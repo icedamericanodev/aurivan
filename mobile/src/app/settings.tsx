@@ -128,7 +128,7 @@ export default function Settings() {
   const confirmReset = () =>
     Alert.alert(
       `Reset ${cert.name} progress?`,
-      `This deletes your answers, reviews, saved questions, mock history, badges and game levels for this exam. It cannot be undone. Save a backup first if you might want it back.${hasPlant ? ' Your plant goes back to a seed. It keeps its name and look.' : ''}`,
+      `This deletes your answers, reviews, saved questions, mock history, badges and game levels for this exam. It cannot be undone. Save a backup first if you might want it back.${hasPlant && plantOn ? ' Your plant goes back to a seed. It keeps its name and look.' : ''}`,
       [
         { text: 'Cancel', style: 'cancel' },
         {

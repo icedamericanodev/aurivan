@@ -73,7 +73,7 @@ one family, Direction 3 (Geist only) is the fallback; Direction 2 (Bricolage onl
 Implementation rules
 - Always select weight by `fontFamily` (e.g. `font.sans600`), never `fontWeight` (Android ignores it for custom fonts).
 - Fraunces never below 18px, never bold (600+), never all caps. **Exception (v2): inline serif numerals** in list rows and segmented controls may go to 20px.
-- **Fraunces italic** is the coach's voice and is used in exactly three places: Key idea, stage name ("Stage 3 · Make it stick"), and the clearing card's "grew to" line. Never for UI labels, never for whole paragraphs > 4 lines.
+- **Fraunces italic** is the coach's voice and is used in exactly three places: Key idea, stage name ("Make it stick"), and the clearing card's "grew to" line. Never for UI labels, never for whole paragraphs > 4 lines.
 - Figtree 700 is not loaded. Emphasis = 600. Hierarchy comes from size + family, not from more weight.
 - `fontVariant: ['tabular-nums']` on Figtree for counters, timers, %, "1 of 3".
 - `maxFontSizeMultiplier` (**changed in v2**): 1.3 for `display`/`hero`/`number`/`stat`; **2.0** for `stem`/`quote`/`body`/`small`/`meta`/`label`/`caption` (WCAG 1.4.4 needs 200%; v1's 1.6 failed it); **1.2** for `tab` (iOS shows the large-content viewer on long-press via `accessibilityShowsLargeContentViewer`). Never 1.0.
@@ -588,7 +588,7 @@ Reduced paths per §8.5 (the phone's Reduce Motion, live, or Settings → Motion
 - Hairline `forestTrack`, then mini rings 48 (`sap`) + italic "Readiness grew to 72%" + `meta` "IS Operations ring +4" (biggest mover). If readiness fell or held, say "Readiness holding at 70%" — never a negative framing.
 - Below the panel: `Tomorrow` section (headline + "about 15 min") with the next 2 plan items as non-tappable preview rows, then ghost "Keep going anyway".
 
-**Today (in progress)**: meta row (weekday · days to exam | sprig streak in Fraunces 20 `clay`) → `display` → forest panel "Start here" with 3 leaf marks for the plan (filled = done, current outline) → readiness row (rings 104 mono + `number` + `meta` "ready, weighted by the blueprint" + italic `stage` "Stage 3 · Make it stick"; no rings while the Exam-ready panel shows them) → "Also today" list with real, unshortened titles (2 lines allowed) under `Section` "Also today" + `meta` "about 64 minutes" (the time, not a count: the list always shows every item; spelled out like the items' own "About 24 minutes"). A paused timed mock counts its unanswered questions at study pace, but never more than its clock has left. A capped review reads "Review 55 due" / "About 24 minutes · 20 at a time, most overdue first" in the panel, and "Spaced review · 20 at a time" as an "Also today" row: the same count and line as You and Practice. The count is the LIVE queue (the day's plan is frozen in the morning, the number is not), and an empty queue reads "Review · all caught up".
+**Today (in progress)**: meta row (weekday · days to exam | sprig streak in Fraunces 20 `clay`) → `display` → forest panel "Start here" with 3 leaf marks for the plan (filled = done, current outline) → readiness row (rings 104 mono + `number` + `meta` "ready, weighted by the blueprint" + italic `stage` "Make it stick" (no number since mobile 1.13); no rings while the Exam-ready panel shows them) → "Also today" list with real, unshortened titles (2 lines allowed) under `Section` "Also today" + `meta` "about 64 minutes" (the time, not a count: the list always shows every item; spelled out like the items' own "About 24 minutes"). A paused timed mock counts its unanswered questions at study pace, but never more than its clock has left. A capped review reads "Review 55 due" / "About 24 minutes · 20 at a time, most overdue first" in the panel, and "Spaced review · 20 at a time" as an "Also today" row: the same count and line as You and Practice. The count is the LIVE queue (the day's plan is frozen in the morning, the number is not), and an empty queue reads "Review · all caught up".
 
 **Question**: v1 recipe plus: progress segments `gap 3`, current segment `ink2`; meta "● IS Operations · Job scheduling · 4 of 10" (domain dot in tone, subtopic shortened to ≤ 3 words); `stem` steps down to 20/29 above 200 chars; option text line-height 1.42; scroll `paddingBottom` = footer + 24.
 
@@ -683,20 +683,24 @@ different days, weighted like the exam), mocks and the exam-ready hold. Never
 taps, minutes, streaks or games. Growth never goes down; only the learner's
 Reset (back to a seed, name, species and look kept) or a restore clamp lowers it.
 
-**Words.** Always "growth", never "stage" ("Bough · growth 4 of 6"); the
-journey keeps "Stage 3 · Make it stick", so the two ladders never share a
-word. Never a guilt or needs word (wilting, thirsty, misses you). Never the
+**Words.** Always "growth", never "stage" ("Bough · growth 4 of 6"). The
+journey line beside it carries no number since PR #43 ("Rehearse the exam",
+not "Stage 4 · Rehearse the exam"), so Today never shows two numbered ladders
+side by side; Phase 5's numbered "Step 3 of 6" belongs only to the Your path
+list, where no plant appears. The rules say where their numbers come from:
+"The low end of your readiness, without hints or games, reaches 55%", and
+Elder's "The low end of your readiness holds at 80% or more for a week". Never a guilt or needs word (wilting, thirsty, misses you). Never the
 bank size. Never "Pokémon".
 
 **Where it lives (and never).**
 
 | Place | What | Size |
 |---|---|---|
-| Today | In the slot beside the readiness range, replacing the small mono rings; tap opens Your plant. Its own screen-reader stop; the readiness words keep theirs | 104pt |
-| Today, below | One calm line when it grows (`PlantNote`, "Your plant grew"), or, with no plant, one quiet "Plant a companion…" line with Plant yours / Not now (dismissed for good) | — |
+| Today | In the slot beside the readiness range, replacing the small mono rings, with its name in `meta` under it (the tap affordance, inside the same target); tap opens Your plant. Its own screen-reader stop; the readiness words keep theirs. Drawn at the small detail level | 104pt |
+| Today, below | One calm line when it grows (`PlantNote`, "Your plant grew", right under the readiness row). With no plant, one quiet "Plant a companion…" line with Plant yours / No thanks (dismissed for good), BELOW the Also today / Tomorrow block: never ahead of the day's study | — |
 | You | Header row under the title: the plant, its name, its growth; or "Plant yours" | 64pt |
 | Your plant | The plant on the shared 200 × 200 stage (`fit={false}`), name, growth and its look in italic; the back-fill line once; the resting line; What grows it next (rule steps with bars, "Not yet" / "Done"); Your domains as text rows with "Next to grow"; Change species and Rename | 200pt |
-| Picker (onboarding step 3 of 3, Plant yours, Change species) | A radio grid of the 13 species, each previewed at Crown; three across, two at ×1.3 text; selected = 2px ink border | 56–96pt |
+| Picker (onboarding step 3 of 3, Plant yours, Change plant) | A radio grid of the 13 species, each previewed at Crown; the columns come from the measured width and text size (a tile needs 112pt × the text scale, up to ×1.3): three when they fit, else two (a 360 dp phone), and one row per species (56pt plant beside its name and line) at ×1.6 text; names wrap to two lines, never mid-word; selected = 2px ink border. The name field starts empty with an idea as its placeholder ("Another idea" fills one in; empty = "Your oak"); the keyboard never covers it (the footer hides while typing) | 56–96pt |
 | Question, mock, lesson, game and Results screens | **Never** (a test checks the imports) | — |
 
 The rings stay on You and Results as the numeric view.
@@ -709,11 +713,25 @@ and never sad: calm, or sleepy while resting.
 **Resting.** After 3 days without study, or on the exam eve and exam day, the
 plant sits on a soft dusk disc with a small moon and closed eyes, and Your plant
 says "Kai is resting. Pick up whenever you're ready." (after 7+ days: "Kai kept
-your place."). It never counts the days and never changes the plant itself.
+your place."). The exam eve says "Rest day. Sleep and time off help memory
+settle." and exam day "Good luck. You've done the work." It never counts the
+days and never changes the plant itself.
+
+**Names.** Cleaned on save: whitespace (newlines too) becomes one space, every
+invisible control or format character goes (a name of only those is no name),
+emoji joiners and script joiners stay between visible characters, and a name
+is at most 20 characters, never cut inside an emoji or an accent. A
+right-to-left name is bidi-isolated where a sentence shows it.
+
+**Restore.** A restore never lowers growth an honest file earned: the clamp
+runs the same gates as live growth on the most generous facts the file
+allows, and evidence a save can lose (mocks past the newest 50, readiness days
+past the log, renamed subtopics) never counts against the plant.
 
 **Motion (4a).** Static. The grow-up line uses `useCelebration('plant-growth')`
-(the session budget, skippable, a 200 ms fade or static under Reduce Motion;
-the line is spoken once via `sayLater`). Focus never moves for it. The growth
+with `shortOnly` (it has no parts to play yet, so it never spends the
+session's one full celebration: a 200 ms fade, or static under Reduce Motion
+and past the budget; the line is spoken once via `sayLater`). Focus never moves for it. The growth
 sequence, idle breathing and reactions come in 4b, each with a Reduce Motion path.
 
 **Large text and narrow phones.** Today stacks the plant above the range at

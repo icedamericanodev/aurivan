@@ -7,7 +7,7 @@
  *   one calm line when there is one: the back-fill (once), or resting
  *   What grows it next: the next growth's rule, step by step, with progress
  *   Your domains: each domain's part of the plant, as text rows
- *   Look: change species (the growth stays) and rename
+ *   Look: change plant (the species; the growth stays) and rename
  *
  * No needs, no guilt: the plant asks for nothing. Resting is a calm look
  * that never counts the days away. Settings → Show my plant off: this
@@ -32,6 +32,7 @@ import {
   plantCallName,
   restLine,
   SPECIES_INFO,
+  shownName,
   SPREAD_EXPLAINER,
 } from '../engine/plant';
 import { dayKey } from '../engine/streak';
@@ -87,7 +88,8 @@ export default function YourPlant() {
     );
   }
 
-  const rest = restLine(p, progress.milestones?.lastDay, dayKey(now)) ?? (view.resting ? `${plantCallName(p)} is resting. Pick up whenever you're ready.` : null);
+  // The exam eve and exam day have their own calm line (UX review P2).
+  const rest = restLine(p, progress.milestones?.lastDay, dayKey(now), view.exam) ?? (view.resting ? `${plantCallName(p)} is resting. Pick up whenever you're ready.` : null);
   const cert = view.cert;
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
@@ -115,7 +117,7 @@ export default function YourPlant() {
         {(kept || rest) && (
           <View style={{ marginTop: space.xl, gap: space.lg }}>
             {kept && <PlantNote caption="From your study so far" line={kept.line} testID="plant-backfill" />}
-            {rest && <PlantNote caption="Resting" line={rest} testID="plant-rest" />}
+            {rest && <PlantNote caption={view.exam === 'day' ? 'Exam day' : 'Resting'} line={rest} testID="plant-rest" />}
           </View>
         )}
 
@@ -152,8 +154,9 @@ export default function YourPlant() {
             <ListRow
               key={d.id}
               title={d.short}
-              subtitle={o.step === 0 ? 'Not started yet' : `${pc}% · ${ORGAN_STEP_WORDS[o.step]}`}
-              trailing={isNext ? <Tag label="Next to grow" /> : undefined}
+              // At large text the tag would squeeze the domain name: "Next to grow" joins the subtitle instead (UX review P7).
+              subtitle={`${o.step === 0 ? 'Not started yet' : `${pc}% · ${ORGAN_STEP_WORDS[o.step]}`}${isNext && large ? ' · Next to grow' : ''}`}
+              trailing={isNext && !large ? <Tag label="Next to grow" /> : undefined}
               accessibilityLabel={organLabel(i, d.name, mastery, o.step, isNext)}
               last={i === cert.domains.length - 1}
             />
@@ -162,8 +165,8 @@ export default function YourPlant() {
         {p.growth < 4 && <T v="meta" style={{ marginTop: space.sm }}>Each domain grows its own part of the plant from Bough.</T>}
 
         <Section title="Look" />
-        <ListRow title="Change species" subtitle="Same growth, new look." onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'species' } })} />
-        <ListRow title="Rename" subtitle={p.name ? `Now: ${p.name}` : 'No name yet'} onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'name' } })} last />
+        <ListRow title="Change plant" subtitle="Same growth, new look." onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'species' } })} />
+        <ListRow title="Rename" subtitle={p.name ? `Now: ${shownName(p.name)}` : 'No name yet'} onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'name' } })} last />
         <Button kind="ghost" label="Plant settings" accessibilityHint="Show my plant and Quiet look, in Settings" onPress={() => router.push('/settings')} style={{ alignSelf: 'flex-start', marginTop: space.md, marginLeft: -space.sm }} />
       </ScrollView>
     </SafeAreaView>

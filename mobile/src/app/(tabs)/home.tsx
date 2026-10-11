@@ -38,7 +38,7 @@ import { haptic } from '../../lib/haptics';
 import { useTodayMoments } from '../../lib/moments';
 import { useJourney } from '../../lib/useJourney';
 import { checkPlant, seeGrowth, usePlantView } from '../../lib/plant';
-import { grewLabel, type GrowthLevel } from '../../engine/plant';
+import { grewLabel, plantCallName, type GrowthLevel } from '../../engine/plant';
 import { useReports } from '../../lib/useReports';
 import { useProgress } from '../../store/progress';
 import { useSession, type ActiveSession } from '../../store/session';
@@ -156,7 +156,10 @@ export default function Today() {
   }, [pending, focused, cert]);
   // Shown for this visit only: leaving Today puts the line away (Today stays mounted for days).
   useFocusEffect(useCallback(() => () => setGrown(null), []));
-  const growthMoment = useCelebration('plant-growth', Boolean(grown) && focused, grown?.line, `${cert}:plant:${grown?.growth ?? 0}`);
+  // shortOnly: the line has no animated parts yet (4b brings the grow
+  // sequence), so it never spends the session's one FULL celebration; a
+  // Results milestone later in the session keeps it (code review M2).
+  const growthMoment = useCelebration('plant-growth', Boolean(grown) && focused, grown?.line, `${cert}:plant:${grown?.growth ?? 0}`, false, true);
   // One quiet line for a learner with no plant yet, until they plant or dismiss it.
   const setPlantSettings = useProgress((s) => s.setPlantSettings);
   const plantPrompt = plantView.shown && !plantView.plant && !plantView.settings.promptHidden;
@@ -265,6 +268,10 @@ export default function Today() {
                   quietLook={!plantView.face}
                   resting={plantView.resting}
                   size={104}
+                  // Small detail at 104pt: the full level's extra marks don't read at this size (code review M6d).
+                  lod="small"
+                  // The name under the plant says "this is yours, tap it" (UX review).
+                  caption={plantCallName(plantView.plant)}
                   label={plantView.label}
                   onPress={() => router.push('/plant')}
                 />
@@ -274,20 +281,13 @@ export default function Today() {
         </Enter>
       )}
 
-      {(grown || plantPrompt) && (
+      {grown && (
         <Enter i={2} style={{ marginTop: space.xl }}>
-          {grown ? (
-            <Celebrate celebration={growthMoment}>
-              <PlantNote caption="Your plant grew" line={grown.line} testID="plant-grew">
-                <Button kind="ghost" label="What grows it next" onPress={() => router.push('/plant')} />
-              </PlantNote>
-            </Celebrate>
-          ) : (
-            <PlantNote caption="Your plant" line="Plant a companion that grows with your study." testID="plant-prompt">
-              <Button kind="ghost" label="Plant yours" onPress={() => router.push('/plant-pick')} />
-              <Button kind="ghost" label="Not now" accessibilityLabel="Not now, hide this note" onPress={() => setPlantSettings({ promptHidden: true })} />
+          <Celebrate celebration={growthMoment}>
+            <PlantNote caption="Your plant grew" line={grown.line} testID="plant-grew">
+              <Button kind="ghost" label="What grows it next" onPress={() => router.push('/plant')} />
             </PlantNote>
-          )}
+          </Celebrate>
         </Enter>
       )}
 
@@ -341,6 +341,20 @@ export default function Today() {
               ))}
             </>
           )
+        )}
+        {/* One quiet offer for a learner with no plant, below the day's study (UX review P6): never ahead of it. */}
+        {!grown && plantPrompt && (
+          <View style={{ marginTop: space.xl }}>
+            <PlantNote caption="Your plant" line="Plant a companion that grows with your study." testID="plant-prompt">
+              <Button kind="ghost" label="Plant yours" onPress={() => router.push('/plant-pick')} />
+              <Button
+                kind="ghost"
+                label="No thanks"
+                accessibilityLabel="No thanks, hide this note. You can plant one from You."
+                onPress={() => setPlantSettings({ promptHidden: true })}
+              />
+            </PlantNote>
+          </View>
         )}
         {credit.items > 0 && !credit.hidden && (
           // The key-idea recipe (a green rule, not a card), like You's back-fill line.

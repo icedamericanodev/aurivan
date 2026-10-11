@@ -151,7 +151,7 @@ export function ReadinessRow({
   cert: Certification;
   readiness: Readiness;
   range: ReadinessRange;
-  /** e.g. "Stage 3 · Make it stick" */
+  /** The journey's coach line, e.g. "Make it stick" (no number: the plant beside it counts its growth). */
   stage: string;
   /**
    * Mobile 1.13: the learner's plant, drawn INSTEAD of the rings (Today). It

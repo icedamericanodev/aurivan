@@ -17,7 +17,7 @@
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { BackHandler, Pressable, ScrollView, View } from 'react-native';
+import { BackHandler, KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle } from 'react-native-svg';
 import { BrandLockup, PillarList } from '../components/brand';
@@ -33,6 +33,7 @@ import { useProgress } from '../store/progress';
 import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS } from '../content/certifications';
 import { dateInMonths, EXAM_DATE_PRESETS } from '../engine/examDay';
+import { useKeyboardShown } from '../lib/useKeyboardShown';
 import { useRestoreFlow } from '../lib/useRestoreFlow';
 import { useSettings } from '../store/settings';
 import { radius, raisedShadow, space } from '../theme/tokens';
@@ -46,9 +47,11 @@ export default function Onboarding() {
   const complete = useSettings((s) => s.completeOnboarding);
   const insets = useSafeAreaInsets();
   const [step, setStep] = useState<0 | 1 | 2 | 3>(0);
-  // Step 3 (mobile 1.13): the plant and its name (a suggestion, prefilled).
+  // Step 3 (mobile 1.13): the plant and its name (empty to start; the field shows an idea as its placeholder).
   const [species, setSpecies] = useState<PlantSpecies>('oak');
-  const [plantName, setPlantName] = useState(() => suggestName('oak', Math.random()));
+  const [plantName, setPlantName] = useState('');
+  // The keyboard and the sticky footer never cover the name field (UX review H2).
+  const typing = useKeyboardShown();
   const [certId, setCertId] = useState('cisa');
   const [preset, setPreset] = useState<number>(3);
   const [footerH, setFooterH] = useState(120);
@@ -223,45 +226,55 @@ export default function Onboarding() {
       {step === 0 ? (
         <ScrollView contentContainerStyle={{ paddingBottom: footerH + space.xl }}>{welcome}</ScrollView>
       ) : (
-        <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingTop: space.lg, paddingBottom: footerH + space.xl }}>
-          {body}
-        </ScrollView>
+        // iOS moves the scroll insets itself; Android shrinks the view (the support sheet's pattern).
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? undefined : 'height'}>
+          <ScrollView
+            automaticallyAdjustKeyboardInsets
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ paddingHorizontal: space.gutter, paddingTop: space.lg, paddingBottom: (typing ? 0 : footerH) + space.xl }}
+          >
+            {body}
+          </ScrollView>
+        </KeyboardAvoidingView>
       )}
-      <StickyFooter onHeight={setFooterH}>
-        {step === 0 ? (
-          <>
-            {/* A bad file's message sits right above the buttons, where the learner is looking. */}
-            {restore.message && <DataMessage message={restore.message} />}
-            <Button label="Start my plan" onPress={() => setStep(1)} disabled={restore.busy !== null} />
-            {/* Moving phones: restore here instead of setting up again. */}
-            <Button
-              kind="ghost"
-              label={restore.busy === 'pick' ? 'Opening…' : 'Restore from a backup'}
-              accessibilityHint="Studied on another phone? Pick your Aurivan backup file to bring your progress here."
-              disabled={restore.busy !== null}
-              onPress={restore.pick}
-            />
-          </>
-        ) : step === 1 ? (
-          <>
-            <Button label="Continue" onPress={() => setStep(2)} />
-            <Button kind="ghost" label="Back" onPress={() => setStep(0)} />
-          </>
-        ) : step === 2 ? (
-          <>
-            <Button label="Continue" onPress={() => setStep(3)} />
-            <Button kind="ghost" label="Back" onPress={() => setStep(1)} />
-          </>
-        ) : (
-          <>
-            <Button label="Plant it" onPress={() => finish(true)} />
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Button kind="ghost" label="Back" onPress={() => setStep(2)} />
-              <Button kind="ghost" label="Skip for now" accessibilityHint="Starts studying without a plant. You can plant one later from You." onPress={() => finish(false)} />
-            </View>
-          </>
-        )}
-      </StickyFooter>
+      {/* Hidden while typing (step 3's name): "Done" on the keyboard brings the buttons back. */}
+      {!typing && (
+        <StickyFooter onHeight={setFooterH}>
+          {step === 0 ? (
+            <>
+              {/* A bad file's message sits right above the buttons, where the learner is looking. */}
+              {restore.message && <DataMessage message={restore.message} />}
+              <Button label="Start my plan" onPress={() => setStep(1)} disabled={restore.busy !== null} />
+              {/* Moving phones: restore here instead of setting up again. */}
+              <Button
+                kind="ghost"
+                label={restore.busy === 'pick' ? 'Opening…' : 'Restore from a backup'}
+                accessibilityHint="Studied on another phone? Pick your Aurivan backup file to bring your progress here."
+                disabled={restore.busy !== null}
+                onPress={restore.pick}
+              />
+            </>
+          ) : step === 1 ? (
+            <>
+              <Button label="Continue" onPress={() => setStep(2)} />
+              <Button kind="ghost" label="Back" onPress={() => setStep(0)} />
+            </>
+          ) : step === 2 ? (
+            <>
+              <Button label="Continue" onPress={() => setStep(3)} />
+              <Button kind="ghost" label="Back" onPress={() => setStep(1)} />
+            </>
+          ) : (
+            <>
+              <Button label="Plant it" onPress={() => finish(true)} />
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                <Button kind="ghost" label="Back" onPress={() => setStep(2)} />
+                <Button kind="ghost" label="Skip for now" accessibilityHint="Starts studying without a plant. You can plant one later from You." onPress={() => finish(false)} />
+              </View>
+            </>
+          )}
+        </StickyFooter>
+      )}
       <RestorePreview ready={restore.ready} busy={restore.busy === 'restore'} onConfirm={restore.confirm} onCancel={restore.cancel} />
     </SafeAreaView>
   );

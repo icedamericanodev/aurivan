@@ -4,7 +4,7 @@
  *
  * Journeys:
  *  J1  new learner onboarding: pick, name, plant; and the same with Skip
- *  J2  a 1.12 save upgrading: no plant, Today's prompt, "Not now" for good, You's "Plant yours"
+ *  J2  a 1.12 save upgrading: no plant, Today's prompt, "No thanks" for good, You's "Plant yours"
  *  J3  growth up from real mastery or readiness; never down after wrong answers; never from games or minutes
  *  J4  change species keeps growth; rename validation
  *  J5  Show my plant OFF: Today, You, and the Your plant routes
@@ -15,8 +15,9 @@
  *  J10 switching certification keeps a separate plant per cert
  *  J11 never on question, mock, lesson or game screens
  *
- * A test marked `// QA-BUG:` pins CURRENT wrong behaviour. When the bug is
- * fixed, that test fails: flip its expectation to the right one.
+ * A test marked `// QA-BUG:` pinned wrong behaviour found by the QA pass.
+ * All eight are fixed in the PR #43 review fixes; each test now asserts the
+ * fixed behaviour and says `// QA-BUG (fixed):` with what changed.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { existsSync, readdirSync, readFileSync } from 'fs';
@@ -239,12 +240,18 @@ describe('J1 a new learner’s onboarding', () => {
     expect(allText()).not.toMatch(/Plant yours/);
   });
 
-  it('a suggested name follows the species until the learner types one', () => {
+  it('the name starts empty with an idea as its placeholder; "Another idea" fills one in, and it follows the species until the learner types one', () => {
+    // UX review P1: nothing is chosen for the learner; an empty name is "Your oak".
     useSettings.setState({ onboarded: false });
     mount(<Onboarding />);
     toStep3();
     layoutGrid();
+    expect(nameInput().props.value).toBe('');
+    expect(['Ledger', 'Atlas', 'Bracken', 'North']).toContain(nameInput().props.placeholder);
     press(/^Lotus\./);
+    expect(nameInput().props.value).toBe('');
+    expect(['Padma', 'Lumi', 'Nila', 'Still']).toContain(nameInput().props.placeholder);
+    press(/^Suggest another name$/);
     expect(['Padma', 'Lumi', 'Nila', 'Still']).toContain(nameInput().props.value);
     press(/^Cactus\./);
     expect(['Pico', 'Nopal', 'Rio', 'Sable']).toContain(nameInput().props.value);
@@ -324,12 +331,12 @@ describe('J2 an existing 1.12 save upgrading', () => {
     expect(useProgress.getState().plantSettings).toBeUndefined();
   });
 
-  it('Today shows the one quiet prompt; "Not now" hides it for good (saved); You still offers "Plant yours"', async () => {
+  it('Today shows the one quiet prompt; "No thanks" hides it for good (saved); You still offers "Plant yours"', async () => {
     await loadOldSave();
     mount(<Today />);
     expect(byTestID('plant-prompt')).toHaveLength(1);
     expect(allText()).toMatch(/Plant a companion that grows with your study\./);
-    press(/^Not now/);
+    press(/^No thanks/);
     expect(byTestID('plant-prompt')).toHaveLength(0);
     unmount();
     // It is saved: a cold start (rehydrate from storage) keeps it hidden.
@@ -459,11 +466,10 @@ describe('J3 growth: up from real learning, never down, never from games or minu
     expect(plantFactsFor('cisa', cp(), Date.now())!.cleanAnswered).toBe(0);
   });
 
-  it('game answers feed the readiness log that the Elder gate’s "exam-ready moment" reads', () => {
-    // QA-BUG: Minor. `readyHeld` (Elder gate) reads moments.readiness and
-    // readySeenAt, which the store logs from ALL answers, game answers
-    // included (store/progress.ts withReadiness). Every other gate uses clean
-    // answers only. A game-inflated readiness can tick the Elder box.
+  it('game answers feed the readiness log, but never tick the Elder gate’s exam-ready hold', () => {
+    // QA-BUG (fixed): `readyHeld` read moments.readiness and readySeenAt,
+    // which the store logs from ALL answers, game answers included. It now
+    // also needs the CLEAN low end at the exam-ready line (code review B2).
     answer(10, { game: true });
     const log = cp().moments?.readiness ?? [];
     expect(log.some((d) => d.last !== null)).toBe(true); // logged from game answers alone
@@ -471,7 +477,7 @@ describe('J3 growth: up from real learning, never down, never from games or minu
     const today = dayKey(Date.now());
     const held = Array.from({ length: 8 }, (_, k) => ({ day: dayKey(Date.now() - k * DAY), min: 85, last: 85 }));
     const f = plantFacts({ cert: getCertification('cisa')!, answers: cp().answers, subtopicsByDomain: plantSubtopics('cisa'), mocks: [], readinessLog: held, today });
-    expect(f.readyHeld).toBe(true); // pinned: should need clean readiness
+    expect(f.readyHeld).toBe(false); // the clean low end isn't there: games can't hold it
   });
 });
 
@@ -533,12 +539,10 @@ describe('J4 change species keeps growth; rename validation', () => {
     expect(plantLabel({ name: p.name, species: p.species, growth: p.growth })).toMatch(/your oak|Your oak/);
   });
 
-  it('a newline or tab between words joins them', () => {
-    // QA-BUG: Minor (cosmetic). STRIP removes C0 controls, including \n and
-    // \t, BEFORE whitespace is collapsed, so a pasted "Kai<newline>Lee"
-    // saves as "KaiLee". Expected "Kai Lee": turn whitespace controls into
-    // spaces first, then strip the rest.
-    expect(cleanPlantName('Kai\n\tLee')).toBe('KaiLee'); // pinned: should be 'Kai Lee'
+  it('a newline or tab between words becomes one space', () => {
+    // QA-BUG (fixed): whitespace controls (newline, tab) now become a space
+    // BEFORE the other controls are stripped, so "Kai<newline>Lee" saves as "Kai Lee".
+    expect(cleanPlantName('Kai\n\tLee')).toBe('Kai Lee');
     expect(cleanPlantName('Kai\u2028Lee')).toBe('Kai Lee'); // a line separator is already a space
   });
 
@@ -550,40 +554,36 @@ describe('J4 change species keeps growth; rename validation', () => {
     expect(nameInput().props.accessibilityHint).toMatch(/Up to 20 characters/);
   });
 
-  it('an emoji ZWJ sequence is split apart', () => {
-    // QA-BUG: Minor. The cleaner strips U+200D (zero-width joiner) with the
-    // other zero-widths, so a family / profession / flag emoji breaks into
-    // its parts (👩‍💻 → 👩💻), and ZWJ/ZWNJ-dependent scripts (Malayalam,
-    // Persian) change spelling. engine/plant.ts STRIP covers U+200B–U+200F.
-    expect(cleanPlantName('👩‍💻')).toBe('👩💻'); // pinned: should stay '👩‍💻'
-    expect(cleanPlantName('🏳️‍🌈')).toBe('🏳️🌈'); // pinned: rainbow flag split
+  it('an emoji ZWJ sequence stays whole', () => {
+    // QA-BUG (fixed): the cleaner stripped U+200D with the other zero-widths,
+    // splitting emoji sequences. It now keeps the joiners (U+200D, U+200C)
+    // between two visible characters, so emoji and Persian or Malayalam spelling survive.
+    expect(cleanPlantName('👩‍💻')).toBe('👩‍💻');
+    expect(cleanPlantName('🏳️‍🌈')).toBe('🏳️‍🌈');
   });
 
-  it('a name of invisible characters survives the cleaner', () => {
-    // QA-BUG: Minor. U+2060 (word joiner), U+180E, U+3164 (Hangul filler) and
-    // U+061C (Arabic letter mark, a bidi control) are not stripped, so a name
-    // can look blank: the Your plant title is empty and VoiceOver reads
-    // ", your oak". `plantCallName` falls back only for ''.
+  it('a name of invisible characters cleans to no name ("Your oak")', () => {
+    // QA-BUG (fixed): U+2060, U+180E, U+3164 and U+061C are now stripped (every
+    // control and format character, plus the blank-looking fillers), so a
+    // name can't look blank: it is '' and reads "Your oak".
     for (const raw of ['⁠', 'ㅤ', '؜']) {
       const name = cleanPlantName(raw);
-      expect(name).not.toBe(''); // pinned: should clean to ''
-      expect(plantCallName({ name, species: 'oak' }).trim().length).toBeLessThanOrEqual(1);
+      expect(name).toBe('');
+      expect(plantCallName({ name, species: 'oak' })).toBe('Your oak');
     }
   });
 
-  it('a zero-width between a letter and its accent saves a name the plant’s own check refuses', () => {
-    // QA-BUG: Minor. cleanPlantName normalises to NFC BEFORE stripping, so
-    // "e" + ZWSP + U+0301 becomes "e" + U+0301 (not NFC) and the cleaner is
-    // not idempotent. The saved plant then fails isValidPlantState; export
-    // repairs it, so the backup still works, but the name silently changes.
+  it('a zero-width between a letter and its accent saves a clean NFC name the plant’s own check accepts', () => {
+    // QA-BUG (fixed): the cleaner now strips BEFORE normalising to NFC, so
+    // "e" + ZWSP + U+0301 becomes "é" and cleaning is idempotent.
     act(() => {
       useProgress.getState().updatePlant('cisa', () => plantNew('oak', 'Kai', Date.now()));
       useProgress.getState().renamePlant('cisa', 'Rene​́');
     });
     const p = cp().plant!;
-    expect(p.name).toBe('René');
-    expect(cleanPlantName(p.name)).not.toBe(p.name); // pinned: should be idempotent
-    expect(isValidPlantState(p)).toBe(false); // pinned: should be true
+    expect(p.name).toBe('Ren\u00E9'); // NFC: one precomposed \u00E9
+    expect(cleanPlantName(p.name)).toBe(p.name);
+    expect(isValidPlantState(p)).toBe(true);
     const read = checkBackupText(JSON.stringify(currentBackup()));
     expect(read.kind).toBe('ok'); // export repairs it
   });
@@ -644,24 +644,21 @@ describe('J5 Show my plant OFF', () => {
     expect(cp().plant).toBe(p);
   });
 
-  it('the picker route while hidden offers to plant a new one and "Plant it" silently does nothing', () => {
-    // QA-BUG: Minor (deep link or stale back stack only). /plant-pick with
-    // the plant hidden treats the learner as having no plant: title "Plant
-    // yours", "Choose what you'll grow", 13 species. "Plant it" keeps the
-    // existing plant (plantFor refuses to replace it, good) but the learner's
-    // pick is ignored without a word. Expected: the same "hidden" screen as
-    // /plant, or the change-species / rename mode it was opened in.
+  it('the picker route while hidden says the plant is hidden and opens Settings, like Your plant', () => {
+    // QA-BUG (fixed): /plant-pick with the plant hidden offered a new plant
+    // whose pick was silently ignored. It now shows the same "hidden" screen
+    // as /plant, with Open Settings, and the plant is kept.
     const p = plantNew('cactus', 'Pico', Date.now(), 2);
     setPlant(p);
     hide();
     mockParams = { mode: 'species' };
     mount(<PlantPick />);
-    expect(allText()).toMatch(/Choose what you’ll grow/); // pinned
-    layoutGrid();
-    press(/^Lotus\./);
-    press(/^Plant it$/); // pinned: the "new" mode button
-    expect(cp().plant).toBe(p); // the pick was dropped
-    expect(router.replace).toHaveBeenCalledWith('/plant');
+    expect(allText()).toMatch(/Your plant is hidden/);
+    expect(allText()).not.toMatch(/Choose what you’ll grow|Plant it/);
+    expect(plants()).toHaveLength(0);
+    press(/^Open Settings$/);
+    expect(router.push).toHaveBeenCalledWith('/settings');
+    expect(cp().plant).toBe(p);
   });
 });
 
@@ -891,18 +888,17 @@ describe('J9 backup export and restore', () => {
     expect(p.backfill!.seen).toBeFalsy();
   });
 
-  it('restoring a backup with no entry at all for the exam drops the phone’s plant', async () => {
-    // QA-BUG: Minor. lib/backup.ts writeAll only carries the phone's plant
-    // identity for certs that ARE in the file. A file whose byCert has no
-    // "cisa" (exported before any answer, or from a phone used for another
-    // exam) wipes the CISA plant, so the learner must re-plant, against the
-    // stated rule "a restore never makes a learner re-plant".
+  it('restoring a backup with no entry at all for the exam keeps the phone’s plant', async () => {
+    // QA-BUG (fixed): writeAll now also carries the phone's plant identity
+    // for an exam the file has no entry for, so a restore never makes a
+    // learner re-plant (its growth is worked out from the restored data: a seed here).
     setPlant(plantNew('pine', 'Summit', Date.now(), 2));
     const read = okRead(fileWith({}));
     await act(async () => {
       expect((await restoreBackup(read.data, { fresh: true })).kind).toBe('ok');
     });
-    expect(cp().plant).toBeUndefined(); // pinned: should keep pine "Summit" (as a seed)
+    expect(cp().plant).toMatchObject({ species: 'pine', name: 'Summit', growth: 1 });
+    expect(cp().plant!.pending).toBeUndefined();
   });
 
   it('a restore can be undone, plant included', async () => {
@@ -978,14 +974,11 @@ describe('J9 backup export and restore', () => {
     expect(okRead(fileWith({ cisa: { answers: {} } }, { plantSettings: { showPlant: false, quietLook: true } })).data.progress.plantSettings).toEqual({ showPlant: false, quietLook: true });
   });
 
-  it('a genuinely grown Elder can be clamped to Crown on restore when one domain has fewer than 20 answers', () => {
-    // QA-BUG: Minor. maxSupportedGrowth's Elder check asks for 20 answers in
-    // EVERY domain (2 × SHOOT_PER_DOMAIN), which the real Elder gate does not
-    // need: a dress-rehearsal mock gives D3 only 18 questions. A learner who
-    // reached Elder this way restores their own backup and comes back at
-    // Crown; the next Today visit then re-grows it with a second "grew to
-    // Elder" moment. The restore clamp should only use conditions the gates
-    // truly imply.
+  it('a genuinely grown Elder keeps Elder on restore when one domain has fewer than 20 answers', () => {
+    // QA-BUG (fixed): maxSupportedGrowth asked for 20 answers in every domain,
+    // which the real Elder gate does not need. The clamp is now the live gates
+    // on the best-case facts (code review B1), so an honest Elder survives
+    // its own backup and no second "grew to Elder" moment can follow.
     const cert = getCertification('cisa')!;
     const now = Date.now();
     const subs = plantSubtopics('cisa');
@@ -1001,9 +994,9 @@ describe('J9 backup export and restore', () => {
     const facts = plantFacts({ cert, answers, mastery, subtopicsByDomain: subs, mocks: [{ total: 150, correct: 135, day: dayKey(now - DAY), timing: 'standard', unanswered: 0 }], readySeenAt: now - DAY, today: dayKey(now) });
     expect(growthFor(facts)).toBe(6); // a real Elder
     const ev = supportEvidence({ cert, answers, mastery, subtopicsByDomain: subs, mocks: [{ total: 150, correct: 135, day: dayKey(now - DAY), timing: 'standard', unanswered: 0 }], readySeenAt: now - DAY });
-    expect(maxSupportedGrowth(ev)).toBe(5); // pinned: should be 6
+    expect(maxSupportedGrowth(ev)).toBe(6);
     const progress = { byCert: { cisa: { answers, mastery, mocks: [mock], moments: { readySeenAt: now - DAY }, plant: plantNew('mango', 'Amber', now - 9 * DAY, 6) } } } as unknown as BackupProgress;
-    expect(keepSupportedPlants(progress, knownIds).byCert.cisa.plant!.growth).toBe(5); // pinned: should stay 6
+    expect(keepSupportedPlants(progress, knownIds).byCert.cisa.plant!.growth).toBe(6);
   });
 });
 
