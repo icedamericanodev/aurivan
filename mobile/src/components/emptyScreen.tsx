@@ -20,8 +20,11 @@ export function EmptyScreen({
   tags,
   primary,
   secondary,
+  fallback = '/home',
 }: {
   header: string;
+  /** Where Back goes when there is no back history (a full list's screen may use '/you'). */
+  fallback?: '/home' | '/you';
   title: string;
   body: string;
   tags?: string[];
@@ -33,7 +36,7 @@ export function EmptyScreen({
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
-        <PushedHeader title={header} onBack={() => (router.canGoBack() ? router.back() : router.replace('/home'))} />
+        <PushedHeader title={header} onBack={() => (router.canGoBack() ? router.back() : router.replace(fallback))} />
         <EmptyState title={title} body={body} tags={tags} />
       </ScrollView>
       {(primary || secondary) && (

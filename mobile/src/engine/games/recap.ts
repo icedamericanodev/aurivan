@@ -69,7 +69,15 @@ export function firstSentence(text: string, max = 180): string {
 
 /** One missed question in the recap. */
 export interface RecapMiss {
+  /** The question id, or the deck's own card id (unique within the round: the row's key). */
   questionId: string;
+  /**
+   * The STABLE review-card id to report, when it differs from questionId
+   * (Canopy Call "role:1A1.3:r001", Stepping Stones "seq:…" / "flow:…").
+   * Fixes and Your reports match on it, so a raw deck id ("r001") must
+   * never reach an email (code review #1).
+   */
+  reportId?: string;
   /** The start of the stem, so the learner knows which question it was. */
   stem: string;
   /** "Snare: …" or "Signpost word: FIRST". */

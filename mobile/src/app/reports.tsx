@@ -5,10 +5,12 @@
  *
  * - Titles use names, not codes ("Question in IS Operations"); the code and
  *   the report's reference sit in the meta line.
- * - "Started": the email app opened (we can't know if it was sent).
- * - "Updated after your report": a fix in the bundled list shipped on a
- *   later day than the report (engine/support.ts fixFor), with its one
- *   general sentence. Matched on this phone; nothing is sent.
+ * - "Started": the learner began a report here (their email app opened, or
+ *   the message was shown to copy or share). We can't know if it was sent.
+ * - "Updated after your report": a fix in the bundled list shipped in a
+ *   later app version than the report was made on (engine/support.ts
+ *   fixFor; by day for entries without a version), with its one general
+ *   sentence. Matched on this phone; nothing is sent.
  * - A question no longer in the app says so.
  * The list is kept on this phone and in the learner's own backup file.
  */
@@ -33,6 +35,7 @@ import { useTheme } from '../theme/useTheme';
 /** Which game a card belongs to, by its id's first part ("rumor:4B1.2:…"). */
 const CARD_GAME: Record<string, string> = {
   rumor: 'Root or Rumor',
+  root: 'Root or Rumor',
   kt: 'Field Guide',
   role: 'Canopy Call',
   seq: 'Stepping Stones',
@@ -110,7 +113,8 @@ export default function Reports() {
       <EmptyScreen
         header="Your reports"
         title="No reports yet"
-        body="When you report a problem, it’s listed here so you don’t report it twice. The list stays on this phone."
+        body="When you report a problem, it’s listed here so you don’t report it twice. The list stays on this phone and in your own backups."
+        fallback="/you"
       />
     );
   }
@@ -125,7 +129,7 @@ export default function Reports() {
     <Screen edges={['top', 'bottom']}>
       <PushedHeader title="Your reports" onBack={back} />
       <T v="meta" style={{ marginTop: space.sm, marginBottom: space.sm }}>
-        Problems you reported from this phone. “Started” means your email app opened. This list stays on this phone and in your own backups.
+        Problems you started a report about. “Started” means you began one here; your email app can’t tell us whether it was sent. This list stays on this phone and in your own backups.
       </T>
       {reports.map((r, i) => (
         <ReportItem key={`${r.ref}:${r.at}`} r={r} last={i === reports.length - 1} />

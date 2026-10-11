@@ -261,7 +261,7 @@ function MissRow({ certId, game, miss: m, last }: { certId: string; game: GameId
   const q = findQuestion(certId, m.questionId);
   const target: ReportTarget = q
     ? questionTarget(certId, q, `Game recap · ${name}`)
-    : { kind: 'card', id: m.questionId, name, where: `Game recap · ${name}` };
+    : { kind: 'card', id: m.reportId ?? m.questionId, name, where: `Game recap · ${name}` };
   const report = useReportFlow(certId, target);
   return (
     <View style={{ paddingTop: 13, paddingBottom: space.xs, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line }}>

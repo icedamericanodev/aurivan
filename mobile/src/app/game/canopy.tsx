@@ -97,7 +97,15 @@ function CanopyCall() {
   if (i >= round.items.length) {
     const misses: RecapMiss[] = answers
       .filter((a) => !isRightRole(a))
-      .map((a) => ({ questionId: a.card.id, stem: a.card.decision, tag: `Decides: ${short(a.card.role)}`, why: a.card.why, answerWrong: true }));
+      .map((a) => ({
+        questionId: a.card.id,
+        // Reported by the stable card id ("role:1A1.3:r001"), not the deck id.
+        reportId: canopyCardId(a.card),
+        stem: a.card.decision,
+        tag: `Decides: ${short(a.card.role)}`,
+        why: a.card.why,
+        answerWrong: true,
+      }));
     const pairs = confusionPairs(answers, deck);
     return (
       <RoundEnd certId={cert.id} game="canopy" score={score} max={round.items.length} misses={misses} reviewNote={MISS_LINE} onAgain={start} news={news}>
