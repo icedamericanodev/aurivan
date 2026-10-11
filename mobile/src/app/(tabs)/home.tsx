@@ -21,7 +21,8 @@ import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
-import { ClearingBody, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow } from '../../components/journey';
+import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow } from '../../components/journey';
+import { Celebrate, Pop, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
 import { ICON_STROKE, Play, Settings, Sprig } from '../../components/icons';
 import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, ScreenTitle, Section, T } from '../../components/ui';
 import { currentIndex, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
@@ -94,13 +95,40 @@ export default function Today() {
   useFocusEffect(useCallback(() => setNow(Date.now()), []));
   const playIcon = (color: string) => <Play size={ICON_SIZE.inline} color={color} strokeWidth={ICON_STROKE} />;
 
-  // The clearing's one success tap, once a day (respects the Haptics setting).
+  // Mobile 1.9 motion: growth plays when Today is ON VIEW (it changes while a
+  // session sits on top), shows what went up since you last looked, and
+  // never replays on a later visit (components/motion.tsx useGrowth).
+  const focused = useScreenFocus();
+  const cert = j.cert.id;
+  const ringsGrowth = useGrowth(`today:rings:${cert}`, j.readiness.domains.map((d) => Math.round(d.mastery * 100)), { active: focused, firstOfDay: true });
+  const rangeGrowth = useGrowth(`today:range:${cert}`, j.range.enough ? [j.range.low, j.range.high] : [], { active: focused, firstOfDay: true });
+  // The streak rolls +1 on a new day's first study; a reset is just shown.
+  const streakGrowth = useGrowth(`today:streak`, [j.streak], { active: focused });
+
+  // The clearing (T2): once a day, when you come back to it. It plays in full
+  // (≤ 1.2 s, a tap skips it) the first few times, then shortened; static
+  // with Reduce Motion. Its words are the same in every mode, and spoken once.
+  const clearing = useCelebration(
+    'clearing',
+    allDone && focused && !plan.celebrated,
+    `Today’s clearing. ${clearingTitle(plan)} ${clearingLine(plan, j.readiness, j.range)}.`,
+  );
+  // The clearing's one success tap, once a day (respects the Haptics setting),
+  // as it comes into view (not while Results is still on top).
   useEffect(() => {
-    if (allDone && !plan.celebrated) {
+    if (allDone && focused && !plan.celebrated) {
       haptic.success();
       markCelebrated(j.cert.id);
     }
-  }, [allDone, plan.celebrated, markCelebrated, j.cert.id]);
+  }, [allDone, focused, plan.celebrated, markCelebrated, j.cert.id]);
+  // The exam-ready moment (T3): the rings grow and the frond breathes once.
+  const ready = useCelebration('exam-ready', showReady && focused, 'A quiet milestone. Your readiness is holding.');
+  // Any touch on Today ends a moment at once (it never blocks the next tap).
+  const live = !clearing.settled || !ready.settled;
+  const skipAll = () => {
+    clearing.skip();
+    ready.skip();
+  };
 
   // "Also today": an unfinished session first, then the plan items still to do.
   const resume = active && !active.finishedAt ? active : null;
@@ -115,13 +143,22 @@ export default function Today() {
 
   return (
     <Screen>
+      <View onTouchStart={live ? skipAll : undefined}>
       <Enter i={0}>
         <Row style={{ justifyContent: 'space-between', minHeight: 24 }}>
           <T v="meta" num>{`${WEEKDAYS[new Date().getDay()]} · ${countdown(j.daysLeft)}`}</T>
           {j.streak > 0 && (
             <Row gap={space.xs} style={{ minHeight: 24 }}>
-              <Sprig size={ICON_SIZE.row} color={c.clay} strokeWidth={ICON_STROKE} />
-              <BigNum value={String(j.streak)} size={20} color={c.clay} accessibilityLabel={`${j.streak}-day streak`} />
+              <Pop trigger={streakGrowth.play ? streakGrowth.run : undefined} spring="leaf">
+                <Sprig size={ICON_SIZE.row} color={c.clay} strokeWidth={ICON_STROKE} />
+              </Pop>
+              <BigNum
+                value={String(j.streak)}
+                size={20}
+                color={c.clay}
+                accessibilityLabel={`${j.streak}-day streak`}
+                roll={{ play: streakGrowth.play, from: String(streakGrowth.from[0] ?? ''), run: streakGrowth.run }}
+              />
             </Row>
           )}
         </Row>
@@ -136,7 +173,7 @@ export default function Today() {
 
       <Enter i={1} style={{ marginTop: space.lg }}>
         {showReady ? (
-          <ExamReadyPanel cert={j.cert} readiness={j.readiness} onDismiss={moments.dismissReady} />
+          <ExamReadyPanel cert={j.cert} readiness={j.readiness} onDismiss={moments.dismissReady} celebration={ready} />
         ) : plan.items.length === 0 ? (
           <HeroPanel
             caption={j.daysLeft !== null && j.daysLeft < 0 ? 'Exam done' : 'Plan'}
@@ -146,19 +183,21 @@ export default function Today() {
             action={{ label: 'Set exam date', onPress: () => router.push('/settings'), icon: (col) => <Settings size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} /> }}
           />
         ) : allDone ? (
-          <HeroPanel
-            caption="Today’s clearing"
-            captionExtra={<PlanLeaves done={plan.done} />}
-            title={clearingTitle(plan)}
-            art="clearing"
-            wideTitle
-          >
-            <ClearingBody plan={plan} readiness={j.readiness} range={j.range} cert={j.cert} />
-          </HeroPanel>
+          <Celebrate celebration={clearing}>
+            <HeroPanel
+              caption="Today’s clearing"
+              captionExtra={<PlanLeaves done={plan.done} focused={focused} />}
+              title={clearingTitle(plan)}
+              art="clearing"
+              wideTitle
+            >
+              <ClearingBody plan={plan} readiness={j.readiness} range={j.range} cert={j.cert} celebration={clearing} />
+            </HeroPanel>
+          </Celebrate>
         ) : (
           <HeroPanel
             caption="Start here"
-            captionExtra={<PlanLeaves done={plan.done} />}
+            captionExtra={<PlanLeaves done={plan.done} focused={focused} />}
             title={planText(plan.items[cur], j.dueCount).title}
             meta={planText(plan.items[cur], j.dueCount).meta}
             action={{ label: 'Start', onPress: () => runPlanItem(plan.items[cur], j.cert.id), icon: playIcon, hint: planText(plan.items[cur], j.dueCount).title }}
@@ -169,7 +208,15 @@ export default function Today() {
       {!allDone && (
         <Enter i={2}>
           {/* The Exam-ready panel draws the rings itself: once per screen (spec §10). */}
-          <ReadinessRow cert={j.cert} readiness={j.readiness} range={j.range} stage={j.stageLine} rings={!showReady} />
+          <ReadinessRow
+            cert={j.cert}
+            readiness={j.readiness}
+            range={j.range}
+            stage={j.stageLine}
+            rings={!showReady}
+            ringsGrowth={ringsGrowth}
+            rangeGrowth={rangeGrowth}
+          />
         </Enter>
       )}
 
@@ -245,6 +292,7 @@ export default function Today() {
           </View>
         )}
       </Enter>
+      </View>
     </Screen>
   );
 }

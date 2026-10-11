@@ -294,7 +294,9 @@ export const motion = {
     screen: 280, // the arriving half of a page turn
     fill: 300, // progress bars and segments
     vine: 520, // the vine stem draws (signature)
-    grow: 600, // growth rings (signature, first view of the day)
+    grow: 600, // growth rings and rolling numbers (signature: first view of the day, or what changed)
+    celebrate: 1200, // the ceiling for a whole celebration (the clearing, a milestone), always skippable
+    short: 200, // a repeated celebration: its end state cross-fades in, nothing else moves
     reduced: 120, // the cross-fade that replaces movement under Reduce Motion
     tick: 900, // the pace tick's linear glide, within each 1 s clock tick (the one linear motion)
   },
@@ -315,8 +317,19 @@ export const motion = {
     pop: { damping: 16, stiffness: 260 }, // the verdict leaf only (signature)
     leaf: { duration: 280, dampingRatio: 0.7 }, // small marks: the bookmark, plan leaves
   },
-  /** Stagger: content groups 40 ms apart (first 4), list rows 30 ms (first 6). */
-  stagger: { group: 40, maxGroups: 4, row: 30, maxRows: 6 },
+  /**
+   * Stagger: content groups 40 ms apart (first 4), list rows 30 ms (first 6),
+   * a rolling number's digits 30 ms (they finish right to left), growth
+   * figures 60 ms (rings, stats), newly pressed leaves 80 ms (first 3).
+   */
+  stagger: { group: 40, maxGroups: 4, row: 30, maxRows: 6, digit: 30, stat: 60, leaf: 80, maxLeaves: 3 },
+  /**
+   * The celebration budget (behavioural review §2): a kind of moment plays in
+   * full its first `fullTimes` times, then shortened; at most ONE plays in
+   * full per app session; decorative motion stays under `sessionMs` in all;
+   * a falling-leaf moment drifts at most `leaves` leaves, once.
+   */
+  celebrate: { fullTimes: 3, sessionMs: 3000, leaves: 8 },
   rise: 8, // pt: content enters this far below its place (y only)
   shift: 16, // pt: a page turn's sideways offset
   pressScale: 0.98,

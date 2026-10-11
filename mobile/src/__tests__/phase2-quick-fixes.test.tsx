@@ -95,7 +95,8 @@ describe('Today', () => {
     mockReady = true;
     mount(<Today />);
     expect(root().findAllByType(GrowthRings)).toHaveLength(1);
-    expect(root().findAllByType(GrowthRings)[0].props.replay).toBe(true); // the panel's own rings
+    // The panel's own rings: sap on the forest track (mobile 1.9 grows them with the moment).
+    expect(root().findAllByType(GrowthRings)[0].props.colors).toBe('#A9D9BA');
     // The readiness numbers are still there, and still spoken.
     expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Estimated readiness'))).not.toHaveLength(0);
   });

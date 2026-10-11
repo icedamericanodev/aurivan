@@ -29,7 +29,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { motion } from '../theme/tokens';
-import { useMotion, useOncePerDay } from './motion';
+import { useCelebrationSettled, useMotion, useOncePerDay } from './motion';
 
 type GlyphProps = { size?: number; color: string; strokeWidth?: number };
 
@@ -75,10 +75,10 @@ export function VerdictLeaf({ size = 38, color }: { size?: number; color: string
   );
 }
 
-/** 22pt filled leaf with a midrib in the background colour (Key idea node). */
-export function LeafBig({ color, rib }: { color: string; rib: string }) {
+/** 22pt filled leaf with a midrib in the background colour (Key idea node; the milestone's pressed leaf at 32). */
+export function LeafBig({ color, rib, size = 22 }: { color: string; rib: string; size?: number }) {
   return (
-    <Svg width={22} height={22} viewBox="0 0 22 22">
+    <Svg width={size} height={size} viewBox="0 0 22 22">
       <Path d="M11 21C3.5 16 3 7.5 11 1c8 6.5 7.5 15 0 20z" fill={color} />
       <Path d="M11 6v11" stroke={rib} strokeWidth={1.4} strokeLinecap="round" />
     </Svg>
@@ -227,9 +227,10 @@ export function swayOrigin(kind: BotanyKind): string {
 /**
  * Decorative line art (hidden from screen readers). With `sway`, the frond
  * rocks ±1.5° over 4 s from its stem base, only while the screen is focused
- * and never under Reduce Motion (spec §10.3).
+ * and never under Reduce Motion (spec §10.3). With `breathe`, it takes ONE
+ * slow breath (1.2 s) and stays still: the Exam-ready moment.
  */
-export function Botany({ kind = 'frond', color, sway = false }: { kind?: BotanyKind; color: string; sway?: boolean }) {
+export function Botany({ kind = 'frond', color, sway = false, breathe = false }: { kind?: BotanyKind; color: string; sway?: boolean; breathe?: boolean }) {
   const spec = specFor(kind);
   const d = useMemo(() => frondPath(spec), [spec]);
   const { reduced: reduce } = useMotion();
@@ -254,13 +255,24 @@ export function Botany({ kind = 'frond', color, sway = false }: { kind?: BotanyK
       };
     }, [sway, reduce, angle]),
   );
+  // One slow breath (the Exam-ready moment): out to 1.5° and back, once, never a loop.
+  useEffect(() => {
+    if (!breathe || sway || reduce) return;
+    angle.set(
+      withSequence(
+        withTiming(1.5, { duration: motion.dur.celebrate / 2, easing: Easing.inOut(Easing.sin), reduceMotion: ReduceMotion.Never }),
+        withTiming(0, { duration: motion.dur.celebrate / 2, easing: Easing.inOut(Easing.sin), reduceMotion: ReduceMotion.Never }),
+      ),
+    );
+    return () => cancelAnimation(angle);
+  }, [breathe, sway, reduce, angle]);
   const style = useAnimatedStyle(() => ({ transform: [{ rotate: `${angle.value}deg` }] }));
   const art = (
     <Svg width={spec.w} height={spec.h} viewBox={`0 0 ${spec.w} ${spec.h}`} fill="none" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
       <Path d={d} />
     </Svg>
   );
-  if (!sway) return art;
+  if (!sway && !breathe) return art;
   // Rotate around the stem base (bottom-right), like a frond in a breeze.
   // Explicit width/height + a pixel pivot: the rotating view never depends on
   // measuring its child first (Android hardening, see HeroPanel in ui.tsx).
@@ -341,6 +353,7 @@ export function GrowthRings({
   track,
   accessibilityLabel,
   replay = false,
+  grow,
 }: {
   preset: RingPreset;
   /** 0..1 per domain, blueprint order (inner → outer). */
@@ -352,6 +365,13 @@ export function GrowthRings({
   accessibilityLabel?: string;
   /** Grow the arcs on mount even if this preset already grew today (a signature moment). */
   replay?: boolean;
+  /**
+   * Mobile 1.9: the caller decides (motion.tsx useGrowth / a celebration):
+   * grow now when `play`, each arc from `from` (0..1, the value last seen)
+   * to its mastery, after `delay`; `run` restarts it. Replaces the
+   * once-a-day rule. Arcs never shrink: a lower value just shows.
+   */
+  grow?: { play: boolean; from?: number[]; run?: number; delay?: number };
 }) {
   const { k, r0, gap, pith } = RING_PRESETS[preset];
   // The box fits the outer ring plus its wobble (+4.2% at most), so nothing clips.
@@ -367,7 +387,7 @@ export function GrowthRings({
   // mount when `replay` asks for it. Static under Reduce Motion.
   const { reduced } = useMotion();
   const first = useOncePerDay(`rings:${preset}`);
-  const animate = !reduced && (replay || first);
+  const animate = !reduced && (grow ? grow.play : replay || first);
   const colorAt = (i: number) => (typeof colors === 'string' ? colors : colors[i % colors.length]);
   return (
     <View accessible={Boolean(accessibilityLabel)} accessibilityRole="image" accessibilityLabel={accessibilityLabel} style={{ width: size, height: size }}>
@@ -385,8 +405,11 @@ export function GrowthRings({
             width={ring.w}
             color={colorAt(i)}
             animate={animate}
+            // Where this arc starts, as a share of its own length (an arc never shrinks).
+            start={grow?.from ? Math.max(0, Math.min(1, (grow.from[i] ?? 0) / Math.max(0.001, mastery[i] ?? 0))) : 0}
+            run={grow?.run ?? 0}
             // Outer ring first, 60ms apart.
-            delay={(rings.length - 1 - i) * 60}
+            delay={(grow?.delay ?? 0) + (rings.length - 1 - i) * motion.stagger.stat}
           />
           ),
         )}
@@ -396,13 +419,38 @@ export function GrowthRings({
   );
 }
 
-function RingArc({ d, length, width, color, animate, delay }: { d: string; length: number; width: number; color: string; animate: boolean; delay: number }) {
-  const p = useSharedValue(animate ? 0 : 1);
+function RingArc({
+  d,
+  length,
+  width,
+  color,
+  animate,
+  start,
+  run,
+  delay,
+}: {
+  d: string;
+  length: number;
+  width: number;
+  color: string;
+  animate: boolean;
+  start: number;
+  run: number;
+  delay: number;
+}) {
+  // Inside a celebration that was skipped or has ended: drawn in full now.
+  const settled = useCelebrationSettled();
+  const p = useSharedValue(animate ? start : 1);
   useEffect(() => {
-    if (!animate) return;
-    p.set(withDelay(delay, withTiming(1, { duration: motion.dur.grow, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.System })));
-  }, [animate, delay, p]);
-  const props = useAnimatedProps(() => ({ strokeDashoffset: length * (1 - p.value) }));
+    if (!animate || settled || start >= 1) {
+      cancelAnimation(p);
+      p.set(1);
+      return;
+    }
+    p.set(withSequence(withTiming(start, { duration: 0, reduceMotion: ReduceMotion.Never }), withDelay(delay, withTiming(1, { duration: motion.dur.grow, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.Never }))));
+  }, [animate, settled, start, run, delay, p]);
+  // At (almost) 0 the dash is empty but its round cap would still draw a dot: hide it until it grows.
+  const props = useAnimatedProps(() => ({ strokeDashoffset: length * (1 - p.value), strokeOpacity: p.value < 0.01 ? 0 : 1 }));
   return (
     <AnimatedPath
       d={d}

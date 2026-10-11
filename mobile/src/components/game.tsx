@@ -25,7 +25,7 @@ import { useReportFlow } from './support';
 import { questionTarget } from '../lib/support';
 import type { ReportTarget } from '../engine/support';
 import { Seedling, TierLeaf } from './glyphs';
-import { AnimatedPressable, Shake, StateLayer, useMotion, usePressScale } from './motion';
+import { AnimatedPressable, FadeIn as Arrive, Shake, StateLayer, useMotion, usePressScale } from './motion';
 import { MilestoneMomentView, TierTag } from './milestones';
 import { tierChangeLine, type GameTier } from '../engine/games/growth';
 import type { RoundNews } from '../lib/gameRounds';
@@ -193,6 +193,9 @@ export function RoundEnd({
   const history = useProgress((s) => s.byCert[certId]?.gameRecent?.[game]);
   const recent = lastScores(history);
   const review = reviewNote !== undefined ? (misses.length ? reviewNote : null) : reviewLine(misses);
+  // Mobile 1.9: the round's score rolls up from 0 once, as the recap arrives
+  // (never a score at or below 0); "New personal best" follows it.
+  const [roll] = useState(() => score > 0);
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ padding: space.gutter, flexGrow: 1, justifyContent: 'center' }}>
@@ -203,7 +206,12 @@ export function RoundEnd({
             </View>
             <T v="caption" center color={c.accentText}>Round complete</T>
             <Gap h={space.sm} />
-            <BigNum value={scoreText(score)} size={52} accessibilityLabel={`Score ${scoreSpoken(score)} out of ${max}`} />
+            <BigNum
+              value={scoreText(score)}
+              size={52}
+              accessibilityLabel={`Score ${scoreSpoken(score)} out of ${max}`}
+              roll={{ play: roll, from: null, run: 1, delay: motion.dur.enter }}
+            />
             <T v="meta" num center>{`out of ${max}${best !== undefined ? ` · best ${scoreText(best)}` : ''}`}</T>
             {recent.length > 1 && (
               // Figtree tabular, oldest → newest: a quiet trend, not a chart.
@@ -213,7 +221,9 @@ export function RoundEnd({
               </View>
             )}
             {news?.best && (
-              <T v="meta" center color={c.accentText} style={{ marginTop: space.sm }}>New personal best</T>
+              <Arrive delay={roll ? motion.dur.enter + motion.dur.grow : 0} rise={false}>
+                <T v="meta" center color={c.accentText} style={{ marginTop: space.sm }}>New personal best</T>
+              </Arrive>
             )}
             {news && tierChangeLine(news.change, news.tier) && (
               <Row gap={space.sm} style={{ marginTop: space.sm, justifyContent: 'center', flexWrap: 'wrap' }}>

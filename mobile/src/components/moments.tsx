@@ -11,32 +11,50 @@
  * The two paper cards are not boxes (spec §5): a 3px accent rule on the
  * left, like the key idea and "Your pattern".
  */
+import { useEffect, type ReactNode } from 'react';
 import { View } from 'react-native';
 import type { Certification } from '../content/types';
 import type { ExamMoment } from '../engine/examDay';
 import { READY_DAYS, READY_LOW } from '../engine/examReady';
 import type { Readiness } from '../engine/readiness';
-import { LARGE_TEXT, space } from '../theme/tokens';
+import { haptic } from '../lib/haptics';
+import { LARGE_TEXT, motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { GrowthRings, PlanLeaf } from './glyphs';
 import { ringsSpoken } from './journey';
 import { Check, ICON_STROKE, Timer } from './icons';
+import { Celebrate, FadeIn, Pop, useOncePerDay, type Celebration } from './motion';
 import { HeroPanel, ICON_SIZE, Row, T, useFontScale } from './ui';
 
 // ── 1. Exam-ready panel ────────────────────────────────────────────────
+/**
+ * Mobile 1.9 (T3): when it first comes into view, the rings grow in, the
+ * frond takes ONE slow breath and the words follow (≤ 1.2 s; a tap ends
+ * it). No particles. Later views, and Reduce Motion, show it still. One
+ * success haptic, the first time it ever shows.
+ */
 export function ExamReadyPanel({
   cert,
   readiness,
   onDismiss,
+  celebration,
 }: {
   cert: Certification;
   readiness: Readiness;
   onDismiss: () => void;
+  celebration?: Celebration;
 }) {
   const { c } = useTheme();
   const stacked = useFontScale() >= LARGE_TEXT;
   const held = `Your readiness range has stayed at ${READY_LOW}% or more for ${READY_DAYS} days.`;
-  return (
+  const full = celebration?.mode === 'full';
+  const run = celebration?.run ?? 0;
+  // One success tap, the first time it ever shows (not on every visit until it is dismissed).
+  const first = celebration?.first ?? false;
+  useEffect(() => {
+    if (run > 0 && first) haptic.success();
+  }, [run, first]);
+  const panel = (
     <HeroPanel
       caption="A quiet milestone"
       // Two short lines, each clear of the frond art.
@@ -45,6 +63,7 @@ export function ExamReadyPanel({
       titleLabel="Your readiness is holding. Keep it light."
       art="clearing"
       sway={false}
+      breathe={full}
       action={{
         label: 'Show today’s plan',
         onPress: onDismiss,
@@ -63,10 +82,10 @@ export function ExamReadyPanel({
           borderTopColor: c.forestTrack,
         }}
       >
-        {/* The rings grow in once (600ms; static under Reduce Motion). */}
+        {/* The rings grow in with the moment (600ms; static under Reduce Motion). */}
         <GrowthRings
           preset="today"
-          replay
+          grow={{ play: full, run }}
           mastery={readiness.domains.map((d) => d.mastery)}
           weights={cert.domains.map((d) => d.weight)}
           colors={c.sap}
@@ -75,16 +94,17 @@ export function ExamReadyPanel({
           accessibilityLabel={`Readiness rings. ${ringsSpoken(cert, readiness.domains.map((d) => (d.answered ? d.mastery : null)))}.`}
         />
         {/* Side by side, the text column stops at 250pt so it never runs under the frond art. */}
-        <View style={stacked ? undefined : { flex: 1, maxWidth: 250 }}>
+        <FadeIn key={run} delay={full ? motion.dur.grow : 0} rise={false} style={stacked ? undefined : { flex: 1, maxWidth: 250 }}>
           <T v="small" color={c.onForest}>{held}</T>
           {/* `small`, not `meta`: spec §2 caps meta lines at 6 words. */}
           <T v="small" color={c.onForest2} style={{ marginTop: 6 }}>
             Light review most days, one mock a week.
           </T>
-        </View>
+        </FadeIn>
       </View>
     </HeroPanel>
   );
+  return celebration ? <Celebrate celebration={celebration}>{panel}</Celebrate> : panel;
 }
 
 // ── 2. Exam eve / exam day card ────────────────────────────────────────
@@ -101,6 +121,11 @@ export function ExamEveCard({
   const { c } = useTheme();
   const eve = moment === 'eve';
   const caption = eve ? 'Exam eve' : 'Exam day';
+  // Mobile 1.9: calm over celebration. On the first view of the day the
+  // reminders arrive one by one, each leaf pressing in, then the closing
+  // line; never particles. Later views, and Reduce Motion, show it still.
+  const play = useOncePerDay(`exam-${moment}`);
+  const at = (k: number) => motion.dur.enter + k * motion.stagger.leaf;
   const title = eve ? 'Tomorrow. You’ve done the work.' : 'Good luck today.';
   return (
     <View style={{ borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
@@ -116,18 +141,19 @@ export function ExamEveCard({
       {eve && reminders && (
         <View style={{ marginTop: space.md }}>
           <T v="caption" color={c.ink2}>{reminders.own ? 'Your three gentle reminders' : 'Three gentle reminders'}</T>
-          {reminders.lines.map((line) => (
-            <View
-              key={line}
-              accessible
-              accessibilityLabel={line}
-              style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.sm, marginTop: space.sm }}
-            >
-              <View style={{ paddingTop: 5 }}>
-                <PlanLeaf color={c.accent} filled />
+          {reminders.lines.map((line, k) => (
+            <Arrive key={line} play={play} delay={at(k)}>
+              <View
+                accessible
+                accessibilityLabel={line}
+                style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.sm, marginTop: space.sm }}
+              >
+                <Pop mount={play} delay={at(k)} style={{ paddingTop: 5 }}>
+                  <PlanLeaf color={c.accent} filled />
+                </Pop>
+                <T v="small" color={c.ink} style={{ flex: 1 }}>{line}</T>
               </View>
-              <T v="small" color={c.ink} style={{ flex: 1 }}>{line}</T>
-            </View>
+            </Arrive>
           ))}
         </View>
       )}
@@ -145,6 +171,16 @@ export function ExamEveCard({
           : 'Read each stem to the last line, find the priority word, and take your time.'}
       </T>
     </View>
+  );
+}
+
+/** Fades in after `delay` when `play`; otherwise simply there. */
+function Arrive({ play, delay, children }: { play: boolean; delay: number; children: ReactNode }) {
+  if (!play) return <View>{children}</View>;
+  return (
+    <FadeIn delay={delay} rise={false}>
+      {children}
+    </FadeIn>
   );
 }
 

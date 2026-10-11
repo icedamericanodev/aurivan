@@ -15,13 +15,14 @@
  * static with Reduce Motion. Any others earned wait for later sessions.
  */
 import { router } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { OptionCard, TrustLine } from '../components/quiz';
 import { useReportFlow } from '../components/support';
 import { DomainRings } from '../components/journey';
 import { PacingPanel } from '../components/pace';
 import { MilestoneMomentView } from '../components/milestones';
+import { useOncePerDay } from '../components/motion';
 import { BigNum, Button, Enter, Gap, Row, Screen, Section, Stat, StatRow, T, Tag } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
@@ -33,7 +34,7 @@ import { momentFor } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
 import { questionTarget, sessionWhere } from '../lib/support';
 import { useSession } from '../store/session';
-import { space } from '../theme/tokens';
+import { motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 export default function Results() {
@@ -55,6 +56,29 @@ export default function Results() {
     name: 'Results',
     where: `Results · ${active?.mode === 'mock' ? 'mock' : active?.mode === 'review' ? 'review' : 'practice'}, ${active?.questionIds.length ?? 0} questions`,
   });
+
+  // Mobile 1.9: the session's outcome grows in ONCE (this session's Results,
+  // after the screen has dissolved in): the rings from 0 to the score, the
+  // score in their centre and "correct" roll up, 60 ms apart (≤ 3 growths).
+  // Never on a session that went badly: below 60% it is simply shown.
+  const firstLook = useOncePerDay(`results:${active?.id ?? ''}`);
+  // The milestone moment plays when it is scrolled into view, not off-screen.
+  const [statsY, setStatsY] = useState<number | null>(null);
+  const [momentY, setMomentY] = useState<number | null>(null);
+  const [view, setView] = useState({ y: 0, h: 0 });
+  const [momentSeen, setMomentSeen] = useState(false);
+  // Latched: once its top is 96pt into the screen, it has been seen.
+  if (!momentSeen && statsY !== null && momentY !== null && view.h > 0 && statsY + momentY < view.y + view.h - 96) setMomentSeen(true);
+  const watch = (y: number, h: number) => setView({ y, h });
+  // One signature at a time: the moment also waits for the rings to settle.
+  const growing = Boolean(firstLook && score && active && Math.round((score.correct / (active.mode === 'mock' ? score.total : Math.max(score.answered, 1))) * 100) >= 60);
+  const [ringsDone, setRingsDone] = useState(!growing);
+  useEffect(() => {
+    if (ringsDone) return;
+    // A one-shot timer for a phase change: the screen's dissolve, the growth, the outer-to-inner stagger.
+    const t = setTimeout(() => setRingsDone(true), motion.dur.select + motion.dur.grow + 4 * motion.stagger.stat);
+    return () => clearTimeout(t);
+  }, [ringsDone]);
 
   if (!active || !score) {
     return (
@@ -105,9 +129,12 @@ export default function Results() {
   const paceText = practicePaceLine(active.questionIds.map((id) => active.responses[id]?.ms), cert.exam);
   // The same figure the mock history and pacing panel use (never past a deadline; untimed = answer time).
   const minutes = minutesUsed(active, active.finishedAt ?? active.startedAt);
+  const grow = growing;
+  // Starts as the screen's dissolve ends (it is already mostly in by then).
+  const at = motion.dur.select;
 
   return (
-    <Screen edges={['top', 'bottom']}>
+    <Screen edges={['top', 'bottom']} onScroll={moment && !momentSeen ? watch : undefined}>
       <Enter i={0}>
         {/* Extra time and untimed mocks say so (standard time is the norm, so it isn't named). */}
         <T v="meta">{active.mode === 'mock' && active.timing && active.timing !== 'standard' ? `${active.title} · ${TIMING_LABEL[active.timing].toLowerCase()}` : active.title}</T>
@@ -122,6 +149,7 @@ export default function Results() {
           cert={cert}
           values={values}
           only={inSession}
+          grow={{ play: grow, run: 1, delay: at }}
           legendValue={(i) => {
             const b = score.byDomain[cert.domains[i].id];
             return b ? `${b.correct}/${b.total}` : '–';
@@ -132,7 +160,7 @@ export default function Results() {
             .join(', ')}.`}
           center={
             <View style={{ alignItems: 'center' }}>
-              <BigNum value={String(pct)} pct size={30} />
+              <BigNum value={String(pct)} pct size={30} roll={{ play: grow, from: null, run: 1, delay: at }} />
               <T v="caption" color={c.ink2}>score</T>
             </View>
           }
@@ -144,10 +172,17 @@ export default function Results() {
         </T>
       </Enter>
 
-      <Enter i={2} style={{ marginTop: space.xl }}>
+      <View style={{ marginTop: space.xl }} onLayout={(e) => setStatsY(e.nativeEvent.layout.y)}>
+      <Enter i={2}>
         <StatRow>
           {[
-            <Stat key="a" value={`${score.correct}/${denominator}`} label="correct" />,
+            <Stat
+              key="a"
+              value={`${score.correct}/${denominator}`}
+              label="correct"
+              // Only the number right rolls (from 0); the "/20" stays put.
+              roll={{ play: grow, from: `0/${denominator}`, run: 1, delay: at + motion.stagger.stat }}
+            />,
             <Stat key="b" value={String(missed.length)} label="to review" />,
             <Stat key="c" value={String(minutes)} label={minutes === 1 ? 'minute' : 'minutes'} />,
           ]}
@@ -169,8 +204,12 @@ export default function Results() {
           </View>
         )}
         {moment && (
-          <View style={{ marginTop: space.xl }}>
-            <MilestoneMomentView moment={moment} once={active.id} />
+          <View
+            style={{ marginTop: space.xl }}
+            // Its place in the stats block (whose own top is statsY in the scroll).
+            onLayout={(e) => setMomentY(e.nativeEvent.layout.y)}
+          >
+            <MilestoneMomentView moment={moment} once={active.id} inView={momentSeen && ringsDone} />
             <Button
               kind="ghost"
               label={moment.kind === 'skill' ? 'See your field notes' : 'See your milestones'}
@@ -194,6 +233,7 @@ export default function Results() {
         )}
         <Button kind="secondary" label="Done" onPress={done} />
       </Enter>
+      </View>
 
       <Section title="Review answers" />
       {active.questionIds.map((id, i) => {

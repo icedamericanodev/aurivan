@@ -7,6 +7,7 @@
  * 2. Wraps every screen in a navigation "stack" (screens slide in/out).
  * 3. Mounts MotionRoot: Reduce Motion (the phone's, live, or Settings →
  *    Motion → Reduced) reaches every animation, Reanimated's included.
+ * 4. Mounts ThemeFade: switching Light ⇄ Dark dissolves instead of flashing.
  */
 // Per-weight imports so only these six font files are bundled.
 import { Figtree_400Regular } from '@expo-google-fonts/figtree/400Regular';
@@ -27,7 +28,7 @@ import { useProgress } from '../store/progress';
 import { cancelReminders, initNotifications, scheduleReminders } from '../lib/reminders';
 import { useSettings } from '../store/settings';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { MotionRoot, useMotion } from '../components/motion';
+import { MotionRoot, ThemeFade, useMotion } from '../components/motion';
 import { Grain } from '../components/ui';
 import { motion } from '../theme/tokens';
 import { useHydrated } from '../store/useHydrated';
@@ -139,6 +140,8 @@ export default function RootLayout() {
         <Stack.Screen name="whats-next" />
       </Stack>
       <MotionRoot />
+      {/* Light ⇄ Dark dissolves (mobile 1.9): a veil in the old paper fades out over the new theme. */}
+      <ThemeFade isDark={isDark} bg={c.bg} />
       {/* Paper grain over every screen (touch-through, hidden from screen readers). */}
       <Grain />
     </SafeAreaProvider>

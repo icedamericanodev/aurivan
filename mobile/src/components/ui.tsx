@@ -56,7 +56,7 @@ import {
 import { useTheme } from '../theme/useTheme';
 import { Botany, botanySize, Seedling, type BotanyKind } from './glyphs';
 import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Settings as SettingsIcon, X } from './icons';
-import { AnimatedPressable, FadeIn, ProgressFill, StateLayer, tween, useMotion, usePressScale } from './motion';
+import { AnimatedPressable, FadeIn, ProgressFill, RollingText, StateLayer, tween, useMotion, usePressScale } from './motion';
 
 /** Icon sizes: inline with text, in rows/circles, and in the tab bar/header. */
 export const ICON_SIZE = { inline: 16, row: 20, bar: 24 } as const;
@@ -91,14 +91,27 @@ export function Screen({
   children,
   scroll = true,
   edges = ['top'],
+  onScroll,
 }: {
   children: ReactNode;
   scroll?: boolean;
   edges?: ('top' | 'bottom')[];
+  /** The scroll offset and the visible height (something below the fold waits until it is seen). */
+  onScroll?: (y: number, height: number) => void;
 }) {
   const { c } = useTheme();
+  const [viewH, setViewH] = useState(0);
   const inner = scroll ? (
-    <ScrollView contentContainerStyle={styles.screenPad} keyboardShouldPersistTaps="handled">
+    <ScrollView
+      contentContainerStyle={styles.screenPad}
+      keyboardShouldPersistTaps="handled"
+      onLayout={onScroll ? (e) => {
+        setViewH(e.nativeEvent.layout.height);
+        onScroll(0, e.nativeEvent.layout.height);
+      } : undefined}
+      onScroll={onScroll ? (e) => onScroll(e.nativeEvent.contentOffset.y, viewH || e.nativeEvent.layoutMeasurement.height) : undefined}
+      scrollEventThrottle={onScroll ? 32 : undefined}
+    >
       {children}
     </ScrollView>
   ) : (
@@ -356,6 +369,7 @@ export function HeroPanel({
   action,
   art = 'frond',
   sway = true,
+  breathe = false,
   children,
   style,
   titleLabel,
@@ -372,6 +386,8 @@ export function HeroPanel({
   art?: BotanyKind;
   /** Gentle frond sway while the screen is focused (off under Reduce Motion). */
   sway?: boolean;
+  /** One slow breath of the art, once, when this turns true (the Exam-ready moment; off under Reduce Motion). */
+  breathe?: boolean;
   /** Extra content under the title (e.g. the clearing card's stats). */
   children?: ReactNode;
   style?: StyleProp<ViewStyle>;
@@ -409,7 +425,7 @@ export function HeroPanel({
             above it. Flat in light mode (forestTop = forest), so no layer. */}
         {c.forestTop !== c.forest && <ForestLight top={c.forestTop} bottom={c.forest} />}
         <View style={[styles.heroArt, botanySize(art)]}>
-          <Botany kind={art} color={c.forestLine} sway={sway} />
+          <Botany kind={art} color={c.forestLine} sway={sway} breathe={breathe} />
         </View>
       </View>
       <View testID="hero-content" style={styles.heroContent}>
@@ -545,6 +561,19 @@ export function Stepper({
   onInc: () => void;
 }) {
   const { c } = useTheme();
+  // Mobile 1.9: the value rolls one step the way you pressed (160 ms; up for +,
+  // down for −), so the change is seen, not just swapped. Nothing moves on open.
+  const [dir, setDir] = useState<1 | -1>(1);
+  const [shown, setShown] = useState({ value, from: value, run: 0 });
+  if (shown.value !== value) setShown((x) => ({ value, from: x.value, run: x.run + 1 }));
+  const dec = () => {
+    setDir(-1);
+    onDec();
+  };
+  const inc = () => {
+    setDir(1);
+    onInc();
+  };
   return (
     <View
       accessible
@@ -555,16 +584,29 @@ export function Stepper({
       accessibilityState={disabled ? { disabled } : undefined}
       onAccessibilityAction={(e) => {
         if (disabled) return;
-        if (e.nativeEvent.actionName === 'increment') onInc();
-        else if (e.nativeEvent.actionName === 'decrement') onDec();
+        if (e.nativeEvent.actionName === 'increment') inc();
+        else if (e.nativeEvent.actionName === 'decrement') dec();
       }}
       style={{ alignItems: 'center' }}
     >
       <T v="caption">{label}</T>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-        <IconButton label={`${label} earlier`} onPress={onDec} disabled={disabled} icon={(col) => <Minus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
-        <T v="label" num center style={{ minWidth: 48, color: c.ink }}>{value}</T>
-        <IconButton label={`${label} later`} onPress={onInc} disabled={disabled} icon={(col) => <Plus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
+        <IconButton label={`${label} earlier`} onPress={dec} disabled={disabled} icon={(col) => <Minus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
+        <View style={{ minWidth: 48, alignItems: 'center' }}>
+          <RollingText
+            value={value}
+            from={shown.from}
+            play={shown.run > 0}
+            run={shown.run}
+            dir={dir}
+            dur="quick"
+            stagger={false}
+            style={{ ...type.label, ...styles.num }}
+            maxScale={maxScale.label}
+            color={c.ink}
+          />
+        </View>
+        <IconButton label={`${label} later`} onPress={inc} disabled={disabled} icon={(col) => <Plus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
       </View>
     </View>
   );
@@ -733,17 +775,31 @@ export function RadioRow({
 // ── ProgressBar: 0..1 ─────────────────────────────────────────────────
 // The fill slides on a transform inside the clipping track (motion.tsx
 // ProgressFill): a change eases over 300 ms; nothing animates on mount.
-export function ProgressBar({ value, color, height = 8 }: { value: number; color?: string; height?: number }) {
+export function ProgressBar({
+  value,
+  color,
+  height = 8,
+  from,
+  delay,
+}: {
+  value: number;
+  color?: string;
+  height?: number;
+  /** Mobile 1.9: grow on mount from the value last seen (0..1), after `delay`. */
+  from?: number;
+  delay?: number;
+}) {
   const { c } = useTheme();
   const pct = Math.max(0, Math.min(1, value)) * 100;
   const r = Math.min(height, radius.sm);
   return (
     <View
       accessibilityRole="progressbar"
+      // The final value from the first frame: screen readers never hear it count.
       accessibilityValue={{ min: 0, max: 100, now: Math.round(pct) }}
       style={{ height, borderRadius: r, backgroundColor: c.track, overflow: 'hidden' }}
     >
-      <ProgressFill value={pct / 100} color={color ?? c.accent} radius={r} />
+      <ProgressFill value={pct / 100} color={color ?? c.accent} radius={r} from={from} delay={delay} />
     </View>
   );
 }
@@ -909,10 +965,10 @@ export function Toggle({
 }
 
 // ── Stat tile: no box. Serif number + meta label, stacked ─────────────
-export function Stat({ value, label, color, pct }: { value: string; label: string; color?: string; pct?: boolean }) {
+export function Stat({ value, label, color, pct, roll }: { value: string; label: string; color?: string; pct?: boolean; roll?: Roll }) {
   return (
     <View accessible accessibilityLabel={`${value}${pct ? ' percent' : ''} ${label}`}>
-      <BigNum value={value} pct={pct} size={34} color={color} />
+      <BigNum value={value} pct={pct} size={34} color={color} roll={roll} />
       <T v="meta" style={{ marginTop: space.xs, textAlign: 'center' }}>{label}</T>
     </View>
   );
@@ -1096,24 +1152,55 @@ export function StatRow({ children, style }: { children: ReactNode[]; style?: St
  * Sizes: 52 = readiness / results, 34 = stats, 17–30 inline.
  * Numbers cap at ×1.3 text size: a fixed shape holds them.
  */
+/** How a numeral rolls (motion.tsx RollingText): from what was shown, when `play`. */
+export interface Roll {
+  play: boolean;
+  /** What was shown before (null = count up from blank). */
+  from?: string | null;
+  /** Restart key: a new value rolls when this changes. */
+  run?: number;
+  delay?: number;
+}
+
 export function BigNum({
   value,
   pct,
   size,
   color,
   accessibilityLabel,
+  roll,
 }: {
   value: string;
   pct?: boolean;
   size: NumeralSize | 34 | 52;
   color?: string;
   accessibilityLabel?: string;
+  /**
+   * Mobile 1.9: the digits roll like an odometer (first view of the day, or
+   * what changed). Screen readers hear the final value only.
+   */
+  roll?: Roll;
 }) {
   const { c } = useTheme();
   const fg = color ?? c.ink;
   return (
     <View style={styles.bigNum} accessible={Boolean(accessibilityLabel)} accessibilityLabel={accessibilityLabel}>
-      <Text maxFontSizeMultiplier={1.3} style={[serifNumeral(size), styles.num, { color: fg }]}>{value}</Text>
+      {roll ? (
+        <RollingText
+          value={value}
+          from={roll.from}
+          play={roll.play}
+          run={roll.run}
+          delay={roll.delay}
+          style={{ ...serifNumeral(size), ...styles.num }}
+          maxScale={1.3}
+          color={fg}
+          // Grouped by the parent's label, or its own: the final value in words.
+          accessibilityLabel={accessibilityLabel ? undefined : `${value}${pct ? ' percent' : ''}`}
+        />
+      ) : (
+        <Text maxFontSizeMultiplier={1.3} style={[serifNumeral(size), styles.num, { color: fg }]}>{value}</Text>
+      )}
       {pct && <Text maxFontSizeMultiplier={1.3} style={[percentSup(size), { color: fg, marginLeft: 2 }]}>%</Text>}
     </View>
   );
