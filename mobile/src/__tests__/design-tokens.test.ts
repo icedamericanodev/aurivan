@@ -7,7 +7,7 @@
 import { CERTIFICATIONS, domainColor, getCertification } from '../content/certifications';
 import type { DomainTone } from '../content/types';
 import { shortDate, shortReference, shortSubtopic } from '../lib/format';
-import { dark, domainPalette, font, grainOp, light, maxScale, type, type Palette } from '../theme/tokens';
+import { badgeEnamel, badgeMetal, dark, domainPalette, font, grainOp, light, maxScale, type, type Palette } from '../theme/tokens';
 
 const HEX = /^#[0-9A-F]{6}$/i;
 const TONES: DomainTone[] = [0, 1, 2, 3, 4];
@@ -204,5 +204,29 @@ describe('shortDate', () => {
   it('formats dates as "6 Oct"', () => {
     expect(shortDate(new Date(2026, 9, 6, 12).getTime())).toBe('6 Oct');
     expect(shortDate(new Date(2027, 0, 31, 9).getTime())).toBe('31 Jan');
+  });
+});
+
+// Mobile 1.10 badge art (art spec §6): the medallion is a graphic, so 3:1.
+describe('badge art contrast (WCAG 1.4.11, 3:1)', () => {
+  it.each(Object.entries(badgeEnamel))('every emblem role reads on the %s enamel', (_id, e) => {
+    for (const role of ['E1', 'E2', 'E3'] as const) expect(contrast(e[role], e.field)).toBeGreaterThanOrEqual(3.5);
+  });
+  it.each(Object.values(badgeMetal).map((m) => [m.name, m] as const))('the %s rim stands out on both papers, and its pips on the rim', (_name, m) => {
+    expect(contrast(m.edge, light.bg)).toBeGreaterThanOrEqual(3);
+    expect(contrast(m.mid, dark.bg)).toBeGreaterThanOrEqual(3);
+    expect(contrast(m.edge, m.mid)).toBeGreaterThanOrEqual(3);
+  });
+  it.each([
+    ['light', light],
+    ['dark', dark],
+  ] as const)('a not-yet badge reads in %s: emblem on its field, stitched outline and progress trace on the paper', (_mode, p) => {
+    expect(contrast(p.muted, p.soft)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(p.control, p.bg)).toBeGreaterThanOrEqual(3);
+    expect(contrast(p.accent, p.bg)).toBeGreaterThanOrEqual(3);
+  });
+  it('earned art is struck in hex colours (an object, the same in light and dark)', () => {
+    for (const e of Object.values(badgeEnamel)) for (const v of Object.values(e)) expect(v).toMatch(HEX);
+    for (const m of Object.values(badgeMetal)) for (const [k, v] of Object.entries(m)) if (k !== 'name') expect(v).toMatch(HEX);
   });
 });
