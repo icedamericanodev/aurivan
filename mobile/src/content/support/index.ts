@@ -36,6 +36,20 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.10.0',
+    date: '2026-10-11',
+    new: [
+      'Your badges are now a collection: each one is a medallion you can open to see its rule, how close you are and how to earn it.',
+      'Next for your exam points you to the badge that helps your exam most right now, with a Study for this button.',
+    ],
+    improved: [
+      'Badges sit on small shelves, each with its own count, and a new one gets a short, calm moment after your review.',
+      'A small dot on You tells you when a new badge is waiting to be seen.',
+      'Settings has a Show badges switch. Turn it off and you still earn them, quietly.',
+    ],
+    fixed: ['Restoring a backup can no longer bring back badges that the backed-up study doesn’t support.'],
+  },
+  {
     version: '1.9.0',
     date: '2026-10-11',
     new: [
@@ -186,6 +200,12 @@ export const WHATS_NEXT: readonly NextItem[] = [
     status: 'planned',
     title: 'A feedback board',
     body: 'Suggest ideas, see what other learners asked for, and read what we decide and why.',
+  },
+  {
+    status: 'shipped',
+    shippedIn: '1.10.0',
+    title: 'Badges you can collect',
+    body: 'Medallions on small shelves, each with its rule and how close you are, and a pointer to the badge that helps your exam most.',
   },
   {
     status: 'shipped',

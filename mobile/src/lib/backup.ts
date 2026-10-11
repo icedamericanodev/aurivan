@@ -50,10 +50,11 @@ import { completeCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
+import { syncPlanters } from './milestones';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from './reminders';
 
 // ── The data in each store (no actions) ──────────────────────────────────
-const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'motion', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize'] as const;
+const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'motion', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize', 'badgesHidden'] as const;
 const PROGRESS_KEYS = ['byCert', 'streak', 'today', 'days', 'reports'] as const;
 
 type SettingsData = Pick<ReturnType<typeof useSettings.getState>, (typeof SETTINGS_KEYS)[number]>;
@@ -305,8 +306,9 @@ function currentRows(): [string, string][] {
  * Write settings, progress, an ended session and the undo snapshot in ONE
  * AsyncStorage.multiSet, then reload the stores from storage.
  * - Fields the backup leaves out go back to the store defaults: a restore
- *   REPLACES, it never mixes. Two exceptions keep this phone's value when an
- *   older file has no such field: the reports list and the Motion choice.
+ *   REPLACES, it never mixes. Three exceptions keep this phone's value when an
+ *   older file has no such field: the reports list, the Motion choice and
+ *   Show badges.
  * - `onboarded` is the phone's (a file can't skip or redo onboarding);
  *   the welcome screen passes true.
  * - Today's plans are not restored: the planner rebuilds today's plan.
@@ -320,6 +322,9 @@ async function writeAll(
   // A file from before 1.8 has no Motion choice. Reduced is an accessibility
   // setting, so keep this phone's choice instead of silently undoing it.
   if (data.settings.motion === undefined) settings.motion = useSettings.getState().motion;
+  // Likewise "Show badges" (1.10): a learner who hid badges keeps them hidden
+  // when restoring a file from before the switch existed.
+  if (data.settings.badgesHidden === undefined) settings.badgesHidden = useSettings.getState().badgesHidden;
   const byCert: ProgressData['byCert'] = {};
   for (const [id, cp] of Object.entries(data.progress.byCert)) byCert[id] = completeCert(cp);
   const progress = { ...pick(useProgress.getInitialState(), PROGRESS_KEYS), ...data.progress, byCert, days: {} };
@@ -349,6 +354,9 @@ async function writeAll(
   useSettings.setState(settings);
   useProgress.setState(progress);
   for (const s of STORES) await s.persist.rehydrate();
+  // A backup from 1.9 already ran its back-fill, so the launch effect never
+  // revisits it: a set it holds complete gets its planter here.
+  for (const id of Object.keys(useProgress.getState().byCert)) syncPlanters(id);
 }
 
 /** How reminders ended up after a restore or undo. */

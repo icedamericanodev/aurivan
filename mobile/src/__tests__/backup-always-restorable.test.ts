@@ -160,6 +160,8 @@ describe('export: every state the phone can hold reads back', () => {
               days: n(100),
               lastDay: dayKey(T0 - n(5) * DAY),
               ...(rng() < 0.3 ? { returnedOn: dayKey(T0) } : {}),
+              // Mobile 1.10: completed sets' planters (kept or dropped on restore, never refused).
+              ...(rng() < 0.5 ? { planters: { rooted: T0 - n(20) * DAY, groundwork: T0, examDay: T0 - DAY } } : {}),
             },
           }
         : {}),
@@ -193,6 +195,7 @@ describe('export: every state the phone can hold reads back', () => {
   it('200 random plausible states: every export passes the restore check', () => {
     for (let seed = 1; seed <= 200; seed++) {
       useProgress.setState({ byCert: { cisa: randomCert(seed) }, reports: randomReports(seed) });
+      useSettings.setState({ badgesHidden: seed % 2 === 0 });
       const read = restorable();
       if (read.kind !== 'ok') throw new Error(`seed ${seed}: ${read.code}`);
     }

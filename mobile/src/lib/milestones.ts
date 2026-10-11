@@ -14,8 +14,14 @@
  *   restore from an older backup): it works out what older saves can still
  *   show, saves those badges quietly and keeps ONE summary line ("You'd
  *   already earned 4") instead of a burst of celebrations.
+ * - Mobile 1.10 (the badge collection): a moment knows its set and its
+ *   unlock line ("what you can now do"), and whether it completed its set;
+ *   a completed set's planter is saved (the plant shows it in Phase 4);
+ *   with Settings → Show badges off, no moment is taken from the queue.
  */
 import { getCertification } from '../content/certifications';
+import type { Certification } from '../content/types';
+import { BADGE_SET, caseMarks, caseSets, completeSets, completingMark, setInfo, type CaseMark, type SetId, type SetView } from '../engine/badgeCatalog';
 import { findQuestion } from '../content/loader';
 import { firstTries, mindsetGrowth } from '../engine/mindsetGrowth';
 import {
@@ -35,6 +41,7 @@ import { domainMastery, type AnswerRecord } from '../engine/readiness';
 import { CLEAR_RIGHT } from '../engine/studyPath';
 import { dayKey } from '../engine/streak';
 import { selectCert, useProgress, type CertProgress } from '../store/progress';
+import { useSettings } from '../store/settings';
 import { playableGames } from './games';
 import { certOutline, guidedStatus } from './outline';
 
@@ -82,6 +89,8 @@ export function milestoneFacts(certId: string, cp: CertProgress, opts: { now: nu
     mocks: cp.mocks,
     fullMockSize: cert.exam.questions,
     mindsetShift: growth.show,
+    // Enough first tries, far enough apart, to be judged at all (the badge is gated until then).
+    mindsetData: growth.show || growth.reason === 'no-improvement',
     studyDays: m?.days ?? 0,
     // Fresh Start: back after a week or more away, and a session just finished
     // today. Live only: the back-fill never awards it.
@@ -103,6 +112,70 @@ export function marksFor(certId: string, cp: CertProgress, now = Date.now()) {
   return facts ? allMarks(facts) : [];
 }
 
+/** A cert's domains and exam, as the badge case reads them. */
+const caseContext = (cert: Certification) => ({
+  domains: cert.domains.map((d) => ({ id: d.id, short: d.short, weight: d.weight, tone: d.tone })),
+  exam: { questions: cert.exam.questions, minutes: cert.exam.minutes },
+});
+
+/** The badge case: every medallion, the shelves, and each domain's mastery as Firm Footing reads it (clean answers only). */
+export interface BadgeCase {
+  marks: CaseMark[];
+  sets: SetView[];
+  mastery: Record<string, number>;
+}
+
+/** The badge case for some facts and earned marks. */
+export function caseFromFacts(cert: Certification, facts: MilestoneFacts, earned: Record<string, number> | undefined): BadgeCase {
+  const ctx = caseContext(cert);
+  const marks = caseMarks({ marks: allMarks(facts), earned, ...ctx, mindsetData: Boolean(facts.mindsetData) });
+  return { marks, sets: caseSets(marks, ctx.exam, ctx.domains.length), mastery: Object.fromEntries(facts.domains.map((d) => [d.id, d.mastery])) };
+}
+
+/** The badge case for a cert's progress now (You → Badges). */
+export function badgeCase(certId: string, cp: CertProgress, now = Date.now()): BadgeCase {
+  const cert = getCertification(certId);
+  const facts = milestoneFacts(certId, cp, { now });
+  if (!cert || !facts) return { marks: [], sets: [], mastery: {} };
+  return caseFromFacts(cert, facts, cp.milestones?.earned);
+}
+
+/**
+ * Save the planter of every counted set now complete (dated when its last
+ * badge was earned). Never removes one: a set that later gains a badge keeps
+ * the planter it gave. Same object when nothing is new.
+ */
+export function withPlanters(m: CertMilestones, sets: readonly SetView[]): CertMilestones {
+  const done = completeSets(sets).filter((id) => m.planters?.[id] === undefined);
+  if (!done.length) return m;
+  const planters = { ...m.planters };
+  for (const id of done) planters[id] = sets.find((x) => x.info.id === id)!.completeAt!;
+  return { ...m, planters };
+}
+
+/**
+ * Save the planter of any counted set already complete that has none yet,
+ * and nothing else. Idempotent: run at launch (after the back-fill) and after
+ * a restore, so a set completed before planters existed (1.9 or earlier, or a
+ * 1.9 backup) gets its planter without waiting for a new badge. Returns the
+ * sets that just got one, or null when there was nothing to save.
+ */
+export function syncPlanters(certId: string, now = Date.now()): SetId[] | null {
+  const cert = getCertification(certId);
+  if (!cert) return null;
+  let added: SetId[] | null = null;
+  useProgress.getState().updateMilestones(certId, (m, cp) => {
+    if (!m || Object.keys(m.earned).length === 0) return null;
+    const facts = milestoneFacts(certId, cp, { now });
+    if (!facts) return null;
+    const next = withPlanters(m, caseFromFacts(cert, facts, m.earned).sets);
+    if (next === m) return null;
+    added = Object.keys(next.planters ?? {}).filter((id) => m.planters?.[id] === undefined) as SetId[];
+    return { milestones: next };
+  });
+  return added;
+}
+
 /**
  * After a session or a game round: save every badge now earned and queue it
  * for its quiet moment. Returns the newly earned marks.
@@ -114,33 +187,82 @@ export function checkMilestones(certId: string, opts: { finished?: boolean; now?
   // whole older history as moments, instead of one quiet summary line.
   ensureBackfill(certId, now);
   let fresh: string[] = [];
+  const cert = getCertification(certId);
   useProgress.getState().updateMilestones(certId, (m, cp) => {
     const facts = milestoneFacts(certId, cp, { now, finished: opts.finished });
-    if (!facts) return null;
+    if (!facts || !cert) return null;
     fresh = newlyMet(allMarks(facts), m?.earned);
-    return fresh.length ? { milestones: earn(m, fresh, now, true) } : null;
+    if (!fresh.length) return null;
+    const earned = earn(m, fresh, now, true);
+    // A set completed by these badges saves its planter (Phase 4 shows it).
+    return { milestones: withPlanters(earned, caseFromFacts(cert, facts, earned.earned).sets) };
   });
   return fresh;
 }
 
-/** One badge's moment: what it is called and its rule. */
+/** One badge's moment: what it is called, its rule, its set and what it means. */
 export interface MilestoneMoment {
   key: string;
   label: string;
   rule: string;
   kind: 'milestone' | 'skill';
+  /** The set it sits in ("Evergreen", "Field notes"). */
+  set: SetId;
+  setName: string;
+  /** What the learner can now do, and why it matters (shown in place of the rule). */
+  unlock: string;
+  /** It completed its set: "That completes Evergreen." */
+  completes?: boolean;
+  /** A higher tier of a badge already held (Rooted · 30 days): always the short form. */
+  tierUp?: boolean;
+  /** The one "Next:" line for Results (the best next badge for the exam), if any. */
+  next?: string;
+  /** For the medallion: Rooted's tier (1–3), Firm Footing's domain leaf. */
+  tier?: number;
+  domain?: { index: number; count: number };
 }
 
 /** The moment for a saved mark key (Results reads it back from the session). */
-export function momentFor(certId: string, key: string): MilestoneMoment | null {
+export function momentFor(certId: string, key: string, next?: string): MilestoneMoment | null {
   const def = badgeDef(markBadge(key));
-  if (!def) return null;
+  const cert = getCertification(certId);
+  if (!def || !cert) return null;
   const cp = selectCert(useProgress.getState(), certId);
-  return { key, label: markLabel(key, marksFor(certId, cp)), rule: def.rule, kind: def.kind };
+  const { marks, sets } = badgeCase(certId, cp);
+  const mark = marks.find((x) => x.key === key);
+  const set = BADGE_SET[def.id];
+  const view = sets.find((x) => x.info.id === set);
+  // The badge that completed its set: the one earned last (two earned in the
+  // same session share the moment, so the later in catalogue order takes it).
+  const completes = Boolean(view && completingMark(view) === key);
+  // A tier above the first, of a badge whose lower tier was earned earlier.
+  const tierUp = (mark?.tier ?? 1) > 1;
+  return {
+    key,
+    label: mark?.name ?? markLabel(key, marksFor(certId, cp)),
+    rule: def.rule,
+    kind: def.kind,
+    set,
+    setName: view?.info.name ?? setInfo(set, cert.exam, cert.domains.length).name,
+    unlock: mark?.unlock ?? def.rule,
+    ...(completes ? { completes } : {}),
+    ...(tierUp ? { tierUp } : {}),
+    ...(next ? { next } : {}),
+    ...(mark?.tier ? { tier: mark.tier } : {}),
+    ...(mark?.domain ? { domain: { index: cert.domains.findIndex((d) => d.id === mark.domain!.id), count: cert.domains.length } } : {}),
+  };
 }
 
-/** Take ONE queued badge for the screen that just ended (the rest wait). */
+/** Badges are hidden (Settings → Show badges off): no moments, nothing on You. */
+export const badgesHidden = () => useSettings.getState().badgesHidden;
+
+/**
+ * Take ONE queued badge for the screen that just ended (the rest wait).
+ * With badges hidden, nothing is taken: they are earned quietly, and the
+ * queue says how many arrived when badges show again (showBadgesAgain).
+ */
 export function celebrateNext(certId: string): MilestoneMoment | null {
+  if (badgesHidden()) return null;
   let key: string | undefined;
   useProgress.getState().updateMilestones(certId, (m) => {
     const r = takeNext(m);
@@ -184,7 +306,10 @@ export function ensureBackfill(certId: string, now = Date.now()): number | null 
     const keys = facts ? newlyMet(allMarks(facts), merged.earned) : [];
     // The summary speaks of milestones (You → Milestones); skill leaves are saved quietly too.
     found = badgeCount(keys.filter((k) => badgeDef(markBadge(k))?.kind === 'milestone'));
-    const milestones = { ...earn(merged, keys, now, false), backfill: { at: now, count: found } };
+    const earned = earn(merged, keys, now, false);
+    const cert = getCertification(certId);
+    const planted = facts && cert ? withPlanters(earned, caseFromFacts(cert, facts, earned.earned).sets) : earned;
+    const milestones = { ...planted, backfill: { at: now, count: found } };
     return { milestones, fixedLater: inferred.loopFixed };
   });
   return found;
@@ -197,8 +322,8 @@ export function seeBackfill(certId: string) {
   );
 }
 
-/** "You'd already earned 4 milestones." (null when there is nothing to say). */
+/** "You'd already earned 4 badges." (null when there is nothing to say). */
 export function backfillLine(count: number): string | null {
   if (count <= 0) return null;
-  return count === 1 ? 'You’d already earned 1 milestone.' : `You’d already earned ${count} milestones.`;
+  return count === 1 ? 'You’d already earned 1 badge.' : `You’d already earned ${count} badges.`;
 }

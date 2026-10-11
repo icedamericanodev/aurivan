@@ -200,6 +200,29 @@ describe('round trip', () => {
     expect(useSettings.getState().haptics).toBe(true);
   });
 
+  it('mobile 1.10: Show badges travels in a backup; a file from before it keeps this phone’s choice', async () => {
+    studiedLearner();
+    useSettings.setState({ badgesHidden: true });
+    const withKey = checkBackupText(JSON.stringify(currentBackup(NOW)));
+    if (withKey.kind !== 'ok') throw new Error(withKey.code);
+    expect(withKey.data.settings.badgesHidden).toBe(true);
+    // An older file has no such key: a learner who hid badges keeps them hidden.
+    const older = currentBackup(NOW);
+    delete (older.stores.settings.state as Partial<typeof older.stores.settings.state>).badgesHidden;
+    const read = checkBackupText(JSON.stringify(older));
+    if (read.kind !== 'ok') throw new Error(read.code);
+    await restoreBackup(read.data, NOW);
+    expect(useSettings.getState().badgesHidden).toBe(true);
+    // A file that says "shown" wins.
+    useSettings.setState({ badgesHidden: true });
+    const shown = currentBackup(NOW);
+    (shown.stores.settings.state as { badgesHidden?: boolean }).badgesHidden = false;
+    const read2 = checkBackupText(JSON.stringify(shown));
+    if (read2.kind !== 'ok') throw new Error(read2.code);
+    await restoreBackup(read2.data, NOW);
+    expect(useSettings.getState().badgesHidden).toBe(false);
+  });
+
   it('a restore replaces optional settings too: ones the backup has none of are cleared on this phone', async () => {
     studiedLearner();
     const file = currentBackup(NOW); // no study defaults, no pace-offer answer

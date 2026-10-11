@@ -335,3 +335,66 @@ export const motion = {
   pressScale: 0.98,
   pressOpacity: 0.92, // the press under Reduce Motion (no scale)
 } as const;
+
+/**
+ * Badge art (mobile 1.10, DESIGN_SYSTEM.md §11 "Badges"). An earned badge is
+ * an OBJECT, struck once: its enamel and metal are the same in light and
+ * dark (like the brand lockup), so these do not follow the theme. A badge not
+ * yet earned is drawn in theme tokens instead (soft field, control dashed
+ * outline, muted emblem, accent progress trace).
+ *
+ * Enamels: the medallion's field and its emblem's colour roles (E1 main, E2
+ * second, E3 accent, D2/D3 shades, L3 light accent; `deep`/`lite` for the
+ * field's cast shadow and growth rings; the ribbon). Each set is a frame
+ * SHAPE plus one enamel (components/medallion.tsx SET_LOOK), so no two sets
+ * differ by colour alone. Contrast (art spec §6, all ≥ 3:1 for graphics):
+ * E1/E2/E3 on forest 8.91/6.39/6.03, on ink 14.37/10.31/9.72, on clay
+ * 5.28/3.83/3.57, on paper 8.93/5.42/5.29.
+ */
+export interface BadgeEnamel {
+  field: string;
+  deep: string;
+  lite: string;
+  E1: string;
+  E2: string;
+  D2: string;
+  E3: string;
+  D3: string;
+  L3: string;
+  ribbon: string;
+  ribbonDeep: string;
+}
+export const badgeEnamel: Record<'forest' | 'ink' | 'clay' | 'paper', BadgeEnamel> = {
+  forest: { field: '#1E4A34', deep: '#123021', lite: '#2C5E44', E1: '#F3F1EA', E2: '#A9D9BA', D2: '#7DB592', E3: '#E9C46A', D3: '#B98A2E', L3: '#F4DE9E', ribbon: '#2B6E4A', ribbonDeep: '#1E4A34' },
+  ink: { field: '#17231B', deep: '#0B130E', lite: '#25362B', E1: '#F3F1EA', E2: '#A9D9BA', D2: '#7DB592', E3: '#E9C46A', D3: '#B98A2E', L3: '#F4DE9E', ribbon: '#9A4F26', ribbonDeep: '#6E3417' },
+  clay: { field: '#9A4F26', deep: '#6A3015', lite: '#A95C33', E1: '#F3F1EA', E2: '#F2C7A6', D2: '#D9A07A', E3: '#E9C46A', D3: '#C0912F', L3: '#F4DE9E', ribbon: '#A87A1F', ribbonDeep: '#7A5100' },
+  paper: { field: '#F5F1E6', deep: '#D9D1BD', lite: '#E6DFCD', E1: '#1E4A34', E2: '#2B6E4A', D2: '#1E4A34', E3: '#9A4F26', D3: '#6E3417', L3: '#EFC6A8', ribbon: '#2B6E4A', ribbonDeep: '#1E4A34' },
+};
+export type BadgeEnamelId = keyof typeof badgeEnamel;
+
+/**
+ * The rim metal tells the TIER, three ways (metal, pip count, laurel), never
+ * by colour alone; the tier's name is also printed beside the badge.
+ * A badge with one mark (no tiers) is struck in `badgeStruck`: a calm sage,
+ * plain rim, no pips, no beads and no name. Gold leaf is only ever the top
+ * tier of a tiered badge, so the ladder stays honest.
+ * `leaf` / `leafRib`: Firm Footing's domain leaf on the rim (this domain).
+ */
+export interface BadgeMetal {
+  name: string;
+  light: string;
+  mid: string;
+  dark: string;
+  edge: string;
+  bead: string;
+}
+export const badgeMetal: Record<1 | 2 | 3, BadgeMetal> = {
+  1: { name: 'Clay', light: '#F7D3B8', mid: '#D58A5C', dark: '#A2552B', edge: '#6B3216', bead: '#FBE5D3' },
+  2: { name: 'Lichen', light: '#FAFBF8', mid: '#C9D5CC', dark: '#8E9C92', edge: '#46544A', bead: '#FFFFFF' },
+  3: { name: 'Gold leaf', light: '#FBE9B4', mid: '#E2B653', dark: '#A87A1F', edge: '#7A5100', bead: '#FFF5D6' },
+};
+/** A one-mark badge's finish: a calm struck sage, never named, never a tier. */
+export const badgeStruck: BadgeMetal = { name: '', light: '#E8EFE6', mid: '#AFC2B2', dark: '#77897B', edge: '#3A4A3F', bead: '#F4F8F2' };
+export const badgeLeafPip = { on: '#1E4A34', rib: '#A9D9BA' } as const;
+/** The faint glaze across an earned badge's enamel (light from the top left). */
+export const badgeGlaze = { color: '#FFFFFF', opacity: 0.035, paperOpacity: 0.3 } as const;

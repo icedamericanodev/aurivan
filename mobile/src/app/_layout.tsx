@@ -23,7 +23,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { getCertification } from '../content/certifications';
 import { pruneUndo } from '../lib/backup';
-import { ensureBackfill } from '../lib/milestones';
+import { initCaseSeen } from '../lib/badges';
+import { ensureBackfill, syncPlanters } from '../lib/milestones';
 import { useProgress } from '../store/progress';
 import { cancelReminders, initNotifications, scheduleReminders } from '../lib/reminders';
 import { useSettings } from '../store/settings';
@@ -82,6 +83,14 @@ export default function RootLayout() {
   useEffect(() => {
     if (hydrated && needsBackfill) ensureBackfill(activeCertId);
   }, [hydrated, needsBackfill, activeCertId]);
+  // Mobile 1.10, after the back-fill: badges already held never show the
+  // "new" dot; only ones earned from now on can. And a set completed before
+  // planters existed saves its planter now (idempotent: nothing new, no write).
+  useEffect(() => {
+    if (!hydrated) return;
+    initCaseSeen(activeCertId);
+    syncPlanters(activeCertId);
+  }, [hydrated, activeCertId]);
 
   if (!ready) return null;
 
@@ -119,7 +128,7 @@ export default function RootLayout() {
         <Stack.Screen name="game/canopy" options={{ animation: rise }} />
         <Stack.Screen name="game/stones" options={{ animation: rise }} />
         <Stack.Screen name="guided" />
-        {/* Build F: You → Milestones and You → Field notes. */}
+        {/* Build F: You → Milestones (mobile 1.10: Badges) and You → Field notes. */}
         <Stack.Screen name="milestones" />
         <Stack.Screen name="field-notes" />
         <Stack.Screen name="mistakes" />

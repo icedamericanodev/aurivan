@@ -13,6 +13,10 @@
  * Build F: when this session earned a milestone, ONE quiet moment sits under
  * the stats (components/milestones.tsx): no confetti, one success haptic,
  * static with Reduce Motion. Any others earned wait for later sessions.
+ * Mobile 1.10: the badge moment comes AFTER the score and the review actions
+ * ("Practice the ones you missed", "Done"), before the answer list, so the
+ * learning comes first; its motion waits until it is scrolled into view. One
+ * "Next:" line under it names the best next badge for the exam.
  */
 import { router } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -30,6 +34,7 @@ import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuf
 import { COACHING, coachingTag, practicePaceLine, TIMING_LABEL } from '../engine/pace';
 import { minutesUsed, scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
+import { badgeNextLine } from '../lib/badges';
 import { momentFor } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
 import { questionTarget, sessionWhere } from '../lib/support';
@@ -48,7 +53,7 @@ export default function Results() {
   // The one milestone this session celebrates (lib/finishSession.ts picked it).
   const certId = active?.certId;
   const milestoneKey = active?.milestone;
-  const moment = useMemo(() => (certId && milestoneKey ? momentFor(certId, milestoneKey) : null), [certId, milestoneKey]);
+  const moment = useMemo(() => (certId && milestoneKey ? momentFor(certId, milestoneKey, badgeNextLine(certId)) : null), [certId, milestoneKey]);
   // "Something not working? Report a bug" at the end of the review (mobile 1.7).
   const bug = useReportFlow(certId ?? 'cisa', {
     kind: 'app',
@@ -215,21 +220,6 @@ export default function Results() {
             <PacingPanel pacing={pacing} cert={cert} />
           </View>
         )}
-        {moment && (
-          <View
-            style={{ marginTop: space.xl }}
-            // Its place in the stats block (whose own top is statsY in the scroll).
-            onLayout={(e) => setMomentY(e.nativeEvent.layout.y)}
-          >
-            <MilestoneMomentView moment={moment} once={active.id} inView={momentSeen && ringsDone} skipRef={skipMoment} />
-            <Button
-              kind="ghost"
-              label={moment.kind === 'skill' ? 'See your field notes' : 'See your milestones'}
-              onPress={() => router.push(moment.kind === 'skill' ? '/field-notes' : '/milestones')}
-              style={{ alignSelf: 'flex-start', marginTop: space.xs }}
-            />
-          </View>
-        )}
         <Gap h={space.xl} />
         {missed.length > 0 && (
           <>
@@ -244,6 +234,21 @@ export default function Results() {
           </>
         )}
         <Button kind="secondary" label="Done" onPress={done} />
+        {moment && (
+          <View
+            style={{ marginTop: space.xl }}
+            // Its place in the stats block (whose own top is statsY in the scroll).
+            onLayout={(e) => setMomentY(e.nativeEvent.layout.y)}
+          >
+            <MilestoneMomentView
+              moment={moment}
+              once={active.id}
+              inView={momentSeen && ringsDone}
+              skipRef={skipMoment}
+              onSee={() => router.push({ pathname: '/milestones', params: { open: moment.key } })}
+            />
+          </View>
+        )}
       </Enter>
       </View>
 

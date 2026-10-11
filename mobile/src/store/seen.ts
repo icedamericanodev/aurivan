@@ -9,7 +9,11 @@
  *   once-ever moments keyed by their occasion ("exam-ready:cisa": played);
  * - `days`: the local day a surface last had its first view of the day
  *   ("today:rings:cisa" → "Sat Oct 11 2026"), so the day's count-up plays
- *   once a day, not again on every cold launch.
+ *   once a day, not again on every cold launch;
+ * - mobile 1.10 badges: `caseSeen` (when each cert's badge case was last
+ *   viewed: the "new" dot shows until it is), `badgeMoments` (when the
+ *   last badge moments played: at most 3 in any 7 days) and `badgeSort`
+ *   (the case's Sort choice, kept on this phone).
  *
  * Presentation only: it holds no answers, nothing a backup needs, and losing
  * it only means one number counts up again. So it is NOT in backups. A reset
@@ -31,13 +35,27 @@ interface SeenState {
   moments: Record<string, number>;
   /** The local day (Date.toDateString) of each surface's first view of the day. */
   days: Record<string, string>;
+  /** Mobile 1.10: when each cert's badge case was last viewed (epoch ms). */
+  caseSeen: Record<string, number>;
+  /** Mobile 1.10: when the most recent badge moments played (newest last, at most BADGE_MOMENTS_MAX). */
+  badgeMoments: number[];
+  /** Mobile 1.10: the badge case's Sort choice ('set' when unset). */
+  badgeSort?: string;
   see: (key: string, values: number[]) => void;
   played: (kind: string) => void;
   /** Marks `key`'s first view of the day as used (false: it already was today). */
   claimDay: (key: string, day: string) => boolean;
   /** After a restore: forget what was shown (moments and days stay). */
   forgetValues: () => void;
+  /** The badge case was viewed at `at` (clears the "new" dot). */
+  seeCase: (certId: string, at: number) => void;
+  /** A badge moment played at `at`. */
+  noteBadgeMoment: (at: number) => void;
+  setBadgeSort: (sort: string) => void;
 }
+
+/** Badge moments kept (the cap counts the last 7 days, and allows 3). */
+export const BADGE_MOMENTS_MAX = 3;
 
 /** Drops the oldest keys (the first inserted) beyond SEEN_MAX_KEYS. */
 function capped<T>(rec: Record<string, T>): Record<string, T> {
@@ -73,6 +91,11 @@ export const useSeen = create<SeenState>()(
         return true;
       },
       forgetValues: () => set({ values: {} }),
+      caseSeen: {},
+      badgeMoments: [],
+      seeCase: (certId, at) => set((s) => (s.caseSeen[certId] !== undefined && s.caseSeen[certId] >= at ? s : { caseSeen: { ...s.caseSeen, [certId]: at } })),
+      noteBadgeMoment: (at) => set((s) => ({ badgeMoments: [...s.badgeMoments, at].slice(-BADGE_MOMENTS_MAX) })),
+      setBadgeSort: (badgeSort) => set({ badgeSort }),
     }),
     { name: 'aurivan.seen.v1', storage: persistStorage, version: 1 },
   ),

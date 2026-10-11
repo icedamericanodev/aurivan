@@ -1,5 +1,5 @@
 /**
- * Settings — certification, exam date, appearance, study goal, reminders, haptics,
+ * Settings — certification, exam date, appearance, study goal, reminders, haptics, show badges,
  * study defaults (the practice timer), your data (backup, restore, reset), one row to
  * Help and feedback (mobile 1.7), and the legal notices required for store review. Groups are
  * sections with hairline rows, not cards (spec §5).
@@ -21,6 +21,8 @@ import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certificatio
 import { addDays, dateInMonths, EXAM_DATE_PRESETS, examDateLabel, presetIndexFor } from '../engine/examDay';
 import { dayKey } from '../engine/streak';
 import { changeExamDate } from '../lib/activity';
+import { sayLater } from '../lib/a11y';
+import { hideBadges, showBadgesAgain, shownAgainLine } from '../lib/badges';
 import { config } from '../lib/config';
 import {
   DAY_CHIPS,
@@ -66,6 +68,8 @@ export default function Settings() {
   const resetCert = useProgress((p) => p.resetCert);
   const clearSession = useSession((x) => x.clear);
   const [busy, setBusy] = useState(false);
+  // "Badges are on again…": shown for this visit, right under the switch.
+  const [badgesLine, setBadgesLine] = useState<string | null>(null);
   // "Now" is read once per visit (render stays pure); presets move in months.
   const [now] = useState(() => Date.now());
   const examDate = s.examDates[cert.id];
@@ -116,7 +120,7 @@ export default function Settings() {
   const days = reminderDays(s.reminder.days);
 
   const confirmReset = () =>
-    Alert.alert(`Reset ${cert.name} progress?`, 'This deletes your answers, reviews, saved questions, mock history, milestones and game levels for this exam. It cannot be undone. Save a backup first if you might want it back.', [
+    Alert.alert(`Reset ${cert.name} progress?`, 'This deletes your answers, reviews, saved questions, mock history, badges and game levels for this exam. It cannot be undone. Save a backup first if you might want it back.', [
       { text: 'Cancel', style: 'cancel' },
       {
         text: 'Reset',
@@ -279,7 +283,31 @@ export default function Settings() {
         </View>
       )}
       <ToggleRow title="Shuffle answer options" subtitle="Stops you memorizing letters." value={s.shuffleOptions} onValueChange={s.setShuffle} />
-      <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
+      <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} />
+      {/* Mobile 1.10: badges are optional. Off = no badge moments, no Badges row
+          on You, no "new" dot; they are still earned quietly, and switching back
+          on says how many arrived, in one line (never a burst of moments). */}
+      <ToggleRow
+        title="Show badges"
+        subtitle="A short moment when you earn one, and Badges on You. Off: you still earn them, quietly."
+        value={!s.badgesHidden}
+        onValueChange={(on) => {
+          if (on) {
+            const line = shownAgainLine(showBadgesAgain());
+            setBadgesLine(line);
+            sayLater(line);
+          } else {
+            setBadgesLine(null);
+            hideBadges();
+          }
+        }}
+        last
+      />
+      {badgesLine && (
+        <T v="meta" color={c.accentText} style={{ marginTop: space.xs }}>
+          {badgesLine}
+        </T>
+      )}
 
       {/* Study defaults: what practice starts with. Build D: the timer.
           Build E: the default study mode (the same choice Practice remembers). */}

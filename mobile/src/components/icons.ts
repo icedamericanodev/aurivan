@@ -48,6 +48,8 @@ export { default as Target } from 'lucide-react-native/icons/target';
 // Field Guide (a book of terms), Canopy Call (a tree: layers of authority),
 // Stepping Stones (footprints along a path).
 export { default as MilestoneIcon } from 'lucide-react-native/icons/milestone';
+// Mobile 1.10: You → Badges (a scalloped seal, like the medallions' round seal).
+export { default as BadgeIcon } from 'lucide-react-native/icons/badge';
 export { default as Leaf } from 'lucide-react-native/icons/leaf';
 export { default as BookA } from 'lucide-react-native/icons/book-a';
 export { default as TreeDeciduous } from 'lucide-react-native/icons/tree-deciduous';
