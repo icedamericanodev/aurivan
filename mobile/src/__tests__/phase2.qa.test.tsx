@@ -562,7 +562,7 @@ describe('J4 Settings → Motion', () => {
     tick(motion.dur.select);
   });
 
-  it('the choice is in a backup; restoring it applies it; an older backup without it restores to "Match my phone"', async () => {
+  it('the choice is in a backup; restoring it applies it; an older backup without it keeps this phone’s choice', async () => {
     jest.useRealTimers();
     act(() => {
       useSettings.getState().setMotion('reduced');
@@ -581,7 +581,8 @@ describe('J4 Settings → Motion', () => {
     });
     expect(useSettings.getState().motion).toBe('reduced');
 
-    // A 1.7 file has no motion key: it restores, and the default applies.
+    // A 1.7 file has no motion key: it restores, and this phone's Reduced
+    // choice (an accessibility setting) is kept, not silently undone.
     const old = JSON.parse(JSON.stringify(file));
     delete old.stores.settings.state.motion;
     const ok2 = checkBackupText(JSON.stringify(old));
@@ -589,7 +590,7 @@ describe('J4 Settings → Motion', () => {
     await act(async () => {
       expect((await restoreBackup(ok2.data, { fresh: true })).kind).toBe('ok');
     });
-    expect(useSettings.getState().motion).toBe('system');
+    expect(useSettings.getState().motion).toBe('reduced');
     expect(useSettings.getState().theme).toBe('dark'); // the rest of the file still applies
   });
 
