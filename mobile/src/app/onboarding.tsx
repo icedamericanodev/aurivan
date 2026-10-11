@@ -1,7 +1,10 @@
 /**
- * Onboarding — a welcome, then 2 quick steps: pick your certification, then
- * (optionally) your exam date. Kept short on purpose: the FTUE decision in
- * MASTER_HANDOFF.md is "get learners to a question fast".
+ * Onboarding — a welcome, then 3 quick steps: pick your certification,
+ * (optionally) your exam date, then (optionally, mobile 1.13) plant your
+ * companion plant. Kept short on purpose: the FTUE decision in
+ * MASTER_HANDOFF.md is "get learners to a question fast". "Plant it" takes
+ * about 10 seconds and can be skipped; skipping never brings a nudge back
+ * (You keeps a "Plant yours" entry).
  *
  * Welcome (step 0): the brand moment. A forest panel with the True North
  * lockup, the tagline and the line, then the four pillars. One tap on
@@ -23,6 +26,10 @@ import { Check } from '../components/icons';
 import { StickyFooter } from '../components/quiz';
 import { Button, Chip, Enter, Gap, T } from '../components/ui';
 import { DataMessage, RestorePreview } from '../components/yourData';
+import { PlantNameField, SpeciesGrid } from '../components/plant/PlantUI';
+import { SPECIES_INFO, suggestName, type PlantSpecies } from '../engine/plant';
+import { plantFor } from '../lib/plant';
+import { useProgress } from '../store/progress';
 import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS } from '../content/certifications';
 import { dateInMonths, EXAM_DATE_PRESETS } from '../engine/examDay';
@@ -38,7 +45,10 @@ export default function Onboarding() {
   const { c, isDark } = useTheme();
   const complete = useSettings((s) => s.completeOnboarding);
   const insets = useSafeAreaInsets();
-  const [step, setStep] = useState<0 | 1 | 2>(0);
+  const [step, setStep] = useState<0 | 1 | 2 | 3>(0);
+  // Step 3 (mobile 1.13): the plant and its name (a suggestion, prefilled).
+  const [species, setSpecies] = useState<PlantSpecies>('oak');
+  const [plantName, setPlantName] = useState(() => suggestName('oak', Math.random()));
   const [certId, setCertId] = useState('cisa');
   const [preset, setPreset] = useState<number>(3);
   const [footerH, setFooterH] = useState(120);
@@ -51,7 +61,7 @@ export default function Onboarding() {
   useEffect(() => {
     const sub = BackHandler.addEventListener('hardwareBackPress', () => {
       if (step === 0) return false;
-      setStep(step === 2 ? 1 : 0);
+      setStep(step === 3 ? 2 : step === 2 ? 1 : 0);
       return true;
     });
     return () => sub.remove();
@@ -97,13 +107,41 @@ export default function Onboarding() {
     </Enter>
   );
 
+  // Finish onboarding with the chosen exam and date; then plant (or not).
+  const finish = (plant: boolean) => {
+    const m = PRESETS[preset].months;
+    complete(certId, m ? dateInMonths(m, Date.now()) : undefined);
+    if (plant) plantFor(certId, species, plantName);
+    // Skipped: no nudge on Today later; You keeps "Plant yours".
+    else useProgress.getState().setPlantSettings({ promptHidden: true });
+    router.replace('/home');
+  };
+
   const body =
-    step === 1 ? (
+    step === 3 ? (
+      <Enter key="s3">
+        <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 3 of 3</T>
+        <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>Plant something that grows with you</T>
+        <T v="meta" style={{ marginTop: space.sm }}>It grows only from real progress across the exam outline. Never from taps or time. It asks for nothing and never wilts. Optional.</T>
+        <Gap h={space.xl} />
+        <SpeciesGrid
+          value={species}
+          onChange={(s) => {
+            if (SPECIES_INFO[species].suggestions.includes(plantName)) setPlantName(suggestName(s, Math.random()));
+            setSpecies(s);
+          }}
+        />
+        <T v="quote" color={c.ink2} style={{ marginTop: space.md }}>{`${SPECIES_INFO[species].name}: ${SPECIES_INFO[species].line}`}</T>
+        <View style={{ marginTop: space.xl }}>
+          <PlantNameField species={species} value={plantName} onChange={setPlantName} />
+        </View>
+      </Enter>
+    ) : step === 1 ? (
       <Enter key="s1">
         <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ marginLeft: -space.lg }}>
           <Seedling color={c.accent} size={110} />
         </View>
-        <T v="caption" color={c.accentText} style={{ marginTop: space.sm }}>Step 1 of 2</T>
+        <T v="caption" color={c.accentText} style={{ marginTop: space.sm }}>Step 1 of 3</T>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>Which exam are you preparing for?</T>
         <T v="meta" style={{ marginTop: space.sm }}>You can switch any time in Settings.</T>
         <Gap h={space.xl} />
@@ -164,7 +202,7 @@ export default function Onboarding() {
       </Enter>
     ) : (
       <Enter key="s2">
-        <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 2 of 2</T>
+        <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 2 of 3</T>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>When is your exam?</T>
         <T v="meta" style={{ marginTop: space.sm }}>For your countdown. A rough date is fine.</T>
         <Gap h={space.xl} />
@@ -209,17 +247,18 @@ export default function Onboarding() {
             <Button label="Continue" onPress={() => setStep(2)} />
             <Button kind="ghost" label="Back" onPress={() => setStep(0)} />
           </>
+        ) : step === 2 ? (
+          <>
+            <Button label="Continue" onPress={() => setStep(3)} />
+            <Button kind="ghost" label="Back" onPress={() => setStep(1)} />
+          </>
         ) : (
           <>
-            <Button
-              label="Start studying"
-              onPress={() => {
-                const m = PRESETS[preset].months;
-                complete(certId, m ? dateInMonths(m, Date.now()) : undefined);
-                router.replace('/home');
-              }}
-            />
-            <Button kind="ghost" label="Back" onPress={() => setStep(1)} />
+            <Button label="Plant it" onPress={() => finish(true)} />
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <Button kind="ghost" label="Back" onPress={() => setStep(2)} />
+              <Button kind="ghost" label="Skip for now" accessibilityHint="Starts studying without a plant. You can plant one later from You." onPress={() => finish(false)} />
+            </View>
           </>
         )}
       </StickyFooter>
