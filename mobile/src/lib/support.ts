@@ -111,3 +111,16 @@ export type HelpOpen = 'support' | 'feedback' | 'idea' | 'report';
 export function helpOpenParam(v: unknown): HelpOpen | null {
   return v === 'support' || v === 'feedback' || v === 'idea' || v === 'report' ? v : null;
 }
+
+/**
+ * Where a session question was reported from: "Practice · Quick 10",
+ * "Mock review · Full mock". Nothing is said twice: a title that already
+ * says it ("Practice · IS Audit") or that the place already names ("Review"
+ * in Spaced review) isn't repeated.
+ */
+export function sessionWhere(place: 'Practice' | 'Spaced review' | 'Practice review' | 'Mock review', title: string): string {
+  const t = title.trim();
+  if (!t || place.toLowerCase().includes(t.toLowerCase())) return place;
+  if (place === 'Practice' && /^practice\b/i.test(t)) return t;
+  return `${place} · ${t}`;
+}

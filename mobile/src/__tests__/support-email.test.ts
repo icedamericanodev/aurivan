@@ -12,7 +12,7 @@
  */
 import { getAllQuestions } from '../content/loader';
 import { DEFAULT_SUPPORT_EMAIL, supportEmailFrom } from '../lib/config';
-import { osLabel } from '../lib/support';
+import { osLabel, sessionWhere } from '../lib/support';
 import {
   addReport,
   buildFeedbackEmail,
@@ -333,6 +333,14 @@ describe('configuration and the phone', () => {
     expect(supportEmailFrom('')).toBe(DEFAULT_SUPPORT_EMAIL);
     expect(supportEmailFrom('not an address')).toBe(DEFAULT_SUPPORT_EMAIL);
     expect(supportEmailFrom(' team@example.org ')).toBe('team@example.org');
+  });
+
+  it('says where a session question was reported, without saying anything twice', () => {
+    expect(sessionWhere('Practice', 'Quick 10')).toBe('Practice · Quick 10');
+    expect(sessionWhere('Practice', 'Practice · IS Audit')).toBe('Practice · IS Audit');
+    expect(sessionWhere('Spaced review', 'Review')).toBe('Spaced review');
+    expect(sessionWhere('Mock review', 'Mini mock')).toBe('Mock review · Mini mock');
+    expect(sessionWhere('Practice review', '')).toBe('Practice review');
   });
 
   it('names the OS by its major version only', () => {

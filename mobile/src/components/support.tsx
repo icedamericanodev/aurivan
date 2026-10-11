@@ -290,7 +290,7 @@ export function ReportSheet({ visible, certId, target, reportedAt, onClose, onOp
     <SheetFrame visible={visible} onClose={onClose}>
       <T v="display" accessibilityRole="header">{REPORT_LABEL}</T>
       <T v="meta" style={{ marginTop: space.xs }}>{sheetMeta(target)}</T>
-      {reportedAt !== undefined && (
+      {reportedAt !== undefined && !failed && (
         <T v="small" color={c.ink2} style={{ marginTop: space.md }}>
           {`You started a report about this on ${shortDate(reportedAt)}. Send another if something else is wrong.`}
         </T>

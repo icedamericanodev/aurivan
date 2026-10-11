@@ -56,7 +56,7 @@ import { addMs } from '../engine/answerClock';
 import { dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, statusOf } from '../engine/pace';
 import { PaceStrip, type PaceStripProps } from '../components/pace';
 import { haptic } from '../lib/haptics';
-import { questionTarget } from '../lib/support';
+import { questionTarget, sessionWhere } from '../lib/support';
 import { Button, Gap, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
 import { getCertification, getDomain } from '../content/certifications';
 import { lessonPreparing } from '../content/lessons';
@@ -653,7 +653,7 @@ export default function SessionScreen() {
                 <TrustLine
                   certId={active.certId}
                   reference={q.reference}
-                  target={questionTarget(active.certId, q, `${active.mode === 'review' ? 'Spaced review' : 'Practice'} · ${active.title}`, {
+                  target={questionTarget(active.certId, q, sessionWhere(active.mode === 'review' ? 'Spaced review' : 'Practice', active.title), {
                     perm,
                     pickedDisplay: response.display,
                   })}

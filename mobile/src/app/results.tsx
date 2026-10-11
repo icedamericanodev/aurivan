@@ -31,7 +31,7 @@ import { minutesUsed, scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
 import { momentFor } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
-import { questionTarget } from '../lib/support';
+import { questionTarget, sessionWhere } from '../lib/support';
 import { useSession } from '../store/session';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -248,7 +248,7 @@ export default function Results() {
                 <TrustLine
                   certId={active.certId}
                   reference={q.reference}
-                  target={questionTarget(active.certId, q, `${active.mode === 'mock' ? 'Mock review' : 'Practice review'} · ${active.title}`, {
+                  target={questionTarget(active.certId, q, sessionWhere(active.mode === 'mock' ? 'Mock review' : 'Practice review', active.title), {
                     perm,
                     pickedDisplay: r?.display,
                   })}
