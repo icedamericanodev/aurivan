@@ -155,9 +155,9 @@ afterEach(() => {
 describe('Settings → Help and feedback', () => {
   it('Settings has ONE row, and it opens the Help screen', () => {
     mount(<Settings />);
-    expect(pressables('Help and feedback, Common questions, contact us, your reports and what’s new')).toHaveLength(1);
+    expect(pressables('Get help or send feedback, Common questions, reports and what’s new')).toHaveLength(1);
     for (const t of ['Common questions', 'Contact support', 'Suggest an idea', 'Your reports', 'What’s next']) expect(pressables(t)).toHaveLength(0);
-    press('Help and feedback, Common questions, contact us, your reports and what’s new');
+    press('Get help or send feedback, Common questions, reports and what’s new');
     expect(mockPush).toHaveBeenCalledWith('/help');
   });
 });

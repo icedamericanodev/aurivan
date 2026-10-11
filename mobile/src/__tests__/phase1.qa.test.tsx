@@ -760,7 +760,7 @@ describe('Journey 6: a fix shipped after a report', () => {
 describe('Journey 7: Help and feedback from Settings and You, and the deep link', () => {
   it('Settings → Help: Contact support writes a tagged email, from Help, nothing personal', async () => {
     mount(<Settings />);
-    press('Help and feedback, Common questions, contact us, your reports and what’s new');
+    press('Get help or send feedback, Common questions, reports and what’s new');
     expect(mockPush).toHaveBeenCalledWith('/help');
     unmount();
     mount(<Help />);

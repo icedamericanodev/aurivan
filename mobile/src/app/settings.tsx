@@ -286,8 +286,9 @@ export default function Settings() {
       <Section title="Help and feedback" />
       <ListRow
         icon={<LifeBuoy size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-        title="Help and feedback"
-        subtitle={dueItems ? creditSubtitle(dueItems) : 'Common questions, contact us, your reports and what’s new'}
+        // The same row as You's, so the way to Help reads the same everywhere.
+        title="Get help or send feedback"
+        subtitle={dueItems ? creditSubtitle(dueItems) : 'Common questions, reports and what’s new'}
         onPress={() => router.push('/help')}
         last
       />
