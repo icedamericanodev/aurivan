@@ -8,7 +8,7 @@
  *   with the share of that step done right, 0 to 1 (the "rate").
  * - Two rounds IN A ROW at 80% or more, played at your level, move you up
  *   one level. Two rounds in a row under 50% move you back one, worded
- *   "Back to Sapling for a few rounds": never as a loss, never a warning.
+ *   "Back to Sapling. Two strong rounds grow it again.": never as a loss, never a warning.
  * - Only rounds played AT your level count toward moving. A learner may
  *   still pick any level on a game's first screen (it starts on theirs);
  *   trying a harder one never knocks them back.
@@ -96,7 +96,7 @@ export function noteRound(prev: GameGrowth | undefined, r: RoundOutcome): { grow
  */
 export function tierChangeLine(change: TierChange, tier: GameTier): string | null {
   if (change === 'up') return `You’ve grown to ${GAME_TIER_NAME[tier]}. Your next round starts there.`;
-  if (change === 'down') return `Back to ${GAME_TIER_NAME[tier]} for a few rounds.`;
+  if (change === 'down') return `Back to ${GAME_TIER_NAME[tier]}. Two strong rounds grow it again.`;
   return null;
 }
 

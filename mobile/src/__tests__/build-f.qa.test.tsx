@@ -445,7 +445,7 @@ describe('Journey 4: game levels through the three new games', () => {
     expect(down.change).toBe('down');
     expect(down.tier).toBe('seedling');
     const line = tierChangeLine(down.change, down.tier)!;
-    expect(line).toBe('Back to Seedling for a few rounds.');
+    expect(line).toBe('Back to Seedling. Two strong rounds grow it again.');
     expect(line).not.toMatch(/lost|lose|fail|demot|drop|wrong|bad/i);
   });
 

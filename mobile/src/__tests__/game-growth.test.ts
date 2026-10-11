@@ -68,7 +68,7 @@ describe('step back', () => {
 
   it('is worded as practice, never as a loss', () => {
     const line = tierChangeLine('down', 'sapling')!;
-    expect(line).toBe('Back to Sapling for a few rounds.');
+    expect(line).toBe('Back to Sapling. Two strong rounds grow it again.');
     expect(line).not.toMatch(/lose|lost|demot|fail/i);
     expect(tierChangeLine('up', 'heartwood')).toMatch(/grown to Heartwood/);
     expect(tierChangeLine(null, 'sapling')).toBeNull();
