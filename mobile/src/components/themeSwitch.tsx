@@ -1,7 +1,8 @@
 /**
  * Appearance switch: System / Light / Dark as a Grove segmented control.
- * Used in Settings → Appearance (since 1.8 the only place: You's copy was
- * a duplicate control). It reads and writes the settings store's `theme`.
+ * Used at the top of You AND in Settings → Appearance, on purpose: the owner
+ * asked for it on You after not finding dark mode in Settings. Both read and
+ * write the same settings store value (`theme` / `setTheme`), so they agree.
  */
 import { useSettings, type ThemePref } from '../store/settings';
 import { ICON_STROKE, Moon, Sun, SunMoon } from './icons';

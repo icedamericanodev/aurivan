@@ -149,7 +149,7 @@ export default function Results() {
           {[
             <Stat key="a" value={`${score.correct}/${denominator}`} label="correct" />,
             <Stat key="b" value={String(missed.length)} label="to review" />,
-            <Stat key="c" value={String(minutes)} label="minutes" />,
+            <Stat key="c" value={String(minutes)} label={minutes === 1 ? 'minute' : 'minutes'} />,
           ]}
         </StatRow>
         {active.mode === 'mock' && (

@@ -3,8 +3,9 @@
  * Spec: DESIGN_SYSTEM.md §11 "You". The rings (one per domain, thicker =
  * heavier on the exam) replace the old per-domain bars; the legend lists
  * domains outside-in so it matches what you see.
- * Appearance lives in Settings only (1.8, ui.md Y1): one control for one
- * setting, and the top of You belongs to the rings.
+ * The appearance switch sits at the top on purpose (owner request: dark mode
+ * was hard to find in Settings alone). It shares its setting with Settings →
+ * Appearance, so both always agree.
  * Mindset growth (Phase 5b): under the stats, only when the learner picks the
  * tempting runner-up less often than in their first weeks (engine/mindsetGrowth.ts).
  * Share progress: opens a preview of a share card (components/shareCard.tsx)
@@ -22,6 +23,7 @@ import { creditSubtitle } from '../../components/help';
 import { MindsetGrowthCard } from '../../components/moments';
 import { Bookmark, ICON_STROKE, Leaf, LifeBuoy, MilestoneIcon, NotebookPen, RotateCcw, Settings, Share2 } from '../../components/icons';
 import { ShareProgressSheet } from '../../components/shareCard';
+import { ThemeSwitch } from '../../components/themeSwitch';
 import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
 import { pacingStats, pacingStatsLine, TIMING_LABEL } from '../../engine/pace';
 import { rangeLabel, rangeSpoken, readinessRange } from '../../engine/readinessRange';
@@ -80,6 +82,9 @@ export default function You() {
     <Screen>
       <Enter i={0}>
         <ScreenTitle title="You" settings={() => router.push('/settings')} />
+        <View style={{ marginTop: space.md }}>
+          <ThemeSwitch />
+        </View>
       </Enter>
 
       <Enter i={1} style={{ marginTop: space.xl }}>
@@ -185,7 +190,7 @@ export default function You() {
         <Section title="Mock exams" />
         {progress.mocks.length === 0 ? (
           <>
-            <EmptyState compact title="No mocks yet" body="Today suggests one when your rings are ready for it." />
+            <EmptyState compact title="No mocks yet" body="A mini mock shows how the exam feels. Start one whenever you like." />
             {/* An experienced learner shouldn't have to wait for Today (ui.md Y4): the same start sheet as Practice. */}
             <Button
               kind="ghost"

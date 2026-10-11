@@ -46,7 +46,8 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
       'Coach me now gently highlights the word that decides the question.',
       'Results after a one-domain session show just that domain, clearly.',
       'Your review count reads the same on Today, Practice and You.',
-      'You can start a mini mock straight from You, and the appearance setting now lives in Settings only.',
+      'You can start a mini mock straight from You.',
+      'Mock exams stay calm and exam-like: each question appears with a short fade, nothing slides.',
     ],
     fixed: [
       'Today no longer shows the readiness rings twice when your readiness is holding.',

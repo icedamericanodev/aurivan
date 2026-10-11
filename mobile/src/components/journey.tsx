@@ -8,7 +8,7 @@
  * Readiness is always a range ("62–70%") or "Not enough data yet". The copy
  * never promises a pass: it describes mastery, weighted by the blueprint.
  */
-import { REVIEW_CAP_LINE, REVIEW_UNIT } from '../engine/srs';
+import { REVIEW_CAP_LINE, REVIEW_SESSION_CAP, REVIEW_UNIT } from '../engine/srs';
 import { gameTitle } from '../engine/games/registry';
 import type { ReactNode } from 'react';
 import { Text, View } from 'react-native';
@@ -41,20 +41,28 @@ export function planIcon(item: PlanItem, color: string): ReactNode {
   }
 }
 
-/** Real, unshortened titles (spec §11: 2 lines allowed) and one short meta line. */
-export function planText(item: PlanItem): { title: string; meta: string; short: string } {
+/**
+ * Real, unshortened titles (spec §11: 2 lines allowed) and one short meta line.
+ * `due`: the LIVE review queue. The day's plan is frozen in the morning, but
+ * the queue it names must match You and Practice all day (reviews done, more
+ * falling due), so Today passes the live count.
+ */
+export function planText(item: PlanItem, due?: number): { title: string; meta: string; short: string } {
   const mins = itemMinutes(item);
   switch (item.kind) {
-    case 'review':
+    case 'review': {
       // Same word as Practice and You ("due"); at the cap, say the rest wait.
+      const queue = due ?? item.due ?? item.count;
+      // The cap line only when MORE than 20 are due (exactly 20 fits one session).
+      const capped = due === undefined ? Boolean(item.capped) : due > REVIEW_SESSION_CAP;
       return {
         // The whole queue ("Review 55 due"), the same number You and Practice show;
         // the meta says how much of it this session takes.
-        title: item.label ?? `Review ${item.due ?? item.count} ${REVIEW_UNIT}`,
-        // The cap line only when MORE than 20 were due (exactly 20 fits one session).
-        meta: `About ${mins} minutes · ${item.capped ? REVIEW_CAP_LINE : 'questions to revisit'}`,
-        short: 'Spaced review',
+        title: item.label ?? (queue > 0 ? `Review ${queue} ${REVIEW_UNIT}` : 'Review · all caught up'),
+        meta: `About ${mins} minutes · ${capped ? REVIEW_CAP_LINE : 'questions to revisit'}`,
+        short: capped ? `Spaced review · ${REVIEW_SESSION_CAP} at a time` : 'Spaced review',
       };
+    }
     case 'lesson':
       return { title: item.title, meta: `Lesson · ${mins} min`, short: `Lesson · ${mins} min` };
     case 'practice':

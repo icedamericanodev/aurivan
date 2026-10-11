@@ -1,7 +1,7 @@
 /**
  * Mobile 1.8 quick fixes from the UI review (ui.md §1, PR 1 row):
  * T3 one set of rings on Today with the Exam-ready panel · T4 "Also today"
- * says the time, not a count · Y1 no theme switch on You · Y3 one phrasing
+ * says the time, not a count · Y1 the theme switch stays on You · Y3 one phrasing
  * for the review queue · Y4 a way to start a mini mock from You · G2 the
  * Seedling tag said once on Play · R1/R2 Results for a one-domain session
  * (one ring, plain copy) · Q1 the "Assisted" line lines up with the coach
@@ -121,9 +121,16 @@ describe('Today', () => {
 });
 
 describe('You', () => {
-  it('Y1: no Appearance switch (it lives in Settings only)', () => {
+  it('Y1 (kept on purpose): You has the Appearance switch, and it is the same setting as Settings → Appearance', () => {
+    // The owner asked for it on You after not finding dark mode in Settings.
     mount(<You />);
-    expect(root().findAll((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'Appearance')).toHaveLength(0);
+    const groups = root().findAll((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'Appearance' && typeof n.type === 'string');
+    expect(groups).toHaveLength(1);
+    const dark = groups[0].findAll((n) => n.props.accessibilityRole === 'radio' && n.props.accessibilityLabel === 'Dark appearance' && typeof n.props.onPress === 'function')[0];
+    act(() => {
+      dark.props.onPress();
+    });
+    expect(useSettings.getState().theme).toBe('dark');
   });
 
   it('Y4: with no mocks yet, "Start a mini mock" opens the start sheet with a third of the exam', () => {

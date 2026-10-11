@@ -14,10 +14,11 @@
  *   (whichever comes first), Today's line has a Dismiss; the plural counts
  *   different things, not reports.
  */
+import appJson from '../../app.json';
 import { Alert, Linking } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { RadioRow } from '../components/ui';
-import { FAQ, shortVersion, WHATS_NEW } from '../content/support';
+import { FAQ } from '../content/support';
 import { getAllQuestions } from '../content/loader';
 import type { Fix, ReportEntry } from '../engine/support';
 import { useProgress } from '../store/progress';
@@ -151,8 +152,12 @@ describe('the Help screen', () => {
     const address = root().findAll((n) => n.props.selectable === true && typeof n.type !== 'string' && n.props.children === 'certprep.support@gmail.com');
     expect(address.length).toBeGreaterThan(0);
     expect(text).toContain('Aurivan is independent and not affiliated with or endorsed by ISACA.');
-    // The latest release, whatever it is (WHATS_NEW[0] matches app.json; support-content tests that).
-    expect(text).toContain(`Version ${shortVersion(WHATS_NEW[0].version)}`);
+    // The version the store build carries (app.json), written short ("1.8", "1.8.1"),
+    // checked against the file itself, not against the list Help reads it from.
+    const shipped = appJson.expo.version;
+    expect(shipped).toMatch(/^\d+\.\d+\.\d+$/);
+    expect(text).toContain(`Version ${shipped.replace(/\.0$/, '')}`);
+    expect(text).not.toMatch(/Version \d+\.\d+\.0\b/);
   });
 
   it('rows open the right screens', () => {

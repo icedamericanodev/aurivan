@@ -6,8 +6,9 @@
  * waits 120 ms with the old page on screen, the risky path) and with Reduce
  * Motion ON (the shared jest mock's default). Fake timers drive the turn.
  *
- * Real bugs are pinned with `it.failing`: the test describes the RIGHT
- * behaviour, so it starts passing (and jest flags it) once the bug is fixed.
+ * Real bugs were pinned with `it.failing` (the test describes the RIGHT
+ * behaviour). All three are fixed in the review round and now run as plain
+ * tests, each with a "Was a bug" note.
  *
  * Gotcha: never `act(() => store.action())` (zustand persist returns a
  * promise, which turns act async). Use braces.
@@ -667,11 +668,9 @@ describe('J5 quick fixes', () => {
     expect(trailDue(You)).toBe(55);
   });
 
-  // BUG: Today's review title now shows the WHOLE queue ("Review 55 due"),
-  // but it is frozen when the day's plan is made, while Practice and You
-  // count live. After 10 reviews, or when more fall due later in the day,
-  // Today says a different number from the other two screens.
-  it.failing('Review counts still agree after some reviews are done mid-day', () => {
+  // Was a bug (fixed): Today's review title was frozen with the morning's plan
+  // while Practice and You count live. Today now names the live queue.
+  it('Review counts still agree after some reviews are done mid-day', () => {
     seedReviews(55, 5);
     act(() => {
       ensureTodayPlan('cisa');
@@ -706,10 +705,9 @@ describe('J5 quick fixes', () => {
     expect(allText()).not.toMatch(/Also today \d+ more/);
   });
 
-  // BUG (minor): a paused TIMED mock adds its unanswered questions at
-  // 1.2 min each, even when the exam clock has far less time left. With
-  // 5 minutes left on a 50-question mini mock, Today says "about 60 min".
-  it.failing('"Also today" never promises more time than a paused mock has left on its clock', () => {
+  // Was a bug (fixed): a paused TIMED mock added its unanswered questions at
+  // 1.2 min each, even with far less time left on the exam clock.
+  it('"Also today" never promises more time than a paused mock has left on its clock', () => {
     const T0 = Date.now();
     act(() => {
       startMock('cisa', 50);

@@ -17,8 +17,8 @@
  *   - "Your readiness is holding" (lower bound ≥ 80% for 7 days): the forest
  *     panel, once per cert, until dismissed. Its plan item moves to "Also today".
  */
-import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow } from '../../components/journey';
@@ -31,13 +31,29 @@ import { useTodayMoments } from '../../lib/moments';
 import { useJourney } from '../../lib/useJourney';
 import { useReports } from '../../lib/useReports';
 import { useProgress } from '../../store/progress';
-import { useSession } from '../../store/session';
+import { useSession, type ActiveSession } from '../../store/session';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 /** "Something you reported was updated." (by different things, not reports). */
 function creditLine(items: number): string {
   return items === 1 ? 'Something you reported was updated.' : 'Things you reported were updated.';
+}
+
+/** "about 84 minutes": the same style as "About 24 minutes" on the plan items. */
+function aboutMinutes(n: number): string {
+  return `about ${n} ${n === 1 ? 'minute' : 'minutes'}`;
+}
+
+/**
+ * What a paused session still takes: its unanswered questions at study pace,
+ * but never more than a timed mock has left on its clock (the clock keeps
+ * running while it is paused).
+ */
+function resumeMinutes(s: ActiveSession, now: number): number {
+  const estimate = Math.max(1, Math.round((s.questionIds.length - Object.keys(s.responses).length) * MINUTES_PER_QUESTION));
+  if (s.mode !== 'mock' || !s.deadline) return estimate;
+  return Math.max(1, Math.min(estimate, Math.ceil((s.deadline - now) / 60_000)));
 }
 
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -73,6 +89,9 @@ export default function Today() {
   const moments = useTodayMoments({ cert: j.cert, progress: j.progress, range: j.range, examDate: j.examDate, today: plan.day });
   // The one-time panel takes the forest slot while the plan is still open.
   const showReady = moments.ready && plan.items.length > 0 && !allDone;
+  // The clock for a paused mock's minutes left: read when Today opens or comes back into view.
+  const [now, setNow] = useState(() => Date.now());
+  useFocusEffect(useCallback(() => setNow(Date.now()), []));
   const playIcon = (color: string) => <Play size={ICON_SIZE.inline} color={color} strokeWidth={ICON_STROKE} />;
 
   // The clearing's one success tap, once a day (respects the Haptics setting).
@@ -90,9 +109,7 @@ export default function Today() {
   const alsoCount = rest.length + (resume ? 1 : 0);
   // The list always shows every item, so a count adds nothing: say the time
   // instead, which is what a busy learner budgets (ui.md T4).
-  const alsoMinutes =
-    rest.reduce((n, { item }) => n + itemMinutes(item), 0) +
-    (resume ? Math.max(1, Math.round((resume.questionIds.length - Object.keys(resume.responses).length) * MINUTES_PER_QUESTION)) : 0);
+  const alsoMinutes = rest.reduce((n, { item }) => n + itemMinutes(item), 0) + (resume ? resumeMinutes(resume, now) : 0);
   // Tomorrow = a preview of the live plan (the next two items).
   const tomorrow = j.plan.slice(0, 2);
 
@@ -142,9 +159,9 @@ export default function Today() {
           <HeroPanel
             caption="Start here"
             captionExtra={<PlanLeaves done={plan.done} />}
-            title={planText(plan.items[cur]).title}
-            meta={planText(plan.items[cur]).meta}
-            action={{ label: 'Start', onPress: () => runPlanItem(plan.items[cur], j.cert.id), icon: playIcon, hint: planText(plan.items[cur]).title }}
+            title={planText(plan.items[cur], j.dueCount).title}
+            meta={planText(plan.items[cur], j.dueCount).meta}
+            action={{ label: 'Start', onPress: () => runPlanItem(plan.items[cur], j.cert.id), icon: playIcon, hint: planText(plan.items[cur], j.dueCount).title }}
           />
         )}
       </Enter>
@@ -161,7 +178,7 @@ export default function Today() {
           <>
             {tomorrow.length > 0 && (
               <>
-                <Section title="Tomorrow" meta={`about ${tomorrow.reduce((n, t) => n + itemMinutes(t), 0)} min`} />
+                <Section title="Tomorrow" meta={aboutMinutes(tomorrow.reduce((n, t) => n + itemMinutes(t), 0))} />
                 {tomorrow.map((item, k) => (
                   <ListRow
                     key={k}
@@ -184,7 +201,7 @@ export default function Today() {
         ) : (
           alsoCount > 0 && (
             <>
-              <Section title="Also today" meta={`about ${alsoMinutes} min`} />
+              <Section title="Also today" meta={aboutMinutes(alsoMinutes)} />
               {resume && (
                 <ListRow
                   icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
@@ -198,8 +215,8 @@ export default function Today() {
                 <ListRow
                   key={i}
                   icon={planIcon(item, c.accentText)}
-                  title={planText(item).title}
-                  subtitle={planText(item).short}
+                  title={planText(item, j.dueCount).title}
+                  subtitle={planText(item, j.dueCount).short}
                   onPress={() => runPlanItem(item, j.cert.id)}
                   last={k === rest.length - 1}
                 />

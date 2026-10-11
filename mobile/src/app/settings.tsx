@@ -7,7 +7,7 @@
 import Constants from 'expo-constants';
 import { useState } from 'react';
 import { router } from 'expo-router';
-import { Alert, Linking, View } from 'react-native';
+import { Alert, Linking, Platform, View } from 'react-native';
 import { BrandLockup, PillarList } from '../components/brand';
 import { creditSubtitle } from '../components/help';
 import { ICON_STROKE, LifeBuoy } from '../components/icons';
@@ -45,6 +45,8 @@ import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 const GOALS = [10, 20, 40];
+/** The phone's own name for the setting (Android has no "Reduce Motion"). */
+const phoneSetting = () => (Platform.OS === 'android' ? 'Remove animations' : 'Reduce Motion');
 /** Fine-tune the exam date: [chip label, days to move]. */
 const DATE_STEPS: [string, number][] = [
   ['1 week earlier', -7],
@@ -178,24 +180,24 @@ export default function Settings() {
       <Gap h={space.sm} />
       <ThemeSwitch />
 
-      {/* Motion (mobile 1.8, WCAG 2.3.3): the phone's Reduce Motion, or Reduced
-          for this app only. Reduced swaps slides, springs and growth for short
-          fades: the same information, less movement. */}
+      {/* Motion (mobile 1.8, WCAG 2.3.3): the phone's own setting, or Reduced
+          for this app only. Reduced swaps slides and springs for short fades,
+          and growth shows its end state: the same information, less movement. */}
       <Section title="Motion" />
       <View accessibilityRole="radiogroup" accessibilityLabel="Motion">
         <RadioRow
           title="Match my phone"
           subtitle={
             phoneReduced
-              ? 'Your phone’s Reduce Motion is on, so movement is already reduced.'
-              : 'Calm movement that shows what changed. Follows your phone’s Reduce Motion setting.'
+              ? `Your phone’s ${phoneSetting()} is on, so movement is already reduced.`
+              : `Calm movement that shows what changed. Follows your phone’s ${phoneSetting()} setting.`
           }
           checked={s.motion !== 'reduced'}
           onPress={() => s.setMotion('system')}
         />
         <RadioRow
           title="Reduced"
-          subtitle="Short fades instead of slides and growth. Nothing is lost, only the movement."
+          subtitle="Short fades instead of slides; growth shows its end state."
           checked={s.motion === 'reduced'}
           onPress={() => s.setMotion('reduced')}
           last
