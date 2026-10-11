@@ -345,7 +345,10 @@ function pressedPaths(): { d: string; knock: string } {
   return { d, knock: `${tape(-3, 10, 5.5)} ${tape(L * 0.64, 20, 5.5)}` };
 }
 
-const EMPTY_ART: Record<EmptyArtKind, { d: string; knock?: string; ground: string[] }> = (() => {
+/** The herbarium sheet behind the pressed leaf: a page with one corner folded down. */
+const HERBARIUM_SHEET = 'M24,22 L136,22 L148,34 L148,170 L24,170 Z M136,22 L136,34 L148,34';
+
+const EMPTY_ART: Record<EmptyArtKind, { d: string; knock?: string; sheet?: string; ground: string[] }> = (() => {
   const pressed = pressedPaths();
   return {
     seedling: { d: `M80,150 C80,128 80,112 82,96 ${leafPath(82, 98, 44, 15, -2.55)} ${leafPath(82, 92, 50, 16, -0.5)} ${leafPath(81, 124, 22, 7, -2.2)}`, ground: SOIL },
@@ -354,7 +357,7 @@ const EMPTY_ART: Record<EmptyArtKind, { d: string; knock?: string; ground: strin
       d: `M66,44 L104,44 L104,144 L85,129 L66,144 Z ${frondPath({ w: 0, h: 0, p0: [85, 116], p1: [86, 60], pc: [80, 88], n: 4, len: 14, wid: 4.5, ang: 0.95, alt: true })} M118,150 C117,134 120,118 128,104 ${leafPath(119, 132, 16, 5, -0.5)} ${leafPath(121, 122, 14, 4.5, -2.6)} ${leafPath(128, 104, 12, 4, -1.1)}`,
       ground: SOIL,
     },
-    pressed: { d: pressed.d, knock: pressed.knock, ground: [] },
+    pressed: { d: pressed.d, knock: pressed.knock, sheet: HERBARIUM_SHEET, ground: [] },
     fieldbook: {
       d: `M85,62 C70,54 48,54 26,60 L26,134 C48,128 70,128 85,136 Z M85,62 C100,54 122,54 144,60 L144,134 C122,128 100,128 85,136 ${frondPath({ w: 0, h: 0, p0: [55, 124], p1: [58, 66], pc: [48, 96], n: 5, len: 15, wid: 4.6, ang: 0.95, alt: true })} M98,76 L132,73 M98,86 L132,83 M98,96 L126,94 M98,106 L130,104 M98,116 L118,115`,
       ground: ['M30 148 Q85 141 140 148', 'M52 157 Q85 153 118 157'],
@@ -367,6 +370,8 @@ export function EmptyArt({ art, color, paper, size = 170 }: { art: EmptyArtKind;
   const a = EMPTY_ART[art];
   return (
     <Svg width={size} height={(size * 176) / 170} viewBox="0 0 170 176" fill="none" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      {/* The sheet sits behind, quieter than the leaf it holds. */}
+      {a.sheet ? <Path d={a.sheet} opacity={0.45} /> : null}
       <Path d={a.d} />
       {a.knock ? <Path d={a.knock} fill={paper} /> : null}
       {a.ground.map((d, i) => (

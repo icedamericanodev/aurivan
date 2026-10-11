@@ -1016,8 +1016,8 @@ const styles = StyleSheet.create({
   tagRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: space.sm, marginTop: 18 },
   teachTag: { minHeight: 32, paddingHorizontal: space.md, borderRadius: radius.pill, flexDirection: 'row', alignItems: 'center', gap: 7 },
   teachDot: { width: 6, height: 6, borderRadius: 3 },
-  // The empty state's "next" line: a soft pill, centred, that may wrap.
-  nextTag: { marginTop: space.lg, minHeight: 32, maxWidth: '100%', paddingHorizontal: space.md, paddingVertical: 6, borderRadius: radius.pill, flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  // The empty state's "next" line: a leaf and a sentence, centred, that may wrap.
+  nextLine: { marginTop: space.lg, maxWidth: '100%', paddingHorizontal: space.md, flexDirection: 'row', alignItems: 'center', gap: space.sm },
   // Track radius 25 = the 44pt pills' 22 + the 3pt inset, so the curves stay concentric.
   seg2: { borderRadius: 25, padding: SEG_INSET, gap: SEG_GAP },
   // The sliding thumb: over the first segment's box; translateX moves it.
@@ -1296,7 +1296,8 @@ export function PushedHeader({
  * Mobile 1.9 (ui.md E1): each empty place has its own drawing (`art`, see
  * glyphs.tsx EmptyArt) instead of the same seedling everywhere, and an
  * optional `next` line that says what will happen here and when ("Next
- * review: tomorrow · 6 questions"), in a soft pill under the body.
+ * review: tomorrow · 6 questions"): a small leaf and a sentence under the
+ * body (not a pill, so it never reads as one of the teaching tags).
  */
 export function EmptyState({
   title,
@@ -1325,7 +1326,8 @@ export function EmptyState({
       <T v={compact ? 'headline' : 'hero'} center accessibilityRole="header" style={{ marginTop: compact ? space.xs : 22 }}>{title}</T>
       <T v={compact ? 'meta' : 'body'} color={c.ink2} center style={{ marginTop: space.sm, marginHorizontal: space.md }}>{body}</T>
       {next ? (
-        <View style={[styles.nextTag, { backgroundColor: c.soft }]}>
+        // A sentence with a small leaf, not a pill: the pills below are teaching tags.
+        <View style={styles.nextLine}>
           <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
             <LeafMark color={c.accentText} />
           </View>
