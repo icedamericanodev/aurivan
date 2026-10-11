@@ -5,7 +5,7 @@
 // readiness range, Today's grow-up line, Today's one quiet "Plant a
 // companion" line, You's header, Your plant (top, next growth, domains),
 // resting, Quiet look (Your plant and Today), hidden (Today with the rings
-// back, and You), and Change species.
+// back, and You), and Change plant (the species picker).
 // NARROW=1 uses a 360-wide phone; FONT_SCALE=2 approximates 200% text.
 import { createRequire } from 'module';
 import fs from 'fs';
@@ -166,7 +166,7 @@ await go('/settings', 2000);
 await toTop('Your plant', 30);
 await shot('p07d-settings');
 
-// ── 8. Change species (the growth stays) ───────────────────────────────
+// ── 8. Change plant (the species; the growth stays) ────────────────────
 await go('/plant-pick?mode=species', 2400);
 await shot('p08-change-species');
 
