@@ -657,24 +657,53 @@ const CHECK_PATH = 'M4.5 12.5 9 17 19.5 6.5';
 const CHECK_LENGTH = Math.hypot(4.5, 4.5) + Math.hypot(10.5, 10.5);
 const AnimatedCheckPath = Animated.createAnimatedComponent(Path);
 
+type CheckDrawProps = {
+  play?: boolean;
+  /**
+   * Wait EMPTY until `play` (a lesson finished while Learn was out of view:
+   * its row must not show the ✓ drawn, then empty it, then draw it again).
+   */
+  hold?: boolean;
+  size?: number;
+  color: string;
+  strokeWidth?: number;
+  delay?: number;
+};
+
 /**
  * A ✓ that draws itself, short stroke then long (`reveal`, 200 ms), when
  * `play` (a lesson just done, a note just marked as read). Otherwise it is
- * simply drawn. One animated SVG path. Reduced: it fades in (120 ms).
- * Decorative: the row or button around it says the state.
+ * simply drawn: a plain SVG, with no animated nodes (a Learn group can hold
+ * many done rows). `hold` keeps it empty until it plays. Reduced: it fades
+ * in (120 ms), never a cut. Decorative: the row or button around it says the state.
  */
-export function CheckDraw({ play = false, size = 16, color, strokeWidth = 2.5, delay = 0 }: { play?: boolean; size?: number; color: string; strokeWidth?: number; delay?: number }) {
+export function CheckDraw({ play = false, hold = false, size = 16, color, strokeWidth = 2.5, delay = 0 }: CheckDrawProps) {
+  if (!play && !hold) {
+    return (
+      <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ width: size, height: size }}>
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d={CHECK_PATH} stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+        </Svg>
+      </View>
+    );
+  }
+  return <DrawnCheck play={play} size={size} color={color} strokeWidth={strokeWidth} delay={delay} />;
+}
+
+/** CheckDraw while it waits or plays: one animated path. It starts empty, so it never shows drawn first. */
+function DrawnCheck({ play, size, color, strokeWidth, delay }: { play: boolean; size: number; color: string; strokeWidth: number; delay: number }) {
   const { reduced } = useMotion();
-  const draw = play && !reduced;
-  const p = useSharedValue(draw ? 0 : 1);
-  const o = useSharedValue(play && reduced ? 0 : 1);
-  useEffect(() => {
+  const p = useSharedValue(reduced ? 1 : 0);
+  const o = useSharedValue(reduced ? 0 : 1);
+  // Before paint, so the frame that turns `play` on never shows the end state first.
+  useLayoutEffect(() => {
     if (!play) return;
     if (reduced) {
       p.set(1);
-      o.set(withDelay(delay, tween(1, 'reduced')));
+      o.set(withSequence(snap(0), withDelay(delay, tween(1, 'reduced'))));
       return;
     }
+    o.set(1);
     p.set(withSequence(snap(0), withDelay(delay, tween(1, 'reveal'))));
   }, [play, reduced, delay, p, o]);
   const props = useAnimatedProps(() => ({ strokeDashoffset: CHECK_LENGTH * (1 - p.value), strokeOpacity: p.value < 0.02 ? 0 : 1 }));
@@ -739,7 +768,8 @@ export function PageTurn({
   calm?: boolean;
   /** Style for each page (a lesson scene fills the scroll's height: flex 1). */
   pageStyle?: StyleProp<ViewStyle>;
-  onSwap?: () => void;
+  /** At the swap, before the new page is painted, with the id of the page now on screen. */
+  onSwap?: (id: string | number) => void;
   /** The leaving page's id when a turn starts; null once the new page is in. */
   onTurning?: (leavingId: string | number | null) => void;
   style?: StyleProp<ViewStyle>;
@@ -805,7 +835,7 @@ export function PageTurn({
   // Arriving: before paint, reset the scroll and place the page off to the side.
   useLayoutEffect(() => {
     if (!page.arrival) return;
-    swapRef.current?.();
+    swapRef.current?.(page.id);
     if (page.quiet) {
       // The keyed page below fades itself in; the frame stays put.
       x.set(0);

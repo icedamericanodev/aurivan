@@ -44,14 +44,44 @@ import { BigNum, Gap, HeroPanel, Stem, T } from './ui';
 export const partDelay = (i: number) => Math.min(i, motion.stagger.maxScene - 1) * motion.stagger.scene;
 
 /**
+ * The index of a scene's last part (its "Report a problem" link arrives with
+ * it). Exported for the player and tests. A check's link waits for the answer.
+ */
+export function lastPart(scene: Scene): number {
+  switch (scene.type) {
+    case 'flow':
+      return scene.steps.length + (scene.caption ? 1 : 0);
+    case 'stack':
+      return scene.layers.length + (scene.caption ? 1 : 0);
+    case 'compare':
+      return scene.caption ? 3 : 2;
+    case 'trap':
+      return 2;
+    case 'check':
+      return scene.options.length;
+    default:
+      // The cover, an idea, an analogy, "How ISACA thinks" and the takeaway: two parts.
+      return 1;
+  }
+}
+
+/**
  * One part of a scene building up (`SceneBuild`): fade + 8pt rise after
  * its reading-order delay. It plays inside the page turn too: the build-up
  * IS the content. `drop`: settles from above (a layer onto the stack).
+ * `spoken`: the part is ONE screen-reader stop that says this (a step or a
+ * layer: "Step 2 of 4: label. note"), its layout on that stop.
  */
-function Part({ i, drop, style, children }: { i: number; drop?: boolean; style?: object; children: ReactNode }) {
+function Part({ i, drop, style, spoken, children }: { i: number; drop?: boolean; style?: object; spoken?: string; children: ReactNode }) {
   return (
-    <FadeIn build delay={partDelay(i)} drop={drop} style={style}>
-      {children}
+    <FadeIn build delay={partDelay(i)} drop={drop} style={spoken ? undefined : style}>
+      {spoken ? (
+        <View accessible accessibilityLabel={spoken} style={style}>
+          {children}
+        </View>
+      ) : (
+        children
+      )}
     </FadeIn>
   );
 }
@@ -184,7 +214,7 @@ function StepsScene({ scene }: { scene: Extract<Scene, { type: 'flow' }> }) {
     <View>
       <Heading>{scene.heading}</Heading>
       {scene.steps.map((step, i) => (
-        <Part key={step.label} i={i + 1} style={{ flexDirection: 'row', gap: space.md }}>
+        <Part key={step.label} i={i + 1} spoken={`Step ${i + 1} of ${n}: ${step.label}. ${step.note}`} style={{ flexDirection: 'row', gap: space.md }}>
           <View style={{ alignItems: 'center', width: 32 }} accessible={false} importantForAccessibility="no-hide-descendants">
             {/* The stop arrives with its step (fade + rise; no spring: nothing springs as a scene mounts). */}
             <View style={{ width: 32, height: 32, borderRadius: radius.pill, backgroundColor: c.soft, alignItems: 'center', justifyContent: 'center' }}>
@@ -276,6 +306,7 @@ function LayersScene({ scene }: { scene: Extract<Scene, { type: 'stack' }> }) {
             key={layer.label}
             i={i + 1}
             drop
+            spoken={`Layer ${i + 1} of ${n}: ${layer.label}. ${layer.note}`}
             style={{
               flexDirection: 'row',
               gap: 14,

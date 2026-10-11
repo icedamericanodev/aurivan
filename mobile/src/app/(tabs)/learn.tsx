@@ -21,8 +21,11 @@
  *   trail; the part already walked is green.
  * - L3: one line under the cover says why this lesson.
  * - Motion: a group opens with its rows arriving 30 ms apart and the
- *   chevron turning (no height animation); a lesson finished since Learn
- *   was last on view draws its ✓ as you come back, with one light haptic.
+ *   chevron turning (no height animation); a lesson finished in the player
+ *   since Learn was last on view draws its ✓ as you come back. Until then
+ *   its ✓ waits empty (never drawn, emptied, then drawn again). No haptic
+ *   here: Lesson complete already gave the moment's one. A lesson that
+ *   arrived any other way (a restore, a certification switch) is just done.
  *
  * Study notes: one row under the cover opens the notes (every exam topic
  * in plain English). It hides itself while the app has no notes.
@@ -40,7 +43,7 @@ import type { Lesson } from '../../content/lessons/types';
 import { hasNotes, noteSubtopics } from '../../content/notes';
 import type { DomainInfo } from '../../content/types';
 import { readCount } from '../../engine/notesSearch';
-import { haptic } from '../../lib/haptics';
+import { clearFinishedLessons, wasJustFinished } from '../../lib/lessonNews';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { motion, radius, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -60,31 +63,31 @@ export function upNextReason(lesson: Lesson, domain: DomainInfo, opts: { askedDo
 export default function Learn() {
   const { c, isDark } = useTheme();
   const { cert, progress, readiness } = useActiveCert();
-  // Lessons finished since Learn was last on view: their ✓ draws as the learner comes back.
+  // Lessons finished in the player since Learn was last on view: their ✓ draws as the learner comes back.
   // Decided while rendering, so the first frame back already starts the draw (no flash of the end state).
   const focused = useScreenFocus();
-  const [look, setLook] = useState<{ focused: boolean; seen: string[]; fresh: string[] }>(() => ({ focused, seen: progress.lessonsDone, fresh: [] }));
+  const [look, setLook] = useState<{ focused: boolean; seen: readonly string[]; fresh: readonly string[] }>(() => ({ focused, seen: progress.lessonsDone, fresh: [] }));
+  const news = progress.lessonsDone.filter((id) => !look.seen.includes(id) && wasJustFinished(id));
   if (look.focused !== focused) {
-    setLook(
-      focused
-        ? { focused, seen: progress.lessonsDone, fresh: progress.lessonsDone.filter((id) => !look.seen.includes(id)) }
-        : { ...look, focused, fresh: [] },
-    );
+    setLook(focused ? { focused, seen: progress.lessonsDone, fresh: news } : { ...look, focused, fresh: [] });
   }
-  const freshKey = look.fresh.join(',');
+  // Out of view, those rows wait with an empty ✓ (the back transition shows them before focus returns).
+  const waiting = focused ? [] : news;
+  // Once Learn has looked (on mount, and each time it is back in view), that news is shown.
   useEffect(() => {
-    // One light haptic for the lesson-done moment (T1), never a celebration of its own.
-    if (freshKey) haptic.light();
-  }, [freshKey]);
+    if (focused) clearFinishedLessons();
+  }, [focused]);
   const { domain } = useLocalSearchParams<{ domain?: string }>();
   // Learn is a tab, so the param would stick; clear it when the learner leaves.
   useFocusEffect(useCallback(() => () => router.setParams({ domain: undefined }), []));
 
   const lessons = lessonsFor(cert.id);
   const done = (id: string) => progress.lessonsDone.includes(id);
-  // Only trust ?domain= if it names a real domain of this exam; anything else
-  // (a typo, an old link, another cert's id) falls back to the focus domain.
-  const knownDomain = cert.domains.some((d) => d.id === domain) ? domain : undefined;
+  // Only trust ?domain= if it names a real domain of this exam with a lesson
+  // still to do; anything else (a typo, an old link, another cert's id, a
+  // finished domain) falls back to the focus domain, so the reason line is true.
+  const knownDomain =
+    cert.domains.some((d) => d.id === domain) && lessons.some((l) => l.domainId === domain && !done(l.id)) ? domain : undefined;
   const upNext = nextLesson(cert.id, progress.lessonsDone, knownDomain ?? readiness.focusDomainId ?? undefined);
   const upDomain = upNext ? cert.domains.find((d) => d.id === upNext.domainId) : undefined;
   const doneCount = lessons.filter((l) => done(l.id)).length;
@@ -205,6 +208,7 @@ export default function Learn() {
                     done={done(l.id)}
                     next={upNext?.id === l.id}
                     fresh={look.fresh.includes(l.id)}
+                    hold={waiting.includes(l.id)}
                     // The trail: the step into this lesson is walked when the one before is done.
                     walkedIn={i > 0 && done(items[i - 1].id)}
                     walkedOut={done(l.id) && i < items.length - 1}
@@ -228,7 +232,7 @@ export default function Learn() {
  * thin path that joins this lesson to the ones before and after (accent
  * where walked, `track` ahead), so the domain reads as a trail, not a list.
  * Done: an accent ✓ circle and the title in ink2 (its ✓ draws once when it
- * was finished since Learn was last on view). Up next: a soft highlight and
+ * was finished in the player since Learn was last on view). Up next: a soft highlight and
  * the caption "Up next". Others: an outline circle with ▶. One button,
  * spoken "IS Audit lesson 2: …, done | up next | 5 min" (unchanged).
  */
@@ -239,6 +243,7 @@ function LessonRow({
   done,
   next,
   fresh,
+  hold,
   walkedIn,
   walkedOut,
   first,
@@ -250,13 +255,16 @@ function LessonRow({
   done: boolean;
   next: boolean;
   fresh: boolean;
+  /** Finished out of view: the ✓ waits empty until Learn is back (then `fresh` draws it). */
+  hold: boolean;
   walkedIn: boolean;
   walkedOut: boolean;
   first: boolean;
   last: boolean;
 }) {
   const { c } = useTheme();
-  const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: radius.md });
+  // The pressed tint: `soft` on paper; the Up next row is already `soft`, so it darkens to `track`.
+  const press = usePressScale({ scale: 1, tint: next ? c.track : c.soft, tintRadius: radius.md });
   const state = done ? 'done' : next ? 'up next' : `${lesson.minutes} min`;
   const segment = (on: boolean, hidden: boolean) => (
     <View style={{ flex: 1, width: 1.5, backgroundColor: hidden ? 'transparent' : on ? c.accent : c.track, opacity: on ? 0.7 : 1 }} />
@@ -304,7 +312,11 @@ function LessonRow({
             borderColor: c.control,
           }}
         >
-          {done ? <CheckDraw play={fresh} color={c.bg} size={16} delay={fresh ? motion.dur.select : 0} /> : <Play size={12} color={c.ink2} strokeWidth={ICON_STROKE} />}
+          {done ? (
+            <CheckDraw play={fresh} hold={hold} color={c.bg} size={16} delay={fresh ? motion.dur.select : 0} />
+          ) : (
+            <Play size={12} color={c.ink2} strokeWidth={ICON_STROKE} />
+          )}
         </View>
       </View>
     </AnimatedPressable>

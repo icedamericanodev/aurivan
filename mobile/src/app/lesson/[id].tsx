@@ -8,9 +8,11 @@
  * - Scene → scene is a page turn (shared axis X): Next drifts left, Back
  *   drifts right; each scene's parts then build in reading order. Each
  *   scene is a fresh subtree, so a check's pick never shows on another scene.
- * - The footer and the "1/7" follow the PAGE on screen, not the tap: for
- *   the 120 ms the old scene is leaving they still describe it, and the
- *   buttons ignore taps, so a tap can't act on a scene not yet seen.
+ * - The footer and the "1/7" follow the PAGE on screen, not the tap: until
+ *   the new page is placed (PageTurn's swap, before it is painted) they still
+ *   describe the old one, and the buttons ignore taps, so a tap can't act on
+ *   a scene not yet seen. Finishing keeps the same "Finish lesson" button
+ *   (and screen-reader focus on it) until Lesson complete is placed.
  * - After a turn screen readers hear "Scene 3 of 7" (said once, after a
  *   short pause), and Back onto the first scene (where Back is hidden)
  *   hands focus to Next.
@@ -18,7 +20,8 @@
  *   the new one filling in: ONE calm moment (useCelebration: skippable, the
  *   session budget, shortened on repeats, static under Reduce Motion),
  *   never on a lesson already done before. Then "Practice this topic" and
- *   "Next lesson".
+ *   "Next lesson". Its one light haptic goes with that moment (Learn then
+ *   draws the ✓ without a second buzz).
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -26,8 +29,8 @@ import { ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LessonBranch, type BotanyKind } from '../../components/glyphs';
 import { ArrowRight, ICON_STROKE } from '../../components/icons';
-import { SceneView } from '../../components/lesson';
-import { Celebrate, PageTurn, useCelebration } from '../../components/motion';
+import { lastPart, partDelay, SceneView } from '../../components/lesson';
+import { Celebrate, FadeIn, PageTurn, useCelebration } from '../../components/motion';
 import { useReportFlow } from '../../components/support';
 import { Button, Gap, ICON_SIZE, PushedHeader, Row, SegmentBar, T } from '../../components/ui';
 import { domainColor, getCertification } from '../../content/certifications';
@@ -42,6 +45,7 @@ import type { DomainInfo, Letter } from '../../content/types';
 import { moveFocus, sayLater } from '../../lib/a11y';
 import { logLesson } from '../../lib/activity';
 import { haptic } from '../../lib/haptics';
+import { noteLessonFinished } from '../../lib/lessonNews';
 import { guardedStart, startFromIds, startPractice } from '../../lib/sessions';
 import { useProgress } from '../../store/progress';
 import { useSettings } from '../../store/settings';
@@ -50,6 +54,8 @@ import { useTheme } from '../../theme/useTheme';
 
 /** The page after the last scene. */
 const DONE = 'done';
+/** One empty list for every render (a fresh `[]` per store snapshot would re-render forever). */
+const NONE: readonly string[] = [];
 
 /**
  * "Practice this topic" after a lesson: the questions the study notes list
@@ -77,8 +83,8 @@ export default function LessonPlayer() {
   const [checked, setChecked] = useState(false);
   const nextRef = useRef<View>(null);
   const scrollRef = useRef<ScrollView>(null);
-  // The page still on screen while a turn is leaving (the footer follows it, not the tap).
-  const [leaving, setLeaving] = useState<string | number | null>(null);
+  // The page on screen: it changes at PageTurn's swap (before paint), so the footer follows the page, not the tap.
+  const [onPage, setOnPage] = useState<string | number>(0);
   // The DISPLAY letter picked on this scene's check (for Report a problem), reset with `checked`.
   const [picked, setPicked] = useState<Letter | null>(null);
   const shuffleOn = useSettings((s) => s.shuffleOptions);
@@ -100,9 +106,10 @@ export default function LessonPlayer() {
   };
   const total = lesson?.scenes.length ?? 0;
   const pageId: string | number = finished ? DONE : index;
-  // At the swap (before the new page is painted): back to the top.
-  const onSwap = useCallback(() => {
+  // At the swap (before the new page is painted): back to the top, and the controls follow the page.
+  const onSwap = useCallback((to: string | number) => {
     scrollRef.current?.scrollTo({ y: 0, animated: false });
+    setOnPage(to);
   }, []);
   // After a turn, say where we are (once, after a short pause so the turn doesn't cut it off).
   // Lesson complete says its own line.
@@ -149,12 +156,12 @@ export default function LessonPlayer() {
   const cert = getCertification(lesson.certId);
   const domain = cert?.domains.find((d) => d.id === lesson.domainId);
   const toneIndex = domain?.tone ?? 0;
-  // While a turn is leaving, the controls describe the page still on screen.
-  const shownIndex = typeof leaving === 'number' ? leaving : index;
-  const showingDone = leaving === null ? Boolean(finished) : leaving === DONE;
+  // Until the new page is placed, the controls describe the page still on screen.
+  const turning = onPage !== pageId;
+  const showingDone = onPage === DONE;
+  const shownIndex = typeof onPage === 'number' ? onPage : index;
   const scene = lesson.scenes[shownIndex];
   const isLast = shownIndex === total - 1;
-  const turning = leaving !== null;
   const canFinish = scene.type !== 'check' || checked || turning;
 
   const next = () => {
@@ -164,8 +171,11 @@ export default function LessonPlayer() {
       return;
     }
     // Finishing: a lesson done before is not news (no moment for a repeat).
-    const before = useProgress.getState().byCert[lesson.certId]?.lessonsDone ?? [];
+    const before = useProgress.getState().byCert[lesson.certId]?.lessonsDone ?? NONE;
     const fresh = !before.includes(lesson.id);
+    // Learn draws the ✓ only for a lesson finished here, this app session (never one restored or synced).
+    // Noted first: the store change below re-renders Learn.
+    if (fresh) noteLessonFinished(lesson.id);
     completeLesson(lesson.certId, lesson.id);
     logLesson(lesson.certId, lesson.id);
     setFinished({ fresh });
@@ -186,7 +196,10 @@ export default function LessonPlayer() {
           center={<SegmentBar total={total} done={showingDone ? total : shownIndex} current={showingDone ? total : shownIndex} />}
           right={
             showingDone ? undefined : (
-              <T v="meta" num accessibilityLabel={`Scene ${shownIndex + 1} of ${total}`}>{`${shownIndex + 1}/${total}`}</T>
+              // Capped at ×1.3: at 200% "10/11" would not fit beside the progress bar (the slot grows from 44pt).
+              <T v="meta" num maxFontSizeMultiplier={1.3} accessibilityLabel={`Scene ${shownIndex + 1} of ${total}`}>
+                {`${shownIndex + 1}/${total}`}
+              </T>
             )
           }
         />
@@ -197,7 +210,6 @@ export default function LessonPlayer() {
           id={pageId}
           direction={pageId === DONE ? 1 : undefined}
           onSwap={onSwap}
-          onTurning={setLeaving}
           style={{ flexGrow: 1 }}
           pageStyle={{ flexGrow: 1 }}
         >
@@ -217,12 +229,15 @@ export default function LessonPlayer() {
                 tone={domainColor(toneIndex, true)}
               />
               {/* A quiet "Report a problem" at the end of each step. On a check it waits
-                  until the check is answered, so it never hints at the answer. */}
+                  until the check is answered, so it never hints at the answer. It arrives
+                  with the scene's last part (it never shows before what it reports on). */}
               {(lesson.scenes[index].type !== 'check' || checked) && (
-                <View style={{ marginTop: space.xl, alignItems: 'flex-start' }}>
-                  {report.link}
-                  <View style={{ alignSelf: 'stretch' }}>{report.block}</View>
-                </View>
+                <FadeIn build rise={false} delay={lesson.scenes[index].type === 'check' ? 0 : partDelay(lastPart(lesson.scenes[index]))}>
+                  <View style={{ marginTop: space.xl, alignItems: 'flex-start' }}>
+                    {report.link}
+                    <View style={{ alignSelf: 'stretch' }}>{report.block}</View>
+                  </View>
+                </FadeIn>
               )}
               {index === total - 1 && (
                 <>
@@ -263,7 +278,7 @@ export default function LessonPlayer() {
 function LessonComplete({ lesson, domain, fresh }: { lesson: Lesson; domain: DomainInfo | undefined; fresh: boolean }) {
   const { c } = useTheme();
   const { width } = useWindowDimensions();
-  const done = useProgress((s) => s.byCert[lesson.certId]?.lessonsDone ?? []);
+  const done = useProgress((s) => s.byCert[lesson.certId]?.lessonsDone ?? NONE);
   const inDomain = lessonsFor(lesson.certId, lesson.domainId);
   const doneFlags = inDomain.map((l) => done.includes(l.id));
   const count = doneFlags.filter(Boolean).length;
@@ -285,12 +300,10 @@ function LessonComplete({ lesson, domain, fresh }: { lesson: Lesson; domain: Dom
   }, []);
   // A first finish is the moment (once per lesson, within the session's budget); a repeat is just shown.
   const celebration = useCelebration('lesson-done', fresh, undefined, lesson.id);
-  // One light haptic with the moment (T1); kept under Reduce Motion.
-  const [hapticRun, setHapticRun] = useState(0);
-  if (celebration.run > 0 && hapticRun !== celebration.run) {
-    setHapticRun(celebration.run);
-    haptic.light();
-  }
+  // One light haptic with the moment (T1), after it commits (never during a render React may replay); kept under Reduce Motion.
+  useEffect(() => {
+    if (celebration.run > 0) haptic.light();
+  }, [celebration.run]);
   const branchW = Math.min(width - space.gutter * 2, 340);
   return (
     <Celebrate celebration={celebration} style={{ flexGrow: 1 }}>
@@ -323,7 +336,7 @@ function LessonComplete({ lesson, domain, fresh }: { lesson: Lesson; domain: Dom
 
 /** Lesson complete's footer: practise what was just learnt (primary), or go on to the next lesson. */
 function CompleteActions({ lesson, domain }: { lesson: Lesson; domain: DomainInfo | undefined }) {
-  const done = useProgress((s) => s.byCert[lesson.certId]?.lessonsDone ?? []);
+  const done = useProgress((s) => s.byCert[lesson.certId]?.lessonsDone ?? NONE);
   const after = nextLesson(lesson.certId, done, lesson.domainId);
   // Drawn once per screen (the order is shuffled), not on every render.
   const ids = useMemo(() => lessonPracticeIds(lesson), [lesson]);
