@@ -12,6 +12,7 @@ import { dueIds } from '../engine/srs';
 import { dayKey, visibleStreak } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
+import { questionExists } from './outline';
 
 /**
  * Calendar days from today to the exam date (local days, DST-safe; the same
@@ -44,9 +45,10 @@ export function useActiveCert() {
   // example after answering), the recount includes reviews that fell due
   // since the last foreground, without waiting for the next AppState change.
   const dueCount = useMemo(
+    // Only questions the bank still has: a review session drops retired ones, so they are never counted.
     // eslint-disable-next-line react-hooks/purity -- see the comment above
-    () => dueIds(progress.review, Math.max(now, Date.now())).length,
-    [progress.review, now],
+    () => dueIds(progress.review, Math.max(now, Date.now()), questionExists(cert.id)).length,
+    [progress.review, now, cert.id],
   );
   // Same reason: one clock read per render for the streak and today's count.
   // eslint-disable-next-line react-hooks/purity -- see the comment above

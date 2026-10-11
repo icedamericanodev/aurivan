@@ -92,11 +92,17 @@ export function nextReview(
  * When spaced review next has questions, for the "all caught up" screen
  * (mobile 1.9): the first moment something falls due after `now`, and how
  * many of the learner's own questions fall due by the end of that local
- * day. Null when nothing is scheduled.
+ * day. Null when nothing is scheduled. `exists` drops ids the bank no
+ * longer has (a review session skips those too, so they are never promised).
  */
-export function upcomingReview(review: Record<string, ReviewEntry>, now: number): { at: number; count: number } | null {
-  const future = Object.values(review)
-    .map((r) => r.dueAt)
+export function upcomingReview(
+  review: Record<string, ReviewEntry>,
+  now: number,
+  exists: (id: string) => boolean = () => true,
+): { at: number; count: number } | null {
+  const future = Object.entries(review)
+    .filter(([id]) => exists(id))
+    .map(([, r]) => r.dueAt)
     .filter((t) => t > now);
   if (future.length === 0) return null;
   const at = Math.min(...future);
@@ -119,9 +125,9 @@ export function upcomingReviewLine(next: { at: number; count: number }, now: num
   return `Next review: ${when} · ${next.count} ${next.count === 1 ? 'question' : 'questions'}`;
 }
 
-/** Question ids due now — most overdue first, then lowest box. */
-export function dueIds(review: Record<string, ReviewEntry>, now: number): string[] {
+/** Question ids due now — most overdue first, then lowest box. `exists`: as in upcomingReview. */
+export function dueIds(review: Record<string, ReviewEntry>, now: number, exists: (id: string) => boolean = () => true): string[] {
   return Object.keys(review)
-    .filter((id) => review[id].dueAt <= now)
+    .filter((id) => review[id].dueAt <= now && exists(id))
     .sort((a, b) => review[a].dueAt - review[b].dueAt || review[a].box - review[b].box);
 }

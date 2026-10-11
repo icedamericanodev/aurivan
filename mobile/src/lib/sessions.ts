@@ -196,7 +196,8 @@ export function reviewSubtitle(dueCount: number): string {
 /** Due reviews, most overdue first: at most one session's worth (REVIEW_SESSION_CAP, 20). */
 export function startReview(certId: string, limit = REVIEW_SESSION_CAP) {
   const review = selectCert(useProgress.getState(), certId).review;
-  const ids = dueIds(review, Date.now()).slice(0, limit);
+  // Retired questions are skipped before the cap, so a review is always a full one.
+  const ids = dueIds(review, Date.now(), questionExists(certId)).slice(0, limit);
   return newSession('review', certId, 'Review', ids);
 }
 

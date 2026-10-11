@@ -13,6 +13,7 @@ import { dayKey } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
 import { haptic } from './haptics';
+import { questionExists } from './outline';
 import { daysUntil } from './useActiveCert';
 import { buildJourney } from './useJourney';
 
@@ -46,7 +47,7 @@ function buildTodayPlan(certId: string, keepToday: boolean) {
     cert,
     progress,
     readiness,
-    dueCount: dueIds(progress.review, now).length,
+    dueCount: dueIds(progress.review, now, questionExists(certId)).length,
     daysLeft: daysUntil(settings.examDates[certId]),
     dailyGoal: settings.dailyGoal,
     streak: state.streak,

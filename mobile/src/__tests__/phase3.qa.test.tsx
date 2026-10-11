@@ -837,7 +837,7 @@ describe('J7 empty states', () => {
   // BUG (Minor): upcomingReview counts every review entry, including questions
   // that a content update removed. newSession drops those ids, so "Next
   // review: tomorrow · 1 question" leads tomorrow to… "All caught up" again.
-  it.failing('caught up: a retired question in the queue is not counted in the "next review" line', () => {
+  it('caught up: a retired question in the queue is not counted in the "next review" line', () => {
     const now = Date.now();
     act(() => {
       const cp = useProgress.getState().byCert.cisa!;
