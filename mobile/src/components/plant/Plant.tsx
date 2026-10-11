@@ -78,14 +78,19 @@ export function renderNode(n: PNode, key: string, wrap?: PlantProps['wrapGroup']
   }
 }
 
+/** The organs as the drawing reads them (rounded to 1/40), so tiny mastery moves never redraw. */
+const organKeyOf = (organs: readonly number[] | undefined) => (organs ? organs.map((v) => Math.round(v * 40) / 40).join(',') : '');
+
 function PlantInner({ species, stage, organs, quietLook, size, theme, resting, mood, lod, fit, accessibilityLabel, style, wrapGroup, testID }: PlantProps) {
   const level = lod ?? lodFor(size);
   // Rounded organs keep the memo steady while mastery moves by tiny amounts.
-  const organKey = organs ? organs.map((v) => Math.round(v * 40) / 40).join(',') : '';
+  const organKey = organKeyOf(organs);
   const built = useMemo(
     () => buildPlant({ species, stage, organs: organKey ? organKey.split(',').map(Number) : undefined, quietLook, lod: level, theme, resting, mood }),
     [species, stage, organKey, quietLook, level, theme, resting, mood],
   );
+  // The element tree is kept too, so a parent's re-render never rebuilds ~150 SVG elements.
+  const tree = useMemo(() => renderNode(built.root, 'p', wrapGroup), [built, wrapGroup]);
   const tight = fit ?? size <= 96;
   const labelled = !!accessibilityLabel;
   return (
@@ -100,10 +105,20 @@ function PlantInner({ species, stage, organs, quietLook, size, theme, resting, m
       testID={testID}
     >
       <Svg width={size} height={size} viewBox={tight ? built.frame : '0 0 200 200'}>
-        {renderNode(built.root, 'p', wrapGroup)}
+        {tree}
       </Svg>
     </View>
   );
 }
 
-export const Plant = memo(PlantInner);
+/** Same props, same drawing: the organs compare by their rounded values, not the array (code review M6c). */
+function sameProps(a: PlantProps, b: PlantProps): boolean {
+  for (const k of Object.keys({ ...a, ...b }) as (keyof PlantProps)[]) {
+    if (k === 'organs') {
+      if (organKeyOf(a.organs) !== organKeyOf(b.organs)) return false;
+    } else if (a[k] !== b[k]) return false;
+  }
+  return true;
+}
+
+export const Plant = memo(PlantInner, sameProps);

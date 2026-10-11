@@ -92,6 +92,11 @@ interface CanopySpec {
   bulge: number;
   dy: number;
   flat?: number;
+  /**
+   * 0..1: from Crown on, a lower, wider dome with a flat underside (mango),
+   * so a fruit tree never reads as an oak (PR #43 UX review).
+   */
+  dome?: number;
 }
 interface TreeArt {
   kind: 'tree';
@@ -142,7 +147,7 @@ export const SPECIES_ART: Record<PlantSpecies, SpeciesArt> = {
   },
   pine: { kind: 'tree', palette: L.evergreen, bark: B.pine, leaf: 'pine', canopy: { custom: 'tiers' }, flourish: 'cone' },
   'coconut-palm': { kind: 'tree', palette: L.spring, bark: B.coconut, leaf: 'olive', canopy: { custom: 'palm' }, flourish: 'coconut', fruitFrom: 5, seedColor: A0.gift.coconutRipe },
-  mango: { kind: 'tree', palette: L.evergreen, bark: B.mango, leaf: 'olive', canopy: { sx: 1.22, sy: 0.84, n: 11, jit: 0.3, bulge: 0.6, dy: 6, flat: 0.35 }, flourish: 'mango', fruitFrom: 5 },
+  mango: { kind: 'tree', palette: L.evergreen, bark: B.mango, leaf: 'olive', canopy: { sx: 1.22, sy: 0.84, n: 11, jit: 0.3, bulge: 0.6, dy: 6, flat: 0.35, dome: 1 }, flourish: 'mango', fruitFrom: 5 },
   bonsai: { kind: 'tree', palette: L.grove, bark: B.bonsai, leaf: 'pine', pot: 'bonsai', canopy: { custom: 'bonsai' }, flourish: 'moss', driftGlyph: 'blossom', driftFill: A0.white },
   sunflower: { kind: 'plant', build: 'sunflower', palette: L.gold, foliage: L.spring, seedColor: A0.seed.sunflower, seedStripe: A0.seed.sunflowerStripe, seedPatch: true, leaf: 'banyan', driftGlyph: 'lens', driftFill: A0.sunflower.drift },
   lotus: { kind: 'plant', build: 'lotus', palette: L.blossom, foliage: L.grove, pot: 'pond', seedColor: A0.seed.lotus, leaf: 'banyan', driftGlyph: 'lens', driftFill: A0.lotus.drift },
@@ -368,10 +373,13 @@ interface CanopyResult {
 
 function cloudCanopy(c: CanopySpec, st: number, pal: PlantLeafPalette, seed: number, lod: Lod, sc: number[]): CanopyResult {
   const g = GEO[st].canopy!;
+  const dome = st >= 5 ? (c.dome ?? 0) : 0;
   const cx = g.cx;
-  const cy = g.cy + (c.dy || 0) * (st / 5);
-  const rx = Math.min(g.rx * c.sx, g.rx < 70 ? g.rx * c.sx : 90);
-  const ry = g.ry * c.sy;
+  // A dome sits lower on the trunk, wider and shorter.
+  const cy = g.cy + (c.dy || 0) * (st / 5) + dome * 8;
+  const wide = g.rx * c.sx * (1 + 0.08 * dome);
+  const rx = Math.min(wide, g.rx < 70 ? wide : 90 + 2 * dome);
+  const ry = g.ry * c.sy * (1 - 0.06 * dome);
   const flat = c.flat || 0;
   const layers: Maybe[] = [];
   const organs: Pt[] = [];
@@ -382,14 +390,20 @@ function cloudCanopy(c: CanopySpec, st: number, pal: PlantLeafPalette, seed: num
     if (lod !== 'icon') layers.push(P(scallop({ cx: cx - rx * 0.3, cy: cy - ry * 0.4, rx: rx * 0.34, ry: ry * 0.3, n: 6, seed: seed + 11, jit: 0.4, bulge: 0.6 }), pal.light));
   } else {
     // A core plus five domain lobes on an arc: D1 left-low → D3 top → D5 right-low.
-    const core = { cx, cy: cy + ry * 0.14, rx: rx * 0.62, ry: ry * 0.6 };
-    const cf = Math.max(flat, 0.3);
+    const core = { cx, cy: cy + ry * 0.14, rx: rx * (0.62 + 0.06 * dome), ry: ry * 0.6 };
+    const cf = Math.max(flat, 0.3 + 0.3 * dome);
     layers.push(P(scallop({ ...core, n: 8, seed, jit: 0.3, bulge: 0.6, flat: cf }), pal.deep));
     layers.push(P(scallop({ cx: core.cx - rx * 0.03, cy: core.cy - ry * 0.06, rx: core.rx * 0.9, ry: core.ry * 0.85, n: 8, seed, jit: 0.3, bulge: 0.6, flat: cf }), pal.mid));
     const lobes = [0, 1, 2, 3, 4].map((i) => {
-      const th = ((200 + i * 35) * Math.PI) / 180;
+      // A dome spreads its lobes wider and flatter: D1 left → D3 top → D5 right.
+      const th = ((200 - 5 * dome + i * (35 + 2.5 * dome)) * Math.PI) / 180;
       const s = sc[i];
-      return { cx: cx + rx * 0.5 * Math.cos(th), cy: cy + ry * 0.46 * Math.sin(th), rx: rx * 0.5 * s, ry: ry * 0.56 * s };
+      return {
+        cx: cx + rx * (0.5 + 0.06 * dome) * Math.cos(th),
+        cy: cy + ry * (0.46 - 0.06 * dome) * Math.sin(th),
+        rx: rx * 0.5 * s * (1 + 0.06 * dome),
+        ry: ry * 0.56 * s,
+      };
     });
     const n = Math.max(6, Math.round(c.n * 0.62));
     for (const k of [0, 4, 1, 3, 2]) {
@@ -410,7 +424,11 @@ function cloudCanopy(c: CanopySpec, st: number, pal: PlantLeafPalette, seed: num
 function tiersCanopy(bark: string, st: number, pal: PlantLeafPalette, seed: number, lod: Lod, sc: number[], lean: number): CanopyResult {
   // Pine: cloud-pruned pads on short limbs, tapering upward. D1 = lowest pad, D5 = top.
   const g = GEO[st].canopy!;
-  const count = st >= 4 ? 5 : 2;
+  // Shoot: three soft pads close together (a young pine, never a bare spike).
+  // From Bough on: five pads, a little larger against a slimmer trunk (PR #43 UX review).
+  const young = st === 3;
+  const count = st >= 4 ? 5 : 3;
+  const padK = st >= 4 ? 1.12 : 1.1;
   const top = g.cy - g.ry * 0.86;
   const bottom = g.cy + g.ry * 0.66;
   const pads: { x: number; y: number; rx: number; ry: number; side: number; dom: number }[] = [];
@@ -420,9 +438,9 @@ function tiersCanopy(bark: string, st: number, pal: PlantLeafPalette, seed: numb
     const s = st >= 4 ? sc[dom] : 1;
     const y = lerp(top + g.ry * 0.16, bottom, t);
     const side = i === 0 ? 0 : i % 2 ? -1 : 1;
-    const w = lerp(g.rx * 0.4, g.rx * 0.95, t) * (i === 0 ? 1 : 0.8) * s;
-    const x = 100 + side * g.rx * 0.3 * (0.4 + t * 0.6) + (i === 0 ? lean : 0);
-    pads.push({ x, y, rx: w, ry: Math.max(9, g.ry * 0.28 * s * (i === 0 ? 1.2 : 1)), side, dom });
+    const w = lerp(g.rx * (young ? 0.62 : 0.4), g.rx * 0.95, t) * (i === 0 ? 1 : 0.8) * s * padK;
+    const x = 100 + side * g.rx * (young ? 0.18 : 0.3) * (0.4 + t * 0.6) + (i === 0 ? lean : 0);
+    pads.push({ x, y, rx: w, ry: Math.max(9, g.ry * (young ? 0.34 : 0.28) * s * (i === 0 ? 1.2 : 1) * padK), side, dom });
   }
   const limbs: PNode[] = [];
   const layers: PNode[] = [];
@@ -718,11 +736,31 @@ function effects(mood: Mood, A: Anchors, lod: Lod, theme: 'light' | 'dark'): GNo
 }
 
 // ── the Elder gift (flowers or fruit) ───────────────────────────────────
-function flourish(sp: TreeArt, st: number, A: Anchors, lod: Lod, seed: number, can: CanopyResult, palmCrown: Pt): GNode {
+/**
+ * The gift marks are drawn larger at the small level: Today shows the plant
+ * at 104pt with small detail, and an Elder must read as "in season" there
+ * (PR #43 UX review: about 1.5× bigger and more of them).
+ */
+const GIFT_SCALE: Record<Lod, number> = { icon: 1.5, small: 1.75, full: 1.5 };
+
+/** A hanging mango: a teardrop with a blush, on a short stalk (scaled about its stalk top). */
+function mangoFruit(x: number, y: number, s: number, ripe: boolean, rot: number, lod: Lod): GNode {
+  const g = A0.gift;
+  const kids: Maybe[] = [
+    S('M0 -9.5V-5', g.stalk, 1.1),
+    P('M0.6 -6.2C4.6 -6.4 6.2 -1.2 5.2 3C4.2 7 -0.6 8.6 -3.6 6.2C-6.2 4 -5.4 -6 0.6 -6.2Z', ripe ? g.mangoRipe : g.mangoGreen),
+  ];
+  if (lod !== 'icon') kids.push(E(-1.8, -1.2, 1.9, 2.9, ripe ? g.mangoBlush : g.mangoGreenLit, { opacity: 0.7 }), E(2.2, -2.4, 0.9, 1.4, A0.white, { opacity: 0.35 }));
+  if (ripe && lod === 'full') kids.push(glyph('olive', 0.4, -9.2, 0.55, 58, L.evergreen.mid));
+  return G(null, kids, { transform: `translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(${f(s)})` });
+}
+
+function flourish(sp: TreeArt, st: number, A: Anchors, lod: Lod, seed: number, can: CanopyResult, palmCrown: Pt, trunkW: number): GNode {
   const r = rng(seed + 99);
   const { cx, cy, rx, ry } = A.canopyBox!;
   const g = A0.gift;
   const kids: Maybe[] = [];
+  const gs = GIFT_SCALE[lod];
   const pick = (): [number, number] => {
     // A random point in the upper part of the canopy ellipse.
     for (let guard = 0; guard < 200; guard++) {
@@ -735,21 +773,21 @@ function flourish(sp: TreeArt, st: number, A: Anchors, lod: Lod, seed: number, c
     return [cx, cy];
   };
   const n = lod === 'full' ? 9 : 5;
-  const rot = (x: number, y: number, deg: number) => `translate(${f(x)} ${f(y)}) rotate(${f(deg)})`;
+  const rot = (x: number, y: number, deg: number, sc = 1) => `translate(${f(x)} ${f(y)}) rotate(${f(deg)})${sc !== 1 ? ` scale(${f(sc)})` : ''}`;
   if (sp.flourish === 'blossom')
     for (let i = 0; i < n + 3; i++) {
       const [x, y] = pick();
       kids.push(glyph('blossom', x, y, lod === 'full' ? 1.05 : 1.5, r() * 70, g.cherryBloom, { core: g.cherryCore }));
     }
   if (sp.flourish === 'acorn')
-    for (let i = 0; i < n - 3; i++) {
+    for (let i = 0; i < (lod === 'full' ? 10 : 7); i++) {
       const [x, y] = pick();
-      kids.push(G(null, [E(0, 2.2, 3, 3.8, g.acorn), P('M-3.6 0.4Q0 -4 3.6 0.4Z', sp.bark), S('M0 -2.6v-1.6', sp.bark, 1)], { transform: rot(x, y, (r() - 0.5) * 40) }));
+      kids.push(G(null, [E(0, 2.2, 3, 3.8, g.acorn), P('M-3.6 0.4Q0 -4 3.6 0.4Z', sp.bark), S('M0 -2.6v-1.6', sp.bark, 1)], { transform: rot(x, y, (r() - 0.5) * 40, gs) }));
     }
   if (sp.flourish === 'samara')
-    for (let i = 0; i < n - 2; i++) {
+    for (let i = 0; i < (lod === 'full' ? 10 : 7); i++) {
       const [x, y] = pick();
-      kids.push(G(null, [P('M0 0C-1 -3 -6 -6 -8 -4C-6 -2 -3 -1 0 0Z', g.samara), P('M0 0C1 -3 6 -6 8 -4C6 -2 3 -1 0 0Z', g.samara), C(0, 0, 1.4, L.ember.deep)], { transform: rot(x, y, (r() - 0.5) * 50) }));
+      kids.push(G(null, [P('M0 0C-1 -3 -6 -6 -8 -4C-6 -2 -3 -1 0 0Z', g.samara), P('M0 0C1 -3 6 -6 8 -4C6 -2 3 -1 0 0Z', g.samara), C(0, 0, 1.4, L.ember.deep)], { transform: rot(x, y, (r() - 0.5) * 50, gs * 0.9) }));
     }
   if (sp.flourish === 'narra')
     for (let i = 0; i < n + 4; i++) {
@@ -757,34 +795,49 @@ function flourish(sp: TreeArt, st: number, A: Anchors, lod: Lod, seed: number, c
       kids.push(glyph('blossom', x, y, lod === 'full' ? 0.75 : 1.2, r() * 70, g.narra, { core: g.narraCore }));
     }
   if (sp.flourish === 'mango') {
+    // Mangoes HANG below the low dome on their stalks (UX review: a mango must
+    // never read as an oak): green at Crown, ripe at Elder, clear of the trunk.
     const ripe = st === 6;
-    const m = ripe ? 5 : 2;
-    for (let i = 0; i < m; i++) {
-      const x = cx + rx * (-0.6 + (1.2 * (i + 0.5)) / m) + (r() - 0.5) * 6;
-      const y = cy + ry * (0.5 + r() * 0.2);
-      kids.push(
-        S(`M${f(x)} ${f(y - 8)}v5`, g.stalk, 1),
-        G(null, [E(0, 0, 4.2, 5.6, ripe ? g.mangoRipe : g.mangoGreen), E(-1.6, -1.4, 1.8, 2.6, ripe ? g.mangoBlush : g.mangoGreenLit, { opacity: 0.7 })], { transform: rot(x, y, -15 + r() * 30) }),
-      );
+    const m = ripe ? 6 : 4;
+    const hang = cy + ry * 0.36;
+    const span = rx * 0.8;
+    // Evenly spaced along the underside, the ones in front of the trunk left out, then the innermost dropped.
+    const xs = Array.from({ length: m + 2 }, (_, i) => cx - span + (2 * span * i) / (m + 1))
+      .filter((x) => Math.abs(x - 100) >= trunkW * 0.5 + 7)
+      .sort((a, b) => Math.abs(b - cx) - Math.abs(a - cx))
+      .slice(0, m);
+    for (const x0 of xs) {
+      const x = x0 + (r() - 0.5) * 4;
+      const y = hang + 8 + r() * 5 - (Math.abs(x - cx) / span) * ry * 0.14;
+      kids.push(mangoFruit(x, y, (ripe ? 1.15 : 1) * (lod === 'full' ? 1.05 : 1.3), ripe, -12 + r() * 24, lod));
     }
   }
   if (sp.flourish === 'coconut') {
-    const m = st === 6 ? 4 : 2;
+    // A cluster under the fronds, in front of the crown, so the nuts read at 104pt.
+    const m = st === 6 ? 5 : 3;
     const pts = [
-      [-5, 7],
-      [4, 8],
-      [-1, 12],
-      [8, 4],
+      [-6, 9],
+      [6, 10],
+      [0, 15],
+      [-12, 15],
+      [11, 16],
     ];
+    const rr = st === 6 ? 7 : 6;
     for (let i = 0; i < m; i++) {
       const [dx, dy] = pts[i];
-      kids.push(C(palmCrown.x + dx, palmCrown.y + dy, 5, st === 6 ? g.coconutRipe : g.coconutGreen), C(palmCrown.x + dx - 1.6, palmCrown.y + dy - 1.6, 1.4, A0.white, { opacity: 0.25 }));
+      const x = palmCrown.x + dx;
+      const y = palmCrown.y + dy;
+      kids.push(C(x, y, rr, st === 6 ? g.coconutRipe : g.coconutGreen), C(x - rr * 0.35, y - rr * 0.35, rr * 0.3, A0.white, { opacity: 0.25 }));
+      if (lod !== 'icon') kids.push(C(x + rr * 0.2, y + rr * 0.35, rr * 0.16, mix(st === 6 ? g.coconutRipe : g.coconutGreen, A0.black, 0.35)));
     }
   }
-  if (sp.flourish === 'moss') for (const o of A.organs.slice(0, 5)) kids.push(glyph('blossom', o.x + 4, o.y - 3, 0.7, r() * 60, A0.white, { core: g.mossBloomCore }));
+  if (sp.flourish === 'moss') for (const o of A.organs.slice(0, 5)) kids.push(glyph('blossom', o.x + 4, o.y - 3, lod === 'full' ? 1 : 1.25, r() * 60, A0.white, { core: g.mossBloomCore }));
   if (sp.flourish === 'cone' && can.pads)
-    can.pads.slice(1).forEach((p) => {
-      kids.push(G(null, [E(0, 0, 2.8, 4.2, g.cone), S('M-2.2 -1.4h4.4M-2.4 1h4.8', g.coneLine, 0.8)], { transform: `translate(${f(p.x + p.side * p.rx * 0.35)} ${f(p.y + p.ry * 0.85)})` }));
+    can.pads.slice(1).forEach((p, k) => {
+      // Cones hang under the pads (two on the lower ones), never hidden inside them.
+      const cone = (x: number, y: number) => G(null, [E(0, 0, 2.8, 4.2, g.cone), S('M-2.2 -1.4h4.4M-2.4 1h4.8', g.coneLine, 0.8)], { transform: rot(x, y, p.side * 8, gs) });
+      kids.push(cone(p.x + p.side * p.rx * 0.38, p.y + p.ry * 0.82 + 4));
+      if (k >= can.pads!.length - 3) kids.push(cone(p.x - p.side * p.rx * 0.2, p.y + p.ry * 0.78 + 4));
     });
   return G('blooms', kids);
 }
@@ -855,7 +908,11 @@ function treeBody(ctx: Ctx, sp: TreeArt): BodyResult {
   }
   const palmCrown = { x: 100 + lean, y: ({ 3: 112, 4: 94, 5: 78, 6: 68 } as Record<number, number>)[st] };
   const top = isPalm ? palmCrown.y + 4 : isPine ? geo.canopy!.cy - geo.canopy!.ry * 0.7 + 8 : t.top;
-  if (isPine) wt *= 0.55;
+  if (isPine) {
+    wt *= st === 3 ? 0.7 : 0.55;
+    // From Bough on the pads carry the shape: a slimmer trunk under them.
+    if (st >= 4) wb *= 0.84;
+  }
   const flare = sp.flare ?? 0.35;
   const tk: Maybe[] = [];
   let trunkTop = { x: 100 + lean, y: top };
@@ -966,7 +1023,7 @@ function treeBody(ctx: Ctx, sp: TreeArt): BodyResult {
   if (isBonsai) A.perch = { x: (can.organs[0] || { x: 60 }).x + 4, y: (can.organs[0] || { y: 120 }).y - 6 };
   A.drift = { x: cx + rx * 0.7, y: cy + ry * 0.4 };
   const body: Maybe[] = [G('trunk', tk), G('branches', br), ...can.layers, G('leaves', marks)];
-  if (st === 6 || (st === 5 && sp.fruitFrom === 5)) body.push(flourish(sp, st, A, lod, seed, can, palmCrown));
+  if (st === 6 || (st === 5 && sp.fruitFrom === 5)) body.push(flourish(sp, st, A, lod, seed, can, palmCrown, wb));
   return { body, behind: [G('roots', roots)], faceSpec: showFace ? { x: fx, y: fy, w: fw * 1.22 } : null };
 }
 
@@ -992,7 +1049,7 @@ function mound(cx: number, cy: number, rx: number, ry: number, pal: PlantLeafPal
   if (lod !== 'icon') kids.push(P(scallop({ cx: cx - rx * 0.36, cy: cy - ry * 0.42, rx: rx * 0.36, ry: ry * 0.3, n: 6, seed: seed + 4, jit: 0.3, bulge: 0.6 }), pal.light));
   return kids;
 }
-const MOUND: Record<number, [number, number]> = { 3: [25, 17], 4: [34, 23], 5: [42, 28], 6: [50, 32] };
+const MOUND: Record<number, [number, number]> = { 3: [23, 14], 4: [34, 23], 5: [42, 28], 6: [50, 32] };
 const arcPos = (cx: number, cy: number, rx: number, ry: number, i: number): Pt => {
   const th = ((200 + i * 35) * Math.PI) / 180;
   return { x: cx + rx * Math.cos(th), y: cy + ry * Math.sin(th) };
@@ -1240,7 +1297,30 @@ const PLANTS: Record<FlowerArt['build'], Builder> = {
         front.push(G('garland', g));
       }
     } else {
-      body.push(S(`M100 ${f(my - ry * 0.5)}Q103 ${f(my - ry - 4)} 101 ${f(my - ry - 10)}`, fol.deep, 2), pearl(101, my - ry - 13, 1));
+      // Shoot: a small shrub, not a blob (PR #43 UX review). Three leafy
+      // sprigs rise out of the low leafy base, the middle one with a first bud.
+      const sprigs: Maybe[] = [];
+      const y0 = my - ry * 0.2;
+      for (const [side, len, ang] of [
+        [-1, 25, -34],
+        [0, 32, 4],
+        [1, 24, 36],
+      ] as const) {
+        const x0 = 100 + side * 7;
+        const tip = tipOf(x0, y0, len, ang);
+        const mid = at(x0, y0, len, ang, 0.5);
+        sprigs.push(S(`M${f(x0)} ${f(y0)}Q${f(mid.x - side * 2)} ${f(mid.y)} ${f(tip.x)} ${f(tip.y)}`, fol.deep, 1.9));
+        for (const [t, l] of [
+          [0.5, 9.5],
+          [0.8, 8.5],
+          [1, 6.5],
+        ] as const) {
+          const q = at(x0, y0, len, ang, t);
+          sprigs.push(leafBlade(q.x, q.y, l, l * 0.42, ang - 48, fol, lod), leafBlade(q.x, q.y, l, l * 0.42, ang + 48, fol, lod));
+        }
+        if (side === 0) body.push(pearl(tip.x, tip.y - 3, 1.05));
+      }
+      body.unshift(G('leaves', sprigs));
     }
     A.canopyBox = { cx: 100, cy: my - ry * 0.4, rx: rx + 6, ry: ry + 6 };
     A.crown = { x: 104, y: my - ry - 4 };
@@ -1274,13 +1354,21 @@ const PLANTS: Record<FlowerArt['build'], Builder> = {
       for (const [side, hf, dI] of arms) {
         const s = sc[dI];
         const y0 = base - H * hf;
-        const dx = W / 2 + aw * 0.62;
+        // Each arm leaves the column sideways, turns up through a rounded
+        // elbow, then rises: one cactus, never five (PR #43 UX review).
+        const dx = W / 2 + aw * 0.95;
         const up = (8 + st * 5.5) * s;
         const x1 = 100 + side * dx;
-        const d = `M${f(100 + side * W * 0.25)} ${f(y0)}H${f(x1)}V${f(y0 - up)}`;
+        const bend = Math.min(aw * 0.75, up * 0.5);
+        const d = `M${f(100 + side * W * 0.2)} ${f(y0)}H${f(x1 - side * bend)}Q${f(x1)} ${f(y0)} ${f(x1)} ${f(y0 - bend)}V${f(y0 - up)}`;
         const k: Maybe[] = [S(d, fol.deep, aw), S(d, fol.mid, aw - 3.5, { transform: 'translate(-0.8 -0.6)' })];
-        if (lod !== 'icon') k.push(S(`M${f(x1 - aw * 0.22)} ${f(y0 - 2)}V${f(y0 - up)}`, fol.light, aw * 0.22, { opacity: 0.8 }));
-        if (lod === 'full') for (let j = 0; j < 3; j++) k.push(S(`M${f(x1 + aw * 0.5)} ${f(y0 - j * 6 - 3)}l${f(side * 2.2)} -1`, fol.hi, 0.9));
+        // The elbow's lit top edge and the arm's lit side, so the turn reads at 64pt.
+        if (lod !== 'icon')
+          k.push(
+            S(`M${f(100 + side * (W / 2 + 1))} ${f(y0 - aw * 0.3)}H${f(x1 - side * bend * 1.1)}`, fol.light, aw * 0.16, { opacity: 0.55 }),
+            S(`M${f(x1 - aw * 0.22)} ${f(y0 - bend - 1)}V${f(y0 - up)}`, fol.light, aw * 0.22, { opacity: 0.8 }),
+          );
+        if (lod === 'full') for (let j = 0; j < 3; j++) k.push(S(`M${f(x1 + side * aw * 0.5)} ${f(y0 - bend - j * 6 - 3)}l${f(side * 2.2)} -1`, fol.hi, 0.9));
         if (st === 6) k.push(glyph('blossom', x1, y0 - up - aw * 0.45, 1.05, 20, pal.light, { core: pal.deep }));
         behind.push(G(`domain-${dI + 1}`, k));
         A.organs[dI] = { x: x1, y: y0 - up * 0.5 };
@@ -1359,12 +1447,21 @@ const PLANTS: Record<FlowerArt['build'], Builder> = {
       if (st >= 4) A.organs[i] = { x: x + lean * 0.8, y: top + 22 };
       if (i === 2) A.crown = { x: x + lean, y: top - 4 };
     }
+    // Elder: new shoots at the foot of the grove, large enough to read at 104pt (PR #43 UX review).
     if (st === 6)
       for (const [sx, s] of [
-        [76, 0.7],
-        [124, 0.8],
+        [71, 1.1],
+        [129, 1.25],
+        [148, 0.85],
       ])
-        body.push(G('shoot', [P(`M${sx - 7 * s} ${base + 1}Q${sx - 5 * s} ${f(base - 14 * s)} ${sx} ${f(base - 24 * s)}Q${sx + 5 * s} ${f(base - 14 * s)} ${sx + 7 * s} ${base + 1}Z`, CU.shoot), S(`M${f(sx - 5 * s)} ${f(base - 6 * s)}L${f(sx + 5 * s)} ${f(base - 10 * s)}`, CU.shootLine, 1)]));
+        body.push(
+          G('shoot', [
+            P(`M${f(sx - 7 * s)} ${base + 1}Q${f(sx - 5 * s)} ${f(base - 14 * s)} ${sx} ${f(base - 24 * s)}Q${f(sx + 5 * s)} ${f(base - 14 * s)} ${f(sx + 7 * s)} ${base + 1}Z`, CU.shoot),
+            S(`M${f(sx - 5 * s)} ${f(base - 6 * s)}L${f(sx + 5 * s)} ${f(base - 10 * s)}`, CU.shootLine, 1),
+            lod !== 'icon' ? S(`M${f(sx - 4 * s)} ${f(base - 13 * s)}L${f(sx + 3.5 * s)} ${f(base - 16 * s)}`, CU.shootLine, 1) : null,
+            lod !== 'icon' ? P(`M${sx} ${f(base - 24 * s)}l-1.6 ${f(5 * s)}h3.2Z`, CU.mid) : null,
+          ]),
+        );
     A.neck = { x: 100, y: base - 42, w: 15 };
     A.perch = st >= 4 ? { x: A.organs[1].x, y: A.organs[1].y - 18 } : { x: 92, y: base - Hb + 20 };
     A.branchL = st >= 4 ? { x: A.organs[0].x - 4, y: A.organs[0].y + 6 } : { x: 92, y: base - Hb * 0.6 };
@@ -1451,7 +1548,29 @@ export interface BuiltPlant {
   frame: string;
 }
 
+/**
+ * Built plants, shared (code review M6a): the picker's 13 previews, Today,
+ * You and Your plant reuse a build instead of redoing ~3 ms of geometry each
+ * (more on a low-end phone). Keyed by every option; a part tree is never
+ * changed after it is built, so sharing it is safe. Small and bounded: the
+ * oldest entry goes first.
+ */
+const BUILT = new Map<string, BuiltPlant>();
+const BUILT_MAX = 64;
+const buildKey = (o: BuildOpts) =>
+  [o.species, Math.round(o.stage), o.lod ?? 'full', o.theme ?? 'light', o.quietLook ? 1 : 0, o.resting ? 1 : 0, o.mood ?? '', o.drift === false ? 0 : 1, (o.organs ?? []).join(',')].join('|');
+
 export function buildPlant(o: BuildOpts): BuiltPlant {
+  const k = buildKey(o);
+  const hit = BUILT.get(k);
+  if (hit) return hit;
+  const built = buildUncached(o);
+  if (BUILT.size >= BUILT_MAX) BUILT.delete(BUILT.keys().next().value as string);
+  BUILT.set(k, built);
+  return built;
+}
+
+function buildUncached(o: BuildOpts): BuiltPlant {
   const key = o.species;
   const sp = SPECIES_ART[key];
   const st = Math.max(1, Math.min(6, Math.round(o.stage)));

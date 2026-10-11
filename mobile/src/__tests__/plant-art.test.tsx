@@ -194,3 +194,28 @@ describe('the resting dusk stays on the stage', () => {
       }
   });
 });
+
+describe('PR #43 art review', () => {
+  const blooms = (species: (typeof PLANT_SPECIES)[number], lod: 'small' | 'full') => {
+    const find = (n: PNode): PNode | null => (n.t === 'g' ? (n.id === 'blooms' ? n : n.children.map(find).find(Boolean) ?? null) : null);
+    const b = find(buildPlant({ species, stage: 6, lod }).root);
+    return b && b.t === 'g' ? b.children.length : 0;
+  };
+
+  it('the mango reads as a low, wide dome from Crown on, never an oak', () => {
+    for (const stage of [5, 6]) {
+      const w = (sp: 'oak' | 'mango') => {
+        const box = bounds(buildPlant({ species: sp, stage }).root);
+        return (box.maxX - box.minX) / (box.maxY - box.minY);
+      };
+      expect(w('mango')).toBeGreaterThan(w('oak') * 1.12);
+    }
+  });
+
+  it('Elder gifts come in numbers that read at 104pt (the small level)', () => {
+    expect(blooms('oak', 'small')).toBeGreaterThanOrEqual(7);
+    expect(blooms('maple', 'small')).toBeGreaterThanOrEqual(7);
+    expect(blooms('mango', 'small')).toBeGreaterThanOrEqual(5);
+    expect(blooms('pine', 'small')).toBeGreaterThanOrEqual(5);
+  });
+});

@@ -486,11 +486,11 @@ export const plantArt = {
     bonsai: '#6B4A3A',
   },
   seed: {
-    sunflower: '#3B3330',
+    sunflower: '#76685F', // PR #43 UX P4: lifted from #3B3330 so the seed reads on the dark theme
     sunflowerStripe: '#E3DCCB',
     lotus: '#6B6340',
     sampaguita: '#7A6A52',
-    cactus: '#5E4A3A', // lifted from #3A332D so the seed reads on the dark theme
+    cactus: '#7E6A58', // lifted from #3A332D, then #5E4A3A (PR #43 UX P4), so the seed reads on the dark theme
   },
   pot: {
     terracotta: '#B9663B',
@@ -569,6 +569,6 @@ export interface PlantThemeTone {
   duskOpacity: number;
 }
 export const plantTheme: { light: PlantThemeTone; dark: PlantThemeTone } = {
-  light: { shadow: '#17231B', shadowOpacity: 0.1, sap: '#2B6E4A', leafFill: '#6DB38A', honey: '#B0802C', dusk: '#DCD8E6', duskOpacity: 0.85 },
+  light: { shadow: '#17231B', shadowOpacity: 0.1, sap: '#2B6E4A', leafFill: '#6DB38A', honey: '#8F6620', dusk: '#DCD8E6', duskOpacity: 0.85 },
   dark: { shadow: '#000000', shadowOpacity: 0.35, sap: '#A9D9BA', leafFill: '#A9D9BA', honey: '#E9C46A', dusk: '#232842', duskOpacity: 0.9 },
 };
