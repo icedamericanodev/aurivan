@@ -32,7 +32,9 @@ import {
   useOncePerDay,
   usePressScale,
 } from '../components/motion';
+import * as Reanimated from 'react-native-reanimated';
 import Settings from '../app/settings';
+import { Segmented } from '../components/ui';
 import { useSettings } from '../store/settings';
 import { motion } from '../theme/tokens';
 import { readBackup } from '../engine/backup';
@@ -342,6 +344,53 @@ describe('full motion lands on the same end states', () => {
     expect(s.opacity).toBe(1);
     expect(xOf(s)).toBe(0);
     expect(r!.root.findAllByType(View)[0].props.importantForAccessibility).toBe('auto');
+  });
+});
+
+describe('Segmented thumb', () => {
+  const opts = [10, 20, 50].map((n) => ({ value: n, numeral: String(n), label: 'questions' }));
+  const layout = () =>
+    act(() => {
+      r!.root.findByProps({ accessibilityRole: 'radiogroup' }).props.onLayout({ nativeEvent: { layout: { width: 306, height: 50 } } });
+    });
+  const thumb = () => r!.root.findAll((n) => n.type === View && style(n).position === 'absolute' && style(n).width !== undefined && style(n).borderColor !== undefined)[0];
+
+  beforeEach(() => setMockReducedMotion(false));
+
+  it('is drawn in place when a screen opens on a later option: nothing springs until the learner chooses', () => {
+    const spring = jest.spyOn(Reanimated, 'withSpring');
+    const el = (v: number) => <Segmented accessibilityLabel="Length" value={v} onChange={() => {}} options={opts} />;
+    mount(el(50));
+    layout();
+    expect(spring).not.toHaveBeenCalled();
+    // The third segment's place, from the very first frame with a width.
+    const s = style(thumb());
+    const step = (s.width as number) + 3;
+    expect(xOf(s)).toBeCloseTo(2 * step);
+    // A rotation (a new width) moves it in place too.
+    act(() => {
+      r!.root.findByProps({ accessibilityRole: 'radiogroup' }).props.onLayout({ nativeEvent: { layout: { width: 500, height: 50 } } });
+    });
+    expect(spring).not.toHaveBeenCalled();
+    // A real choice slides.
+    act(() => {
+      r!.update(el(20));
+    });
+    expect(spring).toHaveBeenCalledTimes(1);
+    expect(spring.mock.calls[0][0]).toBe(1);
+    spring.mockRestore();
+  });
+
+  it('the thumb and the per-segment layers never take Android elevation (it would cover the label)', () => {
+    const el = <Segmented accessibilityLabel="Length" value={20} onChange={() => {}} options={opts} />;
+    mount(el);
+    // Before layout: the per-segment layer.
+    const layer = r!.root.findAllByType(StateLayer).map((l) => style(l.findAllByType(View)[0]));
+    expect(layer.length).toBeGreaterThan(0);
+    for (const s of layer) expect(s.elevation).toBeUndefined();
+    layout();
+    expect(style(thumb()).elevation).toBeUndefined();
+    expect(style(thumb()).shadowOpacity).toBeGreaterThan(0); // iOS keeps its soft shadow
   });
 });
 

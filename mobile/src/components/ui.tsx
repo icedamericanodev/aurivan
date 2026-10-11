@@ -11,7 +11,7 @@
  * things you choose between; one forest panel per screen; tinted blocks
  * only for feedback.
  */
-import { useEffect, useState, type ReactNode, type Ref } from 'react';
+import { useEffect, useRef, useState, type ReactNode, type Ref } from 'react';
 import {
   Image,
   Platform,
@@ -1208,6 +1208,8 @@ export function EmptyState({
 const SEG_ON_DARK = '#2C372F';
 /** 44pt segment + 2pt each side = 48pt to the finger (the 3pt track gap keeps neighbours apart). */
 export const SEG_HIT_SLOP = 2;
+/** `raisedShadow` without Android's `elevation`, for a layer drawn beneath its own content. */
+const { elevation: _elevation, ...layerShadow } = raisedShadow;
 
 export function Segmented<V extends string | number>({
   options,
@@ -1234,28 +1236,40 @@ export function Segmented<V extends string | number>({
   const at = options.findIndex((o) => o.value === value);
   const itemW = trackW > 0 ? (trackW - SEG_INSET * 2 - SEG_GAP * (n - 1)) / n : 0;
   const slide = !stacked && !reduced && itemW > 0;
-  const x = useSharedValue(Math.max(at, 0) * (itemW + SEG_GAP));
+  // The thumb's place in SEGMENTS, not points: its offset is drawn from the
+  // current width, so the first layout (and a rotation) puts it in place at
+  // once. It only ever moves because the learner chose something.
+  const pos = useSharedValue(Math.max(at, 0));
   const shown = useSharedValue(at >= 0 ? 1 : 0);
+  const lastAt = useRef(at);
   useEffect(() => {
-    if (!slide) return;
-    if (at < 0) {
-      shown.set(tween(0, 'quick'));
+    const from = lastAt.current;
+    lastAt.current = at;
+    if (!slide || from === at) {
+      // Not sliding, or only the size or mode changed: be in place.
+      pos.set(Math.max(at, 0));
+      shown.set(at >= 0 ? 1 : 0);
       return;
     }
-    const to = at * (itemW + SEG_GAP);
-    if (shown.get() === 0) {
+    if (at < 0) {
+      shown.set(tween(0, 'quick'));
+    } else if (from < 0) {
       // The first choice appears in place: there is nowhere to slide from.
-      x.set(to);
+      pos.set(at);
       shown.set(tween(1, 'select'));
     } else {
-      x.set(withSpring(to, { ...motion.spring.settle, reduceMotion: ReduceMotion.Never }));
+      pos.set(withSpring(at, { ...motion.spring.settle, reduceMotion: ReduceMotion.Never }));
     }
-  }, [at, slide, itemW, x, shown]);
-  const thumbStyle = useAnimatedStyle(() => ({ opacity: shown.value, transform: [{ translateX: x.value }] }));
+  }, [at, slide, pos, shown]);
+  const step = itemW + SEG_GAP;
+  const thumbStyle = useAnimatedStyle(() => ({ opacity: shown.value, transform: [{ translateX: pos.value * step }] }));
   // Selected = ink (spec §5): a 1.5px ink outline makes the choice clear in
   // both modes (fill alone was ~1.1:1, failing WCAG 1.4.11). Fill: `raised`
-  // + shadow in light, the spec's lifted #2C372F in dark.
-  const onLook = [{ backgroundColor: isDark ? SEG_ON_DARK : c.raised, borderWidth: 1.5, borderColor: c.ink, borderRadius: 22 }, !isDark && raisedShadow];
+  // + shadow in light, the spec's lifted #2C372F in dark. The thumb and the
+  // per-segment layer sit UNDER the labels, so they never take Android
+  // `elevation` (it would lift them above the label they belong to): the
+  // shadow is iOS and web only, and the ink outline carries the choice.
+  const onLook = [{ backgroundColor: isDark ? SEG_ON_DARK : c.raised, borderWidth: 1.5, borderColor: c.ink, borderRadius: 22 }, !isDark && layerShadow];
   return (
     <View
       accessibilityRole="radiogroup"
