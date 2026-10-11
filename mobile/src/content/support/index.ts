@@ -40,7 +40,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     date: '2026-10-11',
     new: [
       'Lessons open on a cover that shows what’s in them, and their diagrams now build step by step: steps along a path, layers on a stack, and stages along a timeline.',
-      'Finishing a lesson adds a leaf to that topic’s branch, then offers practice on what you just learned or the next lesson.',
+      'Finishing a lesson adds a leaf to your branch, then offers practice on what you just learned or the next lesson.',
       'Each game has its own drawing and its own header, so a game never looks like a practice question.',
     ],
     improved: [

@@ -208,8 +208,10 @@ function FieldGuide() {
     const longWord = board.terms.some((t) => t.term.split(/\s+/).some((w) => w.length > LONG_WORD));
     const stack = large || longWord;
     // Matched tiles stay tappable elements (tapTerm / tapDef ignore them); the label says "matched".
+    // Side by side, the columns share the width; stacked, each is as tall as its tiles (flex 1 there left a blank gap).
+    const colStyle = stack ? undefined : { flex: 1 };
     const termsCol = (
-      <View accessibilityRole="list" style={{ flex: 1 }}>
+      <View accessibilityRole="list" style={colStyle}>
         <T v="caption" color={c.ink2} accessibilityRole="header" style={{ marginBottom: space.xs }}>Terms</T>
         {board.terms.map((t, i) => (
           <MatchTile
@@ -225,7 +227,7 @@ function FieldGuide() {
       </View>
     );
     const defsCol = (
-      <View accessibilityRole="list" style={{ flex: 1 }}>
+      <View accessibilityRole="list" style={colStyle}>
         <T v="caption" color={c.ink2} accessibilityRole="header" style={{ marginBottom: space.xs }}>Meanings</T>
         {board.defOrder.map((ti, j) => (
           <MatchTile
