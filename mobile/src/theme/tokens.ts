@@ -264,6 +264,21 @@ export function serifNumeral(size: NumeralSize | 34 | 52): TextStyle {
 }
 /** The unit under or after a serif numeral ("due", "questions"): Figtree 500 12/16. */
 export const numeralUnit: TextStyle = { fontFamily: font.sans500, fontSize: 12, lineHeight: 16 };
+/** A stat's unit beside its serif number ("of 20", "min", "days"): Figtree 15/20, ink2 (mobile 1.11). */
+export const statUnit: TextStyle = { fontFamily: font.sans500, fontSize: 15, lineHeight: 20 };
+/**
+ * The share cards' fixed text (320 × 400 pt pictures that never scale with
+ * the font size, mobile 1.11): the badge's name in Fraunces 21/26, its skill
+ * line in Fraunces italic 16/22, and the trademark notice in Figtree 11/15
+ * (every word legible in the 1080 px export; two lines at most).
+ */
+export const cardType = {
+  name: { fontFamily: font.serif500, fontSize: 21, lineHeight: 26, letterSpacing: -0.2 },
+  skill: { fontFamily: font.serif400Italic, fontSize: 16, lineHeight: 22 },
+  notice: { fontFamily: font.sans500, fontSize: 11, lineHeight: 15 },
+} satisfies Record<string, TextStyle>;
+/** A stat's value in words ("None", "Under a minute"): Fraunces 20/26, the number's voice at word size. */
+export const statWord: TextStyle = { fontFamily: font.serif500, fontSize: 20, lineHeight: 26, letterSpacing: -0.2 };
 /** The raised % after a serif numeral: ~0.48em of the numeral. */
 export function percentSup(size: number): TextStyle {
   return { fontFamily: font.serif500, fontSize: Math.round(size * 0.48), lineHeight: Math.round(size * 0.6) };
@@ -371,6 +386,20 @@ export const badgeEnamel: Record<'forest' | 'ink' | 'clay' | 'paper', BadgeEname
   paper: { field: '#F5F1E6', deep: '#D9D1BD', lite: '#E6DFCD', E1: '#1E4A34', E2: '#2B6E4A', D2: '#1E4A34', E3: '#9A4F26', D3: '#6E3417', L3: '#EFC6A8', ribbon: '#2B6E4A', ribbonDeep: '#1E4A34' },
 };
 export type BadgeEnamelId = keyof typeof badgeEnamel;
+
+/**
+ * The share cards' colours (progress and badge cards), FIXED: never the
+ * theme's, so the exported PNG is the same picture in light and dark mode.
+ * The badge forest enamel, with the light theme's on-forest inks
+ * (ink2 on field 6.9:1, sap on field 6.4:1).
+ */
+export const cardInk = {
+  field: badgeEnamel.forest.field,
+  ink: badgeEnamel.forest.E1,
+  ink2: light.onForest2,
+  sap: badgeEnamel.forest.E2,
+  line: light.forestTrack,
+} as const;
 
 /**
  * The rim metal tells the TIER, three ways (metal, pip count, laurel), never

@@ -139,14 +139,15 @@ describe('Today and Results copy', () => {
       startFromIds('cisa', FOUR.slice(0, 1), 'Practice');
     });
     act(() => {
-      useSession.getState().answer(FOUR[0], { display: 'A', correct: true, ms: 30_000 });
+      useSession.getState().answer(FOUR[0], { display: 'A', correct: true, ms: 60_000 });
     });
     jest.setSystemTime(Date.now() + 60_000);
     act(() => {
       finishSession();
     });
     mount(<Results />);
-    const stat = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^\d+ minutes?$/.test(n.props.accessibilityLabel))[0];
-    expect(stat.props.accessibilityLabel).toBe('1 minute');
+    // Mobile 1.11: the Time stat says its label and plain words ("Time: 1 minute").
+    const stat = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^Time: /.test(n.props.accessibilityLabel))[0];
+    expect(stat.props.accessibilityLabel).toBe('Time: 1 minute');
   });
 });

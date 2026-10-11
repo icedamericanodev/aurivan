@@ -19,6 +19,7 @@ import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan }
 import { computeReadiness, type AnswerRecord } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
 import { recordMastery, type SubtopicMastery } from '../engine/mastery';
+import { CATALOG_VERSION } from '../engine/badgeCatalog';
 import { afterAnswer, afterCard, noteStudyDay, type CertMilestones } from '../engine/milestones';
 import type { MockTiming } from '../engine/pace';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
@@ -529,7 +530,8 @@ export const useProgress = create<ProgressState>()(
           // Build F: a reset is a fresh start for milestones too. The launch
           // back-fill is marked as already done (nothing found, summary seen),
           // so it never runs again and re-awards from older data.
-          const milestones: CertMilestones = { earned: {}, backfill: { at: Date.now(), count: 0, seen: true } };
+          // The catalogue fill is marked done too (mobile 1.11), for the same reason.
+          const milestones: CertMilestones = { earned: {}, backfill: { at: Date.now(), count: 0, seen: true }, catalog: CATALOG_VERSION };
           const base: CertProgress = { ...emptyCert(), milestones };
           const fresh: CertProgress = seen ? { ...base, moments: { readySeenAt: seen } } : base;
           return { byCert: { ...s.byCert, [certId]: fresh }, days };

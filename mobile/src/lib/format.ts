@@ -11,6 +11,11 @@ export function shortDate(ms: number): string {
   return `${d.getDate()} ${MONTHS[d.getMonth()]}`;
 }
 
+/** A timestamp (ms) as "3 Nov 2026": the year too, for things that travel (a shared badge card). */
+export function longDate(ms: number): string {
+  return `${shortDate(ms)} ${new Date(ms).getFullYear()}`;
+}
+
 /**
  * A subtopic shortened for the question meta line (≤ 3 words, sentence case):
  * "Year-End Close. Job Scheduling Control Bypass" → "Year-end close".

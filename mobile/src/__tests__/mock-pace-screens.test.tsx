@@ -200,7 +200,8 @@ describe('results', () => {
     const labels = root().findAll((n) => typeof n.props.accessibilityLabel === 'string').map((n) => n.props.accessibilityLabel as string);
     // Spoken in words (P7); the screen shows "30 min of 1 h 20 min".
     expect(labels).toContain('Time used: 30 minutes of 1 hour 20 minutes');
-    expect(labels).toContain('Median per question: 60 seconds');
+    // Mobile 1.11: plain words, never "median".
+    expect(labels).toContain('Typical time per question: about 60 seconds');
     expect(labels).toContain('Unanswered at submit: 48');
   });
 

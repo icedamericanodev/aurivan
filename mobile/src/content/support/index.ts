@@ -36,6 +36,23 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.11.0',
+    date: '2026-10-11',
+    new: [
+      'Badges now have higher tiers to grow into, and a new badge, Took Root, for making a whole topic stick.',
+      'You can share a badge you’ve earned as a picture card, only when you choose to.',
+    ],
+    improved: [
+      'Each domain’s badge now has its own emblem.',
+      'Extra tiers that go beyond what the exam needs are clearly marked as Stretch.',
+      'Results, You and Today’s numbers now read in plain words, such as “Correct 14 of 20” and “Under 1 min”, and a time shows the same way wherever you see it.',
+    ],
+    fixed: [
+      'A very short session no longer shows “1 minute”, and a session left open overnight no longer counts the hours it sat idle.',
+      'Domain scores on Results and the pace line no longer get cut off on smaller phones.',
+    ],
+  },
+  {
     version: '1.10.0',
     date: '2026-10-11',
     new: [
@@ -200,6 +217,12 @@ export const WHATS_NEXT: readonly NextItem[] = [
     status: 'planned',
     title: 'A feedback board',
     body: 'Suggest ideas, see what other learners asked for, and read what we decide and why.',
+  },
+  {
+    status: 'shipped',
+    shippedIn: '1.11.0',
+    title: 'Badge tiers and sharing',
+    body: 'Higher tiers to grow into, a badge for making a whole topic stick, and a card you can share when you choose to.',
   },
   {
     status: 'shipped',

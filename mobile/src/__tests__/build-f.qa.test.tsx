@@ -241,23 +241,26 @@ describe('Journey 1: a 1.5 learner upgrades', () => {
     const text = allText();
     expect(text).toContain('You’d already earned 9 badges.');
     // Per-set counts, never a grand total.
-    expect(text).not.toContain('of 15');
+    expect(text).not.toMatch(/\bof 15\b/);
     expect(labels()).toContain('Groundwork, 2 of 3');
+    // Mobile 1.11: Exam Day gained Dress Rehearsal · 2 (gated until Whole Map), so 2 of 3 now.
+    expect(labels()).toContain('Exam Day, 2 of 3');
     // Completed by the back-fill: "by" that date (it was already complete then).
-    expect(labels()).toContain('Exam Day, 2 of 2, complete, by 12 Oct');
+    expect(labels()).toContain('Sound Judgement, 2 of 3');
     // The case's own data, checked against the rules: each earned mark is one earned medallion.
     const { marks } = badgeCase('cisa', cp(), T0);
     const earnedKeys = Object.keys(cp().milestones!.earned);
     for (const k of earnedKeys) expect(marks.find((m) => m.key === k)?.status).toBe('earned');
-    expect(labels().some((l) => l.startsWith('Firm Footing · IS Audit. Earned'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Firm Footing · IS Audit, Clay. Earned'))).toBe(true);
     expect(labels().some((l) => l.startsWith('Rooted · 10 days, Clay. Earned'))).toBe(true);
     // Every open badge says "Not yet" with its progress (or when it opens): nothing hidden.
     // (Fresh Start, a moment, stays off the case until it happens: it is never a goal.)
     for (const m of marks.filter((x) => x.status !== 'earned' && x.set !== 'moments')) {
       expect(labels().some((l) => l.startsWith(`${m.name}${m.tier ? ',' : '.'}`) && l.includes('Not yet'))).toBe(true);
     }
-    // A completed set saves its planter (the plant shows it in Phase 4).
-    expect(cp().milestones!.planters?.examDay).toBeDefined();
+    // A completed set saves its planter (the plant shows it in Phase 4): Sound Judgement is not
+    // complete here, Exam Day no longer is (Dress Rehearsal · 2, mobile 1.11), so neither has one.
+    expect(cp().milestones!.planters?.examDay).toBeUndefined();
     // Seen once: a second visit has no summary.
     expect(cp().milestones!.backfill!.seen).toBe(true);
   });

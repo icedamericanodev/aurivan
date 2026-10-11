@@ -29,15 +29,17 @@ import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BadgeCellMemo as BadgeCell, BadgeListRowMemo as BadgeListRow, BadgeSheet, NextPanel, ShelfHeader } from '../components/badges';
+import { BadgeCellMemo as BadgeCell, BadgeListRowMemo as BadgeListRow, BadgeSheet, NextPanel, ShelfHeader, StretchHeader } from '../components/badges';
 import { useGrowth } from '../components/motion';
 import { Button, Chip, ChipRow, PushedHeader, RadioRow, T, useFontScale } from '../components/ui';
 import {
   CASE_SORTS,
+  grownLine,
   hasWholeMap,
   nextForExam,
   onCase,
   passesFilter,
+  quietTimes,
   SET_ORDER,
   setCountLine,
   sortMarks,
@@ -50,7 +52,7 @@ import {
 } from '../engine/badgeCatalog';
 import { moveFocus } from '../lib/a11y';
 import { caseStage, seeCase, studyFor, weakestDomain } from '../lib/badges';
-import { backfillLine, badgeCase, seeBackfill } from '../lib/milestones';
+import { backfillLine, badgeCase, catalogFillLine, seeBackfill, seeCatalogFill } from '../lib/milestones';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useSeen } from '../store/seen';
 import { LARGE_TEXT, motion, space } from '../theme/tokens';
@@ -93,8 +95,17 @@ export default function Badges() {
   );
   const weakest = weakestDomain(mastery);
   const wholeMap = hasWholeMap(marks);
-  // Badges the back-fill saved quietly carry its time: they read "By 11 Oct".
-  const quietAt = progress.milestones?.backfill?.at;
+  // Badges a back-fill or the catalogue fill saved quietly carry its time: they read "By 11 Oct".
+  const backfillAt = progress.milestones?.backfill?.at;
+  const fillAt = progress.milestones?.catalogFill?.at;
+  const quiet = useMemo(() => quietTimes({ ...(backfillAt !== undefined ? { backfill: { at: backfillAt } } : {}), ...(fillAt !== undefined ? { catalogFill: { at: fillAt } } : {}) }), [backfillAt, fillAt]);
+  const planters = progress.milestones?.planters;
+  // "New in <set>": when each grown set's line was first shown on this phone
+  // (it shows for 14 days from then). Read once per visit; recorded below.
+  const [grownSeen] = useState(() => useSeen.getState().values);
+  const [visitAt] = useState(() => Date.now());
+  const grownKey = (id: SetId) => `badges:grown:${cert.id}:${id}`;
+  const grownFor = (s: SetView) => grownLine(s, planters, grownSeen[grownKey(s.info.id)]?.[0], visitAt);
 
   // Badges earned since the case was last opened press in, then it counts as
   // seen. Seen only while the case is on screen: a badge earned in a session
@@ -112,11 +123,11 @@ export default function Badges() {
       seenAt === undefined
         ? []
         : marks
-            .filter((m) => m.earnedAt !== undefined && m.earnedAt > seenAt && m.earnedAt !== quietAt)
+            .filter((m) => m.earnedAt !== undefined && m.earnedAt > seenAt && !quiet.includes(m.earnedAt))
             .sort((a, b) => a.earnedAt! - b.earnedAt!)
             .slice(0, motion.stagger.maxLeaves)
             .map((m) => m.key),
-    [marks, seenAt, quietAt],
+    [marks, seenAt, quiet],
   );
   // Each new badge presses in ONCE: switching the sort or a filter remounts
   // its cell, which must not replay it (code review minor 7).
@@ -143,6 +154,23 @@ export default function Badges() {
   useEffect(() => {
     if (backfill && !backfill.seen) seeBackfill(cert.id);
   }, [backfill, cert.id]);
+  // Mobile 1.11: the catalogue fill's one line (new tiers and Took Root the study already earned), once.
+  const fill = progress.milestones?.catalogFill;
+  const [fillSummary] = useState(() => (fill && !fill.seen ? catalogFillLine(fill.count) : null));
+  useEffect(() => {
+    if (fill && !fill.seen) seeCatalogFill(cert.id);
+  }, [fill, cert.id]);
+
+  // The first time a set's "New in" line shows, remember when (it fades out 14 days later).
+  const grownNow = after ? [] : sets.filter((s) => grownFor(s) !== undefined && grownSeen[grownKey(s.info.id)] === undefined).map((s) => s.info.id);
+  const grownNowKey = grownNow.join('|');
+  useEffect(() => {
+    if (!grownNowKey) return;
+    for (const id of grownNowKey.split('|')) {
+      const key = `badges:grown:${cert.id}:${id}`;
+      if (useSeen.getState().values[key] === undefined) useSeen.getState().see(key, [visitAt]);
+    }
+  }, [grownNowKey, cert.id, visitAt]);
 
   // Filter (this visit) and Sort (kept on this phone). After the exam there is
   // nothing to be close to, so Closest is not offered (By set instead).
@@ -232,7 +260,7 @@ export default function Badges() {
             last={k === items.length - 1}
             showSet={flat}
             showProgress={!after}
-            quietAt={quietAt}
+            quiet={quiet}
           />
         ))}
       </View>
@@ -250,19 +278,21 @@ export default function Badges() {
             press={pressAt(m.key)}
             showSet={flat}
             showProgress={!after}
-            quietAt={quietAt}
+            quiet={quiet}
           />
         ))}
       </View>
     );
 
   const shelf = (s: SetView) => {
-    const items = s.marks.filter((m) => passesFilter(m, filter));
+    const items = s.marks.filter((m) => !m.stretch && passesFilter(m, filter));
+    // The Stretch row: its own caption and small grid under the core marks, after the exam's needs.
+    const stretch = s.marks.filter((m) => m.stretch && passesFilter(m, filter));
     const id: SetId = s.info.id;
     return (
       <View key={id} testID={`shelf-${id}`} onLayout={id === jumpTo ? (e) => setJumpY(e.nativeEvent.layout.y) : undefined}>
         {id === 'fieldNotes' && <View style={{ height: 1, backgroundColor: c.line, marginTop: space.section }} />}
-        <ShelfHeader set={s} line={setCountLine(s)} quietAt={quietAt} />
+        <ShelfHeader set={s} line={setCountLine(s)} quiet={quiet} grown={after ? undefined : grownFor(s)} />
         {id === 'fieldNotes' && (
           <Button kind="ghost" label="See game levels ›" onPress={() => router.push('/field-notes')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />
         )}
@@ -273,6 +303,12 @@ export default function Badges() {
             {filter === 'earned' ? 'Nothing earned here yet.' : 'All earned.'}
           </T>
         )}
+        {stretch.length > 0 && (
+          <>
+            <StretchHeader set={s} />
+            {renderMarks(stretch, false)}
+          </>
+        )}
       </View>
     );
   };
@@ -282,6 +318,13 @@ export default function Badges() {
       <ScrollView ref={scroll} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxl }}>
         <PushedHeader title="Badges" onBack={() => router.back()} />
         <T v="meta" style={{ marginTop: space.sm }}>Earned by what you’ve mastered. Once earned, a badge stays.</T>
+
+        {fillSummary && (
+          <View accessible style={{ marginTop: space.lg, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
+            <T v="caption" color={c.accentText}>New in your badges</T>
+            <T v="quote" style={{ marginTop: 4 }}>{fillSummary}</T>
+          </View>
+        )}
 
         {summary && (
           <View accessible accessibilityLabel={`${summary} From your study before badges arrived.`} style={{ marginTop: space.lg, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
@@ -350,7 +393,7 @@ export default function Badges() {
           key={`${sheetMark.key}:${opens}`}
           mark={sheetMark}
           set={setOf(sheetMark)}
-          ladder={sheetMark.tier ? marks.filter((m) => m.badge === sheetMark.badge && m.tier) : undefined}
+          ladder={sheetMark.ladder ? marks.filter((m) => m.ladder === sheetMark.ladder) : undefined}
           domains={cert.domains}
           stage={stage}
           daysLeft={daysLeft}
@@ -358,11 +401,12 @@ export default function Badges() {
           weakest={weakest}
           wholeMap={wholeMap}
           showProgress={!after}
-          quietAt={quietAt}
+          quiet={quiet}
           visible={open !== null}
           onClose={() => setOpen(null)}
           onDismissed={leaving ? gone : undefined}
           onStudy={study}
+          cert={cert}
         />
       )}
     </SafeAreaView>

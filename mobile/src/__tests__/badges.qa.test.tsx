@@ -43,6 +43,7 @@ import { lessonsFor } from '../content/lessons';
 import { getDomainQuestions } from '../content/loader';
 import {
   CASE_SORTS,
+  SET_ORDER,
   COUNTED_SETS,
   mockTime,
   nextForExam,
@@ -268,9 +269,10 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
     expect(line).toEqual({
       groundwork: '3 of 3 · Complete',
       domains: '1 of 6',
-      evergreen: '0 of 3',
+      // Mobile 1.11: Evergreen gains Long Memory · 75 and Took Root, Exam Day gains Dress Rehearsal · 2.
+      evergreen: '0 of 5',
       judgement: '0 of 3',
-      examDay: '0 of 2',
+      examDay: '0 of 3',
       rooted: '1 of 3',
       moments: undefined,
       fieldNotes: '1 of 7',
@@ -687,7 +689,11 @@ describe('3. "Next for your exam" at each journey stage', () => {
     expect(results['topic-clear']).toBe('/guided');
     expect(results['long-memory']).toBe('session:Review'); // two misses are due
     expect(results['know-what-you-know']).toBe('session:Smart · All domains');
-    expect(Object.keys(results)).toHaveLength(26); // every badge but Fresh Start (a moment) and Mindset Shift (gated)
+    // Every badge but Fresh Start (a moment), Mindset Shift and the tiers that open at Whole Map
+    // (gated); mobile 1.11 adds Long Memory · 75 and · 150 and Took Root.
+    expect(Object.keys(results)).toHaveLength(29);
+    expect(results['took-root']).toBe('/guided');
+    expect(results['long-memory:75']).toBe('session:Review');
   });
 });
 
@@ -724,7 +730,11 @@ describe('4. the case', () => {
       expect(shown.filter((k) => !want.some((m) => m.key === k))).toEqual([]); // nothing the filter excludes
       expect(must.filter((k) => !shown.includes(k))).toEqual([]); // nothing missing
       if (sort !== 'set') expect(shown).toEqual(sortMarks(want, sort).map((m) => m.key));
-      else expect(shown).toEqual(want.map((m) => m.key).filter((k) => shown.includes(k))); // shelf order
+      else {
+        // Shelf order: each set's core marks, then its Stretch row (mobile 1.11).
+        const shelves = SET_ORDER.flatMap((id) => [...want.filter((m) => m.set === id && !m.stretch), ...want.filter((m) => m.set === id && m.stretch)]);
+        expect(shown).toEqual(shelves.map((m) => m.key).filter((k) => shown.includes(k)));
+      }
       expect(must.length).toBeGreaterThan(0);
     },
   );
@@ -736,13 +746,18 @@ describe('4. the case', () => {
     expect(recent.slice(0, 3).map((m) => m.key)).toEqual(['firm-footing:4', 'snare-wise', 'rooted:10']);
     // Within the exam's own (counted) badges; Field notes may follow them as a block.
     const study = (list: CaseMark[]) => list.filter((m) => COUNTED_SETS.includes(m.set));
-    const closest = study(sortMarks(marks, 'closest'));
+    // Mobile 1.11: the core first, then the Stretch tiers, each in the sort's order.
     const rank = (m: CaseMark) => (m.status === 'earned' ? 2 : m.status === 'gated' ? 1 : 0);
-    expect(closest.map(rank)).toEqual([...closest.map(rank)].sort((a, b) => a - b));
-    const open = closest.filter((m) => rank(m) === 0).map((m) => m.progress);
-    expect(open).toEqual([...open].sort((a, b) => b - a));
-    const effort = study(sortMarks(marks, 'effort')).map((m) => m.minDays);
-    expect(effort).toEqual([...effort].sort((a, b) => a - b));
+    for (const part of [(m: CaseMark) => !m.stretch, (m: CaseMark) => Boolean(m.stretch)]) {
+      const closest = study(sortMarks(marks, 'closest')).filter(part);
+      expect(closest.map(rank)).toEqual([...closest.map(rank)].sort((a, b) => a - b));
+      const open = closest.filter((m) => rank(m) === 0).map((m) => m.progress);
+      expect(open).toEqual([...open].sort((a, b) => b - a));
+      const effort = study(sortMarks(marks, 'effort')).filter(part).map((m) => m.minDays);
+      expect(effort).toEqual([...effort].sort((a, b) => a - b));
+    }
+    const closestAll = study(sortMarks(marks, 'closest'));
+    expect(closestAll.findIndex((m) => m.stretch)).toBeGreaterThan(closestAll.findLastIndex((m) => !m.stretch));
   });
 
   it('by set, "Not yet" on a complete set says "All earned."; "Earned" on an empty set says "Nothing earned here yet."', () => {
@@ -758,7 +773,7 @@ describe('4. the case', () => {
   it('detail sheet, not yet: rule, progress, how to earn it, effort, and Study for this', () => {
     midLearner();
     mount(<Badges />);
-    press(/^Firm Footing · Info Protection\. Not yet/);
+    press(/^Firm Footing · Info Protection, Clay\. Not yet/);
     const sheet = root().findByType(Modal);
     const t = textOf(sheet);
     expect(t).toContain('The rule');
@@ -804,7 +819,8 @@ describe('4. the case', () => {
     expect(spoken).toContain('30 days, Lichen: 15 of 30 study days');
     expect(spoken).toContain('60 days, Gold leaf: 15 of 60 study days');
     expect(textOf(sheet)).toContain('Lichen, tier 2 of 3');
-    expect(textOf(sheet)).toMatch(/30 days\s+· next/);
+    // Mobile 1.11: each tier's state sits on its own line ("30 days" / "Next").
+    expect(textOf(sheet)).toMatch(/30 days\s+Next/);
   });
 
   // Fixed in review; was a bug (Minor, copy): the ladder tags the tier you OPENED as "next", not the
@@ -815,8 +831,8 @@ describe('4. the case', () => {
     mount(<Badges />);
     press(/^Rooted · 60 days, Gold leaf\. Not yet/);
     const t = textOf(root().findByType(BadgeSheet));
-    expect(t).toMatch(/30 days\s+· next/);
-    expect(t).not.toMatch(/60 days\s+· next/);
+    expect(t).toMatch(/30 days\s+Next/);
+    expect(t).not.toMatch(/60 days\s+Next/);
   });
 
   it('in the final three weeks the case opens at Exam Day (by set); not before, and not in a flat sort', () => {
@@ -853,7 +869,7 @@ describe('4. the case', () => {
     expect(allText()).not.toContain('Next for your exam');
     for (const c of root().findAllByType(BadgeCell)) expect(c.props.showProgress).toBe(false);
     expect(allText()).not.toMatch(/\d+ of \d+ (answered|study days)/);
-    press(/^Firm Footing · Info Protection\. Not yet/);
+    press(/^Firm Footing · Info Protection, Clay\. Not yet/);
     const sheet = root().findByType(Modal);
     expect(textOf(sheet)).not.toContain('12 of 20 answered');
     expect(medallions(sheet)[0].props.progress).toBe(0);
@@ -989,7 +1005,7 @@ describe('6. restore validation: edited backups', () => {
     answerDomain('4', 45);
     for (const d of ['1', '2', '3', '5']) answerDomain(d, 20);
     addMocks(fullMock('m1', T0 - 20 * DAY), fullMock('m2', T0 - 5 * DAY));
-    setMilestones({ days: 60, counts: { longRecall: 30 } });
+    setMilestones({ days: 60, counts: { longRecall: 30 }, longIds: getDomainQuestions('cisa', '3').slice(0, 30).map((q) => q.id) });
     act(() => {
       checkMilestones('cisa');
     });
@@ -1037,7 +1053,7 @@ describe('6. restore validation: edited backups', () => {
 
   it('genuine higher tiers (from a later version) are kept when the data shows them', async () => {
     genuine();
-    setMilestones({ counts: { longRecall: 80 } });
+    setMilestones({ counts: { longRecall: 80 }, longIds: getDomainQuestions('cisa', '3').slice(0, 80).map((q) => q.id) });
     const m = await restoreEdited((x) => {
       x.earned['long-memory:75'] = T0 - DAY;
       x.earned['dress-rehearsal:2'] = T0 - DAY;

@@ -101,9 +101,11 @@ describe('sets and shelves', () => {
     const line = (id: string) => setCountLine(sets.find((s) => s.info.id === id)!);
     expect(line('groundwork')).toBe('1 of 3');
     expect(line('domains')).toBe('1 of 6'); // 5 domains + Whole Map
-    expect(line('evergreen')).toBe('0 of 3');
+    // Mobile 1.11: Evergreen's core is Long Memory 25 and 75, Graduate, Loop Closed and Took Root;
+    // Exam Day's is Dress Rehearsal 1 and 2 and On Pace. Stretch tiers are counted on their own.
+    expect(line('evergreen')).toBe('0 of 5');
     expect(line('judgement')).toBe('0 of 3');
-    expect(line('examDay')).toBe('0 of 2');
+    expect(line('examDay')).toBe('0 of 3');
     expect(line('rooted')).toBe('0 of 3');
     expect(line('fieldNotes')).toBe('1 of 7'); // its own counter
     expect(line('moments')).toBeUndefined(); // no counter at all
@@ -145,8 +147,8 @@ describe('sets and shelves', () => {
     expect(extra.status).toBe('earned');
     expect(extra.counted).toBe(false);
     expect(setCountLine(sets.find((s) => s.info.id === 'domains')!)).toBe('0 of 6');
-    // A tier key this version doesn't define yet is left for the version that does.
-    expect(caseOf(facts(), { 'long-memory:75': T0 }).marks.some((m) => m.key === 'long-memory:75')).toBe(false);
+    // A tier key no version defines is left alone (kept, never shown).
+    expect(caseOf(facts(), { 'long-memory:999': T0 }).marks.some((m) => m.key === 'long-memory:999')).toBe(false);
   });
 
   it('the domains set follows the exam; Exam Day reads the exam facts', () => {
@@ -160,8 +162,12 @@ describe('sets and shelves', () => {
 
   it('Firm Footing leaves go heaviest domain first, each with its weight and a gap line', () => {
     const f = facts({ domains: cisa.domains.map((d) => ({ id: d.id, short: d.short, answered: 14, mastery: 0.62 })) });
-    const leaves = caseOf(f).marks.filter((m) => m.badge === 'firm-footing');
+    const leaves = caseOf(f).marks.filter((m) => m.badge === 'firm-footing' && !m.stretch);
     expect(leaves.map((m) => m.domain!.weight)).toEqual([26, 26, 18, 18, 12]);
+    // Their 80% Stretch tiers come after them, in the same order.
+    const deep = caseOf(f).marks.filter((m) => m.badge === 'firm-footing' && m.stretch);
+    expect(deep.map((m) => m.domain!.weight)).toEqual([26, 26, 18, 18, 12]);
+    expect(deep.every((m) => m.key.endsWith(':80') && m.tier === 2 && m.tiers === 2)).toBe(true);
     expect(leaves[0].detail).toBe('62% → 70% · 14 of 20 answered');
     expect(leaves[0].caption).toBe(leaves[0].domain!.short);
   });
@@ -203,9 +209,13 @@ describe('states, gates and effort', () => {
     expect(find(marks, 'long-memory').minDays).toBe(8);
     expect(find(marks, 'rooted:60').minDays).toBe(60);
     expect(find(marks, 'graduate').minDays).toBeGreaterThan(14);
-    // Within the exam's own badges, then within Field notes: fewest days first.
+    // Within the exam's core badges, then its Stretch tiers, then Field notes: fewest days first.
     const sorted = sortMarks(marks, 'effort');
-    for (const group of [sorted.filter((m) => COUNTED_SETS.includes(m.set)), sorted.filter((m) => !COUNTED_SETS.includes(m.set))]) {
+    const core = sorted.filter((m) => COUNTED_SETS.includes(m.set) && !m.stretch);
+    const stretch = sorted.filter((m) => COUNTED_SETS.includes(m.set) && m.stretch);
+    expect(sorted.slice(0, core.length)).toEqual(core);
+    expect(sorted.slice(core.length, core.length + stretch.length)).toEqual(stretch);
+    for (const group of [core, stretch, sorted.filter((m) => !COUNTED_SETS.includes(m.set))]) {
       const order = group.map((m) => m.minDays);
       expect([...order].sort((a, b) => a - b)).toEqual(order);
     }
@@ -233,9 +243,11 @@ describe('filter and sort', () => {
     const closest = sortMarks(marks, 'closest');
     const open = closest.filter((m) => m.status === 'started' || m.status === 'open');
     expect(open.map((m) => m.progress)).toEqual([...open.map((m) => m.progress)].sort((a, b) => b - a));
-    const counted = closest.filter((m) => COUNTED_SETS.includes(m.set));
-    const kinds = counted.map((m) => (m.status === 'earned' ? 2 : m.status === 'gated' ? 1 : 0));
-    expect([...kinds].sort()).toEqual(kinds);
+    // Within the core, and within the Stretch tiers after it: open, then gated, then earned.
+    for (const group of [closest.filter((m) => COUNTED_SETS.includes(m.set) && !m.stretch), closest.filter((m) => COUNTED_SETS.includes(m.set) && m.stretch)]) {
+      const kinds = group.map((m) => (m.status === 'earned' ? 2 : m.status === 'gated' ? 1 : 0));
+      expect([...kinds].sort()).toEqual(kinds);
+    }
   });
   it('closest and effort: the exam’s own badges first, then Field notes; an unearned Fresh Start never shows as a target', () => {
     for (const sort of ['closest', 'effort'] as const) {
@@ -277,17 +289,38 @@ describe('Next for your exam', () => {
     expect(['firm-footing:4', 'firm-footing:5']).toContain(run(tie, { 'first-foothold': T0 }, 'learn').best?.key);
   });
 
-  it('mock stage, or the final three weeks: Dress Rehearsal, then On Pace', () => {
+  it('mock stage, or the final three weeks: Dress Rehearsal, then On Pace, then Dress Rehearsal · 2 (once it opens)', () => {
     const f = spread({}, 40);
     expect(run(f, { 'first-foothold': T0 }, 'mock').best?.key).toBe('dress-rehearsal');
     expect(run(f, { 'first-foothold': T0, 'dress-rehearsal': T0 }, 'mock').best?.key).toBe('on-pace');
+    // Dress Rehearsal · 2 is gated until Whole Map: never pushed before it opens.
+    expect(run(f, { 'first-foothold': T0, 'dress-rehearsal': T0, 'on-pace': T0 }, 'mock').best?.key).not.toBe('dress-rehearsal:2');
+    expect(run(f, { 'first-foothold': T0, 'dress-rehearsal': T0, 'on-pace': T0, 'whole-map': T0 }, 'mock').best?.key).toBe('dress-rehearsal:2');
     expect(run(f, { 'first-foothold': T0 }, 'practice', 20).best?.key).toBe('dress-rehearsal');
   });
 
-  it('ready: the next Long Memory tier, then Graduate', () => {
+  it('ready: the next Long Memory tier, then Graduate; the Stretch tier (150) only once Evergreen’s core is done', () => {
     const f = spread({}, 40);
     expect(run(f, { 'first-foothold': T0 }, 'ready').best?.key).toBe('long-memory');
-    expect(run(f, { 'first-foothold': T0, 'long-memory': T0 }, 'ready').best?.key).toBe('graduate');
+    expect(run(f, { 'first-foothold': T0, 'long-memory': T0 }, 'ready').best?.key).toBe('long-memory:75');
+    expect(run(f, { 'first-foothold': T0, 'long-memory': T0, 'long-memory:75': T0 }, 'ready').best?.key).toBe('graduate');
+    // Graduate, Loop Closed and Took Root still open: 150 is never suggested yet.
+    const n = run(f, { 'first-foothold': T0, 'long-memory': T0, 'long-memory:75': T0 }, 'ready');
+    expect([n.best, ...n.nearest].some((m) => m?.key === 'long-memory:150')).toBe(false);
+  });
+
+  it('a Stretch tier is never slot 1, and waits while its set’s core is open', () => {
+    // Every domain at 85% with 45 answers: the 80% tiers are met-able, Whole Map earned, core complete.
+    const f = spread({ '1': 0.85, '2': 0.85, '3': 0.85, '4': 0.85, '5': 0.85 }, 45);
+    const leaves = Object.fromEntries(cisa.domains.map((d) => [`firm-footing:${d.id}`, T0]));
+    for (const stage of ['learn', 'practice', 'mock', 'ready'] as const) {
+      const n = run(f, { 'first-foothold': T0, 'whole-map': T0, ...leaves }, stage);
+      expect(n.best?.stretch).toBeFalsy();
+    }
+    // With a 70% leaf still open, no 80% tier is suggested at all.
+    const { ['firm-footing:3']: _open, ...four } = leaves;
+    const n = run(f, { 'first-foothold': T0, 'whole-map': T0, ...four }, 'practice');
+    expect([n.best, ...n.nearest].some((m) => m?.stretch)).toBe(false);
   });
 
   it('mock badges are never suggested before the mock stage (unless the exam is three weeks away)', () => {
@@ -376,8 +409,10 @@ describe('spoken labels and the new dot', () => {
   it('name, state, rule, progress or date, set', () => {
     const { marks } = caseOf(facts({ longRecall: 12 }), { 'first-foothold': T0 });
     expect(markSpoken(find(marks, 'long-memory'), 'Evergreen')).toBe(
-      'Long Memory. Not yet. Get 25 questions right, without a hint, a week or more after you last saw them. 12 of 25 remembered. Evergreen.',
+      'Long Memory · 25 recalls. Not yet. Get 25 questions right, without a hint, a week or more after you last saw them. 12 of 25 remembered. Evergreen.',
     );
+    // A Stretch tier says so, in words, right after its name.
+    expect(markSpoken(find(marks, 'long-memory:150'), 'Evergreen')).toMatch(/^Long Memory · 150 recalls\. Stretch, beyond exam need\. Not yet\. Get 150 questions right/);
     expect(markSpoken(find(marks, 'first-foothold'), 'Groundwork', '12 Oct')).toBe('First Foothold. Earned 12 Oct. Finish the 20-question diagnostic. Groundwork.');
     expect(markSpoken(find(marks, 'mindset-shift'), 'Sound Judgement')).toContain('Opens after 100 first tries spread over 2 weeks or more. Sound Judgement.');
   });
@@ -393,18 +428,21 @@ describe('spoken labels and the new dot', () => {
     expect(hasNewSince({ 'first-foothold': T0 + 1 }, T0)).toBe(true);
     expect(hasNewSince({ 'first-foothold': T0 }, T0)).toBe(false);
     expect(hasNewSince({ 'first-foothold': T0 + 1 }, undefined)).toBe(false);
-    // A back-fill's quiet badges (stamped with its time) were already held: never new.
-    expect(hasNewSince({ 'first-foothold': T0 + 5 }, T0, T0 + 5)).toBe(false);
-    expect(hasNewSince({ 'first-foothold': T0 + 5, 'topic-clear': T0 + 9 }, T0, T0 + 5)).toBe(true);
+    // A back-fill's or catalogue fill's quiet badges (stamped with its time) were already held: never new.
+    expect(hasNewSince({ 'first-foothold': T0 + 5 }, T0, [T0 + 5])).toBe(false);
+    expect(hasNewSince({ 'first-foothold': T0 + 5, 'topic-clear': T0 + 9 }, T0, [T0 + 5])).toBe(true);
+    expect(hasNewSince({ 'first-foothold': T0 + 5, 'took-root': T0 + 9 }, T0, [T0 + 5, T0 + 9])).toBe(false);
   });
-  it('a kept key the case does not show (a newer tier, an unknown badge) never lights the dot or the count', () => {
-    for (const k of ['long-memory:75', 'firm-footing:4:80', 'dress-rehearsal:2', 'rooted', 'rooted:20', 'took-root', 'nope']) expect(caseKey(k)).toBe(false);
-    // Every key the catalogue lists is shown.
+  it('a kept key the case does not show (a tier no version defines, an unknown badge) never lights the dot or the count', () => {
+    for (const k of ['long-memory:999', 'long-memory:25', 'firm-footing:4:90', 'firm-footing:4:80:x', 'dress-rehearsal:4', 'dress-rehearsal:1', 'rooted', 'rooted:20', 'took-root:2', 'on-pace:2', 'nope', 'firm-footing::80'])
+      expect(caseKey(k)).toBe(false);
+    // Every key the catalogue lists is shown (mobile 1.11: the tiers and Took Root too).
     for (const m of allMarks(facts())) expect(caseKey(m.key)).toBe(true);
+    for (const k of ['long-memory:75', 'long-memory:150', 'firm-footing:4:80', 'dress-rehearsal:2', 'dress-rehearsal:3', 'took-root']) expect(caseKey(k)).toBe(true);
     expect(caseKey('firm-footing:9')).toBe(true); // a domain the exam dropped still shows, earned
-    expect(hasNewSince({ 'long-memory:75': T0 + 1 }, T0)).toBe(false);
-    expect(caseEarnedCount({ 'first-foothold': T0, 'long-memory:75': T0, 'firm-footing:4:80': T0 })).toBe(1);
-    const shown = caseOf(facts(), { 'first-foothold': T0, 'long-memory:75': T0 }).marks.filter((m) => m.status === 'earned');
+    expect(hasNewSince({ 'long-memory:999': T0 + 1 }, T0)).toBe(false);
+    expect(caseEarnedCount({ 'first-foothold': T0, 'long-memory:999': T0, 'firm-footing:4:80': T0 })).toBe(2);
+    const shown = caseOf(facts(), { 'first-foothold': T0, 'long-memory:999': T0 }).marks.filter((m) => m.status === 'earned');
     expect(shown.map((m) => m.key)).toEqual(['first-foothold']);
   });
 });

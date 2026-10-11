@@ -31,8 +31,8 @@ import { BigNum, Button, Enter, Gap, Row, Screen, Section, Stat, StatRow, T, Tag
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
-import { COACHING, coachingTag, practicePaceLine, TIMING_LABEL } from '../engine/pace';
-import { minutesUsed, scoreSession, sessionPacing } from '../lib/finishSession';
+import { COACHING, coachingTag, practicePaceLine, timeStat, TIMING_LABEL } from '../engine/pace';
+import { msUsed, scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
 import { badgeNextLine } from '../lib/badges';
 import { momentFor } from '../lib/milestones';
@@ -110,7 +110,10 @@ export default function Results() {
   const cert = getCertification(active.certId)!;
   const denominator = active.mode === 'mock' ? score.total : Math.max(score.answered, 1);
   const pct = Math.round((score.correct / denominator) * 100);
-  const missed = active.questionIds.filter((id) => active.responses[id] && !active.responses[id].correct);
+  // Missed: answered wrong. On a mock, a question left blank is missed too (it
+  // counts as not correct in "Correct n of total"), so Correct + Missed = total.
+  const missed = active.questionIds.filter((id) => (active.responses[id] ? !active.responses[id].correct : active.mode === 'mock'));
+  const blank = active.mode === 'mock' ? active.questionIds.filter((id) => !active.responses[id]).length : 0;
   const done = () => {
     clear();
     router.replace('/home');
@@ -144,8 +147,9 @@ export default function Results() {
   const oneDomain = inSession.length === 1 ? cert.domains[inSession[0]] : undefined;
   // One pace line for every practice / review session (Build C answer times).
   const paceText = practicePaceLine(active.questionIds.map((id) => active.responses[id]?.ms), cert.exam);
-  // The same figure the mock history and pacing panel use (never past a deadline; untimed = answer time).
-  const minutes = minutesUsed(active, active.finishedAt ?? active.startedAt);
+  // The same time the mock history, pacing panel and Today use (a timed mock's
+  // clock; otherwise answer time), as a stat that reads plainly ("Under 1 min", "24 min").
+  const time = timeStat(msUsed(active, active.finishedAt ?? active.startedAt));
   const grow = growing;
   // Starts as the screen's dissolve ends (it is already mostly in by then).
   const at = motion.dur.select;
@@ -195,22 +199,33 @@ export default function Results() {
           {[
             <Stat
               key="a"
-              value={`${score.correct}/${denominator}`}
-              label="correct"
-              // Only the number right rolls (from 0); the "/20" stays put.
-              roll={{ play: grow, from: `0/${denominator}`, run: 1, delay: at + motion.stagger.stat }}
+              label="Correct"
+              value={String(score.correct)}
+              unit={`of ${denominator}`}
+              // The number right rolls up from 0; "of 20" stays put.
+              roll={{ play: grow, from: '0', run: 1, delay: at + motion.stagger.stat }}
             />,
-            <Stat key="b" value={String(missed.length)} label="to review" />,
-            <Stat key="c" value={String(minutes)} label={minutes === 1 ? 'minute' : 'minutes'} />,
+            // Answered wrong (and, on a mock, left blank): what "Practice the ones you missed" opens.
+            missed.length ? (
+              <Stat key="b" label="Missed" value={String(missed.length)} spoken={blank ? `${missed.length}, ${blank} of them left blank` : undefined} />
+            ) : (
+              <Stat key="b" label="Missed" word="None" />
+            ),
+            time.word ? <Stat key="c" label="Time" word={time.word} spoken={time.spoken} /> : <Stat key="c" label="Time" value={time.value} unit={time.unit} spoken={time.spoken} />,
           ]}
         </StatRow>
-        {active.mode === 'mock' && (
+        {blank > 0 && (
           <T v="meta" style={{ marginTop: space.md }}>
+            {`Missed includes ${blank} left blank: a blank counts as not correct.`}
+          </T>
+        )}
+        {active.mode === 'mock' && (
+          <T v="meta" style={{ marginTop: blank > 0 ? space.sm : space.md }}>
             Practice scores are not scaled exam scores. {cert.exam.passingNote}
           </T>
         )}
         {active.mode !== 'mock' && paceText && (
-          <T v="meta" num style={{ marginTop: space.md }}>{paceText}</T>
+          <T v="meta" style={{ marginTop: space.md }}>{paceText}</T>
         )}
         {active.mode === 'mock' && !active.deadline && (
           <T v="meta" style={{ marginTop: space.sm }}>Untimed mock: your answers count toward readiness, and pacing stats leave it out.</T>

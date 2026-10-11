@@ -11,7 +11,7 @@
 import { REVIEW_CAP_LINE, REVIEW_SESSION_CAP, REVIEW_UNIT } from '../engine/srs';
 import { gameTitle } from '../engine/games/registry';
 import { useEffect, useState, type ReactNode } from 'react';
-import { Text, View } from 'react-native';
+import { Text, useWindowDimensions, View } from 'react-native';
 import { domainColor } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { biggestGrowth, clearingTitle, dayAccuracy, itemMinutes, type DayPlan } from '../engine/dayPlan';
@@ -24,7 +24,8 @@ import { useTheme } from '../theme/useTheme';
 import { GrowthRings, PlanLeaf } from './glyphs';
 import { BookOpen, Gamepad2, ICON_STROKE, RotateCcw, Target, Timer } from './icons';
 import { FadeIn, Pop, type Celebration, type Growth } from './motion';
-import { BigNum, DomainDot, ICON_SIZE, Row, T, useFontScale } from './ui';
+import { BigNum, DomainDot, ICON_SIZE, Row, Stat, StatRow, T, useFontScale } from './ui';
+import { timeStat } from '../engine/pace';
 
 // ── Plan items: icon, title, meta ─────────────────────────────────────
 export function planIcon(item: PlanItem, color: string): ReactNode {
@@ -203,6 +204,8 @@ export function ReadinessRow({
  * domain alone is drawn as a single thick ring in its tone.
  */
 export const SINGLE_RING_WEIGHT = 80;
+/** Narrower than this (most 360 dp Android phones), the legend sits under the rings. */
+export const RINGS_SIDE_BY_SIDE_MIN = 380;
 export function DomainRings({
   cert,
   values,
@@ -230,7 +233,10 @@ export function DomainRings({
   delta?: (i: number) => number;
 }) {
   const { c, isDark } = useTheme();
-  const stacked = useFontScale() >= LARGE_TEXT;
+  // The legend goes under the rings at large text AND on narrow phones: beside
+  // the rings at 360 dp, "IT Governance" wrapped and "26/38" was cut off.
+  const narrow = useWindowDimensions().width < RINGS_SIDE_BY_SIDE_MIN;
+  const stacked = useFontScale() >= LARGE_TEXT || narrow;
   const shown = only && only.length > 0 ? only : [...cert.domains.keys()];
   const tones = shown.map((i) => domainColor(cert.domains[i].tone, isDark));
   const weights = shown.length === 1 ? [SINGLE_RING_WEIGHT] : shown.map((i) => cert.domains[i].weight);
@@ -256,14 +262,17 @@ export function DomainRings({
           return (
             <Row key={cert.domains[i].id} gap={9}>
               <DomainDot domain={cert.domains[i]} />
-              <T v="meta" color={c.ink} style={{ flex: 1 }}>{cert.domains[i].short}</T>
+              <T v="meta" color={c.ink} style={{ flex: 1, minWidth: 0 }}>{cert.domains[i].short}</T>
               {up > 0 && (
                 // After this domain's arc has grown (outer ring first, 60 ms apart).
                 <FadeIn rise={false} dur="select" delay={(grow?.delay ?? 0) + motion.dur.grow + (shown.length - 1 - shown.indexOf(i)) * motion.stagger.stat + motion.dur.select}>
                   <T v="caption" color={c.accentText}>{`+${up}`}</T>
                 </FadeIn>
               )}
-              <BigNum value={label(i)} size={17} />
+              {/* The number never shrinks: the name gives way first (it can wrap, the score can't clip). */}
+              <View style={{ flexShrink: 0 }}>
+                <BigNum value={label(i)} size={17} />
+              </View>
             </Row>
           );
         })}
@@ -307,30 +316,31 @@ export function ClearingBody({
   const full = celebration?.mode === 'full';
   const run = celebration?.run ?? 0;
   const line = clearingLine(plan, readiness, range);
-  const stats: [string, string, boolean][] = [
-    [String(plan.answered), 'questions', false],
-    [acc === null ? '–' : String(acc), 'correct', acc !== null],
-    [String(plan.minutes), 'minutes', false],
-  ];
+  // Each stat reads on its own: "Questions 31", "Accuracy 81%", "Time 24 min".
+  // "Accuracy" for a percentage everywhere (You, Today); "Correct" is a count (Results).
+  const time = timeStat(plan.minutes * 60_000);
   // The beats, inside the 1.2 s budget: stats 120–840 ms, ring 240–840, words from 840.
   const statsAt = motion.dur.select;
   const ringAt = 2 * motion.dur.select;
   const wordsAt = ringAt + motion.dur.grow;
+  const statRoll = (i: number) => ({ play: full, from: null, run, delay: statsAt + i * motion.stagger.stat });
   return (
     <>
-      <View style={{ flexDirection: 'row', marginTop: 18 }}>
-        {stats.map(([v, l, pct], i) => (
-          <View
-            key={l}
-            accessible
-            accessibilityLabel={`${v}${pct ? ' percent' : ''} ${l}`}
-            style={[{ flex: 1 }, i > 0 && { borderLeftWidth: 1, borderLeftColor: c.forestTrack, paddingLeft: 14 }]}
-          >
-            <BigNum value={v} pct={pct} size={30} color={c.onForest} roll={{ play: full && v !== '–', from: null, run, delay: statsAt + i * motion.stagger.stat }} />
-            <T v="caption" color={c.onForest2} style={{ marginTop: 2 }}>{l}</T>
-          </View>
-        ))}
-      </View>
+      <StatRow frame={false} line={c.forestTrack} style={{ marginTop: 18 }}>
+        {[
+          <Stat key="q" label="Questions" value={String(plan.answered)} color={c.onForest} labelColor={c.onForest2} roll={statRoll(0)} />,
+          acc === null ? (
+            <Stat key="a" label="Accuracy" word="None yet" color={c.onForest} labelColor={c.onForest2} />
+          ) : (
+            <Stat key="a" label="Accuracy" value={String(acc)} pct color={c.onForest} labelColor={c.onForest2} roll={statRoll(1)} />
+          ),
+          time.word ? (
+            <Stat key="t" label="Time" word={time.word} spoken={time.spoken} color={c.onForest} labelColor={c.onForest2} />
+          ) : (
+            <Stat key="t" label="Time" value={time.value} unit={time.unit} spoken={time.spoken} color={c.onForest} labelColor={c.onForest2} unitColor={c.onForest2} roll={statRoll(2)} />
+          ),
+        ]}
+      </StatRow>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 18, paddingTop: 16, borderTopWidth: 1, borderTopColor: c.forestTrack }}>
         <GrowthRings
           preset="mini"
@@ -353,10 +363,13 @@ export function ClearingBody({
   );
 }
 
-/** "Readiness grew to 67–77%": never a negative framing ("holding at" otherwise). */
+/**
+ * "Readiness grew to 67–77%": never a negative framing ("holding at" otherwise).
+ * A word joiner after the dash keeps the range on one line ("67–" never ends a line).
+ */
 export function clearingLine(plan: DayPlan, readiness: Readiness, range: ReadinessRange): string {
   return range.enough
-    ? `Readiness ${readiness.score > plan.start.score ? 'grew to' : 'holding at'} ${rangeLabel(range)}%`
+    ? `Readiness ${readiness.score > plan.start.score ? 'grew to' : 'holding at'} ${rangeLabel(range).replace('–', '–\u2060')}%`
     : 'Readiness takes shape as you answer';
 }
 

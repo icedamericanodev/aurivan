@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -28,6 +28,12 @@ fi
 EXPO_OFFLINE=1 npx expo export --platform web --clear --output-dir "$TMP/web" >/dev/null
 if [ "${SHOTS:-}" = support ]; then cp "$TMP/fixes.keep" "$FIXES"; fi
 python3 scripts/screenshots/make_seed.py "$TMP/seed.json" "$THEME"
+# A server left over from an earlier run would keep serving its OLD build on
+# the same port (this one would fail to bind, quietly): stop instead.
+if python3 -c "import socket,sys; s=socket.socket(); sys.exit(0 if s.connect_ex(('127.0.0.1',8093))==0 else 1)"; then
+  echo "Port 8093 is already in use (an old screenshot server?). Stop it, then run again." >&2
+  exit 1
+fi
 python3 scripts/screenshots/serve_spa.py "$TMP/web" & SERVER=$!
 trap 'kill $SERVER 2>/dev/null; rm -rf "$TMP"' EXIT
 sleep 1
@@ -74,6 +80,17 @@ elif [ "${SHOTS:-}" = badges ]; then
   # (shoot_badges.mjs; REDUCED=1 for the reduced set; FONT_SCALE=1.3 or 2 for the
   # large-text layouts of the case, a shelf and the sheet).
   node scripts/screenshots/shoot_badges.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = badgesC ]; then
+  # Mobile 1.11 badge tiers, Took Root and the share card: the tier ladders,
+  # the five domain medallions and their Stretch row, "New in Evergreen", the
+  # catalogue line, the share entry and the card (shoot_badges_c.mjs; REDUCED=1;
+  # FONT_SCALE=2 for the sheet, its ladder and the share panel at about 200% text).
+  node scripts/screenshots/shoot_badges_c.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = stats ]; then
+  # Mobile 1.11 stat rows: Results (1-question practice, 20-question practice,
+  # a mock and its pacing), You's stats and the Today clearing (shoot_stats.mjs;
+  # NARROW=1 for a 360-wide phone, FONT_SCALE=2 for approximate 200% text).
+  node scripts/screenshots/shoot_stats.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).

@@ -4,8 +4,9 @@
  *
  * - The words come from engine/shareCard.ts (pure, tested): never a pass
  *   claim, never the bank size, readiness only as a range once it exists.
- * - The card is always the forest panel (the brand moment), so it looks the
- *   same in light and dark mode. The preview sheet itself follows the theme.
+ * - The card is always the forest panel (the brand moment) in FIXED colours
+ *   (tokens.ts cardInk, never the theme's), so the image is the same in
+ *   light and dark mode. The preview sheet itself follows the theme.
  * - The card is a fixed 320 × 400 pt "picture": its text does NOT grow with the
  *   phone's font size (maxFontSizeMultiplier 1), so the image is identical on
  *   every phone and never clips. Screen readers get the full text from the
@@ -18,15 +19,16 @@
  *   Cancelling or any error is ignored quietly: sharing is never worth a crash.
  */
 import * as Sharing from 'expo-sharing';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Modal, Platform, ScrollView, Share, useWindowDimensions, View } from 'react-native';
+import { moveFocus } from '../lib/a11y';
 import { useMotion } from './motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { captureRef, releaseCapture } from 'react-native-view-shot';
 import type { Certification } from '../content/types';
 import type { Readiness } from '../engine/readiness';
-import { notAffiliated, shareMessage, shareOptions, type ShareHeadline, type ShareInput, type ShareKind } from '../engine/shareCard';
-import { radius, space } from '../theme/tokens';
+import { shareMessage, shareOptions, type BadgeCardText, type ShareHeadline, type ShareInput, type ShareKind } from '../engine/shareCard';
+import { cardInk, cardType, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { BrandLockup } from './brand';
 import { GrowthRings } from './glyphs';
@@ -53,7 +55,6 @@ const KIND_LABEL: Record<ShareKind, string> = {
 
 // ── The card itself ───────────────────────────────────────────────────
 function ShareCard({ cert, readiness, headline }: { cert: Certification; readiness: Readiness; headline: ShareHeadline }) {
-  const { c } = useTheme();
   return (
     <View
       style={{
@@ -62,7 +63,7 @@ function ShareCard({ cert, readiness, headline }: { cert: Certification; readine
         height: CARD_H,
         // Square corners and a solid fill: the PNG has no transparent corners.
         // (The preview rounds them with a wrapper that is NOT captured.)
-        backgroundColor: c.forest,
+        backgroundColor: cardInk.field,
         padding: space.xl,
         justifyContent: 'space-between',
         overflow: 'hidden',
@@ -73,7 +74,7 @@ function ShareCard({ cert, readiness, headline }: { cert: Certification; readine
           the wrapper's accessibilityLabel already says "Aurivan". */}
       <Row style={{ justifyContent: 'space-between', alignItems: 'center' }}>
         <BrandLockup tone="dark" height={30} decorative />
-        <T v="caption" color={c.sap} maxFontSizeMultiplier={FIXED}>{cert.name}</T>
+        <T v="caption" color={cardInk.sap} maxFontSizeMultiplier={FIXED}>{cert.name}</T>
       </Row>
 
       {/* Growth rings: one per domain, in sap on the forest (decorative here).
@@ -83,46 +84,49 @@ function ShareCard({ cert, readiness, headline }: { cert: Certification; readine
           preset="today"
           mastery={readiness.domains.map((d) => d.mastery)}
           weights={cert.domains.map((d) => d.weight)}
-          colors={c.sap}
-          track={c.forestTrack}
+          colors={cardInk.sap}
+          track={cardInk.line}
         />
       </View>
 
       {/* The one headline. */}
       <View>
-        {headline.value && <T v="number" num color={c.onForest} maxFontSizeMultiplier={FIXED}>{headline.value}</T>}
+        {headline.value && <T v="number" num color={cardInk.ink} maxFontSizeMultiplier={FIXED}>{headline.value}</T>}
         <T
           v={headline.value ? 'headline' : 'hero'}
-          color={c.onForest}
+          color={cardInk.ink}
           maxFontSizeMultiplier={FIXED}
           style={{ marginTop: headline.value ? space.sm : 0 }}
         >
           {headline.label}
         </T>
         {headline.note && (
-          <T v="meta" color={c.onForest2} maxFontSizeMultiplier={FIXED} style={{ marginTop: space.xs }}>
+          <T v="meta" color={cardInk.ink2} maxFontSizeMultiplier={FIXED} style={{ marginTop: space.xs }}>
             {headline.note}
           </T>
         )}
       </View>
 
-      {/* Trademark-safe footer. */}
-      <View style={{ paddingTop: space.md, borderTopWidth: 1, borderTopColor: c.forestTrack }}>
-        <T v="caption" color={c.onForest2} maxFontSizeMultiplier={FIXED}>{notAffiliated(cert.issuer)}</T>
+      {/* Trademark-safe footer: the cert's full notice (compliance review §5). */}
+      <View style={{ paddingTop: space.md, borderTopWidth: 1, borderTopColor: cardInk.line }}>
+        <T v="caption" color={cardInk.ink2} maxFontSizeMultiplier={FIXED} style={NOTICE}>{cert.trademarkNotice}</T>
       </View>
     </View>
   );
 }
 
+/** The notice on a card: small, but every word legible (two lines at most at 320 pt). */
+const NOTICE = cardType.notice;
+
 /** Image sharing needs a native share sheet (iOS/Android); web gets text. */
 const IMAGE_SHARE = Platform.OS !== 'web';
 
 /**
- * Capture the card and open the system share sheet with the image.
- * Falls back to sharing the sentence as text when image sharing is unavailable.
- * Never throws: a cancelled sheet or a failed capture simply does nothing.
+ * Capture a card and open the system share sheet with the image. Falls back
+ * to sharing `text` when image sharing is unavailable. Never throws: a
+ * cancelled sheet or a failed capture simply does nothing.
  */
-async function shareCard(view: View | null, h: ShareHeadline, issuer: string) {
+async function shareImage(view: View | null, text: string, title: string) {
   let uri: string | null = null;
   try {
     if (IMAGE_SHARE && view && (await Sharing.isAvailableAsync())) {
@@ -136,12 +140,12 @@ async function shareCard(view: View | null, h: ShareHeadline, issuer: string) {
       await Sharing.shareAsync(uri.startsWith('file://') ? uri : `file://${uri}`, {
         mimeType: 'image/png', // Android: lets the share sheet offer image apps
         UTI: 'public.png', // iOS: the same, as a Uniform Type Identifier
-        dialogTitle: 'Share progress',
+        dialogTitle: title,
       });
       return;
     }
     // Fallback (web, or no share sheet): React Native's Share sends text only.
-    await Share.share({ message: shareMessage(h, issuer), title: 'My study progress' }, { dialogTitle: 'Share progress' });
+    await Share.share({ message: text, title }, { dialogTitle: title });
   } catch {
     // Cancelled, no share target, or capture failed: stay quiet.
   } finally {
@@ -187,7 +191,7 @@ export function ShareProgressSheet({
     busy.current = true;
     setSharing(true);
     try {
-      await shareCard(cardRef.current, headline, cert.issuer);
+      await shareImage(cardRef.current, shareMessage(headline, cert.trademarkNotice), 'Share progress');
     } finally {
       busy.current = false;
       setSharing(false);
@@ -228,7 +232,7 @@ export function ShareProgressSheet({
                 collapsable={false} // Android must keep this view to capture it
                 accessible
                 accessibilityRole="image"
-                accessibilityLabel={`Share card preview. Aurivan, ${cert.name}. ${headline.spoken} ${notAffiliated(cert.issuer)}`}
+                accessibilityLabel={`Share card preview. Aurivan, ${cert.name}. ${headline.spoken} ${cert.trademarkNotice}`}
                 style={{
                   width: CARD_W,
                   height: CARD_H,
@@ -252,5 +256,103 @@ export function ShareProgressSheet({
         </ScrollView>
       </SafeAreaView>
     </Modal>
+  );
+}
+
+// ── Badge cards (mobile 1.11, badges_game.md §6, compliance review §5) ──
+/**
+ * One earned badge, as a 320 × 400 forest card (exported at 1080 × 1350):
+ * the Aurivan lockup, the medallion, its caption "Aurivan study badge ·
+ * Earned 3 Nov 2026" (so it reads as ours, never as an issuer's credential),
+ * the badge's name and tier, its skill line, then at the foot, apart from the
+ * medallion, "Studying for the CISA® exam" and the cert's full notice.
+ * No cert name on or directly above the medallion, no issuer marks or
+ * colours, no verification ID, URL or "add to profile". A picture: its text
+ * never scales with the phone's font size (screen readers get `spoken`).
+ */
+export function BadgeShareCard({ text, art }: { text: BadgeCardText; art: ReactNode }) {
+  return (
+    <View style={{ width: CARD_W, height: CARD_H, backgroundColor: cardInk.field, paddingHorizontal: space.xl, paddingVertical: space.lg, overflow: 'hidden' }}>
+      <BrandLockup tone="dark" height={22} decorative />
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View accessible={false} importantForAccessibility="no-hide-descendants">
+          {art}
+        </View>
+        <T v="caption" center color={cardInk.ink2} maxFontSizeMultiplier={FIXED} style={{ marginTop: space.xs }}>{text.caption}</T>
+        <T v="hero" center color={cardInk.ink} maxFontSizeMultiplier={FIXED} style={[cardType.name, { marginTop: space.sm }]}>{text.name}</T>
+        {text.tierLine && (
+          <T v="caption" center color={cardInk.sap} maxFontSizeMultiplier={FIXED} style={{ marginTop: 2 }}>{text.tierLine}</T>
+        )}
+        <T v="quote" center color={cardInk.ink} maxFontSizeMultiplier={FIXED} style={[cardType.skill, { marginTop: space.xs }]}>{text.skill}</T>
+      </View>
+      <View style={{ paddingTop: space.sm, borderTopWidth: 1, borderTopColor: cardInk.line }}>
+        <T v="caption" color={cardInk.ink} maxFontSizeMultiplier={FIXED}>{text.headline}</T>
+        <T v="caption" color={cardInk.ink2} maxFontSizeMultiplier={FIXED} style={[NOTICE, { marginTop: 2 }]}>{text.notice}</T>
+      </View>
+    </View>
+  );
+}
+
+/**
+ * The badge card's preview and its one action, shown inside the badge's
+ * sheet (never a sheet over a sheet). Opened only by the learner's tap on
+ * Share; "Share image" hands the picture to the system share sheet. Sharing
+ * earns nothing and there is no "add to profile" option. `text` is built by
+ * the sheet before Share is offered (engine/shareCard.ts badgeCardText), so
+ * nothing here can throw while rendering.
+ */
+export function BadgeSharePanel({ text, art, onBack }: { text: BadgeCardText; art: ReactNode; onBack: () => void }) {
+  const { c } = useTheme();
+  const screenWidth = useWindowDimensions().width;
+  const cardRef = useRef<View>(null);
+  const title = useRef<View>(null);
+  const busy = useRef(false);
+  const [sharing, setSharing] = useState(false);
+  useEffect(() => moveFocus(title, 300), []);
+  const onShare = async () => {
+    if (busy.current) return;
+    busy.current = true;
+    setSharing(true);
+    try {
+      await shareImage(cardRef.current, text.message, 'Share badge');
+    } finally {
+      busy.current = false;
+      setSharing(false);
+    }
+  };
+  const scale = Math.min(1, (screenWidth - space.gutter * 2) / CARD_W);
+  return (
+    <View>
+      <View ref={title} accessible accessibilityRole="header" style={{ marginTop: space.md }}>
+        <T v="hero">Share this badge</T>
+      </View>
+      <T v="meta" style={{ marginTop: space.xs }}>Only what is on the card is shared.</T>
+      <View style={{ alignItems: 'center', marginTop: space.xl }}>
+        <View style={{ width: CARD_W * scale, height: CARD_H * scale, borderRadius: radius.lg, overflow: 'hidden' }}>
+          <View
+            ref={cardRef}
+            collapsable={false}
+            accessible
+            accessibilityRole="image"
+            accessibilityLabel={text.spoken}
+            style={{ width: CARD_W, height: CARD_H, transform: [{ translateX: (CARD_W * (scale - 1)) / 2 }, { translateY: (CARD_H * (scale - 1)) / 2 }, { scale }] }}
+          >
+            <BadgeShareCard text={text} art={art} />
+          </View>
+        </View>
+      </View>
+      <Button
+        label={sharing ? 'Sharing…' : IMAGE_SHARE ? 'Share image' : 'Share'}
+        onPress={onShare}
+        disabled={sharing}
+        accessibilityHint={IMAGE_SHARE ? 'Opens the share sheet with this card as an image' : 'Opens the share sheet with this badge as text'}
+        icon={(col) => <Share2 size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+        style={{ marginTop: space.xl }}
+      />
+      <Button kind="ghost" label="Back to the badge" onPress={onBack} style={{ alignSelf: 'center', marginTop: space.sm }} />
+      <T v="meta" color={c.ink2} style={{ marginTop: space.md }}>
+        Nothing is posted for you. You choose where it goes.
+      </T>
+    </View>
   );
 }

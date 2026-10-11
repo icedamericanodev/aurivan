@@ -14,6 +14,9 @@
  *   calm sage (badgeStruck) with a plain rim, so Gold leaf always means the
  *   top of a ladder.
  * - The EMBLEM is the badge's meaning, and later its keepsake on the plant.
+ *   Firm Footing wears its domain's own (mobile 1.11): a balance for IS
+ *   Audit, a helm for IT Governance, a staked sapling for IS Acquisition, a
+ *   windmill for IS Operations, a chestnut in its split husk for Info Protection.
  * - Earned: enamel, metal rim, ribbon. Not yet: a stitched dashed outline,
  *   a flat field, a one-tone emblem and a green progress trace from the top
  *   (theme tokens, so it follows light and dark). Gated (it opens later): a
@@ -23,7 +26,8 @@
  *   trace), so it keeps 3:1 there too.
  * - At 64pt and under, the light cut: no growth rings and no cast emblem
  *   shadow (a case of 30 medallions draws far fewer nodes).
- * - At 47pt and under, the compact cut: no ribbon, laurel, beads, pips or rings.
+ * - At 47pt and under, the compact cut: no ribbon, laurel, beads, pips or rings,
+ *   and an emblem's `fine` detail (a windmill sail's lattice) is left out.
  * - `strike`: the unlock moment. The rim catches the light once (a glint
  *   runs round it) and the emblem fills from its outline. Static under
  *   Reduce Motion, or once the moment is settled.
@@ -86,8 +90,12 @@ type FrameArt = {
 const FRAMES = ART.frames as unknown as Record<FrameKind, FrameArt>;
 const EMBLEMS = ART.emblems as unknown as Record<string, Node[]>;
 
-/** The emblem for a badge (Rooted grows with its tier). */
-export function emblemId(badge: string, tier?: number): string {
+/**
+ * The emblem for a badge: Rooted grows with its tier; Firm Footing wears its
+ * domain's own emblem (`emblem`, mobile 1.11) when the exam has one.
+ */
+export function emblemId(badge: string, tier?: number, emblem?: string): string {
+  if (emblem && EMBLEMS[emblem]) return emblem;
   return badge === 'rooted' ? `rooted:${tier ?? 3}` : badge;
 }
 
@@ -110,6 +118,7 @@ function drawEmblem(nodes: Node[], pal: Record<string, string>, key = 'e'): Reac
   return nodes.map(([tag, attrs, kids], i) => {
     const props: Record<string, string | number> = {};
     for (const [k, v] of Object.entries(attrs)) {
+      if (k === 'fine') continue; // a marker, not an SVG attribute (see withoutFine)
       const name = SVG_ATTR[k] ?? k;
       props[name] = (k === 'fill' || k === 'stroke') && typeof v === 'string' && pal[v] !== undefined ? pal[v] : v;
     }
@@ -133,6 +142,21 @@ function drawEmblem(nodes: Node[], pal: Record<string, string>, key = 'e'): Reac
         return null;
     }
   });
+}
+
+/**
+ * An emblem without its `fine` detail (a windmill sail's lattice): at 47pt
+ * and under that detail turns to noise, so the shapes are drawn solid.
+ */
+function withoutFine(nodes: Node[]): Node[] {
+  return nodes.filter(([, attrs]) => !attrs.fine).map(([tag, attrs, kids]) => (kids ? [tag, attrs, withoutFine(kids)] : [tag, attrs]) as Node);
+}
+const compactEmblems = new Map<string, Node[]>();
+/** The compact cut of an emblem, worked out once per emblem. */
+function compactEmblem(id: string, nodes: Node[]): Node[] {
+  let cut = compactEmblems.get(id);
+  if (!cut) compactEmblems.set(id, (cut = withoutFine(nodes)));
+  return cut;
 }
 
 const ROLES = ['E1', 'E2', 'E3', 'D2', 'D3', 'L3', 'K'] as const;
@@ -162,6 +186,8 @@ export interface MedallionProps {
   domainIndex?: number;
   /** …and how many there are. Primitives, so the memo holds across renders. */
   domainCount?: number;
+  /** Firm Footing's domain emblem ("domain-audit"); none: the badge's own. */
+  emblem?: string;
   /** What it sits on: the page (default) or the forest panel (on-forest inks for a not-yet badge). */
   surface?: 'paper' | 'forest';
   strike?: Strike;
@@ -171,7 +197,7 @@ export interface MedallionProps {
 export const metalFor = (tier: number): BadgeMetal => (tier >= 1 && tier <= 3 ? badgeMetal[tier as 1 | 2 | 3] : badgeStruck);
 
 /** One medallion. Memoised (primitive props): the art only changes with its state, size and progress. */
-export const Medallion = memo(function Medallion({ badge, set, tier = 0, state, progress = 0, size, domainIndex, domainCount, surface = 'paper', strike }: MedallionProps) {
+export const Medallion = memo(function Medallion({ badge, set, tier = 0, state, progress = 0, size, domainIndex, domainCount, emblem: emblemKey, surface = 'paper', strike }: MedallionProps) {
   const { c } = useTheme();
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const look = SET_LOOK[set];
@@ -184,7 +210,9 @@ export const Medallion = memo(function Medallion({ badge, set, tier = 0, state, 
     [domainIndex, domainCount],
   );
   const vb = compact ? '6 0 188 188' : '0 0 200 200';
-  const emblem = EMBLEMS[emblemId(badge, tier || undefined)] ?? EMBLEMS['first-foothold'];
+  const eid = EMBLEMS[emblemId(badge, tier || undefined, emblemKey)] ? emblemId(badge, tier || undefined, emblemKey) : 'first-foothold';
+  // At 47pt and under: solid shapes, no fine lattice (it reads as noise there).
+  const emblem = compact ? compactEmblem(eid, EMBLEMS[eid]) : EMBLEMS[eid];
   const s = fr.emblem.s * (compact ? 1.08 : 1);
   const place = `translate(${fr.emblem.cx - 50 * s} ${fr.emblem.cy - 50 * s}) scale(${s})`;
   const earned = state === 'earned';

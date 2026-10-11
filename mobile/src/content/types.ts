@@ -42,7 +42,15 @@ export interface DomainInfo {
   weight: number; // % of the real exam (all domains sum to 100)
   /** Colour tone 0–4 (see domainColor in certifications.ts). Never a hex value. */
   tone: DomainTone;
+  /**
+   * Firm Footing's emblem for this domain (mobile 1.11): the medallion art
+   * (scripts/badge-art/emblems.mjs, "domain-<id>"). None: the tree-ring slice.
+   */
+  emblem?: DomainEmblem;
 }
+
+/** The five domain emblems the badge art has (an exam picks the apt one per domain). */
+export type DomainEmblem = 'domain-audit' | 'domain-governance' | 'domain-build' | 'domain-operations' | 'domain-protection';
 
 /** Index into the 5 domain tones: Lake, Moss, Ochre, Heather, Slate. */
 export type DomainTone = 0 | 1 | 2 | 3 | 4;

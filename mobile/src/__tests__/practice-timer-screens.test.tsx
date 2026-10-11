@@ -6,7 +6,7 @@
  * - Practice: a "Timed" switch that starts from Settings → Study defaults;
  * - the "Practice at exam pace?" card is offered once and its answer
  *   persists (it never comes back, and dismissing never turns the timer on);
- * - Results: one median line, and coaching tags on fast misses and long right answers.
+ * - Results: one pace sentence, and coaching tags on fast misses and long right answers.
  *
  * Gotcha (see session-screen.regression.test.tsx): never write
  * `act(() => store.action())` — use braces.
@@ -257,7 +257,7 @@ describe('Settings → Study defaults', () => {
 });
 
 describe('Results: pace line and coaching tags', () => {
-  it('one median line, and tags only on a fast miss or a long right answer', () => {
+  it('one pace sentence, and tags only on a fast miss or a long right answer', () => {
     const qs = getAllQuestions('cisa').slice(0, 3);
     startFromIds('cisa', qs.map((q) => q.id), 'Practice');
     act(() => {
@@ -268,7 +268,7 @@ describe('Results: pace line and coaching tags', () => {
     });
     mount(<Results />);
     const text = allText();
-    expect(text).toContain('Median 74 s per question · exam pace 96 s');
+    expect(text).toContain('About 74 seconds per question. The exam allows about 96 seconds.');
     expect(text).toContain('Quick pick');
     expect(text).toContain('Slow down on the stem.');
     expect(text).toContain('Took its time');

@@ -200,10 +200,15 @@ describe('practice timer', () => {
 });
 
 describe('practice results line and coaching tags', () => {
-  it('median seconds vs exam pace', () => {
-    expect(practicePaceLine([70 * S, 74 * S, 90 * S], CISA)).toBe('Median 74 s per question · exam pace 96 s');
-    expect(practicePaceLine([60 * S, 80 * S], CISA)).toBe('Median 70 s per question · exam pace 96 s');
-    expect(practicePaceLine([undefined], CISA)).toBeNull();
+  it('the typical time per question against the exam’s, in one plain sentence', () => {
+    // Mobile 1.11: one plain sentence, the typical (median) time against the exam's.
+    expect(practicePaceLine([70 * S, 74 * S, 90 * S], CISA)).toBe('About 74 seconds per question. The exam allows about 96 seconds.');
+    // Too few answers to say anything useful (a 1- or 2-question session): no line.
+    expect(practicePaceLine([60 * S, 80 * S], CISA)).toBeNull();
+    expect(practicePaceLine([5 * S], CISA)).toBeNull();
+    expect(practicePaceLine([undefined, undefined, undefined], CISA)).toBeNull();
+    // Past two minutes it says minutes, both figures in the same unit.
+    expect(practicePaceLine([150 * S, 160 * S, 170 * S], CISA)).toBe('About 2.7 minutes per question. The exam allows about 1.6 minutes.');
   });
 
   it('fast and wrong: under 30 s and wrong', () => {
@@ -304,7 +309,7 @@ describe('pacing stats leave untimed mocks out', () => {
     expect(s.medianSec).toBe(90);
     expect(s.allAnswered).toBe(1);
     expect(s.meanDeviation).toBeCloseTo((0.05 + 0.15 + 0.2) / 3);
-    expect(pacingStatsLine(s)).toBe('Pace over 2 timed mocks: median 90 s per question. Finished with every question answered: 1 of 2.');
+    expect(pacingStatsLine(s)).toBe('In your 2 timed mocks you took about 90 seconds per question. You answered every question in 1 of 2.');
   });
 
   it('only untimed mocks: no stats line', () => {

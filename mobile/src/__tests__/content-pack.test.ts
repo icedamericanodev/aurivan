@@ -4,7 +4,15 @@
  */
 import { CERTIFICATIONS } from '../content/certifications';
 import { getAllQuestions, hasContent } from '../content/loader';
+import { FIRM_DEEP_ANSWERS } from '../engine/milestones';
 import { optionLetters } from '../engine/shuffle';
+import { marksFor, tookRootShare } from '../lib/milestones';
+import { certOutline, questionExists } from '../lib/outline';
+import { selectCert, useProgress } from '../store/progress';
+
+jest.mock('@react-native-async-storage/async-storage', () =>
+  jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
+);
 
 for (const cert of CERTIFICATIONS.filter((c) => c.status === 'available')) {
   describe(`${cert.name} content pack`, () => {
@@ -48,3 +56,40 @@ for (const cert of CERTIFICATIONS.filter((c) => c.status === 'available')) {
     });
   });
 }
+
+// Mobile 1.11 (badges_game.md §9.4): Firm Footing · 80% needs 40 of a domain's
+// answers. Each available cert's bank must hold at least twice that per domain,
+// or the tier would be out of reach (it would have to leave that cert's catalogue).
+describe('the bank supports every badge tier', () => {
+  it('every domain of every available cert has 2 × 40 questions or more', () => {
+    for (const cert of CERTIFICATIONS.filter((c) => c.status === 'available' && hasContent(c.id))) {
+      const all = getAllQuestions(cert.id);
+      for (const d of cert.domains) {
+        const n = all.filter((q) => q.domainId === d.id).length;
+        expect([cert.id, d.id, n >= 2 * FIRM_DEEP_ANSWERS]).toEqual([cert.id, d.id, true]);
+      }
+    }
+  });
+});
+
+// Mobile 1.11: Took Root (a whole study-notes topic, every part mastered) is
+// Evergreen core. An exam whose pack has no topic with questions could never
+// earn it, so its Evergreen could never complete: the badge leaves that
+// exam's catalogue, decided by the pack itself.
+describe('Took Root is offered only where the pack can earn it', () => {
+  it('in the catalogue exactly when the exam has a study-notes topic with questions', () => {
+    for (const cert of CERTIFICATIONS) {
+      const has = questionExists(cert.id);
+      const topics = certOutline(cert.id).topics.filter((t) => t.subtopics.some((s) => s.questionIds.some(has)));
+      const keys = marksFor(cert.id, selectCert(useProgress.getState(), cert.id)).map((m) => m.key);
+      expect([cert.id, keys.includes('took-root')]).toEqual([cert.id, topics.length > 0]);
+      expect([cert.id, tookRootShare(cert.id, {})]).toEqual([cert.id, topics.length > 0 ? 0 : null]);
+    }
+  });
+
+  it('every available exam with content offers it (CISA has its study notes)', () => {
+    for (const cert of CERTIFICATIONS.filter((c) => c.status === 'available' && hasContent(c.id))) {
+      expect([cert.id, tookRootShare(cert.id, {})]).toEqual([cert.id, 0]);
+    }
+  });
+});

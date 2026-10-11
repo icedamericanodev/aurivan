@@ -1,4 +1,4 @@
-// The 22 emblems. Each is a list of element descriptors in a 100×100 box:
+// The 28 emblems (22 from mobile 1.10, plus Took Root and five domain emblems in 1.11). Each is a list of element descriptors in a 100×100 box:
 //   [tag, attrs, children?]   colours are ROLES resolved per set and state:
 //   E1 main (lightest on dark fields), E2 second, E3 accent (honey or clay), K knock-out (= field colour).
 // One source renders the master SVGs and ships to react-native-svg as JSON (parts/emblems.json).
@@ -303,6 +303,178 @@ const backOnPath = () => [
   leaf(18, 70, 17, 12, -24, 'E2'), leaf(19, 70, 13, 10, 36, 'E2'),
 ];
 
+// ── Mobile 1.11 (slice C): Took Root and Firm Footing's five domains ──
+// Drawn to the same rules: one bold silhouette, ≤ 3 tones, fine detail only
+// as knock-outs. The domain emblems sit on the paper hex (forest, green and
+// clay inks); Took Root on the forest hex.
+
+/**
+ * Took Root: a fern rooted in the ground, one frond open and one still
+ * furled as a fiddlehead beside it (the spaced version of Topic Clear: it
+ * came back, and stayed).
+ */
+const tookRoot = () => {
+  // The open frond: an arching rachis, its pinnae set out along the curve and
+  // shortening toward the drooping tip (an arch, so it never reads as a pine).
+  const q = (t) => {
+    const u = 1 - t;
+    return { x: u * u * 40 + 2 * u * t * 30 + t * t * 8, y: u * u * 80 + 2 * u * t * 22 + t * t * 26 };
+  };
+  const frond = [];
+  for (let k = 0; k < 7; k++) {
+    const t = 0.18 + k * 0.115;
+    const p = q(t);
+    const n = q(t + 0.01);
+    const along = (Math.atan2(n.x - p.x, -(n.y - p.y)) * 180) / Math.PI;
+    const l = 17 - k * 1.7;
+    const w = 7.5 - k * 0.55;
+    frond.push(leaf(+p.x.toFixed(1), +p.y.toFixed(1), l, w, +(along - 72).toFixed(1), 'E2'), leaf(+p.x.toFixed(1), +p.y.toFixed(1), l * 0.92, w, +(along + 68).toFixed(1), 'E2'));
+  }
+  // The fiddlehead: a short stem rising into a tight coil (two turns, closing in).
+  const coil = [];
+  // Wound round twice, closing in, so it reads as a furled crozier (a spiral
+  // you can follow), never an open hook or a question mark.
+  for (let k = 0; k <= 64; k++) {
+    const t = k / 64;
+    const a = -Math.PI * 0.05 + t * Math.PI * 4;
+    const r = 13 - 11 * t;
+    coil.push([(64 + r * Math.cos(a)).toFixed(1), (32 - r * Math.sin(a)).toFixed(1)]);
+  }
+  const [cx, cy] = coil[coil.length - 1];
+  return [
+    // roots reaching down from the ground line
+    S('M40 84Q34 90 27 92M40 84Q46 90 50 95M64 84Q70 89 76 91M64 84L62 95', 'E2', 2.8, { opacity: 0.85 }),
+    R(14, 79, 72, 6, 3, 'E3'),
+    ...frond,
+    S('M40 80Q30 22 8 26', 'E1', 3.4),
+    S(`M64 80Q78 58 ${coil[0][0]} ${coil[0][1]}`, 'E1', 5),
+    S('M' + coil.map((q) => q.join(' ')).join('L'), 'E1', 3.6),
+    Ci(Number(cx), Number(cy), 2.4, 'E1'),
+    // the small pinnae still folded along the young stem
+    leaf(70.5, 64, 9, 6, 64, 'E2'), leaf(72.5, 55, 8, 5.5, -40, 'E2'),
+  ];
+};
+
+/** IS Audit: a balance weighing the evidence (assessed against criteria, independently). */
+const domainAudit = () => [
+  // the base and post
+  P('M30 90L70 90L64 82L36 82Z', 'E2'),
+  R(47, 24, 6, 60, 2, 'E1'),
+  Ci(50, 20, 5.5, 'E1'),
+  // the beam, level: the evidence balanced
+  R(14, 27, 72, 5.5, 2.75, 'E1'),
+  // hangers and pans
+  S('M20 32L12 58M20 32L28 58M80 32L72 58M80 32L88 58', 'E1', 1.8, { opacity: 0.8 }),
+  P('M8 58L32 58C31 66 26 70 20 70C14 70 9 66 8 58Z', 'E3'),
+  P('M68 58L92 58C91 66 86 70 80 70C74 70 69 66 68 58Z', 'E3'),
+  P('M20 58L32 58C31 66 26 70 20 70Z', 'D3', { opacity: 0.8 }),
+  P('M80 58L92 58C91 66 86 70 80 70Z', 'D3', { opacity: 0.8 }),
+  Ci(50, 20, 2, 'K'),
+];
+
+/** IT Governance: a ship's helm, its king spoke marked (governance: to steer). */
+const domainGovernance = () => {
+  const els = [];
+  for (let k = 0; k < 8; k++) {
+    const a = (k / 8) * Math.PI * 2 - Math.PI / 2;
+    const c = Math.cos(a);
+    const sn = Math.sin(a);
+    els.push(S(`M${(50 + 9 * c).toFixed(1)} ${(50 + 9 * sn).toFixed(1)}L${(50 + 35 * c).toFixed(1)} ${(50 + 35 * sn).toFixed(1)}`, 'E2', 4.6));
+    // the handles, turned like a spindle; the top one (the king spoke) in clay
+    els.push(G(`translate(${(50 + 39.5 * c).toFixed(1)} ${(50 + 39.5 * sn).toFixed(1)}) rotate(${((a * 180) / Math.PI + 90).toFixed(1)})`, [R(-3.6, -6.5, 7.2, 13, 3.6, k === 0 ? 'E3' : 'E1')]));
+  }
+  return [
+    ...els,
+    Ci(50, 50, 24, 'none', { stroke: 'E1', 'stroke-width': 7.5 }),
+    Ci(50, 50, 24, 'none', { stroke: 'K', 'stroke-width': 1.4, opacity: 0.45 }),
+    Ci(50, 50, 9.5, 'E3'),
+    Ci(50, 50, 3.6, 'K'),
+  ];
+};
+
+/**
+ * IS Acquisition, Development & Implementation: a sapling planted and
+ * staked, its tie and label on: brought in, built up, put in the ground.
+ */
+const domainBuild = () => [
+  // the planting hole's soil mound
+  P('M14 90Q50 72 86 90Z', 'E3'),
+  // the stake, and the tie that holds the young trunk to it
+  R(60, 14, 6, 74, 2, 'E1'),
+  // the sapling: trunk and a rounded crown of leaves
+  S('M46 84Q44 66 48 46', 'E1', 5),
+  S('M47.5 62Q38 56 32 48', 'E1', 3.2),
+  Ci(46, 34, 15, 'E2'),
+  Ci(33, 44, 10, 'E2'),
+  Ci(58, 42, 9, 'E2'),
+  Ci(42, 29, 4.5, 'K', { opacity: 0.35 }),
+  R(46, 56, 17, 4.4, 2.2, 'E3'),
+  // the label, tied on: the plan it came with
+  S('M63 30L74 36', 'E1', 1.6),
+  G('rotate(18 78 42)', [R(71, 34, 15, 11, 2, 'E3'), Ci(73.5, 39.5, 1.6, 'K')]),
+];
+
+/** IS Operations & Business Resilience: a windmill, turning whatever the wind does. */
+const domainOperations = () => {
+  const sail = (rot) =>
+    G(`rotate(${rot} 50 38)`, [
+      P('M48 36L48 6L60 6L60 33Z', 'E2'),
+      // The sail's lattice: `fine` (the app leaves it out at 47pt and under, where it reads as noise).
+      S('M51.5 10L51.5 32M55.5 9L55.5 32', 'K', 1.5, { opacity: 0.55, fine: 1 }),
+      S('M48 15L60 15M48 24L60 24', 'K', 1.5, { opacity: 0.55, fine: 1 }),
+    ]);
+  return [
+    // the tower, tapering, with its door
+    P('M36 92L42 44L58 44L64 92Z', 'E1'),
+    P('M46.5 92L46.5 82A3.5 3.5 0 0 1 53.5 82L53.5 92Z', 'K'),
+    Ci(50, 64, 3.2, 'K', { opacity: 0.7 }),
+    // the cap
+    P('M39 46Q50 30 61 46Z', 'E3'),
+    sail(-20), sail(70), sail(160), sail(250),
+    Ci(50, 38, 5.2, 'E3'),
+    Ci(50, 38, 2, 'K'),
+    // the ground
+    R(18, 90, 64, 5, 2.5, 'E2', { opacity: 0.75 }),
+  ];
+};
+
+/**
+ * Protection of Information Assets: a chestnut in its husk, split open so the
+ * nut shows (what's inside is kept safe). Two husk halves cup the nut, each
+ * with a few long spines on its outer edge: never a ring of spikes, which
+ * read as a sun (or a virus) at 32pt.
+ */
+const domainProtection = () => {
+  // Spines: from a point on a husk's outer edge, straight out from the nut's centre.
+  const spine = (x, y, len) => {
+    const dx = x - 50;
+    const dy = y - 58;
+    const n = Math.hypot(dx, dy);
+    return `M${x} ${y}L${(x + (dx / n) * len).toFixed(1)} ${(y + (dy / n) * len).toFixed(1)}`;
+  };
+  const left = [
+    [25, 40],
+    [19, 51],
+    [18, 63],
+    [22, 74],
+    [31, 83],
+  ];
+  const spines = [...left, ...left.map(([x, y]) => [100 - x, y])].map(([x, y]) => spine(x, y, 9)).join('');
+  return [
+    S(spines, 'E2', 3.4),
+    // the two husk halves, split at the top, holding the nut's lower half
+    P('M48.5 89C33 89 19 79 18 62C17.5 52 21 44 27 38C28.5 50 31.5 60 37 67C41 72 45 75.5 48.5 76.5Z', 'E2'),
+    P('M51.5 89C67 89 81 79 82 62C82.5 52 79 44 73 38C71.5 50 68.5 60 63 67C59 72 55 75.5 51.5 76.5Z', 'E2'),
+    // the nut, glossy, a little pointed at the top, with its pale crown at the base
+    P('M50 25C61 28 69 39 69 51C69 63 61 71 50 71C39 71 31 63 31 51C31 39 39 28 50 25Z', 'E3'),
+    P('M50 25C61 28 69 39 69 51C69 63 61 71 50 71C57 63 60 44 50 25Z', 'D3'),
+    P('M35 61C40 69 60 69 65 61C60 65 40 65 35 61Z', 'L3', { opacity: 0.9 }),
+    S('M39 44Q41 37 46 34', 'L3', 2.6, { opacity: 0.85 }),
+    // its tuft
+    S('M50 25L50 18', 'E1', 3),
+  ];
+};
+
 export const EMBLEMS = {
   'first-foothold': firstFoothold,
   'topic-clear': topicClear,
@@ -326,6 +498,12 @@ export const EMBLEMS = {
   'sure-footed-pace': sureFootedPace,
   'whole-grove': wholeGrove,
   'back-on-path': backOnPath,
+  'took-root': tookRoot,
+  'domain-audit': domainAudit,
+  'domain-governance': domainGovernance,
+  'domain-build': domainBuild,
+  'domain-operations': domainOperations,
+  'domain-protection': domainProtection,
 };
 
 /** Serialise descriptors to SVG with a role → colour map. */

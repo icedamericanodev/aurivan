@@ -119,9 +119,11 @@ describe('the case', () => {
     ensureBackfill('cisa', T0);
     mount(<Badges />);
     const cells = root().findAllByType(BadgeCell);
-    // The six counted sets hold 20 marks in CISA (3 + 6 + 3 + 3 + 2 + 3), then the 7 skills. Fresh Start
-    // (Moments) is not on the case until it happens: a week away is never shown as a goal.
-    expect(cells.length).toBe(20 + 7);
+    // The six counted sets hold 23 core marks in CISA (3 + 6 + 5 + 3 + 3 + 3) and 7 Stretch tiers
+    // (5 + 1 + 1), then the 7 skills. Fresh Start (Moments) is not on the case until it happens:
+    // a week away is never shown as a goal.
+    expect(cells.length).toBe(23 + 7 + 7);
+    expect(cells.filter((c) => c.props.mark.stretch).length).toBe(7);
     expect(cells.some((c) => c.props.mark.set === 'moments')).toBe(false);
     const widths = new Set(cells.map((c) => c.props.width));
     expect(widths.size).toBe(1);
@@ -138,7 +140,7 @@ describe('the case', () => {
     }
     // Back-filled (saved quietly when badges arrived): "by" that date, never as if earned that day (UX P6).
     expect(labels()).toContain('First Foothold. Earned by 12 Oct. Finish the 20-question diagnostic. Groundwork.');
-    expect(labels().some((l) => l.startsWith('Firm Footing · IS Operations. Earned by 12 Oct.') && l.endsWith('26% of the exam. The Five Domains.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Firm Footing · IS Operations, Clay. Earned by 12 Oct.') && l.endsWith('26% of the exam. The Five Domains.'))).toBe(true);
     expect(allText()).toContain('By 12 Oct');
     expect(labels().some((l) => l.startsWith('Mindset Shift. Not yet.') && l.includes('Opens after 100 first tries'))).toBe(true);
   });
@@ -197,7 +199,7 @@ describe('the detail sheet', () => {
   it('not yet: the rule, progress, how to earn it, effort, and "Study for this" that starts Smart on that domain', () => {
     d4.slice(0, 12).forEach(answer);
     mount(<Badges />);
-    press(/^Firm Footing · IS Operations\. Not yet/);
+    press(/^Firm Footing · IS Operations, Clay\. Not yet/);
     const sheet = root().findByType(Modal);
     const text = () => {
       const out: string[] = [];
@@ -213,6 +215,8 @@ describe('the detail sheet', () => {
     expect(text()).toContain('Needs 20 or more of its questions answered, at 70% mastery.');
     // The title is the sheet's header, spoken with its state.
     expect(sheet.findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && /^Firm Footing · IS Operations\. Not yet\./.test(n.props.accessibilityLabel ?? '')).length).toBe(1);
+    // Its ladder: 70% (Clay) and the 80% Stretch tier (Lichen), in words.
+    expect(labels().some((l) => l.startsWith('70%, Clay: ') && l.includes('80%, Lichen, Stretch: opens when every domain reaches 65%'))).toBe(true);
     const study = sheet.findAll((n) => n.props.accessibilityLabel === 'Study for Firm Footing · IS Operations' && typeof n.props.onPress === 'function')[0];
     act(() => study.props.onPress());
     // The sheet slides away first; only then does the session open (a push under a closing sheet can stall on iOS).
@@ -238,9 +242,9 @@ describe('the detail sheet', () => {
 
   it('a mock badge opens the full mock’s start sheet; Rooted shows its tiers in words', () => {
     mount(<Badges />);
-    press(/^Dress Rehearsal\. Not yet/);
+    press(/^Dress Rehearsal · 1 mock, Clay\. Not yet/);
     expect(allText()).toContain('Best once every domain reaches 65%. It counts whenever you do it.');
-    press(/^Study for Dress Rehearsal$/);
+    press(/^Study for Dress Rehearsal · 1 mock$/);
     act(() => jest.advanceTimersByTime(700));
     expect(router.push).toHaveBeenCalledWith({ pathname: '/mock-start', params: { questions: '150' } });
     press(/^Rooted · 30 days, Lichen\. Not yet/);
@@ -438,7 +442,7 @@ describe('review fixes (PR #40)', () => {
     for (const m of root().findAll((n) => typeof n.type !== 'string' && typeof n.props.badge === 'string' && typeof n.props.state === 'string')) expect(m.props.progress ?? 0).toBe(0);
     press(/^Sort badges/);
     expect(labels().some((l) => /^Closest/.test(l))).toBe(false);
-    press(/^Firm Footing · IS Operations\. Not yet/);
+    press(/^Firm Footing · IS Operations, Clay\. Not yet/);
     expect(sheetText()).not.toContain('How to earn it');
     expect(root().findByType(Modal).findAll((n) => /^Study for/.test(n.props.accessibilityLabel ?? ''))).toHaveLength(0);
   });
@@ -448,7 +452,7 @@ describe('review fixes (PR #40)', () => {
     ensureBackfill('cisa', T0);
     mount(<Badges />);
     press(/^First Foothold\. Earned by/);
-    expect(sheetText()).toContain('Already earned when badges arrived (by 12 Oct)');
+    expect(sheetText()).toContain('Already earned when this badge arrived (by 12 Oct)');
     expect(sheetText()).not.toContain('This completed');
   });
 
@@ -476,7 +480,7 @@ describe('review fixes (PR #40)', () => {
 
   it('You counts only badges the case shows (a kept newer tier never adds one)', () => {
     earn('first-foothold', T0 - DAY);
-    earn('long-memory:75', T0 - DAY);
+    earn('long-memory:999', T0 - DAY);
     mount(<You />);
     expect(labels().some((l) => l.startsWith('Badges, 1 earned.'))).toBe(true);
   });

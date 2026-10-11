@@ -11,7 +11,7 @@
  * things you choose between; one forest panel per screen; tinted blocks
  * only for feedback.
  */
-import { useEffect, useRef, useState, type ReactNode, type Ref } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode, type Ref } from 'react';
 import {
   Image,
   Platform,
@@ -48,6 +48,8 @@ import {
   serifNumeral,
   space,
   STEM_LONG_CHARS,
+  statUnit,
+  statWord,
   stemLong,
   type,
   type NumeralSize,
@@ -988,12 +990,63 @@ export function Toggle({
   );
 }
 
-// ── Stat tile: no box. Serif number + meta label, stacked ─────────────
-export function Stat({ value, label, color, pct, roll }: { value: string; label: string; color?: string; pct?: boolean; roll?: Roll }) {
+// ── Stat: no box. A plain label, then a value that means something alone ──
+/** True inside a StatRow that has become a list (large text). */
+const StatListContext = createContext(false);
+
+/**
+ * One stat (mobile 1.11, "readable at a glance"): the LABEL first ("Correct",
+ * "Missed", "Time"), then a value that reads on its own: a serif number with
+ * its unit ("1 of 1", "24 min", "5 days", "72%") or plain words ("None",
+ * "Under a minute"). Left-aligned and full width, so a label never wraps
+ * mid-phrase or clips in a narrow cell; a long value wraps to a second line
+ * and the row grows. Spoken as one phrase: "Correct: 1 of 1".
+ */
+export function Stat({
+  label,
+  value,
+  unit,
+  word,
+  pct,
+  color,
+  labelColor,
+  unitColor,
+  roll,
+  spoken,
+}: {
+  label: string;
+  /** The number (rolls with `roll`). Leave it out when the value is `word`. */
+  value?: string;
+  /** Words after the number: "of 20", "min", "days". */
+  unit?: string;
+  /** A value in words instead of a number: "None", "Under a minute", "Not yet". */
+  word?: string;
+  pct?: boolean;
+  color?: string;
+  labelColor?: string;
+  unitColor?: string;
+  roll?: Roll;
+  /** What a screen reader says after the label (default: the value as shown). */
+  spoken?: string;
+}) {
+  const { c } = useTheme();
+  // In a StatRow at large text the stats become a list: label left, value right.
+  const listed = useContext(StatListContext);
+  const fg = color ?? c.ink;
+  const said = spoken ?? (word ? word.toLowerCase() : `${value}${pct ? ' percent' : ''}${unit ? ` ${unit}` : ''}`);
   return (
-    <View accessible accessibilityLabel={`${value}${pct ? ' percent' : ''} ${label}`}>
-      <BigNum value={value} pct={pct} size={34} color={color} roll={roll} />
-      <T v="meta" style={{ marginTop: space.xs, textAlign: 'center' }}>{label}</T>
+    <View accessible accessibilityLabel={`${label}: ${said}`} style={[styles.stat, listed && styles.statListed]}>
+      <T v="caption" color={labelColor ?? c.ink2} style={listed ? { flexShrink: 1 } : undefined}>{label}</T>
+      {word !== undefined ? (
+        <Text maxFontSizeMultiplier={2} style={[statWord, { color: fg }, listed ? { flexShrink: 1, textAlign: 'right' } : { marginTop: space.xs }]}>{word}</Text>
+      ) : (
+        <View style={[styles.statValue, listed && { marginTop: 0, justifyContent: 'flex-end', flexShrink: 1 }]}>
+          <BigNum value={value ?? ''} pct={pct} size={30} color={fg} roll={roll} />
+          {unit && (
+            <Text maxFontSizeMultiplier={2} style={[statUnit, { color: unitColor ?? c.ink2 }]}>{unit}</Text>
+          )}
+        </View>
+      )}
     </View>
   );
 }
@@ -1034,6 +1087,11 @@ const SEG_GAP = 3;
 const styles = StyleSheet.create({
   screenPad: { paddingHorizontal: space.gutter, paddingTop: space.lg, paddingBottom: space.xxxl * 2 },
   num: { fontVariant: ['tabular-nums'] },
+  // Full width in its cell (never shrink-wrapped and centred: Android then
+  // measures the text too narrow and a label wraps or clips).
+  stat: { alignSelf: 'stretch' },
+  statListed: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', gap: space.md },
+  statValue: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: 6, marginTop: space.xs },
   bigNum: { flexDirection: 'row', alignItems: 'flex-start' },
   pushed: { flexDirection: 'row', alignItems: 'center', minHeight: 52, gap: space.sm },
   pushedIcon: { width: 44, minHeight: 44, justifyContent: 'center' },
@@ -1146,29 +1204,35 @@ const styles = StyleSheet.create({
 
 /**
  * A row of stats with hairlines above, below and between (spec §11 "You").
- * Each stat is centred in its cell. At large text sizes the row becomes a
- * vertical, left-aligned list so numbers never squeeze.
+ * Each stat starts at its cell's left edge (label over value). At large text
+ * sizes the row becomes a list (label left, value right, a hairline between)
+ * so numbers never squeeze. The row
+ * grows with its tallest stat: nothing is ever clipped by its hairlines.
+ * `line` / `divider`: the hairline colours (the forest panel passes its own).
  */
-export function StatRow({ children, style }: { children: ReactNode[]; style?: StyleProp<ViewStyle> }) {
+export function StatRow({ children, style, line, frame = true }: { children: ReactNode[]; style?: StyleProp<ViewStyle>; line?: string; frame?: boolean }) {
   const { c } = useTheme();
   const stacked = useFontScale() >= LARGE_TEXT;
   const items = children.filter(Boolean);
+  const hair = line ?? c.line;
   return (
-    <View style={[{ flexDirection: stacked ? 'column' : 'row', borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.line }, style]}>
-      {items.map((child, i) => (
-        <View
-          key={i}
-          style={[
-            { paddingTop: space.lg, paddingBottom: 14 },
-            // Side by side, each stat sits centred in its cell; stacked, it reads as a left-aligned list.
-            !stacked && { flex: 1, alignItems: 'center', paddingHorizontal: space.sm },
-            i > 0 && (stacked ? { borderTopWidth: 1, borderTopColor: c.line } : { borderLeftWidth: 1, borderLeftColor: c.line }),
-          ]}
-        >
-          {child}
-        </View>
-      ))}
-    </View>
+    <StatListContext.Provider value={stacked}>
+      <View style={[{ flexDirection: stacked ? 'column' : 'row' }, frame && { borderTopWidth: 1, borderBottomWidth: 1, borderColor: hair }, style]}>
+        {items.map((child, i) => (
+          <View
+            key={i}
+            style={[
+              !stacked && { flex: 1, minWidth: 0, paddingVertical: frame ? 14 : 0, paddingLeft: i > 0 ? 12 : 0, paddingRight: space.xs },
+              // A list: each stat a row, hairlines between them.
+              stacked && { paddingVertical: 10 },
+              i > 0 && (stacked ? { borderTopWidth: 1, borderTopColor: hair } : { borderLeftWidth: 1, borderLeftColor: hair }),
+            ]}
+          >
+            {child}
+          </View>
+        ))}
+      </View>
+    </StatListContext.Provider>
   );
 }
 

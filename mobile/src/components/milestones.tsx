@@ -57,6 +57,7 @@ export function resetBadgeMomentsForTest() {
 /**
  * Decide once per occasion whether this badge gets its moment or only the
  * quiet line: three FULL moments already in the last 7 days means quiet.
+ * Never asked for a tier-up (it always plays its short moment).
  * Read only: nothing is written while rendering. The moment is counted when
  * it actually plays in full (see the effect below), so one never scrolled
  * to, a Reduce Motion one or a short one never uses up the week.
@@ -106,7 +107,9 @@ export function MilestoneMomentView({
   const { c } = useTheme();
   const { reduced } = useMotion();
   const k = `${once}:${moment.key}`;
-  const [quiet] = useState(() => decideQuiet(k));
+  // A tier-up only ever plays SHORT and never counts toward the week's cap, so
+  // the cap never silences it (it isn't a fourth full moment).
+  const [quiet] = useState(() => !moment.tierUp && decideQuiet(k));
   const spoken = quiet ? `New in your badges: ${momentName(moment)}.` : momentSpoken(moment);
   // A moment seen before (a revisit) is simply shown.
   const [fresh] = useState(() => !announced.has(k));
@@ -185,6 +188,7 @@ export function MilestoneMomentView({
                 state="earned"
                 size={MEDAL}
                 {...(moment.domain && moment.domain.index >= 0 ? { domainIndex: moment.domain.index, domainCount: moment.domain.count } : {})}
+                {...(moment.emblem ? { emblem: moment.emblem } : {})}
                 strike={strike}
               />
             </Pop>

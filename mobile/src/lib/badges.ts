@@ -17,7 +17,7 @@ import { router } from 'expo-router';
 import { useSyncExternalStore } from 'react';
 import { getCertification } from '../content/certifications';
 import { lessonsFor } from '../content/lessons';
-import { hasNewSince, nextForExam, nextLine, type CaseMark, type StudyTarget } from '../engine/badgeCatalog';
+import { hasNewSince, nextForExam, nextLine, quietTimes, type CaseMark, type StudyTarget } from '../engine/badgeCatalog';
 import { DIAGNOSTIC_SIZE, journeyStage, type Stage } from '../engine/journey';
 import { computeReadiness, type Readiness } from '../engine/readiness';
 import { sessionSize } from '../engine/studyModes';
@@ -113,7 +113,7 @@ export function seeCase(certId: string, now = Date.now()) {
 export function hasNewBadge(certId: string): boolean {
   if (useSettings.getState().badgesHidden) return false;
   const m = selectCert(useProgress.getState(), certId).milestones;
-  return hasNewSince(m?.earned, useSeen.getState().caseSeen[certId], m?.backfill?.at);
+  return hasNewSince(m?.earned, useSeen.getState().caseSeen[certId], quietTimes(m));
 }
 
 const subscribeAll = (cb: () => void) => {
