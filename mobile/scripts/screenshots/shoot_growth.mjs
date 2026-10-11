@@ -363,6 +363,26 @@ await shot('p15-you-no-mocks');
 // ── 9. The bank, grouped (a header only for topics with 2+ rows) ───────
 await go('/bank/5');
 await shot('p17-bank-grouping');
+// Down to the first topic header (a topic with 2+ rows), with the lone row after its group.
+// The screen's own headings (the bar title, the domain name) are left out by their text.
+const ownHeads = await page.$$eval('[role="heading"]', (els) => els.map((e) => e.textContent));
+const topicHead = async () =>
+  page.evaluateHandle((own) => [...document.querySelectorAll('[role="heading"]')].find((e) => !own.includes(e.textContent)) ?? null, ownHeads);
+// The list's own scroller, moved directly (a wheel over a virtualised list can stop short).
+const listScroll = (dy) =>
+  page.evaluate((d) => {
+    const el = [...document.querySelectorAll('div')].find((x) => x.scrollHeight > x.clientHeight + 200 && /auto|scroll/.test(getComputedStyle(x).overflowY));
+    if (el) el.scrollTop += d;
+  }, dy);
+for (let k = 0; k < 80; k++) {
+  if (await (await topicHead()).evaluate((e) => e !== null)) break;
+  await listScroll(400);
+  await wait(250);
+}
+await (await topicHead()).evaluate((el) => el.scrollIntoView({ block: 'start' }));
+await scrollBy(-120);
+await wait(800);
+await shot('p17b-bank-group-header');
 
 console.log('errors:', errs.slice(0, 5));
 await browser.close();

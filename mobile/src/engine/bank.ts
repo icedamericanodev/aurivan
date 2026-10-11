@@ -120,6 +120,11 @@ export type BankItem =
        * row, so it has no header): the row names its topic itself.
        */
       ownTopic: boolean;
+      /**
+       * A lone row right after a grouped topic's rows: it is set a little
+       * apart, so it never reads as the last row of that group.
+       */
+      afterGroup: boolean;
     };
 
 /** The first paragraph of a stem, trimmed (stems can contain line breaks). */
@@ -154,6 +159,7 @@ export function buildBankList(
   }
   const topics = [...groups.keys()].sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
   const items: BankItem[] = [];
+  let lastGrouped = false; // the previous topic shown had a header
   for (const topic of topics) {
     const all = groups.get(topic)!;
     const shown = all.filter((q) => matchesFilter(questionStatus(q.id, answers), savedSet.has(q.id), filter));
@@ -168,6 +174,8 @@ export function buildBankList(
         summary: topicSummary(learnerCounts(all, answers, bookmarks)),
       });
     }
+    const afterGroup = ownTopic && lastGrouped;
+    lastGrouped = !ownTopic;
     for (const q of shown) {
       items.push({
         kind: 'question',
@@ -179,6 +187,7 @@ export function buildBankList(
         difficulty: q.difficulty,
         topic,
         ownTopic,
+        afterGroup,
       });
     }
   }

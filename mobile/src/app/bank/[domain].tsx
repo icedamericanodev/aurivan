@@ -92,6 +92,7 @@ export default function BankDomain() {
           saved={item.saved}
           difficulty={item.difficulty}
           topic={item.ownTopic ? item.topic : undefined}
+          afterGroup={item.afterGroup}
           onPress={() => openQuestion(item.id)}
         />
       ),

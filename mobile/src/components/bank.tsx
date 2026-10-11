@@ -62,6 +62,7 @@ export function BankQuestionRow({
   saved,
   difficulty,
   topic,
+  afterGroup,
   onPress,
 }: {
   text: string;
@@ -70,6 +71,8 @@ export function BankQuestionRow({
   difficulty: Difficulty;
   /** Mobile 1.9 (E3): the row's own topic, when no header names it (a topic with one row). */
   topic?: string;
+  /** A lone row right after a grouped topic: set a little apart from that group. */
+  afterGroup?: boolean;
   onPress: () => void;
 }) {
   const { c } = useTheme();
@@ -81,7 +84,7 @@ export function BankQuestionRow({
       accessibilityLabel={`${meta}${saved ? ', saved' : ''}. ${topic ? `${topic}. ` : ''}${text}`}
       accessibilityHint="Opens this question to answer it"
       onPress={onPress}
-      style={({ pressed }) => [styles.row, { borderBottomColor: c.line }, pressed && { backgroundColor: c.soft }]}
+      style={({ pressed }) => [styles.row, afterGroup && styles.afterGroup, { borderBottomColor: c.line }, pressed && { backgroundColor: c.soft }]}
     >
       <View style={styles.markCol}>
         <StatusMark status={status} />
@@ -111,6 +114,8 @@ const styles = StyleSheet.create({
   markNew: { backgroundColor: 'transparent' },
   ring: { width: 12, height: 12, borderRadius: 6, borderWidth: 1.5 },
   ownTopic: { marginBottom: 2 },
+  // The gap a header would open, without a header: the group above has ended.
+  afterGroup: { marginTop: space.lg },
   // The mark sits beside the first text line, not centred on a tall row.
   markCol: { paddingTop: 1, alignSelf: 'flex-start' },
   row: {

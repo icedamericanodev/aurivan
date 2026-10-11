@@ -98,6 +98,17 @@ describe('bank list', () => {
     expect(items.filter((i) => i.kind === 'question' && i.topic === 'Sampling').every((i) => i.kind === 'question' && !i.ownTopic)).toBe(true);
   });
 
+  it('a lone row right after a grouped topic is set apart from it; other rows are not', () => {
+    const more = [...qs, q('d1_004', 'Third-party assurance')];
+    const items = buildBankList(more, answers, [], 'all', shortSubtopic);
+    const gap = (id: string) => items.find((i) => i.kind === 'question' && i.id === id) as { afterGroup: boolean };
+    // Audit charter (lone, first), #Sampling: d1_001, d1_003, then Third-party (lone, after a group).
+    expect(gap('d1_002').afterGroup).toBe(false);
+    expect(gap('d1_001').afterGroup).toBe(false);
+    expect(gap('d1_003').afterGroup).toBe(false);
+    expect(gap('d1_004')).toMatchObject({ ownTopic: true, afterGroup: true });
+  });
+
   it('a header goes when a filter leaves one row of its topic', () => {
     const missed = buildBankList(qs, answers, ['d1_003'], 'missed', shortSubtopic);
     expect(missed).toHaveLength(1);
