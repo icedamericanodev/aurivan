@@ -19,7 +19,7 @@ import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan }
 import { computeReadiness, type AnswerRecord } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
 import { recordMastery, type SubtopicMastery } from '../engine/mastery';
-import { afterAnswer, afterCard, type CertMilestones } from '../engine/milestones';
+import { afterAnswer, afterCard, noteStudyDay, type CertMilestones } from '../engine/milestones';
 import type { MockTiming } from '../engine/pace';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import type { ThinkingSlip } from '../engine/slipCoach';
@@ -461,8 +461,16 @@ export const useProgress = create<ProgressState>()(
           if (next) cards[cardId] = next;
           else delete cards[cardId];
           // Build F: a missed card got right on a later day is a game miss fixed (Back on the Path).
-          const milestones = afterCard(cp.milestones, cardId, correct, now);
-          return { byCert: { ...s.byCert, [certId]: { ...cp, cards, ...(milestones ? { milestones } : {}) } } };
+          const afterMiss = afterCard(cp.milestones, cardId, correct, now);
+          // A note-card game round is study too: it counts as a study day for
+          // the streak and for Rooted (owner decision, 1.6.1). No answer is
+          // recorded, so mastery, readiness and today's goal don't move.
+          const day = dayKey(now);
+          const milestones = afterMiss ? noteStudyDay(afterMiss, day) : afterMiss;
+          return {
+            byCert: { ...s.byCert, [certId]: { ...cp, cards, ...(milestones ? { milestones } : {}) } },
+            streak: s.streak.lastDay && day < s.streak.lastDay ? s.streak : bumpStreak(s.streak, now),
+          };
         }),
 
       noteGameRound: (certId, game, outcome) => {

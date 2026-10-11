@@ -225,7 +225,7 @@ describe('Round end', () => {
     act(() =>
       r!.update(<RoundEnd certId="cisa" game="rumor" score={3} max={12} onAgain={() => {}} news={{ change: 'down', tier: 'seedling', best: false, moment: null }} />),
     );
-    expect(allText()).toContain('Back to Seedling for a few rounds.');
+    expect(allText()).toContain('Back to Seedling. Two strong rounds grow it again.');
     expect(allText()).not.toMatch(/lose|lost/i);
   });
 
