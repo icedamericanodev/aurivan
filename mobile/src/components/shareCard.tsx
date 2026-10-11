@@ -20,7 +20,7 @@
 import * as Sharing from 'expo-sharing';
 import { useRef, useState } from 'react';
 import { Modal, Platform, ScrollView, Share, useWindowDimensions, View } from 'react-native';
-import { useReducedMotion } from 'react-native-reanimated';
+import { useMotion } from './motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { captureRef, releaseCapture } from 'react-native-view-shot';
 import type { Certification } from '../content/types';
@@ -171,7 +171,7 @@ export function ShareProgressSheet({
   input: ShareInput;
 }) {
   const { c } = useTheme();
-  const reduceMotion = useReducedMotion();
+  const { reduced: reduceMotion } = useMotion();
   const screenWidth = useWindowDimensions().width;
   const options = shareOptions(input);
   const [kind, setKind] = useState<ShareKind | null>(null);
@@ -198,7 +198,7 @@ export function ShareProgressSheet({
   const scale = Math.min(1, (screenWidth - space.gutter * 2) / CARD_W);
 
   return (
-    <Modal visible={visible} animationType={reduceMotion ? 'none' : 'slide'} presentationStyle="pageSheet" onRequestClose={onClose}>
+    <Modal visible={visible} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={onClose}>
       <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
         <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxxl }}>
           <Row style={{ justifyContent: 'space-between' }}>

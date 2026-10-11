@@ -12,6 +12,7 @@ import { BrandLockup, PillarList } from '../components/brand';
 import { creditSubtitle } from '../components/help';
 import { ICON_STROKE, LifeBuoy } from '../components/icons';
 import { ThemeSwitch } from '../components/themeSwitch';
+import { useSystemReducedMotion } from '../components/motion';
 import { YourData } from '../components/yourData';
 import { Button, Chip, Gap, ICON_SIZE, ListRow, PushedHeader, RadioRow, Screen, Section, Segmented, Stepper, T, ToggleRow } from '../components/ui';
 import { MODE_INFO, STUDY_MODES } from '../engine/studyModes';
@@ -56,6 +57,8 @@ export default function Settings() {
   const { cert } = useActiveCert();
   const { c, isDark } = useTheme();
   const s = useSettings();
+  // The phone's own Reduce Motion, live: Settings says when it already applies.
+  const phoneReduced = useSystemReducedMotion();
   // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
   const { dueItems } = useReports();
   const resetCert = useProgress((p) => p.resetCert);
@@ -171,10 +174,33 @@ export default function Settings() {
         </>
       )}
 
-      {/* Same setting as the switch at the top of You: they always agree. */}
       <Section title="Appearance" />
       <Gap h={space.sm} />
       <ThemeSwitch />
+
+      {/* Motion (mobile 1.8, WCAG 2.3.3): the phone's Reduce Motion, or Reduced
+          for this app only. Reduced swaps slides, springs and growth for short
+          fades: the same information, less movement. */}
+      <Section title="Motion" />
+      <View accessibilityRole="radiogroup" accessibilityLabel="Motion">
+        <RadioRow
+          title="Match my phone"
+          subtitle={
+            phoneReduced
+              ? 'Your phone’s Reduce Motion is on, so movement is already reduced.'
+              : 'Calm movement that shows what changed. Follows your phone’s Reduce Motion setting.'
+          }
+          checked={s.motion !== 'reduced'}
+          onPress={() => s.setMotion('system')}
+        />
+        <RadioRow
+          title="Reduced"
+          subtitle="Short fades instead of slides and growth. Nothing is lost, only the movement."
+          checked={s.motion === 'reduced'}
+          onPress={() => s.setMotion('reduced')}
+          last
+        />
+      </View>
 
       {/* Says what the number counts: questions (testers read "20 a day" as unclear). */}
       <Section title="Daily goal" meta="Questions a day" />

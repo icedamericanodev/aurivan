@@ -27,7 +27,7 @@
  */
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AppState, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
-import { useReducedMotion } from 'react-native-reanimated';
+import { useMotion } from './motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   ASKS_FOR_ANSWER,
@@ -113,7 +113,7 @@ function sheetMeta(t: ReportTarget): string {
 function useDisplayDetails(): DisplayDetails {
   const { isDark } = useTheme();
   const { fontScale } = useWindowDimensions();
-  const reduceMotion = useReducedMotion();
+  const { reduced: reduceMotion } = useMotion();
   return { theme: isDark ? 'dark' : 'light', textScale: fontScale, reduceMotion };
 }
 
@@ -188,7 +188,7 @@ function ReportLinkButton({ target, reportedAt, onPress }: { target: ReportTarge
 }
 
 /**
- * A page sheet (the restore-preview pattern): slides up, no motion under
+ * A page sheet (the restore-preview pattern): slides up, a short fade under
  * Reduce Motion, a ✕ to close, the keyboard never covers the note, and the
  * buttons sit at the end of the scroll, not in a sticky footer.
  *
@@ -201,9 +201,9 @@ function ReportLinkButton({ target, reportedAt, onPress }: { target: ReportTarge
  */
 function SheetFrame({ visible, onClose, children }: { visible: boolean; onClose: () => void; children: ReactNode }) {
   const { c } = useTheme();
-  const reduceMotion = useReducedMotion();
+  const { reduced: reduceMotion } = useMotion();
   return (
-    <Modal visible={visible} animationType={reduceMotion ? 'none' : 'slide'} presentationStyle="pageSheet" onRequestClose={onClose}>
+    <Modal visible={visible} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={onClose}>
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? undefined : 'height'}>
           <ScrollView

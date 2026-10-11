@@ -21,7 +21,6 @@ import Animated, {
   ReduceMotion,
   useAnimatedProps,
   useAnimatedStyle,
-  useReducedMotion,
   useSharedValue,
   withDelay,
   withRepeat,
@@ -29,6 +28,8 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import Svg, { Circle, Path } from 'react-native-svg';
+import { motion } from '../theme/tokens';
+import { useMotion, useOncePerDay } from './motion';
 
 type GlyphProps = { size?: number; color: string; strokeWidth?: number };
 
@@ -231,7 +232,7 @@ export function swayOrigin(kind: BotanyKind): string {
 export function Botany({ kind = 'frond', color, sway = false }: { kind?: BotanyKind; color: string; sway?: boolean }) {
   const spec = specFor(kind);
   const d = useMemo(() => frondPath(spec), [spec]);
-  const reduce = useReducedMotion();
+  const { reduced: reduce } = useMotion();
   const angle = useSharedValue(0);
   useFocusEffect(
     useCallback(() => {
@@ -331,9 +332,6 @@ function ringGeometry(weights: number[], k: number, r0: number, gap: number, c: 
 }
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
-// Rings grow on the first view of each day only (spec §10.1), per preset.
-const grownOn: Partial<Record<string, string>> = {};
-const todayKey = () => new Date().toDateString();
 
 export function GrowthRings({
   preset,
@@ -365,12 +363,11 @@ export function GrowthRings({
     () => rings.map((ring, i) => ringArc(c, ring.rm, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.max(0.001, Math.min(1, mastery[i] ?? 0)))),
     [rings, mastery, c],
   );
-  // Grows once a day per preset, or every mount when `replay` asks for it.
-  // RingArc's timing honours Reduce Motion (static under it).
-  const animate = replay || grownOn[preset] !== todayKey();
-  useEffect(() => {
-    grownOn[preset] = todayKey();
-  }, [preset]);
+  // Grows on the first view of each day per preset (spec §10.1), or every
+  // mount when `replay` asks for it. Static under Reduce Motion.
+  const { reduced } = useMotion();
+  const first = useOncePerDay(`rings:${preset}`);
+  const animate = !reduced && (replay || first);
   const colorAt = (i: number) => (typeof colors === 'string' ? colors : colors[i % colors.length]);
   return (
     <View accessible={Boolean(accessibilityLabel)} accessibilityRole="image" accessibilityLabel={accessibilityLabel} style={{ width: size, height: size }}>
@@ -403,7 +400,7 @@ function RingArc({ d, length, width, color, animate, delay }: { d: string; lengt
   const p = useSharedValue(animate ? 0 : 1);
   useEffect(() => {
     if (!animate) return;
-    p.value = withDelay(delay, withTiming(1, { duration: 600, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.System }));
+    p.set(withDelay(delay, withTiming(1, { duration: motion.dur.grow, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.System })));
   }, [animate, delay, p]);
   const props = useAnimatedProps(() => ({ strokeDashoffset: length * (1 - p.value) }));
   return (

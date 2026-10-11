@@ -26,6 +26,8 @@ let reduced = true;
 export function setMockReducedMotion(value: boolean) {
   reduced = value;
 }
+/** The mocked setting (jest/setup.ts gives React Native's AccessibilityInfo the same answer). */
+export const isMockReducedMotion = () => reduced;
 
 export interface MockSharedValue<T> {
   value: T;

@@ -10,12 +10,20 @@ import type { StudyMode } from '../engine/studyModes';
 import { persistStorage } from './storage';
 
 export type ThemePref = 'system' | 'dark' | 'light';
+/**
+ * Motion (mobile 1.8): 'system' follows the phone's Reduce Motion setting;
+ * 'reduced' asks for short cross-fades instead of slides, springs and growth
+ * on this app only (WCAG 2.3.3). components/motion.tsx useMotion() reads it.
+ */
+export type MotionPref = 'system' | 'reduced';
 
 interface SettingsState {
   onboarded: boolean;
   activeCertId: string;
   examDates: Record<string, string | undefined>; // certId → "YYYY-MM-DD"
   theme: ThemePref;
+  /** Older saves have no key: persist merges the default ('system') in. */
+  motion: MotionPref;
   shuffleOptions: boolean;
   dailyGoal: number; // questions per day
   /** `days` is optional: saves from before day chips have none, which means every day. */
@@ -52,6 +60,7 @@ interface SettingsState {
   setActiveCert: (certId: string) => void;
   setExamDate: (certId: string, date?: string) => void;
   setTheme: (t: ThemePref) => void;
+  setMotion: (m: MotionPref) => void;
   setShuffle: (v: boolean) => void;
   setDailyGoal: (n: number) => void;
   setReminder: (r: SettingsState['reminder']) => void;
@@ -74,6 +83,7 @@ export const useSettings = create<SettingsState>()(
       activeCertId: DEFAULT_CERT_ID,
       examDates: {},
       theme: 'system',
+      motion: 'system',
       shuffleOptions: true,
       dailyGoal: 20,
       // Default: every day at 19:00, off until the learner turns it on.
@@ -95,6 +105,7 @@ export const useSettings = create<SettingsState>()(
       setExamDate: (certId, date) =>
         set((s) => ({ examDates: { ...s.examDates, [certId]: date } })),
       setTheme: (theme) => set({ theme }),
+      setMotion: (motion) => set({ motion }),
       setShuffle: (shuffleOptions) => set({ shuffleOptions }),
       setDailyGoal: (dailyGoal) => set({ dailyGoal }),
       setReminder: (reminder) => set({ reminder }),

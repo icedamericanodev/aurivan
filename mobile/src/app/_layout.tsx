@@ -5,6 +5,8 @@
  *    Fraunces 400 / 400 italic / 500 for reading moments and numbers,
  *    Figtree 400 / 500 / 600 for everything you tap or scan.
  * 2. Wraps every screen in a navigation "stack" (screens slide in/out).
+ * 3. Mounts MotionRoot: Reduce Motion (the phone's, live, or Settings →
+ *    Motion → Reduced) reaches every animation, Reanimated's included.
  */
 // Per-weight imports so only these six font files are bundled.
 import { Figtree_400Regular } from '@expo-google-fonts/figtree/400Regular';
@@ -24,9 +26,10 @@ import { ensureBackfill } from '../lib/milestones';
 import { useProgress } from '../store/progress';
 import { cancelReminders, initNotifications, scheduleReminders } from '../lib/reminders';
 import { useSettings } from '../store/settings';
-import { useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { MotionRoot, useMotion } from '../components/motion';
 import { Grain } from '../components/ui';
+import { motion } from '../theme/tokens';
 import { useHydrated } from '../store/useHydrated';
 import { useTheme } from '../theme/useTheme';
 
@@ -46,9 +49,11 @@ export default function RootLayout() {
   });
   const hydrated = useHydrated();
   const { c, isDark } = useTheme();
-  // Reduce Motion (system setting): screens appear without sliding or rising.
-  const reduceMotion = useReducedMotion();
-  const rise = reduceMotion ? 'none' : 'fade_from_bottom';
+  // Reduce Motion (the phone's setting, live, or Settings → Motion → Reduced):
+  // screens dissolve instead of sliding or rising. Never a hard cut (Apple's
+  // criteria ask for a dissolve for a change of place).
+  const { reduced } = useMotion();
+  const rise = reduced ? 'fade' : 'fade_from_bottom';
   // If a font fails to load we still start (system font fallback) rather than hang.
   const ready = (fontsLoaded || Boolean(fontError)) && hydrated;
 
@@ -87,14 +92,17 @@ export default function RootLayout() {
           headerShown: false,
           contentStyle: { backgroundColor: c.bg },
           // Undefined = the platform's default push animation.
-          animation: reduceMotion ? 'none' : undefined,
+          animation: reduced ? 'fade' : undefined,
+          // iOS honours this for the dissolve; the platform pushes keep their own timing.
+          animationDuration: motion.dur.screen,
         }}
       >
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="onboarding" options={{ gestureEnabled: false }} />
         {/* No swipe-back inside a quiz: an accidental swipe must not lose an exam. */}
         <Stack.Screen name="session" options={{ gestureEnabled: false }} />
-        <Stack.Screen name="results" options={{ gestureEnabled: false }} />
+        {/* The quiz dissolves into its outcome: not a push to a new place. */}
+        <Stack.Screen name="results" options={{ gestureEnabled: false, animation: 'fade' }} />
         {/* Mock start sheet: timing and "hide the clock", before every mock. */}
         <Stack.Screen name="mock-start" options={{ animation: rise }} />
         <Stack.Screen name="lesson/[id]" options={{ animation: rise }} />
@@ -130,6 +138,7 @@ export default function RootLayout() {
         <Stack.Screen name="whats-new" />
         <Stack.Screen name="whats-next" />
       </Stack>
+      <MotionRoot />
       {/* Paper grain over every screen (touch-through, hidden from screen readers). */}
       <Grain />
     </SafeAreaProvider>
