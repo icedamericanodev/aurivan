@@ -74,7 +74,7 @@ GROW DEEP ROOTS
 GAMES THAT BUILD EXAM SKILL
 • Snare Spotter: find the answer built to fool you, then the best one
 • Signpost: read the word that decides which true answer wins
-• Sure Footing: rate how sure you are, and learn when to trust it
+• Forecast: rate how sure you are, and learn when to trust it
 
 STAND TALL ON EXAM DAY
 • Full mock exams weighted like the real exam, plus shorter mini mocks

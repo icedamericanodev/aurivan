@@ -36,6 +36,23 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.12.0',
+    date: '2026-10-11',
+    new: [
+      'Lessons open on a cover that shows what’s in them, and their diagrams now build step by step: steps along a path, layers on a stack, and stages along a timeline.',
+      'Finishing a lesson adds a leaf to that topic’s branch, then offers practice on what you just learned or the next lesson.',
+      'Each game has its own drawing and its own header, so a game never looks like a practice question.',
+    ],
+    improved: [
+      'Learn shows at a glance which lessons are done, which is up next and why, and each topic’s lessons read as a trail.',
+      'Sure Footing is now called Forecast, so it’s no longer confused with the Firm Footing badge. Your best scores and level are kept.',
+      'Forecast explains its scoring before your first round instead of on top of the first question.',
+      'A game’s round summary now shows your recent scores as a small trend line, and moving up a level has its own quiet moment.',
+      'Lesson checks now give the same answer feedback as practice.',
+      'Opening a section, marking a note as read and matching in games now move gently to show what changed. With Reduce Motion on, they simply fade.',
+    ],
+  },
+  {
     version: '1.11.0',
     date: '2026-10-11',
     new: [

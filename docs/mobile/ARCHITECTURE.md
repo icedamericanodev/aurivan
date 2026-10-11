@@ -310,7 +310,7 @@ works out the facts from saved progress.
   and back one level after 2 rounds under 50% ("Back to Sapling for a few
   rounds"). Only rounds played at the learner's level move it. Stored as
   optional `gameGrowth` per game, with the last 30 skill-step results (Snare
-  Spotter's last 10 snares) and a run of "well calibrated" Sure Footing
+  Spotter's last 10 snares) and a run of "well calibrated" Forecast
   rounds. Game intros start on the learner's level; Play shows it as a
   leaf and a word.
 - **Screens.** You → Milestones (earned, the 3 closest with rule and
