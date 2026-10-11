@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=notes] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -56,6 +56,11 @@ elif [ "${SHOTS:-}" = support ]; then
   # note after sending, the no-email-app fallback, Settings → Help and feedback,
   # Help, What's new, What's next, Common questions, Your reports (shoot_support.mjs).
   node scripts/screenshots/shoot_support.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = motion ]; then
+  # Mobile 1.8 motion: end states of the changed screens, and slow-motion
+  # frame strips of the press, the page turn, the segment fill and the tab
+  # fade (shoot_motion.mjs).
+  node scripts/screenshots/shoot_motion.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).
