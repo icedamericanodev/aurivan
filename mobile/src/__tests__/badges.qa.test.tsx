@@ -34,7 +34,7 @@ import TabsLayout from '../app/(tabs)/_layout';
 import You from '../app/(tabs)/you';
 import Results from '../app/results';
 import Settings from '../app/settings';
-import { BadgeCell, BadgeSheet, NextPanel, ShelfHeader } from '../components/badges';
+import { BadgeCell, BadgeSheet, NextPanel } from '../components/badges';
 import { MilestoneMomentView, resetBadgeMomentsForTest } from '../components/milestones';
 import { resetCelebrationsForTest } from '../components/motion';
 import { Screen } from '../components/ui';
@@ -89,7 +89,8 @@ jest.mock('expo-router', () => {
   };
   return {
     router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), dismissTo: jest.fn(), canGoBack: () => true, canDismiss: () => false },
-    useFocusEffect: jest.fn(),
+    // The case counts as seen while focused: a mounted screen is focused here.
+  useFocusEffect: (cb: () => void | (() => void)) => jest.requireActual('react').useEffect(cb, [cb]),
     useLocalSearchParams: () => ({}),
     Tabs,
   };
@@ -280,7 +281,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
     expect(allText()).not.toMatch(/\d+ of (20|28) (badges|earned)|of 28\b/);
   });
 
-  // BUG (Minor now; Major once slice C adds a badge to a set): a set completed
+  // Fixed in review; was a bug (Minor now; Major once slice C adds a badge to a set): a set completed
   // before 1.10 has no planter saved at launch. withPlanters only runs when a
   // NEW badge is earned (checkMilestones) or in the one-time back-fill, which
   // a 1.9 save has already had.
@@ -335,7 +336,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
     expect(hasNewBadge('cisa')).toBe(false);
   });
 
-  // BUG (Minor): restoring a backup from before Build F (no back-fill yet)
+  // Fixed in review; was a bug (Minor): restoring a backup from before Build F (no back-fill yet)
   // runs the back-fill AFTER the launch set the case-seen time, so every
   // back-filled badge is dated "now" and shows the "new" dot.
   it('badges back-filled after a restore of an older backup do not show the "new" dot', async () => {
@@ -401,7 +402,8 @@ describe('2. earning a new badge in a session', () => {
     expect(t).toContain('First Foothold');
     expect(t).toContain('You’ve mapped where you stand.');
     press(/^See it in your badges/);
-    expect(router.push).toHaveBeenCalledWith('/milestones');
+    // It opens the case with this badge's sheet up (UX O7).
+    expect(router.push).toHaveBeenCalledWith({ pathname: '/milestones', params: { open: 'first-foothold' } });
   });
 
   it('it waits until it is scrolled into view (the success tap comes with it), then a new drag skips it', () => {
@@ -474,7 +476,7 @@ describe('2. earning a new badge in a session', () => {
     expect(useSeen.getState().badgeMoments).toHaveLength(3);
   });
 
-  // BUG (Minor, copy): when one session earns several badges of the same set
+  // Fixed in review; was a bug (Minor, copy): when one session earns several badges of the same set
   // and that completes it, EVERY one of their moments (one now, the others in
   // later sessions) says "That completes The Five Domains." momentFor treats
   // any badge dated at the completion time as the one that completed it.
@@ -488,12 +490,12 @@ describe('2. earning a new badge in a session', () => {
     expect(done).toHaveLength(1);
   });
 
-  // BUG (Minor): the weekly budget is charged when the Results screen renders
+  // Fixed in review; was a bug (Minor): the weekly budget is charged when the Results screen renders
   // the moment (decideQuiet in a useState initialiser), not when it plays. A
   // learner who taps Done without scrolling down never sees the moment, yet
   // it uses one of the 3 moments for the week; and reopening the same Results
   // after the app restarts charges it again.
-  it.failing('a moment that was never scrolled into view does not use up the weekly budget', () => {
+  it('a moment that was never scrolled into view does not use up the weekly budget', () => {
     diagnosticSession();
     mount(<Results />);
     unmount();
@@ -599,7 +601,7 @@ describe('3. "Next for your exam" at each journey stage', () => {
     sane(n);
   });
 
-  // BUG (Minor, spec reading): §4.3 lists `stage 'diagnose' → First Foothold`
+  // Fixed in review; was a bug (Minor, spec reading): §4.3 lists `stage 'diagnose' → First Foothold`
   // first; the code checks "daysLeft ≤ 21" first, so a learner who starts two
   // weeks before the exam is told the best thing for the exam is a 4-hour mock,
   // before the 20-question diagnostic.
@@ -702,7 +704,8 @@ describe('4. the case', () => {
     });
   };
   const SORT_LABEL = { set: 'By set', recent: 'Recently earned', closest: 'Closest', effort: 'Effort' } as const;
-  const FILTER_LABEL: Record<CaseFilter, string> = { all: 'all', earned: 'earned', open: 'not yet' };
+  // The chips are spoken as what they show (UX P9): "All badges", "Earned badges", "Badges not yet earned".
+  const FILTER_LABEL: Record<CaseFilter, string> = { all: 'All badges', earned: 'Earned badges', open: 'Badges not yet earned' };
 
   it.each(CASE_SORTS.flatMap((s) => (['all', 'earned', 'open'] as CaseFilter[]).map((f) => [s, f] as const)))(
     'sort %s × filter %s: exactly the badges that pass, each once, in the sort’s order',
@@ -710,7 +713,7 @@ describe('4. the case', () => {
       midLearner();
       useSeen.setState({ badgeSort: sort });
       mount(<Badges />);
-      press(new RegExp(`^Show ${FILTER_LABEL[filter]} badges$`));
+      press(new RegExp(`^${FILTER_LABEL[filter]}$`));
       expect(labels()).toContain(`Sort badges, ${SORT_LABEL[sort]}`);
       const { marks } = badgeCase('cisa', cp());
       const want = marks.filter((m) => passesFilter(m, filter));
@@ -746,9 +749,9 @@ describe('4. the case', () => {
     midLearner();
     setMilestones({ earned: { ...cp().milestones!.earned, 'topic-clear': T0 - 9 * DAY, 'ten-topics': T0 - 8 * DAY } });
     mount(<Badges />);
-    press(/^Show not yet badges$/);
+    press(/^Badges not yet earned$/);
     expect(allText()).toContain('All earned.');
-    press(/^Show earned badges$/);
+    press(/^Earned badges$/);
     expect(allText()).toContain('Nothing earned here yet.');
   });
 
@@ -804,10 +807,10 @@ describe('4. the case', () => {
     expect(textOf(sheet)).toMatch(/30 days\s+· next/);
   });
 
-  // BUG (Minor, copy): the ladder tags the tier you OPENED as "next", not the
+  // Fixed in review; was a bug (Minor, copy): the ladder tags the tier you OPENED as "next", not the
   // next tier to earn. Opening Rooted · 60 days with only 10 days earned says
   // "60 days · next" while 30 days is the real next step.
-  it.failing('the ladder marks the real next tier, whichever tier was opened', () => {
+  it('the ladder marks the real next tier, whichever tier was opened', () => {
     midLearner();
     mount(<Badges />);
     press(/^Rooted · 60 days, Gold leaf\. Not yet/);
@@ -820,10 +823,12 @@ describe('4. the case', () => {
     const spy = jest.spyOn(ScrollView.prototype, 'scrollTo').mockImplementation(() => {});
     const openAt = () => {
       mount(<Badges />);
-      const header = root().findAllByType(ShelfHeader).find((h) => h.props.set.info.id === 'examDay');
-      if (header?.props.onLayout) {
+      // The shelf's OUTER view reports its place in the scroll content (code review B1: the
+      // header's own y was relative to that view, so the jump always landed at the top).
+      const shelf = root().findAll((n) => n.props.testID === 'shelf-examDay' && typeof n.props.onLayout === 'function')[0];
+      if (shelf) {
         act(() => {
-          header.props.onLayout(1400);
+          shelf.props.onLayout({ nativeEvent: { layout: { x: 0, y: 1400, width: 353, height: 300 } } });
         });
       }
       const calls = spy.mock.calls.map((c) => c[0]);
@@ -854,10 +859,10 @@ describe('4. the case', () => {
     expect(medallions(sheet)[0].props.progress).toBe(0);
   });
 
-  // BUG (Minor): in album mode the cells still draw each started badge's
+  // Fixed in review; was a bug (Minor): in album mode the cells still draw each started badge's
   // progress arc on its rim (BadgeCell passes medallionProps' progress
   // whatever showProgress says). The spec hides all progress after the exam.
-  it.failing('after the exam, no medallion in the grid draws a progress arc', () => {
+  it('after the exam, no medallion in the grid draws a progress arc', () => {
     midLearner();
     useSettings.setState({ examDates: { cisa: dayKey(T0 - 2 * DAY) } });
     mount(<Badges />);
@@ -1067,7 +1072,7 @@ describe('6. restore validation: edited backups', () => {
     expect(m.planters ?? {}).toEqual({});
   });
 
-  // BUG (Minor): the Five Domains planter is checked against "Firm Footing in
+  // Fixed in review; was a bug (Minor): the Five Domains planter is checked against "Firm Footing in
   // every domain the ANSWERS cover", not every domain of the exam. An edited
   // backup with 20 answers in ONE domain can claim Whole Map (whose own check
   // is only 20 answers), that domain's Firm Footing, and the planter.
@@ -1083,7 +1088,7 @@ describe('6. restore validation: edited backups', () => {
     expect(m.planters?.domains).toBeUndefined();
   });
 
-  // BUG (Minor): Dress Rehearsal · 2 is checked as "2 mock records", but the
+  // Fixed in review; was a bug (Minor): Dress Rehearsal · 2 is checked as "2 mock records", but the
   // rule needs 2 FULL, timed, fully answered mocks 7+ days apart (after Whole
   // Map). Two 10-question minis on the same day pass. The mock records hold
   // total, timing, unanswered and finishedAt, so the check could read them.
@@ -1150,7 +1155,8 @@ describe('8. regressions', () => {
     const shelf = badgeCase('cisa', cp()).sets.find((s) => s.info.id === 'fieldNotes')!;
     expect(t).toContain(`${shelf.earned} of ${shelf.total} earned, in your badges`);
     press(/^Your skill badges/);
-    expect(router.push).toHaveBeenCalledWith('/milestones');
+    // It opens the case at the Field notes shelf (UX P11).
+    expect(router.push).toHaveBeenCalledWith({ pathname: '/milestones', params: { shelf: 'fieldNotes' } });
   });
 
   it('/milestones is still a route, registered in the stack, and it opens the badge case', () => {

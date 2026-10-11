@@ -12,8 +12,10 @@
  * The dot pops in under the new tab. Today and You use custom glyphs
  * (sprout, growth rings); the others stay Lucide. Practice is a checklist,
  * not a target: a target's concentric circles looked like the You rings.
- * Mobile 1.10: a small "new" dot on the You icon while a newly earned badge
- * waits to be seen (spoken "You, new badge"). Never a number.
+ * Mobile 1.10: a small "new" mark on the You icon while a newly earned badge
+ * waits to be seen (spoken "You, new badge"). Never a number. It is a RING
+ * (an accent outline around paper), so it never reads as the selected-tab
+ * dot under the label, which is a filled dot.
  */
 import { Tabs } from 'expo-router';
 import { PlatformPressable } from 'expo-router/react-navigation';
@@ -32,17 +34,22 @@ const icon = (G: Glyph) =>
   function TabIcon({ color }: IconProps) {
     return <G size={ICON_SIZE.bar} color={color as string} strokeWidth={ICON_STROKE} />;
   };
-/** The You icon, with the "new badge" dot at its top right (an 8pt accent dot ringed in the bar's paper). */
-function YouIcon({ color }: IconProps) {
+/**
+ * The You icon, with the "new badge" mark at its top right: a 10pt ring
+ * (2pt accent outline, the bar's paper inside), a shape distinct from the
+ * filled selected-tab dot. A component (its parent passes `dot`), so the tab
+ * bar can draw it twice (active and inactive layers) without running hooks
+ * inside a render function.
+ */
+export function YouIcon({ color, dot }: IconProps & { dot: boolean }) {
   const { c } = useTheme();
-  const dot = useNewBadge();
   return (
     <View>
       <Rings size={ICON_SIZE.bar} color={color as string} strokeWidth={ICON_STROKE} />
       {dot && (
         <View
           testID="you-new-dot"
-          style={{ position: 'absolute', top: -2, right: -3, width: 10, height: 10, borderRadius: 5, backgroundColor: c.accent, borderWidth: 2, borderColor: c.bg }}
+          style={{ position: 'absolute', top: -3, right: -4, width: 10, height: 10, borderRadius: 5, backgroundColor: c.bg, borderWidth: 2, borderColor: c.accent }}
         />
       )}
     </View>
@@ -110,7 +117,13 @@ export default function TabsLayout() {
       <Tabs.Screen name="play" options={{ title: 'Play', tabBarLabel: label('Play'), tabBarButton: tabButton('Play'), tabBarIcon: icon(Gamepad2 as Glyph) }} />
       <Tabs.Screen
         name="you"
-        options={{ title: 'You', tabBarLabel: label('You'), tabBarButton: tabButton('You'), tabBarIcon: YouIcon, tabBarAccessibilityLabel: newBadge ? 'You, new badge' : 'You' }}
+        options={{
+          title: 'You',
+          tabBarLabel: label('You'),
+          tabBarButton: tabButton('You'),
+          tabBarIcon: ({ color, size }) => <YouIcon color={color} size={size} dot={newBadge} />,
+          tabBarAccessibilityLabel: newBadge ? 'You, new badge' : 'You',
+        }}
       />
     </Tabs>
   );

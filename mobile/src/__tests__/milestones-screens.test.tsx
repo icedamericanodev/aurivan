@@ -32,9 +32,12 @@ jest.mock('../components/icons', () => {
   });
 });
 jest.mock('../components/shareCard', () => ({ ShareProgressSheet: () => null }));
+let mockParams: Record<string, string> = {};
 jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), canGoBack: () => true, canDismiss: () => false },
-  useFocusEffect: jest.fn(),
+  // The case counts as seen while focused: a mounted screen is focused here.
+  useFocusEffect: (cb: () => void | (() => void)) => jest.requireActual('react').useEffect(cb, [cb]),
+  useLocalSearchParams: () => mockParams,
 }));
 jest.mock('react-native-safe-area-context', () => {
   const { View } = jest.requireActual('react-native');
@@ -128,15 +131,17 @@ describe('Badges screen', () => {
     ensureBackfill('cisa', T0);
     mount(<Milestones />);
     const text = allText();
-    for (const shelf of ['Groundwork', 'The Five Domains', 'Evergreen', 'Sound Judgement', 'Exam Day', 'Rooted', 'Moments', 'Field notes']) expect(text).toContain(shelf);
+    for (const shelf of ['Groundwork', 'The Five Domains', 'Evergreen', 'Sound Judgement', 'Exam Day', 'Rooted', 'Field notes']) expect(text).toContain(shelf);
+    // Moments appears only once something on it happened (a Fresh Start is never a goal).
+    expect(text).not.toContain('Moments');
     // Per-set counts only ("1 of 3"), and no "n of 22"-style total.
     expect(labels()).toContain('Groundwork, 1 of 3');
     expect(labels()).toContain('The Five Domains, 1 of 6');
-    expect(labels()).toContain('Moments');
+    expect(labels()).not.toContain('Moments');
     expect(text).not.toMatch(/\bof (15|20|22|23|30)\b(?! (study days|answered|questions|“sure”))/);
     // Every badge is one button whose label holds its exact rule: no mystery badges.
     const buttons = labels();
-    for (const b of [...MILESTONES, ...SKILL_BADGES]) expect(buttons.some((l) => l.includes(b.rule.replace(/\.$/, '')))).toBe(true);
+    for (const b of [...MILESTONES, ...SKILL_BADGES].filter((x) => x.id !== 'fresh-start')) expect(buttons.some((l) => l.includes(b.rule.replace(/\.$/, '')))).toBe(true);
     expect(buttons.some((l) => l.startsWith('Firm Footing · IS Operations. Earned'))).toBe(true);
     // No bank size anywhere.
     expect(text).not.toMatch(/of \d{3,}/);

@@ -9,16 +9,16 @@
  * - Not-yet badges always say how close you are; gated ones say when they
  *   open. No padlocks, no "?", nothing hidden.
  * - "Study for this" opens what earns the badge, and is spoken with its name.
- * - The detail sheet: the medallion turns once as it opens (still under
+ * - The detail sheet: the medallion turns in once as it opens (still under
  *   Reduce Motion), then the rule, how to earn it (or, once earned, what it
  *   means), one honest effort fact and the button.
  */
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { Modal, Pressable, ScrollView, View } from 'react-native';
 import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { DomainInfo } from '../content/types';
-import { MOCK_SUGGEST_LINE, setSpoken, studyNote, studyTarget, suggestLine, type CaseMark, type SetView, type StudyTarget } from '../engine/badgeCatalog';
+import { completingMark, MOCK_SUGGEST_LINE, setSpoken, spokenDetail, studyNote, studyTarget, suggestLine, type CaseMark, type SetView, type StudyTarget } from '../engine/badgeCatalog';
 import type { Stage } from '../engine/journey';
 import { moveFocus } from '../lib/a11y';
 import { shortDate } from '../lib/format';
@@ -51,12 +51,19 @@ export function medallionProps(m: CaseMark, domains: readonly DomainInfo[], show
   };
 }
 
+/**
+ * When a badge was earned, as printed: "11 Oct", or "By 11 Oct" for a badge
+ * the back-fill saved quietly (`quietAt`): it was already held by then, and
+ * that is all the app knows (UX P6). Spoken the same way.
+ */
+export function earnedWhen(m: CaseMark, quietAt?: number): string | undefined {
+  if (m.earnedAt === undefined) return undefined;
+  return m.earnedAt === quietAt ? `By ${shortDate(m.earnedAt)}` : shortDate(m.earnedAt);
+}
+
 /** The short line under a medallion: when it was earned, or how close it is. */
-export function cellLine(m: CaseMark, showProgress: boolean): string | undefined {
-  if (m.status === 'earned') {
-    const when = m.earnedAt !== undefined ? shortDate(m.earnedAt) : '';
-    return [tierName(m), when].filter(Boolean).join(' · ') || 'Earned';
-  }
+export function cellLine(m: CaseMark, showProgress: boolean, quietAt?: number): string | undefined {
+  if (m.status === 'earned') return [tierName(m), earnedWhen(m, quietAt)].filter(Boolean).join(' · ') || 'Earned';
   if (m.status === 'gated') return 'Opens later';
   if (!showProgress) return undefined;
   // Firm Footing: its gap ("62% → 70%"); the weight has its own line.
@@ -64,21 +71,29 @@ export function cellLine(m: CaseMark, showProgress: boolean): string | undefined
   return m.detail;
 }
 
+/** "Earned 11 Oct", or "Earned by 11 Oct" for a back-filled badge. */
+export const earnedLine = (m: CaseMark, quietAt?: number) => {
+  const when = earnedWhen(m, quietAt);
+  return when ? `Earned ${when.replace(/^By /, 'by ')}` : 'Earned';
+};
+
 /** Inside Rooted's own shelf the tier is enough: "10 days". */
 export const tierCaption = (m: CaseMark) => m.caption.replace(/^Rooted · /, '');
 
 /** The spoken label for one medallion (the art says nothing itself). */
-export function cellSpoken(m: CaseMark, setName: string, showProgress: boolean): string {
+export function cellSpoken(m: CaseMark, setName: string, showProgress: boolean, quietAt?: number): string {
   const parts = [m.name + (m.tier ? `, ${tierName(m)}` : '')];
-  if (m.status === 'earned') parts.push(m.earnedAt !== undefined ? `Earned ${shortDate(m.earnedAt)}` : 'Earned');
-  else parts.push('Not yet');
+  parts.push(m.status === 'earned' ? earnedLine(m, quietAt) : 'Not yet');
   parts.push(m.rule.replace(/\.$/, ''));
   if (m.status === 'gated') parts.push(m.gateLine!.replace(/\.$/, ''));
-  else if (m.status !== 'earned' && showProgress && m.detail) parts.push(m.detail.replace(/→/g, 'of').replace(/ · /g, ', '));
+  else if (m.status !== 'earned' && showProgress && m.detail) parts.push(spokenDetail(m.detail));
   if (m.domain) parts.push(`${m.domain.weight}% of the exam`);
   parts.push(setName);
   return `${parts.join('. ')}.`;
 }
+
+/** What a cell or row needs to open its sheet: a stable callback, keyed by the mark (so memo holds). */
+type OnOpen = (key: string) => void;
 
 // ── One cell of the grid ─────────────────────────────────────────────────
 export function BadgeCell({
@@ -87,10 +102,11 @@ export function BadgeCell({
   width,
   size,
   domains,
-  onPress,
+  onOpen,
   press,
   showSet,
   showProgress = true,
+  quietAt,
 }: {
   mark: CaseMark;
   setName: string;
@@ -98,31 +114,35 @@ export function BadgeCell({
   /** The medallion's size (88 in three columns). */
   size: number;
   domains: readonly DomainInfo[];
-  onPress: () => void;
+  onOpen: OnOpen;
   /** Earned since the case was last opened: it presses in after this many ms. */
   press?: number;
   /** Flat sorts: the set's name under the line. */
   showSet?: boolean;
   showProgress?: boolean;
+  /** When the back-fill ran: badges stamped then read "By 11 Oct". */
+  quietAt?: number;
 }) {
   const { c } = useTheme();
   const touch = usePressScale({});
-  const line = cellLine(mark, showProgress);
+  const line = cellLine(mark, showProgress, quietAt);
   const domain = mark.domain ? domains.find((d) => d.id === mark.domain!.id) : undefined;
+  // Firm Footing's leaves are named by domain; in a flat sort they also keep the badge's name.
+  const caption = domain ? (showSet ? `Firm Footing · ${domain.short}` : domain.short) : showSet || !mark.tier ? mark.caption : tierCaption(mark);
   return (
     <AnimatedPressable
       accessibilityRole="button"
-      accessibilityLabel={cellSpoken(mark, setName, showProgress)}
+      accessibilityLabel={cellSpoken(mark, setName, showProgress, quietAt)}
       accessibilityHint="Opens its details"
-      onPress={onPress}
+      onPress={() => onOpen(mark.key)}
       onPressIn={touch.onPressIn}
       onPressOut={touch.onPressOut}
       style={[{ width, alignItems: 'center', paddingVertical: space.sm, minHeight: 48 }, touch.style]}
     >
       <Pop mount={press !== undefined} from={0.4} delay={press ?? 0}>
-        <Medallion {...medallionProps(mark, domains)} size={size} />
+        <Medallion {...medallionProps(mark, domains, showProgress)} size={size} />
       </Pop>
-      <T v="label" center style={{ marginTop: space.xs }}>{domain ? domain.short : showSet || !mark.tier ? mark.caption : tierCaption(mark)}</T>
+      <T v="label" center style={{ marginTop: space.xs }}>{caption}</T>
       {domain && mark.domain && (
         // The domain's blueprint weight, with its tone dot (the dot is never alone: the name is above).
         <Row gap={6} style={{ marginTop: 2, justifyContent: 'center' }}>
@@ -143,58 +163,58 @@ export function BadgeCell({
     </AnimatedPressable>
   );
 }
+/** The cell, memoised (the case's grid): only cells whose mark, size or press changed re-render. */
+export const BadgeCellMemo = memo(BadgeCell);
 
 // ── One row (large text, and "Next for your exam" slots 2–3) ─────────────
 export function BadgeListRow({
   mark,
   setName,
   domains,
-  onPress,
+  onOpen,
   press,
   last,
   showSet,
   showProgress = true,
+  quietAt,
   size = 48,
   extra,
 }: {
   mark: CaseMark;
   setName: string;
   domains: readonly DomainInfo[];
-  onPress: () => void;
+  onOpen: OnOpen;
   press?: number;
   last?: boolean;
   showSet?: boolean;
   showProgress?: boolean;
+  quietAt?: number;
   size?: number;
   /** Under the text (a progress bar). */
   extra?: React.ReactNode;
 }) {
   const { c } = useTheme();
   const touch = usePressScale({ scale: 1, tint: c.soft });
-  const line = cellLine(mark, showProgress);
+  const line = cellLine(mark, showProgress, quietAt);
   return (
     <AnimatedPressable
       accessibilityRole="button"
-      accessibilityLabel={cellSpoken(mark, setName, showProgress)}
+      accessibilityLabel={cellSpoken(mark, setName, showProgress, quietAt)}
       accessibilityHint="Opens its details"
-      onPress={onPress}
+      onPress={() => onOpen(mark.key)}
       onPressIn={touch.onPressIn}
       onPressOut={touch.onPressOut}
       style={[{ flexDirection: 'row', gap: space.md, paddingVertical: 12, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line, alignItems: 'center' }, touch.style]}
     >
       {touch.layer}
       <Pop mount={press !== undefined} from={0.4} delay={press ?? 0}>
-        <Medallion {...medallionProps(mark, domains)} size={size} />
+        <Medallion {...medallionProps(mark, domains, showProgress)} size={size} />
       </Pop>
       <View style={{ flex: 1, minWidth: 0 }}>
         <T v="label">{mark.name}{mark.tier ? ` · ${tierName(mark)}` : ''}</T>
         {line && (
           <T v="meta" num color={mark.status === 'earned' ? c.accentText : c.ink2} style={{ marginTop: 2 }}>
-            {mark.status === 'earned' && mark.earnedAt !== undefined
-              ? `Earned ${shortDate(mark.earnedAt)}`
-              : mark.domain
-                ? `${mark.domain.weight}% of the exam · ${line}`
-                : line}
+            {mark.status === 'earned' ? earnedLine(mark, quietAt) : mark.domain ? `${mark.domain.weight}% of the exam · ${line}` : line}
           </T>
         )}
         {showSet && <T v="meta" color={c.muted}>{setName}</T>}
@@ -203,18 +223,22 @@ export function BadgeListRow({
     </AnimatedPressable>
   );
 }
+/** The row, memoised (the case's large-text list). */
+export const BadgeListRowMemo = memo(BadgeListRow);
 
 // ── A shelf's header ─────────────────────────────────────────────────────
-export function ShelfHeader({ set, line, onLayout }: { set: SetView; line?: string; onLayout?: (y: number) => void }) {
+export function ShelfHeader({ set, line, quietAt }: { set: SetView; line?: string; quietAt?: number }) {
   const { c } = useTheme();
   const complete = set.completeAt !== undefined;
+  // A set the back-fill completed: "by 11 Oct" (it was already complete then).
+  const when = complete ? `${set.completeAt === quietAt ? 'by ' : ''}${shortDate(set.completeAt!)}` : '';
   return (
-    <View onLayout={onLayout ? (e) => onLayout(e.nativeEvent.layout.y) : undefined} style={{ marginTop: space.section }}>
-      <View accessible accessibilityRole="header" accessibilityLabel={complete ? `${setSpoken(set)}, ${shortDate(set.completeAt!)}` : setSpoken(set)} style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'baseline', columnGap: space.md }}>
+    <View style={{ marginTop: space.section }}>
+      <View accessible accessibilityRole="header" accessibilityLabel={complete ? `${setSpoken(set)}, ${when}` : setSpoken(set)} style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'baseline', columnGap: space.md }}>
         <T v="headline" style={{ flexShrink: 1 }}>{set.info.name}</T>
         {line && (
           <T v="meta" num color={complete ? c.accentText : c.ink2}>
-            {complete ? `${line} · ${shortDate(set.completeAt!)}` : line}
+            {complete ? `${line} · ${when}` : line}
           </T>
         )}
       </View>
@@ -253,7 +277,7 @@ export function NextPanel({
   domains: readonly DomainInfo[];
   dueCount: number;
   weakest?: string;
-  onOpen: (m: CaseMark) => void;
+  onOpen: OnOpen;
   onStudy: (target: StudyTarget) => void;
   /** Where each bar was last seen (it grows from there), by mark key. */
   barFrom?: (key: string) => number | undefined;
@@ -268,7 +292,10 @@ export function NextPanel({
         <HeroPanel
           caption="Next for your exam"
           title={best.name}
+          // The heading is spoken with its context: "Next for your exam: Dress Rehearsal" (UX P10).
+          titleLabel={`Next for your exam: ${best.name}`}
           meta={bestMeta(best)}
+          metaLabel={spokenDetail(bestMeta(best))}
           art="frond"
           sway={false}
           action={
@@ -285,8 +312,8 @@ export function NextPanel({
             accessibilityRole="button"
             accessibilityLabel={cellSpoken(best, setName(best), true)}
             accessibilityHint="Opens its details"
-            onPress={() => onOpen(best)}
-            style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, marginTop: space.md }}
+            onPress={() => onOpen(best.key)}
+            style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, marginTop: space.md, minHeight: 48 }}
           >
             {/* On the forest panel: on-forest inks, so a not-yet badge keeps 3:1 (UX review H1). */}
             <Medallion {...medallionProps(best, domains)} size={56} surface="forest" />
@@ -325,7 +352,7 @@ export function NextPanel({
               mark={m}
               setName={setName(m)}
               domains={domains}
-              onPress={() => onOpen(m)}
+              onOpen={onOpen}
               size={40}
               last
               extra={
@@ -350,15 +377,20 @@ export function NextPanel({
 }
 
 // ── The detail sheet ─────────────────────────────────────────────────────
-/** The medallion turns once as the sheet opens (600 ms), like a coin in the hand. Still under Reduce Motion. */
+/**
+ * The medallion turns in once as the sheet opens, from edge-on to facing you
+ * (400 ms), like a coin turned in the hand. It never shows its back, so an
+ * emblem is never mirrored (UX P13). Still under Reduce Motion.
+ */
+export const TURN_MS = 400;
 function Turn({ children }: { children: React.ReactNode }) {
   const { reduced } = useMotion();
   const a = useSharedValue(reduced ? 1 : 0);
   useEffect(() => {
     if (reduced) return;
-    a.set(withTiming(1, { duration: motion.dur.grow, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.Never }));
+    a.set(withTiming(1, { duration: TURN_MS, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.Never }));
   }, [a, reduced]);
-  const style = useAnimatedStyle(() => ({ transform: [{ perspective: 800 }, { rotateY: `${(1 - a.value) * -180}deg` }] }));
+  const style = useAnimatedStyle(() => ({ transform: [{ perspective: 800 }, { rotateY: `${(1 - a.value) * -90}deg` }] }));
   return <Animated.View style={style}>{children}</Animated.View>;
 }
 
@@ -371,8 +403,12 @@ export function BadgeSheet({
   daysLeft,
   dueCount,
   weakest,
+  wholeMap = false,
   showProgress,
+  quietAt,
+  visible = true,
   onClose,
+  onDismissed,
   onStudy,
 }: {
   mark: CaseMark;
@@ -384,8 +420,16 @@ export function BadgeSheet({
   daysLeft: number | null;
   dueCount: number;
   weakest?: string;
+  /** Whole Map is earned (mock badges are then suggested at any stage). */
+  wholeMap?: boolean;
   showProgress: boolean;
+  /** When the back-fill ran (a badge stamped then: "Already earned when badges arrived"). */
+  quietAt?: number;
+  /** False while it slides away (it stays mounted so it can say when it has gone). */
+  visible?: boolean;
   onClose: () => void;
+  /** iOS: the sheet has finished sliding away (Study for this navigates only then). */
+  onDismissed?: () => void;
   onStudy: (target: StudyTarget) => void;
 }) {
   const { c } = useTheme();
@@ -396,11 +440,16 @@ export function BadgeSheet({
   const earned = mark.status === 'earned';
   const target = studyTarget(mark, weakest);
   const note = target ? studyNote(mark, target, dueCount) : undefined;
-  const best = suggestLine(mark, stage, daysLeft);
-  const completedHere = earned && set.info.counted && set.completeAt !== undefined && mark.earnedAt !== undefined && mark.earnedAt >= set.completeAt;
+  const best = suggestLine(mark, stage, daysLeft, wholeMap);
+  const quiet = earned && mark.earnedAt !== undefined && mark.earnedAt === quietAt;
+  // "This completed Groundwork": only the one badge that did, and never for a set the back-fill completed (the order is unknown).
+  const completedHere = earned && !quiet && completingMark(set) === mark.key;
+  // The ladder's "next": the first tier not yet earned, whichever tier was opened.
+  const nextTier = ladder?.find((t) => t.status !== 'earned')?.key;
   const metaParts = [set.info.name, mark.tier ? `${tierName(mark)}, tier ${mark.tier} of ${ladder?.length ?? 3}` : undefined, mark.domain ? `${mark.domain.weight}% of the exam` : undefined].filter(Boolean);
+  const earnedCaption = quiet ? `Already earned when badges arrived (by ${shortDate(mark.earnedAt!)})` : mark.earnedAt !== undefined ? `Earned ${shortDate(mark.earnedAt)}` : 'Earned';
   return (
-    <Modal visible animationType={reduced ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={onClose}>
+    <Modal visible={visible} animationType={reduced ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={onClose} onDismiss={onDismissed}>
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.raised2 }}>
         <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }}>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: space.xs }}>
@@ -408,9 +457,9 @@ export function BadgeSheet({
           </View>
           <View style={{ alignItems: 'center' }}>
             <Turn>
-              <Medallion {...medallionProps(mark, domains)} progress={showProgress && mark.status === 'started' ? mark.progress : 0} size={160} />
+              <Medallion {...medallionProps(mark, domains, showProgress)} size={160} />
             </Turn>
-            <View ref={title} accessible accessibilityRole="header" accessibilityLabel={`${mark.name}. ${earned ? 'Earned' : 'Not yet'}. ${metaParts.join(', ')}.`} style={{ marginTop: space.lg, alignItems: 'center' }}>
+            <View ref={title} accessible accessibilityRole="header" accessibilityLabel={`${mark.name}. ${earned ? earnedLine(mark, quietAt) : 'Not yet'}. ${metaParts.join(', ')}.`} style={{ marginTop: space.lg, alignItems: 'center' }}>
               <T v="hero" center>{mark.name}</T>
               <T v="meta" center color={c.ink2} style={{ marginTop: space.xs }}>
                 {metaParts.join(' · ')}
@@ -420,7 +469,7 @@ export function BadgeSheet({
 
           {earned && (
             <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }} accessible>
-              <T v="caption" color={c.accentText}>{mark.earnedAt !== undefined ? `Earned ${shortDate(mark.earnedAt)}` : 'Earned'}</T>
+              <T v="caption" color={c.accentText}>{earnedCaption}</T>
               <T v="quote" style={{ marginTop: space.xs }}>{mark.unlock}</T>
               {completedHere && (
                 <T v="meta" color={c.ink2} style={{ marginTop: space.sm }}>
@@ -431,16 +480,22 @@ export function BadgeSheet({
           )}
 
           {ladder && ladder.length > 1 && (
-            <View style={{ marginTop: space.xl }} accessible accessibilityLabel={ladder.map((t) => `${tierCaption(t)}, ${tierName(t)}: ${t.status === 'earned' ? `earned ${t.earnedAt !== undefined ? shortDate(t.earnedAt) : ''}` : showProgress ? t.detail : 'not yet'}`).join('. ')}>
+            <View
+              style={{ marginTop: space.xl }}
+              accessible
+              accessibilityLabel={ladder
+                .map((t) => `${tierCaption(t)}, ${tierName(t)}: ${t.status === 'earned' ? earnedLine(t, quietAt).replace(/^Earned/, 'earned') : showProgress ? spokenDetail(t.detail) : 'not yet'}${t.key === nextTier && showProgress ? ', next' : ''}`)
+                .join('. ')}
+            >
               <T v="caption" color={c.ink2}>Tiers</T>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: space.sm }}>
                 {ladder.map((t) => (
                   <View key={t.key} style={{ alignItems: 'center', flex: 1 }}>
-                    <Medallion {...medallionProps(t, domains)} progress={showProgress && t.status === 'started' ? t.progress : 0} size={56} />
+                    <Medallion {...medallionProps(t, domains, showProgress)} size={56} />
                     <T v="label" center style={{ marginTop: space.xs }}>{tierName(t)!}</T>
                     <T v="meta" num center color={t.status === 'earned' ? c.accentText : c.ink2}>
                       {tierCaption(t)}
-                      {t.status === 'earned' ? ' · earned' : t.key === mark.key ? ' · next' : ''}
+                      {t.status === 'earned' ? ' · earned' : t.key === nextTier && showProgress ? ' · next' : ''}
                     </T>
                   </View>
                 ))}
@@ -457,12 +512,13 @@ export function BadgeSheet({
             {!earned && mark.status !== 'gated' && showProgress && (
               <View style={{ marginTop: space.md }}>
                 {mark.progress > 0 && <ProgressBar value={mark.progress} height={6} />}
-                <T v="meta" num color={c.ink2} style={{ marginTop: space.xs }}>{mark.detail}</T>
+                <T v="meta" num color={c.ink2} accessibilityLabel={spokenDetail(mark.detail)} style={{ marginTop: space.xs }}>{mark.detail}</T>
               </View>
             )}
           </View>
 
-          {!earned && mark.howTo !== '' && (
+          {/* After the exam the case is a keepsake album: no "how to earn it", no Study button (UX P8). */}
+          {!earned && showProgress && mark.howTo !== '' && (
             <View style={{ marginTop: space.xl }}>
               <T v="caption" color={c.ink2} accessibilityRole="header">How to earn it</T>
               <T v="body" style={{ marginTop: space.xs }}>{mark.howTo}</T>
@@ -472,7 +528,7 @@ export function BadgeSheet({
 
           <T v="meta" color={c.ink2} style={{ marginTop: space.xl }}>{mark.effort}</T>
 
-          {!earned && target && (
+          {!earned && showProgress && target && (
             <View style={{ marginTop: space.xl }}>
               {note && <T v="meta" color={c.ink2} style={{ marginBottom: space.sm }}>{note}</T>}
               <Button label="Study for this" accessibilityLabel={`Study for ${mark.name}`} onPress={() => onStudy(target)} />

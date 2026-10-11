@@ -12,12 +12,13 @@
  * column (never over the words). The words (the unlock line: "what you can
  * now do") are there from the first frame. ≤ 1.2 s; any tap or scroll ends it. Only one celebration
  * plays in full per session, a kind plays in full its first three times,
- * and a badge's higher tier always plays short. At most THREE badge moments
- * in any 7 days: past that, the badge is saved and a quiet line says so
+ * and a badge's higher tier always plays short. At most THREE full badge
+ * moments in any 7 days (counted as they play, never when only drawn):
+ * past that, the badge is saved and a quiet line says so
  * ("New in your badges: Rooted · 30 days"). Reduce Motion: the end state,
  * the same words.
  */
-import { useEffect, useState, type MutableRefObject } from 'react';
+import { useEffect, useMemo, useState, type MutableRefObject } from 'react';
 import { View } from 'react-native';
 import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
 import { GAME_TIER_NAME, type GameTier } from '../engine/games/growth';
@@ -50,23 +51,26 @@ export function resetBadgeMomentsForTest() {
   announced.clear();
   buzzed.clear();
   quietFor.clear();
+  counted.clear();
 }
 
 /**
  * Decide once per occasion whether this badge gets its moment or only the
- * quiet line: three moments already in the last 7 days means quiet. A moment
- * that plays is noted (on this phone, never in backups).
+ * quiet line: three FULL moments already in the last 7 days means quiet.
+ * Read only: nothing is written while rendering. The moment is counted when
+ * it actually plays in full (see the effect below), so one never scrolled
+ * to, a Reduce Motion one or a short one never uses up the week.
  */
 function decideQuiet(k: string, now = Date.now()): boolean {
   const known = quietFor.get(k);
   if (known !== undefined) return known;
-  const seen = useSeen.getState();
-  const recent = seen.badgeMoments.filter((t) => now - t < BADGE_WEEK_MS && t <= now);
+  const recent = useSeen.getState().badgeMoments.filter((t) => now - t < BADGE_WEEK_MS && t <= now);
   const quiet = recent.length >= BADGE_MOMENTS_MAX;
-  if (!quiet) seen.noteBadgeMoment(now);
   quietFor.set(k, quiet);
   return quiet;
 }
+/** Occasions whose full moment has been counted against the week (once each). */
+const counted = new Set<string>();
 
 /** "Rooted · 30 days, Lichen": the tier's metal is said and printed, never shown by colour alone. */
 const momentName = (m: MilestoneMoment) => (m.tier ? `${m.label} · ${badgeMetal[m.tier as 1 | 2 | 3].name}` : m.label);
@@ -106,6 +110,10 @@ export function MilestoneMomentView({
   const spoken = quiet ? `New in your badges: ${momentName(moment)}.` : momentSpoken(moment);
   // A moment seen before (a revisit) is simply shown.
   const [fresh] = useState(() => !announced.has(k));
+  // Already on screen before it plays (Results: it waits below the review
+  // actions until scrolled to): the medallion then presses from .9, a small
+  // settle, instead of snapping down to .4 from its painted size.
+  const [painted] = useState(() => !inView);
   const celebration = useCelebration('milestone', fresh && inView && !quiet, undefined, k, false, Boolean(moment.tierUp));
   const full = celebration.mode === 'full';
   const [height, setHeight] = useState(0);
@@ -122,6 +130,13 @@ export function MilestoneMomentView({
     buzzed.add(k);
     haptic.success();
   }, [celebration.run, k, quiet]);
+  // The week's cap counts a moment when it plays in FULL, once (badges_game.md §6).
+  useEffect(() => {
+    if (quiet || celebration.run === 0 || !full || counted.has(k)) return;
+    counted.add(k);
+    useSeen.getState().noteBadgeMoment(Date.now());
+  }, [celebration.run, full, k, quiet]);
+  const strike = useMemo(() => ({ run: full ? celebration.run : 0, settled: celebration.settled, delay: 120 }), [full, celebration.run, celebration.settled]);
   const { skip } = celebration;
   useEffect(() => {
     if (!skipRef) return;
@@ -162,7 +177,7 @@ export function MilestoneMomentView({
             style={{ width: MEDAL, alignItems: 'center', alignSelf: 'stretch' }}
           >
             <LeafFall run={full} colors={[c.accent, c.sap]} width={MEDAL} height={height} count={6} />
-            <Pop trigger={full ? celebration.run : undefined} from={0.4} delay={120}>
+            <Pop trigger={full ? celebration.run : undefined} from={painted ? 0.9 : 0.4} delay={120}>
               <Medallion
                 badge={badge}
                 set={moment.set}
@@ -170,7 +185,7 @@ export function MilestoneMomentView({
                 state="earned"
                 size={MEDAL}
                 {...(moment.domain && moment.domain.index >= 0 ? { domainIndex: moment.domain.index, domainCount: moment.domain.count } : {})}
-                strike={{ run: full ? celebration.run : 0, settled: celebration.settled, delay: 120 }}
+                strike={strike}
               />
             </Pop>
           </View>

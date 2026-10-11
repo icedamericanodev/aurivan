@@ -35,6 +35,7 @@ import { REVIEW_UNIT } from '../../engine/srs';
 import { dayKey } from '../../engine/streak';
 import { guardedStart, reviewSubtitle, startReview } from '../../lib/sessions';
 import { shortDate } from '../../lib/format';
+import { caseEarnedCount } from '../../engine/badgeCatalog';
 import { useNewBadge } from '../../lib/badges';
 import { backfillLine, seeBackfill } from '../../lib/milestones';
 import { useMindsetGrowth } from '../../lib/moments';
@@ -65,8 +66,8 @@ export default function You() {
   // The day the sheet was opened (read in the tap handler, not during render). null = closed.
   const [shareDay, setShareDay] = useState<string | null>(null);
   const icon = (G: typeof Settings) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
-  // Mobile 1.10: every badge earned (each medallion in the case counts once), and the "new" dot.
-  const badgeCount = Object.keys(progress.milestones?.earned ?? {}).length;
+  // Mobile 1.10: every badge the case shows as earned (a kept key it doesn't show never counts), and the "new" dot.
+  const badgeCount = caseEarnedCount(progress.milestones?.earned);
   const newBadge = useNewBadge();
   const badgesHidden = useSettings((s) => s.badgesHidden);
   // The back-fill line shows ONCE (code review): kept in state for this

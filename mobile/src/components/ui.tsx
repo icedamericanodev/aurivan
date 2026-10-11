@@ -242,11 +242,14 @@ export function Button({
   accessibilityHint,
   accessibilityLabel,
   selected,
+  expanded,
   ref,
   follow,
 }: {
   /** For moving screen-reader focus here (lib/a11y.ts moveFocus). */
   ref?: Ref<View>;
+  /** A button that shows or hides something under it (a menu): spoken as expanded / collapsed. */
+  expanded?: boolean;
   /** The hero panel's lift: the panel eases a little with the pill (spec §8). */
   follow?: SharedValue<number>;
   label: string;
@@ -284,7 +287,7 @@ export function Button({
     <AnimatedPressable
       ref={ref}
       accessibilityRole="button"
-      accessibilityState={{ disabled, selected }}
+      accessibilityState={{ disabled, selected, ...(expanded === undefined ? {} : { expanded }) }}
       accessibilityHint={accessibilityHint}
       accessibilityLabel={accessibilityLabel ?? label}
       onPress={onPress}
@@ -377,6 +380,7 @@ export function HeroPanel({
   children,
   style,
   titleLabel,
+  metaLabel,
   wideTitle,
 }: {
   caption?: string;
@@ -397,6 +401,8 @@ export function HeroPanel({
   style?: StyleProp<ViewStyle>;
   /** Spoken title, when it differs from the visible one. */
   titleLabel?: string;
+  /** Spoken meta line, when it differs from the visible one (e.g. "62% now, aiming for 70%" for "62% → 70%"). */
+  metaLabel?: string;
   /** Let a short title use the full width (art there is low and sparse). */
   wideTitle?: boolean;
 }) {
@@ -453,7 +459,11 @@ export function HeroPanel({
         </T>
         {/* The meta line keeps clear of the art too (it wraps instead), except
             with wideTitle or large text, where it runs full width like the title. */}
-        {meta && <T v="meta" color={c.onForest2} style={{ marginTop: 6, maxWidth: !large && !wideTitle ? 250 : undefined }}>{meta}</T>}
+        {meta && (
+          <T v="meta" color={c.onForest2} accessibilityLabel={metaLabel} style={{ marginTop: 6, maxWidth: !large && !wideTitle ? 250 : undefined }}>
+            {meta}
+          </T>
+        )}
         {children}
         {action && (
           <Button

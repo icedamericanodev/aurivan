@@ -245,7 +245,7 @@ export default function Results() {
               once={active.id}
               inView={momentSeen && ringsDone}
               skipRef={skipMoment}
-              onSee={() => router.push('/milestones')}
+              onSee={() => router.push({ pathname: '/milestones', params: { open: moment.key } })}
             />
           </View>
         )}

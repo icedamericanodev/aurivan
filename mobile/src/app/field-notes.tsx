@@ -6,8 +6,8 @@
  *   as a leaf AND its name (Seedling, Sapling, Heartwood), and one line on
  *   how it grows. Never a play count, never a leaderboard.
  * - Mobile 1.10: the 7 skill badges moved to the badge case, on their own
- *   Field notes shelf (counted on their own). This screen links there, unless
- *   badges are hidden in Settings.
+ *   Field notes shelf (counted on their own). This screen links there (the
+ *   case opens at that shelf), unless badges are hidden in Settings.
  */
 import { router } from 'expo-router';
 import { useMemo } from 'react';
@@ -77,7 +77,7 @@ export default function FieldNotes() {
               title="Your skill badges"
               subtitle={earned ? `${earned} of ${skills.length} earned, in your badges` : 'In your badges, with what each needs'}
               accessibilityLabel={`Your skill badges. ${earned ? `${earned} of ${skills.length} earned` : 'None yet'}. Opens your badges.`}
-              onPress={() => router.push('/milestones')}
+              onPress={() => router.push({ pathname: '/milestones', params: { shelf: 'fieldNotes' } })}
               last
             />
           </>

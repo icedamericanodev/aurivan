@@ -17,20 +17,28 @@
  *   effort), kept on this phone.
  * - Badges earned since the last visit press in (the first three, 80 ms
  *   apart); "Next" bars grow from where you last saw them. Nothing idles.
- * - In the last three weeks before the exam it opens at Exam Day.
+ * - In the last three weeks before the exam it opens at Exam Day; opened
+ *   from Field notes (`?shelf=fieldNotes`) it opens at that shelf, and from
+ *   a badge moment (`?open=<key>`) with that badge's sheet up.
+ * - Moments shows only once something on it happened (a Fresh Start is a
+ *   moment, never a goal). After the exam: no Next panel, no progress, and
+ *   no Closest sort (it is a keepsake album).
  * - Large text: two columns at ×1.3, a list at ×1.6.
  */
-import { router } from 'expo-router';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { ScrollView, useWindowDimensions, View } from 'react-native';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BadgeCell, BadgeListRow, BadgeSheet, NextPanel, ShelfHeader } from '../components/badges';
+import { BadgeCellMemo as BadgeCell, BadgeListRowMemo as BadgeListRow, BadgeSheet, NextPanel, ShelfHeader } from '../components/badges';
 import { useGrowth } from '../components/motion';
 import { Button, Chip, ChipRow, PushedHeader, RadioRow, T, useFontScale } from '../components/ui';
 import {
   CASE_SORTS,
+  hasWholeMap,
   nextForExam,
+  onCase,
   passesFilter,
+  SET_ORDER,
   setCountLine,
   sortMarks,
   type CaseFilter,
@@ -40,6 +48,7 @@ import {
   type SetView,
   type StudyTarget,
 } from '../engine/badgeCatalog';
+import { moveFocus } from '../lib/a11y';
 import { caseStage, seeCase, studyFor, weakestDomain } from '../lib/badges';
 import { backfillLine, badgeCase, seeBackfill } from '../lib/milestones';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -54,20 +63,27 @@ const SORT_WHY: Record<CaseSort, string> = {
   closest: 'Not yet earned, nearest first.',
   effort: 'Fewest days needed first.',
 };
-const FILTERS: { id: CaseFilter; label: string }[] = [
-  { id: 'all', label: 'All' },
-  { id: 'earned', label: 'Earned' },
-  { id: 'open', label: 'Not yet' },
+const FILTERS: { id: CaseFilter; label: string; spoken: string }[] = [
+  { id: 'all', label: 'All', spoken: 'All badges' },
+  { id: 'earned', label: 'Earned', spoken: 'Earned badges' },
+  { id: 'open', label: 'Not yet', spoken: 'Badges not yet earned' },
 ];
 /** The final three weeks: the case opens at Exam Day. */
 const OPEN_AT_EXAM_DAY = 21;
+/** "Study for this" from the sheet waits for it to slide away (iOS says when; elsewhere, and as a fallback, this long). */
+const SHEET_GONE_MS = Platform.OS === 'ios' ? 700 : 60;
 
 export default function Badges() {
   const { c } = useTheme();
   const { cert, progress, readiness, daysLeft, dueCount } = useActiveCert();
+  const params = useLocalSearchParams<{ shelf?: string; open?: string }>();
   const fontScale = useFontScale();
   const { width: screenW } = useWindowDimensions();
-  const { marks, sets, mastery } = useMemo(() => badgeCase(cert.id, progress), [cert.id, progress]);
+  const full = useMemo(() => badgeCase(cert.id, progress), [cert.id, progress]);
+  // Moments only once something on it happened: an unearned Fresh Start is never shown as a goal.
+  const marks = useMemo(() => full.marks.filter(onCase), [full.marks]);
+  const sets = useMemo(() => full.sets.map((s) => ({ ...s, marks: s.marks.filter(onCase) })), [full.sets]);
+  const { mastery } = full;
   const stage = caseStage(cert.id, progress, readiness, daysLeft);
   const after = stage === 'afterExam';
   const next = useMemo(
@@ -76,23 +92,41 @@ export default function Badges() {
     [marks, stage, daysLeft, mastery],
   );
   const weakest = weakestDomain(mastery);
+  const wholeMap = hasWholeMap(marks);
+  // Badges the back-fill saved quietly carry its time: they read "By 11 Oct".
+  const quietAt = progress.milestones?.backfill?.at;
 
-  // Badges earned since the case was last opened press in, then it counts as seen.
+  // Badges earned since the case was last opened press in, then it counts as
+  // seen. Seen only while the case is on screen: a badge earned in a session
+  // started from here (the case covered) keeps its "new" dot until it is viewed.
   const [seenAt] = useState(() => useSeen.getState().caseSeen[cert.id]);
-  useEffect(() => seeCase(cert.id), [cert.id, progress.milestones?.earned]);
+  // Re-runs when a badge arrives while the case is on screen, so it counts as seen too.
+  const lastEarned = Math.max(0, ...Object.values(progress.milestones?.earned ?? {}));
+  useFocusEffect(
+    useCallback(() => {
+      seeCase(cert.id, Math.max(Date.now(), lastEarned));
+    }, [cert.id, lastEarned]),
+  );
   const fresh = useMemo(
     () =>
       seenAt === undefined
         ? []
         : marks
-            .filter((m) => m.earnedAt !== undefined && m.earnedAt > seenAt)
+            .filter((m) => m.earnedAt !== undefined && m.earnedAt > seenAt && m.earnedAt !== quietAt)
             .sort((a, b) => a.earnedAt! - b.earnedAt!)
             .slice(0, motion.stagger.maxLeaves)
             .map((m) => m.key),
-    [marks, seenAt],
+    [marks, seenAt, quietAt],
   );
+  // Each new badge presses in ONCE: switching the sort or a filter remounts
+  // its cell, which must not replay it (code review minor 7).
+  const [pressDone, setPressDone] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setPressDone(true), 0);
+    return () => clearTimeout(t);
+  }, []);
   const pressAt = (key: string) => {
-    const k = fresh.indexOf(key);
+    const k = pressDone ? -1 : fresh.indexOf(key);
     return k < 0 ? undefined : motion.dur.screen + k * motion.stagger.leaf;
   };
   // "Next" bars grow from where they were last seen (per badge, so a slot that changes never borrows another's).
@@ -110,21 +144,56 @@ export default function Badges() {
     if (backfill && !backfill.seen) seeBackfill(cert.id);
   }, [backfill, cert.id]);
 
-  // Filter (this visit) and Sort (kept on this phone).
+  // Filter (this visit) and Sort (kept on this phone). After the exam there is
+  // nothing to be close to, so Closest is not offered (By set instead).
   const [filter, setFilter] = useState<CaseFilter>('all');
+  const sorts = after ? CASE_SORTS.filter((x) => x !== 'closest') : CASE_SORTS;
   const savedSort = useSeen((s) => s.badgeSort);
-  const sort: CaseSort = CASE_SORTS.includes(savedSort as CaseSort) ? (savedSort as CaseSort) : 'set';
+  // Opened at a shelf (Field notes): shelves for this visit, until a sort is picked.
+  const [atShelf, setAtShelf] = useState(Boolean(params.shelf));
+  const sort: CaseSort = !atShelf && sorts.includes(savedSort as CaseSort) ? (savedSort as CaseSort) : 'set';
   const [sortOpen, setSortOpen] = useState(false);
   const sortButton = useRef<View>(null);
+  const pickSort = (x: CaseSort) => {
+    useSeen.getState().setBadgeSort(x);
+    setAtShelf(false);
+    setSortOpen(false);
+    // The menu unmounts under the finger: focus goes back to the Sort button (UX H2).
+    moveFocus(sortButton, 150);
+  };
 
-  // The sheet: one badge's details.
-  const [open, setOpen] = useState<string | null>(null);
-  const openMark = open ? marks.find((m) => m.key === open) : undefined;
+  // The sheet: one badge's details. A "Study for this" in it waits until the
+  // sheet has slid away before it opens anything (a push under a closing
+  // sheet can land beneath it or stall on iOS).
+  const [open, setOpen] = useState<string | null>(() => (params.open && marks.some((m) => m.key === params.open) ? params.open : null));
+  const [leaving, setLeaving] = useState<string | null>(null);
+  const [opens, setOpens] = useState(0);
+  const pending = useRef<StudyTarget | null>(null);
+  const sheetKey = open ?? leaving;
+  const sheetMark = sheetKey ? marks.find((m) => m.key === sheetKey) : undefined;
+  const openSheet = useCallback((key: string) => {
+    setOpen(key);
+    setOpens((n) => n + 1);
+  }, []);
   const setOf = (m: CaseMark) => sets.find((s) => s.info.id === m.set)!;
   const setName = (m: CaseMark) => setOf(m).info.name;
+  const certId = cert.id;
+  const gone = useCallback(() => {
+    const t = pending.current;
+    pending.current = null;
+    setLeaving(null);
+    if (t) studyFor(t, certId, dueCount);
+  }, [certId, dueCount]);
+  useEffect(() => {
+    if (!leaving) return;
+    const t = setTimeout(gone, SHEET_GONE_MS);
+    return () => clearTimeout(t);
+  }, [leaving, gone]);
   const study = (t: StudyTarget) => {
+    if (!open) return studyFor(t, cert.id, dueCount); // the Next panel: no sheet in the way
+    pending.current = t;
+    setLeaving(open);
     setOpen(null);
-    studyFor(t, cert.id, dueCount);
   };
 
   // Grid: three columns (88pt medallions), two at ×1.3 text, a list at ×1.6.
@@ -134,15 +203,20 @@ export default function Badges() {
   const cellW = Math.floor((inner - (cols - 1) * space.sm) / cols);
   const size = cols === 3 ? Math.min(88, cellW - 16) : Math.min(104, cellW - 24);
 
-  // In the last three weeks, open at Exam Day (by set only, once).
+  // Opens at a shelf, once, by set: the one asked for (Field notes), else
+  // Exam Day in the final three weeks. Measured on the shelf's outer view,
+  // a direct child of the scroll content (code review B1).
   const scroll = useRef<ScrollView>(null);
-  const [examDayY, setExamDayY] = useState<number | null>(null);
+  const late = daysLeft !== null && daysLeft >= 0 && daysLeft <= OPEN_AT_EXAM_DAY;
+  const asked = SET_ORDER.includes(params.shelf as SetId) ? (params.shelf as SetId) : undefined;
+  const jumpTo: SetId | undefined = asked ?? (late ? 'examDay' : undefined);
+  const [jumpY, setJumpY] = useState<number | null>(null);
   const jumped = useRef(false);
   useEffect(() => {
-    if (jumped.current || examDayY === null || sort !== 'set' || daysLeft === null || daysLeft < 0 || daysLeft > OPEN_AT_EXAM_DAY) return;
+    if (jumped.current || jumpY === null || sort !== 'set' || !jumpTo) return;
     jumped.current = true;
-    scroll.current?.scrollTo({ y: Math.max(0, examDayY - space.lg), animated: false });
-  }, [examDayY, sort, daysLeft]);
+    scroll.current?.scrollTo({ y: Math.max(0, jumpY - space.lg), animated: false });
+  }, [jumpY, sort, jumpTo]);
 
   const renderMarks = (items: CaseMark[], flat: boolean) =>
     list ? (
@@ -153,11 +227,12 @@ export default function Badges() {
             mark={m}
             setName={setName(m)}
             domains={cert.domains}
-            onPress={() => setOpen(m.key)}
+            onOpen={openSheet}
             press={pressAt(m.key)}
             last={k === items.length - 1}
             showSet={flat}
             showProgress={!after}
+            quietAt={quietAt}
           />
         ))}
       </View>
@@ -171,10 +246,11 @@ export default function Badges() {
             width={cellW}
             size={size}
             domains={cert.domains}
-            onPress={() => setOpen(m.key)}
+            onOpen={openSheet}
             press={pressAt(m.key)}
             showSet={flat}
             showProgress={!after}
+            quietAt={quietAt}
           />
         ))}
       </View>
@@ -184,9 +260,9 @@ export default function Badges() {
     const items = s.marks.filter((m) => passesFilter(m, filter));
     const id: SetId = s.info.id;
     return (
-      <View key={id}>
+      <View key={id} testID={`shelf-${id}`} onLayout={id === jumpTo ? (e) => setJumpY(e.nativeEvent.layout.y) : undefined}>
         {id === 'fieldNotes' && <View style={{ height: 1, backgroundColor: c.line, marginTop: space.section }} />}
-        <ShelfHeader set={s} line={setCountLine(s)} onLayout={id === 'examDay' ? setExamDayY : undefined} />
+        <ShelfHeader set={s} line={setCountLine(s)} quietAt={quietAt} />
         {id === 'fieldNotes' && (
           <Button kind="ghost" label="See game levels ›" onPress={() => router.push('/field-notes')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />
         )}
@@ -223,7 +299,7 @@ export default function Badges() {
             domains={cert.domains}
             dueCount={dueCount}
             weakest={weakest}
-            onOpen={(m) => setOpen(m.key)}
+            onOpen={openSheet}
             onStudy={study}
             barFrom={barFrom}
           />
@@ -232,32 +308,24 @@ export default function Badges() {
         <View style={{ marginTop: space.xl }}>
           <ChipRow>
             {FILTERS.map((f) => (
-              <Chip key={f.id} label={f.label} selected={filter === f.id} onPress={() => setFilter(f.id)} accessibilityLabel={`Show ${f.label.toLowerCase()} badges`} />
+              <Chip key={f.id} label={f.label} selected={filter === f.id} onPress={() => setFilter(f.id)} accessibilityLabel={f.spoken} />
             ))}
           </ChipRow>
-          <View ref={sortButton} style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}>
+          <View style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}>
             <Button
+              ref={sortButton}
               kind="ghost"
               label={`Sort: ${SORT_LABEL[sort]} ${sortOpen ? '▴' : '▾'}`}
               accessibilityLabel={`Sort badges, ${SORT_LABEL[sort]}`}
               accessibilityHint={sortOpen ? 'Hides the sort choices' : 'Shows the sort choices'}
+              expanded={sortOpen}
               onPress={() => setSortOpen((o) => !o)}
             />
           </View>
           {sortOpen && (
             <View accessibilityRole="radiogroup" accessibilityLabel="Sort badges" style={{ borderBottomWidth: 1, borderBottomColor: c.line, marginBottom: space.sm }}>
-              {CASE_SORTS.map((s, i) => (
-                <RadioRow
-                  key={s}
-                  title={SORT_LABEL[s]}
-                  subtitle={SORT_WHY[s]}
-                  checked={sort === s}
-                  onPress={() => {
-                    useSeen.getState().setBadgeSort(s);
-                    setSortOpen(false);
-                  }}
-                  last={i === CASE_SORTS.length - 1}
-                />
+              {sorts.map((x, i) => (
+                <RadioRow key={x} title={SORT_LABEL[x]} subtitle={SORT_WHY[x]} checked={sort === x} onPress={() => pickSort(x)} last={i === sorts.length - 1} />
               ))}
             </View>
           )}
@@ -277,18 +345,23 @@ export default function Badges() {
         <T v="meta" style={{ marginTop: space.xl }}>Answers after Coach me and game answers don’t count toward study badges. Nothing here is ever taken away.</T>
       </ScrollView>
 
-      {openMark && (
+      {sheetMark && (
         <BadgeSheet
-          mark={openMark}
-          set={setOf(openMark)}
-          ladder={openMark.tier ? marks.filter((m) => m.badge === openMark.badge && m.tier) : undefined}
+          key={`${sheetMark.key}:${opens}`}
+          mark={sheetMark}
+          set={setOf(sheetMark)}
+          ladder={sheetMark.tier ? marks.filter((m) => m.badge === sheetMark.badge && m.tier) : undefined}
           domains={cert.domains}
           stage={stage}
           daysLeft={daysLeft}
           dueCount={dueCount}
           weakest={weakest}
+          wholeMap={wholeMap}
           showProgress={!after}
+          quietAt={quietAt}
+          visible={open !== null}
           onClose={() => setOpen(null)}
+          onDismissed={leaving ? gone : undefined}
           onStudy={study}
         />
       )}

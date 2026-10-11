@@ -12,14 +12,17 @@
  *   moments in any 7 days, then a quiet line; a higher tier plays short.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { Dimensions, Modal } from 'react-native';
+import { Dimensions, Modal, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Badges from '../app/milestones';
 import You from '../app/(tabs)/you';
 import Results from '../app/results';
 import Settings from '../app/settings';
-import { BadgeCell, BadgeListRow } from '../components/badges';
+import { BadgeCell, BadgeListRow, NextPanel } from '../components/badges';
+import { YouIcon } from '../app/(tabs)/_layout';
+import * as a11y from '../lib/a11y';
+import { light, space } from '../theme/tokens';
 import { Medallion } from '../components/medallion';
 import { MilestoneMomentView, resetBadgeMomentsForTest } from '../components/milestones';
 import { resetCelebrationsForTest } from '../components/motion';
@@ -43,9 +46,12 @@ jest.mock('../components/icons', () => {
   });
 });
 jest.mock('../components/shareCard', () => ({ ShareProgressSheet: () => null }));
+let mockParams: Record<string, string> = {};
 jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), canGoBack: () => true, canDismiss: () => false },
-  useFocusEffect: jest.fn(),
+  // The case counts as seen while focused: a mounted screen is focused here.
+  useFocusEffect: (cb: () => void | (() => void)) => jest.requireActual('react').useEffect(cb, [cb]),
+  useLocalSearchParams: () => mockParams,
 }));
 jest.mock('react-native-safe-area-context', () => {
   const { View } = jest.requireActual('react-native');
@@ -98,6 +104,7 @@ beforeEach(() => {
   useSettings.setState({ onboarded: true, activeCertId: 'cisa', examDates: {}, practiceTimer: false, badgesHidden: false });
   useSeen.setState({ values: {}, moments: {}, badgeMoments: [], caseSeen: {}, badgeSort: undefined });
   setScale(1);
+  mockParams = {};
 });
 afterEach(() => {
   act(() => r?.unmount());
@@ -112,8 +119,10 @@ describe('the case', () => {
     ensureBackfill('cisa', T0);
     mount(<Badges />);
     const cells = root().findAllByType(BadgeCell);
-    // The six counted sets hold 20 marks in CISA (3 + 6 + 3 + 3 + 2 + 3), then Fresh Start and the 7 skills.
-    expect(cells.length).toBe(20 + 1 + 7);
+    // The six counted sets hold 20 marks in CISA (3 + 6 + 3 + 3 + 2 + 3), then the 7 skills. Fresh Start
+    // (Moments) is not on the case until it happens: a week away is never shown as a goal.
+    expect(cells.length).toBe(20 + 7);
+    expect(cells.some((c) => c.props.mark.set === 'moments')).toBe(false);
     const widths = new Set(cells.map((c) => c.props.width));
     expect(widths.size).toBe(1);
     const w = [...widths][0] as number;
@@ -127,8 +136,10 @@ describe('the case', () => {
       const box = m.findAll((n) => n.props.importantForAccessibility === 'no-hide-descendants')[0];
       expect(box.props.accessible).toBe(false);
     }
-    expect(labels()).toContain('First Foothold. Earned 12 Oct. Finish the 20-question diagnostic. Groundwork.');
-    expect(labels().some((l) => l.startsWith('Firm Footing · IS Operations. Earned 12 Oct.') && l.endsWith('26% of the exam. The Five Domains.'))).toBe(true);
+    // Back-filled (saved quietly when badges arrived): "by" that date, never as if earned that day (UX P6).
+    expect(labels()).toContain('First Foothold. Earned by 12 Oct. Finish the 20-question diagnostic. Groundwork.');
+    expect(labels().some((l) => l.startsWith('Firm Footing · IS Operations. Earned by 12 Oct.') && l.endsWith('26% of the exam. The Five Domains.'))).toBe(true);
+    expect(allText()).toContain('By 12 Oct');
     expect(labels().some((l) => l.startsWith('Mindset Shift. Not yet.') && l.includes('Opens after 100 first tries'))).toBe(true);
   });
 
@@ -149,7 +160,7 @@ describe('the case', () => {
     d4.slice(0, 20).forEach(answer);
     ensureBackfill('cisa', T0);
     mount(<Badges />);
-    press(/^Show earned badges$/);
+    press(/^Earned badges$/);
     const shown = root().findAllByType(BadgeCell).map((c) => c.props.mark.key).sort();
     expect(shown).toEqual(Object.keys(cp().milestones!.earned).sort());
     expect(allText()).toContain('Nothing earned here yet.');
@@ -204,9 +215,13 @@ describe('the detail sheet', () => {
     expect(sheet.findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && /^Firm Footing · IS Operations\. Not yet\./.test(n.props.accessibilityLabel ?? '')).length).toBe(1);
     const study = sheet.findAll((n) => n.props.accessibilityLabel === 'Study for Firm Footing · IS Operations' && typeof n.props.onPress === 'function')[0];
     act(() => study.props.onPress());
+    // The sheet slides away first; only then does the session open (a push under a closing sheet can stall on iOS).
+    expect(root().findByType(Modal).props.visible).toBe(false);
+    expect(router.push).not.toHaveBeenCalled();
+    act(() => jest.advanceTimersByTime(700));
     expect(useSession.getState().active?.title).toBe('Smart · IS Operations');
     expect(router.push).toHaveBeenCalledWith('/session');
-    expect(root().findAllByType(Modal)).toHaveLength(0); // closed
+    expect(root().findAllByType(Modal)).toHaveLength(0); // gone
   });
 
   it('earned: what it means (not how to earn it), its date, and no Study button', () => {
@@ -226,6 +241,7 @@ describe('the detail sheet', () => {
     press(/^Dress Rehearsal\. Not yet/);
     expect(allText()).toContain('Best once every domain reaches 65%. It counts whenever you do it.');
     press(/^Study for Dress Rehearsal$/);
+    act(() => jest.advanceTimersByTime(700));
     expect(router.push).toHaveBeenCalledWith({ pathname: '/mock-start', params: { questions: '150' } });
     press(/^Rooted · 30 days, Lichen\. Not yet/);
     expect(labels().some((l) => l.startsWith('10 days, Clay: ') && l.includes('30 days, Lichen: ') && l.includes('60 days, Gold leaf: '))).toBe(true);
@@ -311,6 +327,7 @@ describe('the unlock moment', () => {
   it('at most three moments in any 7 days: the fourth is a quiet line, with no tap', () => {
     setMockReducedMotion(false);
     for (let i = 0; i < 3; i++) {
+      resetCelebrationsForTest(); // a new session each time: each plays in full (only full moments count)
       mount(<MilestoneMomentView moment={moment({ key: `k${i}` })} once={`s${i}`} />);
       expect(allText()).toContain('A new badge · Evergreen');
       act(() => r!.unmount());
@@ -339,5 +356,150 @@ describe('the unlock moment', () => {
     mount(<MilestoneMomentView moment={moment({ completes: true })} once="c1" />);
     expect(allText()).toContain('That completes Evergreen.');
     expect(labels().some((l) => l.endsWith('That completes Evergreen.'))).toBe(true);
+  });
+});
+
+describe('review fixes (PR #40)', () => {
+  const sheetText = () => {
+    const out: string[] = [];
+    const walk = (n: ReactTestInstance | string) => (typeof n === 'string' ? out.push(n) : n.children.forEach(walk));
+    walk(root().findByType(Modal));
+    return out.join(' ');
+  };
+
+  it('Next for your exam: the not-yet medallion uses the on-forest inks; the heading and the gap are spoken in full', () => {
+    d4.slice(0, 12).forEach(answer);
+    mount(<Badges />);
+    const panel = root().findByType(NextPanel);
+    const med = panel.findAll((n) => typeof n.type !== 'string' && typeof n.props.badge === 'string' && n.props.size === 56)[0];
+    expect(med.props.surface).toBe('forest');
+    expect(labels()).toContain(`Next for your exam: ${panel.props.best.name}`);
+    expect(labels().some((l) => /now, aiming for 70%/.test(l))).toBe(true);
+    expect(labels().some((l) => /→| of 70%/.test(l))).toBe(false);
+  });
+
+  it('Sort: the button says expanded or collapsed, and focus comes back to it after a choice', () => {
+    const focus = jest.spyOn(a11y, 'moveFocus');
+    mount(<Badges />);
+    const button = () => root().findAll((n) => n.props.accessibilityLabel === 'Sort badges, By set' && n.props.accessibilityRole === 'button')[0];
+    expect(button().props.accessibilityState.expanded).toBe(false);
+    press(/^Sort badges, By set$/);
+    expect(button().props.accessibilityState.expanded).toBe(true);
+    const radio = root().findAll((n) => n.props.accessibilityRole === 'radio' && /^Effort/.test(n.props.accessibilityLabel ?? ''))[0];
+    focus.mockClear();
+    act(() => radio.props.onPress());
+    expect(focus).toHaveBeenCalledTimes(1);
+    expect(focus.mock.calls[0][0]).toEqual({ current: expect.anything() });
+    focus.mockRestore();
+  });
+
+  it('filter chips are spoken as what they show', () => {
+    mount(<Badges />);
+    expect(labels()).toEqual(expect.arrayContaining(['All badges', 'Earned badges', 'Badges not yet earned']));
+  });
+
+  it('flat sorts keep Firm Footing’s name; Closest and Effort put the exam’s badges before Field notes', () => {
+    d4.slice(0, 20).forEach(answer);
+    ensureBackfill('cisa', T0);
+    useSeen.setState({ badgeSort: 'effort' });
+    mount(<Badges />);
+    expect(allText()).toContain('Firm Footing · IS Operations');
+    const sets = root().findAllByType(BadgeCell).map((c) => c.props.mark.set as string);
+    const firstGame = sets.indexOf('fieldNotes');
+    expect(firstGame).toBeGreaterThan(0);
+    expect(sets.slice(firstGame).every((x) => x === 'fieldNotes')).toBe(true);
+  });
+
+  it('opened from Field notes: the case opens at that shelf, by set for this visit, measured on the shelf itself', () => {
+    const spy = jest.spyOn(ScrollView.prototype, 'scrollTo').mockImplementation(() => {});
+    useSeen.setState({ badgeSort: 'closest' });
+    mockParams = { shelf: 'fieldNotes' };
+    mount(<Badges />);
+    expect(labels()).toContain('Sort badges, By set');
+    const shelf = root().findAll((n) => n.props.testID === 'shelf-fieldNotes' && typeof n.props.onLayout === 'function')[0];
+    act(() => shelf.props.onLayout({ nativeEvent: { layout: { x: 0, y: 2200, width: 353, height: 400 } } }));
+    expect(spy).toHaveBeenCalledWith({ y: 2200 - space.lg, animated: false });
+    // The saved choice is untouched.
+    expect(useSeen.getState().badgeSort).toBe('closest');
+    spy.mockRestore();
+  });
+
+  it('opened from a badge moment: that badge’s sheet is up', () => {
+    earn('first-foothold', T0 - DAY);
+    mockParams = { open: 'first-foothold' };
+    mount(<Badges />);
+    expect(sheetText()).toContain('You’ve mapped where you stand.');
+  });
+
+  it('after the exam: no How to earn it, no Study for this, no progress trace, and no Closest sort', () => {
+    useSettings.setState({ examDates: { cisa: '2026-10-01' } });
+    d4.slice(0, 12).forEach(answer);
+    mount(<Badges />);
+    for (const m of root().findAll((n) => typeof n.type !== 'string' && typeof n.props.badge === 'string' && typeof n.props.state === 'string')) expect(m.props.progress ?? 0).toBe(0);
+    press(/^Sort badges/);
+    expect(labels().some((l) => /^Closest/.test(l))).toBe(false);
+    press(/^Firm Footing · IS Operations\. Not yet/);
+    expect(sheetText()).not.toContain('How to earn it');
+    expect(root().findByType(Modal).findAll((n) => /^Study for/.test(n.props.accessibilityLabel ?? ''))).toHaveLength(0);
+  });
+
+  it('a back-filled badge says when badges arrived, and never "This completed" (the order is unknown)', () => {
+    d4.slice(0, 20).forEach(answer);
+    ensureBackfill('cisa', T0);
+    mount(<Badges />);
+    press(/^First Foothold\. Earned by/);
+    expect(sheetText()).toContain('Already earned when badges arrived (by 12 Oct)');
+    expect(sheetText()).not.toContain('This completed');
+  });
+
+  it('a new badge presses in once: switching the sort does not replay it', () => {
+    initCaseSeen('cisa', T0 - DAY);
+    earn('first-foothold', T0 - 1000);
+    mount(<Badges />);
+    const cell = () => root().findAllByType(BadgeCell).find((c) => c.props.mark.key === 'first-foothold')!;
+    expect(cell().props.press).toBeDefined();
+    act(() => jest.advanceTimersByTime(1));
+    press(/^Sort badges/);
+    const radio = root().findAll((n) => n.props.accessibilityRole === 'radio' && /^Recently earned/.test(n.props.accessibilityLabel ?? ''))[0];
+    act(() => radio.props.onPress());
+    expect(cell().props.press).toBeUndefined();
+  });
+
+  it('the You tab’s new mark is a ring (paper inside an accent outline), never the filled selected dot', () => {
+    mount(<YouIcon color="#000" size={24} dot />);
+    const ring = root().findAll((n) => n.props.testID === 'you-new-dot')[0];
+    expect(ring.props.style).toEqual(expect.objectContaining({ backgroundColor: light.bg, borderColor: light.accent, borderWidth: 2 }));
+    act(() => r!.unmount());
+    mount(<YouIcon color="#000" size={24} dot={false} />);
+    expect(root().findAll((n) => n.props.testID === 'you-new-dot')).toHaveLength(0);
+  });
+
+  it('You counts only badges the case shows (a kept newer tier never adds one)', () => {
+    earn('first-foothold', T0 - DAY);
+    earn('long-memory:75', T0 - DAY);
+    mount(<You />);
+    expect(labels().some((l) => l.startsWith('Badges, 1 earned.'))).toBe(true);
+  });
+
+  it('Show badges back on counts the active exam’s waiting moments only', () => {
+    act(() => {
+      useProgress.getState().updateMilestones('cisa', () => ({ milestones: { earned: { 'first-foothold': T0 }, queue: ['first-foothold'] } }));
+      useProgress.getState().updateMilestones('cism', () => ({ milestones: { earned: { 'first-foothold': T0 }, queue: ['first-foothold'] } }));
+    });
+    expect(showBadgesAgain()).toBe(1);
+    expect(selectCert(useProgress.getState(), 'cism').milestones!.queue).toEqual([]);
+  });
+
+  it('a moment already on screen before it plays settles from .9, not .4', () => {
+    setMockReducedMotion(false);
+    const m: MilestoneMoment = { key: 'long-memory', label: 'Long Memory', rule: 'r', kind: 'milestone', set: 'evergreen', setName: 'Evergreen', unlock: 'u' };
+    mount(<MilestoneMomentView moment={m} once="p1" inView={false} />);
+    act(() => r!.update(<MilestoneMomentView moment={m} once="p1" inView />));
+    const pop = root().findAll((n) => n.props.from !== undefined && n.props.trigger !== undefined)[0];
+    expect(pop.props.from).toBe(0.9);
+    act(() => r!.unmount());
+    resetCelebrationsForTest(); // a new session: it plays in full again
+    mount(<MilestoneMomentView moment={m} once="p2" />);
+    expect(root().findAll((n) => n.props.from !== undefined && n.props.trigger !== undefined)[0].props.from).toBe(0.4);
   });
 });

@@ -67,9 +67,12 @@ jest.mock('../components/icons', () => {
     get: (t, k: string) => (k in t ? t[k] : Icon),
   });
 });
+let mockParams: Record<string, string> = {};
 jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), canGoBack: () => true, canDismiss: () => false },
-  useFocusEffect: jest.fn(),
+  // The case counts as seen while focused: a mounted screen is focused here.
+  useFocusEffect: (cb: () => void | (() => void)) => jest.requireActual('react').useEffect(cb, [cb]),
+  useLocalSearchParams: () => mockParams,
 }));
 jest.mock('react-native-safe-area-context', () => {
   const { View } = jest.requireActual('react-native');
@@ -240,7 +243,8 @@ describe('Journey 1: a 1.5 learner upgrades', () => {
     // Per-set counts, never a grand total.
     expect(text).not.toContain('of 15');
     expect(labels()).toContain('Groundwork, 2 of 3');
-    expect(labels()).toContain('Exam Day, 2 of 2, complete, 12 Oct');
+    // Completed by the back-fill: "by" that date (it was already complete then).
+    expect(labels()).toContain('Exam Day, 2 of 2, complete, by 12 Oct');
     // The case's own data, checked against the rules: each earned mark is one earned medallion.
     const { marks } = badgeCase('cisa', cp(), T0);
     const earnedKeys = Object.keys(cp().milestones!.earned);
@@ -248,7 +252,8 @@ describe('Journey 1: a 1.5 learner upgrades', () => {
     expect(labels().some((l) => l.startsWith('Firm Footing · IS Audit. Earned'))).toBe(true);
     expect(labels().some((l) => l.startsWith('Rooted · 10 days, Clay. Earned'))).toBe(true);
     // Every open badge says "Not yet" with its progress (or when it opens): nothing hidden.
-    for (const m of marks.filter((x) => x.status !== 'earned')) {
+    // (Fresh Start, a moment, stays off the case until it happens: it is never a goal.)
+    for (const m of marks.filter((x) => x.status !== 'earned' && x.set !== 'moments')) {
       expect(labels().some((l) => l.startsWith(`${m.name}${m.tier ? ',' : '.'}`) && l.includes('Not yet'))).toBe(true);
     }
     // A completed set saves its planter (the plant shows it in Phase 4).
