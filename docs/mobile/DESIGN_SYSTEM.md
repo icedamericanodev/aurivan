@@ -110,7 +110,8 @@ Names keep the current `Palette` keys where the meaning is the same, so screens 
 | Token | Light | Dark | Use |
 |---|---|---|---|
 | `bg` | `#F3F1EA` | `#111613` | Screen background (warm paper / forest night) |
-| `raised` (was `surface`) | `#FFFFFF` | `#1A211C` | Option rows, sheets, inputs |
+| `raised` (was `surface`) | `#FFFFFF` | `#1A211C` | Option rows, inputs |
+| `raised2` (1.9) | `#F8F7F2` | `#1B231E` | The second surface tier: page sheets (Report a problem, Share progress, Restore preview, the mock navigator) sit one step above the screen behind them. Light is a lifted paper; dark keeps the `soft` pressed tint visible on it |
 | `soft` (was `surface2`) | `#E6EBE2` | `#202A23` | Icon circles, pressed rows, tags |
 | `line` (was `border`) | `#DFDCD1` | `#29322B` | Hairlines, dark-mode option outline |
 | `control` (was `borderStrong`) | `#7D897F` | `#66736A` | Idle chip / checkbox outlines (≥3:1) |
@@ -123,13 +124,14 @@ Names keep the current `Palette` keys where the meaning is the same, so screens 
 | `btn` (was `accentFill`) | `#1E4A34` | `#A9D9BA` | Primary button fill |
 | `onBtn` (was `onAccent`) | `#F7F5EF` | `#0F1F16` | Text on primary button |
 | `forest` | `#1E4A34` | **`#21432F`** | The hero panel (one per screen max). Dark lifted from `#1D3A2A` so it separates from `bg` and from `correctBg`; add a 1px inner top highlight `rgba(255,255,255,.06)` |
+| `forestTop` (1.9) | `#1E4A34` (= forest) | `#285139` | The panel's lit top edge: a vertical gradient `forestTop` → `forest` under the art (dark only; light stays flat, so no layer is drawn). `forest` + 4% lightness |
 | `onForest` | `#F3F1EA` | `#EEF2EA` | Text and pill button on `forest` |
 | `onForest2` | `#C9DACD` | **`#BCD2C2`** | Secondary text on `forest` |
 | `forestLine` | **`#3A6B51`** | **`#3C6B51`** | Botanical line art on `forest` (decorative, exempt from contrast; v1 value was invisible in dark) |
 | `forestTrack` (v2) | `#2F5C44` | `#2E5440` | Hairlines and ring tracks inside `forest` |
 | `sap` (v2) | `#A9D9BA` | `#A9D9BA` | Leaf progress marks and the mini ring on `forest` (6.4:1 / 7.0:1) |
 | `pill` / `onPill` (v2) | `#F3F1EA` / `#17231B` | `#EEF2EA` / `#0F1F16` | On-forest pill button (was hard-coded) |
-| `grainOp` (v2) | `0.05` (warm-black noise) | `0.06` (white noise) | Paper grain overlay opacity. Never higher: at 5% the weakest pair (`muted`/`bg`) stays ≥ 4.7:1 |
+| `grainOp` (v2) | `0.05` (warm-black noise) | `0.045` (white noise; 0.06 before 1.9) | Paper grain overlay opacity. Never higher: at 5% the weakest pair (`muted`/`bg`) stays ≥ 4.7:1. Dark went down in 1.9: white specks over the forest night read as dust |
 | `clay` | `#9A4F26` | `#E9A07A` | Streak + calm attention (pace behind, 2-min cue, last 5 min). Never for errors |
 | `correct` / `correctBg` | `#1D6A43` / `#E0EDE2` | `#8AD6A8` / `#173022` | Answer feedback only |
 | `wrong` / `wrongBg` | `#A3333D` / `#F7E3E1` | `#FF9CA6` / `#3A1A1D` | Answer feedback only |
@@ -141,6 +143,7 @@ Contrast (WCAG 2.x, all pass AA 4.5:1 for text; v2 re-run with `design/contrast_
 `wrong`/`wrongBg` 5.50, `correct`/`correctBg` 5.44, `muted`/`bg` 5.01; weakest dark pair is
 `muted`/`soft` 5.66. Non-text: `control` on `bg` 3.23 (L) / 3.68 (D); `accent` on `track` 4.62 / 6.33.
 Script: `design/contrast.py`.
+Mobile 1.9 (dark depth) adds to the tested pairs (`__tests__/design-tokens.test.ts`), all AA: on `raised2` — `ink` 15.15 L / 13.85 D, `ink2` 7.55 / 8.48, `muted` 5.28 / 6.14, `accentText` 6.94 / 9.00, `wrong` 6.32 / 8.09, `tip` 6.52 / 9.63, `clay` 5.56 / 7.49, non-text `control` 3.40 / 3.24; on `forestTop` (dark) — `onForest` 7.96, `onForest2` 5.65, `sap` 5.73. Dark grain worst case (one full white speck under a glyph, at 4.5%): `muted`/`bg` 6.29, `ink2`/`bg` 8.68, `onForest2`/`forest` 6.06, `onForest2`/`forestTop` 4.97 (6% would have been 5.79 / 4.81).
 
 Colour rules
 - Green = progress, primary action, correct. **Never "selected"** (selected = `ink`).
@@ -193,7 +196,7 @@ Colour rules
 
 **Stat tile**: no box. `number` value + `meta` label, stacked and centred in its cell, in a row of 3 separated by hairlines. At large text sizes the row becomes a left-aligned vertical list.
 
-**Hero panel**: `forest`, radius 24, padding 22, `caption` in `onForest2`, `hero` in `onForest`, `meta` in `onForest2`, on-forest button; **botanical line art** (§10.3, 1.5 stroke `forestLine`) bleeding off the top-right, replacing v1's topographic ellipses. Title may wrap to 3 lines; reserve the right 110pt for art only while the title is ≤ 2 lines (`maxWidth: 250`), otherwise text runs full width over the art (art is decorative and low-contrast). The `meta` line keeps the same `maxWidth: 250` (it wraps rather than running under the art), except with `wideTitle` or large text. Build: the art sits in its own absolutely-filled layer that does the rounded clipping, in a box of explicit size with a pivot in points; the text and button sit in a layer above it (zIndex 1). The panel itself doesn't clip (Android blank-panel fix).
+**Hero panel**: `forest`, radius 24, padding 22, `caption` in `onForest2`, `hero` in `onForest`, `meta` in `onForest2`, on-forest button; **botanical line art** (§10.3, 1.5 stroke `forestLine`) bleeding off the top-right, replacing v1's topographic ellipses. Title may wrap to 3 lines; reserve the right 110pt for art only while the title is ≤ 2 lines (`maxWidth: 250`), otherwise text runs full width over the art (art is decorative and low-contrast). The `meta` line keeps the same `maxWidth: 250` (it wraps rather than running under the art), except with `wideTitle` or large text. Build: the art sits in its own absolutely-filled layer that does the rounded clipping, in a box of explicit size with a pivot in points; the text and button sit in a layer above it (zIndex 1). The panel itself doesn't clip (Android blank-panel fix). Dark mode (1.9): the art layer first draws the panel's top light, one SVG gradient `forestTop` → `forest`, so the panel reads lit from above with its 1px highlight instead of a flat grey-green; light mode has no gradient layer.
 
 **Header**: tab screens = 14px top meta line (countdown left, streak right) + `display` title, no nav bar. **Today and You** put a Settings gear on the title row (`ScreenTitle`): an `IconButton` with Lucide `settings` 24, spoken "Settings" with the hint "Exam date, reminders and more", aligned to the gutter edge (the 48pt target overhangs by 10). Settings is reached only through this gear; You has no separate Settings row (removed 2026-10 as redundant). Pushed screens = 52pt bar: 44 hit icon left (X or ‹), centred progress or title `label`, icon right. No bottom border; content scroll reveals a 1px `line` only after scrolling (optional).
 
@@ -205,7 +208,7 @@ Colour rules
 
 Lucide (already installed, per-icon imports) plus 3 custom SVG glyphs in the same 24-grid / 1.75 stroke: `sprout` (Journey tab), `rings` (You tab), `sprig` (streak, replaces the flame). **Mobile 1.6** adds `TierLeaf` (16 grid, `glyphs.tsx`): a game level by SHAPE — Seedling = a small sprout, Sapling = an outline leaf with midrib, Heartwood = the leaf filled — always beside the level's name, never alone; filled vs outline is also a skill badge's "pressed leaf" (earned vs not yet). New Lucide icons: `milestone` (You → Milestones), `leaf` (Field notes), `book-a` (Field Guide), `tree-deciduous` (Canopy Call), `footprints` (Stepping Stones). **Mobile 1.7** (Help and feedback): `circle-question-mark`, `mail`, `life-buoy`, `inbox`, `map` (exported as `MapIcon`). Keep them in `components/icons.ts` as `react-native-svg` components. Stroke **1.75** everywhere, 2.5 only for the ✓ inside a filled circle. Sizes 16 inline, 20 rows, 24 bar/header. Icons are `accentText` inside `soft` circles, otherwise `ink`/`muted`. Never put icons in square tiles.
 
-## 8. Motion (mobile 1.8; Reanimated 4, no other animation library)
+## 8. Motion (mobile 1.8 and 1.9; Reanimated 4, no other animation library)
 
 The idea in one line: **everyday UI moves like paper** (quick, soft, never bouncy); **growth moves like a plant** (slower, earned, rare). Every animation explains one of three things: where something came from or went, what changed, or that the app heard the tap. Decoration is for rare, earned moments only.
 
@@ -222,7 +225,8 @@ Code: tokens in `theme/tokens.ts` (`motion`), primitives in `components/motion.t
 | `dur.enter` | 240 ms | Content groups (fade + 8pt rise); the tab fade-through |
 | `dur.screen` | 280 ms | The arriving half of a page turn; stack dissolves |
 | `dur.fill` | 300 ms | Progress bars and quiz segments |
-| `dur.vine` / `dur.grow` | 520 / 600 ms | Signatures: the vine stem, the growth rings (first view of the day) |
+| `dur.vine` / `dur.grow` | 520 / 600 ms | Signatures: the vine stem; the growth rings and rolling numbers (first view of the day, or what went up) |
+| `dur.celebrate` / `dur.short` | 1200 / 200 ms | The ceiling for a whole celebration (the clearing, a milestone); a shortened one's cross-fade |
 | `dur.reduced` | 120 ms | The cross-fade that replaces movement under Reduce Motion |
 | `dur.tick` | 900 ms | The Daylight pace tick's linear glide within each 1 s clock tick (the one linear motion) |
 | `curve.enter` / `exit` / `standard` | M3 `(.05,.7,.1,1)` / `(.3,0,.8,.15)` / `(.2,0,0,1)` | Arriving / leaving / moving on screen. The default is `Easing.out(cubic)` |
@@ -230,7 +234,8 @@ Code: tokens in `theme/tokens.ts` (`motion`), primitives in `components/motion.t
 | `spring.settle` | 300 ms, ratio .9 | The segmented thumb (no visible overshoot) |
 | `spring.pop` | damping 16, stiffness 260 | The verdict leaf only (signature) |
 | `spring.leaf` | 280 ms, ratio .7 | Small marks: the saved bookmark (later: plan leaves) |
-| `stagger` | groups 40 ms (first 4), rows 30 ms (first 6) | Entrances |
+| `stagger` | groups 40 ms (first 4), rows 30 ms (first 6), digits 30, growth figures 60, pressed leaves 80 (first 3) | Entrances; a number's digits finish right to left; rings and stats 60 ms apart |
+| `celebrate` | `fullTimes` 3, `sessionMs` 3000, `leaves` 8 | The celebration budget (§8.9) |
 | `rise` / `shift` | 8 / 16 pt | Enter offset (y) / page-turn offset (x) |
 | `pressScale` / `pressOpacity` | .98 / .92 | Press; the reduced press is the dim alone |
 
@@ -249,7 +254,14 @@ Budget (behavioural review §2): functional motion 120–300 ms, ease-out; infor
 | `Pop` | Springs a mark from .6 on a new truthy trigger (or on mount) | 120 ms fade-in |
 | `Shake` | One ±6 → 0 shake over 160 ms on a new trigger (game tiles) | Nothing moves; the words and colour carry it |
 | `PageTurn` | Shared axis X: the page drifts 16pt out the way you're going and fades (120 ms, `exit`); `onSwap` runs before the new page is painted (reset the scroll, announce, move focus); the new page arrives from the other side (280 ms, `enter`). Every page is a fresh subtree (re-keyed on `id`), so no state from the old page (a selection ring, a pressed tint) shows on the new one. The leaving page can't be tapped but **stays readable** (hiding it pushed screen-reader focus off the button just used). `onTurning` reports the page still on screen, so the parent's header and footer follow it. `calm` takes the reduced path with motion on (mocks) | No drift, no wait: the new page fades in over 120 ms (a Reanimated entering fade, so it never flashes at full strength for a frame first) |
-| `useOncePerDay(key)` | True on the first view of the day only (rings) | — |
+| `useOncePerDay(key)` | True on the first view of the day only (rings); `claimFirstView` / `isFirstViewToday` are its non-hook forms | — |
+| `useGrowth(key, values, { active, firstOfDay })` (1.9) | Decides, when a surface comes into view (`active`: a tab's focus, from `useScreenFocus`) or its numbers change while on view, whether they grow and from where: UP since the learner last saw them → from those (remembered across launches in `store/seen.ts`, per surface and cert, not in backups); else with `firstOfDay` the day's first view grows from 0; else they just show. A value that fell is never animated (a fallen one starts where it is). Re-entering never replays | — |
+| `RollingText`, `BigNum roll` (1.9) | An odometer: each digit is a clipped column (blank, 0–9, 0–9) on translateY, one Text per column, the final characters laid out invisibly first so the width never jitters; digits finish right to left 30 ms apart; a rise always rolls up (wrapping through 9), a Stepper step rolls the way it was pressed. Plain text until it first plays. Screen readers hear the final value only (the columns are hidden) | A changed value brightens in (120 ms); nothing rolls |
+| `GrowthRings grow` (1.9) | The caller decides: grow now, each arc from `from` (the value last seen) to now, after `delay`, outer ring first 60 ms apart. A zero-length arc hides its round cap (no stray dot) | Static |
+| `ProgressFill from` (1.9) | A bar that starts at the value last seen and grows to now over `grow`, after `delay` (Milestones' "closest next") | The value at once |
+| `useCelebration(kind, run, line)` + `Celebrate` (1.9) | One celebration: decided once when `run` turns true (§8.9), `line` announced once in every mode. `Celebrate` frames it: anything inside reads `settled` and jumps to its end state; any touch inside skips it (the touch still reaches the button under it); 'short' cross-fades the block in over 200 ms | 'static': the end state at once, same words; haptic kept |
+| `LeafFall` (1.9) | ≤ 8 small leaves drift down once (1.2 s, transform and opacity, fixed positions) inside an area the caller gives them, which holds no text. Gone when skipped | None |
+| `ThemeFade` (1.9) | Mounted once at the root, under the grain: when Light ⇄ Dark flips, a veil in the OLD paper is drawn in the very commit that changes the theme, then fades out (240 ms) as an exit animation, so the app dissolves instead of flashing. Cheap: one view, only during a switch | The same dissolve, 120 ms |
 | `tween(to, dur, ease)` | A token-timed `withTiming` that passes `ReduceMotion.Never`: our components already chose their reduced path, and Reanimated's global switch would otherwise skip even the cross-fade | — |
 
 ### 8.3 Choreography rules
@@ -263,6 +275,14 @@ Budget (behavioural review §2): functional motion 120–300 ms, ease-out; infor
 7. **Focus order never depends on animation.** Content is mounted, and readable by screen readers, from the first frame, including a leaving page; announcements are sent at once; nothing uses a live region to time motion. Labels, roles and states are the same with motion on or off. After a turn: a session announces "Question 3 of 10"; Guided moves focus to the new topic's title; a lesson's Back that takes you to the first scene (where Back is hidden) hands focus to Next.
 8. **One signature per screen**: at most one expressive thing moves at a time (the verdict leaf, the vine, the rings).
 9. **No shared-element transitions yet** (Reanimated's are experimental); continuity comes from matching geometry and the hero lift.
+10. **Growth shows what changed, once (1.9).** Numbers roll and rings grow on the first view of the day, or when they went UP since the learner last saw that surface, and only while it is on view (Today and You use their tab focus: a session on top changes them off-screen). Never on a fall (readiness that dropped, a reset streak, a bad session: below 60% Results is simply shown), never on question or mock screens, never on every focus. Where it plays:
+    - **Today:** the readiness range rolls and the mono rings grow; the streak numeral rolls +1 on a new day's first study and the sprig pops; a plan leaf done since Today was last on view fills as you come back (a `leaf` spring from .6, one `light` haptic per item).
+    - **You:** the rings grow from what you last saw (from 0 on the day's first view), and a domain that went up gets a quiet `caption` "+6" in `accentText` beside its legend value, fading in after its arc settles (only for a real last look, never the day's count-up); the range in the middle and any stat that went up roll, 60 ms apart.
+    - **Results:** once per session, after the dissolve: the session's rings grow from 0 to the score, the score in the centre and the "correct" numerator roll (the "/20" stays put). Three growths at most.
+    - **Round recap:** the score rolls up from 0 (never a score at or below 0), then "New personal best" fades in.
+    - **Milestones:** leaves earned since the last visit press in (80 ms apart, the first 3); a "closest next" bar grows from where you last saw it, once the screen has arrived.
+    - **Stepper:** the value rolls one step the way you pressed (160 ms).
+11. **Celebrations are rare, short and skippable (1.9).** See §8.9.
 
 ### 8.4 Touch (what each control does)
 
@@ -296,6 +316,9 @@ Settings → **Motion** (after Appearance): a radio group, "Match my phone" (the
 | Verdict pop, bookmark pop | 120 ms fade-in |
 | Coach me wash (200 ms) | The same wash, 120 ms (it is colour, not movement) |
 | Vine draw, leaf pops, ring growth | Static (haptics kept) |
+| Rolling numbers | The final number; a changed one brightens in (120 ms) |
+| The clearing, a milestone moment, Exam-ready (1.9) | The end state at once, with the same words (announced once); haptic kept; no leaves |
+| Light ⇄ Dark switch (1.9) | The same dissolve, 120 ms (opacity only) |
 | Game-tile shake | None; the static wrong state and the words "Not a match" |
 | Tab fade-through | Instant (the named exception above) |
 | Stack push / rise, page sheets | Dissolve (`fade`) |
@@ -308,11 +331,22 @@ Transform and opacity only, never layout (the Daylight pace tick used to animate
 
 ### 8.7 Testing and screenshots
 
-One Reanimated jest mock for the whole suite (`mobile/jest/reanimated-mock.ts`, registered in `jest/setup.ts`; Reduce Motion on by default, `setMockReducedMotion(false)` turns it off; React Native's `isReduceMotionEnabled` gives the same answer). Shared values persist and `useAnimatedStyle` runs, so a re-render after effects shows an animation's END state: `motion.test.tsx` renders every primitive reduced and asserts its final static state; `motion-touch.test.tsx` pins that selection never reflows a row. `SHOTS=motion npm run shots` captures the changed screens plus slow-motion frame strips (the page clock runs at 1/10 speed) of the press, select, segment fill, page turn (with its footer), segmented thumb (sliding, and reopened on a later option), a mock's calm turn and the tab fade. `phase2-review-fixes.test.tsx` runs a mock and a practice session with motion ON and fake timers, so the page turn's real leaving phase is on screen (the footer, the bookmark, the announcements).
+One Reanimated jest mock for the whole suite (`mobile/jest/reanimated-mock.ts`, registered in `jest/setup.ts`; Reduce Motion on by default, `setMockReducedMotion(false)` turns it off; React Native's `isReduceMotionEnabled` gives the same answer). Shared values persist and `useAnimatedStyle` runs, so a re-render after effects shows an animation's END state: `motion.test.tsx` renders every primitive reduced and asserts its final static state; `motion-touch.test.tsx` pins that selection never reflows a row. `SHOTS=motion npm run shots` captures the changed screens plus slow-motion frame strips (the page clock runs at 1/10 speed) of the press, select, segment fill, page turn (with its footer), segmented thumb (sliding, and reopened on a later option), a mock's calm turn and the tab fade. `phase2-review-fixes.test.tsx` runs a mock and a practice session with motion ON and fake timers, so the page turn's real leaving phase is on screen (the footer, the bookmark, the announcements). Mobile 1.9: `motion-growth.test.tsx` pins the odometer maths, `useGrowth` (up only, from what was seen, never on a fall, not while out of view), the celebration budget and fatigue, skip, `LeafFall`, `ThemeFade`, `ProgressFill from`, the plan leaf fill and the Stepper roll; `phase3-growth-screens.test.tsx` runs the clearing, Results and You in full motion and reduced (same words, only the movement differs). `SHOTS=growth npm run shots` (with `REDUCED=1` for the reduced set) captures Today (normal, cleared, exam-ready, exam eve), Results, You, Milestones, the empty states, the bank grouping and a sheet, plus strips of a number roll, ring growth, the clearing, the milestone moment, You's "+N" and the theme fade.
 
 ### 8.8 Planned (later phases, same primitives)
 
-Numbers that roll on the first view of the day; rings that grow from the previous value with a "+4" tag; the plan leaf filling on return to Today; lesson scenes as page turns with a step line that draws; the clearing card and milestone moments within the celebration budget (one per session, ≤ 1.2 s, skippable, fatigue decay); the plant companion's idle bursts and reactions (off with Reduce Motion or "Companion moves" off).
+Lesson scenes as page turns with a step line that draws; the Learn accordion; game identity and game motion (the TierLeaf morph, match and stone motions); the plant companion's idle bursts and reactions (off with Reduce Motion or "Companion moves" off), which will take its place in the celebration budget below.
+
+### 8.9 Celebrations (mobile 1.9; behavioural review §2)
+
+| Moment | Tier | Full (≤ 1.2 s, any tap ends it) | Words (every mode, announced once) |
+|---|---|---|---|
+| **Today's clearing** (all plan items done), as Today comes back into view, once a day | T2 | the last plan leaf fills; the day's three numbers roll up 60 ms apart (from 120 ms); the mini ring grows from this morning's readiness to now (from 240 ms); then "Readiness grew to …" and "IS Audit ring +4" fade in (from 840 ms). One `success` haptic | "Today's clearing. Two of two, done. Readiness grew to 67–77%." |
+| **A milestone** (Results under the stats, a round recap) | T3 | the pressed leaf (a 32pt `LeafBig` in its own 40pt column) springs in from .4 and six leaves drift down that column, never over the words. On Results it waits until it is scrolled into view AND the rings have settled (one signature at a time); its haptic and words don't wait | "A quiet milestone: Rooted · 10 days. …" |
+| **Exam-ready** (the readiness-holding panel) | T3 | the sap rings grow, the frond takes ONE slow breath (1.5° out and back over 1.2 s) and the words follow. One `success` haptic, the first time it ever shows | "A quiet milestone. Your readiness is holding." |
+| **Exam eve / exam day** | calm, not a celebration | on the day's first view the reminders arrive one by one (80 ms apart), each leaf pressing in. No particles, ever | the card itself |
+
+Rules: there is no confetti, no sound, no full-screen takeover and no "Congrats!". At most ONE celebration plays in full per app session; the next is the short form. A kind plays in full its first three times, then short (its end state cross-fades in over 200 ms), so it never wears out its welcome. Decorative motion stays within 3 s per session (`claimDecor`). Nothing ever celebrates a loss. Under Reduce Motion it is the end state with the same words. Counts live in `store/seen.ts`, on this phone only.
 
 ## 9. Library decision
 
@@ -368,7 +402,7 @@ may ever appear twice on one screen.
 - Sizes: **Today 104** (`k .24`, `r0 13`, gap 3, **monochrome `accent`**, pith dot `r0×.32`) — shape only, the number sits beside it. **You 172** (`k .36`, `r0 34`, gap 4.2, domain tones, no pith, `70%` `stat` 30 inside + "ready" caption) with a legend listing domains outside-in, numbers in Fraunces 17. **Clearing mini 48** on forest (`sap` on `forestTrack`). **Results 200** same as You, but only the session's domains get rings (mobile 1.8); a one-domain session is one thick ring in its tone with a `meta` line "This session was all IS Audit: the ring is your score."
 - **Exam-ready panel** (Phase 5b, on forest): the rings use `sap` on `forestTrack`, like the clearing mini; its text column keeps `maxWidth: 250` beside them so it never runs under the frond art.
 - Component: `<GrowthRings size mastery={number[]} weights={number[]} tone="domains"|"mono"|"sap" />`, paths `useMemo`'d. Accessibility: `accessibilityRole="image"`, label "Readiness 70 percent. IS Audit 88, IT Governance 63, …".
-- Motion: on first view per day, arcs grow from 0 to value over 600ms `Easing.out(cubic)`, outer ring first, 60ms stagger (animate `strokeDashoffset` via reanimated `useAnimatedProps`; pre-compute each arc's length). Reduce motion → static.
+- Motion: on first view per day, arcs grow from 0 to value over 600ms `Easing.out(cubic)`, outer ring first, 60ms stagger (animate `strokeDashoffset` via reanimated `useAnimatedProps`; pre-compute each arc's length). Since 1.9 they also grow from the value last SEEN to now (Today, You, the clearing mini ring from this morning's readiness), never shrink, and Results grows the session's score once (§8.3 rule 10). Reduce motion → static.
 
 ### 10.2 Vine reveal — the answer moment
 Order on the feedback screen:
@@ -387,7 +421,7 @@ Order on the feedback screen:
 
 ### 10.3 Botanical line art
 - One drawing style: single 1.5pt stroke, round caps/joins, no fills (except leaf marks), leaves = quadratic "lens" shapes with a midrib, arranged along one quadratic-bezier stem. Generator `frond({p0,p1,pc,n,len,wid,ang,alt,taper})` (≈25 lines, see mockup script) emits one SVG path; seeds are fixed per placement so art never changes between renders.
-- Placements: Today panel = upright frond (9 pairs); Practice panel = shorter frond; Learn "Up next" cover = alternate-leaf branch (lesson covers; one variant per domain by changing `alt`/`ang`/`taper` — 5 presets, no images); clearing card = tall frond; empty states = seedling (stem, 2 cotyledons, 1 true leaf, 3 fading soil lines) at 170×176 in `accent`.
+- Placements: Today panel = upright frond (9 pairs); Practice panel = shorter frond; Learn "Up next" cover = alternate-leaf branch (lesson covers; one variant per domain by changing `alt`/`ang`/`taper` — 5 presets, no images); clearing card = tall frond; empty states = their own drawing (1.9, `EmptyArt`, 170×176 in `accent`): seedling (stem, 2 cotyledons, 1 true leaf, 3 fading soil lines; something new will grow here), fern (a fiddlehead uncurling beside one open frond: review brings questions back around), bookmark (a ribbon standing in the soil with a sprig drawn on it, a sprig growing beside it), pressed (a leaf taped to a herbarium sheet, the tape knocked out on paper, with its label), fieldbook (an open field book: a sprig on the left page, notes on the right).
 - On `forest` it's `forestLine` (decorative, ~1.7:1 on purpose). On paper it's `accent`. Never behind body text on paper.
 - Optional, low priority: a 4s ±1.5° sway on the panel frond (reanimated, `withRepeat`), paused when off-screen and under reduce motion.
 
@@ -535,7 +569,9 @@ Reduced paths per §8.5 (the phone's Reduce Motion, live, or Settings → Motion
 
 **Study notes** (added 2026-10-08; Learn → one `ListRow` under the cover, BookOpen icon, hidden while the notes pack is empty): *Home* = pushed header "Study notes" → `meta` line → search field (`raised`, 1.5 `control` outline, 48 min, body text, 48pt clear ✕; the result count is announced to screen readers after typing pauses; an empty pack shows an empty screen) → "By domain" + "3 of 120 read" → rows: domain dot (lead 16) · `label` name · `meta` "26% of the exam · 3 of 24 read" · 28 read circle. Search replaces the rows with results (title + 2-line `meta` snippet + `caption` domain). *Domain* = the one forest panel (domain dot + "Domain 4 · 26% of the exam", `hero` name, `meta` read count, `small` overview in `onForest` clamped to 3 lines + 48pt "More"/"Less" toggle) → "Think of it like this" `caption` + `body` `ink2` analogy on the paper, so the first topic shows on the first screen → "Part A · name" headlines → per topic: `caption` code in `accentText`, `headline` name, `body` `ink2` overview, "You should be able to" bullets (6pt `accent` dots), subtopic rows with read circle → "Domain key terms" folded. *Subtopic* = `Tag` (domain dot + topic) → `hero` name → sections in schema-v2 order, each a `Section` headline: "In one line" in `stem`; bullets for How it works; Compare table side by side only when it fits (label column 100 + columns ≥120: 2 columns on a phone, 3 on wider screens), otherwise and at ×1.3+ text stacked as one bordered block per row (1px `line`, radius 16: row label, then each column name in `accentText` `caption` + cell); Illustration drawn so its smallest label is ≥13pt (×1.5 with large text, max 4 columns wide), scrolling sideways with a `meta` hint and a `bg` right-edge fade that clears at the end, `meta` caption; "How ISACA thinks" = key-idea recipe (3px `accent` rule + `quote`); Exam traps = `tipBg` blocks with `tip` captions "Trap" / "Why it's wrong"; Key terms and Types = hairline term lists → footer: secondary "Mark as read" (toggle, ✓ + "Marked as read", selected state) → when the note lists `practiceIds` that still exist: primary "Practice this concept" (questions shuffled) with a centred `meta` helper 4pt below ("N questions that test this concept. Answers count toward your progress."), then secondary "Practice this domain"; with none, "Practice this domain" is the primary → ghost "Next: …". Diagram colours: web CSS variables map to palette tokens in `engine/notesSvg.ts` (`accent-fill` → `forest` for box fills, `accentText` for text, `accent` for lines/icons; white text → `onForest`; every label ≥4.5:1 in both themes, tested; `surface` → `raised`, `border2` → `control`, `text`/`text2` → `ink`/`ink2`).
 
-**Empty state** (Mistake journal, Saved, Spaced review "all caught up", No mocks): pushed header → seedling art 170 in `accent`, 46 from header → `hero` centred one-line title ("Nothing open right now") → `body` `ink2` centred, ≤ 2 lines → optional teaching tags (non-interactive `soft` tags with a 6pt `clay` dot showing the trap types that will appear) → sticky primary action + ghost secondary. Copy is factual and forward-looking; no "Yay!".
+**Empty state** (Mistake journal, Saved, Spaced review "all caught up", No mocks): pushed header → its own drawing 170 in `accent` (1.9: Spaced review = fern, Saved = bookmark, Mistake journal = pressed leaf, Your reports and the notes search = field book, the bank's filters = what that filter would show (Saved bookmark, Missed pressed leaf, Not yet answered field book), games and anything still to come = seedling), 46 from header → `hero` centred one-line title ("Nothing open right now") → `body` `ink2` centred, ≤ 2 lines → optional **next line** (1.9): a `soft` pill with a small `accentText` leaf and a `meta` `ink` line about what happens here next, from the learner's own data only ("Next review: tomorrow · 6 questions", "12 mistakes cleared so far") → optional teaching tags (non-interactive `soft` tags with a 6pt `clay` dot showing the trap types that will appear) → sticky primary action + ghost secondary. Copy is factual and forward-looking; no "Yay!".
+
+**Question bank → a domain** (1.9, ui.md E3): a topic header (`caption` `accentText` + the learner's own counts) only when the topic shows 2 rows or more under the current filter; a lone row names its topic itself in a `caption` `ink2` line above its stem (and says it, after its status). The "not yet answered" mark is a small 12pt open ring in `control`, centred in the 24pt mark (a full-size ring read as a radio button); ✓ and ✗ stay filled 24pt circles.
 
 ## 12. Brand: "True North" (mobile app, chosen 2026-10-07)
 

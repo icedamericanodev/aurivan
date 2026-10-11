@@ -36,6 +36,21 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.9.0',
+    date: '2026-10-11',
+    new: [
+      'Your progress now shows itself: when your readiness, your answers or a milestone moves up, the numbers roll up and the rings grow from where you last saw them, with a small note of what changed.',
+      'Finishing the day’s plan, and reaching a milestone, now have their own short, quiet moment. Tap to skip it, and it shortens once you’ve seen it a few times.',
+    ],
+    improved: [
+      'Dark mode has more depth: the main panel is gently lit, the paper texture is softer, and sheets stand apart from the screen behind them.',
+      'Switching between light and dark now fades smoothly instead of flashing.',
+      'Empty screens each have their own drawing, and All caught up tells you when your next review is due.',
+      'The question bank only groups questions under a topic heading when there are several; a single question names its topic itself.',
+      'With Reduce Motion on, you see the same numbers and words, without the movement.',
+    ],
+  },
+  {
     version: '1.8.0',
     date: '2026-10-11',
     new: [
@@ -154,8 +169,8 @@ export interface NextItem {
 export const WHATS_NEXT: readonly NextItem[] = [
   {
     status: 'progress',
-    title: 'A livelier, calm feel',
-    body: 'Numbers and rings that grow as you make progress, and quiet moments when you reach a milestone. Short fades instead of movement when Reduce Motion is on.',
+    title: 'Lessons and games that come alive',
+    body: 'Lesson steps that build up one at a time, and games with a look of their own. Short fades instead of movement when Reduce Motion is on.',
   },
   {
     status: 'planned',
@@ -171,6 +186,12 @@ export const WHATS_NEXT: readonly NextItem[] = [
     status: 'planned',
     title: 'A feedback board',
     body: 'Suggest ideas, see what other learners asked for, and read what we decide and why.',
+  },
+  {
+    status: 'shipped',
+    shippedIn: '1.9.0',
+    title: 'Progress you can see',
+    body: 'Numbers and rings that grow as you make progress, and quiet moments when you finish the day’s plan or reach a milestone.',
   },
   {
     status: 'shipped',
