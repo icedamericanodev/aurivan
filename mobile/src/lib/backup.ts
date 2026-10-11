@@ -53,7 +53,7 @@ import { cancelReminders, ensurePermission, remindersSupported, scheduleReminder
 
 // ── The data in each store (no actions) ──────────────────────────────────
 const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize'] as const;
-const PROGRESS_KEYS = ['byCert', 'streak', 'today', 'days'] as const;
+const PROGRESS_KEYS = ['byCert', 'streak', 'today', 'days', 'reports'] as const;
 
 type SettingsData = Pick<ReturnType<typeof useSettings.getState>, (typeof SETTINGS_KEYS)[number]>;
 type ProgressData = Pick<ReturnType<typeof useProgress.getState>, (typeof PROGRESS_KEYS)[number]>;
