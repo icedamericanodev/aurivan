@@ -17,6 +17,8 @@
  * (never "of N") and a small "new" dot until a newly earned badge has been
  * seen. Settings → Show badges off hides the row, the dot and the line.
  * Mobile 1.7: one "Help and feedback" row at the end (app/help.tsx).
+ * Mobile 1.13: your plant in the header (opens Your plant), or a "Plant
+ * yours" entry when there is none. Settings → Show my plant off hides both.
  */
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -25,8 +27,11 @@ import { boundsLabel, DomainRings, ringsSpoken } from '../../components/journey'
 import { useGrowth, useScreenFocus } from '../../components/motion';
 import { creditSubtitle } from '../../components/help';
 import { MindsetGrowthCard } from '../../components/moments';
-import { BadgeIcon, Bookmark, ICON_STROKE, Leaf, LifeBuoy, NotebookPen, RotateCcw, Settings, Share2 } from '../../components/icons';
+import { BadgeIcon, Bookmark, ICON_STROKE, Leaf, LifeBuoy, NotebookPen, RotateCcw, Settings, Share2, Sprout } from '../../components/icons';
 import { ShareProgressSheet } from '../../components/shareCard';
+import { Plant } from '../../components/plant/Plant';
+import { growthShort, plantCallName } from '../../engine/plant';
+import { usePlantView } from '../../lib/plant';
 import { ThemeSwitch } from '../../components/themeSwitch';
 import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Row, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
 import { durationWords, pacingStats, pacingStatsLine, TIMING_LABEL } from '../../engine/pace';
@@ -105,11 +110,43 @@ export default function You() {
         .join(', ')
     : '';
   const statRoll = (k: number, from: string) => ({ play: stats.play, from, run: stats.run, delay: motion.dur.select + k * motion.stagger.stat });
+  const plant = usePlantView();
+  const { isDark } = useTheme();
 
   return (
     <Screen>
       <Enter i={0}>
         <ScreenTitle title="You" settings={() => router.push('/settings')} />
+        {plant.plant ? (
+          // The plant opens Your plant; its growth reads in words beside it ("growth", never "stage").
+          <ListRow
+            lead={
+              <Plant
+                species={plant.plant.species}
+                stage={plant.plant.growth}
+                organs={plant.scales}
+                quietLook={!plant.face}
+                resting={plant.resting}
+                size={64}
+                theme={isDark ? 'dark' : 'light'}
+              />
+            }
+            title={plantCallName(plant.plant)}
+            subtitle={growthShort(plant.plant.growth)}
+            accessibilityLabel={`${plant.label} Your plant.`}
+            accessibilityHint="Opens your plant"
+            onPress={() => router.push('/plant')}
+            last
+          />
+        ) : plant.shown ? (
+          <ListRow
+            icon={<Sprout size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+            title="Plant yours"
+            subtitle="A companion that grows only with your study"
+            onPress={() => router.push('/plant-pick')}
+            last
+          />
+        ) : null}
         <View style={{ marginTop: space.md }}>
           <ThemeSwitch />
         </View>

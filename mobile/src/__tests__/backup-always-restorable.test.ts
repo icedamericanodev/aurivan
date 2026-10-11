@@ -16,6 +16,7 @@
 import { getAllQuestions } from '../content/loader';
 import { MAX_ANSWER_MS } from '../engine/answerClock';
 import { readBackup } from '../engine/backup';
+import { GROWTH_IDS, isValidPlantState, PLANT_SPECIES, type CertPlant, type GrowthLevel } from '../engine/plant';
 import { createRng } from '../engine/random';
 import { dayKey } from '../engine/streak';
 import { originalToDisplay } from '../engine/shuffle';
@@ -200,6 +201,37 @@ describe('export: every state the phone can hold reads back', () => {
     };
   }
 
+  /**
+   * Mobile 1.13: a plant as the phone could hold it, edges included: names
+   * with bidi marks, zero-widths, emoji and over-long text (an older build or
+   * a direct store write), growth with `reached`, `pending` and a back-fill
+   * that don't agree, duplicate keepsakes, odd look ids. Export must repair
+   * every one into a plant the restore accepts.
+   */
+  function randomPlant(seed: number): CertPlant | undefined {
+    const rng = createRng(seed * 977);
+    if (rng() < 0.25) return undefined;
+    const n = (max: number) => Math.floor(rng() * max);
+    const pick = <T,>(xs: readonly T[]) => xs[n(xs.length)];
+    const growth = (1 + n(6)) as GrowthLevel;
+    const reached: Partial<Record<(typeof GROWTH_IDS)[number], number>> = {};
+    for (const g of GROWTH_IDS) if (rng() < 0.5) reached[g] = T0 - n(60) * DAY;
+    const names = ['Kai', '', 'Hana 🌸', '\u202Eevil\u202C', 'zero\u200Bwidth', '  spaced   out  ', 'Ledger', 'Ａｔｌａｓ', '🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳', 'é'.normalize('NFD'), 'A'.repeat(60)];
+    return {
+      species: pick(PLANT_SPECIES),
+      name: pick(names),
+      plantedAt: T0 - n(90) * DAY,
+      growth,
+      ...(rng() < 0.6 ? { reached } : {}),
+      ...(rng() < 0.4 ? { replantedAt: T0 - n(10) * DAY } : {}),
+      ...(rng() < 0.4 ? { pending: (1 + n(6)) as GrowthLevel } : {}),
+      ...(rng() < 0.4 ? { backfill: { at: T0 - n(20) * DAY, growth: (1 + n(6)) as GrowthLevel, ...(rng() < 0.5 ? { seen: true } : {}) } } : {}),
+      ...(rng() < 0.4 ? { look: { ground: 'meadow', keepsakes: pick([[], ['lantern'], ['fox', 'fox', 'jay'], ['a', 'b', 'c', 'd', 'e']]) } } : {}),
+      ...(rng() < 0.3 ? { kept: pick([['robin'], ['robin', 'robin'], Array.from({ length: 80 }, (_, k) => `kept-${k}`)]) } : {}),
+      ...(rng() < 0.2 ? { passedOn: '2026-09-30' } : {}),
+    } as CertPlant;
+  }
+
   /** Mobile 1.7: Your reports, from none to more than the cap (an older build could hold any length). */
   function randomReports(seed: number) {
     const rng = createRng(seed * 31);
@@ -216,10 +248,23 @@ describe('export: every state the phone can hold reads back', () => {
 
   it('200 random plausible states: every export passes the restore check', () => {
     for (let seed = 1; seed <= 200; seed++) {
-      useProgress.setState({ byCert: { cisa: randomCert(seed) }, reports: randomReports(seed) });
+      const plant = randomPlant(seed);
+      useProgress.setState({
+        byCert: { cisa: { ...randomCert(seed), ...(plant ? { plant } : {}) } },
+        reports: randomReports(seed),
+        plantSettings: seed % 3 === 0 ? undefined : { showPlant: seed % 2 === 0, quietLook: seed % 5 === 0, ...(seed % 7 === 0 ? { promptHidden: true } : {}) },
+      });
       useSettings.setState({ badgesHidden: seed % 2 === 0 });
       const read = restorable();
       if (read.kind !== 'ok') throw new Error(`seed ${seed}: ${read.code}`);
+      // The plant survives (repaired and clamped to the data), never dropped or invented.
+      const back = read.data.progress.byCert.cisa.plant;
+      expect(Boolean(back)).toBe(Boolean(plant));
+      if (back) {
+        expect(isValidPlantState(back)).toBe(true);
+        expect(back.species).toBe(plant!.species);
+        expect(back.growth).toBeLessThanOrEqual(plant!.growth);
+      }
     }
   });
 

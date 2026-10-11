@@ -13,7 +13,7 @@ import type { Certification } from '../content/types';
 import { lessonsFor, nextLesson } from '../content/lessons';
 import { newDayPlan } from '../engine/dayPlan';
 import { canPlay } from './games';
-import { journeyStage, STAGE_LABEL, STAGE_ORDER, stageProgress } from '../engine/journey';
+import { journeyStage, STAGE_LABEL, stageProgress } from '../engine/journey';
 import type { Readiness } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
 import { todaysPlan } from '../engine/planner';
@@ -63,8 +63,12 @@ export function buildJourney(i: JourneyInput) {
   return {
     stage,
     stageLabel: STAGE_LABEL[stage],
-    /** "Stage 3 · Make it stick" — the italic coach line under readiness. */
-    stageLine: `Stage ${STAGE_ORDER.indexOf(stage) + 1} · ${STAGE_LABEL[stage]}`,
+    /**
+     * "Make it stick": the italic coach line under readiness. No number since
+     * mobile 1.13: the plant beside it already counts "growth 4 of 6", and two
+     * numbered ladders side by side read as one (PR #43 review).
+     */
+    stageLine: STAGE_LABEL[stage],
     range: readinessRange(cert, readiness),
     stageProgress: stageProgress(stage),
     plan,

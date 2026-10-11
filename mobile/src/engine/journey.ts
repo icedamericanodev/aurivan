@@ -35,6 +35,12 @@ export const DIAGNOSTIC_SIZE = 20;
 export const DOMAIN_TARGET = 0.7;
 export const MOCK_DOMAIN_FLOOR = 0.65;
 export const READY_SCORE = 80;
+/**
+ * The mock history keeps only the newest MAX_MOCKS results (store/progress.ts
+ * recordMock). Anything that reads "a mock was ever done" from a save must
+ * remember older ones may have scrolled away (engine/plant.ts supportEvidence).
+ */
+export const MAX_MOCKS = 50;
 
 export function journeyStage(j: JourneyInput): Stage {
   if (j.daysLeft !== null && j.daysLeft < 0) return 'afterExam';

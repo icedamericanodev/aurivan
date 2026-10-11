@@ -76,7 +76,7 @@ provenance, framework references and a `lastReviewed` date.
 ## 5. Play — games that build real exam skill
 
 Built on existing question data → every new certification gets them free.
-Professional tone: no mascots, no confetti per answer.
+Professional tone: one optional plant companion. No cartoon mascots, no needs, no guilt. No confetti per answer.
 
 | Game | Skill trained | Status |
 |---|---|---|

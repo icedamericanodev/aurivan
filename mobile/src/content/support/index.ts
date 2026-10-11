@@ -36,6 +36,18 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.13.0',
+    date: '2026-10-11',
+    new: [
+      'Grow your own plant. Pick a tree or a flower, give it a name, and watch it grow as your real progress across the exam outline grows. It never wilts and asks for nothing.',
+      'Your plant shows what grows it next, and how each domain is coming along.',
+    ],
+    improved: [
+      'Today shows your plant beside your readiness, and You has it at the top. The rings are still on You and your results.',
+      'Your plant is optional: hide it, or give it a quieter look without a face, in Settings.',
+    ],
+  },
+  {
     version: '1.12.0',
     date: '2026-10-11',
     new: [

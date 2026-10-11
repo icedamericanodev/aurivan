@@ -6,8 +6,14 @@
  *   meta row   weekday · days to exam | sprig streak (serif numeral)
  *   "Today"
  *   forest     "Start here" + leaf marks for the plan, the current item, Start
- *   readiness  mono growth rings + the honest range ("62–70%") + italic stage
+ *   readiness  your plant (mobile 1.13; the mono growth rings when there is
+ *              none or it is hidden) + the honest range ("62–70%") + italic stage
  *   Also today the rest of the plan (real, unshortened titles)
+ *
+ * Your plant (mobile 1.13, Phase 4a): it grows only from real learning. A
+ * grow-up gets ONE calm line here (the celebration budget, never Results),
+ * and a learner with no plant gets one quiet "Plant a companion" line until
+ * they plant or dismiss it. Settings → Show my plant off: none of this.
  *
  * When every plan item is done, the forest panel becomes the clearing card
  * (today's numbers + how readiness moved) and "Tomorrow" previews what's next.
@@ -24,12 +30,15 @@ import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow } from '../../components/journey';
 import { Celebrate, Pop, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
 import { ICON_STROKE, Play, Settings, Sprig } from '../../components/icons';
+import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
 import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, ScreenTitle, Section, T } from '../../components/ui';
 import { currentIndex, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
 import { runPlanItem } from '../../lib/actions';
 import { haptic } from '../../lib/haptics';
 import { useTodayMoments } from '../../lib/moments';
 import { useJourney } from '../../lib/useJourney';
+import { checkPlant, seeGrowth, usePlantView } from '../../lib/plant';
+import { grewLabel, plantCallName, type GrowthLevel } from '../../engine/plant';
 import { useReports } from '../../lib/useReports';
 import { useProgress } from '../../store/progress';
 import { useSession, type ActiveSession } from '../../store/session';
@@ -92,7 +101,14 @@ export default function Today() {
   const showReady = moments.ready && plan.items.length > 0 && !allDone;
   // The clock for a paused mock's minutes left: read when Today opens or comes back into view.
   const [now, setNow] = useState(() => Date.now());
-  useFocusEffect(useCallback(() => setNow(Date.now()), []));
+  const certId = j.cert.id;
+  useFocusEffect(
+    useCallback(() => {
+      setNow(Date.now());
+      // The plant's exam-ready gate changes with the date: check it whenever Today comes into view.
+      checkPlant(certId);
+    }, [certId]),
+  );
   const playIcon = (color: string) => <Play size={ICON_SIZE.inline} color={color} strokeWidth={ICON_STROKE} />;
 
   // Mobile 1.9 motion: growth plays when Today is ON VIEW (it changes while a
@@ -127,11 +143,33 @@ export default function Today() {
   // The exam-ready moment (T3): the rings grow and the frond breathes once,
   // once EVER per cert (saved): later launches show the panel still, unannounced.
   const ready = useCelebration('exam-ready', showReady && focused, 'A quiet milestone. Your readiness is holding.', `exam-ready:${cert}`, true);
+  // Your plant (mobile 1.13). A grow-up is kept for this visit (the pending
+  // mark is cleared as soon as it shows, so it plays once), then one calm
+  // line through the celebration budget. Hidden plant: no line, no prompt.
+  const plantView = usePlantView();
+  const pending = plantView.plant?.pending;
+  const [grown, setGrown] = useState<{ growth: GrowthLevel; line: string } | null>(null);
+  // Set during render (React's pattern for state that follows the store).
+  if (pending && plantView.plant && grown?.growth !== pending) setGrown({ growth: pending, line: grewLabel(plantView.plant, pending) });
+  useEffect(() => {
+    if (pending && focused) seeGrowth(cert);
+  }, [pending, focused, cert]);
+  // Shown for this visit only: leaving Today puts the line away (Today stays mounted for days).
+  useFocusEffect(useCallback(() => () => setGrown(null), []));
+  // shortOnly: the line has no animated parts yet (4b brings the grow
+  // sequence), so it never spends the session's one FULL celebration; a
+  // Results milestone later in the session keeps it (code review M2).
+  const growthMoment = useCelebration('plant-growth', Boolean(grown) && focused, grown?.line, `${cert}:plant:${grown?.growth ?? 0}`, false, true);
+  // One quiet line for a learner with no plant yet, until they plant or dismiss it.
+  const setPlantSettings = useProgress((s) => s.setPlantSettings);
+  const plantPrompt = plantView.shown && !plantView.plant && !plantView.settings.promptHidden;
+
   // Any touch on Today ends a moment at once (it never blocks the next tap).
-  const live = !clearing.settled || !ready.settled;
+  const live = !clearing.settled || !ready.settled || !growthMoment.settled;
   const skipAll = () => {
     clearing.skip();
     ready.skip();
+    growthMoment.skip();
   };
 
   // "Also today": an unfinished session first, then the plan items still to do.
@@ -220,7 +258,36 @@ export default function Today() {
             rings={!showReady}
             ringsGrowth={ringsGrowth}
             rangeGrowth={rangeGrowth}
+            lead={
+              plantView.plant && !showReady ? (
+                <PlantButton
+                  testID="today-plant"
+                  species={plantView.plant.species}
+                  growth={plantView.plant.growth}
+                  scales={plantView.scales}
+                  quietLook={!plantView.face}
+                  resting={plantView.resting}
+                  size={104}
+                  // Small detail at 104pt: the full level's extra marks don't read at this size (code review M6d).
+                  lod="small"
+                  // The name under the plant says "this is yours, tap it" (UX review).
+                  caption={plantCallName(plantView.plant)}
+                  label={plantView.label}
+                  onPress={() => router.push('/plant')}
+                />
+              ) : undefined
+            }
           />
+        </Enter>
+      )}
+
+      {grown && (
+        <Enter i={2} style={{ marginTop: space.xl }}>
+          <Celebrate celebration={growthMoment}>
+            <PlantNote caption="Your plant grew" line={grown.line} testID="plant-grew">
+              <Button kind="ghost" label="What grows it next" onPress={() => router.push('/plant')} />
+            </PlantNote>
+          </Celebrate>
         </Enter>
       )}
 
@@ -274,6 +341,20 @@ export default function Today() {
               ))}
             </>
           )
+        )}
+        {/* One quiet offer for a learner with no plant, below the day's study (UX review P6): never ahead of it. */}
+        {!grown && plantPrompt && (
+          <View style={{ marginTop: space.xl }}>
+            <PlantNote caption="Your plant" line="Plant a companion that grows with your study." testID="plant-prompt">
+              <Button kind="ghost" label="Plant yours" onPress={() => router.push('/plant-pick')} />
+              <Button
+                kind="ghost"
+                label="No thanks"
+                accessibilityLabel="No thanks, hide this note. You can plant one from You."
+                onPress={() => setPlantSettings({ promptHidden: true })}
+              />
+            </PlantNote>
+          </View>
         )}
         {credit.items > 0 && !credit.hidden && (
           // The key-idea recipe (a green rule, not a card), like You's back-fill line.

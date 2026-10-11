@@ -51,11 +51,12 @@ import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import { ensureCatalog, syncPlanters } from './milestones';
+import { carryPlantIdentity, plantSubtopics } from './plant';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from './reminders';
 
 // ── The data in each store (no actions) ──────────────────────────────────
 const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'motion', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize', 'badgesHidden'] as const;
-const PROGRESS_KEYS = ['byCert', 'streak', 'today', 'days', 'reports'] as const;
+const PROGRESS_KEYS = ['byCert', 'streak', 'today', 'days', 'reports', 'plantSettings'] as const;
 
 type SettingsData = Pick<ReturnType<typeof useSettings.getState>, (typeof SETTINGS_KEYS)[number]>;
 type ProgressData = Pick<ReturnType<typeof useProgress.getState>, (typeof PROGRESS_KEYS)[number]>;
@@ -104,6 +105,8 @@ export function knownIds(certId: string): KnownIds {
       lessons: new Set(lessonsFor(certId).map((l) => l.id)),
       notes: new Set(noteSubtopics(certId).map((n) => n.id)),
       domains: new Set((getCertification(certId)?.domains ?? []).map((d) => d.id)),
+      // Mobile 1.13: what "know X% of the outline" counts (the restored plant's clamp).
+      plantOutline: plantSubtopics(certId),
     };
     knownCache.set(certId, k);
   }
@@ -306,9 +309,10 @@ function currentRows(): [string, string][] {
  * Write settings, progress, an ended session and the undo snapshot in ONE
  * AsyncStorage.multiSet, then reload the stores from storage.
  * - Fields the backup leaves out go back to the store defaults: a restore
- *   REPLACES, it never mixes. Three exceptions keep this phone's value when an
- *   older file has no such field: the reports list, the Motion choice and
- *   Show badges.
+ *   REPLACES, it never mixes. Four exceptions keep this phone's value when an
+ *   older file has no such field: the reports list, the Motion choice, Show
+ *   badges and the plant settings. A cert with no plant in the file keeps the
+ *   phone's plant identity (its growth recomputed from the restored data).
  * - `onboarded` is the phone's (a file can't skip or redo onboarding);
  *   the welcome screen passes true.
  * - Today's plans are not restored: the planner rebuilds today's plan.
@@ -326,12 +330,34 @@ async function writeAll(
   // when restoring a file from before the switch existed.
   if (data.settings.badgesHidden === undefined) settings.badgesHidden = useSettings.getState().badgesHidden;
   const byCert: ProgressData['byCert'] = {};
-  for (const [id, cp] of Object.entries(data.progress.byCert)) byCert[id] = completeCert(cp);
+  const phoneCerts = useProgress.getState().byCert;
+  const at = Date.now();
+  for (const [id, cp] of Object.entries(data.progress.byCert)) {
+    const full = completeCert(cp);
+    // Mobile 1.13: an older backup with no plant for this exam keeps the
+    // phone's plant (its species, name and look), with its growth worked out
+    // quietly from the restored data. A restore never makes a learner re-plant.
+    const plant = carryPlantIdentity(id, full, phoneCerts[id]?.plant, at);
+    byCert[id] = plant ? { ...full, plant } : full;
+  }
+  // The same for an exam the file has no entry for at all (QA 7: a file
+  // exported before any answer, or from a phone used for another exam): the
+  // phone's plant comes along as its identity, grown quietly from the
+  // (empty) restored data, so a restore never makes a learner re-plant.
+  for (const [id, phone] of Object.entries(phoneCerts)) {
+    if (!phone?.plant || byCert[id] || !getCertification(id)) continue;
+    const full = completeCert({});
+    const plant = carryPlantIdentity(id, full, phone.plant, at);
+    if (plant) byCert[id] = { ...full, plant };
+  }
   const progress = { ...pick(useProgress.getInitialState(), PROGRESS_KEYS), ...data.progress, byCert, days: {} };
   // A file from before 1.7 has no "Your reports" list at all. Those are the
   // learner's messages to us, not study progress, so keep this phone's list
   // instead of emptying it (a file WITH a list, even an empty one, wins).
   if (data.progress.reports === undefined) progress.reports = useProgress.getState().reports;
+  // Likewise the plant settings (1.13): a learner who hid the plant, or chose
+  // the Quiet look, keeps that choice when restoring an older file.
+  if (data.progress.plantSettings === undefined) progress.plantSettings = useProgress.getState().plantSettings;
   const before = currentRows();
   try {
     await AsyncStorage.multiSet([

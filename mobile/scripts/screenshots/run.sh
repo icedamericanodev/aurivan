@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -99,6 +99,11 @@ elif [ "${SHOTS:-}" = learnplay ]; then
   # stone and the level-leaf morph (shoot_learnplay.mjs; REDUCED=1; NARROW=1;
   # FONT_SCALE=2 for approximate 200% text).
   node scripts/screenshots/shoot_learnplay.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = plant ]; then
+  # Mobile 1.13 Your plant: the onboarding pick, Today (the plant, the grow-up
+  # line, the quiet prompt), You, Your plant, resting, Quiet look, hidden and
+  # Change species (shoot_plant.mjs; NARROW=1; FONT_SCALE=2 for about 200% text).
+  node scripts/screenshots/shoot_plant.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).

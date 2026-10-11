@@ -146,12 +146,19 @@ export function ReadinessRow({
   rings = true,
   ringsGrowth,
   rangeGrowth,
+  lead,
 }: {
   cert: Certification;
   readiness: Readiness;
   range: ReadinessRange;
-  /** e.g. "Stage 3 · Make it stick" */
+  /** The journey's coach line, e.g. "Make it stick" (no number: the plant beside it counts its growth). */
   stage: string;
+  /**
+   * Mobile 1.13: the learner's plant, drawn INSTEAD of the rings (Today). It
+   * is its own tap target and screen-reader stop, so the text keeps its own
+   * label beside it. The rings stay on You and Results.
+   */
+  lead?: ReactNode;
   /**
    * false while the Exam-ready panel above already draws the rings: a
    * signature never appears twice on one screen (spec §10).
@@ -168,13 +175,16 @@ export function ReadinessRow({
       'estimated readiness, weighted by the blueprint'
     : // A countdown, not a moving target: `needed` never goes up after an answer.
       `${range.needed} more ${range.needed === 1 ? 'answer' : 'answers'} until your readiness range`;
+  const spoken = `Estimated readiness ${rangeSpoken(range)}. ${range.enough ? `Weighted by the exam blueprint. ${ESTIMATE_NOTE}` : meta} ${stage}.`;
   return (
     <View
-      accessible
-      accessibilityLabel={`Estimated readiness ${rangeSpoken(range)}. ${range.enough ? `Weighted by the exam blueprint. ${ESTIMATE_NOTE}` : meta} ${stage}.`}
+      // With a plant, the row is two stops (the plant, then the words); otherwise one.
+      accessible={!lead}
+      accessibilityLabel={lead ? undefined : spoken}
       style={{ flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: stacked ? 10 : 18, marginTop: 22 }}
     >
-      {rings && (
+      {lead}
+      {rings && !lead && (
         <GrowthRings
           preset="today"
           mastery={readiness.domains.map((d) => d.mastery)}
@@ -184,7 +194,11 @@ export function ReadinessRow({
           grow={ringsGrowth ? { play: ringsGrowth.play, from: ringsGrowth.from.map((v) => v / 100), run: ringsGrowth.run } : undefined}
         />
       )}
-      <View style={{ flex: stacked || !rings ? undefined : 1 }}>
+      <View
+        style={{ flex: stacked || (!rings && !lead) ? undefined : 1 }}
+        accessible={!!lead}
+        accessibilityLabel={lead ? spoken : undefined}
+      >
         <ReadinessFigure range={range} growth={rangeGrowth} />
         <T v="meta" style={{ marginTop: 4 }}>{meta}</T>
         {/* One quiet line, only once there is a range to explain. */}
