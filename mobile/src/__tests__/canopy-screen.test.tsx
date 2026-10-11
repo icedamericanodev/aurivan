@@ -63,6 +63,10 @@ it('plays ten decisions: right and wrong calls, reveal, cards, confusion pairs, 
   });
   expect(allText()).toContain('Choose who has the authority to decide.');
   pressLabel('Start');
+  // The first wrong call's role: the second goes to a DIFFERENT role, so the two
+  // misses are always two pairs ("You gave one … decision to …"), never one pair
+  // of two (when both cards share a role and the shuffle lists the same wrong role first).
+  let firstWrong = '';
   for (let k = 0; k < 10; k++) {
     const card = current();
     const rows = byLabel(/^Role \d of 4: /);
@@ -70,7 +74,12 @@ it('plays ten decisions: right and wrong calls, reveal, cards, confusion pairs, 
     // Never a role the reviewers excluded for this card.
     for (const x of card.excludeChips) expect(rows.some((n) => n.props.accessibilityLabel.includes(roleLabel(x)))).toBe(false);
     // The first two calls go wrong on purpose.
-    const target = k < 2 ? rows.find((n) => !n.props.accessibilityLabel.endsWith(roleLabel(card.role)))! : rows.find((n) => n.props.accessibilityLabel.endsWith(roleLabel(card.role)))!;
+    const label = (n: (typeof rows)[number]) => String(n.props.accessibilityLabel).replace(/^Role \d+ of \d+: /, '');
+    const target =
+      k < 2
+        ? rows.find((n) => label(n) !== roleLabel(card.role) && label(n) !== firstWrong)!
+        : rows.find((n) => n.props.accessibilityLabel.endsWith(roleLabel(card.role)))!;
+    if (k === 0) firstWrong = label(target);
     press(target);
     expect(allText()).toContain(card.why);
     if (k < 2) expect(byLabel(/^Read the note$/).length + root().findAll((n) => n.props.label === 'Read the note').length).toBeGreaterThan(0);
