@@ -46,6 +46,13 @@ import {
   suggestName,
   supportEvidence,
   switchSpecies,
+  backfillLine,
+  growthShort,
+  isLookId,
+  organSlots,
+  PLANT_SLOTS,
+  repairPlant,
+  slotOf,
   type CertPlant,
   type GrowthLevel,
   type PlantFacts,
@@ -307,9 +314,11 @@ describe('isValidPlantState (backup restore)', () => {
     expect(isValidPlantState(x)).toBe(false);
   });
 
-  it('settings: two optional booleans, nothing else', () => {
+  it('settings: three optional booleans, nothing else', () => {
     expect(isValidPlantSettings({})).toBe(true);
     expect(isValidPlantSettings({ showPlant: false, quietLook: true })).toBe(true);
+    expect(isValidPlantSettings({ promptHidden: true })).toBe(true);
+    expect(isValidPlantSettings({ promptHidden: 1 })).toBe(false);
     expect(isValidPlantSettings({ showPlant: 'no' })).toBe(false);
     expect(isValidPlantSettings({ mood: 'sad' })).toBe(false);
     expect(plantShown(undefined)).toBe(true);
@@ -364,6 +373,11 @@ describe('plantFacts and supportEvidence from saved progress', () => {
     expect(f.cleanAnswered).toBe(50);
     expect(f.cleanByDomain).toEqual([10, 10, 10, 10, 10]);
     expect(f.low).not.toBeNull(); // 50 answers unlock the range
+    // A game round never moves readiness' low end for the plant (owner rule).
+    expect(plantFacts({ ...base, answers: answers(10, { lastGame: true }) }).low).toBeNull();
+    const games: Record<string, AnswerRecord> = {};
+    for (let d = 1; d <= 5; d++) for (let i = 50; i < 70; i++) games[`d${d}_${String(i).padStart(3, '0')}`] = rec(false, { lastGame: true });
+    expect(plantFacts({ ...base, answers: { ...answers(10), ...games } }).low).toBe(f.low);
   });
 
   it('spread is weighted like the exam and renormalised over domains with an outline', () => {
@@ -499,5 +513,98 @@ describe('spoken labels (spec §12, "growth" for "stage")', () => {
         const l = plantLabel({ species, growth: g as GrowthLevel, resting: true, newGrowth: true });
         expect(l).not.toMatch(/stage|sad|neglect|dying|wilt/i);
       }
+  });
+});
+
+describe('certs whose domain count is not 5 (owner decision 5)', () => {
+  const dm = (n: number, mastery = 0.5) => Array.from({ length: n }, () => ({ answered: 12, mastery }));
+
+  it('five domains: the slots are exactly the organs', () => {
+    expect(organSlots(WEIGHTS, dm(5))).toEqual(organs(WEIGHTS, dm(5)));
+  });
+
+  it('8 domains merge into the nearest slot by order; D1 lowest, the last domain last', () => {
+    expect(Array.from({ length: 8 }, (_, i) => slotOf(i, 8))).toEqual([0, 1, 1, 2, 2, 3, 3, 4]);
+    const w = [16, 10, 13, 13, 12, 13, 13, 10]; // a CISSP-like blueprint
+    const domains = w.map((_, i) => ({ answered: 10 + i, mastery: i === 1 ? 0.9 : i === 2 ? 0.1 : 0.5 }));
+    const s = organSlots(w, domains);
+    expect(s).toHaveLength(PLANT_SLOTS);
+    // Slot 1 holds D2 and D3: mastery is their weight-averaged mastery.
+    const merged = (0.9 * 10 + 0.1 * 13) / 23;
+    expect(s[1].fullness).toBeCloseTo(organFullness(merged), 6);
+    // A merged slot weighs more than a single-domain slot at the same mastery.
+    expect(s[1].weightScale).toBeGreaterThan(s[0].weightScale * 0.9);
+    for (const o of s) expect(o.fullness).toBeGreaterThanOrEqual(ORGAN_MIN);
+  });
+
+  it('4 domains: the missing slot is a young organ of average size, never bare', () => {
+    const s = organSlots([25, 25, 25, 25], dm(4, 1));
+    expect(s).toHaveLength(PLANT_SLOTS);
+    expect(s[4].fullness).toBe(ORGAN_MIN);
+    expect(s[4].step).toBe(0);
+    expect(s[4].weightScale).toBeCloseTo(1, 6);
+    expect(s[0].fullness).toBeGreaterThan(s[4].fullness);
+    // 3 domains (AAIA-like): two young slots.
+    const three = organSlots([40, 30, 30], dm(3));
+    expect(three.slice(3).every((o) => o.fullness === ORGAN_MIN && o.scale > 0.5)).toBe(true);
+  });
+
+  it('never throws or returns NaN on odd input (no weights, zero weights)', () => {
+    for (const w of [[], [0, 0, 0, 0], [5], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]]) {
+      const s = organSlots(w, dm(w.length));
+      expect(s).toHaveLength(PLANT_SLOTS);
+      for (const o of s) expect(Number.isFinite(o.scale)).toBe(true);
+    }
+  });
+});
+
+describe('backup fit: repairPlant', () => {
+  it('a valid plant comes back as the same object', () => {
+    const p = plantNew('lotus', 'Padma', T0, 3);
+    expect(repairPlant(p)).toBe(p);
+  });
+
+  it('repairs what an older build could hold into a plant the restore accepts', () => {
+    const broken = {
+      species: 'oak',
+      name: 'Kai\u200B  the   oak',
+      plantedAt: T0,
+      growth: 2,
+      reached: { sprout: T0, crown: T0 },
+      pending: 4,
+      backfill: { at: T0, growth: 5 },
+      look: { colourway: 'Bad Id', keepsakes: ['a', 'a', 'b', 'c', 'd'] },
+      kept: ['x', 'x', 'NOPE'],
+    } as unknown as CertPlant;
+    expect(isValidPlantState(broken)).toBe(false);
+    const fixed = repairPlant(broken);
+    expect(isValidPlantState(fixed)).toBe(true);
+    expect(fixed.name).toBe('Kai the oak');
+    expect(fixed.reached).toEqual({ sprout: T0 });
+    expect(fixed.pending).toBeUndefined();
+    expect(fixed.backfill).toEqual({ at: T0, growth: 2 });
+    expect(fixed.look).toEqual({ keepsakes: ['a', 'b', 'c'] });
+    expect(fixed.kept).toEqual(['x']);
+  });
+
+  it('isLookId: short slugs only', () => {
+    expect(isLookId('stone-ring')).toBe(true);
+    expect(isLookId('Stone Ring')).toBe(false);
+    expect(isLookId('')).toBe(false);
+  });
+});
+
+describe('plant lines', () => {
+  it('the back-fill line names the growth, or the first sprout for a seed', () => {
+    expect(backfillLine({ name: 'Kai', species: 'oak' }, 4)).toBe('Your study so far grew Kai to Bough.');
+    expect(backfillLine({ name: '', species: 'cactus' }, 2)).toBe('Your study so far grew your cactus to Sprout.');
+    expect(backfillLine({ name: 'Kai', species: 'oak' }, 1)).toMatch(/first 20 answers/);
+  });
+
+  it('growthShort says "growth", never "stage"', () => {
+    for (const g of [1, 2, 3, 4, 5, 6] as GrowthLevel[]) {
+      expect(growthShort(g)).toMatch(new RegExp(`growth ${g} of 6$`));
+      expect(growthShort(g)).not.toMatch(/stage/i);
+    }
   });
 });

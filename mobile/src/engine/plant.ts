@@ -133,7 +133,7 @@ export interface PlantFacts {
   cleanByDomain: number[];
   /** Clean domain mastery 0..1 (sample-adjusted, like the rings). */
   cleanMastery: number[];
-  /** The readiness range's lower bound the learner sees on Today; null while "Not enough data yet". */
+  /** The readiness range's lower bound, from clean answers only (no games, no Coach me); null while "Not enough data yet". */
   low: number | null;
   /** Share of the exam outline known, 0..1, weighted like the exam (see outlineSpread). */
   spread: number;
@@ -283,8 +283,10 @@ export function plantFacts(i: PlantFactsInput): PlantFacts {
   for (const [id, a] of Object.entries(i.answers)) if (isClean(a)) clean[id] = a;
   const cert = i.cert as Certification;
   const dm = domainMastery(cert, clean);
-  // `low` is what Today shows: the range from ALL answers (mascot_progression §1.1).
-  const range = readinessRange(cert, computeReadiness(cert, i.answers));
+  // `low` is the readiness range's lower bound from CLEAN answers only (Phase
+  // 4a owner rule: growth never comes from games). Today's range counts game
+  // answers too, so a game round could otherwise open Bough or Crown.
+  const range = readinessRange(cert, computeReadiness(cert, clean));
   const held = readyHoldDays([...(i.readinessLog ?? [])], i.today) >= 7;
   const seen = i.readySeenAt !== undefined && i.readySeenAt > (i.replantedAt ?? 0);
   return {
@@ -346,12 +348,21 @@ export interface CertPlant {
   passedOn?: string;
 }
 
-/** App-wide plant settings (store/settings.ts). Unset = the default. */
+/**
+ * App-wide plant settings (store/progress.ts `plantSettings`, so a backup
+ * carries them with the plants). Unset = the default.
+ */
 export interface PlantSettings {
   /** "Show my plant". Default on. Off: no plant anywhere, no prompts; growth is still worked out quietly. */
   showPlant?: boolean;
   /** "Quiet look": the plant without a face. Default off (the face shows). */
   quietLook?: boolean;
+  /**
+   * The one quiet "Plant a companion…" line on Today was dismissed (or the
+   * onboarding step was skipped): it never shows again. You keeps its
+   * "Plant yours" entry, so planting later is always one tap away.
+   */
+  promptHidden?: boolean;
 }
 export const plantShown = (s: PlantSettings | undefined) => s?.showPlant !== false;
 export const plantHasFace = (s: PlantSettings | undefined) => s?.quietLook !== true;
@@ -571,10 +582,40 @@ export function isValidPlantState(x: unknown): x is CertPlant {
   return true;
 }
 
-/** True when `x` is a well-formed PlantSettings (both fields optional booleans). */
+const PLANT_SETTING_KEYS = ['showPlant', 'quietLook', 'promptHidden'] as const;
+
+/** True when `x` is a well-formed PlantSettings (every field an optional boolean, nothing else). */
 export function isValidPlantSettings(x: unknown): x is PlantSettings {
-  if (!isObj(x) || !onlyKeys(x, ['showPlant', 'quietLook'])) return false;
-  return (x.showPlant === undefined || typeof x.showPlant === 'boolean') && (x.quietLook === undefined || typeof x.quietLook === 'boolean');
+  if (!isObj(x) || !onlyKeys(x, PLANT_SETTING_KEYS)) return false;
+  return PLANT_SETTING_KEYS.every((k) => x[k] === undefined || typeof x[k] === 'boolean');
+}
+
+/** A look id as saved (a short slug). Unknown ids are fine until the 4b catalogue: they fall back at render. */
+export function isLookId(x: unknown): x is LookId {
+  return isLook(x);
+}
+
+/**
+ * The phone's own plant, made to fit the rules a restore checks (the backup
+ * "fit" mode): the name cleaned, nothing reached or pending above the growth,
+ * the back-fill no higher, a pending Seed dropped, keepsakes distinct and at
+ * most MAX_KEEPSAKES, looks and kept ids that aren't slugs dropped. A plant
+ * that is already valid comes back unchanged (the same object).
+ */
+export function repairPlant(p: CertPlant): CertPlant {
+  const valid: boolean = isValidPlantState(p); // a plain boolean: keep `p` typed below
+  if (valid) return p;
+  let out: CertPlant = { ...p, name: cleanPlantName(typeof p.name === 'string' ? p.name : '') };
+  out = clampToSupported(out, out.growth);
+  if (out.pending !== undefined && out.pending <= 1) delete out.pending;
+  if (out.look) {
+    const look: PlantLook = {};
+    for (const k of ['colourway', 'ground', 'visitor'] as const) if (isLook(out.look[k])) look[k] = out.look[k];
+    if (out.look.keepsakes) look.keepsakes = [...new Set(out.look.keepsakes.filter(isLook))].slice(0, MAX_KEEPSAKES);
+    out.look = look;
+  }
+  if (out.kept) out.kept = [...new Set(out.kept.filter(isLook))].slice(0, MAX_KEPT);
+  return out;
 }
 
 // ── Domain organs ──────────────────────────────────────────────────────
@@ -630,6 +671,55 @@ export function organs(weights: readonly number[], domains: readonly { answered:
 
 /** The renderer's input: just the scales. */
 export const organScales = (os: readonly Organ[]) => os.map((o) => o.scale);
+
+/** Every species is drawn with exactly this many organ slots (the CISA blueprint's five domains). */
+export const PLANT_SLOTS = 5;
+
+/**
+ * The slot (0..PLANT_SLOTS-1) a domain is drawn in. Up to five domains map
+ * one to one. More than five merge into the nearest slot by order (8 domains:
+ * 0,1,1,2,2,3,3,4), so D1 stays lowest and the last domain stays last.
+ */
+export function slotOf(index: number, domainCount: number): number {
+  if (domainCount <= PLANT_SLOTS) return index;
+  return Math.round((index * (PLANT_SLOTS - 1)) / (domainCount - 1));
+}
+
+/**
+ * Exactly PLANT_SLOTS organs for the renderer, for a cert with any number of
+ * domains (owner decision 5):
+ * - 5 domains: the same as organs();
+ * - more: domains sharing a slot merge (weights add; mastery is the
+ *   weight-averaged mastery; answers add), so the picture stays balanced;
+ * - fewer: the missing slots show as YOUNG organs (average size, the
+ *   youngest fullness), never bare and never a gap.
+ */
+export function organSlots(weights: readonly number[], domains: readonly { answered: number; mastery: number }[]): Organ[] {
+  const n = weights.length;
+  if (n === PLANT_SLOTS) return organs(weights, domains);
+  const w: number[] = Array.from({ length: PLANT_SLOTS }, () => 0);
+  const m: number[] = Array.from({ length: PLANT_SLOTS }, () => 0);
+  const a: number[] = Array.from({ length: PLANT_SLOTS }, () => 0);
+  const used: boolean[] = Array.from({ length: PLANT_SLOTS }, () => false);
+  weights.forEach((wt, i) => {
+    const k = slotOf(i, n);
+    const d = domains[i] ?? { answered: 0, mastery: 0 };
+    const ww = wt > 0 ? wt : 0;
+    m[k] = w[k] + ww > 0 ? (m[k] * w[k] + (Number.isFinite(d.mastery) ? d.mastery : 0) * ww) / (w[k] + ww) : 0;
+    w[k] += ww;
+    a[k] += d.answered;
+    used[k] = true;
+  });
+  const real = w.filter((x, k) => used[k] && x > 0);
+  const mean = real.length ? real.reduce((s, x) => s + x, 0) / real.length : 1;
+  // A missing slot weighs like an average domain and reads as young.
+  const slotWeights = w.map((x, k) => (used[k] ? x : mean));
+  const out = organs(
+    slotWeights,
+    slotWeights.map((_, k) => (used[k] ? { answered: a[k], mastery: m[k] } : { answered: 0, mastery: 0 })),
+  );
+  return out;
+}
 
 /**
  * "Next to grow": the domain with the most exam points still on the table
@@ -750,6 +840,16 @@ export function plantLabel(i: LabelInput): string {
   const who = i.name ? `${i.name}, your ${sp}` : `Your ${sp}`;
   const extra = [i.newGrowth ? 'New growth today.' : '', i.resting ? 'Resting.' : ''].filter(Boolean).join(' ');
   return `${who}. Growth: ${GROWTH_NAMES[i.growth]}, ${i.growth} of 6.${extra ? ` ${extra}` : ''}`;
+}
+
+/** The quiet back-fill line when an existing learner plants: "Your study so far grew Kai to Bough." */
+export function backfillLine(p: Pick<CertPlant, 'name' | 'species'>, growth: GrowthLevel): string {
+  return growth > 1 ? `Your study so far grew ${p.name || `your ${SPECIES_INFO[p.species].lower}`} to ${GROWTH_NAMES[growth]}.` : `Planted. Your first ${SPROUT_ANSWERS} answers give it its first sprout.`;
+}
+
+/** "Bough · growth 4 of 6": the short growth line beside the plant. Never "stage". */
+export function growthShort(growth: GrowthLevel): string {
+  return `${GROWTH_NAMES[growth]} · growth ${growth} of ${MAX_GROWTH}`;
 }
 
 /** The grow-up line, announced once: "Kai grew to Crown." */
