@@ -310,6 +310,9 @@ const milestones = obj(
     days: count,
     lastDay: date,
     returnedOn: date,
+    // Mobile 1.10: completed badge sets (their planters). Kept only when the
+    // restored badges complete the set (engine/milestones.ts keepSupported).
+    planters: map(ts, 20),
   },
 );
 
@@ -377,6 +380,8 @@ function settingsCheck(certKey: Check<string>) {
       studyMode: oneOf<StudyMode>('smart', 'guided', 'inOrder', 'random'),
       studyDomain: str(10),
       studySize,
+      // Mobile 1.10: Settings → Show badges switched off (optional: older files have none).
+      badgesHidden: bool,
     },
   );
 }

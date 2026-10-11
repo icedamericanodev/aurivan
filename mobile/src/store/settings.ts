@@ -55,6 +55,12 @@ interface SettingsState {
   studyMode?: StudyMode;
   studyDomain?: string;
   studySize?: number;
+  /**
+   * Mobile 1.10: Settings → Show badges, switched off. Hidden means no badge
+   * moments, no Badges row on You and no "new" dot; badges are still earned
+   * quietly, and switching back on shows one summary line. Off by default.
+   */
+  badgesHidden: boolean;
 
   completeOnboarding: (certId: string, examDate?: string) => void;
   setActiveCert: (certId: string) => void;
@@ -74,6 +80,7 @@ interface SettingsState {
   /** Save the domain chip (undefined = All domains). */
   setStudyDomain: (domainId: string | undefined) => void;
   setStudySize: (n: number) => void;
+  setBadgesHidden: (v: boolean) => void;
 }
 
 export const useSettings = create<SettingsState>()(
@@ -94,6 +101,8 @@ export const useSettings = create<SettingsState>()(
       gameRulesSeen: [],
       // Older saves have no key: persist merges this default in (timer off).
       practiceTimer: false,
+      // Older saves have no key: persist merges this default in (badges shown).
+      badgesHidden: false,
 
       completeOnboarding: (certId, examDate) =>
         set((s) => ({
@@ -121,6 +130,7 @@ export const useSettings = create<SettingsState>()(
       setStudyMode: (studyMode) => set({ studyMode }),
       setStudyDomain: (studyDomain) => set({ studyDomain }),
       setStudySize: (studySize) => set({ studySize }),
+      setBadgesHidden: (badgesHidden) => set({ badgesHidden }),
     }),
     { name: 'aurivan.settings.v1', storage: persistStorage, version: SETTINGS_VERSION },
   ),

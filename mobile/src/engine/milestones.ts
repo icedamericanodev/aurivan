@@ -62,6 +62,15 @@ export const MYTH_WINDOW = 25;
 export const MYTH_RIGHT = 20;
 export const PACE_ROUNDS = 3;
 export const GAME_FIXES = 10;
+// The higher tiers planned for the next release (badges_game.md §2.3, slice
+// C). Nothing earns them yet; they are here so a restored backup is checked
+// against the RIGHT evidence for each tier (markSupported), never tier 1's.
+/** Firm Footing · 80%: its answers (a Stretch tier, after Whole Map). */
+export const FIRM_DEEP_ANSWERS = 40;
+/** Long Memory's tiers beyond the first (25): 75, then 150. */
+export const LONG_TIERS = [75, 150] as const;
+/** Dress Rehearsal's tiers beyond the first: 2 and 3 spaced mocks. */
+export const DRESS_TIERS = [2, 3] as const;
 
 const DAY_MS = 86_400_000;
 
@@ -129,6 +138,12 @@ export interface CertMilestones {
   lastDay?: string;
   /** The day the learner came back after FRESH_GAP_DAYS or more away. */
   returnedOn?: string;
+  /**
+   * Mobile 1.10: counted badge sets completed → when (badges_game.md §7).
+   * Each unlocks its planter for the plant (Phase 4). Saved, so a set that
+   * later gains a badge never takes a planter back.
+   */
+  planters?: Record<string, number>;
 }
 
 /** A mock result, as far as the milestones need it. */
@@ -157,6 +172,12 @@ export interface MilestoneFacts {
   /** Questions in a full mock (the exam's length). */
   fullMockSize: number;
   mindsetShift: boolean;
+  /**
+   * Mobile 1.10: Mindset Shift has enough answers to be judged (100 first
+   * tries, the newest 50 two weeks or more after the first 50). Until then
+   * its badge is "gated": it says when it opens, never an empty bar.
+   */
+  mindsetData?: boolean;
   studyDays: number;
   freshStart: boolean;
   // Skill badges.
@@ -605,6 +626,8 @@ export interface MarkEvidence {
   gameBest?: Record<string, unknown>;
   gameGrowth?: Record<string, { hits?: boolean[] } | undefined>;
   milestones?: Pick<CertMilestones, 'counts' | 'sure' | 'days' | 'myths' | 'signposts'>;
+  /** Study-notes mastery dates (Took Root, slice C). */
+  mastery?: Record<string, { masteredAt?: string }>;
 }
 
 /**
@@ -612,6 +635,14 @@ export interface MarkEvidence {
  * plain necessary conditions (the data a rule reads must be there), so a
  * genuine backup always passes and a mark the data can't support (an edited
  * file, or one cut short) is dropped. Unknown marks are never supported.
+ *
+ * Mobile 1.10 (badges_game.md §9.4): a key is read WHOLE, tier and all. A
+ * key with a part its badge doesn't have ("first-foothold:x"), a tier no
+ * version defines ("long-memory:999") or extra parts is refused, and each
+ * higher tier needs ITS evidence: "long-memory:75" needs 75 recalls, not
+ * Long Memory's 25; "dress-rehearsal:2" two mocks; "firm-footing:4:80" 40
+ * of that domain's answers. So an edited backup can't claim a higher tier
+ * on a lower tier's data.
  */
 export function markSupported(key: string, e: MarkEvidence): boolean {
   const answers = Object.keys(e.answers ?? {});
@@ -619,51 +650,74 @@ export function markSupported(key: string, e: MarkEvidence): boolean {
   const studied = (e.lessonsDone?.length ?? 0) + (e.notesRead?.length ?? 0);
   const c = (id: CounterId) => e.milestones?.counts?.[id] ?? 0;
   const days = e.milestones?.days ?? 0;
-  const [badge, part] = key.split(':');
+  const parts = key.split(':');
+  if (parts.length > 3 || parts.some((p) => p === '')) return false;
+  const [badge, part, tier] = parts;
+  // Most badges are one plain key: no part, no tier.
+  const plain = part === undefined;
+  // A tier part must be one of the badge's own: [] = none allowed.
+  const tierOf = (allowed: readonly number[]): number | null => {
+    if (tier !== undefined) return null;
+    if (part === undefined) return 1;
+    return (allowed as readonly number[]).includes(Number(part)) && String(Number(part)) === part ? Number(part) : null;
+  };
   switch (badge) {
     case 'first-foothold':
-      return n >= DIAGNOSTIC_SIZE;
+      return plain && n >= DIAGNOSTIC_SIZE;
     case 'topic-clear':
-      return n >= 4 && studied >= 1;
+      return plain && n >= 4 && studied >= 1;
     case 'ten-topics':
-      return n >= 4 * TEN_TOPICS && studied >= 1;
-    case 'firm-footing':
-      return Boolean(part) && answers.filter((id) => domainOf(id) === part).length >= FIRM_ANSWERS;
+      return plain && n >= 4 * TEN_TOPICS && studied >= 1;
+    case 'firm-footing': {
+      // "firm-footing:<domain>" (70%) or "firm-footing:<domain>:80" (the Stretch tier).
+      if (plain || (tier !== undefined && tier !== '80')) return false;
+      const inDomain = answers.filter((id) => domainOf(id) === part).length;
+      return inDomain >= (tier === '80' ? FIRM_DEEP_ANSWERS : FIRM_ANSWERS);
+    }
     case 'whole-map':
-      return n >= FIRM_ANSWERS;
+      return plain && n >= FIRM_ANSWERS;
     case 'loop-closed':
-      return c('loopFixed') >= LOOP_FIXES;
+      return plain && c('loopFixed') >= LOOP_FIXES;
     case 'slip-spotter':
-      return Object.values(e.mistakes ?? {}).filter((m) => m.slip).length >= SLIP_TAGS;
-    case 'long-memory':
-      return c('longRecall') >= LONG_RECALLS;
+      return plain && Object.values(e.mistakes ?? {}).filter((m) => m.slip).length >= SLIP_TAGS;
+    case 'long-memory': {
+      // "long-memory" is 25 recalls; "long-memory:75" and ":150" need their own count.
+      const t = tierOf(LONG_TIERS);
+      return t !== null && c('longRecall') >= (t === 1 ? LONG_RECALLS : t);
+    }
     case 'graduate':
-      return c('graduated') >= GRADUATES;
+      return plain && c('graduated') >= GRADUATES;
     case 'know-what-you-know':
-      return (e.milestones?.sure?.length ?? 0) >= SURE_MIN;
-    case 'dress-rehearsal':
+      return plain && (e.milestones?.sure?.length ?? 0) >= SURE_MIN;
+    case 'dress-rehearsal': {
+      // "dress-rehearsal" is one full mock; ":2" and ":3" need that many.
+      const t = tierOf(DRESS_TIERS);
+      return t !== null && (e.mocks?.length ?? 0) >= t;
+    }
     case 'on-pace':
-      return (e.mocks?.length ?? 0) >= 1;
+      return plain && (e.mocks?.length ?? 0) >= 1;
     case 'mindset-shift':
-      return n >= 100;
+      return plain && n >= 100;
     case 'rooted':
-      return (ROOTED_DAYS as readonly number[]).includes(Number(part)) && days >= Number(part);
+      return tier === undefined && (ROOTED_DAYS as readonly number[]).includes(Number(part)) && String(Number(part)) === part && days >= Number(part);
+    case 'took-root':
+      return plain && Object.values(e.mastery ?? {}).some((m) => Boolean(m?.masteredAt));
     case 'fresh-start':
-      return days >= 2;
+      return plain && days >= 2;
     case 'snare-wise':
-      return (e.gameGrowth?.trap?.hits?.length ?? 0) >= SNARE_WINDOW;
+      return plain && (e.gameGrowth?.trap?.hits?.length ?? 0) >= SNARE_WINDOW;
     case 'even-keel':
-      return e.gameBest?.sprint !== undefined;
+      return plain && e.gameBest?.sprint !== undefined;
     case 'signpost-reader':
-      return (e.milestones?.signposts?.length ?? 0) >= SIGNPOST_WINDOW;
+      return plain && (e.milestones?.signposts?.length ?? 0) >= SIGNPOST_WINDOW;
     case 'myth-clearer':
-      return (e.milestones?.myths?.length ?? 0) >= MYTH_WINDOW;
+      return plain && (e.milestones?.myths?.length ?? 0) >= MYTH_WINDOW;
     case 'sure-footed-pace':
-      return c('paceRounds') >= PACE_ROUNDS;
+      return plain && c('paceRounds') >= PACE_ROUNDS;
     case 'whole-grove':
-      return Object.keys(e.gameBest ?? {}).length >= 2;
+      return plain && Object.keys(e.gameBest ?? {}).length >= 2;
     case 'back-on-path':
-      return c('gameFixes') >= GAME_FIXES;
+      return plain && c('gameFixes') >= GAME_FIXES;
     default:
       return false;
   }
@@ -673,5 +727,32 @@ export function markSupported(key: string, e: MarkEvidence): boolean {
 export function keepSupported(m: CertMilestones, e: MarkEvidence): CertMilestones {
   const earned = Object.fromEntries(Object.entries(m.earned).filter(([k]) => markSupported(k, e)));
   const queue = m.queue?.filter((k) => earned[k] !== undefined);
-  return { ...m, earned, ...(m.queue ? { queue } : {}) };
+  // A set's planter stays only when the set's badges did (after their own check).
+  const planters = m.planters && Object.fromEntries(Object.entries(m.planters).filter(([set]) => planterSupported(set, earned, e)));
+  return { ...m, earned, ...(m.queue ? { queue } : {}), ...(planters ? { planters } : {}) };
+}
+
+/**
+ * What each counted set held when its planter was first offered (mobile
+ * 1.10), FROZEN. A restored planter is kept only when all of these marks are
+ * earned (and supported). A later version that adds a badge to a set keeps
+ * this list as it is, so a planter earned before never fails a restore.
+ * 'domains': Whole Map plus Firm Footing for every domain the answers cover.
+ */
+export const PLANTER_NEEDS: Readonly<Record<string, readonly string[] | 'domains'>> = {
+  groundwork: ['first-foothold', 'topic-clear', 'ten-topics'],
+  domains: 'domains',
+  evergreen: ['long-memory', 'graduate', 'loop-closed'],
+  judgement: ['know-what-you-know', 'slip-spotter', 'mindset-shift'],
+  examDay: ['dress-rehearsal', 'on-pace'],
+  rooted: ROOTED_DAYS.map((n) => `rooted:${n}`),
+};
+
+/** Could the restored badges have completed this set (its planter)? Unknown sets: never. */
+export function planterSupported(set: string, earned: Record<string, number>, e: Pick<MarkEvidence, 'answers'>): boolean {
+  if (!Object.prototype.hasOwnProperty.call(PLANTER_NEEDS, set)) return false;
+  const needs = PLANTER_NEEDS[set];
+  if (needs !== 'domains') return needs.every((k) => earned[k] !== undefined);
+  const domains = new Set(Object.keys(e.answers ?? {}).map(domainOf));
+  return earned['whole-map'] !== undefined && domains.size > 0 && [...domains].every((d) => earned[`firm-footing:${d}`] !== undefined);
 }
