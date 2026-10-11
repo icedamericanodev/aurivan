@@ -419,8 +419,9 @@ const domainOperations = () => {
   const sail = (rot) =>
     G(`rotate(${rot} 50 38)`, [
       P('M48 36L48 6L60 6L60 33Z', 'E2'),
-      S('M51.5 10L51.5 32M55.5 9L55.5 32', 'K', 1.5, { opacity: 0.55 }),
-      S('M48 15L60 15M48 24L60 24', 'K', 1.5, { opacity: 0.55 }),
+      // The sail's lattice: `fine` (the app leaves it out at 47pt and under, where it reads as noise).
+      S('M51.5 10L51.5 32M55.5 9L55.5 32', 'K', 1.5, { opacity: 0.55, fine: 1 }),
+      S('M48 15L60 15M48 24L60 24', 'K', 1.5, { opacity: 0.55, fine: 1 }),
     ]);
   return [
     // the tower, tapering, with its door
@@ -437,27 +438,40 @@ const domainOperations = () => {
   ];
 };
 
-/** Protection of Information Assets: a chestnut safe in its burr (what's inside is kept). */
+/**
+ * Protection of Information Assets: a chestnut in its husk, split open so the
+ * nut shows (what's inside is kept safe). Two husk halves cup the nut, each
+ * with a few long spines on its outer edge: never a ring of spikes, which
+ * read as a sun (or a virus) at 32pt.
+ */
 const domainProtection = () => {
-  const spikes = [];
-  for (let k = 0; k < 22; k++) {
-    const a = (k / 22) * Math.PI * 2 + 0.12;
-    const c = Math.cos(a);
-    const sn = Math.sin(a);
-    spikes.push(`M${(50 + 27 * c).toFixed(1)} ${(54 + 27 * sn).toFixed(1)}L${(50 + 39 * c).toFixed(1)} ${(54 + 39 * sn).toFixed(1)}`);
-  }
+  // Spines: from a point on a husk's outer edge, straight out from the nut's centre.
+  const spine = (x, y, len) => {
+    const dx = x - 50;
+    const dy = y - 58;
+    const n = Math.hypot(dx, dy);
+    return `M${x} ${y}L${(x + (dx / n) * len).toFixed(1)} ${(y + (dy / n) * len).toFixed(1)}`;
+  };
+  const left = [
+    [25, 40],
+    [19, 51],
+    [18, 63],
+    [22, 74],
+    [31, 83],
+  ];
+  const spines = [...left, ...left.map(([x, y]) => [100 - x, y])].map(([x, y]) => spine(x, y, 9)).join('');
   return [
-    S(spikes.join(''), 'E2', 3.4),
-    Ci(50, 54, 29, 'E2'),
-    // the burr split open at the top, the husk's soft lining inside
-    P('M30 46C36 30 64 30 70 46C64 42 58 41 50 41C42 41 36 42 30 46Z', 'K'),
-    El(50, 57, 21, 19, 'L3'),
-    // the nut, glossy, with its pale crown
-    P('M50 38C62 38 69 47 68 58C67 68 59 73 50 73C41 73 33 68 32 58C31 47 38 38 50 38Z', 'E3'),
-    P('M50 38C62 38 69 47 68 58C67 68 59 73 50 73C57 66 60 50 50 38Z', 'D3'),
-    P('M37 63C41 70 59 70 63 63C59 66 41 66 37 63Z', 'L3', { opacity: 0.85 }),
-    S('M41 47Q43 42 48 41', 'L3', 2.6, { opacity: 0.85 }),
-    S('M50 38L50 31', 'E1', 3),
+    S(spines, 'E2', 3.4),
+    // the two husk halves, split at the top, holding the nut's lower half
+    P('M48.5 89C33 89 19 79 18 62C17.5 52 21 44 27 38C28.5 50 31.5 60 37 67C41 72 45 75.5 48.5 76.5Z', 'E2'),
+    P('M51.5 89C67 89 81 79 82 62C82.5 52 79 44 73 38C71.5 50 68.5 60 63 67C59 72 55 75.5 51.5 76.5Z', 'E2'),
+    // the nut, glossy, a little pointed at the top, with its pale crown at the base
+    P('M50 25C61 28 69 39 69 51C69 63 61 71 50 71C39 71 31 63 31 51C31 39 39 28 50 25Z', 'E3'),
+    P('M50 25C61 28 69 39 69 51C69 63 61 71 50 71C57 63 60 44 50 25Z', 'D3'),
+    P('M35 61C40 69 60 69 65 61C60 65 40 65 35 61Z', 'L3', { opacity: 0.9 }),
+    S('M39 44Q41 37 46 34', 'L3', 2.6, { opacity: 0.85 }),
+    // its tuft
+    S('M50 25L50 18', 'E1', 3),
   ];
 };
 
