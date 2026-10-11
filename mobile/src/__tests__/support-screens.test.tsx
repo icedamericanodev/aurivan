@@ -297,6 +297,11 @@ describe('Common questions', () => {
     expect(checkedRadio()).toBe('Backup, restore or a new phone');
     await pressAsync('Write the email');
     expect(lastEmail().body).toContain(`From: Common questions: ${backup.question}`);
+    // The note sits under that entry, before the next question (UX O3).
+    const text = allText();
+    const next = FAQ[FAQ.indexOf(backup) + 1];
+    expect(text.indexOf('Finished in your email app?')).toBeGreaterThan(text.indexOf(backup.question));
+    if (next) expect(text.indexOf('Finished in your email app?')).toBeLessThan(text.indexOf(next.question));
   });
 });
 

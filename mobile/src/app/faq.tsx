@@ -2,7 +2,9 @@
  * Common questions (product R5): a few quick answers before anyone has to
  * write to us. Each answer opens in place (a disclosure row) and ends with
  * "Still stuck? Email us", which opens Contact support with the right topic
- * already chosen. Bundled content (content/support FAQ), no network.
+ * already chosen. "Finished in your email app?" shows under the entry
+ * that opened it, not below the whole list (UX review O3).
+ * Bundled content (content/support FAQ), no network.
  */
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -27,6 +29,7 @@ export default function Faq() {
       {FAQ.map((f, i) => {
         const open = openId === f.id;
         const last = i === FAQ.length - 1;
+        const from = `Common questions: ${f.question}`;
         return (
           <View key={f.id}>
             <DisclosureRow title={f.question} expanded={open} onPress={() => setOpenId(open ? null : f.id)} last={last} />
@@ -39,15 +42,15 @@ export default function Faq() {
                   kind="ghost"
                   label="Still stuck? Email us"
                   accessibilityHint="Opens Contact support"
-                  onPress={() => contact.openSupport(f.topic, `Common questions: ${f.question}`)}
+                  onPress={() => contact.openSupport(f.topic, from)}
                   style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
                 />
               </View>
             )}
+            {contact.blockFor('support', from)}
           </View>
         );
       })}
-      {contact.block}
       {contact.sheets}
     </Screen>
   );
