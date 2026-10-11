@@ -34,7 +34,7 @@ import {
 } from '../components/motion';
 import * as Reanimated from 'react-native-reanimated';
 import Settings from '../app/settings';
-import { Segmented } from '../components/ui';
+import { Chip, Segmented } from '../components/ui';
 import { useSettings } from '../store/settings';
 import { motion } from '../theme/tokens';
 import { readBackup } from '../engine/backup';
@@ -478,6 +478,24 @@ describe('Segmented thumb', () => {
     layout();
     expect(style(thumb()).elevation).toBeUndefined();
     expect(style(thumb()).shadowOpacity).toBeGreaterThan(0); // iOS keeps its soft shadow
+  });
+});
+
+describe('Chip', () => {
+  it('the label keeps its contrast mid-fade: it swaps colour with the fill at half-way, not at the tap', () => {
+    setMockReducedMotion(false);
+    const el = (on: boolean) => <Chip label="Domain 1" selected={on} onPress={() => {}} />;
+    mount(el(false));
+    const label = () => style(r!.root.find((n) => n.props.children === 'Domain 1' && typeof n.type !== 'string'));
+    const ink = label().color;
+    // The tap's own render: the fill has not started, so the label is still ink.
+    act(() => {
+      r!.update(el(true));
+    });
+    expect(label().color).toBe(ink);
+    // Once the fill is past half-way, the label is paper on ink.
+    settle(el(true));
+    expect(label().color).not.toBe(ink);
   });
 });
 

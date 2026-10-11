@@ -16,7 +16,7 @@ import { Pressable, View } from 'react-native';
 import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import type { Certification } from '../content/types';
 import { checkpointText, durationSpoken, durationText, type MockPacing, type PaceStatus } from '../engine/pace';
-import { LARGE_TEXT, radius, space } from '../theme/tokens';
+import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Clock, Flag, Gauge, ICON_STROKE } from './icons';
 import { ProgressFill, useMotion } from './motion';
@@ -135,7 +135,7 @@ function PaceBar({ done, used }: { done: number; used: number }) {
   const tick = useSharedValue(tickAt);
   useEffect(() => {
     // The clock's own pace: a linear glide over most of each 1 s tick (the one linear motion in the app).
-    tick.set(reduce ? tickAt : withTiming(tickAt, { duration: 900, easing: Easing.linear, reduceMotion: ReduceMotion.Never }));
+    tick.set(reduce ? tickAt : withTiming(tickAt, { duration: motion.dur.tick, easing: Easing.linear, reduceMotion: ReduceMotion.Never }));
   }, [tickAt, reduce, tick]);
   const tickStyle = useAnimatedStyle(() => ({ transform: [{ translateX: tick.value * width }] }));
   return (

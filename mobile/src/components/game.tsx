@@ -18,14 +18,14 @@ import { createRng } from '../engine/random';
 import { makePermutation, type Permutation } from '../engine/shuffle';
 import { lastScores, reviewLine, runningScore, scoreSpoken, scoreText, trendSpoken, type RecapMiss } from '../engine/games/recap';
 import { useProgress, type GameId } from '../store/progress';
-import { optionText, radius, raisedShadow, space } from '../theme/tokens';
+import { motion, optionText, radius, raisedShadow, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ScenarioBlock, StickyFooter } from './quiz';
 import { useReportFlow } from './support';
 import { questionTarget } from '../lib/support';
 import type { ReportTarget } from '../engine/support';
 import { Seedling, TierLeaf } from './glyphs';
-import { AnimatedPressable, Shake, StateLayer, usePressScale } from './motion';
+import { AnimatedPressable, Shake, StateLayer, useMotion, usePressScale } from './motion';
 import { MilestoneMomentView, TierTag } from './milestones';
 import { tierChangeLine, type GameTier } from '../engine/games/growth';
 import type { RoundNews } from '../lib/gameRounds';
@@ -369,6 +369,7 @@ export function LevelNote({ level }: { level: GameTier }) {
  */
 export function RevealCard({ tone, title, body, spoken }: { tone: 'good' | 'bad' | 'info'; title: string; body: string; spoken?: string }) {
   const { c } = useTheme();
+  const { reduced } = useMotion();
   const [open, setOpen] = useState(false);
   const look = tone === 'good' ? { fg: c.correct, bg: c.correctBg } : tone === 'bad' ? { fg: c.wrong, bg: c.wrongBg } : { fg: c.tip, bg: c.tipBg };
   const long = body.length > 280;
@@ -377,7 +378,7 @@ export function RevealCard({ tone, title, body, spoken }: { tone: 'good' | 'bad'
     AccessibilityInfo.announceForAccessibility(say);
   }, [say]);
   return (
-    <Animated.View entering={FadeIn.duration(240).reduceMotion(ReduceMotion.System)}>
+    <Animated.View entering={FadeIn.duration(reduced ? motion.dur.reduced : 240).reduceMotion(ReduceMotion.Never)}>
       <View style={{ backgroundColor: look.bg, borderRadius: radius.md, padding: space.lg }}>
         <View accessibilityLiveRegion="polite">
           <T v="caption" color={look.fg}>{title}</T>

@@ -288,6 +288,7 @@ export const motion = {
     vine: 520, // the vine stem draws (signature)
     grow: 600, // growth rings (signature, first view of the day)
     reduced: 120, // the cross-fade that replaces movement under Reduce Motion
+    tick: 900, // the pace tick's linear glide, within each 1 s clock tick (the one linear motion)
   },
   /** Cubic-bezier control points (Material 3). "out" is Easing.out(cubic), our default. */
   curve: {

@@ -321,8 +321,17 @@ export function Card({
             !isDark && raisedShadow,
           ];
   const base = [look, style];
-  const press = usePressScale();
+  // A static card has no press feedback, so it builds no animated styles (long lists on low-end Android).
   if (!onPress) return <View style={base}>{children}</View>;
+  return (
+    <PressCard style={base} onPress={onPress} accessibilityLabel={accessibilityLabel}>
+      {children}
+    </PressCard>
+  );
+}
+
+function PressCard({ style, onPress, accessibilityLabel, children }: { style: StyleProp<ViewStyle>; onPress: () => void; accessibilityLabel?: string; children: ReactNode }) {
+  const press = usePressScale();
   return (
     <AnimatedPressable
       accessibilityRole="button"
@@ -330,7 +339,7 @@ export function Card({
       onPress={onPress}
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
-      style={[base, press.style]}
+      style={[style, press.style]}
     >
       {children}
     </AnimatedPressable>
@@ -811,6 +820,15 @@ export function Chip({
 }) {
   const { c } = useTheme();
   const press = usePressScale({ tint: c.soft, tintRadius: radius.pill });
+  // The label and ✓ swap colour at the fill's half-way point (as StateLayer
+  // `step` does for a badge): flipping at the tap would put paper-coloured
+  // text on a still-transparent fill for a few frames.
+  const half = useSharedValue(selected ? 1 : 0);
+  useEffect(() => {
+    half.set(tween(selected ? 1 : 0, 'select'));
+  }, [selected, half]);
+  const labelInk = useAnimatedStyle(() => ({ color: half.value >= 0.5 ? c.bg : c.ink }));
+  const markShown = useAnimatedStyle(() => ({ opacity: half.value >= 0.5 ? 1 : 0 }));
   return (
     <AnimatedPressable
       accessibilityRole={checkbox ? 'checkbox' : 'button'}
@@ -829,11 +847,11 @@ export function Chip({
       <StateLayer on={selected} style={[styles.chipFill, { backgroundColor: c.ink }]} />
       {/* In a View, so the mark always draws above the fill layer (web paints a bare SVG under it). */}
       {selected && (
-        <View>
+        <Animated.View style={markShown}>
           <Check size={14} color={c.bg} strokeWidth={2.5} />
-        </View>
+        </Animated.View>
       )}
-      <Text maxFontSizeMultiplier={2} style={[styles.chipLabel, { color: selected ? c.bg : c.ink }]}>{label}</Text>
+      <Animated.Text maxFontSizeMultiplier={2} style={[styles.chipLabel, labelInk]}>{label}</Animated.Text>
     </AnimatedPressable>
   );
 }

@@ -280,16 +280,22 @@ export function usePressScale({
     opacity: dims ? 1 - fade * p.value : 1,
     transform: [{ scale: reduced ? 1 : 1 - squeeze * p.value }],
   }));
-  const grow = 1 - tintFrom;
-  const tintStyle = useAnimatedStyle(() => ({ opacity: p.value, transform: [{ scale: reduced ? 1 : 1 - grow + grow * p.value }] }));
-  const layer = tint ? (
+  // The tint is its own component, so its animated style only exists when there is a tint.
+  const layer = tint ? <PressTint p={p} color={tint} radius={tintRadius} from={reduced ? 1 : tintFrom} /> : null;
+  return { onPressIn: pressIn, onPressOut: pressOut, style, layer };
+}
+
+/** usePressScale's pressed tint: fades in under the content, growing from `from` to 1. */
+function PressTint({ p, color, radius, from }: { p: SharedValue<number>; color: string; radius: number; from: number }) {
+  const grow = 1 - from;
+  const anim = useAnimatedStyle(() => ({ opacity: p.value, transform: [{ scale: 1 - grow + grow * p.value }] }));
+  return (
     <Animated.View
       accessible={false}
       importantForAccessibility="no"
-      style={[StyleSheet.absoluteFill, styles.noTouch, { backgroundColor: tint, borderRadius: tintRadius }, tintStyle]}
+      style={[StyleSheet.absoluteFill, styles.noTouch, { backgroundColor: color, borderRadius: radius }, anim]}
     />
-  ) : null;
-  return { onPressIn: pressIn, onPressOut: pressOut, style, layer };
+  );
 }
 
 // ── StateLayer: what changed (a state cross-fades in place) ────────────

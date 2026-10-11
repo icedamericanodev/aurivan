@@ -13,9 +13,10 @@ import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
 import { GAME_TIER_NAME, type GameTier } from '../engine/games/growth';
 import { haptic } from '../lib/haptics';
 import type { MilestoneMoment } from '../lib/milestones';
-import { space } from '../theme/tokens';
+import { motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, TierLeaf } from './glyphs';
+import { useMotion } from './motion';
 import { Row, T } from './ui';
 
 /** Moments already buzzed and announced (per session or round), so a re-render never repeats them. */
@@ -28,6 +29,7 @@ const buzzed = new Set<string>();
  */
 export function MilestoneMomentView({ moment, once }: { moment: MilestoneMoment; once: string }) {
   const { c } = useTheme();
+  const { reduced } = useMotion();
   const caption = moment.kind === 'skill' ? 'A pressed leaf for your field notes' : 'A quiet milestone';
   const spoken = `${caption}: ${moment.label}. ${moment.rule}`;
   useEffect(() => {
@@ -38,7 +40,7 @@ export function MilestoneMomentView({ moment, once }: { moment: MilestoneMoment;
     AccessibilityInfo.announceForAccessibility(spoken);
   }, [once, moment.key, spoken]);
   return (
-    <Animated.View entering={FadeIn.duration(240).reduceMotion(ReduceMotion.System)}>
+    <Animated.View entering={FadeIn.duration(reduced ? motion.dur.reduced : 240).reduceMotion(ReduceMotion.Never)}>
       <View accessible accessibilityLabel={spoken} style={{ borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
         <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
           <View accessible={false} importantForAccessibility="no-hide-descendants">
