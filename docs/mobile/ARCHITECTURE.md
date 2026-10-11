@@ -339,20 +339,31 @@ server: every email goes through the learner's OWN email app.
 - **Entry points** (`components/support.tsx` `useReportFlow` + `ReportRow`):
   every practice answer (`TrustLine`), the results review after practice and
   mocks, "Something not working? Report a bug" on Results, the mistake
-  journal, every study note, every lesson step (a check only after it's
-  answered), every miss in a game recap, and Settings / You → Help and
-  feedback. A live mock has none (the navigator says to report from the review).
+  journal (`ReportLink`, the link only), every study note, every lesson step
+  (a check only after it's answered), every miss in a game recap (cards by
+  their stable review-card id, `RecapMiss.reportId`), and Help and feedback
+  (one row in Settings and in You). A live mock has none (the navigator says
+  to report from the review). Every send runs once at a time (a ref guard);
+  "Copy or share instead" and the no-email-app panel show the message to
+  copy or share, with "Try again". The link says "Report started 11 Oct".
+  Feedback and support sheets stay mounted, so Cancel keeps typed text.
 - **Your reports** (progress store `reports`, optional, newest first, 200
-  max): `{ ref, item, reason, at, cert, creditSeen? }`, item = `q:d4_217`,
-  `note:4A2.3`, `lesson:<id>#<step>`, `card:<id>`, `app:<screen>`. It goes
-  through the backup checker and its fit mode; reports about retired items
-  are kept. A reset of one exam leaves it alone.
-- **Credit loop**: `content/support/fixes.json` (`{ ref, cert, date, kind,
-  publicNote }`, bundled, empty until the first fix ships) is matched on the
-  phone: a fix for the same item shipped on a LATER day shows "Updated after
-  your report" in Your reports, "Your report helped" once on What's new, and
-  one quiet line on Today until seen. No streak, growth or badge for reporting.
-- **Screens**: `help` (also `aurivan://help?open=support|feedback|idea|report`),
+  max): `{ ref, item, reason, at, cert, version?, creditSeen? }`, item =
+  `q:d4_217`, `note:4A2.3`, `lesson:<id>#<step>`, `card:<id>`, `app:<screen>`;
+  `version` = the app version it was made on. It goes through the backup
+  checker and its fit mode; reports about retired items are kept. A reset of
+  one exam leaves it alone. Restoring a backup from before 1.7 (no list at
+  all) keeps the phone's list; a file with a list replaces it.
+- **Credit loop**: `content/support/fixes.json` (`{ ref, cert, date, fixedIn,
+  kind, publicNote }`, bundled, empty until the first fix ships) is matched
+  on the phone: a fix for the same item whose `fixedIn` version is NEWER than
+  the version the report was made on (by day when either side has no
+  version) shows "Updated after your report" in Your reports, and once, on
+  Today (with Dismiss) or What's new, whichever comes first. The plural
+  counts different items. No streak, growth or badge for reporting.
+- **Screens**: `help` (two groups, Get help and Updates; also
+  `aurivan://help?open=support|feedback|idea|report`, read in an effect and
+  then cleared, so a second link while Help is open still works),
   `faq`, `reports`, `whats-new` (every mobile release in plain words, plus
   "Fixed after learner reports"), `whats-next` (read-only, dateless). Content
   in `content/support/index.ts`; `support-content.test.ts` enforces the What's

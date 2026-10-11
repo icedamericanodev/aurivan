@@ -90,9 +90,10 @@ Ref: R-7K2Q
    report date, number of reports, reason, status, fixed in (version), ref(s).
    It is the only metrics source (the app has no analytics). Never record
    learners' addresses in it.
-6. **Retention.** Delete resolved threads after the period the owner sets
-   (not yet set; the compliance review suggests 24 months, the security review
-   12). Delete sooner on request. Update `privacy.html` §6 when it's set.
+6. **Retention: 12 months** after the issue is resolved (owner decision,
+   Phase 1 review), then delete the thread; sooner if the learner asks. This
+   is the promise in `privacy.html` (§3c and §6) and `support.html` §4: keep
+   them in step if it ever changes.
 
 ---
 
@@ -202,14 +203,20 @@ In the **same pull request** as the content fix:
 2. Add one entry to `mobile/src/content/support/fixes.json`:
 
    ```json
-   { "ref": "q:d4_217", "cert": "cisa", "date": "2026-11-02", "kind": "corrected",
+   { "ref": "q:d4_217", "cert": "cisa", "date": "2026-11-02", "fixedIn": "1.7.1",
+     "kind": "corrected",
      "publicNote": "The answer key was corrected, and the explanation now says why." }
    ```
 
    - `ref`: the item reference from the report subject (`q:` + the code for
      questions; a lesson without `#step` covers every step).
-   - `date`: the day the release ships (YYYY-MM-DD). Only reports made on an
-     EARLIER day are credited.
+   - `fixedIn`: the app version the fix ships in (`expo.version` of that
+     release, e.g. `1.7.1`). Required. Reports made on an OLDER version are
+     credited, including one made on the ship day or on an old build after
+     the release (the learner hadn't updated yet). Card reports use the
+     stable id from the subject (`card:role:1A1.3:r001`, `card:seq:…`).
+   - `date`: the day the release ships (YYYY-MM-DD), shown to learners. Only
+     used for matching when a report has no version.
    - `kind`: `corrected`, `clarified` or `removed`.
    - `publicNote`: ONE general sentence. No codes, no question text, no counts.
      `src/__tests__/support-content.test.ts` checks it.
@@ -219,8 +226,8 @@ In the **same pull request** as the content fix:
 4. After the release, reply with §4.2 and label `Fixed vX`.
 
 On the learner's phone, Your reports then shows "Updated after your report"
-with the note, What's new shows "Your report helped" once, and Today shows one
-quiet line until they've seen it. Nothing is uploaded: the phone matches the
+with the note, and Today (or What's new, if they open it first) shows
+"Updated after your report" once; Today's line can be dismissed. Nothing is uploaded: the phone matches the
 bundled list against its own reports.
 
 ---
@@ -232,5 +239,5 @@ bundled list against its own reports.
 - **Privacy labels stay "Data Not Collected"**: the learner's own email app
   sends, and the app transmits nothing. Re-check with
   `app-store-compliance-reviewer` before each submission.
-- Mention of Google as the email provider for support belongs in the privacy
-  policy once retention is set.
+- The privacy policy names Gmail (Google) as the support inbox's provider
+  (§5 table and §6), with the 12-month retention.
