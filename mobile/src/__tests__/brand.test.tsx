@@ -17,29 +17,6 @@ import { BrandLockup } from '../components/brand';
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
-jest.mock('react-native-reanimated', () => {
-  const { View } = jest.requireActual('react-native');
-  const builder: object = new Proxy({}, { get: () => () => builder });
-  const id = (v: unknown) => v;
-  return {
-    __esModule: true,
-    default: { View, createAnimatedComponent: (c: unknown) => c },
-    createAnimatedComponent: (c: unknown) => c,
-    useReducedMotion: () => true,
-    useSharedValue: (v: unknown) => ({ value: v }),
-    useAnimatedStyle: () => ({}),
-    useAnimatedProps: () => ({}),
-    withTiming: id,
-    withDelay: (_d: number, v: unknown) => v,
-    withRepeat: id,
-    withSequence: (...v: unknown[]) => v[v.length - 1],
-    cancelAnimation: () => {},
-    Easing: new Proxy({}, { get: () => () => id }),
-    ReduceMotion: { System: 'system', Always: 'always', Never: 'never' },
-    FadeIn: builder,
-    FadeInDown: builder,
-  };
-});
 jest.mock('../components/icons', () => {
   const Icon = () => null;
   return new Proxy({ __esModule: true, ICON_STROKE: 2 } as Record<string, unknown>, {

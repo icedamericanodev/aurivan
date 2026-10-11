@@ -364,6 +364,8 @@ function settingsCheck(certKey: Check<string>) {
       // undefined), so the type allows undefined like the store's does.
       examDates: map<string | undefined>(date, 50, certKey),
       theme: oneOf('system', 'dark', 'light'),
+      // Mobile 1.8 (optional: older files have none).
+      motion: oneOf('system', 'reduced'),
       shuffleOptions: bool,
       dailyGoal,
       reminder: obj({ enabled: bool, hour: int(0, 23), minute: int(0, 59) }, { days: list(int(0, 6), 7) }),

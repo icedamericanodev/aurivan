@@ -12,22 +12,36 @@
  */
 import { useState } from 'react';
 import { View } from 'react-native';
-import Animated, { FadeInDown, ReduceMotion } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeInDown, ReduceMotion } from 'react-native-reanimated';
 import type { Scene } from '../content/lessons/types';
 import { displayToOriginal, isCheckCorrect, lettersFor, renderText, type Permutation } from '../engine/shuffle';
 import { LETTERS, type Letter } from '../content/types';
 import { haptic } from '../lib/haptics';
-import { radius, space } from '../theme/tokens';
+import { motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Botany, type BotanyKind } from './glyphs';
+import { useMotion } from './motion';
 import { OptionCard, type OptionState } from './quiz';
 import { BigNum, Gap, Stem, T } from './ui';
 
 const BASE = 240;
 const STEP = 120;
-const enter = (i = 0) => FadeInDown.duration(BASE).delay(i * STEP).reduceMotion(ReduceMotion.System);
+/**
+ * A part arriving. Reduced: a short fade with no rise and no build-up delay
+ * (never a cut: the fade still says "this is new"). Our own reduced path, so
+ * Reanimated's global switch must not skip it.
+ */
+const enterAt = (reduced: boolean, i: number) =>
+  reduced
+    ? FadeIn.duration(motion.dur.reduced).reduceMotion(ReduceMotion.Never)
+    : FadeInDown.duration(BASE).delay(i * STEP).reduceMotion(ReduceMotion.Never);
+function useEnter() {
+  const { reduced } = useMotion();
+  return (i = 0) => enterAt(reduced, i);
+}
 
 function Heading({ children }: { children: string }) {
+  const enter = useEnter();
   return (
     <Animated.View entering={enter(0)}>
       <T v="headline" accessibilityRole="header">{children}</T>
@@ -59,6 +73,7 @@ export function SceneView({
   art?: BotanyKind;
 }) {
   const { c } = useTheme();
+  const enter = useEnter();
 
   switch (scene.type) {
     case 'title':
@@ -250,6 +265,7 @@ function CheckScene({
   perm: Permutation;
 }) {
   const { c } = useTheme();
+  const enter = useEnter();
   // `picked` is the DISPLAY letter the learner tapped.
   const [picked, setPicked] = useState<Letter | null>(null);
   const done = picked !== null;

@@ -15,7 +15,7 @@
  */
 import { useEffect, useState } from 'react';
 import { Alert, Modal, ScrollView, View } from 'react-native';
-import { useReducedMotion } from 'react-native-reanimated';
+import { useMotion } from './motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { previewRows, UNDO_DAYS, undoAvailable, undoExpiresAt } from '../engine/backup';
 import { examDateLabel } from '../engine/examDay';
@@ -188,14 +188,14 @@ export function RestorePreview({
   onCancel: () => void;
 }) {
   const { c } = useTheme();
-  const reduceMotion = useReducedMotion();
+  const { reduced: reduceMotion } = useMotion();
   const large = useFontScale() >= LARGE_TEXT;
   const rows = ready ? previewRows(ready.now, ready.backup) : [];
   const saved = ready ? Date.parse(ready.data.exportedAt) : NaN;
   const fresh = ready?.fresh === true;
   return (
     // While the restore is saving, swipe-down and Back do nothing.
-    <Modal visible={ready !== null} animationType={reduceMotion ? 'none' : 'slide'} presentationStyle="pageSheet" onRequestClose={busy ? () => {} : onCancel}>
+    <Modal visible={ready !== null} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={busy ? () => {} : onCancel}>
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
         <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xl }}>
           <T v="display" accessibilityRole="header">Restore this backup?</T>

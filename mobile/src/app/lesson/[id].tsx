@@ -4,7 +4,7 @@
  * marks the lesson done, ticks it off today's plan and feeds the journey.
  */
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { BotanyKind } from '../../components/glyphs';
@@ -16,6 +16,7 @@ import { findLesson } from '../../content/lessons';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, lettersFor, makeCheckPermutation, type Permutation } from '../../engine/shuffle';
 import type { Letter } from '../../content/types';
+import { moveFocus } from '../../lib/a11y';
 import { logLesson } from '../../lib/activity';
 import { useProgress } from '../../store/progress';
 import { useSettings } from '../../store/settings';
@@ -29,6 +30,7 @@ export default function LessonPlayer() {
   const completeLesson = useProgress((s) => s.completeLesson);
   const [index, setIndex] = useState(0);
   const [checked, setChecked] = useState(false);
+  const nextRef = useRef<View>(null);
   // The DISPLAY letter picked on this scene's check (for Report a problem), reset with `checked`.
   const [picked, setPicked] = useState<Letter | null>(null);
   const shuffleOn = useSettings((s) => s.shuffleOptions);
@@ -138,8 +140,20 @@ export default function LessonPlayer() {
 
       <View style={{ paddingHorizontal: space.gutter, paddingVertical: space.md, backgroundColor: c.bg }}>
         <Row gap={space.sm}>
-          <Button kind="secondary" label="Back" disabled={index === 0} onPress={() => goTo(Math.max(0, index - 1))} style={{ flex: 1 }} />
-          <Button label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: 2 }} />
+          {/* No Back on the first scene (a disabled slab looked broken); Next takes the full width. */}
+          {index > 0 && (
+            <Button
+              kind="secondary"
+              label="Back"
+              onPress={() => {
+                // Back to the first scene removes this button: keep screen-reader focus on Next.
+                if (index === 1) moveFocus(nextRef);
+                goTo(index - 1);
+              }}
+              style={{ flex: 1 }}
+            />
+          )}
+          <Button ref={nextRef} label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: 2 }} />
         </Row>
       </View>
       {report.sheet}

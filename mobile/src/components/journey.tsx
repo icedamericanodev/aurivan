@@ -8,7 +8,7 @@
  * Readiness is always a range ("62–70%") or "Not enough data yet". The copy
  * never promises a pass: it describes mastery, weighted by the blueprint.
  */
-import { REVIEW_CAP_LINE, REVIEW_UNIT } from '../engine/srs';
+import { REVIEW_CAP_LINE, REVIEW_SESSION_CAP, REVIEW_UNIT } from '../engine/srs';
 import { gameTitle } from '../engine/games/registry';
 import type { ReactNode } from 'react';
 import { Text, View } from 'react-native';
@@ -41,18 +41,28 @@ export function planIcon(item: PlanItem, color: string): ReactNode {
   }
 }
 
-/** Real, unshortened titles (spec §11: 2 lines allowed) and one short meta line. */
-export function planText(item: PlanItem): { title: string; meta: string; short: string } {
+/**
+ * Real, unshortened titles (spec §11: 2 lines allowed) and one short meta line.
+ * `due`: the LIVE review queue. The day's plan is frozen in the morning, but
+ * the queue it names must match You and Practice all day (reviews done, more
+ * falling due), so Today passes the live count.
+ */
+export function planText(item: PlanItem, due?: number): { title: string; meta: string; short: string } {
   const mins = itemMinutes(item);
   switch (item.kind) {
-    case 'review':
+    case 'review': {
       // Same word as Practice and You ("due"); at the cap, say the rest wait.
+      const queue = due ?? item.due ?? item.count;
+      // The cap line only when MORE than 20 are due (exactly 20 fits one session).
+      const capped = due === undefined ? Boolean(item.capped) : due > REVIEW_SESSION_CAP;
       return {
-        title: item.label ?? `Review ${item.count} ${REVIEW_UNIT}`,
-        // The cap line only when MORE than 20 were due (exactly 20 fits one session).
-        meta: `About ${mins} minutes · ${item.capped ? REVIEW_CAP_LINE.toLowerCase() : 'questions to revisit'}`,
-        short: 'Spaced review',
+        // The whole queue ("Review 55 due"), the same number You and Practice show;
+        // the meta says how much of it this session takes.
+        title: item.label ?? (queue > 0 ? `Review ${queue} ${REVIEW_UNIT}` : 'Review · all caught up'),
+        meta: `About ${mins} minutes · ${capped ? REVIEW_CAP_LINE : 'questions to revisit'}`,
+        short: capped ? `Spaced review · ${REVIEW_SESSION_CAP} at a time` : 'Spaced review',
       };
+    }
     case 'lesson':
       return { title: item.title, meta: `Lesson · ${mins} min`, short: `Lesson · ${mins} min` };
     case 'practice':
@@ -100,12 +110,18 @@ export function ReadinessRow({
   readiness,
   range,
   stage,
+  rings = true,
 }: {
   cert: Certification;
   readiness: Readiness;
   range: ReadinessRange;
   /** e.g. "Stage 3 · Make it stick" */
   stage: string;
+  /**
+   * false while the Exam-ready panel above already draws the rings: a
+   * signature never appears twice on one screen (spec §10).
+   */
+  rings?: boolean;
 }) {
   const { c } = useTheme();
   const stacked = useFontScale() >= LARGE_TEXT;
@@ -120,14 +136,16 @@ export function ReadinessRow({
       accessibilityLabel={`Estimated readiness ${rangeSpoken(range)}. ${range.enough ? `Weighted by the exam blueprint. ${ESTIMATE_NOTE}` : meta} ${stage}.`}
       style={{ flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: stacked ? 10 : 18, marginTop: 22 }}
     >
-      <GrowthRings
-        preset="today"
-        mastery={readiness.domains.map((d) => d.mastery)}
-        weights={cert.domains.map((d) => d.weight)}
-        colors={c.accent}
-        track={c.track}
-      />
-      <View style={{ flex: stacked ? undefined : 1 }}>
+      {rings && (
+        <GrowthRings
+          preset="today"
+          mastery={readiness.domains.map((d) => d.mastery)}
+          weights={cert.domains.map((d) => d.weight)}
+          colors={c.accent}
+          track={c.track}
+        />
+      )}
+      <View style={{ flex: stacked || !rings ? undefined : 1 }}>
         <ReadinessFigure range={range} />
         <T v="meta" style={{ marginTop: 4 }}>{meta}</T>
         {/* One quiet line, only once there is a range to explain. */}
@@ -142,13 +160,18 @@ export function ReadinessRow({
 /**
  * `values` are 0..1 per domain (blueprint order), or null for "not started".
  * The legend lists domains OUTSIDE-IN, matching the rings visually.
+ * `only` (Results): draw just these domains (indexes, blueprint order), so a
+ * one-domain session isn't four empty rings and four dashes (ui.md R1). One
+ * domain alone is drawn as a single thick ring in its tone.
  */
+export const SINGLE_RING_WEIGHT = 80;
 export function DomainRings({
   cert,
   values,
   center,
   legendValue,
   accessibilityLabel,
+  only,
 }: {
   cert: Certification;
   values: (number | null)[];
@@ -156,18 +179,21 @@ export function DomainRings({
   /** Legend text per domain; defaults to a whole percent. */
   legendValue?: (i: number) => string;
   accessibilityLabel: string;
+  only?: number[];
 }) {
   const { c, isDark } = useTheme();
   const stacked = useFontScale() >= LARGE_TEXT;
-  const tones = cert.domains.map((d) => domainColor(d.tone, isDark));
+  const shown = only && only.length > 0 ? only : [...cert.domains.keys()];
+  const tones = shown.map((i) => domainColor(cert.domains[i].tone, isDark));
+  const weights = shown.length === 1 ? [SINGLE_RING_WEIGHT] : shown.map((i) => cert.domains[i].weight);
   const label = (i: number) => legendValue?.(i) ?? (values[i] === null ? '–' : String(Math.round((values[i] ?? 0) * 100)));
   return (
     <View style={{ flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: space.lg }}>
       <View accessible accessibilityRole="image" accessibilityLabel={accessibilityLabel}>
         <GrowthRings
           preset="you"
-          mastery={values.map((v) => v ?? 0)}
-          weights={cert.domains.map((d) => d.weight)}
+          mastery={shown.map((i) => values[i] ?? 0)}
+          weights={weights}
           colors={tones}
           track={c.track}
         />
@@ -176,7 +202,7 @@ export function DomainRings({
         </View>
       </View>
       <View style={{ flex: stacked ? undefined : 1, gap: 9, alignSelf: stacked ? 'stretch' : undefined }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-        {[...cert.domains.keys()].reverse().map((i) => (
+        {[...shown].reverse().map((i) => (
           <Row key={cert.domains[i].id} gap={9}>
             <DomainDot domain={cert.domains[i]} />
             <T v="meta" color={c.ink} style={{ flex: 1 }}>{cert.domains[i].short}</T>

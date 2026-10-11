@@ -11,7 +11,7 @@
  * things you choose between; one forest panel per screen; tinted blocks
  * only for feedback.
  */
-import { useEffect, type ReactNode, type Ref } from 'react';
+import { useEffect, useRef, useState, type ReactNode, type Ref } from 'react';
 import {
   Image,
   Platform,
@@ -27,7 +27,7 @@ import {
   type TextStyle,
   type ViewStyle,
 } from 'react-native';
-import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
+import Animated, { ReduceMotion, useAnimatedStyle, useSharedValue, withSpring, type SharedValue } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { sayLater } from '../lib/a11y';
@@ -40,6 +40,7 @@ import {
   grainOp,
   LARGE_TEXT,
   maxScale,
+  motion,
   numeralUnit,
   percentSup,
   radius,
@@ -55,6 +56,7 @@ import {
 import { useTheme } from '../theme/useTheme';
 import { Botany, botanySize, Seedling, type BotanyKind } from './glyphs';
 import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Settings as SettingsIcon, X } from './icons';
+import { AnimatedPressable, FadeIn, ProgressFill, StateLayer, tween, useMotion, usePressScale } from './motion';
 
 /** Icon sizes: inline with text, in rows/circles, and in the tab bar/header. */
 export const ICON_SIZE = { inline: 16, row: 20, bar: 24 } as const;
@@ -160,6 +162,7 @@ export function T({
 /** A question stem: Fraunces 21/30, stepping down to 20/29 for long stems. */
 export function Stem({ children, color, highlight }: { children: string; color?: string; highlight?: string | null }) {
   const { c } = useTheme();
+  const { reduced } = useMotion();
   const style = children.length > STEM_LONG_CHARS ? stemLong : undefined;
   // Coach me: mark the LAST capitalised priority word, matched as a whole
   // word (so "MOST" never lights up inside "ALMOST"). Tip colour plus a
@@ -167,6 +170,15 @@ export function Stem({ children, color, highlight }: { children: string; color?:
   // text below also names the word. No underline or background, so it never
   // looks like a link or like an answered (tinted) state.
   const at = highlight ? lastWholeWordIndex(children, highlight) : -1;
+  // The wash (mobile 1.8): when Coach me opens, the word's colour washes from
+  // ink to the tip colour (200 ms; 120 ms reduced). Colour, not motion. A
+  // second, identical copy of the stem sits on top with only the word
+  // visible, and fades in; identical text means identical line breaks.
+  const wash = useSharedValue(at >= 0 ? 1 : 0);
+  useEffect(() => {
+    wash.set(at >= 0 ? tween(1, reduced ? 'reduced' : 'reveal') : 0);
+  }, [at, reduced, wash]);
+  const washStyle = useAnimatedStyle(() => ({ opacity: wash.value }));
   if (!highlight || at < 0) {
     return (
       <T v="stem" color={color} style={style}>
@@ -174,12 +186,28 @@ export function Stem({ children, color, highlight }: { children: string; color?:
       </T>
     );
   }
+  const before = children.slice(0, at);
+  const after = children.slice(at + highlight.length);
   return (
-    <T v="stem" color={color} style={style}>
-      {children.slice(0, at)}
-      <Text style={{ color: c.tip, fontFamily: font.serif500 }}>{highlight}</Text>
-      {children.slice(at + highlight.length)}
-    </T>
+    <View>
+      <T v="stem" color={color} style={style}>
+        {before}
+        <Text style={{ fontFamily: font.serif500 }}>{highlight}</Text>
+        {after}
+      </T>
+      <Animated.View
+        style={[StyleSheet.absoluteFill, styles.noTouch, washStyle]}
+        accessible={false}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      >
+        <T v="stem" color="transparent" style={style}>
+          {before}
+          <Text style={{ color: c.tip, fontFamily: font.serif500 }}>{highlight}</Text>
+          {after}
+        </T>
+      </Animated.View>
+    </View>
   );
 }
 
@@ -198,9 +226,12 @@ export function Button({
   accessibilityLabel,
   selected,
   ref,
+  follow,
 }: {
   /** For moving screen-reader focus here (lib/a11y.ts moveFocus). */
   ref?: Ref<View>;
+  /** The hero panel's lift: the panel eases a little with the pill (spec §8). */
+  follow?: SharedValue<number>;
   label: string;
   onPress: () => void;
   kind?: ButtonKind;
@@ -229,8 +260,11 @@ export function Button({
       }[kind];
   const isForest = kind === 'forest';
   const isGhost = kind === 'ghost';
+  // Pressed = a tiny squeeze and dim on the UI thread, not a colour change.
+  // A ghost button is text alone, so it only dims (never scale text alone).
+  const press = usePressScale({ dim: true, scale: isGhost ? 1 : motion.pressScale, follow });
   return (
-    <Pressable
+    <AnimatedPressable
       ref={ref}
       accessibilityRole="button"
       accessibilityState={{ disabled, selected }}
@@ -238,12 +272,13 @@ export function Button({
       accessibilityLabel={accessibilityLabel ?? label}
       onPress={onPress}
       disabled={disabled}
-      style={({ pressed }) => [
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      style={[
         isForest ? styles.buttonForest : isGhost ? styles.buttonGhost : styles.button,
         { backgroundColor: look.bg, borderColor: look.border },
-        // Pressed = a tiny squeeze, not a colour change.
-        pressed && { transform: [{ scale: 0.98 }], opacity: 0.92 },
         style,
+        press.style,
       ]}
     >
       {iconLeading && icon?.(look.fg)}
@@ -251,7 +286,7 @@ export function Button({
         {label}
       </Text>
       {!iconLeading && icon?.(look.fg)}
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -286,16 +321,28 @@ export function Card({
             !isDark && raisedShadow,
           ];
   const base = [look, style];
+  // A static card has no press feedback, so it builds no animated styles (long lists on low-end Android).
   if (!onPress) return <View style={base}>{children}</View>;
   return (
-    <Pressable
+    <PressCard style={base} onPress={onPress} accessibilityLabel={accessibilityLabel}>
+      {children}
+    </PressCard>
+  );
+}
+
+function PressCard({ style, onPress, accessibilityLabel, children }: { style: StyleProp<ViewStyle>; onPress: () => void; accessibilityLabel?: string; children: ReactNode }) {
+  const press = usePressScale();
+  return (
+    <AnimatedPressable
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
       onPress={onPress}
-      style={({ pressed }) => [base, pressed && { transform: [{ scale: 0.98 }] }]}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      style={[style, press.style]}
     >
       {children}
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -334,9 +381,15 @@ export function HeroPanel({
   wideTitle?: boolean;
 }) {
   const { c } = useTheme();
+  const { reduced } = useMotion();
   const large = useFontScale() >= LARGE_TEXT;
+  // The lift (spec §8): while the pill is pressed the panel eases to .99, so
+  // the whole task seems to rise toward you. Static under Reduce Motion.
+  const lift = useSharedValue(0);
+  const liftStyle = useAnimatedStyle(() => ({ transform: [{ scale: reduced ? 1 : 1 - 0.01 * lift.value }] }));
   return (
-    <Card variant="forest" style={style}>
+    <Animated.View style={[style, liftStyle]}>
+    <Card variant="forest">
       {/* Two layers, so the text can never disappear behind the art (the
           Android "empty green block" on Play):
           1. ART: its own absolutely-filled layer that does the rounded
@@ -386,11 +439,13 @@ export function HeroPanel({
             accessibilityHint={action.hint}
             icon={action.icon}
             iconLeading
+            follow={lift}
             style={{ marginTop: 18, alignSelf: 'flex-start' }}
           />
         )}
       </View>
     </Card>
+    </Animated.View>
   );
 }
 
@@ -423,18 +478,23 @@ export function IconButton({
     ...(expanded === undefined ? {} : { expanded }),
     ...(disabled ? { disabled } : {}),
   };
+  // Pressed: a soft circle grows in behind the icon (.9 → 1) and fades.
+  const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: 24, tintFrom: 0.9 });
   return (
-    <Pressable
+    <AnimatedPressable
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityHint={hint}
       accessibilityState={Object.keys(state).length ? state : undefined}
       onPress={onPress}
       disabled={disabled}
-      style={({ pressed }) => [styles.iconButton, pressed && { backgroundColor: c.soft }]}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      style={[styles.iconButton, press.style]}
     >
+      {press.layer}
       {icon(disabled ? c.muted : c.ink)}
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -559,6 +619,8 @@ export function ListRow({
   accessibilityHint?: string;
 }) {
   const { c } = useTheme();
+  // Pressed: a soft tint fades in under the row (no squeeze: rows are wide).
+  const press = usePressScale({ scale: 1, tint: c.soft });
   const body = (
     <>
       {icon && <IconCircle>{icon}</IconCircle>}
@@ -582,15 +644,18 @@ export function ListRow({
       </View>
     );
   return (
-    <Pressable
+    <AnimatedPressable
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? (typeof subtitle === 'string' ? `${title}, ${subtitle}` : title)}
       accessibilityHint={accessibilityHint}
       onPress={onPress}
-      style={({ pressed }) => [styles.listRow, pressed && { backgroundColor: c.soft }]}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      style={[styles.listRow, press.style]}
     >
+      {press.layer}
       {body}
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -617,16 +682,22 @@ export function RadioRow({
   last?: boolean;
 }) {
   const { c } = useTheme();
+  const press = usePressScale({ scale: 1, tint: c.soft });
   return (
-    <Pressable
+    <AnimatedPressable
       accessibilityRole="radio"
       accessibilityState={{ checked }}
       accessibilityLabel={[title, badge, subtitle].filter(Boolean).join('. ')}
       onPress={onPress}
-      style={({ pressed }) => [styles.listRow, pressed && { backgroundColor: c.soft }]}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      style={[styles.listRow, press.style]}
     >
-      <View style={[styles.radio, { borderColor: checked ? c.ink : c.control }]}>
-        {checked && <View style={[styles.radioDot, { backgroundColor: c.ink }]} />}
+      {press.layer}
+      {/* The ink ring and dot cross-fade in over the idle ring (120 ms). */}
+      <View style={[styles.radio, { borderColor: c.control }]}>
+        <StateLayer on={checked} style={[styles.radioOn, { borderColor: c.ink }]} />
+        <StateLayer on={checked} style={[styles.radioDot, styles.radioDotAt, { backgroundColor: c.ink }]} />
       </View>
       <View style={{ flex: 1, minWidth: 0 }}>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: space.sm }}>
@@ -636,11 +707,13 @@ export function RadioRow({
         {subtitle ? <T v="meta">{subtitle}</T> : null}
       </View>
       {!last && <View style={[styles.hairline, { left: 36, backgroundColor: c.line }]} />}
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
 // ── ProgressBar: 0..1 ─────────────────────────────────────────────────
+// The fill slides on a transform inside the clipping track (motion.tsx
+// ProgressFill): a change eases over 300 ms; nothing animates on mount.
 export function ProgressBar({ value, color, height = 8 }: { value: number; color?: string; height?: number }) {
   const { c } = useTheme();
   const pct = Math.max(0, Math.min(1, value)) * 100;
@@ -651,7 +724,7 @@ export function ProgressBar({ value, color, height = 8 }: { value: number; color
       accessibilityValue={{ min: 0, max: 100, now: Math.round(pct) }}
       style={{ height, borderRadius: r, backgroundColor: c.track, overflow: 'hidden' }}
     >
-      <View style={{ width: `${pct}%`, height, backgroundColor: color ?? c.accent, borderRadius: r }} />
+      <ProgressFill value={pct / 100} color={color ?? c.accent} radius={r} />
     </View>
   );
 }
@@ -659,6 +732,8 @@ export function ProgressBar({ value, color, height = 8 }: { value: number; color
 // ── SegmentBar: quiz progress, one segment per question (spec §6) ─────
 // Done = accent, current = ink2, rest = track. Over 20 questions it turns
 // into one continuous bar so segments never get too thin to see.
+// Motion (spec §8): a newly done segment fills from its left edge (300 ms);
+// the current marker cross-fades when the question changes (120 ms).
 export function SegmentBar({ total, done, current }: { total: number; done: number; current: number }) {
   const { c } = useTheme();
   const a11y = {
@@ -669,18 +744,36 @@ export function SegmentBar({ total, done, current }: { total: number; done: numb
   if (total > 20) {
     return (
       <View {...a11y} style={[styles.segTrack, { backgroundColor: c.track }]}>
-        <View style={{ width: `${(done / total) * 100}%`, height: 4, backgroundColor: c.accent }} />
+        <ProgressFill value={total ? done / total : 0} color={c.accent} />
       </View>
     );
   }
   return (
     <View {...a11y} style={styles.segRow}>
       {Array.from({ length: total }, (_, i) => (
-        <View
-          key={i}
-          style={[styles.seg, { backgroundColor: i < done ? c.accent : i === current ? c.ink2 : c.track }]}
-        />
+        <Segment key={i} done={i < done} current={i === current} />
       ))}
+    </View>
+  );
+}
+
+function Segment({ done, current }: { done: boolean; current: boolean }) {
+  const { c } = useTheme();
+  const { reduced } = useMotion();
+  // 1 = filled. Starts at its state (a resumed quiz shows its segments at once).
+  const fill = useSharedValue(done ? 1 : 0);
+  useEffect(() => {
+    // Filling grows from the left; un-filling (a new quiz) is instant.
+    fill.set(done ? tween(1, reduced ? 'reduced' : 'fill') : 0);
+  }, [done, reduced, fill]);
+  // Reduced: the segment fades in place instead of growing.
+  const fillStyle = useAnimatedStyle(() =>
+    reduced ? { opacity: fill.value, transform: [{ scaleX: 1 }] } : { opacity: fill.value > 0 ? 1 : 0, transform: [{ scaleX: fill.value }] },
+  );
+  return (
+    <View style={[styles.seg, { backgroundColor: c.track }]}>
+      <StateLayer on={current} style={{ backgroundColor: c.ink2 }} />
+      <Animated.View style={[StyleSheet.absoluteFill, styles.segFill, { backgroundColor: c.accent }, fillStyle]} />
     </View>
   );
 }
@@ -726,8 +819,18 @@ export function Chip({
   checkbox?: boolean;
 }) {
   const { c } = useTheme();
+  const press = usePressScale({ tint: c.soft, tintRadius: radius.pill });
+  // The label and ✓ swap colour at the fill's half-way point (as StateLayer
+  // `step` does for a badge): flipping at the tap would put paper-coloured
+  // text on a still-transparent fill for a few frames.
+  const half = useSharedValue(selected ? 1 : 0);
+  useEffect(() => {
+    half.set(tween(selected ? 1 : 0, 'select'));
+  }, [selected, half]);
+  const labelInk = useAnimatedStyle(() => ({ color: half.value >= 0.5 ? c.bg : c.ink }));
+  const markShown = useAnimatedStyle(() => ({ opacity: half.value >= 0.5 ? 1 : 0 }));
   return (
-    <Pressable
+    <AnimatedPressable
       accessibilityRole={checkbox ? 'checkbox' : 'button'}
       accessibilityState={{ ...(checkbox ? { checked: selected } : { selected }), ...(disabled ? { disabled } : {}) }}
       disabled={disabled}
@@ -735,17 +838,21 @@ export function Chip({
       accessibilityLabel={accessibilityLabel ?? label} // the ✓ is visual; the state is spoken
       onPress={onPress}
       hitSlop={4} // 40pt chip + 4pt each side = 48pt touch target
-      style={({ pressed }) => [
-        styles.chip,
-        {
-          borderColor: selected ? c.ink : c.control,
-          backgroundColor: selected ? c.ink : pressed ? c.soft : 'transparent',
-        },
-      ]}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      style={[styles.chip, { borderColor: selected ? c.ink : c.control }, press.style]}
     >
-      {selected && <Check size={14} color={c.bg} strokeWidth={2.5} />}
-      <Text maxFontSizeMultiplier={2} style={[styles.chipLabel, { color: selected ? c.bg : c.ink }]}>{label}</Text>
-    </Pressable>
+      {press.layer}
+      {/* The ink fill cross-fades in (120 ms), covering the outline too. */}
+      <StateLayer on={selected} style={[styles.chipFill, { backgroundColor: c.ink }]} />
+      {/* In a View, so the mark always draws above the fill layer (web paints a bare SVG under it). */}
+      {selected && (
+        <Animated.View style={markShown}>
+          <Check size={14} color={c.bg} strokeWidth={2.5} />
+        </Animated.View>
+      )}
+      <Animated.Text maxFontSizeMultiplier={2} style={[styles.chipLabel, labelInk]}>{label}</Animated.Text>
+    </AnimatedPressable>
   );
 }
 
@@ -796,11 +903,19 @@ export function Stat({ value, label, color, pct }: { value: string; label: strin
 // The dot means the active tab isn't shown by colour alone (spec §6).
 export function TabLabel({ label, focused }: { label: string; focused: boolean }) {
   const { c } = useTheme();
+  const { reduced } = useMotion();
+  // The dot pops in under the new tab (scale 0 → 1, 160 ms) and fades from
+  // the old one; under Reduce Motion it only fades. No icon bounce.
+  const d = useSharedValue(focused ? 1 : 0);
+  useEffect(() => {
+    d.set(tween(focused ? 1 : 0, 'quick'));
+  }, [focused, d]);
+  const dotStyle = useAnimatedStyle(() => ({ opacity: d.value, transform: [{ scale: reduced ? 1 : d.value }] }));
   return (
     // The Large Content Viewer props live on the tab BUTTON ((tabs)/_layout.tsx).
     <View style={styles.tabLabel}>
       <T v="tab" color={focused ? c.ink : c.muted}>{label}</T>
-      <View style={[styles.tabDot, { backgroundColor: focused ? c.accent : 'transparent' }]} />
+      <Animated.View style={[styles.tabDot, { backgroundColor: c.accent }, dotStyle]} />
     </View>
   );
 }
@@ -813,6 +928,10 @@ export function Gap({ h = space.lg }: { h?: number }) {
   return <View style={{ height: h }} />;
 }
 
+/** The track's inset and the gap between segments (styles.seg2). */
+const SEG_INSET = 3;
+const SEG_GAP = 3;
+
 const styles = StyleSheet.create({
   screenPad: { paddingHorizontal: space.gutter, paddingTop: space.lg, paddingBottom: space.xxxl * 2 },
   num: { fontVariant: ['tabular-nums'] },
@@ -823,7 +942,11 @@ const styles = StyleSheet.create({
   teachTag: { minHeight: 32, paddingHorizontal: space.md, borderRadius: radius.pill, flexDirection: 'row', alignItems: 'center', gap: 7 },
   teachDot: { width: 6, height: 6, borderRadius: 3 },
   // Track radius 25 = the 44pt pills' 22 + the 3pt inset, so the curves stay concentric.
-  seg2: { borderRadius: 25, padding: 3, gap: 3 },
+  seg2: { borderRadius: 25, padding: SEG_INSET, gap: SEG_GAP },
+  // The sliding thumb: over the first segment's box; translateX moves it.
+  segThumb: { position: 'absolute', top: SEG_INSET, bottom: SEG_INSET, left: SEG_INSET },
+  // Covers the segment's own transparent 1.5 border, like the thumb does.
+  segOn: { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5 },
   // 44 tall + a 2pt hitSlop all round = a 48pt touch target (P9).
   segItem: { minHeight: 44, borderRadius: 22, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, paddingHorizontal: space.sm },
   chipScroll: { gap: space.sm, paddingVertical: 4, paddingRight: space.xxxl },
@@ -892,8 +1015,11 @@ const styles = StyleSheet.create({
   hairline: { position: 'absolute', right: 0, bottom: 0, height: 1 },
   radio: { width: 22, height: 22, borderRadius: 11, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
   radioDot: { width: 10, height: 10, borderRadius: 5 },
+  radioDotAt: { top: 4, left: 4, right: undefined, bottom: undefined },
+  radioOn: { top: -2, left: -2, right: -2, bottom: -2, borderRadius: 11, borderWidth: 2 },
   segRow: { flex: 1, flexDirection: 'row', gap: 3 },
-  seg: { flex: 1, height: 4, borderRadius: 2 },
+  seg: { flex: 1, height: 4, borderRadius: 2, overflow: 'hidden' },
+  segFill: { transformOrigin: 'left' },
   segTrack: { flex: 1, height: 4, borderRadius: 2, overflow: 'hidden' },
   dot: { width: 8, height: 8, borderRadius: radius.pill },
   tag: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
@@ -908,6 +1034,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   chipLabel: { fontFamily: font.sans600, fontSize: 15, lineHeight: 20 },
+  // Covers the 1.5 outline too, so the selected chip reads as one ink shape.
+  chipFill: { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5, borderRadius: radius.pill },
   tabLabel: { alignItems: 'center', gap: 1 },
   search: { minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, paddingLeft: space.lg, flexDirection: 'row', alignItems: 'center' },
   searchClear: { width: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' },
@@ -1001,18 +1129,14 @@ export function Lead({ value, unit }: { value: string; unit: string }) {
 // ── Motion: content fade-in (spec §8) ─────────────────────────────────
 /**
  * Fade + 8pt rise, 240ms ease-out, staggered 40ms per group (max 4 groups).
- * Under Reduce Motion it simply appears.
+ * Built on motion.tsx FadeIn; under Reduce Motion it cross-fades (120 ms).
  */
 export function Enter({ i = 0, children, style }: { i?: number; children: ReactNode; style?: StyleProp<ViewStyle> }) {
-  const p = useSharedValue(0);
-  useEffect(() => {
-    p.value = withDelay(
-      Math.min(i, 3) * 40,
-      withTiming(1, { duration: 240, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.System }),
-    );
-  }, [i, p]);
-  const anim = useAnimatedStyle(() => ({ opacity: p.value, transform: [{ translateY: (1 - p.value) * 8 }] }));
-  return <Animated.View style={[anim, style]}>{children}</Animated.View>;
+  return (
+    <FadeIn i={i} style={style}>
+      {children}
+    </FadeIn>
+  );
 }
 
 /** The phone's text-size multiplier (1 = default, 2 = 200%). */
@@ -1102,6 +1226,8 @@ export function EmptyState({
 const SEG_ON_DARK = '#2C372F';
 /** 44pt segment + 2pt each side = 48pt to the finger (the 3pt track gap keeps neighbours apart). */
 export const SEG_HIT_SLOP = 2;
+/** `raisedShadow` without Android's `elevation`, for a layer drawn beneath its own content. */
+const { elevation: _elevation, ...layerShadow } = raisedShadow;
 
 export function Segmented<V extends string | number>({
   options,
@@ -1116,9 +1242,66 @@ export function Segmented<V extends string | number>({
   accessibilityLabel: string;
 }) {
   const { c, isDark } = useTheme();
+  const { reduced } = useMotion();
   const stacked = useFontScale() >= LARGE_TEXT;
+  // The thumb (spec §8): ONE selected shape that slides to the new choice
+  // (translateX, a settle spring with no visible overshoot). It needs the
+  // track's width, so until the first layout, and in a stacked column at
+  // large text or under Reduce Motion, each segment cross-fades its own
+  // selected look in place instead. Both look exactly the same at rest.
+  const [trackW, setTrackW] = useState(0);
+  const n = options.length;
+  const at = options.findIndex((o) => o.value === value);
+  const itemW = trackW > 0 ? (trackW - SEG_INSET * 2 - SEG_GAP * (n - 1)) / n : 0;
+  const slide = !stacked && !reduced && itemW > 0;
+  // The thumb's place in SEGMENTS, not points: its offset is drawn from the
+  // current width, so the first layout (and a rotation) puts it in place at
+  // once. It only ever moves because the learner chose something.
+  const pos = useSharedValue(Math.max(at, 0));
+  const shown = useSharedValue(at >= 0 ? 1 : 0);
+  const lastAt = useRef(at);
+  useEffect(() => {
+    const from = lastAt.current;
+    lastAt.current = at;
+    if (!slide || from === at) {
+      // Not sliding, or only the size or mode changed: be in place.
+      pos.set(Math.max(at, 0));
+      shown.set(at >= 0 ? 1 : 0);
+      return;
+    }
+    if (at < 0) {
+      shown.set(tween(0, 'quick'));
+    } else if (from < 0) {
+      // The first choice appears in place: there is nowhere to slide from.
+      pos.set(at);
+      shown.set(tween(1, 'select'));
+    } else {
+      pos.set(withSpring(at, { ...motion.spring.settle, reduceMotion: ReduceMotion.Never }));
+    }
+  }, [at, slide, pos, shown]);
+  const step = itemW + SEG_GAP;
+  const thumbStyle = useAnimatedStyle(() => ({ opacity: shown.value, transform: [{ translateX: pos.value * step }] }));
+  // Selected = ink (spec §5): a 1.5px ink outline makes the choice clear in
+  // both modes (fill alone was ~1.1:1, failing WCAG 1.4.11). Fill: `raised`
+  // + shadow in light, the spec's lifted #2C372F in dark. The thumb and the
+  // per-segment layer sit UNDER the labels, so they never take Android
+  // `elevation` (it would lift them above the label they belong to): the
+  // shadow is iOS and web only, and the ink outline carries the choice.
+  const onLook = [{ backgroundColor: isDark ? SEG_ON_DARK : c.raised, borderWidth: 1.5, borderColor: c.ink, borderRadius: 22 }, !isDark && layerShadow];
   return (
-    <View accessibilityRole="radiogroup" accessibilityLabel={accessibilityLabel} style={[styles.seg2, { backgroundColor: c.soft, flexDirection: stacked ? 'column' : 'row' }]}>
+    <View
+      accessibilityRole="radiogroup"
+      accessibilityLabel={accessibilityLabel}
+      onLayout={(e) => setTrackW(e.nativeEvent.layout.width)}
+      style={[styles.seg2, { backgroundColor: c.soft, flexDirection: stacked ? 'column' : 'row' }]}
+    >
+      {slide && (
+        <Animated.View
+          accessible={false}
+          importantForAccessibility="no"
+          style={[styles.noTouch, styles.segThumb, { width: itemW }, onLook, thumbStyle]}
+        />
+      )}
       {options.map((o) => {
         const on = o.value === value;
         return (
@@ -1129,20 +1312,11 @@ export function Segmented<V extends string | number>({
             accessibilityLabel={o.spoken ?? (o.numeral ? `${o.numeral} ${o.label}` : o.label)}
             onPress={() => onChange(o.value)}
             hitSlop={SEG_HIT_SLOP}
-            style={[
-              styles.segItem,
-              !stacked && { flex: 1 },
-              // Selected = ink (spec §5): a 1.5px ink outline makes the choice
-              // clear in both modes (fill alone was ~1.1:1, failing WCAG 1.4.11).
-              // Fill: `raised` + shadow in light, the spec's lifted #2C372F in dark.
-              // Unselected keeps a transparent border of the same width so nothing jumps.
-              on
-                ? { backgroundColor: isDark ? SEG_ON_DARK : c.raised, borderWidth: 1.5, borderColor: c.ink }
-                : { borderWidth: 1.5, borderColor: 'transparent' },
-              on && !isDark && raisedShadow,
-            ]}
+            // A transparent border of the same width as the selected one, so nothing jumps.
+            style={[styles.segItem, !stacked && { flex: 1 }, { borderWidth: 1.5, borderColor: 'transparent' }]}
           >
-            {o.icon?.(on ? c.ink : c.ink2)}
+            {!slide && <StateLayer on={on} style={[styles.segOn, onLook]} />}
+            {o.icon ? <View>{o.icon(on ? c.ink : c.ink2)}</View> : null}
             {o.numeral ? (
               <>
                 <BigNum value={o.numeral} size={20} />

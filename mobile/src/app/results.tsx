@@ -98,6 +98,9 @@ export default function Results() {
     const b = score.byDomain[d.id];
     return b ? b.correct / b.total : null;
   });
+  // Only the domains this session asked about get a ring (ui.md R1).
+  const inSession = cert.domains.map((d, i) => (score.byDomain[d.id] ? i : -1)).filter((i) => i >= 0);
+  const oneDomain = inSession.length === 1 ? cert.domains[inSession[0]] : undefined;
   // One pace line for every practice / review session (Build C answer times).
   const paceText = practicePaceLine(active.questionIds.map((id) => active.responses[id]?.ms), cert.exam);
   // The same figure the mock history and pacing panel use (never past a deadline; untimed = answer time).
@@ -118,6 +121,7 @@ export default function Results() {
         <DomainRings
           cert={cert}
           values={values}
+          only={inSession}
           legendValue={(i) => {
             const b = score.byDomain[cert.domains[i].id];
             return b ? `${b.correct}/${b.total}` : '–';
@@ -133,7 +137,11 @@ export default function Results() {
             </View>
           }
         />
-        <T v="meta" style={{ marginTop: 14 }}>Each ring is a domain in this session. Thicker rings weigh more on the exam.</T>
+        <T v="meta" style={{ marginTop: 14 }}>
+          {oneDomain
+            ? `This session was all ${oneDomain.short}: the ring is your score.`
+            : 'Each ring is a domain in this session. Thicker rings weigh more on the exam.'}
+        </T>
       </Enter>
 
       <Enter i={2} style={{ marginTop: space.xl }}>
@@ -141,7 +149,7 @@ export default function Results() {
           {[
             <Stat key="a" value={`${score.correct}/${denominator}`} label="correct" />,
             <Stat key="b" value={String(missed.length)} label="to review" />,
-            <Stat key="c" value={String(minutes)} label="minutes" />,
+            <Stat key="c" value={String(minutes)} label={minutes === 1 ? 'minute' : 'minutes'} />,
           ]}
         </StatRow>
         {active.mode === 'mock' && (
@@ -174,7 +182,7 @@ export default function Results() {
         <Gap h={space.xl} />
         {missed.length > 0 && (
           <>
-            <Button label={`Practice the ${missed.length} I missed`} onPress={practiseMissed} />
+            <Button label={missed.length === 1 ? 'Practice the one you missed' : `Practice the ${missed.length} you missed`} onPress={practiseMissed} />
             <Gap h={space.sm} />
           </>
         )}

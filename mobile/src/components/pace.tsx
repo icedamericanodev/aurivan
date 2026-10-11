@@ -11,14 +11,15 @@
  * "behind" and the 2-minute cue, NEVER the error colour, no pulsing. The
  * screens decide WHAT to say (engine/pace.ts); this only draws it.
  */
-import { useEffect, type Ref } from 'react';
+import { useEffect, useState, type Ref } from 'react';
 import { Pressable, View } from 'react-native';
-import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withTiming, Easing } from 'react-native-reanimated';
+import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import type { Certification } from '../content/types';
 import { checkpointText, durationSpoken, durationText, type MockPacing, type PaceStatus } from '../engine/pace';
-import { LARGE_TEXT, radius, space } from '../theme/tokens';
+import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Clock, Flag, Gauge, ICON_STROKE } from './icons';
+import { ProgressFill, useMotion } from './motion';
 import { ICON_SIZE, Row, Section, T, useFontScale } from './ui';
 
 /**
@@ -119,29 +120,41 @@ export function PaceStrip({ clock, clockUnit, line, lineShort, bar, onRequest, r
 /**
  * The calm pace bar (Daylight). The fill is the work done; the thin tick is
  * where a learner exactly on pace would be. The tick glides; under Reduce
- * Motion it steps in tenths with no animation.
+ * Motion it steps in tenths with no animation. Both move on transforms only
+ * (mobile 1.8): the tick slides with translateX across the measured track,
+ * and the fill is a ProgressFill, so nothing triggers a layout pass each
+ * second (the tick used to animate `left`).
  */
 function PaceBar({ done, used }: { done: number; used: number }) {
   const { c } = useTheme();
-  const reduce = useReducedMotion();
+  const { reduced: reduce } = useMotion();
   const clamp = (x: number) => Math.max(0, Math.min(1, x));
   // Reduce Motion: step to the nearest 10% instead of gliding every second.
   const tickAt = reduce ? Math.floor(clamp(used) * 10) / 10 : clamp(used);
+  const [width, setWidth] = useState(0);
   const tick = useSharedValue(tickAt);
   useEffect(() => {
-    tick.value = reduce ? tickAt : withTiming(tickAt, { duration: 900, easing: Easing.linear });
+    // The clock's own pace: a linear glide over most of each 1 s tick (the one linear motion in the app).
+    tick.set(reduce ? tickAt : withTiming(tickAt, { duration: motion.dur.tick, easing: Easing.linear, reduceMotion: ReduceMotion.Never }));
   }, [tickAt, reduce, tick]);
-  const tickStyle = useAnimatedStyle(() => ({ left: `${tick.value * 100}%` }));
+  const tickStyle = useAnimatedStyle(() => ({ transform: [{ translateX: tick.value * width }] }));
   return (
     <View
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
-      style={{ height: 8, borderRadius: radius.sm, backgroundColor: c.track, marginTop: space.xs }}
+      onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
+      style={{ height: 8, marginTop: space.xs }}
     >
-      <View style={{ width: `${clamp(done) * 100}%`, height: 8, borderRadius: radius.sm, backgroundColor: c.accent }} />
-      {/* Ink, 4 wide with a 1px paper edge, so it stays visible on the accent fill (P5). */}
+      <View style={{ height: 8, borderRadius: radius.sm, backgroundColor: c.track, overflow: 'hidden' }}>
+        <ProgressFill value={clamp(done)} color={c.accent} radius={radius.sm} />
+      </View>
+      {/* Ink, 4 wide with a 1px paper edge, so it stays visible on the accent fill (P5).
+          Hidden until the track is measured, so it never flashes at the start. */}
       <Animated.View
-        style={[{ position: 'absolute', top: -3, width: 4, height: 14, marginLeft: -2, backgroundColor: c.ink, borderWidth: 1, borderColor: c.bg, borderRadius: 1 }, tickStyle]}
+        style={[
+          { position: 'absolute', top: -3, left: 0, width: 4, height: 14, marginLeft: -2, backgroundColor: c.ink, borderWidth: 1, borderColor: c.bg, borderRadius: 1, opacity: width > 0 ? 1 : 0 },
+          tickStyle,
+        ]}
       />
     </View>
   );

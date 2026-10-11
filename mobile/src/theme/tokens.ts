@@ -264,3 +264,53 @@ export function percentSup(size: number): TextStyle {
 export const grewLine: TextStyle = { fontFamily: font.serif400Italic, fontSize: 17, lineHeight: 22 };
 /** Large text: at this font scale rows stack and chips wrap (spec §10.7). */
 export const LARGE_TEXT = 1.3;
+
+/**
+ * Motion tokens (DESIGN_SYSTEM.md §8 "Motion"). Every duration, curve and
+ * spring in the app comes from here; components/motion.tsx turns them into
+ * Reanimated easings. Plain data, so the theme never depends on Reanimated.
+ *
+ * The budget (behavioural review §2): functional motion 120–300 ms, ease-out;
+ * informational growth up to 600 ms; nothing loops on question or mock
+ * screens; opacity and colour never bounce. Everyday UI moves like paper:
+ * quick and soft. Only the verdict leaf (and, later, the plant) may spring.
+ */
+export const motion = {
+  /** Durations in ms. */
+  dur: {
+    press: 120, // press-in: scale .98 / row tint (ease-out, so it reads as instant)
+    select: 120, // option, chip and segment state; the exit half of a page turn
+    quick: 160, // small fade or pop, a shake, a tint fading out
+    reveal: 200, // answer rows, "Why", the Coach me wash
+    enter: 240, // content groups fade in and rise 8pt
+    screen: 280, // the arriving half of a page turn
+    fill: 300, // progress bars and segments
+    vine: 520, // the vine stem draws (signature)
+    grow: 600, // growth rings (signature, first view of the day)
+    reduced: 120, // the cross-fade that replaces movement under Reduce Motion
+    tick: 900, // the pace tick's linear glide, within each 1 s clock tick (the one linear motion)
+  },
+  /** Cubic-bezier control points (Material 3). "out" is Easing.out(cubic), our default. */
+  curve: {
+    enter: [0.05, 0.7, 0.1, 1], // emphasized decelerate: arriving
+    exit: [0.3, 0, 0.8, 0.15], // emphasized accelerate: leaving
+    standard: [0.2, 0, 0, 1], // on-screen moves (the segmented thumb, the tab fade)
+  },
+  /**
+   * Springs. `duration` springs are perceptual (the real settle is ~1.5×).
+   * Ratio 1 never overshoots. Only `pop` and `leaf` may overshoot, and only
+   * on a mark, never on a control.
+   */
+  spring: {
+    press: { duration: 160, dampingRatio: 1 }, // press release: back to rest, no bounce
+    settle: { duration: 300, dampingRatio: 0.9 }, // the segmented thumb (M3 standard spatial)
+    pop: { damping: 16, stiffness: 260 }, // the verdict leaf only (signature)
+    leaf: { duration: 280, dampingRatio: 0.7 }, // small marks: the bookmark, plan leaves
+  },
+  /** Stagger: content groups 40 ms apart (first 4), list rows 30 ms (first 6). */
+  stagger: { group: 40, maxGroups: 4, row: 30, maxRows: 6 },
+  rise: 8, // pt: content enters this far below its place (y only)
+  shift: 16, // pt: a page turn's sideways offset
+  pressScale: 0.98,
+  pressOpacity: 0.92, // the press under Reduce Motion (no scale)
+} as const;

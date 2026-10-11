@@ -3,8 +3,9 @@
  * Spec: DESIGN_SYSTEM.md §11 "You". The rings (one per domain, thicker =
  * heavier on the exam) replace the old per-domain bars; the legend lists
  * domains outside-in so it matches what you see.
- * The appearance switch sits at the top (owner request) and shares its
- * setting with Settings → Appearance.
+ * The appearance switch sits at the top on purpose (owner request: dark mode
+ * was hard to find in Settings alone). It shares its setting with Settings →
+ * Appearance, so both always agree.
  * Mindset growth (Phase 5b): under the stats, only when the learner picks the
  * tempting runner-up less often than in their first weeks (engine/mindsetGrowth.ts).
  * Share progress: opens a preview of a share card (components/shareCard.tsx)
@@ -51,6 +52,8 @@ export default function You() {
   const mastered = readiness.domains.reduce((s, d) => s + d.mastered, 0);
   const openMistakes = Object.values(progress.mistakes).filter((m) => !m.resolved).length;
   const values = readiness.domains.map((d) => (d.answered ? d.mastery : null));
+  // A mini mock is a third of the exam, as on Practice.
+  const miniMock = Math.round(cert.exam.questions / 3);
   const growth = useMindsetGrowth(cert.id, progress);
   // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
   const { dueItems: creditItems } = useReports();
@@ -186,7 +189,17 @@ export default function You() {
 
         <Section title="Mock exams" />
         {progress.mocks.length === 0 ? (
-          <EmptyState compact title="No mocks yet" body="Today suggests one when your rings are ready for it." />
+          <>
+            <EmptyState compact title="No mocks yet" body="A mini mock shows how the exam feels. Start one whenever you like." />
+            {/* An experienced learner shouldn't have to wait for Today (ui.md Y4): the same start sheet as Practice. */}
+            <Button
+              kind="ghost"
+              label="Start a mini mock"
+              accessibilityHint={`${miniMock} questions. Opens the timing choices first.`}
+              onPress={() => router.push({ pathname: '/mock-start', params: { questions: String(miniMock) } })}
+              style={{ alignSelf: 'center', marginTop: space.xs }}
+            />
+          </>
         ) : (
           progress.mocks.slice(0, 10).map((m, i, all) => (
             <ListRow

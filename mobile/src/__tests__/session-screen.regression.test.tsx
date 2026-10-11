@@ -23,31 +23,6 @@ import { OptionCard, Verdict } from '../components/quiz';
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
-jest.mock('react-native-reanimated', () => {
-  const { View, Text, ScrollView } = jest.requireActual('react-native');
-  const builder: object = new Proxy({}, { get: () => () => builder });
-  const id = (v: unknown) => v;
-  return {
-    __esModule: true,
-    default: { View, Text, ScrollView, createAnimatedComponent: (c: unknown) => c },
-    createAnimatedComponent: (c: unknown) => c,
-    useReducedMotion: () => true,
-    useSharedValue: (v: unknown) => ({ value: v }),
-    useAnimatedStyle: () => ({}),
-    useAnimatedProps: () => ({}),
-    withTiming: id,
-    withDelay: (_d: number, v: unknown) => v,
-    withSpring: id,
-    withRepeat: id,
-    withSequence: (...v: unknown[]) => v[v.length - 1],
-    cancelAnimation: () => {},
-    Easing: new Proxy({}, { get: () => () => id }),
-    ReduceMotion: { System: 'system', Always: 'always', Never: 'never' },
-    FadeIn: builder,
-    FadeInDown: builder,
-    FadeOut: builder,
-  };
-});
 jest.mock('../components/icons', () => {
   const Icon = () => null;
   return new Proxy({ __esModule: true, ICON_STROKE: 2 } as Record<string, unknown>, {
@@ -199,7 +174,8 @@ describe('lesson player: the quick-check gate', () => {
   it('locks the check, unlocks after answering, and re-locks when the check is revisited', () => {
     mockLessonId = lesson.id;
     mount(<LessonPlayer />);
-    expect(btn('Back').props.disabled).toBe(true);
+    // No Back on the first scene (1.8: a disabled slab looked broken).
+    expect(btn('Back')).toBeUndefined();
     for (let i = 0; i < checkAt; i++) press('Next');
     expect(btn(fwd()).props.disabled).toBe(true);
     act(() => { cards()[0].props.onPress(); });

@@ -36,7 +36,7 @@ import {
   type NativeScrollEvent,
   type NativeSyntheticEvent,
 } from 'react-native';
-import { useReducedMotion } from 'react-native-reanimated';
+import { PageTurn, Pop, useMotion } from '../components/motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LeafSmall } from '../components/glyphs';
 import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ICON_STROKE, Lightbulb, X } from '../components/icons';
@@ -55,6 +55,7 @@ import {
 import { addMs } from '../engine/answerClock';
 import { dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, statusOf } from '../engine/pace';
 import { PaceStrip, type PaceStripProps } from '../components/pace';
+import { sayLater } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
 import { questionTarget, sessionWhere } from '../lib/support';
 import { Button, Gap, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
@@ -93,12 +94,15 @@ export default function SessionScreen() {
   const toggleBookmark = useProgress((s) => s.toggleBookmark);
   const bookmarks = useProgress((s) => (active ? selectCert(s, active.certId).bookmarks : NO_BOOKMARKS));
   const { fontScale } = useWindowDimensions();
-  // Reduce Motion: the navigator sheet appears without sliding.
-  const reduceMotion = useReducedMotion();
+  // Reduce Motion: the navigator sheet fades in instead of sliding.
+  const { reduced: reduceMotion } = useMotion();
 
   const [selected, setSelected] = useState<Letter | null>(null);
   const [confidence, setConfidence] = useState<Confidence | undefined>();
   const [navOpen, setNavOpen] = useState(false);
+  // Counts taps that SAVE a question, so the bookmark pops only for that tap
+  // (never when moving to a question that was already saved).
+  const [savedTaps, setSavedTaps] = useState(0);
   // Lazy initialiser: read the clock once on mount, not on every render.
   const [now, setNow] = useState(() => Date.now());
   // Layout bookkeeping for the sticky footer and the vine reveal.
@@ -170,10 +174,20 @@ export default function SessionScreen() {
     setConfidence(undefined);
     setVineVisible(false);
   }
-  // Scrolling is a side effect on a native view, so it stays in an effect.
-  useEffect(() => {
+  // At the swap (PageTurn calls this before the new page is painted): back to
+  // the top, so the jump is never seen, and tell screen readers where they are
+  // (focus stays on the footer button, whose label has just changed).
+  const onSwap = useCallback(() => {
     scrollRef.current?.scrollTo({ y: 0, animated: false });
-  }, [qid]);
+    const s = useSession.getState().active;
+    if (s) sayLater(`Question ${s.index + 1} of ${s.questionIds.length}`);
+  }, []);
+  // While the old page is still leaving (full motion, 120 ms), the header and
+  // footer stay on it: they show its state and ignore taps, so a tap can never
+  // act on the next question before the learner sees it. Mocks turn calmly
+  // (no leaving phase), so this only ever covers practice.
+  const [leavingIndex, setLeavingIndex] = useState<number | null>(null);
+  const onTurning = useCallback((from: string | number | null) => setLeavingIndex(typeof from === 'number' ? from : null), []);
 
   // After an answer, if the vine is already on screen (short questions),
   // draw it without waiting for a scroll.
@@ -285,6 +299,13 @@ export default function SessionScreen() {
   const total = active.questionIds.length;
   const isLast = active.index === total - 1;
   const submitted = !isMock && Boolean(response);
+  const turning = leavingIndex !== null;
+  // The question whose page is on screen (the leaving one, mid-turn).
+  const shownQid = (turning ? active.questionIds[leavingIndex] : undefined) ?? qid;
+  /** A footer or header action: inert while the old page is still leaving. */
+  const settled = (fn: () => void) => () => {
+    if (!turning) fn();
+  };
   const displayLetters = LETTERS.slice(0, perm.length);
 
   // ── actions ──────────────────────────────────────────────────────────
@@ -396,6 +417,7 @@ export default function SessionScreen() {
         ? 'You picked the runner-up. That’s the trap.'
         : 'Check the role in the stem.';
   const flagged = active.flagged.includes(qid);
+  const shownFlagged = active.flagged.includes(shownQid);
   // Cross-link: after a miss, offer the lesson written to prepare for this question.
   const reviewLesson = response && !response.correct ? lessonPreparing(active.certId, q.id) : undefined;
   // Build E: why this question is here ("Weak spot", "Mixed review"…), and
@@ -405,7 +427,7 @@ export default function SessionScreen() {
   const supportNote =
     response && !response.correct && active.support && reason === 'weak' && !reviewLesson ? subtopicOfQuestion(active.certId, qid) : undefined;
   const supportName = supportNote ? findNote(active.certId, supportNote)?.name : undefined;
-  const saved = bookmarks.includes(qid);
+  const saved = bookmarks.includes(shownQid);
   const lowTime = isMock && remaining < LOW_TIME_MS;
   // The shared pace strip (components/pace.tsx): mock clock and pace line.
   const lastCheck = active.checkpoints?.[active.checkpoints.length - 1];
@@ -486,14 +508,23 @@ export default function SessionScreen() {
             accessibilityRole="button"
             accessibilityLabel={saved ? 'Remove from saved' : 'Save question'}
             accessibilityState={{ selected: saved }}
-            onPress={() => toggleBookmark(active.certId, qid)}
+            onPress={settled(() => {
+              if (!saved) {
+                haptic.light();
+                setSavedTaps((n) => n + 1);
+              }
+              toggleBookmark(active.certId, qid);
+            })}
             style={{ width: 44, height: 44, marginRight: -10, alignItems: 'center', justifyContent: 'center' }}
           >
-            {saved ? (
-              <BookmarkCheck size={22} color={c.accentText} strokeWidth={ICON_STROKE} />
-            ) : (
-              <Bookmark size={22} color={c.ink2} strokeWidth={ICON_STROKE} />
-            )}
+            {/* Saving pops the filled mark in (a small leaf spring); un-saving just swaps it. */}
+            <Pop trigger={savedTaps}>
+              {saved ? (
+                <BookmarkCheck size={22} color={c.accentText} strokeWidth={ICON_STROKE} />
+              ) : (
+                <Bookmark size={22} color={c.ink2} strokeWidth={ICON_STROKE} />
+              )}
+            </Pop>
           </Pressable>
         )}
       </Row>
@@ -507,6 +538,11 @@ export default function SessionScreen() {
           // Pad by the sticky footer + 24, so option D / the last tip never sits under it.
           contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}
         >
+          {/* Question to question is a page turn (spec §8): the old one drifts out
+              the way you're going, the new one arrives from the other side. A
+              mock turns calmly (a short fade): a timed exam should feel like the
+              real test. The header and footer stay still and follow the page. */}
+          <PageTurn id={active.index} calm={isMock} onSwap={onSwap} onTurning={onTurning}>
           {!submitted ? (
             <>
               {/* Question */}
@@ -598,7 +634,8 @@ export default function SessionScreen() {
               <>
                 {/* Answer: verdict → your pick → best answer → why → vine → trust */}
                 <Verdict correct={response.correct} coach={coach} />
-                {response.assisted && <T v="meta" style={{ marginTop: space.xs }}>Assisted. Counts half toward readiness.</T>}
+                {/* Lined up with the coach line above it (left 50, under "Correct"). */}
+                {response.assisted && <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>Assisted. Counts half toward readiness.</T>}
                 <Rise delay={FEEDBACK_DELAY.rows}>
                   <View style={{ marginTop: space.lg }}>
                     {!response.correct && pickedOriginal && (
@@ -661,6 +698,7 @@ export default function SessionScreen() {
               </>
             )
           )}
+          </PageTurn>
         </ScrollView>
 
         {/* Sticky bottom action, within thumb reach */}
@@ -668,34 +706,41 @@ export default function SessionScreen() {
           {isMock ? (
             // Wraps at large text; Next then takes a full row of its own.
             <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
-              <Button kind="secondary" label="‹" accessibilityLabel="Previous question" disabled={active.index === 0} onPress={() => goTo(active.index - 1)} style={{ paddingHorizontal: space.lg }} />
+              <Button kind="secondary" label="‹" accessibilityLabel="Previous question" disabled={active.index === 0} onPress={settled(() => goTo(active.index - 1))} style={{ paddingHorizontal: space.lg }} />
               <Button
                 kind="secondary"
-                label={flagged ? '⚑ Unflag' : '⚐ Flag'}
-                accessibilityLabel={flagged ? 'Unflag question' : 'Flag question'}
-                selected={flagged}
-                onPress={() => toggleFlag(qid)}
+                label={shownFlagged ? '⚑ Unflag' : '⚐ Flag'}
+                accessibilityLabel={shownFlagged ? 'Unflag question' : 'Flag question'}
+                selected={shownFlagged}
+                onPress={settled(() => toggleFlag(qid))}
                 style={{ paddingHorizontal: space.lg }}
               />
-              <Button kind="secondary" label="▦" accessibilityLabel="Question navigator" onPress={() => setNavOpen(true)} style={{ paddingHorizontal: space.lg }} />
-              <Button label={isLast ? 'Finish' : 'Next'} onPress={next} style={largeText ? { flexBasis: '100%' } : { flex: 1 }} />
+              <Button kind="secondary" label="▦" accessibilityLabel="Question navigator" onPress={settled(() => setNavOpen(true))} style={{ paddingHorizontal: space.lg }} />
+              <Button label={isLast ? 'Finish' : 'Next'} onPress={settled(next)} style={largeText ? { flexBasis: '100%' } : { flex: 1 }} />
             </Row>
-          ) : submitted ? (
-            <Button
-              label={isLast ? 'See results' : 'Next question'}
-              onPress={next}
-              icon={(color) => <ArrowRight size={18} color={color} strokeWidth={ICON_STROKE} />}
-            />
           ) : (
             <>
-              {selected && !confidenceInScroll && <ConfidenceRow value={confidence} onChange={setConfidence} />}
-              <Button label="Check answer" onPress={submit} disabled={!selected} />
+              {!turning && !submitted && selected && !confidenceInScroll && <ConfidenceRow value={confidence} onChange={setConfidence} />}
+              {/* ONE primary button for every state, so screen-reader focus stays on
+                  it as it changes. Mid-turn it still belongs to the leaving page
+                  (the answer screen): "Next question", and inert. */}
+              <Button
+                key="primary"
+                label={turning ? 'Next question' : submitted ? (isLast ? 'See results' : 'Next question') : 'Check answer'}
+                onPress={() => {
+                  if (turning) return;
+                  if (submitted) next();
+                  else submit();
+                }}
+                disabled={!turning && !submitted && !selected}
+                icon={turning || submitted ? (color) => <ArrowRight size={18} color={color} strokeWidth={ICON_STROKE} /> : undefined}
+              />
             </>
           )}
         </StickyFooter>
       </View>
       {/* Mock navigator */}
-      <Modal visible={navOpen} animationType={reduceMotion ? 'none' : 'slide'} presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>
+      <Modal visible={navOpen} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>
         <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
           <ScrollView contentContainerStyle={{ padding: space.lg }}>
             <Row style={{ justifyContent: 'space-between' }}>

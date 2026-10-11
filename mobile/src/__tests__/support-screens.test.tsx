@@ -14,6 +14,7 @@
  *   (whichever comes first), Today's line has a Dismiss; the plural counts
  *   different things, not reports.
  */
+import appJson from '../../app.json';
 import { Alert, Linking } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { RadioRow } from '../components/ui';
@@ -35,31 +36,6 @@ import You from '../app/(tabs)/you';
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
-jest.mock('react-native-reanimated', () => {
-  const { View, Text, ScrollView } = jest.requireActual('react-native');
-  const builder: object = new Proxy({}, { get: () => () => builder });
-  const id = (v: unknown) => v;
-  return {
-    __esModule: true,
-    default: { View, Text, ScrollView, createAnimatedComponent: (c: unknown) => c },
-    createAnimatedComponent: (c: unknown) => c,
-    useReducedMotion: () => true,
-    useSharedValue: (v: unknown) => ({ value: v }),
-    useAnimatedStyle: () => ({}),
-    useAnimatedProps: () => ({}),
-    withTiming: id,
-    withDelay: (_d: number, v: unknown) => v,
-    withSpring: id,
-    withRepeat: id,
-    withSequence: (...v: unknown[]) => v[v.length - 1],
-    cancelAnimation: () => {},
-    Easing: new Proxy({}, { get: () => () => id }),
-    ReduceMotion: { System: 'system', Always: 'always', Never: 'never' },
-    FadeIn: builder,
-    FadeInDown: builder,
-    FadeOut: builder,
-  };
-});
 jest.mock('../components/icons', () => {
   const Icon = () => null;
   return new Proxy({ __esModule: true, ICON_STROKE: 2 } as Record<string, unknown>, {
@@ -176,7 +152,12 @@ describe('the Help screen', () => {
     const address = root().findAll((n) => n.props.selectable === true && typeof n.type !== 'string' && n.props.children === 'certprep.support@gmail.com');
     expect(address.length).toBeGreaterThan(0);
     expect(text).toContain('Aurivan is independent and not affiliated with or endorsed by ISACA.');
-    expect(text).toContain('Version 1.7');
+    // The version the store build carries (app.json), written short ("1.8", "1.8.1"),
+    // checked against the file itself, not against the list Help reads it from.
+    const shipped = appJson.expo.version;
+    expect(shipped).toMatch(/^\d+\.\d+\.\d+$/);
+    expect(text).toContain(`Version ${shipped.replace(/\.0$/, '')}`);
+    expect(text).not.toMatch(/Version \d+\.\d+\.0\b/);
   });
 
   it('rows open the right screens', () => {

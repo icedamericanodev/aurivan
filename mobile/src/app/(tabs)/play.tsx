@@ -96,7 +96,9 @@ export default function Play() {
 
       {others.length > 0 && (
         <Enter i={2}>
-          <Section title="More games" />
+          {/* Every game starts at Seedling: say it once, and show a level on a row
+              only once it has grown past that (ui.md G2). Spoken on every row. */}
+          <Section title="More games" meta={others.every((g) => level(g.id) === 'seedling') ? 'All at Seedling' : undefined} />
           {others.map((g, i) => {
             const Icon = ICONS[g.id];
             const b = best(g.id);
@@ -108,9 +110,11 @@ export default function Play() {
                 subtitle={
                   <View>
                     <T v="meta">{g.tagline}</T>
-                    <View style={{ marginTop: 2 }}>
-                      <TierTag tier={level(g.id)} />
-                    </View>
+                    {level(g.id) !== 'seedling' && (
+                      <View style={{ marginTop: 2 }}>
+                        <TierTag tier={level(g.id)} />
+                      </View>
+                    )}
                   </View>
                 }
                 trailing={b !== undefined ? <Trail value={scoreText(b)} unit="best" /> : undefined}

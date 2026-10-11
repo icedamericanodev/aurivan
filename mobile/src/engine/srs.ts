@@ -30,8 +30,11 @@ export interface ReviewEntry {
  * the next session; the screens say so in one line (REVIEW_CAP_LINE).
  */
 export const REVIEW_SESSION_CAP = 20;
-/** One plain line explaining the cap, used on Today, Practice and You. */
-export const REVIEW_CAP_LINE = `Reviews come ${REVIEW_SESSION_CAP} at a time`;
+/**
+ * One plain line explaining the cap, used on Today, Practice and You, always
+ * beside the full due count ("55 due"): one phrasing for one thing (1.8).
+ */
+export const REVIEW_CAP_LINE = `${REVIEW_SESSION_CAP} at a time, most overdue first`;
 
 /** The trailing unit for the review queue count: one word everywhere ("55 due"). */
 export const REVIEW_UNIT = 'due';

@@ -52,7 +52,7 @@ import { useSettings } from '../store/settings';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from './reminders';
 
 // ── The data in each store (no actions) ──────────────────────────────────
-const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize'] as const;
+const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'motion', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize'] as const;
 const PROGRESS_KEYS = ['byCert', 'streak', 'today', 'days', 'reports'] as const;
 
 type SettingsData = Pick<ReturnType<typeof useSettings.getState>, (typeof SETTINGS_KEYS)[number]>;
@@ -304,7 +304,8 @@ function currentRows(): [string, string][] {
  * Write settings, progress, an ended session and the undo snapshot in ONE
  * AsyncStorage.multiSet, then reload the stores from storage.
  * - Fields the backup leaves out go back to the store defaults: a restore
- *   REPLACES, it never mixes.
+ *   REPLACES, it never mixes. Two exceptions keep this phone's value when an
+ *   older file has no such field: the reports list and the Motion choice.
  * - `onboarded` is the phone's (a file can't skip or redo onboarding);
  *   the welcome screen passes true.
  * - Today's plans are not restored: the planner rebuilds today's plan.
@@ -315,6 +316,9 @@ async function writeAll(
   opts: { onboarded: boolean; undo: UndoSnapshot | null; restoredSavedAt: number | null },
 ) {
   const settings = { ...pick(useSettings.getInitialState(), SETTINGS_KEYS), ...data.settings, onboarded: opts.onboarded };
+  // A file from before 1.8 has no Motion choice. Reduced is an accessibility
+  // setting, so keep this phone's choice instead of silently undoing it.
+  if (data.settings.motion === undefined) settings.motion = useSettings.getState().motion;
   const byCert: ProgressData['byCert'] = {};
   for (const [id, cp] of Object.entries(data.progress.byCert)) byCert[id] = completeCert(cp);
   const progress = { ...pick(useProgress.getInitialState(), PROGRESS_KEYS), ...data.progress, byCert, days: {} };

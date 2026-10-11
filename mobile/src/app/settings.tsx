@@ -7,11 +7,12 @@
 import Constants from 'expo-constants';
 import { useState } from 'react';
 import { router } from 'expo-router';
-import { Alert, Linking, View } from 'react-native';
+import { Alert, Linking, Platform, View } from 'react-native';
 import { BrandLockup, PillarList } from '../components/brand';
 import { creditSubtitle } from '../components/help';
 import { ICON_STROKE, LifeBuoy } from '../components/icons';
 import { ThemeSwitch } from '../components/themeSwitch';
+import { useSystemReducedMotion } from '../components/motion';
 import { YourData } from '../components/yourData';
 import { Button, Chip, Gap, ICON_SIZE, ListRow, PushedHeader, RadioRow, Screen, Section, Segmented, Stepper, T, ToggleRow } from '../components/ui';
 import { MODE_INFO, STUDY_MODES } from '../engine/studyModes';
@@ -44,6 +45,8 @@ import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 const GOALS = [10, 20, 40];
+/** The phone's own name for the setting (Android has no "Reduce Motion"). */
+const phoneSetting = () => (Platform.OS === 'android' ? 'Remove animations' : 'Reduce Motion');
 /** Fine-tune the exam date: [chip label, days to move]. */
 const DATE_STEPS: [string, number][] = [
   ['1 week earlier', -7],
@@ -56,6 +59,8 @@ export default function Settings() {
   const { cert } = useActiveCert();
   const { c, isDark } = useTheme();
   const s = useSettings();
+  // The phone's own Reduce Motion, live: Settings says when it already applies.
+  const phoneReduced = useSystemReducedMotion();
   // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
   const { dueItems } = useReports();
   const resetCert = useProgress((p) => p.resetCert);
@@ -171,10 +176,33 @@ export default function Settings() {
         </>
       )}
 
-      {/* Same setting as the switch at the top of You: they always agree. */}
       <Section title="Appearance" />
       <Gap h={space.sm} />
       <ThemeSwitch />
+
+      {/* Motion (mobile 1.8, WCAG 2.3.3): the phone's own setting, or Reduced
+          for this app only. Reduced swaps slides and springs for short fades,
+          and growth shows its end state: the same information, less movement. */}
+      <Section title="Motion" />
+      <View accessibilityRole="radiogroup" accessibilityLabel="Motion">
+        <RadioRow
+          title="Match my phone"
+          subtitle={
+            phoneReduced
+              ? `Your phone’s ${phoneSetting()} is on, so movement is already reduced.`
+              : `Calm movement that shows what changed. Follows your phone’s ${phoneSetting()} setting.`
+          }
+          checked={s.motion !== 'reduced'}
+          onPress={() => s.setMotion('system')}
+        />
+        <RadioRow
+          title="Reduced"
+          subtitle="Short fades instead of slides; growth shows its end state."
+          checked={s.motion === 'reduced'}
+          onPress={() => s.setMotion('reduced')}
+          last
+        />
+      </View>
 
       {/* Says what the number counts: questions (testers read "20 a day" as unclear). */}
       <Section title="Daily goal" meta="Questions a day" />
