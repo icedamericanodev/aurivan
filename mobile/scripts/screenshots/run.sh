@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -67,6 +67,12 @@ elif [ "${SHOTS:-}" = growth ]; then
   # a sheet; strips of a number roll, ring growth, the clearing, the milestone
   # moment, the theme fade and You's growth (shoot_growth.mjs).
   node scripts/screenshots/shoot_growth.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = badges ]; then
+  # Mobile 1.10 badge collection: the case (empty-ish, mid, nearly complete),
+  # each shelf, Next for your exam, Sort, the detail sheet, Results with a new
+  # badge, You's dot, Show badges off/on, and a strip of the unlock moment
+  # (shoot_badges.mjs; REDUCED=1 for the reduced set).
+  node scripts/screenshots/shoot_badges.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).
