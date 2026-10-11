@@ -336,7 +336,7 @@ describe('Journey 1 · Results stats', () => {
 
   // BUG (Minor): on a mock, unanswered questions count as wrong in "Correct
   // 0 of 50", but "Missed" counts only answered-wrong ones, so a blank mock
-  // reads "Correct 0 of 50 · Missed None" (app/results.tsx:146 and :206).
+  // reads "Correct 0 of 50 · Missed None" (app/results.tsx:113 and :206).
   it.failing('a mock submitted with every question blank never says "Missed: None"', () => {
     act(() => {
       startMock('cisa', 50);
