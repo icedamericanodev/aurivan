@@ -1011,7 +1011,10 @@ export function RollingText({
   dir?: 1 | -1;
   /** Digits finish right to left, 30 ms apart (off for the small Stepper). */
   stagger?: boolean;
-  /** Spoken while the digits are columns (default: the value); plain text speaks for itself. */
+  /**
+   * Spoken while the digits are columns (they are hidden from screen readers).
+   * Leave it out inside a labelled group, which already says the value.
+   */
   accessibilityLabel?: string;
 }) {
   const { reduced } = useMotion();
@@ -1046,7 +1049,10 @@ export function RollingText({
   const digits = slots.filter((x) => x.digit).length;
   const place = slots.map((_, k) => digits - 1 - slots.slice(0, k).filter((x) => x.digit).length);
   return (
-    <View style={styles.rollRow} accessible accessibilityRole="text" accessibilityLabel={accessibilityLabel ?? value}>
+    // Its own screen-reader stop only when it is given a label; inside a labelled
+    // group (a stat, the rings, the readiness row) the group speaks the value, and
+    // a second stop would make TalkBack read it twice.
+    <View style={styles.rollRow} accessible={Boolean(accessibilityLabel)} accessibilityLabel={accessibilityLabel}>
       {slots.map((slot, k) => {
         if (!slot.digit) {
           return (

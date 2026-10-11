@@ -110,6 +110,8 @@ describe('Today’s clearing (T2)', () => {
     expect(useSeen.getState().moments.clearing).toBe(1);
     // Spoken as numbers, never as moving digits.
     expect(r!.root.findAll((n) => n.props.accessibilityLabel === '31 questions' && typeof n.type === 'string')).toHaveLength(1);
+    // …and only once: the rolling digits inside the group are not a second stop.
+    expect(r!.root.findAll((n) => n.props.accessible === true && typeof n.type === 'string' && /^\d+( percent)?$/.test(n.props.accessibilityLabel ?? ''))).toHaveLength(0);
   });
 
   it('Reduce Motion: the same words and numbers at once, nothing rolls; the haptic is kept', () => {

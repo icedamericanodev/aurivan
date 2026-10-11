@@ -140,13 +140,14 @@ describe('rolling numbers', () => {
     expect(texts()).toEqual(['62–70', '%']);
   });
 
-  it('full motion: each digit column lands on its final digit; screen readers hear only the final value', () => {
+  it('full motion: each digit column lands on its final digit; screen readers hear only the final value, once', () => {
     setMockReducedMotion(false);
-    const el = <BigNum value="62–70" pct size={52} roll={{ play: true, from: '58–66', run: 1 }} />;
+    const el = <BigNum value="62–70" pct size={52} accessibilityLabel="Readiness 62 to 70 percent" roll={{ play: true, from: '58–66', run: 1 }} />;
     mount(el);
     settle(el);
+    // ONE stop (no second one for the moving digits inside it).
     const labelled = r!.root.findAll((n) => n.props.accessible === true && typeof n.type === 'string');
-    expect(labelled.map((n) => n.props.accessibilityLabel)).toEqual(['62–70 percent']);
+    expect(labelled.map((n) => n.props.accessibilityLabel)).toEqual(['Readiness 62 to 70 percent']);
     // The moving columns are hidden from screen readers.
     const hidden = r!.root.findAll((n) => n.props.importantForAccessibility === 'no-hide-descendants' && typeof n.type === 'string');
     expect(hidden).toHaveLength(4);

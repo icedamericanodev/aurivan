@@ -1179,7 +1179,9 @@ export function BigNum({
   accessibilityLabel?: string;
   /**
    * Mobile 1.9: the digits roll like an odometer (first view of the day, or
-   * what changed). Screen readers hear the final value only.
+   * what changed). The moving digits are hidden from screen readers, so a
+   * rolling numeral needs a spoken label: its own `accessibilityLabel`, or a
+   * labelled group around it (Stat, the rings, the readiness row do this).
    */
   roll?: Roll;
 }) {
@@ -1197,8 +1199,7 @@ export function BigNum({
           style={{ ...serifNumeral(size), ...styles.num }}
           maxScale={1.3}
           color={fg}
-          // Grouped by the parent's label, or its own: the final value in words.
-          accessibilityLabel={accessibilityLabel ? undefined : `${value}${pct ? ' percent' : ''}`}
+          // No label of its own: this BigNum's label (above) or its group's says the final value.
         />
       ) : (
         <Text maxFontSizeMultiplier={1.3} style={[serifNumeral(size), styles.num, { color: fg }]}>{value}</Text>
