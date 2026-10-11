@@ -106,7 +106,13 @@ export default function Settings() {
     useSettings.getState().setReminder(next);
     if (next.enabled) scheduleReminders(next, cert.name).catch(() => {});
   };
-  const moveTime = (deltaMinutes: number) => updateReminder((r) => stepTime(r.hour, r.minute, deltaMinutes));
+  // Which way the time last moved: both steppers roll that way (the hour also
+  // moves when the minutes wrap past :00).
+  const [timeDir, setTimeDir] = useState<1 | -1>(1);
+  const moveTime = (deltaMinutes: number) => {
+    setTimeDir(deltaMinutes < 0 ? -1 : 1);
+    updateReminder((r) => stepTime(r.hour, r.minute, deltaMinutes));
+  };
   const days = reminderDays(s.reminder.days);
 
   const confirmReset = () =>
@@ -230,6 +236,7 @@ export default function Settings() {
             <Stepper
               label="Hour"
               spokenLabel="Reminder hour"
+              dir={timeDir}
               value={localHour(s.reminder.hour)}
               spoken={localTime(s.reminder.hour, s.reminder.minute)}
               disabled={busy}
@@ -239,6 +246,7 @@ export default function Settings() {
             <Stepper
               label="Minutes"
               spokenLabel="Reminder minutes"
+              dir={timeDir}
               value={String(s.reminder.minute).padStart(2, '0')}
               spoken={localTime(s.reminder.hour, s.reminder.minute)}
               disabled={busy}

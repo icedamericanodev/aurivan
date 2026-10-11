@@ -29,6 +29,7 @@ import {
   ProgressFill,
   resetCelebrationsForTest,
   resetOncePerDayForTest,
+  ROLL,
   RollingText,
   rollSlots,
   setSystemReducedMotionForTest,
@@ -133,6 +134,8 @@ describe('rollSlots and columnRows', () => {
 // ── RollingText / BigNum roll ──────────────────────────────────────────
 describe('rolling numbers', () => {
   const LH = serifNumeral(52).lineHeight!;
+  /** Row to row in a column: the line plus the odometer's blank gap. */
+  const PITCH = Math.round(LH + 52 * ROLL.gap);
 
   it('reduced: plain text with the final value (exactly as before), and nothing moves', () => {
     const el = <BigNum value="62–70" pct size={52} roll={{ play: true, from: '58–66', run: 1 }} />;
@@ -155,7 +158,7 @@ describe('rolling numbers', () => {
     const columns = hidden.map((h) => h.findAll((n) => typeof n.type === 'string' && style(n).transform !== undefined)[0]);
     const ys = columns.map((c) => yOf(style(c)));
     // 5→6 and 8→2 (wraps) on the left, 6→7 and 6→0 (wraps) on the right: all at their final digit.
-    expect(ys).toEqual([-columnRows(5, 6, 1)[1] * LH, -columnRows(8, 2, 1)[1] * LH, -columnRows(6, 7, 1)[1] * LH, -columnRows(6, 0, 1)[1] * LH]);
+    expect(ys).toEqual([-columnRows(5, 6, 1)[1] * PITCH, -columnRows(8, 2, 1)[1] * PITCH, -columnRows(6, 7, 1)[1] * PITCH, -columnRows(6, 0, 1)[1] * PITCH]);
   });
 
   it('not playing: the same plain text, so a screen that has nothing new shows it still', () => {
@@ -175,7 +178,7 @@ describe('rolling numbers', () => {
     settle(el('9'));
     settle(el('9')); // the effect moved it; one more render shows where
     const col = r!.root.findAll((n) => typeof n.type === 'string' && yOf(style(n)) !== undefined)[0];
-    expect(yOf(style(col))).toBe(-(9 + 1) * lh);
+    expect(yOf(style(col))).toBe(-(9 + 1) * Math.round(lh + 16 * ROLL.gap));
   });
 });
 
@@ -415,6 +418,7 @@ describe('Stepper', () => {
     act(() => r!.update(<Hour />));
     const col = r!.root.findAll((n) => typeof n.type === 'string' && yOf(style(n)) !== undefined)[0];
     // 7 → 6, rolled down: it rests on the second cycle's 6.
-    expect(yOf(style(col))! / -22).toBe(columnRows(7, 6, -1)[1]);
+    const pitch = Math.round(typeScale.label.lineHeight! + typeScale.label.fontSize! * ROLL.gap);
+    expect(yOf(style(col))! / -pitch).toBe(columnRows(7, 6, -1)[1]);
   });
 });

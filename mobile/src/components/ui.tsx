@@ -551,7 +551,14 @@ export function Stepper({
   onInc,
   disabled,
   spokenLabel,
+  dir: given,
 }: {
+  /**
+   * Which way the value last moved (+1 later, -1 earlier), from the change
+   * itself: the hour moves when the minutes wrap past :00, and must roll the
+   * way time moved, not the way the hour was last pressed.
+   */
+  dir?: 1 | -1;
   /** While true (e.g. a reminder change is being saved), taps are ignored. */
   disabled?: boolean;
   /** "Hour" / "Minutes": the caption, and the buttons' names ("Hour later"). */
@@ -565,9 +572,11 @@ export function Stepper({
   onInc: () => void;
 }) {
   const { c } = useTheme();
-  // Mobile 1.9: the value rolls one step the way you pressed (160 ms; up for +,
-  // down for −), so the change is seen, not just swapped. Nothing moves on open.
-  const [dir, setDir] = useState<1 | -1>(1);
+  // Mobile 1.9: the value rolls one step the way it moved (160 ms; up for
+  // later, down for earlier), so the change is seen, not just swapped. A wrap
+  // (12 → 1, 45 → 00) is still one step. Nothing moves on open.
+  const [pressed, setDir] = useState<1 | -1>(1);
+  const dir = given ?? pressed;
   const [shown, setShown] = useState({ value, from: value, run: 0 });
   if (shown.value !== value) setShown((x) => ({ value, from: x.value, run: x.run + 1 }));
   const dec = () => {
@@ -605,6 +614,7 @@ export function Stepper({
             dir={dir}
             dur="quick"
             stagger={false}
+            step
             style={{ ...type.label, ...styles.num }}
             maxScale={maxScale.label}
             color={c.ink}
@@ -1208,8 +1218,23 @@ export function BigNum({
       ) : (
         <Text maxFontSizeMultiplier={1.3} style={[serifNumeral(size), styles.num, { color: fg }]}>{value}</Text>
       )}
-      {pct && <Text maxFontSizeMultiplier={1.3} style={[percentSup(size), { color: fg, marginLeft: 2 }]}>%</Text>}
+      {pct && <Percent size={size} color={fg} roll={roll} />}
     </View>
+  );
+}
+
+/**
+ * The raised "%". On a count-up from blank it fades in as the first digit
+ * arrives (never a lone "%" waiting for its number); otherwise it is simply there.
+ */
+function Percent({ size, color, roll }: { size: NumeralSize | 34 | 52; color: string; roll?: Roll }) {
+  const { reduced } = useMotion();
+  const sign = <Text maxFontSizeMultiplier={1.3} style={[percentSup(size), { color, marginLeft: 2 }]}>%</Text>;
+  if (!roll?.play || reduced || roll.from) return sign;
+  return (
+    <FadeIn key={roll.run ?? 0} rise={false} dur="quick" delay={roll.delay ?? 0}>
+      {sign}
+    </FadeIn>
   );
 }
 

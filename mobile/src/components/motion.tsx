@@ -1069,9 +1069,12 @@ export function columnRows(from: number | null, to: number, dir: 1 | -1): [numbe
 /**
  * A rolling text with the type style given (any text whose digits should
  * roll; non-digits stay still). Static (plain text, exactly as before)
- * until it first plays; then each change rolls when `run` changes. Screen
- * readers always get the final value: the moving columns are hidden.
- * Reduced: no roll; a changed value brightens in over 120 ms.
+ * until it plays; then each change rolls when `run` changes, and it is
+ * plain text again once that roll has ended (or its celebration was
+ * skipped). Screen readers always get the final value: the moving columns
+ * are hidden. Reduced: no roll; a changed value brightens in over 120 ms.
+ * `step` (the Stepper): every digit that changed rolls one row, from its
+ * neighbour, so a wrap (12 → 1, 45 → 00) is one step, never the long way.
  */
 export function RollingText({
   value,
@@ -1085,6 +1088,7 @@ export function RollingText({
   delay = 0,
   dir = 1,
   stagger = true,
+  step = false,
   accessibilityLabel,
 }: {
   value: string;
@@ -1100,6 +1104,8 @@ export function RollingText({
   dir?: 1 | -1;
   /** Digits finish right to left, 30 ms apart (off for the small Stepper). */
   stagger?: boolean;
+  /** One step per change: each changed digit rolls in from its neighbour. */
+  step?: boolean;
   /**
    * Spoken while the digits are columns (they are hidden from screen readers).
    * Leave it out inside a labelled group, which already says the value.
@@ -1110,33 +1116,33 @@ export function RollingText({
   const settled = useContext(CelebrateContext).settled;
   const { fontScale } = useWindowDimensions();
   const scaled = Math.min(Math.max(fontScale, 1), maxScale);
+  const fs = (style.fontSize ?? 16) * scaled;
   const lh = (style.lineHeight ?? (style.fontSize ?? 16) * 1.2) * scaled;
-  const pad = Math.ceil((style.fontSize ?? 16) * scaled * 0.2);
-  // Columns from the first roll on (never swapped back: no jump at the end).
-  const rolling = play && !reduced;
-  const [columns, setColumns] = useState(rolling);
-  if (rolling && !columns) setColumns(true);
-  const o = useSharedValue(1);
-  const lastRun = useRef(run);
-  useLayoutEffect(() => {
-    if (!reduced || !play || run === lastRun.current) return;
-    lastRun.current = run;
-    o.set(withSequence(snap(0.55), tween(1, 'reduced')));
-  }, [reduced, play, run, o]);
-  const fade = useAnimatedStyle(() => ({ opacity: o.value }));
-  const text = [style, { color }];
-  if (!columns) {
-    // Plain text, read as it is (exactly what a static numeral always was).
-    return (
-      <Animated.View style={fade}>
-        <Text maxFontSizeMultiplier={maxScale} style={text}>{value}</Text>
-      </Animated.View>
-    );
-  }
-  const slots = rollSlots(value, play ? from : value);
+  const pad = Math.ceil(fs * 0.2);
+  const pitch = Math.round(lh + fs * ROLL.gap);
+  const trim = Math.round(fs * ROLL.trim);
+  const slots = rollSlots(value, play ? from : value).map((x) =>
+    step && x.digit && x.from !== x.to ? { ...x, from: (x.to - dir + 10) % 10 } : x,
+  );
   // Each digit's place counted from the right (they finish right to left).
   const digits = slots.filter((x) => x.digit).length;
   const place = slots.map((_, k) => digits - 1 - slots.slice(0, k).filter((x) => x.digit).length);
+  // The run whose roll has ended: plain text again, no animated nodes left behind.
+  const [ended, setEnded] = useState<number | null>(null);
+  const columns = play && !reduced && !settled && ended !== run;
+  const total = delay + (stagger ? Math.max(0, digits - 1) * motion.stagger.digit : 0) + motion.dur[dur];
+  useEffect(() => {
+    if (!columns) return;
+    // A one-shot timer for a phase change (the roll is over), not a frame.
+    const t = setTimeout(() => setEnded(run), total + motion.stagger.digit);
+    return () => clearTimeout(t);
+  }, [columns, run, total]);
+  const text = [style, { color }];
+  if (!columns) {
+    // Plain text, read as it is (exactly what a static numeral always was).
+    const plain = <Text maxFontSizeMultiplier={maxScale} style={text}>{value}</Text>;
+    return reduced ? <Brighten play={play} run={run}>{plain}</Brighten> : plain;
+  }
   return (
     // Its own screen-reader stop only when it is given a label; inside a labelled
     // group (a stat, the rings, the readiness row) the group speaks the value, and
@@ -1155,10 +1161,13 @@ export function RollingText({
             key={`d${slots.length - k}`}
             to={slot.to}
             from={slot.from}
-            play={play && !settled}
+            play={play}
             run={run}
             dir={dir}
             lh={lh}
+            pitch={pitch}
+            scaled={scaled}
+            trim={trim}
             pad={pad}
             style={text}
             maxScale={maxScale}
@@ -1171,6 +1180,19 @@ export function RollingText({
   );
 }
 
+/** Reduced: a changed value (a new `run`) dips to .55 and brightens back over 120 ms. */
+function Brighten({ play, run, children }: { play: boolean; run: number; children: ReactNode }) {
+  const o = useSharedValue(1);
+  const lastRun = useRef(run);
+  useLayoutEffect(() => {
+    if (!play || run === lastRun.current) return;
+    lastRun.current = run;
+    o.set(withSequence(snap(BRIGHTEN_FROM), tween(1, 'reduced')));
+  }, [play, run, o]);
+  const fade = useAnimatedStyle(() => ({ opacity: o.value }));
+  return <Animated.View style={fade}>{children}</Animated.View>;
+}
+
 function DigitColumn({
   to,
   from,
@@ -1178,6 +1200,9 @@ function DigitColumn({
   run,
   dir,
   lh,
+  pitch,
+  scaled,
+  trim,
   pad,
   style,
   maxScale,
@@ -1189,7 +1214,14 @@ function DigitColumn({
   play: boolean;
   run: number;
   dir: 1 | -1;
+  /** The line box (the window and the column's place in the line). */
   lh: number;
+  /** Row to row in the column: the line plus a blank gap. */
+  pitch: number;
+  /** The text scale already applied to lh and pitch (the system applies it again to a lineHeight). */
+  scaled: number;
+  /** The window starts this far below the line box's top and ends as far above its bottom. */
+  trim: number;
   pad: number;
   style: StyleProp<TextStyle>;
   maxScale: number;
@@ -1197,35 +1229,52 @@ function DigitColumn({
   delay: number;
 }) {
   const [a, b] = columnRows(play ? from : to, to, dir);
-  const y = useSharedValue(-a * lh);
-  // The roll in progress: its restart key and the digit it is heading for.
-  const started = useRef<{ run: number; to: number } | null>(null);
+  const y = useSharedValue(-a * pitch);
+  // The roll in progress: its restart key, the digit it is heading for, and its row pitch.
+  const started = useRef<{ run: number; to: number; pitch: number } | null>(null);
   useLayoutEffect(() => {
     const atFinal = () => {
       cancelAnimation(y);
-      y.set(-(to + 1) * lh);
+      y.set(-(to + 1) * pitch);
     };
-    // Settled, skipped, or a new value with no new roll: at the final digit now.
+    // Not playing, or a new value with no new roll: at the final digit now.
     if (!play) return atFinal();
-    if (started.current?.run === run) {
-      if (started.current.to !== to) atFinal();
+    const was = started.current;
+    if (was?.run === run) {
+      // The value or the text size changed under the same roll: re-placed at the end.
+      if (was.to !== to || was.pitch !== pitch) {
+        started.current = { run, to, pitch };
+        atFinal();
+      }
       return;
     }
-    started.current = { run, to };
+    started.current = { run, to, pitch };
     // A digit that doesn't change starts no animation (fewer moving nodes on low-end phones).
     if (a === b) return atFinal();
-    y.set(withSequence(snap(-a * lh), withDelay(delay, tween(-b * lh, dur))));
-  }, [play, run, a, b, to, lh, delay, dur, y]);
-  const anim = useAnimatedStyle(() => ({ transform: [{ translateY: y.value }] }));
+    y.set(withSequence(snap(-a * pitch), withDelay(delay, tween(-b * pitch, dur))));
+  }, [play, run, a, b, to, pitch, delay, dur, y]);
+  const dip = ROLL.dip;
+  const anim = useAnimatedStyle(() => {
+    const rows = -y.value / pitch;
+    const between = rows - Math.floor(rows); // 0 on a row, 0.5 half way to the next
+    return { opacity: 1 - dip * Math.sin(Math.PI * between), transform: [{ translateY: y.value }] };
+  });
   return (
     <View style={{ height: lh }}>
       {/* The final digit, invisible, holds the column's width in the line. */}
       <Text maxFontSizeMultiplier={maxScale} style={[style, styles.hidden]} importantForAccessibility="no" accessibilityElementsHidden>
         {String(to)}
       </Text>
-      <View style={[styles.clip, { left: -pad, right: -pad, height: lh }]} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-        <Animated.View style={[styles.column, anim]}>
-          <Text maxFontSizeMultiplier={maxScale} style={[style, styles.center]}>{COLUMN}</Text>
+      <View
+        style={[styles.clip, { left: -pad, right: -pad, top: trim, height: lh - 2 * trim }]}
+        importantForAccessibility="no-hide-descendants"
+        accessibilityElementsHidden
+      >
+        {/* Each row is centred where the line's own text sits: (lh - pitch) / 2 from the line's top. */}
+        <Animated.View style={[styles.column, { top: (lh - pitch) / 2 - trim }, anim]}>
+          {/* The caller's type style, with its rows spread to the odometer's pitch (geometry, not a new type size). */}
+          {/* eslint-disable-next-line no-restricted-syntax */}
+          <Text maxFontSizeMultiplier={maxScale} style={[style, styles.center, { lineHeight: pitch / scaled }]}>{COLUMN}</Text>
         </Animated.View>
       </View>
     </View>
@@ -1274,7 +1323,7 @@ const styles = StyleSheet.create({
   noTouch: { pointerEvents: 'none' },
   rollRow: { flexDirection: 'row', alignItems: 'flex-start' },
   hidden: { opacity: 0 },
-  clip: { position: 'absolute', top: 0, overflow: 'hidden' },
+  clip: { position: 'absolute', overflow: 'hidden' },
   column: { position: 'absolute', top: 0, left: 0, right: 0 },
   center: { textAlign: 'center' },
 });
