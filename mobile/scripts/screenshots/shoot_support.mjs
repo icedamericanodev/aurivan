@@ -1,8 +1,9 @@
 // Help and feedback screenshots (mobile 1.7, Uplift Phase 1 "Ask and fix"):
 // the report sheet on a question and on a note, the calm note after the
 // email app opens, the no-email-app fallback, Settings → Help and feedback,
-// the Help screen (You), What's new (with "Your report helped"), What's
-// next, Common questions and Your reports (with "Updated after your report").
+// the Help screen (two groups), "Copy or share instead", Today's credit line
+// (with Dismiss), What's new (with "Updated after your report"), What's
+// next, Common questions and Your reports.
 // Usage: node shoot_support.mjs <seed.json> <out> <suffix>
 // Run via: SHOTS=support bash scripts/screenshots/run.sh <out> <dark|light>
 // (run.sh swaps in a one-entry demo fixes list for this export only.)
@@ -16,13 +17,13 @@ const sfx = process.argv[4] ? `-${process.argv[4]}` : '';
 const base = 'http://127.0.0.1:8093';
 const day = 86400000;
 
-// Demo reports on this phone: one fixed since (the demo fix in run.sh is for
-// d1_008), one started on a note, one started on a lesson step.
+// Demo reports on this phone, made on 1.7.0: one fixed since (the demo fix in
+// run.sh is for d1_008, fixedIn 1.7.1), one started on a note, one on a lesson step.
 const progress = JSON.parse(seed['aurivan.progress.v1']);
 progress.state.reports = [
-  { ref: 'R-4MZQ', item: 'lesson:cisa-l-d1-charter#4', reason: 'unclear', at: Date.now() - 2 * day, cert: 'cisa' },
-  { ref: 'R-H7KD', item: 'note:4B1.2', reason: 'diagram', at: Date.now() - 6 * day, cert: 'cisa' },
-  { ref: 'R-7K2Q', item: 'q:d1_008', reason: 'key', at: Date.now() - 20 * day, cert: 'cisa' },
+  { ref: 'R-4MZQ', item: 'lesson:cisa-l-d1-charter#4', reason: 'unclear', at: Date.now() - 2 * day, cert: 'cisa', version: '1.7.0' },
+  { ref: 'R-H7KD', item: 'note:4B1.2', reason: 'diagram', at: Date.now() - 6 * day, cert: 'cisa', version: '1.7.0' },
+  { ref: 'R-7K2Q', item: 'q:d1_008', reason: 'key', at: Date.now() - 20 * day, cert: 'cisa', version: '1.7.0' },
 ];
 seed['aurivan.progress.v1'] = JSON.stringify(progress);
 
@@ -84,7 +85,7 @@ await snap('s05-question-after-send');
 await open('/notes/subtopic/4B1.2');
 await page.mouse.wheel(0, 30000); await page.waitForTimeout(800);
 await snap('s06-note-report-row');
-await page.getByLabel(/^Reported .*Report a problem with note 4B1\.2$/).click();
+await page.getByLabel(/^Report started .*Report a problem with note 4B1\.2$/).click();
 await page.waitForTimeout(900);
 await snap('s07-note-sheet-top');
 await page.getByText('A diagram is wrong or hard to read', { exact: true }).click();
@@ -98,6 +99,18 @@ await snap('s09-fallback');
 await scrollBy(500);
 await snap('s10-fallback-share');
 await page.evaluate(() => { window.__noMail = false; });
+// "Copy or share instead": the same panel, chosen, with no email app involved.
+await page.getByText('Close', { exact: true }).click();
+await page.waitForTimeout(700);
+await page.getByLabel(/^Report started .*Report a problem with note 4B1\.2$/).click();
+await page.waitForTimeout(900);
+await page.getByText('Hard to follow', { exact: true }).click();
+await scrollTo('Copy or share instead', 600);
+await snap('s27-sheet-copy-or-share');
+await page.getByText('Copy or share instead', { exact: true }).click();
+await page.waitForTimeout(900);
+await scrollTo('Send it your own way', 120);
+await snap('s28-own-way-panel');
 
 // 3. Settings → Help and feedback; the Help screen; the sheets from there.
 await open('/settings');
@@ -105,6 +118,8 @@ await scrollTo('Help and feedback', 110);
 await snap('s11-settings-help');
 await open('/help');
 await snap('s12-help-screen');
+await page.mouse.wheel(0, 30000); await page.waitForTimeout(800);
+await snap('s12b-help-screen-updates');
 await page.getByText('Contact support', { exact: true }).click();
 await page.waitForTimeout(900);
 await snap('s13-contact-support');
@@ -113,7 +128,7 @@ await page.getByText('Suggest an idea', { exact: true }).click();
 await page.waitForTimeout(900);
 await snap('s14-send-feedback');
 
-// 4. You (the one entry) and Today (the once-only credit line), before What's new marks it seen.
+// 4. You (the one entry) and Today (the once-only credit line, which marks it seen).
 await open('/you');
 await page.mouse.wheel(0, 30000); await page.waitForTimeout(800);
 await snap('s15-you-help-row');
@@ -122,6 +137,12 @@ await page.mouse.wheel(0, 30000); await page.waitForTimeout(800);
 await snap('s16-today-credit');
 
 // 5. What's new (with the credit, shown once), What's next, Common questions, Your reports.
+// Today has just marked the credit seen; un-mark it so What's new can show its own once.
+await page.evaluate(() => {
+  const row = JSON.parse(localStorage.getItem('aurivan.progress.v1'));
+  row.state.reports = row.state.reports.map(({ creditSeen, ...r }) => r);
+  localStorage.setItem('aurivan.progress.v1', JSON.stringify(row));
+});
 await open('/whats-new');
 await snap('s17-whats-new');
 await scrollTo('Fixed after learner reports', 110);

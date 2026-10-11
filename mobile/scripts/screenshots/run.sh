@@ -19,7 +19,7 @@ if [ "${SHOTS:-}" = support ]; then
   python3 - "$FIXES" <<'PY'
 import json, sys, time
 day = time.strftime("%Y-%m-%d", time.localtime(time.time() - 3 * 86400))
-json.dump([{"ref": "q:d1_008", "cert": "cisa", "date": day, "kind": "corrected",
+json.dump([{"ref": "q:d1_008", "cert": "cisa", "date": day, "fixedIn": "1.7.1", "kind": "corrected",
             "publicNote": "The answer key was corrected, and the explanation now says why."}], open(sys.argv[1], "w"), indent=2)
 PY
 fi
