@@ -4,13 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
-## [v11.1.3] — A new Support page
+## [v11.2] — A new Help and contact page
 
 ### New
-- A Support page shows how to reach us, what to include when you report a problem, and answers to common questions.
+- A Help and contact page shows how to reach us, what to include when you report a problem, and answers to common questions.
 
 ### Improved
-- The feedback and flag forms now remind you not to share questions from the real exam.
+- The feedback and flag forms now remind you not to share questions from the real exam, and screen readers read the reminder too.
+- The privacy policy now says how long we keep the messages you send us.
 
 ## [v11.1.2] — Privacy policy update
 

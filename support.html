@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
-<title>Support — Aurivan</title>
+<title>Help and contact — Aurivan</title>
 <meta name="description" content="How to reach Aurivan, the free and independent CISA exam-prep app: report a problem in a question, ask for help, or send an idea.">
 <style>
   :root {
@@ -28,7 +28,7 @@
   h3 { font-size: 16px; margin: 20px 0 6px; color: var(--teal); }
   p, li { color: var(--ink); }
   a { color: var(--blue); }
-  ul, ol { padding-left: 22px; }
+  ul { padding-left: 22px; }
   li { margin-bottom: 6px; }
   .lead {
     background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--teal);
@@ -36,54 +36,68 @@
   }
   .lead p:first-child { margin-top: 0; }
   .lead p:last-child { margin-bottom: 0; }
-  .address { font-size: 20px; font-weight: 700; word-break: break-all; }
+  /* Breaks only if the address can't fit, and then gracefully (never mid-word first). */
+  .address { font-size: 20px; font-weight: 700; overflow-wrap: anywhere; }
   .callout {
     background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px;
     padding: 14px 16px; margin: 18px 0;
   }
   .callout p { margin: 0; }
-  footer.doc { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 20px; font-size: 14px; color: var(--ink2); }
-  footer.doc a { margin-right: 16px; }
+  footer.doc { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 20px; font-size: 14px; color: var(--ink2);
+    display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  /* A link never breaks across lines ("Terms of / Use"), and is a 44px tap target on phones. */
+  footer.doc a { margin-right: 0; white-space: nowrap; }
+  @media (max-width: 600px) { footer.doc a { display: inline-flex; align-items: center; min-height: 44px; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="doc">
     <a class="brand" href="index.html">aurivan<span>.</span></a>
-    <h1>Support</h1>
+    <h1>Help and contact</h1>
     <p class="updated">Last updated: 11 October 2026</p>
   </header>
 
+  <main>
   <div class="lead">
     <p>Aurivan is a free, independent exam-preparation app made by a small
     team. We read every message. Write to us at:</p>
     <p class="address"><a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a></p>
   </div>
 
-  <h2>1. In the app</h2>
+  <h2>1. Where to get help</h2>
+
+  <h3>In the mobile app</h3>
   <ul>
     <li><strong>Settings → Help and feedback</strong> (or <strong>You → Get
-    help or send feedback</strong>) has quick answers, Report a problem,
-    Suggest an idea and Contact support.</li>
-    <li><strong>A problem in a question, study note, lesson or game card?</strong>
-    Tap <strong>Report a problem</strong> right under it. Your email app opens
-    with the details filled in, including the item's code, so we know exactly
-    which one. You can read and change everything before you send it.</li>
+    help or send feedback</strong>) has common questions, Contact support,
+    Report a problem and Suggest an idea.</li>
+    <li><strong>A problem in a question, study note or lesson step?</strong>
+    Tap <strong>Report a problem</strong> right under it. In a game, use the
+    link in the round's recap. Your email app opens with the details filled
+    in, including the item's code, so we know exactly which one. You can read
+    and change everything before you send it.</li>
     <li>Mock exams have no report button while the clock runs. Report a question
     from the review after you submit.</li>
-    <li>On the website, use <strong>Feedback</strong> at the top of the page, or
-    the <strong>Flag</strong> button on a question.</li>
+  </ul>
+
+  <h3>On the website</h3>
+  <ul>
+    <li>Use <strong>Feedback</strong> at the top of the page (or in the menu on
+    a phone), or the <strong>Flag</strong> button on a question.</li>
+    <li>Common questions are under <strong>More → FAQ &amp; Help</strong>.</li>
   </ul>
 
   <h2>2. What to include</h2>
   <p>A few details help us fix things faster:</p>
   <ul>
     <li><strong>For a question:</strong> its code (for example <code>d4_217</code>;
-    in the app it's shown under the answer), what looks wrong, and which answer
-    you think is best and why.</li>
+    in the mobile app it's shown under the answer; on the website the Flag form
+    adds it for you), what looks wrong, and which answer you think is best and
+    why.</li>
     <li><strong>For an app problem:</strong> what you were doing, what you
-    expected, and what happened instead. The app version is in Settings →
-    About; your phone's model and system version help too.</li>
+    expected, and what happened instead. In the mobile app, the version is in
+    Settings → About; your phone's system version helps too.</li>
     <li>Screenshots are welcome if they show the problem.</li>
   </ul>
   <p>You never need to send a password, your exam date, your scores or a
@@ -99,7 +113,7 @@
 
   <h2>3. Common questions</h2>
 
-  <h3>How do I move my progress to a new phone?</h3>
+  <h3>How do I move my progress to a new phone? (mobile app)</h3>
   <p>In the app, go to Settings → Your data and tap <strong>Save a
   backup</strong>. Keep the file somewhere the new phone can reach, such as
   Files, Google Drive or your email. On the new phone, choose <strong>Restore
@@ -117,7 +131,7 @@
   comes back later; miss it and it comes back sooner. Lucky guesses come back
   too, so the number due goes up and down from day to day.</p>
 
-  <h3>Why don't I get study reminders?</h3>
+  <h3>Why don't I get study reminders? (mobile app)</h3>
   <p>Reminders stay off until you turn them on in Settings, under Study, and
   your phone must allow notifications for Aurivan. You get at most one a day,
   on the days you choose.</p>
@@ -129,15 +143,21 @@
   we reply and explain why.</p>
 
   <h2>4. Your privacy</h2>
-  <p>The app sends nothing by itself: you send these emails from your own
-  email account. When you do, we receive your email address and your message,
-  and we use them only to reply and to fix the problem. See the
+  <p>In the mobile app, nothing is sent by itself: you send these emails from
+  your own email account. When you do, we receive your email address and your
+  message, and we use them only to reply and to fix the problem.</p>
+  <p>On the website, Feedback and Flag send your message through a Google Form
+  to the same inbox. We don't get your email address unless you type it in.</p>
+  <p>We keep support messages for up to 12 months after your issue is
+  resolved, then delete them, or sooner if you ask. See the
   <a href="privacy.html">Privacy Policy</a> for details.</p>
 
   <h2>5. Not affiliated with ISACA</h2>
   <p>Aurivan is independent and is not affiliated with, endorsed by or
   sponsored by ISACA. CISA&reg; is a registered trademark of ISACA. All
   practice questions are original and are not ISACA exam questions.</p>
+
+  </main>
 
   <footer class="doc">
     <a href="index.html">&larr; Back to Aurivan</a>
