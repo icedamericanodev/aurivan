@@ -56,7 +56,8 @@ const fileWith = (mutate: (progressState: Record<string, unknown>) => void) => {
 beforeEach(() => {
   jest.useFakeTimers({ now: NOW });
   useSettings.setState({ ...useSettings.getInitialState(), onboarded: true, activeCertId: 'cisa' });
-  useProgress.setState(useProgress.getInitialState());
+  // `reports` is optional (not in the initial state) and setState merges: clear it by hand.
+  useProgress.setState({ ...useProgress.getInitialState(), reports: undefined });
   useBackup.setState({ lastBackupAt: null, undo: null });
 });
 afterEach(() => jest.useRealTimers());
@@ -137,7 +138,7 @@ describe('before 1.7', () => {
 
   it('a 1.6 save loads with no list, and the list then works', async () => {
     jest.useRealTimers();
-    useProgress.setState(useProgress.getInitialState());
+    useProgress.setState({ ...useProgress.getInitialState(), reports: undefined });
     await new Promise((done) => setTimeout(done, 0));
     await AsyncStorage.clear();
     const save16 = {

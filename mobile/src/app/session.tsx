@@ -56,7 +56,7 @@ import { addMs } from '../engine/answerClock';
 import { dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, statusOf } from '../engine/pace';
 import { PaceStrip, type PaceStripProps } from '../components/pace';
 import { haptic } from '../lib/haptics';
-import { reportIssue } from '../lib/report';
+import { questionTarget } from '../lib/support';
 import { Button, Gap, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
 import { getCertification, getDomain } from '../content/certifications';
 import { lessonPreparing } from '../content/lessons';
@@ -648,7 +648,16 @@ export default function SessionScreen() {
                     last
                   />
                 )}
-                <TrustLine questionId={q.id} reference={q.reference} onReport={() => reportIssue(q.id, cert.name)} />
+                {/* Report a problem (mobile 1.7): the sheet gets the options in the order shown,
+                    and the email names letters as the bank's ORIGINAL ones. */}
+                <TrustLine
+                  certId={active.certId}
+                  reference={q.reference}
+                  target={questionTarget(active.certId, q, `${active.mode === 'review' ? 'Spaced review' : 'Practice'} · ${active.title}`, {
+                    perm,
+                    pickedDisplay: response.display,
+                  })}
+                />
               </>
             )
           )}
@@ -694,6 +703,8 @@ export default function SessionScreen() {
               <Button kind="ghost" label="Close" onPress={() => setNavOpen(false)} />
             </Row>
             <T v="meta">● answered · ○ not answered · ⚑ flagged</T>
+            {/* No report button during a live mock (it stays exam-like); the review has one. */}
+            <T v="meta" style={{ marginTop: space.xs }}>To report a question, open it in the review after you submit.</T>
             <Gap />
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
               {active.questionIds.map((id, i) => {

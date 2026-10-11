@@ -121,6 +121,7 @@ export function T({
   accessibilityRole,
   maxFontSizeMultiplier,
   numberOfLines,
+  selectable,
 }: {
   children: ReactNode;
   v?: Variant;
@@ -135,6 +136,8 @@ export function T({
    *  fixed-size image (the share card), whose wrapper's accessibilityLabel speaks the full text. */
   maxFontSizeMultiplier?: number;
   numberOfLines?: number;
+  /** Lets the learner select and copy the text (an email address, a report to paste). */
+  selectable?: boolean;
 }) {
   const { c } = useTheme();
   // Meta lines and small captions are secondary text by default.
@@ -145,6 +148,7 @@ export function T({
       accessibilityRole={accessibilityRole}
       maxFontSizeMultiplier={maxFontSizeMultiplier ?? maxScale[v]}
       numberOfLines={numberOfLines}
+      selectable={selectable}
       style={[type[v], { color: color ?? defaultColor }, num && styles.num, center && { textAlign: 'center' }, style]}
     >
       {children}
@@ -899,6 +903,7 @@ const styles = StyleSheet.create({
   tabLabel: { alignItems: 'center', gap: 1 },
   search: { minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, paddingLeft: space.lg, flexDirection: 'row', alignItems: 'center' },
   searchClear: { width: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' },
+  note: { minHeight: 112, borderRadius: radius.md, borderWidth: 1.5, paddingHorizontal: space.lg, paddingTop: space.md, paddingBottom: space.md },
   tabDot: { width: 4, height: 4, borderRadius: 2 },
 });
 
@@ -1210,6 +1215,50 @@ export function SearchField({
           <X size={ICON_SIZE.row} color={c.ink2} strokeWidth={ICON_STROKE} />
         </Pressable>
       )}
+    </View>
+  );
+}
+
+// ── NoteField: a few lines of the learner's own words (Report a problem) ──
+// Same look as SearchField (raised, 1.5 outline, radius 16, body text that
+// grows with the phone's text size, ×2 cap), but multi-line, with a quiet
+// character count under it. The visible caption above it is its name.
+export function NoteField({
+  value,
+  onChangeText,
+  placeholder,
+  accessibilityLabel,
+  maxLength,
+}: {
+  value: string;
+  onChangeText: (v: string) => void;
+  placeholder: string;
+  accessibilityLabel: string;
+  maxLength: number;
+}) {
+  const { c, isDark } = useTheme();
+  return (
+    <View>
+      <TextInput
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        placeholderTextColor={c.muted}
+        accessibilityLabel={accessibilityLabel}
+        accessibilityHint={`Optional. Up to ${maxLength} characters.`}
+        maxFontSizeMultiplier={maxScale.body}
+        maxLength={maxLength}
+        multiline
+        textAlignVertical="top"
+        style={[
+          type.body,
+          styles.note,
+          { color: c.ink, backgroundColor: c.raised, borderColor: isDark ? c.line : c.control },
+        ]}
+      />
+      <T v="meta" num style={{ textAlign: 'right', marginTop: space.xs }} accessibilityLabel={`${value.length} of ${maxLength} characters`}>
+        {`${value.length} / ${maxLength}`}
+      </T>
     </View>
   );
 }

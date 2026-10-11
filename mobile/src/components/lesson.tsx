@@ -48,7 +48,8 @@ export function SceneView({
   perm,
 }: {
   scene: Scene;
-  onCheck?: (correct: boolean) => void;
+  /** A check was answered: right or not, and the DISPLAY letter picked (for Report a problem). */
+  onCheck?: (correct: boolean, picked: Letter) => void;
   /**
    * Check scenes only: the option order to show. The player makes it once
    * per viewing, so going Back and Next shows the same order.
@@ -245,7 +246,7 @@ function CheckScene({
   perm,
 }: {
   scene: Extract<Scene, { type: 'check' }>;
-  onCheck?: (correct: boolean) => void;
+  onCheck?: (correct: boolean, picked: Letter) => void;
   perm: Permutation;
 }) {
   const { c } = useTheme();
@@ -282,7 +283,7 @@ function CheckScene({
                 setPicked(letter);
                 if (isRight) haptic.success();
                 else haptic.error();
-                onCheck?.(isRight);
+                onCheck?.(isRight, letter);
               }}
             />
           </Animated.View>

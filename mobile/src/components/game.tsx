@@ -21,6 +21,9 @@ import { useProgress, type GameId } from '../store/progress';
 import { optionText, radius, raisedShadow, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ScenarioBlock, StickyFooter } from './quiz';
+import { useReportFlow } from './support';
+import { questionTarget } from '../lib/support';
+import type { ReportTarget } from '../engine/support';
 import { Seedling, TierLeaf } from './glyphs';
 import { MilestoneMomentView, TierTag } from './milestones';
 import { tierChangeLine, type GameTier } from '../engine/games/growth';
@@ -231,16 +234,7 @@ export function RoundEnd({
           <View style={{ marginBottom: space.lg }}>
             <T v="headline" accessibilityRole="header">What caught you</T>
             {misses.map((m, k) => (
-              <View
-                key={m.questionId}
-                accessible
-                accessibilityLabel={`${m.stem} ${m.tag}. ${m.why}`}
-                style={{ paddingVertical: 13, borderBottomWidth: k === misses.length - 1 ? 0 : 1, borderBottomColor: c.line }}
-              >
-                <T v="meta">{m.stem}</T>
-                <T v="caption" color={c.tip} style={{ marginTop: space.xs }}>{m.tag}</T>
-                <T v="small" style={{ marginTop: 2 }}>{m.why}</T>
-              </View>
+              <MissRow key={m.questionId} certId={certId} game={game} miss={m} last={k === misses.length - 1} />
             ))}
             {review && <T v="meta" style={{ marginTop: space.sm }}>{review}</T>}
           </View>
@@ -252,6 +246,34 @@ export function RoundEnd({
         <Button kind="ghost" label="Done" onPress={() => router.back()} />
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+/**
+ * One "What caught you" row: the miss (one screen-reader stop), then its
+ * own "Report a problem" link (a separate stop). A question-based game
+ * reports the question; a card game (Root or Rumor, Field Guide, Canopy
+ * Call, Stepping Stones) reports the card by its stable id.
+ */
+function MissRow({ certId, game, miss: m, last }: { certId: string; game: GameId; miss: RecapMiss; last: boolean }) {
+  const { c } = useTheme();
+  const name = GAMES[game].name;
+  const q = findQuestion(certId, m.questionId);
+  const target: ReportTarget = q
+    ? questionTarget(certId, q, `Game recap · ${name}`)
+    : { kind: 'card', id: m.questionId, name, where: `Game recap · ${name}` };
+  const report = useReportFlow(certId, target);
+  return (
+    <View style={{ paddingTop: 13, paddingBottom: space.xs, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line }}>
+      <View accessible accessibilityLabel={`${m.stem} ${m.tag}. ${m.why}`}>
+        <T v="meta">{m.stem}</T>
+        <T v="caption" color={c.tip} style={{ marginTop: space.xs }}>{m.tag}</T>
+        <T v="small" style={{ marginTop: 2 }}>{m.why}</T>
+      </View>
+      <View style={{ alignItems: 'flex-end' }}>{report.link}</View>
+      {report.block}
+      {report.sheet}
+    </View>
   );
 }
 

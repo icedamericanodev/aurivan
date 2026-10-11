@@ -28,6 +28,7 @@ import Animated, {
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import type { Letter } from '../content/types';
 import type { Confidence } from '../engine/srs';
+import type { ReportTarget } from '../engine/support';
 import { tipParts } from '../engine/tips';
 import { config } from '../lib/config';
 import { haptic } from '../lib/haptics';
@@ -36,6 +37,7 @@ import { badgeLetter, optionText, radius, raisedShadow, space } from '../theme/t
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
 import { Check, X } from './icons';
+import { ReportRow } from './support';
 import { Chip, Gap, Row, T } from './ui';
 
 
@@ -320,25 +322,19 @@ function VineLeafNode({ node, last, visible, reduce, delay }: { node: VineNode; 
   );
 }
 
-// ── Trust line: provenance + report an issue ──────────────────────────
-export function TrustLine({ questionId, reference, onReport }: { questionId: string; reference?: string; onReport: () => void }) {
-  const { c } = useTheme();
+// ── Trust line: provenance + Report a problem ────────────────────────
+// Under every revealed answer: "Original · Reviewed Oct 2026" with the
+// report link on the right, then the code and source. The link, its sheet
+// and the note after sending live in components/support.tsx (one look and
+// one spoken pattern for every report entry point).
+export function TrustLine({ certId, target, reference }: { certId: string; target: ReportTarget; reference?: string }) {
   return (
-    <View style={{ borderTopWidth: 1, borderTopColor: c.line, marginTop: space.xs, paddingTop: space.sm }}>
-      <Row style={{ justifyContent: 'space-between', flexWrap: 'wrap' }} gap={space.sm}>
-        <T v="meta" style={{ flexShrink: 1 }}>{`Original · Reviewed ${config.contentReviewed}`}</T>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={`Report an issue with question ${questionId}`}
-          onPress={onReport}
-          hitSlop={8}
-          style={{ minHeight: 44, justifyContent: 'center' }}
-        >
-          <T v="label" color={c.accentText}>Report issue</T>
-        </Pressable>
-      </Row>
-      <T v="meta" color={c.muted}>{reference ? `Code ${questionId} · ${shortReference(reference)}` : `Code ${questionId}`}</T>
-    </View>
+    <ReportRow
+      certId={certId}
+      target={target}
+      meta={`Original · Reviewed ${config.contentReviewed}`}
+      sub={reference ? `Code ${target.id} · ${shortReference(reference)}` : `Code ${target.id}`}
+    />
   );
 }
 
