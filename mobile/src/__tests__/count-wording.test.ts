@@ -19,8 +19,8 @@ describe('review queue wording', () => {
   it('uses one word and explains the cap in one line', () => {
     expect(REVIEW_UNIT).toBe('due');
     expect(REVIEW_SESSION_CAP).toBe(20);
-    expect(REVIEW_CAP_LINE).toBe('Reviews come 20 at a time');
-    expect(reviewSubtitle(55)).toBe('Reviews come 20 at a time, most overdue first');
+    expect(REVIEW_CAP_LINE).toBe('20 at a time, most overdue first');
+    expect(reviewSubtitle(55)).toBe('20 at a time, most overdue first');
     expect(reviewSubtitle(12)).toBe('Questions to revisit');
     expect(reviewSubtitle(20)).toBe('Questions to revisit'); // exactly 20 fits one session
     expect(reviewSubtitle(0)).toBe('All caught up');
@@ -28,7 +28,8 @@ describe('review queue wording', () => {
 
   it("Today's review item and the review session share the same cap", () => {
     const plan = todaysPlan({ stage: 'practice', dueReviews: 55, dailyGoal: 20, daysLeft: 40, examQuestions: 150 });
-    expect(plan[0]).toEqual({ kind: 'review', count: REVIEW_SESSION_CAP, capped: true });
+    // The item keeps the whole queue, so Today says "Review 55 due" like You and Practice.
+    expect(plan[0]).toEqual({ kind: 'review', count: REVIEW_SESSION_CAP, capped: true, due: 55 });
     // Exactly 20 due fits one session: not capped, so no cap line on Today.
     const twenty = todaysPlan({ stage: 'practice', dueReviews: 20, dailyGoal: 20, daysLeft: 40, examQuestions: 150 });
     expect(twenty[0]).toEqual({ kind: 'review', count: 20 });

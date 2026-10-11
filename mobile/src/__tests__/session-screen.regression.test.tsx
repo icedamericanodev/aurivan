@@ -174,7 +174,8 @@ describe('lesson player: the quick-check gate', () => {
   it('locks the check, unlocks after answering, and re-locks when the check is revisited', () => {
     mockLessonId = lesson.id;
     mount(<LessonPlayer />);
-    expect(btn('Back').props.disabled).toBe(true);
+    // No Back on the first scene (1.8: a disabled slab looked broken).
+    expect(btn('Back')).toBeUndefined();
     for (let i = 0; i < checkAt; i++) press('Next');
     expect(btn(fwd()).props.disabled).toBe(true);
     act(() => { cards()[0].props.onPress(); });

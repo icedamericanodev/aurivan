@@ -211,10 +211,16 @@ describe('Play when no game is playable for this exam', () => {
 });
 
 describe("Today's review card: the cap line only when more than 20 are due", () => {
-  it('exactly 20 (fits one session) says "questions to revisit"; capped says reviews come 20 at a time', () => {
+  it('exactly 20 (fits one session) says "questions to revisit"; capped says 20 at a time', () => {
     expect(planText({ kind: 'review', count: 20 }).meta).toBe('About 24 minutes · questions to revisit');
-    expect(planText({ kind: 'review', count: 20, capped: true }).meta).toBe('About 24 minutes · reviews come 20 at a time');
+    expect(planText({ kind: 'review', count: 20, capped: true }).meta).toBe('About 24 minutes · 20 at a time, most overdue first');
     expect(planText({ kind: 'review', count: 20 }).title).toBe('Review 20 due');
+  });
+
+  it('capped: the title shows the whole queue, the same number as You and Practice (one phrasing, 1.8)', () => {
+    expect(planText({ kind: 'review', count: 20, capped: true, due: 55 }).title).toBe('Review 55 due');
+    // A plan saved before 1.8 has no `due`: it keeps the session's count.
+    expect(planText({ kind: 'review', count: 20, capped: true }).title).toBe('Review 20 due');
   });
 });
 

@@ -24,7 +24,7 @@ import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow } from '../../components/journey';
 import { ICON_STROKE, Play, Settings, Sprig } from '../../components/icons';
 import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, ScreenTitle, Section, T } from '../../components/ui';
-import { currentIndex, itemMinutes, planComplete } from '../../engine/dayPlan';
+import { currentIndex, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
 import { runPlanItem } from '../../lib/actions';
 import { haptic } from '../../lib/haptics';
 import { useTodayMoments } from '../../lib/moments';
@@ -88,6 +88,11 @@ export default function Today() {
   // While the ready panel shows, the current item is listed here too.
   const rest = plan.items.map((item, i) => ({ item, i })).filter(({ i }) => !plan.done[i] && (showReady || i !== cur));
   const alsoCount = rest.length + (resume ? 1 : 0);
+  // The list always shows every item, so a count adds nothing: say the time
+  // instead, which is what a busy learner budgets (ui.md T4).
+  const alsoMinutes =
+    rest.reduce((n, { item }) => n + itemMinutes(item), 0) +
+    (resume ? Math.max(1, Math.round((resume.questionIds.length - Object.keys(resume.responses).length) * MINUTES_PER_QUESTION)) : 0);
   // Tomorrow = a preview of the live plan (the next two items).
   const tomorrow = j.plan.slice(0, 2);
 
@@ -146,7 +151,8 @@ export default function Today() {
 
       {!allDone && (
         <Enter i={2}>
-          <ReadinessRow cert={j.cert} readiness={j.readiness} range={j.range} stage={j.stageLine} />
+          {/* The Exam-ready panel draws the rings itself: once per screen (spec §10). */}
+          <ReadinessRow cert={j.cert} readiness={j.readiness} range={j.range} stage={j.stageLine} rings={!showReady} />
         </Enter>
       )}
 
@@ -178,7 +184,7 @@ export default function Today() {
         ) : (
           alsoCount > 0 && (
             <>
-              <Section title="Also today" meta={`${alsoCount} more`} />
+              <Section title="Also today" meta={`about ${alsoMinutes} min`} />
               {resume && (
                 <ListRow
                   icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}

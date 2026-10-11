@@ -138,7 +138,8 @@ export default function LessonPlayer() {
 
       <View style={{ paddingHorizontal: space.gutter, paddingVertical: space.md, backgroundColor: c.bg }}>
         <Row gap={space.sm}>
-          <Button kind="secondary" label="Back" disabled={index === 0} onPress={() => goTo(Math.max(0, index - 1))} style={{ flex: 1 }} />
+          {/* No Back on the first scene (a disabled slab looked broken); Next takes the full width. */}
+          {index > 0 && <Button kind="secondary" label="Back" onPress={() => goTo(index - 1)} style={{ flex: 1 }} />}
           <Button label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: 2 }} />
         </Row>
       </View>

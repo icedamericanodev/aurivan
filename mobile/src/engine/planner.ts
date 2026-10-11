@@ -15,10 +15,11 @@ export type PlanItem =
   /** `label` is optional: older saved plans have none, and Today then says "Review N due". */
   /**
    * `capped`: more were due than one session asks (REVIEW_SESSION_CAP), so
-   * Today says "reviews come 20 at a time". Written only when true (older
-   * saves and uncapped items keep the old shape).
+   * Today says "20 at a time". `due`: the whole queue when capped, so Today
+   * says "Review 55 due" like You and Practice ("55 due"). Both are written
+   * only when capped (older saves and uncapped items keep the old shape).
    */
-  | { kind: 'review'; count: number; label?: string; capped?: boolean }
+  | { kind: 'review'; count: number; label?: string; capped?: boolean; due?: number }
   | { kind: 'lesson'; lessonId: string; title: string }
   | { kind: 'practice'; domainId?: string; count: number; label: string }
   /** `label` is saved with the day's plan; screens show the registry name, so old labels never show an old name. */
@@ -110,7 +111,7 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
   // Spaced reviews always come first when due — they are the cheapest wins.
   if (p.dueReviews > 0 && p.stage !== 'afterExam') {
     const capped = p.dueReviews > REVIEW_SESSION_CAP;
-    plan.unshift({ kind: 'review', count: Math.min(p.dueReviews, REVIEW_SESSION_CAP), ...(capped ? { capped } : {}) });
+    plan.unshift({ kind: 'review', count: Math.min(p.dueReviews, REVIEW_SESSION_CAP), ...(capped ? { capped, due: p.dueReviews } : {}) });
   }
   return plan.slice(0, 4);
 }
