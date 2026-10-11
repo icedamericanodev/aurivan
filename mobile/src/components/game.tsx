@@ -237,7 +237,7 @@ export function RoundEnd({
         </Enter>
         {news?.moment && (
           <View style={{ marginTop: space.xl }}>
-            <MilestoneMomentView moment={news.moment} once={`round:${game}:${score}:${news.moment.key}`} />
+            <MilestoneMomentView moment={news.moment} once={`round:${game}:${score}:${news.moment.key}`} onSee={() => router.push('/milestones')} />
           </View>
         )}
         <Gap h={space.xl} />

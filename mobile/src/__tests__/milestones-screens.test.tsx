@@ -14,6 +14,7 @@ import { ensureBackfill } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
+import { useSeen } from '../store/seen';
 import { useSettings } from '../store/settings';
 import Results from '../app/results';
 import Milestones from '../app/milestones';
@@ -65,7 +66,9 @@ beforeEach(() => {
   mockSuccess.mockClear();
   useProgress.setState({ byCert: {}, streak: { current: 0, best: 0, lastDay: null }, today: { day: '', answered: 0 }, days: {} });
   useSession.getState().clear();
-  useSettings.setState({ onboarded: true, activeCertId: 'cisa', examDates: {}, practiceTimer: false });
+  useSettings.setState({ onboarded: true, activeCertId: 'cisa', examDates: {}, practiceTimer: false, badgesHidden: false });
+  // Mobile 1.10: the 3-badge-moments-a-week cap starts empty in each test.
+  useSeen.setState({ badgeMoments: [], caseSeen: {} });
 });
 afterEach(() => {
   act(() => r?.unmount());
@@ -85,11 +88,14 @@ describe('Results: one quiet moment', () => {
     finishTwenty();
     mount(<Results />);
     const text = allText();
-    expect(text).toContain('A quiet milestone');
+    expect(text).toContain('A new badge · Groundwork');
     expect(text).toContain('First Foothold');
-    expect(text).toContain('Finish the 20-question diagnostic.');
-    // The second badge met in this session waits for a later one.
-    expect(text).not.toContain('Firm Footing');
+    // What the learner can now do, not the rule again.
+    expect(text).toContain('You’ve mapped where you stand. Your plan now starts from it.');
+    // The second badge met in this session waits for a later one (only the "Next:" line names a badge to come).
+    expect(text.match(/A new badge/g)).toHaveLength(1);
+    expect(text).not.toContain('Firm Footing · IS Operations');
+    expect(text).toContain('Next: Firm Footing · Info Protection');
     // Its one success tap comes with its motion: once the rings have grown and it is on screen.
     expect(mockSuccess).not.toHaveBeenCalled();
     act(() => {
@@ -103,7 +109,7 @@ describe('Results: one quiet moment', () => {
     expect(mockSuccess).toHaveBeenCalledTimes(1);
     act(() => r!.update(<Results />));
     expect(mockSuccess).toHaveBeenCalledTimes(1);
-    expect(labels().some((l) => l.startsWith('A quiet milestone: First Foothold.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('A new badge, Groundwork: First Foothold.'))).toBe(true);
   });
 
   it('a session with nothing new shows no moment and no haptic', () => {
@@ -111,29 +117,27 @@ describe('Results: one quiet moment', () => {
     answer(d4[0]);
     finishSession();
     mount(<Results />);
-    expect(allText()).not.toContain('A quiet milestone');
+    expect(allText()).not.toContain('A new badge');
     expect(mockSuccess).not.toHaveBeenCalled();
   });
 });
 
-describe('Milestones screen', () => {
-  it('earned, the 3 closest next with rules and progress, and the rest with rules', () => {
+describe('Badges screen', () => {
+  it('shelves with their own counts, every badge with its rule a tap away, no grand total', () => {
     d4.slice(0, 20).forEach(answer);
     ensureBackfill('cisa', T0);
     mount(<Milestones />);
     const text = allText();
-    expect(text).toContain('Earned');
-    expect(text).toContain('First Foothold');
-    expect(text).toContain('Firm Footing · IS Operations');
-    expect(text).toContain('Closest next');
-    expect(text).toContain('Still ahead');
-    // Every one of the 15 milestones is listed by name with its rule: no mystery badges.
-    for (const b of MILESTONES) {
-      expect(text).toContain(b.rule);
-    }
-    // Exactly 3 "closest next" rows: spoken "Not yet" with a progress detail.
-    const section = labels().filter((l) => /Not yet\. .+ of \d+ /.test(l));
-    expect(section.length).toBeGreaterThanOrEqual(1);
+    for (const shelf of ['Groundwork', 'The Five Domains', 'Evergreen', 'Sound Judgement', 'Exam Day', 'Rooted', 'Moments', 'Field notes']) expect(text).toContain(shelf);
+    // Per-set counts only ("1 of 3"), and no "n of 22"-style total.
+    expect(labels()).toContain('Groundwork, 1 of 3');
+    expect(labels()).toContain('The Five Domains, 1 of 6');
+    expect(labels()).toContain('Moments');
+    expect(text).not.toMatch(/\bof (15|20|22|23|30)\b(?! (study days|answered|questions|“sure”))/);
+    // Every badge is one button whose label holds its exact rule: no mystery badges.
+    const buttons = labels();
+    for (const b of [...MILESTONES, ...SKILL_BADGES]) expect(buttons.some((l) => l.includes(b.rule.replace(/\.$/, '')))).toBe(true);
+    expect(buttons.some((l) => l.startsWith('Firm Footing · IS Operations. Earned'))).toBe(true);
     // No bank size anywhere.
     expect(text).not.toMatch(/of \d{3,}/);
   });
@@ -143,7 +147,7 @@ describe('Milestones screen', () => {
     ensureBackfill('cisa', T0);
     expect(cp().milestones!.backfill!.count).toBe(2);
     mount(<Milestones />);
-    expect(allText()).toContain('You’d already earned 2 milestones.');
+    expect(allText()).toContain('You’d already earned 2 badges.');
     expect(cp().milestones!.backfill!.seen).toBe(true);
     act(() => r!.unmount());
     mount(<Milestones />);
@@ -152,38 +156,43 @@ describe('Milestones screen', () => {
 });
 
 describe('You', () => {
-  it('has Milestones and Field notes rows, and the back-fill line until it is seen', () => {
+  it('has Badges and Field notes rows, and the back-fill line until it is seen', () => {
     d4.slice(0, 20).forEach(answer);
     ensureBackfill('cisa', T0);
     mount(<You />);
-    expect(labels()).toEqual(expect.arrayContaining(['Milestones, 2 earned. What you\'ve mastered, and what\'s next', 'Field notes. Game levels and skill leaves']));
-    expect(allText()).toContain('You’d already earned 2 milestones.');
+    expect(labels()).toEqual(expect.arrayContaining(["Badges, 2 earned. What you've mastered, and what's next for your exam", 'Field notes. Game levels and skill badges']));
+    expect(allText()).toContain('You’d already earned 2 badges.');
     // Shown once: You marks it seen, and the line stays for this visit.
     expect(cp().milestones!.backfill!.seen).toBe(true);
-    expect(allText()).toContain('You’d already earned 2 milestones.');
+    expect(allText()).toContain('You’d already earned 2 badges.');
     // Only the text is grouped for screen readers; the button stays reachable on its own (UX review H1).
     const group = r!.root.findAll((n) => n.props.accessible === true && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.includes('already earned'));
     expect(group.length).toBeGreaterThan(0);
-    for (const g of group) expect(g.findAll((n) => n.props.label === 'See your milestones')).toHaveLength(0);
-    expect(r!.root.findAll((n) => n.props.label === 'See your milestones').length).toBeGreaterThan(0);
+    for (const g of group) expect(g.findAll((n) => n.props.label === 'See your badges')).toHaveLength(0);
+    expect(r!.root.findAll((n) => n.props.label === 'See your badges').length).toBeGreaterThan(0);
   });
 
   it('shows no summary when the back-fill found nothing, and says "none yet"', () => {
     ensureBackfill('cisa', T0);
     mount(<You />);
     expect(allText()).not.toContain('already earned');
-    expect(labels()).toContain('Milestones, none yet. What you\'ve mastered, and what\'s next');
+    expect(labels()).toContain("Badges, none yet. What you've mastered, and what's next for your exam");
   });
 });
 
 describe('Field notes', () => {
-  it('lists each game’s level (leaf + name) and the 7 pressed leaves with rules', () => {
+  it('lists each game’s level (leaf + name) and links to the skill badges in the case', () => {
     useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { trap: { tier: 'sapling', up: 0, down: 0 } } } } });
     mount(<FieldNotes />);
-    const text = allText();
     expect(labels()).toContain('Snare Spotter. Level: Sapling. Two rounds in a row at 80% or more, at your level, grow it to Heartwood.');
     expect(labels()).toContain('Signpost. Level: Seedling. Two rounds in a row at 80% or more, at your level, grow it to Sapling.');
-    for (const b of SKILL_BADGES) expect(text).toContain(b.rule);
+    expect(labels()).toContain('Your skill badges. None yet. Opens your badges.');
+  });
+
+  it('with badges hidden, shows game levels only', () => {
+    useSettings.setState({ badgesHidden: true });
+    mount(<FieldNotes />);
+    expect(labels().some((l) => l.startsWith('Your skill badges'))).toBe(false);
   });
 });
 
@@ -222,11 +231,12 @@ describe('Round end', () => {
         score={9}
         max={10}
         onAgain={() => {}}
-        news={{ change: null, tier: 'seedling', best: false, moment: { key: 'snare-wise', label: 'Snare-wise', rule: 'Spot the snare.', kind: 'skill' } }}
+        news={{ change: null, tier: 'seedling', best: false, moment: { key: 'snare-wise', label: 'Snare-wise', rule: 'Spot the snare.', kind: 'skill', set: 'fieldNotes', setName: 'Field notes', unlock: 'You spot the snare 8 times in 10.' } }}
       />,
     );
-    expect(allText()).toContain('A pressed leaf for your field notes');
+    expect(allText()).toContain('A new badge · Field notes');
     expect(allText()).toContain('Snare-wise');
+    expect(allText()).toContain('You spot the snare 8 times in 10.');
     expect(mockSuccess).toHaveBeenCalledTimes(1);
   });
 });

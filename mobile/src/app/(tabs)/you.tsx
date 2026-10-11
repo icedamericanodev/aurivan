@@ -12,7 +12,10 @@
  * with one honest number (engine/shareCard.ts picks it).
  * Build F: "Milestones" and "Field notes" rows under Study tools, and ONE
  * quiet line the first time after the launch back-fill ("You'd already
- * earned 4 milestones.") instead of a burst of celebrations.
+ * earned 4 badges.") instead of a burst of celebrations.
+ * Mobile 1.10: the row is "Badges" (the badge case), with a count only
+ * (never "of N") and a small "new" dot until a newly earned badge has been
+ * seen. Settings → Show badges off hides the row, the dot and the line.
  * Mobile 1.7: one "Help and feedback" row at the end (app/help.tsx).
  */
 import { router } from 'expo-router';
@@ -22,26 +25,25 @@ import { boundsLabel, DomainRings, ringsSpoken } from '../../components/journey'
 import { useGrowth, useScreenFocus } from '../../components/motion';
 import { creditSubtitle } from '../../components/help';
 import { MindsetGrowthCard } from '../../components/moments';
-import { Bookmark, ICON_STROKE, Leaf, LifeBuoy, MilestoneIcon, NotebookPen, RotateCcw, Settings, Share2 } from '../../components/icons';
+import { BadgeIcon, Bookmark, ICON_STROKE, Leaf, LifeBuoy, NotebookPen, RotateCcw, Settings, Share2 } from '../../components/icons';
 import { ShareProgressSheet } from '../../components/shareCard';
 import { ThemeSwitch } from '../../components/themeSwitch';
-import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
+import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Row, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
 import { pacingStats, pacingStatsLine, TIMING_LABEL } from '../../engine/pace';
 import { rangeLabel, rangeSpoken, readinessRange } from '../../engine/readinessRange';
 import { REVIEW_UNIT } from '../../engine/srs';
 import { dayKey } from '../../engine/streak';
 import { guardedStart, reviewSubtitle, startReview } from '../../lib/sessions';
 import { shortDate } from '../../lib/format';
-import { MILESTONES } from '../../engine/milestones';
+import { useNewBadge } from '../../lib/badges';
 import { backfillLine, seeBackfill } from '../../lib/milestones';
 import { useMindsetGrowth } from '../../lib/moments';
 import { useReports } from '../../lib/useReports';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
+import { useSettings } from '../../store/settings';
 import { motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
-
-const MILESTONE_IDS = new Set<string>(MILESTONES.map((b) => b.id));
 
 export default function You() {
   const { c } = useTheme();
@@ -63,9 +65,10 @@ export default function You() {
   // The day the sheet was opened (read in the tap handler, not during render). null = closed.
   const [shareDay, setShareDay] = useState<string | null>(null);
   const icon = (G: typeof Settings) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
-  // Build F: milestones earned (badges, not leaves) and the one-time back-fill line.
-  const earnedMarks = Object.keys(progress.milestones?.earned ?? {});
-  const milestoneCount = new Set(earnedMarks.map((k) => k.split(':')[0]).filter((b) => MILESTONE_IDS.has(b))).size;
+  // Mobile 1.10: every badge earned (each medallion in the case counts once), and the "new" dot.
+  const badgeCount = Object.keys(progress.milestones?.earned ?? {}).length;
+  const newBadge = useNewBadge();
+  const badgesHidden = useSettings((s) => s.badgesHidden);
   // The back-fill line shows ONCE (code review): kept in state for this
   // visit, and marked seen right away, like the Milestones screen does.
   const backfill = progress.milestones?.backfill;
@@ -164,7 +167,7 @@ export default function You() {
       </Enter>
 
       <Enter i={3}>
-        {summary && (
+        {summary && !badgesHidden && (
           // Once, after the launch back-fill: one calm line, not a burst of moments.
           // Only the text is grouped for screen readers; the button stays its own stop (UX review H1).
           <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
@@ -172,7 +175,7 @@ export default function You() {
               <T v="caption" color={c.accentText}>From your study so far</T>
               <T v="quote" style={{ marginTop: 4 }}>{summary}</T>
             </View>
-            <Button kind="ghost" label="See your milestones" onPress={() => router.push('/milestones')} style={{ alignSelf: 'flex-start' }} />
+            <Button kind="ghost" label="See your badges" onPress={() => router.push('/milestones')} style={{ alignSelf: 'flex-start' }} />
           </View>
         )}
         <Section title="Study tools" style={{ marginTop: space.xl }} />
@@ -202,19 +205,27 @@ export default function You() {
           accessibilityLabel={`Saved questions, ${progress.bookmarks.length} saved`}
           onPress={() => router.push('/saved')}
         />
-        <ListRow
-          icon={icon(MilestoneIcon)}
-          title="Milestones"
-          subtitle="What you’ve mastered, and what’s next"
-          trailing={milestoneCount ? <Trail value={String(milestoneCount)} unit="earned" /> : undefined}
-          accessibilityLabel={`Milestones, ${milestoneCount ? `${milestoneCount} earned` : 'none yet'}. What you've mastered, and what's next`}
-          onPress={() => router.push('/milestones')}
-        />
+        {!badgesHidden && (
+          <ListRow
+            icon={icon(BadgeIcon)}
+            title="Badges"
+            subtitle="What you’ve mastered, and what’s next for your exam"
+            trailing={
+              <Row gap={space.sm}>
+                {/* A badge earned since the case was last opened: a dot (shape, and spoken), never a number. */}
+                {newBadge && <View testID="new-badge-dot" style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: c.accent }} />}
+                {badgeCount ? <Trail value={String(badgeCount)} unit="earned" /> : null}
+              </Row>
+            }
+            accessibilityLabel={`Badges${newBadge ? ', new badge' : ''}, ${badgeCount ? `${badgeCount} earned` : 'none yet'}. What you've mastered, and what's next for your exam`}
+            onPress={() => router.push('/milestones')}
+          />
+        )}
         <ListRow
           icon={icon(Leaf)}
           title="Field notes"
-          subtitle="Game levels and skill leaves"
-          accessibilityLabel="Field notes. Game levels and skill leaves"
+          subtitle={badgesHidden ? 'Your level in each game' : 'Game levels and skill badges'}
+          accessibilityLabel={`Field notes. ${badgesHidden ? 'Your level in each game' : 'Game levels and skill badges'}`}
           onPress={() => router.push('/field-notes')}
           last
         />

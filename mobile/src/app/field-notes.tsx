@@ -5,23 +5,24 @@
  * - "Game levels": each game this exam can play, with the learner's level
  *   as a leaf AND its name (Seedling, Sapling, Heartwood), and one line on
  *   how it grows. Never a play count, never a leaderboard.
- * - "Pressed leaves": the 7 skill badges. Each shows its plain rule; earned
- *   ones are a filled leaf with the date, the rest an outline leaf with how
- *   close the learner is.
+ * - Mobile 1.10: the 7 skill badges moved to the badge case, on their own
+ *   Field notes shelf (counted on their own). This screen links there, unless
+ *   badges are hidden in Settings.
  */
 import { router } from 'expo-router';
 import { useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BadgeRow, TierTag } from '../components/milestones';
-import { PushedHeader, Section, T } from '../components/ui';
+import { ICON_STROKE, Leaf } from '../components/icons';
+import { TierTag } from '../components/milestones';
+import { ICON_SIZE, ListRow, PushedHeader, Section, T } from '../components/ui';
 import { GAME_TIER_NAME, growthTier } from '../engine/games/growth';
 import { GAMES } from '../engine/games/registry';
 import { badgeViews } from '../engine/milestones';
-import { shortDate } from '../lib/format';
 import { playableGames } from '../lib/games';
 import { marksFor } from '../lib/milestones';
 import { useActiveCert } from '../lib/useActiveCert';
+import { useSettings } from '../store/settings';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
@@ -38,12 +39,14 @@ export default function FieldNotes() {
   const { cert, progress } = useActiveCert();
   const games = useMemo(() => playableGames(cert.id), [cert.id]);
   const skills = useMemo(() => badgeViews(marksFor(cert.id, progress), progress.milestones?.earned, 'skill'), [cert.id, progress]);
+  const earned = skills.filter((v) => v.earned.length).length;
+  const hidden = useSettings((s) => s.badgesHidden);
 
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxl }}>
         <PushedHeader title="Field notes" onBack={() => router.back()} />
-        <T v="meta" style={{ marginTop: space.sm }}>Your level in each game, and the skills you’ve shown.</T>
+        <T v="meta" style={{ marginTop: space.sm }}>Your level in each game, and how it grows.</T>
 
         <Section title="Game levels" />
         {games.map((id, k) => {
@@ -65,22 +68,20 @@ export default function FieldNotes() {
         })}
         <T v="meta" style={{ marginTop: space.sm }}>Two rounds in a row under 50% at your level move it back one level. Two strong rounds grow it again.</T>
 
-        <Section title="Pressed leaves" meta={`${skills.filter((v) => v.earned.length).length} of ${skills.length}`} />
-        {skills.map((v, k) => {
-          const got = v.earned[0];
-          const detail = got ? `Pressed ${shortDate(got.at)}` : v.next?.detail;
-          return (
-            <BadgeRow
-              key={v.def.id}
-              name={v.def.name}
-              rule={v.def.rule}
-              earned={Boolean(got)}
-              detail={detail}
-              last={k === skills.length - 1}
-              spoken={`${v.def.name}. ${got ? 'Earned' : 'Not yet'}. ${v.def.rule} ${detail ?? ''}`}
+        {!hidden && (
+          <>
+            <Section title="Skill badges" />
+            {/* The 7 skill badges live in the badge case, on their own shelf (counted on their own). */}
+            <ListRow
+              icon={<Leaf size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+              title="Your skill badges"
+              subtitle={earned ? `${earned} of ${skills.length} earned, in your badges` : 'In your badges, with what each needs'}
+              accessibilityLabel={`Your skill badges. ${earned ? `${earned} of ${skills.length} earned` : 'None yet'}. Opens your badges.`}
+              onPress={() => router.push('/milestones')}
+              last
             />
-          );
-        })}
+          </>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

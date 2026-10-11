@@ -739,13 +739,14 @@ export function resetCelebrationsForTest() {
  * Decide (and record) how one celebration of `kind` plays now. `first`: the
  * first time this kind has ever shown (its one success haptic, for example).
  */
-export function pickCelebration(kind: string, reduced: boolean): { mode: CelebrationMode; first: boolean } {
+export function pickCelebration(kind: string, reduced: boolean, shortOnly = false): { mode: CelebrationMode; first: boolean } {
   const seen = useSeen.getState();
   const times = seen.moments[kind] ?? 0;
   seen.played(kind);
   const first = times === 0;
   if (reduced) return { mode: 'static', first };
-  if (sessionFull || times >= motion.celebrate.fullTimes || !claimDecor(motion.dur.celebrate)) {
+  // `shortOnly`: a moment that never plays in full (a badge's higher tier, mobile 1.10).
+  if (shortOnly || sessionFull || times >= motion.celebrate.fullTimes || !claimDecor(motion.dur.celebrate)) {
     // Even the short form is decoration: past the budget, the end state just shows.
     return { mode: claimDecor(motion.dur.short) ? 'short' : 'static', first };
   }
@@ -773,10 +774,11 @@ export interface Celebration {
  * the same one twice. With `once`, the occasion plays once EVER (saved in the
  * seen store): later launches show it still, unannounced. `line` is the
  * moment in words, announced once per occasion to screen readers (in every
- * mode), after a short pause so a screen change doesn't cut it off.
+ * mode), after a short pause so a screen change doesn't cut it off. With
+ * `shortOnly` it never plays in full (a badge's higher tier).
  * Never blocks input: buttons inside keep working, and any touch skips.
  */
-export function useCelebration(kind: string, run: boolean, line?: string, id: string = '', once = false): Celebration {
+export function useCelebration(kind: string, run: boolean, line?: string, id: string = '', once = false, shortOnly = false): Celebration {
   const { reduced } = useMotion();
   const [state, setState] = useState<{ mode: CelebrationMode; first: boolean; settled: boolean; run: number }>({ mode: 'static', first: false, settled: true, run: 0 });
   // The occasion that started (or was found already played), so it never starts twice.
@@ -791,12 +793,12 @@ export function useCelebration(kind: string, run: boolean, line?: string, id: st
       if (seen.moments[id]) return; // played on an earlier launch: shown still
       seen.played(id);
     }
-    const { mode, first } = pickCelebration(kind, reduced);
+    const { mode, first } = pickCelebration(kind, reduced, shortOnly);
     // Deliberately in a layout effect: the start is decided before paint, so the parts never flash their end state.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setState((s) => ({ mode, first, settled: mode !== 'full', run: s.run + 1 }));
     if (line) sayLater(line);
-  }, [run, id, once, kind, reduced, line]);
+  }, [run, id, once, kind, reduced, line, shortOnly]);
   // A full moment has simply ended after its 1.2 s: a later tap is not a skip.
   useEffect(() => {
     if (state.settled) return;

@@ -37,7 +37,8 @@ import Results from '../app/results';
 import Saved from '../app/saved';
 import { EmptyArt, GrowthRings } from '../components/glyphs';
 import { ClearingBody } from '../components/journey';
-import { BadgeRow, MilestoneMomentView } from '../components/milestones';
+import { BadgeCell, BadgeListRow } from '../components/badges';
+import { MilestoneMomentView, resetBadgeMomentsForTest } from '../components/milestones';
 import { resetCelebrationsForTest, resetOncePerDayForTest, RollingText, setSystemReducedMotionForTest, ThemeFade } from '../components/motion';
 import { EmptyState } from '../components/ui';
 import { getAllQuestions, getDomainQuestions } from '../content/loader';
@@ -232,7 +233,8 @@ beforeEach(() => {
   mockFocus.on = true;
   mockFocus.params = {};
   mockMoments.ready = false;
-  useSeen.setState({ values: {}, moments: {} });
+  useSeen.setState({ values: {}, moments: {}, badgeMoments: [], caseSeen: {} });
+  resetBadgeMomentsForTest();
   useProgress.getState().resetCert('cisa');
   useProgress.setState({ days: {} });
   useSession.getState().clear();
@@ -385,7 +387,7 @@ describe('J2 practice session → Results', () => {
 
     it('is announced at once, but moves (with its one success tap) only after the rings settle AND it is scrolled into view', () => {
       openWithMilestone(3);
-      const words = heard().mock.calls.filter(([t]) => String(t).startsWith('A quiet milestone: First Foothold'));
+      const words = heard().mock.calls.filter(([t]) => String(t).startsWith('A new badge, Groundwork: First Foothold'));
       expect(words).toHaveLength(1);
       expect(mockSuccess).not.toHaveBeenCalled();
       expect(moment().props.inView).toBe(false);
@@ -404,7 +406,7 @@ describe('J2 practice session → Results', () => {
       // In full (the session's one full celebration): the leaf pops.
       expect(byName('Pop').some((p) => p.props.trigger === 1)).toBe(true);
       // …and its words are not spoken a second time.
-      expect(heard().mock.calls.filter(([t]) => String(t).startsWith('A quiet milestone: First Foothold'))).toHaveLength(1);
+      expect(heard().mock.calls.filter(([t]) => String(t).startsWith('A new badge, Groundwork: First Foothold'))).toHaveLength(1);
     });
 
     it('already on screen: it still waits for the rings to settle first', () => {
@@ -452,7 +454,7 @@ describe('J3 finishing the day’s plan (the clearing)', () => {
 
   it('at most one FULL celebration per app session: after a milestone played in full, the clearing is short', () => {
     setMockReducedMotion(false);
-    const m = { key: 'first-foothold', kind: 'milestone' as const, label: 'First Foothold', rule: 'Finish the diagnostic.' };
+    const m = { key: 'first-foothold', kind: 'milestone' as const, label: 'First Foothold', rule: 'Finish the diagnostic.', set: 'groundwork', setName: 'Groundwork', unlock: 'You’ve mapped where you stand.' };
     mount(<MilestoneMomentView moment={m as never} once="qa-s1" />);
     expect(useSeen.getState().moments.milestone).toBe(1);
     unmount();
@@ -624,14 +626,16 @@ describe('J4 You', () => {
   });
 });
 
-describe('J4b Milestones: what moved since the last look', () => {
+describe('J4b Badges: what moved since the last look', () => {
   const earn = (key: string) =>
     act(() => {
       useProgress.getState().updateMilestones('cisa', (m) => ({ milestones: { ...(m ?? { earned: {} }), earned: { ...(m?.earned ?? {}), [key]: Date.now() } } }));
     });
-  const pressOf = (name: string) => r!.root.findAllByType(BadgeRow).find((n) => n.props.name === name)?.props.press as number | undefined;
+  // Each medallion is a cell (or a row at large text) whose `press` says it presses in, and when.
+  const pressOf = (name: string) =>
+    [...r!.root.findAllByType(BadgeCell), ...r!.root.findAllByType(BadgeListRow)].find((n) => n.props.mark.name === name)?.props.press as number | undefined;
 
-  it('a leaf earned since the last visit presses in once; a revisit shows it still', () => {
+  it('a badge earned since the last visit presses in once; a revisit shows it still', () => {
     setMockReducedMotion(false);
     mount(<Milestones />);
     unmount();

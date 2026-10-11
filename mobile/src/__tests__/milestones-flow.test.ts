@@ -286,8 +286,8 @@ describe('back-fill at launch', () => {
     expect(n).toBe(5);
     expect(m.backfill).toEqual({ at: T0, count: 5 });
     expect(m.queue ?? []).toEqual([]);
-    expect(backfillLine(n!)).toBe('You’d already earned 5 milestones.');
-    expect(backfillLine(1)).toBe('You’d already earned 1 milestone.');
+    expect(backfillLine(n!)).toBe('You’d already earned 5 badges.');
+    expect(backfillLine(1)).toBe('You’d already earned 1 badge.');
     expect(backfillLine(0)).toBeNull();
   });
 

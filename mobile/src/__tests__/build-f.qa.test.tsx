@@ -25,7 +25,7 @@ import { buildCanopyRound, canopyCardId, confusionPairs, type CanopyAnswer, type
 import { buildFieldRound, fieldTerms } from '../engine/games/fieldGuide';
 import { GAME_TIERS, tierChangeLine } from '../engine/games/growth';
 import { buildStonesRound, checkPath, keyWords, ordinal, stonesCardId, stonesPool, type StonesTier } from '../engine/games/steppingStones';
-import { badgeCount, badgeViews, MILESTONES, nearest } from '../engine/milestones';
+import { badgeCount } from '../engine/milestones';
 import { createRng } from '../engine/random';
 import { computeReadiness } from '../engine/readiness';
 import { slipCoach, type SlipInput } from '../engine/slipCoach';
@@ -35,7 +35,7 @@ import { checkBackupText, currentBackup, restoreBackup } from '../lib/backup';
 import { finishSession } from '../lib/finishSession';
 import { finishGameRound } from '../lib/gameRounds';
 import { canPlay } from '../lib/games';
-import { backfillLine, checkMilestones, ensureBackfill, marksFor, milestoneFacts } from '../lib/milestones';
+import { backfillLine, badgeCase, checkMilestones, ensureBackfill, milestoneFacts } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
 import { selectCert, useProgress, type CertProgress } from '../store/progress';
 import { useSession } from '../store/session';
@@ -194,7 +194,7 @@ describe('Journey 1: a 1.5 learner upgrades', () => {
     expect(n).toBe(9);
     expect(badgeCount(Object.keys(m.earned))).toBe(9);
     expect(m.backfill).toEqual({ at: T0, count: 9 });
-    expect(backfillLine(n!)).toBe('You’d already earned 9 milestones.');
+    expect(backfillLine(n!)).toBe('You’d already earned 9 badges.');
     // Quiet: nothing queued for a moment.
     expect(m.queue ?? []).toEqual([]);
     // Coach me answers (all of D5) never earned a leaf.
@@ -229,34 +229,30 @@ describe('Journey 1: a 1.5 learner upgrades', () => {
     expect(cp().milestones!.counts?.loopFixed).toBe(11);
   });
 
-  it('the Milestones screen splits earned, closest next and still ahead, each badge once', () => {
+  it('the Badges screen: each earned mark once, per-set counts, every open badge on its shelf with its progress', () => {
     upgrade();
     ensureBackfill('cisa', T0);
     act(() => {
       r = create(<Milestones />);
     });
     const text = allText();
-    expect(text).toContain('You’d already earned 9 milestones.');
-    expect(text).toContain('9 of 15');
-    expect(text).toContain('Firm Footing · IS Audit, IS Operations');
-    expect(text).toContain('Rooted · 10 days');
-    // The screen's own data, checked against the rules.
-    const views = badgeViews(marksFor('cisa', cp(), T0), cp().milestones!.earned, 'milestone');
-    const earned = views.filter((v) => v.earned.length).map((v) => v.def.id);
-    const next = nearest(views.filter((v) => v.earned.length === 0 || v.next));
-    const nextIds = next.map((v) => v.def.id);
-    const ahead = views.filter((v) => v.earned.length === 0 && !nextIds.includes(v.def.id)).map((v) => v.def.id);
-    expect(earned).toHaveLength(9);
-    expect(next).toHaveLength(3);
-    // Closest first.
-    const progress = next.map((v) => v.next!.progress);
-    expect([...progress].sort((a, b) => b - a)).toEqual(progress);
-    // Every unearned milestone is either "closest next" or "still ahead", never both, never missing.
-    const unearned = MILESTONES.map((b) => b.id).filter((id) => !earned.includes(id));
-    expect([...ahead, ...nextIds.filter((id) => unearned.includes(id))].sort()).toEqual([...unearned].sort());
-    expect(ahead.filter((id) => nextIds.includes(id))).toEqual([]);
-    // Spoken: each closest-next row says "Not yet" with its progress line.
-    for (const v of next) expect(labels().some((l) => l.startsWith(`${v.next!.label}. Not yet.`))).toBe(true);
+    expect(text).toContain('You’d already earned 9 badges.');
+    // Per-set counts, never a grand total.
+    expect(text).not.toContain('of 15');
+    expect(labels()).toContain('Groundwork, 2 of 3');
+    expect(labels()).toContain('Exam Day, 2 of 2, complete, 12 Oct');
+    // The case's own data, checked against the rules: each earned mark is one earned medallion.
+    const { marks } = badgeCase('cisa', cp(), T0);
+    const earnedKeys = Object.keys(cp().milestones!.earned);
+    for (const k of earnedKeys) expect(marks.find((m) => m.key === k)?.status).toBe('earned');
+    expect(labels().some((l) => l.startsWith('Firm Footing · IS Audit. Earned'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Rooted · 10 days, Clay. Earned'))).toBe(true);
+    // Every open badge says "Not yet" with its progress (or when it opens): nothing hidden.
+    for (const m of marks.filter((x) => x.status !== 'earned')) {
+      expect(labels().some((l) => l.startsWith(`${m.name}${m.tier ? ',' : '.'}`) && l.includes('Not yet'))).toBe(true);
+    }
+    // A completed set saves its planter (the plant shows it in Phase 4).
+    expect(cp().milestones!.planters?.examDay).toBeDefined();
     // Seen once: a second visit has no summary.
     expect(cp().milestones!.backfill!.seen).toBe(true);
   });

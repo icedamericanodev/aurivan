@@ -12,7 +12,7 @@ import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Today from '../app/(tabs)/home';
 import You from '../app/(tabs)/you';
 import Results from '../app/results';
-import { MilestoneMomentView } from '../components/milestones';
+import { MilestoneMomentView, resetBadgeMomentsForTest } from '../components/milestones';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { getAllQuestions } from '../content/loader';
 import { flushSayLaterForTest } from '../lib/a11y';
@@ -69,7 +69,8 @@ beforeEach(() => {
   setSystemReducedMotionForTest(null);
   resetCelebrationsForTest();
   resetOncePerDayForTest();
-  useSeen.setState({ values: {}, moments: {} });
+  useSeen.setState({ values: {}, moments: {}, badgeMoments: [], caseSeen: {} });
+  resetBadgeMomentsForTest();
   useProgress.getState().resetCert('cisa');
   useSession.getState().clear();
   useSettings.setState({ theme: 'light', activeCertId: 'cisa', onboarded: true, motion: 'system', haptics: true });
@@ -194,11 +195,11 @@ describe('the milestone moment', () => {
   it('waits until it is on screen to move, its haptic with it; its words do not wait', () => {
     setMockReducedMotion(false);
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
-    const moment = { key: 'rooted:10', kind: 'milestone' as const, label: 'Rooted · 10 days', rule: 'Study on 10 days in all.' };
+    const moment = { key: 'rooted:10', kind: 'milestone' as const, label: 'Rooted · 10 days', rule: 'Study on 10 days in all.', set: 'rooted', setName: 'Rooted', unlock: 'Ten study days.', tier: 1 };
     mount(<MilestoneMomentView moment={moment as never} once="s1" inView={false} />);
     expect(mockSuccess).not.toHaveBeenCalled();
     flushSayLaterForTest();
-    expect(say.mock.calls.filter(([t]) => String(t).startsWith('A quiet milestone'))).toHaveLength(1);
+    expect(say.mock.calls.filter(([t]) => String(t).startsWith('A new badge, Rooted: Rooted · 10 days · Clay. Ten study days.'))).toHaveLength(1);
     expect(useSeen.getState().moments.milestone).toBeUndefined(); // not played yet
     act(() => {
       r!.update(<MilestoneMomentView moment={moment as never} once="s1" inView />);

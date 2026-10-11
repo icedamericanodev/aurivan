@@ -12,14 +12,17 @@
  * The dot pops in under the new tab. Today and You use custom glyphs
  * (sprout, growth rings); the others stay Lucide. Practice is a checklist,
  * not a target: a target's concentric circles looked like the You rings.
+ * Mobile 1.10: a small "new" dot on the You icon while a newly earned badge
+ * waits to be seen (spoken "You, new badge"). Never a number.
  */
 import { Tabs } from 'expo-router';
 import { PlatformPressable } from 'expo-router/react-navigation';
-import { Easing, type Animated, type ColorValue } from 'react-native';
+import { Easing, View, type Animated, type ColorValue } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BookOpen, Gamepad2, ICON_STROKE, ListChecks, Rings, Sprout } from '../../components/icons';
 import { useMotion } from '../../components/motion';
 import { ICON_SIZE, TAB_BAR_HEIGHT, TabLabel } from '../../components/ui';
+import { useNewBadge } from '../../lib/badges';
 import { motion } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -29,6 +32,22 @@ const icon = (G: Glyph) =>
   function TabIcon({ color }: IconProps) {
     return <G size={ICON_SIZE.bar} color={color as string} strokeWidth={ICON_STROKE} />;
   };
+/** The You icon, with the "new badge" dot at its top right (an 8pt accent dot ringed in the bar's paper). */
+function YouIcon({ color }: IconProps) {
+  const { c } = useTheme();
+  const dot = useNewBadge();
+  return (
+    <View>
+      <Rings size={ICON_SIZE.bar} color={color as string} strokeWidth={ICON_STROKE} />
+      {dot && (
+        <View
+          testID="you-new-dot"
+          style={{ position: 'absolute', top: -2, right: -3, width: 10, height: 10, borderRadius: 5, backgroundColor: c.accent, borderWidth: 2, borderColor: c.bg }}
+        />
+      )}
+    </View>
+  );
+}
 const label = (text: string) =>
   function Label({ focused }: { focused: boolean }) {
     return <TabLabel label={text} focused={focused} />;
@@ -63,6 +82,7 @@ export default function TabsLayout() {
   const { c } = useTheme();
   const { reduced } = useMotion();
   const insets = useSafeAreaInsets();
+  const newBadge = useNewBadge();
   return (
     <Tabs
       screenOptions={{
@@ -88,7 +108,10 @@ export default function TabsLayout() {
       <Tabs.Screen name="learn" options={{ title: 'Learn', tabBarLabel: label('Learn'), tabBarButton: tabButton('Learn'), tabBarIcon: icon(BookOpen as Glyph) }} />
       <Tabs.Screen name="practice" options={{ title: 'Practice', tabBarLabel: label('Practice'), tabBarButton: tabButton('Practice'), tabBarIcon: icon(ListChecks as Glyph) }} />
       <Tabs.Screen name="play" options={{ title: 'Play', tabBarLabel: label('Play'), tabBarButton: tabButton('Play'), tabBarIcon: icon(Gamepad2 as Glyph) }} />
-      <Tabs.Screen name="you" options={{ title: 'You', tabBarLabel: label('You'), tabBarButton: tabButton('You'), tabBarIcon: icon(Rings) }} />
+      <Tabs.Screen
+        name="you"
+        options={{ title: 'You', tabBarLabel: label('You'), tabBarButton: tabButton('You'), tabBarIcon: YouIcon, tabBarAccessibilityLabel: newBadge ? 'You, new badge' : 'You' }}
+      />
     </Tabs>
   );
 }
