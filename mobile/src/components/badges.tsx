@@ -495,6 +495,7 @@ export function BadgeSheet({
   quiet = NO_QUIET,
   visible = true,
   cert,
+  plantLine,
   onClose,
   onDismissed,
   onStudy,
@@ -521,6 +522,12 @@ export function BadgeSheet({
   onStudy: (target: StudyTarget) => void;
   /** The exam, for the share card's "Studying for the CISA® exam" and its notice. */
   cert?: ShareCert;
+  /**
+   * Mobile 1.14: the badge's keepsake on the learner's plant ("On your plant:
+   * the lantern."), one quiet line on an earned badge. Unset: no plant, the
+   * plant is hidden, or the badge gives no keepsake.
+   */
+  plantLine?: string | null;
 }) {
   const { c } = useTheme();
   const { reduced } = useMotion();
@@ -595,6 +602,12 @@ export function BadgeSheet({
                       {`This completed ${set.info.name} on ${shortDate(set.completeAt!)}.`}
                     </T>
                   )}
+                  {/* One quiet line, no banner, no count (mobile 1.14). */}
+                  {plantLine ? (
+                    <T v="meta" color={c.ink2} style={{ marginTop: space.sm }}>
+                      {plantLine}
+                    </T>
+                  ) : null}
                 </View>
               )}
 

@@ -390,6 +390,10 @@ describe('onboarding', () => {
     press(/^Plant it$/);
     expect(useSettings.getState().onboarded).toBe(true);
     expect(cp().plant).toMatchObject({ species: 'lotus', growth: 1 });
+    // Mobile 1.14 (M8): a short planting moment first, then Today.
+    expect(allText()).toMatch(/Planted/);
+    expect(router.replace).not.toHaveBeenCalled();
+    press(/^Start studying$/);
     expect(router.replace).toHaveBeenCalledWith('/home');
   });
 
@@ -498,14 +502,14 @@ describe('PR #43 review fixes', () => {
     expect(labels()).toContain('No thanks, hide this note. You can plant one from You.');
   });
 
-  it('code review M2: the grow line never spends the session’s one full celebration', () => {
+  it('mobile 1.14: the growth sequence is the session’s one full moment (a later milestone plays short)', () => {
     setMockReducedMotion(false);
     setSystemReducedMotionForTest(false);
     setPlant({ ...plantNew('oak', 'Kai', Date.now(), 2), pending: 2 });
     mount(<Today />);
     expect(byTestID('plant-grew')).toHaveLength(1);
-    // A Results milestone later in the same session still plays in full.
-    expect(pickCelebration('milestone-after-plant', false).mode).toBe('full');
+    // 4a's line never spent it (code review M2); 4b's growth sequence is a real moment, so it does.
+    expect(pickCelebration('milestone-after-plant', false).mode).toBe('short');
   });
 
   it('UX P2: the exam eve and exam day have their own calm line on Your plant', () => {

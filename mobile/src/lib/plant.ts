@@ -42,9 +42,11 @@ import {
   type PlantSettings,
   type PlantSpecies,
 } from '../engine/plant';
+import { planComplete } from '../engine/dayPlan';
+import { keepsakeForBadge, plantMood, resolveLook, unlockedLooks, type ArtLook, type CertMarks, type PlantMood, type ResolvedLook } from '../engine/plantLooks';
 import { computeReadiness } from '../engine/readiness';
 import { dayKey } from '../engine/streak';
-import { selectCert, useProgress, type CertProgress, type MockResult } from '../store/progress';
+import { selectCert, useProgress, type CertProgress, type MockResult, type ProgressState } from '../store/progress';
 import { useSettings } from '../store/settings';
 import { certOutline, questionExists } from './outline';
 
@@ -204,8 +206,68 @@ export function plantView(cert: Certification, cp: Pick<CertProgress, 'answers' 
   };
 }
 
+// ── The look (mobile 1.14) ──────────────────────────────────────────────
+/** Every cert's saved marks: badges and set planters dress any plant (they are the learner's, not the plant's). */
+export function allCertMarks(byCert: ProgressState['byCert']): CertMarks[] {
+  return Object.values(byCert).map((c) => ({ earned: c?.milestones?.earned, planters: c?.milestones?.planters }));
+}
+
+/** What the look screens and the plant need from the marks: a stable string, so a store change elsewhere never redraws the plant. */
+function marksKey(s: ProgressState, today: string): string {
+  const keys: string[] = [];
+  let newKeepsake = false;
+  for (const c of Object.values(s.byCert)) {
+    const m = c?.milestones;
+    for (const [k, at] of Object.entries(m?.earned ?? {})) {
+      keys.push(k);
+      if (!newKeepsake && dayKey(at) === today && keepsakeForBadge(k.split(':')[0])) newKeepsake = true;
+    }
+    for (const set of Object.keys(m?.planters ?? {})) keys.push(`set:${set}`);
+  }
+  return JSON.stringify([newKeepsake, [...new Set(keys)].sort()]);
+}
+
+export interface PlantLookView {
+  /** Every look id open now (derived; nothing stored). */
+  unlocked: Set<string>;
+  /** The look as chosen, with anything not open (or not this species') back to its default. */
+  resolved: ResolvedLook;
+  /** What the art draws (the visitor only on a day the plan is cleared). */
+  art: ArtLook;
+  /** The face's mood (none with Quiet look). */
+  mood: PlantMood;
+  /** The visitor is here today. */
+  visiting: boolean;
+}
+
+export interface LookInput {
+  marks: readonly CertMarks[];
+  face: boolean;
+  resting: boolean;
+  planCleared: boolean;
+  newTopicToday: boolean;
+  newKeepsakeToday: boolean;
+  today: string;
+}
+
+/** Pure: the look and mood for one plant (tests call this directly). */
+export function plantLookView(plant: CertPlant, i: LookInput): PlantLookView {
+  const unlocked = new Set(unlockedLooks(plant, i.marks));
+  const resolved = resolveLook(plant.species, plant.look, unlocked);
+  const visiting = i.planCleared && resolved.visitor !== 'no-visitor' && !i.resting;
+  const grewToday = Object.values(plant.reached ?? {}).some((at) => typeof at === 'number' && dayKey(at) === i.today);
+  const mood = plantMood({ face: i.face, resting: i.resting, grewToday, newKeepsakeToday: i.newKeepsakeToday, planCleared: i.planCleared, newTopicToday: i.newTopicToday });
+  return {
+    unlocked,
+    resolved,
+    art: { palette: resolved.palette, ground: resolved.ground, planter: resolved.planter, visitor: visiting ? resolved.visitor : undefined, keepsakes: resolved.keepsakes },
+    mood,
+    visiting,
+  };
+}
+
 /** The plant view for the active cert (Today, You, Your plant). */
-export function usePlantView(): PlantView & { cert: Certification; certId: string; exam: 'eve' | 'day' | null } {
+export function usePlantView(): PlantView & { cert: Certification; certId: string; exam: 'eve' | 'day' | null; look: PlantLookView | null } {
   const certId = useSettings((s) => s.activeCertId);
   const examDate = useSettings((s) => s.examDates[certId]);
   // Only what the view reads (code review M6c): a review, a bookmark or a
@@ -226,5 +288,19 @@ export function usePlantView(): PlantView & { cert: Certification; certId: strin
     () => plantView(cert, { answers, plant, milestones: lastDay ? { earned: {}, lastDay } : undefined }, settings, today, plannedRest),
     [cert, answers, plant, lastDay, settings, today, plannedRest],
   );
-  return { ...view, cert, certId, exam };
+  // Mobile 1.14: the look and the mood, from small, stable selections.
+  const marks = useProgress((s) => marksKey(s, today));
+  const planCleared = useProgress((s) => {
+    const d = s.days[certId];
+    return !!d && d.day === today && planComplete(d);
+  });
+  const newTopicToday = useProgress((s) => Object.values(selectCert(s, certId).mastery ?? {}).some((m) => m?.firstDay === today));
+  const look = useMemo(() => {
+    if (!view.plant) return null;
+    const [newKeepsakeToday] = JSON.parse(marks) as [boolean, string[]];
+    return plantLookView(view.plant, { marks: allCertMarks(useProgress.getState().byCert), face: view.face, resting: view.resting, planCleared, newTopicToday, newKeepsakeToday, today });
+  }, [view.plant, view.face, view.resting, marks, planCleared, newTopicToday, today]);
+  // The spoken label says the mood and the visitor too.
+  const label = view.plant && look ? plantLabel({ name: view.plant.name, species: view.plant.species, growth: view.plant.growth, resting: view.resting, newGrowth: view.newGrowth, mood: look.mood, visitor: look.visiting ? look.resolved.visitor : undefined }) : view.label;
+  return { ...view, label, cert, certId, exam, look };
 }

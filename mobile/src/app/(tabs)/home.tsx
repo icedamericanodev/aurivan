@@ -24,7 +24,7 @@
  *     panel, once per cert, until dismissed. Its plan item moves to "Also today".
  */
 import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow } from '../../components/journey';
@@ -38,7 +38,8 @@ import { haptic } from '../../lib/haptics';
 import { useTodayMoments } from '../../lib/moments';
 import { useJourney } from '../../lib/useJourney';
 import { checkPlant, seeGrowth, usePlantView } from '../../lib/plant';
-import { grewLabel, plantCallName, type GrowthLevel } from '../../engine/plant';
+import { grewLabel, growthBefore, plantCallName, type GrowthLevel } from '../../engine/plant';
+import { dayKey } from '../../engine/streak';
 import { useReports } from '../../lib/useReports';
 import { useProgress } from '../../store/progress';
 import { useSession, type ActiveSession } from '../../store/session';
@@ -68,6 +69,9 @@ function resumeMinutes(s: ActiveSession, now: number): number {
 
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+/** The growth's haptic stays silent this soon after the clearing's (one haptic for one return to Today). */
+const CLEARING_TAP_MS = 5000;
+
 function countdown(daysLeft: number | null): string {
   if (daysLeft === null) return 'No exam date set';
   if (daysLeft < 0) return 'Exam done';
@@ -80,6 +84,8 @@ export default function Today() {
   const j = useJourney();
   const active = useSession((s) => s.active);
   const markCelebrated = useProgress((s) => s.markCelebrated);
+  // When the clearing's haptic last played: the plant's growth stays silent right after it (one haptic only).
+  const clearingTapAt = useRef(0);
   // Mobile 1.7: a fix shipped after something this learner reported. One quiet
   // line, shown ONCE (QA): it is marked seen as soon as Today shows it and
   // kept for this visit (the milestones back-fill pattern), with a Dismiss.
@@ -137,6 +143,7 @@ export default function Today() {
   useEffect(() => {
     if (allDone && focused && !plan.celebrated) {
       haptic.success();
+      clearingTapAt.current = Date.now();
       markCelebrated(j.cert.id);
     }
   }, [allDone, focused, plan.celebrated, markCelebrated, j.cert.id]);
@@ -156,10 +163,17 @@ export default function Today() {
   }, [pending, focused, cert]);
   // Shown for this visit only: leaving Today puts the line away (Today stays mounted for days).
   useFocusEffect(useCallback(() => () => setGrown(null), []));
-  // shortOnly: the line has no animated parts yet (4b brings the grow
-  // sequence), so it never spends the session's one FULL celebration; a
-  // Results milestone later in the session keeps it (code review M2).
-  const growthMoment = useCelebration('plant-growth', Boolean(grown) && focused, grown?.line, `${cert}:plant:${grown?.growth ?? 0}`, false, true);
+  // Mobile 1.14: the growth sequence (≤ 900 ms) plays in the plant's own
+  // slot, through the celebration budget: one full moment per session. A
+  // milestone keeps its Results moment; then the growth shows here in its
+  // short form (a cross-fade), never competing. Static under Reduce Motion.
+  const growthMoment = useCelebration('plant-growth', Boolean(grown) && focused, grown?.line, `${cert}:plant:${grown?.growth ?? 0}`);
+  // One success haptic for the growth, once, unless the clearing plays its own this visit (one haptic only).
+  const growRun = growthMoment.run;
+  useEffect(() => {
+    if (growRun > 0 && Date.now() - clearingTapAt.current > CLEARING_TAP_MS) haptic.success();
+  }, [growRun]);
+  const growFrom = grown && plantView.plant ? growthBefore(plantView.plant, grown.growth) : null;
   // One quiet line for a learner with no plant yet, until they plant or dismiss it.
   const setPlantSettings = useProgress((s) => s.setPlantSettings);
   const plantPrompt = plantView.shown && !plantView.plant && !plantView.settings.promptHidden;
@@ -274,6 +288,11 @@ export default function Today() {
                   caption={plantCallName(plantView.plant)}
                   label={plantView.label}
                   onPress={() => router.push('/plant')}
+                  look={plantView.look?.art}
+                  mood={plantView.look?.mood}
+                  // One reaction per occasion (the mood and the day), wherever the plant is first seen this session.
+                  reaction={plantView.look && focused ? { id: `${cert}:${plantView.look.mood}:${dayKey(now)}`, mood: plantView.look.mood } : null}
+                  grows={grown && growFrom ? { from: growFrom, celebration: growthMoment } : null}
                 />
               ) : undefined
             }

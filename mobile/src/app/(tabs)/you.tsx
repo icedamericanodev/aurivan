@@ -29,7 +29,7 @@ import { creditSubtitle } from '../../components/help';
 import { MindsetGrowthCard } from '../../components/moments';
 import { BadgeIcon, Bookmark, ICON_STROKE, Leaf, LifeBuoy, NotebookPen, RotateCcw, Settings, Share2, Sprout } from '../../components/icons';
 import { ShareProgressSheet } from '../../components/shareCard';
-import { Plant } from '../../components/plant/Plant';
+import { LivePlant } from '../../components/plant/LivePlant';
 import { growthShort, plantCallName } from '../../engine/plant';
 import { usePlantView } from '../../lib/plant';
 import { ThemeSwitch } from '../../components/themeSwitch';
@@ -121,7 +121,8 @@ export default function You() {
           // The plant opens Your plant; its growth reads in words beside it ("growth", never "stage").
           <ListRow
             lead={
-              <Plant
+              // Mobile 1.14: it takes two slow breaths when You comes into view, then rests.
+              <LivePlant
                 species={plant.plant.species}
                 stage={plant.plant.growth}
                 organs={plant.scales}
@@ -129,6 +130,9 @@ export default function You() {
                 resting={plant.resting}
                 size={64}
                 theme={isDark ? 'dark' : 'light'}
+                look={plant.look?.art}
+                mood={plant.look?.mood}
+                breathe
               />
             }
             title={plantCallName(plant.plant)}

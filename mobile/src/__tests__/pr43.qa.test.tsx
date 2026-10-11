@@ -223,6 +223,8 @@ describe('J1 a new learner’s onboarding', () => {
     expect(useSettings.getState().onboarded).toBe(true);
     expect(cp().plant).toMatchObject({ species: 'pine', name: 'Summit Lee', growth: 1 });
     expect(cp().plant!.pending).toBeUndefined();
+    // Mobile 1.14: the planting moment, then Today.
+    press(/^Start studying$/);
     expect(router.replace).toHaveBeenCalledWith('/home');
     unmount();
 
@@ -785,7 +787,11 @@ describe('J8 Reset', () => {
       useProgress.getState().resetCert('cisa');
     });
     const p = cp().plant!;
-    expect(p).toMatchObject({ species: 'narra', name: 'Tala', plantedAt, growth: 1, look: { ground: 'meadow', keepsakes: ['fox'] }, kept: ['robin'], passedOn: '2026-09-30' });
+    expect(p).toMatchObject({ species: 'narra', name: 'Tala', plantedAt, growth: 1, look: { ground: 'meadow', keepsakes: ['fox'] }, passedOn: '2026-09-30' });
+    // Mobile 1.14: every unlock open at the Reset is kept too (here growth's), the old ones first.
+    expect(p.kept?.[0]).toBe('robin');
+    expect(p.kept).toEqual(expect.arrayContaining(['robin', 'narra-silver', 'ribbon']));
+    expect(p.kept).not.toContain('stone-ring'); // Crown's ground: never reached
     expect(p.pending).toBeUndefined();
     expect(p.reached).toBeUndefined();
     expect(p.replantedAt).toBeGreaterThan(plantedAt);
