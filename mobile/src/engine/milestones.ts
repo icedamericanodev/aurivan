@@ -628,6 +628,43 @@ export interface MarkEvidence {
   milestones?: Pick<CertMilestones, 'counts' | 'sure' | 'days' | 'myths' | 'signposts'>;
   /** Study-notes mastery dates (Took Root, slice C). */
   mastery?: Record<string, { masteredAt?: string }>;
+  /**
+   * The exam the cert is for, when known (a restore always knows it): its
+   * domain ids and a full mock's size. Whole Map, the Five Domains planter
+   * and Dress Rehearsal's higher tiers read it.
+   */
+  exam?: { domains: readonly string[]; fullMockSize: number };
+  /**
+   * The restored marks already checked (keepSupported's first pass): the
+   * Stretch and higher tiers that open only after Whole Map need it there.
+   */
+  earned?: Record<string, number>;
+}
+
+/** Keys that open only once Whole Map is earned (badges_game.md §2.3): Firm Footing · 80% and Dress Rehearsal · 2 / · 3. */
+const afterWholeMap = (key: string) => /^firm-footing:[^:]+:80$/.test(key) || /^dress-rehearsal:\d+$/.test(key);
+
+/** A week, in ms: Dress Rehearsal's tiers need each full mock 7 days or more after the one before. */
+const DRESS_GAP_MS = 7 * 86_400_000;
+
+/**
+ * Dress Rehearsal's chain (badges_game.md §2.3): the full, timed, fully
+ * answered mocks, oldest first, each 7 days or more after the last one kept.
+ * Read from restored records, so each field is checked, never trusted.
+ */
+export function dressChain(mocks: readonly unknown[], fullSize: number): number[] {
+  const at: number[] = [];
+  for (const raw of mocks) {
+    if (!raw || typeof raw !== 'object') continue;
+    const m = raw as Record<string, unknown>;
+    if (typeof m.total !== 'number' || typeof m.finishedAt !== 'number' || !Number.isFinite(m.finishedAt)) continue;
+    const unanswered = typeof m.unanswered === 'number' ? m.unanswered : 0;
+    const timing = typeof m.timing === 'string' ? (m.timing as MockTiming) : undefined;
+    if (isDressRehearsal({ total: m.total, timing, unanswered }, fullSize)) at.push(m.finishedAt);
+  }
+  const chain: number[] = [];
+  for (const t of at.sort((a, b) => a - b)) if (!chain.length || t - chain[chain.length - 1] >= DRESS_GAP_MS) chain.push(t);
+  return chain;
 }
 
 /**
@@ -671,11 +708,18 @@ export function markSupported(key: string, e: MarkEvidence): boolean {
     case 'firm-footing': {
       // "firm-footing:<domain>" (70%) or "firm-footing:<domain>:80" (the Stretch tier).
       if (plain || (tier !== undefined && tier !== '80')) return false;
+      if (tier === '80' && e.earned && e.earned['whole-map'] === undefined) return false;
       const inDomain = answers.filter((id) => domainOf(id) === part).length;
       return inDomain >= (tier === '80' ? FIRM_DEEP_ANSWERS : FIRM_ANSWERS);
     }
-    case 'whole-map':
-      return plain && n >= FIRM_ANSWERS;
+    case 'whole-map': {
+      // Every exam domain at the floor needs answers in every exam domain (so
+      // an edited file with one domain's answers can't claim it, nor, through
+      // it, the Five Domains planter). Checked on the answers as backed up.
+      if (!plain || n < FIRM_ANSWERS) return false;
+      const seen = new Set(answers.map(domainOf));
+      return !e.exam || e.exam.domains.every((d) => seen.has(d));
+    }
     case 'loop-closed':
       return plain && c('loopFixed') >= LOOP_FIXES;
     case 'slip-spotter':
@@ -690,9 +734,13 @@ export function markSupported(key: string, e: MarkEvidence): boolean {
     case 'know-what-you-know':
       return plain && (e.milestones?.sure?.length ?? 0) >= SURE_MIN;
     case 'dress-rehearsal': {
-      // "dress-rehearsal" is one full mock; ":2" and ":3" need that many.
+      // "dress-rehearsal" is one mock; ":2" and ":3" need that many FULL,
+      // timed, fully answered mocks, each a week or more after the last.
       const t = tierOf(DRESS_TIERS);
-      return t !== null && (e.mocks?.length ?? 0) >= t;
+      if (t === null) return false;
+      if (t > 1 && e.earned && e.earned['whole-map'] === undefined) return false;
+      if (t === 1 || !e.exam) return (e.mocks?.length ?? 0) >= t;
+      return dressChain(e.mocks ?? [], e.exam.fullMockSize).length >= t;
     }
     case 'on-pace':
       return plain && (e.mocks?.length ?? 0) >= 1;
@@ -725,7 +773,10 @@ export function markSupported(key: string, e: MarkEvidence): boolean {
 
 /** A restored cert's milestones with only the marks its data supports (and a queue of earned marks only). */
 export function keepSupported(m: CertMilestones, e: MarkEvidence): CertMilestones {
-  const earned = Object.fromEntries(Object.entries(m.earned).filter(([k]) => markSupported(k, e)));
+  // Two passes: every key on its own evidence, then the keys that open only
+  // after Whole Map need Whole Map to have survived the first pass.
+  const first = Object.fromEntries(Object.entries(m.earned).filter(([k]) => markSupported(k, { ...e, earned: undefined })));
+  const earned = Object.fromEntries(Object.entries(first).filter(([k]) => !afterWholeMap(k) || markSupported(k, { ...e, earned: first })));
   const queue = m.queue?.filter((k) => earned[k] !== undefined);
   // A set's planter stays only when the set's badges did (after their own check).
   const planters = m.planters && Object.fromEntries(Object.entries(m.planters).filter(([set]) => planterSupported(set, earned, e)));
@@ -737,7 +788,8 @@ export function keepSupported(m: CertMilestones, e: MarkEvidence): CertMilestone
  * 1.10), FROZEN. A restored planter is kept only when all of these marks are
  * earned (and supported). A later version that adds a badge to a set keeps
  * this list as it is, so a planter earned before never fails a restore.
- * 'domains': Whole Map plus Firm Footing for every domain the answers cover.
+ * 'domains': Whole Map plus Firm Footing for every domain of the exam (or,
+ * when the exam isn't known, every domain the answers cover).
  */
 export const PLANTER_NEEDS: Readonly<Record<string, readonly string[] | 'domains'>> = {
   groundwork: ['first-foothold', 'topic-clear', 'ten-topics'],
@@ -749,10 +801,10 @@ export const PLANTER_NEEDS: Readonly<Record<string, readonly string[] | 'domains
 };
 
 /** Could the restored badges have completed this set (its planter)? Unknown sets: never. */
-export function planterSupported(set: string, earned: Record<string, number>, e: Pick<MarkEvidence, 'answers'>): boolean {
+export function planterSupported(set: string, earned: Record<string, number>, e: Pick<MarkEvidence, 'answers' | 'exam'>): boolean {
   if (!Object.prototype.hasOwnProperty.call(PLANTER_NEEDS, set)) return false;
   const needs = PLANTER_NEEDS[set];
   if (needs !== 'domains') return needs.every((k) => earned[k] !== undefined);
-  const domains = new Set(Object.keys(e.answers ?? {}).map(domainOf));
+  const domains = new Set(e.exam ? e.exam.domains : Object.keys(e.answers ?? {}).map(domainOf));
   return earned['whole-map'] !== undefined && domains.size > 0 && [...domains].every((d) => earned[`firm-footing:${d}`] !== undefined);
 }

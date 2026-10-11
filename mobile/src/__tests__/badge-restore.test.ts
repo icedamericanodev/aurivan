@@ -5,7 +5,7 @@
  * set's planter stays only when its badges do.
  */
 import { readBackup } from '../engine/backup';
-import { keepSupported, markSupported, PLANTER_NEEDS, planterSupported, type MarkEvidence } from '../engine/milestones';
+import { dressChain, keepSupported, markSupported, PLANTER_NEEDS, planterSupported, type MarkEvidence } from '../engine/milestones';
 import { COUNTED_SETS } from '../engine/badgeCatalog';
 
 const T0 = new Date(2026, 9, 12, 10, 0, 0).getTime();
@@ -98,6 +98,45 @@ describe('markSupported reads the whole key (the restore bug)', () => {
   });
 });
 
+describe('the exam the cert is for (QA: Whole Map and Dress Rehearsal’s tiers)', () => {
+  const exam = { domains: ['1', '2', '3', '4', '5'], fullMockSize: 150 };
+  const DAY = 86_400_000;
+  const mock = (at: number, over: object = {}) => ({ total: 150, finishedAt: at, timing: 'standard', unanswered: 0, ...over });
+
+  it('Whole Map needs answers in every exam domain, so one domain’s answers can’t claim it', () => {
+    expect(markSupported('whole-map', { answers: answered(ids('4', 25)), exam })).toBe(false);
+    const all = answered(['1', '2', '3', '4', '5'].flatMap((d) => ids(d, 5)));
+    expect(markSupported('whole-map', { answers: all, exam })).toBe(true);
+    // Without the exam (an engine caller that doesn't know it), the old floor stands.
+    expect(markSupported('whole-map', { answers: answered(ids('4', 25)) })).toBe(true);
+  });
+
+  it('Dress Rehearsal · 2 and · 3 need full, timed, fully answered mocks a week apart', () => {
+    const e = (mocks: object[]) => ({ answers: {}, mocks, exam });
+    expect(dressChain([mock(T0), mock(T0 + 7 * DAY)], 150)).toEqual([T0, T0 + 7 * DAY]);
+    expect(markSupported('dress-rehearsal:2', e([mock(T0), mock(T0 + 7 * DAY)]))).toBe(true);
+    expect(markSupported('dress-rehearsal:2', e([mock(T0), mock(T0 + 6 * DAY)]))).toBe(false); // too close
+    expect(markSupported('dress-rehearsal:2', e([mock(T0), mock(T0 + 8 * DAY, { total: 50 })]))).toBe(false); // a mini
+    expect(markSupported('dress-rehearsal:2', e([mock(T0), mock(T0 + 8 * DAY, { timing: 'untimed' })]))).toBe(false);
+    expect(markSupported('dress-rehearsal:2', e([mock(T0), mock(T0 + 8 * DAY, { unanswered: 3 })]))).toBe(false);
+    expect(markSupported('dress-rehearsal:3', e([mock(T0 + 14 * DAY), mock(T0), mock(T0 + 7 * DAY)]))).toBe(true); // any order
+    // Damaged records are skipped, never trusted.
+    expect(markSupported('dress-rehearsal:2', e([mock(T0), { total: '150', finishedAt: T0 + 9 * DAY }, null as unknown as object]))).toBe(false);
+    // A Stretch or higher tier opens only after Whole Map: dropped on restore without it.
+    const genuineMocks = { answers: answered(ids('4', 45)), mocks: [mock(T0), mock(T0 + 7 * DAY)], exam };
+    const strip = (earned: Record<string, number>) => Object.keys(keepSupported({ earned }, genuineMocks).earned).sort();
+    expect(strip({ 'dress-rehearsal:2': T0, 'firm-footing:4:80': T0 })).toEqual([]);
+    const all5 = { ...genuineMocks, answers: answered(['1', '2', '3', '5'].flatMap((d) => ids(d, 5)).concat(ids('4', 45))) };
+    expect(Object.keys(keepSupported({ earned: { 'whole-map': T0, 'dress-rehearsal:2': T0, 'firm-footing:4:80': T0 } }, all5).earned).sort()).toEqual([
+      'dress-rehearsal:2',
+      'firm-footing:4:80',
+      'whole-map',
+    ]);
+    // Tier 1 keeps its plain check (one mock record), so a genuine old badge is never dropped.
+    expect(markSupported('dress-rehearsal', e([mock(T0, { total: 50 })]))).toBe(true);
+  });
+});
+
 describe('planters (a completed set’s reward, Phase 4)', () => {
   it('the frozen needs cover every counted set', () => {
     expect(Object.keys(PLANTER_NEEDS).sort()).toEqual([...COUNTED_SETS].sort());
@@ -112,6 +151,11 @@ describe('planters (a completed set’s reward, Phase 4)', () => {
     expect(planterSupported('domains', { 'firm-footing:1': T0, 'firm-footing:4': T0 }, { answers })).toBe(false);
     expect(planterSupported('fieldNotes', { 'snare-wise': T0 }, { answers })).toBe(false);
     expect(planterSupported('__proto__', {}, { answers })).toBe(false);
+    // With the exam known, the Five Domains planter needs a leaf in EVERY exam domain, not just the ones answered.
+    const exam = { domains: ['1', '2', '3', '4', '5'], fullMockSize: 150 };
+    expect(planterSupported('domains', { 'whole-map': T0, 'firm-footing:1': T0, 'firm-footing:4': T0 }, { answers, exam })).toBe(false);
+    const five = Object.fromEntries(exam.domains.map((d) => [`firm-footing:${d}`, T0]));
+    expect(planterSupported('domains', { 'whole-map': T0, ...five }, { answers, exam })).toBe(true);
   });
 
   it('keepSupported drops a planter whose badges were dropped', () => {

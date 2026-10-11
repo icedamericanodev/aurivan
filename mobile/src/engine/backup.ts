@@ -17,6 +17,7 @@
  * Pure TypeScript: no React, no storage, no files. lib/backup.ts does the
  * file picking, sharing and writing to the stores.
  */
+import { getCertification } from '../content/certifications';
 import { MAX_ANSWER_MS } from './answerClock';
 import { GAME_TIERS, HITS_CAP, type GameTier } from './games/growth';
 import { keepSupported, LONG_RECALLS, MYTH_WINDOW, SIGNPOST_WINDOW, SURE_WINDOW, type CounterId } from './milestones';
@@ -612,7 +613,10 @@ export function keepKnownIds(progress: BackupProgress, known: (certId: string) =
 export function keepSupportedMarks(progress: BackupProgress): BackupProgress {
   const byCert: BackupProgress['byCert'] = {};
   for (const [certId, cp] of Object.entries(progress.byCert)) {
-    byCert[certId] = cp.milestones ? { ...cp, milestones: keepSupported(cp.milestones, cp) } : cp;
+    // The exam's own domains and full mock size (Whole Map, the Five Domains planter, Dress Rehearsal's tiers).
+    const cert = getCertification(certId);
+    const exam = cert ? { domains: cert.domains.map((d) => d.id), fullMockSize: cert.exam.questions } : undefined;
+    byCert[certId] = cp.milestones ? { ...cp, milestones: keepSupported(cp.milestones, { ...cp, ...(exam ? { exam } : {}) }) } : cp;
   }
   return { ...progress, byCert };
 }
