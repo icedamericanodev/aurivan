@@ -58,8 +58,8 @@ elif [ "${SHOTS:-}" = support ]; then
   node scripts/screenshots/shoot_support.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = motion ]; then
   # Mobile 1.8 motion: end states of the changed screens, and slow-motion
-  # frame strips of the press, the page turn, the segment fill and the tab
-  # fade (shoot_motion.mjs).
+  # frame strips of the press, the page turn, the segment fill, the tab fade,
+  # the segmented thumb (moving and reopened) and a mock's calm turn (shoot_motion.mjs).
   node scripts/screenshots/shoot_motion.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,

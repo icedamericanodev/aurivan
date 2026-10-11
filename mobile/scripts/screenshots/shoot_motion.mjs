@@ -2,7 +2,8 @@
 // strips of the motion itself (SHOTS=motion, see run.sh).
 //
 // Frame strips: the page's clock is slowed (performance.now, Date.now,
-// requestAnimationFrame timestamps and setTimeout all run at 1/SLOW speed),
+// requestAnimationFrame timestamps, setTimeout and CSS animations all run
+// at 1/SLOW speed),
 // so a 280 ms page turn lasts ~3 s and Playwright can catch frames in the
 // middle of it. Each strip is 4 frames, labelled with the app-time in ms,
 // composed side by side into one PNG.
@@ -61,6 +62,16 @@ await ctx.addInitScript(() => {
     k = next;
   };
   window.__appNow = () => performance.now();
+  // Reanimated's layout animations (the calm page arrival) are CSS animations
+  // on the web build, which the clock switch can't reach: slow each one as it
+  // starts. (Not CDP's Animation.setPlaybackRate: it slows the rAF clock too.)
+  document.addEventListener(
+    'animationstart',
+    (e) => {
+      if (k !== 1 && e.target.getAnimations) e.target.getAnimations().forEach((a) => (a.playbackRate = k));
+    },
+    true,
+  );
 });
 const page = await ctx.newPage();
 const errs = [];
@@ -204,6 +215,26 @@ await strip(
   [20, 110, 200, 520],
   { x: 0, y: Math.max(0, fb.y - 60), width: 393, height: fb.height + 150 },
 );
+await wait(800);
+// Reopening with 50 chosen: the thumb is drawn in place from its first frame
+// (it used to fly in from the left every time a control mounted).
+await page.getByRole('button', { name: /^Your path/ }).click();
+await wait(900);
+// A taller window for this strip only, so Length opens on screen (the closed
+// page is too short to scroll it there first).
+await page.setViewportSize({ width: 393, height: 1300 });
+await wait(700);
+await strip(
+  'f5b-segmented-reopen',
+  ['Reopen "Your path" with 50 chosen: the thumb is already on 50 (nothing slides until you choose)', 'Reopen "Your path" with 50 chosen: the choice is simply there'],
+  async () => {
+    await page.getByRole('button', { name: /^Your path/ }).click();
+  },
+  [30, 140, 300, 600],
+  { x: 0, y: 640, width: 393, height: 560 },
+);
+await page.setViewportSize({ width: 393, height: 852 });
+await wait(500);
 // Put the length back, so later shots match the seed.
 await page.getByRole('radio', { name: /^10 questions/ }).click();
 await wait(600);
@@ -251,7 +282,10 @@ await wait(800);
 await shot('m15-answer-bottom');
 await strip(
   'f2-page-turn',
-  ['Next question: the answer drifts out left (120 ms), the new question arrives from the right (280 ms)', 'Next question: no drift, no wait: the new question fades in (120 ms)'],
+  [
+    'Next question: the answer drifts out left (120 ms), the new question arrives from the right (280 ms); the footer changes WITH the page',
+    'Next question: no drift, no wait: the new question fades in (120 ms), its footer with it',
+  ],
   async () => {
     await page.getByText('Next question', { exact: true }).click();
   },
@@ -273,6 +307,25 @@ await page.mouse.move(196, 500);
 await page.mouse.wheel(0, 500);
 await wait(700);
 await shot('m09b-results-single-domain-stats');
+
+// ── 3b. A mock turns calmly: a short fade, no drift (a timed exam should feel like the real test) ──
+await go('/mock-start?questions=3', 1500);
+await page.getByText('Start mock', { exact: true }).click();
+await wait(1500);
+await page.getByLabel(/^Option A:/).first().click();
+await wait(600);
+await strip(
+  'f6-mock-turn',
+  ['Mock: Next is a 120 ms fade, no drift and no wait; the footer is the new question’s at once', 'Mock: the same 120 ms fade (mocks are calm either way)'],
+  async () => {
+    await page.getByText('Next', { exact: true }).click();
+  },
+  [15, 50, 90, 200],
+);
+await wait(800);
+await shot('m16-mock-question');
+// Leave the live mock before clearing it, so its screen can't write it back.
+await go('/you', 800);
 
 // ── 4. Today with the exam-ready panel: one set of rings, not two ──────
 const keyIn = (n) => `(() => { const d = new Date(); d.setDate(d.getDate() + (${n}));
