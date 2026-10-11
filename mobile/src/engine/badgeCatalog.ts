@@ -221,7 +221,7 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
       return {
         howTo: `${DIAGNOSTIC_SIZE} mixed questions show where to start. No score to beat.`,
         unlock: 'You’ve mapped where you stand. Your plan now starts from it.',
-        effort: 'About 25 minutes: the diagnostic.',
+        effort: 'About half an hour: the diagnostic.',
         skill: 'Mapped my starting point',
         minDays: 0,
       };
@@ -256,7 +256,7 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
     case 'whole-map':
       return {
         howTo: 'Your weakest domain is the shortest path. Study for this opens it.',
-        unlock: `Every domain is at ${Math.round(MOCK_DOMAIN_FLOOR * 100)}%. You’re ready to rehearse with mocks.`,
+        unlock: `Every domain is at ${Math.round(MOCK_DOMAIN_FLOOR * 100)}%. Time to rehearse with mocks.`,
         effort: `Needs every domain at ${Math.round(MOCK_DOMAIN_FLOOR * 100)}% at the same time.`,
         skill: 'Covered every exam domain',
         minDays: 0,
@@ -321,7 +321,7 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
     case 'on-pace':
       return {
         howTo: 'Flag anything past 2 minutes and move on. The pace checks keep you honest.',
-        unlock: 'On pace at every check. Time won’t be the problem.',
+        unlock: 'On pace at every check. You know the rhythm now.',
         effort: 'Needs one timed mock. A mini mock counts.',
         skill: 'Kept exam pace',
         minDays: 0,
@@ -473,6 +473,24 @@ function domainRank(domains: readonly CaseDomain[]): Map<string, number> {
   return new Map(sorted.map((x, k) => [x.d.id, k]));
 }
 
+/**
+ * Does the case show this earned key? Every key the catalogue lists (plain
+ * badges, a Firm Footing leaf, a Rooted tier), and an earned plain or Firm
+ * Footing key the list no longer has. A higher-tier key this version doesn't
+ * define yet (e.g. "long-memory:75" from a newer backup) is kept, but not
+ * shown, so it is never counted on You or lights the "new" dot.
+ */
+export function caseKey(key: string): boolean {
+  const parts = key.split(':');
+  const def = badgeDef(markBadge(key));
+  if (!def) return false;
+  // Rooted is only ever a tier ("rooted:10"); a bare key was never earned.
+  if (parts.length === 1) return def.id !== 'rooted';
+  if (parts.length !== 2) return false;
+  if (def.id === 'firm-footing') return parts[1] !== '';
+  return def.id === 'rooted' && (ROOTED_DAYS as readonly number[]).some((n) => String(n) === parts[1]);
+}
+
 /** Every medallion on the case, in shelf order, with its state, copy and effort. */
 export function caseMarks(input: CaseInput): CaseMark[] {
   const { marks, earned = {}, domains, exam } = input;
@@ -519,9 +537,8 @@ export function caseMarks(input: CaseInput): CaseMark[] {
   // this version doesn't define yet are left for the version that does.
   for (const [key, at] of Object.entries(earned)) {
     if (out.some((m) => m.key === key)) continue;
-    const parts = key.split(':');
     const def = badgeDef(markBadge(key));
-    if (!def || !(parts.length === 1 || (def.id === 'firm-footing' && parts.length === 2))) continue;
+    if (!def || !caseKey(key)) continue;
     const copy = copyFor(key, def.id, exam);
     out.push({
       key,
@@ -583,6 +600,17 @@ export function setCountLine(s: SetView): string | undefined {
   return s.completeAt !== undefined ? `${s.earned} of ${s.total} · Complete` : `${s.earned} of ${s.total}`;
 }
 
+/**
+ * The ONE mark that completed a set: the last earned. Two marks earned in the
+ * same session share that time, so the later one in catalogue order takes it
+ * ("That completes Groundwork" is said once, never on two badges).
+ */
+export function completingMark(s: SetView): string | undefined {
+  if (!s.info.counted || s.completeAt === undefined) return undefined;
+  const last = s.marks.filter((m) => m.counted && m.status === 'earned' && m.earnedAt === s.completeAt);
+  return last.sort((a, b) => b.order - a.order)[0]?.key;
+}
+
 /** The counted sets whose every mark is earned (each unlocks its planter, Phase 4). */
 export function completeSets(sets: readonly SetView[]): SetId[] {
   return sets.filter((s) => s.info.counted && s.completeAt !== undefined).map((s) => s.info.id);
@@ -606,6 +634,15 @@ export type CaseFilter = 'all' | 'earned' | 'open';
 export type CaseSort = 'set' | 'recent' | 'closest' | 'effort';
 export const CASE_SORTS: readonly CaseSort[] = ['set', 'recent', 'closest', 'effort'];
 
+/**
+ * Is this mark on the case at all? A Moments mark only once it happened:
+ * an unearned Fresh Start would read as a goal (a week away), so the Moments
+ * shelf appears with its first moment, and never in Closest, Effort or Not yet.
+ */
+export function onCase(m: CaseMark): boolean {
+  return m.set !== 'moments' || m.status === 'earned';
+}
+
 export function passesFilter(m: CaseMark, f: CaseFilter): boolean {
   return f === 'all' || (f === 'earned' ? m.status === 'earned' : m.status !== 'earned');
 }
@@ -615,18 +652,25 @@ export function passesFilter(m: CaseMark, f: CaseFilter): boolean {
  * - recent: earned newest first, then the rest in shelf order;
  * - closest: open marks by progress (gated last), then the earned ones;
  * - effort: least to most minimum days, then shelf order.
+ * Closest and Effort rank the exam's own (counted) badges first, then Field
+ * notes and Moments: a game skill never outranks a study badge there, and
+ * Whole Grove never pulls study (behaviour review §2a).
  */
 export function sortMarks(marks: readonly CaseMark[], sort: Exclude<CaseSort, 'set'>): CaseMark[] {
-  const list = [...marks];
+  const list = marks.filter(onCase);
   const earned = (m: CaseMark) => m.status === 'earned';
   if (sort === 'recent') {
     return list.sort((a, b) => Number(earned(b)) - Number(earned(a)) || (b.earnedAt ?? 0) - (a.earnedAt ?? 0) || a.order - b.order);
   }
+  const game = (m: CaseMark) => (COUNTED_SETS.includes(m.set) ? 0 : 1);
   if (sort === 'closest') {
     const rank = (m: CaseMark) => (earned(m) ? 2 : m.status === 'gated' ? 1 : 0);
-    return list.sort((a, b) => rank(a) - rank(b) || (rank(a) === 0 ? b.progress - a.progress : 0) || (b.earnedAt ?? 0) - (a.earnedAt ?? 0) || a.order - b.order);
+    return list.sort(
+      (a, b) =>
+        game(a) - game(b) || rank(a) - rank(b) || (rank(a) === 0 ? b.progress - a.progress : 0) || (b.earnedAt ?? 0) - (a.earnedAt ?? 0) || a.order - b.order,
+    );
   }
-  return list.sort((a, b) => a.minDays - b.minDays || a.order - b.order);
+  return list.sort((a, b) => game(a) - game(b) || a.minDays - b.minDays || a.order - b.order);
 }
 
 // ── Next for your exam (badges_game.md §4.3) ─────────────────────────────
@@ -649,19 +693,27 @@ export interface NextForExam {
   nearest: CaseMark[];
 }
 
-/** Could this mark be suggested now? Never Moments or Field notes, a gated mark, or a mock badge before its stage. */
-export function suggestable(m: CaseMark, stage: Stage, daysLeft: number | null): boolean {
+/** Could this mark be suggested now? Never Moments or Field notes, a gated mark, or a mock badge before its time. */
+export function suggestable(m: CaseMark, stage: Stage, daysLeft: number | null, wholeMap = false): boolean {
   if (m.status === 'earned' || m.status === 'gated' || !m.counted) return false;
   if (!COUNTED_SETS.includes(m.set)) return false;
-  if (MOCK_BADGES.has(m.badge) && !mockTime(stage, daysLeft)) return false;
+  if (MOCK_BADGES.has(m.badge) && !mockTime(stage, daysLeft, wholeMap)) return false;
   return true;
 }
 
-/** Mock badges are suggested from the mock stage on, or in the final three weeks. */
-export function mockTime(stage: Stage, daysLeft: number | null): boolean {
+/**
+ * Mock badges are suggested from the mock stage on, in the final three weeks,
+ * or once Whole Map is earned (every domain at the floor: the mock gate itself,
+ * so a learner past it keeps the mock badges even if the stage reads
+ * "practice" again after a couple of mocks).
+ */
+export function mockTime(stage: Stage, daysLeft: number | null, wholeMap = false): boolean {
   const late = daysLeft !== null && daysLeft >= 0 && daysLeft <= FINAL_WEEKS_DAYS;
-  return late || stage === 'mock' || stage === 'ready' || stage === 'examDay';
+  return wholeMap || late || stage === 'mock' || stage === 'ready' || stage === 'examDay';
 }
+
+/** Whole Map is earned: every domain reached the mock floor. */
+export const hasWholeMap = (marks: readonly CaseMark[]) => marks.some((m) => m.badge === 'whole-map' && m.status === 'earned');
 
 /**
  * Slot 1 by stage (each rule falls through to the next one down when it has
@@ -669,7 +721,8 @@ export function mockTime(stage: Stage, daysLeft: number | null): boolean {
  */
 export function nextForExam({ marks, stage, daysLeft, mastery }: NextInput): NextForExam {
   if (stage === 'afterExam') return { nearest: [] };
-  const ok = marks.filter((m) => suggestable(m, stage, daysLeft));
+  const wholeMap = hasWholeMap(marks);
+  const ok = marks.filter((m) => suggestable(m, stage, daysLeft, wholeMap));
   const find = (badge: BadgeId) => ok.find((m) => m.badge === badge);
   const firmFooting = () => {
     const leaves = ok.filter((m) => m.badge === 'firm-footing' && m.domain);
@@ -684,9 +737,11 @@ export function nextForExam({ marks, stage, daysLeft, mastery }: NextInput): Nex
     () => find('long-memory') ?? find('graduate'),
   ];
   // The mock rule leads at the mock stage and in the final three weeks; once
-  // past it ('ready'), long-term memory does (the mocks stay eligible).
+  // past it ('ready'), long-term memory does (the mocks stay eligible). The
+  // diagnostic always comes first while it is undone: it is one short sitting,
+  // and every plan (a mock's included) starts from it.
   const late = daysLeft !== null && daysLeft >= 0 && daysLeft <= FINAL_WEEKS_DAYS;
-  const first = stage === 'mock' || stage === 'examDay' || late ? 2 : stage === 'diagnose' ? 0 : stage === 'learn' || stage === 'practice' ? 1 : 3;
+  const first = stage === 'diagnose' ? 0 : stage === 'mock' || stage === 'examDay' || late ? 2 : stage === 'learn' || stage === 'practice' ? 1 : 3;
   let best: CaseMark | undefined;
   for (let i = first; i < rules.length && !best; i++) best = rules[i]();
   // Slots 2–3: the nearest by progress, one per badge, never slot 1's badge.
@@ -701,9 +756,9 @@ export function nextForExam({ marks, stage, daysLeft, mastery }: NextInput): Nex
   return { ...(best ? { best } : {}), nearest };
 }
 
-/** Before the mock stage, a mock badge says when it is best (not suggested yet). */
-export function suggestLine(m: CaseMark, stage: Stage, daysLeft: number | null): string | undefined {
-  return m.status !== 'earned' && MOCK_BADGES.has(m.badge) && !mockTime(stage, daysLeft) ? MOCK_SUGGEST_LINE : undefined;
+/** Before its time, a mock badge says when it is best (not suggested yet). */
+export function suggestLine(m: CaseMark, stage: Stage, daysLeft: number | null, wholeMap = false): string | undefined {
+  return m.status !== 'earned' && MOCK_BADGES.has(m.badge) && !mockTime(stage, daysLeft, wholeMap) ? MOCK_SUGGEST_LINE : undefined;
 }
 
 /** The one Results line under a moment: "Next: Firm Footing · IS Operations, 62% → 70% · 14 of 20 answered". */
@@ -782,6 +837,15 @@ export function studyNote(m: CaseMark, target: StudyTarget, dueCount: number): s
 
 // ── Words a screen reader hears ──────────────────────────────────────────
 /**
+ * A progress line as it is spoken: "62% → 70% · 14 of 20 answered" becomes
+ * "62% now, aiming for 70%, 14 of 20 answered" (a screen reader says "→" as
+ * "right arrow", and "of" would change the meaning).
+ */
+export function spokenDetail(detail: string): string {
+  return detail.replace(/\s*→\s*/g, ' now, aiming for ').replace(/ · /g, ', ');
+}
+
+/**
  * One medallion's spoken label: name, state, rule, progress (or the date),
  * gate, set. `date` is the earned date already formatted ("11 Oct").
  */
@@ -791,7 +855,7 @@ export function markSpoken(m: CaseMark, setName: string, date?: string): string 
   else parts.push('Not yet');
   parts.push(m.rule.replace(/\.$/, ''));
   if (m.status === 'gated') parts.push(m.gateLine!.replace(/\.$/, ''));
-  else if (m.status !== 'earned' && m.detail) parts.push(m.detail.replace(/→/g, 'of').replace(/ · /g, ', '));
+  else if (m.status !== 'earned' && m.detail) parts.push(spokenDetail(m.detail));
   parts.push(setName);
   return `${parts.join('. ')}.`;
 }
@@ -802,8 +866,18 @@ export function setSpoken(s: SetView): string {
   return line ? `${s.info.name}, ${line.replace(' · Complete', ', complete')}` : s.info.name;
 }
 
-/** The new dot: any badge earned since the case was last viewed. */
-export function hasNewSince(earned: Record<string, number> | undefined, seenAt: number | undefined): boolean {
+/**
+ * The new dot: any badge the case shows, earned since the case was last
+ * viewed. Badges a back-fill saved quietly (stamped with its time,
+ * `quietAt`) were already held, so they are never new, even when the
+ * back-fill ran after the case was last viewed (a restore of an older backup).
+ */
+export function hasNewSince(earned: Record<string, number> | undefined, seenAt: number | undefined, quietAt?: number): boolean {
   if (seenAt === undefined) return false;
-  return Object.values(earned ?? {}).some((at) => at > seenAt);
+  return Object.entries(earned ?? {}).some(([key, at]) => at > seenAt && at !== quietAt && caseKey(key));
+}
+
+/** How many badges the case shows as earned (You's count): a key it doesn't show is never counted. */
+export function caseEarnedCount(earned: Record<string, number> | undefined): number {
+  return Object.keys(earned ?? {}).filter(caseKey).length;
 }

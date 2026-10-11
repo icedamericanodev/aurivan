@@ -6,9 +6,12 @@
  */
 import {
   BADGE_SET,
+  caseEarnedCount,
+  caseKey,
   caseMarks,
   caseSets,
   completeSets,
+  completingMark,
   COUNTED_SETS,
   examLength,
   GATE_LINE,
@@ -16,12 +19,14 @@ import {
   markSpoken,
   nextForExam,
   nextLine,
+  onCase,
   passesFilter,
   SET_ORDER,
   setCountLine,
   setInfo,
   setSpoken,
   sortMarks,
+  spokenDetail,
   studyNote,
   studyTarget,
   suggestable,
@@ -102,6 +107,13 @@ describe('sets and shelves', () => {
     expect(line('rooted')).toBe('0 of 3');
     expect(line('fieldNotes')).toBe('1 of 7'); // its own counter
     expect(line('moments')).toBeUndefined(); // no counter at all
+  });
+
+  it('a set is completed by ONE badge, even when two share the moment (the later in catalogue order)', () => {
+    const { sets } = caseOf(facts(), { 'first-foothold': T0 - DAY, 'topic-clear': T0, 'ten-topics': T0 });
+    expect(completingMark(sets.find((s) => s.info.id === 'groundwork')!)).toBe('ten-topics');
+    const open = caseOf(facts(), { 'first-foothold': T0 }).sets.find((s) => s.info.id === 'groundwork')!;
+    expect(completingMark(open)).toBeUndefined();
   });
 
   it('a complete set reads "Complete" and dates from its last badge', () => {
@@ -191,8 +203,12 @@ describe('states, gates and effort', () => {
     expect(find(marks, 'long-memory').minDays).toBe(8);
     expect(find(marks, 'rooted:60').minDays).toBe(60);
     expect(find(marks, 'graduate').minDays).toBeGreaterThan(14);
-    const order = sortMarks(marks, 'effort').map((m) => m.minDays);
-    expect([...order].sort((a, b) => a - b)).toEqual(order);
+    // Within the exam's own badges, then within Field notes: fewest days first.
+    const sorted = sortMarks(marks, 'effort');
+    for (const group of [sorted.filter((m) => COUNTED_SETS.includes(m.set)), sorted.filter((m) => !COUNTED_SETS.includes(m.set))]) {
+      const order = group.map((m) => m.minDays);
+      expect([...order].sort((a, b) => a - b)).toEqual(order);
+    }
   });
 
   it('copy never celebrates with "Unlocked!" or "Collected!", and never names a bank size', () => {
@@ -217,8 +233,26 @@ describe('filter and sort', () => {
     const closest = sortMarks(marks, 'closest');
     const open = closest.filter((m) => m.status === 'started' || m.status === 'open');
     expect(open.map((m) => m.progress)).toEqual([...open.map((m) => m.progress)].sort((a, b) => b - a));
-    const kinds = closest.map((m) => (m.status === 'earned' ? 2 : m.status === 'gated' ? 1 : 0));
+    const counted = closest.filter((m) => COUNTED_SETS.includes(m.set));
+    const kinds = counted.map((m) => (m.status === 'earned' ? 2 : m.status === 'gated' ? 1 : 0));
     expect([...kinds].sort()).toEqual(kinds);
+  });
+  it('closest and effort: the exam’s own badges first, then Field notes; an unearned Fresh Start never shows as a target', () => {
+    for (const sort of ['closest', 'effort'] as const) {
+      const list = sortMarks(marks, sort);
+      const firstGame = list.findIndex((m) => !COUNTED_SETS.includes(m.set));
+      expect(firstGame).toBeGreaterThan(0);
+      expect(list.slice(firstGame).every((m) => !COUNTED_SETS.includes(m.set))).toBe(true);
+      expect(list.some((m) => m.badge === 'fresh-start')).toBe(false);
+      // Field notes' Whole Grove (0 days) never outranks a study badge.
+      expect(list.findIndex((m) => m.badge === 'whole-grove')).toBeGreaterThan(firstGame - 1);
+    }
+    // Nor in Recently earned, until it happens; then it shows like any badge.
+    expect(sortMarks(marks, 'recent').some((m) => m.badge === 'fresh-start')).toBe(false);
+    expect(marks.filter(onCase).some((m) => m.set === 'moments')).toBe(false);
+    const after = caseOf(facts(), { 'fresh-start': T0 }).marks;
+    expect(sortMarks(after, 'recent')[0].key).toBe('fresh-start');
+    expect(after.filter(onCase).some((m) => m.set === 'moments')).toBe(true);
   });
 });
 
@@ -267,6 +301,23 @@ describe('Next for your exam', () => {
     expect(suggestable(dr, 'practice', 14)).toBe(true);
     expect(suggestLine(dr, 'practice', null)).toBe('Best once every domain reaches 65%.');
     expect(suggestLine(dr, 'mock', null)).toBeUndefined();
+  });
+
+  it('once Whole Map is earned the mocks stay suggested, even if the stage reads practice again', () => {
+    // Two mocks below the ready score: journeyStage reads "practice" again.
+    const f = spread({ '1': 0.75, '2': 0.75, '3': 0.75, '4': 0.75, '5': 0.75 }, 40);
+    const leaves = Object.fromEntries(cisa.domains.map((d) => [`firm-footing:${d.id}`, T0]));
+    const n = run(f, { 'first-foothold': T0, 'whole-map': T0, ...leaves }, 'practice');
+    expect(n.best?.key).toBe('dress-rehearsal');
+    expect(run(f, { 'first-foothold': T0, ...leaves }, 'practice').best?.badge).not.toBe('dress-rehearsal');
+    const dr = find(caseMarks(input(f, { 'whole-map': T0 })), 'dress-rehearsal');
+    expect(suggestable(dr, 'practice', null, true)).toBe(true);
+    expect(suggestLine(dr, 'practice', null, true)).toBeUndefined();
+  });
+
+  it('the diagnostic comes first while it is undone, even in the final three weeks', () => {
+    const f = spread({}, 40);
+    expect(run(f, {}, 'diagnose', 10).best?.key).toBe('first-foothold');
   });
 
   it('never suggests a gated mark, Moments or Field notes; slots 2–3 are one per badge and not slot 1’s', () => {
@@ -330,10 +381,30 @@ describe('spoken labels and the new dot', () => {
     expect(markSpoken(find(marks, 'first-foothold'), 'Groundwork', '12 Oct')).toBe('First Foothold. Earned 12 Oct. Finish the 20-question diagnostic. Groundwork.');
     expect(markSpoken(find(marks, 'mindset-shift'), 'Sound Judgement')).toContain('Opens after 100 first tries spread over 2 weeks or more. Sound Judgement.');
   });
+  it('a progress arrow is spoken as "now, aiming for", never "of"', () => {
+    expect(spokenDetail('62% → 70% · 14 of 20 answered')).toBe('62% now, aiming for 70%, 14 of 20 answered');
+    const { marks } = caseOf(facts({ domains: cisa.domains.map((d) => ({ id: d.id, short: d.short, answered: 14, mastery: 0.62 })) }));
+    const leaf = marks.find((m) => m.badge === 'firm-footing')!;
+    expect(markSpoken(leaf, 'The Five Domains')).toContain('62% now, aiming for 70%, 14 of 20 answered.');
+    expect(markSpoken(leaf, 'The Five Domains')).not.toMatch(/→| of 70/);
+  });
   it('the new dot: only a badge earned after the case was last viewed', () => {
-    expect(hasNewSince({ a: T0 - DAY }, T0)).toBe(false);
-    expect(hasNewSince({ a: T0 + 1 }, T0)).toBe(true);
-    expect(hasNewSince({ a: T0 }, T0)).toBe(false);
-    expect(hasNewSince({ a: T0 + 1 }, undefined)).toBe(false);
+    expect(hasNewSince({ 'first-foothold': T0 - DAY }, T0)).toBe(false);
+    expect(hasNewSince({ 'first-foothold': T0 + 1 }, T0)).toBe(true);
+    expect(hasNewSince({ 'first-foothold': T0 }, T0)).toBe(false);
+    expect(hasNewSince({ 'first-foothold': T0 + 1 }, undefined)).toBe(false);
+    // A back-fill's quiet badges (stamped with its time) were already held: never new.
+    expect(hasNewSince({ 'first-foothold': T0 + 5 }, T0, T0 + 5)).toBe(false);
+    expect(hasNewSince({ 'first-foothold': T0 + 5, 'topic-clear': T0 + 9 }, T0, T0 + 5)).toBe(true);
+  });
+  it('a kept key the case does not show (a newer tier, an unknown badge) never lights the dot or the count', () => {
+    for (const k of ['long-memory:75', 'firm-footing:4:80', 'dress-rehearsal:2', 'rooted', 'rooted:20', 'took-root', 'nope']) expect(caseKey(k)).toBe(false);
+    // Every key the catalogue lists is shown.
+    for (const m of allMarks(facts())) expect(caseKey(m.key)).toBe(true);
+    expect(caseKey('firm-footing:9')).toBe(true); // a domain the exam dropped still shows, earned
+    expect(hasNewSince({ 'long-memory:75': T0 + 1 }, T0)).toBe(false);
+    expect(caseEarnedCount({ 'first-foothold': T0, 'long-memory:75': T0, 'firm-footing:4:80': T0 })).toBe(1);
+    const shown = caseOf(facts(), { 'first-foothold': T0, 'long-memory:75': T0 }).marks.filter((m) => m.status === 'earned');
+    expect(shown.map((m) => m.key)).toEqual(['first-foothold']);
   });
 });
