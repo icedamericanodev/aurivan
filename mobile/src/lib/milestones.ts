@@ -38,6 +38,7 @@ import {
   markLabel,
   newlyMet,
   takeNext,
+  withFrozenPlanters,
   type CertMilestones,
   type MilestoneFacts,
 } from '../engine/milestones';
@@ -59,16 +60,17 @@ export function isCleanAnswer(a: AnswerRecord): boolean {
  * parts mastered (a subtopic with questions in the pack, answered right
  * without a hint on two different days: engine/mastery.ts masteredAt).
  * 1 = every part of some topic. Game answers and Coach me answers never set
- * a mastery date, so they never count here either.
+ * a mastery date, so they never count here either. null when the exam has no
+ * topic with questions (no study notes yet): Took Root then isn't offered.
  */
-export function tookRootShare(certId: string, mastery: CertProgress['mastery']): number {
+export function tookRootShare(certId: string, mastery: CertProgress['mastery']): number | null {
   const exists = questionExists(certId);
-  let best = 0;
+  let best: number | null = null;
   for (const t of certOutline(certId).topics) {
     const parts = t.subtopics.filter((s) => s.questionIds.some(exists));
     if (!parts.length) continue;
     const done = parts.filter((s) => Boolean(mastery?.[s.id]?.masteredAt)).length;
-    best = Math.max(best, done / parts.length);
+    best = Math.max(best ?? 0, done / parts.length);
     if (best >= 1) break;
   }
   return best;
@@ -306,6 +308,15 @@ export function celebrateNext(certId: string): MilestoneMoment | null {
 }
 
 /**
+ * How many badges a quiet fill's summary line speaks of: milestone badges
+ * (You → Milestones), each counted once however many of its leaves or tiers
+ * the fill found. Skill badges are saved quietly too, but not counted.
+ */
+function summaryCount(keys: readonly string[]): number {
+  return badgeCount(keys.filter((k) => badgeDef(markBadge(k))?.kind === 'milestone'));
+}
+
+/**
  * Once per cert (a save from before milestones, or a restore from an older
  * backup): work out what the saved data can still show, save those badges
  * QUIETLY (no queue, no moment) and keep the summary count. Returns how many
@@ -338,7 +349,7 @@ export function ensureBackfill(certId: string, now = Date.now()): number | null 
     const facts = milestoneFacts(certId, { ...cp, milestones: merged }, { now });
     const keys = facts ? newlyMet(allMarks(facts), merged.earned) : [];
     // The summary speaks of milestones (You → Milestones); skill leaves are saved quietly too.
-    found = badgeCount(keys.filter((k) => badgeDef(markBadge(k))?.kind === 'milestone'));
+    found = summaryCount(keys);
     const earned = earn(merged, keys, now, false);
     const cert = getCertification(certId);
     const planted = facts && cert ? withPlanters(earned, caseFromFacts(cert, facts, earned.earned).sets) : earned;
@@ -369,10 +380,15 @@ export function ensureCatalog(certId: string, now = Date.now()): number | null {
     const facts = milestoneFacts(certId, cp, { now });
     if (!facts || !cert) return null;
     const keys = newlyMet(allMarks(facts), m.earned);
-    found = keys.length;
+    // Counted the same way as the back-fill's line: milestone badges, each once.
+    const count = summaryCount(keys);
+    found = count;
     const earned = earn(m, keys, now, false);
-    const planted = withPlanters(earned, caseFromFacts(cert, facts, earned.earned).sets);
-    return { milestones: { ...planted, catalog: CATALOG_VERSION, ...(keys.length ? { catalogFill: { at: now, count: keys.length } } : {}) } };
+    // Planters this save had already won under its own (older) sets, then any
+    // set the newer catalogue says is complete.
+    const frozen = withFrozenPlanters(earned, { answers: cp.answers, exam: { domains: cert.domains.map((d) => d.id), fullMockSize: cert.exam.questions } });
+    const planted = withPlanters(frozen, caseFromFacts(cert, facts, frozen.earned).sets);
+    return { milestones: { ...planted, catalog: CATALOG_VERSION, ...(count ? { catalogFill: { at: now, count } } : {}) } };
   });
   return found;
 }
@@ -384,10 +400,10 @@ export function seeCatalogFill(certId: string) {
   );
 }
 
-/** "Badges now have higher tiers, plus a new one: Took Root. Your study so far already earned 2 more." (null: nothing to say). */
+/** "Badges now have higher tiers, plus a new one: Took Root. Your study so far already earned 2 of them." (null: nothing to say). */
 export function catalogFillLine(count: number): string | null {
   if (count <= 0) return null;
-  return `Badges now have higher tiers, plus a new one: Took Root. Your study so far already earned ${count} more.`;
+  return `Badges now have higher tiers, plus a new one: Took Root. Your study so far already earned ${count} of them.`;
 }
 
 /** The learner has seen the back-fill summary (it shows once). */

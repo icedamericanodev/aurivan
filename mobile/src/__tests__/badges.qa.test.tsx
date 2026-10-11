@@ -1005,7 +1005,7 @@ describe('6. restore validation: edited backups', () => {
     answerDomain('4', 45);
     for (const d of ['1', '2', '3', '5']) answerDomain(d, 20);
     addMocks(fullMock('m1', T0 - 20 * DAY), fullMock('m2', T0 - 5 * DAY));
-    setMilestones({ days: 60, counts: { longRecall: 30 } });
+    setMilestones({ days: 60, counts: { longRecall: 30 }, longIds: getDomainQuestions('cisa', '3').slice(0, 30).map((q) => q.id) });
     act(() => {
       checkMilestones('cisa');
     });
@@ -1053,7 +1053,7 @@ describe('6. restore validation: edited backups', () => {
 
   it('genuine higher tiers (from a later version) are kept when the data shows them', async () => {
     genuine();
-    setMilestones({ counts: { longRecall: 80 } });
+    setMilestones({ counts: { longRecall: 80 }, longIds: getDomainQuestions('cisa', '3').slice(0, 80).map((q) => q.id) });
     const m = await restoreEdited((x) => {
       x.earned['long-memory:75'] = T0 - DAY;
       x.earned['dress-rehearsal:2'] = T0 - DAY;

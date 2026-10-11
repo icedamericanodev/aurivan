@@ -600,7 +600,8 @@ export function caseKey(key: string): boolean {
   const parts = key.split(':');
   const def = badgeDef(markBadge(key));
   if (!def || parts.some((p) => p === '')) return false;
-  if (parts.length === 1) return def.id !== 'rooted';
+  // Rooted and Firm Footing have no plain key: every Rooted mark is a tier, every Firm Footing mark a domain's leaf.
+  if (parts.length === 1) return def.id !== 'rooted' && def.id !== 'firm-footing';
   if (parts.length > 3) return false;
   return tierOf(key) !== undefined;
 }

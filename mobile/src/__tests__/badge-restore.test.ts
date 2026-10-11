@@ -21,7 +21,8 @@ describe('markSupported reads the whole key (the restore bug)', () => {
     expect(markSupported('firm-footing:4:80', e())).toBe(false);
     expect(markSupported('firm-footing:4:80', e({ answers: answered(ids('4', 40)) }))).toBe(true);
     // Long Memory · 75 needs 75 recalls; the 25 that earn "long-memory" are not enough.
-    const counts = (longRecall: number) => ({ milestones: { counts: { longRecall } } });
+    // A genuine save's counter and its counted questions grow together.
+    const counts = (longRecall: number) => ({ milestones: { counts: { longRecall }, longIds: ids('9', longRecall) } });
     expect(markSupported('long-memory', e(counts(25)))).toBe(true);
     expect(markSupported('long-memory:75', e(counts(25)))).toBe(false);
     expect(markSupported('long-memory:75', e(counts(75)))).toBe(true);
@@ -61,7 +62,14 @@ describe('markSupported reads the whole key (the restore bug)', () => {
       lessonsDone: ['l1'],
       mocks: [{}],
       mistakes: Object.fromEntries(ids('9', 10).map((id) => [id, { slip: 'role' }])),
-      milestones: { counts: { longRecall: 25, graduated: 50, loopFixed: 10, paceRounds: 3, gameFixes: 10 }, sure: Array(20).fill(true), days: 60, myths: Array(25).fill({ id: 'x', ok: true }), signposts: Array(10).fill({ id: 'x', ok: true }) },
+      milestones: {
+        counts: { longRecall: 25, graduated: 50, loopFixed: 10, paceRounds: 3, gameFixes: 10 },
+        longIds: ids('8', 25),
+        sure: Array(20).fill(true),
+        days: 60,
+        myths: Array(25).fill({ id: 'x', ok: true }),
+        signposts: Array(10).fill({ id: 'x', ok: true }),
+      },
       gameBest: { trap: 1, sprint: 1 },
       gameGrowth: { trap: { hits: Array(10).fill(true) } },
       mastery: { '4A1.1': { masteredAt: '2026-10-01' } },
@@ -193,6 +201,7 @@ describe('an edited backup, end to end', () => {
       file({
         earned: { 'firm-footing:4': T0, 'firm-footing:4:80': T0, 'long-memory': T0, 'long-memory:75': T0 },
         counts: { longRecall: 25 },
+        longIds: ids('8', 25),
         planters: { evergreen: T0, made_up: T0 },
       }),
       ['cisa'],

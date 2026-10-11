@@ -212,8 +212,10 @@ export interface MilestoneFacts {
    * Mobile 1.11, Took Root: the topic closest to taking root, as the share
    * (0..1) of its parts (subtopics with questions) mastered, i.e. answered
    * right without a hint on two different days. 1 = a whole topic took root.
+   * null: this exam has no study-notes topics yet, so Took Root isn't in its
+   * catalogue at all (it could never be earned, and it is Evergreen core).
    */
-  tookRoot?: number;
+  tookRoot?: number | null;
   studyDays: number;
   freshStart: boolean;
   // Skill badges.
@@ -402,7 +404,8 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
   const wholeMap = f.domains.length > 0 && atFloor === f.domains.length;
   const mapProgress = f.domains.length ? f.domains.reduce((s, d) => s + frac(d.mastery, WHOLE_MAP_FLOOR), 0) / f.domains.length : 0;
   out.push(...one('whole-map', wholeMap, mapProgress, `${atFloor} of ${f.domains.length} domains at ${pct(WHOLE_MAP_FLOOR)}`));
-  // The tiers that open once Whole Map is earned (or is met right now).
+  // Firm Footing · 80% opens once Whole Map is earned or is met right now
+  // (the domain's own answers are the evidence, whenever they were given).
   const mapOpen = f.wholeMapAt !== undefined || wholeMap;
   // Firm Footing · 80% (a Stretch tier), one per domain.
   for (const d of f.domains) {
@@ -433,10 +436,13 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
     });
   });
   out.push(...one('graduate', f.graduated >= GRADUATES, frac(f.graduated, GRADUATES), of(f.graduated, GRADUATES, 'graduated')));
-  // Took Root: a whole topic, every part right without a hint on two different days.
-  const root = Math.max(0, Math.min(1, f.tookRoot ?? 0));
-  const rootMet = root >= 1 - 1e-9;
-  out.push(...one('took-root', rootMet, root, rootMet ? 'A topic took root' : root > 0 ? `Closest topic: ${pct(root)} rooted` : 'No topic rooted yet'));
+  // Took Root: a whole topic, every part right without a hint on two different
+  // days. Left out for an exam with no study-notes topics (tookRoot null).
+  if (f.tookRoot !== null) {
+    const root = Math.max(0, Math.min(1, f.tookRoot ?? 0));
+    const rootMet = root >= 1 - 1e-9;
+    out.push(...one('took-root', rootMet, root, rootMet ? 'A topic took root' : root > 0 ? `Closest topic: ${pct(root)} rooted` : 'No whole topic yet'));
+  }
   const s = sureShare(f.sure);
   const kwyk = s.n >= SURE_MIN && s.right >= SURE_RIGHT - 1e-9;
   out.push(
@@ -449,9 +455,16 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
   );
   const dress = f.mocks.some((m) => isDressRehearsal(m, f.fullMockSize));
   out.push({ ...one('dress-rehearsal', dress, 0, dress ? 'Done' : 'Not yet')[0], label: 'Dress Rehearsal · 1 mock' });
-  // Dress Rehearsal · 2 and · 3: full mocks finished once Whole Map is earned,
-  // each a week or more after the one before (none before Whole Map counts).
-  const chain = mapOpen ? spacedChain(f.mocks.filter((m) => isDressRehearsal(m, f.fullMockSize) && m.finishedAt !== undefined && m.finishedAt >= (f.wholeMapAt ?? 0)).map((m) => m.finishedAt!)) : [];
+  // Dress Rehearsal · 2 and · 3: full mocks finished on or after the day Whole
+  // Map was EARNED (its saved date), each a week or more after the one before.
+  // Not `mapOpen`: while Whole Map is met but not yet saved there is no date
+  // to count from, so no mock counts yet (otherwise every older mock would,
+  // and the session that earns Whole Map would earn the spaced tiers with it).
+  const wholeMapAt = f.wholeMapAt;
+  const chain =
+    wholeMapAt !== undefined
+      ? spacedChain(f.mocks.filter((m) => isDressRehearsal(m, f.fullMockSize) && m.finishedAt !== undefined && m.finishedAt >= wholeMapAt).map((m) => m.finishedAt!))
+      : [];
   for (const n of DRESS_TIERS) {
     const met = chain.length >= n;
     out.push({
@@ -725,7 +738,7 @@ export interface MarkEvidence {
   notesRead?: string[];
   gameBest?: Record<string, unknown>;
   gameGrowth?: Record<string, { hits?: boolean[] } | undefined>;
-  milestones?: Pick<CertMilestones, 'counts' | 'sure' | 'days' | 'myths' | 'signposts'>;
+  milestones?: Pick<CertMilestones, 'counts' | 'sure' | 'days' | 'myths' | 'signposts' | 'longIds'>;
   /** Study-notes mastery dates (Took Root, slice C). */
   mastery?: Record<string, { masteredAt?: string }>;
   /**
@@ -821,9 +834,13 @@ export function markSupported(key: string, e: MarkEvidence): boolean {
     case 'slip-spotter':
       return plain && Object.values(e.mistakes ?? {}).filter((m) => m.slip).length >= SLIP_TAGS;
     case 'long-memory': {
-      // "long-memory" is 25 recalls; "long-memory:75" and ":150" need their own count.
+      // "long-memory" is 25 recalls; "long-memory:75" and ":150" need their own
+      // count. The counter and the question list only ever grow together (a
+      // recall adds its question), so a counter the list can't back (an
+      // edited file) is read as the list's length.
       const t = tierOf(LONG_TIERS);
-      return t !== null && c('longRecall') >= (t === 1 ? LONG_RECALLS : t);
+      const recalls = Math.min(c('longRecall'), e.milestones?.longIds?.length ?? 0);
+      return t !== null && recalls >= (t === 1 ? LONG_RECALLS : t);
     }
     case 'graduate':
       return plain && c('graduated') >= GRADUATES;
@@ -896,11 +913,38 @@ export const PLANTER_NEEDS: Readonly<Record<string, readonly string[] | 'domains
   rooted: ROOTED_DAYS.map((n) => `rooted:${n}`),
 };
 
+/** The marks a set's FROZEN list needs (PLANTER_NEEDS), keys spelled out; none for an unknown set or no domains. */
+function planterKeys(set: string, e: Pick<MarkEvidence, 'answers' | 'exam'>): readonly string[] | null {
+  if (!Object.prototype.hasOwnProperty.call(PLANTER_NEEDS, set)) return null;
+  const needs = PLANTER_NEEDS[set];
+  if (needs !== 'domains') return needs;
+  const domains = new Set(e.exam ? e.exam.domains : Object.keys(e.answers ?? {}).map(domainOf));
+  return domains.size > 0 ? ['whole-map', ...[...domains].map((d) => `firm-footing:${d}`)] : null;
+}
+
 /** Could the restored badges have completed this set (its planter)? Unknown sets: never. */
 export function planterSupported(set: string, earned: Record<string, number>, e: Pick<MarkEvidence, 'answers' | 'exam'>): boolean {
-  if (!Object.prototype.hasOwnProperty.call(PLANTER_NEEDS, set)) return false;
-  const needs = PLANTER_NEEDS[set];
-  if (needs !== 'domains') return needs.every((k) => earned[k] !== undefined);
-  const domains = new Set(e.exam ? e.exam.domains : Object.keys(e.answers ?? {}).map(domainOf));
-  return earned['whole-map'] !== undefined && domains.size > 0 && [...domains].every((d) => earned[`firm-footing:${d}`] !== undefined);
+  const keys = planterKeys(set, e);
+  return keys !== null && keys.every((k) => earned[k] !== undefined);
+}
+
+/**
+ * The planters a save from before mobile 1.11 had already won: every counted
+ * set whose FROZEN 1.10 list (PLANTER_NEEDS) is earned, dated when the last
+ * of those marks was. A 1.9 save that skips 1.10 never ran 1.10's planter
+ * check, and 1.11's sets are bigger (Evergreen gained Long Memory · 75 and
+ * Took Root), so without this its Evergreen planter would wait for marks it
+ * never needed. Run once, by the catalogue fill (lib/milestones.ts
+ * ensureCatalog), never for a learner who starts on 1.11: their sets are the
+ * 1.11 ones. Never removes or re-dates a planter. Same object when nothing is new.
+ */
+export function withFrozenPlanters(m: CertMilestones, e: Pick<MarkEvidence, 'answers' | 'exam'>): CertMilestones {
+  let planters: Record<string, number> | undefined;
+  for (const set of Object.keys(PLANTER_NEEDS)) {
+    if (m.planters?.[set] !== undefined || planters?.[set] !== undefined) continue;
+    const keys = planterKeys(set, e);
+    if (!keys || !keys.every((k) => m.earned[k] !== undefined)) continue;
+    planters = { ...(planters ?? m.planters), [set]: Math.max(...keys.map((k) => m.earned[k])) };
+  }
+  return planters ? { ...m, planters } : m;
 }

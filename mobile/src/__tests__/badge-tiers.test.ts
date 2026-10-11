@@ -32,10 +32,11 @@ import {
   type MarkEvidence,
   type MilestoneFacts,
   type MockFacts,
+  withFrozenPlanters,
 } from '../engine/milestones';
 import { badgeShareable, isHonestShareText } from '../engine/shareCard';
 import { checkBackupText, currentBackup } from '../lib/backup';
-import { catalogFillLine, checkMilestones, ensureBackfill, ensureCatalog, milestoneFacts, seeCatalogFill, tookRootShare } from '../lib/milestones';
+import { catalogFillLine, checkMilestones, ensureBackfill, ensureCatalog, milestoneFacts, seeCatalogFill, syncPlanters, tookRootShare } from '../lib/milestones';
 import { certOutline, questionExists } from '../lib/outline';
 import { selectCert, useProgress, type MockResult } from '../store/progress';
 import { useSettings } from '../store/settings';
@@ -129,6 +130,13 @@ describe('Dress Rehearsal · 2 and · 3', () => {
     expect(met(facts({ wholeMapAt: wm, mocks: [at(1), at(7)] }))).not.toContain('dress-rehearsal:2');
     // A mock from before Whole Map is not part of the chain.
     expect(met(facts({ wholeMapAt: wm, mocks: [at(-10), at(1)] }))).not.toContain('dress-rehearsal:2');
+    // Whole Map met right now but not yet saved: there is no date to count
+    // from, so none of the older mocks count (they all came before it).
+    const now = facts({ domains: every(40, 0.7), mocks: [at(-30), at(-20), at(-10)] });
+    expect(met(now)).toEqual(expect.arrayContaining(['whole-map', 'dress-rehearsal']));
+    expect(met(now)).not.toContain('dress-rehearsal:2');
+    expect(met(now)).not.toContain('dress-rehearsal:3');
+    expect(allMarks(now).find((m) => m.key === 'dress-rehearsal:2')!.progress).toBe(0);
     // Untimed or unanswered mocks never count.
     expect(met(facts({ wholeMapAt: wm, mocks: [at(1), { ...at(9), timing: 'untimed' }] }))).not.toContain('dress-rehearsal:2');
     expect(met(facts({ wholeMapAt: wm, mocks: [at(1), { ...at(9), unanswered: 3 }] }))).not.toContain('dress-rehearsal:2');
@@ -244,7 +252,14 @@ describe('the catalogue and the restore check agree on every key', () => {
     notesRead: ['n1'],
     gameBest: { trap: 1, sprint: 1, priority: 1 },
     gameGrowth: { trap: { hits: Array(12).fill(true) } },
-    milestones: { counts: { longRecall: 150, graduated: 60, loopFixed: 12, gameFixes: 12, paceRounds: 3 }, sure: Array(30).fill(true), days: 70, myths: Array(25).fill({ id: 'm', ok: true }), signposts: Array(10).fill({ id: 's', ok: true }) },
+    milestones: {
+      counts: { longRecall: 150, graduated: 60, loopFixed: 12, gameFixes: 12, paceRounds: 3 },
+      longIds: Array.from({ length: 150 }, (_, i) => `q${i}`),
+      sure: Array(30).fill(true),
+      days: 70,
+      myths: Array(25).fill({ id: 'm', ok: true }),
+      signposts: Array(10).fill({ id: 's', ok: true }),
+    },
     mastery: { '4A1.1': { masteredAt: '2026-10-02' } },
     exam: { domains: cisa.domains.map((d) => d.id), fullMockSize: 150 },
     earned: { 'whole-map': T0 },
@@ -264,6 +279,25 @@ describe('the catalogue and the restore check agree on every key', () => {
       expect([k, caseKey(k)]).toEqual([k, false]);
       expect([k, markSupported(k, evidence)]).toEqual([k, false]);
     }
+  });
+
+  it('no plain "firm-footing" key: every Firm Footing mark is a domain’s leaf, for the case and the restore alike', () => {
+    expect(caseKey('firm-footing')).toBe(false);
+    expect(markSupported('firm-footing', evidence)).toBe(false);
+    expect(caseKey('rooted')).toBe(false);
+  });
+
+  it('Long Memory’s tiers need the counted questions too, not only the counter', () => {
+    const lm = (longRecall: number, ids: number): MarkEvidence => ({ ...evidence, milestones: { ...evidence.milestones, counts: { longRecall }, longIds: Array.from({ length: ids }, (_, i) => `q${i}`) } });
+    // A genuine save: the counter and the list grow together.
+    expect(markSupported('long-memory:150', lm(150, 150))).toBe(true);
+    expect(markSupported('long-memory:75', lm(80, 80))).toBe(true);
+    // An edited counter the list can't back: read as the list's length.
+    expect(markSupported('long-memory:150', lm(150, 25))).toBe(false);
+    expect(markSupported('long-memory:75', lm(150, 25))).toBe(false);
+    expect(markSupported('long-memory', lm(150, 25))).toBe(true);
+    // No list at all: no recall can be shown.
+    expect(markSupported('long-memory', { ...evidence, milestones: { counts: { longRecall: 30 } } })).toBe(false);
   });
 
   it('tierOf names every tier the same way the case does', () => {
@@ -371,7 +405,7 @@ describe('the catalogue fill (a 1.10 save meets 1.11)', () => {
     expect(m.planters!.evergreen).toBe(T0 - 30 * DAY);
     // Once: a second run does nothing.
     expect(ensureCatalog('cisa', T0 + DAY)).toBeNull();
-    expect(catalogFillLine(2)).toBe('Badges now have higher tiers, plus a new one: Took Root. Your study so far already earned 2 more.');
+    expect(catalogFillLine(2)).toBe('Badges now have higher tiers, plus a new one: Took Root. Your study so far already earned 2 of them.');
     expect(catalogFillLine(0)).toBeNull();
     seeCatalogFill('cisa');
     expect(cp().milestones!.catalogFill!.seen).toBe(true);
@@ -417,10 +451,146 @@ describe('the catalogue fill (a 1.10 save meets 1.11)', () => {
     expect(checkBackupText(JSON.stringify(old)).kind).toBe('ok');
   });
 
+  it('the summary counts badges the way the back-fill does: each badge once, milestones only', () => {
+    save110();
+    // Two more Firm Footing · 80% leaves in the save: one badge, not two marks.
+    useProgress.setState((s) => {
+      const c = selectCert(s, 'cisa');
+      const deep = Object.fromEntries(['1', '4'].flatMap((d) => getDomainQuestions('cisa', d).slice(0, 45).map((q) => [q.id, { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: T0 - 40 * DAY }])));
+      return { byCert: { ...s.byCert, cisa: { ...c, answers: { ...c.answers, ...deep } } } };
+    });
+    expect(ensureCatalog('cisa', T0)).toBe(3); // Took Root, Dress Rehearsal, Firm Footing
+    const m = cp().milestones!;
+    expect(m.earned['firm-footing:1:80']).toBe(T0);
+    expect(m.earned['firm-footing:4:80']).toBe(T0);
+    expect(m.catalogFill).toEqual({ at: T0, count: 3 });
+  });
+
   it('the facts read Whole Map’s date and the topics’ mastery from the save', () => {
     save110();
     const f = milestoneFacts('cisa', cp(), { now: T0 })!;
     expect(f.wholeMapAt).toBe(T0 - 30 * DAY);
     expect(f.tookRoot).toBe(1);
+  });
+});
+
+// ── Dress Rehearsal counts from the day Whole Map is SAVED (CR B1) ─────────
+describe('Dress Rehearsal · 2 and · 3 never count mocks from before Whole Map', () => {
+  beforeEach(() => {
+    jest.useFakeTimers({ now: T0 });
+    useProgress.setState({ byCert: {}, streak: { current: 0, best: 0, lastDay: null }, today: { day: '', answered: 0 }, days: {} });
+    useSettings.setState({ onboarded: true, activeCertId: 'cisa' });
+  });
+  afterEach(() => jest.useRealTimers());
+
+  const mock = (id: string, at: number): MockResult => ({ id, finishedAt: at, total: 150, correct: 110, minutesUsed: 200, byDomain: {}, timing: 'standard', unanswered: 0 });
+  /** Every domain at 100% (Whole Map met), three full mocks a week apart, all BEFORE now. */
+  function seed(milestones?: CertMilestones) {
+    useProgress.setState((s) => ({
+      byCert: {
+        ...s.byCert,
+        cisa: {
+          ...selectCert(s, 'cisa'),
+          answers: Object.fromEntries(cisa.domains.flatMap((d) => getDomainQuestions('cisa', d.id).slice(0, 25).map((q) => [q.id, { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: T0 - 40 * DAY }]))),
+          mocks: [mock('a', T0 - 30 * DAY), mock('b', T0 - 20 * DAY), mock('c', T0 - 10 * DAY)],
+          ...(milestones ? { milestones } : {}),
+        },
+      },
+    }));
+  }
+
+  it('live: the session that first meets Whole Map earns it (and Dress Rehearsal), never · 2 or · 3', () => {
+    seed({ earned: { 'first-foothold': T0 - 40 * DAY }, backfill: { at: T0 - 50 * DAY, count: 1, seen: true }, catalog: CATALOG_VERSION });
+    const fresh = checkMilestones('cisa', { now: T0, finished: true });
+    expect(fresh).toEqual(expect.arrayContaining(['whole-map', 'dress-rehearsal']));
+    expect(fresh).not.toContain('dress-rehearsal:2');
+    expect(fresh).not.toContain('dress-rehearsal:3');
+    // Mocks from the day Whole Map was saved on do count, a week apart.
+    useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...cp(), mocks: [...cp().mocks, mock('d', T0 + DAY), mock('e', T0 + 8 * DAY)] } } }));
+    expect(checkMilestones('cisa', { now: T0 + 8 * DAY, finished: true })).toEqual(['dress-rehearsal:2']);
+  });
+
+  it('back-fill: an older save meets Whole Map now; its older mocks never make · 2 or · 3', () => {
+    seed();
+    ensureBackfill('cisa', T0);
+    const m = cp().milestones!;
+    expect(m.earned['whole-map']).toBe(T0);
+    expect(m.earned['dress-rehearsal']).toBe(T0);
+    expect(m.earned['dress-rehearsal:2']).toBeUndefined();
+    expect(m.earned['dress-rehearsal:3']).toBeUndefined();
+  });
+});
+
+// ── Planters a save from before 1.11 had already won (CR B2) ───────────────
+describe('a save that skips 1.10 keeps the planters its sets had won', () => {
+  beforeEach(() => {
+    jest.useFakeTimers({ now: T0 });
+    useProgress.setState({ byCert: {}, streak: { current: 0, best: 0, lastDay: null }, today: { day: '', answered: 0 }, days: {} });
+    useSettings.setState({ onboarded: true, activeCertId: 'cisa' });
+  });
+  afterEach(() => jest.useRealTimers());
+
+  /** A 1.9 save: back-filled, no planters and no catalogue; Evergreen's three 1.10 badges earned. */
+  const save19 = () =>
+    useProgress.setState((s) => ({
+      byCert: {
+        ...s.byCert,
+        cisa: {
+          ...selectCert(s, 'cisa'),
+          milestones: {
+            earned: { 'long-memory': T0 - 9 * DAY, graduate: T0 - 3 * DAY, 'loop-closed': T0 - 5 * DAY },
+            counts: { longRecall: 25, graduated: 50, loopFixed: 10 },
+            longIds: Array.from({ length: 25 }, (_, i) => `q${i}`),
+            backfill: { at: T0 - 20 * DAY, count: 3, seen: true },
+          },
+        },
+      },
+    }));
+
+  it('1.9 → 1.11: the Evergreen planter is saved, dated when its last 1.10 badge was earned', () => {
+    save19();
+    ensureCatalog('cisa', T0);
+    const m = cp().milestones!;
+    expect(m.planters).toEqual({ evergreen: T0 - 3 * DAY });
+    expect(m.catalog).toBe(CATALOG_VERSION);
+    // Evergreen itself now reads 3 of 5 (Long Memory · 75 and Took Root are new), and says so.
+    const evergreen = caseOf(facts({ longRecall: 25, graduated: 50, loopFixed: 10 }), m.earned).sets.find((x) => x.info.id === 'evergreen')!;
+    expect(setCountLine(evergreen)).toBe('3 of 5');
+    expect(grownLine(evergreen, m.planters)).toBeDefined();
+    // Launch's planter sync after it changes nothing.
+    expect(syncPlanters('cisa', T0)).toBeNull();
+  });
+
+  it('a learner who starts on 1.11 gets a planter only for the set as 1.11 has it', () => {
+    useProgress.setState((s) => ({
+      byCert: {
+        ...s.byCert,
+        cisa: {
+          ...selectCert(s, 'cisa'),
+          milestones: {
+            earned: { 'long-memory': T0 - 9 * DAY, graduate: T0 - 3 * DAY, 'loop-closed': T0 - 5 * DAY },
+            counts: { longRecall: 25, graduated: 50, loopFixed: 10 },
+            longIds: Array.from({ length: 25 }, (_, i) => `q${i}`),
+            backfill: { at: T0 - 20 * DAY, count: 0, seen: true },
+            catalog: CATALOG_VERSION,
+          },
+        },
+      },
+    }));
+    expect(ensureCatalog('cisa', T0)).toBeNull();
+    expect(syncPlanters('cisa', T0)).toBeNull();
+    checkMilestones('cisa', { now: T0 });
+    expect(cp().milestones!.planters?.evergreen).toBeUndefined();
+  });
+
+  it('withFrozenPlanters: never re-dates a planter, and needs every domain for the domains set', () => {
+    const exam = { domains: cisa.domains.map((d) => d.id), fullMockSize: 150 };
+    const earned = { 'whole-map': T0 - 2 * DAY, ...Object.fromEntries(cisa.domains.map((d, i) => [`firm-footing:${d.id}`, T0 - (10 - i) * DAY])) };
+    expect(withFrozenPlanters({ earned }, { exam }).planters).toEqual({ domains: T0 - 2 * DAY });
+    expect(withFrozenPlanters({ earned, planters: { domains: T0 - 50 * DAY } }, { exam }).planters).toEqual({ domains: T0 - 50 * DAY });
+    const short = { ...earned };
+    delete (short as Record<string, number>)['firm-footing:3'];
+    const m: CertMilestones = { earned: short };
+    expect(withFrozenPlanters(m, { exam })).toBe(m);
   });
 });
