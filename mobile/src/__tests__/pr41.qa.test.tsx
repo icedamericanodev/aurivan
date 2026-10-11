@@ -696,11 +696,11 @@ describe('Journey 3 · Dress Rehearsal · 2', () => {
   // SAVED. In the check where Whole Map is first met, wholeMapAt is still
   // undefined and engine/milestones.ts:454 filters with `?? 0`, so every
   // older mock counts and Dress Rehearsal · 2 is earned in the same moment.
-  it.failing('engine: Whole Map met for the first time; two spaced mocks from before it do not count', () => {
+  it('engine: Whole Map met for the first time; two spaced mocks from before it do not count', () => {
     expect(met(facts({ domains: domainsAt(30, 0.7), mocks: [full(-20), full(-10)] }))).not.toContain('dress-rehearsal:2');
   });
 
-  it.failing('stores: the session that first reaches Whole Map does not also hand out Dress Rehearsal · 2', () => {
+  it('stores: the session that first reaches Whole Map does not also hand out Dress Rehearsal · 2', () => {
     seedAnswers(perDomain(12), T0 - 40 * DAY); // every domain at 100%: Whole Map met, not yet saved
     seedMocks([fullMock('a', T0 - 20 * DAY), fullMock('b', T0 - 10 * DAY)]);
     filled({ earned: { 'first-foothold': T0 - 40 * DAY, 'dress-rehearsal': T0 - 20 * DAY } });
@@ -895,9 +895,10 @@ describe('Journey 4 · a set grows after completing', () => {
     const m: CertMilestones = {
       earned: { 'long-memory': T0, graduate: T0, 'loop-closed': T0, 'dress-rehearsal': T0, 'on-pace': T0 },
       counts: { longRecall: 25, graduated: 50, loopFixed: 10 },
+      longIds: ALL.slice(0, 25),
       planters: { evergreen: T0, examDay: T0 },
     };
-    const kept = keepSupported(m, { answers: {}, mocks: [fullMock('a', T0)], milestones: { counts: m.counts } });
+    const kept = keepSupported(m, { answers: {}, mocks: [fullMock('a', T0)], milestones: m });
     expect(kept.planters).toEqual({ evergreen: T0, examDay: T0 });
   });
 });
@@ -1015,6 +1016,16 @@ describe('Journey 5 · share card', () => {
 // ═════════════════════════════════════════════════════════════════════════
 describe('Journey 6 · restore validation', () => {
   const answers = Object.fromEntries(perDomain(60).map((id) => [id, {}]));
+  // A real save keeps Long Memory's counted questions beside its counter (both since 1.6), so the evidence does too.
+  const richMilestones: CertMilestones = {
+    earned: {},
+    counts: { longRecall: 150, graduated: 60, loopFixed: 12, gameFixes: 12, paceRounds: 3 },
+    longIds: ALL.slice(0, 150),
+    sure: Array(30).fill(true),
+    days: 70,
+    myths: Array(25).fill({ id: 'm', ok: true }),
+    signposts: Array(10).fill({ id: 's', ok: true }),
+  };
   const rich: MarkEvidence = {
     answers,
     mistakes: Object.fromEntries(Object.keys(answers).slice(0, 12).map((id) => [id, { slip: 'misread' }])),
@@ -1023,7 +1034,7 @@ describe('Journey 6 · restore validation', () => {
     notesRead: ['n1'],
     gameBest: { trap: 1, sprint: 1, priority: 1 },
     gameGrowth: { trap: { hits: Array(12).fill(true) } },
-    milestones: { counts: { longRecall: 150, graduated: 60, loopFixed: 12, gameFixes: 12, paceRounds: 3 }, sure: Array(30).fill(true), days: 70, myths: Array(25).fill({ id: 'm', ok: true }), signposts: Array(10).fill({ id: 's', ok: true }) },
+    milestones: richMilestones,
     mastery: { '4A1.1': { masteredAt: '2026-10-02' } },
     exam: { domains: cisa.domains.map((d) => d.id), fullMockSize: 150 },
     earned: { 'whole-map': T0 },
@@ -1048,7 +1059,7 @@ describe('Journey 6 · restore validation', () => {
   // BUG (Minor): caseKey accepts a plain "firm-footing" (no domain), which no
   // catalogue mark has and markSupported refuses. engine/badgeCatalog.ts
   // caseKey: `if (parts.length === 1) return def.id !== 'rooted'`.
-  it.failing('a bare "firm-footing" key: the case and the restore check agree', () => {
+  it('a bare "firm-footing" key: the case and the restore check agree', () => {
     expect(caseKey('firm-footing')).toBe(markSupported('firm-footing', rich));
   });
 
@@ -1061,6 +1072,7 @@ describe('Journey 6 · restore validation', () => {
         milestones: {
           ...m!,
           counts: { longRecall: 25 },
+          longIds: ALL.slice(500, 525),
           days: 30,
           earned: {
             'whole-map': T0 - 20 * DAY,
