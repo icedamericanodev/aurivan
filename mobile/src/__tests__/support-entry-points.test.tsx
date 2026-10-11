@@ -10,7 +10,7 @@
  * - no report control during a live mock (the navigator says where to go);
  * - a lesson check's link waits until the check is answered;
  * - no email app: the address and the message as text, Share details;
- * - after reporting: "Finished in your email app?" and "Reported <date>".
+ * - after reporting: "Finished in your email app?" and "Report started <date>".
  *
  * Gotcha (see session-screen.regression.test.tsx): never write
  * `act(() => store.action())`; use braces.
@@ -22,6 +22,9 @@ import { OptionCard } from '../components/quiz';
 import { CISA_LESSONS } from '../content/lessons/cisa';
 import { getAllQuestions } from '../content/loader';
 import { noteSubtopics } from '../content/notes';
+import { getRoleDeck, getStepSequences } from '../content/games';
+import { canopyCardId } from '../engine/games/canopyCall';
+import { stonesCardId } from '../engine/games/steppingStones';
 import { REASONS } from '../engine/support';
 import { finishSession } from '../lib/finishSession';
 import { startFromIds, startMock } from '../lib/sessions';
@@ -31,6 +34,7 @@ import { useSettings } from '../store/settings';
 import SessionScreen from '../app/session';
 import Results from '../app/results';
 import Mistakes from '../app/mistakes';
+import Reports from '../app/reports';
 import NoteSubtopicScreen from '../app/notes/subtopic/[id]';
 import LessonPlayer from '../app/lesson/[id]';
 
@@ -88,6 +92,11 @@ const mount = (el: React.ReactElement) => {
   });
 };
 const root = () => r!.root;
+const unmount = () =>
+  act(() => {
+    r?.unmount();
+    r = undefined;
+  });
 const allText = () => {
   const out: string[] = [];
   const walk = (n: ReactTestInstance | string) => (typeof n === 'string' ? out.push(n) : n.children.forEach(walk));
@@ -137,20 +146,22 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-describe('practice: under the answer', () => {
-  const q = getAllQuestions('cisa').find((x) => x.options.D)!;
-  // Display slots A B C D show the bank's D C B A.
-  const PERM = ['D', 'C', 'B', 'A'] as const;
+// A practice question with a known shuffle (used by the practice and "other ways out" tests).
+const q = getAllQuestions('cisa').find((x) => x.options.D)!;
+// Display slots A B C D show the bank's D C B A.
+const PERM = ['D', 'C', 'B', 'A'] as const;
 
-  function answerShuffled(displayIndex: number) {
-    startFromIds('cisa', [q.id], 'Quick 10');
-    act(() => {
-      useSession.setState((s) => ({ active: { ...s.active!, perms: { [q.id]: [...PERM] } } }));
-    });
-    mount(<SessionScreen />);
-    act(() => { root().findAllByType(OptionCard)[displayIndex].props.onPress(); });
-    press('Check answer');
-  }
+function answerShuffled(displayIndex: number) {
+  startFromIds('cisa', [q.id], 'Quick 10');
+  act(() => {
+    useSession.setState((s) => ({ active: { ...s.active!, perms: { [q.id]: [...PERM] } } }));
+  });
+  mount(<SessionScreen />);
+  act(() => { root().findAllByType(OptionCard)[displayIndex].props.onPress(); });
+  press('Check answer');
+}
+
+describe('practice: under the answer', () => {
 
   it('opens the sheet with the question’s reasons, and the email names the ORIGINAL letter', async () => {
     answerShuffled(1); // the learner taps display B = the bank's C
@@ -182,14 +193,16 @@ describe('practice: under the answer', () => {
 
     // Logged on the phone, the sheet closed, and the calm note shown in place.
     const [entry] = useProgress.getState().reports!;
-    expect(entry).toMatchObject({ item: `q:${q.id}`, reason: 'key', cert: 'cisa', at: NOW });
+    // The app version is kept, so a later fix can credit it by version.
+    expect(entry).toMatchObject({ item: `q:${q.id}`, reason: 'key', cert: 'cisa', at: NOW, version: '1.7.0' });
     expect(sheetOpen()).toBe(false);
     expect(allText()).toContain('Finished in your email app?');
     expect(allText()).toContain('We read every report');
     expect(allText()).not.toMatch(/\bSent\b/);
-    // The link now says it was reported, and still opens the sheet.
-    expect(allText()).toContain('Reported 11 Oct');
-    press(/^Reported 11 Oct\. Report a problem with question/);
+    // The link says a report was STARTED (we can't know it was sent), and still opens the sheet.
+    expect(allText()).toContain('Report started 11 Oct');
+    expect(allText()).not.toMatch(/(^|\s)Reported\b/);
+    press(/^Report started 11 Oct\. Report a problem with question/);
     expect(allText()).toContain('You started a report about this on 11 Oct.');
   });
 
@@ -392,5 +405,97 @@ describe('game recaps', () => {
     await sendReport('The game marked me wrong, but I was right');
     expect(lastBody()).toContain('Item: Game card rumor:4B1.2:k1x9 (Root or Rumor)');
     expect(lastBody()).toContain('Where: Game recap · Root or Rumor');
+  });
+
+  it('Canopy Call and Stepping Stones misses report the STABLE card id, and Your reports names the game', async () => {
+    const card = getRoleDeck('cisa')!.cards[0];
+    const seq = getStepSequences('cisa').find((x) => !x.lessonId)!;
+    mount(
+      <RoundEnd
+        certId="cisa"
+        game="canopy"
+        score={8}
+        max={10}
+        onAgain={() => {}}
+        // As canopy.tsx and stones.tsx build them: the deck id as the key, the stable id to report.
+        misses={[{ questionId: card.id, reportId: canopyCardId(card), stem: 'A decision…', tag: 'Decides: Board', why: 'Why.', answerWrong: true }]}
+      />,
+    );
+    press('Report a problem with this card');
+    await sendReport('Something on this card is wrong');
+    expect(lastBody()).toContain(`Item: Game card ${canopyCardId(card)} (Canopy Call)`);
+    expect(useProgress.getState().reports![0].item).toBe(`card:role:${card.subtopicId}:${card.id}`);
+    unmount();
+
+    mount(
+      <RoundEnd
+        certId="cisa"
+        game="stones"
+        score={1}
+        max={3}
+        onAgain={() => {}}
+        misses={[{ questionId: seq.id, reportId: stonesCardId(seq), stem: seq.title, tag: 'Order', why: 'Why.', answerWrong: true }]}
+      />,
+    );
+    press('Report a problem with this card');
+    await sendReport('Something on this card is wrong');
+    expect(useProgress.getState().reports![0].item).toBe(`card:seq:${seq.subtopicId}:${seq.id}`);
+    unmount();
+
+    // Your reports names each game, Root or Rumor's "root:" cards included.
+    act(() => {
+      useProgress.getState().logReport({ ref: 'R-7K2Q', item: 'card:root:4B1.2:2kku2i', reason: 'incorrect', cert: 'cisa' });
+    });
+    mount(<Reports />);
+    const text = allText();
+    expect(text).toContain('Game card: Canopy Call');
+    expect(text).toContain('Game card: Stepping Stones');
+    expect(text).toContain('Game card: Root or Rumor');
+    expect(text).not.toContain('Game card: a game');
+  });
+});
+
+describe('the report sheet’s other ways out', () => {
+  it('no email app: Try again goes back to the form, and after Close the link opens a fresh form, not the old panel', async () => {
+    openUrl.mockRejectedValue(new Error('no mail app'));
+    answerShuffled(0);
+    press(`Report a problem with question ${q.id}`);
+    await sendReport('Typo or grammar');
+    expect(allText()).toContain('We couldn’t open an email app.');
+    // Try again: the form is back, the reason still chosen; logged once only.
+    press('Try again');
+    expect(sheetOpen()).toBe(true);
+    expect(pressables('Write the email')[0].props.disabled).toBe(false);
+    await pressAsync('Write the email');
+    expect(useProgress.getState().reports).toHaveLength(1);
+    press('Close');
+    press(/^Report started 11 Oct\. Report a problem with question/);
+    expect(allText()).toContain('You started a report about this on 11 Oct.');
+    expect(allText()).not.toContain('We couldn’t open an email app.');
+  });
+
+  it('“Copy or share instead” shows the whole message to copy or share, with no email app needed', async () => {
+    const share = jest.spyOn(Share, 'share').mockResolvedValue({ action: 'sharedAction' });
+    answerShuffled(0);
+    press(`Report a problem with question ${q.id}`);
+    expect(pressables('Copy or share instead')[0].props.disabled).toBe(true); // a reason first
+    press('Typo or grammar');
+    press('Copy or share instead');
+    expect(openUrl).not.toHaveBeenCalled();
+    expect(allText()).toContain('Send it your own way');
+    expect(allText()).not.toContain('We couldn’t open an email app.');
+    expect(allText()).toContain(`Item: Question ${q.id}`);
+    await pressAsync('Share details');
+    expect((share.mock.calls[0][0] as { message: string }).message).toContain('Reason: Typo or grammar');
+    expect(useProgress.getState().reports).toHaveLength(1);
+    share.mockRestore();
+  });
+
+  it('a sighted learner sees why “Write the email” waits', () => {
+    answerShuffled(0);
+    press(`Report a problem with question ${q.id}`);
+    expect(allText()).toContain('Choose what’s wrong to continue.');
+    press('Typo or grammar');
+    expect(allText()).not.toContain('Choose what’s wrong to continue.');
   });
 });

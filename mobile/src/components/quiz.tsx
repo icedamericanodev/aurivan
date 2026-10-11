@@ -11,7 +11,7 @@
  *   Why B    – the explanation.
  *   Vine     – the key idea and the tips as leaves on one stem, drawn in
  *              when it scrolls into view (static under Reduce Motion).
- *   Trust    – "Original · Reviewed Oct 2026 · Report issue".
+ *   Trust    – "Original · Reviewed Oct 2026 · Report a problem".
  */
 import { useEffect, useState, type ReactNode } from 'react';
 import { Pressable, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';

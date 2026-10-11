@@ -3,7 +3,8 @@
  *
  * How an email leaves the app (decided for mobile 1.7; support.md §2):
  * - We open the learner's OWN email app with `Linking.openURL('mailto:…')`,
- *   on iOS and Android. No new native module, so it can ship over the air.
+ *   on iOS and Android. No new native module: it ships in a reviewed store
+ *   build like everything else (never over the air; compliance O1).
  * - We never call `canOpenURL('mailto:')` first: without extra config it
  *   answers "no" on iOS (LSApplicationQueriesSchemes) and on Android 11+
  *   (<queries>), even when a mail app exists. We just try to open it.
