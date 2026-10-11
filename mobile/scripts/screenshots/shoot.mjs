@@ -281,13 +281,15 @@ for (let attempt = 0; attempt < 16; attempt++) {
     break;
   }
 }
-// Sure Footing: the rules (first play) were 08-sprint; now the chips.
-await shot('34-sure-footing-chips', '/game/sprint', 1500);
+// Forecast (id sprint; was Sure Footing): past its rules intro (first play), then the chips.
+await shot('34-forecast-chips', '/game/sprint', 1500);
+const startForecast = page.getByRole('button', { name: 'Start', exact: true });
+if (await startForecast.count()) { await startForecast.first().click(); await page.waitForTimeout(1200); }
 const gotIt = page.getByText('Got it', { exact: true });
 if (await gotIt.count()) { await gotIt.click(); await page.waitForTimeout(600); }
 await page.getByRole('radio', { name: /^Sure:/ }).click();
 await page.waitForTimeout(500);
-await page.screenshot({ path: `${out}/34-sure-footing-chips.png` });
+await page.screenshot({ path: `${out}/34-forecast-chips.png` });
 // Signpost: play a whole round (meaning, then option A), ending on the recap.
 await page.goto('http://127.0.0.1:8093/game/priority', { waitUntil: 'networkidle' });
 await page.waitForTimeout(1200);

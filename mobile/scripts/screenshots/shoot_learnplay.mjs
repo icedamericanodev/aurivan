@@ -98,9 +98,17 @@ const page = await ctx.newPage();
 const errs = [];
 page.on('pageerror', (e) => errs.push(e.message));
 const wait = (ms) => page.waitForTimeout(ms);
+// FONT_SCALE: every text run is zoomed, headings included (RN web draws a header as
+// role="heading" or h1–h3, not a div). Text the app caps below the scale is zoomed
+// to its cap instead (the lesson's "10/11" counter: maxFontSizeMultiplier 1.3).
+const TEXT_RUNS = 'div[dir="auto"], [role="heading"][dir="auto"], h1[dir="auto"], h2[dir="auto"], h3[dir="auto"]';
+const CAPPED = [{ sel: '[dir="auto"][aria-label^="Scene "]', cap: 1.3 }];
 const go = async (path, ms = 2000) => {
   await page.goto(BASE + path, { waitUntil: 'networkidle' });
-  if (FONT_SCALE) await page.addStyleTag({ content: `div[dir="auto"] { zoom: ${FONT_SCALE}; }` });
+  if (FONT_SCALE) {
+    const caps = CAPPED.map(({ sel, cap }) => `${sel} { zoom: ${Math.min(cap, FONT_SCALE)}; }`).join(' ');
+    await page.addStyleTag({ content: `${TEXT_RUNS} { zoom: ${FONT_SCALE}; } ${caps}` });
+  }
   await wait(ms);
 };
 const shot = async (name, opts = {}) => {
@@ -243,6 +251,16 @@ await strip(
 );
 await wait(1200);
 await shot('p05-timeline');
+// On to scene 10 of 11 (the header counter at its widest, "10/11"): answer the check at 9.
+for (let k = 4; k < 10; k++) {
+  const option = page.getByRole('radio', { name: /^Option A:/ });
+  if ((await option.count()) && (await option.first().isEnabled())) {
+    await option.first().click();
+    await wait(900);
+  }
+  await press('Next', 900);
+}
+await shot('p05b-scene-10');
 
 // ── 3. Lesson complete (a fresh lesson) and the ✓ back on Learn ────────
 await go('/learn?domain=1');
@@ -292,7 +310,7 @@ if (noteOk) {
 // ── 5. Play, each game's header and intro ──────────────────────────────
 await go('/play');
 await shot('p10-play');
-await scrollTo('More games', 300);
+await scrollTo('Stepping Stones', 120);
 await shot('p10b-play-rows');
 const games = ['trap', 'sprint', 'priority', 'daylight', 'rumor', 'callit', 'field', 'canopy', 'stones'];
 for (const g of games) {
