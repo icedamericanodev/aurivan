@@ -266,6 +266,17 @@ export function serifNumeral(size: NumeralSize | 34 | 52): TextStyle {
 export const numeralUnit: TextStyle = { fontFamily: font.sans500, fontSize: 12, lineHeight: 16 };
 /** A stat's unit beside its serif number ("of 20", "min", "days"): Figtree 15/20, ink2 (mobile 1.11). */
 export const statUnit: TextStyle = { fontFamily: font.sans500, fontSize: 15, lineHeight: 20 };
+/**
+ * The share cards' fixed text (320 × 400 pt pictures that never scale with
+ * the font size, mobile 1.11): the badge's name in Fraunces 21/26, its skill
+ * line in Fraunces italic 16/22, and the trademark notice in Figtree 11/15
+ * (every word legible in the 1080 px export; two lines at most).
+ */
+export const cardType = {
+  name: { fontFamily: font.serif500, fontSize: 21, lineHeight: 26, letterSpacing: -0.2 },
+  skill: { fontFamily: font.serif400Italic, fontSize: 16, lineHeight: 22 },
+  notice: { fontFamily: font.sans500, fontSize: 11, lineHeight: 15 },
+} satisfies Record<string, TextStyle>;
 /** A stat's value in words ("None", "Under a minute"): Fraunces 20/26, the number's voice at word size. */
 export const statWord: TextStyle = { fontFamily: font.serif500, fontSize: 20, lineHeight: 26, letterSpacing: -0.2 };
 /** The raised % after a serif numeral: ~0.48em of the numeral. */

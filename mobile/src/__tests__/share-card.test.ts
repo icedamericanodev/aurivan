@@ -6,9 +6,12 @@ import { getAllQuestions } from '../content/loader';
 import { computeReadiness, type AnswerRecord } from '../engine/readiness';
 import { RANGE_MIN_ANSWERS, readinessRange } from '../engine/readinessRange';
 import {
+  badgeCardText,
+  badgeShareable,
+  studyingFor,
+  type ShareBadge,
   daysStudied,
   isHonestShareText,
-  notAffiliated,
   pickShareHeadline,
   shareMessage,
   shareOptions,
@@ -46,7 +49,7 @@ function input(perDomain: number, extra: Partial<ShareInput> = {}): ShareInput {
 }
 
 /** Every string a headline can put on the card or into the share text. */
-const texts = (h: ShareHeadline) => [h.value ?? '', h.label, h.note ?? '', h.spoken, shareMessage(h, cisa.issuer)];
+const texts = (h: ShareHeadline) => [h.value ?? '', h.label, h.note ?? '', h.spoken, shareMessage(h, cisa.trademarkNotice).replace(cisa.trademarkNotice, '')];
 
 describe('share card headline', () => {
   it('with no data at all, falls back to a "starting" line with no number', () => {
@@ -104,9 +107,8 @@ describe('share card headline', () => {
     expect(daysStudied(['2026-10-08'], TODAY)).toBe(0); // a future day never counts
   });
 
-  it('carries the trademark-safe line', () => {
-    expect(notAffiliated('ISACA')).toBe('Not affiliated with ISACA.');
-    expect(shareMessage(pickShareHeadline(input(0)), 'ISACA')).toContain('Not affiliated with ISACA.');
+  it('carries the cert’s full trademark notice (compliance review §5)', () => {
+    expect(shareMessage(pickShareHeadline(input(0)), cisa.trademarkNotice)).toContain('Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.');
   });
 });
 
@@ -180,5 +182,63 @@ describe('share card headline: edge cases (QA)', () => {
   it('the readiness note says it is not an exam prediction', () => {
     const h = pickShareHeadline(flat(RANGE_MIN_ANSWERS));
     expect(h.note).toMatch(/not an exam prediction/);
+  });
+});
+
+// ── Badge cards (mobile 1.11, compliance review §5) ─────────────────────
+describe('badge share cards', () => {
+  const badge = (over: Partial<ShareBadge> = {}): ShareBadge => ({
+    name: 'Long Memory · 75 recalls',
+    tierLine: 'Lichen · tier 2 of 3',
+    skill: 'Recalls answers a week or more later',
+    set: 'evergreen',
+    status: 'earned',
+    earnedOn: '3 Nov 2026',
+    ...over,
+  });
+
+  it('the headline is built from the cert: the mark as an adjective before "exam", ® only when registered', () => {
+    expect(studyingFor(cisa)).toBe('Studying for the CISA® exam');
+    expect(studyingFor(getCertification('aaia')!)).toBe('Studying for the AAIA exam');
+    expect(studyingFor(getCertification('cissp')!)).toBe('Studying for the CISSP® exam');
+  });
+
+  it('every word on the card, top to bottom, with the full notice; the cert name never on or above the medallion', () => {
+    const t = badgeCardText(badge(), cisa);
+    expect(t.caption).toBe('Aurivan study badge · Earned 3 Nov 2026');
+    expect(t.headline).toBe('Studying for the CISA® exam');
+    expect(t.notice).toBe('Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.');
+    // The lines that sit with the medallion never name the cert.
+    for (const line of [t.caption, t.name, t.tierLine!, t.skill]) expect(line).not.toMatch(/CISA|ISACA/);
+    // The share text and the spoken label carry the notice too.
+    expect(t.message).toContain(t.notice);
+    expect(t.spoken).toContain(t.notice);
+    expect(t.spoken).toContain('Long Memory · 75 recalls');
+    // No verification id, no URL (no store listing yet), no profile or credential wording.
+    expect(t.message).not.toMatch(/https?:|www\.|utm|ref=|LinkedIn|Licenses|certificat|credential|verif/i);
+  });
+
+  it('a plain store link, never with tracking', () => {
+    const t = badgeCardText(badge(), cisa, 'https://example.com/aurivan');
+    expect(t.message).toContain(' https://example.com/aurivan ');
+    expect(t.message).not.toMatch(/utm_|ref=|\?/);
+  });
+
+  it('the guard now also refuses credential words on the skill line (never on the notice)', () => {
+    for (const w of ['Certified auditor', 'Earned a certificate', 'Certification ready', 'A credential', 'Accredited', 'Official badge', 'Graduated from review']) {
+      expect([w, isHonestShareText(w)]).toEqual([w, false]);
+    }
+    expect(() => badgeCardText(badge({ skill: 'Graduated 50 questions from review' }), cisa)).toThrow();
+    // The notice says "not … endorsed" and stays on the card regardless.
+    expect(badgeCardText(badge(), cisa).notice).toMatch(/endorsed/);
+  });
+
+  it('never shareable: Moments (Fresh Start, a self-reported "Passed"), not yet earned, or an empty skill line', () => {
+    expect(badgeShareable({ status: 'earned', set: 'moments', skill: 'Picked up again' })).toBe(false);
+    expect(badgeShareable({ status: 'earned', set: 'moments', skill: 'Passed' })).toBe(false);
+    expect(badgeShareable({ status: 'open', set: 'evergreen', skill: 'Recalls answers a week or more later' })).toBe(false);
+    expect(badgeShareable({ status: 'earned', set: 'evergreen', skill: '' })).toBe(false);
+    expect(badgeShareable({ status: 'earned', set: 'evergreen', skill: 'Recalls answers a week or more later' })).toBe(true);
+    expect(() => badgeCardText(badge({ set: 'moments' }), cisa)).toThrow();
   });
 });

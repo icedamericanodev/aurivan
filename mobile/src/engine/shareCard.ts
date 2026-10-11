@@ -51,10 +51,17 @@ export interface ShareHeadline {
   spoken: string;
 }
 
-/** Words that would turn a progress card into a pass claim. */
-const PASS_CLAIM = /\b(pass|passed|passing|guarantee[ds]?|certified)\b|ready to|will (pass|succeed)/i;
+/**
+ * Words that would turn a progress card into a pass claim, or a study badge
+ * into something that reads like a credential on LinkedIn (mobile 1.11,
+ * compliance review §5): "certified", "certificate", "credential",
+ * "accredited", "official", "graduated". Run on every string WE write onto a
+ * card (headline, skill line, caption), never on the trademark notice, which
+ * must say "not … endorsed".
+ */
+const PASS_CLAIM = /\b(pass|passed|passing|guarantee[ds]?|certified)\b|ready to|will (pass|succeed)|certificat(e|ion)|credential|accredit|official|graduat/i;
 
-/** True when a piece of share text makes no pass claim. Used by tests and as a runtime guard. */
+/** True when a piece of share text makes no pass or credential claim. Used by tests and as a runtime guard. */
 export function isHonestShareText(text: string): boolean {
   return !PASS_CLAIM.test(text);
 }
@@ -143,12 +150,101 @@ export function pickShareHeadline(input: ShareInput): ShareHeadline {
   return shareOptions(input)[0];
 }
 
-/** The trademark-safe line printed on every card. */
-export function notAffiliated(issuer: string): string {
-  return `Not affiliated with ${issuer}.`;
+/**
+ * The text that travels with the image (or alone, where only text can be
+ * shared). `notice` is the cert's full trademark notice (cert.trademarkNotice:
+ * "Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark
+ * of ISACA."), on every card and in every share text (compliance §5).
+ */
+export function shareMessage(h: ShareHeadline, notice: string): string {
+  return `${h.spoken} Studying with Aurivan. ${notice}`;
 }
 
-/** The text that travels with the image (or alone, where only text can be shared). */
-export function shareMessage(h: ShareHeadline, issuer: string): string {
-  return `${h.spoken} Studying with Aurivan. ${notAffiliated(issuer)}`;
+// ── Badge cards (mobile 1.11, badges_game.md §6, compliance review §5) ────
+
+/** The cert facts a badge card reads (from content/certifications.ts). */
+export interface ShareCert {
+  name: string;
+  trademarkNotice: string;
+  /** false: an unconfirmed mark ("AAIA" without ®). */
+  trademarkRegistered?: boolean;
+}
+
+/**
+ * "Studying for the CISA® exam": the mark as an adjective before "exam", ®
+ * on its first use, built from the cert (AAIA without ®, CISSP® for ISC2).
+ * It sits at the foot of the card, never on or directly above the medallion.
+ */
+export function studyingFor(cert: ShareCert): string {
+  return `Studying for the ${cert.name}${cert.trademarkRegistered === false ? '' : '®'} exam`;
+}
+
+/** A badge, as its card needs it (an earned case mark). */
+export interface ShareBadge {
+  /** "Long Memory · 75 recalls" */
+  name: string;
+  /** The tier's metal and number, printed under the name ("Lichen · tier 2 of 3"), when it has one. */
+  tierLine?: string;
+  /** The skill line ("Recalls answers a week or more later"); empty = never shareable. */
+  skill: string;
+  set: string;
+  status: string;
+  /** "3 Nov 2026", formatted by the caller. */
+  earnedOn: string;
+}
+
+/** Sets whose badges are never shared: Moments (Fresh Start, and the planned self-reported "Passed"). */
+const NEVER_SHARED = new Set(['moments']);
+
+/**
+ * Can this badge be shared? Earned, not a Moment (a "Passed" or a Fresh Start
+ * beside a cert name would read like a claim or a week away), with a skill
+ * line that makes no pass or credential claim. Sharing earns nothing.
+ */
+export function badgeShareable(b: Pick<ShareBadge, 'status' | 'set' | 'skill'>): boolean {
+  return b.status === 'earned' && !NEVER_SHARED.has(b.set) && b.skill.trim() !== '' && isHonestShareText(b.skill);
+}
+
+/** Every word on a badge card, top to bottom, plus the share text and the spoken label. */
+export interface BadgeCardText {
+  name: string;
+  tierLine?: string;
+  skill: string;
+  /** "Aurivan study badge · Earned 3 Nov 2026": the medallion's caption, so it reads as ours. */
+  caption: string;
+  /** "Studying for the CISA® exam" */
+  headline: string;
+  notice: string;
+  /** The text share (a plain store link, when there is one: no referral or tracking codes). */
+  message: string;
+  /** The whole card, for screen readers. */
+  spoken: string;
+}
+
+/**
+ * The words on a badge's share card. Every line we write is checked with
+ * `isHonestShareText` (not the notice: it says "not … endorsed"). Throws
+ * if a badge that isn't shareable gets here, so a slip can never be shared.
+ */
+export function badgeCardText(b: ShareBadge, cert: ShareCert, storeLink?: string | null): BadgeCardText {
+  if (!badgeShareable(b)) throw new Error(`badge not shareable: ${b.name}`);
+  const caption = `Aurivan study badge · Earned ${b.earnedOn}`;
+  const headline = studyingFor(cert);
+  // The badge NAME is not run through the guard: names were cleared by the
+  // compliance review (2a), and the guard's "graduat" would refuse the
+  // Graduate badge by name. Every other line we write is.
+  const ours = [b.tierLine ?? '', b.skill, caption, headline];
+  if (!ours.every(isHonestShareText)) throw new Error(`share text failed the honesty guard: ${b.name}`);
+  const link = storeLink ? ` ${storeLink}` : '';
+  const tier = b.tierLine ? ` (${b.tierLine})` : '';
+  return {
+    name: b.name,
+    ...(b.tierLine ? { tierLine: b.tierLine } : {}),
+    skill: b.skill,
+    caption,
+    headline,
+    notice: cert.trademarkNotice,
+    message: `${b.skill}: my ${b.name}${tier} study badge from Aurivan, earned ${b.earnedOn}. ${headline}.${link} ${cert.trademarkNotice}`,
+    spoken: `Badge card. ${b.name}${tier}. ${b.skill}. ${caption.replace(' · ', ', ')}. ${headline}. ${cert.trademarkNotice}`,
+  };
 }
