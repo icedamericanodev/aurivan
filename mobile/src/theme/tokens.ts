@@ -347,6 +347,17 @@ export const motion = {
    * a falling-leaf moment drifts at most `leaves` leaves, once.
    */
   celebrate: { fullTimes: 3, sessionMs: 3000, leaves: 8 },
+  /**
+   * The plant (mobile 1.14, motion.md §5 / M7 / M8). Whole-layer transforms
+   * only (never a path rebuilt per frame):
+   * - breath: one half-breath (in, or out); the Breathe idle burst is
+   *   `breaths` full breaths (≤ 5 s) on focus, then still. You and Your plant only;
+   * - react: a mood's one reaction (a hop, a lean, a stretch);
+   * - grow: the growth sequence (old swells, cross-fade, new settles);
+   * - plantIn: onboarding's seed settling and the first sprout popping;
+   * - reduced: the cross-fade that replaces any of it under Reduce Motion.
+   */
+  plant: { breath: 1100, breaths: 2, react: 600, lean: 900, grow: 900, plantIn: 820, reduced: 150 },
   rise: 8, // pt: content enters this far below its place (y only)
   shift: 16, // pt: a page turn's sideways offset
   pressScale: 0.98,
@@ -458,6 +469,11 @@ export const plantLeaf = {
   rosewood: { deep: '#8E2F3A', mid: '#B8404C', light: '#D9666F', hi: '#F1A3A6' },
   pearl: { deep: '#AEB8AA', mid: '#E3E8DD', light: '#FAFAF5', hi: '#FFFFFF' },
   cactus: { deep: '#2F6B45', mid: '#4C9160', light: '#7DB97E', hi: '#F4EED9' },
+  // Mobile 1.14 colourways. Snow: white blooms with a mauve-grey shadow, so the
+  // silhouette still holds 3:1 on the light page (white cherry, white lotus).
+  snow: { deep: '#9A8590', mid: '#E4D8DD', light: '#F6EFF2', hi: '#FFFFFF' },
+  // Lemon: a paler sunflower.
+  lemon: { deep: '#9C8516', mid: '#D2BB3E', light: '#EEDD78', hi: '#FAF2BF' },
 } satisfies Record<string, PlantLeafPalette>;
 export type PlantLeafId = keyof typeof plantLeaf;
 
@@ -539,6 +555,76 @@ export const plantArt = {
   sunflower: { disc: '#5E3A1E', discMid: '#8A5A2E', discLit: '#9C6A38', seeds: '#4A2E17', sideDisc: '#6B4423', drift: '#E9C46A' },
   lotus: { stamen: '#E9C46A', stamenDeep: '#C9A14A', pod: '#8DAA5A', podTop: '#B7CC7A', podSeed: '#5F7A3A', drift: '#F0B4C4' },
   sampaguita: { core: '#D9D27A', tassel: '#E8866E' },
+  /** Mobile 1.14: the visitors that perch on the clearing day (original birds; no owl, no finch). */
+  visitor: {
+    wren: '#8A5A3A',
+    wrenDark: '#6A4128',
+    wrenBelly: '#E3CBA8',
+    robin: '#6E5A48',
+    robinDark: '#544334',
+    robinBreast: '#D9673A',
+    beak: '#E9A040',
+    leg: '#3B2C22',
+  },
+  /** Mobile 1.14: the planters (badge sets) and the grounds. */
+  planter: {
+    fieldstone: '#8C8577',
+    fieldstoneLit: '#A8A193',
+    fieldstoneDark: '#6F695D',
+    fiveStone: '#B9B2A2',
+    fiveStoneRim: '#9E9786',
+    fiveDots: ['#3F7F96', '#4E8A3E', '#B0802C', '#86689C', '#5E7482'],
+    compass: '#24533B',
+    compassLit: '#2F6B4C',
+    compassRim: '#1C4430',
+    compassStar: '#E9C46A',
+    banded: '#EFE6D2',
+    bandedLit: '#F8F2E4',
+    bandedBand: '#C98A2E',
+    bandedClay: '#B5502E',
+    root: '#7A5634',
+    stoneRing: '#9AA09A',
+    stoneRingLit: '#BEC3BD',
+    blaze: '#F3F1EA',
+    blazeMark: '#B5502E',
+    post: '#7E5A3C',
+    postLit: '#9C7550',
+  },
+  /** Mobile 1.14: the keepsakes (each badge's emblem as a small object). */
+  keepsake: {
+    stone: '#9A9F98',
+    stoneLit: '#C2C6BF',
+    stoneDark: '#767B74',
+    wood: '#8A6442',
+    woodLit: '#A87F57',
+    woodDark: '#5F432C',
+    gold: '#D9A63E',
+    goldLit: '#F0CF7A',
+    clay: '#B5502E',
+    cream: '#F3ECDC',
+    water: '#8CC0C4',
+    waterRim: '#4F8296',
+    reed: '#5E8A4A',
+    web: '#9FB0B8', // silvery, so it reads on paper and in the dark
+    dew: '#7FC3D2',
+    jay: '#B79A88',
+    jayBlue: '#3E6FB0',
+    jayBlack: '#2A2119',
+    swallow: '#2C3E66',
+    swallowThroat: '#C8553A',
+    fox: '#D2702F',
+    foxDark: '#9E4E1E',
+    fern: '#4C8A47',
+    fernLit: '#7DB06A',
+    deer: '#A86E44',
+    deerDark: '#7A4E2E',
+    mushroom: '#C2453A',
+    mushroomStem: '#F1E7D3',
+    lanternGlow: '#F6C35A',
+    dawn: '#F6D58A',
+    ribbon: '#2B6E4A',
+    ribbonTail: '#1E4A34',
+  },
   bamboo: {
     deep: '#4E7836',
     mid: '#6E9E4C',
@@ -566,9 +652,10 @@ export interface PlantThemeTone {
   leafFill: string; // the happy leaves
   honey: string; // the moon, the curious sparkle
   dusk: string; // the resting backdrop
+  dawnOpacity: number; // mobile 1.14: the clear-dawn keepsake's soft sun behind the plant
   duskOpacity: number;
 }
 export const plantTheme: { light: PlantThemeTone; dark: PlantThemeTone } = {
-  light: { shadow: '#17231B', shadowOpacity: 0.1, sap: '#2B6E4A', leafFill: '#6DB38A', honey: '#8F6620', dusk: '#DCD8E6', duskOpacity: 0.85 },
-  dark: { shadow: '#000000', shadowOpacity: 0.35, sap: '#A9D9BA', leafFill: '#A9D9BA', honey: '#E9C46A', dusk: '#232842', duskOpacity: 0.9 },
+  light: { shadow: '#17231B', shadowOpacity: 0.1, sap: '#2B6E4A', leafFill: '#6DB38A', honey: '#8F6620', dusk: '#DCD8E6', duskOpacity: 0.85, dawnOpacity: 0.7 },
+  dark: { shadow: '#000000', shadowOpacity: 0.35, sap: '#A9D9BA', leafFill: '#A9D9BA', honey: '#E9C46A', dusk: '#232842', duskOpacity: 0.9, dawnOpacity: 0.32 },
 };
