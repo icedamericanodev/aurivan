@@ -31,36 +31,15 @@ import You from '../app/(tabs)/you';
 import { router } from 'expo-router';
 import * as registry from '../engine/games/registry';
 import { planText } from '../components/journey';
+import { setMockReducedMotion } from '../../jest/reanimated-mock';
+
+// Motion ON (the shared mock defaults to Reduce Motion), so the swaying frond
+// (the Android suspect) is rendered.
+setMockReducedMotion(false);
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
-jest.mock('react-native-reanimated', () => {
-  const { View, Text, ScrollView } = jest.requireActual('react-native');
-  const builder: object = new Proxy({}, { get: () => () => builder });
-  const id = (v: unknown) => v;
-  return {
-    __esModule: true,
-    default: { View, Text, ScrollView, createAnimatedComponent: (c: unknown) => c },
-    createAnimatedComponent: (c: unknown) => c,
-    // Motion ON, so the swaying frond (the Android suspect) is rendered.
-    useReducedMotion: () => false,
-    useSharedValue: (v: unknown) => ({ value: v, set: () => {} }),
-    useAnimatedStyle: () => ({}),
-    useAnimatedProps: () => ({}),
-    withTiming: id,
-    withDelay: (_d: number, v: unknown) => v,
-    withSpring: id,
-    withRepeat: id,
-    withSequence: (...v: unknown[]) => v[v.length - 1],
-    cancelAnimation: () => {},
-    Easing: new Proxy({}, { get: () => () => id }),
-    ReduceMotion: { System: 'system', Always: 'always', Never: 'never' },
-    FadeIn: builder,
-    FadeInDown: builder,
-    FadeOut: builder,
-  };
-});
 jest.mock('../components/icons', () => {
   const Icon = () => null;
   return new Proxy({ __esModule: true, ICON_STROKE: 2 } as Record<string, unknown>, {
