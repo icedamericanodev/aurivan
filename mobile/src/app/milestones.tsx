@@ -16,12 +16,13 @@ import { useEffect, useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BadgeRow } from '../components/milestones';
+import { useGrowth } from '../components/motion';
 import { ProgressBar, PushedHeader, Section, T } from '../components/ui';
 import { badgeViews, nearest, type BadgeView } from '../engine/milestones';
 import { shortDate } from '../lib/format';
 import { backfillLine, marksFor, seeBackfill } from '../lib/milestones';
 import { useActiveCert } from '../lib/useActiveCert';
-import { space } from '../theme/tokens';
+import { motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 /** "Firm Footing · IS Audit, IS Operations" style list of a badge's earned leaves. */
@@ -39,6 +40,19 @@ export default function Milestones() {
   const next = nearest(views.filter((v) => v.earned.length === 0 || v.next));
   const nextIds = new Set(next.map((v) => v.def.id));
   const ahead = views.filter((v) => v.earned.length === 0 && !nextIds.has(v.def.id));
+  // Mobile 1.9: what moved since you last looked. Leaves earned since then
+  // press in (80 ms apart, the first 3); a "closest next" bar grows from
+  // where you last saw it, once the screen has arrived. Nothing else moves,
+  // and coming back with nothing new shows it still.
+  const leaves = useGrowth(`milestones:earned:${cert.id}`, views.map((v) => v.earned.length));
+  const bars = useGrowth(`milestones:bars:${cert.id}`, views.map((v) => Math.round((v.next?.progress ?? 0) * 100)));
+  const index = new Map(views.map((v, i) => [v.def.id, i]));
+  const fresh = leaves.play ? earned.filter((v) => v.earned.length > leaves.from[index.get(v.def.id)!]).slice(0, motion.stagger.maxLeaves) : [];
+  const pressAt = (id: BadgeView['def']['id']) => {
+    const k = fresh.findIndex((v) => v.def.id === id);
+    return k < 0 ? undefined : motion.dur.screen + k * motion.stagger.leaf;
+  };
+  const barFrom = (id: BadgeView['def']['id']) => (bars.play ? bars.from[index.get(id)!] / 100 : undefined);
   // The back-fill summary shows on the first visit after it ran, then never again.
   const backfill = progress.milestones?.backfill;
   const [summary] = useState(() => (backfill && !backfill.seen ? backfillLine(backfill.count) : null));
@@ -73,6 +87,7 @@ export default function Milestones() {
                 rule={v.def.rule}
                 earned
                 detail={when}
+                press={pressAt(v.def.id)}
                 last={k === earned.length - 1}
                 spoken={`${v.def.name}${leaves ? `, ${leaves}` : ''}. Earned. ${v.def.rule} ${when}.`}
               />
@@ -93,7 +108,7 @@ export default function Milestones() {
                 extra={
                   v.next && v.next.progress > 0 ? (
                     <View style={{ marginTop: space.sm }}>
-                      <ProgressBar value={v.next.progress} height={6} />
+                      <ProgressBar value={v.next.progress} height={6} from={barFrom(v.def.id)} delay={motion.dur.screen} />
                     </View>
                   ) : undefined
                 }

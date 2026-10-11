@@ -18,7 +18,8 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { DomainRings, ringsSpoken } from '../../components/journey';
+import { boundsLabel, DomainRings, ringsSpoken } from '../../components/journey';
+import { useGrowth, useScreenFocus } from '../../components/motion';
 import { creditSubtitle } from '../../components/help';
 import { MindsetGrowthCard } from '../../components/moments';
 import { Bookmark, ICON_STROKE, Leaf, LifeBuoy, MilestoneIcon, NotebookPen, RotateCcw, Settings, Share2 } from '../../components/icons';
@@ -37,7 +38,7 @@ import { useMindsetGrowth } from '../../lib/moments';
 import { useReports } from '../../lib/useReports';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
-import { space } from '../../theme/tokens';
+import { motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 const MILESTONE_IDS = new Set<string>(MILESTONES.map((b) => b.id));
@@ -78,6 +79,29 @@ export default function You() {
     if (backfill && !backfill.seen) seeBackfill(cert.id);
   }, [backfill, cert.id]);
 
+  // Mobile 1.9 motion, when You is on view: the rings grow from what you last
+  // saw here (the first view of the day grows from 0), each domain that went
+  // up gets a quiet "+4", and the numbers that went up roll. A fall is just
+  // shown; coming back with nothing new shows everything still.
+  const focused = useScreenFocus();
+  const ringValues = readiness.domains.map((d) => (d.answered ? Math.round(d.mastery * 100) : 0));
+  const rings = useGrowth(`you:rings:${cert.id}`, ringValues, { active: focused, firstOfDay: true });
+  const rangeGrowth = useGrowth(`you:range:${cert.id}`, range.enough ? [range.low, range.high] : [], { active: focused, firstOfDay: true });
+  const accuracy = answered ? Math.round((mastered / answered) * 100) : 0;
+  const stats = useGrowth(`you:stats:${cert.id}`, [answered, accuracy, streak], { active: focused });
+  // "+4" only for what went up since a real last look (not the day's count-up
+  // from 0; a first rise from all zeros does count).
+  const sinceLook = rings.play && rings.since === true;
+  // The same "+4"s in words: the legend is hidden from screen readers, so the rings' label says them.
+  const grewSpoken = sinceLook
+    ? cert.domains
+        .map((d, i) => ({ d, up: ringValues[i] - rings.from[i] }))
+        .filter((x) => x.up > 0)
+        .map((x) => `${x.d.short} up ${x.up}`)
+        .join(', ')
+    : '';
+  const statRoll = (k: number, from: string) => ({ play: stats.play, from, run: stats.run, delay: motion.dur.select + k * motion.stagger.stat });
+
   return (
     <Screen>
       <Enter i={0}>
@@ -91,11 +115,13 @@ export default function You() {
         <DomainRings
           cert={cert}
           values={values}
-          accessibilityLabel={`Estimated readiness ${rangeSpoken(range)}. ${ringsSpoken(cert, values)}.`}
+          grow={{ play: rings.play, from: rings.from.map((v) => v / 100), run: rings.run }}
+          delta={sinceLook ? (i) => ringValues[i] - rings.from[i] : undefined}
+          accessibilityLabel={`Estimated readiness ${rangeSpoken(range)}. ${ringsSpoken(cert, values)}.${grewSpoken ? ` Since you last looked: ${grewSpoken}.` : ''}`}
           center={
             range.enough ? (
               <View style={{ alignItems: 'center' }}>
-                <BigNum value={rangeLabel(range)} pct size={20} />
+                <BigNum value={rangeLabel(range)} pct size={20} roll={{ play: rangeGrowth.play, from: boundsLabel(rangeGrowth.from), run: rangeGrowth.run }} />
                 {/* "estimate", not "ready": the range is a study estimate, not a prediction. */}
                 <T v="caption" color={c.ink2}>estimate</T>
               </View>
@@ -110,9 +136,15 @@ export default function You() {
       <Enter i={2} style={{ marginTop: 26 }}>
         <StatRow>
           {[
-            <Stat key="a" value={String(answered)} label="answered" />,
-            <Stat key="b" value={answered ? String(Math.round((mastered / answered) * 100)) : '–'} pct={answered > 0} label="accuracy" />,
-            <Stat key="c" value={String(streak)} label="day streak" color={c.clay} />,
+            <Stat key="a" value={String(answered)} label="answered" roll={statRoll(0, String(stats.from[0]))} />,
+            <Stat
+              key="b"
+              value={answered ? String(accuracy) : '–'}
+              pct={answered > 0}
+              label="accuracy"
+              roll={answered ? statRoll(1, String(stats.from[1])) : undefined}
+            />,
+            <Stat key="c" value={String(streak)} label="day streak" color={c.clay} roll={statRoll(2, String(stats.from[2]))} />,
           ]}
         </StatRow>
         <Button

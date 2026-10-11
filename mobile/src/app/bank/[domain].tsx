@@ -3,7 +3,8 @@
  *
  * Header: the domain, the learner's own progress, and filter chips
  * (All · Not yet answered · Missed · Saved). Below: every question that
- * passes the filter, grouped under short topic names. Tap a question to
+ * passes the filter, grouped under short topic names (a header only when a
+ * topic shows 2 rows or more; a lone row names its topic itself, mobile 1.9). Tap a question to
  * answer it on its own; "Practice these" starts a session from the list
  * (up to 20, random order). Both use the normal session machinery, so
  * grading on ORIGINAL letters and the answer/tips screens are unchanged.
@@ -20,6 +21,7 @@ import { FlatList, View, type ListRenderItem } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BankQuestionRow, TopicHeader } from '../../components/bank';
 import { EmptyScreen } from '../../components/emptyScreen';
+import type { EmptyArtKind } from '../../components/glyphs';
 import { StickyFooter } from '../../components/quiz';
 import { Button, Chip, ChipRow, DomainDot, EmptyState, Gap, PushedHeader, Row, T } from '../../components/ui';
 import { getDomainQuestions } from '../../content/loader';
@@ -46,6 +48,9 @@ const FILTERS: { value: BankFilter; label: string }[] = [
   { value: 'missed', label: 'Missed' },
   { value: 'saved', label: 'Saved' },
 ];
+
+/** Each filter's empty drawing (mobile 1.9): what would be here, drawn. */
+const EMPTY_ART: Record<BankFilter, EmptyArtKind> = { all: 'seedling', new: 'fieldbook', missed: 'pressed', saved: 'bookmark' };
 
 const openSession = () => router.push('/session');
 const goBack = () => (router.canGoBack() ? router.back() : router.replace('/bank'));
@@ -86,6 +91,8 @@ export default function BankDomain() {
           status={item.status}
           saved={item.saved}
           difficulty={item.difficulty}
+          topic={item.ownTopic ? item.topic : undefined}
+          afterGroup={item.afterGroup}
           onPress={() => openQuestion(item.id)}
         />
       ),
@@ -123,7 +130,7 @@ export default function BankDomain() {
         keyExtractor={(it) => it.key}
         renderItem={renderItem}
         ListHeaderComponent={header}
-        ListEmptyComponent={<EmptyState title={empty.title} body={empty.body} />}
+        ListEmptyComponent={<EmptyState art={EMPTY_ART[filter]} title={empty.title} body={empty.body} />}
         contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: (hasItems ? footerH : 0) + space.xl }}
         initialNumToRender={14}
         windowSize={7}

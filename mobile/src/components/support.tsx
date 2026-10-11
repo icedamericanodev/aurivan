@@ -204,7 +204,8 @@ function SheetFrame({ visible, onClose, children }: { visible: boolean; onClose:
   const { reduced: reduceMotion } = useMotion();
   return (
     <Modal visible={visible} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={onClose}>
-      <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
+      {/* Sheets sit one surface tier above the screen behind them (raised2, mobile 1.9). */}
+      <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.raised2 }}>
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? undefined : 'height'}>
           <ScrollView
             automaticallyAdjustKeyboardInsets

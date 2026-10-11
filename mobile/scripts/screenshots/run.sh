@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -61,6 +61,12 @@ elif [ "${SHOTS:-}" = motion ]; then
   # frame strips of the press, the page turn, the segment fill, the tab fade,
   # the segmented thumb (moving and reopened) and a mock's calm turn (shoot_motion.mjs).
   node scripts/screenshots/shoot_motion.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = growth ]; then
+  # Mobile 1.9 progress you can see: Today (normal, cleared, exam-ready, exam
+  # eve), Results, You, Milestones, the new empty states, the bank grouping and
+  # a sheet; strips of a number roll, ring growth, the clearing, the milestone
+  # moment, the theme fade and You's growth (shoot_growth.mjs).
+  node scripts/screenshots/shoot_growth.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).

@@ -1,6 +1,6 @@
 /**
  * A full pushed screen for an empty list (spec §11 "Empty state"):
- * header → seedling → one-line title → ≤2 lines of body → optional teaching
+ * header → its own drawing (mobile 1.9) → one-line title → ≤2 lines of body → optional teaching
  * tags → sticky primary action + optional ghost action. Copy is factual and
  * forward-looking ("Nothing open right now"), never "Yay!".
  */
@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { StickyFooter } from './quiz';
+import type { EmptyArtKind } from './glyphs';
 import { Button, EmptyState, PushedHeader } from './ui';
 
 export function EmptyScreen({
@@ -21,6 +22,8 @@ export function EmptyScreen({
   primary,
   secondary,
   fallback = '/home',
+  art,
+  next,
 }: {
   header: string;
   /** Where Back goes when there is no back history (a full list's screen may use '/you'). */
@@ -28,6 +31,9 @@ export function EmptyScreen({
   title: string;
   body: string;
   tags?: string[];
+  /** Mobile 1.9: this place's own drawing (glyphs.tsx EmptyArt), and what comes next here. */
+  art?: EmptyArtKind;
+  next?: string;
   primary?: { label: string; onPress: () => void };
   secondary?: { label: string; onPress: () => void };
 }) {
@@ -37,7 +43,7 @@ export function EmptyScreen({
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
         <PushedHeader title={header} onBack={() => (router.canGoBack() ? router.back() : router.replace(fallback))} />
-        <EmptyState title={title} body={body} tags={tags} />
+        <EmptyState title={title} body={body} tags={tags} art={art} next={next} />
       </ScrollView>
       {(primary || secondary) && (
         <StickyFooter onHeight={setFooterH}>

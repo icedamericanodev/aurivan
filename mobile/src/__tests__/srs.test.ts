@@ -1,4 +1,4 @@
-import { DAY_MS, dueIds, INTERVAL_DAYS, MAX_BOX, nextReview } from '../engine/srs';
+import { DAY_MS, dueIds, INTERVAL_DAYS, MAX_BOX, nextReview, upcomingReview } from '../engine/srs';
 
 const NOW = 1_700_000_000_000;
 
@@ -57,5 +57,23 @@ describe('Leitner spaced repetition', () => {
       c: { box: 1, dueAt: NOW + DAY_MS, lastSeen: 0, reps: 1 },
     };
     expect(dueIds(review, NOW)).toEqual(['b', 'a']);
+  });
+});
+
+describe('retired questions (a content update removed them)', () => {
+  const NOW = new Date(2026, 9, 12, 10, 0, 0).getTime();
+  const entry = (dueAt: number) => ({ box: 2, dueAt, lastSeen: NOW, reps: 1 });
+
+  it('dueIds leaves out ids the bank no longer has', () => {
+    const review = { d1_001: entry(NOW - 1000), d9_retired: entry(NOW - 2000) };
+    expect(dueIds(review, NOW)).toEqual(['d9_retired', 'd1_001']);
+    expect(dueIds(review, NOW, (id) => id !== 'd9_retired')).toEqual(['d1_001']);
+  });
+
+  it('upcomingReview counts only questions the bank still has', () => {
+    const review = { d1_001: entry(NOW + 3_600_000), d9_retired: entry(NOW + 1_800_000) };
+    expect(upcomingReview(review, NOW)).toEqual({ at: NOW + 1_800_000, count: 2 });
+    expect(upcomingReview(review, NOW, (id) => id !== 'd9_retired')).toEqual({ at: NOW + 3_600_000, count: 1 });
+    expect(upcomingReview({ d9_retired: entry(NOW + 1000) }, NOW, () => false)).toBeNull();
   });
 });

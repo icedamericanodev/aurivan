@@ -656,7 +656,7 @@ describe('J5 quick fixes', () => {
     mount(<Today />);
     const rings = root().findAllByType(GrowthRings);
     expect(rings).toHaveLength(1);
-    expect(rings[0].props.replay).toBe(true); // the panel's own rings, not the readiness row's
+    expect(rings[0].props.colors).toBe('#A9D9BA'); // the panel's own rings (sap), not the readiness row's
   });
 
   it('Review counts agree on Today, Practice and You when the day starts (55 due)', () => {

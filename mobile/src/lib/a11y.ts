@@ -22,6 +22,25 @@ export function moveFocus(ref: RefObject<Component | null | unknown>, delay = 30
 }
 
 export const ANNOUNCE_DELAY = 350;
+/** Announcements waiting for their pause (so tests can say or drop them). */
+const pending = new Map<ReturnType<typeof setTimeout>, string>();
 export function sayLater(text: string, delay = ANNOUNCE_DELAY): void {
-  setTimeout(() => AccessibilityInfo.announceForAccessibility(text), delay);
+  const t = setTimeout(() => {
+    pending.delete(t);
+    AccessibilityInfo.announceForAccessibility(text);
+  }, delay);
+  pending.set(t, text);
+}
+/** Tests: say every waiting announcement now, in order. */
+export function flushSayLaterForTest(): void {
+  for (const [t, text] of [...pending]) {
+    clearTimeout(t);
+    pending.delete(t);
+    AccessibilityInfo.announceForAccessibility(text);
+  }
+}
+/** Tests: drop every waiting announcement (none may fire after a test has ended). */
+export function cancelSayLaterForTest(): void {
+  for (const t of pending.keys()) clearTimeout(t);
+  pending.clear();
 }

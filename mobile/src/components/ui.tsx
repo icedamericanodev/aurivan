@@ -29,7 +29,7 @@ import {
 } from 'react-native';
 import Animated, { ReduceMotion, useAnimatedStyle, useSharedValue, withSpring, type SharedValue } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
+import Svg, { Defs, LinearGradient, Path, Rect, Stop } from 'react-native-svg';
 import { sayLater } from '../lib/a11y';
 import { domainColor } from '../content/certifications';
 import type { DomainInfo } from '../content/types';
@@ -54,9 +54,9 @@ import {
   type TypeVariant,
 } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { Botany, botanySize, Seedling, type BotanyKind } from './glyphs';
+import { Botany, botanySize, EmptyArt, type BotanyKind, type EmptyArtKind } from './glyphs';
 import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Settings as SettingsIcon, X } from './icons';
-import { AnimatedPressable, FadeIn, ProgressFill, StateLayer, tween, useMotion, usePressScale } from './motion';
+import { AnimatedPressable, FadeIn, ProgressFill, RollingText, StateLayer, tween, useMotion, usePressScale } from './motion';
 
 /** Icon sizes: inline with text, in rows/circles, and in the tab bar/header. */
 export const ICON_SIZE = { inline: 16, row: 20, bar: 24 } as const;
@@ -91,14 +91,31 @@ export function Screen({
   children,
   scroll = true,
   edges = ['top'],
+  onScroll,
+  onScrollBeginDrag,
 }: {
   children: ReactNode;
   scroll?: boolean;
   edges?: ('top' | 'bottom')[];
+  /** The scroll offset and the visible height (something below the fold waits until it is seen). */
+  onScroll?: (y: number, height: number) => void;
+  /** The learner starts a new drag (a moment on the screen skips to its end). */
+  onScrollBeginDrag?: () => void;
 }) {
   const { c } = useTheme();
+  const [viewH, setViewH] = useState(0);
   const inner = scroll ? (
-    <ScrollView contentContainerStyle={styles.screenPad} keyboardShouldPersistTaps="handled">
+    <ScrollView
+      contentContainerStyle={styles.screenPad}
+      keyboardShouldPersistTaps="handled"
+      onLayout={onScroll ? (e) => {
+        setViewH(e.nativeEvent.layout.height);
+        onScroll(0, e.nativeEvent.layout.height);
+      } : undefined}
+      onScroll={onScroll ? (e) => onScroll(e.nativeEvent.contentOffset.y, viewH || e.nativeEvent.layoutMeasurement.height) : undefined}
+      scrollEventThrottle={onScroll ? 32 : undefined}
+      onScrollBeginDrag={onScrollBeginDrag}
+    >
       {children}
     </ScrollView>
   ) : (
@@ -356,6 +373,7 @@ export function HeroPanel({
   action,
   art = 'frond',
   sway = true,
+  breathe = false,
   children,
   style,
   titleLabel,
@@ -372,6 +390,8 @@ export function HeroPanel({
   art?: BotanyKind;
   /** Gentle frond sway while the screen is focused (off under Reduce Motion). */
   sway?: boolean;
+  /** One slow breath of the art, once, when this turns true (the Exam-ready moment; off under Reduce Motion). */
+  breathe?: boolean;
   /** Extra content under the title (e.g. the clearing card's stats). */
   children?: ReactNode;
   style?: StyleProp<ViewStyle>;
@@ -404,8 +424,12 @@ export function HeroPanel({
         accessible={false}
         importantForAccessibility="no-hide-descendants"
       >
+        {/* Dark depth (mobile 1.9): the panel is lit from the top, a vertical
+            gradient from `forestTop` down to `forest`, with the 1px highlight
+            above it. Flat in light mode (forestTop = forest), so no layer. */}
+        {c.forestTop !== c.forest && <ForestLight top={c.forestTop} bottom={c.forest} />}
         <View style={[styles.heroArt, botanySize(art)]}>
-          <Botany kind={art} color={c.forestLine} sway={sway} />
+          <Botany kind={art} color={c.forestLine} sway={sway} breathe={breathe} />
         </View>
       </View>
       <View testID="hero-content" style={styles.heroContent}>
@@ -446,6 +470,21 @@ export function HeroPanel({
       </View>
     </Card>
     </Animated.View>
+  );
+}
+
+/** The forest panel's top light: one SVG gradient, drawn under the art (decorative). */
+function ForestLight({ top, bottom }: { top: string; bottom: string }) {
+  return (
+    <Svg style={StyleSheet.absoluteFill} width="100%" height="100%" preserveAspectRatio="none">
+      <Defs>
+        <LinearGradient id="forestLight" x1="0" y1="0" x2="0" y2="1">
+          <Stop offset="0" stopColor={top} />
+          <Stop offset="1" stopColor={bottom} />
+        </LinearGradient>
+      </Defs>
+      <Rect x="0" y="0" width="100%" height="100%" fill="url(#forestLight)" />
+    </Svg>
   );
 }
 
@@ -512,7 +551,14 @@ export function Stepper({
   onInc,
   disabled,
   spokenLabel,
+  dir: given,
 }: {
+  /**
+   * Which way the value last moved (+1 later, -1 earlier), from the change
+   * itself: the hour moves when the minutes wrap past :00, and must roll the
+   * way time moved, not the way the hour was last pressed.
+   */
+  dir?: 1 | -1;
   /** While true (e.g. a reminder change is being saved), taps are ignored. */
   disabled?: boolean;
   /** "Hour" / "Minutes": the caption, and the buttons' names ("Hour later"). */
@@ -526,6 +572,21 @@ export function Stepper({
   onInc: () => void;
 }) {
   const { c } = useTheme();
+  // Mobile 1.9: the value rolls one step the way it moved (160 ms; up for
+  // later, down for earlier), so the change is seen, not just swapped. A wrap
+  // (12 → 1, 45 → 00) is still one step. Nothing moves on open.
+  const [pressed, setDir] = useState<1 | -1>(1);
+  const dir = given ?? pressed;
+  const [shown, setShown] = useState({ value, from: value, run: 0 });
+  if (shown.value !== value) setShown((x) => ({ value, from: x.value, run: x.run + 1 }));
+  const dec = () => {
+    setDir(-1);
+    onDec();
+  };
+  const inc = () => {
+    setDir(1);
+    onInc();
+  };
   return (
     <View
       accessible
@@ -536,16 +597,30 @@ export function Stepper({
       accessibilityState={disabled ? { disabled } : undefined}
       onAccessibilityAction={(e) => {
         if (disabled) return;
-        if (e.nativeEvent.actionName === 'increment') onInc();
-        else if (e.nativeEvent.actionName === 'decrement') onDec();
+        if (e.nativeEvent.actionName === 'increment') inc();
+        else if (e.nativeEvent.actionName === 'decrement') dec();
       }}
       style={{ alignItems: 'center' }}
     >
       <T v="caption">{label}</T>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-        <IconButton label={`${label} earlier`} onPress={onDec} disabled={disabled} icon={(col) => <Minus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
-        <T v="label" num center style={{ minWidth: 48, color: c.ink }}>{value}</T>
-        <IconButton label={`${label} later`} onPress={onInc} disabled={disabled} icon={(col) => <Plus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
+        <IconButton label={`${label} earlier`} onPress={dec} disabled={disabled} icon={(col) => <Minus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
+        <View style={{ minWidth: 48, alignItems: 'center' }}>
+          <RollingText
+            value={value}
+            from={shown.from}
+            play={shown.run > 0}
+            run={shown.run}
+            dir={dir}
+            dur="quick"
+            stagger={false}
+            step
+            style={{ ...type.label, ...styles.num }}
+            maxScale={maxScale.label}
+            color={c.ink}
+          />
+        </View>
+        <IconButton label={`${label} later`} onPress={inc} disabled={disabled} icon={(col) => <Plus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
       </View>
     </View>
   );
@@ -714,17 +789,31 @@ export function RadioRow({
 // ── ProgressBar: 0..1 ─────────────────────────────────────────────────
 // The fill slides on a transform inside the clipping track (motion.tsx
 // ProgressFill): a change eases over 300 ms; nothing animates on mount.
-export function ProgressBar({ value, color, height = 8 }: { value: number; color?: string; height?: number }) {
+export function ProgressBar({
+  value,
+  color,
+  height = 8,
+  from,
+  delay,
+}: {
+  value: number;
+  color?: string;
+  height?: number;
+  /** Mobile 1.9: grow on mount from the value last seen (0..1), after `delay`. */
+  from?: number;
+  delay?: number;
+}) {
   const { c } = useTheme();
   const pct = Math.max(0, Math.min(1, value)) * 100;
   const r = Math.min(height, radius.sm);
   return (
     <View
       accessibilityRole="progressbar"
+      // The final value from the first frame: screen readers never hear it count.
       accessibilityValue={{ min: 0, max: 100, now: Math.round(pct) }}
       style={{ height, borderRadius: r, backgroundColor: c.track, overflow: 'hidden' }}
     >
-      <ProgressFill value={pct / 100} color={color ?? c.accent} radius={r} />
+      <ProgressFill value={pct / 100} color={color ?? c.accent} radius={r} from={from} delay={delay} />
     </View>
   );
 }
@@ -890,10 +979,10 @@ export function Toggle({
 }
 
 // ── Stat tile: no box. Serif number + meta label, stacked ─────────────
-export function Stat({ value, label, color, pct }: { value: string; label: string; color?: string; pct?: boolean }) {
+export function Stat({ value, label, color, pct, roll }: { value: string; label: string; color?: string; pct?: boolean; roll?: Roll }) {
   return (
     <View accessible accessibilityLabel={`${value}${pct ? ' percent' : ''} ${label}`}>
-      <BigNum value={value} pct={pct} size={34} color={color} />
+      <BigNum value={value} pct={pct} size={34} color={color} roll={roll} />
       <T v="meta" style={{ marginTop: space.xs, textAlign: 'center' }}>{label}</T>
     </View>
   );
@@ -941,6 +1030,8 @@ const styles = StyleSheet.create({
   tagRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: space.sm, marginTop: 18 },
   teachTag: { minHeight: 32, paddingHorizontal: space.md, borderRadius: radius.pill, flexDirection: 'row', alignItems: 'center', gap: 7 },
   teachDot: { width: 6, height: 6, borderRadius: 3 },
+  // The empty state's "next" line: a leaf and a sentence, centred, that may wrap.
+  nextLine: { marginTop: space.lg, maxWidth: '100%', paddingHorizontal: space.md, flexDirection: 'row', alignItems: 'center', gap: space.sm },
   // Track radius 25 = the 44pt pills' 22 + the 3pt inset, so the curves stay concentric.
   seg2: { borderRadius: 25, padding: SEG_INSET, gap: SEG_GAP },
   // The sliding thumb: over the first segment's box; translateX moves it.
@@ -1077,26 +1168,73 @@ export function StatRow({ children, style }: { children: ReactNode[]; style?: St
  * Sizes: 52 = readiness / results, 34 = stats, 17–30 inline.
  * Numbers cap at ×1.3 text size: a fixed shape holds them.
  */
+/** How a numeral rolls (motion.tsx RollingText): from what was shown, when `play`. */
+export interface Roll {
+  play: boolean;
+  /** What was shown before (null = count up from blank). */
+  from?: string | null;
+  /** Restart key: a new value rolls when this changes. */
+  run?: number;
+  delay?: number;
+}
+
 export function BigNum({
   value,
   pct,
   size,
   color,
   accessibilityLabel,
+  roll,
 }: {
   value: string;
   pct?: boolean;
   size: NumeralSize | 34 | 52;
   color?: string;
   accessibilityLabel?: string;
+  /**
+   * Mobile 1.9: the digits roll like an odometer (first view of the day, or
+   * what changed). The moving digits are hidden from screen readers, so a
+   * rolling numeral needs a spoken label: its own `accessibilityLabel`, or a
+   * labelled group around it (Stat, the rings, the readiness row do this).
+   */
+  roll?: Roll;
 }) {
   const { c } = useTheme();
   const fg = color ?? c.ink;
   return (
     <View style={styles.bigNum} accessible={Boolean(accessibilityLabel)} accessibilityLabel={accessibilityLabel}>
-      <Text maxFontSizeMultiplier={1.3} style={[serifNumeral(size), styles.num, { color: fg }]}>{value}</Text>
-      {pct && <Text maxFontSizeMultiplier={1.3} style={[percentSup(size), { color: fg, marginLeft: 2 }]}>%</Text>}
+      {roll ? (
+        <RollingText
+          value={value}
+          from={roll.from}
+          play={roll.play}
+          run={roll.run}
+          delay={roll.delay}
+          style={{ ...serifNumeral(size), ...styles.num }}
+          maxScale={1.3}
+          color={fg}
+          // No label of its own: this BigNum's label (above) or its group's says the final value.
+        />
+      ) : (
+        <Text maxFontSizeMultiplier={1.3} style={[serifNumeral(size), styles.num, { color: fg }]}>{value}</Text>
+      )}
+      {pct && <Percent size={size} color={fg} roll={roll} />}
     </View>
+  );
+}
+
+/**
+ * The raised "%". On a count-up from blank it fades in as the first digit
+ * arrives (never a lone "%" waiting for its number); otherwise it is simply there.
+ */
+function Percent({ size, color, roll }: { size: NumeralSize | 34 | 52; color: string; roll?: Roll }) {
+  const { reduced } = useMotion();
+  const sign = <Text maxFontSizeMultiplier={1.3} style={[percentSup(size), { color, marginLeft: 2 }]}>%</Text>;
+  if (!roll?.play || reduced || roll.from) return sign;
+  return (
+    <FadeIn key={roll.run ?? 0} rise={false} dur="quick" delay={roll.delay ?? 0}>
+      {sign}
+    </FadeIn>
   );
 }
 
@@ -1182,28 +1320,49 @@ export function PushedHeader({
   );
 }
 
-// ── Empty state: a seedling, not a sad face (spec §11 "Empty state") ──
+// ── Empty state: a drawing, not a sad face (spec §11 "Empty state") ──
+/**
+ * Mobile 1.9 (ui.md E1): each empty place has its own drawing (`art`, see
+ * glyphs.tsx EmptyArt) instead of the same seedling everywhere, and an
+ * optional `next` line that says what will happen here and when ("Next
+ * review: tomorrow · 6 questions"): a small leaf and a sentence under the
+ * body (not a pill, so it never reads as one of the teaching tags).
+ */
 export function EmptyState({
   title,
   body,
   tags,
   compact,
+  art = 'seedling',
+  next,
 }: {
   title: string;
   body: string;
   /** Teaching tags: the trap types that will appear here. */
   tags?: string[];
-  /** Smaller seedling, for an empty list inside a busier screen. */
+  /** Smaller drawing, for an empty list inside a busier screen. */
   compact?: boolean;
+  art?: EmptyArtKind;
+  /** One useful line about what comes next (a date, a count of the learner's own items). */
+  next?: string;
 }) {
   const { c } = useTheme();
   return (
     <View style={{ alignItems: 'center', marginTop: compact ? space.sm : 46 }}>
-      <View accessible={false} importantForAccessibility="no-hide-descendants">
-        <Seedling color={c.accent} size={compact ? 96 : 170} />
+      <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+        <EmptyArt art={art} color={c.accent} paper={c.bg} size={compact ? 96 : 170} />
       </View>
       <T v={compact ? 'headline' : 'hero'} center accessibilityRole="header" style={{ marginTop: compact ? space.xs : 22 }}>{title}</T>
       <T v={compact ? 'meta' : 'body'} color={c.ink2} center style={{ marginTop: space.sm, marginHorizontal: space.md }}>{body}</T>
+      {next ? (
+        // A sentence with a small leaf, not a pill: the pills below are teaching tags.
+        <View style={styles.nextLine}>
+          <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+            <LeafMark color={c.accentText} />
+          </View>
+          <T v="meta" color={c.ink} style={{ flexShrink: 1 }}>{next}</T>
+        </View>
+      ) : null}
       {tags && tags.length > 0 && (
         <View style={styles.tagRow}>
           {tags.map((t) => (
@@ -1215,6 +1374,15 @@ export function EmptyState({
         </View>
       )}
     </View>
+  );
+}
+
+/** The small leaf at the start of an empty state's "next" line. */
+function LeafMark({ color }: { color: string }) {
+  return (
+    <Svg width={12} height={14} viewBox="0 0 11 13">
+      <Path d="M5.5 12.5C1.5 9.5 1 5 5.5 .8 10 5 9.5 9.5 5.5 12.5z" fill={color} />
+    </Svg>
   );
 }
 

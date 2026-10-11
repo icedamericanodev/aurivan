@@ -90,6 +90,16 @@ describe('Results: one quiet moment', () => {
     expect(text).toContain('Finish the 20-question diagnostic.');
     // The second badge met in this session waits for a later one.
     expect(text).not.toContain('Firm Footing');
+    // Its one success tap comes with its motion: once the rings have grown and it is on screen.
+    expect(mockSuccess).not.toHaveBeenCalled();
+    act(() => {
+      for (const n of r!.root.findAll((x) => typeof x.type === 'string' && typeof x.props.onLayout === 'function')) {
+        n.props.onLayout({ nativeEvent: { layout: { x: 0, y: 0, width: 390, height: 2000 } } });
+      }
+    });
+    act(() => {
+      jest.advanceTimersByTime(2000);
+    });
     expect(mockSuccess).toHaveBeenCalledTimes(1);
     act(() => r!.update(<Results />));
     expect(mockSuccess).toHaveBeenCalledTimes(1);

@@ -1,6 +1,6 @@
 /**
  * Saved questions — the learner's own revision set (bookmarked questions).
- * Empty: a seedling and how to save one. Otherwise: the saved stems as a
+ * Empty: a bookmark in the soil (mobile 1.9) and how to save one. Otherwise: the saved stems as a
  * hairline list (tap a row to answer that question; the trailing bookmark
  * removes it), and one sticky action to practise them all.
  */
@@ -30,6 +30,7 @@ export default function Saved() {
     return (
       <EmptyScreen
         header="Saved questions"
+        art="bookmark"
         title="Nothing saved yet"
         body="Tap the bookmark on any question to build your own revision set."
         primary={{ label: 'Practice 10 questions', onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), open) }}

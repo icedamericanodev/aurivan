@@ -72,8 +72,8 @@ describe('bank list', () => {
 
   it('groups questions under A→Z topic headers with the learner’s own counts', () => {
     const items = buildBankList(qs, answers, ['d1_003'], 'all', shortSubtopic);
+    // A→Z by topic; a topic with one row has no header (mobile 1.9, E3).
     expect(items.map((i) => (i.kind === 'topic' ? `#${i.title}` : i.id))).toEqual([
-      '#Audit charter',
       'd1_002',
       '#Sampling',
       'd1_001',
@@ -86,19 +86,39 @@ describe('bank list', () => {
   });
 
   it('topic counts cover the whole topic, even under a filter', () => {
-    const missed = buildBankList(qs, answers, ['d1_003'], 'missed', shortSubtopic);
-    expect(missed[0]).toMatchObject({ kind: 'topic', title: 'Sampling', summary: '1 answered · 1 missed · 1 saved' });
+    const answered = { ...answers, d1_003: rec(false) };
+    const missed = buildBankList(qs, answered, ['d1_003'], 'missed', shortSubtopic);
+    expect(missed[0]).toMatchObject({ kind: 'topic', title: 'Sampling', summary: '2 answered · 2 missed · 1 saved' });
   });
 
-  it('a one-question topic has no header summary (its row says it all)', () => {
+  it('a topic showing one row has no header: the row names its topic (E3)', () => {
     const items = buildBankList(qs, answers, [], 'all', shortSubtopic);
-    expect(items[0]).toMatchObject({ kind: 'topic', title: 'Audit charter', summary: '' });
+    expect(items[0]).toMatchObject({ kind: 'question', id: 'd1_002', topic: 'Audit charter', ownTopic: true });
+    // Two rows: a header, and rows that don't repeat the topic.
+    expect(items.filter((i) => i.kind === 'question' && i.topic === 'Sampling').every((i) => i.kind === 'question' && !i.ownTopic)).toBe(true);
+  });
+
+  it('a lone row right after a grouped topic is set apart from it; other rows are not', () => {
+    const more = [...qs, q('d1_004', 'Third-party assurance')];
+    const items = buildBankList(more, answers, [], 'all', shortSubtopic);
+    const gap = (id: string) => items.find((i) => i.kind === 'question' && i.id === id) as { afterGroup: boolean };
+    // Audit charter (lone, first), #Sampling: d1_001, d1_003, then Third-party (lone, after a group).
+    expect(gap('d1_002').afterGroup).toBe(false);
+    expect(gap('d1_001').afterGroup).toBe(false);
+    expect(gap('d1_003').afterGroup).toBe(false);
+    expect(gap('d1_004')).toMatchObject({ ownTopic: true, afterGroup: true });
+  });
+
+  it('a header goes when a filter leaves one row of its topic', () => {
+    const missed = buildBankList(qs, answers, ['d1_003'], 'missed', shortSubtopic);
+    expect(missed).toHaveLength(1);
+    expect(missed[0]).toMatchObject({ kind: 'question', id: 'd1_001', topic: 'Sampling', ownTopic: true });
   });
 
   it('drops topics with nothing left after filtering', () => {
     const missed = buildBankList(qs, answers, [], 'missed', shortSubtopic);
     expect(listedIds(missed)).toEqual(['d1_001']);
-    expect(missed.filter((i) => i.kind === 'topic')).toHaveLength(1);
+    expect(missed.filter((i) => i.kind === 'topic')).toHaveLength(0);
     expect(buildBankList(qs, answers, [], 'saved', shortSubtopic)).toEqual([]);
     expect(listedIds(buildBankList(qs, answers, [], 'new', shortSubtopic))).toEqual(['d1_003']);
   });
