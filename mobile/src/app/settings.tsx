@@ -1,6 +1,7 @@
 /**
  * Settings — certification, exam date, appearance, study goal, reminders, haptics, show badges,
- * study defaults (the practice timer), your data (backup, restore, reset), one row to
+ * your plant (mobile 1.13: Show my plant, Quiet look), study defaults (the practice timer),
+ * your data (backup, restore, reset), one row to
  * Help and feedback (mobile 1.7), and the legal notices required for store review. Groups are
  * sections with hairline rows, not cards (spec §5).
  */
@@ -40,7 +41,7 @@ import { useActiveCert } from '../lib/useActiveCert';
 import { useReports } from '../lib/useReports';
 import { sweepBackupFiles } from '../lib/backup';
 import { useBackup } from '../store/backup';
-import { useProgress } from '../store/progress';
+import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import { space } from '../theme/tokens';
@@ -66,6 +67,11 @@ export default function Settings() {
   // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
   const { dueItems } = useReports();
   const resetCert = useProgress((p) => p.resetCert);
+  // Mobile 1.13: the plant switches (for every exam), and whether this exam has a plant (the Reset line).
+  const plantSettings = useProgress((p) => p.plantSettings);
+  const setPlantSettings = useProgress((p) => p.setPlantSettings);
+  const hasPlant = useProgress((p) => Boolean(selectCert(p, cert.id).plant));
+  const plantOn = plantSettings?.showPlant !== false;
   const clearSession = useSession((x) => x.clear);
   const [busy, setBusy] = useState(false);
   // "Badges are on again…": shown for this visit, right under the switch.
@@ -120,21 +126,25 @@ export default function Settings() {
   const days = reminderDays(s.reminder.days);
 
   const confirmReset = () =>
-    Alert.alert(`Reset ${cert.name} progress?`, 'This deletes your answers, reviews, saved questions, mock history, badges and game levels for this exam. It cannot be undone. Save a backup first if you might want it back.', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Reset',
-        style: 'destructive',
-        onPress: () => {
-          resetCert(cert.id);
-          clearSession();
-          // A reset is a fresh start: an old "Undo restore" no longer applies,
-          // and old backup files in the app's cache are tidied away.
-          useBackup.getState().setUndo(null);
-          sweepBackupFiles();
+    Alert.alert(
+      `Reset ${cert.name} progress?`,
+      `This deletes your answers, reviews, saved questions, mock history, badges and game levels for this exam. It cannot be undone. Save a backup first if you might want it back.${hasPlant ? ' Your plant goes back to a seed. It keeps its name and look.' : ''}`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Reset',
+          style: 'destructive',
+          onPress: () => {
+            resetCert(cert.id);
+            clearSession();
+            // A reset is a fresh start: an old "Undo restore" no longer applies,
+            // and old backup files in the app's cache are tidied away.
+            useBackup.getState().setUndo(null);
+            sweepBackupFiles();
+          },
         },
-      },
-    ]);
+      ],
+    );
 
   const reminderText = remindersSupported ? reminderSummary(s.reminder) : 'Available in the installed app, not Expo Go on Android.';
 
@@ -307,6 +317,27 @@ export default function Settings() {
         <T v="meta" color={c.accentText} style={{ marginTop: space.xs }}>
           {badgesLine}
         </T>
+      )}
+
+      {/* Mobile 1.13: the plant is optional. Off = no plant anywhere and no
+          prompts (its growth is still kept, so turning it back on shows the
+          truth). Quiet look = the same plant without a face. */}
+      <Section title="Your plant" />
+      <ToggleRow
+        title="Show my plant"
+        subtitle="A plant on Today and You that grows only from real progress. Off: no plant and no prompts. Its growth is kept."
+        value={plantOn}
+        onValueChange={(on) => setPlantSettings({ showPlant: on })}
+        last={!plantOn}
+      />
+      {plantOn && (
+        <ToggleRow
+          title="Quiet look"
+          subtitle="Your plant without a face."
+          value={plantSettings?.quietLook === true}
+          onValueChange={(on) => setPlantSettings({ quietLook: on })}
+          last
+        />
       )}
 
       {/* Study defaults: what practice starts with. Build D: the timer.
