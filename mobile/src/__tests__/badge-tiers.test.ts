@@ -227,12 +227,15 @@ describe('sets: Stretch rows and sets that grew', () => {
     expect(stretchLine(sets.find((s) => s.info.id === 'groundwork')!)).toBeUndefined();
   });
 
-  it('a set that showed "Complete" and gained badges says "New in Evergreen: 2 more to earn"; its planter stays', () => {
+  it('a set that showed "Complete" and gained badges says so as news, for 14 days; its planter stays', () => {
     const earned = { 'long-memory': T0, graduate: T0, 'loop-closed': T0 };
     const { sets } = caseOf(facts(), earned);
     const evergreen = sets.find((s) => s.info.id === 'evergreen')!;
     expect(setCountLine(evergreen)).toBe('3 of 5');
-    expect(grownLine(evergreen, { evergreen: T0 - DAY })).toBe('New in Evergreen: 2 more to earn');
+    expect(grownLine(evergreen, { evergreen: T0 - DAY })).toBe('New in Evergreen: 2 badges added since you completed it.');
+    // First shown 13 days ago: still news. 14 days on: gone (the set's count still says 3 of 5).
+    expect(grownLine(evergreen, { evergreen: T0 - DAY }, T0 - 13 * DAY, T0)).toBeDefined();
+    expect(grownLine(evergreen, { evergreen: T0 - DAY }, T0 - 14 * DAY, T0)).toBeUndefined();
     // Never for a set that never completed, or one complete again.
     expect(grownLine(evergreen, {})).toBeUndefined();
     const again = caseOf(facts(), { ...earned, 'long-memory:75': T0, 'took-root': T0 }).sets.find((s) => s.info.id === 'evergreen')!;

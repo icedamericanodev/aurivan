@@ -13,6 +13,9 @@ import { captureRef } from 'react-native-view-shot';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Badges from '../app/milestones';
 import { BadgeShareCard } from '../components/shareCard';
+import { cardText } from '../components/badges';
+import { getCertification } from '../content/certifications';
+import { badgeCase } from '../lib/milestones';
 import { resetCelebrationsForTest } from '../components/motion';
 import { getDomainQuestions } from '../content/loader';
 import { selectCert, useProgress } from '../store/progress';
@@ -101,9 +104,12 @@ describe('sharing a badge', () => {
     expect(t).toContain('Share this badge');
     expect(t).toContain('Only what is on the card is shared.');
     expect(t).toContain('Aurivan study badge · Earned 3 Nov 2026');
-    expect(t).toContain('Long Memory · 25 recalls');
+    // The card's title is the plain badge name; the tier line and skill line carry the numbers.
+    const cardText = textOf(root().findByType(BadgeShareCard));
+    expect(cardText).toContain('Long Memory');
+    expect(cardText).not.toContain('Long Memory · 25 recalls');
     expect(t).toContain('Clay · tier 1 of 3');
-    expect(t).toContain('Recalls answers a week or more later');
+    expect(t).toContain('Recalled 25 answers a week or more later');
     expect(t).toContain('Studying for the CISA® exam');
     expect(t).toContain('Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.');
     // No profile, credential or reward wording anywhere in the sheet.
@@ -124,6 +130,55 @@ describe('sharing a badge', () => {
     // Back returns to the badge's details.
     press(/^Back to the badge$/);
     expect(textOf(sheet())).toContain('The rule');
+  });
+
+  it('Android back on the card returns to the badge, never closes the sheet', () => {
+    earn('long-memory', T0 - DAY);
+    act(() => {
+      r = create(<Badges />);
+    });
+    press(/^Long Memory · 25 recalls, Clay\. Earned/);
+    press(/^Share Long Memory · 25 recalls$/);
+    const modal = () => root().findByType(Modal);
+    expect(textOf(modal())).toContain('Share this badge');
+    act(() => modal().props.onRequestClose());
+    expect(root().findAllByType(Modal)).toHaveLength(1);
+    expect(textOf(modal())).toContain('The rule');
+    expect(textOf(modal())).not.toContain('Share this badge');
+    // From the details, back closes the sheet as before.
+    act(() => modal().props.onRequestClose());
+    expect(root().findAllByType(Modal).every((m) => m.props.visible === false)).toBe(true);
+  });
+
+  it('a Firm Footing card: "Firm Footing", its tier, then the domain and the number in the skill line', () => {
+    earn('firm-footing:4', T0 - DAY);
+    act(() => {
+      r = create(<Badges />);
+    });
+    press(/^Firm Footing · IS Operations, Clay\. Earned/);
+    press(/^Share Firm Footing · IS Operations$/);
+    const card = textOf(root().findByType(BadgeShareCard));
+    expect(card).toContain('Firm Footing Clay · tier 1 of 2 Reached 70% in IS Operations in practice');
+    expect(card).not.toContain('Firm Footing · IS Operations');
+  });
+
+  it('card words that fail the honesty check hide Share (built in a try), never crash the sheet', () => {
+    earn('long-memory', T0 - DAY);
+    const cisa = getCertification('cisa')!;
+    const mark = badgeCase('cisa', selectCert(useProgress.getState(), 'cisa')).marks.find((m) => m.key === 'long-memory')!;
+    expect(cardText(mark, cisa)?.name).toBe('Long Memory');
+    expect(cardText(mark, { ...cisa, name: 'Official' })).toBeNull();
+    expect(cardText({ ...mark, status: 'started' }, cisa)).toBeNull();
+  });
+
+  it('Graduate is never shareable: it stays "Graduate" in the app, and its sheet has no Share', () => {
+    earn('graduate', T0 - DAY);
+    act(() => {
+      r = create(<Badges />);
+    });
+    press(/^Graduate\. Earned/);
+    expect(textOf(root().findByType(Modal))).toContain('Graduate');
+    expect(buttons(/^Share /)).toHaveLength(0);
   });
 
   it('no Share on a badge not yet earned, nor on Fresh Start (a moment, never shared)', () => {

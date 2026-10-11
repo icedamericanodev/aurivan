@@ -181,7 +181,9 @@ export function studyingFor(cert: ShareCert): string {
 
 /** A badge, as its card needs it (an earned case mark). */
 export interface ShareBadge {
-  /** "Long Memory · 75 recalls" */
+  /** The badge's id ("long-memory"): a badge on the never-share list is refused by id. */
+  badge?: string;
+  /** The plain badge name on the card ("Long Memory"); the tier line and skill line carry the numbers. */
   name: string;
   /** The tier's metal and number, printed under the name ("Lichen · tier 2 of 3"), when it has one. */
   tierLine?: string;
@@ -197,12 +199,23 @@ export interface ShareBadge {
 const NEVER_SHARED = new Set(['moments']);
 
 /**
- * Can this badge be shared? Earned, not a Moment (a "Passed" or a Fresh Start
- * beside a cert name would read like a claim or a week away), with a skill
- * line that makes no pass or credential claim. Sharing earns nothing.
+ * Badges never shared, whatever their set (owner decision, compliance review
+ * of PR #41): "Graduate" keeps its name in the app, where it plainly means a
+ * question graduating from spaced review. But printed large above "Studying
+ * for the CISA® exam" it reads like a credential, so it never goes on a card.
+ * This list is the ONLY way a badge name escapes the honesty check below.
  */
-export function badgeShareable(b: Pick<ShareBadge, 'status' | 'set' | 'skill'>): boolean {
-  return b.status === 'earned' && !NEVER_SHARED.has(b.set) && b.skill.trim() !== '' && isHonestShareText(b.skill);
+export const NEVER_SHARED_BADGES: ReadonlySet<string> = new Set(['graduate']);
+
+/**
+ * Can this badge be shared? Earned, not a Moment (a "Passed" or a Fresh Start
+ * beside a cert name would read like a claim or a week away), not on the
+ * never-share list, with a name and skill line that make no pass or
+ * credential claim. Sharing earns nothing.
+ */
+export function badgeShareable(b: Pick<ShareBadge, 'status' | 'set' | 'skill'> & { badge?: string; name?: string }): boolean {
+  if (b.status !== 'earned' || NEVER_SHARED.has(b.set) || (b.badge !== undefined && NEVER_SHARED_BADGES.has(b.badge))) return false;
+  return b.skill.trim() !== '' && isHonestShareText(b.skill) && (b.name === undefined || isHonestShareText(b.name));
 }
 
 /** Every word on a badge card, top to bottom, plus the share text and the spoken label. */
@@ -222,18 +235,17 @@ export interface BadgeCardText {
 }
 
 /**
- * The words on a badge's share card. Every line we write is checked with
- * `isHonestShareText` (not the notice: it says "not … endorsed"). Throws
- * if a badge that isn't shareable gets here, so a slip can never be shared.
+ * The words on a badge's share card. Every line we write, the badge's name
+ * included, is checked with `isHonestShareText` (not the notice: it says
+ * "not … endorsed"). Throws if a badge that isn't shareable gets here, or a
+ * line fails the check, so a slip can never be shared: callers build the
+ * text first and offer Share only when it succeeds (components/badges.tsx).
  */
 export function badgeCardText(b: ShareBadge, cert: ShareCert, storeLink?: string | null): BadgeCardText {
   if (!badgeShareable(b)) throw new Error(`badge not shareable: ${b.name}`);
   const caption = `Aurivan study badge · Earned ${b.earnedOn}`;
   const headline = studyingFor(cert);
-  // The badge NAME is not run through the guard: names were cleared by the
-  // compliance review (2a), and the guard's "graduat" would refuse the
-  // Graduate badge by name. Every other line we write is.
-  const ours = [b.tierLine ?? '', b.skill, caption, headline];
+  const ours = [b.name, b.tierLine ?? '', b.skill, caption, headline];
   if (!ours.every(isHonestShareText)) throw new Error(`share text failed the honesty guard: ${b.name}`);
   const link = storeLink ? ` ${storeLink}` : '';
   const tier = b.tierLine ? ` (${b.tierLine})` : '';

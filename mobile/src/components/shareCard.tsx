@@ -4,8 +4,9 @@
  *
  * - The words come from engine/shareCard.ts (pure, tested): never a pass
  *   claim, never the bank size, readiness only as a range once it exists.
- * - The card is always the forest panel (the brand moment), so it looks the
- *   same in light and dark mode. The preview sheet itself follows the theme.
+ * - The card is always the forest panel (the brand moment) in FIXED colours
+ *   (tokens.ts cardInk, never the theme's), so the image is the same in
+ *   light and dark mode. The preview sheet itself follows the theme.
  * - The card is a fixed 320 × 400 pt "picture": its text does NOT grow with the
  *   phone's font size (maxFontSizeMultiplier 1), so the image is identical on
  *   every phone and never clips. Screen readers get the full text from the
@@ -26,9 +27,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { captureRef, releaseCapture } from 'react-native-view-shot';
 import type { Certification } from '../content/types';
 import type { Readiness } from '../engine/readiness';
-import { badgeCardText, shareMessage, shareOptions, type BadgeCardText, type ShareBadge, type ShareCert, type ShareHeadline, type ShareInput, type ShareKind } from '../engine/shareCard';
-import { STORE_LINK } from '../content/storeLinks';
-import { cardType, radius, space } from '../theme/tokens';
+import { shareMessage, shareOptions, type BadgeCardText, type ShareHeadline, type ShareInput, type ShareKind } from '../engine/shareCard';
+import { cardInk, cardType, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { BrandLockup } from './brand';
 import { GrowthRings } from './glyphs';
@@ -55,7 +55,6 @@ const KIND_LABEL: Record<ShareKind, string> = {
 
 // ── The card itself ───────────────────────────────────────────────────
 function ShareCard({ cert, readiness, headline }: { cert: Certification; readiness: Readiness; headline: ShareHeadline }) {
-  const { c } = useTheme();
   return (
     <View
       style={{
@@ -64,7 +63,7 @@ function ShareCard({ cert, readiness, headline }: { cert: Certification; readine
         height: CARD_H,
         // Square corners and a solid fill: the PNG has no transparent corners.
         // (The preview rounds them with a wrapper that is NOT captured.)
-        backgroundColor: c.forest,
+        backgroundColor: cardInk.field,
         padding: space.xl,
         justifyContent: 'space-between',
         overflow: 'hidden',
@@ -75,7 +74,7 @@ function ShareCard({ cert, readiness, headline }: { cert: Certification; readine
           the wrapper's accessibilityLabel already says "Aurivan". */}
       <Row style={{ justifyContent: 'space-between', alignItems: 'center' }}>
         <BrandLockup tone="dark" height={30} decorative />
-        <T v="caption" color={c.sap} maxFontSizeMultiplier={FIXED}>{cert.name}</T>
+        <T v="caption" color={cardInk.sap} maxFontSizeMultiplier={FIXED}>{cert.name}</T>
       </Row>
 
       {/* Growth rings: one per domain, in sap on the forest (decorative here).
@@ -85,32 +84,32 @@ function ShareCard({ cert, readiness, headline }: { cert: Certification; readine
           preset="today"
           mastery={readiness.domains.map((d) => d.mastery)}
           weights={cert.domains.map((d) => d.weight)}
-          colors={c.sap}
-          track={c.forestTrack}
+          colors={cardInk.sap}
+          track={cardInk.line}
         />
       </View>
 
       {/* The one headline. */}
       <View>
-        {headline.value && <T v="number" num color={c.onForest} maxFontSizeMultiplier={FIXED}>{headline.value}</T>}
+        {headline.value && <T v="number" num color={cardInk.ink} maxFontSizeMultiplier={FIXED}>{headline.value}</T>}
         <T
           v={headline.value ? 'headline' : 'hero'}
-          color={c.onForest}
+          color={cardInk.ink}
           maxFontSizeMultiplier={FIXED}
           style={{ marginTop: headline.value ? space.sm : 0 }}
         >
           {headline.label}
         </T>
         {headline.note && (
-          <T v="meta" color={c.onForest2} maxFontSizeMultiplier={FIXED} style={{ marginTop: space.xs }}>
+          <T v="meta" color={cardInk.ink2} maxFontSizeMultiplier={FIXED} style={{ marginTop: space.xs }}>
             {headline.note}
           </T>
         )}
       </View>
 
       {/* Trademark-safe footer: the cert's full notice (compliance review §5). */}
-      <View style={{ paddingTop: space.md, borderTopWidth: 1, borderTopColor: c.forestTrack }}>
-        <T v="caption" color={c.onForest2} maxFontSizeMultiplier={FIXED} style={NOTICE}>{cert.trademarkNotice}</T>
+      <View style={{ paddingTop: space.md, borderTopWidth: 1, borderTopColor: cardInk.line }}>
+        <T v="caption" color={cardInk.ink2} maxFontSizeMultiplier={FIXED} style={NOTICE}>{cert.trademarkNotice}</T>
       </View>
     </View>
   );
@@ -272,24 +271,23 @@ export function ShareProgressSheet({
  * never scales with the phone's font size (screen readers get `spoken`).
  */
 export function BadgeShareCard({ text, art }: { text: BadgeCardText; art: ReactNode }) {
-  const { c } = useTheme();
   return (
-    <View style={{ width: CARD_W, height: CARD_H, backgroundColor: c.forest, paddingHorizontal: space.xl, paddingVertical: space.lg, overflow: 'hidden' }}>
+    <View style={{ width: CARD_W, height: CARD_H, backgroundColor: cardInk.field, paddingHorizontal: space.xl, paddingVertical: space.lg, overflow: 'hidden' }}>
       <BrandLockup tone="dark" height={22} decorative />
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <View accessible={false} importantForAccessibility="no-hide-descendants">
           {art}
         </View>
-        <T v="caption" center color={c.onForest2} maxFontSizeMultiplier={FIXED} style={{ marginTop: space.xs }}>{text.caption}</T>
-        <T v="hero" center color={c.onForest} maxFontSizeMultiplier={FIXED} style={[cardType.name, { marginTop: space.sm }]}>{text.name}</T>
+        <T v="caption" center color={cardInk.ink2} maxFontSizeMultiplier={FIXED} style={{ marginTop: space.xs }}>{text.caption}</T>
+        <T v="hero" center color={cardInk.ink} maxFontSizeMultiplier={FIXED} style={[cardType.name, { marginTop: space.sm }]}>{text.name}</T>
         {text.tierLine && (
-          <T v="caption" center color={c.sap} maxFontSizeMultiplier={FIXED} style={{ marginTop: 2 }}>{text.tierLine}</T>
+          <T v="caption" center color={cardInk.sap} maxFontSizeMultiplier={FIXED} style={{ marginTop: 2 }}>{text.tierLine}</T>
         )}
-        <T v="quote" center color={c.onForest} maxFontSizeMultiplier={FIXED} style={[cardType.skill, { marginTop: space.xs }]}>{text.skill}</T>
+        <T v="quote" center color={cardInk.ink} maxFontSizeMultiplier={FIXED} style={[cardType.skill, { marginTop: space.xs }]}>{text.skill}</T>
       </View>
-      <View style={{ paddingTop: space.sm, borderTopWidth: 1, borderTopColor: c.forestTrack }}>
-        <T v="caption" color={c.onForest} maxFontSizeMultiplier={FIXED}>{text.headline}</T>
-        <T v="caption" color={c.onForest2} maxFontSizeMultiplier={FIXED} style={[NOTICE, { marginTop: 2 }]}>{text.notice}</T>
+      <View style={{ paddingTop: space.sm, borderTopWidth: 1, borderTopColor: cardInk.line }}>
+        <T v="caption" color={cardInk.ink} maxFontSizeMultiplier={FIXED}>{text.headline}</T>
+        <T v="caption" color={cardInk.ink2} maxFontSizeMultiplier={FIXED} style={[NOTICE, { marginTop: 2 }]}>{text.notice}</T>
       </View>
     </View>
   );
@@ -299,12 +297,13 @@ export function BadgeShareCard({ text, art }: { text: BadgeCardText; art: ReactN
  * The badge card's preview and its one action, shown inside the badge's
  * sheet (never a sheet over a sheet). Opened only by the learner's tap on
  * Share; "Share image" hands the picture to the system share sheet. Sharing
- * earns nothing and there is no "add to profile" option.
+ * earns nothing and there is no "add to profile" option. `text` is built by
+ * the sheet before Share is offered (engine/shareCard.ts badgeCardText), so
+ * nothing here can throw while rendering.
  */
-export function BadgeSharePanel({ badge, cert, art, onBack }: { badge: ShareBadge; cert: ShareCert; art: ReactNode; onBack: () => void }) {
+export function BadgeSharePanel({ text, art, onBack }: { text: BadgeCardText; art: ReactNode; onBack: () => void }) {
   const { c } = useTheme();
   const screenWidth = useWindowDimensions().width;
-  const text = badgeCardText(badge, cert, STORE_LINK);
   const cardRef = useRef<View>(null);
   const title = useRef<View>(null);
   const busy = useRef(false);

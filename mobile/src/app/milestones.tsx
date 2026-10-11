@@ -100,6 +100,12 @@ export default function Badges() {
   const fillAt = progress.milestones?.catalogFill?.at;
   const quiet = useMemo(() => quietTimes({ ...(backfillAt !== undefined ? { backfill: { at: backfillAt } } : {}), ...(fillAt !== undefined ? { catalogFill: { at: fillAt } } : {}) }), [backfillAt, fillAt]);
   const planters = progress.milestones?.planters;
+  // "New in <set>": when each grown set's line was first shown on this phone
+  // (it shows for 14 days from then). Read once per visit; recorded below.
+  const [grownSeen] = useState(() => useSeen.getState().values);
+  const [visitAt] = useState(() => Date.now());
+  const grownKey = (id: SetId) => `badges:grown:${cert.id}:${id}`;
+  const grownFor = (s: SetView) => grownLine(s, planters, grownSeen[grownKey(s.info.id)]?.[0], visitAt);
 
   // Badges earned since the case was last opened press in, then it counts as
   // seen. Seen only while the case is on screen: a badge earned in a session
@@ -154,6 +160,17 @@ export default function Badges() {
   useEffect(() => {
     if (fill && !fill.seen) seeCatalogFill(cert.id);
   }, [fill, cert.id]);
+
+  // The first time a set's "New in" line shows, remember when (it fades out 14 days later).
+  const grownNow = after ? [] : sets.filter((s) => grownFor(s) !== undefined && grownSeen[grownKey(s.info.id)] === undefined).map((s) => s.info.id);
+  const grownNowKey = grownNow.join('|');
+  useEffect(() => {
+    if (!grownNowKey) return;
+    for (const id of grownNowKey.split('|')) {
+      const key = `badges:grown:${cert.id}:${id}`;
+      if (useSeen.getState().values[key] === undefined) useSeen.getState().see(key, [visitAt]);
+    }
+  }, [grownNowKey, cert.id, visitAt]);
 
   // Filter (this visit) and Sort (kept on this phone). After the exam there is
   // nothing to be close to, so Closest is not offered (By set instead).
@@ -275,7 +292,7 @@ export default function Badges() {
     return (
       <View key={id} testID={`shelf-${id}`} onLayout={id === jumpTo ? (e) => setJumpY(e.nativeEvent.layout.y) : undefined}>
         {id === 'fieldNotes' && <View style={{ height: 1, backgroundColor: c.line, marginTop: space.section }} />}
-        <ShelfHeader set={s} line={setCountLine(s)} quiet={quiet} grown={after ? undefined : grownLine(s, planters)} />
+        <ShelfHeader set={s} line={setCountLine(s)} quiet={quiet} grown={after ? undefined : grownFor(s)} />
         {id === 'fieldNotes' && (
           <Button kind="ghost" label="See game levels ›" onPress={() => router.push('/field-notes')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />
         )}

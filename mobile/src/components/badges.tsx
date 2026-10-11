@@ -22,7 +22,9 @@ import { completingMark, MOCK_SUGGEST_LINE, setSpoken, spokenDetail, STRETCH, st
 import type { Stage } from '../engine/journey';
 import { moveFocus } from '../lib/a11y';
 import { longDate, shortDate } from '../lib/format';
-import { badgeShareable, type ShareBadge, type ShareCert } from '../engine/shareCard';
+import { badgeDef } from '../engine/milestones';
+import { badgeCardText, badgeShareable, type BadgeCardText, type ShareCert } from '../engine/shareCard';
+import { STORE_LINK } from '../content/storeLinks';
 import { BadgeSharePanel } from './shareCard';
 import { badgeMetal, motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -172,8 +174,9 @@ export function BadgeCell({
         </T>
       )}
       {showSet && (
+        // Flat sorts have no Stretch row header, so a Stretch tier says so here, in words.
         <T v="meta" center color={c.muted} style={{ marginTop: 2 }}>
-          {setName}
+          {mark.stretch ? `${setName} · Stretch` : setName}
         </T>
       )}
     </AnimatedPressable>
@@ -325,12 +328,20 @@ export function NextPanel({
   if (!best && nearest.length === 0) return null;
   const bestTarget = best ? studyTarget(best, weakest) : null;
   const bestNote = best && bestTarget ? studyNote(best, bestTarget, dueCount) : undefined;
+  // Only Stretch tiers left (every core badge they belong to is done): never
+  // "Next for your exam", which would call depth beyond exam need a next step.
+  const extraOnly = !best && nearest.every((m) => m.stretch);
   return (
     <View style={{ marginTop: space.xl }}>
       {!best && (
-        // Nothing fits slot 1 (its rules are all done): the nearest still sit under the panel's name.
+        // Nothing fits slot 1 (its rules are all done): the nearest still sit under a heading.
         <T v="caption" color={c.accentText} accessibilityRole="header">
-          Next for your exam
+          {extraOnly ? 'If you want to go further' : 'Next for your exam'}
+        </T>
+      )}
+      {extraOnly && (
+        <T v="meta" color={c.ink2} style={{ marginTop: space.xs }}>
+          These go beyond what the exam needs. Entirely optional.
         </T>
       )}
       {best && (
@@ -411,7 +422,11 @@ export function NextPanel({
             {target && (
               <View style={{ alignItems: 'flex-end', marginTop: -space.sm, paddingBottom: space.xs }}>
                 {note && <T v="meta" color={c.ink2} style={{ alignSelf: 'stretch', marginLeft: 52 }}>{note}</T>}
-                <Button kind="ghost" label="Study for this ›" accessibilityLabel={`Study for ${m.name}`} onPress={() => onStudy(target)} />
+                {m.stretch ? (
+                  <Button kind="ghost" label="Go further ›" accessibilityLabel={`Go further: ${m.name}. Optional, beyond exam need`} onPress={() => onStudy(target)} />
+                ) : (
+                  <Button kind="ghost" label="Study for this ›" accessibilityLabel={`Study for ${m.name}`} onPress={() => onStudy(target)} />
+                )}
               </View>
             )}
           </View>
@@ -422,6 +437,33 @@ export function NextPanel({
 }
 
 // ── The detail sheet ─────────────────────────────────────────────────────
+/**
+ * The share card's words for an earned mark, or null when it can't be
+ * shared (a Moment, Graduate, an empty skill line, or a line that fails the
+ * honesty check). Built BEFORE Share is offered, inside a try, so a future
+ * cert name or date that trips the check hides Share instead of crashing
+ * the sheet. The card carries the plain badge name ("Firm Footing"); its
+ * tier line and skill line carry the domain and the numbers.
+ */
+export function cardText(mark: CaseMark, cert: ShareCert, quiet: Quiet = NO_QUIET): BadgeCardText | null {
+  if (mark.status !== 'earned' || mark.earnedAt === undefined) return null;
+  const badge = {
+    badge: mark.badge,
+    name: badgeDef(mark.badge)?.name ?? mark.name,
+    ...(mark.tier ? { tierLine: `${tierName(mark)} · tier ${mark.tier} of ${mark.tiers ?? 3}` } : {}),
+    skill: mark.skill,
+    set: mark.set,
+    status: mark.status,
+    earnedOn: `${isQuiet(mark, quiet) ? 'by ' : ''}${longDate(mark.earnedAt)}`,
+  };
+  if (!badgeShareable(badge)) return null;
+  try {
+    return badgeCardText(badge, cert, STORE_LINK);
+  } catch {
+    return null;
+  }
+}
+
 /**
  * The medallion turns in once as the sheet opens, from edge-on to facing you
  * (400 ms), like a coin turned in the hand. It never shows its back, so an
@@ -490,25 +532,21 @@ export function BadgeSheet({
   // The card replaces the details in this same sheet (never a sheet over a sheet).
   const [sharing, setSharing] = useState(false);
   const detailsTop = useRef<View>(null);
-  const shareBadge: ShareBadge | null =
-    earned && cert && badgeShareable(mark)
-      ? {
-          name: mark.name,
-          ...(mark.tier ? { tierLine: `${tierName(mark)} · tier ${mark.tier} of ${mark.tiers ?? 3}` } : {}),
-          skill: mark.skill,
-          set: mark.set,
-          status: mark.status,
-          earnedOn: `${isQuiet(mark, quiet) ? 'by ' : ''}${longDate(mark.earnedAt!)}`,
-        }
-      : null;
+  const shareText = earned && cert ? cardText(mark, cert, quiet) : null;
+  // Android back on the card returns to the badge, like "Back to the badge" (never closes the whole sheet).
+  const backFromShare = () => {
+    setSharing(false);
+    moveFocus(detailsTop, 300);
+  };
   const target = studyTarget(mark, weakest);
   const note = target ? studyNote(mark, target, dueCount) : undefined;
   const best = suggestLine(mark, stage, daysLeft, wholeMap);
   const quietly = earned && isQuiet(mark, quiet);
   // "This completed Groundwork": only the one badge that did, and never for a set a quiet fill completed (the order is unknown).
   const completedHere = earned && !quietly && completingMark(set) === mark.key;
-  // The ladder's "next": the first tier not yet earned, whichever tier was opened.
-  const nextTier = ladder?.find((t) => t.status !== 'earned')?.key;
+  // The ladder's "next": the first core tier not yet earned, whichever tier was
+  // opened. A Stretch tier is never "Next": it is beyond what the exam needs.
+  const nextTier = ladder?.find((t) => t.status !== 'earned' && !t.stretch)?.key;
   const metaParts = [
     set.info.name,
     mark.tier ? `${tierName(mark)}, tier ${mark.tier} of ${mark.tiers ?? ladder?.length ?? 3}` : undefined,
@@ -516,22 +554,14 @@ export function BadgeSheet({
   ].filter(Boolean);
   const earnedCaption = quietly ? `Already earned when this badge arrived (by ${shortDate(mark.earnedAt!)})` : mark.earnedAt !== undefined ? `Earned ${shortDate(mark.earnedAt)}` : 'Earned';
   return (
-    <Modal visible={visible} animationType={reduced ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={onClose} onDismiss={onDismissed}>
+    <Modal visible={visible} animationType={reduced ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={sharing ? backFromShare : onClose} onDismiss={onDismissed}>
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.raised2 }}>
         <ScrollView key={sharing ? 'share' : 'details'} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }}>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: space.xs }}>
             <Button kind="ghost" label="Close" accessibilityLabel={`Close ${mark.name}`} onPress={onClose} />
           </View>
-          {sharing && shareBadge && cert ? (
-            <BadgeSharePanel
-              badge={shareBadge}
-              cert={cert}
-              art={<Medallion {...medallionProps(mark, domains, false)} size={124} />}
-              onBack={() => {
-                setSharing(false);
-                moveFocus(detailsTop, 300);
-              }}
-            />
+          {sharing && shareText ? (
+            <BadgeSharePanel text={shareText} art={<Medallion {...medallionProps(mark, domains, false)} size={124} />} onBack={backFromShare} />
           ) : (
             <>
               <View style={{ alignItems: 'center' }}>
@@ -630,7 +660,7 @@ export function BadgeSheet({
               )}
 
               {/* Earned and shareable only (never Fresh Start or a Moment), on the learner's tap: nothing opens it on its own. */}
-              {shareBadge && (
+              {shareText && (
                 <View style={{ marginTop: space.xl }}>
                   <Button
                     ref={detailsTop}

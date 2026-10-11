@@ -388,6 +388,20 @@ export const badgeEnamel: Record<'forest' | 'ink' | 'clay' | 'paper', BadgeEname
 export type BadgeEnamelId = keyof typeof badgeEnamel;
 
 /**
+ * The share cards' colours (progress and badge cards), FIXED: never the
+ * theme's, so the exported PNG is the same picture in light and dark mode.
+ * The badge forest enamel, with the light theme's on-forest inks
+ * (ink2 on field 6.9:1, sap on field 6.4:1).
+ */
+export const cardInk = {
+  field: badgeEnamel.forest.field,
+  ink: badgeEnamel.forest.E1,
+  ink2: light.onForest2,
+  sap: badgeEnamel.forest.E2,
+  line: light.forestTrack,
+} as const;
+
+/**
  * The rim metal tells the TIER, three ways (metal, pip count, laurel), never
  * by colour alone; the tier's name is also printed beside the badge.
  * A badge with one mark (no tiers) is struck in `badgeStruck`: a calm sage,

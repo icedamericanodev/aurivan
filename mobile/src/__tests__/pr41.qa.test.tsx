@@ -514,7 +514,7 @@ describe('Journey 2 · upgrading a 1.10 save', () => {
     expect(hasNewBadge('cisa')).toBe(false);
   });
 
-  it('the case shows ONE summary line, once; Evergreen says "New in Evergreen: 1 more to earn"', () => {
+  it('the case shows ONE summary line, once; Evergreen says "New in Evergreen: 1 badge added since you completed it."', () => {
     save110();
     act(() => {
       ensureCatalog('cisa', T0);
@@ -524,7 +524,7 @@ describe('Journey 2 · upgrading a 1.10 save', () => {
     const t = allText();
     expect(t.split(line).length - 1).toBe(1);
     expect(t).not.toContain('You’d already earned');
-    expect(t).toContain('New in Evergreen: 1 more to earn');
+    expect(t).toContain('New in Evergreen: 1 badge added since you completed it.');
     // Exam Day grew too, but Dress Rehearsal · 2 is already earned: complete again, no line.
     expect(t).not.toContain('New in Exam Day');
     act(() => r!.unmount());
@@ -877,7 +877,7 @@ describe('Journey 4 · a set grows after completing', () => {
       return caseSets(marks, cisa.exam, cisa.domains.length).find((s) => s.info.id === 'evergreen')!;
     };
     expect(setCountLine(caseNow())).toBe('4 of 5');
-    expect(grownLine(caseNow(), ms().planters)).toBe('New in Evergreen: 1 more to earn');
+    expect(grownLine(caseNow(), ms().planters)).toBe('New in Evergreen: 1 badge added since you completed it.');
     // Earn Long Memory · 75 later: Evergreen is complete again, the line goes, the planter's date stays.
     act(() => {
       useProgress.getState().updateMilestones('cisa', (m) => ({ milestones: { ...m!, counts: { ...m!.counts, longRecall: 75 } } }));
@@ -918,7 +918,8 @@ describe('Journey 5 · share card', () => {
 
   it('only earned badges are shareable; Fresh Start never; unearned never', () => {
     const marks = everyMark();
-    for (const m of marks) expect([m.key, badgeShareable(m)]).toEqual([m.key, m.key !== 'fresh-start']);
+    // Graduate stays "Graduate" in the app but is never shared (owner decision, compliance review).
+    for (const m of marks) expect([m.key, badgeShareable(m)]).toEqual([m.key, m.key !== 'fresh-start' && m.key !== 'graduate']);
     const unearned = caseMarks({ marks: allMarks(facts()), earned: {}, domains: DOMAINS, exam: cisa.exam, mindsetData: true });
     expect(unearned.filter((m) => badgeShareable(m))).toEqual([]);
     expect(() => badgeCardText(shareOf(marks.find((m) => m.key === 'fresh-start')!), cisa)).toThrow();

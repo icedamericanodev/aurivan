@@ -269,7 +269,7 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
           howTo: 'A stretch. Breadth wins exams, so keep the other domains moving too.',
           unlock: `${Math.round(FIRM_DEEP * 100)}% in ${name}: depth beyond what the exam needs.`,
           effort: `${STRETCH}. The exam needs breadth more than one strong domain.`,
-          skill: `Went deep in ${name}`,
+          skill: `Reached ${Math.round(FIRM_DEEP * 100)}% in ${name} in practice`,
           minDays: 0,
           gate: 'wholeMap',
         };
@@ -280,7 +280,7 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
           : `Practise this domain in Smart until ${Math.round(FIRM_MASTERY * 100)}% holds.`,
         unlock: `Firm footing in ${name}: ${Math.round(FIRM_MASTERY * 100)}% mastery across ${FIRM_ANSWERS} or more questions.`,
         effort: `Needs ${FIRM_ANSWERS} or more of its questions answered, at ${Math.round(FIRM_MASTERY * 100)}% mastery.`,
-        skill: `Firm footing in ${name}`,
+        skill: `Reached ${Math.round(FIRM_MASTERY * 100)}% in ${name} in practice`,
         minDays: 0,
       };
     }
@@ -299,7 +299,7 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
         howTo: 'Spaced review brings questions back after a gap. Answer them cold, without Coach me.',
         unlock: `You recalled ${n} questions a week or more after you last saw them. That’s what holds on exam day.`,
         effort: `Needs at least ${LONG_GAP_DAYS + 1} days: a recall counts a week after you last saw the question.${top ? ` ${STRETCH}.` : ''}`,
-        skill: 'Recalls answers a week or more later',
+        skill: `Recalled ${n} answers a week or more later`,
         minDays: LONG_GAP_DAYS + 1,
       };
     }
@@ -719,15 +719,21 @@ export function stretchLine(s: SetView): string | undefined {
   return `Stretch · beyond exam need · ${s.stretch.earned} of ${s.stretch.total}`;
 }
 
+/** How long the "New in <set>" line shows after the learner first saw it. */
+export const GROWN_LINE_DAYS = 14;
+
 /**
  * A set that was complete (it gave its planter) and has since gained badges
- * (a newer version added a tier or Took Root): "New in Evergreen: 2 more to
- * earn". The planter it gave stays. None otherwise.
+ * (a newer version added a tier or Took Root): "New in Evergreen: 2 badges
+ * added since you completed it." Said as news, never as a task ("to earn"),
+ * and only for GROWN_LINE_DAYS after it was first shown (`shownAt`): "new"
+ * stops being true after that. The planter it gave stays. None otherwise.
  */
-export function grownLine(s: SetView, planters: Record<string, number> | undefined): string | undefined {
+export function grownLine(s: SetView, planters: Record<string, number> | undefined, shownAt?: number, now = Date.now()): string | undefined {
   if (!s.info.counted || planters?.[s.info.id] === undefined || s.completeAt !== undefined) return undefined;
+  if (shownAt !== undefined && now - shownAt >= GROWN_LINE_DAYS * 86_400_000) return undefined;
   const more = s.total - s.earned;
-  return more > 0 ? `New in ${s.info.name}: ${more} more to earn` : undefined;
+  return more > 0 ? `New in ${s.info.name}: ${more === 1 ? '1 badge' : `${more} badges`} added since you completed it.` : undefined;
 }
 
 /**
