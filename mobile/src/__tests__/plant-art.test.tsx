@@ -179,3 +179,18 @@ describe('<Plant>', () => {
     expect(seen).toEqual(expect.arrayContaining(['body', 'domain-1', 'domain-5', 'face', 'ground']));
   });
 });
+
+describe('the resting dusk stays on the stage', () => {
+  it('every species and growth: the disc fits inside the shared 200 × 200 stage (the 200pt hero never clips it)', () => {
+    for (const species of PLANT_SPECIES)
+      for (const stage of [1, 2, 3, 4, 5, 6]) {
+        const b = buildPlant({ species, stage, resting: true, organs: [1.25, 1.25, 1.25, 1.25, 1.25] });
+        const dusk = b.root.children.find((n) => n && n.t === 'g' && n.id === 'dusk') as { children: { cx: number; cy: number; r: number }[] };
+        const c = dusk.children[0];
+        expect(c.cx - c.r).toBeGreaterThanOrEqual(0);
+        expect(c.cy - c.r).toBeGreaterThanOrEqual(0);
+        expect(c.cx + c.r).toBeLessThanOrEqual(200);
+        expect(c.cy + c.r).toBeLessThanOrEqual(200);
+      }
+  });
+});

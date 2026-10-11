@@ -59,7 +59,7 @@ export default function PlantPick() {
             <T v="meta" style={{ marginTop: space.sm }}>It grows only from real progress across the exam outline. Never from taps or time. It asks for nothing and never wilts.</T>
           </>
         )}
-        {mode === 'species' && <T v="meta" style={{ marginTop: space.md }}>Same growth, new look. Shown here fully grown.</T>}
+        {mode === 'species' && <T v="meta" style={{ marginTop: space.md }}>Same growth, new look. Each is shown at Crown.</T>}
         {mode !== 'name' && (
           <>
             <Gap h={space.lg} />

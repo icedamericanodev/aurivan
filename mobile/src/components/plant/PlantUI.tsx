@@ -91,7 +91,7 @@ export function SpeciesGrid({ value, onChange, quietLook }: { value: PlantSpecie
   const cols = large ? 2 : 3;
   const gap = space.sm;
   const cell = width ? Math.floor((width - gap * (cols - 1)) / cols) : 0;
-  const art = Math.min(76, Math.max(56, cell - 32));
+  const art = Math.min(large ? 96 : 76, Math.max(56, cell - 32));
   return (
     <View
       accessibilityRole="radiogroup"

@@ -1517,7 +1517,12 @@ export function buildPlant(o: BuildOpts): BuiltPlant {
   if (o.resting) {
     const T = plantTheme[theme];
     const [fx0, fy0, fs0] = frame.split(' ').map(Number);
-    backdrop = G('dusk', [C(fx0 + fs0 / 2, fy0 + fs0 / 2, fs0 * 0.48, T.dusk, { opacity: T.duskOpacity })]);
+    // Kept inside the shared 200 × 200 stage too, so the 200pt hero (which
+    // draws the whole stage, not the tight frame) never clips the disc.
+    const dcx = fx0 + fs0 / 2;
+    const dcy = fy0 + fs0 / 2;
+    const dr = Math.max(8, Math.min(fs0 * 0.48, dcx - 1, dcy - 1, 199 - dcx, 199 - dcy));
+    backdrop = G('dusk', [C(dcx, dcy, dr, T.dusk, { opacity: T.duskOpacity })]);
   }
   const root = G('mascot', [backdrop, gr.back, tree, gr.front]);
   return { root, anchors: A, frame };

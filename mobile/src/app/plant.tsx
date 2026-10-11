@@ -20,7 +20,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { Plant } from '../components/plant/Plant';
 import { PlantNote } from '../components/plant/PlantUI';
-import { ListRow, ProgressBar, PushedHeader, Section, T, Tag, Button } from '../components/ui';
+import { Button, ListRow, ProgressBar, PushedHeader, Section, T, Tag, useFontScale } from '../components/ui';
 import {
   backfillLine,
   GROWTH_LOOKS,
@@ -37,12 +37,13 @@ import {
 import { dayKey } from '../engine/streak';
 import { plantFactsFor, seePlantBackfill, usePlantView } from '../lib/plant';
 import { useActiveCert } from '../lib/useActiveCert';
-import { space } from '../theme/tokens';
+import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 export default function YourPlant() {
   const { c, isDark } = useTheme();
   const view = usePlantView();
+  const large = useFontScale() >= LARGE_TEXT;
   const { readiness, progress } = useActiveCert();
   const p = view.plant;
   const certId = view.certId;
@@ -122,10 +123,11 @@ export default function YourPlant() {
         {next ? (
           <View style={{ gap: space.lg, marginTop: space.sm }}>
             {next.steps.map((st) => (
-              <View key={st.label} accessible accessibilityLabel={`${st.label}. ${Math.round(st.progress * 100)} percent there${st.progress >= 1 ? ', done' : ''}.`}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: space.md, alignItems: 'flex-start' }}>
-                  <T v="body" style={{ flex: 1 }}>{st.label}</T>
-                  <T v="meta" num color={st.progress >= 1 ? c.accentText : c.ink2}>{st.progress >= 1 ? 'Done' : `${Math.round(st.progress * 100)}%`}</T>
+              <View key={st.label} accessible accessibilityLabel={`${st.label}. ${st.progress >= 1 ? 'Done' : st.progress <= 0 ? 'Not yet' : `${Math.round(st.progress * 100)} percent there`}.`}>
+                {/* Side by side; stacked at large text, so the rule never squeezes into a narrow column. */}
+                <View style={large ? { gap: 2 } : { flexDirection: 'row', justifyContent: 'space-between', gap: space.md, alignItems: 'flex-start' }}>
+                  <T v="body" style={large ? undefined : { flex: 1 }}>{st.label}</T>
+                  <T v="meta" num color={st.progress >= 1 ? c.accentText : c.ink2}>{st.progress >= 1 ? 'Done' : st.progress <= 0 ? 'Not yet' : `${Math.round(st.progress * 100)}%`}</T>
                 </View>
                 <View style={{ marginTop: space.xs }}>
                   <ProgressBar value={st.progress} height={6} />
