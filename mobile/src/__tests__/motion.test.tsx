@@ -318,32 +318,119 @@ describe('reduced: every primitive lands on its final, static state', () => {
 describe('full motion lands on the same end states', () => {
   beforeEach(() => setMockReducedMotion(false));
 
-  it('PageTurn: the old page fades out untouchable and unread, then the new one arrives', () => {
+  it('PageTurn: the old page fades out untouchable but still readable, then the new one arrives', () => {
     jest.useFakeTimers();
     const swap = jest.fn();
+    const turning = jest.fn();
     const el = (id: number) => (
-      <PageTurn id={id} onSwap={swap}>
+      <PageTurn id={id} onSwap={swap} onTurning={turning}>
         <Text>{`Question ${id + 1}`}</Text>
       </PageTurn>
     );
     mount(el(0));
+    expect(turning).not.toHaveBeenCalled();
     settle(el(1));
-    // Leaving: still the old page, which can't be tapped or read.
+    // Leaving: still the old page, which can't be tapped...
     expect(r!.root.findByType(Text).props.children).toBe('Question 1');
     const wrapper = r!.root.findAllByType(View)[0];
     expect(style(wrapper).pointerEvents).toBe('none');
-    expect(wrapper.props.importantForAccessibility).toBe('no-hide-descendants');
+    // ...but is never hidden from screen readers (that would push focus off the button just used).
+    expect(r!.root.findAll((n) => n.props.importantForAccessibility === 'no-hide-descendants' || n.props.accessibilityElementsHidden === true)).toHaveLength(0);
+    // The parent hears which page is still on screen, before paint.
+    expect(turning.mock.calls).toEqual([[0]]);
     expect(swap).not.toHaveBeenCalled();
     act(() => {
       jest.advanceTimersByTime(motion.dur.select);
     });
     expect(r!.root.findByType(Text).props.children).toBe('Question 2');
     expect(swap).toHaveBeenCalledTimes(1);
+    expect(turning.mock.calls).toEqual([[0], [null]]);
     settle(el(1));
     const s = style(r!.root.findAllByType(View)[0]);
     expect(s.opacity).toBe(1);
     expect(xOf(s)).toBe(0);
-    expect(r!.root.findAllByType(View)[0].props.importantForAccessibility).toBe('auto');
+    expect(style(r!.root.findAllByType(View)[0]).pointerEvents).toBeUndefined();
+  });
+
+  it('PageTurn calm (mocks): no leaving phase, the new page fades in at once, and the parent never sees a turn', () => {
+    jest.useFakeTimers();
+    const swap = jest.fn();
+    const turning = jest.fn();
+    const el = (id: number) => (
+      <PageTurn id={id} calm onSwap={swap} onTurning={turning}>
+        <Text>{`Question ${id + 1}`}</Text>
+      </PageTurn>
+    );
+    mount(el(0));
+    settle(el(1));
+    expect(r!.root.findByType(Text).props.children).toBe('Question 2');
+    expect(swap).toHaveBeenCalledTimes(1);
+    expect(turning).not.toHaveBeenCalled();
+    const [frame, page] = r!.root.findAllByType(View);
+    expect(style(frame).pointerEvents).toBeUndefined();
+    expect(xOf(style(frame))).toBe(0);
+    // The page itself carries the short fade (a Reanimated entering animation: no first-frame flash).
+    expect(page.props.entering).toBeDefined();
+  });
+
+  it('PageTurn: every page is a fresh subtree, so the old page’s state never shows on the new one', () => {
+    jest.useFakeTimers();
+    // Like a mock: the same structure on every page; option 1 is picked on Q1 only.
+    const Page = ({ q, sel }: { q: number; sel: number | null }) => (
+      <View>
+        {[0, 1, 2, 3].map((k) => (
+          <View key={k}>
+            <Text>{`Q${q} option ${k}`}</Text>
+            <StateLayer on={sel === k} />
+          </View>
+        ))}
+      </View>
+    );
+    const el = (q: number, sel: number | null) => (
+      <PageTurn id={q}>
+        <Page q={q} sel={sel} />
+      </PageTurn>
+    );
+    mount(el(0, 1));
+    settle(el(1, null));
+    act(() => {
+      jest.advanceTimersByTime(motion.dur.select);
+    });
+    // The new page's first frame: every layer was born off (nothing fading out from the old pick).
+    const drawn = r!.root.findAllByType(StateLayer).map((l) => style(l.findAllByType(View)[0]).opacity);
+    expect(drawn).toEqual([0, 0, 0, 0]);
+  });
+
+  it('PageTurn: groups that arrive WITH a page do not stagger again; a group added later still plays', () => {
+    jest.useFakeTimers();
+    const el = (id: number, extra = false) => (
+      <PageTurn id={id}>
+        <FadeIn i={2}>
+          <Text>{`Topic ${id}`}</Text>
+        </FadeIn>
+        {extra && (
+          <FadeIn>
+            <Text>Reveal</Text>
+          </FadeIn>
+        )}
+      </PageTurn>
+    );
+    mount(el(0));
+    // The screen's first page plays its entrance as usual (starts hidden, 8pt low).
+    expect(style(r!.root.findAllByType(FadeIn)[0].findAllByType(View)[0]).opacity).toBe(0);
+    settle(el(1));
+    act(() => {
+      jest.advanceTimersByTime(motion.dur.select);
+    });
+    // The arriving page's group is drawn in place on its first frame: the page's own arrival is its entrance.
+    const arrived = style(r!.root.findAllByType(FadeIn)[0].findAllByType(View)[0]);
+    expect(arrived.opacity).toBe(1);
+    expect(arrived.transform).toEqual([{ translateY: 0 }]);
+    // Later (say, the answer reveal), a new group on that page animates in.
+    act(() => {
+      r!.update(el(1, true));
+    });
+    expect(style(r!.root.findAllByType(FadeIn)[1].findAllByType(View)[0]).opacity).toBe(0);
   });
 });
 

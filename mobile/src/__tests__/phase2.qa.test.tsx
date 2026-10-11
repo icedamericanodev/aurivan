@@ -268,16 +268,21 @@ describe.each([
           next();
         });
         expect(active().index).toBe(i + 1);
-        // ...and a third tap a moment later lands on a disabled "Check answer".
-        expect(btn('Next question')).toBeUndefined();
-        expect(btn('Check answer')!.props.disabled).toBe(true);
         if (on) {
-          // Mid-turn: the OLD page fades out and can't be tapped or read.
+          // Mid-turn: the OLD page fades out and can't be tapped, but stays readable.
           expect(turning()).toBe(true);
-          expect(turnWrapper().props.importantForAccessibility).toBe('no-hide-descendants');
+          expect(turnWrapper().props.importantForAccessibility).not.toBe('no-hide-descendants');
           expect(stem()).toEqual([]); // the old page was the answer screen (no stem)
+          // The footer follows the page on screen: still "Next question", and a
+          // third tap a moment later does nothing.
+          expect(btn('Check answer')).toBeUndefined();
+          press('Next question');
+          expect(active().index).toBe(i + 1);
           tick(motion.dur.select);
         }
+        // The new question: a disabled "Check answer".
+        expect(btn('Next question')).toBeUndefined();
+        expect(btn('Check answer')!.props.disabled).toBe(true);
         expect(turning()).toBe(false);
       } else {
         const done = btn('See results')!.props.onPress as () => void;
@@ -311,7 +316,7 @@ describe.each([
 describe('J2 mock exam with motion on', () => {
   beforeEach(() => motionOn(true));
 
-  it('Previous/Next during turns, flags, navigator, a kill and resume, and Finish → Results', async () => {
+  it('Previous/Next (calm turns), flags, navigator, a kill and resume, and Finish → Results', async () => {
     const T0 = new Date(2026, 9, 11, 9, 0, 0).getTime();
     act(() => {
       startMock('cisa', 6);
@@ -330,12 +335,13 @@ describe('J2 mock exam with motion on', () => {
     expect(active().responses[ids[0]].correct).toBe(true);
     expect(root().findAllByType(Verdict)).toHaveLength(0); // never feedback in a mock
 
-    // Next, then Previous while the page is still turning: back on Q1.
+    // Next, then Previous: a mock turns calmly (a short fade, no leaving
+    // phase), so every tap lands on a settled page, as in the real exam.
     press('Next');
-    expect(turning()).toBe(true);
+    expect(turning()).toBe(false);
+    expect(stem()).toEqual([stemOf(1)]);
     press('Previous question');
     expect(active().index).toBe(0);
-    tick(motion.dur.select);
     expect(turning()).toBe(false);
     expect(stem()).toEqual([stemOf(0)]);
     expect(cards().find((n) => n.props.state === 'selected')!.props.letter).toBe(a0);
@@ -432,11 +438,10 @@ describe('J2 mock exam with motion on', () => {
     expect(stem()).toEqual([findQuestion('cisa', active().questionIds[2])!.stem]);
   });
 
-  // BUG: the option rows are reused from question to question (keyed by
-  // letter), so the ink ring and ink badge of the letter picked on the
-  // previous question start fully ON when the next, unanswered question
-  // arrives, and only then fade out (120 ms) while the page fades in.
-  it.failing('the next question arrives with no ghost of the previous pick (ring and badge start off)', () => {
+  // Was a bug (fixed): the option rows were reused from question to question
+  // (keyed by letter), so the previous pick's ink ring and badge started ON on
+  // the next, unanswered question. Each page is now a fresh subtree.
+  it('the next question arrives with no ghost of the previous pick (ring and badge start off)', () => {
     act(() => {
       startMock('cisa', 6);
     });

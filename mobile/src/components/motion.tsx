@@ -18,7 +18,7 @@
  *   content is mounted (and readable) from the first frame.
  * - Nothing blocks input: every animation can be interrupted by the next tap.
  */
-import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import {
   AccessibilityInfo,
   AppState,
@@ -31,6 +31,7 @@ import {
 } from 'react-native';
 import Animated, {
   Easing,
+  FadeIn as FadeInAnimation,
   ReducedMotionConfig,
   ReduceMotion,
   useAnimatedStyle,
@@ -159,12 +160,23 @@ export function resetOncePerDayForTest() {
   for (const k of Object.keys(seenOn)) delete seenOn[k];
 }
 
+// ── Page arrivals (PageTurn → FadeIn) ──────────────────────────────────
+/**
+ * The page a PageTurn has just brought in, or null for a screen's first page.
+ * FadeIn reads it: groups that mount WITH an arriving page show at once (the
+ * page's own arrival is their entrance, so nothing staggers twice), while
+ * anything mounting later on that page (the answer reveal) still plays.
+ */
+const ArrivalContext = createContext<object | null>(null);
+const settledArrivals = new WeakSet<object>();
+
 // ── FadeIn: content arrives (fade + 8pt rise) ──────────────────────────
 /**
  * The entrance for a content group: opacity 0 → 1 and an 8pt rise, ease-out.
  * `i` staggers groups 40 ms apart (the 5th group on starts with the 4th);
  * `delay` adds an explicit wait (the answer reveal). `when` holds it until
- * true (e.g. scrolled into view). Plays once per mount.
+ * true (e.g. scrolled into view). Plays once per mount. Inside a page that a
+ * PageTurn is bringing in, it shows at once: the page's arrival is the entrance.
  * Reduced: an opacity-only cross-fade (120 ms), no rise, no stagger.
  */
 export function FadeIn({
@@ -186,9 +198,13 @@ export function FadeIn({
   children: ReactNode;
 }) {
   const { reduced } = useMotion();
-  const p = useSharedValue(0);
-  const y = useSharedValue(reduced || !rise ? 0 : motion.rise);
-  const played = useRef(false);
+  // Mounted together with a page that a PageTurn is bringing in: that arrival
+  // is the entrance, so this group starts in place (nothing moves twice).
+  const arrival = useContext(ArrivalContext);
+  const [withPage] = useState(() => arrival !== null && !settledArrivals.has(arrival));
+  const p = useSharedValue(withPage ? 1 : 0);
+  const y = useSharedValue(reduced || !rise || withPage ? 0 : motion.rise);
+  const played = useRef(withPage);
   useEffect(() => {
     if (!when || played.current) return;
     played.current = true;
@@ -439,52 +455,89 @@ export function turnDirection(from: string | number, to: string | number, explic
 }
 
 // ── PageTurn: one step sideways inside a task ──────────────────────────
+/** The calm arrival (Reduce Motion, or a mock): a short fade, applied by Reanimated before the first frame. */
+const QUIET_ARRIVAL = FadeInAnimation.duration(motion.dur.reduced).easing(ease.out).reduceMotion(ReduceMotion.Never);
+
+type Page = { id: string | number; dir: 1 | -1; arrival: object | null; quiet: boolean };
+
 /**
  * Shared-axis page turn (question → next question, Guided topic → next):
  * the page on screen fades out drifting 16pt the way you're going (120 ms,
  * accelerating), then the new page arrives from 16pt on the other side
- * (280 ms, decelerating). `onSwap` runs at the swap, while nothing is
- * visible, so the scroll can go back to the top unseen.
+ * (280 ms, decelerating). `onSwap` runs at the swap, before the new page is
+ * painted, so the scroll can go back to the top unseen.
  * `direction`: 1 = forward (default), -1 = back; numeric ids infer it.
- * The leaving page can't be tapped and is hidden from screen readers.
- * Reduced: no drift and no waiting: the new page cross-fades in (120 ms).
+ * Each page is a fresh subtree (re-keyed on id), so no state from the old
+ * page (a selection ring, a pressed tint) can show on the new one.
+ * The leaving page can't be tapped, but stays readable: hiding it would push
+ * screen-reader focus off the control that was just used. `onTurning` tells
+ * the parent which page is still on screen while it leaves, so the parent's
+ * own controls (footer, flag, bookmark) follow the page, not the tap.
+ * `calm` (mocks: a timed exam should feel like the real test) and Reduce
+ * Motion: no drift and no waiting: the new page fades in (120 ms).
  */
 export function PageTurn({
   id,
   direction,
+  calm = false,
   onSwap,
+  onTurning,
   style,
   children,
 }: {
   id: string | number;
   direction?: 1 | -1;
+  calm?: boolean;
   onSwap?: () => void;
+  /** The leaving page's id when a turn starts; null once the new page is in. */
+  onTurning?: (leavingId: string | number | null) => void;
   style?: StyleProp<ViewStyle>;
   children: ReactNode;
 }) {
   const { reduced } = useMotion();
-  const [page, setPage] = useState<{ id: string | number; dir: 1 | -1 }>({ id, dir: 1 });
+  const quiet = reduced || calm;
+  const [page, setPage] = useState<Page>({ id, dir: 1, arrival: null, quiet });
   const [leaving, setLeaving] = useState<1 | -1 | null>(null);
   // The page on screen, kept so it can fade out after the parent has
   // already moved on (written after each settled commit, read only while leaving).
   const onScreen = useRef<ReactNode>(children);
   const latest = useRef(id);
   const swapRef = useRef(onSwap);
+  const turningRef = useRef(onTurning);
   const o = useSharedValue(1);
   const x = useSharedValue(0);
-  // Declared before the arriving effect, so it sees this commit's onSwap.
+  // Declared before the other effects, so they see this commit's callbacks.
   useLayoutEffect(() => {
     latest.current = id;
     swapRef.current = onSwap;
+    turningRef.current = onTurning;
     if (id === page.id && leaving === null) onScreen.current = children;
   });
 
   // A new id: decide during render (React's "adjust state when a prop changes").
   if (id !== page.id && leaving === null) {
     const dir = turnDirection(page.id, id, direction);
-    if (reduced) setPage({ id, dir });
+    if (quiet) setPage({ id, dir, arrival: {}, quiet: true });
     else setLeaving(dir);
   }
+
+  // Tell the parent before paint, so its controls never run ahead of the page.
+  const wasLeaving = useRef(false);
+  useLayoutEffect(() => {
+    const now = leaving !== null;
+    if (now === wasLeaving.current) return;
+    wasLeaving.current = now;
+    turningRef.current?.(now ? page.id : null);
+    // Only the start and the end of a turn report (page.id is the leaving page then).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [leaving]);
+  // Unmounted mid-turn: the parent's controls must not stay inert.
+  useLayoutEffect(
+    () => () => {
+      if (wasLeaving.current) turningRef.current?.(null);
+    },
+    [],
+  );
 
   // Leaving: fade and drift out, then swap to the newest id.
   useEffect(() => {
@@ -493,41 +546,40 @@ export function PageTurn({
     x.set(tween(-motion.shift * leaving, 'select', ease.exit));
     const t = setTimeout(() => {
       setLeaving(null);
-      setPage({ id: latest.current, dir: leaving });
+      setPage({ id: latest.current, dir: leaving, arrival: {}, quiet: false });
     }, motion.dur.select);
     return () => clearTimeout(t);
   }, [leaving, o, x]);
 
   // Arriving: before paint, reset the scroll and place the page off to the side.
-  const firstPage = useRef(true);
   useLayoutEffect(() => {
-    if (firstPage.current) {
-      firstPage.current = false;
-      return;
-    }
+    if (!page.arrival) return;
     swapRef.current?.();
-    if (reduced) {
+    if (page.quiet) {
+      // The keyed page below fades itself in; the frame stays put.
       x.set(0);
-      o.set(withSequence(snap(0), tween(1, 'reduced')));
+      o.set(1);
       return;
     }
     x.set(withSequence(snap(motion.shift * page.dir), tween(0, 'screen', ease.enter)));
     o.set(withSequence(snap(0), tween(1, 'screen', ease.enter)));
-    // Only a new page starts this; `reduced` changing mid-turn does not.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, o, x]);
+  // After the arrival's own commit, anything new on the page animates again.
+  useEffect(() => {
+    if (page.arrival) settledArrivals.add(page.arrival);
   }, [page]);
 
   const anim = useAnimatedStyle(() => ({ opacity: o.value, transform: [{ translateX: x.value }] }));
   const isLeaving = leaving !== null;
   return (
-    <Animated.View
-      style={[style, anim, isLeaving && styles.noTouch]}
-      accessibilityElementsHidden={isLeaving}
-      importantForAccessibility={isLeaving ? 'no-hide-descendants' : 'auto'}
-    >
-      {/* While leaving, the old page (from the last settled commit) fades out. */}
-      {/* eslint-disable-next-line react-hooks/refs */}
-      {isLeaving ? onScreen.current : children}
+    <Animated.View style={[style, anim, isLeaving && styles.noTouch]}>
+      <Animated.View key={String(page.id)} entering={page.arrival && page.quiet ? QUIET_ARRIVAL : undefined}>
+        <ArrivalContext.Provider value={page.arrival}>
+          {/* While leaving, the old page (from the last settled commit) fades out. */}
+          {/* eslint-disable-next-line react-hooks/refs */}
+          {isLeaving ? onScreen.current : children}
+        </ArrivalContext.Provider>
+      </Animated.View>
     </Animated.View>
   );
 }

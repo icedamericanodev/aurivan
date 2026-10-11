@@ -19,7 +19,7 @@
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
-import { AccessibilityInfo, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { PageTurn } from '../components/motion';
@@ -30,6 +30,7 @@ import { Button, Enter, Gap, ICON_SIZE, ListRow, PushedHeader, Row, Section, T, 
 import { scopeKey, MODE_INFO } from '../engine/studyModes';
 import { CLEAR_OF, CLEAR_RIGHT, currentGuidedTopic, GUIDED_BLOCK, GUIDED_TAIL, nextTopic } from '../engine/studyPath';
 import { guidedStatus, scopeTopics, topicLessons } from '../lib/outline';
+import { moveFocus } from '../lib/a11y';
 import { guardedStart, startGuidedStep } from '../lib/sessions';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useProgress } from '../store/progress';
@@ -61,9 +62,19 @@ export default function GuidedStep() {
   const timed = timedParam(timedRaw);
   const [footerH, setFooterH] = useState(120);
   // "Next topic" turns the page (spec §8): the new topic arrives from the
-  // right, read from the top (the scroll resets while nothing is visible).
+  // right, read from the top (the scroll resets while nothing is visible),
+  // and screen-reader focus moves to its title (the button that was tapped
+  // belonged to the old page).
   const scrollRef = useRef<ScrollView>(null);
-  const scrollToTop = useCallback(() => scrollRef.current?.scrollTo({ y: 0, animated: false }), []);
+  const titleRef = useRef<View>(null);
+  const onSwap = useCallback(() => {
+    scrollRef.current?.scrollTo({ y: 0, animated: false });
+    moveFocus(titleRef);
+  }, []);
+  // While the old topic is still leaving, "Start this step" ignores taps: it
+  // would start the new topic before the learner has seen it.
+  const [turning, setTurning] = useState(false);
+  const onTurning = useCallback((from: string | number | null) => setTurning(from !== null), []);
   const { cert, progress } = useActiveCert();
   const scopeDomain = cert.domains.find((d) => d.id === domainParam);
   const topics = scopeTopics(cert.id, scopeDomain?.id);
@@ -102,7 +113,6 @@ export default function GuidedStep() {
   const moveOn = () => {
     if (!next || next.id === topic.id) return;
     setCursor(next.id);
-    AccessibilityInfo.announceForAccessibility(`Next topic: ${next.name}`);
   };
 
   const clearLine = status.clear
@@ -115,10 +125,13 @@ export default function GuidedStep() {
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView ref={scrollRef} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
       <PushedHeader title="Guided" onBack={goBack} />
-      <PageTurn id={topic.id} direction={1} onSwap={scrollToTop}>
+      <PageTurn id={topic.id} direction={1} onSwap={onSwap} onTurning={onTurning}>
       <Enter i={0}>
         {domain ? <Tag domain={domain} label={`${topic.id} · ${domain.short}`} /> : <T v="meta">{topic.id}</T>}
-        <T v="hero" accessibilityRole="header" style={{ marginTop: space.sm }}>{topic.name}</T>
+        {/* A View, so focus can be moved here after a turn (T takes no ref). */}
+        <View ref={titleRef} accessible accessibilityRole="header" style={{ marginTop: space.sm }}>
+          <T v="hero" accessibilityRole="header">{topic.name}</T>
+        </View>
         <T v="meta" style={{ marginTop: space.xs }}>{MODE_INFO.guided.why}</T>
       </Enter>
 
@@ -188,7 +201,9 @@ export default function GuidedStep() {
           label="Start this step"
           accessibilityHint={first ? `${GUIDED_BLOCK} questions on ${topic.name}` : `${GUIDED_BLOCK} questions on ${topic.name}, then ${GUIDED_TAIL} from earlier topics`}
           icon={(col) => <Play size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
-          onPress={start}
+          onPress={() => {
+            if (!turning) start();
+          }}
         />
       </StickyFooter>
     </SafeAreaView>
