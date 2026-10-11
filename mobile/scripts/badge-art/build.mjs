@@ -17,7 +17,8 @@ import { fileURLToPath } from 'url';
 import { C, FRAMES, frameAt, pathOf, atAngle, bottomIndex, walk, tangentAt, totalLength, wobbleRing } from './geometry.mjs';
 import { EMBLEMS } from './emblems.mjs';
 
-const OUT = join(dirname(fileURLToPath(import.meta.url)), '../../src/content/badgeArt.json');
+// An output path as the first argument writes there instead (the drift test builds to a temp file and compares).
+const OUT = process.argv[2] || join(dirname(fileURLToPath(import.meta.url)), '../../src/content/badgeArt.json');
 const RIM = { edge: 0, metal: 2.4, center: 7.6, innerEdge: 12.6, field: 14.4, locked: 1.6 };
 const f = (v) => Math.round(v * 10) / 10;
 const lensD = (l, w) => `M0 0C${f(w * 0.66)} ${f(-l * 0.16)} ${f(w * 0.66)} ${f(-l * 0.72)} 0 ${f(-l)}C${f(-w * 0.66)} ${f(-l * 0.72)} ${f(-w * 0.66)} ${f(-l * 0.16)} 0 0Z`;
