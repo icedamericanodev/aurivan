@@ -1123,6 +1123,8 @@ function DigitColumn({
       return;
     }
     started.current = { run, to };
+    // A digit that doesn't change starts no animation (fewer moving nodes on low-end phones).
+    if (a === b) return atFinal();
     y.set(withSequence(snap(-a * lh), withDelay(delay, tween(-b * lh, dur))));
   }, [play, run, a, b, to, lh, delay, dur, y]);
   const anim = useAnimatedStyle(() => ({ transform: [{ translateY: y.value }] }));

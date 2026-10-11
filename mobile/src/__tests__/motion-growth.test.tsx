@@ -365,6 +365,14 @@ describe('PlanLeaves', () => {
     expect(light).not.toHaveBeenCalled();
     act(() => r!.update(<PlanLeaves done={[true, true]} focused />));
     expect(light).toHaveBeenCalledTimes(1);
+    // The panel swaps to the clearing (a new tree) while Today is out of view: the
+    // last leaf still fills when Today comes back.
+    light.mockClear();
+    act(() => r!.update(<PlanLeaves key="start" done={[true, false]} focused seenKey="cisa:2026-10-11" />));
+    act(() => r!.update(<PlanLeaves key="clearing" done={[true, true]} focused={false} seenKey="cisa:2026-10-11" />));
+    expect(light).not.toHaveBeenCalled();
+    act(() => r!.update(<PlanLeaves key="clearing" done={[true, true]} focused seenKey="cisa:2026-10-11" />));
+    expect(light).toHaveBeenCalledTimes(1);
     // Still spoken as a count, never as motion.
     expect(r!.root.findAll((n) => n.props.accessibilityLabel === '2 of 2 done' && typeof n.type === 'string')).toHaveLength(1);
   });

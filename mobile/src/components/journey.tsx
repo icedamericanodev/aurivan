@@ -84,10 +84,13 @@ export function planText(item: PlanItem, due?: number): { title: string; meta: s
  * shows what you just finished. `focused`: Today is on view (the change
  * happens while a session is on top, and must not play off-screen).
  */
-export function PlanLeaves({ done, focused = true }: { done: boolean[]; focused?: boolean }) {
+/** The leaves last seen on view, per plan day: the panel swaps from "Start here" to the clearing (a new tree) while a session is on top. */
+const leavesSeen = new Map<string, boolean[]>();
+
+export function PlanLeaves({ done, focused = true, seenKey }: { done: boolean[]; focused?: boolean; seenKey?: string }) {
   const { c } = useTheme();
-  // What the learner last saw, and which leaves to press in now.
-  const [shown, setShown] = useState({ done, pops: [] as number[], run: 0 });
+  // What the learner last saw (also across the panel's swap), and which leaves to press in now.
+  const [shown, setShown] = useState(() => ({ done: (seenKey && leavesSeen.get(seenKey)) || done, pops: [] as number[], run: 0 }));
   const changed = shown.done.length !== done.length || shown.done.some((d, i) => d !== done[i]);
   if (focused && changed) {
     const same = shown.done.length === done.length;
@@ -97,6 +100,9 @@ export function PlanLeaves({ done, focused = true }: { done: boolean[]; focused?
   useEffect(() => {
     if (shown.pops.length) haptic.light();
   }, [shown.run, shown.pops.length]);
+  useEffect(() => {
+    if (focused && seenKey) leavesSeen.set(seenKey, done);
+  }, [focused, seenKey, done]);
   return (
     <View
       accessible

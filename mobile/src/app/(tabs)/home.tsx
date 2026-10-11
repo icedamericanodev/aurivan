@@ -186,7 +186,7 @@ export default function Today() {
           <Celebrate celebration={clearing}>
             <HeroPanel
               caption="Today’s clearing"
-              captionExtra={<PlanLeaves done={plan.done} focused={focused} />}
+              captionExtra={<PlanLeaves done={plan.done} focused={focused} seenKey={`${cert}:${plan.day}`} />}
               title={clearingTitle(plan)}
               art="clearing"
               wideTitle
@@ -197,7 +197,7 @@ export default function Today() {
         ) : (
           <HeroPanel
             caption="Start here"
-            captionExtra={<PlanLeaves done={plan.done} focused={focused} />}
+            captionExtra={<PlanLeaves done={plan.done} focused={focused} seenKey={`${cert}:${plan.day}`} />}
             title={planText(plan.items[cur], j.dueCount).title}
             meta={planText(plan.items[cur], j.dueCount).meta}
             action={{ label: 'Start', onPress: () => runPlanItem(plan.items[cur], j.cert.id), icon: playIcon, hint: planText(plan.items[cur], j.dueCount).title }}
