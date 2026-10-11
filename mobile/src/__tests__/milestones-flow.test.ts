@@ -9,9 +9,9 @@ import { getDomainQuestions } from '../content/loader';
 import { readBackup } from '../engine/backup';
 import { allMarks } from '../engine/milestones';
 import { dayKey } from '../engine/streak';
-import { checkBackupText, currentBackup } from '../lib/backup';
+import { checkBackupText, currentBackup, restoreBackup } from '../lib/backup';
 import { finishSession } from '../lib/finishSession';
-import { backfillLine, celebrateNext, checkMilestones, ensureBackfill, milestoneFacts, momentFor, seeBackfill } from '../lib/milestones';
+import { backfillLine, celebrateNext, checkMilestones, ensureBackfill, milestoneFacts, momentFor, seeBackfill, syncPlanters } from '../lib/milestones';
 import { certOutline, topicLessons } from '../lib/outline';
 import { Alert } from 'react-native';
 import { guardedStart, startFromIds, startMock, startPractice } from '../lib/sessions';
@@ -401,5 +401,66 @@ describe('backup and restore', () => {
     const read = checkBackupText(JSON.stringify(file));
     if (read.kind !== 'ok') throw new Error(read.code);
     expect(read.data.progress.byCert.cisa?.milestones).toBeUndefined();
+  });
+});
+
+describe('planters for sets completed before 1.10 (code review B2)', () => {
+  // Rooted complete from a 1.9 save: its back-fill already ran, and no planter was stored then.
+  const before = () =>
+    useProgress.setState((st) => ({
+      byCert: {
+        cisa: {
+          ...cp(),
+          milestones: { earned: { 'rooted:10': T0 - 50 * DAY, 'rooted:30': T0 - 30 * DAY, 'rooted:60': T0 - 2 * DAY }, days: 70, backfill: { at: T0 - 60 * DAY, count: 0, seen: true } },
+        },
+      },
+      streak: st.streak,
+    }));
+
+  it('nothing new earned, so checkMilestones alone never saves it; syncPlanters does, once', () => {
+    before();
+    expect(checkMilestones('cisa', { now: T0 })).toEqual([]);
+    expect(cp().milestones!.planters).toBeUndefined();
+    expect(syncPlanters('cisa', T0)).toEqual(['rooted']);
+    // Dated when the set was completed, not when it was synced.
+    expect(cp().milestones!.planters).toEqual({ rooted: T0 - 2 * DAY });
+    // Idempotent: nothing new, no write (the same object).
+    const m = cp().milestones;
+    expect(syncPlanters('cisa', T0 + DAY)).toBeNull();
+    expect(cp().milestones).toBe(m);
+  });
+
+  it('a learner with nothing complete, or nothing at all, gets nothing and no write', () => {
+    expect(syncPlanters('cisa', T0)).toBeNull();
+    expect(cp().milestones).toBeUndefined();
+    d4.slice(0, 20).forEach((id) => answer(id));
+    checkMilestones('cisa', { now: T0 });
+    const m = cp().milestones;
+    expect(syncPlanters('cisa', T0)).toBeNull();
+    expect(cp().milestones).toBe(m);
+  });
+
+  it('a restored 1.9 backup with a complete set gets its planter on restore', async () => {
+    before();
+    const file = currentBackup(T0);
+    expect(file.stores.progress.state.byCert.cisa.milestones!.planters).toBeUndefined();
+    useProgress.setState({ byCert: {} });
+    const read = checkBackupText(JSON.stringify(file));
+    if (read.kind !== 'ok') throw new Error(read.code);
+    await restoreBackup(read.data, { now: T0, fresh: true });
+    expect(cp().milestones!.earned['rooted:60']).toBe(T0 - 2 * DAY);
+    expect(cp().milestones!.planters).toEqual({ rooted: T0 - 2 * DAY });
+  });
+});
+
+describe('"That completes" is said once (code review minor 1)', () => {
+  it('two badges of a set earned in the same session: only the later in catalogue order completes it', () => {
+    useProgress.setState((st) => ({
+      byCert: { cisa: { ...cp(), milestones: { earned: { 'first-foothold': T0 - 5000, 'topic-clear': T0, 'ten-topics': T0 }, backfill: { at: T0 - DAY, count: 0, seen: true } } } },
+      streak: st.streak,
+    }));
+    expect(momentFor('cisa', 'topic-clear')?.completes).toBeUndefined();
+    expect(momentFor('cisa', 'ten-topics')?.completes).toBe(true);
+    expect(momentFor('cisa', 'first-foothold')?.completes).toBeUndefined();
   });
 });

@@ -21,7 +21,7 @@
  */
 import { getCertification } from '../content/certifications';
 import type { Certification } from '../content/types';
-import { BADGE_SET, caseMarks, caseSets, completeSets, setInfo, type CaseMark, type SetId, type SetView } from '../engine/badgeCatalog';
+import { BADGE_SET, caseMarks, caseSets, completeSets, completingMark, setInfo, type CaseMark, type SetId, type SetView } from '../engine/badgeCatalog';
 import { findQuestion } from '../content/loader';
 import { firstTries, mindsetGrowth } from '../engine/mindsetGrowth';
 import {
@@ -154,6 +154,29 @@ export function withPlanters(m: CertMilestones, sets: readonly SetView[]): CertM
 }
 
 /**
+ * Save the planter of any counted set already complete that has none yet,
+ * and nothing else. Idempotent: run at launch (after the back-fill) and after
+ * a restore, so a set completed before planters existed (1.9 or earlier, or a
+ * 1.9 backup) gets its planter without waiting for a new badge. Returns the
+ * sets that just got one, or null when there was nothing to save.
+ */
+export function syncPlanters(certId: string, now = Date.now()): SetId[] | null {
+  const cert = getCertification(certId);
+  if (!cert) return null;
+  let added: SetId[] | null = null;
+  useProgress.getState().updateMilestones(certId, (m, cp) => {
+    if (!m || Object.keys(m.earned).length === 0) return null;
+    const facts = milestoneFacts(certId, cp, { now });
+    if (!facts) return null;
+    const next = withPlanters(m, caseFromFacts(cert, facts, m.earned).sets);
+    if (next === m) return null;
+    added = Object.keys(next.planters ?? {}).filter((id) => m.planters?.[id] === undefined) as SetId[];
+    return { milestones: next };
+  });
+  return added;
+}
+
+/**
  * After a session or a game round: save every badge now earned and queue it
  * for its quiet moment. Returns the newly earned marks.
  */
@@ -209,9 +232,9 @@ export function momentFor(certId: string, key: string, next?: string): Milestone
   const mark = marks.find((x) => x.key === key);
   const set = BADGE_SET[def.id];
   const view = sets.find((x) => x.info.id === set);
-  const at = cp.milestones?.earned[key];
-  // The badge that completed its set is the one earned last (the set's completion date).
-  const completes = Boolean(view?.info.counted && view.completeAt !== undefined && at !== undefined && at >= view.completeAt);
+  // The badge that completed its set: the one earned last (two earned in the
+  // same session share the moment, so the later in catalogue order takes it).
+  const completes = Boolean(view && completingMark(view) === key);
   // A tier above the first, of a badge whose lower tier was earned earlier.
   const tierUp = (mark?.tier ?? 1) > 1;
   return {

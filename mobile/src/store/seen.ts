@@ -41,8 +41,6 @@ interface SeenState {
   badgeMoments: number[];
   /** Mobile 1.10: the badge case's Sort choice ('set' when unset). */
   badgeSort?: string;
-  /** Mobile 1.10: when Show badges was switched off on this phone. */
-  badgesHiddenAt?: number;
   see: (key: string, values: number[]) => void;
   played: (kind: string) => void;
   /** Marks `key`'s first view of the day as used (false: it already was today). */
@@ -54,7 +52,6 @@ interface SeenState {
   /** A badge moment played at `at`. */
   noteBadgeMoment: (at: number) => void;
   setBadgeSort: (sort: string) => void;
-  setBadgesHiddenAt: (at: number | undefined) => void;
 }
 
 /** Badge moments kept (the cap counts the last 7 days, and allows 3). */
@@ -99,7 +96,6 @@ export const useSeen = create<SeenState>()(
       seeCase: (certId, at) => set((s) => (s.caseSeen[certId] !== undefined && s.caseSeen[certId] >= at ? s : { caseSeen: { ...s.caseSeen, [certId]: at } })),
       noteBadgeMoment: (at) => set((s) => ({ badgeMoments: [...s.badgeMoments, at].slice(-BADGE_MOMENTS_MAX) })),
       setBadgeSort: (badgeSort) => set({ badgeSort }),
-      setBadgesHiddenAt: (badgesHiddenAt) => set({ badgesHiddenAt }),
     }),
     { name: 'aurivan.seen.v1', storage: persistStorage, version: 1 },
   ),

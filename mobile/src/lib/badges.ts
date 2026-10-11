@@ -17,7 +17,7 @@ import { router } from 'expo-router';
 import { useSyncExternalStore } from 'react';
 import { getCertification } from '../content/certifications';
 import { lessonsFor } from '../content/lessons';
-import { nextForExam, nextLine, type CaseMark, type StudyTarget } from '../engine/badgeCatalog';
+import { hasNewSince, nextForExam, nextLine, type CaseMark, type StudyTarget } from '../engine/badgeCatalog';
 import { DIAGNOSTIC_SIZE, journeyStage, type Stage } from '../engine/journey';
 import { computeReadiness, type Readiness } from '../engine/readiness';
 import { sessionSize } from '../engine/studyModes';
@@ -109,13 +109,11 @@ export function seeCase(certId: string, now = Date.now()) {
   useSeen.getState().seeCase(certId, now);
 }
 
-/** True while a badge earned since the case was last opened waits (and badges are shown). */
+/** True while a badge the case shows, earned since the case was last opened, waits (and badges are shown). */
 export function hasNewBadge(certId: string): boolean {
   if (useSettings.getState().badgesHidden) return false;
-  const seenAt = useSeen.getState().caseSeen[certId];
-  if (seenAt === undefined) return false;
-  const earned = selectCert(useProgress.getState(), certId).milestones?.earned ?? {};
-  return Object.values(earned).some((at) => at > seenAt);
+  const m = selectCert(useProgress.getState(), certId).milestones;
+  return hasNewSince(m?.earned, useSeen.getState().caseSeen[certId], m?.backfill?.at);
 }
 
 const subscribeAll = (cb: () => void) => {
@@ -138,25 +136,26 @@ export function useNewBadge(): boolean {
  * Settings → Show badges, switched back on: the moments that waited while
  * hidden are cleared (one line instead of a burst) and counted. Returns how
  * many badges arrived (0: nothing to say).
+ * The count is the active exam's waiting moments (the line points to You →
+ * Badges, which shows that exam): exactly the badges earned live that never
+ * had their moment. Badges a back-fill or a restore saved quietly were never
+ * queued, so they are not counted as "arrived".
  */
 export function showBadgesAgain(): number {
   let n = 0;
-  const hiddenAt = useSeen.getState().badgesHiddenAt;
+  const active = useSettings.getState().activeCertId;
   const state = useProgress.getState();
   for (const [certId, cp] of Object.entries(state.byCert)) {
     const earned = cp.milestones?.earned ?? {};
-    // Badges earned since they were hidden (on this phone); else, the ones still waiting for a moment.
-    n += hiddenAt !== undefined ? Object.values(earned).filter((at) => at >= hiddenAt).length : new Set(cp.milestones?.queue ?? []).size;
+    if (certId === active) n = new Set((cp.milestones?.queue ?? []).filter((k) => earned[k] !== undefined)).size;
     state.updateMilestones(certId, (m) => (m?.queue?.length ? { milestones: { ...m, queue: [] } } : null));
   }
-  useSeen.getState().setBadgesHiddenAt(undefined);
   useSettings.getState().setBadgesHidden(false);
   return n;
 }
 
-/** Settings → Show badges, switched off: remembered from now, so switching back on can say what arrived. */
-export function hideBadges(now = Date.now()) {
-  useSeen.getState().setBadgesHiddenAt(now);
+/** Settings → Show badges, switched off: moments stop; badges are still earned, and queued for the count. */
+export function hideBadges() {
   useSettings.getState().setBadgesHidden(true);
 }
 
