@@ -657,3 +657,65 @@ stroke on its soft circle: 6.15:1 light, 8.29:1 dark (3:1 needed for graphics).
 
 **Old navy compass-A logo (`#0B1E3D`).** Web app only. It no longer appears
 anywhere in the mobile app or its store assets.
+
+## 13. Your plant (mobile 1.13, Phase 4a)
+
+One optional plant companion that grows only from real learning. No cartoon
+mascot, no needs, no guilt. Rules: `mobile/src/engine/plant.ts`; art:
+`mobile/src/components/plant/` (react-native-svg, ported from the Phase 0
+generator, original art); colours: the `plantLeaf`, `plantArt` and
+`plantTheme` tokens (§3 rules apply: the plant is an object, so its leaf and
+material colours are fixed; only the ground shadow, marks and the resting
+dusk follow the theme).
+
+**What it is.** 13 species (oak, maple, narra, cherry blossom, pine, coconut
+palm, mango, bonsai, sunflower, lotus, sampaguita, cactus, bamboo), each at
+six growths: Seed · Sprout · Shoot · Bough · Crown · Elder. From Bough on,
+each exam domain is one part of the plant (a limb, a pad, a leaf, a culm),
+sized half by blueprint weight and half equal, and full from 62% to 108% with
+domain mastery: a weak domain looks young, never bare or brown. Certs with
+more or fewer than five domains map onto the five drawn slots (extra domains
+merge into the nearest slot; missing slots show young).
+
+**Growth.** Only from clean answers (no Coach me, no games), the readiness low
+end (clean answers only), how much of the outline is known (mastered on two
+different days, weighted like the exam), mocks and the exam-ready hold. Never
+taps, minutes, streaks or games. Growth never goes down; only the learner's
+Reset (back to a seed, name, species and look kept) or a restore clamp lowers it.
+
+**Words.** Always "growth", never "stage" ("Bough · growth 4 of 6"); the
+journey keeps "Stage 3 · Make it stick", so the two ladders never share a
+word. Never a guilt or needs word (wilting, thirsty, misses you). Never the
+bank size. Never "Pokémon".
+
+**Where it lives (and never).**
+
+| Place | What | Size |
+|---|---|---|
+| Today | In the slot beside the readiness range, replacing the small mono rings; tap opens Your plant. Its own screen-reader stop; the readiness words keep theirs | 104pt |
+| Today, below | One calm line when it grows (`PlantNote`, "Your plant grew"), or, with no plant, one quiet "Plant a companion…" line with Plant yours / Not now (dismissed for good) | — |
+| You | Header row under the title: the plant, its name, its growth; or "Plant yours" | 64pt |
+| Your plant | The plant on the shared 200 × 200 stage (`fit={false}`), name, growth and its look in italic; the back-fill line once; the resting line; What grows it next (rule steps with bars, "Not yet" / "Done"); Your domains as text rows with "Next to grow"; Change species and Rename | 200pt |
+| Picker (onboarding step 3 of 3, Plant yours, Change species) | A radio grid of the 13 species, each previewed at Crown; three across, two at ×1.3 text; selected = 2px ink border | 56–96pt |
+| Question, mock, lesson, game and Results screens | **Never** (a test checks the imports) | — |
+
+The rings stay on You and Results as the numeric view.
+
+**Settings → Your plant.** Show my plant (off: no plant and no prompts
+anywhere; growth is still kept, so turning it on shows the truth) and Quiet
+look (no face; shown only while the plant shows). The face is on by default
+and never sad: calm, or sleepy while resting.
+
+**Resting.** After 3 days without study, or on the exam eve and exam day, the
+plant sits on a soft dusk disc with a small moon and closed eyes, and Your plant
+says "Kai is resting. Pick up whenever you're ready." (after 7+ days: "Kai kept
+your place."). It never counts the days and never changes the plant itself.
+
+**Motion (4a).** Static. The grow-up line uses `useCelebration('plant-growth')`
+(the session budget, skippable, a 200 ms fade or static under Reduce Motion;
+the line is spoken once via `sayLater`). Focus never moves for it. The growth
+sequence, idle breathing and reactions come in 4b, each with a Reduce Motion path.
+
+**Large text and narrow phones.** Today stacks the plant above the range at
+×1.3+ (the ReadinessRow rule). Your plant's rule steps stack their status under
+the rule at ×1.3+. Checked at 360 dp and about 200% text (`SHOTS=plant`).
