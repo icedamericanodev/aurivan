@@ -62,7 +62,7 @@ import { checkBackupText, currentBackup, restoreBackup } from '../lib/backup';
 import { caseStage, hasNewBadge, initCaseSeen, showBadgesAgain, studyFor, weakestDomain } from '../lib/badges';
 import { finishSession } from '../lib/finishSession';
 import { finishGameRound } from '../lib/gameRounds';
-import { badgeCase, checkMilestones, ensureBackfill, momentFor } from '../lib/milestones';
+import { badgeCase, checkMilestones, ensureBackfill, momentFor, syncPlanters } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
 import { daysUntil } from '../lib/useActiveCert';
 import { selectCert, useProgress, type MockResult } from '../store/progress';
@@ -181,7 +181,7 @@ beforeEach(() => {
   useProgress.setState({ byCert: {}, streak: { current: 0, best: 0, lastDay: null }, today: { day: '', answered: 0 }, days: {} });
   useSession.getState().clear();
   useSettings.setState({ onboarded: true, activeCertId: 'cisa', examDates: {}, practiceTimer: false, badgesHidden: false });
-  useSeen.setState({ values: {}, moments: {}, days: {}, badgeMoments: [], caseSeen: {}, badgeSort: undefined, badgesHiddenAt: undefined });
+  useSeen.setState({ values: {}, moments: {}, days: {}, badgeMoments: [], caseSeen: {}, badgeSort: undefined });
   setScale(1);
 });
 afterEach(() => {
@@ -218,10 +218,11 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
     // The 1.9 save as it was: exactly these badges, nothing queued, the back-fill long done.
     setMilestones({ earned: { ...SAVED }, queue: [], backfill: { at: A, count: 3, seen: true }, days: 12, lastDay: dayKey(T0 - 5 * DAY) });
   };
-  /** What the app does at launch (app/_layout.tsx): the back-fill (already done), then the case-seen time. */
+  /** What the app does at launch (app/_layout.tsx): the back-fill (already done), then the case-seen time and the planters. */
   const launch = () => {
     expect(ensureBackfill('cisa', T0)).toBeNull();
     initCaseSeen('cisa', T0);
+    syncPlanters('cisa', T0);
   };
 
   it('every badge keeps its exact date and lands in its set', () => {
@@ -283,7 +284,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
   // before 1.10 has no planter saved at launch. withPlanters only runs when a
   // NEW badge is earned (checkMilestones) or in the one-time back-fill, which
   // a 1.9 save has already had.
-  it.failing('a set completed before the update has its planter saved at launch', () => {
+  it('a set completed before the update has its planter saved at launch', () => {
     nineSave();
     launch();
     expect(cp().milestones!.planters?.groundwork).toBe(SAVED['ten-topics']);
@@ -337,7 +338,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
   // BUG (Minor): restoring a backup from before Build F (no back-fill yet)
   // runs the back-fill AFTER the launch set the case-seen time, so every
   // back-filled badge is dated "now" and shows the "new" dot.
-  it.failing('badges back-filled after a restore of an older backup do not show the "new" dot', async () => {
+  it('badges back-filled after a restore of an older backup do not show the "new" dot', async () => {
     // A backup made before badges existed: answers, no milestones.
     answerDomain('4', 25, 25, T0 - 20 * DAY);
     const old = currentBackup(T0 - 10 * DAY);
@@ -477,7 +478,7 @@ describe('2. earning a new badge in a session', () => {
   // and that completes it, EVERY one of their moments (one now, the others in
   // later sessions) says "That completes The Five Domains." momentFor treats
   // any badge dated at the completion time as the one that completed it.
-  it.failing('only one moment says "That completes" a set, even when its last badges arrive together', () => {
+  it('only one moment says "That completes" a set, even when its last badges arrive together', () => {
     for (const d of ['1', '2', '3', '4', '5']) answerDomain(d, 20);
     setMilestones({ earned: { 'firm-footing:1': T0 - 9 * DAY, 'firm-footing:2': T0 - 8 * DAY, 'firm-footing:3': T0 - 7 * DAY } });
     act(() => {
@@ -602,7 +603,7 @@ describe('3. "Next for your exam" at each journey stage', () => {
   // first; the code checks "daysLeft ≤ 21" first, so a learner who starts two
   // weeks before the exam is told the best thing for the exam is a 4-hour mock,
   // before the 20-question diagnostic.
-  it.failing('a learner who starts in the final three weeks is pointed at the diagnostic first', () => {
+  it('a learner who starts in the final three weeks is pointed at the diagnostic first', () => {
     examIn(15);
     const n = next();
     expect(n.stage).toBe('diagnose');
@@ -713,12 +714,15 @@ describe('4. the case', () => {
       expect(labels()).toContain(`Sort badges, ${SORT_LABEL[sort]}`);
       const { marks } = badgeCase('cisa', cp());
       const want = marks.filter((m) => passesFilter(m, filter));
+      // A Fresh Start not yet earned may stay off the case (it is a moment, never a goal).
+      const must = want.filter((m) => !(m.set === 'moments' && m.status !== 'earned')).map((m) => m.key);
       const shown = root().findAllByType(BadgeCell).map((c) => c.props.mark.key as string);
-      expect(new Set(shown).size).toBe(shown.length);
-      expect([...shown].sort()).toEqual(want.map((m) => m.key).sort());
+      expect(new Set(shown).size).toBe(shown.length); // each once
+      expect(shown.filter((k) => !want.some((m) => m.key === k))).toEqual([]); // nothing the filter excludes
+      expect(must.filter((k) => !shown.includes(k))).toEqual([]); // nothing missing
       if (sort !== 'set') expect(shown).toEqual(sortMarks(want, sort).map((m) => m.key));
-      else expect(shown).toEqual(want.map((m) => m.key)); // shelf order
-      expect(want.length).toBeGreaterThan(0);
+      else expect(shown).toEqual(want.map((m) => m.key).filter((k) => shown.includes(k))); // shelf order
+      expect(must.length).toBeGreaterThan(0);
     },
   );
 
@@ -727,12 +731,14 @@ describe('4. the case', () => {
     const { marks } = badgeCase('cisa', cp());
     const recent = sortMarks(marks, 'recent');
     expect(recent.slice(0, 3).map((m) => m.key)).toEqual(['firm-footing:4', 'snare-wise', 'rooted:10']);
-    const closest = sortMarks(marks, 'closest');
+    // Within the exam's own (counted) badges; Field notes may follow them as a block.
+    const study = (list: CaseMark[]) => list.filter((m) => COUNTED_SETS.includes(m.set));
+    const closest = study(sortMarks(marks, 'closest'));
     const rank = (m: CaseMark) => (m.status === 'earned' ? 2 : m.status === 'gated' ? 1 : 0);
     expect(closest.map(rank)).toEqual([...closest.map(rank)].sort((a, b) => a - b));
     const open = closest.filter((m) => rank(m) === 0).map((m) => m.progress);
     expect(open).toEqual([...open].sort((a, b) => b - a));
-    const effort = sortMarks(marks, 'effort').map((m) => m.minDays);
+    const effort = study(sortMarks(marks, 'effort')).map((m) => m.minDays);
     expect(effort).toEqual([...effort].sort((a, b) => a - b));
   });
 
@@ -1039,11 +1045,13 @@ describe('6. restore validation: edited backups', () => {
 
   it('fake planters are refused; a genuine one is kept', async () => {
     genuine();
-    setMilestones({ earned: { ...cp().milestones!.earned, 'rooted:10': T0 - 50 * DAY, 'rooted:30': T0 - 30 * DAY, 'rooted:60': T0 - DAY }, planters: { rooted: T0 - DAY } });
+    // Genuine: every domain at Firm Footing plus Whole Map (earned in genuine()), and all three Rooted tiers.
+    expect(cp().milestones!.planters?.domains).toBe(T0);
+    setMilestones({ earned: { ...cp().milestones!.earned, 'rooted:10': T0 - 50 * DAY, 'rooted:30': T0 - 30 * DAY, 'rooted:60': T0 - DAY }, planters: { ...cp().milestones!.planters, rooted: T0 - DAY } });
     const m = await restoreEdited((x) => {
       x.planters = { ...(x.planters as object), groundwork: T0, evergreen: T0, moments: T0, fieldNotes: T0, gold: T0 };
     });
-    expect(m.planters).toEqual({ rooted: T0 - DAY });
+    expect(m.planters).toEqual({ domains: T0, rooted: T0 - DAY });
   });
 
   it('a planter whose badges an edit made up is dropped with them', async () => {
@@ -1063,7 +1071,7 @@ describe('6. restore validation: edited backups', () => {
   // every domain the ANSWERS cover", not every domain of the exam. An edited
   // backup with 20 answers in ONE domain can claim Whole Map (whose own check
   // is only 20 answers), that domain's Firm Footing, and the planter.
-  it.failing('the Five Domains planter needs Firm Footing in every exam domain, not just the domains answered', async () => {
+  it('the Five Domains planter needs Firm Footing in every exam domain, not just the domains answered', async () => {
     answerDomain('4', 25);
     act(() => {
       checkMilestones('cisa');
@@ -1079,7 +1087,7 @@ describe('6. restore validation: edited backups', () => {
   // rule needs 2 FULL, timed, fully answered mocks 7+ days apart (after Whole
   // Map). Two 10-question minis on the same day pass. The mock records hold
   // total, timing, unanswered and finishedAt, so the check could read them.
-  it.failing('dress-rehearsal:2 needs two full mocks a week apart, not any two mock records', async () => {
+  it('dress-rehearsal:2 needs two full mocks a week apart, not any two mock records', async () => {
     answerDomain('4', 25);
     const mini = (id: string): MockResult => ({ ...fullMock(id, T0 - DAY), total: 10, minutesAllowed: 16 });
     addMocks(mini('a'), mini('b'));
