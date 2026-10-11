@@ -126,7 +126,7 @@ describe('updating from 1.1', () => {
   it("an old Today plan shows today's game names and lengths from the registry", () => {
     const items = useProgress.getState().days.cisa.items;
     const games = items.filter((i) => i.kind === 'game');
-    expect(games.map((g) => (g.kind === 'game' ? gameTitle(g.gameId, g.label) : ''))).toEqual(['Snare Spotter', 'Sure Footing', 'Signpost']);
+    expect(games.map((g) => (g.kind === 'game' ? gameTitle(g.gameId, g.label) : ''))).toEqual(['Snare Spotter', 'Forecast', 'Signpost']);
     expect(games.map(itemMinutes)).toEqual([GAMES.trap.minutes, GAMES.sprint.minutes, GAMES.priority.minutes]);
   });
 

@@ -128,7 +128,7 @@ function Signpost() {
 
   return (
     <GameFrame
-      title={GAMES.priority.name}
+      game="priority"
       index={i}
       total={round.length}
       score={score}

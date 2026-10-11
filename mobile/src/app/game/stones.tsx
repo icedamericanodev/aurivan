@@ -15,12 +15,11 @@
 import { router } from 'expo-router';
 import { useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
+import { FadeIn } from '../../components/motion';
 import { GameFrame, GameIntro, MatchTile, PlayableGate, RevealCard, RoundEnd, type TileState } from '../../components/game';
-import { Footprints } from '../../components/icons';
 import { Button, Gap, Section, T } from '../../components/ui';
 import { getStepSequences } from '../../content/games';
 import type { RecapMiss } from '../../engine/games/recap';
-import { GAMES } from '../../engine/games/registry';
 import {
   buildStonesRound,
   checkPath,
@@ -60,6 +59,8 @@ function SteppingStones() {
   const [round, setRound] = useState<{ items: StonesItem[]; tier: StonesTier } | null>(null);
   const [i, setI] = useState(0);
   const [placed, setPlaced] = useState<number[]>([]);
+  // Stones taken back this process (they arrive back under Stones with a short fade).
+  const [returned, setReturned] = useState<number[]>([]);
   const [checked, setChecked] = useState<ReturnType<typeof checkPath> | null>(null);
   const [pick, setPick] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -82,6 +83,7 @@ function SteppingStones() {
     setRound({ items: buildStonesRound(all, useProgress.getState().byCert[cert.id]?.cards, tier, createRng(seed), seed), tier });
     setI(0);
     setPlaced([]);
+    setReturned([]);
     setChecked(null);
     setPick(null);
     setScore(0);
@@ -94,7 +96,6 @@ function SteppingStones() {
     return (
       <GameIntro
         game="stones"
-        icon={(col) => <Footprints size={48} color={col} strokeWidth={1.5} />}
         rules="Three processes, their steps shuffled. Tap the steps in order to build the path; tap a placed step to take it back. Each step rests on the one before it, and FIRST questions test exactly that."
         tiers={STONES_TIERS}
         tier={tier}
@@ -159,6 +160,7 @@ function SteppingStones() {
   const unplace = (step: number) => {
     if (checked) return;
     setPlaced(placed.filter((s) => s !== step));
+    setReturned((r) => [...r, step]);
     sayLater(`Taken back: ${seq.steps[step].label}.`);
     // The stone is back under "Stones": follow it there.
     moveFocus(stoneRef(step));
@@ -178,6 +180,7 @@ function SteppingStones() {
   const next = () => {
     setI(i + 1);
     setPlaced([]);
+    setReturned([]);
     setChecked(null);
     setPick(null);
   };
@@ -203,7 +206,7 @@ function SteppingStones() {
     const state = (k: number): TileState => (pick === null ? 'idle' : k === m.correct ? 'correct' : k === pick ? 'wrong' : 'dimmed');
     return (
       <GameFrame
-        title={GAMES.stones.name}
+        game="stones"
         index={i}
         total={round.items.length}
         score={score}
@@ -257,7 +260,7 @@ function SteppingStones() {
   const markFor = (k: number) => checked?.marks[k];
   return (
     <GameFrame
-      title={GAMES.stones.name}
+      game="stones"
       index={i}
       total={round.items.length}
       score={score}
@@ -281,19 +284,21 @@ function SteppingStones() {
         const mark = markFor(k);
         const pos = item.given + k + 1;
         return (
-          <MatchTile
-            key={step}
-            lead={String(pos)}
-            text={mark && !mark.right ? `${seq.steps[step].label} · goes ${ordinal(mark.goes)}` : seq.steps[step].label}
-            state={mark ? (mark.right ? 'correct' : 'wrong') : 'idle'}
-            onPress={() => unplace(step)}
-            locked={!!checked}
-            spoken={
-              mark
-                ? `Step ${pos}: ${seq.steps[step].label}, ${mark.right ? 'right place' : `wrong place, it goes ${ordinal(mark.goes)}`}`
-                : `Step ${pos}: ${seq.steps[step].label}. Tap to take it back.`
-            }
-          />
+          // A placed stone settles into its slot (fade + 8pt rise; a fade under Reduce Motion).
+          <FadeIn key={step} dur="quick">
+            <MatchTile
+              lead={String(pos)}
+              text={mark && !mark.right ? `${seq.steps[step].label} · goes ${ordinal(mark.goes)}` : seq.steps[step].label}
+              state={mark ? (mark.right ? 'correct' : 'wrong') : 'idle'}
+              onPress={() => unplace(step)}
+              locked={!!checked}
+              spoken={
+                mark
+                  ? `Step ${pos}: ${seq.steps[step].label}, ${mark.right ? 'right place' : `wrong place, it goes ${ordinal(mark.goes)}`}`
+                  : `Step ${pos}: ${seq.steps[step].label}. Tap to take it back.`
+              }
+            />
+          </FadeIn>
         );
       })}
       {Array.from({ length: n - item.given - placed.length }, (_, k) => (
@@ -310,16 +315,18 @@ function SteppingStones() {
         <>
           <Section title="Stones" />
           {unplacedStones.map((step) => (
-            <MatchTile
-              key={step}
-              text={seq.steps[step].label}
-              state="idle"
-              onPress={() => place(step)}
-              pressRef={(r) => {
-                stoneRefs.current[step] = r;
-              }}
-              spoken={`Place next: ${seq.steps[step].label}`}
-            />
+            // A stone taken back arrives back here the same way; the others were already here.
+            <FadeIn key={step} dur="quick" play={returned.includes(step)}>
+              <MatchTile
+                text={seq.steps[step].label}
+                state="idle"
+                onPress={() => place(step)}
+                pressRef={(r) => {
+                  stoneRefs.current[step] = r;
+                }}
+                spoken={`Place next: ${seq.steps[step].label}`}
+              />
+            </FadeIn>
           ))}
         </>
       )}

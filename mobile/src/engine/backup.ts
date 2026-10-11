@@ -273,7 +273,7 @@ const percent = range(0, 100);
 const readinessDay = obj({ day: date, min: nullable(percent), last: nullable(percent) });
 const moments = obj({}, { readiness: list(readinessDay, MAX_LIST * 2), readySeenAt: ts });
 const subtopicMastery = obj({ firstDay: date }, { firstAt: ts, masteredAt: date });
-/** A game score: Sure Footing can go below zero (a wrong "Sure" is −5). */
+/** A game score: Forecast can go below zero (a wrong "Sure" is −5). */
 const gameScore = range(-1000, 100_000);
 
 /** Build F: a game's level and its last skill-step results (engine/games/growth.ts). */

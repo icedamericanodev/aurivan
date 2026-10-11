@@ -28,7 +28,7 @@ export interface GameRoundResult {
   tier: GameTier;
   /** Each skill-step result, in order. */
   hits?: boolean[];
-  /** The game's own "well done" verdict, when it has one (Sure Footing: well calibrated). */
+  /** The game's own "well done" verdict, when it has one (Forecast: well calibrated). */
   good?: boolean;
   /** Skill-badge counters this round adds. */
   counts?: Partial<Record<CounterId, number>>;

@@ -18,19 +18,23 @@ import { createRng } from '../engine/random';
 import { makePermutation, type Permutation } from '../engine/shuffle';
 import { lastScores, reviewLine, runningScore, scoreSpoken, scoreText, trendSpoken, type RecapMiss } from '../engine/games/recap';
 import { useProgress, type GameId } from '../store/progress';
-import { motion, optionText, radius, raisedShadow, space } from '../theme/tokens';
+import { maxScale, motion, optionText, radius, raisedShadow, space, type } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ScenarioBlock, StickyFooter } from './quiz';
 import { useReportFlow } from './support';
 import { questionTarget } from '../lib/support';
 import type { ReportTarget } from '../engine/support';
-import { Seedling, TierLeaf } from './glyphs';
-import { AnimatedPressable, FadeIn as Arrive, Shake, StateLayer, useMotion, usePressScale } from './motion';
+import { GameGlyph, Sparkline, TierLeafMorph } from './glyphs';
+import { AnimatedPressable, Celebrate, FadeIn as Arrive, Pop, RollingText, Shake, StateLayer, useCelebration, useMotion, usePressScale } from './motion';
+import { haptic } from '../lib/haptics';
 import { MilestoneMomentView, TierTag } from './milestones';
-import { tierChangeLine, type GameTier } from '../engine/games/growth';
+import { GAME_TIERS, tierChangeLine, type GameTier } from '../engine/games/growth';
 import type { RoundNews } from '../lib/gameRounds';
 import { Check, Info, ICON_STROKE, Play as PlayIcon, X } from './icons';
 import { BigNum, Button, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, Row, Section, SegmentBar, Segmented, Stem, T } from './ui';
+
+/** The level just below (the one a level-up grew from). */
+const tierBelow = (t: GameTier): GameTier => GAME_TIERS[Math.max(0, GAME_TIERS.indexOf(t) - 1)];
 
 /** A fixed list of questions + one shuffle each, created once per round. */
 export function useRound(certId: string, build: (rngSeed: number) => string[]) {
@@ -50,6 +54,7 @@ export function useRound(certId: string, build: (rngSeed: number) => string[]) {
 }
 
 export function GameFrame({
+  game,
   title,
   index,
   total,
@@ -61,7 +66,10 @@ export function GameFrame({
   strip,
   scrollToY,
 }: {
-  title: string;
+  /** Mobile 1.12: the game's own header (its glyph and name), so a round never looks like Practice. */
+  game: GameId;
+  /** The name in the header (default: the game's name from the registry). */
+  title?: string;
   index: number;
   total: number;
   score: number;
@@ -80,6 +88,7 @@ export function GameFrame({
   scrollToY?: number | null;
 }) {
   const { c } = useTheme();
+  const name = title ?? GAMES[game].name;
   // Measured height of the sticky footer, so the scroll can clear it.
   const [footerH, setFooterH] = useState(footer ? 120 : 0);
   // Opening the info panel mid-question: scroll up to it (it sits at the top).
@@ -101,10 +110,25 @@ export function GameFrame({
           onBack={() => router.back()}
           center={<SegmentBar total={total} done={Math.min(index, total)} current={index} />}
           // The running score never shows below 0 (display only; the recap shows the real total).
-          right={<T v="label" num accessibilityLabel={`Score ${runningScore(score)}`}>{String(runningScore(score))}</T>}
+          right={<RoundScore value={runningScore(score)} />}
         />
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: onInfo ? 48 : undefined }}>
-          <T v="meta" num style={{ flexShrink: 1 }}>{`${title} · ${Math.min(index + 1, total)} of ${total}`}</T>
+        {/* The game's own header (ui.md G1): its glyph in a soft circle, its name, and where you are.
+            A round never looks like a Practice question. One screen-reader stop. */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 48 }}>
+          <View
+            accessible
+            accessibilityRole="header"
+            accessibilityLabel={`${name}, ${Math.min(index + 1, total)} of ${total}`}
+            style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, flex: 1, minWidth: 0 }}
+          >
+            <View style={{ width: 36, height: 36, borderRadius: radius.pill, backgroundColor: c.soft, alignItems: 'center', justifyContent: 'center' }}>
+              <GameGlyph game={game} size={20} color={c.accentText} />
+            </View>
+            <View style={{ flex: 1, minWidth: 0 }}>
+              <T v="label">{name}</T>
+              <T v="meta" num>{`${Math.min(index + 1, total)} of ${total}`}</T>
+            </View>
+          </View>
           {onInfo && (
             <IconButton
               label="How scoring works"
@@ -128,6 +152,32 @@ export function GameFrame({
         )}
       </View>
     </SafeAreaView>
+  );
+}
+
+/**
+ * The round's running score in the header (motion.md M5): when it goes UP
+ * its digits roll to the new value (300 ms, no stagger: it is small and
+ * changes often). A score that goes down just shows (nothing animates a
+ * loss). Screen readers hear "Score 4". Reduced: the new value brightens in.
+ */
+export function RoundScore({ value }: { value: number }) {
+  const { c } = useTheme();
+  const [s, setS] = useState({ value, from: value, run: 0 });
+  if (s.value !== value) setS({ value, from: s.value, run: value > s.value ? s.run + 1 : s.run });
+  return (
+    <RollingText
+      value={String(value)}
+      from={String(s.from)}
+      play={s.run > 0}
+      run={s.run}
+      style={{ ...type.label, fontVariant: ['tabular-nums'] }}
+      maxScale={maxScale.label}
+      color={c.ink}
+      dur="fill"
+      stagger={false}
+      accessibilityLabel={`Score ${value}`}
+    />
   );
 }
 
@@ -196,15 +246,29 @@ export function RoundEnd({
   // Mobile 1.9: the round's score rolls up from 0 once, as the recap arrives
   // (never a score at or below 0); "New personal best" follows it.
   const [roll] = useState(() => score > 0);
+  // Mobile 1.12: a level up is the round's one small moment (T1), through the
+  // celebration budget: in full it grows the leaf once, after the score has
+  // rolled; short or static it simply shows the new level. Never with a
+  // milestone moment on the same screen (that one is the moment), and never
+  // for a step back (nothing animates a loss). The words are on screen.
+  const levelUp = news?.change === 'up' && !news.moment;
+  const grown = useCelebration('level-up', levelUp, undefined, `${game}:${news?.tier ?? ''}`);
+  // The light haptic: with the leaf's growth when it plays in full, else once as the level shows.
+  const [buzzed, setBuzzed] = useState(0);
+  if (grown.run > 0 && grown.mode !== 'full' && buzzed !== grown.run) {
+    setBuzzed(grown.run);
+    haptic.light();
+  }
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ padding: space.gutter, flexGrow: 1, justifyContent: 'center' }}>
         <Enter>
           <View style={{ alignItems: 'center' }}>
-            <View accessible={false} importantForAccessibility="no-hide-descendants">
-              <Seedling color={c.accent} size={96} />
+            {/* The game's own glyph (ui.md G1): the recap belongs to this game. */}
+            <View style={{ width: 72, height: 72, borderRadius: radius.pill, backgroundColor: c.soft, alignItems: 'center', justifyContent: 'center', marginBottom: space.md }}>
+              <GameGlyph game={game} size={40} color={c.accentText} />
             </View>
-            <T v="caption" center color={c.accentText}>Round complete</T>
+            <T v="caption" center color={c.accentText}>{`Round complete · ${GAMES[game].name}`}</T>
             <Gap h={space.sm} />
             <BigNum
               value={scoreText(score)}
@@ -214,10 +278,14 @@ export function RoundEnd({
             />
             <T v="meta" num center>{`out of ${max}${best !== undefined ? ` · best ${scoreText(best)}` : ''}`}</T>
             {recent.length > 1 && (
-              // Figtree tabular, oldest → newest: a quiet trend, not a chart.
-              <View accessible accessibilityLabel={trendSpoken(recent, best)} style={{ marginTop: space.sm, alignItems: 'center' }}>
+              // Oldest → newest: a small sparkline (ui.md G4), the latest round a filled
+              // leaf, with the scores printed under it. One spoken sentence for both.
+              <View accessible accessibilityLabel={trendSpoken(recent, best)} style={{ marginTop: space.lg, alignItems: 'center' }}>
                 <T v="caption" center>{`Last ${recent.length} rounds`}</T>
-                <T v="label" num center>{recent.map(scoreText).join('  ·  ')}</T>
+                <View style={{ marginTop: space.xs }}>
+                  <Sparkline values={recent} color={c.accent} paper={c.bg} />
+                </View>
+                <T v="meta" num center style={{ marginTop: 2 }}>{recent.map(scoreText).join('  ·  ')}</T>
               </View>
             )}
             {news?.best && (
@@ -226,12 +294,22 @@ export function RoundEnd({
               </Arrive>
             )}
             {news && tierChangeLine(news.change, news.tier) && (
-              <Row gap={space.sm} style={{ marginTop: space.sm, justifyContent: 'center', flexWrap: 'wrap' }}>
-                <View accessible={false} importantForAccessibility="no-hide-descendants">
-                  <TierLeaf tier={news.tier} color={c.accentText} rib={c.bg} />
-                </View>
-                <T v="small" center style={{ flexShrink: 1 }}>{tierChangeLine(news.change, news.tier)!}</T>
-              </Row>
+              <Celebrate celebration={grown}>
+                <Row gap={space.sm} style={{ marginTop: space.sm, justifyContent: 'center', flexWrap: 'wrap' }}>
+                  {/* A level up grows the leaf once (T1), after the score has rolled; a step back just shows. */}
+                  <TierLeafMorph
+                    tier={news.tier}
+                    color={c.accentText}
+                    rib={c.bg}
+                    grow={
+                      levelUp && grown.mode === 'full' && !grown.settled
+                        ? { from: tierBelow(news.tier), delay: (roll ? motion.dur.enter + motion.dur.grow : 0) + motion.dur.quick }
+                        : undefined
+                    }
+                  />
+                  <T v="small" center style={{ flexShrink: 1 }}>{tierChangeLine(news.change, news.tier)!}</T>
+                </Row>
+              </Celebrate>
             )}
           </View>
         </Enter>
@@ -290,13 +368,15 @@ function MissRow({ certId, game, miss: m, last }: { certId: string; game: GameId
 
 /**
  * A game's first screen (Build E games, after Daylight's pattern): pushed
- * header → line icon → skill caption → tagline as the hero → the rules →
- * "Pick your level" Seedling / Sapling / Heartwood (spoken with what each
- * tier means) and one meta line on the chosen tier → primary "Start".
+ * header → the game's glyph (48) → skill caption → tagline as the hero →
+ * the rules → (Forecast: its scoring block, `children`) → "Pick your level"
+ * Seedling / Sapling / Heartwood (spoken with what each tier means) with
+ * the chosen level's leaf and one meta line → primary "Start".
+ * Mobile 1.12: the leaf beside the chosen level MORPHS when the learner
+ * picks another (motion.md M5); a game without levels leaves `tiers` out.
  */
 export function GameIntro<V extends string>({
   game,
-  icon,
   rules,
   tiers,
   tier,
@@ -305,42 +385,56 @@ export function GameIntro<V extends string>({
   tierLine,
   onStart,
   level,
+  children,
+  glyphRise = false,
 }: {
   game: GameId;
   /** Build F: the learner's own level for this game (the picker starts on it). */
   level?: GameTier;
-  icon: (color: string) => ReactNode;
   rules: string;
-  tiers: V[];
-  tier: V;
-  onTier: (t: V) => void;
-  tierName: Record<V, string>;
-  tierLine: Record<V, string>;
+  tiers?: V[];
+  tier?: V;
+  onTier?: (t: V) => void;
+  tierName?: Record<V, string>;
+  tierLine?: Record<V, string>;
   onStart: () => void;
+  /** Extra intro content under the rules (Forecast's scoring block). */
+  children?: ReactNode;
+  /** Daylight: its sun rises once as the intro opens. */
+  glyphRise?: boolean;
 }) {
   const { c } = useTheme();
   const g = GAMES[game];
+  const leafTier = tier && (GAME_TIERS as string[]).includes(tier) ? (tier as unknown as GameTier) : null;
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <View style={{ paddingHorizontal: space.gutter }}>
         <PushedHeader icon="close" onBack={() => router.back()} title={g.name} />
       </View>
       <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxl }}>
-        <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ alignItems: 'center' }}>
-          {icon(c.accent)}
+        <View style={{ alignItems: 'center' }}>
+          <GameGlyph game={game} size={48} color={c.accent} rise={glyphRise} />
         </View>
         <T v="caption" center color={c.accentText} style={{ marginTop: space.sm }}>{`${g.skill} · about ${g.minutes} min`}</T>
         <T v="hero" center accessibilityRole="header" style={{ marginTop: space.xs }}>{g.tagline}</T>
         <T v="body" color={c.ink2} style={{ marginTop: space.md }}>{rules}</T>
-        <Section title="Pick your level" />
-        <Gap h={space.sm} />
-        <Segmented
-          accessibilityLabel="Pick your level"
-          value={tier}
-          onChange={onTier}
-          options={tiers.map((t) => ({ value: t, label: tierName[t], spoken: `${tierName[t]}. ${tierLine[t]}` }))}
-        />
-        <T v="meta" center style={{ marginTop: space.sm }}>{tierLine[tier]}</T>
+        {children}
+        {tiers && tier !== undefined && onTier && tierName && tierLine && (
+          <>
+            <Section title="Pick your level" />
+            <Gap h={space.sm} />
+            <Segmented
+              accessibilityLabel="Pick your level"
+              value={tier}
+              onChange={onTier}
+              options={tiers.map((t) => ({ value: t, label: tierName[t], spoken: `${tierName[t]}. ${tierLine[t]}` }))}
+            />
+            <Row gap={space.sm} style={{ marginTop: space.sm, justifyContent: 'center', flexWrap: 'wrap' }}>
+              {leafTier && <TierLeafMorph tier={leafTier} color={c.accentText} rib={c.bg} />}
+              <T v="meta" center style={{ flexShrink: 1 }}>{tierLine[tier]}</T>
+            </Row>
+          </>
+        )}
         {level && <LevelNote level={level} />}
         <Gap h={space.xl} />
         <Button label="Start" onPress={onStart} icon={(col) => <PlayIcon size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />} />
@@ -487,7 +581,10 @@ export function MatchTile({
       </T>
       {mark ? (
         <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ position: 'absolute', top: -6, right: -8 }}>
-          {mark === Check ? <Check size={16} color={markColor} strokeWidth={2.5} /> : <X size={16} color={markColor} strokeWidth={2.5} />}
+          {/* The mark springs in as the state arrives (a mark may pop; the tint never bounces). */}
+          <Pop trigger={state}>
+            {mark === Check ? <Check size={16} color={markColor} strokeWidth={2.5} /> : <X size={16} color={markColor} strokeWidth={2.5} />}
+          </Pop>
         </View>
       ) : null}
     </View>
@@ -519,9 +616,15 @@ export function MatchTile({
           onPress={onPress}
           onPressIn={press.onPressIn}
           onPressOut={press.onPressOut}
-          style={[box, press.style]}
+          style={[box, interactive && tinted ? { backgroundColor: c.raised } : null, press.style]}
         >
+          {/* The selected ring (first), then mobile 1.12's state tints (motion.md M5):
+              a matched pair, a right or a wrong place tints in over 160 ms, both
+              tiles of a pair together, instead of flipping colour. The states never
+              overlap, and every layer is always mounted, so nothing reflows. */}
           <StateLayer on={state === 'selected'} style={[tileRing, { borderColor: c.ink }]} />
+          <StateLayer on={state === 'matched' || state === 'correct'} dur="quick" style={[tileTint, { backgroundColor: c.correctBg }]} />
+          <StateLayer on={state === 'wrong'} dur="quick" style={[tileTint, { backgroundColor: c.wrongBg }]} />
           {body}
         </AnimatedPressable>
       ) : (
@@ -532,6 +635,9 @@ export function MatchTile({
     </Shake>
   );
 }
+
+/** A tile's state tint, laid over its whole box (the 1.5 border included). */
+const tileTint = { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5, borderRadius: radius.md } as const;
 
 /** The selected tile's 2px ink ring, laid over the tile's own 1.5 border. */
 const tileRing = { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5, borderRadius: radius.md, borderWidth: 2 } as const;

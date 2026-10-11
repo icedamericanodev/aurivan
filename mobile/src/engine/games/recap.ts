@@ -46,7 +46,7 @@ export function scoreSpoken(n: number): string {
 }
 
 /**
- * The running score shown DURING a round never drops below 0 (Sure Footing
+ * The running score shown DURING a round never drops below 0 (Forecast
  * can go negative). Display only: the real total is kept and shown on the recap.
  */
 export function runningScore(n: number): number {
@@ -135,7 +135,7 @@ export function signpostMiss(q: PackQuestion, readRight: boolean, answerCorrect:
 }
 
 /**
- * Sure Footing: a miss is a wrong answer. If the pick was the question's
+ * Forecast: a miss is a wrong answer. If the pick was the question's
  * snare, name it; otherwise name the deciding word when the stem has one.
  * Why = the note on the option the learner picked.
  */

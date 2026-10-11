@@ -19,7 +19,7 @@ import { AppState, type AppStateStatus } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import SessionScreen from '../app/session';
 import TrapSpotter from '../app/game/trap';
-import SureFooting from '../app/game/sprint';
+import Forecast from '../app/game/sprint';
 import Signpost from '../app/game/priority';
 import { OptionCard } from '../components/quiz';
 import { getAllQuestions } from '../content/loader';
@@ -272,8 +272,8 @@ describe('answer time: games (background left out, never mastery)', () => {
     expect(selectCert(useProgress.getState(), 'cisa').mastery).toBeUndefined();
   });
 
-  it('Sure Footing: timed, and the footing is kept as the confidence', () => {
-    mount(<SureFooting />);
+  it('Forecast: timed, and the footing is kept as the confidence', () => {
+    mount(<Forecast />);
     wait(4 * S);
     press('Lean: plus 2 if right, minus 1 if wrong');
     away(45 * S);

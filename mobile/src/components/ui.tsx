@@ -1485,7 +1485,7 @@ export function Segmented<V extends string | number>({
   accessibilityLabel,
 }: {
   options: { value: V; label: string; numeral?: string; icon?: (color: string) => ReactNode; spoken?: string }[];
-  /** null = nothing chosen yet (e.g. Sure Footing before each answer). */
+  /** null = nothing chosen yet (e.g. Forecast before each answer). */
   value: V | null;
   onChange: (v: V) => void;
   accessibilityLabel: string;

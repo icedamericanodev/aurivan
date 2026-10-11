@@ -17,7 +17,6 @@ import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { GameFrame, GameIntro, MatchTile, PlayableGate, RevealCard, RoundEnd, type TileState } from '../../components/game';
-import { TreeDeciduous } from '../../components/icons';
 import { Button, Gap, Stem, T } from '../../components/ui';
 import { getRoleDeck } from '../../content/games';
 import { findNote } from '../../content/notes';
@@ -35,7 +34,6 @@ import {
   type CanopyTier,
 } from '../../engine/games/canopyCall';
 import type { RecapMiss } from '../../engine/games/recap';
-import { GAMES } from '../../engine/games/registry';
 import { createRng } from '../../engine/random';
 import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
 import { useActiveCert } from '../../lib/useActiveCert';
@@ -80,7 +78,6 @@ function CanopyCall() {
     return (
       <GameIntro
         game="canopy"
-        icon={(col) => <TreeDeciduous size={48} color={col} strokeWidth={1.5} />}
         rules="Ten decisions, one at a time. Tap who has the authority to make each one: the board, a committee, management, an owner, a custodian, security, or the IS auditor, who assesses and recommends but never owns the decision."
         tiers={CANOPY_TIERS}
         tier={tier}
@@ -154,7 +151,7 @@ function CanopyCall() {
 
   return (
     <GameFrame
-      title={GAMES.canopy.name}
+      game="canopy"
       index={i}
       total={round.items.length}
       score={score}

@@ -14,7 +14,7 @@
  *   trying a harder one never knocks them back.
  * - We also keep the last 30 skill-step results (hits) per game, for the
  *   skill badges ("spot the snare in 8 of your last 10"), and a run of
- *   rounds in a row with the game's own "well done" verdict (Sure Footing:
+ *   rounds in a row with the game's own "well done" verdict (Forecast:
  *   "well calibrated"). Nothing here counts plays or minutes.
  *
  * Pure TypeScript: no React, no storage.
@@ -54,7 +54,7 @@ export interface RoundOutcome {
   tier: GameTier;
   /** Each skill-step result this round, in order (optional). */
   hits?: readonly boolean[];
-  /** The game's own verdict for the round, when it has one (Sure Footing: well calibrated). */
+  /** The game's own verdict for the round, when it has one (Forecast: well calibrated). */
   good?: boolean;
 }
 

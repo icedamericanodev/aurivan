@@ -208,7 +208,7 @@ describe('Play', () => {
     const rows = labels().filter((l) => / About \d+ minutes\./.test(l));
     expect(rows.length).toBeGreaterThan(0);
     for (const l of rows) expect(l).toMatch(/Your level: (Seedling|Sapling|Heartwood)\./);
-    expect(rows.find((l) => l.startsWith('Sure Footing'))).toMatch(/Your level: Heartwood\./);
+    expect(rows.find((l) => l.startsWith('Forecast'))).toMatch(/Your level: Heartwood\./);
     // The featured game says its level too (leaf + text on the hero).
     expect(labels()).toContain('Your level: Seedling');
   });
