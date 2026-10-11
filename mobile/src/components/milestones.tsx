@@ -17,7 +17,7 @@
  * ("New in your badges: Rooted · 30 days"). Reduce Motion: the end state,
  * the same words.
  */
-import { useEffect, useState, type MutableRefObject, type ReactNode } from 'react';
+import { useEffect, useState, type MutableRefObject } from 'react';
 import { View } from 'react-native';
 import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
 import { GAME_TIER_NAME, type GameTier } from '../engine/games/growth';
@@ -207,57 +207,5 @@ export function TierTag({ tier, color, textColor }: { tier: GameTier; color?: st
       </View>
       <T v="meta" color={textColor ?? c.ink2}>{GAME_TIER_NAME[tier]}</T>
     </Row>
-  );
-}
-
-/** One badge row on Milestones / Field notes: leaf (filled once earned) · name · rule · extra. */
-export function BadgeRow({
-  name,
-  rule,
-  earned,
-  detail,
-  extra,
-  last,
-  spoken,
-  press,
-}: {
-  name: string;
-  rule: string;
-  earned: boolean;
-  /**
-   * Mobile 1.9: earned since the learner last looked: the leaf presses in
-   * (outline → filled, a small spring) after this many ms.
-   */
-  press?: number;
-  /** "Earned 6 Oct 2026" or a progress line. */
-  detail?: string;
-  /** A progress bar, under the rule. */
-  extra?: ReactNode;
-  last?: boolean;
-  spoken: string;
-}) {
-  const { c } = useTheme();
-  return (
-    <View
-      accessible
-      accessibilityLabel={spoken}
-      style={{ flexDirection: 'row', gap: space.md, paddingVertical: 13, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line }}
-    >
-      <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ paddingTop: 3 }}>
-        <Pop mount={press !== undefined} from={0.4} delay={press ?? 0}>
-          <TierLeaf tier={earned ? 'heartwood' : 'sapling'} color={earned ? c.accent : c.control} rib={c.bg} size={20} />
-        </Pop>
-      </View>
-      <View style={{ flex: 1, minWidth: 0 }}>
-        <T v="label">{name}</T>
-        <T v="meta" style={{ marginTop: 2 }}>{rule}</T>
-        {extra}
-        {detail ? (
-          <T v="meta" num color={earned ? c.accentText : c.ink2} style={{ marginTop: space.xs }}>
-            {detail}
-          </T>
-        ) : null}
-      </View>
-    </View>
   );
 }
