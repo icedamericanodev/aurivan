@@ -36,6 +36,25 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.8.0',
+    date: '2026-10-11',
+    new: [
+      'The app now moves with you, gently: buttons and answers respond to your touch, the next question turns in like a page, and your progress bar fills as you answer.',
+      'Settings has a Motion choice: match your phone, or reduce movement to short fades in this app only.',
+    ],
+    improved: [
+      'Coach me now gently highlights the word that decides the question.',
+      'Results after a one-domain session show just that domain, clearly.',
+      'Your review count reads the same on Today, Practice and You.',
+      'You can start a mini mock straight from You, and the appearance setting now lives in Settings only.',
+    ],
+    fixed: [
+      'Today no longer shows the readiness rings twice when your readiness is holding.',
+      'A lesson’s first step no longer shows a Back button you can’t use.',
+      'Turning on Reduce Motion on your phone now applies straight away, without restarting the app.',
+    ],
+  },
+  {
     version: '1.7.0',
     date: '2026-10-11',
     new: [
@@ -135,7 +154,7 @@ export const WHATS_NEXT: readonly NextItem[] = [
   {
     status: 'progress',
     title: 'A livelier, calm feel',
-    body: 'Gentle motion that shows your progress as it happens. It stays still when Reduce Motion is on.',
+    body: 'Numbers and rings that grow as you make progress, and quiet moments when you reach a milestone. Short fades instead of movement when Reduce Motion is on.',
   },
   {
     status: 'planned',
@@ -151,6 +170,12 @@ export const WHATS_NEXT: readonly NextItem[] = [
     status: 'planned',
     title: 'A feedback board',
     body: 'Suggest ideas, see what other learners asked for, and read what we decide and why.',
+  },
+  {
+    status: 'shipped',
+    shippedIn: '1.8.0',
+    title: 'Gentle motion',
+    body: 'Taps, answers and the next question respond with calm motion, and Settings lets you reduce it.',
   },
   {
     status: 'shipped',

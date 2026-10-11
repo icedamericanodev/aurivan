@@ -17,7 +17,7 @@
 import { Alert, Linking } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { RadioRow } from '../components/ui';
-import { FAQ } from '../content/support';
+import { FAQ, shortVersion, WHATS_NEW } from '../content/support';
 import { getAllQuestions } from '../content/loader';
 import type { Fix, ReportEntry } from '../engine/support';
 import { useProgress } from '../store/progress';
@@ -151,7 +151,8 @@ describe('the Help screen', () => {
     const address = root().findAll((n) => n.props.selectable === true && typeof n.type !== 'string' && n.props.children === 'certprep.support@gmail.com');
     expect(address.length).toBeGreaterThan(0);
     expect(text).toContain('Aurivan is independent and not affiliated with or endorsed by ISACA.');
-    expect(text).toContain('Version 1.7');
+    // The latest release, whatever it is (WHATS_NEW[0] matches app.json; support-content tests that).
+    expect(text).toContain(`Version ${shortVersion(WHATS_NEW[0].version)}`);
   });
 
   it('rows open the right screens', () => {
