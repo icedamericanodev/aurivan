@@ -1,6 +1,7 @@
 /**
  * Settings — certification, exam date, appearance, study goal, reminders, haptics,
- * study defaults (the practice timer), your data (backup, restore, reset), and the legal notices required for store review. Groups are
+ * study defaults (the practice timer), your data (backup, restore, reset), help and
+ * feedback (mobile 1.7), and the legal notices required for store review. Groups are
  * sections with hairline rows, not cards (spec §5).
  */
 import Constants from 'expo-constants';
@@ -8,6 +9,7 @@ import { useState } from 'react';
 import { router } from 'expo-router';
 import { Alert, Linking, View } from 'react-native';
 import { BrandLockup, PillarList } from '../components/brand';
+import { HelpRows } from '../components/help';
 import { ThemeSwitch } from '../components/themeSwitch';
 import { YourData } from '../components/yourData';
 import { Button, Chip, Gap, PushedHeader, RadioRow, Screen, Section, Segmented, Stepper, T, ToggleRow } from '../components/ui';
@@ -273,6 +275,11 @@ export default function Settings() {
 
       <Gap h={space.xl} />
       <Button kind="danger" label={`Reset ${cert.name} progress`} onPress={confirmReset} />
+
+      {/* Help and feedback (mobile 1.7): common questions, report a problem, ideas,
+          contact support, Your reports, What's new and What's next (Apple 1.5). */}
+      <Section title="Help and feedback" />
+      <HelpRows certId={cert.id} where="Settings" />
 
       <Section title="About" />
       <Gap h={space.md} />

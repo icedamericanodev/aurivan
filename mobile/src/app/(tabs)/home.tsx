@@ -29,6 +29,7 @@ import { runPlanItem } from '../../lib/actions';
 import { haptic } from '../../lib/haptics';
 import { useTodayMoments } from '../../lib/moments';
 import { useJourney } from '../../lib/useJourney';
+import { useReports } from '../../lib/useReports';
 import { useProgress } from '../../store/progress';
 import { useSession } from '../../store/session';
 import { space } from '../../theme/tokens';
@@ -48,6 +49,9 @@ export default function Today() {
   const j = useJourney();
   const active = useSession((s) => s.active);
   const markCelebrated = useProgress((s) => s.markCelebrated);
+  // Mobile 1.7: a fix shipped after something this learner reported. One quiet
+  // line until they open What's new (which marks it seen). No streak, no growth.
+  const { due: creditDue } = useReports();
   const plan = j.dayPlan;
   const allDone = planComplete(plan);
   const cur = currentIndex(plan);
@@ -181,6 +185,16 @@ export default function Today() {
               ))}
             </>
           )
+        )}
+        {creditDue.length > 0 && (
+          // The key-idea recipe (a green rule, not a card), like You's back-fill line.
+          <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
+            <View accessible accessibilityLabel="Your report helped. Something you reported was updated.">
+              <T v="caption" color={c.accentText}>Your report helped</T>
+              <T v="small" style={{ marginTop: space.xs }}>Something you reported was updated.</T>
+            </View>
+            <Button kind="ghost" label="See what’s new" onPress={() => router.push('/whats-new')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />
+          </View>
         )}
       </Enter>
     </Screen>

@@ -12,13 +12,14 @@
  * Build F: "Milestones" and "Field notes" rows under Study tools, and ONE
  * quiet line the first time after the launch back-fill ("You'd already
  * earned 4 milestones.") instead of a burst of celebrations.
+ * Mobile 1.7: one "Help and feedback" row at the end (app/help.tsx).
  */
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { DomainRings, ringsSpoken } from '../../components/journey';
 import { MindsetGrowthCard } from '../../components/moments';
-import { Bookmark, ICON_STROKE, Leaf, MilestoneIcon, NotebookPen, RotateCcw, Settings, Share2 } from '../../components/icons';
+import { Bookmark, ICON_STROKE, Leaf, LifeBuoy, MilestoneIcon, NotebookPen, RotateCcw, Settings, Share2 } from '../../components/icons';
 import { ShareProgressSheet } from '../../components/shareCard';
 import { ThemeSwitch } from '../../components/themeSwitch';
 import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
@@ -31,6 +32,7 @@ import { shortDate } from '../../lib/format';
 import { MILESTONES } from '../../engine/milestones';
 import { backfillLine, seeBackfill } from '../../lib/milestones';
 import { useMindsetGrowth } from '../../lib/moments';
+import { useReports } from '../../lib/useReports';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
 import { space } from '../../theme/tokens';
@@ -49,6 +51,8 @@ export default function You() {
   const openMistakes = Object.values(progress.mistakes).filter((m) => !m.resolved).length;
   const values = readiness.domains.map((d) => (d.answered ? d.mastery : null));
   const growth = useMindsetGrowth(cert.id, progress);
+  // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
+  const { due: creditDue } = useReports();
   // Share card: the study days come from the saved streak (last 14 study days).
   const recentDays = useProgress((s) => s.streak.recentDays);
   // The day the sheet was opened (read in the tap handler, not during render). null = closed.
@@ -196,6 +200,16 @@ export default function You() {
         )}
         {/* Pacing across timed mocks only (untimed ones are left out). */}
         {pacingLine && <T v="meta" style={{ marginTop: space.md }}>{pacingLine}</T>}
+
+        {/* One entry to Help and feedback (mobile 1.7); the full list is on that screen and in Settings. */}
+        <Section title="Help and feedback" />
+        <ListRow
+          icon={icon(LifeBuoy)}
+          title="Get help or send feedback"
+          subtitle={creditDue.length ? 'Something you reported was updated' : 'Common questions, reports and what’s new'}
+          onPress={() => router.push('/help')}
+          last
+        />
         <T v="meta" center style={{ marginTop: space.xl }}>{cert.trademarkNotice}</T>
       </Enter>
 
