@@ -185,48 +185,72 @@ describe('TierLeafMorph', () => {
     expect(root().findAllByType(TierLeaf).map((t) => t.props.tier)).toEqual(['sapling']);
   });
 
-  it('a level up starts on the level before and grows once, with one light haptic', () => {
+  it('a level up starts on the level before and grows once, then says so once (the round end’s haptic)', () => {
     jest.useFakeTimers();
-    mount(<TierLeafMorph tier="sapling" color="#000000" grow={{ from: 'seedling', delay: 500 }} />);
+    const grown = jest.fn();
+    mount(<TierLeafMorph tier="sapling" color="#000000" grow={{ from: 'seedling', delay: 500 }} onGrown={grown} />);
     expect(root().findByType(TierLeaf).props.tier).toBe('seedling');
+    expect(grown).not.toHaveBeenCalled();
     act(() => {
       jest.advanceTimersByTime(500);
     });
     expect(root().findByType(TierLeaf).props.tier).toBe('sapling');
-    expect(mockLight).toHaveBeenCalledTimes(1);
+    expect(grown).toHaveBeenCalledTimes(1);
+    // It never buzzes itself: the round end owns the one haptic.
+    expect(mockLight).not.toHaveBeenCalled();
     jest.useRealTimers();
   });
 });
 
 describe('TierLeafMorph, a level-up cut short', () => {
-  it('a grow that goes away before it grew (skipped, or the moment ended) shows the new level, still and without a haptic', () => {
+  it('a grow that goes away before it grew (skipped, or the moment ended) shows the new level, still, and still says it arrived once', () => {
     jest.useFakeTimers();
-    mount(<TierLeafMorph tier="sapling" color="#000000" grow={{ from: 'seedling', delay: 500 }} />);
+    const grown = jest.fn();
+    mount(<TierLeafMorph tier="sapling" color="#000000" grow={{ from: 'seedling', delay: 500 }} onGrown={grown} />);
     expect(root().findByType(TierLeaf).props.tier).toBe('seedling');
     act(() => {
-      r!.update(<TierLeafMorph tier="sapling" color="#000000" />);
+      r!.update(<TierLeafMorph tier="sapling" color="#000000" onGrown={grown} />);
     });
     expect(root().findByType(TierLeaf).props.tier).toBe('sapling');
     act(() => {
       jest.advanceTimersByTime(1000);
     });
-    expect(mockLight).not.toHaveBeenCalled();
+    // QA PR #42 bug 3: a skip never loses the level-up's one haptic.
+    expect(grown).toHaveBeenCalledTimes(1);
+    jest.useRealTimers();
+  });
+
+  it('the level before fades out as the leaf grows (its exit is set on its last render, like a morph)', () => {
+    jest.useFakeTimers();
+    mount(<TierLeafMorph tier="sapling" color="#000000" grow={{ from: 'seedling', delay: 500 }} />);
+    const from = root().findAll((n) => n.props.exiting !== undefined && typeof n.type !== 'string');
+    expect(from.length).toBeGreaterThan(0);
     jest.useRealTimers();
   });
 
   it('a grow that starts after mount (the moment decided before paint) goes back to the level before, then grows', () => {
     jest.useFakeTimers();
-    mount(<TierLeafMorph tier="heartwood" color="#000000" />);
+    const grown = jest.fn();
+    mount(<TierLeafMorph tier="heartwood" color="#000000" onGrown={grown} />);
     act(() => {
-      r!.update(<TierLeafMorph tier="heartwood" color="#000000" grow={{ from: 'sapling', delay: 300 }} />);
+      r!.update(<TierLeafMorph tier="heartwood" color="#000000" grow={{ from: 'sapling', delay: 300 }} onGrown={grown} />);
     });
     expect(root().findByType(TierLeaf).props.tier).toBe('sapling');
     act(() => {
       jest.advanceTimersByTime(300);
     });
     expect(root().findAllByType(TierLeaf).map((t) => t.props.tier)).toEqual(['heartwood']);
-    expect(mockLight).toHaveBeenCalledTimes(1);
+    expect(grown).toHaveBeenCalledTimes(1);
     jest.useRealTimers();
+  });
+
+  it('a level shown from the start (the intro picker) never says it grew', () => {
+    const grown = jest.fn();
+    mount(<TierLeafMorph tier="seedling" color="#000000" onGrown={grown} />);
+    act(() => {
+      r!.update(<TierLeafMorph tier="sapling" color="#000000" onGrown={grown} />);
+    });
+    expect(grown).not.toHaveBeenCalled();
   });
 });
 
@@ -457,7 +481,8 @@ describe('Play identity', () => {
       );
     });
     expect(root().findByType(RoundScore).props.value).toBe(2);
-    expect(root().findAll((n) => n.props.accessibilityLabel === 'Score 2').length).toBeGreaterThan(0);
+    // On a HOST node (what a screen reader reads), not just a component's props (CR PR #42 B1).
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'Score 2' && n.props.accessible === true)).toHaveLength(1);
   });
 });
 

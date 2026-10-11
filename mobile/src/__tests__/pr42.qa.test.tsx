@@ -16,8 +16,8 @@
  *  6. A round-end level up goes through the celebration budget.
  *  7. An old 1.11 save, and a backup of it restored on a new phone.
  *
- * Bugs that still reproduce are pinned as the CURRENT behaviour, marked
- * `// QA-BUG:`; flip the assertion once the fix lands.
+ * The three bugs QA found (pinned as `// QA-BUG:` in e7cd11c) are fixed;
+ * their tests now assert the fixed behaviour (marked `// Fixed (QA bug N)`).
  *
  * Gotcha: never `act(() => store.action())` — use braces.
  */
@@ -425,7 +425,7 @@ describe('Journey 3: Learn list states', () => {
     expect(allText()).not.toContain('Up next · IS Audit');
   });
 
-  it('QA-BUG: finishing a lesson buzzes twice (Lesson complete, then again on return to Learn)', () => {
+  it('finishing a lesson buzzes once (Lesson complete); back on Learn its ✓ draws without a second buzz', () => {
     // Learn on view, then the learner opens a lesson (Learn loses focus).
     mount(<Learn />);
     mockFocused = false;
@@ -458,11 +458,11 @@ describe('Journey 3: Learn list states', () => {
       r!.update(<Learn />);
     });
     expect(root().findAll((n) => n.type === CheckDraw && n.props.play === true)).toHaveLength(1);
-    // QA-BUG: one lesson-done occasion gives TWO light haptics (T1 says one). Expected 1.
-    expect(mockLight).toHaveBeenCalledTimes(2);
+    // Fixed (QA bug 1): one lesson-done occasion, one light haptic (T1).
+    expect(mockLight).toHaveBeenCalledTimes(1);
   });
 
-  it('QA-BUG: lessons that arrive by a backup restore draw their ✓ (and buzz) on Learn as if just finished', async () => {
+  it('lessons that arrive by a backup restore show done and still on Learn (nothing was just finished)', async () => {
     mount(<Learn />);
     mockFocused = false;
     act(() => {
@@ -487,9 +487,10 @@ describe('Journey 3: Learn list states', () => {
     act(() => {
       r!.update(<Learn />);
     });
-    // QA-BUG: nothing was finished just now; expected 0 ✓ draws and no haptic.
-    expect(root().findAll((n) => n.type === CheckDraw && n.props.play === true)).toHaveLength(3);
-    expect(mockLight).toHaveBeenCalledTimes(1);
+    // Fixed (QA bug 2): no ✓ draws and no haptic; the three rows are simply done.
+    expect(root().findAll((n) => n.type === CheckDraw && (n.props.play === true || n.props.hold === true))).toHaveLength(0);
+    expect(root().findAll((n) => n.type === CheckDraw)).toHaveLength(3);
+    expect(mockLight).toHaveBeenCalledTimes(0);
   });
 });
 
@@ -658,7 +659,7 @@ describe('Journey 6: the round-end level up goes through the celebration budget'
     expect(mockLight).toHaveBeenCalledTimes(1);
   });
 
-  it('QA-BUG: a full level up that the learner skips (a tap) before the leaf grows loses its haptic', () => {
+  it('a full level up that the learner skips (a tap) before the leaf grows still gives its one haptic', () => {
     setMockReducedMotion(false);
     jest.useFakeTimers();
     mount(levelUp());
@@ -672,8 +673,8 @@ describe('Journey 6: the round-end level up goes through the celebration budget'
       jest.advanceTimersByTime(motion.dur.celebrate * 2);
     });
     expect(root().findByType(TierLeaf).props.tier).toBe('sapling');
-    // QA-BUG: expected 1 (T1: "one light haptic"; short/static still buzz). Currently 0.
-    expect(mockLight).toHaveBeenCalledTimes(0);
+    // Fixed (QA bug 3): one light haptic (T1), as the short and static forms give.
+    expect(mockLight).toHaveBeenCalledTimes(1);
   });
 });
 
