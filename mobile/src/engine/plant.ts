@@ -24,6 +24,7 @@ import type { SubtopicMastery } from './mastery';
 import { computeReadiness, MIN_SAMPLE, domainMastery, type AnswerRecord } from './readiness';
 import { RANGE_MIN_ANSWERS, readinessRange } from './readinessRange';
 import { daysBetween, dayKey } from './streak';
+import { isCatalogLook, isLookOfSlot, MOOD_WORDS, type PlantMood } from './plantLooks';
 
 // ── Species ────────────────────────────────────────────────────────────
 
@@ -329,15 +330,16 @@ export function plantFacts(i: PlantFactsInput): PlantFacts {
 
 // ── The saved state ────────────────────────────────────────────────────
 
-/** A look id (colourway, ground, visitor, keepsake). The catalogue arrives in 4b; ids are slugs. */
+/** A look id (colourway, ground, planter, visitor, keepsake): one of engine/plantLooks.ts LOOK_ITEMS. */
 export type LookId = string;
-const LOOK_ID = /^[a-z0-9][a-z0-9-]{0,39}$/;
 export const MAX_KEEPSAKES = 3;
 export const MAX_KEPT = 64;
 
 export interface PlantLook {
   colourway?: LookId;
   ground?: LookId;
+  /** Mobile 1.14: the pot or planter ("native" = the species' own ground). */
+  planter?: LookId;
   visitor?: LookId;
   /** At most MAX_KEEPSAKES, all different. */
   keepsakes?: LookId[];
@@ -535,6 +537,21 @@ export function advance(plant: CertPlant, facts: PlantFacts, now: number): { pla
   return { plant: { ...plant, growth: next, reached, pending: next }, grew: next };
 }
 
+/**
+ * The growth a grow-up started from (mobile 1.14: the growth sequence plays
+ * from it). Skipped growths share a `reached` time, so it is the highest
+ * growth reached BEFORE `to` was; Seed when there is none.
+ */
+export function growthBefore(plant: Pick<CertPlant, 'reached'>, to: GrowthLevel): GrowthLevel {
+  const at = plant.reached?.[growthId(to)];
+  let best: GrowthLevel = 1;
+  for (let g = 2; g < to; g++) {
+    const t = plant.reached?.[growthId(g as GrowthLevel)];
+    if (t !== undefined && (at === undefined || t < at)) best = g as GrowthLevel;
+  }
+  return best;
+}
+
 /** The grow-up moment was shown: clear `pending`. */
 export function clearPending(plant: CertPlant): CertPlant {
   if (plant.pending === undefined) return plant;
@@ -548,7 +565,7 @@ export function clearPending(plant: CertPlant): CertPlant {
  * is copied into `kept`, so the look survives.
  */
 export function resetPlant(plant: CertPlant, now: number, unlocked: readonly LookId[] = []): CertPlant {
-  const kept = [...new Set([...(plant.kept ?? []), ...unlocked.filter((id) => LOOK_ID.test(id))])].slice(0, MAX_KEPT);
+  const kept = [...new Set([...(plant.kept ?? []), ...unlocked].filter(isCatalogLook))].slice(0, MAX_KEPT);
   const out: CertPlant = {
     species: plant.species,
     name: plant.name,
@@ -571,6 +588,34 @@ export function switchSpecies(plant: CertPlant, species: PlantSpecies): CertPlan
     const { colourway: _drop, ...look } = plant.look;
     out.look = look;
   }
+  return out;
+}
+
+/**
+ * Mobile 1.14: change the look (the Look screen). Only catalogue ids of the
+ * right slot are taken; `null` puts a slot back to its default. Keepsakes
+ * stay distinct and at most MAX_KEEPSAKES. Same object when nothing changes.
+ * The choice is stored even if a later restore makes its unlock vanish (the
+ * art then falls back, engine/plantLooks.ts resolveLook).
+ */
+export function withLook(plant: CertPlant, change: { [K in keyof PlantLook]?: PlantLook[K] | null }): CertPlant {
+  const look: PlantLook = { ...plant.look };
+  for (const [k, slot] of LOOK_SLOTS) {
+    if (!(k in change)) continue;
+    const v = change[k];
+    if (v === null) delete look[k];
+    else if (isLookOfSlot(v, slot)) look[k] = v;
+  }
+  if ('keepsakes' in change) {
+    const ks = [...new Set((change.keepsakes ?? []).filter((x) => isLookOfSlot(x, 'keepsake')))].slice(0, MAX_KEEPSAKES);
+    if (ks.length) look.keepsakes = ks;
+    else delete look.keepsakes;
+  }
+  const before = JSON.stringify(plant.look ?? {});
+  if (JSON.stringify(look) === before) return plant;
+  const out: CertPlant = { ...plant };
+  if (Object.keys(look).length) out.look = look;
+  else delete out.look;
   return out;
 }
 
@@ -741,7 +786,14 @@ const isTs = (x: unknown): x is number => typeof x === 'number' && Number.isFini
 const isDate = (x: unknown): x is string => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x);
 const isObj = (x: unknown): x is Record<string, unknown> => typeof x === 'object' && x !== null && !Array.isArray(x);
 const onlyKeys = (o: Record<string, unknown>, keys: readonly string[]) => Object.keys(o).every((k) => keys.includes(k));
-const isLook = (x: unknown): x is LookId => typeof x === 'string' && LOOK_ID.test(x);
+const isLook = isCatalogLook;
+/** The look's single-choice slots and the catalogue slot each must hold (mobile 1.14). */
+const LOOK_SLOTS = [
+  ['colourway', 'colourway'],
+  ['ground', 'ground'],
+  ['planter', 'planter'],
+  ['visitor', 'visitor'],
+] as const;
 
 /**
  * True when `x` is a well-formed CertPlant: known species, a clean name, a
@@ -773,11 +825,11 @@ export function isValidPlantState(x: unknown): x is CertPlant {
   }
   if (x.look !== undefined) {
     const l = x.look;
-    if (!isObj(l) || !onlyKeys(l, ['colourway', 'ground', 'visitor', 'keepsakes'])) return false;
-    for (const k of ['colourway', 'ground', 'visitor'] as const) if (l[k] !== undefined && !isLook(l[k])) return false;
+    if (!isObj(l) || !onlyKeys(l, ['colourway', 'ground', 'planter', 'visitor', 'keepsakes'])) return false;
+    for (const [k, slot] of LOOK_SLOTS) if (l[k] !== undefined && !isLookOfSlot(l[k], slot)) return false;
     if (l.keepsakes !== undefined) {
       const ks = l.keepsakes;
-      if (!Array.isArray(ks) || ks.length > MAX_KEEPSAKES || !ks.every(isLook) || new Set(ks).size !== ks.length) return false;
+      if (!Array.isArray(ks) || ks.length > MAX_KEEPSAKES || !ks.every((k) => isLookOfSlot(k, 'keepsake')) || new Set(ks).size !== ks.length) return false;
     }
   }
   if (x.kept !== undefined && !(Array.isArray(x.kept) && x.kept.length <= MAX_KEPT && x.kept.every(isLook))) return false;
@@ -793,7 +845,7 @@ export function isValidPlantSettings(x: unknown): x is PlantSettings {
   return PLANT_SETTING_KEYS.every((k) => x[k] === undefined || typeof x[k] === 'boolean');
 }
 
-/** A look id as saved (a short slug). Unknown ids are fine until the 4b catalogue: they fall back at render. */
+/** A look id as saved: one of the catalogue's (mobile 1.14; 4a only checked it was a slug). */
 export function isLookId(x: unknown): x is LookId {
   return isLook(x);
 }
@@ -802,7 +854,8 @@ export function isLookId(x: unknown): x is LookId {
  * The phone's own plant, made to fit the rules a restore checks (the backup
  * "fit" mode): the name cleaned, nothing reached or pending above the growth,
  * the back-fill no higher, a pending Seed dropped, keepsakes distinct and at
- * most MAX_KEEPSAKES, looks and kept ids that aren't slugs dropped. A plant
+ * most MAX_KEEPSAKES, look and kept ids the catalogue doesn't have (or a
+ * slot that doesn't fit) dropped. A plant
  * that is already valid comes back unchanged (the same object).
  */
 export function repairPlant(p: CertPlant): CertPlant {
@@ -813,8 +866,8 @@ export function repairPlant(p: CertPlant): CertPlant {
   if (out.pending !== undefined && out.pending <= 1) delete out.pending;
   if (out.look) {
     const look: PlantLook = {};
-    for (const k of ['colourway', 'ground', 'visitor'] as const) if (isLook(out.look[k])) look[k] = out.look[k];
-    if (out.look.keepsakes) look.keepsakes = [...new Set(out.look.keepsakes.filter(isLook))].slice(0, MAX_KEEPSAKES);
+    for (const [k, slot] of LOOK_SLOTS) if (isLookOfSlot(out.look[k], slot)) look[k] = out.look[k];
+    if (out.look.keepsakes) look.keepsakes = [...new Set(out.look.keepsakes.filter((k) => isLookOfSlot(k, 'keepsake')))].slice(0, MAX_KEEPSAKES);
     out.look = look;
   }
   if (out.kept) out.kept = [...new Set(out.kept.filter(isLook))].slice(0, MAX_KEPT);
@@ -1043,6 +1096,10 @@ export interface LabelInput {
   growth: GrowthLevel;
   resting?: boolean;
   newGrowth?: boolean;
+  /** Mobile 1.14: the face's mood, spoken as a few words ("Looking happy."). */
+  mood?: PlantMood;
+  /** Mobile 1.14: the visitor perched today ("wren", "robin"). */
+  visitor?: string;
 }
 
 /**
@@ -1052,7 +1109,7 @@ export interface LabelInput {
 export function plantLabel(i: LabelInput): string {
   const sp = SPECIES_INFO[i.species].lower;
   const who = i.name ? `${shownName(i.name)}, your ${sp}` : `Your ${sp}`;
-  const extra = [i.newGrowth ? 'New growth today.' : '', i.resting ? 'Resting.' : ''].filter(Boolean).join(' ');
+  const extra = [i.newGrowth ? 'New growth today.' : '', i.resting ? 'Resting.' : '', i.mood ? MOOD_WORDS[i.mood] : '', i.visitor ? `A ${i.visitor} is visiting.` : ''].filter(Boolean).join(' ');
   return `${who}. Growth: ${GROWTH_NAMES[i.growth]}, ${i.growth} of 6.${extra ? ` ${extra}` : ''}`;
 }
 

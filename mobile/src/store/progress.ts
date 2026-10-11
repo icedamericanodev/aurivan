@@ -22,7 +22,8 @@ import { readinessRange } from '../engine/readinessRange';
 import { recordMastery, type SubtopicMastery } from '../engine/mastery';
 import { CATALOG_VERSION } from '../engine/badgeCatalog';
 import { afterAnswer, afterCard, noteStudyDay, type CertMilestones } from '../engine/milestones';
-import { renamePlant, resetPlant, switchSpecies, type CertPlant, type PlantSettings, type PlantSpecies } from '../engine/plant';
+import { renamePlant, resetPlant, switchSpecies, withLook, type CertPlant, type PlantLook, type PlantSettings, type PlantSpecies } from '../engine/plant';
+import { keepOnReset } from '../engine/plantLooks';
 import type { MockTiming } from '../engine/pace';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import type { ThinkingSlip } from '../engine/slipCoach';
@@ -182,7 +183,7 @@ function normalize(cp: CertProgress | undefined): CertProgress {
   return full;
 }
 
-interface ProgressState {
+export interface ProgressState {
   byCert: Record<string, CertProgress>;
   streak: Streak;
   today: { day: string; answered: number };
@@ -281,6 +282,8 @@ interface ProgressState {
   switchPlantSpecies: (certId: string, species: PlantSpecies) => void;
   /** Change the plant settings (merged into the saved ones). */
   setPlantSettings: (change: Partial<PlantSettings>) => void;
+  /** Mobile 1.14: change the plant's look (catalogue ids only; null = the slot's default). */
+  setPlantLook: (certId: string, change: { [K in keyof PlantLook]?: PlantLook[K] | null }) => void;
 }
 
 export const useProgress = create<ProgressState>()(
@@ -560,6 +563,7 @@ export const useProgress = create<ProgressState>()(
         }),
       renamePlant: (certId, name) => get().updatePlant(certId, (p) => (p ? renamePlant(p, name) : p)),
       switchPlantSpecies: (certId, species) => get().updatePlant(certId, (p) => (p ? switchSpecies(p, species) : p)),
+      setPlantLook: (certId, change) => get().updatePlant(certId, (p) => (p ? withLook(p, change) : p)),
       setPlantSettings: (change) =>
         set((s) => {
           const cur = s.plantSettings ?? {};
@@ -586,8 +590,12 @@ export const useProgress = create<ProgressState>()(
           // Mobile 1.13: the plant goes back to a seed, but keeps its name,
           // species, look and unlocks (cosmetics carry no readiness claim).
           // `replantedAt` stops an old exam-ready moment helping it bloom.
+          // Mobile 1.14: every unlock open now (growth, badges and planters from
+          // ANY exam, and what was kept before) goes into `kept`, so the look
+          // the learner earned survives the seed.
           const plant = s.byCert[certId]?.plant;
-          if (plant) fresh.plant = resetPlant(plant, Date.now(), plant.kept ?? []);
+          const marks = Object.values(s.byCert).map((c) => ({ earned: c?.milestones?.earned, planters: c?.milestones?.planters }));
+          if (plant) fresh.plant = resetPlant(plant, Date.now(), keepOnReset(plant, marks));
           return { byCert: { ...s.byCert, [certId]: fresh }, days };
         }),
     }),

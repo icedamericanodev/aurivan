@@ -1,0 +1,391 @@
+/**
+ * "Your plant": the look catalogue (mobile 1.14, Phase 4b "Dress and Alive").
+ * Design: mascot_progression.md §3, badges_game.md §7, mascot spec §6 and §13.
+ *
+ * Pure TypeScript: no React, no storage, no clock. Five slots:
+ * - colour (a colourway: three per species, two free, the third at Bough);
+ * - ground (Meadow free; Stone ring at Crown; Trail blaze at Elder);
+ * - planter (the species' own ground and a terracotta pot free; one per
+ *   completed badge set, read from milestones.planters);
+ * - visitor (the wren free, the robin at Shoot; it visits on days you clear
+ *   your plan);
+ * - keepsakes (up to three shown): each badge's emblem as a small object by
+ *   the plant, with a caption that names the skill.
+ *
+ * The unlock rule is DERIVED (mascot §3.3), so nothing is stored for it:
+ *   unlocked(id) = free OR growth ≥ its growth OR some cert earned its badge
+ *                  OR some cert completed its set OR plant.kept has it.
+ * Growth never goes down and badges are never taken away, so an unlock is
+ * never lost in normal use. A restore can make one vanish: then the slot
+ * falls back to its default AT RENDER (resolveLook) and the stored choice is
+ * left alone, so it comes back by itself when the unlock is re-earned.
+ *
+ * Guard rails: cosmetics carry no readiness claim; game LEVELS unlock
+ * nothing (they can step back); nothing is paid; there is no "n of m
+ * collected" anywhere (no completion counters); a locked item says how to
+ * earn it in plain words, never as a guilt line.
+ */
+import { MOCK_DOMAIN_FLOOR } from './journey';
+import { BADGES } from './milestones';
+import type { CertPlant, GrowthLevel, LookId, PlantLook, PlantSpecies } from './plant';
+
+/**
+ * The species list, written out here (not imported from plant.ts) so the two
+ * modules never need each other at load time. A test checks it equals
+ * PLANT_SPECIES, in order.
+ */
+const SPECIES: readonly PlantSpecies[] = [
+  'oak',
+  'maple',
+  'narra',
+  'cherry-blossom',
+  'pine',
+  'coconut-palm',
+  'mango',
+  'bonsai',
+  'sunflower',
+  'lotus',
+  'sampaguita',
+  'cactus',
+  'bamboo',
+];
+const GROWTH_WORD: Record<number, string> = { 1: 'Seed', 2: 'Sprout', 3: 'Shoot', 4: 'Bough', 5: 'Crown', 6: 'Elder' };
+
+export type LookSlot = 'colourway' | 'ground' | 'planter' | 'visitor' | 'keepsake';
+
+/** How an item opens. Never a game level, never a purchase. */
+export type LookUnlock =
+  | { kind: 'free' }
+  | { kind: 'growth'; growth: GrowthLevel }
+  | { kind: 'badge'; badge: string }
+  | { kind: 'set'; set: string }
+  | { kind: 'passed' };
+
+/** A colour palette key in theme/tokens.ts plantLeaf (the art maps it). */
+export type PaletteKey = 'grove' | 'spring' | 'evergreen' | 'ember' | 'gold' | 'blossom' | 'twilight' | 'silver' | 'rosewood' | 'pearl' | 'snow' | 'lemon';
+
+/** Where a keepsake stands: on the ground by the plant, or behind it (the clear dawn). */
+export type KeepsakePlace = 'ground' | 'back';
+
+export interface LookItem {
+  id: LookId;
+  slot: LookSlot;
+  /** Short name ("Lantern", "Autumn gold"). */
+  name: string;
+  /** One plain line. A keepsake's names the skill: "The sundial: you finished a timed mock on pace." */
+  caption: string;
+  unlock: LookUnlock;
+  /** Colourways only: the species and its palette. */
+  species?: PlantSpecies;
+  palette?: PaletteKey;
+  /** Keepsakes only. */
+  place?: KeepsakePlace;
+}
+
+// ── Colourways (three per species: two free, the third at Bough) ────────
+const COLOURWAYS: Record<PlantSpecies, [string, string, PaletteKey][]> = {
+  oak: [['summer', 'Summer green', 'grove'], ['spring', 'Spring green', 'spring'], ['autumn', 'Autumn gold', 'gold']],
+  maple: [['autumn', 'Autumn red', 'ember'], ['gold', 'Gold', 'gold'], ['summer', 'Summer green', 'grove']],
+  narra: [['fresh', 'Fresh green', 'spring'], ['deep', 'Deep green', 'grove'], ['silver', 'Silver leaf', 'silver']],
+  'cherry-blossom': [['pink', 'Pink', 'blossom'], ['white', 'White', 'snow'], ['dusk', 'Dusk violet', 'twilight']],
+  pine: [['evergreen', 'Evergreen', 'evergreen'], ['fresh', 'Fresh green', 'grove'], ['frost', 'Frost', 'silver']],
+  'coconut-palm': [['tropic', 'Tropic green', 'spring'], ['deep', 'Deep green', 'grove'], ['sun', 'Sun-dried', 'gold']],
+  mango: [['deep', 'Deep green', 'evergreen'], ['leafy', 'Leafy green', 'grove'], ['new', 'New leaf', 'spring']],
+  bonsai: [['green', 'Green', 'grove'], ['juniper', 'Juniper', 'evergreen'], ['autumn', 'Autumn', 'ember']],
+  sunflower: [['gold', 'Gold', 'gold'], ['lemon', 'Lemon', 'lemon'], ['velvet', 'Velvet red', 'rosewood']],
+  lotus: [['pink', 'Pink', 'blossom'], ['white', 'White', 'snow'], ['violet', 'Violet', 'twilight']],
+  sampaguita: [['white', 'White', 'pearl'], ['blush', 'Blush', 'blossom'], ['lilac', 'Lilac', 'twilight']],
+  cactus: [['pink', 'Pink bloom', 'blossom'], ['yellow', 'Yellow bloom', 'gold'], ['red', 'Red bloom', 'rosewood']],
+  bamboo: [['green', 'Green', 'grove'], ['lime', 'Lime', 'spring'], ['silver', 'Silver', 'silver']],
+};
+/** The growth that opens each species' third colourway. */
+export const THIRD_COLOURWAY_AT: GrowthLevel = 4;
+
+const colourwayItems: LookItem[] = SPECIES.flatMap((sp) =>
+  COLOURWAYS[sp].map(([key, name, palette], i) => ({
+    id: `${sp}-${key}`,
+    slot: 'colourway' as const,
+    name,
+    caption: i === 0 ? 'Its own colours.' : i === 1 ? 'Another colourway for it.' : 'A third colourway.',
+    unlock: i < 2 ? ({ kind: 'free' } as const) : ({ kind: 'growth', growth: THIRD_COLOURWAY_AT } as const),
+    species: sp,
+    palette,
+  })),
+);
+
+// ── Grounds ─────────────────────────────────────────────────────────────
+const groundItems: LookItem[] = [
+  { id: 'meadow', slot: 'ground', name: 'Meadow', caption: 'Soft grass and a daisy.', unlock: { kind: 'free' } },
+  { id: 'stone-ring', slot: 'ground', name: 'Stone ring', caption: 'River stones around the base.', unlock: { kind: 'growth', growth: 5 } },
+  { id: 'trail-blaze', slot: 'ground', name: 'Trail blaze', caption: 'A painted waymark that points north.', unlock: { kind: 'growth', growth: 6 } },
+];
+
+// ── Planters (the set planters: badges_game.md §7) ──────────────────────
+/** Display names of the counted sets (engine/badgeCatalog.ts setInfo; CISA's five domains). */
+const SET_NAMES: Record<string, string> = {
+  groundwork: 'Groundwork',
+  domains: 'the Five Domains',
+  evergreen: 'Evergreen',
+  judgement: 'Sound Judgement',
+  examDay: 'Exam Day',
+  rooted: 'Rooted',
+};
+const planterItems: LookItem[] = [
+  { id: 'native', slot: 'planter', name: 'Its own ground', caption: 'Where this plant grows best.', unlock: { kind: 'free' } },
+  { id: 'terracotta', slot: 'planter', name: 'Terracotta pot', caption: 'A plain clay pot.', unlock: { kind: 'free' } },
+  { id: 'fieldstone', slot: 'planter', name: 'Fieldstone planter', caption: 'From completing Groundwork.', unlock: { kind: 'set', set: 'groundwork' } },
+  { id: 'five-stone', slot: 'planter', name: 'Five-stone planter', caption: 'From completing the Five Domains.', unlock: { kind: 'set', set: 'domains' } },
+  { id: 'celadon', slot: 'planter', name: 'Celadon pot', caption: 'From completing Evergreen.', unlock: { kind: 'set', set: 'evergreen' } },
+  { id: 'compass-rose', slot: 'planter', name: 'Compass-rose planter', caption: 'From completing Sound Judgement.', unlock: { kind: 'set', set: 'judgement' } },
+  { id: 'banded', slot: 'planter', name: 'Banded planter', caption: 'From completing Exam Day.', unlock: { kind: 'set', set: 'examDay' } },
+  { id: 'root-woven', slot: 'planter', name: 'Root-woven basket', caption: 'From completing Rooted.', unlock: { kind: 'set', set: 'rooted' } },
+];
+/** Species whose own ground is a pot already: the terracotta pot is their own. */
+export const NATIVE_POT: Partial<Record<PlantSpecies, 'terracotta' | 'tray' | 'bowl'>> = { cactus: 'terracotta', bonsai: 'tray', lotus: 'bowl' };
+
+// ── Visitors (on days you clear your plan; mascot_progression §2) ───────
+// No owl, and no bird called a finch (mascot §3.3: avoid Duolingo and Finch echoes).
+const visitorItems: LookItem[] = [
+  { id: 'wren', slot: 'visitor', name: 'Wren', caption: 'A small brown wren.', unlock: { kind: 'free' } },
+  { id: 'robin', slot: 'visitor', name: 'Robin', caption: 'A robin with a warm red breast.', unlock: { kind: 'growth', growth: 3 } },
+  { id: 'no-visitor', slot: 'visitor', name: 'No visitor', caption: 'The plant on its own.', unlock: { kind: 'free' } },
+];
+
+// ── Keepsakes (badges → objects that name the skill; mascot §3.3) ───────
+// [id, name, badge, caption, place]. Firm Footing gives a part mark and Rooted
+// undergrowth instead (later), so neither is here. The ribbon opens only when
+// the learner reports a pass.
+const KEEPSAKES: [string, string, string, string, KeepsakePlace?][] = [
+  ['stepping-stone', 'Stepping stone', 'first-foothold', 'The stepping stone: you finished your diagnostic.'],
+  ['trail-post', 'Trail post', 'topic-clear', 'The trail post: you cleared your first topic.'],
+  ['trail-board', 'Trail board', 'ten-topics', 'The trail board: you cleared ten topics.'],
+  ['compass-stone', 'Compass stone', 'whole-map', `The compass stone: every domain is at ${Math.round(MOCK_DOMAIN_FLOOR * 100)}% or more.`],
+  ['jay', 'Jay', 'long-memory', 'The jay: you recall answers a week later.'],
+  ['empty-nest', 'Empty nest', 'graduate', 'The empty nest: questions graduated out of review.'],
+  ['woven-ring', 'Woven ring', 'loop-closed', 'The woven ring: you fixed your mistakes for good.'],
+  ['fern', 'Fern', 'took-root', 'The fern: a whole topic took root.'],
+  ['still-pond', 'Still pond', 'know-what-you-know', 'The still pond: when you say sure, you’re right.'],
+  ['dew-web', 'Dew-lit web', 'slip-spotter', 'The dew-lit web: you can name your own thinking slips.'],
+  ['weather-vane', 'Weather vane', 'mindset-shift', 'The weather vane: you fall for the runner-up less often.'],
+  ['lantern', 'Lantern', 'dress-rehearsal', 'The lantern: you sat a full, timed mock.'],
+  ['sundial', 'Sundial', 'on-pace', 'The sundial: you finished a timed mock on pace.'],
+  ['swallow', 'Swallow', 'fresh-start', 'The swallow: you came back and picked up again.'],
+  ['fox', 'Fox', 'snare-wise', 'The fox: you spot the snare in a trap question.'],
+  ['cairn', 'Cairn', 'even-keel', 'The cairn: when you say sure, you mean it.'],
+  ['signpost', 'Signpost', 'signpost-reader', 'The signpost: you read the deciding word.'],
+  ['clear-dawn', 'Clear dawn', 'myth-clearer', 'The clear dawn: half-truths don’t fool you.', 'back'],
+  ['roe-deer', 'Roe deer', 'sure-footed-pace', 'The roe deer: speed without guessing.'],
+  ['mushroom-ring', 'Mushroom ring', 'whole-grove', 'The mushroom ring: you’ve tried every kind of practice game.'],
+  ['pebble-path', 'Pebble path', 'back-on-path', 'The pebble path: you fixed game misses on a later day.'],
+];
+const keepsakeItems: LookItem[] = [
+  ...KEEPSAKES.map(([id, name, badge, caption, place]) => ({ id, slot: 'keepsake' as const, name, caption, unlock: { kind: 'badge', badge } as const, place: place ?? 'ground' })),
+  { id: 'ribbon', slot: 'keepsake', name: 'Ribbon', caption: 'The ribbon: you told us you passed.', unlock: { kind: 'passed' }, place: 'ground' },
+];
+
+/** Every look item, in the order the Look screen lists them. Ids are saved in backups: never rename one. */
+export const LOOK_ITEMS: readonly LookItem[] = [...colourwayItems, ...groundItems, ...planterItems, ...visitorItems, ...keepsakeItems];
+const BY_ID = new Map(LOOK_ITEMS.map((x) => [x.id, x]));
+
+export function lookItem(id: string | undefined): LookItem | undefined {
+  return id === undefined ? undefined : BY_ID.get(id);
+}
+/** True for a catalogue id (any slot). Backups accept nothing else. */
+export function isCatalogLook(x: unknown): x is LookId {
+  return typeof x === 'string' && BY_ID.has(x);
+}
+/** True for a catalogue id of this slot. */
+export function isLookOfSlot(x: unknown, slot: LookSlot): x is LookId {
+  return typeof x === 'string' && BY_ID.get(x)?.slot === slot;
+}
+
+/** The species' own colourways, default first. */
+export function colourwaysFor(species: PlantSpecies): LookItem[] {
+  return colourwayItems.filter((x) => x.species === species);
+}
+/** The planters offered for a species (a cactus' own pot is terracotta, so it isn't listed twice). */
+export function plantersFor(species: PlantSpecies): LookItem[] {
+  return planterItems.filter((x) => !(x.id === 'terracotta' && NATIVE_POT[species] === 'terracotta'));
+}
+export const GROUNDS = groundItems;
+export const VISITORS = visitorItems;
+export const KEEPSAKE_ITEMS = keepsakeItems;
+export const MAX_SHOWN_KEEPSAKES = 3;
+
+/** The keepsake a badge gives (by its badge id), if any. */
+export function keepsakeForBadge(badge: string): LookItem | undefined {
+  return keepsakeItems.find((k) => k.unlock.kind === 'badge' && k.unlock.badge === badge);
+}
+
+// ── Unlocks (derived) ───────────────────────────────────────────────────
+/** One certification's saved marks, as the unlock rule reads them. */
+export interface CertMarks {
+  /** milestones.earned: "dress-rehearsal", "long-memory:50", "firm-footing:4"… */
+  earned?: Record<string, number>;
+  /** milestones.planters: completed counted sets. */
+  planters?: Record<string, number>;
+}
+
+/** A badge counts once ANY tier of it was earned on ANY cert (badges are the learner's, not the plant's). */
+function badgeEarned(badge: string, certs: readonly CertMarks[]): boolean {
+  return certs.some((c) => Object.keys(c.earned ?? {}).some((k) => k === badge || k.startsWith(`${badge}:`)));
+}
+
+/** Is this one item open now? */
+export function isUnlocked(item: LookItem, plant: Pick<CertPlant, 'growth' | 'kept' | 'passedOn'>, certs: readonly CertMarks[]): boolean {
+  if (plant.kept?.includes(item.id)) return true;
+  const u = item.unlock;
+  switch (u.kind) {
+    case 'free':
+      return true;
+    case 'growth':
+      return plant.growth >= u.growth;
+    case 'badge':
+      return badgeEarned(u.badge, certs);
+    case 'set':
+      return certs.some((c) => c.planters?.[u.set] !== undefined);
+    case 'passed':
+      return plant.passedOn !== undefined;
+  }
+}
+
+/**
+ * Every look id this plant can use now, derived (no storage). The plant's
+ * own species decides which colourways are offered, but an unlock is never
+ * species-bound: colourways of other species are simply not listed.
+ */
+export function unlockedLooks(plant: Pick<CertPlant, 'growth' | 'kept' | 'passedOn'>, certs: readonly CertMarks[]): LookId[] {
+  return LOOK_ITEMS.filter((x) => isUnlocked(x, plant, certs)).map((x) => x.id);
+}
+
+/**
+ * The unlocks worth carrying across a Reset (into `kept`): everything open
+ * now that isn't free. Growth goes back to a seed and this cert's badges are
+ * cleared, but the look the learner earned stays (Reset keeps the look).
+ */
+export function keepOnReset(plant: Pick<CertPlant, 'growth' | 'kept' | 'passedOn'>, certs: readonly CertMarks[]): LookId[] {
+  return LOOK_ITEMS.filter((x) => x.unlock.kind !== 'free' && isUnlocked(x, plant, certs)).map((x) => x.id);
+}
+
+/** A locked item's line: how to earn it, in plain words. Never a guilt line, never a count. */
+export function howToOpen(item: LookItem): string {
+  const u = item.unlock;
+  switch (u.kind) {
+    case 'free':
+      return '';
+    case 'growth':
+      return `Opens when your plant reaches ${GROWTH_WORD[u.growth]}.`;
+    case 'badge': {
+      const name = BADGES.find((b) => b.id === u.badge)?.name ?? u.badge;
+      return `Opens with the ${name} badge.`;
+    }
+    case 'set':
+      return `Opens when you complete ${SET_NAMES[u.set] ?? u.set} in your badges.`;
+    case 'passed':
+      return 'Opens when you tell us you passed.';
+  }
+}
+
+// ── What the art draws (with the fallback) ──────────────────────────────
+export interface ResolvedLook {
+  colourway: LookId;
+  palette: PaletteKey;
+  ground: LookId;
+  planter: LookId;
+  visitor: LookId;
+  /** Shown keepsakes, in the learner's order (at most MAX_SHOWN_KEEPSAKES). */
+  keepsakes: LookId[];
+}
+
+/** What the art reads from a look (components/plant/art.ts draws it). */
+export interface ArtLook {
+  palette?: PaletteKey;
+  ground?: string;
+  planter?: string;
+  /** The visitor perched today ("wren", "robin"); unset = none. */
+  visitor?: string;
+  keepsakes?: readonly string[];
+}
+
+export const DEFAULT_LOOK = { ground: 'meadow', planter: 'native', visitor: 'wren' } as const;
+
+/**
+ * The look the art draws: each chosen item if it is in the catalogue, fits
+ * the slot (a colourway of THIS species) and is open now; otherwise the
+ * slot's default. Pure: it never changes the stored choice, so a look whose
+ * unlock vanished (after a restore) comes back when the unlock does.
+ */
+export function resolveLook(species: PlantSpecies, look: PlantLook | undefined, unlocked: ReadonlySet<string> | readonly string[]): ResolvedLook {
+  const open = unlocked instanceof Set ? (unlocked as ReadonlySet<string>) : new Set(unlocked as readonly string[]);
+  const ok = (id: string | undefined, slot: LookSlot) => id !== undefined && isLookOfSlot(id, slot) && open.has(id);
+  const ways = colourwaysFor(species);
+  const cw = look?.colourway !== undefined && ok(look.colourway, 'colourway') && lookItem(look.colourway)!.species === species ? lookItem(look.colourway)! : ways[0];
+  const planter = ok(look?.planter, 'planter') && plantersFor(species).some((x) => x.id === look!.planter) ? look!.planter! : DEFAULT_LOOK.planter;
+  return {
+    colourway: cw.id,
+    palette: cw.palette!,
+    ground: ok(look?.ground, 'ground') ? look!.ground! : DEFAULT_LOOK.ground,
+    planter,
+    visitor: ok(look?.visitor, 'visitor') ? look!.visitor! : DEFAULT_LOOK.visitor,
+    keepsakes: [...new Set(look?.keepsakes ?? [])].filter((k) => ok(k, 'keepsake')).slice(0, MAX_SHOWN_KEEPSAKES),
+  };
+}
+
+/** The default palette of a species (its first colourway). */
+export function defaultPalette(species: PlantSpecies): PaletteKey {
+  return colourwaysFor(species)[0].palette!;
+}
+
+/**
+ * Keepsakes on the plant, by their badge: "On your plant: the lantern." for
+ * the badge sheet. Null when the badge gives none.
+ */
+export function onYourPlantLine(badge: string): string | null {
+  const k = keepsakeForBadge(badge);
+  return k ? `On your plant: the ${k.name.charAt(0).toLowerCase()}${k.name.slice(1)}.` : null;
+}
+
+/** Toggle a keepsake in the shown list: added at the end, or put away. Never more than MAX_SHOWN_KEEPSAKES. */
+export function toggleKeepsake(current: readonly string[] | undefined, id: string): string[] {
+  const list = [...new Set(current ?? [])];
+  if (list.includes(id)) return list.filter((x) => x !== id);
+  if (list.length >= MAX_SHOWN_KEEPSAKES) return list;
+  return [...list, id];
+}
+
+// ── Moods (expressions on the face) ─────────────────────────────────────
+/** The face's expression. Never sad: there is no sad, tired or "missing you" face. */
+export type PlantMood = 'idle' | 'happy' | 'curious' | 'proud' | 'resting';
+
+export interface MoodInput {
+  /** Quiet look: no face, so no expression at all. */
+  face: boolean;
+  resting: boolean;
+  /** A growth step was reached today (this cert). */
+  grewToday: boolean;
+  /** A badge that gives a keepsake was earned today (any cert). */
+  newKeepsakeToday: boolean;
+  /** Today's plan is cleared: a good session. */
+  planCleared: boolean;
+  /** A new topic was opened today (a subtopic answered for the first time today). */
+  newTopicToday: boolean;
+}
+
+/**
+ * One mood at a time, the most meaningful first: proud (a growth step or a
+ * new keepsake) > happy (the plan is cleared) > curious (a new topic today)
+ * > idle. Resting is the calm look of a rest day, and wins. Derived from
+ * saved data: never from taps, and never from absence (no mood reads the
+ * days away).
+ */
+export function plantMood(i: MoodInput): PlantMood {
+  if (!i.face) return 'idle';
+  if (i.resting) return 'resting';
+  if (i.grewToday || i.newKeepsakeToday) return 'proud';
+  if (i.planCleared) return 'happy';
+  if (i.newTopicToday) return 'curious';
+  return 'idle';
+}
+
+/** A short spoken word for the mood (added to the plant's label). Idle and resting say nothing extra. */
+export const MOOD_WORDS: Record<PlantMood, string> = { idle: '', happy: 'Looking happy.', curious: 'Looking curious.', proud: 'Looking proud.', resting: '' };

@@ -17,6 +17,7 @@ import { getAllQuestions } from '../content/loader';
 import { MAX_ANSWER_MS } from '../engine/answerClock';
 import { readBackup } from '../engine/backup';
 import { GROWTH_IDS, isValidPlantState, PLANT_SPECIES, type CertPlant, type GrowthLevel } from '../engine/plant';
+import { isCatalogLook, isLookOfSlot } from '../engine/plantLooks';
 import { createRng } from '../engine/random';
 import { dayKey } from '../engine/streak';
 import { originalToDisplay } from '../engine/shuffle';
@@ -226,8 +227,19 @@ describe('export: every state the phone can hold reads back', () => {
       ...(rng() < 0.4 ? { replantedAt: T0 - n(10) * DAY } : {}),
       ...(rng() < 0.4 ? { pending: (1 + n(6)) as GrowthLevel } : {}),
       ...(rng() < 0.4 ? { backfill: { at: T0 - n(20) * DAY, growth: (1 + n(6)) as GrowthLevel, ...(rng() < 0.5 ? { seen: true } : {}) } } : {}),
-      ...(rng() < 0.4 ? { look: { ground: 'meadow', keepsakes: pick([[], ['lantern'], ['fox', 'fox', 'jay'], ['a', 'b', 'c', 'd', 'e']]) } } : {}),
-      ...(rng() < 0.3 ? { kept: pick([['robin'], ['robin', 'robin'], Array.from({ length: 80 }, (_, k) => `kept-${k}`)]) } : {}),
+      // Mobile 1.14: catalogue ids in every slot (a planter too), plus ids an older or tampered build could hold.
+      ...(rng() < 0.5
+        ? {
+            look: {
+              ...(rng() < 0.6 ? { colourway: pick(['oak-autumn', 'lotus-white', 'cactus-red', 'Bad Id', 'meadow']) } : {}),
+              ground: pick(['meadow', 'stone-ring', 'trail-blaze', 'lantern']),
+              ...(rng() < 0.6 ? { planter: pick(['native', 'celadon', 'five-stone', 'root-woven', 'wren']) } : {}),
+              ...(rng() < 0.5 ? { visitor: pick(['wren', 'robin', 'no-visitor', 'owl']) } : {}),
+              keepsakes: pick([[], ['lantern'], ['fox', 'fox', 'jay'], ['a', 'b', 'c', 'd', 'e'], ['sundial', 'clear-dawn', 'ribbon', 'cairn']]),
+            },
+          }
+        : {}),
+      ...(rng() < 0.3 ? { kept: pick([['robin'], ['robin', 'robin'], ['stone-ring', 'fieldstone', 'oak-autumn', 'lantern'], Array.from({ length: 80 }, (_, k) => `kept-${k}`)]) } : {}),
       ...(rng() < 0.2 ? { passedOn: '2026-09-30' } : {}),
     } as CertPlant;
   }
@@ -264,6 +276,15 @@ describe('export: every state the phone can hold reads back', () => {
         expect(isValidPlantState(back)).toBe(true);
         expect(back.species).toBe(plant!.species);
         expect(back.growth).toBeLessThanOrEqual(plant!.growth);
+        // Mobile 1.14: a look choice that is a catalogue id in its own slot survives exactly
+        // (whether or not its unlock does: the art falls back, the choice is kept).
+        const want = plant!.look;
+        for (const [k, slot] of [['colourway', 'colourway'], ['ground', 'ground'], ['planter', 'planter'], ['visitor', 'visitor']] as const)
+          expect(back.look?.[k]).toBe(want && isLookOfSlot(want[k], slot) ? want[k] : undefined);
+        const ks = [...new Set((want?.keepsakes ?? []).filter((x) => isLookOfSlot(x, 'keepsake')))].slice(0, 3);
+        expect(back.look?.keepsakes ?? []).toEqual(ks);
+        // Unlocks kept across a Reset survive too (catalogue ids only, once each).
+        expect(back.kept ?? []).toEqual([...new Set((plant!.kept ?? []).filter(isCatalogLook))]);
       }
     }
   });
