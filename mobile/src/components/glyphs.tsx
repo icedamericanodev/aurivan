@@ -32,7 +32,6 @@ import Svg, { Circle, Path } from 'react-native-svg';
 import { motion } from '../theme/tokens';
 import type { GameId } from '../engine/games/registry';
 import type { GameTier } from '../engine/games/growth';
-import { haptic } from '../lib/haptics';
 import { Pop, useCelebrationSettled, useMotion, useOncePerDay } from './motion';
 
 type GlyphProps = { size?: number; color: string; strokeWidth?: number };
@@ -140,10 +139,12 @@ export function TierLeaf({ tier, color, size = 16, rib }: { tier: 'seedling' | '
  * (`leaf`), so Seedling → Sapling → Heartwood reads as growth. Nothing moves
  * on mount. `grow` is the round end's level-up while its moment plays
  * (RoundEnd passes it only for a FULL celebration): the leaf shows the level
- * before (`from`) and grows once after `delay`, with a `light` haptic. When
- * `grow` goes away first (skipped, or the moment ended), the new level just
- * shows. Reduced: the new leaf fades in (120 ms). Decorative: the level's
- * name is always written beside it.
+ * before (`from`) and grows once after `delay`. When `grow` goes away first
+ * (skipped, or the moment ended), the new level just shows. Either way
+ * `onGrown` runs once, after that commit (the round end's one haptic: a
+ * skip never loses it). The old leaf always fades out (the morph, and the
+ * level-up's grow). Reduced: the new leaf fades in (120 ms). Decorative: the
+ * level's name is always written beside it.
  */
 export function TierLeafMorph({
   tier,
@@ -151,6 +152,7 @@ export function TierLeafMorph({
   rib,
   size = 16,
   grow,
+  onGrown,
 }: {
   tier: GameTier;
   color: string;
@@ -158,6 +160,8 @@ export function TierLeafMorph({
   size?: number;
   /** The round end's level-up, while its moment plays: start on `from`, grow to `tier` after `delay`. */
   grow?: { from: GameTier; delay: number };
+  /** The level-up has arrived (grown, or skipped to): once per level-up. */
+  onGrown?: () => void;
 }) {
   const [shown, setShown] = useState<GameTier>(grow ? grow.from : tier);
   const [moved, setMoved] = useState(0);
@@ -189,17 +193,26 @@ export function TierLeafMorph({
       setMoved((m) => m + 1);
       setGrowing(false);
       setGrew(true);
-      haptic.light();
     }, growDelay);
     return () => clearTimeout(t);
     // Once per start of the level-up (the delay is fixed for the round end's life).
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [growing]);
+  // The level-up has arrived (it grew, or a skip settled it): tell the round end once.
+  const grownRef = useRef(onGrown);
+  useLayoutEffect(() => {
+    grownRef.current = onGrown;
+  });
+  useEffect(() => {
+    if (grew) grownRef.current?.();
+  }, [grew]);
   return (
     <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ width: size, height: size }}>
       <Animated.View
         key={`${shown}:${moved}`}
-        exiting={moved ? FadeOut.duration(motion.dur.quick).reduceMotion(ReduceMotion.Never) : undefined}
+        // The leaf on screen fades out when it is replaced: a morph (moved), or the level-up's
+        // `from` leaf as it grows (Reanimated reads `exiting` from the element's last render).
+        exiting={moved || growing ? FadeOut.duration(motion.dur.quick).reduceMotion(ReduceMotion.Never) : undefined}
         style={{ position: 'absolute', left: 0, top: 0 }}
       >
         <Pop mount={moved > 0} from={0.6} spring="leaf">
@@ -304,30 +317,36 @@ function glyphPart(p: GlyphPart, k: number, color: string) {
   );
 }
 
+const glyphSvg = (size: number, color: string) =>
+  ({ width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: color, strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round' }) as const;
+
 /**
- * A game's glyph. `rise` (Daylight's intro): its sun rises once into place,
- * 4 points over `grow`, as the screen opens. Reduced: the sun is simply there.
+ * A game's glyph: a plain SVG (no animated nodes: Play shows nine, and every
+ * round header and recap one). `rise` (Daylight's intro): its sun rises once
+ * into place, 4 points over `grow`, as the screen opens (RisingGlyph, the
+ * only animated form). Reduced: the sun is simply there.
  */
 export function GameGlyph({ game, size = 24, color, rise = false }: { game: GameId; size?: number; color: string; rise?: boolean }) {
   const parts = GAME_GLYPHS[game];
   const { reduced } = useMotion();
-  const lift = rise && !reduced && parts.some((p) => p.sun);
-  const y = useSharedValue(lift ? (4 * size) / 24 : 0);
-  const o = useSharedValue(lift ? 0 : 1);
+  if (rise && !reduced && parts.some((p) => p.sun)) return <RisingGlyph parts={parts} size={size} color={color} />;
+  return (
+    <View accessible={false} importantForAccessibility="no-hide-descendants">
+      <Svg {...glyphSvg(size, color)}>{parts.map((p, k) => glyphPart(p, k, color))}</Svg>
+    </View>
+  );
+}
+
+/** Daylight's intro glyph: the ground and arc still, the sun rising once (4pt over `grow`) and fading in. */
+function RisingGlyph({ parts, size, color }: { parts: GlyphPart[]; size: number; color: string }) {
+  const y = useSharedValue((4 * size) / 24);
+  const o = useSharedValue(0);
   useEffect(() => {
-    if (!lift) return;
     y.set(withTiming(0, { duration: motion.dur.grow, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.Never }));
     o.set(withTiming(1, { duration: motion.dur.enter, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.Never }));
-  }, [lift, y, o]);
+  }, [y, o]);
   const sunStyle = useAnimatedStyle(() => ({ opacity: o.value, transform: [{ translateY: y.value }] }));
-  const svgProps = { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: color, strokeWidth: 1.75, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
-  if (!lift) {
-    return (
-      <View accessible={false} importantForAccessibility="no-hide-descendants">
-        <Svg {...svgProps}>{parts.map((p, k) => glyphPart(p, k, color))}</Svg>
-      </View>
-    );
-  }
+  const svgProps = glyphSvg(size, color);
   return (
     <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ width: size, height: size }}>
       <Svg {...svgProps}>{parts.map((p, k) => (p.sun ? null : glyphPart(p, k, color)))}</Svg>
@@ -339,8 +358,11 @@ export function GameGlyph({ game, size = 24, color, rise = false }: { game: Game
 }
 
 // ── Sparkline (mobile 1.12, ui.md G4) ──────────────────────────────────
+/** The sparkline's box, and the inset of its first and last points (labels line up under them). */
+export const SPARK = { width: 168, height: 44, pad: 6 } as const;
+
 /** Points for a sparkline in a w × h box (a flat run sits in the middle). Exported for tests. */
-export function sparkPoints(values: number[], w: number, h: number, pad = 6): [number, number][] {
+export function sparkPoints(values: number[], w: number, h: number, pad: number = SPARK.pad): [number, number][] {
   const min = Math.min(...values);
   const max = Math.max(...values);
   const n = values.length;
@@ -358,7 +380,7 @@ export function sparkPoints(values: number[], w: number, h: number, pad = 6): [n
  * round's own score already rolled). Decorative: the caller speaks the trend
  * in one sentence and prints the numbers.
  */
-export function Sparkline({ values, color, paper, width = 168, height = 44 }: { values: number[]; color: string; paper: string; width?: number; height?: number }) {
+export function Sparkline({ values, color, paper, width = SPARK.width, height = SPARK.height }: { values: number[]; color: string; paper: string; width?: number; height?: number }) {
   const pts = useMemo(() => sparkPoints(values, width, height), [values, width, height]);
   if (pts.length < 2) return null;
   const d = pts.map(([x, y], i) => `${i ? 'L' : 'M'}${f1(x)},${f1(y)}`).join('');

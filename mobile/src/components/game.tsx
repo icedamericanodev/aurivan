@@ -18,20 +18,27 @@ import { createRng } from '../engine/random';
 import { makePermutation, type Permutation } from '../engine/shuffle';
 import { lastScores, reviewLine, runningScore, scoreSpoken, scoreText, trendSpoken, type RecapMiss } from '../engine/games/recap';
 import { useProgress, type GameId } from '../store/progress';
-import { maxScale, motion, optionText, radius, raisedShadow, space, type } from '../theme/tokens';
+import { LARGE_TEXT, maxScale, motion, optionText, radius, raisedShadow, space, type } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ScenarioBlock, StickyFooter } from './quiz';
 import { useReportFlow } from './support';
 import { questionTarget } from '../lib/support';
 import type { ReportTarget } from '../engine/support';
-import { GameGlyph, Sparkline, TierLeafMorph } from './glyphs';
+import { GameGlyph, SPARK, Sparkline, TierLeafMorph } from './glyphs';
 import { AnimatedPressable, Celebrate, FadeIn as Arrive, Pop, RollingText, Shake, StateLayer, useCelebration, useMotion, usePressScale } from './motion';
 import { haptic } from '../lib/haptics';
 import { MilestoneMomentView, TierTag } from './milestones';
 import { GAME_TIERS, tierChangeLine, type GameTier } from '../engine/games/growth';
 import type { RoundNews } from '../lib/gameRounds';
 import { Check, Info, ICON_STROKE, Play as PlayIcon, X } from './icons';
-import { BigNum, Button, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, Row, Section, SegmentBar, Segmented, Stem, T } from './ui';
+import { BigNum, Button, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, Row, Section, SegmentBar, Segmented, Stem, T, useFontScale } from './ui';
+
+/**
+ * How long the `leaf` spring takes to come to rest (its 280 ms is perceptual;
+ * the real settle is about 1.5×). A level-up's grow starts this long before
+ * the celebration's 1.2 s ceiling, so it is over by then.
+ */
+export const LEAF_SETTLE_MS = Math.round(motion.spring.leaf.duration * 1.5) + 30;
 
 /** The level just below (the one a level-up grew from). */
 const tierBelow = (t: GameTier): GameTier => GAME_TIERS[Math.max(0, GAME_TIERS.indexOf(t) - 1)];
@@ -122,7 +129,7 @@ export function GameFrame({
             style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, flex: 1, minWidth: 0 }}
           >
             <View style={{ width: 36, height: 36, borderRadius: radius.pill, backgroundColor: c.soft, alignItems: 'center', justifyContent: 'center' }}>
-              <GameGlyph game={game} size={20} color={c.accentText} />
+              <GameGlyph game={game} size={22} color={c.accentText} />
             </View>
             <View style={{ flex: 1, minWidth: 0 }}>
               <T v="label">{name}</T>
@@ -159,25 +166,29 @@ export function GameFrame({
  * The round's running score in the header (motion.md M5): when it goes UP
  * its digits roll to the new value (300 ms, no stagger: it is small and
  * changes often). A score that goes down just shows (nothing animates a
- * loss). Screen readers hear "Score 4". Reduced: the new value brightens in.
+ * loss). Reduced: the new value brightens in. Screen readers hear "Score 4"
+ * at ALL times (still, rolling, reduced): the label is on a wrapper, one
+ * stop, never on the rolling columns alone (which are plain text again
+ * once the roll ends).
  */
 export function RoundScore({ value }: { value: number }) {
   const { c } = useTheme();
   const [s, setS] = useState({ value, from: value, run: 0 });
   if (s.value !== value) setS({ value, from: s.value, run: value > s.value ? s.run + 1 : s.run });
   return (
-    <RollingText
-      value={String(value)}
-      from={String(s.from)}
-      play={s.run > 0}
-      run={s.run}
-      style={{ ...type.label, fontVariant: ['tabular-nums'] }}
-      maxScale={maxScale.label}
-      color={c.ink}
-      dur="fill"
-      stagger={false}
-      accessibilityLabel={`Score ${value}`}
-    />
+    <View accessible accessibilityLabel={`Score ${value}`}>
+      <RollingText
+        value={String(value)}
+        from={String(s.from)}
+        play={s.run > 0}
+        run={s.run}
+        style={{ ...type.label, fontVariant: ['tabular-nums'] }}
+        maxScale={maxScale.label}
+        color={c.ink}
+        dur="fill"
+        stagger={false}
+      />
+    </View>
   );
 }
 
@@ -253,12 +264,15 @@ export function RoundEnd({
   // for a step back (nothing animates a loss). The words are on screen.
   const levelUp = news?.change === 'up' && !news.moment;
   const grown = useCelebration('level-up', levelUp, undefined, `${game}:${news?.tier ?? ''}`);
-  // The light haptic: with the leaf's growth when it plays in full, else once as the level shows.
-  const [buzzed, setBuzzed] = useState(0);
-  if (grown.run > 0 && grown.mode !== 'full' && buzzed !== grown.run) {
-    setBuzzed(grown.run);
-    haptic.light();
-  }
+  // ONE light haptic per level up, after it commits (never during a render React may replay):
+  // short or static, as the level shows; in full, as the leaf grows, or as it settles
+  // there when the learner skips before it grew (TierLeafMorph onGrown).
+  useEffect(() => {
+    if (grown.run > 0 && grown.mode !== 'full') haptic.light();
+  }, [grown.run, grown.mode]);
+  // The full grow ends inside the celebration's 1.2 s: it starts late in the score's roll
+  // (or just after the recap arrives, with no roll), so the leaf spring settles by the ceiling.
+  const growAt = roll ? motion.dur.celebrate - LEAF_SETTLE_MS : motion.dur.quick;
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ padding: space.gutter, flexGrow: 1, justifyContent: 'center' }}>
@@ -285,7 +299,7 @@ export function RoundEnd({
                 <View style={{ marginTop: space.xs }}>
                   <Sparkline values={recent} color={c.accent} paper={c.bg} />
                 </View>
-                <T v="meta" num center style={{ marginTop: 2 }}>{recent.map(scoreText).join('  ·  ')}</T>
+                <SparkScores values={recent} />
               </View>
             )}
             {news?.best && (
@@ -301,11 +315,8 @@ export function RoundEnd({
                     tier={news.tier}
                     color={c.accentText}
                     rib={c.bg}
-                    grow={
-                      levelUp && grown.mode === 'full' && !grown.settled
-                        ? { from: tierBelow(news.tier), delay: (roll ? motion.dur.enter + motion.dur.grow : 0) + motion.dur.quick }
-                        : undefined
-                    }
+                    grow={levelUp && grown.mode === 'full' && !grown.settled ? { from: tierBelow(news.tier), delay: growAt } : undefined}
+                    onGrown={levelUp && grown.mode === 'full' ? () => haptic.light() : undefined}
                   />
                   <T v="small" center style={{ flexShrink: 1 }}>{tierChangeLine(news.change, news.tier)!}</T>
                 </Row>
@@ -335,6 +346,30 @@ export function RoundEnd({
         <Button kind="ghost" label="Done" onPress={() => router.back()} />
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+/**
+ * The printed scores under the recap's sparkline (ui.md G4): each one centred
+ * under its own point (a row of equal slots, one per round, as wide as the
+ * line's point spacing). At large text (×1.3 and above) the slots would be
+ * too narrow, so the scores stay one compact line. Decorative: the group
+ * around it speaks the trend in one sentence. Exported for tests.
+ */
+export function SparkScores({ values }: { values: number[] }) {
+  const large = useFontScale() >= LARGE_TEXT;
+  if (large || values.length < 2) {
+    return <T v="meta" num center style={{ marginTop: 2 }}>{values.map(scoreText).join('  ·  ')}</T>;
+  }
+  const slot = (SPARK.width - 2 * SPARK.pad) / (values.length - 1);
+  return (
+    <View testID="spark-scores" style={{ flexDirection: 'row', width: slot * values.length, marginTop: 2 }}>
+      {values.map((v, i) => (
+        <View key={i} style={{ width: slot, alignItems: 'center' }}>
+          <T v="meta" num center>{scoreText(v)}</T>
+        </View>
+      ))}
+    </View>
   );
 }
 
@@ -386,7 +421,6 @@ export function GameIntro<V extends string>({
   onStart,
   level,
   children,
-  glyphRise = false,
 }: {
   game: GameId;
   /** Build F: the learner's own level for this game (the picker starts on it). */
@@ -400,8 +434,6 @@ export function GameIntro<V extends string>({
   onStart: () => void;
   /** Extra intro content under the rules (Forecast's scoring block). */
   children?: ReactNode;
-  /** Daylight: its sun rises once as the intro opens. */
-  glyphRise?: boolean;
 }) {
   const { c } = useTheme();
   const g = GAMES[game];
@@ -413,7 +445,7 @@ export function GameIntro<V extends string>({
       </View>
       <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxl }}>
         <View style={{ alignItems: 'center' }}>
-          <GameGlyph game={game} size={48} color={c.accent} rise={glyphRise} />
+          <GameGlyph game={game} size={48} color={c.accent} />
         </View>
         <T v="caption" center color={c.accentText} style={{ marginTop: space.sm }}>{`${g.skill} · about ${g.minutes} min`}</T>
         <T v="hero" center accessibilityRole="header" style={{ marginTop: space.xs }}>{g.tagline}</T>
@@ -552,6 +584,8 @@ export function MatchTile({
 }) {
   const { c, isDark } = useTheme();
   const press = usePressScale();
+  // The state the tile was first drawn in: a mark already there on the screen's first paint never springs.
+  const [firstState] = useState(state);
   const interactive = onPress !== undefined || Boolean(radio);
   // Never tappable and nothing to show: the flat "given" look, so it doesn't pass for a stone you can move.
   const flat = !interactive && state === 'idle';
@@ -581,8 +615,9 @@ export function MatchTile({
       </T>
       {mark ? (
         <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ position: 'absolute', top: -6, right: -8 }}>
-          {/* The mark springs in as the state arrives (a mark may pop; the tint never bounces). */}
-          <Pop trigger={state}>
+          {/* The mark springs in as the state arrives on screen (a mark may pop; the tint never bounces).
+              The mark mounts WITH its state, so it pops on mount, unless the tile was drawn so. */}
+          <Pop mount={state !== firstState} trigger={state}>
             {mark === Check ? <Check size={16} color={markColor} strokeWidth={2.5} /> : <X size={16} color={markColor} strokeWidth={2.5} />}
           </Pop>
         </View>
