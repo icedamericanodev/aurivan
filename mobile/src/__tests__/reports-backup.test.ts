@@ -6,7 +6,8 @@
  *   phone's own list);
  * - an over-long list exports its newest 200, and still restores;
  * - a damaged entry refuses the file, an unknown field is dropped;
- * - backups and saves from before 1.7 (no list) load unchanged;
+ * - backups and saves from before 1.7 (no list) load, and restoring one
+ *   keeps the phone's own list (code review #5);
  * - a reset of one exam leaves the list alone.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -119,6 +120,13 @@ describe('validation: a file is untrusted', () => {
     expect(() => readBackup(text, ['cisa'])).toThrow(/bad-data/);
   });
 
+  it('keeps the app version a report was made on, and refuses one that isn’t a version', () => {
+    useProgress.setState({ reports: [report(0, { version: '1.7.0' })] });
+    expect(readBackup(fileText(), ['cisa']).progress.reports).toEqual([report(0, { version: '1.7.0' })]);
+    const text = fileWith((p) => ((p.reports as Record<string, unknown>[])[0].version = '<script>'));
+    expect(() => readBackup(text, ['cisa'])).toThrow(/bad-data/);
+  });
+
   it('drops a field it doesn’t know', () => {
     const text = fileWith((p) => ((p.reports as Record<string, unknown>[])[0].note = 'my private note'));
     expect(readBackup(text, ['cisa']).progress.reports).toEqual([report(0)]);
@@ -126,14 +134,27 @@ describe('validation: a file is untrusted', () => {
 });
 
 describe('before 1.7', () => {
-  it('a backup with no list reads, and restoring it leaves no list', async () => {
+  it('a backup with no list reads, and restoring it keeps the phone’s own list', async () => {
     const text = fileWith((p) => delete p.reports);
     useProgress.setState({ reports: [report(4)] });
     const read = checkBackupText(text);
     if (read.kind !== 'ok') throw new Error(read.code);
     expect(read.data.progress.reports).toBeUndefined();
     await restoreBackup(read.data, NOW);
-    expect(useProgress.getState().reports ?? []).toEqual([]);
+    // The learner's messages to us are not study progress: a pre-1.7 file can't empty them.
+    expect(useProgress.getState().reports).toEqual([report(4)]);
+    // Saved too, so a restart keeps it.
+    const saved = JSON.parse((await AsyncStorage.getItem('aurivan.progress.v1'))!);
+    expect(saved.state.reports).toEqual([report(4)]);
+  });
+
+  it('a backup WITH a list (even an empty one) replaces the phone’s list', async () => {
+    const text = fileWith((p) => (p.reports = []));
+    useProgress.setState({ reports: [report(4)] });
+    const read = checkBackupText(text);
+    if (read.kind !== 'ok') throw new Error(read.code);
+    await restoreBackup(read.data, NOW);
+    expect(useProgress.getState().reports).toEqual([]);
   });
 
   it('a 1.6 save loads with no list, and the list then works', async () => {

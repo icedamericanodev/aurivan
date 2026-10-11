@@ -17,8 +17,8 @@
  *   that was on screen in brackets: "Your pick: A (shown as C)". The same
  *   rule as grading (CLAUDE.md hard rule 4, engine/shuffle.ts).
  * - "Your reports": a small log kept on the phone (and in the learner's own
- *   backup file), so the app can say "Reported 11 Oct" and, once a fix
- *   ships in a later update, "Updated after your report". Nothing is sent.
+ *   backup file), so the app can say "Report started 11 Oct" and, once a
+ *   fix ships in a later version, "Updated after your report". Nothing is sent.
  *
  * Pure TypeScript: no React, no storage, no network.
  */
@@ -253,12 +253,23 @@ export function cleanNote(note: string, max = MAX_NOTE): string {
     .replace(/\r\n?/g, '\n')
     .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
     .trim();
-  return Array.from(text).slice(0, max).join('').trimEnd();
+  // Array.from walks whole characters, so an emoji (a surrogate PAIR) stays
+  // one item. A LONE half of a pair (usually from a broken paste) can't be
+  // encoded: encodeURIComponent would throw "URI malformed". Drop those.
+  return Array.from(text)
+    .filter((ch) => !(ch.length === 1 && ch >= '\uD800' && ch <= '\uDFFF'))
+    .slice(0, max)
+    .join('')
+    .trimEnd();
 }
 
-/** "A (shown as C)": the ORIGINAL letter, then the letter that was on screen. */
+/**
+ * "A (shown as C)": the ORIGINAL letter, then the letter that was on screen.
+ * When both are the same letter, just "C": the bracket would add nothing.
+ */
 export function letterWithShown(display: Letter, perm: Permutation): string {
-  return `${displayToOriginal(display, perm)} (shown as ${display})`;
+  const original = displayToOriginal(display, perm);
+  return original === display ? original : `${original} (shown as ${display})`;
 }
 
 /** True when the shuffle changed the order (perm is not A, B, C, D). */
@@ -424,9 +435,13 @@ export function buildSupportEmail(input: SupportInput): Email {
 /** A plain email address check (the configured address must pass it). */
 export const EMAIL_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
-/** mailto:<to>?subject=…&body=… with every character of subject and body encoded. */
+/**
+ * mailto:<to>?subject=…&body=… with every character of subject and body
+ * encoded. Line ends become CRLF (%0D%0A), as the mailto standard (RFC 6068)
+ * asks; mail apps that accept a bare %0A accept this too.
+ */
 export function mailtoUrl(to: string, email: Email): string {
-  return `mailto:${to}?subject=${encodeURIComponent(email.subject)}&body=${encodeURIComponent(email.body)}`;
+  return `mailto:${to}?subject=${encodeURIComponent(email.subject)}&body=${encodeURIComponent(email.body.replace(/\n/g, '\r\n'))}`;
 }
 
 /**
@@ -460,7 +475,13 @@ export interface ReportEntry {
   at: number;
   /** Certification id ("cisa"). */
   cert: string;
-  /** The "Your report helped" note for this report has been seen. */
+  /**
+   * The app version the learner was using ("1.7.0"), so a fix can credit
+   * the report when it shipped in a LATER version (fixMatches). Optional:
+   * left out when the version is unknown.
+   */
+  version?: string;
+  /** The "Updated after your report" note for this report has been seen. */
   creditSeen?: boolean;
 }
 
@@ -469,7 +490,7 @@ export function addReport(list: readonly ReportEntry[] | undefined, entry: Repor
   return [entry, ...(list ?? [])].slice(0, cap);
 }
 
-/** The newest report about this item, if any ("Reported 11 Oct"). */
+/** The newest report about this item, if any ("Report started 11 Oct"). */
 export function lastReportFor(list: readonly ReportEntry[] | undefined, cert: string, item: string): ReportEntry | undefined {
   return (list ?? []).find((r) => r.cert === cert && r.item === item);
 }
@@ -481,23 +502,52 @@ export const FIX_KINDS: FixKind[] = ['corrected', 'clarified', 'removed'];
 /**
  * One fix, as the team records it in content/support/fixes.json.
  * `ref` is an item reference (itemRef); a lesson ref without "#step"
- * covers every step. `date` is the day the fix shipped (YYYY-MM-DD).
+ * covers every step. `fixedIn` is the app version the fix ships in
+ * ("1.7.1"); `date` is the day it shipped (YYYY-MM-DD, shown to learners).
  * `publicNote` is ONE general sentence, the What's New style: no question
  * text, no codes, no counts ("The answer key was corrected.").
+ * fixesProblems() requires `fixedIn` for every new entry; the type keeps it
+ * optional so a hand-written test fix can leave it out.
  */
 export interface Fix {
   ref: string;
   cert: string;
   date: string;
+  fixedIn?: string;
   kind: FixKind;
   publicNote: string;
 }
 
-/** True when a fix covers this report's item and shipped on a LATER day than the report. */
+/** "1.7.0" → [1, 7, 0]; anything else (missing, "unknown") → null. */
+export function parseVersion(v: string | undefined): [number, number, number] | null {
+  const m = /^(\d{1,4})\.(\d{1,4})\.(\d{1,4})$/.exec(v ?? '');
+  return m ? [Number(m[1]), Number(m[2]), Number(m[3])] : null;
+}
+
+/** True when version `a` is older than version `b` ("1.7.0" < "1.10.0"). */
+export function versionBefore(a: [number, number, number], b: [number, number, number]): boolean {
+  for (let i = 0; i < 3; i++) if (a[i] !== b[i]) return a[i] < b[i];
+  return false;
+}
+
+/**
+ * True when a fix covers this report's item and the learner's version still
+ * had the problem:
+ * - by VERSION (the main rule): the report was made on a version OLDER than
+ *   the one the fix ships in. This credits a report made on the ship day,
+ *   or on an old build after the fix shipped (the learner hadn't updated
+ *   yet), and it doesn't depend on time zones.
+ * - by DATE (the fallback, when either side has no version): the fix
+ *   shipped on a later day than the report.
+ */
 export function fixMatches(fix: Fix, report: ReportEntry): boolean {
   if (fix.cert !== report.cert) return false;
   const sameItem = fix.ref === report.item || (!fix.ref.includes('#') && report.item.startsWith(`${fix.ref}#`));
-  return sameItem && fix.date > dayKey(report.at);
+  if (!sameItem) return false;
+  const reportedOn = parseVersion(report.version);
+  const fixedIn = parseVersion(fix.fixedIn);
+  if (reportedOn && fixedIn) return versionBefore(reportedOn, fixedIn);
+  return fix.date > dayKey(report.at);
 }
 
 /** The newest fix for this report, if any. */
@@ -505,9 +555,18 @@ export function fixFor(report: ReportEntry, fixes: readonly Fix[]): Fix | undefi
   return fixes.filter((f) => fixMatches(f, report)).sort((a, b) => (a.date < b.date ? 1 : -1))[0];
 }
 
-/** Reports whose fix the learner hasn't been told about yet ("Your report helped", shown once). */
+/** Reports whose fix the learner hasn't been told about yet ("Updated after your report", shown once). */
 export function creditDue(reports: readonly ReportEntry[] | undefined, fixes: readonly Fix[]): ReportEntry[] {
   return (reports ?? []).filter((r) => !r.creditSeen && fixFor(r, fixes));
+}
+
+/**
+ * How many different ITEMS these reports are about. Two reports about one
+ * question are still one thing, so the credit line says "Something you
+ * reported", not "Things you reported".
+ */
+export function distinctItems(reports: readonly ReportEntry[]): number {
+  return new Set(reports.map((r) => `${r.cert}|${r.item}`)).size;
 }
 
 /** "3 started on this phone · 1 updated". */
@@ -527,6 +586,7 @@ export function fixesProblems(fixes: readonly Fix[], knownCerts: readonly string
     if (!/^(q|note|lesson|card|app):[A-Za-z0-9._:#-]{1,100}$/.test(f.ref)) out.push(`${at}.ref is not an item reference`);
     if (!knownCerts.includes(f.cert)) out.push(`${at}.cert is unknown`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(f.date)) out.push(`${at}.date is not YYYY-MM-DD`);
+    if (!parseVersion(f.fixedIn)) out.push(`${at}.fixedIn is not an app version like 1.7.1`);
     if (!FIX_KINDS.includes(f.kind)) out.push(`${at}.kind is not one of ${FIX_KINDS.join(', ')}`);
     if (typeof f.publicNote !== 'string' || f.publicNote.length < 10 || f.publicNote.length > 140) out.push(`${at}.publicNote must be 10–140 characters`);
     else {

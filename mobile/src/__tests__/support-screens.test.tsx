@@ -120,7 +120,7 @@ const pressAsync = async (label: string) => {
 const openUrl = Linking.openURL as jest.Mock;
 const lastEmail = () => {
   const url = String(openUrl.mock.calls.at(-1)![0]);
-  return { subject: decodeURIComponent(url.split('subject=')[1].split('&body=')[0]), body: decodeURIComponent(url.split('&body=')[1]) };
+  return { subject: decodeURIComponent(url.split('subject=')[1].split('&body=')[0]), body: decodeURIComponent(url.split('&body=')[1]).replace(/\r\n/g, '\n') };
 };
 const checkedRadio = () => root().findAllByType(RadioRow).find((n) => n.props.checked)?.props.title;
 

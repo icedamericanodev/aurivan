@@ -20,6 +20,7 @@ import {
   buildSupportEmail,
   cleanNote,
   creditDue,
+  distinctItems,
   EXAM_CONTENT_LINE,
   fitReport,
   fixesProblems,
@@ -33,11 +34,13 @@ import {
   MAX_REPORTS,
   newRef,
   parseItemRef,
+  parseVersion,
   REASONS,
   REF_RE,
   reportCounts,
   reportDetails,
   reportSubject,
+  versionBefore,
   type Fix,
   type ReportEntry,
   type ReportInput,
@@ -78,7 +81,9 @@ describe('report email: letters are ORIGINAL letters, with the shown letter in b
 
   it('with no shuffle, still names the bank letter and leaves out the shown order', () => {
     const { body } = buildReportEmail(input({ target: question({ perm: ['A', 'B', 'C', 'D'], pickedDisplay: 'C' }) }));
-    expect(body).toContain('Your pick: C (shown as C)');
+    // Same letter on screen and in the bank: no bracket (UX review O4).
+    expect(body).toContain('Your pick: C\n');
+    expect(body).not.toContain('shown as');
     expect(body).not.toContain('Shown order');
   });
 
@@ -190,6 +195,13 @@ describe('notes and the mailto: link', () => {
     expect(Array.from(cleanNote('🌱'.repeat(MAX_NOTE + 1)))).toHaveLength(MAX_NOTE);
   });
 
+  it('drops a lone half of an emoji (a broken paste), so building the link never throws', () => {
+    const broken = `before \uD83C after \uDF31 end 🌱`;
+    expect(cleanNote(broken)).toBe('before  after  end 🌱');
+    // Before the fix this threw "URIError: URI malformed" and left the send button stuck.
+    expect(() => fitReport(TO, input({ note: broken }))).not.toThrow();
+  });
+
   it('a note can never add an email header: everything is encoded into the body', () => {
     const { url } = fitReport(TO, input({ note: 'x\r\nBcc: someone@example.com\n&subject=hi' }));
     expect(url.startsWith(`mailto:${TO}?subject=`)).toBe(true);
@@ -215,8 +227,8 @@ describe('notes and the mailto: link', () => {
     expect(email.body).toContain('Ref: R-7K2Q');
   });
 
-  it('builds a plain mailto: link', () => {
-    expect(mailtoUrl(TO, { subject: 'A b', body: 'c\nd' })).toBe(`mailto:${TO}?subject=A%20b&body=c%0Ad`);
+  it('builds a plain mailto: link, with CRLF line ends in the body (RFC 6068)', () => {
+    expect(mailtoUrl(TO, { subject: 'A b', body: 'c\nd' })).toBe(`mailto:${TO}?subject=A%20b&body=c%0D%0Ad`);
   });
 });
 
@@ -273,6 +285,8 @@ describe('Your reports and fixes', () => {
   const day = (iso: string) => new Date(`${iso}T12:00:00`).getTime();
   const report = (over: Partial<ReportEntry> = {}): ReportEntry => ({ ref: 'R-AAAA', item: 'q:d4_217', reason: 'key', at: day('2026-10-11'), cert: 'cisa', ...over });
   const fix = (over: Partial<Fix> = {}): Fix => ({ ref: 'q:d4_217', cert: 'cisa', date: '2026-10-20', kind: 'corrected', publicNote: 'The answer key was corrected.', ...over });
+  // The same, as the team now records them: the version the fix ships in.
+  const vfix = (over: Partial<Fix> = {}): Fix => fix({ fixedIn: '1.7.1', ...over });
 
   it('keeps the newest first and caps the list', () => {
     let list: ReportEntry[] = [];
@@ -289,6 +303,48 @@ describe('Your reports and fixes', () => {
     expect(fixMatches(fix({ date: '2026-10-01' }), report())).toBe(false);
     expect(fixMatches(fix({ ref: 'q:d4_218' }), report())).toBe(false);
     expect(fixMatches(fix({ cert: 'cism' }), report())).toBe(false);
+  });
+
+  it('with versions on both sides, a fix credits a report made on an OLDER version, whatever the day', () => {
+    // Reported on 1.7.0; the fix ships in 1.7.1.
+    expect(fixMatches(vfix(), report({ version: '1.7.0' }))).toBe(true);
+    // The ship day itself still counts (the date rule said no).
+    expect(fixMatches(vfix({ date: '2026-10-11' }), report({ version: '1.7.0' }))).toBe(true);
+    // Reported on an old build AFTER the fix shipped (not updated yet): the problem was real there.
+    expect(fixMatches(vfix({ date: '2026-10-01' }), report({ version: '1.7.0' }))).toBe(true);
+    // Reported on the fixed version or a newer one: not credited.
+    expect(fixMatches(vfix(), report({ version: '1.7.1' }))).toBe(false);
+    expect(fixMatches(vfix(), report({ version: '1.8.0' }))).toBe(false);
+    // Numbers, not text: 1.10.0 is newer than 1.9.0.
+    expect(fixMatches(vfix({ fixedIn: '1.10.0' }), report({ version: '1.9.0' }))).toBe(true);
+    // Item and exam still have to match.
+    expect(fixMatches(vfix({ ref: 'q:d4_218' }), report({ version: '1.7.0' }))).toBe(false);
+    expect(fixMatches(vfix({ cert: 'cism' }), report({ version: '1.7.0' }))).toBe(false);
+  });
+
+  it('falls back to the day when either side has no version', () => {
+    // A report with no version (unknown on that phone): the date rule.
+    expect(fixMatches(vfix({ date: '2026-10-20' }), report())).toBe(true);
+    expect(fixMatches(vfix({ date: '2026-10-11' }), report())).toBe(false);
+    // A fix with no version: the date rule too.
+    expect(fixMatches(fix({ date: '2026-10-11' }), report({ version: '1.7.0' }))).toBe(false);
+    expect(fixMatches(fix({ date: '2026-10-20' }), report({ version: '1.7.0' }))).toBe(true);
+    // A version that isn't one ("unknown") counts as none.
+    expect(fixMatches(vfix({ date: '2026-10-11' }), report({ version: 'unknown' }))).toBe(false);
+  });
+
+  it('reads versions as numbers', () => {
+    expect(parseVersion('1.7.0')).toEqual([1, 7, 0]);
+    expect(parseVersion('1.7')).toBeNull();
+    expect(parseVersion(undefined)).toBeNull();
+    expect(versionBefore([1, 9, 0], [1, 10, 0])).toBe(true);
+    expect(versionBefore([1, 7, 1], [1, 7, 1])).toBe(false);
+  });
+
+  it('counts distinct items, so two reports about one question are one thing', () => {
+    const list = [report(), report({ ref: 'R-BBBB' }), report({ ref: 'R-CCCC', item: 'note:4A2.3' })];
+    expect(distinctItems(list)).toBe(2);
+    expect(distinctItems(list.slice(0, 2))).toBe(1);
   });
 
   it('a lesson fix without a step covers every step; with a step, only that one', () => {
@@ -309,20 +365,23 @@ describe('Your reports and fixes', () => {
   });
 
   it('flags fixes that break the What’s New style', () => {
-    expect(fixesProblems([fix()], ['cisa'])).toEqual([]);
+    expect(fixesProblems([vfix()], ['cisa'])).toEqual([]);
+    // Every new fix names the version it ships in.
+    expect(fixesProblems([fix()], ['cisa'])).toEqual(['fixes[0].fixedIn is not an app version like 1.7.1']);
     const bad = fixesProblems(
       [
-        fix({ ref: 'd4_217' }),
-        fix({ cert: 'zzz' }),
-        fix({ date: '20 Oct' }),
-        fix({ kind: 'fixed' as never }),
-        fix({ publicNote: 'Question d4_217 was corrected.' }),
-        fix({ publicNote: 'We corrected 12 questions in this area.' }),
-        fix({ publicNote: 'The answer key was corrected' }),
+        vfix({ ref: 'd4_217' }),
+        vfix({ cert: 'zzz' }),
+        vfix({ date: '20 Oct' }),
+        vfix({ fixedIn: 'v1.7' }),
+        vfix({ kind: 'fixed' as never }),
+        vfix({ publicNote: 'Question d4_217 was corrected.' }),
+        vfix({ publicNote: 'We corrected 12 questions in this area.' }),
+        vfix({ publicNote: 'The answer key was corrected' }),
       ],
       ['cisa'],
     );
-    expect(bad).toHaveLength(7);
+    expect(bad).toHaveLength(8);
   });
 });
 

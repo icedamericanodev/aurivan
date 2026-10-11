@@ -175,7 +175,8 @@ const lastEmail = () => {
     url,
     to: url.slice('mailto:'.length, url.indexOf('?')),
     subject: decodeURIComponent(url.split('subject=')[1].split('&body=')[0]),
-    body: decodeURIComponent(url.split('&body=')[1]),
+    // Mail links use CRLF line ends (RFC 6068); read them as plain \n lines.
+    body: decodeURIComponent(url.split('&body=')[1]).replace(/\r\n/g, '\n'),
   };
 };
 /** The block the learner is asked to keep: one "Key: value" per line. */

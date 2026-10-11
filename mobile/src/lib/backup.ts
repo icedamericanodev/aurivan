@@ -318,6 +318,10 @@ async function writeAll(
   const byCert: ProgressData['byCert'] = {};
   for (const [id, cp] of Object.entries(data.progress.byCert)) byCert[id] = completeCert(cp);
   const progress = { ...pick(useProgress.getInitialState(), PROGRESS_KEYS), ...data.progress, byCert, days: {} };
+  // A file from before 1.7 has no "Your reports" list at all. Those are the
+  // learner's messages to us, not study progress, so keep this phone's list
+  // instead of emptying it (a file WITH a list, even an empty one, wins).
+  if (data.progress.reports === undefined) progress.reports = useProgress.getState().reports;
   const before = currentRows();
   try {
     await AsyncStorage.multiSet([

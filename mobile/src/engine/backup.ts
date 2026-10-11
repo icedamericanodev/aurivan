@@ -27,7 +27,7 @@ import { reminderSummary } from './reminders';
 import { migrateProgress, PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
 import { dayKey } from './streak';
 import { SESSION_SIZES, type StudyMode } from './studyModes';
-import { MAX_REPORTS, REF_RE } from './support';
+import { MAX_REPORTS, parseVersion, REF_RE } from './support';
 
 export const BACKUP_APP = 'aurivan';
 /** The file format version. Bump it (and add a step to FILE_MIGRATIONS) if the envelope changes. */
@@ -343,9 +343,11 @@ const certProgress = obj(
  * app is KEPT (Your reports can say it was removed), so ids aren't trimmed.
  */
 const reportRef: Check<string> = (x, at) => (typeof x === 'string' && REF_RE.test(x) ? x : bad(at));
+// The app version the report was made on ("1.7.0"): digits and dots only.
+const appVersion: Check<string> = (x, at) => (typeof x === 'string' && parseVersion(x) ? x : bad(at));
 const reportEntry = obj(
   { ref: reportRef, item: id, reason: str(20), at: ts, cert: str(40) },
-  { creditSeen: bool },
+  { version: appVersion, creditSeen: bool },
 );
 
 const streak = obj(

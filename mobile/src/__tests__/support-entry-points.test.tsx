@@ -109,7 +109,8 @@ const pressAsync = async (label: string | RegExp) => {
 };
 const sheetOpen = () => allText().includes('What’s wrong?');
 const openUrl = Linking.openURL as jest.Mock;
-const lastBody = () => decodeURIComponent(String(openUrl.mock.calls.at(-1)![0]).split('&body=')[1]);
+// Mail links use CRLF line ends (RFC 6068); read them as plain \n lines.
+const lastBody = () => decodeURIComponent(String(openUrl.mock.calls.at(-1)![0]).split('&body=')[1]).replace(/\r\n/g, '\n');
 
 /** Choose a reason and press Write the email. */
 async function sendReport(reason: string) {
@@ -166,6 +167,9 @@ describe('practice: under the answer', () => {
     expect(openUrl).toHaveBeenCalledTimes(1);
     const url = String(openUrl.mock.calls[0][0]);
     expect(url.startsWith('mailto:certprep.support@gmail.com?subject=')).toBe(true);
+    // Line ends in the link are CRLF (RFC 6068), never a bare %0A.
+    expect(url).toContain('%0D%0A');
+    expect(url).not.toMatch(/(?<!%0D)%0A/);
     expect(decodeURIComponent(url.split('subject=')[1].split('&body=')[0])).toBe(`Aurivan · Report · CISA · ${q.id} · key`);
     const body = lastBody();
     expect(body).toContain('Your pick: C (shown as B)');
