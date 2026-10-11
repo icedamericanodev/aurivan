@@ -28,6 +28,7 @@ import { router } from 'expo-router';
 import { useRef, useState } from 'react';
 import { AccessibilityInfo, View, type Switch } from 'react-native';
 import { Crosshair, ICON_STROKE, Library, ListChecks, Play, RotateCcw } from '../../components/icons';
+import { Collapse } from '../../components/motion';
 import { DisclosureRow, FieldLabel, PathChooser, pathSummary } from '../../components/pathChooser';
 import { Button, Card, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, ToggleRow, Trail } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
@@ -204,7 +205,8 @@ export default function Practice() {
           accessibilityLabel={`Your path: ${summary.split(' · ').join(', ')}. ${pathOpen ? 'Close' : 'Change'}`}
           accessibilityHint="Shows the study mode, domain and length the Start button uses."
         />
-        {pathOpen && (
+        {/* Opens right here: the panel arrives (fade + 8pt rise); nothing slides (motion.md M4). */}
+        <Collapse open={pathOpen}>
           <PathChooser
             mode={mode}
             suggested={suggested}
@@ -219,7 +221,7 @@ export default function Practice() {
               moveFocus(pathRowRef);
             }}
           />
-        )}
+        </Collapse>
         <ToggleRow
           ref={timedRef}
           title="Timed"
@@ -265,7 +267,7 @@ export default function Practice() {
           accessibilityHint="Shows the choices for a one-off set. Your path doesn't change."
           last
         />
-        {setOpen && (
+        <Collapse open={setOpen}>
           <View testID="build-set">
             <FieldLabel>Domain</FieldLabel>
             <View accessibilityLabel="Domain for this set">
@@ -324,7 +326,7 @@ export default function Practice() {
               }}
             />
           </View>
-        )}
+        </Collapse>
       </Enter>
 
       <Enter i={4}>

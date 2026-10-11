@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
 import { ChevronDown, ICON_STROKE } from '../../components/icons';
+import { Collapse, Turn } from '../../components/motion';
 import { Bullets, ReadMark, TermList } from '../../components/notes';
 import { Button, Enter, HeroPanel, ICON_SIZE, ListRow, PushedHeader, Row, Screen, Section, T } from '../../components/ui';
 import { findQuestion } from '../../content/loader';
@@ -98,7 +99,13 @@ export default function NotesDomain() {
                 hitSlop={4}
                 style={{ minHeight: 48, justifyContent: 'center', alignSelf: 'flex-start' }}
               >
-                <T v="label" color={c.onForest}>{overviewOpen ? 'Less' : 'More'}</T>
+                <Row gap={space.xs}>
+                  <T v="label" color={c.onForest}>{overviewOpen ? 'Less' : 'More'}</T>
+                  {/* The chevron turns with it (what changed); the text itself just reflows. */}
+                  <Turn deg={overviewOpen ? 180 : 0}>
+                    <ChevronDown size={ICON_SIZE.inline} color={c.onForest} strokeWidth={ICON_STROKE} />
+                  </Turn>
+                </Row>
               </Pressable>
             </>
           ) : null}
@@ -172,12 +179,14 @@ export default function NotesDomain() {
             >
               <Row gap={space.sm}>
                 <T v="headline" style={{ flex: 1 }}>Domain key terms</T>
-                <View style={{ transform: [{ rotate: termsOpen ? '0deg' : '-90deg' }] }}>
+                <Turn deg={termsOpen ? 0 : -90}>
                   <ChevronDown size={ICON_SIZE.row} color={c.muted} strokeWidth={ICON_STROKE} />
-                </View>
+                </Turn>
               </Row>
             </Pressable>
-            {termsOpen && <TermList items={notes.keyTerms} />}
+            <Collapse open={termsOpen}>
+              <TermList items={notes.keyTerms} />
+            </Collapse>
           </View>
         )}
       </Enter>

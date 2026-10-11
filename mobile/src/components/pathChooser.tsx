@@ -16,6 +16,7 @@ import { MODE_INFO, SESSION_SIZES, STUDY_MODES, type StudyMode } from '../engine
 import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ChevronDown, ICON_STROKE } from './icons';
+import { Turn } from './motion';
 import { Button, Chip, ChipRow, Gap, IconCircle, RadioRow, Segmented, T, useFontScale } from './ui';
 
 // ── DisclosureRow: a list row that shows or hides the panel under it ──
@@ -66,9 +67,10 @@ export function DisclosureRow({
       </View>
       <View style={styles.trail}>
         {action ? <T v="label" color={c.accentText}>{action}</T> : null}
-        <View style={expanded ? styles.flip : undefined}>
+        {/* Turns as the panel opens or closes (motion.md M4). */}
+        <Turn deg={expanded ? 180 : 0}>
           <ChevronDown size={18} color={action ? c.accentText : c.muted} strokeWidth={ICON_STROKE} />
-        </View>
+        </Turn>
       </View>
       {!last && !expanded && <View style={[styles.hairline, { left: icon ? 54 : 0, backgroundColor: c.line }]} />}
     </Pressable>
@@ -164,7 +166,6 @@ const styles = StyleSheet.create({
   rowStacked: { flexWrap: 'wrap', rowGap: space.xs },
   textStacked: { flexBasis: '100%', minWidth: 0 },
   trail: { flexDirection: 'row', alignItems: 'center', gap: space.xs },
-  flip: { transform: [{ rotate: '180deg' }] },
   hairline: { position: 'absolute', right: 0, bottom: 0, height: 1 },
   field: { marginTop: space.md, marginBottom: space.xs },
   panel: { paddingBottom: space.lg, borderBottomWidth: 1 },
