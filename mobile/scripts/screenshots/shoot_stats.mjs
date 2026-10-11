@@ -26,11 +26,12 @@ const wrongOf = (q) => ['A', 'B', 'C', 'D'].find((l) => l !== q.correct);
 const now = Date.now();
 
 /** A finished session: `right(i)` says which answers were right; `ms(i)` each answer's time. */
-function session({ id, mode, title, n, right, ms, minutes, deadline, pick }) {
+function session({ id, mode, title, n, right, ms, minutes, deadline, pick, answered = n }) {
   const qs = pick(n);
   const responses = {};
   let t = now - minutes * 60_000;
-  qs.forEach((q, i) => {
+  // The first `answered` get an answer; the rest are left blank (a mock submitted early).
+  qs.slice(0, answered).forEach((q, i) => {
     t += ms(i);
     const ok = right(i);
     responses[q.id] = { display: ok ? q.correct : wrongOf(q), correct: ok, ms: ms(i), at: t };
@@ -55,6 +56,8 @@ const SESSIONS = {
   one: session({ id: 'shot-one', mode: 'practice', title: 'Practice · IS Audit', n: 1, right: () => true, ms: () => 5_000, minutes: 5 / 60, pick: (n) => bank.slice(0, n) }),
   twenty: session({ id: 'shot-twenty', mode: 'practice', title: 'Practice · All domains', n: 20, right: (i) => i % 10 < 7, ms: (i) => 52_000 + (i % 5) * 9_000, minutes: 23, pick: spread }),
   mock: session({ id: 'shot-mock', mode: 'mock', title: 'Mock exam', n: 150, right: (i) => i % 10 < 7, ms: (i) => 78_000 + (i % 7) * 6_000, minutes: 215, deadline: 240, pick: spread }),
+  // A mini mock submitted with 10 left blank: Correct + Missed = 50, and the line says so.
+  blanks: session({ id: 'shot-blanks', mode: 'mock', title: 'Mini mock', n: 50, answered: 40, right: (i) => i % 4 !== 0, ms: () => 80_000, minutes: 56, deadline: 80, pick: spread }),
 };
 
 const browser = await chromium.launch({ ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}) });
@@ -98,6 +101,11 @@ await go('/home', 2600);
 for (const [name, s] of Object.entries(SESSIONS)) {
   await edit(SESSION, `v.state = { active: a };`, s);
   await go('/results', 2800);
+  // On a narrow phone, the rings and their legend first (it stacks under the rings below 380 wide).
+  if (NARROW && name === 'mock') {
+    await toTop('Mock exam', 20);
+    await shot('s1-results-mock-rings');
+  }
   // From the rings' legend down: the stats row, the line under it, the actions.
   await toTop(/the ring is your score|Each ring is a domain/, 160);
   await shot(`s1-results-${name}`);

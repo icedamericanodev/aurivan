@@ -4,6 +4,9 @@
 // side with their Stretch row, a set that grew ("New in Evergreen"), the
 // one-time catalogue line, the share entry on a badge's sheet, and the share
 // card. REDUCED=1 runs with Reduce Motion on (files end "-reduced").
+// FONT_SCALE=2: approximate 200% text for the badge sheet, its tier ladder and
+// the share panel (files end "-fs200"). The card itself is a fixed picture in
+// the app (its text never scales), so its text runs are left at 100% here too.
 import { createRequire } from 'module';
 import fs from 'fs';
 const require = createRequire(process.env.PLAYWRIGHT_REQUIRE_FROM || import.meta.url);
@@ -13,7 +16,8 @@ const out = process.argv[3];
 const theme = process.argv[4] || 'light';
 const BASE = 'http://127.0.0.1:8093';
 const REDUCED = process.env.REDUCED === '1';
-const tag = `${theme}${REDUCED ? '-reduced' : ''}`;
+const FONT_SCALE = Number(process.env.FONT_SCALE) || 0;
+const tag = `${theme}${REDUCED ? '-reduced' : ''}${FONT_SCALE ? `-fs${Math.round(FONT_SCALE * 100)}` : ''}`;
 const P = 'aurivan.progress.v1';
 const SEEN = 'aurivan.seen.v1';
 const DAY = 86400000;
@@ -25,12 +29,16 @@ await ctx.addInitScript((s) => {
   for (const [k, v] of Object.entries(s)) if (!k.startsWith('__')) localStorage.setItem(k, v);
   localStorage.setItem('__seeded', '1');
 }, seed);
+if (FONT_SCALE) await ctx.addInitScript((f) => (window.__AURIVAN_FONT_SCALE__ = f), FONT_SCALE);
 const page = await ctx.newPage();
 const errs = [];
 page.on('pageerror', (e) => errs.push(e.message));
 const wait = (ms) => page.waitForTimeout(ms);
 const go = async (path, ms = 2400) => {
   await page.goto(BASE + path, { waitUntil: 'networkidle' });
+  if (FONT_SCALE) {
+    await page.addStyleTag({ content: `div[dir="auto"] { zoom: ${FONT_SCALE}; } [aria-label^="Badge card."] div[dir="auto"] { zoom: 1; }` });
+  }
   await wait(ms);
 };
 const shot = async (name) => {
@@ -83,6 +91,29 @@ await edit(P, `
   m.earned['took-root'] = t - 1 * d; m.earned['dress-rehearsal:2'] = t - 1 * d;
   m.counts = { ...(m.counts || {}), longRecall: 96 };`, now);
 await edit(SEEN, `v.state.caseSeen = { cisa: a }; v.state.badgeSort = 'set';`, now);
+
+if (FONT_SCALE) {
+  // 200% text: a badge's sheet, its tier ladder, and the share panel.
+  await go('/milestones', 2600);
+  await toTop('Evergreen');
+  await open(/^Long Memory · 75 recalls, Lichen\. Earned/);
+  await shot('c30-sheet');
+  await sheetTo('Tiers');
+  await shot('c31-ladder');
+  await close();
+  await toTop('Evergreen');
+  await open(/^Took Root\. Earned/);
+  await page.getByRole('button', { name: /^Share Took Root$/ }).click();
+  await wait(1400);
+  await shot('c32-share-panel');
+  await page.mouse.move(196, 500);
+  await page.mouse.wheel(0, 700);
+  await wait(700);
+  await shot('c32b-share-panel-actions');
+  console.log('errors:', errs.slice(0, 5));
+  await browser.close();
+  process.exit(0);
+}
 
 await go('/milestones', 2600);
 await shot('c07-case-new-tiers-line');
