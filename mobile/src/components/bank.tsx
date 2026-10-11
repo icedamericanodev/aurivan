@@ -1,9 +1,9 @@
 /**
  * Building blocks for the Question bank screens (app/bank/*).
  *
- * - StatusMark: a 24pt circle that says where the learner stands on a
- *   question. Shape AND colour differ (empty ring / ✓ / ✗), so it never
- *   relies on colour alone, and the word is also printed in the meta line.
+ * - StatusMark: a 24pt mark that says where the learner stands on a
+ *   question. Shape AND colour differ (a small open ring / ✓ / ✗), so it
+ *   never relies on colour alone, and the word is also printed in the meta line.
  * - TopicHeader: a topic name with the learner's own counts (never the
  *   topic's size — product rule, see engine/bank.ts).
  * - BankQuestionRow: one question in the list. Hairline below, no card
@@ -22,8 +22,14 @@ import { ICON_SIZE, T } from './ui';
 export function StatusMark({ status }: { status: QuestionStatus }) {
   const { c } = useTheme();
   if (status === 'new') {
-    // Not yet answered: an empty ring in the control colour (≥3:1 on paper).
-    return <View style={[styles.mark, { borderWidth: 1.5, borderColor: c.control }]} />;
+    // Not yet answered: a small open ring in the control colour (≥3:1 on paper),
+    // centred in the mark's place. Small on purpose (mobile 1.9, E3): a full-size
+    // ring read as a radio button to tap.
+    return (
+      <View style={[styles.mark, styles.markNew]}>
+        <View style={[styles.ring, { borderColor: c.control }]} />
+      </View>
+    );
   }
   const ok = status === 'correct';
   const Icon = ok ? Check : X;
@@ -55,12 +61,15 @@ export function BankQuestionRow({
   status,
   saved,
   difficulty,
+  topic,
   onPress,
 }: {
   text: string;
   status: QuestionStatus;
   saved: boolean;
   difficulty: Difficulty;
+  /** Mobile 1.9 (E3): the row's own topic, when no header names it (a topic with one row). */
+  topic?: string;
   onPress: () => void;
 }) {
   const { c } = useTheme();
@@ -68,8 +77,8 @@ export function BankQuestionRow({
   return (
     <Pressable
       accessibilityRole="button"
-      // Status first, so a screen-reader user can skim the list quickly.
-      accessibilityLabel={`${meta}${saved ? ', saved' : ''}. ${text}`}
+      // Status first, so a screen-reader user can skim the list quickly; then the topic when the row names it.
+      accessibilityLabel={`${meta}${saved ? ', saved' : ''}. ${topic ? `${topic}. ` : ''}${text}`}
       accessibilityHint="Opens this question to answer it"
       onPress={onPress}
       style={({ pressed }) => [styles.row, { borderBottomColor: c.line }, pressed && { backgroundColor: c.soft }]}
@@ -78,6 +87,8 @@ export function BankQuestionRow({
         <StatusMark status={status} />
       </View>
       <View style={{ flex: 1, minWidth: 0 }}>
+        {/* A lone row's topic, quieter than a section header (ink2, not green). */}
+        {topic ? <T v="caption" color={c.ink2} style={styles.ownTopic}>{topic}</T> : null}
         {/* The stem's first line(s): two lines keep rows scannable. */}
         <T v="body" numberOfLines={2}>{text}</T>
         <View style={styles.metaRow}>
@@ -97,6 +108,9 @@ export function BankQuestionRow({
 
 const styles = StyleSheet.create({
   mark: { width: 24, height: 24, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
+  markNew: { backgroundColor: 'transparent' },
+  ring: { width: 12, height: 12, borderRadius: 6, borderWidth: 1.5 },
+  ownTopic: { marginBottom: 2 },
   // The mark sits beside the first text line, not centred on a tall row.
   markCol: { paddingTop: 1, alignSelf: 'flex-start' },
   row: {

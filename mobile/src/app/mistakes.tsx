@@ -76,8 +76,11 @@ export default function Mistakes() {
     return (
       <EmptyScreen
         header="Mistake journal"
+        art="pressed"
         title="Nothing open right now"
         body="Every question you miss lands here, tagged by the trap that caught you."
+        // Effort, made visible: what the learner has already cleared (never a count of misses).
+        next={fixedCount > 0 ? `${fixedCount} ${fixedCount === 1 ? 'mistake' : 'mistakes'} cleared so far` : undefined}
         tags={['Missed FIRST/BEST', 'Wrong role', 'Fixed the symptom']}
         primary={{ label: 'Practice 10 questions', onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), openSession) }}
         secondary={fixedCount > 0 ? { label: 'See cleared mistakes', onPress: () => setShowFixed(true) } : undefined}

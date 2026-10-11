@@ -297,6 +297,85 @@ export function Seedling({ color, size = 170 }: { color: string; size?: number }
   );
 }
 
+// ── Empty-state art (mobile 1.9, ui.md E1) ─────────────────────────────
+/**
+ * One drawing per empty place, in the seedling's hand (1.5 stroke, round
+ * caps, lens leaves), so a learner can tell where they are at a glance:
+ * - seedling: something new will grow here (the default);
+ * - fern: a fiddlehead uncurling (spaced review: questions come back around);
+ * - bookmark: a ribbon standing in the soil with a sprig on it (saved questions);
+ * - pressed: a leaf taped to a herbarium sheet, with its label (the mistake journal);
+ * - fieldbook: an open field book, a sprig and notes (the question bank, reports).
+ * Paths are fixed maths, built once. Decorative: hidden from screen readers.
+ */
+export type EmptyArtKind = 'seedling' | 'fern' | 'bookmark' | 'pressed' | 'fieldbook';
+
+const SOIL = ['M28 151 Q80 143 136 151', 'M46 160 Q80 155 116 160', 'M62 168 Q80 165 100 168'];
+const SOIL_OPACITY = [1, 0.55, 0.3];
+
+/** A fiddlehead: a stem from the soil that winds inward 1.7 turns, with folded leaflets. */
+function koruPath(): string {
+  const cx = 92;
+  const cy = 66;
+  const a0 = Math.atan2(86 - cy, 104 - cx);
+  const r0 = Math.hypot(104 - cx, 86 - cy);
+  let d = 'M92,150 C90,128 98,108 104,86';
+  for (let i = 0; i <= 90; i++) {
+    const t = i / 90;
+    const a = a0 - t * Math.PI * 3.4;
+    const r = r0 * Math.exp(-1.84 * t);
+    d += `${i ? 'L' : ' M'}${f1(cx + r * Math.cos(a))},${f1(cy + r * Math.sin(a))}`;
+  }
+  return `${d} ${leafPath(96, 126, 14, 4, -2.5)} ${leafPath(97, 118, 14, 4, -0.55)} ${leafPath(100, 104, 11, 3.2, -2.45)} ${leafPath(101, 98, 11, 3.2, -0.6)}`;
+}
+
+/** A pressed leaf (midrib, veins), its label, and the two strips of tape that hold it (drawn on paper). */
+function pressedPaths(): { d: string; knock: string } {
+  const [x, y, L, W, a] = [42, 132, 108, 30, -0.88];
+  const c = Math.cos(a);
+  const s = Math.sin(a);
+  const P = (u: number, v: number): Pt => [x + u * c - v * s, y + u * s + v * c];
+  const p = (u: number, v: number) => P(u, v).map(f1).join(',');
+  let d = `M${p(0, 0)} Q${p(L * 0.42, -W)} ${p(L, 0)} Q${p(L * 0.42, W)} ${p(0, 0)} M${p(-10, 0)} L${p(L * 0.9, 0)}`;
+  for (const u of [0.22, 0.38, 0.54, 0.7]) {
+    for (const sd of [1, -1]) d += ` M${p(L * u, 0)} Q${p(L * (u + 0.06), sd * W * 0.45)} ${p(L * (u + 0.13), sd * W * 0.62 * (1 - u * 0.5))}`;
+  }
+  d += ' M104,140 L148,140 L148,162 L104,162 Z M110,148 L140,148 M110,155 L130,155';
+  const tape = (u: number, len: number, w: number) => `M${[P(u - w, -len), P(u + w, -len), P(u + w, len), P(u - w, len)].map((q) => q.map(f1).join(',')).join(' L')} Z`;
+  return { d, knock: `${tape(-3, 10, 5.5)} ${tape(L * 0.64, 20, 5.5)}` };
+}
+
+const EMPTY_ART: Record<EmptyArtKind, { d: string; knock?: string; ground: string[] }> = (() => {
+  const pressed = pressedPaths();
+  return {
+    seedling: { d: `M80,150 C80,128 80,112 82,96 ${leafPath(82, 98, 44, 15, -2.55)} ${leafPath(82, 92, 50, 16, -0.5)} ${leafPath(81, 124, 22, 7, -2.2)}`, ground: SOIL },
+    fern: { d: `${koruPath()} ${frondPath({ w: 0, h: 0, p0: [84, 150], p1: [40, 78], pc: [70, 102], n: 5, len: 22, wid: 6.5, ang: 0.95 })}`, ground: SOIL },
+    bookmark: {
+      d: `M66,44 L104,44 L104,144 L85,129 L66,144 Z ${frondPath({ w: 0, h: 0, p0: [85, 116], p1: [86, 60], pc: [80, 88], n: 4, len: 14, wid: 4.5, ang: 0.95, alt: true })} M118,150 C117,134 120,118 128,104 ${leafPath(119, 132, 16, 5, -0.5)} ${leafPath(121, 122, 14, 4.5, -2.6)} ${leafPath(128, 104, 12, 4, -1.1)}`,
+      ground: SOIL,
+    },
+    pressed: { d: pressed.d, knock: pressed.knock, ground: [] },
+    fieldbook: {
+      d: `M85,62 C70,54 48,54 26,60 L26,134 C48,128 70,128 85,136 Z M85,62 C100,54 122,54 144,60 L144,134 C122,128 100,128 85,136 ${frondPath({ w: 0, h: 0, p0: [55, 124], p1: [58, 66], pc: [48, 96], n: 5, len: 15, wid: 4.6, ang: 0.95, alt: true })} M98,76 L132,73 M98,86 L132,83 M98,96 L126,94 M98,106 L130,104 M98,116 L118,115`,
+      ground: ['M30 148 Q85 141 140 148', 'M52 157 Q85 153 118 157'],
+    },
+  };
+})();
+
+/** An empty state's drawing (170 × 176 at full size). `paper` knocks out the tape over the pressed leaf. */
+export function EmptyArt({ art, color, paper, size = 170 }: { art: EmptyArtKind; color: string; paper: string; size?: number }) {
+  const a = EMPTY_ART[art];
+  return (
+    <Svg width={size} height={(size * 176) / 170} viewBox="0 0 170 176" fill="none" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <Path d={a.d} />
+      {a.knock ? <Path d={a.knock} fill={paper} /> : null}
+      {a.ground.map((d, i) => (
+        <Path key={i} d={d} opacity={SOIL_OPACITY[i]} />
+      ))}
+    </Svg>
+  );
+}
+
 // ── Growth rings: readiness as a tree cross-section (spec §10.1) ─────────
 /**
  * One ring per domain, inner = Domain 1 → outer = last domain. Ring

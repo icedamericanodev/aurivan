@@ -115,6 +115,11 @@ export type BankItem =
       saved: boolean;
       difficulty: Difficulty;
       topic: string;
+      /**
+       * Mobile 1.9 (ui.md E3): this row stands alone (its topic shows one
+       * row, so it has no header): the row names its topic itself.
+       */
+      ownTopic: boolean;
     };
 
 /** The first paragraph of a stem, trimmed (stems can contain line breaks). */
@@ -125,7 +130,9 @@ export function firstLine(stem: string): string {
 /**
  * Build the domain screen's list: questions that pass the filter, grouped
  * under topic headers (A→Z by the short topic name), bank order inside a
- * topic. `topicOf` turns a raw subtopic into its short display form; it is
+ * topic. A header only when a topic shows 2 rows or more (mobile 1.9, ui.md
+ * E3): a lone row names its topic itself (`ownTopic`), instead of a header
+ * over every single question. `topicOf` turns a raw subtopic into its short display form; it is
  * passed in so this file stays free of UI helpers.
  */
 export function buildBankList(
@@ -151,14 +158,16 @@ export function buildBankList(
     const all = groups.get(topic)!;
     const shown = all.filter((q) => matchesFilter(questionStatus(q.id, answers), savedSet.has(q.id), filter));
     if (shown.length === 0) continue; // a topic with nothing left after filtering disappears
-    items.push({
-      kind: 'topic',
-      key: `topic:${topic}`,
-      title: topic,
-      // A one-question topic's row already shows its status, so the header
-      // stays quiet. Otherwise: the learner's own counts across the topic.
-      summary: all.length > 1 ? topicSummary(learnerCounts(all, answers, bookmarks)) : '',
-    });
+    const ownTopic = shown.length < 2;
+    if (!ownTopic) {
+      items.push({
+        kind: 'topic',
+        key: `topic:${topic}`,
+        title: topic,
+        // The learner's own counts across the whole topic (never its size).
+        summary: topicSummary(learnerCounts(all, answers, bookmarks)),
+      });
+    }
     for (const q of shown) {
       items.push({
         kind: 'question',
@@ -169,6 +178,7 @@ export function buildBankList(
         saved: savedSet.has(q.id),
         difficulty: q.difficulty,
         topic,
+        ownTopic,
       });
     }
   }

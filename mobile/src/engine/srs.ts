@@ -88,6 +88,37 @@ export function nextReview(
   return { box, dueAt: now + INTERVAL_DAYS[box] * DAY_MS, lastSeen: now, reps: current.reps + 1 };
 }
 
+/**
+ * When spaced review next has questions, for the "all caught up" screen
+ * (mobile 1.9): the first moment something falls due after `now`, and how
+ * many of the learner's own questions fall due by the end of that local
+ * day. Null when nothing is scheduled.
+ */
+export function upcomingReview(review: Record<string, ReviewEntry>, now: number): { at: number; count: number } | null {
+  const future = Object.values(review)
+    .map((r) => r.dueAt)
+    .filter((t) => t > now);
+  if (future.length === 0) return null;
+  const at = Math.min(...future);
+  const end = new Date(at);
+  end.setHours(23, 59, 59, 999);
+  return { at, count: future.filter((t) => t <= end.getTime()).length };
+}
+
+/**
+ * "Next review: tomorrow · 6 questions" (later today / tomorrow / "16 Oct").
+ * `dateOf` formats a far day ("16 Oct"); passed in so the engine stays free of UI helpers.
+ */
+export function upcomingReviewLine(next: { at: number; count: number }, now: number, dateOf: (ms: number) => string): string {
+  const day = (ms: number) => {
+    const d = new Date(ms);
+    return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / DAY_MS;
+  };
+  const gap = day(next.at) - day(now);
+  const when = gap <= 0 ? 'later today' : gap === 1 ? 'tomorrow' : dateOf(next.at);
+  return `Next review: ${when} · ${next.count} ${next.count === 1 ? 'question' : 'questions'}`;
+}
+
 /** Question ids due now — most overdue first, then lowest box. */
 export function dueIds(review: Record<string, ReviewEntry>, now: number): string[] {
   return Object.keys(review)

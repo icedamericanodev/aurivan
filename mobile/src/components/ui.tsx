@@ -29,7 +29,7 @@ import {
 } from 'react-native';
 import Animated, { ReduceMotion, useAnimatedStyle, useSharedValue, withSpring, type SharedValue } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
+import Svg, { Defs, LinearGradient, Path, Rect, Stop } from 'react-native-svg';
 import { sayLater } from '../lib/a11y';
 import { domainColor } from '../content/certifications';
 import type { DomainInfo } from '../content/types';
@@ -54,7 +54,7 @@ import {
   type TypeVariant,
 } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { Botany, botanySize, Seedling, type BotanyKind } from './glyphs';
+import { Botany, botanySize, EmptyArt, type BotanyKind, type EmptyArtKind } from './glyphs';
 import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Settings as SettingsIcon, X } from './icons';
 import { AnimatedPressable, FadeIn, ProgressFill, RollingText, StateLayer, tween, useMotion, usePressScale } from './motion';
 
@@ -1016,6 +1016,8 @@ const styles = StyleSheet.create({
   tagRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: space.sm, marginTop: 18 },
   teachTag: { minHeight: 32, paddingHorizontal: space.md, borderRadius: radius.pill, flexDirection: 'row', alignItems: 'center', gap: 7 },
   teachDot: { width: 6, height: 6, borderRadius: 3 },
+  // The empty state's "next" line: a soft pill, centred, that may wrap.
+  nextTag: { marginTop: space.lg, minHeight: 32, maxWidth: '100%', paddingHorizontal: space.md, paddingVertical: 6, borderRadius: radius.pill, flexDirection: 'row', alignItems: 'center', gap: space.sm },
   // Track radius 25 = the 44pt pills' 22 + the 3pt inset, so the curves stay concentric.
   seg2: { borderRadius: 25, padding: SEG_INSET, gap: SEG_GAP },
   // The sliding thumb: over the first segment's box; translateX moves it.
@@ -1288,28 +1290,47 @@ export function PushedHeader({
   );
 }
 
-// ── Empty state: a seedling, not a sad face (spec §11 "Empty state") ──
+// ── Empty state: a drawing, not a sad face (spec §11 "Empty state") ──
+/**
+ * Mobile 1.9 (ui.md E1): each empty place has its own drawing (`art`, see
+ * glyphs.tsx EmptyArt) instead of the same seedling everywhere, and an
+ * optional `next` line that says what will happen here and when ("Next
+ * review: tomorrow · 6 questions"), in a soft pill under the body.
+ */
 export function EmptyState({
   title,
   body,
   tags,
   compact,
+  art = 'seedling',
+  next,
 }: {
   title: string;
   body: string;
   /** Teaching tags: the trap types that will appear here. */
   tags?: string[];
-  /** Smaller seedling, for an empty list inside a busier screen. */
+  /** Smaller drawing, for an empty list inside a busier screen. */
   compact?: boolean;
+  art?: EmptyArtKind;
+  /** One useful line about what comes next (a date, a count of the learner's own items). */
+  next?: string;
 }) {
   const { c } = useTheme();
   return (
     <View style={{ alignItems: 'center', marginTop: compact ? space.sm : 46 }}>
-      <View accessible={false} importantForAccessibility="no-hide-descendants">
-        <Seedling color={c.accent} size={compact ? 96 : 170} />
+      <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+        <EmptyArt art={art} color={c.accent} paper={c.bg} size={compact ? 96 : 170} />
       </View>
       <T v={compact ? 'headline' : 'hero'} center accessibilityRole="header" style={{ marginTop: compact ? space.xs : 22 }}>{title}</T>
       <T v={compact ? 'meta' : 'body'} color={c.ink2} center style={{ marginTop: space.sm, marginHorizontal: space.md }}>{body}</T>
+      {next ? (
+        <View style={[styles.nextTag, { backgroundColor: c.soft }]}>
+          <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+            <LeafMark color={c.accentText} />
+          </View>
+          <T v="meta" color={c.ink} style={{ flexShrink: 1 }}>{next}</T>
+        </View>
+      ) : null}
       {tags && tags.length > 0 && (
         <View style={styles.tagRow}>
           {tags.map((t) => (
@@ -1321,6 +1342,15 @@ export function EmptyState({
         </View>
       )}
     </View>
+  );
+}
+
+/** The small leaf at the start of an empty state's "next" line. */
+function LeafMark({ color }: { color: string }) {
+  return (
+    <Svg width={12} height={14} viewBox="0 0 11 13">
+      <Path d="M5.5 12.5C1.5 9.5 1 5 5.5 .8 10 5 9.5 9.5 5.5 12.5z" fill={color} />
+    </Svg>
   );
 }
 

@@ -112,6 +112,7 @@ export default function Reports() {
     return (
       <EmptyScreen
         header="Your reports"
+        art="fieldbook"
         title="No reports yet"
         body="When you report a problem, it’s listed here so you don’t report it twice. The list stays on this phone and in your own backups."
         fallback="/you"

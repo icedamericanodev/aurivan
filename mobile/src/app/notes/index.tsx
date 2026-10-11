@@ -74,7 +74,7 @@ export default function NotesHome() {
         <Enter i={1}>
           <Section title="Results" meta={hits.length ? `${hits.length}${hits.length === 30 ? '+' : ''} found` : undefined} />
           {hits.length === 0 ? (
-            <EmptyState compact title="No matches" body="Try a shorter word, or an acronym like RTO or SoD." />
+            <EmptyState compact art="fieldbook" title="No matches" body="Try a shorter word, or an acronym like RTO or SoD." />
           ) : (
             hits.map((h, i) => {
               const d = cert.domains.find((x) => x.id === h.subtopic.domainId);
