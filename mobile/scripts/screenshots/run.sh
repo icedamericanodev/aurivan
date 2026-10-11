@@ -71,7 +71,8 @@ elif [ "${SHOTS:-}" = badges ]; then
   # Mobile 1.10 badge collection: the case (empty-ish, mid, nearly complete),
   # each shelf, Next for your exam, Sort, the detail sheet, Results with a new
   # badge, You's dot, Show badges off/on, and a strip of the unlock moment
-  # (shoot_badges.mjs; REDUCED=1 for the reduced set).
+  # (shoot_badges.mjs; REDUCED=1 for the reduced set; FONT_SCALE=1.3 or 2 for the
+  # large-text layouts of the case, a shelf and the sheet).
   node scripts/screenshots/shoot_badges.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,

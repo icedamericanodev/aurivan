@@ -19,7 +19,12 @@ const theme = process.argv[4] || 'light';
 const BASE = 'http://127.0.0.1:8093';
 const SLOW = 10;
 const REDUCED = process.env.REDUCED === '1';
-const tag = `${theme}${REDUCED ? '-reduced' : ''}`;
+// FONT_SCALE=1.3 or 2: the large-text layouts (two columns at ×1.3, a list at
+// ×1.6+). The web build always reports a font scale of 1, so the app reads
+// the scale from the page (useFontScale) and every text run is zoomed with
+// CSS: an approximation of the phone's text size, with the app's own reflow.
+const FONT_SCALE = Number(process.env.FONT_SCALE) || 0;
+const tag = `${theme}${REDUCED ? '-reduced' : ''}${FONT_SCALE ? `-fs${Math.round(FONT_SCALE * 100)}` : ''}`;
 const P = 'aurivan.progress.v1';
 const S = 'aurivan.settings.v1';
 const SEEN = 'aurivan.seen.v1';
@@ -65,12 +70,14 @@ await ctx.addInitScript(() => {
   };
   window.__appNow = () => performance.now();
 });
+if (FONT_SCALE) await ctx.addInitScript((f) => (window.__AURIVAN_FONT_SCALE__ = f), FONT_SCALE);
 const page = await ctx.newPage();
 const errs = [];
 page.on('pageerror', (e) => errs.push(e.message));
 const wait = (ms) => page.waitForTimeout(ms);
 const go = async (path, ms = 2200) => {
   await page.goto(BASE + path, { waitUntil: 'networkidle' });
+  if (FONT_SCALE) await page.addStyleTag({ content: `div[dir="auto"] { zoom: ${FONT_SCALE}; }` });
   await wait(ms);
 };
 const shot = async (name, opts = {}) => {
@@ -134,6 +141,27 @@ async function strip(name, titles, act, appTimes, clip) {
 
 const now = Date.now();
 
+if (FONT_SCALE) {
+  // Large text: the case's top (Next for your exam), a shelf, and the sheet.
+  await go('/home', 2600);
+  await go('/milestones', 2600);
+  await shot('b01-case-next');
+  await toTop('Groundwork');
+  await shot('b02-shelf-groundwork-domains');
+  await page.getByRole('button', { name: /^First Foothold\. Earned/ }).first().click();
+  await wait(1400);
+  await shot('b09-sheet-earned');
+  await page.getByRole('button', { name: /^Close First Foothold/ }).click();
+  await wait(700);
+  await toTop('Evergreen');
+  await page.getByRole('button', { name: /^Long Memory\. Not yet/ }).first().click();
+  await wait(1400);
+  await shot('b08-sheet-not-yet');
+  console.log('errors:', errs.slice(0, 5));
+  await browser.close();
+  process.exit(0);
+}
+
 // ── 1. Mid-progress: the seed's study, back-filled quietly at launch ────
 await go('/home', 2600);
 await go('/milestones', 2600);
@@ -144,8 +172,9 @@ await toTop('Evergreen');
 await shot('b03-shelf-evergreen-judgement');
 await toTop('Exam Day');
 await shot('b04-shelf-examday-rooted');
-await toTop('Moments');
-await shot('b05-shelf-moments-fieldnotes');
+// Moments is not on the case until something on it happened (b11d shows it).
+await toTop('Field notes', 200);
+await shot('b05-shelf-fieldnotes');
 
 // The Sort menu, opened, and a flat sort (closest first).
 await toTop('Sort: By set ▾', 140);
@@ -191,6 +220,8 @@ await toTop('Groundwork');
 await shot('b11b-nearly-shelves');
 await toTop('Exam Day');
 await shot('b11c-nearly-examday-rooted');
+await toTop('Moments');
+await shot('b11d-nearly-moments-fieldnotes');
 
 // ── 4. Results with a new badge, and the unlock strip ──────────────────
 await edit(P, `

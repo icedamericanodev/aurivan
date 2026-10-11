@@ -63,7 +63,11 @@ export function earnedWhen(m: CaseMark, quietAt?: number): string | undefined {
 
 /** The short line under a medallion: when it was earned, or how close it is. */
 export function cellLine(m: CaseMark, showProgress: boolean, quietAt?: number): string | undefined {
-  if (m.status === 'earned') return [tierName(m), earnedWhen(m, quietAt)].filter(Boolean).join(' · ') || 'Earned';
+  if (m.status === 'earned') {
+    const when = earnedWhen(m, quietAt);
+    // After a tier's name it reads on: "Clay · by 11 Oct".
+    return [tierName(m), m.tier ? when?.replace(/^By /, 'by ') : when].filter(Boolean).join(' · ') || 'Earned';
+  }
   if (m.status === 'gated') return 'Opens later';
   if (!showProgress) return undefined;
   // Firm Footing: its gap ("62% → 70%"); the weight has its own line.

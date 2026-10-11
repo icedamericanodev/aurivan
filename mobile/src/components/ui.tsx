@@ -1287,9 +1287,16 @@ export function Enter({ i = 0, children, style }: { i?: number; children: ReactN
   );
 }
 
-/** The phone's text-size multiplier (1 = default, 2 = 200%). */
+/**
+ * The phone's text-size multiplier (1 = default, 2 = 200%). The web build
+ * always reports 1, so the screenshot harness (FONT_SCALE=…) sets
+ * `__AURIVAN_FONT_SCALE__` on the page to see the large-text layouts there.
+ * Native ignores it.
+ */
 export function useFontScale(): number {
-  return useWindowDimensions().fontScale;
+  const { fontScale } = useWindowDimensions();
+  const shot = Platform.OS === 'web' ? (globalThis as { __AURIVAN_FONT_SCALE__?: unknown }).__AURIVAN_FONT_SCALE__ : undefined;
+  return typeof shot === 'number' && shot > 0 ? shot : fontScale;
 }
 
 // ── Pushed-screen header (spec §6 "Header") ───────────────────────────
