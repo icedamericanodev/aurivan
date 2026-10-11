@@ -288,11 +288,18 @@ export function StateLayer({
   on,
   style,
   dur = 'select',
+  step = false,
   children,
 }: {
   on: boolean;
   style?: StyleProp<ViewStyle>;
   dur?: MotionDur;
+  /**
+   * Flip at the half-way point instead of fading. For a letter whose colours
+   * invert (paper on ink vs ink on paper): a linear cross-fade passes through
+   * zero contrast, so the letter would vanish for a moment mid-fade.
+   */
+  step?: boolean;
   /** Drawn inside the layer (a badge's letter in its "on" colour), so it cross-fades too. */
   children?: ReactNode;
 }) {
@@ -300,7 +307,7 @@ export function StateLayer({
   useEffect(() => {
     o.set(tween(on ? 1 : 0, dur));
   }, [on, dur, o]);
-  const anim = useAnimatedStyle(() => ({ opacity: o.value }));
+  const anim = useAnimatedStyle(() => ({ opacity: step ? (o.value >= 0.5 ? 1 : 0) : o.value }));
   return (
     <Animated.View
       accessible={false}

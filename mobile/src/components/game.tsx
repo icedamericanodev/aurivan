@@ -6,7 +6,7 @@
 import { router } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from 'react';
 import { AccessibilityInfo, Pressable, ScrollView, View } from 'react-native';
-import Animated, { FadeIn, ReduceMotion, useAnimatedStyle, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
+import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { findQuestion } from '../content/loader';
 import { GAMES } from '../engine/games/registry';
@@ -25,6 +25,7 @@ import { useReportFlow } from './support';
 import { questionTarget } from '../lib/support';
 import type { ReportTarget } from '../engine/support';
 import { Seedling, TierLeaf } from './glyphs';
+import { AnimatedPressable, Shake, StateLayer, usePressScale } from './motion';
 import { MilestoneMomentView, TierTag } from './milestones';
 import { tierChangeLine, type GameTier } from '../engine/games/growth';
 import type { RoundNews } from '../lib/gameRounds';
@@ -445,19 +446,14 @@ export function MatchTile({
   pressRef?: Ref<View>;
 }) {
   const { c, isDark } = useTheme();
-  const x = useSharedValue(0);
-  useEffect(() => {
-    if (!shake) return;
-    const step = (to: number) => withTiming(to, { duration: 40, reduceMotion: ReduceMotion.System });
-    x.value = withSequence(step(-6), step(6), step(-3), step(0));
-  }, [shake, x]);
-  const moved = useAnimatedStyle(() => ({ transform: [{ translateX: x.value }] }));
+  const press = usePressScale();
   const interactive = onPress !== undefined || Boolean(radio);
   // Never tappable and nothing to show: the flat "given" look, so it doesn't pass for a stone you can move.
   const flat = !interactive && state === 'idle';
   const look = {
     idle: { bg: flat ? c.soft : c.raised, border: isDark && !flat ? c.line : 'transparent', fg: c.ink },
-    selected: { bg: c.raised, border: c.ink, fg: c.ink },
+    // Selected keeps the idle box: the 2px ink ring is a layer that cross-fades in (spec §8).
+    selected: { bg: c.raised, border: isDark ? c.line : 'transparent', fg: c.ink },
     matched: { bg: c.correctBg, border: 'transparent', fg: c.ink },
     correct: { bg: c.correctBg, border: 'transparent', fg: c.ink },
     wrong: { bg: c.wrongBg, border: 'transparent', fg: c.ink },
@@ -489,19 +485,20 @@ export function MatchTile({
     minHeight: 48,
     justifyContent: 'center' as const,
     borderRadius: radius.md,
-    borderWidth: state === 'selected' ? 2 : 1.5,
+    borderWidth: 1.5,
     borderColor: look.border,
     backgroundColor: look.bg,
-    paddingVertical: state === 'selected' ? 11.5 : 12,
-    paddingHorizontal: state === 'selected' ? 13.5 : 14,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
     marginBottom: space.sm,
     ...(!isDark && !tinted && !flat ? raisedShadow : null),
   };
   const off = Boolean(locked) || !onPress;
   return (
-    <Animated.View style={moved}>
+    // A wrong try shakes once (motion.tsx Shake; nothing moves under Reduce Motion).
+    <Shake trigger={shake}>
       {interactive ? (
-        <Pressable
+        <AnimatedPressable
           ref={pressRef}
           accessibilityRole={radio ? 'radio' : 'button'}
           accessibilityLabel={spoken}
@@ -509,18 +506,24 @@ export function MatchTile({
           accessibilityState={radio ? { checked: Boolean(checked), disabled: off } : { selected: state === 'selected', disabled: off }}
           disabled={off}
           onPress={onPress}
-          style={({ pressed }) => [box, pressed && !off && { opacity: 0.85 }]}
+          onPressIn={press.onPressIn}
+          onPressOut={press.onPressOut}
+          style={[box, press.style]}
         >
+          <StateLayer on={state === 'selected'} style={[tileRing, { borderColor: c.ink }]} />
           {body}
-        </Pressable>
+        </AnimatedPressable>
       ) : (
         <View ref={pressRef} accessible accessibilityLabel={spoken} style={box}>
           {body}
         </View>
       )}
-    </Animated.View>
+    </Shake>
   );
 }
+
+/** The selected tile's 2px ink ring, laid over the tile's own 1.5 border. */
+const tileRing = { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5, borderRadius: radius.md, borderWidth: 2 } as const;
 
 /**
  * A game this certification can't play yet (too few suitable questions,

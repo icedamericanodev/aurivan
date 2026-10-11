@@ -15,16 +15,7 @@
  */
 import { useEffect, useState, type ReactNode } from 'react';
 import { Pressable, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';
-import Animated, {
-  Easing,
-  ReduceMotion,
-  useAnimatedStyle,
-  useReducedMotion,
-  useSharedValue,
-  withDelay,
-  withSpring,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import type { Letter } from '../content/types';
 import type { Confidence } from '../engine/srs';
@@ -33,10 +24,11 @@ import { tipParts } from '../engine/tips';
 import { config } from '../lib/config';
 import { haptic } from '../lib/haptics';
 import { shortReference } from '../lib/format';
-import { badgeLetter, optionText, radius, raisedShadow, space } from '../theme/tokens';
+import { badgeLetter, motion, optionText, radius, raisedShadow, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
 import { Check, X } from './icons';
+import { AnimatedPressable, ease, FadeIn, Pop, StateLayer, tween, useMotion, usePressScale } from './motion';
 import { ReportRow } from './support';
 import { Chip, Gap, Row, T } from './ui';
 
@@ -99,14 +91,20 @@ export function OptionCard({
   // Selected uses INK, never green: green means "correct" (spec §3).
   // Feedback rows are tinted blocks with no border or shadow.
   const tinted = state === 'correct' || state === 'wrong';
-  const look = {
+  const looks = {
     idle: { bg: c.raised, border: isDark ? c.line : 'transparent', badgeBg: 'transparent', badgeBorder: c.control, badgeText: c.ink2, text: c.ink },
     selected: { bg: c.raised, border: c.ink, badgeBg: c.ink, badgeBorder: c.ink, badgeText: c.bg, text: c.ink },
     correct: { bg: c.correctBg, border: 'transparent', badgeBg: c.correct, badgeBorder: c.correct, badgeText: c.bg, text: c.ink },
     wrong: { bg: c.wrongBg, border: 'transparent', badgeBg: c.wrong, badgeBorder: c.wrong, badgeText: c.bg, text: c.ink },
     dimmed: { bg: c.raised, border: isDark ? c.line : 'transparent', badgeBg: 'transparent', badgeBorder: c.line, badgeText: c.muted, text: c.muted },
-  }[state];
+  };
   const selected = state === 'selected';
+  // Selecting never changes the row's own border or padding: the 2px ink
+  // ring and the ink badge are layers that cross-fade in (120 ms, spec §8),
+  // so nothing reflows. The row underneath keeps the idle look.
+  const look = selected ? looks.idle : looks[state];
+  const choosable = Boolean(onPress);
+  const press = usePressScale();
   // The badge grows with very large text so the letter still fits (spec §10.7).
   const badge = 30 * Math.min(Math.max(fontScale, 1), 1.6);
   // No ", selected" here: the radio's checked state already announces it.
@@ -118,10 +116,9 @@ export function OptionCard({
     gap: 14,
     alignItems: 'flex-start' as const,
     borderRadius: radius.md,
-    // 2px ink border when selected; padding shrinks by 0.5 so nothing jumps.
-    borderWidth: selected ? 2 : 1.5,
-    paddingVertical: selected ? 13.5 : 14,
-    paddingHorizontal: selected ? 15.5 : 16,
+    borderWidth: 1.5,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
     borderColor: look.border,
     backgroundColor: look.bg,
     marginBottom: 10, // the gap between option rows (spec §6)
@@ -129,6 +126,7 @@ export function OptionCard({
   };
   const content = (
     <>
+      {choosable && <StateLayer on={selected} style={[ring, { borderColor: c.ink }]} />}
       <View
         style={{
           width: badge,
@@ -150,6 +148,15 @@ export function OptionCard({
         ) : (
           <T v="caption" color={look.badgeText} style={badgeLetter}>{letter}</T>
         )}
+        {choosable && (
+          <>
+            {/* The ink fill fades in; the paper letter flips on at half-way, so it never vanishes mid-fade. */}
+            <StateLayer on={selected} style={[badgeOn, { borderRadius: badge / 2, backgroundColor: c.ink }]} />
+            <StateLayer on={selected} step style={badgeOn}>
+              <T v="caption" color={c.bg} style={badgeLetter}>{letter}</T>
+            </StateLayer>
+          </>
+        )}
       </View>
       <View style={{ flex: 1 }}>
         {tag && <T v="caption" color={tagColor} style={{ marginBottom: 2 }}>{tag}</T>}
@@ -167,18 +174,25 @@ export function OptionCard({
     );
   }
   return (
-    <Pressable
+    <AnimatedPressable
       accessibilityRole="radio"
       accessibilityState={{ checked: selected, disabled }}
       accessibilityLabel={`Option ${letter}: ${text}${suffix}`}
       onPress={onPress}
       disabled={disabled}
-      style={({ pressed }) => [rowStyle, pressed && { transform: [{ scale: 0.98 }] }]}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      style={[rowStyle, press.style]}
     >
       {content}
-    </Pressable>
+    </AnimatedPressable>
   );
 }
+
+/** The selected option's 2px ink ring, laid over the row's own 1.5 border. */
+const ring = { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5, borderRadius: radius.md, borderWidth: 2 } as const;
+/** The selected badge fill, laid over the badge's own 1.5 outline. */
+const badgeOn = { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5, alignItems: 'center', justifyContent: 'center' } as const;
 
 // ── Confidence row: shown after selecting, before checking ────────────
 const CONF: { label: string; value: Confidence }[] = [
@@ -205,24 +219,20 @@ export function ConfidenceRow({ value, onChange }: { value?: Confidence; onChang
 export function Verdict({ correct, coach }: { correct: boolean; coach: string }) {
   const { c } = useTheme();
   const color = correct ? c.correct : c.wrong;
-  // The leaf springs from 60% to full size (spec §10.2); static under Reduce Motion.
-  const scale = useSharedValue(0.6);
-  useEffect(() => {
-    scale.value = withSpring(1, { damping: 16, stiffness: 260, reduceMotion: ReduceMotion.System });
-  }, [scale]);
-  const leafStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
+  // The leaf springs from 60% to full size (spec §10.2, the one signature
+  // spring); under Reduce Motion it fades in instead (120 ms).
   return (
     // No live region: the session screen already calls announceForAccessibility,
     // so a live region would make screen readers say the verdict twice.
     <View accessible accessibilityRole="header" accessibilityLabel={`${correct ? 'Correct' : 'Not quite'}. ${coach}`}>
       <Row gap={space.md} style={{ marginTop: space.md }}>
-        <Animated.View style={[{ width: 38, height: 38 }, leafStyle]}>
+        <Pop mount spring="pop" style={{ width: 38, height: 38 }}>
           <VerdictLeaf color={color} />
           {/* The ✓ / ✗ sits on top of the leaf, centred. */}
           <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
             {correct ? <Check size={20} color={c.bg} strokeWidth={2.5} /> : <X size={20} color={c.bg} strokeWidth={2.5} />}
           </View>
-        </Animated.View>
+        </Pop>
         <T v="hero" color={color} style={{ flexShrink: 1 }}>{correct ? 'Correct' : 'Not quite'}</T>
       </Row>
       <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>{coach}</T>
@@ -230,25 +240,23 @@ export function Verdict({ correct, coach }: { correct: boolean; coach: string })
   );
 }
 
-/** Entrance wrapper for the answer rows and explanation (fade + 8pt rise). */
+/** Entrance wrapper for the answer rows and explanation: fade + 8pt rise over `reveal` (200 ms). */
 export function Rise({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
-  const p = useSharedValue(0);
-  useEffect(() => {
-    p.value = withDelay(delay, withTiming(1, { duration: 200, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.System }));
-  }, [delay, p]);
-  const style = useAnimatedStyle(() => ({ opacity: p.value, transform: [{ translateY: (1 - p.value) * 8 }] }));
-  return <Animated.View style={style}>{children}</Animated.View>;
+  return (
+    <FadeIn dur="reveal" delay={delay}>
+      {children}
+    </FadeIn>
+  );
 }
 
 // ── The vine: key idea + tips as leaves on one stem (spec §10.2) ──────
 type VineNode = { kind: 'key' | 'tip'; label: string; body: string };
 
-const STEM_MS = 520; // stem draw time
-const LEAF_MS = 160; // each leaf pop
+const STEM_MS = motion.dur.vine; // stem draw time (520)
 
 export function Vine({ keyIdea, tips, visible }: { keyIdea?: string; tips: string[]; visible: boolean }) {
   const { c } = useTheme();
-  const reduce = useReducedMotion();
+  const { reduced: reduce } = useMotion();
   const nodes: VineNode[] = [
     ...(keyIdea ? [{ kind: 'key' as const, label: 'Key idea', body: keyIdea }] : []),
     ...tips.map((t, i) => ({ kind: 'tip' as const, ...tipParts(t, i) })),
@@ -260,7 +268,7 @@ export function Vine({ keyIdea, tips, visible }: { keyIdea?: string; tips: strin
     // The one haptic on the vine: a light tick as the Key idea leaf appears.
     if (keyIdea) haptic.selection();
     if (reduce) return;
-    grow.value = withTiming(1, { duration: STEM_MS, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.System });
+    grow.set(tween(1, 'vine', ease.out));
   }, [visible, reduce, keyIdea, grow]);
   const stemStyle = useAnimatedStyle(() => ({ transform: [{ scaleY: grow.value }] }));
 
@@ -293,7 +301,7 @@ function VineLeafNode({ node, last, visible, reduce, delay }: { node: VineNode; 
   const pop = useSharedValue(reduce ? 1 : 0);
   useEffect(() => {
     if (!visible || reduce) return;
-    pop.value = withDelay(delay, withTiming(1, { duration: LEAF_MS, reduceMotion: ReduceMotion.System }));
+    pop.set(withDelay(delay, tween(1, 'quick')));
   }, [visible, reduce, delay, pop]);
   const leafStyle = useAnimatedStyle(() => ({ transform: [{ scale: 0.4 + 0.6 * pop.value }], opacity: pop.value }));
   // Colour per tip type: Eliminate = trap amber, Final two = ink2, Exam cue = green.
@@ -360,5 +368,6 @@ export function StickyFooter({ children, onHeight }: { children: ReactNode; onHe
   );
 }
 
-// Exported for the session screen: delays used to stagger the answer screen.
-export const FEEDBACK_DELAY = { rows: 120, why: 200 } as const;
+// Exported for the session screen: delays used to stagger the answer screen
+// (spec §10.2): the rows start as the verdict leaf settles, "Why" just after.
+export const FEEDBACK_DELAY = { rows: motion.dur.select, why: motion.dur.reveal } as const;
