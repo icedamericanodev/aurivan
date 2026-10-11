@@ -7,7 +7,7 @@
 import { CERTIFICATIONS, domainColor, getCertification } from '../content/certifications';
 import type { DomainTone } from '../content/types';
 import { shortDate, shortReference, shortSubtopic } from '../lib/format';
-import { badgeEnamel, badgeMetal, dark, domainPalette, font, grainOp, light, maxScale, type, type Palette } from '../theme/tokens';
+import { badgeEnamel, badgeMetal, badgeStruck, dark, domainPalette, font, grainOp, light, maxScale, type, type Palette } from '../theme/tokens';
 
 const HEX = /^#[0-9A-F]{6}$/i;
 const TONES: DomainTone[] = [0, 1, 2, 3, 4];
@@ -224,6 +224,33 @@ describe('badge art contrast (WCAG 1.4.11, 3:1)', () => {
     expect(contrast(p.muted, p.soft)).toBeGreaterThanOrEqual(4.5);
     expect(contrast(p.control, p.bg)).toBeGreaterThanOrEqual(3);
     expect(contrast(p.accent, p.bg)).toBeGreaterThanOrEqual(3);
+  });
+  it.each([
+    ['light', light],
+    ['dark', dark],
+  ] as const)('a not-yet badge on the forest panel reads in %s: on-forest outline and emblem, sap trace', (_mode, p) => {
+    // "Next for your exam" draws it with surface="forest" (UX review H1: control on forest was 2.2–2.8:1).
+    expect(contrast(p.onForest2, p.forest)).toBeGreaterThanOrEqual(3);
+    expect(contrast(p.onForest2, p.forestTrack)).toBeGreaterThanOrEqual(3);
+    expect(contrast(p.sap, p.forestTrack)).toBeGreaterThanOrEqual(3);
+    expect(contrast(p.sap, p.forest)).toBeGreaterThanOrEqual(3);
+  });
+  it.each([
+    ['light', light],
+    ['dark', dark],
+  ] as const)('the stitched outline against the not-yet field stays where it is in %s (it is judged on the page, 3:1+ above)', (_mode, p) => {
+    // The outline sits ON the field's edge, so its 3:1 is against the page
+    // (tested above). Against the field itself it is 3.01 light / 2.98 dark:
+    // pinned here so a token change can never quietly make it worse.
+    expect(contrast(p.control, p.soft)).toBeGreaterThanOrEqual(2.95);
+  });
+  it('a one-mark badge is struck in the calm sage: unnamed, not a tier metal, and it reads like one', () => {
+    expect(badgeStruck.name).toBe('');
+    for (const m of Object.values(badgeMetal)) expect(m.mid).not.toBe(badgeStruck.mid);
+    expect(contrast(badgeStruck.edge, light.bg)).toBeGreaterThanOrEqual(3);
+    expect(contrast(badgeStruck.mid, dark.bg)).toBeGreaterThanOrEqual(3);
+    expect(contrast(badgeStruck.edge, badgeStruck.mid)).toBeGreaterThanOrEqual(3);
+    for (const [k, v] of Object.entries(badgeStruck)) if (k !== 'name') expect(v).toMatch(HEX);
   });
   it('earned art is struck in hex colours (an object, the same in light and dark)', () => {
     for (const e of Object.values(badgeEnamel)) for (const v of Object.values(e)) expect(v).toMatch(HEX);

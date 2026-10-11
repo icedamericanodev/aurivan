@@ -9,14 +9,21 @@
  *   Field notes are leaf-marks (pressed leaves); Moments are a stamp (the
  *   round seal with a dashed postmark ring, like a park passport).
  * - The rim METAL tells the tier (Clay, Lichen, Gold leaf), three ways:
- *   metal, pip count and, at Gold leaf, a laurel. A badge with one mark is
- *   struck in Gold leaf. The tier's number is always printed beside it.
+ *   metal, pip count and, at Gold leaf, a laurel. The tier's name is always
+ *   printed beside it. A badge with one mark has no tier: it is struck in a
+ *   calm sage (badgeStruck) with a plain rim, so Gold leaf always means the
+ *   top of a ladder.
  * - The EMBLEM is the badge's meaning, and later its keepsake on the plant.
  * - Earned: enamel, metal rim, ribbon. Not yet: a stitched dashed outline,
  *   a flat field, a one-tone emblem and a green progress trace from the top
  *   (theme tokens, so it follows light and dark). Gated (it opens later): a
  *   dotted outline and no trace. Never a padlock, a "?" or a silhouette.
- * - At 40pt and under, the compact cut: no ribbon, laurel, beads, pips or rings.
+ *   On the forest panel (`surface="forest"`) the not-yet badge uses the
+ *   on-forest inks (onForest2 outline and emblem, forestTrack field, sap
+ *   trace), so it keeps 3:1 there too.
+ * - At 64pt and under, the light cut: no growth rings and no cast emblem
+ *   shadow (a case of 30 medallions draws far fewer nodes).
+ * - At 47pt and under, the compact cut: no ribbon, laurel, beads, pips or rings.
  * - `strike`: the unlock moment. The rim catches the light once (a glint
  *   runs round it) and the emblem fills from its outline. Static under
  *   Reduce Motion, or once the moment is settled.
@@ -30,7 +37,7 @@ import Animated, { Easing, ReduceMotion, useAnimatedProps, useSharedValue, withD
 import Svg, { Circle, ClipPath, Defs, Ellipse, G, LinearGradient, Path, Rect, Stop } from 'react-native-svg';
 import ART from '../content/badgeArt.json';
 import type { SetId } from '../engine/badgeCatalog';
-import { badgeEnamel, badgeGlaze, badgeLeafPip, badgeMetal, motion, type BadgeEnamel, type BadgeEnamelId, type BadgeMetal } from '../theme/tokens';
+import { badgeEnamel, badgeGlaze, badgeLeafPip, badgeMetal, badgeStruck, motion, type BadgeEnamel, type BadgeEnamelId, type BadgeMetal } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { useMotion } from './motion';
 
@@ -145,24 +152,37 @@ export interface Strike {
 export interface MedallionProps {
   badge: string;
   set: SetId;
-  /** 0 = a one-mark badge (Gold leaf, no pips); 1–3 = its tier. */
+  /** 0 = a one-mark badge (the struck sage, no pips); 1–3 = its tier. */
   tier?: number;
   state: MedallionState;
   /** Not yet earned: how far along (0..1), drawn as the trace. */
   progress?: number;
   size: number;
-  /** Firm Footing: which domain leaf on the rim is this badge's (0-based, blueprint order) and how many there are. */
-  domain?: { index: number; count: number };
+  /** Firm Footing: which domain leaf on the rim is this badge's (0-based, blueprint order)… */
+  domainIndex?: number;
+  /** …and how many there are. Primitives, so the memo holds across renders. */
+  domainCount?: number;
+  /** What it sits on: the page (default) or the forest panel (on-forest inks for a not-yet badge). */
+  surface?: 'paper' | 'forest';
   strike?: Strike;
 }
 
-/** One medallion. Memoised: the art only changes with its state, size and progress. */
-export const Medallion = memo(function Medallion({ badge, set, tier = 0, state, progress = 0, size, domain, strike }: MedallionProps) {
+/** The rim for a tier: Clay, Lichen, Gold leaf; a one-mark badge's calm sage. */
+export const metalFor = (tier: number): BadgeMetal => (tier >= 1 && tier <= 3 ? badgeMetal[tier as 1 | 2 | 3] : badgeStruck);
+
+/** One medallion. Memoised (primitive props): the art only changes with its state, size and progress. */
+export const Medallion = memo(function Medallion({ badge, set, tier = 0, state, progress = 0, size, domainIndex, domainCount, surface = 'paper', strike }: MedallionProps) {
   const { c } = useTheme();
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const look = SET_LOOK[set];
   const fr = FRAMES[look.frame];
   const compact = size <= 47;
+  const light = size <= 64;
+  const onForest = surface === 'forest';
+  const domain = useMemo(
+    () => (domainIndex !== undefined && domainIndex >= 0 && domainCount ? { index: domainIndex, count: domainCount } : undefined),
+    [domainIndex, domainCount],
+  );
   const vb = compact ? '6 0 188 188' : '0 0 200 200';
   const emblem = EMBLEMS[emblemId(badge, tier || undefined)] ?? EMBLEMS['first-foothold'];
   const s = fr.emblem.s * (compact ? 1.08 : 1);
@@ -171,9 +191,16 @@ export const Medallion = memo(function Medallion({ badge, set, tier = 0, state, 
   const art = useMemo(
     () =>
       earned
-        ? earnedArt({ uid, look, fr, tier, compact, domain, emblem, place, enamel: badgeEnamel[look.enamel], metal: badgeMetal[(tier || 3) as 1 | 2 | 3] })
-        : lockedArt({ fr, compact, emblem, place, gated: state === 'gated', c }),
-    [earned, uid, look, fr, tier, compact, domain, emblem, place, state, c],
+        ? earnedArt({ uid, look, fr, tier, compact, light, domain, emblem, place, enamel: badgeEnamel[look.enamel], metal: metalFor(tier) })
+        : lockedArt({
+            fr,
+            compact,
+            emblem,
+            place,
+            gated: state === 'gated',
+            ink: onForest ? { field: c.forestTrack, line: c.onForest2, emblem: c.onForest2 } : { field: c.soft, line: c.control, emblem: c.muted },
+          }),
+    [earned, uid, look, fr, tier, compact, light, domain, emblem, place, state, c, onForest],
   );
   return (
     <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ width: size, height: size }}>
@@ -183,14 +210,14 @@ export const Medallion = memo(function Medallion({ badge, set, tier = 0, state, 
           <Path
             d={fr.trace}
             fill="none"
-            stroke={c.accent}
+            stroke={onForest ? c.sap : c.accent}
             strokeWidth={compact ? 5 : 4.2}
             strokeLinecap="round"
             strokeDasharray={`${Math.max(0.01, Math.min(1, progress)) * fr.traceLength} ${fr.traceLength}`}
           />
         )}
         {earned && strike && (
-          <StrikeLayer strike={strike} fr={fr} metal={badgeMetal[(tier || 3) as 1 | 2 | 3]} field={badgeEnamel[look.enamel].field} emblem={emblem} place={place} />
+          <StrikeLayer strike={strike} fr={fr} metal={metalFor(tier)} field={badgeEnamel[look.enamel].field} emblem={emblem} place={place} />
         )}
       </Svg>
     </View>
@@ -203,6 +230,7 @@ function earnedArt({
   fr,
   tier,
   compact,
+  light,
   domain,
   emblem,
   place,
@@ -214,6 +242,8 @@ function earnedArt({
   fr: FrameArt;
   tier: number;
   compact: boolean;
+  /** ≤ 64pt: no growth rings and no cast emblem shadow (detail too fine to see). */
+  light: boolean;
   domain?: { index: number; count: number };
   emblem: Node[];
   place: string;
@@ -224,7 +254,8 @@ function earnedArt({
   const domainPips = !compact && domain ? fr.domainPips[String(domain.count)] : undefined;
   const tierPips = !compact && !domain && tier ? fr.pips[String(tier)] : undefined;
   const beadKey = domainPips ? `d${domain!.count}` : String(tier);
-  const beads = !compact && (tier === 0 || tier >= 2) ? fr.beads[beadKey] : undefined;
+  // Beads mark the upper tiers only; a one-mark badge keeps a plain, calm rim.
+  const beads = !compact && tier >= 2 ? fr.beads[beadKey] : undefined;
   const ribbon = (
     <>
       <Path d={ART.ribbon.tail} fill={enamel.ribbon} />
@@ -291,7 +322,7 @@ function earnedArt({
       <Path d={fr.innerEdge} fill={metal.edge} />
       <Path d={fr.field} fill={enamel.field} />
       <G clipPath={`url(#${uid}f)`}>
-        {!compact && ART.rings.map((d, i) => <Path key={`r${i}`} d={d} fill="none" stroke={enamel.lite} strokeWidth={1.7} />)}
+        {!light && ART.rings.map((d, i) => <Path key={`r${i}`} d={d} fill="none" stroke={enamel.lite} strokeWidth={1.7} />)}
         <Ellipse cx={62} cy={40} rx={80} ry={44} transform="rotate(-28 62 40)" fill={badgeGlaze.color} opacity={paper ? badgeGlaze.paperOpacity : badgeGlaze.opacity} />
         <Path d={fr.field} fill="none" stroke={enamel.deep} strokeWidth={3} opacity={0.55} transform="translate(1.2 2)" />
       </G>
@@ -300,9 +331,11 @@ function earnedArt({
         <Circle cx={ART.centre.x} cy={ART.centre.y} r={compact ? 60 : 62} fill="none" stroke={enamel.E3} strokeWidth={compact ? 3.2 : 2.2} strokeDasharray={compact ? '8 6' : '6 4.5'} opacity={0.85} />
       )}
       <G transform={place}>
-        <G transform="translate(0 2.6)" opacity={paper ? 1 : 0.9}>
-          {drawEmblem(emblem, allRoles(enamel.deep), 's')}
-        </G>
+        {!light && (
+          <G transform="translate(0 2.6)" opacity={paper ? 1 : 0.9}>
+            {drawEmblem(emblem, allRoles(enamel.deep), 's')}
+          </G>
+        )}
         {drawEmblem(emblem, { E1: enamel.E1, E2: enamel.E2, E3: enamel.E3, D2: enamel.D2, D3: enamel.D3, L3: enamel.L3, K: enamel.field })}
       </G>
     </>
@@ -315,24 +348,25 @@ function lockedArt({
   emblem,
   place,
   gated,
-  c,
+  ink,
 }: {
   fr: FrameArt;
   compact: boolean;
   emblem: Node[];
   place: string;
   gated: boolean;
-  c: { soft: string; control: string; muted: string };
+  /** The field, the stitched line and the one-tone emblem (paper: soft / control / muted; forest: forestTrack / onForest2 / onForest2). */
+  ink: { field: string; line: string; emblem: string };
 }) {
-  const second = mix(c.muted, c.soft, 0.3);
-  const pal = { E1: c.muted, E2: second, D2: second, E3: c.muted, D3: c.muted, L3: second, K: c.soft };
+  const second = mix(ink.emblem, ink.field, 0.3);
+  const pal = { E1: ink.emblem, E2: second, D2: second, E3: ink.emblem, D3: ink.emblem, L3: second, K: ink.field };
   // Not yet: a stitched dashed outline (a patch not yet sewn on). Gated: dotted, the texture of "later".
   const dash = gated ? (compact ? '0.1 7' : '0.1 6') : compact ? '9 6' : '6.5 4.5';
   return (
     <>
-      <Path d={fr.metal} fill={c.soft} />
-      <Path d={fr.locked} fill="none" stroke={c.control} strokeWidth={gated ? (compact ? 4.4 : 3.4) : compact ? 3.6 : 2.6} strokeDasharray={dash} strokeLinecap="round" />
-      <Path d={fr.innerEdge} fill="none" stroke={c.control} strokeWidth={compact ? 2.4 : 1.6} opacity={0.7} />
+      <Path d={fr.metal} fill={ink.field} />
+      <Path d={fr.locked} fill="none" stroke={ink.line} strokeWidth={gated ? (compact ? 4.4 : 3.4) : compact ? 3.6 : 2.6} strokeDasharray={dash} strokeLinecap="round" />
+      <Path d={fr.innerEdge} fill="none" stroke={ink.line} strokeWidth={compact ? 2.4 : 1.6} opacity={0.7} />
       <G transform={place} opacity={gated ? 0.75 : 1}>
         {drawEmblem(emblem, pal)}
       </G>

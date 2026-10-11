@@ -169,7 +169,7 @@ export function MilestoneMomentView({
                 tier={moment.tier ?? 0}
                 state="earned"
                 size={MEDAL}
-                {...(moment.domain && moment.domain.index >= 0 ? { domain: moment.domain } : {})}
+                {...(moment.domain && moment.domain.index >= 0 ? { domainIndex: moment.domain.index, domainCount: moment.domain.count } : {})}
                 strike={{ run: full ? celebration.run : 0, settled: celebration.settled, delay: 120 }}
               />
             </Pop>

@@ -34,16 +34,20 @@ export const medallionState = (m: CaseMark): MedallionState => (m.status === 'ea
 /** Rooted's tier material, printed beside it ("Clay"), so the metal is never the only signal. */
 export const tierName = (m: CaseMark) => (m.tier ? badgeMetal[m.tier as 1 | 2 | 3].name : undefined);
 
-/** What a medallion needs from its mark and its exam. */
-export function medallionProps(m: CaseMark, domains: readonly DomainInfo[]) {
+/**
+ * What a medallion needs from its mark and its exam: primitives only, so the
+ * memoised medallion skips re-drawing when nothing about it changed. The
+ * progress trace shows only while progress does (never in the after-exam album).
+ */
+export function medallionProps(m: CaseMark, domains: readonly DomainInfo[], showProgress = true) {
   const index = m.domain ? domains.findIndex((d) => d.id === m.domain!.id) : -1;
   return {
     badge: m.badge,
     set: m.set,
     tier: m.tier ?? 0,
     state: medallionState(m),
-    progress: m.status === 'started' ? m.progress : 0,
-    ...(index >= 0 ? { domain: { index, count: domains.length } } : {}),
+    progress: showProgress && m.status === 'started' ? m.progress : 0,
+    ...(index >= 0 ? { domainIndex: index, domainCount: domains.length } : {}),
   };
 }
 
@@ -284,7 +288,8 @@ export function NextPanel({
             onPress={() => onOpen(best)}
             style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, marginTop: space.md }}
           >
-            <Medallion {...medallionProps(best, domains)} size={56} />
+            {/* On the forest panel: on-forest inks, so a not-yet badge keeps 3:1 (UX review H1). */}
+            <Medallion {...medallionProps(best, domains)} size={56} surface="forest" />
             <View style={{ flex: 1, minWidth: 0 }}>
               {best.progress > 0 ? (
                 <>

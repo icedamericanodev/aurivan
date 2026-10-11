@@ -374,8 +374,10 @@ export type BadgeEnamelId = keyof typeof badgeEnamel;
 
 /**
  * The rim metal tells the TIER, three ways (metal, pip count, laurel), never
- * by colour alone; the tier's number is also printed beside the badge.
- * A badge with one mark is struck in Gold leaf with a beaded rim and no pips.
+ * by colour alone; the tier's name is also printed beside the badge.
+ * A badge with one mark (no tiers) is struck in `badgeStruck`: a calm sage,
+ * plain rim, no pips, no beads and no name. Gold leaf is only ever the top
+ * tier of a tiered badge, so the ladder stays honest.
  * `leaf` / `leafRib`: Firm Footing's domain leaf on the rim (this domain).
  */
 export interface BadgeMetal {
@@ -391,6 +393,8 @@ export const badgeMetal: Record<1 | 2 | 3, BadgeMetal> = {
   2: { name: 'Lichen', light: '#FAFBF8', mid: '#C9D5CC', dark: '#8E9C92', edge: '#46544A', bead: '#FFFFFF' },
   3: { name: 'Gold leaf', light: '#FBE9B4', mid: '#E2B653', dark: '#A87A1F', edge: '#7A5100', bead: '#FFF5D6' },
 };
+/** A one-mark badge's finish: a calm struck sage, never named, never a tier. */
+export const badgeStruck: BadgeMetal = { name: '', light: '#E8EFE6', mid: '#AFC2B2', dark: '#77897B', edge: '#3A4A3F', bead: '#F4F8F2' };
 export const badgeLeafPip = { on: '#1E4A34', rib: '#A9D9BA' } as const;
 /** The faint glaze across an earned badge's enamel (light from the top left). */
 export const badgeGlaze = { color: '#FFFFFF', opacity: 0.035, paperOpacity: 0.3 } as const;
