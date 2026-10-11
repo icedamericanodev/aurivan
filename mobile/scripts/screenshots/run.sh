@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges|stats] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -74,6 +74,11 @@ elif [ "${SHOTS:-}" = badges ]; then
   # (shoot_badges.mjs; REDUCED=1 for the reduced set; FONT_SCALE=1.3 or 2 for the
   # large-text layouts of the case, a shelf and the sheet).
   node scripts/screenshots/shoot_badges.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = badgesC ]; then
+  # Mobile 1.11 badge tiers, Took Root and the share card: the tier ladders,
+  # the five domain medallions and their Stretch row, "New in Evergreen", the
+  # catalogue line, the share entry and the card (shoot_badges_c.mjs; REDUCED=1).
+  node scripts/screenshots/shoot_badges_c.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = stats ]; then
   # Mobile 1.11 stat rows: Results (1-question practice, 20-question practice,
   # a mock and its pacing), You's stats and the Today clearing (shoot_stats.mjs;
