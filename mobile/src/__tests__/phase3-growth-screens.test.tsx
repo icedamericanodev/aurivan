@@ -113,7 +113,7 @@ describe('Today’s clearing (T2)', () => {
     expect(useSeen.getState().moments.clearing).toBe(1);
     // Spoken as label and number, never as moving digits (mobile 1.11: "Questions: 31").
     expect(r!.root.findAll((n) => n.props.accessibilityLabel === 'Questions: 31' && typeof n.type === 'string')).toHaveLength(1);
-    expect(r!.root.findAll((n) => n.props.accessibilityLabel === 'Correct: 81 percent' && typeof n.type === 'string')).toHaveLength(1);
+    expect(r!.root.findAll((n) => n.props.accessibilityLabel === 'Accuracy: 81 percent' && typeof n.type === 'string')).toHaveLength(1);
     expect(r!.root.findAll((n) => n.props.accessibilityLabel === 'Time: 24 minutes' && typeof n.type === 'string')).toHaveLength(1);
     // …and only once: the rolling digits inside the group are not a second stop.
     expect(r!.root.findAll((n) => n.props.accessible === true && typeof n.type === 'string' && /^\d+( percent)?$/.test(n.props.accessibilityLabel ?? ''))).toHaveLength(0);

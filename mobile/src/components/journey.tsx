@@ -11,7 +11,7 @@
 import { REVIEW_CAP_LINE, REVIEW_SESSION_CAP, REVIEW_UNIT } from '../engine/srs';
 import { gameTitle } from '../engine/games/registry';
 import { useEffect, useState, type ReactNode } from 'react';
-import { Text, View } from 'react-native';
+import { Text, useWindowDimensions, View } from 'react-native';
 import { domainColor } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { biggestGrowth, clearingTitle, dayAccuracy, itemMinutes, type DayPlan } from '../engine/dayPlan';
@@ -204,6 +204,8 @@ export function ReadinessRow({
  * domain alone is drawn as a single thick ring in its tone.
  */
 export const SINGLE_RING_WEIGHT = 80;
+/** Narrower than this (most 360 dp Android phones), the legend sits under the rings. */
+export const RINGS_SIDE_BY_SIDE_MIN = 380;
 export function DomainRings({
   cert,
   values,
@@ -231,7 +233,10 @@ export function DomainRings({
   delta?: (i: number) => number;
 }) {
   const { c, isDark } = useTheme();
-  const stacked = useFontScale() >= LARGE_TEXT;
+  // The legend goes under the rings at large text AND on narrow phones: beside
+  // the rings at 360 dp, "IT Governance" wrapped and "26/38" was cut off.
+  const narrow = useWindowDimensions().width < RINGS_SIDE_BY_SIDE_MIN;
+  const stacked = useFontScale() >= LARGE_TEXT || narrow;
   const shown = only && only.length > 0 ? only : [...cert.domains.keys()];
   const tones = shown.map((i) => domainColor(cert.domains[i].tone, isDark));
   const weights = shown.length === 1 ? [SINGLE_RING_WEIGHT] : shown.map((i) => cert.domains[i].weight);
@@ -257,14 +262,17 @@ export function DomainRings({
           return (
             <Row key={cert.domains[i].id} gap={9}>
               <DomainDot domain={cert.domains[i]} />
-              <T v="meta" color={c.ink} style={{ flex: 1 }}>{cert.domains[i].short}</T>
+              <T v="meta" color={c.ink} style={{ flex: 1, minWidth: 0 }}>{cert.domains[i].short}</T>
               {up > 0 && (
                 // After this domain's arc has grown (outer ring first, 60 ms apart).
                 <FadeIn rise={false} dur="select" delay={(grow?.delay ?? 0) + motion.dur.grow + (shown.length - 1 - shown.indexOf(i)) * motion.stagger.stat + motion.dur.select}>
                   <T v="caption" color={c.accentText}>{`+${up}`}</T>
                 </FadeIn>
               )}
-              <BigNum value={label(i)} size={17} />
+              {/* The number never shrinks: the name gives way first (it can wrap, the score can't clip). */}
+              <View style={{ flexShrink: 0 }}>
+                <BigNum value={label(i)} size={17} />
+              </View>
             </Row>
           );
         })}
@@ -308,7 +316,8 @@ export function ClearingBody({
   const full = celebration?.mode === 'full';
   const run = celebration?.run ?? 0;
   const line = clearingLine(plan, readiness, range);
-  // Each stat reads on its own: "Questions 31", "Correct 81%", "Time 24 min".
+  // Each stat reads on its own: "Questions 31", "Accuracy 81%", "Time 24 min".
+  // "Accuracy" for a percentage everywhere (You, Today); "Correct" is a count (Results).
   const time = timeStat(plan.minutes * 60_000);
   // The beats, inside the 1.2 s budget: stats 120–840 ms, ring 240–840, words from 840.
   const statsAt = motion.dur.select;
@@ -321,9 +330,9 @@ export function ClearingBody({
         {[
           <Stat key="q" label="Questions" value={String(plan.answered)} color={c.onForest} labelColor={c.onForest2} roll={statRoll(0)} />,
           acc === null ? (
-            <Stat key="a" label="Correct" word="None yet" color={c.onForest} labelColor={c.onForest2} />
+            <Stat key="a" label="Accuracy" word="None yet" color={c.onForest} labelColor={c.onForest2} />
           ) : (
-            <Stat key="a" label="Correct" value={String(acc)} pct color={c.onForest} labelColor={c.onForest2} roll={statRoll(1)} />
+            <Stat key="a" label="Accuracy" value={String(acc)} pct color={c.onForest} labelColor={c.onForest2} roll={statRoll(1)} />
           ),
           time.word ? (
             <Stat key="t" label="Time" word={time.word} spoken={time.spoken} color={c.onForest} labelColor={c.onForest2} />
@@ -354,10 +363,13 @@ export function ClearingBody({
   );
 }
 
-/** "Readiness grew to 67–77%": never a negative framing ("holding at" otherwise). */
+/**
+ * "Readiness grew to 67–77%": never a negative framing ("holding at" otherwise).
+ * A word joiner after the dash keeps the range on one line ("67–" never ends a line).
+ */
 export function clearingLine(plan: DayPlan, readiness: Readiness, range: ReadinessRange): string {
   return range.enough
-    ? `Readiness ${readiness.score > plan.start.score ? 'grew to' : 'holding at'} ${rangeLabel(range)}%`
+    ? `Readiness ${readiness.score > plan.start.score ? 'grew to' : 'holding at'} ${rangeLabel(range).replace('–', '–\u2060')}%`
     : 'Readiness takes shape as you answer';
 }
 

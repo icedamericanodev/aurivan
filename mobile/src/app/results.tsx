@@ -110,7 +110,10 @@ export default function Results() {
   const cert = getCertification(active.certId)!;
   const denominator = active.mode === 'mock' ? score.total : Math.max(score.answered, 1);
   const pct = Math.round((score.correct / denominator) * 100);
-  const missed = active.questionIds.filter((id) => active.responses[id] && !active.responses[id].correct);
+  // Missed: answered wrong. On a mock, a question left blank is missed too (it
+  // counts as not correct in "Correct n of total"), so Correct + Missed = total.
+  const missed = active.questionIds.filter((id) => (active.responses[id] ? !active.responses[id].correct : active.mode === 'mock'));
+  const blank = active.mode === 'mock' ? active.questionIds.filter((id) => !active.responses[id]).length : 0;
   const done = () => {
     clear();
     router.replace('/home');
@@ -144,8 +147,8 @@ export default function Results() {
   const oneDomain = inSession.length === 1 ? cert.domains[inSession[0]] : undefined;
   // One pace line for every practice / review session (Build C answer times).
   const paceText = practicePaceLine(active.questionIds.map((id) => active.responses[id]?.ms), cert.exam);
-  // The same time the mock history and pacing panel use (never past a deadline;
-  // untimed = answer time), as a stat that reads plainly ("Under a minute", "24 min").
+  // The same time the mock history, pacing panel and Today use (a timed mock's
+  // clock; otherwise answer time), as a stat that reads plainly ("Under 1 min", "24 min").
   const time = timeStat(msUsed(active, active.finishedAt ?? active.startedAt));
   const grow = growing;
   // Starts as the screen's dissolve ends (it is already mostly in by then).
@@ -202,13 +205,22 @@ export default function Results() {
               // The number right rolls up from 0; "of 20" stays put.
               roll={{ play: grow, from: '0', run: 1, delay: at + motion.stagger.stat }}
             />,
-            // Answered wrong: what "Practice the ones you missed" opens.
-            missed.length ? <Stat key="b" label="Missed" value={String(missed.length)} /> : <Stat key="b" label="Missed" word="None" />,
+            // Answered wrong (and, on a mock, left blank): what "Practice the ones you missed" opens.
+            missed.length ? (
+              <Stat key="b" label="Missed" value={String(missed.length)} spoken={blank ? `${missed.length}, ${blank} of them left blank` : undefined} />
+            ) : (
+              <Stat key="b" label="Missed" word="None" />
+            ),
             time.word ? <Stat key="c" label="Time" word={time.word} spoken={time.spoken} /> : <Stat key="c" label="Time" value={time.value} unit={time.unit} spoken={time.spoken} />,
           ]}
         </StatRow>
-        {active.mode === 'mock' && (
+        {blank > 0 && (
           <T v="meta" style={{ marginTop: space.md }}>
+            {`Missed includes ${blank} left blank: a blank counts as not correct.`}
+          </T>
+        )}
+        {active.mode === 'mock' && (
+          <T v="meta" style={{ marginTop: blank > 0 ? space.sm : space.md }}>
             Practice scores are not scaled exam scores. {cert.exam.passingNote}
           </T>
         )}

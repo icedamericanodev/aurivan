@@ -27,6 +27,7 @@ export interface DayPlan {
   start: { score: number; domains: Record<string, number> };
   answered: number;
   correct: number;
+  /** Minutes studied today, kept with their fraction (seconds); rounded only when shown. */
   minutes: number;
   /** The clearing haptic plays once per day. */
   celebrated?: boolean;
@@ -128,7 +129,9 @@ export function activityMatches(item: PlanItem, a: Activity, already = 0): boole
  * it completes. Returns the same object when nothing changed (cheap for the store).
  */
 export function logActivity(plan: DayPlan, a: Activity): { plan: DayPlan; ticked: boolean } {
-  const minutes = plan.minutes + Math.max(0, Math.round(a.minutes));
+  // Kept to the second (a fraction of a minute): Today rounds only for display,
+  // so short sessions add up and a 5-second one never reads "1 min".
+  const minutes = plan.minutes + (Number.isFinite(a.minutes) ? Math.max(0, a.minutes) : 0);
   const credit = plan.items.map((_, k) => plan.credit?.[k] ?? 0);
   // A review/practice session banks its answers on the first open item of
   // the same kind, and ticks it once the day's total reaches the target.

@@ -293,34 +293,52 @@ export const PACE_LINE_MIN = 3;
  * learner reads at a glance (never "median", never a bare "s").
  */
 export function aboutSeconds(sec: number): string {
-  if (sec < 120) {
-    const n = Math.max(1, Math.round(sec));
-    return `about ${n} ${n === 1 ? 'second' : 'seconds'}`;
-  }
-  const m = Math.round((sec / 60) * 10) / 10;
+  // Round first, then choose the unit, so 119.6 s reads "about 2 minutes", never "about 120 seconds".
+  const n = Math.max(1, Math.round(sec));
+  if (n < 120) return `about ${n} ${n === 1 ? 'second' : 'seconds'}`;
+  const m = Math.round((n / 60) * 10) / 10;
   return `about ${m} minutes`;
 }
 
 /**
  * The one plain sentence under a practice session's stats (from the Build C
- * answer times): "About 74 seconds per question. The exam gives you about
- * 96." It reads the typical (median) time, so one long pause doesn't skew
- * it. null when fewer than PACE_LINE_MIN answers have a time (a 1-question
- * session, or one saved before Build C): there is nothing useful to say.
+ * answer times): "About 74 seconds per question. The exam allows about 96
+ * seconds." Both figures carry their unit, the same unit. It reads the
+ * typical (median) time, so one long pause doesn't skew it. null when fewer
+ * than PACE_LINE_MIN answers have a time (a 1-question session, or one saved
+ * before Build C): there is nothing useful to say.
  */
 export function practicePaceLine(ms: readonly (number | undefined)[], exam: ExamFacts): string | null {
   const times = cleanMs(ms);
   if (times.length < PACE_LINE_MIN) return null;
   const med = median(times)! / 1000;
   const pace = examPaceSeconds(exam);
-  // Both in the same unit, so the two figures compare at a glance.
-  const minutes = med >= 120;
+  // Both in the same unit (the learner's decides it), so the two compare at a glance.
   const own = aboutSeconds(med);
-  const exams = minutes ? `about ${Math.round((pace / 60) * 10) / 10}` : `about ${Math.round(pace)}`;
-  return `${own[0].toUpperCase()}${own.slice(1)} per question. The exam gives you ${exams}.`;
+  const minutes = own.endsWith('minutes');
+  const exams = minutes ? `about ${Math.round((pace / 60) * 10) / 10} minutes` : `about ${Math.round(pace)} seconds`;
+  return `${own[0].toUpperCase()}${own.slice(1)} per question. The exam allows ${exams}.`;
 }
 
-/** How a time reads as a stat: a number and its unit ("24" "min", "1" "h 5 min"), or words ("Under a minute"). */
+/** Under this, a time reads "Under 1 min" (never "1 min" for 5 seconds, never "0 min"). */
+const UNDER_A_MINUTE = 'Under 1 min';
+
+/**
+ * A time as a short phrase in one size: "Under 1 min", "24 min", "3 h 31 min",
+ * "4 h". The SAME words wherever a time used is shown (Results, the pacing
+ * panel, You → Mock exams), with how a screen reader says it.
+ */
+export function durationWords(ms: number): { text: string; spoken: string } {
+  if (!(ms >= 60_000)) return { text: UNDER_A_MINUTE, spoken: 'under a minute' };
+  const minutes = Math.round(ms / 60_000);
+  return { text: durationText(minutes), spoken: durationSpoken(minutes) };
+}
+
+/**
+ * How a time reads as a stat: a serif number and its unit ("24" "min"), or
+ * a short phrase in one size ("Under 1 min", "3 h 35 min"). An hour or more
+ * is a phrase, so "3 h 35 min" never reads as a big "3" with small print.
+ */
 export interface TimeStat {
   value?: string;
   unit?: string;
@@ -329,14 +347,12 @@ export interface TimeStat {
   spoken: string;
 }
 
-/** A session's time as a stat (never "1 minute" for 5 seconds). */
+/** A session's time as a stat (never "1 minute" for 5 seconds; "Under 1 min" never wraps at 360 dp). */
 export function timeStat(ms: number): TimeStat {
-  if (!(ms >= 60_000)) return { word: 'Under a minute', spoken: 'under a minute' };
-  const total = Math.round(ms / 60_000);
-  const h = Math.floor(total / 60);
-  const m = total % 60;
-  if (h === 0) return { value: String(m), unit: 'min', spoken: durationSpoken(m) };
-  return { value: String(h), unit: m ? `h ${m} min` : 'h', spoken: durationSpoken(total) };
+  const w = durationWords(ms);
+  const total = ms >= 60_000 ? Math.round(ms / 60_000) : 0;
+  if (total === 0 || total >= 60) return { word: w.text, spoken: w.spoken };
+  return { value: String(total), unit: 'min', spoken: w.spoken };
 }
 
 /** Practice timer: after this long on ONE question, a soft cue appears. */
@@ -421,6 +437,8 @@ export interface MockPacingInput {
 
 export interface MockPacing {
   usedMinutes: number;
+  /** The time used, in ms (so under a minute reads "Under 1 min", like Results). */
+  usedMs: number;
   allowedMinutes: number | null;
   medianSec: number | null;
   checkpoints: Checkpoint[];
@@ -461,6 +479,7 @@ export function mockPacing(i: MockPacingInput): MockPacing {
   }
   return {
     usedMinutes: Math.max(1, Math.round(usedMs / 60_000)),
+    usedMs,
     allowedMinutes: i.allowedMs === null ? null : Math.round(i.allowedMs / 60_000),
     medianSec: medianSeconds(answered.map((a) => a.ms)),
     checkpoints: [...(i.checkpoints ?? [])],

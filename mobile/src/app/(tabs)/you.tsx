@@ -29,7 +29,7 @@ import { BadgeIcon, Bookmark, ICON_STROKE, Leaf, LifeBuoy, NotebookPen, RotateCc
 import { ShareProgressSheet } from '../../components/shareCard';
 import { ThemeSwitch } from '../../components/themeSwitch';
 import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Row, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
-import { pacingStats, pacingStatsLine, TIMING_LABEL } from '../../engine/pace';
+import { durationWords, pacingStats, pacingStatsLine, TIMING_LABEL } from '../../engine/pace';
 import { rangeLabel, rangeSpoken, readinessRange } from '../../engine/readinessRange';
 import { REVIEW_UNIT } from '../../engine/srs';
 import { dayKey } from '../../engine/streak';
@@ -146,14 +146,19 @@ export default function You() {
             ) : (
               <Stat key="b" label="Accuracy" word="Not yet" spoken="not yet, answer a question first" />
             ),
-            <Stat
-              key="c"
-              label="Streak"
-              value={String(streak)}
-              unit={streak === 1 ? 'day' : 'days'}
-              color={c.clay}
-              roll={statRoll(2, String(stats.from[2]))}
-            />,
+            streak > 0 ? (
+              <Stat
+                key="c"
+                label="Streak"
+                value={String(streak)}
+                unit={streak === 1 ? 'day' : 'days'}
+                color={c.clay}
+                roll={statRoll(2, String(stats.from[2]))}
+              />
+            ) : (
+              // No streak yet (or a new start): an invitation, never a "0" that reads as a failure.
+              <Stat key="c" label="Streak" word="Starts today" spoken="starts today, with your first answer" color={c.clay} />
+            ),
           ]}
         </StatRow>
         <Button
@@ -256,7 +261,8 @@ export default function You() {
               lead={<Lead value={`${Math.round((m.correct / m.total) * 100)}%`} unit="score" />}
               title={`${m.total} questions`}
               // Extra time and untimed mocks are labelled in history (older results were standard).
-              subtitle={`${shortDate(m.finishedAt)} · ${m.minutesUsed} min${m.timing && m.timing !== 'standard' ? ` · ${TIMING_LABEL[m.timing].toLowerCase()}` : ''}`}
+              // The time in the same words as Results ("3 h 31 min", "Under 1 min").
+              subtitle={`${shortDate(m.finishedAt)} · ${durationWords(m.minutesUsed * 60_000).text}${m.timing && m.timing !== 'standard' ? ` · ${TIMING_LABEL[m.timing].toLowerCase()}` : ''}`}
               last={i === all.length - 1}
             />
           ))

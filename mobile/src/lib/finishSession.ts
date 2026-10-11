@@ -24,25 +24,46 @@ export interface SessionScore {
 export const MAX_SESSION_MINUTES = 1440;
 
 /**
- * Minutes a session used, the ONE figure Results, mock history and today's
- * plan all show (Build D C1/C3), always 1..1440:
- * - an UNTIMED mock has no clock and may sit paused for days, so its time
- *   is the answer times added up (plus unanswered visits);
- * - everything else is wall time to the end, never past a deadline.
+ * Practice and review: the most time one answer adds to a session's time
+ * (3 minutes, the same figure today's plan has always capped a session at,
+ * per question). A question left open overnight adds 3 minutes, never 10 hours.
+ */
+export const ANSWER_TIME_CAP_MS = 3 * 60_000;
+
+/**
+ * Whole minutes a session used, for a mock's saved result (You → Mock
+ * exams), 0..1440. 0 means under a minute: it reads "Under 1 min", like
+ * Results, never "1 min" for 30 seconds.
  */
 export function minutesUsed(s: ActiveSession, now = Date.now()): number {
-  return Math.min(MAX_SESSION_MINUTES, Math.max(1, Math.round(msUsed(s, now) / 60_000)));
+  return Math.min(MAX_SESSION_MINUTES, Math.max(0, Math.round(msUsed(s, now) / 60_000)));
 }
 
 /**
- * The same time in ms, uncapped below (Results' Time stat says "Under a
- * minute" for a 5-second session, never "1 minute"), capped at a day.
+ * The time a session used, in ms: the ONE figure Results, the mock history
+ * and today's plan all show (Build D C1/C3), capped at a day.
+ * - A TIMED mock: the exam clock, to the end, never past its deadline.
+ * - An UNTIMED mock has no clock and may sit paused for days: its answer
+ *   times added up (plus unanswered visits).
+ * - Practice and review: the answer times added up, each at most
+ *   ANSWER_TIME_CAP_MS, so a session left open overnight never reads "10 h".
+ *   A session saved before answers had times: wall time, at most the same
+ *   cap per question.
  */
 export function msUsed(s: ActiveSession, now = Date.now()): number {
-  const ms =
-    s.mode === 'mock' && !s.deadline
+  let ms: number;
+  if (s.mode === 'mock') {
+    ms = !s.deadline
       ? [...Object.values(s.responses).map((r) => r.ms ?? 0), ...Object.values(s.visitMs ?? {})].reduce((a, b) => a + b, 0)
-      : Math.min(s.finishedAt ?? now, s.deadline ?? Infinity) - s.startedAt;
+      : Math.min(s.finishedAt ?? now, s.deadline) - s.startedAt;
+  } else {
+    const times = Object.values(s.responses)
+      .map((r) => r.ms)
+      .filter((t): t is number => typeof t === 'number' && Number.isFinite(t) && t >= 0);
+    ms = times.length
+      ? times.reduce((a, t) => a + Math.min(t, ANSWER_TIME_CAP_MS), 0)
+      : Math.min((s.finishedAt ?? now) - s.startedAt, s.questionIds.length * ANSWER_TIME_CAP_MS);
+  }
   return Math.min(MAX_SESSION_MINUTES * 60_000, Math.max(0, ms));
 }
 
@@ -160,8 +181,10 @@ export function finishSession(opts: { celebrate?: boolean } = {}) {
     answered: score.answered,
     total: s.questionIds.length,
     byDomain: answeredByDomain,
-    // Capped, so a session left open overnight doesn't claim hours of study.
-    minutes: Math.min(minutesUsed({ ...s, finishedAt: endedAt }), s.questionIds.length * 3),
+    // The same time Results shows, kept to the second (the plan rounds only
+    // for display, so a 5-second review reads "Under 1 min" there too), and
+    // capped, so a session left open overnight doesn't claim hours of study.
+    minutes: Math.min(msUsed({ ...s, finishedAt: endedAt }), s.questionIds.length * ANSWER_TIME_CAP_MS) / 60_000,
   });
   // Build F: save any milestone now earned, and give THIS session at most one
   // quiet moment on Results (the rest wait in the queue for later sessions).

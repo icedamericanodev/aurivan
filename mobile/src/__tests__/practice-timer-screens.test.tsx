@@ -268,7 +268,7 @@ describe('Results: pace line and coaching tags', () => {
     });
     mount(<Results />);
     const text = allText();
-    expect(text).toContain('About 74 seconds per question. The exam gives you about 96.');
+    expect(text).toContain('About 74 seconds per question. The exam allows about 96 seconds.');
     expect(text).toContain('Quick pick');
     expect(text).toContain('Slow down on the stem.');
     expect(text).toContain('Took its time');

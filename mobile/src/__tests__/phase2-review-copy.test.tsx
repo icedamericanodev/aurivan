@@ -139,7 +139,7 @@ describe('Today and Results copy', () => {
       startFromIds('cisa', FOUR.slice(0, 1), 'Practice');
     });
     act(() => {
-      useSession.getState().answer(FOUR[0], { display: 'A', correct: true, ms: 30_000 });
+      useSession.getState().answer(FOUR[0], { display: 'A', correct: true, ms: 60_000 });
     });
     jest.setSystemTime(Date.now() + 60_000);
     act(() => {

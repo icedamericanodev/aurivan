@@ -206,7 +206,7 @@ describe('Journey 1 · Results stats', () => {
     expect(PACE_LINE_MIN).toBe(3);
     expect(practicePaceLine([5_000, 6_000], cisa.exam)).toBeNull();
     expect(practicePaceLine([5_000, undefined, 6_000, undefined, NaN], cisa.exam)).toBeNull();
-    expect(practicePaceLine([5_000, 6_000, 7_000], cisa.exam)).toBe('About 6 seconds per question. The exam gives you about 96.');
+    expect(practicePaceLine([5_000, 6_000, 7_000], cisa.exam)).toBe('About 6 seconds per question. The exam allows about 96 seconds.');
     // Through Results: 3 questions, 2 with a time → no line.
     act(() => {
       startFromIds('cisa', IDS.slice(0, 3), 'Practice');
@@ -227,7 +227,7 @@ describe('Journey 1 · Results stats', () => {
     mount(<Results />);
     expect(resultStats()).toEqual(['Correct: 13 of 20', 'Missed: 7', 'Time: 25 minutes']);
     const t = allText();
-    expect(t).toContain('About 74 seconds per question. The exam gives you about 96.');
+    expect(t).toContain('About 74 seconds per question. The exam allows about 96 seconds.');
     expect(buttons(/^Practice the 7 you missed$/)).toHaveLength(1);
     expect(t).not.toMatch(/median/i);
   });
@@ -239,7 +239,8 @@ describe('Journey 1 · Results stats', () => {
     answer(IDS.slice(0, 12), 8, 50_000);
     finishAt(T0 + 11 * MIN);
     mount(<Results />);
-    expect(resultStats()).toEqual(['Correct: 8 of 12', 'Missed: 4', 'Time: 11 minutes']);
+    // Practice time is the answer time added up (12 × 50 s), not the wall clock (QA Bug 7).
+    expect(resultStats()).toEqual(['Correct: 8 of 12', 'Missed: 4', 'Time: 10 minutes']);
   });
 
   it('a review: same stats, same pace sentence', () => {
@@ -255,8 +256,8 @@ describe('Journey 1 · Results stats', () => {
     answer(ids, 3, 40_000);
     finishAt(T0 + 4 * MIN);
     mount(<Results />);
-    expect(resultStats()).toEqual(['Correct: 3 of 5', 'Missed: 2', 'Time: 4 minutes']);
-    expect(allText()).toContain('About 40 seconds per question. The exam gives you about 96.');
+    expect(resultStats()).toEqual(['Correct: 3 of 5', 'Missed: 2', 'Time: 3 minutes']); // 5 × 40 s of answer time
+    expect(allText()).toContain('About 40 seconds per question. The exam allows about 96 seconds.');
   });
 
   it('a timed full mock submitted at 3 h 31 min: hours read plainly; the pacing panel says "typical", never "median"', () => {
@@ -268,7 +269,8 @@ describe('Journey 1 · Results stats', () => {
     answer(ids.slice(0, 146), 100, 80_000);
     finishAt(T0 + 211 * MIN);
     mount(<Results />);
-    expect(resultStats()).toEqual(['Correct: 100 of 150', 'Missed: 46', 'Time: 3 hours 31 minutes']);
+    // On a mock a blank is missed too: Correct + Missed = 150 (QA Bug 4).
+    expect(resultStats()).toEqual(['Correct: 100 of 150', 'Missed: 50, 4 of them left blank', 'Time: 3 hours 31 minutes']);
     const t = allText();
     expect(t).toContain('Typical time per question');
     expect(t).toContain('About 80 seconds');
@@ -287,7 +289,7 @@ describe('Journey 1 · Results stats', () => {
     answer(ids.slice(0, 10), 7, 90_000);
     finishAt(T0 + 6 * 60 * MIN);
     mount(<Results />);
-    expect(resultStats()).toEqual(['Correct: 7 of 150', 'Missed: 3', 'Time: 4 hours']);
+    expect(resultStats()).toEqual(['Correct: 7 of 150', 'Missed: 143, 140 of them left blank', 'Time: 4 hours']);
     expect(allText()).toContain('Unanswered when time ran out');
     expect(cp().mocks[0].minutesUsed).toBe(240);
   });
@@ -301,7 +303,7 @@ describe('Journey 1 · Results stats', () => {
     answer(ids.slice(0, 50), 40, 78_000); // 50 × 78 s = 65 min
     finishAt(T0 + 3 * DAY);
     mount(<Results />);
-    expect(resultStats()).toEqual(['Correct: 40 of 150', 'Missed: 10', 'Time: 1 hour 5 minutes']);
+    expect(resultStats()).toEqual(['Correct: 40 of 150', 'Missed: 110, 100 of them left blank', 'Time: 1 hour 5 minutes']);
     const t = allText();
     expect(t).toContain('Untimed mock: your answers count toward readiness, and pacing stats leave it out.');
     expect(t).not.toContain('Typical time per question');
@@ -310,21 +312,22 @@ describe('Journey 1 · Results stats', () => {
   });
 
   it('hour-long and boundary durations read plainly', () => {
-    expect(timeStat(59_999)).toEqual({ word: 'Under a minute', spoken: 'under a minute' });
-    expect(timeStat(NaN).word).toBe('Under a minute');
-    expect(timeStat(60 * MIN)).toEqual({ value: '1', unit: 'h', spoken: '1 hour' });
-    expect(timeStat(59.6 * MIN)).toEqual({ value: '1', unit: 'h', spoken: '1 hour' });
-    expect(timeStat(211 * MIN)).toEqual({ value: '3', unit: 'h 31 min', spoken: '3 hours 31 minutes' });
-    expect(timeStat(1440 * MIN)).toEqual({ value: '24', unit: 'h', spoken: '24 hours' });
+    // "Under 1 min" (never wraps at 360 dp); an hour or more is one phrase in one size (UX P4).
+    expect(timeStat(59_999)).toEqual({ word: 'Under 1 min', spoken: 'under a minute' });
+    expect(timeStat(NaN).word).toBe('Under 1 min');
+    expect(timeStat(60 * MIN)).toEqual({ word: '1 h', spoken: '1 hour' });
+    expect(timeStat(59.6 * MIN)).toEqual({ word: '1 h', spoken: '1 hour' });
+    expect(timeStat(211 * MIN)).toEqual({ word: '3 h 31 min', spoken: '3 hours 31 minutes' });
+    expect(timeStat(1440 * MIN)).toEqual({ word: '24 h', spoken: '24 hours' });
     expect(aboutSeconds(0.2)).toBe('about 1 second');
     expect(aboutSeconds(150)).toBe('about 2.5 minutes');
     // Slow practice (over 2 min a question): both figures switch to minutes together.
-    expect(practicePaceLine([150_000, 150_000, 150_000], cisa.exam)).toBe('About 2.5 minutes per question. The exam gives you about 1.6.');
+    expect(practicePaceLine([150_000, 150_000, 150_000], cisa.exam)).toBe('About 2.5 minutes per question. The exam allows about 1.6 minutes.');
   });
 
   // BUG (Minor): same screen, two answers. Results says "Under a minute"
   // but the pacing panel under it says "Time used 1 min of 1 h 20 min".
-  it.failing('a timed mini mock submitted after 30 s: the pacing panel agrees with "Under a minute"', () => {
+  it('a timed mini mock submitted after 30 s: the pacing panel agrees with "Under a minute"', () => {
     act(() => {
       startMock('cisa', 50);
     });
@@ -337,7 +340,7 @@ describe('Journey 1 · Results stats', () => {
   // BUG (Minor): on a mock, unanswered questions count as wrong in "Correct
   // 0 of 50", but "Missed" counts only answered-wrong ones, so a blank mock
   // reads "Correct 0 of 50 · Missed None" (app/results.tsx:113 and :206).
-  it.failing('a mock submitted with every question blank never says "Missed: None"', () => {
+  it('a mock submitted with every question blank never says "Missed: None"', () => {
     act(() => {
       startMock('cisa', 50);
     });
@@ -352,9 +355,10 @@ describe('Journey 1 · You stats and the mock summary', () => {
   beforeEach(() => filled());
   const statsOnYou = () => spoken(/^(Answered|Accuracy|Streak): /);
 
-  it('a new learner: "Answered 0", "Accuracy Not yet", "Streak 0 days"', () => {
+  it('a new learner: "Answered 0", "Accuracy Not yet", "Streak Starts today"', () => {
     mount(<You />);
-    expect(statsOnYou()).toEqual(['Answered: 0', 'Accuracy: not yet, answer a question first', 'Streak: 0 days']);
+    // No streak reads as an invitation, never a "0 days" that looks like a failure (UX observation).
+    expect(statsOnYou()).toEqual(['Answered: 0', 'Accuracy: not yet, answer a question first', 'Streak: starts today, with your first answer']);
   });
 
   it('after 10 answers today (7 right): "70 percent" and "1 day"', () => {
@@ -378,7 +382,7 @@ describe('Journey 1 · You stats and the mock summary', () => {
 
   // BUG (Minor): Results says "3 h 31 min" for a mock; You → Mock exams lists the
   // same mock as "211 min" (app/(tabs)/you.tsx:259 prints minutesUsed raw).
-  it.failing('You → Mock exams lists a long mock in hours, like Results does', () => {
+  it('You → Mock exams lists a long mock in hours, like Results does', () => {
     seedMocks([fullMock('m1', T0 - DAY, { minutesUsed: 211 })]);
     mount(<You />);
     expect(allText()).toContain('3 h 31 min');
@@ -390,21 +394,22 @@ describe('Journey 1 · Today clearing card', () => {
   const readiness = computeReadiness(cisa, {});
   const range = readinessRange(cisa, readiness);
   const plan = (over: Partial<DayPlan>): DayPlan => ({ ...newDayPlan(dayKey(T0), 'cisa', [{ kind: 'review', count: 1 }], readiness), done: [true], ...over });
-  const clearing = () => spoken(/^(Questions|Correct|Time): /);
+  const clearing = () => spoken(/^(Questions|Accuracy|Time): /);
 
-  it('Questions, Correct and Time each read on their own', () => {
+  it('Questions, Accuracy and Time each read on their own', () => {
     mount(<ClearingBody plan={plan({ answered: 31, correct: 25, minutes: 24 })} readiness={readiness} range={range} cert={cisa} />);
-    expect(clearing()).toEqual(['Questions: 31', 'Correct: 81 percent', 'Time: 24 minutes']);
+    // "Accuracy" for a percentage everywhere; "Correct" is Results' count.
+    expect(clearing()).toEqual(['Questions: 31', 'Accuracy: 81 percent', 'Time: 24 minutes']);
     act(() => r!.unmount());
     mount(<ClearingBody plan={plan({ answered: 0, correct: 0, minutes: 75 })} readiness={readiness} range={range} cert={cisa} />);
-    expect(clearing()).toEqual(['Questions: 0', 'Correct: none yet', 'Time: 1 hour 15 minutes']);
+    expect(clearing()).toEqual(['Questions: 0', 'Accuracy: none yet', 'Time: 1 hour 15 minutes']);
   });
 
   // BUG (Minor): the owner's "1 minute for a 5-second session" is fixed on
   // Results but not on Today. finishSession logs minutesUsed() (rounded UP to
   // at least 1) into the day plan, so the clearing card says "1 min" for the
   // same 5-second session Results calls "Under a minute".
-  it.failing('a 5-second review that clears the day: the clearing card says "Under a minute", like Results', () => {
+  it('a 5-second review that clears the day: the clearing card says "Under a minute", like Results', () => {
     filled();
     act(() => {
       useProgress.getState().queueForReview('cisa', ALL.slice(0, 1));
@@ -784,7 +789,7 @@ describe('Journey 3 · tier-ups always play the short moment', () => {
   // BUG (Minor): the week's cap (3 FULL moments in 7 days) also silences a
   // tier-up, which only ever plays SHORT and never counts toward the cap.
   // components/milestones.tsx:64 decideQuiet ignores moment.tierUp.
-  it.failing('after three full moments this week, a tier-up still plays short (it is not a fourth full moment)', () => {
+  it('after three full moments this week, a tier-up still plays short (it is not a fourth full moment)', () => {
     filled({ earned: { 'rooted:10': T0 - 30 * DAY, 'rooted:30': T0 }, days: 30 });
     setMockReducedMotion(false);
     for (let i = 0; i < 3; i++) {

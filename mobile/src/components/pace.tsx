@@ -15,7 +15,7 @@ import { useEffect, useState, type Ref } from 'react';
 import { Pressable, View } from 'react-native';
 import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import type { Certification } from '../content/types';
-import { aboutSeconds, checkpointText, durationSpoken, durationText, type MockPacing, type PaceStatus } from '../engine/pace';
+import { aboutSeconds, checkpointText, durationSpoken, durationText, durationWords, type MockPacing, type PaceStatus } from '../engine/pace';
 import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Clock, Flag, Gauge, ICON_STROKE } from './icons';
@@ -170,11 +170,9 @@ export function PacingPanel({ pacing, cert }: { pacing: MockPacing; cert: Certif
   // [label, shown value, spoken value] (P7: "1 hour 20 minutes", not "1 h 20 min").
   const rows: [string, string, string][] = [];
   if (pacing.allowedMinutes !== null) {
-    rows.push([
-      'Time used',
-      `${durationText(pacing.usedMinutes)} of ${durationText(pacing.allowedMinutes)}`,
-      `${durationSpoken(pacing.usedMinutes)} of ${durationSpoken(pacing.allowedMinutes)}`,
-    ]);
+    // The same words as Results' Time stat ("Under 1 min", "3 h 31 min").
+    const used = durationWords(pacing.usedMs ?? pacing.usedMinutes * 60_000);
+    rows.push(['Time used', `${used.text} of ${durationText(pacing.allowedMinutes)}`, `${used.spoken} of ${durationSpoken(pacing.allowedMinutes)}`]);
   }
   // The typical (median) answer: plain words, never "median" or a bare "s".
   if (pacing.medianSec !== null) {
@@ -191,8 +189,8 @@ export function PacingPanel({ pacing, cert }: { pacing: MockPacing; cert: Certif
     const pct = (t: { correct: number; total: number }) => Math.round((t.correct / t.total) * 100);
     rows.push([
       'Last 10% of the time',
-      `${pct(pacing.lastTenth)}% right · the rest ${pct(pacing.rest)}%`,
-      `${pct(pacing.lastTenth)} percent right; the rest ${pct(pacing.rest)} percent`,
+      `${pct(pacing.lastTenth)}% right (${pct(pacing.rest)}% before that)`,
+      `${pct(pacing.lastTenth)} percent right, against ${pct(pacing.rest)} percent before that`,
     ]);
   }
   if (pacing.slowestDomain) {

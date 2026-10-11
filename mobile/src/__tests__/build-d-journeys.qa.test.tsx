@@ -360,8 +360,8 @@ describe('journey 4: app killed mid-mock, reopened later', () => {
     unmount();
     mount(<Results />);
     const time = root().findAllByType(Stat).find((n) => n.props.label === 'Time')!;
-    expect(time.props.value).toBe('1');
-    expect(time.props.unit).toBe('h 20 min');
+    // An hour or more is one phrase in one size (never a big "1" and small print).
+    expect(time.props.word).toBe('1 h 20 min');
     expect(time.props.spoken).toBe('1 hour 20 minutes');
   });
 });
@@ -411,7 +411,7 @@ describe('journey 5: timed practice', () => {
     expect(active().finishedAt).toBeDefined();
     unmount();
     mount(<Results />);
-    expect(allText()).toContain('About 50 seconds per question. The exam gives you about 96.');
+    expect(allText()).toContain('About 50 seconds per question. The exam allows about 96 seconds.');
     // Review fix O2: the tag was renamed from "Slow and right".
     expect(allText()).toContain('Took its time');
   });
