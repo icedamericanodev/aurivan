@@ -19,8 +19,16 @@
  *     idea, and the aurivan://help?open=… deep link (good and bad values).
  *  8. What's new, What's next and Common questions render; no bank size.
  *
- * Real bugs are pinned with `it.failing` (they pass while the bug exists and
- * start failing once it is fixed; then switch them to `it`).
+ * Real bugs were pinned with `it.failing` (they pass while the bug exists and
+ * start failing once it is fixed). All four were fixed in the review round
+ * and are plain `it` now. The same round changed some copy and layout on
+ * purpose (owner decisions), and these journeys follow it:
+ * - "Report started 11 Oct", never "Reported" (we can't know it was sent);
+ * - Settings has ONE "Help and feedback" row that opens the Help screen,
+ *   where the rows sit in two groups; "Report a problem with the app";
+ * - "Suggest an idea" opens a sheet titled "Suggest an idea";
+ * - "Updated after your report", not "Your report helped";
+ * - a pre-1.7 backup keeps the phone's own report list.
  *
  * Gotcha (session-screen.regression.test.tsx): never write
  * `act(() => store.action())`; use braces.
@@ -98,7 +106,7 @@ jest.mock('../components/shareCard', () => ({ ShareProgressSheet: () => null }))
 const mockPush = jest.fn();
 let mockParams: Record<string, string | string[] | undefined> = {};
 jest.mock('expo-router', () => ({
-  router: { push: (...a: unknown[]) => mockPush(...a), replace: jest.fn(), back: jest.fn(), canGoBack: () => true, canDismiss: () => false, dismissTo: jest.fn() },
+  router: { push: (...a: unknown[]) => mockPush(...a), replace: jest.fn(), back: jest.fn(), canGoBack: () => true, canDismiss: () => false, dismissTo: jest.fn(), setParams: jest.fn() },
   useFocusEffect: jest.fn(),
   useLocalSearchParams: () => mockParams,
 }));
@@ -312,7 +320,7 @@ describe('Journey 1: report a shuffled practice question', () => {
     expect(body).toContain(note.trimEnd());
   });
 
-  it('the “Reported” state belongs to that question only: the next question starts fresh', async () => {
+  it('the “Report started” state belongs to that question only: the next question starts fresh', async () => {
     startPractice('cisa', { count: 10, title: 'Quick 10' });
     const ids = useSession.getState().active!.questionIds;
     mount(<SessionScreen />);
@@ -321,18 +329,19 @@ describe('Journey 1: report a shuffled practice question', () => {
     press(`Report a problem with question ${ids[0]}`);
     press('Typo or grammar');
     await pressAsync('Write the email');
-    expect(allText()).toContain('Reported 11 Oct');
+    expect(allText()).toContain('Report started 11 Oct');
     press('Next question');
     act(() => { root().findAllByType(OptionCard)[0].props.onPress(); });
     press('Check answer');
     expect(pressables(`Report a problem with question ${ids[1]}`)).toHaveLength(1);
-    expect(allText()).not.toContain('Reported 11 Oct');
+    expect(allText()).not.toContain('Report started 11 Oct');
     expect(allText()).not.toContain('Finished in your email app?');
   });
 
-  // BUG (Minor): the busy guard reads React state from the press handler's
-  // closure, so two taps that land before the next render both pass it.
-  it.failing('a quick double tap on “Write the email” opens one email and logs one report', async () => {
+  // Was a BUG (Minor): the busy guard read React state from the press
+  // handler's closure, so two taps before the next render both passed it.
+  // Fixed with a ref guard (components/support.tsx useOneAtATime).
+  it('a quick double tap on “Write the email” opens one email and logs one report', async () => {
     const { q } = openShuffledQuestion();
     mount(<SessionScreen />);
     act(() => { root().findAllByType(OptionCard)[0].props.onPress(); });
@@ -552,7 +561,7 @@ describe('Journey 4: no email app', () => {
 
   it('Contact support and Send feedback fall back the same way', async () => {
     const share = jest.spyOn(Share, 'share').mockResolvedValue({ action: 'sharedAction' });
-    mount(<Settings />);
+    mount(<Help />);
     press('Contact support');
     press('Your data and privacy');
     await pressAsync('Write the email');
@@ -569,16 +578,15 @@ describe('Journey 4: no email app', () => {
     share.mockRestore();
   });
 
-  // BUG (Minor): after the fallback, the sheet is stuck on it for that item.
-  // support.md §4.4: tapping "Reported <date>" reopens the FORM with "You
+  // Was a BUG (Minor): after the fallback, the sheet was stuck on it for
+  // that item. support.md §4.4: tapping the link reopens the FORM with "You
   // started a report about this on <date>. Send another if something else is
-  // wrong." Here it reopens the old fallback panel, so a second report about
-  // the same question can't be started without leaving the screen.
-  it.failing('after the fallback is closed, “Reported” reopens the form so another report can be started', async () => {
+  // wrong." Fixed: closing the fallback starts a fresh form next time.
+  it('after the fallback is closed, “Report started” reopens the form so another report can be started', async () => {
     const id = await failReport();
     press('Close');
-    expect(allText()).toContain('Reported 11 Oct');
-    press(new RegExp(`^Reported 11 Oct\\. Report a problem with question ${id}$`));
+    expect(allText()).toContain('Report started 11 Oct');
+    press(new RegExp(`^Report started 11 Oct\\. Report a problem with question ${id}$`));
     expect(allText()).toContain('You started a report about this on 11 Oct.');
     expect(sheetOpen()).toBe(true);
   });
@@ -630,7 +638,7 @@ describe('Journey 5: Your reports', () => {
     expect(() => readBackup(text, ['cisa'], undefined, '1.6.1')).toThrow(expect.objectContaining({ code: 'newer' }));
   });
 
-  it('a pre-1.7 save loads: no list, Your reports is empty, Settings says “None yet”, and reporting then works', async () => {
+  it('a pre-1.7 save loads: no list, Your reports is empty, Help says “None yet”, and reporting then works', async () => {
     jest.useRealTimers();
     await new Promise((done) => setTimeout(done, 0));
     await AsyncStorage.clear();
@@ -656,9 +664,9 @@ describe('Journey 5: Your reports', () => {
     mount(<Reports />);
     expect(allText()).toContain('No reports yet');
     unmount();
-    mount(<Settings />);
+    mount(<Help />);
     expect(allText()).toContain('None yet. They’re listed here once you report one.');
-    press('Report a problem');
+    press('Report a problem with the app');
     press('Something didn’t load or froze');
     await pressAsync('Write the email');
     expect(useProgress.getState().reports).toHaveLength(1);
@@ -675,6 +683,9 @@ describe('Journey 5: Your reports', () => {
     act(() => { buttons.find((b) => b.text === 'Reset')!.onPress!(); });
     expect(Object.keys(useProgress.getState().byCert.cisa?.mistakes ?? {})).toHaveLength(0);
     expect(useProgress.getState().reports).toHaveLength(1);
+    // Settings has one Help row now; the count lives on the Help screen.
+    unmount();
+    mount(<Help />);
     expect(allText()).toContain('1 started on this phone');
     alert.mockRestore();
   });
@@ -701,18 +712,18 @@ describe('Journey 6: a fix shipped after a report', () => {
     expect(allText()).toContain('The answer key was corrected.');
   });
 
-  it('What’s new says “Your report helped” once, lists the general note (no codes), then never again', () => {
+  it('What’s new says “Updated after your report” once, lists the general note (no codes), then never again', () => {
     mockFixes = [fix()];
     useProgress.setState({ reports: [reported()] });
     mount(<WhatsNew />);
     const text = allText();
-    expect(text).toContain('Your report helped');
+    expect(text).toContain('Updated after your report');
     expect(text).toContain('Fixed after learner reports');
     expect(text).toContain('The answer key was corrected.');
     expect(text).not.toContain(q.id);
     unmount();
     mount(<WhatsNew />);
-    expect(allText()).not.toContain('Your report helped');
+    expect(allText()).not.toContain('Updated after your report');
     // Your reports still says it was updated (that state is permanent).
     unmount();
     mount(<Reports />);
@@ -731,26 +742,29 @@ describe('Journey 6: a fix shipped after a report', () => {
     expect(allText()).not.toContain('Something you reported was updated');
   });
 
-  // BUG (Minor, spec deviation): support.md §7.3 / PHASE1 — Today's "Your
-  // report helped" line shows ONCE ("dismissible and disappears after it is
-  // seen"). It actually shows on every visit to Today, with no way to dismiss
-  // it, until the learner happens to open What's new.
-  it.failing('Today shows “Your report helped” once, not on every visit', () => {
+  // Was a BUG (Minor, spec deviation): support.md §7.3 / PHASE1 — Today's
+  // credit line shows ONCE ("dismissible and disappears after it is seen").
+  // It showed on every visit. Fixed: marked seen once shown, plus Dismiss.
+  it('Today shows “Updated after your report” once, not on every visit', () => {
     mockFixes = [fix()];
     useProgress.setState({ reports: [reported()] });
     mount(<Today />);
-    expect(allText()).toContain('Your report helped');
+    expect(allText()).toContain('Updated after your report');
     unmount();
     mount(<Today />);
-    expect(allText()).not.toContain('Your report helped');
+    expect(allText()).not.toContain('Updated after your report');
   });
 });
 
 // ─────────────────────────────────────────────────────────────────────────
 describe('Journey 7: Help and feedback from Settings and You, and the deep link', () => {
-  it('Settings: Contact support writes a tagged email, from Settings, nothing personal', async () => {
+  it('Settings → Help: Contact support writes a tagged email, from Help, nothing personal', async () => {
     mount(<Settings />);
-    expect(allText()).toContain('Write to us any time at certprep.support@gmail.com. Aurivan is independent and not affiliated with ISACA.');
+    press('Help and feedback, Common questions, contact us, your reports and what’s new');
+    expect(mockPush).toHaveBeenCalledWith('/help');
+    unmount();
+    mount(<Help />);
+    expect(allText()).toContain('Write to us any time at certprep.support@gmail.com Aurivan is independent and not affiliated with or endorsed by ISACA.');
     press('Contact support');
     expect(pressables('Write the email')[0].props.disabled).toBe(true);
     press('Reminders');
@@ -759,17 +773,17 @@ describe('Journey 7: Help and feedback from Settings and You, and the deep link'
     expect(to).toBe('certprep.support@gmail.com');
     expect(subject).toBe('Aurivan · Support · Reminders · CISA');
     expect(body).toContain('Topic: Reminders');
-    expect(body).toContain('From: Settings');
+    expect(body).toContain('From: Help');
     expect(body).toContain('App: Aurivan 1.7.0 (');
     expect(body).not.toMatch(/backup file/i);
     expectNothingPersonal(body, subject);
     expect(allText()).toContain('If you sent it, thank you. We read every message.');
   });
 
-  it('Settings: Suggest an idea opens Send feedback; another kind and display details go in only when chosen', async () => {
-    mount(<Settings />);
+  it('Help: Suggest an idea opens its sheet; another kind and display details go in only when chosen', async () => {
+    mount(<Help />);
     press('Suggest an idea');
-    expect(allText()).toContain('Send feedback');
+    expect(allText()).toContain('Tell us what helps');
     expect(pressables('An idea')[0].props.selected).toBe(true);
     await pressAsync('Write the email');
     expect(lastEmail().subject).toBe('Aurivan · Feedback · Idea · CISA');
@@ -793,7 +807,7 @@ describe('Journey 7: Help and feedback from Settings and You, and the deep link'
     expect(mockPush).toHaveBeenCalledWith('/help');
     unmount();
     mount(<Help />);
-    for (const row of ['Common questions', 'Report a problem', 'Suggest an idea', 'Contact support', 'Your reports', 'What’s new', 'What’s next']) {
+    for (const row of ['Common questions', 'Report a problem with the app', 'Suggest an idea', 'Contact support', 'Your reports', 'What’s new', 'What’s next']) {
       expect(pressables(row).length).toBeGreaterThan(0);
     }
     press('Contact support');
@@ -848,12 +862,12 @@ describe('Journey 7: Help and feedback from Settings and You, and the deep link'
     for (const marker of ['What’s it about?', 'What kind?', 'What’s wrong?']) expect(allText()).not.toContain(marker);
   });
 
-  // BUG (Minor): the deep link is read only on the Help screen's FIRST render.
-  // If Help is already open (or kept in the stack) and a second link arrives
-  // (a support reply's "aurivan://help?open=support"), the params change but
-  // no sheet opens. Confirm on a device: open Help, background the app, tap
+  // Was a BUG (Minor): the deep link was read only on the Help screen's FIRST
+  // render, so a second link while Help was open did nothing. Fixed: an
+  // effect on the param, which is then cleared (router.setParams). Still
+  // worth one device check: open Help, background the app, tap
   // aurivan://help?open=support from Notes/Mail.
-  it.failing('a new deep link while Help is already open still opens its sheet', () => {
+  it('a new deep link while Help is already open still opens its sheet', () => {
     mockParams = {};
     mount(<Help />);
     mockParams = { open: 'support' };
@@ -916,13 +930,13 @@ describe('Journey 8: What’s new, What’s next and Common questions; no bank s
     expectNoBankSize(all);
   });
 
-  it('Help, Settings’ Help section, Your reports and every email carry no bank size', async () => {
-    mount(<Help />);
-    expectNoBankSize(allText());
-    unmount();
+  it('Help, Settings’ Help row, Your reports and every email carry no bank size', async () => {
     mount(<Settings />);
     for (const f of sizeForms.filter((x) => x.length >= 3)) expect(allText()).not.toContain(f);
-    press('Report a problem');
+    unmount();
+    mount(<Help />);
+    expectNoBankSize(allText());
+    press('Report a problem with the app');
     press('A score or result looks wrong');
     await pressAsync('Write the email');
     expectNoBankSize(lastEmail().body);

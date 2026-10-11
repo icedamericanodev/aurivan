@@ -2,8 +2,8 @@
  * Help and feedback content (mobile 1.7): fixes shipped after learner
  * reports, the What's New list, the read-only "What's next" list and the
  * common questions. All bundled with the app: no network, so "no data
- * collected" stays true, and updates ship with the app or an over-the-air
- * update.
+ * collected" stays true. Changes ship in a reviewed store build (never over
+ * the air: compliance O1, Apple 2.5.2).
  *
  * Writing rules (CLAUDE.md "What's New style"): describe the benefit, not
  * the work. No question codes, no domain numbers, no counts of items, no
@@ -39,7 +39,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.7.0',
     date: '2026-10-11',
     new: [
-      'Report a problem from any question, study note, lesson or game card. Your email app opens with the details filled in, and you can read everything before you send it.',
+      'Report a problem from any answered question, study note or lesson step, and from a game’s round recap. Your email app opens with the details filled in, and you can read everything before you send it.',
       'Help and feedback, in Settings and on You: quick answers to common questions, a way to suggest ideas, and an easy way to reach us.',
       'What’s new and What’s next, so you can see what changed and what we’re working on.',
     ],
@@ -156,7 +156,7 @@ export const WHATS_NEXT: readonly NextItem[] = [
     status: 'shipped',
     shippedIn: '1.7.0',
     title: 'Report a problem and Help',
-    body: 'Report any question, note, lesson or game card from where you see it.',
+    body: 'Report any answered question, note or lesson step from where you see it, and game cards from a round’s recap.',
   },
   {
     status: 'shipped',
@@ -187,7 +187,7 @@ export const FAQ: readonly FaqEntry[] = [
     id: 'report',
     question: 'How do I report a problem in a question?',
     answer: [
-      'After you check an answer, tap Report a problem under the explanation. Study notes, lesson steps and game cards have the same link. Pick what looks wrong and add a note if you like.',
+      'After you check an answer, tap Report a problem under the explanation. Study notes, lesson steps and a game’s round recap have the same link. Pick what looks wrong and add a note if you like.',
       'Your email app opens with the question’s code filled in, so we know exactly which one. You can read and change everything before you send it.',
     ],
     topic: 'study',

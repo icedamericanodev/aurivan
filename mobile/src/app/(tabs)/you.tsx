@@ -18,6 +18,7 @@ import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { DomainRings, ringsSpoken } from '../../components/journey';
+import { creditSubtitle } from '../../components/help';
 import { MindsetGrowthCard } from '../../components/moments';
 import { Bookmark, ICON_STROKE, Leaf, LifeBuoy, MilestoneIcon, NotebookPen, RotateCcw, Settings, Share2 } from '../../components/icons';
 import { ShareProgressSheet } from '../../components/shareCard';
@@ -52,7 +53,7 @@ export default function You() {
   const values = readiness.domains.map((d) => (d.answered ? d.mastery : null));
   const growth = useMindsetGrowth(cert.id, progress);
   // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
-  const { due: creditDue } = useReports();
+  const { dueItems: creditItems } = useReports();
   // Share card: the study days come from the saved streak (last 14 study days).
   const recentDays = useProgress((s) => s.streak.recentDays);
   // The day the sheet was opened (read in the tap handler, not during render). null = closed.
@@ -201,12 +202,12 @@ export default function You() {
         {/* Pacing across timed mocks only (untimed ones are left out). */}
         {pacingLine && <T v="meta" style={{ marginTop: space.md }}>{pacingLine}</T>}
 
-        {/* One entry to Help and feedback (mobile 1.7); the full list is on that screen and in Settings. */}
+        {/* One entry to Help and feedback (mobile 1.7); the full list is on that screen. */}
         <Section title="Help and feedback" />
         <ListRow
           icon={icon(LifeBuoy)}
           title="Get help or send feedback"
-          subtitle={creditDue.length ? 'Something you reported was updated' : 'Common questions, reports and what’s new'}
+          subtitle={creditItems ? creditSubtitle(creditItems) : 'Common questions, reports and what’s new'}
           onPress={() => router.push('/help')}
           last
         />

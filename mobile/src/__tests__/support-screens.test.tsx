@@ -1,15 +1,18 @@
 /**
  * Help and feedback screens (mobile 1.7), against the real stores:
- * - Settings → Help and feedback: every row opens what it says, and the
- *   address and the not-affiliated line are there as selectable text;
- * - the Help deep link (aurivan://help?open=…) opens the right sheet, and
- *   ignores anything else;
+ * - Settings has ONE Help and feedback row; the Help screen groups its rows
+ *   (Get help, Updates), every row opens what it says, and the address is
+ *   its own selectable line above the not-affiliated line;
+ * - Send feedback and Contact support keep what was typed across Cancel;
+ * - the Help deep link (aurivan://help?open=…) opens the right sheet, also
+ *   when Help is already open, and ignores anything else;
  * - Common questions: each answer ends with "Still stuck? Email us", which
  *   opens Contact support with the right topic chosen;
  * - What's next: Suggest an idea opens Send feedback with "An idea";
  * - Your reports + the bundled fixes: "Updated after your report" with the
- *   fix's note; What's new says "Your report helped" ONCE; Today and You
- *   show the quiet line until it's seen.
+ *   fix's note; What's new and Today say "Updated after your report" ONCE
+ *   (whichever comes first), Today's line has a Dismiss; the plural counts
+ *   different things, not reports.
  */
 import { Alert, Linking } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
@@ -67,7 +70,7 @@ jest.mock('../components/shareCard', () => ({ ShareProgressSheet: () => null }))
 const mockPush = jest.fn();
 let mockParams: Record<string, string> = {};
 jest.mock('expo-router', () => ({
-  router: { push: (...a: unknown[]) => mockPush(...a), replace: jest.fn(), back: jest.fn(), canGoBack: () => true },
+  router: { push: (...a: unknown[]) => mockPush(...a), replace: jest.fn(), back: jest.fn(), canGoBack: () => true, setParams: jest.fn() },
   useFocusEffect: jest.fn(),
   useLocalSearchParams: () => mockParams,
 }));
@@ -150,19 +153,34 @@ afterEach(() => {
 });
 
 describe('Settings → Help and feedback', () => {
-  it('lists every row, the address and the not-affiliated line (selectable)', () => {
+  it('Settings has ONE row, and it opens the Help screen', () => {
     mount(<Settings />);
-    for (const t of ['Common questions', 'Report a problem', 'Suggest an idea', 'Contact support', 'Your reports', 'What’s new', 'What’s next']) {
+    expect(pressables('Help and feedback, Common questions, contact us, your reports and what’s new')).toHaveLength(1);
+    for (const t of ['Common questions', 'Contact support', 'Suggest an idea', 'Your reports', 'What’s next']) expect(pressables(t)).toHaveLength(0);
+    press('Help and feedback, Common questions, contact us, your reports and what’s new');
+    expect(mockPush).toHaveBeenCalledWith('/help');
+  });
+});
+
+describe('the Help screen', () => {
+  it('groups its rows: Get help, then Updates; the address is its own selectable line', () => {
+    mount(<Help />);
+    const text = allText();
+    expect(text.indexOf('Get help')).toBeLessThan(text.indexOf('Common questions'));
+    expect(text.indexOf('Suggest an idea')).toBeLessThan(text.indexOf('Updates'));
+    expect(text.indexOf('Updates')).toBeLessThan(text.indexOf('Your reports'));
+    for (const t of ['Common questions', 'Contact support', 'Report a problem with the app', 'Suggest an idea', 'Your reports', 'What’s new', 'What’s next']) {
       expect(pressables(t).length).toBeGreaterThan(0);
     }
-    const footer = root().findAll((n) => n.props.selectable === true && typeof n.props.children === 'string' && n.props.children.includes('certprep.support@gmail.com'));
-    expect(footer.length).toBeGreaterThan(0);
-    expect(allText()).toContain('Aurivan is independent and not affiliated with ISACA.');
-    expect(allText()).toContain('Version 1.7');
+    // iOS copies a whole selectable Text: the address must be alone in its own (UX P6).
+    const address = root().findAll((n) => n.props.selectable === true && typeof n.type !== 'string' && n.props.children === 'certprep.support@gmail.com');
+    expect(address.length).toBeGreaterThan(0);
+    expect(text).toContain('Aurivan is independent and not affiliated with or endorsed by ISACA.');
+    expect(text).toContain('Version 1.7');
   });
 
   it('rows open the right screens', () => {
-    mount(<Settings />);
+    mount(<Help />);
     press('Common questions');
     press('Your reports');
     press('What’s new');
@@ -170,34 +188,56 @@ describe('Settings → Help and feedback', () => {
     expect(mockPush.mock.calls.map((c) => c[0])).toEqual(['/faq', '/reports', '/whats-new', '/whats-next']);
   });
 
-  it('Report a problem reports the app itself', async () => {
-    mount(<Settings />);
-    press('Report a problem');
+  it('Report a problem with the app reports the app itself, and the note shows under that row', async () => {
+    mount(<Help />);
+    press('Report a problem with the app');
     expect(allText()).toContain('Something didn’t load or froze');
     press('Text is cut off or hard to read');
     await pressAsync('Write the email');
-    expect(lastEmail().subject).toBe('Aurivan · Report · CISA · app:settings · display');
-    expect(lastEmail().body).toContain('Item: The app (Settings)');
+    expect(lastEmail().subject).toBe('Aurivan · Report · CISA · app:help · display');
+    expect(lastEmail().body).toContain('Item: The app (Help)');
+    const text = allText();
+    expect(text.indexOf('Finished in your email app?')).toBeGreaterThan(text.indexOf('Report a problem with the app'));
+    expect(text.indexOf('Finished in your email app?')).toBeLessThan(text.indexOf('Suggest an idea'));
   });
 
-  it('Suggest an idea opens Send feedback with “An idea” chosen', async () => {
-    mount(<Settings />);
+  it('Suggest an idea opens a sheet called “Suggest an idea” with “An idea” chosen', async () => {
+    mount(<Help />);
     press('Suggest an idea');
-    expect(allText()).toContain('Send feedback');
+    expect(allText()).toContain('Tell us what helps');
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && n.props.children === 'Suggest an idea')).toHaveLength(1);
     expect(pressables('An idea')[0].props.selected).toBe(true);
     act(() => { root().findAll((n) => n.props.accessibilityLabel === 'Your message' && typeof n.props.onChangeText === 'function')[0].props.onChangeText('A dark-mode timer'); });
     await pressAsync('Write the email');
     expect(lastEmail().subject).toBe('Aurivan · Feedback · Idea · CISA');
     expect(lastEmail().body).toContain('A dark-mode timer');
     expect(lastEmail().body).not.toContain('Display:'); // only if ticked
+    expect(lastEmail().body).toContain('From: Help');
     expect(allText()).toContain('If you sent it, thank you. We read every message.');
   });
 
-  it('Contact support waits for a topic, then writes a tagged email', async () => {
-    mount(<Settings />);
+  it('Cancel keeps what the learner typed; a sent message starts fresh next time (UX P3)', async () => {
+    mount(<Help />);
+    const typeMessage = (t: string) =>
+      act(() => { root().findAll((n) => n.props.accessibilityLabel === 'Your message' && typeof n.props.onChangeText === 'function')[0].props.onChangeText(t); });
+    const message = () => root().findAll((n) => n.props.accessibilityLabel === 'Your message' && typeof n.props.onChangeText === 'function')[0].props.value;
+    press('Suggest an idea');
+    typeMessage('Half an idea');
+    press('Cancel');
+    expect(allText()).not.toContain('What kind?');
+    press('Suggest an idea');
+    expect(message()).toBe('Half an idea');
+    await pressAsync('Write the email');
+    press('Suggest an idea');
+    expect(message()).toBe('');
+  });
+
+  it('Contact support waits for a topic (and says so), then writes a tagged email', async () => {
+    mount(<Help />);
     press('Contact support');
     expect(allText()).toContain('We’re a small independent team. We read every message.');
     expect(pressables('Write the email')[0].props.disabled).toBe(true);
+    expect(allText()).toContain('Choose what it’s about to continue.');
     press('Backup, restore or a new phone');
     await pressAsync('Write the email');
     expect(lastEmail().subject).toBe('Aurivan · Support · Backup · CISA');
@@ -208,7 +248,7 @@ describe('Settings → Help and feedback', () => {
 describe('the Help deep link: aurivan://help?open=…', () => {
   it.each([
     ['support', 'Contact support', 'We’re a small independent team.'],
-    ['idea', 'Send feedback', 'Tell us what helps'],
+    ['idea', 'Suggest an idea', 'Tell us what helps'],
     ['feedback', 'Send feedback', 'Tell us what helps'],
     ['report', 'Report a problem', 'Something didn’t load or froze'],
   ])('open=%s opens %s', (open, _title, text) => {
@@ -224,6 +264,17 @@ describe('the Help deep link: aurivan://help?open=…', () => {
     expect(allText()).not.toContain('What’s it about?');
     expect(allText()).not.toContain('What’s wrong?');
     expect(allText()).not.toContain('What kind?');
+  });
+
+  it('a link that arrives while Help is open opens its sheet, and the param is cleared once handled', () => {
+    const { router } = jest.requireMock('expo-router') as { router: { setParams: jest.Mock } };
+    router.setParams.mockClear();
+    mount(<Help />);
+    expect(allText()).not.toContain('What’s it about?');
+    mockParams = { open: 'support' };
+    act(() => { r!.update(<Help />); });
+    expect(allText()).toContain('What’s it about?');
+    expect(router.setParams).toHaveBeenCalledWith({ open: undefined });
   });
 });
 
@@ -292,17 +343,31 @@ describe('Your reports and the credit loop', () => {
     alert.mockRestore();
   });
 
-  it('What’s new says “Your report helped” once, then never again', () => {
+  it('What’s new says “Updated after your report” once, then never again; fixes sit above the versions', () => {
     mockFixes = [fix()];
     useProgress.setState({ reports: [report()] });
     mount(<WhatsNew />);
-    expect(allText()).toContain('Your report helped');
-    expect(allText()).toContain('Fixed after learner reports');
-    expect(allText()).toContain('The answer key was corrected.');
+    const text = allText();
+    expect(text).toContain('Updated after your report');
+    expect(text).not.toContain('Your report helped'); // another learner's report may have led to the fix
+    expect(text).toContain('The answer key was corrected.');
+    // "Fixed after learner reports" comes before Version 1.7, so a fix never reads as part of it (UX P8).
+    expect(text.indexOf('Fixed after learner reports')).toBeLessThan(text.indexOf('Version 1.7'));
     expect(useProgress.getState().reports![0].creditSeen).toBe(true);
     act(() => { r!.unmount(); });
     mount(<WhatsNew />);
-    expect(allText()).not.toContain('Your report helped');
+    expect(allText()).not.toContain('Updated after your report');
+  });
+
+  it('two reports about ONE thing are “Something you reported”, not “Things”', () => {
+    mockFixes = [fix()];
+    useProgress.setState({ reports: [report(), report({ ref: 'R-ABCD', at: NOW - 21 * DAY })] });
+    mount(<You />);
+    expect(allText()).toContain('Something you reported was updated');
+    act(() => { r!.unmount(); });
+    mount(<WhatsNew />);
+    expect(allText()).toContain('Something you reported has been updated since.');
+    expect(allText()).not.toContain('Things you reported');
   });
 
   it('with no fixes yet, What’s new explains how the loop works', () => {
@@ -311,21 +376,30 @@ describe('Your reports and the credit loop', () => {
     expect(allText()).toContain('Nothing yet. When a learner’s report leads to a fix, it’s listed here.');
   });
 
-  it('Today and You show the quiet line until What’s new is opened', () => {
+  it('You shows the quiet line until the credit is seen', () => {
     mockFixes = [fix()];
     useProgress.setState({ reports: [report()] });
-    mount(<Today />);
-    expect(allText()).toContain('Your report helped');
-    press('See what’s new');
-    expect(mockPush).toHaveBeenCalledWith('/whats-new');
-    act(() => { r!.unmount(); });
     mount(<You />);
     expect(allText()).toContain('Something you reported was updated');
     act(() => { useProgress.getState().markCreditSeen(['R-7K2Q']); });
     expect(allText()).not.toContain('Something you reported was updated');
+  });
+
+  it('Today shows the line ONCE (seen as soon as it shows), with a Dismiss and a way to Your reports', () => {
+    mockFixes = [fix()];
+    useProgress.setState({ reports: [report()] });
+    mount(<Today />);
+    expect(allText()).toContain('Updated after your report');
+    expect(useProgress.getState().reports![0].creditSeen).toBe(true);
+    // Kept for this visit, even though it is already marked seen.
+    expect(allText()).toContain('Something you reported was updated.');
+    press('See your reports');
+    expect(mockPush).toHaveBeenCalledWith('/reports');
+    press('Dismiss this note');
+    expect(allText()).not.toContain('Updated after your report');
     act(() => { r!.unmount(); });
     mount(<Today />);
-    expect(allText()).not.toContain('Your report helped');
+    expect(allText()).not.toContain('Updated after your report');
   });
 
   it('You has one entry to Help and feedback', () => {

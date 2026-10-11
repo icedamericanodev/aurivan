@@ -45,14 +45,22 @@ export default function WhatsNext() {
                   last={k === items.length - 1}
                 />
               ) : (
-                <ListRow key={item.title} title={item.title} subtitle={item.body} last={k === items.length - 1} />
+                // Not tappable: one screen-reader stop that says its status (UX review P9).
+                <ListRow
+                  key={item.title}
+                  title={item.title}
+                  subtitle={item.body}
+                  accessibilityLabel={`${title}: ${item.title}. ${item.body}`}
+                  last={k === items.length - 1}
+                />
               ),
             )}
           </View>
         );
       })}
       <Section title="Have an idea?" />
-      <T v="small" style={{ marginTop: space.xs }}>Tell us what would help your study. We read every idea.</T>
+      {/* One promise only ("We read every report"), so no second one here (UX review O12). */}
+      <T v="small" style={{ marginTop: space.xs }}>Tell us what would help your study.</T>
       <Button
         kind="secondary"
         label="Suggest an idea"

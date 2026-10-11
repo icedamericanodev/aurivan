@@ -18,7 +18,7 @@
  *     panel, once per cert, until dismissed. Its plan item moves to "Also today".
  */
 import { router } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow } from '../../components/journey';
@@ -35,6 +35,11 @@ import { useSession } from '../../store/session';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
+/** "Something you reported was updated." (by different things, not reports). */
+function creditLine(items: number): string {
+  return items === 1 ? 'Something you reported was updated.' : 'Things you reported were updated.';
+}
+
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 function countdown(daysLeft: number | null): string {
@@ -50,8 +55,18 @@ export default function Today() {
   const active = useSession((s) => s.active);
   const markCelebrated = useProgress((s) => s.markCelebrated);
   // Mobile 1.7: a fix shipped after something this learner reported. One quiet
-  // line until they open What's new (which marks it seen). No streak, no growth.
-  const { due: creditDue } = useReports();
+  // line, shown ONCE (QA): it is marked seen as soon as Today shows it and
+  // kept for this visit (the milestones back-fill pattern), with a Dismiss.
+  // No streak, no growth, no badge for reporting.
+  const { due: creditDue, dueItems } = useReports();
+  const markCreditSeen = useProgress((s) => s.markCreditSeen);
+  const [credit, setCredit] = useState<{ items: number; hidden: boolean }>({ items: 0, hidden: false });
+  // Set during render (React's pattern for state that follows the store): a
+  // new credit, e.g. after a restore while Today is open, shows its own line.
+  if (creditDue.length > 0 && (credit.items !== dueItems || credit.hidden)) setCredit({ items: dueItems, hidden: false });
+  useEffect(() => {
+    if (creditDue.length) markCreditSeen(creditDue.map((r) => r.ref));
+  }, [creditDue, markCreditSeen]);
   const plan = j.dayPlan;
   const allDone = planComplete(plan);
   const cur = currentIndex(plan);
@@ -186,14 +201,24 @@ export default function Today() {
             </>
           )
         )}
-        {creditDue.length > 0 && (
+        {credit.items > 0 && !credit.hidden && (
           // The key-idea recipe (a green rule, not a card), like You's back-fill line.
+          // "Updated after your report", not "Your report helped": another
+          // learner's report may have led to the same fix (compliance W2).
           <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
-            <View accessible accessibilityLabel="Your report helped. Something you reported was updated.">
-              <T v="caption" color={c.accentText}>Your report helped</T>
-              <T v="small" style={{ marginTop: space.xs }}>Something you reported was updated.</T>
+            <View accessible accessibilityLabel={`Updated after your report. ${creditLine(credit.items)}`}>
+              <T v="caption" color={c.accentText}>Updated after your report</T>
+              <T v="small" style={{ marginTop: space.xs }}>{creditLine(credit.items)}</T>
             </View>
-            <Button kind="ghost" label="See what’s new" onPress={() => router.push('/whats-new')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />
+            <Row gap={space.xs} style={{ flexWrap: 'wrap', marginLeft: -space.sm }}>
+              <Button kind="ghost" label="See your reports" onPress={() => router.push('/reports')} />
+              <Button
+                kind="ghost"
+                label="Dismiss"
+                accessibilityLabel="Dismiss this note"
+                onPress={() => setCredit((x) => ({ ...x, hidden: true }))}
+              />
+            </Row>
           </View>
         )}
       </Enter>

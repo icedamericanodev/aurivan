@@ -3,13 +3,17 @@
  * It backs the promise "fixes show up in What's new".
  *
  * Top to bottom:
- * - "Your report helped" (once): when a fix shipped after something THIS
- *   learner reported. Matched on the phone (content/support FIXES against
- *   Your reports); then marked seen, so it never shows twice. No streak, no
- *   growth, no badge: reporting is never rewarded with points.
- * - The latest version: New / Improved / Fixed, in plain words.
+ * - "Updated after your report" (once): when a fix shipped after something
+ *   THIS learner reported. Matched on the phone (content/support FIXES
+ *   against Your reports); then marked seen, so it never shows twice
+ *   (Today may have shown it first). Not "Your report helped": another
+ *   learner's report may have led to the same fix (compliance W2). No
+ *   streak, no growth, no badge: reporting is never rewarded with points.
  * - "Fixed after learner reports": the general notes of fixes that came
  *   from reports (never a code or a count), or a line saying how it works.
+ *   It sits ABOVE the versions, so a fix never reads as part of the latest
+ *   release (UX review P8).
+ * - The latest version: New / Improved / Fixed, in plain words.
  * - Earlier versions.
  */
 import { router } from 'expo-router';
@@ -27,7 +31,7 @@ import { useTheme } from '../theme/useTheme';
 /** How many recent report-led fixes to list. */
 const FIXES_SHOWN = 8;
 
-/** "Something you reported has been updated since. Thank you for telling us." */
+/** "Something you reported has been updated since. Thank you for telling us." (n = different things) */
 function creditLine(n: number): string {
   return `${n === 1 ? 'Something you reported has' : 'Things you reported have'} been updated since. Thank you for telling us.`;
 }
@@ -55,10 +59,10 @@ function Release({ entry, latest }: { entry: WhatsNewEntry; latest: boolean }) {
 
 export default function WhatsNew() {
   const { c } = useTheme();
-  const { due } = useReports();
+  const { due, dueItems } = useReports();
   const markCreditSeen = useProgress((s) => s.markCreditSeen);
   // Keep the credit for this visit (it's marked seen right away, like the milestones back-fill line).
-  const [credit] = useState(() => due.length);
+  const [credit] = useState(() => dueItems);
   useEffect(() => {
     if (due.length) markCreditSeen(due.map((r) => r.ref));
   }, [due, markCreditSeen]);
@@ -72,20 +76,18 @@ export default function WhatsNew() {
       {credit > 0 && (
         // The key-idea recipe, not a card: a green rule on the left (spec §5).
         <View style={{ marginTop: space.md, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
-          <View accessible accessibilityLabel={`Your report helped. ${creditLine(credit)}`}>
-            <T v="caption" color={c.accentText}>Your report helped</T>
+          <View accessible accessibilityLabel={`Updated after your report. ${creditLine(credit)}`}>
+            <T v="caption" color={c.accentText}>Updated after your report</T>
             <T v="small" style={{ marginTop: space.xs }}>{creditLine(credit)}</T>
           </View>
           <Button kind="ghost" label="See your reports" onPress={() => router.push('/reports')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />
         </View>
       )}
 
-      <Release entry={latest} latest />
-
       <Section title="Fixed after learner reports" />
       {fixes.length === 0 ? (
         <T v="meta" style={{ marginTop: space.sm }}>
-          Nothing yet. When a learner’s report leads to a fix, it’s listed here. Report a problem from the link under any question, note, lesson step or game card.
+          Nothing yet. When a learner’s report leads to a fix, it’s listed here. Report a problem from the link under any answered question, study note or lesson step, or from a game’s round recap.
         </T>
       ) : (
         fixes.map((f, i) => (
@@ -100,6 +102,8 @@ export default function WhatsNew() {
         ))
       )}
       {fixes.length > 0 && <T v="meta" style={{ marginTop: space.sm }}>Thanks to the learners who reported these.</T>}
+
+      <Release entry={latest} latest />
 
       {earlier.map((e) => (
         <Release key={e.version} entry={e} latest={false} />
