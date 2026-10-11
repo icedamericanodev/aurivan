@@ -8,9 +8,25 @@ OUT="${1:-screenshots}"; THEME="${2:-dark}"; TMP="$(mktemp -d)"
 mkdir -p "$OUT"
 # Rebuild the question pack first so shots never show stale questions.
 node scripts/build-content.mjs >/dev/null
+# SHOTS=support needs one fix shipped after a learner's report, to show "Updated
+# after your report". The real list (src/content/support/fixes.json) is empty until
+# the first fix ships, so a one-entry demo list is swapped in for THIS export only
+# and put back straight after it (and on any exit, by the trap).
+FIXES=src/content/support/fixes.json
+if [ "${SHOTS:-}" = support ]; then
+  cp "$FIXES" "$TMP/fixes.keep"
+  trap 'cp "$TMP/fixes.keep" "'"$FIXES"'"; rm -rf "$TMP"' EXIT
+  python3 - "$FIXES" <<'PY'
+import json, sys, time
+day = time.strftime("%Y-%m-%d", time.localtime(time.time() - 3 * 86400))
+json.dump([{"ref": "q:d1_008", "cert": "cisa", "date": day, "kind": "corrected",
+            "publicNote": "The answer key was corrected, and the explanation now says why."}], open(sys.argv[1], "w"), indent=2)
+PY
+fi
 # --clear: Metro caches the inlined app manifest, so without it the web build can
 # report an old app.json (an old version and colours) in Settings → About and backups.
 EXPO_OFFLINE=1 npx expo export --platform web --clear --output-dir "$TMP/web" >/dev/null
+if [ "${SHOTS:-}" = support ]; then cp "$TMP/fixes.keep" "$FIXES"; fi
 python3 scripts/screenshots/make_seed.py "$TMP/seed.json" "$THEME"
 python3 scripts/screenshots/serve_spa.py "$TMP/web" & SERVER=$!
 trap 'kill $SERVER 2>/dev/null; rm -rf "$TMP"' EXIT
@@ -35,6 +51,11 @@ elif [ "${SHOTS:-}" = milestones ]; then
   # Build F: back-fill summary, Milestones, a Results milestone, Play levels,
   # Field notes, and each new game's round and end (shoot_milestones.mjs).
   node scripts/screenshots/shoot_milestones.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = support ]; then
+  # Mobile 1.7 Help and feedback: the report sheet on a question and a note, the
+  # note after sending, the no-email-app fallback, Settings → Help and feedback,
+  # Help, What's new, What's next, Common questions, Your reports (shoot_support.mjs).
+  node scripts/screenshots/shoot_support.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).
