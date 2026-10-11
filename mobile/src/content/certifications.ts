@@ -45,11 +45,11 @@ export const CERTIFICATIONS: Certification[] = [
       passingNote: 'ISACA reports scaled scores from 200–800; 450 is the passing mark.',
     },
     domains: [
-      { id: '1', name: 'Information System Auditing Process', short: 'IS Audit', weight: 18, tone: 0 },
-      { id: '2', name: 'Governance and Management of IT', short: 'IT Governance', weight: 18, tone: 1 },
-      { id: '3', name: 'IS Acquisition, Development & Implementation', short: 'IS Acquisition', weight: 12, tone: 2 },
-      { id: '4', name: 'IS Operations & Business Resilience', short: 'IS Operations', weight: 26, tone: 3 },
-      { id: '5', name: 'Protection of Information Assets', short: 'Info Protection', weight: 26, tone: 4 },
+      { id: '1', name: 'Information System Auditing Process', short: 'IS Audit', weight: 18, tone: 0, emblem: 'domain-audit' },
+      { id: '2', name: 'Governance and Management of IT', short: 'IT Governance', weight: 18, tone: 1, emblem: 'domain-governance' },
+      { id: '3', name: 'IS Acquisition, Development & Implementation', short: 'IS Acquisition', weight: 12, tone: 2, emblem: 'domain-build' },
+      { id: '4', name: 'IS Operations & Business Resilience', short: 'IS Operations', weight: 26, tone: 3, emblem: 'domain-operations' },
+      { id: '5', name: 'Protection of Information Assets', short: 'Info Protection', weight: 26, tone: 4, emblem: 'domain-protection' },
     ],
   },
   {
