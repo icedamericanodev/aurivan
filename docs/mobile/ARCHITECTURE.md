@@ -118,7 +118,9 @@ not foreign), app and schema checks, a file from a newer app version asks the
 learner to update, known cert ids only, a small hand-written type checker
 (real dates and times between 2000 and 2100, scores and minutes in range,
 `correct ≤ total`), capped lists and maps (5,000 per map), unknown keys
-dropped. Ids that don't exist in the app's content (questions, lessons, notes)
+dropped. Since mobile 1.7 the progress store also carries the optional
+"Your reports" list (checked entry by entry, capped at 200, reports about
+retired items kept). Ids that don't exist in the app's content (questions, lessons, notes)
 are dropped, and a progress store over 1.5 M characters is refused, so Android
 can always read the saved row back. Today's frozen plans (`days`) are never
 restored: the planner rebuilds today's plan. The phone keeps its own
@@ -315,6 +317,47 @@ works out the facts from saved progress.
   progress, the rest with rules), You → Field notes (levels and pressed
   leaves), the Results moment and the round-end lines.
 
+### Help and feedback (mobile 1.7, Uplift Phase 1 "Ask and fix")
+Learners report a problem where they see it, and see when it's fixed. No
+server: every email goes through the learner's OWN email app.
+- **Emails** (`engine/support.ts`, pure, tested): Report a problem, Send
+  feedback and Contact support. Subjects carry tags for mail filters
+  (`Aurivan · Report · CISA · d4_217 · key`). A report names the bank's
+  ORIGINAL letter with the shown one in brackets ("Your pick: A (shown as
+  C)", plus the shown order when shuffled), the item code, reason, app and
+  OS major version, review month and a random `R-XXXX` ref. Never a name,
+  exam date, score, progress, device id or question text. Notes are cleaned
+  and capped (1,000 characters); the mailto link is capped at 4,000 and an
+  oversized note is shortened with "…".
+- **Sending** (`lib/support.ts`): `Linking.openURL('mailto:…')` on both
+  platforms, never `canOpenURL` (it needs extra config and answers "no").
+  If it fails, the sheet shows the address and the whole message as
+  selectable text with "Share details" (RN `Share`). We never claim "sent".
+  `expo-mail-composer` (iOS in-app composer) is deferred to a native build.
+  The address `certprep.support@gmail.com` is built in (`lib/config.ts`);
+  the env var can override it, and an empty or broken value can't disable it.
+- **Entry points** (`components/support.tsx` `useReportFlow` + `ReportRow`):
+  every practice answer (`TrustLine`), the results review after practice and
+  mocks, "Something not working? Report a bug" on Results, the mistake
+  journal, every study note, every lesson step (a check only after it's
+  answered), every miss in a game recap, and Settings / You → Help and
+  feedback. A live mock has none (the navigator says to report from the review).
+- **Your reports** (progress store `reports`, optional, newest first, 200
+  max): `{ ref, item, reason, at, cert, creditSeen? }`, item = `q:d4_217`,
+  `note:4A2.3`, `lesson:<id>#<step>`, `card:<id>`, `app:<screen>`. It goes
+  through the backup checker and its fit mode; reports about retired items
+  are kept. A reset of one exam leaves it alone.
+- **Credit loop**: `content/support/fixes.json` (`{ ref, cert, date, kind,
+  publicNote }`, bundled, empty until the first fix ships) is matched on the
+  phone: a fix for the same item shipped on a LATER day shows "Updated after
+  your report" in Your reports, "Your report helped" once on What's new, and
+  one quiet line on Today until seen. No streak, growth or badge for reporting.
+- **Screens**: `help` (also `aurivan://help?open=support|feedback|idea|report`),
+  `faq`, `reports`, `whats-new` (every mobile release in plain words, plus
+  "Fixed after learner reports"), `whats-next` (read-only, dateless). Content
+  in `content/support/index.ts`; `support-content.test.ts` enforces the What's
+  New style. Maintainer side: `docs/support/PLAYBOOK.md`.
+
 **Games (mobile 1.6).** Three content games, all in the registry with the
 minPool guard (`isPlayable` now also counts a cert's decks from
 `content/games`; `lib/games.ts` asks it for every screen):
@@ -396,10 +439,12 @@ Freemium with in-app subscriptions (product panel recommendation):
 3. **Privacy** — live privacy-policy URL (`EXPO_PUBLIC_PRIVACY_URL`), Apple
    privacy label + Google Data safety form matching every SDK added.
    Before any store build, set `EXPO_PUBLIC_PRIVACY_URL`, `EXPO_PUBLIC_TERMS_URL`
-   and `EXPO_PUBLIC_FEEDBACK_EMAIL` in the EAS **production** environment with
+   and (optionally) `EXPO_PUBLIC_FEEDBACK_EMAIL` in the EAS **production** environment with
    `eas env:create` (public values, never secrets). Don't put them in
    `eas.json`: its `env` values override EAS variables, an empty value hides the
    matching link in Settings, and `eas.json` rejects comment keys like `"//"`.
+   (Since mobile 1.7 the support address has a built-in default, so an empty
+   `EXPO_PUBLIC_FEEDBACK_EMAIL` never hides "Report a problem" or Help.)
 4. **Account deletion** — required the moment accounts exist (Phase 3).
 5. **Paywall disclosures** — price, period, renewal terms, Restore, Terms + Privacy links.
 6. **No "guaranteed pass"** claims anywhere. Readiness is always worded as an

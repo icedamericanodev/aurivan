@@ -83,6 +83,7 @@ STAND TALL ON EXAM DAY
 MADE FOR REAL LIFE
 • Works offline, on the commute or between meetings
 • No account and no sign-up. No data collected. Your progress stays on your phone, and a backup file you save yourself moves it to a new one.
+• Report any question from where you see it. Fixes are listed in What's new.
 • Light and dark Grove themes, designed for easy reading
 
 A NOTE ON READINESS
@@ -102,6 +103,10 @@ Welcome to Aurivan. This first release brings calm, focused practice for the CIS
 ```
 
 About 250 characters.
+
+### Support URL
+
+`https://<the website>/support.html` (the same site as `privacy.html` and `terms.html`). It shows the support address, what to include, quick answers and the not-affiliated line. Google Play: use certprep.support@gmail.com as the public developer contact email.
 
 ### Categories
 
@@ -157,6 +162,7 @@ Thank you for reviewing Aurivan.
 - No login or account is needed. There is nothing to sign in to, so no demo account is required.
 - All study data (progress, settings, exam date) is stored only on the device. The app collects no data and has no analytics or ads. Settings → Your data lets the user save a backup file through the system share sheet and restore it with the system file picker; the app never uploads it.
 - The app works fully offline.
+- Support: Settings → Help and feedback (also You → Get help or send feedback) has Contact support, Report a problem and Common questions, and shows certprep.support@gmail.com. "Report a problem" (under every answer, note and lesson step) opens the user's own email app with a draft they can read and edit; the app itself sends nothing. Support URL: support.html on our website.
 
 To reach a mock exam:
 1. On first launch, tap "Start my plan", then "Continue", then "Start studying".
