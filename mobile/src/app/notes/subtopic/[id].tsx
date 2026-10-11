@@ -13,8 +13,10 @@
  *     keep going without stepping back to the list.
  */
 import { router, useLocalSearchParams } from 'expo-router';
+import { useState } from 'react';
 import { View } from 'react-native';
-import { Check, ICON_STROKE } from '../../../components/icons';
+import { ICON_STROKE } from '../../../components/icons';
+import { CheckDraw } from '../../../components/motion';
 import { NoteBody } from '../../../components/notes';
 import { ReportRow } from '../../../components/support';
 import { Button, Enter, Gap, ICON_SIZE, PushedHeader, Screen, Tag, T } from '../../../components/ui';
@@ -34,6 +36,8 @@ export default function NoteSubtopicScreen() {
   const id = decodeURIComponent(rawId ?? '');
   const { cert, progress } = useActiveCert();
   const setNoteRead = useProgress((s) => s.setNoteRead);
+  // Marked as read on this visit: its ✓ draws (a note opened already read shows it still).
+  const [justRead, setJustRead] = useState(false);
   const note = findNote(cert.id, id);
   const domain = note ? cert.domains.find((d) => d.id === note.domainId) : undefined;
 
@@ -86,14 +90,18 @@ export default function NoteSubtopicScreen() {
 
       <Enter i={2} style={{ marginTop: space.section, gap: space.md }}>
         {/* A toggle: announced as "selected" once read; tap again to undo. */}
+        {/* Marking it read draws the ✓ (motion.md M4: what changed); opening a note already read just shows it. */}
         <Button
           kind="secondary"
           label={isRead ? 'Marked as read' : 'Mark as read'}
           selected={isRead}
           accessibilityHint={isRead ? 'Marks this note as not read' : 'Saves that you have read this note'}
-          icon={isRead ? (col) => <Check size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} /> : undefined}
+          icon={isRead ? (col) => <CheckDraw play={justRead} size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} /> : undefined}
           iconLeading
-          onPress={() => setNoteRead(cert.id, note.id, !isRead)}
+          onPress={() => {
+            setJustRead(!isRead);
+            setNoteRead(cert.id, note.id, !isRead);
+          }}
         />
         {n > 0 && (
           // The helper line sits right under its button, so they read as one.

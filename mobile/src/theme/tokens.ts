@@ -314,6 +314,7 @@ export const motion = {
     short: 200, // a repeated celebration: its end state cross-fades in, nothing else moves
     reduced: 120, // the cross-fade that replaces movement under Reduce Motion
     tick: 900, // the pace tick's linear glide, within each 1 s clock tick (the one linear motion)
+    draw: 400, // a lesson diagram's line drawing itself (the step path, a timeline rail), like a short vine
   },
   /** Cubic-bezier control points (Material 3). "out" is Easing.out(cubic), our default. */
   curve: {
@@ -335,9 +336,10 @@ export const motion = {
   /**
    * Stagger: content groups 40 ms apart (first 4), list rows 30 ms (first 6),
    * a rolling number's digits 30 ms (they finish right to left), growth
-   * figures 60 ms (rings, stats), newly pressed leaves 80 ms (first 3).
+   * figures 60 ms (rings, stats), newly pressed leaves 80 ms (first 3),
+   * a lesson scene's parts 120 ms (reading order, first 6; mobile 1.12).
    */
-  stagger: { group: 40, maxGroups: 4, row: 30, maxRows: 6, digit: 30, stat: 60, leaf: 80, maxLeaves: 3 },
+  stagger: { group: 40, maxGroups: 4, row: 30, maxRows: 6, digit: 30, stat: 60, leaf: 80, maxLeaves: 3, scene: 120, maxScene: 6 },
   /**
    * The celebration budget (behavioural review §2): a kind of moment plays in
    * full its first `fullTimes` times, then shortened; at most ONE plays in

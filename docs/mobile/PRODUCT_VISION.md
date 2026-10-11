@@ -81,14 +81,14 @@ Professional tone: no mascots, no confetti per answer.
 | Game | Skill trained | Status |
 |---|---|---|
 | **Snare Spotter** (id `trap`) — find the answer built to fool you, then the best one | Beating distractors | Built |
-| **Sure Footing** (id `sprint`) — how sure are you, really? Honest confidence scores best | Calibration (fixing over-confidence) | Built |
+| **Forecast** (id `sprint`; Sure Footing before mobile 1.12) — how sure are you, really? Honest confidence scores best | Calibration (fixing over-confidence) | Built |
 | **Signpost** (id `priority`) — read the word that decides which true answer wins | Reading the question like an examiner | Built |
 | Who Acts? — auditor, management or board | Role lens | Next |
 | Term Duel, Root-Cause Ladder, Pre-Read Scanner, Mixed Shift, Concept Chain | Retrieval, root cause, interleaving | Later |
 
 > Names, taglines and round lengths live in one place: `mobile/src/engine/games/registry.ts`. The ids (`trap`, `sprint`, `priority`) never change, because saved progress is keyed on them; a rename is display-only.
 >
-> Sure Footing is the one place the learner rates confidence *before* answering (Guess, Lean or Sure). That reversal is deliberate: it is what the game measures. Scoring is asymmetric (Guess +1/0, Lean +2/−1, Sure +3/−5) so honest confidence scores best. Never use betting words ("bet", "stake") in its copy.
+> Forecast is the one place the learner rates confidence *before* answering (Guess, Lean or Sure). That reversal is deliberate: it is what the game measures. Scoring is asymmetric (Guess +1/0, Lean +2/−1, Sure +3/−5) so honest confidence scores best. Never use betting words ("bet", "stake") in its copy.
 
 ---
 

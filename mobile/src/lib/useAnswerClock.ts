@@ -4,7 +4,7 @@
  * Give it a key that changes with each new question (the question id, plus
  * the round index in games). It restarts the clock when the key changes and
  * pauses it while the app is in the background. `held` pauses it too, for
- * time on screen that isn't answering (Sure Footing's rules panel). Call the
+ * time on screen that isn't answering (Forecast's rules panel). Call the
  * returned function at the moment the answer is committed to read the time.
  *
  * The clock lives in a ref, so ticking it never re-renders the screen.

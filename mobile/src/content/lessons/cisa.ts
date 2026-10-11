@@ -675,6 +675,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'flow',
+        layout: 'timeline',
         heading: 'From exit meeting to closure',
         steps: [
           { label: 'Exit meeting', note: 'At the end of testing, management checks the facts and proposes actions' },
@@ -1236,6 +1237,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'flow',
+        layout: 'timeline',
         heading: 'The vendor lifecycle',
         steps: [
           { label: 'Decide to source', note: 'Weigh risk, knowledge loss and flexibility, not price alone' },
@@ -1464,6 +1466,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'flow',
+        layout: 'timeline',
         heading: 'From go-live readiness to lessons learned',
         steps: [
           { label: 'Readiness check', note: 'Before go-live, accountable owners sign off agreed criteria, with open issues listed' },
@@ -2144,6 +2147,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'flow',
+        layout: 'timeline',
         heading: 'A controlled cutover',
         steps: [
           {
@@ -2605,6 +2609,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         // Expert review fix (2026-10): discover and maintain merged into one ongoing step.
         type: 'flow',
+        layout: 'timeline',
         heading: 'The asset life cycle',
         steps: [
           { label: 'Acquire', note: 'Approved and recorded with a named owner' },
@@ -3295,6 +3300,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         // Expert review fix (2026-10): training comes before testing.
         type: 'flow',
+        layout: 'timeline',
         heading: 'The continuity life cycle',
         steps: [
           { label: 'Policy', note: 'Management’s mandate: scope, objectives and who is accountable' },
@@ -3407,6 +3413,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'flow',
+        layout: 'timeline',
         heading: 'Joiner, mover, leaver',
         steps: [
           { label: 'Joiner', note: 'Access requested by the manager, approved by the data owner' },

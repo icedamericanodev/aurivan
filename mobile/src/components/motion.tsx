@@ -21,7 +21,9 @@
 import * as Router from 'expo-router';
 import { useFocusEffect } from 'expo-router';
 import {
+  Children,
   createContext,
+  isValidElement,
   useCallback,
   useContext,
   useEffect,
@@ -52,6 +54,7 @@ import Animated, {
   FadeOut as FadeOutAnimation,
   ReducedMotionConfig,
   ReduceMotion,
+  useAnimatedProps,
   useAnimatedStyle,
   useReducedMotion,
   useSharedValue,
@@ -223,6 +226,9 @@ export function FadeIn({
   dur = 'enter',
   when = true,
   rise = true,
+  build = false,
+  play = true,
+  drop = false,
   style,
   children,
 }: {
@@ -232,6 +238,16 @@ export function FadeIn({
   when?: boolean;
   /** false = fade only. */
   rise?: boolean;
+  /**
+   * Mobile 1.12: a part of a lesson diagram that builds up in reading order.
+   * It plays even inside a page a PageTurn is bringing in (the build-up IS
+   * the content), with its own `delay`.
+   */
+  build?: boolean;
+  /** false = shown in place at once (a group that was already open when its screen opened). */
+  play?: boolean;
+  /** Arrive from 8pt ABOVE instead of below (a lesson's layers settling onto the stack). */
+  drop?: boolean;
   style?: StyleProp<ViewStyle>;
   children: ReactNode;
 }) {
@@ -241,9 +257,9 @@ export function FadeIn({
   const arrival = useContext(ArrivalContext);
   // Inside a celebration that was skipped (a tap) or has ended: at its end state now.
   const settled = useContext(CelebrateContext).settled;
-  const [withPage] = useState(() => arrival !== null && !settledArrivals.has(arrival));
+  const [withPage] = useState(() => !play || (!build && arrival !== null && !settledArrivals.has(arrival)));
   const p = useSharedValue(withPage ? 1 : 0);
-  const y = useSharedValue(reduced || !rise || withPage ? 0 : motion.rise);
+  const y = useSharedValue(reduced || !rise || withPage ? 0 : drop ? -motion.rise : motion.rise);
   const played = useRef(withPage);
   useEffect(() => {
     if (!settled || !when) return;
@@ -532,6 +548,183 @@ export function Shake({ trigger, style, children }: { trigger: number; style?: S
   return <Animated.View style={[style, anim]}>{children}</Animated.View>;
 }
 
+// ── Learn and Play (mobile 1.12, motion.md M4/M5) ─────────────────────
+/**
+ * Show or hide a small group (a Learn domain's lessons, the Practice path
+ * picker, Build a set). No height animation (that would be layout): the
+ * rest of the screen moves at once, and what just opened arrives, so the
+ * eye follows the new content, not a sliding edge. Opening fades the group
+ * in with an 8pt rise; with `rows`, each child is its own row, 30 ms apart
+ * (the first 6; the rest come with the 6th). Closing is immediate (the
+ * chevron turning says it). A group that was already open when its screen
+ * opened is simply there: nothing moves on mount. Reduced: a 120 ms fade.
+ */
+export function Collapse({ open, rows = false, style, children }: { open: boolean; rows?: boolean; style?: StyleProp<ViewStyle>; children: ReactNode }) {
+  // Open from the start: shown in place. Every later opening plays.
+  const [openAtMount] = useState(open);
+  const [closedOnce, setClosedOnce] = useState(false);
+  if (!open && !closedOnce) setClosedOnce(true);
+  if (!open) return null;
+  const play = !(openAtMount && !closedOnce);
+  const parts = rows ? Children.toArray(children) : [children];
+  return (
+    <View style={style}>
+      {parts.map((part, k) => (
+        <FadeIn
+          key={isValidElement(part) && part.key != null ? part.key : k}
+          play={play}
+          build
+          dur="enter"
+          delay={rows ? Math.min(k, motion.stagger.maxRows - 1) * motion.stagger.row : 0}
+        >
+          {part}
+        </FadeIn>
+      ))}
+    </View>
+  );
+}
+
+/**
+ * Turns its child to `deg` (a chevron pointing down when open, right or up
+ * when closed): a quick turn on the standard curve when it changes, never on
+ * mount. Reduced: it simply points the new way (the direction is the state).
+ */
+export function Turn({ deg, style, children }: { deg: number; style?: StyleProp<ViewStyle>; children: ReactNode }) {
+  const { reduced } = useMotion();
+  const a = useSharedValue(deg);
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    a.set(reduced ? deg : tween(deg, 'quick', ease.standard));
+  }, [deg, reduced, a]);
+  const anim = useAnimatedStyle(() => ({ transform: [{ rotate: `${a.value}deg` }] }));
+  return (
+    <Animated.View accessible={false} importantForAccessibility="no-hide-descendants" style={[style, anim]}>
+      {children}
+    </Animated.View>
+  );
+}
+
+/**
+ * A line in a lesson diagram that draws itself (the step path, a timeline
+ * rail): it grows from its start (top, or left) over `dur`, after `delay`,
+ * when it mounts with `play`. Transform only (scaleY / scaleX from its
+ * origin). Reduced, or not playing: drawn at once (like the vine).
+ */
+export function DrawLine({
+  play = true,
+  axis = 'y',
+  delay = 0,
+  dur = 'draw',
+  durMs,
+  style,
+}: {
+  play?: boolean;
+  axis?: 'x' | 'y';
+  delay?: number;
+  dur?: MotionDur;
+  /** A length worked out from tokens (a timeline rail spans its whole build). */
+  durMs?: number;
+  style?: StyleProp<ViewStyle>;
+}) {
+  const { reduced } = useMotion();
+  const settled = useContext(CelebrateContext).settled;
+  const still = !play || reduced || settled;
+  const p = useSharedValue(still ? 1 : 0);
+  useEffect(() => {
+    if (still) {
+      cancelAnimation(p);
+      p.set(1);
+      return;
+    }
+    p.set(withDelay(delay, durMs ? withTiming(1, { duration: durMs, easing: ease.out, reduceMotion: ReduceMotion.Never }) : tween(1, dur, ease.out)));
+  }, [still, delay, dur, durMs, p]);
+  const anim = useAnimatedStyle(() => (axis === 'y' ? { transform: [{ scaleY: p.value }] } : { transform: [{ scaleX: p.value }] }));
+  return (
+    <Animated.View
+      accessible={false}
+      importantForAccessibility="no-hide-descendants"
+      style={[styles.noTouch, { transformOrigin: axis === 'y' ? 'top' : 'left' }, style, anim]}
+    />
+  );
+}
+
+// The ✓ on Lucide's 24 grid, drawn from its short stroke to its long one.
+const CHECK_PATH = 'M4.5 12.5 9 17 19.5 6.5';
+const CHECK_LENGTH = Math.hypot(4.5, 4.5) + Math.hypot(10.5, 10.5);
+const AnimatedCheckPath = Animated.createAnimatedComponent(Path);
+
+type CheckDrawProps = {
+  play?: boolean;
+  /**
+   * Wait EMPTY until `play` (a lesson finished while Learn was out of view:
+   * its row must not show the ✓ drawn, then empty it, then draw it again).
+   */
+  hold?: boolean;
+  size?: number;
+  color: string;
+  strokeWidth?: number;
+  delay?: number;
+};
+
+/**
+ * A ✓ that draws itself, short stroke then long (`reveal`, 200 ms), when
+ * `play` (a lesson just done, a note just marked as read). Otherwise it is
+ * simply drawn: a plain SVG, with no animated nodes (a Learn group can hold
+ * many done rows). `hold` keeps it empty until it plays. Reduced: it fades
+ * in (120 ms), never a cut. Decorative: the row or button around it says the state.
+ */
+export function CheckDraw({ play = false, hold = false, size = 16, color, strokeWidth = 2.5, delay = 0 }: CheckDrawProps) {
+  if (!play && !hold) {
+    return (
+      <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ width: size, height: size }}>
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d={CHECK_PATH} stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+        </Svg>
+      </View>
+    );
+  }
+  return <DrawnCheck play={play} size={size} color={color} strokeWidth={strokeWidth} delay={delay} />;
+}
+
+/** CheckDraw while it waits or plays: one animated path. It starts empty, so it never shows drawn first. */
+function DrawnCheck({ play, size, color, strokeWidth, delay }: { play: boolean; size: number; color: string; strokeWidth: number; delay: number }) {
+  const { reduced } = useMotion();
+  const p = useSharedValue(reduced ? 1 : 0);
+  const o = useSharedValue(reduced ? 0 : 1);
+  // Before paint, so the frame that turns `play` on never shows the end state first.
+  useLayoutEffect(() => {
+    if (!play) return;
+    if (reduced) {
+      p.set(1);
+      o.set(withSequence(snap(0), withDelay(delay, tween(1, 'reduced'))));
+      return;
+    }
+    o.set(1);
+    p.set(withSequence(snap(0), withDelay(delay, tween(1, 'reveal'))));
+  }, [play, reduced, delay, p, o]);
+  const props = useAnimatedProps(() => ({ strokeDashoffset: CHECK_LENGTH * (1 - p.value), strokeOpacity: p.value < 0.02 ? 0 : 1 }));
+  const fade = useAnimatedStyle(() => ({ opacity: o.value }));
+  return (
+    <Animated.View accessible={false} importantForAccessibility="no-hide-descendants" style={[{ width: size, height: size }, fade]}>
+      <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+        <AnimatedCheckPath
+          d={CHECK_PATH}
+          stroke={color}
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeDasharray={`${CHECK_LENGTH} ${CHECK_LENGTH}`}
+          animatedProps={props}
+        />
+      </Svg>
+    </Animated.View>
+  );
+}
+
 /** Which way a page turns: the explicit direction, else back when a numeric id goes down. */
 export function turnDirection(from: string | number, to: string | number, explicit?: 1 | -1): 1 | -1 {
   if (explicit) return explicit;
@@ -567,12 +760,16 @@ export function PageTurn({
   onSwap,
   onTurning,
   style,
+  pageStyle,
   children,
 }: {
   id: string | number;
   direction?: 1 | -1;
   calm?: boolean;
-  onSwap?: () => void;
+  /** Style for each page (a lesson scene fills the scroll's height: flex 1). */
+  pageStyle?: StyleProp<ViewStyle>;
+  /** At the swap, before the new page is painted, with the id of the page now on screen. */
+  onSwap?: (id: string | number) => void;
   /** The leaving page's id when a turn starts; null once the new page is in. */
   onTurning?: (leavingId: string | number | null) => void;
   style?: StyleProp<ViewStyle>;
@@ -638,7 +835,7 @@ export function PageTurn({
   // Arriving: before paint, reset the scroll and place the page off to the side.
   useLayoutEffect(() => {
     if (!page.arrival) return;
-    swapRef.current?.();
+    swapRef.current?.(page.id);
     if (page.quiet) {
       // The keyed page below fades itself in; the frame stays put.
       x.set(0);
@@ -657,7 +854,7 @@ export function PageTurn({
   const isLeaving = leaving !== null;
   return (
     <Animated.View style={[style, anim, isLeaving && styles.noTouch]}>
-      <Animated.View key={String(page.id)} entering={page.arrival && page.quiet ? QUIET_ARRIVAL : undefined}>
+      <Animated.View key={String(page.id)} entering={page.arrival && page.quiet ? QUIET_ARRIVAL : undefined} style={pageStyle}>
         <ArrivalContext.Provider value={page.arrival}>
           {/* While leaving, the old page (from the last settled commit) fades out. */}
           {/* eslint-disable-next-line react-hooks/refs */}

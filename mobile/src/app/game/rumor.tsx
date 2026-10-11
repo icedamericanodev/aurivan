@@ -16,13 +16,12 @@ import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { AccessibilityInfo, View } from 'react-native';
 import { GameFrame, GameIntro, PlayableGate, RevealCard, RoundEnd } from '../../components/game';
-import { BookOpen, ICON_STROKE, SproutIcon } from '../../components/icons';
+import { BookOpen, ICON_STROKE } from '../../components/icons';
 import { OptionCard, type OptionState } from '../../components/quiz';
 import { Button, Gap, ICON_SIZE, ListRow, Row, Stem, T, useFontScale } from '../../components/ui';
 import { getNotes } from '../../content/notes';
 import { LETTERS } from '../../content/types';
 import { clip, firstSentence, type RecapMiss } from '../../engine/games/recap';
-import { GAMES } from '../../engine/games/registry';
 import {
   buildRumorRound,
   isRightTap,
@@ -98,7 +97,6 @@ function RootOrRumor() {
     return (
       <GameIntro
         game="rumor"
-        icon={(col) => <SproutIcon size={48} color={col} strokeWidth={1.5} />}
         rules="Twelve statements from the study notes, one at a time. Tap Root if it is a sound principle, Rumor if it is an exam myth. Myths are the beliefs that make wrong options feel right."
         tiers={RUMOR_TIERS}
         tier={tier}
@@ -212,7 +210,7 @@ function RootOrRumor() {
 
   return (
     <GameFrame
-      title={GAMES.rumor.name}
+      game="rumor"
       index={i}
       total={round.length}
       score={score}

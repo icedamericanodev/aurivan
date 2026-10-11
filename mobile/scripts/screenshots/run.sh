@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -91,6 +91,14 @@ elif [ "${SHOTS:-}" = stats ]; then
   # a mock and its pacing), You's stats and the Today clearing (shoot_stats.mjs;
   # NARROW=1 for a 360-wide phone, FONT_SCALE=2 for approximate 200% text).
   node scripts/screenshots/shoot_stats.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = learnplay ]; then
+  # Mobile 1.12 Learn and Play: Learn's trail and reason, the lesson cover, the
+  # scene templates, a check's verdict, Lesson complete, Mark as read, Play,
+  # each game's header, a recap with its sparkline and a level up; strips of
+  # the scene turn, the step line, the timeline, the lesson ✓, a match, a
+  # stone and the level-leaf morph (shoot_learnplay.mjs; REDUCED=1; NARROW=1;
+  # FONT_SCALE=2 for approximate 200% text).
+  node scripts/screenshots/shoot_learnplay.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).

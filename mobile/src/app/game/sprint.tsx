@@ -1,14 +1,17 @@
 /**
- * Sure Footing (id `sprint`) — say how sure you are, then answer.
+ * Forecast (id `sprint`; called Sure Footing before mobile 1.12, renamed so
+ * it no longer sounds like the Firm Footing and First Foothold badges) —
+ * say how sure you are, then answer.
  * Guess +1 / 0 · Lean +2 / −1 · Sure +3 / −5: the honest choice scores best
- * (engine/games/calibration.ts explains the maths). The rules show on the
- * first play and behind the info button. The end screen shows accuracy per
+ * (engine/games/calibration.ts explains the maths). The rules show in the
+ * game's intro on the first play (ui.md G3: never on top of a question) and
+ * behind the info button after that. The end screen shows accuracy per
  * confidence level: are your Sure answers really sure?
  * Copy rule: no betting words ("bet", "stake") anywhere.
  */
 import { useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, StyleSheet, View } from 'react-native';
-import { GameFrame, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
+import { GameFrame, GameIntro, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
 import { OptionCard, type OptionState } from '../../components/quiz';
 import { Button, Gap, ProgressBar, Segmented, T, useFontScale } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
@@ -46,8 +49,8 @@ import { useTheme } from '../../theme/useTheme';
 
 const SIZE = GAMES.sprint.size;
 
-/** The scoring rules: shown on the first play, and behind the info button. */
-function SureFootingRules({ onDone, focus }: { onDone: () => void; focus?: boolean }) {
+/** The scoring rules: in the intro on the first play, and behind the info button (with "Got it"). */
+function ForecastRules({ onDone, focus }: { onDone?: () => void; focus?: boolean }) {
   const { c } = useTheme();
   // Opened from the info button mid-question: move screen-reader focus to the heading.
   const headRef = useRef<View>(null);
@@ -56,9 +59,9 @@ function SureFootingRules({ onDone, focus }: { onDone: () => void; focus?: boole
   }, [focus]);
   const large = useFontScale() >= LARGE_TEXT;
   return (
-    <View accessibilityLiveRegion="polite" style={{ marginBottom: space.lg }}>
-      <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel="How Sure Footing scores">
-        <T v="headline">How Sure Footing scores</T>
+    <View accessibilityLiveRegion={onDone ? 'polite' : undefined} style={{ marginBottom: onDone ? space.lg : 0, marginTop: onDone ? 0 : space.xl }}>
+      <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel="How scoring works">
+        <T v="headline">How scoring works</T>
       </View>
       <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>
         Before each answer, say how sure you are. Pick the one that matches how sure you really feel: over many questions, honest
@@ -80,22 +83,26 @@ function SureFootingRules({ onDone, focus }: { onDone: () => void; focus?: boole
           <T v="meta">{FOOTING_DESC[f]}</T>
         </View>
       ))}
-      <Gap h={space.sm} />
-      <Button kind="secondary" label="Got it" onPress={onDone} />
+      {onDone && (
+        <>
+          <Gap h={space.sm} />
+          <Button kind="secondary" label="Got it" onPress={onDone} />
+        </>
+      )}
     </View>
   );
 }
 
 /** The route: the game, or a calm "on the way" screen when this exam can't play it. */
-export default function SureFootingScreen() {
+export default function ForecastScreen() {
   return (
     <PlayableGate game="sprint">
-      <SureFooting />
+      <Forecast />
     </PlayableGate>
   );
 }
 
-function SureFooting() {
+function Forecast() {
   const { c } = useTheme();
   const { cert } = useActiveCert();
   const { round, restart } = useRound(cert.id, (seed) =>
@@ -107,22 +114,39 @@ function SureFooting() {
   const [results, setResults] = useState<SprintResult[]>([]);
   const [misses, setMisses] = useState<RecapMiss[]>([]);
   const [news, setNews] = useState<RoundNews | null>(null);
-  // Rules: open on the very first play; afterwards behind the info button.
+  // Rules: in the intro on the very first play; afterwards behind the info button.
   const seen = useSettings((s) => s.gameRulesSeen.includes('sprint'));
   const markRulesSeen = useSettings((s) => s.markRulesSeen);
-  const [rulesOpen, setRulesOpen] = useState(!seen);
+  const [started, setStarted] = useState(seen);
+  const [rulesOpen, setRulesOpen] = useState(false);
   // True when opened from the info button (not on first play): focus the heading.
   const [rulesFromInfo, setRulesFromInfo] = useState(false);
   const progress = useProgress.getState();
   // Quiet data (Build C): time from the question appearing to the answer,
   // held while the rules panel is open (reading rules isn't answering).
-  const readClock = useAnswerClock(round[i] ? `${i}:${round[i].q.id}` : undefined, rulesOpen);
+  const readClock = useAnswerClock(round[i] && started ? `${i}:${round[i].q.id}` : undefined, rulesOpen);
   const score = sprintScore(results);
   const closeRules = () => {
     setRulesOpen(false);
     markRulesSeen('sprint');
   };
   const large = useFontScale() >= LARGE_TEXT;
+
+  // The first play opens on the intro, with the scoring rules (never on top of the first question).
+  if (!started) {
+    return (
+      <GameIntro
+        game="sprint"
+        rules={`${round.length} questions from across the exam, one at a time.`}
+        onStart={() => {
+          markRulesSeen('sprint');
+          setStarted(true);
+        }}
+      >
+        <ForecastRules />
+      </GameIntro>
+    );
+  }
 
   if (i >= round.length) {
     const verdict = calibrationVerdict(results);
@@ -209,7 +233,7 @@ function SureFooting() {
 
   return (
     <GameFrame
-      title={GAMES.sprint.name}
+      game="sprint"
       index={i}
       total={round.length}
       score={score}
@@ -254,7 +278,7 @@ function SureFooting() {
         )
       }
     >
-      {rulesOpen && <SureFootingRules onDone={closeRules} focus={rulesFromInfo} />}
+      {rulesOpen && <ForecastRules onDone={closeRules} focus={rulesFromInfo} />}
       <QuestionHead q={q} />
       {letters.map((d) => (
         <OptionCard

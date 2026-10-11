@@ -27,7 +27,8 @@ import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { GameFrame, LevelNote, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
-import { ICON_STROKE, Pause, Play, Sunrise } from '../../components/icons';
+import { GameGlyph, TierLeafMorph } from '../../components/glyphs';
+import { ICON_STROKE, Pause, Play } from '../../components/icons';
 import { PaceStrip } from '../../components/pace';
 import { OptionCard, type OptionState } from '../../components/quiz';
 import { Button, Gap, ICON_SIZE, PushedHeader, Row, Section, Segmented, T, useFontScale } from '../../components/ui';
@@ -192,8 +193,9 @@ function Daylight() {
           <PushedHeader icon="close" onBack={() => router.back()} title={GAMES.daylight.name} />
         </View>
         <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxl }}>
-          <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ alignItems: 'center' }}>
-            <Sunrise size={48} color={c.accent} strokeWidth={1.5} />
+          {/* The sun rises once as the intro opens (motion.md M5; still under Reduce Motion). */}
+          <View style={{ alignItems: 'center' }}>
+            <GameGlyph game="daylight" size={48} color={c.accent} rise />
           </View>
           <T v="caption" center color={c.accentText} style={{ marginTop: space.sm }}>{GAMES.daylight.skill}</T>
           <T v="hero" center accessibilityRole="header" style={{ marginTop: space.xs }}>{GAMES.daylight.tagline}</T>
@@ -212,9 +214,12 @@ function Daylight() {
               spoken: `${TIER_NAME[t]}, ${tierSeconds(t, cert.exam)} seconds a question${t === suggested ? ', suggested' : ''}`,
             }))}
           />
-          <T v="meta" num center style={{ marginTop: space.sm }}>
-            {`${sec} s a question · ${durationText(Math.round((items.length * sec) / 60))} of light${tierCanExtend(chosen) ? ' · you can add time' : ''}`}
-          </T>
+          <Row gap={space.sm} style={{ marginTop: space.sm, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <TierLeafMorph tier={chosen} color={c.accentText} rib={c.bg} />
+            <T v="meta" num center style={{ flexShrink: 1 }}>
+              {`${sec} s a question · ${durationText(Math.round((items.length * sec) / 60))} of light${tierCanExtend(chosen) ? ' · you can add time' : ''}`}
+            </T>
+          </Row>
           {level ? (
             <LevelNote level={level} />
           ) : (
@@ -352,7 +357,7 @@ function Daylight() {
 
   return (
     <GameFrame
-      title={GAMES.daylight.name}
+      game="daylight"
       index={answered - (reveal !== null ? 1 : 0)}
       total={state.ids.length}
       score={right}
@@ -411,9 +416,7 @@ function Daylight() {
       {paused ? (
         // The question is hidden while paused: the light stops, so the reading does too.
         <View style={{ alignItems: 'center', paddingVertical: space.xxl }}>
-          <View accessible={false} importantForAccessibility="no-hide-descendants">
-            <Sunrise size={48} color={c.accent} strokeWidth={1.5} />
-          </View>
+          <GameGlyph game="daylight" size={48} color={c.accent} />
           <T v="hero" center style={{ marginTop: space.md }}>Paused</T>
           <T v="body" center color={c.ink2} style={{ marginTop: space.xs }}>The light holds until you resume.</T>
         </View>

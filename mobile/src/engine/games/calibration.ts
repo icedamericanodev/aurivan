@@ -1,5 +1,5 @@
 /**
- * Sure Footing (game id `sprint`) — "How sure are you, really?"
+ * Forecast (game id `sprint`) — "How sure are you, really?"
  *
  * Before each answer the learner says how sure they are: Guess, Lean or
  * Sure (the same words as the confidence rating in practice). The end
@@ -112,7 +112,7 @@ export function calibration(results: SprintResult[]): CalibrationBand[] {
 }
 
 /**
- * Build F: Sure Footing's skill step, per answer. An answer is WELL JUDGED
+ * Build F: Forecast's skill step, per answer. An answer is WELL JUDGED
  * unless it was a miss marked Sure (over-confident) or a hit marked Guess
  * (under-confident). Lean is always an honest middle. The round's share of
  * well-judged answers moves the game's level (engine/games/growth.ts).

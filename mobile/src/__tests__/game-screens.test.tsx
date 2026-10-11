@@ -6,7 +6,7 @@
  * answered and scored 0 with no explanation. Now the screen says it is
  * the best answer, keeps it open, and a right answer still scores.
  *
- * Sure Footing: the scoring rules show on the first play, then live
+ * Forecast (was Sure Footing): the scoring rules show in its intro on the first play, then live
  * behind the info button; the chips say their points.
  *
  * Gotcha (see session-screen.regression.test.tsx): never write
@@ -22,7 +22,7 @@ import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
 import TrapSpotter from '../app/game/trap';
 import * as registry from '../engine/games/registry';
-import SureFooting from '../app/game/sprint';
+import Forecast from '../app/game/sprint';
 import Signpost from '../app/game/priority';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -58,7 +58,7 @@ const current = (): PackQuestion => {
   const text = allText();
   return trapPool(getAllQuestions('cisa')).find((q) => text.includes(q.stem) && Object.values(q.options).every((t) => shown.has(t!)))!;
 };
-/** The question on screen, from the whole bank (Sure Footing draws from all of it). */
+/** The question on screen, from the whole bank (Forecast draws from all of it). */
 const currentAny = (): PackQuestion => {
   const shown = new Set(options().map((o) => o.props.text as string));
   // Match the stem too: a few bank questions share the same option texts.
@@ -141,29 +141,35 @@ describe('Snare Spotter: picking the best answer as the snare', () => {
   });
 });
 
-describe('Sure Footing: rules and chips', () => {
-  it('shows the rules on the first play, then only behind the info button', () => {
-    mount(<SureFooting />);
-    expect(allText()).toContain('How Sure Footing scores');
-    press('Got it');
-    expect(allText()).not.toContain('How Sure Footing scores');
+describe('Forecast (was Sure Footing): rules and chips', () => {
+  it('shows the rules in its intro on the first play (never on top of a question), then only behind the info button', () => {
+    mount(<Forecast />);
+    // The intro: the game's tagline as the hero, the scoring rules, and Start. No question yet.
+    expect(allText()).toContain('How scoring works');
+    expect(allText()).toContain('How sure are you, really? Honest confidence scores best.');
+    expect(allText()).not.toContain('First: how sure are you?');
+    press('Start');
+    expect(allText()).not.toContain('How scoring works');
+    expect(allText()).toContain('First: how sure are you?');
     expect(useSettings.getState().gameRulesSeen).toContain('sprint');
     act(() => {
       r!.unmount();
     });
-    mount(<SureFooting />);
-    expect(allText()).not.toContain('How Sure Footing scores');
-    const info = () => root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'How scoring works')[0];
+    // The next play starts on the first question.
+    mount(<Forecast />);
+    expect(allText()).not.toContain('How scoring works');
+    expect(allText()).toContain('First: how sure are you?');
+    const info = () => root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'How scoring works' && n.props.accessibilityRole === 'button')[0];
     // It shows/hides a panel, so it is "collapsed" / "expanded", not "selected".
     expect(info().props.accessibilityState).toEqual({ expanded: false });
     press('How scoring works');
-    expect(allText()).toContain('How Sure Footing scores');
+    expect(allText()).toContain('How scoring works');
     expect(info().props.accessibilityState).toEqual({ expanded: true });
   });
 
   it('offers Guess, Lean and Sure as one radio group, shows the points once, and scores Sure −5 on a miss', () => {
     useSettings.setState({ gameRulesSeen: ['sprint'] });
-    mount(<SureFooting />);
+    mount(<Forecast />);
     // The game's own words only (question content may say "high-stakes").
     const group = root().findAll((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'How sure are you?');
     expect(group.length).toBeGreaterThan(0);
@@ -194,7 +200,7 @@ describe('Sure Footing: rules and chips', () => {
     act(() => {
       Dimensions.set({ window: { ...w, fontScale: 1 }, screen: { ...w, fontScale: 1 } });
     });
-    mount(<SureFooting />);
+    mount(<Forecast />);
     expect(rowOf().row).toMatchObject({ flexDirection: 'row', flexWrap: 'wrap' });
     expect(rowOf().text.flexShrink).toBe(1);
     act(() => {
@@ -203,7 +209,7 @@ describe('Sure Footing: rules and chips', () => {
     act(() => {
       Dimensions.set({ window: { ...w, fontScale: 2 }, screen: { ...w, fontScale: 2 } });
     });
-    mount(<SureFooting />);
+    mount(<Forecast />);
     expect(rowOf().row).toMatchObject({ flexDirection: 'column', alignItems: 'flex-start' });
     expect(rowOf().text.textAlign).not.toBe('right');
     act(() => {
@@ -212,9 +218,9 @@ describe('Sure Footing: rules and chips', () => {
   });
 });
 
-describe('Sure Footing rules panel', () => {
+describe('Forecast rules panel', () => {
   it('each rule row is one stop with the points AND when to choose it', () => {
-    mount(<SureFooting />);
+    mount(<Forecast />);
     const row = root().findAll((n) => typeof n.type === 'string' && String(n.props.accessibilityLabel).startsWith('Sure: plus 3'));
     expect(row[0].props.accessibilityLabel).toBe('Sure: plus 3 if right, minus 5 if wrong. You would put your name to it.');
   });
@@ -224,9 +230,9 @@ describe('Sure Footing rules panel', () => {
     const focus = jest.spyOn(AccessibilityInfo, 'sendAccessibilityEvent').mockImplementation(() => {});
     // Refs on host views are null in the test renderer unless we hand it a fake native node.
     act(() => {
-      r = create(<SureFooting />, { createNodeMock: () => ({}) });
+      r = create(<Forecast />, { createNodeMock: () => ({}) });
     });
-    expect(allText()).not.toContain('How Sure Footing scores');
+    expect(allText()).not.toContain('How scoring works');
     // The game's ScrollView (Jest's mock instance): spy on its scrollTo.
     const scrollTo = jest.spyOn(root().findByType(ScrollView).instance as { scrollTo: (o: object) => void }, 'scrollTo');
     focus.mockClear();
@@ -234,7 +240,7 @@ describe('Sure Footing rules panel', () => {
     expect(focus).toHaveBeenCalledTimes(1);
     const [target, event] = focus.mock.calls[0] as unknown as [{ props: { accessibilityLabel: string } }, string];
     expect(event).toBe('focus');
-    expect(target.props.accessibilityLabel).toBe('How Sure Footing scores');
+    expect(target.props.accessibilityLabel).toBe('How scoring works');
     // …and the question scrolls back up to the panel.
     expect(scrollTo).toHaveBeenCalledWith({ y: 0, animated: false });
     focus.mockRestore();

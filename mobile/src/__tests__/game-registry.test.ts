@@ -27,7 +27,7 @@ describe('game registry', () => {
   it('uses the new names and taglines', () => {
     expect(GAMES.trap.name).toBe('Snare Spotter');
     expect(GAMES.trap.tagline).toBe('Find the answer built to fool you, then the best one.');
-    expect(GAMES.sprint.name).toBe('Sure Footing');
+    expect(GAMES.sprint.name).toBe('Forecast');
     expect(GAMES.sprint.tagline).toBe('How sure are you, really? Honest confidence scores best.');
     expect(GAMES.priority.name).toBe('Signpost');
     expect(GAMES.priority.tagline).toBe('Read the word that decides which true answer wins.');
@@ -76,7 +76,7 @@ describe('renames reach every touch-point', () => {
     const game = plan.find((p) => p.kind === 'game');
     expect(game).toEqual({ kind: 'game', gameId: 'trap', label: `Snare Spotter · ${GAMES.trap.minutes} min` });
     const ready = todaysPlan({ stage: 'ready', dueReviews: 0, dailyGoal: 20, daysLeft: 40, examQuestions: 150 });
-    expect(ready[0]).toMatchObject({ gameId: 'sprint', label: expect.stringContaining('Sure Footing') });
+    expect(ready[0]).toMatchObject({ gameId: 'sprint', label: expect.stringContaining('Forecast') });
   });
 
   it('a plan saved before the rename shows the new name and the honest length', () => {

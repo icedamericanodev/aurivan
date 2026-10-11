@@ -7,7 +7,7 @@
  * - "What caught you" lists every miss (and nothing on a clean round);
  * - "Missed questions are in your review." only when an ANSWER was wrong,
  *   and those questions really are due in spaced review;
- * - Sure Footing: a right Guess or Lean comes back tomorrow, not now.
+ * - Forecast (was Sure Footing): a right Guess or Lean comes back tomorrow, not now.
  *
  * Gotcha (see session-screen.regression.test.tsx): never write
  * `act(() => store.action())` — use braces.
@@ -23,7 +23,7 @@ import { DAY_MS, dueIds } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
 import TrapSpotter from '../app/game/trap';
-import SureFooting from '../app/game/sprint';
+import Forecast from '../app/game/sprint';
 import Signpost from '../app/game/priority';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -167,9 +167,9 @@ describe('Snare Spotter: a whole round to the recap', () => {
   });
 });
 
-describe('Sure Footing: a whole round to the recap', () => {
+describe('Forecast: a whole round to the recap', () => {
   const play = (footing: (k: number) => 'Guess' | 'Lean' | 'Sure', right: boolean) => {
-    mount(<SureFooting />);
+    mount(<Forecast />);
     const played: PackQuestion[] = [];
     const spoken = { Guess: 'Guess: plus 1 if right, nothing if wrong', Lean: 'Lean: plus 2 if right, minus 1 if wrong', Sure: 'Sure: plus 3 if right, minus 5 if wrong' };
     for (let k = 0; k < 8; k++) {
@@ -287,21 +287,21 @@ describe('Signpost: step 1 and a whole round to the recap', () => {
   });
 });
 
-describe('Sure Footing: rules on the first play only', () => {
-  // Was a known bug (QA Build 1): only "Got it" marked the rules seen, so a
-  // learner who never tapped it kept the panel above every question.
-  // Fixed: the first answer counts, and the panel closes on Next.
-  it('a first round played without tapping "Got it" still counts as seeing the rules', () => {
+describe('Forecast: rules on the first play only', () => {
+  // Was a known bug (QA Build 1): the rules panel sat above every question
+  // until "Got it". Mobile 1.12 (ui.md G3): the first play opens on the
+  // game's intro with the rules, and Start counts as seeing them.
+  it('the first play opens on the intro; Start counts as seeing the rules, and no question ever has them on top', () => {
     useSettings.setState({ gameRulesSeen: [] });
-    mount(<SureFooting />);
-    expect(allText()).toContain('How Sure Footing scores');
+    mount(<Forecast />);
+    expect(allText()).toContain('How scoring works');
+    press('Start');
     const q = onScreen(BANK);
+    expect(allText()).not.toContain('How scoring works');
     press('Guess: plus 1 if right, nothing if wrong');
     tap(optionWith(q.options[q.correct]!));
     press('Next question');
-    // The panel no longer sits above the second question…
-    expect(allText()).not.toContain('How Sure Footing scores');
-    // …and the next play starts without it.
+    expect(allText()).not.toContain('How scoring works');
     expect(useSettings.getState().gameRulesSeen).toContain('sprint');
   });
 });

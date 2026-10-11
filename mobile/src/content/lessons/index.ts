@@ -15,7 +15,7 @@ export function findLesson(id: string): Lesson | undefined {
 }
 
 /** The first lesson not yet done, preferring the given (weakest) domain. */
-export function nextLesson(certId: string, done: string[], preferDomainId?: string): Lesson | undefined {
+export function nextLesson(certId: string, done: readonly string[], preferDomainId?: string): Lesson | undefined {
   const open = lessonsFor(certId).filter((l) => !done.includes(l.id));
   return open.find((l) => l.domainId === preferDomainId) ?? open[0];
 }

@@ -443,8 +443,17 @@ export function HeroPanel({
       <View testID="hero-content" style={styles.heroContent}>
         {caption && (
           <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
-            {captionLead}
-            <T v="caption" color={c.onForest2}>{caption}</T>
+            {captionLead ? (
+              // A lead (a domain dot, a game glyph) stays on its caption's line: at large text
+              // the caption wraps BESIDE it (never the lead alone on a line). With nothing after
+              // it, the pair keeps clear of the art like the title (full width at large text).
+              <Row gap={space.sm} style={{ flexShrink: 1, maxWidth: !captionExtra && !large && !wideTitle ? 250 : '100%' }}>
+                {captionLead}
+                <T v="caption" color={c.onForest2} style={{ flexShrink: 1 }}>{caption}</T>
+              </Row>
+            ) : (
+              <T v="caption" color={c.onForest2}>{caption}</T>
+            )}
             {captionExtra}
           </Row>
         )}
@@ -1095,6 +1104,7 @@ const styles = StyleSheet.create({
   bigNum: { flexDirection: 'row', alignItems: 'flex-start' },
   pushed: { flexDirection: 'row', alignItems: 'center', minHeight: 52, gap: space.sm },
   pushedIcon: { width: 44, minHeight: 44, justifyContent: 'center' },
+  pushedRight: { minWidth: 44, minHeight: 44, justifyContent: 'center' },
   tagRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: space.sm, marginTop: 18 },
   teachTag: { minHeight: 32, paddingHorizontal: space.md, borderRadius: radius.pill, flexDirection: 'row', alignItems: 'center', gap: 7 },
   teachDot: { width: 6, height: 6, borderRadius: 3 },
@@ -1396,7 +1406,9 @@ export function PushedHeader({
       <View style={{ flex: 1, alignItems: center ? 'stretch' : 'center' }}>
         {center ?? (title ? <T v="label" accessibilityRole="header" numberOfLines={1}>{title}</T> : null)}
       </View>
-      <View style={[styles.pushedIcon, { marginRight: -10, alignItems: 'center' }]}>{right}</View>
+      {/* At least the back button's 44pt (so a title stays centred), wider when its content needs it
+          (a lesson's "10/11" at large text): never a fixed width that clips. */}
+      <View style={[styles.pushedRight, { marginRight: -10, alignItems: 'center' }]}>{right}</View>
     </View>
   );
 }
@@ -1485,7 +1497,7 @@ export function Segmented<V extends string | number>({
   accessibilityLabel,
 }: {
   options: { value: V; label: string; numeral?: string; icon?: (color: string) => ReactNode; spoken?: string }[];
-  /** null = nothing chosen yet (e.g. Sure Footing before each answer). */
+  /** null = nothing chosen yet (e.g. Forecast before each answer). */
   value: V | null;
   onChange: (v: V) => void;
   accessibilityLabel: string;

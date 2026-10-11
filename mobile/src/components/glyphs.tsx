@@ -13,11 +13,12 @@
  * Colours always come in as props (palette tokens); nothing here is hard-coded.
  */
 import { useFocusEffect } from 'expo-router';
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import Animated, {
   cancelAnimation,
   Easing,
+  FadeOut,
   ReduceMotion,
   useAnimatedProps,
   useAnimatedStyle,
@@ -29,7 +30,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { motion } from '../theme/tokens';
-import { useCelebrationSettled, useMotion, useOncePerDay } from './motion';
+import type { GameId } from '../engine/games/registry';
+import type { GameTier } from '../engine/games/growth';
+import { Pop, useCelebrationSettled, useMotion, useOncePerDay } from './motion';
 
 type GlyphProps = { size?: number; color: string; strokeWidth?: number };
 
@@ -127,6 +130,375 @@ export function TierLeaf({ tier, color, size = 16, rib }: { tier: 'seedling' | '
       <Path d="M8 15C3 11.5 2.5 5.5 8 1c5.5 4.5 5 10.5 0 14z" fill={color} fillOpacity={filled ? 1 : 0.18} stroke={color} strokeWidth={1.4} />
       <Path d="M8 4.5v8.5" stroke={filled ? (rib ?? 'transparent') : color} strokeWidth={1.2} />
     </Svg>
+  );
+}
+
+/**
+ * A game level that changes in front of the learner (mobile 1.12, motion.md
+ * M5): the old leaf fades out (160 ms) while the new one springs in from .6
+ * (`leaf`), so Seedling → Sapling → Heartwood reads as growth. Nothing moves
+ * on mount. `grow` is the round end's level-up while its moment plays
+ * (RoundEnd passes it only for a FULL celebration): the leaf shows the level
+ * before (`from`) and grows once after `delay`. When `grow` goes away first
+ * (skipped, or the moment ended), the new level just shows. Either way
+ * `onGrown` runs once, after that commit (the round end's one haptic: a
+ * skip never loses it). The old leaf always fades out (the morph, and the
+ * level-up's grow). Reduced: the new leaf fades in (120 ms). Decorative: the
+ * level's name is always written beside it.
+ */
+export function TierLeafMorph({
+  tier,
+  color,
+  rib,
+  size = 16,
+  grow,
+  onGrown,
+}: {
+  tier: GameTier;
+  color: string;
+  rib?: string;
+  size?: number;
+  /** The round end's level-up, while its moment plays: start on `from`, grow to `tier` after `delay`. */
+  grow?: { from: GameTier; delay: number };
+  /** The level-up has arrived (grown, or skipped to): once per level-up. */
+  onGrown?: () => void;
+}) {
+  const [shown, setShown] = useState<GameTier>(grow ? grow.from : tier);
+  const [moved, setMoved] = useState(0);
+  const [last, setLast] = useState(tier);
+  // A level-up waiting to grow, and whether it has (it grows once).
+  const [growing, setGrowing] = useState(Boolean(grow));
+  const [grew, setGrew] = useState(false);
+  // All decided while rendering, so no frame shows a level it shouldn't.
+  if (last !== tier) {
+    // A new level chosen while on screen (the intro's picker): morph to it.
+    setLast(tier);
+    setShown(tier);
+    setMoved((m) => m + 1);
+  } else if (grow && !growing && !grew) {
+    // The level-up moment has started: back to the level it grew from.
+    setGrowing(true);
+    setShown(grow.from);
+  } else if (!grow && growing) {
+    // Skipped or over before it grew: the new level, still.
+    setGrowing(false);
+    setGrew(true);
+    setShown(tier);
+  }
+  const growDelay = grow?.delay ?? 0;
+  useEffect(() => {
+    if (!growing) return;
+    const t = setTimeout(() => {
+      setShown(tier);
+      setMoved((m) => m + 1);
+      setGrowing(false);
+      setGrew(true);
+    }, growDelay);
+    return () => clearTimeout(t);
+    // Once per start of the level-up (the delay is fixed for the round end's life).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [growing]);
+  // The level-up has arrived (it grew, or a skip settled it): tell the round end once.
+  const grownRef = useRef(onGrown);
+  useLayoutEffect(() => {
+    grownRef.current = onGrown;
+  });
+  useEffect(() => {
+    if (grew) grownRef.current?.();
+  }, [grew]);
+  return (
+    <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ width: size, height: size }}>
+      <Animated.View
+        key={`${shown}:${moved}`}
+        // The leaf on screen fades out when it is replaced: a morph (moved), or the level-up's
+        // `from` leaf as it grows (Reanimated reads `exiting` from the element's last render).
+        exiting={moved || growing ? FadeOut.duration(motion.dur.quick).reduceMotion(ReduceMotion.Never) : undefined}
+        style={{ position: 'absolute', left: 0, top: 0 }}
+      >
+        <Pop mount={moved > 0} from={0.6} spring="leaf">
+          <TierLeaf tier={shown} color={color} rib={rib} size={size} />
+        </Pop>
+      </Animated.View>
+    </View>
+  );
+}
+
+// ── Game glyphs (mobile 1.12, ui.md G1) ────────────────────────────────
+/**
+ * One original glyph per game, on Lucide's 24 grid with the 1.75 stroke, so
+ * a game is told apart at a glance on Play, in its header, its intro and its
+ * recap. Botanical and calm, and none of them repeats a badge emblem (no
+ * signpost, sundial, book, cairn or footprint; those belong to badges):
+ * - trap (Snare Spotter): a flytrap, a plant built to fool;
+ * - sprint (Forecast): a cloud with the sun behind it, a forecast of your own answer;
+ * - priority (Signpost): a path that forks, one way marked;
+ * - daylight: the sun on its day's arc over the ground (its sun can rise once);
+ * - rumor (Root or Rumor): a dandelion, its seeds blowing away like a rumor;
+ * - callit (Call It First): a bellflower, the call;
+ * - field (Field Guide): a leaf beside its entry lines (a term and its meaning);
+ * - canopy (Canopy Call): one broad tree crown, who decides at the top;
+ * - stones (Stepping Stones): stones across water, one after another.
+ * Fills are a 22% tint of the stroke (like the streak sprig), so the glyph
+ * works on paper, on `soft` and on the forest panel. Decorative.
+ */
+type GlyphPart = { d: string; fill?: 'tint' | 'solid'; dash?: string; opacity?: number; width?: number; sun?: boolean };
+export const GAME_GLYPHS: Record<GameId, GlyphPart[]> = {
+  trap: [
+    { d: 'M12 21.5V14.2' },
+    { d: 'M12 14.2C8.6 14 5.4 11.6 4.6 7.2C8.4 7 11.4 9.6 12 14.2Z', fill: 'tint' },
+    { d: 'M12 14.2C15.4 14 18.6 11.6 19.4 7.2C15.6 7 12.6 9.6 12 14.2Z', fill: 'tint' },
+    { d: 'M4.6 7.2L3.6 5.3M6.9 7.2L6.6 5.1M9.1 7.9L9.6 6.1' },
+    { d: 'M19.4 7.2L20.4 5.3M17.1 7.2L17.4 5.1M14.9 7.9L14.4 6.1' },
+    { d: 'M12 19.2Q9.41 19.87 7.83 17.26Q10.84 16.78 12 19.2Z' },
+  ],
+  sprint: [
+    { d: 'M12.5 10.33A3.3 3.3 0 1 1 18.7 10.33' },
+    { d: 'M15.6 3.2V4.4M20.1 5L19.2 5.9M21.7 9.2H20.5' },
+    { d: 'M7.2 19.5H16.6A3.4 3.4 0 0 0 16.9 12.7A5 5 0 0 0 7.4 14.2A2.7 2.7 0 0 0 7.2 19.5Z', fill: 'tint' },
+  ],
+  priority: [
+    { d: 'M12 21.5V14' },
+    { d: 'M12 14C12 11 9.6 9.4 5.6 8.2' },
+    { d: 'M12 14C12 11 14.4 9.4 18.6 8.2' },
+    { d: 'M15.4 6.8L18.6 8.2L17.2 11.4' },
+    { d: 'M8.8 21.5H15.2' },
+  ],
+  daylight: [
+    { d: 'M10.4 9.2A8.5 8.5 0 0 1 20.5 17.5', dash: '0.1 2.7' },
+    { d: 'M2.5 20.5H21.5' },
+    { d: 'M7 10.6m-2.6 0a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0-5.2 0Z', fill: 'tint', sun: true },
+    { d: 'M3.5 17.5A8.5 8.5 0 0 1 3.8 15.3', dash: '0.1 2.7' },
+  ],
+  rumor: [
+    { d: 'M10.5 21.5V12.6' },
+    { d: 'M10.5 17.4C8.7 17.4 7.1 16.4 6.5 14.6C8.4 14.4 9.9 15.5 10.5 17.4Z', fill: 'tint' },
+    { d: 'M10.5 9m-1.3 0a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0-2.6 0Z', fill: 'solid' },
+    { d: 'M9.18 10.88L7.63 13.1M8.28 9.6L5.67 10.29M8.42 8.03L5.97 6.89M9.53 6.92L8.39 4.47M11.1 6.78L11.79 4.17' },
+    { d: 'M7.35 13.51h.01M5.19 10.42h.01M5.52 6.68h.01M8.18 4.02h.01M11.92 3.69h.01', width: 2.6 },
+    { d: 'M15 6.4L17.2 4.4M15.6 10.6L18.4 10' },
+    { d: 'M18 3.7h.01M19.3 9.8h.01', width: 2.6 },
+  ],
+  callit: [
+    { d: 'M5.5 21.5C5.5 13 8.6 6 15.4 5.6C16.4 5.5 17.2 6 17.2 7' },
+    { d: 'M13.9 8.3C13.7 10.3 13.1 11.8 12.4 12.9C13.4 12.5 14.4 12.7 15 13.3C15.8 12.5 17.2 12.3 18 12.9C18.6 12.4 19.8 12.4 21 12.9C20.3 11.8 19.7 10.3 19.5 8.3C19 6.7 14.4 6.7 13.9 8.3Z', fill: 'tint' },
+    { d: 'M16.7 13.4V15.2' },
+    { d: 'M6.4 15.4Q6.96 12.71 10.08 12.31Q9.15 15.31 6.4 15.4Z', fill: 'tint' },
+  ],
+  field: [
+    { d: 'M4 19.4Q3.04 12.26 10.1 7.92Q10.45 16.21 4 19.4Z', fill: 'tint' },
+    { d: 'M5.2 17.2L8.4 11.2' },
+    { d: 'M13.4 7.6H20.6M13.4 11.6H20.6M13.4 15.6H18' },
+  ],
+  canopy: [
+    { d: 'M4.4 12C2.6 11.8 2.4 9 4.4 8.6C4.2 6 7 4.6 9 5.6C10 3.4 14 3.4 15 5.6C17 4.6 19.8 6 19.6 8.6C21.6 9 21.4 11.8 19.6 12C15 12.9 9 12.9 4.4 12Z', fill: 'tint' },
+    { d: 'M12 21.5V15.6M12 15.6L8.6 12.6M12 15.6L15.4 12.6' },
+    { d: 'M8.5 21.5H15.5' },
+  ],
+  stones: [
+    { d: 'M3 18.2a3.2 1.7 0 1 0 6.4 0a3.2 1.7 0 1 0-6.4 0Z', fill: 'tint' },
+    { d: 'M9 13.4a3.2 1.7 0 1 0 6.4 0a3.2 1.7 0 1 0-6.4 0Z', fill: 'tint' },
+    { d: 'M15 8.6a3.2 1.7 0 1 0 6.4 0a3.2 1.7 0 1 0-6.4 0Z', fill: 'tint' },
+    { d: 'M12.4 21.4q1.4-1 2.8 0t2.8 0M2.5 11.2q1.4-1 2.8 0t2.8 0', opacity: 0.6 },
+  ],
+
+};
+
+function glyphPart(p: GlyphPart, k: number, color: string) {
+  return (
+    <Path
+      key={k}
+      d={p.d}
+      fill={p.fill ? color : 'none'}
+      fillOpacity={p.fill === 'tint' ? 0.22 : 1}
+      strokeDasharray={p.dash}
+      opacity={p.opacity}
+      strokeWidth={p.width}
+    />
+  );
+}
+
+const glyphSvg = (size: number, color: string) =>
+  ({ width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: color, strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round' }) as const;
+
+/**
+ * A game's glyph: a plain SVG (no animated nodes: Play shows nine, and every
+ * round header and recap one). `rise` (Daylight's intro): its sun rises once
+ * into place, 4 points over `grow`, as the screen opens (RisingGlyph, the
+ * only animated form). Reduced: the sun is simply there.
+ */
+export function GameGlyph({ game, size = 24, color, rise = false }: { game: GameId; size?: number; color: string; rise?: boolean }) {
+  const parts = GAME_GLYPHS[game];
+  const { reduced } = useMotion();
+  if (rise && !reduced && parts.some((p) => p.sun)) return <RisingGlyph parts={parts} size={size} color={color} />;
+  return (
+    <View accessible={false} importantForAccessibility="no-hide-descendants">
+      <Svg {...glyphSvg(size, color)}>{parts.map((p, k) => glyphPart(p, k, color))}</Svg>
+    </View>
+  );
+}
+
+/** Daylight's intro glyph: the ground and arc still, the sun rising once (4pt over `grow`) and fading in. */
+function RisingGlyph({ parts, size, color }: { parts: GlyphPart[]; size: number; color: string }) {
+  const y = useSharedValue((4 * size) / 24);
+  const o = useSharedValue(0);
+  useEffect(() => {
+    y.set(withTiming(0, { duration: motion.dur.grow, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.Never }));
+    o.set(withTiming(1, { duration: motion.dur.enter, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.Never }));
+  }, [y, o]);
+  const sunStyle = useAnimatedStyle(() => ({ opacity: o.value, transform: [{ translateY: y.value }] }));
+  const svgProps = glyphSvg(size, color);
+  return (
+    <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ width: size, height: size }}>
+      <Svg {...svgProps}>{parts.map((p, k) => (p.sun ? null : glyphPart(p, k, color)))}</Svg>
+      <Animated.View style={[{ position: 'absolute', left: 0, top: 0 }, sunStyle]}>
+        <Svg {...svgProps}>{parts.map((p, k) => (p.sun ? glyphPart(p, k, color) : null))}</Svg>
+      </Animated.View>
+    </View>
+  );
+}
+
+// ── Sparkline (mobile 1.12, ui.md G4) ──────────────────────────────────
+/** The sparkline's box, and the inset of its first and last points (labels line up under them). */
+export const SPARK = { width: 168, height: 44, pad: 6 } as const;
+
+/** Points for a sparkline in a w × h box (a flat run sits in the middle). Exported for tests. */
+export function sparkPoints(values: number[], w: number, h: number, pad: number = SPARK.pad): [number, number][] {
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const n = values.length;
+  // More room on top: the last point carries a leaf that stands 9pt above it.
+  const top = pad + 8;
+  return values.map((v, i) => [
+    pad + (n > 1 ? (i * (w - 2 * pad)) / (n - 1) : (w - 2 * pad) / 2),
+    max === min ? (top + h - pad) / 2 : top + (1 - (v - min) / (max - min)) * (h - top - pad),
+  ]);
+}
+
+/**
+ * A quiet trend line (a game's last few round scores): `accent` 1.75
+ * stroke, small open points, and the last point a filled leaf. Static (the
+ * round's own score already rolled). Decorative: the caller speaks the trend
+ * in one sentence and prints the numbers.
+ */
+export function Sparkline({ values, color, paper, width = SPARK.width, height = SPARK.height }: { values: number[]; color: string; paper: string; width?: number; height?: number }) {
+  const pts = useMemo(() => sparkPoints(values, width, height), [values, width, height]);
+  if (pts.length < 2) return null;
+  const d = pts.map(([x, y], i) => `${i ? 'L' : 'M'}${f1(x)},${f1(y)}`).join('');
+  const [lx, ly] = pts[pts.length - 1];
+  return (
+    <View accessible={false} importantForAccessibility="no-hide-descendants">
+      <Svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} fill="none">
+        <Path d={d} stroke={color} strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" />
+        {pts.slice(0, -1).map(([x, y], i) => (
+          <Circle key={i} cx={x} cy={y} r={2.4} fill={paper} stroke={color} strokeWidth={1.5} />
+        ))}
+        {/* The latest round: a filled leaf standing on its point. */}
+        <Path d={`M${f1(lx)},${f1(ly + 4)}C${f1(lx - 5)},${f1(ly + 1)} ${f1(lx - 5)},${f1(ly - 6)} ${f1(lx)},${f1(ly - 9)}C${f1(lx + 5)},${f1(ly - 6)} ${f1(lx + 5)},${f1(ly + 1)} ${f1(lx)},${f1(ly + 4)}Z`} fill={color} />
+      </Svg>
+    </View>
+  );
+}
+
+// ── Learn: a domain's status ring (mobile 1.12, ui.md L1) ──────────────
+/**
+ * Before a Learn domain's name: its lessons as a small ring, in the domain's
+ * tone. None done = an outline ring (`control`, 3:1) round the tone dot;
+ * some done = the ring fills that far round (an arc); all done = a filled
+ * disc with a ✓. Shape, not colour alone. Decorative: the row says "2 of 7 done".
+ */
+export function DomainRing({ done, total, tone, track, outline, paper, size = 20 }: { done: number; total: number; tone: string; track: string; outline: string; paper: string; size?: number }) {
+  const c = size / 2;
+  const rad = c - 2;
+  const share = total > 0 ? Math.min(1, done / total) : 0;
+  const full = total > 0 && done >= total;
+  const a = -Math.PI / 2 + share * Math.PI * 2;
+  const arc = `M${f1(c)},${f1(c - rad)}A${f1(rad)},${f1(rad)} 0 ${share > 0.5 ? 1 : 0} 1 ${f1(c + rad * Math.cos(a))},${f1(c + rad * Math.sin(a))}`;
+  return (
+    <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ width: size, height: size }}>
+      <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none">
+        {full ? (
+          <>
+            <Circle cx={c} cy={c} r={c - 0.5} fill={tone} />
+            <Path d={`M${f1(c - 4)},${f1(c + 0.2)}L${f1(c - 1.2)},${f1(c + 3)}L${f1(c + 4.2)},${f1(c - 2.6)}`} stroke={paper} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+          </>
+        ) : (
+          <>
+            <Circle cx={c} cy={c} r={rad} stroke={share > 0 ? track : outline} strokeWidth={2} />
+            {share > 0 && <Path d={arc} stroke={tone} strokeWidth={2.4} strokeLinecap="round" />}
+            <Circle cx={c} cy={c} r={3} fill={tone} />
+          </>
+        )}
+      </Svg>
+    </View>
+  );
+}
+
+// ── Lesson complete: the domain's branch, one leaf per lesson ──────────
+/** Where each lesson's leaf sits on the branch (fixed maths, so it never changes between renders). Exported for tests. */
+export function branchLeaves(total: number, w: number, h: number): { d: string; stem: string } {
+  // The stem runs low-left to mid-right, with a leaf's length clear of every edge.
+  const p0: Pt = [6, h - 30];
+  const p1: Pt = [w - 6, 30];
+  const pc: Pt = [w * 0.45, h - 22];
+  const B = (t: number): Pt => [(1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * pc[0] + t * t * p1[0], (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * pc[1] + t * t * p1[1]];
+  const T = (t: number): Pt => [2 * (1 - t) * (pc[0] - p0[0]) + 2 * t * (p1[0] - pc[0]), 2 * (1 - t) * (pc[1] - p0[1]) + 2 * t * (p1[1] - pc[1])];
+  const n = Math.max(1, total);
+  const leaves: string[] = [];
+  for (let i = 0; i < n; i++) {
+    const t = (i + 0.6) / (n + 0.4);
+    const [x, y] = B(t);
+    const [tx, ty] = T(t);
+    const side = i % 2 ? 1 : -1;
+    leaves.push(leafPath(x, y, Math.min(24, (w / n) * 1.2), Math.min(8.5, (w / n) * 0.4), Math.atan2(ty, tx) + side * 0.95));
+  }
+  return { d: leaves.join('|'), stem: `M${p0.join(',')} Q${pc.map(f1).join(',')} ${p1.join(',')}` };
+}
+
+const AnimatedLeaf = Animated.createAnimatedComponent(Path);
+
+/**
+ * Lesson complete (mobile 1.12, ui.md LP6): the domain's lessons as leaves
+ * on one branch. Done = filled, still to do = outline. `fresh` is the
+ * lesson just finished: with `play` its leaf fills in (over `grow`, after
+ * `delay`), the one thing that moves; inside a settled celebration, or
+ * reduced, it is simply filled. Decorative: the line under it says it in words.
+ */
+export function LessonBranch({ total, done, fresh, play, delay = 0, color, width = 280, height = 112 }: { total: number; done: boolean[]; fresh: number | null; play: boolean; delay?: number; color: string; width?: number; height?: number }) {
+  const geo = useMemo(() => branchLeaves(total, width, height), [total, width, height]);
+  const leaves = geo.d.split('|');
+  const { reduced } = useMotion();
+  const settled = useCelebrationSettled();
+  const grows = play && !reduced && !settled && fresh !== null;
+  const p = useSharedValue(grows ? 0 : 1);
+  // Before paint: the celebration decides its mode in a layout effect, so the
+  // fresh leaf must empty itself in the same frame (never shown full, then emptied).
+  useLayoutEffect(() => {
+    if (!grows) {
+      cancelAnimation(p);
+      p.set(1);
+      return;
+    }
+    p.set(
+      withSequence(
+        withTiming(0, { duration: 0, reduceMotion: ReduceMotion.Never }),
+        withDelay(delay, withTiming(1, { duration: motion.dur.grow, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.Never })),
+      ),
+    );
+  }, [grows, delay, p]);
+  const freshProps = useAnimatedProps(() => ({ fillOpacity: p.value }));
+  return (
+    <View accessible={false} importantForAccessibility="no-hide-descendants">
+      <Svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} fill="none" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <Path d={geo.stem} />
+        {leaves.map((d, i) =>
+          i === fresh ? (
+            <AnimatedLeaf key={i} d={d} fill={color} animatedProps={freshProps} />
+          ) : (
+            <Path key={i} d={d} fill={done[i] ? color : 'none'} />
+          ),
+        )}
+      </Svg>
+    </View>
   );
 }
 

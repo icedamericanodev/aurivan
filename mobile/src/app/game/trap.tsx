@@ -148,7 +148,7 @@ function TrapSpotter() {
 
   return (
     <GameFrame
-      title={GAMES.trap.name}
+      game="trap"
       index={i}
       total={round.length}
       score={score}

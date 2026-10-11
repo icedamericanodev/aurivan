@@ -22,7 +22,6 @@ import { router } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { GameFrame, GameIntro, MatchTile, PlayableGate, RevealCard, RoundEnd, type TileState } from '../../components/game';
-import { BookA } from '../../components/icons';
 import { Button, Gap, Row, Stem, T, useFontScale } from '../../components/ui';
 import { getNotes } from '../../content/notes';
 import {
@@ -37,7 +36,6 @@ import {
   type FieldTier,
 } from '../../engine/games/fieldGuide';
 import type { RecapMiss } from '../../engine/games/recap';
-import { GAMES } from '../../engine/games/registry';
 import { createRng } from '../../engine/random';
 import { sayLater } from '../../lib/a11y';
 import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
@@ -113,7 +111,6 @@ function FieldGuide() {
     return (
       <GameIntro
         game="field"
-        icon={(col) => <BookA size={48} color={col} strokeWidth={1.5} />}
         rules="Three boards of four terms from the study notes. Tap a term, then tap what it means. A pair you match on the first try scores a point. Near neighbours like owner and custodian are where exam points hide."
         tiers={FIELD_TIERS}
         tier={tier}
@@ -211,8 +208,10 @@ function FieldGuide() {
     const longWord = board.terms.some((t) => t.term.split(/\s+/).some((w) => w.length > LONG_WORD));
     const stack = large || longWord;
     // Matched tiles stay tappable elements (tapTerm / tapDef ignore them); the label says "matched".
+    // Side by side, the columns share the width; stacked, each is as tall as its tiles (flex 1 there left a blank gap).
+    const colStyle = stack ? undefined : { flex: 1 };
     const termsCol = (
-      <View accessibilityRole="list" style={{ flex: 1 }}>
+      <View accessibilityRole="list" style={colStyle}>
         <T v="caption" color={c.ink2} accessibilityRole="header" style={{ marginBottom: space.xs }}>Terms</T>
         {board.terms.map((t, i) => (
           <MatchTile
@@ -228,7 +227,7 @@ function FieldGuide() {
       </View>
     );
     const defsCol = (
-      <View accessibilityRole="list" style={{ flex: 1 }}>
+      <View accessibilityRole="list" style={colStyle}>
         <T v="caption" color={c.ink2} accessibilityRole="header" style={{ marginBottom: space.xs }}>Meanings</T>
         {board.defOrder.map((ti, j) => (
           <MatchTile
@@ -245,7 +244,7 @@ function FieldGuide() {
     );
     return (
       <GameFrame
-        title={GAMES.field.name}
+        game="field"
         index={b}
         total={round.boards.length}
         score={score}
@@ -307,7 +306,7 @@ function FieldGuide() {
   };
   return (
     <GameFrame
-      title={GAMES.field.name}
+      game="field"
       index={b}
       total={round.boards.length}
       score={score}

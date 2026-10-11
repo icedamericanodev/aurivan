@@ -33,7 +33,6 @@ import {
   type CallTier,
 } from '../../engine/games/callItFirst';
 import { clip, firstSentence, type RecapMiss } from '../../engine/games/recap';
-import { GAMES } from '../../engine/games/registry';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, makePermutation, originalToDisplay, renderText, type Permutation } from '../../engine/shuffle';
 import { moveFocus } from '../../lib/a11y';
@@ -134,7 +133,6 @@ function CallItFirst() {
     return (
       <GameIntro
         game="callit"
-        icon={(col) => <EyeOff size={48} color={col} strokeWidth={1.5} />}
         rules="Five questions with the options hidden. First name the principle the question tests, then the options appear and you answer. Forming your own answer first is the best defence against tempting distractors."
         tiers={CALL_TIERS}
         tier={tier}
@@ -221,7 +219,7 @@ function CallItFirst() {
 
   return (
     <GameFrame
-      title={GAMES.callit.name}
+      game="callit"
       index={i}
       total={round.items.length}
       score={score}

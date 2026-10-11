@@ -11,7 +11,18 @@ export type Scene =
   | { type: 'idea'; heading: string; body: string }
   | { type: 'analogy'; heading: string; body: string }
   | { type: 'stack'; heading: string; layers: { label: string; note: string }[]; caption?: string }
-  | { type: 'flow'; heading: string; steps: { label: string; note: string }[]; caption?: string }
+  | {
+      type: 'flow';
+      heading: string;
+      steps: { label: string; note: string }[];
+      caption?: string;
+      /**
+       * How the sequence is drawn (mobile 1.12): 'steps' (default) = numbered
+       * stops on a path, a procedure you carry out; 'timeline' = phases on a
+       * time rail, something that unfolds over time (a life cycle, a cutover).
+       */
+      layout?: 'steps' | 'timeline';
+    }
   | {
       type: 'compare';
       heading: string;

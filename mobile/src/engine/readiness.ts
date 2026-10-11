@@ -43,7 +43,7 @@ export interface AnswerRecord {
   ms?: number;
   /**
    * How sure the learner said they were on the LAST attempt (practice
-   * confidence chips, or the Sure Footing level mapped to the same scale).
+   * confidence chips, or the Forecast level mapped to the same scale).
    * Optional: absent when no rating was given, and in older saves.
    */
   lastConfidence?: Confidence;

@@ -6,7 +6,9 @@
  *
  * Names, taglines, skills and round lengths all come from the game registry
  * (engine/games/registry.ts), so this screen, the game screens, Today's plan
- * and the Mistake journal always agree. Only the icons live here (they are UI).
+ * and the Mistake journal always agree. Mobile 1.12: each game has its own
+ * botanical glyph (components/glyphs.tsx GameGlyph), the same one in its
+ * row, its intro, its header and its recap.
  *
  * Build F: every game shows the learner's level (Seedling / Sapling /
  * Heartwood) as a leaf glyph AND its name, never colour alone. No
@@ -15,8 +17,8 @@
 import { router } from 'expo-router';
 import { useMemo } from 'react';
 import { View } from 'react-native';
-import { BookA, Footprints, TreeDeciduous, Crosshair, EyeOff, ICON_STROKE, Play as PlayIcon, Scale, Sparkles, SproutIcon, Sunrise } from '../../components/icons';
-import { TierLeaf } from '../../components/glyphs';
+import { ICON_STROKE, Play as PlayIcon } from '../../components/icons';
+import { GameGlyph, TierLeaf } from '../../components/glyphs';
 import { TierTag } from '../../components/milestones';
 import { Button, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, Section, T, Trail } from '../../components/ui';
 import { GAME_TIER_NAME, growthTier } from '../../engine/games/growth';
@@ -27,17 +29,6 @@ import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
-const ICONS: Record<GameId, typeof Crosshair> = {
-  trap: Crosshair,
-  sprint: Scale,
-  priority: Sparkles,
-  daylight: Sunrise,
-  rumor: SproutIcon,
-  callit: EyeOff,
-  field: BookA,
-  canopy: TreeDeciduous,
-  stones: Footprints,
-};
 
 export default function Play() {
   const { c } = useTheme();
@@ -69,6 +60,7 @@ export default function Play() {
       {featured && (
         <Enter i={1} style={{ marginTop: 18 }}>
           <HeroPanel
+            captionLead={<GameGlyph game={featured.id} size={20} color={c.sap} />}
             caption={`${featured.skill} · about ${featured.minutes} min`}
             captionExtra={
               // The level on forest: the leaf in sap, its name in text.
@@ -100,12 +92,11 @@ export default function Play() {
               only once it has grown past that (ui.md G2). Spoken on every row. */}
           <Section title="More games" meta={others.every((g) => level(g.id) === 'seedling') ? 'All at Seedling' : undefined} />
           {others.map((g, i) => {
-            const Icon = ICONS[g.id];
             const b = best(g.id);
             return (
               <ListRow
                 key={g.id}
-                icon={<Icon size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                icon={<GameGlyph game={g.id} size={ICON_SIZE.row + 2} color={c.accentText} />}
                 title={g.name}
                 subtitle={
                   <View>

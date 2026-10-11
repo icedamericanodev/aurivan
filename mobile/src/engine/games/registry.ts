@@ -83,9 +83,11 @@ export const GAMES: Record<GameId, GameInfo> = {
     size: 5,
     pool: trapPool,
   }),
+  // Called "Sure Footing" before mobile 1.12: renamed so it is never confused
+  // with the Firm Footing and First Foothold badges (learner_journey.md, name sprawl).
   sprint: make({
     id: 'sprint',
-    name: 'Sure Footing',
+    name: 'Forecast',
     tagline: 'How sure are you, really? Honest confidence scores best.',
     skill: 'Knowing what you know',
     size: 8,
