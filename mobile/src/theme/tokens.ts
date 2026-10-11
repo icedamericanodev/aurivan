@@ -429,3 +429,146 @@ export const badgeStruck: BadgeMetal = { name: '', light: '#E8EFE6', mid: '#AFC2
 export const badgeLeafPip = { on: '#1E4A34', rib: '#A9D9BA' } as const;
 /** The faint glaze across an earned badge's enamel (light from the top left). */
 export const badgeGlaze = { color: '#FFFFFF', opacity: 0.035, paperOpacity: 0.3 } as const;
+
+/**
+ * "Your plant" art (Phase 4a, mascot spec §6). The plant is an OBJECT, like
+ * the brand mark: its leaves, bark, blooms and pots are the same in light
+ * and dark. Only the ground shadow, the state marks (moon, sparkle, halo)
+ * and the resting dusk follow the theme (`plantTheme`).
+ *
+ * Leaf palettes: deep = shadow and silhouette (≥ 3:1 on `bg` in light),
+ * mid = body (≥ 3:1 on `bg` in dark), light = the lit side, hi = flecks.
+ * Pearl blooms always sit on green foliage, never on `bg` alone.
+ */
+export interface PlantLeafPalette {
+  deep: string;
+  mid: string;
+  light: string;
+  hi: string;
+}
+export const plantLeaf = {
+  grove: { deep: '#24603F', mid: '#3F8A5E', light: '#6DB38A', hi: '#A9D9BA' },
+  spring: { deep: '#467D38', mid: '#6CA24B', light: '#9CC768', hi: '#CDE6A0' },
+  evergreen: { deep: '#1B4632', mid: '#357A56', light: '#56996F', hi: '#8CC3A1' },
+  ember: { deep: '#9A4F26', mid: '#C4622E', light: '#E2874A', hi: '#F3B47E' },
+  gold: { deep: '#A8771F', mid: '#CF9E34', light: '#E9C46A', hi: '#F6E2A6' },
+  blossom: { deep: '#BB5F7B', mid: '#DC8BA3', light: '#F0B4C4', hi: '#FBDDE5' },
+  twilight: { deep: '#76598D', mid: '#987AB5', light: '#BCA2D6', hi: '#E1D3EF' },
+  silver: { deep: '#56705A', mid: '#7F977A', light: '#A9BCA0', hi: '#D3DEC9' },
+  rosewood: { deep: '#8E2F3A', mid: '#B8404C', light: '#D9666F', hi: '#F1A3A6' },
+  pearl: { deep: '#AEB8AA', mid: '#E3E8DD', light: '#FAFAF5', hi: '#FFFFFF' },
+  cactus: { deep: '#2F6B45', mid: '#4C9160', light: '#7DB97E', hi: '#F4EED9' },
+} satisfies Record<string, PlantLeafPalette>;
+export type PlantLeafId = keyof typeof plantLeaf;
+
+/** Fixed character and material colours for the plant (same in both themes). */
+export const plantArt = {
+  ink: '#2A2119', // eyes and mouth: warm near-black, never pure black (4.3:1 on the face patch)
+  blush: '#E8866E',
+  white: '#FFFFFF',
+  black: '#000000',
+  facePatch: '#F3E3CC', // bark is mixed 35% toward this for the face patch
+  seedLight: '#C9A27A', // a seed is its bark mixed toward this
+  soil: '#7A5A41',
+  soilDeep: '#4A3527',
+  grass: '#5E9A55',
+  tuft: '#4C8A47',
+  daisy: '#F3F1EA',
+  daisyCore: '#E9C46A',
+  bark: {
+    oak: '#6E4B32',
+    maple: '#76563F',
+    narra: '#7B5A44',
+    cherry: '#5E3B35',
+    pine: '#7E4A2C',
+    coconut: '#8A7356',
+    mango: '#6A4B36',
+    bonsai: '#6B4A3A',
+  },
+  seed: {
+    sunflower: '#3B3330',
+    sunflowerStripe: '#E3DCCB',
+    lotus: '#6B6340',
+    sampaguita: '#7A6A52',
+    cactus: '#5E4A3A', // lifted from #3A332D so the seed reads on the dark theme
+  },
+  pot: {
+    terracotta: '#B9663B',
+    terracottaLit: '#CF7A4C',
+    terracottaRim: '#C9724A',
+    terracottaBand: '#A5552F',
+    celadon: '#8FB8A3',
+    celadonLit: '#B5D4C4',
+    celadonLine: '#6F9C86',
+    celadonRim: '#A3C7B4',
+    tray: '#6B4A3E',
+    trayFoot: '#553A30',
+    trayRim: '#7E5A4C',
+    pebble: '#8E9590',
+    basket: '#C08A4E',
+    basketWeave: '#9C6A36',
+    basketRib: '#D9A86C',
+    basketRim: '#A87439',
+    bowl: '#3F6F82',
+    bowlLit: '#5B8EA0',
+    water: '#8CC0C4',
+    ripple: '#C7E3E2',
+    bowlRim: '#4F8296',
+    stone: '#8E9590',
+    stoneLit: '#A6ACA6',
+  },
+  gift: {
+    cherryBloom: '#FFF4F6',
+    cherryCore: '#C2557A',
+    cherryDrift: '#FBDDE5',
+    acorn: '#B98A4A',
+    samara: '#F3B47E',
+    narra: '#F2C94C',
+    narraCore: '#B0802C',
+    mangoRipe: '#F2A93B',
+    mangoBlush: '#E0603A',
+    mangoGreen: '#8DB85A',
+    mangoGreenLit: '#B6D67F',
+    stalk: '#4A3A2A',
+    coconutRipe: '#7A5A34',
+    coconutGreen: '#7E9A3E',
+    cone: '#8A5A34',
+    coneLine: '#6A4024',
+    mossBloomCore: '#E9C46A',
+  },
+  sunflower: { disc: '#5E3A1E', discMid: '#8A5A2E', discLit: '#9C6A38', seeds: '#4A2E17', sideDisc: '#6B4423', drift: '#E9C46A' },
+  lotus: { stamen: '#E9C46A', stamenDeep: '#C9A14A', pod: '#8DAA5A', podTop: '#B7CC7A', podSeed: '#5F7A3A', drift: '#F0B4C4' },
+  sampaguita: { core: '#D9D27A', tassel: '#E8866E' },
+  bamboo: {
+    deep: '#4E7836',
+    mid: '#6E9E4C',
+    light: '#A4C978',
+    node: '#3D612B',
+    shoot: '#9C7A48',
+    shootLine: '#7A5A32',
+    sheath: '#8F6E40',
+    sheathMid: '#A9854F',
+    sheathLit: '#B8955C',
+    sheathLine: '#D6B985',
+  },
+} as const;
+
+/**
+ * The few plant colours that follow the theme: the ground shadow, the state
+ * marks and the resting dusk (a calm backdrop behind the plant, never a
+ * colour change on the plant itself). Light marks reuse accent and Ochre;
+ * dark ones sap and tip.
+ */
+export interface PlantThemeTone {
+  shadow: string;
+  shadowOpacity: number;
+  sap: string; // the proud halo, the happy leaves' edge
+  leafFill: string; // the happy leaves
+  honey: string; // the moon, the curious sparkle
+  dusk: string; // the resting backdrop
+  duskOpacity: number;
+}
+export const plantTheme: { light: PlantThemeTone; dark: PlantThemeTone } = {
+  light: { shadow: '#17231B', shadowOpacity: 0.1, sap: '#2B6E4A', leafFill: '#6DB38A', honey: '#B0802C', dusk: '#DCD8E6', duskOpacity: 0.85 },
+  dark: { shadow: '#000000', shadowOpacity: 0.35, sap: '#A9D9BA', leafFill: '#A9D9BA', honey: '#E9C46A', dusk: '#232842', duskOpacity: 0.9 },
+};
