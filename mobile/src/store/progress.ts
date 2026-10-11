@@ -12,6 +12,7 @@ import { subtopicOfQuestion } from '../content/notes';
 import type { Letter } from '../content/types';
 import { MAX_ANSWER_MS } from '../engine/answerClock';
 import { logReadinessDay, type ReadinessDay } from '../engine/examReady';
+import { MAX_MOCKS } from '../engine/journey';
 import { noteRound, type GameGrowth, type RoundOutcome, type TierChange } from '../engine/games/growth';
 import { pushScore } from '../engine/games/recap';
 import type { GameId } from '../engine/games/registry';
@@ -466,7 +467,7 @@ export const useProgress = create<ProgressState>()(
         set((s) => {
           const cp = normalize(s.byCert[certId]);
           return {
-            byCert: { ...s.byCert, [certId]: { ...cp, mocks: [result, ...cp.mocks].slice(0, 50) } },
+            byCert: { ...s.byCert, [certId]: { ...cp, mocks: [result, ...cp.mocks].slice(0, MAX_MOCKS) } },
           };
         }),
 

@@ -45,6 +45,9 @@ import {
   SPECIES_INFO,
   suggestName,
   supportEvidence,
+  supportSpread,
+  bestCaseFacts,
+  shownName,
   switchSpecies,
   backfillLine,
   growthShort,
@@ -340,7 +343,17 @@ describe('restore clamp', () => {
     const elder = { answered: 200, answeredByDomain: [20, 20, 20, 20, 20], spread: 0.6, mock50: true, dress: true, readyEver: true };
     expect(maxSupportedGrowth(elder)).toBe(6);
     expect(maxSupportedGrowth({ ...elder, readyEver: false })).toBe(5);
-    expect(maxSupportedGrowth({ ...elder, answeredByDomain: [20, 20, 19, 20, 20] })).toBe(5);
+    // The live Elder gate needs 10 clean answers per domain (mastery = credit / max(n, 10)), so the clamp does too (PR #43 B1a).
+    expect(maxSupportedGrowth({ ...elder, answeredByDomain: [20, 20, 10, 20, 20] })).toBe(6);
+    expect(maxSupportedGrowth({ ...elder, answeredByDomain: [20, 20, 9, 20, 20] })).toBe(2);
+  });
+
+  it('is the live gates on the best-case facts: one shared rule, never a stricter copy', () => {
+    const elder = { answered: 200, answeredByDomain: [20, 20, 10, 20, 20], spread: 0.6, mock50: true, dress: true, readyEver: true };
+    expect(maxSupportedGrowth(elder)).toBe(growthFor(bestCaseFacts(elder)));
+    expect(bestCaseFacts(elder)).toMatchObject({ cleanAnswered: 200, low: 100, cleanMastery: [1, 1, 1, 1, 1], readyHeld: true });
+    expect(bestCaseFacts({ ...elder, answered: 39 }).low).toBeNull(); // no range below RANGE_MIN_ANSWERS
+    expect(bestCaseFacts({ ...elder, answeredByDomain: [5, 20, 20, 20, 20] }).cleanMastery[0]).toBe(0.5);
   });
 
   it('clampToSupported lowers growth and trims reached, pending and the back-fill', () => {
@@ -398,11 +411,16 @@ describe('plantFacts and supportEvidence from saved progress', () => {
     expect(plantFacts({ ...base, answers: {}, mocks: [{ total: full, correct: 100, day: '2026-10-01', timing: 'untimed', unanswered: 0 }] }).dress).toBe(false);
   });
 
-  it('readyHeld: a 7-day hold, or a ready moment seen AFTER the last replant', () => {
+  it('readyHeld: a 7-day hold, or a ready moment seen AFTER the last replant, AND the clean low end at 80 now', () => {
     const log = Array.from({ length: 7 }, (_, i) => ({ day: `2026-10-${String(6 + i).padStart(2, '0')}`, min: 82, last: 82 }));
-    expect(plantFacts({ ...base, answers: {}, readinessLog: log }).readyHeld).toBe(true);
-    expect(plantFacts({ ...base, answers: {}, readySeenAt: T0 }).readyHeld).toBe(true);
-    expect(plantFacts({ ...base, answers: {}, readySeenAt: T0, replantedAt: T0 + 1 }).readyHeld).toBe(false);
+    const strong = answers(40);
+    expect(plantFacts({ ...base, answers: strong }).low!).toBeGreaterThanOrEqual(80);
+    expect(plantFacts({ ...base, answers: strong, readinessLog: log }).readyHeld).toBe(true);
+    expect(plantFacts({ ...base, answers: strong, readySeenAt: T0 }).readyHeld).toBe(true);
+    expect(plantFacts({ ...base, answers: strong, readySeenAt: T0, replantedAt: T0 + 1 }).readyHeld).toBe(false);
+    // Code review B2: the log and the panel count games. Without clean answers at the line, they never open Elder.
+    expect(plantFacts({ ...base, answers: {}, readinessLog: log, readySeenAt: T0 }).readyHeld).toBe(false);
+    expect(plantFacts({ ...base, answers: answers(40, { lastGame: true }), readinessLog: log }).readyHeld).toBe(false);
   });
 
   it('supportEvidence counts every answer (a generous necessary condition)', () => {
@@ -606,5 +624,178 @@ describe('plant lines', () => {
       expect(growthShort(g)).toMatch(new RegExp(`growth ${g} of 6$`));
       expect(growthShort(g)).not.toMatch(/stage/i);
     }
+  });
+});
+
+// ── PR #43 review: names (code review M3, QA 2–5; probes P4, P5) ─────────
+describe('cleanPlantName after the PR #43 review', () => {
+  it.each([
+    ['U+061C Arabic letter mark', '\u061C'],
+    ['U+2060 word joiner', '\u2060'],
+    ['U+2062 invisible times', '\u2062'],
+    ['U+00AD soft hyphen', '\u00AD'],
+    ['U+180E Mongolian vowel separator', '\u180E'],
+    ['U+3164 Hangul filler', '\u3164'],
+    ['U+115F Hangul choseong filler', '\u115F'],
+    ['U+FFA0 halfwidth Hangul filler', '\uFFA0'],
+    ['U+2800 blank braille cell', '\u2800'],
+    ['U+E0041 tag A', '\u{E0041}'],
+    ['U+FFF9 interlinear anchor', '\uFFF9'],
+  ])('strips %s', (_n, ch) => {
+    expect(cleanPlantName(`Ka${ch}i`)).toBe('Kai');
+    // A name made only of it is no name at all ("Your oak"), never a blank-looking one.
+    expect(cleanPlantName(`${ch}${ch}${ch}`)).toBe('');
+  });
+
+  it('turns newlines and tabs into one space', () => {
+    expect(cleanPlantName('Kai\n\tLee')).toBe('Kai Lee');
+    expect(cleanPlantName('Kai\r\nLee')).toBe('Kai Lee');
+    expect(cleanPlantName('Kai\u2028Lee')).toBe('Kai Lee');
+    expect(cleanPlantName('Kai\u3000Lee')).toBe('Kai Lee');
+  });
+
+  it('keeps emoji and script joiners between visible characters, and drops stray ones', () => {
+    expect(cleanPlantName('👩\u200D💻')).toBe('👩\u200D💻');
+    expect(cleanPlantName('🏳\uFE0F\u200D🌈')).toBe('🏳\uFE0F\u200D🌈');
+    expect(cleanPlantName('\u0645\u06CC\u200C\u062E\u0648\u0627\u0645')).toBe('\u0645\u06CC\u200C\u062E\u0648\u0627\u0645'); // Persian "mi-khaham"
+    expect(cleanPlantName('\u200DKai\u200D')).toBe('Kai');
+    expect(cleanPlantName('Kai \u200D Lee')).toBe('Kai Lee');
+    expect(cleanPlantName('a\u200D\u200Db')).toBe('a\u200Db');
+    // A subdivision flag keeps its tags; tags anywhere else go.
+    const scotland = '🏴\u{E0067}\u{E0062}\u{E0073}\u{E0063}\u{E0074}\u{E007F}';
+    expect(cleanPlantName(`Go ${scotland}`)).toBe(`Go ${scotland}`);
+  });
+
+  it('never cuts an emoji sequence, an accent or a flag in half at the 20 limit', () => {
+    const family = '👨\u200D👩\u200D👧\u200D👦'; // 7 code points
+    const s = cleanPlantName(`${'a'.repeat(17)}${family}`);
+    expect(s).toBe('a'.repeat(17));
+    expect(cleanPlantName(`${'a'.repeat(19)}🇵🇭`)).toBe('a'.repeat(19));
+    expect(cleanPlantName(`${'a'.repeat(18)}🇵🇭`)).toBe(`${'a'.repeat(18)}🇵🇭`);
+    expect(cleanPlantName(`${'a'.repeat(19)}e\u0301`)).toBe(`${'a'.repeat(19)}\u00E9`);
+    // A letter and its virama stay together: the conjunct is left out whole.
+    expect(cleanPlantName(`${'a'.repeat(19)}\u0915\u094D\u0937`)).toBe('a'.repeat(19));
+  });
+
+  it('strips before normalising, so a stripped mark never leaves a name that is not NFC (P5)', () => {
+    const once = cleanPlantName('e\u200B\u0301');
+    expect(once).toBe('\u00E9');
+    expect(cleanPlantName(once)).toBe(once);
+    expect(isValidPlantState({ species: 'oak', name: cleanPlantName('Rene\u200B\u0301'), plantedAt: T0, growth: 1 })).toBe(true);
+  });
+
+  it('is idempotent on fuzzed names, and every result passes the backup check (P5b)', () => {
+    const pool = ['a', 'e', 'o', 'A', ' ', '\n', '\t', '\u0301', '\u0308', '\u0328', '\u200B', '\u200C', '\u200D', '\u202E', '\u2066', '\u0000', '\u00AD', '\u3164', '\u1100', '\u1161', '\u11A8', '🌳', '👩', '\u{1F3FD}', '\uFE0F', '🏴', '\u{E0067}', '\u{E007F}', '🇵', '🇭', '\u30A2', '\u3099', '\u00C5', '\u05E9', '\u0645', '\uFEFF'];
+    let seed = 7;
+    const rnd = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+    for (let i = 0; i < 4000; i++) {
+      const raw = Array.from({ length: 1 + Math.floor(rnd() * 34) }, () => pool[Math.floor(rnd() * pool.length)]).join('');
+      const once = cleanPlantName(raw);
+      expect(cleanPlantName(once)).toBe(once);
+      expect(Array.from(once).length).toBeLessThanOrEqual(MAX_NAME);
+      expect(once).toBe(once.trim());
+      expect(isValidPlantState({ species: 'oak', name: once, plantedAt: T0, growth: 1 })).toBe(true);
+    }
+  });
+
+  it('bidi-isolates a right-to-left name where a sentence shows it, never in the saved name', () => {
+    const p = { name: '\u05E9\u05DC\u05D5\u05DD', species: 'oak' as const };
+    expect(cleanPlantName(p.name)).toBe(p.name);
+    expect(shownName(p.name)).toBe(`\u2068${p.name}\u2069`);
+    expect(grewLabel(p, 5)).toBe(`\u2068${p.name}\u2069 grew to Crown.`);
+    expect(plantLabel({ ...p, growth: 2 })).toMatch(/^\u2068/);
+    expect(backfillLine(p, 3)).toContain(`\u2068${p.name}\u2069`);
+    expect(restLine(p, '2026-01-01', '2026-01-04')).toMatch(/^\u2068/);
+    // A left-to-right name reads as it is.
+    expect(grewLabel({ name: 'Kai', species: 'oak' }, 5)).toBe('Kai grew to Crown.');
+  });
+});
+
+// ── PR #43 review B1: the restore clamp never refutes live growth ────────
+describe('restore clamp: live growth is always supported (code review B1)', () => {
+  const subs = plantSubtopicsFixture();
+  function plantSubtopicsFixture() {
+    return [1, 2, 3, 4, 5].map((d) => Array.from({ length: 6 }, (_, k) => `${d}A${k + 1}.1`));
+  }
+  const rec = (o: Partial<AnswerRecord>): AnswerRecord => ({ attempts: 1, correctCount: 1, lastCorrect: true, lastAt: T0, ...o });
+  const pickDay = (k: number) => `2026-10-${String(1 + (k % 28)).padStart(2, '0')}`;
+
+  it('growthFor(plantFacts(x)) ≤ maxSupportedGrowth(supportEvidence(x)) for random saves', () => {
+    let seed = 11;
+    const rnd = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+    const seen = new Set<number>();
+    for (let run = 0; run < 1500; run++) {
+      // Some saves are strong (most answers right and clean, much mastered, a held week), so every growth shows up.
+      const strong = rnd() < 0.4;
+      const answers: Record<string, AnswerRecord> = {};
+      const per = [0, 1, 2, 3, 4].map(() => (strong ? 30 + Math.floor(rnd() * 20) : Math.floor(rnd() * rnd() * 50)));
+      const rightRate = strong ? 0.9 + 0.1 * rnd() : 0.55 + 0.45 * rnd();
+      per.forEach((n, i) => {
+        for (let k = 0; k < n; k++) {
+          const r = strong ? rnd() * 2 : rnd();
+          const ok = rnd() < rightRate;
+          answers[`d${i + 1}_${String(k).padStart(3, '0')}`] = rec({ correctCount: ok ? 1 : 0, lastCorrect: ok, lastAssisted: r < 0.1 || undefined, lastGame: (r >= 0.1 && r < 0.2) || undefined });
+        }
+      });
+      const mastery: Record<string, { firstDay: string; masteredAt?: string }> = {};
+      const share = strong ? 0.7 + 0.3 * rnd() : rnd();
+      for (const s of subs.flat()) if (rnd() < share) mastery[s] = { firstDay: pickDay(Math.floor(rnd() * 28)), ...(rnd() < 0.85 ? { masteredAt: '2026-10-20' } : {}) };
+      const mocks: PlantMock[] = Array.from({ length: (strong ? 1 : 0) + Math.floor(rnd() * 4) }, () => ({
+        total: [10, 50, 150][Math.floor(rnd() * 3)],
+        correct: 30,
+        day: pickDay(Math.floor(rnd() * 28)),
+        timing: rnd() < 0.8 ? 'standard' : 'untimed',
+        unanswered: rnd() < 0.8 ? 0 : 2,
+      }));
+      const lo = strong ? 80 + Math.floor(rnd() * 15) : 60 + Math.floor(rnd() * 40);
+      const readinessLog = Array.from({ length: strong ? 10 : Math.floor(rnd() * 10) }, (_, k) => ({ day: `2026-10-${String(3 + k).padStart(2, '0')}`, min: !strong && rnd() < 0.2 ? null : lo, last: !strong && rnd() < 0.2 ? null : lo + 2 }));
+      if (strong && rnd() < 0.7) mocks.push({ total: cisa.exam.questions, correct: 120, day: '2026-10-09', timing: 'standard', unanswered: 0 });
+      const readySeenAt = rnd() < 0.3 ? T0 : undefined;
+      const input = { cert: cisa, answers, mastery, subtopicsByDomain: subs, mocks, readinessLog, readySeenAt, today: '2026-10-12' };
+      const live = growthFor(plantFacts(input));
+      seen.add(live);
+      expect(live).toBeLessThanOrEqual(maxSupportedGrowth(supportEvidence(input)));
+    }
+    // The random saves really reach the high growths.
+    expect([...seen].sort()).toEqual([1, 2, 3, 4, 5, 6]);
+  });
+
+  it('a full mock history, a Dress Rehearsal mark or study older than the readiness log never refutes (P1b)', () => {
+    const answers: Record<string, AnswerRecord> = {};
+    for (let d = 1; d <= 5; d++) for (let k = 0; k < 40; k++) answers[`d${d}_${String(k).padStart(3, '0')}`] = rec({});
+    const mastery = Object.fromEntries(subs.flat().map((s) => [s, { firstDay: '2026-08-01', masteredAt: '2026-08-03' }]));
+    const base = { cert: cisa, answers, mastery, subtopicsByDomain: subs, readinessLog: [{ day: '2026-10-10', min: 70, last: 70 }] };
+    const minis: PlantMock[] = Array.from({ length: 50 }, () => ({ total: 10, correct: 8, day: '2026-10-01' }));
+    expect(maxSupportedGrowth(supportEvidence({ ...base, mocks: minis.slice(0, 49) }))).toBe(4);
+    // 50 mocks: the history is full, so an older 50+ or full mock may have scrolled away.
+    expect(maxSupportedGrowth(supportEvidence({ ...base, mocks: minis }))).toBe(6);
+    // The Dress Rehearsal badge proves a full, timed mock (and, at 150 questions, a 50+ one).
+    expect(maxSupportedGrowth(supportEvidence({ ...base, mocks: [], earned: { 'dress-rehearsal': T0 } }))).toBe(6);
+    // Study older than the log's oldest day: an 80+ day may have scrolled out of the log.
+    const recent = { ...base, mastery: Object.fromEntries(subs.flat().map((s) => [s, { firstDay: '2026-10-10', masteredAt: '2026-10-11' }])) };
+    const nowAnswers = Object.fromEntries(Object.entries(answers).map(([k, a]) => [k, { ...a, lastAt: new Date(2026, 9, 11).getTime() }]));
+    expect(supportEvidence({ ...recent, answers: nowAnswers, mocks: [] }).readyEver).toBe(false);
+    expect(supportEvidence({ ...base, mocks: minis }).readyEver).toBe(true);
+    // A day's LAST reading carries forward into the hold, so it counts too.
+    expect(supportEvidence({ ...recent, answers: nowAnswers, mocks: [], readinessLog: [{ day: '2026-10-10', min: 70, last: 81 }] }).readyEver).toBe(true);
+  });
+
+  it('a renamed subtopic still counts in its domain; an unreadable id or no outline never refutes (P1c)', () => {
+    const w = cisa.domains.map((d) => ({ id: d.id, weight: d.weight }));
+    const all = Object.fromEntries(subs.flat().map((s) => [s, { firstDay: '2026-09-01', masteredAt: '2026-09-03' }]));
+    expect(supportSpread(w, subs, all)).toBeCloseTo(1);
+    // The same mastery after a notes rewrite renamed 70% of the ids ("1A1.1" → "1A1.1-v2"): still everything known.
+    const renamed = Object.fromEntries(Object.entries(all).map(([k, v], i) => [i % 10 < 7 ? `${k}-v2` : k, v]));
+    expect(outlineSpread(cisa.domains.map((d) => d.weight), subs, renamed)).toBeLessThan(0.45);
+    expect(supportSpread(w, subs, renamed)).toBeCloseTo(1);
+    // Renamed ids never count past the domain's own size.
+    const doubled = { ...all, ...Object.fromEntries(subs[0].map((s) => [`${s}-old`, all[s]])) };
+    expect(supportSpread(w, subs, doubled)).toBeCloseTo(1);
+    expect(supportSpread(w, subs, { '1A1.1-x': all['1A1.1'] })).toBeCloseTo(cisa.domains[0].weight / 100 / 6, 3);
+    expect(supportSpread(w, subs, { 'zz-unknown': all['1A1.1'] })).toBe(1);
+    expect(supportSpread(w, [], { '1A1.1': all['1A1.1'] })).toBe(1);
+    expect(supportSpread(w, subs, {})).toBe(0);
+    // Mastery begun but not yet mastered is no evidence.
+    expect(supportSpread(w, subs, { '1A1.1': { firstDay: '2026-09-01' } })).toBe(0);
   });
 });

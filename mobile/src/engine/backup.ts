@@ -626,7 +626,8 @@ export interface KnownIds {
    * Mobile 1.13: the outline subtopics with practice questions, per domain in
    * the cert's order (what "know X% of the outline" counts), so a restored
    * plant is clamped to what the restored data supports. Optional: without
-   * it, the outline counts as unknown (0%), the cautious reading.
+   * it the outline can't be compared, so mastered subtopics never refute a
+   * plant (engine/plant.ts supportSpread: a restore never lowers honest growth).
    */
   plantOutline?: readonly (readonly string[])[];
 }
@@ -707,10 +708,12 @@ export function keepSupportedMarks(progress: BackupProgress): BackupProgress {
 
 /**
  * Mobile 1.13: each cert's plant keeps only the growth its restored data can
- * support (engine/plant.ts maxSupportedGrowth: plain necessary conditions,
- * like keepSupportedMarks). Growth, `reached`, `pending` and the back-fill
- * above it are lowered; never raised. A plant for an exam this app doesn't
- * know can't happen (the cert key is checked first).
+ * support (engine/plant.ts maxSupportedGrowth: the live gates on the most
+ * generous facts the file allows). An honest file never loses growth: only a
+ * claim beyond its evidence is lowered, with `reached`, `pending` and the
+ * back-fill above it; never raised. A plant for an exam this app doesn't
+ * know can't happen (the cert key is checked first). It runs after
+ * keepSupportedMarks, so a Dress Rehearsal mark it reads was checked first.
  */
 export function keepSupportedPlants(progress: BackupProgress, known?: (certId: string) => KnownIds): BackupProgress {
   let changed = false;
@@ -729,6 +732,7 @@ export function keepSupportedPlants(progress: BackupProgress, known?: (certId: s
       mocks: (cp.mocks ?? []).map((m) => ({ total: m.total, correct: m.correct, day: dayKey(m.finishedAt), ...(m.timing ? { timing: m.timing } : {}), ...(m.unanswered !== undefined ? { unanswered: m.unanswered } : {}) })),
       readinessLog: cp.moments?.readiness,
       readySeenAt: cp.moments?.readySeenAt,
+      earned: cp.milestones?.earned,
     });
     const clamped = clampToSupported(cp.plant, maxSupportedGrowth(e));
     if (clamped !== cp.plant) changed = true;

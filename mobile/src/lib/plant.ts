@@ -177,8 +177,8 @@ export interface PlantView {
   label: string;
 }
 
-/** Pure: the view for one cert's progress (tests call this directly). */
-export function plantView(cert: Certification, cp: CertProgress, settings: PlantSettings | undefined, today: string, plannedRest = false): PlantView {
+/** Pure: the view for one cert's progress (tests call this directly). Reads only answers, the plant and the last study day. */
+export function plantView(cert: Certification, cp: Pick<CertProgress, 'answers' | 'plant' | 'milestones'>, settings: PlantSettings | undefined, today: string, plannedRest = false): PlantView {
   const shown = plantShown(settings);
   const readiness = computeReadiness(cert, cp.answers);
   const weights = cert.domains.map((d) => d.weight);
@@ -205,10 +205,14 @@ export function plantView(cert: Certification, cp: CertProgress, settings: Plant
 }
 
 /** The plant view for the active cert (Today, You, Your plant). */
-export function usePlantView(): PlantView & { cert: Certification; certId: string } {
+export function usePlantView(): PlantView & { cert: Certification; certId: string; exam: 'eve' | 'day' | null } {
   const certId = useSettings((s) => s.activeCertId);
   const examDate = useSettings((s) => s.examDates[certId]);
-  const cp = useProgress((s) => selectCert(s, certId));
+  // Only what the view reads (code review M6c): a review, a bookmark or a
+  // session save elsewhere in the cert never rebuilds the plant on a mounted tab.
+  const answers = useProgress((s) => selectCert(s, certId).answers);
+  const plant = useProgress((s) => selectCert(s, certId).plant);
+  const lastDay = useProgress((s) => selectCert(s, certId).milestones?.lastDay);
   const settings = useProgress((s) => s.plantSettings);
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
   // Today's date, read once per render of a screen that is already re-rendering.
@@ -216,7 +220,11 @@ export function usePlantView(): PlantView & { cert: Certification; certId: strin
   const now = Date.now();
   const today = dayKey(now);
   // The day before the exam and exam day are planned rest: the calm look, never a nudge.
-  const plannedRest = examMoment(examDate, now) !== null;
-  const view = useMemo(() => plantView(cert, cp, settings, today, plannedRest), [cert, cp, settings, today, plannedRest]);
-  return { ...view, cert, certId };
+  const exam = examMoment(examDate, now);
+  const plannedRest = exam !== null;
+  const view = useMemo(
+    () => plantView(cert, { answers, plant, milestones: lastDay ? { earned: {}, lastDay } : undefined }, settings, today, plannedRest),
+    [cert, answers, plant, lastDay, settings, today, plannedRest],
+  );
+  return { ...view, cert, certId, exam };
 }

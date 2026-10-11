@@ -18,12 +18,12 @@
  * UI copy rule: the six steps are called "growth", never "stage".
  */
 import type { Certification } from '../content/types';
-import { MOCK_DOMAIN_FLOOR, DIAGNOSTIC_SIZE, DOMAIN_TARGET } from './journey';
-import { readyHoldDays, READY_LOW, type ReadinessDay } from './examReady';
+import { MOCK_DOMAIN_FLOOR, DIAGNOSTIC_SIZE, DOMAIN_TARGET, MAX_MOCKS } from './journey';
+import { readyHoldDays, READY_DAYS, READY_LOW, type ReadinessDay } from './examReady';
 import type { SubtopicMastery } from './mastery';
 import { computeReadiness, MIN_SAMPLE, domainMastery, type AnswerRecord } from './readiness';
 import { RANGE_MIN_ANSWERS, readinessRange } from './readinessRange';
-import { daysBetween } from './streak';
+import { daysBetween, dayKey } from './streak';
 
 // ── Species ────────────────────────────────────────────────────────────
 
@@ -141,7 +141,12 @@ export interface PlantFacts {
   mock50: boolean;
   /** Any full, timed mock with every question answered (a dress rehearsal). */
   dress: boolean;
-  /** The exam-ready moment holds: low ≥ 80 for 7 days, or its panel was seen since the last replant. */
+  /**
+   * The exam-ready moment holds (the logged low ≥ 80 for 7 days, or its panel
+   * was seen since the last replant) AND the CLEAN low end is at 80 or more
+   * now. The log and the panel count game answers, so on their own they could
+   * let games open Elder (code review B2).
+   */
   readyHeld: boolean;
 }
 
@@ -170,14 +175,26 @@ export function nextGrowth(prevHighest: GrowthLevel, computed: GrowthLevel): Gro
   return Math.max(prevHighest, computed) as GrowthLevel;
 }
 
+/**
+ * The exam-ready gate in words. "For a week" is READY_DAYS (7); the line is
+ * the exam-ready moment's own READY_LOW, so the words can't drift from the rule.
+ */
+const READY_RULE = `The low end of your readiness holds at ${READY_LOW}% or more for ${READY_DAYS === 7 ? 'a week' : `${READY_DAYS} days`}`;
+/**
+ * The plant's readiness gates read clean answers only, while Today's range
+ * also counts hints and games: the words say so, so the two never seem to
+ * disagree (code review M8).
+ */
+const CLEAN_LOW = 'The low end of your readiness, without hints or games,';
+
 /** One line per growth: the rule, in learner words (shown before it is reached). No bank sizes. */
 export const GROWTH_RULES: Record<GrowthLevel, string> = {
   1: 'Plant it.',
-  2: `Answer ${SPROUT_ANSWERS} questions without a hint (your diagnostic).`,
+  2: `Answer ${SPROUT_ANSWERS} questions without a hint or a game (your diagnostic).`,
   3: `Answer ${SHOOT_PER_DOMAIN} or more questions in every domain, and know ${pct(SHOOT_SPREAD)} of the outline.`,
-  4: `The low end of your readiness reaches ${BOUGH_LOW}%, and you know ${pct(BOUGH_SPREAD)} of the outline.`,
-  5: `The low end of your readiness reaches ${CROWN_LOW}%, you know ${pct(CROWN_SPREAD)} of the outline, and you finish a mock of ${CROWN_MOCK} questions or more.`,
-  6: `Your exam-ready moment, every domain at ${pct(ELDER_DOMAIN_FLOOR)} or more, ${pct(ELDER_SPREAD)} of the outline known, and a full, timed mock with every question answered.`,
+  4: `${CLEAN_LOW} reaches ${BOUGH_LOW}%, and you know ${pct(BOUGH_SPREAD)} of the outline.`,
+  5: `${CLEAN_LOW} reaches ${CROWN_LOW}%, you know ${pct(CROWN_SPREAD)} of the outline, and you finish a mock of ${CROWN_MOCK} questions or more.`,
+  6: `${READY_RULE}, every domain is at ${pct(ELDER_DOMAIN_FLOOR)} or more, you know ${pct(ELDER_SPREAD)} of the outline, and you finish a full, timed mock with every question answered.`,
 };
 /** The one-line explainer for "know X% of the outline". */
 export const SPREAD_EXPLAINER = "Subtopics you've answered right, without a hint, on two different days, weighted like the exam.";
@@ -193,11 +210,11 @@ export function nextGrowthSteps(current: GrowthLevel, f: PlantFacts): { growth: 
   const frac = (have: number, need: number) => (need <= 0 ? 1 : Math.max(0, Math.min(1, have / need)));
   const low = f.low ?? 0;
   const spread = (need: number) => ({ label: `Know ${pct(need)} of the outline`, progress: frac(f.spread, need) });
-  const lowStep = (need: number) => ({ label: `The low end of your readiness reaches ${need}%`, progress: f.low === null ? 0 : frac(low, need) });
+  const lowStep = (need: number) => ({ label: `${CLEAN_LOW} reaches ${need}%`, progress: f.low === null ? 0 : frac(low, need) });
   let steps: { label: string; progress: number }[];
   switch (g) {
     case 2:
-      steps = [{ label: `Answer ${SPROUT_ANSWERS} questions without a hint`, progress: frac(f.cleanAnswered, SPROUT_ANSWERS) }];
+      steps = [{ label: `Answer ${SPROUT_ANSWERS} questions without a hint or a game`, progress: frac(f.cleanAnswered, SPROUT_ANSWERS) }];
       break;
     case 3: {
       const n = f.cleanByDomain.length;
@@ -214,7 +231,7 @@ export function nextGrowthSteps(current: GrowthLevel, f: PlantFacts): { growth: 
     default: {
       const min = f.cleanMastery.length ? Math.min(...f.cleanMastery) : 0;
       steps = [
-        { label: 'Your exam-ready moment', progress: f.readyHeld ? 1 : 0 },
+        { label: READY_RULE, progress: f.readyHeld ? 1 : 0 },
         { label: `Every domain at ${pct(ELDER_DOMAIN_FLOOR)} or more`, progress: frac(min, ELDER_DOMAIN_FLOOR) },
         spread(ELDER_SPREAD),
         { label: 'A full, timed mock with every question answered', progress: f.dress ? 1 : 0 },
@@ -287,8 +304,13 @@ export function plantFacts(i: PlantFactsInput): PlantFacts {
   // 4a owner rule: growth never comes from games). Today's range counts game
   // answers too, so a game round could otherwise open Bough or Crown.
   const range = readinessRange(cert, computeReadiness(cert, clean));
-  const held = readyHoldDays([...(i.readinessLog ?? [])], i.today) >= 7;
+  const held = readyHoldDays([...(i.readinessLog ?? [])], i.today) >= READY_DAYS;
   const seen = i.readySeenAt !== undefined && i.readySeenAt > (i.replantedAt ?? 0);
+  // The log and the panel count every answer, games and Coach me included. The
+  // plant also needs the CLEAN low end at the exam-ready line right now, so a
+  // week of games can never open Elder (code review B2). Growth is a stored
+  // max: a later dip never takes Elder back.
+  const cleanReady = range.enough && range.low >= READY_LOW;
   return {
     cleanAnswered: dm.reduce((s, d) => s + d.answered, 0),
     cleanByDomain: dm.map((d) => d.answered),
@@ -301,7 +323,7 @@ export function plantFacts(i: PlantFactsInput): PlantFacts {
     ),
     mock50: i.mocks.some((m) => m.total >= CROWN_MOCK),
     dress: i.mocks.some((m) => isDressMock(m, i.cert.exam.questions)),
-    readyHeld: held || seen,
+    readyHeld: (held || seen) && cleanReady,
   };
 }
 
@@ -370,13 +392,108 @@ export const plantHasFace = (s: PlantSettings | undefined) => s?.quietLook !== t
 // ── Names ──────────────────────────────────────────────────────────────
 
 export const MAX_NAME = 20;
-// C0/C1 controls, zero-width U+200B–U+200F and U+FEFF, bidi U+202A–U+202E and U+2066–U+2069.
-const STRIP = /[\u0000-\u001F\u007F-\u009F​-‏﻿‪-‮⁦-⁩]/g;
 
-/** Cleans a learner-typed name: NFC, no controls or invisible marks, single spaces, at most MAX_NAME code points. */
+/*
+ * Name cleaning (code review M3, QA 2–5). Every pattern is written with
+ * escapes, never literal invisible characters, so an editor can't mangle it.
+ *
+ * - WHITESPACE: any whitespace (newline, tab, no-break space, line separator…)
+ *   becomes ONE plain space first, so "Kai⏎Lee" saves as "Kai Lee". U+FEFF
+ *   (the byte-order mark) is whitespace to JavaScript, but it is an invisible
+ *   format character, so it is stripped below instead.
+ * - INVISIBLE: every control (Cc) and format (Cf) character (zero-width
+ *   spaces, bidi marks and overrides, the word joiner, the soft hyphen, the
+ *   Arabic letter mark, tags…), plus the blank-looking fillers that aren't
+ *   Cf (Hangul fillers U+115F, U+1160, U+3164, U+FFA0 and the blank braille
+ *   cell U+2800). A name made only of these cleans to '' ("Your oak").
+ * - Kept on purpose: the zero-width joiner and non-joiner (U+200D, U+200C)
+ *   BETWEEN two visible characters (emoji like 👩‍💻 and 🏳️‍🌈, and the
+ *   spelling of Persian, Malayalam and other scripts), and a subdivision
+ *   flag's tag run (🏴 + tags + U+E007F). Anywhere else they go.
+ */
+const WHITESPACE = /[^\S\uFEFF]+/gu;
+const INVISIBLE = /[\p{Cc}\p{Cf}\u115F\u1160\u2800\u3164\uFFA0]/u;
+const JOINERS = new Set(['\u200C', '\u200D']);
+const BLACK_FLAG = '\u{1F3F4}';
+const FLAG_TAGS = /^[\u{E0020}-\u{E007E}]+\u{E007F}/u;
+/** Parts that never start a character of their own (marks, variation selectors, skin tones, tags). */
+const CLUSTER_TAIL = /^[\p{M}\u{1F3FB}-\u{1F3FF}\u{E0020}-\u{E007F}]$/u;
+
+/** Strips the invisible characters, keeping joiners between visible characters and a flag's tags. */
+function stripInvisible(s: string): string {
+  const cps = Array.from(s);
+  const out: string[] = [];
+  const visible = (ch: string | undefined) => ch !== undefined && ch !== ' ' && !INVISIBLE.test(ch);
+  for (let i = 0; i < cps.length; i++) {
+    const ch = cps[i];
+    if (JOINERS.has(ch)) {
+      // Kept only between two visible characters (a double joiner keeps one).
+      if (visible(out[out.length - 1]) && visible(cps[i + 1])) out.push(ch);
+      continue;
+    }
+    if (ch === BLACK_FLAG) {
+      out.push(ch);
+      const tags = FLAG_TAGS.exec(cps.slice(i + 1).join(''));
+      if (tags) {
+        out.push(tags[0]);
+        i += Array.from(tags[0]).length;
+      }
+      continue;
+    }
+    if (!INVISIBLE.test(ch)) out.push(ch);
+  }
+  return out.join('');
+}
+
+const isRegional = (ch: string | undefined) => {
+  const cp = ch?.codePointAt(0) ?? 0;
+  return cp >= 0x1f1e6 && cp <= 0x1f1ff;
+};
+/** True when a cut before cps[i] would split a two-letter flag (🇵🇭 is two regional indicators). */
+function midFlag(cps: readonly string[], i: number): boolean {
+  if (!isRegional(cps[i]) || !isRegional(cps[i - 1])) return false;
+  let run = 0;
+  for (let k = i - 1; k >= 0 && isRegional(cps[k]); k--) run++;
+  return run % 2 === 1;
+}
+
+/** The first `max` code points, never cutting a character in half (an accent, an emoji sequence, a flag). */
+function cutWhole(s: string, max: number): string {
+  const cps = Array.from(s);
+  if (cps.length <= max) return s;
+  let end = 0; // the end of the last whole character that fits
+  for (let i = 1; i <= max; i++) {
+    const next = cps[i];
+    // A cut before `next` is safe unless `next` belongs to the character before it.
+    const joined = next !== undefined && (CLUSTER_TAIL.test(next) || JOINERS.has(next) || JOINERS.has(cps[i - 1]) || midFlag(cps, i));
+    if (!joined) end = i;
+  }
+  return cps.slice(0, end).join('');
+}
+
+/**
+ * Cleans a learner-typed name: whitespace to single spaces, no controls or
+ * invisible marks, NFC, at most MAX_NAME code points (never cutting a
+ * character in half). Idempotent: cleaning a clean name changes nothing, so
+ * a saved name always passes isValidPlantState.
+ */
 export function cleanPlantName(raw: string): string {
-  const s = raw.normalize('NFC').replace(STRIP, '').replace(/\s+/g, ' ').trim();
-  return Array.from(s).slice(0, MAX_NAME).join('').trim();
+  // Strip FIRST, then normalise: a stripped mark between a letter and its
+  // accent would otherwise leave a name that isn't NFC (QA 4).
+  const s = stripInvisible(raw.replace(WHITESPACE, ' ')).normalize('NFC').replace(/ +/g, ' ').trim();
+  return cutWhole(s, MAX_NAME).trim();
+}
+
+/** Characters of right-to-left scripts (Hebrew, Arabic, Syriac, Thaana, N'Ko…). */
+const RTL = /[\u0590-\u08FF\uFB1D-\uFDFF\uFE70-\uFEFC\u{10800}-\u{10FFF}\u{1E800}-\u{1EFFF}]/u;
+
+/**
+ * A name as it is SHOWN inside a sentence: a right-to-left name is wrapped
+ * in a first-strong isolate (U+2068 … U+2069), so "שלום grew to Crown."
+ * keeps the sentence's own direction. Display only: never stored.
+ */
+export function shownName(name: string): string {
+  return RTL.test(name) ? `\u2068${name}\u2069` : name;
 }
 
 /** A name idea for the picker. `pick` is any 0..1 number (Math.random() in the app, fixed in tests). */
@@ -387,7 +504,7 @@ export function suggestName(species: PlantSpecies, pick: number): string {
 
 /** "Kai" or "Your oak" (the name a coach line uses). */
 export function plantCallName(p: Pick<CertPlant, 'name' | 'species'>): string {
-  return p.name || `Your ${SPECIES_INFO[p.species].lower}`;
+  return p.name ? shownName(p.name) : `Your ${SPECIES_INFO[p.species].lower}`;
 }
 
 // ── Life cycle ─────────────────────────────────────────────────────────
@@ -464,54 +581,140 @@ export function renamePlant(plant: CertPlant, rawName: string): CertPlant {
 }
 
 // ── Restore: clamp to what the data supports ───────────────────────────
+/*
+ * The restore principle (PR #43 review): a restore must NEVER lower growth
+ * that an honest file earned. The clamp only blocks inflation beyond what
+ * the file's own evidence could support.
+ *
+ * So the clamp runs the SAME gates as live growth (growthFor), on the most
+ * generous facts the evidence allows (bestCaseFacts). Every live fact is at
+ * most its best case, and every best case only ever goes up as a learner
+ * studies, so whatever the plant grew to live, at any time, survives its own
+ * backup. Evidence a save can lose (mocks past the newest MAX_MOCKS, readiness
+ * days past the log's window, subtopic ids a notes rewrite renamed) is read
+ * generously: when it may have scrolled away, it never refutes.
+ */
 
-/** Plain necessary conditions read from restored data (mascot_progression §7.3). */
+/** What a restored file can prove, each value only ever going up as the learner studies. */
 export interface SupportEvidence {
-  /** Unique questions answered (any kind: a necessary condition, so it is generous). */
+  /** Unique questions answered (any kind: generous). */
   answered: number;
   answeredByDomain: number[];
-  /** outlineSpread() of the restored mastery dates (exact: they are permanent). */
+  /** outlineSpread() of the restored mastery dates (permanent), with renamed ids read generously. */
   spread: number;
-  /** Any mock with total ≥ CROWN_MOCK. */
+  /** A mock of CROWN_MOCK+ questions, a Dress Rehearsal mark, or a full mock history (older mocks may have scrolled away). */
   mock50: boolean;
-  /** Any dress-rehearsal mock. */
+  /** A dress-rehearsal mock, its badge, or a full mock history. */
   dress: boolean;
-  /** readySeenAt is set, or a readiness-log day has min ≥ 80. */
+  /** readySeenAt is set, a logged day reached 80, or study older than the log's window (its days may have scrolled away). */
   readyEver: boolean;
 }
 
-/** The highest growth the restored data can support (cumulative, like the gates). */
-export function maxSupportedGrowth(e: SupportEvidence): GrowthLevel {
-  const ok: Record<Exclude<GrowthLevel, 1>, boolean> = {
-    2: e.answered >= SPROUT_ANSWERS,
-    3: e.answeredByDomain.length > 0 && e.answeredByDomain.every((n) => n >= SHOOT_PER_DOMAIN) && e.spread >= SHOOT_SPREAD,
-    4: e.answered >= RANGE_MIN_ANSWERS && e.spread >= BOUGH_SPREAD,
-    5: e.answered >= RANGE_MIN_ANSWERS && e.spread >= CROWN_SPREAD && e.mock50,
-    6: e.spread >= ELDER_SPREAD && e.dress && e.answeredByDomain.length > 0 && e.answeredByDomain.every((n) => n >= 2 * SHOOT_PER_DOMAIN) && e.readyEver,
+/**
+ * The most generous PlantFacts the evidence allows. Each field is an upper
+ * bound of the live fact:
+ * - clean answers ≤ all answers;
+ * - clean mastery = credit / max(n, MIN_SAMPLE) ≤ n / max(n, MIN_SAMPLE);
+ * - the clean low end exists only with RANGE_MIN_ANSWERS answers, and is ≤ 100.
+ */
+export function bestCaseFacts(e: SupportEvidence): PlantFacts {
+  return {
+    cleanAnswered: e.answered,
+    cleanByDomain: e.answeredByDomain,
+    cleanMastery: e.answeredByDomain.map((n) => Math.min(1, n / MIN_SAMPLE)),
+    low: e.answered >= RANGE_MIN_ANSWERS ? 100 : null,
+    spread: e.spread,
+    mock50: e.mock50,
+    dress: e.dress,
+    readyHeld: e.readyEver,
   };
-  let g: GrowthLevel = 1;
-  for (const k of [2, 3, 4, 5, 6] as const) {
-    if (!ok[k]) break;
-    g = k;
-  }
-  return g;
+}
+
+/** The highest growth the restored data can support: the live gates, on the best-case facts. */
+export function maxSupportedGrowth(e: SupportEvidence): GrowthLevel {
+  return growthFor(bestCaseFacts(e));
+}
+
+export interface SupportInput extends Omit<PlantFactsInput, 'today' | 'replantedAt'> {
+  /** Milestone marks in the file (CertMilestones.earned, already checked): "dress-rehearsal" proves a dress mock. */
+  earned?: Record<string, number>;
 }
 
 /** SupportEvidence from restored progress (pure). */
-export function supportEvidence(i: Omit<PlantFactsInput, 'today' | 'replantedAt'>): SupportEvidence {
+export function supportEvidence(i: SupportInput): SupportEvidence {
   const dm = domainMastery(i.cert as Certification, i.answers);
+  // recordMock keeps the newest MAX_MOCKS: with a full history, an older big mock may be gone.
+  const capped = i.mocks.length >= MAX_MOCKS;
+  const dressMark = Object.keys(i.earned ?? {}).some((k) => k === 'dress-rehearsal' || k.startsWith('dress-rehearsal:'));
+  const dress = capped || dressMark || i.mocks.some((m) => isDressMock(m, i.cert.exam.questions));
   return {
     answered: dm.reduce((s, d) => s + d.answered, 0),
     answeredByDomain: dm.map((d) => d.answered),
-    spread: outlineSpread(
-      i.cert.domains.map((d) => d.weight),
+    spread: supportSpread(
+      i.cert.domains.map((d) => ({ id: d.id, weight: d.weight })),
       i.subtopicsByDomain,
       i.mastery,
     ),
-    mock50: i.mocks.some((m) => m.total >= CROWN_MOCK),
-    dress: i.mocks.some((m) => isDressMock(m, i.cert.exam.questions)),
-    readyEver: i.readySeenAt !== undefined || (i.readinessLog ?? []).some((d) => d.min !== null && d.min >= READY_LOW),
+    mock50: capped || (dressMark && i.cert.exam.questions >= CROWN_MOCK) || i.mocks.some((m) => m.total >= CROWN_MOCK),
+    dress,
+    readyEver: readyEvidence(i),
   };
+}
+
+/**
+ * outlineSpread for a restore, generous where the outline changed since the
+ * file was made. A mastered subtopic id the outline no longer lists (a notes
+ * rewrite renamed it, or its questions moved) still counts as known in its
+ * domain (read from the id's domain prefix, "4B1.2" → domain 4), capped at
+ * the domain's size. An id whose domain can't be read, or an outline that
+ * isn't known at all, can't be compared, so it never refutes (spread 1).
+ * There is no alias table for renamed ids, so this is the safe reading.
+ */
+export function supportSpread(
+  domains: readonly { id: string; weight: number }[],
+  outline: readonly (readonly string[])[],
+  mastery: Record<string, SubtopicMastery> | undefined,
+): number {
+  const mastered = Object.entries(mastery ?? {}).filter(([, m]) => !!m?.masteredAt).map(([id]) => id);
+  if (!mastered.length) return 0;
+  const listed = new Set(outline.flat());
+  if (!listed.size) return 1;
+  const extra = domains.map(() => 0);
+  for (const id of mastered) {
+    if (listed.has(id)) continue;
+    const d = domains.findIndex((x) => id.startsWith(x.id) && !/[0-9]/.test(id.charAt(x.id.length)));
+    if (d < 0) return 1;
+    extra[d]++;
+  }
+  let wSum = 0;
+  let acc = 0;
+  domains.forEach((dom, i) => {
+    const subs = outline[i] ?? [];
+    if (!subs.length || !(dom.weight > 0)) return;
+    const known = Math.min(subs.length, subs.filter((s) => !!mastery?.[s]?.masteredAt).length + extra[i]);
+    wSum += dom.weight;
+    acc += (dom.weight * known) / subs.length;
+  });
+  return wSum > 0 ? acc / wSum : 0;
+}
+
+/**
+ * Could the exam-ready gate ever have held? The panel was seen, or a logged
+ * day reached the line (its lowest or its last reading: a day's last reading
+ * carries forward), or there was study before the log's oldest day (the log
+ * keeps only its newest LOG_KEEP_DAYS, so older days may have scrolled away).
+ */
+function readyEvidence(i: SupportInput): boolean {
+  if (i.readySeenAt !== undefined) return true;
+  const log = i.readinessLog ?? [];
+  if (log.some((d) => (d.min ?? -1) >= READY_LOW || (d.last ?? -1) >= READY_LOW)) return true;
+  if (!log.length) return false;
+  const oldest = log.reduce((a, d) => (d.day < a ? d.day : a), log[0].day);
+  return (
+    Object.values(i.mastery ?? {}).some((m) => !!m?.firstDay && m.firstDay < oldest) ||
+    i.mocks.some((m) => m.day < oldest) ||
+    Object.values(i.answers).some((a) => typeof a.lastAt === 'number' && dayKey(a.lastAt) < oldest)
+  );
 }
 
 /** Lowers growth (and `reached`, `pending`, the back-fill) to what the data supports. Same object when nothing changes. */
@@ -635,9 +838,9 @@ export function organFullness(mastery: number | null | undefined): number {
   return ORGAN_MIN + ORGAN_SPAN * m;
 }
 
-/** 0 not started · 1 budding · 2 growing · 3 thick · 4 lush (r = mastery / DOMAIN_TARGET). */
+/** 0 not started · 1 budding · 2 growing · 3 full · 4 lush (r = mastery / DOMAIN_TARGET). */
 export type OrganStep = 0 | 1 | 2 | 3 | 4;
-export const ORGAN_STEP_WORDS: Record<OrganStep, string> = { 0: 'not started yet', 1: 'budding', 2: 'growing', 3: 'thick', 4: 'lush' };
+export const ORGAN_STEP_WORDS: Record<OrganStep, string> = { 0: 'not started yet', 1: 'budding', 2: 'growing', 3: 'full', 4: 'lush' };
 
 export function organStep(answered: number, mastery: number): OrganStep {
   if (answered <= 0) return 0;
@@ -813,8 +1016,19 @@ export function isResting(lastStudyDay: string | undefined, today: string, plann
   return daysBetween(lastStudyDay, today) >= REST_AFTER_DAYS;
 }
 
-/** The one line under a resting or returning plant. It never says how long the learner was away. */
-export function restLine(p: Pick<CertPlant, 'name' | 'species'>, lastStudyDay: string | undefined, today: string): string | null {
+/** The exam eve and exam day say their own calm line (UX review P2): planned rest, never a nudge. */
+export const EXAM_REST_LINES = {
+  eve: 'Rest day. Sleep and time off help memory settle.',
+  day: "Good luck. You've done the work.",
+} as const;
+
+/**
+ * The one line under a resting or returning plant. It never says how long
+ * the learner was away. `exam` ("eve" / "day", engine/examDay.ts examMoment)
+ * gives the exam's own line instead.
+ */
+export function restLine(p: Pick<CertPlant, 'name' | 'species'>, lastStudyDay: string | undefined, today: string, exam?: 'eve' | 'day' | null): string | null {
+  if (exam) return EXAM_REST_LINES[exam];
   const who = plantCallName(p);
   if (lastStudyDay && daysBetween(lastStudyDay, today) >= RETURN_DAYS) return `${who} kept your place. Pick up where you left off.`;
   if (isResting(lastStudyDay, today)) return `${who} is resting. Pick up whenever you're ready.`;
@@ -837,14 +1051,14 @@ export interface LabelInput {
  */
 export function plantLabel(i: LabelInput): string {
   const sp = SPECIES_INFO[i.species].lower;
-  const who = i.name ? `${i.name}, your ${sp}` : `Your ${sp}`;
+  const who = i.name ? `${shownName(i.name)}, your ${sp}` : `Your ${sp}`;
   const extra = [i.newGrowth ? 'New growth today.' : '', i.resting ? 'Resting.' : ''].filter(Boolean).join(' ');
   return `${who}. Growth: ${GROWTH_NAMES[i.growth]}, ${i.growth} of 6.${extra ? ` ${extra}` : ''}`;
 }
 
 /** The quiet back-fill line when an existing learner plants: "Your study so far grew Kai to Bough." */
 export function backfillLine(p: Pick<CertPlant, 'name' | 'species'>, growth: GrowthLevel): string {
-  return growth > 1 ? `Your study so far grew ${p.name || `your ${SPECIES_INFO[p.species].lower}`} to ${GROWTH_NAMES[growth]}.` : `Planted. Your first ${SPROUT_ANSWERS} answers give it its first sprout.`;
+  return growth > 1 ? `Your study so far grew ${p.name ? shownName(p.name) : `your ${SPECIES_INFO[p.species].lower}`} to ${GROWTH_NAMES[growth]}.` : `Planted. Your first ${SPROUT_ANSWERS} answers give it its first sprout.`;
 }
 
 /** "Bough · growth 4 of 6": the short growth line beside the plant. Never "stage". */

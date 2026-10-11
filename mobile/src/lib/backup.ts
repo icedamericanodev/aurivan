@@ -340,6 +340,16 @@ async function writeAll(
     const plant = carryPlantIdentity(id, full, phoneCerts[id]?.plant, at);
     byCert[id] = plant ? { ...full, plant } : full;
   }
+  // The same for an exam the file has no entry for at all (QA 7: a file
+  // exported before any answer, or from a phone used for another exam): the
+  // phone's plant comes along as its identity, grown quietly from the
+  // (empty) restored data, so a restore never makes a learner re-plant.
+  for (const [id, phone] of Object.entries(phoneCerts)) {
+    if (!phone?.plant || byCert[id] || !getCertification(id)) continue;
+    const full = completeCert({});
+    const plant = carryPlantIdentity(id, full, phone.plant, at);
+    if (plant) byCert[id] = { ...full, plant };
+  }
   const progress = { ...pick(useProgress.getInitialState(), PROGRESS_KEYS), ...data.progress, byCert, days: {} };
   // A file from before 1.7 has no "Your reports" list at all. Those are the
   // learner's messages to us, not study progress, so keep this phone's list
