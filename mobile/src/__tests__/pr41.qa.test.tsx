@@ -315,10 +315,10 @@ describe('Journey 1 · Results stats', () => {
     // "Under 1 min" (never wraps at 360 dp); an hour or more is one phrase in one size (UX P4).
     expect(timeStat(59_999)).toEqual({ word: 'Under 1 min', spoken: 'under a minute' });
     expect(timeStat(NaN).word).toBe('Under 1 min');
-    expect(timeStat(60 * MIN)).toEqual({ word: '1 h', spoken: '1 hour' });
-    expect(timeStat(59.6 * MIN)).toEqual({ word: '1 h', spoken: '1 hour' });
-    expect(timeStat(211 * MIN)).toEqual({ word: '3 h 31 min', spoken: '3 hours 31 minutes' });
-    expect(timeStat(1440 * MIN)).toEqual({ word: '24 h', spoken: '24 hours' });
+    expect(timeStat(60 * MIN)).toEqual({ word: '1\u00a0h', spoken: '1 hour' });
+    expect(timeStat(59.6 * MIN)).toEqual({ word: '1\u00a0h', spoken: '1 hour' });
+    expect(timeStat(211 * MIN)).toEqual({ word: '3\u00a0h 31\u00a0min', spoken: '3 hours 31 minutes' });
+    expect(timeStat(1440 * MIN)).toEqual({ word: '24\u00a0h', spoken: '24 hours' });
     expect(aboutSeconds(0.2)).toBe('about 1 second');
     expect(aboutSeconds(150)).toBe('about 2.5 minutes');
     // Slow practice (over 2 min a question): both figures switch to minutes together.

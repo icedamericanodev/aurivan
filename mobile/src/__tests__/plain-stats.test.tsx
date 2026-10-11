@@ -90,9 +90,9 @@ describe('time as a stat', () => {
     expect(timeStat(60_000)).toEqual({ value: '1', unit: 'min', spoken: '1 minute' });
     expect(timeStat(23 * 60_000)).toEqual({ value: '23', unit: 'min', spoken: '23 minutes' });
     // An hour or more: one phrase in one size, so "3 h 35 min" never reads as a big "3".
-    expect(timeStat(65 * 60_000)).toEqual({ word: '1 h 5 min', spoken: '1 hour 5 minutes' });
-    expect(timeStat(215 * 60_000)).toEqual({ word: '3 h 35 min', spoken: '3 hours 35 minutes' });
-    expect(timeStat(240 * 60_000)).toEqual({ word: '4 h', spoken: '4 hours' });
+    expect(timeStat(65 * 60_000)).toEqual({ word: '1\u00a0h 5\u00a0min', spoken: '1 hour 5 minutes' });
+    expect(timeStat(215 * 60_000)).toEqual({ word: '3\u00a0h 35\u00a0min', spoken: '3 hours 35 minutes' });
+    expect(timeStat(240 * 60_000)).toEqual({ word: '4\u00a0h', spoken: '4 hours' });
     // The same words wherever a time used is shown.
     expect(durationWords(30_000)).toEqual({ text: 'Under 1 min', spoken: 'under a minute' });
     expect(durationWords(211 * 60_000)).toEqual({ text: '3 h 31 min', spoken: '3 hours 31 minutes' });

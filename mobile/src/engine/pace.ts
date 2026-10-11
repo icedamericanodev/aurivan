@@ -351,7 +351,10 @@ export interface TimeStat {
 export function timeStat(ms: number): TimeStat {
   const w = durationWords(ms);
   const total = ms >= 60_000 ? Math.round(ms / 60_000) : 0;
-  if (total === 0 || total >= 60) return { word: w.text, spoken: w.spoken };
+  // A number keeps its unit on a narrow cell: "3 h" and "35 min" may sit on
+  // two lines, but "35" never ends a line with "min" alone below it.
+  if (total === 0) return { word: w.text, spoken: w.spoken };
+  if (total >= 60) return { word: w.text.replace(/(\d) (h|min)\b/g, '$1\u00a0$2'), spoken: w.spoken };
   return { value: String(total), unit: 'min', spoken: w.spoken };
 }
 

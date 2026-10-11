@@ -361,7 +361,7 @@ describe('journey 4: app killed mid-mock, reopened later', () => {
     mount(<Results />);
     const time = root().findAllByType(Stat).find((n) => n.props.label === 'Time')!;
     // An hour or more is one phrase in one size (never a big "1" and small print).
-    expect(time.props.word).toBe('1 h 20 min');
+    expect(time.props.word).toBe('1\u00a0h 20\u00a0min');
     expect(time.props.spoken).toBe('1 hour 20 minutes');
   });
 });
