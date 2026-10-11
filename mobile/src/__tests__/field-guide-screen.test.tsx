@@ -75,7 +75,8 @@ it('matches by tapping (term, then meaning), and a slip costs the first-try poin
   press(terms[0]);
   // "Selected" is the tile's state, not part of its name (never "selected, selected").
   expect(byLabel(/^Term 1 of 4: /)[0].props.accessibilityState).toEqual(expect.objectContaining({ selected: true }));
-  expect(byLabel(/selected/)).toHaveLength(0);
+  // Only the state suffix is checked: a glossary meaning may itself use the word ("randomly selected items").
+  expect(byLabel(/, selected$/)).toHaveLength(0);
   expect(allText()).toContain(`Now tap what “${t1}” means.`);
   // The meanings say what a tap will do while a term is picked.
   expect(meaningFor(t2).props.accessibilityHint).toBe(`Matches it to ${t1}.`);
