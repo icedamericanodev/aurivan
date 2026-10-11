@@ -9,11 +9,13 @@ import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { BotanyKind } from '../../components/glyphs';
 import { SceneView } from '../../components/lesson';
+import { useReportFlow } from '../../components/support';
 import { Button, Gap, PushedHeader, Row, SegmentBar, T } from '../../components/ui';
 import { getCertification } from '../../content/certifications';
 import { findLesson } from '../../content/lessons';
 import { createRng } from '../../engine/random';
-import { makeCheckPermutation, type Permutation } from '../../engine/shuffle';
+import { displayToOriginal, lettersFor, makeCheckPermutation, type Permutation } from '../../engine/shuffle';
+import type { Letter } from '../../content/types';
 import { logLesson } from '../../lib/activity';
 import { useProgress } from '../../store/progress';
 import { useSettings } from '../../store/settings';
@@ -27,6 +29,8 @@ export default function LessonPlayer() {
   const completeLesson = useProgress((s) => s.completeLesson);
   const [index, setIndex] = useState(0);
   const [checked, setChecked] = useState(false);
+  // The DISPLAY letter picked on this scene's check (for Report a problem), reset with `checked`.
+  const [picked, setPicked] = useState<Letter | null>(null);
   const shuffleOn = useSettings((s) => s.shuffleOptions);
   // One option order per check, made ONCE when the lesson opens (useState's
   // initialiser runs only on the first render). Going Back and Next re-mounts
@@ -42,7 +46,29 @@ export default function LessonPlayer() {
     if (to === index) return;
     setIndex(to);
     setChecked(false);
+    setPicked(null);
   };
+
+  // Report a problem with THIS step (mobile 1.7). A check step offers its
+  // options in the order shown; the email names the ORIGINAL letters.
+  const cur = lesson?.scenes[index];
+  const curPerm = cur?.type === 'check' ? (perms[index] ?? lettersFor(cur.options.length)) : undefined;
+  const report = useReportFlow(lesson?.certId ?? 'cisa', {
+    kind: 'lesson',
+    id: lesson?.id ?? String(id),
+    name: lesson?.title,
+    step: index + 1,
+    steps: lesson?.scenes.length,
+    where: 'Lesson',
+    ...(cur?.type === 'check' && curPerm
+      ? {
+          part: 'check',
+          perm: curPerm,
+          pickedDisplay: picked ?? undefined,
+          options: lettersFor(cur.options.length).map((d) => ({ display: d, text: cur.options['ABCD'.indexOf(displayToOriginal(d, curPerm))] ?? '' })),
+        }
+      : {}),
+  });
 
   if (!lesson) {
     return (
@@ -82,7 +108,24 @@ export default function LessonPlayer() {
 
       <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: space.gutter, paddingTop: space.xl, paddingBottom: space.xl }}>
         {/* key forces each scene to re-mount, replaying its entrance animation */}
-        <SceneView key={index} scene={scene} onCheck={() => setChecked(true)} perm={perms[index]} art={`branch${tone % 5}` as BotanyKind} />
+        <SceneView
+          key={index}
+          scene={scene}
+          onCheck={(_ok, letter) => {
+            setChecked(true);
+            setPicked(letter);
+          }}
+          perm={perms[index]}
+          art={`branch${tone % 5}` as BotanyKind}
+        />
+        {/* A quiet "Report a problem" at the end of each step. On a check it waits
+            until the check is answered, so it never hints at the answer. */}
+        {(scene.type !== 'check' || checked) && (
+          <View style={{ marginTop: space.xl, alignItems: 'flex-start' }}>
+            {report.link}
+            <View style={{ alignSelf: 'stretch' }}>{report.block}</View>
+          </View>
+        )}
         {isLast && (
           <>
             <Gap h={space.xl} />
@@ -99,6 +142,7 @@ export default function LessonPlayer() {
           <Button label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: 2 }} />
         </Row>
       </View>
+      {report.sheet}
     </SafeAreaView>
   );
 }

@@ -83,6 +83,7 @@ STAND TALL ON EXAM DAY
 MADE FOR REAL LIFE
 • Works offline, on the commute or between meetings
 • No account and no sign-up. No data collected. Your progress stays on your phone, and a backup file you save yourself moves it to a new one.
+• Report any question from where you see it. Fixes are listed in What's new.
 • Light and dark Grove themes, designed for easy reading
 
 A NOTE ON READINESS
@@ -102,6 +103,12 @@ Welcome to Aurivan. This first release brings calm, focused practice for the CIS
 ```
 
 About 250 characters.
+
+### Support URL
+
+`https://<the website>/support.html` (the same site as `privacy.html` and `terms.html`). The page is titled "Help and contact". It shows the support address, what to include, quick answers and the not-affiliated line. Google Play: use certprep.support@gmail.com as the public developer contact email.
+
+> **TODO (owner, after the website deploys):** replace `<the website>` here and in the App Review note below with the live https address, open it on a phone to check it loads, then paste the same URL into App Store Connect → Support URL. Apple 2.1(a) needs a working URL.
 
 ### Categories
 
@@ -157,6 +164,10 @@ Thank you for reviewing Aurivan.
 - No login or account is needed. There is nothing to sign in to, so no demo account is required.
 - All study data (progress, settings, exam date) is stored only on the device. The app collects no data and has no analytics or ads. Settings → Your data lets the user save a backup file through the system share sheet and restore it with the system file picker; the app never uploads it.
 - The app works fully offline.
+- Support: Settings → Help and feedback (also You → Get help or send feedback) opens the Help screen with Common questions, Contact support, Report a problem with the app and Suggest an idea, and shows certprep.support@gmail.com. "Report a problem" opens the user's own email app with a draft they can read and edit; the app itself sends nothing. If no email app opens, the message is shown to copy or share.
+- Help and feedback also has: Common questions (bundled text), What's new (release notes), What's next (a static, read-only list of planned work bundled with the app; planned items are not in this build and are labelled with no dates), and Your reports (a list kept only on the phone of reports the user started; it is included in the user's own backup file). Nothing in these screens uses the network.
+- Report a problem appears under every answered question (practice and the mock review; not during a timed mock), every study note and lesson step, and each missed card in a game's round recap.
+- Support URL: https://<the website>/support.html
 
 To reach a mock exam:
 1. On first launch, tap "Start my plan", then "Continue", then "Start studying".

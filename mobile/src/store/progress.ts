@@ -23,6 +23,7 @@ import { afterAnswer, afterCard, noteStudyDay, type CertMilestones } from '../en
 import type { MockTiming } from '../engine/pace';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import type { ThinkingSlip } from '../engine/slipCoach';
+import { addReport, type ReportEntry } from '../engine/support';
 import { MAX_BOX, nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
 import { bumpStreak, dayKey, type Streak } from '../engine/streak';
 import { persistStorage } from './storage';
@@ -180,6 +181,13 @@ interface ProgressState {
    * until Today is first shown for it.
    */
   days: Record<string, DayPlan>;
+  /**
+   * Mobile 1.7: "Your reports", the problems this learner reported (newest
+   * first, capped at engine/support.ts MAX_REPORTS). Kept for every exam in
+   * one list, on the phone and in the learner's own backup file; never sent.
+   * Optional: older saves have none.
+   */
+  reports?: ReportEntry[];
 
   /** Store the plan the first time Today is shown on a new day. */
   startDay: (plan: DayPlan) => void;
@@ -237,6 +245,12 @@ interface ProgressState {
     certId: string,
     update: (m: CertMilestones | undefined, cp: CertProgress) => { milestones: CertMilestones; fixedLater?: string[] } | null,
   ) => void;
+  /** Mobile 1.7: remember a report the learner started (their email app opened, or the fallback showed). Stamped now. */
+  logReport: (entry: Omit<ReportEntry, 'at' | 'creditSeen'>) => void;
+  /** Mobile 1.7: "Your report helped" was shown for these reports (by ref), so it never shows again. */
+  markCreditSeen: (refs: string[]) => void;
+  /** Mobile 1.7: Your reports → "Clear this list". */
+  clearReports: () => void;
 }
 
 export const useProgress = create<ProgressState>()(
@@ -495,6 +509,17 @@ export const useProgress = create<ProgressState>()(
           return { byCert: { ...s.byCert, [certId]: { ...cp, mistakes, milestones: r.milestones } } };
         }),
 
+      logReport: (entry) => set((s) => ({ reports: addReport(s.reports, { ...entry, at: Date.now() }) })),
+      markCreditSeen: (refs) =>
+        set((s) => {
+          if (!s.reports || refs.length === 0) return s;
+          const seen = new Set(refs);
+          return { reports: s.reports.map((r) => (seen.has(r.ref) && !r.creditSeen ? { ...r, creditSeen: true } : r)) };
+        }),
+      clearReports: () => set({ reports: [] }),
+
+      // A reset is per exam and leaves "Your reports" alone: those are the
+      // learner's messages to us, not study progress.
       resetCert: (certId) =>
         set((s) => {
           const days = { ...s.days };
@@ -524,6 +549,7 @@ export const useProgress = create<ProgressState>()(
       // Build E added only OPTIONAL fields (CertProgress.studyPath / cards): same.
       // Build F added only OPTIONAL fields (CertProgress.gameGrowth / milestones,
       // AnswerRecord.lastGame): same.
+      // Mobile 1.7 added one OPTIONAL top-level field (reports): same.
       version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },

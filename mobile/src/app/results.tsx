@@ -17,7 +17,8 @@
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { OptionCard } from '../components/quiz';
+import { OptionCard, TrustLine } from '../components/quiz';
+import { useReportFlow } from '../components/support';
 import { DomainRings } from '../components/journey';
 import { PacingPanel } from '../components/pace';
 import { MilestoneMomentView } from '../components/milestones';
@@ -30,6 +31,7 @@ import { minutesUsed, scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
 import { momentFor } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
+import { questionTarget, sessionWhere } from '../lib/support';
 import { useSession } from '../store/session';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -46,6 +48,13 @@ export default function Results() {
   const certId = active?.certId;
   const milestoneKey = active?.milestone;
   const moment = useMemo(() => (certId && milestoneKey ? momentFor(certId, milestoneKey) : null), [certId, milestoneKey]);
+  // "Something not working? Report a bug" at the end of the review (mobile 1.7).
+  const bug = useReportFlow(certId ?? 'cisa', {
+    kind: 'app',
+    id: 'session-results',
+    name: 'Results',
+    where: `Results · ${active?.mode === 'mock' ? 'mock' : active?.mode === 'review' ? 'review' : 'practice'}, ${active?.questionIds.length ?? 0} questions`,
+  });
 
   if (!active || !score) {
     return (
@@ -235,11 +244,32 @@ export default function Results() {
                     {renderText(trapTip(q), perm)}
                   </T>
                 )}
+                {/* Report a problem: mock questions are reported here, after the exam (never during it). */}
+                <TrustLine
+                  certId={active.certId}
+                  reference={q.reference}
+                  target={questionTarget(active.certId, q, sessionWhere(active.mode === 'mock' ? 'Mock review' : 'Practice review', active.title), {
+                    perm,
+                    pickedDisplay: r?.display,
+                  })}
+                />
               </View>
             )}
           </View>
         );
       })}
+      {/* The app's own problems (a score, the timer, a freeze): one quiet ghost button at the end. */}
+      <View style={{ marginTop: space.xl, alignItems: 'flex-start' }}>
+        <Button
+          kind="ghost"
+          label="Something not working? Report a bug"
+          accessibilityHint="Opens a short form, then your email app"
+          onPress={bug.open}
+          style={{ marginLeft: -space.sm }}
+        />
+        <View style={{ alignSelf: 'stretch' }}>{bug.block}</View>
+      </View>
+      {bug.sheet}
     </Screen>
   );
 }

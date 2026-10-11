@@ -30,6 +30,7 @@ import {
 import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
+import { sayLater } from '../lib/a11y';
 import { domainColor } from '../content/certifications';
 import type { DomainInfo } from '../content/types';
 import { lastWholeWordIndex } from '../engine/games/priorityLens';
@@ -121,6 +122,7 @@ export function T({
   accessibilityRole,
   maxFontSizeMultiplier,
   numberOfLines,
+  selectable,
 }: {
   children: ReactNode;
   v?: Variant;
@@ -135,6 +137,8 @@ export function T({
    *  fixed-size image (the share card), whose wrapper's accessibilityLabel speaks the full text. */
   maxFontSizeMultiplier?: number;
   numberOfLines?: number;
+  /** Lets the learner select and copy the text (an email address, a report to paste). */
+  selectable?: boolean;
 }) {
   const { c } = useTheme();
   // Meta lines and small captions are secondary text by default.
@@ -145,6 +149,7 @@ export function T({
       accessibilityRole={accessibilityRole}
       maxFontSizeMultiplier={maxFontSizeMultiplier ?? maxScale[v]}
       numberOfLines={numberOfLines}
+      selectable={selectable}
       style={[type[v], { color: color ?? defaultColor }, num && styles.num, center && { textAlign: 'center' }, style]}
     >
       {children}
@@ -568,7 +573,14 @@ export function ListRow({
       {!last && <View style={[styles.hairline, { left: icon ? 54 : 0, backgroundColor: c.line }]} />}
     </>
   );
-  if (!onPress) return <View style={styles.listRow}>{body}</View>;
+  // A row you can't tap is still ONE screen-reader stop when it has a label
+  // (What's next: "Planned: An optional account. …"), not two loose lines.
+  if (!onPress)
+    return (
+      <View style={styles.listRow} accessible={!!accessibilityLabel} accessibilityLabel={accessibilityLabel}>
+        {body}
+      </View>
+    );
   return (
     <Pressable
       accessibilityRole="button"
@@ -899,6 +911,7 @@ const styles = StyleSheet.create({
   tabLabel: { alignItems: 'center', gap: 1 },
   search: { minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, paddingLeft: space.lg, flexDirection: 'row', alignItems: 'center' },
   searchClear: { width: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' },
+  note: { minHeight: 112, borderRadius: radius.md, borderWidth: 1.5, paddingHorizontal: space.lg, paddingTop: space.md, paddingBottom: space.md },
   tabDot: { width: 4, height: 4, borderRadius: 2 },
 });
 
@@ -1210,6 +1223,58 @@ export function SearchField({
           <X size={ICON_SIZE.row} color={c.ink2} strokeWidth={ICON_STROKE} />
         </Pressable>
       )}
+    </View>
+  );
+}
+
+// ── NoteField: a few lines of the learner's own words (Report a problem) ──
+// Same look as SearchField (raised, 1.5 outline, radius 16, body text that
+// grows with the phone's text size, ×2 cap), but multi-line, with a quiet
+// character count under it. The visible caption above it is its name.
+// The outline is `control` in BOTH themes (UX review P4): dark `line` was
+// 1.24:1 on the fill, so the field's edges vanished once the placeholder
+// was gone (WCAG 1.4.11 asks 3:1; `control` is 3.31 dark, 3.65 light).
+// Reaching the limit is announced once, so it is never silent (UX O6).
+export function NoteField({
+  value,
+  onChangeText,
+  placeholder,
+  accessibilityLabel,
+  maxLength,
+}: {
+  value: string;
+  onChangeText: (v: string) => void;
+  placeholder: string;
+  accessibilityLabel: string;
+  maxLength: number;
+}) {
+  const { c } = useTheme();
+  const change = (next: string) => {
+    if (next.length >= maxLength && value.length < maxLength) sayLater(`That’s the limit, ${maxLength} characters.`);
+    onChangeText(next);
+  };
+  return (
+    <View>
+      <TextInput
+        value={value}
+        onChangeText={change}
+        placeholder={placeholder}
+        placeholderTextColor={c.muted}
+        accessibilityLabel={accessibilityLabel}
+        accessibilityHint={`Optional. Up to ${maxLength} characters.`}
+        maxFontSizeMultiplier={maxScale.body}
+        maxLength={maxLength}
+        multiline
+        textAlignVertical="top"
+        style={[
+          type.body,
+          styles.note,
+          { color: c.ink, backgroundColor: c.raised, borderColor: c.control },
+        ]}
+      />
+      <T v="meta" num style={{ textAlign: 'right', marginTop: space.xs }} accessibilityLabel={`${value.length} of ${maxLength} characters`}>
+        {`${value.length} / ${maxLength}`}
+      </T>
     </View>
   );
 }

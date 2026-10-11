@@ -123,6 +123,12 @@ export default function RootLayout() {
         <Stack.Screen name="notes/index" />
         <Stack.Screen name="notes/[domain]" />
         <Stack.Screen name="notes/subtopic/[id]" />
+        {/* Mobile 1.7: Help and feedback (You), common questions, Your reports, What's new and What's next. */}
+        <Stack.Screen name="help" />
+        <Stack.Screen name="faq" />
+        <Stack.Screen name="reports" />
+        <Stack.Screen name="whats-new" />
+        <Stack.Screen name="whats-next" />
       </Stack>
       {/* Paper grain over every screen (touch-through, hidden from screen readers). */}
       <Grain />

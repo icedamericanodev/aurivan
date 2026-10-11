@@ -4737,6 +4737,8 @@ header {
   background: var(--surface); border: 1px solid var(--raised-outline); border-radius: 28px; box-shadow: 0 20px 60px rgba(0,0,0,.28);
 }
 .flag-overlay, .mock-confirm-overlay, .onboard-overlay, .changelog-overlay, .profile-overlay { background: rgba(17,22,19,.55); }
+/* The flag form's exam-content reminder sits close under its textarea (4px scale). */
+.flag-modal .fb-helper { margin: -8px 0 12px; }
 .cl-title, .flag-title, .onboard-title { font-family: var(--f-serif); font-weight: 500; color: var(--text); letter-spacing: -0.4px; }
 .cl-ver-label { font: 600 17px/24px var(--f-sans); color: var(--text); }
 .cl-ver-label .cl-latest { background: var(--btn); color: var(--on-btn); border-radius: 999px; }
@@ -5170,7 +5172,7 @@ body[data-mock-results="1"] #readinessCard { display: none; }
     <span class="logo-tagline">Free CISA&reg; exam prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v11.1.2</span>
+    <span class="bank-pill" id="versionPill">v11.2</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5188,7 +5190,7 @@ body[data-mock-results="1"] #readinessCard { display: none; }
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 15a2 2 0 0 1-2 2H8l-4.5 3.5V5.5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg>Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6"/><path d="M12 16.8h.01"/></svg>Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v10.45.3</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v11.2</span>
     </div>
   </div>
 </header>
@@ -5393,6 +5395,7 @@ body[data-mock-results="1"] #readinessCard { display: none; }
     <p class="legal-links">
       <a href="privacy.html" target="_blank" rel="noopener noreferrer" aria-label="Privacy Policy (opens in a new tab)">Privacy Policy</a>
       <a href="terms.html" target="_blank" rel="noopener noreferrer" aria-label="Terms of Use (opens in a new tab)">Terms of Use</a>
+      <a href="support.html" target="_blank" rel="noopener noreferrer" aria-label="Help and contact (opens in a new tab)">Help and contact</a>
       <button type="button" class="legal-link-btn" onclick="openConsentBanner()">Cookie preferences</button>
     </p>
   </section>
@@ -5566,7 +5569,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v11.1.2';
+const APP_VERSION = 'v11.2';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -12309,7 +12312,7 @@ function showFlagModal() {
   modal.innerHTML = '<div class="flag-overlay" onclick="closeFlagModal(event)">'
     + '<div class="flag-modal" onclick="event.stopPropagation()">'
     + '<div class="flag-title">Flag this question</div>'
-    + '<label class="flag-label">Reason</label>'
+    + '<label class="flag-label" for="flagReason">Reason</label>'
     + '<select class="flag-select" id="flagReason">'
     + '<option value="I think the correct answer is wrong">I think the correct answer is wrong</option>'
     + '<option value="The explanation doesn\x27t match the answer">The explanation does not match the answer</option>'
@@ -12317,8 +12320,9 @@ function showFlagModal() {
     + '<option value="Typo or formatting issue">Typo or formatting issue</option>'
     + '<option value="Other">Other</option>'
     + '</select>'
-    + '<label class="flag-label">Comment (optional)</label>'
-    + '<textarea class="flag-input" id="flagComment" rows="3" placeholder="Any additional details..."></textarea>'
+    + '<label class="flag-label" for="flagComment">Comment (optional)</label>'
+    + '<textarea class="flag-input" id="flagComment" rows="3" placeholder="Any additional details..." aria-describedby="flagExamNote"></textarea>'
+    + '<div class="fb-helper" id="flagExamNote">Please don\'t include questions from the real exam: candidates agree to keep them confidential.</div>'
     + '<div id="flagStatus"></div>'
     + '<div class="flag-actions">'
     + '<button class="flag-btn cancel" onclick="closeFlagModal()">Cancel</button>'
@@ -12512,6 +12516,15 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'A new Help and contact page',
+    items: [
+      { cat: 'new', text: 'A Help and contact page shows how to reach us, what to include when you report a problem, and answers to common questions.' },
+      { cat: 'improved', text: 'The feedback and flag forms now remind you not to share questions from the real exam, and screen readers read the reminder too.' },
+      { cat: 'improved', text: 'The privacy policy now says how long we keep the messages you send us.' }
+    ]
+  },
+  {
+    version: 'v11.1.2',
     title: 'Privacy policy update',
     items: [
       { cat: 'improved', text: 'The privacy policy now explains how the mobile app\'s backup files work: they are made on your phone and go only where you send them.' }
@@ -13332,7 +13345,8 @@ function showFeedback() {
     + '</div>'
     + '<div class="fb-row">'
     + '<label class="fb-label" for="fbMessage">Your message</label>'
-    + '<textarea id="fbMessage" class="fb-textarea" placeholder="What\'s on your mind? For bug reports, please describe what you were doing, what you expected, and what happened instead."></textarea>'
+    + '<textarea id="fbMessage" class="fb-textarea" placeholder="What\'s on your mind? For bug reports, please describe what you were doing, what you expected, and what happened instead." aria-describedby="fbExamNote"></textarea>'
+    + '<div class="fb-helper" id="fbExamNote">Please don\'t include questions from the real exam: candidates agree to keep them confidential.</div>'
     + '</div>'
     + '<div class="fb-row">'
     + '<label class="fb-checkrow"><input type="checkbox" id="fbDiag" checked> '

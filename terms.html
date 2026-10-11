@@ -39,8 +39,11 @@
     background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px;
     padding: 14px 16px; margin: 18px 0;
   }
-  footer.doc { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 20px; font-size: 14px; color: var(--ink2); }
-  footer.doc a { margin-right: 16px; }
+  footer.doc { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 20px; font-size: 14px; color: var(--ink2);
+    display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  /* A link never breaks across lines ("Terms of / Use"), and is a 44px tap target on phones. */
+  footer.doc a { margin-right: 0; white-space: nowrap; }
+  @media (max-width: 600px) { footer.doc a { display: inline-flex; align-items: center; min-height: 44px; } }
 </style>
 </head>
 <body>
@@ -51,6 +54,7 @@
     <p class="updated">Last updated: 7 October 2026</p>
   </header>
 
+  <main>
   <div class="lead">
     <p>Aurivan is a <strong>free, independent CISA exam-preparation app</strong>.
     It is a study aid — a supplement to official preparation, not a replacement
@@ -153,9 +157,12 @@
   <p>Questions about these terms? Email
   <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a>.</p>
 
+  </main>
+
   <footer class="doc">
     <a href="index.html">&larr; Back to Aurivan</a>
     <a href="privacy.html">Privacy Policy</a>
+    <a href="support.html">Help and contact</a>
   </footer>
 </div>
 </body>

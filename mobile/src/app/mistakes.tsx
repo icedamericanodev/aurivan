@@ -20,10 +20,12 @@ import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { StickyFooter } from '../components/quiz';
+import { ReportLink } from '../components/support';
 import { Button, Chip, Gap, PushedHeader, Section, T } from '../components/ui';
 import { findQuestion } from '../content/loader';
 import { shortDate } from '../lib/format';
 import { guardedStart, startFromIds, startPractice } from '../lib/sessions';
+import { questionTarget } from '../lib/support';
 import { useActiveCert } from '../lib/useActiveCert';
 import { GAMES } from '../engine/games/registry';
 import { canPlay } from '../lib/games';
@@ -144,6 +146,9 @@ export default function Mistakes() {
               )}
               <T v="caption" color={c.correct}>✓ Best answer</T>
               <T v="small" numberOfLines={2}>{q.options[q.correct]}</T>
+              {/* No letters here, so the report names the pick by its ORIGINAL letter only.
+                  Just the link (UX review O8): a meta block on every card was clutter. */}
+              <ReportLink certId={cert.id} target={questionTarget(cert.id, q, 'Mistake journal', undefined, m.picked)} />
               {!m.resolved && (
                 <>
                   <Gap h={space.md} />

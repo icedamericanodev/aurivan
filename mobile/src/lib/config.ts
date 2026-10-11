@@ -3,13 +3,28 @@
  * (see .env.example). These values are baked into the app and visible to
  * anyone — never put secrets here.
  */
+import { EMAIL_RE } from '../engine/support';
+
+/**
+ * The support inbox. It is already public (privacy.html, the website), so
+ * it is the built-in default: reporting can never be switched off by a
+ * missing or empty setting.
+ */
+export const DEFAULT_SUPPORT_EMAIL = 'certprep.support@gmail.com';
+
+/** The env value when it is a real address; otherwise the default (an empty or broken value never disables support). */
+export function supportEmailFrom(env: string | undefined): string {
+  const v = (env ?? '').trim();
+  return EMAIL_RE.test(v) ? v : DEFAULT_SUPPORT_EMAIL;
+}
+
 export const config = {
   /** Live URL of privacy.html — REQUIRED by both stores before launch. */
   privacyUrl: process.env.EXPO_PUBLIC_PRIVACY_URL ?? '',
   /** Live URL of terms.html — required once subscriptions exist. */
   termsUrl: process.env.EXPO_PUBLIC_TERMS_URL ?? '',
-  /** Where "Report an issue" emails go. Without it, reports are acknowledged in-app only. */
-  feedbackEmail: process.env.EXPO_PUBLIC_FEEDBACK_EMAIL ?? '',
+  /** Where "Report a problem", "Send feedback" and "Contact support" emails go. Always set (see supportEmailFrom). */
+  feedbackEmail: supportEmailFrom(process.env.EXPO_PUBLIC_FEEDBACK_EMAIL),
   /** Supabase (Phase 3: accounts + sync). Publishable values only. */
   supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL ?? '',
   supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '',

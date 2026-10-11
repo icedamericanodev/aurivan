@@ -1,6 +1,7 @@
 /**
  * Settings — certification, exam date, appearance, study goal, reminders, haptics,
- * study defaults (the practice timer), your data (backup, restore, reset), and the legal notices required for store review. Groups are
+ * study defaults (the practice timer), your data (backup, restore, reset), one row to
+ * Help and feedback (mobile 1.7), and the legal notices required for store review. Groups are
  * sections with hairline rows, not cards (spec §5).
  */
 import Constants from 'expo-constants';
@@ -8,9 +9,11 @@ import { useState } from 'react';
 import { router } from 'expo-router';
 import { Alert, Linking, View } from 'react-native';
 import { BrandLockup, PillarList } from '../components/brand';
+import { creditSubtitle } from '../components/help';
+import { ICON_STROKE, LifeBuoy } from '../components/icons';
 import { ThemeSwitch } from '../components/themeSwitch';
 import { YourData } from '../components/yourData';
-import { Button, Chip, Gap, PushedHeader, RadioRow, Screen, Section, Segmented, Stepper, T, ToggleRow } from '../components/ui';
+import { Button, Chip, Gap, ICON_SIZE, ListRow, PushedHeader, RadioRow, Screen, Section, Segmented, Stepper, T, ToggleRow } from '../components/ui';
 import { MODE_INFO, STUDY_MODES } from '../engine/studyModes';
 import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certifications';
@@ -31,6 +34,7 @@ import {
 } from '../engine/reminders';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from '../lib/reminders';
 import { useActiveCert } from '../lib/useActiveCert';
+import { useReports } from '../lib/useReports';
 import { sweepBackupFiles } from '../lib/backup';
 import { useBackup } from '../store/backup';
 import { useProgress } from '../store/progress';
@@ -52,6 +56,8 @@ export default function Settings() {
   const { cert } = useActiveCert();
   const { c, isDark } = useTheme();
   const s = useSettings();
+  // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
+  const { dueItems } = useReports();
   const resetCert = useProgress((p) => p.resetCert);
   const clearSession = useSession((x) => x.clear);
   const [busy, setBusy] = useState(false);
@@ -273,6 +279,19 @@ export default function Settings() {
 
       <Gap h={space.xl} />
       <Button kind="danger" label={`Reset ${cert.name} progress`} onPress={confirmReset} />
+
+      {/* Help and feedback (mobile 1.7): ONE row to the Help screen (UX review O2),
+          where Common questions, Contact support, Report a problem, ideas, Your
+          reports, What's new and What's next live (Apple 1.5: easy contact). */}
+      <Section title="Help and feedback" />
+      <ListRow
+        icon={<LifeBuoy size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+        // The same row as You's, so the way to Help reads the same everywhere.
+        title="Get help or send feedback"
+        subtitle={dueItems ? creditSubtitle(dueItems) : 'Common questions, reports and what’s new'}
+        onPress={() => router.push('/help')}
+        last
+      />
 
       <Section title="About" />
       <Gap h={space.md} />

@@ -16,6 +16,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 import { Check, ICON_STROKE } from '../../../components/icons';
 import { NoteBody } from '../../../components/notes';
+import { ReportRow } from '../../../components/support';
 import { Button, Enter, Gap, ICON_SIZE, PushedHeader, Screen, Tag, T } from '../../../components/ui';
 import { EmptyScreen } from '../../../components/emptyScreen';
 import { findQuestion } from '../../../content/loader';
@@ -124,6 +125,14 @@ export default function NoteSubtopicScreen() {
           />
         )}
       </Enter>
+      {/* Report a problem with this note (mobile 1.7). Notes carry no review date, so only the code is shown. */}
+      <View style={{ marginTop: space.xl }}>
+        <ReportRow
+          certId={cert.id}
+          meta={`Code ${note.id}`}
+          target={{ kind: 'note', id: note.id, name: note.name, where: 'Study note' }}
+        />
+      </View>
     </Screen>
   );
 }

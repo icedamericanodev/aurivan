@@ -39,8 +39,11 @@
   table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14.5px; }
   th, td { text-align: left; padding: 9px 10px; border: 1px solid var(--line); vertical-align: top; }
   th { background: #EEF2FF; color: var(--navy); }
-  footer.doc { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 20px; font-size: 14px; color: var(--ink2); }
-  footer.doc a { margin-right: 16px; }
+  footer.doc { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 20px; font-size: 14px; color: var(--ink2);
+    display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  /* A link never breaks across lines ("Terms of / Use"), and is a 44px tap target on phones. */
+  footer.doc a { margin-right: 0; white-space: nowrap; }
+  @media (max-width: 600px) { footer.doc a { display: inline-flex; align-items: center; min-height: 44px; } }
 </style>
 </head>
 <body>
@@ -48,9 +51,10 @@
   <header class="doc">
     <a class="brand" href="index.html">aurivan<span>.</span></a>
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: 10 October 2026</p>
+    <p class="updated">Last updated: 11 October 2026</p>
   </header>
 
+  <main>
   <div class="lead">
     <p>Aurivan is a free CISA exam-preparation app built privacy-first. There
     are <strong>no accounts</strong>, and your study progress
@@ -94,10 +98,12 @@
   through analytics, and we do not use analytics for advertising.</p>
 
   <h3>3c. Feedback you choose to send</h3>
-  <p>The App includes an optional Feedback feature. If you use it, the message
-  you write is submitted through a Google Form to the maintainer's email
-  inbox. This happens only when you choose to send feedback. Please do not
-  include sensitive personal information in feedback messages.</p>
+  <p>The App includes optional Feedback and Flag features. If you use one,
+  the message you write is submitted through a Google Form to the
+  maintainer's email inbox. This happens only when you choose to send it.
+  Please do not include sensitive personal information in these messages.</p>
+  <p>We keep these messages for up to 12 months after your issue is resolved,
+  then delete them, or sooner if you ask.</p>
 
   <h3>3d. Hosting logs</h3>
   <p>The App is hosted on GitHub Pages. As with any website, the hosting
@@ -119,8 +125,9 @@
     <tr><th>Service</th><th>Purpose</th><th>When</th></tr>
     <tr><td>Google Analytics</td><td>Anonymous, aggregated usage metrics</td><td>Only after you accept the cookie banner</td></tr>
     <tr><td>Google Forms</td><td>Delivering feedback you choose to send</td><td>Only when you submit feedback</td></tr>
+    <tr><td>Gmail (Google)</td><td>Our support inbox, for emails you choose to send us</td><td>Only when you email us</td></tr>
     <tr><td>GitHub Pages</td><td>Website hosting</td><td>Every visit (technical logs)</td></tr>
-    <tr><td>Ko-fi</td><td>Optional donations</td><td>Only if you follow the "Support" link</td></tr>
+    <tr><td>Ko-fi</td><td>Optional donations</td><td>Only if you follow a "Support on Ko-fi" link (website only; never in the mobile app)</td></tr>
   </table>
   <p>Each of these providers processes data under its own privacy policy. We
   do not sell or rent personal information to anyone.</p>
@@ -144,12 +151,20 @@
     to your phone's share sheet. Nothing is sent to us; you decide where it
     goes. If you choose "Save Image", the app asks to add it to your Photos and
     never reads your photo library.</li>
-    <li><strong>"Report issue" uses your own email app.</strong> Tapping it
-    opens a draft in your email app. Nothing is sent unless you choose to
-    send that email, and you can read and edit it first.</li>
+    <li><strong>"Report a problem", "Suggest an idea" and "Contact support"
+    use your own email app.</strong> Tapping one opens a draft in your email
+    app with the item's code, the app version and your phone's system version
+    filled in. Your theme, text size and Reduce Motion setting are added only
+    if "Include display details" is ticked. Nothing is sent unless you send
+    that email, and you can read and edit it first. If you send it, it reaches
+    our support inbox (Gmail, run by Google) with your email address and
+    message. We use them only to reply and to fix the problem, never for
+    marketing. We keep support emails for up to 12 months after your issue is
+    resolved, then delete them, or sooner if you ask. Please don't include
+    questions from the real exam.</li>
     <li><strong>Backup files are made on your phone.</strong> If you tap
-    "Save a backup" in Settings, the app puts your progress and settings into
-    one file and hands it to your phone's share sheet. Nothing is sent to us.
+    "Save a backup" in Settings, the app puts your progress and settings, and
+    the list of problems you reported, into one file and hands it to your phone's share sheet. Nothing is sent to us.
     You decide where the file goes (for example Files, Google Drive or email),
     and that service keeps it under its own terms. The file contains no name,
     email address or device ID. "Restore from a backup" only reads the file you
@@ -198,9 +213,12 @@
   <p>For any privacy question or request, email
   <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a>.</p>
 
+  </main>
+
   <footer class="doc">
     <a href="index.html">&larr; Back to Aurivan</a>
     <a href="terms.html">Terms of Use</a>
+    <a href="support.html">Help and contact</a>
   </footer>
 </div>
 </body>

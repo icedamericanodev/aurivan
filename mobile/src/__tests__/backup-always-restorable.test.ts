@@ -176,9 +176,23 @@ describe('export: every state the phone can hold reads back', () => {
     };
   }
 
+  /** Mobile 1.7: Your reports, from none to more than the cap (an older build could hold any length). */
+  function randomReports(seed: number) {
+    const rng = createRng(seed * 31);
+    const len = [0, 1, 5, 200, 260][Math.floor(rng() * 5)];
+    return Array.from({ length: len }, (_, i) => ({
+      ref: `R-${'ABCDEFGH'[i % 8]}${'23456789'[Math.floor(i / 8) % 8]}QQ`,
+      item: ['q:d4_217', 'note:4A2.3', 'lesson:cisa-l-d1-charter#3', 'card:rumor:4B1.2:k1x9', 'app:settings', 'q:d9_999'][i % 6],
+      reason: ['key', 'typo', 'other', 'freeze'][i % 4],
+      at: T0 - i * DAY,
+      cert: 'cisa',
+      ...(rng() < 0.3 ? { creditSeen: true } : {}),
+    }));
+  }
+
   it('200 random plausible states: every export passes the restore check', () => {
     for (let seed = 1; seed <= 200; seed++) {
-      useProgress.setState({ byCert: { cisa: randomCert(seed) } });
+      useProgress.setState({ byCert: { cisa: randomCert(seed) }, reports: randomReports(seed) });
       const read = restorable();
       if (read.kind !== 'ok') throw new Error(`seed ${seed}: ${read.code}`);
     }

@@ -53,7 +53,7 @@ import { cancelReminders, ensurePermission, remindersSupported, scheduleReminder
 
 // ── The data in each store (no actions) ──────────────────────────────────
 const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize'] as const;
-const PROGRESS_KEYS = ['byCert', 'streak', 'today', 'days'] as const;
+const PROGRESS_KEYS = ['byCert', 'streak', 'today', 'days', 'reports'] as const;
 
 type SettingsData = Pick<ReturnType<typeof useSettings.getState>, (typeof SETTINGS_KEYS)[number]>;
 type ProgressData = Pick<ReturnType<typeof useProgress.getState>, (typeof PROGRESS_KEYS)[number]>;
@@ -318,6 +318,10 @@ async function writeAll(
   const byCert: ProgressData['byCert'] = {};
   for (const [id, cp] of Object.entries(data.progress.byCert)) byCert[id] = completeCert(cp);
   const progress = { ...pick(useProgress.getInitialState(), PROGRESS_KEYS), ...data.progress, byCert, days: {} };
+  // A file from before 1.7 has no "Your reports" list at all. Those are the
+  // learner's messages to us, not study progress, so keep this phone's list
+  // instead of emptying it (a file WITH a list, even an empty one, wins).
+  if (data.progress.reports === undefined) progress.reports = useProgress.getState().reports;
   const before = currentRows();
   try {
     await AsyncStorage.multiSet([

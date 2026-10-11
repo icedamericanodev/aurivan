@@ -130,7 +130,8 @@ function SteppingStones() {
     const nextHits = [...hits, ...stoneHits];
     setScore(nextScore);
     setHits(nextHits);
-    if (!perfect) setMisses((m) => [...m, { questionId: seq.id, stem: seq.title, tag, why: seq.caption, answerWrong: true }]);
+    // Reported by the stable card id ("seq:1A3.1:s001" / "flow:<lesson>"), not the deck id.
+    if (!perfect) setMisses((m) => [...m, { questionId: seq.id, reportId: stonesCardId(seq), stem: seq.title, tag, why: seq.caption, answerWrong: true }]);
     if (last) {
       const news = finishGameRound(cert.id, 'stones', {
         score: nextScore,

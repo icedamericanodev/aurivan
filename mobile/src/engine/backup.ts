@@ -27,6 +27,7 @@ import { reminderSummary } from './reminders';
 import { migrateProgress, PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
 import { dayKey } from './streak';
 import { SESSION_SIZES, type StudyMode } from './studyModes';
+import { MAX_REPORTS, parseVersion, REF_RE } from './support';
 
 export const BACKUP_APP = 'aurivan';
 /** The file format version. Bump it (and add a step to FILE_MIGRATIONS) if the envelope changes. */
@@ -335,6 +336,20 @@ const certProgress = obj(
   },
 );
 
+/**
+ * Mobile 1.7: one entry in "Your reports" (engine/support.ts ReportEntry).
+ * The item and reason are short codes, never free text; the ref must look
+ * like one we make ("R-7K2Q"). A report about something no longer in the
+ * app is KEPT (Your reports can say it was removed), so ids aren't trimmed.
+ */
+const reportRef: Check<string> = (x, at) => (typeof x === 'string' && REF_RE.test(x) ? x : bad(at));
+// The app version the report was made on ("1.7.0"): digits and dots only.
+const appVersion: Check<string> = (x, at) => (typeof x === 'string' && parseVersion(x) ? x : bad(at));
+const reportEntry = obj(
+  { ref: reportRef, item: id, reason: str(20), at: ts, cert: str(40) },
+  { version: appVersion, creditSeen: bool },
+);
+
 const streak = obj(
   { current: count, best: count, lastDay: nullable(date) },
   { restDay: nullable(date), recentDays: list(date, MAX_LIST) },
@@ -370,12 +385,16 @@ function settingsCheck(certKey: Check<string>) {
  * all (an unknown key, dropped), and nothing in a file can steer navigation.
  */
 function progressCheck(certKey: Check<string>) {
-  return obj({
-    byCert: map(certProgress, 50, certKey),
-    streak,
-    // "" before the first answer ever, otherwise a calendar day.
-    today: obj({ day: (x, at) => (x === '' ? '' : date(x, at)), answered: count }),
-  });
+  return obj(
+    {
+      byCert: map(certProgress, 50, certKey),
+      streak,
+      // "" before the first answer ever, otherwise a calendar day.
+      today: obj({ day: (x, at) => (x === '' ? '' : date(x, at)), answered: count }),
+    },
+    // Mobile 1.7 (optional: older files have none). Newest first, so fitting cuts the oldest.
+    { reports: list(reportEntry, MAX_REPORTS) },
+  );
 }
 
 export type BackupSettings = ReturnType<ReturnType<typeof settingsCheck>>;
