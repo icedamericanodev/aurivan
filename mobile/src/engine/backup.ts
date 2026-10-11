@@ -23,6 +23,25 @@ import { GAME_TIERS, HITS_CAP, type GameTier } from './games/growth';
 import { keepSupported, LONG_IDS_CAP, MYTH_WINDOW, SIGNPOST_WINDOW, SURE_WINDOW, type CounterId } from './milestones';
 import type { Confidence } from './srs';
 import type { MockTiming } from './pace';
+import {
+  clampToSupported,
+  cleanPlantName,
+  GROWTH_IDS,
+  isGrowthLevel,
+  isLookId,
+  isValidPlantState,
+  MAX_GROWTH,
+  MAX_KEEPSAKES,
+  MAX_KEPT,
+  maxSupportedGrowth,
+  PLANT_SPECIES,
+  repairPlant,
+  supportEvidence,
+  type CertPlant,
+  type GrowthId,
+  type GrowthLevel,
+  type PlantSpecies,
+} from './plant';
 import { examDateLabel } from './examDay';
 import { reminderSummary } from './reminders';
 import { migrateProgress, PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
@@ -321,6 +340,57 @@ const milestones = obj(
   },
 );
 
+/**
+ * Mobile 1.13: "Your plant" (engine/plant.ts CertPlant). The shape is checked
+ * field by field like everything else, then the plant's own rules
+ * (isValidPlantState: nothing reached or pending above the growth,
+ * keepsakes distinct). Export repairs a broken plant (repairPlant); a file
+ * with one is refused. Unknown species are bad data: species ids are never
+ * renamed, and a file from a newer app is already told to update first.
+ */
+const GROWTH: Check<GrowthLevel> = (x, at) => {
+  if (fitting && typeof x === 'number' && Number.isFinite(x)) return clampTo(Math.round(x), 1, MAX_GROWTH) as GrowthLevel;
+  return isGrowthLevel(x) ? x : bad(at);
+};
+const lookId: Check<string> = (x, at) => (isLookId(x) ? x : bad(at));
+/** The learner's own text: a read refuses a name that isn't clean; export cleans it. */
+const plantName: Check<string> = (x, at) => {
+  if (typeof x !== 'string' || x.length > 80) return bad(at);
+  const c = cleanPlantName(x);
+  return c === x ? x : fitting ? c : bad(at);
+};
+const plantReached = obj({}, Object.fromEntries(GROWTH_IDS.map((g) => [g, ts])) as Record<GrowthId, Check<number>>);
+const plantShape = rule(
+  obj(
+    { species: oneOf<PlantSpecies>(...PLANT_SPECIES), name: plantName, plantedAt: ts, growth: GROWTH },
+    {
+      replantedAt: ts,
+      reached: plantReached,
+      pending: GROWTH,
+      backfill: obj({ at: ts, growth: GROWTH }, { seen: bool }),
+      look: obj({}, { colourway: lookId, ground: lookId, visitor: lookId, keepsakes: list(lookId, MAX_KEEPSAKES) }),
+      kept: list(lookId, MAX_KEPT),
+      passedOn: date,
+    },
+  ),
+  (p) => isValidPlantState(p),
+  (p) => repairPlant(p),
+);
+const plant: Check<CertPlant> = (x, at) => {
+  // Export: repair first, so a look id an older build kept (never a type
+  // error in the store) can't make the whole backup unrestorable.
+  if (fitting && isObj(x)) {
+    try {
+      x = repairPlant(x as unknown as CertPlant);
+    } catch {
+      // Not plant-shaped at all: the shape check below reports it.
+    }
+  }
+  return plantShape(x, at);
+};
+/** The plant settings (all optional switches). */
+const plantSettings = obj({}, { showPlant: bool, quietLook: bool, promptHidden: bool });
+
 const certProgress = obj(
   {},
   {
@@ -341,6 +411,8 @@ const certProgress = obj(
     // Build F: game levels and milestones.
     gameGrowth: map(gameGrowth, 50),
     milestones,
+    // Mobile 1.13: the plant (optional: older files have none).
+    plant,
   },
 );
 
@@ -405,7 +477,8 @@ function progressCheck(certKey: Check<string>) {
       today: obj({ day: (x, at) => (x === '' ? '' : date(x, at)), answered: count }),
     },
     // Mobile 1.7 (optional: older files have none). Newest first, so fitting cuts the oldest.
-    { reports: list(reportEntry, MAX_REPORTS) },
+    // Mobile 1.13: the plant settings (optional: older files have none).
+    { reports: list(reportEntry, MAX_REPORTS), plantSettings },
   );
 }
 
@@ -549,6 +622,13 @@ export interface KnownIds {
   notes: ReadonlySet<string>;
   /** Domain ids ("4"): Field Guide cards for a domain's key terms ("kt:D4:…"). Optional. */
   domains?: ReadonlySet<string>;
+  /**
+   * Mobile 1.13: the outline subtopics with practice questions, per domain in
+   * the cert's order (what "know X% of the outline" counts), so a restored
+   * plant is clamped to what the restored data supports. Optional: without
+   * it, the outline counts as unknown (0%), the cautious reading.
+   */
+  plantOutline?: readonly (readonly string[])[];
 }
 
 function keepKeys<T>(m: Record<string, T> | undefined, keep: ReadonlySet<string>): Record<string, T> | undefined {
@@ -623,6 +703,38 @@ export function keepSupportedMarks(progress: BackupProgress): BackupProgress {
     byCert[certId] = cp.milestones ? { ...cp, milestones: keepSupported(cp.milestones, { ...cp, ...(exam ? { exam } : {}) }) } : cp;
   }
   return { ...progress, byCert };
+}
+
+/**
+ * Mobile 1.13: each cert's plant keeps only the growth its restored data can
+ * support (engine/plant.ts maxSupportedGrowth: plain necessary conditions,
+ * like keepSupportedMarks). Growth, `reached`, `pending` and the back-fill
+ * above it are lowered; never raised. A plant for an exam this app doesn't
+ * know can't happen (the cert key is checked first).
+ */
+export function keepSupportedPlants(progress: BackupProgress, known?: (certId: string) => KnownIds): BackupProgress {
+  let changed = false;
+  const byCert: BackupProgress['byCert'] = {};
+  for (const [certId, cp] of Object.entries(progress.byCert)) {
+    const cert = getCertification(certId);
+    if (!cp.plant || !cert) {
+      byCert[certId] = cp;
+      continue;
+    }
+    const e = supportEvidence({
+      cert,
+      answers: cp.answers ?? {},
+      mastery: cp.mastery,
+      subtopicsByDomain: known?.(certId).plantOutline ?? [],
+      mocks: (cp.mocks ?? []).map((m) => ({ total: m.total, correct: m.correct, day: dayKey(m.finishedAt), ...(m.timing ? { timing: m.timing } : {}), ...(m.unanswered !== undefined ? { unanswered: m.unanswered } : {}) })),
+      readinessLog: cp.moments?.readiness,
+      readySeenAt: cp.moments?.readySeenAt,
+    });
+    const clamped = clampToSupported(cp.plant, maxSupportedGrowth(e));
+    if (clamped !== cp.plant) changed = true;
+    byCert[certId] = clamped === cp.plant ? cp : { ...cp, plant: clamped };
+  }
+  return changed ? { ...progress, byCert } : progress;
 }
 
 /**
@@ -701,7 +813,8 @@ function readChecked(raw: Record<string, unknown>, knownCertIds: readonly string
   // Badges are checked against the data AS BACKED UP, before ids the bank
   // no longer has are trimmed: a genuine badge earned on a question that
   // was later retired must not be dropped (code review, Build F).
-  const supported = keepSupportedMarks(checked);
+  // The plant is clamped at the same point, for the same reason.
+  const supported = keepSupportedPlants(keepSupportedMarks(checked), known);
   const progress = known ? keepKnownIds(supported, known) : supported;
   // Never write a store row Android can't read back (see MAX_PROGRESS_CHARS).
   if (JSON.stringify(progress).length > MAX_PROGRESS_CHARS) throw new BackupError('too-big', 'progress');

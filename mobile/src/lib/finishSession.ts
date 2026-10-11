@@ -12,6 +12,7 @@ import { useProgress, type MockResult } from '../store/progress';
 import { useSession, type ActiveSession } from '../store/session';
 import { logActivity } from './activity';
 import { celebrateNext, checkMilestones } from './milestones';
+import { checkPlant } from './plant';
 
 export interface SessionScore {
   total: number;
@@ -189,6 +190,9 @@ export function finishSession(opts: { celebrate?: boolean } = {}) {
   // Build F: save any milestone now earned, and give THIS session at most one
   // quiet moment on Results (the rest wait in the queue for later sessions).
   checkMilestones(s.certId, { finished: true });
+  // Mobile 1.13: the plant grows from real learning only. A grow-up waits as
+  // `pending` for its one calm line on Today (never on Results).
+  checkPlant(s.certId);
   if (opts.celebrate === false) return;
   const moment = celebrateNext(s.certId);
   if (moment) useSession.getState().setMilestone(moment.key);

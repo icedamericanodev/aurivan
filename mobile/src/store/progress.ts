@@ -21,6 +21,7 @@ import { readinessRange } from '../engine/readinessRange';
 import { recordMastery, type SubtopicMastery } from '../engine/mastery';
 import { CATALOG_VERSION } from '../engine/badgeCatalog';
 import { afterAnswer, afterCard, noteStudyDay, type CertMilestones } from '../engine/milestones';
+import { renamePlant, resetPlant, switchSpecies, type CertPlant, type PlantSettings, type PlantSpecies } from '../engine/plant';
 import type { MockTiming } from '../engine/pace';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import type { ThinkingSlip } from '../engine/slipCoach';
@@ -138,6 +139,14 @@ export interface CertProgress {
    * and get a one-time back-fill at launch (lib/milestones.ts).
    */
   milestones?: CertMilestones;
+  /**
+   * Mobile 1.13 (Phase 4a): "Your plant", the optional companion that grows
+   * only from real learning (engine/plant.ts). Optional: older saves have
+   * none, and a learner has no plant until they plant one (onboarding, the
+   * quiet line on Today, or "Plant yours" on You). Growth is the HIGHEST
+   * reached: only Reset or a restore clamp lowers it.
+   */
+  plant?: CertPlant;
 }
 
 export interface StudyPathState {
@@ -189,6 +198,13 @@ interface ProgressState {
    * Optional: older saves have none.
    */
   reports?: ReportEntry[];
+  /**
+   * Mobile 1.13: the plant settings, for every exam (Settings → Show my plant,
+   * Quiet look; and whether Today's one "Plant a companion" line was
+   * dismissed). Optional: older saves have none, which means the defaults
+   * (shown, with a face, the line not dismissed).
+   */
+  plantSettings?: PlantSettings;
 
   /** Store the plan the first time Today is shown on a new day. */
   startDay: (plan: DayPlan) => void;
@@ -252,6 +268,18 @@ interface ProgressState {
   markCreditSeen: (refs: string[]) => void;
   /** Mobile 1.7: Your reports → "Clear this list". */
   clearReports: () => void;
+  /**
+   * Mobile 1.13: change a cert's plant (lib/plant.ts does the rules: planting,
+   * growth, the moment shown). `update` gets the current plant and progress
+   * and returns the new plant; returning the same object saves nothing.
+   */
+  updatePlant: (certId: string, update: (p: CertPlant | undefined, cp: CertProgress) => CertPlant | undefined) => void;
+  /** Rename the plant (cleaned; '' = no name). */
+  renamePlant: (certId: string, name: string) => void;
+  /** Change species: the growth stays. */
+  switchPlantSpecies: (certId: string, species: PlantSpecies) => void;
+  /** Change the plant settings (merged into the saved ones). */
+  setPlantSettings: (change: Partial<PlantSettings>) => void;
 }
 
 export const useProgress = create<ProgressState>()(
@@ -519,6 +547,26 @@ export const useProgress = create<ProgressState>()(
         }),
       clearReports: () => set({ reports: [] }),
 
+      updatePlant: (certId, update) =>
+        set((s) => {
+          const cp = normalize(s.byCert[certId]);
+          const next = update(cp.plant, cp);
+          if (next === cp.plant) return s; // nothing changed: no save
+          const out: CertProgress = { ...cp };
+          if (next) out.plant = next;
+          else delete out.plant;
+          return { byCert: { ...s.byCert, [certId]: out } };
+        }),
+      renamePlant: (certId, name) => get().updatePlant(certId, (p) => (p ? renamePlant(p, name) : p)),
+      switchPlantSpecies: (certId, species) => get().updatePlant(certId, (p) => (p ? switchSpecies(p, species) : p)),
+      setPlantSettings: (change) =>
+        set((s) => {
+          const cur = s.plantSettings ?? {};
+          const next = { ...cur, ...change };
+          if ((Object.keys(next) as (keyof PlantSettings)[]).every((k) => next[k] === cur[k])) return s;
+          return { plantSettings: next };
+        }),
+
       // A reset is per exam and leaves "Your reports" alone: those are the
       // learner's messages to us, not study progress.
       resetCert: (certId) =>
@@ -534,6 +582,11 @@ export const useProgress = create<ProgressState>()(
           const milestones: CertMilestones = { earned: {}, backfill: { at: Date.now(), count: 0, seen: true }, catalog: CATALOG_VERSION };
           const base: CertProgress = { ...emptyCert(), milestones };
           const fresh: CertProgress = seen ? { ...base, moments: { readySeenAt: seen } } : base;
+          // Mobile 1.13: the plant goes back to a seed, but keeps its name,
+          // species, look and unlocks (cosmetics carry no readiness claim).
+          // `replantedAt` stops an old exam-ready moment helping it bloom.
+          const plant = s.byCert[certId]?.plant;
+          if (plant) fresh.plant = resetPlant(plant, Date.now(), plant.kept ?? []);
           return { byCert: { ...s.byCert, [certId]: fresh }, days };
         }),
     }),
@@ -552,6 +605,9 @@ export const useProgress = create<ProgressState>()(
       // Build F added only OPTIONAL fields (CertProgress.gameGrowth / milestones,
       // AnswerRecord.lastGame): same.
       // Mobile 1.7 added one OPTIONAL top-level field (reports): same.
+      // Mobile 1.13 added CertProgress.plant and the top-level plantSettings,
+      // both OPTIONAL: an old save loads as-is and has no plant until the
+      // learner plants one (never one made up for them).
       version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },
