@@ -142,9 +142,9 @@ describe('Badges screen', () => {
     // Every badge is one button whose label holds its exact rule: no mystery badges.
     const buttons = labels();
     for (const b of [...MILESTONES, ...SKILL_BADGES].filter((x) => x.id !== 'fresh-start')) expect(buttons.some((l) => l.includes(b.rule.replace(/\.$/, '')))).toBe(true);
-    expect(buttons.some((l) => l.startsWith('Firm Footing · IS Operations. Earned'))).toBe(true);
-    // No bank size anywhere.
-    expect(text).not.toMatch(/of \d{3,}/);
+    expect(buttons.some((l) => l.startsWith('Firm Footing · IS Operations, Clay. Earned'))).toBe(true);
+    // No bank size anywhere (the only 3-digit target is Long Memory's own top tier, 150 recalls).
+    expect(text.replace(/of 150 remembered/g, '')).not.toMatch(/of \d{3,}/);
   });
 
   it('shows the back-fill summary once, then never again', () => {

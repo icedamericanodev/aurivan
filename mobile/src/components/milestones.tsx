@@ -185,6 +185,7 @@ export function MilestoneMomentView({
                 state="earned"
                 size={MEDAL}
                 {...(moment.domain && moment.domain.index >= 0 ? { domainIndex: moment.domain.index, domainCount: moment.domain.count } : {})}
+                {...(moment.emblem ? { emblem: moment.emblem } : {})}
                 strike={strike}
               />
             </Pop>
