@@ -11,7 +11,7 @@
  * 4. App killed mid-mock: the pace checks catch up on reopen, and a reopen
  *    after the deadline ends the exam AT the deadline (the results agree).
  * 5. Timed practice: the clock stops on the explanation, the 2:00 cue,
- *    nothing auto-submits, and Results show the median line and a tag.
+ *    nothing auto-submits, and Results show the pace sentence and a tag.
  * 6. The "Practice at exam pace?" card.
  * 7. Daylight at each tier: flag and come back, pause, add a minute, and
  *    the light setting; the score and end screen.
@@ -198,9 +198,10 @@ describe('journey 1: full mock at Standard', () => {
     expect(l).toContain('Time used: 4 hours of 4 hours');
     expect(l).toContain('Pace checks: 25 percent: 30 minutes behind; 50 percent: 15 minutes ahead; 75 percent: 42 minutes behind');
     expect(l).toContain('Unanswered when time ran out: 60');
-    expect(l).toContain('240 minutes');
+    // Mobile 1.11: the Time stat is said in plain words with its label.
+    expect(l).toContain('Time: 4 hours');
     // The You tab's pacing line counts this timed mock.
-    expect(pacingStatsLine(pacingStats(cp().mocks))).toMatch(/^Pace over 1 timed mock: median \d+ s per question\. Finished with every question answered: 0 of 1\.$/);
+    expect(pacingStatsLine(pacingStats(cp().mocks))).toMatch(/^In your timed mock you took about \d+ seconds? per question\. Some questions were left unanswered\.$/);
   });
 });
 
@@ -349,7 +350,7 @@ describe('journey 4: app killed mid-mock, reopened later', () => {
   // Found in QA (fixed in e6904f4): finish() stamped finishedAt = now, so a
   // mock reopened after its deadline showed "140 minutes" in the Results
   // stat row, above a pacing panel saying "1 h 20 min of 1 h 20 min".
-  it('reopened after the deadline: the Results "minutes" stat agrees with the time allowed', () => {
+  it('reopened after the deadline: the Results "Time" stat agrees with the time allowed', () => {
     startMock('cisa', 50);
     mount(<SessionScreen />);
     answerAndNext();
@@ -358,8 +359,10 @@ describe('journey 4: app killed mid-mock, reopened later', () => {
     mount(<SessionScreen />);
     unmount();
     mount(<Results />);
-    const minutes = root().findAllByType(Stat).find((n) => n.props.label === 'minutes')!;
-    expect(minutes.props.value).toBe('80');
+    const time = root().findAllByType(Stat).find((n) => n.props.label === 'Time')!;
+    expect(time.props.value).toBe('1');
+    expect(time.props.unit).toBe('h 20 min');
+    expect(time.props.spoken).toBe('1 hour 20 minutes');
   });
 });
 
@@ -375,7 +378,7 @@ describe('journey 5: timed practice', () => {
     });
   };
 
-  it('clock stops on the explanation, the 2:00 cue, nothing auto-submits, and Results show the median and a tag', () => {
+  it('clock stops on the explanation, the 2:00 cue, nothing auto-submits, and Results show the pace sentence and a tag', () => {
     startPractice('cisa', { count: 3, timed: true, title: 'Quick 10' });
     mount(<SessionScreen />);
     tick(119 * S);
@@ -408,7 +411,7 @@ describe('journey 5: timed practice', () => {
     expect(active().finishedAt).toBeDefined();
     unmount();
     mount(<Results />);
-    expect(allText()).toContain('Median 50 s per question · exam pace 96 s');
+    expect(allText()).toContain('About 50 seconds per question. The exam gives you about 96.');
     // Review fix O2: the tag was renamed from "Slow and right".
     expect(allText()).toContain('Took its time');
   });

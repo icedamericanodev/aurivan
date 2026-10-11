@@ -140,15 +140,20 @@ export default function You() {
       <Enter i={2} style={{ marginTop: 26 }}>
         <StatRow>
           {[
-            <Stat key="a" value={String(answered)} label="answered" roll={statRoll(0, String(stats.from[0]))} />,
+            <Stat key="a" label="Answered" value={String(answered)} roll={statRoll(0, String(stats.from[0]))} />,
+            answered ? (
+              <Stat key="b" label="Accuracy" value={String(accuracy)} pct roll={statRoll(1, String(stats.from[1]))} />
+            ) : (
+              <Stat key="b" label="Accuracy" word="Not yet" spoken="not yet, answer a question first" />
+            ),
             <Stat
-              key="b"
-              value={answered ? String(accuracy) : '–'}
-              pct={answered > 0}
-              label="accuracy"
-              roll={answered ? statRoll(1, String(stats.from[1])) : undefined}
+              key="c"
+              label="Streak"
+              value={String(streak)}
+              unit={streak === 1 ? 'day' : 'days'}
+              color={c.clay}
+              roll={statRoll(2, String(stats.from[2]))}
             />,
-            <Stat key="c" value={String(streak)} label="day streak" color={c.clay} roll={statRoll(2, String(stats.from[2]))} />,
           ]}
         </StatRow>
         <Button

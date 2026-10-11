@@ -31,8 +31,8 @@ import { BigNum, Button, Enter, Gap, Row, Screen, Section, Stat, StatRow, T, Tag
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
-import { COACHING, coachingTag, practicePaceLine, TIMING_LABEL } from '../engine/pace';
-import { minutesUsed, scoreSession, sessionPacing } from '../lib/finishSession';
+import { COACHING, coachingTag, practicePaceLine, timeStat, TIMING_LABEL } from '../engine/pace';
+import { msUsed, scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
 import { badgeNextLine } from '../lib/badges';
 import { momentFor } from '../lib/milestones';
@@ -144,8 +144,9 @@ export default function Results() {
   const oneDomain = inSession.length === 1 ? cert.domains[inSession[0]] : undefined;
   // One pace line for every practice / review session (Build C answer times).
   const paceText = practicePaceLine(active.questionIds.map((id) => active.responses[id]?.ms), cert.exam);
-  // The same figure the mock history and pacing panel use (never past a deadline; untimed = answer time).
-  const minutes = minutesUsed(active, active.finishedAt ?? active.startedAt);
+  // The same time the mock history and pacing panel use (never past a deadline;
+  // untimed = answer time), as a stat that reads plainly ("Under a minute", "24 min").
+  const time = timeStat(msUsed(active, active.finishedAt ?? active.startedAt));
   const grow = growing;
   // Starts as the screen's dissolve ends (it is already mostly in by then).
   const at = motion.dur.select;
@@ -195,13 +196,15 @@ export default function Results() {
           {[
             <Stat
               key="a"
-              value={`${score.correct}/${denominator}`}
-              label="correct"
-              // Only the number right rolls (from 0); the "/20" stays put.
-              roll={{ play: grow, from: `0/${denominator}`, run: 1, delay: at + motion.stagger.stat }}
+              label="Correct"
+              value={String(score.correct)}
+              unit={`of ${denominator}`}
+              // The number right rolls up from 0; "of 20" stays put.
+              roll={{ play: grow, from: '0', run: 1, delay: at + motion.stagger.stat }}
             />,
-            <Stat key="b" value={String(missed.length)} label="to review" />,
-            <Stat key="c" value={String(minutes)} label={minutes === 1 ? 'minute' : 'minutes'} />,
+            // Answered wrong: what "Practice the ones you missed" opens.
+            missed.length ? <Stat key="b" label="Missed" value={String(missed.length)} /> : <Stat key="b" label="Missed" word="None" />,
+            time.word ? <Stat key="c" label="Time" word={time.word} spoken={time.spoken} /> : <Stat key="c" label="Time" value={time.value} unit={time.unit} spoken={time.spoken} />,
           ]}
         </StatRow>
         {active.mode === 'mock' && (
@@ -210,7 +213,7 @@ export default function Results() {
           </T>
         )}
         {active.mode !== 'mock' && paceText && (
-          <T v="meta" num style={{ marginTop: space.md }}>{paceText}</T>
+          <T v="meta" style={{ marginTop: space.md }}>{paceText}</T>
         )}
         {active.mode === 'mock' && !active.deadline && (
           <T v="meta" style={{ marginTop: space.sm }}>Untimed mock: your answers count toward readiness, and pacing stats leave it out.</T>

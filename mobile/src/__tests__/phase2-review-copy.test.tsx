@@ -146,7 +146,8 @@ describe('Today and Results copy', () => {
       finishSession();
     });
     mount(<Results />);
-    const stat = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^\d+ minutes?$/.test(n.props.accessibilityLabel))[0];
-    expect(stat.props.accessibilityLabel).toBe('1 minute');
+    // Mobile 1.11: the Time stat says its label and plain words ("Time: 1 minute").
+    const stat = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^Time: /.test(n.props.accessibilityLabel))[0];
+    expect(stat.props.accessibilityLabel).toBe('Time: 1 minute');
   });
 });

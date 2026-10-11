@@ -15,7 +15,7 @@ import { useEffect, useState, type Ref } from 'react';
 import { Pressable, View } from 'react-native';
 import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import type { Certification } from '../content/types';
-import { checkpointText, durationSpoken, durationText, type MockPacing, type PaceStatus } from '../engine/pace';
+import { aboutSeconds, checkpointText, durationSpoken, durationText, type MockPacing, type PaceStatus } from '../engine/pace';
 import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Clock, Flag, Gauge, ICON_STROKE } from './icons';
@@ -176,12 +176,17 @@ export function PacingPanel({ pacing, cert }: { pacing: MockPacing; cert: Certif
       `${durationSpoken(pacing.usedMinutes)} of ${durationSpoken(pacing.allowedMinutes)}`,
     ]);
   }
-  if (pacing.medianSec !== null) rows.push(['Median per question', `${pacing.medianSec} s`, `${pacing.medianSec} seconds`]);
+  // The typical (median) answer: plain words, never "median" or a bare "s".
+  if (pacing.medianSec !== null) {
+    const about = aboutSeconds(pacing.medianSec);
+    rows.push(['Typical time per question', `${about[0].toUpperCase()}${about.slice(1)}`, about]);
+  }
   if (pacing.checkpoints.length) {
     const text = (sep: string) => pacing.checkpoints.map((k) => `${Math.round(k.at * 100)}%: ${checkpointText(k)}`).join(sep);
     rows.push(['Pace checks', text(' · '), text('; ').replace(/min/g, 'minutes').replace(/%/g, ' percent')]);
   }
-  rows.push([pacing.timedOut ? 'Unanswered when time ran out' : 'Unanswered at submit', String(pacing.unanswered), String(pacing.unanswered)]);
+  const left = pacing.unanswered ? String(pacing.unanswered) : 'None';
+  rows.push([pacing.timedOut ? 'Unanswered when time ran out' : 'Unanswered at submit', left, left.toLowerCase()]);
   if (pacing.lastTenth && pacing.rest) {
     const pct = (t: { correct: number; total: number }) => Math.round((t.correct / t.total) * 100);
     rows.push([
@@ -192,7 +197,10 @@ export function PacingPanel({ pacing, cert }: { pacing: MockPacing; cert: Certif
   }
   if (pacing.slowestDomain) {
     const d = cert.domains.find((x) => x.id === pacing.slowestDomain!.domainId);
-    if (d) rows.push(['Slowest domain', `${d.short}, median ${pacing.slowestDomain.medianSec} s`, `${d.short}, median ${pacing.slowestDomain.medianSec} seconds`]);
+    if (d) {
+      const line = `${d.short}, ${aboutSeconds(pacing.slowestDomain.medianSec)} per question`;
+      rows.push(['Slowest domain', line, line]);
+    }
   }
   return (
     <View>

@@ -264,6 +264,10 @@ export function serifNumeral(size: NumeralSize | 34 | 52): TextStyle {
 }
 /** The unit under or after a serif numeral ("due", "questions"): Figtree 500 12/16. */
 export const numeralUnit: TextStyle = { fontFamily: font.sans500, fontSize: 12, lineHeight: 16 };
+/** A stat's unit beside its serif number ("of 20", "min", "days"): Figtree 15/20, ink2 (mobile 1.11). */
+export const statUnit: TextStyle = { fontFamily: font.sans500, fontSize: 15, lineHeight: 20 };
+/** A stat's value in words ("None", "Under a minute"): Fraunces 20/26, the number's voice at word size. */
+export const statWord: TextStyle = { fontFamily: font.serif500, fontSize: 20, lineHeight: 26, letterSpacing: -0.2 };
 /** The raised % after a serif numeral: ~0.48em of the numeral. */
 export function percentSup(size: number): TextStyle {
   return { fontFamily: font.serif500, fontSize: Math.round(size * 0.48), lineHeight: Math.round(size * 0.6) };

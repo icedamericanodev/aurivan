@@ -285,15 +285,58 @@ export function medianSeconds(ms: readonly (number | undefined)[]): number | nul
 
 // ── Practice: the results line, coaching tags, the soft cue ──────────────
 
+/** Fewer timed answers than this and a session's pace says little: no pace line (a 1-question session). */
+export const PACE_LINE_MIN = 3;
+
 /**
- * The one line every practice session's results show (from the Build C
- * answer times): "Median 74 s per question · exam pace 96 s". null when
- * no answer in the session has a time (a session saved before Build C).
+ * "About 74 seconds", or "about 2.5 minutes" past two minutes: one figure a
+ * learner reads at a glance (never "median", never a bare "s").
+ */
+export function aboutSeconds(sec: number): string {
+  if (sec < 120) {
+    const n = Math.max(1, Math.round(sec));
+    return `about ${n} ${n === 1 ? 'second' : 'seconds'}`;
+  }
+  const m = Math.round((sec / 60) * 10) / 10;
+  return `about ${m} minutes`;
+}
+
+/**
+ * The one plain sentence under a practice session's stats (from the Build C
+ * answer times): "About 74 seconds per question. The exam gives you about
+ * 96." It reads the typical (median) time, so one long pause doesn't skew
+ * it. null when fewer than PACE_LINE_MIN answers have a time (a 1-question
+ * session, or one saved before Build C): there is nothing useful to say.
  */
 export function practicePaceLine(ms: readonly (number | undefined)[], exam: ExamFacts): string | null {
-  const med = medianSeconds(ms);
-  if (med === null) return null;
-  return `Median ${med} s per question · exam pace ${Math.round(examPaceSeconds(exam))} s`;
+  const times = cleanMs(ms);
+  if (times.length < PACE_LINE_MIN) return null;
+  const med = median(times)! / 1000;
+  const pace = examPaceSeconds(exam);
+  // Both in the same unit, so the two figures compare at a glance.
+  const minutes = med >= 120;
+  const own = aboutSeconds(med);
+  const exams = minutes ? `about ${Math.round((pace / 60) * 10) / 10}` : `about ${Math.round(pace)}`;
+  return `${own[0].toUpperCase()}${own.slice(1)} per question. The exam gives you ${exams}.`;
+}
+
+/** How a time reads as a stat: a number and its unit ("24" "min", "1" "h 5 min"), or words ("Under a minute"). */
+export interface TimeStat {
+  value?: string;
+  unit?: string;
+  word?: string;
+  /** As a screen reader says it: "under a minute", "1 hour 5 minutes". */
+  spoken: string;
+}
+
+/** A session's time as a stat (never "1 minute" for 5 seconds). */
+export function timeStat(ms: number): TimeStat {
+  if (!(ms >= 60_000)) return { word: 'Under a minute', spoken: 'under a minute' };
+  const total = Math.round(ms / 60_000);
+  const h = Math.floor(total / 60);
+  const m = total % 60;
+  if (h === 0) return { value: String(m), unit: 'min', spoken: durationSpoken(m) };
+  return { value: String(h), unit: m ? `h ${m} min` : 'h', spoken: durationSpoken(total) };
 }
 
 /** Practice timer: after this long on ONE question, a soft cue appears. */
@@ -469,6 +512,7 @@ export function pacingStats(mocks: readonly PacedMock[]): PacingStats {
 /** The one-line summary under You → Mock exams, or null before any timed mock with pacing data. */
 export function pacingStatsLine(s: PacingStats): string | null {
   if (s.mocks === 0 || s.medianSec === null) return null;
-  const mocks = s.mocks === 1 ? '1 timed mock' : `${s.mocks} timed mocks`;
-  return `Pace over ${mocks}: median ${Math.round(s.medianSec)} s per question. Finished with every question answered: ${s.allAnswered} of ${s.mocks}.`;
+  const mocks = s.mocks === 1 ? 'your timed mock' : `your ${s.mocks} timed mocks`;
+  const all = s.mocks === 1 ? (s.allAnswered ? 'You answered every question.' : 'Some questions were left unanswered.') : `You answered every question in ${s.allAnswered} of ${s.mocks}.`;
+  return `In ${mocks} you took ${aboutSeconds(s.medianSec)} per question. ${all}`;
 }

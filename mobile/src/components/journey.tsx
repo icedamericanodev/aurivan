@@ -24,7 +24,8 @@ import { useTheme } from '../theme/useTheme';
 import { GrowthRings, PlanLeaf } from './glyphs';
 import { BookOpen, Gamepad2, ICON_STROKE, RotateCcw, Target, Timer } from './icons';
 import { FadeIn, Pop, type Celebration, type Growth } from './motion';
-import { BigNum, DomainDot, ICON_SIZE, Row, T, useFontScale } from './ui';
+import { BigNum, DomainDot, ICON_SIZE, Row, Stat, StatRow, T, useFontScale } from './ui';
+import { timeStat } from '../engine/pace';
 
 // ── Plan items: icon, title, meta ─────────────────────────────────────
 export function planIcon(item: PlanItem, color: string): ReactNode {
@@ -307,30 +308,30 @@ export function ClearingBody({
   const full = celebration?.mode === 'full';
   const run = celebration?.run ?? 0;
   const line = clearingLine(plan, readiness, range);
-  const stats: [string, string, boolean][] = [
-    [String(plan.answered), 'questions', false],
-    [acc === null ? '–' : String(acc), 'correct', acc !== null],
-    [String(plan.minutes), 'minutes', false],
-  ];
+  // Each stat reads on its own: "Questions 31", "Correct 81%", "Time 24 min".
+  const time = timeStat(plan.minutes * 60_000);
   // The beats, inside the 1.2 s budget: stats 120–840 ms, ring 240–840, words from 840.
   const statsAt = motion.dur.select;
   const ringAt = 2 * motion.dur.select;
   const wordsAt = ringAt + motion.dur.grow;
+  const statRoll = (i: number) => ({ play: full, from: null, run, delay: statsAt + i * motion.stagger.stat });
   return (
     <>
-      <View style={{ flexDirection: 'row', marginTop: 18 }}>
-        {stats.map(([v, l, pct], i) => (
-          <View
-            key={l}
-            accessible
-            accessibilityLabel={`${v}${pct ? ' percent' : ''} ${l}`}
-            style={[{ flex: 1 }, i > 0 && { borderLeftWidth: 1, borderLeftColor: c.forestTrack, paddingLeft: 14 }]}
-          >
-            <BigNum value={v} pct={pct} size={30} color={c.onForest} roll={{ play: full && v !== '–', from: null, run, delay: statsAt + i * motion.stagger.stat }} />
-            <T v="caption" color={c.onForest2} style={{ marginTop: 2 }}>{l}</T>
-          </View>
-        ))}
-      </View>
+      <StatRow frame={false} line={c.forestTrack} style={{ marginTop: 18 }}>
+        {[
+          <Stat key="q" label="Questions" value={String(plan.answered)} color={c.onForest} labelColor={c.onForest2} roll={statRoll(0)} />,
+          acc === null ? (
+            <Stat key="a" label="Correct" word="None yet" color={c.onForest} labelColor={c.onForest2} />
+          ) : (
+            <Stat key="a" label="Correct" value={String(acc)} pct color={c.onForest} labelColor={c.onForest2} roll={statRoll(1)} />
+          ),
+          time.word ? (
+            <Stat key="t" label="Time" word={time.word} spoken={time.spoken} color={c.onForest} labelColor={c.onForest2} />
+          ) : (
+            <Stat key="t" label="Time" value={time.value} unit={time.unit} spoken={time.spoken} color={c.onForest} labelColor={c.onForest2} unitColor={c.onForest2} roll={statRoll(2)} />
+          ),
+        ]}
+      </StatRow>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 18, paddingTop: 16, borderTopWidth: 1, borderTopColor: c.forestTrack }}>
         <GrowthRings
           preset="mini"

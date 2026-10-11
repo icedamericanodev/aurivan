@@ -31,11 +31,19 @@ export const MAX_SESSION_MINUTES = 1440;
  * - everything else is wall time to the end, never past a deadline.
  */
 export function minutesUsed(s: ActiveSession, now = Date.now()): number {
+  return Math.min(MAX_SESSION_MINUTES, Math.max(1, Math.round(msUsed(s, now) / 60_000)));
+}
+
+/**
+ * The same time in ms, uncapped below (Results' Time stat says "Under a
+ * minute" for a 5-second session, never "1 minute"), capped at a day.
+ */
+export function msUsed(s: ActiveSession, now = Date.now()): number {
   const ms =
     s.mode === 'mock' && !s.deadline
       ? [...Object.values(s.responses).map((r) => r.ms ?? 0), ...Object.values(s.visitMs ?? {})].reduce((a, b) => a + b, 0)
       : Math.min(s.finishedAt ?? now, s.deadline ?? Infinity) - s.startedAt;
-  return Math.min(MAX_SESSION_MINUTES, Math.max(1, Math.round(ms / 60_000)));
+  return Math.min(MAX_SESSION_MINUTES * 60_000, Math.max(0, ms));
 }
 
 /**
