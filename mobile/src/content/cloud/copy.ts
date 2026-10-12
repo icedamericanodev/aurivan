@@ -503,6 +503,11 @@ export const ACCOUNT_COPY = {
   'board.staff.pause.confirm': 'Pause posting? Learners can still read and vote. New posts and comments wait until you reopen.',
   'board.staff.reason': 'Why?',
   'board.staff.done': 'Done.',
+  // Re-review RR_P8 R1: a reported item edited after the report.
+  'board.staff.edited': 'Edited after it was reported',
+  'board.staff.reportedFirst': 'First reported as: “{text}”',
+  'board.staff.reportedLast': 'Last reported as: “{text}”',
+  'board.staff.changed': 'These words changed while you were looking. Here is what it says now.',
   'board.staff.hide': 'Hide',
   'board.staff.label.new_member': 'new member',
   'board.staff.label.recall': 'exam recall',

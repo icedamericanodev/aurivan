@@ -296,8 +296,13 @@ staff accounts; the server checks every action); the rules are
    | Fine | **Approve** (puts it back, dismisses the reports; once you've looked, one report can't hide it again: three established members' can) | Nothing |
    | Talks about a practice question's answer, not folded | ⋯ **Fold it** (readers tap "Show it" first) | Nothing |
 
-   Each report shows the words **as they were when reported**, even if the
-   author edited them since.
+   Each report shows the words **as they are now**. If the author edited
+   them after the first report, the item says "Edited after it was
+   reported" and shows the words as first reported (and as last reported,
+   when those differ), so an edit can't hide what was reported, and a
+   harmless first report can't hide an insult added later. If the words
+   change while you're looking, **Dismiss reports** is refused and the new
+   words load: read them, then decide.
 
 2. **Held**, oldest first:
    - "new member": approve, or act as above (approving lifts their

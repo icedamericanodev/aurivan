@@ -456,6 +456,43 @@ describe('plain text, staff, progress', () => {
     expect(allText()).not.toContain('Reported ×');
   });
 
+  it('Reported shows the words live now, that they were edited after the report, and what was reported (RR_P8 R1)', async () => {
+    backendWith({ staff: true });
+    // Maya posts; Raj reports it as spam; Maya edits it into an insult. (Straight on the backend.)
+    const signIn = async (email: string) => {
+      await memory.auth.signOut('local');
+      await memory.auth.sendEmailCode(email);
+      await memory.auth.verifyEmailCode(email, memory.control.lastCode(email)!);
+    };
+    const p = await memory.board.submitPost({ kind: 'idea', title: 'A modest idea for timers', body: 'Could the timer pause?', cert: 'cisa' });
+    jest.advanceTimersByTime(60_000);
+    await signIn('raj@example.com');
+    await memory.board.report({ kind: 'post', id: p.id, reason: 'spam' });
+    jest.advanceTimersByTime(60_000);
+    await signIn(DEMO_EMAIL);
+    await memory.board.editPost(p.id, { kind: 'idea', title: 'Calm Pine 7 is a liar', body: 'Everyone ignore him', cert: 'cisa' });
+    jest.advanceTimersByTime(60_000);
+    board.resetBoardSession();
+    const Mod = screen('moderation');
+    mount(<Mod />);
+    await flush();
+    await press('Reported');
+    expect(allText()).toContain('Calm Pine 7 is a liar');
+    expect(allText()).toContain('Edited after it was reported');
+    expect(allText()).toContain('First reported as: “A modest idea for timers · Could the timer pause?”');
+    // The author edits again while staff look: Dismiss is refused, and the new words load.
+    await memory.board.editPost(p.id, { kind: 'idea', title: 'Calm Pine 7 is a fraud', body: 'Everyone ignore him', cert: 'cisa' });
+    await press('More options, Calm Pine 7 is a liar');
+    await pressMenuItem('Dismiss reports');
+    expect(allText()).toContain('These words changed while you were looking. Here is what it says now.');
+    expect(allText()).toContain('Calm Pine 7 is a fraud');
+    expect(memory.control.board.reports().filter((x) => x.targetId === p.id && x.status === 'open')).toHaveLength(1);
+    // Now staff have seen them: Dismiss goes through.
+    await press('More options, Calm Pine 7 is a fraud');
+    await pressMenuItem('Dismiss reports');
+    expect(memory.control.board.reports().filter((x) => x.targetId === p.id && x.status === 'open')).toHaveLength(0);
+  });
+
   it('board actions never touch study progress, the plant, badges or streaks', async () => {
     const before = JSON.stringify(useProgress.getState());
     await board.openBoard(true);

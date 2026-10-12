@@ -26,6 +26,9 @@
  * question's answer is folded (N12); own withdrawn or removed comments
  * don't come back (N2); dismiss takes the queue's target (N4); a deleted
  * account closes the reports about its posts (N5); staff can rename.
+ * Re-review RR_P8: the Reported queue shows the live words with the first
+ * and last reported ones, and Dismiss is refused once the words changed
+ * since staff read them (R1); joining counts a write attempt (R3).
  * Never in a store build (see backend.ts).
  */
 import { checkHandle, moderateText, normalizeText } from '../../engine/moderation';
@@ -566,6 +569,8 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
       if (!u.termsVersion) throw new CloudError('forbidden', undefined, 'terms');
       if (i.guidelinesVersion !== guidelinesVersion) throw new CloudError('invalid', undefined, 'guidelines');
       const handle = normalizeText(i.handle);
+      // Counted before the name is checked, as board-submit does (re-review RR_P8 R3).
+      take(u.userId, 'attempt', 30, 200);
       const problem = checkHandle(handle);
       if (problem) throw new CloudError('invalid', undefined, `handle_${problem}`);
       for (const m of members.values()) if (m.userId !== u.userId && m.handle.toLowerCase() === handle.toLowerCase()) throw new CloudError('invalid', undefined, 'handle_taken');
@@ -822,15 +827,19 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
           const r = rs[0];
           const t = r.kind === 'post' ? posts.get(r.targetId) : r.kind === 'comment' ? comments.get(r.targetId) : undefined;
           const who = t ? members.get(t.authorId) : r.kind === 'member' ? [...members.values()].find((m) => m.publicId === r.targetId) : undefined;
-          // The words as they were when first reported (SEC S3): an edit can't hide them from staff.
-          const first = [...rs].sort((a, b) => a.at - b.at)[0];
-          const snap = first.snapshot ?? '';
+          // As the SQL does (re-review RR_P8 R1): the words live NOW, so an edit after a harmless first
+          // report can't hide an insult; and the words as first and as last reported (SEC S3).
+          const byTime = [...rs].sort((a, b) => a.at - b.at);
+          const firstAt = byTime[0].at;
+          const editedAt = t?.editedAt ?? null;
           return {
             kind: r.kind, id: r.targetId, label: [...new Set(rs.map((x) => x.reason))].join(', '),
-            title: r.kind === 'post' ? (snap.split('\n')[0] || null) : null,
-            body: r.kind === 'member' ? null : (r.kind === 'post' ? snap.split('\n').slice(1).join('\n') : snap).slice(0, 600) || null,
+            title: r.kind === 'post' ? (t as MPost | undefined)?.title ?? null : null,
+            body: t ? t.body.slice(0, 600) : null,
             handle: who?.handle ?? (t ? handleOf(t.authorId) : null), newMember: (who?.approvedPosts ?? 1) === 0, priorActions: who ? prior(who.userId) : 0,
-            count: rs.length, examContent: rs.some((x) => x.reason === 'exam_content'), at: Math.min(...rs.map((x) => x.at)),
+            count: rs.length, examContent: rs.some((x) => x.reason === 'exam_content'), at: firstAt,
+            reportedFirst: byTime[0].snapshot, reportedLast: byTime[byTime.length - 1].snapshot,
+            editedAt, editedSinceReport: editedAt !== null && editedAt > firstAt,
           };
         });
       };
@@ -982,6 +991,10 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
         // Every open report on one reported thing: the queue's row (CR N4), as the SQL does.
         const kind = a.extra?.kind;
         if (kind !== 'post' && kind !== 'comment' && kind !== 'member') throw new CloudError('invalid', undefined, 'kind');
+        // Never blind (re-review RR_P8 R1): words edited after the queue row staff read are refused, nothing closed.
+        const seen = a.extra?.editedAt ?? null;
+        const edited = kind === 'post' ? posts.get(id)?.editedAt : kind === 'comment' ? comments.get(id)?.editedAt : null;
+        if (edited != null && edited !== seen) throw new CloudError('conflict', undefined, 'changed');
         for (const r of reports) if (r.kind === kind && r.targetId === id && r.status === 'open') r.status = 'dismissed';
         log('dismiss', 'report', id, null);
       } else {

@@ -5,12 +5,11 @@
  * the server again. This screen's gate is cosmetic.
  *
  * Held · Reported · Appeals · Members · Log. Each item: why it's here and
- * how long ago, its first lines (for a report: the words as they were when
- * reported), who and their history; then the actions (Approve · Remove ·
- * Remove + warn · ⋯ for exam content, hiding and folding). "Real exam
- * content" reports sort first. At the foot, "Posting: Open" and Pause
- * posting (it asks first): the cover for a 24-hour window nobody can watch
- * (docs/support/PLAYBOOK.md §7).
+ * how long ago, its first lines, who and their history; then the actions
+ * (Approve · Remove · Remove + warn · ⋯ for exam content, hiding and
+ * folding). "Real exam content" reports sort first. At the foot,
+ * "Posting: Open" and Pause posting (it asks first): the cover for a
+ * 24-hour window nobody can watch (docs/support/PLAYBOOK.md §7).
  *
  * Fix round P8:
  * - The list on screen is always the selected tab's (CR B5): the staff
@@ -23,6 +22,13 @@
  *   "Done." to screen readers.
  * - A reported member can be dismissed, suspended or banned from the
  *   Reported tab; Members has Rename for an offensive name (CR N4, SEC B1).
+ *
+ * Re-review RR_P8 R1 (report, then edit): a reported item shows its words
+ * as they are NOW. If they were edited after the first report, the row says
+ * so and shows what was reported (the first report's words, and the latest
+ * report's when they differ). Dismiss sends the edit time staff saw; if the
+ * words changed since, the server refuses it, nothing is closed, and the
+ * new words load with a note saying so.
  */
 import { Redirect, router, useFocusEffect } from 'expo-router';
 import { useCallback, useRef, useState, type ReactNode } from 'react';
@@ -57,6 +63,9 @@ function headline(tab: StaffTab, it: QueueItem): string {
   if (tab === 'members') return `${it.handle ?? ''} · ${it.label}`;
   return `${it.label}${it.title ? ` · ${it.title}` : ''} · ${timeAgo(it.at)}`;
 }
+
+/** Reported words on one line: a post's are "title\nbody", shown as "title · body". */
+const oneLine = (s: string) => s.split('\n').filter(Boolean).join(' · ');
 
 /** What a reason is asked for. */
 type Asking = { item: QueueItem; action: 'remove' | 'remove_warn' | 'suspend' | 'ban' } | null;
@@ -117,10 +126,12 @@ export default function Moderation() {
   const act = async (a: StaffAction) => {
     setProblem(null);
     const r = await staffAct(a);
-    if (!r.ok) setProblem(copy(r.code === 'offline' ? 'board.offline' : 'err.server'));
-    else sayLater(copy('board.staff.done'));
     // The list for the tab selected NOW (the learner may have moved on while this ran).
     await load(wanted.current);
+    // After the reload, so a fresh list doesn't wipe the note. 'conflict': a Dismiss of
+    // words edited since staff read them (RR_P8 R1); the reload just showed the new words.
+    if (!r.ok) setProblem(copy(r.code === 'offline' ? 'board.offline' : r.code === 'conflict' ? 'board.staff.changed' : 'err.server'));
+    else sayLater(copy('board.staff.done'));
   };
   const target = (it: QueueItem) => ({ targetKind: (it.kind === 'appeal' ? 'appeal' : it.kind) as StaffAction['targetKind'], targetId: it.id });
   /** "Approve: Timer keeps running…" (the button's spoken name says which item). */
@@ -130,7 +141,8 @@ export default function Moderation() {
       { text: copy('board.menu.cancel'), style: 'cancel' },
       { text: go, style: 'destructive', onPress: run },
     ]);
-  const dismiss = (it: QueueItem) => void act({ action: 'dismiss', targetKind: 'report', targetId: it.id, extra: { kind: it.kind } });
+  // With the edit time on the row staff read: words edited since are refused, not dismissed blind (RR_P8 R1).
+  const dismiss = (it: QueueItem) => void act({ action: 'dismiss', targetKind: 'report', targetId: it.id, extra: { kind: it.kind, editedAt: it.editedAt ?? null } });
   const rename = (it: QueueItem) =>
     confirm(copy('board.staff.rename'), copy('board.staff.rename.confirm', { handle: it.handle ?? '' }), copy('board.staff.rename'), () => void act({ action: 'rename', targetKind: 'member', targetId: it.id }));
 
@@ -235,6 +247,15 @@ export default function Moderation() {
           <T v="label">{headline(shown, it)}</T>
           {it.title ? <T v="body" numberOfLines={2}>{it.title}</T> : null}
           {it.body ? <T v="small" numberOfLines={2} color={c.ink}>{`“${it.body}”`}</T> : null}
+          {shown === 'reported' && it.editedSinceReport ? (
+            <>
+              <T v="meta">{copy('board.staff.edited')}</T>
+              {it.reportedFirst ? <T v="small" numberOfLines={3}>{copy('board.staff.reportedFirst', { text: oneLine(it.reportedFirst) })}</T> : null}
+              {it.reportedLast && it.reportedLast !== it.reportedFirst ? (
+                <T v="small" numberOfLines={3}>{copy('board.staff.reportedLast', { text: oneLine(it.reportedLast) })}</T>
+              ) : null}
+            </>
+          ) : null}
           {shown !== 'log' && shown !== 'members' && it.handle ? (
             <T v="meta">{[it.handle, it.newMember ? copy('board.staff.newMember') : null, copy('board.staff.prior', { n: String(it.priorActions) })].filter(Boolean).join(' · ')}</T>
           ) : null}

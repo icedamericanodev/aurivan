@@ -318,6 +318,17 @@ export interface QueueItem {
   count: number;
   examContent: boolean;
   at: number;
+  /**
+   * Reported only (re-review RR_P8 R1). `title` and `body` are the words as
+   * they are NOW; these are the words as first and as last reported (SQL
+   * `firstSnapshot`, `lastSnapshot`; a post's are "title\nbody").
+   */
+  reportedFirst?: string | null;
+  reportedLast?: string | null;
+  /** Reported posts and comments: the last edit time (null: never edited). Dismiss sends it back (`extra.editedAt`). */
+  editedAt?: number | null;
+  /** Reported: edited after the first report, so the live words may not be what was reported. */
+  editedSinceReport?: boolean;
 }
 export interface StaffQueue {
   tab: StaffTab;

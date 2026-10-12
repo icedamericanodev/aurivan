@@ -1501,7 +1501,11 @@ h ago", "Reported ×3 · harassment or hate · 40 min ago"), the title, the firs
 two lines in quotes (`small`), `meta` "Quiet Oak 9 · new member · 0 prior
 actions", then `secondary` Approve · Remove · Remove + warn and a ⋯ (Delete
 exam content, Hide, Fold it / Unfold it, Dismiss reports). A report shows
-the words as they were when reported. Remove, Remove + warn, Suspend and Ban
+the words as they are now; edited after the first report, it adds `meta`
+"Edited after it was reported" and `small` "First reported as: “…”" (and
+"Last reported as: “…”" when different). A Dismiss of words edited since
+they loaded is refused: the list reloads with "These words changed while you
+were looking. Here is what it says now." Remove, Remove + warn, Suspend and Ban
 ask why with a `ChoiceSheet`; Ban and Delete exam content then ask again in a
 system alert. Each button's spoken name says which item ("Approve: Timer
 keeps running…"), and "Done." is said after an action. Appeals: Keep removed
