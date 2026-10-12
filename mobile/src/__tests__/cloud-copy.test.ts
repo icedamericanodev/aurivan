@@ -97,10 +97,16 @@ describe('the exact §2.3 strings', () => {
     expect(ACCOUNT_COPY['first.both.body']).toBe(
       'You’re signed in as {email}. This phone and your account both have progress. We’ll combine them: nothing you’ve answered is lost, and your best results are kept.',
     );
+    // Security review S7: everything that syncs, as the privacy notice lists it.
     expect(ACCOUNT_COPY['sync.what.body']).toBe(
-      'Answers, reviews, saved questions, mocks, lessons and notes done, badges, your plant, your exam date and study settings. These stay on this phone: reminders, theme, motion, haptics, plant display choices and a quiz in progress.',
+      'Your answers (whether right, how sure you were and how long you took), reviews, your mistake journal, saved questions, mocks, lessons and notes done, your study days and streak, badges, game levels, your readiness log and exam-week checklist, your plant, the questions you reported to us, your exam date and study settings. These stay on this phone: reminders, theme, motion, haptics, plant display choices and a quiz in progress.',
     );
-    expect(ACCOUNT_COPY['switch.fresh.sub']).toBe('This phone’s current progress is kept for 7 days in Undo sync.');
+    // UX P3 / P4.
+    expect(ACCOUNT_COPY['switch.fresh.sub']).toBe('This phone switches to this account’s progress. What’s here now is kept for 7 days in Settings → Your data → Undo sync.');
+    expect(ACCOUNT_COPY['switch.keep.sub']).toBe('It will be added to this account, even if it’s someone else’s.');
+    // UX H1 / H2: the review's wording (H2 reworded so it is true with one phone too: QA B4).
+    expect(ACCOUNT_COPY['signout.remove.confirm.unsynced']).toBe('Some of this phone’s progress isn’t in your account yet. Removing it deletes it for good. Save a backup first if you might want it.');
+    expect(ACCOUNT_COPY['reset.sync']).not.toMatch(/will come back/);
     expect(ACCOUNT_COPY['delsync.body']).toBe('This deletes the copy of your progress stored in your account. Your account and this phone’s progress stay. Sync turns off.');
     // UX O2: the cloud intro never says "only on this phone".
     expect(ACCOUNT_COPY['data.intro.on']).not.toMatch(/only/);

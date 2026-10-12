@@ -14,7 +14,7 @@
 import { CERTIFICATIONS } from '../content/certifications';
 import { getAllQuestions } from '../content/loader';
 import { BackupError, buildBackup, readBackup } from '../engine/backup';
-import { MAX_SETTINGS_BYTES, mergeSides, readSnapshot, stableStringify, type Side, type SyncedProgress } from '../engine/syncMerge';
+import { holdsStudy, MAX_SETTINGS_BYTES, mergeSides, progressIsEmpty, readSnapshot, stableStringify, type Side, type SyncedProgress } from '../engine/syncMerge';
 import { plan, type PlanInput } from '../engine/syncPlan';
 import { dayKey } from '../engine/streak';
 
@@ -165,5 +165,32 @@ describe('CR-P7 N10, SEC N2, CR N7, SEC S2', () => {
     }
     expect(code).toBe('too-big');
     expect(() => readSnapshot('settings', { state: { activeCertId: 'cisa' }, storeVersion: 1, appVersion: '1.18.0' }, { ...ctx, thisApp: '1.18.0' })).not.toThrow();
+  });
+});
+
+describe('CR N8: holdsStudy (a first sync keeps an undo copy unless the phone holds nothing)', () => {
+  const empty = { byCert: {}, streak: { current: 0, best: 0, lastDay: null } } as unknown as SyncedProgress;
+  const withCert = (cp: object) => ({ ...empty, byCert: { cisa: cp } }) as unknown as SyncedProgress;
+  it('a fresh phone holds nothing; answers or a study day count, as before', () => {
+    expect(holdsStudy(empty, {})).toBe(false);
+    expect(holdsStudy(withCert({ answers }), {})).toBe(true);
+    expect(holdsStudy({ ...empty, streak: { current: 1, best: 1, lastDay: '2026-10-11' } } as SyncedProgress, {})).toBe(true);
+  });
+  it('so do the things progressIsEmpty ignores: a saved question, a note read, a mock, a plant, a report, an exam date', () => {
+    const cases = [
+      withCert({ bookmarks: ['d1_001'] }),
+      withCert({ notesRead: ['1A1.1'] }),
+      withCert({ mocks: [short(1, T0)] }),
+      withCert({ plant: { species: 'oak', plantedAt: T0, growth: 1 } }),
+      withCert({ milestones: { earned: { 'first-foothold': T0 } } }),
+      { ...empty, reports: [{ ref: 'R-AAAA', item: 'q:d1_001', reason: 'key', at: T0, cert: 'cisa' }] } as unknown as SyncedProgress,
+    ];
+    for (const p of cases) {
+      expect(progressIsEmpty(p)).toBe(true);
+      expect(holdsStudy(p, {})).toBe(true);
+    }
+    expect(holdsStudy(empty, { examDates: { cisa: '2027-01-15' } })).toBe(true);
+    // An empty cert entry (launch bookkeeping) is still nothing.
+    expect(holdsStudy(withCert({ answers: {}, milestones: { earned: {} } }), { examDates: {} })).toBe(false);
   });
 });

@@ -146,17 +146,21 @@ export const ACCOUNT_COPY = {
   'sync.status.day': 'Synced {d MMM}',
   'sync.status.busy': 'Syncing…',
   'sync.status.offline': 'Will sync when you’re online',
+  // Any other failure (a server problem, too many conflicts or writes): not "offline" (UX review P1).
+  'sync.status.retry': 'Couldn’t sync just now. We’ll try again soon.',
   'sync.status.off': 'Sync is off',
   'sync.status.signin': 'Sign in again to keep syncing',
   'sync.paused.newer': 'Sync is paused. This account has progress from a newer version of Aurivan. Update the app to keep syncing.',
-  'sync.paused.unreadable': 'Sync is paused. We couldn’t read the synced copy, so your phone’s progress is unchanged.',
+  'sync.paused.unreadable': 'Sync is paused. We couldn’t read the synced copy, so your phone’s progress is unchanged. If this keeps happening, contact us from Help.',
   'sync.paused.toobig': 'Your progress is too large to sync. It stays safe on this phone. You can save a backup file in Settings → Your data.',
   'sync.retry': 'Try again',
   'sync.offline': 'You’re offline. Connect to the internet to sync.',
   'sync.what.title': 'What syncs',
+  // Everything that syncs (security review P7 S7: matches the privacy notice).
   'sync.what.body':
-    'Answers, reviews, saved questions, mocks, lessons and notes done, badges, your plant, your exam date and study settings. These stay on this phone: reminders, theme, motion, haptics, plant display choices and a quiz in progress.',
+    'Your answers (whether right, how sure you were and how long you took), reviews, your mistake journal, saved questions, mocks, lessons and notes done, your study days and streak, badges, game levels, your readiness log and exam-week checklist, your plant, the questions you reported to us, your exam date and study settings. These stay on this phone: reminders, theme, motion, haptics, plant display choices and a quiz in progress.',
   'sync.what.limits': 'Removals don’t sync yet: a question you unsave, or progress you reset, on one device can come back from another.',
+  'sync.what.kept': 'Turning sync off stops syncing. The copy in your account stays until you use Delete synced progress.',
   'sync.what.done': 'Done',
   'sync.delete.row': 'Delete synced progress',
   'sync.delete.sub': 'Removes the copy in your account. This phone keeps its progress.',
@@ -173,6 +177,8 @@ export const ACCOUNT_COPY = {
   'first.both.go': 'Combine',
   'first.undo': 'You can undo this for 7 days in Settings → Your data.',
   'first.undo.replaces': 'This replaces the earlier “Undo restore”.',
+  // Combine (UX review O1).
+  'first.both.once': 'Questions answered on both count once.',
   'first.later': 'Not now',
   // {email} in the preview and switch bodies when Apple hides the address ("You’re signed in as your Apple account (email hidden).").
   'first.relay': 'your Apple account (email hidden)',
@@ -194,9 +200,11 @@ export const ACCOUNT_COPY = {
   'switch.title': 'This phone has progress from another account',
   'switch.body': 'You’re now signed in as {email}. The progress on this phone was synced with a different account.',
   'switch.fresh': 'Start fresh with this account',
-  'switch.fresh.sub': 'This phone’s current progress is kept for 7 days in Undo sync.',
+  'switch.fresh.sub': 'This phone switches to this account’s progress. What’s here now is kept for 7 days in Settings → Your data → Undo sync.',
   'switch.keep': 'Keep this phone’s progress',
-  'switch.keep.sub': 'It will be added to this account.',
+  'switch.keep.sub': 'It will be added to this account, even if it’s someone else’s.',
+  // Start fresh while an undo copy is already waiting on this phone (QA B3).
+  'switch.undo.replaces': 'This replaces the earlier undo copy kept on this phone.',
   'switch.go': 'Continue',
 
   // Settings → Your data.
@@ -217,17 +225,26 @@ export const ACCOUNT_COPY = {
   // Sign out (account/sign-out).
   'signout.body.sync': 'Your progress stays on this phone, and Aurivan keeps working without an account. Sync stops until you sign in again.',
   'signout.remove': 'Remove my progress from this phone (for shared devices)',
-  'signout.remove.confirm': 'This removes all study progress from this phone. Your account’s copy isn’t affected.',
+  'signout.remove.confirm': 'This removes all your study progress, your plant and your study settings from this phone. Your account’s copy isn’t affected.',
+  // Some of it is only on this phone: sync is off, paused, or the last changes didn’t reach the account (UX review H1).
+  'signout.remove.confirm.unsynced': 'Some of this phone’s progress isn’t in your account yet. Removing it deletes it for good. Save a backup first if you might want it.',
   'signout.remove.go': 'Remove and sign out',
 
   // Account → Delete synced progress.
   'delsync.title': 'Delete synced progress?',
   'delsync.body': 'This deletes the copy of your progress stored in your account. Your account and this phone’s progress stay. Sync turns off.',
+  // What happens on the learner’s other devices (UX review P2, worded to match what they do).
+  'delsync.others': 'Your other devices stop syncing the next time they connect. If you turn sync on again before that, their progress is added back.',
   'delsync.go': 'Delete synced progress',
   'delsync.done': 'Synced progress deleted.',
   'delsync.busy': 'Deleting synced progress…',
   'delsync.offline': 'You’re offline. Connect to the internet to delete your synced progress. Nothing was deleted.',
   'delsync.fail': 'We couldn’t delete your synced progress just now. Nothing was deleted. Try again in a little while.',
+
+  // Settings → Reset progress and the restore preview, while this phone syncs (UX review H2: true in every case).
+  'reset.sync': 'Sync is on: progress removed here can come back from another device that syncs with your account. To start fresh everywhere, first use Delete synced progress in Account.',
+  // Reset also clears a waiting Undo sync copy (UX review O2).
+  'reset.undo': 'This also removes the Undo sync copy kept on this phone.',
 
   // Screen-reader hints.
   'hint.sync.now': 'Syncs this phone with your account now',

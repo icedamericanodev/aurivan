@@ -243,6 +243,8 @@ export function RestorePreview({
   const { c } = useTheme();
   const { reduced: reduceMotion } = useMotion();
   const large = useFontScale() >= LARGE_TEXT;
+  // Cloud builds only (UX H2): while this phone syncs, progress the backup doesn't have can come back. Always false with the flag off.
+  const syncing = useSyncing();
   const rows = ready ? previewRows(ready.now, ready.backup) : [];
   const saved = ready ? Date.parse(ready.data.exportedAt) : NaN;
   const fresh = ready?.fresh === true;
@@ -269,6 +271,7 @@ export function RestorePreview({
           {ready?.pausedSession && (
             <T v="small" color={c.ink} style={{ marginTop: space.md }}>Your paused session will end.</T>
           )}
+          {syncing && !fresh && <T v="small" color={c.ink} style={{ marginTop: space.md }}>{copy('reset.sync')}</T>}
           <Gap h={space.lg} />
           {rows.map((row, i) => (
             <View

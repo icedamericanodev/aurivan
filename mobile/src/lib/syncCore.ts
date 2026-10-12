@@ -13,12 +13,21 @@
  *    pull is applied when it ends (`deferredPull`).
  * 4. Pull what changed and check it like a backup file (readSnapshot). A
  *    snapshot that fails the check pauses sync; the phone changes NOTHING and
- *    the account is never "repaired" by pushing over it.
+ *    the account is never "repaired" by pushing over it. The same unreadable
+ *    copy is not downloaded again until it changes (`pausedRev`).
  * 5. Merge (engine/syncMerge.ts) and, if that changes the phone, write both
- *    stores in one storage write (lib/backup.ts writeSynced).
- * 6. Push what the account doesn't have yet, at the rev just seen. Another
- *    phone writing first is a `conflict`: go back to 1, at most 3 more times
- *    (after 1 s, 3 s, 9 s).
+ *    stores in one storage write (lib/backup.ts writeSynced). The write
+ *    merges in whatever the learner did while the pull was on the network
+ *    (`rebase`), and a quiz opened meanwhile still makes it wait.
+ * 6. Push what the phone now holds and the account doesn't have yet, at the
+ *    rev just seen. Another phone writing first is a `conflict`: go back to
+ *    1, at most 3 more times (after 1 s, 3 s, 9 s).
+ *
+ * Concurrency (Phase 7 review, CR B1/B3): lib/sync.ts runs one cycle at a
+ * time. `ctx.alive()` turns false the moment the learner turns sync off,
+ * signs out, removes their progress, undoes the first sync or deletes the
+ * synced copy: the cycle then stops before its next write or push and
+ * records nothing, and lib/sync.ts waits for it before acting.
  */
 import { BackupError, fitForBackup, utf8Bytes, type UndoSnapshot } from '../engine/backup';
 import { PROGRESS_VERSION, SETTINGS_VERSION } from '../engine/saveMigrations';
@@ -26,7 +35,9 @@ import {
   deviceLocalOf,
   dropFutureStamps,
   fnv1a,
+  MAX_SETTINGS_BYTES,
   mergeSides,
+  holdsStudy,
   mergeStamps,
   progressIsEmpty,
   readSnapshot,
@@ -49,6 +60,7 @@ export const MAX_PUSH_BYTES = 1_500_000;
 /** The waits before trying again after another phone wrote first. */
 export const CONFLICT_WAITS = [1000, 3000, 9000] as const;
 const STORES: readonly SyncStore[] = ['settings', 'progress'];
+const NO_REV: PerStore<number | null> = { settings: null, progress: null };
 
 /** The phone's two stores as plain data (all fields, device-local ones included). */
 export interface PhoneData {
@@ -58,7 +70,13 @@ export interface PhoneData {
 
 export interface Device {
   read(): PhoneData;
-  /** One storage write of both stores; `rebase` merges in anything the learner did meanwhile. Throws if it failed (nothing changed). */
+  /**
+   * One storage write of both stores. `rebase` merges the live stores into
+   * `next` (whatever the learner did since `next` was worked out), both
+   * when the write starts and again after it lands; merging is safe to
+   * repeat. Throws if it failed, or if that merge couldn't be done: then
+   * nothing changed and the cycle records nothing.
+   */
   write(next: PhoneData, opts: { undo?: UndoSnapshot | null; rebase?: (live: PhoneData) => PhoneData | null }): Promise<void>;
   meta(): SyncMeta;
   setMeta(m: Partial<SyncMeta>): void;
@@ -75,6 +93,13 @@ export interface CycleCtx {
   now: () => number;
   knownCertIds: readonly string[];
   wait: (ms: number) => Promise<void>;
+  /**
+   * False once the learner turned sync off, signed out, removed their
+   * progress, undid the first sync or deleted the synced copy, or another
+   * account signed in, since this cycle started: it stops before its next
+   * write or push and records nothing. Missing: always alive (tests).
+   */
+  alive?: () => boolean;
 }
 
 export type CycleResult =
@@ -143,11 +168,12 @@ function keepStamps(dev: Device, s: SyncStore, stamps: Stamps, now: number): Per
 
 export async function syncCycle(ctx: CycleCtx): Promise<CycleResult> {
   const dev = ctx.device;
+  const alive = () => !ctx.alive || ctx.alive();
   let pulledAny = false;
   let pushedAny = false;
   for (let attempt = 0; ; attempt++) {
     const meta = dev.meta();
-    if (!meta.enabled) return { kind: 'idle' };
+    if (!meta.enabled || !alive()) return { kind: 'idle' };
     const mctx = mctxOf(ctx);
     const local = dev.read();
     let mine: Sides;
@@ -165,11 +191,12 @@ export async function syncCycle(ctx: CycleCtx): Promise<CycleResult> {
     } catch (e) {
       return failed(e);
     }
+    if (!alive()) return { kind: 'idle' };
     const actions = {} as PerStore<SyncAction>;
     for (const s of STORES) {
       actions[s] = plan({
         head: heads[s],
-        meta: { lastRev: meta.lastRev[s], lastPushedHash: meta.lastPushedHash[s] },
+        meta: { lastRev: meta.lastRev[s], lastPushedHash: meta.lastPushedHash[s], lastAt: meta.lastAt?.[s] ?? null },
         setUp: true,
         switchPending: false,
         localHash: hash[s],
@@ -177,11 +204,19 @@ export async function syncCycle(ctx: CycleCtx): Promise<CycleResult> {
         thisApp: ctx.thisApp,
       });
     }
-    if (STORES.some((s) => actions[s].kind === 'pause' && (actions[s] as { reason: string }).reason === 'newer')) {
+    const pauseFor = (r: string) => STORES.filter((s) => actions[s].kind === 'pause' && (actions[s] as { reason: string }).reason === r);
+    if (pauseFor('newer').length) {
       dev.setMeta({ pausedReason: 'newer' });
       return { kind: 'paused', reason: 'newer' };
     }
-    if (STORES.some((s) => actions[s].kind === 'pause' && (actions[s] as { reason: string }).reason === 'remote_deleted')) {
+    // A copy claiming an app no update reaches: unreadable (engine/syncPlan.ts implausibleApp).
+    const implausible = pauseFor('unreadable');
+    if (implausible.length) {
+      const m = dev.meta();
+      dev.setMeta({ pausedReason: 'unreadable', pausedRev: { ...(m.pausedRev ?? NO_REV), [implausible[0]]: heads[implausible[0]]!.rev } });
+      return { kind: 'paused', reason: 'unreadable' };
+    }
+    if (pauseFor('remote_deleted').length) {
       dev.setMeta({ ...SYNC_OFF });
       return { kind: 'stopped' };
     }
@@ -192,10 +227,16 @@ export async function syncCycle(ctx: CycleCtx): Promise<CycleResult> {
       dev.setMeta({ deferredPull: true });
       return { kind: 'deferred' };
     }
+    // The copy that couldn't be read hasn't changed: don't download it again (security review S5).
+    const stuck = meta.pausedRev ?? NO_REV;
+    if (meta.pausedReason === 'unreadable' && toPull.length && toPull.every((s) => stuck[s] !== null && heads[s]?.rev === stuck[s])) {
+      return { kind: 'paused', reason: 'unreadable' };
+    }
 
     // 4. Pull and check.
     const remote: Partial<Sides> = {};
     const remoteRev: PerStore<number | null> = { settings: null, progress: null };
+    const remoteAt: PerStore<number | null> = { settings: null, progress: null };
     const remoteHash: PerStore<string | null> = { settings: null, progress: null };
     for (const s of toPull) {
       let snap: (SnapshotHead & { state: unknown }) | null;
@@ -211,11 +252,14 @@ export async function syncCycle(ctx: CycleCtx): Promise<CycleResult> {
         remoteHash[s] = hashOf(side); // what the server holds, as stored (never clamped to this phone's clock)
       } catch (e) {
         const reason: SyncPause = e instanceof BackupError && e.code === 'newer' ? 'newer' : 'unreadable';
-        dev.setMeta({ pausedReason: reason });
+        const m = dev.meta();
+        dev.setMeta({ pausedReason: reason, pausedRev: { ...(m.pausedRev ?? NO_REV), [s]: reason === 'unreadable' ? snap.rev : null } });
         return { kind: 'paused', reason };
       }
       remoteRev[s] = snap.rev;
+      remoteAt[s] = typeof snap.updatedAt === 'number' ? snap.updatedAt : null;
     }
+    if (!alive()) return { kind: 'idle' };
 
     // 5. Merge, and apply on the phone in one write when it changes anything here.
     let merged: Sides;
@@ -226,46 +270,67 @@ export async function syncCycle(ctx: CycleCtx): Promise<CycleResult> {
     }
     const changesPhone = STORES.some((s) => remote[s] && stableStringify(merged[s].state) !== stableStringify(mine[s].state));
     if (changesPhone) {
+      // A quiz opened while the pull was on the network: still never written under it (CR B1).
+      if (dev.busy()) {
+        dev.setMeta({ deferredPull: true });
+        return { kind: 'deferred' };
+      }
       try {
         await dev.write(forPhone(merged, local), {
+          // The phone as it is when the write starts (and again after it lands), merged with what was pulled.
           rebase: (live) => forPhone(mergeAll(phoneSides(live, dev.meta().stamps, mctx), merged, mctx), live),
         });
       } catch {
         return { kind: 'failed', code: 'server' };
       }
+      // Stopped while the write was in flight: whoever stopped it acts next; record nothing.
+      if (!alive()) return { kind: 'idle' };
     }
     for (const s of STORES) {
       if (!remote[s]) continue;
       const m = dev.meta();
       dev.setMeta({
         lastRev: { ...m.lastRev, [s]: remoteRev[s] },
+        lastAt: { ...(m.lastAt ?? NO_REV), [s]: remoteAt[s] },
         lastPushedHash: { ...m.lastPushedHash, [s]: remoteHash[s] },
         stamps: keepStamps(dev, s, merged[s].stamps, mctx.now),
       });
       pulledAny = true;
     }
+    // What goes up is what the phone holds now: the merge, plus anything done while it was applied.
+    let outgoing = merged;
+    if (changesPhone) {
+      try {
+        outgoing = phoneSides(dev.read(), dev.meta().stamps, mctx);
+      } catch (e) {
+        return localProblem(e, dev);
+      }
+    }
 
     // 6. Push what the account doesn't have yet.
     let conflict = false;
     for (const s of STORES) {
-      const h = hashOf(merged[s]);
+      const h = hashOf(outgoing[s]);
       const onServer = remote[s] ? remoteHash[s] : heads[s] ? dev.meta().lastPushedHash[s] : null;
       if (onServer !== null && h === onServer) continue;
       // An empty phone never overwrites the account's progress (engine/syncPlan.ts makes it merge first).
-      if (s === 'progress' && heads.progress && progressIsEmpty(merged.progress.state)) continue;
-      const payload = toPayload<object>(merged[s] as Side<object>);
-      if (utf8Bytes(JSON.stringify(payload)) > MAX_PUSH_BYTES) {
+      if (s === 'progress' && heads.progress && progressIsEmpty(outgoing.progress.state)) continue;
+      const payload = toPayload<object>(outgoing[s] as Side<object>);
+      const bytes = utf8Bytes(JSON.stringify(payload));
+      if (bytes > MAX_PUSH_BYTES || (s === 'settings' && bytes > MAX_SETTINGS_BYTES)) {
         dev.setMeta({ pausedReason: 'toobig' });
         return { kind: 'paused', reason: 'toobig' };
       }
       const expectedRev = remote[s] ? remoteRev[s] : (heads[s]?.rev ?? null);
+      if (!alive()) return { kind: 'idle' };
       try {
         const head = await ctx.port.push({ store: s, expectedRev, storeVersion: versionOf(s), appVersion: ctx.thisApp, deviceId: await ctx.deviceId(), state: payload });
         const m = dev.meta();
         dev.setMeta({
           lastRev: { ...m.lastRev, [s]: head.rev },
+          lastAt: { ...(m.lastAt ?? NO_REV), [s]: typeof head.updatedAt === 'number' ? head.updatedAt : null },
           lastPushedHash: { ...m.lastPushedHash, [s]: h },
-          stamps: keepStamps(dev, s, merged[s].stamps, mctx.now),
+          stamps: keepStamps(dev, s, outgoing[s].stamps, mctx.now),
         });
         pushedAny = true;
       } catch (e) {
@@ -286,7 +351,8 @@ export async function syncCycle(ctx: CycleCtx): Promise<CycleResult> {
       await ctx.wait(CONFLICT_WAITS[attempt]);
       continue;
     }
-    dev.setMeta({ lastSyncAt: ctx.now(), pausedReason: null, deferredPull: false });
+    if (!alive()) return { kind: 'idle' };
+    dev.setMeta({ lastSyncAt: ctx.now(), pausedReason: null, pausedRev: NO_REV, deferredPull: false });
     return pulledAny || pushedAny ? { kind: 'synced', pulled: pulledAny, pushed: pushedAny } : { kind: 'idle' };
   }
 }
@@ -297,20 +363,24 @@ export interface FirstSyncPrep {
   /** The account's sides (none when it has nothing), their revs and fingerprints. */
   remote: Partial<Sides>;
   remoteRev: PerStore<number | null>;
+  remoteAt: PerStore<number | null>;
   remoteHash: PerStore<string | null>;
   /** The phone, the account and the merged result, as full stores (for the preview's three columns). */
   phone: PhoneData;
   account: PhoneData | null;
   after: PhoneData;
-  /** This phone holds no study (nothing to undo). */
+  /** This phone holds no study (no answers, lessons or study days): decides the preview's case. */
   phoneEmpty: boolean;
+  /** This phone holds anything a learner would miss (engine/syncMerge.ts holdsStudy): the 7-day undo copy is kept. */
+  keepUndo: boolean;
 }
 
 export type PrepResult = { ok: true; prep: FirstSyncPrep } | { ok: false; code: CloudErrorCode | 'newer' | 'unreadable' | 'toobig' };
 
 /** What a first sync would do. Reads the account; changes nothing anywhere. */
 export async function prepareFirstSync(ctx: Omit<CycleCtx, 'device' | 'wait' | 'deviceId'> & { read: () => PhoneData; stamps: PerStore<Stamps> }): Promise<PrepResult> {
-  const mctx = mctxOf(ctx);
+  // The first sync's Combine: two different plants keep the more grown one (engine/syncMerge.ts mergePlant).
+  const mctx = { ...mctxOf(ctx), firstSync: true };
   const local = ctx.read();
   let mine: Sides;
   try {
@@ -320,15 +390,15 @@ export async function prepareFirstSync(ctx: Omit<CycleCtx, 'device' | 'wait' | '
   }
   const remote: Partial<Sides> = {};
   const remoteRev: PerStore<number | null> = { settings: null, progress: null };
+  const remoteAt: PerStore<number | null> = { settings: null, progress: null };
   const remoteHash: PerStore<string | null> = { settings: null, progress: null };
   for (const s of STORES) {
     let snap: (SnapshotHead & { state: unknown }) | null;
     try {
       const head = await ctx.port.head(s);
       if (!head) continue;
-      if (plan({ head, meta: { lastRev: null, lastPushedHash: null }, setUp: false, switchPending: false, localHash: '', localEmpty: false, thisApp: ctx.thisApp }).kind === 'pause') {
-        return { ok: false, code: 'newer' };
-      }
+      const first = plan({ head, meta: { lastRev: null, lastPushedHash: null }, setUp: false, switchPending: false, localHash: '', localEmpty: false, thisApp: ctx.thisApp });
+      if (first.kind === 'pause') return { ok: false, code: first.reason === 'unreadable' ? 'unreadable' : 'newer' };
       snap = await ctx.port.pull(s);
     } catch (e) {
       return { ok: false, code: errorCode(e) };
@@ -339,6 +409,7 @@ export async function prepareFirstSync(ctx: Omit<CycleCtx, 'device' | 'wait' | '
       (remote as Record<string, Side<object>>)[s] = side;
       remoteHash[s] = hashOf(side); // what the server holds, as stored (never clamped to this phone's clock)
       remoteRev[s] = snap.rev;
+      remoteAt[s] = typeof snap.updatedAt === 'number' ? snap.updatedAt : null;
     } catch (e) {
       return { ok: false, code: e instanceof BackupError && e.code === 'newer' ? 'newer' : 'unreadable' };
     }
@@ -357,11 +428,13 @@ export async function prepareFirstSync(ctx: Omit<CycleCtx, 'device' | 'wait' | '
       case: firstCase(phoneEmpty, accountHasProgress),
       remote,
       remoteRev,
+      remoteAt,
       remoteHash,
       phone: local,
       account: remote.settings || remote.progress ? forPhone({ settings: remote.settings ?? mine.settings, progress: remote.progress ?? EMPTY_PROGRESS }, local) : null,
       after: forPhone(merged, local),
       phoneEmpty,
+      keepUndo: holdsStudy(mine.progress.state, mine.settings.state),
     },
   };
 }
@@ -377,11 +450,19 @@ export const EMPTY_PROGRESS: Side<SyncedProgress> = { state: { byCert: {}, strea
  * - 'replace': this phone takes the account's progress ("Start fresh with
  *   this account"; this phone's own goes to the undo slot first).
  * The undo snapshot is written in the SAME storage write as the stores. Then
- * sync is on, and a normal cycle sends the result to the account.
+ * sync is on for `accountHash` (the account this was confirmed for), and a
+ * normal cycle sends the result to the account: here when `cycle` is left
+ * on (the tests), or by lib/sync.ts's one-at-a-time queue.
  */
-export async function confirmFirstSync(ctx: CycleCtx, prep: FirstSyncPrep, mode: 'merge' | 'replace', undo: UndoSnapshot | null | undefined): Promise<CycleResult> {
+export async function confirmFirstSync(
+  ctx: CycleCtx,
+  prep: FirstSyncPrep,
+  mode: 'merge' | 'replace',
+  undo: UndoSnapshot | null | undefined,
+  opts: { accountHash?: string | null; cycle?: boolean } = {},
+): Promise<CycleResult> {
   const dev = ctx.device;
-  const mctx = mctxOf(ctx);
+  const mctx = { ...mctxOf(ctx), firstSync: true };
   const local = dev.read();
   let target: Sides;
   try {
@@ -402,9 +483,11 @@ export async function confirmFirstSync(ctx: CycleCtx, prep: FirstSyncPrep, mode:
   dev.setMeta({
     ...SYNC_OFF,
     enabled: true,
+    accountHash: opts.accountHash ?? null,
     lastRev: prep.remoteRev,
+    lastAt: prep.remoteAt ?? NO_REV,
     lastPushedHash: prep.remoteHash,
     stamps: { settings: target.settings.stamps, progress: target.progress.stamps },
   });
-  return syncCycle(ctx);
+  return opts.cycle === false ? { kind: 'idle' } : syncCycle(ctx);
 }

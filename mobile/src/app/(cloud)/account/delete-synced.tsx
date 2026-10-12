@@ -2,7 +2,8 @@
  * Delete synced progress (spec §3.1 S6, compliance 4.7),
  * aurivan://account/delete-synced: "Delete synced progress?" with what it
  * does (the copy in the account goes; the account and this phone's progress
- * stay; sync turns off), the destructive button, and Cancel. A sheet rather
+ * stay; sync turns off; the learner's other devices stop syncing when they
+ * next connect), the destructive button, and Cancel. A sheet rather
  * than a system alert, like Sign out, so it reads the same on every
  * platform. Offline or a server problem: nothing is deleted, and it says so.
  *
@@ -48,6 +49,7 @@ export default function DeleteSynced() {
         <T v="display">{copy('delsync.title')}</T>
       </View>
       <T v="body" style={{ marginTop: space.md }}>{copy('delsync.body')}</T>
+      <T v="meta" style={{ marginTop: space.sm }}>{copy('delsync.others')}</T>
       {done ? (
         <Button label={copy('sync.what.done')} onPress={back} style={{ marginTop: space.lg }} />
       ) : (

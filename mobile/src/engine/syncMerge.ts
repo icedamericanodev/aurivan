@@ -704,6 +704,25 @@ export function readSnapshot<T extends SyncedSettings | SyncedProgress>(
   return { state: withoutDeviceLocal(store, JSON.parse(JSON.stringify(checked)) as object) as T, stamps: readStamps(isObj(raw) ? raw.changedAt : undefined) };
 }
 
+/**
+ * True when the phone holds anything a learner would miss (Phase 7 review,
+ * CR N8): any study, a saved question, a note read, a mock, a badge, a game
+ * level, a plant, a report, a study day, or an exam date. Stricter than
+ * progressIsEmpty (which decides the first-sync preview's case): when this is
+ * true, a first sync keeps the 7-day "Undo sync" copy before changing the
+ * phone, so "Start fresh" never discards anything without a way back.
+ */
+export function holdsStudy(p: SyncedProgress, s: Partial<SyncedSettings>): boolean {
+  if (!progressIsEmpty(p) || p.streak.best > 0 || (p.reports ?? []).length > 0) return true;
+  const some = (x: object | readonly unknown[] | undefined) => (Array.isArray(x) ? x.length > 0 : Boolean(x && Object.keys(x).length > 0));
+  const certHolds = Object.values(p.byCert).some(
+    (cp) =>
+      some(cp.bookmarks) || some(cp.notesRead) || some(cp.mocks) || some(cp.mistakes) || some(cp.review) || some(cp.cards) ||
+      some(cp.gameBest) || some(cp.gameGrowth) || some(cp.mastery) || some(cp.milestones?.earned) || Boolean(cp.plant),
+  );
+  return certHolds || Object.values(s.examDates ?? {}).some(Boolean);
+}
+
 /** True when a synced progress side holds no study at all (nothing to lose, nothing to keep). */
 export function progressIsEmpty(p: SyncedProgress): boolean {
   const any = Object.values(p.byCert).some((cp) => Object.keys(cp.answers ?? {}).length > 0 || (cp.lessonsDone ?? []).length > 0);

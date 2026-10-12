@@ -277,10 +277,18 @@ describe('Account → Sync (§3.2)', () => {
       useProgress.setState({ streak: { current: 0, best: 0, lastDay: null } });
     });
     memory.control.writeSnapshot(MAYA.userId, 'progress', { state: remoteProgress([ids[4]]) });
+    // Review CR N8: an exam date alone is something to keep, so the undo line shows…
+    await sync.startFirstSync();
+    mount(<>{(() => { const F = screen('first-sync'); return <F />; })()}</>);
+    expect(allText()).toContain('You can undo this');
+    unmount();
+    // …and with truly nothing on the phone there is nothing to undo: no undo line.
+    act(() => {
+      useSettings.setState({ examDates: {} });
+    });
     await sync.startFirstSync();
     mount(<>{(() => { const F = screen('first-sync'); return <F />; })()}</>);
     expect(allText()).toContain('Bring your progress to this phone?');
-    // Nothing on the phone to undo: no undo line.
     expect(allText()).not.toContain('You can undo this');
     await press('Bring it here');
     expect(answered()).toEqual([ids[4]]);
@@ -316,7 +324,9 @@ describe('Account → Sync (§3.2)', () => {
     expect(sync.statusLine({ ...base, busy: true })).toBe('Syncing…');
     expect(sync.statusLine({ ...base, offline: true })).toBe('Will sync when you’re online');
     expect(sync.statusLine({ ...base, pausedReason: 'newer' })).toMatch(/^Sync is paused\. This account has progress from a newer version/);
-    expect(sync.statusLine({ ...base, pausedReason: 'unreadable' })).toBe('Sync is paused. We couldn’t read the synced copy, so your phone’s progress is unchanged.');
+    expect(sync.statusLine({ ...base, pausedReason: 'unreadable' })).toBe('Sync is paused. We couldn’t read the synced copy, so your phone’s progress is unchanged. If this keeps happening, contact us from Help.');
+    // UX P1: only a lost connection is "offline"; anything else says it will try again.
+    expect(sync.statusLine({ ...base, retrying: true })).toBe('Couldn’t sync just now. We’ll try again soon.');
     expect(sync.statusLine({ ...base, pausedReason: 'toobig' })).toMatch(/^Your progress is too large to sync/);
     expect(sync.statusLine({ ...base, enabled: false })).toBe('Sync is off');
     expect(sync.statusLine({ ...base, signedIn: false, expired: true })).toBe('Sign in again to keep syncing');
@@ -399,7 +409,7 @@ describe('account switch', () => {
     await account.verifyCode('raj@example.com', memory.control.lastCode('raj@example.com')!, true);
     await flush();
     mount(<>{(() => { const S = screen('switch'); return <S />; })()}</>);
-    await press('Keep this phone’s progress. It will be added to this account.');
+    await press('Keep this phone’s progress. It will be added to this account, even if it’s someone else’s.');
     await press('Continue');
     const rajCopy = memory.control.snapshots(RAJ.userId).progress!.state as { byCert: { cisa: { answers: object } } };
     expect(Object.keys(rajCopy.byCert.cisa.answers)).toEqual([ids[0]]);
@@ -494,7 +504,7 @@ describe('the sign-out sheet and What syncs', () => {
     });
     try {
       await press('Remove and sign out');
-      expect(alert.mock.calls[0][1]).toBe('This removes all study progress from this phone. Your account’s copy isn’t affected.');
+      expect(alert.mock.calls[0][1]).toBe('This removes all your study progress, your plant and your study settings from this phone. Your account’s copy isn’t affected.');
     } finally {
       alert.mockRestore();
     }

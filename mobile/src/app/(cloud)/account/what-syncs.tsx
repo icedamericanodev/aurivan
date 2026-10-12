@@ -25,6 +25,7 @@ export default function WhatSyncs() {
       </View>
       <T v="body" style={{ marginTop: space.md }}>{copy('sync.what.body')}</T>
       <T v="meta" style={{ marginTop: space.md }}>{copy('sync.what.limits')}</T>
+      <T v="meta" style={{ marginTop: space.sm }}>{copy('sync.what.kept')}</T>
       <Button kind="secondary" label={copy('sync.what.done')} onPress={back} style={{ marginTop: space.xl }} />
     </Screen>
   );

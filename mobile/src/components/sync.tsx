@@ -5,16 +5,20 @@
  *
  * - SyncSection: Account → Sync. "Sync this phone" (on only after the
  *   first-sync preview), the status line, Sync now (Try again when paused),
- *   What syncs, Delete synced progress (its own confirmation sheet).
+ *   What syncs, Delete synced progress (its own confirmation sheet). After
+ *   the learner taps the switch or Sync now, a screen reader hears the
+ *   status line each time what it says changes ("Syncing…", "Synced just
+ *   now", "Sync is off"), never the quiet "n min ago" refresh (UX H3).
  * - PreviewRows: the first-sync preview's three columns (This phone ·
  *   Account · After), side by side, stacked at large text. Never the bank
  *   size: counts are "312 questions", like the restore preview.
  */
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { copy } from '../content/cloud/copy';
-import { startFirstSync, statusLine, syncNow, turnSyncOff, type FirstPreview } from '../lib/sync';
+import { sayLater } from '../lib/a11y';
+import { startFirstSync, statusKind, statusLine, syncNow, turnSyncOff, type FirstPreview } from '../lib/sync';
 import { useAccount } from '../store/account';
 import { useSyncMeta, useSyncStatus } from '../store/sync';
 import { LARGE_TEXT, space } from '../theme/tokens';
@@ -49,16 +53,49 @@ export function SyncSection() {
   const lastSyncAt = useSyncMeta((s) => s.lastSyncAt);
   const busy = useSyncStatus((s) => s.busy);
   const offline = useSyncStatus((s) => s.offline);
+  const retrying = useSyncStatus((s) => s.retrying);
   const signedIn = useAccount((s) => s.signedIn);
   const expired = useAccount((s) => s.expired);
   const now = useNow();
   const [working, setWorking] = useState<'start' | null>(null);
   const [notice, setNotice] = useState<{ text: string; tone: 'ok' | 'problem' } | null>(null);
 
-  const line = statusLine({ enabled, signedIn, expired, busy: busy || working === 'start', offline, pausedReason, lastSyncAt, now });
+  const input = { enabled, signedIn, expired, busy: busy || working === 'start', offline, retrying, pausedReason, lastSyncAt, now };
+  const line = statusLine(input);
+  const kind = statusKind(input);
+
+  // UX H3 (WCAG 4.1.3): after a tap, say the status line when what it says changes, until it settles.
+  const listening = useRef(false);
+  const lastKind = useRef(kind);
+  useEffect(() => {
+    if (kind === lastKind.current) return;
+    lastKind.current = kind;
+    if (!listening.current) return;
+    sayLater(line, undefined, { queue: true });
+    if (kind !== 'busy') listening.current = false;
+  }, [kind, line]);
+  const listen = () => {
+    listening.current = true;
+    lastKind.current = kind;
+  };
+  // Sync now: the line may read the same kind before and after ("Synced 4 min ago" → "Synced just now"),
+  // so the result is said once the sync is done.
+  const syncTapped = async () => {
+    listening.current = false;
+    await syncNow();
+    const st = useSyncStatus.getState();
+    const m = useSyncMeta.getState();
+    const a = useAccount.getState();
+    sayLater(
+      statusLine({ enabled: m.enabled, signedIn: a.signedIn, expired: a.expired, busy: st.busy, offline: st.offline, retrying: st.retrying, pausedReason: m.pausedReason, lastSyncAt: m.lastSyncAt, now: Date.now() }),
+      undefined,
+      { queue: true },
+    );
+  };
 
   const toggle = async (on: boolean) => {
     setNotice(null);
+    listen();
     if (!on) {
       turnSyncOff();
       return;
@@ -85,7 +122,7 @@ export function SyncSection() {
           label={copy(paused ? 'sync.retry' : 'sync.now')}
           accessibilityHint={copy('hint.sync.now')}
           disabled={busy || working !== null}
-          onPress={() => void syncNow()}
+          onPress={() => void syncTapped()}
           style={{ marginTop: space.md }}
         />
       )}

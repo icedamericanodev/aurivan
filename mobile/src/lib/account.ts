@@ -22,7 +22,8 @@ import { SIGNED_OUT, useAccount } from '../store/account';
 import { useBackup } from '../store/backup';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
-import { sweepBackupFiles } from './backup';
+import { SYNC_OFF, useSyncMeta } from '../store/sync';
+import { sweepBackupFiles, wipeLocalStudy, type WipeAlso } from './backup';
 
 export type Result<T = object> = ({ ok: true } & T) | { ok: false; code: CloudErrorCode; detail?: string; retryAfterSec?: number };
 
@@ -306,13 +307,49 @@ export async function deleteAccount(i: { alsoLocal: boolean; appleAuthorizationC
   }
   await b.auth.signOut('local').catch(() => {});
   useAccount.getState().setFacts({ ...SIGNED_OUT });
-  if (i.alsoLocal) removeLocalProgress();
+  if (i.alsoLocal) await removeAllLocal();
   emit({ kind: 'deleted' });
   return { ok: true };
 }
 
-/** Clear study progress on this phone for every exam: Settings → Reset's path, for each one. */
-export function removeLocalProgress() {
+/**
+ * "Remove my progress from this phone (for shared devices)", and account
+ * deletion's "also remove from this phone" (Phase 7 review, CR B5 / SEC
+ * S3–S4 / QA B2): the phone goes back to a fresh install's study state
+ * (lib/backup.ts wipeLocalStudy: progress, streak, plant, reports, exam
+ * dates and study settings; theme, motion, reminders and haptics stay), and
+ * in the same storage write the sync record (off, no stamps) and this
+ * phone's link to the account are forgotten. Then this install gets a new
+ * id, so the next learner's snapshots never share one with this learner's.
+ * Never rejects: if the one write fails, the older per-exam path clears the
+ * study progress instead.
+ */
+export async function removeAllLocal(): Promise<void> {
+  const also: WipeAlso[] = cloudReady()
+    ? [
+        { store: useSyncMeta, state: { ...SYNC_OFF, stamps: { settings: {}, progress: {} } } },
+        { store: useAccount, state: { ...pickFacts(useAccount.getState()), syncedAccountHash: null } },
+      ]
+    : [];
+  try {
+    await wipeLocalStudy(also);
+  } catch {
+    removeLocalProgress();
+    for (const a of also) a.store.setState(a.state);
+  }
+  if (cloudReady()) await backend().device.renew().catch(() => {});
+}
+
+const pickFacts = (s: ReturnType<typeof useAccount.getState>) => ({
+  signedIn: s.signedIn,
+  emailMasked: s.emailMasked,
+  providers: s.providers,
+  syncedAccountHash: s.syncedAccountHash,
+  expired: s.expired,
+});
+
+/** Clear study progress on this phone for every exam: Settings → Reset's path, for each one (removeAllLocal's fallback). */
+function removeLocalProgress() {
   const { byCert, resetCert } = useProgress.getState();
   for (const certId of Object.keys(byCert)) resetCert(certId);
   useSession.getState().clear();

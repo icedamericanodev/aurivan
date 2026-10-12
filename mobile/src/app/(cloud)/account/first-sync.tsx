@@ -5,7 +5,8 @@
  * - only the account has progress → "Bring your progress to this phone?"
  * - both → "Bring your progress together?" (Combine)
  * Three columns, This phone · Account · After: the After column is the real
- * merge result, not a guess. It always names the masked account (a learner
+ * merge result, not a guess (Combine adds "Questions answered on both count
+ * once."). It always names the masked account (a learner
  * tricked into someone else's account would see it here). When the phone
  * has progress, it is kept for 7 days as "Undo sync" (it replaces an older
  * "Undo restore", and says so).
@@ -22,7 +23,7 @@ import { AccountNotice } from '../../../components/account';
 import { PreviewRows, syncProblem } from '../../../components/sync';
 import { Button, PushedHeader, Screen, T } from '../../../components/ui';
 import { copy, type AccountCopyKey } from '../../../content/cloud/copy';
-import { moveFocus } from '../../../lib/a11y';
+import { moveFocus, sayLater } from '../../../lib/a11y';
 import { confirmPreview, dismissFirstSync, pendingPreview } from '../../../lib/sync';
 import { useAccount } from '../../../store/account';
 import { space } from '../../../theme/tokens';
@@ -55,6 +56,8 @@ export default function FirstSync() {
   const go = async () => {
     setNotice(null);
     setBusy(true);
+    // The busy line appears under the button: a screen reader hears it too (UX H3).
+    sayLater(copy('first.busy'));
     const r = await confirmPreview();
     setBusy(false);
     if (r.ok) back();
@@ -69,6 +72,7 @@ export default function FirstSync() {
       </View>
       <T v="body" style={{ marginTop: space.md }}>{copy(words.body, { email })}</T>
       <PreviewRows rows={preview.rows} />
+      {preview.case === 'both' && <T v="meta" style={{ marginTop: space.md }}>{copy('first.both.once')}</T>}
       {preview.undo && <T v="meta" style={{ marginTop: space.md }}>{copy('first.undo')}</T>}
       {preview.replacesUndo && <T v="meta" style={{ marginTop: space.xs }}>{copy('first.undo.replaces')}</T>}
       <Button label={copy(words.go)} onPress={go} disabled={busy} style={{ marginTop: space.lg }} />
