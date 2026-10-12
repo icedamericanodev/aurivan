@@ -338,3 +338,51 @@ it('builds the heavy save', () => {
   expect(save.answers).toBeGreaterThan(3000);
   expect(save.mocks).toBe(12);
 });
+
+/**
+ * Budgets (mobile 1.15.x performance work), in components re-rendered and
+ * saves, never milliseconds. Generous: about twice what the fixes reached,
+ * and well under 1.15.0 (in brackets).
+ */
+describe('budgets with the heavy save', () => {
+  const LAP: Tab[] = ['learn', 'practice', 'play', 'you', 'home'];
+  function lap() {
+    startMeasure();
+    for (const t of LAP) tapTab(t);
+    return { ...total(snapshot()) };
+  }
+
+  it('tapping through every open tab', () => {
+    openAll();
+    lap(); // settles each tab's first view of the day
+    const l = lap();
+    expect(l.renders).toBeLessThan(2500); // 1.15.0: 6,112 (now ~1,200)
+    expect(l.saves).toBe(0); // 1.15.0: 7 saves of the whole store (~310 KB on each Today tap)
+    expect(l.setParams).toBe(0); // 1.15.0: 1 (leaving Learn set params on the next tab)
+  });
+
+  it('one answer recorded while the tabs are open', () => {
+    openAll();
+    tapTab('practice');
+    startMeasure();
+    act(() => {
+      useProgress.getState().recordAnswer('cisa', 'd3_005', true, 'sure');
+    });
+    const s = snapshot();
+    expect(total(s).renders).toBeLessThan(1600); // 1.15.0: 2,308 (now ~1,070)
+    expect(s.learn.renders).toBe(0); // 1.15.0: 634
+    expect(s.play.renders).toBe(0); // 1.15.0: 459
+    expect(total(s).saves).toBe(1); // the answer itself
+  });
+
+  it('a store write that changes nothing re-renders nothing and saves nothing', () => {
+    openAll();
+    startMeasure();
+    act(() => {
+      useProgress.setState((x) => x);
+      useProgress.setState({});
+    });
+    expect(total(snapshot()).renders).toBe(0);
+    expect(total(snapshot()).saves).toBe(0);
+  });
+});
