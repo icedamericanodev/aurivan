@@ -29,6 +29,8 @@ export { default as NotebookPen } from 'lucide-react-native/icons/notebook-pen';
 export { default as Play } from 'lucide-react-native/icons/play';
 export { default as Plus } from 'lucide-react-native/icons/plus';
 export { default as RotateCcw } from 'lucide-react-native/icons/rotate-ccw';
+// Uplift Phase 6 (accounts, built OFF): You → "Sync across devices" / "Account and sync".
+export { default as RefreshCw } from 'lucide-react-native/icons/refresh-cw';
 export { default as Scale } from 'lucide-react-native/icons/scale';
 export { default as Settings } from 'lucide-react-native/icons/settings';
 export { default as Share2 } from 'lucide-react-native/icons/share-2';

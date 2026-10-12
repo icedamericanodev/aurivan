@@ -279,16 +279,16 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
       async deleteAccount(i) {
         await enter('auth.deleteAccount');
         const { s, u } = await needUser();
-        if (i.confirm !== 'DELETE') throw new CloudError('invalid');
+        if (i.confirm !== 'DELETE') throw new CloudError('invalid', undefined, 'confirm_required');
         if (!recentAuth(s.authAt, now())) throw new CloudError('reauth_required');
-        if (u.providers.includes('apple') && !i.appleAuthorizationCode) throw new CloudError('invalid', undefined, 'apple_code');
+        if (u.providers.includes('apple') && !i.appleAuthorizationCode) throw new CloudError('invalid', undefined, 'apple_code_required');
         users.delete(u.userId);
         snapshots.delete(u.userId);
         lastExport.delete(u.userId);
         await saveSession(null);
         emit();
       },
-      async exportMyData() {
+      async exportMyData(o) {
         await enter('auth.exportMyData');
         const { u } = await needUser();
         const last = lastExport.get(u.userId);
@@ -307,7 +307,7 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
             app: 'aurivan',
             schema: 1,
             exportedAt: new Date(now()).toISOString(),
-            appVersion: opts.appVersion ?? '0.0.0',
+            appVersion: o?.appVersion ?? opts.appVersion ?? '0.0.0',
             stores,
             account: { email: u.email, providers: u.providers, createdAt: new Date(u.createdAt).toISOString(), termsVersion: u.termsVersion },
           },

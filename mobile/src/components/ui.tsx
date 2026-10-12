@@ -11,7 +11,7 @@
  * things you choose between; one forest panel per screen; tinted blocks
  * only for feedback.
  */
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode, type Ref } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, type ComponentProps, type ReactNode, type Ref } from 'react';
 import {
   Image,
   Platform,
@@ -1326,6 +1326,7 @@ const styles = StyleSheet.create({
   search: { minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, paddingLeft: space.lg, flexDirection: 'row', alignItems: 'center' },
   searchClear: { width: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' },
   note: { minHeight: 112, borderRadius: radius.md, borderWidth: 1.5, paddingHorizontal: space.lg, paddingTop: space.md, paddingBottom: space.md },
+  field: { minHeight: 56, marginTop: space.sm, borderRadius: radius.md, borderWidth: 1.5, paddingHorizontal: space.lg, paddingVertical: space.md },
   tabDot: { width: 4, height: 4, borderRadius: 2 },
 });
 
@@ -1827,6 +1828,72 @@ export function NoteField({
       <T v="meta" num style={{ textAlign: 'right', marginTop: space.xs }} accessibilityLabel={`${value.length} of ${maxLength} characters`}>
         {`${value.length} / ${maxLength}`}
       </T>
+    </View>
+  );
+}
+
+// ── TextField: one line the learner types (sign-in email, code, DELETE) ──
+// Uplift Phase 6 (accounts, built OFF). The same look as NoteField (raised,
+// 1.5 `control` outline in both themes, radius 16, body text that grows with
+// the phone's text size up to ×2), one line, at least 56pt tall. Its visible
+// `label` sits above it and is also its spoken name. A problem shows under
+// it in `tip` (Grove keeps red for wrong answers), is part of the spoken
+// hint, and is announced once when it appears. `tabular` lines digits up
+// (the 6-digit code).
+export function TextField({
+  label,
+  value,
+  onChangeText,
+  problem,
+  help,
+  ref,
+  tabular,
+  ...input
+}: {
+  label: string;
+  value: string;
+  onChangeText: (v: string) => void;
+  /** Why the value can't be used yet ("Enter an email address like …"). */
+  problem?: string | null;
+  /** A quiet line under the field when there is no problem. */
+  help?: string;
+  ref?: Ref<TextInput>;
+  tabular?: boolean;
+} & Pick<
+  ComponentProps<typeof TextInput>,
+  'keyboardType' | 'autoComplete' | 'textContentType' | 'autoCapitalize' | 'maxLength' | 'onSubmitEditing' | 'returnKeyType' | 'editable' | 'placeholder' | 'autoFocus'
+>) {
+  const { c } = useTheme();
+  const said = useRef<string | null>(null);
+  useEffect(() => {
+    if (problem && problem !== said.current) sayLater(problem);
+    said.current = problem ?? null;
+  }, [problem]);
+  return (
+    <View style={{ marginTop: space.md }}>
+      <T v="label">{label}</T>
+      <TextInput
+        ref={ref}
+        value={value}
+        onChangeText={onChangeText}
+        placeholderTextColor={c.muted}
+        accessibilityLabel={label}
+        accessibilityHint={problem ?? help}
+        maxFontSizeMultiplier={maxScale.body}
+        autoCorrect={false}
+        {...input}
+        style={[
+          type.body,
+          tabular ? { fontVariant: ['tabular-nums'] } : null,
+          styles.field,
+          { color: c.ink, backgroundColor: c.raised, borderColor: c.control },
+        ]}
+      />
+      {problem ? (
+        <T v="meta" color={c.tip} style={{ marginTop: space.xs }}>{problem}</T>
+      ) : help ? (
+        <T v="meta" style={{ marginTop: space.xs }}>{help}</T>
+      ) : null}
     </View>
   );
 }

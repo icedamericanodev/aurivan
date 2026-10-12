@@ -21,13 +21,19 @@
  *
  * Theme lives only here since 1.17 (the owner found the switch on You
  * redundant once Settings was tidy).
+ *
+ * Uplift Phase 6 (accounts, built OFF): in a cloud build only, an Account
+ * group sits above Your data, and About's last sentence follows the account
+ * (components/account.tsx). With the flag off nothing here changes.
  */
 import Constants from 'expo-constants';
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import * as ExpoRouter from 'expo-router';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Alert, Linking, Platform, View, type ScrollView } from 'react-native';
+import { aboutLine, AccountSettingsGroup } from '../components/account';
 import { BrandLockup, PillarList } from '../components/brand';
+import { CLOUD } from '../cloud/flag';
 import { CalendarSheet } from '../components/calendar';
 import { EXAM_FOCUSED_SUBTITLE, EXAM_FOCUSED_TITLE, FAMILIARITY_QUESTION } from '../components/fit';
 import { creditSubtitle } from '../components/help';
@@ -376,6 +382,9 @@ export default function Settings() {
         </SettingsGroup>
       </View>
 
+      {/* Cloud builds only: Settings → Account (one of the two ways in). */}
+      {CLOUD && <AccountSettingsGroup />}
+
       {/* Backup and restore (Build C): save a file, restore one, undo for 7 days. Free, offline, no account. */}
       <YourData />
 
@@ -407,7 +416,8 @@ export default function Settings() {
 
       <Gap h={space.xl} />
       <T v="meta">
-        Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. Progress is stored only on this device.
+        {/* The last sentence is "Progress is stored only on this device." with the flag off (content/cloud/copy.ts about.off). */}
+        Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. {aboutLine()}
       </T>
       <Gap h={space.sm} />
       {/* Every certification named anywhere in the app (coming-soon ones too) needs its trademark notice;

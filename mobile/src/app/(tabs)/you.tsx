@@ -23,6 +23,9 @@
  * Mobile 1.16: "See your readiness report" under the rings; each Mock exams
  * row opens the report with that mock's domains shown, and the section has
  * a "See report" button.
+ * Uplift Phase 6 (accounts, built OFF): in a cloud build only, the first row
+ * of Help and feedback is "Sync across devices" (components/account.tsx).
+ * With the flag off (every build today) nothing here changes.
  */
 import { router } from 'expo-router';
 import { memo, useEffect, useMemo, useState } from 'react';
@@ -30,6 +33,8 @@ import { View } from 'react-native';
 import { boundsLabel, DomainRings, RINGS_NOTE, ringsSpoken } from '../../components/journey';
 import { useGrowth, useScreenFocus } from '../../components/motion';
 import { creditSubtitle } from '../../components/help';
+import { AccountRow } from '../../components/account';
+import { CLOUD } from '../../cloud/flag';
 import { MindsetGrowthCard } from '../../components/moments';
 import { BadgeIcon, Bookmark, ICON_STROKE, Leaf, LifeBuoy, NotebookPen, RotateCcw, Settings, Share2, Sprout } from '../../components/icons';
 import { ShareProgressSheet } from '../../components/shareCard';
@@ -386,6 +391,8 @@ const YouLists = memo(function YouLists({
 
         {/* One entry to Help and feedback (mobile 1.7); the full list is on that screen. */}
         <Section title="Help and feedback" />
+        {/* Cloud builds only: "Sync across devices" / "Account and sync" (one of the two ways in). */}
+        {CLOUD && <AccountRow />}
         <ListRow
           icon={icon(LifeBuoy)}
           title="Get help or send feedback"

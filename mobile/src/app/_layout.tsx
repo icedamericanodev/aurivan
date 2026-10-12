@@ -8,6 +8,9 @@
  * 3. Mounts MotionRoot: Reduce Motion (the phone's, live, or Settings →
  *    Motion → Reduced) reaches every animation, Reanimated's included.
  * 4. Mounts ThemeFade: switching Light ⇄ Dark dissolves instead of flashing.
+ * 5. Cloud builds only (Uplift Phase 6, built OFF): once saved data has
+ *    loaded, lib/account.ts initAccount() checks the sign-in and follows it.
+ *    With the flag off (every build today) the effect returns at once.
  */
 // Per-weight imports so only these six font files are bundled.
 import { Figtree_400Regular } from '@expo-google-fonts/figtree/400Regular';
@@ -22,6 +25,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { getCertification } from '../content/certifications';
+import { CLOUD } from '../cloud/flag';
+import { initAccount } from '../lib/account';
 import { pruneUndo } from '../lib/backup';
 import { initCaseSeen } from '../lib/badges';
 import { ensureBackfill, ensureCatalog, syncPlanters } from '../lib/milestones';
@@ -73,6 +78,19 @@ export default function RootLayout() {
     else cancelReminders().catch(() => {});
     // An "Undo restore" snapshot older than 7 days is dropped once, at launch.
     pruneUndo();
+  }, [hydrated]);
+
+  // Cloud builds only: the account's sign-in state, and the session refresh
+  // only while the app is in front. Nothing runs with the flag off.
+  useEffect(() => {
+    if (!CLOUD || !hydrated) return;
+    let live = true;
+    let stop = () => {};
+    initAccount().then((s) => (live ? (stop = s) : s()));
+    return () => {
+      live = false;
+      stop();
+    };
   }, [hydrated]);
 
   // Build F: once per certification (an older save, a new cert, or a restore

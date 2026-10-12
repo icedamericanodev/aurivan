@@ -10,6 +10,7 @@
  * With the flag off none of this runs: `cloudReady()` is false, the entry
  * points are hidden, and the (cloud) screens redirect to Today.
  */
+import Constants from 'expo-constants';
 import { File, Directory, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { AppState, Platform } from 'react-native';
@@ -96,6 +97,21 @@ export async function initAccount(): Promise<() => void> {
 }
 
 // ── Sign in ───────────────────────────────────────────────────────────
+/**
+ * The sign-in sheet's "I'm 16 or older and I agree to the Terms" box, for
+ * this visit only (never saved). The email screen takes no link parameters
+ * (a deep link can't tick the box for the learner), so it reads this; it
+ * lapses after 30 minutes and on every app start.
+ */
+const AGREE_TTL_MS = 30 * 60_000;
+let agreedAt: number | null = null;
+export function setAgreed(on: boolean, now = Date.now()) {
+  agreedAt = on ? now : null;
+}
+export function hasAgreed(now = Date.now()): boolean {
+  return agreedAt !== null && now - agreedAt >= 0 && now - agreedAt < AGREE_TTL_MS;
+}
+
 /**
  * After any sign-in: record the Terms (the learner ticked "16 or older and
  * I agree" on the sheet before any sign-in button worked). If that fails,
@@ -233,7 +249,7 @@ const ACCOUNT_FILE = /^aurivan-account-.*\.json$/;
 export async function downloadMyData(now = Date.now()): Promise<Result<{ outcome: 'shared' | 'unavailable' }>> {
   let text: string;
   try {
-    text = await backend().auth.exportMyData();
+    text = await backend().auth.exportMyData({ appVersion: Constants.expoConfig?.version });
   } catch (e) {
     return failed(e);
   }

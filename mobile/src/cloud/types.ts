@@ -37,6 +37,13 @@ export type CloudErrorCode =
 /**
  * `detail` is a short machine word for the screen to pick its copy
  * (`code_wrong`, `code_expired`, `code_toomany`). Never a server message.
+ *
+ * The Edge Functions answer `{ error, detail? }` (delete-account:
+ * unauthorized, reauth_required, invalid with detail confirm_required |
+ * apple_code_required | apple_code_invalid, rate_limited with a
+ * `retry-after` header, too_big, server). The Phase 9 Supabase adapter maps
+ * `error` to the code, `detail` to detail and `retry-after` to
+ * retryAfterSec; the memory backend answers with the same set.
  */
 export class CloudError extends Error {
   constructor(
@@ -84,8 +91,12 @@ export interface AuthPort {
   acceptTerms(v: { termsVersion: string; ageConfirmed: true }): Promise<void>;
   signOut(scope: 'local' | 'global'): Promise<void>;
   deleteAccount(i: { confirm: 'DELETE'; appleAuthorizationCode?: string }): Promise<void>;
-  /** JSON text for the share sheet: the backup envelope plus `account` (and `board` from PR 8). */
-  exportMyData(): Promise<string>;
+  /**
+   * JSON text for the share sheet: the backup envelope plus `account` (and
+   * `board` from PR 8). The export-my-data function takes `{ appVersion }`
+   * for the envelope.
+   */
+  exportMyData(opts?: { appVersion?: string }): Promise<string>;
   /** AppState: refresh the session only while the app is in the foreground. */
   setForeground(active: boolean): void;
 }

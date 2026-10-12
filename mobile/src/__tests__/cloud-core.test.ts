@@ -27,13 +27,22 @@ const codeOf = async (p: Promise<unknown>) => {
   }
 };
 
-describe('the flag is off by default (every build today)', () => {
-  it('CLOUD is false and no backend loads', () => {
+// CI also runs the whole suite with the flag ON and the memory backend (spec A1: "the existing suites run with
+// the flag on and signed out"); this block checks whichever mode the run is in.
+const onRun = process.env.EXPO_PUBLIC_AURIVAN_CLOUD === '1';
+describe('the flag', () => {
+  (onRun ? it.skip : it)('is off by default (every build today): CLOUD is false and no backend loads', () => {
     expect(process.env.EXPO_PUBLIC_AURIVAN_CLOUD).toBeUndefined();
     expect(CLOUD).toBe(false);
     expect(PROVIDERS).toEqual([]);
     setBackendForTests(undefined);
     expect(getBackend()).toBeNull();
+  });
+
+  (onRun ? it : it.skip)('when on (the flag-on CI run), loads the memory backend in a dev build', () => {
+    expect(CLOUD).toBe(true);
+    setBackendForTests(undefined);
+    expect(getBackend()).not.toBeNull();
   });
 });
 
@@ -225,7 +234,7 @@ describe('the memory backend plays the server’s rules', () => {
     expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE' }))).toBe('reauth_required');
     const { appleAuthorizationCode } = await b.auth.reauthenticate('apple');
     expect(appleAuthorizationCode).toBeTruthy();
-    expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE' }))).toBe('invalid:apple_code');
+    expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE' }))).toBe('invalid:apple_code_required');
     expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE', appleAuthorizationCode }))).toBe('ok');
     expect(await b.auth.current()).toBeNull();
     // A second call for a deleted account: unauthorized (the app treats it as done).
@@ -257,6 +266,9 @@ describe('the memory backend plays the server’s rules', () => {
     await b.auth.signInWithGoogle();
     const file = JSON.parse(await b.auth.exportMyData());
     expect(file).toMatchObject({ app: 'aurivan', schema: 1, appVersion: '1.17.0', account: { email: 'maya@example.com', providers: ['google'] } });
+    // The server's export takes { appVersion } for the envelope.
+    t += 60 * 60_000;
+    expect(JSON.parse(await b.auth.exportMyData({ appVersion: '1.18.0' })).appVersion).toBe('1.18.0');
     expect(await codeOf(b.auth.exportMyData())).toBe('rate_limited');
     t += 60 * 60_000;
     expect(await codeOf(b.auth.exportMyData())).toBe('ok');
