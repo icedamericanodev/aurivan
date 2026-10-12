@@ -76,13 +76,18 @@ function build(now: number, days: number, cert: NonNullable<ReturnType<typeof ge
   useSettings.setState({ dailyMinutes: 30, familiarity: 'some', fitPrompt: 'answered' } as never);
 
   let answers = 0;
+  // Fixed local hours, so every answer lands on the same calendar day whatever
+  // time the suite runs: past days' study at about 4 am (noon minus 8 h, safe
+  // across a daylight-saving shift), and today's answers never before midnight.
+  const noon = new Date(now).setHours(12, 0, 0, 0);
+  const todayStart = new Date(now).setHours(0, 0, 0, 0);
   const slips = ['role', 'priority', 'tech-first', 'symptom', 'misread', 'knowledge'];
   const confs = ['sure', 'unsure', 'guessing'] as const;
   let cursor = 0;
   for (let d = days; d >= 0; d--) {
     // A study day most days (a few gaps), more on weekends.
     if (d > 0 && rand() < 0.12) continue;
-    const dayStart = now - d * DAY;
+    const dayStart = noon - d * DAY;
     const n = d === 0 ? 12 : 30 + Math.floor(rand() * 20);
     // Accuracy rises from ~55% to ~85% over the months.
     const pRight = 0.55 + 0.3 * (1 - d / days);
@@ -92,7 +97,7 @@ function build(now: number, days: number, cert: NonNullable<ReturnType<typeof ge
       cursor += 1 + Math.floor(rand() * 3);
       const right = rand() < pRight;
       const conf = confs[Math.floor(rand() * 3)];
-      const at = d === 0 ? now - (n - k) * 60_000 : dayStart - 8 * 3_600_000 + k * 60_000;
+      const at = d === 0 ? Math.max(todayStart + k, now - (n - k) * 60_000) : dayStart - 8 * 3_600_000 + k * 60_000;
       p().recordAnswer(CERT, q.id, right, conf, { at, ms: 30_000 + Math.floor(rand() * 60_000) } as never);
       if (!right) {
         p().recordMistake(CERT, q.id, q.correct === 'A' ? 'B' : 'A', conf);

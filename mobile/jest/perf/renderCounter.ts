@@ -11,6 +11,11 @@
  *
  * MUST be imported before react-test-renderer (React reads the hook once,
  * when the renderer module loads).
+ *
+ * Written against React 19.2's fiber internals (the work tags and the
+ * PerformedWork flag below, which are not public API): check them again on
+ * a React major upgrade. A wrong tag would show as zero renders, so the
+ * budget tests' "more than zero" checks (perf-focus) would catch it.
  */
 type Fiber = {
   tag: number;
