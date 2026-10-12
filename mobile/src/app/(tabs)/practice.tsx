@@ -48,7 +48,7 @@ import { shortTopic } from '../../lib/format';
 import { guardedStart, reviewSubtitle, startPractice, startReview, startStudy } from '../../lib/sessions';
 import { moveFocus } from '../../lib/a11y';
 import { useJourney } from '../../lib/useJourney';
-import { useSettings } from '../../store/settings';
+import { useDailyMinutes, useSettings } from '../../store/settings';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -94,11 +94,13 @@ export default function Practice() {
   const savedMode = useSettings((s) => s.studyMode);
   const savedDomain = useSettings((s) => s.studyDomain);
   const savedSize = useSettings((s) => s.studySize);
+  // Never picked a length: sized from the daily minutes (UX review O8).
+  const dailyMinutes = useDailyMinutes();
   const mode = activeMode(savedMode, stage, familiarity);
   const suggested = suggestedMode(stage, familiarity);
   // A saved domain this cert doesn't have reads as All domains.
   const pathDomain = cert.domains.find((d) => d.id === savedDomain);
-  const pathSize = sessionSize(savedSize);
+  const pathSize = sessionSize(savedSize, dailyMinutes);
   const guidedTopics = scopeTopics(cert.id, pathDomain?.id);
   const guidedTopic =
     mode === 'guided'

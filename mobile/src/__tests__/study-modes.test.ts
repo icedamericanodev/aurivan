@@ -23,7 +23,9 @@ import {
   type OrderItem,
 } from '../engine/smartMix';
 import { DAY_MS, type ReviewEntry } from '../engine/srs';
-import { activeMode, interleaveTopic, randomMix, REASON_LABEL, scopeKey, sessionSize, suggestedMode } from '../engine/studyModes';
+import { activeMode, interleaveTopic, randomMix, REASON_LABEL, scopeKey, sessionSize, sizeForMinutes, suggestedMode } from '../engine/studyModes';
+import { DAILY_MINUTES, planTolerance } from '../engine/fit';
+import { MINUTES_PER_QUESTION } from '../engine/pace';
 import {
   blockedQuestions,
   currentGuidedTopic,
@@ -102,6 +104,19 @@ describe('mode meta and the suggestion by stage', () => {
     expect(sessionSize(37)).toBe(50);
     expect(scopeKey()).toBe('all');
     expect(scopeKey('3')).toBe('3');
+  });
+  it('mobile 1.16 (UX review O8): never picked a length? sized from the daily minutes, never past the day', () => {
+    expect(DAILY_MINUTES.map((m) => sizeForMinutes(m))).toEqual([10, 10, 20, 20]);
+    for (const m of DAILY_MINUTES) expect(sizeForMinutes(m) * MINUTES_PER_QUESTION).toBeLessThanOrEqual(m + planTolerance(m));
+    expect(sessionSize(undefined, 30)).toBe(20);
+    expect(sessionSize(undefined, 10)).toBe(10);
+    // A length the learner chose always wins over the minutes.
+    expect(sessionSize(50, 10)).toBe(50);
+    expect(sessionSize(10, 45)).toBe(10);
+    // No minutes (an old caller): the old default.
+    expect(sessionSize(undefined)).toBe(10);
+    expect(sizeForMinutes(Number.NaN)).toBe(10);
+    expect(sizeForMinutes(1)).toBe(10);
   });
   it('reason tags read as the spec names them', () => {
     expect(REASON_LABEL).toEqual({ due: 'Due', weak: 'Weak spot', new: 'New', refresher: 'Refresher', mixed: 'Mixed review' });
