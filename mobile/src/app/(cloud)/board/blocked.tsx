@@ -19,6 +19,7 @@ import { useTheme } from '../../../theme/useTheme';
 export default function Blocked() {
   const { c } = useTheme();
   const signedIn = useAccount((s) => s.signedIn);
+  const known = useAccount((s) => s.known);
   const [members, setMembers] = useState<Member[]>([]);
   const [state, setState] = useState<'loading' | 'ready' | 'problem'>('loading');
   const back = () => (router.canGoBack() ? router.back() : router.replace('/settings'));
@@ -32,6 +33,8 @@ export default function Blocked() {
       });
     }, [signedIn]),
   );
+  // Until the phone knows who is signed in, nothing (never "Sign in" to a signed-in learner: CR B1).
+  if (!known) return <Screen edges={['top', 'bottom']}><PushedHeader title={copy('board.blocked.title')} onBack={back} /></Screen>;
   if (!signedIn) return <Redirect href="/account/sign-in" />;
 
   return (

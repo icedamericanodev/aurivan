@@ -116,7 +116,8 @@ describe('the exact §2.3 strings', () => {
   it('has the §4.3 board strings word for word (Phase 8), with no What’s next and no retyped trademark line', () => {
     const exact: [AccountCopyKey, string][] = [
       ['board.title', 'Feedback board'],
-      ['board.sub', 'Ideas, app problems and questions from learners. We read every post.'],
+      // Compliance review P8 (item 5): no absolute promise to read every post.
+      ['board.sub', 'Ideas, app problems and questions from learners. We read the posts.'],
       ['board.signin', 'Sign in to post, vote and comment. Reading is open to everyone.'],
       ['board.empty.title', 'Nothing here yet'],
       ['board.empty.body', 'Be the first to suggest an idea or tell us what to fix.'],

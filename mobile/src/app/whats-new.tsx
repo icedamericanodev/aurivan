@@ -24,9 +24,9 @@ import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { CLOUD } from '../cloud/flag';
+import { BoardCreditLine } from '../components/board';
 import { Bullets } from '../components/notes';
 import { Button, PushedHeader, Screen, Section, T } from '../components/ui';
-import { copy } from '../content/cloud/copy';
 import { FIXES, shortVersion, WHATS_NEW, WHATS_NEW_FOOTER, type WhatsNewEntry } from '../content/support';
 import { examDateLabel as dayLabel } from '../engine/examDay';
 import { useReports } from '../lib/useReports';
@@ -115,8 +115,8 @@ export default function WhatsNew() {
         <Release key={e.version} entry={e} latest={false} />
       ))}
 
-      {/* Cloud builds only: shipped board ideas get a general thank-you (no counts, no names). */}
-      {CLOUD && <T v="meta" style={{ marginTop: space.xl }}>{copy('board.whatsnew.credit')}</T>}
+      {/* Cloud builds only, and only once an idea from the board has shipped: a general thank-you (no counts, no names). */}
+      {CLOUD && <BoardCreditLine />}
       <T v="meta" style={{ marginTop: space.xl }}>{WHATS_NEW_FOOTER}</T>
     </Screen>
   );

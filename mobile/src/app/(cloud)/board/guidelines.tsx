@@ -16,6 +16,10 @@
  * - Opened from the board's foot or the composer's link while already
  *   agreed: the rules to read, and "Done". From "Posting as … · Change":
  *   the name choice, with the box.
+ * - Fix round P8 (CR B1): the choice waits for the learner's own facts. A
+ *   learner who already has a name starts on THAT name (accepting new
+ *   guidelines never changes it unless they choose to); only a new member
+ *   gets a fresh pseudonym.
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
@@ -55,19 +59,28 @@ export default function Guidelines() {
   const [pseudonym, setPseudonym] = useState(() => (me?.handleKind === 'pseudonym' ? me.handle : suggestPseudonym()));
   const [choice, setChoice] = useState<'pseudonym' | 'chosen'>(me?.handleKind === 'chosen' ? 'chosen' : 'pseudonym');
   const [chosen, setChosen] = useState(me?.handleKind === 'chosen' ? me.handle : '');
+  // The learner's facts arrived after the screen opened (a link): start on their own name, once.
+  const [seededFor, setSeededFor] = useState<string | null>(me?.memberId ?? null);
+  if (me && me.memberId !== seededFor) {
+    setSeededFor(me.memberId);
+    if (me.handleKind === 'pseudonym') setPseudonym(me.handle);
+    else setChosen(me.handle);
+    setChoice(me.handleKind);
+  }
   const [agreed, setAgreed] = useState(false);
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
   const titleRef = useRef<View>(null);
   const back = () => (router.canGoBack() ? router.back() : router.replace('/board'));
 
-  useBoardSession(signedIn);
+  const sessionReady = useBoardSession(signedIn);
   useEffect(() => {
     moveFocus(titleRef, 350);
   }, []);
 
-  // Agreeing is needed (or a new name was asked for); otherwise this is the rules to read.
-  const agreeMode = signedIn && (needsGate(me, settings) || params.name === '1');
+  // Agreeing is needed (or a new name was asked for); otherwise this is the rules to read. Only once
+  // the learner's own facts are in: never offer to "join" someone who already has (CR B1).
+  const agreeMode = signedIn && sessionReady && me !== undefined && (needsGate(me, settings) || params.name === '1');
   const updated = !!me && !!settings && me.guidelinesVersion !== settings.guidelinesVersion;
   const handle = choice === 'pseudonym' ? pseudonym : chosen.trim();
   const local = choice === 'chosen' && chosen.trim() ? checkHandle(chosen.trim()) : null;

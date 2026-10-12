@@ -5,6 +5,9 @@
  * "Ask us to look again" for 14 days, a warning, a suspension, an appeal's
  * outcome). New notices have a dot; opening the screen marks them read.
  * No push notifications: this is the only place they appear.
+ * Fix round P8: the unread dot is spoken ("Unread"), an appeal can't be
+ * sent twice by a double tap, and the screen waits for the account to be
+ * known before it sends anyone to "Sign in".
  */
 import { Redirect, router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
@@ -24,12 +27,14 @@ import { useTheme } from '../../../theme/useTheme';
 export default function Activity() {
   const { c } = useTheme();
   const signedIn = useAccount((s) => s.signedIn);
+  const known = useAccount((s) => s.known);
   const [posts, setPosts] = useState<PostCard[]>([]);
   const [notices, setNotices] = useState<Notice[]>([]);
   const [state, setState] = useState<'loading' | 'ready' | 'offline' | 'error'>('loading');
   const [appealFor, setAppealFor] = useState<Notice | null>(null);
   const [note, setNote] = useState('');
   const [appealDone, setAppealDone] = useState<string | null>(null);
+  const [appealing, setAppealing] = useState(false);
   const back = () => (router.canGoBack() ? router.back() : router.replace('/board'));
 
   const load = useCallback(async () => {
@@ -47,14 +52,17 @@ export default function Activity() {
     }, [load, signedIn]),
   );
 
+  if (!known) return <Screen edges={['top', 'bottom']}><PushedHeader title={copy('board.activity.title')} onBack={back} /></Screen>;
   if (!signedIn) return <Redirect href="/account/sign-in" />;
 
   const sendAppeal = async () => {
-    if (!appealFor) return;
+    if (!appealFor || appealing) return;
     const kind = appealFor.targetKind === 'comment' ? 'comment' : 'post';
     const id = kind === 'comment' ? appealFor.commentId : appealFor.postId;
     if (!id) return;
+    setAppealing(true);
     const r = await appeal(kind, id, note);
+    setAppealing(false);
     setAppealDone(r.ok ? copy('board.appeal.done') : copy(r.code === 'offline' ? 'board.offline' : 'err.server'));
     if (r.ok) setNotices((list) => list.map((n) => (n.id === appealFor.id ? { ...n, canAppeal: false } : n)));
   };
@@ -71,8 +79,9 @@ export default function Activity() {
       ) : (
         notices.map((n, i) => (
           <View key={n.id} style={{ paddingVertical: space.md, borderBottomWidth: i === notices.length - 1 ? 0 : 1, borderBottomColor: c.line }}>
-            <View style={{ flexDirection: 'row', gap: space.sm, alignItems: 'center' }}>
-              {!n.read && <View accessibilityLabel={copy('board.activity.unread')} style={{ width: 8, height: 8, borderRadius: radius.pill, backgroundColor: c.accentText }} />}
+            {/* The dot is spoken with the date ("Unread, 12 Oct"): a bare dot isn't read by VoiceOver (CR nit 2). */}
+            <View accessible accessibilityLabel={n.read ? shortDate(n.at) : `${copy('board.activity.unread')}, ${shortDate(n.at)}`} style={{ flexDirection: 'row', gap: space.sm, alignItems: 'center' }}>
+              {!n.read && <View style={{ width: 8, height: 8, borderRadius: radius.pill, backgroundColor: c.accentText }} />}
               <T v="meta">{shortDate(n.at)}</T>
             </View>
             <T v="body" style={{ marginTop: space.xs }}>{noticeText(n)}</T>
@@ -105,7 +114,7 @@ export default function Activity() {
         }}
         title={copy('board.appeal.title')}
         closeLabel={appealDone ? copy('board.held.done') : copy('board.menu.cancel')}
-        footer={appealDone ? null : <Button label={copy('board.appeal.send')} onPress={() => void sendAppeal()} />}
+        footer={appealDone ? null : <Button label={copy('board.appeal.send')} disabled={appealing} onPress={() => void sendAppeal()} />}
       >
         {appealDone ? (
           <T v="body">{appealDone}</T>

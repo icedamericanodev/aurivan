@@ -255,13 +255,12 @@ export const ACCOUNT_COPY = {
   // Every key starts with "board." (the 24-hour review line is allowed only here).
   // The not-affiliated line is always cert.trademarkNotice, shown by the screen.
   'board.title': 'Feedback board',
-  'board.sub': 'Ideas, app problems and questions from learners. We read every post.',
+  'board.sub': 'Ideas, app problems and questions from learners. We read the posts.',
   // read_scope 'author_staff' (an owner decision at Phase 9): learners see only their own posts.
-  'board.sub.own': 'Ideas, app problems and questions for the Aurivan team. Only you and the team see your posts. We read every post.',
+  'board.sub.own': 'Ideas, app problems and questions for the Aurivan team. Only you and the team see your posts. We read the posts.',
   'board.tab.top': 'Top',
   'board.tab.new': 'New',
   'board.tab.shipped': 'Shipped',
-  'board.tab.mine': 'Your posts',
   'board.type.content': 'Content',
   'board.type.idea': 'Idea',
   'board.type.app': 'App problem',
@@ -320,6 +319,7 @@ export const ACCOUNT_COPY = {
   'board.gone': 'This post isn’t available.',
   'board.yours.held': 'Only you can see this until it’s reviewed.',
   'board.menu.a11y': 'More options',
+  'board.menu.a11y.comment': 'More options, comment by {handle}',
   'board.menu.report.post': 'Report post',
   'board.menu.report.comment': 'Report comment',
   'board.menu.report.member': 'Report {handle}',
@@ -374,6 +374,8 @@ export const ACCOUNT_COPY = {
   'board.reject.paused': 'Posting is paused for a short while. Reading and voting still work.',
   'board.reject.banned': 'Your account can’t post on the board. If you think this is a mistake, email {supportEmail}.',
   'board.reject.server': 'We couldn’t post that just now. Try again in a little while.',
+  // A comment the server refused (a locked or removed post, or its author blocked you): never says why (QA O4).
+  'board.reject.comment': 'You can’t comment on this post.',
 
   // Guidelines gate (version 2026-11). No ISACA text is quoted; checked against the candidate guide before publishing.
   'board.gate.title': 'Before you post',
@@ -479,6 +481,13 @@ export const ACCOUNT_COPY = {
   'board.staff.keep': 'Keep removed',
   'board.staff.putBack': 'Put back',
   'board.staff.dismiss': 'Dismiss reports',
+  'board.staff.rename': 'Rename',
+  'board.staff.rename.confirm': 'Replace “{handle}” with a plain new name? This is logged.',
+  'board.staff.ban.confirm': 'Ban {handle}? They can still read the board, but can’t post, comment or vote.',
+  'board.staff.deleteExam.confirm': 'Delete these words for good? They can’t be brought back. Only the action is logged.',
+  'board.staff.spoiler': 'Fold it (talks about an answer)',
+  'board.staff.unspoiler': 'Unfold it',
+  'board.staff.empty.body': 'Held posts, reports and appeals show up here.',
   'board.staff.suspend': 'Suspend 7 days',
   'board.staff.ban': 'Ban',
   'board.staff.unban': 'Unban',
@@ -511,6 +520,7 @@ export const ACCOUNT_COPY = {
 
   // Screen-reader hints.
   'board.hint.vote': 'Adds your vote. Tap again to take it back.',
+  'board.hint.unvote': 'Takes your vote back.',
   'board.hint.post': 'Opens the post and its comments',
   'board.hint.menu': 'Report, block and more',
   'board.hint.compose': 'Opens the composer. You agree to the community guidelines first.',

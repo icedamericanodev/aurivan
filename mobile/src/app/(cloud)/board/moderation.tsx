@@ -5,14 +5,27 @@
  * the server again. This screen's gate is cosmetic.
  *
  * Held · Reported · Appeals · Members · Log. Each item: why it's here and
- * how long ago, its first lines, who and their history; then the actions
- * (Approve · Remove · Remove + warn · ⋯ for exam content). "Real exam
+ * how long ago, its first lines (for a report: the words as they were when
+ * reported), who and their history; then the actions (Approve · Remove ·
+ * Remove + warn · ⋯ for exam content, hiding and folding). "Real exam
  * content" reports sort first. At the foot, "Posting: Open" and Pause
  * posting (it asks first): the cover for a 24-hour window nobody can watch
  * (docs/support/PLAYBOOK.md §7).
+ *
+ * Fix round P8:
+ * - The list on screen is always the selected tab's (CR B5): the staff
+ *   check runs when the screen comes to the front (not on every tab
+ *   change), the list loads when a tab is picked (or after an action, for
+ *   the tab selected THEN), and an answer for any other tab, or a late
+ *   staff check, is dropped.
+ * - Suspend, Ban, Remove and Remove + warn ask why; Ban and "Delete exam
+ *   content" ask again before anything happens (UX H5). Each action says
+ *   "Done." to screen readers.
+ * - A reported member can be dismissed, suspended or banned from the
+ *   Reported tab; Members has Rename for an offensive name (CR N4, SEC B1).
  */
 import { Redirect, router, useFocusEffect } from 'expo-router';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, type ReactNode } from 'react';
 import { Alert, View } from 'react-native';
 import { AccountNotice } from '../../../components/account';
 import { ItemMenu, MenuButton, type MenuItem } from '../../../components/board';
@@ -20,6 +33,7 @@ import { ChoiceSheet } from '../../../components/settings';
 import { Button, Chip, ChipRow, EmptyState, PushedHeader, Screen, T } from '../../../components/ui';
 import type { ModReason, QueueItem, StaffAction, StaffQueue, StaffTab } from '../../../cloud/types';
 import { copy, type AccountCopyKey } from '../../../content/cloud/copy';
+import { sayLater } from '../../../lib/a11y';
 import { checkStaff, loadStaffQueue, staffAct, timeAgo } from '../../../lib/board';
 import { useAccount } from '../../../store/account';
 import { space } from '../../../theme/tokens';
@@ -44,37 +58,56 @@ function headline(tab: StaffTab, it: QueueItem): string {
   return `${it.label}${it.title ? ` · ${it.title}` : ''} · ${timeAgo(it.at)}`;
 }
 
+/** What a reason is asked for. */
+type Asking = { item: QueueItem; action: 'remove' | 'remove_warn' | 'suspend' | 'ban' } | null;
+
 export default function Moderation() {
   const { c } = useTheme();
   const signedIn = useAccount((s) => s.signedIn);
+  const known = useAccount((s) => s.known);
   const [staff, setStaff] = useState<boolean | null>(null);
   const [tab, setTab] = useState<StaffTab>('held');
   const [queue, setQueue] = useState<StaffQueue | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
-  const [asking, setAsking] = useState<{ item: QueueItem; action: 'remove' | 'remove_warn' } | null>(null);
+  const [asking, setAsking] = useState<Asking>(null);
   const [menuFor, setMenuFor] = useState<QueueItem | null>(null);
   const back = () => (router.canGoBack() ? router.back() : router.replace('/board'));
 
-  // The tab asked for last: a slower answer for an earlier tab is dropped.
+  // The tab asked for last: an answer for any other tab is dropped (CR B5).
   const wanted = useRef<StaffTab>(tab);
   const load = useCallback(async (t: StaffTab) => {
     wanted.current = t;
     const r = await loadStaffQueue(t);
     if (wanted.current !== t) return;
-    if (r.ok) setQueue(r.queue);
-    else setProblem(copy(r.code === 'offline' ? 'board.offline' : 'board.error'));
+    if (r.ok) {
+      setProblem(null);
+      setQueue(r.queue);
+    } else setProblem(copy(r.code === 'offline' ? 'board.offline' : 'board.error'));
   }, []);
+  // The staff check, each time the screen comes to the front; then the selected tab's list.
+  // A late answer (after leaving) is dropped.
   useFocusEffect(
     useCallback(() => {
       if (!signedIn) return;
+      let live = true;
       void checkStaff().then((r) => {
+        if (!live) return;
         const ok = r.ok && r.staff;
         setStaff(ok);
-        if (ok) void load(tab);
+        if (ok) void load(wanted.current);
       });
-    }, [signedIn, load, tab]),
+      return () => {
+        live = false;
+      };
+    }, [signedIn, load]),
   );
+  /** A tab: its list (the staff check isn't asked again). */
+  const chooseTab = (t: StaffTab) => {
+    setTab(t);
+    void load(t);
+  };
 
+  if (!known) return <Screen edges={['top', 'bottom']}><PushedHeader title={copy('board.staff.title')} onBack={back} /></Screen>;
   if (!signedIn || staff === false) return <Redirect href="/board" />;
   if (staff === null) return <Screen edges={['top', 'bottom']}><PushedHeader title={copy('board.staff.title')} onBack={back} /></Screen>;
 
@@ -85,50 +118,83 @@ export default function Moderation() {
     setProblem(null);
     const r = await staffAct(a);
     if (!r.ok) setProblem(copy(r.code === 'offline' ? 'board.offline' : 'err.server'));
-    await load(tab);
+    else sayLater(copy('board.staff.done'));
+    // The list for the tab selected NOW (the learner may have moved on while this ran).
+    await load(wanted.current);
   };
   const target = (it: QueueItem) => ({ targetKind: (it.kind === 'appeal' ? 'appeal' : it.kind) as StaffAction['targetKind'], targetId: it.id });
+  /** "Approve: Timer keeps running…" (the button's spoken name says which item). */
+  const named = (label: string, it: QueueItem) => `${label}: ${it.title ?? it.handle ?? it.label}`;
+  const confirm = (title: string, body: string, go: string, run: () => void) =>
+    Alert.alert(title, body, [
+      { text: copy('board.menu.cancel'), style: 'cancel' },
+      { text: go, style: 'destructive', onPress: run },
+    ]);
+  const dismiss = (it: QueueItem) => void act({ action: 'dismiss', targetKind: 'report', targetId: it.id, extra: { kind: it.kind } });
+  const rename = (it: QueueItem) =>
+    confirm(copy('board.staff.rename'), copy('board.staff.rename.confirm', { handle: it.handle ?? '' }), copy('board.staff.rename'), () => void act({ action: 'rename', targetKind: 'member', targetId: it.id }));
 
+  const row = (children: ReactNode) => <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm, marginTop: space.sm }}>{children}</View>;
   const actions = (it: QueueItem) => {
     if (shown === 'log') return null;
     if (shown === 'appeals') {
-      return (
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.sm }}>
-          <Button kind="secondary" label={copy('board.staff.keep')} onPress={() => void act({ action: 'uphold', ...target(it) })} />
-          <Button kind="secondary" label={copy('board.staff.putBack')} onPress={() => void act({ action: 'restore_appeal', ...target(it) })} />
-        </View>
+      return row(
+        <>
+          <Button kind="secondary" label={copy('board.staff.keep')} accessibilityLabel={named(copy('board.staff.keep'), it)} onPress={() => void act({ action: 'uphold', ...target(it) })} />
+          <Button kind="secondary" label={copy('board.staff.putBack')} accessibilityLabel={named(copy('board.staff.putBack'), it)} onPress={() => void act({ action: 'restore_appeal', ...target(it) })} />
+        </>,
       );
     }
-    if (shown === 'members') {
-      return (
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.sm }}>
-          {it.label === 'active' ? (
+    if (it.kind === 'member') {
+      // Members tab, or a reported member: suspend or ban (each asks why), rename, or (reported) dismiss.
+      const active = shown === 'reported' || it.label === 'active';
+      return row(
+        <>
+          {active ? (
             <>
-              <Button kind="secondary" label={copy('board.staff.suspend')} onPress={() => void act({ action: 'suspend', targetKind: 'member', targetId: it.id, extra: { days: 7 } })} />
-              <Button kind="secondary" label={copy('board.staff.ban')} onPress={() => void act({ action: 'ban', targetKind: 'member', targetId: it.id })} />
+              <Button kind="secondary" label={copy('board.staff.suspend')} accessibilityLabel={named(copy('board.staff.suspend'), it)} onPress={() => setAsking({ item: it, action: 'suspend' })} />
+              <Button kind="secondary" label={copy('board.staff.ban')} accessibilityLabel={named(copy('board.staff.ban'), it)} onPress={() => setAsking({ item: it, action: 'ban' })} />
             </>
           ) : (
-            <Button kind="secondary" label={copy('board.staff.unban')} onPress={() => void act({ action: 'unban', targetKind: 'member', targetId: it.id })} />
+            <Button kind="secondary" label={copy('board.staff.unban')} accessibilityLabel={named(copy('board.staff.unban'), it)} onPress={() => void act({ action: 'unban', targetKind: 'member', targetId: it.id })} />
           )}
-        </View>
+          {shown === 'reported' ? (
+            <Button kind="secondary" label={copy('board.staff.dismiss')} accessibilityLabel={named(copy('board.staff.dismiss'), it)} onPress={() => dismiss(it)} />
+          ) : (
+            <Button kind="secondary" label={copy('board.staff.rename')} accessibilityLabel={named(copy('board.staff.rename'), it)} onPress={() => rename(it)} />
+          )}
+        </>,
       );
     }
     if (it.kind !== 'post' && it.kind !== 'comment') return null;
-    return (
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm, marginTop: space.sm }}>
-        <Button kind="secondary" label={copy('board.staff.approve')} onPress={() => void act({ action: 'approve', ...target(it) })} />
-        <Button kind="secondary" label={copy('board.staff.remove')} onPress={() => setAsking({ item: it, action: 'remove' })} />
-        <Button kind="secondary" label={copy('board.staff.removeWarn')} onPress={() => setAsking({ item: it, action: 'remove_warn' })} />
-        <MenuButton label={`${copy('board.menu.a11y')}, ${copy('board.staff.title')}`} onPress={() => setMenuFor(it)} />
-      </View>
+    return row(
+      <>
+        <Button kind="secondary" label={copy('board.staff.approve')} accessibilityLabel={named(copy('board.staff.approve'), it)} onPress={() => void act({ action: 'approve', ...target(it) })} />
+        <Button kind="secondary" label={copy('board.staff.remove')} accessibilityLabel={named(copy('board.staff.remove'), it)} onPress={() => setAsking({ item: it, action: 'remove' })} />
+        <Button kind="secondary" label={copy('board.staff.removeWarn')} accessibilityLabel={named(copy('board.staff.removeWarn'), it)} onPress={() => setAsking({ item: it, action: 'remove_warn' })} />
+        <MenuButton label={`${copy('board.menu.a11y')}, ${it.title ?? it.handle ?? copy('board.staff.title')}`} onPress={() => setMenuFor(it)} />
+      </>,
     );
   };
 
   const menu: MenuItem[] = menuFor
     ? [
-        { label: copy('board.staff.deleteExam'), onPress: () => void act({ action: 'delete_exam_content', ...target(menuFor) }), danger: true },
+        {
+          label: copy('board.staff.deleteExam'),
+          onPress: () => {
+            const it = menuFor;
+            confirm(copy('board.staff.deleteExam'), copy('board.staff.deleteExam.confirm'), copy('board.staff.deleteExam'), () => void act({ action: 'delete_exam_content', ...target(it) }));
+          },
+          danger: true,
+        },
         { label: copy('board.staff.hide'), onPress: () => void act({ action: 'hide', ...target(menuFor) }) },
-        ...(shown === 'reported' ? [{ label: copy('board.staff.dismiss'), onPress: () => void act({ action: 'approve', ...target(menuFor) }) }] : []),
+        ...(menuFor.kind === 'post'
+          ? [
+              { label: copy('board.staff.spoiler'), onPress: () => void act({ action: 'spoiler', targetKind: 'post', targetId: menuFor.id, extra: { on: true } }) },
+              { label: copy('board.staff.unspoiler'), onPress: () => void act({ action: 'spoiler', targetKind: 'post', targetId: menuFor.id, extra: { on: false } }) },
+            ]
+          : []),
+        ...(shown === 'reported' ? [{ label: copy('board.staff.dismiss'), onPress: () => dismiss(menuFor) }] : []),
       ]
     : [];
 
@@ -141,18 +207,29 @@ export default function Moderation() {
     ]);
   };
 
+  /** A reason was chosen: act (a ban asks once more first). */
+  const withReason = (a: NonNullable<Asking>, reason: ModReason) => {
+    if (a.action === 'ban') {
+      confirm(copy('board.staff.ban'), copy('board.staff.ban.confirm', { handle: a.item.handle ?? '' }), copy('board.staff.ban'), () => void act({ action: 'ban', targetKind: 'member', targetId: a.item.id, reason }));
+    } else if (a.action === 'suspend') {
+      void act({ action: 'suspend', targetKind: 'member', targetId: a.item.id, reason, extra: { days: 7 } });
+    } else {
+      void act({ action: a.action, ...target(a.item), reason });
+    }
+  };
+
   return (
     <Screen edges={['top', 'bottom']}>
       <PushedHeader title={copy('board.staff.title')} onBack={back} right={queue ? <T v="meta">{copy('board.staff.waiting', { n: String(queue.waiting) })}</T> : undefined} />
       <View style={{ marginTop: space.sm }}>
         <ChipRow>
           {TABS.map((t) => (
-            <Chip key={t} label={tabLabel(t)} selected={tab === t} onPress={() => setTab(t)} />
+            <Chip key={t} label={tabLabel(t)} selected={tab === t} onPress={() => chooseTab(t)} />
           ))}
         </ChipRow>
       </View>
       {problem && <AccountNotice text={problem} />}
-      {queue && queue.items.length === 0 && <EmptyState compact title={copy('board.staff.empty')} body={copy('board.staff.posting.open')} />}
+      {queue && queue.items.length === 0 && <EmptyState compact title={copy('board.staff.empty')} body={copy('board.staff.empty.body')} />}
       {queue?.items.map((it, i) => (
         <View key={`${it.kind}-${it.id}`} style={{ paddingVertical: space.md, borderBottomWidth: i === queue.items.length - 1 ? 0 : 1, borderBottomColor: c.line }}>
           <T v="label">{headline(shown, it)}</T>
@@ -181,7 +258,7 @@ export default function Moderation() {
         onChange={(reason) => {
           const a = asking;
           setAsking(null);
-          if (a) void act({ action: a.action, ...target(a.item), reason });
+          if (a) withReason(a, reason);
         }}
         onClose={() => setAsking(null)}
       />

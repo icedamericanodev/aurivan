@@ -1794,12 +1794,15 @@ export function NoteField({
   placeholder,
   accessibilityLabel,
   maxLength,
+  ref,
 }: {
   value: string;
   onChangeText: (v: string) => void;
   placeholder: string;
   accessibilityLabel: string;
   maxLength: number;
+  /** To focus the field (the board composer's "Edit my post"). */
+  ref?: Ref<TextInput>;
 }) {
   const { c } = useTheme();
   const change = (next: string) => {
@@ -1809,6 +1812,7 @@ export function NoteField({
   return (
     <View>
       <TextInput
+        ref={ref}
         value={value}
         onChangeText={change}
         placeholder={placeholder}

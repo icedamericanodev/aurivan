@@ -121,6 +121,11 @@ const press = async (label: string) => {
   });
   await flush();
 };
+/** A ⋯ menu item: its action runs once the menu has closed (fix round P8, UX H2). */
+const pressMenuItem = async (label: string) => {
+  await press(label);
+  await flush(400);
+};
 const type = (label: string, text: string) =>
   act(() => {
     const n = r!.root.findAll((x) => typeof x.props.onChangeText === 'function' && (x.props.accessibilityLabel === label || x.props.label === label))[0];
@@ -268,7 +273,9 @@ describe('the ⋯ menu, report and block', () => {
 
   it('every comment has its menu: Report and Block on others’, Withdraw on yours', async () => {
     await openPost(BOARD_POST.bcp);
-    const menus = r!.root.findAll((n) => n.props.accessibilityLabel === 'More options' && typeof n.props.onPress === 'function' && n.type !== Text);
+    // Each comment's ⋯ says whose comment it is ("More options, comment by Steady Oak 9").
+    const menus = r!.root.findAll((n) => /^More options/.test(String(n.props.accessibilityLabel)) && typeof n.props.onPress === 'function' && n.type !== Text);
+    expect(menus.map((m) => m.props.accessibilityLabel)).toContain('More options, comment by Steady Oak 9');
     // The header's, plus one per comment (3).
     expect(menus.length).toBeGreaterThanOrEqual(4);
     await act(async () => {
@@ -296,7 +303,7 @@ describe('the ⋯ menu, report and block', () => {
     await flush();
     expect(board.useBoard.getState().settings).not.toBeNull();
     await press('More options');
-    await press('Report post');
+    await pressMenuItem('Report post');
     expect(mockNav.push).not.toHaveBeenCalled();
     expect(has('Send report')).toBe(true);
   });
@@ -304,7 +311,7 @@ describe('the ⋯ menu, report and block', () => {
   it('the report sheet: a reason is needed; afterwards the thanks line, and the post is gone from the feed', async () => {
     await openPost(BOARD_POST.audio);
     await press('More options');
-    await press('Report post');
+    await pressMenuItem('Report post');
     expect(button('Send report').props.disabled).toBe(true);
     await press('Spam or advertising');
     await press('Send report');
@@ -320,7 +327,7 @@ describe('the ⋯ menu, report and block', () => {
     const alert = jest.spyOn(Alert, 'alert');
     await openPost(BOARD_POST.bcp);
     await press('More options');
-    await press('Block Quiet Cedar 214');
+    await pressMenuItem('Block Quiet Cedar 214');
     expect(alert.mock.calls[0][0]).toBe('Block Quiet Cedar 214?');
     await act(async () => {
       (alert.mock.calls[0][2] as { text: string; onPress?: () => void }[]).find((b) => b.text === 'Block')!.onPress!();

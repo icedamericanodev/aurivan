@@ -1,20 +1,24 @@
 /**
  * One post (spec §4.2 "Post detail"), aurivan://board/<id>. The ⋯ menu in
- * the header (Report post · Block {handle} · Edit · Withdraw on your own),
- * the title and meta line, the body (a Content post about a practice
- * question's answer is folded: "Show it"), Vote and Follow, the team's
- * official response, the status history, the comments (each with its own
- * ⋯ menu; one level of replies) and the comment field.
+ * the header (Report post · Report {handle} · Block {handle} · Edit ·
+ * Withdraw on your own), the title and meta line, the body (a post about a
+ * practice question's answer is folded: "Show it"), Vote and Follow, the
+ * team's official response, the status history, the comments (each with its
+ * own ⋯ menu; one level of replies) and the comment field.
  *
  * - Learners' words are plain Text: no links are made from them.
  * - Reporting hides the post or comment on this phone at once; blocking
  *   hides everything by that learner at once (they aren't told).
- * - Vote, Follow and Comment need an account, then the guidelines gate.
- * - A post you can't see (removed, withdrawn, someone else's waiting post)
- *   says so; a link to it changes nothing.
+ * - Report and Block need only an account (fix round P8, UX H1 / compliance
+ *   2: reporting must be readily reachable); Vote, Follow and Comment also
+ *   need the guidelines gate.
+ * - "Mine" is the learner's public member id (never an account id), so
+ *   nobody is offered Block on themselves; staff can't be blocked.
+ * - A post you can't see (removed, someone else's waiting post) says so; a
+ *   link to it changes nothing. Your own withdrawn post says you withdrew it.
  */
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Alert, View } from 'react-native';
 import { AccountNotice } from '../../../components/account';
 import { BoardCard, ItemMenu, kindLabel, MenuButton, OfficialCard, ReportSheet, StatusTag, TeamBadge, VotePill, type MenuItem } from '../../../components/board';
@@ -50,11 +54,14 @@ export default function PostScreen() {
   const [replyTo, setReplyTo] = useState<Comment | null>(null);
   const [sending, setSending] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  // The vote as last tapped (two taps in one render read the same post: CR N11).
+  const votedRef = useRef<boolean | null>(null);
   const back = () => (router.canGoBack() ? router.back() : router.replace('/board'));
 
   const load = useCallback(async () => {
     const r = typeof id === 'string' ? await loadPost(id) : ({ ok: false, code: 'not_found' } as const);
     if (r.ok) {
+      votedRef.current = null;
       setPost(r.post);
       setState('ready');
     } else setState(r.code === 'not_found' || r.code === 'forbidden' ? 'gone' : r.code === 'offline' ? 'offline' : 'error');
@@ -67,11 +74,15 @@ export default function PostScreen() {
   );
 
   const mine = !!post && !!me && post.authorId === me.memberId;
+  /** Report and Block: an account is enough (UX H1). */
+  const signedInFirst = (): boolean => {
+    if (signedIn) return true;
+    router.push('/account/sign-in');
+    return false;
+  };
+  /** Vote, Follow, Comment: an account, then the guidelines gate. */
   const gate = (): boolean => {
-    if (!signedIn) {
-      router.push('/account/sign-in');
-      return false;
-    }
+    if (!signedInFirst()) return false;
     if (needsGate(me, settings)) {
       router.push({ pathname: '/board/guidelines', params: { then: 'back' } });
       return false;
@@ -118,8 +129,9 @@ export default function PostScreen() {
 
   const vote = () => {
     if (!gate()) return;
-    const on = !post.voted;
-    setPost({ ...post, voted: on, voteCount: Math.max(0, post.voteCount + (on ? 1 : -1)) });
+    const on = !(votedRef.current ?? post.voted);
+    votedRef.current = on;
+    setPost((p) => (p ? { ...p, voted: on, voteCount: Math.max(0, p.voteCount + (on === p.voted ? 0 : on ? 1 : -1)) } : p));
     void setVote(post.id, on);
   };
   const follow = () => {
@@ -127,15 +139,15 @@ export default function PostScreen() {
     setPost({ ...post, following: !post.following });
     void setFollow(post.id, !post.following);
   };
-  const confirmBlock = (userId: string, handle: string) => {
+  const confirmBlock = (memberId: string, handle: string) => {
     Alert.alert(copy('board.block.title', { handle }), copy('board.block.body'), [
       { text: copy('board.block.cancel'), style: 'cancel' },
       {
         text: copy('board.block.go'),
         style: 'destructive',
         onPress: () => {
-          void block(userId);
-          if (userId === post.authorId) back();
+          void block(memberId);
+          if (memberId === post.authorId) back();
         },
       },
     ]);
@@ -156,25 +168,25 @@ export default function PostScreen() {
     ]);
   };
 
+  /** Someone else's item: report it, report its author (S8), and block them (never staff, never yourself). */
+  const othersMenu = (kind: 'post' | 'comment', itemId: string, authorId: string, handle: string, team: boolean): MenuItem[] => [
+    { label: copy(kind === 'post' ? 'board.menu.report.post' : 'board.menu.report.comment'), onPress: () => (signedInFirst() ? setReporting({ kind, id: itemId }) : undefined) },
+    ...(authorId ? [{ label: copy('board.menu.report.member', { handle }), onPress: () => (signedInFirst() ? setReporting({ kind: 'member', id: authorId }) : undefined) }] : []),
+    ...(team || !authorId || authorId === me?.memberId ? [] : [{ label: copy('board.menu.block', { handle }), onPress: () => (signedInFirst() ? confirmBlock(authorId, handle) : undefined) }]),
+  ];
   const postMenu: MenuItem[] = mine
     ? [
         { label: copy('board.menu.edit'), onPress: () => router.push({ pathname: '/board/new', params: { edit: post.id } }) },
         { label: copy('board.menu.withdraw'), onPress: () => confirmWithdraw('post', post.id), danger: true },
       ]
-    : [
-        { label: copy('board.menu.report.post'), onPress: () => (gate() ? setReporting({ kind: 'post', id: post.id }) : undefined) },
-        ...(post.isTeam ? [] : [{ label: copy('board.menu.block', { handle: post.authorHandle }), onPress: () => (gate() ? confirmBlock(post.authorId, post.authorHandle) : undefined) }]),
-      ];
+    : othersMenu('post', post.id, post.authorId, post.authorHandle, post.isTeam);
   const commentMenu = (cm: Comment): MenuItem[] =>
     me && cm.authorId === me.memberId
       ? [{ label: copy('board.menu.withdraw'), onPress: () => confirmWithdraw('comment', cm.id), danger: true }]
-      : [
-          { label: copy('board.menu.report.comment'), onPress: () => (gate() ? setReporting({ kind: 'comment', id: cm.id }) : undefined) },
-          ...(cm.isTeam ? [] : [{ label: copy('board.menu.block', { handle: cm.authorHandle }), onPress: () => (gate() ? confirmBlock(cm.authorId, cm.authorHandle) : undefined) }]),
-        ];
+      : othersMenu('comment', cm.id, cm.authorId, cm.authorHandle, cm.isTeam);
 
   const send = async () => {
-    if (!gate() || !text.trim()) return;
+    if (!gate() || !text.trim() || sending) return;
     setSending(true);
     setNotice(null);
     const r = await comment(post.id, text, replyTo?.id);
@@ -184,7 +196,7 @@ export default function PostScreen() {
       setReplyTo(null);
       if (r.visibility === 'pending') setNotice(copy('board.held.words'));
       void load();
-    } else setNotice(postProblem(r.code, r.detail));
+    } else setNotice(r.code === 'forbidden' ? copy('board.reject.comment') : postProblem(r.code, r.detail));
   };
 
   const comments = visibleComments(post.comments, { hiddenComments, blockedIds });
@@ -199,7 +211,7 @@ export default function PostScreen() {
         <View style={{ flex: 1, minWidth: 0 }}>
           <T v="meta">{`${author(cm.authorHandle, cm.isTeam)} · ${shortDate(cm.createdAt)}`}</T>
         </View>
-        <MenuButton onPress={() => setMenu({ kind: 'comment', c: cm })} />
+        <MenuButton label={copy('board.menu.a11y.comment', { handle: author(cm.authorHandle, cm.isTeam) })} onPress={() => setMenu({ kind: 'comment', c: cm })} />
       </View>
       {/* Plain words: no links are made from a learner's text. */}
       <T v="body">{cm.body}</T>
@@ -210,6 +222,9 @@ export default function PostScreen() {
       {!reply && repliesTo(cm.id).map((r) => renderComment(r, true))}
     </View>
   );
+
+  // Every comment counts, replies included (QA BUG-7).
+  const commentsTitle = comments.length === 1 ? copy('board.comments.one') : comments.length ? copy('board.comments.many', { n: String(comments.length) }) : copy('board.comments.none');
 
   return (
     <Screen edges={['top', 'bottom']}>
@@ -225,8 +240,10 @@ export default function PostScreen() {
           <T v="small" color={c.ink}>{copy('board.yours.held')}</T>
         </BoardCard>
       )}
+      {post.visibility === 'withdrawn' && mine && <AccountNotice text={copy('board.withdrawn')} />}
 
       {folded ? (
+        // Not grouped: "Show it" must stay a button of its own for screen readers (CR B7).
         <BoardCard tone="soft">
           <T v="small" color={c.ink}>{copy('board.spoiler')}</T>
           <Button kind="ghost" label={copy('board.spoiler.show')} onPress={() => setShowSpoiler(true)} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />
@@ -254,7 +271,7 @@ export default function PostScreen() {
         </>
       )}
 
-      <Section title={tops.length === 1 ? copy('board.comments.one') : tops.length ? copy('board.comments.many', { n: String(comments.length) }) : copy('board.comments.none')} />
+      <Section title={commentsTitle} />
       {tops.map((cm) => renderComment(cm, false))}
 
       {post.locked ? (
@@ -262,7 +279,7 @@ export default function PostScreen() {
       ) : post.visibility === 'visible' ? (
         <View style={{ marginTop: space.lg }}>
           {replyTo && <T v="meta">{copy('board.comment.reply', { handle: author(replyTo.authorHandle, replyTo.isTeam) })}</T>}
-          <NoteField value={text} onChangeText={setText} placeholder={copy('board.comment.field')} accessibilityLabel={replyTo ? copy('board.comment.reply', { handle: replyTo.authorHandle }) : copy('board.comment.field')} maxLength={1000} />
+          <NoteField value={text} onChangeText={setText} placeholder={copy('board.comment.field')} accessibilityLabel={replyTo ? copy('board.comment.reply', { handle: author(replyTo.authorHandle, replyTo.isTeam) }) : copy('board.comment.field')} maxLength={1000} />
           <Button label={sending ? copy('board.comment.sending') : copy('board.comment.send')} disabled={sending || !text.trim()} onPress={() => void send()} style={{ marginTop: space.sm }} />
           {replyTo && <Button kind="ghost" label={copy('board.menu.cancel')} onPress={() => setReplyTo(null)} style={{ alignSelf: 'center' }} />}
         </View>
