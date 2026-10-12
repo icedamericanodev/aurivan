@@ -41,6 +41,7 @@ import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Row, Scree
 import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
 import { mockSubtitle } from '../../components/readinessReport';
 import { rangeLabel, rangeSpoken, readinessRange } from '../../engine/readinessRange';
+import { mockPct } from '../../engine/readinessReport';
 import { REVIEW_UNIT } from '../../engine/srs';
 import { dayKey } from '../../engine/streak';
 import { guardedStart, reviewSubtitle, startReview } from '../../lib/sessions';
@@ -323,12 +324,13 @@ export default function You() {
           progress.mocks.slice(0, 10).map((m, i, all) => (
             <ListRow
               key={m.id}
-              lead={<Lead value={`${Math.round((m.correct / m.total) * 100)}%`} unit="score" />}
+              lead={<Lead value={`${mockPct(m)}%`} unit="score" />}
               title={`${m.total} questions`}
               // Extra time and untimed mocks are labelled in history (older results were standard).
               // The time in the same words as Results ("3 h 31 min", "Under 1 min").
               subtitle={mockSubtitle(m)}
-              accessibilityLabel={`${m.total} questions, score ${Math.round((m.correct / m.total) * 100)} percent, ${spokenMin(mockSubtitle(m))}`}
+              // mockPct: a 0-question mock (a hand-edited backup) reads 0%, never NaN.
+              accessibilityLabel={`${m.total} questions, score ${mockPct(m)} percent, ${spokenMin(mockSubtitle(m))}`}
               // Mobile 1.16 (Elena's gap): a past mock opens the report with its domains shown.
               accessibilityHint="Opens your readiness report with this mock’s domains"
               onPress={() => router.push({ pathname: '/readiness', params: { mock: m.id } })}

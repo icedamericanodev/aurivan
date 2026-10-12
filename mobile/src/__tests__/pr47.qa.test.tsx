@@ -15,7 +15,9 @@
  *   5. Practice's hero sized from the daily minutes; a chosen length wins.
  *   6. Copy: never a pass prediction, never the bank size.
  *
- * Real bugs are pinned as the CURRENT behaviour with a `// QA-BUG:` note.
+ * The three bugs QA found (B1, B2: a junk or missing checklist list refused
+ * the whole backup; B3: "NaN%" on You for a 0-question mock) are fixed and
+ * the tests here now assert the fixed behaviour ("Fixed (QA Bn)").
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { Dimensions } from 'react-native';
@@ -363,18 +365,17 @@ describe('QA 2: entry points', () => {
     expect(router.push).toHaveBeenLastCalledWith({ pathname: '/readiness', params: { mock: mocks[0].id } });
   });
 
-  it('a restored mock with 0 questions: the report says 0%, You says NaN', () => {
+  it('a restored mock with 0 questions: the report and You both say 0%, never NaN', () => {
     // A backup may hold a mock with total 0 (backup.ts mockResult: total is `count`, 0 allowed).
     setCert({ answers: seedAnswers(30, 0.7), mocks: [mock('empty', 1, 0, 0, { correct: 0, byDomain: {} })] });
     mount(<ReadinessReport />);
     expect(allText()).not.toContain('NaN');
     unmount();
     mount(<You />);
-    // QA-BUG (Minor): You computes Math.round(correct / total * 100) with no zero guard
-    // (app/(tabs)/you.tsx, the Mock exams ListRow lead and its new 1.16 spoken label),
-    // so the row shows "NaN%" and VoiceOver reads "score NaN percent". The report's
-    // mockPct() guards it. Fix: use mockPct(m) on You too.
-    expect(allWords()).toContain('score NaN percent');
+    // Fixed (QA B3): You uses mockPct(), like the report.
+    expect(allWords()).not.toContain('NaN');
+    expect(allWords()).toContain('score 0 percent');
+    expect(allText()).toContain('0%');
   });
 
   it('the exam-week screen links to the report; the report links back to the checklist in exam week', () => {
@@ -585,25 +586,31 @@ describe('QA 4: the checklist in backups, and Reset', () => {
     expect(examWeekOf(back, date())).toEqual({ done: ['booking', 'sleep'], hidden: false });
   });
 
-  it('a checklist whose "done" holds a non-string is refused with the WHOLE file (not repaired)', () => {
+  it('a checklist whose "done" holds a non-string: the junk is dropped and the file restores', () => {
     act(() => {
       useProgress.getState().tickExamWeek('cisa', date(), 'pace');
     });
     const file = JSON.parse(JSON.stringify(currentBackup(Date.now())));
-    file.stores.progress.state.byCert.cisa.moments.examWeek.done = ['pace', 7];
-    // QA-BUG (Minor): cleanDone() would drop 7, but the backup check runs str(40)
-    // on each entry first and refuses the entire backup (all study progress)
-    // over one checklist value. Unknown STRING ids are dropped; other junk refuses.
-    expect(checkBackupText(JSON.stringify(file)).kind).toBe('error');
+    file.stores.progress.state.byCert.cisa.moments.examWeek.done = ['pace', 7, null, { id: 'sleep' }];
+    // Fixed (QA B1): one checklist value never refuses the learner's whole backup.
+    expect(checkBackupText(JSON.stringify(file)).kind).not.toBe('error');
+    expect(readBackup(JSON.stringify(file), ['cisa']).progress.byCert.cisa.moments?.examWeek).toEqual({ for: date(), done: ['pace'] });
   });
 
-  it('a checklist with no "done" list is refused with the whole file', () => {
+  it('a checklist with a long junk "done" list still restores, with only the known ids', () => {
+    const file = JSON.parse(JSON.stringify(currentBackup(Date.now())));
+    file.stores.progress.state.byCert.cisa.moments = { examWeek: { for: date(), done: [...Array.from({ length: 40 }, (_, i) => `x${i}`), 'sleep', 'guide'] } };
+    expect(readBackup(JSON.stringify(file), ['cisa']).progress.byCert.cisa.moments?.examWeek).toEqual({ for: date(), done: ['guide', 'sleep'] });
+  });
+
+  it('a checklist with no "done" list (or a broken one) restores as an empty list', () => {
     const file = JSON.parse(JSON.stringify(currentBackup(Date.now())));
     file.stores.progress.state.byCert.cisa.moments = { examWeek: { for: date(), hidden: true } };
-    // QA-BUG (Minor): PHASE5.md §3.2 specifies done as OPTIONAL
-    // (obj({ for: date }, { done, hidden })); backup.ts makes it required, so a
-    // hand-edited or future file without `done` refuses the whole restore.
-    expect(checkBackupText(JSON.stringify(file)).kind).toBe('error');
+    // Fixed (QA B2): PHASE5.md §3.2 makes `done` optional; a missing list reads as [].
+    expect(checkBackupText(JSON.stringify(file)).kind).not.toBe('error');
+    expect(readBackup(JSON.stringify(file), ['cisa']).progress.byCert.cisa.moments?.examWeek).toEqual({ for: date(), done: [], hidden: true });
+    file.stores.progress.state.byCert.cisa.moments = { examWeek: { for: date(), done: 'pace' } };
+    expect(readBackup(JSON.stringify(file), ['cisa']).progress.byCert.cisa.moments?.examWeek).toEqual({ for: date(), done: [] });
   });
 
   it('Reset progress keeps the checklist (ticks and Hide), and Today still honours the Hide', () => {
