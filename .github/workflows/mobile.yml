@@ -2,20 +2,24 @@ name: Mobile
 
 # Typecheck + lint + unit tests for the Expo app. Also runs when question data
 # changes, because the content-pack integrity test reads data/domain*.json.
+# Plus the cloud guards (Uplift Phase 6, accounts built OFF; docs/mobile/
+# ARCHITECTURE.md "Cloud (built OFF)"): G1 no secrets under mobile/, the
+# suite again with the cloud flag ON (signed out), and G2 an OFF bundle with
+# no cloud runtime code.
 
 on:
   pull_request:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', '.github/workflows/mobile.yml', 'scripts/check_secrets.sh', 'scripts/secret_patterns.txt']
   push:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', '.github/workflows/mobile.yml', 'scripts/check_secrets.sh', 'scripts/secret_patterns.txt']
 
 jobs:
   check:
     name: Typecheck + tests
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 25
     defaults:
       run:
         working-directory: mobile
@@ -34,3 +38,16 @@ jobs:
         run: npm run lint
       - name: Unit + content tests
         run: npm test -- --ci
+      - name: Cloud guard G1 (no secrets under mobile/)
+        working-directory: .
+        run: bash scripts/check_secrets.sh
+      - name: Unit tests with the cloud flag ON (memory backend, signed out)
+        run: npm test -- --ci
+        env:
+          EXPO_PUBLIC_AURIVAN_CLOUD: '1'
+          EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND: memory
+      - name: Cloud guard G2 (the OFF Android bundle has no cloud code)
+        # The flag is unset here, as in every EAS environment today.
+        run: |
+          EXPO_OFFLINE=1 npx expo export --platform android --output-dir "$RUNNER_TEMP/off-android"
+          bash scripts/check_off_bundle.sh "$RUNNER_TEMP/off-android"
