@@ -227,9 +227,10 @@ export async function syncCycle(ctx: CycleCtx): Promise<CycleResult> {
       dev.setMeta({ deferredPull: true });
       return { kind: 'deferred' };
     }
-    // The copy that couldn't be read hasn't changed: don't download it again (security review S5).
+    // A copy that couldn't be read hasn't changed: the cycle would pause on it again, so download
+    // nothing (security review S5). A new copy, or "Try again", reads it once more.
     const stuck = meta.pausedRev ?? NO_REV;
-    if (meta.pausedReason === 'unreadable' && toPull.length && toPull.every((s) => stuck[s] !== null && heads[s]?.rev === stuck[s])) {
+    if (meta.pausedReason === 'unreadable' && toPull.some((s) => stuck[s] !== null && heads[s]?.rev === stuck[s])) {
       return { kind: 'paused', reason: 'unreadable' };
     }
 

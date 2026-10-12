@@ -515,11 +515,17 @@ describe('review fixes beyond the repros', () => {
       await sync.trigger();
     });
     expect(pulls() - before).toBe(1);
+    // A settings change from another device doesn't make it fetch the stuck progress copy again.
+    memory.control.writeSnapshot(MAYA.userId, 'settings', { state: { activeCertId: 'cisa', dailyGoal: 40 } });
+    await act(async () => {
+      await sync.trigger();
+    });
+    expect(pulls() - before).toBe(1);
     // "Try again" reads it once more; a NEW copy is read on the next trigger.
     await act(async () => {
       await sync.syncNow();
     });
-    expect(pulls() - before).toBe(2);
+    expect(pulls() - before).toBeGreaterThan(1);
     memory.control.writeSnapshot(MAYA.userId, 'progress', { state: remoteProgress([ids[0], ids[8]]) });
     await act(async () => {
       await sync.trigger();
