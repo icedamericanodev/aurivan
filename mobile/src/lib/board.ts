@@ -295,7 +295,7 @@ export function checkDraft(cert: string, text: string, itemRef: string | null, n
   return {
     bank: leak.verdict === 'block',
     questionId: leak.verdict === 'block' ? (bankQuestionAt(cert, leak.itemIndex)?.id ?? null) : null,
-    recall: recallScore(text, itemRef !== null) >= RECALL_HOLD,
+    recall: recallScore(text, itemRef) >= RECALL_HOLD,
     reject: verdict.verdict === 'reject' ? verdict.reason : null,
   };
 }

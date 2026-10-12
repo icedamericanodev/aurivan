@@ -27,7 +27,10 @@
 //    `links`; threats, self-harm or contact details → held `hold_words`.
 // 4. The leak guard: near-verbatim bank text → 422 bank_text, and NOTHING
 //    is written. (Which question it matched is never said.)
-// 5. The recall score of 3 or more → held `recall`.
+// 5. The recall score of 3 or more → held `recall` (a linked practice
+//    question lowers it only without a pasted option list).
+//    A post that talks about a practice question's answer is folded for
+//    readers ("Show it"; CR N12).
 // 6. public.svc_board_write writes it with author = the verified user (a
 //    user id in the body is ignored), holding a new member's posts, and
 //    counting the rate limits (429 rate_limited).
@@ -39,7 +42,7 @@ import { requireUser } from '../_shared/auth.ts';
 import type { BoardDbPort, HoldReason, MemberFacts, PostKind } from '../_shared/board.ts';
 import { fromBoardDb as fromDb } from '../_shared/boardHttp.ts';
 import { HttpError, json, type Logger, readJsonObject, requirePost, serveSafely } from '../_shared/http.ts';
-import { type Fingerprint, leakMatch, RECALL_HOLD, recallScore } from '../_shared/leakGuard.ts';
+import { type Fingerprint, leakMatch, RECALL_HOLD, recallScore, talksAboutAnswer } from '../_shared/leakGuard.ts';
 import { checkHandle, moderateText, normalizeText } from '../_shared/moderation.ts';
 
 export interface BoardSubmitDeps {
@@ -157,7 +160,7 @@ export function handleBoardSubmit(req: Request, deps: BoardSubmitDeps, nowMs = D
     }
     const hold: HoldReason | null = verdict.verdict === 'hold'
       ? 'hold_words'
-      : recallScore(checked, itemRef !== null) >= RECALL_HOLD
+      : recallScore(checked, itemRef) >= RECALL_HOLD
       ? 'recall'
       : null;
 
@@ -173,7 +176,7 @@ export function handleBoardSubmit(req: Request, deps: BoardSubmitDeps, nowMs = D
       hold,
       cert,
       clientId,
-      spoiler: false,
+      spoiler: isPost && talksAboutAnswer(checked, itemRef),
     }).catch(fromDb);
     deps.log(out.visibility === 'pending' ? 'held' : 'published', { [op]: 1 });
     return json(200, { id: out.id, visibility: out.visibility, holdReason: out.holdReason ?? undefined });

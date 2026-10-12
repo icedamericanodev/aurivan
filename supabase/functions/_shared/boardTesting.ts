@@ -172,6 +172,7 @@ export const TEST_BANK = [
   },
 ];
 
+/** The server's fingerprint of the made-up bank (with the squashed-letters check). */
 export function testFingerprint(): Fingerprint {
-  return buildFingerprint(TEST_BANK.map(leakItem));
+  return buildFingerprint(TEST_BANK.map(leakItem), { squash: true });
 }

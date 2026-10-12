@@ -7,7 +7,8 @@
  *   and the `.ts` import endings).
  * - The shared fixture (supabase/functions/_shared/leakGuard.fixture.json):
  *   200 seeded strings against a small made-up bank, with the verdicts this
- *   engine gives. The Deno test (_shared/leakGuard.test.ts) runs the server
+ *   engine gives (the server's fingerprint, with the squashed-letters check;
+ *   the recall score with a linked item or none; the answer-talk fold). The Deno test (_shared/leakGuard.test.ts) runs the server
  *   copy on the same strings and must get the same answers.
  *   To refresh it after a deliberate rule change:
  *     UPDATE_SHARED_FIXTURE=1 npx jest board-shared
@@ -15,7 +16,7 @@
 import { execFileSync } from 'child_process';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
-import { buildFingerprint, leakItem, leakMatch, recallScore } from '../engine/leakGuard';
+import { buildFingerprint, leakItem, leakMatch, recallScore, talksAboutAnswer } from '../engine/leakGuard';
 import { moderateText } from '../engine/moderation';
 import { createRng } from '../engine/random';
 
@@ -43,18 +44,19 @@ function madeUpBank(): { stem: string; options: Record<string, string>; explanat
 
 const VOCAB = 'audit control risk evidence sample policy owner board backup review change access test plan report finding manager system data vendor'.split(' ');
 
-function strings(): { text: string; ref: boolean; newMember: boolean }[] {
+function strings(): { text: string; ref: string | null; newMember: boolean }[] {
   const rng = createRng(2026);
   const bank = madeUpBank();
   const pick = <T,>(xs: readonly T[]) => xs[Math.floor(rng() * xs.length)];
-  const out: { text: string; ref: boolean; newMember: boolean }[] = [];
+  const out: { text: string; ref: string | null; newMember: boolean }[] = [];
   const zw = String.fromCharCode(0x200b);
+  const tag = String.fromCodePoint(0xe0020);
   for (let i = 0; i < 200; i++) {
     const q = pick(bank);
     const full = [q.stem, ...Object.values(q.options), q.explanation, ...Object.values(q.wrongExplanations), ...q.tips].join(' ');
     const words = full.split(' ');
     let text: string;
-    switch (i % 8) {
+    switch (i % 10) {
       case 0: // a verbatim span
         text = words.slice(Math.floor(rng() * 5), 8 + Math.floor(rng() * 20)).join(' ');
         break;
@@ -76,20 +78,32 @@ function strings(): { text: string; ref: boolean; newMember: boolean }[] {
       case 6: // moderation words and links
         text = pick(['see bit.ly/x', 'call +1 415 555 0100', 'what the f u c k', 'kind words only', 'www.example.org has it', 'add me on telegram']) + ' ' + pick(VOCAB);
         break;
+      case 8: // fix round P8: the squashed-letters check (no spaces, leetspeak, a tag character inside words)
+        text = pick([q.stem.replace(/\s+/g, ''), q.stem.replace(/e/g, '3').replace(/a/g, '4'), q.stem.split(' ').map((w) => (w.length > 3 ? w.slice(0, 2) + tag + w.slice(2) : w)).join(' ')]);
+        break;
+      case 9: // fix round P8: links, phone numbers, holds and answer talk
+        text = pick([
+          'Great app.To be honest ' + pick(VOCAB), 'see examhelp.shop now', 'ISO 27001 2022 ' + pick(VOCAB), 'I have a dump for the exam', 'a memory dump of ' + pick(VOCAB),
+          'The answer is B for ' + pick(VOCAB), 'An official ISACA note', 'are these like the real exam questions?', 'at certdumps dot com',
+        ]);
+        break;
       default: // the tail of the full text
         text = words.slice(-(10 + Math.floor(rng() * 15))).join(' ');
     }
-    out.push({ text, ref: rng() < 0.2, newMember: rng() < 0.5 });
+    const r = rng();
+    out.push({ text, ref: r < 0.1 ? 'q:d1_001' : r < 0.2 ? 'app:timer' : null, newMember: rng() < 0.5 });
   }
   return out;
 }
 
 function verdicts() {
-  const fp = buildFingerprint(madeUpBank().map(leakItem));
+  // The server's fingerprint (board-submit's leakprint.json has the squashed one too).
+  const fp = buildFingerprint(madeUpBank().map(leakItem), { squash: true });
   return strings().map((s) => ({
     ...s,
     leak: leakMatch(fp, s.text),
     recall: recallScore(s.text, s.ref),
+    answer: talksAboutAnswer(s.text, s.ref),
     moderation: moderateText(s.text, { newMember: s.newMember }),
   }));
 }
@@ -112,5 +126,6 @@ describe('guard G8: the server copies are the engine', () => {
     expect(want.cases.some((c) => c.moderation.verdict === 'reject')).toBe(true);
     expect(want.cases.some((c) => c.moderation.verdict === 'hold')).toBe(true);
     expect(want.cases.some((c) => c.recall >= 3)).toBe(true);
+    expect(want.cases.some((c) => c.answer)).toBe(true);
   });
 });

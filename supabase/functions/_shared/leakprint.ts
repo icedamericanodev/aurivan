@@ -1,10 +1,12 @@
 // The leak guard's fingerprint as a file (Uplift Phase 8): numbers only.
 //
-// board-submit/build-leakprint.ts writes board-submit/leakprint.json at
+// scripts/build-leakprint.mjs writes board-submit/leakprint.json at
 // DEPLOY time from the bundled question bank (it is gitignored: the bank's
 // fingerprint never sits in the public repo). Each array of 32-bit numbers
 // is stored as base64 of its little-endian bytes. Nothing in the file says
 // how many questions there are, and no text can be read back from it.
+// `squash` (fix round P8, SEC S5) is the server-only squashed-letters
+// fingerprint; board-submit refuses to start without it.
 
 import type { Fingerprint, Postings } from './leakGuard.ts';
 
@@ -12,6 +14,7 @@ export interface LeakprintFile {
   v: 1;
   full: { hashes: string; items: string; common: string };
   stem: { hashes: string; items: string; common: string };
+  squash: { hashes: string; items: string; common: string };
 }
 
 function toBase64(a: Uint32Array): string {
@@ -49,13 +52,19 @@ function decodePostings(raw: unknown): Postings {
   return p;
 }
 
+/** The file for a SERVER fingerprint (built with `{ squash: true }`). */
 export function encodeLeakprint(fp: Fingerprint): LeakprintFile {
-  return { v: 1, full: encodePostings(fp.full), stem: encodePostings(fp.stem) };
+  if (!fp.squash) throw new Error('leakprint: build it with { squash: true }');
+  return { v: 1, full: encodePostings(fp.full), stem: encodePostings(fp.stem), squash: encodePostings(fp.squash) };
 }
 
-/** The fingerprint from the file's JSON. Throws on anything malformed (the function then refuses to start). */
+/**
+ * The fingerprint from the file's JSON. Throws on anything malformed, or a
+ * file without the squashed fingerprint (an old build): the function then
+ * refuses every post rather than run with a weaker guard.
+ */
 export function decodeLeakprint(raw: unknown): Fingerprint {
   const r = raw as Partial<LeakprintFile> | null;
   if (!r || r.v !== 1) throw new Error('leakprint: unknown version');
-  return { full: decodePostings(r.full), stem: decodePostings(r.stem) };
+  return { full: decodePostings(r.full), stem: decodePostings(r.stem), squash: decodePostings(r.squash) };
 }

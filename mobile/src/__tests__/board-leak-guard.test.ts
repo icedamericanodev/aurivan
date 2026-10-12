@@ -108,7 +108,7 @@ describe('blocking near-verbatim bank text (B6)', () => {
     const posts = benign.posts as string[];
     expect(posts).toHaveLength(60);
     expect(posts.filter((p) => leakMatch(fp, p).verdict === 'block')).toEqual([]);
-    expect(posts.filter((p) => recallScore(p, false) >= RECALL_HOLD)).toEqual([]);
+    expect(posts.filter((p) => recallScore(p, null) >= RECALL_HOLD)).toEqual([]);
   });
 
   it('blocks at most 2% of study-note paragraphs', () => {
@@ -159,21 +159,26 @@ describe('the fingerprint', () => {
 });
 
 describe('recall score (support.md §10.3)', () => {
-  it.each([
-    ['On my exam I got one about the audit charter approval', false, 3],
-    ['In the exam I saw a question on RTO and RPO', false, 3],
-    ['Anyone have the CISA dumps pdf?', false, 3],
-    ['Selling real exam questions, message me', false, 3],
-    ['Which of the following is the BEST control?\nA) one\nB) two\nC) three\nD) four', false, 3],
-    ['Which of the following is the BEST control?\nA) one\nB) two\nC) three\nD) four', true, 1],
-    ['I keep confusing a memory dump with a core dump in forensics.', false, 0],
-    ['Which of the following is BEST? I never know how to choose.', false, 1],
+  // Fix round P8 (SEC S5): the second argument is the linked item (or null).
+  // Only a practice-question link (q:…) gets the −2, never with a pasted
+  // option list; a pasted option list with a question scores +3 on its own.
+  it.each<[string, string | null, number]>([
+    ['On my exam I got one about the audit charter approval', null, 3],
+    ['On my exam I got one about the audit charter approval', 'q:d1_001', 1],
+    ['On my exam I got one about the audit charter approval', 'app:timer', 3],
+    ['In the exam I saw a question on RTO and RPO', null, 3],
+    ['Anyone have the CISA dumps pdf?', null, 3],
+    ['Selling real exam questions, message me', null, 3],
+    ['Which of the following is the BEST control?\nA) one\nB) two\nC) three\nD) four', null, 4],
+    ['Which of the following is the BEST control?\nA) one\nB) two\nC) three\nD) four', 'q:d1_001', 4],
+    ['I keep confusing a memory dump with a core dump in forensics.', null, 0],
+    ['Which of the following is BEST? I never know how to choose.', null, 1],
   ])('%j (item linked: %s) scores %i', (text, ref, score) => {
     expect(recallScore(text, ref)).toBe(score);
   });
 
   it('look-alike letters and odd spacing do not hide recall language', () => {
-    expect(recallScore(cyrillic('on my exam I got one about BCP'), false)).toBeGreaterThanOrEqual(RECALL_HOLD);
-    expect(recallScore(`brain${ZW}dump for sale`, false)).toBeGreaterThanOrEqual(RECALL_HOLD);
+    expect(recallScore(cyrillic('on my exam I got one about BCP'), null)).toBeGreaterThanOrEqual(RECALL_HOLD);
+    expect(recallScore(`brain${ZW}dump for sale`, null)).toBeGreaterThanOrEqual(RECALL_HOLD);
   });
 });

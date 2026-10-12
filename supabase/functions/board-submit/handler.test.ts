@@ -115,12 +115,9 @@ Deno.test('hold list and recall: stored as pending with the hold reason', async 
   assert.deepEqual(await words.json(), { id: board.writes[0].id, visibility: 'pending', holdReason: 'hold_words' });
   const recall = await run({ ...IDEA, body: 'On my exam I got one about the audit charter.' });
   assert.deepEqual(await recall.json(), { id: board.writes[1].id, visibility: 'pending', holdReason: 'recall' });
-  // Linking one of our own items lowers the recall score below the hold.
-  const ours = await run({
-    ...IDEA,
-    itemRef: 'q:d1_001',
-    body: 'Which of the following is BEST?\nA) one\nB) two\nC) three',
-  });
+  // Linking one of our own practice questions lowers the recall score below the hold
+  // (a pasted option list doesn't get that discount: see the fix-round test below).
+  const ours = await run({ ...IDEA, itemRef: 'q:d1_001', body: 'On my exam I got one like this, was it the board?' });
   assert.equal(((await ours.json()) as { visibility: string }).visibility, 'visible');
 });
 
@@ -282,4 +279,23 @@ Deno.test('the same draft sent twice (its reply was lost) is ONE post (QA BUG-1)
     error: 'invalid',
     detail: 'client_id',
   });
+});
+
+Deno.test('fix round: a paste without spaces is still bank text; a pasted option list is held even with a link; answer talk is folded', async () => {
+  const { board, run } = setup();
+  // The squashed-letters check (server only).
+  const squashed = TEST_BANK[0].stem.replace(/\s+/g, '');
+  assert.deepEqual(await errorOf(await run({ ...IDEA, body: squashed })), { status: 422, error: 'bank_text' });
+  // A real-exam-looking question with its options: held, even when it links one of our items.
+  const pasted =
+    'An auditor sees backups kept in the same building. What should be done FIRST?\nA) move them\nB) test them\nC) log them\nD) ignore it';
+  const held = (await (await run({ ...IDEA, kind: 'content', body: pasted, itemRef: 'q:d1_001' })).json()) as {
+    holdReason: string;
+  };
+  assert.equal(held.holdReason, 'recall');
+  // Talk about an answer: the post is folded for readers.
+  await run({ ...IDEA, title: 'About question four of the mock', body: 'I think the answer is B, not C.' });
+  assert.equal(board.writes.at(-1)!.spoiler, true);
+  await run({ ...IDEA, title: 'A calmer colour at night please' });
+  assert.equal(board.writes.at(-1)!.spoiler, false);
 });

@@ -18,6 +18,10 @@
  * built-in TypeScript type stripping (Node 22.18 or newer), and the same
  * question pack the app bundles (mobile/src/content/generated/<cert>/d*.json).
  * board-submit refuses every post until this file exists.
+ *
+ * REBUILD IT ON EVERY CONTENT RELEASE (security review P8, N9): a new or
+ * edited question isn't guarded until board-submit is redeployed with a
+ * fresh file. The Phase 9 release checklist (ARCHITECTURE §10) has the step.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -41,6 +45,7 @@ if (questions.length === 0) {
   console.error('build-leakprint: no question pack found. Run `npm run content` in mobile/ first.');
   process.exit(1);
 }
-fs.writeFileSync(OUT, `${JSON.stringify(encodeLeakprint(buildFingerprint(questions.map(leakItem))))}\n`);
+// The server's fingerprint: with the squashed-letters check (fix round P8, SEC S5).
+fs.writeFileSync(OUT, `${JSON.stringify(encodeLeakprint(buildFingerprint(questions.map(leakItem), { squash: true })))}\n`);
 // Deliberately no count in the output: the bank's size is never advertised.
 console.log(`✓ wrote ${path.relative(ROOT, OUT)} (numbers only; gitignored)`);

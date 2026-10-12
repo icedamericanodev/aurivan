@@ -404,7 +404,7 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
     if (verdict.verdict === 'reject') throw new CloudError('rejected_words', undefined, verdict.reason);
     if (leakMatch(ctx.leak(cert), text).verdict === 'block') throw new CloudError('bank_text');
     if (verdict.verdict === 'hold') return 'hold_words';
-    return recallScore(text, itemRef !== null) >= RECALL_HOLD ? 'recall' : null;
+    return recallScore(text, itemRef) >= RECALL_HOLD ? 'recall' : null;
   };
   const postFields = (d: { kind: PostKind; title: string; body: string; itemRef?: string }) => {
     const title = normalizeText(d.title);

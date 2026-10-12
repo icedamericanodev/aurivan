@@ -99,6 +99,11 @@ Deno.test('leakprint.json round-trips, numbers only, and a malformed file is ref
     'block',
   );
   assert.ok(!JSON.stringify(file).includes('payroll'));
+  // The squashed-letters fingerprint travels too: a paste without spaces is still caught (SEC S5).
+  assert.deepEqual([...back.squash!.hashes], [...fp.squash!.hashes]);
+  assert.equal(leakMatch(back, 'Thepayrollclerkeditsmasterrecordswithoutanyindependentreview').verdict, 'block');
+  // A file from before the fix round (no squashed fingerprint) is refused, never run weaker.
+  assert.throws(() => decodeLeakprint({ v: 1, full: file.full, stem: file.stem }));
   assert.throws(() => decodeLeakprint({ v: 2 }));
   assert.throws(() => decodeLeakprint({ ...file, full: { ...file.full, hashes: 'AAA' } }));
 });
