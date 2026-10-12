@@ -4,7 +4,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { DEFAULT_CERT_ID } from '../content/certifications';
-import { goalFromMinutes, minutesFromGoal, type DailyMinutes, type Familiarity, type FitPrompt } from '../engine/fit';
+import { FIT_ASK_DAYS, goalFromMinutes, minutesFromGoal, type DailyMinutes, type Familiarity, type FitPrompt } from '../engine/fit';
 import { DEFAULT_REMINDER, type ReminderPrefs } from '../engine/reminders';
 import { SETTINGS_VERSION } from '../engine/saveMigrations';
 import type { StudyMode } from '../engine/studyModes';
@@ -79,12 +79,16 @@ interface SettingsState {
    *   dismissed. Onboarding sets 'answered' (a new learner already chose).
    * - fitChanges: how often the answers were changed later. A local count
    *   for the beta's "were the defaults wrong?" check; never sent anywhere.
+   * - fitAskDays: the days the card was shown (at most FIT_ASK_DAYS). After
+   *   that many separate days it is hidden for good, answered or not
+   *   (code review M4: ask, never nag). Settings keeps the controls.
    */
   familiarity?: Familiarity;
   dailyMinutes?: DailyMinutes;
   examFocused?: boolean;
   fitPrompt?: FitPrompt;
   fitChanges?: number;
+  fitAskDays?: string[];
 
   completeOnboarding: (certId: string, examDate?: string, fit?: { familiarity?: Familiarity; dailyMinutes: DailyMinutes }) => void;
   /**
@@ -95,6 +99,8 @@ interface SettingsState {
   setFit: (p: { familiarity?: Familiarity | null; dailyMinutes?: DailyMinutes; examFocused?: boolean | null }) => void;
   /** "Not now" on the Today card: it never shows again (Settings keeps the controls). */
   dismissFitPrompt: () => void;
+  /** The card showed on `day` ("YYYY-MM-DD"): counted once per day, up to FIT_ASK_DAYS. */
+  noteFitAsked: (day: string) => void;
   setActiveCert: (certId: string) => void;
   setExamDate: (certId: string, date?: string) => void;
   setTheme: (t: ThemePref) => void;
@@ -161,13 +167,19 @@ export const useSettings = create<SettingsState>()(
           return { ...next, fitPrompt: 'answered', ...(s.fitPrompt === 'answered' ? { fitChanges: (s.fitChanges ?? 0) + 1 } : {}) };
         }),
       dismissFitPrompt: () => set((s) => (s.fitPrompt ? s : { fitPrompt: 'dismissed' })),
+      noteFitAsked: (day) =>
+        set((s) => {
+          const days = s.fitAskDays ?? [];
+          return days.includes(day) || days.length >= FIT_ASK_DAYS ? s : { fitAskDays: [...days, day] };
+        }),
       setActiveCert: (certId) => set({ activeCertId: certId }),
       setExamDate: (certId, date) =>
         set((s) => ({ examDates: { ...s.examDates, [certId]: date } })),
       setTheme: (theme) => set({ theme }),
       setMotion: (motion) => set({ motion }),
       setShuffle: (shuffleOptions) => set({ shuffleOptions }),
-      setDailyGoal: (dailyGoal) => set({ dailyGoal }),
+      // Kept for older callers: it moves the minutes too, so it is never a silent no-op (code review M6).
+      setDailyGoal: (dailyGoal) => set({ dailyGoal, dailyMinutes: minutesFromGoal(dailyGoal) }),
       setReminder: (reminder) => set({ reminder }),
       setHaptics: (haptics) => set({ haptics }),
       markRulesSeen: (gameId) =>

@@ -477,13 +477,17 @@ function settingsCheck(certKey: Check<string>) {
       studySize,
       // Mobile 1.10: Settings → Show badges switched off (optional: older files have none).
       badgesHidden: bool,
-      // Mobile 1.15, "Fit the plan" (all optional: older files have none, and
-      // an older app drops them; dailyGoal is still written beside them).
+      // Mobile 1.15, "Fit the plan" (all optional: older files have none).
+      // An older app refuses a 1.15 file as "newer", so these never reach it
+      // by backup; dailyGoal is still written beside them for an app
+      // DOWNGRADE reading the saved store (code review M9b).
       familiarity: oneOf<Familiarity>('new', 'some', 'experienced'),
       dailyMinutes,
       examFocused: bool,
       fitPrompt: oneOf('answered', 'dismissed'),
       fitChanges: int(0, 9999),
+      // The days the "Fit your plan" card showed (at most 3; PR #45 review M4).
+      fitAskDays: list(date, 3),
     },
   );
 }

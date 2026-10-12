@@ -276,18 +276,21 @@ describe('export: every state the phone can hold reads back', () => {
         examFocused: seed % 3 === 0 ? undefined : seed % 2 === 0,
         fitPrompt: seed % 6 === 0 ? undefined : seed % 2 ? 'answered' : 'dismissed',
         fitChanges: seed % 7 === 0 ? undefined : seed * 97,
+        // PR #45 review M4: the days the fit card showed (none to all three).
+        fitAskDays: seed % 4 === 0 ? undefined : ['2026-10-01', '2026-10-02', '2026-10-03'].slice(0, seed % 4),
       });
       const read = restorable();
       if (read.kind !== 'ok') throw new Error(`seed ${seed}: ${read.code}`);
       // The fit survives exactly (a count past the cap is clamped, never refused).
       const st = useSettings.getState();
       const fit = read.data.settings;
-      expect([fit.familiarity, fit.dailyMinutes, fit.examFocused, fit.fitPrompt, fit.fitChanges]).toEqual([
+      expect([fit.familiarity, fit.dailyMinutes, fit.examFocused, fit.fitPrompt, fit.fitChanges, fit.fitAskDays]).toEqual([
         st.familiarity,
         st.dailyMinutes,
         st.examFocused,
         st.fitPrompt,
         st.fitChanges === undefined ? undefined : Math.min(9999, st.fitChanges),
+        st.fitAskDays,
       ]);
       // The plant survives (repaired and clamped to the data), never dropped or invented.
       const back = read.data.progress.byCert.cisa.plant;

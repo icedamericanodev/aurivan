@@ -124,6 +124,9 @@ export function planLesson<L extends { id: string; domainId: string }>(
 
 export type FitPrompt = 'answered' | 'dismissed';
 
+/** The card shows on at most this many separate days, then never again (code review M4). */
+export const FIT_ASK_DAYS = 3;
+
 export interface FitAskInput {
   onboarded: boolean;
   fitPrompt?: FitPrompt;
@@ -136,16 +139,22 @@ export interface FitAskInput {
   readyPanel: boolean;
   /** The plant's one setup line ("Plant a companion…") is showing this visit: it goes first. */
   plantLine: boolean;
+  /** The days the card has already shown (settings.fitAskDays), and today's ("YYYY-MM-DD"). */
+  askedDays?: readonly string[];
+  today?: string;
 }
 
 /**
  * Whether Today shows the one "Fit your plan" card. Only for a learner who
- * has never answered or dismissed it, never in exam week (7 days or fewer),
+ * has never answered or dismissed it, on at most FIT_ASK_DAYS separate days
+ * (the last of them all day long), never in exam week (7 days or fewer),
  * never beside another moment, and never on the same visit as the plant's
  * setup line (one setup line on Today at a time).
  */
 export function shouldAskFit(i: FitAskInput): boolean {
   if (!i.onboarded || i.fitPrompt || i.familiarity) return false;
+  const asked = i.askedDays ?? [];
+  if (asked.length >= FIT_ASK_DAYS && !(i.today && asked.includes(i.today))) return false;
   if (i.daysLeft !== null && i.daysLeft <= 7) return false;
   return !i.examMoment && !i.readyPanel && !i.plantLine;
 }
