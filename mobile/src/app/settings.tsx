@@ -32,6 +32,7 @@ import * as ExpoRouter from 'expo-router';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Alert, Linking, Platform, View, type ScrollView } from 'react-native';
 import { aboutLine, AccountSettingsGroup } from '../components/account';
+import { BoardSettingsGroup } from '../components/board';
 import { useSyncing } from '../lib/sync';
 import { BrandLockup, PillarList } from '../components/brand';
 import { CLOUD } from '../cloud/flag';
@@ -396,6 +397,8 @@ export default function Settings() {
 
       {/* Cloud builds only: Settings → Account (one of the two ways in). */}
       {CLOUD && <AccountSettingsGroup />}
+      {/* Cloud builds only: Settings → Feedback board (Your activity, Blocked learners; Phase 8). */}
+      {CLOUD && <BoardSettingsGroup />}
 
       {/* Backup and restore (Build C): save a file, restore one, undo for 7 days. Free, offline, no account. */}
       <YourData />

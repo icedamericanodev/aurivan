@@ -1,6 +1,6 @@
 /**
  * The cloud route group (Uplift Phases 6–8, built OFF; spec §1.1 "Routes").
- * Every account (and later board) screen lives under `(cloud)`.
+ * Every account and feedback board screen lives under `(cloud)`.
  *
  * With the flag off, or in a cloud build without a backend, this layout is
  * just a Redirect to Today: a deep link such as aurivan://account or
@@ -39,6 +39,14 @@ export default function CloudLayout() {
       <Stack.Screen name="account/what-syncs" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
       <Stack.Screen name="account/sign-out" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
       <Stack.Screen name="account/delete-synced" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
+      {/* The feedback board (Phase 8). The composer and the guidelines gate rise like sheets. */}
+      <Stack.Screen name="board/index" />
+      <Stack.Screen name="board/[id]" />
+      <Stack.Screen name="board/new" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
+      <Stack.Screen name="board/guidelines" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
+      <Stack.Screen name="board/activity" />
+      <Stack.Screen name="board/blocked" />
+      <Stack.Screen name="board/moderation" />
     </Stack>
   );
 }

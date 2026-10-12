@@ -140,11 +140,15 @@ describeOff('the cloud flag is off', () => {
     });
     expect(netCalls).toBe(0);
     const text = allText();
-    for (const words of ['Sync across devices', 'Account and sync', 'Not signed in', 'Continue with', 'Delete account', 'Progress is stored on this device.', 'Sync this phone', 'Undo sync', 'syncs to your Aurivan account']) {
+    for (const words of [
+      'Sync across devices', 'Account and sync', 'Not signed in', 'Continue with', 'Delete account', 'Progress is stored on this device.', 'Sync this phone', 'Undo sync', 'syncs to your Aurivan account',
+      // The feedback board (Phase 8): no row, no group, no credit line.
+      'Feedback board', 'Blocked learners', 'Your activity', 'started as ideas on the feedback board', 'Post publicly instead',
+    ]) {
       expect(text).not.toContain(words);
     }
-    // The account store and the sync record (Phase 7) are never read or written with the flag off.
-    for (const key of ['aurivan.account.v1', 'aurivan.sync.v1']) {
+    // The account store, the sync record (Phase 7), the board's outbox and draft (Phase 8) are never read or written with the flag off.
+    for (const key of ['aurivan.account.v1', 'aurivan.sync.v1', 'aurivan.outbox.v1', 'aurivan.boardDraft.v1']) {
       expect(getItem.mock.calls.map((c) => c[0])).not.toContain(key);
       expect(setItem.mock.calls.map((c) => c[0])).not.toContain(key);
     }
@@ -169,7 +173,10 @@ describeOff('the cloud flag is off', () => {
     expect(netCalls).toBe(0);
   });
 
-  it.each(['/account', '/account/delete', '/account/sign-in', '/account/email', '/account/first-sync', '/account/switch', '/account/what-syncs', '/account/sign-out', '/account/delete-synced', '/board', '/board/0b9e7c1a-1111-4222-8333-444455556666', '/board/new'])(
+  it.each([
+    '/account', '/account/delete', '/account/sign-in', '/account/email', '/account/first-sync', '/account/switch', '/account/what-syncs', '/account/sign-out', '/account/delete-synced',
+    '/board', '/board/0b9e7c1a-1111-4222-8333-444455556666', '/board/new', '/board/guidelines', '/board/activity', '/board/blocked', '/board/moderation',
+  ])(
     'G5: %s lands on Today, and no backend method runs',
     (path) => {
       // Even with a backend present, the flag decides (and a hostile link's params change nothing).
@@ -203,6 +210,26 @@ describeOff('the cloud flag is off', () => {
     expect(Object.keys(storage.__INTERNAL_MOCK_STORAGE__ ?? {})).not.toContain('aurivan.sync.v1');
     expect(Object.keys(storage.__INTERNAL_MOCK_STORAGE__ ?? {}).filter((k) => !before.includes(k))).not.toContain('aurivan.sync.v1');
     stop();
+  });
+
+  it('the board does nothing: not ready, no backend call, no storage key (Phase 8)', async () => {
+    const memory = createMemoryBackend();
+    setBackendForTests(memory);
+    const AS = require('@react-native-async-storage/async-storage');
+    const storage = AS.default ?? AS;
+    const before = Object.keys(storage.__INTERNAL_MOCK_STORAGE__ ?? {});
+    const lib = require('../lib/board');
+    expect(lib.boardReady()).toBe(false);
+    await lib.flushOutbox();
+    expect(memory.control.calls).toEqual([]);
+    expect(Object.keys(storage.__INTERNAL_MOCK_STORAGE__ ?? {}).filter((k) => !before.includes(k))).toEqual([]);
+    // The cloud-only pieces render nothing.
+    const { BoardRow, BoardSettingsGroup, PostPubliclyLine } = require('../components/board');
+    for (const Piece of [BoardRow, BoardSettingsGroup, () => <PostPubliclyLine onGo={() => {}} />]) {
+      mount(<Piece />);
+      expect(r!.toJSON()).toBeNull();
+      unmount();
+    }
   });
 
   it('account start-up does nothing, even with a backend present', async () => {
