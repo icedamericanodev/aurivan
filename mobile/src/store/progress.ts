@@ -22,7 +22,7 @@ import { readinessRange } from '../engine/readinessRange';
 import { recordMastery, type SubtopicMastery } from '../engine/mastery';
 import { CATALOG_VERSION } from '../engine/badgeCatalog';
 import { afterAnswer, afterCard, noteStudyDay, type CertMilestones } from '../engine/milestones';
-import { renamePlant, resetPlant, switchSpecies, withLook, type CertPlant, type PlantLook, type PlantSettings, type PlantSpecies } from '../engine/plant';
+import { freezeKeepsakes, keepThroughOtherReset, renamePlant, resetPlant, switchSpecies, withLook, type CertPlant, type PlantLook, type PlantSettings, type PlantSpecies } from '../engine/plant';
 import { keepOnReset } from '../engine/plantLooks';
 import type { MockTiming } from '../engine/pace';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
@@ -593,10 +593,21 @@ export const useProgress = create<ProgressState>()(
           // Mobile 1.14: every unlock open now (growth, badges and planters from
           // ANY exam, and what was kept before) goes into `kept`, so the look
           // the learner earned survives the seed.
+          // The keepsakes on show are written down first (freezeKeepsakes), so a
+          // default "first three earned" never reshuffles when badges go.
           const plant = s.byCert[certId]?.plant;
           const marks = Object.values(s.byCert).map((c) => ({ earned: c?.milestones?.earned, planters: c?.milestones?.planters }));
-          if (plant) fresh.plant = resetPlant(plant, Date.now(), keepOnReset(plant, marks));
-          return { byCert: { ...s.byCert, [certId]: fresh }, days };
+          if (plant) fresh.plant = resetPlant(freezeKeepsakes(plant, marks), Date.now(), keepOnReset(plant, marks));
+          // Code review M6: another exam's plant never loses a keepsake or a
+          // planter because THIS exam's badges were cleared.
+          const byCert = { ...s.byCert, [certId]: fresh };
+          const resetMarks = { earned: s.byCert[certId]?.milestones?.earned, planters: s.byCert[certId]?.milestones?.planters };
+          for (const [id, c] of Object.entries(s.byCert)) {
+            if (id === certId || !c?.plant) continue;
+            const kept = keepThroughOtherReset(c.plant, marks, resetMarks);
+            if (kept !== c.plant) byCert[id] = { ...c, plant: kept };
+          }
+          return { byCert, days };
         }),
     }),
     {

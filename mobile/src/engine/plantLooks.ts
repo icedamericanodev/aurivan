@@ -25,8 +25,7 @@
  * collected" anywhere (no completion counters); a locked item says how to
  * earn it in plain words, never as a guilt line.
  */
-import { MOCK_DOMAIN_FLOOR } from './journey';
-import { BADGES } from './milestones';
+import { BADGES, WHOLE_MAP_FLOOR } from './milestones';
 import type { CertPlant, GrowthLevel, LookId, PlantLook, PlantSpecies } from './plant';
 
 /**
@@ -62,10 +61,16 @@ export type LookUnlock =
   | { kind: 'passed' };
 
 /** A colour palette key in theme/tokens.ts plantLeaf (the art maps it). */
-export type PaletteKey = 'grove' | 'spring' | 'evergreen' | 'ember' | 'gold' | 'blossom' | 'twilight' | 'silver' | 'rosewood' | 'pearl' | 'snow' | 'lemon';
+export type PaletteKey = 'grove' | 'spring' | 'evergreen' | 'ember' | 'gold' | 'blossom' | 'twilight' | 'silver' | 'rosewood' | 'pearl' | 'snow' | 'lemon' | 'golden';
 
 /** Where a keepsake stands: on the ground by the plant, or behind it (the clear dawn). */
 export type KeepsakePlace = 'ground' | 'back';
+/**
+ * A keepsake's build (UX review H2): a tall one (a post, a bird, a lantern)
+ * still reads standing behind the plant; a flat one (a stone, a pond, a
+ * ring) would hide behind the trunk there, so flat ones take the front slots.
+ */
+export type KeepsakeShape = 'tall' | 'flat';
 
 export interface LookItem {
   id: LookId;
@@ -80,6 +85,9 @@ export interface LookItem {
   palette?: PaletteKey;
   /** Keepsakes only. */
   place?: KeepsakePlace;
+  shape?: KeepsakeShape;
+  /** Keepsakes only: how to earn it, in plain words ("Finish your diagnostic"). */
+  how?: string;
 }
 
 // ── Colourways (three per species: two free, the third at Bough) ────────
@@ -89,7 +97,8 @@ const COLOURWAYS: Record<PlantSpecies, [string, string, PaletteKey][]> = {
   narra: [['fresh', 'Fresh green', 'spring'], ['deep', 'Deep green', 'grove'], ['silver', 'Silver leaf', 'silver']],
   'cherry-blossom': [['pink', 'Pink', 'blossom'], ['white', 'White', 'snow'], ['dusk', 'Dusk violet', 'twilight']],
   pine: [['evergreen', 'Evergreen', 'evergreen'], ['fresh', 'Fresh green', 'grove'], ['frost', 'Frost', 'silver']],
-  'coconut-palm': [['tropic', 'Tropic green', 'spring'], ['deep', 'Deep green', 'grove'], ['sun', 'Sun-dried', 'gold']],
+  // Id "sun" is kept (ids are saved); it is drawn golden-green, never dried (UX review P13).
+  'coconut-palm': [['tropic', 'Tropic green', 'spring'], ['deep', 'Deep green', 'grove'], ['sun', 'Golden', 'golden']],
   mango: [['deep', 'Deep green', 'evergreen'], ['leafy', 'Leafy green', 'grove'], ['new', 'New leaf', 'spring']],
   bonsai: [['green', 'Green', 'grove'], ['juniper', 'Juniper', 'evergreen'], ['autumn', 'Autumn', 'ember']],
   sunflower: [['gold', 'Gold', 'gold'], ['lemon', 'Lemon', 'lemon'], ['velvet', 'Velvet red', 'rosewood']],
@@ -121,20 +130,24 @@ const groundItems: LookItem[] = [
 ];
 
 // ── Planters (the set planters: badges_game.md §7) ──────────────────────
-/** Display names of the counted sets (engine/badgeCatalog.ts setInfo; CISA's five domains). */
+/**
+ * Display names of the counted sets (engine/badgeCatalog.ts setInfo). The
+ * Domains set is "The Five Domains" for CISA but four or eight for other
+ * exams, so the look screens say "the Domains set" (code review M9c).
+ */
 const SET_NAMES: Record<string, string> = {
   groundwork: 'Groundwork',
-  domains: 'the Five Domains',
+  domains: 'Domains',
   evergreen: 'Evergreen',
   judgement: 'Sound Judgement',
   examDay: 'Exam Day',
   rooted: 'Rooted',
 };
 const planterItems: LookItem[] = [
-  { id: 'native', slot: 'planter', name: 'Its own ground', caption: 'Where this plant grows best.', unlock: { kind: 'free' } },
+  { id: 'native', slot: 'planter', name: 'Its usual home', caption: 'Where this plant grows best.', unlock: { kind: 'free' } },
   { id: 'terracotta', slot: 'planter', name: 'Terracotta pot', caption: 'A plain clay pot.', unlock: { kind: 'free' } },
   { id: 'fieldstone', slot: 'planter', name: 'Fieldstone planter', caption: 'From completing Groundwork.', unlock: { kind: 'set', set: 'groundwork' } },
-  { id: 'five-stone', slot: 'planter', name: 'Five-stone planter', caption: 'From completing the Five Domains.', unlock: { kind: 'set', set: 'domains' } },
+  { id: 'five-stone', slot: 'planter', name: 'Five-stone planter', caption: 'From completing the Domains set.', unlock: { kind: 'set', set: 'domains' } },
   { id: 'celadon', slot: 'planter', name: 'Celadon pot', caption: 'From completing Evergreen.', unlock: { kind: 'set', set: 'evergreen' } },
   { id: 'compass-rose', slot: 'planter', name: 'Compass-rose planter', caption: 'From completing Sound Judgement.', unlock: { kind: 'set', set: 'judgement' } },
   { id: 'banded', slot: 'planter', name: 'Banded planter', caption: 'From completing Exam Day.', unlock: { kind: 'set', set: 'examDay' } },
@@ -152,35 +165,37 @@ const visitorItems: LookItem[] = [
 ];
 
 // ── Keepsakes (badges → objects that name the skill; mascot §3.3) ───────
-// [id, name, badge, caption, place]. Firm Footing gives a part mark and Rooted
-// undergrowth instead (later), so neither is here. The ribbon opens only when
-// the learner reports a pass.
-const KEEPSAKES: [string, string, string, string, KeepsakePlace?][] = [
-  ['stepping-stone', 'Stepping stone', 'first-foothold', 'The stepping stone: you finished your diagnostic.'],
-  ['trail-post', 'Trail post', 'topic-clear', 'The trail post: you cleared your first topic.'],
-  ['trail-board', 'Trail board', 'ten-topics', 'The trail board: you cleared ten topics.'],
-  ['compass-stone', 'Compass stone', 'whole-map', `The compass stone: every domain is at ${Math.round(MOCK_DOMAIN_FLOOR * 100)}% or more.`],
-  ['jay', 'Jay', 'long-memory', 'The jay: you recall answers a week later.'],
-  ['empty-nest', 'Empty nest', 'graduate', 'The empty nest: questions graduated out of review.'],
-  ['woven-ring', 'Woven ring', 'loop-closed', 'The woven ring: you fixed your mistakes for good.'],
-  ['fern', 'Fern', 'took-root', 'The fern: a whole topic took root.'],
-  ['still-pond', 'Still pond', 'know-what-you-know', 'The still pond: when you say sure, you’re right.'],
-  ['dew-web', 'Dew-lit web', 'slip-spotter', 'The dew-lit web: you can name your own thinking slips.'],
-  ['weather-vane', 'Weather vane', 'mindset-shift', 'The weather vane: you fall for the runner-up less often.'],
-  ['lantern', 'Lantern', 'dress-rehearsal', 'The lantern: you sat a full, timed mock.'],
-  ['sundial', 'Sundial', 'on-pace', 'The sundial: you finished a timed mock on pace.'],
-  ['swallow', 'Swallow', 'fresh-start', 'The swallow: you came back and picked up again.'],
-  ['fox', 'Fox', 'snare-wise', 'The fox: you spot the snare in a trap question.'],
-  ['cairn', 'Cairn', 'even-keel', 'The cairn: when you say sure, you mean it.'],
-  ['signpost', 'Signpost', 'signpost-reader', 'The signpost: you read the deciding word.'],
-  ['clear-dawn', 'Clear dawn', 'myth-clearer', 'The clear dawn: half-truths don’t fool you.', 'back'],
-  ['roe-deer', 'Roe deer', 'sure-footed-pace', 'The roe deer: speed without guessing.'],
-  ['mushroom-ring', 'Mushroom ring', 'whole-grove', 'The mushroom ring: you’ve tried every kind of practice game.'],
-  ['pebble-path', 'Pebble path', 'back-on-path', 'The pebble path: you fixed game misses on a later day.'],
+// [id, name, badge, caption, shape, how, place]. Firm Footing gives a part
+// mark and Rooted undergrowth instead (later), so neither is here. The ribbon
+// opens only when the learner reports a pass. `how` says how to earn it in
+// plain words (UX review P2); the badge's name follows in brackets.
+const KEEPSAKES: [string, string, string, string, KeepsakeShape, string, KeepsakePlace?][] = [
+  ['stepping-stone', 'Stepping stone', 'first-foothold', 'The stepping stone: you finished your diagnostic.', 'flat', 'Finish your diagnostic'],
+  ['trail-post', 'Trail post', 'topic-clear', 'The trail post: you cleared your first topic.', 'tall', 'Clear your first topic'],
+  ['trail-board', 'Trail board', 'ten-topics', 'The trail board: you cleared ten topics.', 'tall', 'Clear ten topics'],
+  // Past tense: a keepsake never claims where readiness stands today (code review M9b).
+  ['compass-stone', 'Compass stone', 'whole-map', `The compass stone: every domain reached ${Math.round(WHOLE_MAP_FLOOR * 100)}% or more.`, 'flat', `Bring every domain to ${Math.round(WHOLE_MAP_FLOOR * 100)}%`],
+  ['jay', 'Jay', 'long-memory', 'The jay: you recall answers a week later.', 'tall', 'Recall answers a week after you saw them'],
+  ['empty-nest', 'Empty nest', 'graduate', 'The empty nest: questions you’ve learned have flown the nest.', 'flat', 'Graduate questions out of review'],
+  ['woven-ring', 'Woven ring', 'loop-closed', 'The woven ring: you fixed your mistakes for good.', 'flat', 'Fix your mistakes on a later day'],
+  ['fern', 'Fern', 'took-root', 'The fern: a whole topic took root.', 'tall', 'Help a whole topic take root'],
+  ['still-pond', 'Still pond', 'know-what-you-know', 'The still pond: when you say sure, you’re right.', 'flat', 'Be right when you say you’re sure'],
+  ['dew-web', 'Dew-lit web', 'slip-spotter', 'The dew-lit web: you can name your own thinking slips.', 'tall', 'Tag your mistakes with their thinking slip'],
+  ['weather-vane', 'Weather vane', 'mindset-shift', 'The weather vane: you fall for the runner-up less often.', 'tall', 'Pick the tempting runner-up less often'],
+  ['lantern', 'Lantern', 'dress-rehearsal', 'The lantern: you sat a full, timed mock.', 'tall', 'Sit a full, timed mock'],
+  ['sundial', 'Sundial', 'on-pace', 'The sundial: you finished a timed mock on pace.', 'tall', 'Finish a timed mock on pace'],
+  ['swallow', 'Swallow', 'fresh-start', 'The swallow: you came back and picked up again.', 'tall', 'Pick up again after some time away'],
+  ['fox', 'Fox', 'snare-wise', 'The fox: you spot the snare in a trap question.', 'tall', 'Spot the snare in trap questions'],
+  ['cairn', 'Cairn', 'even-keel', 'The cairn: your confidence matches your results, round after round.', 'tall', 'Keep your confidence matched to your results'],
+  ['signpost', 'Signpost', 'signpost-reader', 'The signpost: you read the deciding word.', 'tall', 'Read the deciding word in a question'],
+  ['clear-dawn', 'Clear dawn', 'myth-clearer', 'The clear dawn: half-truths don’t fool you.', 'tall', 'Clear half-truths in a practice game', 'back'],
+  ['roe-deer', 'Roe deer', 'sure-footed-pace', 'The roe deer: speed without guessing.', 'tall', 'Answer at pace without guessing'],
+  ['mushroom-ring', 'Mushroom ring', 'whole-grove', 'The mushroom ring: you’ve tried every kind of practice game.', 'flat', 'Play every practice game once'],
+  ['pebble-path', 'Pebble path', 'back-on-path', 'The pebble path: you fixed game misses on a later day.', 'flat', 'Fix game misses on a later day'],
 ];
 const keepsakeItems: LookItem[] = [
-  ...KEEPSAKES.map(([id, name, badge, caption, place]) => ({ id, slot: 'keepsake' as const, name, caption, unlock: { kind: 'badge', badge } as const, place: place ?? 'ground' })),
-  { id: 'ribbon', slot: 'keepsake', name: 'Ribbon', caption: 'The ribbon: you told us you passed.', unlock: { kind: 'passed' }, place: 'ground' },
+  ...KEEPSAKES.map(([id, name, badge, caption, shape, how, place]) => ({ id, slot: 'keepsake' as const, name, caption, unlock: { kind: 'badge', badge } as const, place: place ?? 'ground', shape, how })),
+  { id: 'ribbon', slot: 'keepsake', name: 'Ribbon', caption: 'The ribbon: you told us you passed.', unlock: { kind: 'passed' }, place: 'ground', shape: 'tall', how: 'Tell us you passed' },
 ];
 
 /** Every look item, in the order the Look screen lists them. Ids are saved in backups: never rename one. */
@@ -231,10 +246,24 @@ function badgeEarned(badge: string, certs: readonly CertMarks[]): boolean {
   return certs.some((c) => Object.keys(c.earned ?? {}).some((k) => k === badge || k.startsWith(`${badge}:`)));
 }
 
+/**
+ * What `kept` may hold (code review M4): an unlock a Reset can carry, i.e.
+ * one earned by growth, a badge or a set. Never a free item (nothing to
+ * keep) and never the ribbon: it opens only with a reported pass, and
+ * `passedOn` already survives a Reset. A backup whose `kept` holds anything
+ * else is refused.
+ */
+export function isKeepable(id: unknown): id is LookId {
+  const item = typeof id === 'string' ? BY_ID.get(id) : undefined;
+  return !!item && (item.unlock.kind === 'growth' || item.unlock.kind === 'badge' || item.unlock.kind === 'set');
+}
+
 /** Is this one item open now? */
 export function isUnlocked(item: LookItem, plant: Pick<CertPlant, 'growth' | 'kept' | 'passedOn'>, certs: readonly CertMarks[]): boolean {
-  if (plant.kept?.includes(item.id)) return true;
   const u = item.unlock;
+  // The ribbon needs a reported pass, whatever `kept` says (code review M4).
+  if (u.kind === 'passed') return plant.passedOn !== undefined;
+  if (plant.kept?.includes(item.id)) return true;
   switch (u.kind) {
     case 'free':
       return true;
@@ -244,8 +273,6 @@ export function isUnlocked(item: LookItem, plant: Pick<CertPlant, 'growth' | 'ke
       return badgeEarned(u.badge, certs);
     case 'set':
       return certs.some((c) => c.planters?.[u.set] !== undefined);
-    case 'passed':
-      return plant.passedOn !== undefined;
   }
 }
 
@@ -260,15 +287,59 @@ export function unlockedLooks(plant: Pick<CertPlant, 'growth' | 'kept' | 'passed
 
 /**
  * The unlocks worth carrying across a Reset (into `kept`): everything open
- * now that isn't free. Growth goes back to a seed and this cert's badges are
- * cleared, but the look the learner earned stays (Reset keeps the look).
+ * now that can be kept (isKeepable). Growth goes back to a seed and this
+ * cert's badges are cleared, but the look the learner earned stays (Reset
+ * keeps the look). The ribbon needs no `kept`: `passedOn` survives a Reset.
  */
 export function keepOnReset(plant: Pick<CertPlant, 'growth' | 'kept' | 'passedOn'>, certs: readonly CertMarks[]): LookId[] {
-  return LOOK_ITEMS.filter((x) => x.unlock.kind !== 'free' && isUnlocked(x, plant, certs)).map((x) => x.id);
+  return LOOK_ITEMS.filter((x) => isKeepable(x.id) && isUnlocked(x, plant, certs)).map((x) => x.id);
 }
 
-/** A locked item's line: how to earn it, in plain words. Never a guilt line, never a count. */
-export function howToOpen(item: LookItem): string {
+/**
+ * When the learner first had each keepsake (epoch ms), for the default
+ * "first three earned": a badge's earliest tier on any exam; the ribbon's
+ * reported pass; a kept one (earned before a Reset) counts as earliest.
+ * Ties keep catalogue order.
+ */
+function keepsakeSince(item: LookItem, plant: Pick<CertPlant, 'kept' | 'passedOn'>, certs: readonly CertMarks[]): number {
+  const u = item.unlock;
+  if (u.kind === 'passed') return plant.passedOn ? Date.parse(plant.passedOn) || 0 : Infinity;
+  let at = Infinity;
+  if (u.kind === 'badge')
+    for (const c of certs)
+      for (const [k, t] of Object.entries(c.earned ?? {})) if ((k === u.badge || k.startsWith(`${u.badge}:`)) && typeof t === 'number' && t < at) at = t;
+  if (at === Infinity && plant.kept?.includes(item.id)) return -Infinity;
+  return at;
+}
+
+/**
+ * The keepsakes shown while the learner has never chosen any (look.keepsakes
+ * unset; UX review H1, decided): the first three they earned, so the badge
+ * sheet's "On your plant" is true from the first badge. Derived, never
+ * stored. Once the learner taps a keepsake, their own list (even an empty
+ * one) is used instead.
+ */
+export function defaultKeepsakes(plant: Pick<CertPlant, 'growth' | 'kept' | 'passedOn'>, certs: readonly CertMarks[]): LookId[] {
+  return keepsakeItems
+    .filter((k) => isUnlocked(k, plant, certs))
+    .map((k, i) => ({ id: k.id, at: keepsakeSince(k, plant, certs), i }))
+    .sort((a, b) => a.at - b.at || a.i - b.i)
+    .slice(0, MAX_SHOWN_KEEPSAKES)
+    .map((x) => x.id);
+}
+
+/** Options for the locked lines. */
+export interface HowOptions {
+  /** Settings → Show badges is off: say what to do, never the badge's name. */
+  badgesHidden?: boolean;
+}
+
+/**
+ * A locked item's line: how to earn it, in plain words (UX review P2).
+ * Never a guilt line, never a count. With badges hidden it never names a
+ * badge or a set (code review M9d).
+ */
+export function howToOpen(item: LookItem, o: HowOptions = {}): string {
   const u = item.unlock;
   switch (u.kind) {
     case 'free':
@@ -277,10 +348,11 @@ export function howToOpen(item: LookItem): string {
       return `Opens when your plant reaches ${GROWTH_WORD[u.growth]}.`;
     case 'badge': {
       const name = BADGES.find((b) => b.id === u.badge)?.name ?? u.badge;
-      return `Opens with the ${name} badge.`;
+      const how = item.how ?? 'Earn its badge';
+      return o.badgesHidden ? `${how}.` : `${how} (the ${name} badge).`;
     }
     case 'set':
-      return `Opens when you complete ${SET_NAMES[u.set] ?? u.set} in your badges.`;
+      return o.badgesHidden ? 'Opens as you study.' : `Opens when you finish the ${SET_NAMES[u.set] ?? u.set} set in Badges.`;
     case 'passed':
       return 'Opens when you tell us you passed.';
   }
@@ -314,8 +386,10 @@ export const DEFAULT_LOOK = { ground: 'meadow', planter: 'native', visitor: 'wre
  * the slot (a colourway of THIS species) and is open now; otherwise the
  * slot's default. Pure: it never changes the stored choice, so a look whose
  * unlock vanished (after a restore) comes back when the unlock does.
+ * `defaultKeeps`: what shows while no keepsake was ever chosen
+ * (defaultKeepsakes; none when not given).
  */
-export function resolveLook(species: PlantSpecies, look: PlantLook | undefined, unlocked: ReadonlySet<string> | readonly string[]): ResolvedLook {
+export function resolveLook(species: PlantSpecies, look: PlantLook | undefined, unlocked: ReadonlySet<string> | readonly string[], defaultKeeps: readonly string[] = []): ResolvedLook {
   const open = unlocked instanceof Set ? (unlocked as ReadonlySet<string>) : new Set(unlocked as readonly string[]);
   const ok = (id: string | undefined, slot: LookSlot) => id !== undefined && isLookOfSlot(id, slot) && open.has(id);
   const ways = colourwaysFor(species);
@@ -327,7 +401,7 @@ export function resolveLook(species: PlantSpecies, look: PlantLook | undefined, 
     ground: ok(look?.ground, 'ground') ? look!.ground! : DEFAULT_LOOK.ground,
     planter,
     visitor: ok(look?.visitor, 'visitor') ? look!.visitor! : DEFAULT_LOOK.visitor,
-    keepsakes: [...new Set(look?.keepsakes ?? [])].filter((k) => ok(k, 'keepsake')).slice(0, MAX_SHOWN_KEEPSAKES),
+    keepsakes: [...new Set(look?.keepsakes ?? defaultKeeps)].filter((k) => ok(k, 'keepsake')).slice(0, MAX_SHOWN_KEEPSAKES),
   };
 }
 
@@ -337,12 +411,15 @@ export function defaultPalette(species: PlantSpecies): PaletteKey {
 }
 
 /**
- * Keepsakes on the plant, by their badge: "On your plant: the lantern." for
- * the badge sheet. Null when the badge gives none.
+ * The badge sheet's quiet keepsake line (UX review H1): "On your plant: the
+ * lantern." only when it is one of the keepsakes on show; otherwise where to
+ * show it. Null when the badge gives none.
  */
-export function onYourPlantLine(badge: string): string | null {
+export function onYourPlantLine(badge: string, shown: readonly string[]): string | null {
   const k = keepsakeForBadge(badge);
-  return k ? `On your plant: the ${k.name.charAt(0).toLowerCase()}${k.name.slice(1)}.` : null;
+  if (!k) return null;
+  const the = `the ${k.name.charAt(0).toLowerCase()}${k.name.slice(1)}`;
+  return shown.includes(k.id) ? `On your plant: ${the}.` : `A keepsake for your plant: ${the}. Show it from Your plant, Change its look.`;
 }
 
 /** A keepsake's skill line without its "The jay: " lead, for a row that already shows the name ("You recall answers a week later."). */

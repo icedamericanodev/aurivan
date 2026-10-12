@@ -43,10 +43,11 @@ import {
   type PlantSpecies,
 } from '../engine/plant';
 import { planComplete } from '../engine/dayPlan';
-import { keepsakeForBadge, plantMood, resolveLook, unlockedLooks, type ArtLook, type CertMarks, type PlantMood, type ResolvedLook } from '../engine/plantLooks';
+import { defaultKeepsakes, keepsakeForBadge, plantMood, resolveLook, unlockedLooks, type ArtLook, type CertMarks, type PlantMood, type ResolvedLook } from '../engine/plantLooks';
 import { computeReadiness } from '../engine/readiness';
 import { dayKey } from '../engine/streak';
 import { selectCert, useProgress, type CertProgress, type MockResult, type ProgressState } from '../store/progress';
+import { useSeen } from '../store/seen';
 import { useSettings } from '../store/settings';
 import { certOutline, questionExists } from './outline';
 
@@ -132,6 +133,18 @@ export function seeGrowth(certId: string): void {
   useProgress.getState().updatePlant(certId, (p) => (p ? clearPending(p) : p));
 }
 
+/**
+ * The grow-up arrived on a visit that already has its one moment (the
+ * exam-ready panel: Elder and "Your readiness is holding" come from the same
+ * week; code review M1). The growth is applied silently: no sequence on a
+ * hidden plant, no second haptic. Your plant says it in one calm line next
+ * time (store/seen.ts `quietGrowth`, this phone only).
+ */
+export function growQuietly(certId: string, growth: GrowthLevel): void {
+  useSeen.getState().noteQuietGrowth(certId, growth);
+  seeGrowth(certId);
+}
+
 /** The back-fill line was shown (once). */
 export function seePlantBackfill(certId: string): void {
   useProgress.getState().updatePlant(certId, (p) => (p?.backfill && !p.backfill.seen ? { ...p, backfill: { ...p.backfill, seen: true } } : p));
@@ -212,19 +225,32 @@ export function allCertMarks(byCert: ProgressState['byCert']): CertMarks[] {
   return Object.values(byCert).map((c) => ({ earned: c?.milestones?.earned, planters: c?.milestones?.planters }));
 }
 
+/**
+ * True when a keepsake first came today: its badge's FIRST tier, on any
+ * exam, was earned today (QA BUG-2: a higher tier of a badge already held
+ * brings no new keepsake, so it makes no proud plant).
+ */
+export function newKeepsakeOn(byCert: ProgressState['byCert'], today: string): boolean {
+  const first = new Map<string, number>();
+  for (const c of Object.values(byCert))
+    for (const [k, at] of Object.entries(c?.milestones?.earned ?? {})) {
+      const badge = k.split(':')[0];
+      if (typeof at === 'number' && at < (first.get(badge) ?? Infinity)) first.set(badge, at);
+    }
+  for (const [badge, at] of first) if (dayKey(at) === today && keepsakeForBadge(badge)) return true;
+  return false;
+}
+
 /** What the look screens and the plant need from the marks: a stable string, so a store change elsewhere never redraws the plant. */
 function marksKey(s: ProgressState, today: string): string {
   const keys: string[] = [];
-  let newKeepsake = false;
   for (const c of Object.values(s.byCert)) {
     const m = c?.milestones;
-    for (const [k, at] of Object.entries(m?.earned ?? {})) {
-      keys.push(k);
-      if (!newKeepsake && dayKey(at) === today && keepsakeForBadge(k.split(':')[0])) newKeepsake = true;
-    }
+    // With the time: the default keepsakes are the first three EARNED.
+    for (const [k, at] of Object.entries(m?.earned ?? {})) keys.push(`${k}@${at}`);
     for (const set of Object.keys(m?.planters ?? {})) keys.push(`set:${set}`);
   }
-  return JSON.stringify([newKeepsake, [...new Set(keys)].sort()]);
+  return JSON.stringify([newKeepsakeOn(s.byCert, today), [...new Set(keys)].sort()]);
 }
 
 export interface PlantLookView {
@@ -253,9 +279,11 @@ export interface LookInput {
 /** Pure: the look and mood for one plant (tests call this directly). */
 export function plantLookView(plant: CertPlant, i: LookInput): PlantLookView {
   const unlocked = new Set(unlockedLooks(plant, i.marks));
-  const resolved = resolveLook(plant.species, plant.look, unlocked);
+  const resolved = resolveLook(plant.species, plant.look, unlocked, defaultKeepsakes(plant, i.marks));
   const visiting = i.planCleared && resolved.visitor !== 'no-visitor' && !i.resting;
-  const grewToday = Object.values(plant.reached ?? {}).some((at) => typeof at === 'number' && dayKey(at) === i.today);
+  // A back-filled growth (planting, or a restore with no plant) is one quiet
+  // line, never a moment, so it is no reason to look proud (code review M5).
+  const grewToday = Object.values(plant.reached ?? {}).some((at) => typeof at === 'number' && dayKey(at) === i.today && at !== plant.backfill?.at);
   const mood = plantMood({ face: i.face, resting: i.resting, grewToday, newKeepsakeToday: i.newKeepsakeToday, planCleared: i.planCleared, newTopicToday: i.newTopicToday });
   return {
     unlocked,

@@ -790,7 +790,9 @@ describe('J8 Reset', () => {
     expect(p).toMatchObject({ species: 'narra', name: 'Tala', plantedAt, growth: 1, look: { ground: 'meadow', keepsakes: ['fox'] }, passedOn: '2026-09-30' });
     // Mobile 1.14: every unlock open at the Reset is kept too (here growth's), the old ones first.
     expect(p.kept?.[0]).toBe('robin');
-    expect(p.kept).toEqual(expect.arrayContaining(['robin', 'narra-silver', 'ribbon']));
+    expect(p.kept).toEqual(expect.arrayContaining(['robin', 'narra-silver']));
+    // PR #44 code review M4: the ribbon is never kept (passedOn survives a Reset and opens it).
+    expect(p.kept).not.toContain('ribbon');
     expect(p.kept).not.toContain('stone-ring'); // Crown's ground: never reached
     expect(p.pending).toBeUndefined();
     expect(p.reached).toBeUndefined();

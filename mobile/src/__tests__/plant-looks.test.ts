@@ -216,7 +216,7 @@ describe('moods (the face only)', () => {
 });
 
 describe('copy', () => {
-  const lines = [...LOOK_ITEMS.map((x) => x.caption), ...LOOK_ITEMS.map(howToOpen), ...GROUNDS.map((x) => x.name), ...VISITORS.map((x) => x.name)];
+  const lines = [...LOOK_ITEMS.map((x) => x.caption), ...LOOK_ITEMS.map((x) => howToOpen(x)), ...LOOK_ITEMS.map((x) => howToOpen(x, { badgesHidden: true })), ...GROUNDS.map((x) => x.name), ...VISITORS.map((x) => x.name)];
   it('plain words: no counters, no "Unlocked!", no guilt, no readiness claim, no trademark echo', () => {
     for (const l of lines) {
       expect(l).not.toMatch(/\d+\s+of\s+\d+|collected|unlocked!|\bstage\b|wilt|miss(es)? you|you haven.t|ready for the exam|pass the exam|Pokémon|Pokemon|owl|finch/i);
@@ -228,12 +228,32 @@ describe('copy', () => {
   });
   it('a locked item says how to open it, in plain words', () => {
     expect(howToOpen(lookItem('stone-ring')!)).toBe('Opens when your plant reaches Crown.');
-    expect(howToOpen(lookItem('lantern')!)).toBe('Opens with the Dress Rehearsal badge.');
-    expect(howToOpen(lookItem('five-stone')!)).toBe('Opens when you complete the Five Domains in your badges.');
+    // UX review P2: what to do, then the badge in brackets.
+    expect(howToOpen(lookItem('lantern')!)).toBe('Sit a full, timed mock (the Dress Rehearsal badge).');
+    expect(howToOpen(lookItem('stepping-stone')!)).toBe('Finish your diagnostic (the First Foothold badge).');
+    // Code review M9c: the Domains set is four, five or eight domains, so it is named neutrally.
+    expect(howToOpen(lookItem('five-stone')!)).toBe('Opens when you finish the Domains set in Badges.');
+    expect(howToOpen(lookItem('ribbon')!)).toBe('Opens when you tell us you passed.');
+    for (const k of KEEPSAKE_ITEMS) expect(k.how).toMatch(/^[A-Z][^.]+$/);
   });
-  it('the badge sheet’s quiet line', () => {
-    expect(onYourPlantLine('dress-rehearsal')).toBe('On your plant: the lantern.');
-    expect(onYourPlantLine('long-memory')).toBe('On your plant: the jay.');
-    expect(onYourPlantLine('firm-footing')).toBeNull();
+  it('with badges hidden, a locked line never names a badge or a set (code review M9d)', () => {
+    expect(howToOpen(lookItem('lantern')!, { badgesHidden: true })).toBe('Sit a full, timed mock.');
+    expect(howToOpen(lookItem('five-stone')!, { badgesHidden: true })).toBe('Opens as you study.');
+    for (const x of LOOK_ITEMS) expect(howToOpen(x, { badgesHidden: true })).not.toMatch(/badge|set in/i);
+  });
+  it('captions never make a readiness claim in the present tense (code review M9b) and never say "the Five Domains" (M9c)', () => {
+    expect(lookItem('compass-stone')!.caption).toBe('The compass stone: every domain reached 65% or more.');
+    for (const x of LOOK_ITEMS) expect(x.caption).not.toMatch(/Five Domains|\bis at\b/);
+    expect(lookItem('empty-nest')!.caption).toBe('The empty nest: questions you’ve learned have flown the nest.');
+    expect(lookItem('native')!.name).toBe('Its usual home');
+    // UX review P13: no colourway reads as dying or grey.
+    expect(lookItem('coconut-palm-sun')!.name).toBe('Golden');
+    for (const x of LOOK_ITEMS) expect(x.name).not.toMatch(/dried|dead|grey|gray|faded/i);
+  });
+  it('the badge sheet’s quiet line says "On your plant" only when the keepsake is on show (UX review H1)', () => {
+    expect(onYourPlantLine('dress-rehearsal', ['lantern'])).toBe('On your plant: the lantern.');
+    expect(onYourPlantLine('long-memory', ['jay', 'fox'])).toBe('On your plant: the jay.');
+    expect(onYourPlantLine('long-memory', ['fox'])).toBe('A keepsake for your plant: the jay. Show it from Your plant, Change its look.');
+    expect(onYourPlantLine('firm-footing', [])).toBeNull();
   });
 });

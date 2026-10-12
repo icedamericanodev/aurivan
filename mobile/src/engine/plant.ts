@@ -24,7 +24,7 @@ import type { SubtopicMastery } from './mastery';
 import { computeReadiness, MIN_SAMPLE, domainMastery, type AnswerRecord } from './readiness';
 import { RANGE_MIN_ANSWERS, readinessRange } from './readinessRange';
 import { daysBetween, dayKey } from './streak';
-import { isCatalogLook, isLookOfSlot, MOOD_WORDS, type PlantMood } from './plantLooks';
+import { defaultKeepsakes, isCatalogLook, isKeepable, isLookOfSlot, keepOnReset, MOOD_WORDS, type CertMarks, type PlantMood } from './plantLooks';
 
 // ── Species ────────────────────────────────────────────────────────────
 
@@ -565,7 +565,7 @@ export function clearPending(plant: CertPlant): CertPlant {
  * is copied into `kept`, so the look survives.
  */
 export function resetPlant(plant: CertPlant, now: number, unlocked: readonly LookId[] = []): CertPlant {
-  const kept = [...new Set([...(plant.kept ?? []), ...unlocked].filter(isCatalogLook))].slice(0, MAX_KEPT);
+  const kept = [...new Set([...(plant.kept ?? []), ...unlocked].filter(isKeepable))].slice(0, MAX_KEPT);
   const out: CertPlant = {
     species: plant.species,
     name: plant.name,
@@ -578,6 +578,32 @@ export function resetPlant(plant: CertPlant, now: number, unlocked: readonly Loo
   if (kept.length) out.kept = kept;
   if (plant.passedOn) out.passedOn = plant.passedOn;
   return out;
+}
+
+/**
+ * Mobile 1.14 (UX review H1): a plant that never chose its keepsakes shows
+ * the first three earned. A Reset takes badges away, which would reorder
+ * that default, so just before one the keepsakes on show are written down
+ * as the plant's own choice: the plant looks exactly as it did.
+ */
+export function freezeKeepsakes(plant: CertPlant, marks: readonly CertMarks[]): CertPlant {
+  if (plant.look?.keepsakes !== undefined) return plant;
+  const shown = defaultKeepsakes(plant, marks);
+  return shown.length ? { ...plant, look: { ...plant.look, keepsakes: shown } } : plant;
+}
+
+/**
+ * Resetting one exam, seen from ANOTHER exam's plant (code review M6):
+ * badges are the learner's, not one plant's, so the reset exam's badge and
+ * set unlocks go into this plant's `kept` as well. Its growth and look are
+ * untouched and it draws exactly what it drew before. Same object when
+ * nothing changes.
+ */
+export function keepThroughOtherReset(plant: CertPlant, marks: readonly CertMarks[], resetMarks: CertMarks): CertPlant {
+  const p = freezeKeepsakes(plant, marks);
+  const add = keepOnReset({ growth: 1 }, [resetMarks]).filter((id) => !p.kept?.includes(id));
+  if (!add.length) return p;
+  return { ...p, kept: [...(p.kept ?? []), ...add].filter(isKeepable).slice(0, MAX_KEPT) };
 }
 
 /** Change species: no cost, no cooldown, and the growth stays. The colourway goes back to the species' default. */
@@ -607,9 +633,10 @@ export function withLook(plant: CertPlant, change: { [K in keyof PlantLook]?: Pl
     else if (isLookOfSlot(v, slot)) look[k] = v;
   }
   if ('keepsakes' in change) {
-    const ks = [...new Set((change.keepsakes ?? []).filter((x) => isLookOfSlot(x, 'keepsake')))].slice(0, MAX_KEEPSAKES);
-    if (ks.length) look.keepsakes = ks;
-    else delete look.keepsakes;
+    // null: back to the default (the first three earned). An empty list is
+    // the learner's own choice ("none on show") and is kept as such.
+    if (change.keepsakes === null || change.keepsakes === undefined) delete look.keepsakes;
+    else look.keepsakes = [...new Set(change.keepsakes.filter((x) => isLookOfSlot(x, 'keepsake')))].slice(0, MAX_KEEPSAKES);
   }
   const before = JSON.stringify(plant.look ?? {});
   if (JSON.stringify(look) === before) return plant;
@@ -832,7 +859,8 @@ export function isValidPlantState(x: unknown): x is CertPlant {
       if (!Array.isArray(ks) || ks.length > MAX_KEEPSAKES || !ks.every((k) => isLookOfSlot(k, 'keepsake')) || new Set(ks).size !== ks.length) return false;
     }
   }
-  if (x.kept !== undefined && !(Array.isArray(x.kept) && x.kept.length <= MAX_KEPT && x.kept.every(isLook))) return false;
+  // `kept` holds only what a Reset can carry (code review M4): never a free item, never the ribbon.
+  if (x.kept !== undefined && !(Array.isArray(x.kept) && x.kept.length <= MAX_KEPT && x.kept.every(isKeepable))) return false;
   if (x.passedOn !== undefined && !isDate(x.passedOn)) return false;
   return true;
 }
@@ -870,7 +898,7 @@ export function repairPlant(p: CertPlant): CertPlant {
     if (out.look.keepsakes) look.keepsakes = [...new Set(out.look.keepsakes.filter((k) => isLookOfSlot(k, 'keepsake')))].slice(0, MAX_KEEPSAKES);
     out.look = look;
   }
-  if (out.kept) out.kept = [...new Set(out.kept.filter(isLook))].slice(0, MAX_KEPT);
+  if (out.kept) out.kept = [...new Set(out.kept.filter(isKeepable))].slice(0, MAX_KEPT);
   return out;
 }
 

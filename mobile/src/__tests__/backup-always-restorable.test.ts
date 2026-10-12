@@ -17,7 +17,7 @@ import { getAllQuestions } from '../content/loader';
 import { MAX_ANSWER_MS } from '../engine/answerClock';
 import { readBackup } from '../engine/backup';
 import { GROWTH_IDS, isValidPlantState, PLANT_SPECIES, type CertPlant, type GrowthLevel } from '../engine/plant';
-import { isCatalogLook, isLookOfSlot } from '../engine/plantLooks';
+import { isCatalogLook, isKeepable, isLookOfSlot } from '../engine/plantLooks';
 import { createRng } from '../engine/random';
 import { dayKey } from '../engine/streak';
 import { originalToDisplay } from '../engine/shuffle';
@@ -239,7 +239,8 @@ describe('export: every state the phone can hold reads back', () => {
             },
           }
         : {}),
-      ...(rng() < 0.3 ? { kept: pick([['robin'], ['robin', 'robin'], ['stone-ring', 'fieldstone', 'oak-autumn', 'lantern'], Array.from({ length: 80 }, (_, k) => `kept-${k}`)]) } : {}),
+      // PR #44 code review M4: `kept` may only hold what a Reset can carry (never the ribbon, never a free item).
+      ...(rng() < 0.3 ? { kept: pick([['robin'], ['robin', 'robin'], ['stone-ring', 'fieldstone', 'oak-autumn', 'lantern'], ['ribbon', 'lantern'], ['meadow', 'wren', 'robin'], Array.from({ length: 80 }, (_, k) => `kept-${k}`)]) } : {}),
       ...(rng() < 0.2 ? { passedOn: '2026-09-30' } : {}),
     } as CertPlant;
   }
@@ -282,9 +283,11 @@ describe('export: every state the phone can hold reads back', () => {
         for (const [k, slot] of [['colourway', 'colourway'], ['ground', 'ground'], ['planter', 'planter'], ['visitor', 'visitor']] as const)
           expect(back.look?.[k]).toBe(want && isLookOfSlot(want[k], slot) ? want[k] : undefined);
         const ks = [...new Set((want?.keepsakes ?? []).filter((x) => isLookOfSlot(x, 'keepsake')))].slice(0, 3);
-        expect(back.look?.keepsakes ?? []).toEqual(ks);
-        // Unlocks kept across a Reset survive too (catalogue ids only, once each).
-        expect(back.kept ?? []).toEqual([...new Set((plant!.kept ?? []).filter(isCatalogLook))]);
+        // An explicit list (even an empty one: "none on show") survives as such; unset stays unset (the default three).
+        expect(back.look?.keepsakes).toEqual(want?.keepsakes === undefined ? undefined : ks);
+        // Unlocks kept across a Reset survive too (keepable catalogue ids only, once each).
+        expect(back.kept ?? []).toEqual([...new Set((plant!.kept ?? []).filter(isKeepable))]);
+        expect((back.kept ?? []).every((id) => isCatalogLook(id) && id !== 'ribbon')).toBe(true);
       }
     }
   });
