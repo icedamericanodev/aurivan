@@ -16,6 +16,7 @@
 //   compose-empty, compose-bank, compose-recall, compose-draft   the composer
 //   board-gate, board-handle   the guidelines gate and "Choose how you appear"
 //   ugc-menu, ugc-report, ugc-report-done, ugc-block   the ⋯ menu, Report, thanks, Block
+//   ugc-report-member    "Report {name}": reporting a learner (fix round P8, SEC S8)
 //   ugc-blocked          Settings → Feedback board → Blocked learners
 //   board-activity       Your activity: a removal with "Ask us to look again", a status, a reply
 //   board-held           Maya's post waiting for review; board-paused: the composer, paused
@@ -147,6 +148,11 @@ const SIGNED_IN = { signedIn: true, authAgeMin: 30 };
   await tap(page, 'More options');
   await tap(page, 'Block Kind Willow 31');
   await shot(page, 'ugc-block');
+  await go(page, ON, '/board/post-weekly-summary');
+  await tap(page, 'More options');
+  await tap(page, 'Report Bright Rowan 58');
+  await tap(page, 'Harassment or hate');
+  await shot(page, 'ugc-report-member');
 
   await go(page, ON, '/board/activity');
   await shot(page, 'board-activity');
