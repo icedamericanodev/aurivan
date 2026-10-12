@@ -45,7 +45,7 @@ manager) evaluated the options independently. All three picked **React Native
 | Crash reporting | **Sentry** (`@sentry/react-native`) | 2 | Tells you when the app crashes, and where |
 | Analytics | **PostHog** (anonymous events first) | 2 | Which features help people study |
 | Payments | **RevenueCat** (`react-native-purchases`) | 2 | Apple/Google subscriptions + restore, one SDK |
-| Accounts + sync | **Supabase** (Postgres + Auth + RLS) | 3 | Sign in with Apple/Google, progress on every device |
+| Accounts + sync | **Supabase** (Postgres + Auth + RLS) | Uplift 6–9 (built OFF; see §3 "Cloud (built OFF)") | Sign in with Apple/Google or an email code, progress on every device. Client ports and screens exist behind a build flag; `@supabase/supabase-js`, `expo-secure-store`, `expo-apple-authentication` and `@react-native-google-signin/google-signin` are added only at go-live (Phase 9), cloud build only |
 | Content delivery | **Supabase Storage / CDN** content packs | 3 | Add CISM etc. without an app update |
 | E2E tests | **Maestro** | 3 | Robot taps through the app before release |
 
@@ -397,6 +397,83 @@ minPool guard (`isPlayable` now also counts a cert's decks from
 Games never count toward mastery or readiness: these three only write
 review cards. Odd Leaf Out (games review §3.6) is not built.
 
+### Cloud (built OFF) — Uplift Phase 6, accounts
+Accounts, sync (Phase 7) and the feedback board (Phase 8) are built and
+tested now but switched OFF in every build. Nothing a learner can see
+changes until the owner's go-live (Phase 9). Spec: the uplift plan's
+PHASE6_8 (§1–2).
+- **One build-time switch**, `EXPO_PUBLIC_AURIVAN_CLOUD` (`src/cloud/flag.ts`).
+  Unset in every EAS environment = OFF. babel-preset-expo writes it into the
+  bundle as a literal, so `CLOUD` is `false` in a store build. Never a
+  remote switch: no server value, deep link or saved data can turn it on.
+  Sign-in methods: `EXPO_PUBLIC_AURIVAN_CLOUD_PROVIDERS` (default
+  `email,apple,google`).
+- **Ports, not SDKs** (`src/cloud/types.ts`). Screens and `lib/account.ts`
+  talk to a `CloudBackend` (`auth`, `sync`, `board`); every failure is a
+  `CloudError` code, never a raw server message. Device ports for Phase 9's
+  native adapters: `SecureKVPort` (Keychain / Keystore), `AppleSignInPort`,
+  `GoogleSignInPort`, `RandomPort`, `CaptchaPort`. `src/cloud/memory/` is
+  an in-memory backend that plays the server's rules (6-digit codes, 60 s
+  resend, 10-minute codes, 5 tries, the 10-minute re-auth window, Apple's
+  authorisation code, export once an hour, sync `rev` conflicts, offline)
+  for tests, dev builds and `SHOTS=cloud`. Tests swap backends with
+  `setBackendForTests`.
+- **Bundle exclusion without new machinery.** `src/cloud/backend.ts`
+  requires `runtime.on.ts` behind an INLINE
+  `process.env.EXPO_PUBLIC_AURIVAN_CLOUD === '1'` check; with the flag
+  unset that is `undefined === '1'`, which Metro folds away before it
+  collects dependencies, so the ON runtime and the memory backend are not in
+  an OFF bundle at all (`runtime.off.ts` exports `backend = null`). No
+  `metro.config.js` was needed. The entry points (`{CLOUD && …}`) and the
+  `(cloud)` screens do ship, inert: the screens import no SDK.
+- **Session**: `src/cloud/secureSession.ts` splits the session into secure
+  store keys of at most 1,800 bytes, writes the manifest (count, length,
+  checksum) LAST, and reads a broken set as "signed out" and wipes it.
+  Every write is "this device only, after first unlock". Nothing secret in
+  AsyncStorage: `store/account.ts` (`aurivan.account.v1`) keeps only
+  signed-in, the MASKED email, the methods, the SHA-256 of the account id
+  and "sign in again"; it is never hydrated with the flag off, never in a
+  backup file, never synced. `deviceId.ts` keeps a random UUID in the secure
+  store (a restored phone gets a new one).
+- **Screens** (`src/app/(cloud)/`): the group's layout is a `Redirect` to `/`
+  unless the build has a backend, so `aurivan://account/delete` lands on
+  Today with the flag off. `/account` is the sign-in sheet when signed out
+  and the account screen when signed in; `/account/sign-in` (for "sign in
+  first" places), `/account/email` (code sign-in), `/account/delete` (step 1
+  → re-confirm → done). No route reads link parameters or calls the backend
+  on mount. Ways in: You → Help and feedback's first row, and Settings →
+  Account; never at launch, onboarding, a session or as a pop-up.
+- **Safety asserts** live in `src/cloud/configGuard.ts`
+  (`assertCloudConfig(env)`, pure and tested): the flag must be `1` or
+  unset; the memory backend fails any EAS profile except `development`
+  (G9); the flag on `production` needs `AURIVAN_CLOUD_GO_LIVE_ACK=yes`; an
+  https backend URL and a publishable key; no secret-looking `EXPO_PUBLIC_*`
+  value; no Google on iOS without Apple (App Store 4.8). **Phase 9 adds
+  `mobile/app.config.ts`, which calls `assertCloudConfig(process.env)` and,
+  only when the flag is on, adds the native plugins** (`expo-secure-store`,
+  `expo-apple-authentication`, `@react-native-google-signin/google-signin`).
+  It was not added in Phase 6 on purpose: there were no plugins to add, and
+  a config file risks the native fingerprint (§6.9).
+- **No new dependency in Phase 6.** SHA-256 (the account hash, the Apple
+  nonce) is a small tested TypeScript file (`engine/sha256.ts`) instead of
+  `expo-crypto`. `@supabase/supabase-js` and the three native modules above
+  arrive at Phase 9, each justified then, in the cloud build only.
+- **Guards** (CI, `.github/workflows/mobile.yml`): G1
+  `scripts/check_secrets.sh` (patterns in `scripts/secret_patterns.txt`,
+  tracked files under `mobile/` only); the whole Jest suite a second time
+  with the flag ON and the memory backend, signed out; G2
+  `mobile/scripts/check_off_bundle.sh` greps the OFF Android export for the
+  backend SDK, sign-in SDKs, secure store, `/rest/v1/` and the memory
+  backend's demo markers (checked both ways: a flag-ON export trips it).
+  Jest: G4 (`cloud-off.test.tsx`: no fetch or XHR on nine screens and a
+  session), G5 (the `(cloud)` routes redirect, no backend call), G9
+  (`cloud-core.test.ts`). Server-side guards (RLS, pgTAP) live with
+  `supabase/`.
+- **Screenshots**: `SHOTS=cloud bash scripts/screenshots/run.sh <out>
+  <light|dark>` exports the web build with the flag ON and the memory
+  backend (`EXPO_PUBLIC_AURIVAN_SHOTS=1`; never a store build) plus the same
+  app with the flag OFF for the `off-*` proof shots (DESIGN_SYSTEM §17).
+
 ### The content pipeline
 ```
 data/tips_overrides/d{N}.json ─┐
@@ -464,16 +541,36 @@ Freemium with in-app subscriptions (product panel recommendation):
 6. **No "guaranteed pass"** claims anywhere. Readiness is always worded as an
    estimate ("estimated readiness", "A study estimate, not a prediction of
    your exam result."), never a prediction.
-7. **Android backup (decision, 2026-10)** — `android.allowBackup` is `true` on
+7. **Android backup (decision, 2026-10; updated Phase 6)** — `android.allowBackup` is `true` on
    purpose. The app stores only study progress and settings (no accounts,
    no secrets), and a restore onto a new phone saves learners from starting
-   over. Revisit if the app ever stores tokens or personal data on device.
+   over. Accounts (built OFF, "Cloud (built OFF)" in §3) keep this: the
+   sign-in session and the device id live ONLY in the secure key store,
+   which is excluded from backups ("this device only"; Phase 9 sets
+   `expo-secure-store`'s `configureAndroidBackup`). A restored phone has no
+   session, so it is quietly signed out and the account row says "Sign in
+   again to keep syncing". AsyncStorage holds only non-secret account facts
+   (signed in, a masked email), which are safe in a backup.
    Since mobile 1.3 the learner can also save their own backup file
    (Settings → Your data), which works across iOS and Android. The file goes
    only where the learner sends it, so the store data-safety answers stay
    "no data collected".
 8. **Tablets** — `ios.supportsTablet` is `false` for v1 (no iPad layouts or
    iPad screenshots yet).
+9. **Over-the-air updates and the cloud flag (Phase 6).** `expo-updates`
+   uses the `fingerprint` runtime policy (`mobile/fingerprint.config.js`):
+   an update reaches only binaries whose native fingerprint matches. Phase 6
+   adds no native module and no config file, so the Android fingerprint is
+   unchanged (`5e26d4b961113941199b725cff5ff30a66bf0ac1`) and OTA updates
+   keep reaching the APKs learners already have. The spec's
+   "`runtimeVersion` with a `-cloud` suffix" rule is not needed: a cloud
+   build adds native modules (secure store, Apple, Google sign-in), which
+   changes its fingerprint, so an ON bundle can never be served to an OFF
+   binary, and an OFF bundle never to an ON one (Apple 2.5.2). Check
+   before every cloud-related PR: `npx expo-updates fingerprint:generate
+   --platform android` must print the same hash while the flag is off.
+   Don't touch `mobile/.gitignore` or `mobile/eas.json` casually: both are
+   fingerprint inputs.
 
 Run the `app-store-compliance-reviewer` agent before every submission.
 
