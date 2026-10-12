@@ -401,7 +401,8 @@ describe('clock skew', () => {
     const c = clampFuture('progress', skewed, T0);
     expect(c.state.byCert.cisa.answers![q].lastAt).toBe(T0);
     expect(c.state.streak.lastDay).toBe(dayKey(T0));
-    expect(c.stamps['plant.cisa']).toBe(T0);
+    // A stamp from the future counts as "unknown" (0): it loses to any real change.
+    expect(c.stamps['plant.cisa']).toBeUndefined();
     // An honest later answer (an hour from now, inside the slack) is not touched.
     const soon = { attempts: 1, correctCount: 0, lastCorrect: false, lastAt: T0 + 3_600_000 };
     const honest = clampFuture('progress', { state: { ...skewed.state, byCert: { cisa: { answers: { [q]: soon } } } } as SyncedProgress, stamps: {} }, T0);

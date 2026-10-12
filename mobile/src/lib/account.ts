@@ -62,6 +62,29 @@ function apply(a: AccountInfo | null) {
   else if (!a) setFacts({ signedIn: false, emailMasked: null, providers: [], expired: signedIn });
 }
 
+// ── Account events (Uplift Phase 7: lib/sync.ts listens) ───────────────
+/**
+ * What sync needs to hear about: a sign-in (which account: a different one
+ * on a shared phone asks first) and a deleted account (forget the sync
+ * record and this install's id). Nothing listens with the flag off.
+ */
+export type AccountEvent = { kind: 'signedIn'; info: AccountInfo } | { kind: 'deleted' };
+const listeners = new Set<(e: AccountEvent) => void>();
+/** Hear account events; returns a function that stops listening. */
+export function onAccountEvent(cb: (e: AccountEvent) => void): () => void {
+  listeners.add(cb);
+  return () => listeners.delete(cb);
+}
+function emit(e: AccountEvent) {
+  for (const cb of [...listeners]) {
+    try {
+      cb(e);
+    } catch {
+      // A listener's problem never breaks signing in or deleting.
+    }
+  }
+}
+
 /** Signed out on this phone because the session ended (not the learner's choice): the row says "Sign in again". */
 async function sessionEnded(b: ReturnType<typeof backend>) {
   await b.auth.signOut('local').catch(() => {});
@@ -160,7 +183,14 @@ async function finishSignIn(a: AccountInfo): Promise<Result> {
     return failed(e);
   }
   apply({ ...a, termsVersion: TERMS_VERSION });
+  emit({ kind: 'signedIn', info: a });
   return { ok: true };
+}
+
+/** The server refused the session during a sync: signed out here, and the rows say "Sign in again to keep syncing". */
+export async function noteSessionEnded() {
+  if (!cloudReady()) return;
+  await sessionEnded(backend());
 }
 
 /** Send a sign-in code. */
@@ -277,6 +307,7 @@ export async function deleteAccount(i: { alsoLocal: boolean; appleAuthorizationC
   await b.auth.signOut('local').catch(() => {});
   useAccount.getState().setFacts({ ...SIGNED_OUT });
   if (i.alsoLocal) removeLocalProgress();
+  emit({ kind: 'deleted' });
   return { ok: true };
 }
 

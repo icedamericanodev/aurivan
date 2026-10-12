@@ -389,6 +389,85 @@ async function writeAll(
   }
 }
 
+/** The settings and progress the phone holds now, as plain data (sync reads these). */
+export function phoneStores(): { settings: SettingsData; progress: ProgressData } {
+  return { settings: settingsData(), progress: progressData() };
+}
+
+/**
+ * Sync (Uplift Phase 7, cloud builds only): put MERGED settings and progress
+ * on the phone through the restore write path. Unlike a restore it:
+ * - keeps today's plans (`days`) and a paused quiz (the merged data only
+ *   adds to them);
+ * - writes the undo snapshot (`opts.undo`, the first sync's "Undo sync") in
+ *   the SAME AsyncStorage.multiSet as the stores, or leaves the slot alone;
+ * - never reloads the stores from storage: anything the learner did while
+ *   the write was in flight (an answer) would be lost. Instead, if a store
+ *   changed meanwhile, `opts.rebase` merges the live data into what was
+ *   written (merging is safe to repeat) and that is what the stores take;
+ *   persist then saves it as usual.
+ * If the write fails, the old rows are written back, nothing in memory
+ * changes, and it throws.
+ */
+export async function writeSynced(
+  next: { settings: Record<string, unknown>; progress: Record<string, unknown> },
+  opts: {
+    undo?: UndoSnapshot | null;
+    rebase?: (live: { settings: SettingsData; progress: ProgressData }) => { settings: Record<string, unknown>; progress: Record<string, unknown> } | null;
+  } = {},
+): Promise<void> {
+  await whenHydrated();
+  const full = (n: { settings: Record<string, unknown>; progress: Record<string, unknown> }, days: ProgressData['days']) => {
+    const settings = { ...pick(useSettings.getInitialState(), SETTINGS_KEYS), ...n.settings } as SettingsData;
+    const byCert: ProgressData['byCert'] = {};
+    for (const [id, cp] of Object.entries((n.progress.byCert ?? {}) as Record<string, Partial<CertData>>)) byCert[id] = completeCert(cp);
+    const progress = { ...pick(useProgress.getInitialState(), PROGRESS_KEYS), ...n.progress, byCert, days } as ProgressData;
+    return { settings, progress };
+  };
+  const live = { settings: settingsData(), progress: progressData() };
+  const written = full(next, live.progress.days);
+  const before = currentRows();
+  const rows = [row(useSettings, written.settings), row(useProgress, written.progress)];
+  if (opts.undo !== undefined) {
+    const b = useBackup.getState();
+    rows.push(row(useBackup, { lastBackupAt: b.lastBackupAt, undo: opts.undo, restoredSavedAt: b.restoredSavedAt ?? null }));
+  }
+  try {
+    await AsyncStorage.multiSet(rows);
+  } catch (e) {
+    await AsyncStorage.multiSet(before).catch(() => {});
+    throw e;
+  }
+  // The learner kept studying while the write was in flight: merge that in, never drop it.
+  const now = { settings: settingsData(), progress: progressData() };
+  const moved =
+    SETTINGS_KEYS.some((k) => !Object.is(now.settings[k], live.settings[k])) || PROGRESS_KEYS.some((k) => !Object.is(now.progress[k], live.progress[k]));
+  let final = written;
+  if (moved && opts.rebase) {
+    try {
+      const r = opts.rebase(now);
+      if (r) final = full(r, now.progress.days);
+    } catch {
+      // Can't merge right now: the next sync will (nothing is lost; it is all on the phone).
+      final = full({ settings: { ...written.settings, ...now.settings }, progress: { ...written.progress, ...now.progress } }, now.progress.days);
+    }
+  }
+  useSeen.getState().forgetValues();
+  useSettings.setState(final.settings);
+  useProgress.setState(final.progress);
+  if (opts.undo !== undefined) useBackup.setState({ undo: opts.undo });
+  for (const id of Object.keys(useProgress.getState().byCert)) {
+    ensureCatalog(id);
+    syncPlanters(id);
+  }
+}
+
+/** The undo copy for a first sync ("Undo sync"), or null when this phone's own data couldn't be checked. */
+export function syncUndoSnapshot(now = Date.now()): UndoSnapshot | null {
+  const file = currentBackup(now);
+  return checkBackupText(JSON.stringify(file)).kind === 'ok' ? { takenAt: now, file, kind: 'sync' } : null;
+}
+
 /** How reminders ended up after a restore or undo. */
 export type ReminderOutcome = 'on' | 'off' | 'blocked' | 'unsupported';
 

@@ -605,7 +605,7 @@ describe('A5: Download my data, A6: sign out', () => {
     signedIn();
     const file = currentBackup();
     for (const store of ['settings', 'progress'] as const) {
-      await memory.sync.push({ store, expectedRev: null, storeVersion: file.stores[store].version, appVersion: '1.17.0', deviceId: 'd', state: file.stores[store].state });
+      await memory.sync.push({ store, expectedRev: null, storeVersion: file.stores[store].version, appVersion: '1.17.0', deviceId: '6f1c2b9e-4d3a-4c1b-9a7e-2f5d8c0b1a3e', state: file.stores[store].state });
     }
     const text = await memory.auth.exportMyData();
     const data = readBackup(text, CERTIFICATIONS.map((c) => c.id));

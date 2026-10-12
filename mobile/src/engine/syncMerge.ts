@@ -32,7 +32,7 @@
  * - set-like lists are kept in a canonical (sorted) order, so two phones
  *   converge on the same bytes instead of swapping orders forever.
  */
-import { fitForBackup, readStores, type BackupProgress, type BackupSettings } from './backup';
+import { BackupError, fitForBackup, hasProtoKey, readStores, type BackupProgress, type BackupSettings } from './backup';
 import { LOG_KEEP_DAYS } from './examReady';
 import { cleanDone } from './examWeek';
 import { GAME_TIERS } from './games/growth';
@@ -184,7 +184,8 @@ export function readStamps(raw: unknown): Stamps {
   return out;
 }
 
-const mergeStamps = (a: Stamps, b: Stamps): Stamps => {
+/** Two stamp maps together: the later time per key. */
+export const mergeStamps = (a: Stamps, b: Stamps): Stamps => {
   const out: Stamps = {};
   for (const k of unionSorted(Object.keys(a), Object.keys(b)).slice(0, MAX_STAMPS)) {
     const v = max(a[k], b[k]);
@@ -194,7 +195,21 @@ const mergeStamps = (a: Stamps, b: Stamps): Stamps => {
 };
 
 // ── Wrong clocks ─────────────────────────────────────────────────────────
-/** A copy of a store side with every time more than a day ahead pulled back to `now`. */
+/** Stamps more than a day ahead dropped: "changed at an unknown time", which loses to any real change. */
+export function dropFutureStamps(stamps: Stamps, now: number): Stamps {
+  const limit = now + FUTURE_SLACK_MS;
+  return Object.fromEntries(Object.entries(stamps).filter(([, v]) => v <= limit));
+}
+
+/**
+ * A copy of a store side with every time more than a day ahead (a phone
+ * whose clock is wrong) pulled back to `now`, and every such STAMP dropped.
+ * A stamp only decides who changed a choice last: pulled back to now it
+ * would beat a real change made just before this sync, so it counts as 0
+ * instead (like a missing stamp). The phone with the wrong clock still keeps
+ * its own choice while its clock is wrong; once it is right, a later real
+ * change wins everywhere.
+ */
 export function clampFuture<T>(store: SyncStoreName, side: Side<T>, now: number): Side<T> {
   const limit = now + FUTURE_SLACK_MS;
   const today = dayKey(now);
@@ -203,7 +218,7 @@ export function clampFuture<T>(store: SyncStoreName, side: Side<T>, now: number)
   const d = (v: unknown) => (typeof v === 'string' && v > lastDay ? today : v);
   const times = <V>(m: Record<string, V> | undefined) => (m ? Object.fromEntries(Object.entries(m).map(([k, v]) => [k, t(v)])) : m);
   const days = <V>(m: Record<string, V> | undefined) => (m ? Object.fromEntries(Object.entries(m).map(([k, v]) => [k, d(v)])) : m);
-  const stamps = times(side.stamps) as Stamps;
+  const stamps = dropFutureStamps(side.stamps, now);
   if (store === 'settings') return { state: side.state, stamps };
   const p = JSON.parse(JSON.stringify(side.state)) as SyncedProgress;
   for (const cp of Object.values(p.byCert)) {
@@ -636,6 +651,9 @@ export function readSnapshot<T extends SyncedSettings | SyncedProgress>(
   ctx: MergeContext & { thisApp?: string },
 ): Side<T> {
   const raw = snap.state;
+  // Checked on the RAW state, before any copy: a copy made with spread or
+  // assignment would turn a "__proto__" key into a prototype and hide it.
+  if (hasProtoKey(raw)) throw new BackupError('bad-data', store);
   const state = isObj(raw) ? { ...withoutDeviceLocal(store, raw), ...PLACEHOLDER[store] } : raw;
   const checked = readStores({ [store]: { version: snap.storeVersion, state } }, { appVersion: snap.appVersion }, ctx.knownCertIds, undefined, ctx.thisApp, {
     strict: true,

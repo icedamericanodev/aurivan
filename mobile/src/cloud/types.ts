@@ -135,12 +135,36 @@ export interface SnapshotHead {
   updatedAt: number;
   deviceId: string;
 }
+/**
+ * The learner's two snapshots (spec §3.7, `public.sync_snapshots`). Every
+ * call is the signed-in learner's own rows only (RLS on the server).
+ * - head: only store, rev, app_version, store_version, device_id and
+ *   updated_at, so the state is downloaded only when `rev` changed;
+ * - push: `expectedRev` null inserts (CloudError 'conflict' if a row
+ *   exists); otherwise `update … where rev = expectedRev` (zero rows:
+ *   'conflict'). 'rate_limited' past 60 writes per store per hour;
+ *   'invalid' for a session without accepted Terms or a malformed row;
+ *   'too_big' past the server's cap;
+ * - deleteAll: "Delete synced progress" (the server clears its checkpoints).
+ * The Phase 9 adapter maps Postgres `P0001 rate_limited` and `42501` here.
+ */
 export interface SyncPort {
   head(store: SyncStore): Promise<SnapshotHead | null>;
   pull(store: SyncStore): Promise<(SnapshotHead & { state: unknown }) | null>;
   /** CloudError('conflict') when `expectedRev` isn't the server's rev. */
   push(i: { store: SyncStore; expectedRev: number | null; storeVersion: number; appVersion: string; deviceId: string; state: unknown }): Promise<SnapshotHead>;
   deleteAll(): Promise<void>;
+}
+
+/**
+ * This install's random id (cloud/deviceId.ts), sent with every push so a
+ * snapshot says which device wrote it. A random UUID in the secure key
+ * store, never a hardware or advertising id.
+ */
+export interface DevicePort {
+  id(): Promise<string>;
+  /** A new id: a different account signed in on this phone, or its account was deleted (Phase 6 review N6). */
+  renew(): Promise<string>;
 }
 
 // ── Feedback board (PR 8, spec §4.6) ──────────────────────────────────
@@ -258,6 +282,7 @@ export interface CloudBackend {
   auth: AuthPort;
   sync: SyncPort;
   board: BoardPort;
+  device: DevicePort;
 }
 
 // ── Device ports the Phase 9 adapters fill in ─────────────────────────

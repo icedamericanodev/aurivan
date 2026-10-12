@@ -6,6 +6,9 @@
  * - Kept in the secure key store, "this device only": NOT in AsyncStorage,
  *   so a phone restored from a backup gets a new id (it is a new install).
  * - Made the first time it is needed, then reused.
+ * - Renewed when a different account signs in on this phone and when the
+ *   account is deleted (Phase 6 review N6), so two learners' snapshots never
+ *   share an id.
  */
 import type { RandomPort, SecureKVPort } from './types';
 
@@ -31,6 +34,13 @@ export function isDeviceId(v: unknown): v is string {
 export async function getDeviceId(kv: SecureKVPort, random: RandomPort): Promise<string> {
   const saved = await kv.getItem(KEY);
   if (isDeviceId(saved)) return saved;
+  const id = uuidV4(random.bytes(16));
+  await kv.setItem(KEY, id, { thisDeviceOnly: true });
+  return id;
+}
+
+/** A new id for this install, saved now (the old one is forgotten). */
+export async function renewDeviceId(kv: SecureKVPort, random: RandomPort): Promise<string> {
   const id = uuidV4(random.bytes(16));
   await kv.setItem(KEY, id, { thisDeviceOnly: true });
   return id;

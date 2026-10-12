@@ -451,11 +451,14 @@ describe('the memory backend plays the server’s rules', () => {
     expect(await codeOf(b.auth.exportMyData())).toBe('ok');
   });
 
-  it('sync (for PR 7): rev concurrency and the size cap', async () => {
+  it('sync (for PR 7): Terms first, rev concurrency and the size cap', async () => {
     const b = make();
     await b.auth.signInWithGoogle();
     const push = (expectedRev: number | null, state: unknown = { a: 1 }) =>
-      b.sync.push({ store: 'progress', expectedRev, storeVersion: 1, appVersion: '1.17.0', deviceId: 'd', state });
+      b.sync.push({ store: 'progress', expectedRev, storeVersion: 1, appVersion: '1.17.0', deviceId: '6f1c2b9e-4d3a-4c1b-9a7e-2f5d8c0b1a3e', state });
+    // No writes until the Terms are accepted (the server's profile policy, Phase 6 review N10).
+    expect(await codeOf(push(null))).toBe('invalid:terms');
+    await b.auth.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true });
     expect((await push(null)).rev).toBe(1);
     expect(await codeOf(push(null))).toBe('conflict');
     expect((await push(1)).rev).toBe(2);

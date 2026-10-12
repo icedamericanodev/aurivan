@@ -868,7 +868,7 @@ function readChecked(
 const PROTO_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
 
 /** True when any object at any depth has a prototype key (a sync pull refuses the whole state). */
-function hasProtoKey(x: unknown, depth = 0): boolean {
+export function hasProtoKey(x: unknown, depth = 0): boolean {
   if (depth > 40) return true; // nothing we save is this deep: treat it as hostile
   if (Array.isArray(x)) return x.some((v) => hasProtoKey(v, depth + 1));
   if (!isObj(x)) return false;
@@ -1065,6 +1065,12 @@ export function previewRows(now: BackupSummary, backup: BackupSummary): PreviewR
 export interface UndoSnapshot {
   takenAt: number;
   file: BackupFile;
+  /**
+   * Uplift Phase 7 (cloud builds only): 'sync' when the copy was taken just
+   * before this phone first synced (Settings → Your data says "Undo sync").
+   * Never set otherwise, so an OFF build saves exactly what it always did.
+   */
+  kind?: 'sync';
 }
 
 /** When "Undo restore" stops being offered. */
