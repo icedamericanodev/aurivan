@@ -2,7 +2,7 @@
  * Uplift Phase 6 (accounts, built OFF): with the flag off — every build
  * today — the app is exactly what it was. Spec PHASE6_8.md §1.6:
  * - G4: no network. fetch and XMLHttpRequest throw if touched; Today, Learn,
- *   Practice, Play, You, Settings, Help, What's next and a session render
+ *   Practice, Play, You, Settings, Help, What's new and a session render
  *   without touching either.
  * - G5: the (cloud) routes redirect to Today, and no backend method runs,
  *   even with a backend present (a deep link can't reach a cloud screen).
@@ -125,7 +125,7 @@ describeOff('the cloud flag is off', () => {
     you: () => require('../app/(tabs)/you').default,
     settings: () => require('../app/settings').default,
     help: () => require('../app/help').default,
-    'whats-next': () => require('../app/whats-next').default,
+    'whats-new': () => require('../app/whats-new').default,
   };
 
   it.each(Object.keys(SCREENS))('G4: %s renders with no network and no account UI', async (name) => {
