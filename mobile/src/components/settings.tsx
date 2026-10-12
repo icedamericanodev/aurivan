@@ -5,13 +5,14 @@
  *   one-line intro, then hairline rows; no card, spec §5).
  * - SettingsRow: one setting. Its CURRENT value sits on the right with a
  *   chevron ("Exam date   8 Jan 2027 ›"); tapping it opens a sheet with the
- *   choices. At large text the value drops under the title instead of
+ *   choices. Rows that DO something at once (Save a backup) have no chevron:
+ *   a chevron promises somewhere to go. At large text the value drops under the title instead of
  *   squeezing beside it. Spoken as one button: "Exam date, Friday 8 January 2027".
  * - Sheet: a bottom sheet. The screen behind dims (the `scrim` token at
  *   `scrimOp`) and stays in place, so the learner knows they haven't gone
  *   anywhere. It fades in and its panel rises 8pt (FadeIn); under Reduce
  *   Motion it only fades. No spring, no drag. Closes with its button, a tap
- *   on the dim, or Android's Back. Tall content scrolls inside it; a footer
+ *   on the dim, Android's Back, or VoiceOver's escape gesture (two-finger Z). Tall content scrolls inside it; a footer
  *   (Save) stays in reach.
  * - ChoiceSheet: a Sheet holding one radio group. Choosing saves at once and
  *   closes it, like a dropdown.
@@ -51,6 +52,7 @@ export function SettingsRow({
   accessibilityLabel,
   accessibilityHint,
   ref,
+  chevron = true,
 }: {
   title: string;
   /** The current value, shown on the right ("8 Jan 2027", "20 min", "System"). */
@@ -67,6 +69,8 @@ export function SettingsRow({
   accessibilityHint?: string;
   /** For handing screen-reader focus back here when its sheet closes. */
   ref?: Ref<View>;
+  /** false for an action row (it acts at once; it doesn't open anything to choose from). */
+  chevron?: boolean;
 }) {
   const { c } = useTheme();
   const large = useFontScale() >= LARGE_TEXT;
@@ -98,7 +102,7 @@ export function SettingsRow({
         {large ? valueText : null}
       </View>
       {large ? null : valueText}
-      <ChevronRight size={18} color={c.muted} strokeWidth={ICON_STROKE} />
+      {chevron ? <ChevronRight size={18} color={c.muted} strokeWidth={ICON_STROKE} /> : null}
       {!last && <View style={[styles.hairline, { backgroundColor: c.line }]} />}
     </AnimatedPressable>
   );
@@ -146,6 +150,8 @@ export function Sheet({
         <FadeIn>
           <View
             accessibilityViewIsModal
+            // VoiceOver's escape gesture closes it, like the header button.
+            onAccessibilityEscape={onClose}
             style={[
               styles.sheet,
               {

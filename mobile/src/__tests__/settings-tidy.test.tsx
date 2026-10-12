@@ -10,6 +10,7 @@ import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Settings, { LINK_OPEN_FALLBACK_MS } from '../app/settings';
 import Onboarding from '../app/onboarding';
 import { cellSize } from '../components/calendar';
+import { ChevronRight } from '../components/icons';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import * as a11y from '../lib/a11y';
 import { flushSayLaterForTest } from '../lib/a11y';
@@ -177,7 +178,8 @@ describe('Choice sheets work like a dropdown', () => {
   it('Theme: choosing Dark saves it and closes the sheet', () => {
     mount(<Settings />);
     openRow('Theme');
-    const group = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'Appearance');
+    // Spoken as the sheet's own name (UX O2; this test used to expect the group's "Appearance").
+    const group = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'Theme');
     expect(group).toHaveLength(1);
     press('Dark');
     expect(useSettings.getState().theme).toBe('dark');
@@ -205,6 +207,26 @@ describe('Choice sheets work like a dropdown', () => {
     expect(dim[0].props.accessible).toBe(false);
     press('Close, Daily time');
     expect(root().findAll((n) => n.props.accessibilityRole === 'radiogroup')).toHaveLength(0);
+  });
+
+  it('VoiceOver’s escape gesture closes a sheet, like its header button (UX P3)', () => {
+    mount(<Settings />);
+    openRow('Exam date');
+    press('Friday 22 January 2027');
+    const panel = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityViewIsModal === true);
+    expect(panel).toHaveLength(1);
+    act(() => panel[0].props.onAccessibilityEscape());
+    expect(byLabel('Next month')).toHaveLength(0);
+    // Like Cancel: nothing saved.
+    expect(useSettings.getState().examDates.cisa).toBe('2027-01-08');
+  });
+
+  it('rows that open a sheet keep their chevron (action rows in Your data have none, your-data.test)', () => {
+    mount(<Settings />);
+    expect(row('Exam date').findAll((n) => n.type === ChevronRight)).toHaveLength(1);
+    expect(row('Theme').findAll((n) => n.type === ChevronRight)).toHaveLength(1);
+    const save = hosts((n) => n.props.accessibilityRole === 'button' && String(n.props.accessibilityLabel).startsWith('Save a backup, '))[0];
+    expect(save.findAll((n) => n.type === ChevronRight)).toHaveLength(0);
   });
 });
 

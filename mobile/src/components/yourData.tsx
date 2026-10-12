@@ -113,13 +113,16 @@ export function YourData() {
         title="Your data"
         intro="Your progress is kept only on this phone. A backup file keeps it safe and moves it to a new phone. You choose where the file goes."
       >
+        {/* Action rows: no chevron (they act; they don't open a list). The status is part of the
+            name, so it is read even with hints off; the hint says only what a tap does. */}
         <SettingsRow
           title={saveLabel}
           subtitle={status}
-          accessibilityLabel={saveLabel}
-          accessibilityHint={`${status}. Opens the share sheet to save a file with your progress.`}
+          accessibilityLabel={`${saveLabel}, ${status}`}
+          accessibilityHint="Opens the share sheet to save a file with your progress."
           disabled={busy !== null}
           onPress={save}
+          chevron={false}
         />
         <SettingsRow
           title={pickLabel}
@@ -129,16 +132,18 @@ export function YourData() {
           disabled={busy !== null}
           onPress={flow.pick}
           last={!(canUndo && undo)}
+          chevron={false}
         />
         {canUndo && undo && (
           <SettingsRow
             title="Undo restore"
             subtitle={`Available until ${dateOf(undoExpiresAt(undo))}.`}
-            accessibilityLabel="Undo restore"
-            accessibilityHint={`Puts back your progress from before the restore. Available until ${dateOf(undoExpiresAt(undo))}.`}
+            accessibilityLabel={`Undo restore, available until ${dateOf(undoExpiresAt(undo))}`}
+            accessibilityHint="Puts back your progress from before the restore."
             disabled={busy !== null}
             onPress={confirmUndo}
             last
+            chevron={false}
           />
         )}
       </SettingsGroup>

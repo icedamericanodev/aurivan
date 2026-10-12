@@ -147,7 +147,9 @@ const unmount = () => {
   });
   r = undefined;
 };
-const button = (label: string) => root().findAll((n) => n.props.accessibilityLabel === label && typeof n.props.onPress === 'function')[0];
+/** A button by its name; a Your data row's name continues with its status ("Save a backup, No backup file yet", PR #49 UX P4). */
+const named = (n: ReactTestInstance, label: string) => n.props.accessibilityLabel === label || String(n.props.accessibilityLabel).startsWith(`${label}, `);
+const button = (label: string) => root().findAll((n) => named(n, label) && typeof n.props.onPress === 'function')[0];
 const press = async (label: string) => {
   await act(async () => {
     await button(label).props.onPress();

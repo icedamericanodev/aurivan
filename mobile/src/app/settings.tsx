@@ -539,7 +539,6 @@ export default function Settings() {
         visible={sheet === 'theme'}
         onClose={close}
         title="Theme"
-        groupLabel="Appearance"
         options={[
           { value: 'system', title: 'System', subtitle: 'Follows your phone’s light or dark setting.' },
           { value: 'light', title: 'Light' },
