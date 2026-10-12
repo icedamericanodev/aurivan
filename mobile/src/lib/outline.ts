@@ -43,8 +43,20 @@ export function guidedStatus(certId: string, topic: OutlineTopic, progress: Cert
   return topicStatus(topic, studied, progress.answers);
 }
 
-/** True when the question still exists in the bundled bank. */
-export const questionExists = (certId: string) => (id: string) => Boolean(findQuestion(certId, id));
+/**
+ * True when the question still exists in the bundled bank. One function per
+ * certification (the bank is bundled, so it never changes while the app
+ * runs): engine/srs.ts dueCountFor shares its count per function.
+ */
+const existsByCert = new Map<string, (id: string) => boolean>();
+export function questionExists(certId: string): (id: string) => boolean {
+  let exists = existsByCert.get(certId);
+  if (!exists) {
+    exists = (id: string) => Boolean(findQuestion(certId, id));
+    existsByCert.set(certId, exists);
+  }
+  return exists;
+}
 
 /** Test helper: forget cached outlines. */
 export function clearOutlineCache(): void {

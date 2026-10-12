@@ -25,22 +25,31 @@ import { GAME_TIER_NAME, growthTier } from '../../engine/games/growth';
 import { scoreSpoken, scoreText } from '../../engine/games/recap';
 import { GAMES, type GameId } from '../../engine/games/registry';
 import { playableGames } from '../../lib/games';
-import { useActiveCert } from '../../lib/useActiveCert';
+import { CERTIFICATIONS, getCertification } from '../../content/certifications';
+import { selectCert, useProgress } from '../../store/progress';
+import { useSettings } from '../../store/settings';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 
 export default function Play() {
   const { c } = useTheme();
-  const { cert, progress } = useActiveCert();
+  // Only what Play shows (performance, 1.15.x): its exam, best scores and
+  // levels. An answer, a review or a badge elsewhere never re-renders Play,
+  // which stays mounted (hidden) while the learner studies.
+  const certId = useSettings((s) => s.activeCertId);
+  const cert = getCertification(certId) ?? CERTIFICATIONS[0];
+  // Progress by the active id itself, as useActiveCert reads it, so every tab shows the same exam's progress.
+  const gameBest = useProgress((s) => selectCert(s, certId).gameBest);
+  const gameGrowth = useProgress((s) => selectCert(s, certId).gameGrowth);
   // A game whose question pool is too small for this certification is not
   // offered at all (never explained with a number: no bank-size leaks).
   // Note-based games (Root or Rumor) count the cert's study notes instead.
   const games = useMemo(() => playableGames(cert.id).map((id) => GAMES[id]), [cert.id]);
   const [featured, ...others] = games;
-  const best = (id: GameId) => progress.gameBest[id];
+  const best = (id: GameId) => gameBest[id];
   // Each game's level (Build F): Seedling until it has been played.
-  const level = (id: GameId) => growthTier(progress.gameGrowth?.[id]);
+  const level = (id: GameId) => growthTier(gameGrowth?.[id]);
 
   return (
     <Screen>

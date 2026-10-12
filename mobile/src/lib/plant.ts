@@ -44,7 +44,7 @@ import {
 } from '../engine/plant';
 import { planComplete } from '../engine/dayPlan';
 import { defaultKeepsakes, keepsakeForBadge, plantMood, resolveLook, unlockedLooks, type ArtLook, type CertMarks, type PlantMood, type ResolvedLook } from '../engine/plantLooks';
-import { computeReadiness } from '../engine/readiness';
+import { readinessFor } from '../engine/readiness';
 import { dayKey } from '../engine/streak';
 import { selectCert, useProgress, type CertProgress, type MockResult, type ProgressState } from '../store/progress';
 import { useSeen } from '../store/seen';
@@ -101,6 +101,14 @@ export function plantFactsFor(certId: string, cp: CertProgress, now: number): Pl
  * while the plant is hidden, so turning it back on shows the truth.
  */
 export function checkPlant(certId: string, now = Date.now()): GrowthLevel | null {
+  // Performance: Today calls this every time it comes into view. Growth
+  // depends only on the exam's saved progress and the day, so the same
+  // progress (the very same object: the store never mutates it) on the same
+  // day can't open a new gate. Skip the facts scan and the store write then.
+  const day = dayKey(now);
+  const before = useProgress.getState().byCert[certId];
+  const last = lastCheck.get(certId);
+  if (before && last && last.cp === before && last.day === day) return null;
   let grew: GrowthLevel | null = null;
   useProgress.getState().updatePlant(certId, (p, cp) => {
     if (!p) return p;
@@ -110,8 +118,12 @@ export function checkPlant(certId: string, now = Date.now()): GrowthLevel | null
     grew = r.grew;
     return r.plant;
   });
+  const after = useProgress.getState().byCert[certId];
+  if (after) lastCheck.set(certId, { cp: after, day });
   return grew;
 }
+/** The progress (by identity) and day each cert's plant was last checked against. */
+const lastCheck = new Map<string, { cp: CertProgress; day: string }>();
 
 /**
  * Plant a seed for this cert. An existing learner's study sets the growth
@@ -195,7 +207,7 @@ export interface PlantView {
 /** Pure: the view for one cert's progress (tests call this directly). Reads only answers, the plant and the last study day. */
 export function plantView(cert: Certification, cp: Pick<CertProgress, 'answers' | 'plant' | 'milestones'>, settings: PlantSettings | undefined, today: string, plannedRest = false): PlantView {
   const shown = plantShown(settings);
-  const readiness = computeReadiness(cert, cp.answers);
+  const readiness = readinessFor(cert, cp.answers);
   const weights = cert.domains.map((d) => d.weight);
   const domains = readiness.domains.map((d) => ({ answered: d.answered, mastery: d.mastery }));
   const lastDay = cp.milestones?.lastDay;

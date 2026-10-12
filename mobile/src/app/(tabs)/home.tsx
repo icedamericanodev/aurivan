@@ -35,7 +35,7 @@
  *     panel, once per cert, until dismissed. Its plan item moves to "Also today".
  */
 import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow, todayMinutesLine } from '../../components/journey';
@@ -141,7 +141,12 @@ export default function Today() {
   const certId = j.cert.id;
   useFocusEffect(
     useCallback(() => {
-      setNow(Date.now());
+      // Only a new clock that changes what Today shows re-renders it (performance,
+      // 1.15.x): a new day (the plant's reaction), or a paused timed mock's minutes left.
+      // Read outside the updater, so the updater stays pure.
+      const at = Date.now();
+      const keep = !useSession.getState().active?.deadline;
+      setNow((was) => (keep && dayKey(was) === dayKey(at) ? was : at));
       // The plant's exam-ready gate changes with the date: check it whenever Today comes into view.
       checkPlant(certId);
     }, [certId]),
@@ -220,9 +225,13 @@ export default function Today() {
   useEffect(() => {
     if (grown && reactionId) markReacted(reactionId);
   }, [grown, reactionId]);
-  const reaction = plantView.look && reactionId && focused && !grown && clearing.settled ? { id: reactionId, mood: plantView.look.mood } : null;
+  // The same objects while nothing changes (performance, 1.15.x): the plant is
+  // memoised and skips a re-render of its ~200-shape drawing and its motion hooks.
+  const reactionMood = plantView.look && reactionId && focused && !grown && clearing.settled ? plantView.look.mood : null;
+  const reaction = useMemo(() => (reactionMood && reactionId ? { id: reactionId, mood: reactionMood } : null), [reactionMood, reactionId]);
   // Today is study-first: the plant and its visitor, never the keepsakes (UX review, decided).
-  const todayLook = plantView.look ? { ...plantView.look.art, keepsakes: [] } : undefined;
+  const lookArt = plantView.look?.art;
+  const todayLook = useMemo(() => (lookArt ? { ...lookArt, keepsakes: [] } : undefined), [lookArt]);
   const todayPlant = (size: number, testID: string) =>
     plantView.plant ? (
       <PlantButton

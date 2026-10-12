@@ -7,8 +7,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { AppState } from 'react-native';
 import { getCertification, CERTIFICATIONS } from '../content/certifications';
 import { daysToExam } from '../engine/examDay';
-import { computeReadiness } from '../engine/readiness';
-import { dueIds } from '../engine/srs';
+import { readinessFor } from '../engine/readiness';
+import { dueCountFor } from '../engine/srs';
 import { dayKey, visibleStreak } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
@@ -40,14 +40,16 @@ export function useActiveCert() {
     return () => sub.remove();
   }, []);
 
-  const readiness = useMemo(() => computeReadiness(cert, progress.answers), [cert, progress.answers]);
+  // Shared with the store and the other tabs: computed once per change of answers.
+  const readiness = readinessFor(cert, progress.answers);
   // Reading the clock here is deliberate: when the review queue changes (for
   // example after answering), the recount includes reviews that fell due
   // since the last foreground, without waiting for the next AppState change.
   const dueCount = useMemo(
     // Only questions the bank still has: a review session drops retired ones, so they are never counted.
+    // Shared with the other tabs (engine/srs.ts dueCountFor): counted once until the queue or a due time changes.
     // eslint-disable-next-line react-hooks/purity -- see the comment above
-    () => dueIds(progress.review, Math.max(now, Date.now()), questionExists(cert.id)).length,
+    () => dueCountFor(progress.review, Math.max(now, Date.now()), questionExists(cert.id)),
     [progress.review, now, cert.id],
   );
   // Same reason: one clock read per render for the streak and today's count.

@@ -1143,7 +1143,7 @@ const useFocusedAtMount: () => boolean = (Router as { useIsFocused?: () => boole
  * so a screen that mounts in view decides its growth in the first frame
  * (never one frame of the final values, then a snap back to grow).
  */
-export function useScreenFocus(): boolean {
+function useScreenFocusFromEffect(): boolean {
   const atMount = useFocusedAtMount();
   const [focused, setFocused] = useState(atMount);
   useFocusEffect(
@@ -1154,6 +1154,14 @@ export function useScreenFocus(): boolean {
   );
   return focused;
 }
+/**
+ * Performance (1.15.x): with the navigator's own `useIsFocused`, that IS the
+ * answer, live: one re-render per focus change. Holding a copy in state as
+ * well re-rendered the whole tab a second time on every switch (both the tab
+ * left and the tab opened). The state copy stays only for test stand-ins of
+ * expo-router that have no `useIsFocused`.
+ */
+export const useScreenFocus: () => boolean = (Router as { useIsFocused?: () => boolean }).useIsFocused ?? useScreenFocusFromEffect;
 
 export interface Growth {
   /** Grow now (else show the values as they are). */

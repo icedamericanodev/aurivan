@@ -30,21 +30,24 @@
  * Study notes: one row under the cover opens the notes (every exam topic
  * in plain English). It hides itself while the app has no notes.
  */
+import * as Router from 'expo-router';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { DomainRing, type BotanyKind } from '../../components/glyphs';
 import { BookOpen, ChevronDown, ICON_STROKE, Play } from '../../components/icons';
 import { AnimatedPressable, CheckDraw, Collapse, Turn, usePressScale, useScreenFocus } from '../../components/motion';
 import { BigNum, Enter, HeroPanel, ICON_SIZE, ListRow, ProgressBar, Row, Screen, Section, T } from '../../components/ui';
-import { domainColor, domainLabel } from '../../content/certifications';
+import { CERTIFICATIONS, domainColor, domainLabel, getCertification } from '../../content/certifications';
 import { lessonsFor, nextLesson } from '../../content/lessons';
 import type { Lesson } from '../../content/lessons/types';
 import { hasNotes, noteSubtopics } from '../../content/notes';
-import type { DomainInfo } from '../../content/types';
+import type { Certification, DomainInfo } from '../../content/types';
 import { readCount } from '../../engine/notesSearch';
 import { clearFinishedLessons, wasJustFinished } from '../../lib/lessonNews';
-import { useActiveCert } from '../../lib/useActiveCert';
+import { readinessFor } from '../../engine/readiness';
+import { selectCert, useProgress } from '../../store/progress';
+import { useSettings } from '../../store/settings';
 import { motion, radius, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -60,16 +63,34 @@ export function upNextReason(lesson: Lesson, domain: DomainInfo, opts: { askedDo
   return `Next in ${domain.short}`;
 }
 
+/** This screen's own navigation (absent where a test's expo-router stand-in has none). */
+const useOwnNavigation: () => { setParams?: (p: { domain?: string }) => void } | undefined =
+  (Router as { useNavigation?: () => { setParams?: (p: { domain?: string }) => void } }).useNavigation ?? (() => undefined);
+
 export default function Learn() {
-  const { c, isDark } = useTheme();
-  const { cert, progress, readiness } = useActiveCert();
+  const { c } = useTheme();
+  // Only what Learn shows (performance, 1.15.x): lessons done, notes read,
+  // and from readiness only the focus domain and whether there are answers.
+  // Learn stays mounted (hidden) during study; an answer that doesn't move
+  // its focus domain no longer re-renders it.
+  const certId = useSettings((s) => s.activeCertId);
+  const cert = getCertification(certId) ?? CERTIFICATIONS[0];
+  // Progress by the active id itself, as useActiveCert reads it, so every tab shows the same exam's progress.
+  const lessonsDone = useProgress((s) => selectCert(s, certId).lessonsDone);
+  const notesReadIds = useProgress((s) => selectCert(s, certId).notesRead);
+  const focusKey = useProgress((s) => {
+    const r = readinessFor(cert, selectCert(s, certId).answers);
+    return `${r.domains.some((d) => d.answered > 0) ? 1 : 0}${r.focusDomainId ?? ''}`;
+  });
+  const hasAnswers = focusKey[0] === '1';
+  const focusDomainId = focusKey.slice(1) || null;
   // Lessons finished in the player since Learn was last on view: their ✓ draws as the learner comes back.
   // Decided while rendering, so the first frame back already starts the draw (no flash of the end state).
   const focused = useScreenFocus();
-  const [look, setLook] = useState<{ focused: boolean; seen: readonly string[]; fresh: readonly string[] }>(() => ({ focused, seen: progress.lessonsDone, fresh: [] }));
-  const news = progress.lessonsDone.filter((id) => !look.seen.includes(id) && wasJustFinished(id));
+  const [look, setLook] = useState<{ focused: boolean; seen: readonly string[]; fresh: readonly string[] }>(() => ({ focused, seen: lessonsDone, fresh: [] }));
+  const news = lessonsDone.filter((id) => !look.seen.includes(id) && wasJustFinished(id));
   if (look.focused !== focused) {
-    setLook(focused ? { focused, seen: progress.lessonsDone, fresh: news } : { ...look, focused, fresh: [] });
+    setLook(focused ? { focused, seen: lessonsDone, fresh: news } : { ...look, focused, fresh: [] });
   }
   // Out of view, those rows wait with an empty ✓ (the back transition shows them before focus returns).
   const waiting = focused ? [] : news;
@@ -79,36 +100,44 @@ export default function Learn() {
   }, [focused]);
   const { domain } = useLocalSearchParams<{ domain?: string }>();
   // Learn is a tab, so the param would stick; clear it when the learner leaves.
-  useFocusEffect(useCallback(() => () => router.setParams({ domain: undefined }), []));
+  // Through Learn's OWN navigation, and only when there is one to clear
+  // (performance, 1.15.x): `router.setParams` acts on the screen in focus,
+  // which on leaving is already the NEXT tab, so every switch away from Learn
+  // re-rendered that tab and restarted its fade, and Learn's param stayed.
+  const navigation = useOwnNavigation();
+  const domainNow = useRef(domain);
+  useEffect(() => {
+    domainNow.current = domain;
+  }, [domain]);
+  useFocusEffect(
+    useCallback(
+      () => () => {
+        if (domainNow.current === undefined) return;
+        if (navigation?.setParams) navigation.setParams({ domain: undefined });
+        else router.setParams({ domain: undefined });
+      },
+      [navigation],
+    ),
+  );
 
   const lessons = lessonsFor(cert.id);
-  const done = (id: string) => progress.lessonsDone.includes(id);
+  const done = (id: string) => lessonsDone.includes(id);
   // Only trust ?domain= if it names a real domain of this exam with a lesson
   // still to do; anything else (a typo, an old link, another cert's id, a
   // finished domain) falls back to the focus domain, so the reason line is true.
   const knownDomain =
     cert.domains.some((d) => d.id === domain) && lessons.some((l) => l.domainId === domain && !done(l.id)) ? domain : undefined;
-  const upNext = nextLesson(cert.id, progress.lessonsDone, knownDomain ?? readiness.focusDomainId ?? undefined);
+  const upNext = nextLesson(cert.id, lessonsDone, knownDomain ?? focusDomainId ?? undefined);
   const upDomain = upNext ? cert.domains.find((d) => d.id === upNext.domainId) : undefined;
-  const doneCount = lessons.filter((l) => done(l.id)).length;
-  // One group per domain that has lessons, in domain order (lessonsFor is sorted).
-  const groups = cert.domains
-    .map((d) => ({ domain: d, items: lessons.filter((l) => l.domainId === d.id) }))
-    .filter((grp) => grp.items.length > 0);
-  // Groups the learner has opened or closed by hand. Any group they have not
-  // touched is open only if it holds "Up next", so the list stays short.
-  const [toggled, setToggled] = useState<Record<string, boolean>>({});
-  const isOpenGroup = (domainId: string) => toggled[domainId] ?? domainId === upNext?.domainId;
-  const toggleGroup = (domainId: string) => setToggled((t) => ({ ...t, [domainId]: !isOpenGroup(domainId) }));
   const play = (col: string, size: number = ICON_SIZE.inline) => <Play size={size} color={col} strokeWidth={ICON_STROKE} />;
   // Study notes progress: "3 of 120 read" (hidden when there are no notes).
   const showNotes = hasNotes(cert.id);
   const noteIds = showNotes ? noteSubtopics(cert.id).map((s) => s.id) : [];
-  const notesRead = readCount(noteIds, progress.notesRead);
+  const notesRead = readCount(noteIds, notesReadIds);
   const notesState = notesRead === 0 ? 'Every exam topic in plain English' : `${notesRead} of ${noteIds.length} read`;
   const reason =
     upNext && upDomain
-      ? upNextReason(upNext, upDomain, { askedDomain: knownDomain, focusDomainId: readiness.focusDomainId, hasAnswers: readiness.domains.some((d) => d.answered > 0) })
+      ? upNextReason(upNext, upDomain, { askedDomain: knownDomain, focusDomainId, hasAnswers })
       : null;
 
   return (
@@ -156,6 +185,59 @@ export default function Learn() {
       )}
 
       <Enter i={showNotes ? 3 : 2}>
+        {/* Memoised (performance, 1.15.x): a focus change or a store write that
+            leaves the lessons as they were never re-renders the whole list. */}
+        <LessonGroups
+          cert={cert}
+          lessonsDone={lessonsDone}
+          upNextId={upNext?.id}
+          upNextDomainId={upNext?.domainId}
+          fresh={look.fresh.join(',')}
+          waiting={waiting.join(',')}
+        />
+      </Enter>
+    </Screen>
+  );
+}
+
+/**
+ * The lessons, grouped by domain (a group opens and closes). Its props are
+ * primitives or the store's own arrays, so it re-renders only when a lesson,
+ * Up next or a ✓ to draw changes. `fresh` and `waiting` are lesson ids joined
+ * with commas (strings compare by value).
+ */
+const LessonGroups = memo(function LessonGroups({
+  cert,
+  lessonsDone,
+  upNextId,
+  upNextDomainId,
+  fresh,
+  waiting,
+}: {
+  cert: Certification;
+  lessonsDone: readonly string[];
+  upNextId?: string;
+  upNextDomainId?: string;
+  fresh: string;
+  waiting: string;
+}) {
+  const { c, isDark } = useTheme();
+  const lessons = lessonsFor(cert.id);
+  const done = (id: string) => lessonsDone.includes(id);
+  const freshIds = fresh ? fresh.split(',') : [];
+  const waitingIds = waiting ? waiting.split(',') : [];
+  const doneCount = lessons.filter((l) => done(l.id)).length;
+  // One group per domain that has lessons, in domain order (lessonsFor is sorted).
+  const groups = cert.domains
+    .map((d) => ({ domain: d, items: lessons.filter((l) => l.domainId === d.id) }))
+    .filter((grp) => grp.items.length > 0);
+  // Groups the learner has opened or closed by hand. Any group they have not
+  // touched is open only if it holds "Up next", so the list stays short.
+  const [toggled, setToggled] = useState<Record<string, boolean>>({});
+  const isOpenGroup = (domainId: string) => toggled[domainId] ?? domainId === upNextDomainId;
+  const toggleGroup = (domainId: string) => setToggled((t) => ({ ...t, [domainId]: !isOpenGroup(domainId) }));
+  return (
+    <>
         <Section title="Lessons by domain" meta={`${doneCount} of ${lessons.length} done`} />
         {/* J25: the short names keep "IS"; say once what it stands for. */}
         {cert.domains.some((d) => /\bIS\b/.test(d.short)) && <T v="meta" style={{ marginTop: space.xs }}>IS means information systems.</T>}
@@ -209,9 +291,9 @@ export default function Learn() {
                     lesson={l}
                     n={i + 1}
                     done={done(l.id)}
-                    next={upNext?.id === l.id}
-                    fresh={look.fresh.includes(l.id)}
-                    hold={waiting.includes(l.id)}
+                    next={upNextId === l.id}
+                    fresh={freshIds.includes(l.id)}
+                    hold={waitingIds.includes(l.id)}
                     // The trail: the step into this lesson is walked when the one before is done.
                     walkedIn={i > 0 && done(items[i - 1].id)}
                     walkedOut={done(l.id) && i < items.length - 1}
@@ -225,10 +307,9 @@ export default function Learn() {
         })}
         <T v="meta" style={{ marginTop: space.md }}>One lesson for every topic in the CISA exam outline.</T>
         <T v="meta" color={c.muted} style={{ marginTop: space.xs }}>Original content, reviewed against public frameworks.</T>
-      </Enter>
-    </Screen>
+    </>
   );
-}
+});
 
 /**
  * One lesson on its domain's trail (ui.md L2). The numeral column carries a
@@ -239,7 +320,7 @@ export default function Learn() {
  * the caption "Up next". Others: an outline circle with ▶. One button,
  * spoken "IS Audit lesson 2: …, done | up next | 5 min" (unchanged).
  */
-function LessonRow({
+const LessonRow = memo(function LessonRow({
   domain,
   lesson,
   n,
@@ -324,4 +405,4 @@ function LessonRow({
       </View>
     </AnimatedPressable>
   );
-}
+});

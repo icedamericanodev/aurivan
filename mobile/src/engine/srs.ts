@@ -131,3 +131,38 @@ export function dueIds(review: Record<string, ReviewEntry>, now: number, exists:
     .filter((id) => review[id].dueAt <= now && exists(id))
     .sort((a, b) => review[a].dueAt - review[b].dueAt || review[a].box - review[b].box);
 }
+
+// Performance (1.15.x): each mounted tab counted the due reviews (a filter
+// and a sort over the whole queue) after every answer. The count can only
+// change when the queue changes (a new object: it is never mutated) or the
+// clock passes the next review's due time, so it is shared until then.
+const dueCounts = new WeakMap<Record<string, ReviewEntry>, WeakMap<(id: string) => boolean, { at: number; next: number; count: number }>>();
+/** The default `exists`: every question counts. One function, so its counts are shared too. */
+const everyQuestion = () => true;
+
+/**
+ * dueIds(review, now, exists).length, shared: the same queue object and the
+ * same `exists` function (by identity: lib/outline.ts questionExists gives
+ * one per certification) reuse the count while no review falls due between
+ * the time it was counted and `now`. Exactly the same number as counting
+ * again; a different `exists` is never given another one's count.
+ */
+export function dueCountFor(review: Record<string, ReviewEntry>, now: number, exists: (id: string) => boolean = everyQuestion): number {
+  let byRule = dueCounts.get(review);
+  if (!byRule) {
+    byRule = new WeakMap();
+    dueCounts.set(review, byRule);
+  }
+  const hit = byRule.get(exists);
+  if (hit && now >= hit.at && now < hit.next) return hit.count;
+  let count = 0;
+  let next = Infinity;
+  for (const id of Object.keys(review)) {
+    const due = review[id].dueAt;
+    if (due <= now) {
+      if (exists(id)) count++;
+    } else if (due < next) next = due;
+  }
+  byRule.set(exists, { at: now, next, count });
+  return count;
+}
