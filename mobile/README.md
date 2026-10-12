@@ -22,19 +22,18 @@ and use `bash scripts/dev-sync.sh`.
 
 ## Install a test APK on an Android phone (no computer needed)
 
-GitHub builds an installable APK for every mobile release and puts it on the
-repo's **Releases** page (workflow: `.github/workflows/android-apk.yml`).
+The test APK is built on **expo.dev** (EAS Build, profile **preview**, branch
+`main`, base directory `/mobile`, platform Android, Submit unchecked). On the
+phone, open the build's page on expo.dev and tap **Install**, then allow
+**"Install unknown apps"** when Android asks. Installing a newer APK over an
+older one keeps your progress.
 
-1. On the phone, sign in to GitHub in the browser and open the repo's
-   **Releases** page.
-2. Open the newest **"Aurivan x.y.z (test APK)"** and tap the `.apk` under
-   **Assets**.
-3. Open the download and allow **"Install unknown apps"** when Android asks.
-
-Installing a newer APK over an older one keeps your progress. To build one by
-hand instead, run **Actions → Android test APK → Run workflow**, or
-`bash scripts/build-apk.sh` on a Mac with Android Studio (it builds in a
-separate folder, so the emulator and `dev-sync.sh` keep running).
+Backup routes, only if EAS is unavailable (their APKs are signed with a
+different key, so uninstall the EAS one first, which erases progress on that
+phone): **Actions → Android test APK → Run workflow** on GitHub (it lands on
+the repo's Releases page), or `bash scripts/build-apk.sh` on a Mac with
+Android Studio (it builds in a separate folder, so the emulator and
+`dev-sync.sh` keep running).
 
 ## Everyday commands (run inside `mobile/`)
 

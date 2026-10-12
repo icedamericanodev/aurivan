@@ -4,10 +4,12 @@ name: Android test APK
 # the Play Store) and attaches it to a GitHub Release. On a phone, open the
 # repo's Releases page while signed in to GitHub and tap the .apk to download.
 #
-# When it runs: once per mobile release (mobile/app.json changes on main, which
-# is where the version is bumped), or by hand from the Actions tab ("Run
-# workflow"). A version that already has an APK is skipped on push, so routine
-# merges don't spend build minutes; a manual run rebuilds and replaces it.
+# When it runs: by hand only (Actions tab → "Android test APK" → "Run
+# workflow"). It is the BACKUP route: the main test APK comes from EAS Build
+# (expo.dev, profile "preview"), which pairs with EAS Update for over-the-air
+# updates. APKs from the two routes are signed with different keys and cannot
+# be installed over each other, so this one never runs on its own. A manual
+# run rebuilds and replaces the APK for the current version.
 #
 # The APK is signed with the standard Android debug key (fine for personal
 # installs, and the same key every time, so a new APK installs over the old one
@@ -15,9 +17,6 @@ name: Android test APK
 # time.
 
 on:
-  push:
-    branches: [main]
-    paths: ['mobile/app.json']
   workflow_dispatch:
 
 permissions:
