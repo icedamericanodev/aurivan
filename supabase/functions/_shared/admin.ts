@@ -18,6 +18,12 @@ export interface BoardCounts {
   comments: number;
 }
 
+/** What readSnapshots returns: the stores, and the newest app version among them (code review P7 N11). */
+export interface SnapshotsRead {
+  stores: Record<string, unknown>;
+  appVersion: string | null;
+}
+
 export interface AdminPort {
   /**
    * Verifies the JWT with the Auth server:
@@ -38,8 +44,11 @@ export interface AdminPort {
   recordDeletion(userId: string, counts: BoardCounts): Promise<void>;
   /** profiles.terms_version, or null when no profile exists yet. */
   getTermsVersion(userId: string): Promise<string | null>;
-  /** The learner's synced stores (`{ settings?, progress? }`, each `{ version, state }` like a backup file). Empty when sync was never used. */
-  readSnapshots(userId: string): Promise<Record<string, unknown>>;
+  /**
+   * The learner's synced stores (`{ settings?, progress? }`, each `{ version, state }` like a backup file;
+   * empty when sync was never used), and the newest app version that wrote one of them (null when none).
+   */
+  readSnapshots(userId: string): Promise<SnapshotsRead>;
   /** Atomically claims the hourly export slot. false = already exported this hour. */
   claimExport(userId: string): Promise<boolean>;
 }

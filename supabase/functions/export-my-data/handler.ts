@@ -4,7 +4,9 @@
 //   { app: 'aurivan', schema: 1, exportedAt, appVersion, stores, account }
 // `stores` holds the learner's synced snapshots (Phase 7) as backup-file
 // stores, so the download is also a backup the app can restore (empty when
-// sync was never used); Phase 8 adds `board`.
+// sync was never used); `appVersion` is the newest app that wrote one of
+// them (else the version the app sent); Phase 8 adds `board`. The two daily
+// support checkpoints are copies of the same progress and are not included.
 //
 // A verified user (401 otherwise; 410 for an account already deleted), at
 // most once an hour (429 with Retry-After). No recent sign-in is required:
@@ -40,7 +42,7 @@ export function handleExportMyData(req: Request, deps: ExportDeps): Promise<Resp
     const body = await readJsonObject(req, { maxBytes: 1024, optional: true });
     const appVersion = typeof body.appVersion === 'string' && SEMVER.test(body.appVersion) ? body.appVersion : null;
 
-    const [termsVersion, stores] = await Promise.all([
+    const [termsVersion, snaps] = await Promise.all([
       deps.admin.getTermsVersion(user.id),
       deps.admin.readSnapshots(user.id),
     ]);
@@ -48,8 +50,10 @@ export function handleExportMyData(req: Request, deps: ExportDeps): Promise<Resp
       app: EXPORT_APP,
       schema: EXPORT_SCHEMA,
       exportedAt: new Date(now).toISOString(),
-      appVersion,
-      stores,
+      // The newest app that wrote a synced store (so a restore says "update the app" when it
+      // should); with no snapshot, the version of the app asking (code review P7 N11).
+      appVersion: snaps.appVersion ?? appVersion,
+      stores: snaps.stores,
       account: {
         email: user.email,
         providers: user.providers,

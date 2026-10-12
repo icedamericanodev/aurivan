@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert';
-import { providersOf, snapshotsToStores, supabaseAdmin, type SupabaseLike } from './supabaseAdmin.ts';
+import { newestAppVersion, providersOf, snapshotsToStores, supabaseAdmin, type SupabaseLike } from './supabaseAdmin.ts';
 import { USER_A } from './testing.ts';
 
 type Rpc = { fn: string; args: Record<string, unknown> };
@@ -154,9 +154,9 @@ Deno.test('readSnapshots (Phase 7): the caller’s own rows, as backup-file stor
   const { client, queries } = fakeClient({
     snapshots: {
       data: [
-        { store: 'progress', store_version: 1, state: { byCert: {}, changedAt: {} } },
-        { store: 'settings', store_version: 1, state: { activeCertId: 'cisa' } },
-        { store: 'notes', store_version: 1, state: {} },
+        { store: 'progress', store_version: 1, app_version: '1.18.0', state: { byCert: {}, changedAt: {} } },
+        { store: 'settings', store_version: 1, app_version: '1.9.2', state: { activeCertId: 'cisa' } },
+        { store: 'notes', store_version: 1, app_version: 'x', state: {} },
         { store: 'settings', store_version: 'x', state: {} },
       ],
       error: null,
@@ -164,13 +164,17 @@ Deno.test('readSnapshots (Phase 7): the caller’s own rows, as backup-file stor
   });
   const admin = supabaseAdmin(client);
   assert.deepEqual(await admin.readSnapshots(USER_A), {
-    // The two fields a backup file needs and a snapshot never holds are added, so the file restores.
-    progress: { version: 1, state: { today: { day: '', answered: 0 }, byCert: {}, changedAt: {} } },
-    settings: { version: 1, state: { onboarded: true, activeCertId: 'cisa' } },
+    stores: {
+      // The two fields a backup file needs and a snapshot never holds are added, so the file restores.
+      progress: { version: 1, state: { today: { day: '', answered: 0 }, byCert: {}, changedAt: {} } },
+      settings: { version: 1, state: { onboarded: true, activeCertId: 'cisa' } },
+    },
+    // The newest app that wrote a row (1.18.0 is newer than 1.9.2: compared as numbers, not text).
+    appVersion: '1.18.0',
   });
-  assert.deepEqual(queries, [`sync_snapshots:store, store_version, state:user_id=${USER_A}`]);
-  // No rows: an empty `stores`, never an error.
-  assert.deepEqual(await supabaseAdmin(fakeClient().client).readSnapshots(USER_A), {});
+  assert.deepEqual(queries, [`sync_snapshots:store, store_version, app_version, state:user_id=${USER_A}`]);
+  // No rows: an empty `stores` and no version, never an error.
+  assert.deepEqual(await supabaseAdmin(fakeClient().client).readSnapshots(USER_A), { stores: {}, appVersion: null });
   // A database error throws without its message.
   const failing = supabaseAdmin(
     fakeClient({ snapshots: { data: null, error: { message: `relation for ${USER_A}` } } }).client,
@@ -191,4 +195,15 @@ Deno.test('snapshotsToStores skips anything malformed', () => {
     }]),
     {},
   );
+});
+
+Deno.test('newestAppVersion: the highest well-formed version, by number', () => {
+  assert.equal(newestAppVersion(null), null);
+  assert.equal(newestAppVersion([]), null);
+  assert.equal(newestAppVersion([{ app_version: 'v1' }, {}]), null);
+  assert.equal(
+    newestAppVersion([{ app_version: '1.9.9' }, { app_version: '1.10.0' }, { app_version: '1.10.0<x>' }]),
+    '1.10.0',
+  );
+  assert.equal(newestAppVersion([{ app_version: '2.0.0' }, { app_version: '1.99.99' }]), '2.0.0');
 });

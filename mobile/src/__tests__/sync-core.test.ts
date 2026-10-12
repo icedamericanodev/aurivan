@@ -457,6 +457,30 @@ describe('the memory backend plays the server’s sync rules', () => {
     now += 3_600_001;
     expect((await push(60)).rev).toBe(61);
   });
+
+  it('review fixes (SEC S1/S2, CR N3/N7): deletes count, so delete + insert can’t reset the window; a rev is never reused; settings ≤ 64 KB', async () => {
+    const push = (expectedRev: number | null, store: 'settings' | 'progress' = 'progress', state: object = { a: 1 }) =>
+      memory.sync.push({ store, expectedRev, storeVersion: 1, appVersion: '1.18.0', deviceId: '11111111-1111-4111-8111-111111111111', state });
+    const code = async (p: Promise<unknown>) => p.then(() => 'ok', (e: { code: string }) => e.code);
+    const first = await push(null);
+    await memory.sync.deleteAll();
+    const again = await push(null);
+    // A phone that last saw `first.rev` can never match the re-made row by accident.
+    expect(again.rev).toBeGreaterThan(first.rev);
+    // 2 inserts + 1 delete so far; 28 more delete + insert pairs reach 59, then one delete: 60.
+    for (let i = 0; i < 28; i++) {
+      await memory.sync.deleteAll();
+      await push(null);
+    }
+    // Deletes are never refused ("Delete synced progress" always works)…
+    expect(await code(memory.sync.deleteAll())).toBe('ok');
+    // …but they count: the next insert is over the limit.
+    expect(await code(push(null))).toBe('rate_limited');
+    // Settings over 64 KB are refused; progress that size is fine.
+    now += 3_600_001;
+    expect(await code(push(null, 'settings', { x: 'y'.repeat(70_000) }))).toBe('too_big');
+    expect(await code(push(null, 'progress', { x: 'y'.repeat(70_000) }))).toBe('ok');
+  });
 });
 
 describe('Download my data with synced progress', () => {
@@ -473,6 +497,26 @@ describe('Download my data with synced progress', () => {
     expect(data.settings.activeCertId).toBe('cisa');
     // Nothing device-local was ever in the account: the file's are neutral placeholders.
     expect(JSON.parse(text).stores.settings.state).not.toHaveProperty('reminder');
+  });
+
+  it('the envelope names the newest app that wrote a store (CR N11): a newer store restores as "update the app", not "damaged"', async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-require-imports */
+    const { readBackup, BackupError } = require('../engine/backup') as typeof import('../engine/backup');
+    const A = makePhone('A');
+    answer(A, ids[0]);
+    await firstSync(A);
+    // Another device on a newer app writes the progress copy.
+    const cur = memory.control.snapshots(USER).progress!;
+    memory.control.writeSnapshot(USER, 'progress', { state: cur.state, appVersion: '1.19.0' });
+    const text = await memory.auth.exportMyData({ appVersion: '1.18.0' });
+    expect(JSON.parse(text).appVersion).toBe('1.19.0');
+    let code = 'ok';
+    try {
+      readBackup(text, CERT_IDS, undefined, '1.18.0');
+    } catch (e) {
+      code = e instanceof BackupError ? e.code : 'other';
+    }
+    expect(code).toBe('newer');
   });
 });
 

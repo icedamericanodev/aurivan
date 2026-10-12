@@ -7,7 +7,7 @@
 // 20261005000000_init_mobile_sync.sql (security invoker, service_role only),
 // because schema `private` is not exposed by the Data API.
 
-import type { AdminPort, AuthUser, BoardCounts, Provider } from './admin.ts';
+import type { AdminPort, AuthUser, BoardCounts, Provider, SnapshotsRead } from './admin.ts';
 
 interface RawUser {
   id: string;
@@ -66,6 +66,27 @@ export function snapshotsToStores(rows: unknown): Record<string, { version: numb
     out[store] = { version: r.store_version, state: { ...BACKUP_ONLY[store], ...(state as Record<string, unknown>) } };
   }
   return out;
+}
+
+const SEMVER = /^\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+
+/**
+ * The newest `app_version` among the rows (null when none is well-formed).
+ * The export's envelope carries it, so a file holding a store written by a
+ * newer app restores as "update the app", not as damaged (code review P7 N11).
+ */
+export function newestAppVersion(rows: unknown): string | null {
+  if (!Array.isArray(rows)) return null;
+  const parts = (v: string) => v.split('.').map(Number);
+  let best: string | null = null;
+  for (const r of rows as { app_version?: unknown }[]) {
+    const v = r?.app_version;
+    if (typeof v !== 'string' || !SEMVER.test(v)) continue;
+    const [a, b] = [parts(v), best === null ? null : parts(best)];
+    // Major, then minor, then patch: the first difference decides.
+    if (b === null || (a[0] - b[0] || a[1] - b[1] || a[2] - b[2]) > 0) best = v;
+  }
+  return best;
 }
 
 /** Linked sign-in methods, from app_metadata and identities, known ones only. */
@@ -156,13 +177,13 @@ export function supabaseAdmin(client: SupabaseLike): AdminPort {
     },
 
     // Phase 7: the learner's own sync_snapshots rows, as backup-file stores.
-    async readSnapshots(userId: string): Promise<Record<string, unknown>> {
-      const { data, error } = await client.from('sync_snapshots').select('store, store_version, state').eq(
+    async readSnapshots(userId: string): Promise<SnapshotsRead> {
+      const { data, error } = await client.from('sync_snapshots').select('store, store_version, app_version, state').eq(
         'user_id',
         userId,
       );
       if (error) throw new AdminCallFailed('readSnapshots');
-      return snapshotsToStores(data);
+      return { stores: snapshotsToStores(data), appVersion: newestAppVersion(data) };
     },
 
     async claimExport(userId: string): Promise<boolean> {
