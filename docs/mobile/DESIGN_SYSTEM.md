@@ -1096,7 +1096,10 @@ and adds a ghost "Pick the exact date" that opens the same calendar; a picked
 day that no chip gives is said under it ("Fri 20 Nov 2026 · In 39 days").
 
 **Ways in.** `?open=exam-date` opens Settings with the calendar up (Today's and
-the exam-week screen's "Set exam date"). `?section=plant` opens it scrolled to
+the exam-week screen's "Set exam date"). On iOS it opens once the push
+transition ends (a sheet presented mid-transition can be dropped). Its Save or
+Cancel goes back to where the learner came from. "Now" is read each time the
+calendar opens, so a screen left open past midnight never offers yesterday. `?section=plant` opens it scrolled to
 Badges and your plant (the plant screens). The gear on Today and You is
 unchanged. The fit screen keeps its own "Your study" screen.
 

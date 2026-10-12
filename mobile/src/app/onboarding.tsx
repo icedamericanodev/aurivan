@@ -77,9 +77,17 @@ export default function Onboarding() {
   const [certId, setCertId] = useState('cisa');
   // Step 3: the exam date ("YYYY-MM-DD"), none to start ("Not sure yet").
   // A quick choice or the calendar ("Pick the exact date") sets it.
-  const [now] = useState(() => Date.now());
+  // "Now" is read again on each quick choice and each calendar open, so a step
+  // left open past midnight never offers yesterday (render stays pure).
+  const [now, setNow] = useState(() => Date.now());
   const [examDate, setExamDate] = useState<string | undefined>(undefined);
   const [calendarOpen, setCalendarOpen] = useState(false);
+  // Screen-reader focus comes back to "Pick the exact date" when the calendar closes.
+  const pickRef = useRef<View>(null);
+  const closeCalendar = () => {
+    setCalendarOpen(false);
+    moveFocus(pickRef, 450);
+  };
   const preset = presetIndexFor(examDate, now);
   const [footerH, setFooterH] = useState(120);
   // Restore from a backup (shared with Settings → Your data). Success
@@ -260,15 +268,29 @@ export default function Onboarding() {
         {/* No label on this wrapper: a View without a role never speaks it (UX review O7). The header names the group. */}
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
           {PRESETS.map((p, i) => (
-            <Chip key={p.label} label={p.label} selected={preset === i} onPress={() => setExamDate(p.months ? dateInMonths(p.months, now) : undefined)} />
+            <Chip
+              key={p.label}
+              label={p.label}
+              selected={preset === i}
+              onPress={() => {
+                // The same fresh "now" for the date and for which chip is lit.
+                const t = Date.now();
+                setNow(t);
+                setExamDate(p.months ? dateInMonths(p.months, t) : undefined);
+              }}
+            />
           ))}
         </View>
         {/* The exact day, for a learner who has booked: the same calendar as Settings. */}
         <Button
+          ref={pickRef}
           kind="ghost"
           label="Pick the exact date"
           accessibilityHint="Opens a calendar"
-          onPress={() => setCalendarOpen(true)}
+          onPress={() => {
+            setNow(Date.now());
+            setCalendarOpen(true);
+          }}
           style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
         />
         {/* A date no quick choice gives: say which one, so the choice is never invisible. */}
@@ -368,10 +390,10 @@ export default function Onboarding() {
         visible={calendarOpen}
         value={examDate}
         now={now}
-        onClose={() => setCalendarOpen(false)}
+        onClose={closeCalendar}
         onSave={(d) => {
           setExamDate(d);
-          setCalendarOpen(false);
+          closeCalendar();
         }}
       />
       <RestorePreview ready={restore.ready} busy={restore.busy === 'restore'} onConfirm={restore.confirm} onCancel={restore.cancel} />

@@ -20,7 +20,7 @@ import { Alert, Dimensions } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
-import Settings from '../app/settings';
+import Settings, { LINK_OPEN_FALLBACK_MS } from '../app/settings';
 import Onboarding from '../app/onboarding';
 import ExamWeek from '../app/exam-week';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
@@ -532,20 +532,32 @@ describe('F. Onboarding’s date step', () => {
 
 // ══ G. Deep links ═════════════════════════════════════════════════════
 describe('G. Deep links into Settings', () => {
-  it('?open=exam-date: pick and Save closes the calendar and saves', () => {
+  // Fix round (code review 4): on iOS (Jest's platform) the link's calendar opens once the push
+  // transition ends. This stand-in router has no transition events, so the short fallback opens it.
+  const afterPush = () =>
+    act(() => {
+      jest.advanceTimersByTime(LINK_OPEN_FALLBACK_MS);
+    });
+
+  it('?open=exam-date: pick and Save closes the calendar, saves, and goes back (UX O5)', () => {
+    jest.mocked(router.back).mockClear();
     mockParams = { open: 'exam-date' };
     mount(<Settings />);
+    expect(sheetOpen()).toBe(false);
+    afterPush();
     expect(sheetOpen()).toBe(true);
     pressDay('Friday 22 January 2027');
     press('Save');
     expect(sheetOpen()).toBe(false);
     expect(useSettings.getState().examDates.cisa).toBe('2027-01-22');
+    expect(router.back).toHaveBeenCalledTimes(1);
   });
 
   it('?open=exam-date with no date yet opens on this month with "Not sure yet" chosen', () => {
     useSettings.setState({ examDates: {} });
     mockParams = { open: 'exam-date' };
     mount(<Settings />);
+    afterPush();
     expect(shownMonth()).toBe(2026 * 12 + 9);
     expect(byLabel('Not sure yet')[0].props.accessibilityState).toMatchObject({ selected: true });
   });
@@ -553,6 +565,7 @@ describe('G. Deep links into Settings', () => {
   it('an unknown ?open value opens nothing', () => {
     mockParams = { open: 'theme' };
     mount(<Settings />);
+    afterPush();
     expect(sheetOpen()).toBe(false);
   });
 

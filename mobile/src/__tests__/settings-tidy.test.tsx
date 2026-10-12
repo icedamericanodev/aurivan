@@ -3,14 +3,15 @@
  * a sheet, the exam-date calendar (Settings and onboarding), the deep links
  * into Settings, and the theme living only in Settings.
  */
-import { AccessibilityInfo, Dimensions } from 'react-native';
+import { AccessibilityInfo, Dimensions, Platform } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
-import Settings from '../app/settings';
+import Settings, { LINK_OPEN_FALLBACK_MS } from '../app/settings';
 import Onboarding from '../app/onboarding';
 import { cellSize } from '../components/calendar';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
+import * as a11y from '../lib/a11y';
 import { flushSayLaterForTest } from '../lib/a11y';
 import { useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
@@ -28,8 +29,18 @@ jest.mock('../components/icons', () => {
 });
 jest.mock('../components/brand', () => ({ BrandLockup: () => null, PillarList: () => null }));
 let mockParams: Record<string, string> = {};
+/** The stack's event listeners Settings adds (the iOS deep link waits for 'transitionEnd'). */
+let mockNavListeners: Record<string, ((e: { data?: { closing?: boolean } }) => void)[]> = {};
 jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), canGoBack: () => true, canDismiss: () => false },
+  useNavigation: () => ({
+    addListener: (type: string, cb: (e: { data?: { closing?: boolean } }) => void) => {
+      (mockNavListeners[type] ??= []).push(cb);
+      return () => {
+        mockNavListeners[type] = (mockNavListeners[type] ?? []).filter((x) => x !== cb);
+      };
+    },
+  }),
   useFocusEffect: (cb: () => void | (() => void)) => jest.requireActual('react').useEffect(() => cb(), [cb]),
   useLocalSearchParams: () => mockParams,
 }));
@@ -93,6 +104,7 @@ beforeEach(() => {
   jest.useFakeTimers({ now: new Date(2026, 9, 12, 10, 0) });
   setWindow(393);
   mockParams = {};
+  mockNavListeners = {};
   setMockReducedMotion(true);
   setSystemReducedMotionForTest(null);
   resetCelebrationsForTest();
@@ -106,6 +118,7 @@ beforeEach(() => {
   useSettings.setState(useSettings.getInitialState(), true);
   useSettings.setState({ theme: 'light', activeCertId: 'cisa', onboarded: true, motion: 'system', examDates: { cisa: '2027-01-08' } });
   jest.mocked(router.push).mockClear();
+  jest.mocked(router.back).mockClear();
 });
 afterEach(() => {
   act(() => {
@@ -350,11 +363,123 @@ describe('Exam date: the calendar', () => {
 });
 
 describe('Deep links into Settings', () => {
-  it('?open=exam-date opens the calendar straight away', () => {
+  const emit = (type: string, closing = false) =>
+    act(() => {
+      for (const cb of mockNavListeners[type] ?? []) cb({ data: { closing } });
+    });
+  const calendarUp = () => byLabel('Next month').length === 1;
+
+  // Fix round (code review 4): this test used to expect the calendar in the very first frame on every platform.
+  it('iOS: ?open=exam-date opens the calendar once the push transition has ended', () => {
+    expect(Platform.OS).toBe('ios');
     mockParams = { open: 'exam-date' };
     mount(<Settings />);
-    expect(byLabel('Next month').length).toBe(1);
+    expect(calendarUp()).toBe(false);
+    emit('transitionEnd', true); // a screen closing is not this push
+    expect(calendarUp()).toBe(false);
+    emit('transitionEnd');
+    expect(calendarUp()).toBe(true);
     expect(allText()).toContain('A rough date is fine. You can change it any time.');
+    // Once only: a later transition (back from Help) doesn't open it again.
+    press('Cancel, Exam date');
+    emit('transitionEnd');
+    expect(calendarUp()).toBe(false);
+  });
+
+  it('iOS: with no transition event it still opens after a short wait', () => {
+    mockParams = { open: 'exam-date' };
+    mount(<Settings />);
+    act(() => {
+      jest.advanceTimersByTime(LINK_OPEN_FALLBACK_MS - 1);
+    });
+    expect(calendarUp()).toBe(false);
+    act(() => {
+      jest.advanceTimersByTime(1);
+    });
+    expect(calendarUp()).toBe(true);
+  });
+
+  it('Android: up from the first frame, as before', () => {
+    const os = Platform.OS;
+    Platform.OS = 'android';
+    try {
+      mockParams = { open: 'exam-date' };
+      mount(<Settings />);
+      expect(calendarUp()).toBe(true);
+    } finally {
+      Platform.OS = os;
+    }
+  });
+
+  it('Save goes back to where the learner came from, and says the date was saved', () => {
+    const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+    mockParams = { open: 'exam-date' };
+    mount(<Settings />);
+    emit('transitionEnd');
+    press('Friday 22 January 2027');
+    press('Save');
+    expect(useSettings.getState().examDates.cisa).toBe('2027-01-22');
+    expect(router.back).toHaveBeenCalledTimes(1);
+    act(() => flushSayLaterForTest());
+    expect(say).toHaveBeenCalledWith('Exam date saved: Friday 22 January 2027');
+  });
+
+  it('Cancel goes back too, saving nothing; the row opened later stays in Settings', () => {
+    mockParams = { open: 'exam-date' };
+    mount(<Settings />);
+    emit('transitionEnd');
+    press('Friday 22 January 2027');
+    press('Cancel, Exam date');
+    expect(router.back).toHaveBeenCalledTimes(1);
+    expect(useSettings.getState().examDates.cisa).toBe('2027-01-08');
+    // Opened from its row (not the link): closing returns to Settings.
+    openRow('Exam date');
+    press('Save');
+    expect(router.back).toHaveBeenCalledTimes(1);
+  });
+
+  it('with no screen to go back to, Save stays in Settings and focus returns to the row', () => {
+    jest.spyOn(router, 'canGoBack').mockReturnValue(false);
+    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => {});
+    mockParams = { open: 'exam-date' };
+    mount(<Settings />);
+    emit('transitionEnd');
+    press('Friday 22 January 2027');
+    press('Save');
+    expect(router.back).not.toHaveBeenCalled();
+    expect(useSettings.getState().examDates.cisa).toBe('2027-01-22');
+    expect(focus).toHaveBeenCalledWith({ current: expect.anything() }, 450);
+  });
+});
+
+describe('"Now" is read when the calendar opens (code review 2, QA 4)', () => {
+  it('Settings left open past midnight: today moves on, yesterday cannot be picked, quick choices count from today', () => {
+    useSettings.setState({ examDates: {} });
+    mount(<Settings />);
+    // 00:05 the next day, Settings still open.
+    jest.setSystemTime(new Date(2026, 9, 13, 0, 5));
+    openRow('Exam date');
+    expect(day('Tuesday 13 October 2026').props.accessibilityLabel).toBe('Tuesday 13 October 2026, today');
+    expect(day('Monday 12 October 2026').props.accessibilityState).toMatchObject({ disabled: true });
+    press('In 1 month');
+    expect(day('Friday 13 November 2026').props.accessibilityState).toMatchObject({ selected: true });
+    expect(byLabel('In 1 month')[0].props.accessibilityState).toMatchObject({ selected: true });
+    press('Save');
+    expect(useSettings.getState().examDates.cisa).toBe('2026-11-13');
+  });
+
+  it('Save from the row says nothing extra: focus returns to the row, which reads the new date (UX O4)', () => {
+    const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => {});
+    mount(<Settings />);
+    openRow('Exam date');
+    press('Friday 22 January 2027');
+    say.mockClear();
+    press('Save');
+    act(() => flushSayLaterForTest());
+    expect(say).not.toHaveBeenCalledWith(expect.stringMatching(/^Exam date (saved|cleared)/));
+    expect(focus).toHaveBeenCalledWith({ current: expect.anything() }, 450);
+    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Friday 22 January 2027');
   });
 });
 
@@ -376,6 +501,45 @@ describe('Onboarding: the same calendar on the date step', () => {
     press('Continue');
     press('Skip for now');
     expect(useSettings.getState().examDates.cisa).toBe('2026-11-16');
+  });
+
+  it('left open past midnight: quick choices and the calendar count from the new today', () => {
+    useSettings.setState({ onboarded: false, examDates: {} });
+    mount(<Onboarding />);
+    press('Start my plan');
+    press('Continue');
+    press('Skip this question');
+    jest.setSystemTime(new Date(2026, 9, 13, 0, 5));
+    press('In 1 month');
+    expect(byLabel('In 1 month')[0].props.accessibilityState).toMatchObject({ selected: true });
+    press('Pick the exact date');
+    // Opens on the chosen month; one back is today's.
+    expect(day('Friday 13 November 2026').props.accessibilityState).toMatchObject({ selected: true });
+    press('Previous month');
+    expect(day('Tuesday 13 October 2026').props.accessibilityLabel).toBe('Tuesday 13 October 2026, today');
+    expect(day('Monday 12 October 2026').props.accessibilityState).toMatchObject({ disabled: true });
+    press('Cancel, Exam date');
+    press('Continue');
+    press('Skip for now');
+    expect(useSettings.getState().examDates.cisa).toBe('2026-11-13');
+  });
+
+  it('screen-reader focus returns to "Pick the exact date" after Cancel and after Save', () => {
+    useSettings.setState({ onboarded: false, examDates: {} });
+    mount(<Onboarding />);
+    press('Start my plan');
+    press('Continue');
+    press('Skip this question');
+    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => {});
+    const pickButton = () => root().findAll((n) => n.props.accessibilityLabel === 'Pick the exact date');
+    const isPick = (ref: unknown) => pickButton().some((n) => n.instance !== null && n.instance === (ref as { current: unknown }).current);
+    for (const close of ['Cancel, Exam date', 'Save']) {
+      press('Pick the exact date');
+      focus.mockClear();
+      press(close);
+      expect(focus).toHaveBeenCalledTimes(1);
+      expect(isPick(focus.mock.calls[0][0])).toBe(true);
+    }
   });
 
   it('the quick choices still work, and "Not sure yet" stays the default', () => {

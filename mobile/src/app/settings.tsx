@@ -15,14 +15,16 @@
  *   Help and about        Get help or send feedback · About Aurivan · Privacy · Terms
  *
  * Deep links: `?open=exam-date` opens the calendar (Today's and exam week's
- * "Set exam date"); `?section=plant` opens at Badges and your plant (the
- * plant screens' "Open Settings").
+ * "Set exam date"); on iOS once the push transition has ended, and its
+ * Save or Cancel goes back to where the learner came from. `?section=plant`
+ * opens at Badges and your plant (the plant screens' "Open Settings").
  *
  * Theme lives only here since 1.17 (the owner found the switch on You
  * redundant once Settings was tidy).
  */
 import Constants from 'expo-constants';
-import { useRef, useState, type RefObject } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
+import * as ExpoRouter from 'expo-router';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Alert, Linking, Platform, View, type ScrollView } from 'react-native';
 import { BrandLockup, PillarList } from '../components/brand';
@@ -67,6 +69,19 @@ const THEME_NAME: Record<ThemePref, string> = { system: 'System', light: 'Light'
 const MOTION_NAME: Record<MotionPref, string> = { system: 'Match my phone', reduced: 'Reduced' };
 const AUTO_MODE = 'auto';
 
+/**
+ * iOS: how long to wait for the push transition's end before opening the
+ * deep-linked calendar anyway (a push takes about 350 ms; this covers a slow
+ * one, and a screen that had no transition at all).
+ */
+export const LINK_OPEN_FALLBACK_MS = 700;
+
+/** The part of this screen's navigation used here: the stack's "transition ended" event. */
+type TransitionEvents = { addListener?: (type: 'transitionEnd', cb: (e: { data?: { closing?: boolean } }) => void) => () => void };
+/** This screen's own navigation (absent where a test's expo-router stand-in has none). */
+const useOwnNavigation: () => TransitionEvents | undefined =
+  (ExpoRouter as { useNavigation?: () => TransitionEvents }).useNavigation ?? (() => undefined);
+
 export default function Settings() {
   const { cert } = useActiveCert();
   const { c, isDark } = useTheme();
@@ -89,7 +104,41 @@ export default function Settings() {
 
   // Deep links: open the calendar, or start at the plant's group.
   const params = useLocalSearchParams<{ open?: string; section?: string }>();
-  const [sheet, setSheet] = useState<SheetId | null>(() => (params.open === 'exam-date' ? 'date' : null));
+  const navigation = useOwnNavigation();
+  // "Now" for the calendar: read again each time it opens, so a Settings
+  // screen left open past midnight never offers yesterday (render stays pure:
+  // it is only read in handlers and effects).
+  const [now, setNow] = useState(() => Date.now());
+  // ?open=exam-date: on Android (and web) the calendar is up from the first frame, as before.
+  const linkNow = params.open === 'exam-date' && Platform.OS !== 'ios';
+  const [sheet, setSheet] = useState<SheetId | null>(() => (linkNow ? 'date' : null));
+  // True while the calendar the link opened is up: its Save or Cancel goes back to where the learner came from.
+  const fromLink = useRef(linkNow);
+  // iOS presents a sheet from the screen itself; one presented during the
+  // push transition can be dropped (and then can't open until the learner
+  // leaves). So wait for the transition to end, with a short fallback.
+  useEffect(() => {
+    if (params.open !== 'exam-date' || Platform.OS !== 'ios') return;
+    let done = false;
+    const show = () => {
+      if (done) return;
+      done = true;
+      fromLink.current = true;
+      setNow(Date.now());
+      setSheet('date');
+    };
+    const off = navigation?.addListener?.('transitionEnd', (e) => {
+      if (!e.data?.closing) show();
+    });
+    const fallback = setTimeout(show, LINK_OPEN_FALLBACK_MS);
+    return () => {
+      done = true;
+      off?.();
+      clearTimeout(fallback);
+    };
+    // Read once, when Settings opens (each push is a fresh screen).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const scrollRef = useRef<ScrollView>(null);
   const scrolled = useRef(false);
   // Each row that opens a sheet gets screen-reader focus back when its sheet closes.
@@ -102,11 +151,23 @@ export default function Settings() {
   const themeRow = useRef<View>(null);
   const motionRow = useRef<View>(null);
   const aboutRow = useRef<View>(null);
-  const open = (id: SheetId) => () => setSheet(id);
+  const open = (id: SheetId) => () => {
+    if (id === 'date') setNow(Date.now());
+    setSheet(id);
+  };
+  /** True when closing the calendar should leave Settings: the link opened it and there is a screen to go back to. */
+  const leavesWithLink = () => sheet === 'date' && fromLink.current && router.canGoBack();
   const close = () => {
     const id = sheet;
+    const leave = leavesWithLink();
     setSheet(null);
     if (!id) return;
+    if (id === 'date') fromLink.current = false;
+    // Opened from "Set exam date": back to where the learner was (Today, exam week).
+    if (leave) {
+      router.back();
+      return;
+    }
     // Looked up here, in the handler (never during render).
     const back: Record<SheetId, RefObject<View | null>> = { exam: examRow, date: dateRow, minutes: minutesRow, start: startRow, mode: modeRow, remind: remindRow, theme: themeRow, motion: motionRow, about: aboutRow };
     moveFocus(back[id], 450);
@@ -121,8 +182,6 @@ export default function Settings() {
     if (kept && !keptToday) sayLater(KEEP_TODAY_LINE);
     setKeptToday(kept);
   };
-  // "Now" is read once per visit (render stays pure).
-  const [now] = useState(() => Date.now());
   const examDate = s.examDates[cert.id];
   const minutes = dailyMinutesOf(s);
   const examFocused = examFocusedOf(s);
@@ -382,7 +441,9 @@ export default function Settings() {
         onSave={(date) => {
           // Changing it rebuilds today's plan for this exam (exam week and the eve card follow it).
           if (date !== examDate) changeExamDate(cert.id, date);
-          sayLater(date ? `Exam date saved: ${spokenDate(date)}` : 'Exam date cleared');
+          // Staying in Settings, focus returns to the Exam date row, which reads the new
+          // date; an announcement as well would say it twice. Leaving (the link), say it.
+          if (leavesWithLink()) sayLater(date ? `Exam date saved: ${spokenDate(date)}` : 'Exam date cleared');
           close();
         }}
       />
