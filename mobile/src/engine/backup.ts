@@ -45,6 +45,7 @@ import {
 import { isLookOfSlot, type LookSlot } from './plantLooks';
 import { examDateLabel } from './examDay';
 import { snapMinutes, type DailyMinutes, type Familiarity } from './fit';
+import { cleanDone, type ExamWeekItem } from './examWeek';
 import { reminderSummary } from './reminders';
 import { migrateProgress, PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
 import { dayKey } from './streak';
@@ -294,7 +295,14 @@ const mockResult = rule(
 const mistakeEntry = obj({ at: ts }, { picked: LETTER, slip: SLIP, resolved: bool, confidence: CONFIDENCE, fixedLater: bool });
 const percent = range(0, 100);
 const readinessDay = obj({ day: date, min: nullable(percent), last: nullable(percent) });
-const moments = obj({}, { readiness: list(readinessDay, MAX_LIST * 2), readySeenAt: ts });
+/**
+ * Mobile 1.16: the exam-week checklist's ticks. An id this app doesn't know
+ * (a newer app's, or a tampered file's) is dropped, never a reason to refuse
+ * the file; each id counts once.
+ */
+const examWeekDone: Check<ExamWeekItem[]> = (x, at) => cleanDone(list(str(40), 20)(x, at));
+const examWeek = obj({ for: date, done: examWeekDone }, { hidden: bool });
+const moments = obj({}, { readiness: list(readinessDay, MAX_LIST * 2), readySeenAt: ts, examWeek });
 const subtopicMastery = obj({ firstDay: date }, { firstAt: ts, masteredAt: date });
 /** A game score: Forecast can go below zero (a wrong "Sure" is −5). */
 const gameScore = range(-1000, 100_000);

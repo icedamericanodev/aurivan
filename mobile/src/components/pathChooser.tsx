@@ -24,6 +24,7 @@ export function DisclosureRow({
   title,
   subtitle,
   icon,
+  lead,
   action,
   expanded,
   onPress,
@@ -35,6 +36,8 @@ export function DisclosureRow({
   title: string;
   subtitle?: string;
   icon?: ReactNode;
+  /** A leading serif numeral block instead of an icon (mobile 1.16: a mock's score). */
+  lead?: ReactNode;
   /** A word beside the chevron, e.g. "Change". */
   action?: string;
   expanded: boolean;
@@ -61,6 +64,7 @@ export function DisclosureRow({
       style={({ pressed }) => [styles.row, stack && styles.rowStacked, pressed && { backgroundColor: c.soft }]}
     >
       {icon && <IconCircle>{icon}</IconCircle>}
+      {lead}
       <View style={stack ? styles.textStacked : { flex: 1, minWidth: 0 }}>
         <T v="label">{title}</T>
         {subtitle ? <T v="meta">{subtitle}</T> : null}

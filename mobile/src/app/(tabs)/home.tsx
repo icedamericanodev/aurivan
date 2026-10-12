@@ -24,6 +24,11 @@
  * When every plan item is done, the forest panel becomes the clearing card
  * (today's numbers + how readiness moved) and "Tomorrow" previews what's next.
  *
+ * Proof (mobile 1.16, PHASE5.md §3.1–3.2): tapping the readiness words opens
+ * the readiness report (the plant beside them still opens Your plant). From 7
+ * to 2 days before the exam, one quiet "Exam week" card sits under the
+ * readiness row, above "Also today": the checklist, or Hide.
+ *
  * Signature moments (Phase 5b, components/moments.tsx):
  *   - the day before the exam / exam day: a calm card above the panel;
  *   - "Your readiness is holding" (lower bound ≥ 80% for 7 days): the forest
@@ -35,6 +40,8 @@ import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow, todayMinutesLine } from '../../components/journey';
 import { FitCard } from '../../components/fit';
+import { ExamWeekCard } from '../../components/readinessReport';
+import { examWeekCardDue, examWeekCount, examWeekOf } from '../../engine/examWeek';
 import { Celebrate, Pop, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
 import { ICON_STROKE, Play, Settings, Sprig } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
@@ -287,6 +294,8 @@ export default function Today() {
     askedDays: fitAskDays,
     today: plan.day,
   });
+  // Mobile 1.16: the exam-week card, 7 to 2 days out, until hidden for this exam date.
+  const examWeekDue = examWeekCardDue(j.daysLeft, j.progress.moments?.examWeek, j.examDate);
   // Count the day the card showed: after 3 separate days it stays away (code review M4).
   useEffect(() => {
     if (askFit) useSettings.getState().noteFitAsked(plan.day);
@@ -372,6 +381,7 @@ export default function Today() {
             ringsGrowth={ringsGrowth}
             rangeGrowth={rangeGrowth}
             lead={plantView.plant && !showReady ? todayPlant(104, 'today-plant') : undefined}
+            onPress={() => router.push('/readiness')}
           />
         </Enter>
       )}
@@ -400,6 +410,19 @@ export default function Today() {
       )}
 
       <Enter i={3}>
+        {/* Mobile 1.16: exam week (7 to 2 days out): one calm card, under the readiness row. */}
+        {examWeekDue && j.examDate && (
+          <View style={{ marginTop: space.xl }}>
+            <ExamWeekCard
+              count={examWeekCount(examWeekOf(j.progress.moments?.examWeek, j.examDate).done)}
+              onOpen={() => router.push('/exam-week')}
+              onHide={() => {
+                useProgress.getState().hideExamWeek(j.cert.id, j.examDate!);
+                sayLater('Hidden. The checklist stays in your readiness report.');
+              }}
+            />
+          </View>
+        )}
         {allDone ? (
           <>
             {tomorrow.length > 0 && (

@@ -682,20 +682,37 @@ export function Section({
   title,
   meta,
   metaLabel,
+  action,
   style,
 }: {
   title: string;
   meta?: string;
   /** Spoken meta, when it differs ("About 19 minutes" for "About 19 min"). */
   metaLabel?: string;
+  /**
+   * Mobile 1.16: a trailing ghost button in place of the meta (You → Mock
+   * exams "See report"). Its own stop, after the heading.
+   */
+  action?: { label: string; onPress: () => void; hint?: string; accessibilityLabel?: string };
   style?: StyleProp<ViewStyle>;
 }) {
   // Large text: the meta drops under the title instead of squeezing beside it.
   const large = useFontScale() >= LARGE_TEXT;
   return (
-    <View style={[styles.section, large && styles.sectionStacked, style]}>
+    <View style={[styles.section, action && styles.sectionAction, large && styles.sectionStacked, style]}>
       <T v="headline" accessibilityRole="header" style={{ flexShrink: 1 }}>{title}</T>
-      {meta && <T v="meta" accessibilityLabel={metaLabel} style={{ flexShrink: 1 }}>{meta}</T>}
+      {meta && !action && <T v="meta" accessibilityLabel={metaLabel} style={{ flexShrink: 1 }}>{meta}</T>}
+      {action && (
+        // The ghost pads 8pt each side: its text lines up with the gutter (or the title, stacked).
+        <Button
+          kind="ghost"
+          label={action.label}
+          onPress={action.onPress}
+          accessibilityHint={action.hint}
+          accessibilityLabel={action.accessibilityLabel}
+          style={large ? { marginLeft: -space.sm } : { marginRight: -space.sm }}
+        />
+      )}
     </View>
   );
 }
@@ -824,6 +841,51 @@ export function RadioRow({
         </View>
         {subtitle ? <T v="meta">{subtitle}</T> : null}
       </View>
+      {!last && <View style={[styles.hairline, { left: 36, backgroundColor: c.line }]} />}
+    </AnimatedPressable>
+  );
+}
+
+// ── CheckRow: one item in a checklist (mobile 1.16, the exam-week list) ──
+// A 22pt rounded square (control outline; ink fill and a paper ✓ when done:
+// shape AND colour), then the item's words in `body`. The whole row is the
+// touch target (64pt min, so well above 48) and is spoken as a checkbox with
+// its checked state. Done items are never struck through or dimmed: a tick
+// is progress, not something crossed out. No red, no "overdue".
+export function CheckRow({
+  label,
+  checked,
+  onPress,
+  hint,
+  last,
+}: {
+  label: string;
+  checked: boolean;
+  onPress: () => void;
+  hint?: string;
+  last?: boolean;
+}) {
+  const { c } = useTheme();
+  const press = usePressScale({ scale: 1, tint: c.soft });
+  return (
+    <AnimatedPressable
+      accessibilityRole="checkbox"
+      accessibilityState={{ checked }}
+      accessibilityLabel={label}
+      accessibilityHint={hint}
+      onPress={onPress}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      style={[styles.listRow, styles.checkRow, press.style]}
+    >
+      {press.layer}
+      <View style={[styles.checkBox, { borderColor: c.control }]}>
+        {/* The ink fill and its paper ✓ cross-fade in together (120 ms) over the idle outline. */}
+        <StateLayer on={checked} style={[styles.checkFill, { backgroundColor: c.ink }]}>
+          <Check size={14} color={c.bg} strokeWidth={2.5} />
+        </StateLayer>
+      </View>
+      <T v="body" style={{ flex: 1, minWidth: 0 }}>{label}</T>
       {!last && <View style={[styles.hairline, { left: 36, backgroundColor: c.line }]} />}
     </AnimatedPressable>
   );
@@ -1190,6 +1252,8 @@ const styles = StyleSheet.create({
   heroArt: { position: 'absolute', right: -18, top: -14 },
   heroContent: { zIndex: 1 },
   sectionStacked: { flexDirection: 'column', alignItems: 'flex-start', gap: 2 },
+  // With a ghost button: centred on the button's 48pt target (a baseline would float the title).
+  sectionAction: { alignItems: 'center', marginBottom: -space.sm },
   section: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -1208,6 +1272,9 @@ const styles = StyleSheet.create({
   listRow: { flexDirection: 'row', alignItems: 'center', gap: 14, minHeight: 64, paddingVertical: 13 },
   hairline: { position: 'absolute', right: 0, bottom: 0, height: 1 },
   radio: { width: 22, height: 22, borderRadius: 11, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
+  checkRow: { alignItems: 'flex-start' },
+  checkBox: { width: 22, height: 22, borderRadius: 6, borderWidth: 2, alignItems: 'center', justifyContent: 'center', marginTop: 1 },
+  checkFill: { top: -2, left: -2, right: -2, bottom: -2, borderRadius: 6, alignItems: 'center', justifyContent: 'center' },
   radioDot: { width: 10, height: 10, borderRadius: 5 },
   radioDotAt: { top: 4, left: 4, right: undefined, bottom: undefined },
   radioOn: { top: -2, left: -2, right: -2, bottom: -2, borderRadius: 11, borderWidth: 2 },
