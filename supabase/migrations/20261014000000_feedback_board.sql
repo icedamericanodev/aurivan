@@ -878,6 +878,7 @@ language plpgsql security definer set search_path = '' as $$
 declare
   v_words text[];
   v_squashed text;
+  v_uncarried text;
   v_term text;
   v_t text;
 begin
@@ -885,13 +886,21 @@ begin
     -- Folded like the app's checkHandle (private.fold_handle): "AURlVAN" reads as "aurivan".
     v_words := array_remove(regexp_split_to_array(private.fold_handle(new.handle), '[^a-z]+'), '');
     v_squashed := array_to_string(v_words, '');
-    -- The same list as RESERVED_HANDLES in engine/moderation.ts. Short ones, and
-    -- "admin" and "staff", count only as a whole word ("Modest Pine", "Badminton Fan").
+    -- The name without the everyday words that contain "admin" or "staff"
+    -- (RESERVED_CARRIERS in engine/moderation.ts: same words, same order).
+    v_uncarried := v_squashed;
+    foreach v_term in array array['badminton', 'distaff', 'fiagstaff', 'pikestaff', 'quarterstaff', 'stafford'] loop
+      v_uncarried := replace(v_uncarried, v_term, '');
+    end loop;
+    -- The same list as RESERVED_HANDLES in engine/moderation.ts. Short ones count
+    -- only as a whole word ("Modest Pine"); the rest anywhere in the name, and
+    -- "admin" and "staff" once the everyday words are out ("SiteAdmin" is
+    -- refused, "Badminton Fan" is fine: re-review RR_P8 R2).
     foreach v_term in array array['aurivan', 'isaca', 'cisa', 'cism', 'crisc', 'cgeit', 'cdpse', 'ccoa', 'aaia', 'aaism',
                                    'cobit', 'csx', 'admin', 'moderator', 'mod', 'team', 'support', 'official', 'staff'] loop
       v_t := private.fold_handle(v_term);
-      if ((length(v_t) <= 4 or v_term in ('admin', 'staff')) and (v_t = any (v_words) or v_squashed = v_t))
-         or (length(v_t) > 4 and v_term not in ('admin', 'staff') and position(v_t in v_squashed) > 0) then
+      if (length(v_t) <= 4 and (v_t = any (v_words) or v_squashed = v_t))
+         or (length(v_t) > 4 and position(v_t in case when v_term in ('admin', 'staff') then v_uncarried else v_squashed end) > 0) then
         raise exception 'reserved_handle' using errcode = '22023';
       end if;
     end loop;
@@ -1161,7 +1170,8 @@ end $$;
 --                   (the target is the member's public id, or their account id)
 --   board:          pause, reopen
 --   appeal:         uphold, restore_appeal
---   report:         dismiss {kind}: every open report on that target (the queue's id)
+--   report:         dismiss {kind, editedAt}: every open report on that target (the queue's id);
+--                   refused ('changed') when the words were edited after `editedAt`
 create function private.staff_act(p_actor uuid, p_action text, p_kind text, p_target uuid, p_reason text, p_extra jsonb)
 returns jsonb language plpgsql volatile security invoker set search_path = '' as $$
 declare
@@ -1175,6 +1185,7 @@ declare
   v_reason text := p_reason;
   v_log_action text := p_action;
   v_member uuid;
+  v_edited timestamptz;
 begin
   if not exists (select 1 from private.staff s where s.user_id = p_actor) then
     raise exception 'forbidden' using errcode = '42501';
@@ -1349,6 +1360,17 @@ begin
     if coalesce(p_extra ->> 'kind', '') not in ('post', 'comment', 'member') then
       raise exception 'invalid' using errcode = '22023';
     end if;
+    -- Never blind (re-review RR_P8 R1): `editedAt` is the edit time on the
+    -- queue row the moderator read (whole milliseconds; null = not edited).
+    -- Words edited since then: refused ('changed'), nothing is closed, and
+    -- the app shows the new words first.
+    v_edited := case p_extra ->> 'kind'
+      when 'post' then (select p.edited_at from public.board_posts p where p.id = p_target)
+      when 'comment' then (select c.edited_at from public.board_comments c where c.id = p_target) end;
+    if v_edited is not null and (p_extra ->> 'editedAt' is null
+        or abs(extract(epoch from v_edited) * 1000 - (p_extra ->> 'editedAt')::numeric) >= 1) then
+      raise exception 'changed' using errcode = 'P0001';
+    end if;
     update public.ugc_reports set status = 'dismissed', handled_at = now()
      where target_kind = p_extra ->> 'kind' and target_id = p_target and status = 'open';
 
@@ -1398,23 +1420,36 @@ begin
         from public.board_comments c left join public.board_members m on m.user_id = c.author_id
        where c.visibility in ('pending', 'hidden') and c.hold_reason is not null) q;
   elsif p_tab = 'reported' then
-    -- One row per reported thing, with the words as they were when first
-    -- reported (SEC S3) and who wrote them (a member report: their name).
+    -- One row per reported thing and who wrote it (a member report: their
+    -- name). Its words as they are NOW (title, body), so an edit after a
+    -- harmless first report can't hide an insult from staff (re-review
+    -- RR_P8 R1); the words as first and as last reported (SEC S3: an edit
+    -- can't wipe them either); and when it was last edited, and whether
+    -- that was after the first report. Dismiss sends `editedAt` back.
     select coalesce(jsonb_agg(x order by x ->> 'at'), '[]') into v_out from (
       select jsonb_build_object('kind', g.target_kind, 'id', g.target_id, 'count', g.n,
         'reasons', g.reasons, 'at', g.first_at, 'examContent', g.exam,
-        'snapshot', g.snapshot, 'handle', m.handle,
+        'title', t.title, 'body', t.body,
+        'firstSnapshot', g.first_snapshot, 'lastSnapshot', g.last_snapshot,
+        'editedAt', t.edited_at, 'editedSinceReport', coalesce(t.edited_at > g.first_at, false),
+        'handle', m.handle,
         'newMember', coalesce(m.approved_posts, 0) = 0,
         'priorActions', (select count(*) from private.moderation_log l where l.target_id = m.user_id and l.actor_id is not null)) x
         from (select r.target_kind, r.target_id, count(*) as n, jsonb_agg(distinct r.reason) as reasons,
                      min(r.created_at) as first_at, bool_or(r.reason = 'exam_content') as exam,
-                     (array_agg(r.snapshot order by r.created_at))[1] as snapshot
+                     (array_agg(r.snapshot order by r.created_at, r.id))[1] as first_snapshot,
+                     (array_agg(r.snapshot order by r.created_at desc, r.id desc))[1] as last_snapshot
                 from public.ugc_reports r where r.status = 'open'
                group by r.target_kind, r.target_id) g
+        left join lateral (
+          select p.title, left(p.body, 600) as body, p.edited_at, p.author_id
+            from public.board_posts p where g.target_kind = 'post' and p.id = g.target_id
+          union all
+          select null, left(c.body, 600), c.edited_at, c.author_id
+            from public.board_comments c where g.target_kind = 'comment' and c.id = g.target_id) t on true
         left join public.board_members m on m.user_id = case g.target_kind
-               when 'post' then (select p.author_id from public.board_posts p where p.id = g.target_id)
-               when 'comment' then (select c.author_id from public.board_comments c where c.id = g.target_id)
-               else (select mm.user_id from public.board_members mm where mm.public_id = g.target_id) end) q;
+               when 'member' then (select mm.user_id from public.board_members mm where mm.public_id = g.target_id)
+               else t.author_id end) q;
   elsif p_tab = 'appeals' then
     select coalesce(jsonb_agg(jsonb_build_object('id', a.id, 'kind', a.target_kind, 'targetId', a.target_id,
       'note', a.note, 'at', a.created_at) order by a.created_at), '[]') into v_out

@@ -263,6 +263,28 @@ Deno.test('every write attempt is counted before the filters: a refused text cos
   assert.deepEqual(board.calls.slice(before), ['member', 'attempt']);
 });
 
+Deno.test('join counts a write attempt before the word lists are read: no free probing of the private list (RR_P8 R3)', async () => {
+  const { board, run } = setup();
+  board.termsList.block = ['secretslur'];
+  const join = (handle: string) =>
+    run({ op: 'join', handle, handleKind: 'chosen', guidelinesVersion: '2026-11' }, USER_B);
+  const before = board.calls.length;
+  assert.deepEqual(await errorOf(await join('Calm Secretslur')), {
+    status: 400,
+    error: 'invalid',
+    detail: 'handle_words',
+  });
+  // Counted first, then the lists are read.
+  assert.deepEqual(board.calls.slice(before), ['attempt', 'terms']);
+  assert.deepEqual(board.attempts, [USER_B]);
+  // Past the limit: 429 before the lists are even read, and nobody joins.
+  board.attemptsAllowed = 1;
+  const mid = board.calls.length;
+  assert.deepEqual(await errorOf(await join('Calm Otherword')), { status: 429, error: 'rate_limited' });
+  assert.deepEqual(board.calls.slice(mid), ['attempt']);
+  assert.equal(board.members.has(USER_B), false);
+});
+
 Deno.test('the same draft sent twice (its reply was lost) is ONE post (QA BUG-1)', async () => {
   const { board, run } = setup();
   const clientId = '40000000-0000-4000-8000-000000000001';

@@ -4,6 +4,8 @@
 //   { action: 'whoami' }        → { staff }  (anyone signed in: is THIS user staff?)
 //   { action: 'queue', tab }    → the staff queue page (held, reported, appeals, members, log)
 //   { action, targetKind, … }   → private.staff_act, which logs the actor and reason
+//   A report Dismiss carries `extra.editedAt` (the edit time on the queue row
+//   staff read); words edited since → 409 conflict `changed` (RR_P8 R1).
 //
 // 1. A verified user (401 / 410 otherwise).
 // 2. Staff status is read from private.staff with the service role, never
@@ -88,7 +90,13 @@ function extraFor(action: string, raw: unknown): Record<string, unknown> {
     case 'dismiss': {
       // Every open report on one reported thing (the queue's row; CR N4).
       if (x.kind !== 'post' && x.kind !== 'comment' && x.kind !== 'member') throw new HttpError(400, 'invalid', 'kind');
-      return { kind: x.kind };
+      // The edit time on the row the moderator read, in whole milliseconds (null: not edited). The SQL
+      // refuses the Dismiss ('changed', 409) if the words were edited after it (re-review RR_P8 R1).
+      const editedAt = x.editedAt === undefined || x.editedAt === null ? null : x.editedAt;
+      if (editedAt !== null && !(typeof editedAt === 'number' && Number.isSafeInteger(editedAt) && editedAt >= 0)) {
+        throw new HttpError(400, 'invalid', 'edited_at');
+      }
+      return { kind: x.kind, editedAt };
     }
     case 'limit':
     case 'suspend': {

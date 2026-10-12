@@ -25,7 +25,8 @@ export function boardDbCode(error: unknown): BoardDbCode {
     case '42501':
       return 'forbidden';
     case 'P0001':
-      return word === 'rate_limited' || word === 'posting_paused' || word === 'banned' || word === 'guidelines'
+      return word === 'rate_limited' || word === 'posting_paused' || word === 'banned' || word === 'guidelines' ||
+          word === 'changed'
         ? word
         : 'server';
     case '22023':

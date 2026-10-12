@@ -26,6 +26,9 @@ export function fromBoardDb(e: unknown): never {
       throw new HttpError(404, 'not_found');
     case 'invalid':
       throw new HttpError(400, 'invalid');
+    case 'changed':
+      // Staff dismissed words that were edited after they looked (RR_P8 R1): the app reloads them.
+      throw new HttpError(409, 'conflict', 'changed');
     default:
       throw new HttpError(500, 'server');
   }

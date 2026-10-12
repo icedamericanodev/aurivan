@@ -89,6 +89,8 @@ export type BoardDbCode =
   | 'handle_taken'
   | 'not_found'
   | 'invalid'
+  // Dismiss from an older view: the words were edited since (re-review RR_P8 R1).
+  | 'changed'
   | 'server';
 
 export class BoardDbError extends Error {

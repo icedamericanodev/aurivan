@@ -162,7 +162,7 @@ select is((public.svc_board_write('00000000-0000-4000-8000-00000000000a', 'edit_
            'A''s lovely post here', 'all good', null, null, null)) ->> 'visibility', 'visible', 'A edits the reported post');
 select ok((select snapshot like '%something nasty about B%' from public.ugc_reports where target_id = '10000000-0000-4000-8000-000000000003'),
   'the report keeps the words as they were when reported');
-select ok((select bool_or(i ->> 'snapshot' like '%something nasty about B%' and i ->> 'handle' is not null)
+select ok((select bool_or(i ->> 'firstSnapshot' like '%something nasty about B%' and i ->> 'handle' is not null)
            from jsonb_array_elements(public.svc_staff_queue('00000000-0000-4000-8000-000000000005', 'reported') -> 'items') i),
   'the staff queue shows them, with who wrote them');
 

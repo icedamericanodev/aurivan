@@ -1,4 +1,5 @@
 import { strict as assert } from 'node:assert';
+import { BoardDbError } from '../_shared/board.ts';
 import { FakeBoardDb } from '../_shared/boardTesting.ts';
 import { FakeAdmin, post, recordingLogger, USER_A, USER_B } from '../_shared/testing.ts';
 import { handleStaffAction } from './handler.ts';
@@ -125,17 +126,50 @@ Deno.test('fix round: rename a member, fold a post, dismiss every report on one 
   assert.deepEqual(board.staffActs.map((a) => [a.action, a.extra]), [
     ['rename', {}],
     ['spoiler', { on: true }],
-    ['dismiss', { kind: 'member' }],
+    ['dismiss', { kind: 'member', editedAt: null }],
   ]);
   // Their extras are checked too.
   for (
     const [body, detail] of [
       [{ action: 'spoiler', targetKind: 'post', targetId: POST_ID, extra: { on: 'yes' } }, 'on'],
       [{ action: 'dismiss', targetKind: 'report', targetId: MEMBER }, 'kind'],
+      // RR_P8 R1: the edit time the moderator saw is a whole number of milliseconds, or null.
+      [
+        { action: 'dismiss', targetKind: 'report', targetId: POST_ID, extra: { kind: 'post', editedAt: 'yesterday' } },
+        'edited_at',
+      ],
+      [
+        { action: 'dismiss', targetKind: 'report', targetId: POST_ID, extra: { kind: 'post', editedAt: -5 } },
+        'edited_at',
+      ],
+      [
+        { action: 'dismiss', targetKind: 'report', targetId: POST_ID, extra: { kind: 'post', editedAt: 1.5 } },
+        'edited_at',
+      ],
       [{ action: 'rename', targetKind: 'post', targetId: POST_ID }, 'action'],
     ] as [Record<string, unknown>, string][]
   ) {
     assert.deepEqual(await (await run(body)).json(), { error: 'invalid', detail });
   }
   assert.equal(board.staffActs.length, 3);
+});
+
+Deno.test('dismiss passes on the edit time staff saw; words changed since are a 409 conflict (RR_P8 R1)', async () => {
+  const { board, run } = setup();
+  const at = Date.UTC(2026, 9, 12, 10, 3);
+  assert.equal(
+    (await run({ action: 'dismiss', targetKind: 'report', targetId: POST_ID, extra: { kind: 'post', editedAt: at } }))
+      .status,
+    200,
+  );
+  assert.deepEqual(board.staffActs.at(-1)!.extra, { kind: 'post', editedAt: at });
+  board.fail.staffAct = new BoardDbError('changed');
+  const res = await run({
+    action: 'dismiss',
+    targetKind: 'report',
+    targetId: POST_ID,
+    extra: { kind: 'post', editedAt: null },
+  });
+  assert.equal(res.status, 409);
+  assert.deepEqual(await res.json(), { error: 'conflict', detail: 'changed' });
 });

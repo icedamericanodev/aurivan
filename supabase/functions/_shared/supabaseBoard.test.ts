@@ -23,6 +23,8 @@ Deno.test('the SQL’s words map to codes; any other database message is just "s
   for (const w of ['rate_limited', 'posting_paused', 'banned', 'guidelines']) {
     assert.equal(boardDbCode({ code: 'P0001', message: w }), w);
   }
+  // RR_P8 R1: a Dismiss from an older view of words edited since.
+  assert.equal(boardDbCode({ code: 'P0001', message: 'changed' }), 'changed');
   assert.equal(boardDbCode({ code: 'P0001', message: 'something with a@test.invalid' }), 'server');
   assert.equal(boardDbCode({ code: '22023', message: 'reserved_handle' }), 'handle_reserved');
   assert.equal(

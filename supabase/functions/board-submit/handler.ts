@@ -5,6 +5,9 @@
 //   { op: 'me' }                                         → { member }  (own facts only; null before joining;
 //                                                            its public memberId, never the account id)
 //   { op: 'join', handle, handleKind, guidelinesVersion } → { member }
+//      Counted as a write attempt before the name is checked (429
+//      rate_limited past the limit): the private block list can't be
+//      probed for free with names either (re-review RR_P8 R3).
 //   { op: 'post', kind, title, body?, itemRef?, cert?, clientId? } → { id, visibility, holdReason }
 //      clientId: the app's id for this draft (a uuid). Sending the same
 //      draft again (its reply was lost) returns the FIRST post, unchanged:
@@ -96,6 +99,9 @@ export function handleBoardSubmit(req: Request, deps: BoardSubmitDeps, nowMs = D
       const kind = body.handleKind === 'chosen' ? 'chosen' : body.handleKind === 'pseudonym' ? 'pseudonym' : null;
       const version = str(body.guidelinesVersion);
       if (!kind || !version || !VERSION.test(version)) throw new HttpError(400, 'invalid', 'join');
+      // Counted BEFORE the private word lists are read, like a post (SEC S6): a refused
+      // name costs a try too, so the block list can't be probed for free (re-review RR_P8 R3).
+      await deps.board.attempt(user.id).catch(fromDb);
       const terms = await deps.board.terms().catch(fromDb);
       const problem = checkHandle(handle, { reserved: terms.reserved, block: terms.block });
       if (problem) throw new HttpError(400, 'invalid', `handle_${problem}`);

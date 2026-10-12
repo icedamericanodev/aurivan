@@ -224,6 +224,25 @@ MUTANTS = {
     "merge keeps two official responses (CR nit 6)": [
         (r"set post_id = v_into, is_official = false where post_id = p_target;", "set post_id = v_into where post_id = p_target;"),
     ],
+    # Re-review RR_P8 (supabase/tests/32_board_rr8.sql).
+    "admin and staff only as whole words (RR_P8 R2)": [
+        (r"case when v_term in \('admin', 'staff'\) then v_uncarried else v_squashed end", "case when v_term in ('admin', 'staff') then '' else v_squashed end"),
+    ],
+    "everyday words not taken out of names (RR_P8 R2)": [
+        (r"v_uncarried := replace\(v_uncarried, v_term, ''\);", "null;"),
+    ],
+    "queue shows the first report's words, not the live ones (RR_P8 R1)": [
+        (r"'title', t\.title, 'body', t\.body,", "'title', null::text, 'body', g.first_snapshot,"),
+    ],
+    "latest report's words lost (RR_P8 R1)": [
+        (r"order by r\.created_at desc, r\.id desc", "order by r.created_at, r.id"),
+    ],
+    "edited after the report never said (RR_P8 R1)": [
+        (r"'editedSinceReport', coalesce\(t\.edited_at > g\.first_at, false\)", "'editedSinceReport', false"),
+    ],
+    "dismiss ignores edits (RR_P8 R1)": [
+        (r"if v_edited is not null and \(p_extra ->> 'editedAt' is null", "if false and (p_extra ->> 'editedAt' is null"),
+    ],
     "board in realtime": [
         (r"\Z", "\ncreate publication supabase_realtime for table public.board_posts;\n"),
     ],

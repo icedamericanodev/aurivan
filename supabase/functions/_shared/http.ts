@@ -22,6 +22,8 @@ export type ErrorCode =
   | 'bank_text'
   | 'banned'
   | 'posting_paused'
+  // A staff Dismiss of words edited since they were read (RR_P8 R1).
+  | 'conflict'
   | 'server';
 
 export class HttpError extends Error {
