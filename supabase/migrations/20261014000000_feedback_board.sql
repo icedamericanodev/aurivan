@@ -819,6 +819,28 @@ language sql stable security invoker set search_path = '' as $$
   where m.user_id = p_user
 $$;
 
+-- Joins the board (or accepts a new guidelines version, or changes the
+-- name) for `p_user`, after board-submit's name check. Needs the Terms (a
+-- profile row); members_guard re-checks the name, once-a-day changes and
+-- the consent time. Returns the member's own facts.
+create function public.svc_board_join(p_user uuid, p_handle text, p_kind text, p_version text) returns jsonb
+language plpgsql volatile security invoker set search_path = '' as $$
+begin
+  if not exists (select 1 from public.profiles p where p.id = p_user) then
+    raise exception 'forbidden' using errcode = '42501';
+  end if;
+  if p_version is distinct from (select s.guidelines_version from public.board_settings s) then
+    raise exception 'guidelines' using errcode = 'P0001';
+  end if;
+  insert into public.board_members as m (user_id, handle, handle_kind, guidelines_version)
+    values (p_user, p_handle, p_kind, p_version)
+  on conflict (user_id) do update
+    set handle = excluded.handle, handle_kind = excluded.handle_kind, guidelines_version = excluded.guidelines_version
+    where (m.handle, m.handle_kind, m.guidelines_version) is distinct from
+          (excluded.handle, excluded.handle_kind, excluded.guidelines_version);
+  return public.svc_board_member(p_user);
+end $$;
+
 -- The staff-maintained filter terms, as plain words (board-submit passes them to moderateText).
 create function public.svc_moderation_terms() returns jsonb
 language sql stable security invoker set search_path = '' as $$
@@ -1381,7 +1403,7 @@ revoke all on function
   private.comments_after(), private.votes_after(), private.follows_after(), private.reports_guard(),
   private.reports_after(), private.blocks_guard(), private.appeals_guard(), private.members_guard(),
   private.staff_mark(), private.staff_act(uuid, text, text, uuid, text, jsonb),
-  public.svc_board_member(uuid), public.svc_moderation_terms(),
+  public.svc_board_member(uuid), public.svc_moderation_terms(), public.svc_board_join(uuid, text, text, text),
   public.svc_board_write(uuid, text, uuid, text, text, text, text, uuid, text, text),
   public.svc_staff_act(uuid, text, text, uuid, text, jsonb), public.svc_is_staff(uuid),
   public.svc_staff_queue(uuid, text), public.svc_staff_digest(), public.svc_board_export(uuid),
@@ -1396,7 +1418,7 @@ grant execute on function
   private.is_staff(), private.app_role(), private.is_blocked_by(uuid, uuid), private.account_is_new(uuid, interval),
   private.board_take(uuid, text, int, int, boolean), private.notify(uuid, text, uuid, uuid, text, boolean, text, timestamptz),
   private.notify_post(uuid, text, uuid, uuid), private.staff_act(uuid, text, text, uuid, text, jsonb),
-  public.svc_board_member(uuid), public.svc_moderation_terms(),
+  public.svc_board_member(uuid), public.svc_moderation_terms(), public.svc_board_join(uuid, text, text, text),
   public.svc_board_write(uuid, text, uuid, text, text, text, text, uuid, text, text),
   public.svc_staff_act(uuid, text, text, uuid, text, jsonb), public.svc_is_staff(uuid),
   public.svc_staff_queue(uuid, text), public.svc_staff_digest(), public.svc_board_export(uuid),

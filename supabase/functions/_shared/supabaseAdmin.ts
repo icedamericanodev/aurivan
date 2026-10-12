@@ -149,9 +149,13 @@ export function supabaseAdmin(client: SupabaseLike): AdminPort {
       if (error) throw new AdminCallFailed('deleteUser');
     },
 
-    // Phase 8 replaces this with counts from board_posts and board_comments.
-    countBoardRows(_userId: string): Promise<BoardCounts> {
-      return Promise.resolve({ posts: 0, comments: 0 });
+    // Phase 8: the learner's board posts and comments, for the audit row's counts.
+    async countBoardRows(userId: string): Promise<BoardCounts> {
+      const { data, error } = await client.rpc('svc_board_counts', { p_user: userId });
+      if (error) throw new AdminCallFailed('countBoardRows');
+      const d = (data ?? {}) as { posts?: unknown; comments?: unknown };
+      const n = (x: unknown) => (typeof x === 'number' && Number.isInteger(x) && x >= 0 ? x : 0);
+      return { posts: n(d.posts), comments: n(d.comments) };
     },
 
     // No storage bucket holds learner files yet. When one is added, list and
@@ -184,6 +188,13 @@ export function supabaseAdmin(client: SupabaseLike): AdminPort {
       );
       if (error) throw new AdminCallFailed('readSnapshots');
       return { stores: snapshotsToStores(data), appVersion: newestAppVersion(data) };
+    },
+
+    // Phase 8: the export's `board` section (own rows only; see svc_board_export).
+    async readBoard(userId: string): Promise<Record<string, unknown>> {
+      const { data, error } = await client.rpc('svc_board_export', { p_user: userId });
+      if (error) throw new AdminCallFailed('readBoard');
+      return data && typeof data === 'object' && !Array.isArray(data) ? data as Record<string, unknown> : {};
     },
 
     async claimExport(userId: string): Promise<boolean> {

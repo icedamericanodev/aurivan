@@ -15,6 +15,13 @@ export type ErrorCode =
   | 'invalid'
   | 'too_big'
   | 'method_not_allowed'
+  // The feedback board (Phase 8): the app's CloudErrorCode has the same words.
+  | 'forbidden'
+  | 'not_found'
+  | 'rejected_words'
+  | 'bank_text'
+  | 'banned'
+  | 'posting_paused'
   | 'server';
 
 export class HttpError extends Error {

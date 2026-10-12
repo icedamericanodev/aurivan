@@ -11,7 +11,7 @@
 --
 -- Run: supabase test db   (CI: .github/workflows/supabase.yml)
 begin;
-select plan(161);
+select plan(165);
 
 -- ── Fixtures (as the owner) ─────────────────────────────────────────
 insert into auth.users (id, email, created_at) values
@@ -266,6 +266,14 @@ select ok(not has_function_privilege('authenticated', 'private.is_blocked_by(uui
 -- ── board-submit's writer (the service role, after the filters) ────
 reset role;
 set local role service_role;
+select is((public.svc_board_join('00000000-0000-4000-8000-0000000000e1', 'Bright Elm 11', 'pseudonym', '2026-11')) ->> 'handle', 'Bright Elm 11',
+  'joining again with the same details changes nothing (no name-change counted)');
+select throws_ok($$ select public.svc_board_join('00000000-0000-4000-8000-00000000000e', 'Calm Pine 6', 'pseudonym', '2026-11') $$,
+  '42501', 'forbidden', 'board-submit''s join also needs the Terms');
+select throws_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000e1', 'Bright Elm 11', 'pseudonym', '2025-01') $$,
+  'P0001', 'guidelines', 'joining needs the current guidelines version');
+select throws_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000e2', 'Aurivan Helper', 'chosen', '2026-11') $$,
+  '22023', 'reserved_handle', 'the reserved-name check runs for board-submit''s join too');
 select is((public.svc_board_write('00000000-0000-4000-8000-0000000000f1', 'post', null, 'idea', 'A first idea from Y', '', null, null, null)) ->> 'holdReason',
   'new_member', 'a new member''s first post waits for review');
 select is((public.svc_board_write('00000000-0000-4000-8000-00000000000a', 'post', null, 'idea', 'A trusted member posts this', '', null, null, null)) ->> 'visibility',

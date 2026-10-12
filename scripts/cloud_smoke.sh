@@ -101,6 +101,28 @@ expect "A cannot call svc_record_deletion" \
 expect "anon cannot call svc_claim_export" \
   "$(request POST "$REST/rpc/svc_claim_export" '' "{\"p_user\":\"$UID_A\"}")" denied
 
+echo "Feedback board (Phase 8; read scope as set in board_settings, 'signed_in' by default):"
+expect "anon reads the board settings" "$(request GET "$REST/board_settings?select=posting_open,read_scope" '')" 200
+expect "anon reads no post in the default scope" "$(request GET "$REST/board_posts?select=id" '')" empty
+expect "anon cannot read votes" "$(request GET "$REST/board_votes?select=*" '')" denied
+expect "anon cannot read reports" "$(request GET "$REST/ugc_reports?select=*" '')" denied
+expect "A cannot write a post directly (board-submit only)" \
+  "$(request POST "$REST/board_posts" "$JWT_A" "{\"author_id\":\"$UID_A\",\"kind\":\"idea\",\"title\":\"Straight to the table\"}")" denied
+expect "A cannot read severity or hold reasons" "$(request GET "$REST/board_posts?select=severity,hold_reason" "$JWT_A")" denied
+expect "A cannot read B's votes" "$(request GET "$REST/board_votes?user_id=eq.$UID_B" "$JWT_A")" empty
+expect "A cannot read B's blocks" "$(request GET "$REST/member_blocks?blocker_id=eq.$UID_B" "$JWT_A")" empty
+expect "A cannot read B's notices" "$(request GET "$REST/board_notifications?user_id=eq.$UID_B" "$JWT_A")" empty
+for t in staff moderation_log moderation_terms board_events; do
+  expect "A cannot read private.$t" "$(request GET "$REST/$t?select=*" "$JWT_A" '' 'Accept-Profile: private')" denied
+done
+for f in svc_board_write svc_board_join svc_staff_act svc_staff_queue svc_board_export; do
+  expect "A cannot call $f" "$(request POST "$REST/rpc/$f" "$JWT_A" "{\"p_user\":\"$UID_A\"}")" denied
+done
+expect "board-submit refuses an anonymous call" "$(request POST "$FN/board-submit" '' '{"op":"me"}')" 401
+expect "staff-action refuses a learner (A is not staff)" \
+  "$(request POST "$FN/staff-action" "$JWT_A" '{"action":"queue","tab":"held"}')" 403
+expect "staff-digest refuses a learner's token" "$(request POST "$FN/staff-digest" "$JWT_A" '')" 401
+
 echo "Edge Functions (no destructive call is made):"
 # Anonymous: 401 from the gateway's JWT check (verify_jwt) or, with it off, the function's own.
 expect "delete-account refuses an anonymous call" "$(request POST "$FN/delete-account" '' '{"confirm":"DELETE"}')" 401

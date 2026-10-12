@@ -165,5 +165,20 @@ verify_jwt = true
 [functions.export-my-data]
 verify_jwt = true
 
+# The feedback board (Phase 8). board-submit ships the leak guard's
+# fingerprint, built at deploy time by scripts/build-leakprint.mjs
+# (gitignored): without it every post is refused.
+[functions.board-submit]
+verify_jwt = true
+static_files = ["./functions/board-submit/leakprint.json"]
+
+[functions.staff-action]
+verify_jwt = true
+
+# Called by pg_cron with its own secret (STAFF_DIGEST_SECRET), never by the
+# app, so the gateway's user-JWT check is off and the function checks the secret.
+[functions.staff-digest]
+verify_jwt = false
+
 [analytics]
 enabled = false
