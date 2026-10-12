@@ -21,8 +21,8 @@
  *  J11 Show my plant OFF: no Look entry, no motion
  *  J12 never on question, mock, lesson or game screens
  *
- * A test marked `// QA-BUG:` pins CURRENT wrong behaviour found by this pass
- * (see QA_44.md). Flip the assertion when the bug is fixed.
+ * The `// QA-BUG:` pins of this pass (QA_44.md) are flipped: each now
+ * asserts the fixed behaviour and says which finding it closes ("Fixed").
  */
 import { existsSync, readdirSync, readFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
@@ -110,6 +110,14 @@ const textOf = (n: ReactTestInstance) => {
   return out.join(' ');
 };
 const allText = () => textOf(root());
+/** Opens the Look screen's closed "More to find" group (the planters and keepsakes still to earn, UX review P1). */
+const openMore = () => {
+  const b = root().findAll((n) => n.props.testID === 'look-more' && typeof n.props.onPress === 'function')[0];
+  if (!b) throw new Error('no More to find');
+  act(() => {
+    b.props.onPress();
+  });
+};
 /** A Look option's Pressable (it carries the role, state, label and onPress). */
 const option = (id: string) => root().findAll((n) => n.props.testID === `look-${id}` && n.props.accessibilityRole !== undefined)[0];
 const tap = (id: string) => {
@@ -175,8 +183,8 @@ const clearPlan = (cert = 'cisa') =>
       days: { ...s.days, [cert]: { day: today(), certId: cert, items: [{ kind: 'review', count: 5 } as never], done: [true], start: { score: 0, domains: {} }, answered: 5, correct: 4, minutes: 5 } },
     }));
   });
-/** The breath's own tweens (motion.plant.breath ms): only the Breathe burst uses that duration. */
-const breathCalls = (spy: jest.SpyInstance) => spy.mock.calls.filter((c) => (c[1] as { duration?: number } | undefined)?.duration === motion.plant.breath).length;
+/** The breath's own out-breaths (motion.plant.breathOut ms, one per breath): only the Breathe burst uses that duration. */
+const breathCalls = (spy: jest.SpyInstance) => spy.mock.calls.filter((c) => (c[1] as { duration?: number } | undefined)?.duration === motion.plant.breathOut).length;
 /** A backup file of our own shape, with a given byCert. */
 const fileWith = (byCert: Record<string, unknown>, appVersion = '1.14.0') =>
   JSON.stringify({
@@ -248,17 +256,16 @@ describe('J1 the Look screen', () => {
     setPlant(grownAgo('oak', 'Kai', 3));
     for (const k of ['dress-rehearsal', 'on-pace', 'snare-wise', 'signpost-reader']) earn(k, 'cisa', Date.now() - 3 * DAY);
     mount(<PlantLook />);
-    tap('lantern');
-    tap('sundial');
-    tap('fox');
-    expect(cp().plant!.look?.keepsakes).toEqual(['lantern', 'sundial', 'fox']);
+    // Never chosen: the first three earned are on show (UX review H1, decided; same day, so catalogue order).
+    expect(cp().plant!.look?.keepsakes).toBeUndefined();
+    for (const id of ['lantern', 'sundial', 'fox']) expect(option(id).props.accessibilityState).toMatchObject({ checked: true });
     // The fourth: disabled for a tap, and its spoken label says how to make room.
     const signpost = option('signpost');
     expect(signpost.props.accessibilityState).toMatchObject({ checked: false, disabled: true });
     expect(signpost.props.accessibilityLabel).toMatch(/Put one away to show this\./);
     expect(signpost.props.onPress).toBeUndefined();
     tap('signpost');
-    expect(cp().plant!.look?.keepsakes).toEqual(['lantern', 'sundial', 'fox']);
+    expect(cp().plant!.look?.keepsakes).toBeUndefined();
     // The store refuses a fourth too, whatever calls it.
     act(() => {
       useProgress.getState().setPlantLook('cisa', { keepsakes: ['lantern', 'sundial', 'fox', 'signpost'] });
@@ -271,42 +278,40 @@ describe('J1 the Look screen', () => {
     expect(option('signpost').props.accessibilityState).toMatchObject({ disabled: false });
     tap('signpost');
     expect(cp().plant!.look?.keepsakes).toEqual(['lantern', 'fox', 'signpost']);
-    // Put every one away: the look holds no empty list.
+    // Put every one away: "none on show" is the learner's own choice, kept as
+    // an empty list, so the default three never come back by themselves.
     tap('lantern');
     tap('fox');
     tap('signpost');
-    expect(cp().plant!.look?.keepsakes).toBeUndefined();
+    expect(cp().plant!.look?.keepsakes).toEqual([]);
+    for (const id of ['lantern', 'sundial', 'fox', 'signpost']) expect(option(id).props.accessibilityState).toMatchObject({ checked: false, disabled: false });
   });
 
-  it('the fourth keepsake has NO visible explanation (only its spoken label says why)', () => {
-    // QA-BUG: a sighted learner who taps a fourth keepsake gets no response
-    // at all: the row looks exactly like an open one (no dimming, no line),
-    // the tap does nothing, and "Put one away to show this." lives only in
-    // the accessibilityLabel (components/plant/LookUI.tsx LookOption). The
-    // section's "Show up to three" is the only visible hint. Expected: the
-    // full rows read differently (a muted style or a visible line such as
-    // "Put one away to show this."). Flip these when fixed.
+  it('the fourth keepsake is visibly muted and the section says why (Fixed: QA BUG-1, UX review H3)', () => {
     setPlant(grownAgo('oak', 'Kai', 3));
     for (const k of ['dress-rehearsal', 'on-pace', 'snare-wise', 'signpost-reader']) earn(k, 'cisa', Date.now() - 3 * DAY);
-    mount(<PlantLook />);
-    tap('lantern');
-    tap('sundial');
-    tap('fox');
-    expect(textOf(option('signpost'))).not.toMatch(/Put one away/);
-    const style = (id: string) => JSON.stringify(option(id).props.style({ pressed: false }));
-    // The full row is drawn exactly like an open, unselected one.
-    unmount();
+    /** Every style drawn inside an option (its art's opacity and its label's colour). */
+    const looks = (id: string) => JSON.stringify(option(id).findAll((n) => typeof n.type === 'string').map((n) => n.props.style));
     act(() => {
       useProgress.getState().setPlantLook('cisa', { keepsakes: ['lantern', 'sundial'] });
     });
     mount(<PlantLook />);
-    const openStyle = style('signpost');
+    const openLooks = looks('signpost');
+    expect(allText()).toMatch(/Show up to three/);
+    expect(allText()).not.toMatch(/Tap one that’s on show to put it away/);
     unmount();
     act(() => {
       useProgress.getState().setPlantLook('cisa', { keepsakes: ['lantern', 'sundial', 'fox'] });
     });
     mount(<PlantLook />);
-    expect(style('signpost')).toBe(openStyle);
+    // Visible, not only spoken: the section says three are on show and how to make room.
+    expect(allText()).toMatch(/Three on show/);
+    expect(allText()).toMatch(/Tap one that’s on show to put it away, then pick another\./);
+    // The waiting row is drawn muted (its art at half strength, its name in ink2), unlike an open one.
+    expect(looks('signpost')).not.toBe(openLooks);
+    expect(looks('signpost')).toMatch(/"opacity":0\.5/);
+    // A shown keepsake carries a ✓ (beside its ring), the waiting one none.
+    expect(option('fox').props.accessibilityState).toMatchObject({ checked: true });
   });
 
   it('works at 360 dp and 200% text: one column of rows, every section there', () => {
@@ -316,7 +321,8 @@ describe('J1 the Look screen', () => {
     layout(360);
     for (const s of ['Colour', 'Ground', 'Planter', 'Visitor', 'Keepsakes']) expect(allText()).toContain(s);
     // Rows: no fixed tile width on any option.
-    for (const id of ['lotus-pink', 'meadow', 'native', 'wren', 'lantern']) expect(option(id).props.style({ pressed: false })[0].width).toBeUndefined();
+    openMore();
+    for (const id of ['lotus-pink', 'meadow', 'native', 'wren', 'lantern']) expect(option(id).props.style[0].width).toBeUndefined();
     // The lotus' own ground is a bowl: the terracotta pot is still offered (only the cactus' own pot is terracotta).
     expect(option('terracotta')).toBeDefined();
   });
@@ -327,16 +333,22 @@ describe('J2 earning a badge opens its keepsake', () => {
   it('locked says which badge; once earned it opens with its skill caption and can be shown', () => {
     setPlant(grownAgo('oak', 'Kai', 2));
     mount(<PlantLook />);
+    // Still to earn: in the closed "More to find" group, saying what to do and which badge (UX review P1, P2).
+    expect(option('sundial')).toBeUndefined();
+    openMore();
     expect(option('sundial').props.accessibilityState).toMatchObject({ disabled: true });
-    expect(textOf(option('sundial'))).toMatch(/Opens with the On Pace badge\./);
+    expect(textOf(option('sundial'))).toMatch(/Finish a timed mock on pace \(the On Pace badge\)\./);
     unmount();
     earn('on-pace');
     mount(<PlantLook />);
-    expect(option('sundial').props.accessibilityState).toMatchObject({ disabled: false, checked: false });
+    // Earned: it opens, and (no keepsake chosen yet) it is on show by default (UX review H1).
+    expect(option('sundial').props.accessibilityState).toMatchObject({ disabled: false, checked: true });
     expect(textOf(option('sundial'))).toMatch(/You finished a timed mock on pace\./);
     expect(lookItem('sundial')!.caption).toBe('The sundial: you finished a timed mock on pace.');
     // No "Unlocked!" banner and no "n of m collected" anywhere.
     expect(allText().replace(/growth \d of 6/, '')).not.toMatch(/unlocked|collected|\b\d+ of \d+\b/i);
+    tap('sundial');
+    expect(cp().plant!.look?.keepsakes).toEqual([]);
     tap('sundial');
     expect(cp().plant!.look?.keepsakes).toEqual(['sundial']);
     // A higher tier opens the same keepsake (any tier counts).
@@ -382,8 +394,9 @@ describe('J3 completing a set opens its planter exactly once', () => {
       }));
     });
     mount(<PlantLook />);
+    openMore();
     expect(option('root-woven').props.accessibilityState).toMatchObject({ disabled: true });
-    expect(textOf(option('root-woven'))).toMatch(/Opens when you complete Rooted in your badges\./);
+    expect(textOf(option('root-woven'))).toMatch(/Opens when you finish the Rooted set in Badges\./);
     unmount();
     let added: unknown;
     act(() => {
@@ -536,6 +549,7 @@ describe('J6 an unlock that vanishes after a restore', () => {
     // Drawn with the defaults; the stored look is untouched.
     expect(option('meadow').props.accessibilityState).toMatchObject({ checked: true });
     expect(option('wren').props.accessibilityState).toMatchObject({ checked: true });
+    openMore();
     expect(option('lantern').props.accessibilityState).toMatchObject({ checked: false, disabled: true });
     const preview = plants().find((p) => p.props.testID === 'look-preview')!;
     expect(preview.props.look).toMatchObject({ ground: 'meadow', visitor: 'wren', keepsakes: [] });
@@ -571,8 +585,10 @@ describe('J7 switching certification', () => {
     earn('dress-rehearsal', 'cism', Date.now() - DAY);
     mount(<PlantLook />);
     expect(option('oak-spring').props.accessibilityState).toMatchObject({ checked: true });
-    tap('lantern'); // a CISM badge dresses the CISA plant too
-    expect(cp('cisa').plant!.look?.keepsakes).toEqual(['lantern']);
+    // A CISM badge dresses the CISA plant too: its lantern is on show by default (UX review H1).
+    expect(option('lantern').props.accessibilityState).toMatchObject({ checked: true, disabled: false });
+    tap('lantern'); // put away on the CISA plant only
+    expect(cp('cisa').plant!.look?.keepsakes).toEqual([]);
     unmount();
     act(() => {
       useSettings.setState({ activeCertId: 'cism' });
@@ -580,13 +596,14 @@ describe('J7 switching certification', () => {
     mount(<PlantLook />);
     expect(option('lotus-white').props.accessibilityState).toMatchObject({ checked: true });
     expect(option('terracotta').props.accessibilityState).toMatchObject({ checked: true });
-    expect(option('lantern').props.accessibilityState).toMatchObject({ checked: false, disabled: false });
+    // The CISM plant has its own look: its lantern is still on show.
+    expect(option('lantern').props.accessibilityState).toMatchObject({ checked: true, disabled: false });
     tap('meadow');
     unmount();
     act(() => {
       useSettings.setState({ activeCertId: 'cisa' });
     });
-    expect(cp('cisa').plant!.look).toEqual({ colourway: 'oak-spring', visitor: 'robin', keepsakes: ['lantern'] });
+    expect(cp('cisa').plant!.look).toEqual({ colourway: 'oak-spring', visitor: 'robin', keepsakes: [] });
     expect(cp('cism').plant!.look).toEqual({ colourway: 'lotus-white', planter: 'terracotta', ground: 'meadow' });
   });
 });
@@ -614,26 +631,29 @@ describe('J8 moods', () => {
     expect(claimReaction(`cisa:proud:${dayKey(Date.now() + DAY)}`)).toBe(true);
   });
 
-  it('on a day the plan is cleared, Today shows no plant at all (so its happy mood and the visitor are never seen there)', () => {
-    // Observation (not a QA-BUG): Today draws the plant inside ReadinessRow,
-    // which is hidden once the plan is cleared (the clearing replaces it).
-    // So the "happy" reaction (motion.md §5.3: trigger = the clearing) and
-    // the visitor ("comes on days you clear your plan") only ever show on
-    // You and Your plant. A product/UX call; noted in QA_44.md.
-    setPlant(grownAgo('oak', 'Kai', 3));
+  it('on a day the plan is cleared, Today shows the plant, happy, with its visitor (Fixed: QA O-1)', () => {
+    // Decided (FIXES_44): the cleared state shows the plant and its visitor at a
+    // modest size under the clearing, so "comes on days you clear your plan" is true on Today.
+    setPlant({ ...grownAgo('oak', 'Kai', 3), look: { keepsakes: ['lantern'] } });
+    earn('dress-rehearsal', 'cisa', Date.now() - 3 * DAY);
     clearPlan();
     mount(<Today />);
-    expect(plants()).toHaveLength(0);
+    const host = root().findAll((n) => n.props.testID === 'today-plant-cleared' && typeof n.type === 'string')[0];
+    expect(host).toBeDefined();
+    const cleared = plants().find((x) => host.findAll((m) => m === x).length > 0);
+    expect(cleared).toBeDefined();
+    expect(cleared!.props.size).toBeLessThan(104);
+    expect(cleared!.props.mood).toBe('happy');
+    expect(cleared!.props.look).toMatchObject({ visitor: 'wren' });
+    // Today is study-first: the plant and its visitor, never the keepsakes (UX review, decided).
+    expect(cleared!.props.look.keepsakes).toEqual([]);
+    expect(allText()).toMatch(/A wren came by: you cleared today’s plan\./);
   });
 
-  it('the reaction plays again after the app is relaunched on the same day', () => {
-    // QA-BUG: "once per mood per day" is only kept in memory
-    // (components/plant/LivePlant.tsx `reacted`, a module Set). Kill and
-    // reopen the app the same day and the same happy hop plays again (and
-    // spends the new session's budget). PHASE4.md asks for "at most one
-    // reaction per session moment", so this may be accepted as designed;
-    // the QA journey asked for one per mood per DAY. A fix: save the last
-    // reaction day per mood (useSeen), like `moments`. Flip when fixed.
+  it('the reaction may play once more after a relaunch on the same day (accepted: QA BUG-4)', () => {
+    // Decided (FIXES_44): one reaction per mood per day while the app runs; a
+    // relaunch is a new app session and may react once more. Documented in
+    // DESIGN_SYSTEM §13. This pins the accepted behaviour.
     motionOn();
     setPlant(grownAgo('oak', 'Kai', 3));
     clearPlan();
@@ -679,34 +699,38 @@ describe('J8 moods', () => {
     expect(claimReaction(`cisa:happy:${today()}`)).toBe(true);
   });
 
-  it('a higher tier of a badge you already hold makes the plant proud, though no new keepsake came', () => {
-    // QA-BUG: lib/plant.ts marksKey sets newKeepsakeToday for ANY earned key
-    // dated today whose badge has a keepsake, tiers included. Long Memory ·
-    // 50 earned today, when the jay came with Long Memory · 25 weeks ago,
-    // gives no new keepsake, yet the plant reads "Looking proud." and plays
-    // the proud stretch. Spec: proud after "a growth step or a new keepsake".
-    // Fix: count a key only when it is the FIRST tier of its badge earned
-    // (no other key of that badge is older). Flip when fixed.
+  it('a higher tier of a badge you already hold is no new keepsake, so no proud plant (Fixed: QA BUG-2)', () => {
     setPlant(grownAgo('oak', 'Kai', 3));
     earn('long-memory', 'cisa', Date.now() - 30 * DAY);
     earn('long-memory:50', 'cisa', Date.now());
     mount(<YourPlant />);
+    expect(plants().find((x) => x.props.testID === 'plant-hero')!.props.mood).toBe('idle');
+    unmount();
+    // The badge's first tier on ANOTHER exam earlier counts too (keepsakes are the learner's).
+    earn('on-pace:2', 'cisa', Date.now());
+    earn('on-pace', 'cism', Date.now() - 9 * DAY);
+    mount(<YourPlant />);
+    expect(plants().find((x) => x.props.testID === 'plant-hero')!.props.mood).toBe('idle');
+    unmount();
+    // A truly new keepsake today still makes it proud.
+    earn('snare-wise', 'cisa', Date.now());
+    mount(<YourPlant />);
     expect(plants().find((x) => x.props.testID === 'plant-hero')!.props.mood).toBe('proud');
   });
 
-  it('planting with a back-filled growth makes the plant proud that day, though the back-fill is meant to be quiet', () => {
-    // QA-BUG: plantNew stamps every back-filled growth's `reached` with
-    // "now", and plantLookView reads any `reached` dated today as "grew
-    // today". So an existing learner who plants today (or restores a file
-    // with no plant, lib/plant.ts carryPlantIdentity) gets "Looking proud."
-    // and a proud stretch on Today and Your plant, for growth that was
-    // never a moment (4a: the back-fill is one quiet line, never a moment).
-    // Fix: ignore `reached` times equal to backfill.at (or plantedAt). Flip when fixed.
+  it('planting with a back-filled growth is quiet that day: no proud face, no stretch (Fixed: QA BUG-3, code review M5)', () => {
     motionOn();
     setPlant(plantNew('oak', 'Kai', Date.now(), 4));
     mount(<YourPlant />);
+    expect(plants().find((x) => x.props.testID === 'plant-hero')!.props.mood).toBe('idle');
+    expect(claimReaction(`cisa:proud:${today()}`)).toBe(true); // never claimed: no stretch played
+    unmount();
+    // A real growth later the same day is proud again.
+    act(() => {
+      useProgress.getState().updatePlant('cisa', (p) => ({ ...p!, growth: 5, reached: { ...p!.reached, crown: Date.now() + 1 } }));
+    });
+    mount(<YourPlant />);
     expect(plants().find((x) => x.props.testID === 'plant-hero')!.props.mood).toBe('proud');
-    expect(claimReaction(`cisa:proud:${today()}`)).toBe(false); // the stretch played
   });
 });
 
@@ -748,20 +772,19 @@ describe('J9 the celebration budget', () => {
     expect(haptic.success).toHaveBeenCalledTimes(1);
   });
 
-  it('the growth sequence and the proud reaction both start on the same plant at once', () => {
-    // QA-BUG: on Today, a growth day passes BOTH the growth sequence
-    // (grows, full) and a proud reaction (reaction.mood 'proud') to the same
-    // LivePlant; each effect starts its own tween on the one plant wrapper,
-    // so the stretch overlaps the swell and cross-fade (two moves at once,
-    // and 600 ms more of the session's decorative budget). motion.md §5.3:
-    // reactions are "queued, one at a time". Fix: skip the reaction while a
-    // growth celebration is running (or let the growth BE the proud moment).
+  it('the growth sequence is that day’s proud moment: no reaction with it, nor later the same day (Fixed: QA BUG-5, UX H4, code review M3)', () => {
     motionOn();
+    const spy = jest.spyOn(Reanimated, 'withTiming');
     grewToday();
     mount(<Today />);
     expect(growthMode()).toBe('full');
-    expect(plants().find((x) => x.props.growth)!.props.reaction).toMatchObject({ mood: 'proud' });
-    expect(claimReaction(`cisa:proud:${today()}`)).toBe(false); // the proud reaction already ran
+    expect(plants().find((x) => x.props.growth)!.props.reaction).toBeNull();
+    expect(proudCalls(spy)).toBe(0);
+    // The occasion is spent without playing (and without charging the budget), so Your plant won't stretch either.
+    expect(claimReaction(`cisa:proud:${today()}`)).toBe(false);
+    unmount();
+    mount(<YourPlant />);
+    expect(proudCalls(spy)).toBe(0);
   });
 
   it('growth is never fatigued (rare), but still keeps one full moment per session', () => {
@@ -793,8 +816,12 @@ describe('J10 Reduce Motion', () => {
     const spy = jest.spyOn(Reanimated, 'withTiming');
     setPlant(grownAgo('oak', 'Kai', 4));
     mount(<YourPlant />);
-    expect(breathCalls(spy)).toBe(motion.plant.breaths * 2);
-    expect(motion.plant.breath * motion.plant.breaths * 2).toBeLessThanOrEqual(5000);
+    expect(breathCalls(spy)).toBe(motion.plant.breaths);
+    expect((motion.plant.breath + motion.plant.breathOut) * motion.plant.breaths).toBeLessThanOrEqual(5000);
+    // Once per surface per app session (UX review P6): coming back does not breathe again.
+    unmount();
+    mount(<YourPlant />);
+    expect(breathCalls(spy)).toBe(motion.plant.breaths);
   });
 
   it('Today’s growth: static (no old growth drawn), the line and one haptic still there', () => {
