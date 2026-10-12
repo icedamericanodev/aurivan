@@ -888,7 +888,12 @@ Phase 6 on purpose).**
     `too_big` when the state is over the size checks, else `invalid`;
   - never puts `error.message` in `CloudError.detail` (allowlist only);
   - never adds `sync_snapshots` or a private table to the
-    `supabase_realtime` publication (`20_sync.sql` checks it).
+    `supabase_realtime` publication (`20_sync.sql` checks it);
+  - aborts every `SyncPort` call after 20 s or less (AbortController), so a
+    hung request never holds a sync cycle open. Actions such as sign-out,
+    Remove my progress, Undo and account deletion wait at most 15 s for a
+    running cycle and then go ahead; a stopped cycle records nothing after
+    its push (`lib/sync.ts` `EXCLUSIVE_WAIT_MS`, `lib/syncCore.ts`).
 - Sync: a snapshot whose `app_version` claims an app more than one major
   ahead pauses as unreadable on every device (not "update the app"), and
   the Delete synced progress row stays reachable while paused, so a bad

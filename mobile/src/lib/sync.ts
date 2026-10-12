@@ -110,6 +110,8 @@ let again = false;
 let failures = 0;
 let retryTimer: ReturnType<typeof setTimeout> | null = null;
 let changeTimer: ReturnType<typeof setTimeout> | null = null;
+/** The longest an action waits for a stopped cycle (its in-flight request) before going ahead. */
+const EXCLUSIVE_WAIT_MS = 15_000;
 /** Bumped to stop a running cycle (it checks before its next write or push). */
 let epoch = 0;
 /** > 0 while an action has the phone (exclusive): no cycle starts. */
@@ -139,7 +141,20 @@ async function exclusive<T>(fn: () => Promise<T>): Promise<T> {
   held++;
   stopRunning();
   try {
-    while (running) await running;
+    // Wait for the running cycle, but never for ever: a request that never answers must not block
+    // sign-out, removal or account deletion. A stopped cycle writes and records nothing afterwards.
+    // `running` changes while we wait, so read it fresh on every turn (a function call is never narrowed).
+    const runningNow = () => running;
+    if (runningNow()) {
+      let late = false;
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      const deadline = new Promise<void>((res) => { timer = setTimeout(() => { late = true; res(); }, EXCLUSIVE_WAIT_MS); });
+      try {
+        for (let r = runningNow(); r && !late; r = runningNow()) await Promise.race([r, deadline]);
+      } finally {
+        clearTimeout(timer);
+      }
+    }
     return await fn();
   } finally {
     held--;
@@ -450,7 +465,7 @@ export interface FirstPreview {
   replacesUndo: boolean;
 }
 
-let pending: { prep: FirstSyncPrep; at: number; mode: 'first' | 'switch' } | null = null;
+let pending: { prep: FirstSyncPrep; at: number; mode: 'first' | 'switch'; forAccount: string } | null = null;
 /** A preview older than this is stale: the screen sends the learner back to Account. */
 const PREP_TTL_MS = 10 * 60_000;
 
@@ -505,12 +520,16 @@ export async function startFirstSync(): Promise<Result<{ next: 'preview' | 'done
     if (r.code === 'newer' || r.code === 'unreadable' || r.code === 'toobig') return { ok: false, code: r.code === 'toobig' ? 'too_big' : r.code === 'newer' ? 'newer_app' : 'unreadable' };
     return { ok: false, code: r.code };
   }
+  // The account read must still be the one signed in now (a sign-out + sign-in meanwhile: drop it).
+  const forAccount = hashOf(current.userId);
+  const still = await b.auth.current().catch(() => null);
+  if (!still || hashOf(still.userId) !== forAccount) return { ok: false, code: 'unauthorized' };
   if (r.prep.case === 'none') {
-    const done = await exclusive(() => confirm(r.prep, 'merge'));
+    const done = await exclusive(() => confirm(r.prep, 'merge', forAccount));
     if (done.ok) await trigger();
     return done.ok ? { ok: true, next: 'done' } : done;
   }
-  pending = { prep: r.prep, at: Date.now(), mode: 'first' };
+  pending = { prep: r.prep, at: Date.now(), mode: 'first', forAccount };
   return { ok: true, next: 'preview' };
 }
 
@@ -526,7 +545,7 @@ export function dismissFirstSync() {
 }
 
 /** The first sync's write (always inside `exclusive`). Sync is then on for the account signed in now. */
-async function confirm(prep: FirstSyncPrep, mode: 'merge' | 'replace'): Promise<Result> {
+async function confirm(prep: FirstSyncPrep, mode: 'merge' | 'replace', forAccount: string): Promise<Result> {
   const ctx = ctxOrNull();
   if (!ctx) return { ok: false, code: 'server' };
   const current = await getBackend()!.auth.current().catch(() => null);
@@ -534,6 +553,8 @@ async function confirm(prep: FirstSyncPrep, mode: 'merge' | 'replace'): Promise<
     await noteSessionEnded();
     return { ok: false, code: 'unauthorized' };
   }
+  // The prep was read from THIS account: never confirm another learner's copy into the one signed in now.
+  if (hashOf(current.userId) !== forAccount) return { ok: false, code: 'unauthorized' };
   // The 7-day undo copy, written in the same storage write as the merged stores, unless the phone holds
   // nothing (CR N8: anything at all counts). A merge keeps an earlier "Undo sync" copy as it is: it
   // still puts back the phone from before it FIRST synced (QA B3). "Start fresh" always takes a new
@@ -563,8 +584,8 @@ async function confirm(prep: FirstSyncPrep, mode: 'merge' | 'replace'): Promise<
 /** The preview's main button (Sync this phone / Bring it here / Combine). Then the first push, in the queue. */
 export async function confirmPreview(): Promise<Result> {
   if (!pending || pending.mode !== 'first') return { ok: false, code: 'invalid' };
-  const prep = pending.prep;
-  const r = await exclusive(() => confirm(prep, 'merge'));
+  const { prep, forAccount } = pending;
+  const r = await exclusive(() => confirm(prep, 'merge', forAccount));
   if (r.ok) await trigger();
   return r;
 }
@@ -579,6 +600,7 @@ export async function chooseSwitch(choice: 'fresh' | 'keep'): Promise<Result> {
   const b = getBackend();
   const thisApp = appVersion();
   if (!switchPending || !CLOUD_ON() || !b || !thisApp) return { ok: false, code: 'invalid' };
+  const forAccount = hashOf(switchPending.info.userId);
   const r = await exclusive(async (): Promise<Result> => {
     // A different learner on this phone: confirm() gives this install a new id before anything is sent (N6).
     setMeta({ ...SYNC_OFF });
@@ -587,7 +609,7 @@ export async function chooseSwitch(choice: 'fresh' | 'keep'): Promise<Result> {
       if (prep.code === 'unauthorized' || prep.code === 'gone') await noteSessionEnded();
       return { ok: false, code: prep.code === 'newer' ? 'newer_app' : prep.code === 'unreadable' ? 'unreadable' : prep.code === 'toobig' ? 'too_big' : prep.code };
     }
-    return confirm(prep.prep, choice === 'fresh' ? 'replace' : 'merge');
+    return confirm(prep.prep, choice === 'fresh' ? 'replace' : 'merge', forAccount);
   });
   if (r.ok) await trigger();
   return r;

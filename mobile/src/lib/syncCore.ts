@@ -326,6 +326,8 @@ export async function syncCycle(ctx: CycleCtx): Promise<CycleResult> {
       if (!alive()) return { kind: 'idle' };
       try {
         const head = await ctx.port.push({ store: s, expectedRev, storeVersion: versionOf(s), appVersion: ctx.thisApp, deviceId: await ctx.deviceId(), state: payload });
+        // Stopped while the push was on the wire (sync off, sign-out, remove, undo): record nothing.
+        if (!alive()) return { kind: 'idle' };
         const m = dev.meta();
         dev.setMeta({
           lastRev: { ...m.lastRev, [s]: head.rev },
