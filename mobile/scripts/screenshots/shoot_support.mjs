@@ -114,7 +114,7 @@ await snap('s28-own-way-panel');
 
 // 3. Settings → Help and feedback; the Help screen; the sheets from there.
 await open('/settings');
-await scrollTo('Help and feedback', 110);
+await scrollTo('Help and about', 110); // mobile 1.17 group name
 await snap('s11-settings-help');
 await open('/help');
 await snap('s12-help-screen');
