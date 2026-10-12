@@ -142,6 +142,9 @@ function build(now: number, days: number, cert: NonNullable<ReturnType<typeof ge
   const ms = optional(() => require('../../src/lib/milestones'));
   ms?.ensureBackfill?.(CERT, now);
   ms?.ensureCatalog?.(CERT, now);
+  // An everyday visit, not the first launch after an update: the one-time summary lines were seen.
+  ms?.seeBackfill?.(CERT);
+  ms?.seeCatalogFill?.(CERT);
   let badges = 0;
   const cp = p().byCert[CERT]!;
   const marks: { key: string }[] = optional(() => ms.badgeCase(CERT, cp, now).marks) ?? [];

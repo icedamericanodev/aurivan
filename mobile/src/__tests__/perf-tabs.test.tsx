@@ -20,7 +20,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 // First: the render counter must be in place before React's renderer loads.
 import { renderNames, renders, resetRenders } from '../../jest/perf/renderCounter';
-import { Profiler, useSyncExternalStore, type ComponentType, type ProfilerOnRenderCallback } from 'react';
+import { Profiler, useSyncExternalStore, type ComponentType, type ReactElement, type ProfilerOnRenderCallback } from 'react';
 import { View } from 'react-native';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import { FocusEmitter, FocusScope } from '../../jest/perf/focusRouter';
@@ -115,22 +115,27 @@ const subscribeHost = (cb: () => void) => {
   hostSubs.add(cb);
   return () => hostSubs.delete(cb);
 };
+// One element per tab, made once: like the navigator's StaticContainer, opening
+// another tab never re-renders the tabs already open.
+const elements = new Map<Tab, ReactElement>();
+function tabElement(t: Tab): ReactElement {
+  let el = elements.get(t);
+  if (!el) {
+    const S = SCREENS[t]();
+    el = (
+      <FocusScope key={t} emitter={emitters[t]}>
+        <Profiler id={t} onRender={onRender}>
+          <S />
+        </Profiler>
+      </FocusScope>
+    );
+    elements.set(t, el);
+  }
+  return el;
+}
 function Host() {
   const open = useSyncExternalStore(subscribeHost, () => openTabs);
-  return (
-    <View>
-      {open.map((t) => {
-        const S = SCREENS[t]();
-        return (
-          <FocusScope key={t} emitter={emitters[t]}>
-            <Profiler id={t} onRender={onRender}>
-              <S />
-            </Profiler>
-          </FocusScope>
-        );
-      })}
-    </View>
-  );
+  return <View>{open.map(tabElement)}</View>;
 }
 
 let r: ReactTestRenderer | undefined;
@@ -184,13 +189,26 @@ afterEach(() => {
 /** Mounts the host, opens Today, then every tab once (the lazy first visits). */
 function openAll() {
   openTabs = [];
+  elements.clear();
   act(() => {
     r = create(<Host />);
   });
   const mount: Record<string, unknown> = {};
   for (const t of TABS) {
     startMeasure(true);
+    const DBG: string[] = [];
+    const u1 = useProgress.subscribe((n, o) => {
+      const keys = Object.keys(n).filter((k) => (n as never)[k] !== (o as never)[k]);
+      const ck = n.byCert.cisa && o.byCert.cisa ? Object.keys(n.byCert.cisa).filter((k) => (n.byCert.cisa as never)[k] !== (o.byCert.cisa as never)[k]) : [];
+      DBG.push(`P:${keys.join('+')}[${ck.join('+')}]`);
+    });
+    const u2 = useSettings.subscribe((n, o) => DBG.push(`S:${Object.keys(n).filter((k) => (n as never)[k] !== (o as never)[k]).join('+')}`));
+    const u3 = useSeen.subscribe((n, o) => DBG.push(`seen:${Object.keys(n).filter((k) => (n as never)[k] !== (o as never)[k]).join('+')}`));
     const wall = tapTab(t);
+    u1();
+    u2();
+    u3();
+    if (process.env.PERF_DEBUG) console.log('MOUNT', t, DBG.join(' '));
     const s = snapshot();
     mount[t] = { wallMs: wall, ...total(s), perTab: Object.fromEntries(TABS.map((x) => [x, s[x].renders])), top: topNames(renderNames(), 25)[t] };
   }
@@ -276,7 +294,7 @@ report('report', () => {
           tt.ms.push(total(s).ms);
         }
         lapOut[t] = { wallMs: wall, ...total(s), perTab: Object.fromEntries(TABS.map((x) => [x, s[x].renders])) };
-        if (lap === 1) (lapOut[t] as Record<string, unknown>).top = topNames(renderNames(), 6);
+        if (lap === 1) (lapOut[t] as Record<string, unknown>).top = topNames(renderNames(), 40);
       }
       if (lap <= 1) laps.push(lapOut);
     }
