@@ -4,15 +4,16 @@
  * Uplift Phase 7 sync merge property tests (spec §3.1 S1): the backup export
  * test and the merge tests throw the same states at their code.
  *
- * Not a test file (Jest only runs *.test.* files): import from it.
+ * It lives in jest/ (not src/__tests__/, where Jest runs every file as a
+ * test), next to the other test helpers. Import it from a test.
  */
-import { getAllQuestions } from '../../content/loader';
-import { MAX_ANSWER_MS } from '../../engine/answerClock';
-import { GROWTH_IDS, PLANT_SPECIES, type CertPlant, type GrowthLevel } from '../../engine/plant';
-import { createRng } from '../../engine/random';
-import { dayKey } from '../../engine/streak';
-import { MAX_SESSION_MINUTES } from '../../lib/finishSession';
-import type { CertProgress, MockResult } from '../../store/progress';
+import { getAllQuestions } from '../src/content/loader';
+import { MAX_ANSWER_MS } from '../src/engine/answerClock';
+import { GROWTH_IDS, PLANT_SPECIES, type CertPlant, type GrowthLevel } from '../src/engine/plant';
+import { createRng } from '../src/engine/random';
+import { dayKey } from '../src/engine/streak';
+import { MAX_SESSION_MINUTES } from '../src/lib/finishSession';
+import type { CertProgress, MockResult } from '../src/store/progress';
 
 /** The fixed "now" the states are built around (12 Oct 2026, 09:00 local). */
 export const T0 = new Date(2026, 9, 12, 9, 0, 0).getTime();

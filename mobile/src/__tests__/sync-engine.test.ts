@@ -36,7 +36,7 @@ import {
 } from '../engine/syncMerge';
 import { firstCase, plan, type PlanInput } from '../engine/syncPlan';
 import { fitForBackup } from '../engine/backup';
-import { DAY, ids, randomCert, randomPlant, randomReports, T0 } from './helpers/randomState';
+import { DAY, ids, randomCert, randomPlant, randomReports, T0 } from '../../jest/randomState';
 
 // The shared random states import store types (and the stores load AsyncStorage).
 jest.mock('@react-native-async-storage/async-storage', () =>

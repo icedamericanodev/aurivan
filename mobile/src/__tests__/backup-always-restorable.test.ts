@@ -26,8 +26,8 @@ import { startMock } from '../lib/sessions';
 import { selectCert, useProgress, type CertProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
-// The random but plausible states live in helpers/randomState.ts (shared with the sync merge tests).
-import { DAY, ids, MIN, randomCert, randomPlant, randomReports, T0 } from './helpers/randomState';
+// The random but plausible states live in jest/randomState.ts (shared with the sync merge tests).
+import { DAY, ids, MIN, randomCert, randomPlant, randomReports, T0 } from '../../jest/randomState';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
