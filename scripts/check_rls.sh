@@ -11,10 +11,16 @@
 #        reviewers can't misread which schema a table lands in.
 #   G6c  No policy is `using (true)` / `with check (true)` unless its name is
 #        on TRUE_POLICY_ALLOWLIST (catalogue and public-read policies only).
+#        `create policy` and `alter policy` alike.
 #   G6d  A view in public is `security_invoker`: a plain view runs as its
 #        owner and silently skips the RLS of the tables it reads.
-#   G7   No `security definer` function in schema public. Elevated helpers
-#        live in schema private (not exposed by the Data API).
+#   G6e  Nothing turns row level security off (`disable row level security`).
+#   G7   No `security definer` function or procedure outside schema private.
+#        An unqualified name lands in public (the search_path), so it counts
+#        as public; `public . f()` with spaces too. Elevated helpers live in
+#        schema private (not exposed by the Data API).
+#   G8   Nothing is granted to `anon` or `public` (every role) unless the
+#        object is on ANON_GRANT_ALLOWLIST (Phase 8's public board reads).
 #
 # The pgTAP suite (supabase/tests/01_hardening.sql) checks the same rules on
 # the APPLIED database; this script catches them before anything runs.
@@ -36,6 +42,10 @@ import sys
 TRUE_POLICY_ALLOWLIST = {
     "content_packs_read",  # catalogue of downloadable packs, not user data
 }
+
+# Objects anon or public may be granted something on (as written after `on`,
+# e.g. "public.board_posts"). Empty in Phase 6; Phase 8 adds the board's reads.
+ANON_GRANT_ALLOWLIST = set()
 
 
 def statements(sql):
@@ -85,7 +95,12 @@ def statements(sql):
 
 
 IDENT = r'(?:"[^"]+"|[a-z_][a-z0-9_$]*)'
-NAME = rf"({IDENT}(?:\.{IDENT})?)"
+NAME = rf"({IDENT}(?:\s*\.\s*{IDENT})?)"
+
+
+def clean(name):
+    """A name as one token: no quotes, no spaces around the dot."""
+    return re.sub(r"\s*\.\s*", ".", name.replace('"', ""))
 
 
 def check(name, sql):
@@ -95,26 +110,41 @@ def check(name, sql):
         low = st.lower()
         m = re.match(rf"create (?:unlogged |temporary |temp )?table (?:if not exists )?{NAME}", low)
         if m and " partition of " not in low:
-            tbl = m.group(1).replace('"', "")
+            tbl = clean(m.group(1))
             if "." not in tbl:
                 errors.append(f"G6b {name}: table '{tbl}' is not schema-qualified")
             created[tbl] = True
         m = re.match(rf"alter table (?:if exists )?(?:only )?{NAME} enable row level security", low)
         if m:
-            rls.add(m.group(1).replace('"', ""))
-        m = re.match(rf"create policy ({IDENT}) on ", low)
+            rls.add(clean(m.group(1)))
+        m = re.match(rf"alter table (?:if exists )?(?:only )?{NAME} disable row level security", low)
+        if m:
+            errors.append(f"G6e {name}: row level security turned off on '{clean(m.group(1))}'")
+        m = re.match(rf"(?:create|alter) policy ({IDENT}) on ", low)
         if m:
             pol = m.group(1).replace('"', "")
             if re.search(r"\b(using|with check)\s*\(\s*true\s*\)", low) and pol not in TRUE_POLICY_ALLOWLIST:
                 errors.append(f"G6c {name}: policy '{pol}' is always true and not on the allowlist")
         m = re.match(rf"create (?:or replace )?(?:materialized )?view (?:if not exists )?{NAME}", low)
         if m:
-            view = m.group(1).replace('"', "")
+            view = clean(m.group(1))
             if (view.startswith("public.") or "." not in view) and not re.search(r"security_invoker\s*=?\s*(true|on)\b", low):
                 errors.append(f"G6d {name}: view '{view}' in public is not security_invoker")
-        if re.match(r"(create (or replace )?|alter )function (\"public\"|public)\.", low) and "security definer" in low:
-            fn = re.match(r"\S+ (?:or replace )?function ([^(\s]+)", low).group(1)
-            errors.append(f"G7 {name}: security definer function '{fn}' in schema public")
+        m = re.match(rf"(?:create (?:or replace )?|alter )(?:function|procedure) {NAME}\s*\(", low)
+        if m and re.search(r"\bsecurity definer\b", low):
+            fn = clean(m.group(1))
+            if not fn.startswith("private."):
+                where = "public (unqualified names land there)" if "." not in fn else fn.split(".")[0]
+                errors.append(f"G7 {name}: security definer function '{fn}' in schema {where}")
+        grant = re.match(r"(?:alter default privileges .*?)?grant (.+) to (.+?)(?: with grant option)?(?: granted by .+)?$", low)
+        if grant and not low.startswith("revoke"):
+            grantees = {g.strip().replace('"', "") for g in grant.group(2).split(",")}
+            on = re.search(r" on (.+)$", grant.group(1))
+            obj = clean(on.group(1)) if on else grant.group(1)
+            obj = re.sub(r"^(table|function|sequence|schema|all tables in schema|all functions in schema|all sequences in schema) ", "", obj)
+            for role in sorted(grantees & {"anon", "public"}):
+                if obj not in ANON_GRANT_ALLOWLIST:
+                    errors.append(f"G8 {name}: '{obj}' granted to {role} (not on the allowlist)")
     for tbl in created:
         if tbl not in rls:
             errors.append(f"G6a {name}: table '{tbl}' has no 'enable row level security' in the same file")
@@ -138,7 +168,22 @@ def self_test():
         "true_check": ("create policy p on public.e for insert to authenticated with check ( true );", ["G6c"]),
         "definer_public": ("create or replace function public.h() returns int language sql\n security definer as $$ select 1 $$;", ["G7"]),
         "alter_definer": ("alter function public.h() security definer;", ["G7"]),
+        "definer_unqualified": ("create function f() returns int language sql security definer as $$ select 1 $$;", ["G7"]),
+        "definer_spaced": ("create function public . h() returns int language sql security definer as $$ select 1 $$;", ["G7"]),
+        "definer_quoted": ('create function "public"."h"() returns int language sql security definer as $$ select 1 $$;', ["G7"]),
+        "definer_procedure": ("create procedure p() language sql security definer as $$ select 1 $$;", ["G7"]),
+        "invoker_unqualified_ok": ("create function f() returns int language sql security invoker as $$ select 1 $$;", []),
         "plain_view": ("create view public.w as select 1;", ["G6d"]),
+        "rls_off": ("create table public.x (id int); alter table public.x enable row level security;"
+                    "alter table public.x disable row level security;", ["G6e"]),
+        "alter_policy_true": ("alter policy p on public.e using (true);", ["G6c"]),
+        "alter_policy_check_true": ("alter policy p on public.e with check (true);", ["G6c"]),
+        "grant_anon": ("grant select on public.profiles to anon;", ["G8"]),
+        "grant_public": ("grant execute on function private.f() to public;", ["G8"]),
+        "grant_anon_listed": ("grant select, insert on table public.e to authenticated, anon;", ["G8"]),
+        "grant_default_anon": ("alter default privileges in schema public grant select on tables to anon;", ["G8"]),
+        "grant_ok": ("grant select on public.profiles to authenticated; grant usage on schema public to service_role;"
+                     "revoke all on public.profiles from anon, public;", []),
     }
     bad = 0
     for case, (sql, want) in cases.items():

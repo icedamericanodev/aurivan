@@ -5,7 +5,7 @@
 --
 -- Run: supabase test db   (CI: .github/workflows/supabase.yml)
 begin;
-select plan(12);
+select plan(14);
 
 -- Functions owned by an extension (pgTAP itself, etc.) are not ours.
 create temporary view our_functions as
@@ -55,28 +55,38 @@ select is_empty($$ select oid::regprocedure::text from our_functions
                      and nspname || '.' || proname not in (select name from allow where kind = 'auth_exec') $$,
   'authenticated can execute no function in public or private');
 
+-- Privileges below are checked at table level AND column level: has_table_privilege
+-- is true only for a table-wide grant, so a later `grant insert (col) on … to anon`
+-- would slip past it. has_any_column_privilege is true for either (select, insert,
+-- update and references are the privileges a column can carry).
+
 -- 6. Private tables are never readable or writable by app roles.
 select is_empty($$ select nspname || '.' || relname from our_tables
                    where nspname = 'private'
-                     and (has_table_privilege('anon', oid, 'select,insert,update,delete,truncate,references,trigger')
-                       or has_table_privilege('authenticated', oid, 'select,insert,update,delete,truncate,references,trigger')) $$,
-  'anon and authenticated have no privilege on any private table');
+                     and (has_table_privilege('anon', oid, 'delete,truncate,trigger')
+                       or has_any_column_privilege('anon', oid, 'select,insert,update,references')
+                       or has_table_privilege('authenticated', oid, 'delete,truncate,trigger')
+                       or has_any_column_privilege('authenticated', oid, 'select,insert,update,references')) $$,
+  'anon and authenticated have no privilege on any private table or column');
 
 -- 7. anon reads nothing in public unless allowlisted.
 select is_empty($$ select nspname || '.' || relname from our_tables
-                   where nspname = 'public' and has_table_privilege('anon', oid, 'select')
+                   where nspname = 'public' and has_any_column_privilege('anon', oid, 'select')
                      and nspname || '.' || relname not in (select name from allow where kind = 'anon_read') $$,
-  'anon can read no table in public');
+  'anon can read no table or column in public');
 
 -- 8. anon never writes anywhere.
 select is_empty($$ select nspname || '.' || relname from our_tables
-                   where has_table_privilege('anon', oid, 'insert,update,delete') $$,
-  'anon has no insert, update or delete privilege on any table');
+                   where has_table_privilege('anon', oid, 'delete')
+                      or has_any_column_privilege('anon', oid, 'insert,update') $$,
+  'anon has no insert, update or delete privilege on any table or column');
 
 -- 9. TRUNCATE, REFERENCES and TRIGGER bypass or sidestep RLS: never for app roles.
 select is_empty($$ select nspname || '.' || relname from our_tables
-                   where has_table_privilege('authenticated', oid, 'truncate,references,trigger')
-                      or has_table_privilege('anon', oid, 'truncate,references,trigger') $$,
+                   where has_table_privilege('authenticated', oid, 'truncate,trigger')
+                      or has_any_column_privilege('authenticated', oid, 'references')
+                      or has_table_privilege('anon', oid, 'truncate,trigger')
+                      or has_any_column_privilege('anon', oid, 'references') $$,
   'no truncate, references or trigger privilege for anon or authenticated');
 
 -- 10. Every policy names its roles (no implicit `to public`).
@@ -91,11 +101,31 @@ select is_empty($$ select policyname from pg_policies
                      and policyname not in (select name from allow where kind = 'true_policy') $$,
   'no always-true policy outside the allowlist');
 
--- 12. The private schema is not exposed to anon (Phase 8 grants USAGE to
---     authenticated and anon for policy helpers only; test 6 still holds then).
+-- 12. Nobody but the owner can create objects in private.
 select ok(not has_schema_privilege('anon', 'private', 'create')
           and not has_schema_privilege('authenticated', 'private', 'create'),
-  'nobody but the owner can create objects in private');
+  'anon and authenticated cannot create objects in private');
+
+-- 13. App roles cannot even look into private. Phase 8 grants USAGE to anon and
+--     authenticated for its policy helpers; it changes this test to an allowlist
+--     then, and tests 4–6 still hold (no execute, no table privilege).
+select ok(not has_schema_privilege('anon', 'private', 'usage')
+          and not has_schema_privilege('authenticated', 'private', 'usage'),
+  'anon and authenticated have no usage on schema private');
+
+-- 14. Every view in public runs as the caller (security_invoker), so the RLS of
+--     the tables it reads applies (guard G6d at runtime). A plain view runs as
+--     its owner and skips it. (A materialized view can't be security_invoker:
+--     keep those out of public.)
+select is_empty($$ select n.nspname || '.' || c.relname
+                   from pg_class c join pg_namespace n on n.oid = c.relnamespace
+                   where n.nspname = 'public' and c.relkind in ('v', 'm')
+                     and not exists (select 1 from pg_depend d
+                                     where d.classid = 'pg_class'::regclass and d.objid = c.oid and d.deptype = 'e')
+                     and not exists (select 1 from unnest(coalesce(c.reloptions, '{}')) o
+                                     where lower(o) in ('security_invoker=true', 'security_invoker=on',
+                                                        'security_invoker=1', 'security_invoker=yes')) $$,
+  'every view in public is security_invoker');
 
 select * from finish();
 rollback;

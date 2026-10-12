@@ -30,13 +30,19 @@ pass=0
 
 # request <method> <url> <bearer> [json-body] [extra-header]
 # Prints "<status> <body>" with the body cut to 200 characters.
+# An empty <bearer> sends NO Authorization header: that is what an anonymous
+# caller looks like (PostgREST then uses the anon role, and the Edge Functions
+# must answer 401 themselves). Sending the publishable key as a Bearer token
+# instead would be refused at the gateway with the new sb_publishable_ keys,
+# so a denial would pass for the wrong reason.
 request() {
   local method=$1 url=$2 bearer=$3 body=${4:-} extra=${5:-}
   local tmp
   tmp=$(mktemp)
   local args=(-sS -o "$tmp" -w '%{http_code}' -X "$method" "$url"
-    -H "apikey: $SUPABASE_ANON_KEY" -H "Authorization: Bearer $bearer"
+    -H "apikey: $SUPABASE_ANON_KEY"
     -H 'Content-Type: application/json' -H 'Prefer: return=representation')
+  [ -n "$bearer" ] && args+=(-H "Authorization: Bearer $bearer")
   [ -n "$extra" ] && args+=(-H "$extra")
   [ -n "$body" ] && args+=(--data "$body")
   local code
@@ -58,12 +64,16 @@ expect() {
   else fail=$((fail + 1)); printf '  ✗ %-58s %s  %s\n' "$label" "$code" "$body"; fi
 }
 
-echo "Anon (publishable key only):"
+echo "Anon (publishable key only, no Authorization header):"
 for t in profiles entitlements content_packs; do
-  expect "anon cannot read $t" "$(request GET "$REST/$t?select=*" "$SUPABASE_ANON_KEY")" denied
+  expect "anon cannot read $t" "$(request GET "$REST/$t?select=*" '')" denied
 done
 expect "anon cannot create a profile" \
-  "$(request POST "$REST/profiles" "$SUPABASE_ANON_KEY" '{"terms_version":"2026-11","age_confirmed":true}')" denied
+  "$(request POST "$REST/profiles" '' '{"terms_version":"2026-11","age_confirmed":true}')" denied
+expect "anon cannot grant an entitlement" \
+  "$(request POST "$REST/entitlements" '' "{\"user_id\":\"$UID_A\",\"entitlement\":\"all_access\",\"active\":true}")" denied
+expect "anon cannot publish a content pack" \
+  "$(request POST "$REST/content_packs" '' '{"cert_id":"cisa","version":99,"storage_path":"x","sha256":"x"}')" denied
 
 echo "Learner A against learner B:"
 expect "A cannot read B's profile" "$(request GET "$REST/profiles?id=eq.$UID_B" "$JWT_A")" empty
@@ -73,6 +83,8 @@ expect "A cannot create a profile with B's id" \
   "$(request POST "$REST/profiles" "$JWT_A" "{\"id\":\"$UID_B\",\"terms_version\":\"2026-11\",\"age_confirmed\":true}")" denied
 expect "A cannot delete B's profile" "$(request DELETE "$REST/profiles?id=eq.$UID_B" "$JWT_A")" denied
 expect "A cannot read B's entitlements" "$(request GET "$REST/entitlements?user_id=eq.$UID_B" "$JWT_A")" empty
+expect "A cannot change B's entitlements" \
+  "$(request PATCH "$REST/entitlements?user_id=eq.$UID_B" "$JWT_A" '{"active":false}')" denied
 expect "B cannot read A's profile" "$(request GET "$REST/profiles?id=eq.$UID_A" "$JWT_B")" empty
 
 echo "Learner A against server-only data:"
@@ -87,12 +99,15 @@ expect "A cannot call svc_claim_export" "$(request POST "$REST/rpc/svc_claim_exp
 expect "A cannot call svc_record_deletion" \
   "$(request POST "$REST/rpc/svc_record_deletion" "$JWT_A" "{\"p_user\":\"$UID_B\"}")" denied
 expect "anon cannot call svc_claim_export" \
-  "$(request POST "$REST/rpc/svc_claim_export" "$SUPABASE_ANON_KEY" "{\"p_user\":\"$UID_A\"}")" denied
+  "$(request POST "$REST/rpc/svc_claim_export" '' "{\"p_user\":\"$UID_A\"}")" denied
 
 echo "Edge Functions (no destructive call is made):"
-expect "delete-account refuses the anon key" "$(request POST "$FN/delete-account" "$SUPABASE_ANON_KEY" '{"confirm":"DELETE"}')" denied
-expect "delete-account needs confirm=DELETE" "$(request POST "$FN/delete-account" "$JWT_A" '{"confirm":"nope"}')" denied
-expect "export-my-data refuses the anon key" "$(request POST "$FN/export-my-data" "$SUPABASE_ANON_KEY" '{}')" denied
+# Anonymous: 401 from the gateway's JWT check (verify_jwt) or, with it off, the function's own.
+expect "delete-account refuses an anonymous call" "$(request POST "$FN/delete-account" '' '{"confirm":"DELETE"}')" 401
+expect "export-my-data refuses an anonymous call" "$(request POST "$FN/export-my-data" '' '{}')" 401
+# A real learner's token passes the gateway, so these denials come from the function itself.
+expect "delete-account needs confirm=DELETE (learner A's token)" "$(request POST "$FN/delete-account" "$JWT_A" '{"confirm":"nope"}')" denied
+expect "delete-account refuses a GET (learner A's token)" "$(request GET "$FN/delete-account" "$JWT_A")" denied
 
 echo
 echo "cloud_smoke: $pass passed, $fail failed"
