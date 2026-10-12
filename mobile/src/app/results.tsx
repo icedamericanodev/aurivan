@@ -274,7 +274,7 @@ export default function Results() {
         if (!q || !perm) return null;
         const r = active.responses[id];
         const status = !r ? '○ Skipped' : r.correct ? '✓ Correct' : '✗ Missed';
-        // Answered after Coach me: a small mark, since it counts half toward readiness.
+        // Answered after Coach me: a small mark, since a right answer after a hint counts as half.
         const assisted = Boolean(r?.assisted);
         // Coaching (engine/pace.ts): only on a fast miss or a long, right answer.
         const coaching = r ? coachingTag(r.correct, r.ms) : null;
@@ -289,14 +289,14 @@ export default function Results() {
               accessibilityRole="button"
               accessibilityState={{ expanded: open }}
               // One sentence each; the coaching line ends with its own full stop (O2).
-              accessibilityLabel={`Question ${i + 1}, ${status}${assisted ? ', assisted' : ''}.${coaching ? ` ${COACHING[coaching].tag}: ${COACHING[coaching].line}` : ''} Tap to ${open ? 'collapse' : 'expand'}`}
+              accessibilityLabel={`Question ${i + 1}, ${status}${assisted ? ', hint used' : ''}.${coaching ? ` ${COACHING[coaching].tag}: ${COACHING[coaching].line}` : ''} Tap to ${open ? 'collapse' : 'expand'}`}
               onPress={() => setOpenId(open ? null : id)}
               style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
             >
               <Row style={{ justifyContent: 'space-between' }}>
                 <T v="label" num>{`Question ${i + 1}`}</T>
                 <Row gap={space.sm} style={{ flexShrink: 1, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-                  {assisted && <Tag label="Assisted" />}
+                  {assisted && <Tag label="Hint used" />}
                   {coaching && <Tag label={COACHING[coaching].tag} />}
                   <T v="label" color={color}>{status}</T>
                 </Row>

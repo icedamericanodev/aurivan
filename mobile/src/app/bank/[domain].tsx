@@ -24,6 +24,7 @@ import { EmptyScreen } from '../../components/emptyScreen';
 import type { EmptyArtKind } from '../../components/glyphs';
 import { StickyFooter } from '../../components/quiz';
 import { Button, Chip, ChipRow, DomainDot, EmptyState, Gap, PushedHeader, Row, T } from '../../components/ui';
+import { domainLabel } from '../../content/certifications';
 import { getDomainQuestions } from '../../content/loader';
 import {
   buildBankList,
@@ -108,7 +109,7 @@ export default function BankDomain() {
 
   const header = (
     <View>
-      <PushedHeader title={domain.short} onBack={goBack} />
+      <PushedHeader title={domainLabel(domain)} onBack={goBack} />
       <Row gap={space.sm} style={{ marginTop: space.sm }}>
         <DomainDot domain={domain} />
         <T v="headline" accessibilityRole="header" style={{ flexShrink: 1 }}>{domain.name}</T>

@@ -575,7 +575,7 @@ describe('Journey 5b: Canopy Call on the reviewed deck', () => {
     act(() => {
       r = create(<Mistakes />);
     });
-    expect(allText()).toContain('You answer from the wrong role');
+    expect(allText()).toContain('You answer as the wrong person');
     expect(root().findAll((n) => n.props.label === 'Drill it: Canopy Call' && typeof n.props.onPress === 'function').length).toBeGreaterThan(0);
   });
 });

@@ -37,7 +37,7 @@ import { DomainRing, type BotanyKind } from '../../components/glyphs';
 import { BookOpen, ChevronDown, ICON_STROKE, Play } from '../../components/icons';
 import { AnimatedPressable, CheckDraw, Collapse, Turn, usePressScale, useScreenFocus } from '../../components/motion';
 import { BigNum, Enter, HeroPanel, ICON_SIZE, ListRow, ProgressBar, Row, Screen, Section, T } from '../../components/ui';
-import { domainColor } from '../../content/certifications';
+import { domainColor, domainLabel } from '../../content/certifications';
 import { lessonsFor, nextLesson } from '../../content/lessons';
 import type { Lesson } from '../../content/lessons/types';
 import { hasNotes, noteSubtopics } from '../../content/notes';
@@ -157,6 +157,8 @@ export default function Learn() {
 
       <Enter i={showNotes ? 3 : 2}>
         <Section title="Lessons by domain" meta={`${doneCount} of ${lessons.length} done`} />
+        {/* J25: the short names keep "IS"; say once what it stands for. */}
+        {cert.domains.some((d) => /\bIS\b/.test(d.short)) && <T v="meta" style={{ marginTop: space.xs }}>IS means information systems.</T>}
         {groups.map(({ domain: d, items }, g) => {
           const groupDone = items.filter((l) => done(l.id)).length;
           const isOpen = isOpenGroup(d.id);
@@ -184,7 +186,8 @@ export default function Learn() {
                 <Row gap={space.sm}>
                   {/* L1: the domain's status by SHAPE (outline · arc · filled ✓), in its tone. */}
                   <DomainRing done={groupDone} total={items.length} tone={domainColor(d.tone, isDark)} track={c.track} outline={c.control} paper={c.bg} />
-                  <T v="label" style={{ flex: 1 }}>{d.short}</T>
+                  {/* C9: a list of domains says "Domain 1 · IS Audit". */}
+                  <T v="label" style={{ flex: 1 }}>{domainLabel(d)}</T>
                   <T v="meta" num>{progressText}</T>
                   {/* Chevron points down when open, right when closed; it turns when tapped. */}
                   <Turn deg={isOpen ? 0 : -90}>

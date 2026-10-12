@@ -149,7 +149,7 @@ function CallItFirst() {
     return (
       <RoundEnd certId={cert.id} game="callit" score={score} max={callMax(round.tier, round.items.length)} misses={misses} onAgain={() => start(Date.now())} news={news}>
         <T color={c.ink2}>
-          On exam day, read the stem, name the principle in your head, then look for the option that matches it. The options are written to pull you off course.
+          On exam day, read the question, name the principle in your head, then look for the option that matches it. The options are written to pull you off course.
         </T>
         <Gap h={space.md} />
       </RoundEnd>
@@ -248,20 +248,20 @@ function CallItFirst() {
         hint ? (
           <View style={{ borderLeftWidth: 3, borderLeftColor: c.tip, paddingLeft: space.md, marginBottom: space.lg }}>
             <T v="small">{renderText(q.preRead, perm)}</T>
-            <T v="meta" style={{ marginTop: space.xs }}>Assisted. Counts half toward readiness.</T>
+            <T v="meta" style={{ marginTop: space.xs }}>You used a hint, so this counts as half a right answer.</T>
           </View>
         ) : (
           <Pressable
             accessibilityRole="button"
             accessibilityLabel="Show a hint"
-            accessibilityHint="Shows a reading hint. Your answer then counts half toward readiness."
+            accessibilityHint="Shows a reading hint. A right answer after a hint counts as half."
             onPress={() => setHint(true)}
             style={({ pressed }) => ({ alignSelf: 'flex-start', minHeight: 48, justifyContent: 'center', opacity: pressed ? 0.7 : 1, marginBottom: space.sm })}
           >
             <Row gap={space.xs} style={{ flexWrap: 'wrap' }}>
               <Lightbulb size={ICON_SIZE.inline} color={c.accentText} strokeWidth={ICON_STROKE} />
               <T v="label" color={c.accentText}>Show a hint</T>
-              <T v="meta">A hint counts half.</T>
+              <T v="meta">A right answer after a hint counts as half.</T>
             </Row>
           </Pressable>
         )

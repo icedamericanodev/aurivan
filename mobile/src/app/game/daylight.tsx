@@ -217,7 +217,7 @@ function Daylight() {
           <Row gap={space.sm} style={{ marginTop: space.sm, justifyContent: 'center', flexWrap: 'wrap' }}>
             <TierLeafMorph tier={chosen} color={c.accentText} rib={c.bg} />
             <T v="meta" num center style={{ flexShrink: 1 }}>
-              {`${sec} s a question · ${durationText(Math.round((items.length * sec) / 60))} of light${tierCanExtend(chosen) ? ' · you can add time' : ''}`}
+              {`${sec} seconds a question · ${durationText(Math.round((items.length * sec) / 60))} of light${tierCanExtend(chosen) ? ' · you can add time' : ''}`}
             </T>
           </Row>
           {level ? (
@@ -261,8 +261,8 @@ function Daylight() {
           >
             {`Light used: ${formatClock(lightUsed)} of ${formatClock(state.budgetMs)}${inBudget ? ' · finished in time, +1' : ''}`}
           </T>
-          {avg !== null && <T v="small" num>{`Average ${avg} s a question · your light gave ${state.perItemSec} s`}</T>}
-          {slow && slowQ && <T v="small">{`Slowest: ${slow.seconds} s on “${clipStem(slowQ.stem)}”`}</T>}
+          {avg !== null && <T v="small" num>{`Average ${avg} seconds a question · your light gave ${state.perItemSec} seconds`}</T>}
+          {slow && slowQ && <T v="small">{`Slowest: ${slow.seconds} seconds on “${clipStem(slowQ.stem)}”`}</T>}
         </View>
         {state.timedOut.length > 0 && (
           <View style={{ marginTop: space.lg }}>

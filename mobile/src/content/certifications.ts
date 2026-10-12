@@ -162,6 +162,15 @@ export function getDomain(cert: Certification, domainId: string) {
 export const DEFAULT_CERT_ID = 'cisa';
 
 /**
+ * A domain's name in LISTS of domains (mobile 1.15, PHASE5.md C9): "Domain 4 ·
+ * IS Operations", with the full name as the row's subtitle. Chips, legends,
+ * plan items and session titles use the short name alone.
+ */
+export function domainLabel(d: { id: string; short: string }): string {
+  return `Domain ${d.id} · ${d.short}`;
+}
+
+/**
  * The colour for a domain tone (0 Lake, 1 Moss, 2 Ochre, 3 Heather, 4 Slate)
  * in light or dark mode. Use it for dots, bars and ring segments only,
  * never for text (tones are not tuned for text contrast).

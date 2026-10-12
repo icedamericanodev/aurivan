@@ -398,7 +398,7 @@ export default function SessionScreen() {
   const openCoach = () => {
     haptic.selection();
     // Focus moves to the hint once it mounts (effect above); it ends with the
-    // "Counts half" line, so no separate announcement is needed.
+    // "counts as half" line, so no separate announcement is needed.
     focusHint.current = true;
     useSession.getState().markCoached(qid);
   };
@@ -415,7 +415,7 @@ export default function SessionScreen() {
       ? 'Clean read.'
       : pickedOriginal && pickedOriginal === runnerUp(q.tips, q.correct)
         ? 'You picked the runner-up. That’s the trap.'
-        : 'Check the role in the stem.';
+        : 'Check who you are in the question.';
   const flagged = active.flagged.includes(qid);
   const shownFlagged = active.flagged.includes(shownQid);
   // Cross-link: after a miss, offer the lesson written to prepare for this question.
@@ -573,7 +573,7 @@ export default function SessionScreen() {
                 <Pressable
                   accessibilityRole="button"
                   accessibilityLabel="Coach me"
-                  accessibilityHint="Shows a hint. Your answer then counts half toward readiness."
+                  accessibilityHint="Shows a hint. A right answer after a hint counts as half."
                   onPress={openCoach}
                   hitSlop={4}
                   style={({ pressed }) => ({ alignSelf: 'flex-start', minHeight: 48, justifyContent: 'center', opacity: pressed ? 0.7 : 1, marginTop: space.xs })}
@@ -582,7 +582,7 @@ export default function SessionScreen() {
                     <Lightbulb size={ICON_SIZE.inline} color={c.accentText} strokeWidth={ICON_STROKE} />
                     <T v="label" color={c.accentText}>Coach me</T>
                     {/* Said up front, so nobody taps it by accident and is surprised. */}
-                    <T v="meta">A hint counts half.</T>
+                    <T v="meta">A right answer after a hint counts as half.</T>
                   </Row>
                 </Pressable>
               )}
@@ -605,7 +605,7 @@ export default function SessionScreen() {
                         <T v="small" color={c.ink}>{renderText(tipParts(hintTip, 0).body, perm)}</T>
                       </View>
                     )}
-                    <T v="meta" style={{ marginTop: space.xs }}>Assisted. Counts half toward readiness.</T>
+                    <T v="meta" style={{ marginTop: space.xs }}>You used a hint, so this counts as half a right answer.</T>
                   </View>
                 </Rise>
               )}
@@ -635,7 +635,7 @@ export default function SessionScreen() {
                 {/* Answer: verdict → your pick → best answer → why → vine → trust */}
                 <Verdict correct={response.correct} coach={coach} />
                 {/* Lined up with the coach line above it (left 50, under "Correct"). */}
-                {response.assisted && <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>Assisted. Counts half toward readiness.</T>}
+                {response.assisted && <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>You used a hint, so this counts as half a right answer.</T>}
                 <Rise delay={FEEDBACK_DELAY.rows}>
                   <View style={{ marginTop: space.lg }}>
                     {!response.correct && pickedOriginal && (

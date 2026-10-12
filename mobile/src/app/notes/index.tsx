@@ -12,6 +12,7 @@ import { AccessibilityInfo, View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
 import { ReadMark } from '../../components/notes';
 import { DomainDot, EmptyState, Enter, ListRow, PushedHeader, Screen, SearchField, Section, T } from '../../components/ui';
+import { domainLabel } from '../../content/certifications';
 import { getNotes, noteSubtopics } from '../../content/notes';
 import { readCount, searchNotes } from '../../engine/notesSearch';
 import { useActiveCert } from '../../lib/useActiveCert';
@@ -111,10 +112,16 @@ export default function NotesHome() {
                     <DomainDot domain={d} />
                   </View>
                 }
-                title={d.name}
-                subtitle={`${d.weight}% of the exam · ${state}`}
+                // C9: "Domain 4 · IS Operations", the full name under it.
+                title={domainLabel(d)}
+                subtitle={
+                  <>
+                    <T v="meta">{d.name}</T>
+                    <T v="meta">{`${d.weight}% of the exam · ${state}`}</T>
+                  </>
+                }
                 trailing={<ReadMark read={done === ids.length && ids.length > 0} />}
-                accessibilityLabel={`${d.name}. ${d.weight} percent of the exam. ${state}.`}
+                accessibilityLabel={`Domain ${d.id}, ${d.name}. ${d.weight} percent of the exam. ${state}.`}
                 onPress={() => router.push(`/notes/${d.id}`)}
                 last={i === domains.length - 1}
               />
