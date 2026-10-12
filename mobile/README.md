@@ -20,6 +20,30 @@ and use `bash scripts/dev-sync.sh`.
 4. Scan the QR code with your phone camera (iPhone) or with Expo Go (Android).
    The app opens on your phone. Edit a file, save, and it reloads instantly.
 
+## Install a test APK on an Android phone (no computer needed)
+
+The test APK is built on **expo.dev** (EAS Build, profile **preview**, branch
+`main`, base directory `/mobile`, platform Android, Submit unchecked). On the
+phone, open the build's page on expo.dev and tap **Install**, then allow
+**"Install unknown apps"** when Android asks. Installing a newer APK over an
+older one keeps your progress.
+
+**Small updates arrive by themselves.** After every merge to `main`, GitHub
+publishes the new code to the **preview** update channel
+(`.github/workflows/eas-update.yml`, needs the `EXPO_TOKEN` repository secret).
+The phone downloads it in the background and uses it the next time the app
+opens (close it fully, then reopen). Changes to native parts (a new library
+with Android code, the icon, permissions) need a new APK; the "fingerprint"
+runtime policy in `app.json` makes sure a phone never gets an update that
+doesn't match its APK.
+
+Backup routes, only if EAS is unavailable (their APKs are signed with a
+different key, so uninstall the EAS one first, which erases progress on that
+phone): **Actions → Android test APK → Run workflow** on GitHub (it lands on
+the repo's Releases page), or `bash scripts/build-apk.sh` on a Mac with
+Android Studio (it builds in a separate folder, so the emulator and
+`dev-sync.sh` keep running).
+
 ## Everyday commands (run inside `mobile/`)
 
 | Command | What it does |

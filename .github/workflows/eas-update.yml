@@ -1,0 +1,70 @@
+name: Phone update (EAS Update)
+
+# Publishes the app's latest code as an over-the-air update to the "preview"
+# channel after each merge to main, so test APKs built on expo.dev (EAS Build,
+# profile "preview") pick up small changes by themselves: the app downloads the
+# update in the background and uses it the next time it opens.
+#
+# Safety: app.json uses the "fingerprint" runtime policy, so an update only
+# reaches APKs whose native parts match it. A change to native code (a new
+# library with Android code, the icon, permissions) needs a new APK instead.
+#
+# Needs the EXPO_TOKEN repository secret (an access token from expo.dev). If it
+# is not set, the job says so and stops without failing.
+
+on:
+  push:
+    branches: [main]
+    paths: ['mobile/**', 'data/domain*.json']
+  workflow_dispatch:
+
+concurrency:
+  group: eas-update
+  cancel-in-progress: true # a newer merge supersedes an older update
+
+jobs:
+  update:
+    name: Publish update to preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+    steps:
+      - name: Check for the Expo token
+        id: token
+        run: |
+          if [ -n "$EXPO_TOKEN" ]; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "The EXPO_TOKEN secret is not set, so no update is published."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.token.outputs.ok == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.token.outputs.ok == 'true'
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install (also builds the content pack)
+        if: steps.token.outputs.ok == 'true'
+        working-directory: mobile
+        run: npm ci
+
+      - name: Publish the update
+        if: steps.token.outputs.ok == 'true'
+        working-directory: mobile
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          message="$(printf '%s' "${COMMIT_MESSAGE:-Manual update}" | head -n 1)"
+          npx --yes eas-cli@24 update \
+            --channel preview \
+            --environment preview \
+            --platform android \
+            --message "$message" \
+            --non-interactive
