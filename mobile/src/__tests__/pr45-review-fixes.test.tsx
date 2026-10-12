@@ -429,11 +429,11 @@ describe('Practice: when mocks lead, they come straight after Timed, then the pa
   });
 });
 
-describe('Settings: Your study and Study defaults together; the kept line is said (UX review P6, P8; code review M7b)', () => {
-  it('section order', () => {
+describe('Settings: Your study and Practice together; the kept line is said (UX review P6, P8; code review M7b)', () => {
+  it('section order (mobile 1.17 groups)', () => {
     mount(<Settings />);
     const t = allText();
-    const at = ['Your study', 'Study defaults', 'Appearance', 'Motion', 'Reminders and extras', 'Your data'].map((s) => t.indexOf(s));
+    const at = ['Your study', 'Practice', 'Reminders', 'Appearance', 'Badges and your plant', 'Your data', 'Help and about'].map((s) => t.indexOf(s));
     expect(at.every((n) => n > -1)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
   });
@@ -449,7 +449,10 @@ describe('Settings: Your study and Study defaults together; the kept line is sai
       });
     });
     mount(<Settings />);
+    // Mobile 1.17: Daily time is a row; each choice closes its sheet.
+    press(/^Daily time, /);
     press(/^10 minutes a day$/);
+    press(/^Daily time, /);
     press(/^30 minutes a day$/);
     act(() => flushSayLaterForTest());
     expect(say.mock.calls.map((c) => c[0])).toEqual(['Today’s plan stays as it is. Tomorrow’s will fit.']);

@@ -80,7 +80,7 @@ const responses = (n, sec, at, right = (i) => i % 10 < 7) =>
   await page.waitForTimeout(500);
   await snap(page, 'p02b-mock-start-extra-time');
   await open(page, '/settings');
-  await scrollTo(page, 'Study defaults', 300);
+  await scrollTo(page, 'Practice', 300); // mobile 1.17: "Study defaults" is the Practice group
   await snap(page, 'p03-settings-study-defaults');
   // Play lists Daylight with the other games.
   await open(page, '/play');

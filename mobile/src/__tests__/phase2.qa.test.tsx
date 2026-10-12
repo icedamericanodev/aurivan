@@ -503,6 +503,13 @@ describe.each([
 });
 
 // ══ Journey 4: Settings → Motion ══════════════════════════════════════
+
+/** Mobile 1.17: Settings → Appearance → Motion is a row that opens the choices in a sheet. */
+const openMotionRow = (at: ReactTestInstance) =>
+  act(() => {
+    at.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && String(n.props.accessibilityLabel).startsWith('Motion, '))[0].props.onPress();
+  });
+
 describe('J4 Settings → Motion', () => {
   const startThree = () => {
     act(() => {
@@ -525,18 +532,23 @@ describe('J4 Settings → Motion', () => {
     act(() => {
       r2 = create(<Settings />);
     });
-    const radio = (title: string) =>
-      r2!.root.findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function' && n.props.accessibilityLabel?.startsWith(title))[0];
+    // Mobile 1.17: each choice closes the Motion sheet, so it is opened before each one.
+    const radio = (title: string) => {
+      if (!r2!.root.findAll((n) => n.props.accessibilityRole === 'radio').length) openMotionRow(r2!.root);
+      return r2!.root.findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function' && n.props.accessibilityLabel?.startsWith(title))[0];
+    };
+    const reducedRow = radio('Reduced');
     act(() => {
-      radio('Reduced').props.onPress();
+      reducedRow.props.onPress();
     });
     expect(useSettings.getState().motion).toBe('reduced');
     expect(radio('Reduced').props.accessibilityState.checked).toBe(true);
     answerAndNext();
     expect(turning()).toBe(false); // a cross-fade, no 120 ms wait with the old page
     expect(stem()).toEqual([findQuestion('cisa', TEN[1])!.stem]);
+    const matchRow = radio('Match my phone');
     act(() => {
-      radio('Match my phone').props.onPress();
+      matchRow.props.onPress();
     });
     answerAndNext();
     expect(turning()).toBe(true); // full motion again
@@ -550,6 +562,7 @@ describe('J4 Settings → Motion', () => {
     act(() => {
       r2 = create(<Settings />);
     });
+    openMotionRow(r2!.root);
     const match = () => r2!.root.findAll((n) => n.props.accessibilityRole === 'radio' && n.props.accessibilityLabel?.startsWith('Match my phone'))[0];
     expect(match().props.accessibilityLabel).not.toMatch(/Reduce Motion is on/);
     phoneReduceMotion(true);

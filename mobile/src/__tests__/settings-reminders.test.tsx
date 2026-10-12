@@ -22,7 +22,7 @@ jest.mock('../components/icons', () => {
   });
 });
 jest.mock('../components/brand', () => ({ BrandLockup: () => null, PillarList: () => null }));
-jest.mock('expo-router', () => ({ router: { push: jest.fn(), back: jest.fn() }, useFocusEffect: jest.fn() }));
+jest.mock('expo-router', () => ({ router: { push: jest.fn(), back: jest.fn() }, useFocusEffect: jest.fn(), useLocalSearchParams: () => ({}) }));
 jest.mock('react-native-safe-area-context', () => {
   const { View } = jest.requireActual('react-native');
   return { SafeAreaView: View, useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }) };
@@ -56,7 +56,15 @@ beforeEach(() => {
   act(() => {
     r = create(<Settings />);
   });
+  // Mobile 1.17: the time and days live in a sheet behind the "Time and days" row
+  // (the switch stays on the screen). Each test starts with it open.
+  expect(allText()).not.toContain('Applies when reminders are on.');
+  openTimes();
 });
+const openTimes = () =>
+  act(() => {
+    root().findAll((n) => typeof n.props.onPress === 'function' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Time and days'))[0].props.onPress();
+  });
 afterEach(() => {
   act(() => {
     r?.unmount();
@@ -65,6 +73,12 @@ afterEach(() => {
 });
 
 describe('Settings → Study reminder', () => {
+  it('the "Time and days" row shows the summary and opens a sheet with the steppers and days', () => {
+    const row = root().findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && String(n.props.accessibilityLabel).startsWith('Time and days'))[0];
+    expect(row.props.accessibilityLabel).toBe(`Time and days, Every day at ${localTime(19, 0)}`);
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'adjustable' && n.props.accessibilityLabel === 'Reminder hour')).toHaveLength(1);
+  });
+
   it('shows every day at 19:00 by default (an old save without days)', () => {
     expect(allText()).toContain(`Every day at ${localTime(19, 0)}`);
     // Off by default: the time and day choices wait for the switch.

@@ -13,6 +13,7 @@
  */
 import { Alert, Dimensions } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
+import { ChevronRight } from '../components/icons';
 import { Button } from '../components/ui';
 import { RestorePreview, YourData } from '../components/yourData';
 import { useRestoreFlow } from '../lib/useRestoreFlow';
@@ -75,7 +76,9 @@ const allText = () => {
   walk(root());
   return out.join(' ');
 };
-const button = (label: string) => root().findAll((n) => n.props.accessibilityLabel === label && typeof n.props.onPress === 'function')[0];
+/** A button by its name; a Your data row's name continues with its status ("Save a backup, No backup file yet", PR #49 UX P4). */
+const named = (n: ReactTestInstance, label: string) => n.props.accessibilityLabel === label || String(n.props.accessibilityLabel).startsWith(`${label}, `);
+const button = (label: string) => root().findAll((n) => named(n, label) && typeof n.props.onPress === 'function')[0];
 const press = async (label: string) => {
   await act(async () => {
     await button(label).props.onPress();
@@ -144,10 +147,27 @@ describe('Settings → Your data', () => {
   it('every action is a labelled button with a hint', () => {
     render();
     for (const label of ['Save a backup', 'Restore from a backup']) {
-      const b = button(label);
+      // Mobile 1.17: rows in the Your data group; the pressable itself carries the role.
+      const b = root().findAll((n) => named(n, label) && n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function')[0];
       expect(b.props.accessibilityRole).toBe('button');
       expect(b.props.accessibilityHint).toBeTruthy();
     }
+  });
+
+  it('the backup status is in the spoken name, not only the hint; action rows have no chevron (PR #49 UX P4, O1)', () => {
+    render();
+    const save = button('Save a backup');
+    // Hints can be turned off; the status must still be heard.
+    expect(save.props.accessibilityLabel).toBe('Save a backup, No backup file yet');
+    expect(save.props.accessibilityHint).toBe('Opens the share sheet to save a file with your progress.');
+    act(() => {
+      r?.unmount();
+    });
+    useBackup.setState({ lastBackupAt: new Date(2026, 9, 6, 12).getTime() });
+    render();
+    expect(button('Save a backup').props.accessibilityLabel).toBe('Save a backup, Last backup file made: 6 Oct 2026');
+    // A chevron promises somewhere to go; these rows act at once.
+    for (const label of ['Save a backup', 'Restore from a backup']) expect(button(label).findAll((n) => n.type === ChevronRight)).toHaveLength(0);
   });
 
   it('a bad file shows a clear message, no preview, and changes nothing', async () => {
@@ -192,6 +212,10 @@ describe('Settings → Your data', () => {
     expect(useSettings.getState().examDates.cisa).toBe('2026-12-01');
     expect(allText()).toContain('Restored');
     expect(allText()).toContain('Undo restore');
+    // Its deadline is part of the spoken name; the hint is the action only (PR #49 UX P4).
+    const undoRow = button('Undo restore');
+    expect(undoRow.props.accessibilityLabel).toMatch(/^Undo restore, available until \d{1,2} [A-Z][a-z]{2} \d{4}$/);
+    expect(undoRow.props.accessibilityHint).toBe('Puts back your progress from before the restore.');
     // The header now names the backup that was restored.
     expect(allText()).toMatch(/Restored from a backup saved on \d{1,2} [A-Z][a-z]{2} \d{4}/);
     // Undo asks first (and says what is lost), then puts this phone's data back.

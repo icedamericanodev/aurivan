@@ -26,6 +26,7 @@ jest.mock('../components/icons', () => {
 jest.mock('expo-router', () => ({
   router: { replace: jest.fn(), back: jest.fn(), push: jest.fn() },
   useFocusEffect: jest.fn(),
+  useLocalSearchParams: () => ({}),
 }));
 jest.mock('react-native-safe-area-context', () => {
   const { View } = jest.requireActual('react-native');
@@ -131,6 +132,11 @@ describe('welcome screen', () => {
 describe('Settings → About', () => {
   it('carries the same vision and pillars', () => {
     mount(<Settings />);
+    // Mobile 1.17: behind the "About Aurivan" row (a sheet), so Settings stays short.
+    expect(allText()).not.toContain(TAGLINE);
+    act(() => {
+      r!.root.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && String(n.props.accessibilityLabel).startsWith('About Aurivan'))[0].props.onPress();
+    });
     const text = allText();
     expect(text).toContain('Our vision');
     expect(text).toContain(TAGLINE);

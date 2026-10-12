@@ -246,10 +246,10 @@ describe('Practice: the Timed switch and the one-time offer', () => {
   });
 });
 
-describe('Settings → Study defaults', () => {
+describe('Settings → Practice (was Study defaults)', () => {
   it('the practice timer default is off, and the switch saves it', () => {
     mount(<Settings />);
-    expect(allText()).toContain('Study defaults');
+    expect(allText()).toContain('Practice');
     expect(toggleValue('Timed practice')).toBe(false);
     toggle('Timed practice', true);
     expect(useSettings.getState().practiceTimer).toBe(true);

@@ -54,6 +54,7 @@ jest.mock('../components/icons', () => {
 jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), canGoBack: () => true },
   useFocusEffect: jest.fn(),
+  useLocalSearchParams: () => ({}),
 }));
 jest.mock('react-native-safe-area-context', () => {
   const { View: V } = jest.requireActual('react-native');
@@ -540,9 +541,16 @@ describe('useOncePerDay', () => {
 });
 
 // ── Settings → Motion ───────────────────────────────────────────────────
+
+/** Mobile 1.17: Settings → Appearance → Motion is a row that opens the choices in a sheet. */
+const openMotionRow = (at: ReactTestInstance) =>
+  act(() => {
+    at.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && String(n.props.accessibilityLabel).startsWith('Motion, '))[0].props.onPress();
+  });
 describe('Settings → Motion', () => {
   it('offers "Match my phone" and "Reduced" as one radio group, and says when the phone already reduces motion', () => {
     mount(<Settings />);
+    openMotionRow(r!.root);
     const group = r!.root.findByProps({ accessibilityRole: 'radiogroup', accessibilityLabel: 'Motion' });
     const radios = group.findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function');
     expect(radios.map((n) => n.props.accessibilityLabel.split('.')[0])).toEqual(['Match my phone', 'Reduced']);

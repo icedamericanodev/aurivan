@@ -4,9 +4,9 @@
  * heavier on the exam) replace the old per-domain bars; the legend lists
  * domains 1 → 5 like every other list (mobile 1.15), with one line saying
  * Domain 1 is the inner ring.
- * The appearance switch sits at the top on purpose (owner request: dark mode
- * was hard to find in Settings alone). It shares its setting with Settings →
- * Appearance, so both always agree.
+ * Mobile 1.17: no appearance switch here any more. It lives only in
+ * Settings → Appearance → Theme (owner request: once Settings was tidy, the
+ * copy on You was redundant). The gear beside the title opens Settings.
  * Mindset growth (Phase 5b): under the stats, only when the learner picks the
  * tempting runner-up less often than in their first weeks (engine/mindsetGrowth.ts).
  * Share progress: opens a preview of a share card (components/shareCard.tsx)
@@ -36,7 +36,6 @@ import { ShareProgressSheet } from '../../components/shareCard';
 import { LivePlant } from '../../components/plant/LivePlant';
 import { growthShort, plantCallName } from '../../engine/plant';
 import { usePlantView } from '../../lib/plant';
-import { ThemeSwitch } from '../../components/themeSwitch';
 import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Row, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
 import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
 import { mockSubtitle } from '../../components/readinessReport';
@@ -163,9 +162,6 @@ export default function You() {
             last
           />
         ) : null}
-        <View style={{ marginTop: space.md }}>
-          <ThemeSwitch />
-        </View>
       </Enter>
 
       <Enter i={1} style={{ marginTop: space.xl }}>

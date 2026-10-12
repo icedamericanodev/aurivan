@@ -95,11 +95,10 @@ for (const l of lessonShots) {
   console.log('shot lesson', l.id);
 }
 // Settings → About: the brand vision (lockup, tagline, four pillars).
+// Mobile 1.17: the vision sits behind the "About Aurivan" row, in a sheet.
 await shot0('16b-settings-about', '/settings');
-await page.getByText('Our vision', { exact: true }).scrollIntoViewIfNeeded();
-await page.mouse.move(196, 500);
-await page.mouse.wheel(0, 120);
-await page.waitForTimeout(600);
+await page.getByRole('button', { name: /^About Aurivan/ }).first().click();
+await page.waitForTimeout(900);
 await page.screenshot({ path: `${out}/16b-settings-about.png` });
 console.log('shot settings about');
 // Question bank: the domain list, a domain (All), the Missed filter, and the

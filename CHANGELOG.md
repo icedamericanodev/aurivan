@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v11.2.1] — Privacy policy update
+
+### Improved
+- The privacy policy now explains that the mobile app checks for app updates when it opens, and exactly what that check sends.
+
 ## [v11.2] — A new Help and contact page
 
 ### New

@@ -28,11 +28,23 @@ export const EXAM_DATE_PRESETS: { label: string; months?: number }[] = [
   { label: 'Not sure yet' },
 ];
 
-/** The local calendar date `months` from `now`, as "YYYY-MM-DD". */
+/**
+ * The local calendar date `months` from `now`, as "YYYY-MM-DD".
+ *
+ * Same day number in the target month; when that month is shorter, its last
+ * day instead (31 Jan + 1 month = 28 Feb, or 29 Feb in a leap year; 29 Feb
+ * 2028 + 24 months = 28 Feb 2030). `Date.setMonth` alone would roll the spare
+ * days into the month after (31 Jan + 1 month = 3 Mar), so "In 1 month"
+ * would land in the month after next.
+ */
 export function dateInMonths(months: number, now: number): string {
   const d = new Date(now);
-  d.setMonth(d.getMonth() + months);
-  return dayKey(d.getTime()); // local calendar date, not UTC
+  // The 1st of the target month, at noon (no daylight-saving edge can move it to another day).
+  const t = new Date(d.getFullYear(), d.getMonth() + months, 1, 12);
+  // Day 0 of the month after = the last day of the target month.
+  const last = new Date(t.getFullYear(), t.getMonth() + 1, 0).getDate();
+  t.setDate(Math.min(d.getDate(), last));
+  return dayKey(t.getTime()); // local calendar date, not UTC
 }
 
 /** Move a "YYYY-MM-DD" date by `days` (negative = earlier). Calendar maths, no time zone. */
@@ -44,7 +56,7 @@ export function addDays(date: string, days: number): string {
 
 /**
  * Which preset matches a saved date (so its chip shows as selected):
- * no date → "Not sure yet"; a date no preset gives (after stepping by a day) → -1.
+ * no date → "Not sure yet"; a date no preset gives (e.g. one picked on the calendar) → -1.
  */
 export function presetIndexFor(date: string | undefined, now: number): number {
   if (!date) return EXAM_DATE_PRESETS.findIndex((p) => p.months === undefined);

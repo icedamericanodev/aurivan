@@ -38,7 +38,7 @@ export default function ExamWeek() {
         title="Set your exam date first"
         body="The checklist belongs to your exam date. Set it in Settings, and the list is here for the week before."
         fallback="/home"
-        primary={{ label: 'Set exam date', onPress: () => router.push('/settings') }}
+        primary={{ label: 'Set exam date', onPress: () => router.push({ pathname: '/settings', params: { open: 'exam-date' } }) }}
       />
     );
   }

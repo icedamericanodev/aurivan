@@ -45,6 +45,7 @@ export interface Palette {
   wrongBg: string;
   tip: string; // trap warnings
   tipBg: string;
+  scrim: string; // the dim behind a bottom sheet, drawn at `scrimOp` (never full strength)
 }
 
 export const light: Palette = {
@@ -78,6 +79,7 @@ export const light: Palette = {
   wrongBg: '#F7E3E1',
   tip: '#7A5100',
   tipBg: '#F3EAD3',
+  scrim: '#17231B',
 };
 
 export const dark: Palette = {
@@ -111,6 +113,7 @@ export const dark: Palette = {
   wrongBg: '#3A1A1D',
   tip: '#E9C46A',
   tipBg: '#2C2715',
+  scrim: '#000000',
 };
 
 /**
@@ -137,6 +140,13 @@ export const pillarGlyph = {
   light: { fill: '#A9D9BA' },
   dark: { fill: '#2E5440' },
 } as const;
+
+/**
+ * How strongly a bottom sheet's scrim dims the screen behind it (spec §3):
+ * enough that the sheet reads as on top, light enough that the screen it
+ * came from still shows (the learner hasn't gone anywhere).
+ */
+export const scrimOp = { light: 0.4, dark: 0.6 } as const;
 
 /**
  * Paper grain overlay opacity (spec §10.5). Never higher: at 5% the weakest

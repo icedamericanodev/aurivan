@@ -76,6 +76,12 @@ afterEach(() => {
 });
 
 describe('Settings → Motion names the phone’s own setting', () => {
+
+/** Mobile 1.17: Settings → Appearance → Motion is a row that opens the choices in a sheet. */
+const openMotionRow = (at: ReactTestInstance) =>
+  act(() => {
+    at.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && String(n.props.accessibilityLabel).startsWith('Motion, '))[0].props.onPress();
+  });
   const subtitle = () =>
     root().findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Match my phone'))[0].props
       .accessibilityLabel as string;
@@ -87,18 +93,21 @@ describe('Settings → Motion names the phone’s own setting', () => {
   it('iOS: Reduce Motion; Android: Remove animations', () => {
     Platform.OS = 'ios';
     mount(<Settings />);
+    openMotionRow(root());
     expect(subtitle()).toContain('Your phone’s Reduce Motion');
     act(() => {
       r!.unmount();
     });
     Platform.OS = 'android';
     mount(<Settings />);
+    openMotionRow(root());
     expect(subtitle()).toContain('Your phone’s Remove animations');
     expect(subtitle()).not.toContain('Reduce Motion');
   });
 
   it('Reduced says what it does', () => {
     mount(<Settings />);
+    openMotionRow(root());
     const reduced = root().findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Reduced'))[0];
     expect(reduced.props.accessibilityLabel).toContain('Short fades instead of slides; growth shows its end state.');
   });

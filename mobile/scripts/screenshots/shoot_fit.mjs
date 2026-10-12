@@ -187,6 +187,8 @@ await go('/home', 2400);
 await edit(P, `const d = v.state.days.cisa; d.done = d.items.map((_, i) => i === 0);`);
 await go('/settings', 2200);
 await toTop('Your study', 20);
+// Mobile 1.17: Daily time is a row that opens its choices in a sheet.
+await press(/^Daily time, /);
 await pick(/^30 minutes a day$/);
 await shot('f11-settings-your-study');
 await toTop('Exam-focused plan', 160);

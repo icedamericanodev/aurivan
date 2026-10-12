@@ -351,7 +351,7 @@ export default function Today() {
             title="How did it go?"
             meta="Set a new date to plan what’s next."
             // Settings opens with "Exam date" near the top, right under Certification.
-            action={{ label: 'Set exam date', onPress: () => router.push('/settings'), icon: (col) => <Settings size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} /> }}
+            action={{ label: 'Set exam date', onPress: () => router.push({ pathname: '/settings', params: { open: 'exam-date' } }), icon: (col) => <Settings size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} /> }}
           />
         ) : allDone ? (
           <Celebrate celebration={clearing}>

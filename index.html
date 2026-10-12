@@ -5172,7 +5172,7 @@ body[data-mock-results="1"] #readinessCard { display: none; }
     <span class="logo-tagline">Free CISA&reg; exam prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v11.2</span>
+    <span class="bank-pill" id="versionPill">v11.2.1</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5569,7 +5569,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v11.2';
+const APP_VERSION = 'v11.2.1';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -12516,6 +12516,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Privacy policy update',
+    items: [
+      { cat: 'improved', text: 'The privacy policy now explains that the mobile app checks for app updates when it opens, and exactly what that check sends.' }
+    ]
+  },
+  {
+    version: 'v11.2',
     title: 'A new Help and contact page',
     items: [
       { cat: 'new', text: 'A Help and contact page shows how to reach us, what to include when you report a problem, and answers to common questions.' },
