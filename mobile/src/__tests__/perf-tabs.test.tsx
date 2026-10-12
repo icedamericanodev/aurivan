@@ -271,7 +271,11 @@ function engineTimings() {
 }
 
 // ── The report ──────────────────────────────────────────────────────────
-const report = process.env.PERF_REPORT === '1' ? describe : describe.skip;
+// Opt-in: only registered with PERF_REPORT=1 (prints numbers, asserts nothing),
+// so the everyday suite shows no "skipped" test. The budgets below always run.
+const report = (name: string, fn: () => void) => {
+  if (process.env.PERF_REPORT === '1') describe(name, fn);
+};
 report('report', () => {
   it('measures mount, tab switches, one answer, any store write, and the engine', () => {
     const result: Record<string, unknown> = { save, buildMs, reduced: REDUCED };
