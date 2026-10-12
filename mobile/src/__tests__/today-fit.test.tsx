@@ -19,6 +19,7 @@ import { planText } from '../components/journey';
 import { lessonsFor } from '../content/lessons';
 import { addDays } from '../engine/examDay';
 import { dayKey } from '../engine/streak';
+import { startMock } from '../lib/sessions';
 import { useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
@@ -184,6 +185,19 @@ describe('the plan items in minutes (C1, C7)', () => {
     expect(planText({ kind: 'practice', count: 5, label: 'x', why: 'learn' }).meta).toBe('About 6 min · on what you just learned');
     expect(planText({ kind: 'game', gameId: 'trap', label: 'x' }).meta).toBe('Game · about 6 min');
     expect(planText({ kind: 'mock', questions: 50, label: 'Mini mock · 50 questions' }).short).toBe('Mock · about 80 min');
+  });
+});
+
+describe('a paused untimed mock on Today (C4)', () => {
+  it('"Also today" counts its questions at exam pace: 50 left is about 80 min, as Practice says', () => {
+    useSettings.setState({ fitPrompt: 'answered', dailyMinutes: 20 });
+    act(() => {
+      startMock('cisa', 50, { timing: 'untimed' });
+    });
+    mount(<Today />);
+    // The starting check (19 min) is the hero; Also today = the paused mock.
+    expect(allText()).toMatch(/Also today About 80 min/);
+    useSession.getState().clear();
   });
 });
 
