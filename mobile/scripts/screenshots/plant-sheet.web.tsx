@@ -19,7 +19,7 @@ import fs from 'fs';
 import path from 'path';
 import type { ReactElement } from 'react';
 import { Plant } from '../../src/components/plant/Plant';
-import { KeepsakeIcon } from '../../src/components/plant/Keepsake';
+import { KeepsakeIcon, PlanterIcon } from '../../src/components/plant/Keepsake';
 import { colourwaysFor, GROUNDS, KEEPSAKE_ITEMS, plantersFor, resolveLook, VISITORS, LOOK_ITEMS } from '../../src/engine/plantLooks';
 import { getCertification } from '../../src/content/certifications';
 import { GROWTH_LOOKS, GROWTH_NAMES, organs, organScales, plantLabel, PLANT_SPECIES, SPECIES_INFO, type GrowthLevel, type PlantSpecies } from '../../src/engine/plant';
@@ -146,7 +146,8 @@ function looks(theme: Theme): string {
 }
 
 function keepsakeSheet(theme: Theme): string {
-  let b = cardRow('Every keepsake (each badge’s emblem), 48pt icon', KEEPSAKE_ITEMS.map((k) => card(renderToStaticMarkup(<KeepsakeIcon id={k.id} size={48} />), k.name)));
+  let b = cardRow('Every keepsake (each badge’s emblem), 48pt icon (fitted to 80% height)', KEEPSAKE_ITEMS.map((k) => card(renderToStaticMarkup(<KeepsakeIcon id={k.id} size={48} theme={theme} />), k.name)));
+  b += cardRow('Planter icons (the Look screen’s planter rows), 40pt', (['oak', 'lotus', 'bonsai', 'cactus'] as PlantSpecies[]).flatMap((sp) => plantersFor(sp).map((pl) => card(renderToStaticMarkup(<PlanterIcon id={pl.id} species={sp} size={40} theme={theme} />), `${SPECIES_INFO[sp].name} · ${pl.name}`))));
   for (const sp of ['oak', 'sunflower', 'cactus'] as PlantSpecies[]) {
     const sets = [
       ['stepping-stone', 'trail-post', 'trail-board'],

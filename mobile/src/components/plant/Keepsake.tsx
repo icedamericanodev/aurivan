@@ -6,7 +6,8 @@
 import { memo, type ReactNode } from 'react';
 import { View } from 'react-native';
 import Svg, { Circle, Ellipse, G, Path } from 'react-native-svg';
-import { keepsakeIcon, type PNode } from './art';
+import type { PlantSpecies } from '../../engine/plant';
+import { keepsakeIcon, planterIcon, type PNode } from './art';
 
 function node(n: PNode, key: string): ReactNode {
   const p: Record<string, unknown> = {};
@@ -30,9 +31,7 @@ function node(n: PNode, key: string): ReactNode {
   }
 }
 
-/** One keepsake alone, decorative (its name is always in words beside it). */
-export const KeepsakeIcon = memo(function KeepsakeIcon({ id, size, dim = false }: { id: string; size: number; dim?: boolean }) {
-  const { root, viewBox } = keepsakeIcon(id);
+function Icon({ root, viewBox, size, dim }: { root: PNode; viewBox: string; size: number; dim: boolean }) {
   return (
     <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ width: size, height: size, opacity: dim ? 0.45 : 1 }}>
       <Svg width={size} height={size} viewBox={viewBox}>
@@ -40,5 +39,17 @@ export const KeepsakeIcon = memo(function KeepsakeIcon({ id, size, dim = false }
       </Svg>
     </View>
   );
+}
+
+/** One keepsake alone, decorative (its name is always in words beside it). Dark: a soft cream rim (UX review P12). */
+export const KeepsakeIcon = memo(function KeepsakeIcon({ id, size, dim = false, theme = 'light' }: { id: string; size: number; dim?: boolean; theme?: 'light' | 'dark' }) {
+  const { root, viewBox } = keepsakeIcon(id, theme);
+  return <Icon root={root} viewBox={viewBox} size={size} dim={dim} />;
+});
+
+/** One planter alone, as this species wears it (UX review P8), decorative. */
+export const PlanterIcon = memo(function PlanterIcon({ id, species, size, dim = false, theme = 'light' }: { id: string; species: PlantSpecies; size: number; dim?: boolean; theme?: 'light' | 'dark' }) {
+  const { root, viewBox } = planterIcon(id, species, theme);
+  return <Icon root={root} viewBox={viewBox} size={size} dim={dim} />;
 });
 

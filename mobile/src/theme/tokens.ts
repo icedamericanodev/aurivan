@@ -350,14 +350,16 @@ export const motion = {
   /**
    * The plant (mobile 1.14, motion.md §5 / M7 / M8). Whole-layer transforms
    * only (never a path rebuilt per frame):
-   * - breath: one half-breath (in, or out); the Breathe idle burst is
-   *   `breaths` full breaths (≤ 5 s) on focus, then still. You and Your plant only;
-   * - react: a mood's one reaction (a hop, a lean, a stretch);
+   * - breath / breathOut: one slow breath in, then out (a longer out-breath,
+   *   UX review P6); the Breathe idle burst is `breaths` of them (≤ 5 s),
+   *   once per surface per app session, then still. You and Your plant only;
+   * - react: a mood's one reaction (happy stretches, proud stands tall);
+   * - lean: curious' reaction (a lean, a held look, back);
    * - grow: the growth sequence (old swells, cross-fade, new settles);
-   * - plantIn: onboarding's seed settling and the first sprout popping;
-   * - reduced: the cross-fade that replaces any of it under Reduce Motion.
+   * - plantIn: onboarding's seed settling and the first sprout popping.
+   * Reduce Motion stills all of it (no cross-fade token: the end state shows).
    */
-  plant: { breath: 1100, breaths: 2, react: 600, lean: 900, grow: 900, plantIn: 820, reduced: 150 },
+  plant: { breath: 2000, breathOut: 2400, breaths: 1, react: 600, lean: 900, grow: 900, plantIn: 820 },
   rise: 8, // pt: content enters this far below its place (y only)
   shift: 16, // pt: a page turn's sideways offset
   pressScale: 0.98,
@@ -465,15 +467,18 @@ export const plantLeaf = {
   gold: { deep: '#A8771F', mid: '#CF9E34', light: '#E9C46A', hi: '#F6E2A6' },
   blossom: { deep: '#BB5F7B', mid: '#DC8BA3', light: '#F0B4C4', hi: '#FBDDE5' },
   twilight: { deep: '#76598D', mid: '#987AB5', light: '#BCA2D6', hi: '#E1D3EF' },
-  silver: { deep: '#56705A', mid: '#7F977A', light: '#A9BCA0', hi: '#D3DEC9' },
+  // Silver leaf / Frost: a cool blue-green, never a dry grey (UX review P13).
+  silver: { deep: '#5E7F70', mid: '#7FA393', light: '#A9C4B6', hi: '#D3E2D9' },
   rosewood: { deep: '#8E2F3A', mid: '#B8404C', light: '#D9666F', hi: '#F1A3A6' },
   pearl: { deep: '#AEB8AA', mid: '#E3E8DD', light: '#FAFAF5', hi: '#FFFFFF' },
   cactus: { deep: '#2F6B45', mid: '#4C9160', light: '#7DB97E', hi: '#F4EED9' },
-  // Mobile 1.14 colourways. Snow: white blooms with a mauve-grey shadow, so the
-  // silhouette still holds 3:1 on the light page (white cherry, white lotus).
-  snow: { deep: '#9A8590', mid: '#E4D8DD', light: '#F6EFF2', hi: '#FFFFFF' },
+  // Mobile 1.14 colourways. Snow: white blooms with a soft blush shadow
+  // (white cherry, white lotus): fresh snow, never a faded grey (UX review P13).
+  snow: { deep: '#B48FA0', mid: '#F2E6EC', light: '#FAF4F7', hi: '#FFFFFF' },
   // Lemon: a paler sunflower.
   lemon: { deep: '#9C8516', mid: '#D2BB3E', light: '#EEDD78', hi: '#FAF2BF' },
+  // Golden: the coconut's third colourway, green-gold fronds in full sun (with orange nuts), alive, never dried.
+  golden: { deep: '#66721F', mid: '#98A034', light: '#C4C25A', hi: '#E7E3A0' },
 } satisfies Record<string, PlantLeafPalette>;
 export type PlantLeafId = keyof typeof plantLeaf;
 
@@ -548,6 +553,7 @@ export const plantArt = {
     stalk: '#4A3A2A',
     coconutRipe: '#7A5A34',
     coconutGreen: '#7E9A3E',
+    coconutGolden: '#D9822B', // the Golden colourway's orange king coconuts
     cone: '#8A5A34',
     coneLine: '#6A4024',
     mossBloomCore: '#E9C46A',
@@ -576,7 +582,7 @@ export const plantArt = {
     fiveDots: ['#3F7F96', '#4E8A3E', '#B0802C', '#86689C', '#5E7482'],
     compass: '#2F6B4C', // 3:1 on the dark page too
     compassLit: '#3E8160',
-    compassRim: '#24533B',
+    compassRim: '#4A8A68', // a lifted rim, like the other planters' (UX review P14: a dark rim read as a deeper pot)
     compassStar: '#E9C46A',
     banded: '#DCCBA6',
     bandedLit: '#E9DDC2',

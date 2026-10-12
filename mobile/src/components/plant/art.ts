@@ -16,7 +16,7 @@
  * head, blooms, face), drift, fx, ground-front.
  */
 import type { PlantSpecies } from '../../engine/plant';
-import type { ArtLook } from '../../engine/plantLooks';
+import { lookItem, type ArtLook } from '../../engine/plantLooks';
 import { plantArt as A0, plantLeaf, plantTheme, type PlantLeafPalette } from '../../theme/tokens';
 
 // ── nodes ───────────────────────────────────────────────────────────────
@@ -659,7 +659,8 @@ function ground(kind: PotKind, size: 1 | 2 | 3, lod: Lod, theme: 'light' | 'dark
   };
   /** A small waymark post with a painted blaze (the True North chevron). */
   const waymark = (x: number, foot: number) => {
-    const s = k * 1.5;
+    // At the keepsakes' scale (UX review P15), so it reads as a real waymark beside them.
+    const s = k * 1.6;
     return G('trail-blaze', [
       P(`M${f(x - 2.6 * s)} ${f(foot)}V${f(foot - 15 * s)}Q${f(x)} ${f(foot - 18 * s)} ${f(x + 2.6 * s)} ${f(foot - 15 * s)}V${f(foot)}Z`, PL.post),
       P(`M${f(x - 2.6 * s)} ${f(foot)}V${f(foot - 15 * s)}Q${f(x - 1.4 * s)} ${f(foot - 16.6 * s)} ${f(x - 0.6 * s)} ${f(foot - 16.9 * s)}V${f(foot)}Z`, PL.postLit),
@@ -813,7 +814,8 @@ function ground(kind: PotKind, size: 1 | 2 | 3, lod: Lod, theme: 'light' | 'dark
     front.push(ring.ahead);
   }
   if (look === 'trail-blaze' && lod !== 'icon') {
-    const s = Math.max(0.7, ph / 22);
+    // ×1.6 (UX review P15), so the painted blaze reads at 104pt; never past the pot's face.
+    const s = Math.min((ph - 8) / 10, Math.max(0.7, ph / 22) * 1.6);
     const y = kind === 'bonsai' ? top + 1 + (floor - top - 4) / 2 : faceY + (kind === 'celadon' ? 0 : 2);
     if (kind === 'bonsai') front.push(waymark(100 - span - 7 * k, floor));
     else
@@ -840,8 +842,15 @@ function face(x: number, y: number, w: number, mood: Mood, lod: Lod): GNode {
   const eyeL = x - sp;
   const eyeR = x + sp;
   const lw = Math.max(1.2, er * 0.55);
-  if (mood === 'happy' || mood === 'proud') {
+  if (mood === 'happy') {
     for (const ex of [eyeL, eyeR]) kids.push(S(`M${f(ex - er)} ${f(y + er * 0.3)}Q${f(ex)} ${f(y - er * 1.5)} ${f(ex + er)} ${f(y + er * 0.3)}`, INK, lw));
+  } else if (mood === 'proud') {
+    // Proud (UX review P3, option a): content half-lids, the eyes' lower
+    // halves under a calm lid line. Clearly not happy's "^ ^".
+    for (const ex of [eyeL, eyeR]) {
+      kids.push(P(`M${f(ex - er * 0.92)} ${f(y - er * 0.05)}A${f(er * 0.92)} ${f(er * 1.05)} 0 0 0 ${f(ex + er * 0.92)} ${f(y - er * 0.05)}Z`, INK));
+      kids.push(S(`M${f(ex - er * 1.15)} ${f(y - er * 0.05)}Q${f(ex)} ${f(y - er * 0.55)} ${f(ex + er * 1.15)} ${f(y - er * 0.05)}`, INK, lw));
+    }
   } else if (mood === 'resting') {
     for (const ex of [eyeL, eyeR]) kids.push(S(`M${f(ex - er)} ${f(y + er * 0.2)}Q${f(ex)} ${f(y + er * 1.3)} ${f(ex + er)} ${f(y + er * 0.2)}`, INK, lw));
   } else if (mood === 'blink') {
@@ -855,7 +864,7 @@ function face(x: number, y: number, w: number, mood: Mood, lod: Lod): GNode {
     if (mood === 'curious') kids.push(S(`M${f(eyeR - er)} ${f(y - er * 2.5)}Q${f(eyeR)} ${f(y - er * 3.3)} ${f(eyeR + er * 1.1)} ${f(y - er * 2.4)}`, INK, lw * 0.85));
   }
   if (lod !== 'icon') {
-    const co = mood === 'happy' || mood === 'proud' ? 0.6 : 0.38;
+    const co = mood === 'proud' ? 0.7 : mood === 'happy' ? 0.6 : 0.38;
     kids.unshift(E(eyeL - er * 0.9, y + er * 2.1, er * 1.3, er * 0.75, A0.blush, { opacity: co }), E(eyeR + er * 0.9, y + er * 2.1, er * 1.3, er * 0.75, A0.blush, { opacity: co }));
   }
   const my = y + er * 2.4;
@@ -863,7 +872,8 @@ function face(x: number, y: number, w: number, mood: Mood, lod: Lod): GNode {
   if (mood === 'happy') kids.push(P(`M${f(x - mw * 1.25)} ${f(my - 0.6)}Q${f(x)} ${f(my + mw * 2)} ${f(x + mw * 1.25)} ${f(my - 0.6)}Z`, INK));
   else if (mood === 'curious') kids.push(E(x, my + 0.6, mw * 0.5, mw * 0.62, INK));
   else if (mood === 'resting') kids.push(S(`M${f(x - mw * 0.55)} ${f(my + 0.4)}Q${f(x)} ${f(my + 1.3)} ${f(x + mw * 0.55)} ${f(my + 0.4)}`, INK, lw * 0.85));
-  else if (mood === 'proud') kids.push(S(`M${f(x - mw * 1.2)} ${f(my - 0.5)}Q${f(x)} ${f(my + mw * 1.5)} ${f(x + mw * 1.2)} ${f(my - 0.5)}`, INK, lw));
+  // Proud: a wider closed smile (no open mouth: that is happy's).
+  else if (mood === 'proud') kids.push(S(`M${f(x - mw * 1.65)} ${f(my - 1)}Q${f(x)} ${f(my + mw * 1.9)} ${f(x + mw * 1.65)} ${f(my - 1)}`, INK, lw * 1.05));
   else kids.push(S(`M${f(x - mw * 0.8)} ${f(my)}Q${f(x)} ${f(my + mw * 1.1)} ${f(x + mw * 0.8)} ${f(my)}`, INK, lw * 0.9));
   return G('face', kids);
 }
@@ -920,8 +930,23 @@ function visitorNode(id: string | undefined, A: Anchors, lod: Lod): GNode | null
  * One keepsake, drawn about its foot at (0, 0), about 20 units tall and up
  * to ±11 wide. Simple shapes, so it still reads at 64pt. Original art.
  */
-export function keepsakeShape(id: string, lod: Lod): PNode[] {
-  const K = A0.keepsake;
+export function keepsakeShape(id: string, lod: Lod, theme: 'light' | 'dark' = 'light'): PNode[] {
+  const parts = keepsakeParts(id, lod, theme);
+  if (theme !== 'dark' || !parts.length) return parts;
+  // Dark (UX review P12): a 1px cream rim at 35% round the object, so a
+  // dark post or a dark bird never sinks into the night page.
+  const rim = (n: PNode): PNode =>
+    n.t === 'g'
+      ? { ...n, children: n.children.map(rim) }
+      : { ...n, fill: n.fill === 'none' ? 'none' : A0.keepsake.cream, stroke: A0.keepsake.cream, sw: (n.stroke ? (n.sw ?? 1) : 0) + 1.3, opacity: undefined };
+  // The ground shade (the first, low ellipse of most) gets no rim.
+  const body = parts.filter((n) => !(n.t === 'ellipse' && n.fill === A0.black));
+  return [G(null, body.map(rim), { opacity: 0.35 }), ...parts];
+}
+
+function keepsakeParts(id: string, lod: Lod, theme: 'light' | 'dark'): PNode[] {
+  // Dark: the darkest wood lifts to the mid wood (it would vanish on the night page).
+  const K = theme === 'dark' ? { ...A0.keepsake, woodDark: A0.keepsake.wood, wood: A0.keepsake.woodLit } : A0.keepsake;
   const fine = lod === 'full';
   const shade = E(0, 0.4, 8.5, 1.8, A0.black, { opacity: 0.12 });
   switch (id) {
@@ -1067,14 +1092,39 @@ export function keepsakeShape(id: string, lod: Lod): PNode[] {
 }
 
 /** One keepsake standing at (x, foot) at scale k. */
-function keepsakeAt(id: string, x: number, foot: number, k: number, lod: Lod): GNode {
-  return G(`keepsake-${id}`, keepsakeShape(id, lod), { transform: `translate(${f(x)} ${f(foot)}) scale(${f(k)})` });
+function keepsakeAt(id: string, x: number, foot: number, k: number, lod: Lod, theme: 'light' | 'dark'): GNode {
+  return G(`keepsake-${id}`, keepsakeShape(id, lod, theme), { transform: `translate(${f(x)} ${f(foot)}) scale(${f(k)})` });
+}
+
+/**
+ * A square viewBox round a drawing: its height fills about 80% of the box
+ * (its width at most 90%), centred (UX review: every icon reads the same size).
+ */
+function iconFrame(root: PNode): string {
+  const b = bounds(root);
+  const w = b.maxX - b.minX;
+  const h = b.maxY - b.minY;
+  const side = Math.max(h / 0.8, w / 0.9, 1);
+  const cx = (b.minX + b.maxX) / 2;
+  const cy = (b.minY + b.maxY) / 2;
+  return `${f(cx - side / 2)} ${f(cy - side / 2)} ${f(side)} ${f(side)}`;
 }
 
 /** A keepsake alone, framed for a small icon (the Look screen's rows). */
-export function keepsakeIcon(id: string): { root: GNode; viewBox: string } {
-  const root = G('mascot', keepsakeShape(id, 'small'));
-  return { root, viewBox: '-13 -23 26 26' };
+export function keepsakeIcon(id: string, theme: 'light' | 'dark' = 'light'): { root: GNode; viewBox: string } {
+  const root = G('mascot', keepsakeShape(id, 'small', theme));
+  return { root, viewBox: iconFrame(root) };
+}
+
+/**
+ * A planter as a small icon (the Look screen's planter rows, UX review P8):
+ * the pot this species gets for it, with the plant's first sprout in it (a
+ * bare pot is a thin sliver at 40pt; the sprout makes it read as a planter).
+ * No face: it is a picture of the pot, not the companion.
+ */
+export function planterIcon(id: string, species: PlantSpecies, theme: 'light' | 'dark' = 'light'): { root: GNode; viewBox: string } {
+  const built = buildPlant({ species, stage: 2, lod: 'small', theme, quietLook: true, drift: false, look: { planter: id } });
+  return { root: built.root, viewBox: iconFrame(built.root) };
 }
 
 // ── the Elder gift (flowers or fruit) ───────────────────────────────────
@@ -1165,12 +1215,14 @@ function flourish(sp: TreeArt, st: number, A: Anchors, lod: Lod, seed: number, c
       [11, 16],
     ];
     const rr = st === 6 ? 7 : 6;
+    // The Golden colourway carries orange king coconuts (UX review P13).
+    const nut = sp.palette === L.golden ? g.coconutGolden : st === 6 ? g.coconutRipe : g.coconutGreen;
     for (let i = 0; i < m; i++) {
       const [dx, dy] = pts[i];
       const x = palmCrown.x + dx;
       const y = palmCrown.y + dy;
-      kids.push(C(x, y, rr, st === 6 ? g.coconutRipe : g.coconutGreen), C(x - rr * 0.35, y - rr * 0.35, rr * 0.3, A0.white, { opacity: 0.25 }));
-      if (lod !== 'icon') kids.push(C(x + rr * 0.2, y + rr * 0.35, rr * 0.16, mix(st === 6 ? g.coconutRipe : g.coconutGreen, A0.black, 0.35)));
+      kids.push(C(x, y, rr, nut), C(x - rr * 0.35, y - rr * 0.35, rr * 0.3, A0.white, { opacity: 0.25 }));
+      if (lod !== 'icon') kids.push(C(x + rr * 0.2, y + rr * 0.35, rr * 0.16, mix(nut, A0.black, 0.35)));
     }
   }
   if (sp.flourish === 'moss') for (const o of A.organs.slice(0, 5)) kids.push(glyph('blossom', o.x + 4, o.y - 3, lod === 'full' ? 1 : 1.25, r() * 60, A0.white, { core: g.mossBloomCore }));
@@ -1939,7 +1991,8 @@ export interface BuiltPlant {
  * bounded: the oldest entry goes first.
  */
 const BUILT = new Map<string, BuiltPlant>();
-const BUILT_MAX = 96;
+// 32 (code review M8c): about 13 previews and 4 screens are ever live, and keys churn as organs move.
+const BUILT_MAX = 32;
 const lookKey = (l: ArtLook | undefined) => (l ? [l.palette ?? '', l.ground ?? '', l.planter ?? '', l.visitor ?? '', (l.keepsakes ?? []).join('+')].join('/') : '');
 const buildKey = (o: BuildOpts) =>
   [o.species, Math.round(o.stage), o.lod ?? 'full', o.theme ?? 'light', o.quietLook ? 1 : 0, o.resting ? 1 : 0, o.mood ?? '', o.drift === false ? 0 : 1, (o.organs ?? []).join(','), lookKey(o.look)].join('|');
@@ -2042,6 +2095,9 @@ function buildUncached(o: BuildOpts): BuiltPlant {
   // Keepsakes (mobile 1.14): up to three, on the shelf beside the plant. Two
   // base slots (left, right) and one behind it; the clear dawn is always the
   // backdrop. Never at icon size (a 24pt chip is the silhouette only).
+  // UX review H2: flat ones (a stone, a pond, a ring) take the base slots
+  // first, since behind the plant the trunk would hide them; a flat third
+  // lies in front instead, and the slot behind stands clear of the trunk.
   const keepBack: Maybe[] = [];
   const keepFront: Maybe[] = [];
   let dawn: GNode | null = null;
@@ -2050,30 +2106,37 @@ function buildUncached(o: BuildOpts): BuiltPlant {
     const k = GROUND_K[GEO[st].ground] * 1.6;
     const gap = 3 + 9 * k;
     const half = 11 * k;
-    const slots = [
-      { x: Math.max(2 + half, 100 - gr.span - gap), foot: gr.floor, back: false },
-      { x: Math.min(198 - half, 100 + gr.span + gap), foot: gr.floor, back: false },
-      // The third stands behind the plant: on the mound, or in a pot's soil like a garden figurine (the rim overlaps its foot).
-      potKind === 'meadow' ? { x: 100 + gr.span * 0.56, foot: gr.floor - 3, back: true } : { x: 100 + gr.span * 0.76, foot: gr.top + 1.5, back: true },
+    const base2 = [
+      { x: Math.max(2 + half, 100 - gr.span - gap), foot: gr.floor },
+      { x: Math.min(198 - half, 100 + gr.span + gap), foot: gr.floor },
     ];
-    const items = look.keepsakes.slice(0, 3);
-    let slot = 0;
-    for (const id of items) {
-      if (id === 'clear-dawn') {
-        // A soft sun behind the crown: the mist has lifted.
-        const T = plantTheme[theme];
-        const box = A.canopyBox ?? { cx: 100, cy: 120, rx: 30, ry: 30 };
-        const r = Math.min(26, Math.max(12, box.rx * 0.42));
-        const cx = Math.min(196 - r, box.cx + box.rx * 0.62);
-        const cy = Math.max(r + 2, box.cy - box.ry * 0.7);
-        dawn = G('keepsake-clear-dawn', [C(cx, cy, r, A0.keepsake.dawn, { opacity: T.dawnOpacity }), C(cx, cy, r * 0.66, A0.keepsake.dawn, { opacity: Math.min(1, T.dawnOpacity + 0.2) })]);
-        continue;
-      }
-      // Without the dawn, the third keepsake stands behind the plant.
-      const s = slots[slot++];
-      if (!s) break;
-      (s.back ? keepBack : keepFront).push(keepsakeAt(id, s.x, s.foot, s.back ? k * (potKind === 'meadow' ? 0.8 : 0.68) : k, lod));
+    const items = [...new Set(look.keepsakes)].slice(0, 3);
+    if (items.includes('clear-dawn')) {
+      // A soft sun behind the crown: the mist has lifted.
+      const T = plantTheme[theme];
+      const box = A.canopyBox ?? { cx: 100, cy: 120, rx: 30, ry: 30 };
+      const r = Math.min(26, Math.max(12, box.rx * 0.42));
+      const cx = Math.min(196 - r, box.cx + box.rx * 0.62);
+      const cy = Math.max(r + 2, box.cy - box.ry * 0.7);
+      dawn = G('keepsake-clear-dawn', [C(cx, cy, r, A0.keepsake.dawn, { opacity: T.dawnOpacity }), C(cx, cy, r * 0.66, A0.keepsake.dawn, { opacity: Math.min(1, T.dawnOpacity + 0.2) })]);
     }
+    const flat = (id: string) => lookItem(id)?.shape === 'flat';
+    const standing = items.filter((id) => id !== 'clear-dawn');
+    const order = [...standing.filter(flat), ...standing.filter((id) => !flat(id))];
+    const trunkHalf = bandHalfWidth({ ...tree, children: [tree.children[0]] }, base - 16, base - 1);
+    order.forEach((id, i) => {
+      if (i < 2) keepFront.push(keepsakeAt(id, base2[i].x, base2[i].foot, k, lod, theme));
+      else if (flat(id)) {
+        // A flat third lies in front, just right of the trunk (never over its face).
+        const kf = k * 0.8;
+        keepFront.push(keepsakeAt(id, Math.min(198 - 11 * kf, 100 + Math.max(gr.span * 0.5, trunkHalf + 9 * kf)), gr.floor + 2, kf, lod, theme));
+      } else {
+        // Behind the plant, clear of the trunk: on the mound, or in a pot's soil like a garden figurine (the rim overlaps its foot).
+        const kb = k * (potKind === 'meadow' ? 0.8 : 0.68);
+        const x = Math.min(198 - 11 * kb, 100 + Math.max(trunkHalf + 11 * kb, gr.span * (potKind === 'meadow' ? 0.62 : 0.76)));
+        keepBack.push(keepsakeAt(id, x, potKind === 'meadow' ? gr.floor - 3 : gr.top + 1.5, kb, lod, theme));
+      }
+    });
   }
   const frame = frameFor(bounds(G(null, [gr.back, ...(keepBack as PNode[]), tree, gr.front, ...(keepFront.filter(Boolean) as PNode[]), dawn ?? null].filter(Boolean) as PNode[])));
   // The resting dusk: a soft disc behind the whole plant, filling the frame.
@@ -2274,6 +2337,25 @@ export function bounds(n: PNode, m: Mat = ID, box: Box = { minX: Infinity, minY:
 }
 
 /** Every named group in a part tree, depth-first (tests and motion use the names). */
+/** How far a drawing reaches from the centre line (x = 100) between two heights: the trunk's half-width at its base. */
+export function bandHalfWidth(n: PNode, yLo: number, yHi: number, m: Mat = ID): number {
+  const mm = n.transform ? mul(m, parseTransform(n.transform)) : m;
+  let hw = 0;
+  const add = (x: number, y: number) => {
+    const [px, py] = apply(mm, x, y);
+    if (py >= yLo && py <= yHi) hw = Math.max(hw, Math.abs(px - 100));
+  };
+  if (n.t === 'g') for (const c of n.children) hw = Math.max(hw, bandHalfWidth(c, yLo, yHi, mm));
+  else if (n.t === 'circle') {
+    add(n.cx - n.r, n.cy);
+    add(n.cx + n.r, n.cy);
+  } else if (n.t === 'ellipse') {
+    add(n.cx - n.rx, n.cy);
+    add(n.cx + n.rx, n.cy);
+  } else for (const [x, y] of pathPoints(n.d)) add(x, y);
+  return hw;
+}
+
 export function groupNames(n: PNode, out: string[] = []): string[] {
   if (n.t === 'g') {
     if (n.id) out.push(n.id);
