@@ -10,19 +10,35 @@
  * into view (a plant check, a growth "seen" mark). So a save whose top-level
  * fields are all the very same objects as the last save is skipped: there
  * is nothing new to write. Any real change makes a new object for what
- * changed (the stores never mutate), so it is always written.
+ * changed (the stores never mutate: src/__tests__/stores-immutable.test.ts),
+ * so it is always written.
+ *
+ * Only a write the phone CONFIRMED counts as saved. While a write is still
+ * in flight, the same state again shares it; if that write then fails, the
+ * shared save writes again by itself (unless a newer save has come since,
+ * which holds the newer state). A failed write is never taken as saved.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createJSONStorage, type PersistStorage, type StorageValue } from 'zustand/middleware';
 
 const json = createJSONStorage(() => AsyncStorage)!;
 
-/** The last value written (or read) per key: its top-level fields and version. */
-const last = new Map<string, { version?: number; fields: Record<string, unknown> }>();
+/** A save's version and its top-level fields (the objects themselves, compared by identity). */
+type Snap = { version?: number; fields: Record<string, unknown> };
+/** Per key: the last save the phone confirmed. */
+const saved = new Map<string, Snap>();
+/** Per key: the write still in flight (the newest one started), and what it writes. */
+const pending = new Map<string, { snap: Snap | null; done: Promise<void> }>();
+/** Per key: how many saves were asked for, so a retry never writes over a newer save. */
+const asked = new Map<string, number>();
 
-/** True when every top-level field is the same object (or value) as last time. */
-function unchanged(name: string, value: StorageValue<unknown>): boolean {
-  const prev = last.get(name);
+function snapOf(value: StorageValue<unknown>): Snap | null {
+  const state = value.state;
+  return state && typeof state === 'object' ? { version: value.version, fields: { ...(state as Record<string, unknown>) } } : null;
+}
+
+/** True when every top-level field is the same object (or value) as in `prev`. */
+function same(prev: Snap | null | undefined, value: StorageValue<unknown>): boolean {
   const state = value.state as Record<string, unknown> | null;
   if (!prev || !state || typeof state !== 'object' || prev.version !== value.version) return false;
   const keys = Object.keys(state);
@@ -30,35 +46,77 @@ function unchanged(name: string, value: StorageValue<unknown>): boolean {
   return keys.every((k) => Object.is(state[k], prev.fields[k]));
 }
 
-function remember(name: string, value: StorageValue<unknown>) {
-  const state = value.state;
-  if (state && typeof state === 'object') last.set(name, { version: value.version, fields: { ...(state as Record<string, unknown>) } });
+/** Forget what was saved or is being saved: the next save always writes. */
+function forget(name: string) {
+  saved.delete(name);
+  pending.delete(name);
+}
+/** A read or a removal makes the file the truth: forget, and no older save may retry over it. */
+function supersede(name: string) {
+  forget(name);
+  asked.set(name, (asked.get(name) ?? 0) + 1);
+}
+
+function write(name: string, value: StorageValue<unknown>): Promise<void> {
+  // Nothing is recorded before the write has started: if turning the state
+  // into JSON throws, the next save simply tries again.
+  const started = json.setItem(name, value);
+  const entry = { snap: snapOf(value), done: Promise.resolve() };
+  entry.done = Promise.resolve(started).then(
+    () => {
+      // Only the newest write may say what the phone holds.
+      if (pending.get(name) !== entry) return;
+      pending.delete(name);
+      if (entry.snap) saved.set(name, entry.snap);
+      else saved.delete(name);
+    },
+    (e: unknown) => {
+      if (pending.get(name) === entry) forget(name);
+      throw e;
+    },
+  );
+  pending.set(name, entry);
+  return entry.done;
 }
 
 export const persistStorage: PersistStorage<any> = {
-  // A read (launch, or a rehydrate after a restore) forgets what was written:
-  // the next save always goes through, whatever the file now holds.
+  // A read (launch, or a rehydrate after a restore) forgets what was written,
+  // both when it starts and when it ends: the next save always goes through,
+  // whatever the file now holds.
   getItem: (name) => {
-    last.delete(name);
-    return json.getItem(name);
+    supersede(name);
+    const read = json.getItem(name);
+    if (read instanceof Promise) {
+      const done = () => supersede(name);
+      // A side branch: the read itself is returned untouched (no extra ticks for zustand's hydrate).
+      read.then(done, done);
+    }
+    return read;
   },
   setItem: (name, value) => {
-    if (unchanged(name, value)) return;
-    remember(name, value);
-    const done = json.setItem(name, value);
-    // A failed write is tried again on the next save, even an unchanged one.
-    return Promise.resolve(done).catch((e: unknown) => {
-      last.delete(name);
-      throw e;
-    });
+    const ask = (asked.get(name) ?? 0) + 1;
+    asked.set(name, ask);
+    const inFlight = pending.get(name);
+    if (inFlight) {
+      if (same(inFlight.snap, value)) {
+        // The very same state is being written: share that write. If it fails,
+        // write again now, unless a newer save came since (it holds newer state).
+        return inFlight.done.catch(() => (asked.get(name) === ask ? write(name, value) : undefined));
+      }
+    } else if (same(saved.get(name), value)) {
+      return;
+    }
+    return write(name, value);
   },
   removeItem: (name) => {
-    last.delete(name);
+    supersede(name);
     return json.removeItem(name);
   },
 };
 
 /** Tests: forget what was last written (a fresh launch). */
 export function resetSavedForTest() {
-  last.clear();
+  saved.clear();
+  pending.clear();
+  asked.clear();
 }

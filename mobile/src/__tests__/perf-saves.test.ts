@@ -69,6 +69,128 @@ describe('saves only what changed', () => {
   });
 });
 
+describe('the adapter counts a write as saved only once the phone confirms it', () => {
+  const K = 'perf.adapter';
+  type Held = { value: string; ok: () => Promise<void>; fail: (e: Error) => void };
+  /** AsyncStorage writes held until the test settles each one. */
+  function holdWrites(): Held[] {
+    const held: Held[] = [];
+    AsyncStorage.setItem = ((k: string, v: string) =>
+      new Promise<void>((res, rej) => {
+        writes.push(k);
+        held.push({ value: v, ok: () => realSet(k, v).then(res), fail: rej });
+      })) as typeof AsyncStorage.setItem;
+    return held;
+  }
+  const count = () => writes.filter((k) => k === K).length;
+  const onDisk = async () => JSON.parse((await AsyncStorage.getItem(K))!).state.n;
+  const a = { state: { n: 1, list: [1] }, version: 0 };
+  const b = { state: { n: 2, list: [2] }, version: 0 };
+
+  it('the same state while its write is in flight shares that write; once confirmed it is skipped', async () => {
+    const held = holdWrites();
+    const first = persistStorage.setItem(K, a);
+    const second = persistStorage.setItem(K, a);
+    expect(count()).toBe(1);
+    await held[0].ok();
+    await Promise.all([first, second]);
+    await persistStorage.setItem(K, a);
+    expect(count()).toBe(1);
+    expect(await onDisk()).toBe(1);
+  });
+
+  it('failure, then retry: a save that shared a failed write writes again by itself', async () => {
+    const held = holdWrites();
+    const first = persistStorage.setItem(K, a);
+    const second = persistStorage.setItem(K, a);
+    held[0].fail(new Error('disk full'));
+    await expect(first).rejects.toThrow('disk full');
+    // The retry has started (a second write of the same state)...
+    await Promise.resolve();
+    expect(count()).toBe(2);
+    await held[1].ok();
+    await second;
+    expect(await onDisk()).toBe(1);
+    // ...and once it is confirmed, the same state is skipped again.
+    await persistStorage.setItem(K, a);
+    expect(count()).toBe(2);
+  });
+
+  it('a failed write with nobody sharing it: the very next save, even an unchanged one, writes', async () => {
+    const held = holdWrites();
+    const first = persistStorage.setItem(K, a);
+    held[0].fail(new Error('disk full'));
+    await expect(first).rejects.toThrow('disk full');
+    const again = persistStorage.setItem(K, a);
+    expect(count()).toBe(2);
+    await held[1].ok();
+    await again;
+  });
+
+  it('a retry never writes an older state over a newer save', async () => {
+    const held = holdWrites();
+    const first = persistStorage.setItem(K, a);
+    const shared = persistStorage.setItem(K, a);
+    const newer = persistStorage.setItem(K, b);
+    expect(count()).toBe(2);
+    held[0].fail(new Error('disk full'));
+    await expect(first).rejects.toThrow('disk full');
+    await shared;
+    // No third write: the newer save holds the whole, newer state.
+    expect(count()).toBe(2);
+    await held[1].ok();
+    await newer;
+    expect(await onDisk()).toBe(2);
+    // The newer state is the one remembered as saved.
+    await persistStorage.setItem(K, b);
+    expect(count()).toBe(2);
+  });
+
+  it('a read in between (a restore): the older save does not retry over what was read', async () => {
+    const held = holdWrites();
+    const first = persistStorage.setItem(K, a);
+    const shared = persistStorage.setItem(K, a);
+    await persistStorage.getItem(K);
+    held[0].fail(new Error('disk full'));
+    await expect(first).rejects.toThrow('disk full');
+    await shared;
+    expect(count()).toBe(1);
+  });
+
+  it('a state that cannot be turned into JSON is not remembered: the next save tries again', async () => {
+    let calls = 0;
+    // Throws the first time it is turned into JSON only (a transient failure).
+    const flaky = { toJSON: () => (calls++ === 0 ? (() => { throw new Error('no JSON'); })() : 'ok') };
+    const value = { state: { n: 3, flaky }, version: 0 };
+    expect(() => persistStorage.setItem(K, value)).toThrow('no JSON');
+    expect(count()).toBe(0);
+    await persistStorage.setItem(K, value);
+    expect(count()).toBe(1);
+  });
+
+  it('a save made while a read is in flight: once the read ends, the next save writes', async () => {
+    const realGet = AsyncStorage.getItem;
+    let finishRead: () => void = () => {};
+    AsyncStorage.getItem = ((k: string) =>
+      new Promise<string | null>((res) => {
+        finishRead = () => res(null);
+        void k;
+      })) as typeof AsyncStorage.getItem;
+    try {
+      const read = persistStorage.getItem(K);
+      await persistStorage.setItem(K, a);
+      expect(count()).toBe(1);
+      finishRead();
+      await read;
+    } finally {
+      AsyncStorage.getItem = realGet;
+    }
+    // The read finished after that save: what the store holds now is re-written.
+    await persistStorage.setItem(K, a);
+    expect(count()).toBe(2);
+  });
+});
+
 describe('checkPlant (Today, on every focus)', () => {
   it('the same progress on the same day is not checked again: no facts scan, no store write', () => {
     const now = Date.now();

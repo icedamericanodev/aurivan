@@ -18,10 +18,10 @@
  * same caches, the key numbers are ALSO checked against the engine computed
  * from scratch (computeReadiness, dueIds), never through the caches.
  *
- * Bugs: one Minor, pinned as the CURRENT behaviour with `// QA-BUG:` (a
- * no-op save made while a real write is still in flight is skipped, so a
- * failed write is only healed by the save after it). Everything else matched
- * main: the freshness tests here pass on origin/main as well.
+ * Bugs: one Minor, found here and fixed in the PR (a no-op save made while
+ * a real write was still in flight was skipped, so a failed write was only
+ * healed by the save after it); its test now pins the fix. Everything else
+ * matched main: the freshness tests here pass on origin/main as well.
  *
  * Gotcha: never `act(() => store.action())` — use braces.
  */
@@ -738,7 +738,7 @@ describe('progress is still SAVED after real changes (store/storage.ts)', () => 
     expect(writeCount(P)).toBe(1);
   });
 
-  it('a no-op save made WHILE a real write is still in flight is lost if that write then fails', async () => {
+  it('a no-op save made WHILE a real write is still in flight shares it, and writes again by itself if that write fails', async () => {
     const AS = AsyncStorage as unknown as { setItem: (k: string, v: string) => Promise<void> };
     const ok = AS.setItem;
     const version = useProgress.persist.getOptions().version;
@@ -752,15 +752,19 @@ describe('progress is still SAVED after real changes (store/storage.ts)', () => 
     // The write is still pending; the store saves the same state again (e.g. a no-op set).
     AS.setItem = ok;
     countWrites();
-    await persistStorage.setItem(P, { state: changed, version });
-    // QA-BUG: (Minor, PR #48 store/storage.ts setItem) the second save is skipped
-    // because the first is remembered as saved BEFORE it completes. When the
-    // first then fails, nothing re-writes it until the NEXT save. On main the
-    // second save always wrote, so a transient failure healed at once.
+    const second = persistStorage.setItem(P, { state: changed, version });
+    // Shared with the write on its way: the same state is not written twice.
     expect(writeCount(P)).toBe(0);
     rejectWrite(new Error('disk full'));
     await expect(first).rejects.toThrow('disk full');
-    // The save after the failure does go through (the adapter forgot it).
+    // Fixed (was QA-BUG, PR #48 store/storage.ts setItem): a write counts as
+    // saved only once it succeeds, so the shared save writes again at once and
+    // a transient failure heals, as on main.
+    await second;
+    expect(writeCount(P)).toBe(1);
+    const saved = JSON.parse((await AsyncStorage.getItem(P))!);
+    expect(saved.state.byCert.cisa).toBeDefined();
+    // Once that write is confirmed, the same state again is skipped.
     await persistStorage.setItem(P, { state: changed, version });
     expect(writeCount(P)).toBe(1);
   });
