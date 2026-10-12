@@ -139,7 +139,8 @@ function LivePlantInner(p: LivePlantProps) {
   const viewBox = (fit ?? size <= 96) ? built.frame : '0 0 200 200';
   const layers = plantLayers(built.root);
   // Onboarding: the first sprout pops on its own layer.
-  const lifted = useMemo(() => (plantIn ? liftGroup(layers.plant, 'sprout') : null), [plantIn, layers.plant]);
+  // A seed's curled tip, or (an existing learner's study back-filled it) the Sprout's two leaves.
+  const lifted = useMemo(() => (plantIn ? (liftGroup(layers.plant, 'sprout') ?? liftGroup(layers.plant, 'leaves')) : null), [plantIn, layers.plant]);
   const origin = baseOrigin(built, viewBox, size);
 
   // ── The plant layer's motion (one wrapper; transform and opacity only) ─
@@ -216,7 +217,8 @@ function LivePlantInner(p: LivePlantProps) {
       return;
     }
     grow.set(0);
-    grow.set(t(1, motion.plant.grow));
+    // Linear: the styles above shape each phase (swell 0–350 ms, cross-fade 300–600, settle to 900).
+    grow.set(t(1, motion.plant.grow, Easing.linear));
     return () => cancelAnimation(grow);
   }, [full, gc?.run, grow]);
 

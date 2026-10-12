@@ -23,7 +23,7 @@ import { LivePlant } from '../components/plant/LivePlant';
 import { KeepsakeIcon, LookOption, Swatch } from '../components/plant/LookUI';
 import { PushedHeader, Section, T, useFontScale } from '../components/ui';
 import { growthShort, plantCallName } from '../engine/plant';
-import { colourwaysFor, GROUNDS, howToOpen, KEEPSAKE_ITEMS, MAX_SHOWN_KEEPSAKES, plantersFor, toggleKeepsake, VISITORS, type LookItem, type LookSlot } from '../engine/plantLooks';
+import { colourwaysFor, GROUNDS, howToOpen, skillLine, KEEPSAKE_ITEMS, MAX_SHOWN_KEEPSAKES, plantersFor, toggleKeepsake, VISITORS, type LookItem, type LookSlot } from '../engine/plantLooks';
 import { haptic } from '../lib/haptics';
 import { usePlantView } from '../lib/plant';
 import { useProgress } from '../store/progress';
@@ -78,31 +78,40 @@ export default function PlantLook() {
   };
   // The preview shows the visitor whatever the day, so the learner sees their choice.
   const preview = { ...look.art, visitor: r.visitor !== 'no-visitor' ? r.visitor : undefined };
-  const previewSize = scale >= LARGE_TEXT ? 112 : 140;
+  // Smaller at large text, so the choices keep most of the screen.
+  const previewSize = scale >= LARGE_TEXT ? 96 : 140;
 
-  const group = (label: string, multi: boolean, items: LookItem[], selected: (x: LookItem) => boolean, onPress: (x: LookItem) => void, art?: (x: LookItem) => React.ReactNode, full = false) => (
-    <View accessibilityRole={multi ? undefined : 'radiogroup'} accessibilityLabel={label} style={{ flexDirection: rows ? 'column' : 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.sm }}>
-      {items.map((x) => {
-        const locked = !open(x);
-        return (
-          <LookOption
-            key={x.id}
-            testID={`look-${x.id}`}
-            name={x.name}
-            line={locked ? howToOpen(x) : x.caption}
-            art={art?.(x)}
-            selected={selected(x)}
-            locked={locked}
-            multi={multi}
-            full={full}
-            row={rows}
-            width={tile}
-            onPress={() => onPress(x)}
-          />
-        );
-      })}
-    </View>
-  );
+  /**
+   * One section's choices. Short ones (colour, ground, visitor) sit two
+   * across when two fit; planters and keepsakes, with longer lines, are
+   * always one column of rows.
+   */
+  const group = (label: string, multi: boolean, items: LookItem[], selected: (x: LookItem) => boolean, onPress: (x: LookItem) => void, opts: { art?: (x: LookItem) => React.ReactNode; full?: boolean; asRows?: boolean; line?: (x: LookItem) => string } = {}) => {
+    const asRows = rows || !!opts.asRows;
+    return (
+      <View accessibilityRole={multi ? undefined : 'radiogroup'} accessibilityLabel={label} style={{ flexDirection: asRows ? 'column' : 'row', flexWrap: asRows ? 'nowrap' : 'wrap', alignItems: 'stretch', gap: space.sm, marginTop: space.sm }}>
+        {items.map((x) => {
+          const locked = !open(x);
+          return (
+            <LookOption
+              key={x.id}
+              testID={`look-${x.id}`}
+              name={x.name}
+              line={locked ? howToOpen(x) : (opts.line?.(x) ?? x.caption)}
+              art={opts.art?.(x)}
+              selected={selected(x)}
+              locked={locked}
+              multi={multi}
+              full={opts.full}
+              row={asRows}
+              width={asRows ? undefined : tile}
+              onPress={() => onPress(x)}
+            />
+          );
+        })}
+      </View>
+    );
+  };
 
   // The ribbon only appears once it is earned (it opens when you tell us you passed).
   const keepsakes = KEEPSAKE_ITEMS.filter((k) => k.id !== 'ribbon' || open(k));
@@ -142,9 +151,13 @@ export default function PlantLook() {
           colourwaysFor(p.species),
           (x) => x.id === r.colourway,
           (x) => choose('colourway', x.id),
-          (x) => {
-            const t = plantLeaf[x.palette as keyof typeof plantLeaf];
-            return <Swatch tones={[t.deep, t.mid, t.light]} />;
+          {
+            art: (x) => {
+              const t = plantLeaf[x.palette as keyof typeof plantLeaf];
+              return <Swatch tones={[t.deep, t.mid, t.light]} />;
+            },
+            // An open colourway needs no words beyond its name: the swatch shows it.
+            line: () => '',
           },
         )}
 
@@ -152,7 +165,7 @@ export default function PlantLook() {
         {group('Ground', false, GROUNDS, (x) => x.id === r.ground, (x) => choose('ground', x.id))}
 
         <Section title="Planter" />
-        {group('Planter', false, plantersFor(p.species), (x) => x.id === r.planter, (x) => choose('planter', x.id))}
+        {group('Planter', false, plantersFor(p.species), (x) => x.id === r.planter, (x) => choose('planter', x.id), { asRows: true })}
 
         <Section title="Visitor" meta="Comes on days you clear your plan" />
         {group('Visitor', false, VISITORS, (x) => x.id === r.visitor, (x) => choose('visitor', x.id))}
@@ -173,8 +186,13 @@ export default function PlantLook() {
             const room = stored.includes(x.id) || stored.length < MAX_SHOWN_KEEPSAKES ? stored : stored.filter((k) => look.unlocked.has(k));
             set(certId, { keepsakes: toggleKeepsake(room, x.id) });
           },
-          (x) => <KeepsakeIcon id={x.id} size={36} dim={!open(x)} />,
-          fullUp,
+          {
+            art: (x) => <KeepsakeIcon id={x.id} size={40} />,
+            full: fullUp,
+            asRows: true,
+            // The row already says its name: "The jay: you recall…" reads "You recall…".
+            line: skillLine,
+          },
         )}
       </ScrollView>
     </SafeAreaView>

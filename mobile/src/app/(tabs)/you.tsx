@@ -130,7 +130,8 @@ export default function You() {
                 resting={plant.resting}
                 size={64}
                 theme={isDark ? 'dark' : 'light'}
-                look={plant.look?.art}
+                // At 64pt keepsakes would shrink the plant to fit them: the row shows the plant and its colours.
+                look={plant.look ? { ...plant.look.art, keepsakes: [] } : undefined}
                 mood={plant.look?.mood}
                 breathe
               />

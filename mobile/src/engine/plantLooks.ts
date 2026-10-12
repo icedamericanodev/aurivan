@@ -345,6 +345,13 @@ export function onYourPlantLine(badge: string): string | null {
   return k ? `On your plant: the ${k.name.charAt(0).toLowerCase()}${k.name.slice(1)}.` : null;
 }
 
+/** A keepsake's skill line without its "The jay: " lead, for a row that already shows the name ("You recall answers a week later."). */
+export function skillLine(item: LookItem): string {
+  const i = item.caption.indexOf(': ');
+  const rest = i >= 0 ? item.caption.slice(i + 2) : item.caption;
+  return rest.charAt(0).toUpperCase() + rest.slice(1);
+}
+
 /** Toggle a keepsake in the shown list: added at the end, or put away. Never more than MAX_SHOWN_KEEPSAKES. */
 export function toggleKeepsake(current: readonly string[] | undefined, id: string): string[] {
   const list = [...new Set(current ?? [])];

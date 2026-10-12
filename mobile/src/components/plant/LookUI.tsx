@@ -55,7 +55,7 @@ export function LookOption({ name, line, art, selected, locked, multi = false, f
     <Pressable
       accessibilityRole={multi ? 'checkbox' : 'radio'}
       accessibilityState={{ checked: selected, disabled }}
-      accessibilityLabel={`${name}. ${state ? `${state} ` : ''}${line}${multi && full && !selected && !locked ? ' Put one away to show this.' : ''}`}
+      accessibilityLabel={`${name}.${state ? ` ${state}` : ''}${line ? ` ${line}` : ''}${multi && full && !selected && !locked ? ' Put one away to show this.' : ''}`}
       onPress={disabled ? undefined : onPress}
       testID={testID}
       style={({ pressed }) => [
@@ -83,9 +83,11 @@ export function LookOption({ name, line, art, selected, locked, multi = false, f
         <T v="label" color={locked ? c.ink2 : c.ink}>
           {name}
         </T>
-        <T v="meta" style={{ marginTop: 2 }}>
-          {line}
-        </T>
+        {line ? (
+          <T v="meta" style={{ marginTop: 2 }}>
+            {line}
+          </T>
+        ) : null}
       </View>
     </Pressable>
   );

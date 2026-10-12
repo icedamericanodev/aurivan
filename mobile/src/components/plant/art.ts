@@ -736,7 +736,7 @@ function ground(kind: PotKind, size: 1 | 2 | 3, lod: Lod, theme: 'light' | 'dark
     }
   } else if (kind === 'banded') {
     back.push(shadow);
-    tapered(PL.banded, PL.bandedLit, PL.bandedLit, PL.bandedBand);
+    tapered(PL.banded, PL.bandedLit, PL.bandedRim, PL.bandedBand);
     if (lod !== 'icon') {
       back.push(P(`M${f(100 - pw * 0.8)} ${f(bot - 7)}L${f(100 + pw * 0.8)} ${f(bot - 7)}L${f(100 + pw * 0.76)} ${f(bot - 3.6)}L${f(100 - pw * 0.76)} ${f(bot - 3.6)}Z`, PL.bandedClay));
       back.push(P(`M${f(100 - pw * 0.83)} ${f(bot - 11)}L${f(100 + pw * 0.83)} ${f(bot - 11)}L${f(100 + pw * 0.82)} ${f(bot - 9.6)}L${f(100 - pw * 0.82)} ${f(bot - 9.6)}Z`, PL.bandedBand));
@@ -2054,7 +2054,7 @@ function buildUncached(o: BuildOpts): BuiltPlant {
       { x: Math.max(2 + half, 100 - gr.span - gap), foot: gr.floor, back: false },
       { x: Math.min(198 - half, 100 + gr.span + gap), foot: gr.floor, back: false },
       // The third stands behind the plant: on the mound, or in a pot's soil like a garden figurine (the rim overlaps its foot).
-      potKind === 'meadow' ? { x: 100 + gr.span * 0.56, foot: gr.floor - 3, back: true } : { x: 100 + gr.span * 0.5, foot: gr.top + 1.5, back: true },
+      potKind === 'meadow' ? { x: 100 + gr.span * 0.56, foot: gr.floor - 3, back: true } : { x: 100 + gr.span * 0.76, foot: gr.top + 1.5, back: true },
     ];
     const items = look.keepsakes.slice(0, 3);
     let slot = 0;
