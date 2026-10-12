@@ -22,7 +22,7 @@ export const ACCOUNT_COPY = {
   'you.row.in.sub.relay': 'Signed in with Apple',
   'you.row.expired.sub': 'Sign in again to keep syncing',
   'settings.group': 'Account',
-  'settings.row': 'Account',
+  'settings.row': 'Your account',
   'settings.row.out': 'Not signed in',
 
   // The sign-in sheet.

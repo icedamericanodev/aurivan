@@ -346,7 +346,9 @@ describe('A2: sign in', () => {
     await press('Send code');
     expect(allText()).toContain('Enter the code we sent to m•••@example.com');
     expect(allText()).toContain('Send a new code in 1:00');
-    expect(pressables('Send a new code in 1 minute')[0].props.disabled).toBe(true);
+    // Waiting: a quiet line (spoken in words), not a button to tap yet.
+    expect(r!.root.findAll((n) => n.props.accessibilityLabel === 'Send a new code in 1 minute').length).toBeGreaterThan(0);
+    expect(pressables('Send a new code')).toHaveLength(0);
     await act(async () => {
       jest.advanceTimersByTime(18_000);
     });
@@ -360,9 +362,21 @@ describe('A2: sign in', () => {
     await press('Sign in');
     expect(mockNav.back).toHaveBeenCalled();
     expect(facts()).toMatchObject({ signedIn: true, emailMasked: 'm•••@example.com' });
+  });
+
+  it('email: after 60 seconds "Send a new code" is a button again, and sends one', async () => {
+    account.setAgreed(true);
+    const Email = screen('email');
+    mount(<Email />);
+    type('Email address', 'maya@example.com');
+    await press('Send code');
     await act(async () => {
       jest.advanceTimersByTime(60_000);
     });
+    expect(pressables('Send a new code').length).toBeGreaterThan(0);
+    await press('Send a new code');
+    expect(memory.control.calls.filter((c) => c === 'auth.sendEmailCode')).toHaveLength(2);
+    expect(allText()).toContain('Send a new code in 1:00');
   });
 
   it('email: after 5 wrong codes, Sign in waits for a new code', async () => {

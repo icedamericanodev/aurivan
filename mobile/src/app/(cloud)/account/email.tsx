@@ -156,14 +156,23 @@ export default function EmailSignIn() {
             disabled={busy || !validCode(code) || tries >= MAX_CODE_TRIES}
             style={{ marginTop: space.lg }}
           />
-          <Button
-            kind="ghost"
-            label={wait > 0 ? copy('code.resend.wait', { 'm:ss': clockLabel(wait) }) : copy('code.resend')}
-            accessibilityLabel={wait > 0 ? `Send a new code in ${clockSpoken(wait)}` : copy('code.resend')}
-            disabled={busy || wait > 0}
-            onPress={send}
-            style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.sm }}
-          />
+          {wait > 0 ? (
+            // While waiting: a quiet line, not a greyed-out button (it isn't something to tap yet).
+            // The same 48pt row as the button it becomes, so nothing below jumps.
+            <View style={{ minHeight: 48, justifyContent: 'center', marginTop: space.sm }}>
+              <T v="meta" num accessibilityLabel={`Send a new code in ${clockSpoken(wait)}`}>
+                {copy('code.resend.wait', { 'm:ss': clockLabel(wait) })}
+              </T>
+            </View>
+          ) : (
+            <Button
+              kind="ghost"
+              label={copy('code.resend')}
+              disabled={busy}
+              onPress={send}
+              style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.sm }}
+            />
+          )}
           <Button
             kind="ghost"
             label={copy('code.other')}
