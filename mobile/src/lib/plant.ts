@@ -44,7 +44,7 @@ import {
 } from '../engine/plant';
 import { planComplete } from '../engine/dayPlan';
 import { defaultKeepsakes, keepsakeForBadge, plantMood, resolveLook, unlockedLooks, type ArtLook, type CertMarks, type PlantMood, type ResolvedLook } from '../engine/plantLooks';
-import { computeReadiness } from '../engine/readiness';
+import { readinessFor } from '../engine/readiness';
 import { dayKey } from '../engine/streak';
 import { selectCert, useProgress, type CertProgress, type MockResult, type ProgressState } from '../store/progress';
 import { useSeen } from '../store/seen';
@@ -207,7 +207,7 @@ export interface PlantView {
 /** Pure: the view for one cert's progress (tests call this directly). Reads only answers, the plant and the last study day. */
 export function plantView(cert: Certification, cp: Pick<CertProgress, 'answers' | 'plant' | 'milestones'>, settings: PlantSettings | undefined, today: string, plannedRest = false): PlantView {
   const shown = plantShown(settings);
-  const readiness = computeReadiness(cert, cp.answers);
+  const readiness = readinessFor(cert, cp.answers);
   const weights = cert.domains.map((d) => d.weight);
   const domains = readiness.domains.map((d) => ({ answered: d.answered, mastery: d.mastery }));
   const lastDay = cp.milestones?.lastDay;

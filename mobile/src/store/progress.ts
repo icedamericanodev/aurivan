@@ -18,7 +18,7 @@ import { noteRound, type GameGrowth, type RoundOutcome, type TierChange } from '
 import { pushScore } from '../engine/games/recap';
 import type { GameId } from '../engine/games/registry';
 import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan } from '../engine/dayPlan';
-import { computeReadiness, type AnswerRecord } from '../engine/readiness';
+import { readinessFor, type AnswerRecord } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
 import { recordMastery, type SubtopicMastery } from '../engine/mastery';
 import { CATALOG_VERSION } from '../engine/badgeCatalog';
@@ -682,7 +682,7 @@ function withReadiness(
 ): CertMoments | undefined {
   const cert = getCertification(certId);
   if (!cert) return moments;
-  const range = readinessRange(cert, computeReadiness(cert, answers));
+  const range = readinessRange(cert, readinessFor(cert, answers));
   const log = moments?.readiness ?? [];
   const next = logReadinessDay(log, day, range.enough ? range.low : null);
   return next === log ? moments : { ...moments, readiness: next };

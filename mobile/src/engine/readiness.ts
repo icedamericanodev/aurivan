@@ -161,3 +161,28 @@ export function computeReadiness(
     focusDomainId: answered === 0 ? cert.domains[0]?.id ?? null : focus?.id ?? null,
   };
 }
+
+// Performance (1.15.x): one answer used to compute readiness from every
+// answer up to eight times (the store's daily log, then each mounted tab and
+// the plant). Answers are never mutated (each change is a new object), so the
+// result for one answers object and one certification can be shared.
+const shared = new WeakMap<Record<string, AnswerRecord>, Map<Certification, Readiness>>();
+
+/**
+ * computeReadiness, shared: the same answers object and certification give
+ * the very same Readiness object (treat it as read-only). Same result as
+ * computeReadiness, computed once per change of answers.
+ */
+export function readinessFor(cert: Certification, answers: Record<string, AnswerRecord>): Readiness {
+  let byCert = shared.get(answers);
+  if (!byCert) {
+    byCert = new Map();
+    shared.set(answers, byCert);
+  }
+  let r = byCert.get(cert);
+  if (!r) {
+    r = computeReadiness(cert, answers);
+    byCert.set(cert, r);
+  }
+  return r;
+}
