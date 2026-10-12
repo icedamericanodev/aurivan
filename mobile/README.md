@@ -20,6 +20,22 @@ and use `bash scripts/dev-sync.sh`.
 4. Scan the QR code with your phone camera (iPhone) or with Expo Go (Android).
    The app opens on your phone. Edit a file, save, and it reloads instantly.
 
+## Install a test APK on an Android phone (no computer needed)
+
+GitHub builds an installable APK for every mobile release and puts it on the
+repo's **Releases** page (workflow: `.github/workflows/android-apk.yml`).
+
+1. On the phone, sign in to GitHub in the browser and open the repo's
+   **Releases** page.
+2. Open the newest **"Aurivan x.y.z (test APK)"** and tap the `.apk` under
+   **Assets**.
+3. Open the download and allow **"Install unknown apps"** when Android asks.
+
+Installing a newer APK over an older one keeps your progress. To build one by
+hand instead, run **Actions → Android test APK → Run workflow**, or
+`bash scripts/build-apk.sh` on a Mac with Android Studio (it builds in a
+separate folder, so the emulator and `dev-sync.sh` keep running).
+
 ## Everyday commands (run inside `mobile/`)
 
 | Command | What it does |

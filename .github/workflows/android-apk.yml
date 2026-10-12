@@ -1,0 +1,106 @@
+name: Android test APK
+
+# Builds an installable test APK (for the owner's and testers' own phones, not
+# the Play Store) and attaches it to a GitHub Release. On a phone, open the
+# repo's Releases page while signed in to GitHub and tap the .apk to download.
+#
+# When it runs: once per mobile release (mobile/app.json changes on main, which
+# is where the version is bumped), or by hand from the Actions tab ("Run
+# workflow"). A version that already has an APK is skipped on push, so routine
+# merges don't spend build minutes; a manual run rebuilds and replaces it.
+#
+# The APK is signed with the standard Android debug key (fine for personal
+# installs, and the same key every time, so a new APK installs over the old one
+# and keeps the learner's progress). The Play Store upload key comes at store
+# time.
+
+on:
+  push:
+    branches: [main]
+    paths: ['mobile/app.json']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: false
+
+jobs:
+  apk:
+    name: Build test APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: mobile
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read the app version
+        id: v
+        run: |
+          version="$(node -p "require('./app.json').expo.version")"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=apk-v$version" >> "$GITHUB_OUTPUT"
+
+      - name: Skip if this version already has an APK
+        id: skip
+        run: |
+          if [ "${{ github.event_name }}" = "push" ] && gh release view "${{ steps.v.outputs.tag }}" >/dev/null 2>&1; then
+            echo "Release ${{ steps.v.outputs.tag }} already has an APK; nothing to do."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.skip.outputs.skip != 'true'
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      - uses: actions/setup-java@v4
+        if: steps.skip.outputs.skip != 'true'
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install (also builds the content pack)
+        if: steps.skip.outputs.skip != 'true'
+        run: npm ci
+
+      - name: Generate the Android project
+        if: steps.skip.outputs.skip != 'true'
+        run: npx expo prebuild --platform android --no-install
+
+      # Phones only (arm64 and older 32-bit arm); emulator CPUs are left out to
+      # keep the build and the download smaller.
+      - name: Build the release APK
+        if: steps.skip.outputs.skip != 'true'
+        working-directory: mobile/android
+        run: ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a,armeabi-v7a --no-daemon
+
+      - name: Publish it to a GitHub Release
+        if: steps.skip.outputs.skip != 'true'
+        run: |
+          version="${{ steps.v.outputs.version }}"
+          tag="${{ steps.v.outputs.tag }}"
+          apk="Aurivan-$version.apk"
+          cp android/app/build/outputs/apk/release/app-release.apk "$apk"
+          notes="Test build of Aurivan $version for your own Android phone (not the Play Store).
+
+          To install: open this page on the phone while signed in to GitHub, tap $apk under Assets, then open the download and allow \"Install unknown apps\" when asked. Installing a newer APK over an older one keeps your progress.
+
+          Built from ${GITHUB_SHA::7}."
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "$apk" --clobber
+          else
+            gh release create "$tag" "$apk" --title "Aurivan $version (test APK)" --notes "$notes" --prerelease --target "$GITHUB_SHA"
+          fi
+          echo "Published $apk to release $tag."
