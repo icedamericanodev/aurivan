@@ -36,6 +36,19 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.16.0',
+    date: '2026-10-12',
+    new: [
+      'A readiness report: your mock trend, each domain side by side, and what would raise your lower number.',
+      'A calm exam-week plan with a short checklist for the practical side.',
+    ],
+    improved: [
+      'Tap a past mock to see how each domain went.',
+      'Your path now shows its six steps, so you can see where you are.',
+      'Practice starts a session that fits your daily time when you haven’t picked a length.',
+    ],
+  },
+  {
     version: '1.15.0',
     date: '2026-10-12',
     new: [
@@ -272,6 +285,12 @@ export const WHATS_NEXT: readonly NextItem[] = [
   },
   {
     status: 'shipped',
+    shippedIn: '1.16.0',
+    title: 'A readiness report',
+    body: 'See your mock trend, each domain side by side, and what would raise your lower number, plus a calm checklist for exam week.',
+  },
+  {
+    status: 'shipped',
     shippedIn: '1.15.0',
     title: 'A plan that fits your time',
     body: 'Say where you’re starting from and how long you have most days, and Today’s plan fits.',
@@ -311,12 +330,6 @@ export const WHATS_NEXT: readonly NextItem[] = [
     shippedIn: '1.7.0',
     title: 'Report a problem and Help',
     body: 'Report any answered question, note or lesson step from where you see it, and game cards from a round’s recap.',
-  },
-  {
-    status: 'shipped',
-    shippedIn: '1.6.0',
-    title: 'Milestones and game levels',
-    body: 'Quiet markers of what you’ve mastered, and levels that grow as you play.',
   },
 ];
 

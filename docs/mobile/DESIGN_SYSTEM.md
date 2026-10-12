@@ -919,3 +919,93 @@ footer at about 200% text, with both groups reachable; the segmented minutes
 stack at ×1.3+ (the Segmented rule). Checked at 360 dp and about 200% text
 (`SHOTS=fit`). Nothing new animates; Reduce Motion changes nothing here.
 
+
+## 15. Proof: the readiness report and exam week (mobile 1.16, Phase 5b)
+
+A data screen and a calm checklist. Rules: `mobile/src/engine/readinessReport.ts`
+and `engine/examWeek.ts`; drawing: `components/readinessReport.tsx`; screens:
+`app/readiness.tsx`, `app/exam-week.tsx`.
+
+**Readiness report** (`PushedHeader "Readiness report"`). No plant, no
+celebration, nothing grows or draws in (motion on or off). Top to bottom:
+1. The range (`BigNum` 52 + "estimated readiness"), or "Not enough data yet"
+   with "12 more answers until your readiness range". One stop.
+2. **What this number is** (key-idea recipe, always shown): `quote` "A study
+   estimate, not a prediction." + `small` `ink2` limits line. "How it's
+   worked out" is a `DisclosureRow` + `Collapse` right under it.
+3. **What would raise your lower number**: up to 3 rows (`label` text + a ghost
+   button, each its own stop), in a stable order: the thinnest domain under 10
+   answers ("Answer 6 more in IS Acquisition to firm up your range"), the
+   domain with the most to gain (skipped when it is the same one), the reviews
+   due (one session's 20 at most). Nothing stands out: "Keep a steady mix…"
+   with no button. Before there is a range: only "Answer N more questions to
+   see your range". In exam week an "Exam-week checklist" row follows.
+4. **Your cautious number over time**: the low end, last 30 days, carried
+   forward over gaps, on a static `ScoreChart` (`accent` 1.75 line, the newest
+   day a filled leaf, a `line` hairline floor). The scale is at least 20 points
+   tall, so a 2-point wobble never reads as a cliff. Under it "From 58% to 66%
+   over 30 days." (spoken "Your low end went from…"). Fewer than 3 days with a
+   reading: "This fills in as you study on more days."
+5. **Mock trend**: up to 10 mocks, oldest → newest. By SHAPE: a filled leaf =
+   full mock, an outline leaf = mini mock, a small ring = another length, a
+   dashed outline = untimed; a legend names only the kinds shown. Then the
+   scores in one tabular line ("Oldest first: 56% · 58% · …") and the trend in
+   words: "Up 6 points over your last 3 mocks." / "About level…" (±2) / "Down
+   4 points since your last mock. One mock can swing; look at the domains
+   below." A fall is plain words: never red, never a warning icon. Always:
+   "Practice scores are not scaled exam scores." + the exam's passing note.
+   0 mocks: `EmptyState` "No mocks yet" + ghost "Start a mini mock"; 1 mock:
+   its score (`BigNum` 34) and kind, no trend words.
+6. **Domain by domain**, 1 → n: `label` "Domain 4 · IS Operations"; `meta`
+   "26% of the exam · domain readiness 68%", "Based on 120 answers" (under 10:
+   "…: still firming up"), "Last mock 14 of 20 · the one before 11 of 18" ("–"
+   for an older mock with no entry); a static 3px bar in the domain tone. One
+   stop per domain. Never "of N questions in this domain".
+7. **Pacing** (timed mocks only): the You line, then up to 5 rows "11 Oct ·
+   about 88 seconds a question · every question answered".
+8. **Your path**: `stage` "Step 3 of 6 · Make it stick", then the six steps,
+   each a `label` + one `meta` line; the current one a filled `PlanLeaf` and
+   "Now" (shape and word, never colour alone), the rest outline leaves. With
+   the Exam-focused plan, step 2 says the plan skips it. After the exam the
+   line reads "After the exam" with no number. (Today's stage line stays
+   numberless: the plant counts its own growth.)
+9. **Your mocks**: every mock as on You, each a `DisclosureRow` (`lead` score)
+   that opens its per-domain results (dot, short name, "7 of 10" or "–").
+   `?mock=<id>` opens that one, scrolls it into view and moves screen-reader
+   focus to it.
+10. The trademark notice.
+
+**Ways in.** Today: the readiness words are a button (`ReadinessRow onPress`;
+a trailing chevron, a `soft` pressed tint, an `ink` ring while it has keyboard
+focus; 6pt of room taken back by the margin, so nothing moves). With a plant
+the plant still opens Your plant: two stops. You: a ghost "See your readiness
+report" under the rings; "Mock exams" gets a trailing ghost "See report"
+(`Section action`, stacked under the title at large text); each mock row opens
+the report with that mock's domains. The exam-week screen links back.
+
+**Exam week.** The planner tapers (PHASE5.md §3.2): 7–5 days out reviews, a
+"Top-up: IS Operations" and ONE optional full mock ("About 4 h · a last long
+rehearsal; skip it if you'd rather rest"; never leading, "Optional this week"
+in its row) when none was finished in 14 days and the starting check is done;
+4–2 days out no mock, the day fits min(minutes, 20) with a light top-up (≤ 10)
+and a short game if it fits; the eve and the day are unchanged.
+- **Today card** (7–2 days out, under the readiness row, above "Also today"):
+  key-idea recipe, `caption` "Exam week", `small` "A calm week. A short
+  checklist, then light review.", `meta` "2 of 6 done", ghost "Open checklist"
+  and "Hide" (announces where the list stays). Never red, never "overdue",
+  never a notification.
+- **Checklist screen**: `quote` "Use this week to settle in, not to cram.",
+  the count, six `CheckRow`s (a 22pt rounded square, `ink` fill and a paper ✓
+  that cross-fade in; the whole 64pt row is the target, spoken as a checkbox),
+  then "If you blank" (key-idea recipe) and "See your readiness report". Ticks
+  belong to one exam date: a new date starts a fresh list. Generic, true
+  wording ("the official candidate guide"), no links out. No exam date: an
+  empty screen asking for one.
+
+**Practice (UX review O8).** A learner who never picked a length gets one sized
+from their daily minutes, never past the day: 10 min → 10, 20 → 10, 30 → 20,
+45 → 20. A chosen length always wins.
+
+**Large text and narrow phones.** Charts keep their size (decorative; the words
+carry them) and sit above their words; the legend wraps; the Section's ghost
+drops under its title. Checked at 360 dp and about 200% text (`SHOTS=proof`).
