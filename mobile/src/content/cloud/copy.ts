@@ -443,7 +443,7 @@ export const ACCOUNT_COPY = {
   'board.notice.status': '“{words}” is now {status}.',
   'board.notice.official': 'The Aurivan team replied to “{words}”.',
   'board.notice.reply': 'New reply on “{words}”.',
-  'board.notice.removed': 'We removed your {item} “{words}…” because it {reason}. {who} If you think we got it wrong, you can ask us to look again within 14 days.',
+  'board.notice.removed': 'We removed your {item} “{words}” because it {reason}. {who} If you think we got it wrong, you can ask us to look again within 14 days.',
   'board.notice.reason.exam_content': 'appears to share real exam content',
   'board.notice.reason.copyright': 'includes material copied from a publication',
   'board.notice.reason.abuse': 'breaks the rule on harassment or hate',

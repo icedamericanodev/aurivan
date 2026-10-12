@@ -65,25 +65,36 @@ function apply(a: AccountInfo | null) {
 
 // ── Account events (Uplift Phase 7: lib/sync.ts listens) ───────────────
 /**
- * What sync needs to hear about: a sign-in (which account: a different one
- * on a shared phone asks first) and a deleted account (forget the sync
- * record and this install's id). Nothing listens with the flag off.
+ * What sync and the board need to hear about: a sign-in (which account: a
+ * different one on a shared phone asks first), a deleted account (forget the
+ * sync record and this install's id), a sign-out the learner chose, and a
+ * session that ended on its own. The board forgets its session, draft and
+ * outbox on a sign-out or deletion, and its session on the others (fix
+ * round P8, CR B3 / SEC S9). Nothing listens with the flag off.
  */
-export type AccountEvent = { kind: 'signedIn'; info: AccountInfo } | { kind: 'deleted' };
-const listeners = new Set<(e: AccountEvent) => void>();
-/** Hear account events; returns a function that stops listening. */
-export function onAccountEvent(cb: (e: AccountEvent) => void): () => void {
+export type AccountEvent = { kind: 'signedIn'; info: AccountInfo } | { kind: 'deleted' } | { kind: 'signedOut' } | { kind: 'sessionEnded' };
+type AccountListener = (e: AccountEvent) => void | Promise<void>;
+const listeners = new Set<AccountListener>();
+/**
+ * Hear account events; returns a function that stops listening. A listener
+ * may return a promise: sign-out and deletion wait for it (the board's
+ * cleanup is done before they report success).
+ */
+export function onAccountEvent(cb: AccountListener): () => void {
   listeners.add(cb);
   return () => listeners.delete(cb);
 }
-function emit(e: AccountEvent) {
+async function emit(e: AccountEvent): Promise<void> {
+  const waits: Promise<void>[] = [];
   for (const cb of [...listeners]) {
     try {
-      cb(e);
+      const r = cb(e);
+      if (r) waits.push(r.catch(() => {}));
     } catch {
       // A listener's problem never breaks signing in or deleting.
     }
   }
+  await Promise.all(waits);
 }
 
 /** Signed out on this phone because the session ended (not the learner's choice): the row says "Sign in again". */
@@ -91,6 +102,7 @@ async function sessionEnded(b: ReturnType<typeof backend>) {
   await b.auth.signOut('local').catch(() => {});
   const was = useAccount.getState();
   was.setFacts({ ...SIGNED_OUT, syncedAccountHash: was.syncedAccountHash, expired: true });
+  await emit({ kind: 'sessionEnded' });
 }
 
 // ── Launch ────────────────────────────────────────────────────────────
@@ -138,6 +150,8 @@ export async function initAccount(): Promise<() => void> {
     } catch {
       // Can't tell right now: keep what the phone last knew, and try again when the app is next in front.
     }
+    // Known either way now (the saved facts, or what the backend said): board screens stop waiting.
+    if (!stopped) useAccount.setState({ known: true });
   };
   await check();
   const off = b.auth.onChange((a) => apply(a));
@@ -184,7 +198,7 @@ async function finishSignIn(a: AccountInfo): Promise<Result> {
     return failed(e);
   }
   apply({ ...a, termsVersion: TERMS_VERSION });
-  emit({ kind: 'signedIn', info: a });
+  await emit({ kind: 'signedIn', info: a });
   return { ok: true };
 }
 
@@ -240,6 +254,7 @@ export async function signOut(scope: 'local' | 'global'): Promise<Result> {
   }
   const keep = useAccount.getState().syncedAccountHash;
   useAccount.getState().setFacts({ ...SIGNED_OUT, syncedAccountHash: keep });
+  await emit({ kind: 'signedOut' });
   return { ok: true };
 }
 
@@ -308,7 +323,7 @@ export async function deleteAccount(i: { alsoLocal: boolean; appleAuthorizationC
   await b.auth.signOut('local').catch(() => {});
   useAccount.getState().setFacts({ ...SIGNED_OUT });
   if (i.alsoLocal) await removeAllLocal();
-  emit({ kind: 'deleted' });
+  await emit({ kind: 'deleted' });
   return { ok: true };
 }
 

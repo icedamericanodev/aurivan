@@ -204,6 +204,7 @@ export interface PostCard {
   title: string;
   status: PostStatus;
   shippedIn: string | null;
+  /** The author's PUBLIC member id (never their account id: SEC S4). */
   authorId: string;
   authorHandle: string;
   /** The author is on the Aurivan team (staff). */
@@ -222,6 +223,7 @@ export interface Comment {
   postId: string;
   parentId: string | null;
   authorHandle: string;
+  /** The author's PUBLIC member id (never their account id: SEC S4). */
   authorId: string;
   isTeam: boolean;
   body: string;
@@ -241,8 +243,14 @@ export interface PostDetail extends PostCard {
   comments: Comment[];
   statusHistory: { status: PostStatus; at: number; note: string | null }[];
 }
+/**
+ * A board member as the app sees them. `memberId` is their PUBLIC member id:
+ * a random id the server keeps apart from the account id, which the app
+ * never sees for anyone (fix round P8, SEC S4). "Mine" is `memberId ===
+ * post.authorId`.
+ */
 export interface Member {
-  userId: string;
+  memberId: string;
   handle: string;
   handleKind: 'pseudonym' | 'chosen';
   /** Only ever the learner's OWN standing (board-submit { op: 'me' }); other members' come back without it. */
@@ -258,6 +266,12 @@ export interface Draft {
   body: string;
   itemRef?: string;
   cert: string;
+  /**
+   * This draft's own id (made when it is first sent, kept with the draft).
+   * Sending the same draft again, after a reply was lost, gives back the
+   * first post: never a second one (QA BUG-1).
+   */
+  clientId?: string;
 }
 /**
  * One in-app notice (no push). The app writes the words (lib/board.ts
@@ -322,6 +336,10 @@ export interface BoardPort {
   /** board-submit { op: 'me' }: the learner's own standing, never anyone else's. null before joining. */
   me(): Promise<Member | null>;
   join(i: { handle: string; handleKind: 'pseudonym' | 'chosen'; guidelinesVersion: string }): Promise<Member>;
+  /**
+   * board-submit { op: 'post', …, clientId }. The same author sending the
+   * same clientId again gets the FIRST post back, unchanged (QA BUG-1).
+   */
   submitPost(d: Draft): Promise<{ id: string; visibility: Visibility; holdReason?: HoldReason }>;
   editPost(id: string, d: Draft): Promise<{ visibility: Visibility; holdReason?: HoldReason }>;
   withdrawPost(id: string): Promise<void>;
@@ -331,8 +349,9 @@ export interface BoardPort {
   vote(postId: string, on: boolean): Promise<void>;
   follow(postId: string, on: boolean): Promise<void>;
   report(t: { kind: 'post' | 'comment' | 'member'; id: string; reason: ReportReason; note?: string }): Promise<void>;
-  block(userId: string): Promise<void>;
-  unblock(userId: string): Promise<void>;
+  /** By the member's public id (Member.memberId / PostCard.authorId). */
+  block(memberId: string): Promise<void>;
+  unblock(memberId: string): Promise<void>;
   blocked(): Promise<Member[]>;
   inbox(): Promise<Notice[]>;
   markRead(ids: number[]): Promise<void>;

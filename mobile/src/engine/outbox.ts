@@ -11,9 +11,14 @@
  * - Coalesced per act and target: the last one wins (vote on, then off, is
  *   just "off").
  * - At most 50, each kept 7 days.
- * - When sent: a rate limit, "not allowed" or "not there" drops it quietly
- *   (sending again wouldn't help); offline or a server problem keeps it for
- *   the next try.
+ * - When sent (fix round P8, CR N8):
+ *   - done, a rate limit, "not allowed" or "not there": dropped (sending
+ *     again wouldn't help);
+ *   - offline or signed out: kept, and the send stops there (nothing else
+ *     would get through either);
+ *   - a server problem: kept, tried again later with a growing wait (30 s,
+ *     1 min, 2 min, … up to an hour), and dropped after 8 tries; the acts
+ *     behind it are still sent (one failing act never holds up the rest).
  */
 export type OutboxAct =
   | { op: 'vote'; target: string; on: boolean }
@@ -26,10 +31,21 @@ export interface OutboxEntry {
   key: string;
   at: number;
   act: OutboxAct;
+  /** Failed sends so far (a server problem). */
+  tries: number;
+  /** Not sent again before this time (the backoff). */
+  nextAt: number;
 }
 
 export const OUTBOX_MAX = 50;
 export const OUTBOX_TTL_MS = 7 * 24 * 60 * 60_000;
+/** Dropped after this many failed sends. */
+export const OUTBOX_MAX_TRIES = 8;
+
+/** The wait after `tries` failed sends: 30 s, doubling, at most an hour. */
+export function backoffMs(tries: number): number {
+  return Math.min(30_000 * 2 ** Math.max(0, tries - 1), 60 * 60_000);
+}
 
 /** The coalescing key: one entry per act and target ("vote:<post id>"; "read" is one entry). */
 export function outboxKey(a: OutboxAct): string {
@@ -53,16 +69,42 @@ export function addToOutbox(list: readonly OutboxEntry[], act: OutboxAct, now: n
   const prev = list.find((e) => e.key === key);
   const merged: OutboxAct =
     act.op === 'read' && prev?.act.op === 'read' ? { op: 'read', target: 'read', ids: [...new Set([...prev.act.ids, ...act.ids])].slice(-500) } : act;
-  const next = [...pruneOutbox(list, now).filter((e) => e.key !== key), { key, at: now, act: merged }];
+  const next = [...pruneOutbox(list, now).filter((e) => e.key !== key), { key, at: now, act: merged, tries: 0, nextAt: now }];
   return next.slice(-OUTBOX_MAX);
 }
 
-/** What to do with an entry after sending it: done, dropped (no point retrying), or kept for later. */
-export function afterSend(outcome: 'ok' | string): 'remove' | 'keep' {
+/**
+ * What to do with an entry after sending it: done or dropped ('remove': no
+ * point retrying), kept and the send stops ('stop': offline, signed out),
+ * or kept for a later try with a wait ('retry': a server problem).
+ */
+export function afterSend(outcome: 'ok' | string): 'remove' | 'stop' | 'retry' {
   if (outcome === 'ok') return 'remove';
   // Sending again wouldn't change these answers.
-  if (outcome === 'rate_limited' || outcome === 'forbidden' || outcome === 'not_found' || outcome === 'invalid' || outcome === 'conflict') return 'remove';
-  return 'keep';
+  if (outcome === 'rate_limited' || outcome === 'forbidden' || outcome === 'not_found' || outcome === 'invalid' || outcome === 'conflict' || outcome === 'gone') return 'remove';
+  if (outcome === 'offline' || outcome === 'unauthorized') return 'stop';
+  return 'retry';
+}
+
+/** The first entry due to be sent (`now` past its wait) that this send hasn't tried yet. */
+export function nextDue(list: readonly OutboxEntry[], now: number, tried: ReadonlySet<string>): OutboxEntry | null {
+  return list.find((e) => e.nextAt <= now && !tried.has(`${e.key}@${e.at}`)) ?? null;
+}
+
+/**
+ * The list after one send of `sent`: only THAT entry changes (matched by its
+ * key and time, so a newer act for the same target, added meanwhile,
+ * survives: CR B2). Removed; or, on a retry, its count and wait updated, and
+ * dropped after OUTBOX_MAX_TRIES.
+ */
+export function settleSent(list: readonly OutboxEntry[], sent: OutboxEntry, verdict: 'remove' | 'stop' | 'retry', now: number): OutboxEntry[] {
+  return list.flatMap((e) => {
+    if (e.key !== sent.key || e.at !== sent.at) return [e];
+    if (verdict === 'remove') return [];
+    if (verdict === 'stop') return [e];
+    const tries = e.tries + 1;
+    return tries >= OUTBOX_MAX_TRIES ? [] : [{ ...e, tries, nextAt: now + backoffMs(tries) }];
+  });
 }
 
 /**
@@ -74,18 +116,41 @@ export function writeOutbox(owner: string, list: readonly OutboxEntry[]): string
   return JSON.stringify({ v: 1, owner, entries: list });
 }
 
-/** A stored outbox, read defensively: another account's, or anything malformed, reads as empty. */
+/** Is this a well-formed act? Each op's own fields are checked (a corrupt entry could otherwise crash a send and be kept forever: CR N8). */
+export function validAct(a: unknown): a is OutboxAct {
+  if (!a || typeof a !== 'object') return false;
+  const x = a as Record<string, unknown>;
+  if (typeof x.target !== 'string' || !x.target) return false;
+  switch (x.op) {
+    case 'vote':
+    case 'follow':
+    case 'block':
+      return typeof x.on === 'boolean';
+    case 'report':
+      return (x.kind === 'post' || x.kind === 'comment' || x.kind === 'member') && typeof x.reason === 'string' && (x.note === undefined || typeof x.note === 'string');
+    case 'read':
+      return Array.isArray(x.ids) && x.ids.every((n) => Number.isInteger(n));
+    default:
+      return false;
+  }
+}
+
+/** A stored outbox, read defensively: another account's, or anything malformed, reads as empty (a bad entry alone is skipped). */
 export function readOutbox(raw: string | null, now: number, owner: string): OutboxEntry[] {
   if (!raw) return [];
   try {
     const stored = JSON.parse(raw) as { v?: unknown; owner?: unknown; entries?: unknown } | null;
     if (!stored || stored.v !== 1 || stored.owner !== owner || !Array.isArray(stored.entries)) return [];
-    const v = stored.entries;
-    const ok = v.filter(
-      (e): e is OutboxEntry =>
-        !!e && typeof e === 'object' && typeof (e as OutboxEntry).key === 'string' && Number.isFinite((e as OutboxEntry).at) && !!(e as OutboxEntry).act &&
-        ['vote', 'follow', 'report', 'block', 'read'].includes((e as OutboxEntry).act.op) && typeof (e as OutboxEntry).act.target === 'string',
-    );
+    const ok: OutboxEntry[] = [];
+    for (const e of stored.entries as unknown[]) {
+      if (!e || typeof e !== 'object') continue;
+      const x = e as Partial<OutboxEntry>;
+      if (typeof x.key !== 'string' || !Number.isFinite(x.at) || !validAct(x.act)) continue;
+      // Entries saved before the fix round have no tries or wait yet.
+      const tries = Number.isInteger(x.tries) && (x.tries as number) >= 0 ? (x.tries as number) : 0;
+      const nextAt = Number.isFinite(x.nextAt) ? (x.nextAt as number) : (x.at as number);
+      ok.push({ key: x.key, at: x.at as number, act: x.act, tries, nextAt });
+    }
     return pruneOutbox(ok, now).slice(-OUTBOX_MAX);
   } catch {
     return [];

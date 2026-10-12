@@ -19,12 +19,28 @@
  * With the flag off none of this runs: `boardReady()` is false, the entry
  * points are hidden, the (cloud) screens redirect to Today, and neither
  * storage key is ever read or written.
+ *
+ * Fix round P8 (CR B1 / B3, SEC S4 / S9, QA BUG-1 / 2 / 3 / 6):
+ * - The session (settings, the learner's own member facts, staff) loads in
+ *   ONE step, for the sign-in state it was loaded for, and loads again when
+ *   that changes. Screens opened directly wait for it (and for the account
+ *   to be known) instead of sending an agreed learner to the gate.
+ * - Signing out or deleting the account forgets the session, the draft and
+ *   the outbox on this phone; any sign-in starts a fresh session. The draft,
+ *   like the outbox, belongs to one account (a hash of its id).
+ * - Each draft has its own id (`clientId`), so sending it again after a
+ *   lost reply gives back the first post, never a second one.
+ * - Members are named by their public id (Member.memberId, PostCard.authorId).
+ * - Opening the board sends what waited offline BEFORE the first feed, so a
+ *   report or block made offline is applied there too.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
+import { InteractionManager } from 'react-native';
 import { create } from 'zustand';
 import { getBackend } from '../cloud/backend';
-import { enqueue, flush } from '../cloud/outbox';
+import { CLOUD } from '../cloud/flag';
+import { clearOutbox, enqueue, flush } from '../cloud/outbox';
 import {
   CloudError,
   errorCode,
@@ -50,7 +66,8 @@ import { leakMatch, RECALL_HOLD, recallScore } from '../engine/leakGuard';
 import { moderateText } from '../engine/moderation';
 import { createRng } from '../engine/random';
 import { sha256Hex } from '../engine/sha256';
-import { cloudReady, type Result } from './account';
+import { useAccount } from '../store/account';
+import { cloudReady, onAccountEvent, type Result } from './account';
 import { config } from './config';
 import { shortDate } from './format';
 import { bankFingerprint, bankQuestionAt } from './leakIndex';
@@ -89,9 +106,11 @@ export interface BoardSettings {
 }
 interface BoardSession {
   settings: BoardSettings | null;
-  /** undefined = not asked yet; null = not joined. */
+  /** undefined = not known (not asked yet, or the answer didn't arrive); null = not joined (or signed out). */
   me: Member | null | undefined;
   staff: boolean;
+  /** The sign-in state this session was loaded for (null = not loaded). A change loads it again. */
+  sessionFor: boolean | null;
   /** Posts, comments and learners hidden on this phone at once (reported or blocked). */
   hiddenPosts: string[];
   hiddenComments: string[];
@@ -99,16 +118,33 @@ interface BoardSession {
   /** Unread notices (the dot on Your activity). */
   unread: number;
 }
-const EMPTY: BoardSession = { settings: null, me: undefined, staff: false, hiddenPosts: [], hiddenComments: [], blockedIds: [], unread: 0 };
+const EMPTY: BoardSession = { settings: null, me: undefined, staff: false, sessionFor: null, hiddenPosts: [], hiddenComments: [], blockedIds: [], unread: 0 };
 export const useBoard = create<BoardSession>(() => ({ ...EMPTY }));
 
 /** Feed pages seen this session, by query (memory only). */
 const pages = new Map<string, PostCard[]>();
+/** Bumped by every reset: an answer for an earlier session is dropped. */
+let sessionEpoch = 0;
 
-/** Tests and sign-out: forget the session (nothing of it is saved anyway). */
+/** Forget the session (nothing of it is saved anyway): any sign-in, a session that ended, and tests. */
 export function resetBoardSession() {
+  sessionEpoch++;
   pages.clear();
   useBoard.setState({ ...EMPTY });
+}
+
+/** Sign-out and account deletion: the session, the draft and the outbox go (CR B3, SEC S9). Never rejects. */
+export async function forgetBoardHere(): Promise<void> {
+  resetBoardSession();
+  await Promise.all([clearDraft(), clearOutbox()]);
+}
+
+// Cloud builds only (CLOUD is a build-time constant: with the flag off this is dead code).
+if (CLOUD) {
+  onAccountEvent((e) => {
+    if (e.kind === 'signedOut' || e.kind === 'deleted') return forgetBoardHere();
+    resetBoardSession();
+  });
 }
 
 /** Whose outbox (a hash of the account id: never the id itself). null when signed out. */
@@ -125,33 +161,49 @@ export async function flushOutbox(): Promise<void> {
   if (o) await flush(board(), o).catch(() => {});
 }
 
-/** The board's settings, the learner's own member facts and staff status (on open). */
+/**
+ * The board's settings, the learner's own member facts and staff status,
+ * published together in ONE step (CR B1: a screen never sees the settings
+ * without the member). Signed in, what waited offline is sent first, so the
+ * first feed already leaves out a post reported or a learner blocked
+ * offline (QA BUG-6). An answer for a session that was reset meanwhile (a
+ * sign-out) is dropped.
+ */
 export async function openBoard(signedIn: boolean): Promise<Result<{ settings: BoardSettings }>> {
-  const r = await run(async () => ({ settings: await board().settings() }));
-  if (!r.ok) return r;
-  useBoard.setState({ settings: r.settings });
-  if (signedIn) {
-    const [me, staff] = await Promise.all([board().me().catch(() => undefined), board().isStaff().catch(() => false)]);
-    useBoard.setState({ me, staff });
-    void flushOutbox();
-    void refreshUnread();
-  } else {
-    useBoard.setState({ me: undefined, staff: false });
+  const at = sessionEpoch;
+  if (signedIn) await flushOutbox();
+  let loaded: [BoardSettings, Member | null | undefined, boolean];
+  try {
+    loaded = await Promise.all([
+      board().settings(),
+      signedIn ? board().me().catch(() => undefined) : Promise.resolve(null),
+      signedIn ? board().isStaff().catch(() => false) : Promise.resolve(false),
+    ]);
+  } catch (e) {
+    return failed(e);
   }
-  return r;
+  const [settings, me, staff] = loaded;
+  if (at !== sessionEpoch) return { ok: true, settings };
+  useBoard.setState({ settings, me, staff, sessionFor: signedIn });
+  if (signedIn) void refreshUnread();
+  return { ok: true, settings };
 }
 
 /**
- * For a board screen opened directly (a link, a notice's "Open the post", or
- * the app restored onto it): loads the session the board's front page would
- * have loaded, so the gate doesn't wrongly ask an agreed learner to agree
- * again. Does nothing once the session is there.
+ * For a board screen opened directly (a link, a notice's "Open the post",
+ * "Post publicly instead", or the app restored onto it): loads the session
+ * the board's front page would have loaded, and loads it again whenever the
+ * sign-in state changes (a cold start learns it a moment later: CR B1).
+ * Returns true once the session is there for the account the phone knows;
+ * until then a screen shows nothing rather than redirect anyone.
  */
-export function useBoardSession(signedIn: boolean) {
-  const loaded = useBoard((s) => s.settings !== null);
+export function useBoardSession(signedIn: boolean): boolean {
+  const known = useAccount((s) => s.known);
+  const stale = useBoard((s) => s.settings === null || s.sessionFor !== signedIn);
   useEffect(() => {
-    if (!loaded) void openBoard(signedIn);
-  }, [loaded, signedIn]);
+    if (known && stale) void openBoard(signedIn);
+  }, [known, stale, signedIn]);
+  return known && !stale;
 }
 
 /** Before the first post, comment or vote, and again when the guidelines change. */
@@ -256,19 +308,21 @@ export async function report(kind: 'post' | 'comment' | 'member', id: string, re
   return queue({ op: 'report', target: id, kind, reason, ...(trimmed ? { note: trimmed.slice(0, 500) } : {}) });
 }
 
-export async function block(userId: string): Promise<Result> {
-  useBoard.setState({ blockedIds: [...new Set([...useBoard.getState().blockedIds, userId])] });
-  return queue({ op: 'block', target: userId, on: true });
+/** Block a learner, by their public member id. Never yourself (the menu doesn't offer it, and nothing is sent). */
+export async function block(memberId: string): Promise<Result> {
+  if (memberId === useBoard.getState().me?.memberId) return { ok: false, code: 'forbidden' };
+  useBoard.setState({ blockedIds: [...new Set([...useBoard.getState().blockedIds, memberId])] });
+  return queue({ op: 'block', target: memberId, on: true });
 }
 
-export async function unblock(userId: string): Promise<Result> {
-  useBoard.setState({ blockedIds: useBoard.getState().blockedIds.filter((b) => b !== userId) });
-  return queue({ op: 'block', target: userId, on: false });
+export async function unblock(memberId: string): Promise<Result> {
+  useBoard.setState({ blockedIds: useBoard.getState().blockedIds.filter((b) => b !== memberId) });
+  return queue({ op: 'block', target: memberId, on: false });
 }
 
 export async function loadBlocked(): Promise<Result<{ members: Member[] }>> {
   const r = await run(async () => ({ members: await board().blocked() }));
-  if (r.ok) useBoard.setState({ blockedIds: [...new Set([...useBoard.getState().blockedIds, ...r.members.map((m) => m.userId)])] });
+  if (r.ok) useBoard.setState({ blockedIds: [...new Set([...useBoard.getState().blockedIds, ...r.members.map((m) => m.memberId)])] });
   return r;
 }
 
@@ -276,6 +330,8 @@ export async function loadBlocked(): Promise<Result<{ members: Member[] }>> {
 export interface DraftCheck {
   /** Near-verbatim text from a practice question: Post is disabled. */
   bank: boolean;
+  /** Where that text is ("Edit my post" focuses that field). */
+  field: 'title' | 'body' | null;
   /** The question it matched (for "Report it privately"); never shown as text. */
   questionId: string | null;
   /** Looks like a recalled real-exam question: a warning (the server holds it). */
@@ -291,37 +347,77 @@ export interface DraftCheck {
  */
 export function checkDraft(cert: string, text: string, itemRef: string | null, newMember: boolean): DraftCheck {
   const verdict = moderateText(text, { newMember });
-  const leak = text.trim() ? leakMatch(bankFingerprint(cert), text) : { verdict: 'ok' as const, itemIndex: undefined };
+  const fp = bankFingerprint(cert);
+  const leak = text.trim() ? leakMatch(fp, text) : { verdict: 'ok' as const, itemIndex: undefined };
+  // The title is the text's first line; the details follow it.
+  const cut = text.indexOf('\n');
+  const body = cut < 0 ? '' : text.slice(cut + 1);
+  const field = leak.verdict !== 'block' ? null : body.trim() && leakMatch(fp, body).verdict === 'block' ? 'body' : cut < 0 || leakMatch(fp, text.slice(0, cut)).verdict === 'block' ? 'title' : 'body';
   return {
     bank: leak.verdict === 'block',
+    field,
     questionId: leak.verdict === 'block' ? (bankQuestionAt(cert, leak.itemIndex)?.id ?? null) : null,
     recall: recallScore(text, itemRef) >= RECALL_HOLD,
     reject: verdict.verdict === 'reject' ? verdict.reason : null,
   };
 }
 
+/** Builds the fingerprint off the typing path (on composer open, after its animation): the first check doesn't freeze typing (CR N9). */
+export function warmLeakGuard(cert: string): { cancel: () => void } {
+  return InteractionManager.runAfterInteractions(() => {
+    bankFingerprint(cert);
+  });
+}
+
+/**
+ * A new id for one draft (a uuid's shape, made from Math.random). Not a
+ * secret: it only lets the server say "this draft was already posted".
+ */
+export function newClientId(rand: () => number = Math.random): string {
+  const b = Array.from({ length: 16 }, () => Math.floor(rand() * 256));
+  b[6] = (b[6] & 0x0f) | 0x40;
+  b[8] = (b[8] & 0x3f) | 0x80;
+  const h = b.map((x) => x.toString(16).padStart(2, '0')).join('');
+  return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+}
+const CLIENT_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
 export type PostOutcome = Result<{ id: string; visibility: Visibility; holdReason?: string }>;
 
-/** Post (or save an edit). Offline: the draft is kept here and the screen says so. */
+/**
+ * Post (or save an edit). A new post gets its draft id first, so a reply
+ * lost on the way can't make a second post when it is sent again (QA
+ * BUG-1). Offline (or the reply was lost): the draft, with that id, is kept
+ * here and the screen says so.
+ */
 export async function submitPost(d: Draft, editId?: string): Promise<PostOutcome> {
+  const draft: Draft = editId || (d.clientId && CLIENT_ID.test(d.clientId)) ? d : { ...d, clientId: newClientId() };
   try {
     if (editId) {
-      const r = await board().editPost(editId, d);
+      const r = await board().editPost(editId, draft);
       pages.clear();
       return { ok: true, id: editId, ...r };
     }
-    const r = await board().submitPost(d);
+    const r = await board().submitPost(draft);
     pages.clear();
     await clearDraft();
     return { ok: true, ...r };
   } catch (e) {
-    if (e instanceof CloudError && e.code === 'offline' && !editId) await saveDraft(d);
+    if (e instanceof CloudError && e.code === 'offline' && !editId) await saveDraft(draft);
     return failed(e);
   }
 }
 
-/** The words for a refused post or comment. */
-export function postProblem(code: string, detail?: string): string {
+/**
+ * The words for a refused post or comment. A learner whose limit or
+ * suspension has an end date is told the date (not "can't post"); near-
+ * verbatim bank text gets the whole explanation, as in the composer (UX H3).
+ */
+export function postProblem(code: string, detail?: string, me: Member | null | undefined = useBoard.getState().me): string {
+  if (code === 'banned' && me && (me.standing === 'limited' || me.standing === 'suspended') && me.standingUntil) {
+    return copy('board.notice.suspended', { 'd MMM': shortDate(me.standingUntil) });
+  }
+  if (code === 'bank_text') return `${copy('board.leak.title')}. ${copy('board.leak.body')}`;
   const key: AccountCopyKey =
     code === 'rejected_words'
       ? detail === 'links'
@@ -356,9 +452,15 @@ export function withdrawComment(id: string): Promise<Result> {
 }
 
 // ── The offline draft (one, this account's composer) ─────────────────
+/**
+ * Saved with WHOSE it is (a hash of the account id, like the outbox), and
+ * read back only for that account: another learner on the same phone never
+ * sees it (QA BUG-2). Signed out, there is no draft.
+ */
 export async function saveDraft(d: Draft): Promise<void> {
   try {
-    await AsyncStorage.setItem(DRAFT_KEY, JSON.stringify({ v: 1, draft: d }));
+    const o = await owner();
+    if (o) await AsyncStorage.setItem(DRAFT_KEY, JSON.stringify({ v: 1, owner: o, draft: d }));
   } catch {
     // Not saved: the composer still shows what was typed.
   }
@@ -367,9 +469,11 @@ export async function saveDraft(d: Draft): Promise<void> {
 export async function loadDraft(): Promise<Draft | null> {
   try {
     const raw = await AsyncStorage.getItem(DRAFT_KEY);
-    const v = raw ? (JSON.parse(raw) as { v?: number; draft?: Draft }) : null;
-    const d = v?.v === 1 ? v.draft : null;
-    return d && typeof d.title === 'string' && typeof d.body === 'string' && typeof d.kind === 'string' ? d : null;
+    const v = raw ? (JSON.parse(raw) as { v?: number; owner?: string; draft?: Draft }) : null;
+    const o = v ? await owner() : null;
+    const d = v?.v === 1 && o && v.owner === o ? v.draft : null;
+    if (!d || typeof d.title !== 'string' || typeof d.body !== 'string' || typeof d.kind !== 'string') return null;
+    return d.clientId === undefined || (typeof d.clientId === 'string' && CLIENT_ID.test(d.clientId)) ? d : { ...d, clientId: undefined };
   } catch {
     return null;
   }
@@ -404,11 +508,11 @@ export function appeal(kind: 'post' | 'comment' | 'standing', id: string, note?:
   return run(async () => (await board().appeal({ kind, id, note: note?.trim() || undefined }), {}));
 }
 
-/** The first words of a post or comment, for a notice ("your post “Timer keeps…”"). */
+/** The first words of a post or comment, for a notice ("your post “Timer keeps running…”"). An ellipsis says there is more. */
 export function firstWords(text: string | null, max = 6): string {
   if (!text) return '';
   const words = text.trim().split(/\s+/);
-  return words.slice(0, max).join(' ');
+  return words.length > max ? `${words.slice(0, max).join(' ')}…` : words.join(' ');
 }
 
 export function statusLabel(status: PostStatus, shippedIn: string | null): string {

@@ -36,7 +36,7 @@ import { space } from '../../../theme/tokens';
 import { useTheme } from '../../../theme/useTheme';
 
 const ITEM_REF = /^(q|note|lesson|card|app):[A-Za-z0-9_.:#-]{1,80}$/;
-const NO_CHECK: DraftCheck = { bank: false, questionId: null, recall: false, reject: null };
+const NO_CHECK: DraftCheck = { bank: false, field: null, questionId: null, recall: false, reject: null };
 /** The 2 longest words of a title: what "Similar posts" searches for. */
 const dupeQuery = (title: string) =>
   title
@@ -77,7 +77,7 @@ export default function Compose() {
     void (async () => {
       if (editId) {
         const r = await loadPost(editId);
-        if (live && r.ok && me && r.post.authorId === me.userId) {
+        if (live && r.ok && me && r.post.authorId === me.memberId) {
           setKind(r.post.kind);
           setTitle(r.post.title);
           setBody(r.post.body);

@@ -41,7 +41,7 @@ export default function Blocked() {
       {state === 'ready' && members.length === 0 && <EmptyState compact title={copy('board.blocked.title')} body={copy('board.blocked.empty')} />}
       {members.map((m, i) => (
         <View
-          key={m.userId}
+          key={m.memberId}
           style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: space.sm, borderBottomWidth: i === members.length - 1 ? 0 : 1, borderBottomColor: c.line }}
         >
           <T v="body" style={{ flex: 1 }}>{m.handle}</T>
@@ -50,8 +50,8 @@ export default function Blocked() {
             label={copy('board.unblock')}
             accessibilityLabel={`${copy('board.unblock')} ${m.handle}`}
             onPress={() => {
-              setMembers((list) => list.filter((x) => x.userId !== m.userId));
-              void unblock(m.userId);
+              setMembers((list) => list.filter((x) => x.memberId !== m.memberId));
+              void unblock(m.memberId);
             }}
           />
         </View>

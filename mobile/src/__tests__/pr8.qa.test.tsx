@@ -121,6 +121,8 @@ const feedIds = async (tab: 'top' | 'new' | 'shipped' = 'new') => {
 };
 const draft = (title: string, body = '', extra: Partial<Draft> = {}): Draft => ({ kind: 'idea', title, body, cert: 'cisa', ...extra });
 const row = (id: string) => memory.control.board.posts().find((p) => p.id === id);
+/** A member's PUBLIC id: what the app knows of them (fix round P8, SEC S4). */
+const memberIdOf = (userId: string) => memory.control.board.members().find((m) => m.userId === userId)!.publicId;
 
 beforeEach(() => {
   mockRedirects.length = 0;
@@ -275,7 +277,16 @@ describe('journey: reports', () => {
     expect(q.queue.items.slice(0, exam.length).every((i) => i.examContent)).toBe(true);
   });
 
-  it('an ordinary reason hides it for the reporter only; the third reporter (7+ day accounts) hides it for everyone', async () => {
+  it('an ordinary reason hides it for the reporter only; the third TRUSTED reporter (7+ day accounts) hides it for everyone', async () => {
+    // Fix round P8 (SEC S1): only members in good standing with an approved post count toward the three.
+    for (const [who, handle] of [[RAJ, 'Calm Pine 31'], [LEE, 'Calm Pine 32']] as const) {
+      await as(who);
+      ok(await board.joinBoard(handle, 'pseudonym'));
+      const p = ok(await board.submitPost(draft(`An idea from ${handle}, waiting`)));
+      await as(STAFF);
+      ok(await board.staffAct({ action: 'approve', targetKind: 'post', targetId: p.id }));
+    }
+    await as(MAYA);
     ok(await board.report('post', P.hint, 'off_topic'));
     expect(await feedIds()).not.toContain(P.hint);
     await as(RAJ);
@@ -322,15 +333,15 @@ describe('journey: block and unblock', () => {
     const raj = await rajWithAPost();
     await as(MAYA);
     expect(await feedIds()).toContain(raj.post);
-    const p = board.block(RAJ);
-    expect(board.useBoard.getState().blockedIds).toContain(RAJ);
+    const p = board.block(memberIdOf(RAJ));
+    expect(board.useBoard.getState().blockedIds).toContain(memberIdOf(RAJ));
     ok(await p);
     // A fresh session (no local list): the server hides them too.
     board.resetBoardSession();
     await board.openBoard(true);
     expect(await feedIds()).not.toContain(raj.post);
     expect(ok(await board.loadPost(P.bcp)).post.comments.map((c) => c.id)).not.toContain(raj.comment);
-    expect(ok(await board.loadBlocked()).members.map((m) => m.userId)).toEqual([RAJ]);
+    expect(ok(await board.loadBlocked()).members.map((m) => m.memberId)).toEqual([memberIdOf(RAJ)]);
 
     await as(RAJ);
     // He still reads her posts (he isn't told) but can't comment on them.
@@ -347,9 +358,9 @@ describe('journey: block and unblock', () => {
   it('unblock: his content comes back, and he can comment on her posts again', async () => {
     const raj = await rajWithAPost();
     await as(MAYA);
-    ok(await board.block(RAJ));
-    ok(await board.unblock(RAJ));
-    expect(board.useBoard.getState().blockedIds).not.toContain(RAJ);
+    ok(await board.block(memberIdOf(RAJ)));
+    ok(await board.unblock(memberIdOf(RAJ)));
+    expect(board.useBoard.getState().blockedIds).not.toContain(memberIdOf(RAJ));
     expect(memory.control.board.blocks()).toEqual([]);
     expect(await feedIds()).toContain(raj.post);
     expect(ok(await board.loadBlocked()).members).toEqual([]);
@@ -358,7 +369,7 @@ describe('journey: block and unblock', () => {
   });
 
   it('staff can’t be blocked (their menu never offers it; the server refuses too)', async () => {
-    ok(await board.block(STAFF));
+    ok(await board.block(memberIdOf(STAFF)));
     expect(memory.control.board.blocks()).toEqual([]);
     // Dropped from the outbox (not retried forever).
     expect(await outboxSize(sha256Hex(MAYA))).toBe(0);
@@ -454,7 +465,7 @@ describe('journey: the leak guard', () => {
     ];
     for (const [title, body] of posts) {
       const text = `${title}\n${body}`;
-      expect({ title, ...board.checkDraft('cisa', text, null, false) }).toEqual({ title, bank: false, questionId: null, recall: false, reject: null });
+      expect({ title, ...board.checkDraft('cisa', text, null, false) }).toEqual({ title, bank: false, field: null, questionId: null, recall: false, reject: null });
       expect(moderateText(text, { newMember: true })).toEqual({ verdict: 'ok' });
     }
     // Maya (an approved member) posts one: up at once.
@@ -479,7 +490,8 @@ describe('journey: offline', () => {
     const off = await board.submitPost(d);
     expect(!off.ok && off.code).toBe('offline');
     expect(board.postProblem('offline')).toBe(copy('board.compose.draft'));
-    expect(await board.loadDraft()).toEqual(d);
+    // The draft is kept with its own id, so sending it again can't post twice (QA BUG-1).
+    expect(await board.loadDraft()).toMatchObject({ ...d, clientId: expect.stringMatching(/^[0-9a-f-]{36}$/) });
     expect(memory.control.board.posts().filter((p) => p.authorId === MAYA).length).toBe(mineBefore);
     // Nothing goes on its own when the phone is back (posts are never queued).
     memory.control.setOffline(false);

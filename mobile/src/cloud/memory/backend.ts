@@ -35,7 +35,8 @@
 import { CODE_TTL_MS, EXPORT_EVERY_MS, maskEmail, MAX_CODE_TRIES, normalizeEmail, recentAuth, RESEND_WAIT_MS, validCode, validEmail, type Provider } from '../../engine/account';
 import { utf8 } from '../../engine/sha256';
 import { MAX_SETTINGS_BYTES } from '../../engine/syncMerge';
-import { bankFingerprint } from '../../lib/leakIndex';
+import { getAllQuestions } from '../../content/loader';
+import { buildFingerprint, leakItem, type Fingerprint } from '../../engine/leakGuard';
 import { getDeviceId, isDeviceId, renewDeviceId } from '../deviceId';
 import { createChunkedSession } from '../secureSession';
 import { CloudError, type AccountInfo, type CloudBackend, type CloudErrorCode, type RandomPort, type SnapshotHead, type SyncStore } from '../types';
@@ -128,6 +129,22 @@ interface Session {
   accessToken: string;
   refreshToken: string;
   authAt: number;
+}
+
+/**
+ * The leak guard as board-submit has it: the bundled bank's fingerprint
+ * WITH the server-only squashed-letters check (leakprint.json is built the
+ * same way). Built once per exam, the first time the memory "server" checks
+ * a post; never on a phone build (this whole backend is dev and shots only).
+ */
+const serverPrints = new Map<string, Fingerprint>();
+function serverFingerprint(cert: string): Fingerprint {
+  let fp = serverPrints.get(cert);
+  if (!fp) {
+    fp = buildFingerprint(getAllQuestions(cert).map(leakItem), { squash: true });
+    serverPrints.set(cert, fp);
+  }
+  return fp;
 }
 
 export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
@@ -300,7 +317,7 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
         return { userId: u.userId, termsVersion: u.termsVersion, createdAt: u.createdAt };
       },
       accountCreatedAt: (id) => users.get(id)?.createdAt ?? null,
-      leak: (cert) => bankFingerprint(cert),
+      leak: serverFingerprint,
     },
     opts.board,
   );

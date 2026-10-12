@@ -56,7 +56,11 @@ describe('who reads what (the read scope)', () => {
     expect((await b.board.myPosts()).map((p) => p.id)).toContain(BOARD_POST.mayaHeld);
     expect((await b.board.post(BOARD_POST.mayaHeld)).visibility).toBe('pending');
     const own = make({ readScope: 'author_staff' });
-    expect((await own.board.feed({ cert: 'cisa', tab: 'new' })).items.every((p) => p.authorId === DEMO_USER_ID)).toBe(true);
+    // Authors come back as PUBLIC member ids, never account ids (SEC S4).
+    const mayaPublic = own.control.board.members().find((m) => m.userId === DEMO_USER_ID)!.publicId;
+    const ownItems = (await own.board.feed({ cert: 'cisa', tab: 'new' })).items;
+    expect(ownItems.every((p) => p.authorId === mayaPublic)).toBe(true);
+    expect(JSON.stringify(ownItems)).not.toContain(DEMO_USER_ID);
     expect((await own.board.settings()).readScope).toBe('author_staff');
   });
 
@@ -168,10 +172,17 @@ describe('votes, reports, blocks, appeals', () => {
 
   it('a blocked learner can’t comment on the blocker’s posts, and staff can’t be blocked', async () => {
     const b = make();
-    await b.board.block(RAJ);
-    expect(await code(b.board.block(BOARD_STAFF_ID))).toBe('forbidden');
+    // A block names a MEMBER by their public id (fix round P8, SEC S4): Raj joins first.
     await signInAs(b, 'raj@example.com');
     await b.board.join({ handle: 'Calm Pine 7', handleKind: 'pseudonym', guidelinesVersion: '2026-11' });
+    const pub = (userId: string) => b.control.board.members().find((m) => m.userId === userId)!.publicId;
+    await signInAs(b, DEMO_EMAIL);
+    await b.board.block(pub(RAJ));
+    expect(await code(b.board.block(pub(BOARD_STAFF_ID)))).toBe('forbidden');
+    expect(await code(b.board.block(pub(DEMO_USER_ID)))).toBe('forbidden');
+    // The account id is not a member id: nothing to block.
+    expect(await code(b.board.block(RAJ))).toBe('forbidden');
+    await signInAs(b, 'raj@example.com');
     expect(await code(b.board.comment(BOARD_POST.weekend, 'Hello from Raj'))).toBe('forbidden');
     expect(await code(b.board.comment(BOARD_POST.bcp, 'Hello from Raj'))).toBe('ok');
   });

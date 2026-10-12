@@ -145,7 +145,8 @@ describe('the exact §2.3 strings', () => {
       ['board.gate.go', 'I agree, continue'],
       ['board.report.done', 'Thanks. We review reports within 24 hours. You won’t see this {item} while it’s reviewed.'],
       ['board.block.body', 'You won’t see their posts or comments, and they can’t comment on yours. They won’t be told. You can unblock them in Settings → Feedback board → Blocked learners.'],
-      ['board.notice.removed', 'We removed your {item} “{words}…” because it {reason}. {who} If you think we got it wrong, you can ask us to look again within 14 days.'],
+      // Fix round P8 (UX): the ellipsis comes from firstWords, and only when the words were cut short.
+      ['board.notice.removed', 'We removed your {item} “{words}” because it {reason}. {who} If you think we got it wrong, you can ask us to look again within 14 days.'],
       ['board.appeal.done', 'Thanks. A person will look at this again.'],
       ['board.withdraw.confirm', 'Withdraw this post? It will no longer be shown. Comments on it are hidden too.'],
       ['board.staff.pause.confirm', 'Pause posting? Learners can still read and vote. New posts and comments wait until you reopen.'],

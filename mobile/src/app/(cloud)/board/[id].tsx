@@ -66,7 +66,7 @@ export default function PostScreen() {
     }, [load]),
   );
 
-  const mine = !!post && !!me && post.authorId === me.userId;
+  const mine = !!post && !!me && post.authorId === me.memberId;
   const gate = (): boolean => {
     if (!signedIn) {
       router.push('/account/sign-in');
@@ -166,7 +166,7 @@ export default function PostScreen() {
         ...(post.isTeam ? [] : [{ label: copy('board.menu.block', { handle: post.authorHandle }), onPress: () => (gate() ? confirmBlock(post.authorId, post.authorHandle) : undefined) }]),
       ];
   const commentMenu = (cm: Comment): MenuItem[] =>
-    me && cm.authorId === me.userId
+    me && cm.authorId === me.memberId
       ? [{ label: copy('board.menu.withdraw'), onPress: () => confirmWithdraw('comment', cm.id), danger: true }]
       : [
           { label: copy('board.menu.report.comment'), onPress: () => (gate() ? setReporting({ kind: 'comment', id: cm.id }) : undefined) },

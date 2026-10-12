@@ -17,10 +17,19 @@
  *   appeals (own removal, 14 days, once), notices, and staff actions;
  * - everything it returns crosses a JSON "wire", so the app never shares an
  *   object with the "server".
+ * Fix round P8 (the SQL's changes, played the same way): members are named
+ * by a PUBLIC id, never the account id (SEC S4); only trusted reporters
+ * hide with one report, and not after staff reviewed it (S1); a blocked
+ * learner can't reply to or notify the blocker (S2); reports keep the
+ * reported words (S3); write attempts count before the filters (S6); the
+ * same draft twice is one post (QA BUG-1); a post about a practice
+ * question's answer is folded (N12); own withdrawn or removed comments
+ * don't come back (N2); dismiss takes the queue's target (N4); a deleted
+ * account closes the reports about its posts (N5); staff can rename.
  * Never in a store build (see backend.ts).
  */
 import { checkHandle, moderateText, normalizeText } from '../../engine/moderation';
-import { leakMatch, RECALL_HOLD, recallScore, type Fingerprint } from '../../engine/leakGuard';
+import { leakMatch, RECALL_HOLD, recallScore, talksAboutAnswer, type Fingerprint } from '../../engine/leakGuard';
 import {
   CloudError,
   type BoardPort,
@@ -149,6 +158,10 @@ interface MPost extends Required<Omit<SeedPost, 'history' | 'itemRef' | 'statusN
   editedAt: number | null;
   reportCount: number;
   history: { status: PostStatus; at: number; note: string | null }[];
+  /** When a person last kept or put it back (one report no longer hides it: SEC S1). */
+  reviewedAt: number | null;
+  /** The app's id for the draft it came from (QA BUG-1). */
+  clientId: string | null;
 }
 interface MComment {
   id: string;
@@ -164,9 +177,12 @@ interface MComment {
   createdAt: number;
   editedAt: number | null;
   reportCount: number;
+  reviewedAt: number | null;
 }
 interface MMember {
   userId: string;
+  /** The PUBLIC member id: what other learners get, never the account id (SEC S4). */
+  publicId: string;
   handle: string;
   handleKind: 'pseudonym' | 'chosen';
   guidelinesVersion: string;
@@ -201,7 +217,7 @@ export interface MemoryBoardControl {
   comments(): MComment[];
   members(): MMember[];
   votes(): { postId: string; userId: string }[];
-  reports(): { reporterId: string | null; kind: string; targetId: string; reason: ReportReason; status: string }[];
+  reports(): { reporterId: string | null; kind: string; targetId: string; reason: ReportReason; status: string; snapshot: string | null; note: string | null }[];
   blocks(): { blockerId: string; blockedId: string }[];
   notices(): MNotice[];
   log(): { actorId: string | null; action: string; targetKind: string | null; reason: string | null }[];
@@ -220,9 +236,13 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
   const guidelinesVersion = seed.guidelinesVersion ?? '2026-11';
   const staff = new Set(seed.staff ?? []);
   const members = new Map<string, MMember>();
+  let memberN = 0;
+  /** A public member id: random-looking and unrelated to the account id. */
+  const newPublicId = () => `member-${(++memberN * 7919 + 104729).toString(36)}`;
   for (const m of seed.members ?? []) {
     members.set(m.userId, {
       userId: m.userId,
+      publicId: newPublicId(),
       handle: m.handle,
       handleKind: m.handleKind ?? 'pseudonym',
       guidelinesVersion,
@@ -261,6 +281,8 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
       editedAt: null,
       reportCount: 0,
       history: (p.history ?? []).map((h) => ({ status: h.status, at: h.at, note: h.note ?? null })),
+      reviewedAt: null,
+      clientId: null,
     });
   }
   const comments = new Map<string, MComment>();
@@ -279,6 +301,7 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
       createdAt: c.createdAt,
       editedAt: null,
       reportCount: 0,
+      reviewedAt: null,
     });
     if (c.isOfficial && staff.has(c.authorId)) posts.get(c.postId)!.officialCommentId = c.id;
   }
@@ -287,13 +310,37 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
   const follows = new Set<string>((seed.follows ?? []).map((f) => key(f.postId, f.userId)));
   for (const p of posts.values()) follows.add(key(p.id, p.authorId));
   for (const v of seed.votes ?? []) follows.add(key(v.postId, v.userId));
-  const reports: { reporterId: string | null; kind: 'post' | 'comment' | 'member'; targetId: string; reason: ReportReason; status: 'open' | 'actioned' | 'dismissed'; at: number }[] = (
-    seed.reports ?? []
-  ).map((r) => ({ ...r, status: 'open' as const }));
+  /** The account id behind a public member id (or an account id given directly). */
+  const memberByAnyId = (id: string) => members.get(id) ?? [...members.values()].find((m) => m.publicId === id);
+  /** The public id of an account ('' for someone who never joined: the cascade took them). */
+  const pubOf = (userId: string) => members.get(userId)?.publicId ?? '';
+  const reports: {
+    reporterId: string | null;
+    kind: 'post' | 'comment' | 'member';
+    /** A post's or comment's id, or a member's PUBLIC id. */
+    targetId: string;
+    reason: ReportReason;
+    status: 'open' | 'actioned' | 'dismissed';
+    at: number;
+    /** Staff-only: the words as they were when reported (SEC S3). */
+    snapshot: string | null;
+    note: string | null;
+  }[] = (seed.reports ?? []).map((r) => {
+    const t = r.kind === 'post' ? posts.get(r.targetId) : r.kind === 'comment' ? comments.get(r.targetId) : undefined;
+    const m = r.kind === 'member' ? members.get(r.targetId) : undefined;
+    return {
+      ...r,
+      targetId: m ? m.publicId : r.targetId,
+      status: 'open' as const,
+      snapshot: t ? (r.kind === 'post' ? `${(t as MPost).title}\n${t.body}` : t.body) : (m?.handle ?? null),
+      note: null,
+    };
+  });
   for (const r of reports) {
     const t = r.kind === 'post' ? posts.get(r.targetId) : r.kind === 'comment' ? comments.get(r.targetId) : undefined;
     if (t) t.reportCount += 1;
   }
+  // Kept by ACCOUNT ids inside the "server"; the app names the blocked learner by their public id.
   const blocks = new Set<string>((seed.blocks ?? []).map((b) => key(b.blockerId, b.blockedId)));
   let noticeId = 0;
   const notices: MNotice[] = (seed.notices ?? []).map((n) => ({
@@ -337,11 +384,15 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
     events.push({ userId, kind, at: now() });
   };
   const notify = (n: Omit<MNotice, 'id' | 'at' | 'read'>) => notices.push({ ...n, id: ++noticeId, at: now(), read: false });
+  /** Never to `except` (who caused it), and never to anyone who blocked them (SEC S2). */
   const notifyPost = (postId: string, kind: Notice['kind'], except: string | null, extra: Partial<MNotice> = {}) => {
     const p = posts.get(postId);
     if (!p) return;
     const who = new Set([p.authorId, ...[...follows].filter((f) => f.startsWith(`${postId}|`)).map((f) => f.split('|')[1])]);
-    for (const u of who) if (u !== except) notify({ userId: u, kind, postId, commentId: null, reason: null, byPerson: null, outcome: null, status: null, untilAt: null, ...extra });
+    for (const u of who) {
+      if (u === except || (except !== null && blocks.has(key(u, except)))) continue;
+      notify({ userId: u, kind, postId, commentId: null, reason: null, byPerson: null, outcome: null, status: null, untilAt: null, ...extra });
+    }
   };
   const setStatus = (p: MPost, status: PostStatus, note: string | null) => {
     if (p.status === status) return;
@@ -352,6 +403,12 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
     notifyPost(p.id, 'status', null, { status });
   };
   const activeMember = (m: MMember | undefined) => !!m && (m.standing === 'active' || ((m.standing === 'limited' || m.standing === 'suspended') && (m.standingUntil ?? Infinity) < now()));
+  /** May this learner's report hide something on its own? Good standing, a day old, an approved post (SEC S1). */
+  const trustedReporter = (userId: string | null) => {
+    if (userId === null) return false;
+    const m = members.get(userId);
+    return activeMember(m) && (m?.approvedPosts ?? 0) > 0 && accountAge(userId) >= DAY;
+  };
 
   // ── Shapes on the wire ────────────────────────────────────────────
   const card = (p: MPost, viewer: string | null, own = false): PostCard => ({
@@ -360,7 +417,7 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
     title: p.title,
     status: p.status,
     shippedIn: p.shippedIn,
-    authorId: p.authorId,
+    authorId: pubOf(p.authorId),
     authorHandle: handleOf(p.authorId),
     isTeam: staff.has(p.authorId),
     voteCount: [...votes.keys()].filter((k) => k.startsWith(`${p.id}|`)).length,
@@ -376,7 +433,7 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
     postId: c.postId,
     parentId: c.parentId,
     authorHandle: handleOf(c.authorId),
-    authorId: c.authorId,
+    authorId: pubOf(c.authorId),
     isTeam: staff.has(c.authorId),
     body: c.body,
     isOfficial: c.isOfficial,
@@ -386,8 +443,8 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
   });
   const memberOut = (m: MMember, own: boolean): Member =>
     own
-      ? { userId: m.userId, handle: m.handle, handleKind: m.handleKind, standing: m.standing, standingUntil: m.standingUntil, guidelinesVersion: m.guidelinesVersion, approvedPosts: m.approvedPosts }
-      : { userId: m.userId, handle: m.handle, handleKind: m.handleKind };
+      ? { memberId: m.publicId, handle: m.handle, handleKind: m.handleKind, standing: m.standing, standingUntil: m.standingUntil, guidelinesVersion: m.guidelinesVersion, approvedPosts: m.approvedPosts }
+      : { memberId: m.publicId, handle: m.handle, handleKind: m.handleKind };
 
   // ── board-submit's checks (the same order and the same engine) ────
   const mayWrite = (userId: string) => {
@@ -398,8 +455,9 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
     if (!postingOpen) throw new CloudError('posting_paused');
     return m;
   };
-  /** The filters, the leak guard and the recall score: a reject throws; a hold comes back. */
+  /** The filters, the leak guard and the recall score: a reject throws; a hold comes back. Counted first (SEC S6). */
   const checkText = (m: MMember, text: string, itemRef: string | null, cert: string): HoldReason | null => {
+    take(m.userId, 'attempt', 30, 200);
     const verdict = moderateText(text, { newMember: m.approvedPosts === 0 });
     if (verdict.verdict === 'reject') throw new CloudError('rejected_words', undefined, verdict.reason);
     if (leakMatch(ctx.leak(cert), text).verdict === 'block') throw new CloudError('bank_text');
@@ -470,8 +528,9 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
       const viewer = await ctx.viewer();
       const p = posts.get(id);
       if (!p || !canRead(p, viewer) || (viewer !== p.authorId && p.visibility !== 'visible' && !isStaffId(viewer))) throw new CloudError('not_found');
+      // Your own comment waiting for review shows (to you); withdrawn or removed ones don't (CR N2).
       const visibleComments = [...comments.values()]
-        .filter((c) => c.postId === id && (c.visibility === 'visible' || c.authorId === viewer) && !blockedBy(viewer, c.authorId) && !reportedBy(viewer, 'comment', c.id))
+        .filter((c) => c.postId === id && (c.visibility === 'visible' || (c.visibility === 'pending' && (c.authorId === viewer || isStaffId(viewer)))) && !blockedBy(viewer, c.authorId) && !reportedBy(viewer, 'comment', c.id))
         .sort((a, b) => a.createdAt - b.createdAt);
       const official = p.officialCommentId ? comments.get(p.officialCommentId) : undefined;
       const detail: PostDetail = {
@@ -517,7 +576,7 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
       }
       const m: MMember = prev
         ? { ...prev, handle, handleKind: i.handleKind, guidelinesVersion: i.guidelinesVersion }
-        : { userId: u.userId, handle, handleKind: i.handleKind, guidelinesVersion: i.guidelinesVersion, standing: 'active', standingUntil: null, standingChangedAt: null, approvedPosts: 0, handleChangedAt: null, joinedAt: now() };
+        : { userId: u.userId, publicId: newPublicId(), handle, handleKind: i.handleKind, guidelinesVersion: i.guidelinesVersion, standing: 'active', standingUntil: null, standingChangedAt: null, approvedPosts: 0, handleChangedAt: null, joinedAt: now() };
       members.set(u.userId, m);
       ctx.leave('board.join');
       return wire(memberOut(m, true));
@@ -527,15 +586,24 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
       const u = await ctx.needUser();
       const f = postFields(d);
       const m = mayWrite(u.userId);
+      // board-submit's order: the attempt and the filters, then the writer (which knows the draft).
       let reason = checkText(m, `${f.title}\n${f.body}`, f.itemRef, d.cert);
+      const clientId = typeof d.clientId === 'string' && d.clientId ? d.clientId : null;
+      // The same draft again (its reply was lost): the first post, unchanged and not counted as a post again.
+      const same = clientId ? [...posts.values()].find((p) => p.authorId === u.userId && p.clientId === clientId) : undefined;
+      if (same) {
+        ctx.leave('board.submitPost');
+        return same.holdReason ? { id: same.id, visibility: same.visibility, holdReason: same.holdReason } : { id: same.id, visibility: same.visibility };
+      }
       const young = accountAge(u.userId) < DAY;
       take(u.userId, 'post', 3, young ? 1 : 5);
       if (!reason && m.approvedPosts === 0) reason = 'new_member';
       const id = newId('post');
+      const spoiler = talksAboutAnswer(`${f.title}\n${f.body}`, f.itemRef) || (d.kind === 'content' && (f.itemRef ?? '').startsWith('q:'));
       posts.set(id, {
-        id, authorId: u.userId, cert: d.cert, kind: d.kind, title: f.title, body: f.body, itemRef: f.itemRef, discussesAnswer: false, status: 'open', statusNote: null,
+        id, authorId: u.userId, cert: d.cert, kind: d.kind, title: f.title, body: f.body, itemRef: f.itemRef, discussesAnswer: spoiler, status: 'open', statusNote: null,
         shippedIn: null, visibility: reason ? 'pending' : 'visible', holdReason: reason, modReason: null, moderatedAt: null, locked: false, createdAt: now(),
-        officialCommentId: null, duplicateOf: null, statusChangedAt: null, editedAt: null, reportCount: 0, history: [],
+        officialCommentId: null, duplicateOf: null, statusChangedAt: null, editedAt: null, reportCount: 0, history: [], reviewedAt: null, clientId,
       });
       follows.add(key(id, u.userId));
       hold('post', id, reason);
@@ -552,7 +620,9 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
       const p = posts.get(id);
       if (!p || p.authorId !== u.userId || !['pending', 'visible'].includes(p.visibility) || p.locked) throw new CloudError('forbidden');
       if (!reason && p.visibility === 'pending') reason = p.holdReason ?? 'new_member';
-      Object.assign(p, { kind: d.kind, title: f.title, body: f.body, itemRef: f.itemRef, visibility: reason ? 'pending' : 'visible', holdReason: reason, editedAt: now() });
+      const spoiler = talksAboutAnswer(`${f.title}\n${f.body}`, f.itemRef) || (d.kind === 'content' && (f.itemRef ?? '').startsWith('q:'));
+      // A changed text needs a fresh review before one report can't hide it.
+      Object.assign(p, { kind: d.kind, title: f.title, body: f.body, itemRef: f.itemRef, discussesAnswer: spoiler, visibility: reason ? 'pending' : 'visible', holdReason: reason, editedAt: now(), reviewedAt: null });
       hold('post', id, reason);
       return reason ? { visibility: 'pending', holdReason: reason } : { visibility: 'visible' };
     },
@@ -576,12 +646,13 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
       if (!p || p.visibility !== 'visible' || !canRead(p, u.userId) || (p.locked && !staff.has(u.userId)) || blockedBy(p.authorId, u.userId)) throw new CloudError('forbidden');
       if (parentId) {
         const parent = comments.get(parentId);
-        if (!parent || parent.postId !== postId || parent.parentId !== null) throw new CloudError('forbidden');
+        // Never a reply to someone who blocked the replier (SEC S2).
+        if (!parent || parent.postId !== postId || parent.parentId !== null || blockedBy(parent.authorId, u.userId)) throw new CloudError('forbidden');
       }
       const id = newId('comment');
       comments.set(id, {
         id, postId, authorId: u.userId, parentId: parentId ?? null, body, isOfficial: false, visibility: reason ? 'pending' : 'visible', holdReason: reason,
-        modReason: null, moderatedAt: null, createdAt: now(), editedAt: null, reportCount: 0,
+        modReason: null, moderatedAt: null, createdAt: now(), editedAt: null, reportCount: 0, reviewedAt: null,
       });
       follows.add(key(postId, u.userId));
       if (!reason) notifyPost(postId, 'reply', u.userId, { commentId: id });
@@ -598,7 +669,7 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
       const reason = checkText(m, body, null, (c && posts.get(c.postId)?.cert) ?? 'cisa');
       take(u.userId, 'edit', null, 30);
       if (!c || c.authorId !== u.userId || !['pending', 'visible'].includes(c.visibility) || c.isOfficial) throw new CloudError('forbidden');
-      Object.assign(c, { body, visibility: reason ? 'pending' : 'visible', holdReason: reason, editedAt: now() });
+      Object.assign(c, { body, visibility: reason ? 'pending' : 'visible', holdReason: reason, editedAt: now(), reviewedAt: null });
     },
     async withdrawComment(id) {
       await ctx.enter('board.withdrawComment');
@@ -643,14 +714,20 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
       if (!u.termsVersion) throw new CloudError('forbidden');
       if (reports.some((r) => r.reporterId === u.userId && r.kind === t.kind && r.targetId === t.id)) return; // already reported: the same answer
       const target = t.kind === 'post' ? posts.get(t.id) : t.kind === 'comment' ? comments.get(t.id) : undefined;
-      if (t.kind === 'member' ? t.id === u.userId || !members.has(t.id) : !target || target.visibility !== 'visible' || target.authorId === u.userId) throw new CloudError('forbidden');
+      // A member is reported by their PUBLIC id.
+      const member = t.kind === 'member' ? [...members.values()].find((m) => m.publicId === t.id) : undefined;
+      if (t.kind === 'member' ? !member || member.userId === u.userId : !target || target.visibility !== 'visible' || target.authorId === u.userId) throw new CloudError('forbidden');
       if (t.note !== undefined && t.note.length > 500) throw new CloudError('invalid', undefined, 'note');
       take(u.userId, 'report', null, accountAge(u.userId) < DAY ? 3 : 10);
-      reports.push({ reporterId: u.userId, kind: t.kind, targetId: t.id, reason: t.reason, status: 'open', at: now() });
+      const snapshot = member ? member.handle : t.kind === 'post' ? `${(target as MPost).title}\n${target!.body}` : target!.body;
+      reports.push({ reporterId: u.userId, kind: t.kind, targetId: t.id, reason: t.reason, status: 'open', at: now(), snapshot, note: t.note ?? null });
       if (target) {
         target.reportCount += 1;
-        const verified = new Set(reports.filter((r) => r.kind === t.kind && r.targetId === t.id && r.status === 'open' && r.reporterId && accountAge(r.reporterId) >= 7 * DAY).map((r) => r.reporterId)).size;
-        const why: HoldReason | null = t.reason === 'exam_content' ? 'exam_report' : verified >= 3 ? 'reports' : null;
+        // Only trusted reporters hide (SEC S1): one "real exam content" report before any review, or three with accounts 7+ days old.
+        const verified = new Set(
+          reports.filter((r) => r.kind === t.kind && r.targetId === t.id && r.status === 'open' && trustedReporter(r.reporterId) && accountAge(r.reporterId!) >= 7 * DAY).map((r) => r.reporterId),
+        ).size;
+        const why: HoldReason | null = t.reason === 'exam_content' && target.reviewedAt === null && trustedReporter(u.userId) ? 'exam_report' : verified >= 3 ? 'reports' : null;
         if (why && target.visibility === 'visible') {
           target.visibility = 'hidden';
           target.holdReason = why;
@@ -659,25 +736,28 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
       }
       ctx.leave('board.report');
     },
-    async block(id) {
+    async block(memberId) {
       await ctx.enter('board.block');
       const u = await ctx.needUser();
-      if (blocks.has(key(u.userId, id))) return;
-      if (id === u.userId || staff.has(id) || [...blocks].filter((b) => b.startsWith(`${u.userId}|`)).length >= 500) throw new CloudError('forbidden');
+      // The app names the learner by their public id only.
+      const m = [...members.values()].find((x) => x.publicId === memberId);
+      if (m && blocks.has(key(u.userId, m.userId))) return;
+      if (!m || m.userId === u.userId || staff.has(m.userId) || [...blocks].filter((b) => b.startsWith(`${u.userId}|`)).length >= 500) throw new CloudError('forbidden');
       take(u.userId, 'block', null, 100);
-      blocks.add(key(u.userId, id));
+      blocks.add(key(u.userId, m.userId));
       ctx.leave('board.block');
     },
-    async unblock(id) {
+    async unblock(memberId) {
       await ctx.enter('board.unblock');
       const u = await ctx.needUser();
-      if (blocks.delete(key(u.userId, id))) take(u.userId, 'block', null, null, false);
+      const m = [...members.values()].find((x) => x.publicId === memberId);
+      if (m && blocks.delete(key(u.userId, m.userId))) take(u.userId, 'block', null, null, false);
     },
     async blocked() {
       await ctx.enter('board.blocked');
       const u = await ctx.needUser();
-      const list = [...blocks].filter((b) => b.startsWith(`${u.userId}|`)).map((b) => b.split('|')[1]);
-      return wire(list.map((id) => ({ userId: id, handle: handleOf(id), handleKind: members.get(id)?.handleKind ?? 'pseudonym' })));
+      const list = [...blocks].filter((b) => b.startsWith(`${u.userId}|`)).map((b) => members.get(b.split('|')[1])).filter((m): m is MMember => !!m);
+      return wire(list.map((m) => memberOut(m, false)));
     },
     async inbox() {
       await ctx.enter('board.inbox');
@@ -741,9 +821,15 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
         return [...groups.values()].map((rs) => {
           const r = rs[0];
           const t = r.kind === 'post' ? posts.get(r.targetId) : r.kind === 'comment' ? comments.get(r.targetId) : undefined;
+          const who = t ? members.get(t.authorId) : r.kind === 'member' ? [...members.values()].find((m) => m.publicId === r.targetId) : undefined;
+          // The words as they were when first reported (SEC S3): an edit can't hide them from staff.
+          const first = [...rs].sort((a, b) => a.at - b.at)[0];
+          const snap = first.snapshot ?? '';
           return {
-            kind: r.kind, id: r.targetId, label: [...new Set(rs.map((x) => x.reason))].join(', '), title: r.kind === 'post' ? (t as MPost | undefined)?.title ?? null : null,
-            body: t ? t.body.slice(0, 600) : null, handle: t ? handleOf(t.authorId) : r.kind === 'member' ? handleOf(r.targetId) : null, newMember: false, priorActions: t ? prior(t.authorId) : 0,
+            kind: r.kind, id: r.targetId, label: [...new Set(rs.map((x) => x.reason))].join(', '),
+            title: r.kind === 'post' ? (snap.split('\n')[0] || null) : null,
+            body: r.kind === 'member' ? null : (r.kind === 'post' ? snap.split('\n').slice(1).join('\n') : snap).slice(0, 600) || null,
+            handle: who?.handle ?? (t ? handleOf(t.authorId) : null), newMember: (who?.approvedPosts ?? 1) === 0, priorActions: who ? prior(who.userId) : 0,
             count: rs.length, examContent: rs.some((x) => x.reason === 'exam_content'), at: Math.min(...rs.map((x) => x.at)),
           };
         });
@@ -756,7 +842,7 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
             : tab === 'appeals'
               ? appeals.filter((a) => a.status === 'open').map((a) => ({ kind: 'appeal' as const, id: a.id, label: a.kind, title: a.kind === 'post' ? posts.get(a.targetId)?.title ?? null : null, body: a.note, handle: handleOf(a.userId), newMember: false, priorActions: prior(a.userId), count: 1, examContent: false, at: a.at }))
               : tab === 'members'
-                ? [...members.values()].filter((m) => m.standing !== 'active' || prior(m.userId) > 0).map((m) => ({ kind: 'member' as const, id: m.userId, label: m.standing, title: null, body: null, handle: m.handle, newMember: m.approvedPosts === 0, priorActions: prior(m.userId), count: 0, examContent: false, at: m.standingChangedAt ?? m.joinedAt }))
+                ? [...members.values()].filter((m) => m.standing !== 'active' || prior(m.userId) > 0).map((m) => ({ kind: 'member' as const, id: m.publicId, label: m.standing, title: null, body: null, handle: m.handle, newMember: m.approvedPosts === 0, priorActions: prior(m.userId), count: 0, examContent: false, at: m.standingChangedAt ?? m.joinedAt }))
                 : modLog.slice(-50).reverse().map((l, i) => ({ kind: 'log' as const, id: `log-${i}`, label: l.action, title: l.reason, body: null, handle: null, newMember: false, priorActions: 0, count: 0, examContent: false, at: l.at }));
       if (tab !== 'log') items.sort((a, b) => Number(b.examContent) - Number(a.examContent) || a.at - b.at);
       const waiting = heldItems().length + new Set(reports.filter((r) => r.status === 'open').map((r) => `${r.kind}|${r.targetId}`)).size;
@@ -771,12 +857,16 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
       const id = a.targetId ?? '';
       if ((a.targetKind === 'post' || a.targetKind === 'comment') && ['approve', 'hide', 'remove', 'remove_warn', 'delete_exam_content', 'restore'].includes(a.action)) {
         const t = a.targetKind === 'post' ? posts.get(id) : comments.get(id);
-        if (!t) throw new CloudError('not_found');
+        // Withdrawn by its author: staff can't publish it again or hide it (SEC N3).
+        if (!t || (t.visibility === 'withdrawn' && ['approve', 'restore', 'hide'].includes(a.action))) throw new CloudError('not_found');
         const why = a.action === 'delete_exam_content' ? 'exam_content' : reason;
         if (['remove', 'remove_warn'].includes(a.action) && !why) throw new CloudError('invalid', undefined, 'reason_required');
         const wasPending = t.visibility === 'pending';
         t.visibility = a.action === 'approve' || a.action === 'restore' ? 'visible' : a.action === 'hide' ? 'hidden' : 'removed';
-        if (a.action === 'approve' || a.action === 'restore') t.holdReason = null;
+        if (a.action === 'approve' || a.action === 'restore') {
+          t.holdReason = null;
+          t.reviewedAt = now();
+        }
         if (['remove', 'remove_warn', 'delete_exam_content'].includes(a.action)) {
           t.modReason = why as ModReason;
           t.moderatedAt = now();
@@ -797,6 +887,19 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
         }
         for (const r of reports) if (r.kind === a.targetKind && r.targetId === id && r.status === 'open') r.status = a.action === 'approve' || a.action === 'restore' ? 'dismissed' : 'actioned';
         log(a.action === 'remove_warn' ? 'remove' : a.action, a.targetKind, id, why);
+      } else if (a.targetKind === 'post' && a.action === 'spoiler') {
+        const p = posts.get(id);
+        if (!p) throw new CloudError('not_found');
+        p.discussesAnswer = a.extra?.on !== false;
+        log('spoiler', 'post', id, null);
+      } else if (a.targetKind === 'member' && a.action === 'rename') {
+        // An offensive or impersonating name becomes a plain neutral one (SEC B1). Logged.
+        const m = memberByAnyId(id);
+        if (!m) throw new CloudError('not_found');
+        m.handle = `Learner ${newId('n').replace(/[^a-z0-9]/g, '').slice(-6)}`;
+        m.handleKind = 'pseudonym';
+        m.handleChangedAt = now();
+        log('rename', 'member', m.userId, null);
       } else if (a.targetKind === 'post' && ['status', 'official', 'merge', 'lock', 'unlock'].includes(a.action)) {
         const p = posts.get(id);
         if (!p) throw new CloudError('not_found');
@@ -812,7 +915,7 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
           if (!body || body.length > 1000) throw new CloudError('invalid', undefined, 'body');
           const cid = newId('comment');
           for (const c of comments.values()) if (c.postId === id) c.isOfficial = false;
-          comments.set(cid, { id: cid, postId: id, authorId: actor, parentId: null, body, isOfficial: true, visibility: 'visible', holdReason: null, modReason: null, moderatedAt: null, createdAt: now(), editedAt: null, reportCount: 0 });
+          comments.set(cid, { id: cid, postId: id, authorId: actor, parentId: null, body, isOfficial: true, visibility: 'visible', holdReason: null, modReason: null, moderatedAt: null, createdAt: now(), editedAt: null, reportCount: 0, reviewedAt: now() });
           p.officialCommentId = cid;
           notifyPost(id, 'official', null, { commentId: cid });
         } else if (a.action === 'merge') {
@@ -826,7 +929,12 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
             follows.add(key(into, f.split('|')[1]));
             follows.delete(f);
           }
-          for (const c of comments.values()) if (c.postId === id) c.postId = into;
+          // The moved comments can't bring a second official response (CR nit 6).
+          for (const c of comments.values()) {
+            if (c.postId !== id) continue;
+            c.postId = into;
+            c.isOfficial = false;
+          }
           p.duplicateOf = into;
           p.officialCommentId = null;
           setStatus(p, 'duplicate', typeof x.note === 'string' ? x.note : p.statusNote);
@@ -835,17 +943,18 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
         }
         log(a.action, 'post', id, null);
       } else if (a.targetKind === 'member' && ['warn', 'limit', 'suspend', 'ban', 'unban'].includes(a.action)) {
-        const m = members.get(id);
+        // The queue names a member by their public id (an account id works too, as in the SQL).
+        const m = memberByAnyId(id);
         if (!m) throw new CloudError('not_found');
         const days = Math.min(Math.max(Number(a.extra?.days ?? (a.action === 'limit' ? 3 : 7)) || 7, 1), 365);
-        if (a.action === 'warn') notify({ userId: id, kind: 'warned', postId: null, commentId: null, reason, byPerson: null, outcome: null, status: null, untilAt: null });
+        if (a.action === 'warn') notify({ userId: m.userId, kind: 'warned', postId: null, commentId: null, reason, byPerson: null, outcome: null, status: null, untilAt: null });
         else {
           m.standing = a.action === 'unban' ? 'active' : a.action === 'ban' ? 'banned' : a.action === 'limit' ? 'limited' : 'suspended';
           m.standingUntil = a.action === 'limit' || a.action === 'suspend' ? now() + days * DAY : null;
           m.standingChangedAt = now();
-          if (a.action === 'limit' || a.action === 'suspend') notify({ userId: id, kind: 'suspended', postId: null, commentId: null, reason, byPerson: null, outcome: null, status: null, untilAt: m.standingUntil });
+          if (a.action === 'limit' || a.action === 'suspend') notify({ userId: m.userId, kind: 'suspended', postId: null, commentId: null, reason, byPerson: null, outcome: null, status: null, untilAt: m.standingUntil });
         }
-        log(a.action, 'member', id);
+        log(a.action, 'member', m.userId);
       } else if (a.targetKind === 'board' && (a.action === 'pause' || a.action === 'reopen')) {
         postingOpen = a.action === 'reopen';
         log(a.action, 'board', null, null);
@@ -858,6 +967,7 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
           if (t) {
             t.visibility = 'visible';
             t.modReason = null;
+            t.reviewedAt = now();
           } else if (ap.kind === 'standing') {
             const m = members.get(ap.userId);
             if (m) Object.assign(m, { standing: 'active', standingUntil: null, standingChangedAt: now() });
@@ -869,7 +979,10 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
         });
         log(a.action === 'uphold' ? 'uphold' : 'restore', 'appeal', id, null);
       } else if (a.targetKind === 'report' && a.action === 'dismiss') {
-        for (const r of reports) if (r.targetId === id && r.status === 'open') r.status = 'dismissed';
+        // Every open report on one reported thing: the queue's row (CR N4), as the SQL does.
+        const kind = a.extra?.kind;
+        if (kind !== 'post' && kind !== 'comment' && kind !== 'member') throw new CloudError('invalid', undefined, 'kind');
+        for (const r of reports) if (r.kind === kind && r.targetId === id && r.status === 'open') r.status = 'dismissed';
         log('dismiss', 'report', id, null);
       } else {
         throw new CloudError('invalid', undefined, 'action');
@@ -893,13 +1006,22 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
     comments: () => wire([...comments.values()]),
     members: () => wire([...members.values()]),
     votes: () => [...votes.keys()].map((k) => ({ postId: k.split('|')[0], userId: k.split('|')[1] })),
-    reports: () => wire(reports.map(({ reporterId, kind, targetId, reason, status }) => ({ reporterId, kind, targetId, reason, status }))),
+    reports: () => wire(reports.map(({ reporterId, kind, targetId, reason, status, snapshot, note }) => ({ reporterId, kind, targetId, reason, status, snapshot, note }))),
     blocks: () => [...blocks].map((b) => ({ blockerId: b.split('|')[0], blockedId: b.split('|')[1] })),
     notices: () => wire(notices),
     log: () => modLog.map(({ actorId, action, targetKind, reason }) => ({ actorId, action, targetKind, reason })),
     removeUser(userId) {
-      for (const [id, p] of posts) if (p.authorId === userId) posts.delete(id);
-      for (const [id, c] of comments) if (c.authorId === userId || !posts.has(c.postId)) comments.delete(id);
+      // Reports about what goes are closed, and the reported words and notes go too (CR N5).
+      const gone = new Set<string>([members.get(userId)?.publicId ?? '']);
+      for (const [id, p] of posts) if (p.authorId === userId) {
+        posts.delete(id);
+        gone.add(id);
+      }
+      for (const [id, c] of comments) if (c.authorId === userId || !posts.has(c.postId)) {
+        comments.delete(id);
+        gone.add(id);
+      }
+      for (const r of reports) if (gone.has(r.targetId)) Object.assign(r, { status: r.status === 'open' ? 'actioned' : r.status, snapshot: null, note: null });
       for (const k of [...votes.keys()]) if (k.endsWith(`|${userId}`) || !posts.has(k.split('|')[0])) votes.delete(k);
       for (const k of [...follows]) if (k.endsWith(`|${userId}`) || !posts.has(k.split('|')[0])) follows.delete(k);
       for (const k of [...blocks]) if (k.startsWith(`${userId}|`) || k.endsWith(`|${userId}`)) blocks.delete(k);
@@ -919,7 +1041,7 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
         votes: [...votes.keys()].filter((k) => k.endsWith(`|${userId}`)).map((k) => ({ postId: k.split('|')[0] })),
         follows: [...follows].filter((k) => k.endsWith(`|${userId}`)).map((k) => ({ postId: k.split('|')[0] })),
         reports: reports.filter((r) => r.reporterId === userId).map((r) => ({ kind: r.kind, targetId: r.targetId, reason: r.reason, status: r.status })),
-        blocks: [...blocks].filter((b) => b.startsWith(`${userId}|`)).map((b) => ({ userId: b.split('|')[1] })),
+        blocks: [...blocks].filter((b) => b.startsWith(`${userId}|`)).map((b) => ({ member: handleOf(b.split('|')[1]) })),
         appeals: appeals.filter((a) => a.userId === userId).map((a) => ({ kind: a.kind, targetId: a.targetId, note: a.note, status: a.status })),
         notices: notices.filter((n) => n.userId === userId).map((n) => ({ kind: n.kind, postId: n.postId, reason: n.reason, at: new Date(n.at).toISOString() })),
       });
