@@ -787,8 +787,8 @@ export function ListRow({
       {!last && <View style={[styles.hairline, { left: icon ? 54 : 0, backgroundColor: c.line }]} />}
     </>
   );
-  // A row you can't tap is still ONE screen-reader stop when it has a label
-  // (What's next: "Planned: An optional account. …"), not two loose lines.
+  // A row you can't tap is still ONE screen-reader stop when it has a label,
+  // not two loose lines.
   if (!onPress)
     return (
       <View style={styles.listRow} accessible={!!accessibilityLabel} accessibilityLabel={accessibilityLabel}>

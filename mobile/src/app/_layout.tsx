@@ -144,12 +144,12 @@ export default function RootLayout() {
         <Stack.Screen name="notes/index" />
         <Stack.Screen name="notes/[domain]" />
         <Stack.Screen name="notes/subtopic/[id]" />
-        {/* Mobile 1.7: Help and feedback (You), common questions, Your reports, What's new and What's next. */}
+        {/* Mobile 1.7: Help and feedback (You), common questions, Your reports and What's new.
+            (What's next was removed in 1.17.1; +native-intent sends old links to Help.) */}
         <Stack.Screen name="help" />
         <Stack.Screen name="faq" />
         <Stack.Screen name="reports" />
         <Stack.Screen name="whats-new" />
-        <Stack.Screen name="whats-next" />
         {/* Mobile 1.15: Your study, from Today's one "Fit your plan" card. */}
         <Stack.Screen name="fit" />
         {/* Mobile 1.16: the readiness report and the exam-week checklist. */}

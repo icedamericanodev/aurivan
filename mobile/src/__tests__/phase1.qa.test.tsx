@@ -17,7 +17,8 @@
  *     "Your report helped" once, Today's line once.
  *  7. Settings and You → Help: Contact support, Send feedback, Suggest an
  *     idea, and the aurivan://help?open=… deep link (good and bad values).
- *  8. What's new, What's next and Common questions render; no bank size.
+ *  8. What's new and Common questions render; no bank size. (What's next
+ *     was removed in 1.17.1: no row, and What's new mentions no plans.)
  *
  * Real bugs were pinned with `it.failing` (they pass while the bug exists and
  * start failing once it is fixed). All four were fixed in the review round
@@ -42,7 +43,7 @@ import { getCertification } from '../content/certifications';
 import { CISA_LESSONS } from '../content/lessons/cisa';
 import { getAllQuestions } from '../content/loader';
 import { getNotes, noteSubtopics } from '../content/notes';
-import { FAQ, WHATS_NEW, WHATS_NEXT } from '../content/support';
+import { FAQ, WHATS_NEW } from '../content/support';
 import type { Letter, PackQuestion } from '../content/types';
 import { readBackup } from '../engine/backup';
 import { rumorStatements } from '../engine/games/rootOrRumor';
@@ -62,7 +63,6 @@ import LessonPlayer from '../app/lesson/[id]';
 import Settings from '../app/settings';
 import Help from '../app/help';
 import Faq from '../app/faq';
-import WhatsNext from '../app/whats-next';
 import WhatsNew from '../app/whats-new';
 import Reports from '../app/reports';
 import Today from '../app/(tabs)/home';
@@ -782,9 +782,10 @@ describe('Journey 7: Help and feedback from Settings and You, and the deep link'
     expect(mockPush).toHaveBeenCalledWith('/help');
     unmount();
     mount(<Help />);
-    for (const row of ['Common questions', 'Report a problem with the app', 'Suggest an idea', 'Contact support', 'Your reports', 'What’s new', 'What’s next']) {
+    for (const row of ['Common questions', 'Report a problem with the app', 'Suggest an idea', 'Contact support', 'Your reports', 'What’s new']) {
       expect(pressables(row).length).toBeGreaterThan(0);
     }
+    expect(pressables('What’s next')).toHaveLength(0);
     press('Contact support');
     press('A study question or topic');
     await pressAsync('Write the email');
@@ -854,7 +855,7 @@ describe('Journey 7: Help and feedback from Settings and You, and the deep link'
 });
 
 // ─────────────────────────────────────────────────────────────────────────
-describe('Journey 8: What’s new, What’s next and Common questions; no bank size anywhere', () => {
+describe('Journey 8: What’s new and Common questions; no bank size anywhere', () => {
   const bank = getAllQuestions('cisa').length;
   const perDomain = getCertification('cisa')!.domains.map((d) => getAllQuestions('cisa').filter((q) => q.domainId === d.id).length);
   const sizeForms = [bank, ...perDomain].flatMap((n) => [String(n), n.toLocaleString('en-US')]).concat([
@@ -881,12 +882,11 @@ describe('Journey 8: What’s new, What’s next and Common questions; no bank s
     expect(text).not.toMatch(/\bd\d_\d{3}\b|\b[1-5][A-Z]\d\.\d\b/);
   });
 
-  it('What’s next: three lists, no dates, no promises', () => {
-    mount(<WhatsNext />);
+  it('What’s new: no plans, no dates ahead; it ends with the feedback line', () => {
+    mount(<WhatsNew />);
     const text = allText();
-    for (const t of ['In progress', 'Planned', 'Recently shipped', 'Suggest an idea']) expect(text).toContain(t);
-    for (const item of WHATS_NEXT) expect(text).toContain(item.title);
-    expect(text).not.toMatch(/\b(20\d\d|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|Q[1-4]|next week|next month|soon|guarantee)\b/);
+    expect(text).toContain('We improve the app regularly based on learner feedback. Have an idea? Send it from Help.');
+    expect(text).not.toMatch(/What[’']s next|In progress|Recently shipped|\b(planned|roadmap|coming soon|next week|next month|guarantee)\b/i);
     expectNoBankSize(text);
   });
 

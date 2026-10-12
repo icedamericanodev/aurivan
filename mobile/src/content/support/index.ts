@@ -1,13 +1,18 @@
 /**
  * Help and feedback content (mobile 1.7): fixes shipped after learner
- * reports, the What's New list, the read-only "What's next" list and the
- * common questions. All bundled with the app: no network, so "no data
- * collected" stays true. Changes ship in a reviewed store build (never over
- * the air: compliance O1, Apple 2.5.2).
+ * reports, the What's New list and the common questions. All bundled with
+ * the app: no network, so "no data collected" stays true. Changes ship in a
+ * reviewed store build (never over the air: compliance O1, Apple 2.5.2).
+ *
+ * There is no "What's next" list any more (removed in mobile 1.17.1, owner
+ * decision): the plan stays internal in docs/ROADMAP.md, and learners see a
+ * change once it ships, in What's new.
  *
  * Writing rules (CLAUDE.md "What's New style"): describe the benefit, not
  * the work. No question codes, no domain numbers, no counts of items, no
- * internal labels. src/__tests__/support-content.test.ts checks them.
+ * internal labels, and no design-spec detail (how a moment moves, how long
+ * it lasts, what each part is called inside the app): one plain benefit
+ * sentence is enough. src/__tests__/support-content.test.ts checks them.
  *
  * Content only: no React, no storage.
  */
@@ -36,11 +41,16 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.17.1',
+    date: '2026-10-12',
+    improved: ['Help is simpler: What’s new now covers every change.'],
+  },
+  {
     version: '1.17.0',
     date: '2026-10-12',
     new: ['Pick your exact exam date on a calendar.'],
     improved: [
-      'Settings is tidier: grouped sections, each showing its current choice, with options that open in a simple panel.',
+      'Settings is tidier and easier to find your way around.',
       'Appearance now lives in one place, in Settings.',
     ],
   },
@@ -53,7 +63,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.16.0',
     date: '2026-10-12',
     new: [
-      'A readiness report: your mock trend, each domain side by side, and what would raise your low end.',
+      'A readiness report that shows how you’re tracking and what would help most.',
       'A calm exam-week plan with a short checklist for the practical side.',
     ],
     improved: [
@@ -80,9 +90,9 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.14.0',
     date: '2026-10-12',
     new: [
-      'Give your plant a look of its own: colours, a planter, a ground and a visitor that stops by on days you clear your plan.',
-      'The badges you earn become keepsakes beside your plant, each one naming the skill behind it.',
-      'Your plant comes alive: it breathes when you visit, smiles back on good days, and grows with a short moment of its own.',
+      'Give your plant a look of its own.',
+      'The badges you earn can sit beside your plant as keepsakes.',
+      'Your plant feels more alive, and growing has a short moment of its own.',
     ],
     improved: [
       'Planting your first plant now ends with a small planting moment.',
@@ -94,11 +104,11 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.13.0',
     date: '2026-10-11',
     new: [
-      'Grow your own plant. Pick a tree or a flower, give it a name, and watch it grow as your real progress across the exam outline grows. It never wilts and asks for nothing.',
+      'Grow your own plant: name it, and watch it grow with your real progress. It never wilts and asks for nothing.',
       'Your plant shows what grows it next, and how each domain is coming along.',
     ],
     improved: [
-      'Today shows your plant beside your readiness, and You has it at the top. The rings are still on You and your results.',
+      'Your plant sits on Today and You, beside your readiness.',
       'Your plant is optional: hide it, or give it a quieter look without a face, in Settings.',
     ],
   },
@@ -106,17 +116,17 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.12.0',
     date: '2026-10-11',
     new: [
-      'Lessons open on a cover that shows what’s in them, and their diagrams now build step by step: steps along a path, layers on a stack, and stages along a timeline.',
-      'Finishing a lesson adds a leaf to your branch, then offers practice on what you just learned or the next lesson.',
-      'Each game has its own drawing and its own header, so a game never looks like a practice question.',
+      'Lessons open with a clear overview, and their diagrams are easier to follow.',
+      'Finishing a lesson offers practice on what you just learned, or the next lesson.',
+      'Each game now has a look of its own, so it never feels like a practice question.',
     ],
     improved: [
-      'Learn shows at a glance which lessons are done, which is up next and why, and each topic’s lessons read as a trail.',
-      'Sure Footing is now called Forecast, so it’s no longer confused with the Firm Footing badge. Your best scores and level are kept.',
-      'Forecast explains its scoring before your first round instead of on top of the first question.',
-      'A game’s round summary now shows your recent scores as a small trend line, and moving up a level has its own quiet moment.',
+      'Learn shows at a glance what’s done and what’s up next.',
+      'Sure Footing is now called Forecast. Your best scores and level are kept.',
+      'Forecast explains its scoring before your first round.',
+      'A game’s round summary now shows how your recent scores are going.',
       'Lesson checks now give the same answer feedback as practice.',
-      'Opening a section, marking a note as read and matching in games now move gently to show what changed. With Reduce Motion on, they simply fade.',
+      'Small touches of motion show what changed. With Reduce Motion on, they simply fade.',
     ],
   },
   {
@@ -129,10 +139,10 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     improved: [
       'Each domain’s badge now has its own emblem.',
       'Extra tiers that go beyond what the exam needs are clearly marked as Stretch.',
-      'Results, You and Today’s numbers now read in plain words, such as “Correct 14 of 20” and “Under 1 min”, and a time shows the same way wherever you see it.',
+      'Scores and times now read in plain words, the same way wherever you see them.',
     ],
     fixed: [
-      'A very short session no longer shows “1 minute”, and a session left open overnight no longer counts the hours it sat idle.',
+      'Session times are now right, even for a very short session or one left open overnight.',
       'Domain scores on Results and the pace line no longer get cut off on smaller phones.',
     ],
   },
@@ -140,11 +150,11 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.10.0',
     date: '2026-10-11',
     new: [
-      'Your badges are now a collection: each one is a medallion you can open to see its rule, how close you are and how to earn it.',
-      'Next for your exam points you to the badge that helps your exam most right now, with a Study for this button.',
+      'Your badges are now a collection: open any one to see how close you are and how to earn it.',
+      'Next for your exam points you to the badge that helps your exam most right now.',
     ],
     improved: [
-      'Badges sit on small shelves, each with its own count, and a new one gets a short, calm moment after your review.',
+      'Badges are easier to browse, and a new one gets a short, calm moment.',
       'A small dot on You tells you when a new badge is waiting to be seen.',
       'Settings has a Show badges switch. Turn it off and you still earn them, quietly.',
     ],
@@ -154,14 +164,14 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.9.0',
     date: '2026-10-11',
     new: [
-      'Your progress now shows itself: when your readiness, your answers or a milestone moves up, the numbers roll up and the rings grow from where you last saw them, with a small note of what changed.',
-      'Finishing the day’s plan, and reaching a milestone, now have their own short, quiet moment. Tap to skip it, and it shortens once you’ve seen it a few times.',
+      'Your progress now shows itself when your readiness or a milestone moves up.',
+      'Finishing the day’s plan and reaching a milestone now have their own short, quiet moment.',
     ],
     improved: [
-      'Dark mode has more depth: the main panel is gently lit, the paper texture is softer, and sheets stand apart from the screen behind them.',
+      'Dark mode has more depth and is easier on the eyes.',
       'Switching between light and dark now fades smoothly instead of flashing.',
-      'Empty screens each have their own drawing, and All caught up tells you when your next review is due.',
-      'The question bank only groups questions under a topic heading when there are several; a single question names its topic itself.',
+      'All caught up now tells you when your next review is due.',
+      'The question bank is easier to scan.',
       'With Reduce Motion on, you see the same numbers and words, without the movement.',
     ],
   },
@@ -169,7 +179,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.8.0',
     date: '2026-10-11',
     new: [
-      'The app now moves with you, gently: buttons and answers respond to your touch, the next question turns in like a page, and your progress bar fills as you answer.',
+      'The app now responds to your touch with calm, gentle motion.',
       'Settings has a Motion choice: match your phone, or reduce movement to short fades in this app only.',
     ],
     improved: [
@@ -177,7 +187,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
       'Results after a one-domain session show just that domain, clearly.',
       'Your review count reads the same on Today, Practice and You.',
       'You can start a mini mock straight from You.',
-      'Mock exams stay calm and exam-like: each question appears with a short fade, nothing slides.',
+      'Mock exams stay calm and exam-like, with no sliding.',
     ],
     fixed: [
       'Today no longer shows the readiness rings twice when your readiness is holding.',
@@ -189,9 +199,9 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.7.0',
     date: '2026-10-11',
     new: [
-      'Report a problem from any answered question, study note or lesson step, and from a game’s round recap. Your email app opens with the details filled in, and you can read everything before you send it.',
-      'Help and feedback, in Settings and on You: quick answers to common questions, a way to suggest ideas, and an easy way to reach us.',
-      'What’s new and What’s next, so you can see what changed and what we’re working on.',
+      'Report a problem right where you see it, and read everything before you send it.',
+      'Help and feedback: quick answers to common questions, a way to suggest ideas, and an easy way to reach us.',
+      'What’s new, so you can see what changed.',
     ],
     improved: [
       'The app remembers what you reported, so you don’t report the same thing twice, and tells you once it has been updated.',
@@ -262,90 +272,16 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   },
 ];
 
+/**
+ * The last line of What's new (mobile 1.17.1), in place of the old "What's
+ * next" list: no plans, just how changes come about and where ideas go.
+ */
+export const WHATS_NEW_FOOTER = 'We improve the app regularly based on learner feedback. Have an idea? Send it from Help.';
+
 /** "1.7.0" → "1.7"; "1.6.1" stays. */
 export function shortVersion(v: string): string {
   return v.replace(/\.0$/, '');
 }
-
-// ── What's next (read-only; product W1) ──────────────────────────────────
-export type NextStatus = 'progress' | 'planned' | 'shipped';
-export interface NextItem {
-  title: string;
-  body: string;
-  status: NextStatus;
-  /** Shipped items: the version, so the row can open What's new. */
-  shippedIn?: string;
-}
-
-/**
- * Honest and dateless: plans can change, so nothing here is a promise.
- * Up to 8 items per list (product W1).
- */
-export const WHATS_NEXT: readonly NextItem[] = [
-  {
-    status: 'progress',
-    title: 'Lessons and games that come alive',
-    body: 'Lesson steps that build up one at a time, and games with a look of their own. Short fades instead of movement when Reduce Motion is on.',
-  },
-  {
-    status: 'planned',
-    title: 'An optional account',
-    body: 'Sign in only if you want to, and keep your progress on more than one device. Everything keeps working without one.',
-  },
-  {
-    status: 'planned',
-    title: 'A feedback board',
-    body: 'Suggest ideas, see what other learners asked for, and read what we decide and why.',
-  },
-  {
-    status: 'shipped',
-    shippedIn: '1.16.0',
-    title: 'A readiness report',
-    body: 'See your mock trend, each domain side by side, and what would raise your low end, plus a calm checklist for exam week.',
-  },
-  {
-    status: 'shipped',
-    shippedIn: '1.15.0',
-    title: 'A plan that fits your time',
-    body: 'Say where you’re starting from and how long you have most days, and Today’s plan fits.',
-  },
-  {
-    status: 'shipped',
-    shippedIn: '1.14.0',
-    title: 'A plant that grows with you',
-    body: 'Pick a tree or a flower, watch it grow as you master your exam, and dress it with keepsakes from your badges.',
-  },
-  {
-    status: 'shipped',
-    shippedIn: '1.11.0',
-    title: 'Badge tiers and sharing',
-    body: 'Higher tiers to grow into, a badge for making a whole topic stick, and a card you can share when you choose to.',
-  },
-  {
-    status: 'shipped',
-    shippedIn: '1.10.0',
-    title: 'Badges you can collect',
-    body: 'Medallions on small shelves, each with its rule and how close you are, and a pointer to the badge that helps your exam most.',
-  },
-  {
-    status: 'shipped',
-    shippedIn: '1.9.0',
-    title: 'Progress you can see',
-    body: 'Numbers and rings that grow as you make progress, and quiet moments when you finish the day’s plan or reach a milestone.',
-  },
-  {
-    status: 'shipped',
-    shippedIn: '1.8.0',
-    title: 'Gentle motion',
-    body: 'Taps, answers and the next question respond with calm motion, and Settings lets you reduce it.',
-  },
-  {
-    status: 'shipped',
-    shippedIn: '1.7.0',
-    title: 'Report a problem and Help',
-    body: 'Report any answered question, note or lesson step from where you see it, and game cards from a round’s recap.',
-  },
-];
 
 // ── Common questions (product R5) ────────────────────────────────────────
 export interface FaqEntry {

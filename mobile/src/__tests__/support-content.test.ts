@@ -1,13 +1,15 @@
 /**
  * The bundled Help content follows the What's New style (CLAUDE.md):
  * the benefit in plain words, never a question code, a domain number, a
- * count of items or an internal label. What's next has no dates and no
- * promises. The FAQ is 6–10 entries, including "Is Aurivan affiliated with
+ * count of items, a version number or an internal label. There is no
+ * "What's next" list (removed in 1.17.1), and no copy points to one.
+ * The FAQ is 6–10 entries, including "Is Aurivan affiliated with
  * ISACA? No." The fixes list passes its own checker.
  */
 import appJson from '../../app.json';
 import { CERTIFICATIONS } from '../content/certifications';
-import { FAQ, FIXES, shortVersion, WHATS_NEW, WHATS_NEXT } from '../content/support';
+import * as support from '../content/support';
+import { FAQ, FIXES, shortVersion, WHATS_NEW, WHATS_NEW_FOOTER } from '../content/support';
 import { fixesProblems, SUPPORT_TOPICS } from '../engine/support';
 
 const lines = WHATS_NEW.flatMap((e) => [...(e.new ?? []), ...(e.improved ?? []), ...(e.fixed ?? [])]);
@@ -38,6 +40,8 @@ describe('What’s new', () => {
     expect(line).not.toMatch(/\b(domain|D)\s?\d\b/i); // domain numbers
     expect(line).not.toMatch(/\b\d+\s+(questions?|items?|notes?|lessons?|subtopics?)\b/i); // counts
     expect(line).not.toMatch(/\b(subtopic|refactor|rebuilt|schema|store|component|backfill|back-fill)\b/i);
+    // The version is the section heading; never repeat it inside a line (1.17.1).
+    expect(line).not.toMatch(/\bversion\s+\d|\b\d+\.\d+(\.\d+)?\b/i);
   });
 
   it('shows short versions', () => {
@@ -46,23 +50,21 @@ describe('What’s new', () => {
   });
 });
 
-describe('What’s next', () => {
-  it('has each list, at most 8 items each, no dates and no promises', () => {
-    for (const status of ['progress', 'planned', 'shipped'] as const) {
-      const n = WHATS_NEXT.filter((i) => i.status === status).length;
-      expect(n).toBeGreaterThan(0);
-      expect(n).toBeLessThanOrEqual(8);
-    }
-    for (const i of WHATS_NEXT) {
-      const text = `${i.title} ${i.body}`;
-      expect(text).not.toMatch(/\b(20\d\d|Q[1-4]|January|February|March|April|May|June|July|August|September|October|November|December|soon|next month|next week)\b/);
-      expect(text).not.toMatch(/\b(will|guarantee|promise)\b/i);
-    }
+// What's next was removed in 1.17.1 (owner decision): the plan stays
+// internal (docs/ROADMAP.md), so nothing bundled may list or point to it.
+describe('No What’s next', () => {
+  it('the app bundles no roadmap list', () => {
+    expect('WHATS_NEXT' in support).toBe(false);
   });
 
-  it('a shipped item names a version that What’s new lists', () => {
-    const versions = new Set(WHATS_NEW.map((e) => e.version));
-    for (const i of WHATS_NEXT.filter((x) => x.status === 'shipped')) expect(versions.has(i.shippedIn!)).toBe(true);
+  it('no learner copy points to What’s next or to planned work', () => {
+    const copy = [...lines, WHATS_NEW_FOOTER, ...FAQ.flatMap((f) => [f.question, ...f.answer])].join(' ');
+    expect(copy).not.toMatch(/What[’']s next/i);
+    expect(copy).not.toMatch(/\b(roadmap|coming soon|in progress|planned)\b/i);
+  });
+
+  it('What’s new ends with one fixed line about feedback, with no plans or dates', () => {
+    expect(WHATS_NEW_FOOTER).toBe('We improve the app regularly based on learner feedback. Have an idea? Send it from Help.');
   });
 });
 

@@ -60,7 +60,7 @@ elif [ "${SHOTS:-}" = milestones ]; then
 elif [ "${SHOTS:-}" = support ]; then
   # Mobile 1.7 Help and feedback: the report sheet on a question and a note, the
   # note after sending, the no-email-app fallback, Settings → Help and feedback,
-  # Help, What's new, What's next, Common questions, Your reports (shoot_support.mjs).
+  # Help, What's new (top and end), Common questions, Your reports (shoot_support.mjs).
   node scripts/screenshots/shoot_support.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = motion ]; then
   # Mobile 1.8 motion: end states of the changed screens, and slow-motion

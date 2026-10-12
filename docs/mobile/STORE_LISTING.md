@@ -165,7 +165,7 @@ Thank you for reviewing Aurivan.
 - All study data (progress, settings, exam date) is stored only on the device. The app collects no data and has no analytics or ads. Settings → Your data lets the user save a backup file through the system share sheet and restore it with the system file picker; the app never uploads it.
 - The app works fully offline.
 - Support: Settings → Help and feedback (also You → Get help or send feedback) opens the Help screen with Common questions, Contact support, Report a problem with the app and Suggest an idea, and shows certprep.support@gmail.com. "Report a problem" opens the user's own email app with a draft they can read and edit; the app itself sends nothing. If no email app opens, the message is shown to copy or share.
-- Help and feedback also has: Common questions (bundled text), What's new (release notes), What's next (a static, read-only list of planned work bundled with the app; planned items are not in this build and are labelled with no dates), and Your reports (a list kept only on the phone of reports the user started; it is included in the user's own backup file). Nothing in these screens uses the network.
+- Help and feedback also has: Common questions (bundled text), What's new (release notes for changes already in the app), and Your reports (a list kept only on the phone of reports the user started; it is included in the user's own backup file). Nothing in these screens uses the network.
 - Report a problem appears under every answered question (practice and the mock review; not during a timed mock), every study note and lesson step, and each missed card in a game's round recap.
 - Support URL: https://<the website>/support.html
 
