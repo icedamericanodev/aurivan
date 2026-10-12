@@ -367,7 +367,7 @@ server: every email goes through the learner's OWN email app.
   `faq`, `reports`, `whats-new` (every mobile release in plain words, plus
   "Fixed after learner reports", ending with a fixed feedback line). The
   read-only `whats-next` list was removed in 1.17.1: the plan is internal
-  (`docs/ROADMAP.md`), and `src/app/+native-intent.tsx` sends old
+  (kept outside this public repo), and `src/app/+native-intent.tsx` sends old
   `aurivan://whats-next` links to Help (`lib/legacyLinks.ts`). Content
   in `content/support/index.ts`; `support-content.test.ts` enforces the What's
   New style. Maintainer side: `docs/support/PLAYBOOK.md`.

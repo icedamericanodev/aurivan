@@ -115,7 +115,7 @@ Proposed: **two short batches a week (Monday and Thursday), oldest first.**
 4. **App problems** (`app:` items, `display`, `freeze`, `timer`…): reproduce
    with the App and Display lines; open a fix in the mobile backlog.
 5. **Feedback and ideas:** reply §4.8, log the idea in the sheet. If it joins
-   the plan, add it to the internal roadmap (`docs/ROADMAP.md`, never shown
+   the plan, add it to the internal roadmap (kept outside this public repo, never shown
    in the app) in plain words, no dates. Ideas are not listed in the app;
    when one ships, it goes in What's new (`WHATS_NEW` in
    `mobile/src/content/support/index.ts`) as one plain benefit sentence.

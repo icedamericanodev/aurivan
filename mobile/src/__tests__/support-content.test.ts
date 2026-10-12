@@ -51,7 +51,7 @@ describe('What’s new', () => {
 });
 
 // What's next was removed in 1.17.1 (owner decision): the plan stays
-// internal (docs/ROADMAP.md), so nothing bundled may list or point to it.
+// internal (kept outside this repo), so nothing bundled may list or point to it.
 describe('No What’s next', () => {
   it('the app bundles no roadmap list', () => {
     expect('WHATS_NEXT' in support).toBe(false);

@@ -7,7 +7,7 @@
  * every link that opens the app on a phone.
  *
  * - "What's next" (aurivan://whats-next) was removed in mobile 1.17.1: the
- *   plan is internal now (docs/ROADMAP.md). Its old links open Help, which
+ *   plan is internal now (kept outside this repo). Its old links open Help, which
  *   has What's new and "Suggest an idea".
  *
  * Pure: no React, no storage, no network. Tested in legacy-links.test.ts.

@@ -5,7 +5,7 @@
  * reviewed store build (never over the air: compliance O1, Apple 2.5.2).
  *
  * There is no "What's next" list any more (removed in mobile 1.17.1, owner
- * decision): the plan stays internal in docs/ROADMAP.md, and learners see a
+ * decision): the plan stays internal (outside this public repo), and learners see a
  * change once it ships, in What's new.
  *
  * Writing rules (CLAUDE.md "What's New style"): describe the benefit, not

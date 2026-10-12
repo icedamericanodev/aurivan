@@ -7,7 +7,7 @@
  * - Get help: Common questions, Contact support, Report a problem with the
  *   app, Suggest an idea. These open a screen or a short sheet.
  * - Updates: Your reports, What's new. These open a screen. (What's next
- *   was removed in 1.17.1: the plan is internal, docs/ROADMAP.md.)
+ *   was removed in 1.17.1: the plan is kept internal, outside this repo.)
  * Under the rows: the support address as its OWN selectable line (so iOS
  * copies just the address, UX P6), and the not-affiliated line (Apple 1.5:
  * an easy way to contact us; compliance T1 wording).
