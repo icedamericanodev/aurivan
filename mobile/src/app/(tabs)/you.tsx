@@ -25,7 +25,7 @@
  * a "See report" button.
  */
 import { router } from 'expo-router';
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { boundsLabel, DomainRings, RINGS_NOTE, ringsSpoken } from '../../components/journey';
 import { useGrowth, useScreenFocus } from '../../components/motion';
@@ -117,6 +117,9 @@ export default function You() {
     : '';
   const statRoll = (k: number, from: string) => ({ play: stats.play, from, run: stats.run, delay: motion.dur.select + k * motion.stagger.stat });
   const plant = usePlantView();
+  // The same object while the look is unchanged: the memoised plant skips re-rendering (performance, 1.15.x).
+  const lookArt = plant.look?.art;
+  const rowLook = useMemo(() => (lookArt ? { ...lookArt, keepsakes: [] } : undefined), [lookArt]);
   const { isDark } = useTheme();
 
   return (
@@ -138,7 +141,7 @@ export default function You() {
                 size={64}
                 theme={isDark ? 'dark' : 'light'}
                 // At 64pt keepsakes would shrink the plant to fit them: the row shows the plant and its colours.
-                look={plant.look ? { ...plant.look.art, keepsakes: [] } : undefined}
+                look={rowLook}
                 mood={plant.look?.mood}
                 breathe="you"
                 breatheDelay={rings.play ? RINGS_SETTLED_MS : 0}
@@ -381,36 +384,7 @@ const YouLists = memo(function YouLists({
           title="Mock exams"
           action={mocks.length ? { label: 'See report', onPress: () => router.push('/readiness'), accessibilityLabel: 'See your readiness report' } : undefined}
         />
-        {mocks.length === 0 ? (
-          <>
-            <EmptyState compact title="No mocks yet" body="A mini mock shows how the exam feels. Start one whenever you like." />
-            {/* An experienced learner shouldn't have to wait for Today (ui.md Y4): the same start sheet as Practice. */}
-            <Button
-              kind="ghost"
-              label="Start a mini mock"
-              accessibilityHint={`${miniMock} questions. Opens the timing choices first.`}
-              onPress={() => router.push({ pathname: '/mock-start', params: { questions: String(miniMock) } })}
-              style={{ alignSelf: 'center', marginTop: space.xs }}
-            />
-          </>
-        ) : (
-          mocks.slice(0, 10).map((m, i, all) => (
-            <ListRow
-              key={m.id}
-              lead={<Lead value={`${mockPct(m)}%`} unit="score" />}
-              title={`${m.total} questions`}
-              // Extra time and untimed mocks are labelled in history (older results were standard).
-              // The time in the same words as Results ("3 h 31 min", "Under 1 min").
-              subtitle={mockSubtitle(m)}
-              // mockPct: a 0-question mock (a hand-edited backup) reads 0%, never NaN.
-              accessibilityLabel={`${m.total} questions, score ${mockPct(m)} percent, ${spokenMin(mockSubtitle(m))}`}
-              // Mobile 1.16 (Elena's gap): a past mock opens the report with its domains shown.
-              accessibilityHint="Opens your readiness report with this mock’s domains"
-              onPress={() => router.push({ pathname: '/readiness', params: { mock: m.id } })}
-              last={i === all.length - 1}
-            />
-          ))
-        )}
+        <MockHistory mocks={mocks} miniMock={miniMock} />
         {/* Pacing across timed mocks only (untimed ones are left out). */}
         {pacingLine && <T v="meta" style={{ marginTop: space.md }}>{pacingLine}</T>}
 
@@ -424,6 +398,44 @@ const YouLists = memo(function YouLists({
           last
         />
         <T v="meta" center style={{ marginTop: space.xl }}>{cert.trademarkNotice}</T>
+    </>
+  );
+});
+
+/** The mock history (its own memo: an answer in a session changes the review count above it, never the mocks). */
+const MockHistory = memo(function MockHistory({ mocks, miniMock }: { mocks: readonly MockResult[]; miniMock: number }) {
+  return (
+    <>
+      {mocks.length === 0 ? (
+        <>
+          <EmptyState compact title="No mocks yet" body="A mini mock shows how the exam feels. Start one whenever you like." />
+          {/* An experienced learner shouldn't have to wait for Today (ui.md Y4): the same start sheet as Practice. */}
+          <Button
+            kind="ghost"
+            label="Start a mini mock"
+            accessibilityHint={`${miniMock} questions. Opens the timing choices first.`}
+            onPress={() => router.push({ pathname: '/mock-start', params: { questions: String(miniMock) } })}
+            style={{ alignSelf: 'center', marginTop: space.xs }}
+          />
+        </>
+      ) : (
+        mocks.slice(0, 10).map((m, i, all) => (
+          <ListRow
+            key={m.id}
+            lead={<Lead value={`${mockPct(m)}%`} unit="score" />}
+            title={`${m.total} questions`}
+            // Extra time and untimed mocks are labelled in history (older results were standard).
+            // The time in the same words as Results ("3 h 31 min", "Under 1 min").
+            subtitle={mockSubtitle(m)}
+            // mockPct: a 0-question mock (a hand-edited backup) reads 0%, never NaN.
+            accessibilityLabel={`${m.total} questions, score ${mockPct(m)} percent, ${spokenMin(mockSubtitle(m))}`}
+            // Mobile 1.16 (Elena's gap): a past mock opens the report with its domains shown.
+            accessibilityHint="Opens your readiness report with this mock’s domains"
+            onPress={() => router.push({ pathname: '/readiness', params: { mock: m.id } })}
+            last={i === all.length - 1}
+          />
+        ))
+      )}
     </>
   );
 });

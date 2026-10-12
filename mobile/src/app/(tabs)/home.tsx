@@ -35,7 +35,7 @@
  *     panel, once per cert, until dismissed. Its plan item moves to "Also today".
  */
 import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow, todayMinutesLine } from '../../components/journey';
@@ -223,9 +223,13 @@ export default function Today() {
   useEffect(() => {
     if (grown && reactionId) markReacted(reactionId);
   }, [grown, reactionId]);
-  const reaction = plantView.look && reactionId && focused && !grown && clearing.settled ? { id: reactionId, mood: plantView.look.mood } : null;
+  // The same objects while nothing changes (performance, 1.15.x): the plant is
+  // memoised and skips a re-render of its ~200-shape drawing and its motion hooks.
+  const reactionMood = plantView.look && reactionId && focused && !grown && clearing.settled ? plantView.look.mood : null;
+  const reaction = useMemo(() => (reactionMood && reactionId ? { id: reactionId, mood: reactionMood } : null), [reactionMood, reactionId]);
   // Today is study-first: the plant and its visitor, never the keepsakes (UX review, decided).
-  const todayLook = plantView.look ? { ...plantView.look.art, keepsakes: [] } : undefined;
+  const lookArt = plantView.look?.art;
+  const todayLook = useMemo(() => (lookArt ? { ...lookArt, keepsakes: [] } : undefined), [lookArt]);
   const todayPlant = (size: number, testID: string) =>
     plantView.plant ? (
       <PlantButton

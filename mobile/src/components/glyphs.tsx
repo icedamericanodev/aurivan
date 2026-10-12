@@ -610,14 +610,20 @@ export function Botany({ kind = 'frond', color, sway = false, breathe = false }:
   useFocusEffect(
     useCallback(() => {
       if (!sway || reduce) return;
+      // Starts once the tab's fade-through has ended (performance, 1.15.x):
+      // the first 240 ms of a 4 s sway are invisible anyway, and starting it
+      // in the switch's own frames made the UI thread do both at once.
       angle.set(
-        withRepeat(
-        withSequence(
-          withTiming(1.5, { duration: 2000, easing: Easing.inOut(Easing.sin) }),
-          withTiming(-1.5, { duration: 4000, easing: Easing.inOut(Easing.sin) }),
-          withTiming(0, { duration: 2000, easing: Easing.inOut(Easing.sin) }),
+        withDelay(
+          motion.dur.enter,
+          withRepeat(
+            withSequence(
+              withTiming(1.5, { duration: 2000, easing: Easing.inOut(Easing.sin) }),
+              withTiming(-1.5, { duration: 4000, easing: Easing.inOut(Easing.sin) }),
+              withTiming(0, { duration: 2000, easing: Easing.inOut(Easing.sin) }),
+            ),
+            -1,
           ),
-          -1,
         ),
       );
       // Paused when the screen loses focus (off-screen).

@@ -163,5 +163,13 @@ describe('what a hidden tab re-renders', () => {
     expect(names.learn?.LessonRow ?? 0).toBe(0);
     expect(names.learn?.LessonGroups ?? 0).toBe(0);
     expect(names.you?.YouLists ?? 0).toBe(0);
+    // The plant (~200 shapes and its motion hooks) is memoised and its look is the same object.
+    expect(names.you?.LivePlantInner ?? 0).toBe(0);
+    // An answer in a session changes the review count, never the mock history.
+    resetRenders({ names: true });
+    act(() => {
+      useProgress.getState().recordAnswer('cisa', 'd2_001', false, 'unsure');
+    });
+    expect(renderNames().you?.MockHistory ?? 0).toBe(0);
   });
 });
