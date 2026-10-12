@@ -381,7 +381,7 @@ export interface FeedbackInput {
   message?: string;
   certName: string;
   app: AppInfo;
-  /** Where it was opened from, when that helps ("What’s next"). */
+  /** Where it was opened from, when that helps ("Help"). */
   from?: string;
   display?: DisplayDetails;
 }

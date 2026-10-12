@@ -234,12 +234,12 @@ describe('notes and the mailto: link', () => {
 
 describe('feedback and support emails', () => {
   it('feedback: kind tag in the subject, optional display line, the exam-content line', () => {
-    const e = buildFeedbackEmail({ kind: 'idea', message: 'More mocks', certName: 'CISA', app: { version: '1.7.0', os: 'Android 16' }, from: 'What’s next' });
+    const e = buildFeedbackEmail({ kind: 'idea', message: 'More mocks', certName: 'CISA', app: { version: '1.7.0', os: 'Android 16' }, from: 'Help' });
     expect(e.subject).toBe('Aurivan · Feedback · Idea · CISA');
     expect(e.body).toContain('More mocks');
     expect(e.body).toContain('Kind: An idea');
     expect(e.body).toContain('App: Aurivan 1.7.0 (Android 16)');
-    expect(e.body).toContain('From: What’s next');
+    expect(e.body).toContain('From: Help');
     expect(e.body).not.toContain('Display:');
     expect(e.body).toContain(EXAM_CONTENT_LINE);
   });

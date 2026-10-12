@@ -115,8 +115,10 @@ Proposed: **two short batches a week (Monday and Thursday), oldest first.**
 4. **App problems** (`app:` items, `display`, `freeze`, `timer`…): reproduce
    with the App and Display lines; open a fix in the mobile backlog.
 5. **Feedback and ideas:** reply §4.8, log the idea in the sheet. If it joins
-   the plan, add it to What's next (`mobile/src/content/support/index.ts`
-   `WHATS_NEXT`) in plain words, no dates.
+   the plan, add it to the internal roadmap (kept outside this public repo, never shown
+   in the app) in plain words, no dates. Ideas are not listed in the app;
+   when one ships, it goes in What's new (`WHATS_NEW` in
+   `mobile/src/content/support/index.ts`) as one plain benefit sentence.
 6. **Support:** answer from the FAQ where it helps (`FAQ` in the same file);
    if a question keeps coming, improve the FAQ entry.
 
@@ -178,8 +180,8 @@ once done.
 
 ### 4.8 Idea logged
 > Thank you, this is a good one. We've added it to our list. We can't promise
-> when or whether it ships, but we read every idea, and when one is on its way
-> it appears in What's next in the app.
+> when or whether it ships, but we read every idea, and when it’s ready,
+> you’ll see it in What’s new in the app.
 
 ### 4.9 Real exam content (delete the content first)
 > Thank you for taking the time to write. Your message seems to describe a

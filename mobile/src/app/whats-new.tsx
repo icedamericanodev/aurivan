@@ -15,13 +15,17 @@
  *   release (UX review P8).
  * - The latest version: New / Improved / Fixed, in plain words.
  * - Earlier versions.
+ * - One fixed closing line (WHATS_NEW_FOOTER). Plain text, not a link: an
+ *   inline word link can't be a 48pt touch target, and Help is one Back
+ *   away. There is no "What's next" list (removed in 1.17.1): plans stay
+ *   internal, and a change shows up here once it ships.
  */
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Bullets } from '../components/notes';
 import { Button, PushedHeader, Screen, Section, T } from '../components/ui';
-import { FIXES, shortVersion, WHATS_NEW, type WhatsNewEntry } from '../content/support';
+import { FIXES, shortVersion, WHATS_NEW, WHATS_NEW_FOOTER, type WhatsNewEntry } from '../content/support';
 import { examDateLabel as dayLabel } from '../engine/examDay';
 import { useReports } from '../lib/useReports';
 import { useProgress } from '../store/progress';
@@ -108,6 +112,8 @@ export default function WhatsNew() {
       {earlier.map((e) => (
         <Release key={e.version} entry={e} latest={false} />
       ))}
+
+      <T v="meta" style={{ marginTop: space.xl }}>{WHATS_NEW_FOOTER}</T>
     </Screen>
   );
 }

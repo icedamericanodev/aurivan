@@ -8,7 +8,8 @@
  *   when Help is already open, and ignores anything else;
  * - Common questions: each answer ends with "Still stuck? Email us", which
  *   opens Contact support with the right topic chosen;
- * - What's next: Suggest an idea opens Send feedback with "An idea";
+ * - What's next is gone (1.17.1): no Help row for it, What's new ends with
+ *   the fixed feedback line (old links: legacy-links.test.ts);
  * - Your reports + the bundled fixes: "Updated after your report" with the
  *   fix's note; What's new and Today say "Updated after your report" ONCE
  *   (whichever comes first), Today's line has a Dismiss; the plural counts
@@ -27,7 +28,6 @@ import { useSettings } from '../store/settings';
 import Settings from '../app/settings';
 import Help from '../app/help';
 import Faq from '../app/faq';
-import WhatsNext from '../app/whats-next';
 import WhatsNew from '../app/whats-new';
 import Reports from '../app/reports';
 import Today from '../app/(tabs)/home';
@@ -145,9 +145,12 @@ describe('the Help screen', () => {
     expect(text.indexOf('Get help')).toBeLessThan(text.indexOf('Common questions'));
     expect(text.indexOf('Suggest an idea')).toBeLessThan(text.indexOf('Updates'));
     expect(text.indexOf('Updates')).toBeLessThan(text.indexOf('Your reports'));
-    for (const t of ['Common questions', 'Contact support', 'Report a problem with the app', 'Suggest an idea', 'Your reports', 'What’s new', 'What’s next']) {
+    for (const t of ['Common questions', 'Contact support', 'Report a problem with the app', 'Suggest an idea', 'Your reports', 'What’s new']) {
       expect(pressables(t).length).toBeGreaterThan(0);
     }
+    // What's next was removed in 1.17.1: no row, and no copy that mentions it.
+    expect(pressables('What’s next')).toHaveLength(0);
+    expect(text).not.toMatch(/What[’']s next|recently shipped|planned/i);
     // iOS copies a whole selectable Text: the address must be alone in its own (UX P6).
     const address = root().findAll((n) => n.props.selectable === true && typeof n.type !== 'string' && n.props.children === 'certprep.support@gmail.com');
     expect(address.length).toBeGreaterThan(0);
@@ -165,8 +168,7 @@ describe('the Help screen', () => {
     press('Common questions');
     press('Your reports');
     press('What’s new');
-    press('What’s next');
-    expect(mockPush.mock.calls.map((c) => c[0])).toEqual(['/faq', '/reports', '/whats-new', '/whats-next']);
+    expect(mockPush.mock.calls.map((c) => c[0])).toEqual(['/faq', '/reports', '/whats-new']);
   });
 
   it('Report a problem with the app reports the app itself, and the note shows under that row', async () => {
@@ -286,14 +288,22 @@ describe('Common questions', () => {
   });
 });
 
-describe('What’s next', () => {
-  it('shows the three lists and Suggest an idea', async () => {
-    mount(<WhatsNext />);
-    for (const t of ['In progress', 'Planned', 'Recently shipped']) expect(allText()).toContain(t);
+describe('What’s next is gone (1.17.1)', () => {
+  it('What’s new ends with the fixed feedback line, after the oldest release', () => {
+    mount(<WhatsNew />);
+    const text = allText();
+    const footer = 'We improve the app regularly based on learner feedback. Have an idea? Send it from Help.';
+    expect(text).toContain(footer);
+    expect(text.trimEnd().endsWith(footer)).toBe(true);
+    expect(text).not.toMatch(/What[’']s next|In progress|Recently shipped/);
+  });
+
+  it('Help’s Suggest an idea still opens Send feedback with “An idea”', async () => {
+    mount(<Help />);
     press('Suggest an idea');
     expect(pressables('An idea')[0].props.selected).toBe(true);
     await pressAsync('Write the email');
-    expect(lastEmail().body).toContain('From: What’s next');
+    expect(lastEmail().body).toContain('From: Help');
   });
 });
 

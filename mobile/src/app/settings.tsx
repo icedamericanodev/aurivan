@@ -430,7 +430,7 @@ export default function Settings() {
         }))}
         value={s.activeCertId}
         onChange={(id) => s.setActiveCert(id)}
-        after={<T v="meta" style={{ marginTop: space.md }}>More exams are on the way. We are writing original questions for them now.</T>}
+        after={<T v="meta" style={{ marginTop: space.md }}>Only CISA is available today.</T>}
       />
 
       <CalendarSheet

@@ -2,8 +2,9 @@
 // the report sheet on a question and on a note, the calm note after the
 // email app opens, the no-email-app fallback, Settings → Help and feedback,
 // the Help screen (two groups), "Copy or share instead", Today's credit line
-// (with Dismiss), What's new (with "Updated after your report"), What's
-// next, Common questions and Your reports.
+// (with Dismiss), What's new (with "Updated after your report", and its end
+// with the feedback line), Common questions and Your reports. (What's next
+// was removed in 1.17.1.)
 // Usage: node shoot_support.mjs <seed.json> <out> <suffix>
 // Run via: SHOTS=support bash scripts/screenshots/run.sh <out> <dark|light>
 // (run.sh swaps in a one-entry demo fixes list for this export only.)
@@ -136,7 +137,7 @@ await open('/home');
 await page.mouse.wheel(0, 30000); await page.waitForTimeout(800);
 await snap('s16-today-credit');
 
-// 5. What's new (with the credit, shown once), What's next, Common questions, Your reports.
+// 5. What's new (with the credit, shown once, and its end), Common questions, Your reports.
 // Today has just marked the credit seen; un-mark it so What's new can show its own once.
 await page.evaluate(() => {
   const row = JSON.parse(localStorage.getItem('aurivan.progress.v1'));
@@ -147,10 +148,9 @@ await open('/whats-new');
 await snap('s17-whats-new');
 await scrollTo('Fixed after learner reports', 110);
 await snap('s18-whats-new-fixes');
-await open('/whats-next');
-await snap('s19-whats-next');
+// s19: the end of What's new, its last line (Help → What's new, scrolled to the bottom).
 await page.mouse.wheel(0, 30000); await page.waitForTimeout(800);
-await snap('s20-whats-next-end');
+await snap('s19-whats-new-end');
 await open('/faq');
 await page.getByText('How do I move my progress to a new phone?', { exact: true }).click();
 await page.waitForTimeout(600);

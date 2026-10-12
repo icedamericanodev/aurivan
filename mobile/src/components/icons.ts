@@ -58,12 +58,11 @@ export { default as Timer } from 'lucide-react-native/icons/timer';
 export { default as UserRound } from 'lucide-react-native/icons/user-round';
 export { default as X } from 'lucide-react-native/icons/x';
 // Mobile 1.7, Help and feedback: common questions, contact support, the
-// You row, Your reports and What's next. ("MapIcon", so it never hides JS's Map.)
+// You row and Your reports.
 export { default as CircleQuestionMark } from 'lucide-react-native/icons/circle-question-mark';
 export { default as Mail } from 'lucide-react-native/icons/mail';
 export { default as LifeBuoy } from 'lucide-react-native/icons/life-buoy';
 export { default as Inbox } from 'lucide-react-native/icons/inbox';
-export { default as MapIcon } from 'lucide-react-native/icons/map';
 export { Rings, Sprig, Sprout } from './glyphs';
 
 export const ICON_STROKE = 1.75;

@@ -6,7 +6,8 @@
  * (UX review O2):
  * - Get help: Common questions, Contact support, Report a problem with the
  *   app, Suggest an idea. These open a screen or a short sheet.
- * - Updates: Your reports, What's new, What's next. These open a screen.
+ * - Updates: Your reports, What's new. These open a screen. (What's next
+ *   was removed in 1.17.1: the plan is kept internal, outside this repo.)
  * Under the rows: the support address as its OWN selectable line (so iOS
  * copies just the address, UX P6), and the not-affiliated line (Apple 1.5:
  * an easy way to contact us; compliance T1 wording).
@@ -22,7 +23,7 @@ import { config } from '../lib/config';
 import { reportsSubtitle, useReports } from '../lib/useReports';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { CircleQuestionMark, Flag, ICON_STROKE, Inbox, Lightbulb, Mail, MapIcon, Sparkles } from './icons';
+import { CircleQuestionMark, Flag, ICON_STROKE, Inbox, Lightbulb, Mail, Sparkles } from './icons';
 import { useContactFlow, useReportFlow } from './support';
 import { ICON_SIZE, ListRow, Section, T } from './ui';
 
@@ -84,14 +85,7 @@ export function HelpRows({ certId }: { certId: string }) {
 
       <Section title="Updates" />
       <ListRow icon={icon(Inbox)} title="Your reports" subtitle={reportsSubtitle(counts)} onPress={() => router.push('/reports')} />
-      <ListRow icon={icon(Sparkles)} title="What’s new" subtitle={whatsNewSubtitle(dueItems)} onPress={() => router.push('/whats-new')} />
-      <ListRow
-        icon={icon(MapIcon)}
-        title="What’s next"
-        subtitle="Planned, in progress and recently shipped"
-        onPress={() => router.push('/whats-next')}
-        last
-      />
+      <ListRow icon={icon(Sparkles)} title="What’s new" subtitle={whatsNewSubtitle(dueItems)} onPress={() => router.push('/whats-new')} last />
 
       <T v="small" color={c.ink2} style={{ marginTop: space.lg }}>{HELP_FOOTER_LEAD}</T>
       <T v="label" selectable color={c.accentText}>{config.feedbackEmail}</T>
