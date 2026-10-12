@@ -5,11 +5,9 @@
  * link the app relies on today (exam date, plant section, Help's open=…),
  * in all three URL shapes Expo Router hands to +native-intent.
  *
- * One real bug is pinned with `it.failing` (passes while the bug exists,
- * starts failing once it is fixed; then drop `.failing`): MOVED is a plain
- * object, so a link whose last part is an Object.prototype key
- * (aurivan://constructor, aurivan://__proto__) returns a function or an
- * object instead of a string.
+ * It also pins a fixed bug: a link whose last part is an Object.prototype
+ * key (aurivan://constructor, aurivan://__proto__) once returned a function
+ * or an object instead of a string.
  */
 import { redirectSystemPath } from '../app/+native-intent';
 import { redirectLegacyPath } from '../lib/legacyLinks';
@@ -73,11 +71,8 @@ describe('links that must pass through untouched', () => {
 });
 
 describe('the hook never hands Expo Router a non-string', () => {
-  // Bug: legacyLinks.ts reads MOVED[last] on a plain object literal, so
-  // inherited keys resolve. "aurivan://constructor" returns Object itself.
-  // (The last part is lowercased first, so camel-case keys like toString
-  // miss; "constructor" and "__proto__" hit, in any case.)
-  it.failing.each(['aurivan://constructor', 'aurivan://CONSTRUCTOR', 'aurivan://__proto__', '/notes/__proto__'])(
+  // Fixed: inherited keys of the lookup object must never match.
+  it.each(['aurivan://constructor', 'aurivan://CONSTRUCTOR', 'aurivan://__proto__', '/notes/__proto__'])(
     '%s comes back as the same string',
     (path) => {
       for (const out of both(path)) expect(typeof out).toBe('string');

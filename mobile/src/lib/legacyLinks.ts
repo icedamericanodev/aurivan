@@ -28,5 +28,6 @@ export function redirectLegacyPath(path: string): string {
   // Drop "?query" and "#hash", then any trailing "/", then take the last part.
   const bare = path.split(/[?#]/)[0].replace(/\/+$/, '');
   const last = bare.slice(bare.lastIndexOf('/') + 1).toLowerCase();
-  return MOVED[last] ?? path;
+  // Own keys only: "constructor" or "__proto__" must never match an inherited value.
+  return Object.prototype.hasOwnProperty.call(MOVED, last) ? MOVED[last] : path;
 }

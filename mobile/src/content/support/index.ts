@@ -104,7 +104,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.13.0',
     date: '2026-10-11',
     new: [
-      'Grow your own plant: name it, and watch it grow with your real progress. It never wilts and asks for nothing.',
+      'Grow and name your own plant: it grows with your real progress, never wilts and asks for nothing.',
       'Your plant shows what grows it next, and how each domain is coming along.',
     ],
     improved: [
@@ -122,11 +122,11 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     ],
     improved: [
       'Learn shows at a glance what’s done and what’s up next.',
-      'Sure Footing is now called Forecast. Your best scores and level are kept.',
+      'Sure Footing is now called Forecast, and your best scores and level are kept.',
       'Forecast explains its scoring before your first round.',
       'A game’s round summary now shows how your recent scores are going.',
       'Lesson checks now give the same answer feedback as practice.',
-      'Small touches of motion show what changed. With Reduce Motion on, they simply fade.',
+      'Small touches of motion show what changed, or simple fades with Reduce Motion on.',
     ],
   },
   {
@@ -164,7 +164,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.9.0',
     date: '2026-10-11',
     new: [
-      'Your progress now shows itself when your readiness or a milestone moves up.',
+      'You now see your readiness and milestones move up as you make progress.',
       'Finishing the day’s plan and reaching a milestone now have their own short, quiet moment.',
     ],
     improved: [
