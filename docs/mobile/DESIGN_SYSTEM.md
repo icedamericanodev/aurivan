@@ -1378,3 +1378,133 @@ adds `sync-status-just`, `sync-status-offline`, `sync-status-newer`,
 `sync-signout-unsynced` (the warning alert), `sync-reset` (Settings with
 the Reset alert while syncing) and `sync-restore` (the restore preview's
 sync line).
+
+## 19. The feedback board (Uplift Phase 8, built OFF)
+
+The board is built and switched OFF with accounts and sync (ARCHITECTURE.md
+§3 "Cloud (built OFF) — Uplift Phase 8"). With the flag off no screen below
+is reachable, and You, Settings, Help, What's new and the Send feedback
+sheet read exactly as before (the `off-*` shots). Copy:
+`content/cloud/copy.ts` only, every key starting `board.`, under §17's rules
+(`cloud-copy.test.ts`); "We review reports within 24 hours" is the one
+reply-time line, allowed only in board strings. There is **no What's next
+tab or feed** (12 Oct addendum).
+
+**Ways in.** You → Help and feedback: a "Feedback board" row (Lucide
+`messages-square` in the usual `soft` circle; "Ideas, app problems and
+questions from learners") above "Get help or send feedback"; Settings → a
+"Feedback board" group (Your activity, Blocked learners); and in the Send
+feedback sheet, for "An idea" and signed in, a ghost "Post publicly instead
+›" under the email buttons. A question's report never offers it. What's new
+ends (cloud builds) with one `meta` line thanking learners whose ideas
+shipped, no names or counts.
+
+**The board** (`/board`): pushed, "Feedback board" in the bar with a ghost
+"+ Post" on the right; a `body` intro ("Ideas, app problems and questions
+from learners. We read every post.", or, with the `author_staff` read scope,
+"…Only you and the team see your posts."); signed out, a `small` line ("Sign
+in to read the board, and to post, vote and comment." or, when anyone may
+read, "…Reading is open to everyone.") and a `secondary` Sign in; signed in,
+rows for Your activity ("New" when there's an unread notice) and, for staff,
+Moderation. Then a `Segmented` Top · New · Shipped, kind `Chip`s (All,
+Content, Ideas, App problems, Questions), a `SearchField`, and the posts.
+
+**A post row.** The **vote pill** on the left: 52 wide, at least 56 tall,
+radius `md`, a 1.5 `line` outline, ▲ over the count in `label` (tabular);
+voted, it fills with `ink` and the text turns `bg` (shape AND colour, never
+green). Spoken "Vote for: {title}. {n} votes. Voted." / "Not voted yet." Then
+the title (`headline`), a `meta` line "Idea · ◑ Planned · Quiet Cedar 214"
+("Aurivan team" for staff) and a `meta` comments line ("12 comments · Team
+replied"). Rows are hairline-ruled, no cards.
+
+**Statuses** are glyph + words, never the correct green or wrong red: Open ○,
+Under review ◔, Planned ◑, In progress ◕, Shipped ● ("Shipped in 1.18"),
+Answered ✓, Not planned –, Duplicate ⇢. On a post they're a `soft` pill
+(`StatusTag`, `meta` in `ink`).
+
+**A post** (`/board/<id>`): the ⋯ button (48pt, spoken "More options") on
+the bar's right opens a `Sheet` of full-width buttons: Report post · Block
+{handle} on someone else's; Edit · Withdraw (`danger`) on your own. Then the
+`hero` title, the meta row (kind, `StatusTag`, handle or the "Aurivan team"
+badge), the body as plain `body` Text, the vote pill beside a full-width
+`secondary` Follow / Following, the **official response** (a 3pt
+`accentText` left rule, `caption` "Aurivan team · official response", the
+`body`), "Status history" (`small` "Planned · 9 Oct" with a `meta` note), and
+the comments: `meta` "handle · date", the words, a ghost Reply on top-level
+comments, replies indented with a `line` rule (one level), each with its own
+⋯. A Content post about an answer is folded in a `soft` block ("This post
+talks about the answer to a practice question." + ghost "Show it"). Your own
+waiting post shows a `tipBg` "Waiting for review" block. The comment field
+is a `NoteField` with a primary Send.
+
+**Report** (a `Sheet`): "Report this post / comment / learner", eight
+`RadioRow` reasons (Shares real exam content first), an optional note, and
+Send report (disabled until a reason). After sending, the sheet says
+"Thanks. We review reports within 24 hours. You won't see this post while
+it's reviewed." and the item is already gone behind it. **Block** asks with
+a system alert ("Block Quiet Cedar 214?" and what it does; "They won't be
+told."). The menu never offers to block a team member.
+
+**The composer** (`/board/new`, rises like a sheet): close (X), "New post";
+"What is it about?" with four `Chip`s; `TextField`s Title ("Short and
+specific"; under 8 characters, the problem in `tip`) and Link an item (a
+code like q:d4_217); Details in a `NoteField`; "Similar posts. Vote
+instead?" with up to three rows; the **leak card** in `tipBg` (a `label`
+title "This looks like text from one of Aurivan's practice questions", the
+`small` explanation, a `secondary` "Report it privately" that opens the
+private report on that question, and a ghost "Edit my post"), or the recall
+warning, or the words/links line; "Posting as Misty Rowan 77 · Change"; the
+primary Post (off while checking, on a bank match, when paused, or with a
+short title); then the `meta` rules line, Community guidelines, and the
+not-affiliated line. Held: "Waiting for review" (`display`) with why, and
+Done. Offline: "You're offline. Your post is saved here as a draft." Paused:
+the `tipBg` notice at the top.
+
+**The guidelines gate** (`/board/guidelines`, a sheet): `display` "Before you
+post" (focus moves to it), the intro, seven rules as `body` bullets with an
+`accentText` dot, "We review reports within 24 hours…", the not-affiliated
+line, the full guidelines link; then `Section` "Choose how you appear":
+`RadioRow` "Quiet Cedar 214 (a pseudonym)" with a ghost "New name", and
+`RadioRow` "A name you choose" with a `TextField` (a refused name shows why
+in `tip`); `meta` "Your email address is never shown."; the `CheckRow` "I
+agree to the community guidelines" (unticked); primary "I agree, continue"
+(off until ticked and the name is fine); ghost "Not now". Read from the
+board's foot when already agreed, it's the rules and a `secondary` Done.
+
+**Your activity** (`/board/activity`): Notices first (an 8pt `accentText`
+dot for new, `meta` date, the `body` sentence written on the phone: a status,
+the team's reply, a reply, a removal with its reason and who decided, a
+warning, a suspension with its end date, an appeal's outcome), with a
+`secondary` "Ask us to look again" on a removal (14 days, once; a `Sheet`
+with "Tell us why (optional)" and Send) and a ghost "Open the post"; then
+Your posts (a waiting one with its `tipBg` block). **Blocked learners**: each
+name with a `secondary` Unblock.
+
+**Moderation** (`/board/moderation`, staff only; anyone else is sent back):
+"Moderation" with "3 waiting" (`meta`) on the right; `Chip`s Held · Reported
+· Appeals · Members · Log; each item a `label` line ("Held · exam recall · 2
+h ago", "Reported ×3 · harassment or hate · 40 min ago"), the title, the first
+two lines in quotes (`small`), `meta` "Quiet Oak 9 · new member · 0 prior
+actions", then `secondary` Approve · Remove · Remove + warn and a ⋯ (Delete
+exam content, Hide, Dismiss reports). Remove asks why with a `ChoiceSheet`.
+Appeals: Keep removed / Put back; Members: Suspend 7 days, Ban / Unban.
+At the foot: "Posting: Open" and Pause posting (asks first) / Reopen posting.
+
+**Motion.** No new animation: pushes and sheets as elsewhere, dissolving
+under Reduce Motion.
+
+**Large text.** Rows wrap; chips wrap to new lines; the vote pill keeps its
+size while the title and meta lines wrap beside it; at about 200% text the
+composer's leak card and buttons stack full width (`board-top-xl`,
+`compose-bank-xl`).
+
+**Shots.** `SHOTS=cloud bash scripts/screenshots/run.sh <out> <light|dark>`
+(`CLOUD_PART=board` for only these): `board-top`, `board-new`,
+`board-shipped`, `board-out`, `board-out-everyone`, `board-own`,
+`board-post`, `board-spoiler`, `compose-empty`, `compose-bank`,
+`compose-recall`, `compose-draft`, `board-gate`, `board-handle`, `ugc-menu`,
+`ugc-report`, `ugc-report-done`, `ugc-block`, `ugc-blocked`,
+`board-activity`, `board-held`, `board-paused`, `mod-held`, `mod-reported`,
+`mod-appeals`, `mod-members`, `mod-log`, `mod-pause`, `board-you`,
+`board-settings`, `board-feedback-public`, `board-whatsnew`, `board-top-xl`,
+`compose-bank-xl`, and the flag-OFF `off-help`, `off-whatsnew`.

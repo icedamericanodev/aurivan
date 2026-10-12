@@ -602,6 +602,77 @@ is touched with it off: `cloud-off.test.tsx`). Spec: PHASE6_8 §3.
   owner decides plan and region at Phase 9). A heavy learner's progress
   snapshot measures about 263 KB (`sync-budget.test.ts`).
 
+### Cloud (built OFF) — Uplift Phase 8, the feedback board
+A board where learners post ideas, app problems, content concerns and
+questions, vote, comment and follow, and the team answers with statuses and
+an official response. Built and switched OFF with accounts and sync (same
+flag; with it off nothing renders, no network, no timer, and neither of the
+board's storage keys is touched: `cloud-off.test.tsx`). Spec: PHASE6_8 §4,
+with its 12 Oct addendum: **the board does not feed What's next** (What's
+next was removed from the app in 1.17.1; the roadmap is kept for developers,
+outside the app). Statuses (Open, Under review, Planned, In progress,
+Shipped, Answered, Not planned, Duplicate) stay on posts for their authors
+and voters, and shipped ideas get one general thank-you line at the end of
+What's new (cloud builds only; no names, no counts).
+- **Who reads it is ONE server value**, `board_settings.read_scope` (an
+  open owner decision, §10): `signed_in` (the default: every signed-in
+  learner reads visible posts), `author_staff` (a learner sees only their
+  own posts and the team's replies), or `everyone` (signed-out reading too,
+  spec B1). Switching is one SQL line; the RLS policies decide, and the app
+  only picks its words from `settings().readScope` (the intro line and the
+  signed-out hint). Authors always read their own; staff read everything.
+- **Screens** (`app/(cloud)/board/*`): the board (Top · New · Shipped, kind
+  chips, search, the vote pill, the published contact and the
+  not-affiliated line at the foot), a post (the ⋯ menu, the official
+  response, the status history, one level of replies, a folded spoiler for a
+  Content post about an answer), the composer, the guidelines gate, Your
+  activity (your posts, and in-app notices: no push), Blocked learners, and
+  Moderation (staff only). Ways in: You → Help and feedback → Feedback
+  board, Settings → Feedback board (Your activity, Blocked learners), and
+  the Send feedback sheet's "Post publicly instead ›" for an idea (never on
+  a question's report).
+- **The gate can't be skipped.** Signed out, Vote, Comment and Post open the
+  sign-in sheet; then the guidelines gate (version-stamped; again when the
+  version changes) before the first post, comment or vote. The learner
+  appears as a pseudonym ("Quiet Cedar 214", `engine/boardNames.ts`) or a
+  name they type (checked on the phone with `engine/moderation.ts
+  checkHandle`, again by the server). The email is never shown.
+- **One set of text rules on both sides.** `engine/moderation.ts`
+  (normalising, the block and hold word lists, links, reserved names) and
+  `engine/leakGuard.ts` (the exam-content leak guard) are pure and copied to
+  `supabase/functions/_shared/` by `mobile/scripts/sync-shared.mjs`; guard
+  G8 (`--check`, in both workflows and a Jest test) fails if they differ,
+  and a 200-string fixture proves the Deno copy gives the same verdicts.
+- **The leak guard.** Near-verbatim text from Aurivan's own questions is
+  refused (Post is off in the composer; the server answers `bank_text` and
+  writes nothing). Two numbers-only fingerprints of the bundled bank: 5-word
+  runs over stem, options, explanations and tips, and 3-word runs over stem
+  and options (the spec's single 5-word print caught about 85% of stems
+  with 1 word in 8 changed; with the second, about 98%), ignoring runs found
+  in 3 or more questions. Measured on the real bank in Jest: every stem of
+  12+ words blocked, at least 95% with 1 word in 8 changed, 0 of 60 ordinary
+  posts, under 2% of study-note paragraphs, Unicode tricks folded. Built on
+  the phone once, the first time the composer checks (about 0.25 s in Jest;
+  measure on a mid-range Android before go-live), from the questions
+  already in the app; nothing about it is shown, and it never reveals the
+  bank's size. A recall score (support §10.3: "on my exam I got…", dumps,
+  an A–D option list, stem phrasing; −2 when the post links one of our own
+  items) of 3 or more holds a post for a person.
+- **Report and block are immediate on the phone** (`lib/board.ts`): the item
+  or the learner disappears before the network answers. Votes, follows,
+  reports, blocks and "mark read" made offline wait in the outbox
+  (`aurivan.outbox.v1`, `engine/outbox.ts`: idempotent acts only, coalesced
+  per target, 50 at most, 7 days, bound to one account by a hash so another
+  learner on the phone never sends them). Posts and comments are never
+  queued: offline, the composer keeps one draft (`aurivan.boardDraft.v1`).
+  Other learners' posts are kept in memory for the session only.
+- **Learners' text is plain Text** everywhere: no link detection, no markdown.
+- **No reward for board activity**: posting, voting and reporting never touch
+  progress, the plant, badges or streaks (compliance 2.4; tested).
+- **Memory backend** (`cloud/memory/board.ts`) plays the server's rules for
+  tests and the screenshot build; `memory/seed.ts boardSeed` has 12 posts in
+  every status, a held post, reports, an appeal and a staff member.
+
 ### The content pipeline
 ```
 data/tips_overrides/d{N}.json ─┐
@@ -808,7 +879,87 @@ cap.
   `appVersion` is the newest app that wrote one of them (else the asking
   app's), so a store from a newer app restores as "update the app", not as
   damaged. The two support checkpoints are copies of the same progress and
-  are not included (the privacy notice says so); Phase 8 adds `board`.
+  are not included (the privacy notice says so). Phase 8 added `board`
+  (below).
+
+### The feedback board, server side (Phase 8)
+
+| Piece | Path | Job |
+|---|---|---|
+| Board schema | `supabase/migrations/20261014000000_feedback_board.sql` | `board_settings` (the pause valve, the guidelines version, the read scope), `board_members` (handle, consent, standing, the team mark), `board_posts`, `board_comments`, `board_votes`, `board_follows`, `board_status_events`, `board_notifications`, `ugc_reports`, `member_blocks`, `moderation_appeals` in `public`; `staff`, `moderation_log`, `moderation_terms`, `board_events` (rate-limit counts, 2 days) and the `board_priority` view in `private`; the triggers; the reads `board_feed` and `board_post`; the server entry points `svc_board_member`, `svc_board_join`, `svc_board_write`, `svc_moderation_terms`, `svc_is_staff`, `svc_staff_act` (→ `private.staff_act`), `svc_staff_queue`, `svc_staff_digest`, `svc_board_export`, `svc_board_counts` |
+| Board tests | `supabase/tests/30_board.sql` | 165 pgTAP checks: anon and A/B/staff in each read scope; column grants; withdraw-only (and the other learner's post, comment, vote and notice unchanged after A's attempts); votes (exactly ±1, 100 changes a day, a take-back counts and is never refused); reports (exam content hides at once, 3 reporters 7+ days old, a young reporter doesn't count, rate limits, unseen targets refused); blocks; handles; appeals; private tables and functions; board-submit's writer (holds, pause, guidelines, banned, post and comment limits, one level of replies); staff actions and their log; cascade on account delete; no board table in any publication |
+| Board mutants | `scripts/board_sql_mutants.py` | 34 one-change breaks of the board migration; the suite must fail on each (same `PGTAP_RUN` as the sync mutants) |
+| Board functions | `supabase/functions/{board-submit,staff-action,staff-digest}` | Pure handlers on a `BoardDbPort` (`_shared/board.ts`; real adapter `_shared/supabaseBoard.ts`, which maps the SQL's own words to codes and never passes a database message on); `deno test` with `FakeBoardDb` |
+| Leak print | `scripts/build-leakprint.mjs` → `supabase/functions/board-submit/leakprint.json` | Built at DEPLOY time from the bundled pack (gitignored, numbers only); `board-submit` refuses every post without it. Shipped as a static file (`config.toml`) |
+
+**The read scope (open owner decision, Phase 9).** Whether board posts are
+visible to every signed-in learner, or only to their author and the team,
+is undecided. It is built as ONE value, `public.board_settings.read_scope`:
+- `signed_in` (default, per spec): signed-in learners read visible posts;
+- `author_staff`: a learner reads only their own posts (and the team's
+  replies on them); the app's intro says "Only you and the team see your
+  posts";
+- `everyone`: signed-out readers too (spec B1 and decision #6).
+Switch it with one statement, no deploy:
+`update public.board_settings set read_scope = 'author_staff';`. The anon
+and authenticated read policies on posts, comments, members and the status
+history all read it; `30_board.sql` tests all three; the app reads it from
+`settings()` and only changes its words. Signed-out reading (decision #6)
+is the same switch.
+
+**The security model, in short.**
+- Posts and comments are written only by `board-submit` (service role,
+  through `svc_board_write`) after the filters and the leak guard, with the
+  author taken from the verified JWT (a user id in the body is ignored).
+  Learners can only withdraw their own (`posts_guard` and
+  `comments_guard_upd`: only `visibility` → `withdrawn` from pending or
+  visible; updates made one trigger level deeper, such as a vote's count,
+  pass).
+- Votes, follows, reports, blocks, appeals, read marks and the member row
+  are written directly under RLS, own rows only, and need a `profiles` row
+  (Terms) and, for votes, a member in good standing.
+- Rate limits are counted in `private.board_events`, one row per act
+  (deletes too), under a per-user advisory lock, so delete + re-add can't
+  reset them and two acts at once can't both slip under.
+- Staff come only from `private.staff`. `staff-action` checks it with the
+  service role, and `private.staff_act` checks the actor again; every action
+  is logged with actor and reason (never the learner's text).
+- App roles have **no usage on schema `private`** (hardening test 13 still
+  holds): a policy calls a helper by its stored id, which needs only
+  EXECUTE. Exactly two helpers are executable by `authenticated`
+  (`private.is_staff`, `private.is_active_member`) and none by `anon`; every
+  other private function, `private.is_blocked_by` included, is revoked from
+  PUBLIC (addendum). Inside a definer trigger, `private.app_role()` reads
+  the session's role setting to tell a learner's statement from the service
+  role's.
+- The reads `board_feed` / `board_post` are `security invoker` plpgsql: RLS
+  applies, and the signed-out branch never touches tables anon can't read.
+- Allowlists (`01_hardening.sql`, `check_rls.sh`): `board_settings_read`
+  (always true: the pause valve, guidelines version and read scope are
+  needed before sign-in), anon column reads of the five public-read board
+  tables, and execute on the two reads.
+
+**The three functions.**
+- `board-submit` `{ op: me | join | post | edit_post | comment | edit_comment }`:
+  normalise, `moderateText` (block → 422 `rejected_words` `words`; a new
+  member's link, a shortener or a dump site → `links`; threats, self-harm,
+  contact details → hold), `leakMatch` (→ 422 `bank_text`, nothing
+  written), `recallScore` ≥ 3 → hold `recall`, then `svc_board_write`
+  (standing → 403 `banned`, consent → 409 `invalid` `guidelines`, pause →
+  409 `posting_paused`, 3 posts an hour and 5 a day (1 for an account under
+  a day old), 20 comments an hour and 30 a day (5), 30 edits a day → 429
+  with Retry-After). A new member's posts wait until one is approved.
+  Rejected text is never stored or logged.
+- `staff-action` `{ action, targetKind, targetId, reason, extra }` or
+  `{ action: 'queue', tab }` or `{ action: 'whoami' }`: fixed lists of
+  actions per target, rebuilt extras, 403 for anyone not in `private.staff`.
+- `staff-digest`: called by pg_cron with `STAFF_DIGEST_SECRET` (not a user
+  token); counts of held, reported and appealed items older than 12 hours
+  and the queue link, never learner text or handles; a no-op until the
+  email provider is chosen.
+- `export-my-data` gains `board` (the learner's own member row, posts,
+  comments, votes, follows, reports made, blocks, appeals, notices), and
+  `delete-account`'s audit row counts real board posts and comments.
 
 **Run it locally** (needs Docker): `supabase start`, `supabase db reset`,
 `supabase test db`, `supabase db lint`; functions:
@@ -819,13 +970,13 @@ cap.
 - Every new user table cascades from `auth.users`.
 - Every new function revokes `execute` from `public, anon, authenticated`
   explicitly: PUBLIC's execute is a global default that per-schema default
-  privileges cannot remove. `01_hardening.sql` fails otherwise. (The
-  spec's Phase 8 SQL still needs this for `private.is_active_member` and
-  `private.is_blocked_by`.)
+  privileges cannot remove. `01_hardening.sql` fails otherwise. (Done in
+  Phase 8 for every board function, the policy helpers included.)
 - Exceptions go on the allowlists in `01_hardening.sql` and
   `scripts/check_rls.sh`, never by weakening a check.
-- `AdminPort.countBoardRows` (Phase 8) is a stub returning zero until the
-  board exists. `readSnapshots` reads `sync_snapshots` (Phase 7).
+- `AdminPort.countBoardRows` reads `svc_board_counts` and `readBoard`
+  reads `svc_board_export` (Phase 8). `readSnapshots` reads
+  `sync_snapshots` (Phase 7).
 
 **At Phase 9 (owner go-ahead).** Mirror the `[auth]` settings on the
 dashboard; set the email-send limit to the SMTP quota; turn on Apple and
@@ -861,7 +1012,8 @@ Phase 6 on purpose).**
   Phase 7: a new id when a different account signs in, and on account
   deletion.
 - PR 8 write policies require a `profiles` row (Terms accepted), not only a
-  session. Done for `sync_snapshots` in Phase 7.
+  session. Done for `sync_snapshots` in Phase 7 and for the board's member,
+  report and block inserts (and `svc_board_join`) in Phase 8.
 - The Phase 9 adapter: `reauthenticate` is a NEW sign-in (it adds an `amr`
   entry; `supabase.auth.reauthenticate()` does not); `thisDeviceOnly` maps
   to `AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY`; `expo-secure-store` with
@@ -900,3 +1052,33 @@ Phase 6 on purpose).**
   write can always be cleared. Re-measure SCALING.md's figures against live
   pricing, and add a DB-size alert at 60% next to the egress alert (with
   captcha on sign-up, the main guard against parked data).
+- The feedback board (Phase 8):
+  - **owner decisions:** the read scope (above; default signed-in
+    learners), signed-out reading (#6, the same switch), the moderator
+    cover and the 24-hour duty in writing (PLAYBOOK §7), the email provider
+    (the digest), captcha, a DMCA agent, and the age rating (13+, 16+ in
+    Australia) with the UGC answers;
+  - build `leakprint.json` at deploy (`node scripts/build-leakprint.mjs`
+    after `npm run content`) and deploy `board-submit` with it as a static
+    file; check the composer's first leak check on a mid-range Android
+    (Jest builds the fingerprint in about 0.25 s);
+  - set Function secrets `STAFF_DIGEST_SECRET` and `SUPPORT_EMAIL`; schedule
+    pg_cron: `staff-digest` daily at 08:45 local and every 6 hours while
+    anything waits over 12 hours, the `moderation_log` purge (12 months),
+    and the removed-body purge (30 days);
+  - add the first staff row (`insert into private.staff …`) and seed
+    `private.moderation_terms` (the full block and hold lists, plain words;
+    the app ships only a short mild list);
+  - the Supabase `BoardPort` adapter: `feed` → `board_feed` with keyset
+    paging (`sort_key`, `id`), `post` → `board_post` (null → `not_found`),
+    `myPosts` → `board_posts` own rows, votes / follows / reports / blocks /
+    appeals / read marks → direct RLS writes where a duplicate (`23505`) is
+    success, `me` / `join` / writes → `board-submit`, staff → `staff-action`
+    (the queue's JSON mapped to `QueueItem`); `P0001` words and `42501`
+    mapped like `_shared/supabaseBoard.ts boardDbCode`; never
+    `error.message`;
+  - publish `community.html` with the other drafts and link it from
+    `support.html` (draft section at the end of `community.html`), and
+    re-run `app-store-compliance-reviewer` (Apple 1.2: filter, report,
+    block, published contact, zero-tolerance terms) and
+    `isaca-language-reviewer` (the guidelines wording) first.

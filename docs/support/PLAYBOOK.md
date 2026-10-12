@@ -243,3 +243,125 @@ bundled list against its own reports.
   `app-store-compliance-reviewer` before each submission.
 - The privacy policy names Gmail (Google) as the support inbox's provider
   (§5 table and §6), with the 12-month retention.
+
+---
+
+# The feedback board (Uplift Phase 8, built OFF)
+
+Sections 7–12 apply only once the feedback board goes live (Phase 9, owner
+go-ahead). Today the board is built and switched off: nobody can post, and
+nothing below needs doing yet. Where things are: the staff queue is in the
+app, **You → Help and feedback → Feedback board → Moderation** (shown only to
+staff accounts; the server checks every action); the rules are
+`docs/legal/cloud/community.html`; the server side is
+`supabase/migrations/20261014000000_feedback_board.sql` and the
+`board-submit`, `staff-action` and `staff-digest` Edge Functions.
+
+## 7. The 24-hour duty (owner decision)
+
+- A named moderator (default: the owner) opens **Moderation at least once
+  every 24 hours, 7 days a week**. The daily digest email is the reminder.
+- Anything held is invisible to learners, so a wait never exposes anything
+  bad. **Reports are the 24-hour clock**: learners are told "We review
+  reports within 24 hours".
+- **If you can't cover a 24-hour window** (travel, illness), tap **Pause
+  posting** in Moderation first (it asks once).
+  - Reading and voting continue. New posts and comments are refused with
+    "Posting is paused for a short while. Reading and voting still work."
+  - Tap **Reopen posting** when you're back.
+- **Go-live reminder:** Phase 9's checklist makes the owner re-confirm this
+  duty in writing. Restate it in the merge summary of every PR that touches
+  the board.
+
+## 8. Daily queue routine (about 10 minutes at the expected volume)
+
+1. **Reported**, oldest first. **"Shares real exam content" sorts first.**
+
+   | Finding | Action | Learner sees |
+   |---|---|---|
+   | Real exam content, or a "dump" offer | **Delete exam content** (⋯ menu: the text is deleted for good; the log keeps only the action), which also warns. A second offence or a dump seller: **Members → Ban**. | Removal notice: "appears to share real exam content", and the warning |
+   | Harassment, hate, threats, sexual content | **Remove + warn**; a serious case: **Suspend 7 days** or **Ban** | Notice |
+   | Personal info (theirs or others') | **Remove** (reason Personal information); no warning for their own details on a first offence | Notice |
+   | Spam or ads | **Remove**, then **Ban** (account under 7 days old) or warn | Notice |
+   | Copyrighted pages | **Remove + warn** | Notice |
+   | Off topic | **Hide** (⋯) or **Remove**, no warning | Notice when removed |
+   | Fine | **Approve** (puts it back, dismisses the reports) | Nothing |
+
+2. **Held**, oldest first:
+   - "new member": approve, or act as above (approving lifts their
+     pre-moderation: their later posts appear straight away);
+   - "exam recall": read with care. If in doubt, remove it (the risk is
+     one-sided), and tune the word lists monthly (§12);
+   - "held words": a threat or self-harm content: see §11.
+3. **Appeals**: re-read the item as if it were new. **Put back** or **Keep
+   removed**. The learner is told either way.
+4. **Content concerns that name one of our questions** (a `q:` link): don't
+   argue the answer key in public. Move it to the private triage in §3 (the
+   reviewers' process) and post the official response: "Thanks. We're
+   checking this question privately and will update this post."
+5. **Statuses:**
+   - every new post gets a status within 7 days (Under review, Answered,
+     Duplicate, or Not planned with a reason);
+   - each month, give the top 20 by priority (`private.board_priority`) an
+     official response;
+   - when something ships, set **Shipped** with the version. What's new
+     carries the general line "Some of these changes started as ideas on the
+     feedback board. Thank you to everyone who posted and voted." (no names,
+     no counts).
+
+## 9. Exam content and takedowns
+
+- Never paraphrase removed exam content into the bank or the notes. Log only
+  "rejected: possible live exam content".
+- **Rights-holder takedowns** (for example from ISACA) arrive at the support
+  inbox. Remove the content within 24 hours (Delete exam content, or Remove
+  with "Copyrighted material"), reply in writing with §10, and keep the email.
+- **DMCA agent:** an owner decision (Phase 9). Without one, remove anything a
+  rights holder flags at once.
+
+## 10. Canned board notices and replies
+
+The app writes the removal, warning, suspension and appeal notices itself
+(`mobile/src/content/cloud/copy.ts`, `board.notice.*`); nothing to send. Two
+email templates:
+
+- **Takedown acknowledgement:** "Thank you. We've removed the post you
+  identified and closed the matter on our side. If you see anything else,
+  reply to this email."
+- **Ban appeal by email:** "Thanks for writing. We looked at your account
+  again and {the ban stands / we've restored your access}. Our community
+  guidelines are at {url}."
+
+## 11. Escalations
+
+- **A credible threat of violence or harm:** remove it, ban, and keep a
+  private record (the log plus a screenshot stored outside the inbox). If
+  someone is in immediate danger, contact local emergency services with what
+  you know.
+- **Self-harm content:** hold or remove it, and email a kind note if you can:
+  "We've hidden your post. If you're going through a hard time, please reach
+  out to someone you trust or a local support line. You're welcome on the
+  board any time."
+- **Anything illegal**, or a legal letter: pause posting if it is spreading,
+  and escalate to the owner. This is a "major" item (CLAUDE.md).
+
+## 12. Records and metrics (SQL only; no analytics in the app)
+
+- Weekly:
+  - time to action at p95 (target under 24 hours);
+  - holds, and holds that turned out fine (false positives);
+  - removed ÷ total (target under 2%);
+  - new posts with a status within 7 days (target at least 90%).
+- Monthly: tune `private.moderation_terms` (plain words only, kinds `block`,
+  `hold`, `reserved_handle`, `link_domain`: never patterns), review the
+  recall weights in `mobile/src/engine/leakGuard.ts`, and compare verified
+  votes (accounts 7+ days old) with raw votes on the top 20.
+- Retention:
+  - `private.moderation_log` keeps 12 months (a pg_cron purge, set at Phase 9);
+  - removed bodies are kept 30 days for appeals, then cleared (exam content:
+    at once, by Delete exam content);
+  - the rate-limit counts (`private.board_events`) keep 2 days;
+  - this matches the privacy draft (`docs/legal/cloud/privacy.html`).
+- UK OSA / EU DSA: keep the illegal-content and children's-access risk
+  assessments (owner and counsel) with this playbook. The moderator is the
+  named responsible person.
