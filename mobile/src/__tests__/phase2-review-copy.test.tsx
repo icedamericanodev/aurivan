@@ -121,13 +121,15 @@ describe('Today and Results copy', () => {
     mount(<Today />);
     const text = textOf(root());
     expect(text).toContain('Review 56 due');
-    expect(text).toMatch(/Also today about \d+ minutes/);
-    expect(text).not.toMatch(/about \d+ min\b/);
+    // Mobile 1.15 (C1): one minutes style everywhere, "About N min" (screen readers say "minutes").
+    expect(text).toMatch(/Also today About \d+ min/);
+    expect(text).not.toMatch(/about \d+ minutes/i);
   });
 
-  it('a review row under "Also today" says "20 at a time" when the queue is bigger than one session (live count)', () => {
+  it('a review row under "Also today" says how many TODAY takes when the queue is bigger (live count; mobile 1.15 C7)', () => {
     const item = { kind: 'review' as const, count: 20, capped: true, due: 56 };
-    expect(planText(item, 56).short).toBe('Spaced review · 20 at a time');
+    expect(planText(item, 56).short).toBe('Spaced review · 20 today');
+    expect(planText({ kind: 'review', count: 8, due: 56 }, 56)).toEqual({ title: 'Review 56 due', meta: 'About 10 min · 8 today, most overdue first', short: 'Spaced review · 8 today' });
     expect(planText(item, 56).title).toBe('Review 56 due');
     // Reviews done since the morning: the live queue, and no cap line once it fits one session.
     expect(planText(item, 12)).toEqual({ title: 'Review 12 due', meta: expect.stringContaining('questions to revisit'), short: 'Spaced review' });

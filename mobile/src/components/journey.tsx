@@ -6,9 +6,9 @@
  * - Plan helpers: icon, title and meta line for each plan item.
  *
  * Readiness is always a range ("62–70%") or "Not enough data yet". The copy
- * never promises a pass: it describes mastery, weighted by the blueprint.
+ * never promises a pass: it describes mastery, weighted like the exam.
  */
-import { REVIEW_CAP_LINE, REVIEW_SESSION_CAP, REVIEW_UNIT } from '../engine/srs';
+import { REVIEW_UNIT } from '../engine/srs';
 import { gameTitle } from '../engine/games/registry';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Text, useWindowDimensions, View } from 'react-native';
@@ -25,7 +25,7 @@ import { GrowthRings, PlanLeaf } from './glyphs';
 import { BookOpen, Gamepad2, ICON_STROKE, RotateCcw, Target, Timer } from './icons';
 import { FadeIn, Pop, type Celebration, type Growth } from './motion';
 import { BigNum, DomainDot, ICON_SIZE, Row, Stat, StatRow, T, useFontScale } from './ui';
-import { timeStat } from '../engine/pace';
+import { aboutMin, timeStat } from '../engine/pace';
 
 // ── Plan items: icon, title, meta ─────────────────────────────────────
 export function planIcon(item: PlanItem, color: string): ReactNode {
@@ -49,33 +49,65 @@ export function planIcon(item: PlanItem, color: string): ReactNode {
  * `due`: the LIVE review queue. The day's plan is frozen in the morning, but
  * the queue it names must match You and Practice all day (reviews done, more
  * falling due), so Today passes the live count.
+ *
+ * Mobile 1.15 (PHASE5.md §2.3, C1, C7): one minutes style everywhere
+ * ("About 10 min" first in a line, "about 6 min" mid-line), and a review
+ * that takes part of the queue says how much of it TODAY takes ("8 today,
+ * most overdue first"), not the session cap. `when`: the Tomorrow preview
+ * says "8 tomorrow".
  */
-export function planText(item: PlanItem, due?: number): { title: string; meta: string; short: string } {
+export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow' = 'today'): { title: string; meta: string; short: string } {
   const mins = itemMinutes(item);
   switch (item.kind) {
     case 'review': {
-      // Same word as Practice and You ("due"); at the cap, say the rest wait.
+      // Same word as Practice and You ("due").
       const queue = due ?? item.due ?? item.count;
-      // The cap line only when MORE than 20 are due (exactly 20 fits one session).
-      const capped = due === undefined ? Boolean(item.capped) : due > REVIEW_SESSION_CAP;
+      const more = queue > item.count;
       return {
         // The whole queue ("Review 55 due"), the same number You and Practice show;
-        // the meta says how much of it this session takes.
+        // the meta says how much of it today takes.
         title: item.label ?? (queue > 0 ? `Review ${queue} ${REVIEW_UNIT}` : 'Review · all caught up'),
-        meta: `About ${mins} minutes · ${capped ? REVIEW_CAP_LINE : 'questions to revisit'}`,
-        short: capped ? `Spaced review · ${REVIEW_SESSION_CAP} at a time` : 'Spaced review',
+        meta: `${aboutMin(mins)} · ${more ? `${item.count} ${when}, most overdue first` : 'questions to revisit'}`,
+        short: more ? `Spaced review · ${item.count} ${when}` : 'Spaced review',
       };
     }
     case 'lesson':
       return { title: item.title, meta: `Lesson · ${mins} min`, short: `Lesson · ${mins} min` };
-    case 'practice':
-      return { title: item.label, meta: `About ${mins} minutes · new material first`, short: `Practice · ${mins} min` };
+    case 'practice': {
+      const why =
+        item.why === 'check'
+          ? 'no score yet, just a starting point'
+          : item.why === 'learn'
+            ? 'on what you just learned'
+            : item.why === 'weak'
+              ? `${item.count} questions, most points to gain`
+              : 'new material first';
+      return { title: item.label, meta: `${aboutMin(mins)} · ${why}`, short: `Practice · ${mins} min` };
+    }
     case 'game':
       // Registry name by id: a plan saved before a rename shows today's name.
-      return { title: gameTitle(item.gameId, item.label), meta: `Game · about ${mins} min`, short: `Game · ${mins} min` };
+      return { title: gameTitle(item.gameId, item.label), meta: `Game · ${aboutMin(mins, true)}`, short: `Game · ${mins} min` };
     case 'mock':
-      return { title: item.label.split(' · ')[0], meta: `${item.questions} questions at exam pace`, short: `Mock · ${item.questions} questions` };
+      // At exam pace (a 50-question mini mock is 80 minutes), and honest that it is a long one.
+      return {
+        title: item.label.split(' · ')[0],
+        meta: `${aboutMin(mins)} · longer than your usual day, so pick a time that suits you`,
+        short: `Mock · ${aboutMin(mins, true)}`,
+      };
   }
+}
+
+/**
+ * "About 20 min today": the open items' minutes. A mock is left out (it is
+ * longer than any day) and adds "+ mock" instead. null when nothing is open.
+ */
+export function todayMinutesLine(items: readonly PlanItem[], done: readonly boolean[]): string | null {
+  const open = items.filter((_, i) => !done[i]);
+  if (open.length === 0) return null;
+  const mock = open.some((i) => i.kind === 'mock');
+  const mins = open.reduce((n, i) => n + (i.kind === 'mock' ? 0 : itemMinutes(i)), 0);
+  if (mins === 0) return mock ? 'A mock today' : null;
+  return `${aboutMin(mins)} today${mock ? ' + mock' : ''}`;
 }
 
 /**
@@ -172,10 +204,10 @@ export function ReadinessRow({
   const stacked = useFontScale() >= LARGE_TEXT;
   const meta = range.enough
     ? // An ESTIMATE, never a prediction (app-store review: no outcome claims).
-      'estimated readiness, weighted by the blueprint'
+      'estimated readiness, weighted like the exam'
     : // A countdown, not a moving target: `needed` never goes up after an answer.
       `${range.needed} more ${range.needed === 1 ? 'answer' : 'answers'} until your readiness range`;
-  const spoken = `Estimated readiness ${rangeSpoken(range)}. ${range.enough ? `Weighted by the exam blueprint. ${ESTIMATE_NOTE}` : meta} ${stage}.`;
+  const spoken = `Estimated readiness ${rangeSpoken(range)}. ${range.enough ? `Weighted like the exam. ${ESTIMATE_NOTE}` : meta} ${stage}.`;
   return (
     <View
       // With a plant, the row is two stops (the plant, then the words); otherwise one.
@@ -212,12 +244,15 @@ export function ReadinessRow({
 // ── Rings in domain tones + legend (You, Results) ─────────────────────
 /**
  * `values` are 0..1 per domain (blueprint order), or null for "not started".
- * The legend lists domains OUTSIDE-IN, matching the rings visually.
+ * The legend lists domains 1 → 5, top-down, like every other list in the app
+ * (mobile 1.15, PHASE5.md C10). Domain 1 is the inner ring; RINGS_NOTE says so.
  * `only` (Results): draw just these domains (indexes, blueprint order), so a
  * one-domain session isn't four empty rings and four dashes (ui.md R1). One
  * domain alone is drawn as a single thick ring in its tone.
  */
 export const SINGLE_RING_WEIGHT = 80;
+/** Said once under the rings wherever the legend shows (You). */
+export const RINGS_NOTE = 'Domain 1 is the inner ring. Thicker rings weigh more on the exam.';
 /** Narrower than this (most 360 dp Android phones), the legend sits under the rings. */
 export const RINGS_SIDE_BY_SIDE_MIN = 380;
 export function DomainRings({
@@ -271,7 +306,7 @@ export function DomainRings({
         </View>
       </View>
       <View style={{ flex: stacked ? undefined : 1, gap: 9, alignSelf: stacked ? 'stretch' : undefined }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-        {[...shown].reverse().map((i) => {
+        {shown.map((i) => {
           const up = Math.max(0, Math.round(delta?.(i) ?? 0));
           return (
             <Row key={cert.domains[i].id} gap={9}>
@@ -344,7 +379,7 @@ export function ClearingBody({
         {[
           <Stat key="q" label="Questions" value={String(plan.answered)} color={c.onForest} labelColor={c.onForest2} roll={statRoll(0)} />,
           acc === null ? (
-            <Stat key="a" label="Accuracy" word="None yet" color={c.onForest} labelColor={c.onForest2} />
+            <Stat key="a" label="Accuracy" word="Not yet" color={c.onForest} labelColor={c.onForest2} />
           ) : (
             <Stat key="a" label="Accuracy" value={String(acc)} pct color={c.onForest} labelColor={c.onForest2} roll={statRoll(1)} />
           ),

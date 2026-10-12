@@ -373,6 +373,7 @@ export function HeroPanel({
   caption,
   captionLead,
   captionExtra,
+  captionMeta,
   title,
   meta,
   action,
@@ -390,6 +391,8 @@ export function HeroPanel({
   captionLead?: ReactNode;
   /** After the caption on the same line (e.g. plan leaf marks). */
   captionExtra?: ReactNode;
+  /** One meta line under the caption row (Today, mobile 1.15: "About 20 min today"). */
+  captionMeta?: string;
   title: string;
   meta?: string;
   action?: { label: string; onPress: () => void; icon?: (color: string) => ReactNode; hint?: string };
@@ -457,6 +460,11 @@ export function HeroPanel({
             {captionExtra}
           </Row>
         )}
+        {captionMeta ? (
+          <T v="meta" color={c.onForest2} style={{ marginTop: 2 }}>
+            {captionMeta}
+          </T>
+        ) : null}
         {/* While the title fits in 2 lines it stays clear of the art (maxWidth 250);
             longer titles, or large text, run full width over the low-contrast art. */}
         <T

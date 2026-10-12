@@ -150,6 +150,8 @@ export default function RootLayout() {
         <Stack.Screen name="reports" />
         <Stack.Screen name="whats-new" />
         <Stack.Screen name="whats-next" />
+        {/* Mobile 1.15: Your study, from Today's one "Fit your plan" card. */}
+        <Stack.Screen name="fit" />
         {/* Mobile 1.13: Your plant, and its picker (plant, change species, rename). */}
         <Stack.Screen name="plant" />
         <Stack.Screen name="plant-pick" options={{ animation: rise }} />

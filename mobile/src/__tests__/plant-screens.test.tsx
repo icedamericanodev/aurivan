@@ -369,9 +369,11 @@ describe('Settings', () => {
 });
 
 describe('onboarding', () => {
+  // Mobile 1.15: the plant step is step 4 of 4, after "Where are you starting from?" (skipped here) and the date.
   const toStep3 = () => {
     press(/^Start my plan$/);
     press(/^Continue$/);
+    press(/^Skip this question$/);
     press(/^Continue$/);
   };
 
@@ -379,7 +381,7 @@ describe('onboarding', () => {
     useSettings.setState({ onboarded: false });
     mount(<Onboarding />);
     toStep3();
-    expect(allText()).toMatch(/Step 3 of 3/);
+    expect(allText()).toMatch(/Step 4 of 4/);
     expect(allText()).toMatch(/never wilts/);
     const grid = root().findAll((n) => n.props.accessibilityRole === 'radiogroup')[0];
     act(() => {

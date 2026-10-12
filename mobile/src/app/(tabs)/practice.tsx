@@ -23,6 +23,12 @@
  * Length, Difficulty), so the two sets of controls are never confused.
  * "Or 10 mixed questions" keeps a quick mixed 10 one tap away whenever the
  * hero isn't already one.
+ *
+ * Mobile 1.15 (PHASE5.md §2.4, ui.md P1–P2): "Mock exams" moves up, right
+ * under the hero, for the Exam-focused plan and at the mock and ready
+ * stages. The one-time "Practice at exam pace?" card sits under the Timed
+ * switch it changes, never above the hero. Session titles use a domain's
+ * short name (C9), and the exam pace is said in seconds (C2).
  */
 import { router } from 'expo-router';
 import { useRef, useState } from 'react';
@@ -33,7 +39,7 @@ import { DisclosureRow, FieldLabel, PathChooser, pathSummary } from '../../compo
 import { Button, Card, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, ToggleRow, Trail } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
 import { topicQuestionIds } from '../../engine/outline';
-import { examPaceSeconds, MINUTES_PER_QUESTION, shouldOfferTimer } from '../../engine/pace';
+import { aboutMin, examPaceWords, MINUTES_PER_QUESTION, shouldOfferTimer } from '../../engine/pace';
 import { REVIEW_UNIT } from '../../engine/srs';
 import { activeMode, MODE_INFO, scopeKey, SESSION_SIZES, sessionSize, suggestedMode } from '../../engine/studyModes';
 import { currentGuidedTopic } from '../../engine/studyPath';
@@ -55,7 +61,10 @@ const DIFFS: { label: string; value?: Difficulty }[] = [
 
 export default function Practice() {
   const { c } = useTheme();
-  const { cert, readiness, dueCount, daysLeft, stage, progress } = useJourney();
+  const { cert, readiness, dueCount, daysLeft, stage, progress, examFocused } = useJourney();
+  const familiarity = useSettings((s) => s.familiarity);
+  // Mock exams right under the hero for the Exam-focused plan and at the mock / ready stages.
+  const mocksFirst = examFocused || stage === 'mock' || stage === 'ready';
   // Timed practice: starts from the Study default; this screen's switch can
   // change it for the next start without touching the default.
   const timerDefault = useSettings((s) => s.practiceTimer);
@@ -85,8 +94,8 @@ export default function Practice() {
   const savedMode = useSettings((s) => s.studyMode);
   const savedDomain = useSettings((s) => s.studyDomain);
   const savedSize = useSettings((s) => s.studySize);
-  const mode = activeMode(savedMode, stage);
-  const suggested = suggestedMode(stage);
+  const mode = activeMode(savedMode, stage, familiarity);
+  const suggested = suggestedMode(stage, familiarity);
   // A saved domain this cert doesn't have reads as All domains.
   const pathDomain = cert.domains.find((d) => d.id === savedDomain);
   const pathSize = sessionSize(savedSize);
@@ -126,31 +135,37 @@ export default function Practice() {
   const hours = cert.exam.minutes / 60;
   const icon = (G: typeof Crosshair) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
 
+  /** Mock exams: under the hero for the Exam-focused plan and the mock / ready stages (`top`), else last. */
+  const mockExams = (top: boolean) => (
+    <Enter i={top ? 2 : 4}>
+        <Section title="Mock exams" style={{ marginTop: top ? 22 : space.xl }} />
+        <ListRow
+          lead={<Lead value={String(mini)} unit="questions" />}
+          title="Mini mock"
+          subtitle={`${miniMinutes} min · feedback at the end`}
+          accessibilityLabel={`Mini mock, ${mini} questions, ${miniMinutes} minutes, feedback at the end`}
+          // The start sheet first: timing (standard, extra time, untimed) and "hide the clock".
+          onPress={() => router.push({ pathname: '/mock-start', params: { questions: String(mini) } })}
+        />
+        <ListRow
+          lead={<Lead value={String(cert.exam.questions)} unit="questions" />}
+          title="Full mock"
+          subtitle={`${hours} hours · weighted like the real ${cert.name}`}
+          accessibilityLabel={`Full mock, ${cert.exam.questions} questions, ${hours} hours`}
+          onPress={() => router.push({ pathname: '/mock-start', params: { questions: String(cert.exam.questions) } })}
+          last
+        />
+        <Gap h={space.sm} />
+        <T v="meta">{cert.exam.passingNote}</T>
+    </Enter>
+  );
+
   return (
     <Screen>
       <Enter i={0}>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Practice</T>
         <T v="meta" style={{ marginTop: space.xs }}>Every option explained, every trap named.</T>
       </Enter>
-
-      {offer && (
-        // Offered ONCE (behavioural review §2): close to the exam or at the
-        // mock / ready stage. Never switched on without the learner's tap.
-        <Enter i={1} style={{ marginTop: 18 }}>
-          <Card>
-            <T v="headline" accessibilityRole="header">Practice at exam pace?</T>
-            <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>
-              {`The exam gives you about ${Math.round(examPaceSeconds(cert.exam))} s a question. A timer counts up while you answer, never down, and stops while you read the explanation.`}
-            </T>
-            <Gap h={space.md} />
-            <View style={{ gap: space.sm }}>
-              {/* Secondary, not primary: an offer, never a push (P3). */}
-              <Button kind="secondary" label="Turn on Timed" onPress={() => answerOffer('accepted')} />
-              <Button kind="ghost" label="No thanks" accessibilityHint="Hides this card. You can turn the timer on in Settings." onPress={() => answerOffer('dismissed')} />
-            </View>
-          </Card>
-        </Enter>
-      )}
 
       <Enter i={1} style={{ marginTop: 18 }}>
         <HeroPanel
@@ -171,7 +186,7 @@ export default function Practice() {
           meta={
             mode === 'guided'
               ? 'Learn it, practice it, then mix it with earlier topics.'
-              : `About ${Math.round(pathSize * MINUTES_PER_QUESTION)} min${timed ? ' · timed' : ''}`
+              : `${aboutMin(pathSize * MINUTES_PER_QUESTION)}${timed ? ' · timed' : ''}`
           }
           art="frond2"
           wideTitle
@@ -230,7 +245,25 @@ export default function Practice() {
           onValueChange={setTimedHere}
           last
         />
+      {offer && (
+        // Offered ONCE (behavioural review §2): close to the exam or at the
+        // mock / ready stage. Never switched on without the learner's tap.
+        // Mobile 1.15 (ui.md P1): under the Timed switch it changes, not above the hero.
+        <Card style={{ marginTop: space.md }}>
+          <T v="headline" accessibilityRole="header">Practice at exam pace?</T>
+          <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>
+            {`${examPaceWords(cert.exam)} A timer counts up while you answer, never down, and stops while you read the explanation.`}
+          </T>
+          <Gap h={space.md} />
+          <View style={{ gap: space.sm }}>
+            {/* Secondary, not primary: an offer, never a push (P3). */}
+            <Button kind="secondary" label="Turn on Timed" onPress={() => answerOffer('accepted')} />
+            <Button kind="ghost" label="No thanks" accessibilityHint="Hides this card. You can turn the timer on in Settings." onPress={() => answerOffer('dismissed')} />
+          </View>
+        </Card>
+      )}
       </Enter>
+      {mocksFirst && mockExams(true)}
 
       <Enter i={3}>
         <Section title="More ways to practice" style={{ marginTop: 22 }} />
@@ -247,7 +280,7 @@ export default function Practice() {
             icon={icon(Crosshair)}
             title={`Weak area: ${focus.short}`}
             subtitle="Most points to gain"
-            onPress={() => guardedStart(() => startPractice(cert.id, { count: 10, domainId: focus.id, title: focus.name }), open)}
+            onPress={() => guardedStart(() => startPractice(cert.id, { count: 10, domainId: focus.id, title: focus.short }), open)}
           />
         )}
         {/* Browse every question by domain and topic (app/bank). Never shows bank size. */}
@@ -317,7 +350,8 @@ export default function Practice() {
                       count,
                       domainId,
                       difficulty: DIFFS[diff].value,
-                      title: setTopic ? setTopic.name : domain ? domain.name : 'Custom set',
+                      // Session titles use the short name, like chips and plan items (C9).
+                      title: setTopic ? setTopic.name : domain ? domain.short : 'Custom set',
                       timed,
                       ...(setTopic ? { ids: topicQuestionIds(setTopic) } : {}),
                     }),
@@ -329,27 +363,7 @@ export default function Practice() {
         </Collapse>
       </Enter>
 
-      <Enter i={4}>
-        <Section title="Mock exams" style={{ marginTop: space.xl }} />
-        <ListRow
-          lead={<Lead value={String(mini)} unit="questions" />}
-          title="Mini mock"
-          subtitle={`${miniMinutes} min · feedback at the end`}
-          accessibilityLabel={`Mini mock, ${mini} questions, ${miniMinutes} minutes, feedback at the end`}
-          // The start sheet first: timing (standard, extra time, untimed) and "hide the clock".
-          onPress={() => router.push({ pathname: '/mock-start', params: { questions: String(mini) } })}
-        />
-        <ListRow
-          lead={<Lead value={String(cert.exam.questions)} unit="questions" />}
-          title="Full mock"
-          subtitle={`${hours} hours · weighted like the real ${cert.name}`}
-          accessibilityLabel={`Full mock, ${cert.exam.questions} questions, ${hours} hours`}
-          onPress={() => router.push({ pathname: '/mock-start', params: { questions: String(cert.exam.questions) } })}
-          last
-        />
-        <Gap h={space.sm} />
-        <T v="meta">{cert.exam.passingNote}</T>
-      </Enter>
+      {!mocksFirst && mockExams(false)}
     </Screen>
   );
 }

@@ -116,7 +116,7 @@ describe('Today', () => {
     mount(<Today />);
     const text = allText();
     expect(text).toMatch(/Also today/);
-    expect(text).toMatch(/Also today about 12 min/);
+    expect(text).toMatch(/Also today About 12 min/);
     expect(text).not.toMatch(/Also today \d+ more/);
   });
 });
@@ -147,8 +147,9 @@ describe('You', () => {
 
 describe('Y3: one phrasing for the review queue', () => {
   it('Today’s capped item says the whole queue, like You and Practice; the cap line is the same everywhere', () => {
-    const plan = todaysPlan({ stage: 'practice', dueReviews: 55, dailyGoal: 20, daysLeft: 40, examQuestions: 150 });
-    expect(plan[0]).toMatchObject({ kind: 'review', count: 20, due: 55 });
+    const plan = todaysPlan({ stage: 'practice', dueReviews: 55, dailyMinutes: 20, daysLeft: 40, examQuestions: 150 });
+    // Mobile 1.15: a 20-minute day takes 8 of the 55, and keeps the whole queue for its title.
+    expect(plan[0]).toMatchObject({ kind: 'review', count: 8, due: 55 });
     expect(reviewSubtitle(55)).toBe('20 at a time, most overdue first');
   });
 });
@@ -230,7 +231,7 @@ describe('Q1', () => {
       const t = root().findAll((n) => typeof n.type === 'string' && re.test(textOf(n)) && n.children.every((c) => typeof c === 'string'))[0];
       return StyleSheet.flatten(t.props.style).marginLeft;
     };
-    expect(indentOf(/^Assisted\. Counts half toward readiness\.$/)).toBe(50);
-    expect(indentOf(/^(Clean read\.|You picked the runner-up\. That’s the trap\.|Check the role in the stem\.)$/)).toBe(50);
+    expect(indentOf(/^You used a hint, so this counts as half a right answer\.$/)).toBe(50);
+    expect(indentOf(/^(Clean read\.|You picked the runner-up\. That’s the trap\.|Check who you are in the question\.)$/)).toBe(50);
   });
 });

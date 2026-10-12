@@ -210,10 +210,11 @@ describe('Play when no game is playable for this exam', () => {
   });
 });
 
-describe("Today's review card: the cap line only when more than 20 are due", () => {
-  it('exactly 20 (fits one session) says "questions to revisit"; capped says 20 at a time', () => {
-    expect(planText({ kind: 'review', count: 20 }).meta).toBe('About 24 minutes · questions to revisit');
-    expect(planText({ kind: 'review', count: 20, capped: true }).meta).toBe('About 24 minutes · 20 at a time, most overdue first');
+describe("Today's review card: the 'N today' line only when more are due than today takes", () => {
+  it('all of them today says "questions to revisit"; part of the queue says "N today, most overdue first" (mobile 1.15 C7)', () => {
+    expect(planText({ kind: 'review', count: 20 }).meta).toBe('About 24 min · questions to revisit');
+    expect(planText({ kind: 'review', count: 20, capped: true, due: 55 }).meta).toBe('About 24 min · 20 today, most overdue first');
+    expect(planText({ kind: 'review', count: 8 }, 55).meta).toBe('About 10 min · 8 today, most overdue first');
     expect(planText({ kind: 'review', count: 20 }).title).toBe('Review 20 due');
   });
 

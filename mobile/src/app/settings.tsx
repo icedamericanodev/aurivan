@@ -1,5 +1,6 @@
 /**
- * Settings — certification, exam date, appearance, study goal, reminders, haptics, show badges,
+ * Settings — certification, exam date, your study (mobile 1.15: daily time, where you're
+ * starting from, the Exam-focused plan), appearance, reminders, haptics, show badges,
  * your plant (mobile 1.13: Show my plant, Quiet look), study defaults (the practice timer),
  * your data (backup, restore, reset), one row to
  * Help and feedback (mobile 1.7), and the legal notices required for store review. Groups are
@@ -15,13 +16,15 @@ import { ICON_STROKE, LifeBuoy } from '../components/icons';
 import { ThemeSwitch } from '../components/themeSwitch';
 import { useSystemReducedMotion } from '../components/motion';
 import { YourData } from '../components/yourData';
-import { Button, Chip, Gap, ICON_SIZE, ListRow, PushedHeader, RadioRow, Screen, Section, Segmented, Stepper, T, ToggleRow } from '../components/ui';
+import { YourStudy } from '../components/fit';
+import { examFocusedOf, KEEP_TODAY_LINE } from '../engine/fit';
+import { Button, Chip, Gap, ICON_SIZE, ListRow, PushedHeader, RadioRow, Screen, Section, Stepper, T, ToggleRow } from '../components/ui';
 import { MODE_INFO, STUDY_MODES } from '../engine/studyModes';
 import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certifications';
 import { addDays, dateInMonths, EXAM_DATE_PRESETS, examDateLabel, presetIndexFor } from '../engine/examDay';
 import { dayKey } from '../engine/streak';
-import { changeExamDate } from '../lib/activity';
+import { changeExamDate, changeFit } from '../lib/activity';
 import { sayLater } from '../lib/a11y';
 import { hideBadges, showBadgesAgain, shownAgainLine } from '../lib/badges';
 import { config } from '../lib/config';
@@ -43,11 +46,10 @@ import { sweepBackupFiles } from '../lib/backup';
 import { useBackup } from '../store/backup';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
-import { useSettings } from '../store/settings';
+import { dailyMinutesOf, useSettings } from '../store/settings';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
-const GOALS = [10, 20, 40];
 /** The phone's own name for the setting (Android has no "Reduce Motion"). */
 const phoneSetting = () => (Platform.OS === 'android' ? 'Remove animations' : 'Reduce Motion');
 /** Fine-tune the exam date: [chip label, days to move]. */
@@ -76,6 +78,10 @@ export default function Settings() {
   const [busy, setBusy] = useState(false);
   // "Badges are on again…": shown for this visit, right under the switch.
   const [badgesLine, setBadgesLine] = useState<string | null>(null);
+  // Mobile 1.15: a change to Your study rebuilds today's plan only if nothing
+  // in it is ticked yet; otherwise this visit says so in one line.
+  const [keptToday, setKeptToday] = useState(false);
+  const fit = (p: Parameters<typeof changeFit>[1]) => setKeptToday(changeFit(cert.id, p).keptToday);
   // "Now" is read once per visit (render stays pure); presets move in months.
   const [now] = useState(() => Date.now());
   const examDate = s.examDates[cert.id];
@@ -196,6 +202,18 @@ export default function Settings() {
         </>
       )}
 
+      {/* Mobile 1.15 (PHASE5.md §2.8): Your study replaces "Daily goal" (questions a day). */}
+      <Section title="Your study" />
+      <YourStudy
+        minutes={dailyMinutesOf(s)}
+        familiarity={s.familiarity}
+        examFocused={examFocusedOf(s)}
+        onMinutes={(dailyMinutes) => fit({ dailyMinutes })}
+        onFamiliarity={(familiarity) => fit({ familiarity })}
+        onExamFocused={(examFocused) => fit({ examFocused })}
+        keptLine={keptToday ? KEEP_TODAY_LINE : null}
+      />
+
       <Section title="Appearance" />
       <Gap h={space.sm} />
       <ThemeSwitch />
@@ -223,16 +241,6 @@ export default function Settings() {
           last
         />
       </View>
-
-      {/* Says what the number counts: questions (testers read "20 a day" as unclear). */}
-      <Section title="Daily goal" meta="Questions a day" />
-      <Gap h={space.sm} />
-      <Segmented
-        accessibilityLabel="Daily goal"
-        value={s.dailyGoal}
-        onChange={s.setDailyGoal}
-        options={GOALS.map((g) => ({ value: g, numeral: String(g), label: 'a day', spoken: `${g} questions a day` }))}
-      />
 
       <Section title="Study" />
       <ToggleRow
@@ -352,8 +360,8 @@ export default function Settings() {
       <T v="caption" style={{ marginTop: space.lg }}>Default mode</T>
       <View accessibilityRole="radiogroup" accessibilityLabel="Default study mode">
         <RadioRow
-          title="Follow my stage"
-          subtitle="The app suggests a mode as you progress: Random, then Guided, then Smart."
+          title="Let the app choose"
+          subtitle="It changes as you go: a mixed start, then topic by topic, then a smart mix of what you need."
           checked={!s.studyMode}
           onPress={() => s.setStudyMode(undefined)}
         />

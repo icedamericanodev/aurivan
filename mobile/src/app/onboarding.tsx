@@ -1,7 +1,8 @@
 /**
- * Onboarding — a welcome, then 3 quick steps: pick your certification,
- * (optionally) your exam date, then (optionally, mobile 1.13) plant your
- * companion plant. Kept short on purpose: the FTUE decision in
+ * Onboarding — a welcome, then 4 quick steps: pick your certification,
+ * where you're starting from (optional, mobile 1.15), your exam date and
+ * how long you can study most days (mobile 1.15), then (optionally, mobile
+ * 1.13) plant your companion plant. Kept short on purpose: the FTUE decision in
  * MASTER_HANDOFF.md is "get learners to a question fast". "Plant it" takes
  * about 10 seconds and can be skipped; skipping never brings a nudge back
  * (You keeps a "Plant yours" entry).
@@ -10,6 +11,13 @@
  * lockup, the tagline and the line, then the four pillars. One tap on
  * "Start my plan" moves on; nothing is saved until the last step.
  *
+ * Mobile 1.15 (PHASE5.md §1): step 2 "Where are you starting from?" (no
+ * preselected answer; "Skip this question" leaves it unset) shapes the first
+ * week: a learner new to audit starts with a lesson, an experienced one with
+ * exam practice. Step 3 adds "How long can you study most days?" (20 min by
+ * default) under the date. Both "Plant it" and "Skip for now" save the
+ * exam, the date and these answers in the same tap.
+ *
  * Grove v2: a seedling to open (your grove starts here), certifications as
  * raised choice rows (selected = 2px ink border + filled ink badge, never
  * green), and the action in a sticky footer.
@@ -17,12 +25,12 @@
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { BackHandler, KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
+import { BackHandler, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle } from 'react-native-svg';
 import { BrandLockup, PillarList } from '../components/brand';
 import { Seedling } from '../components/glyphs';
-import { Check } from '../components/icons';
+import { ChoiceRow, FamiliarityRows, FAMILIARITY_QUESTION, MinutesControl } from '../components/fit';
 import { StickyFooter } from '../components/quiz';
 import { Button, Chip, Enter, Gap, T } from '../components/ui';
 import { DataMessage, RestorePreview } from '../components/yourData';
@@ -39,7 +47,8 @@ import { dateInMonths, EXAM_DATE_PRESETS } from '../engine/examDay';
 import { useKeyboardShown } from '../lib/useKeyboardShown';
 import { useRestoreFlow } from '../lib/useRestoreFlow';
 import { useSettings } from '../store/settings';
-import { radius, raisedShadow, space } from '../theme/tokens';
+import { DEFAULT_MINUTES, type DailyMinutes, type Familiarity } from '../engine/fit';
+import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 // Exam date presets (shared with Settings) avoid a native date-picker dependency.
@@ -49,8 +58,12 @@ export default function Onboarding() {
   const { c, isDark } = useTheme();
   const complete = useSettings((s) => s.completeOnboarding);
   const insets = useSafeAreaInsets();
-  const [step, setStep] = useState<0 | 1 | 2 | 3 | 4>(0);
-  // Step 3 (mobile 1.13): the plant and its name (empty to start; the field shows an idea as its placeholder).
+  const [step, setStep] = useState<0 | 1 | 2 | 3 | 4 | 5>(0);
+  // Step 2 (mobile 1.15): nothing chosen to start (no default biases the answer); skip leaves it unset.
+  const [familiarity, setFamiliarity] = useState<Familiarity | undefined>(undefined);
+  // Step 3 (mobile 1.15): minutes most days, 20 to start.
+  const [minutes, setMinutes] = useState<DailyMinutes>(DEFAULT_MINUTES);
+  // Step 4 (mobile 1.13): the plant and its name (empty to start; the field shows an idea as its placeholder).
   const [species, setSpecies] = useState<PlantSpecies>('oak');
   const [plantName, setPlantName] = useState('');
   // The keyboard and the sticky footer never cover the name field (UX review H2).
@@ -62,7 +75,7 @@ export default function Onboarding() {
   // finishes onboarding and goes straight to Today.
   const restore = useRestoreFlow({ onboard: true, onRestored: () => router.replace('/home') });
 
-  // After planting (step 4): on to Today.
+  // After planting (step 5): on to Today.
   const finishPlanted = useCallback(() => router.replace('/home'), []);
   // "Plant it" is gone once the step changes: screen-reader focus moves to the
   // "Planted" header instead of being dropped (UX review P16, code review M10b).
@@ -73,12 +86,12 @@ export default function Onboarding() {
   useEffect(() => {
     const sub = BackHandler.addEventListener('hardwareBackPress', () => {
       if (step === 0) return false;
-      // Planted (step 4): back means "go on", never un-planting.
-      if (step === 4) {
+      // Planted (step 5): back means "go on", never un-planting.
+      if (step === 5) {
         finishPlanted();
         return true;
       }
-      setStep(step === 3 ? 2 : step === 2 ? 1 : 0);
+      setStep((step - 1) as 0 | 1 | 2 | 3);
       return true;
     });
     return () => sub.remove();
@@ -124,17 +137,17 @@ export default function Onboarding() {
     </Enter>
   );
 
-  // Finish onboarding with the chosen exam and date; then plant (or not).
+  // Finish onboarding with the chosen exam, date and fit; then plant (or not).
   const finish = (plant: boolean) => {
     const m = PRESETS[preset].months;
-    complete(certId, m ? dateInMonths(m, Date.now()) : undefined);
+    complete(certId, m ? dateInMonths(m, Date.now()) : undefined, { familiarity, dailyMinutes: minutes });
     if (plant) {
       // Mobile 1.14 (M8): plant now (onboarding is already done, so closing
       // the app here loses nothing), then a short planting moment (step 4):
       // the seed settles and its first sprout pops. One soft haptic.
       plantFor(certId, species, plantName);
       haptic.light();
-      setStep(4);
+      setStep(5);
       moveFocus(plantedRef);
       return;
     }
@@ -142,11 +155,11 @@ export default function Onboarding() {
     useProgress.getState().setPlantSettings({ promptHidden: true });
     router.replace('/home');
   };
-  const planted = step === 4 ? selectCert(useProgress.getState(), certId).plant : undefined;
+  const planted = step === 5 ? selectCert(useProgress.getState(), certId).plant : undefined;
 
   const body =
-    step === 4 && planted ? (
-      <Enter key="s4">
+    step === 5 && planted ? (
+      <Enter key="s5">
         <View style={{ alignItems: 'center', marginTop: space.xxl }}>
           <LivePlant
             species={planted.species}
@@ -167,9 +180,9 @@ export default function Onboarding() {
         </T>
         <T v="meta" center style={{ marginTop: space.md }}>It grows only from real progress. It asks for nothing.</T>
       </Enter>
-    ) : step === 3 ? (
-      <Enter key="s3">
-        <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 3 of 3</T>
+    ) : step === 4 ? (
+      <Enter key="s4">
+        <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 4 of 4</T>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>Plant something that grows with you</T>
         <T v="meta" style={{ marginTop: space.sm }}>It grows only from real progress across the exam outline. Never from taps or time. It asks for nothing and never wilts. Optional.</T>
         <Gap h={space.xl} />
@@ -190,76 +203,56 @@ export default function Onboarding() {
         <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ marginLeft: -space.lg }}>
           <Seedling color={c.accent} size={110} />
         </View>
-        <T v="caption" color={c.accentText} style={{ marginTop: space.sm }}>Step 1 of 3</T>
+        <T v="caption" color={c.accentText} style={{ marginTop: space.sm }}>Step 1 of 4</T>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>Which exam are you preparing for?</T>
         <T v="meta" style={{ marginTop: space.sm }}>You can switch any time in Settings.</T>
         <Gap h={space.xl} />
-        {CERTIFICATIONS.map((cert) => {
-          const available = cert.status === 'available';
-          const selected = certId === cert.id;
-          return (
-            <Pressable
-              key={cert.id}
-              accessibilityRole="radio"
-              accessibilityState={{ checked: selected, disabled: !available }}
-              accessibilityLabel={`${cert.name}, ${cert.fullName}${available ? '' : ', coming soon'}`}
-              disabled={!available}
-              onPress={() => setCertId(cert.id)}
-              style={({ pressed }) => [
-                {
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 14,
-                  minHeight: 64,
-                  borderRadius: radius.md,
-                  backgroundColor: c.raised,
-                  // Selected = 2px ink border; padding shrinks 0.5 so nothing jumps.
-                  borderWidth: selected ? 2 : 1.5,
-                  borderColor: selected ? c.ink : isDark ? c.line : 'transparent',
-                  paddingVertical: selected ? 13.5 : 14,
-                  paddingHorizontal: selected ? 15.5 : 16,
-                  marginBottom: 10,
-                },
-                !isDark && raisedShadow,
-                pressed && { transform: [{ scale: 0.98 }] },
-              ]}
-            >
-              <View
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 15,
-                  borderWidth: 1.5,
-                  borderColor: selected ? c.ink : available ? c.control : c.line,
-                  backgroundColor: selected ? c.ink : 'transparent',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {selected && <Check size={16} color={c.bg} strokeWidth={2.5} />}
-              </View>
-              <View style={{ flex: 1 }}>
-                <T v="label" color={available ? c.ink : c.muted}>{cert.name}</T>
-                <T v="meta" color={available ? c.ink2 : c.muted}>{available ? cert.fullName : `${cert.fullName} · coming soon`}</T>
-              </View>
-            </Pressable>
-          );
-        })}
+        <View accessibilityRole="radiogroup" accessibilityLabel="Which exam are you preparing for?">
+          {CERTIFICATIONS.map((cert) => {
+            const available = cert.status === 'available';
+            return (
+              <ChoiceRow
+                key={cert.id}
+                title={cert.name}
+                subtitle={available ? cert.fullName : `${cert.fullName} · coming soon`}
+                accessibilityLabel={`${cert.name}, ${cert.fullName}${available ? '' : ', coming soon'}`}
+                selected={certId === cert.id}
+                disabled={!available}
+                onPress={() => setCertId(cert.id)}
+              />
+            );
+          })}
+        </View>
         <T v="meta" color={c.muted} style={{ marginTop: space.md }}>
           Not affiliated with or endorsed by ISACA® or ISC2®. Exam names are trademarks of their owners.
         </T>
       </Enter>
-    ) : (
+    ) : step === 2 ? (
       <Enter key="s2">
-        <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 2 of 3</T>
+        <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 2 of 4</T>
+        <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>{FAMILIARITY_QUESTION}</T>
+        <T v="meta" style={{ marginTop: space.sm }}>This shapes your first week. You can change it any time in Settings.</T>
+        <Gap h={space.xl} />
+        <FamiliarityRows look="raised" value={familiarity} onChange={setFamiliarity} />
+      </Enter>
+    ) : (
+      <Enter key="s3">
+        <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 3 of 4</T>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>When is your exam?</T>
         <T v="meta" style={{ marginTop: space.sm }}>For your countdown. A rough date is fine.</T>
-        <Gap h={space.xl} />
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+        <Gap h={space.lg} />
+        <View accessibilityLabel="Exam date" style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
           {PRESETS.map((p, i) => (
             <Chip key={p.label} label={p.label} selected={preset === i} onPress={() => setPreset(i)} />
           ))}
         </View>
+        {/* Daily time: the plan is sized to it (mobile 1.15). A second group on the same step, never a second screen. */}
+        <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Daily time</T>
+        <T v="headline" accessibilityRole="header" style={{ marginTop: space.sm }}>How long can you study most days?</T>
+        <View style={{ marginTop: space.md }}>
+          <MinutesControl value={minutes} onChange={setMinutes} />
+        </View>
+        <T v="meta" style={{ marginTop: space.sm }}>A rough guess is fine. Short days still count, and days don’t need to be in a row.</T>
       </Enter>
     );
 
@@ -283,7 +276,7 @@ export default function Onboarding() {
           </ScrollView>
         </KeyboardAvoidingView>
       )}
-      {/* Hidden while typing (step 3's name): "Done" on the keyboard brings the buttons back. */}
+      {/* Hidden while typing (step 4's name): "Done" on the keyboard brings the buttons back. */}
       {!typing && (
         <StickyFooter onHeight={setFooterH}>
           {step === 0 ? (
@@ -305,18 +298,39 @@ export default function Onboarding() {
               <Button label="Continue" onPress={() => setStep(2)} />
               <Button kind="ghost" label="Back" onPress={() => setStep(0)} />
             </>
-          ) : step === 4 ? (
+          ) : step === 5 ? (
             <Button label="Start studying" onPress={finishPlanted} />
           ) : step === 2 ? (
             <>
-              <Button label="Continue" onPress={() => setStep(3)} />
-              <Button kind="ghost" label="Back" onPress={() => setStep(1)} />
+              <Button
+                label="Continue"
+                onPress={() => setStep(3)}
+                disabled={!familiarity}
+                accessibilityHint={familiarity ? undefined : 'Choose one, or skip this question.'}
+              />
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                <Button kind="ghost" label="Back" onPress={() => setStep(1)} />
+                <Button
+                  kind="ghost"
+                  label="Skip this question"
+                  accessibilityHint="Leaves it unset. You can answer it later in Settings."
+                  onPress={() => {
+                    setFamiliarity(undefined);
+                    setStep(3);
+                  }}
+                />
+              </View>
+            </>
+          ) : step === 3 ? (
+            <>
+              <Button label="Continue" onPress={() => setStep(4)} />
+              <Button kind="ghost" label="Back" onPress={() => setStep(2)} />
             </>
           ) : (
             <>
               <Button label="Plant it" onPress={() => finish(true)} />
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <Button kind="ghost" label="Back" onPress={() => setStep(2)} />
+                <Button kind="ghost" label="Back" onPress={() => setStep(3)} />
                 <Button kind="ghost" label="Skip for now" accessibilityHint="Starts studying without a plant. You can plant one later from You." onPress={() => finish(false)} />
               </View>
             </>

@@ -83,7 +83,8 @@ describe('Settings → Study reminder', () => {
   });
 
   it('asks permission only when turned on, then re-schedules on changes without asking again', async () => {
-    const toggle = root().findAll((n) => typeof n.props.onValueChange === 'function' && n.props.value === false)[0];
+    // The reminder switch by its name (Settings has other switches above it, e.g. Exam-focused plan).
+    const toggle = root().findAll((n) => typeof n.props.onValueChange === 'function' && n.props.accessibilityLabel === 'Study reminder')[0];
     await act(async () => {
       await toggle.props.onValueChange(true);
     });
