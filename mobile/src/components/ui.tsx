@@ -95,10 +95,13 @@ export function Screen({
   edges = ['top'],
   onScroll,
   onScrollBeginDrag,
+  scrollRef,
 }: {
   children: ReactNode;
   scroll?: boolean;
   edges?: ('top' | 'bottom')[];
+  /** The scroll view, for a screen that opens at one of its groups (Settings → Badges and plant). */
+  scrollRef?: Ref<ScrollView>;
   /** The scroll offset and the visible height (something below the fold waits until it is seen). */
   onScroll?: (y: number, height: number) => void;
   /** The learner starts a new drag (a moment on the screen skips to its end). */
@@ -108,6 +111,7 @@ export function Screen({
   const [viewH, setViewH] = useState(0);
   const inner = scroll ? (
     <ScrollView
+      ref={scrollRef}
       contentContainerStyle={styles.screenPad}
       keyboardShouldPersistTaps="handled"
       onLayout={onScroll ? (e) => {
@@ -820,6 +824,7 @@ export function RadioRow({
   onPress,
   badge,
   last,
+  disabled,
 }: {
   title: string;
   subtitle?: string;
@@ -828,31 +833,34 @@ export function RadioRow({
   /** A short word beside the title, e.g. "Suggested". */
   badge?: string;
   last?: boolean;
+  /** A choice that can't be made yet (an exam that is coming soon): `muted` text and ring, spoken as dimmed. */
+  disabled?: boolean;
 }) {
   const { c } = useTheme();
   const press = usePressScale({ scale: 1, tint: c.soft });
   return (
     <AnimatedPressable
       accessibilityRole="radio"
-      accessibilityState={{ checked }}
+      accessibilityState={disabled ? { checked, disabled } : { checked }}
       accessibilityLabel={[title, badge, subtitle].filter(Boolean).join('. ')}
       onPress={onPress}
+      disabled={disabled}
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
       style={[styles.listRow, press.style]}
     >
       {press.layer}
       {/* The ink ring and dot cross-fade in over the idle ring (120 ms). */}
-      <View style={[styles.radio, { borderColor: c.control }]}>
+      <View style={[styles.radio, { borderColor: disabled ? c.line : c.control }]}>
         <StateLayer on={checked} style={[styles.radioOn, { borderColor: c.ink }]} />
         <StateLayer on={checked} style={[styles.radioDot, styles.radioDotAt, { backgroundColor: c.ink }]} />
       </View>
       <View style={{ flex: 1, minWidth: 0 }}>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: space.sm }}>
-          <T v="label">{title}</T>
+          <T v="label" color={disabled ? c.muted : undefined}>{title}</T>
           {badge ? <T v="caption" color={c.accentText}>{badge}</T> : null}
         </View>
-        {subtitle ? <T v="meta">{subtitle}</T> : null}
+        {subtitle ? <T v="meta" color={disabled ? c.muted : undefined}>{subtitle}</T> : null}
       </View>
       {!last && <View style={[styles.hairline, { left: 36, backgroundColor: c.line }]} />}
     </AnimatedPressable>
