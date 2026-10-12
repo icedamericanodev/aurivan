@@ -780,8 +780,12 @@ lantern. Show it from Your plant, Change its look."
 
 **Moods.** Idle, happy (the plan is cleared), curious (a new topic opened
 today), proud and resting, on the FACE only (no posture, no marks; the resting look keeps its
-moon). Proud is content half-lids, a wide closed smile and a stronger blush
-(happy is "^ ^" with an open smile). Quiet look shows none. Spoken in the
+moon). Proud (redrawn in mobile 1.18: the old half-lids read as smug or
+sleepy) is eyes softly closed in wide, gentle upward arcs, a big warm closed
+grin (a filled crescent, about twice rest's smile) and the warmest blush, in
+the plant's own `plantArt.ink` and `plantArt.blush` only; happy is the
+taller, pointed "^ ^" with an open smile, resting the downward "u u". Checked
+on all 13 species in both themes (`proud-light/dark` in `plant_sheet.sh`). Quiet look shows none. Spoken in the
 label ("Looking proud.").
 
 **Motion (mobile 1.14).** `LivePlant` draws three layers (back, plant, front)

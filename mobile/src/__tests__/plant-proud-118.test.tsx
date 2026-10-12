@@ -26,8 +26,9 @@ import Today from '../app/(tabs)/home';
 import You from '../app/(tabs)/you';
 import YourPlant from '../app/plant';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
+import { buildPlant, type GNode, type Lod, type PNode } from '../components/plant/art';
 import { breathDepth, relaunchPlantForTest, resetPlantReactionsForTest } from '../components/plant/LivePlant';
-import { plantNew, type CertPlant } from '../engine/plant';
+import { plantNew, PLANT_SPECIES, type CertPlant } from '../engine/plant';
 import {
   admitProud,
   growthOccasions,
@@ -44,7 +45,7 @@ import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
-import { motion } from '../theme/tokens';
+import { motion, plantArt } from '../theme/tokens';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -438,5 +439,56 @@ describe('never on an answering screen: no plant, face or ambient motion', () =>
     }
     // The lesson cover's forest panel is checked (the scan is not empty).
     if (screen.startsWith('app/lesson/')) expect(panels).toBeGreaterThan(0);
+  });
+});
+
+// ── The proud face (redrawn in 1.18) ────────────────────────────────────
+describe('the proud face', () => {
+  const faceOf = (o: Parameters<typeof buildPlant>[0]): GNode | null => {
+    const find = (n: PNode): GNode | null => (n.t === 'g' ? (n.id === 'face' ? n : n.children.map(find).find(Boolean) ?? null) : null);
+    return find(buildPlant(o).root);
+  };
+  const paths = (g: GNode) => g.children.filter((c): c is Extract<PNode, { t: 'path' }> => c.t === 'path');
+  const colours = (g: GNode) => new Set(g.children.flatMap((c) => [c.fill, c.stroke]).filter((x): x is string => !!x && x !== 'none'));
+
+  it.each(PLANT_SPECIES)('%s: closed eyes in upward arcs, a wide warm grin and blush, in both themes; Quiet look hides it', (species) => {
+    for (const theme of ['light', 'dark'] as const)
+      for (const lod of ['small', 'full'] as Lod[]) {
+        const proud = faceOf({ species, stage: 5, theme, lod, mood: 'proud' })!;
+        const happy = faceOf({ species, stage: 5, theme, lod, mood: 'happy' })!;
+        const idle = faceOf({ species, stage: 5, theme, lod, mood: 'idle' })!;
+        expect(proud).not.toBeNull();
+        // Closed eyes: no round pupils (idle and curious draw ellipses; proud draws none but the blush).
+        expect(proud.children.filter((c) => c.t === 'ellipse' && c.fill === plantArt.ink)).toHaveLength(0);
+        // Two eye strokes curving UP: the control point sits above both ends ("happy arcs", never resting's "u").
+        const eyes = paths(proud).filter((p) => p.fill === 'none');
+        expect(eyes).toHaveLength(2);
+        for (const e of eyes) {
+          const [x0, y0, cx, cy, x1, y1] = (e.d.match(/-?[\d.]+/g) ?? []).map(Number);
+          expect(cy).toBeLessThan(y0);
+          expect(y1).toBeCloseTo(y0, 1);
+          expect(x1 - x0).toBeGreaterThan(0);
+          expect(cx).toBeGreaterThan(x0);
+        }
+        // The grin: one filled ink crescent, wider than rest's smile.
+        const grin = paths(proud).filter((p) => p.fill === plantArt.ink);
+        expect(grin).toHaveLength(1);
+        const width = (d: string) => {
+          const xs = (d.match(/[MQ]\s*(-?[\d.]+)/g) ?? []).map((m) => Number(m.slice(1)));
+          return Math.max(...xs) - Math.min(...xs);
+        };
+        const restMouth = paths(idle).find((p) => p.fill === 'none')!;
+        expect(width(grin[0].d)).toBeGreaterThan(width(restMouth.d) * 1.8);
+        // A faint blush, a little warmer than happy's.
+        const blush = (g: GNode) => g.children.filter((c) => c.t === 'ellipse' && c.fill === plantArt.blush).map((c) => c.opacity ?? 1);
+        expect(blush(proud)).toHaveLength(2);
+        expect(Math.min(...blush(proud))).toBeGreaterThan(Math.max(...blush(happy)));
+        // Distinct from happy and from rest; only the plant's own tokens.
+        expect(JSON.stringify(proud)).not.toBe(JSON.stringify(happy));
+        expect(JSON.stringify(proud)).not.toBe(JSON.stringify(idle));
+        for (const c of colours(proud)) expect([plantArt.ink, plantArt.blush]).toContain(c);
+        // Quiet look: no face at all.
+        expect(faceOf({ species, stage: 5, theme, lod, mood: 'proud', quietLook: true })).toBeNull();
+      }
   });
 });
