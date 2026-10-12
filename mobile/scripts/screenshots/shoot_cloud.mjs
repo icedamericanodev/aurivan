@@ -11,13 +11,18 @@
 //
 // Shots (light or dark, from the run's theme):
 //   acct-you-out     You, signed out, with "Sync across devices"
-//   acct-signin      the sign-in sheet, box unticked: buttons disabled, hint shown
+//   acct-signin      the sign-in sheet, box unticked: buttons disabled, hint shown,
+//                    with the Privacy policy and Terms of Use links (placeholder URLs)
 //   acct-email-err   email entry with the "bad address" problem
 //   acct-code        the code step with the resend timer
 //   acct-home        the Account screen, signed in
 //   acct-settings    Settings → Account, signed in
-//   acct-del-1/2/3   delete: step 1, confirm it's you, typing DELETE
+//   acct-del-1/2/3   delete: step 1, confirm it's you, typing DELETE (with the line
+//                    restating the progress choice)
 //   acct-del-done    "Your account is deleted"
+//   acct-del-code    delete, email-only account: the code step with a wrong code
+//                    (the problem on the field, its outline in tip)
+//   acct-del-resend  after too many wrong codes: back to "Send a code to …", with why
 //   acct-about       Settings → About line, flag on, signed out
 //   acct-signin-xl, acct-home-xl   about 200% text
 //   off-you, off-settings          the flag-OFF build (served on 8094): proof nothing changed
@@ -162,6 +167,22 @@ const tap = async (page, name) => {
   await go(page, ON, '/account/delete');
   await tap(page, 'Continue');
   await shot(page, 'acct-del-2');
+
+  // An email-only account confirms with a code: a wrong one, then too many.
+  await setState(page, { signedIn: true, authAgeMin: 30, providers: ['email'] });
+  await go(page, ON, '/account/delete');
+  await tap(page, 'Continue');
+  await tap(page, 'Send a code to m•••@example.com');
+  const codeField = page.getByLabel('6-digit code', { exact: true });
+  await codeField.fill('000000');
+  await tap(page, 'Confirm it’s you');
+  await shot(page, 'acct-del-code');
+  for (let i = 0; i < 4; i++) {
+    await codeField.fill('000000');
+    await tap(page, 'Confirm it’s you');
+  }
+  await page.waitForTimeout(600);
+  await shot(page, 'acct-del-resend');
   await ctx.close();
 }
 

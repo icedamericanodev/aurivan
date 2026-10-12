@@ -5,16 +5,17 @@
  *
  * The screenshot script picks the starting state per page load through
  * localStorage key `aurivan.shots.cloud` (web only), JSON:
- *   { "signedIn": true, "authAgeMin": 30, "offline": false }
+ *   { "signedIn": true, "authAgeMin": 30, "offline": false, "providers": ["email"] }
  * Missing or unreadable = signed out. `authAgeMin` = how long ago Maya last
  * signed in (over 10 minutes, deleting her account asks her to confirm it's
- * her first).
+ * her first). `providers` = her sign-in methods (default email and Google;
+ * email only shows the delete screen's email code step).
  *
  * The board's 12 posts, held post, report and staff account arrive with
  * PR 8, when the memory backend gains the board.
  */
 import Constants from 'expo-constants';
-import { TERMS_VERSION } from '../../engine/account';
+import { ALL_PROVIDERS, TERMS_VERSION, type Provider } from '../../engine/account';
 import type { MemoryOptions } from './backend';
 
 export const DEMO_USER_ID = 'mem-user-maya';
@@ -26,6 +27,7 @@ interface ShotsState {
   signedIn?: boolean;
   authAgeMin?: number;
   offline?: boolean;
+  providers?: Provider[];
 }
 
 function readShotsState(): ShotsState {
@@ -38,6 +40,12 @@ function readShotsState(): ShotsState {
   }
 }
 
+/** Maya's sign-in methods: the known ones from the state, or email and Google. */
+function demoProviders(raw: unknown): Provider[] {
+  const list = Array.isArray(raw) ? ALL_PROVIDERS.filter((p) => raw.includes(p)) : [];
+  return list.length ? list : ['email', 'google'];
+}
+
 export function shotsSeed(now = Date.now()): MemoryOptions {
   const state = readShotsState();
   const day = 86_400_000;
@@ -45,7 +53,7 @@ export function shotsSeed(now = Date.now()): MemoryOptions {
     appVersion: Constants.expoConfig?.version ?? '1.0.0',
     fixedCode: DEMO_CODE,
     offline: state.offline === true,
-    users: [{ userId: DEMO_USER_ID, email: DEMO_EMAIL, providers: ['email', 'google'], termsVersion: TERMS_VERSION, createdAt: now - 30 * day }],
+    users: [{ userId: DEMO_USER_ID, email: DEMO_EMAIL, providers: demoProviders(state.providers), termsVersion: TERMS_VERSION, createdAt: now - 30 * day }],
     signedIn: state.signedIn ? { userId: DEMO_USER_ID, authAt: now - (state.authAgeMin ?? 1) * 60_000 } : null,
     snapshots: {
       [DEMO_USER_ID]: {

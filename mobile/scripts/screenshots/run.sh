@@ -31,9 +31,13 @@ if [ "${SHOTS:-}" = cloud ]; then
   # memory backend only runs with EXPO_PUBLIC_AURIVAN_SHOTS=1 or in dev, and
   # src/cloud/configGuard.ts refuses it in every EAS profile). The same app is
   # also exported with the flag OFF, for the off-* proof shots.
+  # Placeholder https links (example.com), so the sign-in sheet's Privacy
+  # policy and Terms of Use links are in the shots (a real cloud build must set
+  # both: src/cloud/configGuard.ts).
   EXPO_OFFLINE=1 EXPO_PUBLIC_AURIVAN_CLOUD=1 EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND=memory EXPO_PUBLIC_AURIVAN_SHOTS=1 \
+    EXPO_PUBLIC_PRIVACY_URL=https://example.com/aurivan/privacy EXPO_PUBLIC_TERMS_URL=https://example.com/aurivan/terms \
     npx expo export --platform web --clear --output-dir "$TMP/web" >/dev/null
-  env -u EXPO_PUBLIC_AURIVAN_CLOUD -u EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND -u EXPO_PUBLIC_AURIVAN_SHOTS EXPO_OFFLINE=1 \
+  env -u EXPO_PUBLIC_AURIVAN_CLOUD -u EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND -u EXPO_PUBLIC_AURIVAN_SHOTS -u EXPO_PUBLIC_PRIVACY_URL -u EXPO_PUBLIC_TERMS_URL EXPO_OFFLINE=1 \
     npx expo export --platform web --clear --output-dir "$TMP/web-off" >/dev/null
 else
   EXPO_OFFLINE=1 npx expo export --platform web --clear --output-dir "$TMP/web" >/dev/null
