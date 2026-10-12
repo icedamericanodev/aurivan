@@ -245,21 +245,32 @@
   <p>Sync is off until you turn it on (Settings → Account → Sync this phone),
   and the app shows you what will change before it first syncs. While it is
   on, we keep one copy of your study progress and study settings in your
-  account: your answers and how sure you were, reviews, saved questions,
-  mocks, lessons and notes done, badges, your plant, your exam date and your
-  study settings. With each copy we keep the app version that sent it, when
-  it was sent, and a random install code for the phone that sent it (it is
-  not a hardware or advertising ID; a new one is made when a different
-  account signs in on that phone). We also keep up to two earlier daily
-  copies of your progress for a short time, so support can help if something
-  goes wrong.</p>
+  account: your answers (whether right, how sure you were and how long you
+  took), reviews, your mistake journal, saved questions, mocks, lessons and
+  notes done, your study days and streak, badges, game levels, your
+  readiness log and exam-week checklist, your plant, the questions you
+  reported to us, your exam date and your study settings. With each copy we
+  keep the app version that sent it, when it was sent, and a random install
+  code for the phone that sent it (it is not a hardware or advertising ID; a
+  new one is made before a different account syncs from that phone, and
+  when you remove your progress from the phone or delete your account). We
+  also keep the two most recent daily copies of your progress, so support
+  can help if something goes wrong; they are deleted when you delete the
+  synced copy or your account.</p>
   <p>These stay on your phone and are never synced: study reminders, theme,
   motion and haptics settings, plant display choices, and a quiz in
   progress.</p>
-  <p>You can turn sync off at any time, delete the synced copy (Settings →
-  Account → Delete synced progress: your account and the progress on your
-  phone stay), or delete your account. Deleted copies are removed from our
-  live systems at once and from backups within 30 days.</p>
+  <p>You can turn sync off at any time: that stops syncing, and the copy in
+  your account stays until you delete it. You can delete the synced copy
+  (Settings → Account → Delete synced progress: your account and the
+  progress on your phone stay), or delete your account. Deleted copies are
+  removed from our live systems at once and from backups within 30 days.</p>
+  <!-- Before publishing (security review P7 N8): confirm "within 30 days"
+       against the chosen Supabase plan's backup and PITR retention
+       (SCALING.md §3). -->
+  <p>When you sign out, you can also remove your progress from that phone
+  (for shared devices): your study progress, plant and study settings are
+  removed from the phone, and your account’s copy stays.</p>
   <!-- Phase 8 adds "Feedback board." here (compliance §9.1). -->
 
   <h3>How we use it</h3>
@@ -289,7 +300,9 @@
   <ul>
     <li>You can sign out at any time, on this phone or on every device.</li>
     <li>To get a copy of your account data, use <strong>Settings → Account →
-    Download my data</strong>.</li>
+    Download my data</strong>. It includes your synced progress and study
+    settings; the two daily support copies are earlier versions of the same
+    progress and are not included.</li>
     <li>To delete everything, use <strong>Settings → Account → Delete
     account</strong>, visit <a href="delete-account.html">[URL]/delete-account.html</a>,
     or email <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a>.</li>

@@ -521,38 +521,83 @@ is touched with it off: `cloud-off.test.tsx`). Spec: PHASE6_8 §3.
   account is never pushed over. Unlike a file, a pull keeps ids this app's
   content doesn't have (bounded by the caps), so two app versions agree
   instead of dropping and re-adding them on every sync.
-- **The cycle** (`lib/syncCore.ts`, ports only): heads (rev and app version,
-  never the data), `engine/syncPlan.ts` (idle, push, pull, merge, first,
-  pause), pull and check, merge, ONE storage write through the restore path
-  (`lib/backup.ts writeSynced`: keeps today's plans and a paused quiz, and
-  merges in anything done while the write was in flight), push at the rev
-  just seen; a `conflict` (another phone wrote first) retries after 1 s,
-  3 s, 9 s. A snapshot from a newer minor app pauses ("Update the app"); an
-  empty phone never pushes over the account's progress; a copy deleted from
-  another phone turns sync off here instead of re-uploading it.
+- **The cycle** (`lib/syncCore.ts`, ports only): heads (rev, write time and
+  app version, never the data), `engine/syncPlan.ts` (idle, push, pull,
+  merge, first, pause; a rev plus its write time is the write's identity, so
+  a copy deleted and made again is never "unchanged"), pull and check, merge,
+  ONE storage write through the restore path (`lib/backup.ts writeSynced`:
+  keeps today's plans and a paused quiz, and merges in whatever the learner
+  did since the cycle read the phone, both when the write starts and after
+  it lands; a quiz opened while the pull was on the network still makes it
+  wait), then push what the phone now holds at the rev just seen; a
+  `conflict` (another phone wrote first) retries after 1 s, 3 s, 9 s. A
+  snapshot from a newer minor app pauses ("Update the app"); one claiming an
+  app more than one major ahead (no update reaches it) pauses as unreadable;
+  an unreadable copy isn't downloaded again until its rev changes or the
+  learner taps Try again; an empty phone never pushes over the account's
+  progress; a copy deleted from another phone turns sync off here instead of
+  re-uploading it.
+- **Never into another learner's account; never under the learner**
+  (Phase 7 review). The sync record keeps the account's SHA-256
+  (`accountHash`), set in the same write that turns sync on. Every cycle
+  compares it with the account signed in now (a local session read), not
+  only on a sign-in event, which a relaunch never sends: a different account
+  never syncs; the switch sheet asks, and its "Not now" turns sync off here.
+  Cycles run one at a time (the first sync's own push included); a
+  generation counter stops a running cycle before its next write or push,
+  and Undo sync, sign out, remove, Delete synced progress, account deletion
+  and the account switch wait for it and hold off new cycles while they act.
+  A failed run leaves its retry to the backoff.
 - **When** (`lib/sync.ts`): at launch (after `initAccount`, which loads who
   is signed in first), on background, when a quiz, lesson or
   game ends (root `_layout` tells it the route; a pull never lands under an
   open session), at most every 10 minutes after a change, and Sync now.
   Failures only change the status line and back off 30 s / 2 min / 10 min /
-  1 h. The record is `aurivan.sync.v1` (`store/sync.ts`: on/off, last rev and
-  fingerprint per store, stamps, pause reason, a waiting pull), never in a
-  backup file, never synced, never hydrated with the flag off.
+  1 h; a lost connection says "Will sync when you're online", any other
+  failure "We'll try again soon". The record is `aurivan.sync.v1`
+  (`store/sync.ts`: on/off, the account's hash, last rev, write time and
+  fingerprint per store, stamps, pause reason and the unreadable rev, a
+  waiting pull), never in a backup file, never synced, never hydrated with
+  the flag off.
 - **Choices stay with the learner.** The first sync on a phone shows a
   preview (phone only, account only, or both: This phone · Account · After,
   where After is the real merge) and keeps a 7-day "Undo sync" copy in the
-  backup store's undo slot, written in the same storage write. A different
-  account on a shared phone asks first (Start fresh, the default, keeps this
-  phone's progress in Undo sync and never adds it to the new account) and
-  gets a new install id. Sign out can remove this phone's progress (for
-  shared devices). Delete synced progress removes the account's copy (and the
-  server's checkpoints) and turns sync off.
+  backup store's undo slot, written in the same storage write, whenever the
+  phone holds anything at all (`holdsStudy`: a saved question, a note, a
+  plant or an exam date count). A merge keeps an earlier Undo sync copy as it
+  is (it still puts back the phone from before it FIRST synced); Start fresh
+  always takes a new one. Undo sync turns sync off only when it worked. A
+  different account on a shared phone asks first (Start fresh, the default,
+  keeps this phone's progress in Undo sync and never adds it to the new
+  account); any account other than the last one synced here gets a new
+  install id before its first push. Sign out can remove this phone's
+  progress (for shared devices): while syncing it sends the latest first,
+  warns when something is only on this phone, then puts the phone back to a
+  fresh install's study state in one storage write (theme, motion,
+  reminders and haptics stay; `lib/backup.ts wipeLocalStudy`), with the
+  sync record and link, and renews the install id; account deletion's "also
+  remove from this phone" does the same. Delete synced progress removes the
+  account's copy (and the server's checkpoints) and turns sync off; the
+  other devices stop when they next connect.
+- **Two different plants** (each phone planted its own, or one was reset):
+  the earlier planting is kept, at the higher growth of the two, so nobody
+  re-plants or loses growth; the first sync's Combine keeps the more grown
+  plant instead and stamps that choice (`plantId.<cert>`), so a phone still
+  holding the other plant never undoes it. A merge whose mocks pass the
+  50-mock cap keeps every Dress Rehearsal tier already earned.
 - **Known limits (v1), in "What syncs":** removals don't travel (a bookmark
-  removed, or progress reset, on one phone comes back from another; Reset
-  while syncing is refilled from the account); attempts made offline on two
-  phones count as the max, never the sum; a phone whose clock is days off
-  keeps its own choices until its clock is right (answers are never lost).
-  Tombstones and a three-way merge are later steps (SCALING.md §5).
+  removed, or progress reset, on one phone comes back from another device
+  that still has it; with only one phone syncing, a Reset is simply sent to
+  the account, so it is not refilled; the Reset alert says so while syncing,
+  and points to Delete synced progress to start fresh everywhere); attempts
+  made offline on two phones count as the max, never the sum; a phone whose
+  clock is days off keeps its own choices until its clock is right (answers
+  are never lost). A compromised account (or a hostile snapshot in the
+  learner's own account) can't erase answers, lessons, notes or badges
+  (merges only add), but can push local items out of the capped lists
+  (newest 50 mocks, 200 reports and study days) and win last-writer-wins
+  choices; only the first sync has an undo. Tombstones and a three-way merge
+  are later steps (SCALING.md §5).
 - **Sizing:** `docs/mobile/SCALING.md` (≤ 5k accounts on Supabase Pro; the
   owner decides plan and region at Phase 9). A heavy learner's progress
   snapshot measures about 263 KB (`sync-budget.test.ts`).
@@ -712,9 +757,10 @@ its own section.
 | Piece | Path | Job |
 |---|---|---|
 | Schema | `supabase/migrations/20261005000000_init_mobile_sync.sql` | `profiles`, `entitlements`, `content_packs` in `public`; the bank size, deletion audit and export rate limit in `private` |
-| Sync schema (Phase 7) | `supabase/migrations/20261013000000_sync_snapshots.sql` | `public.sync_snapshots` (one row per store per learner; column grants; a trigger sets `rev`, the time and the 60-writes-an-hour window and reverts owner or store changes; writes need a `profiles` row); `private.sync_history` (a daily support checkpoint of the progress row, newest 2, cleared by "Delete synced progress") |
+| Sync schema (Phase 7) | `supabase/migrations/20261013000000_sync_snapshots.sql` | `public.sync_snapshots` (one row per store per learner; column grants; a trigger sets `rev` (the write time in ms or one more than the store's last rev, never reused even after a delete) and the time, and reverts owner or store changes; writes need a `profiles` row; settings capped at 96 KB of jsonb text, progress at 2,000,000 bytes); `private.sync_writes` (the 60-writes-per-store-per-hour count and last rev, outside the row, so delete + insert can't reset it: deletes count but are never refused); `private.sync_history` (a daily support checkpoint of the progress row, newest 2, kept while the synced copy exists, cleared by "Delete synced progress") |
 | Local config | `supabase/config.toml`, `supabase/templates/` | Auth as it will be set on the dashboard at Phase 9: 6-digit codes valid 10 min, code-only emails, empty redirect list, no anonymous sign-in, confirmed emails only, refresh rotation (10 s reuse), JWT 1 h |
-| SQL tests | `supabase/tests/01_hardening.sql`, `10_accounts.sql`, `20_sync.sql` | pgTAP: schema-wide rules every later table inherits, plus own-rows-only, anon denied and cascade-on-delete; sync: cross-learner access, server-owned rev/time/keys, stale-rev updates, the rate limit, the size cap, Terms before writes, checkpoints |
+| SQL tests | `supabase/tests/01_hardening.sql`, `10_accounts.sql`, `20_sync.sql` | pgTAP: schema-wide rules every later table inherits, plus own-rows-only, anon denied and cascade-on-delete; sync: cross-learner access (the other learner's state unchanged, not just present), server-owned rev/time/keys, revs never reused after delete + re-insert, stale-rev updates, the rate limit (delete + insert can't reset it; a delete over it still works), both size caps, Terms before inserts and updates, checkpoints, the counter's cascade, no sync table in any publication |
+| SQL mutants | `scripts/sync_sql_mutants.py` | 15 one-line breaks of the sync migration; the pgTAP suite must fail on each (`PGTAP_RUN` runs it on a plain Postgres with the shim; the default uses the Supabase CLI) |
 | Edge Functions | `supabase/functions/{delete-account,export-my-data}` | Pure `handler.ts` with an injected `AdminPort`; `index.ts` only wires env. `deno test` uses a fake admin client, no network |
 | Smoke (Phase 9) | `scripts/cloud_smoke.sh` | curl with two learners' JWTs and the publishable key: every cross-user, anon, private and server-only call must fail |
 | Static guard | `scripts/check_rls.sh` | G6–G8: RLS in the same file as every `create table` and never turned off, no always-true policy (create or alter) off the allowlist, `security_invoker` views, no `security definer` outside `private` (an unqualified name counts as `public`), nothing granted to `anon` or `public` off the allowlist |
@@ -758,7 +804,11 @@ cap.
   slot is claimed last, after the reply is built. `stores` holds the
   learner's synced snapshots (Phase 7) as backup-file stores, with the two
   device-only fields a backup needs (`onboarded`, today's count), so the
-  download is also a backup the app can restore; Phase 8 adds `board`.
+  download is also a backup the app can restore; the envelope's
+  `appVersion` is the newest app that wrote one of them (else the asking
+  app's), so a store from a newer app restores as "update the app", not as
+  damaged. The two support checkpoints are copies of the same progress and
+  are not included (the privacy notice says so); Phase 8 adds `board`.
 
 **Run it locally** (needs Docker): `supabase start`, `supabase db reset`,
 `supabase test db`, `supabase db lint`; functions:
@@ -825,8 +875,23 @@ Phase 6 on purpose).**
   `(cloud)` screens in an OFF build raise Apple 2.3.1 ("hidden features").
 - Privacy policy: the install id and the backend's request logs are in the
   draft (Phase 7); fill in Supabase's log retention period.
-- Sync (Phase 7): the Supabase adapter maps `P0001 rate_limited`, `42501`
-  and a zero-row update to the `CloudError` codes in `cloud/types.ts`
-  `SyncPort`; the head query selects only store, rev, app_version,
-  store_version, device_id and updated_at. Re-measure SCALING.md's figures
-  against live pricing.
+- Sync (Phase 7, security review N1): the Supabase `SyncPort` adapter
+  - selects only store, rev, app_version, store_version, device_id and
+    updated_at for a head, and returns `updatedAt` as epoch ms (the app
+    compares rev AND write time);
+  - writes `update … where rev = $expected` with `.select('rev, updated_at, …')`
+    and treats an empty result (PostgREST answers 200 with no rows) as
+    `conflict`; an insert hitting the primary key (`23505`, two phones' first
+    push) is `conflict` too;
+  - maps `P0001 rate_limited` to `rate_limited` with Retry-After 3600 s
+    (Postgres sends none), `42501` to `invalid` (no profile), and `23514` to
+    `too_big` when the state is over the size checks, else `invalid`;
+  - never puts `error.message` in `CloudError.detail` (allowlist only);
+  - never adds `sync_snapshots` or a private table to the
+    `supabase_realtime` publication (`20_sync.sql` checks it).
+- Sync: a snapshot whose `app_version` claims an app more than one major
+  ahead pauses as unreadable on every device (not "update the app"), and
+  the Delete synced progress row stays reachable while paused, so a bad
+  write can always be cleared. Re-measure SCALING.md's figures against live
+  pricing, and add a DB-size alert at 60% next to the egress alert (with
+  captcha on sign-up, the main guard against parked data).

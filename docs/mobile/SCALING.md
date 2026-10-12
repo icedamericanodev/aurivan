@@ -30,9 +30,10 @@ release grows them past its bounds, so this table can't silently go stale.
 |---|---|---|
 | Progress snapshot, **heavy learner** (every CISA question answered, reviews, mistakes, 50 mocks, readiness log, badges, plant) | **about 263 KB** of JSON; **about 17 KB** gzipped | The app's cap is 1.5 MB (`MAX_PUSH_BYTES`); the database's is 2,000,000 bytes. Postgres stores it TOAST-compressed: expect a few tens of KB on disk |
 | Progress snapshot, typical learner (a few hundred answers) | about 60–80 KB | about 220 bytes per answered question, plus a few KB fixed |
-| Settings snapshot | **about 350 bytes** | |
-| Support checkpoints (`private.sync_history`) | 2 earlier copies of the progress row | at most one new one a day |
-| Writes | about 6 a day per store per device | launch, background, session end, at most every 10 minutes after a change; the server allows 60 an hour |
+| Settings snapshot | **about 350 bytes** | capped at 64 KB in the app and 96 KB in the database (security review P7 S2), so a scripted account can't park 2 MB there |
+| Support checkpoints (`private.sync_history`) | 2 earlier copies of the progress row | at most one new one a day; kept while the synced copy exists |
+| Write counter (`private.sync_writes`) | one small row per learner and store | the rate window and last rev; outlives the snapshot rows (so delete + insert can't reset it), goes with the account |
+| Writes | about 6 a day per store per device | launch, background, session end, at most every 10 minutes after a change; the server allows 60 an hour per store, deletes included |
 | Egress, one device | near zero: heads only (about 1 KB per sync) | the state is downloaded **only when `rev` changed** (another device wrote) |
 | Egress, two devices | about one progress download per sync that follows the other phone's change: a few downloads a day of 60–260 KB | about 10–50 MB a month for an active two-phone learner |
 | Board (Phase 8) | under 5 KB per active poster | posts, comments, votes |
@@ -75,7 +76,9 @@ snapshots, writes per hour). Act when any of these holds:
 - Sync conflicts over 2% of pushes (two phones writing at the same moment
   more often than expected: check the triggers in `lib/sync.ts`).
 - `rate_limited` answers from `sync_snapshots` at all (the app needs about
-  6 writes a day; 60 an hour means a bug or abuse).
+  6 writes a day; 60 an hour means a bug or abuse). Since the Phase 7
+  review the count lives outside the row, so a delete + insert loop raises
+  it too instead of slipping past.
 - Auth emails per hour over 60% of the SMTP quota.
 - Edge Function invocations over 60% of the plan.
 - Moderation (Phase 8): more than 30 items a day, or any 24-hour miss.

@@ -209,16 +209,19 @@ the "Data Not Collected" label stay true for the OFF build only.
 - Contact Info › Email Address: linked to the user, App Functionality, not tracking.
 - Identifiers › User ID: linked, App Functionality, not tracking.
 - Identifiers › Device ID (the random install id sent with each sync): linked, App Functionality, not tracking.
-- Usage Data › Product Interaction (synced study progress): linked, App Functionality, not tracking.
-- Data is encrypted in transit; users can request deletion (in the app, and at the delete-account URL).
+- Usage Data › Product Interaction (synced study progress: answers and how long each took, study days, game levels): linked, App Functionality, not tracking.
+- User Content › Other User Content ("Your reports": which questions the learner reported, why and when, synced with progress): linked, App Functionality, not tracking.
+- Data is encrypted in transit; users can request deletion (in the app, and at the delete-account URL). Settings → Account → Delete synced progress deletes the synced copy without deleting the account.
 
 **Google Play Data safety.**
-- Personal info › Email address; App activity › Other actions (synced progress); Device or other IDs (the install id). All collected, not shared, App functionality, optional (only with an account), encrypted in transit, deletable in the app and at the delete-account URL.
+- Personal info › Email address; App activity › App interactions (answer timings, study days and streak, game levels) and Other actions (synced progress); App activity › Other user-generated content ("Your reports"); Device or other IDs (the install id). All collected, not shared, App functionality, optional (only with an account), encrypted in transit, deletable in the app and at the delete-account URL. The synced copy can also be deleted on its own (Delete synced progress) without deleting the account.
+- Re-read both forms against the shipped build before submitting (security review P7 S8): the shared-device "remove from this phone" path and the install id renewal changed in the Phase 7 review.
 
 **App Review note, added paragraph.**
 "Accounts are optional: every study feature works signed out. Sync is
 optional too and off until the learner turns it on in Settings → Account →
 Sync this phone, after a preview of what will change. Settings → Account →
-Delete synced progress removes the synced copy; Settings → Account → Delete
-account deletes the account in the app. No push notifications. Demo access:
+Delete synced progress removes the synced copy without deleting the account;
+Settings → Account → Delete account deletes the account in the app. No push
+notifications. Demo access:
 [owner decision, PHASE6_8 §9 #8]."
