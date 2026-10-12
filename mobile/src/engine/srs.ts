@@ -131,3 +131,35 @@ export function dueIds(review: Record<string, ReviewEntry>, now: number, exists:
     .filter((id) => review[id].dueAt <= now && exists(id))
     .sort((a, b) => review[a].dueAt - review[b].dueAt || review[a].box - review[b].box);
 }
+
+// Performance (1.15.x): each mounted tab counted the due reviews (a filter
+// and a sort over the whole queue) after every answer. The count can only
+// change when the queue changes (a new object: it is never mutated) or the
+// clock passes the next review's due time, so it is shared until then.
+const dueCounts = new WeakMap<Record<string, ReviewEntry>, Map<string, { at: number; next: number; count: number }>>();
+
+/**
+ * dueIds(review, now, exists).length, shared: the same queue object and
+ * `scope` (the certification, whose bank decides `exists`) reuse the count
+ * while no review falls due between the time it was counted and `now`.
+ * Exactly the same number as counting again.
+ */
+export function dueCountFor(review: Record<string, ReviewEntry>, now: number, scope: string, exists: (id: string) => boolean = () => true): number {
+  let byScope = dueCounts.get(review);
+  if (!byScope) {
+    byScope = new Map();
+    dueCounts.set(review, byScope);
+  }
+  const hit = byScope.get(scope);
+  if (hit && now >= hit.at && now < hit.next) return hit.count;
+  let count = 0;
+  let next = Infinity;
+  for (const id of Object.keys(review)) {
+    const due = review[id].dueAt;
+    if (due <= now) {
+      if (exists(id)) count++;
+    } else if (due < next) next = due;
+  }
+  byScope.set(scope, { at: now, next, count });
+  return count;
+}
