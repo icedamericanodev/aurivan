@@ -103,7 +103,12 @@ elif [ "${SHOTS:-}" = plant ]; then
   # Mobile 1.13 Your plant: the onboarding pick, Today (the plant, the grow-up
   # line, the quiet prompt), You, Your plant, resting, Quiet look, hidden and
   # Change species (shoot_plant.mjs; NARROW=1; FONT_SCALE=2 for about 200% text).
-  node scripts/screenshots/shoot_plant.mjs "$TMP/seed.json" "$OUT" "$THEME"
+  # Mobile 1.14 Dress and Alive (shoot_plant4b.mjs): the Look screen, dressed
+  # plants, moods, planters, keepsakes, the badge sheet line, the planting
+  # moment, and frame strips of Breathe, a reaction, the growth sequence and
+  # the planting (REDUCED=1 for the reduced set). PLANT=4b runs only these.
+  if [ "${PLANT:-}" != 4b ]; then node scripts/screenshots/shoot_plant.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
+  node scripts/screenshots/shoot_plant4b.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).
