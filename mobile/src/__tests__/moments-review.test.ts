@@ -49,9 +49,10 @@ describe('planner: exam eve and exam day are for rest', () => {
     expect(plan.some((p) => p.kind === 'mock' || p.kind === 'game')).toBe(false);
   });
 
-  it('two days out, the normal exam-week plan is unchanged', () => {
-    const plan = todaysPlan({ ...base, daysLeft: 2, dueReviews: 0 });
+  it('two days out, the exam-week taper: a light top-up and a short game (mobile 1.16)', () => {
+    const plan = todaysPlan({ ...base, daysLeft: 2, dueReviews: 0, answered: 200, focusDomain: { id: '4', short: 'IS Operations' } });
     expect(plan.map((p) => p.kind)).toEqual(['practice', 'game']);
+    expect(plan[0]).toMatchObject({ label: 'Top-up: IS Operations', count: 10, why: 'topup' });
   });
 });
 

@@ -29,7 +29,7 @@ import { clearingTitle, countedDone, currentIndex, isOptional, newDayPlan, planC
 import { addDays } from '../engine/examDay';
 import { STAGE_ORDER, type Stage } from '../engine/journey';
 import { aboutMin, spokenMin } from '../engine/pace';
-import { EXAM_WEEK_REVIEW, itemMinutes, planMinutes, todaysPlan, type PlanInput, type PlanItem } from '../engine/planner';
+import { EXAM_WEEK_LIGHT_MINUTES, itemMinutes, planMinutes, todaysPlan, type PlanInput, type PlanItem } from '../engine/planner';
 import type { Readiness } from '../engine/readiness';
 import { REVIEW_SESSION_CAP } from '../engine/srs';
 import { dayKey } from '../engine/streak';
@@ -153,7 +153,9 @@ describe('planner: property over random inputs (code review P1)', () => {
         dailyMinutes: B,
         familiarity,
         examFocused,
-        answered: Math.floor(r() * 20),
+        // Mobile 1.16: past the starting check too (exam week's full mock needs 20 answers).
+        answered: r() < 0.6 ? Math.floor(r() * 20) : pick([20, 21, 200]),
+        lastFullMockAt: pick([null, NOW - 3 * DAY, NOW - 13 * DAY, NOW - 14 * DAY, NOW - 40 * DAY]),
         focusDomain: r() < 0.8 ? { id: '4', short: 'IS Operations' } : undefined,
         nextLesson,
         lastMockAt,
@@ -168,6 +170,9 @@ describe('planner: property over random inputs (code review P1)', () => {
       const T = planTolerance(B);
       const focused = examFocused ?? familiarity === 'experienced';
       if (B >= 5 && planMinutes(plan) > B + T) bad.push(`over budget ${where}`);
+      // Mobile 1.16: from 4 days out the day tapers to at most 20 minutes.
+      const L = Math.min(B, EXAM_WEEK_LIGHT_MINUTES);
+      if (B >= 5 && daysLeft !== null && daysLeft >= 2 && daysLeft <= 4 && planMinutes(plan) > L + planTolerance(L)) bad.push(`exam week grew ${where}`);
       if (B >= 5 && planMinutes(plan.slice(0, 2)) > B + T) bad.push(`tomorrow over ${where}`);
       if (plan.length > 4) bad.push(`>4 items ${where}`);
       if (plan.length === 0 && daysLeft !== 0 && daysLeft !== 1) bad.push(`empty ${where}`);
@@ -180,8 +185,8 @@ describe('planner: property over random inputs (code review P1)', () => {
           const n = i.label.match(/(\d+) (mixed )?questions/);
           if (n && Number(n[1]) !== i.count) bad.push(`label ${i.label} vs ${i.count} ${where}`);
         }
-        if (i.kind === 'mock' && daysLeft !== null && daysLeft <= 7) bad.push(`mock in exam week ${where}`);
-        if (i.kind === 'practice' && daysLeft !== null && daysLeft >= 2 && daysLeft <= 7 && i.count > EXAM_WEEK_REVIEW) bad.push(`exam week grew ${where}`);
+        // Mobile 1.16: exam week's only mock is the optional full rehearsal, 7 to 5 days out.
+        if (i.kind === 'mock' && daysLeft !== null && daysLeft <= 7 && !(daysLeft >= 5 && i.why === 'final' && i.questions === examQuestions)) bad.push(`mock in exam week ${where}`);
       }
     }
     expect(bad.slice(0, 10)).toEqual([]);
@@ -210,12 +215,12 @@ describe('planner: the weekly mock counts CALENDAR days (code review M1, QA B1)'
 });
 
 describe('planner: sizes that respect the learner', () => {
-  it('exam week keeps its light review at 10, whatever the minutes (code review M5)', () => {
+  it('exam week tapers: from 4 days out the day is at most 20 minutes (mobile 1.16 replaces the 5a cap of 10)', () => {
     for (const m of DAILY_MINUTES) {
-      const plan = todaysPlan({ stage: 'examDay', dueReviews: 0, dailyMinutes: m, daysLeft: 4, examQuestions: 150, examMinutes: 240 });
-      const light = plan.find((i): i is Extract<PlanItem, { kind: 'practice' }> => i.kind === 'practice')!;
-      expect(light.count).toBeLessThanOrEqual(EXAM_WEEK_REVIEW);
-      expect(light.label).toBe(`Light review · ${light.count} questions`);
+      const plan = todaysPlan({ stage: 'examDay', dueReviews: 0, dailyMinutes: m, daysLeft: 4, answered: 200, focusDomain: { id: '4', short: 'IS Operations' }, examQuestions: 150, examMinutes: 240 });
+      const top = plan.find((i): i is Extract<PlanItem, { kind: 'practice' }> => i.kind === 'practice')!;
+      expect(planMinutes(plan)).toBeLessThanOrEqual(Math.min(m, EXAM_WEEK_LIGHT_MINUTES) + planTolerance(Math.min(m, EXAM_WEEK_LIGHT_MINUTES)));
+      expect(top.label).toBe('Top-up: IS Operations');
     }
   });
 

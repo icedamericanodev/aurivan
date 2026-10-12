@@ -375,11 +375,11 @@ describe('J2 the Exam-focused path', () => {
     expect(allText()).toContain('Optional this week');
   });
 
-  it('exam week wins over Exam-focused: no mini mock in the last 7 days', () => {
+  it('exam week wins over Exam-focused: no mini mock in the last 7 days (1.16: only the optional full rehearsal, 7 to 5 days out)', () => {
     const cp = completeCert({ answers: seedAnswers(10, 0.4) });
     for (const daysLeft of [7, 4, 2, 1, 0]) {
       const p = buildJourney({ cert: cisa, progress: cp, readiness: computeReadiness(cisa, cp.answers), dueCount: 0, daysLeft, dailyMinutes: 45, familiarity: 'experienced', streak: useProgress.getState().streak, now: Date.now() }).plan;
-      expect(p.some((i) => i.kind === 'mock')).toBe(false);
+      expect(p.filter((i) => i.kind === 'mock').every((i) => daysLeft >= 5 && i.kind === 'mock' && i.questions === cisa.exam.questions)).toBe(true);
       expect(p.some((i) => i.kind === 'lesson')).toBe(false);
     }
   });
