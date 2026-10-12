@@ -101,6 +101,14 @@ export function plantFactsFor(certId: string, cp: CertProgress, now: number): Pl
  * while the plant is hidden, so turning it back on shows the truth.
  */
 export function checkPlant(certId: string, now = Date.now()): GrowthLevel | null {
+  // Performance: Today calls this every time it comes into view. Growth
+  // depends only on the exam's saved progress and the day, so the same
+  // progress (the very same object: the store never mutates it) on the same
+  // day can't open a new gate. Skip the facts scan and the store write then.
+  const day = dayKey(now);
+  const before = useProgress.getState().byCert[certId];
+  const last = lastCheck.get(certId);
+  if (before && last && last.cp === before && last.day === day) return null;
   let grew: GrowthLevel | null = null;
   useProgress.getState().updatePlant(certId, (p, cp) => {
     if (!p) return p;
@@ -110,8 +118,12 @@ export function checkPlant(certId: string, now = Date.now()): GrowthLevel | null
     grew = r.grew;
     return r.plant;
   });
+  const after = useProgress.getState().byCert[certId];
+  if (after) lastCheck.set(certId, { cp: after, day });
   return grew;
 }
+/** The progress (by identity) and day each cert's plant was last checked against. */
+const lastCheck = new Map<string, { cp: CertProgress; day: string }>();
 
 /**
  * Plant a seed for this cert. An existing learner's study sets the growth
