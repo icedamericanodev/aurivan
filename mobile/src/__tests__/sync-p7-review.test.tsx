@@ -729,7 +729,9 @@ describe('review fixes beyond the repros', () => {
     try {
       mount(<>{(() => { const F = screen('sign-out'); return <F />; })()}</>);
       const btn = () => r!.root.findAll((n) => n.props.label === 'Remove and sign out' && n.props.kind !== undefined)[0];
-      r!.root.findAll((n) => typeof n.props.onPress === 'function' && n.props.label === 'Remove my progress from this phone (for shared devices)')[0].props.onPress();
+      act(() => {
+        r!.root.findAll((n) => typeof n.props.onPress === 'function' && n.props.label === 'Remove my progress from this phone (for shared devices)')[0].props.onPress();
+      });
       await flush();
       expect(btn().props.kind).toBe('danger');
       // Syncing and everything sent: the plain confirmation.
