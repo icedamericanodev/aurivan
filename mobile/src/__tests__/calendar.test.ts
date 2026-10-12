@@ -18,6 +18,7 @@ import {
   untilLabel,
   weekdayIndex,
 } from '../engine/calendar';
+import { dateInMonths, presetIndexFor } from '../engine/examDay';
 
 // 12 Oct 2026, mid-afternoon local time.
 const NOW = new Date(2026, 9, 12, 15, 30).getTime();
@@ -82,5 +83,41 @@ describe('calendar maths', () => {
     expect(untilLabel('2026-10-13', '2026-10-12')).toBe('Tomorrow');
     expect(untilLabel('2027-01-08', '2026-10-12')).toBe('In 88 days');
     expect(untilLabel('2026-10-01', '2026-10-12')).toBeNull();
+  });
+});
+
+/**
+ * PR #49 review (code review 1, QA 1): "In 1 month" from the end of a month
+ * used to roll into the month after next (31 Jan → 3 Mar), and the calendar's
+ * two-year limit from 29 Feb 2028 was 1 Mar 2030. Now a shorter target month
+ * gives its last day.
+ */
+describe('months ahead stay in the target month', () => {
+  const at = (y: number, m: number, d: number, h = 10) => new Date(y, m, d, h).getTime();
+
+  it('clamps to the last day of a shorter month', () => {
+    expect(dateInMonths(1, at(2027, 0, 31))).toBe('2027-02-28');
+    expect(dateInMonths(1, at(2028, 0, 31))).toBe('2028-02-29'); // leap year
+    expect(dateInMonths(1, at(2027, 7, 31))).toBe('2027-09-30');
+    expect(dateInMonths(1, at(2026, 9, 31))).toBe('2026-11-30');
+    expect(dateInMonths(3, at(2026, 10, 30))).toBe('2027-02-28');
+    // Late at night is still the same calendar day.
+    expect(dateInMonths(1, at(2027, 0, 31, 23))).toBe('2027-02-28');
+  });
+
+  it('keeps the same day when the target month has it, across year ends', () => {
+    expect(dateInMonths(1, NOW)).toBe('2026-11-12');
+    expect(dateInMonths(3, at(2026, 11, 31))).toBe('2027-03-31');
+    expect(dateInMonths(2, at(2027, 0, 30))).toBe('2027-03-30');
+  });
+
+  it('the two-year limit from a leap day is 28 Feb two years on', () => {
+    expect(dateInMonths(24, at(2028, 1, 29))).toBe('2030-02-28');
+    expect(calendarBounds(at(2028, 1, 29)).max).toBe('2030-02-28');
+  });
+
+  it('the quick-choice chip still lights for the clamped date', () => {
+    expect(presetIndexFor('2027-02-28', at(2027, 0, 31))).toBe(0); // "In 1 month"
+    expect(presetIndexFor('2027-03-03', at(2027, 0, 31))).toBe(-1);
   });
 });
