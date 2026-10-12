@@ -931,48 +931,73 @@ celebration, nothing grows or draws in (motion on or off). Top to bottom:
 1. The range (`BigNum` 52 + "estimated readiness"), or "Not enough data yet"
    with "12 more answers until your readiness range". One stop.
 2. **What this number is** (key-idea recipe, always shown): `quote` "A study
-   estimate, not a prediction." + `small` `ink2` limits line. "How it's
-   worked out" is a `DisclosureRow` + `Collapse` right under it.
-3. **What would raise your lower number**: up to 3 rows (`label` text + a ghost
-   button, each its own stop), in a stable order: the thinnest domain under 10
-   answers ("Answer 6 more in IS Acquisition to firm up your range"), the
-   domain with the most to gain (skipped when it is the same one), the reviews
-   due (one session's 20 at most). Nothing stands out: "Keep a steady mix…"
-   with no button. Before there is a range: only "Answer N more questions to
-   see your range". In exam week an "Exam-week checklist" row follows.
-4. **Your cautious number over time**: the low end, last 30 days, carried
-   forward over gaps, on a static `ScoreChart` (`accent` 1.75 line, the newest
-   day a filled leaf, a `line` hairline floor). The scale is at least 20 points
-   tall, so a 2-point wobble never reads as a cliff. Under it "From 58% to 66%
-   over 30 days." (spoken "Your low end went from…"). Fewer than 3 days with a
-   reading: "This fills in as you study on more days."
+   estimate, not a prediction." + `small` `ink2` limits line. Before there is
+   a range the caption reads "What your range will be". "How it's worked
+   out" is a `DisclosureRow` + `Collapse` right under it. In exam week the
+   "Exam-week checklist" row (a `ListRow` with its "2 of 5 done") follows
+   straight after.
+3. **What would raise your low end** ("What gets you a range" before there is
+   one; "low end" is the number's one name on this screen): up to 3 rows
+   (`label` text + a ghost button, each its own stop), in a stable order: the
+   thinnest domain under 10 answers ("Answer 6 more in IS Acquisition to firm
+   up your range"), the domain with the most to gain (skipped when it is the
+   same one), the reviews due (one session's 20 at most). Nothing stands out:
+   "Keep a steady mix…" with no button. Before there is a range: only "Answer
+   N more questions to see your range".
+4. **Your low end over time** (`caption` "The cautious end of your range, last
+   30 days"): carried forward over gaps, on a static `ScoreChart` (`accent`
+   1.75 line, the newest day a filled leaf, a `line` hairline floor). The
+   scale is at least 20 points tall, so a 2-point wobble never reads as a
+   cliff. Under it "From 58% to 66% over 30 days." (spoken "Your low end went
+   from…"). Fewer than 3 days with a reading: "This fills in as you study on
+   more days."
 5. **Mock trend**: up to 10 mocks, oldest → newest. By SHAPE: a filled leaf =
    full mock, an outline leaf = mini mock, a small ring = another length, a
-   dashed outline = untimed; a legend names only the kinds shown. Then the
-   scores in one tabular line ("Oldest first: 56% · 58% · …") and the trend in
-   words: "Up 6 points over your last 3 mocks." / "About level…" (±2) / "Down
-   4 points since your last mock. One mock can swing; look at the domains
-   below." A fall is plain words: never red, never a warning icon. Always:
-   "Practice scores are not scaled exam scores." + the exam's passing note.
-   0 mocks: `EmptyState` "No mocks yet" + ghost "Start a mini mock"; 1 mock:
-   its score (`BigNum` 34) and kind, no trend words.
+   dashed outline = untimed (any length, exactly as the legend draws it); a
+   legend names only the kinds shown. Then the scores in one tabular line
+   ("Oldest first: 56% · 58% · …") and the trend in words. The newest mock is
+   compared with the one before FIRST, so a recent fall is never smoothed
+   over: "Down 12 points since your last mock. One mock can swing; look at the
+   domains below." Otherwise the last 3: "Up 6 points over your last 3
+   mocks." / "About level…" (±2) / "Down 4 points over…". When mini and full
+   mocks are both in the comparison: "Mini and full mocks are mixed here; a
+   mini mock swings more." A fall is plain words: never red, never a warning
+   icon. Spoken: each score with its kind ("56 mini, 59 mini untimed, 62
+   full"), then the words. Always: "Practice scores are not scaled exam
+   scores." + the exam's passing note. 0 mocks: `EmptyState` "No mocks yet" +
+   ghost "Start a mini mock"; 1 mock: its score (`BigNum` 34) and kind, no
+   trend words.
 6. **Domain by domain**, 1 → n: `label` "Domain 4 · IS Operations"; `meta`
    "26% of the exam · domain readiness 68%", "Based on 120 answers" (under 10:
-   "…: still firming up"), "Last mock 14 of 20 · the one before 11 of 18" ("–"
-   for an older mock with no entry); a static 3px bar in the domain tone. One
-   stop per domain. Never "of N questions in this domain".
+   "…: still firming up"), "Last mock 14 of 20 (70%) · the one before 11 of 18
+   (61%)" ("–" for an older mock with no entry); a static 3px bar in the
+   domain tone. A domain with no answers never reads "0%": "26% of the exam ·
+   not started yet", "No answers here yet", the bar's empty track, spoken
+   "Not started yet.". One stop per domain. Never "of N questions in this
+   domain".
 7. **Pacing** (timed mocks only): the You line, then up to 5 rows "11 Oct ·
    about 88 seconds a question · every question answered".
-8. **Your path**: `stage` "Step 3 of 6 · Make it stick", then the six steps,
-   each a `label` + one `meta` line; the current one a filled `PlanLeaf` and
-   "Now" (shape and word, never colour alone), the rest outline leaves. With
+8. **Your path**: `stage` "Now: Make it stick" (no "Step N of 6": the plan can
+   move back a step, and a counter that goes down reads like a score), then
+   the six steps, each a `label` "3. Make it stick" + one `meta` line; the
+   current one a filled `PlanLeaf` and "Now" (shape and word, never colour
+   alone) with an `ink` reason line under it ("Until every domain is steady,
+   practice leads."), the rest outline leaves. Under the list: "The plan moves
+   between these as you go. If a domain slips, practice leads again for a
+   while; mocks and lessons are always one tap away." Spoken per step: "3.
+   Make it stick. Practice and spaced review. You are here. <reason>". With
    the Exam-focused plan, step 2 says the plan skips it. After the exam the
    line reads "After the exam" with no number. (Today's stage line stays
    numberless: the plant counts its own growth.)
-9. **Your mocks**: every mock as on You, each a `DisclosureRow` (`lead` score)
-   that opens its per-domain results (dot, short name, "7 of 10" or "–").
-   `?mock=<id>` opens that one, scrolls it into view and moves screen-reader
-   focus to it.
+9. **Your mocks**: the newest 5 as on You, then a `DisclosureRow` "Show all N
+   mocks" with the older ones under it. Each is a `DisclosureRow` (`lead`
+   score) that opens its per-domain results (dot, short name, "8 of 9 (89%)"
+   or "–", spoken "8 of 9, 89 percent"), closed by a hairline when another
+   mock follows. At large text the 66pt indent goes and the tally drops under
+   the name (names shrink, never break mid-word). `?mock=<id>` opens that one
+   (showing all first when it is older), scrolls it into view (following it
+   while the layout settles, until the learner scrolls) and moves
+   screen-reader focus to it. An unknown or repeated id opens nothing.
 10. The trademark notice.
 
 **Ways in.** Today: the readiness words are a button (`ReadinessRow onPress`;
@@ -988,17 +1013,23 @@ the report with that mock's domains. The exam-week screen links back.
 rehearsal; skip it if you'd rather rest"; never leading, "Optional this week"
 in its row) when none was finished in 14 days and the starting check is done;
 4–2 days out no mock, the day fits min(minutes, 20) with a light top-up (≤ 10)
-and a short game if it fits; the eve and the day are unchanged.
+and a short game if it fits; the eve and the day are unchanged. Only a
+full-length mock ticks the rehearsal (a mini mock doesn't). In exam week the
+reviews read "Light review · 8 questions" (as on the eve), and Today's hero
+meta says "About 30 min today + optional mock" while the rehearsal is open.
 - **Today card** (7–2 days out, under the readiness row, above "Also today"):
-  key-idea recipe, `caption` "Exam week", `small` "A calm week. A short
-  checklist, then light review.", `meta` "2 of 6 done", ghost "Open checklist"
-  and "Hide" (announces where the list stays). Never red, never "overdue",
-  never a notification.
+  key-idea recipe, `caption` "This week" (the stage line already says Exam
+  week), `small` "A calm week. A short checklist, then light review.", `meta`
+  "2 of 5 done", ghost "Open checklist" and "Hide" (announces where the list
+  stays, then moves screen-reader focus to the next heading, "Also today").
+  Never red, never "overdue", never a notification.
 - **Checklist screen**: `quote` "Use this week to settle in, not to cram.",
   the count, six `CheckRow`s (a 22pt rounded square, `ink` fill and a paper ✓
   that cross-fade in; the whole 64pt row is the target, spoken as a checkbox),
-  then "If you blank" (key-idea recipe) and "See your readiness report". Ticks
-  belong to one exam date: a new date starts a fresh list. Generic, true
+  with `meta` "Tick the one that fits you." above the online and test-centre
+  rows (one choice, one slot: the count is out of 5), then "If you blank"
+  (key-idea recipe) and "See your readiness report". Ticks belong to one exam
+  date: a new date shows a fresh list (only one list is kept). Generic, true
   wording ("the official candidate guide"), no links out. No exam date: an
   empty screen asking for one.
 
@@ -1008,4 +1039,5 @@ from their daily minutes, never past the day: 10 min → 10, 20 → 10, 30 → 2
 
 **Large text and narrow phones.** Charts keep their size (decorative; the words
 carry them) and sit above their words; the legend wraps; the Section's ghost
-drops under its title. Checked at 360 dp and about 200% text (`SHOTS=proof`).
+drops under its title; an open mock's domains stack (name, then tally).
+Checked at 360 dp and about 200% text (`SHOTS=proof`).
