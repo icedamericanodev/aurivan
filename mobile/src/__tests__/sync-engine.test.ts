@@ -371,7 +371,7 @@ describe('merge rules (§3.4)', () => {
     expect(s.recentDays).toEqual(days([4, 3, 2, 1, 0]).sort());
   });
 
-  it('the plant: the later planting wins; the same plant keeps the higher growth and the last-edited name', () => {
+  it('the plant: the same plant keeps the higher growth and the last-edited name; a different one: the earlier planting, at the higher growth', () => {
     const plant = (o: Record<string, unknown>) => ({ species: 'oak', name: 'Kai', plantedAt: T0 - 30 * DAY, growth: 1, ...o });
     const answers = Object.fromEntries(ids.slice(0, 60).map((q) => [q, { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: T0 - DAY }]));
     const a = side(prog({ answers, plant: plant({ growth: 2, name: 'Kai' }) }), { 'plant.cisa': T0 - DAY });
@@ -379,9 +379,12 @@ describe('merge rules (§3.4)', () => {
     const m = M('progress', a, b).state.byCert.cisa.plant!;
     expect(m.name).toBe('Ledger');
     expect(m.growth).toBe(Math.min(2, M('progress', a, null).state.byCert.cisa.plant!.growth));
-    // Replanted on one phone later: that plant, whole.
+    // Replanted on one phone later (a Reset): the earlier plant stays, and no growth is lost (review P7, CR N9).
     const c = side(prog({ answers, plant: plant({ species: 'lotus', name: 'Hana', replantedAt: T0 - DAY }) }));
-    expect(M('progress', a, c).state.byCert.cisa.plant!.species).toBe('lotus');
+    const ac = M('progress', a, c).state.byCert.cisa.plant!;
+    expect(ac.species).toBe('oak');
+    expect(ac.growth).toBe(M('progress', a, null).state.byCert.cisa.plant!.growth);
+    expect(canon(M('progress', c, a))).toBe(canon(M('progress', a, c)));
   });
 
   it('reports: one per ref, newest first; "your report helped" seen on either phone counts', () => {

@@ -27,12 +27,13 @@
  * - attempts take the max: two phones answering the same question offline
  *   under-count attempts, never inflate them;
  * - no deletions travel: a bookmark removed on one phone can come back from
- *   another, and Settings → Reset on one phone is refilled from the account
- *   (tombstones are a later step);
+ *   another, and progress reset on one phone comes back from another device
+ *   that still has it (with only one phone syncing, the reset is simply sent
+ *   to the account); tombstones are a later step;
  * - set-like lists are kept in a canonical (sorted) order, so two phones
  *   converge on the same bytes instead of swapping orders forever.
  */
-import { BackupError, fitForBackup, hasProtoKey, readStores, type BackupProgress, type BackupSettings } from './backup';
+import { BackupError, fitForBackup, hasProtoKey, readStores, utf8Bytes, type BackupProgress, type BackupSettings } from './backup';
 import { LOG_KEEP_DAYS } from './examReady';
 import { cleanDone } from './examWeek';
 import { GAME_TIERS } from './games/growth';
@@ -85,6 +86,12 @@ type DeviceLocalSetting = (typeof DEVICE_LOCAL_SETTINGS)[number];
 export const DEVICE_LOCAL_PROGRESS = ['today', 'days', 'plantSettings'] as const;
 type DeviceLocalProgress = (typeof DEVICE_LOCAL_PROGRESS)[number];
 
+/**
+ * The biggest settings snapshot (UTF-8 bytes), on the server and here
+ * (security review P7 S2): real settings are a few hundred bytes, so 64 KB
+ * is generous, and it keeps a scripted account from parking 2 MB there.
+ */
+export const MAX_SETTINGS_BYTES = 65_536;
 /** The stamp keys a snapshot may carry (and the most of them). */
 export const MAX_STAMPS = 120;
 /** A time further ahead than this is a wrong clock: pulled back to now before merging. */
@@ -254,6 +261,8 @@ export function clampFuture<T>(store: SyncStoreName, side: Side<T>, now: number)
       if (pl.replantedAt !== undefined) pl.replantedAt = t(pl.replantedAt) as number;
       if (pl.reached) pl.reached = times(pl.reached) as typeof pl.reached;
       if (pl.backfill) pl.backfill.at = t(pl.backfill.at) as number;
+      // A day key too (CR N10): a future "passed on" day would otherwise win maxDay forever.
+      if (pl.passedOn) pl.passedOn = d(pl.passedOn) as string;
     }
   }
   const s = p.streak;
@@ -411,21 +420,40 @@ function mergeMilestones(a: Milestones | undefined, b: Milestones | undefined): 
 }
 
 /**
- * The plant. Its identity (species, planted, replanted) comes from the side
- * planted or replanted LATER. For the same plant, the name and look come
- * from the side that edited them last (stamp `plant.<cert>`), growth is the
- * highest, each growth time the earliest. Unlocks carried across a Reset
- * (`kept`) are unioned. The checker then clamps growth to what the merged
- * data supports.
+ * The plant (Phase 7 review, lead decision on CR N9: like a restore, a sync
+ * never makes a learner re-plant or lose growth).
+ *
+ * Two DIFFERENT plants (each phone planted its own, or one was reset):
+ * - the plant kept is the one planted EARLIER (for a reset one, its replant
+ *   time counts), so the learner's older plant stays, and every phone agrees
+ *   on it whatever order they sync in;
+ * - on the FIRST sync's Combine only (`firstSync`), the plant that has grown
+ *   more is kept instead (the learner chose to bring two phones together;
+ *   from then on both phones hold that plant);
+ * - either way the kept plant takes the HIGHER growth of the two (and the
+ *   earliest time each growth was reached): the merged progress supports
+ *   it, so no growth is lost.
+ * A reset plant can therefore come back from another device, like the reset
+ * progress it grew from (removals don't sync).
+ *
+ * The same plant: the name and look come from the side that edited them
+ * last (stamp `plant.<cert>`), growth is the highest, each growth time the
+ * earliest. Unlocks carried across a Reset (`kept`) are unioned. The checker
+ * then clamps growth to what the merged data supports.
+ *
+ * The keys depend on the plant's identity alone (except the first sync's
+ * one-off choice), so the merge stays associative.
  */
-function mergePlant(certId: string, a: Plant | undefined, as: Stamps, b: Plant | undefined, bs: Stamps): Plant | undefined {
+function mergePlant(certId: string, a: Plant | undefined, as: Stamps, b: Plant | undefined, bs: Stamps, firstSync = false): Plant | undefined {
   if (!a || !b) return a ?? b;
   const identity = (p: Plant) => clean({ species: p.species, plantedAt: p.plantedAt, replantedAt: p.replantedAt });
-  const idKey = (p: Plant) => [p.replantedAt ?? p.plantedAt, stableStringify(identity(p))];
+  // Earlier wins: the negative time, so the larger key is the earlier plant.
+  const idKey = (p: Plant) => [...(firstSync ? [p.growth] : []), -(p.replantedAt ?? p.plantedAt), stableStringify(identity(p))];
   const kept = a.kept || b.kept ? unionSorted(a.kept, b.kept).slice(0, MAX_KEPT) : undefined;
+  const reached = mergeMap(a.reached as Record<string, number> | undefined, b.reached as Record<string, number> | undefined, Math.min) as Plant['reached'];
   if (stableStringify(identity(a)) !== stableStringify(identity(b))) {
     const w = pick(a, b, idKey);
-    return clean({ ...w, kept });
+    return clean({ ...w, growth: Math.max(a.growth, b.growth) as Plant['growth'], reached, kept });
   }
   const key = `plant.${certId}`;
   const face = (p: Plant) => clean({ name: p.name, look: p.look });
@@ -441,7 +469,7 @@ function mergePlant(certId: string, a: Plant | undefined, as: Stamps, b: Plant |
     name: f.name,
     look: f.look,
     growth: Math.max(a.growth, b.growth) as Plant['growth'],
-    reached: mergeMap(a.reached as Record<string, number> | undefined, b.reached as Record<string, number> | undefined, Math.min) as Plant['reached'],
+    reached,
     pending: max(a.pending, b.pending) as Plant['pending'],
     backfill: flaggedBackfill,
     kept,
@@ -462,7 +490,7 @@ function mergeGrowth(a: Growth, b: Growth): Growth {
   return clean({ tier: lvl.tier, up: lvl.up, down: lvl.down, hits, run: max(a.run, b.run) }) as Growth;
 }
 
-function mergeCert(certId: string, a: Cert, as: Stamps, b: Cert, bs: Stamps): Cert {
+function mergeCert(certId: string, a: Cert, as: Stamps, b: Cert, bs: Stamps, firstSync: boolean): Cert {
   // Game recaps and where the study paths stopped: whole, from the side that studied last.
   const working = (cp: Cert) => clean({ gameRecent: cp.gameRecent, studyPath: cp.studyPath });
   const w = pick(a, b, (cp) => [activityAt(cp), stableStringify(working(cp))]);
@@ -498,7 +526,7 @@ function mergeCert(certId: string, a: Cert, as: Stamps, b: Cert, bs: Stamps): Ce
     ),
     cards: mergeMap(a.cards, b.cards, (x, y) => later(x, y, (v) => v.lastSeen)!),
     milestones: mergeMilestones(a.milestones, b.milestones),
-    plant: mergePlant(certId, a.plant, as, b.plant, bs),
+    plant: mergePlant(certId, a.plant, as, b.plant, bs, firstSync),
   }) as Cert;
 }
 
@@ -551,12 +579,12 @@ function mergeReports(a: Report[] | undefined, b: Report[] | undefined): Report[
   return [...byRef.values()].sort((x, y) => y.at - x.at || cmpText(x.ref, y.ref)).slice(0, MAX_REPORTS);
 }
 
-function mergeProgressRaw(a: Side<SyncedProgress>, b: Side<SyncedProgress>): Side<SyncedProgress> {
+function mergeProgressRaw(a: Side<SyncedProgress>, b: Side<SyncedProgress>, firstSync = false): Side<SyncedProgress> {
   const byCert = mergeMap(a.state.byCert, b.state.byCert, (x, y) => x) ?? {};
   for (const c of Object.keys(byCert)) {
     const x = a.state.byCert[c];
     const y = b.state.byCert[c];
-    if (x && y) byCert[c] = mergeCert(c, x, a.stamps, y, b.stamps);
+    if (x && y) byCert[c] = mergeCert(c, x, a.stamps, y, b.stamps, firstSync);
   }
   return {
     state: clean({ byCert, streak: mergeStreak(a.state.streak, b.state.streak), reports: mergeReports(a.state.reports, b.state.reports) }) as SyncedProgress,
@@ -586,6 +614,8 @@ export interface MergeContext {
   now: number;
   /** The certifications this app knows (a merge never adds one it doesn't). */
   knownCertIds: readonly string[];
+  /** The first sync's Combine (preview and confirm): two different plants keep the more grown one (mergePlant). */
+  firstSync?: boolean;
 }
 
 /**
@@ -600,6 +630,7 @@ function finish<T>(store: SyncStoreName, side: Side<T>, ctx: MergeContext): Side
   const checked = readStores({ [store]: { version: store === 'settings' ? SETTINGS_VERSION : PROGRESS_VERSION, state: fitted } }, { appVersion: '0.0.0' }, ctx.knownCertIds, undefined, undefined, {
     strict: true,
     only: store,
+    mocksMayBeCut: true,
   })[store];
   return { state: withoutDeviceLocal(store, JSON.parse(JSON.stringify(checked)) as object) as T, stamps: side.stamps };
 }
@@ -613,7 +644,7 @@ export function mergeSides<T extends SyncedSettings | SyncedProgress>(store: Syn
   const rawMerge = (p: Side<T>, q: Side<T>) =>
     (store === 'settings'
       ? mergeSettingsRaw(p as unknown as Side<SyncedSettings>, q as unknown as Side<SyncedSettings>)
-      : mergeProgressRaw(p as unknown as Side<SyncedProgress>, q as unknown as Side<SyncedProgress>)) as unknown as Side<T>;
+      : mergeProgressRaw(p as unknown as Side<SyncedProgress>, q as unknown as Side<SyncedProgress>, ctx.firstSync)) as unknown as Side<T>;
   // Each side in its canonical form first (sorted sets, one entry per day…), so a
   // value only one side has is in the same form as a merged one.
   const x = rawMerge(clampFuture(store, a, ctx.now), clampFuture(store, a, ctx.now));
@@ -654,10 +685,13 @@ export function readSnapshot<T extends SyncedSettings | SyncedProgress>(
   // Checked on the RAW state, before any copy: a copy made with spread or
   // assignment would turn a "__proto__" key into a prototype and hide it.
   if (hasProtoKey(raw)) throw new BackupError('bad-data', store);
+  // A settings copy over the server's 64 KB cap can't be genuine: unreadable, never applied.
+  if (store === 'settings' && utf8Bytes(JSON.stringify(raw ?? null)) > MAX_SETTINGS_BYTES) throw new BackupError('too-big', store);
   const state = isObj(raw) ? { ...withoutDeviceLocal(store, raw), ...PLACEHOLDER[store] } : raw;
   const checked = readStores({ [store]: { version: snap.storeVersion, state } }, { appVersion: snap.appVersion }, ctx.knownCertIds, undefined, ctx.thisApp, {
     strict: true,
     only: store,
+    mocksMayBeCut: true,
   })[store];
   return { state: withoutDeviceLocal(store, JSON.parse(JSON.stringify(checked)) as object) as T, stamps: readStamps(isObj(raw) ? raw.changedAt : undefined) };
 }

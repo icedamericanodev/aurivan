@@ -735,13 +735,15 @@ export function keepKnownIds(progress: BackupProgress, known: (certId: string) =
  * have earned (engine/milestones.ts markSupported). A restored badge never
  * claims more than the data shows.
  */
-export function keepSupportedMarks(progress: BackupProgress): BackupProgress {
+export function keepSupportedMarks(progress: BackupProgress, opts: { mocksMayBeCut?: boolean } = {}): BackupProgress {
   const byCert: BackupProgress['byCert'] = {};
   for (const [certId, cp] of Object.entries(progress.byCert)) {
     // The exam's own domains and full mock size (Whole Map, the Five Domains planter, Dress Rehearsal's tiers).
     const cert = getCertification(certId);
     const exam = cert ? { domains: cert.domains.map((d) => d.id), fullMockSize: cert.exam.questions } : undefined;
-    byCert[certId] = cp.milestones ? { ...cp, milestones: keepSupported(cp.milestones, { ...cp, ...(exam ? { exam } : {}) }) } : cp;
+    // Sync only: a merged mock list cut at the cap keeps the Dress Rehearsal tiers it may have lost the chain for.
+    const cut = opts.mocksMayBeCut ? { mocksMayBeCut: true } : {};
+    byCert[certId] = cp.milestones ? { ...cp, milestones: keepSupported(cp.milestones, { ...cp, ...(exam ? { exam } : {}), ...cut }) } : cp;
   }
   return { ...progress, byCert };
 }
@@ -895,6 +897,13 @@ export interface ReadStoresOptions {
   strict?: boolean;
   /** Check only one store (a sync pull fetches the one whose `rev` changed). */
   only?: 'settings' | 'progress';
+  /**
+   * Sync only (Uplift Phase 7 review, CR B4): the mock list may have been cut
+   * to the newest 50 by a merge, so a full list keeps its Dress Rehearsal
+   * tiers (engine/milestones.ts MarkEvidence.mocksMayBeCut). The backup FILE
+   * path never sets it.
+   */
+  mocksMayBeCut?: boolean;
 }
 
 /**
@@ -964,7 +973,7 @@ function readStoresChecked(
     // no longer has are trimmed: a genuine badge earned on a question that
     // was later retired must not be dropped (code review, Build F).
     // The plant is clamped at the same point, for the same reason.
-    const supported = keepSupportedPlants(keepSupportedMarks(checked), known);
+    const supported = keepSupportedPlants(keepSupportedMarks(checked, { mocksMayBeCut: opts.mocksMayBeCut }), known);
     progress = known ? keepKnownIds(supported, known) : supported;
     // Never write a store row Android can't read back (see MAX_PROGRESS_CHARS).
     if (JSON.stringify(progress).length > MAX_PROGRESS_CHARS) throw new BackupError('too-big', 'progress');
