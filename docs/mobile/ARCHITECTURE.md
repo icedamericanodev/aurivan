@@ -629,14 +629,26 @@ What's new (cloud builds only; no names, no counts).
   activity (your posts, and in-app notices: no push), Blocked learners, and
   Moderation (staff only). Ways in: You → Help and feedback → Feedback
   board, Settings → Feedback board (Your activity, Blocked learners), and
-  the Send feedback sheet's "Post publicly instead ›" for an idea (never on
-  a question's report).
+  the Send feedback sheet's "Post publicly instead ›" for an idea, and the
+  app-problem report sheet (never on a question's report), which carry what
+  was typed into the composer (a prefill only).
 - **The gate can't be skipped.** Signed out, Vote, Comment and Post open the
   sign-in sheet; then the guidelines gate (version-stamped; again when the
-  version changes) before the first post, comment or vote. The learner
-  appears as a pseudonym ("Quiet Cedar 214", `engine/boardNames.ts`) or a
-  name they type (checked on the phone with `engine/moderation.ts
-  checkHandle`, again by the server). The email is never shown.
+  version changes) before the first post, comment or vote. Report and Block
+  need only an account (reporting must be readily reachable: fix round P8,
+  UX H1). The learner appears as a pseudonym ("Quiet Cedar 214",
+  `engine/boardNames.ts`) or a name they type (checked on the phone with
+  `engine/moderation.ts checkHandle`, again by the server). The email is
+  never shown, and neither is the account id: members are named by a
+  separate random public id (`Member.memberId`, `PostCard.authorId`).
+- **The session** (`lib/board.ts`): settings, the learner's own member facts
+  and staff status load in ONE step for the sign-in state they were loaded
+  for, and again when it changes. A board screen opened directly waits for
+  that, and for the account store's `known` flag, before it redirects
+  anyone (fix round P8, CR B1), so an agreed learner is never sent to the
+  gate and the gate never renames them. Sign-out and account deletion
+  (awaited account events) forget the session, the draft and the outbox;
+  any sign-in starts a fresh session.
 - **One set of text rules on both sides.** `engine/moderation.ts`
   (normalising, the block and hold word lists, links, reserved names) and
   `engine/leakGuard.ts` (the exam-content leak guard) are pure and copied to
@@ -649,23 +661,40 @@ What's new (cloud builds only; no names, no counts).
   runs over stem, options, explanations and tips, and 3-word runs over stem
   and options (the spec's single 5-word print caught about 85% of stems
   with 1 word in 8 changed; with the second, about 98%), ignoring runs found
-  in 3 or more questions. Measured on the real bank in Jest: every stem of
-  12+ words blocked, at least 95% with 1 word in 8 changed, 0 of 60 ordinary
-  posts, under 2% of study-note paragraphs, Unicode tricks folded. Built on
-  the phone once, the first time the composer checks (about 0.25 s in Jest;
-  measure on a mid-range Android before go-live), from the questions
-  already in the app; nothing about it is shown, and it never reveals the
-  bank's size. A recall score (support §10.3: "on my exam I got…", dumps,
-  an A–D option list, stem phrasing; −2 when the post links one of our own
-  items) of 3 or more holds a post for a person.
+  in 3 or more questions. The server adds a third (fix round P8, SEC S5):
+  the stem and options squashed to letters (look-alikes folded, leetspeak
+  undone, spaces and dots gone) in 24-letter runs, which catches a paste
+  with no spaces, in CamelCase, in leetspeak or with a dot inside each word
+  (0% → 100% on the real bank). Measured on the real bank in Jest: every
+  stem of 12+ words blocked, at least 95% with 1 word in 8 changed, 0 of 60
+  ordinary posts, about 1.2% of study-note sentences (the same with and
+  without the squashed check), every invisible format character (the tag
+  characters U+E0020–E007F included) and look-alike alphabet folded. Built
+  on the phone once, when the composer opens and after its animation (CR
+  N9; about 0.25 s in Jest; measure on a mid-range Android before go-live),
+  from the questions already in the app; the phone never builds the
+  squashed one. Nothing about it is shown, and it never reveals the bank's
+  size. A recall score (support §10.3: "on my exam I got…" within one
+  sentence, dump offers and offers of "real exam questions", an A–D option
+  list (+3 with a question), stem phrasing; −2 only when the post links one
+  of our PRACTICE questions and has no option list) of 3 or more holds a
+  post for a person. A post that talks about a practice question's answer
+  is folded ("Show it"; `talksAboutAnswer`).
 - **Report and block are immediate on the phone** (`lib/board.ts`): the item
   or the learner disappears before the network answers. Votes, follows,
   reports, blocks and "mark read" made offline wait in the outbox
   (`aurivan.outbox.v1`, `engine/outbox.ts`: idempotent acts only, coalesced
   per target, 50 at most, 7 days, bound to one account by a hash so another
-  learner on the phone never sends them). Posts and comments are never
-  queued: offline, the composer keeps one draft (`aurivan.boardDraft.v1`).
-  Other learners' posts are kept in memory for the session only.
+  learner on the phone never sends them). Every read-change-write of the
+  list runs under one lock, and a send changes only the entry it sent, so
+  two acts at once are never lost (CR B2); offline stops a send, a server
+  problem backs off (30 s doubling, dropped after 8 tries) without holding
+  up the rest (N8). Opening the board sends what waits before the first
+  feed (QA BUG-6). Posts and comments are never queued: offline, the
+  composer keeps one draft (`aurivan.boardDraft.v1`, bound to one account
+  like the outbox) with its own `clientId`, so a post whose reply was lost
+  is posted once when sent again (QA BUG-1). Other learners' posts are
+  kept in memory for the session only.
 - **Learners' text is plain Text** everywhere: no link detection, no markdown.
 - **No reward for board activity**: posting, voting and reporting never touch
   progress, the plant, badges or streaks (compliance 2.4; tested).
@@ -887,10 +916,10 @@ cap.
 | Piece | Path | Job |
 |---|---|---|
 | Board schema | `supabase/migrations/20261014000000_feedback_board.sql` | `board_settings` (the pause valve, the guidelines version, the read scope), `board_members` (handle, consent, standing, the team mark), `board_posts`, `board_comments`, `board_votes`, `board_follows`, `board_status_events`, `board_notifications`, `ugc_reports`, `member_blocks`, `moderation_appeals` in `public`; `staff`, `moderation_log`, `moderation_terms`, `board_events` (rate-limit counts, 2 days) and the `board_priority` view in `private`; the triggers; the reads `board_feed` and `board_post`; the server entry points `svc_board_member`, `svc_board_join`, `svc_board_write`, `svc_moderation_terms`, `svc_is_staff`, `svc_staff_act` (→ `private.staff_act`), `svc_staff_queue`, `svc_staff_digest`, `svc_board_export`, `svc_board_counts` |
-| Board tests | `supabase/tests/30_board.sql` | 165 pgTAP checks: anon and A/B/staff in each read scope; column grants; withdraw-only (and the other learner's post, comment, vote and notice unchanged after A's attempts); votes (exactly ±1, 100 changes a day, a take-back counts and is never refused); reports (exam content hides at once, 3 reporters 7+ days old, a young reporter doesn't count, rate limits, unseen targets refused); blocks; handles; appeals; private tables and functions; board-submit's writer (holds, pause, guidelines, banned, post and comment limits, one level of replies); staff actions and their log; cascade on account delete; no board table in any publication |
-| Board mutants | `scripts/board_sql_mutants.py` | 34 one-change breaks of the board migration; the suite must fail on each (same `PGTAP_RUN` as the sync mutants) |
+| Board tests | `supabase/tests/30_board.sql`, `31_board_review.sql` | 166 + 83 pgTAP checks. `31_board_review.sql` is the fix round's: names checked only when set or changed, no direct name writes, look-alikes and ISACA marks, staff rename; no account ids for readers; a blocked learner can't reply to or notify the blocker; reported words kept for staff; trusted reporters and reviewed posts; member reports and dismiss by target; deletion closes reports; the team's name in `author_staff`; own withdrawn and removed comments; withdrawn stays withdrawn; folding; one post per draft; write attempts counted; one official response after a merge. `30_board.sql`: anon and A/B/staff in each read scope; column grants; withdraw-only (and the other learner's post, comment, vote and notice unchanged after A's attempts); votes (exactly ±1, 100 changes a day, a take-back counts and is never refused); reports (exam content hides at once, 3 reporters 7+ days old, a young reporter doesn't count, rate limits, unseen targets refused); blocks; handles; appeals; private tables and functions; board-submit's writer (holds, pause, guidelines, banned, post and comment limits, one level of replies); staff actions and their log; cascade on account delete; no board table in any publication |
+| Board mutants | `scripts/board_sql_mutants.py` | 56 one-change breaks of the board migration (22 added in the fix round); the suite must fail on each (same `PGTAP_RUN` as the sync mutants) |
 | Board functions | `supabase/functions/{board-submit,staff-action,staff-digest}` | Pure handlers on a `BoardDbPort` (`_shared/board.ts`; real adapter `_shared/supabaseBoard.ts`, which maps the SQL's own words to codes and never passes a database message on); `deno test` with `FakeBoardDb` |
-| Leak print | `scripts/build-leakprint.mjs` → `supabase/functions/board-submit/leakprint.json` | Built at DEPLOY time from the bundled pack (gitignored, numbers only); `board-submit` refuses every post without it. Shipped as a static file (`config.toml`) |
+| Leak print | `scripts/build-leakprint.mjs` → `supabase/functions/board-submit/leakprint.json` | Built at DEPLOY time from the bundled pack, with the squashed-letters fingerprint (gitignored, numbers only); `board-submit` refuses every post without it, or with a file from before the fix round. Shipped as a static file (`config.toml`). Rebuild it on every content release |
 
 **The read scope (open owner decision, Phase 9).** Whether board posts are
 visible to every signed-in learner, or only to their author and the team,
@@ -915,9 +944,28 @@ is the same switch.
   `comments_guard_upd`: only `visibility` → `withdrawn` from pending or
   visible; updates made one trigger level deeper, such as a vote's count,
   pass).
-- Votes, follows, reports, blocks, appeals, read marks and the member row
-  are written directly under RLS, own rows only, and need a `profiles` row
-  (Terms) and, for votes, a member in good standing.
+- Votes, follows, reports, blocks, appeals and read marks are written
+  directly under RLS, own rows only, and need a `profiles` row (Terms) and,
+  for votes, a member in good standing. The member row (the public name) is
+  written only by `board-submit`'s `join` (`svc_board_join`, after the
+  app's full name check; one change a day) and by staff `rename`: learners
+  have no insert or update grant on it (fix round P8, SEC B1 / CR N3). Name
+  checks run only when a name is set or changed, so a word added to a list
+  later never blocks a ban, an approval or a same-name re-accept (CR B4).
+- Nobody reads another learner's account id (SEC S4): `board_members.
+  public_id` is a separate random id, posts and comments carry it as
+  `author_member` (set by a trigger), blocks and member reports use it, and
+  app roles can't select `user_id`, `author_id` or a member's join date (an
+  RLS policy needs no column grant).
+- Reports (SEC S1, S3): one "real exam content" report hides an item at
+  once only from a trusted reporter (good standing, account a day old, an
+  approved post) and only before a person reviewed it (`reviewed_at`, set
+  by approve and restore, cleared by an edit); otherwise three trusted
+  reporters with accounts 7+ days old hide it. Every report keeps a
+  staff-only copy of the reported words (`ugc_reports.snapshot`), which the
+  queue shows; deleting the item closes its reports and drops the copy and
+  note. A blocked learner can't reply to the blocker's comments, and the
+  blocker gets no notice from them (S2).
 - Rate limits are counted in `private.board_events`, one row per act
   (deletes too), under a per-user advisory lock, so delete + re-add can't
   reset them and two acts at once can't both slip under.
@@ -941,18 +989,30 @@ is the same switch.
 
 **The three functions.**
 - `board-submit` `{ op: me | join | post | edit_post | comment | edit_comment }`:
-  normalise, `moderateText` (block → 422 `rejected_words` `words`; a new
-  member's link, a shortener or a dump site → `links`; threats, self-harm,
-  contact details → hold), `leakMatch` (→ 422 `bank_text`, nothing
-  written), `recallScore` ≥ 3 → hold `recall`, then `svc_board_write`
+  after the standing check, every write attempt is counted
+  (`svc_board_attempt`, 30 an hour and 200 a day, before any filter, so a
+  refused text isn't free: SEC S6); normalise, `moderateText` (block → 422
+  `rejected_words` `words`; a new member's web address of any ending, a
+  shortener or a dump site → `links`; threats, self-harm, contact details,
+  "ISACA official" claims and dump offers → hold), `leakMatch` (→ 422
+  `bank_text`, nothing written), `recallScore` ≥ 3 → hold `recall`,
+  `talksAboutAnswer` → the post is folded, then `svc_board_write`
   (standing → 403 `banned`, consent → 409 `invalid` `guidelines`, pause →
   409 `posting_paused`, 3 posts an hour and 5 a day (1 for an account under
   a day old), 20 comments an hour and 30 a day (5), 30 edits a day → 429
   with Retry-After). A new member's posts wait until one is approved.
-  Rejected text is never stored or logged.
+  Rejected text is never stored or logged. **Contract (fix round P8):** a
+  post carries the draft's `clientId` (a uuid); the same author sending the
+  same `clientId` again gets the FIRST post back, unchanged and not counted
+  as a post again (QA BUG-1; `BoardPort.submitPost`, `Draft.clientId`).
+  `{ op: 'me' }` returns `memberId` (the public id), never the account id.
 - `staff-action` `{ action, targetKind, targetId, reason, extra }` or
   `{ action: 'queue', tab }` or `{ action: 'whoami' }`: fixed lists of
   actions per target, rebuilt extras, 403 for anyone not in `private.staff`.
+  Fix round P8: member `rename` (a neutral pseudonym, logged; the target is
+  the member's public id), post `spoiler {on}`, report `dismiss {kind}`
+  (every open report on the queue's target), and approve, restore and hide
+  refuse an item its author withdrew.
 - `staff-digest`: called by pg_cron with `STAFF_DIGEST_SECRET` (not a user
   token); counts of held, reported and appealed items older than 12 hours
   and the queue link, never learner text or handles; a no-op until the
@@ -1012,8 +1072,8 @@ Phase 6 on purpose).**
   Phase 7: a new id when a different account signs in, and on account
   deletion.
 - PR 8 write policies require a `profiles` row (Terms accepted), not only a
-  session. Done for `sync_snapshots` in Phase 7 and for the board's member,
-  report and block inserts (and `svc_board_join`) in Phase 8.
+  session. Done for `sync_snapshots` in Phase 7 and for the board's report
+  and block inserts and `svc_board_join` (the only way to join) in Phase 8.
 - The Phase 9 adapter: `reauthenticate` is a NEW sign-in (it adds an `amr`
   entry; `supabase.auth.reauthenticate()` does not); `thisDeviceOnly` maps
   to `AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY`; `expo-secure-store` with
@@ -1057,7 +1117,14 @@ Phase 6 on purpose).**
     learners), signed-out reading (#6, the same switch), the moderator
     cover and the 24-hour duty in writing (PLAYBOOK §7), the email provider
     (the digest), captcha, a DMCA agent, and the age rating (13+, 16+ in
-    Australia) with the UGC answers;
+    Australia) with the UGC answers (STORE_LISTING §7);
+  - **the 24-hour promise stays only with written cover** (compliance
+    review P8, item 6): if the owner doesn't confirm the named moderator
+    and 7-day cover in writing, change "We review reports within 24 hours"
+    to "We aim to review reports within 24 hours" everywhere it appears
+    (`content/cloud/copy.ts` `board.gate.review`, `board.report.done`,
+    `board.report.done.member`; `community.html`; `terms.html` 7E, with
+    "we aim to act on takedown requests within 24 hours");
   - build `leakprint.json` at deploy (`node scripts/build-leakprint.mjs`
     after `npm run content`) and deploy `board-submit` with it as a static
     file; check the composer's first leak check on a mid-range Android
@@ -1081,4 +1148,38 @@ Phase 6 on purpose).**
     `support.html` (draft section at the end of `community.html`), and
     re-run `app-store-compliance-reviewer` (Apple 1.2: filter, report,
     block, published contact, zero-tolerance terms) and
-    `isaca-language-reviewer` (the guidelines wording) first.
+    `isaca-language-reviewer` (the guidelines wording) first;
+  - **from the P8 security review (recorded, not built in Phase 8):**
+    - votes, follows, reports and blocks don't yet need the CURRENT
+      guidelines version (SEC N1): add
+      `and m.guidelines_version = (select s.guidelines_version from public.board_settings s)`
+      to `private.is_active_member()` when the owner wants re-acceptance to
+      gate voting too;
+    - restore vs withdrawn: done (approve, restore and hide refuse a
+      withdrawn item; `31_board_review.sql`), keep it when adding actions;
+    - reports after a deletion: open reports are closed and their copies
+      and notes dropped (done); add closed reports, and reports about a
+      deleted member, to the retention purge;
+    - retention jobs, as ONE `private.board_purge()` (revoked from app
+      roles, pgTAP-tested) on pg_cron: removed bodies after 30 days (the
+      privacy draft promises it), withdrawn post and comment text after N
+      days (and tell learners what Withdraw keeps), `moderation_log` after
+      12 months, report copies (`snapshot`) and notes once handled plus 90
+      days, and `board_events` older than 2 days for idle learners;
+    - **rebuild `leakprint.json` on EVERY content release** and redeploy
+      `board-submit` with it (a new or edited question isn't guarded
+      until then: SEC N9); have CI compare the leakprint's build hash with
+      the content pack's;
+    - `author_staff` scope: `svc_board_write` lets a learner comment on a
+      post they can't read (random ids, Low: SEC N2); refuse it if that
+      scope is chosen;
+    - hides by reports send no notice (SEC N7, DSA Art. 17): notify on the
+      staff decision (done for removals) and say a hide is temporary, or
+      add a `hidden` notice kind;
+    - optionally log staff queue views (SEC N12), and add notice fan-out
+      to SCALING.md (N14: one notice per follower per comment);
+    - the adapter: map `23505` on votes, follows, reports and blocks to
+      success; `Prefer: return=minimal` for votes; authors are public ids
+      (`author_member`, `authorId`); never `error.message` (SEC N10);
+    - optionally rotate a member's public id on a name change (SEC S4);
+      blocks and reports point at it, so they would need moving too.

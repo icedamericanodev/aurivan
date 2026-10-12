@@ -199,8 +199,9 @@ Success metric: store listing conversion rate (visitors to installs), read at 90
 
 ## 7. Cloud release (DRAFT, not in effect until Phase 9)
 
-Accounts (Phase 6) and sync (Phase 7) are built and switched OFF. Nothing
-above changes until the owner's go-live (Phase 9, proposed mobile 2.0.0).
+Accounts (Phase 6), sync (Phase 7) and the feedback board (Phase 8) are
+built and switched OFF. Nothing above changes until the owner's go-live
+(Phase 9, proposed mobile 2.0.0).
 Then swap these in, in the same release as the published privacy, terms and
 delete-account pages. Section 5's "No account, no data collected" line and
 the "Data Not Collected" label stay true for the OFF build only.
@@ -210,11 +211,12 @@ the "Data Not Collected" label stay true for the OFF build only.
 - Identifiers › User ID: linked, App Functionality, not tracking.
 - Identifiers › Device ID (the random install id sent with each sync): linked, App Functionality, not tracking.
 - Usage Data › Product Interaction (synced study progress: answers and how long each took, study days, game levels): linked, App Functionality, not tracking.
-- User Content › Other User Content ("Your reports": which questions the learner reported, why and when, synced with progress): linked, App Functionality, not tracking.
+- User Content › Other User Content ("Your reports": which questions the learner reported, why and when, synced with progress; and the feedback board: posts, comments, the board name, reports and appeals): linked, App Functionality, not tracking.
+- Usage Data › Product Interaction also covers the board's votes and follows: linked, App Functionality, not tracking.
 - Data is encrypted in transit; users can request deletion (in the app, and at the delete-account URL). Settings → Account → Delete synced progress deletes the synced copy without deleting the account.
 
 **Google Play Data safety.**
-- Personal info › Email address; App activity › App interactions (answer timings, study days and streak, game levels) and Other actions (synced progress); App activity › Other user-generated content ("Your reports"); Device or other IDs (the install id). All collected, not shared, App functionality, optional (only with an account), encrypted in transit, deletable in the app and at the delete-account URL. The synced copy can also be deleted on its own (Delete synced progress) without deleting the account.
+- Personal info › Email address; App activity › App interactions (answer timings, study days and streak, game levels) and Other actions (synced progress; the board's votes and follows); App activity › Other user-generated content ("Your reports"; the board's posts, comments, board name, reports and appeals); Device or other IDs (the install id). All collected, not shared, App functionality, optional (only with an account), encrypted in transit, deletable in the app and at the delete-account URL. The synced copy can also be deleted on its own (Delete synced progress) without deleting the account.
 - Re-read both forms against the shipped build before submitting (security review P7 S8): the shared-device "remove from this phone" path and the install id renewal changed in the Phase 7 review.
 
 **App Review note, added paragraph.**
@@ -225,3 +227,33 @@ Delete synced progress removes the synced copy without deleting the account;
 Settings → Account → Delete account deletes the account in the app. No push
 notifications. Demo access:
 [owner decision, PHASE6_8 §9 #8]."
+
+**App Review note, feedback board paragraph (Apple 1.2, 2.3.1(a)).**
+"You → Help and feedback → Feedback board (also Settings → Feedback board)
+is a board where learners post ideas, app problems, content concerns and
+questions about the app, vote and comment. Before the first post, comment
+or vote, a learner must sign in and agree to the community guidelines
+(version-stamped, zero tolerance for abuse and for real exam questions:
+[community guidelines URL]). Filters: word lists, a check against the app's
+own practice questions, and new members' posts wait for a person. Every
+post and comment has a ⋯ menu with Report post or comment, Report {name}
+(the member) and Block {name}; blocked learners' content disappears at once
+and they can't comment on the blocker's posts. We review reports within 24
+hours; contact: certprep.support@gmail.com (shown at the foot of the
+board). Staff moderate in the app (Moderation, staff accounts only:
+[demo staff access, or "staff-only, not part of review"]). Demo learner
+account with board access: [owner decision]."
+
+**Age rating (Phase 9, with the read-scope decision).**
+- The board is user-generated content with reporting, blocking and
+  moderation. If the read scope is `signed_in` or `everyone` (other learners
+  read posts), it is a feed shared with many users: Apple's questionnaire
+  answers "Social Media" yes, which rates the app **13+ (16+ in
+  Australia)**. With `author_staff` (only the author and the team read a
+  post) it is closer to private feedback: re-ask
+  `app-store-compliance-reviewer` before answering.
+- Google Play: file a **new IARC questionnaire** when the board ships
+  (features changed): "users can interact or exchange content: yes",
+  "shares user-generated content: yes", with the moderation answers above.
+- Check the Australian under-16 social media rules with counsel before
+  enabling the board there (compliance review P8, go-live checklist).

@@ -268,6 +268,13 @@ staff accounts; the server checks every action); the rules are
   posting** in Moderation first (it asks once).
   - Reading and voting continue. New posts and comments are refused with
     "Posting is paused for a short while. Reading and voting still work."
+  - **Pausing stops new posts only. Reports still arrive and still need a
+    review within the promised time.** A report hides a post only for the
+    person who reported it (unless it comes from an established member and
+    says "real exam content"), so abuse stays visible to others until you
+    act. For a longer absence, also switch the read scope to
+    `author_staff` (one SQL line, ARCHITECTURE §10) so posts are seen only by
+    their authors and the team.
   - Tap **Reopen posting** when you're back.
 - **Go-live reminder:** Phase 9's checklist makes the owner re-confirm this
   duty in writing. Restate it in the merge summary of every PR that touches
@@ -279,13 +286,18 @@ staff accounts; the server checks every action); the rules are
 
    | Finding | Action | Learner sees |
    |---|---|---|
-   | Real exam content, or a "dump" offer | **Delete exam content** (⋯ menu: the text is deleted for good; the log keeps only the action), which also warns. A second offence or a dump seller: **Members → Ban**. | Removal notice: "appears to share real exam content", and the warning |
-   | Harassment, hate, threats, sexual content | **Remove + warn**; a serious case: **Suspend 7 days** or **Ban** | Notice |
+   | Real exam content, or a "dump" offer | **Delete exam content** (⋯ menu, it asks once: the text is deleted for good; the log keeps only the action), which also warns. A second offence or a dump seller: **Ban** (it asks why, then once more). | Removal notice: "appears to share real exam content", and the warning |
+   | Harassment, hate, threats, sexual content | **Remove + warn**; a serious case: **Suspend 7 days** or **Ban** (each asks why) | Notice |
+   | A reported **member** (an offensive or impersonating name, a pattern) | **Suspend**, **Ban**, or **Dismiss reports**; an offensive name: **Members → Rename** (a plain new name, logged) | A suspension notice; nothing for a rename |
    | Personal info (theirs or others') | **Remove** (reason Personal information); no warning for their own details on a first offence | Notice |
    | Spam or ads | **Remove**, then **Ban** (account under 7 days old) or warn | Notice |
    | Copyrighted pages | **Remove + warn** | Notice |
    | Off topic | **Hide** (⋯) or **Remove**, no warning | Notice when removed |
-   | Fine | **Approve** (puts it back, dismisses the reports) | Nothing |
+   | Fine | **Approve** (puts it back, dismisses the reports; once you've looked, one report can't hide it again: three established members' can) | Nothing |
+   | Talks about a practice question's answer, not folded | ⋯ **Fold it** (readers tap "Show it" first) | Nothing |
+
+   Each report shows the words **as they were when reported**, even if the
+   author edited them since.
 
 2. **Held**, oldest first:
    - "new member": approve, or act as above (approving lifts their

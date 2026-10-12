@@ -1400,8 +1400,9 @@ ends (cloud builds) with one `meta` line thanking learners whose ideas
 shipped, no names or counts.
 
 **The board** (`/board`): pushed, "Feedback board" in the bar with a ghost
-"+ Post" on the right; a `body` intro ("Ideas, app problems and questions
-from learners. We read every post.", or, with the `author_staff` read scope,
+"+ Post" on the right (at 150% text and above it moves into the page, a
+`secondary` under the intro); a `body` intro ("Ideas, app problems and
+questions from learners. We read the posts.", or, with the `author_staff` read scope,
 "…Only you and the team see your posts."); signed out, a `small` line ("Sign
 in to read the board, and to post, vote and comment." or, when anyone may
 read, "…Reading is open to everyone.") and a `secondary` Sign in; signed in,
@@ -1412,19 +1413,28 @@ Content, Ideas, App problems, Questions), a `SearchField`, and the posts.
 **A post row.** The **vote pill** on the left: 52 wide, at least 56 tall,
 radius `md`, a 1.5 `line` outline, ▲ over the count in `label` (tabular);
 voted, it fills with `ink` and the text turns `bg` (shape AND colour, never
-green). Spoken "Vote for: {title}. {n} votes. Voted." / "Not voted yet." Then
+green). Spoken "Vote for: {title}. {n} votes. Voted." / "Not voted yet."; its
+hint is "Takes your vote back." once voted; off (a locked or waiting post) it
+fades to 50%. Then
 the title (`headline`), a `meta` line "Idea · ◑ Planned · Quiet Cedar 214"
 ("Aurivan team" for staff) and a `meta` comments line ("12 comments · Team
-replied"). Rows are hairline-ruled, no cards.
+replied"). Rows are hairline-ruled, no cards. Your own post waiting for
+review says "Waiting for review" in place of its status (never "○ Open"
+beside it).
 
 **Statuses** are glyph + words, never the correct green or wrong red: Open ○,
 Under review ◔, Planned ◑, In progress ◕, Shipped ● ("Shipped in 1.18"),
 Answered ✓, Not planned –, Duplicate ⇢. On a post they're a `soft` pill
-(`StatusTag`, `meta` in `ink`).
+(`StatusTag`, `meta` in `ink`). Screen readers hear the words only, never the
+glyph.
 
 **A post** (`/board/<id>`): the ⋯ button (48pt, spoken "More options") on
-the bar's right opens a `Sheet` of full-width buttons: Report post · Block
-{handle} on someone else's; Edit · Withdraw (`danger`) on your own. Then the
+the bar's right opens a `Sheet` of full-width buttons: Report post · Report
+{handle} · Block {handle} on someone else's (no Block on the team or
+yourself); Edit · Withdraw (`danger`) on your own. Report and Block need
+only an account (no guidelines gate). The chosen action runs once the sheet
+has closed (≈350 ms), so iOS never drops the Report sheet or the Block
+alert. Then the
 `hero` title, the meta row (kind, `StatusTag`, handle or the "Aurivan team"
 badge), the body as plain `body` Text, the vote pill beside a full-width
 `secondary` Follow / Following, the **official response** (a 3pt
@@ -1432,8 +1442,11 @@ badge), the body as plain `body` Text, the vote pill beside a full-width
 `body`), "Status history" (`small` "Planned · 9 Oct" with a `meta` note), and
 the comments: `meta` "handle · date", the words, a ghost Reply on top-level
 comments, replies indented with a `line` rule (one level), each with its own
-⋯. A Content post about an answer is folded in a `soft` block ("This post
-talks about the answer to a practice question." + ghost "Show it"). Your own
+⋯ (spoken "More options, comment by {handle}"). The header counts every
+comment, replies included. A post about a practice question's answer is
+folded in a `soft` block ("This post talks about the answer to a practice
+question." + ghost "Show it", its own focusable button: a `BoardCard` groups
+its content for screen readers only when it holds words alone). Your own
 waiting post shows a `tipBg` "Waiting for review" block. The comment field
 is a `NoteField` with a primary Send.
 
@@ -1456,8 +1469,9 @@ private report on that question, and a ghost "Edit my post"), or the recall
 warning, or the words/links line; "Posting as Misty Rowan 77 · Change"; the
 primary Post (off while checking, on a bank match, when paused, or with a
 short title); then the `meta` rules line, Community guidelines, and the
-not-affiliated line. Held: "Waiting for review" (`display`) with why, and
-Done. Offline: "You're offline. Your post is saved here as a draft." Paused:
+not-affiliated line. The leak card and the recall warning are announced when
+they appear; "Edit my post" goes to the field the match is in. Held: "Waiting
+for review" (`display`, focus moves to it) with why, and Done. Offline: "You're offline. Your post is saved here as a draft." Paused:
 the `tipBg` notice at the top.
 
 **The guidelines gate** (`/board/guidelines`, a sheet): `display` "Before you
@@ -1486,9 +1500,15 @@ name with a `secondary` Unblock.
 h ago", "Reported ×3 · harassment or hate · 40 min ago"), the title, the first
 two lines in quotes (`small`), `meta` "Quiet Oak 9 · new member · 0 prior
 actions", then `secondary` Approve · Remove · Remove + warn and a ⋯ (Delete
-exam content, Hide, Dismiss reports). Remove asks why with a `ChoiceSheet`.
-Appeals: Keep removed / Put back; Members: Suspend 7 days, Ban / Unban.
-At the foot: "Posting: Open" and Pause posting (asks first) / Reopen posting.
+exam content, Hide, Fold it / Unfold it, Dismiss reports). A report shows
+the words as they were when reported. Remove, Remove + warn, Suspend and Ban
+ask why with a `ChoiceSheet`; Ban and Delete exam content then ask again in a
+system alert. Each button's spoken name says which item ("Approve: Timer
+keeps running…"), and "Done." is said after an action. Appeals: Keep removed
+/ Put back; Members: Suspend 7 days, Ban / Unban, Rename (asks first); a
+reported member in Reported: Suspend 7 days, Ban, Dismiss reports. Empty:
+"Nothing waiting." with "Held posts, reports and appeals show up here." At
+the foot: "Posting: Open" and Pause posting (asks first) / Reopen posting.
 
 **Motion.** No new animation: pushes and sheets as elsewhere, dissolving
 under Reduce Motion.
