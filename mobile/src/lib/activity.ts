@@ -69,9 +69,13 @@ export function changeExamDate(certId: string, date: string | undefined) {
   buildTodayPlan(certId, true);
 }
 
-/** Nothing ticked yet today (or no plan for today): a change of fit can rebuild it now. */
+/**
+ * Nothing done yet on today's plan (or no plan for today): a change of fit
+ * can rebuild it now. Answers banked on an item that isn't ticked yet count
+ * as started (code review M2): that plan stays, so they still move it.
+ */
 export function planUntouched(plan: DayPlan | undefined, today = dayKey(Date.now())): boolean {
-  return !plan || plan.day !== today || !plan.done.some(Boolean);
+  return !plan || plan.day !== today || (!plan.done.some(Boolean) && !(plan.credit ?? []).some((n) => n > 0));
 }
 
 /**

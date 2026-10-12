@@ -152,7 +152,7 @@ describe('Today: the day in minutes', () => {
     expect(storedPlan().items[0]).toMatchObject({ label: 'Diagnostic: 20 mixed questions' });
   });
 
-  it('Exam-focused leads with a mini mock: "About 80 min · longer than your usual day…", and "+ mock" in the total', () => {
+  it('Exam-focused: a saved plan with the mock first still leads with the timed item; the mock is optional, "+ mock" in the total', () => {
     useSettings.setState({ fitPrompt: 'answered', dailyMinutes: 20, familiarity: 'experienced' });
     // Past the starting check, every domain still weak: the practice stage, never "learn".
     act(() => {
@@ -166,10 +166,11 @@ describe('Today: the day in minutes', () => {
       });
     });
     mount(<Today />);
-    expect(allText()).toContain('Mini mock');
-    expect(allText()).toContain('About 80 min · longer than your usual day, so pick a time that suits you');
-    expect(allText()).toContain('About 19 min today + mock');
-    expect(allText()).toContain('Practice · 19 min');
+    // UX review P2: a mock never leads the hero (even in a plan saved with it first).
+    expect(allText()).toContain('Start here About 19 min today + mock Weak spots: IS Operations');
+    expect(allText()).toContain('About 19 min · 16 questions, most points to gain');
+    // Its row says it is optional this week, and how long it is.
+    expect(allText()).toContain('Mini mock Optional this week · about 80 min');
   });
 });
 
@@ -177,7 +178,8 @@ describe('the plan items in minutes (C1, C7)', () => {
   it('a review of part of the queue says how many today, and "tomorrow" in the Tomorrow preview', () => {
     const item = { kind: 'review' as const, count: 8, due: 55 };
     expect(planText(item, 55)).toEqual({ title: 'Review 55 due', meta: 'About 10 min · 8 today, most overdue first', short: 'Spaced review · 8 today' });
-    expect(planText(item, undefined, 'tomorrow').short).toBe('Spaced review · 8 tomorrow');
+    // UX review O5: tomorrow's queue isn't known yet, so the preview names the habit.
+    expect(planText(item, undefined, 'tomorrow')).toMatchObject({ title: 'Spaced review', short: 'Review · 8 tomorrow' });
   });
   it('one minutes style on every kind of item', () => {
     expect(planText({ kind: 'lesson', lessonId: 'x', title: 'X' }).meta).toBe('Lesson · 5 min');

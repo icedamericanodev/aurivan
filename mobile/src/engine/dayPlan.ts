@@ -79,13 +79,69 @@ export function newDayPlan(day: string, certId: string, items: PlanItem[], readi
 /**
  * Swap today's plan for a freshly built one (the exam date changed, so the
  * day's advice changed). Today's numbers carry over: answers, minutes and the
- * readiness the day started at. The items start fresh (a new plan can't
- * inherit ticks from different items). A plan from another day or cert is
- * simply replaced.
+ * readiness the day started at. So does what the learner already did
+ * (code review M2): answers banked on an item move to the new item they
+ * would count for (same kind; a domain item only from the same domain), and
+ * a lesson, game or mock already done stays ticked if the new plan has it.
+ * A plan from another day or cert is simply replaced.
  */
 export function replanDay(old: DayPlan | undefined, fresh: DayPlan): DayPlan {
   if (!old || old.day !== fresh.day || old.certId !== fresh.certId) return fresh;
-  return { ...fresh, start: old.start, answered: old.answered, correct: old.correct, minutes: old.minutes };
+  const credit = fresh.items.map(() => 0);
+  const done = fresh.items.map(() => false);
+  const taken = new Set<number>();
+  old.items.forEach((item, k) => {
+    const banked = old.credit?.[k] ?? 0;
+    const j = fresh.items.findIndex((f, x) => !taken.has(x) && carriesTo(item, f));
+    if (j < 0) return;
+    taken.add(j);
+    if (item.kind === 'review' || item.kind === 'practice') {
+      credit[j] = banked;
+      done[j] = banked > 0 && banked >= itemTarget(fresh.items[j]);
+    } else {
+      done[j] = old.done[k];
+    }
+  });
+  return {
+    ...fresh,
+    done,
+    ...(credit.some((n) => n > 0) ? { credit } : {}),
+    start: old.start,
+    answered: old.answered,
+    correct: old.correct,
+    minutes: old.minutes,
+  };
+}
+
+/** Would what was done on `from` count for `to`? (replanDay) */
+function carriesTo(from: PlanItem, to: PlanItem): boolean {
+  switch (from.kind) {
+    case 'review':
+      return to.kind === 'review';
+    case 'practice':
+      // Answers from one domain count for a mixed item; mixed answers never count for a domain item.
+      return to.kind === 'practice' && (!to.domainId || to.domainId === from.domainId);
+    case 'lesson':
+      return to.kind === 'lesson' && to.lessonId === from.lessonId;
+    case 'game':
+      return to.kind === 'game' && to.gameId === from.gameId;
+    case 'mock':
+      return to.kind === 'mock';
+  }
+}
+
+/**
+ * A mini mock beside timed items is OPTIONAL (PR #45, decided): the day
+ * clears when the timed items are done, and the mock's row says "Optional
+ * this week". A day with nothing but a mock is that mock.
+ */
+export function isOptional(items: readonly PlanItem[], i: number): boolean {
+  return items[i]?.kind === 'mock' && items.some((x) => x.kind !== 'mock');
+}
+
+/** The items the day counts: every required one, and an optional one only once done. */
+export function countedDone(plan: DayPlan): boolean[] {
+  return plan.items.flatMap((_, k) => (plan.done[k] || !isOptional(plan.items, k) ? [Boolean(plan.done[k])] : []));
 }
 
 /** Questions needed to finish a review/practice item: 80% of the PLANNED count (never the session size). */
@@ -162,13 +218,14 @@ export function logAnswer(plan: DayPlan, correct: boolean): DayPlan {
   return { ...plan, answered: plan.answered + 1, correct: plan.correct + (correct ? 1 : 0) };
 }
 
+/** Every required item is done (an optional mock may still be open). */
 export function planComplete(plan: DayPlan): boolean {
-  return plan.items.length > 0 && plan.done.every(Boolean);
+  return plan.items.length > 0 && plan.items.every((_, k) => plan.done[k] || isOptional(plan.items, k));
 }
 
-/** Index of the item to do now (first unticked), or -1 when all are done. */
+/** Index of the item to do now (the first unticked required one), or -1 when all are done. */
 export function currentIndex(plan: DayPlan): number {
-  return plan.done.findIndex((d) => !d);
+  return plan.items.findIndex((_, k) => !plan.done[k] && !isOptional(plan.items, k));
 }
 
 const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
@@ -177,7 +234,8 @@ const capital = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 /** "Three of three, done." — count-aware (spec §11 "Daily clearing card"). */
 export function clearingTitle(plan: DayPlan): string {
-  const n = plan.items.length;
+  // An optional mock left for another day is not part of "N of N".
+  const n = countedDone(plan).length;
   return `${capital(word(n))} of ${word(n)}, done.`;
 }
 

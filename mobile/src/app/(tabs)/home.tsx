@@ -39,9 +39,9 @@ import { Celebrate, Pop, useCelebration, useGrowth, useScreenFocus } from '../..
 import { ICON_STROKE, Play, Settings, Sprig } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
 import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, ScreenTitle, Section, T } from '../../components/ui';
-import { currentIndex, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
+import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
 import { shouldAskFit } from '../../engine/fit';
-import { aboutMin } from '../../engine/pace';
+import { aboutMin, spokenMin } from '../../engine/pace';
 import { sayLater } from '../../lib/a11y';
 import { useSettings } from '../../store/settings';
 import { runPlanItem } from '../../lib/actions';
@@ -55,6 +55,7 @@ import { dayKey } from '../../engine/streak';
 import { useReports } from '../../lib/useReports';
 import { useProgress } from '../../store/progress';
 import { useSession, type ActiveSession } from '../../store/session';
+import type { PlanItem } from '../../engine/planner';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -79,6 +80,14 @@ function resumeMinutes(s: ActiveSession, now: number, exam: { questions: number;
 
 /** A section's "About N min" (C1), or nothing when only a mock is listed (its row says its length). */
 const sectionMinutes = (n: number) => (n > 0 ? aboutMin(n) : undefined);
+
+/**
+ * A plan row's short line. The weekly mini mock beside timed items is
+ * optional (PR #45, decided): "Optional this week · about 80 min".
+ */
+function rowShort(item: PlanItem, items: readonly PlanItem[], i: number, due: number | undefined, when: 'today' | 'tomorrow' = 'today'): string {
+  return isOptional(items, i) ? `Optional this week · ${aboutMin(itemMinutes(item), true)}` : planText(item, due, when).short;
+}
 
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -251,6 +260,7 @@ export default function Today() {
   // Tomorrow = a preview of the live plan (the next two items). The live plan
   // is sized to the minutes, so this never previews more than the day has.
   const tomorrow = j.plan.slice(0, 2);
+  const tomorrowMinutes = sectionMinutes(tomorrow.reduce((n, t) => n + (t.kind === 'mock' ? 0 : itemMinutes(t)), 0));
   // "About 20 min today" under the leaf marks: only for plans sized in minutes (1.15+).
   const todayLine = plan.budget ? todayMinutesLine(plan.items, plan.done) : null;
 
@@ -265,6 +275,7 @@ export default function Today() {
   const onboarded = useSettings((x) => x.onboarded);
   const fitPrompt = useSettings((x) => x.fitPrompt);
   const familiarity = useSettings((x) => x.familiarity);
+  const fitAskDays = useSettings((x) => x.fitAskDays);
   const askFit = shouldAskFit({
     onboarded,
     fitPrompt,
@@ -273,7 +284,13 @@ export default function Today() {
     examMoment: Boolean(moments.moment),
     readyPanel: showReady,
     plantLine: plantLineNow || plantVisit,
+    askedDays: fitAskDays,
+    today: plan.day,
   });
+  // Count the day the card showed: after 3 separate days it stays away (code review M4).
+  useEffect(() => {
+    if (askFit) useSettings.getState().noteFitAsked(plan.day);
+  }, [askFit, plan.day]);
 
   return (
     <Screen>
@@ -320,7 +337,8 @@ export default function Today() {
           <Celebrate celebration={clearing}>
             <HeroPanel
               caption="Today’s clearing"
-              captionExtra={<PlanLeaves done={plan.done} focused={focused} seenKey={`${cert}:${plan.day}`} />}
+              // An optional mock left for another day is not a leaf of the clearing.
+              captionExtra={<PlanLeaves done={countedDone(plan)} focused={focused} seenKey={`${cert}:${plan.day}:cleared`} />}
               title={clearingTitle(plan)}
               art="clearing"
               wideTitle
@@ -333,8 +351,10 @@ export default function Today() {
             caption="Start here"
             captionExtra={<PlanLeaves done={plan.done} focused={focused} seenKey={`${cert}:${plan.day}`} />}
             captionMeta={todayLine ?? undefined}
+            captionMetaLabel={todayLine ? spokenMin(todayLine) : undefined}
             title={planText(plan.items[cur], j.dueCount).title}
             meta={planText(plan.items[cur], j.dueCount).meta}
+            metaLabel={spokenMin(planText(plan.items[cur], j.dueCount).meta)}
             action={{ label: 'Start', onPress: () => runPlanItem(plan.items[cur], j.cert.id), icon: playIcon, hint: planText(plan.items[cur], j.dueCount).title }}
           />
         )}
@@ -384,13 +404,14 @@ export default function Today() {
           <>
             {tomorrow.length > 0 && (
               <>
-                <Section title="Tomorrow" meta={sectionMinutes(tomorrow.reduce((n, t) => n + (t.kind === 'mock' ? 0 : itemMinutes(t)), 0))} />
+                <Section title="Tomorrow" meta={tomorrowMinutes} metaLabel={tomorrowMinutes && spokenMin(tomorrowMinutes)} />
                 {tomorrow.map((item, k) => (
                   <ListRow
                     key={k}
                     icon={planIcon(item, c.accentText)}
                     title={planText(item, undefined, 'tomorrow').title}
-                    subtitle={planText(item, undefined, 'tomorrow').short}
+                    subtitle={rowShort(item, tomorrow, k, undefined, 'tomorrow')}
+                    accessibilityLabel={`${planText(item, undefined, 'tomorrow').title}, ${spokenMin(rowShort(item, tomorrow, k, undefined, 'tomorrow'))}`}
                     last={k === tomorrow.length - 1}
                   />
                 ))}
@@ -407,7 +428,7 @@ export default function Today() {
         ) : (
           alsoCount > 0 && (
             <>
-              <Section title="Also today" meta={sectionMinutes(alsoMinutes)} />
+              <Section title="Also today" meta={sectionMinutes(alsoMinutes)} metaLabel={alsoMinutes > 0 ? spokenMin(aboutMin(alsoMinutes)) : undefined} />
               {resume && (
                 <ListRow
                   icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
@@ -422,7 +443,8 @@ export default function Today() {
                   key={i}
                   icon={planIcon(item, c.accentText)}
                   title={planText(item, j.dueCount).title}
-                  subtitle={planText(item, j.dueCount).short}
+                  subtitle={rowShort(item, plan.items, i, j.dueCount)}
+                  accessibilityLabel={`${planText(item, j.dueCount).title}, ${spokenMin(rowShort(item, plan.items, i, j.dueCount))}`}
                   onPress={() => runPlanItem(item, j.cert.id)}
                   last={k === rest.length - 1}
                 />

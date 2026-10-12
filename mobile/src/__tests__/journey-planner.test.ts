@@ -151,8 +151,9 @@ describe("today's plan, sized in minutes (mobile 1.15, PHASE5.md §2.3)", () => 
       }
     }
     const longAgo = todaysPlan(input({ familiarity: 'experienced', lastMockAt: NOW - 8 * DAY }));
-    expect(longAgo.map((i) => i.kind)).toEqual(['mock', 'practice']);
-    expect(longAgo[1]).toEqual({ kind: 'practice', count: 16, label: 'Weak spots: IS Operations', domainId: '4', why: 'weak' });
+    // The mock never leads (UX review P2): right after the first timed item.
+    expect(longAgo.map((i) => i.kind)).toEqual(['practice', 'mock']);
+    expect(longAgo[0]).toEqual({ kind: 'practice', count: 16, label: 'Weak spots: IS Operations', domainId: '4', why: 'weak' });
     // A mock 3 days ago: none this week.
     expect(todaysPlan(input({ familiarity: 'experienced', lastMockAt: NOW - 3 * DAY })).some((i) => i.kind === 'mock')).toBe(false);
     // The explicit choice wins: an experienced learner who switched it off gets lessons.

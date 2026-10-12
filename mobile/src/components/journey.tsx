@@ -63,6 +63,15 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
       // Same word as Practice and You ("due").
       const queue = due ?? item.due ?? item.count;
       const more = queue > item.count;
+      // Tomorrow's queue isn't known yet (today's reviews change it), so the
+      // preview names the habit, not today's count (UX review O5).
+      if (when === 'tomorrow' && !item.label) {
+        return {
+          title: 'Spaced review',
+          meta: `${aboutMin(mins)} · questions to revisit`,
+          short: more ? `Review · ${item.count} tomorrow` : `Review · ${mins} min`,
+        };
+      }
       return {
         // The whole queue ("Review 55 due"), the same number You and Practice show;
         // the meta says how much of it today takes.

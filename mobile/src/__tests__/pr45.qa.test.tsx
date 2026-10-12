@@ -292,16 +292,17 @@ describe('J2 the Exam-focused path', () => {
   /** Past the starting check, every domain still weak, no lessons done. */
   const weakLearner = () => setCert({ answers: seedAnswers(10, 0.4) });
 
-  it('no lesson on Today, "Weak spots" practice, and a mini mock leads when none was taken', () => {
+  it('no lesson on Today, "Weak spots" practice leads, and an optional mini mock follows when none was taken', () => {
     weakLearner();
     useSettings.setState({ fitPrompt: 'answered', familiarity: 'experienced', dailyMinutes: 20 });
     mount(<Today />);
     const items = storedPlan().items;
     expect(items.some((i) => i.kind === 'lesson')).toBe(false);
-    expect(items[0]).toMatchObject({ kind: 'mock', questions: 50, minutes: 80 });
-    expect(items.find((i) => i.kind === 'practice')).toMatchObject({ why: 'weak', label: expect.stringMatching(/^Weak spots: /) });
+    // UX review P2 (decided): a mock never leads the hero; it comes right after the first timed item.
+    expect(items[0]).toMatchObject({ kind: 'practice', why: 'weak', label: expect.stringMatching(/^Weak spots: /) });
+    expect(items[1]).toMatchObject({ kind: 'mock', questions: 50, minutes: 80 });
     expect(allText()).toContain('Mini mock');
-    expect(allText()).toContain('About 80 min · longer than your usual day, so pick a time that suits you');
+    expect(allText()).toContain('Optional this week · about 80 min');
     expect(allText()).toMatch(/About \d+ min today \+ mock/);
     // The mock is exempt; everything else fits the day.
     expect(planMinutes(items)).toBeLessThanOrEqual(budgetCap(20));
@@ -317,8 +318,9 @@ describe('J2 the Exam-focused path', () => {
     expect(storedPlan().items.some((i) => i.kind === 'mock')).toBe(false);
   });
 
-  it('weekly mini mock: none 6 days 23 hours after the last, one at 7 days (any size of mock counts)', () => {
-    const now = Date.now();
+  it('weekly mini mock: none 6 calendar days after the last, one at 7 (any size of mock counts)', () => {
+    // Midday, so a calendar day is never confused with 24 hours.
+    const now = new Date(2026, 9, 12, 12).getTime();
     const plan = (mocks: MockResult[]) => {
       const cp = completeCert({ answers: seedAnswers(10, 0.4), mocks });
       return buildJourney({ cert: cisa, progress: cp, readiness: computeReadiness(cisa, cp.answers), dueCount: 0, daysLeft: 90, dailyMinutes: 20, familiarity: 'experienced', streak: useProgress.getState().streak, now }).plan;
@@ -326,13 +328,13 @@ describe('J2 the Exam-focused path', () => {
     const hasMock = (p: PlanItem[]) => p.some((i) => i.kind === 'mock');
     expect(hasMock(plan([]))).toBe(true);
     expect(hasMock(plan([mock(now - 3 * DAY)]))).toBe(false);
-    expect(hasMock(plan([mock(now - 7 * DAY + 3_600_000)]))).toBe(false);
-    expect(hasMock(plan([mock(now - 7 * DAY)]))).toBe(true);
+    expect(hasMock(plan([mock(new Date(2026, 9, 6, 23, 59).getTime())]))).toBe(false);
+    expect(hasMock(plan([mock(new Date(2026, 9, 5, 0, 1).getTime())]))).toBe(true);
     // A full mock counts as this week's mock too.
     expect(hasMock(plan([mock(now - 2 * DAY, 150), mock(now - 30 * DAY)]))).toBe(false);
   });
 
-  it('weekly mini mock across a calendar week: a Monday-evening mock is not offered again the next Monday morning', () => {
+  it('weekly mini mock across a calendar week: a Monday-evening mock is offered again the next Monday morning', () => {
     const lastMonday7pm = new Date(2026, 9, 12, 19).getTime();
     const nextMonday8am = new Date(2026, 9, 19, 8).getTime();
     const nextTuesday8am = new Date(2026, 9, 20, 8).getTime();
@@ -340,33 +342,37 @@ describe('J2 the Exam-focused path', () => {
       const cp = completeCert({ answers: seedAnswers(10, 0.4, lastMonday7pm - DAY), mocks: [mock(lastMonday7pm)] });
       return buildJourney({ cert: cisa, progress: cp, readiness: computeReadiness(cisa, cp.answers), dueCount: 0, daysLeft: 90, dailyMinutes: 20, familiarity: 'experienced', streak: useProgress.getState().streak, now }).plan;
     };
-    // QA-BUG: (Minor) the 7-day gap is measured in milliseconds from when the last mock FINISHED to
-    // when Today is first opened, not in calendar days. A learner who takes the weekly mock in the
-    // evening and opens Today in the morning is offered it a day late, every week (Mon → Tue → Wed…).
-    // Expected: a mock on 2026-10-19 (7 calendar days later). Actual: none until the Tuesday.
-    expect(plan(nextMonday8am).some((i) => i.kind === 'mock')).toBe(false);
+    // Fixed (QA B1 / code review M1): the 7-day gap is counted in calendar days, so the mock taken
+    // on Monday evening is offered again the next Monday morning, every week, never a day later.
+    expect(plan(nextMonday8am).some((i) => i.kind === 'mock')).toBe(true);
     expect(plan(nextTuesday8am).some((i) => i.kind === 'mock')).toBe(true);
+    // And six days on (the Sunday), not yet.
+    expect(plan(new Date(2026, 9, 18, 21).getTime()).some((i) => i.kind === 'mock')).toBe(false);
   });
 
-  it('a skipped weekly mock stays in every day’s plan, so the day cannot be cleared inside the budget (observation)', () => {
-    // By the spec (AC2: "a mini mock is planned when there has been none in 7 days"), but the
-    // mock is exempt from the budget and still needed to clear the day. An Exam-focused learner
-    // with 20 minutes who skips it never sees the clearing card until they find 80 minutes.
+  it('a skipped weekly mock is optional: the day clears without it, and it is offered again the next day', () => {
+    // Decided (QA observation O1): the weekly mini mock is OPTIONAL. The day clears when the
+    // timed items are done; the mock row reads "Optional this week" until it is taken.
     weakLearner();
     useSettings.setState({ fitPrompt: 'answered', familiarity: 'experienced', dailyMinutes: 20 });
     mount(<Today />);
     const items = storedPlan().items;
     act(() => {
-      useProgress.setState((s) => ({ days: { ...s.days, cisa: { ...s.days.cisa!, done: items.map((i) => i.kind === 'mock' ? false : true) } } }));
+      useProgress.setState((s) => ({ days: { ...s.days, cisa: { ...s.days.cisa!, done: items.map((i) => i.kind !== 'mock') } } }));
     });
-    expect(planComplete(storedPlan())).toBe(false);
-    // The next day, with still no mock taken: it is planned again.
+    expect(planComplete(storedPlan())).toBe(true);
+    // The clearing counts only what the day needed: the skipped mock is not "one of N".
+    const required = items.filter((i) => i.kind !== 'mock').length;
+    expect(allText()).toContain(['', 'One', 'Two', 'Three'][required] + ' of ');
+    // The next day, with still no mock taken: it is offered again, never leading.
     unmount();
     act(() => {
       useProgress.setState((s) => ({ days: { ...s.days, cisa: { ...s.days.cisa!, day: addDays(today(), -1) } } }));
     });
     mount(<Today />);
-    expect(storedPlan().items[0]).toMatchObject({ kind: 'mock' });
+    expect(storedPlan().items[0]).toMatchObject({ kind: 'practice' });
+    expect(storedPlan().items.some((i) => i.kind === 'mock')).toBe(true);
+    expect(allText()).toContain('Optional this week');
   });
 
   it('exam week wins over Exam-focused: no mini mock in the last 7 days', () => {
@@ -581,7 +587,7 @@ describe('J4 Settings → Your study changes the next plan', () => {
     expect(storedPlan().items).toEqual([{ kind: 'practice', count: 8, label: 'Starting check: 8 mixed questions', why: 'check' }]);
   });
 
-  it('answers banked toward an unticked item are lost when a fit change rebuilds the plan', () => {
+  it('answers banked toward an unticked item are kept when the fit changes', () => {
     useSettings.setState({ fitPrompt: 'answered', dailyMinutes: 20 });
     act(() => {
       useProgress.getState().startDay({
@@ -590,14 +596,14 @@ describe('J4 Settings → Your study changes the next plan', () => {
         done: [false], credit: [10], start: { score: 0, domains: {} }, answered: 10, correct: 6, minutes: 12,
       });
     });
-    changeFit('cisa', { dailyMinutes: 10 });
+    const r = changeFit('cisa', { dailyMinutes: 10 });
     expect(storedPlan().answered).toBe(10);
-    // QA-BUG: (Minor) 10 of the 13 answers needed to tick the starting check were already banked.
-    // planUntouched() looks only at ticks, and replanDay() drops `credit`, so after changing the
-    // minutes the new 8-question item starts from 0 although the learner answered 10 today.
-    // Expected: credit carried over (the new item ticks at once, 10 ≥ 7). Actual: no credit.
-    expect(storedPlan().credit).toBeUndefined();
-    expect(storedPlan().done).toEqual([false]);
+    // Fixed (QA B2 / code review M2): banked answers mean today's plan has started, so it stays
+    // (with its credit) and tomorrow's fits; the screen says so in one line.
+    expect(r.keptToday).toBe(true);
+    expect(storedPlan().credit).toEqual([10]);
+    expect(storedPlan().items).toEqual([{ kind: 'practice', count: 16, label: 'Starting check: 16 mixed questions', why: 'check' }]);
+    expect(useSettings.getState().dailyMinutes).toBe(10);
   });
 });
 
