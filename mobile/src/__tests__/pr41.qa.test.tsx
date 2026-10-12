@@ -924,8 +924,8 @@ describe('Journey 5 · share card', () => {
 
   it('only earned badges are shareable; Fresh Start never; unearned never', () => {
     const marks = everyMark();
-    // Graduate stays "Graduate" in the app but is never shared (owner decision, compliance review).
-    for (const m of marks) expect([m.key, badgeShareable(m)]).toEqual([m.key, m.key !== 'fresh-start' && m.key !== 'graduate']);
+    // Mobile 1.18: "Graduate" became "Flown the Nest" and is shared like the rest; only Fresh Start (a Moment) never is.
+    for (const m of marks) expect([m.key, badgeShareable(m)]).toEqual([m.key, m.key !== 'fresh-start']);
     const unearned = caseMarks({ marks: allMarks(facts()), earned: {}, domains: DOMAINS, exam: cisa.exam, mindsetData: true });
     expect(unearned.filter((m) => badgeShareable(m))).toEqual([]);
     expect(() => badgeCardText(shareOf(marks.find((m) => m.key === 'fresh-start')!), cisa)).toThrow();

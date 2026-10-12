@@ -207,7 +207,7 @@ export const CATALOG_VERSION = 2;
 /** The words a Stretch tier always carries (never only a colour or a ring). */
 export const STRETCH = 'Stretch: beyond exam need';
 
-/** Graduate's shortest path: right on each review box's interval, then once more from the last box. */
+/** Flown the Nest's (id `graduate`) shortest path: right on each review box's interval, then once more from the last box. */
 const GRADUATE_MIN_DAYS = Object.entries(INTERVAL_DAYS)
   .filter(([box]) => Number(box) < MAX_BOX)
   .reduce((s, [, d]) => s + d, 0) + INTERVAL_DAYS[MAX_BOX] + 1;
@@ -305,9 +305,15 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
     case 'graduate':
       return {
         howTo: 'Keep up with review. Each right answer moves a question a box further on.',
-        unlock: `${GRADUATES === 50 ? 'Fifty' : GRADUATES} questions graduated: you’ve shown them again and again, weeks apart.`,
-        effort: 'Needs several weeks: a question graduates from the last review box.',
-        skill: `Moved ${GRADUATES} questions through spaced review`,
+        // Mobile 1.18 "Flown the Nest": the words describe the QUESTIONS
+        // leaving review, never the learner "graduating" (a credential word
+        // the share guard refuses). The skill line says "weeks apart", not
+        // an exact gap: the rule counts a right answer from the last box,
+        // and the boxes space a question over weeks, but the count itself
+        // does not check the days.
+        unlock: `${GRADUATES === 50 ? 'Fifty' : GRADUATES} questions have left review: you answered them right again and again, weeks apart. Spaced recall is what holds on exam day.`,
+        effort: 'Needs several weeks: a question leaves review from the last box.',
+        skill: `Recalled ${GRADUATES} answers weeks apart`,
         minDays: GRADUATE_MIN_DAYS,
       };
     case 'loop-closed':
@@ -879,7 +885,7 @@ export function nextForExam({ marks, stage, daysLeft, mastery }: NextInput): Nex
     firmFooting,
     // Exam Day: the first full mock, then pace, then the second spaced mock.
     () => findKey('dress-rehearsal') ?? find('on-pace') ?? findKey('dress-rehearsal:2'),
-    // The next Long Memory tier (Stretch only once Evergreen's core is done), then Graduate.
+    // The next Long Memory tier (Stretch only once Evergreen's core is done), then Flown the Nest.
     () => find('long-memory') ?? find('graduate'),
   ];
   // The mock rule leads at the mock stage and in the final three weeks; once

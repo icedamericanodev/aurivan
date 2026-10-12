@@ -439,7 +439,7 @@ export function NextPanel({
 // ── The detail sheet ─────────────────────────────────────────────────────
 /**
  * The share card's words for an earned mark, or null when it can't be
- * shared (a Moment, Graduate, an empty skill line, or a line that fails the
+ * shared (a Moment, a badge on the never-share list, an empty skill line, or a line that fails the
  * honesty check). Built BEFORE Share is offered, inside a try, so a future
  * cert name or date that trips the check hides Share instead of crashing
  * the sheet. The card carries the plain badge name ("Firm Footing"); its

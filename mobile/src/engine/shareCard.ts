@@ -199,13 +199,15 @@ export interface ShareBadge {
 const NEVER_SHARED = new Set(['moments']);
 
 /**
- * Badges never shared, whatever their set (owner decision, compliance review
- * of PR #41): "Graduate" keeps its name in the app, where it plainly means a
- * question graduating from spaced review. But printed large above "Studying
- * for the CISA® exam" it reads like a credential, so it never goes on a card.
- * This list is the ONLY way a badge name escapes the honesty check below.
+ * Badges never shared, whatever their set. Empty since mobile 1.18: the one
+ * badge that was here, "Graduate", was renamed "Flown the Nest" (owner-
+ * delegated panel), a name that describes the QUESTIONS leaving review, not
+ * the learner, so it no longer reads like a credential and is shared like
+ * any other badge. The list stays so a future badge can be kept off cards by
+ * its id. The honesty guard below still refuses "graduat" in any line, and
+ * the list is the ONLY way a badge name escapes that check.
  */
-export const NEVER_SHARED_BADGES: ReadonlySet<string> = new Set(['graduate']);
+export const NEVER_SHARED_BADGES: ReadonlySet<string> = new Set<string>();
 
 /**
  * Can this badge be shared? Earned, not a Moment (a "Passed" or a Fresh Start

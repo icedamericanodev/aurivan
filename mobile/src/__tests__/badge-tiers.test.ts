@@ -349,7 +349,7 @@ describe('copy for the new marks', () => {
     }
     expect(badgeShareable({ status: 'earned', set: 'moments', skill: 'Came back' })).toBe(false);
     expect(badgeShareable(find(marks, 'fresh-start'))).toBe(false);
-    expect(find(marks, 'graduate').skill).toBe('Moved 50 questions through spaced review');
+    expect(find(marks, 'graduate').skill).toBe('Recalled 50 answers weeks apart');
     expect(find(marks, 'on-pace').skill).toBe('Kept exam pace in a practice mock');
     expect(find(marks, 'whole-map').skill).toBe('Reached 65% in every exam domain in practice');
   });

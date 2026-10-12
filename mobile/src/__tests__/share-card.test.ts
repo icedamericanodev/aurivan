@@ -235,15 +235,32 @@ describe('badge share cards', () => {
     expect(badgeCardText(badge(), cisa).notice).toMatch(/endorsed/);
   });
 
-  it('Graduate is never shareable (owner decision): by its id, whatever its set or skill line', () => {
-    expect(NEVER_SHARED_BADGES.has('graduate')).toBe(true);
-    const graduate = badge({ badge: 'graduate', name: 'Graduate', tierLine: undefined, skill: 'Moved 50 questions through spaced review' });
-    expect(badgeShareable(graduate)).toBe(false);
-    expect(() => badgeCardText(graduate, cisa)).toThrow();
+  it('Flown the Nest (id `graduate`, mobile 1.18) is shareable: no badge is on the never-share list', () => {
+    expect(NEVER_SHARED_BADGES.has('graduate')).toBe(false);
+    expect(NEVER_SHARED_BADGES.size).toBe(0);
+    const nest = badge({ badge: 'graduate', name: 'Flown the Nest', tierLine: undefined, skill: 'Recalled 50 answers weeks apart' });
+    expect(badgeShareable(nest)).toBe(true);
+    const t = badgeCardText(nest, cisa);
+    // Every line we write passes the guard; the old credential-like word appears nowhere.
+    for (const line of [t.name, t.skill, t.caption, t.headline]) expect([line, isHonestShareText(line)]).toEqual([line, true]);
+    expect(`${t.name} ${t.skill} ${t.caption} ${t.headline} ${t.message} ${t.spoken}`).not.toMatch(/graduat/i);
+    // The full trademark notice, word for word, on the card, in the share text and in the spoken card.
+    const notice = 'Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.';
+    expect(t.notice).toBe(notice);
+    expect(t.message.endsWith(notice)).toBe(true);
+    expect(t.spoken.endsWith(notice)).toBe(true);
+    expect(t.headline).toBe('Studying for the CISA® exam');
+    // Never the bank size, never an affiliation or pass claim.
+    const ours = t.message.replace(notice, '');
+    expect(ours).not.toMatch(/official|partner|ISACA|endorsed|\bpass/i);
+    // The only numbers are the learner's 50 and the earned date (never the bank size).
+    expect(ours.match(/\d+/g)).toEqual(['50', '3', '2026']);
   });
 
-  it('the guard reads the badge name too: no name escapes it, only the never-share list keeps Graduate off cards', () => {
+  it('the guard reads the badge name too, and still refuses "graduat" anywhere we write', () => {
     expect(badgeShareable({ status: 'earned', set: 'evergreen', skill: 'Made a whole topic stick', name: 'Graduate' })).toBe(false);
+    expect(badgeShareable({ status: 'earned', set: 'evergreen', skill: 'Graduated 50 questions', name: 'Flown the Nest' })).toBe(false);
+    expect(isHonestShareText('Flown the Nest')).toBe(true);
     expect(() => badgeCardText(badge({ badge: undefined, name: 'Certified Auditor' }), cisa)).toThrow();
     // A cert or date that trips the guard throws here; the sheet catches it and hides Share.
     expect(() => badgeCardText(badge(), { ...cisa, name: 'Official' })).toThrow();
