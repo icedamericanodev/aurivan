@@ -1832,14 +1832,19 @@ export function NoteField({
   );
 }
 
+/** A visible line the field itself already speaks (its name or hint): hidden from screen readers on iOS and Android. */
+const SPOKEN_BY_FIELD = { accessibilityElementsHidden: true, importantForAccessibility: 'no-hide-descendants' } as const;
+
 // ── TextField: one line the learner types (sign-in email, code, DELETE) ──
 // Uplift Phase 6 (accounts, built OFF). The same look as NoteField (raised,
 // 1.5 `control` outline in both themes, radius 16, body text that grows with
 // the phone's text size up to ×2), one line, at least 56pt tall. Its visible
 // `label` sits above it and is also its spoken name. A problem shows under
-// it in `tip` (Grove keeps red for wrong answers), is part of the spoken
-// hint, and is announced once when it appears. `tabular` lines digits up
-// (the 6-digit code).
+// it in `tip` (Grove keeps red for wrong answers), with the outline in `tip`
+// too, is part of the spoken hint, and is announced once when it appears.
+// The visible label, help and problem lines are hidden from screen readers:
+// the field already says them (name and hint), so they are never read twice.
+// `tabular` lines digits up (the 6-digit code).
 export function TextField({
   label,
   value,
@@ -1871,7 +1876,9 @@ export function TextField({
   }, [problem]);
   return (
     <View style={{ marginTop: space.md }}>
-      <T v="label">{label}</T>
+      <View {...SPOKEN_BY_FIELD}>
+        <T v="label">{label}</T>
+      </View>
       <TextInput
         ref={ref}
         value={value}
@@ -1886,13 +1893,17 @@ export function TextField({
           type.body,
           tabular ? { fontVariant: ['tabular-nums'] } : null,
           styles.field,
-          { color: c.ink, backgroundColor: c.raised, borderColor: c.control },
+          { color: c.ink, backgroundColor: c.raised, borderColor: problem ? c.tip : c.control },
         ]}
       />
       {problem ? (
-        <T v="meta" color={c.tip} style={{ marginTop: space.xs }}>{problem}</T>
+        <View {...SPOKEN_BY_FIELD}>
+          <T v="meta" color={c.tip} style={{ marginTop: space.xs }}>{problem}</T>
+        </View>
       ) : help ? (
-        <T v="meta" style={{ marginTop: space.xs }}>{help}</T>
+        <View {...SPOKEN_BY_FIELD}>
+          <T v="meta" style={{ marginTop: space.xs }}>{help}</T>
+        </View>
       ) : null}
     </View>
   );

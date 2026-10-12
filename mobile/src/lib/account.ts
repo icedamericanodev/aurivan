@@ -17,7 +17,7 @@ import { AppState, Platform } from 'react-native';
 import { getBackend } from '../cloud/backend';
 import { CLOUD, PROVIDERS } from '../cloud/flag';
 import { errorCode, CloudError, type AccountInfo, type CloudErrorCode } from '../cloud/types';
-import { accountExportFileName, deleteGate, providersFor, reauthProvider, TERMS_VERSION, type Provider } from '../engine/account';
+import { accountExportFileName, deleteGate, deleteStep, providersFor, TERMS_VERSION, type Provider } from '../engine/account';
 import { SIGNED_OUT, useAccount } from '../store/account';
 import { useBackup } from '../store/backup';
 import { useProgress } from '../store/progress';
@@ -48,11 +48,25 @@ function failed(e: unknown): Result<never> {
   return { ok: false, code: errorCode(e) };
 }
 
-/** The store's facts for a signed-in account (or signed out). Never stores the id or the full email. */
+/**
+ * The store's facts for a signed-in account (or signed out). Never stores the
+ * id or the full email. A session that ends on its own while the phone was
+ * signed in (a refresh that failed, "Sign out on all devices" elsewhere)
+ * leaves `expired`, so the row says "Sign in again to keep syncing". A
+ * sign-out or delete the learner chose overwrites the facts right after,
+ * with `expired: false`.
+ */
 function apply(a: AccountInfo | null) {
-  const set = useAccount.getState().setFacts;
-  if (a && a.termsVersion) set({ signedIn: true, emailMasked: a.emailMasked, providers: a.providers, expired: false });
-  else if (!a) set({ signedIn: false, emailMasked: null, providers: [] });
+  const { setFacts, signedIn } = useAccount.getState();
+  if (a && a.termsVersion) setFacts({ signedIn: true, emailMasked: a.emailMasked, providers: a.providers, expired: false });
+  else if (!a) setFacts({ signedIn: false, emailMasked: null, providers: [], expired: signedIn });
+}
+
+/** Signed out on this phone because the session ended (not the learner's choice): the row says "Sign in again". */
+async function sessionEnded(b: ReturnType<typeof backend>) {
+  await b.auth.signOut('local').catch(() => {});
+  const was = useAccount.getState();
+  was.setFacts({ ...SIGNED_OUT, syncedAccountHash: was.syncedAccountHash, expired: true });
 }
 
 // ── Launch ────────────────────────────────────────────────────────────
@@ -60,8 +74,12 @@ function apply(a: AccountInfo | null) {
  * Cloud builds only, once at launch (root _layout): load the saved facts,
  * compare them with the session the backend really has, follow its changes,
  * and tell it when the app is in front (the session refreshes only then).
- * Returns a function that stops listening.
+ * Returns a function that stops listening. Never rejects.
  *
+ * - The saved facts or the session can't be read right now (a storage
+ *   error, the key store locked): the phone keeps what it last knew, and the
+ *   check runs again each time the app comes to the front until it works.
+ *   The listeners are set up either way, so the session still refreshes.
  * - Saved facts say signed in, but there is no session (a phone restored
  *   from a backup: the secure key store isn't in backups) → quietly signed
  *   out, and the row says "Sign in again to keep syncing". Never a crash.
@@ -72,25 +90,40 @@ function apply(a: AccountInfo | null) {
 export async function initAccount(): Promise<() => void> {
   if (!cloudReady()) return () => {};
   const b = backend();
-  await useAccount.persist.rehydrate();
-  try {
-    const a = await b.auth.current();
-    const was = useAccount.getState();
-    if (!a) {
-      if (was.signedIn) useAccount.getState().setFacts({ ...SIGNED_OUT, syncedAccountHash: was.syncedAccountHash, expired: true });
-    } else if (!a.termsVersion) {
-      await b.auth.signOut('local').catch(() => {});
-      apply(null);
-    } else {
-      apply(a);
+  let hydrated = false;
+  let settled = false;
+  let stopped = false;
+  const check = async () => {
+    try {
+      if (!hydrated) {
+        await useAccount.persist.rehydrate();
+        hydrated = true;
+      }
+      const a = await b.auth.current();
+      if (stopped) return;
+      const was = useAccount.getState();
+      if (!a) {
+        if (was.signedIn) was.setFacts({ ...SIGNED_OUT, syncedAccountHash: was.syncedAccountHash, expired: true });
+      } else if (!a.termsVersion) {
+        await b.auth.signOut('local').catch(() => {});
+        useAccount.getState().setFacts({ signedIn: false, emailMasked: null, providers: [] });
+      } else {
+        apply(a);
+      }
+      settled = true;
+    } catch {
+      // Can't tell right now: keep what the phone last knew, and try again when the app is next in front.
     }
-  } catch {
-    // Can't tell right now: keep what the phone last knew.
-  }
+  };
+  await check();
   const off = b.auth.onChange((a) => apply(a));
   b.auth.setForeground(AppState.currentState === 'active');
-  const sub = AppState.addEventListener('change', (s) => b.auth.setForeground(s === 'active'));
+  const sub = AppState.addEventListener('change', (s) => {
+    b.auth.setForeground(s === 'active');
+    if (s === 'active' && !settled) void check();
+  });
   return () => {
+    stopped = true;
     off();
     sub.remove();
   };
@@ -162,12 +195,17 @@ export async function signInWith(p: 'apple' | 'google', agreed: true): Promise<R
 }
 
 // ── Sign out ──────────────────────────────────────────────────────────
-/** "Sign out" (this phone) or "Sign out on all devices". Progress on the phone always stays. */
+/**
+ * "Sign out on this phone" or "Sign out on all devices". Progress on the
+ * phone always stays. Signing out on this phone always works, offline too:
+ * the backend forgets the session here even when it reports a failure
+ * (AuthPort.signOut), so a failure there is not shown.
+ */
 export async function signOut(scope: 'local' | 'global'): Promise<Result> {
   try {
     await backend().auth.signOut(scope);
   } catch (e) {
-    return failed(e);
+    if (scope === 'global') return failed(e);
   }
   const keep = useAccount.getState().syncedAccountHash;
   useAccount.getState().setFacts({ ...SIGNED_OUT, syncedAccountHash: keep });
@@ -182,12 +220,16 @@ export interface DeletePlan {
   provider: Provider;
 }
 
-/** Step 1's Continue: what step 2 asks for. Never called on mount (a deep link can't start anything). */
+/**
+ * Step 1's Continue: what step 2 asks for (engine/account.ts deleteStep: an
+ * Apple-linked account on iOS always confirms with Apple, for a fresh code).
+ * Never called on mount (a deep link can't start anything).
+ */
 export async function deletePlan(now = Date.now()): Promise<Result<{ plan: DeletePlan }>> {
   try {
     const a = await backend().auth.current();
     if (!a) return { ok: false, code: 'unauthorized' };
-    return { ok: true, plan: { gate: deleteGate(a.authAt, now), provider: reauthProvider(a.providers, shownProviders()) } };
+    return { ok: true, plan: deleteStep(a.providers, shownProviders(), a.authAt, now) };
   } catch (e) {
     return failed(e);
   }
@@ -208,19 +250,29 @@ export async function reauth(p: Provider, code?: string): Promise<Result<{ apple
  * this phone. `alsoLocal` (unticked by default) also clears study progress
  * here, through the same path as Settings → Reset.
  *
- * Checks the sign-in is recent FIRST, so an old one asks to confirm it's you
- * without calling the server. Offline or a server failure: nothing is
- * deleted, here or there. A second call for an account already gone (the
- * server says "unauthorized") counts as done.
+ * - No session on this phone: refused here (`unauthorized`), with no call.
+ * - The sign-in isn't recent: `reauth_required`, with no call (confirm it's
+ *   you first).
+ * - Offline or a server failure: nothing is deleted, here or there.
+ * - The server refused the session (`unauthorized`: revoked by "Sign out on
+ *   all devices", or expired): NOT done. Signed out here (the row says
+ *   "Sign in again"), progress untouched, nothing deleted.
+ * - Only `gone` (the account is already deleted, e.g. a first call whose
+ *   reply was lost) counts as done.
  */
 export async function deleteAccount(i: { alsoLocal: boolean; appleAuthorizationCode?: string }, now = Date.now()): Promise<Result> {
   const b = backend();
   try {
     const a = await b.auth.current();
-    if (a && deleteGate(a.authAt, now) === 'reauth') return { ok: false, code: 'reauth_required' };
+    if (!a) return { ok: false, code: 'unauthorized' };
+    if (deleteGate(a.authAt, now) === 'reauth') return { ok: false, code: 'reauth_required' };
     await b.auth.deleteAccount({ confirm: 'DELETE', appleAuthorizationCode: i.appleAuthorizationCode });
   } catch (e) {
-    if (!(e instanceof CloudError && e.code === 'unauthorized')) return failed(e);
+    if (e instanceof CloudError && e.code === 'unauthorized') {
+      await sessionEnded(b);
+      return failed(e);
+    }
+    if (!(e instanceof CloudError && e.code === 'gone')) return failed(e);
   }
   await b.auth.signOut('local').catch(() => {});
   useAccount.getState().setFacts({ ...SIGNED_OUT });
@@ -248,9 +300,12 @@ const ACCOUNT_FILE = /^aurivan-account-.*\.json$/;
  */
 export async function downloadMyData(now = Date.now()): Promise<Result<{ outcome: 'shared' | 'unavailable' }>> {
   let text: string;
+  const b = backend();
   try {
-    text = await backend().auth.exportMyData({ appVersion: Constants.expoConfig?.version });
+    text = await b.auth.exportMyData({ appVersion: Constants.expoConfig?.version });
   } catch (e) {
+    // The session ended (or its account is gone): signed out here, and the screen says sign in again.
+    if (e instanceof CloudError && (e.code === 'unauthorized' || e.code === 'gone')) await sessionEnded(b);
     return failed(e);
   }
   const name = accountExportFileName(now);
@@ -263,7 +318,8 @@ export async function downloadMyData(now = Date.now()): Promise<Result<{ outcome
       a.href = url;
       a.download = name;
       a.click();
-      URL.revokeObjectURL(url);
+      // Revoked a moment later: revoking at once can cancel the download in some browsers.
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
       return { ok: true, outcome: 'shared' };
     }
     if (!(await Sharing.isAvailableAsync())) return { ok: true, outcome: 'unavailable' };

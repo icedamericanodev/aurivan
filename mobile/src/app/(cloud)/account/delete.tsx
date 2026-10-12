@@ -6,25 +6,35 @@
  *
  * 1. "Delete your Aurivan account?" with "Also remove my progress from this
  *    phone" UNticked, then Continue or Cancel.
- * 2. Re-confirm. A sign-in under 10 minutes old: type DELETE. Otherwise
- *    confirm it's you first with the same method (email code, Apple,
- *    Google); Apple's fresh code lets the server revoke Apple's token.
- *    The destructive button lives only here.
- * 3. "Your account is deleted".
- * Offline, or a server failure: nothing is deleted, and the copy says so.
+ * 2. Re-confirm. A sign-in under 10 minutes old: type DELETE (any case).
+ *    Otherwise confirm it's you first with the same method (email code,
+ *    Apple, Google). An account linked to Apple, on an iPhone, always
+ *    confirms with Apple: its fresh code lets the server revoke Apple's
+ *    token. A line above the DELETE field restates the step 1 choice. The
+ *    destructive button lives only here.
+ * 3. "Your account is deleted" (and, with the box ticked, that this phone's
+ *    progress is gone too).
+ * Offline, or a server failure: nothing is deleted, and the copy says so. A
+ * sign-in that ended meanwhile: nothing is deleted, and it says sign in again.
+ *
+ * Email code step: a wrong code shows on the field, which takes focus. An
+ * expired code, or too many tries, goes back to "Send a code to …" so a new
+ * one can be sent. Sending says "Code sent to …" to a screen reader.
  *
  * Takes NO link parameters (aurivan://account/delete?confirm=DELETE only
- * opens step 1) and calls nothing until a tap. No swipe-back while it runs.
+ * opens step 1) and calls nothing until a tap. No swipe-back and no Android
+ * back while it deletes; Android back on the last step goes to You (the
+ * account screens behind it are for an account that no longer exists).
  */
-import { router } from 'expo-router';
-import { useRef, useState } from 'react';
-import { TextInput, View } from 'react-native';
-import { AccountNotice } from '../../../components/account';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useRef, useState } from 'react';
+import { BackHandler, TextInput, View } from 'react-native';
+import { AccountNotice, codeProblem } from '../../../components/account';
 import { Button, CheckRow, PushedHeader, Screen, T, TextField } from '../../../components/ui';
 import { copy, type AccountCopyKey } from '../../../content/cloud/copy';
 import { cleanCode, typedDelete, validCode, type Provider } from '../../../engine/account';
 import { deleteAccount, deletePlan, reauth, type DeletePlan } from '../../../lib/account';
-import { moveFocus } from '../../../lib/a11y';
+import { moveFocus, sayLater } from '../../../lib/a11y';
 import { config } from '../../../lib/config';
 import { useAccount } from '../../../store/account';
 import { space } from '../../../theme/tokens';
@@ -42,19 +52,50 @@ export default function DeleteAccount() {
   const [confirmed, setConfirmed] = useState(false);
   const [codeSent, setCodeSent] = useState(false);
   const [code, setCode] = useState('');
+  // A code that didn't work, shown on the field.
+  const [codeIssue, setCodeIssue] = useState<string | null>(null);
   const [appleCode, setAppleCode] = useState<string | undefined>(undefined);
   const [typed, setTyped] = useState('');
   const [busy, setBusy] = useState<'plan' | 'reauth' | 'delete' | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const titleRef = useRef<View>(null);
   const typeRef = useRef<TextInput>(null);
+  const codeRef = useRef<TextInput>(null);
 
   const back = () => (router.canGoBack() ? router.back() : router.replace('/account'));
   const goTo = (s: Step) => {
     setStep(s);
     moveFocus(titleRef, 350);
   };
-  const problem = (code: string) => setNotice(code === 'offline' ? copy('delete.offline') : copy('delete.fail', { supportEmail: config.feedbackEmail }));
+  const problem = (c: string) =>
+    setNotice(
+      c === 'offline' ? copy('delete.offline') : c === 'unauthorized' || c === 'gone' ? copy('delete.signin') : copy('delete.fail', { supportEmail: config.feedbackEmail }),
+    );
+  /** Back to "confirm it's you" (the sign-in got old, or Apple's code was refused): a fresh confirmation. */
+  const confirmAgain = () => {
+    setPlan((p) => (p ? { ...p, gate: 'reauth' } : p));
+    setConfirmed(false);
+    setCodeSent(false);
+    setCode('');
+    setCodeIssue(null);
+    setAppleCode(undefined);
+  };
+
+  // Android's back button: never while the account is being deleted; once it
+  // is, to You (the same as Done).
+  useFocusEffect(
+    useCallback(() => {
+      const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+        if (busy === 'delete') return true;
+        if (step === 'done') {
+          router.replace('/you');
+          return true;
+        }
+        return false;
+      });
+      return () => sub.remove();
+    }, [busy, step]),
+  );
 
   const cont = async () => {
     setNotice(null);
@@ -77,12 +118,26 @@ export default function DeleteAccount() {
     setBusy(null);
     if (!r.ok) {
       if (r.code === 'cancelled') return;
-      if (r.code === 'invalid' && p === 'email') return setNotice(r.detail === 'code_expired' ? copy('code.expired') : r.detail === 'code_toomany' ? copy('code.toomany') : copy('code.wrong'));
+      if (r.code === 'invalid' && p === 'email' && codeSent) {
+        if (r.detail === 'code_expired' || r.detail === 'code_toomany') {
+          // This code can't work any more: back to "Send a code to …", and say why.
+          setCodeSent(false);
+          setCode('');
+          setCodeIssue(null);
+          setNotice(codeProblem(r.detail));
+          return;
+        }
+        setCodeIssue(codeProblem(r.detail));
+        codeRef.current?.focus();
+        return;
+      }
       if (r.code === 'rate_limited') return setNotice(copy('err.rate'));
       return problem(r.code);
     }
     if (p === 'email' && !codeSent) {
       setCodeSent(true);
+      setCodeIssue(null);
+      sayLater(copy('code.sent', { email: emailMasked ?? '' }));
       return;
     }
     setAppleCode(r.appleAuthorizationCode);
@@ -97,13 +152,16 @@ export default function DeleteAccount() {
     const r = await deleteAccount({ alsoLocal, appleAuthorizationCode: appleCode });
     setBusy(null);
     if (r.ok) return goTo('done');
-    if (r.code === 'reauth_required') {
-      // The sign-in got too old while this screen was open: confirm it's you again.
-      setPlan((p) => (p ? { ...p, gate: 'reauth' } : p));
-      setConfirmed(false);
-      setCodeSent(false);
-      setCode('');
+    if (r.code === 'reauth_required' || (r.code === 'invalid' && (r.detail === 'apple_code_required' || r.detail === 'apple_code_invalid'))) {
+      // The sign-in got too old while this screen was open, or Apple's code was refused: confirm it's you again.
+      confirmAgain();
       return;
+    }
+    if (r.code === 'unauthorized') {
+      // The sign-in ended (signed out on all devices elsewhere): nothing was deleted, and this phone is signed out.
+      setPlan(null);
+      setTyped('');
+      goTo('s1');
     }
     problem(r.code);
   };
@@ -126,6 +184,7 @@ export default function DeleteAccount() {
             <CheckRow label={copy('delete.s1.local')} checked={alsoLocal} onPress={() => setAlsoLocal((v) => !v)} last />
           </View>
           <Button label={copy('delete.s1.go')} onPress={cont} disabled={busy !== null} style={{ marginTop: space.lg }} />
+          {busy === 'plan' && <T v="meta" style={{ marginTop: space.sm }}>{copy('delete.s1.busy')}</T>}
           <Button kind="ghost" label={copy('delete.s1.cancel')} onPress={back} style={{ alignSelf: 'center', marginTop: space.sm }} />
         </View>
       )}
@@ -138,9 +197,14 @@ export default function DeleteAccount() {
               <T v="body" style={{ marginTop: space.md }}>{copy('delete.s2.reauth')}</T>
               {plan.provider === 'email' && codeSent && (
                 <TextField
+                  ref={codeRef}
                   label={copy('code.field')}
                   value={code}
-                  onChangeText={(v) => setCode(cleanCode(v))}
+                  onChangeText={(v) => {
+                    setCode(cleanCode(v));
+                    if (codeIssue) setCodeIssue(null);
+                  }}
+                  problem={codeIssue}
                   keyboardType="number-pad"
                   autoComplete="one-time-code"
                   textContentType="oneTimeCode"
@@ -161,9 +225,11 @@ export default function DeleteAccount() {
                 onPress={confirmIt}
                 style={{ marginTop: space.lg }}
               />
+              {busy === 'reauth' && plan.provider === 'email' && !codeSent && <T v="meta" style={{ marginTop: space.sm }}>{copy('email.sending')}</T>}
             </View>
           ) : (
             <View>
+              <T v="meta" style={{ marginTop: space.md }}>{copy(alsoLocal ? 'delete.s2.local.on' : 'delete.s2.local.off')}</T>
               <TextField
                 ref={typeRef}
                 label={copy('delete.s2.type')}
@@ -184,7 +250,7 @@ export default function DeleteAccount() {
       {step === 'done' && (
         <View style={{ marginTop: space.xxl }}>
           {header('delete.done.title')}
-          <T v="body" style={{ marginTop: space.md }}>{copy('delete.done.body')}</T>
+          <T v="body" style={{ marginTop: space.md }}>{copy(alsoLocal ? 'delete.done.body.local' : 'delete.done.body')}</T>
           <Button label={copy('delete.done.go')} onPress={() => router.replace('/you')} style={{ marginTop: space.xl }} />
         </View>
       )}

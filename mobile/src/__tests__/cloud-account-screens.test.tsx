@@ -10,10 +10,13 @@
  * - #8: no PII in console during sign-in, sign-out and delete;
  * - deep links with hostile params start nothing (§2.6);
  * - A5: "Download my data" saves a file a backup restore would accept.
+ * Plus the Phase 6 fix round (code review B1–B3, S3–S5; UX H2, H3, P2, P4–P6, O1):
+ * Apple accounts on iOS always confirm with Apple; only "gone" is deleted;
+ * the email code step can always get a new code; Android back on delete.
  */
 /* eslint-disable @typescript-eslint/no-require-imports */
 import type { ComponentType, ReactElement } from 'react';
-import { Alert, Platform } from 'react-native';
+import { AccessibilityInfo, Alert, AppState, BackHandler, Platform } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { setBackendForTests } from '../cloud/backend';
 import { createMemoryBackend, type MemoryBackend, type MemoryUser } from '../cloud/memory/backend';
@@ -22,6 +25,7 @@ import { getAllQuestions } from '../content/loader';
 import { readBackup } from '../engine/backup';
 import { TERMS_VERSION } from '../engine/account';
 import * as account from '../lib/account';
+import { flushSayLaterForTest } from '../lib/a11y';
 import { currentBackup } from '../lib/backup';
 import { startFromIds } from '../lib/sessions';
 import { SIGNED_OUT, useAccount } from '../store/account';
@@ -142,6 +146,8 @@ const field = (label: string) => {
   if (!n) throw new Error(`no field "${label}"`);
   return n;
 };
+/** How many typing fields have this spoken name (0 or 1). */
+const fields = (label: string) => r!.root.findAll((x) => typeof x.props.onChangeText === 'function' && x.props.accessibilityLabel === label).length;
 const type = (label: string, text: string) =>
   act(() => {
     field(label).props.onChangeText(text);
@@ -425,7 +431,7 @@ describe('A3: the session never leaks', () => {
       const Account = screen('index');
       mount(<Account />);
       alert.mockImplementation((_t, _m, buttons) => buttons?.[1]?.onPress?.());
-      await press('Sign out');
+      await press('Sign out on this phone');
       expect(facts().signedIn).toBe(false);
       await act(async () => {
         jest.advanceTimersByTime(61_000);
@@ -483,11 +489,16 @@ describe('A4: delete the account', () => {
     expect(button('Also remove my progress from this phone').props.checked).toBe(false);
     await press('Continue');
     expect(disabled('Delete account')).toBe(true);
-    type('Type DELETE to confirm', 'delete');
+    // The step 1 choice, restated above the field.
+    expect(allText()).toContain('Your progress on this phone stays here.');
+    type('Type DELETE to confirm', 'DELET');
     expect(disabled('Delete account')).toBe(true);
-    type('Type DELETE to confirm', 'DELETE');
+    // Any case counts (the keyboard may not start in capitals).
+    type('Type DELETE to confirm', 'delete');
     await press('Delete account');
     expect(allText()).toContain('Your account is deleted');
+    expect(allText()).toContain('It’s gone from our live systems now');
+    expect(allText()).not.toContain('was removed too');
     expect(memory.control.users()).toEqual([]);
     expect(facts().signedIn).toBe(false);
     expect(answered()).toBe(1);
@@ -500,9 +511,11 @@ describe('A4: delete the account', () => {
     mount(<Delete />);
     await press('Also remove my progress from this phone');
     await press('Continue');
+    expect(allText()).toContain('Your progress on this phone will be removed too.');
     type('Type DELETE to confirm', 'DELETE');
     await press('Delete account');
     expect(allText()).toContain('Your account is deleted');
+    expect(allText()).toContain('Your progress on this phone was removed too.');
     expect(answered()).toBe(0);
   });
 
@@ -514,7 +527,7 @@ describe('A4: delete the account', () => {
     mount(<Delete />);
     await press('Continue');
     expect(allText()).toContain('For your security, confirm it’s you first.');
-    expect(pressables('Type DELETE to confirm')).toHaveLength(0);
+    expect(fields('Type DELETE to confirm')).toBe(0);
     // Maya signs in with Google here, so she confirms with Google.
     await press('Continue with Google');
     type('Type DELETE to confirm', 'DELETE');
@@ -613,13 +626,314 @@ describe('A5: Download my data, A6: sign out', () => {
       expect(allText()).toContain('You’re offline. Connect to the internet to sign out on all devices.');
       expect(facts().signedIn).toBe(true);
       memory.control.setOffline(false);
-      await press('Sign out');
+      await press('Sign out on this phone');
       expect(alert.mock.calls[1][0]).toBe('Sign out?');
       expect(alert.mock.calls[1][1]).toBe('Your progress stays on this phone, and Aurivan keeps working without an account.');
       expect(facts().signedIn).toBe(false);
       expect(mockNav.back).toHaveBeenCalled();
     } finally {
       alert.mockRestore();
+    }
+  });
+});
+
+// ── Phase 6 fix round ──────────────────────────────────────────────────
+describe('fix round: deleting is never falsely "done"', () => {
+  const APPLE: MemoryUser = { userId: 'user-apple', email: 'demo-learner@privaterelay.appleid.com', providers: ['apple'], termsVersion: TERMS_VERSION, createdAt: 0 };
+  const signIn = (authAgoMin = 1, users?: MemoryUser[]) => {
+    backendWith({ signedIn: true, authAgoMin, users });
+    const u = (users ?? [MAYA])[0];
+    setFacts({ signedIn: true, emailMasked: u.email.startsWith('maya') ? 'm•••@example.com' : null, providers: u.providers });
+  };
+  const answerOne = () =>
+    act(() => {
+      useProgress.getState().recordAnswer('cisa', getAllQuestions('cisa')[0].id, true);
+    });
+  const answered = () => Object.keys(selectCert(useProgress.getState(), 'cisa').answers).length;
+
+  it('B1 (repro R1): an Apple account signed in a minute ago confirms with Apple on iOS, and its fresh code reaches the server', async () => {
+    signIn(1, [APPLE]);
+    const plan = await account.deletePlan();
+    expect(plan).toMatchObject({ ok: true, plan: { gate: 'reauth', provider: 'apple' } });
+    const del = jest.spyOn(memory.auth, 'deleteAccount');
+    const Delete = screen('delete');
+    mount(<Delete />);
+    await press('Continue');
+    expect(fields('Type DELETE to confirm')).toBe(0);
+    await press('Continue with Apple');
+    type('Type DELETE to confirm', 'DELETE');
+    await press('Delete account');
+    expect(allText()).toContain('Your account is deleted');
+    expect(del.mock.calls[0][0].appleAuthorizationCode).toMatch(/^mem-apple-code-/);
+    expect(memory.control.users()).toEqual([]);
+  });
+
+  it('B1: Apple’s code refused by the server goes back to "confirm it’s you", not a dead end', async () => {
+    signIn(1, [APPLE]);
+    const Delete = screen('delete');
+    mount(<Delete />);
+    await press('Continue');
+    await press('Continue with Apple');
+    type('Type DELETE to confirm', 'DELETE');
+    memory.control.failNext('auth.deleteAccount', 'invalid', 'apple_code_invalid');
+    await press('Delete account');
+    expect(pressables('Continue with Apple').length).toBeGreaterThan(0);
+    expect(fields('Type DELETE to confirm')).toBe(0);
+    await press('Continue with Apple');
+    type('Type DELETE to confirm', 'DELETE');
+    await press('Delete account');
+    expect(allText()).toContain('Your account is deleted');
+  });
+
+  it('B2 (repro R2): the server refusing the session is NOT deleted: account kept, progress kept, signed out here', async () => {
+    signIn(1);
+    answerOne();
+    const resetSpy = jest.spyOn(useProgress.getState(), 'resetCert');
+    memory.control.failNext('auth.deleteAccount', 'unauthorized');
+    const r = await account.deleteAccount({ alsoLocal: true });
+    expect(r).toMatchObject({ ok: false, code: 'unauthorized' });
+    expect(memory.control.users().map((u) => u.userId)).toEqual([MAYA.userId]);
+    expect(resetSpy).not.toHaveBeenCalled();
+    expect(answered()).toBe(1);
+    // The row says "Sign in again to keep syncing".
+    expect(facts()).toMatchObject({ signedIn: false, expired: true });
+    resetSpy.mockRestore();
+  });
+
+  it('B2: on screen, a sign-in that ended says so, and nothing reads "deleted"', async () => {
+    signIn(1);
+    const Delete = screen('delete');
+    mount(<Delete />);
+    await press('Also remove my progress from this phone');
+    await press('Continue');
+    type('Type DELETE to confirm', 'DELETE');
+    memory.control.failNext('auth.deleteAccount', 'unauthorized');
+    await press('Delete account');
+    expect(allText()).toContain('Your sign-in has ended, so nothing was deleted. Sign in again, then delete your account.');
+    expect(allText()).not.toContain('Your account is deleted');
+    expect(allText()).toContain('Delete your Aurivan account?');
+  });
+
+  it('B2: no session on this phone is refused before any server call', async () => {
+    backendWith({ signedIn: false });
+    expect(await account.deleteAccount({ alsoLocal: true })).toMatchObject({ ok: false, code: 'unauthorized' });
+    expect(memory.control.calls).not.toContain('auth.deleteAccount');
+  });
+
+  it('B2: a reply lost after the server deleted the account: the retry hears "gone", which is done', async () => {
+    signIn(1);
+    answerOne();
+    memory.control.dropNextReply('auth.deleteAccount');
+    expect(await account.deleteAccount({ alsoLocal: true })).toMatchObject({ ok: false, code: 'offline' });
+    expect(facts().signedIn).toBe(true);
+    expect(answered()).toBe(1);
+    expect(await account.deleteAccount({ alsoLocal: true })).toEqual({ ok: true });
+    expect(facts()).toMatchObject({ signedIn: false, expired: false });
+    expect(answered()).toBe(0);
+    expect(await memory.auth.current()).toBeNull();
+  });
+});
+
+describe('fix round: the email code step on delete (UX H2, CR S3)', () => {
+  const ANN: MemoryUser = { userId: 'user-ann', email: 'ann@example.org', providers: ['email'], termsVersion: TERMS_VERSION, createdAt: 0 };
+  const open = async () => {
+    backendWith({ signedIn: true, authAgoMin: 30, users: [ANN] });
+    setFacts({ signedIn: true, emailMasked: 'a•••@example.org', providers: ['email'] });
+    const Delete = screen('delete');
+    mount(<Delete />);
+    await press('Continue');
+  };
+  const wrongFor = (code: string) => (code === '000000' ? '111111' : '000000');
+
+  it('sending says "Code sent to …"; a wrong code shows on the field (spoken as its hint)', async () => {
+    const said = jest.spyOn(AccessibilityInfo, 'announceForAccessibility');
+    await open();
+    await press('Send a code to a•••@example.org');
+    act(() => flushSayLaterForTest());
+    expect(said).toHaveBeenCalledWith('Code sent to a•••@example.org');
+    type('6-digit code', wrongFor(memory.control.lastCode('ann@example.org')!));
+    await press('Confirm it’s you');
+    expect(allText()).toContain('That code didn’t work. Check it, or send a new one.');
+    expect(field('6-digit code').props.accessibilityHint).toBe('That code didn’t work. Check it, or send a new one.');
+    said.mockRestore();
+  });
+
+  it('an expired code goes back to "Send a code to …", which sends a new one', async () => {
+    await open();
+    await press('Send a code to a•••@example.org');
+    const first = memory.control.lastCode('ann@example.org')!;
+    act(() => {
+      jest.advanceTimersByTime(11 * 60_000);
+    });
+    type('6-digit code', first);
+    await press('Confirm it’s you');
+    expect(allText()).toContain('That code has expired. Send a new one.');
+    expect(fields('6-digit code')).toBe(0);
+    await press('Send a code to a•••@example.org');
+    expect(memory.control.calls.filter((c) => c === 'auth.reauthenticate')).toHaveLength(3);
+    type('6-digit code', memory.control.lastCode('ann@example.org')!);
+    await press('Confirm it’s you');
+    expect(fields('Type DELETE to confirm')).toBeGreaterThan(0);
+  });
+
+  it('five wrong codes go back to "Send a code to …" (never a dead end)', async () => {
+    await open();
+    await press('Send a code to a•••@example.org');
+    const wrong = wrongFor(memory.control.lastCode('ann@example.org')!);
+    for (let i = 0; i < 5; i++) {
+      type('6-digit code', wrong);
+      await press('Confirm it’s you');
+    }
+    expect(allText()).toContain('Too many tries. Send a new code to try again.');
+    expect(pressables('Send a code to a•••@example.org').length).toBeGreaterThan(0);
+  });
+});
+
+describe('fix round: Android back on delete (UX H3)', () => {
+  it('does nothing while the account is being deleted; on "deleted" it goes to You', async () => {
+    let handler: (() => boolean | null | undefined) | undefined;
+    type BackListener = Parameters<typeof BackHandler.addEventListener>[1];
+    const spy = jest.spyOn(BackHandler, 'addEventListener').mockImplementation((_e, h: BackListener) => {
+      handler = () => h({} as Parameters<BackListener>[0]);
+      return { remove: () => {} };
+    });
+    try {
+      backendWith({ signedIn: true });
+      setFacts({ signedIn: true, emailMasked: 'm•••@example.com', providers: ['email', 'google'] });
+      const Delete = screen('delete');
+      mount(<Delete />);
+      expect(handler!()).toBe(false); // step 1: back as usual
+      await press('Continue');
+      type('Type DELETE to confirm', 'DELETE');
+      let finish: () => void = () => {};
+      const real = memory.auth.deleteAccount.bind(memory.auth);
+      jest.spyOn(memory.auth, 'deleteAccount').mockImplementation((i) => new Promise((res) => (finish = () => res(real(i)))));
+      await press('Delete account');
+      expect(allText()).toContain('Deleting your account…');
+      expect(handler!()).toBe(true); // swallowed while it runs
+      expect(mockNav.back).not.toHaveBeenCalled();
+      await act(async () => finish());
+      await flush();
+      expect(allText()).toContain('Your account is deleted');
+      let handled: boolean | null | undefined;
+      act(() => {
+        handled = handler!();
+      });
+      expect(handled).toBe(true);
+      expect(mockNav.replace).toHaveBeenCalledWith('/you');
+    } finally {
+      spy.mockRestore();
+    }
+  });
+});
+
+describe('fix round: sessions that end, and launch (CR S4, S5, B3)', () => {
+  it('S5: a session that ends on its own while signed in leaves "Sign in again to keep syncing"', async () => {
+    backendWith({ signedIn: true });
+    const stop = await account.initAccount();
+    expect(facts().signedIn).toBe(true);
+    // Supabase emits SIGNED_OUT when a refresh fails; here the memory backend forgets the session.
+    await act(async () => {
+      await memory.auth.signOut('local');
+    });
+    expect(facts()).toMatchObject({ signedIn: false, expired: true });
+    const You = require('../app/(tabs)/you').default as ComponentType;
+    mount(<You />);
+    expect(allText()).toContain('Sign in again to keep syncing');
+    stop();
+  });
+
+  it('S5: a sign-out the learner chose is not "expired"', async () => {
+    backendWith({ signedIn: true });
+    const stop = await account.initAccount();
+    expect(await account.signOut('local')).toEqual({ ok: true });
+    expect(facts()).toMatchObject({ signedIn: false, expired: false });
+    stop();
+  });
+
+  it('S4: saved facts that can’t be read at launch: no rejection, and it checks again when the app is next in front', async () => {
+    backendWith({ signedIn: true });
+    const rehydrate = jest.spyOn(useAccount.persist, 'rehydrate').mockRejectedValueOnce(new Error('disk'));
+    const listeners: ((s: string) => void)[] = [];
+    const appState = jest.spyOn(AppState, 'addEventListener').mockImplementation((_e, h) => {
+      listeners.push(h as (s: string) => void);
+      return { remove: () => {} } as ReturnType<typeof AppState.addEventListener>;
+    });
+    try {
+      const stop = await account.initAccount();
+      expect(facts().signedIn).toBe(false);
+      expect(memory.control.calls).toContain('auth.setForeground');
+      await act(async () => {
+        listeners.forEach((h) => h('active'));
+      });
+      await flush();
+      expect(facts().signedIn).toBe(true);
+      stop();
+    } finally {
+      rehydrate.mockRestore();
+      appState.mockRestore();
+    }
+  });
+
+  it('a local sign-out that reports a failure still signs out on this phone', async () => {
+    backendWith({ signedIn: true });
+    setFacts({ signedIn: true, emailMasked: 'm•••@example.com', providers: ['email', 'google'] });
+    memory.control.failNext('auth.signOut', 'server');
+    expect(await account.signOut('local')).toEqual({ ok: true });
+    expect(facts().signedIn).toBe(false);
+    expect(await memory.auth.current()).toBeNull();
+  });
+
+  it('B3: Download my data needs no recent sign-in; a sign-in that ended says sign in again', async () => {
+    backendWith({ signedIn: true, authAgoMin: 24 * 60 });
+    setFacts({ signedIn: true, emailMasked: 'm•••@example.com', providers: ['email', 'google'] });
+    const Account = screen('index');
+    mount(<Account />);
+    await press('Download my data, A copy of everything your account holds, as a file.');
+    expect(allText()).toContain('Your data file is ready.');
+    act(() => {
+      jest.advanceTimersByTime(60 * 60_000);
+    });
+    memory.control.failNext('auth.exportMyData', 'unauthorized');
+    await press('Download my data, A copy of everything your account holds, as a file.');
+    expect(facts()).toMatchObject({ signedIn: false, expired: true });
+    expect(allText()).toContain('Your sign-in has ended. Sign in again to download your data.');
+    expect(allText()).toContain('Keep your progress on every device');
+  });
+});
+
+describe('fix round: the field and the words (UX P1, P4, P6)', () => {
+  it('P4: the visible label and problem lines are hidden from screen readers (the field says them); the outline turns tip', async () => {
+    account.setAgreed(true);
+    const Email = screen('email');
+    mount(<Email />);
+    type('Email address', 'nope');
+    await press('Send code');
+    const hidden = r!.root.findAll((n) => n.props.importantForAccessibility === 'no-hide-descendants' && n.props.accessibilityElementsHidden === true);
+    const hiddenText = hidden.map((n) => n.findAll((x) => typeof x.props.children === 'string').map((x) => x.props.children).join(' ')).join(' | ');
+    expect(hiddenText).toContain('Email address');
+    expect(hiddenText).toContain('Enter an email address like name@example.com.');
+    const style = [field('Email address').props.style].flat(3).reduce((a: object, b: object | null) => ({ ...a, ...(b ?? {}) }), {}) as { borderColor?: string };
+    expect(style.borderColor).toBe(require('../theme/tokens').light.tip);
+  });
+
+  it('P1: the sign-out section and row say where', () => {
+    backendWith({ signedIn: true });
+    setFacts({ signedIn: true, emailMasked: 'm•••@example.com', providers: ['email'] });
+    const Account = screen('index');
+    mount(<Account />);
+    expect(allText()).toContain('Where you’re signed in');
+    expect(pressables('Sign out on this phone').length).toBeGreaterThan(0);
+  });
+
+  it('P6: no spoken string is typed into the account screens outside copy.ts', () => {
+    const { readFileSync } = require('fs');
+    const { join } = require('path');
+    const files = ['app/(cloud)/account/index.tsx', 'app/(cloud)/account/email.tsx', 'app/(cloud)/account/delete.tsx', 'app/(cloud)/account/sign-in.tsx', 'components/account.tsx'];
+    for (const f of files) {
+      const src = readFileSync(join(__dirname, '..', f), 'utf8') as string;
+      expect(`${f}: ${src.match(/accessibility(Label|Hint)=["'`]/g) ?? 'none'}`).toBe(`${f}: none`);
+      expect(`${f}: ${src.match(/accessibility(Label|Hint)=\{`/g) ?? 'none'}`).toBe(`${f}: none`);
     }
   });
 });

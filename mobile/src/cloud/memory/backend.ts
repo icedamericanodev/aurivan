@@ -4,16 +4,19 @@
  * the screens meet the same answers they will meet for real:
  * - email codes: 6 digits, 10 minutes, 60 s between sends, 5 wrong tries;
  * - own-rows-only accounts, Terms acceptance, sign out (this phone / all);
- * - deletion needs a sign-in from the last 10 minutes, and an Apple account
- *   needs Apple's fresh authorisation code;
- * - "Download my data" once an hour;
+ * - deletion needs a sign-in from the last 10 minutes; Apple's code is
+ *   optional (the server's Apple revoke is best-effort), and a second call
+ *   for a deleted account is `gone`, while no session is `unauthorized`;
+ * - "Download my data" once an hour (no recent sign-in needed);
+ * - signing out on this phone always forgets the session, even offline;
  * - sync snapshots with `rev` concurrency and the 1.5 MB cap (PR 7 uses it);
  * - "offline" on demand, and a log of every port call for tests.
  * The session is written through the same chunked session store a real
  * build uses (cloud/secureSession.ts), into an in-memory key store.
  *
- * Never in a store build: cloud/runtime.on.ts only creates it in a dev or
- * screenshot build, and cloud/configGuard.ts refuses it in EAS profiles.
+ * Never in a store build: cloud/runtime.on.ts only creates it in a dev build
+ * or the WEB screenshot build, and cloud/configGuard.ts refuses it in EAS
+ * profiles.
  */
 import { CODE_TTL_MS, EXPORT_EVERY_MS, maskEmail, MAX_CODE_TRIES, normalizeEmail, recentAuth, RESEND_WAIT_MS, validCode, validEmail, type Provider } from '../../engine/account';
 import { utf8 } from '../../engine/sha256';
@@ -25,6 +28,11 @@ import { createMemoryKV, type MemoryKV } from './kv';
 const SESSION_KEY = 'sb-memory-auth-token';
 /** The sync cap: a snapshot over 1.5 MB (UTF-8) is refused. */
 const MAX_SNAPSHOT_BYTES = 1_500_000;
+/** The server's Retry-After for "Download my data": always the full hour. */
+const EXPORT_RETRY_AFTER_SEC = 3600;
+/** The server's checks on its inputs (export-my-data's SEMVER, apple.ts isAppleCode). */
+const SEMVER = /^\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+const APPLE_CODE = /^[A-Za-z0-9._~+/=-]{8,1024}$/;
 
 export interface MemoryUser {
   userId: string;
@@ -61,8 +69,14 @@ export interface MemoryControl {
   lastCode(email: string): string | null;
   /** Every port call, in order ("auth.sendEmailCode", …). */
   calls: string[];
-  /** The next call to this method fails with this code. */
-  failNext(method: string, code: CloudErrorCode): void;
+  /** The next call to this method fails with this code (and detail, e.g. 'apple_code_invalid'). */
+  failNext(method: string, code: CloudErrorCode, detail?: string): void;
+  /**
+   * The next call to this method does its work on the "server", then its
+   * reply is lost (the app sees 'offline'). Models a dropped connection
+   * after the server already deleted the account.
+   */
+  dropNextReply(method: string): void;
   kv: MemoryKV;
   /** The raw session (tokens) a test greps the app's storage and logs for. */
   session(): { userId: string; accessToken: string; refreshToken: string; authAt: number } | null;
@@ -86,12 +100,15 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
   const kv = opts.kv ?? createMemoryKV();
   const store = createChunkedSession(kv);
   const users = new Map<string, MemoryUser>((opts.users ?? []).map((u) => [u.userId, { ...u }]));
+  /** Deleted accounts: a session the phone still holds for one of these gets 'gone' from the server. */
+  const deleted = new Map<string, MemoryUser>();
   const codes = new Map<string, { code: string; sentAt: number; tries: number }>();
   const snapshots = new Map<string, Partial<Record<SyncStore, SnapshotHead & { state: unknown }>>>(Object.entries(opts.snapshots ?? {}));
   const lastExport = new Map<string, number>();
   const listeners = new Set<(a: AccountInfo | null) => void>();
   const calls: string[] = [];
-  const failures = new Map<string, CloudErrorCode>();
+  const failures = new Map<string, { code: CloudErrorCode; detail?: string }>();
+  const dropped = new Set<string>();
   let offline = opts.offline ?? false;
   let foreground = true;
   // The session as last read or written (the store is the truth; this saves re-reading it).
@@ -109,8 +126,10 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
     ready = saveSession({ userId: opts.signedIn.userId, authAt: opts.signedIn.authAt, accessToken: token('mem-at'), refreshToken: token('mem-rt') });
   }
 
+  // The phone's view: a session it holds for an account deleted on the server still reads (like a real
+  // client's stored session); only server calls find out ('gone').
   const info = (s: Session): AccountInfo | null => {
-    const u = users.get(s.userId);
+    const u = users.get(s.userId) ?? deleted.get(s.userId);
     if (!u) return null;
     return { userId: u.userId, emailMasked: maskEmail(u.email), providers: [...u.providers], authAt: s.authAt, termsVersion: u.termsVersion };
   };
@@ -126,9 +145,13 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
     const forced = failures.get(method);
     if (forced) {
       failures.delete(method);
-      throw new CloudError(forced);
+      throw new CloudError(forced.code, undefined, forced.detail);
     }
     if (offline) throw new CloudError('offline');
+  };
+  /** After a call's work: its reply may be "lost" (dropNextReply). */
+  const leave = (method: string) => {
+    if (dropped.delete(method)) throw new CloudError('offline');
   };
   const current = async (): Promise<Session | null> => {
     const raw = await store.getItem(SESSION_KEY);
@@ -141,12 +164,14 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
     } catch {
       session = null;
     }
-    // A deleted account's session is no session.
-    if (session && !users.has(session.userId)) session = null;
+    // A session for an account that never existed here is no session.
+    if (session && !users.has(session.userId) && !deleted.has(session.userId)) session = null;
     return session;
   };
+  /** The server's requireUser: no session → unauthorized; a deleted account → gone. */
   const needUser = async (): Promise<{ s: Session; u: MemoryUser }> => {
     const s = await current();
+    if (s && deleted.has(s.userId)) throw new CloudError('gone');
     const u = s ? users.get(s.userId) : undefined;
     if (!s || !u) throw new CloudError('unauthorized');
     return { s, u };
@@ -265,55 +290,61 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
         // Signing out on THIS phone works offline (it only forgets the session); everywhere needs the server.
         calls.push('auth.signOut');
         await ready;
+        const forced = failures.get('auth.signOut');
+        if (forced) failures.delete('auth.signOut');
         if (scope === 'global') {
-          const forced = failures.get('auth.signOut');
-          if (forced) {
-            failures.delete('auth.signOut');
-            throw new CloudError(forced);
-          }
+          if (forced) throw new CloudError(forced.code, undefined, forced.detail);
           if (offline) throw new CloudError('offline');
         }
         await saveSession(null);
         emit();
+        // This phone's session is gone even when a local sign-out then reports a failure (AuthPort.signOut).
+        if (forced) throw new CloudError(forced.code, undefined, forced.detail);
       },
       async deleteAccount(i) {
+        // The server's order: who (unauthorized / gone), a recent sign-in, the body, then the work.
         await enter('auth.deleteAccount');
         const { s, u } = await needUser();
-        if (i.confirm !== 'DELETE') throw new CloudError('invalid', undefined, 'confirm_required');
         if (!recentAuth(s.authAt, now())) throw new CloudError('reauth_required');
-        if (u.providers.includes('apple') && !i.appleAuthorizationCode) throw new CloudError('invalid', undefined, 'apple_code_required');
+        if (i.confirm !== 'DELETE') throw new CloudError('invalid', undefined, 'confirm_required');
+        const code = i.appleAuthorizationCode;
+        if (code !== undefined && !APPLE_CODE.test(code)) throw new CloudError('invalid', undefined, 'apple_code_invalid');
+        // An Apple account without a code is deleted too: the server's Apple revoke is best-effort.
         users.delete(u.userId);
+        deleted.set(u.userId, u);
         snapshots.delete(u.userId);
         lastExport.delete(u.userId);
-        await saveSession(null);
-        emit();
+        // The server can't touch the phone's storage: the app signs out locally after this.
+        leave('auth.deleteAccount');
       },
       async exportMyData(o) {
         await enter('auth.exportMyData');
         const { u } = await needUser();
         const last = lastExport.get(u.userId);
-        if (last !== undefined && now() - last < EXPORT_EVERY_MS) {
-          throw new CloudError('rate_limited', Math.ceil((last + EXPORT_EVERY_MS - now()) / 1000));
-        }
-        lastExport.set(u.userId, now());
+        if (last !== undefined && now() - last < EXPORT_EVERY_MS) throw new CloudError('rate_limited', EXPORT_RETRY_AFTER_SEC);
         const mine = snapshots.get(u.userId) ?? {};
         const stores: Record<string, { version: number; state: unknown }> = {};
         for (const k of ['settings', 'progress'] as const) {
           const snap = mine[k];
           if (snap) stores[k] = { version: snap.storeVersion, state: snap.state };
         }
-        return JSON.stringify(
+        const version = o?.appVersion ?? opts.appVersion;
+        const text = JSON.stringify(
           {
             app: 'aurivan',
             schema: 1,
             exportedAt: new Date(now()).toISOString(),
-            appVersion: o?.appVersion ?? opts.appVersion ?? '0.0.0',
+            appVersion: typeof version === 'string' && SEMVER.test(version) ? version : null,
             stores,
             account: { email: u.email, providers: u.providers, createdAt: new Date(u.createdAt).toISOString(), termsVersion: u.termsVersion },
           },
           null,
           2,
         );
+        // The hour is used only once the file is ready (the server claims its slot last).
+        lastExport.set(u.userId, now());
+        leave('auth.exportMyData');
+        return text;
       },
       setForeground(active) {
         calls.push('auth.setForeground');
@@ -362,8 +393,11 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
         return codes.get(normalizeEmail(email))?.code ?? null;
       },
       calls,
-      failNext(method, code) {
-        failures.set(method, code);
+      failNext(method, code, detail) {
+        failures.set(method, { code, detail });
+      },
+      dropNextReply(method) {
+        dropped.add(method);
       },
       kv,
       session: () => (session ? { ...session } : null),

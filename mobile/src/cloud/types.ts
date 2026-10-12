@@ -17,7 +17,10 @@ export type { Provider };
 
 export type CloudErrorCode =
   | 'offline'
+  /** No usable session (none on this phone, or the server refused the token). Never means "deleted". */
   | 'unauthorized'
+  /** The session's account no longer exists (the server's 410). The only code delete reads as "already done". */
+  | 'gone'
   | 'reauth_required'
   | 'rate_limited'
   | 'too_big'
@@ -38,12 +41,21 @@ export type CloudErrorCode =
  * `detail` is a short machine word for the screen to pick its copy
  * (`code_wrong`, `code_expired`, `code_toomany`). Never a server message.
  *
- * The Edge Functions answer `{ error, detail? }` (delete-account:
- * unauthorized, reauth_required, invalid with detail confirm_required |
- * apple_code_required | apple_code_invalid, rate_limited with a
- * `retry-after` header, too_big, server). The Phase 9 Supabase adapter maps
- * `error` to the code, `detail` to detail and `retry-after` to
- * retryAfterSec; the memory backend answers with the same set.
+ * The Edge Functions answer `{ error, detail? }`:
+ * - delete-account: unauthorized (401), gone (410: the account is already
+ *   deleted), reauth_required (401), invalid (400) with detail
+ *   confirm_required | apple_code_invalid, too_big, server;
+ * - export-my-data: unauthorized, gone, rate_limited (429, `retry-after`
+ *   3600), too_big, server.
+ * The Phase 9 Supabase adapter maps `error` to the code, `detail` to detail
+ * and `retry-after` to retryAfterSec, and:
+ * - `method_not_allowed` (405, a bug on our side) to `server`;
+ * - every GoTrue "Token has expired or is invalid" to `invalid` with detail
+ *   `code_wrong`: GoTrue can't tell an expired code from a wrong one and has
+ *   no per-code try counter (only a per-IP limit), so the screens' 5-try
+ *   count is the only cap a learner meets. `code_expired` and `code_toomany`
+ *   come from the memory backend (and the screens handle them).
+ * The memory backend answers with the same set.
  */
 export class CloudError extends Error {
   constructor(
@@ -89,7 +101,19 @@ export interface AuthPort {
    */
   reauthenticate(p: Provider, code?: string): Promise<{ appleAuthorizationCode?: string }>;
   acceptTerms(v: { termsVersion: string; ageConfirmed: true }): Promise<void>;
+  /**
+   * 'global' needs the server (offline: CloudError 'offline', nothing changes).
+   * 'local' must ALWAYS forget the session on this phone, offline or not, even
+   * when it then reports a failure: supabase-js `signOut({ scope: 'local' })`
+   * keeps the session when its /logout call fails on the network, so the
+   * Phase 9 adapter calls the session store's removeItem itself on any error.
+   */
   signOut(scope: 'local' | 'global'): Promise<void>;
+  /**
+   * The server deletes the account. Without an Apple code (Android, the web)
+   * an Apple-linked account is still deleted; only Apple's token revoke is
+   * skipped. A second call for an account already deleted: CloudError 'gone'.
+   */
   deleteAccount(i: { confirm: 'DELETE'; appleAuthorizationCode?: string }): Promise<void>;
   /**
    * JSON text for the share sheet: the backup envelope plus `account` (and

@@ -11,6 +11,7 @@ import {
   clockSpoken,
   createNonceGuard,
   deleteGate,
+  deleteStep,
   isRelayEmail,
   maskEmail,
   parseProviders,
@@ -137,11 +138,27 @@ describe('re-auth before deleting', () => {
     expect(reauthProvider(['apple'], ['google', 'email'])).toBe('apple');
   });
 
-  it('only DELETE, in capitals, confirms', () => {
+  it('the word DELETE confirms, in any case (the keyboard may not start in capitals)', () => {
     expect(typedDelete('DELETE')).toBe(true);
     expect(typedDelete(' DELETE ')).toBe(true);
-    expect(typedDelete('delete')).toBe(false);
+    expect(typedDelete('delete')).toBe(true);
+    expect(typedDelete('Delete')).toBe(true);
     expect(typedDelete('DELET')).toBe(false);
+    expect(typedDelete('DELETE IT')).toBe(false);
+    expect(typedDelete('')).toBe(false);
+  });
+
+  it('deleteStep: an Apple account on a phone that shows Apple always confirms with Apple, even just signed in', () => {
+    const ios = ['apple', 'google', 'email'] as const;
+    const android = ['google', 'email'] as const;
+    expect(deleteStep(['apple'], ios, now - 60_000, now)).toEqual({ gate: 'reauth', provider: 'apple' });
+    expect(deleteStep(['email', 'apple'], ios, now - 60_000, now)).toEqual({ gate: 'reauth', provider: 'apple' });
+    // Android: the usual rule (Apple can't show there); the server deletes without the Apple revoke.
+    expect(deleteStep(['apple', 'email'], android, now - 60_000, now)).toEqual({ gate: 'type', provider: 'email' });
+    expect(deleteStep(['apple', 'email'], android, now - 11 * 60_000, now)).toEqual({ gate: 'reauth', provider: 'email' });
+    // No Apple: recent → type; old → confirm with the best shown method.
+    expect(deleteStep(['google', 'email'], ios, now - 60_000, now)).toEqual({ gate: 'type', provider: 'google' });
+    expect(deleteStep(['email'], ios, now - 30 * 60_000, now)).toEqual({ gate: 'reauth', provider: 'email' });
   });
 });
 

@@ -15,20 +15,13 @@
 import { Redirect, router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
-import { AccountNotice, signInProblem } from '../../../components/account';
+import { AccountNotice, codeProblem, signInProblem } from '../../../components/account';
 import { Button, PushedHeader, Screen, T, TextField } from '../../../components/ui';
 import { copy } from '../../../content/cloud/copy';
 import { cleanCode, clockLabel, clockSpoken, maskEmail, MAX_CODE_TRIES, normalizeEmail, resendWaitMs, validCode, validEmail } from '../../../engine/account';
 import { hasAgreed, sendCode, verifyCode } from '../../../lib/account';
-import { moveFocus } from '../../../lib/a11y';
+import { moveFocus, sayLater } from '../../../lib/a11y';
 import { space } from '../../../theme/tokens';
-
-/** The copy for a code that didn't work. */
-function codeProblem(detail: string | undefined): string {
-  if (detail === 'code_expired') return copy('code.expired');
-  if (detail === 'code_toomany') return copy('code.toomany');
-  return copy('code.wrong');
-}
 
 export default function EmailSignIn() {
   const [agreed] = useState(() => hasAgreed());
@@ -78,8 +71,12 @@ export default function EmailSignIn() {
     setCode('');
     setCodeIssue(null);
     if (step === 'email') {
+      // The code step's title ("Enter the code we sent to …") takes focus and is read out.
       setStep('code');
       moveFocus(titleRef, 350);
+    } else {
+      // "Send a new code": nothing moves, so say that it went.
+      sayLater(copy('code.sent', { email: maskEmail(email) ?? '' }));
     }
   };
 
@@ -127,6 +124,7 @@ export default function EmailSignIn() {
             maxLength={254}
           />
           <Button label={copy('email.send')} onPress={send} disabled={busy} style={{ marginTop: space.lg }} />
+          {busy && <T v="meta" style={{ marginTop: space.sm }}>{copy('email.sending')}</T>}
         </View>
       ) : (
         <View>
@@ -160,7 +158,7 @@ export default function EmailSignIn() {
             // While waiting: a quiet line, not a greyed-out button (it isn't something to tap yet).
             // The same 48pt row as the button it becomes, so nothing below jumps.
             <View style={{ minHeight: 48, justifyContent: 'center', marginTop: space.sm }}>
-              <T v="meta" num accessibilityLabel={`Send a new code in ${clockSpoken(wait)}`}>
+              <T v="meta" num accessibilityLabel={copy('code.resend.wait.spoken', { time: clockSpoken(wait) })}>
                 {copy('code.resend.wait', { 'm:ss': clockLabel(wait) })}
               </T>
             </View>

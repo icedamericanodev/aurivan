@@ -123,9 +123,9 @@ export function deleteGate(authAt: number, now: number): 'type' | 'reauth' {
   return recentAuth(authAt, now) ? 'type' : 'reauth';
 }
 
-/** The learner typed the confirmation word. */
+/** The learner typed the confirmation word (any case: "delete" counts; the server always gets "DELETE"). */
 export function typedDelete(raw: string): boolean {
-  return raw.trim() === 'DELETE';
+  return raw.trim().toUpperCase() === 'DELETE';
 }
 
 /**
@@ -139,6 +139,27 @@ export function reauthProvider(accountProviders: readonly Provider[], shown: rea
     if (accountProviders.includes(p) && shown.includes(p)) return p;
   }
   return accountProviders[0] ?? 'email';
+}
+
+/**
+ * Delete, step 2: what to ask for before DELETE can be typed.
+ * - An account linked to Apple, on a phone that shows Apple (iOS): always
+ *   confirm with Apple, even straight after signing in. Apple's code is
+ *   single-use and short-lived, and the server needs a fresh one to revoke
+ *   Apple's tokens.
+ * - Otherwise: type DELETE after a recent sign-in, or confirm it's you first
+ *   with the method `reauthProvider` picks. (On Android an Apple-linked
+ *   account confirms another way; the server then deletes it without the
+ *   Apple revoke, which is best-effort.)
+ */
+export function deleteStep(
+  accountProviders: readonly Provider[],
+  shown: readonly Provider[],
+  authAt: number,
+  now: number,
+): { gate: 'type' | 'reauth'; provider: Provider } {
+  if (accountProviders.includes('apple') && shown.includes('apple')) return { gate: 'reauth', provider: 'apple' };
+  return { gate: deleteGate(authAt, now), provider: reauthProvider(accountProviders, shown) };
 }
 
 /** Milliseconds until "Send a new code" is allowed again (0 = now). */

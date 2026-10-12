@@ -55,7 +55,7 @@ export function AccountRow() {
       icon={<RefreshCw size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
       title={title}
       subtitle={sub}
-      accessibilityHint={signedIn ? 'Opens your account' : 'Opens sign in. An account is optional.'}
+      accessibilityHint={copy(signedIn ? 'hint.account.in' : 'hint.account.out')}
       onPress={() => router.push('/account')}
     />
   );
@@ -74,7 +74,7 @@ export function AccountSettingsGroup() {
         title={copy('settings.row')}
         value={value}
         subtitle={!signedIn && expired ? copy('you.row.expired.sub') : undefined}
-        accessibilityHint={signedIn ? 'Opens your account' : 'Opens sign in. An account is optional.'}
+        accessibilityHint={copy(signedIn ? 'hint.account.in' : 'hint.account.out')}
         onPress={() => router.push('/account')}
         last
       />
@@ -101,6 +101,13 @@ export function AccountNotice({ text, tone = 'problem' }: { text: string; tone?:
       <T v="small" color={c.ink}>{text}</T>
     </View>
   );
+}
+
+/** The copy for an email code that didn't work (sign in, and confirm it's you before deleting). */
+export function codeProblem(detail: string | undefined): string {
+  if (detail === 'code_expired') return copy('code.expired');
+  if (detail === 'code_toomany') return copy('code.toomany');
+  return copy('code.wrong');
 }
 
 /** The copy for a failed sign-in call (a cancelled Apple or Google sheet: nothing). */
@@ -150,10 +157,10 @@ export function SignInContent({ onClose }: { onClose: () => void }) {
       <T v="meta" style={{ marginTop: space.sm }}>{copy('signin.body3')}</T>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: -space.sm }}>
         {config.privacyUrl !== '' && (
-          <Button kind="ghost" label={`${copy('signin.privacy')} ›`} accessibilityLabel={copy('signin.privacy')} accessibilityHint="Opens in your browser" onPress={() => Linking.openURL(config.privacyUrl)} />
+          <Button kind="ghost" label={`${copy('signin.privacy')} ›`} accessibilityLabel={copy('signin.privacy')} accessibilityHint={copy('hint.browser')} onPress={() => Linking.openURL(config.privacyUrl)} />
         )}
         {config.termsUrl !== '' && (
-          <Button kind="ghost" label={`${copy('signin.terms')} ›`} accessibilityLabel={copy('signin.terms')} accessibilityHint="Opens in your browser" onPress={() => Linking.openURL(config.termsUrl)} />
+          <Button kind="ghost" label={`${copy('signin.terms')} ›`} accessibilityLabel={copy('signin.terms')} accessibilityHint={copy('hint.browser')} onPress={() => Linking.openURL(config.termsUrl)} />
         )}
       </View>
       <View style={{ marginTop: space.sm }}>

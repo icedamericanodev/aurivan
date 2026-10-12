@@ -17,10 +17,16 @@
  * - the flag on the `production` profile without AURIVAN_CLOUD_GO_LIVE_ACK=yes,
  *   which only the owner sets, at Phase 9;
  * - a Supabase URL that isn't https, or a missing publishable key;
+ * - with the real backend, a Privacy policy or Terms of Use link that isn't
+ *   https (the sign-in sheet links both; an account can't be offered without
+ *   them);
  * - anything secret-looking in an EXPO_PUBLIC_* value (those are bundled
  *   into the app, where anyone can read them);
  * - Google sign-in on iOS without Sign in with Apple (App Store rule 4.8),
- *   or no sign-in method at all.
+ *   or no sign-in method at all. The 4.8 check runs for EAS iOS builds
+ *   (EAS_BUILD_PLATFORM=ios). With no EAS platform (a local `expo run`) it is
+ *   skipped: every store build is an EAS build, and on iOS the app shows
+ *   Apple whenever it shows Google anyway (engine/account.ts providersFor).
  */
 import { parseProviders, type Provider } from '../engine/account';
 
@@ -100,11 +106,14 @@ export function assertCloudConfig(env: Env): CloudConfig {
     if (!(env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '').trim()) {
       throw new CloudConfigError('EXPO_PUBLIC_SUPABASE_ANON_KEY (the publishable key) is missing.');
     }
+    for (const k of ['EXPO_PUBLIC_PRIVACY_URL', 'EXPO_PUBLIC_TERMS_URL'] as const) {
+      if (!(env[k] ?? '').startsWith('https://')) throw new CloudConfigError(`${k} must be an https:// link: the sign-in sheet links it.`);
+    }
   }
   const providers = parseProviders(env.EXPO_PUBLIC_AURIVAN_CLOUD_PROVIDERS);
   if (!providers.length) throw new CloudConfigError('no sign-in method is turned on.');
   // App Store 4.8: an iOS app with Google sign-in must offer Sign in with Apple too.
-  if (platform !== 'android' && providers.includes('google') && !providers.includes('apple')) {
+  if (platform === 'ios' && providers.includes('google') && !providers.includes('apple')) {
     throw new CloudConfigError('Google sign-in on iOS needs Sign in with Apple too (App Store rule 4.8).');
   }
   return { enabled: true, providers, backend };

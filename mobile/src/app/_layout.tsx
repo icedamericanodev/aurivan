@@ -86,7 +86,10 @@ export default function RootLayout() {
     if (!CLOUD || !hydrated) return;
     let live = true;
     let stop = () => {};
-    initAccount().then((s) => (live ? (stop = s) : s()));
+    // initAccount never rejects; the catch is a second line of defence (nothing unhandled at launch).
+    initAccount()
+      .then((s) => (live ? (stop = s) : s()))
+      .catch(() => {});
     return () => {
       live = false;
       stop();

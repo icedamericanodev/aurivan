@@ -46,6 +46,49 @@ describe('the flag', () => {
   });
 });
 
+describe('runtime.on: the memory backend never reaches a phone (SEC S9)', () => {
+  const KEYS = ['EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND', 'EXPO_PUBLIC_AURIVAN_SHOTS'] as const;
+  const g = globalThis as { __DEV__?: boolean };
+  /** runtime.on's backend for these env values, __DEV__ and platform (a fresh module each time). */
+  const backendFor = (env: Partial<Record<(typeof KEYS)[number], string>>, dev: boolean, os: string) => {
+    const saved = KEYS.map((k) => process.env[k]);
+    const savedDev = g.__DEV__;
+    try {
+      for (const k of KEYS) {
+        if (env[k] === undefined) delete process.env[k];
+        else process.env[k] = env[k];
+      }
+      g.__DEV__ = dev;
+      let out: unknown;
+      jest.isolateModules(() => {
+        jest.doMock('react-native', () => ({ Platform: { OS: os } }));
+        jest.doMock('expo-constants', () => ({ __esModule: true, default: { expoConfig: { version: '1.17.1' } } }));
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        out = (require('../cloud/runtime.on') as typeof import('../cloud/runtime.on')).backend;
+      });
+      return out;
+    } finally {
+      KEYS.forEach((k, i) => (saved[i] === undefined ? delete process.env[k] : (process.env[k] = saved[i])));
+      g.__DEV__ = savedDev;
+      jest.dontMock('react-native');
+      jest.dontMock('expo-constants');
+    }
+  };
+  const memory = { EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND: 'memory', EXPO_PUBLIC_AURIVAN_SHOTS: '1' };
+
+  it('a release build on a phone never builds it, even with every variable set (an EAS environment)', () => {
+    expect(backendFor(memory, false, 'android')).toBeNull();
+    expect(backendFor(memory, false, 'ios')).toBeNull();
+  });
+
+  it('only a dev build, or the web screenshot export, does', () => {
+    expect(backendFor(memory, false, 'web')).not.toBeNull();
+    expect(backendFor({ EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND: 'memory' }, true, 'android')).not.toBeNull();
+    expect(backendFor({ EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND: 'memory' }, false, 'web')).toBeNull();
+    expect(backendFor({}, true, 'web')).toBeNull();
+  });
+});
+
 describe('chunked secure session (spec #2)', () => {
   // A 6 KB session: four chunks of at most 1,800 bytes.
   const session = JSON.stringify({ access_token: 'a'.repeat(3000), refresh_token: 'r'.repeat(2500), user: { id: 'u1' } });
@@ -103,6 +146,71 @@ describe('chunked secure session (spec #2)', () => {
     expect(await s.getItem('k')).toBeNull();
   });
 
+  // Code review R3 / R4 (Phase 6 fix round): a write cut off half-way, and sign-out after one.
+  const crashingAfter = (kv: ReturnType<typeof createMemoryKV>, writes: number) => {
+    let n = 0;
+    return {
+      ...kv,
+      async setItem(k: string, v: string, o: { thisDeviceOnly: true }) {
+        if (n++ === writes) throw new Error('crash');
+        return kv.setItem(k, v, o);
+      },
+    };
+  };
+
+  it('R3: a write cut off half-way leaves the OLD session readable, never a mix', async () => {
+    const kv = createMemoryKV();
+    const s = createChunkedSession(kv);
+    const old = 'o'.repeat(4000);
+    await s.setItem('k', old);
+    await expect(createChunkedSession(crashingAfter(kv, 1)).setItem('k', 'n'.repeat(4000))).rejects.toThrow('crash');
+    expect(await s.getItem('k')).toBe(old);
+    // The next write succeeds and clears what the cut-off one left.
+    await s.setItem('k', 'new');
+    expect(await s.getItem('k')).toBe('new');
+    expect(Object.keys(kv.dump())).toHaveLength(2);
+  });
+
+  it('a read in the middle of a write sees the old session (the manifest switches last)', async () => {
+    const kv = createMemoryKV();
+    const s = createChunkedSession(kv);
+    await s.setItem('k', session);
+    const seen: (string | null)[] = [];
+    const spying = {
+      ...kv,
+      async setItem(k: string, v: string, o: { thisDeviceOnly: true }) {
+        if (!k.endsWith('.m')) seen.push(await s.getItem('k'));
+        return kv.setItem(k, v, o);
+      },
+    };
+    await createChunkedSession(spying).setItem('k', 'x'.repeat(5000));
+    expect(seen.length).toBeGreaterThan(1);
+    for (const v of seen) expect(v).toBe(session);
+    expect(await s.getItem('k')).toBe('x'.repeat(5000));
+  });
+
+  it('R4: sign-out after a cut-off write leaves no piece of the session behind', async () => {
+    const kv = createMemoryKV();
+    const s = createChunkedSession(kv);
+    await s.setItem('k', 'o'.repeat(100)); // one chunk
+    // Writes 3 of the new value's chunks, then stops: no new manifest.
+    await expect(createChunkedSession(crashingAfter(kv, 3)).setItem('k', 'r'.repeat(5000))).rejects.toThrow('crash');
+    await s.removeItem('k');
+    expect(kv.dump()).toEqual({});
+  });
+
+  it('sign-out with no session costs a handful of key-store calls, not one per possible chunk', async () => {
+    const kv = createMemoryKV();
+    let calls = 0;
+    const counting = {
+      getItem: (k: string) => (calls++, kv.getItem(k)),
+      setItem: (k: string, v: string, o: { thisDeviceOnly: true }) => (calls++, kv.setItem(k, v, o)),
+      deleteItem: (k: string) => (calls++, kv.deleteItem(k)),
+    };
+    await createChunkedSession(counting).removeItem('k');
+    expect(calls).toBeLessThanOrEqual(4);
+  });
+
   it('never splits a character between chunks', () => {
     const text = '😀'.repeat(1000);
     const parts = chunkText(text);
@@ -132,7 +240,13 @@ describe('device id', () => {
 });
 
 describe('build-time config guard (G9 and friends)', () => {
-  const on = { EXPO_PUBLIC_AURIVAN_CLOUD: '1', EXPO_PUBLIC_SUPABASE_URL: 'https://abc.example.co', EXPO_PUBLIC_SUPABASE_ANON_KEY: 'sb_publishable_x' };
+  const on = {
+    EXPO_PUBLIC_AURIVAN_CLOUD: '1',
+    EXPO_PUBLIC_SUPABASE_URL: 'https://abc.example.co',
+    EXPO_PUBLIC_SUPABASE_ANON_KEY: 'sb_publishable_x',
+    EXPO_PUBLIC_PRIVACY_URL: 'https://example.com/privacy.html',
+    EXPO_PUBLIC_TERMS_URL: 'https://example.com/terms.html',
+  };
 
   it('flag unset: off, nothing else needed', () => {
     expect(assertCloudConfig({})).toEqual({ enabled: false, providers: [], backend: null });
@@ -159,6 +273,16 @@ describe('build-time config guard (G9 and friends)', () => {
     expect(() => assertCloudConfig({ ...on, EXPO_PUBLIC_SUPABASE_ANON_KEY: ' ' })).toThrow(/publishable/);
   });
 
+  it('UX H1: with the real backend, the Privacy policy and Terms links must be https', () => {
+    for (const k of ['EXPO_PUBLIC_PRIVACY_URL', 'EXPO_PUBLIC_TERMS_URL'] as const) {
+      expect(() => assertCloudConfig({ ...on, [k]: undefined })).toThrow(new RegExp(k));
+      expect(() => assertCloudConfig({ ...on, [k]: '' })).toThrow(new RegExp(k));
+      expect(() => assertCloudConfig({ ...on, [k]: 'http://example.com/x' })).toThrow(new RegExp(k));
+    }
+    // The memory backend (dev, the web screenshot build) may run without them.
+    expect(assertCloudConfig({ EXPO_PUBLIC_AURIVAN_CLOUD: '1', EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND: 'memory' }).backend).toBe('memory');
+  });
+
   it('a secret-looking EXPO_PUBLIC value fails the build', () => {
     const secretKey = ['sb', 'secret', 'abc'].join('_');
     const role = ['service', 'role'].join('_');
@@ -173,8 +297,10 @@ describe('build-time config guard (G9 and friends)', () => {
   });
 
   it('spec #5: Google without Apple on iOS fails the build (App Store 4.8); Android may', () => {
-    expect(() => assertCloudConfig({ ...on, EXPO_PUBLIC_AURIVAN_CLOUD_PROVIDERS: 'email,google' })).toThrow(/4\.8/);
+    expect(() => assertCloudConfig({ ...on, EAS_BUILD_PLATFORM: 'ios', EXPO_PUBLIC_AURIVAN_CLOUD_PROVIDERS: 'email,google' })).toThrow(/4\.8/);
     expect(() => assertCloudConfig({ ...on, EAS_BUILD_PLATFORM: 'ios', EXPO_PUBLIC_AURIVAN_CLOUD_PROVIDERS: 'google' })).toThrow(/4\.8/);
+    // No EAS platform (a local `expo run:android`): not treated as iOS. Every store build is an EAS build.
+    expect(assertCloudConfig({ ...on, EXPO_PUBLIC_AURIVAN_CLOUD_PROVIDERS: 'email,google' }).providers).toEqual(['email', 'google']);
     expect(assertCloudConfig({ ...on, EAS_BUILD_PLATFORM: 'android', EXPO_PUBLIC_AURIVAN_CLOUD_PROVIDERS: 'email,google' }).providers).toEqual(['email', 'google']);
     expect(assertCloudConfig({ ...on, EXPO_PUBLIC_AURIVAN_CLOUD_PROVIDERS: 'email' }).providers).toEqual(['email']);
   });
@@ -226,19 +352,57 @@ describe('the memory backend plays the server’s rules', () => {
     for (const w of b.control.kv.writes) expect(w.opts).toEqual({ thisDeviceOnly: true });
   });
 
-  it('deleting needs a recent sign-in; Apple accounts need Apple’s fresh code', async () => {
+  it('deleting: the server’s order (who, recent sign-in, body); Apple’s code is optional but must look right', async () => {
     const b = make();
+    expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE' }))).toBe('unauthorized');
     await b.auth.signInWithApple();
     await b.auth.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true });
     t += 11 * 60_000;
-    expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE' }))).toBe('reauth_required');
+    // A stale sign-in is refused before the body is looked at, like the server.
+    expect(await codeOf(b.auth.deleteAccount({ confirm: 'nope' as 'DELETE' }))).toBe('reauth_required');
     const { appleAuthorizationCode } = await b.auth.reauthenticate('apple');
-    expect(appleAuthorizationCode).toBeTruthy();
-    expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE' }))).toBe('invalid:apple_code_required');
+    expect(appleAuthorizationCode).toMatch(/^[A-Za-z0-9._~+/=-]{8,}$/);
+    expect(await codeOf(b.auth.deleteAccount({ confirm: 'nope' as 'DELETE' }))).toBe('invalid:confirm_required');
+    expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE', appleAuthorizationCode: 'has spaces' }))).toBe('invalid:apple_code_invalid');
+    expect(b.control.users()).toHaveLength(1);
     expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE', appleAuthorizationCode }))).toBe('ok');
+    expect(b.control.users()).toEqual([]);
+    // The phone still holds its session until the app signs out; the server says the account is gone.
+    expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE' }))).toBe('gone');
+    expect(await codeOf(b.auth.exportMyData())).toBe('gone');
+    await b.auth.signOut('local');
     expect(await b.auth.current()).toBeNull();
-    // A second call for a deleted account: unauthorized (the app treats it as done).
-    expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE', appleAuthorizationCode }))).toBe('unauthorized');
+    expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE' }))).toBe('unauthorized');
+  });
+
+  it('an Apple account without a code (Android, the web) is deleted too: the Apple revoke is best-effort', async () => {
+    const b = make();
+    await b.auth.signInWithApple();
+    expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE' }))).toBe('ok');
+    expect(b.control.users()).toEqual([]);
+  });
+
+  it('dropNextReply: the server does the work, the app hears "offline"', async () => {
+    const b = make();
+    await b.auth.signInWithGoogle();
+    b.control.dropNextReply('auth.deleteAccount');
+    expect(await codeOf(b.auth.deleteAccount({ confirm: 'DELETE' }))).toBe('offline');
+    expect(b.control.users()).toEqual([]);
+  });
+
+  it('signing out on this phone always forgets the session: offline, or when the call then reports a failure', async () => {
+    const b = make();
+    await b.auth.signInWithGoogle();
+    b.control.setOffline(true);
+    expect(await codeOf(b.auth.signOut('local'))).toBe('ok');
+    expect(await b.auth.current()).toBeNull();
+    expect(b.control.kv.dump()).toEqual({});
+    b.control.setOffline(false);
+    await b.auth.signInWithGoogle();
+    b.control.failNext('auth.signOut', 'server');
+    expect(await codeOf(b.auth.signOut('local'))).toBe('server');
+    expect(await b.auth.current()).toBeNull();
+    expect(b.control.kv.dump()).toEqual({});
   });
 
   it('re-auth by email: send a code to the account’s address, then check it', async () => {
@@ -269,8 +433,21 @@ describe('the memory backend plays the server’s rules', () => {
     // The server's export takes { appVersion } for the envelope.
     t += 60 * 60_000;
     expect(JSON.parse(await b.auth.exportMyData({ appVersion: '1.18.0' })).appVersion).toBe('1.18.0');
-    expect(await codeOf(b.auth.exportMyData())).toBe('rate_limited');
+    // Like the server: Retry-After is always the full hour.
+    await b.auth.exportMyData().catch((e: CloudError) => expect(e).toMatchObject({ code: 'rate_limited', retryAfterSec: 3600 }));
     t += 60 * 60_000;
+    // Like the server: a missing or odd app version is null, never made up.
+    expect(JSON.parse(await b.auth.exportMyData({ appVersion: '1.17.0<script>' })).appVersion).toBeNull();
+    // No recent sign-in needed (a day-old one exports).
+    t += 24 * 60 * 60_000;
+    expect(await codeOf(b.auth.exportMyData())).toBe('ok');
+  });
+
+  it('a failed export does not use up the hour', async () => {
+    const b = make();
+    await b.auth.signInWithGoogle();
+    b.control.failNext('auth.exportMyData', 'server');
+    expect(await codeOf(b.auth.exportMyData())).toBe('server');
     expect(await codeOf(b.auth.exportMyData())).toBe('ok');
   });
 

@@ -56,6 +56,9 @@ export const ACCOUNT_COPY = {
   'code.expired': 'That code has expired. Send a new one.',
   'code.toomany': 'Too many tries. Send a new code to try again.',
   'code.sent': 'Code sent to {email}',
+  // Said by a screen reader for the waiting line ("Send a new code in 42 seconds").
+  'code.resend.wait.spoken': 'Send a new code in {time}',
+  'email.sending': 'Sending your code…',
 
   // Errors (a cancelled Apple or Google sheet shows nothing: it just returns to the sheet).
   'err.offline': 'You’re offline. Connect to the internet to sign in.',
@@ -73,8 +76,9 @@ export const ACCOUNT_COPY = {
   'account.download.rate': 'You can download your data once an hour. Try again later.',
   'account.download.fail': 'We couldn’t prepare your data just now. Try again in a while.',
   'account.download.done': 'Your data file is ready. If you saved it, you’re set.',
-  'account.section.signout': 'Sign out',
-  'account.signout': 'Sign out',
+  'account.download.signin': 'Your sign-in has ended. Sign in again to download your data.',
+  'account.section.signout': 'Where you’re signed in',
+  'account.signout': 'Sign out on this phone',
   'account.signoutAll': 'Sign out on all devices',
   'account.foot': 'Progress on this phone works with or without an account.',
   'signout.title': 'Sign out?',
@@ -93,19 +97,33 @@ export const ACCOUNT_COPY = {
   'delete.s1.local': 'Also remove my progress from this phone',
   'delete.s1.go': 'Continue',
   'delete.s1.cancel': 'Cancel',
+  'delete.s1.busy': 'One moment…',
   'delete.s2.reauth': 'For your security, confirm it’s you first.',
   'delete.s2.reauth.email': 'Send a code to {email}',
   'delete.s2.reauth.confirm': 'Confirm it’s you',
+  // Restates the step 1 choice right above the DELETE field.
+  'delete.s2.local.on': 'Your progress on this phone will be removed too.',
+  'delete.s2.local.off': 'Your progress on this phone stays here.',
   'delete.s2.type': 'Type DELETE to confirm',
   'delete.s2.go': 'Delete account',
   'delete.busy': 'Deleting your account…',
   'delete.done.title': 'Your account is deleted',
   'delete.done.body': 'It’s gone from our live systems now, and from backups within 30 days. Aurivan keeps working on this phone without an account.',
+  'delete.done.body.local': 'It’s gone from our live systems now, and from backups within 30 days. Your progress on this phone was removed too. Aurivan keeps working without an account.',
   'delete.done.go': 'Done',
   'delete.offline': 'You’re offline. Connect to the internet to delete your account. Nothing was deleted.',
   'delete.fail': 'We couldn’t delete your account just now. Nothing was deleted. Try again, or email {supportEmail}.',
+  'delete.signin': 'Your sign-in has ended, so nothing was deleted. Sign in again, then delete your account.',
   // A later phase, only with an active store subscription.
   'delete.sub.note': 'Deleting your account doesn’t cancel your subscription. Billing continues through the {store} until you cancel it there.',
+
+  // Screen-reader hints (said after a row's or button's name).
+  'hint.account.in': 'Opens your account',
+  'hint.account.out': 'Opens sign in. An account is optional.',
+  'hint.browser': 'Opens in your browser',
+  'hint.download': 'Opens the share sheet to save the file',
+  'hint.signout': 'Asks first. Your progress stays on this phone.',
+  'hint.signoutAll': 'Asks first',
 
   // Settings → About: the line after the version.
   'about.off': 'Progress is stored only on this device.',

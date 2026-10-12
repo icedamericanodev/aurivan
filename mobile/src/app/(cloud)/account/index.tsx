@@ -43,6 +43,8 @@ export default function Account() {
     return (
       <Screen edges={['top', 'bottom']}>
         <PushedHeader icon="close" onBack={back} />
+        {/* A sign-in that ended during an action here ("Sign in again to download your data"). */}
+        {notice && <AccountNotice text={notice.text} tone={notice.tone} />}
         <SignInContent onClose={back} />
       </Screen>
     );
@@ -57,7 +59,12 @@ export default function Account() {
       if (r.outcome === 'shared') setNotice({ tone: 'ok', text: copy('account.download.done') });
       else setNotice({ tone: 'problem', text: copy('account.download.fail') });
     } else {
-      setNotice({ tone: 'problem', text: copy(r.code === 'rate_limited' ? 'account.download.rate' : r.code === 'offline' ? 'err.offline' : 'account.download.fail') });
+      // A sign-in that ended (or would need confirming) is never "try again later": it says sign in again.
+      const signIn = r.code === 'unauthorized' || r.code === 'gone' || r.code === 'reauth_required';
+      setNotice({
+        tone: 'problem',
+        text: copy(r.code === 'rate_limited' ? 'account.download.rate' : r.code === 'offline' ? 'err.offline' : signIn ? 'account.download.signin' : 'account.download.fail'),
+      });
     }
   };
 
@@ -92,7 +99,7 @@ export default function Account() {
       <SettingsRow
         title={copy('account.download')}
         subtitle={busy === 'download' ? copy('account.download.busy') : copy('account.download.sub')}
-        accessibilityHint="Opens the share sheet to save the file"
+        accessibilityHint={copy('hint.download')}
         disabled={busy !== null}
         onPress={download}
         chevron={false}
@@ -101,8 +108,8 @@ export default function Account() {
       {notice && <AccountNotice text={notice.text} tone={notice.tone} />}
 
       <Section title={copy('account.section.signout')} />
-      <SettingsRow title={copy('account.signout')} disabled={busy !== null} onPress={() => confirmSignOut('local')} chevron={false} accessibilityHint="Asks first. Your progress stays on this phone." />
-      <SettingsRow title={copy('account.signoutAll')} disabled={busy !== null} onPress={() => confirmSignOut('global')} chevron={false} accessibilityHint="Asks first" last />
+      <SettingsRow title={copy('account.signout')} disabled={busy !== null} onPress={() => confirmSignOut('local')} chevron={false} accessibilityHint={copy('hint.signout')} />
+      <SettingsRow title={copy('account.signoutAll')} disabled={busy !== null} onPress={() => confirmSignOut('global')} chevron={false} accessibilityHint={copy('hint.signoutAll')} last />
 
       {/* Set apart, like Reset in Settings. */}
       <Gap h={space.xxl} />
