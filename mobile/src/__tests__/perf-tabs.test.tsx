@@ -92,6 +92,7 @@ function startMeasure(names = false) {
   profile = {};
   saves = { n: 0, bytes: 0 };
   routerCalls().setParams = 0;
+  eventRenders = {};
   resetRenders({ names });
 }
 const total = (s: ReturnType<typeof snapshot>) => ({
@@ -140,6 +141,8 @@ function Host() {
 
 let r: ReactTestRenderer | undefined;
 let current: Tab | null = null;
+/** Per tab: components re-rendered by the focus / blur events alone (since the last startMeasure). */
+let eventRenders: Record<string, number> = {};
 /** A tap on a tab: the old one blurs, the new one mounts (first visit) or regains focus. Returns wall ms. */
 function tapTab(t: Tab): number {
   const t0 = performance.now();
@@ -149,10 +152,14 @@ function tapTab(t: Tab): number {
     emitters[t].setContext(true);
     mountTab(t);
   });
+  const pressed = renders();
   act(() => {
     if (current) emitters[current].fireEvents();
     emitters[t].fireEvents();
   });
+  // What the focus / blur events re-rendered on their own, after the press's commit.
+  const after = renders();
+  for (const [id, n] of Object.entries(after)) eventRenders[id] = (eventRenders[id] ?? 0) + n - (pressed[id] ?? 0);
   current = t;
   return Math.round((performance.now() - t0) * 10) / 10;
 }
@@ -345,22 +352,30 @@ it('builds the heavy save', () => {
 
 /**
  * Budgets (mobile 1.15.x performance work), in components re-rendered and
- * saves, never milliseconds. Generous: about twice what the fixes reached,
- * and well under 1.15.0 (in brackets).
+ * saves, never milliseconds. Totals allow about 1.3x what the fixes reached
+ * (room for content and design changes), well under 1.15.0 (in brackets).
+ * What must not come back is pinned exactly: a tab re-renders with the tab
+ * press only, never again when the focus events arrive.
  */
 describe('budgets with the heavy save', () => {
   const LAP: Tab[] = ['learn', 'practice', 'play', 'you', 'home'];
   function lap() {
     startMeasure();
     for (const t of LAP) tapTab(t);
-    return { ...total(snapshot()) };
+    return { ...total(snapshot()), events: { ...eventRenders } };
   }
 
   it('tapping through every open tab', () => {
     openAll();
     lap(); // settles each tab's first view of the day
     const l = lap();
-    expect(l.renders).toBeLessThan(2500); // 1.15.0: 6,112 (now ~1,200)
+    // Nothing re-renders on the focus / blur events: with a copy of the focus
+    // held in state (useScreenFocus) every focus-aware tab rendered twice per
+    // switch (Today +510, Learn +190, You +530); with Today's clock reset on
+    // every focus, Today rendered again (+236).
+    const renderedOnEvents = Object.fromEntries(Object.entries(l.events).filter(([, n]) => n > 0));
+    expect(renderedOnEvents).toEqual({});
+    expect(l.renders).toBeLessThan(1600); // 1.15.0: 6,112 (now ~1,230)
     expect(l.saves).toBe(0); // 1.15.0: 7 saves of the whole store (~310 KB on each Today tap)
     expect(l.setParams).toBe(0); // 1.15.0: 1 (leaving Learn set params on the next tab)
   });
@@ -373,7 +388,7 @@ describe('budgets with the heavy save', () => {
       useProgress.getState().recordAnswer('cisa', 'd3_005', true, 'sure');
     });
     const s = snapshot();
-    expect(total(s).renders).toBeLessThan(1600); // 1.15.0: 2,308 (now ~1,070)
+    expect(total(s).renders).toBeLessThan(1150); // 1.15.0: 2,308 (now ~865)
     expect(s.learn.renders).toBe(0); // 1.15.0: 634
     expect(s.play.renders).toBe(0); // 1.15.0: 459
     expect(total(s).saves).toBe(1); // the answer itself
