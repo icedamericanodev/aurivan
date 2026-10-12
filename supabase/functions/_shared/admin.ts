@@ -19,8 +19,15 @@ export interface BoardCounts {
 }
 
 export interface AdminPort {
-  /** Verifies the JWT with the Auth server. null = invalid, expired, signed out or deleted. */
-  getUser(jwt: string): Promise<AuthUser | null>;
+  /**
+   * Verifies the JWT with the Auth server:
+   * - the account, when the token is good;
+   * - 'invalid' when the token is bad, expired or signed out (revoked);
+   * - 'gone' when the token is good but its account no longer exists (deleted);
+   * - THROWS when the Auth server can't be asked (network, 5xx), so a passing
+   *   failure is a 500, never read as "signed out" or "deleted".
+   */
+  getUser(jwt: string): Promise<AuthUser | 'invalid' | 'gone'>;
   /** auth.admin.deleteUser: revokes sessions and cascades every account row. */
   deleteUser(userId: string): Promise<void>;
   /** For the deletion audit row. Zero until the board ships (Phase 8). */

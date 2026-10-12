@@ -44,6 +44,25 @@ export function providersOf(u: RawUser): Provider[] {
   return KNOWN.filter((p) => raw.has(p));
 }
 
+/**
+ * What an Auth server error on getUser means. Checked against supabase-js
+ * (AuthApiError carries the HTTP `status` and GoTrue's error `code`) and
+ * GoTrue's maybeLoadUserOrSession, which looks the user up by the token's
+ * `sub` BEFORE its session:
+ * - code `user_not_found` (403): the token is genuine but the account is
+ *   deleted → 'gone' (the only answer the app reads as "already deleted");
+ * - any other 4xx (`bad_jwt`, `session_not_found`, `no_authorization`, a
+ *   missing session): the token can't be used → 'invalid';
+ * - anything else (AuthRetryableFetchError: network or 5xx, an unknown
+ *   error with no status) → 'retry': we can't tell, so the call fails (500).
+ */
+export function authVerdict(error: unknown): 'invalid' | 'gone' | 'retry' {
+  const e = (error ?? {}) as { status?: unknown; code?: unknown };
+  if (e.code === 'user_not_found') return 'gone';
+  if (typeof e.status === 'number' && e.status >= 400 && e.status < 500) return 'invalid';
+  return 'retry';
+}
+
 /** A failed call never carries its message out of here (it may hold SQL or ids). */
 class AdminCallFailed extends Error {
   constructor(what: string) {
@@ -53,10 +72,15 @@ class AdminCallFailed extends Error {
 
 export function supabaseAdmin(client: SupabaseLike): AdminPort {
   return {
-    async getUser(jwt: string): Promise<AuthUser | null> {
+    async getUser(jwt: string): Promise<AuthUser | 'invalid' | 'gone'> {
       const { data, error } = await client.auth.getUser(jwt);
+      if (error) {
+        const verdict = authVerdict(error);
+        if (verdict === 'retry') throw new AdminCallFailed('getUser');
+        return verdict;
+      }
       const u = data?.user;
-      if (error || !u || typeof u.id !== 'string') return null;
+      if (!u || typeof u.id !== 'string') return 'invalid';
       return {
         id: u.id,
         email: typeof u.email === 'string' && u.email !== '' ? u.email : null,

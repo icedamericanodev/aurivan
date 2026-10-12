@@ -7,6 +7,9 @@
 
 export type ErrorCode =
   | 'unauthorized'
+  // 410: the token was valid, but its account no longer exists (deleted). Only
+  // this tells the app "already deleted"; an invalid token is `unauthorized`.
+  | 'gone'
   | 'reauth_required'
   | 'rate_limited'
   | 'invalid'
@@ -49,18 +52,46 @@ export function requirePost(req: Request): void {
 }
 
 /**
+ * Reads the body as text, at most `maxBytes`. It counts the bytes as they
+ * arrive and stops at the cap, so a body sent without a content-length (or
+ * with a false one) is refused before it is held in memory.
+ */
+export async function readCapped(req: Request, maxBytes: number): Promise<string> {
+  const declared = Number(req.headers.get('content-length') ?? '0');
+  if (Number.isFinite(declared) && declared > maxBytes) throw new HttpError(413, 'too_big');
+  if (!req.body) return '';
+  const reader = req.body.getReader();
+  const parts: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > maxBytes) {
+      await reader.cancel().catch(() => {});
+      throw new HttpError(413, 'too_big');
+    }
+    parts.push(value);
+  }
+  const all = new Uint8Array(total);
+  let at = 0;
+  for (const p of parts) {
+    all.set(p, at);
+    at += p.byteLength;
+  }
+  return new TextDecoder().decode(all);
+}
+
+/**
  * Reads a small JSON object body. Rejects anything that isn't a plain object,
- * and anything over `maxBytes` before parsing it. An empty body reads as {}
- * when `optional` is set.
+ * and anything over `maxBytes` before parsing it (see readCapped). An empty
+ * body reads as {} when `optional` is set.
  */
 export async function readJsonObject(
   req: Request,
   opts: { maxBytes: number; optional?: boolean },
 ): Promise<Record<string, unknown>> {
-  const declared = Number(req.headers.get('content-length') ?? '0');
-  if (Number.isFinite(declared) && declared > opts.maxBytes) throw new HttpError(413, 'too_big');
-  const text = await req.text();
-  if (new TextEncoder().encode(text).length > opts.maxBytes) throw new HttpError(413, 'too_big');
+  const text = await readCapped(req, opts.maxBytes);
   if (text.trim() === '') {
     if (opts.optional) return {};
     throw new HttpError(400, 'invalid', 'body_required');

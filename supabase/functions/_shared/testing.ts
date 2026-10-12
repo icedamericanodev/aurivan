@@ -35,7 +35,7 @@ export interface Call {
   userId?: string;
 }
 
-/** In-memory AdminPort. Tokens map to user ids; a deleted user's tokens stop working. */
+/** In-memory AdminPort. Tokens map to user ids; a deleted user's tokens get 'gone'. */
 export class FakeAdmin implements AdminPort {
   users = new Map<string, FakeUser>();
   tokens = new Map<string, string>();
@@ -71,17 +71,22 @@ export class FakeAdmin implements AdminPort {
     if (this.fail[method]) throw new Error(`db error: relation "x" for ${userId} a@test.invalid`);
   }
 
-  getUser(jwt: string): Promise<AuthUser | null> {
+  /** Ids of deleted accounts: their genuine tokens get 'gone', like GoTrue's user_not_found. */
+  deleted = new Set<string>();
+
+  getUser(jwt: string): Promise<AuthUser | 'invalid' | 'gone'> {
     this.check('getUser');
     const id = this.tokens.get(jwt);
+    if (id && this.deleted.has(id)) return Promise.resolve('gone');
     const u = id ? this.users.get(id) : undefined;
-    if (!u) return Promise.resolve(null);
+    if (!u) return Promise.resolve('invalid');
     return Promise.resolve({ id: u.id, email: u.email, createdAt: u.createdAt, providers: [...u.providers] });
   }
 
   deleteUser(userId: string): Promise<void> {
     this.check('deleteUser', userId);
     this.users.delete(userId);
+    this.deleted.add(userId);
     this.exportLog.delete(userId);
     return Promise.resolve();
   }

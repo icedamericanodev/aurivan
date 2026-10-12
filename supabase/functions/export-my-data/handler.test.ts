@@ -38,11 +38,54 @@ Deno.test('no JWT: 401', async () => {
   assert.equal(admin.count('claimExport'), 0);
 });
 
-Deno.test('a stale sign-in: 401 reauth_required, and the hourly slot is not used', async () => {
+Deno.test('no recent sign-in needed: a day-old sign-in exports, then the hourly limit applies', async () => {
   const { admin, run } = setup();
-  const res = await run(post({}, admin.issue(USER_A, { amrAgoMs: 11 * 60_000 })));
-  assert.equal(res.status, 401);
-  assert.deepEqual(await res.json(), { error: 'reauth_required' });
+  const res = await run(post({}, admin.issue(USER_A, { amrAgoMs: 24 * HOUR })));
+  assert.equal(res.status, 200);
+  assert.equal(((await res.json()) as { app: string }).app, 'aurivan');
+  const again = await run(post({}, admin.issue(USER_A, { amrAgoMs: null })));
+  assert.equal(again.status, 429);
+});
+
+Deno.test('a deleted account: 410 gone; a revoked token: 401; the Auth server down: 500', async () => {
+  const { admin, run } = setup();
+  const jwt = admin.issue(USER_A);
+  admin.deleted.add(USER_A);
+  assert.equal((await run(post({}, jwt))).status, 410);
+  const revoked = admin.issue(USER_B);
+  admin.tokens.delete(revoked);
+  assert.equal((await run(post({}, revoked))).status, 401);
+  admin.fail.getUser = true;
+  assert.equal((await run(post({}, admin.issue(USER_B)))).status, 500);
+  assert.equal(admin.count('claimExport'), 0);
+});
+
+Deno.test('the hourly slot is claimed last, after the reply is built', async () => {
+  const { admin, run } = setup();
+  assert.equal((await run(post({}, admin.issue(USER_A)))).status, 200);
+  const methods = admin.calls.map((c) => c.method);
+  assert.equal(methods[methods.length - 1], 'claimExport');
+});
+
+Deno.test('a streamed body over the cap (no content-length) is refused before it is read in full', async () => {
+  const { admin, run } = setup();
+  let pulled = 0;
+  const stream = new ReadableStream<Uint8Array>({
+    pull(c) {
+      pulled += 1;
+      if (pulled > 1000) return c.close();
+      c.enqueue(new Uint8Array(512).fill(32));
+    },
+  });
+  const req = new Request('http://localhost/fn', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', authorization: `Bearer ${admin.issue(USER_A)}` },
+    body: stream,
+  });
+  assert.equal(req.headers.get('content-length'), null);
+  const res = await run(req);
+  assert.equal(res.status, 413);
+  assert.ok(pulled < 10, `read ${pulled} chunks before stopping`);
   assert.equal(admin.count('claimExport'), 0);
 });
 

@@ -28,7 +28,7 @@ export interface Claims {
   amr: AmrEntry[];
 }
 
-/** Destructive or data-revealing actions need a sign-in in the last 10 minutes. */
+/** Deleting the account needs a sign-in in the last 10 minutes. */
 export const RECENT_AUTH_MS = 10 * 60 * 1000;
 /** Allowed clock skew between the Auth server and this function. */
 const SKEW_MS = 60 * 1000;
@@ -80,22 +80,21 @@ export function decodeClaims(jwt: string): Claims | null {
 }
 
 /**
- * The caller's verified account and claims, or a 401. The Auth server check
- * (getUser) also refuses a signed-out session and a deleted user, which makes
- * a repeated delete-account call a 401 that the app treats as done.
+ * The caller's verified account and claims. Otherwise:
+ * - 401 `unauthorized`: no token, or a bad, expired or signed-out one;
+ * - 410 `gone`: a genuine token for an account that no longer exists, which
+ *   makes a repeated delete-account call something the app can treat as done;
+ * - 500 `server` (serveSafely): the Auth server couldn't be asked. Never read
+ *   as signed out or deleted.
  */
 export async function requireUser(
   req: Request,
   admin: AdminPort,
 ): Promise<{ user: AuthUser; claims: Claims }> {
   const jwt = bearerToken(req);
-  let user: AuthUser | null;
-  try {
-    user = await admin.getUser(jwt);
-  } catch {
-    user = null;
-  }
-  if (!user) throw new HttpError(401, 'unauthorized');
+  const user = await admin.getUser(jwt);
+  if (user === 'gone') throw new HttpError(410, 'gone');
+  if (user === 'invalid') throw new HttpError(401, 'unauthorized');
   const claims = decodeClaims(jwt);
   if (!claims || claims.sub !== user.id || claims.role !== 'authenticated') {
     throw new HttpError(401, 'unauthorized');

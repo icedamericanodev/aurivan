@@ -47,12 +47,25 @@ Deno.test('a malformed or unknown token: 401', async () => {
   assert.equal(admin.count('deleteUser'), 0);
 });
 
-Deno.test('the Auth server failing reads as 401, never as success', async () => {
+Deno.test('the Auth server unreachable is a bare 500: never 401 or 410, never success', async () => {
   const { admin, run } = setup();
   const jwt = admin.issue(USER_A);
   admin.fail.getUser = true;
-  assert.equal((await run(post({ confirm: 'DELETE' }, jwt))).status, 401);
+  const res = await run(post({ confirm: 'DELETE' }, jwt));
+  assert.equal(res.status, 500);
+  assert.deepEqual(await body(res), { error: 'server' });
   assert.equal(admin.count('deleteUser'), 0);
+});
+
+Deno.test('a revoked session (signed out on all devices): 401 unauthorized, never 410 gone', async () => {
+  const { admin, run } = setup();
+  const jwt = admin.issue(USER_A);
+  admin.tokens.delete(jwt); // the Auth server no longer accepts it
+  const res = await run(post({ confirm: 'DELETE' }, jwt));
+  assert.equal(res.status, 401);
+  assert.deepEqual(await body(res), { error: 'unauthorized' });
+  assert.equal(admin.count('deleteUser'), 0);
+  assert.equal(admin.users.has(USER_A), true, 'the account still exists');
 });
 
 Deno.test('claims that do not match the verified user: 401', async () => {
@@ -107,14 +120,22 @@ Deno.test('confirm must be exactly DELETE, as a JSON body', async () => {
   assert.equal(admin.count('deleteUser'), 0);
 });
 
-Deno.test('an Apple account without an authorization code: 400, nothing deleted', async () => {
-  const { admin, run } = setup();
+Deno.test('an Apple account without a code (Android, web): deleted anyway, the skipped revoke logged', async () => {
+  const { admin, log, revoked, run } = setup();
   const res = await run(post({ confirm: 'DELETE' }, admin.issue(USER_B)));
-  assert.equal(res.status, 400);
-  assert.deepEqual(await body(res), { error: 'invalid', detail: 'apple_code_required' });
-  assert.equal(admin.count('deleteUser'), 0);
+  assert.equal(res.status, 200);
+  assert.deepEqual(await body(res), { deleted: true });
+  assert.deepEqual(revoked, [], 'nothing to revoke with');
+  assert.equal(admin.users.has(USER_B), false);
+  assert.ok(log.lines.some((l) => l.includes('"apple_revoke_skipped"') && l.includes('"count":1')));
+});
+
+Deno.test('a malformed Apple code: 400 apple_code_invalid, nothing deleted', async () => {
+  const { admin, run } = setup();
   const bad = await run(post({ confirm: 'DELETE', appleAuthorizationCode: 'has spaces in it' }, admin.issue(USER_B)));
   assert.equal(bad.status, 400);
+  assert.deepEqual(await body(bad), { error: 'invalid', detail: 'apple_code_invalid' });
+  assert.equal(admin.count('deleteUser'), 0);
 });
 
 Deno.test('an Apple account: the code is revoked at Apple, then the account is deleted', async () => {
@@ -157,12 +178,13 @@ Deno.test('happy path: deleteUser exactly once, in order, with the audit row', a
   assert.equal(admin.users.has(USER_B), true, 'the other learner is untouched');
 });
 
-Deno.test('a second call with the same token: 401 (the app treats it as done)', async () => {
+Deno.test('a second call with the same token: 410 gone (the app treats only this as done)', async () => {
   const { admin, run } = setup();
   const jwt = admin.issue(USER_A);
   assert.equal((await run(post({ confirm: 'DELETE' }, jwt))).status, 200);
   const again = await run(post({ confirm: 'DELETE' }, jwt));
-  assert.equal(again.status, 401);
+  assert.equal(again.status, 410);
+  assert.deepEqual(await body(again), { error: 'gone' });
   assert.equal(admin.count('deleteUser'), 1);
 });
 

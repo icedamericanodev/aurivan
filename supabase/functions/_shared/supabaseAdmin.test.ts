@@ -49,7 +49,7 @@ Deno.test('providersOf keeps known sign-in methods from metadata and identities'
   assert.deepEqual(providersOf({ id: USER_A }), []);
 });
 
-Deno.test('getUser maps the Auth user and treats any error as signed out', async () => {
+Deno.test('getUser maps the Auth user; tells a deleted account from a bad token from a failure', async () => {
   const ok = fakeClient({
     user: {
       id: USER_A,
@@ -65,10 +65,39 @@ Deno.test('getUser maps the Auth user and treats any error as signed out', async
     providers: ['email'],
   });
   const relay = fakeClient({ user: { id: USER_A, email: '' } });
-  assert.equal((await supabaseAdmin(relay.client).getUser('jwt'))?.email, null);
-  const bad = fakeClient({ user: { id: USER_A }, userError: { message: 'session_not_found' } });
-  assert.equal(await supabaseAdmin(bad.client).getUser('jwt'), null);
-  assert.equal(await supabaseAdmin(fakeClient().client).getUser('jwt'), null);
+  const relayUser = await supabaseAdmin(relay.client).getUser('jwt');
+  assert.ok(typeof relayUser === 'object');
+  assert.equal(relayUser.email, null);
+  // supabase-js AuthApiError shapes (status + GoTrue code).
+  const gone = fakeClient({
+    userError: { status: 403, code: 'user_not_found', message: 'User from sub claim in JWT does not exist' },
+  });
+  assert.equal(await supabaseAdmin(gone.client).getUser('jwt'), 'gone');
+  for (
+    const err of [
+      { status: 403, code: 'bad_jwt' },
+      { status: 403, code: 'session_not_found' },
+      { status: 401, code: 'no_authorization' },
+      { status: 400, name: 'AuthSessionMissingError' },
+    ]
+  ) {
+    assert.equal(await supabaseAdmin(fakeClient({ userError: err }).client).getUser('jwt'), 'invalid');
+  }
+  assert.equal(await supabaseAdmin(fakeClient().client).getUser('jwt'), 'invalid');
+  // Network or a 5xx (AuthRetryableFetchError), or an error with no status: we can't tell, so it throws
+  // (a 500 to the app), with no message from the error.
+  for (
+    const err of [
+      { status: 0, name: 'AuthRetryableFetchError', message: 'fetch failed a@test.invalid' },
+      { status: 503, name: 'AuthRetryableFetchError', message: 'upstream a@test.invalid' },
+      { message: 'unknown a@test.invalid' },
+    ]
+  ) {
+    await assert.rejects(
+      () => supabaseAdmin(fakeClient({ userError: err }).client).getUser('jwt'),
+      (e: unknown) => e instanceof Error && !e.message.includes('a@test.invalid'),
+    );
+  }
 });
 
 Deno.test('server-only calls go through the svc_ functions with the verified id', async () => {
