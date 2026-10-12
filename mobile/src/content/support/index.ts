@@ -43,7 +43,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
     version: '1.17.1',
     date: '2026-10-12',
-    improved: ['Help is simpler: What’s new now covers every change.'],
+    improved: ['Help is simpler, and What’s new shows each change once it’s in the app.'],
   },
   {
     version: '1.17.0',

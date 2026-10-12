@@ -8,7 +8,7 @@ Brand source: `mobile/src/content/brand.ts`. Compliance source: `docs/mobile/ARC
 - Never state or hint at the number of questions. Say "practice questions across all 5 CISA domains".
 - Never promise a pass. Readiness is always "an estimate".
 - Keep "CISA" and "ISACA" out of the app name, icon and developer name. Use them only to describe the exam, with the trademark notice.
-- Only CISA is available. At most say "More certifications are planned."
+- Only CISA is available. Do not mention future certifications.
 - No hype words ("ultimate", "guaranteed", "best", "#1").
 
 Character counts below are exact for the short fields (® counts as 1). Long fields are approximate. Check them in the console's counter before you submit.
@@ -89,7 +89,6 @@ MADE FOR REAL LIFE
 A NOTE ON READINESS
 Your readiness range is a study estimate, not a prediction of your exam result. Aurivan cannot promise a pass. It helps you practise with purpose and walk in prepared.
 
-More certifications are planned.
 
 CISA® is a registered trademark of ISACA. Aurivan is not affiliated with or endorsed by ISACA. All practice questions are original and are not ISACA exam questions.
 ```

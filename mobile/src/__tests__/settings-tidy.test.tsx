@@ -195,7 +195,7 @@ describe('Choice sheets work like a dropdown', () => {
     for (const n of soon) expect(n.props.accessibilityState).toMatchObject({ disabled: true, checked: false });
     const cisa = hosts((n) => n.props.accessibilityRole === 'radio' && String(n.props.accessibilityLabel).startsWith('CISA.'))[0];
     expect(cisa.props.accessibilityState.checked).toBe(true);
-    expect(allText()).toContain('More exams are on the way.');
+    expect(allText()).toContain('Only CISA is available today.');
   });
 
   it('a sheet closes from its header button, and the dim is hidden from screen readers', () => {
