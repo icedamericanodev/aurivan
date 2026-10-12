@@ -7,7 +7,7 @@
  */
 /* eslint-disable @typescript-eslint/no-require-imports */
 // First: the render counter must be in place before React's renderer loads.
-import { renders, resetRenders } from '../../jest/perf/renderCounter';
+import { renderNames, renders, resetRenders } from '../../jest/perf/renderCounter';
 import { Profiler, type ComponentType } from 'react';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import { FocusEmitter, FocusScope, routeParams, routerCalls } from '../../jest/perf/focusRouter';
@@ -117,4 +117,51 @@ describe('a tab switch re-renders a focus-aware tab once, not twice', () => {
       expect(back.events).toBe(0);
     });
   }
+});
+
+describe('what a hidden tab re-renders', () => {
+  /** Mounts several tabs side by side (as the navigator keeps them), each in its own Profiler. */
+  function mountTabs(tabs: Record<string, ComponentType>) {
+    act(() => {
+      r = create(
+        <FocusScope emitter={em}>
+          {Object.entries(tabs).map(([id, S]) => (
+            <Profiler key={id} id={id} onRender={() => {}}>
+              <S />
+            </Profiler>
+          ))}
+        </FocusScope>,
+      );
+    });
+  }
+
+  it('one answer (a session on top): Play and Learn do not re-render at all', () => {
+    mountTabs({ learn: require('../app/(tabs)/learn').default, play: require('../app/(tabs)/play').default });
+    flip(false);
+    resetRenders();
+    // A question already answered right, right again: Learn's focus domain stays where it was.
+    act(() => {
+      useProgress.getState().recordAnswer('cisa', 'd1_001', true, 'sure');
+    });
+    expect(renders().learn ?? 0).toBe(0);
+    expect(renders().play ?? 0).toBe(0);
+    // A game round does reach Play (its best scores).
+    act(() => {
+      useProgress.getState().recordGame('cisa', 'trap', 7);
+    });
+    expect(renders().play ?? 0).toBeGreaterThan(0);
+  });
+
+  it('coming back into view: Learn re-renders no lesson row, You none of its lists', () => {
+    mountTabs({ learn: require('../app/(tabs)/learn').default, you: require('../app/(tabs)/you').default });
+    flip(false);
+    flip(true);
+    resetRenders({ names: true });
+    flip(false);
+    flip(true);
+    const names = renderNames();
+    expect(names.learn?.LessonRow ?? 0).toBe(0);
+    expect(names.learn?.LessonGroups ?? 0).toBe(0);
+    expect(names.you?.YouLists ?? 0).toBe(0);
+  });
 });

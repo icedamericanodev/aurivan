@@ -25,7 +25,7 @@
  * a "See report" button.
  */
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { boundsLabel, DomainRings, RINGS_NOTE, ringsSpoken } from '../../components/journey';
 import { useGrowth, useScreenFocus } from '../../components/motion';
@@ -51,7 +51,8 @@ import { backfillLine, seeBackfill } from '../../lib/milestones';
 import { useMindsetGrowth } from '../../lib/moments';
 import { useReports } from '../../lib/useReports';
 import { useActiveCert } from '../../lib/useActiveCert';
-import { useProgress } from '../../store/progress';
+import { useProgress, type MockResult } from '../../store/progress';
+import type { Certification } from '../../content/types';
 import { useSettings } from '../../store/settings';
 import { motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -69,8 +70,6 @@ export default function You() {
   const mastered = readiness.domains.reduce((s, d) => s + d.mastered, 0);
   const openMistakes = Object.values(progress.mistakes).filter((m) => !m.resolved).length;
   const values = readiness.domains.map((d) => (d.answered ? d.mastery : null));
-  // A mini mock is a third of the exam, as on Practice.
-  const miniMock = Math.round(cert.exam.questions / 3);
   const growth = useMindsetGrowth(cert.id, progress);
   // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
   const { dueItems: creditItems } = useReports();
@@ -78,7 +77,6 @@ export default function You() {
   const recentDays = useProgress((s) => s.streak.recentDays);
   // The day the sheet was opened (read in the tap handler, not during render). null = closed.
   const [shareDay, setShareDay] = useState<string | null>(null);
-  const icon = (G: typeof Settings) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
   // Mobile 1.10: every badge the case shows as earned (a kept key it doesn't show never counts), and the "new" dot.
   const badgeCount = caseEarnedCount(progress.milestones?.earned);
   const newBadge = useNewBadge();
@@ -241,7 +239,82 @@ export default function You() {
       </Enter>
 
       <Enter i={3}>
-        {summary && !badgesHidden && (
+        {/* Memoised (performance, 1.15.x): coming into view, or a store
+            write that changes none of these, never re-renders the lists. */}
+        <YouLists
+          cert={cert}
+          summary={badgesHidden ? null : summary}
+          dueCount={dueCount}
+          openMistakes={openMistakes}
+          saved={progress.bookmarks.length}
+          badgesHidden={badgesHidden}
+          newBadge={newBadge}
+          badgeCount={badgeCount}
+          mocks={progress.mocks}
+          pacingLine={pacingLine}
+          creditItems={creditItems}
+        />
+      </Enter>
+
+      {/* Mounted only while open, so the card's numbers are always fresh. */}
+      {shareDay && (
+        <ShareProgressSheet
+          visible
+          onClose={() => setShareDay(null)}
+          cert={cert}
+          readiness={readiness}
+          input={{
+            certName: cert.name,
+            issuer: cert.issuer,
+            streak,
+            recentDays: recentDays ?? [],
+            today: shareDay,
+            answered,
+            range,
+          }}
+        />
+      )}
+    </Screen>
+  );
+}
+
+/**
+ * You's lower half: Study tools, Mock exams, Help and the trademark line.
+ * Its props are primitives and the store's own arrays, so it re-renders only
+ * when one of them changes (never on focus).
+ */
+const YouLists = memo(function YouLists({
+  cert,
+  summary,
+  dueCount,
+  openMistakes,
+  saved,
+  badgesHidden,
+  newBadge,
+  badgeCount,
+  mocks,
+  pacingLine,
+  creditItems,
+}: {
+  cert: Certification;
+  summary: string | null;
+  dueCount: number;
+  openMistakes: number;
+  saved: number;
+  badgesHidden: boolean;
+  newBadge: boolean;
+  badgeCount: number;
+  mocks: readonly MockResult[];
+  pacingLine: string | null;
+  creditItems: number;
+}) {
+  const { c } = useTheme();
+  const icon = (G: typeof Settings) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
+  // A mini mock is a third of the exam, as on Practice.
+  const miniMock = Math.round(cert.exam.questions / 3);
+  return (
+    <>
+        {summary && (
           // Once, after the launch back-fill: one calm line, not a burst of moments.
           // Only the text is grouped for screen readers; the button stays its own stop (UX review H1).
           <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
@@ -275,8 +348,8 @@ export default function You() {
           icon={icon(Bookmark)}
           title="Saved questions"
           subtitle="Your own revision set"
-          trailing={progress.bookmarks.length ? <Trail value={String(progress.bookmarks.length)} unit="saved" /> : undefined}
-          accessibilityLabel={`Saved questions, ${progress.bookmarks.length} saved`}
+          trailing={saved ? <Trail value={String(saved)} unit="saved" /> : undefined}
+          accessibilityLabel={`Saved questions, ${saved} saved`}
           onPress={() => router.push('/saved')}
         />
         {!badgesHidden && (
@@ -306,9 +379,9 @@ export default function You() {
 
         <Section
           title="Mock exams"
-          action={progress.mocks.length ? { label: 'See report', onPress: () => router.push('/readiness'), accessibilityLabel: 'See your readiness report' } : undefined}
+          action={mocks.length ? { label: 'See report', onPress: () => router.push('/readiness'), accessibilityLabel: 'See your readiness report' } : undefined}
         />
-        {progress.mocks.length === 0 ? (
+        {mocks.length === 0 ? (
           <>
             <EmptyState compact title="No mocks yet" body="A mini mock shows how the exam feels. Start one whenever you like." />
             {/* An experienced learner shouldn't have to wait for Today (ui.md Y4): the same start sheet as Practice. */}
@@ -321,7 +394,7 @@ export default function You() {
             />
           </>
         ) : (
-          progress.mocks.slice(0, 10).map((m, i, all) => (
+          mocks.slice(0, 10).map((m, i, all) => (
             <ListRow
               key={m.id}
               lead={<Lead value={`${mockPct(m)}%`} unit="score" />}
@@ -351,26 +424,6 @@ export default function You() {
           last
         />
         <T v="meta" center style={{ marginTop: space.xl }}>{cert.trademarkNotice}</T>
-      </Enter>
-
-      {/* Mounted only while open, so the card's numbers are always fresh. */}
-      {shareDay && (
-        <ShareProgressSheet
-          visible
-          onClose={() => setShareDay(null)}
-          cert={cert}
-          readiness={readiness}
-          input={{
-            certName: cert.name,
-            issuer: cert.issuer,
-            streak,
-            recentDays: recentDays ?? [],
-            today: shareDay,
-            answered,
-            range,
-          }}
-        />
-      )}
-    </Screen>
+    </>
   );
-}
+});
