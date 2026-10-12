@@ -36,6 +36,19 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.15.0',
+    date: '2026-10-12',
+    new: [
+      'Tell Aurivan where you’re starting from and how long you have most days, and Today’s plan fits your time.',
+      'New to audit? Your first days start with a short lesson before any questions.',
+      'Experienced? An exam-focused plan leads with mocks and your weak spots.',
+    ],
+    improved: [
+      'Times, paces and names now match across Today, Practice and You.',
+      'Plainer words for readiness, hints and mistake tags, with an example for each tag.',
+    ],
+  },
+  {
     version: '1.14.0',
     date: '2026-10-12',
     new: [
@@ -258,6 +271,12 @@ export const WHATS_NEXT: readonly NextItem[] = [
   },
   {
     status: 'shipped',
+    shippedIn: '1.15.0',
+    title: 'A plan that fits your time',
+    body: 'Say where you’re starting from and how long you have most days, and Today’s plan fits.',
+  },
+  {
+    status: 'shipped',
     shippedIn: '1.14.0',
     title: 'A plant that grows with you',
     body: 'Pick a tree or a flower, watch it grow as you master your exam, and dress it with keepsakes from your badges.',
@@ -297,12 +316,6 @@ export const WHATS_NEXT: readonly NextItem[] = [
     shippedIn: '1.6.0',
     title: 'Milestones and game levels',
     body: 'Quiet markers of what you’ve mastered, and levels that grow as you play.',
-  },
-  {
-    status: 'shipped',
-    shippedIn: '1.5.0',
-    title: 'Choose your path',
-    body: 'Smart, Guided, In order or Random practice, for any domain.',
   },
 ];
 
