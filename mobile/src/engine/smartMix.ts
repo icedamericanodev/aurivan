@@ -129,6 +129,10 @@ export interface SmartInput {
   /** Study-notes subtopic of a question (engine/outline.ts); undefined if no note lists it. */
   subtopicOf: (questionId: string) => string | undefined;
   count: number;
+  /**
+   * Questions a day: the backlog test's yardstick. Since mobile 1.15 the
+   * learner sets minutes, so callers pass fit.ts questionsFor(dailyMinutes).
+   */
   dailyGoal: number;
   now: number;
   rng: Rng;

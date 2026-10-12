@@ -116,7 +116,7 @@ describe('Today', () => {
     mount(<Today />);
     const text = allText();
     expect(text).toMatch(/Also today/);
-    expect(text).toMatch(/Also today about 12 min/);
+    expect(text).toMatch(/Also today About 12 min/);
     expect(text).not.toMatch(/Also today \d+ more/);
   });
 });
@@ -147,8 +147,9 @@ describe('You', () => {
 
 describe('Y3: one phrasing for the review queue', () => {
   it('Today’s capped item says the whole queue, like You and Practice; the cap line is the same everywhere', () => {
-    const plan = todaysPlan({ stage: 'practice', dueReviews: 55, dailyGoal: 20, daysLeft: 40, examQuestions: 150 });
-    expect(plan[0]).toMatchObject({ kind: 'review', count: 20, due: 55 });
+    const plan = todaysPlan({ stage: 'practice', dueReviews: 55, dailyMinutes: 20, daysLeft: 40, examQuestions: 150 });
+    // Mobile 1.15: a 20-minute day takes 8 of the 55, and keeps the whole queue for its title.
+    expect(plan[0]).toMatchObject({ kind: 'review', count: 8, due: 55 });
     expect(reviewSubtitle(55)).toBe('20 at a time, most overdue first');
   });
 });
@@ -211,7 +212,8 @@ describe('Results for a one-domain session (R1, R2) and the assisted line (Q1)',
 });
 
 describe('Q1', () => {
-  it('the "Assisted" line under the verdict starts where the coach line does (left 50)', () => {
+  /** Coach me, then answer: the right option, or a wrong one. */
+  const answerHinted = (right: boolean) => {
     const q = getAllQuestions('cisa').find((x) => x.domainId === '1')!;
     act(() => {
       startFromIds('cisa', [q.id], 'Practice · IS Audit');
@@ -221,16 +223,27 @@ describe('Q1', () => {
     });
     mount(<SessionScreen />);
     act(() => {
-      root().findAllByType(OptionCard)[0].props.onPress();
+      root()
+        .findAllByType(OptionCard)
+        .find((o) => (o.props.text === q.options[q.correct]) === right)!
+        .props.onPress();
     });
     act(() => {
       buttons('Check answer')[0].props.onPress();
     });
-    const indentOf = (re: RegExp) => {
-      const t = root().findAll((n) => typeof n.type === 'string' && re.test(textOf(n)) && n.children.every((c) => typeof c === 'string'))[0];
-      return StyleSheet.flatten(t.props.style).marginLeft;
-    };
-    expect(indentOf(/^Assisted\. Counts half toward readiness\.$/)).toBe(50);
-    expect(indentOf(/^(Clean read\.|You picked the runner-up\. That’s the trap\.|Check the role in the stem\.)$/)).toBe(50);
+  };
+  const indentOf = (re: RegExp) => {
+    const t = root().findAll((n) => typeof n.type === 'string' && re.test(textOf(n)) && n.children.every((c) => typeof c === 'string'))[0];
+    return t ? StyleSheet.flatten(t.props.style).marginLeft : undefined;
+  };
+  it('the hint line under the verdict starts where the coach line does (left 50)', () => {
+    answerHinted(true);
+    expect(indentOf(/^You used a hint, so this counts as half a right answer\.$/)).toBe(50);
+    expect(indentOf(/^(Clean read\.|You picked the runner-up\. That’s the trap\.|Check who you are in the question\.)$/)).toBe(50);
+  });
+  it('UX review H1: a WRONG hinted answer never says it "counts as half a right answer"', () => {
+    answerHinted(false);
+    expect(allText()).not.toContain('half a right answer');
+    expect(allText()).not.toContain('You used a hint');
   });
 });

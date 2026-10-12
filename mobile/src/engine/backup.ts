@@ -44,6 +44,7 @@ import {
 } from './plant';
 import { isLookOfSlot, type LookSlot } from './plantLooks';
 import { examDateLabel } from './examDay';
+import { snapMinutes, type DailyMinutes, type Familiarity } from './fit';
 import { reminderSummary } from './reminders';
 import { migrateProgress, PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
 import { dayKey } from './streak';
@@ -176,6 +177,8 @@ const dailyGoal: Check<number> = (x, at) => {
   const n = num(x, at);
   return DAILY_GOALS.reduce((best, g) => (Math.abs(g - n) < Math.abs(best - n) ? g : best), DAILY_GOALS[0] as number);
 };
+/** Mobile 1.15: minutes most days; any other number is moved to the nearest choice (like the daily goal). */
+const dailyMinutes: Check<DailyMinutes> = (x, at) => snapMinutes(num(x, at));
 /** Build E session sizes: any other number is moved to the nearest one (like the daily goal). */
 const studySize: Check<number> = (x, at) => {
   const n = num(x, at);
@@ -474,6 +477,17 @@ function settingsCheck(certKey: Check<string>) {
       studySize,
       // Mobile 1.10: Settings → Show badges switched off (optional: older files have none).
       badgesHidden: bool,
+      // Mobile 1.15, "Fit the plan" (all optional: older files have none).
+      // An older app refuses a 1.15 file as "newer", so these never reach it
+      // by backup; dailyGoal is still written beside them for an app
+      // DOWNGRADE reading the saved store (code review M9b).
+      familiarity: oneOf<Familiarity>('new', 'some', 'experienced'),
+      dailyMinutes,
+      examFocused: bool,
+      fitPrompt: oneOf('answered', 'dismissed'),
+      fitChanges: int(0, 9999),
+      // The days the "Fit your plan" card showed (at most 3; PR #45 review M4).
+      fitAskDays: list(date, 3),
     },
   );
 }

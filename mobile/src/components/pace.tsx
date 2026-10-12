@@ -15,7 +15,7 @@ import { useEffect, useState, type Ref } from 'react';
 import { Pressable, View } from 'react-native';
 import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import type { Certification } from '../content/types';
-import { aboutSeconds, checkpointText, durationSpoken, durationText, durationWords, type MockPacing, type PaceStatus } from '../engine/pace';
+import { aboutSeconds, checkpointText, durationSpoken, durationText, durationWords, spokenMin, type MockPacing, type PaceStatus } from '../engine/pace';
 import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Clock, Flag, Gauge, ICON_STROKE } from './icons';
@@ -177,7 +177,7 @@ export function PacingPanel({ pacing, cert }: { pacing: MockPacing; cert: Certif
   // The typical (median) answer: plain words, never "median" or a bare "s".
   if (pacing.medianSec !== null) {
     const about = aboutSeconds(pacing.medianSec);
-    rows.push(['Typical time per question', `${about[0].toUpperCase()}${about.slice(1)}`, about]);
+    rows.push(['Typical time per question', `${about[0].toUpperCase()}${about.slice(1)}`, spokenMin(about)]);
   }
   if (pacing.checkpoints.length) {
     const text = (sep: string) => pacing.checkpoints.map((k) => `${Math.round(k.at * 100)}%: ${checkpointText(k)}`).join(sep);
@@ -197,7 +197,7 @@ export function PacingPanel({ pacing, cert }: { pacing: MockPacing; cert: Certif
     const d = cert.domains.find((x) => x.id === pacing.slowestDomain!.domainId);
     if (d) {
       const line = `${d.short}, ${aboutSeconds(pacing.slowestDomain.medianSec)} per question`;
-      rows.push(['Slowest domain', line, line]);
+      rows.push(['Slowest domain', line, spokenMin(line)]);
     }
   }
   return (

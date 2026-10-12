@@ -27,12 +27,18 @@ describe('review queue wording', () => {
   });
 
   it("Today's review item and the review session share the same cap", () => {
-    const plan = todaysPlan({ stage: 'practice', dueReviews: 55, dailyGoal: 20, daysLeft: 40, examQuestions: 150 });
-    // The item keeps the whole queue, so Today says "Review 55 due" like You and Practice.
-    expect(plan[0]).toEqual({ kind: 'review', count: REVIEW_SESSION_CAP, capped: true, due: 55 });
-    // Exactly 20 due fits one session: not capped, so no cap line on Today.
-    const twenty = todaysPlan({ stage: 'practice', dueReviews: 20, dailyGoal: 20, daysLeft: 40, examQuestions: 150 });
-    expect(twenty[0]).toEqual({ kind: 'review', count: 20 });
+    const plan = todaysPlan({ stage: 'practice', dueReviews: 55, dailyMinutes: 20, daysLeft: 40, examQuestions: 150 });
+    // The item keeps the whole queue, so Today says "Review 55 due" like You and Practice;
+    // mobile 1.15: a 20-minute day takes 8 of them (about half the day).
+    expect(plan[0]).toEqual({ kind: 'review', count: 8, capped: true, due: 55 });
+    // Never more than one session's cap, whatever the day.
+    for (const dailyMinutes of [10, 20, 30, 45]) {
+      const day = todaysPlan({ stage: 'ready', dueReviews: 200, dailyMinutes, daysLeft: 40, examQuestions: 150, playable: () => false });
+      expect(day[0].kind === 'review' && day[0].count).toBeLessThanOrEqual(REVIEW_SESSION_CAP);
+    }
+    // All the due ones fit today: no "of N" on the item.
+    const few = todaysPlan({ stage: 'practice', dueReviews: 6, dailyMinutes: 20, daysLeft: 40, examQuestions: 150 });
+    expect(few[0]).toEqual({ kind: 'review', count: 6 });
     // Seed 55 due reviews: one session asks 20 of them (it used to ask 30).
     const review: Record<string, ReviewEntry> = {};
     const ids = getAllQuestions('cisa').slice(0, 55).map((q) => q.id);

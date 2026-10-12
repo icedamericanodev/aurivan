@@ -136,12 +136,21 @@ function elementsOf(n: GNode): ReactNode {
   return el;
 }
 
+/**
+ * A transform origin in whole, non-negative pixels. React Native parses origin
+ * strings with a regex that misreads decimals ("100.0px" becomes three values and
+ * crashes the screen on a phone), so never pass it a decimal.
+ */
+export function originPx(x: number, y: number): string {
+  return `${Math.max(0, Math.round(x))}px ${Math.max(0, Math.round(y))}px`;
+}
+
 /** The plant's base in view points, as a transform origin (it pivots there, like a real plant). */
-function baseOrigin(built: BuiltPlant, viewBox: string, size: number): string {
+export function baseOrigin(built: BuiltPlant, viewBox: string, size: number): string {
   const [x, y, w] = viewBox.split(' ').map(Number);
   const px = ((built.anchors.base.x - x) / w) * size;
   const py = ((built.anchors.base.y - y) / w) * size;
-  return `${px.toFixed(1)}px ${py.toFixed(1)}px`;
+  return originPx(px, py);
 }
 
 function Layer({ node, size, viewBox, style }: { node: GNode; size: number; viewBox: string; style?: StyleProp<ViewStyle> }): ReactElement {
@@ -345,7 +354,7 @@ function LivePlantInner(p: LivePlantProps) {
   const labelled = !!accessibilityLabel;
   const crown = built.anchors.crown ?? built.anchors.base;
   const [vx, vy, vw] = viewBox.split(' ').map(Number);
-  const sproutOrigin = `${(((crown.x - vx) / vw) * size).toFixed(1)}px ${(((crown.y + 8 - vy) / vw) * size).toFixed(1)}px`;
+  const sproutOrigin = originPx(((crown.x - vx) / vw) * size, ((crown.y + 8 - vy) / vw) * size);
   return (
     <View
       style={[{ width: size, height: size }, style]}

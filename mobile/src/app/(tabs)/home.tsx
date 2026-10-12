@@ -15,6 +15,12 @@
  * and a learner with no plant gets one quiet "Plant a companion" line until
  * they plant or dismiss it. Settings → Show my plant off: none of this.
  *
+ * Fit (mobile 1.15, PHASE5.md §2.3, §2.5): the plan is sized to the learner's
+ * minutes. Under the leaf marks, "About 20 min today" (the open items; a mock
+ * adds "+ mock"); "Also today" and "Tomorrow" say "About N min". A learner
+ * from before 1.15 sees ONE quiet "Fit your plan" card below the day's study,
+ * once (never in exam week, never beside another moment or the plant's line).
+ *
  * When every plan item is done, the forest panel becomes the clearing card
  * (today's numbers + how readiness moved) and "Tomorrow" previews what's next.
  *
@@ -27,12 +33,17 @@ import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
-import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow } from '../../components/journey';
+import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow, todayMinutesLine } from '../../components/journey';
+import { FitCard } from '../../components/fit';
 import { Celebrate, Pop, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
 import { ICON_STROKE, Play, Settings, Sprig } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
 import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, ScreenTitle, Section, T } from '../../components/ui';
-import { currentIndex, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
+import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
+import { shouldAskFit } from '../../engine/fit';
+import { aboutMin, spokenMin } from '../../engine/pace';
+import { sayLater } from '../../lib/a11y';
+import { useSettings } from '../../store/settings';
 import { runPlanItem } from '../../lib/actions';
 import { haptic } from '../../lib/haptics';
 import { useTodayMoments } from '../../lib/moments';
@@ -44,6 +55,7 @@ import { dayKey } from '../../engine/streak';
 import { useReports } from '../../lib/useReports';
 import { useProgress } from '../../store/progress';
 import { useSession, type ActiveSession } from '../../store/session';
+import type { PlanItem } from '../../engine/planner';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -52,20 +64,29 @@ function creditLine(items: number): string {
   return items === 1 ? 'Something you reported was updated.' : 'Things you reported were updated.';
 }
 
-/** "about 84 minutes": the same style as "About 24 minutes" on the plan items. */
-function aboutMinutes(n: number): string {
-  return `about ${n} ${n === 1 ? 'minute' : 'minutes'}`;
-}
-
 /**
- * What a paused session still takes: its unanswered questions at study pace,
- * but never more than a timed mock has left on its clock (the clock keeps
- * running while it is paused).
+ * What a paused session still takes: its unanswered questions at study pace
+ * (a mock at exam pace, mobile 1.15 C4: a 50-question mini mock is 80 min,
+ * as Practice says), but never more than a timed mock has left on its clock
+ * (the clock keeps running while it is paused).
  */
-function resumeMinutes(s: ActiveSession, now: number): number {
-  const estimate = Math.max(1, Math.round((s.questionIds.length - Object.keys(s.responses).length) * MINUTES_PER_QUESTION));
+function resumeMinutes(s: ActiveSession, now: number, exam: { questions: number; minutes: number }): number {
+  const left = s.questionIds.length - Object.keys(s.responses).length;
+  const perQuestion = s.mode === 'mock' ? exam.minutes / exam.questions : MINUTES_PER_QUESTION;
+  const estimate = Math.max(1, Math.round(left * perQuestion));
   if (s.mode !== 'mock' || !s.deadline) return estimate;
   return Math.max(1, Math.min(estimate, Math.ceil((s.deadline - now) / 60_000)));
+}
+
+/** A section's "About N min" (C1), or nothing when only a mock is listed (its row says its length). */
+const sectionMinutes = (n: number) => (n > 0 ? aboutMin(n) : undefined);
+
+/**
+ * A plan row's short line. The weekly mini mock beside timed items is
+ * optional (PR #45, decided): "Optional this week · about 80 min".
+ */
+function rowShort(item: PlanItem, items: readonly PlanItem[], i: number, due: number | undefined, when: 'today' | 'tomorrow' = 'today'): string {
+  return isOptional(items, i) ? `Optional this week · ${aboutMin(itemMinutes(item), true)}` : planText(item, due, when).short;
 }
 
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -234,9 +255,42 @@ export default function Today() {
   const alsoCount = rest.length + (resume ? 1 : 0);
   // The list always shows every item, so a count adds nothing: say the time
   // instead, which is what a busy learner budgets (ui.md T4).
-  const alsoMinutes = rest.reduce((n, { item }) => n + itemMinutes(item), 0) + (resume ? resumeMinutes(resume, now) : 0);
-  // Tomorrow = a preview of the live plan (the next two items).
+  // A mock is left out: its row says how long it is ("Mock · about 80 min").
+  const alsoMinutes = rest.reduce((n, { item }) => n + (item.kind === 'mock' ? 0 : itemMinutes(item)), 0) + (resume ? resumeMinutes(resume, now, j.cert.exam) : 0);
+  // Tomorrow = a preview of the live plan (the next two items). The live plan
+  // is sized to the minutes, so this never previews more than the day has.
   const tomorrow = j.plan.slice(0, 2);
+  const tomorrowMinutes = sectionMinutes(tomorrow.reduce((n, t) => n + (t.kind === 'mock' ? 0 : itemMinutes(t)), 0));
+  // "About 20 min today" under the leaf marks: only for plans sized in minutes (1.15+).
+  const todayLine = plan.budget ? todayMinutesLine(plan.items, plan.done) : null;
+
+  // Mobile 1.15: the one "Fit your plan" card for learners from before 1.15.
+  // One setup line on Today at a time, and the plant's goes first: on a visit
+  // that showed the plant's line, the card waits (even after "No thanks"),
+  // so one setup line is never swapped for another mid-visit.
+  const plantLineNow = Boolean(!grown && plantPrompt);
+  const [plantVisit, setPlantVisit] = useState(plantLineNow);
+  if (plantLineNow && !plantVisit) setPlantVisit(true);
+  useFocusEffect(useCallback(() => () => setPlantVisit(false), []));
+  const onboarded = useSettings((x) => x.onboarded);
+  const fitPrompt = useSettings((x) => x.fitPrompt);
+  const familiarity = useSettings((x) => x.familiarity);
+  const fitAskDays = useSettings((x) => x.fitAskDays);
+  const askFit = shouldAskFit({
+    onboarded,
+    fitPrompt,
+    familiarity,
+    daysLeft: j.daysLeft,
+    examMoment: Boolean(moments.moment),
+    readyPanel: showReady,
+    plantLine: plantLineNow || plantVisit,
+    askedDays: fitAskDays,
+    today: plan.day,
+  });
+  // Count the day the card showed: after 3 separate days it stays away (code review M4).
+  useEffect(() => {
+    if (askFit) useSettings.getState().noteFitAsked(plan.day);
+  }, [askFit, plan.day]);
 
   return (
     <Screen>
@@ -283,7 +337,8 @@ export default function Today() {
           <Celebrate celebration={clearing}>
             <HeroPanel
               caption="Today’s clearing"
-              captionExtra={<PlanLeaves done={plan.done} focused={focused} seenKey={`${cert}:${plan.day}`} />}
+              // An optional mock left for another day is not a leaf of the clearing.
+              captionExtra={<PlanLeaves done={countedDone(plan)} focused={focused} seenKey={`${cert}:${plan.day}:cleared`} />}
               title={clearingTitle(plan)}
               art="clearing"
               wideTitle
@@ -295,8 +350,11 @@ export default function Today() {
           <HeroPanel
             caption="Start here"
             captionExtra={<PlanLeaves done={plan.done} focused={focused} seenKey={`${cert}:${plan.day}`} />}
+            captionMeta={todayLine ?? undefined}
+            captionMetaLabel={todayLine ? spokenMin(todayLine) : undefined}
             title={planText(plan.items[cur], j.dueCount).title}
             meta={planText(plan.items[cur], j.dueCount).meta}
+            metaLabel={spokenMin(planText(plan.items[cur], j.dueCount).meta)}
             action={{ label: 'Start', onPress: () => runPlanItem(plan.items[cur], j.cert.id), icon: playIcon, hint: planText(plan.items[cur], j.dueCount).title }}
           />
         )}
@@ -346,13 +404,14 @@ export default function Today() {
           <>
             {tomorrow.length > 0 && (
               <>
-                <Section title="Tomorrow" meta={aboutMinutes(tomorrow.reduce((n, t) => n + itemMinutes(t), 0))} />
+                <Section title="Tomorrow" meta={tomorrowMinutes} metaLabel={tomorrowMinutes && spokenMin(tomorrowMinutes)} />
                 {tomorrow.map((item, k) => (
                   <ListRow
                     key={k}
                     icon={planIcon(item, c.accentText)}
-                    title={planText(item).title}
-                    subtitle={planText(item).short}
+                    title={planText(item, undefined, 'tomorrow').title}
+                    subtitle={rowShort(item, tomorrow, k, undefined, 'tomorrow')}
+                    accessibilityLabel={`${planText(item, undefined, 'tomorrow').title}, ${spokenMin(rowShort(item, tomorrow, k, undefined, 'tomorrow'))}`}
                     last={k === tomorrow.length - 1}
                   />
                 ))}
@@ -369,7 +428,7 @@ export default function Today() {
         ) : (
           alsoCount > 0 && (
             <>
-              <Section title="Also today" meta={aboutMinutes(alsoMinutes)} />
+              <Section title="Also today" meta={sectionMinutes(alsoMinutes)} metaLabel={alsoMinutes > 0 ? spokenMin(aboutMin(alsoMinutes)) : undefined} />
               {resume && (
                 <ListRow
                   icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
@@ -384,13 +443,26 @@ export default function Today() {
                   key={i}
                   icon={planIcon(item, c.accentText)}
                   title={planText(item, j.dueCount).title}
-                  subtitle={planText(item, j.dueCount).short}
+                  subtitle={rowShort(item, plan.items, i, j.dueCount)}
+                  accessibilityLabel={`${planText(item, j.dueCount).title}, ${spokenMin(rowShort(item, plan.items, i, j.dueCount))}`}
                   onPress={() => runPlanItem(item, j.cert.id)}
                   last={k === rest.length - 1}
                 />
               ))}
             </>
           )
+        )}
+        {/* Mobile 1.15: one quiet "Fit your plan" card, below the day's study (never above the hero). */}
+        {askFit && (
+          <View style={{ marginTop: space.xl }}>
+            <FitCard
+              onSetUp={() => router.push('/fit')}
+              onNotNow={() => {
+                useSettings.getState().dismissFitPrompt();
+                sayLater('Hidden. Settings, Your study, keeps these choices.');
+              }}
+            />
+          </View>
         )}
         {/* One quiet offer for a learner with no plant, below the day's study (UX review P6): never ahead of it. */}
         {!grown && plantPrompt && (

@@ -169,7 +169,7 @@ export function ExamEveCard({
       <T v="quote" color={c.ink} style={{ marginTop: space.md }}>
         {eve
           ? 'Rest tonight rather than cram. A calm, early night does more than one more set.'
-          : 'Read each stem to the last line, find the priority word, and take your time.'}
+          : 'Read each question to the last line, find the priority word, and take your time.'}
       </T>
     </View>
   );
@@ -253,7 +253,7 @@ export function MindsetGrowthCard({
           </View>
         ))}
       </View>
-      <T v="meta" style={{ marginTop: space.sm }}>Runner-up picks on first tries, out of 10.</T>
+      <T v="meta" style={{ marginTop: space.sm }}>How often you picked the second-best option on a first try, out of 10.</T>
     </View>
   );
 }

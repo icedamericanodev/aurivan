@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { ICON_STROKE, Play } from '../components/icons';
 import { Button, Gap, ICON_SIZE, PushedHeader, Screen, Section, T, ToggleRow } from '../components/ui';
-import { durationSpoken, durationText, mockPace, MOCK_TIMINGS, TIMING_LABEL, type MockTiming } from '../engine/pace';
+import { durationSpoken, durationText, mockPace, MOCK_TIMINGS, TIMING_FACTOR, TIMING_LABEL, targetPaceWords, type MockTiming } from '../engine/pace';
 import { guardedStart, startMock } from '../lib/sessions';
 import { useActiveCert } from '../lib/useActiveCert';
 import { space } from '../theme/tokens';
@@ -143,7 +143,8 @@ export default function MockStart() {
       <T v="small">
         {timing === 'untimed'
           ? 'Your answers still count toward readiness.'
-          : `Pace checks at 25, 50 and 75% of the time. Aim for about ${Math.round(pace.targetSec)} s a question: that leaves time to revisit flagged ones.`}
+          : // Seconds, the same words as Practice and the exam-eve card (mobile 1.15, PHASE5.md C2).
+            `Pace checks at 25, 50 and 75% of the time. ${targetPaceWords(cert.exam, TIMING_FACTOR[timing])}`}
       </T>
       <Gap h={space.xl} />
       <Button

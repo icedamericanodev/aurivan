@@ -124,6 +124,6 @@ export function reminderCopy(certName: string, questions = 10): { title: string;
   const minutes = Math.round(questions * MINUTES_PER_QUESTION);
   return {
     title: 'A short study session?',
-    body: `${questions} ${certName} questions, about ${minutes} minutes. Pick up where you left off.`,
+    body: `${questions} ${certName} questions, about ${minutes} min. Pick up where you left off.`,
   };
 }

@@ -47,6 +47,49 @@ export function targetPaceSeconds(exam: ExamFacts): number {
   return ((exam.minutes - reserve) * 60) / exam.questions;
 }
 
+// ── The two paces in words (mobile 1.15, PHASE5.md C2) ───────────────────
+// Always seconds, always the same two named facts, so Practice, the mock
+// start sheet and the exam-eve card never disagree ("96 s", "1.5 minutes"…).
+
+/** "The exam allows about 96 seconds a question." */
+export function examPaceWords(exam: ExamFacts): string {
+  return `The exam allows about ${Math.round(examPaceSeconds(exam))} seconds a question.`;
+}
+
+/**
+ * "Aim for about 90 seconds a question, so there's time to revisit flagged
+ * ones." `factor` stretches it for extra time (+25% → about 112 seconds).
+ */
+export function targetPaceWords(exam: ExamFacts, factor = 1): string {
+  return `Aim for about ${Math.round(targetPaceSeconds(exam) * factor)} seconds a question, so there’s time to revisit flagged ones.`;
+}
+
+/** From this many minutes, a time reads in hours ("About 2 h 10 min"). */
+const HOURS_FROM = 120;
+
+/**
+ * The one minutes style (PHASE5.md C1): "About 12 min" at the start of a
+ * line, "about 12 min" mid-line (`mid`). Never fewer than 1. Two hours or
+ * more read in hours, like every other duration ("About 4 h" for a paused
+ * full mock; code review M9a); a mini mock stays "About 80 min".
+ * Screen readers: pass the line through `spokenMin`, since TalkBack often
+ * reads "min" as a word (code review M7a).
+ */
+export function aboutMin(n: number, mid = false): string {
+  const total = Math.max(1, Math.round(n));
+  return `${mid ? 'about' : 'About'} ${total >= HOURS_FROM ? durationText(total) : `${total} min`}`;
+}
+
+/**
+ * A line with short units, spoken in full: "About 20 min today" → "About 20
+ * minutes today", "4 h" → "4 hours". Screen readers don't all expand "min".
+ */
+export function spokenMin(line: string): string {
+  return line
+    .replace(/\b(\d+(?:\.\d+)?) h\b/g, (_, n: string) => `${n} hour${n === '1' ? '' : 's'}`)
+    .replace(/\b(\d+(?:\.\d+)?) min\b/g, (_, n: string) => `${n} minute${n === '1' ? '' : 's'}`);
+}
+
 // ── Mock timing options (WCAG 2.2.1; ISACA grants accommodations) ─────────
 
 /** Standard time, +25%, +50%, or no clock at all. */
@@ -144,7 +187,7 @@ export function paceVerdict(elapsedSec: number, done: number, targetSec: number)
 /** The words for a verdict. Calm, and always a next step. */
 export function paceMessage(v: Pick<PaceVerdict, 'status' | 'minutes'>): string {
   if (v.status === 'behind') return `About ${v.minutes} min behind. Flag anything past 2 minutes and move on.`;
-  if (v.status === 'ahead') return 'Ahead. Use the time to re-read the stems.';
+  if (v.status === 'ahead') return 'Ahead. Use the time to re-read the questions.';
   return 'On pace';
 }
 
@@ -289,35 +332,32 @@ export function medianSeconds(ms: readonly (number | undefined)[]): number | nul
 export const PACE_LINE_MIN = 3;
 
 /**
- * "About 74 seconds", or "about 2.5 minutes" past two minutes: one figure a
- * learner reads at a glance (never "median", never a bare "s").
+ * "About 74 seconds", or "about 2.5 min" past two minutes: one figure a
+ * learner reads at a glance (never "median", never a bare "s"; minutes in
+ * the one minutes style, C1). Spoken lines pass through spokenMin.
  */
 export function aboutSeconds(sec: number): string {
   // Round first, then choose the unit, so 119.6 s reads "about 2 minutes", never "about 120 seconds".
   const n = Math.max(1, Math.round(sec));
   if (n < 120) return `about ${n} ${n === 1 ? 'second' : 'seconds'}`;
   const m = Math.round((n / 60) * 10) / 10;
-  return `about ${m} minutes`;
+  return `about ${m} min`;
 }
 
 /**
  * The one plain sentence under a practice session's stats (from the Build C
  * answer times): "About 74 seconds per question. The exam allows about 96
- * seconds." Both figures carry their unit, the same unit. It reads the
- * typical (median) time, so one long pause doesn't skew it. null when fewer
- * than PACE_LINE_MIN answers have a time (a 1-question session, or one saved
- * before Build C): there is nothing useful to say.
+ * seconds." Both figures in seconds, always (mobile 1.15, PHASE5.md C2: the
+ * exam pace is said one way everywhere), so the two compare at a glance. It
+ * reads the typical (median) time, so one long pause doesn't skew it. null
+ * when fewer than PACE_LINE_MIN answers have a time (a 1-question session, or
+ * one saved before Build C): there is nothing useful to say.
  */
 export function practicePaceLine(ms: readonly (number | undefined)[], exam: ExamFacts): string | null {
   const times = cleanMs(ms);
   if (times.length < PACE_LINE_MIN) return null;
-  const med = median(times)! / 1000;
-  const pace = examPaceSeconds(exam);
-  // Both in the same unit (the learner's decides it), so the two compare at a glance.
-  const own = aboutSeconds(med);
-  const minutes = own.endsWith('minutes');
-  const exams = minutes ? `about ${Math.round((pace / 60) * 10) / 10} minutes` : `about ${Math.round(pace)} seconds`;
-  return `${own[0].toUpperCase()}${own.slice(1)} per question. The exam allows ${exams}.`;
+  const own = Math.max(1, Math.round(median(times)! / 1000));
+  return `About ${own} ${own === 1 ? 'second' : 'seconds'} per question. The exam allows about ${Math.round(examPaceSeconds(exam))} seconds.`;
 }
 
 /** Under this, a time reads "Under 1 min" (never "1 min" for 5 seconds, never "0 min"). */
@@ -385,7 +425,7 @@ export type CoachingTag = 'fast-wrong' | 'slow-right';
 
 /** Coaching, not penalties: what each tag says on Results. */
 export const COACHING: Record<CoachingTag, { tag: string; line: string }> = {
-  'fast-wrong': { tag: 'Quick pick', line: 'Slow down on the stem.' },
+  'fast-wrong': { tag: 'Quick pick', line: 'Slow down on the question.' },
   'slow-right': { tag: 'Took its time', line: 'You knew it; trust the first pass.' },
 };
 

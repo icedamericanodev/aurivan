@@ -144,7 +144,7 @@ describe('days to exam (Today header, journey stage, planner)', () => {
 });
 
 describe('planner on exam eve / exam day (fixed: rest, not cram)', () => {
-  const input = { stage: 'examDay' as const, dueReviews: 45, dailyGoal: 20, daysLeft: 1, examQuestions: 150 };
+  const input = { stage: 'examDay' as const, dueReviews: 45, dailyMinutes: 20, daysLeft: 1, examQuestions: 150 };
 
   it('eve: at most a light 10-question review, no mock', () => {
     const plan = todaysPlan(input);

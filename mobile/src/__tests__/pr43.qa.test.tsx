@@ -196,9 +196,11 @@ afterEach(() => {
 
 // ── J1 Onboarding ────────────────────────────────────────────────────────
 describe('J1 a new learner’s onboarding', () => {
+  // Mobile 1.15: the plant step is step 4 of 4, after "Where are you starting from?" (skipped here) and the date.
   const toStep3 = () => {
     press(/^Start my plan$/);
     press(/^Continue$/);
+    press(/^Skip this question$/);
     press(/^Continue$/);
   };
 
@@ -206,7 +208,7 @@ describe('J1 a new learner’s onboarding', () => {
     useSettings.setState({ onboarded: false });
     mount(<Onboarding />);
     toStep3();
-    expect(allText()).toMatch(/Step 3 of 3/);
+    expect(allText()).toMatch(/Step 4 of 4/);
     expect(allText()).not.toMatch(BANNED);
     layoutGrid();
     // Every species is previewed at Crown (growth 5), with the face by default.
@@ -298,7 +300,7 @@ describe('J1 a new learner’s onboarding', () => {
     mount(<Onboarding />);
     toStep3();
     press(/^Back$/);
-    expect(allText()).toMatch(/Step 2 of 3/);
+    expect(allText()).toMatch(/Step 3 of 4/);
     expect(cp().plant).toBeUndefined();
     expect(useSettings.getState().onboarded).toBe(false);
   });

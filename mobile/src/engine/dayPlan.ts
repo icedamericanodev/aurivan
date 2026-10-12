@@ -10,13 +10,13 @@
  *
  * Pure TypeScript: no React, no storage. The progress store persists it.
  */
-import { gameMinutes } from './games/registry';
 import { MINUTES_PER_QUESTION } from './pace';
-import type { PlanItem } from './planner';
+import { itemMinutes, LESSON_MINUTES, type PlanItem } from './planner';
 import type { Readiness } from './readiness';
 
-// Re-exported so existing imports keep working; the value lives in pace.ts.
-export { MINUTES_PER_QUESTION };
+// Re-exported so existing imports keep working; the values live in pace.ts and
+// planner.ts (the planner sizes the day with the same minutes Today shows).
+export { itemMinutes, LESSON_MINUTES, MINUTES_PER_QUESTION };
 
 export interface DayPlan {
   day: string; // "YYYY-MM-DD", local calendar day
@@ -37,6 +37,11 @@ export interface DayPlan {
    * item). Optional: plans saved before this field existed start at zero.
    */
   credit?: number[];
+  /**
+   * Mobile 1.15: the daily minutes this plan was sized for. Optional: plans
+   * saved before 1.15 have none, and Today then shows no "about N min today".
+   */
+  budget?: number;
 }
 
 export type Activity =
@@ -54,9 +59,8 @@ export type Activity =
 
 /** A session counts toward a plan item once 80% of the planned questions are answered. */
 export const SESSION_DONE_SHARE = 0.8;
-export const LESSON_MINUTES = 3;
 
-export function newDayPlan(day: string, certId: string, items: PlanItem[], readiness: Readiness): DayPlan {
+export function newDayPlan(day: string, certId: string, items: PlanItem[], readiness: Readiness, budget?: number): DayPlan {
   const domains: Record<string, number> = {};
   for (const d of readiness.domains) domains[d.domainId] = d.mastery;
   return {
@@ -68,19 +72,76 @@ export function newDayPlan(day: string, certId: string, items: PlanItem[], readi
     answered: 0,
     correct: 0,
     minutes: 0,
+    ...(budget ? { budget } : {}),
   };
 }
 
 /**
  * Swap today's plan for a freshly built one (the exam date changed, so the
  * day's advice changed). Today's numbers carry over: answers, minutes and the
- * readiness the day started at. The items start fresh (a new plan can't
- * inherit ticks from different items). A plan from another day or cert is
- * simply replaced.
+ * readiness the day started at. So does what the learner already did
+ * (code review M2): answers banked on an item move to the new item they
+ * would count for (same kind; a domain item only from the same domain), and
+ * a lesson, game or mock already done stays ticked if the new plan has it.
+ * A plan from another day or cert is simply replaced.
  */
 export function replanDay(old: DayPlan | undefined, fresh: DayPlan): DayPlan {
   if (!old || old.day !== fresh.day || old.certId !== fresh.certId) return fresh;
-  return { ...fresh, start: old.start, answered: old.answered, correct: old.correct, minutes: old.minutes };
+  const credit = fresh.items.map(() => 0);
+  const done = fresh.items.map(() => false);
+  const taken = new Set<number>();
+  old.items.forEach((item, k) => {
+    const banked = old.credit?.[k] ?? 0;
+    const j = fresh.items.findIndex((f, x) => !taken.has(x) && carriesTo(item, f));
+    if (j < 0) return;
+    taken.add(j);
+    if (item.kind === 'review' || item.kind === 'practice') {
+      credit[j] = banked;
+      done[j] = banked > 0 && banked >= itemTarget(fresh.items[j]);
+    } else {
+      done[j] = old.done[k];
+    }
+  });
+  return {
+    ...fresh,
+    done,
+    ...(credit.some((n) => n > 0) ? { credit } : {}),
+    start: old.start,
+    answered: old.answered,
+    correct: old.correct,
+    minutes: old.minutes,
+  };
+}
+
+/** Would what was done on `from` count for `to`? (replanDay) */
+function carriesTo(from: PlanItem, to: PlanItem): boolean {
+  switch (from.kind) {
+    case 'review':
+      return to.kind === 'review';
+    case 'practice':
+      // Answers from one domain count for a mixed item; mixed answers never count for a domain item.
+      return to.kind === 'practice' && (!to.domainId || to.domainId === from.domainId);
+    case 'lesson':
+      return to.kind === 'lesson' && to.lessonId === from.lessonId;
+    case 'game':
+      return to.kind === 'game' && to.gameId === from.gameId;
+    case 'mock':
+      return to.kind === 'mock';
+  }
+}
+
+/**
+ * A mini mock beside timed items is OPTIONAL (PR #45, decided): the day
+ * clears when the timed items are done, and the mock's row says "Optional
+ * this week". A day with nothing but a mock is that mock.
+ */
+export function isOptional(items: readonly PlanItem[], i: number): boolean {
+  return items[i]?.kind === 'mock' && items.some((x) => x.kind !== 'mock');
+}
+
+/** The items the day counts: every required one, and an optional one only once done. */
+export function countedDone(plan: DayPlan): boolean[] {
+  return plan.items.flatMap((_, k) => (plan.done[k] || !isOptional(plan.items, k) ? [Boolean(plan.done[k])] : []));
 }
 
 /** Questions needed to finish a review/practice item: 80% of the PLANNED count (never the session size). */
@@ -157,13 +218,14 @@ export function logAnswer(plan: DayPlan, correct: boolean): DayPlan {
   return { ...plan, answered: plan.answered + 1, correct: plan.correct + (correct ? 1 : 0) };
 }
 
+/** Every required item is done (an optional mock may still be open). */
 export function planComplete(plan: DayPlan): boolean {
-  return plan.items.length > 0 && plan.done.every(Boolean);
+  return plan.items.length > 0 && plan.items.every((_, k) => plan.done[k] || isOptional(plan.items, k));
 }
 
-/** Index of the item to do now (first unticked), or -1 when all are done. */
+/** Index of the item to do now (the first unticked required one), or -1 when all are done. */
 export function currentIndex(plan: DayPlan): number {
-  return plan.done.findIndex((d) => !d);
+  return plan.items.findIndex((_, k) => !plan.done[k] && !isOptional(plan.items, k));
 }
 
 const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
@@ -172,7 +234,8 @@ const capital = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 /** "Three of three, done." — count-aware (spec §11 "Daily clearing card"). */
 export function clearingTitle(plan: DayPlan): string {
-  const n = plan.items.length;
+  // An optional mock left for another day is not part of "N of N".
+  const n = countedDone(plan).length;
   return `${capital(word(n))} of ${word(n)}, done.`;
 }
 
@@ -189,20 +252,4 @@ export function biggestGrowth(plan: DayPlan, readiness: Readiness): { domainId: 
     if (points > 0 && (!best || points > best.points)) best = { domainId: d.domainId, points };
   }
   return best;
-}
-
-/** Rough minutes an item takes, for "about 15 min" on the Tomorrow preview. */
-export function itemMinutes(item: PlanItem): number {
-  switch (item.kind) {
-    case 'review':
-    case 'practice':
-      return Math.max(1, Math.round(item.count * MINUTES_PER_QUESTION));
-    case 'mock':
-      return Math.round(item.questions * MINUTES_PER_QUESTION);
-    case 'lesson':
-      return LESSON_MINUTES;
-    case 'game':
-      // From the game's round size (engine/games/registry.ts), not a fixed guess.
-      return gameMinutes(item.gameId);
-  }
 }

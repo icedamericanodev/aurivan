@@ -1,39 +1,85 @@
 /**
  * Today's plan — a short, achievable list built from the learner's real
  * situation: reviews due, the weakest high-weight domain, lessons not yet
- * done, and how close the exam is. Never more than ~4 items: one screen,
+ * done, and how close the exam is. Never more than 4 items: one screen,
  * one clear next step, no guilt.
+ *
+ * Mobile 1.15 (PHASE5.md §2.3): the plan is sized in MINUTES, to the time
+ * the learner said they have most days (B). It may run a little over (the
+ * tolerance T = 15% of B, at least 2 minutes), never more. A mock is the one
+ * exception: it is planned at most once a week and says it is longer.
+ *
+ *   1. Reviews first, when any are due (spacing is the cheapest win), sized
+ *      to about half the day: B=10 → 5 · 20 → 8 · 30 → 12 · 45 → 18.
+ *   2. Then the stage's items, in order, while they fit in what is left.
+ *   3. Time left, and reviews cut below what is due? The reviews grow into it.
+ *
+ * And by where the learner is starting from (engine/fit.ts):
+ *   - `new`: day 1 teaches before it tests: the next lesson + 5 questions on it.
+ *   - `experienced` (or Exam-focused switched on): no lessons; weak spots
+ *     lead, with an optional mini mock once a week.
+ *
+ * A mini mock never leads the plan: it sits right after the first timed
+ * item, and the day clears without it (dayPlan.ts isOptional).
  */
-import { GAMES, type GameId } from './games/registry';
+import { GAMES, gameMinutes, type GameId } from './games/registry';
+import { DEFAULT_MINUTES, examFocusedOf, planTolerance, questionsFor, type Familiarity } from './fit';
 import type { Stage } from './journey';
+import { MINUTES_PER_QUESTION } from './pace';
 import { REVIEW_SESSION_CAP } from './srs';
+import { dayKey, daysBetween } from './streak';
 
 /** A game's plan label: its registry name and honest length (e.g. "Snare Spotter · 6 min"). */
 const gameItem = (gameId: GameId): PlanItem => ({ kind: 'game', gameId, label: `${GAMES[gameId].name} · ${GAMES[gameId].minutes} min` });
 
+/**
+ * Why a practice item is in the plan (its meta line says so). Optional:
+ * older saved plans have none and read as "new material first".
+ *   check: the starting check · learn: right after a lesson · weak: Exam-focused weak spots
+ */
+export type PracticeWhy = 'check' | 'learn' | 'weak';
+
 export type PlanItem =
   /** `label` is optional: older saved plans have none, and Today then says "Review N due". */
   /**
-   * `capped`: more were due than one session asks (REVIEW_SESSION_CAP), so
-   * Today says "20 at a time". `due`: the whole queue when capped, so Today
-   * says "Review 55 due" like You and Practice ("55 due"). Both are written
-   * only when capped (older saves and uncapped items keep the old shape).
+   * `due`: the whole queue when more were due than today's count (mobile
+   * 1.15: also when the day's budget, not the session cap, cut it), so Today
+   * says "Review 55 due · 8 today". `capped`: the older shape (more than one
+   * session's 20 were due); kept so saved plans read the same.
    */
   | { kind: 'review'; count: number; label?: string; capped?: boolean; due?: number }
-  | { kind: 'lesson'; lessonId: string; title: string }
-  | { kind: 'practice'; domainId?: string; count: number; label: string }
+  /** `minutes`: the lesson's own length (mobile 1.15). Older saves have none: LESSON_MINUTES. */
+  | { kind: 'lesson'; lessonId: string; title: string; minutes?: number }
+  | { kind: 'practice'; domainId?: string; count: number; label: string; why?: PracticeWhy }
   /** `label` is saved with the day's plan; screens show the registry name, so old labels never show an old name. */
   | { kind: 'game'; gameId: GameId; label: string }
-  | { kind: 'mock'; questions: number; label: string };
+  /** `minutes`: the mock's time at exam pace (mobile 1.15). Older saves have none: EXAM_MINUTES_PER_QUESTION. */
+  | { kind: 'mock'; questions: number; label: string; minutes?: number };
 
 export interface PlanInput {
   stage: Stage;
   dueReviews: number;
-  dailyGoal: number;
+  /** The minutes the learner has most days (engine/fit.ts DAILY_MINUTES). */
+  dailyMinutes: number;
+  /** Where the learner is starting from; unset = not asked or skipped (reads as `some`). */
+  familiarity?: Familiarity;
+  /** The learner's explicit Exam-focused choice; unset = follow familiarity (fit.ts examFocusedOf). */
+  examFocused?: boolean;
+  /** Questions answered so far: sizes the starting check (it stops at DIAGNOSTIC_SIZE). */
+  answered?: number;
   focusDomain?: { id: string; short: string };
-  nextLesson?: { id: string; title: string };
+  /** The lesson to offer (already chosen: fit.ts planLesson), with its length and domain. */
+  nextLesson?: { id: string; title: string; minutes?: number; domainId?: string; domainShort?: string };
+  /** When the last mock (any size) finished; null = never. */
+  lastMockAt?: number | null;
+  /** When the last FULL mock finished. Not read in 5a: kept for 5b's exam-week full mock. */
+  lastFullMockAt?: number | null;
+  /** Now (ms), for the once-a-week mock rule. Optional: the clock's now. */
+  now?: number;
   daysLeft: number | null;
   examQuestions: number; // full mock length for this certification
+  /** The exam's minutes (a mock's length at exam pace). Optional: EXAM_MINUTES_PER_QUESTION. */
+  examMinutes?: number;
   /**
    * Whether a game has enough questions for this certification
    * (registry isPlayable). Optional: leaving it out treats every game as playable.
@@ -41,77 +87,230 @@ export interface PlanInput {
   playable?: (id: GameId) => boolean;
 }
 
-/** The most the exam eve asks for: a light review, never a cram. */
+/** The most the exam eve asks for: a light review, never a cram (and never more than the budget). */
 export const EVE_MAX = 10;
 /** Exam day: an optional warm-up only. */
 export const WARM_UP = 5;
+/** Questions answered before the starting check is done (journey.ts DIAGNOSTIC_SIZE). */
+const CHECK_SIZE = 20;
+/** The most one planned practice item asks for. */
+export const PRACTICE_MAX = 30;
+/** The fewest questions worth a practice item (fewer than this and it waits). */
+export const PRACTICE_MIN = 5;
+/** A new learner's first questions on a lesson: a few, to try it, not a test. */
+export const NEW_LEARNER_QUESTIONS = 5;
+/** A mock is planned at most once in this many CALENDAR days (Monday's mock is due again next Monday). */
+export const MOCK_GAP_DAYS = 7;
+/** Exam week's light review keeps its size (code review M5): rest, not cram, whatever the minutes. */
+export const EXAM_WEEK_REVIEW = 10;
+/** A new learner after day 1: a lesson and up to this many questions (UX review O4). */
+export const NEW_LEARNER_MAX = 10;
+
+/** A lesson's length when a saved plan item has none (1.15: 3 → 5, to match the lessons themselves). */
+export const LESSON_MINUTES = 5;
+/**
+ * Exam pace in minutes per question, for a saved mock item with no minutes
+ * (every ISACA exam: 240 minutes / 150 questions). A 50-question mini mock = 80.
+ */
+export const EXAM_MINUTES_PER_QUESTION = 1.6;
+
+const studyMinutes = (count: number) => Math.max(1, Math.round(count * MINUTES_PER_QUESTION));
+/** Questions that fit in `minutes` at study pace (no floor of 5). */
+const fitting = (minutes: number) => Math.max(0, Math.floor(minutes / MINUTES_PER_QUESTION + 1e-9));
+
+/** Rough minutes an item takes: study pace for questions, the lesson's own length, exam pace for a mock. */
+export function itemMinutes(item: PlanItem): number {
+  switch (item.kind) {
+    case 'review':
+    case 'practice':
+      return studyMinutes(item.count);
+    case 'mock':
+      return item.minutes ?? Math.round(item.questions * EXAM_MINUTES_PER_QUESTION);
+    case 'lesson':
+      return item.minutes ?? LESSON_MINUTES;
+    case 'game':
+      // From the game's round size (engine/games/registry.ts), not a fixed guess.
+      return gameMinutes(item.gameId);
+  }
+}
+
+/** The minutes a plan asks for, leaving mocks out (they are exempt from the budget). */
+export function planMinutes(items: readonly PlanItem[]): number {
+  return items.reduce((n, i) => n + (i.kind === 'mock' ? 0 : itemMinutes(i)), 0);
+}
+
+function reviewItem(count: number, due: number, label?: string): PlanItem {
+  return {
+    kind: 'review',
+    count,
+    ...(label ? { label } : {}),
+    // The whole queue when today's count is less, so Today can say "Review 55 due · 8 today".
+    ...(due > count ? { due } : {}),
+    ...(due > REVIEW_SESSION_CAP ? { capped: true } : {}),
+  };
+}
 
 export function todaysPlan(p: PlanInput): PlanItem[] {
+  // A missing or broken number plans the default day, never a NaN one.
+  const budget = Number.isFinite(p.dailyMinutes) ? Math.max(1, p.dailyMinutes) : DEFAULT_MINUTES;
+  const tol = planTolerance(budget);
+
   // The day before the exam and exam day are for rest, not cramming
   // (the eve card says "Rest tonight rather than cram"; the plan must agree).
   // Eve: ONE light item, due reviews if any, else practice. No game, no mock.
   if (p.daysLeft === 1) {
-    const label = `Light review · up to ${EVE_MAX}`;
+    const n = Math.min(EVE_MAX, questionsFor(budget));
     return p.dueReviews > 0
-      ? [{ kind: 'review', count: Math.min(p.dueReviews, EVE_MAX), label }]
-      : [{ kind: 'practice', count: EVE_MAX, label }];
+      ? [reviewItem(Math.min(p.dueReviews, n), p.dueReviews, `Light review · ${Math.min(p.dueReviews, n)} questions`)]
+      : [{ kind: 'practice', count: n, label: `Light review · ${n} questions` }];
   }
   // Exam day: only an optional five-question warm-up.
   if (p.daysLeft === 0) {
     return [{ kind: 'practice', count: WARM_UP, label: `Optional warm-up · ${WARM_UP} questions` }];
   }
+  if (p.stage === 'afterExam') return [];
 
+  const focused = examFocusedOf(p);
   const plan: PlanItem[] = [];
-  // A game is only planned when it can be played (small banks hide it).
-  const addGame = (id: GameId) => {
-    if (!p.playable || p.playable(id)) plan.push(gameItem(id));
+  let used = 0;
+  const left = () => budget - used;
+  const add = (item: PlanItem) => {
+    plan.push(item);
+    if (item.kind !== 'mock') used += itemMinutes(item);
   };
-  const practiceCount = Math.max(5, Math.min(p.dailyGoal, 20));
+
+  // 1. Spaced reviews first, when due: about half the day.
+  let review: Extract<PlanItem, { kind: 'review' }> | null = null;
+  const reviewCap = Math.min(p.dueReviews, REVIEW_SESSION_CAP);
+  if (p.dueReviews > 0) {
+    review = reviewItem(Math.min(reviewCap, Math.max(5, fitting((0.5 * budget)))), p.dueReviews) as Extract<PlanItem, { kind: 'review' }>;
+    add(review);
+  }
+  // 3 (the fill). Time left and reviews cut below what is due: they grow into it (spacing first).
+  const fill = () => {
+    if (!review || review.count >= reviewCap) return;
+    const more = Math.min(reviewCap - review.count, fitting(left()));
+    if (more <= 0) return;
+    used -= itemMinutes(review);
+    const grown = reviewItem(review.count + more, p.dueReviews) as Extract<PlanItem, { kind: 'review' }>;
+    plan[plan.indexOf(review)] = grown;
+    review = grown;
+    used += itemMinutes(grown);
+  };
+  // Too little left for a real practice set: the reviews take it now, before a lesson or game could.
+  if (left() < studyMinutes(PRACTICE_MIN)) fill();
+
+  // 2. The stage's items, in order, while they fit.
+  /** A sized practice item: as many questions as fit (5 to 30), or nothing when fewer than 5 fit. */
+  const practice = (label: (n: number) => string, extra: { domainId?: string; why?: PracticeWhy } = {}, max = PRACTICE_MAX) => {
+    const n = Math.min(max, PRACTICE_MAX, fitting(left()));
+    if (n < PRACTICE_MIN) return;
+    add({ kind: 'practice', count: n, label: label(n), ...(extra.domainId ? { domainId: extra.domainId } : {}), ...(extra.why ? { why: extra.why } : {}) });
+  };
+  /** A fixed-length item (a lesson, a game, 5 questions): added only when it fits, with the tolerance. */
+  const fixed = (item: PlanItem) => {
+    if (itemMinutes(item) <= left() + tol) add(item);
+  };
+  const game = (id: GameId) => {
+    // A game is only planned when it can be played (small banks hide it).
+    if (!p.playable || p.playable(id)) fixed(gameItem(id));
+  };
+  const lessonOf = (l: NonNullable<PlanInput['nextLesson']>): PlanItem => ({
+    kind: 'lesson',
+    lessonId: l.id,
+    title: l.title,
+    ...(l.minutes ? { minutes: l.minutes } : {}),
+  });
+  // Exam-focused plans never offer a lesson (they stay one tap away in Learn).
+  const lesson = p.nextLesson && !focused ? p.nextLesson : undefined;
+  const focusPractice = () =>
+    practice((n) => (p.focusDomain ? `${n} questions · ${p.focusDomain.short}` : `${n} mixed questions`), { domainId: p.focusDomain?.id });
+  // Calendar days, not hours (code review M1): a mock finished Monday evening
+  // is due again next Monday morning, DST weeks included. Never in exam week.
+  const mockDue =
+    (p.daysLeft === null || p.daysLeft > 7) &&
+    (p.lastMockAt == null || daysBetween(dayKey(p.lastMockAt), dayKey(p.now ?? Date.now())) >= MOCK_GAP_DAYS);
+  const miniMock = (): PlanItem => {
+    const questions = Math.round(p.examQuestions / 3);
+    const minutes = p.examMinutes ? Math.round((p.examMinutes / p.examQuestions) * questions) : Math.round(questions * EXAM_MINUTES_PER_QUESTION);
+    return { kind: 'mock', questions, label: `Mini mock · ${questions} questions`, minutes };
+  };
+  const practiceStage = () => {
+    if (focused) {
+      // Leads with a mock (once a week) and the weak spots; no lessons.
+      if (mockDue) add(miniMock());
+      practice((n) => (p.focusDomain ? `Weak spots: ${p.focusDomain.short}` : `${n} mixed questions`), { domainId: p.focusDomain?.id, why: 'weak' });
+      game('trap');
+      return;
+    }
+    focusPractice();
+    if (lesson) fixed(lessonOf(lesson));
+    game('trap');
+  };
 
   switch (p.stage) {
     case 'diagnose':
-      plan.push({ kind: 'practice', count: 20, label: 'Diagnostic: 20 mixed questions' });
+      if (p.familiarity === 'new' && lesson) {
+        // Teach before testing (worked examples first): the lesson, then a few questions on it.
+        fixed(lessonOf(lesson));
+        // Day 1 tries 5. After that, the questions grow to the minutes the
+        // learner chose (up to 10, and never past the 20 that end this stage):
+        // a 45-minute learner isn't left with 9 minutes a day (UX review O4).
+        const answered = p.answered ?? 0;
+        const count =
+          answered === 0
+            ? NEW_LEARNER_QUESTIONS
+            : Math.max(NEW_LEARNER_QUESTIONS, Math.min(NEW_LEARNER_MAX, fitting(left()), CHECK_SIZE - answered));
+        const short = lesson.domainShort;
+        fixed({
+          kind: 'practice',
+          count,
+          label: short ? `${count} questions · ${short}` : `${count} questions`,
+          ...(lesson.domainId ? { domainId: lesson.domainId } : {}),
+          why: 'learn',
+        });
+      } else {
+        // The starting check, sized to the day; it ends at 20 answers in all.
+        const remaining = Math.max(PRACTICE_MIN, CHECK_SIZE - (p.answered ?? 0));
+        practice((n) => `Starting check: ${n} mixed questions`, { why: 'check' }, remaining);
+      }
       break;
     case 'learn':
-      if (p.nextLesson) plan.push({ kind: 'lesson', lessonId: p.nextLesson.id, title: p.nextLesson.title });
-      plan.push({
-        kind: 'practice',
-        domainId: p.focusDomain?.id,
-        count: 10,
-        label: p.focusDomain ? `10 questions · ${p.focusDomain.short}` : '10 mixed questions',
-      });
+      if (focused) {
+        practiceStage();
+        break;
+      }
+      if (lesson) fixed(lessonOf(lesson));
+      focusPractice();
       break;
     case 'practice':
-      plan.push({
-        kind: 'practice',
-        domainId: p.focusDomain?.id,
-        count: practiceCount,
-        label: p.focusDomain ? `${practiceCount} questions · ${p.focusDomain.short}` : `${practiceCount} mixed questions`,
-      });
-      if (p.nextLesson) plan.push({ kind: 'lesson', lessonId: p.nextLesson.id, title: p.nextLesson.title });
-      addGame('trap');
+      practiceStage();
       break;
-    case 'mock': {
-      const mini = Math.round(p.examQuestions / 3);
-      plan.push({ kind: 'mock', questions: mini, label: `Mini mock · ${mini} questions` });
+    case 'mock':
+      // A mini mock (exempt from the budget), at most once a week; in a week
+      // that already had one, the day is ordinary practice.
+      if (mockDue) add(miniMock());
+      else practiceStage();
       break;
-    }
     case 'ready':
-      addGame('sprint');
-      plan.push({ kind: 'practice', count: 10, label: '10 mixed questions to stay sharp' });
+      game('sprint');
+      practice((n) => `${n} mixed questions to stay sharp`);
       break;
     case 'examDay':
-      plan.push({ kind: 'practice', count: 10, label: 'Light review · 10 questions' });
-      addGame('priority');
-      break;
-    case 'afterExam':
+      // The current exam-week size, never grown by the minutes (code review M5).
+      practice((n) => `Light review · ${n} questions`, {}, EXAM_WEEK_REVIEW);
+      game('priority');
       break;
   }
 
-  // Spaced reviews always come first when due — they are the cheapest wins.
-  if (p.dueReviews > 0 && p.stage !== 'afterExam') {
-    const capped = p.dueReviews > REVIEW_SESSION_CAP;
-    plan.unshift({ kind: 'review', count: Math.min(p.dueReviews, REVIEW_SESSION_CAP), ...(capped ? { capped, due: p.dueReviews } : {}) });
-  }
+  fill();
+  // Never an empty day: a short mixed set that fits.
+  if (plan.length === 0) plan.push({ kind: 'practice', count: questionsFor(budget), label: `${questionsFor(budget)} mixed questions` });
+  // A mock never leads (UX review P2, decided): it goes right after the first
+  // timed item, so the hero matches "About N min today". It stays optional,
+  // and its row says how long it is.
+  const m = plan.findIndex((i) => i.kind === 'mock');
+  const t = plan.findIndex((i) => i.kind !== 'mock');
+  if (m === 0 && t > 0) plan.splice(t, 0, ...plan.splice(0, 1));
   return plan.slice(0, 4);
 }

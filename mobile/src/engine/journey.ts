@@ -16,16 +16,23 @@ export interface JourneyInput {
   lessonsAvailable: number;
   mocksTaken: number;
   daysLeft: number | null; // null = no exam date set
+  /**
+   * Mobile 1.15: the Exam-focused plan (engine/fit.ts examFocusedOf). It
+   * never enters `learn`: where a learner would be sent to lessons, it
+   * returns `practice` ("Make it stick") instead. Optional: unset = off.
+   */
+  examFocused?: boolean;
 }
 
 export const STAGE_ORDER: Stage[] = ['diagnose', 'learn', 'practice', 'mock', 'ready', 'examDay', 'afterExam'];
 
 export const STAGE_LABEL: Record<Stage, string> = {
-  diagnose: 'Find your gaps',
+  diagnose: 'Find your starting point',
   learn: 'Learn the concepts',
   practice: 'Make it stick',
   mock: 'Rehearse the exam',
-  ready: 'Ready check',
+  // Not "Ready check": that read like a verdict on passing (PHASE5.md J4).
+  ready: 'Keep it steady',
   examDay: 'Exam week',
   afterExam: 'After the exam',
 };
@@ -49,7 +56,7 @@ export function journeyStage(j: JourneyInput): Stage {
 
   const domains = j.readiness.domains;
   const lessonsShort = j.lessonsAvailable > 0 && j.lessonsDone < Math.min(j.lessonsAvailable, domains.length);
-  if (lessonsShort && j.readiness.score < 50) return 'learn';
+  if (lessonsShort && j.readiness.score < 50 && !j.examFocused) return 'learn';
 
   const allAbove = (floor: number) => domains.every((d) => d.mastery >= floor);
   if (!allAbove(MOCK_DOMAIN_FLOOR)) return 'practice';

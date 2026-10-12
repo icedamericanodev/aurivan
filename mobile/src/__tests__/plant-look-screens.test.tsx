@@ -171,7 +171,12 @@ describe('Look', () => {
 
   it('keepsakes: earned ones can be shown, up to three; the fourth waits until one is put away', () => {
     setPlant(plantNew('oak', 'Kai', Date.now(), 3));
+    // All four at the SAME moment (the clock frozen), so catalogue order decides: without
+    // this, a millisecond tick between two earns reordered them and the test flaked.
+    const at = Date.now();
+    const clock = jest.spyOn(Date, 'now').mockReturnValue(at);
     for (const k of ['dress-rehearsal', 'on-pace', 'long-memory:25', 'snare-wise']) earn(k);
+    clock.mockRestore();
     mount(<PlantLook />);
     // Never chosen: the first three earned show (UX review H1; same time here, so catalogue order).
     expect(cp().plant!.look?.keepsakes).toBeUndefined();

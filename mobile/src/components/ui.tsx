@@ -373,6 +373,8 @@ export function HeroPanel({
   caption,
   captionLead,
   captionExtra,
+  captionMeta,
+  captionMetaLabel,
   title,
   meta,
   action,
@@ -390,6 +392,10 @@ export function HeroPanel({
   captionLead?: ReactNode;
   /** After the caption on the same line (e.g. plan leaf marks). */
   captionExtra?: ReactNode;
+  /** One meta line under the caption row (Today, mobile 1.15: "About 20 min today"). */
+  captionMeta?: string;
+  /** Spoken caption meta, when it differs ("About 20 minutes today" for "About 20 min today"). */
+  captionMetaLabel?: string;
   title: string;
   meta?: string;
   action?: { label: string; onPress: () => void; icon?: (color: string) => ReactNode; hint?: string };
@@ -457,6 +463,11 @@ export function HeroPanel({
             {captionExtra}
           </Row>
         )}
+        {captionMeta ? (
+          <T v="meta" color={c.onForest2} accessibilityLabel={captionMetaLabel} style={{ marginTop: 2 }}>
+            {captionMeta}
+          </T>
+        ) : null}
         {/* While the title fits in 2 lines it stays clear of the art (maxWidth 250);
             longer titles, or large text, run full width over the low-contrast art. */}
         <T
@@ -667,13 +678,24 @@ export function ScreenTitle({ title, settings }: { title: string; settings?: () 
 }
 
 // ── Section: headline + optional meta on the right ────────────────────
-export function Section({ title, meta, style }: { title: string; meta?: string; style?: StyleProp<ViewStyle> }) {
+export function Section({
+  title,
+  meta,
+  metaLabel,
+  style,
+}: {
+  title: string;
+  meta?: string;
+  /** Spoken meta, when it differs ("About 19 minutes" for "About 19 min"). */
+  metaLabel?: string;
+  style?: StyleProp<ViewStyle>;
+}) {
   // Large text: the meta drops under the title instead of squeezing beside it.
   const large = useFontScale() >= LARGE_TEXT;
   return (
     <View style={[styles.section, large && styles.sectionStacked, style]}>
       <T v="headline" accessibilityRole="header" style={{ flexShrink: 1 }}>{title}</T>
-      {meta && <T v="meta" style={{ flexShrink: 1 }}>{meta}</T>}
+      {meta && <T v="meta" accessibilityLabel={metaLabel} style={{ flexShrink: 1 }}>{meta}</T>}
     </View>
   );
 }
@@ -982,8 +1004,11 @@ export function Toggle({
   disabled?: boolean;
   accessibilityLabel: string;
 }) {
-  const { c } = useTheme();
+  const { c, isDark } = useTheme();
   const webOnly = Platform.OS === 'web' ? ({ activeThumbColor: c.onBtn } as object) : {};
+  // Dark mode, off: the dark `onBtn` thumb sank into the grey track, so it takes
+  // the light secondary ink instead (UX review O6). On, it stays `onBtn` on `btn`.
+  const offThumb = isDark ? c.ink2 : c.onBtn;
   return (
     <Switch
       ref={ref}
@@ -991,7 +1016,7 @@ export function Toggle({
       value={value}
       disabled={disabled}
       onValueChange={onValueChange}
-      thumbColor={c.onBtn}
+      thumbColor={value ? c.onBtn : offThumb}
       trackColor={{ true: c.btn, false: c.muted }}
       ios_backgroundColor={c.muted}
       {...webOnly}
@@ -1194,6 +1219,10 @@ const styles = StyleSheet.create({
   tag: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   chip: {
     minHeight: 40,
+    // Never wider than its row: at 200% text a long label wraps inside the
+    // pill instead of running off the screen (UX review H2).
+    maxWidth: '100%',
+    paddingVertical: 4,
     borderRadius: radius.pill,
     borderWidth: 1.5,
     paddingHorizontal: space.lg,
@@ -1202,7 +1231,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  chipLabel: { fontFamily: font.sans600, fontSize: 15, lineHeight: 20 },
+  chipLabel: { fontFamily: font.sans600, fontSize: 15, lineHeight: 20, flexShrink: 1 },
   // Covers the 1.5 outline too, so the selected chip reads as one ink shape.
   chipFill: { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5, borderRadius: radius.pill },
   tabLabel: { alignItems: 'center', gap: 1 },

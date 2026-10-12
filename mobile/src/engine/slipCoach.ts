@@ -55,13 +55,13 @@ export interface SlipCoachCopy {
 
 export const PATTERN_COPY: Record<SlipPattern, SlipCoachCopy> = {
   'runner-up': { title: 'You often pick the runner-up', coach: 'Two options look right. Say why the best one wins before you tap.', game: 'trap' },
-  priority: { title: 'You miss FIRST/BEST priority words', coach: 'Find the priority word before you read the options.', game: 'priority' },
-  overconfident: { title: 'You miss when you feel sure', coach: 'A sure answer still deserves one more read of the stem.', game: 'sprint' },
+  priority: { title: 'You miss priority words like FIRST and BEST', coach: 'Find the priority word before you read the options.', game: 'priority' },
+  overconfident: { title: 'You miss when you feel sure', coach: 'A sure answer still deserves one more read of the question.', game: 'sprint' },
   // Build F: the role pattern drills in Canopy Call ("who has the authority to decide?").
-  role: { title: 'You answer from the wrong role', coach: 'Ask who you are in the question: auditor, manager or board?', game: 'canopy' },
-  'tech-first': { title: 'You reach for tech before governance', coach: 'Policy, ownership and approval usually come before tools.', game: 'trap' },
+  role: { title: 'You answer as the wrong person', coach: 'Ask who you are in the question: auditor, manager or board?', game: 'canopy' },
+  'tech-first': { title: 'You reach for a tool before the policy', coach: 'Policy, ownership and approval usually come before tools.', game: 'trap' },
   symptom: { title: 'You fix the symptom, not the cause', coach: 'Prefer the option that removes the root cause.', game: 'trap' },
-  misread: { title: 'You misread the stem', coach: 'Slow down on the last line of the stem.', game: 'priority' },
+  misread: { title: 'You misread the question', coach: 'Slow down on the last line of the question.', game: 'priority' },
   knowledge: { title: 'Most misses are content gaps', coach: 'A lesson or a review session will close them.', game: null },
 };
 

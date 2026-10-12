@@ -702,7 +702,7 @@ describe('J5 quick fixes', () => {
       startFromIds('cisa', TEN, 'Practice · All domains');
     });
     mount(<Today />);
-    expect(allText()).toMatch(/Also today about \d+ min/);
+    expect(allText()).toMatch(/Also today About \d+ min/);
     expect(allText()).not.toMatch(/Also today \d+ more/);
   });
 
@@ -717,7 +717,7 @@ describe('J5 quick fixes', () => {
     jest.setSystemTime(active().deadline! - 5 * 60_000); // paused, 5 minutes left
     expect(left).toBeGreaterThan(5 * 60_000);
     mount(<Today />);
-    const m = allText().match(/Also today about (\d+) min/);
+    const m = allText().match(/Also today About (\d+) min/);
     expect(m).not.toBeNull();
     expect(Number(m![1])).toBeLessThanOrEqual(5);
   });

@@ -95,7 +95,7 @@ describe('what gets scheduled', () => {
 
   it('copy names one small action and its time, with no guilt or promises', () => {
     const { title, body } = reminderCopy('CISA');
-    expect(body).toBe('10 CISA questions, about 12 minutes. Pick up where you left off.');
+    expect(body).toBe('10 CISA questions, about 12 min. Pick up where you left off.');
     expect(`${title} ${body}`).not.toMatch(/streak|alive|got this|don.t|lose|behind|pass|!/i);
   });
 });

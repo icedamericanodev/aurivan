@@ -102,7 +102,8 @@ describe('picking a light', () => {
   it('suggests Seedling to a new learner and explains the round', () => {
     expect(allText()).toContain('Answer at exam pace.');
     expect(allText()).toContain('Suggested: Seedling, from your recent answer times.');
-    expect(allText()).toContain('120 s a question · 10 min of light · you can add time');
+    // Mobile 1.15 (C2): seconds in words, never a bare "s".
+    expect(allText()).toContain('120 seconds a question · 10 min of light · you can add time');
     const radios = root().findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function');
     expect(radios.map((n) => n.props.accessibilityLabel)).toEqual([
       'Seedling, 120 seconds a question, suggested',
@@ -112,7 +113,7 @@ describe('picking a light', () => {
     act(() => {
       radios[2].props.onPress();
     });
-    expect(allText()).toContain('80 s a question · 7 min of light');
+    expect(allText()).toContain('80 seconds a question · 7 min of light');
   });
 });
 

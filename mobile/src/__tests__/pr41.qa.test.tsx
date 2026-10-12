@@ -320,9 +320,9 @@ describe('Journey 1 · Results stats', () => {
     expect(timeStat(211 * MIN)).toEqual({ word: '3\u00a0h 31\u00a0min', spoken: '3 hours 31 minutes' });
     expect(timeStat(1440 * MIN)).toEqual({ word: '24\u00a0h', spoken: '24 hours' });
     expect(aboutSeconds(0.2)).toBe('about 1 second');
-    expect(aboutSeconds(150)).toBe('about 2.5 minutes');
-    // Slow practice (over 2 min a question): both figures switch to minutes together.
-    expect(practicePaceLine([150_000, 150_000, 150_000], cisa.exam)).toBe('About 2.5 minutes per question. The exam allows about 1.6 minutes.');
+    expect(aboutSeconds(150)).toBe('about 2.5 min');
+    // Slow practice (over 2 min a question): mobile 1.15 (C2) keeps both figures in seconds, the exam pace's one unit.
+    expect(practicePaceLine([150_000, 150_000, 150_000], cisa.exam)).toBe('About 150 seconds per question. The exam allows about 96 seconds.');
   });
 
   // BUG (Minor): same screen, two answers. Results says "Under a minute"
@@ -402,7 +402,8 @@ describe('Journey 1 · Today clearing card', () => {
     expect(clearing()).toEqual(['Questions: 31', 'Accuracy: 81 percent', 'Time: 24 minutes']);
     act(() => r!.unmount());
     mount(<ClearingBody plan={plan({ answered: 0, correct: 0, minutes: 75 })} readiness={readiness} range={range} cert={cisa} />);
-    expect(clearing()).toEqual(['Questions: 0', 'Accuracy: none yet', 'Time: 1 hour 15 minutes']);
+    // Mobile 1.15 (C8): the same empty word as You ("Not yet").
+    expect(clearing()).toEqual(['Questions: 0', 'Accuracy: not yet', 'Time: 1 hour 15 minutes']);
   });
 
   // BUG (Minor): the owner's "1 minute for a 5-second session" is fixed on

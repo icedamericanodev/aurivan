@@ -221,7 +221,8 @@ describe('Practice: Build a set (P1, labelled and folded)', () => {
     // The path chooser is a different, folded group: Build a set never changes the path.
     expect(useSettings.getState().studyDomain).toBeUndefined();
     press('Start 10 questions');
-    expect(useSession.getState().active).toMatchObject({ mode: 'practice', title: 'IS Operations & Business Resilience' });
+    // Session titles use the short name (mobile 1.15 C9).
+    expect(useSession.getState().active).toMatchObject({ mode: 'practice', title: 'IS Operations' });
   });
 });
 

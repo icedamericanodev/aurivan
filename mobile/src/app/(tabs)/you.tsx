@@ -2,7 +2,8 @@
  * You — your growth rings, your numbers, your study tools.
  * Spec: DESIGN_SYSTEM.md §11 "You". The rings (one per domain, thicker =
  * heavier on the exam) replace the old per-domain bars; the legend lists
- * domains outside-in so it matches what you see.
+ * domains 1 → 5 like every other list (mobile 1.15), with one line saying
+ * Domain 1 is the inner ring.
  * The appearance switch sits at the top on purpose (owner request: dark mode
  * was hard to find in Settings alone). It shares its setting with Settings →
  * Appearance, so both always agree.
@@ -23,7 +24,7 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { boundsLabel, DomainRings, ringsSpoken } from '../../components/journey';
+import { boundsLabel, DomainRings, RINGS_NOTE, ringsSpoken } from '../../components/journey';
 import { useGrowth, useScreenFocus } from '../../components/motion';
 import { creditSubtitle } from '../../components/help';
 import { MindsetGrowthCard } from '../../components/moments';
@@ -173,15 +174,17 @@ export default function You() {
             range.enough ? (
               <View style={{ alignItems: 'center' }}>
                 <BigNum value={rangeLabel(range)} pct size={20} roll={{ play: rangeGrowth.play, from: boundsLabel(rangeGrowth.from), run: rangeGrowth.run }} />
-                {/* "estimate", not "ready": the range is a study estimate, not a prediction. */}
-                <T v="caption" color={c.ink2}>estimate</T>
+                {/* "estimate", not "ready": the range is a study estimate, not a prediction.
+                    Capped like the numeral above it: it sits inside the fixed-size rings
+                    (UX review O10); the rings' spoken label says it in full. */}
+                <T v="caption" color={c.ink2} maxFontSizeMultiplier={1.3}>estimate</T>
               </View>
             ) : (
               <T v="caption" color={c.ink2} center style={{ maxWidth: 72 }}>Not enough data yet</T>
             )
           }
         />
-        <T v="meta" style={{ marginTop: 14 }}>Rings read from the outside in. Thicker rings weigh more on the exam.</T>
+        <T v="meta" style={{ marginTop: 14 }}>{RINGS_NOTE}</T>
       </Enter>
 
       <Enter i={2} style={{ marginTop: 26 }}>
@@ -208,6 +211,8 @@ export default function You() {
             ),
           ]}
         </StatRow>
+        {/* Two "Accuracy" stats in the app count different things (C8): say what this one counts. */}
+        <T v="meta" style={{ marginTop: space.sm }}>Accuracy counts your latest try at each question.</T>
         <Button
           kind="secondary"
           label="Share progress"

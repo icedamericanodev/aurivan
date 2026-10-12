@@ -1,7 +1,8 @@
 /**
- * Settings — certification, exam date, appearance, study goal, reminders, haptics, show badges,
- * your plant (mobile 1.13: Show my plant, Quiet look), study defaults (the practice timer),
- * your data (backup, restore, reset), one row to
+ * Settings — certification, exam date, your study (mobile 1.15: daily time, where you're
+ * starting from, the Exam-focused plan), study defaults (the practice timer, the default
+ * mode), appearance, motion, reminders and extras (reminders, shuffle, haptics, show
+ * badges), your plant (mobile 1.13: Show my plant, Quiet look), your data (backup, restore, reset), one row to
  * Help and feedback (mobile 1.7), and the legal notices required for store review. Groups are
  * sections with hairline rows, not cards (spec §5).
  */
@@ -15,13 +16,15 @@ import { ICON_STROKE, LifeBuoy } from '../components/icons';
 import { ThemeSwitch } from '../components/themeSwitch';
 import { useSystemReducedMotion } from '../components/motion';
 import { YourData } from '../components/yourData';
-import { Button, Chip, Gap, ICON_SIZE, ListRow, PushedHeader, RadioRow, Screen, Section, Segmented, Stepper, T, ToggleRow } from '../components/ui';
+import { YourStudy } from '../components/fit';
+import { examFocusedOf, KEEP_TODAY_LINE } from '../engine/fit';
+import { Button, Chip, Gap, ICON_SIZE, ListRow, PushedHeader, RadioRow, Screen, Section, Stepper, T, ToggleRow } from '../components/ui';
 import { MODE_INFO, STUDY_MODES } from '../engine/studyModes';
 import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certifications';
 import { addDays, dateInMonths, EXAM_DATE_PRESETS, examDateLabel, presetIndexFor } from '../engine/examDay';
 import { dayKey } from '../engine/streak';
-import { changeExamDate } from '../lib/activity';
+import { changeExamDate, changeFit } from '../lib/activity';
 import { sayLater } from '../lib/a11y';
 import { hideBadges, showBadgesAgain, shownAgainLine } from '../lib/badges';
 import { config } from '../lib/config';
@@ -43,11 +46,10 @@ import { sweepBackupFiles } from '../lib/backup';
 import { useBackup } from '../store/backup';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
-import { useSettings } from '../store/settings';
+import { dailyMinutesOf, useSettings } from '../store/settings';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
-const GOALS = [10, 20, 40];
 /** The phone's own name for the setting (Android has no "Reduce Motion"). */
 const phoneSetting = () => (Platform.OS === 'android' ? 'Remove animations' : 'Reduce Motion');
 /** Fine-tune the exam date: [chip label, days to move]. */
@@ -76,6 +78,15 @@ export default function Settings() {
   const [busy, setBusy] = useState(false);
   // "Badges are on again…": shown for this visit, right under the switch.
   const [badgesLine, setBadgesLine] = useState<string | null>(null);
+  // Mobile 1.15: a change to Your study rebuilds today's plan only if nothing
+  // in it is ticked yet; otherwise this visit says so in one line.
+  const [keptToday, setKeptToday] = useState(false);
+  const fit = (p: Parameters<typeof changeFit>[1]) => {
+    const kept = changeFit(cert.id, p).keptToday;
+    // Said once, when the line first appears (code review M7b, UX review P6).
+    if (kept && !keptToday) sayLater(KEEP_TODAY_LINE);
+    setKeptToday(kept);
+  };
   // "Now" is read once per visit (render stays pure); presets move in months.
   const [now] = useState(() => Date.now());
   const examDate = s.examDates[cert.id];
@@ -196,6 +207,48 @@ export default function Settings() {
         </>
       )}
 
+      {/* Mobile 1.15 (PHASE5.md §2.8): Your study replaces "Daily goal" (questions a day). */}
+      <Section title="Your study" />
+      <YourStudy
+        minutes={dailyMinutesOf(s)}
+        familiarity={s.familiarity}
+        examFocused={examFocusedOf(s)}
+        onMinutes={(dailyMinutes) => fit({ dailyMinutes })}
+        onFamiliarity={(familiarity) => fit({ familiarity })}
+        onExamFocused={(examFocused) => fit({ examFocused })}
+        keptLine={keptToday ? KEEP_TODAY_LINE : null}
+      />
+
+      {/* Study defaults: what practice starts with. Build D: the timer.
+          Build E: the default study mode (the same choice Practice remembers).
+          Right under Your study: both shape how you study (UX review P8). */}
+      <Section title="Study defaults" />
+      <ToggleRow
+        title="Timed practice"
+        subtitle="Every practice session starts with a timer that counts up while you answer. Never a countdown. Practice's own switch can change it for one set."
+        value={s.practiceTimer}
+        onValueChange={s.setPracticeTimer}
+      />
+      <T v="caption" style={{ marginTop: space.lg }}>Default mode</T>
+      <View accessibilityRole="radiogroup" accessibilityLabel="Default study mode">
+        <RadioRow
+          title="Let the app choose"
+          subtitle="It changes as you go and fits where you’re starting from, ending with a smart mix of what you need."
+          checked={!s.studyMode}
+          onPress={() => s.setStudyMode(undefined)}
+        />
+        {STUDY_MODES.map((m, i) => (
+          <RadioRow
+            key={m}
+            title={MODE_INFO[m].name}
+            subtitle={MODE_INFO[m].why}
+            checked={s.studyMode === m}
+            onPress={() => s.setStudyMode(m)}
+            last={i === STUDY_MODES.length - 1}
+          />
+        ))}
+      </View>
+
       <Section title="Appearance" />
       <Gap h={space.sm} />
       <ThemeSwitch />
@@ -224,17 +277,8 @@ export default function Settings() {
         />
       </View>
 
-      {/* Says what the number counts: questions (testers read "20 a day" as unclear). */}
-      <Section title="Daily goal" meta="Questions a day" />
-      <Gap h={space.sm} />
-      <Segmented
-        accessibilityLabel="Daily goal"
-        value={s.dailyGoal}
-        onChange={s.setDailyGoal}
-        options={GOALS.map((g) => ({ value: g, numeral: String(g), label: 'a day', spoken: `${g} questions a day` }))}
-      />
-
-      <Section title="Study" />
+      {/* Reminders, shuffle, haptics and badges (UX review P8: "Study" read like the study choices above). */}
+      <Section title="Reminders and extras" />
       <ToggleRow
         title="Study reminder"
         subtitle={reminderText}
@@ -339,35 +383,6 @@ export default function Settings() {
           last
         />
       )}
-
-      {/* Study defaults: what practice starts with. Build D: the timer.
-          Build E: the default study mode (the same choice Practice remembers). */}
-      <Section title="Study defaults" />
-      <ToggleRow
-        title="Timed practice"
-        subtitle="Every practice session starts with a timer that counts up while you answer. Never a countdown. Practice's own switch can change it for one set."
-        value={s.practiceTimer}
-        onValueChange={s.setPracticeTimer}
-      />
-      <T v="caption" style={{ marginTop: space.lg }}>Default mode</T>
-      <View accessibilityRole="radiogroup" accessibilityLabel="Default study mode">
-        <RadioRow
-          title="Follow my stage"
-          subtitle="The app suggests a mode as you progress: Random, then Guided, then Smart."
-          checked={!s.studyMode}
-          onPress={() => s.setStudyMode(undefined)}
-        />
-        {STUDY_MODES.map((m, i) => (
-          <RadioRow
-            key={m}
-            title={MODE_INFO[m].name}
-            subtitle={MODE_INFO[m].why}
-            checked={s.studyMode === m}
-            onPress={() => s.setStudyMode(m)}
-            last={i === STUDY_MODES.length - 1}
-          />
-        ))}
-      </View>
 
       {/* Backup and restore (Build C): save a file, restore one, undo for 7 days. Free, offline, no account. */}
       <YourData />

@@ -127,7 +127,7 @@ export function PathChooser({
             subtitle={MODE_INFO[m].why}
             badge={m === suggested ? 'Suggested' : undefined}
             checked={m === mode}
-            // P2: re-tapping the chosen mode saves nothing, so "Follow my stage" survives.
+            // P2: re-tapping the chosen mode saves nothing, so "Let the app choose" survives.
             onPress={() => {
               if (m !== mode) onMode(m);
             }}

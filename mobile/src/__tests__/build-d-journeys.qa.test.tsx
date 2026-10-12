@@ -165,7 +165,7 @@ describe('journey 1: full mock at Standard', () => {
     for (let i = 0; i < 70; i++) answerAndNext();
     tick(60 * MIN);
     expect(active().checkpoints).toHaveLength(2);
-    expect(strip().line).toEqual({ text: 'Ahead. Use the time to re-read the stems.', tone: 'ahead' });
+    expect(strip().line).toEqual({ text: 'Ahead. Use the time to re-read the questions.', tone: 'ahead' });
 
     // Two parked (flagged, unanswered) questions count as done for the 75% check.
     for (let i = 0; i < 2; i++) {
@@ -178,7 +178,7 @@ describe('journey 1: full mock at Standard', () => {
     // Each check announced once, in order.
     expect(paceAnnouncements()).toEqual([
       'Pace check. About 30 min behind. Flag anything past 2 minutes and move on.',
-      'Pace check. Ahead. Use the time to re-read the stems.',
+      'Pace check. Ahead. Use the time to re-read the questions.',
       'Pace check. About 42 min behind. Flag anything past 2 minutes and move on.',
     ]);
 
@@ -515,7 +515,7 @@ describe('journey 7: Daylight', () => {
     expect(allText()).toMatch(/· 25 s/);
     press('See results');
     expect(allText()).toContain('Light used: 02:25 of 08:00 · finished in time, +1');
-    expect(allText()).toContain('your light gave 96 s');
+    expect(allText()).toContain('your light gave 96 seconds');
     expect(scoreLabel()).toBe(`Score ${right() + 1} out of 6`);
   });
 

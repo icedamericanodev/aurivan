@@ -13,15 +13,21 @@
  *
  * Nothing open → the seedling empty state (spec §11), with teaching tags
  * that preview the trap types that will be filed here.
+ *
+ * Mobile 1.15 (PHASE5.md J9–J13): the tags in plain words, and "What do
+ * these mean?" opens one example for each, so a learner new to audit can tag
+ * honestly. The stored slip ids never change (no migration). The button
+ * says how many of the open mistakes one set takes ("Practice 20 of 55").
  */
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Modal, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { StickyFooter } from '../components/quiz';
 import { ReportLink } from '../components/support';
-import { Button, Chip, Gap, PushedHeader, Section, T } from '../components/ui';
+import { useMotion } from '../components/motion';
+import { Button, Chip, Gap, PushedHeader, Row, Section, T } from '../components/ui';
 import { findQuestion } from '../content/loader';
 import { shortDate } from '../lib/format';
 import { guardedStart, startFromIds, startPractice } from '../lib/sessions';
@@ -34,14 +40,54 @@ import { useProgress, type ThinkingSlip } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
-const SLIPS: { id: ThinkingSlip; label: string }[] = [
-  { id: 'role', label: 'Wrong role' },
-  { id: 'priority', label: 'Missed FIRST/BEST' },
-  { id: 'tech-first', label: 'Tech before governance' },
-  { id: 'symptom', label: 'Fixed the symptom' },
-  { id: 'misread', label: 'Misread' },
-  { id: 'knowledge', label: 'Didn’t know it' },
+/** The tags, each with one example (the chip's spoken hint and the "What do these mean?" sheet). */
+export const SLIPS: { id: ThinkingSlip; label: string; example: string }[] = [
+  { id: 'role', label: 'Acted as the wrong person', example: 'You fixed it yourself, when the auditor’s job is to report it.' },
+  { id: 'priority', label: 'Missed FIRST or BEST', example: 'You picked a good step, but not the first one.' },
+  { id: 'tech-first', label: 'Tool before policy', example: 'You picked a new tool before anyone agreed who owns the risk.' },
+  { id: 'symptom', label: 'Fixed the symptom, not the cause', example: 'You restored the lost file but not the reason it was lost.' },
+  { id: 'misread', label: 'Misread', example: 'You knew it, but missed a word in the question.' },
+  { id: 'knowledge', label: 'Didn’t know it', example: 'The topic was new to you.' },
 ];
+/** One practice set takes at most this many open mistakes. */
+const SET_MAX = 20;
+
+/** "Practice 20 of 55" when one set takes part of them, "Practice all 12" when it takes them all. */
+export function practiceOpenLabel(open: number): { label: string; spoken: string } {
+  if (open > SET_MAX) return { label: `Practice ${SET_MAX} of ${open}`, spoken: `Practice ${SET_MAX} of your ${open} open mistakes, ${SET_MAX} at a time` };
+  if (open === 1) return { label: 'Practice this one', spoken: 'Practice your 1 open mistake' };
+  return { label: `Practice all ${open}`, spoken: `Practice all ${open} open mistakes` };
+}
+
+/** The tags explained: one example each (a page sheet; a fade under Reduce Motion). */
+function SlipTagsSheet({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+  const { c } = useTheme();
+  const { reduced } = useMotion();
+  return (
+    <Modal visible={visible} animationType={reduced ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={onClose}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: c.raised2 }}>
+        <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxxl }}>
+          <Row style={{ justifyContent: 'space-between' }}>
+            <T v="hero" accessibilityRole="header" style={{ flex: 1 }}>What the tags mean</T>
+            <Button kind="ghost" label="Close" onPress={onClose} accessibilityLabel="Close what the tags mean" />
+          </Row>
+          <T v="meta" style={{ marginTop: space.xs }}>Pick the one that fits best. Your pattern shows after a few.</T>
+          {SLIPS.map((x, i) => (
+            <View
+              key={x.id}
+              accessible
+              accessibilityLabel={`${x.label}. For example: ${x.example}`}
+              style={{ paddingVertical: space.md, borderBottomWidth: i === SLIPS.length - 1 ? 0 : 1, borderBottomColor: c.line }}
+            >
+              <T v="label">{x.label}</T>
+              <T v="small" color={c.ink2} style={{ marginTop: 2 }}>{x.example}</T>
+            </View>
+          ))}
+        </ScrollView>
+      </SafeAreaView>
+    </Modal>
+  );
+}
 
 export default function Mistakes() {
   const { c } = useTheme();
@@ -49,6 +95,7 @@ export default function Mistakes() {
   const tagMistake = useProgress((s) => s.tagMistake);
   const [showFixed, setShowFixed] = useState(false);
   const [footerH, setFooterH] = useState(120);
+  const [tagsOpen, setTagsOpen] = useState(false);
   const openSession = () => router.push('/session');
 
   const entries = useMemo(
@@ -81,7 +128,7 @@ export default function Mistakes() {
         body="Every question you miss lands here, tagged by the trap that caught you."
         // Effort, made visible: what the learner has already cleared (never a count of misses).
         next={fixedCount > 0 ? `${fixedCount} ${fixedCount === 1 ? 'mistake' : 'mistakes'} cleared so far` : undefined}
-        tags={['Missed FIRST/BEST', 'Wrong role', 'Fixed the symptom']}
+        tags={['Missed FIRST or BEST', 'Acted as the wrong person', 'Fixed the symptom, not the cause']}
         primary={{ label: 'Practice 10 questions', onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), openSession) }}
         secondary={fixedCount > 0 ? { label: 'See cleared mistakes', onPress: () => setShowFixed(true) } : undefined}
       />
@@ -155,11 +202,19 @@ export default function Mistakes() {
               {!m.resolved && (
                 <>
                   <Gap h={space.md} />
-                  <T v="meta">Why did you slip?</T>
-                  <Gap h={space.xs} />
+                  <Row gap={space.xs} style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                    <T v="meta">Why did you slip?</T>
+                    <Button kind="ghost" label="What do these mean?" accessibilityHint="Shows one example for each tag" onPress={() => setTagsOpen(true)} style={{ marginRight: -space.sm }} />
+                  </Row>
                   <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
                     {SLIPS.map((s) => (
-                      <Chip key={s.id} label={s.label} selected={m.slip === s.id} onPress={() => tagMistake(cert.id, id, s.id)} />
+                      <Chip
+                        key={s.id}
+                        label={s.label}
+                        accessibilityHint={`For example: ${s.example}`}
+                        selected={m.slip === s.id}
+                        onPress={() => tagMistake(cert.id, id, s.id)}
+                      />
                     ))}
                   </View>
                 </>
@@ -171,11 +226,13 @@ export default function Mistakes() {
       {open.length > 0 && (
         <StickyFooter onHeight={setFooterH}>
           <Button
-            label={`Practice ${Math.min(open.length, 20)} open mistakes`}
-            onPress={() => guardedStart(() => startFromIds(cert.id, open.slice(0, 20).map(([id]) => id), 'Mistake journal'), openSession)}
+            label={practiceOpenLabel(open.length).label}
+            accessibilityLabel={practiceOpenLabel(open.length).spoken}
+            onPress={() => guardedStart(() => startFromIds(cert.id, open.slice(0, SET_MAX).map(([id]) => id), 'Mistake journal'), openSession)}
           />
         </StickyFooter>
       )}
+      <SlipTagsSheet visible={tagsOpen} onClose={() => setTagsOpen(false)} />
     </SafeAreaView>
   );
 }

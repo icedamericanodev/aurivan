@@ -83,7 +83,12 @@ describe('day plan', () => {
 
   it('estimates minutes per item', () => {
     expect(itemMinutes({ kind: 'practice', count: 10, label: '' })).toBe(12);
-    expect(itemMinutes(items[1])).toBe(3);
+    // Mobile 1.15 (C3): a saved lesson item with no minutes reads 5, like the lessons themselves.
+    expect(itemMinutes(items[1])).toBe(5);
+    expect(itemMinutes({ kind: 'lesson', lessonId: 'x', title: 'x', minutes: 3 })).toBe(3);
+    // C4: a mock at exam pace (a 50-question mini mock is 80 minutes, as Practice says), not study pace.
+    expect(itemMinutes({ kind: 'mock', questions: 50, label: 'Mini mock' })).toBe(80);
+    expect(itemMinutes({ kind: 'mock', questions: 50, label: 'Mini mock', minutes: 80 })).toBe(80);
     // A game's length comes from its round size (engine/games/registry.ts).
     expect(itemMinutes(items[2])).toBe(GAMES.trap.minutes);
   });

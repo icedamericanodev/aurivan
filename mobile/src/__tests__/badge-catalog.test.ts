@@ -155,7 +155,7 @@ describe('sets and shelves', () => {
     expect(setInfo('domains', EXAM, 5).name).toBe('The Five Domains');
     expect(setInfo('domains', EXAM, 4).name).toBe('The Four Domains');
     expect(setInfo('domains', EXAM, 8).name).toBe('The Eight Domains');
-    expect(setInfo('examDay', EXAM, 5).purpose).toBe('Practise the full sitting: 150 questions in 4 hours, about 1.6 minutes each.');
+    expect(setInfo('examDay', EXAM, 5).purpose).toBe('Practise the full sitting: 150 questions in 4 hours, about 96 seconds each.');
     expect(examLength(180)).toBe('3 hours');
     expect(examLength(90)).toBe('1 hour 30 minutes');
   });

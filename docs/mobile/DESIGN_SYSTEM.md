@@ -216,6 +216,8 @@ The idea in one line: **everyday UI moves like paper** (quick, soft, never bounc
 
 Code: tokens in `theme/tokens.ts` (`motion`), primitives in `components/motion.tsx`. Screens never write a raw duration, curve or spring.
 
+**Native transform origins (1.15 hotfix).** `transformOrigin` on native must be keywords or whole non-negative px (use `originPx`); React Native misreads decimals ("Transform origin must have exactly 3 values").
+
 ### 8.1 Tokens
 
 | Token | Value | Use |
@@ -794,7 +796,7 @@ elements are cached, so no path is rebuilt per frame (low-end Android).
   at rest at once. The occasions are kept in memory: a relaunch the same day
   may react once more (accepted, QA BUG-4).
 - **Growth sequence**: see §8.9; `useCelebration('plant-growth')`.
-- **Planting** (onboarding step 4, M8): once the page has arrived (`dur.screen`),
+- **Planting** (after onboarding's last step, "Plant it", M8): once the page has arrived (`dur.screen`),
   the seed settles 14pt into the soil, then the first sprout pops from 0.3
   (820 ms); one light haptic; screen-reader focus moves to the "Planted"
   header; then "Start studying".
@@ -813,3 +815,107 @@ round mound with three big white stars.
 **Large text and narrow phones.** Today stacks the plant above the range at
 ×1.3+ (the ReadinessRow rule). Your plant's rule steps stack their status under
 the rule at ×1.3+. Checked at 360 dp and about 200% text (`SHOTS=plant`).
+
+## 14. Fit your plan (mobile 1.15, Phase 5a)
+
+Two answers shape Today: where the learner is starting from, and how long
+they can study most days. Rules: `mobile/src/engine/fit.ts` and
+`engine/planner.ts`; controls: `components/fit.tsx` (the same words in
+onboarding, Settings → Your study and the fit screen).
+
+**Onboarding (4 steps).** Step 1 the exam · step 2 "Where are you starting
+from?" · step 3 the date, then "Daily time" (10 · 20 · 30 · 45 min, 20 to
+start) on the same screen · step 4 the plant. Step 2 uses step 1's raised
+choice rows; no row is preselected, Continue waits for one (its spoken hint
+says "Choose one, or skip this question."), and the ghost "Skip this
+question" sits beside Back. "Step N of 4" appears only in onboarding.
+Nothing is saved until the last step. The exam date starts on "Not sure yet"
+(a date is never invented for the learner; the spec's "In 3 months" default
+was dropped on review). Each step's question is one header stop, and
+screen-reader focus moves to it on every step change (never waiting on the
+entrance).
+
+**Minutes everywhere (C1).** One style: "About 12 min" at the start of a line,
+"about 6 min" mid-line, and from two hours in hours ("About 4 h"); screen
+readers hear "minutes" and "hours" in full: every shown minutes line has a
+spoken twin through `engine/pace.ts spokenMin` (HeroPanel `captionMetaLabel`
+/ `metaLabel`, Section `metaLabel`, row labels). `engine/pace.ts aboutMin`. The exam pace is always in seconds, as two named
+facts: "The exam allows about 96 seconds a question." and "Aim for about 90
+seconds a question, so there's time to revisit flagged ones." Never a bare "s".
+
+**Today.**
+- Under the hero's leaf marks, one `meta` line: "About 20 min today" (the open
+  items; a mock adds "+ mock"). Plans saved before 1.15 have no budget and show
+  no total.
+- "Also today" and "Tomorrow" carry "About N min" as their Section meta; a mock
+  is left out of the sum (its row says how long it is).
+- A review that takes part of the queue: "Review 55 due" / "About 10 min · 8
+  today, most overdue first" / row "Spaced review · 8 today". In the Tomorrow
+  preview the row is titled "Spaced review" (tomorrow's queue isn't known yet),
+  "Review · 8 tomorrow".
+- The weekly mini mock is **optional** and **never leads**: the planner puts it
+  right after the first timed item, so the hero always matches "About N min
+  today". Its row reads "Optional this week · about 80 min". The day clears
+  when the timed items are done ("Two of two, done."; a mock taken anyway
+  counts), and the mock is offered again each day until taken. It is due again
+  7 calendar days after the last mock (Monday evening → next Monday), never in
+  exam week, and exempt from the budget. A day with nothing but a mock is that
+  mock: the hero shows it and the line says "A mock today".
+- A new learner's starting days: day 1 is the next lesson + 5 questions; later
+  days add up to 10 questions that fit the minutes. Exam week's light review
+  keeps its size (10), whatever the minutes.
+- The journey line stays numberless ("Rehearse the exam"); the plant beside it
+  counts its growth.
+
+**The "Fit your plan" card** (learners from before 1.15 only). The key-idea
+recipe (3px `accent` rule, no shadow), `caption` "Fit your plan", `small` line,
+ghost "Set it up" and "Not now". Below the day's study, never above the hero;
+on at most 3 separate days (the third lasts all day), then hidden for good,
+answered or not (`settings.fitAskDays`); never in exam week, beside the eve
+card or the ready panel, or on a visit that showed the plant's setup line (one
+setup line on Today at a time). The fit screen's intro: "Tell us how long you
+have and where you're starting from, so Today's plan fits your time. You can
+change these any time in Settings."
+"Set it up" pushes the fit screen ("Your study": minutes, the three radio
+rows, the Exam-focused switch, then Save / Cancel in a sticky footer).
+
+**Settings → Your study** (after Exam date): caption "Daily time" + the
+segmented minutes + "Most days. Your daily plan fits this."; caption "Where
+you're starting from" + the radio rows (none selected is allowed); the
+"Exam-focused plan" toggle. A change rebuilds today's plan when nothing in it
+is done yet (no tick, and no answers banked on an item); otherwise one
+`accentText` meta says "Today's plan stays as it is. Tomorrow's will fit.",
+announced once as it appears (`sayLater`, plus a polite live region).
+"Study defaults" sits right under Your study; the reminders, shuffle, haptics
+and badges switches are one group, "Reminders and extras".
+
+**Practice.** With the Exam-focused plan, or at the mock and ready stages,
+"Mock exams" comes straight after the Timed switch, with the one-time
+"Practice at exam pace?" card after it; otherwise the card sits under the
+Timed switch. Never above the hero. The focus row reads "Weak spots: IS
+Operations", like Today's Exam-focused item.
+
+**Lists of domains (C9).** Title "Domain 4 · IS Operations", the full name as
+the subtitle (`domainLabel`). Chips, legends, plan items and session titles
+use the short name only. The You legend lists domains 1 → 5 with "Domain 1 is
+the inner ring. Thicker rings weigh more on the exam."
+
+**Mistake tags.** Acted as the wrong person · Missed FIRST or BEST · Tool
+before policy · Fixed the symptom, not the cause · Misread · Didn't know it.
+A ghost "What do these mean?" beside "Why did you slip?" opens a page sheet
+with one example per tag; each chip's spoken hint carries the same example.
+A chip is never wider than its row (`maxWidth: '100%'`, the label shrinks):
+at 200% text a long tag wraps inside its pill.
+
+**Hints.** Before an answer: "You used a hint, so a right answer counts as
+half." After a RIGHT hinted answer: "You used a hint, so this counts as half a
+right answer." After a wrong one: nothing (it counts nothing anyway).
+
+**Switches in dark mode.** Off, the thumb is `ink2` (the dark `onBtn` thumb sank
+into the grey track); on, it stays `onBtn` on `btn`.
+
+**Large text and narrow phones.** Onboarding step 3 scrolls under the sticky
+footer at about 200% text, with both groups reachable; the segmented minutes
+stack at ×1.3+ (the Segmented rule). Checked at 360 dp and about 200% text
+(`SHOTS=fit`). Nothing new animates; Reduce Motion changes nothing here.
+
