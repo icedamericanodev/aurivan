@@ -33,6 +33,10 @@ export type CloudErrorCode =
   | 'posting_paused'
   | 'newer_app'
   | 'unreadable'
+  /** The board: not allowed (a blocked commenter, a locked post, someone else's item). */
+  | 'forbidden'
+  /** The board: that post or comment isn't there (removed, withdrawn, or never was). */
+  | 'not_found'
   | 'server'
   /** The learner closed the Apple or Google sheet: not an error to show (copy `err.cancelled` is "none"). */
   | 'cancelled';
@@ -167,14 +171,26 @@ export interface DevicePort {
   renew(): Promise<string>;
 }
 
-// ── Feedback board (PR 8, spec §4.6) ──────────────────────────────────
+// ── Feedback board (PR 8, spec §4.6; 12 Oct addendum: no What's next feed) ──
 export type PostKind = 'content' | 'idea' | 'app' | 'question';
 export type PostStatus = 'open' | 'under_review' | 'planned' | 'in_progress' | 'shipped' | 'answered' | 'not_planned' | 'duplicate';
 export type Visibility = 'pending' | 'visible' | 'hidden' | 'removed' | 'withdrawn';
 export type HoldReason = 'new_member' | 'recall' | 'hold_words' | 'links' | 'reports' | 'exam_report';
-export type ReportReason = 'exam_content' | 'copyright' | 'harassment' | 'sexual_violent' | 'spam' | 'personal_info' | 'off_topic' | 'other';
+/** What a learner reports (the SQL's ugc_reports.reason). */
+export type ReportReason = 'exam_content' | 'copyright' | 'abuse' | 'sexual_violent' | 'spam' | 'personal_info' | 'off_topic' | 'other';
+/** Why staff removed something (the removal notice's reason). */
+export type ModReason = Exclude<ReportReason, 'other'>;
 export type Standing = 'active' | 'limited' | 'suspended' | 'banned';
-export type BoardTab = 'top' | 'new' | 'next' | 'shipped';
+/** The board's lists. There is no "What's next" tab: What's next isn't in the app (12 Oct addendum). */
+export type BoardTab = 'top' | 'new' | 'shipped';
+/**
+ * Who reads the board: ONE server value, public.board_settings.read_scope
+ * (an owner decision for Phase 9; ARCHITECTURE §10). 'signed_in' is the
+ * default; 'author_staff' shows a learner only their own posts; 'everyone'
+ * adds signed-out reading. The server's RLS decides; the app adapts its words.
+ */
+export type ReadScope = 'everyone' | 'signed_in' | 'author_staff';
+export type StaffTab = 'held' | 'reported' | 'appeals' | 'members' | 'log';
 
 /** An opaque "load more" position (the adapter decides its contents). */
 export type Cursor = string;
@@ -188,13 +204,18 @@ export interface PostCard {
   title: string;
   status: PostStatus;
   shippedIn: string | null;
+  authorId: string;
   authorHandle: string;
+  /** The author is on the Aurivan team (staff). */
+  isTeam: boolean;
   voteCount: number;
   commentCount: number;
   voted: boolean;
   teamReplied: boolean;
   createdAt: number;
   visibility: Visibility;
+  /** Your activity only: why your post waits (new member, recall, …). */
+  holdReason?: HoldReason | null;
 }
 export interface Comment {
   id: string;
@@ -202,17 +223,18 @@ export interface Comment {
   parentId: string | null;
   authorHandle: string;
   authorId: string;
+  isTeam: boolean;
   body: string;
   isOfficial: boolean;
   createdAt: number;
   editedAt: number | null;
+  visibility: Visibility;
 }
 export interface PostDetail extends PostCard {
   body: string;
   itemRef: string | null;
   discussesAnswer: boolean;
   statusNote: string | null;
-  authorId: string;
   following: boolean;
   locked: boolean;
   official: Comment | null;
@@ -227,6 +249,8 @@ export interface Member {
   standing?: Standing;
   standingUntil?: number | null;
   guidelinesVersion?: string;
+  /** Own facts only: how many approved posts (0 = new member: posts wait for review). */
+  approvedPosts?: number;
 }
 export interface Draft {
   kind: PostKind;
@@ -235,27 +259,67 @@ export interface Draft {
   itemRef?: string;
   cert: string;
 }
+/**
+ * One in-app notice (no push). The app writes the words (lib/board.ts
+ * noticeText) from these facts, so no learner text travels in a notice.
+ */
 export interface Notice {
   id: number;
-  kind: 'status' | 'official' | 'reply' | 'moderation' | 'appeal';
+  kind: 'status' | 'official' | 'reply' | 'removed' | 'warned' | 'suspended' | 'appeal';
   postId: string | null;
-  text: string;
+  commentId: string | null;
+  /** What it's about, for "your post “…”": the post's title or the comment's first words (the learner's own, or a public post). */
+  subject: string | null;
+  targetKind: 'post' | 'comment' | null;
+  reason: ModReason | null;
+  /** Removed: a person reviewed it (true) or the filter flagged it (false). */
+  byPerson: boolean | null;
+  outcome: 'upheld' | 'restored' | null;
+  /** A status notice: the new status. */
+  status: PostStatus | null;
+  untilAt: number | null;
   at: number;
   read: boolean;
+  /** A removal the learner may still ask us to look at again (14 days, once). */
+  canAppeal: boolean;
 }
 export interface StaffAction {
   action: string;
-  targetKind: 'post' | 'comment' | 'member' | 'board' | 'queue';
+  targetKind: 'post' | 'comment' | 'member' | 'board' | 'appeal' | 'report';
   targetId?: string;
-  reason?: string;
+  reason?: ModReason;
   extra?: Record<string, unknown>;
+}
+/** One row of the staff queue (staff-action { action: 'queue' }). Bodies appear here only. */
+export interface QueueItem {
+  kind: 'post' | 'comment' | 'member' | 'appeal' | 'log';
+  id: string;
+  /** Held: the hold reason; reported: the reasons; log: the action. */
+  label: string;
+  title: string | null;
+  body: string | null;
+  handle: string | null;
+  newMember: boolean;
+  priorActions: number;
+  count: number;
+  examContent: boolean;
+  at: number;
+}
+export interface StaffQueue {
+  tab: StaffTab;
+  items: QueueItem[];
+  postingOpen: boolean;
+  waiting: number;
 }
 
 export interface BoardPort {
-  settings(): Promise<{ postingOpen: boolean; guidelinesVersion: string }>;
+  settings(): Promise<{ postingOpen: boolean; guidelinesVersion: string; readScope: ReadScope }>;
   feed(q: { cert: string; tab: BoardTab; kind?: PostKind; search?: string; after?: Cursor }): Promise<Page<PostCard>>;
+  /** CloudError('not_found') when the post isn't there for this viewer. */
   post(id: string): Promise<PostDetail>;
-  /** board-submit { op: 'me' }: the learner's own standing, never anyone else's. */
+  /** The learner's own posts in every state (Your activity). */
+  myPosts(): Promise<PostCard[]>;
+  /** board-submit { op: 'me' }: the learner's own standing, never anyone else's. null before joining. */
   me(): Promise<Member | null>;
   join(i: { handle: string; handleKind: 'pseudonym' | 'chosen'; guidelinesVersion: string }): Promise<Member>;
   submitPost(d: Draft): Promise<{ id: string; visibility: Visibility; holdReason?: HoldReason }>;
@@ -273,8 +337,9 @@ export interface BoardPort {
   inbox(): Promise<Notice[]>;
   markRead(ids: number[]): Promise<void>;
   appeal(t: { kind: 'post' | 'comment' | 'standing'; id: string; note?: string }): Promise<void>;
-  /** Server-verified; the UI gate is cosmetic. */
+  /** Server-verified (staff-action { action: 'whoami' }); the UI gate is cosmetic. */
   isStaff(): Promise<boolean>;
+  staffQueue(tab: StaffTab): Promise<StaffQueue>;
   staff(a: StaffAction): Promise<unknown>;
 }
 
