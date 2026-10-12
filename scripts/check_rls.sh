@@ -21,6 +21,8 @@
 #        schema private (not exposed by the Data API).
 #   G8   Nothing is granted to `anon` or `public` (every role) unless the
 #        object is on ANON_GRANT_ALLOWLIST (Phase 8's public board reads).
+#        A grant naming several objects is checked object by object, and a
+#        function is named without its argument list.
 #
 # The pgTAP suite (supabase/tests/01_hardening.sql) checks the same rules on
 # the APPLIED database; this script catches them before anything runs.
@@ -38,14 +40,25 @@ import glob
 import re
 import sys
 
-# Policies allowed to be always-true. Phase 8 adds the board's public reads.
+# Policies allowed to be always-true.
 TRUE_POLICY_ALLOWLIST = {
-    "content_packs_read",  # catalogue of downloadable packs, not user data
+    "content_packs_read",   # catalogue of downloadable packs, not user data
+    "board_settings_read",  # Phase 8: pause valve, guidelines version, read scope (needed before sign-in)
 }
 
 # Objects anon or public may be granted something on (as written after `on`,
-# e.g. "public.board_posts"). Empty in Phase 6; Phase 8 adds the board's reads.
-ANON_GRANT_ALLOWLIST = set()
+# e.g. "public.board_posts"; functions without their arguments). Phase 8: the
+# board's public reads. Their anon RLS policies return rows only when
+# board_settings.read_scope is 'everyone' (an owner decision, Phase 9).
+ANON_GRANT_ALLOWLIST = {
+    "public.board_settings",
+    "public.board_members",
+    "public.board_posts",
+    "public.board_comments",
+    "public.board_status_events",
+    "public.board_feed",
+    "public.board_post",
+}
 
 
 def statements(sql):
@@ -103,6 +116,25 @@ def clean(name):
     return re.sub(r"\s*\.\s*", ".", name.replace('"', ""))
 
 
+def granted_objects(text):
+    """The objects of a grant, one by one: commas inside an argument list
+    don't split, and a function loses its argument list."""
+    text = re.sub(r"^(table|function|procedure|routine|sequence|schema|all tables in schema|all functions in schema|all sequences in schema) ", "", text.strip())
+    out, depth, cur = [], 0, ""
+    for ch in text:
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+        if ch == "," and depth == 0:
+            out.append(cur)
+            cur = ""
+        else:
+            cur += ch
+    out.append(cur)
+    return [clean(re.sub(r"\(.*\)$", "", o.strip()).strip()) for o in out if o.strip()]
+
+
 def check(name, sql):
     errors = []
     created, rls = {}, set()
@@ -140,11 +172,11 @@ def check(name, sql):
         if grant and not low.startswith("revoke"):
             grantees = {g.strip().replace('"', "") for g in grant.group(2).split(",")}
             on = re.search(r" on (.+)$", grant.group(1))
-            obj = clean(on.group(1)) if on else grant.group(1)
-            obj = re.sub(r"^(table|function|sequence|schema|all tables in schema|all functions in schema|all sequences in schema) ", "", obj)
+            objs = granted_objects(on.group(1)) if on else [grant.group(1)]
             for role in sorted(grantees & {"anon", "public"}):
-                if obj not in ANON_GRANT_ALLOWLIST:
-                    errors.append(f"G8 {name}: '{obj}' granted to {role} (not on the allowlist)")
+                for obj in objs:
+                    if obj not in ANON_GRANT_ALLOWLIST:
+                        errors.append(f"G8 {name}: '{obj}' granted to {role} (not on the allowlist)")
     for tbl in created:
         if tbl not in rls:
             errors.append(f"G6a {name}: table '{tbl}' has no 'enable row level security' in the same file")
@@ -182,6 +214,11 @@ def self_test():
         "grant_public": ("grant execute on function private.f() to public;", ["G8"]),
         "grant_anon_listed": ("grant select, insert on table public.e to authenticated, anon;", ["G8"]),
         "grant_default_anon": ("alter default privileges in schema public grant select on tables to anon;", ["G8"]),
+        "grant_board_reads_ok": ("grant select (id, title) on public.board_posts to anon, authenticated;"
+                                 "grant execute on function public.board_feed(text, int), public.board_post(uuid) to anon;", []),
+        "grant_list_one_bad": ("grant execute on function public.board_post(uuid), private.is_staff() to anon;", ["G8"]),
+        "grant_table_list_bad": ("grant select on public.board_posts, public.profiles to anon;", ["G8"]),
+        "board_true_policy_ok": ("create policy board_settings_read on public.s for select to anon using (true);", []),
         "grant_ok": ("grant select on public.profiles to authenticated; grant usage on schema public to service_role;"
                      "revoke all on public.profiles from anon, public;", []),
     }
