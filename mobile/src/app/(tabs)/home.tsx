@@ -143,8 +143,10 @@ export default function Today() {
     useCallback(() => {
       // Only a new clock that changes what Today shows re-renders it (performance,
       // 1.15.x): a new day (the plant's reaction), or a paused timed mock's minutes left.
+      // Read outside the updater, so the updater stays pure.
       const at = Date.now();
-      setNow((was) => (dayKey(was) === dayKey(at) && !useSession.getState().active?.deadline ? was : at));
+      const keep = !useSession.getState().active?.deadline;
+      setNow((was) => (keep && dayKey(was) === dayKey(at) ? was : at));
       // The plant's exam-ready gate changes with the date: check it whenever Today comes into view.
       checkPlant(certId);
     }, [certId]),
