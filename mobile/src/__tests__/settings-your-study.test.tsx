@@ -121,7 +121,7 @@ describe('Settings → Your study', () => {
     const t = allText();
     expect(t).not.toMatch(/Daily goal|Questions a day/);
     expect(t).toContain('Your study');
-    expect(t).toContain('Most days. Today’s plan fits this.');
+    expect(t).toContain('Most days. Your daily plan fits this.');
     expect(t).toContain('Where you’re starting from');
     expect(t).toContain('Exam-focused plan');
     expect(t).toContain('Leads with mocks and your weak spots, and leaves lessons out of Today. Lessons stay in Learn.');
@@ -169,7 +169,7 @@ describe('Settings → Your study', () => {
   it('Default mode: "Let the app choose", in plain words', () => {
     mount(<Settings />);
     expect(allText()).toContain('Let the app choose');
-    expect(allText()).toContain('It changes as you go: a mixed start, then topic by topic, then a smart mix of what you need.');
+    expect(allText()).toContain('It changes as you go and fits where you’re starting from, ending with a smart mix of what you need.');
     expect(allText()).not.toContain('Follow my stage');
   });
 });

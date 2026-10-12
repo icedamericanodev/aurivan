@@ -18,6 +18,7 @@ import { useSyncExternalStore } from 'react';
 import { getCertification } from '../content/certifications';
 import { lessonsFor } from '../content/lessons';
 import { hasNewSince, nextForExam, nextLine, quietTimes, type CaseMark, type StudyTarget } from '../engine/badgeCatalog';
+import { examFocusedOf } from '../engine/fit';
 import { DIAGNOSTIC_SIZE, journeyStage, type Stage } from '../engine/journey';
 import { computeReadiness, type Readiness } from '../engine/readiness';
 import { sessionSize } from '../engine/studyModes';
@@ -37,6 +38,8 @@ export function caseStage(certId: string, cp: CertProgress, readiness: Readiness
     lessonsAvailable: lessonsFor(certId).length,
     mocksTaken: cp.mocks.length,
     daysLeft,
+    // The same Exam-focused rule as Today (code review M8): it skips the learn stage.
+    examFocused: examFocusedOf(useSettings.getState()),
   });
 }
 

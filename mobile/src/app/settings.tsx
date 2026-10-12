@@ -1,8 +1,8 @@
 /**
  * Settings — certification, exam date, your study (mobile 1.15: daily time, where you're
- * starting from, the Exam-focused plan), appearance, reminders, haptics, show badges,
- * your plant (mobile 1.13: Show my plant, Quiet look), study defaults (the practice timer),
- * your data (backup, restore, reset), one row to
+ * starting from, the Exam-focused plan), study defaults (the practice timer, the default
+ * mode), appearance, motion, reminders and extras (reminders, shuffle, haptics, show
+ * badges), your plant (mobile 1.13: Show my plant, Quiet look), your data (backup, restore, reset), one row to
  * Help and feedback (mobile 1.7), and the legal notices required for store review. Groups are
  * sections with hairline rows, not cards (spec §5).
  */
@@ -81,7 +81,12 @@ export default function Settings() {
   // Mobile 1.15: a change to Your study rebuilds today's plan only if nothing
   // in it is ticked yet; otherwise this visit says so in one line.
   const [keptToday, setKeptToday] = useState(false);
-  const fit = (p: Parameters<typeof changeFit>[1]) => setKeptToday(changeFit(cert.id, p).keptToday);
+  const fit = (p: Parameters<typeof changeFit>[1]) => {
+    const kept = changeFit(cert.id, p).keptToday;
+    // Said once, when the line first appears (code review M7b, UX review P6).
+    if (kept && !keptToday) sayLater(KEEP_TODAY_LINE);
+    setKeptToday(kept);
+  };
   // "Now" is read once per visit (render stays pure); presets move in months.
   const [now] = useState(() => Date.now());
   const examDate = s.examDates[cert.id];
@@ -214,6 +219,36 @@ export default function Settings() {
         keptLine={keptToday ? KEEP_TODAY_LINE : null}
       />
 
+      {/* Study defaults: what practice starts with. Build D: the timer.
+          Build E: the default study mode (the same choice Practice remembers).
+          Right under Your study: both shape how you study (UX review P8). */}
+      <Section title="Study defaults" />
+      <ToggleRow
+        title="Timed practice"
+        subtitle="Every practice session starts with a timer that counts up while you answer. Never a countdown. Practice's own switch can change it for one set."
+        value={s.practiceTimer}
+        onValueChange={s.setPracticeTimer}
+      />
+      <T v="caption" style={{ marginTop: space.lg }}>Default mode</T>
+      <View accessibilityRole="radiogroup" accessibilityLabel="Default study mode">
+        <RadioRow
+          title="Let the app choose"
+          subtitle="It changes as you go and fits where you’re starting from, ending with a smart mix of what you need."
+          checked={!s.studyMode}
+          onPress={() => s.setStudyMode(undefined)}
+        />
+        {STUDY_MODES.map((m, i) => (
+          <RadioRow
+            key={m}
+            title={MODE_INFO[m].name}
+            subtitle={MODE_INFO[m].why}
+            checked={s.studyMode === m}
+            onPress={() => s.setStudyMode(m)}
+            last={i === STUDY_MODES.length - 1}
+          />
+        ))}
+      </View>
+
       <Section title="Appearance" />
       <Gap h={space.sm} />
       <ThemeSwitch />
@@ -242,7 +277,8 @@ export default function Settings() {
         />
       </View>
 
-      <Section title="Study" />
+      {/* Reminders, shuffle, haptics and badges (UX review P8: "Study" read like the study choices above). */}
+      <Section title="Reminders and extras" />
       <ToggleRow
         title="Study reminder"
         subtitle={reminderText}
@@ -347,35 +383,6 @@ export default function Settings() {
           last
         />
       )}
-
-      {/* Study defaults: what practice starts with. Build D: the timer.
-          Build E: the default study mode (the same choice Practice remembers). */}
-      <Section title="Study defaults" />
-      <ToggleRow
-        title="Timed practice"
-        subtitle="Every practice session starts with a timer that counts up while you answer. Never a countdown. Practice's own switch can change it for one set."
-        value={s.practiceTimer}
-        onValueChange={s.setPracticeTimer}
-      />
-      <T v="caption" style={{ marginTop: space.lg }}>Default mode</T>
-      <View accessibilityRole="radiogroup" accessibilityLabel="Default study mode">
-        <RadioRow
-          title="Let the app choose"
-          subtitle="It changes as you go: a mixed start, then topic by topic, then a smart mix of what you need."
-          checked={!s.studyMode}
-          onPress={() => s.setStudyMode(undefined)}
-        />
-        {STUDY_MODES.map((m, i) => (
-          <RadioRow
-            key={m}
-            title={MODE_INFO[m].name}
-            subtitle={MODE_INFO[m].why}
-            checked={s.studyMode === m}
-            onPress={() => s.setStudyMode(m)}
-            last={i === STUDY_MODES.length - 1}
-          />
-        ))}
-      </View>
 
       {/* Backup and restore (Build C): save a file, restore one, undo for 7 days. Free, offline, no account. */}
       <YourData />

@@ -169,14 +169,17 @@ export function YourStudy({
       <View style={{ marginTop: space.sm }}>
         <MinutesControl value={minutes} onChange={onMinutes} />
       </View>
-      <T v="meta" style={{ marginTop: space.sm }}>Most days. Today’s plan fits this.</T>
+      <T v="meta" style={{ marginTop: space.sm }}>Most days. Your daily plan fits this.</T>
       <T v="caption" style={{ marginTop: space.lg }}>Where you’re starting from</T>
       <FamiliarityRows value={familiarity} onChange={onFamiliarity} />
       <ToggleRow title={EXAM_FOCUSED_TITLE} subtitle={EXAM_FOCUSED_SUBTITLE} value={examFocused} onValueChange={onExamFocused} last />
       {keptLine ? (
-        <T v="meta" color={c.accentText} style={{ marginTop: space.xs }}>
-          {keptLine}
-        </T>
+        // Android announces it when it appears (iOS: the screen's sayLater; UX review P6).
+        <View accessibilityLiveRegion="polite">
+          <T v="meta" color={c.accentText} style={{ marginTop: space.xs }}>
+            {keptLine}
+          </T>
+        </View>
       ) : null}
     </View>
   );
@@ -184,8 +187,9 @@ export function YourStudy({
 
 /**
  * Today's one "Fit your plan" card for learners from before 1.15 (the
- * key-idea recipe: a 3px accent rule, not a card shadow). Shown once,
- * below "Also today"; "Not now" hides it for good (engine/fit.ts shouldAskFit).
+ * key-idea recipe: a 3px accent rule, not a card shadow). Below "Also
+ * today", on at most 3 separate days; "Not now" hides it for good
+ * (engine/fit.ts shouldAskFit).
  */
 export function FitCard({ onSetUp, onNotNow }: { onSetUp: () => void; onNotNow: () => void }) {
   const { c } = useTheme();

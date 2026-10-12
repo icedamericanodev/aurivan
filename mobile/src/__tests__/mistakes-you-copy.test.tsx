@@ -121,7 +121,7 @@ describe('Mistake journal: tags in plain words, with an example each', () => {
     expect(sheet().props.visible).toBe(false);
     press(/^What do these mean\?$/);
     expect(sheet().props.visible).toBe(true);
-    expect(allText()).toContain('The auditor fixes the control instead of reporting it.');
+    expect(allText()).toContain('You fixed it yourself, when the auditor’s job is to report it.');
     expect(allText()).toContain('You restored the lost file but not the reason it was lost.');
     press(/^Close what the tags mean$/);
     expect(sheet().props.visible).toBe(false);

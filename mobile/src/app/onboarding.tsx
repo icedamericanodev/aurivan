@@ -24,7 +24,7 @@
  */
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
 import { BackHandler, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle } from 'react-native-svg';
@@ -80,6 +80,12 @@ export default function Onboarding() {
   // "Plant it" is gone once the step changes: screen-reader focus moves to the
   // "Planted" header instead of being dropped (UX review P16, code review M10b).
   const plantedRef = useRef<View>(null);
+  // Each step's header takes screen-reader focus when the step changes (UX review P7).
+  // Not tied to the step's entrance: the header is there from the first frame.
+  const headRef = useRef<View>(null);
+  useEffect(() => {
+    if (step >= 1 && step <= 4) moveFocus(headRef);
+  }, [step]);
 
   // Android's back button steps back through onboarding; on the welcome step
   // it does the default (onboarding is the first screen, so the app closes).
@@ -183,7 +189,7 @@ export default function Onboarding() {
     ) : step === 4 ? (
       <Enter key="s4">
         <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 4 of 4</T>
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>Plant something that grows with you</T>
+        <StepHeader title="Plant something that grows with you" headRef={headRef} />
         <T v="meta" style={{ marginTop: space.sm }}>It grows only from real progress across the exam outline. Never from taps or time. It asks for nothing and never wilts. Optional.</T>
         <Gap h={space.xl} />
         <SpeciesGrid
@@ -204,7 +210,7 @@ export default function Onboarding() {
           <Seedling color={c.accent} size={110} />
         </View>
         <T v="caption" color={c.accentText} style={{ marginTop: space.sm }}>Step 1 of 4</T>
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>Which exam are you preparing for?</T>
+        <StepHeader title="Which exam are you preparing for?" headRef={headRef} />
         <T v="meta" style={{ marginTop: space.sm }}>You can switch any time in Settings.</T>
         <Gap h={space.xl} />
         <View accessibilityRole="radiogroup" accessibilityLabel="Which exam are you preparing for?">
@@ -230,7 +236,7 @@ export default function Onboarding() {
     ) : step === 2 ? (
       <Enter key="s2">
         <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 2 of 4</T>
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>{FAMILIARITY_QUESTION}</T>
+        <StepHeader title={FAMILIARITY_QUESTION} headRef={headRef} />
         <T v="meta" style={{ marginTop: space.sm }}>This shapes your first week. You can change it any time in Settings.</T>
         <Gap h={space.xl} />
         <FamiliarityRows look="raised" value={familiarity} onChange={setFamiliarity} />
@@ -238,10 +244,11 @@ export default function Onboarding() {
     ) : (
       <Enter key="s3">
         <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 3 of 4</T>
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>When is your exam?</T>
+        <StepHeader title="When is your exam?" headRef={headRef} />
         <T v="meta" style={{ marginTop: space.sm }}>For your countdown. A rough date is fine.</T>
         <Gap h={space.lg} />
-        <View accessibilityLabel="Exam date" style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+        {/* No label on this wrapper: a View without a role never speaks it (UX review O7). The header names the group. */}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
           {PRESETS.map((p, i) => (
             <Chip key={p.label} label={p.label} selected={preset === i} onPress={() => setPreset(i)} />
           ))}
@@ -339,5 +346,14 @@ export default function Onboarding() {
       )}
       <RestorePreview ready={restore.ready} busy={restore.busy === 'restore'} onConfirm={restore.confirm} onCancel={restore.cancel} />
     </SafeAreaView>
+  );
+}
+
+/** A step's big question: one header stop that screen-reader focus can move to (UX review P7). */
+function StepHeader({ title, headRef }: { title: string; headRef: RefObject<View | null> }) {
+  return (
+    <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel={title} style={{ marginTop: space.sm }}>
+      <T v="display">{title}</T>
+    </View>
   );
 }

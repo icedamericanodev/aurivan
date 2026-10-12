@@ -48,7 +48,7 @@ export default function Fit() {
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
         <PushedHeader title="Your study" onBack={() => router.back()} />
-        <T v="meta" style={{ marginTop: space.sm }}>Two quick questions, so Today’s plan fits your time. Change them any time in Settings.</T>
+        <T v="meta" style={{ marginTop: space.sm }}>Tell us how long you have and where you’re starting from, so Today’s plan fits your time. You can change these any time in Settings.</T>
         <YourStudy
           minutes={minutes}
           familiarity={familiarity}

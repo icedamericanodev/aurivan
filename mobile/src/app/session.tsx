@@ -72,6 +72,7 @@ import { eliminateTip, runnerUp, tipParts } from '../engine/tips';
 import { finishSession } from '../lib/finishSession';
 import { advancePath } from '../lib/sessions';
 import { shortSubtopic } from '../lib/format';
+import { HINT_AFTER_LINE, HINT_BEFORE_LINE } from '../engine/readiness';
 import { useAnswerClock } from '../lib/useAnswerClock';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
@@ -605,7 +606,8 @@ export default function SessionScreen() {
                         <T v="small" color={c.ink}>{renderText(tipParts(hintTip, 0).body, perm)}</T>
                       </View>
                     )}
-                    <T v="meta" style={{ marginTop: space.xs }}>You used a hint, so this counts as half a right answer.</T>
+                    {/* Before the answer: what the hint will do (UX H1). */}
+                    <T v="meta" style={{ marginTop: space.xs }}>{HINT_BEFORE_LINE}</T>
                   </View>
                 </Rise>
               )}
@@ -635,7 +637,8 @@ export default function SessionScreen() {
                 {/* Answer: verdict → your pick → best answer → why → vine → trust */}
                 <Verdict correct={response.correct} coach={coach} />
                 {/* Lined up with the coach line above it (left 50, under "Correct"). */}
-                {response.assisted && <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>You used a hint, so this counts as half a right answer.</T>}
+                {/* Only after a RIGHT hinted answer (UX H1): a wrong one counts nothing, so "half" would be untrue. */}
+                {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>{HINT_AFTER_LINE}</T>}
                 <Rise delay={FEEDBACK_DELAY.rows}>
                   <View style={{ marginTop: space.lg }}>
                     {!response.correct && pickedOriginal && (

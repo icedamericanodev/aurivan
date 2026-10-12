@@ -42,7 +42,7 @@ import { useTheme } from '../theme/useTheme';
 
 /** The tags, each with one example (the chip's spoken hint and the "What do these mean?" sheet). */
 export const SLIPS: { id: ThinkingSlip; label: string; example: string }[] = [
-  { id: 'role', label: 'Acted as the wrong person', example: 'The auditor fixes the control instead of reporting it.' },
+  { id: 'role', label: 'Acted as the wrong person', example: 'You fixed it yourself, when the auditor’s job is to report it.' },
   { id: 'priority', label: 'Missed FIRST or BEST', example: 'You picked a good step, but not the first one.' },
   { id: 'tech-first', label: 'Tool before policy', example: 'You picked a new tool before anyone agreed who owns the risk.' },
   { id: 'symptom', label: 'Fixed the symptom, not the cause', example: 'You restored the lost file but not the reason it was lost.' },

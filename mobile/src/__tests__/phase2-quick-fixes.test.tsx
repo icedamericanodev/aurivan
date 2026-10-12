@@ -212,7 +212,8 @@ describe('Results for a one-domain session (R1, R2) and the assisted line (Q1)',
 });
 
 describe('Q1', () => {
-  it('the "Assisted" line under the verdict starts where the coach line does (left 50)', () => {
+  /** Coach me, then answer: the right option, or a wrong one. */
+  const answerHinted = (right: boolean) => {
     const q = getAllQuestions('cisa').find((x) => x.domainId === '1')!;
     act(() => {
       startFromIds('cisa', [q.id], 'Practice · IS Audit');
@@ -222,16 +223,27 @@ describe('Q1', () => {
     });
     mount(<SessionScreen />);
     act(() => {
-      root().findAllByType(OptionCard)[0].props.onPress();
+      root()
+        .findAllByType(OptionCard)
+        .find((o) => (o.props.text === q.options[q.correct]) === right)!
+        .props.onPress();
     });
     act(() => {
       buttons('Check answer')[0].props.onPress();
     });
-    const indentOf = (re: RegExp) => {
-      const t = root().findAll((n) => typeof n.type === 'string' && re.test(textOf(n)) && n.children.every((c) => typeof c === 'string'))[0];
-      return StyleSheet.flatten(t.props.style).marginLeft;
-    };
+  };
+  const indentOf = (re: RegExp) => {
+    const t = root().findAll((n) => typeof n.type === 'string' && re.test(textOf(n)) && n.children.every((c) => typeof c === 'string'))[0];
+    return t ? StyleSheet.flatten(t.props.style).marginLeft : undefined;
+  };
+  it('the hint line under the verdict starts where the coach line does (left 50)', () => {
+    answerHinted(true);
     expect(indentOf(/^You used a hint, so this counts as half a right answer\.$/)).toBe(50);
     expect(indentOf(/^(Clean read\.|You picked the runner-up\. That’s the trap\.|Check who you are in the question\.)$/)).toBe(50);
+  });
+  it('UX review H1: a WRONG hinted answer never says it "counts as half a right answer"', () => {
+    answerHinted(false);
+    expect(allText()).not.toContain('half a right answer');
+    expect(allText()).not.toContain('You used a hint');
   });
 });

@@ -40,6 +40,7 @@ import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRou
 import { certOutline } from '../../lib/outline';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
+import { HINT_BEFORE_LINE } from '../../engine/readiness';
 import { useProgress } from '../../store/progress';
 import { radius, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -248,7 +249,8 @@ function CallItFirst() {
         hint ? (
           <View style={{ borderLeftWidth: 3, borderLeftColor: c.tip, paddingLeft: space.md, marginBottom: space.lg }}>
             <T v="small">{renderText(q.preRead, perm)}</T>
-            <T v="meta" style={{ marginTop: space.xs }}>You used a hint, so this counts as half a right answer.</T>
+            {/* Shown before the reveal, so it says what a RIGHT answer will count (UX H1). */}
+            <T v="meta" style={{ marginTop: space.xs }}>{HINT_BEFORE_LINE}</T>
           </View>
         ) : (
           <Pressable

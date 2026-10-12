@@ -51,6 +51,13 @@ export interface AnswerRecord {
 
 /** How much an assisted answer counts toward readiness (half). */
 export const ASSISTED_WEIGHT = 0.5;
+/**
+ * The hint lines (UX review H1). Before an answer, say what a RIGHT answer
+ * will count; after one, say it only when the answer was right (a wrong
+ * answer counts nothing, hint or not, so "half" would be untrue).
+ */
+export const HINT_BEFORE_LINE = 'You used a hint, so a right answer counts as half.';
+export const HINT_AFTER_LINE = 'You used a hint, so this counts as half a right answer.';
 
 /** Mastery credit for one answer record: 1 clean correct, 0.5 assisted correct, 0 wrong. */
 export function answerCredit(rec: AnswerRecord): number {

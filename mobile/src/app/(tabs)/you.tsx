@@ -174,8 +174,10 @@ export default function You() {
             range.enough ? (
               <View style={{ alignItems: 'center' }}>
                 <BigNum value={rangeLabel(range)} pct size={20} roll={{ play: rangeGrowth.play, from: boundsLabel(rangeGrowth.from), run: rangeGrowth.run }} />
-                {/* "estimate", not "ready": the range is a study estimate, not a prediction. */}
-                <T v="caption" color={c.ink2}>estimate</T>
+                {/* "estimate", not "ready": the range is a study estimate, not a prediction.
+                    Capped like the numeral above it: it sits inside the fixed-size rings
+                    (UX review O10); the rings' spoken label says it in full. */}
+                <T v="caption" color={c.ink2} maxFontSizeMultiplier={1.3}>estimate</T>
               </View>
             ) : (
               <T v="caption" color={c.ink2} center style={{ maxWidth: 72 }}>Not enough data yet</T>

@@ -1,7 +1,7 @@
 /**
  * Practice — every way to answer questions, in one place.
  * Spec: DESIGN_SYSTEM.md §11 "Practice":
- *   forest "Quick 10" → Spaced review / Weak area rows → "Build a set"
+ *   forest "Quick 10" → Spaced review / Weak spots rows → "Build a set"
  *   (domain chips, serif segmented size, difficulty chips, Start) →
  *   "Mock exams" rows with a lead serif numeral.
  *
@@ -135,6 +135,24 @@ export default function Practice() {
   const hours = cert.exam.minutes / 60;
   const icon = (G: typeof Crosshair) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
 
+  /** The one-time "Practice at exam pace?" card: under Timed, or under Mock exams when they lead. */
+  const paceCard = offer ? (
+    // Offered ONCE (behavioural review §2): close to the exam or at the
+    // mock / ready stage. Never switched on without the learner's tap.
+    // Mobile 1.15 (ui.md P1): under the Timed switch it changes, not above the hero.
+    <Card style={{ marginTop: space.md }}>
+      <T v="headline" accessibilityRole="header">Practice at exam pace?</T>
+      <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>
+        {`${examPaceWords(cert.exam)} A timer counts up while you answer, never down, and stops while you read the explanation.`}
+      </T>
+      <Gap h={space.md} />
+      <View style={{ gap: space.sm }}>
+        {/* Secondary, not primary: an offer, never a push (P3). */}
+        <Button kind="secondary" label="Turn on Timed" onPress={() => answerOffer('accepted')} />
+        <Button kind="ghost" label="No thanks" accessibilityHint="Hides this card. You can turn the timer on in Settings." onPress={() => answerOffer('dismissed')} />
+      </View>
+    </Card>
+  ) : null;
   /** Mock exams: under the hero for the Exam-focused plan and the mock / ready stages (`top`), else last. */
   const mockExams = (top: boolean) => (
     <Enter i={top ? 2 : 4}>
@@ -245,25 +263,11 @@ export default function Practice() {
           onValueChange={setTimedHere}
           last
         />
-      {offer && (
-        // Offered ONCE (behavioural review §2): close to the exam or at the
-        // mock / ready stage. Never switched on without the learner's tap.
-        // Mobile 1.15 (ui.md P1): under the Timed switch it changes, not above the hero.
-        <Card style={{ marginTop: space.md }}>
-          <T v="headline" accessibilityRole="header">Practice at exam pace?</T>
-          <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>
-            {`${examPaceWords(cert.exam)} A timer counts up while you answer, never down, and stops while you read the explanation.`}
-          </T>
-          <Gap h={space.md} />
-          <View style={{ gap: space.sm }}>
-            {/* Secondary, not primary: an offer, never a push (P3). */}
-            <Button kind="secondary" label="Turn on Timed" onPress={() => answerOffer('accepted')} />
-            <Button kind="ghost" label="No thanks" accessibilityHint="Hides this card. You can turn the timer on in Settings." onPress={() => answerOffer('dismissed')} />
-          </View>
-        </Card>
-      )}
+      {!mocksFirst && paceCard}
       </Enter>
+      {/* Mock exams straight after Timed when they lead, then the pace offer (UX review P3). */}
       {mocksFirst && mockExams(true)}
+      {mocksFirst && paceCard && <Enter i={2}>{paceCard}</Enter>}
 
       <Enter i={3}>
         <Section title="More ways to practice" style={{ marginTop: 22 }} />
@@ -278,7 +282,7 @@ export default function Practice() {
         {focus && (
           <ListRow
             icon={icon(Crosshair)}
-            title={`Weak area: ${focus.short}`}
+            title={`Weak spots: ${focus.short}`}
             subtitle="Most points to gain"
             onPress={() => guardedStart(() => startPractice(cert.id, { count: 10, domainId: focus.id, title: focus.short }), open)}
           />

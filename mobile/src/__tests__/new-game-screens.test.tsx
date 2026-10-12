@@ -131,7 +131,7 @@ describe('Call It First screen', () => {
     mount(<CallItFirst />);
     press('Start');
     press('Show a hint');
-    expect(allText()).toContain('You used a hint, so this counts as half a right answer.');
+    expect(allText()).toContain('You used a hint, so a right answer counts as half.');
     act(() => {
       options()[0].props.onPress();
     });
