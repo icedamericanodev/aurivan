@@ -213,7 +213,7 @@ await shot('f14-mistakes-tags');
 await press('What do these mean?', 1200);
 await shot('f15-mistakes-tags-sheet');
 
-// ── 8. An answer after a hint (J6) ─────────────────────────────────────
+// ── 8. Answers after a hint (J6; UX review H1: wrong, then right) ──
 const keys = (seed.__shotKeys || 'D').split(',');
 await page.evaluate(([k, v]) => localStorage.setItem(k, v), [SESSION, paused]);
 await go('/session', 1800);
@@ -222,7 +222,17 @@ await wait(700);
 await page.getByLabel(new RegExp(`^Option ${keys[0]}:`)).first().click();
 await page.getByText('Check answer', { exact: true }).click();
 await wait(1400);
+// f16: a WRONG answer after a hint: no "half a right answer" line (UX review H1).
 await shot('f16-answer-after-hint');
+// f16b: the next question, hinted and answered RIGHT: the line shows, under the verdict.
+await page.getByText('Next question', { exact: true }).click();
+await wait(900);
+await page.getByRole('button', { name: 'Coach me', exact: true }).click();
+await wait(700);
+await page.getByLabel(new RegExp(`^Option ${keys[1] || 'A'}:`)).first().click();
+await page.getByText('Check answer', { exact: true }).click();
+await wait(1400);
+await shot('f16b-right-after-hint');
 
 // ── 9. The exam-eve card, in seconds ───────────────────────────────────
 await edit(S, `v.state.examDates = { cisa: a };`, dk(now + DAY));
