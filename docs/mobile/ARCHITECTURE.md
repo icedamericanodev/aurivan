@@ -414,10 +414,14 @@ PHASE6_8 (§1–2).
   native adapters: `SecureKVPort` (Keychain / Keystore), `AppleSignInPort`,
   `GoogleSignInPort`, `RandomPort`, `CaptchaPort`. `src/cloud/memory/` is
   an in-memory backend that plays the server's rules (6-digit codes, 60 s
-  resend, 10-minute codes, 5 tries, the 10-minute re-auth window, Apple's
-  authorisation code, export once an hour, sync `rev` conflicts, offline)
-  for tests, dev builds and `SHOTS=cloud`. Tests swap backends with
-  `setBackendForTests`.
+  resend, 10-minute codes, 5 tries, the 10-minute re-auth window for
+  deleting, `gone` for an account already deleted vs `unauthorized` for no
+  session, export once an hour with no re-auth, sync `rev` conflicts,
+  offline, a reply lost after the work is done) for tests, dev builds and
+  `SHOTS=cloud`. Tests swap backends with `setBackendForTests`. It can only
+  be created in a dev build or the WEB screenshot export
+  (`runtime.on.ts` checks `__DEV__` or `Platform.OS === 'web'`), so no
+  phone release binary can run it, whatever an EAS environment sets.
 - **Bundle exclusion without new machinery.** `src/cloud/backend.ts`
   requires `runtime.on.ts` behind an INLINE
   `process.env.EXPO_PUBLIC_AURIVAN_CLOUD === '1'` check; with the flag
@@ -427,9 +431,14 @@ PHASE6_8 (§1–2).
   `metro.config.js` was needed. The entry points (`{CLOUD && …}`) and the
   `(cloud)` screens do ship, inert: the screens import no SDK.
 - **Session**: `src/cloud/secureSession.ts` splits the session into secure
-  store keys of at most 1,800 bytes, writes the manifest (count, length,
-  checksum) LAST, and reads a broken set as "signed out" and wipes it.
-  Every write is "this device only, after first unlock". Nothing secret in
+  store keys of at most 1,800 bytes, in one of two slots that take turns: a
+  write clears and fills the OTHER slot, then switches the manifest (slot,
+  count, length, checksum), then clears the old slot. A crash or a read
+  mid-write sees the old session whole, never a mix; a broken set reads as
+  "signed out" and is cleared (only if the manifest didn't change under
+  the read); sign-out clears the manifest and both slots, so no piece of a
+  refresh token is left in the Keychain. Every write is "this device only,
+  after first unlock". Nothing secret in
   AsyncStorage: `store/account.ts` (`aurivan.account.v1`) keeps only
   signed-in, the MASKED email, the methods, the SHA-256 of the account id
   and "sign in again"; it is never hydrated with the flag off, never in a
@@ -447,8 +456,11 @@ PHASE6_8 (§1–2).
   (`assertCloudConfig(env)`, pure and tested): the flag must be `1` or
   unset; the memory backend fails any EAS profile except `development`
   (G9); the flag on `production` needs `AURIVAN_CLOUD_GO_LIVE_ACK=yes`; an
-  https backend URL and a publishable key; no secret-looking `EXPO_PUBLIC_*`
-  value; no Google on iOS without Apple (App Store 4.8). **Phase 9 adds
+  https backend URL and a publishable key; https Privacy policy and Terms of
+  Use links (the sign-in sheet links both); no secret-looking
+  `EXPO_PUBLIC_*` value; no Google on iOS without Apple (App Store 4.8, for
+  EAS iOS builds; with no EAS platform the check is skipped, and on iOS the
+  app shows Apple whenever it shows Google anyway). **Phase 9 adds
   `mobile/app.config.ts`, which calls `assertCloudConfig(process.env)` and,
   only when the flag is on, adds the native plugins** (`expo-secure-store`,
   `expo-apple-authentication`, `@react-native-google-signin/google-signin`).
@@ -458,9 +470,14 @@ PHASE6_8 (§1–2).
   nonce) is a small tested TypeScript file (`engine/sha256.ts`) instead of
   `expo-crypto`. `@supabase/supabase-js` and the three native modules above
   arrive at Phase 9, each justified then, in the cloud build only.
-- **Guards** (CI, `.github/workflows/mobile.yml`): G1
-  `scripts/check_secrets.sh` (patterns in `scripts/secret_patterns.txt`,
-  tracked files under `mobile/` only); the whole Jest suite a second time
+- **Guards** (CI): G1 `scripts/check_secrets.sh` runs on EVERY pull
+  request (`verify.yml`; the repo is public): the secret shapes in
+  `scripts/secret_patterns.txt` in every tracked file but `data/`, the
+  app-only words in `scripts/secret_patterns_app.txt` under `mobile/`, a
+  narrow `path:pattern` allowlist (`scripts/secret_allowlist.txt`), and no
+  tracked key file (`.p8 .p12 .jks .keystore .pem .key .mobileprovision`)
+  or `.env` file (the root `.gitignore` ignores them too). In
+  `.github/workflows/mobile.yml`: the whole Jest suite a second time
   with the flag ON and the memory backend, signed out; G2
   `mobile/scripts/check_off_bundle.sh` greps the OFF Android export for the
   backend SDK, sign-in SDKs, secure store, `/rest/v1/` and the memory
@@ -562,11 +579,18 @@ Freemium with in-app subscriptions (product panel recommendation):
    an update reaches only binaries whose native fingerprint matches. Phase 6
    adds no native module and no config file, so the Android fingerprint is
    unchanged (`5e26d4b961113941199b725cff5ff30a66bf0ac1`) and OTA updates
-   keep reaching the APKs learners already have. The spec's
-   "`runtimeVersion` with a `-cloud` suffix" rule is not needed: a cloud
-   build adds native modules (secure store, Apple, Google sign-in), which
-   changes its fingerprint, so an ON bundle can never be served to an OFF
-   binary, and an OFF bundle never to an ON one (Apple 2.5.2). Check
+   keep reaching the APKs learners already have. That also means an
+   over-the-air update IS a remote channel for JavaScript until a cloud
+   build adds its native modules (secure store, Apple, Google sign-in) at
+   Phase 9: today an ON bundle would match an OFF binary's fingerprint. So
+   two things keep the flag off on phones: `eas-update.yml` refuses to
+   publish if the EAS preview environment (or the job) sets any
+   `EXPO_PUBLIC_AURIVAN_*` variable, and the memory backend can't run on a
+   phone release build at all (`runtime.on.ts`). From Phase 9 the native
+   modules change a cloud build's fingerprint, so an ON bundle can never be
+   served to an OFF binary, and an OFF bundle never to an ON one (Apple
+   2.5.2); the spec's "`runtimeVersion` with a `-cloud` suffix" rule is not
+   needed then either. Check
    before every cloud-related PR: `npx expo-updates fingerprint:generate
    --platform android` must print the same hash while the flag is off.
    Don't touch `mobile/.gitignore` or `mobile/eas.json` casually: both are
@@ -626,7 +650,7 @@ its own section.
 | SQL tests | `supabase/tests/01_hardening.sql`, `10_accounts.sql` | pgTAP: schema-wide rules every later table inherits, plus own-rows-only, anon denied and cascade-on-delete |
 | Edge Functions | `supabase/functions/{delete-account,export-my-data}` | Pure `handler.ts` with an injected `AdminPort`; `index.ts` only wires env. `deno test` uses a fake admin client, no network |
 | Smoke (Phase 9) | `scripts/cloud_smoke.sh` | curl with two learners' JWTs and the publishable key: every cross-user, anon, private and server-only call must fail |
-| Static guard | `scripts/check_rls.sh` | G6 + G7: RLS in the same file as every `create table`, no always-true policy off the allowlist, `security_invoker` views, no `security definer` in `public` |
+| Static guard | `scripts/check_rls.sh` | G6–G8: RLS in the same file as every `create table` and never turned off, no always-true policy (create or alter) off the allowlist, `security_invoker` views, no `security definer` outside `private` (an unqualified name counts as `public`), nothing granted to `anon` or `public` off the allowlist |
 | CI | `.github/workflows/supabase.yml` | On `supabase/**`: the guard, deno fmt/lint/check/test, then a local Supabase (CLI 2.118.0) with `db reset`, `test db`, `db lint` and the advisors |
 
 **Security model.** RLS is on for every table, public and private. Policies
@@ -642,17 +666,30 @@ needs no direct database connection. New server-only writes follow the same
 pattern; elevated helpers that policies call go in `private` as
 `security definer set search_path = ''`.
 
-**The two functions.** Both verify the JWT with the Auth server first, then
-read `amr` and require a sign-in in the last 10 minutes (`401
-reauth_required` otherwise; `amr` timestamps checked against the Supabase
-Auth source). No CORS, no database text in responses, logs carry event names
-and counts only.
-- `delete-account` needs `{ confirm: 'DELETE' }`; an Apple-linked account
-  also sends a fresh `appleAuthorizationCode`, which is revoked at Apple
-  (a failed revoke is logged, never blocking). Then `auth.admin.deleteUser`,
-  which cascades every row, and an audit row holding a SHA-256 of the id.
+**The two functions.** Both verify the JWT with the Auth server first:
+`401 unauthorized` for a bad, expired or revoked token; `410 gone` for a
+genuine token whose account no longer exists (GoTrue's `user_not_found`);
+`500 server` when the Auth server can't be asked (never read as signed out
+or deleted). No CORS, no database text in responses, logs carry event names
+and counts only, and bodies are read with a byte counter that stops at the
+cap.
+- `delete-account` also reads `amr` and requires a sign-in in the last 10
+  minutes (`401 reauth_required` otherwise; `amr` timestamps checked
+  against the Supabase Auth source), then `{ confirm: 'DELETE' }`. Revoking
+  Sign in with Apple is best-effort: the iPhone app always re-confirms with
+  Apple and sends a fresh `appleAuthorizationCode`, which is revoked at
+  Apple; without one (Android, the web) the account is still deleted and
+  `apple_revoke_skipped` is logged as a count, and a failed revoke is
+  logged too, never blocking. Then `auth.admin.deleteUser`, which cascades
+  every row, and an audit row holding a SHA-256 of the id. The app treats
+  only `410 gone` as "already deleted" (a retry after a lost reply).
 - `export-my-data` returns the caller's own account data, at most once an
-  hour. `stores` stays empty until Phase 7; Phase 8 adds `board`.
+  hour, with NO recent sign-in needed: everything in it is already readable
+  with the same token (the account, and own rows through RLS), so a re-auth
+  would add friction and no protection. Revisit if an export ever holds data
+  the token can't read (moderation notes, logs, staff fields). The hourly
+  slot is claimed last, after the reply is built. `stores` stays empty
+  until Phase 7; Phase 8 adds `board`.
 
 **Run it locally** (needs Docker): `supabase start`, `supabase db reset`,
 `supabase test db`, `supabase db lint`; functions:
@@ -679,3 +716,40 @@ Google with real client IDs; set Function secrets `APPLE_TEAM_ID`,
 penetration-style smoke `scripts/cloud_smoke.sh` (two test learners'
 JWTs against every table, private table, RPC and function; keep the output
 as evidence).
+
+**Phase 9 checklist (from the Phase 6 security and code reviews; not done in
+Phase 6 on purpose).**
+- Apple revocation from any platform: at Apple sign-in, keep Apple's refresh
+  token server-side (schema `private`, service role only), so delete-account
+  can revoke it without a fresh code (today Android and web deletions skip
+  the revoke and log `apple_revoke_skipped`). Bind a revoke code to the
+  user: decode the `id_token` from `/auth/token` and require its `sub` to
+  equal the user's Apple identity before revoking.
+- Delete order: `deleteUser` first, then the audit row, then storage files
+  (retried, logged), then the Apple revoke (best-effort), so a failed
+  `deleteUser` never follows a partial clean-up.
+- Wrong-code limits on the server: GoTrue has no per-code try counter (the
+  app's 5 tries are UX only). Turn on captcha (`CaptchaPort`) or 8-digit
+  codes, keep `token_verifications` low, and alert on verify-failure spikes.
+  Captcha also guards the email-send quota against sign-in spam.
+- Password sign-in off at the provider (a "password verification" Auth hook
+  that rejects every attempt), so a stolen fresh session can't add a
+  password as a second credential.
+- The deletion audit hash as an HMAC with a server pepper (a Function
+  secret), so it can't be joined with the phone's `syncedAccountHash`.
+- A new device id when a different account signs in, and on account
+  deletion (a shared phone); declare it in the store privacy answers.
+- PR 7 and PR 8 write policies require a `profiles` row (Terms accepted),
+  not only a session.
+- The Phase 9 adapter: `reauthenticate` is a NEW sign-in (it adds an `amr`
+  entry; `supabase.auth.reauthenticate()` does not); `thisDeviceOnly` maps
+  to `AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY`; `expo-secure-store` with
+  `configureAndroidBackup: true` (`allowBackup` is on); a local sign-out
+  calls the session store's `removeItem` itself on any error; supabase-js
+  `auth.lock: processLock`, `flowType: 'pkce'`, `detectSessionInUrl: false`;
+  `CloudError.detail` from an allowlist only.
+- `verify_jwt = false` if the new asymmetric signing keys make the gateway
+  refuse valid tokens (the in-function `getUser` is the real check).
+- Ask `app-store-compliance-reviewer` whether the bundled but unreachable
+  `(cloud)` screens in an OFF build raise Apple 2.3.1 ("hidden features").
+- Privacy policy: add the install id (PR 7) and the backend's request logs.

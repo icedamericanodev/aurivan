@@ -158,6 +158,7 @@ grant execute on function public.svc_claim_export(uuid) to service_role;
 grant execute on function public.svc_record_deletion(uuid, int, int) to service_role;
 
 -- In-app account deletion (Apple 5.1.1(v)): the `delete-account` Edge
--- Function verifies the JWT and a recent sign-in, revokes the Apple token if
--- any, then calls auth.admin.deleteUser(uid). Every user table above cascades
--- from auth.users; Phase 7 and 8 tables must do the same.
+-- Function verifies the JWT and a recent sign-in, revokes the Apple token
+-- when it has a fresh Apple code (best-effort: never blocking), then calls
+-- auth.admin.deleteUser(uid). Every user table above cascades from
+-- auth.users; Phase 7 and 8 tables must do the same.
