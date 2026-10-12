@@ -714,7 +714,7 @@ bank size. Never "Pokémon".
 | Your plant | The plant on the shared 200 × 200 stage (`fit={false}`), name, growth and its look in italic; the back-fill line once; the resting line; What grows it next (rule steps with bars, "Not yet" / "Done"); Your domains as text rows with "Next to grow"; Change species and Rename | 200pt |
 | Picker (onboarding step 3 of 3, Plant yours, Change plant) | A radio grid of the 13 species, each previewed at Crown; the columns come from the measured width and text size (a tile needs 112pt × the text scale, up to ×1.3): three when they fit, else two (a 360 dp phone), and one row per species (56pt plant beside its name and line) at ×1.6 text; names wrap to two lines, never mid-word; selected = 2px ink border. The name field starts empty with an idea as its placeholder ("Another idea" fills one in; empty = "Your oak"); the keyboard never covers it (the footer hides while typing) | 56–96pt |
 | Look (mobile 1.14) | A live preview pinned under the header (it stays in view while the choices scroll; small detail level, so a tap rebuilds quickly; its label names the visitor, planter and keepsakes it draws), then Colour (swatches), Ground and Visitor two across when two fit (the width is known from the first frame), Planter (a 40pt planter icon with a sprout in it) and Keepsakes always one column of rows (an icon, the name, the skill line); one column for everything at ×1.3+ text. Planter and Keepsakes list only what is open; the planters and keepsakes still to earn wait in ONE closed "More to find" group at the end (no count; "Badges and finished badge sets add more. Each one says how."; rows arrive 30 ms apart, a 120 ms fade reduced). Colour, Ground and Visitor keep their one locked choice inline. Selected = a 2px ink ring that cross-fades in (an always-mounted state layer, nothing reflows) and, for a keepsake, a ✓; the press is the soft tint. Keepsakes say "Show up to three", or "Three on show" with "Tap one that's on show to put it away, then pick another." while the others are drawn muted. Radio groups, keepsakes checkboxes; a tap applies at once (selection haptic) | 140pt; 96pt at ×1.3+ text; 72pt at ×1.6+ or on a phone under 700pt tall |
-| Question, mock, lesson, game and Results screens | **Never** (a test checks the imports) | — |
+| Question, mock, lesson, game and Results screens | **Never**: no plant, face or looping art while answering (practice, review, mock, lesson steps, games in play, answer feedback). Tests walk each screen's imports, and check that its hero panels are still (`plant-proud-118.test.tsx`) | — |
 
 The rings stay on You and Results as the numeric view.
 
@@ -779,9 +779,7 @@ lantern." only when it is on show; otherwise "A keepsake for your plant: the
 lantern. Show it from Your plant, Change its look."
 
 **Moods.** Idle, happy (the plan is cleared), curious (a new topic opened
-today), proud (a growth step today, never a back-filled one; or a NEW keepsake
-today: the first tier of its badge on any exam, never a higher tier) and
-resting, on the FACE only (no posture, no marks; the resting look keeps its
+today), proud and resting, on the FACE only (no posture, no marks; the resting look keeps its
 moon). Proud is content half-lids, a wide closed smile and a stronger blush
 (happy is "^ ^" with an open smile). Quiet look shows none. Spoken in the
 label ("Looking proud.").
@@ -790,20 +788,33 @@ label ("Looking proud.").
 and moves only the plant layer's wrapper, transform and opacity, pivoting on
 its base; the SVG is built once per species, growth, look and theme and the
 elements are cached, so no path is rebuilt per frame (low-end Android).
-- **Breathe**: one slow breath (2 s in, 2.4 s out; about 2pt deep, never
-  under 1.6%; a 0.7° sway either side of upright) the first time You or Your
+- **Breathe**: one slow breath (2 s in, 2.4 s out; about 2pt deep:
+  `breathDepth` = clamp(2 / size, 1.2%, 2.0%), so 2.0% at 64pt, 1.9% at
+  104pt, 1.4% at 140pt, 1.2% at 200pt; a 0.7° sway either side of upright) the first time You or Your
   plant comes into view in an app session, then still. It waits for a
   reaction to finish, and on You for the rings. Stopped (and back at rest)
-  off screen and in the background. Never on Today, never a loop.
+  off screen and in the background. Never on Today or onboarding (the plant
+  there is still), never a loop. Quiet look keeps the breath.
 - **Reactions**: happy stretches up from its base (3.5% taller, 1.2% narrower;
   no hop: it stays rooted), curious leans 3° and holds a look (900 ms,
-  charged its whole length), proud stands 4% taller, once per occasion
-  (`cert:mood:day`) wherever the plant is first seen, charged to the 3 s
-  decorative budget. Never with the growth sequence, nor later on a growth
-  day; on Today it waits while the clearing plays. Anything that cuts one
-  short (the screen loses focus, Reduce Motion turns on) puts the plant back
-  at rest at once. The occasions are kept in memory: a relaunch the same day
-  may react once more (accepted, QA BUG-4).
+  charged its whole length), proud stands 4% taller (180 ms up, 420 ms
+  back), once per occasion EVER wherever the plant is first seen, charged
+  to the 3 s decorative budget. Happy and curious are keyed `cert:mood:day`;
+  proud by its earned occasions (below). Played occasions are saved in
+  `store/seen.ts` (`reactions`, two weeks kept), so a relaunch never replays
+  one (mobile 1.18, fixes QA BUG-4). Never with the growth sequence, nor
+  later on a growth day; on Today it waits while the clearing plays.
+  Anything that cuts one short (the screen loses focus, Reduce Motion turns
+  on) puts the plant back at rest at once. Quiet look: no face, no reaction.
+- **Proud (mobile 1.18, expert panel)**, rules in `engine/proud.ts`: only for
+  something earned today: a growth step (never a back-filled one), or a NEW
+  keepsake from a LEARNING badge (the first tier, on any exam, of a badge in
+  the six counted sets; never a game-only Field notes badge such as Whole
+  Grove, never Fresh Start, never a mark saved by a quiet fill). Never for a
+  visit, a tap or a streak; no random rewards. Each occasion is written down
+  in `store/seen.ts` (`proud`); keepsake occasions are capped at 3 in any
+  rolling 7 days (a 4th is noted as capped and changes nothing), growth
+  always counts. The proud face lasts until local midnight, then idle.
 - **Growth sequence**: see §8.9; `useCelebration('plant-growth')`.
 - **Planting** (after onboarding's last step, "Plant it", M8): once the page has arrived (`dur.screen`),
   the seed settles 14pt into the soil, then the first sprout pops from 0.3

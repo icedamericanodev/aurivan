@@ -221,7 +221,8 @@ export default function Today() {
   // it is first seen this session. Never on a growth visit (UX review H4: the
   // growth IS that day's proud moment, so the occasion is spent), and it waits
   // while the clearing plays (one thing moves at a time).
-  const reactionId = plantView.look ? `${cert}:${plantView.look.mood}:${dayKey(now)}` : null;
+  // Mobile 1.18: the id comes from usePlantView (proud: its earned occasions, saved once played).
+  const reactionId = plantView.reactionId;
   useEffect(() => {
     if (grown && reactionId) markReacted(reactionId);
   }, [grown, reactionId]);

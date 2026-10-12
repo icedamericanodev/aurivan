@@ -17,7 +17,7 @@
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import { buildPlant, builtCacheSize, bounds, groupNames, liftGroup, plantLayers, type GNode, type PNode } from '../components/plant/art';
-import { claimReaction, LivePlant, resetPlantReactionsForTest } from '../components/plant/LivePlant';
+import { claimReaction, LivePlant, relaunchPlantForTest, resetPlantReactionsForTest } from '../components/plant/LivePlant';
 import { resetCelebrationsForTest, setSystemReducedMotionForTest, type Celebration } from '../components/motion';
 import { GROWTH_IDS, growthBefore, PLANT_SPECIES, type GrowthLevel } from '../engine/plant';
 import { colourwaysFor, GROUNDS, KEEPSAKE_ITEMS, plantersFor, VISITORS } from '../engine/plantLooks';
@@ -224,11 +224,13 @@ describe('<LivePlant>', () => {
     expect(r!.root.findAll((n) => typeof n.type === 'string' && JSON.stringify(n.props.style ?? '').includes('transformOrigin'))).toHaveLength(1);
   });
 
-  it('a reaction plays once per occasion per app session, within the budget', () => {
+  it('a reaction plays once per occasion, ever (mobile 1.18: a relaunch keeps the record), within the budget', () => {
     expect(claimReaction('cisa:happy:2026-10-11')).toBe(true);
     expect(claimReaction('cisa:happy:2026-10-11')).toBe(false);
     expect(claimReaction('cisa:proud:2026-10-11')).toBe(true);
-    resetPlantReactionsForTest();
+    relaunchPlantForTest();
+    expect(claimReaction('cisa:happy:2026-10-11')).toBe(false);
+    resetPlantReactionsForTest(); // a fresh install
     expect(claimReaction('cisa:happy:2026-10-11')).toBe(true);
   });
 

@@ -124,7 +124,7 @@ export default function YourPlant() {
             look={view.look?.art}
             mood={view.look?.mood}
             breathe="plant"
-            reaction={view.look ? { id: `${certId}:${view.look.mood}:${dayKey(now)}`, mood: view.look.mood } : null}
+            reaction={view.look && view.reactionId ? { id: view.reactionId, mood: view.look.mood } : null}
           />
         </View>
         <T v="display" center accessibilityRole="header" style={{ marginTop: space.md }}>{plantCallName(p)}</T>

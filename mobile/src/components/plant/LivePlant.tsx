@@ -16,10 +16,10 @@
  * - breathe: the Breathe idle burst, one slow breath (in 2 s, out 2.4 s,
  *   swaying a little either side of upright) the first time a surface comes
  *   into view in an app session, then still. You and Your plant only. Never
- *   a loop. It waits for a reaction (and, on You, for the rings) to finish.
+ *   a loop. About 2pt deep at any size (breathDepth: 1.2–2.0%). It waits for a reaction (and, on You, for the rings) to finish.
  * - reaction: a mood's one reaction (happy stretches up from its base,
- *   curious leans and looks, proud stands tall), once per occasion per app
- *   session, charged to the session's decorative budget
+ *   curious leans and looks, proud stands tall), once per occasion EVER
+ *   (saved in store/seen.ts, so a relaunch never replays it), charged to the session's decorative budget
  *   (components/motion.tsx claimDecor). Never during, or on the same visit
  *   as, the growth sequence: the growth IS that day's proud moment.
  * - growth: the growth sequence (≤ 900 ms): the old growth swells a little
@@ -46,6 +46,7 @@ import Svg from 'react-native-svg';
 import type { GrowthLevel, PlantSpecies } from '../../engine/plant';
 import type { PlantMood } from '../../engine/plantLooks';
 import { motion } from '../../theme/tokens';
+import { useSeen } from '../../store/seen';
 import { claimDecor, useMotion, type Celebration } from '../motion';
 import { buildPlant, liftGroup, lodFor, plantLayers, type ArtLook, type BuiltPlant, type GNode, type Lod, type Mood } from './art';
 import { lookKeyOf, renderNode } from './Plant';
@@ -73,7 +74,7 @@ export interface LivePlantProps {
   breathe?: string;
   /** Wait this long before breathing (You: until its rings have grown). */
   breatheDelay?: number;
-  /** One reaction for this occasion (its id plays once per app session). */
+  /** One reaction for this occasion (its id plays once, ever: saved in store/seen.ts). */
   reaction?: { id: string; mood: PlantMood } | null;
   /** The growth sequence, from this growth to `stage`, run by a useCelebration moment. */
   growth?: { from: GrowthLevel; celebration: Celebration } | null;
@@ -81,29 +82,51 @@ export interface LivePlantProps {
   plantIn?: boolean;
 }
 
-// ── Reactions: once per occasion per app session ───────────────────────
-// In memory on purpose: a relaunch the same day may react once more (accepted,
-// DESIGN_SYSTEM §13; QA BUG-4 was decided "per app session").
+// ── Reactions: once per occasion, EVER (mobile 1.18) ───────────────────
+// An occasion that played is written down in store/seen.ts (`reactions`),
+// so closing and reopening the app never plays it again (QA BUG-4, fixed by
+// the expert panel's decision). The in-memory set is a fast first check.
 const reacted = new Set<string>();
-// Surfaces that already breathed this app session.
+// Surfaces that already breathed this app session (in memory on purpose:
+// one breath per surface per app SESSION).
 const breathed = new Set<string>();
-/** Tests: forget which reactions and breaths played (a new app session). */
+/** Tests: a fresh install (forget every reaction, breath and proud occasion). */
 export function resetPlantReactionsForTest() {
   reacted.clear();
   breathed.clear();
+  useSeen.setState({ reactions: {}, proud: {} });
 }
+/** Tests: a relaunch (memory is gone; what the phone saved stays). */
+export function relaunchPlantForTest() {
+  reacted.clear();
+  breathed.clear();
+}
+const playedBefore = (id: string) => reacted.has(id) || useSeen.getState().reactions?.[id] !== undefined;
+const notePlayed = (id: string) => {
+  reacted.add(id);
+  useSeen.getState().noteReaction(id, Date.now());
+};
 /**
  * May this occasion's reaction play now? Records it (and spends `ms` of the
  * budget: curious' lean is longer than the others, code review M7a).
  */
 export function claimReaction(id: string, ms: number = motion.plant.react): boolean {
-  if (reacted.has(id)) return false;
-  reacted.add(id);
+  if (playedBefore(id)) return false;
+  notePlayed(id);
   return claimDecor(ms);
 }
 /** This occasion's reaction is spent without playing (the growth sequence was the moment; code review M3). */
 export function markReacted(id: string): void {
-  reacted.add(id);
+  if (!playedBefore(id)) notePlayed(id);
+}
+/**
+ * The breath's depth as a share of the plant's height (mobile 1.18 panel):
+ * about 2pt at any size, clamped between 1.2% and 2.0%. So a 64pt plant
+ * breathes 2.0% (1.3pt, never a wobble), 104pt about 1.9%, 140pt about 1.4%
+ * and the 200pt stage 1.2% (2.4pt). The width moves half as much.
+ */
+export function breathDepth(size: number): number {
+  return Math.min(0.02, Math.max(0.012, 2 / size));
 }
 /** How long a mood's reaction runs. */
 export const reactionMs = (mood: PlantMood) => (mood === 'curious' ? motion.plant.lean : motion.plant.react);
@@ -191,8 +214,8 @@ function LivePlantInner(p: LivePlantProps) {
   const pop = useSharedValue(plantIn && !reduced ? 0 : 1); // the onboarding sprout
   const grow = useSharedValue(1); // 0 = the old growth showing → 1 = the new one settled
   const kind = reaction?.mood ?? 'idle';
-  // The breath's depth: about 2pt at any size, never under 1.6% (UX review P6).
-  const amp = Math.max(0.016, 2 / size);
+  // The breath's depth: about 2pt at any size, clamped to 1.2–2.0% (breathDepth).
+  const amp = breathDepth(size);
 
   // Code review M8a: while anything moves, the moving layer is one cached
   // bitmap. Each move counts itself in and out (its last step's callback).
@@ -238,7 +261,7 @@ function LivePlantInner(p: LivePlantProps) {
   });
   const sproutStyle = useAnimatedStyle(() => ({ opacity: Math.min(1, pop.value * 2), transform: [{ scale: 0.3 + 0.7 * pop.value }] }));
 
-  // A reaction: once per occasion per app session, within the budget. Never
+  // A reaction: once per occasion (ever), within the budget. Never
   // with the growth sequence (code review M3, UX review H4): that occasion is
   // spent without playing. Anything that stops it puts the plant back at rest.
   const reactionId = reaction?.id;
