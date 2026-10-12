@@ -216,6 +216,8 @@ The idea in one line: **everyday UI moves like paper** (quick, soft, never bounc
 
 Code: tokens in `theme/tokens.ts` (`motion`), primitives in `components/motion.tsx`. Screens never write a raw duration, curve or spring.
 
+**Native transform origins (1.15 hotfix).** `transformOrigin` on native must be keywords or whole non-negative px (use `originPx`); React Native misreads decimals ("Transform origin must have exactly 3 values").
+
 ### 8.1 Tokens
 
 | Token | Value | Use |

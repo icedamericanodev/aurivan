@@ -47,6 +47,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
       'Times, paces and names now match across Today, Practice and You.',
       'Plainer words for readiness, hints and mistake tags, with an example for each tag.',
     ],
+    fixed: ['Fixed a crash that could happen when planting or showing your plant on a phone.'],
   },
   {
     version: '1.14.0',
