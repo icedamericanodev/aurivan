@@ -30,6 +30,9 @@ export class FakeBoardDb implements BoardDbPort {
   postingOpen = true;
   guidelines = '2026-11';
   postsPerHour = 3;
+  /** Write attempts allowed (SEC S6: counted before the filters). */
+  attemptsAllowed = 30;
+  attempts: string[] = [];
   digestCounts: DigestCounts = { held: 0, reported: 0, appeals: 0 };
   fail: Partial<Record<keyof BoardDbPort, BoardDbError>> = {};
   calls: string[] = [];
@@ -37,7 +40,8 @@ export class FakeBoardDb implements BoardDbPort {
 
   addMember(userId: string, m: Partial<MemberFacts> = {}): MemberFacts {
     const member: MemberFacts = {
-      userId,
+      // A public id unlike the account id (SEC S4).
+      memberId: `30000000-0000-4000-8000-${String(this.members.size + 1).padStart(12, '0')}`,
       handle: `Quiet Cedar ${this.members.size + 1}`,
       handleKind: 'pseudonym',
       guidelinesVersion: this.guidelines,
@@ -79,6 +83,15 @@ export class FakeBoardDb implements BoardDbPort {
     return this.run('terms', () => structuredClone(this.termsList));
   }
 
+  attempt(userId: string): Promise<void> {
+    return this.run('attempt', () => {
+      if (this.attempts.filter((u) => u === userId).length >= this.attemptsAllowed) {
+        throw new BoardDbError('rate_limited');
+      }
+      this.attempts.push(userId);
+    });
+  }
+
   join(userId: string, handle: string, kind: 'pseudonym' | 'chosen', version: string): Promise<MemberFacts> {
     return this.run('join', () => {
       if (version !== this.guidelines) throw new BoardDbError('guidelines');
@@ -97,6 +110,11 @@ export class FakeBoardDb implements BoardDbPort {
       if (!m) throw new BoardDbError('forbidden');
       if (m.standing === 'banned') throw new BoardDbError('banned');
       if (!this.postingOpen) throw new BoardDbError('posting_paused');
+      // The same draft again: the first post, not a second one (QA BUG-1).
+      const same = i.op === 'post' && i.clientId
+        ? this.writes.find((w) => w.userId === i.userId && w.clientId === i.clientId)
+        : undefined;
+      if (same) return { id: same.id, visibility: same.visibility, holdReason: same.holdReason };
       if (
         i.op === 'post' &&
         this.writes.filter((w) => w.userId === i.userId && w.op === 'post').length >= this.postsPerHour

@@ -63,6 +63,9 @@ export function supabaseBoard(client: RpcLike): BoardDbPort {
         linkDomains: words(t?.linkDomains),
       };
     },
+    async attempt(userId) {
+      await call('svc_board_attempt', { p_user: userId });
+    },
     async join(userId, handle, kind, version) {
       return (await call('svc_board_join', {
         p_user: userId,
@@ -83,6 +86,8 @@ export function supabaseBoard(client: RpcLike): BoardDbPort {
         p_parent: i.parentId,
         p_hold: i.hold,
         p_cert: i.cert,
+        p_client: i.clientId,
+        p_spoiler: i.spoiler,
       })) as { id: string; visibility: 'pending' | 'visible'; holdReason: string | null };
       return { id: r.id, visibility: r.visibility, holdReason: r.holdReason ?? null };
     },

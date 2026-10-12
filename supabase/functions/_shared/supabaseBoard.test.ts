@@ -48,10 +48,19 @@ Deno.test('calls go to the svc_ functions with the verified id, and errors carry
     parentId: null,
     hold: 'recall',
     cert: 'cisa',
+    clientId: '40000000-0000-4000-8000-000000000001',
+    spoiler: true,
   });
   assert.deepEqual(out, { id: 'p1', visibility: 'pending', holdReason: 'recall' });
   assert.equal(ok.calls[0].fn, 'svc_board_write');
   assert.equal(ok.calls[0].args.p_user, USER_A);
+  // The draft's id and the fold reach the SQL (QA BUG-1, CR N12).
+  assert.equal(ok.calls[0].args.p_client, '40000000-0000-4000-8000-000000000001');
+  assert.equal(ok.calls[0].args.p_spoiler, true);
+  // A write attempt is counted by its own svc_ function (SEC S6).
+  const counted = client({ data: null, error: null });
+  await supabaseBoard(counted.c).attempt(USER_A);
+  assert.deepEqual(counted.calls[0], { fn: 'svc_board_attempt', args: { p_user: USER_A } });
   const bad = client({ data: null, error: { code: 'P0001', message: 'rate_limited' } });
   await assert.rejects(
     () => supabaseBoard(bad.c).member(USER_A),

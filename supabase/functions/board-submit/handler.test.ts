@@ -205,8 +205,11 @@ Deno.test('the leak guard must be built: without it nothing is accepted', async 
 
 Deno.test('me: the learner’s own facts only; join checks the name', async () => {
   const { board, run } = setup();
-  const me = (await (await run({ op: 'me' })).json()) as { member: { userId: string } };
-  assert.equal(me.member.userId, USER_A);
+  const me = (await (await run({ op: 'me' })).json()) as { member: Record<string, unknown> };
+  // The public member id only: the account id never travels (SEC S4).
+  assert.equal(me.member.memberId, board.members.get(USER_A)!.memberId);
+  assert.notEqual(me.member.memberId, USER_A);
+  assert.ok(!JSON.stringify(me).includes(USER_A));
   assert.deepEqual(await (await run({ op: 'me' }, USER_B)).json(), { member: null });
   for (const handle of ['Aurivan Team', 'ISACA_mod', 'support']) {
     assert.deepEqual(
@@ -247,4 +250,36 @@ Deno.test('me: the learner’s own facts only; join checks the name', async () =
       detail: 'handle_taken',
     },
   );
+});
+
+Deno.test('every write attempt is counted before the filters: a refused text costs a try too (SEC S6)', async () => {
+  const { board, run } = setup();
+  // A refused text (blocked words) still counts.
+  assert.equal((await run({ ...IDEA, body: 'fuck this timer' })).status, 422);
+  assert.deepEqual(board.attempts, [USER_A]);
+  // Past the limit: 429 before the text is even looked at, and nothing is written.
+  board.attemptsAllowed = 1;
+  const before = board.calls.length;
+  assert.deepEqual(await errorOf(await run(IDEA)), { status: 429, error: 'rate_limited' });
+  assert.equal(board.writes.length, 0);
+  // Refused at the count: the word lists were never even read for it.
+  assert.deepEqual(board.calls.slice(before), ['member', 'attempt']);
+});
+
+Deno.test('the same draft sent twice (its reply was lost) is ONE post (QA BUG-1)', async () => {
+  const { board, run } = setup();
+  const clientId = '40000000-0000-4000-8000-000000000001';
+  const first = (await (await run({ ...IDEA, clientId })).json()) as { id: string };
+  const again = (await (await run({ ...IDEA, clientId })).json()) as { id: string };
+  assert.equal(again.id, first.id);
+  assert.equal(board.writes.length, 1);
+  assert.equal(board.writes[0].clientId, clientId);
+  // A different draft is a new post; a malformed id is refused.
+  await run({ ...IDEA, clientId: '40000000-0000-4000-8000-000000000002' });
+  assert.equal(board.writes.length, 2);
+  assert.deepEqual(await errorOf(await run({ ...IDEA, clientId: 'x' })), {
+    status: 400,
+    error: 'invalid',
+    detail: 'client_id',
+  });
 });

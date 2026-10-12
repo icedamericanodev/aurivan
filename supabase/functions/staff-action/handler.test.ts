@@ -109,3 +109,33 @@ Deno.test('the log has counts only', async () => {
   await run({ action: 'official', targetKind: 'post', targetId: POST_ID, extra: { body: 'A private reply text' } });
   assert.ok(log.lines.every((l) => !l.includes('private reply') && !l.includes(POST_ID)));
 });
+
+Deno.test('fix round: rename a member, fold a post, dismiss every report on one thing', async () => {
+  const { board, run } = setup();
+  const MEMBER = '30000000-0000-4000-8000-0000000000aa';
+  assert.equal((await run({ action: 'rename', targetKind: 'member', targetId: MEMBER })).status, 200);
+  assert.equal(
+    (await run({ action: 'spoiler', targetKind: 'post', targetId: POST_ID, extra: { on: true } })).status,
+    200,
+  );
+  assert.equal(
+    (await run({ action: 'dismiss', targetKind: 'report', targetId: MEMBER, extra: { kind: 'member' } })).status,
+    200,
+  );
+  assert.deepEqual(board.staffActs.map((a) => [a.action, a.extra]), [
+    ['rename', {}],
+    ['spoiler', { on: true }],
+    ['dismiss', { kind: 'member' }],
+  ]);
+  // Their extras are checked too.
+  for (
+    const [body, detail] of [
+      [{ action: 'spoiler', targetKind: 'post', targetId: POST_ID, extra: { on: 'yes' } }, 'on'],
+      [{ action: 'dismiss', targetKind: 'report', targetId: MEMBER }, 'kind'],
+      [{ action: 'rename', targetKind: 'post', targetId: POST_ID }, 'action'],
+    ] as [Record<string, unknown>, string][]
+  ) {
+    assert.deepEqual(await (await run(body)).json(), { error: 'invalid', detail });
+  }
+  assert.equal(board.staffActs.length, 3);
+});

@@ -2,9 +2,13 @@
 // The ONLY way a post or comment reaches the board, so the filters and the
 // leak guard can't be skipped through the REST API.
 //
-//   { op: 'me' }                                         → { member }  (own facts only; null before joining)
+//   { op: 'me' }                                         → { member }  (own facts only; null before joining;
+//                                                            its public memberId, never the account id)
 //   { op: 'join', handle, handleKind, guidelinesVersion } → { member }
-//   { op: 'post', kind, title, body?, itemRef?, cert? }   → { id, visibility, holdReason }
+//   { op: 'post', kind, title, body?, itemRef?, cert?, clientId? } → { id, visibility, holdReason }
+//      clientId: the app's id for this draft (a uuid). Sending the same
+//      draft again (its reply was lost) returns the FIRST post, unchanged:
+//      never a second one (QA BUG-1).
 //   { op: 'edit_post', id, kind, title, body?, itemRef? }
 //   { op: 'comment', postId, body, parentId? }
 //   { op: 'edit_comment', id, body }
@@ -14,6 +18,9 @@
 //    `not_member`), in good standing (403 banned), with the current
 //    guidelines (409 invalid `guidelines`), while posting is open (409
 //    posting_paused). The SQL checks all of these again.
+//    Then the attempt is COUNTED (30 an hour, 200 a day; 429 rate_limited),
+//    before any filter looks at the text: a refused text costs a try too,
+//    so the private word lists can't be probed for free (SEC S6).
 // 2. The text is normalised (NFKC, invisible characters gone, spacing).
 // 3. moderateText: blocked words → 422 rejected_words `words`; a new
 //    member's link, a shortener or a dump site → 422 rejected_words
@@ -123,12 +130,16 @@ export function handleBoardSubmit(req: Request, deps: BoardSubmitDeps, nowMs = D
     const parentId = op === 'comment' && body.parentId !== undefined && body.parentId !== null
       ? uuidOrThrow(body.parentId, 'parent_id')
       : null;
+    const clientId = op === 'post' && body.clientId !== undefined && body.clientId !== null
+      ? uuidOrThrow(body.clientId, 'client_id')
+      : null;
 
     if (!deps.leak) {
       deps.log('leakprint_missing', {});
       throw new HttpError(500, 'server');
     }
     const member = mayWrite(await deps.board.member(user.id).catch(fromDb), nowMs);
+    await deps.board.attempt(user.id).catch(fromDb);
     const terms = await deps.board.terms().catch(fromDb);
 
     const checked = title ? `${title}\n${text}` : text;
@@ -161,6 +172,8 @@ export function handleBoardSubmit(req: Request, deps: BoardSubmitDeps, nowMs = D
       parentId,
       hold,
       cert,
+      clientId,
+      spoiler: false,
     }).catch(fromDb);
     deps.log(out.visibility === 'pending' ? 'held' : 'published', { [op]: 1 });
     return json(200, { id: out.id, visibility: out.visibility, holdReason: out.holdReason ?? undefined });

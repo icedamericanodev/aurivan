@@ -9,9 +9,13 @@ export type PostKind = 'content' | 'idea' | 'app' | 'question';
 export type HoldReason = 'recall' | 'hold_words' | 'links';
 export type WriteOp = 'post' | 'edit_post' | 'comment' | 'edit_comment';
 
-/** The learner's OWN member facts (public.svc_board_member). Never another member's. */
+/**
+ * The learner's OWN member facts (public.svc_board_member). Never another
+ * member's. `memberId` is their PUBLIC id (what other learners see of them);
+ * the account id never leaves the server (SEC S4).
+ */
 export interface MemberFacts {
-  userId: string;
+  memberId: string;
   handle: string;
   handleKind: 'pseudonym' | 'chosen';
   guidelinesVersion: string;
@@ -44,6 +48,10 @@ export interface WriteInput {
   parentId: string | null;
   hold: HoldReason | null;
   cert: string;
+  /** A post only: the app's id for this draft (the same draft twice is one post: QA BUG-1). */
+  clientId: string | null;
+  /** The answer-talk check flagged it: the post is folded ("Show it"; CR N12). */
+  spoiler: boolean;
 }
 
 export interface WriteResult {
@@ -93,6 +101,8 @@ export interface BoardDbPort {
   /** The learner's own member facts, or null before they join. */
   member(userId: string): Promise<MemberFacts | null>;
   terms(): Promise<BoardTerms>;
+  /** Counts one write attempt BEFORE the filters (SEC S6): BoardDbError('rate_limited') past the limit. */
+  attempt(userId: string): Promise<void>;
   join(userId: string, handle: string, kind: 'pseudonym' | 'chosen', version: string): Promise<MemberFacts>;
   write(i: WriteInput): Promise<WriteResult>;
   isStaff(userId: string): Promise<boolean>;

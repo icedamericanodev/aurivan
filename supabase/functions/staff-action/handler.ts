@@ -42,9 +42,12 @@ export const ACTIONS: Record<Kind, readonly string[]> = {
     'merge',
     'lock',
     'unlock',
+    'spoiler',
   ],
   comment: ['approve', 'hide', 'remove', 'remove_warn', 'delete_exam_content', 'restore'],
-  member: ['warn', 'limit', 'suspend', 'ban', 'unban'],
+  // A member is named by their public id (what the queue shows; SEC S4).
+  // rename: an offensive or impersonating name becomes a neutral pseudonym (SEC B1).
+  member: ['warn', 'limit', 'suspend', 'ban', 'unban', 'rename'],
   board: ['pause', 'reopen'],
   appeal: ['uphold', 'restore_appeal'],
   report: ['dismiss'],
@@ -76,6 +79,16 @@ function extraFor(action: string, raw: unknown): Record<string, unknown> {
     case 'merge': {
       if (typeof x.into !== 'string' || !UUID.test(x.into)) throw new HttpError(400, 'invalid', 'into');
       return { into: x.into.toLowerCase(), note };
+    }
+    case 'spoiler': {
+      // Fold (true) or unfold (false) a post about a practice question's answer (CR N12).
+      if (typeof x.on !== 'boolean') throw new HttpError(400, 'invalid', 'on');
+      return { on: x.on };
+    }
+    case 'dismiss': {
+      // Every open report on one reported thing (the queue's row; CR N4).
+      if (x.kind !== 'post' && x.kind !== 'comment' && x.kind !== 'member') throw new HttpError(400, 'invalid', 'kind');
+      return { kind: x.kind };
     }
     case 'limit':
     case 'suspend': {
