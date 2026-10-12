@@ -9,6 +9,7 @@ import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Settings from '../app/settings';
 import Onboarding from '../app/onboarding';
+import { cellSize } from '../components/calendar';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { flushSayLaterForTest } from '../lib/a11y';
 import { useProgress } from '../store/progress';
@@ -70,6 +71,16 @@ const openRow = (title: string) => {
   });
 };
 const day = (spoken: string) => hosts((n) => String(n.props.accessibilityLabel).startsWith(spoken))[0];
+const flatStyle = (style: unknown): Record<string, unknown> => Object.assign({}, ...[style].flat(3).filter(Boolean));
+/** The calendar's cells (days and blanks): host views sized like a day cell at this width. */
+const gridCells = () => {
+  const { w, h } = cellSize(Dimensions.get('window').width);
+  return root().findAll((n) => {
+    if (typeof n.type !== 'string') return false;
+    const st = flatStyle(n.props.style);
+    return st.width === w && st.height === h;
+  }).length;
+};
 const setWindow = (width: number, fontScale = 1) => {
   const w = Dimensions.get('window');
   act(() => {
@@ -256,17 +267,85 @@ describe('Exam date: the calendar', () => {
     expect(day('Friday 22 January 2027').props.accessibilityState).toMatchObject({ selected: false });
   });
 
-  it('at 360 dp and 200% text every day is still a 44pt+ target and its number cannot clip', () => {
+  it('at 360 dp and 200% text every day is a 48pt+ target and its number cannot clip', () => {
     setWindow(360, 2);
     mount(<Settings />);
     openRow('Exam date');
     const d = day('Friday 8 January 2027');
-    const flat = Object.assign({}, ...[d.props.style].flat(3).filter(Boolean));
-    expect(flat.width).toBeGreaterThanOrEqual(44);
-    expect(flat.height).toBeGreaterThanOrEqual(44);
+    const flat = flatStyle(d.props.style);
+    // Fix round (code review 3, UX P2): the house 48pt, not 44 (this test used to accept 44).
+    expect(flat.width).toBeGreaterThanOrEqual(48);
+    expect(flat.height).toBeGreaterThanOrEqual(48);
     const nums = d.findAll((n) => typeof n.type === 'string' && n.children.includes('8'));
     expect(nums.length).toBeGreaterThan(0);
     for (const n of nums) expect(n.props.maxFontSizeMultiplier).toBeLessThanOrEqual(1.5);
+  });
+
+  // ── PR #49 fix round ──────────────────────────────────────────────
+  it('every month is six rows, so the month arrows never move under the thumb', () => {
+    mount(<Settings />);
+    openRow('Exam date');
+    // January 2027 needs 5 rows, February 2027 only 4, August 2027 all 6.
+    for (const month of ['January 2027', 'February 2027', 'March 2027', 'April 2027', 'May 2027', 'June 2027', 'July 2027', 'August 2027']) {
+      expect(allText()).toContain(month);
+      expect(gridCells()).toBe(42);
+      press('Next month');
+    }
+  });
+
+  it('at 320 dp no column leaves the screen, and each day is still 48pt tall', () => {
+    setWindow(320, 2);
+    mount(<Settings />);
+    openRow('Exam date');
+    const flat = flatStyle(day('Friday 8 January 2027').props.style);
+    expect(flat.height).toBeGreaterThanOrEqual(48);
+    // The grid reaches into the sheet's 20pt gutters, keeping 8pt at each edge.
+    const bleed = root().findAll((n) => typeof n.type === 'string' && flatStyle(n.props.style).marginHorizontal === -12);
+    expect(bleed.length).toBeGreaterThan(0);
+    expect(7 * Number(flat.width)).toBeLessThanOrEqual(320 - 2 * 8);
+    // Sunday (the right-hand column) is there and can be picked.
+    expect(day('Sunday 10 January 2027').props.accessibilityState).toMatchObject({ disabled: false });
+  });
+
+  it('cell sizes: inside the gutters on wider phones, into them on narrow ones', () => {
+    expect(cellSize(393)).toEqual({ w: 50, h: 50, bleed: 0 });
+    expect(cellSize(360)).toEqual({ w: 49, h: 49, bleed: 12 });
+    expect(cellSize(320)).toEqual({ w: 43, h: 48, bleed: 12 });
+    for (const width of [300, 320, 340, 360, 375, 393, 430]) {
+      const c = cellSize(width);
+      expect(c.h).toBeGreaterThanOrEqual(48);
+      // Seven columns plus the gutters left over fit the screen.
+      expect(7 * c.w + 2 * (20 - c.bleed)).toBeLessThanOrEqual(width);
+    }
+  });
+
+  it('at large text the grid comes before the quick choices; at normal text after', () => {
+    mount(<Settings />);
+    openRow('Exam date');
+    let t = allText();
+    expect(t.indexOf('Quick choice')).toBeLessThan(t.indexOf('January 2027'));
+    act(() => {
+      r?.unmount();
+    });
+    setWindow(360, 1.3);
+    mount(<Settings />);
+    openRow('Exam date');
+    t = allText();
+    expect(t.indexOf('January 2027')).toBeLessThan(t.indexOf('Quick choice'));
+    // The quick choices still work from below the grid.
+    press('In 3 months');
+    expect(day('Tuesday 12 January 2027').props.accessibilityState).toMatchObject({ selected: true });
+  });
+
+  it('the chosen-date line wraps at large text instead of stopping at ×1.5; day numbers stay capped', () => {
+    mount(<Settings />);
+    openRow('Exam date');
+    const line = root().findAll((n) => typeof n.type === 'string' && n.children.includes('Fri 8 Jan 2027 · In 88 days'));
+    expect(line.length).toBeGreaterThan(0);
+    for (const n of line) expect(n.props.maxFontSizeMultiplier ?? 99).toBeGreaterThan(1.5);
+    for (const n of day('Friday 8 January 2027').findAll((x) => typeof x.type === 'string' && x.children.includes('8'))) {
+      expect(n.props.maxFontSizeMultiplier).toBeLessThanOrEqual(1.5);
+    }
   });
 });
 

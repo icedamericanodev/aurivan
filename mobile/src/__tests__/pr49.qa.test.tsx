@@ -347,8 +347,12 @@ describe('C. Older saves load and keep their date', () => {
     // Opens on today's month (the past month can't be shown); no quick choice lit; no "In N days".
     expect(allText()).toContain('October 2026');
     for (const p of ['In 1 month', 'In 2 months', 'In 3 months', 'Not sure yet']) expect(byLabel(p)[0].props.accessibilityState).toMatchObject({ selected: false });
-    expect(allText()).toContain('Sun 1 Mar 2026');
-    expect(allText()).not.toMatch(/Sun 1 Mar 2026 ·/);
+    // Fix round (UX P6, QA nit 2): the line says the date has passed, shown and spoken, with no stray ". ".
+    // (This test used to pin the bare "Sun 1 Mar 2026" with nothing after it.)
+    expect(allText()).toContain('Sun 1 Mar 2026 · Passed');
+    expect(allText()).not.toMatch(/In -?\d+ days/);
+    const line = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'Chosen: Sunday 1 March 2026. Passed');
+    expect(line.length).toBeGreaterThan(0);
     press('Save');
     expect(useSettings.getState().examDates.cisa).toBe('2026-03-01');
     expect(useProgress.getState().days.cisa).toBeUndefined();
