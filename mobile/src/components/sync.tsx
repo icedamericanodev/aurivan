@@ -5,16 +5,16 @@
  *
  * - SyncSection: Account → Sync. "Sync this phone" (on only after the
  *   first-sync preview), the status line, Sync now (Try again when paused),
- *   What syncs, Delete synced progress (asks first).
+ *   What syncs, Delete synced progress (its own confirmation sheet).
  * - PreviewRows: the first-sync preview's three columns (This phone ·
  *   Account · After), side by side, stacked at large text. Never the bank
  *   size: counts are "312 questions", like the restore preview.
  */
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { copy } from '../content/cloud/copy';
-import { deleteSyncedProgress, startFirstSync, statusLine, syncNow, turnSyncOff, type FirstPreview } from '../lib/sync';
+import { startFirstSync, statusLine, syncNow, turnSyncOff, type FirstPreview } from '../lib/sync';
 import { useAccount } from '../store/account';
 import { useSyncMeta, useSyncStatus } from '../store/sync';
 import { LARGE_TEXT, space } from '../theme/tokens';
@@ -52,7 +52,7 @@ export function SyncSection() {
   const signedIn = useAccount((s) => s.signedIn);
   const expired = useAccount((s) => s.expired);
   const now = useNow();
-  const [working, setWorking] = useState<'start' | 'delete' | null>(null);
+  const [working, setWorking] = useState<'start' | null>(null);
   const [notice, setNotice] = useState<{ text: string; tone: 'ok' | 'problem' } | null>(null);
 
   const line = statusLine({ enabled, signedIn, expired, busy: busy || working === 'start', offline, pausedReason, lastSyncAt, now });
@@ -70,24 +70,6 @@ export function SyncSection() {
     if (!r.ok) setNotice({ tone: 'problem', text: syncProblem(r.code) });
     else if (r.next === 'preview') router.push('/account/first-sync');
     else if (r.next === 'switch') router.push('/account/switch');
-  };
-
-  const confirmDelete = () => {
-    Alert.alert(copy('delsync.title'), copy('delsync.body'), [
-      { text: copy('cancel'), style: 'cancel' },
-      {
-        text: copy('delsync.go'),
-        style: 'destructive',
-        onPress: async () => {
-          setNotice(null);
-          setWorking('delete');
-          const r = await deleteSyncedProgress();
-          setWorking(null);
-          if (r.ok) setNotice({ tone: 'ok', text: copy('delsync.done') });
-          else setNotice({ tone: 'problem', text: copy(r.code === 'offline' ? 'delsync.offline' : 'delsync.fail') });
-        },
-      },
-    ]);
   };
 
   const paused = pausedReason !== null;
@@ -111,10 +93,10 @@ export function SyncSection() {
         <SettingsRow title={copy('sync.what.title')} accessibilityHint={copy('hint.sync.what')} onPress={() => router.push('/account/what-syncs')} />
         <SettingsRow
           title={copy('sync.delete.row')}
-          subtitle={working === 'delete' ? copy('delsync.busy') : copy('sync.delete.sub')}
+          subtitle={copy('sync.delete.sub')}
           accessibilityHint={copy('hint.sync.delete')}
           disabled={working !== null}
-          onPress={confirmDelete}
+          onPress={() => router.push('/account/delete-synced')}
           last
         />
       </View>

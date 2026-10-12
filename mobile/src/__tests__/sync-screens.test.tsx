@@ -322,32 +322,30 @@ describe('Account → Sync (§3.2)', () => {
     expect(sync.statusLine({ ...base, signedIn: false, expired: true })).toBe('Sign in again to keep syncing');
   });
 
-  it('Delete synced progress asks first; then the account copy goes, this phone keeps its progress, sync turns off', async () => {
+  it('Delete synced progress asks first (its own sheet); then the account copy goes, this phone keeps its progress, sync turns off', async () => {
     backendWith(MAYA);
     answer(ids[0]);
     await sync.startFirstSync();
     await sync.confirmPreview();
     expect(memory.control.snapshots(MAYA.userId).progress).toBeDefined();
-    const alert = jest.spyOn(Alert, 'alert').mockImplementation((_t, _m, b) => {
-      void b?.[1]?.onPress?.();
-    });
-    try {
-      mount(<>{(() => { const A = screen('index'); return <A />; })()}</>);
-      // Offline: nothing deleted.
-      memory.control.setOffline(true);
-      await press('Delete synced progress');
-      expect(alert.mock.calls[0][0]).toBe('Delete synced progress?');
-      expect(allText()).toContain('You’re offline. Connect to the internet to delete your synced progress. Nothing was deleted.');
-      expect(useSyncMeta.getState().enabled).toBe(true);
-      memory.control.setOffline(false);
-      await press('Delete synced progress');
-      expect(memory.control.snapshots(MAYA.userId)).toEqual({});
-      expect(useSyncMeta.getState().enabled).toBe(false);
-      expect(answered()).toEqual([ids[0]]);
-      expect(allText()).toContain('Synced progress deleted.');
-    } finally {
-      alert.mockRestore();
-    }
+    mount(<>{(() => { const A = screen('index'); return <A />; })()}</>);
+    await press('Delete synced progress');
+    expect(mockNav.push).toHaveBeenCalledWith('/account/delete-synced');
+    expect(memory.control.calls).not.toContain('sync.deleteAll');
+    unmount();
+    mount(<>{(() => { const D = screen('delete-synced'); return <D />; })()}</>);
+    expect(allText()).toContain('This deletes the copy of your progress stored in your account. Your account and this phone’s progress stay. Sync turns off.');
+    // Offline: nothing deleted.
+    memory.control.setOffline(true);
+    await press('Delete synced progress');
+    expect(allText()).toContain('You’re offline. Connect to the internet to delete your synced progress. Nothing was deleted.');
+    expect(useSyncMeta.getState().enabled).toBe(true);
+    memory.control.setOffline(false);
+    await press('Delete synced progress');
+    expect(memory.control.snapshots(MAYA.userId)).toEqual({});
+    expect(useSyncMeta.getState().enabled).toBe(false);
+    expect(answered()).toEqual([ids[0]]);
+    expect(allText()).toContain('Synced progress deleted.');
   });
 });
 
@@ -517,7 +515,7 @@ describe('the sign-out sheet and What syncs', () => {
 
 // ── Deep links start nothing ────────────────────────────────────────────
 describe('deep links to the sync routes', () => {
-  it.each(['first-sync', 'switch', 'what-syncs', 'sign-out'])('/account/%s?confirm=1 calls no backend method', (path) => {
+  it.each(['first-sync', 'switch', 'what-syncs', 'sign-out', 'delete-synced'])('/account/%s?confirm=1 calls no backend method', (path) => {
     backendWith(MAYA);
     const routeParams = require('../../jest/perf/focusRouter').routeParams as Record<string, string | undefined>;
     Object.assign(routeParams, { confirm: '1', choice: 'fresh', remove: '1' });

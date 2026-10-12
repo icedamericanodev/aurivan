@@ -946,6 +946,7 @@ describe('fix round: the field and the words (UX P1, P4, P6)', () => {
       'app/(cloud)/account/switch.tsx',
       'app/(cloud)/account/what-syncs.tsx',
       'app/(cloud)/account/sign-out.tsx',
+      'app/(cloud)/account/delete-synced.tsx',
       'components/account.tsx',
       'components/sync.tsx',
     ];

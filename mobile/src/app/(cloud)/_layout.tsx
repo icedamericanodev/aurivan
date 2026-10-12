@@ -38,6 +38,7 @@ export default function CloudLayout() {
       <Stack.Screen name="account/switch" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
       <Stack.Screen name="account/what-syncs" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
       <Stack.Screen name="account/sign-out" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
+      <Stack.Screen name="account/delete-synced" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
     </Stack>
   );
 }

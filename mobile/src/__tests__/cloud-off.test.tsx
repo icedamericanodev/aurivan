@@ -169,7 +169,7 @@ describeOff('the cloud flag is off', () => {
     expect(netCalls).toBe(0);
   });
 
-  it.each(['/account', '/account/delete', '/account/sign-in', '/account/email', '/account/first-sync', '/account/switch', '/account/what-syncs', '/account/sign-out', '/board', '/board/0b9e7c1a-1111-4222-8333-444455556666', '/board/new'])(
+  it.each(['/account', '/account/delete', '/account/sign-in', '/account/email', '/account/first-sync', '/account/switch', '/account/what-syncs', '/account/sign-out', '/account/delete-synced', '/board', '/board/0b9e7c1a-1111-4222-8333-444455556666', '/board/new'])(
     'G5: %s lands on Today, and no backend method runs',
     (path) => {
       // Even with a backend present, the flag decides (and a hostile link's params change nothing).
