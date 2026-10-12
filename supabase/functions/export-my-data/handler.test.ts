@@ -177,3 +177,11 @@ Deno.test('only POST; oversized bodies refused; logs carry no PII', async () => 
   const all = log.lines.join('\n');
   for (const secret of [USER_A, 'a@test.invalid', jwt]) assert.equal(all.includes(secret), false);
 });
+
+Deno.test('appVersion: the newest app that wrote a synced store wins over the asking app (a newer store restores as "update the app")', async () => {
+  const { admin, run } = setup();
+  admin.users.get(USER_A)!.snapshotsApp = '1.19.0';
+  const res = await run(post({ appVersion: '1.18.0' }, admin.issue(USER_A)));
+  assert.equal(res.status, 200);
+  assert.equal((await res.json() as { appVersion: unknown }).appVersion, '1.19.0');
+});

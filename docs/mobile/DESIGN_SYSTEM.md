@@ -1155,8 +1155,10 @@ You and Settings look exactly as in §11 and §16 (`off-*` shots). Copy:
 no "official / certified / endorsed / forum" near an exam name, no reply-time
 promise, no guilt, urgency or "!", curly apostrophes).
 
-**Optional, never pushy.** Two ways in only: You → Help and feedback's first
-row (Lucide `refresh-cw` in the usual `soft` circle: "Sync across devices ·
+**Optional, never pushy.** Two ways in only: You → its own "Account"
+section, just before Help and feedback (Phase 7, UX review O3: syncing isn't
+help; it was Help and feedback's first row in Phase 6), one row (Lucide
+`refresh-cw` in the usual `soft` circle: "Sync across devices ·
 Optional. Keep your progress on your other phone or tablet." signed out,
 "Account and sync · Signed in as j•••@gmail.com" signed in, "Sign in again to
 keep syncing" on a restored phone), and Settings → an "Account" group with one
@@ -1206,12 +1208,12 @@ hidden from screen readers and never read twice.
 (your email is hidden)"); `Section` "Your account data" → action row
 "Download my data" (no chevron; its subtitle turns into "Preparing your
 data…" while busy); `Section` "Where you're signed in" → "Sign out on this
-phone" and "Sign out on all devices" (action rows; each asks first with a
-system alert); a 48pt gap,
+phone" (opens the sign-out sheet, §18) and "Sign out on all devices" (asks
+first with a system alert); a 48pt gap,
 then "Delete account" with its subtitle and a chevron, and the `meta` foot
 "Progress on this phone works with or without an account." No red on this
 screen: Grove keeps red for wrong answers, so the only destructive style is
-the delete screen's last button. PR 7 adds the Sync section under the email.
+the delete screen's last button. The Sync section sits under the email (§18).
 
 **Delete** (`/account/delete`, no swipe-back; Android back does nothing
 while it deletes and goes to You once it is done): `hero` title "Delete your
@@ -1257,3 +1259,122 @@ scrolls and the buttons stay full width (`acct-signin-xl`, `acct-home-xl`).
 many tries), `acct-about`, `acct-signin-xl`, `acct-home-xl`, and the flag-OFF
 `off-you`, `off-settings`. The cloud export uses placeholder `example.com`
 Privacy and Terms links so the sheet's link row is in the shots.
+
+## 18. Sync (Uplift Phase 7, built OFF)
+
+Sync is built and switched OFF with accounts (ARCHITECTURE.md §3 "Cloud
+(built OFF) — Uplift Phase 7, sync"). With the flag off nothing below is
+reachable, and Settings → Your data and About read exactly as before (the
+`off-*` shots). Copy: `content/cloud/copy.ts` only, under the same rules as
+§17 (tested in `cloud-copy.test.ts`).
+
+**Account → Sync** (under "Signed in as …"): `Section` "Sync"; a
+`ToggleRow` "Sync this phone · Your progress and study settings, on every
+device you sign in on." (on only after the first-sync preview; switching it
+off just stops, and switching it on again shows the preview again); one
+`meta` status line, never a pop-up: "Synced just now", "Synced 4 min ago",
+"Synced today at 7:05", "Synced 9 Oct", "Syncing…", "Will sync when you're
+online" (a lost connection only), "Couldn't sync just now. We'll try again
+soon." (any other failure; UX review P1), "Sync is off", "Sign in again to
+keep syncing", or the full paused sentence (a newer app wrote the account's
+copy; the copy couldn't be read, "so your phone's progress is unchanged. If
+this keeps happening, contact us from Help."; too large, with where to save
+a backup). After the learner taps the switch or "Sync now", a screen reader
+hears the line when what it says changes, and the result once Sync now is
+done ("Synced just now", "Sync is off"); the quiet 30-second "n min ago"
+refresh is never announced (UX review H3, O4). While on: a `secondary`
+"Sync now" ("Try again" when paused). Then two `SettingsRow`s: "What syncs
+›" and "Delete synced progress" (subtitle: "Removes the copy in your
+account. This phone keeps its progress."). No red on this screen.
+
+**The first-sync preview** (`/account/first-sync`, rises like a sheet,
+close (X) header): the `display` title takes focus ("Bring your progress
+together?", "Add this phone's progress to your account?" or "Bring your
+progress to this phone?"), a `body` line that always names the masked
+account, then four rows (Answered, Last studied, Best streak, Exam date),
+each a hairline-ruled block like the restore preview: the row's `label`,
+then three columns, This phone · Account · After, each a `meta` heading over
+the value; After is in `label` weight and `ink` (the result). At large text
+the columns stack. Each row is one spoken sentence ("Answered: this phone
+312 questions, account 140 questions, after 361 questions"). Counts read
+"312 questions": never the bank size. Combine adds `meta` "Questions
+answered on both count once." (UX review O1). Then `meta` "You can undo
+this for 7 days in Settings → Your data." (whenever the phone holds
+anything, an exam date or a saved question included, or an earlier Undo
+sync copy still applies) and, when an Undo restore is waiting, "This
+replaces the earlier "Undo restore"." The primary button names the action
+(Combine / Sync this phone / Bring it here); "Syncing your progress…" in
+`meta` while it runs (also announced); a ghost "Not now". Opened by a link
+or stale, it goes back to Account.
+
+**A different account on this phone** (`/account/switch`, a sheet):
+`display` "This phone has progress from another account", the `body` naming
+the new masked account, two `RadioRow`s ("Start fresh with this account ·
+This phone switches to this account's progress. What's here now is kept for
+7 days in Settings → Your data → Undo sync." checked by default, and "Keep
+this phone's progress · It will be added to this account, even if it's
+someone else's."; UX review P3, P4), with Start fresh chosen and an undo
+copy already waiting, `meta` "This replaces the earlier undo copy kept on
+this phone.", primary "Continue", ghost "Not now". "Not now" and the close
+(X) turn sync off on this phone (nothing syncs into either account until
+the learner chooses here). It also opens at launch when the signed-in
+account isn't the one this phone syncs with.
+
+**What syncs** (`/account/what-syncs`, a sheet): the `body` list of what
+travels (as the privacy notice lists it: answer times, the mistake journal,
+study days, game levels, the readiness log, reports…) and what stays on the
+phone, one `meta` line on the v1 limit ("Removals don't sync yet: …"), one
+`meta` "Turning sync off stops syncing. The copy in your account stays
+until you use Delete synced progress.", a `secondary` "Done".
+
+**Sign out** (`/account/sign-out`, a sheet): `display` "Sign out?", the
+`body` (it adds "Sync stops until you sign in again." while syncing), a
+`CheckRow` "Remove my progress from this phone (for shared devices)",
+UNticked; primary "Sign out on this phone", which becomes the `danger`
+"Remove and sign out" when ticked (UX review H1). A tap first sends this
+phone's latest to the account while it syncs ("Syncing your progress…" in
+`meta`, announced), then asks once more with a system alert: "This removes
+all your study progress, your plant and your study settings from this
+phone. Your account's copy isn't affected." or, when something is only on
+this phone (sync off, paused, or the last changes didn't arrive), "Some of
+this phone's progress isn't in your account yet. Removing it deletes it for
+good. Save a backup first if you might want it."; ghost Cancel.
+
+**Delete synced progress** (`/account/delete-synced`, a sheet rather than an
+alert so it reads the same on every platform): `display` "Delete synced
+progress?", the `body`, a `meta` line on the other devices ("Your other
+devices stop syncing the next time they connect. If you turn sync on again
+before that, their progress is added back."; UX review P2, worded to what
+they do), the `danger` button "Delete synced progress"
+("Deleting synced progress…" in `meta`), ghost Cancel; afterwards the
+`correctBg` notice "Synced progress deleted." and a primary "Done".
+Offline or a server problem: the `tipBg` notice, and nothing is deleted.
+
+**Settings → Your data** (cloud builds): the intro reads "Your progress is
+kept on this phone. …" (never "only") and, while syncing, "Your progress is
+kept on this phone and syncs to your Aurivan account. A backup file is a
+copy you keep yourself. …" (UX review O2). The copy taken before a first
+sync shows as an action row "Undo sync · Put back this phone's progress
+from before it first synced (until 19 Oct).", which asks first ("Undo
+sync?") and turns sync off; its result is the usual tinted message. About's
+last sentence becomes "Progress is stored on this device and syncs to your
+Aurivan account." while syncing. While syncing, the Reset alert adds "Sync
+is on: progress removed here can come back from another device that syncs
+with your account. To start fresh everywhere, first use Delete synced
+progress in Account." (true with one phone too), plus "This also removes
+the Undo sync copy kept on this phone." when one is waiting; the restore
+preview adds the same sync sentence (UX review H2, O2). With the flag off
+both are exactly as before.
+
+**Motion.** No new animation: the sheets rise like the other
+sheets-as-screens and dissolve under Reduce Motion.
+
+**Shots.** `SHOTS=cloud bash scripts/screenshots/run.sh <out> <light|dark>`
+adds `sync-status-just`, `sync-status-offline`, `sync-status-newer`,
+`sync-status-unreadable`, `sync-first-both`, `sync-first-phone`,
+`sync-first-account`, `sync-switch`, `sync-undo`, `sync-signout`,
+`sync-what`, `sync-delete`, `sync-you` and `sync-first-both-xl` (about
+200% text); since the Phase 7 review also `sync-status-retry`,
+`sync-signout-unsynced` (the warning alert), `sync-reset` (Settings with
+the Reset alert while syncing) and `sync-restore` (the restore preview's
+sync line).

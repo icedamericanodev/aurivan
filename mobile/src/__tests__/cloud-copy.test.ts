@@ -84,6 +84,35 @@ describe('the exact §2.3 strings', () => {
     expect(ACCOUNT_COPY['delete.done.body']).toBe('It’s gone from our live systems now, and from backups within 30 days. Aurivan keeps working on this phone without an account.');
   });
 
+  it('has every §3.3 sync key (Phase 7), word for word where it matters', () => {
+    const spec = [
+      'sync.section', 'sync.toggle', 'sync.toggle.sub', 'sync.now', 'sync.status.just', 'sync.status.min', 'sync.status.today', 'sync.status.day',
+      'sync.status.busy', 'sync.status.offline', 'sync.status.off', 'sync.status.signin', 'sync.paused.newer', 'sync.paused.unreadable', 'sync.paused.toobig',
+      'sync.retry', 'sync.what.title', 'sync.what.body', 'first.phone.title', 'first.phone.body', 'first.phone.go', 'first.account.title', 'first.account.body',
+      'first.account.go', 'first.both.title', 'first.both.body', 'first.both.go', 'first.undo', 'first.undo.replaces', 'first.later', 'first.cols',
+      'switch.title', 'switch.body', 'switch.fresh', 'switch.fresh.sub', 'switch.keep', 'switch.keep.sub', 'undo.row', 'undo.row.sub',
+      'undo.confirm.title', 'undo.confirm.body', 'signout.body.sync', 'signout.remove', 'signout.remove.confirm', 'delsync.title', 'delsync.body', 'delsync.go', 'delsync.done',
+    ];
+    for (const k of spec) expect(ACCOUNT_COPY).toHaveProperty([k]);
+    expect(ACCOUNT_COPY['first.both.body']).toBe(
+      'You’re signed in as {email}. This phone and your account both have progress. We’ll combine them: nothing you’ve answered is lost, and your best results are kept.',
+    );
+    // Security review S7: everything that syncs, as the privacy notice lists it.
+    expect(ACCOUNT_COPY['sync.what.body']).toBe(
+      'Your answers (whether right, how sure you were and how long you took), reviews, your mistake journal, saved questions, mocks, lessons and notes done, your study days and streak, badges, game levels, your readiness log and exam-week checklist, your plant, the questions you reported to us, your exam date and study settings. These stay on this phone: reminders, theme, motion, haptics, plant display choices and a quiz in progress.',
+    );
+    // UX P3 / P4.
+    expect(ACCOUNT_COPY['switch.fresh.sub']).toBe('This phone switches to this account’s progress. What’s here now is kept for 7 days in Settings → Your data → Undo sync.');
+    expect(ACCOUNT_COPY['switch.keep.sub']).toBe('It will be added to this account, even if it’s someone else’s.');
+    // UX H1 / H2: the review's wording (H2 reworded so it is true with one phone too: QA B4).
+    expect(ACCOUNT_COPY['signout.remove.confirm.unsynced']).toBe('Some of this phone’s progress isn’t in your account yet. Removing it deletes it for good. Save a backup first if you might want it.');
+    expect(ACCOUNT_COPY['reset.sync']).not.toMatch(/will come back/);
+    expect(ACCOUNT_COPY['delsync.body']).toBe('This deletes the copy of your progress stored in your account. Your account and this phone’s progress stay. Sync turns off.');
+    // UX O2: the cloud intro never says "only on this phone".
+    expect(ACCOUNT_COPY['data.intro.on']).not.toMatch(/only/);
+    expect(ACCOUNT_COPY['data.intro.sync']).not.toMatch(/only/);
+  });
+
   it('fills placeholders, and leaves a missing one visible', () => {
     expect(copy('you.row.in.sub', { email: 'j•••@gmail.com' })).toBe('Signed in as j•••@gmail.com');
     expect(copy('code.resend.wait', { 'm:ss': '0:42' })).toBe('Send a new code in 0:42');
@@ -93,7 +122,7 @@ describe('the exact §2.3 strings', () => {
   it('the About line with the flag off is the one Settings has always shown', () => {
     // Settings reads its last sentence from here (aboutLine); with the flag off it must stay word for word.
     const settings = readFileSync(join(__dirname, '../app/settings.tsx'), 'utf8');
-    expect(settings).toContain('written for exam preparation. {aboutLine()}');
+    expect(settings).toContain('written for exam preparation. {aboutLine(syncing)}');
     expect(ACCOUNT_COPY['about.off']).toBe('Progress is stored only on this device.');
   });
 });

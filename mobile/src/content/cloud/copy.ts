@@ -129,6 +129,127 @@ export const ACCOUNT_COPY = {
   'about.off': 'Progress is stored only on this device.',
   'about.on.out': 'Progress is stored on this device.',
   'about.on.sync': 'Progress is stored on this device and syncs to your Aurivan account.',
+
+  // ── Sync (Uplift Phase 7; spec §3.3) ───────────────────────────────
+  // Settings → Your data's intro in a cloud build (the OFF build keeps its own words in yourData.tsx).
+  'data.intro.on': 'Your progress is kept on this phone. A backup file keeps it safe and moves it to a new phone. You choose where the file goes.',
+  'data.intro.sync': 'Your progress is kept on this phone and syncs to your Aurivan account. A backup file is a copy you keep yourself. You choose where the file goes.',
+
+  // Account → Sync.
+  'sync.section': 'Sync',
+  'sync.toggle': 'Sync this phone',
+  'sync.toggle.sub': 'Your progress and study settings, on every device you sign in on.',
+  'sync.now': 'Sync now',
+  'sync.status.just': 'Synced just now',
+  'sync.status.min': 'Synced {n} min ago',
+  'sync.status.today': 'Synced today at {time}',
+  'sync.status.day': 'Synced {d MMM}',
+  'sync.status.busy': 'Syncing…',
+  'sync.status.offline': 'Will sync when you’re online',
+  // Any other failure (a server problem, too many conflicts or writes): not "offline" (UX review P1).
+  'sync.status.retry': 'Couldn’t sync just now. We’ll try again soon.',
+  'sync.status.off': 'Sync is off',
+  'sync.status.signin': 'Sign in again to keep syncing',
+  'sync.paused.newer': 'Sync is paused. This account has progress from a newer version of Aurivan. Update the app to keep syncing.',
+  'sync.paused.unreadable': 'Sync is paused. We couldn’t read the synced copy, so your phone’s progress is unchanged. If this keeps happening, contact us from Help.',
+  'sync.paused.toobig': 'Your progress is too large to sync. It stays safe on this phone. You can save a backup file in Settings → Your data.',
+  'sync.retry': 'Try again',
+  'sync.offline': 'You’re offline. Connect to the internet to sync.',
+  'sync.what.title': 'What syncs',
+  // Everything that syncs (security review P7 S7: matches the privacy notice).
+  'sync.what.body':
+    'Your answers (whether right, how sure you were and how long you took), reviews, your mistake journal, saved questions, mocks, lessons and notes done, your study days and streak, badges, game levels, your readiness log and exam-week checklist, your plant, the questions you reported to us, your exam date and study settings. These stay on this phone: reminders, theme, motion, haptics, plant display choices and a quiz in progress.',
+  'sync.what.limits': 'Removals don’t sync yet: a question you unsave, or progress you reset, on one device can come back from another.',
+  'sync.what.kept': 'Turning sync off stops syncing. The copy in your account stays until you use Delete synced progress.',
+  'sync.what.done': 'Done',
+  'sync.delete.row': 'Delete synced progress',
+  'sync.delete.sub': 'Removes the copy in your account. This phone keeps its progress.',
+
+  // The first-sync preview (account/first-sync).
+  'first.phone.title': 'Add this phone’s progress to your account?',
+  'first.phone.body': 'You’re signed in as {email}. Your account has no progress yet.',
+  'first.phone.go': 'Sync this phone',
+  'first.account.title': 'Bring your progress to this phone?',
+  'first.account.body': 'You’re signed in as {email}. Your account has progress from another device.',
+  'first.account.go': 'Bring it here',
+  'first.both.title': 'Bring your progress together?',
+  'first.both.body': 'You’re signed in as {email}. This phone and your account both have progress. We’ll combine them: nothing you’ve answered is lost, and your best results are kept.',
+  'first.both.go': 'Combine',
+  'first.undo': 'You can undo this for 7 days in Settings → Your data.',
+  'first.undo.replaces': 'This replaces the earlier “Undo restore”.',
+  // Combine (UX review O1).
+  'first.both.once': 'Questions answered on both count once.',
+  'first.later': 'Not now',
+  // {email} in the preview and switch bodies when Apple hides the address ("You’re signed in as your Apple account (email hidden).").
+  'first.relay': 'your Apple account (email hidden)',
+  'first.cols': 'This phone · Account · After',
+  'first.col.phone': 'This phone',
+  'first.col.account': 'Account',
+  'first.col.after': 'After',
+  'first.row.answered': 'Answered',
+  'first.row.last': 'Last studied',
+  'first.row.streak': 'Best streak',
+  'first.row.exam': 'Exam date',
+  'first.busy': 'Syncing your progress…',
+  'first.fail': 'We couldn’t sync just now. Nothing was changed. Try again in a little while.',
+  'first.signin': 'Your sign-in has ended. Sign in again to sync this phone.',
+  // Said by a screen reader for one row of the table ("Answered: this phone 312, account 140, after 361").
+  'first.row.spoken': '{label}: this phone {phone}, account {account}, after {after}',
+
+  // A different account on this phone (account/switch).
+  'switch.title': 'This phone has progress from another account',
+  'switch.body': 'You’re now signed in as {email}. The progress on this phone was synced with a different account.',
+  'switch.fresh': 'Start fresh with this account',
+  'switch.fresh.sub': 'This phone switches to this account’s progress. What’s here now is kept for 7 days in Settings → Your data → Undo sync.',
+  'switch.keep': 'Keep this phone’s progress',
+  'switch.keep.sub': 'It will be added to this account, even if it’s someone else’s.',
+  // Start fresh while an undo copy is already waiting on this phone (QA B3).
+  'switch.undo.replaces': 'This replaces the earlier undo copy kept on this phone.',
+  'switch.go': 'Continue',
+
+  // Settings → Your data.
+  'undo.row': 'Undo sync',
+  'undo.row.sub': 'Put back this phone’s progress from before it first synced (until {d MMM}).',
+  'undo.confirm.title': 'Undo sync?',
+  'undo.confirm.body': 'This phone goes back to how it was before it first synced, and sync turns off. Your account’s copy stays as it is.',
+  'undo.done.title': 'Sync undone',
+  'undo.done.body': 'This phone’s progress is back to how it was before it first synced. Sync is off.',
+  'hint.undo': 'Asks first. Puts back this phone’s progress from before it first synced.',
+  'undo.none.title': 'Nothing to undo',
+  'undo.none.body': 'A sync can only be undone for 7 days.',
+  'undo.invalid.title': 'Can’t undo',
+  'undo.invalid.body': 'The copy kept from before the first sync is damaged, so it can’t be used. Your progress stays as it is now.',
+  'undo.failed.title': 'Undo didn’t finish',
+  'undo.failed.body': 'Something went wrong while saving, so your progress was put back as it was. Please try again.',
+
+  // Sign out (account/sign-out).
+  'signout.body.sync': 'Your progress stays on this phone, and Aurivan keeps working without an account. Sync stops until you sign in again.',
+  'signout.remove': 'Remove my progress from this phone (for shared devices)',
+  'signout.remove.confirm': 'This removes all your study progress, your plant and your study settings from this phone. Your account’s copy isn’t affected.',
+  // Some of it is only on this phone: sync is off, paused, or the last changes didn’t reach the account (UX review H1).
+  'signout.remove.confirm.unsynced': 'Some of this phone’s progress isn’t in your account yet. Removing it deletes it for good. Save a backup first if you might want it.',
+  'signout.remove.go': 'Remove and sign out',
+
+  // Account → Delete synced progress.
+  'delsync.title': 'Delete synced progress?',
+  'delsync.body': 'This deletes the copy of your progress stored in your account. Your account and this phone’s progress stay. Sync turns off.',
+  // What happens on the learner’s other devices (UX review P2, worded to match what they do).
+  'delsync.others': 'Your other devices stop syncing the next time they connect. If you turn sync on again before that, their progress is added back.',
+  'delsync.go': 'Delete synced progress',
+  'delsync.done': 'Synced progress deleted.',
+  'delsync.busy': 'Deleting synced progress…',
+  'delsync.offline': 'You’re offline. Connect to the internet to delete your synced progress. Nothing was deleted.',
+  'delsync.fail': 'We couldn’t delete your synced progress just now. Nothing was deleted. Try again in a little while.',
+
+  // Settings → Reset progress and the restore preview, while this phone syncs (UX review H2: true in every case).
+  'reset.sync': 'Sync is on: progress removed here can come back from another device that syncs with your account. To start fresh everywhere, first use Delete synced progress in Account.',
+  // Reset also clears a waiting Undo sync copy (UX review O2).
+  'reset.undo': 'This also removes the Undo sync copy kept on this phone.',
+
+  // Screen-reader hints.
+  'hint.sync.now': 'Syncs this phone with your account now',
+  'hint.sync.what': 'Opens the list of what syncs',
+  'hint.sync.delete': 'Asks first. This phone keeps its progress.',
 } as const;
 
 export type AccountCopyKey = keyof typeof ACCOUNT_COPY;

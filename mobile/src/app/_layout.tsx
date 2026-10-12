@@ -8,9 +8,11 @@
  * 3. Mounts MotionRoot: Reduce Motion (the phone's, live, or Settings →
  *    Motion → Reduced) reaches every animation, Reanimated's included.
  * 4. Mounts ThemeFade: switching Light ⇄ Dark dissolves instead of flashing.
- * 5. Cloud builds only (Uplift Phase 6, built OFF): once saved data has
- *    loaded, lib/account.ts initAccount() checks the sign-in and follows it.
- *    With the flag off (every build today) the effect returns at once.
+ * 5. Cloud builds only (Uplift Phases 6–7, built OFF): once saved data has
+ *    loaded, lib/account.ts initAccount() checks the sign-in and follows it,
+ *    then lib/sync.ts initSync() starts sync, and SyncRouteWatch tells sync
+ *    when a quiz, lesson or game opens and ends. With the flag off (every
+ *    build today) the effect returns at once and SyncRouteWatch isn't drawn.
  */
 // Per-weight imports so only these six font files are bundled.
 import { Figtree_400Regular } from '@expo-google-fonts/figtree/400Regular';
@@ -20,13 +22,14 @@ import { Fraunces_400Regular } from '@expo-google-fonts/fraunces/400Regular';
 import { Fraunces_400Regular_Italic } from '@expo-google-fonts/fraunces/400Regular_Italic';
 import { Fraunces_500Medium } from '@expo-google-fonts/fraunces/500Medium';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { getCertification } from '../content/certifications';
 import { CLOUD } from '../cloud/flag';
 import { initAccount } from '../lib/account';
+import { initSync, setRoute } from '../lib/sync';
 import { pruneUndo } from '../lib/backup';
 import { initCaseSeen } from '../lib/badges';
 import { ensureBackfill, ensureCatalog, syncPlanters } from '../lib/milestones';
@@ -86,9 +89,18 @@ export default function RootLayout() {
     if (!CLOUD || !hydrated) return;
     let live = true;
     let stop = () => {};
-    // initAccount never rejects; the catch is a second line of defence (nothing unhandled at launch).
+    // Sync starts only once the account check has loaded who is signed in (it reads that first).
+    // initAccount and initSync never reject; the catch is a second line of defence (nothing unhandled at launch).
     initAccount()
-      .then((s) => (live ? (stop = s) : s()))
+      .then(async (a) => {
+        const s = await initSync();
+        const both = () => {
+          a();
+          s();
+        };
+        if (live) stop = both;
+        else both();
+      })
       .catch(() => {});
     return () => {
       live = false;
@@ -121,6 +133,7 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <StatusBar style={isDark ? 'light' : 'dark'} />
+      {CLOUD && <SyncRouteWatch />}
       <Stack
         screenOptions={{
           headerShown: false,
@@ -188,4 +201,16 @@ export default function RootLayout() {
       <Grain />
     </SafeAreaProvider>
   );
+}
+
+/**
+ * Cloud builds only: tells lib/sync.ts which screen is open, so a pull never
+ * lands under an open quiz, lesson or game, and leaving one syncs. Draws nothing.
+ */
+function SyncRouteWatch() {
+  const path = usePathname();
+  useEffect(() => {
+    setRoute(path);
+  }, [path]);
+  return null;
 }

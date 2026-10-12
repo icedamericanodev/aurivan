@@ -5,24 +5,33 @@
  * - Signed out: the sign-in sheet (components/account.tsx SignInContent).
  *   Signing in with Apple or Google, or coming back from the email screen
  *   signed in, turns this into the account screen in place.
- * - Signed in: "Signed in as j•••@gmail.com", Your account data (Download
- *   my data), Sign out and Sign out on all devices (each asks first), then
- *   Delete account, set apart, and the line that progress works either way.
+ * - Signed in: "Signed in as j•••@gmail.com", Sync (Phase 7: the switch,
+ *   the status line, Sync now, What syncs, Delete synced progress), Your
+ *   account data (Download my data), Sign out on this phone (a sheet with
+ *   "remove my progress from this phone") and on all devices (asks first),
+ *   then Delete account, set apart, and the line that progress works
+ *   either way.
  *   No red here: Grove keeps red for wrong answers; the destructive button
  *   is on the delete screen's last step.
  *
  * Reads only the account store on open: no backend call until a tap, so a
- * deep link can never start anything (spec §2.6).
+ * deep link can never start anything (spec §2.6). The one exception follows
+ * a sign-in the learner just made: once this screen is in front again, it
+ * offers the first-sync preview (this phone never synced) or the
+ * account-switch choice (it synced with a different account).
  */
-import { router } from 'expo-router';
+import { router, useIsFocused } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { AccountNotice, SignInContent } from '../../../components/account';
 import { SettingsRow } from '../../../components/settings';
+import { SyncSection } from '../../../components/sync';
 import { Gap, PushedHeader, Screen, Section, T } from '../../../components/ui';
 import { copy } from '../../../content/cloud/copy';
 import { downloadMyData, signOut, sweepAccountFiles } from '../../../lib/account';
+import { startFirstSync, takeOffer } from '../../../lib/sync';
 import { useAccount } from '../../../store/account';
+import { useSyncStatus } from '../../../store/sync';
 import { space } from '../../../theme/tokens';
 
 type Busy = 'download' | 'signout' | null;
@@ -38,6 +47,22 @@ export default function Account() {
   useEffect(() => {
     sweepAccountFiles();
   }, []);
+
+  // Just signed in (here or on the email screen): once this screen is in front, offer what's next.
+  const offer = useSyncStatus((s) => s.offer);
+  const focused = useIsFocused();
+  useEffect(() => {
+    if (!offer || !focused || !signedIn) return;
+    takeOffer();
+    if (offer === 'switch') {
+      router.push('/account/switch');
+      return;
+    }
+    void startFirstSync().then((r) => {
+      if (r.ok && r.next === 'preview') router.push('/account/first-sync');
+      else if (r.ok && r.next === 'switch') router.push('/account/switch');
+    });
+  }, [offer, focused, signedIn]);
 
   if (!signedIn) {
     return (
@@ -68,16 +93,16 @@ export default function Account() {
     }
   };
 
-  const confirmSignOut = (scope: 'local' | 'global') => {
-    const local = scope === 'local';
-    Alert.alert(copy(local ? 'signout.title' : 'signoutAll.title'), copy(local ? 'signout.body' : 'signoutAll.body'), [
+  // Sign out on this phone is a sheet (account/sign-out: the "remove my progress" box); on all devices asks here.
+  const confirmSignOutAll = () => {
+    Alert.alert(copy('signoutAll.title'), copy('signoutAll.body'), [
       { text: copy('cancel'), style: 'cancel' },
       {
-        text: copy(local ? 'account.signout' : 'account.signoutAll'),
+        text: copy('account.signoutAll'),
         onPress: async () => {
           setNotice(null);
           setBusy('signout');
-          const r = await signOut(scope);
+          const r = await signOut('global');
           setBusy(null);
           if (r.ok) back();
           else setNotice({ tone: 'problem', text: copy(r.code === 'offline' ? 'signout.offline' : 'err.server') });
@@ -93,7 +118,7 @@ export default function Account() {
         {emailMasked ? copy('account.signedin', { email: emailMasked }) : copy('account.signedin.relay')}
       </T>
 
-      {/* PR 7 adds the Sync section here. */}
+      <SyncSection />
 
       <Section title={copy('account.data')} />
       <SettingsRow
@@ -108,8 +133,8 @@ export default function Account() {
       {notice && <AccountNotice text={notice.text} tone={notice.tone} />}
 
       <Section title={copy('account.section.signout')} />
-      <SettingsRow title={copy('account.signout')} disabled={busy !== null} onPress={() => confirmSignOut('local')} chevron={false} accessibilityHint={copy('hint.signout')} />
-      <SettingsRow title={copy('account.signoutAll')} disabled={busy !== null} onPress={() => confirmSignOut('global')} chevron={false} accessibilityHint={copy('hint.signoutAll')} last />
+      <SettingsRow title={copy('account.signout')} disabled={busy !== null} onPress={() => router.push('/account/sign-out')} chevron={false} accessibilityHint={copy('hint.signout')} />
+      <SettingsRow title={copy('account.signoutAll')} disabled={busy !== null} onPress={confirmSignOutAll} chevron={false} accessibilityHint={copy('hint.signoutAll')} last />
 
       {/* Set apart, like Reset in Settings. */}
       <Gap h={space.xxl} />

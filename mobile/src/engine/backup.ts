@@ -735,13 +735,15 @@ export function keepKnownIds(progress: BackupProgress, known: (certId: string) =
  * have earned (engine/milestones.ts markSupported). A restored badge never
  * claims more than the data shows.
  */
-export function keepSupportedMarks(progress: BackupProgress): BackupProgress {
+export function keepSupportedMarks(progress: BackupProgress, opts: { mocksMayBeCut?: boolean } = {}): BackupProgress {
   const byCert: BackupProgress['byCert'] = {};
   for (const [certId, cp] of Object.entries(progress.byCert)) {
     // The exam's own domains and full mock size (Whole Map, the Five Domains planter, Dress Rehearsal's tiers).
     const cert = getCertification(certId);
     const exam = cert ? { domains: cert.domains.map((d) => d.id), fullMockSize: cert.exam.questions } : undefined;
-    byCert[certId] = cp.milestones ? { ...cp, milestones: keepSupported(cp.milestones, { ...cp, ...(exam ? { exam } : {}) }) } : cp;
+    // Sync only: a merged mock list cut at the cap keeps the Dress Rehearsal tiers it may have lost the chain for.
+    const cut = opts.mocksMayBeCut ? { mocksMayBeCut: true } : {};
+    byCert[certId] = cp.milestones ? { ...cp, milestones: keepSupported(cp.milestones, { ...cp, ...(exam ? { exam } : {}), ...cut }) } : cp;
   }
   return { ...progress, byCert };
 }
@@ -815,7 +817,7 @@ export function readBackup(
   // silently drop, so ask the learner to update first.
   if (thisApp && compareVersions(fileApp, thisApp, 2) > 0) throw new BackupError('newer', 'appVersion');
   try {
-    return readChecked(raw, knownCertIds, known);
+    return readChecked(raw, fileApp, knownCertIds, known, thisApp);
   } catch (e) {
     // Anything this app can't read in a file from a newer app (even a patch
     // release) is most likely new data, not damage: say "update the app".
@@ -840,30 +842,143 @@ export function compareVersions(a: string, b: string, parts = 3): number {
   return 0;
 }
 
-function readChecked(raw: Record<string, unknown>, knownCertIds: readonly string[], known?: (certId: string) => KnownIds): BackupData {
+function readChecked(
+  raw: Record<string, unknown>,
+  fileApp: string,
+  knownCertIds: readonly string[],
+  known?: (certId: string) => KnownIds,
+  thisApp?: string,
+): BackupData {
   const schema = raw.schema;
   if (typeof schema !== 'number' || !Number.isInteger(schema) || schema < 1) throw new BackupError('unknown-schema');
   if (schema > BACKUP_SCHEMA) throw new BackupError('newer', 'schema');
   const file = migrateFile(raw);
   if (!isObj(file.stores)) throw new BackupError('bad-data', 'stores');
+  // The file's two stores go through the SAME checker as a synced snapshot (readStores).
+  const { settings, progress } = readStores(
+    { settings: file.stores.settings, progress: file.stores.progress },
+    { appVersion: fileApp },
+    knownCertIds,
+    known,
+    thisApp,
+  );
+  const exportedAt = typeof file.exportedAt === 'string' && file.exportedAt.length <= 40 ? file.exportedAt : '';
+  return { settings, progress, exportedAt };
+}
 
+/** Keys that could reach an object's prototype if a careless reader copied them. */
+const PROTO_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+
+/** True when any object at any depth has a prototype key (a sync pull refuses the whole state). */
+export function hasProtoKey(x: unknown, depth = 0): boolean {
+  if (depth > 40) return true; // nothing we save is this deep: treat it as hostile
+  if (Array.isArray(x)) return x.some((v) => hasProtoKey(v, depth + 1));
+  if (!isObj(x)) return false;
+  for (const k of Object.keys(x)) {
+    if (PROTO_KEYS.has(k) || hasProtoKey(x[k], depth + 1)) return true;
+  }
+  return false;
+}
+
+/** Where the stores came from: the app version that wrote them (a file's `appVersion`, a snapshot's `app_version`). */
+export interface StoresEnvelope {
+  appVersion: string;
+}
+
+export interface ReadStoresOptions {
+  /**
+   * Sync pulls (Uplift Phase 7). The backup FILE path never sets it, so a
+   * file reads exactly as before. Strict adds two refusals on the raw state:
+   * - a prototype key anywhere (`__proto__`, `constructor`, `prototype`),
+   *   even where the file reader would quietly drop an unknown key;
+   * - a state over MAX_PROGRESS_CHARS characters BEFORE it is trimmed (a
+   *   1.6 M-character snapshot is refused, not cut down).
+   */
+  strict?: boolean;
+  /** Check only one store (a sync pull fetches the one whose `rev` changed). */
+  only?: 'settings' | 'progress';
+  /**
+   * Sync only (Uplift Phase 7 review, CR B4): the mock list may have been cut
+   * to the newest 50 by a merge, so a full list keeps its Dress Rehearsal
+   * tiers (engine/milestones.ts MarkEvidence.mocksMayBeCut). The backup FILE
+   * path never sets it.
+   */
+  mocksMayBeCut?: boolean;
+}
+
+/**
+ * THE checker for the two saved stores, shared by a backup file
+ * (readBackup) and a synced snapshot (lib/sync.ts pulls). Each store comes
+ * as its saved `{ version, state }`; `envelope.appVersion` is the app
+ * version that wrote them.
+ *
+ * - A store from a newer MINOR (or major) app: `newer` (it may hold data
+ *   this app would silently drop). A store this app can't read from a newer
+ *   PATCH app: also `newer` (most likely new data, not damage).
+ * - Every field is type- and range-checked; unknown keys are dropped; a
+ *   cert this app doesn't know is `unknown-cert`.
+ * - Badges and the plant keep only what the data supports, checked on the
+ *   data AS GIVEN (before ids are trimmed), then ids the content doesn't
+ *   have are dropped when `known` is given.
+ * - The progress store is never bigger than Android can read back.
+ *
+ * Returns the checked stores at the current versions, or throws a
+ * BackupError. Never changes anything.
+ */
+export function readStores(
+  stores: { settings?: unknown; progress?: unknown },
+  envelope: StoresEnvelope,
+  knownCertIds: readonly string[],
+  known?: (certId: string) => KnownIds,
+  thisApp?: string,
+  opts: ReadStoresOptions = {},
+): { settings: BackupSettings; progress: BackupProgress } {
+  if (thisApp && compareVersions(envelope.appVersion, thisApp, 2) > 0) throw new BackupError('newer', 'appVersion');
+  try {
+    return readStoresChecked(stores, knownCertIds, known, opts);
+  } catch (e) {
+    if (e instanceof BackupError && e.code === 'bad-data' && thisApp && compareVersions(envelope.appVersion, thisApp) > 0) {
+      throw new BackupError('newer', e.where);
+    }
+    throw e;
+  }
+}
+
+function readStoresChecked(
+  stores: { settings?: unknown; progress?: unknown },
+  knownCertIds: readonly string[],
+  known: ((certId: string) => KnownIds) | undefined,
+  opts: ReadStoresOptions,
+): { settings: BackupSettings; progress: BackupProgress } {
   const certKey: Check<string> = (x, at) => {
     if (typeof x !== 'string') return bad(at);
     if (!knownCertIds.includes(x)) throw new BackupError('unknown-cert', at);
     return x;
   };
-  const settings = settingsCheck(certKey)(readStore(file.stores.settings, SETTINGS_VERSION, null, 'settings'), 'settings');
-  const checked = progressCheck(certKey)(readStore(file.stores.progress, PROGRESS_VERSION, migrateProgress, 'progress'), 'progress');
-  // Badges are checked against the data AS BACKED UP, before ids the bank
-  // no longer has are trimmed: a genuine badge earned on a question that
-  // was later retired must not be dropped (code review, Build F).
-  // The plant is clamped at the same point, for the same reason.
-  const supported = keepSupportedPlants(keepSupportedMarks(checked), known);
-  const progress = known ? keepKnownIds(supported, known) : supported;
-  // Never write a store row Android can't read back (see MAX_PROGRESS_CHARS).
-  if (JSON.stringify(progress).length > MAX_PROGRESS_CHARS) throw new BackupError('too-big', 'progress');
-  const exportedAt = typeof file.exportedAt === 'string' && file.exportedAt.length <= 40 ? file.exportedAt : '';
-  return { settings, progress, exportedAt };
+  const strictRaw = (blob: unknown, at: string) => {
+    if (!opts.strict || !isObj(blob)) return;
+    if (hasProtoKey(blob)) throw new BackupError('bad-data', at);
+    if (JSON.stringify(blob.state ?? null).length > MAX_PROGRESS_CHARS) throw new BackupError('too-big', at);
+  };
+  let settings = undefined as unknown as BackupSettings;
+  let progress = undefined as unknown as BackupProgress;
+  if (opts.only !== 'progress') {
+    strictRaw(stores.settings, 'settings');
+    settings = settingsCheck(certKey)(readStore(stores.settings, SETTINGS_VERSION, null, 'settings'), 'settings');
+  }
+  if (opts.only !== 'settings') {
+    strictRaw(stores.progress, 'progress');
+    const checked = progressCheck(certKey)(readStore(stores.progress, PROGRESS_VERSION, migrateProgress, 'progress'), 'progress');
+    // Badges are checked against the data AS BACKED UP, before ids the bank
+    // no longer has are trimmed: a genuine badge earned on a question that
+    // was later retired must not be dropped (code review, Build F).
+    // The plant is clamped at the same point, for the same reason.
+    const supported = keepSupportedPlants(keepSupportedMarks(checked, { mocksMayBeCut: opts.mocksMayBeCut }), known);
+    progress = known ? keepKnownIds(supported, known) : supported;
+    // Never write a store row Android can't read back (see MAX_PROGRESS_CHARS).
+    if (JSON.stringify(progress).length > MAX_PROGRESS_CHARS) throw new BackupError('too-big', 'progress');
+  }
+  return { settings, progress };
 }
 
 // ── The preview ──────────────────────────────────────────────────────────
@@ -959,6 +1074,12 @@ export function previewRows(now: BackupSummary, backup: BackupSummary): PreviewR
 export interface UndoSnapshot {
   takenAt: number;
   file: BackupFile;
+  /**
+   * Uplift Phase 7 (cloud builds only): 'sync' when the copy was taken just
+   * before this phone first synced (Settings → Your data says "Undo sync").
+   * Never set otherwise, so an OFF build saves exactly what it always did.
+   */
+  kind?: 'sync';
 }
 
 /** When "Undo restore" stops being offered. */

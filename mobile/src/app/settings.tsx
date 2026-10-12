@@ -32,8 +32,11 @@ import * as ExpoRouter from 'expo-router';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Alert, Linking, Platform, View, type ScrollView } from 'react-native';
 import { aboutLine, AccountSettingsGroup } from '../components/account';
+import { useSyncing } from '../lib/sync';
 import { BrandLockup, PillarList } from '../components/brand';
 import { CLOUD } from '../cloud/flag';
+import { copy as cloudCopy } from '../content/cloud/copy';
+import { undoAvailable } from '../engine/backup';
 import { CalendarSheet } from '../components/calendar';
 import { EXAM_FOCUSED_SUBTITLE, EXAM_FOCUSED_TITLE, FAMILIARITY_QUESTION } from '../components/fit';
 import { creditSubtitle } from '../components/help';
@@ -89,6 +92,8 @@ const useOwnNavigation: () => TransitionEvents | undefined =
   (ExpoRouter as { useNavigation?: () => TransitionEvents }).useNavigation ?? (() => undefined);
 
 export default function Settings() {
+  // Cloud builds only: true while this phone syncs (About says so). Always false with the flag off.
+  const syncing = useSyncing();
   const { cert } = useActiveCert();
   const { c, isDark } = useTheme();
   const s = useSettings();
@@ -230,10 +235,17 @@ export default function Settings() {
   };
   const days = reminderDays(s.reminder.days);
 
+  // Cloud builds only (Phase 7 review, UX H2 / O2): what a reset means while this phone syncs, and that
+  // it also drops a waiting Undo sync copy. With the flag off both are '' and the alert is as it always was.
+  const resetCloudNote = () => {
+    const undo = useBackup.getState().undo;
+    const syncUndo = CLOUD && undo?.kind === 'sync' && undoAvailable(undo, Date.now());
+    return `${syncing ? ` ${cloudCopy('reset.sync')}` : ''}${syncUndo ? ` ${cloudCopy('reset.undo')}` : ''}`;
+  };
   const confirmReset = () =>
     Alert.alert(
       `Reset ${cert.name} progress?`,
-      `This deletes your answers, reviews, saved questions, mock history, badges and game levels for this exam. It cannot be undone. Save a backup first if you might want it back.${hasPlant && plantOn ? ' Your plant goes back to a seed. It keeps its name and look.' : ''}`,
+      `This deletes your answers, reviews, saved questions, mock history, badges and game levels for this exam. It cannot be undone. Save a backup first if you might want it back.${hasPlant && plantOn ? ' Your plant goes back to a seed. It keeps its name and look.' : ''}${resetCloudNote()}`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -417,7 +429,7 @@ export default function Settings() {
       <Gap h={space.xl} />
       <T v="meta">
         {/* The last sentence is "Progress is stored only on this device." with the flag off (content/cloud/copy.ts about.off). */}
-        Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. {aboutLine()}
+        Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. {aboutLine(syncing)}
       </T>
       <Gap h={space.sm} />
       {/* Every certification named anywhere in the app (coming-soon ones too) needs its trademark notice;

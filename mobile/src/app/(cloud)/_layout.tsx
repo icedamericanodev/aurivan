@@ -33,6 +33,12 @@ export default function CloudLayout() {
       <Stack.Screen name="account/sign-in" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
       <Stack.Screen name="account/email" />
       <Stack.Screen name="account/delete" options={{ gestureEnabled: false }} />
+      {/* Sync (Phase 7): the preview, the account-switch choice, What syncs and Sign out rise like sheets. */}
+      <Stack.Screen name="account/first-sync" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
+      <Stack.Screen name="account/switch" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
+      <Stack.Screen name="account/what-syncs" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
+      <Stack.Screen name="account/sign-out" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
+      <Stack.Screen name="account/delete-synced" options={{ animation: reduced ? 'fade' : 'fade_from_bottom' }} />
     </Stack>
   );
 }

@@ -2,7 +2,7 @@
 // learners in memory, and unsigned JWTs shaped like Supabase access tokens.
 // Never imported by an index.ts, so never deployed.
 
-import type { AdminPort, AuthUser, BoardCounts } from './admin.ts';
+import type { AdminPort, AuthUser, BoardCounts, SnapshotsRead } from './admin.ts';
 import type { Logger } from './http.ts';
 
 export const NOW = Date.UTC(2026, 10, 2, 12, 0, 0); // fixed clock: 2026-11-02 12:00 UTC
@@ -27,6 +27,8 @@ export function makeJwt(
 export interface FakeUser extends AuthUser {
   termsVersion: string | null;
   snapshots: Record<string, unknown>;
+  /** The newest app version that wrote one of the snapshots (null when none). */
+  snapshotsApp?: string | null;
   board: BoardCounts;
 }
 
@@ -112,9 +114,10 @@ export class FakeAdmin implements AdminPort {
     return Promise.resolve(this.users.get(userId)?.termsVersion ?? null);
   }
 
-  readSnapshots(userId: string): Promise<Record<string, unknown>> {
+  readSnapshots(userId: string): Promise<SnapshotsRead> {
     this.check('readSnapshots', userId);
-    return Promise.resolve(structuredClone(this.users.get(userId)?.snapshots ?? {}));
+    const u = this.users.get(userId);
+    return Promise.resolve({ stores: structuredClone(u?.snapshots ?? {}), appVersion: u?.snapshotsApp ?? null });
   }
 
   claimExport(userId: string): Promise<boolean> {

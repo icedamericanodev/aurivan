@@ -140,13 +140,19 @@ describeOff('the cloud flag is off', () => {
     });
     expect(netCalls).toBe(0);
     const text = allText();
-    for (const words of ['Sync across devices', 'Account and sync', 'Not signed in', 'Continue with', 'Delete account', 'Progress is stored on this device.']) {
+    for (const words of ['Sync across devices', 'Account and sync', 'Not signed in', 'Continue with', 'Delete account', 'Progress is stored on this device.', 'Sync this phone', 'Undo sync', 'syncs to your Aurivan account']) {
       expect(text).not.toContain(words);
     }
-    // The account store is never read or written with the flag off.
-    expect(getItem.mock.calls.map((c) => c[0])).not.toContain('aurivan.account.v1');
-    expect(setItem.mock.calls.map((c) => c[0])).not.toContain('aurivan.account.v1');
-    if (name === 'settings') expect(text).toContain('Progress is stored only on this device.');
+    // The account store and the sync record (Phase 7) are never read or written with the flag off.
+    for (const key of ['aurivan.account.v1', 'aurivan.sync.v1']) {
+      expect(getItem.mock.calls.map((c) => c[0])).not.toContain(key);
+      expect(setItem.mock.calls.map((c) => c[0])).not.toContain(key);
+    }
+    if (name === 'settings') {
+      expect(text).toContain('Progress is stored only on this device.');
+      // Settings → Your data keeps its words with the flag off (UX O2 changes only cloud builds).
+      expect(text).toContain('Your progress is kept only on this phone. A backup file keeps it safe and moves it to a new phone. You choose where the file goes.');
+    }
     getItem.mockRestore();
     setItem.mockRestore();
   });
@@ -163,7 +169,7 @@ describeOff('the cloud flag is off', () => {
     expect(netCalls).toBe(0);
   });
 
-  it.each(['/account', '/account/delete', '/account/sign-in', '/account/email', '/board', '/board/0b9e7c1a-1111-4222-8333-444455556666', '/board/new'])(
+  it.each(['/account', '/account/delete', '/account/sign-in', '/account/email', '/account/first-sync', '/account/switch', '/account/what-syncs', '/account/sign-out', '/account/delete-synced', '/board', '/board/0b9e7c1a-1111-4222-8333-444455556666', '/board/new'])(
     'G5: %s lands on Today, and no backend method runs',
     (path) => {
       // Even with a backend present, the flag decides (and a hostile link's params change nothing).
@@ -178,6 +184,26 @@ describeOff('the cloud flag is off', () => {
       for (const k of ['confirm', 'scope', 'path']) delete routeParams[k];
     },
   );
+
+  it('sync start-up does nothing: no backend call, no storage key, no timer (Phase 7)', async () => {
+    const memory = createMemoryBackend();
+    setBackendForTests(memory);
+    const AS = require('@react-native-async-storage/async-storage');
+    const storage = AS.default ?? AS;
+    const before = Object.keys(storage.__INTERNAL_MOCK_STORAGE__ ?? {});
+    const timers = jest.getTimerCount();
+    const lib = require('../lib/sync');
+    const stop = await lib.initSync();
+    expect(stop).toEqual(expect.any(Function));
+    await lib.trigger();
+    lib.setRoute('/session');
+    lib.setRoute('/');
+    expect(memory.control.calls).toEqual([]);
+    expect(jest.getTimerCount()).toBe(timers);
+    expect(Object.keys(storage.__INTERNAL_MOCK_STORAGE__ ?? {})).not.toContain('aurivan.sync.v1');
+    expect(Object.keys(storage.__INTERNAL_MOCK_STORAGE__ ?? {}).filter((k) => !before.includes(k))).not.toContain('aurivan.sync.v1');
+    stop();
+  });
 
   it('account start-up does nothing, even with a backend present', async () => {
     const memory = createMemoryBackend();

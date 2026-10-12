@@ -269,7 +269,7 @@ export async function pickBackup(): Promise<PickOutcome> {
 }
 
 // ── Restore: replace the stores, in one write ────────────────────────────
-type PersistedStore = { persist: { getOptions: () => { name?: string; version?: number }; rehydrate: () => Promise<void> | void; hasHydrated: () => boolean; onFinishHydration: (fn: () => void) => () => void } };
+export type PersistedStore = { persist: { getOptions: () => { name?: string; version?: number }; rehydrate: () => Promise<void> | void; hasHydrated: () => boolean; onFinishHydration: (fn: () => void) => () => void } };
 const STORES: PersistedStore[] = [useSettings, useProgress, useSession, useBackup];
 
 /** Resolves once every store has loaded from the phone (a restore must not race the first load). */
@@ -387,6 +387,155 @@ async function writeAll(
     ensureCatalog(id);
     syncPlanters(id);
   }
+}
+
+/** The settings and progress the phone holds now, as plain data (sync reads these). */
+export function phoneStores(): { settings: SettingsData; progress: ProgressData } {
+  return { settings: settingsData(), progress: progressData() };
+}
+
+/**
+ * Sync (Uplift Phase 7, cloud builds only): put MERGED settings and progress
+ * on the phone through the restore write path. Unlike a restore it:
+ * - keeps today's plans (`days`) and a paused quiz (the merged data only
+ *   adds to them);
+ * - writes the undo snapshot (`opts.undo`, the first sync's "Undo sync") in
+ *   the SAME AsyncStorage.multiSet as the stores, or leaves the slot alone;
+ * - never loses what the learner did while the sync was on the network or
+ *   the write was in flight (Phase 7 review, CR B1): `next` was worked out
+ *   from the phone as it was when the sync STARTED, so `opts.rebase` merges
+ *   the live stores into it before writing, and once more after the write
+ *   lands if they changed again meanwhile (merging is safe to repeat). A
+ *   setting changed meanwhile keeps its newer value AND its stamp;
+ * - never reloads the stores from storage: persist saves the final state as
+ *   usual.
+ * `opts.quiet` wraps ONLY the synchronous store updates (lib/sync.ts uses it
+ * so its own write isn't stamped as the learner's: CR N4); a change the
+ * learner makes during the awaits is stamped as usual.
+ * If the write fails, or the live data can't be merged in (CR N1), the rows
+ * are put back as the phone holds them, nothing in memory changes, and it
+ * throws: the sync records nothing and tries again later.
+ */
+export async function writeSynced(
+  next: { settings: Record<string, unknown>; progress: Record<string, unknown> },
+  opts: {
+    undo?: UndoSnapshot | null;
+    rebase?: (live: { settings: SettingsData; progress: ProgressData }) => { settings: Record<string, unknown>; progress: Record<string, unknown> } | null;
+    quiet?: (apply: () => void) => void;
+  } = {},
+): Promise<void> {
+  await whenHydrated();
+  const full = (n: { settings: Record<string, unknown>; progress: Record<string, unknown> }, days: ProgressData['days']) => {
+    const settings = { ...pick(useSettings.getInitialState(), SETTINGS_KEYS), ...n.settings } as SettingsData;
+    const byCert: ProgressData['byCert'] = {};
+    for (const [id, cp] of Object.entries((n.progress.byCert ?? {}) as Record<string, Partial<CertData>>)) byCert[id] = completeCert(cp);
+    const progress = { ...pick(useProgress.getInitialState(), PROGRESS_KEYS), ...n.progress, byCert, days } as ProgressData;
+    return { settings, progress };
+  };
+  // The phone now, with everything done since the sync started merged in (a failure throws: nothing written).
+  const live = { settings: settingsData(), progress: progressData() };
+  const written = full((opts.rebase && opts.rebase(live)) || next, live.progress.days);
+  const before = currentRows();
+  const rows = [row(useSettings, written.settings), row(useProgress, written.progress)];
+  if (opts.undo !== undefined) {
+    const b = useBackup.getState();
+    rows.push(row(useBackup, { lastBackupAt: b.lastBackupAt, undo: opts.undo, restoredSavedAt: b.restoredSavedAt ?? null }));
+  }
+  try {
+    await AsyncStorage.multiSet(rows);
+  } catch (e) {
+    await AsyncStorage.multiSet(before).catch(() => {});
+    throw e;
+  }
+  // The learner kept studying while the write was in flight: merge that in, never drop it.
+  const now = { settings: settingsData(), progress: progressData() };
+  const moved =
+    SETTINGS_KEYS.some((k) => !Object.is(now.settings[k], live.settings[k])) || PROGRESS_KEYS.some((k) => !Object.is(now.progress[k], live.progress[k]));
+  let final = written;
+  if (moved && opts.rebase) {
+    let r: ReturnType<NonNullable<typeof opts.rebase>>;
+    try {
+      r = opts.rebase(now);
+    } catch (e) {
+      // Can't merge right now: storage goes back to what the phone holds, memory is untouched, and the sync
+      // records nothing (so it never pushes a phone that lacks what it pulled). Everything is still on the phone.
+      await AsyncStorage.multiSet(currentRows()).catch(() => {});
+      throw e;
+    }
+    if (r) final = full(r, now.progress.days);
+  }
+  const apply = () => {
+    useSeen.getState().forgetValues();
+    useSettings.setState(final.settings);
+    useProgress.setState(final.progress);
+    if (opts.undo !== undefined) useBackup.setState({ undo: opts.undo });
+    for (const id of Object.keys(useProgress.getState().byCert)) {
+      ensureCatalog(id);
+      syncPlanters(id);
+    }
+  };
+  if (opts.quiet) opts.quiet(apply);
+  else apply();
+}
+
+/** Settings that stay as they are when a phone is wiped for the next learner: the device's own (theme, motion, reminders, haptics, onboarding done). */
+const WIPE_KEEPS = ['onboarded', 'theme', 'motion', 'reminder', 'haptics'] as const;
+/** A store's saved data: its state without the actions (what persist writes). */
+const dataOf = (state: object): Record<string, unknown> => Object.fromEntries(Object.entries(state).filter(([, v]) => typeof v !== 'function'));
+
+/**
+ * "Remove my progress from this phone (for shared devices)" and account
+ * deletion's "also remove from this phone" (Phase 7 review, CR B5 / SEC S3 /
+ * QA B2): this phone back to a fresh install's study state, so nothing of
+ * this learner is left for the next account to see or merge. In ONE storage
+ * write:
+ * - progress: the initial state (every exam, the streak and study days, the
+ *   plant with its name and look, your reports, plant display choices);
+ * - settings: back to their defaults (exam, exam dates, study choices, the
+ *   fit card's counters), except the device's own: theme, motion,
+ *   reminders, haptics, and onboarding done;
+ * - no paused quiz, no undo copy, no backup dates, no "seen" memory;
+ * - plus `also`: other stores to reset in the same write (lib/account.ts
+ *   adds the sync record and the account link in a cloud build).
+ * If the write fails nothing changes and it throws. Not Settings → Reset
+ * (that is per exam and keeps the plant, the exam-week list and reports).
+ */
+export type WipeAlso = { store: PersistedStore & { getState: () => object; setState: (s: object) => void }; state: object };
+export async function wipeLocalStudy(also: WipeAlso[] = []): Promise<void> {
+  await whenHydrated();
+  const kept = pick(useSettings.getState(), WIPE_KEEPS);
+  const settings = { ...pick(useSettings.getInitialState(), SETTINGS_KEYS), ...kept } as SettingsData;
+  const progress = pick(useProgress.getInitialState(), PROGRESS_KEYS) as ProgressData;
+  const backup = { lastBackupAt: null, undo: null, restoredSavedAt: null };
+  const seen = dataOf(useSeen.getInitialState());
+  // What the phone holds now, to put back if the write fails.
+  const before = [...currentRows(), row(useSeen, dataOf(useSeen.getState())), ...also.map((a) => row(a.store, dataOf(a.store.getState())))];
+  try {
+    await AsyncStorage.multiSet([
+      row(useSettings, settings),
+      row(useProgress, progress),
+      row(useSession, { active: null }),
+      row(useBackup, backup),
+      row(useSeen, seen),
+      ...also.map((a) => row(a.store, a.state)),
+    ]);
+  } catch (e) {
+    await AsyncStorage.multiSet(before).catch(() => {});
+    throw e;
+  }
+  useSeen.setState(seen);
+  useSettings.setState(settings);
+  useProgress.setState(progress);
+  useSession.getState().clear();
+  useBackup.setState(backup);
+  for (const a of also) a.store.setState(a.state);
+  sweepBackupFiles();
+}
+
+/** The undo copy for a first sync ("Undo sync"), or null when this phone's own data couldn't be checked. */
+export function syncUndoSnapshot(now = Date.now()): UndoSnapshot | null {
+  const file = currentBackup(now);
+  return checkBackupText(JSON.stringify(file)).kind === 'ok' ? { takenAt: now, file, kind: 'sync' } : null;
 }
 
 /** How reminders ended up after a restore or undo. */

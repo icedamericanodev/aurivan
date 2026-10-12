@@ -9,7 +9,16 @@
  *   for a deleted account is `gone`, while no session is `unauthorized`;
  * - "Download my data" once an hour (no recent sign-in needed);
  * - signing out on this phone always forgets the session, even offline;
- * - sync snapshots with `rev` concurrency and the 1.5 MB cap (PR 7 uses it);
+ * - sync snapshots like public.sync_snapshots (PR 7): own rows only, a
+ *   server-set `rev` with optimistic concurrency (insert at null, update at
+ *   the expected rev, else 'conflict') that is never reused, even after a
+ *   delete (here a counter per store that outlives the rows; the server
+ *   uses the write time), the size caps (settings 64 KB), 60 writes per
+ *   store per hour counted outside the rows ('rate_limited' with
+ *   Retry-After; deletes count but are never refused), writes only after
+ *   the Terms, a uuid device id, a JSON round trip on the wire (no shared
+ *   objects), and the export's stores with the newest app version that
+ *   wrote them; plus a reply lost after a write (dropNextReply);
  * - "offline" on demand, and a log of every port call for tests.
  * The session is written through the same chunked session store a real
  * build uses (cloud/secureSession.ts), into an in-memory key store.
@@ -20,14 +29,24 @@
  */
 import { CODE_TTL_MS, EXPORT_EVERY_MS, maskEmail, MAX_CODE_TRIES, normalizeEmail, recentAuth, RESEND_WAIT_MS, validCode, validEmail, type Provider } from '../../engine/account';
 import { utf8 } from '../../engine/sha256';
+import { MAX_SETTINGS_BYTES } from '../../engine/syncMerge';
+import { getDeviceId, isDeviceId, renewDeviceId } from '../deviceId';
 import { createChunkedSession } from '../secureSession';
-import { CloudError, type AccountInfo, type BoardPort, type CloudBackend, type CloudErrorCode, type SnapshotHead, type SyncStore } from '../types';
+import { CloudError, type AccountInfo, type BoardPort, type CloudBackend, type CloudErrorCode, type RandomPort, type SnapshotHead, type SyncStore } from '../types';
 import { createMemoryKV, type MemoryKV } from './kv';
 
 /** The session key (Supabase names its own like this). */
 const SESSION_KEY = 'sb-memory-auth-token';
 /** The sync cap: a snapshot over 1.5 MB (UTF-8) is refused. */
 const MAX_SNAPSHOT_BYTES = 1_500_000;
+/** The server's write limit per store (20261013000000_sync_snapshots.sql). */
+const SYNC_WRITES_PER_HOUR = 60;
+const HOUR_MS = 3_600_000;
+/** The fields a backup file needs that a snapshot never holds (export-my-data's snapshotsToStores). */
+const BACKUP_ONLY: Record<SyncStore, Record<string, unknown>> = { settings: { onboarded: true }, progress: { today: { day: '', answered: 0 } } };
+type Snapshot = SnapshotHead & { state: unknown };
+/** What crosses the network: JSON text, so the app and the "server" never share an object. */
+const wire = <T,>(x: T): T => JSON.parse(JSON.stringify(x)) as T;
 /** The server's Retry-After for "Download my data": always the full hour. */
 const EXPORT_RETRY_AFTER_SEC = 3600;
 /** The server's checks on its inputs (export-my-data's SEMVER, apple.ts isAppleCode). */
@@ -52,6 +71,8 @@ export interface MemorySeed {
   fixedCode?: string;
   /** Start offline. */
   offline?: boolean;
+  /** Every sync call fails with this code (screenshots: a server problem that isn't "offline"). */
+  failSync?: CloudErrorCode;
 }
 
 export interface MemoryOptions extends MemorySeed {
@@ -83,6 +104,10 @@ export interface MemoryControl {
   users(): MemoryUser[];
   /** What the AppState hook last told the backend (true = the app is in front). */
   foreground(): boolean;
+  /** The "server's" snapshots for a user (tests check what was pushed). */
+  snapshots(userId: string): Partial<Record<SyncStore, Snapshot>>;
+  /** Another device writes a snapshot directly on the "server" (tests, shots): rev +1, no checks. */
+  writeSnapshot(userId: string, store: SyncStore, s: { state: unknown; appVersion?: string; storeVersion?: number; deviceId?: string }): Snapshot;
 }
 
 export type MemoryBackend = CloudBackend & { control: MemoryControl };
@@ -103,7 +128,32 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
   /** Deleted accounts: a session the phone still holds for one of these gets 'gone' from the server. */
   const deleted = new Map<string, MemoryUser>();
   const codes = new Map<string, { code: string; sentAt: number; tries: number }>();
-  const snapshots = new Map<string, Partial<Record<SyncStore, SnapshotHead & { state: unknown }>>>(Object.entries(opts.snapshots ?? {}));
+  const snapshots = new Map<string, Partial<Record<SyncStore, Snapshot>>>(Object.entries(opts.snapshots ?? {}).map(([k, v]) => [k, wire(v)]));
+  /** The server's write count per user and store (private.sync_writes): it outlives the rows, and so does the last rev. */
+  const writes = new Map<string, { start: number; n: number; lastRev: number }>();
+  /** Count one write (or delete) and return the next rev; over 60 in the hour and `refuse`: rate_limited. */
+  const countWrite = (userId: string, store: SyncStore, oldRev: number, refuse: boolean): number => {
+    const key = `${userId}:${store}`;
+    const t = now();
+    const w = writes.get(key);
+    const rev = Math.max(oldRev + 1, (w?.lastRev ?? 0) + 1);
+    const win = !w || t - w.start > HOUR_MS ? { start: t, n: 1, lastRev: rev } : { start: w.start, n: w.n + 1, lastRev: rev };
+    // Refused: nothing is counted (the server's statement rolls back).
+    if (refuse && win.n > SYNC_WRITES_PER_HOUR) throw new CloudError('rate_limited', Math.max(1, Math.ceil((win.start + HOUR_MS - t) / 1000)));
+    writes.set(key, win);
+    return rev;
+  };
+  /** The newest app version among a learner's snapshots (the export's envelope: a restore then says "update the app" when it should). */
+  const newestApp = (versions: string[]): string | null => {
+    const n = (v: string) => v.split('.').map(Number);
+    const ok = versions.filter((v) => SEMVER.test(v));
+    ok.sort((a, b) => {
+      const [x, y] = [n(a), n(b)];
+      return x[0] - y[0] || x[1] - y[1] || x[2] - y[2];
+    });
+    return ok.length ? ok[ok.length - 1] : null;
+  };
+  const randomPort: RandomPort = { bytes: (n) => Uint8Array.from({ length: n }, () => Math.floor(random() * 256)) };
   const lastExport = new Map<string, number>();
   const listeners = new Set<(a: AccountInfo | null) => void>();
   const calls: string[] = [];
@@ -148,6 +198,7 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
       throw new CloudError(forced.code, undefined, forced.detail);
     }
     if (offline) throw new CloudError('offline');
+    if (opts.failSync && method.startsWith('sync.')) throw new CloudError(opts.failSync);
   };
   /** After a call's work: its reply may be "lost" (dropNextReply). */
   const leave = (method: string) => {
@@ -313,6 +364,8 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
         users.delete(u.userId);
         deleted.set(u.userId, u);
         snapshots.delete(u.userId);
+        // The cascade takes the write counters too.
+        for (const k of [...writes.keys()]) if (k.startsWith(`${u.userId}:`)) writes.delete(k);
         lastExport.delete(u.userId);
         // The server can't touch the phone's storage: the app signs out locally after this.
         leave('auth.deleteAccount');
@@ -326,9 +379,11 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
         const stores: Record<string, { version: number; state: unknown }> = {};
         for (const k of ['settings', 'progress'] as const) {
           const snap = mine[k];
-          if (snap) stores[k] = { version: snap.storeVersion, state: snap.state };
+          // As backup-file stores, with the two device-only fields a backup needs (the file restores).
+          if (snap) stores[k] = { version: snap.storeVersion, state: { ...BACKUP_ONLY[k], ...(snap.state as object) } };
         }
-        const version = o?.appVersion ?? opts.appVersion;
+        // The newest app that wrote a snapshot; with none, the app asking (code review P7 N11).
+        const version = newestApp(Object.values(mine).map((x) => x!.appVersion)) ?? o?.appVersion ?? opts.appVersion;
         const text = JSON.stringify(
           {
             app: 'aurivan',
@@ -358,31 +413,52 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
         const snap = snapshots.get(u.userId)?.[storeName];
         if (!snap) return null;
         const { state: _state, ...head } = snap;
-        return head;
+        return wire(head);
       },
       async pull(storeName) {
         await enter('sync.pull');
         const { u } = await needUser();
-        return snapshots.get(u.userId)?.[storeName] ?? null;
+        const snap = snapshots.get(u.userId)?.[storeName];
+        return snap ? wire(snap) : null;
       },
       async push(i) {
         await enter('sync.push');
         const { u } = await needUser();
+        // The table's checks and the profile policy (Terms accepted, Phase 6 review N10).
+        if (!u.termsVersion) throw new CloudError('invalid', undefined, 'terms');
+        if (i.store !== 'settings' && i.store !== 'progress') throw new CloudError('invalid', undefined, 'store');
+        if (!SEMVER.test(i.appVersion) || !Number.isInteger(i.storeVersion) || i.storeVersion < 1 || i.storeVersion > 1000 || !isDeviceId(i.deviceId)) {
+          throw new CloudError('invalid', undefined, 'row');
+        }
+        if (typeof i.state !== 'object' || i.state === null || Array.isArray(i.state)) throw new CloudError('invalid', undefined, 'state');
         const mine = snapshots.get(u.userId) ?? {};
         const prev = mine[i.store];
+        // Optimistic concurrency: insert only when there is no row; update only at the expected rev.
         if ((prev?.rev ?? null) !== i.expectedRev) throw new CloudError('conflict');
         const bytes = utf8(JSON.stringify(i.state)).length;
-        if (bytes > MAX_SNAPSHOT_BYTES) throw new CloudError('too_big');
-        const head: SnapshotHead = { store: i.store, rev: (prev?.rev ?? 0) + 1, appVersion: i.appVersion, storeVersion: i.storeVersion, updatedAt: now(), deviceId: i.deviceId };
-        mine[i.store] = { ...head, state: i.state };
+        if (bytes > MAX_SNAPSHOT_BYTES || (i.store === 'settings' && bytes > MAX_SETTINGS_BYTES)) throw new CloudError('too_big');
+        // 60 writes per store per hour, in the server's own window; a rev never used before.
+        const t = now();
+        const rev = countWrite(u.userId, i.store, prev?.rev ?? 0, true);
+        const head: SnapshotHead = { store: i.store, rev, appVersion: i.appVersion, storeVersion: i.storeVersion, updatedAt: t, deviceId: i.deviceId };
+        mine[i.store] = { ...head, state: wire(i.state) };
         snapshots.set(u.userId, mine);
-        return head;
+        leave('sync.push');
+        return { ...head };
       },
       async deleteAll() {
         await enter('sync.deleteAll');
         const { u } = await needUser();
+        // Deletes are counted (so delete + insert can't reset the window), never refused.
+        for (const [k, snap] of Object.entries(snapshots.get(u.userId) ?? {})) countWrite(u.userId, k as SyncStore, snap!.rev, false);
         snapshots.delete(u.userId);
+        leave('sync.deleteAll');
       },
+    },
+    device: {
+      // The secure key store's install id (a real build: expo-secure-store, Phase 9).
+      id: () => getDeviceId(kv, randomPort),
+      renew: () => renewDeviceId(kv, randomPort),
     },
     board,
     control: {
@@ -403,6 +479,28 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
       session: () => (session ? { ...session } : null),
       users: () => [...users.values()].map((u) => ({ ...u, providers: [...u.providers] })),
       foreground: () => foreground,
+      snapshots: (userId) => wire(snapshots.get(userId) ?? {}),
+      writeSnapshot(userId, store, w) {
+        const mine = snapshots.get(userId) ?? {};
+        const prev = mine[store];
+        // Another device's write: the same never-reused rev (not counted against this phone's limit).
+        const key = `${userId}:${store}`;
+        const cnt = writes.get(key);
+        const rev = Math.max((prev?.rev ?? 0) + 1, (cnt?.lastRev ?? 0) + 1);
+        writes.set(key, { start: cnt?.start ?? now(), n: cnt?.n ?? 0, lastRev: rev });
+        const snap: Snapshot = {
+          store,
+          rev,
+          appVersion: w.appVersion ?? '1.18.0',
+          storeVersion: w.storeVersion ?? 1,
+          updatedAt: now(),
+          deviceId: w.deviceId ?? '6f1c2b9e-4d3a-4c1b-9a7e-2f5d8c0b1a3e',
+          state: wire(w.state),
+        };
+        mine[store] = snap;
+        snapshots.set(userId, mine);
+        return wire(snap);
+      },
     },
   };
   return backend;

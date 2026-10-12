@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- DRAFT, NOT IN EFFECT. Uplift Phase 6 (accounts, built OFF). Published at the
      site root, replacing privacy.html, only at Phase 9 with the owner's go-ahead,
-     after the [placeholders] are filled in. Phase 7 adds the Sync paragraph and
-     Phase 8 the feedback board paragraph (see the HTML comments below).
+     after the [placeholders] are filled in. Phase 7 added the Sync paragraphs;
+     Phase 8 adds the feedback board paragraph (see the HTML comments below).
      Links assume the page sits at the site root, where it will be published. -->
 <meta name="robots" content="noindex, nofollow">
 <title>Privacy Policy (draft) — Aurivan</title>
@@ -79,12 +79,12 @@
     <p>Aurivan is a free CISA exam-preparation app built privacy-first. You
     don’t need an account. Without one, your study progress
     <strong>never leaves your device</strong>. If you choose to create an
-    account, we store only what is needed to sign you in. On the website we
+    account, we store only what is needed to sign you in and, if you turn
+    on sync, to sync your progress. On the website we
     use anonymous analytics only if you accept it; the mobile app has no
     analytics at all. This policy explains exactly what happens to your
     data.</p>
-    <!-- Phase 7 adds "sync your progress" and Phase 8 "run the feedback board"
-         to the sentence above (compliance §9.1 lead). -->
+    <!-- Phase 8 adds "run the feedback board" to the sentence above (compliance §9.1 lead). -->
   </div>
 
   <h2>1. Who this policy covers</h2>
@@ -171,8 +171,8 @@
     <li><strong>Your progress stays on your phone.</strong> Your answers,
     scores, how long you took to answer, how sure you said you were, when you
     first mastered each topic, saved questions, mistake journal and settings
-    are stored only on your device.</li>
-    <!-- Phase 7 adds: "...unless you turn on sync with an Aurivan account (section 6A)." -->
+    are stored only on your device, unless you turn on sync with an Aurivan
+    account (section 6A).</li>
     <li><strong>App updates.</strong> Each time the app opens, it asks Expo’s
     update service (EAS Update, run by Expo) whether a newer version of the
     app is available, and downloads it if so. That request carries the app’s
@@ -240,7 +240,38 @@
   </ul>
   <p>If you sign in with Apple, Apple may give us a private relay address
   instead of your email. We do not keep the name Apple shares.</p>
-  <!-- Phase 7 adds "Sync." and Phase 8 adds "Feedback board." here (compliance §9.1). -->
+
+  <h3>Sync</h3>
+  <p>Sync is off until you turn it on (Settings → Account → Sync this phone),
+  and the app shows you what will change before it first syncs. While it is
+  on, we keep one copy of your study progress and study settings in your
+  account: your answers (whether right, how sure you were and how long you
+  took), reviews, your mistake journal, saved questions, mocks, lessons and
+  notes done, your study days and streak, badges, game levels, your
+  readiness log and exam-week checklist, your plant, the questions you
+  reported to us, your exam date and your study settings. With each copy we
+  keep the app version that sent it, when it was sent, and a random install
+  code for the phone that sent it (it is not a hardware or advertising ID; a
+  new one is made before a different account syncs from that phone, and
+  when you remove your progress from the phone or delete your account). We
+  also keep the two most recent daily copies of your progress, so support
+  can help if something goes wrong; they are deleted when you delete the
+  synced copy or your account.</p>
+  <p>These stay on your phone and are never synced: study reminders, theme,
+  motion and haptics settings, plant display choices, and a quiz in
+  progress.</p>
+  <p>You can turn sync off at any time: that stops syncing, and the copy in
+  your account stays until you delete it. You can delete the synced copy
+  (Settings → Account → Delete synced progress: your account and the
+  progress on your phone stay), or delete your account. Deleted copies are
+  removed from our live systems at once and from backups within 30 days.</p>
+  <!-- Before publishing (security review P7 N8): confirm "within 30 days"
+       against the chosen Supabase plan's backup and PITR retention
+       (SCALING.md §3). -->
+  <p>When you sign out, you can also remove your progress from that phone
+  (for shared devices): your study progress, plant and study settings are
+  removed from the phone, and your account’s copy stays.</p>
+  <!-- Phase 8 adds "Feedback board." here (compliance §9.1). -->
 
   <h3>How we use it</h3>
   <p>Only to sign you in, keep your account safe and answer you. We do not
@@ -250,7 +281,9 @@
   <h3>Who processes it</h3>
   <ul>
     <li>Supabase stores the data in [region], under a data-processing
-    agreement.</li>
+    agreement. Like any internet service, it keeps request logs (your IP
+    address and your app's version, for example) for [Supabase's log
+    retention period], to keep the service secure.</li>
     <li>[Email provider] sends sign-in codes.</li>
     <li>Apple or Google handles sign-in if you choose them.</li>
   </ul>
@@ -267,7 +300,9 @@
   <ul>
     <li>You can sign out at any time, on this phone or on every device.</li>
     <li>To get a copy of your account data, use <strong>Settings → Account →
-    Download my data</strong>.</li>
+    Download my data</strong>. It includes your synced progress and study
+    settings; the two daily support copies are earlier versions of the same
+    progress and are not included.</li>
     <li>To delete everything, use <strong>Settings → Account → Delete
     account</strong>, visit <a href="delete-account.html">[URL]/delete-account.html</a>,
     or email <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a>.</li>

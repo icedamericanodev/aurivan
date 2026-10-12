@@ -25,6 +25,11 @@ function make(): CloudBackend | null {
     const { createMemoryBackend } = require('./memory/backend') as typeof import('./memory/backend');
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { shotsSeed } = require('./memory/seed') as typeof import('./memory/seed');
+    if (shotsOnWeb) {
+      // The screenshot page can't show system alerts on the web: draw them (shots only).
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      (require('./memory/shotsAlert') as typeof import('./memory/shotsAlert')).installShotsAlert();
+    }
     return createMemoryBackend(shotsSeed());
   }
   // Phase 9: return the Supabase adapter here. Until then a cloud build has

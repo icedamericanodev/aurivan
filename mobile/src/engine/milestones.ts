@@ -28,7 +28,7 @@
 import { GAMES } from './games/registry';
 import { DAYLIGHT_SIZE, PACE_RIGHT } from './games/daylight';
 import { share } from './games/growth';
-import { DIAGNOSTIC_SIZE, DOMAIN_TARGET, MOCK_DOMAIN_FLOOR } from './journey';
+import { DIAGNOSTIC_SIZE, DOMAIN_TARGET, MAX_MOCKS, MOCK_DOMAIN_FLOOR } from './journey';
 import { CLEAR_RIGHT } from './studyPath';
 import { CHECKPOINTS, PACE_TOLERANCE, type MockTiming } from './pace';
 import { domainOf, type AnswerRecord } from './readiness';
@@ -755,6 +755,14 @@ export interface MarkEvidence {
    * Stretch and higher tiers that open only after Whole Map need it there.
    */
   earned?: Record<string, number>;
+  /**
+   * Sync only (Uplift Phase 7 review, CR B4): the mock list may have been cut
+   * to the newest MAX_MOCKS by a merge, so a full list can have lost an older
+   * Dress Rehearsal chain the learner really took. Then a full list counts as
+   * enough for its higher tiers (the plant's support check reads it the same
+   * way). A backup file never sets this, so a restore checks exactly as before.
+   */
+  mocksMayBeCut?: boolean;
 }
 
 /** Keys that open only once Whole Map is earned (badges_game.md §2.3): Firm Footing · 80% and Dress Rehearsal · 2 / · 3. */
@@ -856,6 +864,8 @@ export function markSupported(key: string, e: MarkEvidence): boolean {
       if (t === null) return false;
       if (t > 1 && e.earned && e.earned['whole-map'] === undefined) return false;
       if (t === 1 || !e.exam) return (e.mocks?.length ?? 0) >= t;
+      // A synced list at the cap may have dropped the chain (see mocksMayBeCut): never take an earned tier away.
+      if (e.mocksMayBeCut && (e.mocks?.length ?? 0) >= MAX_MOCKS) return true;
       return dressChain(e.mocks ?? [], e.exam.fullMockSize).length >= t;
     }
     case 'on-pace':
