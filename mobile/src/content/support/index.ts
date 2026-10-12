@@ -36,6 +36,15 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.17.0',
+    date: '2026-10-12',
+    new: ['Pick your exact exam date on a calendar.'],
+    improved: [
+      'Settings is tidier: grouped sections, each showing its current choice, with options that open in a simple panel.',
+      'Appearance now lives in one place, in Settings.',
+    ],
+  },
+  {
     version: '1.16.1',
     date: '2026-10-12',
     improved: ['Switching between tabs is much faster, and answering questions no longer slows the app down.'],
