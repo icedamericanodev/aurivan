@@ -122,16 +122,13 @@ describe('Today', () => {
 });
 
 describe('You', () => {
-  it('Y1 (kept on purpose): You has the Appearance switch, and it is the same setting as Settings → Appearance', () => {
-    // The owner asked for it on You after not finding dark mode in Settings.
+  it('Y1 (mobile 1.17): You has no Appearance switch; the theme lives only in Settings → Appearance', () => {
+    // The owner found the copy on You redundant once Settings was tidy.
     mount(<You />);
-    const groups = root().findAll((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'Appearance' && typeof n.type === 'string');
-    expect(groups).toHaveLength(1);
-    const dark = groups[0].findAll((n) => n.props.accessibilityRole === 'radio' && n.props.accessibilityLabel === 'Dark appearance' && typeof n.props.onPress === 'function')[0];
-    act(() => {
-      dark.props.onPress();
-    });
-    expect(useSettings.getState().theme).toBe('dark');
+    expect(root().findAll((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'Appearance')).toHaveLength(0);
+    expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /appearance$/i.test(n.props.accessibilityLabel))).toHaveLength(0);
+    // Settings stays one tap away: the gear beside the title.
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'Settings' && n.props.accessibilityRole === 'button')).toHaveLength(1);
   });
 
   it('Y4: with no mocks yet, "Start a mini mock" opens the start sheet with a third of the exam', () => {
