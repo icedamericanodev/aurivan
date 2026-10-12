@@ -5,7 +5,7 @@
  *
  * The screenshot script picks the starting state per page load through
  * localStorage key `aurivan.shots.cloud` (web only), JSON:
- *   { "signedIn": true, "authAgeMin": 30, "offline": false, "providers": ["email"], "remote": "progress" }
+ *   { "signedIn": true, "authAgeMin": 30, "offline": false, "providers": ["email"], "remote": "progress", "syncFails": "server" }
  * Missing or unreadable = signed out. `authAgeMin` = how long ago Maya last
  * signed in (over 10 minutes, deleting her account asks her to confirm it's
  * her first). `providers` = her sign-in methods (default email and Google;
@@ -13,7 +13,8 @@
  * Maya's account already holds from her other phone (Phase 7 sync shots):
  * "progress" (answers, a streak and an exam date), "newer" (written by a
  * newer app: sync pauses), "unreadable" (a copy the checker refuses: sync
- * pauses), or nothing extra (only her settings).
+ * pauses), or nothing extra (only her settings). `syncFails` = every sync
+ * call fails with that code (a server problem: "We'll try again soon").
  *
  * The board's 12 posts, held post, report and staff account arrive with
  * PR 8, when the memory backend gains the board.
@@ -35,6 +36,7 @@ interface ShotsState {
   offline?: boolean;
   providers?: Provider[];
   remote?: 'progress' | 'newer' | 'unreadable';
+  syncFails?: 'server';
 }
 
 const OTHER_PHONE = '6f1c2b9e-4d3a-4c1b-9a7e-2f5d8c0b1a3e';
@@ -74,6 +76,7 @@ export function shotsSeed(now = Date.now()): MemoryOptions {
     appVersion: Constants.expoConfig?.version ?? '1.0.0',
     fixedCode: DEMO_CODE,
     offline: state.offline === true,
+    ...(state.syncFails === 'server' ? { failSync: 'server' as const } : {}),
     users: [{ userId: DEMO_USER_ID, email: DEMO_EMAIL, providers: demoProviders(state.providers), termsVersion: TERMS_VERSION, createdAt: now - 30 * day }],
     signedIn: state.signedIn ? { userId: DEMO_USER_ID, authAt: now - (state.authAgeMin ?? 1) * 60_000 } : null,
     snapshots: {

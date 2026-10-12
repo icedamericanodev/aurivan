@@ -71,6 +71,8 @@ export interface MemorySeed {
   fixedCode?: string;
   /** Start offline. */
   offline?: boolean;
+  /** Every sync call fails with this code (screenshots: a server problem that isn't "offline"). */
+  failSync?: CloudErrorCode;
 }
 
 export interface MemoryOptions extends MemorySeed {
@@ -196,6 +198,7 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
       throw new CloudError(forced.code, undefined, forced.detail);
     }
     if (offline) throw new CloudError('offline');
+    if (opts.failSync && method.startsWith('sync.')) throw new CloudError(opts.failSync);
   };
   /** After a call's work: its reply may be "lost" (dropNextReply). */
   const leave = (method: string) => {

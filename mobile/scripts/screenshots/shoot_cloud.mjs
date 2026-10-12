@@ -35,8 +35,17 @@
 //   sync-delete      the Delete synced progress confirmation
 //   sync-you         You, signed in, with its own Account section (UX O3)
 //   sync-first-both-xl   the preview at about 200% text
+// Phase 7 review (FIXES_P7):
+//   sync-status-retry      a server problem that isn't the connection: "We'll try again soon" (UX P1)
+//   sync-signout-remove    the sign-out sheet ticked: the red "Remove and sign out" (UX H1)
+//   sync-signout-unsynced  …tapped with sync off: the "isn't in your account yet" warning (UX H1)
+//   sync-reset             Settings → Reset while syncing, with an Undo sync copy waiting (UX H2, O2)
+//   sync-restore           the restore preview while syncing (UX H2)
+//   sync-switch            now also shows Start fresh's new wording (UX P3, P4)
+// The web build can't show system alerts, so cloud/memory/shotsAlert.ts draws them (shots only).
 //   off-you, off-settings          the flag-OFF build (served on 8094): proof nothing changed
 import { createRequire } from 'module';
+import { createHash } from 'crypto';
 import fs from 'fs';
 const require = createRequire(process.env.PLAYWRIGHT_REQUIRE_FROM || import.meta.url);
 const { chromium } = require('playwright');
@@ -199,18 +208,21 @@ const tap = async (page, name) => {
 // ── Sync (Phase 7) ─────────────────────────────────────────────────────
 const SYNC = 'aurivan.sync.v1';
 const PROGRESS = 'aurivan.progress.v1';
-/** This phone already syncs (the launch sync then runs against the seeded account). */
+/** The demo learner's account hash (src/cloud/memory/seed.ts DEMO_USER_ID): a sync record belongs to one account. */
+const MAYA_HASH = createHash('sha256').update('mem-user-maya').digest('hex');
+const NONE = { settings: null, progress: null };
+/** This phone already syncs, with Maya's account (the launch sync then runs against the seeded account). */
 const syncOn = (page) =>
   page.evaluate(
-    ([k]) =>
+    ([k, h, none]) =>
       localStorage.setItem(
         k,
         JSON.stringify({
-          state: { enabled: true, lastRev: { settings: null, progress: null }, lastPushedHash: { settings: null, progress: null }, lastSyncAt: null, pausedReason: null, deferredPull: false, stamps: { settings: {}, progress: {} } },
+          state: { enabled: true, accountHash: h, lastRev: none, lastAt: none, lastPushedHash: none, pausedRev: none, lastSyncAt: null, pausedReason: null, deferredPull: false, stamps: { settings: {}, progress: {} } },
           version: 1,
         }),
       ),
-    [SYNC],
+    [SYNC, MAYA_HASH, NONE],
   );
 const syncOff = (page) => page.evaluate(([k]) => localStorage.removeItem(k), [SYNC]);
 /** Put the demo learner's own progress and settings back (a launch sync above may have merged the account into them). */
@@ -232,8 +244,10 @@ const syncSwitch = async (page) => {
 {
   const { ctx, page } = await phone();
   await go(page, ON, '/you');
-  // The four statuses: the launch sync runs against the account as seeded.
+  // The statuses: the launch sync runs against the account as seeded. "retry" goes first: leaving a page
+  // syncs it once more (the app went to the background), which can save that page's pause again.
   for (const [name, state] of [
+    ['sync-status-retry', { signedIn: true, remote: 'progress', syncFails: 'server' }],
     ['sync-status-just', { signedIn: true, remote: 'progress' }],
     ['sync-status-offline', { signedIn: true, remote: 'progress', offline: true }],
     ['sync-status-newer', { signedIn: true, remote: 'newer' }],
@@ -258,6 +272,29 @@ const syncSwitch = async (page) => {
   await go(page, ON, '/settings');
   await scrollTo(page, 'Your data', 120);
   await shot(page, 'sync-undo');
+  // Reset while syncing (an Undo sync copy is waiting): the alert says what that means.
+  await scrollTo(page, 'Reset CISA progress', 420);
+  await tap(page, 'Reset CISA progress');
+  await shot(page, 'sync-reset');
+  await page.getByRole('button', { name: 'Cancel', exact: true }).last().click();
+  await page.waitForTimeout(500);
+  // Restoring a backup while syncing: the preview's sync line.
+  {
+    const day = 86400000;
+    const file = JSON.stringify({
+      app: 'aurivan',
+      schema: 1,
+      exportedAt: new Date(Date.now() - 3 * day).toISOString(),
+      appVersion: '1.17.0',
+      stores: { settings: JSON.parse(seed['aurivan.settings.v1']), progress: JSON.parse(seed[PROGRESS]) },
+    });
+    await scrollTo(page, 'Your data', 120);
+    const chooser = page.waitForEvent('filechooser');
+    await page.getByRole('button', { name: 'Restore from a backup' }).first().click();
+    await (await chooser).setFiles({ name: 'aurivan-backup.json', mimeType: 'application/json', buffer: Buffer.from(file) });
+    await page.waitForTimeout(1500);
+    await shot(page, 'sync-restore');
+  }
 
   // Only this phone has progress.
   await setState(page, { signedIn: true });
@@ -285,6 +322,23 @@ const syncSwitch = async (page) => {
   await syncOn(page);
   await go(page, ON, '/account/sign-out');
   await shot(page, 'sync-signout');
+  // Ticked: the red button. With sync off, a tap warns that some progress is only on this phone.
+  await page.getByRole('checkbox').first().click();
+  await page.waitForTimeout(500);
+  await shot(page, 'sync-signout-remove');
+  // Off through the app itself (removing the record from the script races the sync that leaving a page runs).
+  await go(page, ON, '/account');
+  await page.getByRole('switch', { name: 'Sync this phone', exact: true }).first().click();
+  await page.waitForTimeout(800);
+  await go(page, ON, '/account/sign-out');
+  await page.getByRole('checkbox').first().click();
+  await page.waitForTimeout(400);
+  await tap(page, 'Remove and sign out');
+  await page.waitForTimeout(600);
+  await shot(page, 'sync-signout-unsynced');
+  await page.getByRole('button', { name: 'Cancel', exact: true }).last().click();
+  await page.waitForTimeout(400);
+  await syncOn(page);
   await go(page, ON, '/account/what-syncs');
   await shot(page, 'sync-what');
   await go(page, ON, '/account/delete-synced');
