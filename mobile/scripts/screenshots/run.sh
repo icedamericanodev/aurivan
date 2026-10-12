@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -109,6 +109,13 @@ elif [ "${SHOTS:-}" = plant ]; then
   # the planting (REDUCED=1 for the reduced set). PLANT=4b runs only these.
   if [ "${PLANT:-}" != 4b ]; then node scripts/screenshots/shoot_plant.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
   node scripts/screenshots/shoot_plant4b.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = fit ]; then
+  # Mobile 1.15 "Fit the plan": onboarding steps 2–4, Today (a new learner's
+  # day 1, a 10-minute day, the Exam-focused mini mock, the "Fit your plan"
+  # card, Tomorrow), the fit screen, Settings → Your study, Practice's order,
+  # You's legend, the mistake tags and their sheet, an answer after a hint
+  # and the exam eve (shoot_fit.mjs; NARROW=1; FONT_SCALE=2 for about 200% text).
+  node scripts/screenshots/shoot_fit.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).
