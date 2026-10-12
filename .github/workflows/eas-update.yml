@@ -74,7 +74,7 @@ jobs:
         run: |
           set -uo pipefail
           for scope in project account; do
-            if ! raw="$(npx --yes eas-cli@24 env:list --environment preview --format short --scope "$scope" --non-interactive 2>&1)"; then
+            if ! raw="$(npx --yes eas-cli@24 env:list --environment preview --format short --scope "$scope" 2>&1)"; then
               echo "::warning::Couldn't read the EAS '$scope' variables, so this check was skipped for them: $raw"
               continue
             fi
