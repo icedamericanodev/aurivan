@@ -24,6 +24,11 @@
  * When every plan item is done, the forest panel becomes the clearing card
  * (today's numbers + how readiness moved) and "Tomorrow" previews what's next.
  *
+ * Proof (mobile 1.16, PHASE5.md §3.1–3.2): tapping the readiness words opens
+ * the readiness report (the plant beside them still opens Your plant). From 7
+ * to 2 days before the exam, one quiet "Exam week" card sits under the
+ * readiness row, above "Also today": the checklist, or Hide.
+ *
  * Signature moments (Phase 5b, components/moments.tsx):
  *   - the day before the exam / exam day: a calm card above the panel;
  *   - "Your readiness is holding" (lower bound ≥ 80% for 7 days): the forest
@@ -35,6 +40,8 @@ import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow, todayMinutesLine } from '../../components/journey';
 import { FitCard } from '../../components/fit';
+import { ExamWeekCard } from '../../components/readinessReport';
+import { examWeekCardDue, examWeekCount, examWeekOf } from '../../engine/examWeek';
 import { Celebrate, Pop, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
 import { ICON_STROKE, Play, Settings, Sprig } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
@@ -42,7 +49,7 @@ import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, Scre
 import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
 import { shouldAskFit } from '../../engine/fit';
 import { aboutMin, spokenMin } from '../../engine/pace';
-import { sayLater } from '../../lib/a11y';
+import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../../lib/a11y';
 import { useSettings } from '../../store/settings';
 import { runPlanItem } from '../../lib/actions';
 import { haptic } from '../../lib/haptics';
@@ -108,6 +115,8 @@ export default function Today() {
   const markCelebrated = useProgress((s) => s.markCelebrated);
   // When the clearing's haptic last played: the plant's growth stays silent right after it (one haptic only).
   const clearingTapAt = useRef(0);
+  // The heading under the exam-week card: focus lands there when the card is hidden (code review M3b).
+  const nextHeadRef = useRef<View>(null);
   // Mobile 1.7: a fix shipped after something this learner reported. One quiet
   // line, shown ONCE (QA): it is marked seen as soon as Today shows it and
   // kept for this visit (the milestones back-fill pattern), with a Dismiss.
@@ -287,6 +296,8 @@ export default function Today() {
     askedDays: fitAskDays,
     today: plan.day,
   });
+  // Mobile 1.16: the exam-week card, 7 to 2 days out, until hidden for this exam date.
+  const examWeekDue = examWeekCardDue(j.daysLeft, j.progress.moments?.examWeek, j.examDate);
   // Count the day the card showed: after 3 separate days it stays away (code review M4).
   useEffect(() => {
     if (askFit) useSettings.getState().noteFitAsked(plan.day);
@@ -372,6 +383,7 @@ export default function Today() {
             ringsGrowth={ringsGrowth}
             rangeGrowth={rangeGrowth}
             lead={plantView.plant && !showReady ? todayPlant(104, 'today-plant') : undefined}
+            onPress={() => router.push('/readiness')}
           />
         </Enter>
       )}
@@ -400,11 +412,26 @@ export default function Today() {
       )}
 
       <Enter i={3}>
+        {/* Mobile 1.16: exam week (7 to 2 days out): one calm card, under the readiness row. */}
+        {examWeekDue && j.examDate && (
+          <View style={{ marginTop: space.xl }}>
+            <ExamWeekCard
+              count={examWeekCount(examWeekOf(j.progress.moments?.examWeek, j.examDate).done)}
+              onOpen={() => router.push('/exam-week')}
+              onHide={() => {
+                useProgress.getState().hideExamWeek(j.cert.id, j.examDate!);
+                sayLater('Hidden. The checklist stays in your readiness report.');
+                // The card unmounts under the focused button: move focus to the next heading, after the announcement.
+                moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50);
+              }}
+            />
+          </View>
+        )}
         {allDone ? (
           <>
             {tomorrow.length > 0 && (
               <>
-                <Section title="Tomorrow" meta={tomorrowMinutes} metaLabel={tomorrowMinutes && spokenMin(tomorrowMinutes)} />
+                <Section title="Tomorrow" meta={tomorrowMinutes} metaLabel={tomorrowMinutes && spokenMin(tomorrowMinutes)} headRef={nextHeadRef} />
                 {tomorrow.map((item, k) => (
                   <ListRow
                     key={k}
@@ -428,7 +455,7 @@ export default function Today() {
         ) : (
           alsoCount > 0 && (
             <>
-              <Section title="Also today" meta={sectionMinutes(alsoMinutes)} metaLabel={alsoMinutes > 0 ? spokenMin(aboutMin(alsoMinutes)) : undefined} />
+              <Section title="Also today" meta={sectionMinutes(alsoMinutes)} metaLabel={alsoMinutes > 0 ? spokenMin(aboutMin(alsoMinutes)) : undefined} headRef={nextHeadRef} />
               {resume && (
                 <ListRow
                   icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}

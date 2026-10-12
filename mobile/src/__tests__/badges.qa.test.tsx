@@ -678,7 +678,7 @@ describe('3. "Next for your exam" at each journey stage', () => {
       });
       results[m.key] = opened();
     }
-    expect(results['first-foothold']).toBe('session:Diagnostic');
+    expect(results['first-foothold']).toBe('session:Starting check');
     expect(results['firm-footing:5']).toBe('session:Smart · Info Protection');
     expect(results['whole-map']).toBe('session:Smart · IS Audit'); // the weakest domain (nothing answered yet)
     expect(results['dress-rehearsal']).toBe('/mock-start');

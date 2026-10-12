@@ -479,6 +479,12 @@ describe('Forecast is only the game’s name', () => {
     'components/shareCard.tsx',
     'app/(tabs)/home.tsx',
     'app/(tabs)/you.tsx',
+    // Mobile 1.16: the readiness report and the exam week.
+    'engine/readinessReport.ts',
+    'engine/examWeek.ts',
+    'components/readinessReport.tsx',
+    'app/readiness.tsx',
+    'app/exam-week.tsx',
   ];
   const stripComments = (src: string) => src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|\s)\/\/.*$/gm, '$1');
 

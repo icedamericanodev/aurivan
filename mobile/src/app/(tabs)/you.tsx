@@ -20,6 +20,9 @@
  * Mobile 1.7: one "Help and feedback" row at the end (app/help.tsx).
  * Mobile 1.13: your plant in the header (opens Your plant), or a "Plant
  * yours" entry when there is none. Settings → Show my plant off hides both.
+ * Mobile 1.16: "See your readiness report" under the rings; each Mock exams
+ * row opens the report with that mock's domains shown, and the section has
+ * a "See report" button.
  */
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -35,12 +38,13 @@ import { growthShort, plantCallName } from '../../engine/plant';
 import { usePlantView } from '../../lib/plant';
 import { ThemeSwitch } from '../../components/themeSwitch';
 import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Row, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
-import { durationWords, pacingStats, pacingStatsLine, TIMING_LABEL } from '../../engine/pace';
+import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
+import { mockSubtitle } from '../../components/readinessReport';
 import { rangeLabel, rangeSpoken, readinessRange } from '../../engine/readinessRange';
+import { mockPct } from '../../engine/readinessReport';
 import { REVIEW_UNIT } from '../../engine/srs';
 import { dayKey } from '../../engine/streak';
 import { guardedStart, reviewSubtitle, startReview } from '../../lib/sessions';
-import { shortDate } from '../../lib/format';
 import { caseEarnedCount } from '../../engine/badgeCatalog';
 import { useNewBadge } from '../../lib/badges';
 import { backfillLine, seeBackfill } from '../../lib/milestones';
@@ -185,6 +189,13 @@ export default function You() {
           }
         />
         <T v="meta" style={{ marginTop: 14 }}>{RINGS_NOTE}</T>
+        <Button
+          kind="ghost"
+          label="See your readiness report"
+          accessibilityHint="Your mock trend, each domain side by side, and what would raise your low end"
+          onPress={() => router.push('/readiness')}
+          style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
+        />
       </Enter>
 
       <Enter i={2} style={{ marginTop: 26 }}>
@@ -293,7 +304,10 @@ export default function You() {
           last
         />
 
-        <Section title="Mock exams" />
+        <Section
+          title="Mock exams"
+          action={progress.mocks.length ? { label: 'See report', onPress: () => router.push('/readiness'), accessibilityLabel: 'See your readiness report' } : undefined}
+        />
         {progress.mocks.length === 0 ? (
           <>
             <EmptyState compact title="No mocks yet" body="A mini mock shows how the exam feels. Start one whenever you like." />
@@ -310,11 +324,16 @@ export default function You() {
           progress.mocks.slice(0, 10).map((m, i, all) => (
             <ListRow
               key={m.id}
-              lead={<Lead value={`${Math.round((m.correct / m.total) * 100)}%`} unit="score" />}
+              lead={<Lead value={`${mockPct(m)}%`} unit="score" />}
               title={`${m.total} questions`}
               // Extra time and untimed mocks are labelled in history (older results were standard).
               // The time in the same words as Results ("3 h 31 min", "Under 1 min").
-              subtitle={`${shortDate(m.finishedAt)} · ${durationWords(m.minutesUsed * 60_000).text}${m.timing && m.timing !== 'standard' ? ` · ${TIMING_LABEL[m.timing].toLowerCase()}` : ''}`}
+              subtitle={mockSubtitle(m)}
+              // mockPct: a 0-question mock (a hand-edited backup) reads 0%, never NaN.
+              accessibilityLabel={`${m.total} questions, score ${mockPct(m)} percent, ${spokenMin(mockSubtitle(m))}`}
+              // Mobile 1.16 (Elena's gap): a past mock opens the report with its domains shown.
+              accessibilityHint="Opens your readiness report with this mock’s domains"
+              onPress={() => router.push({ pathname: '/readiness', params: { mock: m.id } })}
               last={i === all.length - 1}
             />
           ))

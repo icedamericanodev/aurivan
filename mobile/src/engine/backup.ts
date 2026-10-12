@@ -45,6 +45,7 @@ import {
 import { isLookOfSlot, type LookSlot } from './plantLooks';
 import { examDateLabel } from './examDay';
 import { snapMinutes, type DailyMinutes, type Familiarity } from './fit';
+import { cleanDone, type ExamWeekItem } from './examWeek';
 import { reminderSummary } from './reminders';
 import { migrateProgress, PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
 import { dayKey } from './streak';
@@ -294,7 +295,17 @@ const mockResult = rule(
 const mistakeEntry = obj({ at: ts }, { picked: LETTER, slip: SLIP, resolved: bool, confidence: CONFIDENCE, fixedLater: bool });
 const percent = range(0, 100);
 const readinessDay = obj({ day: date, min: nullable(percent), last: nullable(percent) });
-const moments = obj({}, { readiness: list(readinessDay, MAX_LIST * 2), readySeenAt: ts });
+/**
+ * Mobile 1.16: the exam-week checklist's ticks. A cosmetic list is never a
+ * reason to refuse the file (QA B1/B2): an id this app doesn't know (a newer
+ * app's, or a tampered file's), a value that isn't text, or a missing or
+ * broken list are all dropped, and each id counts once. cleanDone() keeps
+ * only the six known ids, so a long junk list can't grow the save.
+ */
+const examWeekDone: Check<ExamWeekItem[]> = (x) => (Array.isArray(x) ? cleanDone(x.filter((v) => typeof v === 'string')) : []);
+// `done` is read leniently (above), so a file without it restores with an empty list.
+const examWeek = obj({ for: date, done: examWeekDone }, { hidden: bool });
+const moments = obj({}, { readiness: list(readinessDay, MAX_LIST * 2), readySeenAt: ts, examWeek });
 const subtopicMastery = obj({ firstDay: date }, { firstAt: ts, masteredAt: date });
 /** A game score: Forecast can go below zero (a wrong "Sure" is −5). */
 const gameScore = range(-1000, 100_000);

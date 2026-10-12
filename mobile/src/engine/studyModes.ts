@@ -15,7 +15,8 @@
  * Pure TypeScript: no React, no storage.
  */
 import type { PackQuestion } from '../content/types';
-import type { Familiarity } from './fit';
+import { planTolerance, questionsFor, type Familiarity } from './fit';
+import { MINUTES_PER_QUESTION } from './pace';
 import type { Stage } from './journey';
 import { shuffled, type Rng } from './random';
 
@@ -35,10 +36,30 @@ export const SESSION_SIZES = [10, 20, 50] as const;
 export type SessionSize = (typeof SESSION_SIZES)[number];
 export const DEFAULT_SIZE: SessionSize = 10;
 
-/** The size the learner last chose, or the nearest offered one (a restored or odd value). */
-export function sessionSize(n: number | undefined): SessionSize {
-  if (n === undefined || !Number.isFinite(n)) return DEFAULT_SIZE;
-  return SESSION_SIZES.reduce((best, s) => (Math.abs(s - n) < Math.abs(best - n) ? s : best), SESSION_SIZES[0] as SessionSize);
+/** The offered size nearest to `n` (ties go to the smaller one). */
+const nearestSize = (n: number, sizes: readonly SessionSize[] = SESSION_SIZES): SessionSize =>
+  sizes.reduce((best, s) => (Math.abs(s - n) < Math.abs(best - n) ? s : best), sizes[0]);
+
+/**
+ * Mobile 1.16 (UX review O8): a learner who never picked a length gets one
+ * sized from their daily minutes. It is the offered size nearest to what fits
+ * the minutes at study pace, never one that runs past the day (the planner's
+ * own 15% tolerance, engine/fit.ts): 10 min → 10, 20 → 10, 30 → 20, 45 → 20.
+ * Fit before stretch: a 20-question set (about 24 min) would overrun 20 minutes.
+ */
+export function sizeForMinutes(minutes: number | undefined): SessionSize {
+  if (minutes === undefined || !Number.isFinite(minutes)) return DEFAULT_SIZE;
+  const fits = SESSION_SIZES.filter((s) => s * MINUTES_PER_QUESTION <= minutes + planTolerance(minutes));
+  return fits.length ? nearestSize(questionsFor(minutes), fits) : SESSION_SIZES[0];
+}
+
+/**
+ * The size the learner last chose, or the nearest offered one (a restored or
+ * odd value). Unset: sized from the daily minutes when given (O8), else 10.
+ */
+export function sessionSize(n: number | undefined, dailyMinutes?: number): SessionSize {
+  if (n === undefined || !Number.isFinite(n)) return dailyMinutes === undefined ? DEFAULT_SIZE : sizeForMinutes(dailyMinutes);
+  return nearestSize(n);
 }
 
 /** The mode the app suggests for a journey stage (behavioural review §3). */

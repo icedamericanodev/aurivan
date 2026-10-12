@@ -12,6 +12,7 @@ import { subtopicOfQuestion } from '../content/notes';
 import type { Letter } from '../content/types';
 import { MAX_ANSWER_MS } from '../engine/answerClock';
 import { logReadinessDay, type ReadinessDay } from '../engine/examReady';
+import { hideExamWeek, toggleExamWeek, type ExamWeekItem, type ExamWeekSaved } from '../engine/examWeek';
 import { MAX_MOCKS } from '../engine/journey';
 import { noteRound, type GameGrowth, type RoundOutcome, type TierChange } from '../engine/games/growth';
 import { pushScore } from '../engine/games/recap';
@@ -84,6 +85,12 @@ export interface CertMoments {
   readiness?: ReadinessDay[];
   /** When the one-time "You're ready" panel was dismissed (once per cert). */
   readySeenAt?: number;
+  /**
+   * Mobile 1.16: the exam-week checklist's ticks, for ONE exam date
+   * (engine/examWeek.ts). Optional: older saves have none and read as a
+   * fresh list. Moving the exam date starts a fresh list.
+   */
+  examWeek?: ExamWeekSaved;
 }
 
 export interface CertProgress {
@@ -248,6 +255,10 @@ export interface ProgressState {
   noteReadiness: (certId: string, day: string, low: number | null) => void;
   /** The learner closed the "You're ready" panel; it never shows again for this cert. */
   dismissReady: (certId: string) => void;
+  /** Mobile 1.16: tick or untick one exam-week item, for this exam date. */
+  tickExamWeek: (certId: string, examDate: string, id: ExamWeekItem) => void;
+  /** Mobile 1.16: hide Today's exam-week card for this exam date (the ticks stay). */
+  hideExamWeek: (certId: string, examDate: string) => void;
   resetCert: (certId: string) => void;
   /** Build E: save where In order / Guided stopped for a scope ("all" or a domain id). */
   setPathCursor: (certId: string, mode: keyof StudyPathState, scope: string, value: string) => void;
@@ -490,6 +501,20 @@ export const useProgress = create<ProgressState>()(
           return { byCert: { ...s.byCert, [certId]: { ...cp, moments: { ...cp.moments, readySeenAt: Date.now() } } } };
         }),
 
+      tickExamWeek: (certId, examDate, id) =>
+        set((s) => {
+          const cp = normalize(s.byCert[certId]);
+          const examWeek = toggleExamWeek(cp.moments?.examWeek, examDate, id);
+          return { byCert: { ...s.byCert, [certId]: { ...cp, moments: { ...cp.moments, examWeek } } } };
+        }),
+
+      hideExamWeek: (certId, examDate) =>
+        set((s) => {
+          const cp = normalize(s.byCert[certId]);
+          const examWeek = hideExamWeek(cp.moments?.examWeek, examDate);
+          return { byCert: { ...s.byCert, [certId]: { ...cp, moments: { ...cp.moments, examWeek } } } };
+        }),
+
       setPathCursor: (certId, mode, scope, value) =>
         set((s) => {
           const cp = normalize(s.byCert[certId]);
@@ -580,13 +605,16 @@ export const useProgress = create<ProgressState>()(
           delete days[certId];
           // "Shows once per certification": a reset keeps the dismissed flag.
           const seen = s.byCert[certId]?.moments?.readySeenAt;
+          // Mobile 1.16: the exam-week checklist is about the exam itself (the
+          // booking, the route, sleep), not study progress: a reset keeps it.
+          const examWeek = s.byCert[certId]?.moments?.examWeek;
           // Build F: a reset is a fresh start for milestones too. The launch
           // back-fill is marked as already done (nothing found, summary seen),
           // so it never runs again and re-awards from older data.
           // The catalogue fill is marked done too (mobile 1.11), for the same reason.
           const milestones: CertMilestones = { earned: {}, backfill: { at: Date.now(), count: 0, seen: true }, catalog: CATALOG_VERSION };
           const base: CertProgress = { ...emptyCert(), milestones };
-          const fresh: CertProgress = seen ? { ...base, moments: { readySeenAt: seen } } : base;
+          const fresh: CertProgress = seen || examWeek ? { ...base, moments: { ...(seen ? { readySeenAt: seen } : {}), ...(examWeek ? { examWeek } : {}) } } : base;
           // Mobile 1.13: the plant goes back to a seed, but keeps its name,
           // species, look and unlocks (cosmetics carry no readiness claim).
           // `replantedAt` stops an old exam-ready moment helping it bloom.
@@ -625,6 +653,7 @@ export const useProgress = create<ProgressState>()(
       // Build F added only OPTIONAL fields (CertProgress.gameGrowth / milestones,
       // AnswerRecord.lastGame): same.
       // Mobile 1.7 added one OPTIONAL top-level field (reports): same.
+      // Mobile 1.16 added CertMoments.examWeek, OPTIONAL: same.
       // Mobile 1.13 added CertProgress.plant and the top-level plantSettings,
       // both OPTIONAL: an old save loads as-is and has no plant until the
       // learner plants one (never one made up for them).

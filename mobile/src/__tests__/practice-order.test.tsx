@@ -116,3 +116,21 @@ describe('Practice: mocks first for the exam-focused, the pace offer under Timed
   });
 });
 
+
+describe('Practice: the hero sized from the daily minutes (mobile 1.16, UX review O8)', () => {
+  it('no length chosen: 30 minutes a day starts 20 questions; 20 minutes, 10 (never past the day)', () => {
+    useSettings.setState({ familiarity: 'some', studyMode: 'smart', studySize: undefined, dailyMinutes: 30 });
+    mount(<Practice />);
+    expect(allText()).toContain('20 questions picked for you');
+    unmount();
+    useSettings.setState({ dailyMinutes: 20 });
+    mount(<Practice />);
+    expect(allText()).toContain('10 questions picked for you');
+  });
+
+  it('a length the learner chose always wins', () => {
+    useSettings.setState({ familiarity: 'some', studyMode: 'smart', studySize: 50, dailyMinutes: 10 });
+    mount(<Practice />);
+    expect(allText()).toContain('50 questions picked for you');
+  });
+});

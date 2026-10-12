@@ -80,10 +80,17 @@ jobs:
 
       # Phones only (arm64 and older 32-bit arm); emulator CPUs are left out to
       # keep the build and the download smaller.
+      # The default Gradle memory (2 GB, 512 MB metaspace) runs out during the
+      # release lint pass; the runner has 16 GB, so give Gradle room. Then
+      # check the APK really exists, so a failed build can never look green.
       - name: Build the release APK
         if: steps.skip.outputs.skip != 'true'
         working-directory: mobile/android
-        run: ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a,armeabi-v7a --no-daemon
+        run: |
+          sed -i 's/^org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx6g -XX:MaxMetaspaceSize=2g/' gradle.properties
+          grep -q '^org.gradle.jvmargs=' gradle.properties || echo 'org.gradle.jvmargs=-Xmx6g -XX:MaxMetaspaceSize=2g' >> gradle.properties
+          ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a,armeabi-v7a --no-daemon
+          test -f app/build/outputs/apk/release/app-release.apk || { echo "No APK was produced; see the Gradle errors above."; exit 1; }
 
       - name: Publish it to a GitHub Release
         if: steps.skip.outputs.skip != 'true'

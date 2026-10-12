@@ -24,7 +24,7 @@ import { computeReadiness, type Readiness } from '../engine/readiness';
 import { sessionSize } from '../engine/studyModes';
 import { selectCert, useProgress, type CertProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
-import { useSettings } from '../store/settings';
+import { dailyMinutesOf, useSettings } from '../store/settings';
 import { badgeCase } from './milestones';
 import { guardedStart, startPractice, startReview, startStudy } from './sessions';
 import { daysUntil } from './useActiveCert';
@@ -71,11 +71,11 @@ const openSession = () => router.push('/session');
  * guardedStart, so a paused mock is never replaced without asking.
  */
 export function studyFor(target: StudyTarget, certId: string, dueCount: number) {
-  const size = sessionSize(useSettings.getState().studySize);
+  const size = sessionSize(useSettings.getState().studySize, dailyMinutesOf(useSettings.getState()));
   const smart = (domainId?: string) => guardedStart(() => startStudy(certId, { mode: 'smart', count: size, ...(domainId ? { domainId } : {}) }), openSession);
   switch (target.kind) {
     case 'diagnostic':
-      return guardedStart(() => startPractice(certId, { count: DIAGNOSTIC_SIZE, title: 'Diagnostic' }), openSession);
+      return guardedStart(() => startPractice(certId, { count: DIAGNOSTIC_SIZE, title: 'Starting check' }), openSession);
     case 'guided':
       return router.push('/guided');
     case 'smart':

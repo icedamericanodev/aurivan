@@ -6,20 +6,20 @@
  * (so they don't cut off the button's own feedback), and queued on iOS.
  */
 import { useState } from 'react';
-import { AccessibilityInfo, Platform } from 'react-native';
 import { BACKUP_ERROR_COPY, UNDO_DAYS } from '../engine/backup';
+import { sayLater } from './a11y';
 import { haptic } from './haptics';
 import { pickBackup, restoreBackup, type ReadyToRestore, type ReminderOutcome } from './backup';
 
 export type Busy = null | 'save' | 'pick' | 'restore' | 'undo';
 export type FlowMessage = { tone: 'ok' | 'problem'; title: string; text: string };
 
-/** Speak a message once, ~600 ms after it appears; queued behind other speech on iOS. */
+/**
+ * Speak a message once, ~600 ms after it appears; queued behind other speech
+ * on iOS. Through sayLater, so a test can never leave it waiting (lib/a11y.ts).
+ */
 export function announce(text: string) {
-  setTimeout(() => {
-    if (Platform.OS === 'ios') AccessibilityInfo.announceForAccessibilityWithOptions(text, { queue: true });
-    else AccessibilityInfo.announceForAccessibility(text);
-  }, 600);
+  sayLater(text, 600, { queue: true });
 }
 
 /** One extra sentence about reminders after a restore or undo. */

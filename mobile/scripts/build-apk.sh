@@ -80,6 +80,8 @@ echo "• Preparing the Android project…"
 npx expo prebuild --platform android --no-install
 
 echo "• Building the release app with Gradle (this is the slow part)…"
+# Gradle's default memory runs out during the release lint pass; give it room.
+sed -i.bak 's/^org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g/' android/gradle.properties && rm -f android/gradle.properties.bak
 ( cd android && ./gradlew assembleRelease )
 
 APK="android/app/build/outputs/apk/release/app-release.apk"

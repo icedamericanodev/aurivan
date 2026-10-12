@@ -15,6 +15,7 @@
  */
 import { getAllQuestions } from '../content/loader';
 import { MAX_ANSWER_MS } from '../engine/answerClock';
+import { cleanDone } from '../engine/examWeek';
 import { readBackup } from '../engine/backup';
 import { GROWTH_IDS, isValidPlantState, PLANT_SPECIES, type CertPlant, type GrowthLevel } from '../engine/plant';
 import { isCatalogLook, isKeepable, isLookOfSlot } from '../engine/plantLooks';
@@ -189,6 +190,19 @@ describe('export: every state the phone can hold reads back', () => {
             },
           }
         : {}),
+      // Mobile 1.16: the exam-week checklist (any ticks, hidden or not; an
+      // older build or a newer one could hold ids this app doesn't know).
+      ...(rng() < 0.6
+        ? {
+            moments: {
+              examWeek: {
+                for: pick(['2026-10-20', '2027-01-05']),
+                done: pick([[], ['booking'], ['pace', 'sleep', 'guide'], ['booking', 'guide', 'online', 'centre', 'pace', 'sleep'], ['sleep', 'nap', 'sleep']]) as never,
+                ...(rng() < 0.5 ? { hidden: true } : {}),
+              },
+            },
+          }
+        : {}),
       ...(rng() < 0.5
         ? {
             cards: {
@@ -292,6 +306,10 @@ describe('export: every state the phone can hold reads back', () => {
         st.fitChanges === undefined ? undefined : Math.min(9999, st.fitChanges),
         st.fitAskDays,
       ]);
+      // Mobile 1.16: the exam-week checklist survives, known ids once each, in order.
+      const ew = useProgress.getState().byCert.cisa.moments?.examWeek;
+      const ewBack = read.data.progress.byCert.cisa.moments?.examWeek;
+      expect(ewBack).toEqual(ew ? { for: ew.for, done: cleanDone(ew.done), ...(ew.hidden ? { hidden: true } : {}) } : undefined);
       // The plant survives (repaired and clamped to the data), never dropped or invented.
       const back = read.data.progress.byCert.cisa.plant;
       expect(Boolean(back)).toBe(Boolean(plant));

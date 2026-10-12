@@ -21,6 +21,14 @@
  *
  * A mini mock never leads the plan: it sits right after the first timed
  * item, and the day clears without it (dayPlan.ts isOptional).
+ *
+ * Mobile 1.16, exam week (PHASE5.md §3.2): a calm taper.
+ *   - 7, 6, 5 days out: reviews, a top-up on the focus domain, and ONE
+ *     optional full mock, only when none was taken in the last 14 days and
+ *     the starting check is done ("a last long rehearsal; skip it if you'd
+ *     rather rest"). Exempt from the budget, like every mock.
+ *   - 4, 3, 2 days out: no mock; the day is sized to min(minutes, 20).
+ *   - The eve and the exam day are unchanged.
  */
 import { GAMES, gameMinutes, type GameId } from './games/registry';
 import { DEFAULT_MINUTES, examFocusedOf, planTolerance, questionsFor, type Familiarity } from './fit';
@@ -36,8 +44,9 @@ const gameItem = (gameId: GameId): PlanItem => ({ kind: 'game', gameId, label: `
  * Why a practice item is in the plan (its meta line says so). Optional:
  * older saved plans have none and read as "new material first".
  *   check: the starting check · learn: right after a lesson · weak: Exam-focused weak spots
+ *   topup: exam week's light top-up on the focus domain (mobile 1.16)
  */
-export type PracticeWhy = 'check' | 'learn' | 'weak';
+export type PracticeWhy = 'check' | 'learn' | 'weak' | 'topup';
 
 export type PlanItem =
   /** `label` is optional: older saved plans have none, and Today then says "Review N due". */
@@ -53,8 +62,11 @@ export type PlanItem =
   | { kind: 'practice'; domainId?: string; count: number; label: string; why?: PracticeWhy }
   /** `label` is saved with the day's plan; screens show the registry name, so old labels never show an old name. */
   | { kind: 'game'; gameId: GameId; label: string }
-  /** `minutes`: the mock's time at exam pace (mobile 1.15). Older saves have none: EXAM_MINUTES_PER_QUESTION. */
-  | { kind: 'mock'; questions: number; label: string; minutes?: number };
+  /**
+   * `minutes`: the mock's time at exam pace (mobile 1.15). Older saves have none: EXAM_MINUTES_PER_QUESTION.
+   * `why: 'final'`: exam week's last long rehearsal (mobile 1.16); optional, older saves have none.
+   */
+  | { kind: 'mock'; questions: number; label: string; minutes?: number; why?: 'final' };
 
 export interface PlanInput {
   stage: Stage;
@@ -72,7 +84,7 @@ export interface PlanInput {
   nextLesson?: { id: string; title: string; minutes?: number; domainId?: string; domainShort?: string };
   /** When the last mock (any size) finished; null = never. */
   lastMockAt?: number | null;
-  /** When the last FULL mock finished. Not read in 5a: kept for 5b's exam-week full mock. */
+  /** When the last FULL mock finished; null = never (exam week's full mock, mobile 1.16). */
   lastFullMockAt?: number | null;
   /** Now (ms), for the once-a-week mock rule. Optional: the clock's now. */
   now?: number;
@@ -101,8 +113,10 @@ export const PRACTICE_MIN = 5;
 export const NEW_LEARNER_QUESTIONS = 5;
 /** A mock is planned at most once in this many CALENDAR days (Monday's mock is due again next Monday). */
 export const MOCK_GAP_DAYS = 7;
-/** Exam week's light review keeps its size (code review M5): rest, not cram, whatever the minutes. */
-export const EXAM_WEEK_REVIEW = 10;
+/** Exam week, 4 to 2 days out: the day is sized to at most this many minutes (a taper, never a cram). */
+export const EXAM_WEEK_LIGHT_MINUTES = 20;
+/** Exam week, 7 to 5 days out: a full mock is offered only when none was taken in this many calendar days. */
+export const FULL_MOCK_GAP_DAYS = 14;
 /** A new learner after day 1: a lesson and up to this many questions (UX review O4). */
 export const NEW_LEARNER_MAX = 10;
 
@@ -152,7 +166,10 @@ function reviewItem(count: number, due: number, label?: string): PlanItem {
 
 export function todaysPlan(p: PlanInput): PlanItem[] {
   // A missing or broken number plans the default day, never a NaN one.
-  const budget = Number.isFinite(p.dailyMinutes) ? Math.max(1, p.dailyMinutes) : DEFAULT_MINUTES;
+  const minutes = Number.isFinite(p.dailyMinutes) ? Math.max(1, p.dailyMinutes) : DEFAULT_MINUTES;
+  // Exam week tapers: from 4 days out, at most 20 minutes (mobile 1.16).
+  const taper = p.stage === 'examDay' && p.daysLeft !== null && p.daysLeft >= 2 && p.daysLeft <= 4;
+  const budget = taper ? Math.min(minutes, EXAM_WEEK_LIGHT_MINUTES) : minutes;
   const tol = planTolerance(budget);
 
   // The day before the exam and exam day are for rest, not cramming
@@ -180,10 +197,13 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
   };
 
   // 1. Spaced reviews first, when due: about half the day.
+  // Exam week calls them what they are, as the eve does: "Light review · 8 questions" (UX review P6).
+  const reviewLabel = (n: number) => (p.stage === 'examDay' ? `Light review · ${n} questions` : undefined);
   let review: Extract<PlanItem, { kind: 'review' }> | null = null;
   const reviewCap = Math.min(p.dueReviews, REVIEW_SESSION_CAP);
   if (p.dueReviews > 0) {
-    review = reviewItem(Math.min(reviewCap, Math.max(5, fitting((0.5 * budget)))), p.dueReviews) as Extract<PlanItem, { kind: 'review' }>;
+    const n = Math.min(reviewCap, Math.max(5, fitting((0.5 * budget))));
+    review = reviewItem(n, p.dueReviews, reviewLabel(n)) as Extract<PlanItem, { kind: 'review' }>;
     add(review);
   }
   // 3 (the fill). Time left and reviews cut below what is due: they grow into it (spacing first).
@@ -192,7 +212,7 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
     const more = Math.min(reviewCap - review.count, fitting(left()));
     if (more <= 0) return;
     used -= itemMinutes(review);
-    const grown = reviewItem(review.count + more, p.dueReviews) as Extract<PlanItem, { kind: 'review' }>;
+    const grown = reviewItem(review.count + more, p.dueReviews, reviewLabel(review.count + more)) as Extract<PlanItem, { kind: 'review' }>;
     plan[plan.indexOf(review)] = grown;
     review = grown;
     used += itemMinutes(grown);
@@ -235,6 +255,16 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
     const minutes = p.examMinutes ? Math.round((p.examMinutes / p.examQuestions) * questions) : Math.round(questions * EXAM_MINUTES_PER_QUESTION);
     return { kind: 'mock', questions, label: `Mini mock · ${questions} questions`, minutes };
   };
+  // Exam week's one full rehearsal: none finished in the last 14 calendar days.
+  const fullMockDue = () =>
+    p.lastFullMockAt == null || daysBetween(dayKey(p.lastFullMockAt), dayKey(p.now ?? Date.now())) >= FULL_MOCK_GAP_DAYS;
+  const fullMock = (): PlanItem => ({
+    kind: 'mock',
+    questions: p.examQuestions,
+    label: `Full mock · ${p.examQuestions} questions`,
+    minutes: p.examMinutes ?? Math.round(p.examQuestions * EXAM_MINUTES_PER_QUESTION),
+    why: 'final',
+  });
   const practiceStage = () => {
     if (focused) {
       // Leads with a mock (once a week) and the weak spots; no lessons.
@@ -296,16 +326,24 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
       game('sprint');
       practice((n) => `${n} mixed questions to stay sharp`);
       break;
-    case 'examDay':
-      // The current exam-week size, never grown by the minutes (code review M5).
-      practice((n) => `Light review · ${n} questions`, {}, EXAM_WEEK_REVIEW);
-      game('priority');
+    case 'examDay': {
+      // Exam week (mobile 1.16): reviews came first; then a light top-up on the
+      // focus domain. Before the starting check is done, the top-up IS the
+      // starting check (mixed, sized like it), and no full mock is offered.
+      const answered = p.answered ?? 0;
+      if (answered < CHECK_SIZE) practice((n) => `Starting check: ${n} mixed questions`, { why: 'check' }, Math.max(PRACTICE_MIN, CHECK_SIZE - answered));
+      // From 4 days out the top-up stays light (at most 10), so a short game still fits.
+      else practice((n) => (p.focusDomain ? `Top-up: ${p.focusDomain.short}` : `Top-up: ${n} mixed questions`), { domainId: p.focusDomain?.id, why: 'topup' }, taper ? EVE_MAX : PRACTICE_MAX);
+      if (taper) game('priority');
+      else if (answered >= CHECK_SIZE && fullMockDue()) add(fullMock());
       break;
+    }
   }
 
   fill();
-  // Never an empty day: a short mixed set that fits.
-  if (plan.length === 0) plan.push({ kind: 'practice', count: questionsFor(budget), label: `${questionsFor(budget)} mixed questions` });
+  // Never an empty day: a short mixed set that fits. Exam week's optional
+  // full rehearsal never stands alone either: it is an extra, not the day.
+  if (plan.every((i) => i.kind === 'mock' && i.why === 'final')) plan.unshift({ kind: 'practice', count: questionsFor(budget), label: `${questionsFor(budget)} mixed questions` });
   // A mock never leads (UX review P2, decided): it goes right after the first
   // timed item, so the hero matches "About N min today". It stays optional,
   // and its row says how long it is.

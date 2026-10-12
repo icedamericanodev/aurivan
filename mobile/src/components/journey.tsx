@@ -11,7 +11,7 @@
 import { REVIEW_UNIT } from '../engine/srs';
 import { gameTitle } from '../engine/games/registry';
 import { useEffect, useState, type ReactNode } from 'react';
-import { Text, useWindowDimensions, View } from 'react-native';
+import { Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
 import { domainColor } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { biggestGrowth, clearingTitle, dayAccuracy, itemMinutes, type DayPlan } from '../engine/dayPlan';
@@ -19,11 +19,11 @@ import type { PlanItem } from '../engine/planner';
 import type { Readiness } from '../engine/readiness';
 import { rangeLabel, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
 import { haptic } from '../lib/haptics';
-import { grewLine, LARGE_TEXT, motion, space } from '../theme/tokens';
+import { grewLine, LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { GrowthRings, PlanLeaf } from './glyphs';
-import { BookOpen, Gamepad2, ICON_STROKE, RotateCcw, Target, Timer } from './icons';
-import { FadeIn, Pop, type Celebration, type Growth } from './motion';
+import { BookOpen, ChevronRight, Gamepad2, ICON_STROKE, RotateCcw, Target, Timer } from './icons';
+import { AnimatedPressable, FadeIn, Pop, usePressScale, type Celebration, type Growth } from './motion';
 import { BigNum, DomainDot, ICON_SIZE, Row, Stat, StatRow, T, useFontScale } from './ui';
 import { aboutMin, timeStat } from '../engine/pace';
 
@@ -90,7 +90,9 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
             ? 'on what you just learned'
             : item.why === 'weak'
               ? `${item.count} questions, most points to gain`
-              : 'new material first';
+              : item.why === 'topup'
+                ? `${item.count} questions, a light top-up`
+                : 'new material first';
       return { title: item.label, meta: `${aboutMin(mins)} · ${why}`, short: `Practice · ${mins} min` };
     }
     case 'game':
@@ -98,9 +100,10 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
       return { title: gameTitle(item.gameId, item.label), meta: `Game · ${aboutMin(mins, true)}`, short: `Game · ${mins} min` };
     case 'mock':
       // At exam pace (a 50-question mini mock is 80 minutes), and honest that it is a long one.
+      // Exam week's full mock (mobile 1.16) says it is optional in its own words.
       return {
         title: item.label.split(' · ')[0],
-        meta: `${aboutMin(mins)} · longer than your usual day, so pick a time that suits you`,
+        meta: item.why === 'final' ? `${aboutMin(mins)} · a last long rehearsal; skip it if you’d rather rest` : `${aboutMin(mins)} · longer than your usual day, so pick a time that suits you`,
         short: `Mock · ${aboutMin(mins, true)}`,
       };
   }
@@ -108,15 +111,18 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
 
 /**
  * "About 20 min today": the open items' minutes. A mock is left out (it is
- * longer than any day) and adds "+ mock" instead. null when nothing is open.
+ * longer than any day) and adds "+ mock" instead; exam week's last long
+ * rehearsal says it is optional ("+ optional mock", UX review O9). null when
+ * nothing is open.
  */
 export function todayMinutesLine(items: readonly PlanItem[], done: readonly boolean[]): string | null {
   const open = items.filter((_, i) => !done[i]);
   if (open.length === 0) return null;
-  const mock = open.some((i) => i.kind === 'mock');
+  const mocks = open.filter((i) => i.kind === 'mock');
+  const optional = mocks.length > 0 && mocks.every((i) => i.kind === 'mock' && i.why === 'final');
   const mins = open.reduce((n, i) => n + (i.kind === 'mock' ? 0 : itemMinutes(i)), 0);
-  if (mins === 0) return mock ? 'A mock today' : null;
-  return `${aboutMin(mins)} today${mock ? ' + mock' : ''}`;
+  if (mins === 0) return mocks.length ? (optional ? 'An optional mock today' : 'A mock today') : null;
+  return `${aboutMin(mins)} today${mocks.length ? (optional ? ' + optional mock' : ' + mock') : ''}`;
 }
 
 /**
@@ -188,6 +194,7 @@ export function ReadinessRow({
   ringsGrowth,
   rangeGrowth,
   lead,
+  onPress,
 }: {
   cert: Certification;
   readiness: Readiness;
@@ -208,6 +215,12 @@ export function ReadinessRow({
   /** Mobile 1.9: the rings and the range grow from what was last seen (motion.tsx useGrowth). */
   ringsGrowth?: Growth;
   rangeGrowth?: Growth;
+  /**
+   * Mobile 1.16: opens the readiness report. With a plant, the words are the
+   * button (the plant still opens Your plant); without one, the whole row is.
+   * A chevron says it can be tapped.
+   */
+  onPress?: () => void;
 }) {
   const { c } = useTheme();
   const stacked = useFontScale() >= LARGE_TEXT;
@@ -217,36 +230,87 @@ export function ReadinessRow({
     : // A countdown, not a moving target: `needed` never goes up after an answer.
       `${range.needed} more ${range.needed === 1 ? 'answer' : 'answers'} until your readiness range`;
   const spoken = `Estimated readiness ${rangeSpoken(range)}. ${range.enough ? `Weighted like the exam. ${ESTIMATE_NOTE}` : meta} ${stage}.`;
-  return (
-    <View
-      // With a plant, the row is two stops (the plant, then the words); otherwise one.
-      accessible={!lead}
-      accessibilityLabel={lead ? undefined : spoken}
-      style={{ flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: stacked ? 10 : 18, marginTop: 22 }}
-    >
-      {lead}
-      {rings && !lead && (
-        <GrowthRings
-          preset="today"
-          mastery={readiness.domains.map((d) => d.mastery)}
-          weights={cert.domains.map((d) => d.weight)}
-          colors={c.accent}
-          track={c.track}
-          grow={ringsGrowth ? { play: ringsGrowth.play, from: ringsGrowth.from.map((v) => v / 100), run: ringsGrowth.run } : undefined}
-        />
-      )}
-      <View
-        style={{ flex: stacked || (!rings && !lead) ? undefined : 1 }}
-        accessible={!!lead}
-        accessibilityLabel={lead ? spoken : undefined}
-      >
+  const words = (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, flex: stacked ? undefined : 1, alignSelf: stacked ? 'stretch' : undefined }}>
+      <View style={{ flex: 1, minWidth: 0 }}>
         <ReadinessFigure range={range} growth={rangeGrowth} />
         <T v="meta" style={{ marginTop: 4 }}>{meta}</T>
         {/* One quiet line, only once there is a range to explain. */}
         {range.enough && <T v="meta" style={{ marginTop: 2 }}>{ESTIMATE_NOTE}</T>}
         <T v="stage" style={{ marginTop: 6 }}>{stage}</T>
       </View>
+      {onPress && (
+        <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+          <ChevronRight size={18} color={c.muted} strokeWidth={ICON_STROKE} />
+        </View>
+      )}
     </View>
+  );
+  const rowStyle = { flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: stacked ? 10 : 18, marginTop: 22 } as const;
+  const ringArt = rings && !lead && (
+    <GrowthRings
+      preset="today"
+      mastery={readiness.domains.map((d) => d.mastery)}
+      weights={cert.domains.map((d) => d.weight)}
+      colors={c.accent}
+      track={c.track}
+      grow={ringsGrowth ? { play: ringsGrowth.play, from: ringsGrowth.from.map((v) => v / 100), run: ringsGrowth.run } : undefined}
+    />
+  );
+  // No plant: the whole row (rings and words) is one stop, and one button when it opens the report.
+  if (!lead) {
+    return onPress ? (
+      <ReportTap onPress={onPress} label={spoken} style={{ ...rowStyle, marginTop: rowStyle.marginTop - 6 }} testID="readiness-tap">
+        {ringArt}
+        {words}
+      </ReportTap>
+    ) : (
+      <View accessible accessibilityLabel={spoken} style={rowStyle}>
+        {ringArt}
+        {words}
+      </View>
+    );
+  }
+  // With a plant, the row is two stops: the plant (Your plant), then the words (the report).
+  return (
+    <View style={rowStyle}>
+      {lead}
+      {onPress ? (
+        <ReportTap onPress={onPress} label={spoken} style={{ flex: stacked ? undefined : 1, alignSelf: stacked ? 'stretch' : undefined }} testID="readiness-tap">
+          {words}
+        </ReportTap>
+      ) : (
+        <View accessible accessibilityLabel={spoken} style={{ flex: stacked ? undefined : 1, alignSelf: stacked ? 'stretch' : undefined }}>
+          {words}
+        </View>
+      )}
+    </View>
+  );
+}
+
+/** Today's readiness as a button to the report: a soft tint when pressed, an ink ring when it has keyboard focus. */
+function ReportTap({ onPress, label, style, children, testID }: { onPress: () => void; label: string; style?: ViewStyle; children: ReactNode; testID?: string }) {
+  const { c } = useTheme();
+  const [focus, setFocus] = useState(false);
+  const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: radius.md });
+  return (
+    <AnimatedPressable
+      testID={testID}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityHint="Opens your readiness report"
+      onPress={onPress}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
+      // 6pt of room round the words for the tint and the ring, taken back by the margin: nothing moves.
+      style={[{ padding: 6, marginHorizontal: -6, marginTop: -6, marginBottom: -6, borderRadius: radius.md }, style, press.style]}
+    >
+      {press.layer}
+      {children}
+      {focus && <View testID="readiness-focus-ring" pointerEvents="none" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: radius.md, borderWidth: 2, borderColor: c.ink }} />}
+    </AnimatedPressable>
   );
 }
 
