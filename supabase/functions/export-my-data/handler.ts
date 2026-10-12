@@ -1,11 +1,13 @@
 // export-my-data: POST { appVersion? }
 // "Download my data" (GDPR access and portability). Returns the learner's own
 // data only, as one JSON document for the share sheet:
-//   { app: 'aurivan', schema: 1, exportedAt, appVersion, stores, account }
+//   { app: 'aurivan', schema: 1, exportedAt, appVersion, stores, account, board }
 // `stores` holds the learner's synced snapshots (Phase 7) as backup-file
 // stores, so the download is also a backup the app can restore (empty when
 // sync was never used); `appVersion` is the newest app that wrote one of
-// them (else the version the app sent); Phase 8 adds `board`. The two daily
+// them (else the version the app sent); `board` holds the learner's own
+// feedback board rows (Phase 8: member row, posts, comments, votes, follows,
+// reports they made, blocks, appeals, notices). The two daily
 // support checkpoints are copies of the same progress and are not included.
 //
 // A verified user (401 otherwise; 410 for an account already deleted), at
@@ -42,9 +44,10 @@ export function handleExportMyData(req: Request, deps: ExportDeps): Promise<Resp
     const body = await readJsonObject(req, { maxBytes: 1024, optional: true });
     const appVersion = typeof body.appVersion === 'string' && SEMVER.test(body.appVersion) ? body.appVersion : null;
 
-    const [termsVersion, snaps] = await Promise.all([
+    const [termsVersion, snaps, board] = await Promise.all([
       deps.admin.getTermsVersion(user.id),
       deps.admin.readSnapshots(user.id),
+      deps.admin.readBoard(user.id),
     ]);
     const doc = {
       app: EXPORT_APP,
@@ -60,6 +63,8 @@ export function handleExportMyData(req: Request, deps: ExportDeps): Promise<Resp
         createdAt: user.createdAt,
         termsVersion,
       },
+      // Phase 8: the learner's own feedback board rows (empty before they join).
+      board,
     };
 
     // Everything that can fail is done: only now is the hour used.

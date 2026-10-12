@@ -33,9 +33,10 @@ if [ "${SHOTS:-}" = cloud ]; then
   # also exported with the flag OFF, for the off-* proof shots.
   # Placeholder https links (example.com), so the sign-in sheet's Privacy
   # policy and Terms of Use links are in the shots (a real cloud build must set
-  # both: src/cloud/configGuard.ts).
+  # both: src/cloud/configGuard.ts), and the guidelines gate's link to the
+  # Community guidelines page (community.html next to privacy.html, Phase 8).
   EXPO_OFFLINE=1 EXPO_PUBLIC_AURIVAN_CLOUD=1 EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND=memory EXPO_PUBLIC_AURIVAN_SHOTS=1 \
-    EXPO_PUBLIC_PRIVACY_URL=https://example.com/aurivan/privacy EXPO_PUBLIC_TERMS_URL=https://example.com/aurivan/terms \
+    EXPO_PUBLIC_PRIVACY_URL=https://example.com/aurivan/privacy.html EXPO_PUBLIC_TERMS_URL=https://example.com/aurivan/terms.html \
     npx expo export --platform web --clear --output-dir "$TMP/web" >/dev/null
   env -u EXPO_PUBLIC_AURIVAN_CLOUD -u EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND -u EXPO_PUBLIC_AURIVAN_SHOTS -u EXPO_PUBLIC_PRIVACY_URL -u EXPO_PUBLIC_TERMS_URL EXPO_OFFLINE=1 \
     npx expo export --platform web --clear --output-dir "$TMP/web-off" >/dev/null
@@ -156,7 +157,12 @@ elif [ "${SHOTS:-}" = cloud ]; then
   # Uplift Phase 6 accounts (built OFF): You and Settings entry points, the
   # sign-in sheet, email and code, Account, delete (3 steps and done), About,
   # about 200% text, and the flag-OFF You and Settings (shoot_cloud.mjs).
-  node scripts/screenshots/shoot_cloud.mjs "$TMP/seed.json" "$OUT" "$THEME"
+  # Phase 8, the feedback board: its tabs, a post, the composer and leak card,
+  # the gate, report and block, Your activity, the staff queue, the entry
+  # points, 200% text and the flag-OFF Help and What's new (shoot_board.mjs).
+  # CLOUD_PART=account or CLOUD_PART=board runs only one of the two.
+  if [ "${CLOUD_PART:-}" != board ]; then node scripts/screenshots/shoot_cloud.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
+  if [ "${CLOUD_PART:-}" != account ]; then node scripts/screenshots/shoot_board.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).

@@ -28,6 +28,8 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AppState, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
 import { useMotion } from './motion';
+import { CLOUD } from '../cloud/flag';
+import { PostPubliclyLine } from './boardLink';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   ASKS_FOR_ANSWER,
@@ -481,6 +483,8 @@ export function ReportSheet({ visible, certId, target, reportedAt, onClose, onOp
           <Gap h={space.sm} />
           <Button kind="secondary" label="Cancel" onPress={() => onClose(false)} />
           <OwnWayButton disabled={!reason || busy} onPress={ownWay} />
+          {/* Cloud builds, signed in, an app problem: it can go on the feedback board instead (Phase 8). */}
+          {CLOUD && target.kind === 'app' && <PostPubliclyLine kind="app" text={note} onGo={() => onClose(false)} />}
         </>
       )}
     </SheetFrame>
@@ -652,6 +656,8 @@ function FeedbackSheet({
           <Gap h={space.sm} />
           <Button kind="secondary" label="Cancel" onPress={() => onClose(false)} />
           <OwnWayButton disabled={busy} onPress={() => setPanel({ email: email(), why: 'chosen' })} />
+          {/* Cloud builds, signed in, an idea: it can go on the feedback board instead (Phase 8). */}
+          {CLOUD && kind === 'idea' && <PostPubliclyLine kind="idea" text={message} onGo={() => onClose(false)} />}
         </>
       )}
     </SheetFrame>

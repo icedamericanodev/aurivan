@@ -30,6 +30,8 @@ export interface FakeUser extends AuthUser {
   /** The newest app version that wrote one of the snapshots (null when none). */
   snapshotsApp?: string | null;
   board: BoardCounts;
+  /** The learner's own board rows (export-my-data's `board` section). */
+  boardRows?: Record<string, unknown>;
 }
 
 export interface Call {
@@ -118,6 +120,11 @@ export class FakeAdmin implements AdminPort {
     this.check('readSnapshots', userId);
     const u = this.users.get(userId);
     return Promise.resolve({ stores: structuredClone(u?.snapshots ?? {}), appVersion: u?.snapshotsApp ?? null });
+  }
+
+  readBoard(userId: string): Promise<Record<string, unknown>> {
+    this.check('readBoard', userId);
+    return Promise.resolve(structuredClone(this.users.get(userId)?.boardRows ?? {}));
   }
 
   claimExport(userId: string): Promise<boolean> {

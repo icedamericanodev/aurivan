@@ -342,7 +342,8 @@ export async function initSync(): Promise<() => void> {
   const offStamps = watchChanges();
   const offAccount = onAccountEvent((e) => {
     if (e.kind === 'signedIn') void afterSignIn(e.info);
-    else void afterAccountDeleted();
+    else if (e.kind === 'deleted') void afterAccountDeleted();
+    // 'signedOut' and 'sessionEnded' (the board's) change nothing here: sign-out has its own path (signOutHere).
   });
   let lastActive = Date.now();
   const sub = AppState.addEventListener('change', (s) => {

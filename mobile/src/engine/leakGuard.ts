@@ -1,0 +1,391 @@
+/**
+ * The exam-content leak guard (Uplift Phase 8, built OFF; spec PHASE6_8.md
+ * §4.7 and support.md §10.3): pure, tested in __tests__/board-leak-guard.test.ts.
+ * No React, no storage, no network.
+ *
+ * Two jobs, in plain English:
+ * 1. BLOCK near-verbatim copies of Aurivan's own practice questions
+ *    (`leakMatch`). Pasting a question, its options, explanation or tips on
+ *    the board would spoil it for everyone. Text is cut into short runs of
+ *    words ("shingles"), and each run becomes a 32-bit number (a hash). The
+ *    "fingerprint" is the sorted list of those numbers with the question
+ *    each came from. A post that shares enough runs with one question is
+ *    blocked. The fingerprint holds numbers only: no question text can be
+ *    read back from it, and nothing here ever shows how many questions
+ *    there are.
+ * 2. HOLD what looks like a recalled REAL exam question (`recallScore`):
+ *    "on my exam I got…", dump offers, a pasted A–D option list. A score of
+ *    3 or more sends the post to a person first ("Waiting for review").
+ * 3. FOLD a post that talks about one of our questions' answers
+ *    (`talksAboutAnswer`): readers tap "Show it" first.
+ *
+ * The SAME file runs on the phone (the composer, as the learner types) and
+ * in the `board-submit` Edge Function (which decides). The server copy,
+ * supabase/functions/_shared/leakGuard.ts, is written by
+ * mobile/scripts/sync-shared.mjs and checked by `--check` (guard G8).
+ *
+ * Departures from the spec's sketch (§4.7), both measured on the real bank
+ * in the tests:
+ * - Two fingerprints, not one. The spec's 5-word runs over the whole
+ *   question (stem, options, explanations, tips) catch a verbatim paste
+ *   every time, but a stem with 1 word in 8 changed keeps too few 5-word
+ *   runs (about 85% caught, under the 95% target). So a second, small
+ *   fingerprint of 3-word runs over the stem and options only catches those
+ *   (about 99%), without raising false alarms on study-note paragraphs
+ *   (still under 2%) or on ordinary posts (none).
+ * - Each is two sorted typed arrays instead of a Map of arrays: the same
+ *   answers in a fraction of the memory, built quickly on a phone.
+ * - A third, SERVER-ONLY fingerprint (fix round P8, SEC S5): the stem and
+ *   options "squashed" to letters only (look-alikes folded, leetspeak
+ *   undone, spaces and dots gone), cut into 24-letter runs. It catches a
+ *   question pasted with no spaces, in CamelCase, in leetspeak, with
+ *   look-alike letters or with a dot inside each word, which the word runs
+ *   miss. Built with `buildFingerprint(items, { squash: true })` (board-
+ *   submit's leakprint.json and the memory backend); the phone's composer
+ *   doesn't build it, so typing costs nothing more. Measured on the real
+ *   bank in __tests__/board-review-guard.test.ts: ordinary posts 0 of 60,
+ *   study-note sentences no more than the word check alone.
+ */
+import { foldForMatch } from './moderation';
+
+/** Words per run in the whole-question fingerprint. */
+export const SHINGLE = 5;
+/** Words per run in the stem-and-options fingerprint. */
+export const STEM_SHINGLE = 3;
+/** Letters per run in the server's squashed fingerprint. */
+export const SQUASH_RUN = 24;
+/** Squashed: one question shares at least this many 24-letter runs (about 54 letters copied in a row). */
+export const SQUASH_HITS = 30;
+/** Whole question: one question shares at least this many runs with the post (about a 10-word copied run). */
+export const ITEM_HITS = 6;
+/** Whole question: or at least this many of the post's runs are in the bank… */
+export const MIN_HITS = 4;
+/** …and they are at least this share of the post's (uncommon) runs. */
+export const HIT_SHARE = 0.5;
+/** Stem and options: one question shares at least this many 3-word runs… */
+export const STEM_HITS = 3;
+/** …and they are at least this share of the post's (uncommon) 3-word runs. */
+export const STEM_SHARE = 0.4;
+/** A run found in this many different questions or more is everyday exam phrasing: ignored. */
+export const COMMON_IN = 3;
+
+/**
+ * A leading option marker on a line ("A) ", "b. ") or inline (" C) "),
+ * dropped before matching. (A lone letter before a full stop mid-sentence,
+ * "Plan B. Then", goes too: harmless, as the bank is read the same way.)
+ */
+const OPTION_MARKER = /(^|\s)[A-Da-d][.)](?=\s)/g;
+
+/**
+ * The words of a text for matching: normalised (NFKC, invisible characters
+ * gone, look-alike letters folded, lower case), option markers dropped,
+ * split on anything that isn't a-z or 0-9. Template tokens such as {{A}}
+ * read as their letter, as they appear on screen.
+ */
+export function tokens(text: string): string[] {
+  const folded = foldForMatch(text.replace(/\{\{([A-D])\}\}/g, '$1')).replace(OPTION_MARKER, ' ');
+  return folded.split(/[^a-z0-9]+/).filter(Boolean);
+}
+
+/** Math.imul, read once (a global lookup inside the hot loop is slow in some JS hosts). */
+const imul = Math.imul;
+
+/** FNV-1a, 32-bit, over a string's UTF-16 code units. */
+export function fnv1a(s: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = imul(h, 0x01000193);
+  }
+  return h >>> 0;
+}
+
+/** The hash of every run of `size` words ("w1 w2 w3 w4 w5"), in order, repeats kept. */
+export function shingleHashes(words: readonly string[], size = SHINGLE): Uint32Array {
+  const n = Math.max(0, words.length - size + 1);
+  const out = new Uint32Array(n);
+  // fnv1a(words.slice(i, i + size).join(' ')), without building the strings (the bank has many).
+  for (let i = 0; i < n; i++) {
+    let h = 0x811c9dc5;
+    for (let j = i; j < i + size; j++) {
+      if (j > i) h = imul(h ^ 32, 0x01000193);
+      const w = words[j];
+      for (let c = 0; c < w.length; c++) h = imul(h ^ w.charCodeAt(c), 0x01000193);
+    }
+    out[i] = h >>> 0;
+  }
+  return out;
+}
+
+/**
+ * One fingerprint: every distinct (hash, question) pair, sorted by hash, as
+ * two parallel arrays; and the "common" hashes (in COMMON_IN or more
+ * questions), sorted. Numbers only.
+ */
+export interface Postings {
+  hashes: Uint32Array;
+  items: Uint32Array;
+  common: Uint32Array;
+}
+
+/**
+ * The bank's fingerprints: whole questions (5-word runs) and stems with
+ * options (3-word runs); and, on the server only, stems with options
+ * squashed to letters (24-letter runs).
+ */
+export interface Fingerprint {
+  full: Postings;
+  stem: Postings;
+  squash?: Postings;
+}
+
+/** The parts of a bank question the guard matches on (a structural shape, so the server copy needs no import). */
+export interface LeakSource {
+  stem: string;
+  options: Partial<Record<string, string>>;
+  explanation: string;
+  wrongExplanations: Partial<Record<string, string>>;
+  tips: readonly string[];
+}
+
+/** One question's matchable text, one part per line: `stem` = the stem and options; `full` adds the explanations and tips. */
+export interface LeakItem {
+  stem: string;
+  full: string;
+}
+
+const lines = (parts: readonly (string | undefined)[]) =>
+  parts
+    .filter((p): p is string => typeof p === 'string' && p.length > 0)
+    .map((p) => p.replace(/\s*\n\s*/g, ' '))
+    .join('\n');
+
+/** A bank question as the guard reads it. */
+export function leakItem(q: LeakSource): LeakItem {
+  const stem = [q.stem, ...Object.values(q.options)];
+  return { stem: lines(stem), full: lines([...stem, q.explanation, ...Object.values(q.wrongExplanations), ...q.tips]) };
+}
+
+/** The packing base: (hash, item) as one exact double, hash × 2^21 + item (items < 2^21). */
+const PACK = 2097152;
+
+/** Letters only, for the squashed runs: digits and symbols used as letters ("4udit0r"). */
+const LEET: Record<string, string> = { '0': 'o', '1': 'i', '3': 'e', '4': 'a', '5': 's', '7': 't', '@': 'a', '$': 's' };
+
+/**
+ * A text squashed to its letters: folded like `tokens` (invisible
+ * characters gone, look-alikes folded, lower case, option markers dropped),
+ * leetspeak undone, then everything that isn't a-z removed.
+ */
+export function squashLetters(text: string): string {
+  const folded = foldForMatch(text.replace(/\{\{([A-D])\}\}/g, '$1')).replace(OPTION_MARKER, ' ');
+  let out = '';
+  for (const ch of folded) {
+    const c = LEET[ch] ?? ch;
+    if (c >= 'a' && c <= 'z') out += c;
+  }
+  return out;
+}
+
+/** The hash of every SQUASH_RUN-letter run of a squashed text, in order. */
+function squashHashes(squashed: string): Uint32Array {
+  const n = Math.max(0, squashed.length - SQUASH_RUN + 1);
+  const out = new Uint32Array(n);
+  for (let i = 0; i < n; i++) out[i] = fnv1a(squashed.slice(i, i + SQUASH_RUN));
+  return out;
+}
+
+/** Each line is cut into runs on its own, so no run joins the end of one option to the start of the next. */
+function postings(texts: readonly string[], runsOf: (line: string) => Uint32Array): Postings {
+  const packed: number[] = [];
+  texts.forEach((text, i) => {
+    const seen = new Set<number>();
+    for (const line of text.split('\n')) {
+      for (const h of runsOf(line)) {
+        if (seen.has(h)) continue;
+        seen.add(h);
+        packed.push(h * PACK + i);
+      }
+    }
+  });
+  const all = Float64Array.from(packed).sort();
+  const hashes = new Uint32Array(all.length);
+  const items = new Uint32Array(all.length);
+  const common: number[] = [];
+  let run = 0;
+  for (let k = 0; k < all.length; k++) {
+    const h = (all[k] / PACK) >>> 0;
+    hashes[k] = h;
+    items[k] = all[k] - h * PACK;
+    run = k > 0 && hashes[k - 1] === h ? run + 1 : 1;
+    if (run === COMMON_IN) common.push(h);
+  }
+  return { hashes, items, common: Uint32Array.from(common) };
+}
+
+/**
+ * Builds the fingerprints. The index of each item is what `leakMatch`
+ * returns as `itemIndex`. `squash: true` adds the server's squashed one.
+ */
+export function buildFingerprint(items: readonly LeakItem[], opts: { squash?: boolean } = {}): Fingerprint {
+  const stems = items.map((i) => i.stem);
+  return {
+    full: postings(items.map((i) => i.full), (line) => shingleHashes(tokens(line), SHINGLE)),
+    stem: postings(stems, (line) => shingleHashes(tokens(line), STEM_SHINGLE)),
+    ...(opts.squash ? { squash: postings(stems, (line) => squashHashes(squashLetters(line))) } : {}),
+  };
+}
+
+/** The first index of `h` in the sorted array, or -1. */
+function lowerBound(a: Uint32Array, h: number): number {
+  let lo = 0;
+  let hi = a.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >>> 1;
+    if (a[mid] < h) lo = mid + 1;
+    else hi = mid;
+  }
+  return lo < a.length && a[lo] === h ? lo : -1;
+}
+
+/** How a post's runs meet one fingerprint: its uncommon runs, how many are in the bank, and the best question. */
+function meet(p: Postings, runs: Uint32Array) {
+  const H = new Set<number>();
+  for (const h of runs) if (lowerBound(p.common, h) < 0) H.add(h);
+  let hits = 0;
+  const perItem = new Map<number, number>();
+  for (const h of H) {
+    let k = lowerBound(p.hashes, h);
+    if (k < 0) continue;
+    hits++;
+    for (; k < p.hashes.length && p.hashes[k] === h; k++) perItem.set(p.items[k], (perItem.get(p.items[k]) ?? 0) + 1);
+  }
+  let best = -1;
+  let bestHits = 0;
+  for (const [item, n] of perItem) {
+    if (n > bestHits || (n === bestHits && item < best)) {
+      best = item;
+      bestHits = n;
+    }
+  }
+  return { size: H.size, hits, best, bestHits };
+}
+
+export interface LeakVerdict {
+  verdict: 'ok' | 'block';
+  /** The question it matched best (the phone offers "Report it privately" on it; the server never says). */
+  itemIndex?: number;
+  /** How many of the post's uncommon 5-word runs were found in the bank. */
+  hits: number;
+}
+
+/**
+ * Is this text a near-verbatim copy of a bank question? Blocked when, after
+ * ignoring everyday exam phrasing:
+ * - one question shares ITEM_HITS (6) or more 5-word runs with it; or
+ * - at least MIN_HITS (4) of its 5-word runs are in the bank, and they are
+ *   at least HIT_SHARE (half) of its runs; or
+ * - one question's stem and options share STEM_HITS (3) or more 3-word runs
+ *   with it, and they are at least STEM_SHARE (40%) of its 3-word runs; or
+ * - (server only) one question's squashed stem and options share
+ *   SQUASH_HITS (30) or more 24-letter runs with the squashed text.
+ */
+export function leakMatch(fp: Fingerprint, text: string): LeakVerdict {
+  const words = tokens(text);
+  const full = meet(fp.full, shingleHashes(words, SHINGLE));
+  if (full.bestHits >= ITEM_HITS || (full.hits >= MIN_HITS && full.hits / Math.max(1, full.size) >= HIT_SHARE)) {
+    return { verdict: 'block', itemIndex: full.best >= 0 ? full.best : undefined, hits: full.hits };
+  }
+  const stem = meet(fp.stem, shingleHashes(words, STEM_SHINGLE));
+  if (stem.bestHits >= STEM_HITS && stem.bestHits / Math.max(1, stem.size) >= STEM_SHARE) {
+    return { verdict: 'block', itemIndex: stem.best, hits: full.hits };
+  }
+  if (fp.squash) {
+    const sq = meet(fp.squash, squashHashes(squashLetters(text)));
+    if (sq.bestHits >= SQUASH_HITS) return { verdict: 'block', itemIndex: sq.best, hits: full.hits };
+  }
+  return { verdict: 'ok', hits: full.hits };
+}
+
+// ── Recall heuristic (support.md §10.3) ────────────────────────────────
+
+/**
+ * "On my exam I got…", "came out in the exam", "I remember a question":
+ * weight 3. The first is bounded to one sentence and needs "I/we/they got,
+ * saw, had or were asked", so "I want to do well on the exam and there are
+ * 5 domains" and "on the exam I was so nervous" aren't recall (CR N6).
+ */
+const RECALL = [
+  /\bon (the|my) (real |actual )?exam\b[^.?!\n]{0,40}\b(i|we|they) (got|saw|had|was asked|were asked)\b/,
+  /\bin (the|my) (real |actual )?exam,? (i|we) (got|saw|had)\b/,
+  /\bexam (question|item)s? (was|were|said|asked)\b/,
+  /\bcame out (in|on) (the|my) exam\b/,
+  /\bremember(ed)? (a|this|one|the) question\b/,
+  /\b(questions?|items?) from (the|my) (real |actual )?exam\b/,
+  /\bsaw (this|it|one) on (the|my) exam\b/,
+];
+/**
+ * Dumps and offers of "real exam questions": weight 3. ("memory dump" and
+ * "core dump" are audit topics, so plain "dump" isn't here; and "are the
+ * practice questions like the real exam questions?" isn't an offer: "real
+ * questions" counts only next to sharing, selling or asking for them: CR N6.)
+ */
+const DUMPS = [
+  /\bbrain ?dumps?\b/,
+  /\b(exam|cisa|cism|crisc|cgeit|cdpse|aaia|test|question|questions) dumps?\b/,
+  /\bdumps? (site|sites|pdf|pdfs|file|files|link|links)\b/,
+  /\bexam (pdf|leak|leaks)\b/,
+  /\b(share|sharing|send|sell|selling|buy|buying|leaked|anyone have|anybody have|someone have|who has)\b[^.?!\n]{0,60}\b(actual|real) (exam )?(questions|answers)\b/,
+  /\b(actual|real) (exam )?(questions|answers)\b[^.?!\n]{0,60}\b(share|sharing|send|sell|selling|for sale|dm me|message me|pm me)\b/,
+];
+/** "which of the following … BEST / MOST / FIRST …" with a question mark: weight 1. */
+const STEM_PHRASE = /\bwhich of the following\b/;
+const STEM_QUALIFIER = /\b(best|most|first|primary|greatest|least)\b/;
+
+/** Held for a person when the recall score is at least this. */
+export const RECALL_HOLD = 3;
+
+/**
+ * The recall score of a post (support.md §10.3): recall language +3, dump
+ * words +3, three or more option lines ("A) …") +2 (+3 with a question:
+ * a pasted question with its options is held on its own), exam-stem
+ * phrasing with a question mark +1, and −2 when the post links one of
+ * Aurivan's own PRACTICE QUESTIONS (`q:…`) and has no option list (it is
+ * about our question, not a real exam's). A pasted option list never gets
+ * the discount, and nor does any other link (fix round P8, SEC S5).
+ * RECALL_HOLD (3) or more: held.
+ */
+export function recallScore(text: string, itemRef: string | null): number {
+  const folded = foldForMatch(text);
+  const flat = folded.replace(/\s+/g, ' ');
+  let score = 0;
+  if (RECALL.some((r) => r.test(flat))) score += 3;
+  if (DUMPS.some((r) => r.test(flat))) score += 3;
+  const optionLines = folded.split('\n').filter((l) => /^\s*[a-d][.)]\s+\S/.test(l)).length;
+  if (optionLines >= 3) score += flat.includes('?') || STEM_QUALIFIER.test(flat) ? 3 : 2;
+  if (STEM_PHRASE.test(flat) && STEM_QUALIFIER.test(flat) && flat.includes('?')) score += 1;
+  if (itemRef !== null && itemRef.startsWith('q:') && optionLines < 3) score -= 2;
+  return score;
+}
+
+// ── Answer talk (CR N12) ─────────────────────────────────────────────
+
+/** "The answer is B", "option C is correct", "the right answer": a post about an answer. */
+const ANSWER_TALK = [
+  /\b(the )?(correct|right) (answer|option|choice)\b/,
+  /\banswer (is|was|should be|must be) [a-d]\b/,
+  /\b(option|choice|answer) [a-d] (is|was|should be|must be) (right|correct|wrong|the answer|the best)\b/,
+  /\b[a-d] is (the )?(correct|right|best) (answer|one|option)\b/,
+];
+
+/**
+ * Does this post talk about a practice question's answer? Then the server
+ * folds it ("Show it"), so nobody sees the answer by accident (CR N12).
+ * A Content post that links one of our questions is folded by the server
+ * anyway; this catches answer talk anywhere else.
+ */
+export function talksAboutAnswer(text: string, itemRef: string | null): boolean {
+  const flat = foldForMatch(text).replace(/\s+/g, ' ');
+  if (ANSWER_TALK.some((r) => r.test(flat))) return true;
+  return itemRef !== null && itemRef.startsWith('q:') && /\b(answer|answers|explanation|option [a-d])\b/.test(flat);
+}

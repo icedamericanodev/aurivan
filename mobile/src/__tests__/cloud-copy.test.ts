@@ -113,6 +113,61 @@ describe('the exact §2.3 strings', () => {
     expect(ACCOUNT_COPY['data.intro.sync']).not.toMatch(/only/);
   });
 
+  it('has the §4.3 board strings word for word (Phase 8), with no What’s next and no retyped trademark line', () => {
+    const exact: [AccountCopyKey, string][] = [
+      ['board.title', 'Feedback board'],
+      // Compliance review P8 (item 5): no absolute promise to read every post.
+      ['board.sub', 'Ideas, app problems and questions from learners. We read the posts.'],
+      ['board.signin', 'Sign in to post, vote and comment. Reading is open to everyone.'],
+      ['board.empty.title', 'Nothing here yet'],
+      ['board.empty.body', 'Be the first to suggest an idea or tell us what to fix.'],
+      ['board.offline', 'You’re offline. Showing what was last loaded.'],
+      ['board.foot.contact', 'Questions or concerns: {supportEmail}'],
+      ['board.team', 'Aurivan team · official response'],
+      ['board.spoiler', 'This post talks about the answer to a practice question.'],
+      ['board.vote.a11y', 'Vote for: {title}. {n} votes. {state}.'],
+      ['board.compose.private', 'Reporting one question? Report it privately instead. It’s faster, and it won’t spoil the answer for others.'],
+      ['board.compose.rules', 'Be kind, stay on topic, no real exam questions, no personal details.'],
+      ['board.compose.draft', 'You’re offline. Your post is saved here as a draft.'],
+      ['board.leak.title', 'This looks like text from one of Aurivan’s practice questions'],
+      ['board.leak.body', 'To keep answers fresh for everyone, please describe the topic in your own words. If something in that question looks wrong, report it privately: it’s faster, and it won’t spoil it for others.'],
+      ['board.leak.recall', 'This looks like it might be a question from a real exam. Real exam questions can’t be posted: candidates agree to keep them confidential. Describe the topic instead.'],
+      ['board.held.title', 'Waiting for review'],
+      ['board.held.body', 'A person checks posts from new members before they appear.'],
+      ['board.held.recall', 'It looked like it might contain real exam content, so a person will check it first.'],
+      ['board.reject.words', 'This contains words we don’t allow. Please rephrase.'],
+      ['board.reject.links', 'Links can’t be posted yet. Describe it in words instead.'],
+      ['board.reject.rate', 'You’ve posted a lot today. Try again tomorrow.'],
+      ['board.reject.paused', 'Posting is paused for a short while. Reading and voting still work.'],
+      ['board.reject.banned', 'Your account can’t post on the board. If you think this is a mistake, email {supportEmail}.'],
+      ['board.gate.rule.exam', 'No real exam questions. Ever. Don’t post, paraphrase or ask for questions from a real certification exam. Candidates agree to keep them confidential. Talk about topics, not items.'],
+      ['board.gate.review', 'We review reports within 24 hours. We remove posts that break these rules, and we close accounts that keep breaking them.'],
+      ['board.gate.email', 'Your email address is never shown.'],
+      ['board.gate.go', 'I agree, continue'],
+      ['board.report.done', 'Thanks. We review reports within 24 hours. You won’t see this {item} while it’s reviewed.'],
+      ['board.block.body', 'You won’t see their posts or comments, and they can’t comment on yours. They won’t be told. You can unblock them in Settings → Feedback board → Blocked learners.'],
+      // Fix round P8 (UX): the ellipsis comes from firstWords, and only when the words were cut short.
+      ['board.notice.removed', 'We removed your {item} “{words}” because it {reason}. {who} If you think we got it wrong, you can ask us to look again within 14 days.'],
+      ['board.appeal.done', 'Thanks. A person will look at this again.'],
+      ['board.withdraw.confirm', 'Withdraw this post? It will no longer be shown. Comments on it are hidden too.'],
+      ['board.staff.pause.confirm', 'Pause posting? Learners can still read and vote. New posts and comments wait until you reopen.'],
+    ];
+    for (const [k, v] of exact) expect([k, ACCOUNT_COPY[k]]).toEqual([k, v]);
+    for (const r of ['exam_content', 'copyright', 'abuse', 'sexual_violent', 'spam', 'personal_info', 'off_topic', 'other']) {
+      expect(ACCOUNT_COPY).toHaveProperty([`board.report.reason.${r}`]);
+    }
+    const board = entries.filter(([k]) => k.startsWith('board.'));
+    expect(board.length).toBeGreaterThan(150);
+    for (const [k, v] of board) {
+      // The 12 Oct addendum: no What's next anywhere on the board.
+      expect(`${k}: ${v}`).not.toMatch(/what.s next/i);
+      // The not-affiliated line always comes from cert.trademarkNotice.
+      expect(`${k}: ${v}`).not.toMatch(/affiliated|trademark/i);
+    }
+    // The 24-hour line appears only in board strings.
+    for (const [k, v] of entries) if (v.includes('24 hours')) expect(k.startsWith('board.')).toBe(true);
+  });
+
   it('fills placeholders, and leaves a missing one visible', () => {
     expect(copy('you.row.in.sub', { email: 'j•••@gmail.com' })).toBe('Signed in as j•••@gmail.com');
     expect(copy('code.resend.wait', { 'm:ss': '0:42' })).toBe('Send a new code in 0:42');

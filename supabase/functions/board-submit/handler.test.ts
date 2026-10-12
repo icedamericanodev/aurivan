@@ -1,0 +1,323 @@
+import { strict as assert } from 'node:assert';
+import { BoardDbError } from '../_shared/board.ts';
+import { FakeBoardDb, TEST_BANK, testFingerprint } from '../_shared/boardTesting.ts';
+import { FakeAdmin, NOW, post, recordingLogger, USER_A, USER_B } from '../_shared/testing.ts';
+import { handleBoardSubmit } from './handler.ts';
+
+function setup(opts: { leak?: boolean } = {}) {
+  const admin = new FakeAdmin();
+  admin.addUser({ id: USER_A, email: 'a@test.invalid' });
+  admin.addUser({ id: USER_B, email: 'b@test.invalid' });
+  const board = new FakeBoardDb();
+  board.addMember(USER_A);
+  const log = recordingLogger();
+  const run = (body: unknown, user = USER_A) =>
+    handleBoardSubmit(post(body, admin.issue(user)), {
+      admin,
+      board,
+      leak: opts.leak === false ? null : testFingerprint(),
+      log,
+    }, NOW);
+  return { admin, board, log, run };
+}
+
+const IDEA = {
+  op: 'post',
+  kind: 'idea',
+  title: 'More practice on BCP test types',
+  body: 'Tabletop versus parallel, please.',
+};
+
+async function errorOf(res: Response) {
+  return { status: res.status, ...((await res.json()) as { error: string; detail?: string }) };
+}
+
+Deno.test('no JWT: 401, and nothing is read or written', async () => {
+  const { board } = setup();
+  const admin = new FakeAdmin();
+  const res = await handleBoardSubmit(post(IDEA), { admin, board, leak: testFingerprint(), log: recordingLogger() });
+  assert.equal(res.status, 401);
+  assert.deepEqual(board.calls, []);
+});
+
+Deno.test('a trusted member’s idea is published; the author is the verified user, never the body’s', async () => {
+  const { board, run } = setup();
+  const res = await run({ ...IDEA, author_id: USER_B, userId: USER_B, user_id: USER_B });
+  assert.equal(res.status, 200);
+  assert.deepEqual(await res.json(), { id: board.writes[0].id, visibility: 'visible' });
+  assert.equal(board.writes[0].userId, USER_A);
+});
+
+Deno.test('a new member’s first post waits for review (new_member)', async () => {
+  const { board, run } = setup();
+  board.addMember(USER_A, { approvedPosts: 0 });
+  const res = await run(IDEA);
+  assert.deepEqual(await res.json(), { id: board.writes[0].id, visibility: 'pending', holdReason: 'new_member' });
+});
+
+Deno.test('near-verbatim bank text: 422 bank_text, and NO row is written', async () => {
+  const { board, log, run } = setup();
+  const res = await run({ ...IDEA, kind: 'content', body: TEST_BANK[0].stem });
+  assert.deepEqual(await errorOf(res), { status: 422, error: 'bank_text' });
+  assert.equal(board.writes.length, 0);
+  // The same for a comment and for edits.
+  assert.equal(
+    (await run({ op: 'comment', postId: '00000000-0000-4000-8000-0000000000ff', body: TEST_BANK[0].explanation }))
+      .status,
+    422,
+  );
+  assert.equal(
+    (await run({ ...IDEA, op: 'edit_post', id: '00000000-0000-4000-8000-0000000000ff', body: TEST_BANK[0].stem }))
+      .status,
+    422,
+  );
+  assert.equal(board.writes.length, 0);
+  // The log never holds the text.
+  assert.ok(log.lines.every((l) => !l.includes('payroll') && !l.includes('clerk')));
+});
+
+Deno.test('blocked words: 422 rejected_words, nothing written', async () => {
+  const { board, run } = setup();
+  const res = await run({ ...IDEA, body: 'what the fuck is this timer' });
+  assert.deepEqual(await errorOf(res), { status: 422, error: 'rejected_words', detail: 'words' });
+  assert.equal(board.writes.length, 0);
+});
+
+Deno.test('a new member’s link and anyone’s shortener: 422 links; a trusted member’s plain link is fine', async () => {
+  const { board, run } = setup();
+  board.addMember(USER_A, { approvedPosts: 0 });
+  assert.deepEqual(await errorOf(await run({ ...IDEA, body: 'see https://example.org/x' })), {
+    status: 422,
+    error: 'rejected_words',
+    detail: 'links',
+  });
+  board.addMember(USER_A, { approvedPosts: 2 });
+  assert.deepEqual(await errorOf(await run({ ...IDEA, body: 'see bit.ly/x' })), {
+    status: 422,
+    error: 'rejected_words',
+    detail: 'links',
+  });
+  assert.equal((await run({ ...IDEA, body: 'see https://example.org/x' })).status, 200);
+});
+
+Deno.test('staff-added words count too', async () => {
+  const { board, run } = setup();
+  board.termsList.block = ['spoilerword'];
+  board.termsList.hold = ['meet offline'];
+  assert.equal((await run({ ...IDEA, body: 'a spoilerword here' })).status, 422);
+  const held = await run({ ...IDEA, body: 'we should meet offline' });
+  assert.equal(((await held.json()) as { holdReason: string }).holdReason, 'hold_words');
+});
+
+Deno.test('hold list and recall: stored as pending with the hold reason', async () => {
+  const { board, run } = setup();
+  const words = await run({ ...IDEA, body: 'add me on whatsapp' });
+  assert.deepEqual(await words.json(), { id: board.writes[0].id, visibility: 'pending', holdReason: 'hold_words' });
+  const recall = await run({ ...IDEA, body: 'On my exam I got one about the audit charter.' });
+  assert.deepEqual(await recall.json(), { id: board.writes[1].id, visibility: 'pending', holdReason: 'recall' });
+  // Linking one of our own practice questions lowers the recall score below the hold
+  // (a pasted option list doesn't get that discount: see the fix-round test below).
+  const ours = await run({ ...IDEA, itemRef: 'q:d1_001', body: 'On my exam I got one like this, was it the board?' });
+  assert.equal(((await ours.json()) as { visibility: string }).visibility, 'visible');
+});
+
+Deno.test('posting paused: posts and comments refused before anything is written', async () => {
+  const { board, run } = setup();
+  board.postingOpen = false;
+  assert.deepEqual(await errorOf(await run(IDEA)), { status: 409, error: 'posting_paused' });
+  assert.deepEqual(
+    await errorOf(await run({ op: 'comment', postId: '00000000-0000-4000-8000-0000000000ff', body: 'Same here.' })),
+    {
+      status: 409,
+      error: 'posting_paused',
+    },
+  );
+  assert.equal(board.writes.length, 0);
+});
+
+Deno.test('standing, consent and membership', async () => {
+  const { board, run } = setup();
+  board.addMember(USER_A, { standing: 'banned' });
+  assert.deepEqual(await errorOf(await run(IDEA)), { status: 403, error: 'banned' });
+  board.addMember(USER_A, { standing: 'suspended', standingUntil: new Date(NOW + 86_400_000).toISOString() });
+  assert.equal((await run(IDEA)).status, 403);
+  board.addMember(USER_A, { standing: 'suspended', standingUntil: new Date(NOW - 1000).toISOString() });
+  assert.equal((await run(IDEA)).status, 200, 'a suspension that ran out lets them post again');
+  board.addMember(USER_A, { guidelinesVersion: '2025-01' });
+  assert.deepEqual(await errorOf(await run(IDEA)), { status: 409, error: 'invalid', detail: 'guidelines' });
+  assert.deepEqual(await errorOf(await run(IDEA, USER_B)), { status: 403, error: 'forbidden', detail: 'not_member' });
+});
+
+Deno.test('the database’s refusals map to the app’s codes (rate limit with a Retry-After)', async () => {
+  const { board, run } = setup();
+  board.postsPerHour = 0;
+  const res = await run(IDEA);
+  assert.equal(res.status, 429);
+  assert.equal(res.headers.get('retry-after'), String(24 * 60 * 60));
+  board.fail.write = new BoardDbError('forbidden');
+  assert.deepEqual(
+    await errorOf(await run({ op: 'comment', postId: '00000000-0000-4000-8000-0000000000ff', body: 'blocked' })),
+    {
+      status: 403,
+      error: 'forbidden',
+    },
+  );
+  board.fail.member = new BoardDbError('server');
+  assert.deepEqual(await errorOf(await run(IDEA)), { status: 500, error: 'server' });
+});
+
+Deno.test('fields are checked: kind, title length, body length, item link, ids', async () => {
+  const { board, run } = setup();
+  const cases: [Record<string, unknown>, string][] = [
+    [{ ...IDEA, kind: 'rant' }, 'kind'],
+    [{ ...IDEA, title: 'Short' }, 'title'],
+    [{ ...IDEA, title: 'x'.repeat(101) }, 'title'],
+    [{ ...IDEA, body: 'x'.repeat(2001) }, 'body'],
+    [{ ...IDEA, itemRef: 'javascript:alert(1)' }, 'item_ref'],
+    [{ op: 'comment', postId: 'not-a-uuid', body: 'hi' }, 'post_id'],
+    [{ op: 'comment', postId: '00000000-0000-4000-8000-0000000000ff', body: '   ' }, 'body'],
+    [{ op: 'edit_comment', id: '00000000-0000-4000-8000-0000000000ff', body: 'x'.repeat(1001) }, 'body'],
+    [{ op: 'launch' }, 'op'],
+  ];
+  for (const [body, detail] of cases) {
+    assert.deepEqual(await errorOf(await run(body)), { status: 400, error: 'invalid', detail });
+  }
+  assert.equal(board.writes.length, 0);
+});
+
+Deno.test('text is normalised before it is checked and stored (invisible characters can’t hide a word)', async () => {
+  const { board, run } = setup();
+  const zw = String.fromCharCode(0x200b);
+  assert.equal((await run({ ...IDEA, body: `fu${zw}ck` })).status, 422);
+  await run({ ...IDEA, title: `  More   practice${zw} on BCP  `, body: 'ok' });
+  assert.equal(board.writes[0].title, 'More practice on BCP');
+});
+
+Deno.test('the leak guard must be built: without it nothing is accepted', async () => {
+  const { board, run, log } = setup({ leak: false });
+  assert.deepEqual(await errorOf(await run(IDEA)), { status: 500, error: 'server' });
+  assert.equal(board.writes.length, 0);
+  assert.ok(log.lines.some((l) => l.includes('leakprint_missing')));
+});
+
+Deno.test('me: the learner’s own facts only; join checks the name', async () => {
+  const { board, run } = setup();
+  const me = (await (await run({ op: 'me' })).json()) as { member: Record<string, unknown> };
+  // The public member id only: the account id never travels (SEC S4).
+  assert.equal(me.member.memberId, board.members.get(USER_A)!.memberId);
+  assert.notEqual(me.member.memberId, USER_A);
+  assert.ok(!JSON.stringify(me).includes(USER_A));
+  assert.deepEqual(await (await run({ op: 'me' }, USER_B)).json(), { member: null });
+  for (const handle of ['Aurivan Team', 'ISACA_mod', 'support']) {
+    assert.deepEqual(
+      await errorOf(await run({ op: 'join', handle, handleKind: 'chosen', guidelinesVersion: '2026-11' }, USER_B)),
+      {
+        status: 400,
+        error: 'invalid',
+        detail: 'handle_reserved',
+      },
+    );
+  }
+  assert.deepEqual(
+    await errorOf(await run({ op: 'join', handle: 'x', handleKind: 'chosen', guidelinesVersion: '2026-11' }, USER_B)),
+    {
+      status: 400,
+      error: 'invalid',
+      detail: 'handle_shape',
+    },
+  );
+  board.termsList.reserved = ['ranger'];
+  assert.equal(
+    (await run({ op: 'join', handle: 'Ranger Bob', handleKind: 'chosen', guidelinesVersion: '2026-11' }, USER_B))
+      .status,
+    400,
+  );
+  const ok = await run(
+    { op: 'join', handle: 'Misty Rowan 77', handleKind: 'pseudonym', guidelinesVersion: '2026-11' },
+    USER_B,
+  );
+  assert.equal(((await ok.json()) as { member: { handle: string } }).member.handle, 'Misty Rowan 77');
+  assert.deepEqual(
+    await errorOf(
+      await run({ op: 'join', handle: 'Misty Rowan 77', handleKind: 'pseudonym', guidelinesVersion: '2026-11' }),
+    ),
+    {
+      status: 409,
+      error: 'invalid',
+      detail: 'handle_taken',
+    },
+  );
+});
+
+Deno.test('every write attempt is counted before the filters: a refused text costs a try too (SEC S6)', async () => {
+  const { board, run } = setup();
+  // A refused text (blocked words) still counts.
+  assert.equal((await run({ ...IDEA, body: 'fuck this timer' })).status, 422);
+  assert.deepEqual(board.attempts, [USER_A]);
+  // Past the limit: 429 before the text is even looked at, and nothing is written.
+  board.attemptsAllowed = 1;
+  const before = board.calls.length;
+  assert.deepEqual(await errorOf(await run(IDEA)), { status: 429, error: 'rate_limited' });
+  assert.equal(board.writes.length, 0);
+  // Refused at the count: the word lists were never even read for it.
+  assert.deepEqual(board.calls.slice(before), ['member', 'attempt']);
+});
+
+Deno.test('join counts a write attempt before the word lists are read: no free probing of the private list (RR_P8 R3)', async () => {
+  const { board, run } = setup();
+  board.termsList.block = ['secretslur'];
+  const join = (handle: string) =>
+    run({ op: 'join', handle, handleKind: 'chosen', guidelinesVersion: '2026-11' }, USER_B);
+  const before = board.calls.length;
+  assert.deepEqual(await errorOf(await join('Calm Secretslur')), {
+    status: 400,
+    error: 'invalid',
+    detail: 'handle_words',
+  });
+  // Counted first, then the lists are read.
+  assert.deepEqual(board.calls.slice(before), ['attempt', 'terms']);
+  assert.deepEqual(board.attempts, [USER_B]);
+  // Past the limit: 429 before the lists are even read, and nobody joins.
+  board.attemptsAllowed = 1;
+  const mid = board.calls.length;
+  assert.deepEqual(await errorOf(await join('Calm Otherword')), { status: 429, error: 'rate_limited' });
+  assert.deepEqual(board.calls.slice(mid), ['attempt']);
+  assert.equal(board.members.has(USER_B), false);
+});
+
+Deno.test('the same draft sent twice (its reply was lost) is ONE post (QA BUG-1)', async () => {
+  const { board, run } = setup();
+  const clientId = '40000000-0000-4000-8000-000000000001';
+  const first = (await (await run({ ...IDEA, clientId })).json()) as { id: string };
+  const again = (await (await run({ ...IDEA, clientId })).json()) as { id: string };
+  assert.equal(again.id, first.id);
+  assert.equal(board.writes.length, 1);
+  assert.equal(board.writes[0].clientId, clientId);
+  // A different draft is a new post; a malformed id is refused.
+  await run({ ...IDEA, clientId: '40000000-0000-4000-8000-000000000002' });
+  assert.equal(board.writes.length, 2);
+  assert.deepEqual(await errorOf(await run({ ...IDEA, clientId: 'x' })), {
+    status: 400,
+    error: 'invalid',
+    detail: 'client_id',
+  });
+});
+
+Deno.test('fix round: a paste without spaces is still bank text; a pasted option list is held even with a link; answer talk is folded', async () => {
+  const { board, run } = setup();
+  // The squashed-letters check (server only).
+  const squashed = TEST_BANK[0].stem.replace(/\s+/g, '');
+  assert.deepEqual(await errorOf(await run({ ...IDEA, body: squashed })), { status: 422, error: 'bank_text' });
+  // A real-exam-looking question with its options: held, even when it links one of our items.
+  const pasted =
+    'An auditor sees backups kept in the same building. What should be done FIRST?\nA) move them\nB) test them\nC) log them\nD) ignore it';
+  const held = (await (await run({ ...IDEA, kind: 'content', body: pasted, itemRef: 'q:d1_001' })).json()) as {
+    holdReason: string;
+  };
+  assert.equal(held.holdReason, 'recall');
+  // Talk about an answer: the post is folded for readers.
+  await run({ ...IDEA, title: 'About question four of the mock', body: 'I think the answer is B, not C.' });
+  assert.equal(board.writes.at(-1)!.spoiler, true);
+  await run({ ...IDEA, title: 'A calmer colour at night please' });
+  assert.equal(board.writes.at(-1)!.spoiler, false);
+});

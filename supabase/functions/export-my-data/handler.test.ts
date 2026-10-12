@@ -12,6 +12,7 @@ function setup() {
     providers: ['email', 'google'],
     termsVersion: '2026-11',
     snapshots: { progress: { mine: 'a-progress' } },
+    boardRows: { member: { handle: 'Quiet Cedar 214' }, posts: [{ title: 'More practice on BCP' }] },
   });
   admin.addUser({
     id: USER_B,
@@ -20,6 +21,7 @@ function setup() {
     termsVersion: '2099-12',
     createdAt: '2020-01-01T00:00:00.000Z',
     snapshots: { progress: { theirs: 'b-private-progress' }, settings: { name: 'b-private-settings' } },
+    boardRows: { member: { handle: 'Steady Oak 9' }, posts: [{ title: 'b-private-post' }] },
   });
   const log = recordingLogger();
   let now = NOW;
@@ -109,6 +111,7 @@ Deno.test('happy path: the learner’s own account data, as a no-store JSON down
       createdAt: '2026-10-01T00:00:00.000Z',
       termsVersion: '2026-11',
     },
+    board: { member: { handle: 'Quiet Cedar 214' }, posts: [{ title: 'More practice on BCP' }] },
   });
 });
 
@@ -149,6 +152,8 @@ Deno.test('the export holds no other learner’s data', async () => {
       '2020-01-01',
       'b-private-progress',
       'b-private-settings',
+      'Steady Oak 9',
+      'b-private-post',
       'apple',
     ]
   ) {

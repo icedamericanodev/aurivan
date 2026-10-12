@@ -468,8 +468,10 @@ describe('the memory backend plays the server’s rules', () => {
     expect(await b.sync.head('progress')).toBeNull();
   });
 
-  it('the board is not built yet (PR 8): every call is a server error', async () => {
+  it('the board (PR 8) answers: signed out, the default scope shows nothing to read', async () => {
     const b = make();
-    expect(await codeOf(b.board.settings())).toBe('server:not_built');
+    expect(await b.board.settings()).toEqual({ postingOpen: true, guidelinesVersion: '2026-11', readScope: 'signed_in' });
+    expect((await b.board.feed({ cert: 'cisa', tab: 'top' })).items).toEqual([]);
+    expect(await codeOf(b.board.me())).toBe('unauthorized');
   });
 });

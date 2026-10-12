@@ -34,6 +34,7 @@ import { boundsLabel, DomainRings, RINGS_NOTE, ringsSpoken } from '../../compone
 import { useGrowth, useScreenFocus } from '../../components/motion';
 import { creditSubtitle } from '../../components/help';
 import { AccountSection } from '../../components/account';
+import { BoardRow } from '../../components/board';
 import { CLOUD } from '../../cloud/flag';
 import { MindsetGrowthCard } from '../../components/moments';
 import { BadgeIcon, Bookmark, ICON_STROKE, Leaf, LifeBuoy, NotebookPen, RotateCcw, Settings, Share2, Sprout } from '../../components/icons';
@@ -393,6 +394,8 @@ const YouLists = memo(function YouLists({
         {CLOUD && <AccountSection />}
         {/* One entry to Help and feedback (mobile 1.7); the full list is on that screen. */}
         <Section title="Help and feedback" />
+        {/* Cloud builds only: the feedback board (Phase 8). */}
+        {CLOUD && <BoardRow />}
         <ListRow
           icon={icon(LifeBuoy)}
           title="Get help or send feedback"

@@ -34,6 +34,14 @@ export interface AccountFacts {
 }
 
 interface AccountState extends AccountFacts {
+  /**
+   * The phone knows who is signed in: the saved facts were loaded and
+   * compared with the session (lib/account.ts initAccount), or a screen set
+   * them. Never saved. Until then a board screen opened from a link shows
+   * nothing rather than send a signed-in learner to "Sign in" (fix round
+   * P8, CR B1).
+   */
+  known: boolean;
   setFacts: (f: Partial<AccountFacts>) => void;
 }
 
@@ -43,7 +51,8 @@ export const useAccount = create<AccountState>()(
   persist(
     (set) => ({
       ...SIGNED_OUT,
-      setFacts: (f) => set(f),
+      known: false,
+      setFacts: (f) => set({ ...f, known: true }),
     }),
     {
       name: 'aurivan.account.v1',

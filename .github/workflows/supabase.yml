@@ -7,10 +7,10 @@ name: Supabase
 on:
   pull_request:
     branches: [main]
-    paths: ['supabase/**', 'scripts/check_rls.sh', '.github/workflows/supabase.yml']
+    paths: ['supabase/**', 'scripts/check_rls.sh', 'mobile/src/engine/leakGuard.ts', 'mobile/src/engine/moderation.ts', 'mobile/scripts/sync-shared.mjs', '.github/workflows/supabase.yml']
   push:
     branches: [main]
-    paths: ['supabase/**', 'scripts/check_rls.sh', '.github/workflows/supabase.yml']
+    paths: ['supabase/**', 'scripts/check_rls.sh', 'mobile/src/engine/leakGuard.ts', 'mobile/src/engine/moderation.ts', 'mobile/scripts/sync-shared.mjs', '.github/workflows/supabase.yml']
 
 permissions:
   contents: read
@@ -30,6 +30,8 @@ jobs:
         run: bash scripts/check_rls.sh --self-test
       - name: RLS guard (G6 + G7) on supabase/migrations
         run: bash scripts/check_rls.sh
+      - name: Guard G8 (the board's shared text rules match mobile/src/engine)
+        run: node mobile/scripts/sync-shared.mjs --check
       # Third-party actions are pinned to a commit (the tag can be moved; a commit can't).
       - uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed # v2.0.5
         with:
@@ -39,7 +41,9 @@ jobs:
       - name: Lint
         run: deno lint supabase/functions
       - name: Typecheck entrypoints (fetches the pinned supabase-js)
-        run: deno check --no-lock supabase/functions/delete-account/index.ts supabase/functions/export-my-data/index.ts
+        run: >-
+          deno check --no-lock supabase/functions/delete-account/index.ts supabase/functions/export-my-data/index.ts
+          supabase/functions/board-submit/index.ts supabase/functions/staff-action/index.ts supabase/functions/staff-digest/index.ts
       - name: Unit tests (pure handlers, fake admin client, no network)
         run: deno test --no-lock --no-remote supabase/functions
 

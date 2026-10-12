@@ -19,6 +19,11 @@
  *   the Terms, a uuid device id, a JSON round trip on the wire (no shared
  *   objects), and the export's stores with the newest app version that
  *   wrote them; plus a reply lost after a write (dropNextReply);
+ * - the feedback board (PR 8, memory/board.ts): the read scope, posting
+ *   through board-submit's rules (filters, leak guard, recall, holds, rate
+ *   limits), votes, reports, blocks, appeals, notices and staff actions; an
+ *   account deletion cascades its board rows, and "Download my data" adds
+ *   the learner's own board rows;
  * - "offline" on demand, and a log of every port call for tests.
  * The session is written through the same chunked session store a real
  * build uses (cloud/secureSession.ts), into an in-memory key store.
@@ -30,9 +35,12 @@
 import { CODE_TTL_MS, EXPORT_EVERY_MS, maskEmail, MAX_CODE_TRIES, normalizeEmail, recentAuth, RESEND_WAIT_MS, validCode, validEmail, type Provider } from '../../engine/account';
 import { utf8 } from '../../engine/sha256';
 import { MAX_SETTINGS_BYTES } from '../../engine/syncMerge';
+import { getAllQuestions } from '../../content/loader';
+import { buildFingerprint, leakItem, type Fingerprint } from '../../engine/leakGuard';
 import { getDeviceId, isDeviceId, renewDeviceId } from '../deviceId';
 import { createChunkedSession } from '../secureSession';
-import { CloudError, type AccountInfo, type BoardPort, type CloudBackend, type CloudErrorCode, type RandomPort, type SnapshotHead, type SyncStore } from '../types';
+import { CloudError, type AccountInfo, type CloudBackend, type CloudErrorCode, type RandomPort, type SnapshotHead, type SyncStore } from '../types';
+import { createMemoryBoard, type BoardSeed, type MemoryBoardControl } from './board';
 import { createMemoryKV, type MemoryKV } from './kv';
 
 /** The session key (Supabase names its own like this). */
@@ -73,6 +81,8 @@ export interface MemorySeed {
   offline?: boolean;
   /** Every sync call fails with this code (screenshots: a server problem that isn't "offline"). */
   failSync?: CloudErrorCode;
+  /** The feedback board's starting rows (PR 8): members, staff, posts, comments, reports, notices. */
+  board?: BoardSeed;
 }
 
 export interface MemoryOptions extends MemorySeed {
@@ -108,6 +118,8 @@ export interface MemoryControl {
   snapshots(userId: string): Partial<Record<SyncStore, Snapshot>>;
   /** Another device writes a snapshot directly on the "server" (tests, shots): rev +1, no checks. */
   writeSnapshot(userId: string, store: SyncStore, s: { state: unknown; appVersion?: string; storeVersion?: number; deviceId?: string }): Snapshot;
+  /** The board's "server" rows and switches (PR 8). */
+  board: MemoryBoardControl;
 }
 
 export type MemoryBackend = CloudBackend & { control: MemoryControl };
@@ -117,6 +129,22 @@ interface Session {
   accessToken: string;
   refreshToken: string;
   authAt: number;
+}
+
+/**
+ * The leak guard as board-submit has it: the bundled bank's fingerprint
+ * WITH the server-only squashed-letters check (leakprint.json is built the
+ * same way). Built once per exam, the first time the memory "server" checks
+ * a post; never on a phone build (this whole backend is dev and shots only).
+ */
+const serverPrints = new Map<string, Fingerprint>();
+function serverFingerprint(cert: string): Fingerprint {
+  let fp = serverPrints.get(cert);
+  if (!fp) {
+    fp = buildFingerprint(getAllQuestions(cert).map(leakItem), { squash: true });
+    serverPrints.set(cert, fp);
+  }
+  return fp;
 }
 
 export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
@@ -273,14 +301,26 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
     return signInAs(u);
   };
 
-  const notBuilt = () => Promise.reject(new CloudError('server', undefined, 'not_built'));
-  // The board arrives in PR 8: every call is a server error until then.
-  const board = new Proxy({} as BoardPort, {
-    get: (_t, name) => () => {
-      calls.push(`board.${String(name)}`);
-      return notBuilt();
+  // The feedback board (PR 8): reads work signed out (the read scope decides); writes need the account.
+  const board = createMemoryBoard(
+    {
+      now,
+      enter,
+      leave,
+      viewer: async () => {
+        const s = await current();
+        if (s && deleted.has(s.userId)) throw new CloudError('gone');
+        return s && users.has(s.userId) ? s.userId : null;
+      },
+      needUser: async () => {
+        const { u } = await needUser();
+        return { userId: u.userId, termsVersion: u.termsVersion, createdAt: u.createdAt };
+      },
+      accountCreatedAt: (id) => users.get(id)?.createdAt ?? null,
+      leak: serverFingerprint,
     },
-  });
+    opts.board,
+  );
 
   const backend: MemoryBackend = {
     auth: {
@@ -364,6 +404,8 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
         users.delete(u.userId);
         deleted.set(u.userId, u);
         snapshots.delete(u.userId);
+        // The board's rows go with the account (owner decision §9 #5: cascade).
+        board.control.removeUser(u.userId);
         // The cascade takes the write counters too.
         for (const k of [...writes.keys()]) if (k.startsWith(`${u.userId}:`)) writes.delete(k);
         lastExport.delete(u.userId);
@@ -392,6 +434,8 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
             appVersion: typeof version === 'string' && SEMVER.test(version) ? version : null,
             stores,
             account: { email: u.email, providers: u.providers, createdAt: new Date(u.createdAt).toISOString(), termsVersion: u.termsVersion },
+            // PR 8: the learner's own feedback board rows (export-my-data's `board`).
+            board: board.control.exportFor(u.userId),
           },
           null,
           2,
@@ -460,8 +504,9 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
       id: () => getDeviceId(kv, randomPort),
       renew: () => renewDeviceId(kv, randomPort),
     },
-    board,
+    board: board.port,
     control: {
+      board: board.control,
       setOffline(on) {
         offline = on;
       },

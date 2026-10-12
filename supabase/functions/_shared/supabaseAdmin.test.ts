@@ -144,10 +144,46 @@ Deno.test('a failed call throws without the database message', async () => {
   }
 });
 
-Deno.test('stubs until Phase 8: no board rows, no files', async () => {
-  const admin = supabaseAdmin(fakeClient().client);
-  assert.deepEqual(await admin.countBoardRows(USER_A), { posts: 0, comments: 0 });
-  await admin.deleteUserFiles(USER_A);
+Deno.test('board counts and the board export (Phase 8) come from the svc_ functions, own id only', async () => {
+  const f = fakeClient({ rpcResult: { data: { posts: 3, comments: 4 }, error: null } });
+  const admin = supabaseAdmin(f.client);
+  assert.deepEqual(await admin.countBoardRows(USER_A), { posts: 3, comments: 4 });
+  const rows = fakeClient({ rpcResult: { data: { member: { handle: 'Quiet Cedar 214' }, posts: [] }, error: null } });
+  assert.deepEqual(await supabaseAdmin(rows.client).readBoard(USER_A), {
+    member: { handle: 'Quiet Cedar 214' },
+    posts: [],
+  });
+  assert.deepEqual([...f.rpcs, ...rows.rpcs], [
+    { fn: 'svc_board_counts', args: { p_user: USER_A } },
+    { fn: 'svc_board_export', args: { p_user: USER_A } },
+  ]);
+  // Odd answers read as nothing, never as a crash or a negative count.
+  assert.deepEqual(
+    await supabaseAdmin(fakeClient({ rpcResult: { data: { posts: -1 }, error: null } }).client).countBoardRows(USER_A),
+    {
+      posts: 0,
+      comments: 0,
+    },
+  );
+  assert.deepEqual(
+    await supabaseAdmin(fakeClient({ rpcResult: { data: [1], error: null } }).client).readBoard(USER_A),
+    {},
+  );
+  const failing = supabaseAdmin(
+    fakeClient({ rpcResult: { data: null, error: { message: 'relation board_posts a@test.invalid' } } }).client,
+  );
+  await assert.rejects(
+    () => failing.readBoard(USER_A),
+    (e: unknown) => e instanceof Error && !e.message.includes('a@test.invalid'),
+  );
+  await assert.rejects(
+    () => failing.countBoardRows(USER_A),
+    (e: unknown) => e instanceof Error && !e.message.includes('a@test.invalid'),
+  );
+});
+
+Deno.test('no storage bucket yet: deleting files is a no-op', async () => {
+  await supabaseAdmin(fakeClient().client).deleteUserFiles(USER_A);
 });
 
 Deno.test('readSnapshots (Phase 7): the caller’s own rows, as backup-file stores', async () => {

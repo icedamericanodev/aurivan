@@ -22,14 +22,40 @@ create temporary view our_tables as
   join pg_namespace n on n.oid = c.relnamespace
   where n.nspname in ('public', 'private') and c.relkind in ('r', 'p');
 
--- ALLOWLISTS (empty in Phase 6).
---  anon may execute:          Phase 8 adds private.is_staff and the board read RPCs.
---  authenticated may execute: Phase 8 adds private.is_staff, private.is_active_member,
---                             private.is_blocked_by and the board RPCs.
---  anon may read (tables):    Phase 8 adds the board's public-read tables.
---  `using (true)` policies:   content_packs_read; Phase 8 adds the board's public reads.
+-- ALLOWLISTS. Each entry is a deliberate exception; add one with a comment, never
+-- by weakening a query below. (Phase 6 had only content_packs_read.)
+--  anon may execute:          the board's two read functions (Phase 8). They run as
+--                             the caller (security invoker), so RLS decides what anon
+--                             sees: nothing at all unless board_settings.read_scope
+--                             is 'everyone'.
+--  authenticated may execute: the same two reads, and the two policy helpers the
+--                             board's RLS calls (private.is_staff,
+--                             private.is_active_member). App roles still have no
+--                             usage on schema private (test 13): a policy calls a
+--                             helper by its id, which needs only EXECUTE. Every other
+--                             private helper, private.is_blocked_by included, is
+--                             revoked from public (Phase 8 addendum).
+--  anon may read (tables):    the board's public-read tables (Phase 8), column by
+--                             column; their anon policies return rows only when
+--                             read_scope is 'everyone'.
+--  `using (true)` policies:   content_packs_read (Phase 6); board_settings_read
+--                             (Phase 8: the pause valve, the guidelines version and
+--                             the read scope, which the app needs before sign-in).
 create temporary table allow (kind text, name text);
-insert into allow values ('true_policy', 'content_packs_read');
+insert into allow values
+  ('true_policy', 'content_packs_read'),
+  ('true_policy', 'board_settings_read'),
+  ('anon_exec', 'public.board_feed'),
+  ('anon_exec', 'public.board_post'),
+  ('auth_exec', 'public.board_feed'),
+  ('auth_exec', 'public.board_post'),
+  ('auth_exec', 'private.is_staff'),
+  ('auth_exec', 'private.is_active_member'),
+  ('anon_read', 'public.board_settings'),
+  ('anon_read', 'public.board_members'),
+  ('anon_read', 'public.board_posts'),
+  ('anon_read', 'public.board_comments'),
+  ('anon_read', 'public.board_status_events');
 
 -- 1. RLS is on for every table, public and private (guard G6 at runtime).
 select is_empty($$ select nspname || '.' || relname from our_tables where not relrowsecurity $$,
@@ -106,9 +132,8 @@ select ok(not has_schema_privilege('anon', 'private', 'create')
           and not has_schema_privilege('authenticated', 'private', 'create'),
   'anon and authenticated cannot create objects in private');
 
--- 13. App roles cannot even look into private. Phase 8 grants USAGE to anon and
---     authenticated for its policy helpers; it changes this test to an allowlist
---     then, and tests 4–6 still hold (no execute, no table privilege).
+-- 13. App roles cannot even look into private. Phase 8 kept this: its policy
+--     helpers need only EXECUTE (allowlisted above), never USAGE on the schema.
 select ok(not has_schema_privilege('anon', 'private', 'usage')
           and not has_schema_privilege('authenticated', 'private', 'usage'),
   'anon and authenticated have no usage on schema private');

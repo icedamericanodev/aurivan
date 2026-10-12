@@ -36,7 +36,7 @@ export interface AdminPort {
   getUser(jwt: string): Promise<AuthUser | 'invalid' | 'gone'>;
   /** auth.admin.deleteUser: revokes sessions and cascades every account row. */
   deleteUser(userId: string): Promise<void>;
-  /** For the deletion audit row. Zero until the board ships (Phase 8). */
+  /** For the deletion audit row: the learner's board posts and comments (public.svc_board_counts). */
   countBoardRows(userId: string): Promise<BoardCounts>;
   /** Removes storage objects under user/<uid>/. No buckets exist yet. */
   deleteUserFiles(userId: string): Promise<void>;
@@ -51,4 +51,11 @@ export interface AdminPort {
   readSnapshots(userId: string): Promise<SnapshotsRead>;
   /** Atomically claims the hourly export slot. false = already exported this hour. */
   claimExport(userId: string): Promise<boolean>;
+  /**
+   * The learner's own feedback board rows for "Download my data" (Phase 8,
+   * public.svc_board_export): their member row, posts, comments, votes,
+   * follows, reports they made, blocks, appeals and notices. Never anyone
+   * else's, and never staff-only fields (moderation log, filter terms).
+   */
+  readBoard(userId: string): Promise<Record<string, unknown>>;
 }

@@ -65,6 +65,8 @@ export { default as CircleQuestionMark } from 'lucide-react-native/icons/circle-
 export { default as Mail } from 'lucide-react-native/icons/mail';
 export { default as LifeBuoy } from 'lucide-react-native/icons/life-buoy';
 export { default as Inbox } from 'lucide-react-native/icons/inbox';
+// Uplift Phase 8 (built OFF): the feedback board's row in You (cloud builds only).
+export { default as MessagesSquare } from 'lucide-react-native/icons/messages-square';
 export { Rings, Sprig, Sprout } from './glyphs';
 
 export const ICON_STROKE = 1.75;
