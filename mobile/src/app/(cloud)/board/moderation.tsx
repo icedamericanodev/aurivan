@@ -12,7 +12,7 @@
  * (docs/support/PLAYBOOK.md §7).
  */
 import { Redirect, router, useFocusEffect } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Alert, View } from 'react-native';
 import { AccountNotice } from '../../../components/account';
 import { ItemMenu, MenuButton, type MenuItem } from '../../../components/board';
@@ -55,8 +55,12 @@ export default function Moderation() {
   const [menuFor, setMenuFor] = useState<QueueItem | null>(null);
   const back = () => (router.canGoBack() ? router.back() : router.replace('/board'));
 
+  // The tab asked for last: a slower answer for an earlier tab is dropped.
+  const wanted = useRef<StaffTab>(tab);
   const load = useCallback(async (t: StaffTab) => {
+    wanted.current = t;
     const r = await loadStaffQueue(t);
+    if (wanted.current !== t) return;
     if (r.ok) setQueue(r.queue);
     else setProblem(copy(r.code === 'offline' ? 'board.offline' : 'board.error'));
   }, []);
@@ -74,6 +78,9 @@ export default function Moderation() {
   if (!signedIn || staff === false) return <Redirect href="/board" />;
   if (staff === null) return <Screen edges={['top', 'bottom']}><PushedHeader title={copy('board.staff.title')} onBack={back} /></Screen>;
 
+  // The tab of the list on screen: until a new tab's answer arrives, the old
+  // list stays, with its own labels and buttons (never another tab's).
+  const shown = queue?.tab ?? tab;
   const act = async (a: StaffAction) => {
     setProblem(null);
     const r = await staffAct(a);
@@ -83,8 +90,8 @@ export default function Moderation() {
   const target = (it: QueueItem) => ({ targetKind: (it.kind === 'appeal' ? 'appeal' : it.kind) as StaffAction['targetKind'], targetId: it.id });
 
   const actions = (it: QueueItem) => {
-    if (tab === 'log') return null;
-    if (tab === 'appeals') {
+    if (shown === 'log') return null;
+    if (shown === 'appeals') {
       return (
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.sm }}>
           <Button kind="secondary" label={copy('board.staff.keep')} onPress={() => void act({ action: 'uphold', ...target(it) })} />
@@ -92,7 +99,7 @@ export default function Moderation() {
         </View>
       );
     }
-    if (tab === 'members') {
+    if (shown === 'members') {
       return (
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.sm }}>
           {it.label === 'active' ? (
@@ -121,7 +128,7 @@ export default function Moderation() {
     ? [
         { label: copy('board.staff.deleteExam'), onPress: () => void act({ action: 'delete_exam_content', ...target(menuFor) }), danger: true },
         { label: copy('board.staff.hide'), onPress: () => void act({ action: 'hide', ...target(menuFor) }) },
-        ...(tab === 'reported' ? [{ label: copy('board.staff.dismiss'), onPress: () => void act({ action: 'approve', ...target(menuFor) }) }] : []),
+        ...(shown === 'reported' ? [{ label: copy('board.staff.dismiss'), onPress: () => void act({ action: 'approve', ...target(menuFor) }) }] : []),
       ]
     : [];
 
@@ -148,10 +155,10 @@ export default function Moderation() {
       {queue && queue.items.length === 0 && <EmptyState compact title={copy('board.staff.empty')} body={copy('board.staff.posting.open')} />}
       {queue?.items.map((it, i) => (
         <View key={`${it.kind}-${it.id}`} style={{ paddingVertical: space.md, borderBottomWidth: i === queue.items.length - 1 ? 0 : 1, borderBottomColor: c.line }}>
-          <T v="label">{headline(tab, it)}</T>
+          <T v="label">{headline(shown, it)}</T>
           {it.title ? <T v="body" numberOfLines={2}>{it.title}</T> : null}
           {it.body ? <T v="small" numberOfLines={2} color={c.ink}>{`“${it.body}”`}</T> : null}
-          {tab !== 'log' && tab !== 'members' && it.handle ? (
+          {shown !== 'log' && shown !== 'members' && it.handle ? (
             <T v="meta">{[it.handle, it.newMember ? copy('board.staff.newMember') : null, copy('board.staff.prior', { n: String(it.priorActions) })].filter(Boolean).join(' · ')}</T>
           ) : null}
           {actions(it)}

@@ -29,7 +29,7 @@ import { Button, Chip, ChipRow, NoteField, PushedHeader, Screen, T, TextField } 
 import type { Draft, PostCard, PostKind } from '../../../cloud/types';
 import { getCertification } from '../../../content/certifications';
 import { copy } from '../../../content/cloud/copy';
-import { checkDraft, loadDraft, loadFeed, loadPost, needsGate, postProblem, submitPost, useBoard, type DraftCheck } from '../../../lib/board';
+import { checkDraft, loadDraft, loadFeed, loadPost, needsGate, postProblem, submitPost, useBoard, useBoardSession, type DraftCheck } from '../../../lib/board';
 import { useAccount } from '../../../store/account';
 import { useSettings } from '../../../store/settings';
 import { space } from '../../../theme/tokens';
@@ -56,6 +56,8 @@ export default function Compose() {
   const signedIn = useAccount((s) => s.signedIn);
   const me = useBoard((s) => s.me);
   const settings = useBoard((s) => s.settings);
+  // Opened directly (a link or a notice): load the session the board would have.
+  useBoardSession(signedIn);
   const initialKind = KINDS.find((k) => k === params.kind) ?? 'idea';
   const [kind, setKind] = useState<PostKind>(initialKind);
   const [title, setTitle] = useState('');

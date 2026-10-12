@@ -27,7 +27,7 @@ import { getCertification } from '../../../content/certifications';
 import { copy, type AccountCopyKey } from '../../../content/cloud/copy';
 import { checkHandle } from '../../../engine/moderation';
 import { moveFocus } from '../../../lib/a11y';
-import { handleProblem, joinBoard, needsGate, openBoard, suggestPseudonym, useBoard } from '../../../lib/board';
+import { handleProblem, joinBoard, needsGate, suggestPseudonym, useBoard, useBoardSession } from '../../../lib/board';
 import { useAccount } from '../../../store/account';
 import { useSettings } from '../../../store/settings';
 import { space } from '../../../theme/tokens';
@@ -61,10 +61,10 @@ export default function Guidelines() {
   const titleRef = useRef<View>(null);
   const back = () => (router.canGoBack() ? router.back() : router.replace('/board'));
 
+  useBoardSession(signedIn);
   useEffect(() => {
     moveFocus(titleRef, 350);
-    if (!settings) void openBoard(signedIn);
-  }, [settings, signedIn]);
+  }, []);
 
   // Agreeing is needed (or a new name was asked for); otherwise this is the rules to read.
   const agreeMode = signedIn && (needsGate(me, settings) || params.name === '1');

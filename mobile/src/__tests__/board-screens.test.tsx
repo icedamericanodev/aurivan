@@ -288,6 +288,19 @@ describe('the ⋯ menu, report and block', () => {
     expect(memory.control.board.reports().some((x) => x.targetId === 'c-bcp-1' && x.reporterId === DEMO_USER_ID)).toBe(true);
   });
 
+  it('a post opened directly (a link or a notice, no board visit first) loads the session: an agreed learner is not sent to the gate', async () => {
+    // No openBoard here: the post screen must load the settings and the member itself.
+    params().id = BOARD_POST.audio;
+    const Post = screen('[id]');
+    mount(<Post />);
+    await flush();
+    expect(board.useBoard.getState().settings).not.toBeNull();
+    await press('More options');
+    await press('Report post');
+    expect(mockNav.push).not.toHaveBeenCalled();
+    expect(has('Send report')).toBe(true);
+  });
+
   it('the report sheet: a reason is needed; afterwards the thanks line, and the post is gone from the feed', async () => {
     await openPost(BOARD_POST.audio);
     await press('More options');
@@ -420,6 +433,20 @@ describe('plain text, staff, progress', () => {
     });
     await flush();
     expect(memory.control.board.log().some((l) => l.action === 'approve' && l.actorId === DEMO_USER_ID)).toBe(true);
+  });
+
+  it('switching the queue’s tab never labels the old list by the new tab (Held → Reported → Appeals)', async () => {
+    backendWith({ staff: true });
+    const Mod = screen('moderation');
+    mount(<Mod />);
+    await flush();
+    // Held items are labelled with hold reasons ("recall"), which are not report
+    // reasons: rendering them under Reported's rule used to throw.
+    await press('Reported');
+    expect(allText()).toContain('Reported ×');
+    expect(allText()).toContain('harassment or hate');
+    await press('Appeals');
+    expect(allText()).not.toContain('Reported ×');
   });
 
   it('board actions never touch study progress, the plant, badges or streaks', async () => {

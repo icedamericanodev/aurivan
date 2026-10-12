@@ -21,6 +21,7 @@
  * storage key is ever read or written.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
 import { create } from 'zustand';
 import { getBackend } from '../cloud/backend';
 import { enqueue, flush } from '../cloud/outbox';
@@ -138,6 +139,19 @@ export async function openBoard(signedIn: boolean): Promise<Result<{ settings: B
     useBoard.setState({ me: undefined, staff: false });
   }
   return r;
+}
+
+/**
+ * For a board screen opened directly (a link, a notice's "Open the post", or
+ * the app restored onto it): loads the session the board's front page would
+ * have loaded, so the gate doesn't wrongly ask an agreed learner to agree
+ * again. Does nothing once the session is there.
+ */
+export function useBoardSession(signedIn: boolean) {
+  const loaded = useBoard((s) => s.settings !== null);
+  useEffect(() => {
+    if (!loaded) void openBoard(signedIn);
+  }, [loaded, signedIn]);
 }
 
 /** Before the first post, comment or vote, and again when the guidelines change. */

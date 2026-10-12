@@ -21,7 +21,7 @@ import { BoardCard, ItemMenu, kindLabel, MenuButton, OfficialCard, ReportSheet, 
 import { Button, EmptyState, NoteField, PushedHeader, Screen, Section, T } from '../../../components/ui';
 import type { Comment, PostDetail } from '../../../cloud/types';
 import { copy } from '../../../content/cloud/copy';
-import { block, comment, loadPost, needsGate, postProblem, report, setFollow, setVote, statusLabel, useBoard, visibleComments, withdrawComment, withdrawPost } from '../../../lib/board';
+import { block, comment, loadPost, needsGate, postProblem, report, setFollow, setVote, statusLabel, useBoard, useBoardSession, visibleComments, withdrawComment, withdrawPost } from '../../../lib/board';
 import { shortDate } from '../../../lib/format';
 import { useAccount } from '../../../store/account';
 import { space } from '../../../theme/tokens';
@@ -36,6 +36,8 @@ export default function PostScreen() {
   const signedIn = useAccount((s) => s.signedIn);
   const me = useBoard((s) => s.me);
   const settings = useBoard((s) => s.settings);
+  // Opened directly (a link or a notice): load the session the board would have.
+  useBoardSession(signedIn);
   const hiddenPosts = useBoard((s) => s.hiddenPosts);
   const hiddenComments = useBoard((s) => s.hiddenComments);
   const blockedIds = useBoard((s) => s.blockedIds);
