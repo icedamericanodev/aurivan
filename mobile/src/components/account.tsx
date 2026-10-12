@@ -4,10 +4,10 @@
  * has a cloud backend (`cloudReady()`): with the flag off, You and Settings
  * are exactly what they were.
  *
- * - AccountRow: You → Help and feedback, the first row ("Sync across
- *   devices" signed out, "Account and sync" signed in). It is one of only two
- *   ways in; the account is never offered at launch, in onboarding, before a
- *   first question, or as a pop-up.
+ * - AccountSection / AccountRow: You → Account, its own section just before
+ *   Help and feedback ("Sync across devices" signed out, "Account and sync"
+ *   signed in). It is one of only two ways in; the account is never offered
+ *   at launch, in onboarding, before a first question, or as a pop-up.
  * - AccountSettingsGroup: Settings → Account (the other way in).
  * - aboutLine: Settings → About's last sentence.
  * - AccountNotice: one calm message after an action (the `tip` tint, like
@@ -28,7 +28,7 @@ import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ICON_STROKE, RefreshCw } from './icons';
 import { SettingsGroup, SettingsRow } from './settings';
-import { Button, CheckRow, ICON_SIZE, ListRow, T } from './ui';
+import { Button, CheckRow, ICON_SIZE, ListRow, Section, T } from './ui';
 
 /** What the row under You / Settings says about the account. */
 export function accountLines(f: { signedIn: boolean; emailMasked: string | null; providers: readonly string[]; expired: boolean }) {
@@ -41,8 +41,8 @@ export function accountLines(f: { signedIn: boolean; emailMasked: string | null;
   return { title: copy('you.row.out.title'), sub: f.expired ? copy('you.row.expired.sub') : copy('you.row.out.sub') };
 }
 
-// ── You → Help and feedback: the first row ────────────────────────────
-export function AccountRow() {
+// ── You → Account: the row ─────────────────────────────────────────────
+export function AccountRow({ last }: { last?: boolean } = {}) {
   const { c } = useTheme();
   const signedIn = useAccount((s) => s.signedIn);
   const emailMasked = useAccount((s) => s.emailMasked);
@@ -57,7 +57,22 @@ export function AccountRow() {
       subtitle={sub}
       accessibilityHint={copy(signedIn ? 'hint.account.in' : 'hint.account.out')}
       onPress={() => router.push('/account')}
+      last={last}
     />
+  );
+}
+
+/**
+ * You → its own "Account" section, just before Help and feedback (Phase 7,
+ * UX review O3: syncing your progress isn't help). One of only two ways in.
+ */
+export function AccountSection() {
+  if (!cloudReady()) return null;
+  return (
+    <>
+      <Section title={copy('settings.group')} />
+      <AccountRow last />
+    </>
   );
 }
 
@@ -82,7 +97,7 @@ export function AccountSettingsGroup() {
   );
 }
 
-/** Settings → About's last sentence: unchanged with the flag off. PR 7 passes `syncing`. */
+/** Settings → About's last sentence: unchanged with the flag off; "…and syncs to your Aurivan account" while this phone syncs. */
 export function aboutLine(syncing = false): string {
   if (!CLOUD) return copy('about.off');
   return copy(syncing ? 'about.on.sync' : 'about.on.out');

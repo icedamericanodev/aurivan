@@ -374,10 +374,21 @@ function previewOf(prep: FirstSyncPrep): FirstPreview {
  * work out the preview. Changes nothing. With nothing on either side there
  * is nothing to preview: sync simply turns on.
  */
-export async function startFirstSync(): Promise<Result<{ next: 'preview' | 'done' }>> {
+export async function startFirstSync(): Promise<Result<{ next: 'preview' | 'done' | 'switch' }>> {
   const b = getBackend();
   const thisApp = appVersion();
   if (!CLOUD_ON() || !b || !thisApp) return { ok: false, code: 'server' };
+  const current = await b.auth.current().catch(() => null);
+  if (!current) {
+    await noteSessionEnded();
+    return { ok: false, code: 'unauthorized' };
+  }
+  // This phone synced with a different account: the learner chooses first (Start fresh is the default).
+  const synced = useAccount.getState().syncedAccountHash;
+  if (synced && synced !== hashOf(current.userId)) {
+    switchPending = { info: current };
+    return { ok: true, next: 'switch' };
+  }
   useSyncStatus.setState({ busy: true });
   const r = await prepareFirstSync({ port: b.sync, thisApp, now: () => Date.now(), knownCertIds: CERTIFICATIONS.map((c) => c.id), read: device.read, stamps: meta().stamps });
   useSyncStatus.setState({ busy: false });

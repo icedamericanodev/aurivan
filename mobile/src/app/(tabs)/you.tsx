@@ -33,7 +33,7 @@ import { View } from 'react-native';
 import { boundsLabel, DomainRings, RINGS_NOTE, ringsSpoken } from '../../components/journey';
 import { useGrowth, useScreenFocus } from '../../components/motion';
 import { creditSubtitle } from '../../components/help';
-import { AccountRow } from '../../components/account';
+import { AccountSection } from '../../components/account';
 import { CLOUD } from '../../cloud/flag';
 import { MindsetGrowthCard } from '../../components/moments';
 import { BadgeIcon, Bookmark, ICON_STROKE, Leaf, LifeBuoy, NotebookPen, RotateCcw, Settings, Share2, Sprout } from '../../components/icons';
@@ -389,10 +389,10 @@ const YouLists = memo(function YouLists({
         {/* Pacing across timed mocks only (untimed ones are left out). */}
         {pacingLine && <T v="meta" style={{ marginTop: space.md }}>{pacingLine}</T>}
 
+        {/* Cloud builds only: its own "Account" section, "Sync across devices" / "Account and sync" (one of the two ways in). */}
+        {CLOUD && <AccountSection />}
         {/* One entry to Help and feedback (mobile 1.7); the full list is on that screen. */}
         <Section title="Help and feedback" />
-        {/* Cloud builds only: "Sync across devices" / "Account and sync" (one of the two ways in). */}
-        {CLOUD && <AccountRow />}
         <ListRow
           icon={icon(LifeBuoy)}
           title="Get help or send feedback"

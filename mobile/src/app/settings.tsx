@@ -32,6 +32,7 @@ import * as ExpoRouter from 'expo-router';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Alert, Linking, Platform, View, type ScrollView } from 'react-native';
 import { aboutLine, AccountSettingsGroup } from '../components/account';
+import { useSyncing } from '../lib/sync';
 import { BrandLockup, PillarList } from '../components/brand';
 import { CLOUD } from '../cloud/flag';
 import { CalendarSheet } from '../components/calendar';
@@ -89,6 +90,8 @@ const useOwnNavigation: () => TransitionEvents | undefined =
   (ExpoRouter as { useNavigation?: () => TransitionEvents }).useNavigation ?? (() => undefined);
 
 export default function Settings() {
+  // Cloud builds only: true while this phone syncs (About says so). Always false with the flag off.
+  const syncing = useSyncing();
   const { cert } = useActiveCert();
   const { c, isDark } = useTheme();
   const s = useSettings();
@@ -417,7 +420,7 @@ export default function Settings() {
       <Gap h={space.xl} />
       <T v="meta">
         {/* The last sentence is "Progress is stored only on this device." with the flag off (content/cloud/copy.ts about.off). */}
-        Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. {aboutLine()}
+        Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. {aboutLine(syncing)}
       </T>
       <Gap h={space.sm} />
       {/* Every certification named anywhere in the app (coming-soon ones too) needs its trademark notice;

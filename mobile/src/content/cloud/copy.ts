@@ -205,6 +205,12 @@ export const ACCOUNT_COPY = {
   'undo.done.title': 'Sync undone',
   'undo.done.body': 'This phone’s progress is back to how it was before it first synced. Sync is off.',
   'hint.undo': 'Asks first. Puts back this phone’s progress from before it first synced.',
+  'undo.none.title': 'Nothing to undo',
+  'undo.none.body': 'A sync can only be undone for 7 days.',
+  'undo.invalid.title': 'Can’t undo',
+  'undo.invalid.body': 'The copy kept from before the first sync is damaged, so it can’t be used. Your progress stays as it is now.',
+  'undo.failed.title': 'Undo didn’t finish',
+  'undo.failed.body': 'Something went wrong while saving, so your progress was put back as it was. Please try again.',
 
   // Sign out (account/sign-out).
   'signout.body.sync': 'Your progress stays on this phone, and Aurivan keeps working without an account. Sync stops until you sign in again.',

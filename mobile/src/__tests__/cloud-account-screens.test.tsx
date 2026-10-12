@@ -431,7 +431,11 @@ describe('A3: the session never leaks', () => {
       const Account = screen('index');
       mount(<Account />);
       alert.mockImplementation((_t, _m, buttons) => buttons?.[1]?.onPress?.());
+      // Phase 7: the row opens the sign-out sheet; sign out the way it does.
       await press('Sign out on this phone');
+      await act(async () => {
+        await account.signOut('local');
+      });
       expect(facts().signedIn).toBe(false);
       await act(async () => {
         jest.advanceTimersByTime(61_000);
@@ -626,11 +630,15 @@ describe('A5: Download my data, A6: sign out', () => {
       expect(allText()).toContain('You’re offline. Connect to the internet to sign out on all devices.');
       expect(facts().signedIn).toBe(true);
       memory.control.setOffline(false);
+      // Phase 7: signing out on this phone is a sheet (with "Remove my progress from this phone").
       await press('Sign out on this phone');
-      expect(alert.mock.calls[1][0]).toBe('Sign out?');
-      expect(alert.mock.calls[1][1]).toBe('Your progress stays on this phone, and Aurivan keeps working without an account.');
+      expect(mockNav.push).toHaveBeenCalledWith('/account/sign-out');
+      unmount();
+      mount(<>{(() => { const S = screen('sign-out'); return <S />; })()}</>);
+      expect(allText()).toContain('Your progress stays on this phone, and Aurivan keeps working without an account.');
+      await press('Sign out on this phone');
       expect(facts().signedIn).toBe(false);
-      expect(mockNav.back).toHaveBeenCalled();
+      expect(mockNav.replace).toHaveBeenCalledWith('/you');
     } finally {
       alert.mockRestore();
     }
@@ -929,7 +937,18 @@ describe('fix round: the field and the words (UX P1, P4, P6)', () => {
   it('P6: no spoken string is typed into the account screens outside copy.ts', () => {
     const { readFileSync } = require('fs');
     const { join } = require('path');
-    const files = ['app/(cloud)/account/index.tsx', 'app/(cloud)/account/email.tsx', 'app/(cloud)/account/delete.tsx', 'app/(cloud)/account/sign-in.tsx', 'components/account.tsx'];
+    const files = [
+      'app/(cloud)/account/index.tsx',
+      'app/(cloud)/account/email.tsx',
+      'app/(cloud)/account/delete.tsx',
+      'app/(cloud)/account/sign-in.tsx',
+      'app/(cloud)/account/first-sync.tsx',
+      'app/(cloud)/account/switch.tsx',
+      'app/(cloud)/account/what-syncs.tsx',
+      'app/(cloud)/account/sign-out.tsx',
+      'components/account.tsx',
+      'components/sync.tsx',
+    ];
     for (const f of files) {
       const src = readFileSync(join(__dirname, '..', f), 'utf8') as string;
       expect(`${f}: ${src.match(/accessibility(Label|Hint)=["'`]/g) ?? 'none'}`).toBe(`${f}: none`);

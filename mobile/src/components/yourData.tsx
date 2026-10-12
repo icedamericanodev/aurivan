@@ -12,6 +12,11 @@
  * same on iOS, Android and the web build, and stay readable at 200% text
  * (every row stacks at large sizes). Undo asks first with a system alert,
  * like Reset.
+ *
+ * Cloud builds only (Uplift Phase 7): the intro no longer says "kept only on
+ * this phone", and the undo copy taken before a first sync is offered as
+ * "Undo sync" (it turns sync off). With the flag off this screen is exactly
+ * what it was: the old intro, and only ever "Undo restore".
  */
 import { useEffect, useState } from 'react';
 import { Alert, Modal, ScrollView, View } from 'react-native';
@@ -20,7 +25,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { previewRows, UNDO_DAYS, undoAvailable, undoExpiresAt } from '../engine/backup';
 import { examDateLabel } from '../engine/examDay';
 import { dayKey } from '../engine/streak';
+import { shortDate } from '../lib/format';
+import { CLOUD } from '../cloud/flag';
+import { copy } from '../content/cloud/copy';
 import { pruneUndo, saveBackup, sweepBackupFiles, undoRestore, type ReadyToRestore } from '../lib/backup';
+import { undoSync, useSyncing } from '../lib/sync';
 import { reminderLine, useRestoreFlow, type FlowMessage } from '../lib/useRestoreFlow';
 import { useBackup } from '../store/backup';
 import { LARGE_TEXT, radius, space } from '../theme/tokens';
@@ -41,6 +50,9 @@ export function YourData() {
   const flow = useRestoreFlow();
   const { busy, setBusy, message, say } = flow;
   const canUndo = undoAvailable(undo, now);
+  const syncing = useSyncing();
+  // Only a cloud build ever takes a "sync" undo copy.
+  const syncUndo = CLOUD && undo?.kind === 'sync';
 
   // Tidy up when Settings opens: an expired undo snapshot, and backup files
   // we made more than an hour ago in the app's cache.
@@ -67,8 +79,31 @@ export function YourData() {
     }
   };
 
+  const confirmUndoSync = () => {
+    Alert.alert(copy('undo.confirm.title'), copy('undo.confirm.body'), [
+      { text: copy('cancel'), style: 'cancel' },
+      {
+        text: copy('undo.row'),
+        style: 'destructive',
+        onPress: async () => {
+          setBusy('undo');
+          try {
+            const r = await undoSync();
+            if (r.kind === 'ok') say({ tone: 'ok', title: copy('undo.done.title'), text: `${copy('undo.done.body')}${reminderLine(r.reminders)}` });
+            else if (r.kind === 'none') say({ tone: 'problem', title: copy('undo.none.title'), text: copy('undo.none.body') });
+            else if (r.kind === 'invalid') say({ tone: 'problem', title: copy('undo.invalid.title'), text: copy('undo.invalid.body') });
+            else say({ tone: 'problem', title: copy('undo.failed.title'), text: copy('undo.failed.body') });
+          } finally {
+            setBusy(null);
+          }
+        },
+      },
+    ]);
+  };
+
   const confirmUndo = () => {
     if (!undo) return;
+    if (syncUndo) return confirmUndoSync();
     Alert.alert(
       'Undo the restore?',
       `Your progress goes back to how it was on ${dateOf(undo.takenAt)}, before the restore. Anything you studied since then will be replaced.`,
@@ -111,7 +146,11 @@ export function YourData() {
     <>
       <SettingsGroup
         title="Your data"
-        intro="Your progress is kept only on this phone. A backup file keeps it safe and moves it to a new phone. You choose where the file goes."
+        intro={
+          CLOUD
+            ? copy(syncing ? 'data.intro.sync' : 'data.intro.on')
+            : 'Your progress is kept only on this phone. A backup file keeps it safe and moves it to a new phone. You choose where the file goes.'
+        }
       >
         {/* Action rows: no chevron (they act; they don't open a list). The status is part of the
             name, so it is read even with hints off; the hint says only what a tap does. */}
@@ -134,12 +173,23 @@ export function YourData() {
           last={!(canUndo && undo)}
           chevron={false}
         />
-        {canUndo && undo && (
+        {canUndo && undo && !syncUndo && (
           <SettingsRow
             title="Undo restore"
             subtitle={`Available until ${dateOf(undoExpiresAt(undo))}.`}
             accessibilityLabel={`Undo restore, available until ${dateOf(undoExpiresAt(undo))}`}
             accessibilityHint="Puts back your progress from before the restore."
+            disabled={busy !== null}
+            onPress={confirmUndo}
+            last
+            chevron={false}
+          />
+        )}
+        {canUndo && undo && syncUndo && (
+          <SettingsRow
+            title={copy('undo.row')}
+            subtitle={copy('undo.row.sub', { 'd MMM': shortDate(undoExpiresAt(undo)) })}
+            accessibilityHint={copy('hint.undo')}
             disabled={busy !== null}
             onPress={confirmUndo}
             last
