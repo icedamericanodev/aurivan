@@ -10,7 +10,7 @@
  *   screen ticks, and links to the readiness report.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { Dimensions } from 'react-native';
+import { AccessibilityInfo, Dimensions } from 'react-native';
 import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Today from '../app/(tabs)/home';
@@ -318,7 +318,7 @@ describe('Today: the Exam week card', () => {
     expect(allText()).toContain('0 of 6 done');
     press(/^Open checklist$/);
     expect(router.push).toHaveBeenCalledWith('/exam-week');
-    const spoken = jest.spyOn(require('react-native').AccessibilityInfo, 'announceForAccessibility');
+    const spoken = jest.spyOn(AccessibilityInfo, 'announceForAccessibility');
     press(/^Hide this card/);
     flushSayLaterForTest();
     expect(hasCard()).toBe(false);
