@@ -69,7 +69,7 @@ describe('the badge set', () => {
       'Loop Closed',
       'Slip Spotter',
       'Long Memory',
-      'Graduate',
+      'Flown the Nest',
       'Know What You Know',
       'Dress Rehearsal',
       'On Pace',

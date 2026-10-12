@@ -41,6 +41,12 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.18.0',
+    date: '2026-10-12',
+    new: ['The badge for questions you know for good is now called Flown the Nest, and you can share it.'],
+    improved: ['Your plant’s proud moments now come only when you’ve truly earned them, and never while you’re answering.'],
+  },
+  {
     version: '1.17.1',
     date: '2026-10-12',
     improved: ['Help is simpler, and What’s new shows each change once it’s in the app.'],

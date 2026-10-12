@@ -16,7 +16,7 @@
  * - `usePlantView` gives Today, You and the Your plant screen everything
  *   they draw, and says when the plant is hidden (Settings → Show my plant).
  */
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { examMoment } from '../engine/examDay';
@@ -43,7 +43,8 @@ import {
   type PlantSpecies,
 } from '../engine/plant';
 import { planComplete } from '../engine/dayPlan';
-import { defaultKeepsakes, keepsakeForBadge, plantMood, resolveLook, unlockedLooks, type ArtLook, type CertMarks, type PlantMood, type ResolvedLook } from '../engine/plantLooks';
+import { defaultKeepsakes, plantMood, resolveLook, unlockedLooks, type ArtLook, type CertMarks, type PlantMood, type ResolvedLook } from '../engine/plantLooks';
+import { growthOccasions, keepsakeOccasions, proudReactionId, proudToday, type ProudMarks, type ProudOccasion } from '../engine/proud';
 import { readinessFor } from '../engine/readiness';
 import { dayKey } from '../engine/streak';
 import { selectCert, useProgress, type CertProgress, type MockResult, type ProgressState } from '../store/progress';
@@ -237,24 +238,27 @@ export function allCertMarks(byCert: ProgressState['byCert']): CertMarks[] {
   return Object.values(byCert).map((c) => ({ earned: c?.milestones?.earned, planters: c?.milestones?.planters }));
 }
 
-/**
- * True when a keepsake first came today: its badge's FIRST tier, on any
- * exam, was earned today (QA BUG-2: a higher tier of a badge already held
- * brings no new keepsake, so it makes no proud plant).
- */
-export function newKeepsakeOn(byCert: ProgressState['byCert'], today: string): boolean {
-  const first = new Map<string, number>();
-  for (const c of Object.values(byCert))
-    for (const [k, at] of Object.entries(c?.milestones?.earned ?? {})) {
-      const badge = k.split(':')[0];
-      if (typeof at === 'number' && at < (first.get(badge) ?? Infinity)) first.set(badge, at);
-    }
-  for (const [badge, at] of first) if (dayKey(at) === today && keepsakeForBadge(badge)) return true;
-  return false;
+/** Every cert's marks as the proud rules read them (the quiet fills' times too, so those never count). */
+function proudMarks(byCert: ProgressState['byCert']): ProudMarks[] {
+  return Object.values(byCert).map((c) => ({ earned: c?.milestones?.earned, backfill: c?.milestones?.backfill, catalogFill: c?.milestones?.catalogFill }));
 }
 
-/** What the look screens and the plant need from the marks: a stable string, so a store change elsewhere never redraws the plant. */
-function marksKey(s: ProgressState, today: string): string {
+/**
+ * True when a keepsake first came today from a LEARNING badge: its FIRST
+ * tier, on any exam, earned today and live (QA BUG-2: a higher tier brings no
+ * new keepsake; mobile 1.18: never a game-only badge, Fresh Start or a mark
+ * saved quietly by a back-fill). The cap is applied later (engine/proud.ts).
+ */
+export function newKeepsakeOn(byCert: ProgressState['byCert'], today: string, kept: readonly string[] = []): boolean {
+  return keepsakeOccasions(proudMarks(byCert), today, kept).length > 0;
+}
+
+/**
+ * What the look screens and the plant need from the marks: a stable string, so
+ * a store change elsewhere never redraws the plant. The keepsake occasions skip
+ * what this cert's plant kept through a Reset (re-earning it brings nothing new).
+ */
+function marksKey(s: ProgressState, today: string, certId: string): string {
   const keys: string[] = [];
   for (const c of Object.values(s.byCert)) {
     const m = c?.milestones;
@@ -262,7 +266,8 @@ function marksKey(s: ProgressState, today: string): string {
     for (const [k, at] of Object.entries(m?.earned ?? {})) keys.push(`${k}@${at}`);
     for (const set of Object.keys(m?.planters ?? {})) keys.push(`set:${set}`);
   }
-  return JSON.stringify([newKeepsakeOn(s.byCert, today), [...new Set(keys)].sort()]);
+  const kept = selectCert(s, certId).plant?.kept ?? [];
+  return JSON.stringify([keepsakeOccasions(proudMarks(s.byCert), today, kept), [...new Set(keys)].sort()]);
 }
 
 export interface PlantLookView {
@@ -307,7 +312,7 @@ export function plantLookView(plant: CertPlant, i: LookInput): PlantLookView {
 }
 
 /** The plant view for the active cert (Today, You, Your plant). */
-export function usePlantView(): PlantView & { cert: Certification; certId: string; exam: 'eve' | 'day' | null; look: PlantLookView | null } {
+export function usePlantView(): PlantView & { cert: Certification; certId: string; exam: 'eve' | 'day' | null; look: PlantLookView | null; reactionId: string | null } {
   const certId = useSettings((s) => s.activeCertId);
   const examDate = useSettings((s) => s.examDates[certId]);
   // Only what the view reads (code review M6c): a review, a bookmark or a
@@ -329,18 +334,41 @@ export function usePlantView(): PlantView & { cert: Certification; certId: strin
     [cert, answers, plant, lastDay, settings, today, plannedRest],
   );
   // Mobile 1.14: the look and the mood, from small, stable selections.
-  const marks = useProgress((s) => marksKey(s, today));
+  const marks = useProgress((s) => marksKey(s, today, certId));
   const planCleared = useProgress((s) => {
     const d = s.days[certId];
     return !!d && d.day === today && planComplete(d);
   });
   const newTopicToday = useProgress((s) => Object.values(selectCert(s, certId).mastery ?? {}).some((m) => m?.firstDay === today));
+  // Mobile 1.18: today's proud occasions (a growth step, a new learning
+  // keepsake), judged against what this phone wrote down (store/seen.ts), so
+  // the keepsake cap holds and nothing replays after a relaunch.
+  const proudLog = useSeen((s) => s.proud);
+  const occasions = useMemo<ProudOccasion[]>(() => {
+    const [keepsakes] = JSON.parse(marks) as [ProudOccasion[], string[]];
+    return [...growthOccasions(certId, view.plant, today), ...keepsakes];
+  }, [marks, certId, view.plant, today]);
+  const proud = useMemo(() => proudToday(proudLog ?? {}, occasions, now), [proudLog, occasions, now]);
+  const occasionKey = occasions.map((o) => o.id).join(',');
   const look = useMemo(() => {
     if (!view.plant) return null;
-    const [newKeepsakeToday] = JSON.parse(marks) as [boolean, string[]];
-    return plantLookView(view.plant, { marks: allCertMarks(useProgress.getState().byCert), face: view.face, resting: view.resting, planCleared, newTopicToday, newKeepsakeToday, today });
-  }, [view.plant, view.face, view.resting, marks, planCleared, newTopicToday, today]);
+    return plantLookView(view.plant, { marks: allCertMarks(useProgress.getState().byCert), face: view.face, resting: view.resting, planCleared, newTopicToday, newKeepsakeToday: proud.keepsake, today });
+    // `marks` changes when a badge or planter does: the unlocks are read fresh from the store then.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view.plant, view.face, view.resting, marks, planCleared, newTopicToday, proud.keepsake, today]);
+  // Write down the new occasions (the cap applies once, here), but ONLY while
+  // the proud face really shows (PR #51 review). With Quiet look (no face),
+  // the plant hidden, or the plant resting, nobody sees a proud moment, so it
+  // must not use up one of the 3 keepsake moments in 7 days. No save when nothing is new.
+  const proudShown = look?.mood === 'proud';
+  useEffect(() => {
+    if (occasionKey && proudShown) useSeen.getState().noteProud(occasions, Date.now());
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by the occasions' ids
+  }, [occasionKey, proudShown]);
+  // The reaction's occasion: proud is keyed by its earned occasions (once ever,
+  // and a new occasion later today is a new reason); the others by mood and day.
+  const reactionId = look ? (look.mood === 'proud' ? (proudReactionId(proud.ids) ?? `${certId}:proud:${today}`) : `${certId}:${look.mood}:${today}`) : null;
   // The spoken label says the mood and the visitor too.
   const label = view.plant && look ? plantLabel({ name: view.plant.name, species: view.plant.species, growth: view.plant.growth, resting: view.resting, newGrowth: view.newGrowth, mood: look.mood, visitor: look.visiting ? look.resolved.visitor : undefined }) : view.label;
-  return { ...view, label, cert, certId, exam, look };
+  return { ...view, label, cert, certId, exam, look, reactionId };
 }

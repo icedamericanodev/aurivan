@@ -176,7 +176,7 @@ const KEEPSAKES: [string, string, string, string, KeepsakeShape, string, Keepsak
   // Past tense: a keepsake never claims where readiness stands today (code review M9b).
   ['compass-stone', 'Compass stone', 'whole-map', `The compass stone: every domain reached ${Math.round(WHOLE_MAP_FLOOR * 100)}% or more.`, 'flat', `Bring every domain to ${Math.round(WHOLE_MAP_FLOOR * 100)}%`],
   ['jay', 'Jay', 'long-memory', 'The jay: you recall answers a week later.', 'tall', 'Recall answers a week after you saw them'],
-  ['empty-nest', 'Empty nest', 'graduate', 'The empty nest: questions you’ve learned have flown the nest.', 'flat', 'Graduate questions out of review'],
+  ['empty-nest', 'Empty nest', 'graduate', 'The empty nest: questions you’ve learned have flown the nest.', 'flat', 'Clear questions out of review'],
   ['woven-ring', 'Woven ring', 'loop-closed', 'The woven ring: you fixed your mistakes for good.', 'flat', 'Fix your mistakes on a later day'],
   ['fern', 'Fern', 'took-root', 'The fern: a whole topic took root.', 'tall', 'Help a whole topic take root'],
   ['still-pond', 'Still pond', 'know-what-you-know', 'The still pond: when you say sure, you’re right.', 'flat', 'Be right when you say you’re sure'],

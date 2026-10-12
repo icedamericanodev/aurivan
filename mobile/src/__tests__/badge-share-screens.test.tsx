@@ -171,14 +171,22 @@ describe('sharing a badge', () => {
     expect(cardText({ ...mark, status: 'started' }, cisa)).toBeNull();
   });
 
-  it('Graduate is never shareable: it stays "Graduate" in the app, and its sheet has no Share', () => {
-    earn('graduate', T0 - DAY);
+  it('Flown the Nest (renamed from Graduate in 1.18) is shareable: its sheet offers Share and the card passes every check', () => {
+    earn('graduate', new Date(2026, 10, 3, 9).getTime());
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Graduate\. Earned/);
-    expect(textOf(root().findByType(Modal))).toContain('Graduate');
-    expect(buttons(/^Share /)).toHaveLength(0);
+    press(/^Flown the Nest\. Earned/);
+    const sheet = () => root().findByType(Modal);
+    expect(textOf(sheet())).toContain('Flown the Nest');
+    expect(textOf(sheet())).not.toMatch(/graduat/i);
+    press(/^Share Flown the Nest$/);
+    const t = textOf(sheet());
+    expect(t).toContain('Moved 50 questions out of spaced review');
+    expect(t).toContain('Aurivan study badge · Earned 3 Nov 2026');
+    expect(t).toContain('Studying for the CISA® exam');
+    expect(t).toContain('Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.');
+    expect(t).not.toMatch(/graduat|certificat|credential|official/i);
   });
 
   it('no Share on a badge not yet earned, nor on Fresh Start (a moment, never shared)', () => {
@@ -190,7 +198,7 @@ describe('sharing a badge', () => {
     expect(buttons(/^Share /)).toHaveLength(0);
     press(/^Close Fresh Start$/);
     act(() => jest.advanceTimersByTime(700));
-    press(/^Graduate\. Not yet/);
+    press(/^Flown the Nest\. Not yet/);
     expect(buttons(/^Share /)).toHaveLength(0);
   });
 });

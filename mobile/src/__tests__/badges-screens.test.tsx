@@ -191,7 +191,7 @@ describe('the case', () => {
     d4.slice(0, 20).forEach(answer);
     mount(<Badges />);
     expect(allText()).not.toContain('Next for your exam');
-    expect(allText()).not.toMatch(/\d+ of \d+ (study days|remembered|graduated)/);
+    expect(allText()).not.toMatch(/\d+ of \d+ (study days|remembered|left review)/);
   });
 });
 

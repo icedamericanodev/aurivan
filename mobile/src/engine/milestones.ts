@@ -267,7 +267,10 @@ export const BADGES: BadgeDef[] = [
   { id: 'loop-closed', kind: 'milestone', name: 'Loop Closed', rule: `Fix ${LOOP_FIXES} logged mistakes: answer each one right, without a hint, on a later day.` },
   { id: 'slip-spotter', kind: 'milestone', name: 'Slip Spotter', rule: `Tag ${SLIP_TAGS} mistakes with the thinking slip behind them.` },
   { id: 'long-memory', kind: 'milestone', name: 'Long Memory', rule: `Get ${LONG_RECALLS} questions right, without a hint, a week or more after you last saw them.` },
-  { id: 'graduate', kind: 'milestone', name: 'Graduate', rule: `Graduate ${GRADUATES} questions out of spaced review: right again from the last box.` },
+  // Mobile 1.18 (owner-delegated panel): named for the questions, not the
+  // learner ("Graduate" read like a credential). The id stays `graduate` and
+  // the counter `graduated`, so saved progress and backups load unchanged.
+  { id: 'graduate', kind: 'milestone', name: 'Flown the Nest', rule: `Answer ${GRADUATES} questions right from the last review box, so they leave review.` },
   {
     id: 'know-what-you-know',
     kind: 'milestone',
@@ -435,7 +438,7 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
       ...(i > 0 ? { rule: `Get ${n} questions right, without a hint, a week or more after you last saw them.` } : {}),
     });
   });
-  out.push(...one('graduate', f.graduated >= GRADUATES, frac(f.graduated, GRADUATES), of(f.graduated, GRADUATES, 'graduated')));
+  out.push(...one('graduate', f.graduated >= GRADUATES, frac(f.graduated, GRADUATES), of(f.graduated, GRADUATES, 'left review')));
   // Took Root: a whole topic, every part right without a hint on two different
   // days. Left out for an exam with no study-notes topics (tookRoot null).
   if (f.tookRoot !== null) {

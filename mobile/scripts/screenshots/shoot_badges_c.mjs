@@ -3,7 +3,7 @@
 // Footing's 80% Stretch tier), Took Root, the five domain medallions side by
 // side with their Stretch row, a set that grew ("New in Evergreen"), the
 // one-time catalogue line, the share entry on a badge's sheet, and the share
-// card. REDUCED=1 runs with Reduce Motion on (files end "-reduced").
+// card (and, since 1.18, Flown the Nest's sheet and card). REDUCED=1 runs with Reduce Motion on (files end "-reduced").
 // FONT_SCALE=2: approximate 200% text for the badge sheet, its tier ladder and
 // the share panel (files end "-fs200"). The card itself is a fixed picture in
 // the app (its text never scales), so its text runs are left at 100% here too.
@@ -165,6 +165,15 @@ await open(/^Firm Footing · IS Operations, Clay\. Earned/);
 await page.getByRole('button', { name: /^Share Firm Footing · IS Operations$/ }).click();
 await wait(1400);
 await shot('c22-share-card-domain');
+await close();
+// Mobile 1.18: Flown the Nest (saved id `graduate`), its sheet and its share card.
+await toTop('Evergreen');
+await open(/^Flown the Nest\. Earned/);
+await shot('c23-sheet-flown-the-nest');
+await sheetTo('Share');
+await page.getByRole('button', { name: /^Share Flown the Nest$/ }).click();
+await wait(1400);
+await shot('c24-share-card-flown-the-nest');
 await close();
 
 // ── State B: a set that was complete and grew (1.10's Evergreen) ───────

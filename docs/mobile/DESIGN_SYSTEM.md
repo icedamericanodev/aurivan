@@ -560,7 +560,7 @@ Reduced paths per §8.5 (the phone's Reduce Motion, live, or Settings → Motion
 
 **Badge sheet** (tap a medallion): a `pageSheet` Modal on `raised2` (dissolves under Reduce Motion), ghost "Close" (spoken "Close <name>"), the 160pt medallion turning in once, a header group (`hero` name, `meta` "Rooted · Lichen, tier 2 of 3" / "The Five Domains · 26% of the exam") that takes focus. Earned: the key-idea block (`caption` "Earned 11 Oct", or "Already earned when badges arrived (by 11 Oct)" for a back-filled badge; `quote` unlock line; `meta` "This completed Groundwork on 2 Nov." on the ONE badge that did: of two earned together, the later in catalogue order, and never on a back-filled badge). Every tiered badge (mobile 1.11: Rooted, Long Memory, Dress Rehearsal, each Firm Footing domain) shows its ladder: a "Tiers" row of 56pt medallions, each with the metal name (`label`), the tier in words (`meta` "30 days", "75 recalls", "2 mocks", "80%"), its state on a line of its own ("Earned" in `accentText`, "Next", "Not yet", "Opens later") and "Stretch" (`caption`) under a Stretch tier; spoken "30 days, Lichen: earned 2 Nov. 75 recalls, Lichen: 52 of 75 remembered, next. 150 recalls, Gold leaf, Stretch: 52 of 150 remembered" ("next" is the first unearned CORE tier, whichever was opened; a Stretch tier is never "Next", even when it is the only one left). A Stretch badge's header adds `caption` "Stretch: beyond exam need" in `accentText`. Then `caption` "The rule" + `body` rule + bar and progress (or the gate line), `caption` "How to earn it" + `body` (open only; mock badges before their stage add "Best once every domain reaches 65%. It counts whenever you do it."), the effort fact in `meta` (never rarity), and a primary "Study for this" (spoken with the name) for open badges; it opens its session only once the sheet has slid away (iOS `onDismiss`, else a short wait). After the exam: no "How to earn it", no Study button, no progress.
 
-**Badge share card** (mobile 1.11, slice D; compliance review §5, mandatory): an earned badge's sheet ends with a secondary "Share" (share icon, spoken "Share <name>", hint "Shows a card you can share. Nothing is shared until you choose."). Never on a badge not yet earned, a Moment (Fresh Start, and the planned self-reported "Passed"), a badge on the never-share list (`NEVER_SHARED_BADGES`: Graduate, owner decision: it keeps its name in the app, where it means a question graduating from spaced review, but printed large above "Studying for the CISA® exam" it reads like a credential), or one whose words fail the honesty guard; never offered or opened automatically; sharing earns nothing. The sheet builds the card's words before it offers Share, inside a try: if they fail, there is simply no Share (never a crash). It swaps the sheet's content (never a sheet over a sheet): `hero` "Share this badge" (takes focus), `meta` "Only what is on the card is shared.", the card (preview scaled to fit, its corners rounded by an outer box that is not captured; the PNG itself has square corners), primary "Share image" (react-native-view-shot 1080 × 1350 → the system share sheet; web: the share text), ghost "Back to the badge" (Android back does the same: it returns to the badge, never closes the sheet), `meta` "Nothing is posted for you. You choose where it goes." **The card** (320 × 400 pt, a fixed picture: text never scales, and its colours are FIXED, `cardInk` in `theme/tokens.ts`: the badge forest enamel `#1E4A34` with the light theme's on-forest inks, so the PNG is the same in light and dark; the progress card on You uses them too): the Aurivan lockup (22pt, top left, no cert name beside it) → the 124pt medallion → `caption` "Aurivan study badge · Earned 3 Nov 2026" in `cardInk.ink2` (so it reads as ours, never an issuer's credential) → the plain badge name in `cardType.name` (Fraunces 21/26) `cardInk.ink` ("Firm Footing", "Long Memory": never "Firm Footing · IS Operations · 80%") → the tier line `caption` "Lichen · tier 2 of 3" in `cardInk.sap` → the skill line in `cardType.skill` (Fraunces italic 16/22), which carries the domain and the number ("Reached 70% in IS Operations in practice", "Recalled 75 answers a week or more later", "Thirty days of steady study") → a `cardInk.line` hairline → `caption` "Studying for the CISA® exam" (built from the cert: the mark as an adjective, ® only when registered) → the cert's full `trademarkNotice` in `cardType.notice` (Figtree 11/15, `cardInk.ink2`). The cert name is never on, in or directly above the medallion; no issuer logo, colours or fonts; no verification id or URL, no "add to profile", no Open Badges format. The share text carries the same words and the notice, plus a plain store link once one exists (`content/storeLinks.ts`, no referral or tracking codes; none yet). The spoken label is the whole card. Every line we write passes `isHonestShareText` (now also refusing certificate/certification/credential/accredited/official/graduated), the badge's name included; only the notice is exempt (it says "not … endorsed"), and the never-share list is the only way a badge name stays off a card. The progress share card (You) now prints the full notice too.
+**Badge share card** (mobile 1.11, slice D; compliance review §5, mandatory): an earned badge's sheet ends with a secondary "Share" (share icon, spoken "Share <name>", hint "Shows a card you can share. Nothing is shared until you choose."). Never on a badge not yet earned, a Moment (Fresh Start, and the planned self-reported "Passed"), a badge on the never-share list (`NEVER_SHARED_BADGES`, empty since mobile 1.18: "Graduate" was renamed "Flown the Nest", a name for the questions leaving review rather than the learner, so it no longer reads like a credential and shares like any other badge with the skill line "Moved 50 questions out of spaced review"; its saved id stays `graduate`), or one whose words fail the honesty guard; never offered or opened automatically; sharing earns nothing. The sheet builds the card's words before it offers Share, inside a try: if they fail, there is simply no Share (never a crash). It swaps the sheet's content (never a sheet over a sheet): `hero` "Share this badge" (takes focus), `meta` "Only what is on the card is shared.", the card (preview scaled to fit, its corners rounded by an outer box that is not captured; the PNG itself has square corners), primary "Share image" (react-native-view-shot 1080 × 1350 → the system share sheet; web: the share text), ghost "Back to the badge" (Android back does the same: it returns to the badge, never closes the sheet), `meta` "Nothing is posted for you. You choose where it goes." **The card** (320 × 400 pt, a fixed picture: text never scales, and its colours are FIXED, `cardInk` in `theme/tokens.ts`: the badge forest enamel `#1E4A34` with the light theme's on-forest inks, so the PNG is the same in light and dark; the progress card on You uses them too): the Aurivan lockup (22pt, top left, no cert name beside it) → the 124pt medallion → `caption` "Aurivan study badge · Earned 3 Nov 2026" in `cardInk.ink2` (so it reads as ours, never an issuer's credential) → the plain badge name in `cardType.name` (Fraunces 21/26) `cardInk.ink` ("Firm Footing", "Long Memory": never "Firm Footing · IS Operations · 80%") → the tier line `caption` "Lichen · tier 2 of 3" in `cardInk.sap` → the skill line in `cardType.skill` (Fraunces italic 16/22), which carries the domain and the number ("Reached 70% in IS Operations in practice", "Recalled 75 answers a week or more later", "Thirty days of steady study") → a `cardInk.line` hairline → `caption` "Studying for the CISA® exam" (built from the cert: the mark as an adjective, ® only when registered) → the cert's full `trademarkNotice` in `cardType.notice` (Figtree 11/15, `cardInk.ink2`). The cert name is never on, in or directly above the medallion; no issuer logo, colours or fonts; no verification id or URL, no "add to profile", no Open Badges format. The share text carries the same words and the notice, plus a plain store link once one exists (`content/storeLinks.ts`, no referral or tracking codes; none yet). The spoken label is the whole card. Every line we write passes `isHonestShareText` (now also refusing certificate/certification/credential/accredited/official/graduated), the badge's name included; only the notice is exempt (it says "not … endorsed"), and the never-share list (empty today) is the only way a badge name stays off a card. The progress share card (You) now prints the full notice too.
 
 **Field notes** (You → Field notes, `app/field-notes.tsx`): pushed header → `meta` "Your level in each game, and how it grows." → `Section` "Game levels": one hairline row per playable game, `label` name left and `TierTag` (leaf + `meta` level name) right (wraps under at large text), `meta` how it grows → `meta` the step-back rule → (badges shown) `Section` "Skill badges" with one ListRow "Your skill badges" ("2 of 7 earned, in your badges") that opens the case at its Field notes shelf.
 
@@ -714,7 +714,7 @@ bank size. Never "Pokémon".
 | Your plant | The plant on the shared 200 × 200 stage (`fit={false}`), name, growth and its look in italic; the back-fill line once; the resting line; What grows it next (rule steps with bars, "Not yet" / "Done"); Your domains as text rows with "Next to grow"; Change species and Rename | 200pt |
 | Picker (onboarding step 3 of 3, Plant yours, Change plant) | A radio grid of the 13 species, each previewed at Crown; the columns come from the measured width and text size (a tile needs 112pt × the text scale, up to ×1.3): three when they fit, else two (a 360 dp phone), and one row per species (56pt plant beside its name and line) at ×1.6 text; names wrap to two lines, never mid-word; selected = 2px ink border. The name field starts empty with an idea as its placeholder ("Another idea" fills one in; empty = "Your oak"); the keyboard never covers it (the footer hides while typing) | 56–96pt |
 | Look (mobile 1.14) | A live preview pinned under the header (it stays in view while the choices scroll; small detail level, so a tap rebuilds quickly; its label names the visitor, planter and keepsakes it draws), then Colour (swatches), Ground and Visitor two across when two fit (the width is known from the first frame), Planter (a 40pt planter icon with a sprout in it) and Keepsakes always one column of rows (an icon, the name, the skill line); one column for everything at ×1.3+ text. Planter and Keepsakes list only what is open; the planters and keepsakes still to earn wait in ONE closed "More to find" group at the end (no count; "Badges and finished badge sets add more. Each one says how."; rows arrive 30 ms apart, a 120 ms fade reduced). Colour, Ground and Visitor keep their one locked choice inline. Selected = a 2px ink ring that cross-fades in (an always-mounted state layer, nothing reflows) and, for a keepsake, a ✓; the press is the soft tint. Keepsakes say "Show up to three", or "Three on show" with "Tap one that's on show to put it away, then pick another." while the others are drawn muted. Radio groups, keepsakes checkboxes; a tap applies at once (selection haptic) | 140pt; 96pt at ×1.3+ text; 72pt at ×1.6+ or on a phone under 700pt tall |
-| Question, mock, lesson, game and Results screens | **Never** (a test checks the imports) | — |
+| Question, mock, lesson, game and Results screens | **Never**: no plant, face or looping art while answering (practice, review, mock, lesson steps, games in play, answer feedback). Tests walk each screen's imports, and check that its hero panels are still (`plant-proud-118.test.tsx`) | — |
 
 The rings stay on You and Results as the numeric view.
 
@@ -779,31 +779,62 @@ lantern." only when it is on show; otherwise "A keepsake for your plant: the
 lantern. Show it from Your plant, Change its look."
 
 **Moods.** Idle, happy (the plan is cleared), curious (a new topic opened
-today), proud (a growth step today, never a back-filled one; or a NEW keepsake
-today: the first tier of its badge on any exam, never a higher tier) and
-resting, on the FACE only (no posture, no marks; the resting look keeps its
-moon). Proud is content half-lids, a wide closed smile and a stronger blush
-(happy is "^ ^" with an open smile). Quiet look shows none. Spoken in the
+today), proud and resting, on the FACE only (no posture, no marks; the resting look keeps its
+moon). Proud (redrawn in mobile 1.18: the old half-lids read as smug or
+sleepy; then, after the PR #51 review, made distinct from happy at 64 and
+104pt) is drawn only in lines: eyes closed in FLAT, WIDE lids (about 1.3×
+wider than happy's eyes and well under half their height, still bowed
+upward, slightly thicker), a wide STROKED smile (a line, never a filled
+shape; about twice rest's smile) and the warmest blush, in the plant's own
+`plantArt.ink` and `plantArt.blush` only. It reads content and pleased,
+not smug or sleepy. Happy is the tall, pointed "^ ^" with a small FILLED open
+grin, resting the downward "u u", blink a flat line. The two cues (eye shape,
+line vs filled mouth) keep happy and proud apart even at 64pt. Checked on all
+13 species in both themes (`proud-light/dark` in `plant_sheet.sh`), with
+happy beside proud at 64 and 104pt in `happy-vs-proud-light/dark`. Quiet look shows none. Spoken in the
 label ("Looking proud.").
 
 **Motion (mobile 1.14).** `LivePlant` draws three layers (back, plant, front)
 and moves only the plant layer's wrapper, transform and opacity, pivoting on
 its base; the SVG is built once per species, growth, look and theme and the
 elements are cached, so no path is rebuilt per frame (low-end Android).
-- **Breathe**: one slow breath (2 s in, 2.4 s out; about 2pt deep, never
-  under 1.6%; a 0.7° sway either side of upright) the first time You or Your
+- **Breathe**: one slow breath (2 s in, 2.4 s out; about 2pt deep:
+  `breathDepth` = clamp(2 / size, 1.2%, 2.0%), so 2.0% at 64pt, 1.9% at
+  104pt, 1.4% at 140pt, 1.2% at 200pt; a 0.7° sway either side of upright) the first time You or Your
   plant comes into view in an app session, then still. It waits for a
   reaction to finish, and on You for the rings. Stopped (and back at rest)
-  off screen and in the background. Never on Today, never a loop.
+  off screen and in the background. Never on Today or onboarding (the plant
+  there is still), never a loop. Quiet look keeps the breath.
 - **Reactions**: happy stretches up from its base (3.5% taller, 1.2% narrower;
   no hop: it stays rooted), curious leans 3° and holds a look (900 ms,
-  charged its whole length), proud stands 4% taller, once per occasion
-  (`cert:mood:day`) wherever the plant is first seen, charged to the 3 s
-  decorative budget. Never with the growth sequence, nor later on a growth
-  day; on Today it waits while the clearing plays. Anything that cuts one
-  short (the screen loses focus, Reduce Motion turns on) puts the plant back
-  at rest at once. The occasions are kept in memory: a relaunch the same day
-  may react once more (accepted, QA BUG-4).
+  charged its whole length), proud stands 4% taller (180 ms up, 420 ms
+  back), once per occasion EVER wherever the plant is first seen, charged
+  to the 3 s decorative budget. Happy and curious are keyed `cert:mood:day`;
+  proud by its earned occasions (below). Played occasions are saved in
+  `store/seen.ts` (`reactions`, two weeks kept), so a relaunch never replays
+  one (mobile 1.18, fixes QA BUG-4). Never with the growth sequence, nor
+  later on a growth day; on Today it waits while the clearing plays.
+  Anything that cuts one short (the screen loses focus, Reduce Motion turns
+  on) puts the plant back at rest at once. Quiet look: no face, no reaction.
+- **Proud (mobile 1.18, expert panel)**, rules in `engine/proud.ts`: only for
+  something earned today: a growth step (never a back-filled one), or a NEW
+  keepsake from a LEARNING badge (the first tier, on any exam, of a badge in
+  the six counted sets; never a game-only Field notes badge such as Whole
+  Grove, never Fresh Start, never a mark saved by a quiet fill). Never for a
+  visit, a tap or a streak; no random rewards. Each occasion is written down
+  in `store/seen.ts` (`proud`); keepsake occasions are capped at 3 in any
+  rolling 7 days (a 4th is noted as capped and changes nothing), growth
+  always counts. The proud face lasts until local midnight, then idle.
+  Occasions are written down only while the proud face really shows: with
+  Quiet look (no face), the plant hidden or resting, nothing is written, so
+  an unseen moment never uses up one of the 3 (PR #51 review). After a
+  Reset, re-earning a badge whose keepsake the plant kept (`CertPlant.kept`)
+  is no new keepsake, so no proud. A reaction is saved as played only if it
+  really played: when the session's 3 s budget is spent, the occasion can
+  still play on a later visit. What is seen (`store/seen.ts`) is not in the
+  backup, so restoring today's backup on a new phone can show today's proud
+  face and stand-tall once more there; that is accepted (it is still one
+  earned occasion, on a phone that never showed it).
 - **Growth sequence**: see §8.9; `useCelebration('plant-growth')`.
 - **Planting** (after onboarding's last step, "Plant it", M8): once the page has arrived (`dur.screen`),
   the seed settles 14pt into the soil, then the first sprout pops from 0.3

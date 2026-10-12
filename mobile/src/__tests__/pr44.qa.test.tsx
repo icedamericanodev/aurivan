@@ -37,7 +37,7 @@ import Badges from '../app/milestones';
 import PlantLook from '../app/plant-look';
 import YourPlant from '../app/plant';
 import { pickCelebration, resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
-import { claimReaction, resetPlantReactionsForTest } from '../components/plant/LivePlant';
+import { claimReaction, relaunchPlantForTest, resetPlantReactionsForTest } from '../components/plant/LivePlant';
 import { BACKUP_APP, BACKUP_SCHEMA } from '../engine/backup';
 import { plantNew, withLook, type CertPlant } from '../engine/plant';
 import { keepsakeForBadge, lookItem, MAX_SHOWN_KEEPSAKES, plantMood, resolveLook, toggleKeepsake, unlockedLooks } from '../engine/plantLooks';
@@ -612,23 +612,25 @@ describe('J7 switching certification', () => {
 describe('J8 moods', () => {
   const input = { marks: [], face: true, resting: false, planCleared: false, newTopicToday: false, newKeepsakeToday: false, today: '' };
 
-  it('one reaction per mood per day while the app runs; Your plant and Today share it', () => {
+  it('one reaction per occasion; Your plant and Today share it (mobile 1.18: the occasion is the keepsake itself)', () => {
     motionOn();
     const spy = jest.spyOn(Reanimated, 'withTiming');
     setPlant(grownAgo('oak', 'Kai', 3));
-    earn('dress-rehearsal', 'cisa', Date.now()); // a new keepsake today: proud
+    const at = Date.now();
+    earn('dress-rehearsal', 'cisa', at); // a new keepsake today: proud
+    const id = `proud:keepsake:dress-rehearsal:${at}`;
     mount(<YourPlant />);
-    expect(plants().find((x) => x.props.testID === 'plant-hero')!.props.reaction).toEqual({ id: `cisa:proud:${today()}`, mood: 'proud' });
+    expect(plants().find((x) => x.props.testID === 'plant-hero')!.props.reaction).toEqual({ id, mood: 'proud' });
     expect(proudCalls(spy)).toBe(1);
     unmount();
     // Back to Your plant, then Today, the same day: the same occasion, no second stretch.
     mount(<YourPlant />);
     unmount();
     mount(<Today />);
-    expect(plants().find((x) => x.props.reaction)!.props.reaction).toEqual({ id: `cisa:proud:${today()}`, mood: 'proud' });
+    expect(plants().find((x) => x.props.reaction)!.props.reaction).toEqual({ id, mood: 'proud' });
     expect(proudCalls(spy)).toBe(1);
-    // Tomorrow is a new occasion.
-    expect(claimReaction(`cisa:proud:${dayKey(Date.now() + DAY)}`)).toBe(true);
+    // A different occasion is a new one.
+    expect(claimReaction(`proud:keepsake:on-pace:${at + DAY}`)).toBe(true);
   });
 
   it('on a day the plan is cleared, Today shows the plant, happy, with its visitor (Fixed: QA O-1)', () => {
@@ -650,19 +652,21 @@ describe('J8 moods', () => {
     expect(allText()).toMatch(/A wren came by: you cleared today’s plan\./);
   });
 
-  it('the reaction may play once more after a relaunch on the same day (accepted: QA BUG-4)', () => {
-    // Decided (FIXES_44): one reaction per mood per day while the app runs; a
-    // relaunch is a new app session and may react once more. Documented in
-    // DESIGN_SYSTEM §13. This pins the accepted behaviour.
+  it('the reaction never plays again after a relaunch on the same day (Fixed in 1.18: QA BUG-4)', () => {
+    // Expert panel (mobile 1.18): an occasion's reaction plays once EVER; it
+    // is written down (store/seen.ts), so a relaunch never replays it.
     motionOn();
+    const spy = jest.spyOn(Reanimated, 'withTiming');
     setPlant(grownAgo('oak', 'Kai', 3));
     clearPlan();
     mount(<YourPlant />);
+    expect(proudCalls(spy)).toBe(1); // the happy stretch, once
     unmount();
-    resetPlantReactionsForTest(); // a relaunch
+    relaunchPlantForTest(); // a relaunch: memory gone, the phone's record kept
     resetCelebrationsForTest();
     mount(<YourPlant />);
-    expect(claimReaction(`cisa:happy:${today()}`)).toBe(false); // it played again on the relaunch
+    expect(proudCalls(spy)).toBe(1); // no replay
+    expect(claimReaction(`cisa:happy:${today()}`)).toBe(false);
   });
 
   it('a growth step today shows proud (face and words); a new keepsake today too', () => {
@@ -712,8 +716,13 @@ describe('J8 moods', () => {
     mount(<YourPlant />);
     expect(plants().find((x) => x.props.testID === 'plant-hero')!.props.mood).toBe('idle');
     unmount();
-    // A truly new keepsake today still makes it proud.
+    // Mobile 1.18: a badge from games alone (Snare-wise, Field notes) is no reason to be proud.
     earn('snare-wise', 'cisa', Date.now());
+    mount(<YourPlant />);
+    expect(plants().find((x) => x.props.testID === 'plant-hero')!.props.mood).toBe('idle');
+    unmount();
+    // A truly new keepsake from a learning badge today still makes it proud.
+    earn('slip-spotter', 'cisa', Date.now());
     mount(<YourPlant />);
     expect(plants().find((x) => x.props.testID === 'plant-hero')!.props.mood).toBe('proud');
   });
@@ -781,7 +790,9 @@ describe('J9 the celebration budget', () => {
     expect(plants().find((x) => x.props.growth)!.props.reaction).toBeNull();
     expect(proudCalls(spy)).toBe(0);
     // The occasion is spent without playing (and without charging the budget), so Your plant won't stretch either.
-    expect(claimReaction(`cisa:proud:${today()}`)).toBe(false);
+    const spent = Object.keys(useSeen.getState().reactions).filter((k) => k.startsWith('proud:growth:cisa:'));
+    expect(spent).toHaveLength(1);
+    expect(claimReaction(spent[0])).toBe(false);
     unmount();
     mount(<YourPlant />);
     expect(proudCalls(spy)).toBe(0);
