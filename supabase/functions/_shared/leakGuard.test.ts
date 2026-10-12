@@ -6,7 +6,7 @@
 import { strict as assert } from 'node:assert';
 import fixture from './leakGuard.fixture.json' with { type: 'json' };
 import { buildFingerprint, leakItem, leakMatch, recallScore, talksAboutAnswer } from './leakGuard.ts';
-import { moderateText } from './moderation.ts';
+import { checkHandle, moderateText, normalizeText } from './moderation.ts';
 
 Deno.test('the server copy gives the app engine’s verdict on all 200 strings', () => {
   const fp = buildFingerprint(fixture.bank.map(leakItem), { squash: true });
@@ -16,5 +16,17 @@ Deno.test('the server copy gives the app engine’s verdict on all 200 strings',
     assert.equal(recallScore(c.text, c.ref), c.recall, c.text);
     assert.equal(talksAboutAnswer(c.text, c.ref), c.answer, c.text);
     assert.deepEqual(moderateText(c.text, { newMember: c.newMember }), c.moderation, c.text);
+  }
+});
+
+// RR_P8 R2 and R4: the server copy refuses the same names, and removes the
+// same blank-looking characters, as the app's engine.
+Deno.test('the server copy gives the app engine’s verdict on every name and blank character in the fixture', () => {
+  assert.ok(fixture.handles.length >= 20);
+  for (const h of fixture.handles) assert.equal(checkHandle(h.handle), h.problem, h.handle);
+  assert.ok(fixture.blanks.length >= 10);
+  for (const b of fixture.blanks) {
+    assert.equal(normalizeText(b.text), b.normalized, b.codePoint);
+    assert.deepEqual(moderateText(b.text, { newMember: false }), b.moderation, b.codePoint);
   }
 });

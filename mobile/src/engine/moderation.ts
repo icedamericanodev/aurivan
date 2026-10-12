@@ -15,7 +15,8 @@
  * - normalizeText: the one way text is cleaned before any check (Unicode
  *   NFKC, every invisible "format" character removed, including the "tag"
  *   characters U+E0020–E007F a reviewer used to hide a word (fix round P8,
- *   CR B6), curly quotes straightened, spaces collapsed). Look-alike letters
+ *   CR B6) and blank-looking ones like the empty braille cell U+2800
+ *   (RR_P8 R4), curly quotes straightened, spaces collapsed). Look-alike letters
  *   from other alphabets (Cyrillic "а", Armenian "օ", small capitals "ᴀ")
  *   are folded only for MATCHING, never in what is stored.
  * - moderateText: words we never allow (reject), words a person should see
@@ -42,13 +43,21 @@ const ASCII = /^[\n\x20-\x7e]*$/;
  * characters other than the line break and tab. A common way to sneak a
  * word past a filter. Checked one code point at a time (no regex: the same
  * in Hermes, Node and Deno, and lint-safe).
+ *
+ * Re-review RR_P8 R4: some characters LOOK blank but aren't "format"
+ * characters, so they need naming one by one: U+2800 (the empty braille
+ * cell), U+1D159 (a musical "null" note head) and U+16FE4 (the Khitan
+ * filler). The Unicode "default ignorable" blocks not yet assigned
+ * (U+FFF0–FFF8, U+E0080–E00FF, U+E01F0–E0FFF) go too, so a future font
+ * can't turn them into a hiding place. Ranges stay in order (`hidden` stops
+ * at the first range past the code point).
  */
 const HIDDEN: readonly (readonly [number, number])[] = [
   [0x00, 0x08], [0x0b, 0x1f], [0x7f, 0x9f], [0xad, 0xad], [0x34f, 0x34f], [0x600, 0x605], [0x61c, 0x61c], [0x6dd, 0x6dd],
   [0x70f, 0x70f], [0x890, 0x891], [0x8e2, 0x8e2], [0x115f, 0x1160], [0x17b4, 0x17b5], [0x180b, 0x180f], [0x200b, 0x200f],
-  [0x202a, 0x202e], [0x2060, 0x206f], [0x3164, 0x3164], [0xfe00, 0xfe0f], [0xfeff, 0xfeff], [0xffa0, 0xffa0], [0xfff9, 0xfffb],
-  [0x110bd, 0x110bd], [0x110cd, 0x110cd], [0x13430, 0x1343f], [0x1bca0, 0x1bca3], [0x1d173, 0x1d17a], [0xe0000, 0xe007f],
-  [0xe0100, 0xe01ef],
+  [0x202a, 0x202e], [0x2060, 0x206f], [0x2800, 0x2800], [0x3164, 0x3164], [0xfe00, 0xfe0f], [0xfeff, 0xfeff], [0xffa0, 0xffa0],
+  [0xfff0, 0xfffb], [0x110bd, 0x110bd], [0x110cd, 0x110cd], [0x13430, 0x1343f], [0x16fe4, 0x16fe4], [0x1bca0, 0x1bca3],
+  [0x1d159, 0x1d159], [0x1d173, 0x1d17a], [0xe0000, 0xe0fff],
 ];
 function hidden(c: number): boolean {
   for (const [lo, hi] of HIDDEN) {
@@ -335,8 +344,19 @@ export const RESERVED_HANDLES: readonly string[] = [
   'aurivan', 'isaca', 'cisa', 'cism', 'crisc', 'cgeit', 'cdpse', 'ccoa', 'aaia', 'aaism', 'cobit', 'csx',
   'admin', 'moderator', 'mod', 'team', 'support', 'official', 'staff',
 ];
-/** Reserved words matched only as a whole word, never inside another ("Badminton Fan", "Distaff Pine": CR nit 8). Short ones (4 letters or fewer) too. */
-const WHOLE_WORD_ONLY = new Set(['admin', 'staff']);
+/**
+ * Everyday words that happen to contain "admin" or "staff" (CR nit 8). They
+ * are taken out of the name before "admin" and "staff" are looked for, so
+ * "Badminton Fan" and "Distaff Pine" are fine while "SiteAdmin",
+ * "StaffPick" and "Badminton Admin" are not (re-review RR_P8 R2: matching
+ * those two only as whole words let "SiteAdmin" through). Written already
+ * folded (foldHandle reads "l" as "i": "flagstaff" is "fiagstaff"), and
+ * taken out one after another in this order; the server's members_guard
+ * does exactly the same.
+ */
+export const RESERVED_CARRIERS: readonly string[] = ['badminton', 'distaff', 'fiagstaff', 'pikestaff', 'quarterstaff', 'stafford'];
+/** The reserved words checked after the carriers above are taken out. */
+const CARRIED = new Set(['admin', 'staff']);
 
 /**
  * A name's word folded for the reserved check (the server's
@@ -360,10 +380,15 @@ export function checkHandle(handle: string, extra: { reserved?: readonly string[
   if (handle !== handle.trim() || !HANDLE_RE.test(handle) || handle.includes('  ')) return 'shape';
   const words = wordsOf(handle).map(foldHandle);
   const squashed = words.join('');
-  // Short reserved words ("mod"), "admin" and "staff" count only as a whole word, so "Modest Pine 4" stays fine.
+  // The name without its everyday "admin" / "staff" words ("Badminton Fan" → "fan").
+  let uncarried = squashed;
+  for (const c of RESERVED_CARRIERS) uncarried = uncarried.split(c).join('');
+  // Short reserved words ("mod") count only as a whole word, so "Modest Pine 4" stays fine.
+  // The rest count anywhere in the name; "admin" and "staff" once the everyday words are out.
   for (const name of RESERVED_HANDLES) {
     const r = foldHandle(wordsOf(name).join(''));
-    if (r.length <= 4 || WHOLE_WORD_ONLY.has(name) ? words.includes(r) || squashed === r : squashed.includes(r)) return 'reserved';
+    const hit = r.length <= 4 ? words.includes(r) || squashed === r : (CARRIED.has(name) ? uncarried : squashed).includes(r);
+    if (hit) return 'reserved';
   }
   for (const name of extra.reserved ?? []) {
     const r = foldHandle(wordsOf(name).join(''));
