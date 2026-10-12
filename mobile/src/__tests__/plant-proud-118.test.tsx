@@ -25,10 +25,11 @@ import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Today from '../app/(tabs)/home';
 import You from '../app/(tabs)/you';
 import YourPlant from '../app/plant';
-import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
+import { claimDecor, resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { buildPlant, type GNode, type Lod, type PNode } from '../components/plant/art';
-import { breathDepth, relaunchPlantForTest, resetPlantReactionsForTest } from '../components/plant/LivePlant';
-import { plantNew, PLANT_SPECIES, type CertPlant } from '../engine/plant';
+import { breathDepth, claimReaction, relaunchPlantForTest, resetPlantReactionsForTest } from '../components/plant/LivePlant';
+import { plantNew, PLANT_SPECIES, resetPlant, type CertPlant } from '../engine/plant';
+import { keepsakeForBadge } from '../engine/plantLooks';
 import {
   admitProud,
   growthOccasions,
@@ -451,7 +452,12 @@ describe('the proud face', () => {
   const paths = (g: GNode) => g.children.filter((c): c is Extract<PNode, { t: 'path' }> => c.t === 'path');
   const colours = (g: GNode) => new Set(g.children.flatMap((c) => [c.fill, c.stroke]).filter((x): x is string => !!x && x !== 'none'));
 
-  it.each(PLANT_SPECIES)('%s: closed eyes in upward arcs, a wide warm grin and blush, in both themes; Quiet look hides it', (species) => {
+  it.each(PLANT_SPECIES)('%s: flat wide closed eyes and a wide line smile (never happy’s look), blush, in both themes; Quiet look hides it', (species) => {
+    // A one-curve stroke "M x0 y0 Q cx cy x1 y1", as numbers.
+    const curve = (d: string) => {
+      const [x0, y0, cx, cy, x1, y1] = (d.match(/-?[\d.]+/g) ?? []).map(Number);
+      return { x0, y0, cx, cy, x1, y1, width: x1 - x0, rise: y0 - cy };
+    };
     for (const theme of ['light', 'dark'] as const)
       for (const lod of ['small', 'full'] as Lod[]) {
         const proud = faceOf({ species, stage: 5, theme, lod, mood: 'proud' })!;
@@ -460,25 +466,28 @@ describe('the proud face', () => {
         expect(proud).not.toBeNull();
         // Closed eyes: no round pupils (idle and curious draw ellipses; proud draws none but the blush).
         expect(proud.children.filter((c) => c.t === 'ellipse' && c.fill === plantArt.ink)).toHaveLength(0);
-        // Two eye strokes curving UP: the control point sits above both ends ("happy arcs", never resting's "u").
-        const eyes = paths(proud).filter((p) => p.fill === 'none');
-        expect(eyes).toHaveLength(2);
-        for (const e of eyes) {
-          const [x0, y0, cx, cy, x1, y1] = (e.d.match(/-?[\d.]+/g) ?? []).map(Number);
-          expect(cy).toBeLessThan(y0);
-          expect(y1).toBeCloseTo(y0, 1);
-          expect(x1 - x0).toBeGreaterThan(0);
-          expect(cx).toBeGreaterThan(x0);
+        // PR #51 review: everything proud draws in ink is a LINE. Happy's mouth
+        // is a filled open grin; proud has no filled ink shape at all.
+        expect(paths(proud).filter((p) => p.fill === plantArt.ink)).toHaveLength(0);
+        expect(paths(happy).filter((p) => p.fill === plantArt.ink)).toHaveLength(1);
+        const [eyeL, eyeR, mouth] = paths(proud).filter((p) => p.fill === 'none');
+        expect(paths(proud).filter((p) => p.fill === 'none')).toHaveLength(3);
+        const happyEye = curve(paths(happy).filter((p) => p.fill === 'none')[0].d);
+        for (const e of [eyeL, eyeR].map((p) => curve(p.d))) {
+          // Still curving UP (content, never resting's "u" or blink's flat line)...
+          expect(e.cy).toBeLessThan(e.y0);
+          expect(e.y1).toBeCloseTo(e.y0, 1);
+          expect(e.cx).toBeGreaterThan(e.x0);
+          // ...but clearly FLATTER and WIDER than happy's tall "^": the cue that tells them apart at 64pt.
+          expect(e.rise).toBeLessThan(happyEye.rise * 0.5);
+          expect(e.width).toBeGreaterThan(happyEye.width * 1.2);
         }
-        // The grin: one filled ink crescent, wider than rest's smile.
-        const grin = paths(proud).filter((p) => p.fill === plantArt.ink);
-        expect(grin).toHaveLength(1);
-        const width = (d: string) => {
-          const xs = (d.match(/[MQ]\s*(-?[\d.]+)/g) ?? []).map((m) => Number(m.slice(1)));
-          return Math.max(...xs) - Math.min(...xs);
-        };
-        const restMouth = paths(idle).find((p) => p.fill === 'none')!;
-        expect(width(grin[0].d)).toBeGreaterThan(width(restMouth.d) * 1.8);
+        // The smile: a stroked ink line curving down in the middle, much wider than rest's smile.
+        const m = curve(mouth.d);
+        expect(mouth.stroke).toBe(plantArt.ink);
+        expect(m.cy).toBeGreaterThan(m.y0);
+        const restMouth = curve(paths(idle).find((p) => p.fill === 'none')!.d);
+        expect(m.width).toBeGreaterThan(restMouth.width * 2);
         // A faint blush, a little warmer than happy's.
         const blush = (g: GNode) => g.children.filter((c) => c.t === 'ellipse' && c.fill === plantArt.blush).map((c) => c.opacity ?? 1);
         expect(blush(proud)).toHaveLength(2);
@@ -490,5 +499,72 @@ describe('the proud face', () => {
         // Quiet look: no face at all.
         expect(faceOf({ species, stage: 5, theme, lod, mood: 'proud', quietLook: true })).toBeNull();
       }
+  });
+});
+
+// ── PR #51 review fixes ─────────────────────────────────────────────────
+describe('PR #51 review: a proud moment only counts when it is really seen or new', () => {
+  it('a reaction that could not play (the session’s motion budget was spent) is not written down: it plays later', () => {
+    // Spend the whole decorative budget for this app session.
+    expect(claimDecor(motion.celebrate.sessionMs)).toBe(true);
+    expect(claimReaction('proud:keepsake:x')).toBe(false);
+    // Not saved as played, in memory or on the phone.
+    expect(useSeen.getState().reactions['proud:keepsake:x']).toBeUndefined();
+    // A later session (budget fresh, memory gone): it still plays, once.
+    relaunchPlantForTest();
+    resetCelebrationsForTest();
+    expect(claimReaction('proud:keepsake:x')).toBe(true);
+    expect(useSeen.getState().reactions['proud:keepsake:x']).toBeDefined();
+    expect(claimReaction('proud:keepsake:x')).toBe(false);
+  });
+
+  it('engine: after a Reset, re-earning a badge whose keepsake the plant kept is no new keepsake', () => {
+    const today = dayKey(T0);
+    const kept = [keepsakeForBadge('dress-rehearsal')!.id];
+    expect(keepsakeOccasions([{ earned: { 'dress-rehearsal': T0 } }], today, kept)).toEqual([]);
+    // A badge whose keepsake was never kept still counts.
+    expect(keepsakeOccasions([{ earned: { 'dress-rehearsal': T0, 'loop-closed': T0 + 1 } }], today, kept)).toEqual([{ id: `keepsake:loop-closed:${T0 + 1}`, kind: 'keepsake', at: T0 + 1 }]);
+  });
+
+  it('on the screen: a Reset plant that kept the keepsake is not proud when its badge is re-earned; a truly new one is', () => {
+    motionOn();
+    const spy = jest.spyOn(Reanimated, 'withTiming');
+    // Reset three days ago: the dress-rehearsal keepsake was carried over.
+    setPlant(resetPlant(grownAgo(4), T0 - 3 * DAY, [keepsakeForBadge('dress-rehearsal')!.id]));
+    expect(selectCert(useProgress.getState(), 'cisa').plant?.kept).toContain(keepsakeForBadge('dress-rehearsal')!.id);
+    earn('dress-rehearsal', T0 - 30_000);
+    mount(<YourPlant />);
+    expect(hero().props.mood).toBe('idle');
+    expect(reactCalls(spy)).toBe(0);
+    expect(useSeen.getState().proud).toEqual({});
+    unmount();
+    earn('loop-closed', T0 - 10_000);
+    mount(<YourPlant />);
+    expect(hero().props.mood).toBe('proud');
+    expect(reactCalls(spy)).toBe(1);
+  });
+
+  it('Quiet look writes no proud log, so unseen moments never use up the 3-in-7-days cap', () => {
+    setPlant(grownAgo(3));
+    act(() => {
+      useProgress.getState().setPlantSettings({ quietLook: true });
+    });
+    ['first-foothold', 'topic-clear', 'loop-closed'].forEach((b, i) => {
+      setNow(T0 + i * DAY);
+      earn(b, T0 + i * DAY);
+      mount(<YourPlant />);
+      expect(hero().props.mood).toBe('idle');
+      unmount();
+    });
+    expect(useSeen.getState().proud).toEqual({});
+    // The face back on: the next keepsake within the same 7 days still makes it proud (none of the 3 were used).
+    act(() => {
+      useProgress.getState().setPlantSettings({ quietLook: false });
+    });
+    setNow(T0 + 3 * DAY);
+    earn('slip-spotter', T0 + 3 * DAY);
+    mount(<YourPlant />);
+    expect(hero().props.mood).toBe('proud');
+    expect(Object.keys(useSeen.getState().proud ?? {})).toEqual([`keepsake:slip-spotter:${T0 + 3 * DAY}`]);
   });
 });

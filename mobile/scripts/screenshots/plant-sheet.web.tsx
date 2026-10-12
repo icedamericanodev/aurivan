@@ -15,6 +15,7 @@
  *   chips-light.html / chips-dark.html      24pt chips (lotus, sampaguita, round crowns by shape)
  *   moods-light.html / moods-dark.html      each mood on the face (and Quiet look shows none)
  *   proud-light.html / proud-dark.html      mobile 1.18: proud beside rest, happy and resting on all 13 species
+ *   happy-vs-proud-light.html / -dark.html  mobile 1.18: happy beside proud at 64pt and 104pt (oak, sunflower, cactus, lotus)
  */
 import fs from 'fs';
 import path from 'path';
@@ -205,6 +206,29 @@ function proudSheet(theme: Theme): string {
   return page('Your plant · proud on every species', 'Rest, happy, proud and resting at Crown; proud at Today’s and You’s sizes; Quiet look shows no face.', b, theme, 1500);
 }
 
+/**
+ * Mobile 1.18 review: happy and proud side by side at the two small sizes
+ * where they used to look the same: 64pt (You) and 104pt (Today, small
+ * detail level), at Crown and at Shoot. Proud should differ by its flat,
+ * wide closed eyes and its stroked (line) smile.
+ */
+function happyVsProud(theme: Theme): string {
+  const sizes: [string, number, GrowthLevel, 'small' | undefined][] = [
+    ['64pt (You), Crown', 64, 5, undefined],
+    ['104pt (Today), Crown', 104, 5, 'small'],
+    ['104pt (Today), Shoot', 104, 3, 'small'],
+  ];
+  let b = '';
+  for (const sp of ['oak', 'sunflower', 'cactus', 'lotus'] as PlantSpecies[])
+    b += cardRow(
+      SPECIES_INFO[sp].name,
+      sizes.flatMap(([cap, size, stage, lod]) =>
+        (['happy', 'proud'] as const).map((m) => card(plant({ species: sp, stage, size, theme, fit: true, lod, mood: m }), `${m} · ${cap}`)),
+      ),
+    );
+  return page('Your plant · happy vs proud', 'Happy: tall “^ ^” eyes and a small filled open grin. Proud: flat, wide closed eyes and a wide line smile.', b, theme, 1200);
+}
+
 describe('plant sheets', () => {
   it('writes the HTML sheets', () => {
     fs.mkdirSync(OUT, { recursive: true });
@@ -217,6 +241,7 @@ describe('plant sheets', () => {
       fs.writeFileSync(path.join(OUT, `chips-${t}.html`), chips(t));
       fs.writeFileSync(path.join(OUT, `moods-${t}.html`), moodSheet(t));
       fs.writeFileSync(path.join(OUT, `proud-${t}.html`), proudSheet(t));
+      fs.writeFileSync(path.join(OUT, `happy-vs-proud-${t}.html`), happyVsProud(t));
     }
     fs.writeFileSync(path.join(OUT, 'organs-light.html'), organSheet('light'));
     expect(fs.existsSync(path.join(OUT, 'contact-light.html'))).toBe(true);

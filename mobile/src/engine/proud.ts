@@ -89,8 +89,13 @@ export interface ProudMarks {
  * Keepsake occasions: a learning badge whose FIRST tier, on any exam, was
  * earned today, live (not by a quiet fill). A higher tier of a badge already
  * held brings no new keepsake (QA BUG-2), so it is no occasion.
+ *
+ * `kept` is the plant's unlocks carried across a Reset (CertPlant.kept). A
+ * Reset wipes the badges but the plant keeps their keepsakes, so earning that
+ * badge's first tier again brings nothing new: it is no occasion (PR #51
+ * review). Everything in `kept` was unlocked before the Reset that kept it.
  */
-export function keepsakeOccasions(certs: readonly ProudMarks[], today: string): ProudOccasion[] {
+export function keepsakeOccasions(certs: readonly ProudMarks[], today: string, kept: readonly string[] = []): ProudOccasion[] {
   const first = new Map<string, { at: number; quiet: boolean }>();
   for (const c of certs) {
     const quiet = new Set([c.backfill?.at, c.catalogFill?.at].filter((x): x is number => typeof x === 'number'));
@@ -104,6 +109,9 @@ export function keepsakeOccasions(certs: readonly ProudMarks[], today: string): 
   const out: ProudOccasion[] = [];
   for (const [badge, { at, quiet }] of first) {
     if (quiet || dayKey(at) !== today || !isLearningKeepsakeBadge(badge)) continue;
+    // Its keepsake was already on the plant before a Reset: not new.
+    const k = keepsakeForBadge(badge);
+    if (k && kept.includes(k.id)) continue;
     out.push({ id: `keepsake:${badge}:${at}`, kind: 'keepsake', at });
   }
   return out.sort((a, b) => a.at - b.at || a.id.localeCompare(b.id));

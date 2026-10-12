@@ -238,7 +238,7 @@ describe('badge share cards', () => {
   it('Flown the Nest (id `graduate`, mobile 1.18) is shareable: no badge is on the never-share list', () => {
     expect(NEVER_SHARED_BADGES.has('graduate')).toBe(false);
     expect(NEVER_SHARED_BADGES.size).toBe(0);
-    const nest = badge({ badge: 'graduate', name: 'Flown the Nest', tierLine: undefined, skill: 'Recalled 50 answers weeks apart' });
+    const nest = badge({ badge: 'graduate', name: 'Flown the Nest', tierLine: undefined, skill: 'Moved 50 questions out of spaced review' });
     expect(badgeShareable(nest)).toBe(true);
     const t = badgeCardText(nest, cisa);
     // Every line we write passes the guard; the old credential-like word appears nowhere.

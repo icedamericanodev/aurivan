@@ -307,13 +307,14 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
         howTo: 'Keep up with review. Each right answer moves a question a box further on.',
         // Mobile 1.18 "Flown the Nest": the words describe the QUESTIONS
         // leaving review, never the learner "graduating" (a credential word
-        // the share guard refuses). The skill line says "weeks apart", not
-        // an exact gap: the rule counts a right answer from the last box,
-        // and the boxes space a question over weeks, but the count itself
-        // does not check the days.
-        unlock: `${GRADUATES === 50 ? 'Fifty' : GRADUATES} questions have left review: you answered them right again and again, weeks apart. Spaced recall is what holds on exam day.`,
+        // the share guard refuses). The words claim only what the rule
+        // counts (PR #51 review, honesty): a right answer from the last box
+        // moves a question out of review. The count never checks how many
+        // days passed, so the lines say "box after box" and "moved out of
+        // spaced review", never "weeks apart".
+        unlock: `${GRADUATES === 50 ? 'Fifty' : GRADUATES} questions have left review: you answered them right again and again, box after box. Spaced recall is what holds on exam day.`,
         effort: 'Needs several weeks: a question leaves review from the last box.',
-        skill: `Recalled ${GRADUATES} answers weeks apart`,
+        skill: `Moved ${GRADUATES} questions out of spaced review`,
         minDays: GRADUATE_MIN_DAYS,
       };
     case 'loop-closed':

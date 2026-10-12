@@ -845,11 +845,12 @@ function face(x: number, y: number, w: number, mood: Mood, lod: Lod): GNode {
   if (mood === 'happy') {
     for (const ex of [eyeL, eyeR]) kids.push(S(`M${f(ex - er)} ${f(y + er * 0.3)}Q${f(ex)} ${f(y - er * 1.5)} ${f(ex + er)} ${f(y + er * 0.3)}`, INK, lw));
   } else if (mood === 'proud') {
-    // Proud (mobile 1.18 panel redraw): eyes softly closed in wide, gentle
-    // upward arcs, as if smiling with the eyes. The old half-lids read as
-    // smug or sleepy. Distinct from happy's tall, pointed "^ ^" (and its
-    // open mouth) and from resting's downward "u u".
-    for (const ex of [eyeL, eyeR]) kids.push(S(`M${f(ex - er * 1.2)} ${f(y + er * 0.25)}Q${f(ex)} ${f(y - er * 0.9)} ${f(ex + er * 1.2)} ${f(y + er * 0.25)}`, INK, lw * 1.1));
+    // Proud (mobile 1.18, after the 64/104pt review): eyes closed in FLAT,
+    // WIDE lids, a little thicker, like a content "mm". Happy's eyes are
+    // tall, pointed "^ ^"; at 64pt the old proud arcs looked the same, so
+    // proud's are now clearly lower and wider. Still bowed upward, never
+    // flat (blink) or downward (resting's "u u"), so it reads content, not sleepy.
+    for (const ex of [eyeL, eyeR]) kids.push(S(`M${f(ex - er * 1.3)} ${f(y + er * 0.1)}Q${f(ex)} ${f(y - er * 0.45)} ${f(ex + er * 1.3)} ${f(y + er * 0.1)}`, INK, lw * 1.15));
   } else if (mood === 'resting') {
     for (const ex of [eyeL, eyeR]) kids.push(S(`M${f(ex - er)} ${f(y + er * 0.2)}Q${f(ex)} ${f(y + er * 1.3)} ${f(ex + er)} ${f(y + er * 0.2)}`, INK, lw));
   } else if (mood === 'blink') {
@@ -873,12 +874,11 @@ function face(x: number, y: number, w: number, mood: Mood, lod: Lod): GNode {
   if (mood === 'happy') kids.push(P(`M${f(x - mw * 1.25)} ${f(my - 0.6)}Q${f(x)} ${f(my + mw * 2)} ${f(x + mw * 1.25)} ${f(my - 0.6)}Z`, INK));
   else if (mood === 'curious') kids.push(E(x, my + 0.6, mw * 0.5, mw * 0.62, INK));
   else if (mood === 'resting') kids.push(S(`M${f(x - mw * 0.55)} ${f(my + 0.4)}Q${f(x)} ${f(my + 1.3)} ${f(x + mw * 0.55)} ${f(my + 0.4)}`, INK, lw * 0.85));
-  // Proud: a big, warm closed grin: a wide crescent, wider than rest's
-  // smile and with no open mouth (that is happy's).
-  else if (mood === 'proud') {
-    const sx = mw * 1.8;
-    kids.push(P(`M${f(x - sx)} ${f(my - 1.2)}Q${f(x)} ${f(my + mw * 1.25)} ${f(x + sx)} ${f(my - 1.2)}Q${f(x)} ${f(my + mw * 2.7)} ${f(x - sx)} ${f(my - 1.2)}Z`, INK));
-  }
+  // Proud: a wide, closed smile drawn as a LINE (a stroke), not a filled
+  // shape. Happy's mouth is a small filled, open grin; a filled proud
+  // crescent looked the same at 64pt. Wider than rest's smile, so it still
+  // reads warm and pleased.
+  else if (mood === 'proud') kids.push(S(`M${f(x - mw * 1.9)} ${f(my - 0.8)}Q${f(x)} ${f(my + mw * 1.7)} ${f(x + mw * 1.9)} ${f(my - 0.8)}`, INK, lw * 1.3));
   else kids.push(S(`M${f(x - mw * 0.8)} ${f(my)}Q${f(x)} ${f(my + mw * 1.1)} ${f(x + mw * 0.8)} ${f(my)}`, INK, lw * 0.9));
   return G('face', kids);
 }

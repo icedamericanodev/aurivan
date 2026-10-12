@@ -249,12 +249,16 @@ function proudMarks(byCert: ProgressState['byCert']): ProudMarks[] {
  * new keepsake; mobile 1.18: never a game-only badge, Fresh Start or a mark
  * saved quietly by a back-fill). The cap is applied later (engine/proud.ts).
  */
-export function newKeepsakeOn(byCert: ProgressState['byCert'], today: string): boolean {
-  return keepsakeOccasions(proudMarks(byCert), today).length > 0;
+export function newKeepsakeOn(byCert: ProgressState['byCert'], today: string, kept: readonly string[] = []): boolean {
+  return keepsakeOccasions(proudMarks(byCert), today, kept).length > 0;
 }
 
-/** What the look screens and the plant need from the marks: a stable string, so a store change elsewhere never redraws the plant. */
-function marksKey(s: ProgressState, today: string): string {
+/**
+ * What the look screens and the plant need from the marks: a stable string, so
+ * a store change elsewhere never redraws the plant. The keepsake occasions skip
+ * what this cert's plant kept through a Reset (re-earning it brings nothing new).
+ */
+function marksKey(s: ProgressState, today: string, certId: string): string {
   const keys: string[] = [];
   for (const c of Object.values(s.byCert)) {
     const m = c?.milestones;
@@ -262,7 +266,8 @@ function marksKey(s: ProgressState, today: string): string {
     for (const [k, at] of Object.entries(m?.earned ?? {})) keys.push(`${k}@${at}`);
     for (const set of Object.keys(m?.planters ?? {})) keys.push(`set:${set}`);
   }
-  return JSON.stringify([keepsakeOccasions(proudMarks(s.byCert), today), [...new Set(keys)].sort()]);
+  const kept = selectCert(s, certId).plant?.kept ?? [];
+  return JSON.stringify([keepsakeOccasions(proudMarks(s.byCert), today, kept), [...new Set(keys)].sort()]);
 }
 
 export interface PlantLookView {
@@ -329,7 +334,7 @@ export function usePlantView(): PlantView & { cert: Certification; certId: strin
     [cert, answers, plant, lastDay, settings, today, plannedRest],
   );
   // Mobile 1.14: the look and the mood, from small, stable selections.
-  const marks = useProgress((s) => marksKey(s, today));
+  const marks = useProgress((s) => marksKey(s, today, certId));
   const planCleared = useProgress((s) => {
     const d = s.days[certId];
     return !!d && d.day === today && planComplete(d);
@@ -345,17 +350,21 @@ export function usePlantView(): PlantView & { cert: Certification; certId: strin
   }, [marks, certId, view.plant, today]);
   const proud = useMemo(() => proudToday(proudLog ?? {}, occasions, now), [proudLog, occasions, now]);
   const occasionKey = occasions.map((o) => o.id).join(',');
-  useEffect(() => {
-    // Write down the new occasions (the cap applies once, here). No save when nothing is new.
-    if (occasionKey) useSeen.getState().noteProud(occasions, Date.now());
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by the occasions' ids
-  }, [occasionKey]);
   const look = useMemo(() => {
     if (!view.plant) return null;
     return plantLookView(view.plant, { marks: allCertMarks(useProgress.getState().byCert), face: view.face, resting: view.resting, planCleared, newTopicToday, newKeepsakeToday: proud.keepsake, today });
     // `marks` changes when a badge or planter does: the unlocks are read fresh from the store then.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [view.plant, view.face, view.resting, marks, planCleared, newTopicToday, proud.keepsake, today]);
+  // Write down the new occasions (the cap applies once, here), but ONLY while
+  // the proud face really shows (PR #51 review). With Quiet look (no face),
+  // the plant hidden, or the plant resting, nobody sees a proud moment, so it
+  // must not use up one of the 3 keepsake moments in 7 days. No save when nothing is new.
+  const proudShown = look?.mood === 'proud';
+  useEffect(() => {
+    if (occasionKey && proudShown) useSeen.getState().noteProud(occasions, Date.now());
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by the occasions' ids
+  }, [occasionKey, proudShown]);
   // The reaction's occasion: proud is keyed by its earned occasions (once ever,
   // and a new occasion later today is a new reason); the others by mood and day.
   const reactionId = look ? (look.mood === 'proud' ? (proudReactionId(proud.ids) ?? `${certId}:proud:${today}`) : `${certId}:${look.mood}:${today}`) : null;

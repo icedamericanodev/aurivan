@@ -107,13 +107,15 @@ const notePlayed = (id: string) => {
   useSeen.getState().noteReaction(id, Date.now());
 };
 /**
- * May this occasion's reaction play now? Records it (and spends `ms` of the
- * budget: curious' lean is longer than the others, code review M7a).
+ * May this occasion's reaction play now? Spends `ms` of the motion budget
+ * (curious' lean is longer than the others, code review M7a) and, ONLY if it
+ * really plays, writes it down as played. When the budget is used up the
+ * occasion is not spent: it can still play on a later visit (PR #51 review).
  */
 export function claimReaction(id: string, ms: number = motion.plant.react): boolean {
-  if (playedBefore(id)) return false;
+  if (playedBefore(id) || !claimDecor(ms)) return false;
   notePlayed(id);
-  return claimDecor(ms);
+  return true;
 }
 /** This occasion's reaction is spent without playing (the growth sequence was the moment; code review M3). */
 export function markReacted(id: string): void {
