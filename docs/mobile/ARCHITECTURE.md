@@ -450,7 +450,7 @@ PHASE6_8 (§1–2).
   and the account screen when signed in; `/account/sign-in` (for "sign in
   first" places), `/account/email` (code sign-in), `/account/delete` (step 1
   → re-confirm → done). No route reads link parameters or calls the backend
-  on mount. Ways in: You → Help and feedback's first row, and Settings →
+  on mount. Ways in: You → its own Account section (Help and feedback's first row in Phase 6; moved in Phase 7), and Settings →
   Account; never at launch, onboarding, a session or as a pop-up.
 - **Safety asserts** live in `src/cloud/configGuard.ts`
   (`assertCloudConfig(env)`, pure and tested): the flag must be `1` or
@@ -490,6 +490,72 @@ PHASE6_8 (§1–2).
   <light|dark>` exports the web build with the flag ON and the memory
   backend (`EXPO_PUBLIC_AURIVAN_SHOTS=1`; never a store build) plus the same
   app with the flag OFF for the `off-*` proof shots (DESIGN_SYSTEM §17).
+
+### Cloud (built OFF) — Uplift Phase 7, sync
+Optional progress sync between a learner's phones, built and switched OFF
+like accounts (same flag; nothing renders, no timer runs and no storage key
+is touched with it off: `cloud-off.test.tsx`). Spec: PHASE6_8 §3.
+- **One snapshot per store.** Each phone pushes its `settings` and
+  `progress` stores as whole snapshots (`public.sync_snapshots`), without
+  the device-local fields: reminders, theme, motion, haptics, `onboarded`,
+  the fit card's local counters, today's count and plans, and the plant
+  display choices never leave the phone. Each snapshot carries `changedAt`,
+  a map of "when was this choice last changed" stamps (kept in the sync
+  record, never in the stores, so an OFF build saves exactly what it did).
+- **Merge, never overwrite** (`engine/syncMerge.ts`, pure). Union for
+  things done (answers, reviews, bookmarks, mocks, lessons, notes, badges,
+  reports), max for counts, earliest for first times, last-writer-wins by
+  stamp for single choices (exam, exam date, study defaults, the plant's
+  name and look). Ties go by value, never by side, so phones converge on the
+  same bytes; set-like lists are kept sorted for the same reason. Times more
+  than a day ahead are pulled back to now; stamps that far ahead count as
+  unknown. Evidence for badges never shrinks (windows keep the longer
+  history, a slip tag stays, a game never loses a level, readiness keeps the
+  higher reading), so `keepSupportedMarks` after a merge can't drop a badge
+  either phone earned. Property tests: commutative, idempotent, absorbing,
+  associative, monotone, over seeded random states (`sync-engine.test.ts`).
+- **One checker** (`engine/backup.ts readStores`). A pulled snapshot goes
+  through the same checker as a backup file, plus a strict mode (a
+  prototype key anywhere, or a state over the cap before trimming, is
+  refused). A refused pull pauses sync; the phone changes nothing and the
+  account is never pushed over. Unlike a file, a pull keeps ids this app's
+  content doesn't have (bounded by the caps), so two app versions agree
+  instead of dropping and re-adding them on every sync.
+- **The cycle** (`lib/syncCore.ts`, ports only): heads (rev and app version,
+  never the data), `engine/syncPlan.ts` (idle, push, pull, merge, first,
+  pause), pull and check, merge, ONE storage write through the restore path
+  (`lib/backup.ts writeSynced`: keeps today's plans and a paused quiz, and
+  merges in anything done while the write was in flight), push at the rev
+  just seen; a `conflict` (another phone wrote first) retries after 1 s,
+  3 s, 9 s. A snapshot from a newer minor app pauses ("Update the app"); an
+  empty phone never pushes over the account's progress; a copy deleted from
+  another phone turns sync off here instead of re-uploading it.
+- **When** (`lib/sync.ts`): at launch (after `initAccount`, which loads who
+  is signed in first), on background, when a quiz, lesson or
+  game ends (root `_layout` tells it the route; a pull never lands under an
+  open session), at most every 10 minutes after a change, and Sync now.
+  Failures only change the status line and back off 30 s / 2 min / 10 min /
+  1 h. The record is `aurivan.sync.v1` (`store/sync.ts`: on/off, last rev and
+  fingerprint per store, stamps, pause reason, a waiting pull), never in a
+  backup file, never synced, never hydrated with the flag off.
+- **Choices stay with the learner.** The first sync on a phone shows a
+  preview (phone only, account only, or both: This phone · Account · After,
+  where After is the real merge) and keeps a 7-day "Undo sync" copy in the
+  backup store's undo slot, written in the same storage write. A different
+  account on a shared phone asks first (Start fresh, the default, keeps this
+  phone's progress in Undo sync and never adds it to the new account) and
+  gets a new install id. Sign out can remove this phone's progress (for
+  shared devices). Delete synced progress removes the account's copy (and the
+  server's checkpoints) and turns sync off.
+- **Known limits (v1), in "What syncs":** removals don't travel (a bookmark
+  removed, or progress reset, on one phone comes back from another; Reset
+  while syncing is refilled from the account); attempts made offline on two
+  phones count as the max, never the sum; a phone whose clock is days off
+  keeps its own choices until its clock is right (answers are never lost).
+  Tombstones and a three-way merge are later steps (SCALING.md §5).
+- **Sizing:** `docs/mobile/SCALING.md` (≤ 5k accounts on Supabase Pro; the
+  owner decides plan and region at Phase 9). A heavy learner's progress
+  snapshot measures about 263 KB (`sync-budget.test.ts`).
 
 ### The content pipeline
 ```
@@ -646,8 +712,9 @@ its own section.
 | Piece | Path | Job |
 |---|---|---|
 | Schema | `supabase/migrations/20261005000000_init_mobile_sync.sql` | `profiles`, `entitlements`, `content_packs` in `public`; the bank size, deletion audit and export rate limit in `private` |
+| Sync schema (Phase 7) | `supabase/migrations/20261013000000_sync_snapshots.sql` | `public.sync_snapshots` (one row per store per learner; column grants; a trigger sets `rev`, the time and the 60-writes-an-hour window and reverts owner or store changes; writes need a `profiles` row); `private.sync_history` (a daily support checkpoint of the progress row, newest 2, cleared by "Delete synced progress") |
 | Local config | `supabase/config.toml`, `supabase/templates/` | Auth as it will be set on the dashboard at Phase 9: 6-digit codes valid 10 min, code-only emails, empty redirect list, no anonymous sign-in, confirmed emails only, refresh rotation (10 s reuse), JWT 1 h |
-| SQL tests | `supabase/tests/01_hardening.sql`, `10_accounts.sql` | pgTAP: schema-wide rules every later table inherits, plus own-rows-only, anon denied and cascade-on-delete |
+| SQL tests | `supabase/tests/01_hardening.sql`, `10_accounts.sql`, `20_sync.sql` | pgTAP: schema-wide rules every later table inherits, plus own-rows-only, anon denied and cascade-on-delete; sync: cross-learner access, server-owned rev/time/keys, stale-rev updates, the rate limit, the size cap, Terms before writes, checkpoints |
 | Edge Functions | `supabase/functions/{delete-account,export-my-data}` | Pure `handler.ts` with an injected `AdminPort`; `index.ts` only wires env. `deno test` uses a fake admin client, no network |
 | Smoke (Phase 9) | `scripts/cloud_smoke.sh` | curl with two learners' JWTs and the publishable key: every cross-user, anon, private and server-only call must fail |
 | Static guard | `scripts/check_rls.sh` | G6–G8: RLS in the same file as every `create table` and never turned off, no always-true policy (create or alter) off the allowlist, `security_invoker` views, no `security definer` outside `private` (an unqualified name counts as `public`), nothing granted to `anon` or `public` off the allowlist |
@@ -688,8 +755,10 @@ cap.
   with the same token (the account, and own rows through RLS), so a re-auth
   would add friction and no protection. Revisit if an export ever holds data
   the token can't read (moderation notes, logs, staff fields). The hourly
-  slot is claimed last, after the reply is built. `stores` stays empty
-  until Phase 7; Phase 8 adds `board`.
+  slot is claimed last, after the reply is built. `stores` holds the
+  learner's synced snapshots (Phase 7) as backup-file stores, with the two
+  device-only fields a backup needs (`onboarded`, today's count), so the
+  download is also a backup the app can restore; Phase 8 adds `board`.
 
 **Run it locally** (needs Docker): `supabase start`, `supabase db reset`,
 `supabase test db`, `supabase db lint`; functions:
@@ -705,8 +774,8 @@ cap.
   `private.is_blocked_by`.)
 - Exceptions go on the allowlists in `01_hardening.sql` and
   `scripts/check_rls.sh`, never by weakening a check.
-- `AdminPort.countBoardRows` (Phase 8) and `readSnapshots` (Phase 7) are
-  stubs returning nothing until those tables exist.
+- `AdminPort.countBoardRows` (Phase 8) is a stub returning zero until the
+  board exists. `readSnapshots` reads `sync_snapshots` (Phase 7).
 
 **At Phase 9 (owner go-ahead).** Mirror the `[auth]` settings on the
 dashboard; set the email-send limit to the SMTP quota; turn on Apple and
@@ -737,10 +806,12 @@ Phase 6 on purpose).**
   password as a second credential.
 - The deletion audit hash as an HMAC with a server pepper (a Function
   secret), so it can't be joined with the phone's `syncedAccountHash`.
-- A new device id when a different account signs in, and on account
-  deletion (a shared phone); declare it in the store privacy answers.
-- PR 7 and PR 8 write policies require a `profiles` row (Terms accepted),
-  not only a session.
+- Declare the install id in the store privacy answers (Apple "Device ID",
+  Play "Device or other IDs"; drafted in STORE_LISTING.md §7). Done in
+  Phase 7: a new id when a different account signs in, and on account
+  deletion.
+- PR 8 write policies require a `profiles` row (Terms accepted), not only a
+  session. Done for `sync_snapshots` in Phase 7.
 - The Phase 9 adapter: `reauthenticate` is a NEW sign-in (it adds an `amr`
   entry; `supabase.auth.reauthenticate()` does not); `thisDeviceOnly` maps
   to `AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY`; `expo-secure-store` with
@@ -752,4 +823,10 @@ Phase 6 on purpose).**
   refuse valid tokens (the in-function `getUser` is the real check).
 - Ask `app-store-compliance-reviewer` whether the bundled but unreachable
   `(cloud)` screens in an OFF build raise Apple 2.3.1 ("hidden features").
-- Privacy policy: add the install id (PR 7) and the backend's request logs.
+- Privacy policy: the install id and the backend's request logs are in the
+  draft (Phase 7); fill in Supabase's log retention period.
+- Sync (Phase 7): the Supabase adapter maps `P0001 rate_limited`, `42501`
+  and a zero-row update to the `CloudError` codes in `cloud/types.ts`
+  `SyncPort`; the head query selects only store, rev, app_version,
+  store_version, device_id and updated_at. Re-measure SCALING.md's figures
+  against live pricing.

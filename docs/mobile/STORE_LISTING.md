@@ -196,3 +196,29 @@ Apple Product Page Optimization can test screenshots, icon and preview video, bu
 | Screenshot 1 caption | Master Modern Risk. | Know what to study next | A concrete benefit first beats the brand line for cold traffic |
 
 Success metric: store listing conversion rate (visitors to installs), read at 90% confidence and at least 7 days per test.
+
+## 7. Cloud release (DRAFT, not in effect until Phase 9)
+
+Accounts (Phase 6) and sync (Phase 7) are built and switched OFF. Nothing
+above changes until the owner's go-live (Phase 9, proposed mobile 2.0.0).
+Then swap these in, in the same release as the published privacy, terms and
+delete-account pages. Section 5's "No account, no data collected" line and
+the "Data Not Collected" label stay true for the OFF build only.
+
+**Apple privacy label (App Privacy).**
+- Contact Info › Email Address: linked to the user, App Functionality, not tracking.
+- Identifiers › User ID: linked, App Functionality, not tracking.
+- Identifiers › Device ID (the random install id sent with each sync): linked, App Functionality, not tracking.
+- Usage Data › Product Interaction (synced study progress): linked, App Functionality, not tracking.
+- Data is encrypted in transit; users can request deletion (in the app, and at the delete-account URL).
+
+**Google Play Data safety.**
+- Personal info › Email address; App activity › Other actions (synced progress); Device or other IDs (the install id). All collected, not shared, App functionality, optional (only with an account), encrypted in transit, deletable in the app and at the delete-account URL.
+
+**App Review note, added paragraph.**
+"Accounts are optional: every study feature works signed out. Sync is
+optional too and off until the learner turns it on in Settings → Account →
+Sync this phone, after a preview of what will change. Settings → Account →
+Delete synced progress removes the synced copy; Settings → Account → Delete
+account deletes the account in the app. No push notifications. Demo access:
+[owner decision, PHASE6_8 §9 #8]."
