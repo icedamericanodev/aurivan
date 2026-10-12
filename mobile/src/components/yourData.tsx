@@ -25,13 +25,13 @@ import { reminderLine, useRestoreFlow, type FlowMessage } from '../lib/useRestor
 import { useBackup } from '../store/backup';
 import { LARGE_TEXT, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { Button, Gap, Section, T, useFontScale } from './ui';
+import { SettingsGroup, SettingsRow } from './settings';
+import { Button, Gap, T, useFontScale } from './ui';
 
 /** "6 Oct 2026" for a timestamp, in the phone's local time. */
 const dateOf = (ms: number) => examDateLabel(dayKey(ms));
 
 export function YourData() {
-  const { c } = useTheme();
   const lastBackupAt = useBackup((s) => s.lastBackupAt);
   const restoredSavedAt = useBackup((s) => s.restoredSavedAt ?? null);
   const undo = useBackup((s) => s.undo);
@@ -97,55 +97,53 @@ export function YourData() {
     );
   };
 
+  // "Made", not "saved": the share sheet can't tell us where the file went.
+  // After a restore (and no newer file made), the restored backup is the learner's latest copy.
+  const status =
+    restoredSavedAt && (!lastBackupAt || restoredSavedAt > lastBackupAt)
+      ? `Restored from a backup saved on ${dateOf(restoredSavedAt)}`
+      : lastBackupAt
+        ? `Last backup file made: ${dateOf(lastBackupAt)}`
+        : 'No backup file yet';
+  const saveLabel = busy === 'save' ? 'Saving…' : 'Save a backup';
+  const pickLabel = busy === 'pick' ? 'Opening…' : 'Restore from a backup';
   return (
     <>
-      {/* "Made", not "saved": the share sheet can't tell us where the file went.
-          After a restore (and no newer file made), the restored backup is the learner's latest copy. */}
-      <Section
+      <SettingsGroup
         title="Your data"
-        meta={
-          restoredSavedAt && (!lastBackupAt || restoredSavedAt > lastBackupAt)
-            ? `Restored from a backup saved on ${dateOf(restoredSavedAt)}`
-            : lastBackupAt
-              ? `Last backup file made: ${dateOf(lastBackupAt)}`
-              : 'No backup file yet'
-        }
-      />
-      <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>
-        Your progress is kept only on this phone. A backup file keeps it safe and moves it to a new phone. You choose where the file goes.
-      </T>
-      <Gap h={space.md} />
-      <Button
-        kind="secondary"
-        label={busy === 'save' ? 'Saving…' : 'Save a backup'}
-        accessibilityHint="Opens the share sheet to save a file with your progress."
-        disabled={busy !== null}
-        onPress={save}
-      />
-      <Gap h={space.sm} />
-      <Button
-        kind="secondary"
-        label={busy === 'pick' ? 'Opening…' : 'Restore from a backup'}
-        accessibilityHint="Choose a backup file. You will see what changes before anything is replaced."
-        disabled={busy !== null}
-        onPress={flow.pick}
-      />
-      {/* The result first ("Restored… you can undo"), then the undo it mentions. */}
-      {message && <DataMessage message={message} />}
-      {canUndo && undo && (
-        <View style={{ marginTop: space.sm }}>
-          <Button
-            kind="ghost"
-            label="Undo restore"
+        intro="Your progress is kept only on this phone. A backup file keeps it safe and moves it to a new phone. You choose where the file goes."
+      >
+        <SettingsRow
+          title={saveLabel}
+          subtitle={status}
+          accessibilityLabel={saveLabel}
+          accessibilityHint={`${status}. Opens the share sheet to save a file with your progress.`}
+          disabled={busy !== null}
+          onPress={save}
+        />
+        <SettingsRow
+          title={pickLabel}
+          subtitle="You see what changes before anything is replaced."
+          accessibilityLabel={pickLabel}
+          accessibilityHint="Choose a backup file. You will see what changes before anything is replaced."
+          disabled={busy !== null}
+          onPress={flow.pick}
+          last={!(canUndo && undo)}
+        />
+        {canUndo && undo && (
+          <SettingsRow
+            title="Undo restore"
+            subtitle={`Available until ${dateOf(undoExpiresAt(undo))}.`}
+            accessibilityLabel="Undo restore"
             accessibilityHint={`Puts back your progress from before the restore. Available until ${dateOf(undoExpiresAt(undo))}.`}
             disabled={busy !== null}
             onPress={confirmUndo}
-            // Ghost buttons pad their label; pull it back so it lines up with the text below.
-            style={{ alignSelf: 'flex-start', marginLeft: -space.sm }}
+            last
           />
-          <T v="meta">{`Available until ${dateOf(undoExpiresAt(undo))}.`}</T>
-        </View>
-      )}
+        )}
+      </SettingsGroup>
+      {/* The result of the last action, right under the rows that started it. */}
+      {message && <DataMessage message={message} />}
       <RestorePreview ready={flow.ready} busy={busy === 'restore'} onConfirm={flow.confirm} onCancel={flow.cancel} />
     </>
   );

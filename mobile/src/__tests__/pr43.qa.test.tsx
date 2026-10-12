@@ -644,7 +644,8 @@ describe('J5 Show my plant OFF', () => {
     expect(plants()).toHaveLength(0);
     expect(allText()).not.toMatch(/Pico/);
     press(/^Open Settings$/);
-    expect(router.push).toHaveBeenCalledWith('/settings');
+    // Mobile 1.17: Settings opens at Badges and your plant, where Show my plant is.
+    expect(router.push).toHaveBeenCalledWith({ pathname: '/settings', params: { section: 'plant' } });
     expect(cp().plant).toBe(p);
   });
 
@@ -661,7 +662,8 @@ describe('J5 Show my plant OFF', () => {
     expect(allText()).not.toMatch(/Choose what you’ll grow|Plant it/);
     expect(plants()).toHaveLength(0);
     press(/^Open Settings$/);
-    expect(router.push).toHaveBeenCalledWith('/settings');
+    // Mobile 1.17: Settings opens at Badges and your plant, where Show my plant is.
+    expect(router.push).toHaveBeenCalledWith({ pathname: '/settings', params: { section: 'plant' } });
     expect(cp().plant).toBe(p);
   });
 });

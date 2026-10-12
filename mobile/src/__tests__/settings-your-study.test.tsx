@@ -73,6 +73,18 @@ const toggle = (name: string, value: boolean) => {
     n.props.onValueChange(value);
   });
 };
+/** Mobile 1.17: a Settings row (spoken "Daily time, 20 minutes a day") opens its sheet. */
+const openRow = (title: string) => {
+  const n = root().findAll(
+    (x) => x.props.accessibilityRole === 'button' && typeof x.props.onPress === 'function' && typeof x.props.accessibilityLabel === 'string' && (x.props.accessibilityLabel === title || x.props.accessibilityLabel.startsWith(`${title}, `)),
+  )[0];
+  if (!n) throw new Error(`no row ${title}`);
+  act(() => {
+    n.props.onPress();
+  });
+};
+const rowLabel = (title: string) =>
+  root().findAll((x) => x.props.accessibilityRole === 'button' && typeof x.props.onPress === 'function' && String(x.props.accessibilityLabel).startsWith(`${title}, `))[0]?.props.accessibilityLabel;
 const switchValue = (name: string) => root().findAll((x) => typeof x.props.onValueChange === 'function' && x.props.accessibilityLabel === name)[0]?.props.value;
 const checkedRadio = (group: string) => {
   const g = root().findAll((x) => x.props.accessibilityRole === 'radiogroup' && x.props.accessibilityLabel === group && typeof x.type !== 'string')[0];
@@ -121,22 +133,31 @@ describe('Settings → Your study', () => {
     const t = allText();
     expect(t).not.toMatch(/Daily goal|Questions a day/);
     expect(t).toContain('Your study');
-    expect(t).toContain('Most days. Your daily plan fits this.');
-    expect(t).toContain('Where you’re starting from');
+    expect(t).toContain('Starting point');
     expect(t).toContain('Exam-focused plan');
     expect(t).toContain('Leads with mocks and your weak spots, and leaves lessons out of Today. Lessons stay in Learn.');
-    // An old 40-a-day goal reads as 45 minutes.
+    // Each row shows its current value: an old 40-a-day goal reads as 45 minutes; no start chosen yet.
+    expect(rowLabel('Daily time')).toBe('Daily time, 45 minutes a day');
+    expect(rowLabel('Starting point')).toBe('Starting point, not set');
+    // The choices are in sheets.
+    openRow('Daily time');
+    expect(allText()).toContain('Most days. Your daily plan fits this.');
     expect(checkedRadio('Daily time')).toEqual(['45 minutes a day']);
+    openRow('Starting point');
     expect(checkedRadio('Where are you starting from?')).toEqual([]);
-    // Order: Certification, Exam date, Your study, Appearance.
-    const at = sectionOrder()(['Certification', 'Exam date', 'Your study', 'Appearance', 'Motion']);
+    // Order (mobile 1.17 groups): Exam, Your study, Practice, Reminders, Appearance.
+    const at = sectionOrder()(['Exam date', 'Your study', 'Practice', 'Reminders', 'Appearance']);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
   });
 
   it('with nothing ticked today, a change rebuilds the plan at once', () => {
     mount(<Settings />);
+    openRow('Daily time');
     press(/^10 minutes a day$/);
     expect(useSettings.getState()).toMatchObject({ dailyMinutes: 10, dailyGoal: 10, fitPrompt: 'answered' });
+    // A choice closes the sheet, like a dropdown, and the row shows the new value.
+    expect(pressable(/^10 minutes a day$/)).toHaveLength(0);
+    expect(rowLabel('Daily time')).toBe('Daily time, 10 minutes a day');
     expect(storedPlan().budget).toBe(10);
     expect(allText()).not.toContain('Today’s plan stays as it is.');
   });
@@ -150,6 +171,7 @@ describe('Settings → Your study', () => {
       });
     });
     mount(<Settings />);
+    openRow('Starting point');
     press(/^Experienced practitioner/);
     expect(useSettings.getState().familiarity).toBe('experienced');
     expect(allText()).toContain('Today’s plan stays as it is. Tomorrow’s will fit.');
@@ -159,6 +181,7 @@ describe('Settings → Your study', () => {
 
   it('Exam-focused follows the row until switched; an explicit "off" wins over Experienced', () => {
     mount(<Settings />);
+    openRow('Starting point');
     press(/^Experienced practitioner/);
     expect(switchValue('Exam-focused plan')).toBe(true);
     toggle('Exam-focused plan', false);
@@ -168,6 +191,8 @@ describe('Settings → Your study', () => {
 
   it('Default mode: "Let the app choose", in plain words', () => {
     mount(<Settings />);
+    expect(rowLabel('Default mode')).toBe('Default mode, Let the app choose');
+    openRow('Default mode');
     expect(allText()).toContain('Let the app choose');
     expect(allText()).toContain('It changes as you go and fits where you’re starting from, ending with a smart mix of what you need.');
     expect(allText()).not.toContain('Follow my stage');

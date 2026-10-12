@@ -63,7 +63,7 @@ export default function PlantPick() {
         art="seedling"
         title="Your plant is hidden"
         body="Its growth is kept. Turn on Show my plant in Settings to see it again."
-        primary={{ label: 'Open Settings', onPress: () => router.push('/settings') }}
+        primary={{ label: 'Open Settings', onPress: () => router.push({ pathname: '/settings', params: { section: 'plant' } }) }}
       />
     );
   }

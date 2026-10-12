@@ -11,6 +11,9 @@
  * lockup, the tagline and the line, then the four pillars. One tap on
  * "Start my plan" moves on; nothing is saved until the last step.
  *
+ * Mobile 1.17: step 3 keeps its quick choices and adds "Pick the exact date",
+ * the same calendar sheet as Settings → Exam date (components/calendar.tsx).
+ *
  * Mobile 1.15 (PHASE5.md §1): step 2 "Where are you starting from?" (no
  * preselected answer; "Skip this question" leaves it unset) shapes the first
  * week: a learner new to audit starts with a lesson, an experienced one with
@@ -43,7 +46,9 @@ import { plantFor } from '../lib/plant';
 import { selectCert, useProgress } from '../store/progress';
 import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS } from '../content/certifications';
-import { dateInMonths, EXAM_DATE_PRESETS } from '../engine/examDay';
+import { dateInMonths, EXAM_DATE_PRESETS, presetIndexFor } from '../engine/examDay';
+import { CalendarSheet, chosenLine } from '../components/calendar';
+import { dayKey } from '../engine/streak';
 import { useKeyboardShown } from '../lib/useKeyboardShown';
 import { useRestoreFlow } from '../lib/useRestoreFlow';
 import { useSettings } from '../store/settings';
@@ -51,7 +56,8 @@ import { DEFAULT_MINUTES, type DailyMinutes, type Familiarity } from '../engine/
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
-// Exam date presets (shared with Settings) avoid a native date-picker dependency.
+// Exam date presets (shared with Settings and the calendar). The calendar is
+// pure React Native: no native date-picker dependency.
 const PRESETS = EXAM_DATE_PRESETS;
 
 export default function Onboarding() {
@@ -69,7 +75,12 @@ export default function Onboarding() {
   // The keyboard and the sticky footer never cover the name field (UX review H2).
   const typing = useKeyboardShown();
   const [certId, setCertId] = useState('cisa');
-  const [preset, setPreset] = useState<number>(3);
+  // Step 3: the exam date ("YYYY-MM-DD"), none to start ("Not sure yet").
+  // A quick choice or the calendar ("Pick the exact date") sets it.
+  const [now] = useState(() => Date.now());
+  const [examDate, setExamDate] = useState<string | undefined>(undefined);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const preset = presetIndexFor(examDate, now);
   const [footerH, setFooterH] = useState(120);
   // Restore from a backup (shared with Settings → Your data). Success
   // finishes onboarding and goes straight to Today.
@@ -145,8 +156,7 @@ export default function Onboarding() {
 
   // Finish onboarding with the chosen exam, date and fit; then plant (or not).
   const finish = (plant: boolean) => {
-    const m = PRESETS[preset].months;
-    complete(certId, m ? dateInMonths(m, Date.now()) : undefined, { familiarity, dailyMinutes: minutes });
+    complete(certId, examDate, { familiarity, dailyMinutes: minutes });
     if (plant) {
       // Mobile 1.14 (M8): plant now (onboarding is already done, so closing
       // the app here loses nothing), then a short planting moment (step 4):
@@ -250,9 +260,19 @@ export default function Onboarding() {
         {/* No label on this wrapper: a View without a role never speaks it (UX review O7). The header names the group. */}
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
           {PRESETS.map((p, i) => (
-            <Chip key={p.label} label={p.label} selected={preset === i} onPress={() => setPreset(i)} />
+            <Chip key={p.label} label={p.label} selected={preset === i} onPress={() => setExamDate(p.months ? dateInMonths(p.months, now) : undefined)} />
           ))}
         </View>
+        {/* The exact day, for a learner who has booked: the same calendar as Settings. */}
+        <Button
+          kind="ghost"
+          label="Pick the exact date"
+          accessibilityHint="Opens a calendar"
+          onPress={() => setCalendarOpen(true)}
+          style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
+        />
+        {/* A date no quick choice gives: say which one, so the choice is never invisible. */}
+        {examDate && preset < 0 ? <T v="meta" color={c.ink}>{chosenLine(examDate, dayKey(now))}</T> : null}
         {/* Daily time: the plan is sized to it (mobile 1.15). A second group on the same step, never a second screen. */}
         <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Daily time</T>
         <T v="headline" accessibilityRole="header" style={{ marginTop: space.sm }}>How long can you study most days?</T>
@@ -344,6 +364,16 @@ export default function Onboarding() {
           )}
         </StickyFooter>
       )}
+      <CalendarSheet
+        visible={calendarOpen}
+        value={examDate}
+        now={now}
+        onClose={() => setCalendarOpen(false)}
+        onSave={(d) => {
+          setExamDate(d);
+          setCalendarOpen(false);
+        }}
+      />
       <RestorePreview ready={restore.ready} busy={restore.busy === 'restore'} onConfirm={restore.confirm} onCancel={restore.cancel} />
     </SafeAreaView>
   );

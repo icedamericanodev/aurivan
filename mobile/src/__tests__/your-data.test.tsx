@@ -144,7 +144,8 @@ describe('Settings → Your data', () => {
   it('every action is a labelled button with a hint', () => {
     render();
     for (const label of ['Save a backup', 'Restore from a backup']) {
-      const b = button(label);
+      // Mobile 1.17: rows in the Your data group; the pressable itself carries the role.
+      const b = root().findAll((n) => n.props.accessibilityLabel === label && n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function')[0];
       expect(b.props.accessibilityRole).toBe('button');
       expect(b.props.accessibilityHint).toBeTruthy();
     }

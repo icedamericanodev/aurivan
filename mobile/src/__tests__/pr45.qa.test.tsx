@@ -487,6 +487,7 @@ describe('J3 an existing 1.14 learner upgrades', () => {
     unmount();
     // A later change in Settings never brings it back.
     mount(<Settings />);
+    press(/^Daily time, /); // mobile 1.17: the row opens its sheet
     press(/^30 minutes a day$/);
     unmount();
     mount(<Today />);
@@ -556,7 +557,9 @@ describe('J4 Settings → Your study changes the next plan', () => {
       });
     });
     mount(<Settings />);
+    press(/^Daily time, /);
     press(/^10 minutes a day$/);
+    press(/^Starting point, /);
     press(/^New to audit/);
     expect(allText()).toContain('Today’s plan stays as it is. Tomorrow’s will fit.');
     expect(storedPlan().budget).toBe(20);
@@ -582,6 +585,7 @@ describe('J4 Settings → Your study changes the next plan', () => {
       useProgress.setState((s) => ({ days: { ...s.days, cisa: { ...s.days.cisa!, answered: 3, correct: 2, minutes: 4 } } }));
     });
     mount(<Settings />);
+    press(/^Daily time, /);
     press(/^10 minutes a day$/);
     expect(storedPlan()).toMatchObject({ budget: 10, answered: 3, correct: 2, minutes: 4 });
     expect(storedPlan().items).toEqual([{ kind: 'practice', count: 8, label: 'Starting check: 8 mixed questions', why: 'check' }]);
