@@ -136,21 +136,24 @@ export function dueIds(review: Record<string, ReviewEntry>, now: number, exists:
 // and a sort over the whole queue) after every answer. The count can only
 // change when the queue changes (a new object: it is never mutated) or the
 // clock passes the next review's due time, so it is shared until then.
-const dueCounts = new WeakMap<Record<string, ReviewEntry>, Map<string, { at: number; next: number; count: number }>>();
+const dueCounts = new WeakMap<Record<string, ReviewEntry>, WeakMap<(id: string) => boolean, { at: number; next: number; count: number }>>();
+/** The default `exists`: every question counts. One function, so its counts are shared too. */
+const everyQuestion = () => true;
 
 /**
- * dueIds(review, now, exists).length, shared: the same queue object and
- * `scope` (the certification, whose bank decides `exists`) reuse the count
- * while no review falls due between the time it was counted and `now`.
- * Exactly the same number as counting again.
+ * dueIds(review, now, exists).length, shared: the same queue object and the
+ * same `exists` function (by identity: lib/outline.ts questionExists gives
+ * one per certification) reuse the count while no review falls due between
+ * the time it was counted and `now`. Exactly the same number as counting
+ * again; a different `exists` is never given another one's count.
  */
-export function dueCountFor(review: Record<string, ReviewEntry>, now: number, scope: string, exists: (id: string) => boolean = () => true): number {
-  let byScope = dueCounts.get(review);
-  if (!byScope) {
-    byScope = new Map();
-    dueCounts.set(review, byScope);
+export function dueCountFor(review: Record<string, ReviewEntry>, now: number, exists: (id: string) => boolean = everyQuestion): number {
+  let byRule = dueCounts.get(review);
+  if (!byRule) {
+    byRule = new WeakMap();
+    dueCounts.set(review, byRule);
   }
-  const hit = byScope.get(scope);
+  const hit = byRule.get(exists);
   if (hit && now >= hit.at && now < hit.next) return hit.count;
   let count = 0;
   let next = Infinity;
@@ -160,6 +163,6 @@ export function dueCountFor(review: Record<string, ReviewEntry>, now: number, sc
       if (exists(id)) count++;
     } else if (due < next) next = due;
   }
-  byScope.set(scope, { at: now, next, count });
+  byRule.set(exists, { at: now, next, count });
   return count;
 }

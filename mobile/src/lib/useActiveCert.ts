@@ -49,7 +49,7 @@ export function useActiveCert() {
     // Only questions the bank still has: a review session drops retired ones, so they are never counted.
     // Shared with the other tabs (engine/srs.ts dueCountFor): counted once until the queue or a due time changes.
     // eslint-disable-next-line react-hooks/purity -- see the comment above
-    () => dueCountFor(progress.review, Math.max(now, Date.now()), cert.id, questionExists(cert.id)),
+    () => dueCountFor(progress.review, Math.max(now, Date.now()), questionExists(cert.id)),
     [progress.review, now, cert.id],
   );
   // Same reason: one clock read per render for the streak and today's count.
