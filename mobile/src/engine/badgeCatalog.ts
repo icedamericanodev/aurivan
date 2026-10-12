@@ -141,10 +141,9 @@ export interface SetInfo {
 
 const NUMBER_WORD = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
 
-/** "1.6": minutes per question, one decimal, no trailing ".0". */
+/** "96": the exam's seconds per question (PHASE5 C2: a pace is always in seconds). */
 function perQuestion(exam: ExamFacts): string {
-  const x = Math.round((exam.minutes / exam.questions) * 10) / 10;
-  return String(x);
+  return String(Math.round((exam.minutes * 60) / exam.questions));
 }
 /** "4 hours", "3 hours 30 minutes", "90 minutes". */
 export function examLength(minutes: number): string {
@@ -177,7 +176,7 @@ export function setInfo(id: SetId, exam: ExamFacts, domainCount: number): SetInf
       return {
         id,
         name: 'Exam Day',
-        purpose: `Practise the full sitting: ${exam.questions} questions in ${examLength(exam.minutes)}, about ${perQuestion(exam)} minutes each.`,
+        purpose: `Practise the full sitting: ${exam.questions} questions in ${examLength(exam.minutes)}, about ${perQuestion(exam)} seconds each.`,
         counted,
         counter: true,
       };

@@ -320,7 +320,7 @@ describe('Journey 1 · Results stats', () => {
     expect(timeStat(211 * MIN)).toEqual({ word: '3\u00a0h 31\u00a0min', spoken: '3 hours 31 minutes' });
     expect(timeStat(1440 * MIN)).toEqual({ word: '24\u00a0h', spoken: '24 hours' });
     expect(aboutSeconds(0.2)).toBe('about 1 second');
-    expect(aboutSeconds(150)).toBe('about 2.5 minutes');
+    expect(aboutSeconds(150)).toBe('about 2.5 min');
     // Slow practice (over 2 min a question): mobile 1.15 (C2) keeps both figures in seconds, the exam pace's one unit.
     expect(practicePaceLine([150_000, 150_000, 150_000], cisa.exam)).toBe('About 150 seconds per question. The exam allows about 96 seconds.');
   });

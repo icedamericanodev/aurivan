@@ -64,13 +64,30 @@ export function targetPaceWords(exam: ExamFacts, factor = 1): string {
   return `Aim for about ${Math.round(targetPaceSeconds(exam) * factor)} seconds a question, so there’s time to revisit flagged ones.`;
 }
 
+/** From this many minutes, a time reads in hours ("About 2 h 10 min"). */
+const HOURS_FROM = 120;
+
 /**
  * The one minutes style (PHASE5.md C1): "About 12 min" at the start of a
- * line, "about 12 min" mid-line (`mid`). Screen readers say "min" as
- * "minutes" by themselves. Never fewer than 1.
+ * line, "about 12 min" mid-line (`mid`). Never fewer than 1. Two hours or
+ * more read in hours, like every other duration ("About 4 h" for a paused
+ * full mock; code review M9a); a mini mock stays "About 80 min".
+ * Screen readers: pass the line through `spokenMin`, since TalkBack often
+ * reads "min" as a word (code review M7a).
  */
 export function aboutMin(n: number, mid = false): string {
-  return `${mid ? 'about' : 'About'} ${Math.max(1, Math.round(n))} min`;
+  const total = Math.max(1, Math.round(n));
+  return `${mid ? 'about' : 'About'} ${total >= HOURS_FROM ? durationText(total) : `${total} min`}`;
+}
+
+/**
+ * A line with short units, spoken in full: "About 20 min today" → "About 20
+ * minutes today", "4 h" → "4 hours". Screen readers don't all expand "min".
+ */
+export function spokenMin(line: string): string {
+  return line
+    .replace(/\b(\d+(?:\.\d+)?) h\b/g, (_, n: string) => `${n} hour${n === '1' ? '' : 's'}`)
+    .replace(/\b(\d+(?:\.\d+)?) min\b/g, (_, n: string) => `${n} minute${n === '1' ? '' : 's'}`);
 }
 
 // ── Mock timing options (WCAG 2.2.1; ISACA grants accommodations) ─────────
@@ -315,15 +332,16 @@ export function medianSeconds(ms: readonly (number | undefined)[]): number | nul
 export const PACE_LINE_MIN = 3;
 
 /**
- * "About 74 seconds", or "about 2.5 minutes" past two minutes: one figure a
- * learner reads at a glance (never "median", never a bare "s").
+ * "About 74 seconds", or "about 2.5 min" past two minutes: one figure a
+ * learner reads at a glance (never "median", never a bare "s"; minutes in
+ * the one minutes style, C1). Spoken lines pass through spokenMin.
  */
 export function aboutSeconds(sec: number): string {
   // Round first, then choose the unit, so 119.6 s reads "about 2 minutes", never "about 120 seconds".
   const n = Math.max(1, Math.round(sec));
   if (n < 120) return `about ${n} ${n === 1 ? 'second' : 'seconds'}`;
   const m = Math.round((n / 60) * 10) / 10;
-  return `about ${m} minutes`;
+  return `about ${m} min`;
 }
 
 /**
