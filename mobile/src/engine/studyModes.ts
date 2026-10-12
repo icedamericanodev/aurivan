@@ -15,6 +15,7 @@
  * Pure TypeScript: no React, no storage.
  */
 import type { PackQuestion } from '../content/types';
+import type { Familiarity } from './fit';
 import type { Stage } from './journey';
 import { shuffled, type Rng } from './random';
 
@@ -41,15 +42,17 @@ export function sessionSize(n: number | undefined): SessionSize {
 }
 
 /** The mode the app suggests for a journey stage (behavioural review §3). */
-export function suggestedMode(stage: Stage): StudyMode {
-  if (stage === 'diagnose') return 'random';
+export function suggestedMode(stage: Stage, familiarity?: Familiarity): StudyMode {
+  // Mobile 1.15: a learner new to audit starts topic by topic (learn it,
+  // then practise it): worked examples first, not a random mix.
+  if (stage === 'diagnose') return familiarity === 'new' ? 'guided' : 'random';
   if (stage === 'learn') return 'guided';
   return 'smart';
 }
 
 /** The mode to use: the learner's saved choice wins; otherwise the stage's suggestion. */
-export function activeMode(saved: StudyMode | undefined, stage: Stage): StudyMode {
-  return saved && STUDY_MODES.includes(saved) ? saved : suggestedMode(stage);
+export function activeMode(saved: StudyMode | undefined, stage: Stage, familiarity?: Familiarity): StudyMode {
+  return saved && STUDY_MODES.includes(saved) ? saved : suggestedMode(stage, familiarity);
 }
 
 /** The scope key a resumable path is saved under: a domain id, or "all". */

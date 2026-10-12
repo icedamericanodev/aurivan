@@ -72,10 +72,11 @@ describe('game registry', () => {
 
 describe('renames reach every touch-point', () => {
   it("Today's planner labels a game with its registry name and length", () => {
-    const plan = todaysPlan({ stage: 'practice', dueReviews: 0, dailyGoal: 20, daysLeft: 40, examQuestions: 150 });
+    // A 45-minute day has room for the game after the practice set.
+    const plan = todaysPlan({ stage: 'practice', dueReviews: 0, dailyMinutes: 45, daysLeft: 40, examQuestions: 150 });
     const game = plan.find((p) => p.kind === 'game');
     expect(game).toEqual({ kind: 'game', gameId: 'trap', label: `Snare Spotter · ${GAMES.trap.minutes} min` });
-    const ready = todaysPlan({ stage: 'ready', dueReviews: 0, dailyGoal: 20, daysLeft: 40, examQuestions: 150 });
+    const ready = todaysPlan({ stage: 'ready', dueReviews: 0, dailyMinutes: 45, daysLeft: 40, examQuestions: 150 });
     expect(ready[0]).toMatchObject({ gameId: 'sprint', label: expect.stringContaining('Forecast') });
   });
 
@@ -89,7 +90,7 @@ describe('renames reach every touch-point', () => {
   });
 
   it('Today never plans a game this exam cannot play', () => {
-    const base = { dueReviews: 0, dailyGoal: 20, daysLeft: 40, examQuestions: 150 };
+    const base = { dueReviews: 0, dailyMinutes: 45, daysLeft: 40, examQuestions: 150 };
     for (const stage of ['practice', 'ready', 'examDay'] as const) {
       const none = todaysPlan({ ...base, stage, playable: () => false });
       expect(none.some((p) => p.kind === 'game')).toBe(false);

@@ -19,7 +19,8 @@ import { identityPermutation, makePermutation, type Permutation } from '../engin
 import { dueIds, REVIEW_CAP_LINE, REVIEW_SESSION_CAP } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession, type ActiveSession, type SessionMode } from '../store/session';
-import { useSettings } from '../store/settings';
+import { dailyMinutesOf, useSettings } from '../store/settings';
+import { questionsFor } from '../engine/fit';
 import { finishSession } from './finishSession';
 
 /**
@@ -118,7 +119,8 @@ export function startStudy(certId: string, opts: { mode: Exclude<StudyMode, 'gui
       domainWeights: weights,
       subtopicOf: certOutline(certId).subtopicOf,
       count: opts.count,
-      dailyGoal: useSettings.getState().dailyGoal,
+      // Questions a day, from the minutes the learner set (mobile 1.15).
+      dailyGoal: questionsFor(dailyMinutesOf(useSettings.getState())),
       now,
       rng,
     });

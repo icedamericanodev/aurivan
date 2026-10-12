@@ -142,9 +142,10 @@ describe('exam eve and exam day dates', () => {
   });
 
   it('pacing comes from the certification config, not a hard-coded number', () => {
-    expect(paceLine(cisa.exam)).toBe('150 questions in 4 hours: about 1.5 minutes each.');
-    expect(paceLine({ questions: 90, minutes: 150 })).toBe('90 questions in 2 h 30 min: about 1.5 minutes each.');
-    expect(paceLine({ questions: 60, minutes: 60 })).toBe('60 questions in 1 hour: about 1 minute each.');
+    // Mobile 1.15 (C2): seconds, like every other pace in the app (it said "about 1.5 minutes", which is not 96 s).
+    expect(paceLine(cisa.exam)).toBe('150 questions in 4 hours: about 96 seconds each.');
+    expect(paceLine({ questions: 90, minutes: 150 })).toBe('90 questions in 2 h 30 min: about 100 seconds each.');
+    expect(paceLine({ questions: 60, minutes: 60 })).toBe('60 questions in 1 hour: about 60 seconds each.');
   });
 });
 

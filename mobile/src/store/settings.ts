@@ -4,6 +4,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { DEFAULT_CERT_ID } from '../content/certifications';
+import { goalFromMinutes, minutesFromGoal, type DailyMinutes, type Familiarity, type FitPrompt } from '../engine/fit';
 import { DEFAULT_REMINDER, type ReminderPrefs } from '../engine/reminders';
 import { SETTINGS_VERSION } from '../engine/saveMigrations';
 import type { StudyMode } from '../engine/studyModes';
@@ -25,7 +26,12 @@ interface SettingsState {
   /** Older saves have no key: persist merges the default ('system') in. */
   motion: MotionPref;
   shuffleOptions: boolean;
-  dailyGoal: number; // questions per day
+  /**
+   * Questions per day (Settings before 1.15). Still written whenever the
+   * minutes change (fit.ts goalFromMinutes), so an older app that restores a
+   * 1.15 backup plans a sensible day. Nothing on screen sets it any more.
+   */
+  dailyGoal: number;
   /** `days` is optional: saves from before day chips have none, which means every day. */
   reminder: ReminderPrefs;
   /** Gentle vibrations on select, submit and milestones. On by default. */
@@ -61,8 +67,34 @@ interface SettingsState {
    * quietly, and switching back on shows one summary line. Off by default.
    */
   badgesHidden: boolean;
+  /**
+   * Mobile 1.15, "Fit the plan to each learner" (engine/fit.ts). All optional:
+   * saves and backups from 1.14 and before have none of them.
+   * - familiarity: where the learner is starting from. Unset = not asked or
+   *   skipped; it plans like 'some'.
+   * - dailyMinutes: minutes most days. Unset = from the old daily goal
+   *   (dailyMinutesOf: 10 → 10, 20 → 20, 40 → 45).
+   * - examFocused: the learner's own choice. Unset = on for 'experienced'.
+   * - fitPrompt: the one "Fit your plan" card on Today was answered or
+   *   dismissed. Onboarding sets 'answered' (a new learner already chose).
+   * - fitChanges: how often the answers were changed later. A local count
+   *   for the beta's "were the defaults wrong?" check; never sent anywhere.
+   */
+  familiarity?: Familiarity;
+  dailyMinutes?: DailyMinutes;
+  examFocused?: boolean;
+  fitPrompt?: FitPrompt;
+  fitChanges?: number;
 
-  completeOnboarding: (certId: string, examDate?: string) => void;
+  completeOnboarding: (certId: string, examDate?: string, fit?: { familiarity?: Familiarity; dailyMinutes: DailyMinutes }) => void;
+  /**
+   * Change the fit (Settings → Your study, the fit screen). `null` clears a
+   * key: familiarity back to "not said", examFocused back to "follow
+   * familiarity". It also marks the Today card answered.
+   */
+  setFit: (p: { familiarity?: Familiarity | null; dailyMinutes?: DailyMinutes; examFocused?: boolean | null }) => void;
+  /** "Not now" on the Today card: it never shows again (Settings keeps the controls). */
+  dismissFitPrompt: () => void;
   setActiveCert: (certId: string) => void;
   setExamDate: (certId: string, date?: string) => void;
   setTheme: (t: ThemePref) => void;
@@ -104,12 +136,31 @@ export const useSettings = create<SettingsState>()(
       // Older saves have no key: persist merges this default in (badges shown).
       badgesHidden: false,
 
-      completeOnboarding: (certId, examDate) =>
+      completeOnboarding: (certId, examDate, fit) =>
         set((s) => ({
           onboarded: true,
           activeCertId: certId,
           examDates: { ...s.examDates, [certId]: examDate },
+          // A new learner has chosen already (even with familiarity skipped): no Today card later.
+          ...(fit
+            ? { familiarity: fit.familiarity, dailyMinutes: fit.dailyMinutes, dailyGoal: goalFromMinutes(fit.dailyMinutes), fitPrompt: 'answered' as const }
+            : {}),
         })),
+      setFit: (p) =>
+        set((s) => {
+          const next: Partial<SettingsState> = {};
+          if (p.familiarity !== undefined) next.familiarity = p.familiarity ?? undefined;
+          if (p.examFocused !== undefined) next.examFocused = p.examFocused ?? undefined;
+          if (p.dailyMinutes !== undefined) {
+            next.dailyMinutes = p.dailyMinutes;
+            next.dailyGoal = goalFromMinutes(p.dailyMinutes);
+          }
+          const changed = (Object.keys(next) as (keyof SettingsState)[]).some((k) => k !== 'dailyGoal' && next[k] !== s[k]);
+          if (!changed) return s;
+          // A change AFTER the first answer is the "change-away" count (PHASE5.md §4 guard rail).
+          return { ...next, fitPrompt: 'answered', ...(s.fitPrompt === 'answered' ? { fitChanges: (s.fitChanges ?? 0) + 1 } : {}) };
+        }),
+      dismissFitPrompt: () => set((s) => (s.fitPrompt ? s : { fitPrompt: 'dismissed' })),
       setActiveCert: (certId) => set({ activeCertId: certId }),
       setExamDate: (certId, date) =>
         set((s) => ({ examDates: { ...s.examDates, [certId]: date } })),
@@ -135,3 +186,11 @@ export const useSettings = create<SettingsState>()(
     { name: 'aurivan.settings.v1', storage: persistStorage, version: SETTINGS_VERSION },
   ),
 );
+
+/** Minutes most days: the learner's choice, or (older saves) the old daily goal converted. */
+export function dailyMinutesOf(s: Pick<SettingsState, 'dailyMinutes' | 'dailyGoal'>): DailyMinutes {
+  return s.dailyMinutes ?? minutesFromGoal(s.dailyGoal);
+}
+
+/** The learner's minutes most days, live. */
+export const useDailyMinutes = () => useSettings(dailyMinutesOf);

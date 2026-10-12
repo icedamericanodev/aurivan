@@ -13,6 +13,7 @@
  *
  * Pure TypeScript: no React, no storage.
  */
+import { examPaceSeconds } from './pace';
 import { PATTERN_ORDER, patternsOf, type SlipInput, type SlipPattern } from './slipCoach';
 import { dayKey, daysBetween } from './streak';
 
@@ -81,27 +82,27 @@ export function examMoment(
 
 /**
  * The pacing line, from the certification's exam facts (never hard-coded):
- * CISA 150 questions / 240 minutes → "150 questions in 4 hours: about 1.5
- * minutes each." Minutes per question round to the nearest half minute.
+ * CISA 150 questions / 240 minutes → "150 questions in 4 hours: about 96
+ * seconds each." Seconds, like every other pace in the app (mobile 1.15,
+ * PHASE5.md C2): it used to say "about 1.5 minutes", which is neither 96 s
+ * nor what Practice and the mock sheet say.
  */
 export function paceLine(exam: { questions: number; minutes: number }): string {
-  const per = Math.max(0.5, Math.round((exam.minutes / exam.questions) * 2) / 2);
   const h = Math.floor(exam.minutes / 60);
   const m = exam.minutes % 60;
   const hours = h === 0 ? `${m} minutes` : m === 0 ? `${h} hour${h === 1 ? '' : 's'}` : `${h} h ${m} min`;
-  const perText = per === 1 ? '1 minute' : `${per} minutes`;
-  return `${exam.questions} questions in ${hours}: about ${perText} each.`;
+  return `${exam.questions} questions in ${hours}: about ${Math.round(examPaceSeconds(exam))} seconds each.`;
 }
 
 /** Gentle exam-eve wording for each slip ("knowledge" is left out: no cramming tonight). */
 export const EVE_REMINDER: Record<Exclude<SlipPattern, 'knowledge'>, string> = {
   'runner-up': 'When two options look right, say why the best one wins.',
   priority: 'Find the FIRST or BEST word before you read the options.',
-  overconfident: 'Give a sure answer one more read of the stem.',
+  overconfident: 'Give a sure answer one more read of the question.',
   role: 'Ask who you are in the question before you answer.',
   'tech-first': 'Policy, ownership and approval come before tools.',
   symptom: 'Prefer the option that fixes the root cause.',
-  misread: 'Slow down on the last line of each stem.',
+  misread: 'Slow down on the last line of each question.',
 };
 
 /** Shown when the learner has no slips on record yet (calm, general advice). */

@@ -8,7 +8,12 @@
  * - the mock pacing panel, and pacing stats that leave untimed mocks out.
  */
 import { getCertification } from '../content/certifications';
+import { paceLine } from '../engine/examDay';
 import {
+  aboutMin,
+  examPaceWords,
+  targetPaceWords,
+  TIMING_FACTOR,
   CHECKPOINTS,
   coachingTag,
   COACHING,
@@ -102,7 +107,7 @@ describe('pace verdict', () => {
   it('ahead: more than 10% faster', () => {
     const v = paceVerdict(60 * 60, 46, 90); // 69 min of work in 60
     expect(v.status).toBe('ahead');
-    expect(paceMessage(v)).toBe('Ahead. Use the time to re-read the stems.');
+    expect(paceMessage(v)).toBe('Ahead. Use the time to re-read the questions.');
     expect(paceMessage(paceVerdict(3600, 40, 90))).toBe('On pace');
   });
 
@@ -207,15 +212,15 @@ describe('practice results line and coaching tags', () => {
     expect(practicePaceLine([60 * S, 80 * S], CISA)).toBeNull();
     expect(practicePaceLine([5 * S], CISA)).toBeNull();
     expect(practicePaceLine([undefined, undefined, undefined], CISA)).toBeNull();
-    // Past two minutes it says minutes, both figures in the same unit.
-    expect(practicePaceLine([150 * S, 160 * S, 170 * S], CISA)).toBe('About 2.7 minutes per question. The exam allows about 1.6 minutes.');
+    // Mobile 1.15 (C2): seconds even past two minutes, so the exam pace reads one way everywhere.
+    expect(practicePaceLine([150 * S, 160 * S, 170 * S], CISA)).toBe('About 160 seconds per question. The exam allows about 96 seconds.');
   });
 
   it('fast and wrong: under 30 s and wrong', () => {
     expect(coachingTag(false, 29 * S)).toBe('fast-wrong');
     expect(coachingTag(false, 30 * S)).toBeNull();
     expect(coachingTag(true, 10 * S)).toBeNull(); // fast and RIGHT is fine
-    expect(COACHING['fast-wrong']).toEqual({ tag: 'Quick pick', line: 'Slow down on the stem.' });
+    expect(COACHING['fast-wrong']).toEqual({ tag: 'Quick pick', line: 'Slow down on the question.' });
   });
 
   it('slow and right: over 3 minutes and right', () => {
@@ -370,3 +375,30 @@ describe('review fixes: spoken and short forms', () => {
   });
 });
 
+describe('the two paces in words, one way everywhere (mobile 1.15, PHASE5.md C1–C2)', () => {
+  const aaia = getCertification('aaia')!.exam;
+  it('exam pace: "The exam allows about 96 seconds a question." (CISA), from the exam facts', () => {
+    expect(examPaceWords(CISA)).toBe('The exam allows about 96 seconds a question.');
+    // AAIA: 150 minutes for 90 questions = 100 s.
+    expect(examPaceWords(aaia)).toBe('The exam allows about 100 seconds a question.');
+  });
+  it('target pace: "Aim for about 90 seconds a question…", stretched for extra time', () => {
+    expect(targetPaceWords(CISA)).toBe('Aim for about 90 seconds a question, so there’s time to revisit flagged ones.');
+    expect(targetPaceWords(CISA, TIMING_FACTOR.plus25)).toBe('Aim for about 113 seconds a question, so there’s time to revisit flagged ones.');
+    // AAIA keeps 15 minutes back too: (150 − 15) × 60 / 90 = 90.
+    expect(targetPaceWords(aaia)).toMatch(/^Aim for about 90 seconds a question/);
+  });
+  it('the exam-eve card says the same pace in seconds', () => {
+    expect(paceLine(CISA)).toBe('150 questions in 4 hours: about 96 seconds each.');
+  });
+  it('aboutMin: "About 12 min" first in a line, "about 6 min" mid-line, never under 1', () => {
+    expect(aboutMin(12)).toBe('About 12 min');
+    expect(aboutMin(6, true)).toBe('about 6 min');
+    expect(aboutMin(0.2)).toBe('About 1 min');
+    expect(aboutMin(19.2)).toBe('About 19 min');
+  });
+  it('no bare "s" for seconds in any pace sentence', () => {
+    for (const line of [examPaceWords(CISA), targetPaceWords(CISA), paceLine(CISA), practicePaceLine([70 * S, 74 * S, 90 * S], CISA)!])
+      expect(line).not.toMatch(/\d s\b/);
+  });
+});

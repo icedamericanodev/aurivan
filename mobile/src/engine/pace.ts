@@ -47,6 +47,32 @@ export function targetPaceSeconds(exam: ExamFacts): number {
   return ((exam.minutes - reserve) * 60) / exam.questions;
 }
 
+// ── The two paces in words (mobile 1.15, PHASE5.md C2) ───────────────────
+// Always seconds, always the same two named facts, so Practice, the mock
+// start sheet and the exam-eve card never disagree ("96 s", "1.5 minutes"…).
+
+/** "The exam allows about 96 seconds a question." */
+export function examPaceWords(exam: ExamFacts): string {
+  return `The exam allows about ${Math.round(examPaceSeconds(exam))} seconds a question.`;
+}
+
+/**
+ * "Aim for about 90 seconds a question, so there's time to revisit flagged
+ * ones." `factor` stretches it for extra time (+25% → about 112 seconds).
+ */
+export function targetPaceWords(exam: ExamFacts, factor = 1): string {
+  return `Aim for about ${Math.round(targetPaceSeconds(exam) * factor)} seconds a question, so there’s time to revisit flagged ones.`;
+}
+
+/**
+ * The one minutes style (PHASE5.md C1): "About 12 min" at the start of a
+ * line, "about 12 min" mid-line (`mid`). Screen readers say "min" as
+ * "minutes" by themselves. Never fewer than 1.
+ */
+export function aboutMin(n: number, mid = false): string {
+  return `${mid ? 'about' : 'About'} ${Math.max(1, Math.round(n))} min`;
+}
+
 // ── Mock timing options (WCAG 2.2.1; ISACA grants accommodations) ─────────
 
 /** Standard time, +25%, +50%, or no clock at all. */
@@ -144,7 +170,7 @@ export function paceVerdict(elapsedSec: number, done: number, targetSec: number)
 /** The words for a verdict. Calm, and always a next step. */
 export function paceMessage(v: Pick<PaceVerdict, 'status' | 'minutes'>): string {
   if (v.status === 'behind') return `About ${v.minutes} min behind. Flag anything past 2 minutes and move on.`;
-  if (v.status === 'ahead') return 'Ahead. Use the time to re-read the stems.';
+  if (v.status === 'ahead') return 'Ahead. Use the time to re-read the questions.';
   return 'On pace';
 }
 
@@ -303,21 +329,17 @@ export function aboutSeconds(sec: number): string {
 /**
  * The one plain sentence under a practice session's stats (from the Build C
  * answer times): "About 74 seconds per question. The exam allows about 96
- * seconds." Both figures carry their unit, the same unit. It reads the
- * typical (median) time, so one long pause doesn't skew it. null when fewer
- * than PACE_LINE_MIN answers have a time (a 1-question session, or one saved
- * before Build C): there is nothing useful to say.
+ * seconds." Both figures in seconds, always (mobile 1.15, PHASE5.md C2: the
+ * exam pace is said one way everywhere), so the two compare at a glance. It
+ * reads the typical (median) time, so one long pause doesn't skew it. null
+ * when fewer than PACE_LINE_MIN answers have a time (a 1-question session, or
+ * one saved before Build C): there is nothing useful to say.
  */
 export function practicePaceLine(ms: readonly (number | undefined)[], exam: ExamFacts): string | null {
   const times = cleanMs(ms);
   if (times.length < PACE_LINE_MIN) return null;
-  const med = median(times)! / 1000;
-  const pace = examPaceSeconds(exam);
-  // Both in the same unit (the learner's decides it), so the two compare at a glance.
-  const own = aboutSeconds(med);
-  const minutes = own.endsWith('minutes');
-  const exams = minutes ? `about ${Math.round((pace / 60) * 10) / 10} minutes` : `about ${Math.round(pace)} seconds`;
-  return `${own[0].toUpperCase()}${own.slice(1)} per question. The exam allows ${exams}.`;
+  const own = Math.max(1, Math.round(median(times)! / 1000));
+  return `About ${own} ${own === 1 ? 'second' : 'seconds'} per question. The exam allows about ${Math.round(examPaceSeconds(exam))} seconds.`;
 }
 
 /** Under this, a time reads "Under 1 min" (never "1 min" for 5 seconds, never "0 min"). */
@@ -385,7 +407,7 @@ export type CoachingTag = 'fast-wrong' | 'slow-right';
 
 /** Coaching, not penalties: what each tag says on Results. */
 export const COACHING: Record<CoachingTag, { tag: string; line: string }> = {
-  'fast-wrong': { tag: 'Quick pick', line: 'Slow down on the stem.' },
+  'fast-wrong': { tag: 'Quick pick', line: 'Slow down on the question.' },
   'slow-right': { tag: 'Took its time', line: 'You knew it; trust the first pass.' },
 };
 

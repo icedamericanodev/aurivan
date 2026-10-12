@@ -267,9 +267,28 @@ describe('export: every state the phone can hold reads back', () => {
         reports: randomReports(seed),
         plantSettings: seed % 3 === 0 ? undefined : { showPlant: seed % 2 === 0, quietLook: seed % 5 === 0, ...(seed % 7 === 0 ? { promptHidden: true } : {}) },
       });
-      useSettings.setState({ badgesHidden: seed % 2 === 0 });
+      // Mobile 1.15: the fit, from none (an older save) to every key, odd counts included.
+      const fams = [undefined, 'new', 'some', 'experienced'] as const;
+      useSettings.setState({
+        badgesHidden: seed % 2 === 0,
+        familiarity: fams[seed % 4],
+        dailyMinutes: seed % 5 === 0 ? undefined : ([10, 20, 30, 45] as const)[seed % 4],
+        examFocused: seed % 3 === 0 ? undefined : seed % 2 === 0,
+        fitPrompt: seed % 6 === 0 ? undefined : seed % 2 ? 'answered' : 'dismissed',
+        fitChanges: seed % 7 === 0 ? undefined : seed * 97,
+      });
       const read = restorable();
       if (read.kind !== 'ok') throw new Error(`seed ${seed}: ${read.code}`);
+      // The fit survives exactly (a count past the cap is clamped, never refused).
+      const st = useSettings.getState();
+      const fit = read.data.settings;
+      expect([fit.familiarity, fit.dailyMinutes, fit.examFocused, fit.fitPrompt, fit.fitChanges]).toEqual([
+        st.familiarity,
+        st.dailyMinutes,
+        st.examFocused,
+        st.fitPrompt,
+        st.fitChanges === undefined ? undefined : Math.min(9999, st.fitChanges),
+      ]);
       // The plant survives (repaired and clamped to the data), never dropped or invented.
       const back = read.data.progress.byCert.cisa.plant;
       expect(Boolean(back)).toBe(Boolean(plant));

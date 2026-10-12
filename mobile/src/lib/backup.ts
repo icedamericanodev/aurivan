@@ -55,7 +55,7 @@ import { carryPlantIdentity, plantSubtopics } from './plant';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from './reminders';
 
 // ── The data in each store (no actions) ──────────────────────────────────
-const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'motion', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize', 'badgesHidden'] as const;
+const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'motion', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize', 'badgesHidden', 'familiarity', 'dailyMinutes', 'examFocused', 'fitPrompt', 'fitChanges'] as const;
 const PROGRESS_KEYS = ['byCert', 'streak', 'today', 'days', 'reports', 'plantSettings'] as const;
 
 type SettingsData = Pick<ReturnType<typeof useSettings.getState>, (typeof SETTINGS_KEYS)[number]>;

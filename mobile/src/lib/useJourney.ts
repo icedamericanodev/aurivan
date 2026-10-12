@@ -10,7 +10,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { AppState } from 'react-native';
 import { getDomain } from '../content/certifications';
 import type { Certification } from '../content/types';
-import { lessonsFor, nextLesson } from '../content/lessons';
+import { lessonsFor } from '../content/lessons';
+import { examFocusedOf, planLesson, skippableDomains, type Familiarity } from '../engine/fit';
 import { newDayPlan } from '../engine/dayPlan';
 import { canPlay } from './games';
 import { journeyStage, STAGE_LABEL, stageProgress } from '../engine/journey';
@@ -19,7 +20,7 @@ import { readinessRange } from '../engine/readinessRange';
 import { todaysPlan } from '../engine/planner';
 import { dayKey, weekStrip, type Streak } from '../engine/streak';
 import { useProgress, type CertProgress } from '../store/progress';
-import { useSettings } from '../store/settings';
+import { useDailyMinutes, useSettings } from '../store/settings';
 import { useActiveCert } from './useActiveCert';
 
 export interface JourneyInput {
@@ -28,7 +29,11 @@ export interface JourneyInput {
   readiness: Readiness;
   dueCount: number;
   daysLeft: number | null;
-  dailyGoal: number;
+  /** Minutes most days (store/settings.ts dailyMinutesOf). */
+  dailyMinutes: number;
+  /** Mobile 1.15: where the learner is starting from, and their Exam-focused choice (both optional). */
+  familiarity?: Familiarity;
+  examFocused?: boolean;
   streak: Streak;
   /** A moment inside "today", used for the week strip. */
   now: number;
@@ -36,9 +41,10 @@ export interface JourneyInput {
 
 /** Stage, plan and coach lines from progress. Pure: same input, same output. */
 export function buildJourney(i: JourneyInput) {
-  const { cert, progress, readiness, dueCount, daysLeft, dailyGoal } = i;
+  const { cert, progress, readiness, dueCount, daysLeft, dailyMinutes, familiarity } = i;
   const lessons = lessonsFor(cert.id);
   const answeredTotal = readiness.domains.reduce((n, d) => n + d.answered, 0);
+  const focused = examFocusedOf(i);
   const stage = journeyStage({
     readiness,
     answeredTotal,
@@ -46,23 +52,50 @@ export function buildJourney(i: JourneyInput) {
     lessonsAvailable: lessons.length,
     mocksTaken: progress.mocks.length,
     daysLeft,
+    examFocused: focused,
   });
   const focus = readiness.focusDomainId ? getDomain(cert, readiness.focusDomainId) : undefined;
-  const upNext = nextLesson(cert.id, progress.lessonsDone, focus?.id);
+  // The lesson Learn suggests next (the focus domain's first).
+  const upNext = planLesson(lessons, progress.lessonsDone, { preferDomainId: focus?.id });
+  // The lesson the PLAN offers: a new learner's starting check is replaced
+  // by lessons in teaching order; others skip domains they already know
+  // (≥ 5 answers at ≥ 80%, engine/fit.ts). Lessons stay open in Learn.
+  const planned = planLesson(lessons, progress.lessonsDone, {
+    preferDomainId: focus?.id,
+    inOrder: familiarity === 'new' && stage === 'diagnose',
+    skip: skippableDomains(familiarity, readiness.domains),
+  });
+  const plannedDomain = planned ? getDomain(cert, planned.domainId) : undefined;
+  // The newest mock first (store/progress.ts recordMock keeps newest first).
+  const lastMockAt = progress.mocks.reduce<number | null>((t, m) => (t === null || m.finishedAt > t ? m.finishedAt : t), null);
+  const lastFullMockAt = progress.mocks
+    .filter((m) => m.total === cert.exam.questions)
+    .reduce<number | null>((t, m) => (t === null || m.finishedAt > t ? m.finishedAt : t), null);
   const plan = todaysPlan({
     stage,
     dueReviews: dueCount,
-    dailyGoal,
+    dailyMinutes,
+    familiarity,
+    examFocused: i.examFocused,
+    answered: answeredTotal,
     focusDomain: focus ? { id: focus.id, short: focus.short } : undefined,
-    nextLesson: upNext ? { id: upNext.id, title: upNext.title } : undefined,
+    nextLesson: planned
+      ? { id: planned.id, title: planned.title, minutes: planned.minutes, domainId: planned.domainId, domainShort: plannedDomain?.short }
+      : undefined,
+    lastMockAt,
+    lastFullMockAt,
+    now: i.now,
     daysLeft,
     examQuestions: cert.exam.questions,
+    examMinutes: cert.exam.minutes,
     // Today never plans a game this certification can't play (registry minPool).
     playable: (id) => canPlay(cert.id, id),
   });
   return {
     stage,
     stageLabel: STAGE_LABEL[stage],
+    /** The Exam-focused plan is on (an explicit choice, or experienced by default). */
+    examFocused: focused,
     /**
      * "Make it stick": the italic coach line under readiness. No number since
      * mobile 1.13: the plant beside it already counts "growth 4 of 6", and two
@@ -72,6 +105,8 @@ export function buildJourney(i: JourneyInput) {
     range: readinessRange(cert, readiness),
     stageProgress: stageProgress(stage),
     plan,
+    /** The minutes the plan was sized for (saved with the day's plan). */
+    budget: dailyMinutes,
     focus,
     upNext,
     answeredTotal,
@@ -118,7 +153,9 @@ function useToday(): { key: string; at: number } {
 export function useJourney() {
   const active = useActiveCert();
   const { cert, progress, readiness, dueCount, daysLeft } = active;
-  const dailyGoal = useSettings((s) => s.dailyGoal);
+  const dailyMinutes = useDailyMinutes();
+  const familiarity = useSettings((s) => s.familiarity);
+  const examFocused = useSettings((s) => s.examFocused);
   const streakState = useProgress((s) => s.streak);
   const storedDay = useProgress((s) => s.days[cert.id]);
   const startDay = useProgress((s) => s.startDay);
@@ -132,11 +169,13 @@ export function useJourney() {
         readiness,
         dueCount,
         daysLeft,
-        dailyGoal,
+        dailyMinutes,
+        familiarity,
+        examFocused,
         streak: streakState,
         now: today.at,
       }),
-    [cert, progress, readiness, dueCount, daysLeft, dailyGoal, streakState, today.at],
+    [cert, progress, readiness, dueCount, daysLeft, dailyMinutes, familiarity, examFocused, streakState, today.at],
   );
 
   // Today's plan is frozen the first time Today is shown each day, so items
@@ -144,8 +183,8 @@ export function useJourney() {
   // Plans are kept per cert, so switching certs never wipes the other's ticks.
   const dayValid = !!storedDay && storedDay.day === today.key;
   const fresh = useMemo(
-    () => (dayValid ? null : newDayPlan(today.key, cert.id, derived.plan, readiness)),
-    [dayValid, today.key, cert.id, derived.plan, readiness],
+    () => (dayValid ? null : newDayPlan(today.key, cert.id, derived.plan, readiness, derived.budget)),
+    [dayValid, today.key, cert.id, derived.plan, readiness, derived.budget],
   );
   useEffect(() => {
     if (fresh) startDay(fresh);

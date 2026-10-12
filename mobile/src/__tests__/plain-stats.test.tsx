@@ -106,10 +106,10 @@ describe('time as a stat', () => {
     expect(aboutSeconds(150)).toBe('about 2.5 minutes');
   });
 
-  it('the pace sentence gives both figures their unit, the same unit', () => {
+  it('the pace sentence gives both figures their unit, the same unit (seconds, always: mobile 1.15 C2)', () => {
     const exam = getCertification('cisa')!.exam;
     expect(practicePaceLine([74_000, 74_000, 74_000], exam)).toBe('About 74 seconds per question. The exam allows about 96 seconds.');
-    expect(practicePaceLine([119_600, 119_600, 119_600], exam)).toBe('About 2 minutes per question. The exam allows about 1.6 minutes.');
+    expect(practicePaceLine([119_600, 119_600, 119_600], exam)).toBe('About 120 seconds per question. The exam allows about 96 seconds.');
   });
 });
 

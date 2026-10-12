@@ -29,7 +29,7 @@ import { PROGRESS_VERSION, SETTINGS_VERSION } from '../engine/saveMigrations';
 import { canUndo, checkBackupText, currentBackup, pickBackup, pruneUndo, restoreBackup, saveBackup, undoRestore } from '../lib/backup';
 import { useBackup } from '../store/backup';
 import { selectCert, useProgress } from '../store/progress';
-import { useSettings } from '../store/settings';
+import { dailyMinutesOf, useSettings } from '../store/settings';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -239,6 +239,56 @@ describe('round trip', () => {
 });
 
 // ── Bad files ────────────────────────────────────────────────────────────
+describe('mobile 1.15: the fit travels in a backup, both ways', () => {
+  it('a 1.15 file round-trips the fit, with the old daily goal written beside the minutes', async () => {
+    studiedLearner();
+    useSettings.getState().setFit({ dailyMinutes: 30, familiarity: 'experienced', examFocused: false });
+    const file = currentBackup(NOW);
+    expect(file.stores.settings.state).toMatchObject({ dailyMinutes: 30, dailyGoal: 20, familiarity: 'experienced', examFocused: false, fitPrompt: 'answered' });
+    const read = checkBackupText(JSON.stringify(file));
+    if (read.kind !== 'ok') throw new Error(read.code);
+    useSettings.getState().setFit({ dailyMinutes: 10, familiarity: 'new', examFocused: true });
+    await restoreBackup(read.data, NOW);
+    expect(useSettings.getState()).toMatchObject({ dailyMinutes: 30, dailyGoal: 20, familiarity: 'experienced', examFocused: false, fitPrompt: 'answered' });
+  });
+
+  it('a 1.14 file (no fit keys) restores with no fit: minutes come from its goal, and the Today card may ask', async () => {
+    studiedLearner(); // dailyGoal 40
+    const old = currentBackup(NOW);
+    for (const k of ['familiarity', 'dailyMinutes', 'examFocused', 'fitPrompt', 'fitChanges'] as const) delete (old.stores.settings.state as Record<string, unknown>)[k];
+    useSettings.getState().setFit({ dailyMinutes: 10, familiarity: 'new' });
+    const read = checkBackupText(JSON.stringify(old));
+    if (read.kind !== 'ok') throw new Error(read.code);
+    await restoreBackup(read.data, NOW);
+    const st = useSettings.getState();
+    expect([st.familiarity, st.dailyMinutes, st.examFocused, st.fitPrompt]).toEqual([undefined, undefined, undefined, undefined]);
+    expect(dailyMinutesOf(st)).toBe(45);
+  });
+
+  it('a 1.15 file read by the rules an older app has (no fit keys) still carries a sensible daily goal', () => {
+    studiedLearner();
+    useSettings.getState().setFit({ dailyMinutes: 45 });
+    const file = currentBackup(NOW);
+    // An older app drops keys it doesn't know; what it keeps is the goal.
+    expect(file.stores.settings.state.dailyGoal).toBe(40);
+  });
+
+  it('out-of-range minutes snap to the nearest choice; a bad familiarity, prompt or count is refused', () => {
+    studiedLearner();
+    const f = JSON.parse(JSON.stringify(currentBackup(NOW))) as BackupFile;
+    (f.stores.settings.state as Record<string, unknown>).dailyMinutes = 33;
+    expect(readBackup(JSON.stringify(f), CERTS).settings.dailyMinutes).toBe(30);
+    (f.stores.settings.state as Record<string, unknown>).dailyMinutes = 900;
+    expect(readBackup(JSON.stringify(f), CERTS).settings.dailyMinutes).toBe(45);
+    for (const [k, v] of [['familiarity', 'guru'], ['fitPrompt', 'maybe'], ['fitChanges', -1], ['examFocused', 'yes'], ['dailyMinutes', 'lots']] as const) {
+      const bad = JSON.parse(JSON.stringify(f));
+      bad.stores.settings.state.dailyMinutes = 20;
+      bad.stores.settings.state[k] = v;
+      expect(checkBackupText(JSON.stringify(bad)).kind).toBe('error');
+    }
+  });
+});
+
 describe('a bad file is refused and changes nothing', () => {
   const good = () => {
     studiedLearner();

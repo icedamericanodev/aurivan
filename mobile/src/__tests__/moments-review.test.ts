@@ -26,15 +26,16 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 const readiness = { score: 0.5, domains: [], focusDomainId: undefined } as never;
 
 describe('planner: exam eve and exam day are for rest', () => {
-  const base = { stage: 'examDay' as const, dailyGoal: 40, daysLeft: 1, examQuestions: 150 };
+  // 45 minutes a day (the old "40 a day"): the eve still asks at most 10.
+  const base = { stage: 'examDay' as const, dailyMinutes: 45, daysLeft: 1, examQuestions: 150 };
 
-  it('eve with reviews due: ONE light review, capped at 10', () => {
-    expect(todaysPlan({ ...base, dueReviews: 45 })).toEqual([{ kind: 'review', count: EVE_MAX, label: 'Light review · up to 10' }]);
-    expect(todaysPlan({ ...base, dueReviews: 3 })).toEqual([{ kind: 'review', count: 3, label: 'Light review · up to 10' }]);
+  it('eve with reviews due: ONE light review, capped at 10 (mobile 1.15: "N questions", like exam week)', () => {
+    expect(todaysPlan({ ...base, dueReviews: 45 })).toEqual([{ kind: 'review', count: EVE_MAX, label: 'Light review · 10 questions', due: 45, capped: true }]);
+    expect(todaysPlan({ ...base, dueReviews: 3 })).toEqual([{ kind: 'review', count: 3, label: 'Light review · 3 questions' }]);
   });
 
   it('eve with nothing due: ONE light practice set of 10, no game, no mock', () => {
-    expect(todaysPlan({ ...base, dueReviews: 0 })).toEqual([{ kind: 'practice', count: EVE_MAX, label: 'Light review · up to 10' }]);
+    expect(todaysPlan({ ...base, dueReviews: 0 })).toEqual([{ kind: 'practice', count: EVE_MAX, label: 'Light review · 10 questions' }]);
   });
 
   it('exam day: only an optional five-question warm-up, even with reviews due', () => {
@@ -117,7 +118,8 @@ describe('Settings → exam date rebuilds today’s plan', () => {
     changeExamDate('cisa', addDays(today, 1));
     expect(useSettings.getState().examDates.cisa).toBe(addDays(today, 1));
     let day = useProgress.getState().days.cisa;
-    expect(day.items).toEqual([{ kind: 'practice', count: 10, label: 'Light review · up to 10' }]);
+    // 20 minutes a day: the eve is min(10, what 20 minutes fits) = 10.
+    expect(day.items).toEqual([{ kind: 'practice', count: 10, label: 'Light review · 10 questions' }]);
     expect(day.answered).toBe(4); // today's numbers survive
 
     changeExamDate('cisa', today);
@@ -129,7 +131,8 @@ describe('Settings → exam date rebuilds today’s plan', () => {
     changeExamDate('cisa', addDays(today, 1));
     changeExamDate('cisa', undefined);
     expect(useSettings.getState().examDates.cisa).toBeUndefined();
-    expect(useProgress.getState().days.cisa.items[0]).toMatchObject({ kind: 'practice', count: 20 });
+    // The starting check, sized to a 20-minute day (16 questions, about 19 min).
+    expect(useProgress.getState().days.cisa.items[0]).toMatchObject({ kind: 'practice', count: 16, label: 'Starting check: 16 mixed questions' });
   });
 });
 

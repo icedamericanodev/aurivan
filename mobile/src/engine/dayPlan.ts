@@ -10,13 +10,13 @@
  *
  * Pure TypeScript: no React, no storage. The progress store persists it.
  */
-import { gameMinutes } from './games/registry';
 import { MINUTES_PER_QUESTION } from './pace';
-import type { PlanItem } from './planner';
+import { itemMinutes, LESSON_MINUTES, type PlanItem } from './planner';
 import type { Readiness } from './readiness';
 
-// Re-exported so existing imports keep working; the value lives in pace.ts.
-export { MINUTES_PER_QUESTION };
+// Re-exported so existing imports keep working; the values live in pace.ts and
+// planner.ts (the planner sizes the day with the same minutes Today shows).
+export { itemMinutes, LESSON_MINUTES, MINUTES_PER_QUESTION };
 
 export interface DayPlan {
   day: string; // "YYYY-MM-DD", local calendar day
@@ -37,6 +37,11 @@ export interface DayPlan {
    * item). Optional: plans saved before this field existed start at zero.
    */
   credit?: number[];
+  /**
+   * Mobile 1.15: the daily minutes this plan was sized for. Optional: plans
+   * saved before 1.15 have none, and Today then shows no "about N min today".
+   */
+  budget?: number;
 }
 
 export type Activity =
@@ -54,9 +59,8 @@ export type Activity =
 
 /** A session counts toward a plan item once 80% of the planned questions are answered. */
 export const SESSION_DONE_SHARE = 0.8;
-export const LESSON_MINUTES = 3;
 
-export function newDayPlan(day: string, certId: string, items: PlanItem[], readiness: Readiness): DayPlan {
+export function newDayPlan(day: string, certId: string, items: PlanItem[], readiness: Readiness, budget?: number): DayPlan {
   const domains: Record<string, number> = {};
   for (const d of readiness.domains) domains[d.domainId] = d.mastery;
   return {
@@ -68,6 +72,7 @@ export function newDayPlan(day: string, certId: string, items: PlanItem[], readi
     answered: 0,
     correct: 0,
     minutes: 0,
+    ...(budget ? { budget } : {}),
   };
 }
 
@@ -189,20 +194,4 @@ export function biggestGrowth(plan: DayPlan, readiness: Readiness): { domainId: 
     if (points > 0 && (!best || points > best.points)) best = { domainId: d.domainId, points };
   }
   return best;
-}
-
-/** Rough minutes an item takes, for "about 15 min" on the Tomorrow preview. */
-export function itemMinutes(item: PlanItem): number {
-  switch (item.kind) {
-    case 'review':
-    case 'practice':
-      return Math.max(1, Math.round(item.count * MINUTES_PER_QUESTION));
-    case 'mock':
-      return Math.round(item.questions * MINUTES_PER_QUESTION);
-    case 'lesson':
-      return LESSON_MINUTES;
-    case 'game':
-      // From the game's round size (engine/games/registry.ts), not a fixed guess.
-      return gameMinutes(item.gameId);
-  }
 }
