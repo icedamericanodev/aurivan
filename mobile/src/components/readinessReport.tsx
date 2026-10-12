@@ -167,20 +167,21 @@ export function DomainReportRow({ row, last }: { row: DomainRow; last?: boolean 
 /**
  * Today's exam-week card (days 7 to 2 before the exam): the key-idea recipe
  * under the hero. The words are one stop; each button is its own. Never a
- * red or "overdue" state: "2 of 6 done" is all it counts.
+ * red or "overdue" state: "2 of 5 done" is all it counts.
  */
 export function ExamWeekCard({ count, onOpen, onHide }: { count: string; onOpen: () => void; onHide: () => void }) {
   const { c } = useTheme();
   const line = 'A calm week. A short checklist, then light review.';
   return (
     <View testID="exam-week-card" style={{ borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
-      <View accessible accessibilityLabel={`Exam week. ${line} ${count}.`}>
-        <T v="caption" color={c.accentText}>Exam week</T>
+      {/* "This week", not "Exam week": the readiness row's stage line already says Exam week (UX review P5). */}
+      <View accessible accessibilityLabel={`This week. ${line} ${count}.`}>
+        <T v="caption" color={c.accentText}>This week</T>
         <T v="small" style={{ marginTop: space.xs }}>{line}</T>
         <T v="meta" style={{ marginTop: 2 }}>{count}</T>
       </View>
       <Row gap={space.xs} style={{ flexWrap: 'wrap', marginLeft: -space.sm }}>
-        <Button kind="ghost" label="Open checklist" accessibilityHint="Six practical things for the week before your exam" onPress={onOpen} />
+        <Button kind="ghost" label="Open checklist" accessibilityHint="A short practical list for the week before your exam" onPress={onOpen} />
         <Button kind="ghost" label="Hide" accessibilityLabel="Hide this card. The checklist stays in your readiness report." onPress={onHide} />
       </Row>
     </View>

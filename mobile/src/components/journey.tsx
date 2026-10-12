@@ -111,15 +111,18 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
 
 /**
  * "About 20 min today": the open items' minutes. A mock is left out (it is
- * longer than any day) and adds "+ mock" instead. null when nothing is open.
+ * longer than any day) and adds "+ mock" instead; exam week's last long
+ * rehearsal says it is optional ("+ optional mock", UX review O9). null when
+ * nothing is open.
  */
 export function todayMinutesLine(items: readonly PlanItem[], done: readonly boolean[]): string | null {
   const open = items.filter((_, i) => !done[i]);
   if (open.length === 0) return null;
-  const mock = open.some((i) => i.kind === 'mock');
+  const mocks = open.filter((i) => i.kind === 'mock');
+  const optional = mocks.length > 0 && mocks.every((i) => i.kind === 'mock' && i.why === 'final');
   const mins = open.reduce((n, i) => n + (i.kind === 'mock' ? 0 : itemMinutes(i)), 0);
-  if (mins === 0) return mock ? 'A mock today' : null;
-  return `${aboutMin(mins)} today${mock ? ' + mock' : ''}`;
+  if (mins === 0) return mocks.length ? (optional ? 'An optional mock today' : 'A mock today') : null;
+  return `${aboutMin(mins)} today${mocks.length ? (optional ? ' + optional mock' : ' + mock') : ''}`;
 }
 
 /**

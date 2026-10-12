@@ -176,7 +176,10 @@ export function activityMatches(item: PlanItem, a: Activity, already = 0): boole
       return got > 0 && already + got >= itemTarget(item);
     }
     case 'mock':
-      return a.kind === 'session' && a.mode === 'mock' && a.answered > 0;
+      // Exam week's full rehearsal (why 'final') is ticked by a full-length mock
+      // only: a mini mock is still a mock, but not the one the plan offered (code review M4).
+      // `total` is the session's length (lib/finishSession.ts).
+      return a.kind === 'session' && a.mode === 'mock' && a.answered > 0 && (item.why !== 'final' || a.total >= item.questions);
     case 'lesson':
       return a.kind === 'lesson' && a.lessonId === item.lessonId;
     case 'game':

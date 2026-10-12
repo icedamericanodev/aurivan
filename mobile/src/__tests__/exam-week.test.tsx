@@ -160,7 +160,7 @@ describe('the exam-week checklist (engine)', () => {
     let s = toggleExamWeek(undefined, date, 'booking');
     s = toggleExamWeek(s, date, 'pace');
     expect(examWeekOf(s, date).done).toEqual(['booking', 'pace']);
-    expect(examWeekCount(examWeekOf(s, date).done)).toBe('2 of 6 done');
+    expect(examWeekCount(examWeekOf(s, date).done)).toBe('2 of 5 done');
     expect(examWeekOf(s, '2026-10-27')).toEqual({ done: [], hidden: false });
     // A tick on the new date starts a new list.
     expect(toggleExamWeek(s, '2026-10-27', 'sleep')).toEqual({ for: '2026-10-27', done: ['sleep'] });
@@ -315,7 +315,10 @@ describe('Today: the Exam week card', () => {
   it('"Open checklist" opens it; "Hide" hides it for this exam date and says where it went', () => {
     mount(<Today />);
     expect(allText()).toContain('A calm week. A short checklist, then light review.');
-    expect(allText()).toContain('0 of 6 done');
+    // "This week": the readiness row already says Exam week (UX review P5).
+    expect(allText()).toContain('This week');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'This week. A calm week. A short checklist, then light review. 0 of 5 done.')).not.toHaveLength(0);
+    expect(allText()).toContain('0 of 5 done');
     press(/^Open checklist$/);
     expect(router.push).toHaveBeenCalledWith('/exam-week');
     const spoken = jest.spyOn(AccessibilityInfo, 'announceForAccessibility');
@@ -350,8 +353,18 @@ describe('the Exam week screen', () => {
       boxes()[4].props.onPress();
     });
     expect(boxes().map((b) => b.props.accessibilityState.checked)).toEqual([true, false, false, false, true, false]);
-    expect(allText()).toContain('2 of 6 done');
+    expect(allText()).toContain('2 of 5 done');
     expect(selectCert(useProgress.getState(), 'cisa').moments?.examWeek).toEqual({ for: addDays(today(), 6), done: ['booking', 'pace'] });
+    // Online or test centre is one choice: ticking both still counts one slot (UX review P4).
+    expect(allText()).toContain('Tick the one that fits you.');
+    act(() => {
+      boxes()[2].props.onPress();
+    });
+    expect(allText()).toContain('3 of 5 done');
+    act(() => {
+      boxes()[3].props.onPress();
+    });
+    expect(allText()).toContain('3 of 5 done');
     // The whole row is the target: the shared list-row style is at least 64pt tall.
     const flat = Object.assign({}, ...[boxes()[0].props.style].flat(3).filter(Boolean));
     expect(flat.minHeight).toBeGreaterThanOrEqual(48);

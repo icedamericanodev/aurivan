@@ -6,15 +6,17 @@
  *   readiness report. Ticks belong to this exam date (engine/examWeek.ts):
  *   moving the date starts a fresh list.
  * - Calm on purpose: no notification, no red, no "overdue", no count of what
- *   is left. Generic, true wording ("the official candidate guide"): never a
+ *   is left. "Taking it online?" and "At a test centre?" are one choice
+ *   ("Tick the one that fits you."), one slot in "2 of 5 done". Generic, true wording ("the official candidate guide"): never a
  *   claim about what an exam body says, no links that imply affiliation.
  * - No exam date: nothing to tick against, so the screen asks for one first.
  */
 import { router } from 'expo-router';
+import { Fragment } from 'react';
 import { View } from 'react-native';
 import { EmptyScreen } from '../components/emptyScreen';
 import { Button, CheckRow, PushedHeader, Screen, T } from '../components/ui';
-import { EXAM_WEEK_ITEMS, examWeekCount, examWeekOf, examWeekText } from '../engine/examWeek';
+import { EXAM_WEEK_EITHER, EXAM_WEEK_ITEMS, examWeekCount, examWeekOf, examWeekText } from '../engine/examWeek';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useProgress } from '../store/progress';
 import { space } from '../theme/tokens';
@@ -49,15 +51,21 @@ export default function ExamWeek() {
         <T v="quote">Use this week to settle in, not to cram.</T>
       </View>
       <T v="meta" style={{ marginTop: space.lg }} accessibilityLabel={`${examWeekCount(done)}. Your ticks stay on this phone.`}>{examWeekCount(done)}</T>
-      <View accessibilityLabel="Exam-week checklist" style={{ marginTop: space.xs }}>
+      {/* The rows speak for themselves (checkboxes); the count above gives the context (code review M3a). */}
+      <View style={{ marginTop: space.xs }}>
         {EXAM_WEEK_ITEMS.map((id, i) => (
-          <CheckRow
-            key={id}
-            label={examWeekText(id, cert.exam)}
-            checked={done.includes(id)}
-            onPress={() => tick(cert.id, examDate, id)}
-            last={i === EXAM_WEEK_ITEMS.length - 1}
-          />
+          <Fragment key={id}>
+            {/* Online or test centre: one choice, one slot in the count (UX review P4). */}
+            {id === EXAM_WEEK_EITHER[0] && (
+              <T v="meta" style={{ marginTop: space.md }}>Tick the one that fits you.</T>
+            )}
+            <CheckRow
+              label={examWeekText(id, cert.exam)}
+              checked={done.includes(id)}
+              onPress={() => tick(cert.id, examDate, id)}
+              last={i === EXAM_WEEK_ITEMS.length - 1}
+            />
+          </Fragment>
         ))}
       </View>
       <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>

@@ -49,7 +49,7 @@ import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, Scre
 import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
 import { shouldAskFit } from '../../engine/fit';
 import { aboutMin, spokenMin } from '../../engine/pace';
-import { sayLater } from '../../lib/a11y';
+import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../../lib/a11y';
 import { useSettings } from '../../store/settings';
 import { runPlanItem } from '../../lib/actions';
 import { haptic } from '../../lib/haptics';
@@ -115,6 +115,8 @@ export default function Today() {
   const markCelebrated = useProgress((s) => s.markCelebrated);
   // When the clearing's haptic last played: the plant's growth stays silent right after it (one haptic only).
   const clearingTapAt = useRef(0);
+  // The heading under the exam-week card: focus lands there when the card is hidden (code review M3b).
+  const nextHeadRef = useRef<View>(null);
   // Mobile 1.7: a fix shipped after something this learner reported. One quiet
   // line, shown ONCE (QA): it is marked seen as soon as Today shows it and
   // kept for this visit (the milestones back-fill pattern), with a Dismiss.
@@ -419,6 +421,8 @@ export default function Today() {
               onHide={() => {
                 useProgress.getState().hideExamWeek(j.cert.id, j.examDate!);
                 sayLater('Hidden. The checklist stays in your readiness report.');
+                // The card unmounts under the focused button: move focus to the next heading, after the announcement.
+                moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50);
               }}
             />
           </View>
@@ -427,7 +431,7 @@ export default function Today() {
           <>
             {tomorrow.length > 0 && (
               <>
-                <Section title="Tomorrow" meta={tomorrowMinutes} metaLabel={tomorrowMinutes && spokenMin(tomorrowMinutes)} />
+                <Section title="Tomorrow" meta={tomorrowMinutes} metaLabel={tomorrowMinutes && spokenMin(tomorrowMinutes)} headRef={nextHeadRef} />
                 {tomorrow.map((item, k) => (
                   <ListRow
                     key={k}
@@ -451,7 +455,7 @@ export default function Today() {
         ) : (
           alsoCount > 0 && (
             <>
-              <Section title="Also today" meta={sectionMinutes(alsoMinutes)} metaLabel={alsoMinutes > 0 ? spokenMin(aboutMin(alsoMinutes)) : undefined} />
+              <Section title="Also today" meta={sectionMinutes(alsoMinutes)} metaLabel={alsoMinutes > 0 ? spokenMin(aboutMin(alsoMinutes)) : undefined} headRef={nextHeadRef} />
               {resume && (
                 <ListRow
                   icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}

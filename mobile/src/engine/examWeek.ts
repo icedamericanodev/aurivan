@@ -5,8 +5,10 @@
  * - A card on Today from 7 to 2 days before the exam (the eve and the day
  *   have their own calm card). The learner can hide it; the checklist stays
  *   one tap away in the readiness report.
- * - Ticks belong to ONE exam date (`for`). Moving the date starts a fresh
- *   list; the old ticks are kept under the old date and simply ignored.
+ * - Ticks belong to ONE exam date (`for`), and only one list is kept. Moving
+ *   the date shows a fresh list; the old ticks stay saved (and come back if
+ *   the date moves back) only until the first tick under the new date
+ *   replaces them (code review M6b).
  * - Never a notification, never a red or "overdue" state.
  * - Generic, true wording: "the official candidate guide", never a claim
  *   about what any exam body says, and no links that imply affiliation.
@@ -81,5 +83,19 @@ export function examWeekCardDue(daysLeft: number | null, saved: ExamWeekSaved | 
   return !examWeekOf(saved, examDate).hidden;
 }
 
-/** "2 of 6 done" (the card's meta). */
-export const examWeekCount = (done: readonly ExamWeekItem[]) => `${done.length} of ${EXAM_WEEK_ITEMS.length} done`;
+/**
+ * The two "where you take it" items are one choice: a learner ticks the one
+ * that fits (UX review P4). So the count has five slots, not six.
+ */
+export const EXAM_WEEK_EITHER: readonly ExamWeekItem[] = ['online', 'centre'];
+export const EXAM_WEEK_SLOTS = EXAM_WEEK_ITEMS.length - EXAM_WEEK_EITHER.length + 1;
+
+/** Slots done: online and centre count once between them. */
+export function examWeekDoneSlots(done: readonly ExamWeekItem[]): number {
+  const known = cleanDone(done);
+  const either = known.some((id) => EXAM_WEEK_EITHER.includes(id));
+  return known.filter((id) => !EXAM_WEEK_EITHER.includes(id)).length + (either ? 1 : 0);
+}
+
+/** "2 of 5 done" (the card's meta). Never a count of what is left. */
+export const examWeekCount = (done: readonly ExamWeekItem[]) => `${examWeekDoneSlots(done)} of ${EXAM_WEEK_SLOTS} done`;

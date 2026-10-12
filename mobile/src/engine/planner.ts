@@ -197,10 +197,13 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
   };
 
   // 1. Spaced reviews first, when due: about half the day.
+  // Exam week calls them what they are, as the eve does: "Light review · 8 questions" (UX review P6).
+  const reviewLabel = (n: number) => (p.stage === 'examDay' ? `Light review · ${n} questions` : undefined);
   let review: Extract<PlanItem, { kind: 'review' }> | null = null;
   const reviewCap = Math.min(p.dueReviews, REVIEW_SESSION_CAP);
   if (p.dueReviews > 0) {
-    review = reviewItem(Math.min(reviewCap, Math.max(5, fitting((0.5 * budget)))), p.dueReviews) as Extract<PlanItem, { kind: 'review' }>;
+    const n = Math.min(reviewCap, Math.max(5, fitting((0.5 * budget))));
+    review = reviewItem(n, p.dueReviews, reviewLabel(n)) as Extract<PlanItem, { kind: 'review' }>;
     add(review);
   }
   // 3 (the fill). Time left and reviews cut below what is due: they grow into it (spacing first).
@@ -209,7 +212,7 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
     const more = Math.min(reviewCap - review.count, fitting(left()));
     if (more <= 0) return;
     used -= itemMinutes(review);
-    const grown = reviewItem(review.count + more, p.dueReviews) as Extract<PlanItem, { kind: 'review' }>;
+    const grown = reviewItem(review.count + more, p.dueReviews, reviewLabel(review.count + more)) as Extract<PlanItem, { kind: 'review' }>;
     plan[plan.indexOf(review)] = grown;
     review = grown;
     used += itemMinutes(grown);

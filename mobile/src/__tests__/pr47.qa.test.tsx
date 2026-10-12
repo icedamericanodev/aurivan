@@ -434,18 +434,18 @@ describe('QA 3: the Today card and the checklist', () => {
     unmount();
     mount(<ExamWeekScreen />);
     expect(boxes().map((b) => b.props.accessibilityState.checked)).toEqual([false, true, false, false, false, true]);
-    expect(allText()).toContain('2 of 6 done');
+    expect(allText()).toContain('2 of 5 done');
     // Move the exam date: fresh.
     act(() => {
       useSettings.setState({ examDates: { cisa: d2 } });
     });
     expect(boxes().every((b) => b.props.accessibilityState.checked === false)).toBe(true);
-    expect(allText()).toContain('0 of 6 done');
+    expect(allText()).toContain('0 of 5 done');
     // Move it back without ticking anything: the old ticks were kept under the old date.
     act(() => {
       useSettings.setState({ examDates: { cisa: d1 } });
     });
-    expect(allText()).toContain('2 of 6 done');
+    expect(allText()).toContain('2 of 5 done');
     // A tick on a NEW date replaces the old list (only one date is kept).
     act(() => {
       useSettings.setState({ examDates: { cisa: d2 } });
@@ -457,7 +457,7 @@ describe('QA 3: the Today card and the checklist', () => {
     act(() => {
       useSettings.setState({ examDates: { cisa: d1 } });
     });
-    expect(allText()).toContain('0 of 6 done');
+    expect(allText()).toContain('0 of 5 done');
   });
 
   it('the Today card counts ticks for this date; Hide hides it, and a new date shows it again', () => {
@@ -468,7 +468,7 @@ describe('QA 3: the Today card and the checklist', () => {
       useProgress.getState().tickExamWeek('cisa', d1, 'pace');
     });
     mount(<Today />);
-    expect(allText()).toContain('2 of 6 done');
+    expect(allText()).toContain('2 of 5 done');
     press(/^Hide this card/);
     expect(hasCard()).toBe(false);
     // The ticks survive the Hide.
@@ -477,7 +477,7 @@ describe('QA 3: the Today card and the checklist', () => {
       useSettings.setState({ examDates: { cisa: addDays(today(), 5) } });
     });
     expect(hasCard()).toBe(true);
-    expect(allText()).toContain('0 of 6 done');
+    expect(allText()).toContain('0 of 5 done');
   });
 });
 
@@ -542,7 +542,8 @@ describe('QA 3: the exam-week taper plans', () => {
     setCert({ answers: seedAnswers(30, 0.7) });
     mount(<Today />);
     const t = allText();
-    expect(t).toContain('About 30 min today + mock');
+    // The hero says the mock is optional (UX review O9).
+    expect(t).toContain('About 30 min today + optional mock');
     // While the mock sits in "Also today" its row reads "Optional this week · about 4 h";
     // the "a last long rehearsal; skip it if you’d rather rest" meta only shows once it
     // becomes the hero (after the top-up). Observation, not a bug: both say optional.
@@ -625,7 +626,7 @@ describe('QA 4: the checklist in backups, and Reset', () => {
     expect(selectCert(useProgress.getState(), 'cisa').mocks).toEqual([]);
     expect(selectCert(useProgress.getState(), 'cisa').moments?.readiness).toBeUndefined();
     mount(<ExamWeekScreen />);
-    expect(allText()).toContain('1 of 6 done');
+    expect(allText()).toContain('1 of 5 done');
     unmount();
     mount(<Today />);
     expect(root().findAll((n) => n.props.testID === 'exam-week-card')).toHaveLength(0);

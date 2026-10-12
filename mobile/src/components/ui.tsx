@@ -684,6 +684,7 @@ export function Section({
   metaLabel,
   action,
   style,
+  headRef,
 }: {
   title: string;
   meta?: string;
@@ -695,12 +696,24 @@ export function Section({
    */
   action?: { label: string; onPress: () => void; hint?: string; accessibilityLabel?: string };
   style?: StyleProp<ViewStyle>;
+  /**
+   * Mobile 1.16: for moving screen-reader focus to this heading (lib/a11y.ts
+   * moveFocus), e.g. after the card above it is hidden. T doesn't forward
+   * refs, so the heading then sits in a focusable View.
+   */
+  headRef?: Ref<View>;
 }) {
   // Large text: the meta drops under the title instead of squeezing beside it.
   const large = useFontScale() >= LARGE_TEXT;
   return (
     <View style={[styles.section, action && styles.sectionAction, large && styles.sectionStacked, style]}>
-      <T v="headline" accessibilityRole="header" style={{ flexShrink: 1 }}>{title}</T>
+      {headRef ? (
+        <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel={title} style={{ flexShrink: 1 }}>
+          <T v="headline">{title}</T>
+        </View>
+      ) : (
+        <T v="headline" accessibilityRole="header" style={{ flexShrink: 1 }}>{title}</T>
+      )}
       {meta && !action && <T v="meta" accessibilityLabel={metaLabel} style={{ flexShrink: 1 }}>{meta}</T>}
       {action && (
         // The ghost pads 8pt each side: its text lines up with the gutter (or the title, stacked).
