@@ -75,10 +75,11 @@ export default function Learn() {
   // its focus domain no longer re-renders it.
   const certId = useSettings((s) => s.activeCertId);
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
-  const lessonsDone = useProgress((s) => selectCert(s, cert.id).lessonsDone);
-  const notesReadIds = useProgress((s) => selectCert(s, cert.id).notesRead);
+  // Progress by the active id itself, as useActiveCert reads it, so every tab shows the same exam's progress.
+  const lessonsDone = useProgress((s) => selectCert(s, certId).lessonsDone);
+  const notesReadIds = useProgress((s) => selectCert(s, certId).notesRead);
   const focusKey = useProgress((s) => {
-    const r = readinessFor(cert, selectCert(s, cert.id).answers);
+    const r = readinessFor(cert, selectCert(s, certId).answers);
     return `${r.domains.some((d) => d.answered > 0) ? 1 : 0}${r.focusDomainId ?? ''}`;
   });
   const hasAnswers = focusKey[0] === '1';

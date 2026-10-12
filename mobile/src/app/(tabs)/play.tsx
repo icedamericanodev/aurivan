@@ -39,8 +39,9 @@ export default function Play() {
   // which stays mounted (hidden) while the learner studies.
   const certId = useSettings((s) => s.activeCertId);
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
-  const gameBest = useProgress((s) => selectCert(s, cert.id).gameBest);
-  const gameGrowth = useProgress((s) => selectCert(s, cert.id).gameGrowth);
+  // Progress by the active id itself, as useActiveCert reads it, so every tab shows the same exam's progress.
+  const gameBest = useProgress((s) => selectCert(s, certId).gameBest);
+  const gameGrowth = useProgress((s) => selectCert(s, certId).gameGrowth);
   // A game whose question pool is too small for this certification is not
   // offered at all (never explained with a number: no bank-size leaks).
   // Note-based games (Root or Rumor) count the cert's study notes instead.

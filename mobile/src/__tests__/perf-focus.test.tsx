@@ -173,3 +173,52 @@ describe('what a hidden tab re-renders', () => {
     expect(renderNames().you?.MockHistory ?? 0).toBe(0);
   });
 });
+
+describe('an unknown active certification (the screens fall back to the first exam’s content)', () => {
+  /** Every text and screen-reader label on screen, in order. */
+  function texts(): string[] {
+    const out: string[] = [];
+    const walk = (n: unknown) => {
+      if (typeof n === 'string') out.push(n);
+      else if (n && typeof n === 'object') {
+        const node = n as { props?: { accessibilityLabel?: string }; children?: unknown[] | null };
+        if (node.props?.accessibilityLabel) out.push(node.props.accessibilityLabel);
+        (node.children ?? []).forEach(walk);
+      }
+    };
+    const j = r!.toJSON();
+    (Array.isArray(j) ? j : [j]).forEach(walk);
+    return out;
+  }
+  function seen(Screen: ComponentType): string[] {
+    mount(Screen);
+    const t = texts();
+    act(() => r?.unmount());
+    r = undefined;
+    return t;
+  }
+  // As on main, and as the other tabs (lib/useActiveCert.ts): progress is read
+  // under the active id itself, so nothing saved for CISA shows under an unknown id.
+  for (const [name, load] of [
+    ['Learn', () => require('../app/(tabs)/learn').default],
+    ['Play', () => require('../app/(tabs)/play').default],
+  ] as const) {
+    it(`${name}: shows the progress saved under the active id (none), never CISA’s`, () => {
+      act(() => {
+        const lesson = require('../content/lessons').lessonsFor('cisa')[0].id;
+        useProgress.getState().completeLesson('cisa', lesson);
+        useProgress.getState().recordGame('cisa', require('../lib/games').playableGames('cisa')[0], 9);
+      });
+      const withCisa = seen(load());
+      useSettings.setState({ activeCertId: 'retired-cert' });
+      const unknown = seen(load());
+      // CISA's own progress shows under CISA (the test can tell the two apart)...
+      expect(unknown).not.toEqual(withCisa);
+      // ...and under an unknown id the screen is exactly the one with nothing saved.
+      act(() => {
+        useProgress.getState().resetCert('cisa');
+      });
+      expect(unknown).toEqual(seen(load()));
+    });
+  }
+});
