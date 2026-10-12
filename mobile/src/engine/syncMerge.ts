@@ -424,12 +424,13 @@ function mergeMilestones(a: Milestones | undefined, b: Milestones | undefined): 
  * never makes a learner re-plant or lose growth).
  *
  * Two DIFFERENT plants (each phone planted its own, or one was reset):
- * - the plant kept is the one planted EARLIER (for a reset one, its replant
- *   time counts), so the learner's older plant stays, and every phone agrees
- *   on it whatever order they sync in;
- * - on the FIRST sync's Combine only (`firstSync`), the plant that has grown
- *   more is kept instead (the learner chose to bring two phones together;
- *   from then on both phones hold that plant);
+ * - on the FIRST sync's Combine (`firstSync`), the plant that has grown
+ *   more is kept (then as below). That choice is stamped (`plantId.<cert>`)
+ *   so every later sync keeps it, even with a phone that still holds the
+ *   other plant;
+ * - otherwise the plant with the later `plantId.<cert>` stamp is kept, and
+ *   with none, the one planted EARLIER (for a reset one, its replant time
+ *   counts): the learner's older plant stays;
  * - either way the kept plant takes the HIGHER growth of the two (and the
  *   earliest time each growth was reached): the merged progress supports
  *   it, so no growth is lost.
@@ -441,18 +442,19 @@ function mergeMilestones(a: Milestones | undefined, b: Milestones | undefined): 
  * earliest. Unlocks carried across a Reset (`kept`) are unioned. The checker
  * then clamps growth to what the merged data supports.
  *
- * The keys depend on the plant's identity alone (except the first sync's
- * one-off choice), so the merge stays associative.
+ * Outside the first sync the keys depend only on the plant's identity and
+ * its own stamp (which travels with it), so the merge stays associative.
  */
 function mergePlant(certId: string, a: Plant | undefined, as: Stamps, b: Plant | undefined, bs: Stamps, firstSync = false): Plant | undefined {
   if (!a || !b) return a ?? b;
   const identity = (p: Plant) => clean({ species: p.species, plantedAt: p.plantedAt, replantedAt: p.replantedAt });
-  // Earlier wins: the negative time, so the larger key is the earlier plant.
-  const idKey = (p: Plant) => [...(firstSync ? [p.growth] : []), -(p.replantedAt ?? p.plantedAt), stableStringify(identity(p))];
+  const chosen = `plantId.${certId}`;
+  // Larger key wins: (more growth, first sync only), the later choice stamp, then the EARLIER planting.
+  const idKey = (x: { p: Plant; st: Stamps }) => [...(firstSync ? [x.p.growth] : []), x.st[chosen] ?? 0, -(x.p.replantedAt ?? x.p.plantedAt), stableStringify(identity(x.p))];
   const kept = a.kept || b.kept ? unionSorted(a.kept, b.kept).slice(0, MAX_KEPT) : undefined;
   const reached = mergeMap(a.reached as Record<string, number> | undefined, b.reached as Record<string, number> | undefined, Math.min) as Plant['reached'];
   if (stableStringify(identity(a)) !== stableStringify(identity(b))) {
-    const w = pick(a, b, idKey);
+    const w = pick({ p: a, st: as }, { p: b, st: bs }, idKey).p;
     return clean({ ...w, growth: Math.max(a.growth, b.growth) as Plant['growth'], reached, kept });
   }
   const key = `plant.${certId}`;
@@ -579,16 +581,22 @@ function mergeReports(a: Report[] | undefined, b: Report[] | undefined): Report[
   return [...byRef.values()].sort((x, y) => y.at - x.at || cmpText(x.ref, y.ref)).slice(0, MAX_REPORTS);
 }
 
-function mergeProgressRaw(a: Side<SyncedProgress>, b: Side<SyncedProgress>, firstSync = false): Side<SyncedProgress> {
+/** `firstSyncAt`: the first sync's Combine (its time): two different plants keep the more grown one, and that choice is stamped. */
+function mergeProgressRaw(a: Side<SyncedProgress>, b: Side<SyncedProgress>, firstSyncAt?: number): Side<SyncedProgress> {
   const byCert = mergeMap(a.state.byCert, b.state.byCert, (x, y) => x) ?? {};
+  const stamps = mergeStamps(a.stamps, b.stamps);
   for (const c of Object.keys(byCert)) {
     const x = a.state.byCert[c];
     const y = b.state.byCert[c];
-    if (x && y) byCert[c] = mergeCert(c, x, a.stamps, y, b.stamps, firstSync);
+    if (!x || !y) continue;
+    byCert[c] = mergeCert(c, x, a.stamps, y, b.stamps, firstSyncAt !== undefined);
+    // The first Combine chose between two plants: stamp the choice, so a phone still holding the other one never undoes it.
+    const id = (p: Plant) => stableStringify(clean({ species: p.species, plantedAt: p.plantedAt, replantedAt: p.replantedAt }));
+    if (firstSyncAt !== undefined && x.plant && y.plant && id(x.plant) !== id(y.plant)) stamps[`plantId.${c}`] = Math.max(stamps[`plantId.${c}`] ?? 0, firstSyncAt);
   }
   return {
     state: clean({ byCert, streak: mergeStreak(a.state.streak, b.state.streak), reports: mergeReports(a.state.reports, b.state.reports) }) as SyncedProgress,
-    stamps: mergeStamps(a.stamps, b.stamps),
+    stamps,
   };
 }
 
@@ -644,7 +652,7 @@ export function mergeSides<T extends SyncedSettings | SyncedProgress>(store: Syn
   const rawMerge = (p: Side<T>, q: Side<T>) =>
     (store === 'settings'
       ? mergeSettingsRaw(p as unknown as Side<SyncedSettings>, q as unknown as Side<SyncedSettings>)
-      : mergeProgressRaw(p as unknown as Side<SyncedProgress>, q as unknown as Side<SyncedProgress>, ctx.firstSync)) as unknown as Side<T>;
+      : mergeProgressRaw(p as unknown as Side<SyncedProgress>, q as unknown as Side<SyncedProgress>, ctx.firstSync ? ctx.now : undefined)) as unknown as Side<T>;
   // Each side in its canonical form first (sorted sets, one entry per day…), so a
   // value only one side has is in the same form as a merged one.
   const x = rawMerge(clampFuture(store, a, ctx.now), clampFuture(store, a, ctx.now));

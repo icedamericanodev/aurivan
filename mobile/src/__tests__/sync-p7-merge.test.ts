@@ -100,17 +100,27 @@ describe('CR-P7 N9: two different plants (lead decision)', () => {
     const first = mergeSides('progress', oldSeed, newGrown, fctx);
     expect(canon(first)).toBe(canon(mergeSides('progress', newGrown, oldSeed, fctx)));
     expect(first.state.byCert.cisa.plant).toMatchObject({ species: 'lotus', name: 'Hana' });
-    // The other phone (which had the lotus) syncs as usual afterwards: still the lotus everywhere.
-    expect(mergeSides('progress', newGrown, first, ctx).state.byCert.cisa.plant).toMatchObject({ species: 'lotus', name: 'Hana' });
+    expect(first.stamps['plantId.cisa']).toBe(T0);
+    // A phone that still holds the old (earlier) oak syncs as usual afterwards, either order: the lotus stays.
+    expect(mergeSides('progress', oldSeed, first, ctx).state.byCert.cisa.plant).toMatchObject({ species: 'lotus', name: 'Hana' });
+    expect(canon(mergeSides('progress', first, oldSeed, ctx))).toBe(canon(mergeSides('progress', oldSeed, first, ctx)));
+    // Without two different plants nothing is stamped.
+    expect(mergeSides('progress', newGrown, newGrown, fctx).stamps['plantId.cisa']).toBeUndefined();
   });
 
-  it('associative over many triples of different plants (identity keys only)', () => {
+  // Some sides carry a first-sync choice stamp (it travels with its plant).
+  const stamped = (at: number | undefined, x: Side<SyncedProgress>): Side<SyncedProgress> => (at === undefined ? x : { ...x, stamps: { ...x.stamps, 'plantId.cisa': at } });
+
+  it('associative over many triples of different plants (identity keys and their own stamp only)', () => {
     const species = ['oak', 'lotus', 'maple'];
     for (let i = 0; i < 60; i++) {
       const mk = (k: number) =>
-        side(
+        stamped(
+          (i + k) % 5 === 0 ? T0 - k * DAY : undefined,
+          side(
           plant({ species: species[(i + k) % 3], name: ['Kai', 'Hana', 'Ledger'][(i * k) % 3], plantedAt: T0 - ((i * 7 + k * 13) % 40) * DAY, growth: 1 + ((i + k) % 3), ...((i + k) % 4 === 0 ? { replantedAt: T0 - k * DAY } : {}) }),
-          (i + k) % 2 ? answers : some,
+            (i + k) % 2 ? answers : some,
+          ),
         );
       const [a, b, c] = [mk(1), mk(2), mk(3)];
       const left = mergeSides('progress', mergeSides('progress', a, b, ctx), c, ctx);
