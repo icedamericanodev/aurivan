@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert';
-import { providersOf, supabaseAdmin, type SupabaseLike } from './supabaseAdmin.ts';
+import { providersOf, snapshotsToStores, supabaseAdmin, type SupabaseLike } from './supabaseAdmin.ts';
 import { USER_A } from './testing.ts';
 
 type Rpc = { fn: string; args: Record<string, unknown> };
@@ -10,6 +10,7 @@ function fakeClient(opts: {
   deleteError?: unknown;
   rpcResult?: { data: unknown; error: unknown };
   profile?: { data: unknown; error: unknown };
+  snapshots?: { data: unknown; error: unknown };
 } = {}) {
   const rpcs: Rpc[] = [];
   const queries: string[] = [];
@@ -28,7 +29,10 @@ function fakeClient(opts: {
       select: (cols) => ({
         eq: (col, val) => {
           queries.push(`${table}:${cols}:${col}=${val}`);
-          return { maybeSingle: () => Promise.resolve(opts.profile ?? { data: null, error: null }) };
+          const rows = Promise.resolve(opts.snapshots ?? { data: [], error: null });
+          return Object.assign(rows, {
+            maybeSingle: () => Promise.resolve(opts.profile ?? { data: null, error: null }),
+          });
         },
       }),
     }),
@@ -140,9 +144,51 @@ Deno.test('a failed call throws without the database message', async () => {
   }
 });
 
-Deno.test('Phase 6 stubs: no board rows, no files, no snapshots yet', async () => {
+Deno.test('stubs until Phase 8: no board rows, no files', async () => {
   const admin = supabaseAdmin(fakeClient().client);
   assert.deepEqual(await admin.countBoardRows(USER_A), { posts: 0, comments: 0 });
-  assert.deepEqual(await admin.readSnapshots(USER_A), {});
   await admin.deleteUserFiles(USER_A);
+});
+
+Deno.test('readSnapshots (Phase 7): the caller’s own rows, as backup-file stores', async () => {
+  const { client, queries } = fakeClient({
+    snapshots: {
+      data: [
+        { store: 'progress', store_version: 1, state: { byCert: {}, changedAt: {} } },
+        { store: 'settings', store_version: 1, state: { activeCertId: 'cisa' } },
+        { store: 'notes', store_version: 1, state: {} },
+        { store: 'settings', store_version: 'x', state: {} },
+      ],
+      error: null,
+    },
+  });
+  const admin = supabaseAdmin(client);
+  assert.deepEqual(await admin.readSnapshots(USER_A), {
+    // The two fields a backup file needs and a snapshot never holds are added, so the file restores.
+    progress: { version: 1, state: { today: { day: '', answered: 0 }, byCert: {}, changedAt: {} } },
+    settings: { version: 1, state: { onboarded: true, activeCertId: 'cisa' } },
+  });
+  assert.deepEqual(queries, [`sync_snapshots:store, store_version, state:user_id=${USER_A}`]);
+  // No rows: an empty `stores`, never an error.
+  assert.deepEqual(await supabaseAdmin(fakeClient().client).readSnapshots(USER_A), {});
+  // A database error throws without its message.
+  const failing = supabaseAdmin(
+    fakeClient({ snapshots: { data: null, error: { message: `relation for ${USER_A}` } } }).client,
+  );
+  await assert.rejects(
+    () => failing.readSnapshots(USER_A),
+    (e: unknown) => e instanceof Error && !e.message.includes(USER_A),
+  );
+});
+
+Deno.test('snapshotsToStores skips anything malformed', () => {
+  assert.deepEqual(snapshotsToStores(null), {});
+  assert.deepEqual(
+    snapshotsToStores([{ store: 'progress', store_version: 1, state: [1] }, {
+      store: 'progress',
+      store_version: 1,
+      state: null,
+    }]),
+    {},
+  );
 });

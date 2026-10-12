@@ -38,7 +38,7 @@ export interface AdminPort {
   recordDeletion(userId: string, counts: BoardCounts): Promise<void>;
   /** profiles.terms_version, or null when no profile exists yet. */
   getTermsVersion(userId: string): Promise<string | null>;
-  /** The learner's synced stores keyed by store name. Empty until sync ships (Phase 7). */
+  /** The learner's synced stores (`{ settings?, progress? }`, each `{ version, state }` like a backup file). Empty when sync was never used. */
   readSnapshots(userId: string): Promise<Record<string, unknown>>;
   /** Atomically claims the hourly export slot. false = already exported this hour. */
   claimExport(userId: string): Promise<boolean>;

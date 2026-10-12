@@ -2,7 +2,9 @@
 // "Download my data" (GDPR access and portability). Returns the learner's own
 // data only, as one JSON document for the share sheet:
 //   { app: 'aurivan', schema: 1, exportedAt, appVersion, stores, account }
-// `stores` is empty until sync ships (Phase 7); Phase 8 adds `board`.
+// `stores` holds the learner's synced snapshots (Phase 7) as backup-file
+// stores, so the download is also a backup the app can restore (empty when
+// sync was never used); Phase 8 adds `board`.
 //
 // A verified user (401 otherwise; 410 for an account already deleted), at
 // most once an hour (429 with Retry-After). No recent sign-in is required:
