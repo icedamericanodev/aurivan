@@ -10,10 +10,10 @@ name: Mobile
 on:
   pull_request:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
   push:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
 
 # Read-only token: `npm ci` runs third-party install scripts, which must not
 # be able to push to the repo.
@@ -39,6 +39,8 @@ jobs:
         run: npm ci
       - name: Typecheck
         run: npm run typecheck
+      - name: Cloud guard G8 (the server's copies of the board's text rules match the engine)
+        run: node scripts/sync-shared.mjs --check
       - name: Lint (includes the design-system guard)
         run: npm run lint
       - name: Unit + content tests
