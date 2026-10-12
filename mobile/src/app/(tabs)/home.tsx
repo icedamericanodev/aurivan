@@ -37,7 +37,8 @@ import { runPlanItem } from '../../lib/actions';
 import { haptic } from '../../lib/haptics';
 import { useTodayMoments } from '../../lib/moments';
 import { useJourney } from '../../lib/useJourney';
-import { checkPlant, seeGrowth, usePlantView } from '../../lib/plant';
+import { checkPlant, growQuietly, seeGrowth, usePlantView } from '../../lib/plant';
+import { markReacted } from '../../components/plant/LivePlant';
 import { grewLabel, growthBefore, plantCallName, type GrowthLevel } from '../../engine/plant';
 import { dayKey } from '../../engine/streak';
 import { useReports } from '../../lib/useReports';
@@ -156,11 +157,18 @@ export default function Today() {
   const plantView = usePlantView();
   const pending = plantView.plant?.pending;
   const [grown, setGrown] = useState<{ growth: GrowthLevel; line: string } | null>(null);
+  // Code review M1: the exam-ready panel and Elder usually arrive on the same
+  // visit (both come from a week held at 80%+). ONE moment: the panel keeps
+  // it, and the growth is applied silently (no sequence on the hidden plant,
+  // no second haptic); Your plant says it in a calm line next time.
+  const quietly = !!pending && showReady;
   // Set during render (React's pattern for state that follows the store).
-  if (pending && plantView.plant && grown?.growth !== pending) setGrown({ growth: pending, line: grewLabel(plantView.plant, pending) });
+  if (pending && plantView.plant && !quietly && grown?.growth !== pending) setGrown({ growth: pending, line: grewLabel(plantView.plant, pending) });
   useEffect(() => {
-    if (pending && focused) seeGrowth(cert);
-  }, [pending, focused, cert]);
+    if (!pending || !focused) return;
+    if (quietly) growQuietly(cert, pending);
+    else seeGrowth(cert);
+  }, [pending, focused, cert, quietly]);
   // Shown for this visit only: leaving Today puts the line away (Today stays mounted for days).
   useFocusEffect(useCallback(() => () => setGrown(null), []));
   // Mobile 1.14: the growth sequence (≤ 900 ms) plays in the plant's own
@@ -174,6 +182,39 @@ export default function Today() {
     if (growRun > 0 && Date.now() - clearingTapAt.current > CLEARING_TAP_MS) haptic.success();
   }, [growRun]);
   const growFrom = grown && plantView.plant ? growthBefore(plantView.plant, grown.growth) : null;
+  // The plant's one reaction for this occasion (its mood and the day), wherever
+  // it is first seen this session. Never on a growth visit (UX review H4: the
+  // growth IS that day's proud moment, so the occasion is spent), and it waits
+  // while the clearing plays (one thing moves at a time).
+  const reactionId = plantView.look ? `${cert}:${plantView.look.mood}:${dayKey(now)}` : null;
+  useEffect(() => {
+    if (grown && reactionId) markReacted(reactionId);
+  }, [grown, reactionId]);
+  const reaction = plantView.look && reactionId && focused && !grown && clearing.settled ? { id: reactionId, mood: plantView.look.mood } : null;
+  // Today is study-first: the plant and its visitor, never the keepsakes (UX review, decided).
+  const todayLook = plantView.look ? { ...plantView.look.art, keepsakes: [] } : undefined;
+  const todayPlant = (size: number, testID: string) =>
+    plantView.plant ? (
+      <PlantButton
+        testID={testID}
+        species={plantView.plant.species}
+        growth={plantView.plant.growth}
+        scales={plantView.scales}
+        quietLook={!plantView.face}
+        resting={plantView.resting}
+        size={size}
+        // Small detail at Today's sizes: the full level's extra marks don't read there (code review M6d).
+        lod="small"
+        // The name under the plant says "this is yours, tap it" (UX review).
+        caption={plantCallName(plantView.plant)}
+        label={plantView.label}
+        onPress={() => router.push('/plant')}
+        look={todayLook}
+        mood={plantView.look?.mood}
+        reaction={reaction}
+        grows={grown && growFrom ? { from: growFrom, celebration: growthMoment } : null}
+      />
+    ) : null;
   // One quiet line for a learner with no plant yet, until they plant or dismiss it.
   const setPlantSettings = useProgress((s) => s.setPlantSettings);
   const plantPrompt = plantView.shown && !plantView.plant && !plantView.settings.promptHidden;
@@ -272,31 +313,21 @@ export default function Today() {
             rings={!showReady}
             ringsGrowth={ringsGrowth}
             rangeGrowth={rangeGrowth}
-            lead={
-              plantView.plant && !showReady ? (
-                <PlantButton
-                  testID="today-plant"
-                  species={plantView.plant.species}
-                  growth={plantView.plant.growth}
-                  scales={plantView.scales}
-                  quietLook={!plantView.face}
-                  resting={plantView.resting}
-                  size={104}
-                  // Small detail at 104pt: the full level's extra marks don't read at this size (code review M6d).
-                  lod="small"
-                  // The name under the plant says "this is yours, tap it" (UX review).
-                  caption={plantCallName(plantView.plant)}
-                  label={plantView.label}
-                  onPress={() => router.push('/plant')}
-                  look={plantView.look?.art}
-                  mood={plantView.look?.mood}
-                  // One reaction per occasion (the mood and the day), wherever the plant is first seen this session.
-                  reaction={plantView.look && focused ? { id: `${cert}:${plantView.look.mood}:${dayKey(now)}`, mood: plantView.look.mood } : null}
-                  grows={grown && growFrom ? { from: growFrom, celebration: growthMoment } : null}
-                />
-              ) : undefined
-            }
+            lead={plantView.plant && !showReady ? todayPlant(104, 'today-plant') : undefined}
           />
+        </Enter>
+      )}
+
+      {allDone && plantView.plant && (
+        // A cleared day (QA O-1): the plant, happy, with its visitor if one came,
+        // at a modest size under the clearing. The clearing stays the day's moment.
+        <Enter i={2} style={{ marginTop: space.lg }}>
+          <Row gap={space.md} style={{ alignItems: 'center' }}>
+            {todayPlant(88, 'today-plant-cleared')}
+            {plantView.look?.visiting ? (
+              <T v="meta" style={{ flex: 1 }}>{`A ${plantView.look.resolved.visitor} came by: you cleared today’s plan.`}</T>
+            ) : null}
+          </Row>
         </Enter>
       )}
 

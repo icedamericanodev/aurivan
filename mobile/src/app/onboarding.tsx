@@ -16,7 +16,7 @@
  */
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { BackHandler, KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle } from 'react-native-svg';
@@ -30,6 +30,7 @@ import { PlantNameField, SpeciesGrid } from '../components/plant/PlantUI';
 import { backfillLine, plantCallName, plantHasFace, plantLabel, SPECIES_INFO, SPROUT_ANSWERS, suggestName, type PlantSpecies } from '../engine/plant';
 import { LivePlant } from '../components/plant/LivePlant';
 import { haptic } from '../lib/haptics';
+import { moveFocus } from '../lib/a11y';
 import { plantFor } from '../lib/plant';
 import { selectCert, useProgress } from '../store/progress';
 import { TAGLINE, VISION_LINE } from '../content/brand';
@@ -63,6 +64,9 @@ export default function Onboarding() {
 
   // After planting (step 4): on to Today.
   const finishPlanted = useCallback(() => router.replace('/home'), []);
+  // "Plant it" is gone once the step changes: screen-reader focus moves to the
+  // "Planted" header instead of being dropped (UX review P16, code review M10b).
+  const plantedRef = useRef<View>(null);
 
   // Android's back button steps back through onboarding; on the welcome step
   // it does the default (onboarding is the first screen, so the app closes).
@@ -131,6 +135,7 @@ export default function Onboarding() {
       plantFor(certId, species, plantName);
       haptic.light();
       setStep(4);
+      moveFocus(plantedRef);
       return;
     }
     // Skipped: no nudge on Today later; You keeps "Plant yours".
@@ -154,7 +159,9 @@ export default function Onboarding() {
             accessibilityLabel={plantLabel({ name: planted.name, species: planted.species, growth: planted.growth })}
           />
         </View>
-        <T v="display" center accessibilityRole="header" style={{ marginTop: space.xl }}>Planted</T>
+        <View ref={plantedRef} accessible accessibilityRole="header" accessibilityLabel="Planted" style={{ marginTop: space.xl }}>
+          <T v="display" center>Planted</T>
+        </View>
         <T v="quote" center color={c.ink2} style={{ marginTop: space.sm }}>
           {planted.growth > 1 ? backfillLine(planted, planted.growth) : `Your first ${SPROUT_ANSWERS} answers give ${plantCallName(planted)} its first sprout.`}
         </T>

@@ -933,17 +933,17 @@ export function resetCelebrationsForTest() {
 }
 
 /**
- * Decide (and record) how one celebration of `kind` plays now. `first`: the
- * first time this kind has ever shown (its one success haptic, for example).
- */
-/**
  * Moments too rare to wear out (behavioural review §2): the plant's growth
- * sequence happens at most five times in a learner's life, so it never
- * drops to the short form for being repeated (it still keeps the one-full-
- * moment-per-session rule and the session budget).
+ * sequence comes once per growth (a Reset can bring the growths back), so it
+ * never drops to the short form for being repeated (it still keeps the
+ * one-full-moment-per-session rule and the session budget).
  */
 const NEVER_FATIGUED = new Set(['plant-growth']);
 
+/**
+ * Decide (and record) how one celebration of `kind` plays now. `first`: the
+ * first time this kind has ever shown (its one success haptic, for example).
+ */
 export function pickCelebration(kind: string, reduced: boolean, shortOnly = false): { mode: CelebrationMode; first: boolean } {
   const seen = useSeen.getState();
   const times = seen.moments[kind] ?? 0;
@@ -951,7 +951,7 @@ export function pickCelebration(kind: string, reduced: boolean, shortOnly = fals
   const first = times === 0;
   if (reduced) return { mode: 'static', first };
   // `shortOnly`: a moment that never plays in full (a badge's higher tier, mobile 1.10).
-  // A kind in NEVER_FATIGUED keeps its full form every time (the plant grows at most five times in a life).
+  // A kind in NEVER_FATIGUED keeps its full form every time (it is rare: once per growth).
   const fatigued = times >= motion.celebrate.fullTimes && !NEVER_FATIGUED.has(kind);
   if (shortOnly || sessionFull || fatigued || !claimDecor(motion.dur.celebrate)) {
     // Even the short form is decoration: past the budget, the end state just shows.

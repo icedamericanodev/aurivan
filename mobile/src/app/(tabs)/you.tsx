@@ -51,6 +51,9 @@ import { useSettings } from '../../store/settings';
 import { motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
+/** When You's rings have finished growing (five arcs, outer first 60 ms apart, each over `grow`): the plant breathes after. */
+const RINGS_SETTLED_MS = motion.dur.grow + 4 * motion.stagger.stat;
+
 export default function You() {
   const { c } = useTheme();
   const { cert, readiness, progress, streak, dueCount } = useActiveCert();
@@ -121,7 +124,8 @@ export default function You() {
           // The plant opens Your plant; its growth reads in words beside it ("growth", never "stage").
           <ListRow
             lead={
-              // Mobile 1.14: it takes two slow breaths when You comes into view, then rests.
+              // Mobile 1.14: one slow breath the first time You comes into view this
+              // session, once the rings have grown (one thing moves at a time), then still.
               <LivePlant
                 species={plant.plant.species}
                 stage={plant.plant.growth}
@@ -133,7 +137,8 @@ export default function You() {
                 // At 64pt keepsakes would shrink the plant to fit them: the row shows the plant and its colours.
                 look={plant.look ? { ...plant.look.art, keepsakes: [] } : undefined}
                 mood={plant.look?.mood}
-                breathe
+                breathe="you"
+                breatheDelay={rings.play ? RINGS_SETTLED_MS : 0}
               />
             }
             title={plantCallName(plant.plant)}

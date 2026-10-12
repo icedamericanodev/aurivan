@@ -23,6 +23,7 @@ import { PlantNote } from '../components/plant/PlantUI';
 import { Button, ListRow, ProgressBar, PushedHeader, Section, T, Tag, useFontScale } from '../components/ui';
 import {
   backfillLine,
+  grewLabel,
   GROWTH_LOOKS,
   GROWTH_NAMES,
   growthShort,
@@ -34,10 +35,12 @@ import {
   SPECIES_INFO,
   shownName,
   SPREAD_EXPLAINER,
+  type GrowthLevel,
 } from '../engine/plant';
 import { dayKey } from '../engine/streak';
 import { plantFactsFor, seePlantBackfill, usePlantView } from '../lib/plant';
 import { useActiveCert } from '../lib/useActiveCert';
+import { useSeen } from '../store/seen';
 import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
@@ -62,6 +65,15 @@ export default function YourPlant() {
   useEffect(() => {
     if (backfill && !backfill.seen) seePlantBackfill(certId);
   }, [backfill, certId]);
+
+  // A grow-up Today applied silently (the exam-ready panel had that visit's
+  // one moment, code review M1): one calm line here, once, kept for this visit.
+  const quiet = useSeen((s) => s.quietGrowth?.[certId]);
+  const [grewQuietly, setGrewQuietly] = useState<number | null>(null);
+  if (p && quiet && grewQuietly !== quiet) setGrewQuietly(quiet);
+  useEffect(() => {
+    if (quiet) useSeen.getState().seeQuietGrowth(certId);
+  }, [quiet, certId]);
 
   if (!view.shown) {
     return (
@@ -97,7 +109,7 @@ export default function YourPlant() {
         <PushedHeader title="Your plant" onBack={() => (router.canGoBack() ? router.back() : router.replace('/you'))} />
 
         <View style={{ alignItems: 'center', marginTop: space.sm }}>
-          {/* Mobile 1.14: dressed in its look; two slow breaths on arrival, then still; one reaction per occasion. */}
+          {/* Mobile 1.14: dressed in its look; one slow breath the first time it opens this session, then still; one reaction per occasion. */}
           <LivePlant
             testID="plant-hero"
             species={p.species}
@@ -111,7 +123,7 @@ export default function YourPlant() {
             accessibilityLabel={view.label}
             look={view.look?.art}
             mood={view.look?.mood}
-            breathe
+            breathe="plant"
             reaction={view.look ? { id: `${certId}:${view.look.mood}:${dayKey(now)}`, mood: view.look.mood } : null}
           />
         </View>
@@ -122,8 +134,9 @@ export default function YourPlant() {
           <T v="meta" center style={{ marginTop: space.xs }}>{`A ${view.look.resolved.visitor} came by: you cleared today’s plan.`}</T>
         ) : null}
 
-        {(kept || rest) && (
+        {(kept || rest || grewQuietly) && (
           <View style={{ marginTop: space.xl, gap: space.lg }}>
+            {grewQuietly ? <PlantNote caption="Your plant grew" line={grewLabel(p, grewQuietly as GrowthLevel)} testID="plant-grew-quietly" /> : null}
             {kept && <PlantNote caption="From your study so far" line={kept.line} testID="plant-backfill" />}
             {rest && <PlantNote caption={view.exam === 'day' ? 'Exam day' : 'Resting'} line={rest} testID="plant-rest" />}
           </View>

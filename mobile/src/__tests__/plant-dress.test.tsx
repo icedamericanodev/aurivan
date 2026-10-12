@@ -166,7 +166,7 @@ describe('motion layers and caches', () => {
     const a = buildPlant({ species: 'pine', stage: 4, look: { palette: 'silver', keepsakes: ['fox'] } });
     expect(buildPlant({ species: 'pine', stage: 4, look: { palette: 'silver', keepsakes: ['fox'] } })).toBe(a);
     for (let i = 0; i < 300; i++) buildPlant({ species: PLANT_SPECIES[i % 13], stage: 1 + (i % 6), theme: i % 2 ? 'dark' : 'light', look: { keepsakes: [KEEPSAKE_ITEMS[i % 22].id] } });
-    expect(builtCacheSize()).toBeLessThanOrEqual(96);
+    expect(builtCacheSize()).toBeLessThanOrEqual(32);
   });
 
   it('growthBefore: the growth a grow-up started from (skipped growths share a time)', () => {
@@ -200,13 +200,13 @@ describe('<LivePlant>', () => {
   it('is one image with the spoken label from its first frame, whatever moves', () => {
     setMockReducedMotion(false);
     setSystemReducedMotionForTest(false);
-    mount(<LivePlant testID="live" species="oak" stage={5} size={200} theme="light" accessibilityLabel="Kai, your oak." breathe reaction={{ id: 'x', mood: 'happy' }} growth={{ from: 4, celebration: full }} />);
+    mount(<LivePlant testID="live" species="oak" stage={5} size={200} theme="light" accessibilityLabel="Kai, your oak." breathe="plant" reaction={{ id: 'x', mood: 'happy' }} growth={{ from: 4, celebration: full }} />);
     expect(host().props.accessibilityRole).toBe('image');
     expect(host().props.accessibilityLabel).toBe('Kai, your oak.');
   });
 
   it('Reduce Motion: the end state only (no old growth drawn, nothing transformed)', () => {
-    mount(<LivePlant testID="live" species="oak" stage={5} size={200} theme="light" breathe reaction={{ id: 'y', mood: 'proud' }} growth={{ from: 4, celebration: { ...full, mode: 'static', settled: true } }} />);
+    mount(<LivePlant testID="live" species="oak" stage={5} size={200} theme="light" breathe="plant" reaction={{ id: 'y', mood: 'proud' }} growth={{ from: 4, celebration: { ...full, mode: 'static', settled: true } }} />);
     // back, plant, front: one moving layer (the plant), no old growth.
     const animated = r!.root.findAll((n) => typeof n.type === 'string' && Array.isArray(n.props.style) && JSON.stringify(n.props.style).includes('transformOrigin'));
     expect(animated).toHaveLength(1);
