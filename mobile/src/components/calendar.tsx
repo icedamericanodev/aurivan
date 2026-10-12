@@ -14,7 +14,7 @@
  * - at large text (×1.3 and up) the grid comes BEFORE the quick choices:
  *   the wrapped chips would otherwise push the grid out of view;
  * - one line says what is chosen ("Fri 8 Jan 2027 · In 88 days", or
- *   "Sun 1 Mar 2026 · Passed" for a saved date already gone);
+ *   "Sun 1 Mar 2026 · Date passed" for a saved date already gone);
  * - Save. Nothing changes until Save; Cancel (the header) or the dim closes.
  *   "Not sure yet" is the way to clear the date (one control, not two).
  *
@@ -78,10 +78,10 @@ export function cellSize(width: number): { w: number; h: number; bleed: number }
   return { w, h: Math.max(MIN_TARGET, w), bleed: space.gutter - space.sm };
 }
 
-/** "Fri 8 Jan 2027 · In 88 days", "Sun 1 Mar 2026 · Passed" for a date already gone, or the no-date line. */
+/** "Fri 8 Jan 2027 · In 88 days", "Sun 1 Mar 2026 · Date passed" for a date already gone, or the no-date line. */
 export function chosenLine(date: string | undefined, today: string): string {
   if (!date) return 'No date yet. Your plan works without one.';
-  return `${shortDayLabel(date)} · ${untilLabel(date, today) ?? 'Passed'}`;
+  return `${shortDayLabel(date)} · ${untilLabel(date, today) ?? 'Date passed'}`;
 }
 
 export function CalendarSheet({
@@ -164,7 +164,7 @@ export function CalendarSheet({
       footer={
         <>
           {/* Not capped: at large text it wraps to a second line rather than staying small. Spoken in full. */}
-          <T v="small" center color={c.ink} accessibilityLabel={draft ? `Chosen: ${spokenDate(draft)}. ${untilLabel(draft, today) ?? 'Passed'}` : chosenLine(undefined, today)}>
+          <T v="small" center color={c.ink} accessibilityLabel={draft ? `Chosen: ${spokenDate(draft)}. ${untilLabel(draft, today) ?? 'Date passed'}` : chosenLine(undefined, today)}>
             {chosenLine(draft, today)}
           </T>
           <Button label="Save" accessibilityHint="Saves this exam date. Your plan follows it." onPress={() => onSave(draft)} />
