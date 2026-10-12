@@ -145,7 +145,8 @@ await go('/home', 2600);
 await shot('f06-today-10min-reviews');
 
 // f07: Exam-focused, no reviews due, no mock this week, one weak domain: the
-// mini mock leads, then the weak spots (never a lesson).
+// weak spots lead (never a lesson), and the mini mock follows in "Also today",
+// "Optional this week" (PR #45 review: a mock never leads the hero).
 await restoreStudy();
 await edit(P, `const c = v.state.byCert.cisa; c.review = {}; c.mocks = []; v.state.days = {}; v.state.plantSettings = { promptHidden: true };
   let k = 0; for (const [id, r] of Object.entries(c.answers)) if (id.startsWith('d3_') && k++ % 2 === 0) { r.lastCorrect = false; }`);
