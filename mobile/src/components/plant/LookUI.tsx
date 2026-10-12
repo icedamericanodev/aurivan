@@ -9,12 +9,14 @@
  * with its name, state and line.
  */
 import { type ReactNode } from 'react';
-import { Pressable, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { radius, raisedShadow, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
-import { T } from '../ui';
-export { KeepsakeIcon } from './Keepsake';
+import { Check, ICON_STROKE } from '../icons';
+import { AnimatedPressable, StateLayer, usePressScale } from '../motion';
+import { ICON_SIZE, T } from '../ui';
+export { KeepsakeIcon, PlanterIcon } from './Keepsake';
 
 /** A small colour swatch (a colourway's three tones), decorative. */
 export function Swatch({ tones, size = 28 }: { tones: readonly string[]; size?: number }) {
@@ -47,18 +49,29 @@ export interface LookOptionProps {
   testID?: string;
 }
 
+/**
+ * One choice. Selected = a 2px ink ring that cross-fades in (an always-
+ * mounted StateLayer, so nothing reflows; UX review P11); a shown keepsake
+ * also gets a ✓. Press: the soft tint fades in under the row. Locked: a
+ * dashed outline and how to open it. A keepsake that can't be shown while
+ * three are on show is drawn muted (UX review H3), and says why.
+ */
 export function LookOption({ name, line, art, selected, locked, multi = false, full = false, row, width, onPress, testID }: LookOptionProps) {
   const { c, isDark } = useTheme();
-  const disabled = locked || (multi && full && !selected);
+  const waiting = multi && full && !selected && !locked;
+  const disabled = locked || waiting;
+  const press = usePressScale({ scale: 1, tint: disabled ? undefined : c.soft, tintRadius: radius.md });
   const state = locked ? 'Not open yet.' : '';
   return (
-    <Pressable
+    <AnimatedPressable
       accessibilityRole={multi ? 'checkbox' : 'radio'}
       accessibilityState={{ checked: selected, disabled }}
-      accessibilityLabel={`${name}.${state ? ` ${state}` : ''}${line ? ` ${line}` : ''}${multi && full && !selected && !locked ? ' Put one away to show this.' : ''}`}
+      accessibilityLabel={`${name}.${state ? ` ${state}` : ''}${line ? ` ${line}` : ''}${waiting ? ' Put one away to show this.' : ''}`}
       onPress={disabled ? undefined : onPress}
+      onPressIn={disabled ? undefined : press.onPressIn}
+      onPressOut={disabled ? undefined : press.onPressOut}
       testID={testID}
-      style={({ pressed }) => [
+      style={[
         {
           width: row ? undefined : width,
           minHeight: 56,
@@ -67,20 +80,23 @@ export function LookOption({ name, line, art, selected, locked, multi = false, f
           gap: space.md,
           borderRadius: radius.md,
           backgroundColor: locked ? 'transparent' : c.raised,
-          // Selected = 2px ink border (shape, not colour alone); a locked one is a dashed outline.
-          borderWidth: selected ? 2 : 1.5,
+          // The idle outline never changes width, so selecting never moves a thing.
+          borderWidth: 1.5,
           borderStyle: locked ? 'dashed' : 'solid',
-          borderColor: selected ? c.ink : locked ? c.control : isDark ? c.line : 'transparent',
-          paddingVertical: selected ? space.sm - 0.5 : space.sm,
-          paddingHorizontal: selected ? space.md - 0.5 : space.md,
+          borderColor: locked ? c.control : isDark ? c.line : 'transparent',
+          paddingVertical: space.sm,
+          paddingHorizontal: space.md,
         },
         !isDark && !locked && raisedShadow,
-        pressed && !disabled && { opacity: 0.85 },
+        press.style,
       ]}
     >
-      {art ? <View style={{ opacity: locked ? 0.5 : 1 }}>{art}</View> : null}
+      {press.layer}
+      {/* The selection ring: 2px ink over the idle outline, cross-fading (shape, not colour alone). */}
+      <StateLayer on={selected} style={[styles.ring, { borderColor: c.ink }]} />
+      {art ? <View style={{ opacity: locked || waiting ? 0.5 : 1 }}>{art}</View> : null}
       <View style={{ flex: 1, minWidth: 0 }}>
-        <T v="label" color={locked ? c.ink2 : c.ink}>
+        <T v="label" color={locked || waiting ? c.ink2 : c.ink}>
           {name}
         </T>
         {line ? (
@@ -89,6 +105,19 @@ export function LookOption({ name, line, art, selected, locked, multi = false, f
           </T>
         ) : null}
       </View>
-    </Pressable>
+      {multi && !locked ? (
+        // A shown keepsake's ✓ fades in with its ring.
+        <View style={{ width: ICON_SIZE.inline, height: ICON_SIZE.inline }}>
+          <StateLayer on={selected}>
+            <Check size={ICON_SIZE.inline} color={c.ink} strokeWidth={ICON_STROKE} />
+          </StateLayer>
+        </View>
+      ) : null}
+    </AnimatedPressable>
   );
 }
+
+const styles = StyleSheet.create({
+  // Drawn over the 1.5pt idle outline (inset −1.5), so the ring sits exactly on it.
+  ring: { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5, borderRadius: radius.md + 1.5, borderWidth: 2 },
+});

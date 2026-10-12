@@ -89,6 +89,13 @@ const layout = (width: number) => {
     sv.props.onLayout({ nativeEvent: { layout: { width, height: 800 } } });
   });
 };
+/** Opens the closed "More to find" group (the planters and keepsakes still to earn). */
+const openMore = () => {
+  const b = root().findAll((n) => n.props.testID === 'look-more' && typeof n.props.onPress === 'function')[0];
+  act(() => {
+    b.props.onPress();
+  });
+};
 const earn = (key: string, certId = 'cisa') =>
   act(() => {
     useProgress.setState((s) => {
@@ -149,8 +156,15 @@ describe('Look', () => {
     expect(robin.props.accessibilityState).toMatchObject({ checked: false, disabled: true });
     expect(robin.props.accessibilityLabel).toMatch(/Not open yet\. Opens when your plant reaches Shoot\./);
     expect(robin.props.onPress).toBeUndefined();
-    expect(allText()).toMatch(/Opens with the Dress Rehearsal badge\./);
-    expect(allText()).toMatch(/Opens when you complete Groundwork in your badges\./);
+    // UX review P1: planters and keepsakes still to earn wait in one closed "More to find" group (no count).
+    expect(option('lantern')).toBeUndefined();
+    expect(allText()).toMatch(/More to find/);
+    expect(allText()).not.toMatch(/More to find \(?\d/);
+    openMore();
+    expect(allText()).toMatch(/Badges and finished badge sets add more\. Each one says how\./);
+    expect(option('lantern').props.accessibilityState).toMatchObject({ disabled: true });
+    expect(allText()).toMatch(/Sit a full, timed mock \(the Dress Rehearsal badge\)\./);
+    expect(allText()).toMatch(/Opens when you finish the Groundwork set in Badges\./);
     // No collection counters (only the plant's own "growth n of 6"), no "unlocked!", never "Pokémon".
     expect(allText().replace(/growth \d of 6/, '')).not.toMatch(/\b\d+ of \d+\b|collected|unlocked!|Pokémon|Pokemon/i);
   });
@@ -159,14 +173,17 @@ describe('Look', () => {
     setPlant(plantNew('oak', 'Kai', Date.now(), 3));
     for (const k of ['dress-rehearsal', 'on-pace', 'long-memory:25', 'snare-wise']) earn(k);
     mount(<PlantLook />);
-    for (const id of ['lantern', 'sundial', 'jay']) tap(id);
-    expect(cp().plant!.look?.keepsakes).toEqual(['lantern', 'sundial', 'jay']);
+    // Never chosen: the first three earned show (UX review H1; same time here, so catalogue order).
+    expect(cp().plant!.look?.keepsakes).toBeUndefined();
+    for (const id of ['jay', 'lantern', 'sundial']) expect(option(id).props.accessibilityState).toMatchObject({ checked: true });
     const fox = option('fox');
     expect(fox.props.accessibilityState).toMatchObject({ disabled: true });
     expect(fox.props.accessibilityLabel).toMatch(/Put one away to show this\./);
+    // The first tap starts from what shows, and stores the learner's own list.
     tap('sundial');
+    expect(cp().plant!.look?.keepsakes).toEqual(['jay', 'lantern']);
     tap('fox');
-    expect(cp().plant!.look?.keepsakes).toEqual(['lantern', 'jay', 'fox']);
+    expect(cp().plant!.look?.keepsakes).toEqual(['jay', 'lantern', 'fox']);
     expect(option('lantern').props.accessibilityRole).toBe('checkbox');
     expect(option('oak-summer').props.accessibilityRole).toBe('radio');
   });
@@ -182,7 +199,7 @@ describe('Look', () => {
     mount(<PlantLook />);
     layout(393);
     expect(option('meadow').props.style).toBeDefined();
-    const w = (id: string) => JSON.stringify(option(id).props.style?.({ pressed: false }) ?? '');
+    const w = (id: string) => JSON.stringify(option(id).props.style ?? '');
     expect(w('meadow')).toMatch(/"width":172/);
     act(() => {
       r!.unmount();
@@ -263,10 +280,10 @@ describe('Today', () => {
 
 describe('the badge sheet', () => {
   it('one quiet line names the keepsake on your plant', () => {
-    expect(onYourPlantLine('dress-rehearsal')).toBe('On your plant: the lantern.');
+    expect(onYourPlantLine('dress-rehearsal', ['lantern'])).toBe('On your plant: the lantern.');
     const mark = { key: 'dress-rehearsal', badge: 'dress-rehearsal', set: 'examDay', name: 'Dress Rehearsal', caption: 'Dress Rehearsal', status: 'earned', earnedAt: Date.now(), progress: 1, detail: '', rule: 'r', howTo: '', unlock: 'u', effort: 'e', skill: 's', minDays: 1, counted: true, order: 1 } as never;
     const set = { info: { id: 'examDay', name: 'Exam Day', counted: true }, marks: [], completeAt: undefined } as never;
-    mount(<BadgeSheet mark={mark} set={set} domains={[]} stage={'learn' as never} daysLeft={null} dueCount={0} showProgress onClose={() => {}} onStudy={() => {}} plantLine={onYourPlantLine('dress-rehearsal')} />);
+    mount(<BadgeSheet mark={mark} set={set} domains={[]} stage={'learn' as never} daysLeft={null} dueCount={0} showProgress onClose={() => {}} onStudy={() => {}} plantLine={onYourPlantLine('dress-rehearsal', ['lantern'])} />);
     expect(allText()).toMatch(/On your plant: the lantern\./);
     expect(allText()).not.toMatch(/Unlocked|\d+ of \d+ collected/i);
   });

@@ -3,7 +3,9 @@
  *
  * A live preview at the top (it stays in view while the choices scroll),
  * then five sections: Colour, Ground, Planter, Visitor and Keepsakes (show up
- * to three). A tap changes the look at once; nothing to save.
+ * to three). A tap changes the look at once; nothing to save. Planter and
+ * Keepsakes list what is open; the planters and keepsakes still to earn sit
+ * in one closed "More to find" group at the end, each saying how (UX P1).
  *
  * Unlocks are derived (engine/plantLooks.ts): every species' two colourways,
  * the Meadow, its own ground, a terracotta pot and the wren are free; the
@@ -16,28 +18,46 @@
  */
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
+import { ChevronDown, ICON_STROKE } from '../components/icons';
+import { Collapse, Turn } from '../components/motion';
 import { LivePlant } from '../components/plant/LivePlant';
-import { KeepsakeIcon, LookOption, Swatch } from '../components/plant/LookUI';
-import { PushedHeader, Section, T, useFontScale } from '../components/ui';
+import { KeepsakeIcon, LookOption, PlanterIcon, Swatch } from '../components/plant/LookUI';
+import { ICON_SIZE, PushedHeader, Row, Section, T, useFontScale } from '../components/ui';
 import { growthShort, plantCallName } from '../engine/plant';
-import { colourwaysFor, GROUNDS, howToOpen, skillLine, KEEPSAKE_ITEMS, MAX_SHOWN_KEEPSAKES, plantersFor, toggleKeepsake, VISITORS, type LookItem, type LookSlot } from '../engine/plantLooks';
+import { colourwaysFor, GROUNDS, howToOpen, skillLine, KEEPSAKE_ITEMS, lookItem, MAX_SHOWN_KEEPSAKES, plantersFor, toggleKeepsake, VISITORS, type LookItem, type LookSlot } from '../engine/plantLooks';
 import { haptic } from '../lib/haptics';
 import { usePlantView } from '../lib/plant';
 import { useProgress } from '../store/progress';
+import { useSettings } from '../store/settings';
 import { LARGE_TEXT, plantLeaf, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 /** Two tiles across when each gets at least this much width (else one column of rows). */
 const MIN_TILE = 150;
+/** From this text size the preview is at its smallest, so the choices keep the screen. */
+const HUGE_TEXT = 1.6;
+
+/**
+ * The preview's size (UX review P9): 140pt, 96pt at large text, 72pt at
+ * very large text or on a short phone (the choices need the room).
+ */
+export function previewSizeFor(fontScale: number, windowHeight: number): number {
+  if (fontScale >= HUGE_TEXT || windowHeight < 700) return 72;
+  return fontScale >= LARGE_TEXT ? 96 : 140;
+}
 
 export default function PlantLook() {
   const { c, isDark } = useTheme();
   const view = usePlantView();
   const scale = useFontScale();
-  const [width, setWidth] = useState(0);
+  const win = useWindowDimensions();
+  // The first frame already knows the width (UX review P10): no jump when the layout reports it.
+  const [width, setWidth] = useState(() => win.width - space.gutter * 2);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const badgesHidden = useSettings((s) => s.badgesHidden);
   const p = view.plant;
   const look = view.look;
 
@@ -68,9 +88,11 @@ export default function PlantLook() {
 
   const certId = view.certId;
   const set = useProgress.getState().setPlantLook;
+  const theme = isDark ? 'dark' : 'light';
   const rows = scale >= LARGE_TEXT || width < MIN_TILE * 2 + space.sm;
   const tile = rows ? undefined : Math.floor((width - space.sm) / 2);
   const open = (x: LookItem) => look.unlocked.has(x.id);
+  const how = (x: LookItem) => howToOpen(x, { badgesHidden });
   const r = look.resolved;
   const choose = (slot: Exclude<LookSlot, 'keepsake'>, id: string) => {
     haptic.selection();
@@ -78,8 +100,11 @@ export default function PlantLook() {
   };
   // The preview shows the visitor whatever the day, so the learner sees their choice.
   const preview = { ...look.art, visitor: r.visitor !== 'no-visitor' ? r.visitor : undefined };
-  // Smaller at large text, so the choices keep most of the screen.
-  const previewSize = scale >= LARGE_TEXT ? 96 : 140;
+  const previewSize = previewSizeFor(scale, win.height);
+  // The preview's label says what it draws (code review M10a): the plant, then its visitor, planter and keepsakes.
+  const named = (id: string | undefined) => (id ? lookItem(id)?.name.toLowerCase() : undefined);
+  const extras = [preview.visitor ? `a ${named(preview.visitor)}` : '', r.planter !== 'native' ? `in the ${named(r.planter)}` : '', ...r.keepsakes.map((k) => `the ${named(k)}`)].filter(Boolean);
+  const previewLabel = `Preview: ${view.label}${extras.length ? ` With ${extras.join(', ')}.` : ''}`;
 
   /**
    * One section's choices. Short ones (colour, ground, visitor) sit two
@@ -97,7 +122,7 @@ export default function PlantLook() {
               key={x.id}
               testID={`look-${x.id}`}
               name={x.name}
-              line={locked ? howToOpen(x) : (opts.line?.(x) ?? x.caption)}
+              line={locked ? how(x) : (opts.line?.(x) ?? x.caption)}
               art={opts.art?.(x)}
               selected={selected(x)}
               locked={locked}
@@ -113,10 +138,15 @@ export default function PlantLook() {
     );
   };
 
-  // The ribbon only appears once it is earned (it opens when you tell us you passed).
-  const keepsakes = KEEPSAKE_ITEMS.filter((k) => k.id !== 'ribbon' || open(k));
-  // Open ones first, in catalogue order; then the ones still to open.
-  const keepsakesSorted = [...keepsakes.filter(open), ...keepsakes.filter((k) => !open(k))];
+  const planters = plantersFor(p.species);
+  const planterArt = (x: LookItem) => <PlanterIcon id={x.id} species={p.species} size={40} theme={theme} />;
+  const keepsakeArt = (x: LookItem) => <KeepsakeIcon id={x.id} size={40} theme={theme} />;
+  // Planter and Keepsakes list only what is open (UX review P1). The ribbon is
+  // never listed until it is earned (it opens when you tell us you passed).
+  const openPlanters = planters.filter(open);
+  const openKeepsakes = KEEPSAKE_ITEMS.filter(open);
+  const morePlanters = planters.filter((x) => !open(x));
+  const moreKeepsakes = KEEPSAKE_ITEMS.filter((k) => !open(k) && k.id !== 'ribbon');
   const shown = r.keepsakes;
   const fullUp = shown.length >= MAX_SHOWN_KEEPSAKES;
 
@@ -135,9 +165,11 @@ export default function PlantLook() {
           quietLook={!view.face}
           size={previewSize}
           fit
-          theme={isDark ? 'dark' : 'light'}
+          // A preview: the small detail level, so each tap rebuilds quickly on a low-end phone (code review M8b).
+          lod="small"
+          theme={theme}
           look={preview}
-          accessibilityLabel={`Preview: ${view.label}`}
+          accessibilityLabel={previewLabel}
         />
         <T v="meta" center style={{ marginTop: space.xs }}>{`${plantCallName(p)} · ${growthShort(p.growth)}`}</T>
       </View>
@@ -165,34 +197,67 @@ export default function PlantLook() {
         {group('Ground', false, GROUNDS, (x) => x.id === r.ground, (x) => choose('ground', x.id))}
 
         <Section title="Planter" />
-        {group('Planter', false, plantersFor(p.species), (x) => x.id === r.planter, (x) => choose('planter', x.id), { asRows: true })}
+        {group('Planter', false, openPlanters, (x) => x.id === r.planter, (x) => choose('planter', x.id), { asRows: true, art: planterArt })}
 
         <Section title="Visitor" meta="Comes on days you clear your plan" />
         {group('Visitor', false, VISITORS, (x) => x.id === r.visitor, (x) => choose('visitor', x.id))}
 
-        <Section title="Keepsakes" meta={`Show up to ${MAX_SHOWN_KEEPSAKES === 3 ? 'three' : MAX_SHOWN_KEEPSAKES}`} />
-        <T v="meta">Each one is a badge you earned, kept by your plant.</T>
-        {group(
-          'Keepsakes',
-          true,
-          keepsakesSorted,
-          (x) => shown.includes(x.id),
-          (x) => {
-            haptic.selection();
-            // Toggle on what is STORED, so a keepsake whose badge a restore took
-            // away stays chosen (and comes back with the badge). Only when the
-            // learner needs the room is such a hidden one let go.
-            const stored = p.look?.keepsakes ?? [];
-            const room = stored.includes(x.id) || stored.length < MAX_SHOWN_KEEPSAKES ? stored : stored.filter((k) => look.unlocked.has(k));
-            set(certId, { keepsakes: toggleKeepsake(room, x.id) });
-          },
-          {
-            art: (x) => <KeepsakeIcon id={x.id} size={40} />,
-            full: fullUp,
-            asRows: true,
-            // The row already says its name: "The jay: you recall…" reads "You recall…".
-            line: skillLine,
-          },
+        <Section title="Keepsakes" meta={fullUp ? 'Three on show' : `Show up to ${MAX_SHOWN_KEEPSAKES === 3 ? 'three' : MAX_SHOWN_KEEPSAKES}`} />
+        {openKeepsakes.length ? (
+          <>
+            {/* Visible, not only spoken: why a tap does nothing once three are on show (UX review H3). */}
+            <View testID="look-keepsakes-help">
+              <T v="meta">{fullUp ? 'Tap one that’s on show to put it away, then pick another.' : badgesHidden ? 'Each one is kept by your plant.' : 'Each badge you earn leaves a keepsake here.'}</T>
+            </View>
+            {group(
+              'Keepsakes',
+              true,
+              openKeepsakes,
+              (x) => shown.includes(x.id),
+              (x) => {
+                haptic.selection();
+                // Toggle on what is STORED, so a keepsake whose badge a restore took
+                // away stays chosen (and comes back with the badge). Only when the
+                // learner needs the room is such a hidden one let go. Never chosen
+                // yet: start from what shows now (the first three earned).
+                const stored = p.look?.keepsakes ?? shown;
+                const room = stored.includes(x.id) || stored.length < MAX_SHOWN_KEEPSAKES ? stored : stored.filter((k) => look.unlocked.has(k));
+                set(certId, { keepsakes: toggleKeepsake(room, x.id) });
+              },
+              { art: keepsakeArt, full: fullUp, asRows: true, line: skillLine },
+            )}
+          </>
+        ) : (
+          <View testID="look-keepsakes-help">
+            <T v="meta">{badgesHidden ? 'Your plant keeps a small keepsake for each step you master.' : 'Each badge you earn leaves a keepsake here. Your first comes with the diagnostic.'}</T>
+          </View>
+        )}
+
+        {morePlanters.length + moreKeepsakes.length > 0 && (
+          <View style={{ marginTop: space.section }}>
+            {/* Closed by default: what is still to earn never crowds what is open. No count. */}
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ expanded: moreOpen }}
+              accessibilityLabel="More to find"
+              accessibilityHint={moreOpen ? 'Hides the planters and keepsakes still to earn' : 'Shows the planters and keepsakes still to earn, and how'}
+              onPress={() => setMoreOpen(!moreOpen)}
+              testID="look-more"
+              style={({ pressed }) => ({ minHeight: 48, justifyContent: 'center', backgroundColor: pressed ? c.soft : 'transparent' })}
+            >
+              <Row gap={space.sm}>
+                <T v="headline" style={{ flex: 1 }}>More to find</T>
+                <Turn deg={moreOpen ? 0 : -90}>
+                  <ChevronDown size={ICON_SIZE.row} color={c.muted} strokeWidth={ICON_STROKE} />
+                </Turn>
+              </Row>
+            </Pressable>
+            <Collapse open={moreOpen} rows>
+              <T v="meta" key="line">{badgesHidden ? 'Your study adds more. Each one says how.' : 'Badges and finished badge sets add more. Each one says how.'}</T>
+              {morePlanters.length ? <View key="planters">{group('Planters still to earn', false, morePlanters, () => false, () => {}, { asRows: true, art: planterArt })}</View> : null}
+              {moreKeepsakes.length ? <View key="keepsakes">{group('Keepsakes still to earn', true, moreKeepsakes, () => false, () => {}, { art: keepsakeArt, asRows: true })}</View> : null}
+            </Collapse>
+          </View>
         )}
       </ScrollView>
     </SafeAreaView>
