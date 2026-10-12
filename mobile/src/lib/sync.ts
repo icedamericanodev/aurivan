@@ -110,10 +110,12 @@ export interface StatusInput {
 /** The Sync section's one status line (spec §3.3). Pure. */
 export function statusLine(s: StatusInput): string {
   if (!s.signedIn) return copy(s.expired ? 'sync.status.signin' : 'sync.status.off');
-  if (!s.enabled) return copy('sync.status.off');
+  // Reading the account for the first-sync preview counts as syncing too.
+  if (!s.enabled) return copy(s.busy ? 'sync.status.busy' : 'sync.status.off');
   if (s.pausedReason) return copy(s.pausedReason === 'newer' ? 'sync.paused.newer' : s.pausedReason === 'unreadable' ? 'sync.paused.unreadable' : 'sync.paused.toobig');
-  if (s.busy) return copy('sync.status.busy');
-  if (s.offline || s.lastSyncAt === null) return copy('sync.status.offline');
+  if (s.offline) return copy('sync.status.offline');
+  // On, and the first sync hasn't finished yet: it is on its way.
+  if (s.busy || s.lastSyncAt === null) return copy('sync.status.busy');
   const ago = s.now - s.lastSyncAt;
   if (ago < 60_000) return copy('sync.status.just');
   if (ago < 60 * 60_000) return copy('sync.status.min', { n: String(Math.floor(ago / 60_000)) });

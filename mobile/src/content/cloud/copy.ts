@@ -174,6 +174,8 @@ export const ACCOUNT_COPY = {
   'first.undo': 'You can undo this for 7 days in Settings → Your data.',
   'first.undo.replaces': 'This replaces the earlier “Undo restore”.',
   'first.later': 'Not now',
+  // {email} in the preview and switch bodies when Apple hides the address ("You’re signed in as your Apple account (email hidden).").
+  'first.relay': 'your Apple account (email hidden)',
   'first.cols': 'This phone · Account · After',
   'first.col.phone': 'This phone',
   'first.col.account': 'Account',

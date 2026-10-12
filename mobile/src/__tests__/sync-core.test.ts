@@ -458,3 +458,42 @@ describe('the memory backend plays the server’s sync rules', () => {
     expect((await push(60)).rev).toBe(61);
   });
 });
+
+describe('Download my data with synced progress', () => {
+  it('the file holds the synced snapshots and restores as a backup (the device-only fields are filled in)', async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-require-imports */
+    const { readBackup } = require('../engine/backup') as typeof import('../engine/backup');
+    const A = makePhone('A');
+    answer(A, ids[0]);
+    answer(A, ids[1]);
+    await firstSync(A);
+    const text = await memory.auth.exportMyData({ appVersion: '1.18.0' });
+    const data = readBackup(text, CERT_IDS, undefined, '1.18.0');
+    expect(Object.keys(data.progress.byCert.cisa.answers!).sort()).toEqual([ids[0], ids[1]].sort());
+    expect(data.settings.activeCertId).toBe('cisa');
+    // Nothing device-local was ever in the account: the file's are neutral placeholders.
+    expect(JSON.parse(text).stores.settings.state).not.toHaveProperty('reminder');
+  });
+});
+
+describe('the screenshot seed (SHOTS=cloud)', () => {
+  it('its account copies are what they claim: "progress" passes the checker, the others don’t', () => {
+    /* eslint-disable @typescript-eslint/no-require-imports */
+    const { readSnapshot } = require('../engine/syncMerge') as typeof import('../engine/syncMerge');
+    const { shotsSeed, DEMO_USER_ID } = require('../cloud/memory/seed') as typeof import('../cloud/memory/seed');
+    /* eslint-enable @typescript-eslint/no-require-imports */
+    const g = globalThis as { localStorage?: unknown };
+    const ctx = { now: T0, knownCertIds: CERT_IDS, thisApp: '1.18.0' };
+    try {
+      for (const remote of ['progress', 'unreadable', 'newer'] as const) {
+        g.localStorage = { getItem: () => JSON.stringify({ signedIn: true, remote }) };
+        const snap = shotsSeed(T0).snapshots![DEMO_USER_ID]!.progress!;
+        const read = () => readSnapshot('progress', snap, ctx);
+        if (remote === 'progress') expect(read).not.toThrow();
+        else expect(read).toThrow(remote === 'newer' ? /newer/ : /unknown-cert/);
+      }
+    } finally {
+      delete g.localStorage;
+    }
+  });
+});

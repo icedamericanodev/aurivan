@@ -89,9 +89,11 @@ export default function RootLayout() {
     if (!CLOUD || !hydrated) return;
     let live = true;
     let stop = () => {};
+    // Sync starts only once the account check has loaded who is signed in (it reads that first).
     // initAccount and initSync never reject; the catch is a second line of defence (nothing unhandled at launch).
-    Promise.all([initAccount(), initSync()])
-      .then(([a, s]) => {
+    initAccount()
+      .then(async (a) => {
+        const s = await initSync();
         const both = () => {
           a();
           s();

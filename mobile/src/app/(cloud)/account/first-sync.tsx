@@ -46,7 +46,7 @@ export default function FirstSync() {
   if (!preview) return <Redirect href="/account" />;
 
   const words = WORDS[preview.case === 'none' ? 'phone' : preview.case];
-  const email = emailMasked ?? copy('you.row.in.sub.relay');
+  const email = emailMasked ?? copy('first.relay');
   const back = () => (router.canGoBack() ? router.back() : router.replace('/account'));
   const later = () => {
     dismissFirstSync();

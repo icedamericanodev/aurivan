@@ -52,7 +52,7 @@ export default function SwitchAccount() {
       <View ref={titleRef} accessible accessibilityRole="header" accessibilityLabel={copy('switch.title')} style={{ marginTop: space.sm }}>
         <T v="display">{copy('switch.title')}</T>
       </View>
-      <T v="body" style={{ marginTop: space.md }}>{copy('switch.body', { email: emailMasked ?? copy('you.row.in.sub.relay') })}</T>
+      <T v="body" style={{ marginTop: space.md }}>{copy('switch.body', { email: emailMasked ?? copy('first.relay') })}</T>
       <View accessibilityRole="radiogroup" style={{ marginTop: space.lg }}>
         <RadioRow title={copy('switch.fresh')} subtitle={copy('switch.fresh.sub')} checked={choice === 'fresh'} onPress={() => setChoice('fresh')} disabled={busy} />
         <RadioRow title={copy('switch.keep')} subtitle={copy('switch.keep.sub')} checked={choice === 'keep'} onPress={() => setChoice('keep')} disabled={busy} last />

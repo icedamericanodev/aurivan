@@ -25,6 +25,16 @@
 //   acct-del-resend  after too many wrong codes: back to "Send a code to …", with why
 //   acct-about       Settings → About line, flag on, signed out
 //   acct-signin-xl, acct-home-xl   about 200% text
+// Phase 7 (sync, spec §3.10):
+//   sync-status-just / -offline / -newer / -unreadable   Account → Sync in each status
+//   sync-first-phone / -account / -both                  the first-sync preview, each case
+//   sync-switch      a different account on this phone (Start fresh is the default)
+//   sync-undo        Settings → Your data with "Undo sync" (after a real first sync)
+//   sync-signout     the sign-out sheet with "Remove my progress from this phone"
+//   sync-what        What syncs
+//   sync-delete      the Delete synced progress confirmation
+//   sync-you         You, signed in, with its own Account section (UX O3)
+//   sync-first-both-xl   the preview at about 200% text
 //   off-you, off-settings          the flag-OFF build (served on 8094): proof nothing changed
 import { createRequire } from 'module';
 import fs from 'fs';
@@ -186,6 +196,119 @@ const tap = async (page, name) => {
   await ctx.close();
 }
 
+// ── Sync (Phase 7) ─────────────────────────────────────────────────────
+const SYNC = 'aurivan.sync.v1';
+const PROGRESS = 'aurivan.progress.v1';
+/** This phone already syncs (the launch sync then runs against the seeded account). */
+const syncOn = (page) =>
+  page.evaluate(
+    ([k]) =>
+      localStorage.setItem(
+        k,
+        JSON.stringify({
+          state: { enabled: true, lastRev: { settings: null, progress: null }, lastPushedHash: { settings: null, progress: null }, lastSyncAt: null, pausedReason: null, deferredPull: false, stamps: { settings: {}, progress: {} } },
+          version: 1,
+        }),
+      ),
+    [SYNC],
+  );
+const syncOff = (page) => page.evaluate(([k]) => localStorage.removeItem(k), [SYNC]);
+/** Put the demo learner's own progress and settings back (a launch sync above may have merged the account into them). */
+const reseed = (page) =>
+  page.evaluate(
+    ([p, s, pv, sv]) => {
+      localStorage.setItem(p, pv);
+      localStorage.setItem(s, sv);
+      localStorage.removeItem('aurivan.backup.v1');
+    },
+    [PROGRESS, 'aurivan.settings.v1', seed[PROGRESS], seed['aurivan.settings.v1']],
+  );
+/** Switch "Sync this phone" on: it reads the account, then opens the preview or the switch sheet. */
+const syncSwitch = async (page) => {
+  await page.getByRole('switch', { name: 'Sync this phone', exact: true }).first().click();
+  await page.waitForURL(/\/account\/(first-sync|switch)/, { timeout: 15000 });
+  await page.waitForTimeout(1200);
+};
+{
+  const { ctx, page } = await phone();
+  await go(page, ON, '/you');
+  // The four statuses: the launch sync runs against the account as seeded.
+  for (const [name, state] of [
+    ['sync-status-just', { signedIn: true, remote: 'progress' }],
+    ['sync-status-offline', { signedIn: true, remote: 'progress', offline: true }],
+    ['sync-status-newer', { signedIn: true, remote: 'newer' }],
+    ['sync-status-unreadable', { signedIn: true, remote: 'unreadable' }],
+  ]) {
+    await setState(page, state);
+    await syncOn(page);
+    await go(page, ON, '/account', 3200);
+    await shot(page, name);
+  }
+
+  // The preview: both have progress.
+  await setState(page, { signedIn: true, remote: 'progress' });
+  await syncOff(page);
+  await reseed(page);
+  await go(page, ON, '/account');
+  await syncSwitch(page);
+  await shot(page, 'sync-first-both');
+  // Combine, then Settings → Your data offers Undo sync.
+  await tap(page, 'Combine');
+  await page.waitForTimeout(1200);
+  await go(page, ON, '/settings');
+  await scrollTo(page, 'Your data', 120);
+  await shot(page, 'sync-undo');
+
+  // Only this phone has progress.
+  await setState(page, { signedIn: true });
+  await syncOff(page);
+  await reseed(page);
+  await go(page, ON, '/account');
+  await syncSwitch(page);
+  await shot(page, 'sync-first-phone');
+
+  // A different account synced on this phone before: the switch sheet.
+  await setState(page, { signedIn: true, remote: 'progress' });
+  await syncOff(page);
+  await page.evaluate(() =>
+    localStorage.setItem(
+      'aurivan.account.v1',
+      JSON.stringify({ state: { signedIn: true, emailMasked: 'm•••@example.com', providers: ['email', 'google'], syncedAccountHash: 'f'.repeat(64), expired: false }, version: 1 }),
+    ),
+  );
+  await go(page, ON, '/account');
+  await syncSwitch(page);
+  await shot(page, 'sync-switch');
+
+  // The sheets.
+  await setState(page, { signedIn: true, remote: 'progress' });
+  await syncOn(page);
+  await go(page, ON, '/account/sign-out');
+  await shot(page, 'sync-signout');
+  await go(page, ON, '/account/what-syncs');
+  await shot(page, 'sync-what');
+  await go(page, ON, '/account/delete-synced');
+  await shot(page, 'sync-delete');
+  await go(page, ON, '/you');
+  await scrollTo(page, 'Help and feedback', 420);
+  await shot(page, 'sync-you');
+
+  await ctx.close();
+}
+{
+  // Only the account has progress: a phone with no study yet. A fresh context: a page left open
+  // above with sync on can save its sync record again after this script removes it.
+  const { ctx, page } = await phone();
+  await go(page, ON, '/you');
+  await setState(page, { signedIn: true, remote: 'progress' });
+  await syncOff(page);
+  await page.evaluate(([k]) => localStorage.removeItem(k), [PROGRESS]);
+  await go(page, ON, '/account');
+  await syncSwitch(page);
+  await shot(page, 'sync-first-account');
+  await ctx.close();
+}
+
 // ── About 200% text ───────────────────────────────────────────────────
 {
   const { ctx, page } = await phone(2);
@@ -196,6 +319,15 @@ const tap = async (page, name) => {
   await setState(page, { signedIn: true, authAgeMin: 1 });
   await go(page, ON, '/account');
   await shot(page, 'acct-home-xl', 2);
+  // Phase 7: the preview at about 200% text (the rows stack).
+  await setState(page, { signedIn: true, remote: 'progress' });
+  await syncOff(page);
+  await reseed(page);
+  await go(page, ON, '/account');
+  await syncSwitch(page);
+  // The rows, stacked at large text (the title and body fill the first screen).
+  await scrollTo(page, 'Answered', 80);
+  await shot(page, 'sync-first-both-xl', 2);
   await ctx.close();
 }
 
