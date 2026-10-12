@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- DRAFT, NOT IN EFFECT. Uplift Phase 6 (accounts, built OFF). Published at the
+     site root, replacing privacy.html, only at Phase 9 with the owner's go-ahead,
+     after the [placeholders] are filled in. Phase 7 adds the Sync paragraph and
+     Phase 8 the feedback board paragraph (see the HTML comments below).
+     Links assume the page sits at the site root, where it will be published. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Privacy Policy (draft) — Aurivan</title>
+<meta name="description" content="Draft, not in effect: how Aurivan would handle your data if you choose to create an optional account.">
+<style>
+  :root {
+    --navy: #0B1E3D; --blue: #1D4ED8; --teal: #0F766E;
+    --ink: #1F2937; --ink2: #4B5563; --line: #E5E7EB;
+    --bg: #F8FAFC; --card: #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.65; font-size: 16px;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 32px 22px 64px; }
+  .draft {
+    background: #FEF3C7; border: 2px solid #B45309; color: #78350F;
+    border-radius: 10px; padding: 12px 16px; margin: 0 0 22px; font-size: 15px;
+  }
+  .draft strong { display: block; font-size: 17px; }
+  header.doc { border-bottom: 3px solid var(--blue); padding-bottom: 20px; margin-bottom: 28px; }
+  .brand { font-size: 22px; font-weight: 800; letter-spacing: 0.02em; color: var(--navy); text-decoration: none; }
+  .brand span { color: var(--blue); }
+  h1 { font-size: 30px; margin: 18px 0 6px; color: var(--navy); line-height: 1.2; }
+  .updated { font-size: 13px; color: var(--ink2); margin: 0; }
+  h2 { font-size: 19px; margin: 34px 0 10px; color: var(--navy); }
+  h3 { font-size: 16px; margin: 20px 0 6px; color: var(--teal); }
+  p, li { color: var(--ink); }
+  a { color: var(--blue); }
+  ul { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  .lead {
+    background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--teal);
+    border-radius: 10px; padding: 16px 18px; margin: 22px 0;
+  }
+  .lead p:first-child { margin-top: 0; }
+  .lead p:last-child { margin-bottom: 0; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14.5px; }
+  th, td { text-align: left; padding: 9px 10px; border: 1px solid var(--line); vertical-align: top; }
+  th { background: #EEF2FF; color: var(--navy); }
+  footer.doc { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 20px; font-size: 14px; color: var(--ink2);
+    display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  footer.doc a { margin-right: 0; white-space: nowrap; }
+  @media (max-width: 600px) {
+    .wrap { padding: 24px 16px 56px; }
+    table { display: block; overflow-x: auto; }
+    footer.doc a { display: inline-flex; align-items: center; min-height: 44px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="draft" role="note">
+    <strong>Draft, not in effect</strong>
+    This is a draft for optional Aurivan accounts, which are not available
+    yet. Nothing on this page applies today. The privacy policy in effect is
+    <a href="privacy.html">privacy.html</a>.
+  </div>
+
+  <header class="doc">
+    <a class="brand" href="index.html">aurivan<span>.</span></a>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Draft prepared: 12 October 2026. Not in effect.</p>
+  </header>
+
+  <main>
+  <div class="lead">
+    <p>Aurivan is a free CISA exam-preparation app built privacy-first. You
+    don’t need an account. Without one, your study progress
+    <strong>never leaves your device</strong>. If you choose to create an
+    account, we store only what is needed to sign you in. On the website we
+    use anonymous analytics only if you accept it; the mobile app has no
+    analytics at all. This policy explains exactly what happens to your
+    data.</p>
+    <!-- Phase 7 adds "sync your progress" and Phase 8 "run the feedback board"
+         to the sentence above (compliance §9.1 lead). -->
+  </div>
+
+  <h2>1. Who this policy covers</h2>
+  <p>This policy applies to the Aurivan web application, the Aurivan mobile
+  app for iPhone and Android, and their related pages ("the App").
+  Sections 2 to 5 describe the website; section 6 describes the mobile app,
+  and section 6A the optional Aurivan account. Aurivan is operated as an
+  independent project by its maintainer ("we", "us"). It is not a company
+  offering, and it is not affiliated with, endorsed by, or sponsored by
+  ISACA.</p>
+
+  <h2>2. Our privacy approach</h2>
+  <p>The website runs entirely in your browser. It has no backend server and no
+  database that we control. Because of this, the large majority of your
+  activity — every question you answer, your scores, bookmarks, settings, and
+  local profile — is stored only on your own device and is never transmitted
+  to us or anyone else.</p>
+
+  <h2>3. Information involved</h2>
+
+  <h3>3a. On-device data (never transmitted)</h3>
+  <p>Your study progress, scores, bookmarks, review queue, exam-date setting,
+  theme choice, and local profile name are saved in your browser’s
+  <code>localStorage</code>. This data stays on your device. We cannot see it,
+  and it is not sent anywhere. Clearing your browser data for this site
+  removes it.</p>
+
+  <h3>3b. Analytics (only with your consent)</h3>
+  <p>The App uses Google Analytics, configured with Google Consent Mode.
+  Before you make a choice, and if you choose "Decline", analytics storage is
+  disabled — <strong>no analytics cookie and no analytics identifier are
+  stored on your device.</strong></p>
+  <p>Only if you select "Accept" on the cookie banner does Google Analytics
+  record anonymous, aggregated usage (such as page views and which sections
+  are visited) and set a cookie on your device to distinguish visits. This
+  helps us understand how the App is used and where to improve it.</p>
+  <p>We do not collect names, email addresses, your answers, or your scores
+  through analytics, and we do not use analytics for advertising.</p>
+
+  <h3>3c. Feedback you choose to send</h3>
+  <p>The App includes optional Feedback and Flag features. If you use one,
+  the message you write is submitted through a Google Form to the
+  maintainer’s email inbox. This happens only when you choose to send it.
+  Please do not include sensitive personal information in these messages.</p>
+  <p>We keep these messages for up to 12 months after your issue is resolved,
+  then delete them, or sooner if you ask.</p>
+
+  <h3>3d. Hosting logs</h3>
+  <p>The App is hosted on GitHub Pages. As with any website, the hosting
+  provider may automatically process technical request data (such as IP
+  address and browser type) to deliver the site and protect against abuse.
+  This is handled by the hosting provider under its own terms.</p>
+
+  <h2>4. Cookies and consent</h2>
+  <p>The App itself sets no cookies. The only cookie scenario is Google
+  Analytics, described in section 3b, and it is used <strong>only after you
+  accept</strong> on the cookie banner. Until you make a choice, analytics
+  storage is disabled by default.</p>
+  <p>You can change your mind at any time using the <strong>"Cookie
+  preferences"</strong> link in the App’s footer, or by clearing this site’s
+  data in your browser.</p>
+
+  <h2>5. Third-party services</h2>
+  <table>
+    <tr><th>Service</th><th>Purpose</th><th>When</th></tr>
+    <tr><td>Google Analytics</td><td>Anonymous, aggregated usage metrics</td><td>Only after you accept the cookie banner</td></tr>
+    <tr><td>Google Forms</td><td>Delivering feedback you choose to send</td><td>Only when you submit feedback</td></tr>
+    <tr><td>Gmail (Google)</td><td>Our support inbox, for emails you choose to send us</td><td>Only when you email us</td></tr>
+    <tr><td>GitHub Pages</td><td>Website hosting</td><td>Every visit (technical logs)</td></tr>
+    <tr><td>Expo (EAS Update)</td><td>Delivering updates to the mobile app</td><td>Each time the mobile app opens</td></tr>
+    <tr><td>Supabase</td><td>Stores your Aurivan account, in [region], under a data-processing agreement</td><td>Only if you create an account</td></tr>
+    <tr><td>[Email provider]</td><td>Sends your sign-in codes</td><td>Only when you ask for a sign-in code</td></tr>
+    <tr><td>Apple or Google</td><td>Signs you in, if you choose Sign in with Apple or Google</td><td>Only when you choose that sign-in</td></tr>
+    <tr><td>Ko-fi</td><td>Optional donations</td><td>Only if you follow a "Support on Ko-fi" link (website only; never in the mobile app)</td></tr>
+  </table>
+  <p>Each of these providers processes data under its own privacy policy and
+  must protect it at least as well as this policy does. We do not sell or
+  rent personal information to anyone.</p>
+
+  <h2>6. Aurivan mobile app</h2>
+  <p>The Aurivan mobile app keeps your study data on your phone. In plain
+  terms:</p>
+  <ul>
+    <li><strong>Your progress stays on your phone.</strong> Your answers,
+    scores, how long you took to answer, how sure you said you were, when you
+    first mastered each topic, saved questions, mistake journal and settings
+    are stored only on your device.</li>
+    <!-- Phase 7 adds: "...unless you turn on sync with an Aurivan account (section 6A)." -->
+    <li><strong>App updates.</strong> Each time the app opens, it asks Expo’s
+    update service (EAS Update, run by Expo) whether a newer version of the
+    app is available, and downloads it if so. That request carries the app’s
+    version, its update channel, your phone’s platform (Android or iOS) and a
+    random install code that Expo uses to roll updates out. Like any internet
+    request, it also shows your IP address to Expo. It carries no study data,
+    name, email address or account. Expo handles it under its own privacy
+    policy.</li>
+    <li><strong>Reminders are local.</strong> If you turn on study reminders,
+    they are scheduled by your phone itself. No server is involved and no
+    notification token is sent anywhere.</li>
+    <li><strong>No analytics, no ads, no tracking. An account is
+    optional.</strong> The app collects no usage statistics, shows no ads and
+    does not track you across apps or websites. If you don’t create an
+    account, nothing about your study leaves your phone.</li>
+    <li><strong>Share cards are made on your phone.</strong> If you tap
+    "Share progress", the app draws an image of the card you chose and hands it
+    to your phone’s share sheet. Nothing is sent to us; you decide where it
+    goes. If you choose "Save Image", the app asks to add it to your Photos and
+    never reads your photo library.</li>
+    <li><strong>"Report a problem", "Suggest an idea" and "Contact support"
+    use your own email app.</strong> Tapping one opens a draft in your email
+    app with the item’s code, the app version and your phone’s system version
+    filled in. Your theme, text size and Reduce Motion setting are added only
+    if "Include display details" is ticked. Nothing is sent unless you send
+    that email, and you can read and edit it first. If you send it, it reaches
+    our support inbox (Gmail, run by Google) with your email address and
+    message. We use them only to reply and to fix the problem, never for
+    marketing. We keep support emails for up to 12 months after your issue is
+    resolved, then delete them, or sooner if you ask. Please don’t include
+    questions from the real exam.</li>
+    <li><strong>Backup files are made on your phone.</strong> If you tap
+    "Save a backup" in Settings, the app puts your progress and settings, and
+    the list of problems you reported, into one file and hands it to your
+    phone’s share sheet. Nothing is sent to us. You decide where the file goes
+    (for example Files, Google Drive or email), and that service keeps it
+    under its own terms. The file contains no name, email address, account or
+    device ID. "Restore from a backup" only reads the file you pick, and shows
+    you what will change before anything is replaced.</li>
+    <li><strong>Phone backups.</strong> If you have turned on your phone’s own
+    backup (for example iCloud or Google backup), that backup may include
+    your Aurivan progress, so it can be restored on a new phone. That backup
+    is handled by Apple or Google under their terms, not by us. If you are
+    signed in to an Aurivan account, your sign-in is kept in your phone’s
+    secure storage and is not part of that backup, so a restored phone starts
+    signed out.</li>
+  </ul>
+  <p>Deleting the app removes all of its data from your phone. It does not
+  remove backup files you saved elsewhere, or your Aurivan account if you
+  have one; delete those where you keep them, or as described in section 6A.
+  You can also reset your progress at any time in the app’s Settings.</p>
+
+  <h2>6A. Optional Aurivan account</h2>
+  <p>You don’t need an account to use any study feature. If you choose to
+  create one:</p>
+
+  <h3>What we keep</h3>
+  <ul>
+    <li>Your email address, to sign you in.</li>
+    <li>An account ID.</li>
+    <li>Which sign-in methods you use (email code, Apple or Google), and when
+    the account was created.</li>
+    <li>Which version of the terms you accepted, and that you confirmed you
+    are 16 or older.</li>
+  </ul>
+  <p>If you sign in with Apple, Apple may give us a private relay address
+  instead of your email. We do not keep the name Apple shares.</p>
+  <!-- Phase 7 adds "Sync." and Phase 8 adds "Feedback board." here (compliance §9.1). -->
+
+  <h3>How we use it</h3>
+  <p>Only to sign you in, keep your account safe and answer you. We do not
+  sell it, show ads, track you, build profiles or use it to train AI
+  models.</p>
+
+  <h3>Who processes it</h3>
+  <ul>
+    <li>Supabase stores the data in [region], under a data-processing
+    agreement.</li>
+    <li>[Email provider] sends sign-in codes.</li>
+    <li>Apple or Google handles sign-in if you choose them.</li>
+  </ul>
+  <p>Each must protect your data at least as well as this policy does.</p>
+
+  <h3>How long we keep it</h3>
+  <p>We keep it while your account exists. When you delete your account, we
+  remove it from our live systems at once and from backups within 30 days.
+  We keep only a record that an account was deleted, made with a one-way
+  code from the account ID, with no email address, so we can show the
+  deletion happened.</p>
+
+  <h3>Your choices</h3>
+  <ul>
+    <li>You can sign out at any time, on this phone or on every device.</li>
+    <li>To get a copy of your account data, use <strong>Settings → Account →
+    Download my data</strong>.</li>
+    <li>To delete everything, use <strong>Settings → Account → Delete
+    account</strong>, visit <a href="delete-account.html">[URL]/delete-account.html</a>,
+    or email <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a>.</li>
+  </ul>
+
+  <h3>Age</h3>
+  <p>Accounts are for people aged 16 and over.</p>
+
+  <h3>Legal basis (EU/UK)</h3>
+  <p>We run your account to provide the service you asked for (contract).
+  Anything else happens only with your consent, which you can withdraw in
+  Settings.</p>
+
+  <h2>7. Your rights</h2>
+  <p>Depending on where you live, you may have rights over your personal data
+  under laws such as the EU/UK General Data Protection Regulation (GDPR), the
+  California Consumer Privacy Act (CCPA/CPRA), and the Philippine Data Privacy
+  Act of 2012. These can include the right to access, correct, or delete your
+  data, to object to or restrict processing, and to withdraw consent.</p>
+  <p>Without an account, your progress is stored only on your own device, so
+  you can exercise most of these rights yourself at any time by declining
+  analytics, using "Cookie preferences", or clearing this site’s data in your
+  browser. In the mobile app, reset your progress in Settings or delete the
+  app. With an account, use Download my data and Delete account in the app
+  (section 6A). For anything else — including requests relating to feedback
+  messages — contact us using section 11.</p>
+  <p>We do not sell personal information, and we do not use your data for
+  targeted advertising.</p>
+
+  <h2>8. International visitors</h2>
+  <p>Aurivan is used by candidates worldwide. The third-party services above
+  may process data in countries other than yours. If you create an account,
+  it is stored in [region] as described in section 6A.</p>
+
+  <h2>9. Children’s privacy</h2>
+  <p>Aurivan is a professional certification study tool intended for adults
+  preparing for the CISA exam. It is not directed at children, and we do not
+  knowingly collect personal information from children. Accounts are only for
+  people aged 16 and over.</p>
+
+  <h2>10. Changes to this policy</h2>
+  <p>We may update this policy as the App evolves or as laws change. The
+  "Last updated" date at the top reflects the latest version. Material changes
+  will be noted in the App.</p>
+
+  <h2>11. Contact</h2>
+  <p>For any privacy question or request, email
+  <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a>.</p>
+
+  </main>
+
+  <footer class="doc">
+    <a href="index.html">&larr; Back to Aurivan</a>
+    <a href="terms.html">Terms of Use</a>
+    <a href="delete-account.html">Delete your account</a>
+    <a href="support.html">Help and contact</a>
+  </footer>
+</div>
+</body>
+</html>

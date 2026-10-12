@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -25,7 +25,23 @@ PY
 fi
 # --clear: Metro caches the inlined app manifest, so without it the web build can
 # report an old app.json (an old version and colours) in Settings → About and backups.
-EXPO_OFFLINE=1 npx expo export --platform web --clear --output-dir "$TMP/web" >/dev/null
+if [ "${SHOTS:-}" = cloud ]; then
+  # Uplift Phase 6 (accounts, built OFF): the cloud screens need the flag ON and
+  # the in-memory backend. Dev-only: this export is never a store build (the
+  # memory backend only runs with EXPO_PUBLIC_AURIVAN_SHOTS=1 or in dev, and
+  # src/cloud/configGuard.ts refuses it in every EAS profile). The same app is
+  # also exported with the flag OFF, for the off-* proof shots.
+  # Placeholder https links (example.com), so the sign-in sheet's Privacy
+  # policy and Terms of Use links are in the shots (a real cloud build must set
+  # both: src/cloud/configGuard.ts).
+  EXPO_OFFLINE=1 EXPO_PUBLIC_AURIVAN_CLOUD=1 EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND=memory EXPO_PUBLIC_AURIVAN_SHOTS=1 \
+    EXPO_PUBLIC_PRIVACY_URL=https://example.com/aurivan/privacy EXPO_PUBLIC_TERMS_URL=https://example.com/aurivan/terms \
+    npx expo export --platform web --clear --output-dir "$TMP/web" >/dev/null
+  env -u EXPO_PUBLIC_AURIVAN_CLOUD -u EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND -u EXPO_PUBLIC_AURIVAN_SHOTS -u EXPO_PUBLIC_PRIVACY_URL -u EXPO_PUBLIC_TERMS_URL EXPO_OFFLINE=1 \
+    npx expo export --platform web --clear --output-dir "$TMP/web-off" >/dev/null
+else
+  EXPO_OFFLINE=1 npx expo export --platform web --clear --output-dir "$TMP/web" >/dev/null
+fi
 if [ "${SHOTS:-}" = support ]; then cp "$TMP/fixes.keep" "$FIXES"; fi
 python3 scripts/screenshots/make_seed.py "$TMP/seed.json" "$THEME"
 # A server left over from an earlier run would keep serving its OLD build on
@@ -36,6 +52,14 @@ if python3 -c "import socket,sys; s=socket.socket(); sys.exit(0 if s.connect_ex(
 fi
 python3 scripts/screenshots/serve_spa.py "$TMP/web" & SERVER=$!
 trap 'kill $SERVER 2>/dev/null; rm -rf "$TMP"' EXIT
+if [ "${SHOTS:-}" = cloud ]; then
+  if python3 -c "import socket,sys; s=socket.socket(); sys.exit(0 if s.connect_ex(('127.0.0.1',8094))==0 else 1)"; then
+    echo "Port 8094 is already in use (an old screenshot server?). Stop it, then run again." >&2
+    exit 1
+  fi
+  python3 scripts/screenshots/serve_spa.py "$TMP/web-off" 8094 & SERVER_OFF=$!
+  trap 'kill $SERVER $SERVER_OFF 2>/dev/null; rm -rf "$TMP"' EXIT
+fi
 sleep 1
 if [ -d /opt/node-tools/node_modules/playwright ]; then export PLAYWRIGHT_REQUIRE_FROM=/opt/node-tools/node_modules/; fi
 if [ -x /opt/pw-browsers/chromium-1194/chrome-linux/chrome ]; then export CHROME_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome; fi
@@ -128,6 +152,11 @@ elif [ "${SHOTS:-}" = settings ]; then
   # straight into the calendar, onboarding's date step with the calendar, and
   # You without the theme switch (shoot_settings.mjs; NARROW=1; FONT_SCALE=2).
   node scripts/screenshots/shoot_settings.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = cloud ]; then
+  # Uplift Phase 6 accounts (built OFF): You and Settings entry points, the
+  # sign-in sheet, email and code, Account, delete (3 steps and done), About,
+  # about 200% text, and the flag-OFF You and Settings (shoot_cloud.mjs).
+  node scripts/screenshots/shoot_cloud.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).

@@ -1,0 +1,169 @@
+# Aurivan: LOCAL Supabase only (`supabase start`, CI's supabase.yml job).
+# No hosted project exists. There is no project ref, URL or key in this repo,
+# and nothing here is ever pushed to a hosted project automatically.
+# At Phase 9 (owner go-ahead) the [auth] values below are mirrored by hand on
+# the hosted dashboard; see docs/mobile/ARCHITECTURE.md, "Cloud (built OFF):
+# server side". Secrets only ever come from env(...) or Function secrets.
+
+project_id = "aurivan"
+
+[api]
+enabled = true
+port = 54321
+# REST only. GraphQL is not exposed: the app never uses it, so it is one
+# less surface to audit.
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[api.tls]
+enabled = false
+
+[db]
+port = 54322
+shadow_port = 54320
+health_timeout = "2m"
+major_version = 17
+
+[db.pooler]
+enabled = false
+
+[db.migrations]
+enabled = true
+
+[db.seed]
+# No seed data: pgTAP tests create and roll back their own rows.
+enabled = false
+
+[realtime]
+enabled = false
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://127.0.0.1"
+
+# Local email catcher (Mailpit): sign-in codes land here, never in a real inbox.
+[local_smtp]
+enabled = true
+port = 54324
+
+[storage]
+# No buckets yet. delete-account already clears user/<uid>/ when one is added.
+enabled = false
+
+[auth]
+enabled = true
+site_url = "http://127.0.0.1:3000"
+# Empty on purpose: sign-in uses 6-digit codes and native ID tokens, so no
+# redirect (and no token-bearing deep link) is ever needed.
+additional_redirect_urls = []
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+enable_signup = true
+enable_anonymous_sign_ins = false
+enable_manual_linking = false
+# The app never offers passwords. These only harden the API path that exists anyway.
+minimum_password_length = 12
+password_requirements = "lower_upper_letters_digits_symbols"
+
+[auth.rate_limit]
+# Per hour. Local Mailpit only; at Phase 9 email_sent is set to the SMTP quota.
+email_sent = 2
+sms_sent = 0
+anonymous_users = 0
+token_refresh = 150
+sign_in_sign_ups = 30
+token_verifications = 30
+web3 = 0
+
+# Captcha is an interface only until Phase 9 (owner decision, spec §9 #7).
+# [auth.captcha]
+# enabled = true
+# provider = "turnstile"
+# secret = "env(SUPABASE_AUTH_CAPTCHA_SECRET)"
+
+[auth.email]
+enable_signup = true
+# Secure email change: confirm on both the old and the new address.
+double_confirm_changes = true
+# Never allow unverified email sign-ins.
+enable_confirmations = true
+secure_password_change = true
+max_frequency = "60s"
+# 6-digit code, valid for 10 minutes.
+otp_length = 6
+otp_expiry = 600
+
+# Code-only emails: the templates carry {{ .Token }} and no link.
+[auth.email.template.confirmation]
+subject = "Your Aurivan sign-in code"
+content_path = "./supabase/templates/otp_code.html"
+
+[auth.email.template.magic_link]
+subject = "Your Aurivan sign-in code"
+content_path = "./supabase/templates/otp_code.html"
+
+[auth.email.template.email_change]
+subject = "Confirm your new email for Aurivan"
+content_path = "./supabase/templates/email_change_code.html"
+
+[auth.email.template.reauthentication]
+subject = "Your Aurivan confirmation code"
+content_path = "./supabase/templates/otp_code.html"
+
+[auth.sms]
+enable_signup = false
+enable_confirmations = false
+
+[auth.mfa]
+max_enrolled_factors = 10
+
+[auth.mfa.totp]
+enroll_enabled = false
+verify_enabled = false
+
+[auth.mfa.phone]
+enroll_enabled = false
+verify_enabled = false
+
+# Sign in with Apple and Google take native ID tokens (signInWithIdToken).
+# Off locally because they need owner accounts (Apple Services ID, Google
+# client IDs) that only exist at Phase 9; the client IDs and secrets then come
+# from env, never from this file. Turn on locally with real test credentials:
+#   SUPABASE_AUTH_EXTERNAL_APPLE_CLIENT_ID / _SECRET, ..._GOOGLE_CLIENT_ID / _SECRET
+[auth.external.apple]
+enabled = false
+client_id = "env(SUPABASE_AUTH_EXTERNAL_APPLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_EXTERNAL_APPLE_SECRET)"
+redirect_uri = ""
+url = ""
+skip_nonce_check = false
+email_optional = false
+
+[auth.external.google]
+enabled = false
+client_id = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET)"
+redirect_uri = ""
+url = ""
+skip_nonce_check = false
+email_optional = false
+
+[edge_runtime]
+enabled = true
+policy = "per_worker"
+inspector_port = 8083
+deno_version = 2
+
+# Native-app endpoints. The gateway checks the JWT first; each function then
+# re-verifies it with the Auth server and checks a recent sign-in.
+[functions.delete-account]
+verify_jwt = true
+
+[functions.export-my-data]
+verify_jwt = true
+
+[analytics]
+enabled = false

@@ -22,6 +22,10 @@ concurrency:
   group: eas-update
   cancel-in-progress: true # a newer merge supersedes an older update
 
+# Read-only token: `npm ci` runs third-party install scripts.
+permissions:
+  contents: read
+
 jobs:
   update:
     name: Publish update to preview
@@ -54,6 +58,37 @@ jobs:
         if: steps.token.outputs.ok == 'true'
         working-directory: mobile
         run: npm ci
+
+      # Accounts are built OFF (docs/mobile/ARCHITECTURE.md "Cloud (built OFF)").
+      # An update reaches every preview APK, so a cloud variable in the EAS
+      # environment would switch accounts on remotely. Refuse to publish if
+      # any EXPO_PUBLIC_AURIVAN_* variable is set there (project or account
+      # wide) or in this job. A variable that IS listed always blocks the
+      # update. If a list can't be read (token scope, CLI hiccup), it warns and
+      # carries on: phones must keep getting updates, and with no cloud adapter
+      # in the app yet (Phase 9) a stray flag can't reach a server, and the
+      # memory backend never runs on a phone (src/cloud/runtime.on.ts).
+      - name: Refuse to publish with a cloud variable set
+        if: steps.token.outputs.ok == 'true'
+        working-directory: mobile
+        run: |
+          set -uo pipefail
+          for scope in project account; do
+            if ! raw="$(npx --yes eas-cli@24 env:list --environment preview --format short --scope "$scope" --non-interactive 2>&1)"; then
+              echo "::warning::Couldn't read the EAS '$scope' variables, so this check was skipped for them: $raw"
+              continue
+            fi
+            vars="$(printf '%s\n' "$raw" | sed 's/\x1b\[[0-9;]*m//g')"
+            if printf '%s\n' "$vars" | grep -E '(^|[^A-Z0-9_])EXPO_PUBLIC_AURIVAN_[A-Z0-9_]*='; then
+              echo "The EAS 'preview' environment ($scope) sets the variable above. Remove it: accounts are built OFF and only turn on in a new build." >&2
+              exit 1
+            fi
+          done
+          if env | grep -E '^EXPO_PUBLIC_AURIVAN_[A-Z0-9_]*='; then
+            echo "This job sets the variable above. Remove it." >&2
+            exit 1
+          fi
+          echo "No cloud variable is set for the preview update."
 
       - name: Publish the update
         if: steps.token.outputs.ok == 'true'

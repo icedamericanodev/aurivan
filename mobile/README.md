@@ -22,11 +22,27 @@ and use `bash scripts/dev-sync.sh`.
 
 ## Install a test APK on an Android phone (no computer needed)
 
-The test APK is built on **expo.dev** (EAS Build, profile **preview**, branch
-`main`, base directory `/mobile`, platform Android, Submit unchecked). On the
-phone, open the build's page on expo.dev and tap **Install**, then allow
-**"Install unknown apps"** when Android asks. Installing a newer APK over an
-older one keeps your progress.
+There are two ways to get a test APK. **Both receive the small updates
+described below**, because both are built from `main` with the same native
+parts (the same "fingerprint") and listen on the **preview** update channel.
+
+1. **GitHub Releases (simplest).** On GitHub: **Actions → Android test APK →
+   Run workflow**. It publishes the APK to the repo's Releases page as
+   `apk-v<version>` (for example `apk-v1.17.1`). On the phone, open that
+   release while signed in to GitHub, tap the `.apk`, then allow **"Install
+   unknown apps"** when Android asks.
+2. **expo.dev.** Start a fresh EAS build (profile **preview**, branch `main`,
+   base directory `/mobile`, platform Android, Submit unchecked). On the
+   phone, open the build's page on expo.dev and tap **Install**.
+
+The two APKs are signed with **different keys**, so a phone can keep only
+one of them. To switch, uninstall the other first, which erases the progress
+on that phone (save a backup file first: Settings → Your data). Installing a
+newer APK of the same kind over an older one keeps your progress.
+
+**An old expo.dev build gets no updates.** An EAS build made before 12 October
+2026 (version 1.15.0) has older native parts, so its fingerprint no longer
+matches and no update reaches it. Replace it with a new APK from either route.
 
 **Small updates arrive by themselves.** After every merge to `main`, GitHub
 publishes the new code to the **preview** update channel
@@ -37,12 +53,9 @@ with Android code, the icon, permissions) need a new APK; the "fingerprint"
 runtime policy in `app.json` makes sure a phone never gets an update that
 doesn't match its APK.
 
-Backup routes, only if EAS is unavailable (their APKs are signed with a
-different key, so uninstall the EAS one first, which erases progress on that
-phone): **Actions → Android test APK → Run workflow** on GitHub (it lands on
-the repo's Releases page), or `bash scripts/build-apk.sh` on a Mac with
-Android Studio (it builds in a separate folder, so the emulator and
-`dev-sync.sh` keep running).
+On a Mac with Android Studio there is also `bash scripts/build-apk.sh` (it
+builds in a separate folder, so the emulator and `dev-sync.sh` keep running).
+Its APK is signed like the GitHub Releases one.
 
 ## Everyday commands (run inside `mobile/`)
 

@@ -25,9 +25,9 @@ export const config = {
   termsUrl: process.env.EXPO_PUBLIC_TERMS_URL ?? '',
   /** Where "Report a problem", "Send feedback" and "Contact support" emails go. Always set (see supportEmailFrom). */
   feedbackEmail: supportEmailFrom(process.env.EXPO_PUBLIC_FEEDBACK_EMAIL),
-  /** Supabase (Phase 3: accounts + sync). Publishable values only. */
-  supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL ?? '',
-  supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '',
+  // The cloud backend's URL and publishable key are NOT read here: only the
+  // cloud runtime reads them (Phase 9, src/cloud/runtime.on.ts), so a build
+  // with the cloud flag off carries no backend address at all (guard G2).
   /**
    * Month the question bank was last reviewed, shown in the trust line under
    * every answer ("Original · Reviewed Oct 2026"). Update it with each

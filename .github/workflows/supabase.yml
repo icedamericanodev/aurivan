@@ -1,0 +1,69 @@
+name: Supabase
+
+# Server side of the cloud features (built OFF; nothing is deployed). Runs the
+# static RLS guard, the Edge Function unit tests, and the SQL on a LOCAL
+# Supabase started from supabase/config.toml: no hosted project, no secrets.
+
+on:
+  pull_request:
+    branches: [main]
+    paths: ['supabase/**', 'scripts/check_rls.sh', '.github/workflows/supabase.yml']
+  push:
+    branches: [main]
+    paths: ['supabase/**', 'scripts/check_rls.sh', '.github/workflows/supabase.yml']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supabase-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static:
+    name: RLS guard + Edge Function tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: RLS guard self-test (G6 + G7 catch known-bad SQL)
+        run: bash scripts/check_rls.sh --self-test
+      - name: RLS guard (G6 + G7) on supabase/migrations
+        run: bash scripts/check_rls.sh
+      # Third-party actions are pinned to a commit (the tag can be moved; a commit can't).
+      - uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed # v2.0.5
+        with:
+          deno-version: 2.9.6
+      - name: Format
+        run: deno fmt --check --single-quote --line-width=120 supabase/functions
+      - name: Lint
+        run: deno lint supabase/functions
+      - name: Typecheck entrypoints (fetches the pinned supabase-js)
+        run: deno check --no-lock supabase/functions/delete-account/index.ts supabase/functions/export-my-data/index.ts
+      - name: Unit tests (pure handlers, fake admin client, no network)
+        run: deno test --no-lock --no-remote supabase/functions
+
+  database:
+    name: Local Supabase + pgTAP + db lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1.7.3
+        with:
+          version: 2.118.0
+      # Only Postgres and Auth are needed: Auth owns the auth schema the
+      # migrations reference. Everything else is skipped to keep the job fast.
+      - name: Start local Supabase (db + auth only)
+        run: supabase start -x realtime,storage-api,imgproxy,kong,mailpit,postgrest,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
+      - name: Re-apply every migration from scratch
+        run: supabase db reset
+      - name: pgTAP (supabase/tests)
+        run: supabase test db
+      - name: Lint SQL functions (plpgsql_check)
+        run: supabase db lint --schema public,private --level warning --fail-on error
+      # The same Security and Performance Advisor the hosted dashboard runs.
+      # INFO-level "RLS enabled, no policy" on private tables is the intended
+      # deny-all, so only WARN and above fail the job.
+      - name: Security + performance advisors
+        run: supabase db advisors --local --type all --level warn --fail-on warn

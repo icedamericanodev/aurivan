@@ -11,3 +11,27 @@ scripts/__pycache__/
 .idea/
 .vscode/
 *.swp
+
+# Local secrets and Supabase CLI state (cloud features, Uplift Phase 6).
+# Example files with empty values stay tracked.
+.env
+.env.*
+!.env.example
+supabase/.env
+supabase/functions/.env
+supabase/.temp/
+supabase/.branches/
+
+# Signing keys and certificates, anywhere in the repo (the repo is public).
+# The Apple .p8 for Sign in with Apple revocation, a Play upload keystore or a
+# provisioning profile must never be committed: they belong in Supabase
+# function secrets or EAS credentials. scripts/check_secrets.sh (G1) also
+# fails on any tracked file with these extensions. Nothing tracked matches
+# them today (checked with `git ls-files`), so nothing tracked is hidden.
+*.p8
+*.p12
+*.jks
+*.keystore
+*.pem
+*.key
+*.mobileprovision

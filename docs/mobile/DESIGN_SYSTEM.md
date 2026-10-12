@@ -1144,3 +1144,116 @@ calendar's grid comes before the quick choices, nothing clips, and each day
 stays at least 48pt tall (48 × 48 or more from 360 dp; on 320 dp phones the
 grid uses the gutters, 43 wide). Checked at 360 dp and about 200% text, light
 and dark (`SHOTS=settings`).
+
+## 17. Accounts (Uplift Phase 6, built OFF)
+
+Accounts are built and switched OFF in every build (ARCHITECTURE.md §3
+"Cloud (built OFF)"). With the flag off, no screen below is reachable and
+You and Settings look exactly as in §11 and §16 (`off-*` shots). Copy:
+`content/cloud/copy.ts` only, held to the cloud copy rules by
+`cloud-copy.test.ts` (no bank size, no "ISACA" outside the trademark notice,
+no "official / certified / endorsed / forum" near an exam name, no reply-time
+promise, no guilt, urgency or "!", curly apostrophes).
+
+**Optional, never pushy.** Two ways in only: You → Help and feedback's first
+row (Lucide `refresh-cw` in the usual `soft` circle: "Sync across devices ·
+Optional. Keep your progress on your other phone or tablet." signed out,
+"Account and sync · Signed in as j•••@gmail.com" signed in, "Sign in again to
+keep syncing" on a restored phone), and Settings → an "Account" group with one
+`SettingsRow`, "Your account", whose value is the masked email or "Not signed
+in". Never at launch, in onboarding, before the first question, in a session
+or as a pop-up (tested).
+
+**Sign-in sheet** (`/account` while signed out, and `/account/sign-in`): a
+pushed screen with a close (X) header, the one `display` title "Keep your
+progress on every device" (takes screen-reader focus on open), two `body`
+lines, one `meta` line ("We store your email…"), ghost links to Privacy
+policy and Terms of Use (a build with the real backend can't be made without
+both https links: `configGuard.ts`; a dev build without them hides the
+row), then a `CheckRow` "I'm 16 or
+older and I agree to the Terms of Use." (unticked). Until it is ticked every
+sign-in button is disabled (the `soft` / `muted` disabled look) and a `meta`
+hint says "Tick the box above to continue." (also each button's spoken
+hint). Buttons: `secondary`, full width, 8pt apart: Continue with Apple
+(iOS only; Phase 9 swaps in Apple's own system button), Continue with Google,
+Continue with email; then a ghost "Not now". A cancelled Apple or Google
+sheet shows nothing; other problems show one notice (below).
+
+**Email** (`/account/email`, pushed, title in the bar). `TextField` (see
+below) "Email address" with the help line "We'll send you a 6-digit code. No
+password needed."; a bad address shows "Enter an email address like
+name@example.com." in `tip` under the field (announced once). Primary "Send
+code" (with a `meta` "Sending your code…" under it while it sends). The
+code step: a `body` line "Enter the code we sent to m•••@example.com"
+(focus moves to it), the "6-digit code" field (number pad, one-time-code
+autofill, tabular digits), primary "Sign in" (disabled until 6 digits, and
+after 5 wrong codes), then the resend line. While the 60-second wait runs it
+is a quiet `meta` line "Send a new code in 0:42" (spoken "in 42 seconds"),
+NOT a greyed button, in a 48pt row so nothing jumps when it becomes the ghost
+"Send a new code" (a new code is confirmed to a screen reader: "Code sent to
+m•••@example.com"). Ghost "Use a different email".
+
+**TextField** (`ui.tsx`): the NoteField look on one line: `raised`, 1.5
+`control` outline in both themes, radius 16, min height 56, `body` text up to
+×2; the visible `label` above is also its spoken name; a problem in `tip`
+under it, with the outline in `tip` too (red stays for wrong answers), else
+an optional `meta` help line. The field speaks its label (name) and its
+problem or help (hint), so the visible label, problem and help lines are
+hidden from screen readers and never read twice.
+
+**Account** (`/account` signed in): pushed, "Account" in the bar; `body`
+"Signed in as m•••@example.com" (Apple's hidden email: "Signed in with Apple
+(your email is hidden)"); `Section` "Your account data" → action row
+"Download my data" (no chevron; its subtitle turns into "Preparing your
+data…" while busy); `Section` "Where you're signed in" → "Sign out on this
+phone" and "Sign out on all devices" (action rows; each asks first with a
+system alert); a 48pt gap,
+then "Delete account" with its subtitle and a chevron, and the `meta` foot
+"Progress on this phone works with or without an account." No red on this
+screen: Grove keeps red for wrong answers, so the only destructive style is
+the delete screen's last button. PR 7 adds the Sync section under the email.
+
+**Delete** (`/account/delete`, no swipe-back; Android back does nothing
+while it deletes and goes to You once it is done): `hero` title "Delete your
+Aurivan account?" (focus moves to it at each step), the `body` explanation,
+a `CheckRow` "Also remove my progress from this phone" (unticked), primary
+"Continue" ("One moment…" in `meta` while it checks), ghost "Cancel". Step 2:
+either "For your security, confirm it's you first." with ONE `secondary`
+button for the same method (Continue with Google / Apple, or "Send a code to
+m•••@example.com" then the code field and "Confirm it's you"), or, once
+confirmed or when the sign-in is under 10 minutes old, a `meta` line
+restating the step 1 choice ("Your progress on this phone stays here." /
+"…will be removed too."), the field "Type DELETE to confirm" (capitals
+keyboard; any case counts) and the `danger` "Delete account", disabled until
+the word matches; "Deleting your account…" in `meta` while it runs. An
+account linked to Apple, on an iPhone, always confirms with Apple, even just
+after signing in (a fresh Apple code lets the server revoke Apple's token).
+The email code step: a wrong code shows on the field (which takes focus); an
+expired code or five wrong tries go back to "Send a code to …" with a notice
+saying why, so a new code is always one tap away; a sent code is confirmed to
+a screen reader. A sign-in that ended meanwhile: back to step 1 with "Your
+sign-in has ended, so nothing was deleted. Sign in again, then delete your
+account." Done: `hero` "Your account is deleted", the `body` line (it adds
+"Your progress on this phone was removed too." when the box was ticked),
+primary "Done" (back to You).
+
+**Notices.** One calm block after an action (`AccountNotice`): `tipBg` with
+`small` `ink` text for a problem ("You're offline. Connect to the internet to
+delete your account. Nothing was deleted."), `correctBg` for a done ("Your
+data file is ready…"); said once by the screen reader, never a live region.
+
+**Motion.** No new animation: pushes use the root stack's push, the sign-in
+sheet rises like the other sheets-as-screens (`fade_from_bottom`), and all
+of them dissolve under Reduce Motion (Settings → Motion or the phone's). No
+`transformOrigin` is involved.
+
+**Large text.** Everything stacks and wraps; at about 200% text the sheet
+scrolls and the buttons stay full width (`acct-signin-xl`, `acct-home-xl`).
+
+**Shots.** `SHOTS=cloud bash scripts/screenshots/run.sh <out> <light|dark>`:
+`acct-you-out`, `acct-signin`, `acct-email-err`, `acct-code`, `acct-home`,
+`acct-settings`, `acct-del-1`, `acct-del-2`, `acct-del-3`, `acct-del-done`,
+`acct-del-code` (a wrong code on the field), `acct-del-resend` (after too
+many tries), `acct-about`, `acct-signin-xl`, `acct-home-xl`, and the flag-OFF
+`off-you`, `off-settings`. The cloud export uses placeholder `example.com`
+Privacy and Terms links so the sheet's link row is in the shots.
