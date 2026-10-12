@@ -284,7 +284,7 @@ describe('isValidPlantState (backup restore)', () => {
     expect(isValidPlantState(ok)).toBe(true);
     expect(isValidPlantState({ species: 'oak', name: '', plantedAt: 0, growth: 1 })).toBe(true);
     expect(
-      isValidPlantState({ ...ok, replantedAt: T0, backfill: { at: T0, growth: 2, seen: false }, look: { colourway: 'pink', ground: 'meadow', visitor: 'wren', keepsakes: ['jay', 'fox'] }, kept: ['robin'], passedOn: '2026-11-02' }),
+      isValidPlantState({ ...ok, replantedAt: T0, backfill: { at: T0, growth: 2, seen: false }, look: { colourway: 'oak-autumn', ground: 'meadow', planter: 'celadon', visitor: 'wren', keepsakes: ['jay', 'fox'] }, kept: ['robin'], passedOn: '2026-11-02' }),
     ).toBe(true);
   });
 
@@ -591,8 +591,8 @@ describe('backup fit: repairPlant', () => {
       reached: { sprout: T0, crown: T0 },
       pending: 4,
       backfill: { at: T0, growth: 5 },
-      look: { colourway: 'Bad Id', keepsakes: ['a', 'a', 'b', 'c', 'd'] },
-      kept: ['x', 'x', 'NOPE'],
+      look: { colourway: 'Bad Id', ground: 'lantern', keepsakes: ['jay', 'jay', 'a', 'fox', 'cairn', 'lantern'] },
+      kept: ['robin', 'robin', 'NOPE'],
     } as unknown as CertPlant;
     expect(isValidPlantState(broken)).toBe(false);
     const fixed = repairPlant(broken);
@@ -601,12 +601,15 @@ describe('backup fit: repairPlant', () => {
     expect(fixed.reached).toEqual({ sprout: T0 });
     expect(fixed.pending).toBeUndefined();
     expect(fixed.backfill).toEqual({ at: T0, growth: 2 });
-    expect(fixed.look).toEqual({ keepsakes: ['a', 'b', 'c'] });
-    expect(fixed.kept).toEqual(['x']);
+    // Mobile 1.14: only catalogue ids, each in its own slot (a keepsake is never a ground).
+    expect(fixed.look).toEqual({ keepsakes: ['jay', 'fox', 'cairn'] });
+    expect(fixed.kept).toEqual(['robin']);
   });
 
-  it('isLookId: short slugs only', () => {
+  it('isLookId: catalogue ids only (mobile 1.14; 4a took any short slug)', () => {
     expect(isLookId('stone-ring')).toBe(true);
+    expect(isLookId('lantern')).toBe(true);
+    expect(isLookId('some-new-slug')).toBe(false);
     expect(isLookId('Stone Ring')).toBe(false);
     expect(isLookId('')).toBe(false);
   });

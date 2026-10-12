@@ -16,7 +16,7 @@
  */
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { BackHandler, KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle } from 'react-native-svg';
@@ -27,9 +27,12 @@ import { StickyFooter } from '../components/quiz';
 import { Button, Chip, Enter, Gap, T } from '../components/ui';
 import { DataMessage, RestorePreview } from '../components/yourData';
 import { PlantNameField, SpeciesGrid } from '../components/plant/PlantUI';
-import { SPECIES_INFO, suggestName, type PlantSpecies } from '../engine/plant';
+import { backfillLine, plantCallName, plantHasFace, plantLabel, SPECIES_INFO, SPROUT_ANSWERS, suggestName, type PlantSpecies } from '../engine/plant';
+import { LivePlant } from '../components/plant/LivePlant';
+import { haptic } from '../lib/haptics';
+import { moveFocus } from '../lib/a11y';
 import { plantFor } from '../lib/plant';
-import { useProgress } from '../store/progress';
+import { selectCert, useProgress } from '../store/progress';
 import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS } from '../content/certifications';
 import { dateInMonths, EXAM_DATE_PRESETS } from '../engine/examDay';
@@ -46,7 +49,7 @@ export default function Onboarding() {
   const { c, isDark } = useTheme();
   const complete = useSettings((s) => s.completeOnboarding);
   const insets = useSafeAreaInsets();
-  const [step, setStep] = useState<0 | 1 | 2 | 3>(0);
+  const [step, setStep] = useState<0 | 1 | 2 | 3 | 4>(0);
   // Step 3 (mobile 1.13): the plant and its name (empty to start; the field shows an idea as its placeholder).
   const [species, setSpecies] = useState<PlantSpecies>('oak');
   const [plantName, setPlantName] = useState('');
@@ -59,16 +62,27 @@ export default function Onboarding() {
   // finishes onboarding and goes straight to Today.
   const restore = useRestoreFlow({ onboard: true, onRestored: () => router.replace('/home') });
 
+  // After planting (step 4): on to Today.
+  const finishPlanted = useCallback(() => router.replace('/home'), []);
+  // "Plant it" is gone once the step changes: screen-reader focus moves to the
+  // "Planted" header instead of being dropped (UX review P16, code review M10b).
+  const plantedRef = useRef<View>(null);
+
   // Android's back button steps back through onboarding; on the welcome step
   // it does the default (onboarding is the first screen, so the app closes).
   useEffect(() => {
     const sub = BackHandler.addEventListener('hardwareBackPress', () => {
       if (step === 0) return false;
+      // Planted (step 4): back means "go on", never un-planting.
+      if (step === 4) {
+        finishPlanted();
+        return true;
+      }
       setStep(step === 3 ? 2 : step === 2 ? 1 : 0);
       return true;
     });
     return () => sub.remove();
-  }, [step]);
+  }, [step, finishPlanted]);
 
   // Welcome: forest panel, then the pillars on the page. A fixed forest strip
   // sits behind the status bar (outside the scroll view), so the light
@@ -114,14 +128,46 @@ export default function Onboarding() {
   const finish = (plant: boolean) => {
     const m = PRESETS[preset].months;
     complete(certId, m ? dateInMonths(m, Date.now()) : undefined);
-    if (plant) plantFor(certId, species, plantName);
+    if (plant) {
+      // Mobile 1.14 (M8): plant now (onboarding is already done, so closing
+      // the app here loses nothing), then a short planting moment (step 4):
+      // the seed settles and its first sprout pops. One soft haptic.
+      plantFor(certId, species, plantName);
+      haptic.light();
+      setStep(4);
+      moveFocus(plantedRef);
+      return;
+    }
     // Skipped: no nudge on Today later; You keeps "Plant yours".
-    else useProgress.getState().setPlantSettings({ promptHidden: true });
+    useProgress.getState().setPlantSettings({ promptHidden: true });
     router.replace('/home');
   };
+  const planted = step === 4 ? selectCert(useProgress.getState(), certId).plant : undefined;
 
   const body =
-    step === 3 ? (
+    step === 4 && planted ? (
+      <Enter key="s4">
+        <View style={{ alignItems: 'center', marginTop: space.xxl }}>
+          <LivePlant
+            species={planted.species}
+            stage={planted.growth}
+            size={168}
+            theme={isDark ? 'dark' : 'light'}
+            fit
+            quietLook={!plantHasFace(useProgress.getState().plantSettings)}
+            plantIn
+            accessibilityLabel={plantLabel({ name: planted.name, species: planted.species, growth: planted.growth })}
+          />
+        </View>
+        <View ref={plantedRef} accessible accessibilityRole="header" accessibilityLabel="Planted" style={{ marginTop: space.xl }}>
+          <T v="display" center>Planted</T>
+        </View>
+        <T v="quote" center color={c.ink2} style={{ marginTop: space.sm }}>
+          {planted.growth > 1 ? backfillLine(planted, planted.growth) : `Your first ${SPROUT_ANSWERS} answers give ${plantCallName(planted)} its first sprout.`}
+        </T>
+        <T v="meta" center style={{ marginTop: space.md }}>It grows only from real progress. It asks for nothing.</T>
+      </Enter>
+    ) : step === 3 ? (
       <Enter key="s3">
         <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 3 of 3</T>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>Plant something that grows with you</T>
@@ -259,6 +305,8 @@ export default function Onboarding() {
               <Button label="Continue" onPress={() => setStep(2)} />
               <Button kind="ghost" label="Back" onPress={() => setStep(0)} />
             </>
+          ) : step === 4 ? (
+            <Button label="Start studying" onPress={finishPlanted} />
           ) : step === 2 ? (
             <>
               <Button label="Continue" onPress={() => setStep(3)} />

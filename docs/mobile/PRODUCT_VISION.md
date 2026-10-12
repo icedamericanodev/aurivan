@@ -77,6 +77,7 @@ provenance, framework references and a `lastReviewed` date.
 
 Built on existing question data → every new certification gets them free.
 Professional tone: one optional plant companion. No cartoon mascots, no needs, no guilt. No confetti per answer.
+Its looks (colours, planters, keepsakes) are earned only from real growth and badges: never sold, never a counter to complete, and game levels unlock nothing. A look carries no readiness claim.
 
 | Game | Skill trained | Status |
 |---|---|---|

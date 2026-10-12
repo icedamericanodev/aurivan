@@ -22,7 +22,9 @@ import { radius, raisedShadow, space, type as typeScale, maxScale, LARGE_TEXT } 
 import { useTheme } from '../../theme/useTheme';
 import { Button, T, useFontScale } from '../ui';
 import { Plant } from './Plant';
-import type { Lod } from './art';
+import { LivePlant, type LivePlantProps } from './LivePlant';
+import type { ArtLook, Lod } from './art';
+import type { PlantMood } from '../../engine/plantLooks';
 
 // ── The plant you can tap ──────────────────────────────────────────────
 export function PlantButton({
@@ -39,6 +41,10 @@ export function PlantButton({
   caption,
   hint = 'Opens your plant',
   testID,
+  look,
+  mood,
+  reaction,
+  grows,
 }: {
   species: PlantSpecies;
   growth: GrowthLevel;
@@ -56,6 +62,12 @@ export function PlantButton({
   caption?: string;
   hint?: string;
   testID?: string;
+  /** Mobile 1.14: the look, the face's mood, its one reaction and the growth sequence. */
+  look?: ArtLook;
+  mood?: PlantMood;
+  reaction?: LivePlantProps['reaction'];
+  /** The growth sequence (Today's grow-up moment). */
+  grows?: LivePlantProps['growth'];
 }) {
   const { c, isDark } = useTheme();
   return (
@@ -68,7 +80,7 @@ export function PlantButton({
       // The drawing is the target; never smaller than 48pt.
       style={({ pressed }) => ({ minWidth: 48, minHeight: 48, alignItems: 'center', opacity: pressed ? 0.85 : 1 })}
     >
-      <Plant species={species} stage={growth} organs={scales} quietLook={quietLook} resting={resting} size={size} theme={isDark ? 'dark' : 'light'} fit={fit} lod={lod} />
+      <LivePlant species={species} stage={growth} organs={scales} quietLook={quietLook} resting={resting} size={size} theme={isDark ? 'dark' : 'light'} fit={fit} lod={lod} look={look} mood={mood} reaction={reaction} growth={grows} />
       {caption ? (
         <T v="meta" center numberOfLines={2} color={c.ink2} style={{ maxWidth: Math.max(size, 120), marginTop: 2 }}>
           {caption}

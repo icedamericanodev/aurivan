@@ -41,6 +41,12 @@ interface SeenState {
   badgeMoments: number[];
   /** Mobile 1.10: the badge case's Sort choice ('set' when unset). */
   badgeSort?: string;
+  /**
+   * Mobile 1.14: a grow-up applied silently on Today (the exam-ready panel
+   * had that visit's one moment), per cert: Your plant says it once in a
+   * calm line ("Kai grew to Elder."), then forgets it.
+   */
+  quietGrowth: Record<string, number>;
   see: (key: string, values: number[]) => void;
   played: (kind: string) => void;
   /** Marks `key`'s first view of the day as used (false: it already was today). */
@@ -52,6 +58,9 @@ interface SeenState {
   /** A badge moment played at `at`. */
   noteBadgeMoment: (at: number) => void;
   setBadgeSort: (sort: string) => void;
+  noteQuietGrowth: (certId: string, growth: number) => void;
+  /** Your plant showed the quiet grow-up line. */
+  seeQuietGrowth: (certId: string) => void;
 }
 
 /** Badge moments kept (the cap counts the last 7 days, and allows 3). */
@@ -96,6 +105,15 @@ export const useSeen = create<SeenState>()(
       seeCase: (certId, at) => set((s) => (s.caseSeen[certId] !== undefined && s.caseSeen[certId] >= at ? s : { caseSeen: { ...s.caseSeen, [certId]: at } })),
       noteBadgeMoment: (at) => set((s) => ({ badgeMoments: [...s.badgeMoments, at].slice(-BADGE_MOMENTS_MAX) })),
       setBadgeSort: (badgeSort) => set({ badgeSort }),
+      quietGrowth: {},
+      noteQuietGrowth: (certId, growth) => set((s) => ({ quietGrowth: { ...s.quietGrowth, [certId]: Math.max(growth, s.quietGrowth?.[certId] ?? 0) } })),
+      seeQuietGrowth: (certId) =>
+        set((s) => {
+          if (s.quietGrowth?.[certId] === undefined) return s;
+          const next = { ...s.quietGrowth };
+          delete next[certId];
+          return { quietGrowth: next };
+        }),
     }),
     { name: 'aurivan.seen.v1', storage: persistStorage, version: 1 },
   ),

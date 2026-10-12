@@ -16,6 +16,7 @@
  * head, blooms, face), drift, fx, ground-front.
  */
 import type { PlantSpecies } from '../../engine/plant';
+import { lookItem, type ArtLook } from '../../engine/plantLooks';
 import { plantArt as A0, plantLeaf, plantTheme, type PlantLeafPalette } from '../../theme/tokens';
 
 // ── nodes ───────────────────────────────────────────────────────────────
@@ -97,6 +98,13 @@ interface CanopySpec {
    * so a fruit tree never reads as an oak (PR #43 UX review).
    */
   dome?: number;
+  /**
+   * Mobile 1.14: the crown's silhouette at icon size (24pt chips), so the
+   * round-crown trees differ by SHAPE, not only colour: oak round, maple a
+   * tall flame, narra a flat umbrella, cherry three puffs, mango a low dome
+   * with fruit.
+   */
+  icon?: 'round' | 'flame' | 'umbrella' | 'puffs' | 'dome';
 }
 interface TreeArt {
   kind: 'tree';
@@ -127,27 +135,27 @@ interface FlowerArt {
   driftFill: string;
 }
 type SpeciesArt = TreeArt | FlowerArt;
-type PotKind = 'meadow' | 'terracotta' | 'celadon' | 'bonsai' | 'pond' | 'basket' | 'stone';
+type PotKind = 'meadow' | 'terracotta' | 'celadon' | 'bonsai' | 'pond' | 'basket' | 'stone' | 'fieldstone' | 'five-stone' | 'compass-rose' | 'banded' | 'root-woven';
 
 const L = plantLeaf;
 const B = A0.bark;
 export const SPECIES_ART: Record<PlantSpecies, SpeciesArt> = {
-  oak: { kind: 'tree', palette: L.grove, bark: B.oak, leaf: 'oak', canopy: { sx: 1.08, sy: 0.98, n: 9, jit: 0.55, bulge: 0.66, dy: 0 }, flourish: 'acorn' },
-  maple: { kind: 'tree', palette: L.ember, bark: B.maple, leaf: 'maple', canopy: { sx: 0.98, sy: 1.1, n: 11, jit: 0.25, bulge: 0.6, dy: -4 }, flourish: 'samara' },
-  narra: { kind: 'tree', palette: L.spring, bark: B.narra, leaf: 'banyan', flare: 0.6, trunkW: 1.08, canopy: { sx: 1.3, sy: 0.72, n: 12, jit: 0.3, bulge: 0.56, dy: 2, flat: 0.25 }, flourish: 'narra' },
+  oak: { kind: 'tree', palette: L.grove, bark: B.oak, leaf: 'oak', canopy: { sx: 1.08, sy: 0.98, n: 9, jit: 0.55, bulge: 0.66, dy: 0, icon: 'round' }, flourish: 'acorn' },
+  maple: { kind: 'tree', palette: L.ember, bark: B.maple, leaf: 'maple', canopy: { sx: 0.98, sy: 1.1, n: 11, jit: 0.25, bulge: 0.6, dy: -4, icon: 'flame' }, flourish: 'samara' },
+  narra: { kind: 'tree', palette: L.spring, bark: B.narra, leaf: 'banyan', flare: 0.6, trunkW: 1.08, canopy: { sx: 1.3, sy: 0.72, n: 12, jit: 0.3, bulge: 0.56, dy: 2, flat: 0.25, icon: 'umbrella' }, flourish: 'narra' },
   'cherry-blossom': {
     kind: 'tree',
     palette: L.blossom,
     bark: B.cherry,
     leaf: 'blossom',
-    canopy: { sx: 1.18, sy: 0.84, n: 13, jit: 0.3, bulge: 0.58, dy: 4 },
+    canopy: { sx: 1.18, sy: 0.84, n: 13, jit: 0.3, bulge: 0.58, dy: 4, icon: 'puffs' },
     flourish: 'blossom',
     driftGlyph: 'blossom',
     driftFill: A0.gift.cherryDrift,
   },
   pine: { kind: 'tree', palette: L.evergreen, bark: B.pine, leaf: 'pine', canopy: { custom: 'tiers' }, flourish: 'cone' },
   'coconut-palm': { kind: 'tree', palette: L.spring, bark: B.coconut, leaf: 'olive', canopy: { custom: 'palm' }, flourish: 'coconut', fruitFrom: 5, seedColor: A0.gift.coconutRipe },
-  mango: { kind: 'tree', palette: L.evergreen, bark: B.mango, leaf: 'olive', canopy: { sx: 1.22, sy: 0.84, n: 11, jit: 0.3, bulge: 0.6, dy: 6, flat: 0.35, dome: 1 }, flourish: 'mango', fruitFrom: 5 },
+  mango: { kind: 'tree', palette: L.evergreen, bark: B.mango, leaf: 'olive', canopy: { sx: 1.22, sy: 0.84, n: 11, jit: 0.3, bulge: 0.6, dy: 6, flat: 0.35, dome: 1, icon: 'dome' }, flourish: 'mango', fruitFrom: 5 },
   bonsai: { kind: 'tree', palette: L.grove, bark: B.bonsai, leaf: 'pine', pot: 'bonsai', canopy: { custom: 'bonsai' }, flourish: 'moss', driftGlyph: 'blossom', driftFill: A0.white },
   sunflower: { kind: 'plant', build: 'sunflower', palette: L.gold, foliage: L.spring, seedColor: A0.seed.sunflower, seedStripe: A0.seed.sunflowerStripe, seedPatch: true, leaf: 'banyan', driftGlyph: 'lens', driftFill: A0.sunflower.drift },
   lotus: { kind: 'plant', build: 'lotus', palette: L.blossom, foliage: L.grove, pot: 'pond', seedColor: A0.seed.lotus, leaf: 'banyan', driftGlyph: 'lens', driftFill: A0.lotus.drift },
@@ -383,6 +391,7 @@ function cloudCanopy(c: CanopySpec, st: number, pal: PlantLeafPalette, seed: num
   const flat = c.flat || 0;
   const layers: Maybe[] = [];
   const organs: Pt[] = [];
+  if (lod === 'icon' && c.icon) return iconCrown(c.icon, cx, cy, rx, ry, pal, seed, st);
   if (st < 4) {
     const base = { n: c.n, jit: c.jit, bulge: c.bulge, flat };
     layers.push(P(scallop({ cx, cy, rx, ry, seed, ...base }), pal.deep));
@@ -419,6 +428,51 @@ function cloudCanopy(c: CanopySpec, st: number, pal: PlantLeafPalette, seed: num
     lobes.forEach((Lb) => organs.push({ x: Lb.cx + (Lb.cx - cx) * 0.55, y: Lb.cy + (Lb.cy - cy) * 0.55 }));
   }
   return { layers: [G('canopy', layers)], box: { cx, cy, rx, ry }, organs };
+}
+
+/**
+ * A crown drawn for 24pt (mobile 1.14): one bold silhouette per species, in
+ * two tones, so oak, maple, narra, cherry and mango read by shape alone.
+ * The domain parts don't read at this size, so none are drawn.
+ */
+function iconCrown(kind: NonNullable<CanopySpec['icon']>, cx: number, cy: number, rx: number, ry: number, pal: PlantLeafPalette, seed: number, st: number): CanopyResult {
+  const two = (d: string, lit: string): Maybe[] => [P(d, pal.deep), P(lit, pal.mid)];
+  let parts: Maybe[];
+  let box = { cx, cy, rx, ry };
+  if (kind === 'round') {
+    parts = two(scallop({ cx, cy, rx: rx * 0.92, ry: ry * 1.04, n: 16, seed, jit: 0, bulge: 0.52 }), scallop({ cx: cx - rx * 0.06, cy: cy - ry * 0.08, rx: rx * 0.8, ry: ry * 0.88, n: 16, seed, jit: 0, bulge: 0.52 }));
+  } else if (kind === 'flame') {
+    // Tall, with a pointed top (like the maple leaf's own tip).
+    const w = rx * 0.82;
+    const flame = (k: number, dx: number, dy: number) =>
+      `M${f(cx + dx)} ${f(cy - ry * 1.42 * k + dy)}C${f(cx + dx + w * 0.75 * k)} ${f(cy - ry * 0.8 * k + dy)} ${f(cx + dx + w * k)} ${f(cy + ry * 0.4 * k + dy)} ${f(cx + dx)} ${f(cy + ry * 0.9 * k + dy)}C${f(cx + dx - w * k)} ${f(cy + ry * 0.4 * k + dy)} ${f(cx + dx - w * 0.75 * k)} ${f(cy - ry * 0.8 * k + dy)} ${f(cx + dx)} ${f(cy - ry * 1.42 * k + dy)}Z`;
+    parts = two(flame(1, 0, 0), flame(0.84, -w * 0.08, -ry * 0.04));
+    box = { cx, cy: cy - ry * 0.25, rx: w, ry: ry * 1.15 };
+  } else if (kind === 'umbrella') {
+    // Wide and flat on top of a tall trunk.
+    const y0 = cy - ry * 0.2;
+    const w = rx * 1.12;
+    const dome = (k: number) => `M${f(cx - w * k)} ${f(y0 + ry * 0.2)}Q${f(cx - w * k)} ${f(y0 - ry * 0.75 * k)} ${f(cx)} ${f(y0 - ry * 0.78 * k)}Q${f(cx + w * k)} ${f(y0 - ry * 0.75 * k)} ${f(cx + w * k)} ${f(y0 + ry * 0.2)}Q${f(cx)} ${f(y0 + ry * 0.42)} ${f(cx - w * k)} ${f(y0 + ry * 0.2)}Z`;
+    parts = two(dome(1), dome(0.86));
+    box = { cx, cy: y0, rx: w, ry: ry * 0.6 };
+  } else if (kind === 'puffs') {
+    // Three round puffs side by side: a cherry's spreading cloud.
+    const r = ry * 0.66;
+    const puffs = [
+      [cx - rx * 0.56, cy + ry * 0.08, r * 0.92],
+      [cx, cy - ry * 0.22, r * 1.06],
+      [cx + rx * 0.56, cy + ry * 0.08, r * 0.92],
+    ];
+    parts = [...puffs.map(([x, y, rr]) => C(x, y, rr, pal.deep)), ...puffs.map(([x, y, rr]) => C(x - rr * 0.08, y - rr * 0.1, rr * 0.8, pal.mid))];
+  } else {
+    // A low dome with a flat underside, and fruit hanging below it.
+    const yb = cy + ry * 0.36;
+    const dome = (k: number) => `M${f(cx - rx * k)} ${f(yb)}C${f(cx - rx * k)} ${f(yb - ry * 1.5 * k)} ${f(cx + rx * k)} ${f(yb - ry * 1.5 * k)} ${f(cx + rx * k)} ${f(yb)}Q${f(cx)} ${f(yb + 3)} ${f(cx - rx * k)} ${f(yb)}Z`;
+    parts = two(dome(1), dome(0.85));
+    if (st === 4) for (const dx of [-0.55, 0.55]) parts.push(E(cx + rx * dx, yb + 6, 5, 6.4, A0.gift.mangoRipe));
+    box = { cx, cy: yb - ry * 0.5, rx, ry: ry * 0.75 };
+  }
+  return { layers: [G('canopy', parts)], box, organs: [] };
 }
 
 function tiersCanopy(bark: string, st: number, pal: PlantLeafPalette, seed: number, lod: Lod, sc: number[], lean: number): CanopyResult {
@@ -564,18 +618,65 @@ interface GroundResult {
   back: GNode;
   front: GNode;
   top: number;
+  /** Mobile 1.14: where things standing beside the plant rest (the shelf line), and the ground's half-width. */
+  floor: number;
+  span: number;
 }
-function ground(kind: PotKind, size: 1 | 2 | 3, lod: Lod, theme: 'light' | 'dark'): GroundResult {
+/** The look's ground dressing (engine/plantLooks.ts grounds). */
+export type GroundLook = 'meadow' | 'stone-ring' | 'trail-blaze';
+interface GroundOpts {
+  /** Lotus in a planter: water instead of soil. */
+  water?: boolean;
+  look?: GroundLook;
+}
+/** The keepsake and ground-mark scale per ground size (Seed … Elder grounds). */
+const GROUND_K = [0, 0.72, 0.86, 1] as const;
+
+function ground(kind: PotKind, size: 1 | 2 | 3, lod: Lod, theme: 'light' | 'dark', o: GroundOpts = {}): GroundResult {
   const T = plantTheme[theme];
   const PT = A0.pot;
+  const PL = A0.planter;
   const w = [0, 34, 46, 62][size];
+  const k = GROUND_K[size];
   const shadow = E(100, 172, w * 1.05, 6, T.shadow, { opacity: T.shadowOpacity });
   const back: Maybe[] = [];
   const front: Maybe[] = [];
+  const look = lod === 'icon' ? 'meadow' : o.look || 'meadow';
+  /** A ring of river stones around (cx, cy): the back half behind, the front half in front. */
+  const stoneRing = (cx: number, cy: number, rx: number, ry: number) => {
+    const n = 11;
+    const behind: PNode[] = [];
+    const ahead: PNode[] = [];
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2 + 0.2;
+      const x = cx + Math.cos(a) * rx;
+      const y = cy + Math.sin(a) * ry;
+      const s = (i % 3 === 0 ? 1.2 : 1) * k * 1.25;
+      const st = G(null, [E(x, y, 3.6 * s, 2.5 * s, i % 2 ? PL.stoneRing : mix(PL.stoneRing, A0.black, 0.12)), E(x - 0.9 * s, y - 0.8 * s, 1.6 * s, 0.9 * s, PL.stoneRingLit)]);
+      (Math.sin(a) < 0 ? behind : ahead).push(st);
+    }
+    return { behind: G('stone-ring', behind), ahead: G('stone-ring-front', ahead) };
+  };
+  /** A small waymark post with a painted blaze (the True North chevron). */
+  const waymark = (x: number, foot: number) => {
+    // At the keepsakes' scale (UX review P15), so it reads as a real waymark beside them.
+    const s = k * 1.6;
+    return G('trail-blaze', [
+      P(`M${f(x - 2.6 * s)} ${f(foot)}V${f(foot - 15 * s)}Q${f(x)} ${f(foot - 18 * s)} ${f(x + 2.6 * s)} ${f(foot - 15 * s)}V${f(foot)}Z`, PL.post),
+      P(`M${f(x - 2.6 * s)} ${f(foot)}V${f(foot - 15 * s)}Q${f(x - 1.4 * s)} ${f(foot - 16.6 * s)} ${f(x - 0.6 * s)} ${f(foot - 16.9 * s)}V${f(foot)}Z`, PL.postLit),
+      P(`M${f(x - 2.1 * s)} ${f(foot - 13 * s)}h${f(4.2 * s)}v${f(6 * s)}h${f(-4.2 * s)}Z`, PL.blaze),
+      P(`M${f(x)} ${f(foot - 12.2 * s)}l${f(1.5 * s)} ${f(3.4 * s)}l${f(-1.5 * s)} ${f(-0.9 * s)}l${f(-1.5 * s)} ${f(0.9 * s)}Z`, PL.blazeMark),
+    ]);
+  };
   if (kind === 'meadow') {
     back.push(shadow);
     back.push(P(`M${100 - w} 174C${100 - w * 0.8} ${164 - size} ${100 + w * 0.8} ${164 - size} ${100 + w} 174Q100 ${181 + size} ${100 - w} 174Z`, A0.soil));
     back.push(P(`M${100 - w} 174C${100 - w * 0.8} ${164 - size} ${100 + w * 0.8} ${164 - size} ${100 + w} 174Q100 170 ${100 - w} 174Z`, A0.grass));
+    if (look === 'stone-ring') {
+      const ring = stoneRing(100, 172.5, w * 0.74, 3.6);
+      back.push(ring.behind);
+      front.push(ring.ahead);
+    }
     if (lod !== 'icon') {
       const tuft = (x: number, s: number) =>
         P(
@@ -583,9 +684,10 @@ function ground(kind: PotKind, size: 1 | 2 | 3, lod: Lod, theme: 'light' | 'dark
           A0.tuft,
         );
       front.push(tuft(100 - w * 0.62, 0.9 + size * 0.15), tuft(100 + w * 0.7, 0.8 + size * 0.12));
-      if (size >= 2) front.push(C(100 + w * 0.42, 169.5, 1.6, A0.daisy), C(100 + w * 0.42, 169.5, 0.6, A0.daisyCore));
+      if (size >= 2 && look !== 'stone-ring') front.push(C(100 + w * 0.42, 169.5, 1.6, A0.daisy), C(100 + w * 0.42, 169.5, 0.6, A0.daisyCore));
     }
-    return { back: G('ground', back), front: G('ground-front', front), top: 168 };
+    if (look === 'trail-blaze') front.push(waymark(100 - w * 0.72, 174));
+    return { back: G('ground', back), front: G('ground-front', front), top: 168, floor: 175, span: w };
   }
   // Pots: the rim top at y = 168.
   const pw = w * 0.9;
@@ -594,12 +696,52 @@ function ground(kind: PotKind, size: 1 | 2 | 3, lod: Lod, theme: 'light' | 'dark
   const bot = top + ph;
   let soil: EllipseNode | null = E(100, top + 1, pw * 0.92, 3.4, A0.soilDeep);
   const potShadow = (bw: number, y: number) => E(100, y, bw, 4.5, T.shadow, { opacity: T.shadowOpacity });
+  let floor = bot + 1;
+  let span = pw;
+  let rimTop = top;
+  /** The classic tapered pot (terracotta's shape) in any material. */
+  const tapered = (body: string, lit: string, rim: string, band?: string) => {
+    back.push(P(`M${f(100 - pw * 0.86)} ${top + 4}L${f(100 - pw * 0.68)} ${bot}Q100 ${bot + 2} ${f(100 + pw * 0.68)} ${bot}L${f(100 + pw * 0.86)} ${top + 4}Z`, body));
+    back.push(P(`M${f(100 - pw * 0.86)} ${top + 4}L${f(100 - pw * 0.68)} ${bot}Q${f(100 - pw * 0.5)} ${bot + 1} ${f(100 - pw * 0.4)} ${bot}L${f(100 - pw * 0.6)} ${top + 4}Z`, lit));
+    front.push(P(`M${f(100 - pw)} ${top - 1}h${f(pw * 2)}v8q0 2 -2 2h${f(-pw * 2 + 4)}q-2 0 -2 -2Z`, rim));
+    if (band) front.push(P(`M${f(100 - pw)} ${top + 5}h${f(pw * 2)}v2q0 2 -2 2h${f(-pw * 2 + 4)}q-2 0 -2 -2Z`, band));
+  };
+  // The front face of a tapered pot, under the rim: where a mark is painted.
+  const faceY = top + 9 + (ph - 9) * 0.5;
   if (kind === 'terracotta') {
     back.push(shadow);
-    back.push(P(`M${f(100 - pw * 0.86)} ${top + 4}L${f(100 - pw * 0.68)} ${bot}Q100 ${bot + 2} ${f(100 + pw * 0.68)} ${bot}L${f(100 + pw * 0.86)} ${top + 4}Z`, PT.terracotta));
-    back.push(P(`M${f(100 - pw * 0.86)} ${top + 4}L${f(100 - pw * 0.68)} ${bot}Q${f(100 - pw * 0.5)} ${bot + 1} ${f(100 - pw * 0.4)} ${bot}L${f(100 - pw * 0.6)} ${top + 4}Z`, PT.terracottaLit));
-    front.push(P(`M${f(100 - pw)} ${top - 1}h${f(pw * 2)}v8q0 2 -2 2h${f(-pw * 2 + 4)}q-2 0 -2 -2Z`, PT.terracottaRim));
-    front.push(P(`M${f(100 - pw)} ${top + 5}h${f(pw * 2)}v2q0 2 -2 2h${f(-pw * 2 + 4)}q-2 0 -2 -2Z`, PT.terracottaBand));
+    tapered(PT.terracotta, PT.terracottaLit, PT.terracottaRim, PT.terracottaBand);
+  } else if (kind === 'fieldstone') {
+    back.push(shadow);
+    tapered(PL.fieldstone, PL.fieldstoneLit, PL.fieldstoneLit);
+    if (lod !== 'icon') {
+      const r = rng(7 + size);
+      for (let i = 0; i < 7; i++) {
+        const x = 100 - pw * 0.6 + (i / 6) * pw * 1.2 + (r() - 0.5) * 4;
+        const y = top + 11 + ((i * 5) % 3) * ((ph - 12) / 3) + r() * 2;
+        back.push(E(x, y, 3 + r() * 2, 2 + r(), i % 2 ? PL.fieldstoneDark : PL.fieldstoneLit, { opacity: 0.85 }));
+      }
+    }
+  } else if (kind === 'five-stone') {
+    back.push(shadow);
+    tapered(PL.fiveStone, mix(PL.fiveStone, A0.white, 0.3), PL.fiveStoneRim);
+    // Five inset stones in a row: one per exam domain (the domain tones).
+    if (lod !== 'icon') PL.fiveDots.forEach((c, i) => back.push(C(100 + (i - 2) * pw * 0.26, faceY, Math.max(1.6, pw * 0.075), c)));
+  } else if (kind === 'compass-rose') {
+    back.push(shadow);
+    tapered(PL.compass, PL.compassLit, PL.compassRim);
+    if (lod !== 'icon') {
+      const s = Math.max(2.4, ph * 0.22);
+      back.push(P(`M100 ${f(faceY - s * 1.5)}L${f(100 + s * 0.38)} ${f(faceY - s * 0.38)}L${f(100 + s * 1.5)} ${f(faceY)}L${f(100 + s * 0.38)} ${f(faceY + s * 0.38)}L100 ${f(faceY + s * 1.5)}L${f(100 - s * 0.38)} ${f(faceY + s * 0.38)}L${f(100 - s * 1.5)} ${f(faceY)}L${f(100 - s * 0.38)} ${f(faceY - s * 0.38)}Z`, PL.compassStar));
+      back.push(C(100, faceY, s * 0.28, PL.compass));
+    }
+  } else if (kind === 'banded') {
+    back.push(shadow);
+    tapered(PL.banded, PL.bandedLit, PL.bandedRim, PL.bandedBand);
+    if (lod !== 'icon') {
+      back.push(P(`M${f(100 - pw * 0.8)} ${f(bot - 7)}L${f(100 + pw * 0.8)} ${f(bot - 7)}L${f(100 + pw * 0.76)} ${f(bot - 3.6)}L${f(100 - pw * 0.76)} ${f(bot - 3.6)}Z`, PL.bandedClay));
+      back.push(P(`M${f(100 - pw * 0.83)} ${f(bot - 11)}L${f(100 + pw * 0.83)} ${f(bot - 11)}L${f(100 + pw * 0.82)} ${f(bot - 9.6)}L${f(100 - pw * 0.82)} ${f(bot - 9.6)}Z`, PL.bandedBand));
+    }
   } else if (kind === 'celadon') {
     back.push(shadow);
     back.push(P(`M${f(100 - pw)} ${top}C${f(100 - pw)} ${bot - 2} ${f(100 - pw * 0.5)} ${bot} 100 ${bot}C${f(100 + pw * 0.5)} ${bot} ${f(100 + pw)} ${bot - 2} ${f(100 + pw)} ${top}Z`, PT.celadon));
@@ -616,14 +758,25 @@ function ground(kind: PotKind, size: 1 | 2 | 3, lod: Lod, theme: 'light' | 'dark
     front.push(P(`M${f(100 - bw - 1)} ${top - 1.5}h${f(bw * 2 + 2)}v3h${f(-bw * 2 - 2)}Z`, PT.trayRim));
     soil = E(100, top + 1, bw * 0.95, 3.4, A0.soilDeep);
     if (lod !== 'icon') front.push(P(`M${f(100 + bw * 0.45)} ${top - 1}q4 -6 9 0Z`, PT.pebble), P(`M${f(100 - bw * 0.7)} ${top - 1}q5 -4 9 0Z`, A0.grass));
-  } else if (kind === 'basket') {
+    floor = top + bh + 3;
+    span = bw;
+  } else if (kind === 'basket' || kind === 'root-woven') {
     back.push(shadow);
     back.push(P(`M${f(100 - pw * 0.95)} ${top}L${f(100 - pw * 0.78)} ${bot}h${f(pw * 1.56)}L${f(100 + pw * 0.95)} ${top}Z`, PT.basket));
     if (lod !== 'icon') {
       for (let y = top + 4; y < bot - 1; y += 4) back.push(S(`M${f(100 - pw * 0.92 + (y - top) * 0.17)} ${y}H${f(100 + pw * 0.92 - (y - top) * 0.17)}`, PT.basketWeave, 1.2));
       for (let i = -3; i <= 3; i++) back.push(S(`M${f(100 + i * pw * 0.26)} ${top + 1}L${f(100 + i * pw * 0.21)} ${bot - 1}`, PT.basketRib, 1.3));
+      // Root-woven: living roots wound through the weave.
+      if (kind === 'root-woven')
+        for (const [x0, dir] of [
+          [-0.7, 1],
+          [0.15, -1],
+          [0.55, 1],
+        ] as const)
+          back.push(S(`M${f(100 + x0 * pw)} ${top + 2}C${f(100 + (x0 + dir * 0.25) * pw)} ${f(top + ph * 0.35)} ${f(100 + (x0 - dir * 0.15) * pw)} ${f(top + ph * 0.65)} ${f(100 + (x0 + dir * 0.1) * pw)} ${bot - 1}`, PL.root, 2));
     }
-    front.push(P(`M${f(100 - pw - 1)} ${top - 2}h${f(pw * 2 + 2)}v4h${f(-pw * 2 - 2)}Z`, PT.basketRim));
+    front.push(P(`M${f(100 - pw - 1)} ${top - 2}h${f(pw * 2 + 2)}v4h${f(-pw * 2 - 2)}Z`, kind === 'root-woven' ? PL.root : PT.basketRim));
+    rimTop = top - 2;
   } else if (kind === 'pond') {
     const bw = pw * 1.3;
     const bh = 10 + size * 3;
@@ -633,17 +786,47 @@ function ground(kind: PotKind, size: 1 | 2 | 3, lod: Lod, theme: 'light' | 'dark
     back.push(E(100, top + 0.5, bw * 0.95, 4, PT.water));
     if (lod !== 'icon') back.push(S(`M${f(100 + bw * 0.3)} ${top + 0.5}h${f(bw * 0.3)} M${f(100 - bw * 0.5)} ${top + 1.6}h${f(bw * 0.2)}`, PT.ripple, 0.9));
     front.push(P(`M${f(100 - bw - 1)} ${top - 1.2}h${f(bw * 2 + 2)}v2.6h${f(-bw * 2 - 2)}Z`, PT.bowlRim));
-    return { back: G('ground', back), front: G('ground-front', front), top: top - 1 };
+    if (look === 'stone-ring') {
+      const ring = stoneRing(100, top + bh, bw * 1.04, 2.8);
+      back.unshift(ring.behind);
+      front.push(ring.ahead);
+    }
+    if (look === 'trail-blaze') front.push(waymark(100 - bw - 7 * k, top + bh + 3));
+    return { back: G('ground', back), front: G('ground-front', front), top: top - 1, floor: top + bh + 3, span: bw };
   } else if (kind === 'stone') {
     const sw = pw * 1.1;
     back.push(shadow);
     back.push(P(`M${f(100 - sw)} ${bot - 1}C${f(100 - sw * 1.05)} ${top + 2} ${f(100 - sw * 0.55)} ${top - 3} 100 ${top - 2}C${f(100 + sw * 0.6)} ${top - 3} ${f(100 + sw * 1.05)} ${top + 3} ${f(100 + sw)} ${bot - 1}Q100 ${bot + 2} ${f(100 - sw)} ${bot - 1}Z`, PT.stone));
     back.push(P(`M${f(100 - sw * 0.9)} ${bot - 3}C${f(100 - sw)} ${top + 4} ${f(100 - sw * 0.5)} ${top} ${f(100 - sw * 0.2)} ${top}C${f(100 - sw * 0.6)} ${top + 4} ${f(100 - sw * 0.7)} ${bot - 6} ${f(100 - sw * 0.5)} ${bot}Z`, PT.stoneLit));
     front.push(P(`M${f(100 - sw * 0.75)} ${top + 2}C${f(100 - sw * 0.5)} ${top - 4} ${f(100 + sw * 0.5)} ${top - 4} ${f(100 + sw * 0.78)} ${top + 2}Q${f(100 + sw * 0.4)} ${top + 6} ${f(100 + sw * 0.1)} ${top + 3}Q${f(100 - sw * 0.3)} ${top + 7} ${f(100 - sw * 0.75)} ${top + 2}Z`, A0.grass));
-    return { back: G('ground', back), front: G('ground-front', front), top: top - 2 };
+    return { back: G('ground', back), front: G('ground-front', front), top: top - 2, floor: bot, span: sw };
+  }
+  // Lotus in a planter: still water inside the rim (it lives in water).
+  if (o.water) {
+    soil = E(100, top + 1, pw * 0.92, 3.6, PT.water);
+    if (lod !== 'icon') front.push(S(`M${f(100 + pw * 0.25)} ${top + 1}h${f(pw * 0.3)}`, PT.ripple, 0.9));
   }
   back.push(soil);
-  return { back: G('ground', back), front: G('ground-front', front), top };
+  // The ground look around a pot: the stone ring at its foot, the blaze painted on its face.
+  if (look === 'stone-ring') {
+    const ring = stoneRing(100, floor - 3.5, span * 0.98, 2.6);
+    back.unshift(ring.behind);
+    front.push(ring.ahead);
+  }
+  if (look === 'trail-blaze' && lod !== 'icon') {
+    // ×1.6 (UX review P15), so the painted blaze reads at 104pt; never past the pot's face.
+    const s = Math.min((ph - 8) / 10, Math.max(0.7, ph / 22) * 1.6);
+    const y = kind === 'bonsai' ? top + 1 + (floor - top - 4) / 2 : faceY + (kind === 'celadon' ? 0 : 2);
+    if (kind === 'bonsai') front.push(waymark(100 - span - 7 * k, floor));
+    else
+      front.push(
+        G('trail-blaze', [
+          P(`M${f(100 - 4 * s)} ${f(y - 4.5 * s)}h${f(8 * s)}v${f(9 * s)}h${f(-8 * s)}Z`, PL.blaze, { opacity: 0.95 }),
+          P(`M100 ${f(y - 3.2 * s)}l${f(2.6 * s)} ${f(5.6 * s)}l${f(-2.6 * s)} ${f(-1.5 * s)}l${f(-2.6 * s)} ${f(1.5 * s)}Z`, PL.blazeMark),
+        ]),
+      );
+  }
+  return { back: G('ground', back), front: G('ground-front', front), top: Math.min(top, rimTop + 2), floor, span };
 }
 
 // ── face ────────────────────────────────────────────────────────────────
@@ -659,8 +842,15 @@ function face(x: number, y: number, w: number, mood: Mood, lod: Lod): GNode {
   const eyeL = x - sp;
   const eyeR = x + sp;
   const lw = Math.max(1.2, er * 0.55);
-  if (mood === 'happy' || mood === 'proud') {
+  if (mood === 'happy') {
     for (const ex of [eyeL, eyeR]) kids.push(S(`M${f(ex - er)} ${f(y + er * 0.3)}Q${f(ex)} ${f(y - er * 1.5)} ${f(ex + er)} ${f(y + er * 0.3)}`, INK, lw));
+  } else if (mood === 'proud') {
+    // Proud (UX review P3, option a): content half-lids, the eyes' lower
+    // halves under a calm lid line. Clearly not happy's "^ ^".
+    for (const ex of [eyeL, eyeR]) {
+      kids.push(P(`M${f(ex - er * 0.92)} ${f(y - er * 0.05)}A${f(er * 0.92)} ${f(er * 1.05)} 0 0 0 ${f(ex + er * 0.92)} ${f(y - er * 0.05)}Z`, INK));
+      kids.push(S(`M${f(ex - er * 1.15)} ${f(y - er * 0.05)}Q${f(ex)} ${f(y - er * 0.55)} ${f(ex + er * 1.15)} ${f(y - er * 0.05)}`, INK, lw));
+    }
   } else if (mood === 'resting') {
     for (const ex of [eyeL, eyeR]) kids.push(S(`M${f(ex - er)} ${f(y + er * 0.2)}Q${f(ex)} ${f(y + er * 1.3)} ${f(ex + er)} ${f(y + er * 0.2)}`, INK, lw));
   } else if (mood === 'blink') {
@@ -674,7 +864,7 @@ function face(x: number, y: number, w: number, mood: Mood, lod: Lod): GNode {
     if (mood === 'curious') kids.push(S(`M${f(eyeR - er)} ${f(y - er * 2.5)}Q${f(eyeR)} ${f(y - er * 3.3)} ${f(eyeR + er * 1.1)} ${f(y - er * 2.4)}`, INK, lw * 0.85));
   }
   if (lod !== 'icon') {
-    const co = mood === 'happy' || mood === 'proud' ? 0.6 : 0.38;
+    const co = mood === 'proud' ? 0.7 : mood === 'happy' ? 0.6 : 0.38;
     kids.unshift(E(eyeL - er * 0.9, y + er * 2.1, er * 1.3, er * 0.75, A0.blush, { opacity: co }), E(eyeR + er * 0.9, y + er * 2.1, er * 1.3, er * 0.75, A0.blush, { opacity: co }));
   }
   const my = y + er * 2.4;
@@ -682,57 +872,259 @@ function face(x: number, y: number, w: number, mood: Mood, lod: Lod): GNode {
   if (mood === 'happy') kids.push(P(`M${f(x - mw * 1.25)} ${f(my - 0.6)}Q${f(x)} ${f(my + mw * 2)} ${f(x + mw * 1.25)} ${f(my - 0.6)}Z`, INK));
   else if (mood === 'curious') kids.push(E(x, my + 0.6, mw * 0.5, mw * 0.62, INK));
   else if (mood === 'resting') kids.push(S(`M${f(x - mw * 0.55)} ${f(my + 0.4)}Q${f(x)} ${f(my + 1.3)} ${f(x + mw * 0.55)} ${f(my + 0.4)}`, INK, lw * 0.85));
-  else if (mood === 'proud') kids.push(S(`M${f(x - mw * 1.2)} ${f(my - 0.5)}Q${f(x)} ${f(my + mw * 1.5)} ${f(x + mw * 1.2)} ${f(my - 0.5)}`, INK, lw));
+  // Proud: a wider closed smile (no open mouth: that is happy's).
+  else if (mood === 'proud') kids.push(S(`M${f(x - mw * 1.65)} ${f(my - 1)}Q${f(x)} ${f(my + mw * 1.9)} ${f(x + mw * 1.65)} ${f(my - 1)}`, INK, lw * 1.05));
   else kids.push(S(`M${f(x - mw * 0.8)} ${f(my)}Q${f(x)} ${f(my + mw * 1.1)} ${f(x + mw * 0.8)} ${f(my)}`, INK, lw * 0.9));
   return G('face', kids);
 }
 
-// ── state marks (posture + small marks; no face needed) ─────────────────
+// ── state marks ─────────────────────────────────────────────────────────
+/**
+ * Mobile 1.14: moods are expressions on the FACE only (Quiet look shows
+ * none), so the only mark left is the resting look's small honey moon:
+ * calm, no "z", no droop, no colour loss.
+ */
 function effects(mood: Mood, A: Anchors, lod: Lod, theme: 'light' | 'dark'): GNode | null {
-  if (lod === 'icon' || !A.canopyBox) return null;
+  if (lod === 'icon' || !A.canopyBox || mood !== 'resting') return null;
   const T = plantTheme[theme];
   const { cx, cy, rx, ry } = A.canopyBox;
   const k = Math.min(2, Math.max(1, rx / 34));
   const about = (x: number, y: number) => `translate(${f(x)} ${f(y)}) scale(${f(k)}) translate(${f(-x)} ${f(-y)})`;
-  if (mood === 'happy') {
-    const lf = (x: number, y: number, s: number, r: number) => glyph('lens', x, y, s * k, r, T.leafFill, { stroke: T.sap, sw: 0.8 });
-    return G('fx', [lf(cx + rx * 0.62, cy - ry - 2 * k, 0.9, 32), lf(cx - rx * 0.66, cy - ry + 4 * k, 0.8, -38), lf(cx + rx * 0.04, cy - ry - 9 * k, 0.85, 6)]);
+  const mx = cx + rx * 0.7;
+  const my = cy - ry - 2 - 6 * k;
+  return G('fx', [P(`M${f(mx)} ${f(my - 8)}A8 8 0 1 0 ${f(mx + 7)} ${f(my + 4)}A6.4 6.4 0 1 1 ${f(mx)} ${f(my - 8)}Z`, T.honey)], { transform: about(mx, my) });
+}
+
+// ── visitors (mobile 1.14: they perch on days you clear your plan) ──────
+/** A small round songbird facing right, sitting at (x, y) (its feet). Original art. */
+function bird(kind: 'wren' | 'robin', x: number, y: number, s: number, lod: Lod): GNode {
+  const V = A0.visitor;
+  const body = kind === 'wren' ? V.wren : V.robin;
+  const dark = kind === 'wren' ? V.wrenDark : V.robinDark;
+  const belly = kind === 'wren' ? V.wrenBelly : V.robinBreast;
+  const kids: Maybe[] = [
+    // The tail: a wren's cocks straight up; a robin's sits low.
+    kind === 'wren' ? P('M-5 -6L-9 -16L-6.4 -16.6L-2.6 -7Z', dark) : P('M-6 -4L-13 -8L-11.6 -2Z', dark),
+    E(0, -6, 7.6, 6.2, body),
+    E(1.8, -4.2, 5, 4, belly, kind === 'robin' ? {} : { opacity: 0.95 }),
+    C(4.8, -10.4, 4.3, body),
+    kind === 'robin' ? E(5.4, -8.4, 3, 2.6, belly) : null,
+    P('M8.7 -11.2l3.8 1.3l-3.8 1.1Z', V.beak),
+    C(6.1, -11.3, 1, A0.ink),
+    lod === 'full' ? C(5.8, -11.6, 0.35, A0.white) : null,
+    P('M-4.6 -8Q0.4 -9 2 -5Q-3 -2.6 -4.6 -8Z', dark),
+    kind === 'wren' && lod === 'full' ? S('M3.2 -12.6Q6 -13.6 8.6 -12.6', V.wrenBelly, 0.7) : null,
+    S('M-1 0.2v1.8 M2 0.2v1.8', V.leg, 0.9),
+  ];
+  return G('visitor', kids, { transform: `translate(${f(x)} ${f(y)}) scale(${f(s)})` });
+}
+
+function visitorNode(id: string | undefined, A: Anchors, lod: Lod): GNode | null {
+  if (lod === 'icon' || !A.perch || (id !== 'wren' && id !== 'robin')) return null;
+  const k = Math.min(1.6, Math.max(0.85, (A.canopyBox ? A.canopyBox.rx : 30) / 40));
+  return bird(id, A.perch.x, A.perch.y + 1, k, lod);
+}
+
+// ── keepsakes (mobile 1.14: each badge's emblem as a small object) ──────
+/**
+ * One keepsake, drawn about its foot at (0, 0), about 20 units tall and up
+ * to ±11 wide. Simple shapes, so it still reads at 64pt. Original art.
+ */
+export function keepsakeShape(id: string, lod: Lod, theme: 'light' | 'dark' = 'light'): PNode[] {
+  const parts = keepsakeParts(id, lod, theme);
+  if (theme !== 'dark' || !parts.length) return parts;
+  // Dark (UX review P12): a 1px cream rim at 35% round the object, so a
+  // dark post or a dark bird never sinks into the night page.
+  const rim = (n: PNode): PNode =>
+    n.t === 'g'
+      ? { ...n, children: n.children.map(rim) }
+      : { ...n, fill: n.fill === 'none' ? 'none' : A0.keepsake.cream, stroke: A0.keepsake.cream, sw: (n.stroke ? (n.sw ?? 1) : 0) + 1.3, opacity: undefined };
+  // The ground shade (the first, low ellipse of most) gets no rim.
+  const body = parts.filter((n) => !(n.t === 'ellipse' && n.fill === A0.black));
+  return [G(null, body.map(rim), { opacity: 0.35 }), ...parts];
+}
+
+function keepsakeParts(id: string, lod: Lod, theme: 'light' | 'dark'): PNode[] {
+  // Dark: the darkest wood lifts to the mid wood (it would vanish on the night page).
+  const K = theme === 'dark' ? { ...A0.keepsake, woodDark: A0.keepsake.wood, wood: A0.keepsake.woodLit } : A0.keepsake;
+  const fine = lod === 'full';
+  const shade = E(0, 0.4, 8.5, 1.8, A0.black, { opacity: 0.12 });
+  switch (id) {
+    case 'stepping-stone':
+      return [shade, E(0, -2.6, 9.4, 3.6, K.stone), E(-2.4, -3.9, 4.6, 1.4, K.stoneLit), fine ? S('M3 -2.2q2 0.6 4 -0.2', K.stoneDark, 0.7) : null].filter(Boolean) as PNode[];
+    case 'trail-post':
+      return [shade, P('M-2.6 0V-17Q0 -20.4 2.6 -17V0Z', K.wood), P('M-2.6 0V-17Q-1.6 -18.6 -0.6 -19V0Z', K.woodLit), P('M-2.6 -14h5.2v3h-5.2Z', K.clay), P('M-2.6 -9.4h5.2v1.6h-5.2Z', K.cream)];
+    case 'trail-board':
+      return [shade, P('M-7.4 0V-12h2.4V0Z', K.woodDark), P('M5 0V-12h2.4V0Z', K.woodDark), P('M-10 -19.5h20v8.5h-20Z', K.wood), P('M-10 -19.5h20v2h-20Z', K.woodLit), S('M-7 -14.2h9 M-7 -12.6h6', K.cream, 1)];
+    case 'compass-stone':
+      return [shade, E(0, -6.2, 8.4, 6.6, K.stone), E(-2.4, -8.6, 3.6, 2.2, K.stoneLit), P('M0 -11.4L1.2 -7.4L5 -6.2L1.2 -5L0 -1L-1.2 -5L-5 -6.2L-1.2 -7.4Z', K.gold), C(0, -6.2, 0.9, K.stoneDark)];
+    case 'jay':
+      return [
+        shade,
+        P('M-6 -6L-12 -4.6L-11 -2.4L-5.4 -4Z', K.jayBlack),
+        E(0, -6.4, 7.2, 5.6, K.jay),
+        P('M-4.8 -8.4Q0 -10 2.2 -5.6Q-2.6 -3.6 -4.8 -8.4Z', K.jayBlue),
+        S('M-3.6 -7.6l1.4 1.2 M-2 -8.3l1.4 1.2 M-0.4 -8.6l1.4 1.2', A0.white, 0.6),
+        C(4.6, -11, 4, K.jay),
+        P('M2.8 -14.6Q5 -16.6 7.4 -14.2Q5 -13.6 2.8 -14.6Z', K.cream),
+        P('M8.3 -11.6l3.4 1.1l-3.4 1Z', K.jayBlack),
+        C(5.8, -11.6, 0.95, A0.ink),
+        S('M4.6 -9.6q1.6 1 3 0.4', K.jayBlack, 0.8),
+        S('M-1 0.2v-1.8 M2 0.2v-1.8', A0.visitor.leg, 0.9),
+      ];
+    case 'empty-nest':
+      return [
+        shade,
+        P('M-9 -6.4Q-8.4 0 0 0Q8.4 0 9 -6.4Z', K.wood),
+        E(0, -6.4, 9, 2.6, K.woodDark),
+        S('M-8.6 -5Q-2 -2 6 -5.6 M-7 -3Q0 -1 7.6 -3.6 M-6 -6.6l3 1.4 M2 -7l4 1', K.woodLit, 0.9),
+      ];
+    case 'woven-ring':
+      return [
+        shade,
+        C(0, -8.6, 7.4, 'none', { stroke: K.wood, sw: 3 }),
+        C(0, -8.6, 7.4, 'none', { stroke: K.woodLit, sw: 1, opacity: 0.85 }),
+        fine ? S('M-5.6 -13.4l1.8 1.6 M4 -14.4l-1.4 1.8 M-7.6 -7.6h2.4 M5.2 -7.6h2.4', K.woodDark, 0.8) : null,
+        C(0, -1.2, 1.7, K.clay),
+      ].filter(Boolean) as PNode[];
+    case 'fern':
+      return [
+        S('M-1 0Q-5 -8 -9 -14', K.fern, 1.4),
+        S('M1 0Q4 -9 2 -18', K.fern, 1.4),
+        ...[0.25, 0.45, 0.65, 0.85].flatMap((t) => [
+          glyph('olive', -1 - 8 * t, -14 * t, 0.42, -100 + t * 40, K.fernLit),
+          glyph('olive', -1 - 8 * t, -14 * t, 0.42, -10 + t * 30, K.fern),
+          glyph('olive', 1 + 3 * t, -18 * t, 0.42, -60, K.fern),
+          glyph('olive', 1 + 3 * t, -18 * t, 0.42, 60, K.fernLit),
+        ]),
+      ];
+    case 'still-pond':
+      return [E(0, -2.4, 11, 3.6, K.waterRim), E(0, -2.8, 9.6, 2.7, K.water), S('M-4 -2.8h4 M2 -2h3', A0.white, 0.7, { opacity: 0.7 }), S('M7 -3Q7.6 -10 9 -14', K.reed, 1.1), S('M8.4 -3Q8.2 -8 10.6 -11', K.reed, 1.1), E(9, -14.6, 0.9, 2, K.woodDark)];
+    case 'dew-web': {
+      const kids: PNode[] = [S('M-8 0L-7 -18', K.woodDark, 1.2), S('M8 0L7.4 -18', K.woodDark, 1.2)];
+      for (const a of [-60, -20, 20, 60, 180]) kids.push(S(`M0 -10L${f(Math.cos((a * Math.PI) / 180) * 7.2)} ${f(-10 + Math.sin((a * Math.PI) / 180) * 7.2)}`, K.web, 0.6, { opacity: 0.9 }));
+      kids.push(S('M-3.4 -10a3.4 3.4 0 1 0 6.8 0a3.4 3.4 0 1 0 -6.8 0 M-6 -10a6 6 0 1 0 12 0a6 6 0 1 0 -12 0', K.web, 0.6, { opacity: 0.85 }));
+      kids.push(C(-3, -13, 1, K.dew), C(4.4, -7.6, 1.1, K.dew), C(1.2, -16, 0.8, K.dew));
+      return kids;
+    }
+    case 'weather-vane':
+      return [shade, S('M0 0V-19', K.woodDark, 1.4), S('M-7 -19H7', K.woodDark, 1.2), P('M7 -19l-3 -2.6v5.2Z', K.gold), P('M-7 -19l-1.6 -2.8h3.4l1.4 2.8l-1.4 2.8h-3.4Z', K.gold), C(0, -19, 1.2, K.goldLit), S('M-3 -14h6', K.woodDark, 0.9)];
+    case 'lantern':
+      return [
+        shade,
+        P('M-4.6 0h9.2v-2h-9.2Z', K.woodDark),
+        P('M-4 -2Q-5.4 -8 -3.4 -13h6.8Q5.4 -8 4 -2Z', K.lanternGlow),
+        E(-1.4, -8, 1.3, 3.6, A0.white, { opacity: 0.55 }),
+        S('M-3.4 -13V-2 M3.4 -13V-2', K.woodDark, 0.8),
+        P('M-4.6 -13h9.2l-1.6 -2.6h-6Z', K.woodDark),
+        S('M-2.6 -15.6Q0 -19.4 2.6 -15.6', K.woodDark, 1),
+      ];
+    case 'sundial':
+      return [shade, P('M-3 0V-9h6V0Z', K.stone), P('M-3 0V-9h2V0Z', K.stoneLit), E(0, -10, 8.4, 2.6, K.stoneDark), E(0, -10.6, 8, 2.2, K.stoneLit), P('M-1 -10.6L5 -10.6L-1 -16Z', K.gold), fine ? S('M-6 -10.6l1 0.4 M-3 -12.2l0.6 0.6 M4 -12l-0.6 0.6', K.stoneDark, 0.6) : null].filter(Boolean) as PNode[];
+    case 'swallow':
+      return [
+        shade,
+        P('M-5 -7L-13 -3.4L-10 -5.6L-12.6 -1.2L-4.4 -5Z', K.swallow),
+        E(0, -6.6, 6.8, 5, K.swallow),
+        E(1.6, -4.8, 4.6, 3.2, K.cream),
+        C(4.2, -10.4, 3.6, K.swallow),
+        C(5.2, -8.4, 1.8, K.swallowThroat),
+        P('M7.6 -11l2.6 0.8l-2.6 0.8Z', K.jayBlack),
+        C(5.4, -11.2, 0.9, A0.ink),
+        S('M-1 0.2v-1.8 M1.8 0.2v-1.8', A0.visitor.leg, 0.9),
+      ];
+    case 'fox':
+      return [
+        shade,
+        // The tail curls round in front of its feet.
+        P('M-8 -2Q-13 -6 -9 -11Q-7 -6 -1 -1.6Q-4 0.2 -8 -2Z', K.fox),
+        P('M-11.6 -8.2Q-12.6 -10.2 -10.4 -11.6Q-10.4 -9.6 -9.6 -8.8Z', K.cream),
+        P('M-4.6 0Q-6 -9 -1 -12.6Q3.6 -12 4 -4Q4.4 0 1 0Z', K.fox),
+        P('M0.6 -1Q-0.2 -7 2.6 -10Q4 -5 3.4 -1Z', K.cream),
+        P('M-3.2 -11.6Q-2 -17.6 3.4 -16.6Q7 -16 9.6 -13.2Q6 -11.4 1 -10.6Z', K.fox),
+        P('M-2.6 -14.4L-2.4 -19.6L0.4 -16.2Z', K.foxDark),
+        P('M1.4 -16.4L2.8 -20.6L4.6 -16.2Z', K.foxDark),
+        P('M9.6 -13.2Q6.4 -11.8 4 -12.6Q6.6 -13 9.6 -13.2Z', K.cream),
+        C(10, -13.3, 0.9, A0.ink),
+        C(3.6, -14.6, 0.8, A0.ink),
+      ];
+    case 'cairn':
+      return [shade, E(0, -2.6, 8.4, 3, K.stoneDark), E(0.6, -7.4, 6.4, 2.6, K.stone), E(-0.4, -11.6, 4.6, 2.2, K.stoneLit), E(0.3, -15.2, 2.8, 1.8, K.stone), E(-1.6, -8.2, 2.6, 0.8, K.stoneLit)];
+    case 'signpost':
+      return [shade, P('M-1.2 0V-20h2.4V0Z', K.woodDark), P('M-1 -18.6h9l2.6 2.4l-2.6 2.4h-9Z', K.wood), P('M1 -12.4h-9l-2.6 2.4l2.6 2.4h9Z', K.woodLit), S('M0.8 -16.2h5', K.cream, 0.9), S('M-0.8 -10h-5', K.cream, 0.9)];
+    case 'roe-deer':
+      return [
+        shade,
+        S('M-5 -6V0 M-2.6 -6V0 M4.2 -6.4V0 M6.4 -6.6V0', K.deerDark, 1.3),
+        E(0.6, -8.6, 7.6, 3.8, K.deer),
+        E(-6.4, -8.2, 1.9, 2.2, K.cream),
+        P('M5 -10Q6 -15 8.4 -16.6L10 -15Q8.4 -12.8 8 -9Z', K.deer),
+        E(9.6, -16.2, 2.8, 1.9, K.deer),
+        S('M8 -18.2l-0.6 -3.4 M9.4 -18.4l0.6 -3.4', K.deerDark, 0.9),
+        P('M7.4 -18.4l-1.6 -1l1.8 -0.4Z', K.deerDark),
+        C(10, -16.6, 0.65, A0.ink),
+        C(12.2, -15.8, 0.6, A0.ink),
+      ];
+    case 'mushroom-ring':
+      return [
+        shade,
+        ...([
+          [-6.4, 0.9],
+          [0.6, 1.2],
+          [6.6, 0.8],
+        ] as const).flatMap(([x, s]) => [
+          P(`M${f(x - 1.4 * s)} 0V${f(-5 * s)}h${f(2.8 * s)}V0Z`, K.mushroomStem),
+          P(`M${f(x - 5 * s)} ${f(-5 * s)}Q${f(x)} ${f(-12.6 * s)} ${f(x + 5 * s)} ${f(-5 * s)}Z`, K.mushroom),
+          C(x - 1.6 * s, -7.4 * s, 0.8 * s, K.mushroomStem),
+          C(x + 1.8 * s, -8.2 * s, 0.7 * s, K.mushroomStem),
+        ]),
+      ];
+    case 'clear-dawn':
+      // Only the icon draws it here; on the plant it is a soft sun behind the crown.
+      return [C(0, -10, 8, K.dawn), C(0, -10, 5.4, K.goldLit), S('M-11 -1H11', K.stone, 1.4), S('M-8 1.6H8', K.stoneLit, 1.2)];
+    case 'pebble-path':
+      return [E(-7.6, -0.8, 3.2, 1.6, K.stone), E(-2.2, -2.6, 3.4, 1.7, K.stoneLit), E(3.2, -4.4, 3, 1.5, K.stone), E(7.6, -6.4, 2.6, 1.3, K.stoneLit), E(-7.6, -1.2, 1.4, 0.5, K.stoneLit)];
+    case 'ribbon':
+      return [shade, P('M-0.9 0V-13h1.8V0Z', K.woodDark), P('M-1.6 -13L-4.6 -3.4L-2.4 -4.6L-1 -2.6L0.4 -12Z', K.ribbonTail), P('M1.6 -13L4.6 -3.4L2.4 -4.6L1 -2.6L-0.4 -12Z', K.ribbon), C(0, -15, 4.6, K.ribbon), C(0, -15, 2.6, K.goldLit), C(0, -15, 1.4, K.gold)];
+    default:
+      return [];
   }
-  if (mood === 'curious') {
-    const bx = cx + rx * 0.62;
-    const by = cy - ry * 0.72;
-    return G(
-      'fx',
-      [
-        P(`M${f(bx + 8)} ${f(by - 12)}l1.4 3.6l3.6 1.4l-3.6 1.4l-1.4 3.6l-1.4 -3.6l-3.6 -1.4l3.6 -1.4Z`, T.honey),
-        C(bx + 16, by - 3, 1.3, T.honey),
-        glyph('lens', bx, by, 0.9, 35, L.grove.hi, { stroke: T.sap, sw: 0.7 }),
-      ],
-      { transform: about(bx, by) },
-    );
-  }
-  if (mood === 'proud') {
-    // The growth-ring halo: two wobbly arcs behind the crown (the brand motif).
-    const arc = (gx: number, gy: number) => {
-      let d = '';
-      for (let i = 0; i <= 40; i++) {
-        const t = Math.PI * (1.08 + (i / 40) * 0.84);
-        const w = 1 + 0.02 * Math.sin(3 * t + 0.6) + 0.012 * Math.sin(5 * t + 1.9);
-        d += (i ? 'L' : 'M') + f(cx + gx * w * Math.cos(t)) + ' ' + f(cy + 4 + gy * w * Math.sin(t));
-      }
-      return d;
-    };
-    const gy = Math.min(ry + 12, cy);
-    const gy2 = Math.min(ry + 19, cy + 3);
-    return G('fx-back', [S(arc(rx + 10, gy), T.sap, 2.2, { opacity: 0.55 }), S(arc(rx + 17, gy2), T.sap, 1.6, { opacity: 0.3 })]);
-  }
-  if (mood === 'resting') {
-    // A small honey crescent moon. Calm: no "z", no droop, no colour loss.
-    const mx = cx + rx * 0.7;
-    const my = cy - ry - 2 - 6 * k;
-    return G('fx', [P(`M${f(mx)} ${f(my - 8)}A8 8 0 1 0 ${f(mx + 7)} ${f(my + 4)}A6.4 6.4 0 1 1 ${f(mx)} ${f(my - 8)}Z`, T.honey)], { transform: about(mx, my) });
-  }
-  return null;
+}
+
+/** One keepsake standing at (x, foot) at scale k. */
+function keepsakeAt(id: string, x: number, foot: number, k: number, lod: Lod, theme: 'light' | 'dark'): GNode {
+  return G(`keepsake-${id}`, keepsakeShape(id, lod, theme), { transform: `translate(${f(x)} ${f(foot)}) scale(${f(k)})` });
+}
+
+/**
+ * A square viewBox round a drawing: its height fills about 80% of the box
+ * (its width at most 90%), centred (UX review: every icon reads the same size).
+ */
+function iconFrame(root: PNode): string {
+  const b = bounds(root);
+  const w = b.maxX - b.minX;
+  const h = b.maxY - b.minY;
+  const side = Math.max(h / 0.8, w / 0.9, 1);
+  const cx = (b.minX + b.maxX) / 2;
+  const cy = (b.minY + b.maxY) / 2;
+  return `${f(cx - side / 2)} ${f(cy - side / 2)} ${f(side)} ${f(side)}`;
+}
+
+/** A keepsake alone, framed for a small icon (the Look screen's rows). */
+export function keepsakeIcon(id: string, theme: 'light' | 'dark' = 'light'): { root: GNode; viewBox: string } {
+  const root = G('mascot', keepsakeShape(id, 'small', theme));
+  return { root, viewBox: iconFrame(root) };
+}
+
+/**
+ * A planter as a small icon (the Look screen's planter rows, UX review P8):
+ * the pot this species gets for it, with the plant's first sprout in it (a
+ * bare pot is a thin sliver at 40pt; the sprout makes it read as a planter).
+ * No face: it is a picture of the pot, not the companion.
+ */
+export function planterIcon(id: string, species: PlantSpecies, theme: 'light' | 'dark' = 'light'): { root: GNode; viewBox: string } {
+  const built = buildPlant({ species, stage: 2, lod: 'small', theme, quietLook: true, drift: false, look: { planter: id } });
+  return { root: built.root, viewBox: iconFrame(built.root) };
 }
 
 // ── the Elder gift (flowers or fruit) ───────────────────────────────────
@@ -823,12 +1215,14 @@ function flourish(sp: TreeArt, st: number, A: Anchors, lod: Lod, seed: number, c
       [11, 16],
     ];
     const rr = st === 6 ? 7 : 6;
+    // The Golden colourway carries orange king coconuts (UX review P13).
+    const nut = sp.palette === L.golden ? g.coconutGolden : st === 6 ? g.coconutRipe : g.coconutGreen;
     for (let i = 0; i < m; i++) {
       const [dx, dy] = pts[i];
       const x = palmCrown.x + dx;
       const y = palmCrown.y + dy;
-      kids.push(C(x, y, rr, st === 6 ? g.coconutRipe : g.coconutGreen), C(x - rr * 0.35, y - rr * 0.35, rr * 0.3, A0.white, { opacity: 0.25 }));
-      if (lod !== 'icon') kids.push(C(x + rr * 0.2, y + rr * 0.35, rr * 0.16, mix(st === 6 ? g.coconutRipe : g.coconutGreen, A0.black, 0.35)));
+      kids.push(C(x, y, rr, nut), C(x - rr * 0.35, y - rr * 0.35, rr * 0.3, A0.white, { opacity: 0.25 }));
+      if (lod !== 'icon') kids.push(C(x + rr * 0.2, y + rr * 0.35, rr * 0.16, mix(nut, A0.black, 0.35)));
     }
   }
   if (sp.flourish === 'moss') for (const o of A.organs.slice(0, 5)) kids.push(glyph('blossom', o.x + 4, o.y - 3, lod === 'full' ? 1 : 1.25, r() * 60, A0.white, { core: g.mossBloomCore }));
@@ -1201,6 +1595,20 @@ const PLANTS: Record<FlowerArt['build'], Builder> = {
     const body: Maybe[] = [];
     const behind: Maybe[] = [];
     let faceSpec: FaceSpec;
+    if (lod === 'icon' && st >= 4) {
+      // 24pt (mobile 1.14): one bold bloom low over the bowl and two pads, so
+      // the chip reads as a lotus, not a bowl.
+      const h = st === 4 ? 40 : 52;
+      const top = wy - 14;
+      behind.push(floatPad(70, 18), floatPad(130, 18));
+      if (st === 4) body.push(G('flower', [bud(100, top - 10, 24)]));
+      else body.push(flower(100, top, h));
+      A.canopyBox = { cx: 100, cy: top - h * 0.5, rx: h * 0.9, ry: h * 0.6 };
+      A.crown = { x: 100, y: top - h };
+      A.neck = { x: 100, y: top, w: 6 };
+      A.drift = { x: 120, y: top - 20 };
+      return { body, behind, faceSpec: null };
+    }
     if (st === 3) {
       behind.push(floatPad(126, 13), standPad(84, 78, wy - 30, 15));
       body.push(floatPad(70, 15));
@@ -1262,6 +1670,23 @@ const PLANTS: Record<FlowerArt['build'], Builder> = {
     const my = base - ry * 0.5;
     const body: Maybe[] = [];
     const front: Maybe[] = [];
+    if (lod === 'icon' && st >= 3) {
+      // 24pt (mobile 1.14): a rounder mound crowned with three big white
+      // stars, so the chip reads as a flowering shrub, not a flat blob.
+      const iy = base - ry * 0.7;
+      body.push(G('mound', mound(100, iy, rx * 0.9, ry * 1.3, fol, seed, lod, 10)));
+      for (const [dx, dy, s] of [
+        [-0.42, -0.62, 2],
+        [0, -1.05, 2.3],
+        [0.42, -0.62, 2],
+      ] as const)
+        body.push(glyph('star', 100 + rx * dx, iy + ry * 1.3 * dy, s, 0, pal.light, { edge: pal.deep }));
+      A.canopyBox = { cx: 100, cy: iy - ry * 0.5, rx: rx + 4, ry: ry * 1.3 + 4 };
+      A.crown = { x: 100, y: iy - ry * 1.4 };
+      A.neck = { x: 100, y: iy, w: rx };
+      A.drift = { x: 100 + rx * 0.7, y: iy };
+      return { body, faceSpec: null };
+    }
     body.push(G('mound', mound(100, my, rx, ry, fol, seed, lod, 12)));
     if (lod !== 'icon') {
       const r = rng(seed + 9);
@@ -1534,12 +1959,21 @@ export interface BuildOpts {
   quietLook?: boolean;
   lod?: Lod;
   theme?: 'light' | 'dark';
+  /** The face's expression (mobile 1.14: the face only; no posture or marks). */
   mood?: Mood;
   /** The resting look: a calm dusk backdrop and a small moon. */
   resting?: boolean;
   /** Falling leaves at Elder (off for static renders that should stay still-looking). */
   drift?: boolean;
+  /**
+   * Mobile 1.14: the look, already resolved (engine/plantLooks.ts
+   * resolveLook: unknown or locked choices have fallen back). Unset = the
+   * species' own look.
+   */
+  look?: ArtLook;
 }
+
+export type { ArtLook };
 
 export interface BuiltPlant {
   root: GNode;
@@ -1551,31 +1985,62 @@ export interface BuiltPlant {
 /**
  * Built plants, shared (code review M6a): the picker's 13 previews, Today,
  * You and Your plant reuse a build instead of redoing ~3 ms of geometry each
- * (more on a low-end phone). Keyed by every option; a part tree is never
- * changed after it is built, so sharing it is safe. Small and bounded: the
- * oldest entry goes first.
+ * (more on a low-end phone). Keyed by every option, the look included
+ * (species, growth, look and theme: the path cache of the 4b brief); a part
+ * tree is never changed after it is built, so sharing it is safe. Small and
+ * bounded: the oldest entry goes first.
  */
 const BUILT = new Map<string, BuiltPlant>();
-const BUILT_MAX = 64;
+// 32 (code review M8c): about 13 previews and 4 screens are ever live, and keys churn as organs move.
+const BUILT_MAX = 32;
+const lookKey = (l: ArtLook | undefined) => (l ? [l.palette ?? '', l.ground ?? '', l.planter ?? '', l.visitor ?? '', (l.keepsakes ?? []).join('+')].join('/') : '');
 const buildKey = (o: BuildOpts) =>
-  [o.species, Math.round(o.stage), o.lod ?? 'full', o.theme ?? 'light', o.quietLook ? 1 : 0, o.resting ? 1 : 0, o.mood ?? '', o.drift === false ? 0 : 1, (o.organs ?? []).join(',')].join('|');
+  [o.species, Math.round(o.stage), o.lod ?? 'full', o.theme ?? 'light', o.quietLook ? 1 : 0, o.resting ? 1 : 0, o.mood ?? '', o.drift === false ? 0 : 1, (o.organs ?? []).join(','), lookKey(o.look)].join('|');
 
 export function buildPlant(o: BuildOpts): BuiltPlant {
   const k = buildKey(o);
   const hit = BUILT.get(k);
-  if (hit) return hit;
+  if (hit) {
+    // Most recently used goes to the back, so the plants on screen stay cached.
+    BUILT.delete(k);
+    BUILT.set(k, hit);
+    return hit;
+  }
   const built = buildUncached(o);
   if (BUILT.size >= BUILT_MAX) BUILT.delete(BUILT.keys().next().value as string);
   BUILT.set(k, built);
   return built;
 }
+/** Tests: how many builds are cached (the cache is bounded). */
+export const builtCacheSize = () => BUILT.size;
+
+/** The pot a planter id draws for this species ("native" = the species' own ground). */
+function potFor(sp: SpeciesArt, planter: string | undefined): PotKind {
+  switch (planter) {
+    case 'terracotta':
+    case 'celadon':
+    case 'fieldstone':
+    case 'five-stone':
+    case 'compass-rose':
+    case 'banded':
+    case 'root-woven':
+      return planter;
+    default:
+      return sp.pot || 'meadow';
+  }
+}
 
 function buildUncached(o: BuildOpts): BuiltPlant {
   const key = o.species;
-  const sp = SPECIES_ART[key];
+  const base0 = SPECIES_ART[key];
+  const look = o.look;
+  // A colourway swaps the leaf (trees) or bloom (flowers) palette; the art is otherwise the species'.
+  const pal = look?.palette ? plantLeaf[look.palette] : base0.palette;
+  const sp: SpeciesArt = { ...base0, palette: pal } as SpeciesArt;
   const st = Math.max(1, Math.min(6, Math.round(o.stage)));
   const lod = o.lod || 'full';
   const theme = o.theme || 'light';
+  // Quiet look has no face, so no expression; resting keeps its calm look.
   const mood: Mood = o.resting && (!o.mood || o.mood === 'idle') ? 'resting' : o.mood || 'idle';
   const showFace = !o.quietLook && lod !== 'icon';
   const seed = hash(key + st);
@@ -1583,11 +2048,14 @@ function buildUncached(o: BuildOpts): BuiltPlant {
     const v = o.organs?.[i];
     return typeof v === 'number' && Number.isFinite(v) ? Math.max(ORGAN_DRAW_MIN, Math.min(ORGAN_DRAW_MAX, v)) : ORGAN_DEFAULT;
   });
-  const potKind: PotKind = sp.pot || 'meadow';
-  const gr = ground(potKind, GEO[st].ground, lod, theme);
+  const potKind = potFor(base0, look?.planter);
+  const gr = ground(potKind, GEO[st].ground, lod, theme, { water: key === 'lotus' && potKind !== 'pond', look: (look?.ground as GroundLook) || 'meadow' });
   const base = gr.top + 2;
   const A: Anchors = { base: { x: 100, y: base }, organs: [] };
-  const ctx: Ctx = { key, sp, st, lod, pal: sp.palette, fol: sp.kind === 'plant' ? sp.foliage : null, seed, sc, base, A, showFace };
+  // A cactus' own pot is deep; in any other planter the young seed sits the same way.
+  const potted = potKind !== 'meadow' && potKind !== 'pond' && potKind !== 'bonsai' && potKind !== 'stone';
+  const spAdj: SpeciesArt = { ...sp, pot: potted ? 'terracotta' : sp.pot } as SpeciesArt;
+  const ctx: Ctx = { key, sp: spAdj, st, lod, pal, fol: sp.kind === 'plant' ? sp.foliage : null, seed, sc, base, A, showFace };
 
   const res = youngOverride(ctx) ?? (st <= 2 ? youngStage(ctx) : sp.kind === 'tree' ? treeBody(ctx, sp) : PLANTS[sp.build](ctx, sp));
 
@@ -1610,19 +2078,12 @@ function buildUncached(o: BuildOpts): BuiltPlant {
     drift.push(glyph(kind, d.x + 4, Math.min(d.y + 44, low), 0.7, -60, fill, { core }));
   }
 
-  const pose: Partial<Record<Mood, string>> = {
-    happy: `translate(100 ${base}) scale(1.015) translate(-100 ${-base - 2})`,
-    curious: `rotate(-4 100 ${base})`,
-    proud: `translate(100 ${base}) scale(1 1.025) translate(-100 ${-base})`,
-    resting: `rotate(2.5 100 ${base})`,
-  };
+  // Posture belongs to motion now (mobile 1.14): only the resting look keeps its small tilt.
+  const pose = mood === 'resting' ? `rotate(2.5 100 ${base})` : null;
   const fx = effects(mood, A, lod, theme);
-  const tree = G('tree', [
-    mood === 'proud' ? fx : null,
-    G('body', [...(res.behind || []), ...res.body, patch, faceNode, ...(res.front || [])], pose[mood] ? { transform: pose[mood] } : {}),
-    G('drift', drift),
-    mood !== 'proud' ? fx : null,
-  ]);
+  // The visitor perches on the plant (it sways with it), on the clearing day.
+  const visitor = visitorNode(look?.visitor, A, lod);
+  const tree = G('tree', [G('body', [...(res.behind || []), ...res.body, patch, faceNode, visitor, ...(res.front || [])], pose ? { transform: pose } : {}), G('drift', drift), fx]);
   // The hero stage is a shared 200 × 200, so growth reads from one size to the
   // next. A very full Elder (big organs, a tall crown) can reach past it: then
   // the whole plant settles a little smaller about its base, never clipped.
@@ -1630,7 +2091,54 @@ function buildUncached(o: BuildOpts): BuiltPlant {
   const M = 3;
   const fit = Math.min(1, (base - M) / Math.max(1, base - tb.minY), (100 - M) / Math.max(1, 100 - tb.minX), (100 - M) / Math.max(1, tb.maxX - 100));
   if (fit < 1) tree.transform = `translate(100 ${f(base)}) scale(${fit.toFixed(3)}) translate(-100 ${f(-base)})`;
-  const frame = frameFor(bounds(G(null, [gr.back, tree, gr.front])));
+
+  // Keepsakes (mobile 1.14): up to three, on the shelf beside the plant. Two
+  // base slots (left, right) and one behind it; the clear dawn is always the
+  // backdrop. Never at icon size (a 24pt chip is the silhouette only).
+  // UX review H2: flat ones (a stone, a pond, a ring) take the base slots
+  // first, since behind the plant the trunk would hide them; a flat third
+  // lies in front instead, and the slot behind stands clear of the trunk.
+  const keepBack: Maybe[] = [];
+  const keepFront: Maybe[] = [];
+  let dawn: GNode | null = null;
+  if (lod !== 'icon' && look?.keepsakes?.length) {
+    // Big enough to read at 104pt, kept on the 200 × 200 stage.
+    const k = GROUND_K[GEO[st].ground] * 1.6;
+    const gap = 3 + 9 * k;
+    const half = 11 * k;
+    const base2 = [
+      { x: Math.max(2 + half, 100 - gr.span - gap), foot: gr.floor },
+      { x: Math.min(198 - half, 100 + gr.span + gap), foot: gr.floor },
+    ];
+    const items = [...new Set(look.keepsakes)].slice(0, 3);
+    if (items.includes('clear-dawn')) {
+      // A soft sun behind the crown: the mist has lifted.
+      const T = plantTheme[theme];
+      const box = A.canopyBox ?? { cx: 100, cy: 120, rx: 30, ry: 30 };
+      const r = Math.min(26, Math.max(12, box.rx * 0.42));
+      const cx = Math.min(196 - r, box.cx + box.rx * 0.62);
+      const cy = Math.max(r + 2, box.cy - box.ry * 0.7);
+      dawn = G('keepsake-clear-dawn', [C(cx, cy, r, A0.keepsake.dawn, { opacity: T.dawnOpacity }), C(cx, cy, r * 0.66, A0.keepsake.dawn, { opacity: Math.min(1, T.dawnOpacity + 0.2) })]);
+    }
+    const flat = (id: string) => lookItem(id)?.shape === 'flat';
+    const standing = items.filter((id) => id !== 'clear-dawn');
+    const order = [...standing.filter(flat), ...standing.filter((id) => !flat(id))];
+    const trunkHalf = bandHalfWidth({ ...tree, children: [tree.children[0]] }, base - 16, base - 1);
+    order.forEach((id, i) => {
+      if (i < 2) keepFront.push(keepsakeAt(id, base2[i].x, base2[i].foot, k, lod, theme));
+      else if (flat(id)) {
+        // A flat third lies in front, just right of the trunk (never over its face).
+        const kf = k * 0.8;
+        keepFront.push(keepsakeAt(id, Math.min(198 - 11 * kf, 100 + Math.max(gr.span * 0.5, trunkHalf + 9 * kf)), gr.floor + 2, kf, lod, theme));
+      } else {
+        // Behind the plant, clear of the trunk: on the mound, or in a pot's soil like a garden figurine (the rim overlaps its foot).
+        const kb = k * (potKind === 'meadow' ? 0.8 : 0.68);
+        const x = Math.min(198 - 11 * kb, 100 + Math.max(trunkHalf + 11 * kb, gr.span * (potKind === 'meadow' ? 0.62 : 0.76)));
+        keepBack.push(keepsakeAt(id, x, potKind === 'meadow' ? gr.floor - 3 : gr.top + 1.5, kb, lod, theme));
+      }
+    });
+  }
+  const frame = frameFor(bounds(G(null, [gr.back, ...(keepBack as PNode[]), tree, gr.front, ...(keepFront.filter(Boolean) as PNode[]), dawn ?? null].filter(Boolean) as PNode[])));
   // The resting dusk: a soft disc behind the whole plant, filling the frame.
   let backdrop: GNode | null = null;
   if (o.resting) {
@@ -1643,8 +2151,56 @@ function buildUncached(o: BuildOpts): BuiltPlant {
     const dr = Math.max(8, Math.min(fs0 * 0.48, dcx - 1, dcy - 1, 199 - dcx, 199 - dcy));
     backdrop = G('dusk', [C(dcx, dcy, dr, T.dusk, { opacity: T.duskOpacity })]);
   }
-  const root = G('mascot', [backdrop, gr.back, tree, gr.front]);
+  // Paint order, and the three motion layers (PlantLayers): back (dusk, the
+  // dawn, the ground, a keepsake behind) · the plant (`tree`, which moves) ·
+  // front (the pot's rim, grass, the keepsakes beside it). Never moves: the
+  // ground grounds the character (motion.md §5).
+  const root = G('mascot', [backdrop, dawn, gr.back, G('keepsakes-back', keepBack), tree, gr.front, G('keepsakes', keepFront)]);
   return { root, anchors: A, frame };
+}
+
+/** The motion layers of a built plant, in paint order: back and front never move; the plant does. */
+export interface PlantLayers {
+  back: GNode;
+  plant: GNode;
+  front: GNode;
+}
+/** Splits a built plant into its three motion layers (cached per build: never rebuilt per frame). */
+const LAYERS = new WeakMap<GNode, PlantLayers>();
+export function plantLayers(root: GNode): PlantLayers {
+  const hit = LAYERS.get(root);
+  if (hit) return hit;
+  const i = root.children.findIndex((c) => c.t === 'g' && c.id === 'tree');
+  const layers = {
+    back: G('back', root.children.slice(0, i)),
+    plant: G('plant', [root.children[i]]),
+    front: G('front', root.children.slice(i + 1)),
+  };
+  LAYERS.set(root, layers);
+  return layers;
+}
+
+/**
+ * Lifts one named group out of a part tree into its own layer (the
+ * onboarding sprout pops on its own): returns the tree without it, and the
+ * group alone with its ancestors' transforms composed, so it draws in the
+ * same place. Null when the tree has no such group.
+ */
+export function liftGroup(root: GNode, id: string): { rest: GNode; part: GNode } | null {
+  let found: { node: GNode; chain: string[] } | null = null;
+  const strip = (n: PNode, chain: string[]): PNode | null => {
+    if (n.t !== 'g') return n;
+    if (n.id === id && !found) {
+      found = { node: n, chain };
+      return null;
+    }
+    const next = n.transform ? [...chain, n.transform] : chain;
+    return { ...n, children: n.children.map((c) => strip(c, next)).filter(Boolean) as PNode[] };
+  };
+  const rest = strip(root, []) as GNode;
+  if (!found) return null;
+  const { node, chain } = found as { node: GNode; chain: string[] };
+  return { rest, part: G(`lift-${id}`, [node], chain.length ? { transform: chain.join(' ') } : {}) };
 }
 
 /**
@@ -1781,6 +2337,25 @@ export function bounds(n: PNode, m: Mat = ID, box: Box = { minX: Infinity, minY:
 }
 
 /** Every named group in a part tree, depth-first (tests and motion use the names). */
+/** How far a drawing reaches from the centre line (x = 100) between two heights: the trunk's half-width at its base. */
+export function bandHalfWidth(n: PNode, yLo: number, yHi: number, m: Mat = ID): number {
+  const mm = n.transform ? mul(m, parseTransform(n.transform)) : m;
+  let hw = 0;
+  const add = (x: number, y: number) => {
+    const [px, py] = apply(mm, x, y);
+    if (py >= yLo && py <= yHi) hw = Math.max(hw, Math.abs(px - 100));
+  };
+  if (n.t === 'g') for (const c of n.children) hw = Math.max(hw, bandHalfWidth(c, yLo, yHi, mm));
+  else if (n.t === 'circle') {
+    add(n.cx - n.r, n.cy);
+    add(n.cx + n.r, n.cy);
+  } else if (n.t === 'ellipse') {
+    add(n.cx - n.rx, n.cy);
+    add(n.cx + n.rx, n.cy);
+  } else for (const [x, y] of pathPoints(n.d)) add(x, y);
+  return hw;
+}
+
 export function groupNames(n: PNode, out: string[] = []): string[] {
   if (n.t === 'g') {
     if (n.id) out.push(n.id);

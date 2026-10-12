@@ -42,6 +42,7 @@ import {
   type GrowthLevel,
   type PlantSpecies,
 } from './plant';
+import { isLookOfSlot, type LookSlot } from './plantLooks';
 import { examDateLabel } from './examDay';
 import { reminderSummary } from './reminders';
 import { migrateProgress, PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
@@ -352,7 +353,12 @@ const GROWTH: Check<GrowthLevel> = (x, at) => {
   if (fitting && typeof x === 'number' && Number.isFinite(x)) return clampTo(Math.round(x), 1, MAX_GROWTH) as GrowthLevel;
   return isGrowthLevel(x) ? x : bad(at);
 };
+/** Mobile 1.14: a look id must be in the catalogue (engine/plantLooks.ts), and in the right slot. */
 const lookId: Check<string> = (x, at) => (isLookId(x) ? x : bad(at));
+const slotLook =
+  (slot: LookSlot): Check<string> =>
+  (x, at) =>
+    isLookOfSlot(x, slot) ? x : bad(at);
 /** The learner's own text: a read refuses a name that isn't clean; export cleans it. */
 const plantName: Check<string> = (x, at) => {
   if (typeof x !== 'string' || x.length > 80) return bad(at);
@@ -368,7 +374,16 @@ const plantShape = rule(
       reached: plantReached,
       pending: GROWTH,
       backfill: obj({ at: ts, growth: GROWTH }, { seen: bool }),
-      look: obj({}, { colourway: lookId, ground: lookId, visitor: lookId, keepsakes: list(lookId, MAX_KEEPSAKES) }),
+      look: obj(
+        {},
+        {
+          colourway: slotLook('colourway'),
+          ground: slotLook('ground'),
+          planter: slotLook('planter'),
+          visitor: slotLook('visitor'),
+          keepsakes: list(slotLook('keepsake'), MAX_KEEPSAKES),
+        },
+      ),
       kept: list(lookId, MAX_KEPT),
       passedOn: date,
     },

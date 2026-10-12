@@ -18,11 +18,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
-import { Plant } from '../components/plant/Plant';
+import { LivePlant } from '../components/plant/LivePlant';
 import { PlantNote } from '../components/plant/PlantUI';
 import { Button, ListRow, ProgressBar, PushedHeader, Section, T, Tag, useFontScale } from '../components/ui';
 import {
   backfillLine,
+  grewLabel,
   GROWTH_LOOKS,
   GROWTH_NAMES,
   growthShort,
@@ -34,10 +35,12 @@ import {
   SPECIES_INFO,
   shownName,
   SPREAD_EXPLAINER,
+  type GrowthLevel,
 } from '../engine/plant';
 import { dayKey } from '../engine/streak';
 import { plantFactsFor, seePlantBackfill, usePlantView } from '../lib/plant';
 import { useActiveCert } from '../lib/useActiveCert';
+import { useSeen } from '../store/seen';
 import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
@@ -62,6 +65,15 @@ export default function YourPlant() {
   useEffect(() => {
     if (backfill && !backfill.seen) seePlantBackfill(certId);
   }, [backfill, certId]);
+
+  // A grow-up Today applied silently (the exam-ready panel had that visit's
+  // one moment, code review M1): one calm line here, once, kept for this visit.
+  const quiet = useSeen((s) => s.quietGrowth?.[certId]);
+  const [grewQuietly, setGrewQuietly] = useState<number | null>(null);
+  if (p && quiet && grewQuietly !== quiet) setGrewQuietly(quiet);
+  useEffect(() => {
+    if (quiet) useSeen.getState().seeQuietGrowth(certId);
+  }, [quiet, certId]);
 
   if (!view.shown) {
     return (
@@ -97,7 +109,8 @@ export default function YourPlant() {
         <PushedHeader title="Your plant" onBack={() => (router.canGoBack() ? router.back() : router.replace('/you'))} />
 
         <View style={{ alignItems: 'center', marginTop: space.sm }}>
-          <Plant
+          {/* Mobile 1.14: dressed in its look; one slow breath the first time it opens this session, then still; one reaction per occasion. */}
+          <LivePlant
             testID="plant-hero"
             species={p.species}
             stage={p.growth}
@@ -108,14 +121,22 @@ export default function YourPlant() {
             fit={false}
             theme={isDark ? 'dark' : 'light'}
             accessibilityLabel={view.label}
+            look={view.look?.art}
+            mood={view.look?.mood}
+            breathe="plant"
+            reaction={view.look ? { id: `${certId}:${view.look.mood}:${dayKey(now)}`, mood: view.look.mood } : null}
           />
         </View>
         <T v="display" center accessibilityRole="header" style={{ marginTop: space.md }}>{plantCallName(p)}</T>
         <T v="meta" center style={{ marginTop: space.xs }}>{`${p.name ? `Your ${SPECIES_INFO[p.species].lower} · ` : ''}${growthShort(p.growth)}`}</T>
         <T v="quote" center color={c.ink2} style={{ marginTop: space.xs }}>{GROWTH_LOOKS[p.growth]}</T>
+        {view.look?.visiting ? (
+          <T v="meta" center style={{ marginTop: space.xs }}>{`A ${view.look.resolved.visitor} came by: you cleared today’s plan.`}</T>
+        ) : null}
 
-        {(kept || rest) && (
+        {(kept || rest || grewQuietly) && (
           <View style={{ marginTop: space.xl, gap: space.lg }}>
+            {grewQuietly ? <PlantNote caption="Your plant grew" line={grewLabel(p, grewQuietly as GrowthLevel)} testID="plant-grew-quietly" /> : null}
             {kept && <PlantNote caption="From your study so far" line={kept.line} testID="plant-backfill" />}
             {rest && <PlantNote caption={view.exam === 'day' ? 'Exam day' : 'Resting'} line={rest} testID="plant-rest" />}
           </View>
@@ -165,6 +186,7 @@ export default function YourPlant() {
         {p.growth < 4 && <T v="meta" style={{ marginTop: space.sm }}>Each domain grows its own part of the plant from Bough.</T>}
 
         <Section title="Look" />
+        <ListRow title="Change its look" subtitle="Colour, ground, planter, visitor and keepsakes" onPress={() => router.push('/plant-look')} />
         <ListRow title="Change plant" subtitle="Same growth, new look." onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'species' } })} />
         <ListRow title="Rename" subtitle={p.name ? `Now: ${shownName(p.name)}` : 'No name yet'} onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'name' } })} last />
         <Button kind="ghost" label="Plant settings" accessibilityHint="Show my plant and Quiet look, in Settings" onPress={() => router.push('/settings')} style={{ alignSelf: 'flex-start', marginTop: space.md, marginLeft: -space.sm }} />

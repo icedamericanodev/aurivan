@@ -10,11 +10,17 @@
  *   quiet-light.html / quiet-dark.html      face vs Quiet look, plus the resting look
  *   sizes-light.html / sizes-dark.html      24 / 64 / 200pt strips
  *   organs-light.html                       domain organs: weak, uneven, strong (CISA weights)
+ *   looks-light.html / looks-dark.html      mobile 1.14: colourways, grounds, planters, visitors, sample looks
+ *   keepsakes-light.html / keepsakes-dark.html  every keepsake, and keepsakes on 3 species
+ *   chips-light.html / chips-dark.html      24pt chips (lotus, sampaguita, round crowns by shape)
+ *   moods-light.html / moods-dark.html      each mood on the face (and Quiet look shows none)
  */
 import fs from 'fs';
 import path from 'path';
 import type { ReactElement } from 'react';
 import { Plant } from '../../src/components/plant/Plant';
+import { KeepsakeIcon, PlanterIcon } from '../../src/components/plant/Keepsake';
+import { colourwaysFor, GROUNDS, KEEPSAKE_ITEMS, plantersFor, resolveLook, VISITORS, LOOK_ITEMS } from '../../src/engine/plantLooks';
 import { getCertification } from '../../src/content/certifications';
 import { GROWTH_LOOKS, GROWTH_NAMES, organs, organScales, plantLabel, PLANT_SPECIES, SPECIES_INFO, type GrowthLevel, type PlantSpecies } from '../../src/engine/plant';
 import { dark, light } from '../../src/theme/tokens';
@@ -110,6 +116,76 @@ function organSheet(theme: Theme): string {
   return page('Your plant · domain organs', 'Organ size follows the CISA blueprint weight (12% to 26%) and fullness follows mastery (62% to 108%). A weak domain looks young, never bare.', b, theme, 1500);
 }
 
+const ALL = LOOK_ITEMS.map((x) => x.id);
+const art = (species: PlantSpecies, look: Parameters<typeof resolveLook>[1], visitor = false) => {
+  const r = resolveLook(species, look, ALL);
+  return { palette: r.palette, ground: r.ground, planter: r.planter, visitor: visitor && r.visitor !== 'no-visitor' ? r.visitor : undefined, keepsakes: r.keepsakes };
+};
+const cardRow = (title: string, cells: string[]) => `<div style="margin-top:20px;font-weight:600">${title}</div><div class="row" style="flex-wrap:wrap;gap:10px;margin-top:8px">${cells.join('')}</div>`;
+const card = (inner: string, cap: string) => `<div class="card" style="text-align:center">${inner}<div class="cap" style="max-width:150px">${cap}</div></div>`;
+
+function looks(theme: Theme): string {
+  let b = '';
+  b += cardRow(
+    'Colourways (three per species: two free, the third at Bough), Crown, 120pt',
+    PLANT_SPECIES.flatMap((sp) => colourwaysFor(sp).map((cw) => card(plant({ species: sp, stage: 5, size: 120, theme, fit: true, look: art(sp, { colourway: cw.id }) }), `${SPECIES_INFO[sp].name} · ${cw.name}`))),
+  );
+  b += cardRow('Grounds (Meadow free, Stone ring at Crown, Trail blaze at Elder), oak and cactus', ['oak', 'cactus', 'lotus'].flatMap((sp) => GROUNDS.map((g) => card(plant({ species: sp as PlantSpecies, stage: 6, size: 130, theme, fit: true, look: art(sp as PlantSpecies, { ground: g.id }) }), `${g.name}`))));
+  b += cardRow('Planters (your own ground and terracotta free; one per completed badge set), Crown, 130pt', ['oak', 'sunflower', 'lotus', 'bonsai'].flatMap((sp) => plantersFor(sp as PlantSpecies).map((pl) => card(plant({ species: sp as PlantSpecies, stage: 5, size: 130, theme, fit: true, look: art(sp as PlantSpecies, { planter: pl.id }) }), `${SPECIES_INFO[sp as PlantSpecies].name} · ${pl.name}`))));
+  b += cardRow('Visitors (on days you clear your plan), 140pt', ['oak', 'pine', 'sunflower', 'cactus', 'bamboo', 'coconut-palm', 'sampaguita'].flatMap((sp) => VISITORS.filter((v) => v.id !== 'no-visitor').map((v) => card(plant({ species: sp as PlantSpecies, stage: 5, size: 140, theme, fit: true, look: art(sp as PlantSpecies, { visitor: v.id }, true) }), `${SPECIES_INFO[sp as PlantSpecies].name} · ${v.name}`))));
+  const samples: [PlantSpecies, number, Parameters<typeof resolveLook>[1], string][] = [
+    ['oak', 6, { colourway: 'oak-autumn', ground: 'trail-blaze', planter: 'native', keepsakes: ['lantern', 'fox', 'jay'] }, 'Autumn oak, trail blaze, lantern · fox · jay'],
+    ['cherry-blossom', 5, { colourway: 'cherry-blossom-white', planter: 'celadon', keepsakes: ['clear-dawn', 'sundial', 'stepping-stone'] }, 'White cherry in celadon, clear dawn · sundial · stone'],
+    ['cactus', 6, { colourway: 'cactus-yellow', planter: 'compass-rose', ground: 'stone-ring', keepsakes: ['cairn', 'roe-deer'] }, 'Yellow-bloom cactus, compass-rose planter'],
+    ['lotus', 6, { colourway: 'lotus-violet', planter: 'five-stone', keepsakes: ['still-pond', 'swallow', 'fern'] }, 'Violet lotus in the five-stone planter'],
+    ['sunflower', 5, { colourway: 'sunflower-velvet', planter: 'banded', keepsakes: ['signpost', 'mushroom-ring'] }, 'Velvet sunflower, banded planter'],
+    ['bamboo', 6, { planter: 'root-woven', keepsakes: ['pebble-path', 'woven-ring', 'weather-vane'] }, 'Bamboo in the root-woven basket'],
+  ];
+  b += cardRow('Sample looks (200pt, the hero stage)', samples.map(([sp, g, l, cap]) => card(plant({ species: sp, stage: g as GrowthLevel, size: 200, theme, fit: false, look: { ...art(sp, l), visitor: 'robin' } }), cap)));
+  return page('Your plant · looks', 'Colour, ground, planter, visitor and keepsakes (mobile 1.14). Cosmetics only: they carry no readiness claim.', b, theme, 1500);
+}
+
+function keepsakeSheet(theme: Theme): string {
+  let b = cardRow('Every keepsake (each badge’s emblem), 48pt icon (fitted to 80% height)', KEEPSAKE_ITEMS.map((k) => card(renderToStaticMarkup(<KeepsakeIcon id={k.id} size={48} theme={theme} />), k.name)));
+  b += cardRow('Planter icons (the Look screen’s planter rows), 40pt', (['oak', 'lotus', 'bonsai', 'cactus'] as PlantSpecies[]).flatMap((sp) => plantersFor(sp).map((pl) => card(renderToStaticMarkup(<PlanterIcon id={pl.id} species={sp} size={40} theme={theme} />), `${SPECIES_INFO[sp].name} · ${pl.name}`))));
+  for (const sp of ['oak', 'sunflower', 'cactus'] as PlantSpecies[]) {
+    const sets = [
+      ['stepping-stone', 'trail-post', 'trail-board'],
+      ['compass-stone', 'jay', 'empty-nest'],
+      ['woven-ring', 'fern', 'still-pond'],
+      ['dew-web', 'weather-vane', 'lantern'],
+      ['sundial', 'swallow', 'fox'],
+      ['cairn', 'signpost', 'clear-dawn'],
+      ['roe-deer', 'mushroom-ring', 'pebble-path'],
+      ['ribbon', 'lantern', 'fox'],
+    ];
+    b += cardRow(`Keepsakes on the ${SPECIES_INFO[sp].lower} (three at a time), 160pt`, sets.map((ks) => card(plant({ species: sp, stage: 5, size: 160, theme, fit: true, look: art(sp, { keepsakes: ks }) }), ks.join(' · '))));
+    b += cardRow(`… at 64pt and at Sprout`, sets.slice(0, 4).map((ks) => card(plant({ species: sp, stage: 5, size: 64, theme, look: art(sp, { keepsakes: ks }) }) + plant({ species: sp, stage: 2, size: 64, theme, look: art(sp, { keepsakes: ks }) }), ks.join(' · '))));
+  }
+  return page('Your plant · keepsakes', 'Each badge’s emblem becomes a small object by the plant, with a caption that names the skill. Up to three are shown.', b, theme, 1500);
+}
+
+function chips(theme: Theme): string {
+  let b = '';
+  for (const g of [3, 4, 5, 6] as GrowthLevel[]) {
+    b += `<div style="margin-top:18px" class="it">${GROWTH_NAMES[g]} · 24pt (actual) and 24pt ×3</div><div class="row" style="flex-wrap:wrap;gap:16px;margin-top:6px">${PLANT_SPECIES.map(
+      (sp) => `<div style="display:flex;flex-direction:column;align-items:center;gap:4px">${plant({ species: sp, stage: g, size: 24, theme })}<div style="zoom:3">${plant({ species: sp, stage: g, size: 24, theme })}</div><div class="cap">${SPECIES_INFO[sp].name}</div></div>`,
+    ).join('')}</div>`;
+  }
+  return page('Your plant · 24pt chips', 'Lotus and sampaguita read at 24pt; the round-crown trees differ by shape: oak round, maple a flame, narra an umbrella, cherry three puffs, mango a dome with fruit.', b, theme, 1500);
+}
+
+function moodSheet(theme: Theme): string {
+  const moods = ['idle', 'happy', 'curious', 'proud', 'resting'] as const;
+  let b = '';
+  for (const sp of ['oak', 'sunflower', 'cactus', 'lotus', 'bamboo', 'sampaguita'] as PlantSpecies[])
+    b += cardRow(SPECIES_INFO[sp].name, [
+      ...moods.map((m) => card(plant({ species: sp, stage: 5, size: 130, theme, fit: true, mood: m === 'resting' ? undefined : m, resting: m === 'resting' }), m)),
+      card(plant({ species: sp, stage: 5, size: 130, theme, fit: true, mood: 'proud', quietLook: true }), 'Quiet look: no face, no mood'),
+    ]);
+  return page('Your plant · moods', 'Idle, happy, curious, proud and resting, on the face only. Never sad.', b, theme, 1500);
+}
+
 describe('plant sheets', () => {
   it('writes the HTML sheets', () => {
     fs.mkdirSync(OUT, { recursive: true });
@@ -117,6 +193,10 @@ describe('plant sheets', () => {
       fs.writeFileSync(path.join(OUT, `contact-${t}.html`), contact(t));
       fs.writeFileSync(path.join(OUT, `quiet-${t}.html`), quiet(t));
       fs.writeFileSync(path.join(OUT, `sizes-${t}.html`), sizes(t));
+      fs.writeFileSync(path.join(OUT, `looks-${t}.html`), looks(t));
+      fs.writeFileSync(path.join(OUT, `keepsakes-${t}.html`), keepsakeSheet(t));
+      fs.writeFileSync(path.join(OUT, `chips-${t}.html`), chips(t));
+      fs.writeFileSync(path.join(OUT, `moods-${t}.html`), moodSheet(t));
     }
     fs.writeFileSync(path.join(OUT, 'organs-light.html'), organSheet('light'));
     expect(fs.existsSync(path.join(OUT, 'contact-light.html'))).toBe(true);

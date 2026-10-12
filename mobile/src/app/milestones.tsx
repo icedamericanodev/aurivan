@@ -54,6 +54,8 @@ import { moveFocus } from '../lib/a11y';
 import { caseStage, seeCase, studyFor, weakestDomain } from '../lib/badges';
 import { backfillLine, badgeCase, catalogFillLine, seeBackfill, seeCatalogFill } from '../lib/milestones';
 import { useActiveCert } from '../lib/useActiveCert';
+import { onYourPlantLine } from '../engine/plantLooks';
+import { usePlantView } from '../lib/plant';
 import { useSeen } from '../store/seen';
 import { LARGE_TEXT, motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -78,6 +80,11 @@ const SHEET_GONE_MS = Platform.OS === 'ios' ? 700 : 60;
 export default function Badges() {
   const { c } = useTheme();
   const { cert, progress, readiness, daysLeft, dueCount } = useActiveCert();
+  // Mobile 1.14: an earned badge's keepsake line, only when this exam has a
+  // plant that shows; "On your plant" only when the keepsake is on show (UX review H1).
+  const plantView = usePlantView();
+  const plantShown = !!plantView.plant;
+  const shownKeepsakes = plantView.look?.resolved.keepsakes ?? [];
   const params = useLocalSearchParams<{ shelf?: string; open?: string }>();
   const fontScale = useFontScale();
   const { width: screenW } = useWindowDimensions();
@@ -407,6 +414,7 @@ export default function Badges() {
           onDismissed={leaving ? gone : undefined}
           onStudy={study}
           cert={cert}
+          plantLine={plantShown && sheetMark.status === 'earned' ? onYourPlantLine(sheetMark.badge, shownKeepsakes) : null}
         />
       )}
     </SafeAreaView>

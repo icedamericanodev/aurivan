@@ -15,7 +15,7 @@ import { memo, useMemo, type ReactElement, type ReactNode } from 'react';
 import { View, type StyleProp, type ViewStyle } from 'react-native';
 import Svg, { Circle, Ellipse, G, Path } from 'react-native-svg';
 import type { GrowthLevel, PlantSpecies } from '../../engine/plant';
-import { buildPlant, lodFor, type Lod, type Mood, type PNode, type Paint } from './art';
+import { buildPlant, lodFor, type ArtLook, type Lod, type Mood, type PNode, type Paint } from './art';
 
 export interface PlantProps {
   species: PlantSpecies;
@@ -30,8 +30,10 @@ export interface PlantProps {
   theme: 'light' | 'dark';
   /** The calm resting look (dusk backdrop and a small moon). Never sad, never smaller. */
   resting?: boolean;
-  /** Reserved for 4b reactions; Phase 4a screens leave it idle. */
+  /** The face's expression (mobile 1.14; the face only, so Quiet look shows none). */
   mood?: Mood;
+  /** Mobile 1.14: the resolved look (engine/plantLooks.ts resolveLook → lib/plant.ts artLook). */
+  look?: ArtLook;
   /** Force a detail level (e.g. a contact sheet); normally chosen from `size`. */
   lod?: Lod;
   /** Frame tightly around the plant (default for 96pt and below) or use the shared 200 × 200 stage (hero, so growth reads). */
@@ -81,13 +83,13 @@ export function renderNode(n: PNode, key: string, wrap?: PlantProps['wrapGroup']
 /** The organs as the drawing reads them (rounded to 1/40), so tiny mastery moves never redraw. */
 const organKeyOf = (organs: readonly number[] | undefined) => (organs ? organs.map((v) => Math.round(v * 40) / 40).join(',') : '');
 
-function PlantInner({ species, stage, organs, quietLook, size, theme, resting, mood, lod, fit, accessibilityLabel, style, wrapGroup, testID }: PlantProps) {
+function PlantInner({ species, stage, organs, quietLook, size, theme, resting, mood, look, lod, fit, accessibilityLabel, style, wrapGroup, testID }: PlantProps) {
   const level = lod ?? lodFor(size);
   // Rounded organs keep the memo steady while mastery moves by tiny amounts.
   const organKey = organKeyOf(organs);
   const built = useMemo(
-    () => buildPlant({ species, stage, organs: organKey ? organKey.split(',').map(Number) : undefined, quietLook, lod: level, theme, resting, mood }),
-    [species, stage, organKey, quietLook, level, theme, resting, mood],
+    () => buildPlant({ species, stage, organs: organKey ? organKey.split(',').map(Number) : undefined, quietLook, lod: level, theme, resting, mood, look }),
+    [species, stage, organKey, quietLook, level, theme, resting, mood, look],
   );
   // The element tree is kept too, so a parent's re-render never rebuilds ~150 SVG elements.
   const tree = useMemo(() => renderNode(built.root, 'p', wrapGroup), [built, wrapGroup]);
@@ -111,11 +113,16 @@ function PlantInner({ species, stage, organs, quietLook, size, theme, resting, m
   );
 }
 
+/** A look as a stable string, so an equal look built fresh never redraws. */
+export const lookKeyOf = (l: ArtLook | undefined) => (l ? JSON.stringify([l.palette, l.ground, l.planter, l.visitor, l.keepsakes]) : '');
+
 /** Same props, same drawing: the organs compare by their rounded values, not the array (code review M6c). */
 function sameProps(a: PlantProps, b: PlantProps): boolean {
   for (const k of Object.keys({ ...a, ...b }) as (keyof PlantProps)[]) {
     if (k === 'organs') {
       if (organKeyOf(a.organs) !== organKeyOf(b.organs)) return false;
+    } else if (k === 'look') {
+      if (lookKeyOf(a.look) !== lookKeyOf(b.look)) return false;
     } else if (a[k] !== b[k]) return false;
   }
   return true;
