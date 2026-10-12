@@ -39,12 +39,12 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.16.0',
     date: '2026-10-12',
     new: [
-      'A readiness report: your mock trend, each domain side by side, and what would raise your lower number.',
+      'A readiness report: your mock trend, each domain side by side, and what would raise your low end.',
       'A calm exam-week plan with a short checklist for the practical side.',
     ],
     improved: [
       'Tap a past mock to see how each domain went.',
-      'Your path now shows its six steps, so you can see where you are.',
+      'Your path now shows its steps, so you can see where you are.',
       'Practice starts a session that fits your daily time when you haven’t picked a length.',
     ],
   },
@@ -287,7 +287,7 @@ export const WHATS_NEXT: readonly NextItem[] = [
     status: 'shipped',
     shippedIn: '1.16.0',
     title: 'A readiness report',
-    body: 'See your mock trend, each domain side by side, and what would raise your lower number, plus a calm checklist for exam week.',
+    body: 'See your mock trend, each domain side by side, and what would raise your low end, plus a calm checklist for exam week.',
   },
   {
     status: 'shipped',

@@ -155,7 +155,8 @@ describe('the readiness report: every section, every state', () => {
     expect(t).toContain('estimated readiness');
     expect(t).toContain('A study estimate, not a prediction.');
     expect(t).toContain(FRAMING_LINE);
-    for (const h of ['What would raise your lower number', 'Your cautious number over time', 'Mock trend', 'Domain by domain', 'Pacing', 'Your path', 'Your mocks'])
+    // One name for the number: "low end" (UX review P2).
+    for (const h of ['What would raise your low end', 'Your low end over time', 'The cautious end of your range, last 30 days', 'Mock trend', 'Domain by domain', 'Pacing', 'Your path', 'Your mocks'])
       expect(t).toContain(h);
     expect(byTestID('trend-chart')).toHaveLength(1);
     expect(byTestID('low-chart')).toHaveLength(1);
@@ -165,12 +166,18 @@ describe('the readiness report: every section, every state', () => {
     expect(t).toContain(cisa.exam.passingNote);
     // Domains 1 → 5, with the C9 list label.
     expect(cisa.domains.map((d) => t.indexOf(`Domain ${d.id} · ${d.short}`))).toEqual([...cisa.domains.map((d) => t.indexOf(`Domain ${d.id} · ${d.short}`))].sort((a, b) => a - b));
-    expect(t).toContain('Last mock 10 of 13');
-    // The six steps, the current one marked.
-    expect(t).toContain('Step 3 of 6 · Make it stick');
-    expect(labelled(/You are here\.$/)).toHaveLength(1);
-    // Every mock, folded.
-    expect(root().findAll((n) => n.props.accessibilityState?.expanded === false && /questions, score/.test(n.props.accessibilityLabel ?? '') && typeof n.props.onPress === 'function')).toHaveLength(8);
+    expect(t).toContain('Last mock 10 of 13 (77%)');
+    // The six steps, the current one marked, with why; no "Step N of 6" (UX review P1, O8).
+    expect(t).toContain('Now: Make it stick');
+    expect(t).not.toMatch(/Step \d of 6/);
+    expect(labelled(/^3\. Make it stick\. Practice and spaced review\. You are here\. Until every domain is steady, practice leads\.$/)).toHaveLength(1);
+    expect(labelled(/You are here\./)).toHaveLength(1);
+    expect(t).toContain('The plan moves between these as you go.');
+    // The newest 5 mocks, folded, then "Show all 8 mocks" (UX review P8).
+    const folded = () => root().findAll((n) => n.props.accessibilityState?.expanded === false && /questions, score/.test(n.props.accessibilityLabel ?? '') && typeof n.props.onPress === 'function');
+    expect(folded()).toHaveLength(5);
+    press(/^Show all 8 mocks$/);
+    expect(folded()).toHaveLength(8);
     expect(t).toContain(cisa.trademarkNotice);
   });
 
@@ -235,8 +242,10 @@ describe('honest words, everywhere on the report', () => {
   it('spoken: the trend is one sentence, each domain one stop with its weight, readiness and evidence', () => {
     setCert({ answers: seedAnswers(30, 0.7), mocks: EIGHT });
     mount(<ReadinessReport />);
-    expect(labelled(/^Your last 8 mocks, oldest first: [\d, ]+ percent\. Up \d+ points over your last 3 mocks\.$/)).toHaveLength(1);
-    expect(labelled(/^Domain 4, IS Operations, 26 percent of the exam\. Domain readiness \d+ percent, based on 30 answers\. Last mock \d+ of 13\./)).toHaveLength(1);
+    // Each score with its kind (code review M3c), then the trend in words.
+    expect(labelled(/^Your last 8 mocks, oldest first, in percent: (\d+ (mini|full)( untimed)?(, |\.))+ Up \d+ points over your last 3 mocks\. Mini and full mocks are mixed here; a mini mock swings more\.$/)).toHaveLength(1);
+    expect(labelled(/: 56 mini, 60 mini untimed, 62 full, /)).toHaveLength(1);
+    expect(labelled(/^Domain 4, IS Operations, 26 percent of the exam\. Domain readiness \d+ percent, based on 30 answers\. Last mock \d+ of 13, \d+ percent\./)).toHaveLength(1);
     expect(labelled(/^Estimated readiness between \d+ and \d+ percent\.$/)).toHaveLength(1);
   });
 });
@@ -249,7 +258,8 @@ describe('mocks: tap to see each domain; ?mock= opens one', () => {
     const m7 = new RegExp(`^50 questions, score ${Math.round((EIGHT[0].correct / 50) * 100)} percent`);
     press(m7);
     expect(byTestID('mock-domains-m7')).toHaveLength(1);
-    expect(labelled(/^IS Audit, 7 of 9$/).length).toBeGreaterThan(0);
+    expect(labelled(/^IS Audit, 7 of 9, 78 percent$/).length).toBeGreaterThan(0);
+    expect(allText()).toContain('7 of 9 (78%)');
     expect(labelled(/^IT Governance, not recorded$/).length).toBeGreaterThan(0);
     press(m7);
     expect(byTestID('mock-domains-m7')).toHaveLength(0);
@@ -264,7 +274,7 @@ describe('mocks: tap to see each domain; ?mock= opens one', () => {
   });
 });
 
-describe('what would raise the lower number: each button starts its session', () => {
+describe('what would raise the low end: each button starts its session', () => {
   it('the thin domain, the weak spots and the review start real sessions', () => {
     const answers = seedAnswers(30, 0.7);
     // Domain 3 thin (4 answers), reviews due.

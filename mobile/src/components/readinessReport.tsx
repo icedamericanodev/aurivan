@@ -15,7 +15,7 @@
 import { useWindowDimensions, View } from 'react-native';
 import Svg, { Circle, Line, Path } from 'react-native-svg';
 import { domainColor, domainLabel } from '../content/certifications';
-import { chartScale, domainSpoken, evidenceLine, mockLine, type DomainRow, type TrendPoint } from '../engine/readinessReport';
+import { chartScale, domainSpoken, evidenceLine, mockLine, readinessLine, type DomainRow, type TrendPoint } from '../engine/readinessReport';
 import { durationWords, TIMING_LABEL } from '../engine/pace';
 import { shortDate } from '../lib/format';
 import type { MockResult } from '../store/progress';
@@ -78,7 +78,9 @@ function Mark({ x, y, kind, dashed, color, paper }: { x: number; y: number; kind
       return null;
     case 'full':
     case 'leaf':
-      return <Path d={leaf(x, y)} fill={color} fillOpacity={dashed ? 0.35 : 1} stroke={color} strokeWidth={1.4} {...dash} />;
+      // An untimed mock of any length is a dashed OUTLINE, exactly as the legend draws it (UX review O2).
+      if (dashed) return <Path d={leaf(x, y)} fill={paper} stroke={color} strokeWidth={1.5} {...dash} />;
+      return <Path d={leaf(x, y)} fill={color} stroke={color} strokeWidth={1.4} />;
     case 'mini':
       return <Path d={leaf(x, y)} fill={paper} stroke={color} strokeWidth={1.5} {...dash} />;
     case 'other':
@@ -153,12 +155,13 @@ export function DomainReportRow({ row, last }: { row: DomainRow; last?: boolean 
       style={{ paddingVertical: 13, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line }}
     >
       <T v="label">{domainLabel(row.domain)}</T>
-      <T v="meta" color={c.ink}>{`${row.weightPct}% of the exam · domain readiness ${row.readinessPct}%`}</T>
+      <T v="meta" color={c.ink}>{readinessLine(row)}</T>
       <T v="meta">{evidenceLine(row)}</T>
       {mocks && <T v="meta">{mocks}</T>}
-      {/* The domain's tone fills its readiness (a static bar: nothing grows on a data screen). */}
-      <View style={{ height: 3, borderRadius: 2, backgroundColor: c.track, marginTop: space.sm, overflow: 'hidden' }}>
-        <View style={{ width: `${Math.max(0, Math.min(100, row.readinessPct))}%`, height: 3, backgroundColor: tone }} />
+      {/* The domain's tone fills its readiness (a static bar: nothing grows on a data screen).
+          No answers yet: the empty track only, never a "0%" fill (UX review H2). */}
+      <View testID={`domain-bar-${row.domain.id}`} style={{ height: 3, borderRadius: 2, backgroundColor: c.track, marginTop: space.sm, overflow: 'hidden' }}>
+        {row.answered > 0 && <View style={{ width: `${Math.max(0, Math.min(100, row.readinessPct))}%`, height: 3, backgroundColor: tone }} />}
       </View>
     </View>
   );

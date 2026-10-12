@@ -7,7 +7,7 @@
  *   trendWords       "Up 6 points over your last 3 mocks." (words, never colour alone)
  *   domainBreakdown  every domain side by side: weight, domain readiness, evidence,
  *                    and the last two mocks' results in it
- *   raiseLowerBound  up to 3 concrete things that would raise the LOW end of the range
+ *   raiseLowerBound  up to 3 concrete things that would raise the low end of the range
  *   lowSeries        the low end over the last 30 days, carried forward over gaps
  *   PATH_STEPS       the six steps of "Your path", one line each
  *
@@ -79,19 +79,44 @@ export function mockTrend(mocks: readonly MockLike[], examQuestions: number): Tr
     .map((m) => ({ id: m.id, at: m.finishedAt, pct: mockPct(m), kind: mockKind(m.total, examQuestions), timed: timingOf(m.timing) !== 'untimed' }));
 }
 
+/** Said after a fall: one mock is one sample. */
+const FALL_NOTE = 'One mock can swing; look at the domains below.';
+/** Said when the mocks compared are of both lengths (UX review O1). */
+export const MIXED_NOTE = 'Mini and full mocks are mixed here; a mini mock swings more.';
+
 /**
  * The trend in words, over the last 2 or 3 mocks; null for fewer than 2.
  * Up, about level (within ±2 points) or down. A fall is stated plainly and
  * points to the domains: one mock can swing.
+ *
+ * The newest mock is compared with the one before FIRST (code review M1): a
+ * recent fall is never smoothed over by an older, lower score ("60 → 70 → 58"
+ * reads "Down 12 points since your last mock", not "About level").
  */
 export function trendWords(points: readonly TrendPoint[]): string | null {
   if (points.length < 2) return null;
+  const mixed = (window: readonly TrendPoint[]) =>
+    window.some((p) => p.kind === 'mini') && window.some((p) => p.kind === 'full') ? ` ${MIXED_NOTE}` : '';
+  const last = points[points.length - 1].pct;
+  const fall = points[points.length - 2].pct - last;
+  if (fall > LEVEL_POINTS) return `Down ${fall} points since your last mock. ${FALL_NOTE}${mixed(points.slice(-2))}`;
   const n = Math.min(TREND_WINDOW, points.length);
-  const delta = points[points.length - 1].pct - points[points.length - n].pct;
+  const delta = last - points[points.length - n].pct;
   const span = n === 2 ? 'since your last mock' : `over your last ${n} mocks`;
-  if (delta > LEVEL_POINTS) return `Up ${delta} points ${span}.`;
-  if (delta < -LEVEL_POINTS) return `Down ${-delta} points ${span}. One mock can swing; look at the domains below.`;
-  return `About level ${span}.`;
+  const note = mixed(points.slice(-n));
+  if (delta > LEVEL_POINTS) return `Up ${delta} points ${span}.${note}`;
+  if (delta < -LEVEL_POINTS) return `Down ${-delta} points ${span}. ${FALL_NOTE}${note}`;
+  return `About level ${span}.${note}`;
+}
+
+/**
+ * The trend chart's spoken label: every score with its kind (code review
+ * M3c), so mini and full mocks are told apart by ear too: "56 mini, 59 mini
+ * untimed, 62 full".
+ */
+export function trendSpoken(points: readonly TrendPoint[]): string {
+  const said = points.map((p) => `${p.pct}${p.kind === 'full' ? ' full' : p.kind === 'mini' ? ' mini' : ''}${p.timed ? '' : ' untimed'}`);
+  return `Your last ${points.length} mocks, oldest first, in percent: ${said.join(', ')}.`;
 }
 
 // ── Domain by domain ─────────────────────────────────────────────────────
@@ -115,11 +140,7 @@ export interface DomainRow {
   prevMock?: MockTally;
 }
 
-const tallyIn = (m: MockLike | undefined, domainId: string): MockTally | undefined => {
-  if (!m) return undefined;
-  const t = m.byDomain?.[domainId];
-  return t && t.total > 0 ? { total: t.total, correct: Math.min(t.correct, t.total) } : null;
-};
+const tallyIn = (m: MockLike | undefined, domainId: string): MockTally | undefined => (m ? mockTally(m, domainId) : undefined);
 
 /** One row per domain, in the certification's order (any number of domains). */
 export function domainBreakdown(cert: Certification, readiness: Readiness, mocks: readonly MockLike[]): DomainRow[] {
@@ -142,14 +163,36 @@ export function domainBreakdown(cert: Certification, readiness: Readiness, mocks
   });
 }
 
-/** "14 of 20", or "–" for a mock with no entry for the domain. */
-export const tallyText = (t: MockTally) => (t ? `${t.correct} of ${t.total}` : '–');
+/** A tally's share, whole percent (the total is never 0: tallyIn drops those). */
+const tallyPct = (t: { total: number; correct: number }) => Math.round((Math.min(t.correct, t.total) / t.total) * 100);
+
+/** "14 of 20 (70%)", or "–" for a mock with no entry for the domain (UX review P7: tallies of different sizes compare at a glance). */
+export const tallyText = (t: MockTally) => (t ? `${t.correct} of ${t.total} (${tallyPct(t)}%)` : '–');
+
+/** Spoken: "14 of 20, 70 percent", or "not recorded". */
+export const tallySpoken = (t: MockTally | undefined) => (t ? `${t.correct} of ${t.total}, ${tallyPct(t)} percent` : 'not recorded');
+
+/** A mock's own per-domain entry, as a tally (null when it has none, or an empty one). */
+export const mockTally = (m: Pick<MockLike, 'byDomain'>, domainId: string): MockTally => {
+  const t = m.byDomain?.[domainId];
+  return t && t.total > 0 ? { total: t.total, correct: Math.min(t.correct, t.total) } : null;
+};
 
 /** True when either of the last two mocks has a result for this domain. */
 export const mockCovers = (r: DomainRow) => Boolean(r.lastMock || r.prevMock);
 
-/** Line 2: "Based on 120 answers", or "Based on 6 answers: still firming up". */
+/**
+ * Line 1: "26% of the exam · domain readiness 68%". A domain with no answers
+ * has no readiness to show, so it never reads "0%" (UX review H2): "26% of
+ * the exam · not started yet".
+ */
+export function readinessLine(r: DomainRow): string {
+  return `${r.weightPct}% of the exam · ${r.answered === 0 ? 'not started yet' : `domain readiness ${r.readinessPct}%`}`;
+}
+
+/** Line 2: "Based on 120 answers", or "Based on 6 answers: still firming up"; none yet: "No answers here yet". */
 export function evidenceLine(r: DomainRow): string {
+  if (r.answered === 0) return 'No answers here yet';
   const n = `${r.answered} ${r.answered === 1 ? 'answer' : 'answers'}`;
   return r.firm ? `Based on ${n}` : `Based on ${n}: still firming up`;
 }
@@ -163,13 +206,13 @@ export function mockLine(r: DomainRow): string | null {
 
 /** One spoken stop per domain (full words, no symbols). */
 export function domainSpoken(r: DomainRow): string {
-  const said = (t: MockTally | undefined) => (t ? `${t.correct} of ${t.total}` : 'not recorded');
-  const mocks = mockCovers(r) ? ` Last mock ${said(r.lastMock)}.${r.prevMock !== undefined ? ` The one before ${said(r.prevMock)}.` : ''}` : '';
+  const mocks = mockCovers(r) ? ` Last mock ${tallySpoken(r.lastMock)}.${r.prevMock !== undefined ? ` The one before ${tallySpoken(r.prevMock)}.` : ''}` : '';
   const n = `${r.answered} ${r.answered === 1 ? 'answer' : 'answers'}`;
-  return `Domain ${r.domain.id}, ${r.domain.short}, ${r.weightPct} percent of the exam. Domain readiness ${r.readinessPct} percent, based on ${n}${r.firm ? '' : ', still firming up'}.${mocks}`;
+  const readiness = r.answered === 0 ? 'Not started yet.' : `Domain readiness ${r.readinessPct} percent, based on ${n}${r.firm ? '' : ', still firming up'}.`;
+  return `Domain ${r.domain.id}, ${r.domain.short}, ${r.weightPct} percent of the exam. ${readiness}${mocks}`;
 }
 
-// ── What would raise your lower number ──────────────────────────────────
+// ── What would raise your low end ───────────────────────────────────────
 
 export type RaiseAction =
   /** Not enough data yet: answers unlock the range itself. */
@@ -319,7 +362,7 @@ export function chartScale(values: readonly number[], minSpan = 20): { lo: numbe
 
 /** The six steps, in order, each with one plain line (PHASE5.md §3.1, item 8). */
 export const PATH_STEPS: readonly { stage: Exclude<Stage, 'afterExam'>; line: string }[] = [
-  { stage: 'diagnose', line: 'A short check of where you are.' },
+  { stage: 'diagnose', line: 'The starting check: a short look at where you are.' },
   { stage: 'learn', line: 'Lessons for the domains you need.' },
   { stage: 'practice', line: 'Practice and spaced review.' },
   { stage: 'mock', line: 'Mocks at exam pace.' },
@@ -327,8 +370,29 @@ export const PATH_STEPS: readonly { stage: Exclude<Stage, 'afterExam'>; line: st
   { stage: 'examDay', line: 'Rest, a checklist, light review.' },
 ];
 
-/** "Step 3 of 6 · Make it stick"; after the exam, "After the exam" with no number. */
+/**
+ * Why the plan is at this step, said under the current one (UX review O8).
+ * True to engine/journey.ts journeyStage, in plain words.
+ */
+export const PATH_REASON: Record<Exclude<Stage, 'afterExam'>, string> = {
+  diagnose: 'A first look comes before anything else, so the plan knows where to start.',
+  learn: 'While the basics are new, lessons come first.',
+  practice: 'Until every domain is steady, practice leads.',
+  mock: 'Every domain is steady, so mocks build your exam pace.',
+  ready: 'Your numbers are steady, so light review keeps them there.',
+  examDay: 'The exam is close: rest and light review help more than cramming.',
+};
+
+/** Under the steps: the path is not a ladder you can fall off (UX review P1). */
+export const PATH_NOTE =
+  'The plan moves between these as you go. If a domain slips, practice leads again for a while; mocks and lessons are always one tap away.';
+
+/**
+ * "Now: Make it stick"; after the exam, "After the exam". No "Step N of 6"
+ * counter (UX review P1, decided): the plan can move back a step, and a
+ * number that goes down reads like a score.
+ */
 export function stepLabel(stage: Stage): string {
   const i = PATH_STEPS.findIndex((s) => s.stage === stage);
-  return i < 0 ? STAGE_LABEL[stage] : `Step ${i + 1} of ${PATH_STEPS.length} · ${STAGE_LABEL[stage]}`;
+  return i < 0 ? STAGE_LABEL[stage] : `Now: ${STAGE_LABEL[stage]}`;
 }

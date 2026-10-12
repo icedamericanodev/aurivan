@@ -192,7 +192,7 @@ export default function You() {
         <Button
           kind="ghost"
           label="See your readiness report"
-          accessibilityHint="Your mock trend, each domain side by side, and what would raise your lower number"
+          accessibilityHint="Your mock trend, each domain side by side, and what would raise your low end"
           onPress={() => router.push('/readiness')}
           style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
         />

@@ -137,7 +137,7 @@ await examIn(38);
 await setMocks(MOCKS);
 await go('/readiness', 2400);
 await shot('p01a-report-top');
-await toTop('Your cautious number over time', 40);
+await toTop('Your low end over time', 40);
 await shot('p01b-report-low-and-trend');
 await toTop('Mock trend', 40);
 await shot('p01c-report-trend');
@@ -189,7 +189,7 @@ await edit(P, `const c = v.state.byCert.cisa; c.moments = { ...(c.moments || {})
 await examIn(6);
 await go('/home', 2600);
 await shot('p06-today-exam-week-6');
-await toTop('Exam week', 120);
+await toTop('This week', 120);
 await shot('p06b-today-exam-week-card');
 // 3 days out: the taper, no mock.
 await edit(P, `v.state.days = {}; v.state.byCert.cisa.moments.examWeek.for = a;`, dk(now + 3 * DAY));

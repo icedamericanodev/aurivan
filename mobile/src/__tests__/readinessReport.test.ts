@@ -28,10 +28,17 @@ import {
   mockLine,
   mockPct,
   mockTrend,
+  MIXED_NOTE,
+  PATH_NOTE,
+  PATH_REASON,
   PATH_STEPS,
   raiseLowerBound,
+  readinessLine,
   stepLabel,
+  tallySpoken,
+  tallyText,
   TREND_MAX,
+  trendSpoken,
   trendWords,
   type MockLike,
   type TrendPoint,
@@ -51,7 +58,7 @@ function answers(spec: Record<string, [number, number]>): Record<string, AnswerR
   return out;
 }
 const mock = (id: string, daysAgo: number, total: number, correct: number, extra: Partial<MockLike> = {}): MockLike => ({ id, finishedAt: T0 - daysAgo * DAY, total, correct, ...extra });
-const point = (pct: number): TrendPoint => ({ id: String(pct), at: 0, pct, kind: 'mini', timed: true });
+const point = (pct: number, kind: TrendPoint['kind'] = 'mini', timed = true): TrendPoint => ({ id: String(pct), at: 0, pct, kind, timed });
 
 describe('mockTrend', () => {
   it('oldest → newest, whatever order the store keeps (newest first)', () => {
@@ -95,10 +102,37 @@ describe('trendWords', () => {
   });
 
   it('within ±2 points reads "about level"; 3 is a move', () => {
-    expect(trendWords([point(60), point(70), point(62)])).toBe('About level over your last 3 mocks.');
-    expect(trendWords([point(60), point(70), point(58)])).toBe('About level over your last 3 mocks.');
+    expect(trendWords([point(60), point(62), point(61)])).toBe('About level over your last 3 mocks.');
+    expect(trendWords([point(60), point(57), point(58)])).toBe('About level over your last 3 mocks.');
     expect(trendWords([point(60), point(63)])).toBe('Up 3 points since your last mock.');
     expect(trendWords([point(60), point(57)])).toBe('Down 3 points since your last mock. One mock can swing; look at the domains below.');
+  });
+
+  it('a fall in the NEWEST mock is never smoothed over by an older, lower score (code review M1)', () => {
+    // 60 → 70 → 58: the newest fell 12; comparing only with the oldest said "About level".
+    expect(trendWords([point(60), point(70), point(58)])).toBe('Down 12 points since your last mock. One mock can swing; look at the domains below.');
+    // 50 → 80 → 60: it once read "Up 10 points".
+    expect(trendWords([point(50), point(80), point(60)])).toBe('Down 20 points since your last mock. One mock can swing; look at the domains below.');
+    // 60 → 70 → 62 is an 8-point fall since the last mock: said plainly too.
+    expect(trendWords([point(60), point(70), point(62)])).toBe('Down 8 points since your last mock. One mock can swing; look at the domains below.');
+    // A small dip (within ±2) after a rise still reads as the 3-mock trend.
+    expect(trendWords([point(60), point(70), point(68)])).toBe('Up 8 points over your last 3 mocks.');
+  });
+
+  it('mini and full mocks mixed in the comparison: says so (UX review O1); one kind: no note', () => {
+    expect(trendWords([point(60, 'mini'), point(66, 'full')])).toBe(`Up 6 points since your last mock. ${MIXED_NOTE}`);
+    expect(trendWords([point(70, 'mini'), point(60, 'full')])).toBe(`Down 10 points since your last mock. One mock can swing; look at the domains below. ${MIXED_NOTE}`);
+    expect(trendWords([point(60, 'full'), point(61, 'mini'), point(61, 'mini')])).toBe(`About level over your last 3 mocks. ${MIXED_NOTE}`);
+    // A full mock outside the window compared is not "mixed here".
+    expect(trendWords([point(40, 'full'), point(60), point(61), point(66)])).toBe('Up 6 points over your last 3 mocks.');
+    expect(trendWords([point(60, 'full'), point(66, 'full')])).toBe('Up 6 points since your last mock.');
+    expect(MIXED_NOTE).toBe('Mini and full mocks are mixed here; a mini mock swings more.');
+  });
+
+  it('the spoken trend names each mock\'s kind and untimed (code review M3c)', () => {
+    expect(trendSpoken([point(56), point(59, 'mini', false), point(62, 'full'), point(64, 'other')])).toBe(
+      'Your last 4 mocks, oldest first, in percent: 56 mini, 59 mini untimed, 62 full, 64.',
+    );
   });
 
   it('a fall is said plainly and points to the domains, never alarmed', () => {
@@ -138,7 +172,13 @@ describe('domainBreakdown', () => {
     // 6 of 6 right reads as 60%: missing answers count as not yet right (MIN_SAMPLE).
     expect(d3).toMatchObject({ readinessPct: 60, firm: false });
     expect(evidenceLine(d3)).toBe('Based on 6 answers: still firming up');
-    expect(evidenceLine(rows.find((x) => x.domain.id === '1')!)).toBe('Based on 0 answers: still firming up');
+    // No answers: never "0%" (UX review H2).
+    const d1 = rows.find((x) => x.domain.id === '1')!;
+    expect(evidenceLine(d1)).toBe('No answers here yet');
+    expect(readinessLine(d1)).toBe('18% of the exam · not started yet');
+    expect(readinessLine(d1)).not.toMatch(/0%\s*$|readiness 0/);
+    expect(domainSpoken(d1)).toBe('Domain 1, IS Audit, 18 percent of the exam. Not started yet.');
+    expect(readinessLine(d4)).toBe('26% of the exam · domain readiness 75%');
   });
 
   it('the last two mocks side by side; an older mock with no entry for a domain shows "–"', () => {
@@ -150,9 +190,14 @@ describe('domainBreakdown', () => {
     ];
     const rows = domainBreakdown(cisa, r, mocks);
     const d4 = rows.find((x) => x.domain.id === '4')!;
-    expect(mockLine(d4)).toBe('Last mock 14 of 20 · the one before 11 of 18');
+    // Tallies carry their percentage, so mocks of different sizes compare at a glance (UX review P7).
+    expect(mockLine(d4)).toBe('Last mock 14 of 20 (70%) · the one before 11 of 18 (61%)');
     const d1 = rows.find((x) => x.domain.id === '1')!;
-    expect(mockLine(d1)).toBe('Last mock 6 of 9 · the one before –');
+    expect(mockLine(d1)).toBe('Last mock 6 of 9 (67%) · the one before –');
+    expect(tallyText({ total: 9, correct: 8 })).toBe('8 of 9 (89%)');
+    expect(tallySpoken({ total: 9, correct: 8 })).toBe('8 of 9, 89 percent');
+    expect(tallyText(null)).toBe('–');
+    expect(tallySpoken(null)).toBe('not recorded');
     // A domain neither mock covered: no line at all.
     expect(mockLine(rows.find((x) => x.domain.id === '2')!)).toBeNull();
     // A very old save with no byDomain at all.
@@ -163,7 +208,7 @@ describe('domainBreakdown', () => {
   it('spoken: one sentence per domain, full words, never the bank size', () => {
     const r = computeReadiness(cisa, answers({ '4': [120, 82] }));
     const d4 = domainBreakdown(cisa, r, [mock('m', 1, 50, 30, { byDomain: { '4': { total: 20, correct: 14 } } })]).find((x) => x.domain.id === '4')!;
-    expect(domainSpoken(d4)).toBe('Domain 4, IS Operations, 26 percent of the exam. Domain readiness 68 percent, based on 120 answers. Last mock 14 of 20.');
+    expect(domainSpoken(d4)).toBe('Domain 4, IS Operations, 26 percent of the exam. Domain readiness 68 percent, based on 120 answers. Last mock 14 of 20, 70 percent.');
     const thin = domainBreakdown(cisa, computeReadiness(cisa, answers({ '3': [6, 4] })), []).find((x) => x.domain.id === '3')!;
     expect(domainSpoken(thin)).toBe('Domain 3, IS Acquisition, 12 percent of the exam. Domain readiness 40 percent, based on 6 answers, still firming up.');
     expect(domainSpoken(d4)).not.toMatch(/questions in this domain|of \d+ questions/);
@@ -264,12 +309,17 @@ describe('chartScale', () => {
 describe('Your path: the six steps', () => {
   it('six steps in journey order, each with one line; after the exam has no number', () => {
     expect(PATH_STEPS.map((s) => s.stage)).toEqual(STAGE_ORDER.slice(0, 6));
-    expect(stepLabel('practice')).toBe('Step 3 of 6 · Make it stick');
-    expect(stepLabel('diagnose')).toBe('Step 1 of 6 · Find your starting point');
-    expect(stepLabel('examDay')).toBe('Step 6 of 6 · Exam week');
+    // No "Step N of 6" counter (UX review P1, decided).
+    expect(stepLabel('practice')).toBe('Now: Make it stick');
+    expect(stepLabel('diagnose')).toBe('Now: Find your starting point');
+    expect(stepLabel('examDay')).toBe('Now: Exam week');
     expect(stepLabel('afterExam')).toBe('After the exam');
+    for (const s of PATH_STEPS) expect(stepLabel(s.stage)).not.toMatch(/\d/);
+    expect(PATH_REASON.practice).toBe('Until every domain is steady, practice leads.');
+    expect(Object.keys(PATH_REASON)).toEqual(PATH_STEPS.map((s) => s.stage));
+    expect(PATH_NOTE).toMatch(/^The plan moves between these as you go\./);
     expect(PATH_STEPS.map((s) => s.line)).toEqual([
-      'A short check of where you are.',
+      'The starting check: a short look at where you are.',
       'Lessons for the domains you need.',
       'Practice and spaced review.',
       'Mocks at exam pace.',

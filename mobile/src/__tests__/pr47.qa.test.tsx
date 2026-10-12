@@ -1,7 +1,7 @@
 /**
  * QA for PR #47, mobile 1.16.0 "Proof" (PHASE5.md §3). Journeys:
  *   1. The readiness report: no data, one mock, many mocks (cap at 10),
- *      rising / falling / level trend words, each "raise your lower number"
+ *      rising / falling / level trend words, each "raise your low end"
  *      action starts the right session, a past mock opens on tap, and a
  *      `?mock=` deep link with a bad id is harmless.
  *   2. The ways in: Today's readiness words, You ("See your readiness
@@ -180,8 +180,14 @@ describe('QA 1: the readiness report in every state', () => {
     expect(t).not.toContain('Your mocks');
     expect(byTestID('raise-unlock')).toHaveLength(1);
     expect(root().findAll((n) => typeof n.props.testID === 'string' && /^raise-/.test(n.props.testID) && typeof n.type === 'string')).toHaveLength(1);
-    // Domain rows still show, each "still firming up".
-    expect(t.match(/Based on 0 answers: still firming up/g)).toHaveLength(cisa.domains.length);
+    // Domain rows still show; with no answers each says so, never "0%" (UX review H2).
+    expect(t.match(/No answers here yet/g)).toHaveLength(cisa.domains.length);
+    expect(t.match(/not started yet/g)).toHaveLength(cisa.domains.length);
+    expect(t).not.toMatch(/domain readiness 0%/);
+    // Before there is a range, the headings say what gets one (UX review P3).
+    expect(t).toContain('What your range will be');
+    expect(t).toContain('What gets you a range');
+    expect(t).not.toContain('What would raise your low end');
     // "Start a mini mock" opens the timing choices for a third of the exam.
     press(/^Start a mini mock$/);
     expect(router.push).toHaveBeenLastCalledWith({ pathname: '/mock-start', params: { questions: '50' } });
@@ -203,14 +209,20 @@ describe('QA 1: the readiness report in every state', () => {
     mount(<ReadinessReport />);
     const newest10 = pcts.slice(-TREND_MAX);
     expect(allText()).toContain(`Oldest first: ${newest10.map((p) => `${p}%`).join(' · ')}`);
-    expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith(`Your last ${TREND_MAX} mocks, oldest first: ${newest10.join(', ')} percent.`) && typeof n.type === 'string')).toHaveLength(1);
+    expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith(`Your last ${TREND_MAX} mocks, oldest first, in percent: ${newest10.map((p) => `${p} mini`).join(', ')}.`) && typeof n.type === 'string')).toHaveLength(1);
+    // The newest 5 are listed; "Show all 14 mocks" lists every one (UX review P8).
+    expect(root().findAll((n) => typeof n.props.testID === 'string' && /^mock-q\d+$/.test(n.props.testID) && typeof n.type === 'string')).toHaveLength(5);
+    press(/^Show all 14 mocks$/);
     for (let i = 0; i < pcts.length; i++) expect(byTestID(`mock-q${i}`)).toHaveLength(1);
   });
 
   it.each([
     ['rising', [60, 64, 70], 'Up 10 points over your last 3 mocks.', 50],
-    ['falling', [72, 70, 66], 'Down 6 points over your last 3 mocks. One mock can swing; look at the domains below.', 50],
-    ['level (+2)', [60, 70, 62], 'About level over your last 3 mocks.', 50],
+    // A fall since the last mock is said first (code review M1).
+    ['falling', [72, 70, 66], 'Down 4 points since your last mock. One mock can swing; look at the domains below.', 50],
+    ['falling over 3 (each step small)', [72, 70, 68], 'Down 4 points over your last 3 mocks. One mock can swing; look at the domains below.', 50],
+    ['a rise, then a fall', [60, 70, 62], 'Down 8 points since your last mock. One mock can swing; look at the domains below.', 50],
+    ['level (+2)', [60, 63, 62], 'About level over your last 3 mocks.', 50],
     ['level (−2)', [62, 50, 60], 'About level over your last 3 mocks.', 50],
     ['just past level (+3)', [60, 40, 63], 'Up 3 points over your last 3 mocks.', 150],
     ['two mocks, falling', [70, 66], 'Down 4 points since your last mock. One mock can swing; look at the domains below.', 50],
@@ -222,13 +234,13 @@ describe('QA 1: the readiness report in every state', () => {
     expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.endsWith(words) && typeof n.type === 'string')).toHaveLength(1);
   });
 
-  it('the trend compares the newest with the third newest, whatever order the mocks were saved in', () => {
+  it('the trend compares the newest with the one before, then the third newest, whatever order the mocks were saved in', () => {
     const shuffledSave = [mock('b', 6, 50, 64), mock('c', 3, 50, 70), mock('a', 9, 50, 60)];
     expect(trendWords(mockTrend(shuffledSave, 150))).toBe('Up 10 points over your last 3 mocks.');
   });
 });
 
-describe('QA 1: what would raise the lower number, each button', () => {
+describe('QA 1: what would raise the low end, each button', () => {
   const sessionTitle = () => useSession.getState().active?.title;
 
   it('not enough data: "Practice a mixed set" starts a mixed session sized from the minutes', () => {
