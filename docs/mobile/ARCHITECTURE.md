@@ -514,3 +514,71 @@ Run the `app-store-compliance-reviewer` agent before every submission.
 | `growth-marketer` | store listing, launch plan, ASO, social posts |
 
 …plus the 19 existing `cisa-*` content agents (see `CLAUDE.md`).
+
+## 10. Cloud (built OFF): server side
+
+Uplift Phase 6 adds the server half of optional accounts. **Nothing is
+deployed and no hosted project exists**: no project ref, URL or key is in
+the repo. The client half (flag, backend port, screens) is described in
+its own section.
+
+| Piece | Path | Job |
+|---|---|---|
+| Schema | `supabase/migrations/20261005000000_init_mobile_sync.sql` | `profiles`, `entitlements`, `content_packs` in `public`; the bank size, deletion audit and export rate limit in `private` |
+| Local config | `supabase/config.toml`, `supabase/templates/` | Auth as it will be set on the dashboard at Phase 9: 6-digit codes valid 10 min, code-only emails, empty redirect list, no anonymous sign-in, confirmed emails only, refresh rotation (10 s reuse), JWT 1 h |
+| SQL tests | `supabase/tests/01_hardening.sql`, `10_accounts.sql` | pgTAP: schema-wide rules every later table inherits, plus own-rows-only, anon denied and cascade-on-delete |
+| Edge Functions | `supabase/functions/{delete-account,export-my-data}` | Pure `handler.ts` with an injected `AdminPort`; `index.ts` only wires env. `deno test` uses a fake admin client, no network |
+| Smoke (Phase 9) | `scripts/cloud_smoke.sh` | curl with two learners' JWTs and the publishable key: every cross-user, anon, private and server-only call must fail |
+| Static guard | `scripts/check_rls.sh` | G6 + G7: RLS in the same file as every `create table`, no always-true policy off the allowlist, `security_invoker` views, no `security definer` in `public` |
+| CI | `.github/workflows/supabase.yml` | On `supabase/**`: the guard, deno fmt/lint/check/test, then a local Supabase (CLI 2.118.0) with `db reset`, `test db`, `db lint` and the advisors |
+
+**Security model.** RLS is on for every table, public and private. Policies
+are per command, `to authenticated`, with `(select auth.uid())`. Supabase's
+automatic grants to `anon`/`authenticated` on new public objects are revoked
+by default privileges, so each table grants only the columns it needs.
+`anon` gets nothing. Schema `private` is not exposed by the Data API.
+
+**How the Edge Functions reach `private`.** Through two `security invoker`
+functions in `public` (`svc_claim_export`, `svc_record_deletion`) that only
+`service_role` may execute. That keeps G7 (no definer in `public`) and
+needs no direct database connection. New server-only writes follow the same
+pattern; elevated helpers that policies call go in `private` as
+`security definer set search_path = ''`.
+
+**The two functions.** Both verify the JWT with the Auth server first, then
+read `amr` and require a sign-in in the last 10 minutes (`401
+reauth_required` otherwise; `amr` timestamps checked against the Supabase
+Auth source). No CORS, no database text in responses, logs carry event names
+and counts only.
+- `delete-account` needs `{ confirm: 'DELETE' }`; an Apple-linked account
+  also sends a fresh `appleAuthorizationCode`, which is revoked at Apple
+  (a failed revoke is logged, never blocking). Then `auth.admin.deleteUser`,
+  which cascades every row, and an audit row holding a SHA-256 of the id.
+- `export-my-data` returns the caller's own account data, at most once an
+  hour. `stores` stays empty until Phase 7; Phase 8 adds `board`.
+
+**Run it locally** (needs Docker): `supabase start`, `supabase db reset`,
+`supabase test db`, `supabase db lint`; functions:
+`deno test --no-lock supabase/functions`.
+
+**Rules for Phases 7 and 8.**
+- Migrations are append-only from the first `supabase db push`.
+- Every new user table cascades from `auth.users`.
+- Every new function revokes `execute` from `public, anon, authenticated`
+  explicitly: PUBLIC's execute is a global default that per-schema default
+  privileges cannot remove. `01_hardening.sql` fails otherwise. (The
+  spec's Phase 8 SQL still needs this for `private.is_active_member` and
+  `private.is_blocked_by`.)
+- Exceptions go on the allowlists in `01_hardening.sql` and
+  `scripts/check_rls.sh`, never by weakening a check.
+- `AdminPort.countBoardRows` (Phase 8) and `readSnapshots` (Phase 7) are
+  stubs returning nothing until those tables exist.
+
+**At Phase 9 (owner go-ahead).** Mirror the `[auth]` settings on the
+dashboard; set the email-send limit to the SMTP quota; turn on Apple and
+Google with real client IDs; set Function secrets `APPLE_TEAM_ID`,
+`APPLE_KEY_ID`, `APPLE_CLIENT_ID` (the bundle id) and `APPLE_PRIVATE_KEY`
+(the `.p8`); run `supabase db push`, then the Security Advisor and the
+penetration-style smoke `scripts/cloud_smoke.sh` (two test learners'
+JWTs against every table, private table, RPC and function; keep the output
+as evidence).
