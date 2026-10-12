@@ -325,7 +325,9 @@ const syncSwitch = async (page) => {
   await reseed(page);
   await go(page, ON, '/account');
   await syncSwitch(page);
-  // The rows, stacked at large text (the title and body fill the first screen).
+  // The rows, stacked at large text (the title and body fill the first screen): zoom first, then scroll.
+  await zoomText(page, 2);
+  await page.waitForTimeout(400);
   await scrollTo(page, 'Answered', 80);
   await shot(page, 'sync-first-both-xl', 2);
   await ctx.close();
