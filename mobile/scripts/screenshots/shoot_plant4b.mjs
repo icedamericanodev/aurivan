@@ -128,9 +128,18 @@ const setPlanCleared = (cleared) =>
     `const d = v.state.days && v.state.days.cisa; if (!d) return; d.day = a[0]; d.done = d.done.map(() => a[1]); d.celebrated = true;`,
     [dk(now), cleared],
   );
-/** A new topic opened today (curious): one subtopic first answered today. */
+/**
+ * A new topic opened today (curious): one subtopic first answered today. The
+ * demo seed may hold no mastery at all, so the entry is created when needed
+ * (PR #44 UX review P3: the old helper only edited an existing one, so q03's
+ * "curious" cell showed idle).
+ */
 const setNewTopic = (on) =>
-  edit(P, `const m = v.state.byCert.cisa.mastery || {}; const k = Object.keys(m)[0]; if (k) { m[k] = Object.assign({}, m[k], { firstDay: a ? a : '2020-01-01' }); } v.state.byCert.cisa.mastery = m;`, on ? dk(now) : null);
+  edit(
+    P,
+    `const m = v.state.byCert.cisa.mastery || {}; const keys = Object.keys(m); if (a) { const k = keys[0] || 'Project Charter & Sponsor Authority'; m[k] = Object.assign({ firstAt: Date.now() }, m[k], { firstDay: a }); } else { for (const k of keys) m[k] = Object.assign({}, m[k], { firstDay: '2020-01-01' }); } v.state.byCert.cisa.mastery = m;`,
+    on ? dk(now) : null,
+  );
 
 // ── Frame strips ───────────────────────────────────────────────────────
 async function strip(name, title, act, appTimes, clip, nav = false) {
@@ -207,20 +216,33 @@ for (const [name, heading, off] of [
   ['q01c-look-planter', 'Planter', 40],
   ['q01d-look-visitor', 'Visitor', 40],
   ['q01e-look-keepsakes', 'Keepsakes', 40],
-  ['q01f-look-locked', 'Signpost', 160],
 ]) {
   await toTop(heading, off);
   await shot(name);
 }
+// "More to find": the planters and keepsakes still to earn, in one closed group at the end (UX review P1).
+await toTop('More to find', 120);
+await shot('q01f-look-more-closed');
+await page.getByRole('button', { name: 'More to find' }).first().click();
+await wait(700);
+await toTop('More to find', 40);
+await shot('q01g-look-more-open');
+
 
 // ── 2. Dressed: Your plant (a cleared day brings the robin) and Today ──
 await setPlanCleared(true);
 await go('/plant', 2600);
 await shot('q02-plant-dressed');
-// Today shows the plant beside the readiness range while the plan is open (a cleared day shows the clearing there).
+// Today shows the plant beside the readiness range while the plan is open: the plant and its visitor, never keepsakes.
 await setPlanCleared(false);
 await go('/home', 2600);
 await shot('q02b-today-dressed');
+// A cleared day: the plant, happy, with its visitor under the clearing (QA O-1, decided).
+await setPlanCleared(true);
+await go('/home', 3200);
+await toTop('Tomorrow', 420);
+await shot('q02c-today-cleared');
+await setPlanCleared(false);
 
 if (!NARROW && !FONT_SCALE) {
   // ── 3. Each mood (on the face; Quiet look shows none) ────────────────
@@ -263,19 +285,22 @@ if (!NARROW && !FONT_SCALE) {
     ],
     [
       'q05-keepsakes',
-      'Keepsakes (three at a time) on three species',
+      'Keepsakes (three at a time): flat ones in front, a tall one behind, clear of the trunk',
       [
         ['oak', { keepsakes: ['lantern', 'fox', 'jay'] }],
         ['sunflower', { keepsakes: ['sundial', 'swallow', 'stepping-stone'] }],
         ['cactus', { keepsakes: ['clear-dawn', 'cairn', 'fox'] }],
         ['pine', { keepsakes: ['jay', 'trail-post', 'lantern'], ground: 'stone-ring' }],
-        ['bamboo', { keepsakes: ['fox', 'sundial', 'lantern'], planter: 'fieldstone' }],
+        ['bamboo', { keepsakes: ['pebble-path', 'still-pond', 'weather-vane'], planter: 'fieldstone' }],
+        ['oak', { keepsakes: ['stepping-stone', 'empty-nest', 'woven-ring'] }],
       ],
     ],
   ]) {
     const cs = [];
     const ls = [];
-    await setEarned({ ...EARNED, 'myth-clearer': now - DAY, 'even-keel': now - DAY, 'fresh-start': now - DAY }, { groundwork: now, domains: now, evergreen: now, judgement: now, examDay: now, rooted: now });
+    // Every badge the strips show (so no keepsake falls back for want of its badge).
+    const strip = ['myth-clearer', 'even-keel', 'fresh-start', 'back-on-path', 'know-what-you-know', 'mindset-shift', 'graduate', 'loop-closed', 'first-foothold'];
+    await setEarned({ ...EARNED, ...Object.fromEntries(strip.map((b) => [b, now - DAY])) }, { groundwork: now, domains: now, evergreen: now, judgement: now, examDay: now, rooted: now });
     for (const [species, look] of looks) {
       await setPlant({ ...kai, species, growth: 6, reached: { ...reached, elder: now - 3 * DAY }, look });
       await go('/plant', 2400);
@@ -315,7 +340,7 @@ if (STRIPS) {
   await strip('s04-onboarding-sprout', 'Planting: the seed settles into the soil, then its first sprout pops (820 ms)', async () => plantBtn.click(), [40, 260, 450, 620, 900], { x: 0, y: 40, width: W, height: 360 });
   await edit(S, `v.state.onboarded = true;`);
 
-  // Breathe: two slow breaths on arrival (4.4 s), then still.
+  // Breathe: one slow breath on arrival (2 s in, 2.4 s out), then still.
   await setPlant({ ...dressed, look: { colourway: 'oak-autumn' } });
   await setPlanCleared(false);
   await go('/plant', 2400);
@@ -323,19 +348,19 @@ if (STRIPS) {
   await go('/you', 1500);
   await strip(
     's01-breathe',
-    'Breathe: two slow breaths when Your plant opens (≤ 5 s), pivoting on the base; then still',
+    'Breathe: one slow breath when Your plant first opens this session (2 s in, 2.4 s out, a slight sway either side), pivoting on the base; then still',
     async () => page.goto(BASE + '/plant', { waitUntil: 'commit' }),
     [400, 1300, 2400, 3500, 5600],
     clip,
     true,
   );
 
-  // A reaction: happy hops once (the plan is cleared), once per occasion.
+  // A reaction: happy stretches up once from its base (the plan is cleared), once per occasion.
   await setPlanCleared(true);
   await setPlant({ ...dressed, look: { colourway: 'oak-autumn' } });
   await go('/settings', 1500);
   await setPlanCleared(true);
-  await strip('s02-reaction-happy', 'A reaction: happy (the plan is cleared) hops once, 600 ms; once per occasion per session', async () => page.goto(BASE + '/plant', { waitUntil: 'commit' }), [150, 260, 380, 520, 900], clip, true);
+  await strip('s02-reaction-happy', 'A reaction: happy (the plan is cleared) stretches up from its base once, 600 ms (no hop); then the breath', async () => page.goto(BASE + '/plant', { waitUntil: 'commit' }), [150, 260, 380, 520, 900], clip, true);
   await setPlanCleared(false);
 
   // The growth sequence on Today: Bough → Crown, ≤ 900 ms.
@@ -343,7 +368,7 @@ if (STRIPS) {
   await setPlant({ ...dressed, look: { colourway: 'oak-autumn' }, reached: { ...reached, bough: now, crown: now }, pending: 5 });
   await go('/learn', 1500);
   const box = { x: 0, y: 300, width: W, height: 420 };
-  await strip('s03-growth', 'The growth sequence on Today: the old growth swells and fades as the new one settles (900 ms), one success haptic', async () => page.getByRole('tab', { name: /Today/ }).click(), [60, 220, 400, 600, 1000], box);
+  await strip('s03-growth', 'The growth sequence on Today: the old growth swells and fades as the new one settles (900 ms), one success haptic, no reaction with it', async () => page.getByRole('tab', { name: /Today/ }).click(), [60, 220, 400, 600, 1000], box);
 }
 
 console.log('errors:', errs.slice(0, 5));
