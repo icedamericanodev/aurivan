@@ -72,27 +72,28 @@ MUTANTS = {
         (r"update public\.board_posts set vote_count = vote_count \+ 1 where id = new\.post_id;", "null;"),
     ],
     "exam-content report doesn't hide": [
-        (r"when new\.reason = 'exam_content' then 'exam_report'", "when false then 'exam_report'"),
+        (r"when new\.reason = 'exam_content' and v_reviewed is null and private\.trusted_reporter\(new\.reporter_id\) then 'exam_report'",
+         "when false then 'exam_report'"),
     ],
     "two reporters hide": [
         (r"when v_verified >= 3 then 'reports'", "when v_verified >= 2 then 'reports'"),
     ],
     "young reporters count": [
-        (r"\n     and u\.created_at <= now\(\) - interval '7 days';", ";"),
+        (r"\n     and u\.created_at <= now\(\) - interval '7 days'\n     and private\.trusted_reporter", "\n     and private.trusted_reporter"),
     ],
     "report limit off": [
         (r"case when private\.account_is_new\(new\.reporter_id\) then 3 else 10 end", "100"),
     ],
     "reports of unseen posts": [
-        (r"select 1 from public\.board_posts p where p\.id = new\.target_id and p\.visibility = 'visible' and p\.author_id <> new\.reporter_id\)",
-         "select 1 from public.board_posts p where p.id = new.target_id)"),
+        (r"\n     where p\.id = new\.target_id and p\.visibility = 'visible' and p\.author_id <> new\.reporter_id;",
+         "\n     where p.id = new.target_id;"),
     ],
     "blocked commenters allowed": [
-        (r"v_post\.locked or private\.is_blocked_by\(v_post\.author_id, p_user\) then", "v_post.locked then"),
+        (r"v_post\.locked or private\.is_blocked_by\(v_post\.author_id, p_user\)\n", "v_post.locked\n"),
         (r"if private\.is_blocked_by\(v_post\.author_id, new\.author_id\) then", "if false then"),
     ],
     "staff can be blocked": [
-        (r"if exists \(select 1 from private\.staff s where s\.user_id = new\.blocked_id\)\n     or ", "if "),
+        (r"\n     or exists \(select 1 from private\.staff s where s\.user_id = v_blocked\)", ""),
     ],
     "replies nest deeper": [
         (r" and c\.post_id = new\.post_id and c\.parent_id is null\) then", " and c.post_id = new.post_id) then"),
@@ -101,11 +102,11 @@ MUTANTS = {
         (r"'team', 'support', 'official', 'staff'\] loop", "'team', 'official', 'staff'] loop"),
     ],
     "handle changes unlimited": [
-        (r"if old\.handle_changed_at > now\(\) - interval '24 hours' then", "if false then"),
+        (r"and m\.handle is distinct from p_handle and m\.handle_changed_at > now\(\) - interval '24 hours'\) then", "and false) then"),
     ],
     "joining without the Terms": [
-        (r"create policy members_insert on public\.board_members for insert to authenticated\n  with check \(user_id = \(select auth\.uid\(\)\)\n              and exists \(select 1 from public\.profiles p where p\.id = \(select auth\.uid\(\)\)\)\);",
-         "create policy members_insert on public.board_members for insert to authenticated\n  with check (user_id = (select auth.uid()));"),
+        (r"if not exists \(select 1 from public\.profiles p where p\.id = p_user\) then\n    raise exception 'forbidden' using errcode = '42501';\n  end if;\n  if p_version",
+         "if false then\n    raise exception 'forbidden' using errcode = '42501';\n  end if;\n  if p_version"),
     ],
     "appeals after 14 days": [
         (r"and p\.visibility = 'removed' and p\.moderated_at > now\(\) - interval '14 days'\)", "and p.visibility = 'removed')"),
@@ -149,6 +150,79 @@ MUTANTS = {
     "votes kept after account deletion": [
         (r"(create table public\.board_votes \(\n  post_id uuid not null references public\.board_posts \(id\) on delete cascade,\n  user_id uuid not null default auth\.uid\(\) references auth\.users \(id\)) on delete cascade",
          r"\1"),
+    ],
+    # ── Fix round P8 (CR_P8, SEC_P8, QA_P8): every new promise has its mutant. ──
+    "name checks on every update (CR B4)": [
+        (r"if tg_op = 'INSERT' or new\.handle is distinct from old\.handle then", "if true then"),
+    ],
+    "learners change names over REST (CR N3)": [
+        (r"grant select \(public_id, handle, is_team\) on public\.board_members to anon, authenticated;",
+         "grant select (public_id, handle, is_team) on public.board_members to anon, authenticated;"
+         " grant update (handle) on public.board_members to authenticated;"
+         " create policy members_update on public.board_members for update to authenticated using (user_id = (select auth.uid()));"),
+    ],
+    "look-alike names not folded (SEC B1 d)": [
+        (r"select replace\(replace\(translate\(lower\(p\), '013457l', 'oieasti'\), 'rn', 'm'\), 'vv', 'w'\)", "select translate(lower(p), '013457', 'oieast')"),
+    ],
+    "ISACA marks not reserved (COMP 8)": [
+        (r"'cdpse', 'ccoa', 'aaia', 'aaism',\n                                   'cobit', 'csx', ", ""),
+    ],
+    "no staff rename (SEC B1 c)": [
+        (r"set handle = 'Learner ' \|\| substr\(replace\(gen_random_uuid\(\)::text, '-', ''\), 1, 6\), handle_kind = 'pseudonym'", "set handle_kind = 'pseudonym'"),
+    ],
+    "account ids readable (SEC S4)": [
+        (r"grant select \(public_id, handle, is_team\) on public\.board_members to anon, authenticated;",
+         "grant select (public_id, handle, is_team, user_id, created_at) on public.board_members to anon, authenticated;"),
+    ],
+    "author account ids readable (SEC S4)": [
+        (r"grant select \(id, author_member, cert_id,", "grant select (id, author_id, author_member, cert_id,"),
+    ],
+    "self-block allowed": [
+        (r"if v_blocked is null or v_blocked = new\.blocker_id\n", "if v_blocked is null\n"),
+    ],
+    "untrusted reporters hide (SEC S1)": [
+        (r"and v_reviewed is null and private\.trusted_reporter\(new\.reporter_id\) then", "and v_reviewed is null then"),
+    ],
+    "reviewed posts hide on one report (SEC S1)": [
+        (r"when new\.reason = 'exam_content' and v_reviewed is null and", "when new.reason = 'exam_content' and"),
+    ],
+    "replies to a blocker allowed (SEC S2)": [
+        (r"if new\.parent_id is not null and private\.is_blocked_by\(", "if false and private.is_blocked_by("),
+        (r"\n       or \(p_parent is not null and private\.is_blocked_by\(\n             \(select c\.author_id from public\.board_comments c where c\.id = p_parent\), p_user\)\) then",
+         " then"),
+    ],
+    "notices reach a blocker (SEC S2)": [
+        (r"\n     and \(p_except is null or not private\.is_blocked_by\(u, p_except\)\);", ";"),
+    ],
+    "reports keep no copy (SEC S3)": [
+        (r"select left\(p\.title \|\| E'\\n' \|\| p\.body, 2200\) into new\.snapshot", "select null::text into new.snapshot"),
+    ],
+    "reports outlive a deleted post (CR N5)": [
+        (r"create trigger posts_reports_gone after delete on public\.board_posts\n  for each row execute function private\.reports_target_gone\(\);", ""),
+    ],
+    "team names hidden in author_staff (CR N1)": [
+        (r"\n         or is_team\n", "\n"),
+    ],
+    "own withdrawn comments come back (CR N2)": [
+        (r"where c\.post_id = p_id and c\.visibility in \('visible', 'pending'\)", "where c.post_id = p_id and c.visibility <> 'hidden'"),
+    ],
+    "dismiss by report id (CR N4)": [
+        (r"where target_kind = p_extra ->> 'kind' and target_id = p_target and status = 'open';", "where id = p_target and status = 'open';"),
+    ],
+    "withdrawn posts restorable (SEC N3)": [
+        (r"if not found or \(v_prev = 'withdrawn' and p_action in \('approve', 'restore', 'hide'\)\) then", "if not found then"),
+    ],
+    "same draft counted twice (QA BUG-1)": [
+        (r"    if p_client is not null then\n      select \* into v_post", "    if false then\n      select * into v_post"),
+    ],
+    "write attempts free (SEC S6)": [
+        (r"select private\.board_take\(p_user, 'attempt', 30, 200, true\)", "select private.board_take(p_user, 'attempt', 3000, 20000, true)"),
+    ],
+    "practice-question posts not folded (CR N12)": [
+        (r"or \(p_kind = 'content' and coalesce\(p_item_ref, ''\) like 'q:%'\)", "or false"),
+    ],
+    "merge keeps two official responses (CR nit 6)": [
+        (r"set post_id = v_into, is_official = false where post_id = p_target;", "set post_id = v_into where post_id = p_target;"),
     ],
     "board in realtime": [
         (r"\Z", "\ncreate publication supabase_realtime for table public.board_posts;\n"),

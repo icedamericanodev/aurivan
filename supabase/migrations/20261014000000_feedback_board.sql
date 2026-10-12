@@ -19,10 +19,19 @@
 --    (service role) after the filters and the leak guard, through
 --    public.svc_board_write. Learners have no insert grant on them; their one
 --    direct change is withdrawing their own (a trigger allows nothing else).
---  * Votes, follows, reports, blocks, appeals, read marks and the member row
---    are written directly by learners, own rows only, and need the Terms
---    (a profile row) and a member row in good standing. Counters, thresholds
---    and notices are triggers.
+--  * Votes, follows, reports, blocks, appeals and read marks are written
+--    directly by learners, own rows only, and need the Terms (a profile
+--    row); votes also need a member row in good standing. Counters,
+--    thresholds and notices are triggers.
+--  * The member row (the public name) is written ONLY by board-submit's
+--    `join` (public.svc_board_join, after the app's full name check) and by
+--    staff (`rename`): learners have no insert or update grant on it (fix
+--    round P8, SEC B1 / CR N3).
+--  * Nobody reads another learner's account id. Each member has a separate
+--    random PUBLIC id (board_members.public_id); posts, comments, blocks and
+--    member reports name members by it (SEC S4). The account id stays in
+--    author_id / user_id columns that app roles can't select (RLS policies
+--    still use them: a policy needs no column grant).
 --  * Rate limits count in private.board_events, OUTSIDE the rows, so deleting
 --    and re-adding (a vote, a block) can't reset them: deletes are counted
 --    too, and never refused (security review P7 S1).
@@ -88,29 +97,29 @@ create table public.board_members (
   approved_posts int not null default 0 check (approved_posts >= 0),
   is_team boolean not null default false,                -- set from private.staff by a trigger
   handle_changed_at timestamptz,
+  -- The member's PUBLIC id: what readers see instead of the account id
+  -- (SEC S4). Random, never derived from the account id, never reused.
+  public_id uuid not null default gen_random_uuid() unique,
   created_at timestamptz not null default now()
 );
 create unique index board_members_handle_uq on public.board_members (lower(handle));
 alter table public.board_members enable row level security;
 revoke all on public.board_members from anon, authenticated;
--- Column grants: nobody reads another member's standing, trust or consent dates.
--- A learner's OWN full row comes from board-submit { op: 'me' } (service role).
-grant select (user_id, handle, is_team, created_at) on public.board_members to anon, authenticated;
-grant insert (handle, handle_kind, guidelines_version) on public.board_members to authenticated;
-grant update (handle, handle_kind, guidelines_version) on public.board_members to authenticated;
+-- Column grants: nobody reads another member's account id, standing, trust
+-- or consent dates. A learner's OWN full row comes from board-submit
+-- { op: 'me' } (service role). No insert or update: names change only
+-- through board-submit's `join` (the app's full name check) or staff.
+grant select (public_id, handle, is_team) on public.board_members to anon, authenticated;
 grant select, insert, update, delete on public.board_members to service_role;
 create policy members_read_anon on public.board_members for select to anon
   using (exists (select 1 from public.board_settings s where s.read_scope = 'everyone'));
+-- The team's names are always readable, so their replies on a learner's own
+-- post show "Aurivan team" in the 'author_staff' scope too (CR N1).
 create policy members_read on public.board_members for select to authenticated
   using (user_id = (select auth.uid())
+         or is_team
          or exists (select 1 from public.board_settings s where s.read_scope in ('everyone', 'signed_in'))
          or (select private.is_staff()));
--- Joining needs the Terms and the "16 or older" box (a profile row: Phase 6 review N10).
-create policy members_insert on public.board_members for insert to authenticated
-  with check (user_id = (select auth.uid())
-              and exists (select 1 from public.profiles p where p.id = (select auth.uid())));
-create policy members_update on public.board_members for update to authenticated
-  using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));
 
 -- Can the signed-in learner vote and follow? A member in good standing (a
 -- limit or suspension that has run out counts as good again).
@@ -126,6 +135,10 @@ $$;
 create table public.board_posts (
   id uuid primary key default gen_random_uuid(),
   author_id uuid not null references auth.users (id) on delete cascade,   -- §9 decision: cascade
+  -- The author's PUBLIC member id (set by a trigger from board_members): what readers get (SEC S4).
+  author_member uuid references public.board_members (public_id) on delete set null,
+  -- The app's id for one draft: sending the same draft again returns the first post (QA BUG-1). Staff-only column.
+  client_id uuid,
   cert_id text not null default 'cisa' check (cert_id ~ '^[a-z0-9-]{2,20}$'),
   kind text not null check (kind in ('content', 'idea', 'app', 'question')),
   title text not null check (char_length(btrim(title)) between 8 and 100),
@@ -142,6 +155,9 @@ create table public.board_posts (
   mod_reason text check (mod_reason in
     ('exam_content', 'copyright', 'abuse', 'sexual_violent', 'spam', 'personal_info', 'off_topic')),
   moderated_at timestamptz,                                -- staff-only: when it was removed (appeals: 14 days)
+  -- Staff-only: when a person last kept or put it back (approve, restore). A
+  -- reviewed post is no longer hidden by one report (SEC S1); an edit clears it.
+  reviewed_at timestamptz,
   duplicate_of uuid references public.board_posts (id) on delete set null,
   official_comment_id uuid,
   locked boolean not null default false,
@@ -161,12 +177,14 @@ create index board_posts_new_idx on public.board_posts (cert_id, visibility, cre
 create index board_posts_status_idx on public.board_posts (cert_id, visibility, status, status_changed_at desc);
 create index board_posts_author_idx on public.board_posts (author_id, created_at desc);
 create index board_posts_search_idx on public.board_posts using gin (search);
+-- One post per draft and author (NULLs never collide: a post without a client id is always new).
+create unique index board_posts_client_uq on public.board_posts (author_id, client_id);
 alter table public.board_posts enable row level security;
 revoke all on public.board_posts from anon, authenticated;
-grant select (id, author_id, cert_id, kind, title, body, item_ref, discusses_answer, status, status_note,
+grant select (id, author_member, cert_id, kind, title, body, item_ref, discusses_answer, status, status_note,
               shipped_in, visibility, duplicate_of, official_comment_id, locked, vote_count,
               comment_count, search, created_at, status_changed_at, edited_at)
-  on public.board_posts to anon, authenticated;            -- no severity/reach/report_count/hold_reason/mod dates
+  on public.board_posts to anon, authenticated;            -- no author_id/client_id/severity/reach/report_count/hold_reason/mod dates
 grant update (visibility) on public.board_posts to authenticated;   -- withdraw only (posts_guard)
 grant select, insert, update, delete on public.board_posts to service_role;
 create policy posts_read_anon on public.board_posts for select to anon
@@ -186,6 +204,7 @@ create table public.board_comments (
   id uuid primary key default gen_random_uuid(),
   post_id uuid not null references public.board_posts (id) on delete cascade,
   author_id uuid not null references auth.users (id) on delete cascade,
+  author_member uuid references public.board_members (public_id) on delete set null,   -- the public id (SEC S4)
   parent_id uuid references public.board_comments (id) on delete cascade,
   body text not null check (char_length(btrim(body)) between 1 and 1000),
   is_official boolean not null default false,
@@ -195,6 +214,7 @@ create table public.board_comments (
   mod_reason text check (mod_reason in
     ('exam_content', 'copyright', 'abuse', 'sexual_violent', 'spam', 'personal_info', 'off_topic')),
   moderated_at timestamptz,
+  reviewed_at timestamptz,                                 -- staff-only (as on posts)
   report_count int not null default 0,
   created_at timestamptz not null default now(),
   edited_at timestamptz
@@ -205,7 +225,7 @@ alter table public.board_posts add constraint board_posts_official_fk
   foreign key (official_comment_id) references public.board_comments (id) on delete set null;
 alter table public.board_comments enable row level security;
 revoke all on public.board_comments from anon, authenticated;
-grant select (id, post_id, author_id, parent_id, body, is_official, visibility, created_at, edited_at)
+grant select (id, post_id, author_member, parent_id, body, is_official, visibility, created_at, edited_at)
   on public.board_comments to anon, authenticated;
 grant update (visibility) on public.board_comments to authenticated;   -- withdraw only (comments_guard_upd)
 grant select, insert, update, delete on public.board_comments to service_role;
@@ -309,6 +329,10 @@ create table public.ugc_reports (
   reason text not null check (reason in
     ('exam_content', 'copyright', 'abuse', 'sexual_violent', 'spam', 'personal_info', 'off_topic', 'other')),
   note text check (char_length(note) <= 500),
+  -- Staff-only: the reported words as they were when reported, so an edit
+  -- can't wipe the evidence before a moderator looks (SEC S3). Cleared when
+  -- the post or comment itself is deleted (an account deletion).
+  snapshot text check (char_length(snapshot) <= 2200),
   status text not null default 'open' check (status in ('open', 'actioned', 'dismissed')),
   created_at timestamptz not null default now(),
   handled_at timestamptz,
@@ -326,18 +350,19 @@ create policy reports_insert on public.ugc_reports for insert to authenticated
   with check (reporter_id = (select auth.uid())
               and exists (select 1 from public.profiles p where p.id = (select auth.uid())));
 
+-- A block names the blocked learner by their PUBLIC member id (all the app
+-- ever knows of them: SEC S4). Never yourself, never staff (blocks_guard).
 create table public.member_blocks (
   blocker_id uuid not null default auth.uid() references auth.users (id) on delete cascade,
-  blocked_id uuid not null references auth.users (id) on delete cascade,
+  blocked_member uuid not null references public.board_members (public_id) on delete cascade,
   created_at timestamptz not null default now(),
-  primary key (blocker_id, blocked_id),
-  check (blocker_id <> blocked_id)
+  primary key (blocker_id, blocked_member)
 );
-create index member_blocks_blocked_idx on public.member_blocks (blocked_id);
+create index member_blocks_blocked_idx on public.member_blocks (blocked_member);
 alter table public.member_blocks enable row level security;
 revoke all on public.member_blocks from anon, authenticated;
 grant select, delete on public.member_blocks to authenticated;
-grant insert (blocked_id) on public.member_blocks to authenticated;
+grant insert (blocked_member) on public.member_blocks to authenticated;
 grant select on public.member_blocks to service_role;
 create policy blocks_select on public.member_blocks for select to authenticated using (blocker_id = (select auth.uid()));
 create policy blocks_insert on public.member_blocks for insert to authenticated
@@ -345,12 +370,14 @@ create policy blocks_insert on public.member_blocks for insert to authenticated
               and exists (select 1 from public.profiles p where p.id = (select auth.uid())));
 create policy blocks_delete on public.member_blocks for delete to authenticated using (blocker_id = (select auth.uid()));
 
--- Has `p_owner` blocked `p_member`? Definer: the member can't read the
--- owner's blocks under RLS. Server-side only (board-submit and the comment
--- trigger): no app role may execute it (addendum: revoked from public).
+-- Has `p_owner` blocked `p_member` (both ACCOUNT ids)? Definer: the member
+-- can't read the owner's blocks under RLS. Server-side only (board-submit,
+-- the comment trigger, notices): no app role may execute it.
 create function private.is_blocked_by(p_owner uuid, p_member uuid) returns boolean
 language sql stable security definer set search_path = '' as $$
-  select exists (select 1 from public.member_blocks b where b.blocker_id = p_owner and b.blocked_id = p_member)
+  select exists (select 1 from public.member_blocks b
+                   join public.board_members m on m.public_id = b.blocked_member
+                  where b.blocker_id = p_owner and m.user_id = p_member)
 $$;
 
 create table public.moderation_appeals (
@@ -380,7 +407,7 @@ create table private.moderation_log (
   actor_id uuid,                        -- null = automatic (filter, threshold)
   action text not null check (action in ('hold', 'approve', 'hide', 'remove', 'restore', 'warn', 'limit', 'suspend',
     'ban', 'unban', 'status', 'official', 'merge', 'lock', 'unlock', 'delete_exam_content', 'pause', 'reopen',
-    'appeal', 'uphold', 'dismiss')),
+    'appeal', 'uphold', 'dismiss', 'rename', 'spoiler')),
   target_kind text,
   target_id uuid,
   reason text check (char_length(reason) <= 40),
@@ -402,13 +429,20 @@ create table private.moderation_terms (
 );
 alter table private.moderation_terms enable row level security;
 grant select on private.moderation_terms to service_role;
+-- Starter hold terms (compliance review P8, item 8): a post claiming to speak
+-- for ISACA waits for a person. ("real exam" and "dump" are checked with
+-- their context in the app's shared rules instead, so "like the real exam
+-- questions?" and "memory dump" aren't held.) Staff add the rest (PLAYBOOK §12).
+insert into private.moderation_terms (kind, term) values ('hold', 'isaca official'), ('hold', 'official isaca');
 
 -- Every rate-limited act, one row each, kept 2 days. Counted per user and
 -- kind over the last hour and day; a delete is a row too.
 create table private.board_events (
   id bigint generated always as identity primary key,
   user_id uuid not null references auth.users (id) on delete cascade,
-  kind text not null check (kind in ('post', 'comment', 'edit', 'vote', 'follow', 'report', 'block')),
+  -- 'attempt': every post, comment or edit sent to board-submit, counted BEFORE the filters,
+  -- so refused texts aren't free (SEC S6).
+  kind text not null check (kind in ('post', 'comment', 'edit', 'vote', 'follow', 'report', 'block', 'attempt')),
   at timestamptz not null default now()
 );
 create index board_events_user_idx on private.board_events (user_id, kind, at desc);
@@ -450,6 +484,28 @@ language sql stable security definer set search_path = '' as $$
   select coalesce((select u.created_at > now() - p_age from auth.users u where u.id = p_user), true)
 $$;
 
+-- May this learner's report hide something on its own? (SEC S1) Only a
+-- member in good standing (a limit or suspension that has run out counts),
+-- whose account is at least a day old and who has had a post approved.
+-- Anyone else's report still reaches the staff queue; it just doesn't hide.
+create function private.trusted_reporter(p_user uuid) returns boolean
+language sql stable security definer set search_path = '' as $$
+  select exists (select 1 from public.board_members m join auth.users u on u.id = m.user_id
+    where m.user_id = p_user and m.approved_posts > 0
+      and u.created_at <= now() - interval '24 hours'
+      and (m.standing = 'active'
+           or (m.standing in ('limited', 'suspended') and m.standing_until < now())))
+$$;
+
+-- A board name folded for the reserved-name check, like the app's
+-- checkHandle (engine/moderation.ts foldHandle): lower case, digits read as
+-- letters (0→o 1→i 3→e 4→a 5→s 7→t), then the look-alikes l→i, rn→m and
+-- vv→w ("AURlVAN" reads as "aurivan"; SEC B1 d).
+create function private.fold_handle(p text) returns text
+language sql immutable set search_path = '' as $$
+  select replace(replace(translate(lower(p), '013457l', 'oieasti'), 'rn', 'm'), 'vv', 'w')
+$$;
+
 -- One in-app notice.
 create function private.notify(p_user uuid, p_kind text, p_post uuid, p_comment uuid default null,
   p_reason text default null, p_by_person boolean default null, p_outcome text default null,
@@ -460,17 +516,33 @@ returns void language sql security definer set search_path = '' as $$
    where p_user is not null;
 $$;
 
--- A notice to a post's author and followers, once each, never to `p_except` (who caused it).
+-- A notice to a post's author and followers, once each, never to `p_except`
+-- (who caused it), and never to anyone who blocked `p_except` (a blocked
+-- learner can't reach the blocker through a notice: SEC S2).
 create function private.notify_post(p_post uuid, p_kind text, p_except uuid, p_comment uuid default null)
 returns void language sql security definer set search_path = '' as $$
   insert into public.board_notifications (user_id, kind, post_id, comment_id)
   select distinct u, p_kind, p_post, p_comment
     from (select p.author_id as u from public.board_posts p where p.id = p_post
           union select f.user_id from public.board_follows f where f.post_id = p_post) w
-   where u is distinct from p_except;
+   where u is distinct from p_except
+     and (p_except is null or not private.is_blocked_by(u, p_except));
 $$;
 
 -- ── Triggers ────────────────────────────────────────────────────────
+-- Posts and comments, before insert: the author's PUBLIC member id, the
+-- only id of theirs readers ever get (SEC S4).
+create function private.set_author_member() returns trigger
+language plpgsql security definer set search_path = '' as $$
+begin
+  new.author_member := (select m.public_id from public.board_members m where m.user_id = new.author_id);
+  return new;
+end $$;
+create trigger posts_author_member before insert on public.board_posts
+  for each row execute function private.set_author_member();
+create trigger comments_author_member before insert on public.board_comments
+  for each row execute function private.set_author_member();
+
 -- Posts: an app role may only withdraw its own pending or visible post
 -- (RLS can't see OLD, so this closes "update anything I can see"). Anything
 -- else from anon or authenticated is `forbidden` (42501). The service role
@@ -514,7 +586,8 @@ create trigger posts_after after update on public.board_posts
 
 -- Comments, before insert (the service role writes them): one level of
 -- replies, on a visible and unlocked post, never from someone the post's
--- author blocked, and "official" only from staff.
+-- author blocked, never a reply to someone who blocked the replier (SEC
+-- S2), and "official" only from staff.
 create function private.comments_guard_ins() returns trigger
 language plpgsql security definer set search_path = '' as $$
 declare
@@ -531,6 +604,10 @@ begin
     raise exception 'forbidden' using errcode = '42501';
   end if;
   if private.is_blocked_by(v_post.author_id, new.author_id) then
+    raise exception 'forbidden' using errcode = '42501';
+  end if;
+  if new.parent_id is not null and private.is_blocked_by(
+       (select c.author_id from public.board_comments c where c.id = new.parent_id), new.author_id) then
     raise exception 'forbidden' using errcode = '42501';
   end if;
   new.is_official := new.is_official and v_staff;
@@ -620,19 +697,30 @@ create trigger follows_after after insert or delete on public.board_follows
   for each row execute function private.follows_after();
 
 -- Reports, before insert: a real target the reporter can see (a visible post
--- or comment, or a member), never yourself.
+-- or comment, or a member named by their PUBLIC id), never yourself. The
+-- reported words are copied for the moderators (SEC S3: an edit can't wipe
+-- them); a member report keeps the name they had.
 create function private.reports_guard() returns trigger
 language plpgsql security definer set search_path = '' as $$
 begin
-  if new.target_kind = 'post' and not exists (
-       select 1 from public.board_posts p where p.id = new.target_id and p.visibility = 'visible' and p.author_id <> new.reporter_id) then
-    raise exception 'forbidden' using errcode = '42501';
-  elsif new.target_kind = 'comment' and not exists (
-       select 1 from public.board_comments c where c.id = new.target_id and c.visibility = 'visible' and c.author_id <> new.reporter_id) then
-    raise exception 'forbidden' using errcode = '42501';
-  elsif new.target_kind = 'member' and (new.target_id = new.reporter_id or not exists (
-       select 1 from public.board_members m where m.user_id = new.target_id)) then
-    raise exception 'forbidden' using errcode = '42501';
+  if new.target_kind = 'post' then
+    select left(p.title || E'\n' || p.body, 2200) into new.snapshot from public.board_posts p
+     where p.id = new.target_id and p.visibility = 'visible' and p.author_id <> new.reporter_id;
+    if not found then
+      raise exception 'forbidden' using errcode = '42501';
+    end if;
+  elsif new.target_kind = 'comment' then
+    select left(c.body, 2200) into new.snapshot from public.board_comments c
+     where c.id = new.target_id and c.visibility = 'visible' and c.author_id <> new.reporter_id;
+    if not found then
+      raise exception 'forbidden' using errcode = '42501';
+    end if;
+  else
+    select m.handle into new.snapshot from public.board_members m
+     where m.public_id = new.target_id and m.user_id <> new.reporter_id;
+    if not found then
+      raise exception 'forbidden' using errcode = '42501';
+    end if;
   end if;
   return new;
 end $$;
@@ -640,25 +728,37 @@ create trigger reports_guard before insert on public.ugc_reports
   for each row execute function private.reports_guard();
 
 -- Reports, after insert: 10 a day (3 for an account under a day old). The
--- target's report count goes up. "Shares real exam content" hides it for
--- everyone at once; otherwise 3 different reporters, each with an account
--- at least 7 days old, hide it. Automatic hides are logged.
+-- target's report count goes up. Hiding for everyone (SEC S1):
+--  * "Shares real exam content" from a TRUSTED reporter (private.
+--    trusted_reporter: good standing, a day old, an approved post) hides it
+--    at once, unless a person has already reviewed it (reviewed_at);
+--  * otherwise 3 different trusted reporters, each with an account at least
+--    7 days old, hide it (a reviewed one too).
+-- Any other report still reaches the queue. Automatic hides are logged.
 create function private.reports_after() returns trigger
 language plpgsql security definer set search_path = '' as $$
 declare
   v_verified int;
   v_hide text;
+  v_reviewed timestamptz;
 begin
   perform private.board_take(new.reporter_id, 'report', null,
     case when private.account_is_new(new.reporter_id) then 3 else 10 end, true);
   if new.target_kind = 'member' then
     return null;
   end if;
+  if new.target_kind = 'post' then
+    select p.reviewed_at into v_reviewed from public.board_posts p where p.id = new.target_id;
+  else
+    select c.reviewed_at into v_reviewed from public.board_comments c where c.id = new.target_id;
+  end if;
   select count(distinct r.reporter_id) into v_verified
     from public.ugc_reports r join auth.users u on u.id = r.reporter_id
    where r.target_kind = new.target_kind and r.target_id = new.target_id and r.status = 'open'
-     and u.created_at <= now() - interval '7 days';
-  v_hide := case when new.reason = 'exam_content' then 'exam_report' when v_verified >= 3 then 'reports' end;
+     and u.created_at <= now() - interval '7 days'
+     and private.trusted_reporter(r.reporter_id);
+  v_hide := case when new.reason = 'exam_content' and v_reviewed is null and private.trusted_reporter(new.reporter_id) then 'exam_report'
+                 when v_verified >= 3 then 'reports' end;
   if new.target_kind = 'post' then
     update public.board_posts
        set report_count = report_count + 1,
@@ -681,10 +781,42 @@ end $$;
 create trigger reports_after after insert on public.ugc_reports
   for each row execute function private.reports_after();
 
--- Blocks: at most 500 per learner, 100 changes a day (deletes count), and
--- never a staff member (a learner can't hide moderation from themselves).
+-- A post, comment or member that is deleted (an account deletion's cascade)
+-- closes the open reports about it, and the reported words and notes go
+-- with it (CR N5, SEC N5): nothing waits in the queue for something that
+-- isn't there, and no copy of a deleted learner's text stays behind.
+create function private.reports_target_gone() returns trigger
+language plpgsql security definer set search_path = '' as $$
+declare
+  v_kind text := case tg_table_name when 'board_posts' then 'post' when 'board_comments' then 'comment' else 'member' end;
+  v_id uuid;
+begin
+  -- Separate statements: a member row has no `id`, a post no `public_id`.
+  if tg_table_name = 'board_members' then
+    v_id := old.public_id;
+  else
+    v_id := old.id;
+  end if;
+  update public.ugc_reports
+     set status = case when status = 'open' then 'actioned' else status end,
+         handled_at = coalesce(handled_at, now()), snapshot = null, note = null
+   where target_kind = v_kind and target_id = v_id;
+  return null;
+end $$;
+create trigger posts_reports_gone after delete on public.board_posts
+  for each row execute function private.reports_target_gone();
+create trigger comments_reports_gone after delete on public.board_comments
+  for each row execute function private.reports_target_gone();
+create trigger members_reports_gone after delete on public.board_members
+  for each row execute function private.reports_target_gone();
+
+-- Blocks: at most 500 per learner, 100 changes a day (deletes count), never
+-- yourself, and never a staff member (a learner can't hide moderation from
+-- themselves). The blocked learner is named by their public id.
 create function private.blocks_guard() returns trigger
 language plpgsql security definer set search_path = '' as $$
+declare
+  v_blocked uuid;
 begin
   if tg_op = 'DELETE' then
     if private.app_role() = 'authenticated' and exists (select 1 from auth.users u where u.id = old.blocker_id) then
@@ -692,7 +824,9 @@ begin
     end if;
     return old;
   end if;
-  if exists (select 1 from private.staff s where s.user_id = new.blocked_id)
+  select m.user_id into v_blocked from public.board_members m where m.public_id = new.blocked_member;
+  if v_blocked is null or v_blocked = new.blocker_id
+     or exists (select 1 from private.staff s where s.user_id = v_blocked)
      or (select count(*) from public.member_blocks b where b.blocker_id = new.blocker_id) >= 500 then
     raise exception 'forbidden' using errcode = '42501';
   end if;
@@ -732,47 +866,55 @@ create trigger appeals_guard before insert on public.moderation_appeals
   for each row execute function private.appeals_guard();
 
 -- Members: reserved names (the app's list plus private.moderation_terms
--- 'reserved_handle'), words on the block list, one name change a day, and a
--- fresh consent time when the guidelines version changes. Standing and trust
--- never change here except by the service role.
+-- 'reserved_handle') and words on the block list, a fresh consent time when
+-- the guidelines version changes, and a public id that never changes.
+-- The name checks run ONLY when a name is set or changed (CR B4 / SEC B1):
+-- a word staff add to a list later never stops a ban, a suspension, an
+-- approval or a same-name re-accept of new guidelines. (Names change only
+-- through svc_board_join, which also allows one change a day, and staff
+-- `rename`.) Standing and trust never change here except by the service role.
 create function private.members_guard() returns trigger
 language plpgsql security definer set search_path = '' as $$
 declare
   v_words text[];
   v_squashed text;
   v_term text;
+  v_t text;
 begin
-  -- Folded like the app's checkHandle: lower case, digits read as letters.
-  v_words := regexp_split_to_array(translate(lower(new.handle), '013457', 'oieast'), '[^a-z]+');
-  v_squashed := array_to_string(v_words, '');
-  foreach v_term in array array['aurivan', 'isaca', 'cisa', 'cism', 'crisc', 'cgeit', 'admin', 'moderator', 'mod',
-                                 'team', 'support', 'official', 'staff'] loop
-    if (length(v_term) <= 4 and (v_term = any (v_words) or v_squashed = v_term))
-       or (length(v_term) > 4 and position(v_term in v_squashed) > 0) then
-      raise exception 'reserved_handle' using errcode = '22023';
-    end if;
-  end loop;
-  -- Staff-added terms: a reserved name anywhere in the name; a blocked word as a whole word.
-  for v_term in select t.term from private.moderation_terms t where t.kind = 'reserved_handle' loop
-    if position(regexp_replace(v_term, '[^a-z]', '', 'g') in v_squashed) > 0 then
-      raise exception 'reserved_handle' using errcode = '22023';
-    end if;
-  end loop;
-  for v_term in select t.term from private.moderation_terms t where t.kind = 'block' loop
-    if (' ' || array_to_string(v_words, ' ') || ' ') like ('% ' || v_term || ' %') then
-      raise exception 'reserved_handle' using errcode = '22023';
-    end if;
-  end loop;
+  if tg_op = 'INSERT' or new.handle is distinct from old.handle then
+    -- Folded like the app's checkHandle (private.fold_handle): "AURlVAN" reads as "aurivan".
+    v_words := array_remove(regexp_split_to_array(private.fold_handle(new.handle), '[^a-z]+'), '');
+    v_squashed := array_to_string(v_words, '');
+    -- The same list as RESERVED_HANDLES in engine/moderation.ts. Short ones, and
+    -- "admin" and "staff", count only as a whole word ("Modest Pine", "Badminton Fan").
+    foreach v_term in array array['aurivan', 'isaca', 'cisa', 'cism', 'crisc', 'cgeit', 'cdpse', 'ccoa', 'aaia', 'aaism',
+                                   'cobit', 'csx', 'admin', 'moderator', 'mod', 'team', 'support', 'official', 'staff'] loop
+      v_t := private.fold_handle(v_term);
+      if ((length(v_t) <= 4 or v_term in ('admin', 'staff')) and (v_t = any (v_words) or v_squashed = v_t))
+         or (length(v_t) > 4 and v_term not in ('admin', 'staff') and position(v_t in v_squashed) > 0) then
+        raise exception 'reserved_handle' using errcode = '22023';
+      end if;
+    end loop;
+    -- Staff-added terms: a reserved name anywhere in the name; a blocked word as a whole word.
+    for v_term in select t.term from private.moderation_terms t where t.kind = 'reserved_handle' loop
+      if position(regexp_replace(private.fold_handle(v_term), '[^a-z]', '', 'g') in v_squashed) > 0 then
+        raise exception 'reserved_handle' using errcode = '22023';
+      end if;
+    end loop;
+    for v_term in select t.term from private.moderation_terms t where t.kind = 'block' loop
+      if (' ' || array_to_string(v_words, ' ') || ' ') like ('% ' || private.fold_handle(v_term) || ' %') then
+        raise exception 'reserved_handle' using errcode = '22023';
+      end if;
+    end loop;
+  end if;
   if tg_op = 'UPDATE' then
     if private.app_role() in ('anon', 'authenticated') and pg_trigger_depth() = 1 then
       new.standing := old.standing; new.standing_until := old.standing_until;
       new.standing_changed_at := old.standing_changed_at; new.approved_posts := old.approved_posts;
       new.is_team := old.is_team; new.created_at := old.created_at; new.user_id := old.user_id;
     end if;
+    new.public_id := old.public_id;
     if new.handle is distinct from old.handle then
-      if old.handle_changed_at > now() - interval '24 hours' then
-        raise exception 'rate_limited' using errcode = 'P0001';
-      end if;
       new.handle_changed_at := now();
     end if;
     if new.guidelines_version is distinct from old.guidelines_version then
@@ -805,12 +947,13 @@ create trigger staff_mark after insert or delete on private.staff
   for each row execute function private.staff_mark();
 
 -- ── Server-only: board-submit (the service role, after the filters) ──
--- The learner's own member facts, for board-submit and { op: 'me' }.
+-- The learner's own member facts, for board-submit and { op: 'me' }:
+-- their PUBLIC id (to tell their own posts apart), never the account id.
 -- Returns null when they haven't joined.
 create function public.svc_board_member(p_user uuid) returns jsonb
 language sql stable security invoker set search_path = '' as $$
   select jsonb_build_object(
-    'userId', m.user_id, 'handle', m.handle, 'handleKind', m.handle_kind,
+    'memberId', m.public_id, 'handle', m.handle, 'handleKind', m.handle_kind,
     'guidelinesVersion', m.guidelines_version, 'standing', m.standing,
     'standingUntil', m.standing_until, 'approvedPosts', m.approved_posts, 'isTeam', m.is_team,
     'newAccount', private.account_is_new(m.user_id),
@@ -820,9 +963,10 @@ language sql stable security invoker set search_path = '' as $$
 $$;
 
 -- Joins the board (or accepts a new guidelines version, or changes the
--- name) for `p_user`, after board-submit's name check. Needs the Terms (a
--- profile row); members_guard re-checks the name, once-a-day changes and
--- the consent time. Returns the member's own facts.
+-- name) for `p_user`, after board-submit's name check: the ONLY way a
+-- learner sets or changes a name. Needs the Terms (a profile row); one name
+-- change a day; members_guard re-checks the name and stamps the consent
+-- time. Returns the member's own facts.
 create function public.svc_board_join(p_user uuid, p_handle text, p_kind text, p_version text) returns jsonb
 language plpgsql volatile security invoker set search_path = '' as $$
 begin
@@ -832,12 +976,20 @@ begin
   if p_version is distinct from (select s.guidelines_version from public.board_settings s) then
     raise exception 'guidelines' using errcode = 'P0001';
   end if;
-  insert into public.board_members as m (user_id, handle, handle_kind, guidelines_version)
-    values (p_user, p_handle, p_kind, p_version)
-  on conflict (user_id) do update
-    set handle = excluded.handle, handle_kind = excluded.handle_kind, guidelines_version = excluded.guidelines_version
-    where (m.handle, m.handle_kind, m.guidelines_version) is distinct from
-          (excluded.handle, excluded.handle_kind, excluded.guidelines_version);
+  if exists (select 1 from public.board_members m where m.user_id = p_user
+               and m.handle is distinct from p_handle and m.handle_changed_at > now() - interval '24 hours') then
+    raise exception 'rate_limited' using errcode = 'P0001';
+  end if;
+  -- An update for a member (never `insert … on conflict`: its insert trigger
+  -- would check an unchanged name as if it were new).
+  update public.board_members m
+     set handle = p_handle, handle_kind = p_kind, guidelines_version = p_version
+   where m.user_id = p_user
+     and (m.handle, m.handle_kind, m.guidelines_version) is distinct from (p_handle, p_kind, p_version);
+  if not exists (select 1 from public.board_members m where m.user_id = p_user) then
+    insert into public.board_members (user_id, handle, handle_kind, guidelines_version)
+      values (p_user, p_handle, p_kind, p_version);
+  end if;
   return public.svc_board_member(p_user);
 end $$;
 
@@ -852,6 +1004,14 @@ language sql stable security invoker set search_path = '' as $$
   from private.moderation_terms t
 $$;
 
+-- Counts one write attempt (a post, comment or edit sent to board-submit),
+-- BEFORE the filters look at it: a refused text costs a try too, so the
+-- word lists can't be probed for free (SEC S6). 30 an hour, 200 a day.
+create function public.svc_board_attempt(p_user uuid) returns void
+language sql volatile security invoker set search_path = '' as $$
+  select private.board_take(p_user, 'attempt', 30, 200, true)
+$$;
+
 -- Writes a post or comment for `p_user` AFTER board-submit's filters, leak
 -- guard and recall check (its verdict arrives as `p_hold`). Checks again
 -- here what only the database knows: the member's standing and consent,
@@ -859,9 +1019,16 @@ $$;
 -- holdReason }. Errors: forbidden (42501), rate_limited / posting_paused /
 -- banned / guidelines (P0001), invalid (22023).
 --   p_op: 'post' | 'edit_post' | 'comment' | 'edit_comment'
+--   p_client: the app's id for this draft (a post only). The same author
+--     sending the same id again gets the FIRST post back, unchanged and not
+--     counted again: a reply lost on the way can't make a second post (QA BUG-1).
+--   p_spoiler: board-submit's answer-talk check flagged it; the post is folded
+--     ("Show it"). A Content post that links one of our practice questions is
+--     folded too (CR N12).
 create function public.svc_board_write(
   p_user uuid, p_op text, p_target uuid, p_kind text, p_title text, p_body text,
-  p_item_ref text, p_parent uuid, p_hold text, p_cert text default 'cisa')
+  p_item_ref text, p_parent uuid, p_hold text, p_cert text default 'cisa',
+  p_client uuid default null, p_spoiler boolean default false)
 returns jsonb language plpgsql volatile security invoker set search_path = '' as $$
 declare
   v_member public.board_members%rowtype;
@@ -871,6 +1038,7 @@ declare
   v_hold text := p_hold;
   v_id uuid;
   v_post public.board_posts%rowtype;
+  v_spoiler boolean := coalesce(p_spoiler, false) or (p_kind = 'content' and coalesce(p_item_ref, '') like 'q:%');
 begin
   if p_op not in ('post', 'edit_post', 'comment', 'edit_comment') then
     raise exception 'invalid' using errcode = '22023';
@@ -898,15 +1066,28 @@ begin
   v_new := private.account_is_new(p_user);
 
   if p_op = 'post' then
+    -- The same draft again (its reply was lost): the first post, as it is now.
+    if p_client is not null then
+      select * into v_post from public.board_posts p where p.author_id = p_user and p.client_id = p_client;
+      if found then
+        return jsonb_build_object('id', v_post.id, 'visibility', v_post.visibility, 'holdReason', v_post.hold_reason);
+      end if;
+    end if;
     perform private.board_take(p_user, 'post', 3, case when v_new then 1 else 5 end, true);
     -- Until a member has one approved post, their posts wait for a person.
     if v_hold is null and v_member.approved_posts = 0 then
       v_hold := 'new_member';
     end if;
     v_vis := case when v_hold is null then 'visible' else 'pending' end;
-    insert into public.board_posts (author_id, cert_id, kind, title, body, item_ref, visibility, hold_reason)
-      values (p_user, coalesce(p_cert, 'cisa'), p_kind, p_title, coalesce(p_body, ''), p_item_ref, v_vis, v_hold)
+    insert into public.board_posts (author_id, client_id, cert_id, kind, title, body, item_ref, discusses_answer, visibility, hold_reason)
+      values (p_user, p_client, coalesce(p_cert, 'cisa'), p_kind, p_title, coalesce(p_body, ''), p_item_ref, v_spoiler, v_vis, v_hold)
+      on conflict (author_id, client_id) do nothing
       returning id into v_id;
+    if v_id is null then
+      -- Two sends of one draft at the same moment: the other one won.
+      select * into v_post from public.board_posts p where p.author_id = p_user and p.client_id = p_client;
+      return jsonb_build_object('id', v_post.id, 'visibility', v_post.visibility, 'holdReason', v_post.hold_reason);
+    end if;
     insert into public.board_follows (post_id, user_id) values (v_id, p_user) on conflict do nothing;
     if v_hold is not null then
       insert into private.moderation_log (actor_id, action, target_kind, target_id, reason)
@@ -926,9 +1107,10 @@ begin
       v_hold := coalesce(v_post.hold_reason, 'new_member');
     end if;
     v_vis := case when v_hold is null then 'visible' else 'pending' end;
+    -- A changed text needs a fresh review before one report can't hide it (reviewed_at).
     update public.board_posts
        set kind = p_kind, title = p_title, body = coalesce(p_body, ''), item_ref = p_item_ref,
-           visibility = v_vis, hold_reason = v_hold, edited_at = now()
+           discusses_answer = v_spoiler, visibility = v_vis, hold_reason = v_hold, edited_at = now(), reviewed_at = null
      where id = p_target;
     if v_hold is not null then
       insert into private.moderation_log (actor_id, action, target_kind, target_id, reason)
@@ -940,7 +1122,9 @@ begin
   if p_op = 'comment' then
     perform private.board_take(p_user, 'comment', 20, case when v_new then 5 else 30 end, true);
     select * into v_post from public.board_posts p where p.id = p_target;
-    if not found or v_post.visibility <> 'visible' or v_post.locked or private.is_blocked_by(v_post.author_id, p_user) then
+    if not found or v_post.visibility <> 'visible' or v_post.locked or private.is_blocked_by(v_post.author_id, p_user)
+       or (p_parent is not null and private.is_blocked_by(
+             (select c.author_id from public.board_comments c where c.id = p_parent), p_user)) then
       raise exception 'forbidden' using errcode = '42501';
     end if;
     v_vis := case when v_hold is null then 'visible' else 'pending' end;
@@ -961,7 +1145,7 @@ begin
     raise exception 'forbidden' using errcode = '42501';
   end if;
   v_vis := case when v_hold is null then 'visible' else 'pending' end;
-  update public.board_comments set body = p_body, visibility = v_vis, hold_reason = v_hold, edited_at = now()
+  update public.board_comments set body = p_body, visibility = v_vis, hold_reason = v_hold, edited_at = now(), reviewed_at = null
    where id = p_target;
   return jsonb_build_object('id', p_target, 'visibility', v_vis, 'holdReason', v_hold);
 end $$;
@@ -970,11 +1154,14 @@ end $$;
 -- Every staff action in one place (spec §4.4 B7), logged with the actor and
 -- reason. `p_actor` must be in private.staff. Returns the target's new state.
 --   post / comment: approve, hide, remove, remove_warn, delete_exam_content, restore
---   post:           status {status, note?, shippedIn?}, official {body}, merge {into}, lock, unlock
---   member:         warn, limit {days?}, suspend {days?}, ban, unban
+--                   (never on an item its author withdrew: that stays withdrawn)
+--   post:           status {status, note?, shippedIn?}, official {body}, merge {into}, lock, unlock,
+--                   spoiler {on}
+--   member:         warn, limit {days?}, suspend {days?}, ban, unban, rename
+--                   (the target is the member's public id, or their account id)
 --   board:          pause, reopen
 --   appeal:         uphold, restore_appeal
---   report:         dismiss
+--   report:         dismiss {kind}: every open report on that target (the queue's id)
 create function private.staff_act(p_actor uuid, p_action text, p_kind text, p_target uuid, p_reason text, p_extra jsonb)
 returns jsonb language plpgsql volatile security invoker set search_path = '' as $$
 declare
@@ -987,6 +1174,7 @@ declare
   v_appeal public.moderation_appeals%rowtype;
   v_reason text := p_reason;
   v_log_action text := p_action;
+  v_member uuid;
 begin
   if not exists (select 1 from private.staff s where s.user_id = p_actor) then
     raise exception 'forbidden' using errcode = '42501';
@@ -1002,7 +1190,8 @@ begin
     else
       select author_id, visibility into v_author, v_prev from public.board_comments where id = p_target for update;
     end if;
-    if not found then
+    -- Withdrawn by its author: staff can't publish it again or hide it (SEC N3).
+    if not found or (v_prev = 'withdrawn' and p_action in ('approve', 'restore', 'hide')) then
       raise exception 'not_found' using errcode = 'P0002';
     end if;
     if p_action in ('remove', 'remove_warn', 'delete_exam_content') and v_reason is null then
@@ -1017,6 +1206,7 @@ begin
         hold_reason = case when p_action in ('approve', 'restore') then null else hold_reason end,
         mod_reason = case when p_action in ('approve', 'restore', 'hide') then null else v_reason end,
         moderated_at = case when p_action in ('remove', 'remove_warn', 'delete_exam_content') then now() else moderated_at end,
+        reviewed_at = case when p_action in ('approve', 'restore') then now() else reviewed_at end,
         title = case when p_action = 'delete_exam_content' then 'Removed post' else title end,
         body = case when p_action = 'delete_exam_content' then '' else body end
       where id = p_target;
@@ -1030,6 +1220,7 @@ begin
         hold_reason = case when p_action in ('approve', 'restore') then null else hold_reason end,
         mod_reason = case when p_action in ('approve', 'restore', 'hide') then null else v_reason end,
         moderated_at = case when p_action in ('remove', 'remove_warn', 'delete_exam_content') then now() else moderated_at end,
+        reviewed_at = case when p_action in ('approve', 'restore') then now() else reviewed_at end,
         body = case when p_action = 'delete_exam_content' then '-' else body end
       where id = p_target;
     end if;
@@ -1081,7 +1272,8 @@ begin
       select v_into, f.user_id, f.created_at from public.board_follows f where f.post_id = p_target
       on conflict do nothing;
     delete from public.board_follows where post_id = p_target;
-    update public.board_comments set post_id = v_into where post_id = p_target;
+    -- The moved comments can't bring a second official response (CR nit 6).
+    update public.board_comments set post_id = v_into, is_official = false where post_id = p_target;
     update public.board_posts set duplicate_of = v_into, status = 'duplicate',
            status_note = coalesce(nullif(p_extra ->> 'note', ''), status_note), official_comment_id = null
      where id = p_target;
@@ -1089,21 +1281,39 @@ begin
   elsif p_kind = 'post' and p_action in ('lock', 'unlock') then
     update public.board_posts set locked = (p_action = 'lock') where id = p_target;
 
+  elsif p_kind = 'post' and p_action = 'spoiler' then
+    -- Fold a post that talks about a practice question's answer ("Show it"), or unfold it.
+    update public.board_posts set discusses_answer = coalesce((p_extra ->> 'on')::boolean, true) where id = p_target;
+    if not found then
+      raise exception 'not_found' using errcode = 'P0002';
+    end if;
+
+  elsif p_kind = 'member' and p_action = 'rename' then
+    -- An offensive or impersonating name: a plain neutral one instead (SEC B1 c). Logged.
+    select m.user_id into v_member from public.board_members m where m.public_id = p_target or m.user_id = p_target;
+    if v_member is null then
+      raise exception 'not_found' using errcode = 'P0002';
+    end if;
+    update public.board_members
+       set handle = 'Learner ' || substr(replace(gen_random_uuid()::text, '-', ''), 1, 6), handle_kind = 'pseudonym'
+     where user_id = v_member;
+
   elsif p_kind = 'member' and p_action in ('warn', 'limit', 'suspend', 'ban', 'unban') then
-    if not exists (select 1 from public.board_members where user_id = p_target) then
+    select m.user_id into v_member from public.board_members m where m.public_id = p_target or m.user_id = p_target;
+    if v_member is null then
       raise exception 'not_found' using errcode = 'P0002';
     end if;
     v_days := least(greatest(coalesce((p_extra ->> 'days')::int, case p_action when 'limit' then 3 else 7 end), 1), 365);
     v_until := case when p_action in ('limit', 'suspend') then now() + make_interval(days => v_days) end;
     if p_action = 'warn' then
-      perform private.notify(p_target, 'warned', null, null, v_reason);
+      perform private.notify(v_member, 'warned', null, null, v_reason);
     else
       update public.board_members set
         standing = case p_action when 'unban' then 'active' when 'ban' then 'banned' when 'limit' then 'limited' else 'suspended' end,
         standing_until = v_until, standing_changed_at = now()
-      where user_id = p_target;
+      where user_id = v_member;
       if p_action in ('limit', 'suspend') then
-        perform private.notify(p_target, 'suspended', null, null, v_reason, null, null, v_until);
+        perform private.notify(v_member, 'suspended', null, null, v_reason, null, null, v_until);
       end if;
     end if;
 
@@ -1120,9 +1330,9 @@ begin
      where id = p_target;
     if p_action = 'restore_appeal' then
       if v_appeal.target_kind = 'post' then
-        update public.board_posts set visibility = 'visible', mod_reason = null where id = v_appeal.target_id;
+        update public.board_posts set visibility = 'visible', mod_reason = null, reviewed_at = now() where id = v_appeal.target_id;
       elsif v_appeal.target_kind = 'comment' then
-        update public.board_comments set visibility = 'visible', mod_reason = null where id = v_appeal.target_id;
+        update public.board_comments set visibility = 'visible', mod_reason = null, reviewed_at = now() where id = v_appeal.target_id;
       else
         update public.board_members set standing = 'active', standing_until = null, standing_changed_at = now()
          where user_id = v_appeal.user_id;
@@ -1135,14 +1345,19 @@ begin
     v_log_action := case when p_action = 'uphold' then 'uphold' else 'restore' end;
 
   elsif p_kind = 'report' and p_action = 'dismiss' then
-    update public.ugc_reports set status = 'dismissed', handled_at = now() where id = p_target and status = 'open';
+    -- The queue shows one row per reported THING: dismiss every open report on it (CR N4).
+    if coalesce(p_extra ->> 'kind', '') not in ('post', 'comment', 'member') then
+      raise exception 'invalid' using errcode = '22023';
+    end if;
+    update public.ugc_reports set status = 'dismissed', handled_at = now()
+     where target_kind = p_extra ->> 'kind' and target_id = p_target and status = 'open';
 
   else
     raise exception 'invalid' using errcode = '22023';
   end if;
 
   insert into private.moderation_log (actor_id, action, target_kind, target_id, reason, detail)
-    values (p_actor, v_log_action, p_kind, p_target, v_reason,
+    values (p_actor, v_log_action, p_kind, coalesce(v_member, p_target), v_reason,
             case when p_action = 'status' then p_extra ->> 'status' when p_action in ('limit', 'suspend') then v_days || ' days' end);
   return jsonb_build_object('ok', true, 'action', p_action);
 end $$;
@@ -1183,18 +1398,29 @@ begin
         from public.board_comments c left join public.board_members m on m.user_id = c.author_id
        where c.visibility in ('pending', 'hidden') and c.hold_reason is not null) q;
   elsif p_tab = 'reported' then
+    -- One row per reported thing, with the words as they were when first
+    -- reported (SEC S3) and who wrote them (a member report: their name).
     select coalesce(jsonb_agg(x order by x ->> 'at'), '[]') into v_out from (
-      select jsonb_build_object('kind', r.target_kind, 'id', r.target_id, 'count', count(*),
-        'reasons', jsonb_agg(distinct r.reason), 'at', min(r.created_at),
-        'examContent', bool_or(r.reason = 'exam_content')) x
-        from public.ugc_reports r where r.status = 'open'
-       group by r.target_kind, r.target_id) q;
+      select jsonb_build_object('kind', g.target_kind, 'id', g.target_id, 'count', g.n,
+        'reasons', g.reasons, 'at', g.first_at, 'examContent', g.exam,
+        'snapshot', g.snapshot, 'handle', m.handle,
+        'newMember', coalesce(m.approved_posts, 0) = 0,
+        'priorActions', (select count(*) from private.moderation_log l where l.target_id = m.user_id and l.actor_id is not null)) x
+        from (select r.target_kind, r.target_id, count(*) as n, jsonb_agg(distinct r.reason) as reasons,
+                     min(r.created_at) as first_at, bool_or(r.reason = 'exam_content') as exam,
+                     (array_agg(r.snapshot order by r.created_at))[1] as snapshot
+                from public.ugc_reports r where r.status = 'open'
+               group by r.target_kind, r.target_id) g
+        left join public.board_members m on m.user_id = case g.target_kind
+               when 'post' then (select p.author_id from public.board_posts p where p.id = g.target_id)
+               when 'comment' then (select c.author_id from public.board_comments c where c.id = g.target_id)
+               else (select mm.user_id from public.board_members mm where mm.public_id = g.target_id) end) q;
   elsif p_tab = 'appeals' then
     select coalesce(jsonb_agg(jsonb_build_object('id', a.id, 'kind', a.target_kind, 'targetId', a.target_id,
       'note', a.note, 'at', a.created_at) order by a.created_at), '[]') into v_out
       from public.moderation_appeals a where a.status = 'open';
   elsif p_tab = 'members' then
-    select coalesce(jsonb_agg(jsonb_build_object('userId', m.user_id, 'handle', m.handle, 'standing', m.standing,
+    select coalesce(jsonb_agg(jsonb_build_object('id', m.public_id, 'handle', m.handle, 'standing', m.standing,
       'until', m.standing_until, 'priorActions',
         (select count(*) from private.moderation_log l where l.target_id = m.user_id and l.actor_id is not null))
       order by m.standing_changed_at desc nulls last), '[]') into v_out
@@ -1251,8 +1477,9 @@ language sql stable security invoker set search_path = '' as $$
     'reports', coalesce((select jsonb_agg(jsonb_build_object('kind', r.target_kind, 'targetId', r.target_id, 'reason', r.reason,
                  'note', r.note, 'status', r.status, 'at', r.created_at) order by r.created_at)
                  from public.ugc_reports r where r.reporter_id = p_user), '[]'),
-    'blocks', coalesce((select jsonb_agg(jsonb_build_object('userId', b.blocked_id, 'at', b.created_at) order by b.created_at)
-                 from public.member_blocks b where b.blocker_id = p_user), '[]'),
+    'blocks', coalesce((select jsonb_agg(jsonb_build_object('member', m.handle, 'at', b.created_at) order by b.created_at)
+                 from public.member_blocks b join public.board_members m on m.public_id = b.blocked_member
+                where b.blocker_id = p_user), '[]'),
     'appeals', coalesce((select jsonb_agg(jsonb_build_object('kind', a.target_kind, 'targetId', a.target_id, 'note', a.note,
                  'status', a.status, 'at', a.created_at) order by a.created_at)
                  from public.moderation_appeals a where a.user_id = p_user), '[]'),
@@ -1278,9 +1505,9 @@ $$;
 create function public.board_feed(
   p_cert text, p_tab text, p_kind text default null, p_q text default null,
   p_after_key bigint default null, p_after_id uuid default null, p_limit int default 20)
-returns table (id uuid, kind text, title text, status text, shipped_in text, author_handle text, is_team boolean,
-               vote_count int, comment_count int, voted boolean, team_replied boolean, created_at timestamptz,
-               sort_key bigint)
+returns table (id uuid, kind text, title text, status text, shipped_in text, author_member uuid, author_handle text,
+               is_team boolean, vote_count int, comment_count int, voted boolean, team_replied boolean,
+               created_at timestamptz, sort_key bigint)
 language plpgsql stable security invoker set search_path = '' as $$
 #variable_conflict use_column
 declare
@@ -1292,10 +1519,10 @@ begin
   end if;
   if v_me is null then
     return query
-      select p.id, p.kind, p.title, p.status, p.shipped_in, m.handle, coalesce(m.is_team, false),
+      select p.id, p.kind, p.title, p.status, p.shipped_in, p.author_member, m.handle, coalesce(m.is_team, false),
              p.vote_count, p.comment_count, false, p.official_comment_id is not null, p.created_at, k.key
         from public.board_posts p
-        left join public.board_members m on m.user_id = p.author_id
+        left join public.board_members m on m.public_id = p.author_member
         cross join lateral (select case p_tab when 'top' then p.vote_count::bigint
                                  when 'shipped' then (extract(epoch from p.status_changed_at) * 1000)::bigint
                                  else (extract(epoch from p.created_at) * 1000)::bigint end as key) k
@@ -1309,12 +1536,12 @@ begin
     return;
   end if;
   return query
-    select p.id, p.kind, p.title, p.status, p.shipped_in, m.handle, coalesce(m.is_team, false),
+    select p.id, p.kind, p.title, p.status, p.shipped_in, p.author_member, m.handle, coalesce(m.is_team, false),
            p.vote_count, p.comment_count,
            exists (select 1 from public.board_votes v where v.post_id = p.id and v.user_id = v_me),
            p.official_comment_id is not null, p.created_at, k.key
       from public.board_posts p
-      left join public.board_members m on m.user_id = p.author_id
+      left join public.board_members m on m.public_id = p.author_member
       cross join lateral (select case p_tab when 'top' then p.vote_count::bigint
                                when 'shipped' then (extract(epoch from p.status_changed_at) * 1000)::bigint
                                else (extract(epoch from p.created_at) * 1000)::bigint end as key) k
@@ -1322,7 +1549,7 @@ begin
        and (p_tab <> 'shipped' or p.status = 'shipped')
        and (p_kind is null or p.kind = p_kind)
        and (p_q is null or p.search @@ plainto_tsquery('simple', p_q))
-       and not exists (select 1 from public.member_blocks b where b.blocker_id = v_me and b.blocked_id = p.author_id)
+       and not exists (select 1 from public.member_blocks b where b.blocker_id = v_me and b.blocked_member = p.author_member)
        -- ugc_reports is the viewer's own rows only (RLS), so this is "posts I reported".
        and not exists (select 1 from public.ugc_reports r where r.target_kind = 'post' and r.target_id = p.id)
        and (p_after_key is null or (k.key, p.id) < (p_after_key, p_after_id))
@@ -1341,35 +1568,39 @@ declare
 begin
   select jsonb_build_object('id', p.id, 'kind', p.kind, 'title', p.title, 'body', p.body, 'itemRef', p.item_ref,
            'discussesAnswer', p.discusses_answer, 'status', p.status, 'statusNote', p.status_note,
-           'shippedIn', p.shipped_in, 'visibility', p.visibility, 'authorId', p.author_id,
+           'shippedIn', p.shipped_in, 'visibility', p.visibility, 'authorId', p.author_member,
            'authorHandle', m.handle, 'isTeam', coalesce(m.is_team, false), 'locked', p.locked,
            'voteCount', p.vote_count, 'commentCount', p.comment_count, 'createdAt', p.created_at,
            'officialCommentId', p.official_comment_id,
            'history', coalesce((select jsonb_agg(jsonb_build_object('status', e.to_status, 'note', e.note, 'at', e.created_at)
                                   order by e.created_at) from public.board_status_events e where e.post_id = p.id), '[]'))
     into v_post
-    from public.board_posts p left join public.board_members m on m.user_id = p.author_id
+    from public.board_posts p left join public.board_members m on m.public_id = p.author_member
    where p.id = p_id;
   if v_post is null then
     return null;
   end if;
   if v_me is null then
     return v_post || jsonb_build_object('voted', false, 'following', false,
-      'comments', coalesce((select jsonb_agg(jsonb_build_object('id', c.id, 'parentId', c.parent_id, 'authorId', c.author_id,
+      'comments', coalesce((select jsonb_agg(jsonb_build_object('id', c.id, 'parentId', c.parent_id, 'authorId', c.author_member,
                    'authorHandle', m.handle, 'isTeam', coalesce(m.is_team, false), 'body', c.body, 'isOfficial', c.is_official,
-                   'createdAt', c.created_at, 'editedAt', c.edited_at) order by c.created_at)
-                   from public.board_comments c left join public.board_members m on m.user_id = c.author_id
+                   'visibility', c.visibility, 'createdAt', c.created_at, 'editedAt', c.edited_at) order by c.created_at)
+                   from public.board_comments c left join public.board_members m on m.public_id = c.author_member
                   where c.post_id = p_id and c.visibility = 'visible'), '[]'));
   end if;
   return v_post || jsonb_build_object(
     'voted', exists (select 1 from public.board_votes v where v.post_id = p_id and v.user_id = v_me),
     'following', exists (select 1 from public.board_follows f where f.post_id = p_id and f.user_id = v_me),
-    'comments', coalesce((select jsonb_agg(jsonb_build_object('id', c.id, 'parentId', c.parent_id, 'authorId', c.author_id,
+    -- Your own comment waiting for review shows (to you: RLS lets only its
+    -- author, and staff, read a pending comment); withdrawn and removed ones,
+    -- your own included, don't come back as ordinary comments (CR N2). No
+    -- account ids here: app roles can't read author_id (SEC S4).
+    'comments', coalesce((select jsonb_agg(jsonb_build_object('id', c.id, 'parentId', c.parent_id, 'authorId', c.author_member,
                  'authorHandle', m.handle, 'isTeam', coalesce(m.is_team, false), 'body', c.body, 'isOfficial', c.is_official,
-                 'createdAt', c.created_at, 'editedAt', c.edited_at) order by c.created_at)
-                 from public.board_comments c left join public.board_members m on m.user_id = c.author_id
-                where c.post_id = p_id and (c.visibility = 'visible' or c.author_id = v_me)
-                  and not exists (select 1 from public.member_blocks b where b.blocker_id = v_me and b.blocked_id = c.author_id)
+                 'visibility', c.visibility, 'createdAt', c.created_at, 'editedAt', c.edited_at) order by c.created_at)
+                 from public.board_comments c left join public.board_members m on m.public_id = c.author_member
+                where c.post_id = p_id and c.visibility in ('visible', 'pending')
+                  and not exists (select 1 from public.member_blocks b where b.blocker_id = v_me and b.blocked_member = c.author_member)
                   and not exists (select 1 from public.ugc_reports r       -- own rows only (RLS)
                                    where r.target_kind = 'comment' and r.target_id = c.id)), '[]'));
 end $$;
@@ -1403,8 +1634,10 @@ revoke all on function
   private.comments_after(), private.votes_after(), private.follows_after(), private.reports_guard(),
   private.reports_after(), private.blocks_guard(), private.appeals_guard(), private.members_guard(),
   private.staff_mark(), private.staff_act(uuid, text, text, uuid, text, jsonb),
+  private.trusted_reporter(uuid), private.fold_handle(text), private.set_author_member(), private.reports_target_gone(),
   public.svc_board_member(uuid), public.svc_moderation_terms(), public.svc_board_join(uuid, text, text, text),
-  public.svc_board_write(uuid, text, uuid, text, text, text, text, uuid, text, text),
+  public.svc_board_attempt(uuid),
+  public.svc_board_write(uuid, text, uuid, text, text, text, text, uuid, text, text, uuid, boolean),
   public.svc_staff_act(uuid, text, text, uuid, text, jsonb), public.svc_is_staff(uuid),
   public.svc_staff_queue(uuid, text), public.svc_staff_digest(), public.svc_board_export(uuid),
   public.svc_board_counts(uuid),
@@ -1419,7 +1652,8 @@ grant execute on function
   private.board_take(uuid, text, int, int, boolean), private.notify(uuid, text, uuid, uuid, text, boolean, text, timestamptz),
   private.notify_post(uuid, text, uuid, uuid), private.staff_act(uuid, text, text, uuid, text, jsonb),
   public.svc_board_member(uuid), public.svc_moderation_terms(), public.svc_board_join(uuid, text, text, text),
-  public.svc_board_write(uuid, text, uuid, text, text, text, text, uuid, text, text),
+  public.svc_board_attempt(uuid),
+  public.svc_board_write(uuid, text, uuid, text, text, text, text, uuid, text, text, uuid, boolean),
   public.svc_staff_act(uuid, text, text, uuid, text, jsonb), public.svc_is_staff(uuid),
   public.svc_staff_queue(uuid, text), public.svc_staff_digest(), public.svc_board_export(uuid),
   public.svc_board_counts(uuid), public.board_feed(text, text, text, text, bigint, uuid, int), public.board_post(uuid)

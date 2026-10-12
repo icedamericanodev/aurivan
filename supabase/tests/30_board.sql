@@ -5,13 +5,15 @@
 --
 -- People: members A and B; staff S; reporters R1–R3 (accounts 30 days old);
 -- Y, an account an hour old (it joins during the test); N, a session that
--- never accepted the Terms (no profile).
+-- never accepted the Terms (no profile). Each member's PUBLIC id is fixed
+-- here (3000…a for A, 3000…b for B, …) so the tests can name it: learners
+-- never read account ids (fix round P8, SEC S4).
 -- Read scope: the default 'signed_in' first, then 'everyone' (signed-out
 -- reading, spec B1) and 'author_staff' (owner decision, Phase 9).
 --
 -- Run: supabase test db   (CI: .github/workflows/supabase.yml)
 begin;
-select plan(165);
+select plan(166);
 
 -- ── Fixtures (as the owner) ─────────────────────────────────────────
 insert into auth.users (id, email, created_at) values
@@ -26,13 +28,13 @@ insert into auth.users (id, email, created_at) values
 insert into public.profiles (id, terms_version, age_confirmed)
   select id, '2026-11', true from auth.users where id <> '00000000-0000-4000-8000-00000000000e';
 insert into private.staff (user_id, role) values ('00000000-0000-4000-8000-000000000005', 'admin');
-insert into public.board_members (user_id, handle, guidelines_version, approved_posts) values
-  ('00000000-0000-4000-8000-00000000000a', 'Quiet Cedar 214', '2026-11', 1),
-  ('00000000-0000-4000-8000-00000000000b', 'Steady Oak 9', '2026-11', 1),
-  ('00000000-0000-4000-8000-000000000005', 'Calm Birch 1', '2026-11', 1),
-  ('00000000-0000-4000-8000-0000000000e1', 'Bright Elm 11', '2026-11', 1),
-  ('00000000-0000-4000-8000-0000000000e2', 'Bright Elm 12', '2026-11', 1),
-  ('00000000-0000-4000-8000-0000000000e3', 'Bright Elm 13', '2026-11', 1);
+insert into public.board_members (user_id, public_id, handle, guidelines_version, approved_posts) values
+  ('00000000-0000-4000-8000-00000000000a', '30000000-0000-4000-8000-00000000000a', 'Quiet Cedar 214', '2026-11', 1),
+  ('00000000-0000-4000-8000-00000000000b', '30000000-0000-4000-8000-00000000000b', 'Steady Oak 9', '2026-11', 1),
+  ('00000000-0000-4000-8000-000000000005', '30000000-0000-4000-8000-000000000005', 'Calm Birch 1', '2026-11', 1),
+  ('00000000-0000-4000-8000-0000000000e1', '30000000-0000-4000-8000-0000000000e1', 'Bright Elm 11', '2026-11', 1),
+  ('00000000-0000-4000-8000-0000000000e2', '30000000-0000-4000-8000-0000000000e2', 'Bright Elm 12', '2026-11', 1),
+  ('00000000-0000-4000-8000-0000000000e3', '30000000-0000-4000-8000-0000000000e3', 'Bright Elm 13', '2026-11', 1);
 insert into public.board_posts (id, author_id, kind, title, body, visibility, hold_reason, locked, moderated_at, severity) values
   ('10000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-00000000000a', 'idea', 'More practice on BCP test types', 'Please.', 'visible', null, false, null, 10),
   ('10000000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-00000000000b', 'app', 'Timer keeps running when locked', '', 'visible', null, false, null, null),
@@ -198,13 +200,13 @@ select is((select count(*)::int from private.moderation_log where actor_id is nu
 -- ── Blocks ──────────────────────────────────────────────────────────
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"00000000-0000-4000-8000-00000000000b","role":"authenticated"}';
-select lives_ok($$ insert into public.member_blocks (blocked_id) values ('00000000-0000-4000-8000-00000000000a') $$, 'B blocks A');
+select lives_ok($$ insert into public.member_blocks (blocked_member) values ('30000000-0000-4000-8000-00000000000a') $$, 'B blocks A (by A''s public id)');
 select is((select count(*)::int from public.board_feed('cisa', 'new') f where f.author_handle = 'Quiet Cedar 214'), 0,
   'B''s feed no longer shows A''s posts');
 select is((select count(*)::int from jsonb_array_elements(public.board_post('10000000-0000-4000-8000-000000000002') -> 'comments') e
-           where e ->> 'authorId' = '00000000-0000-4000-8000-00000000000a'), 0,
+           where e ->> 'authorId' = '30000000-0000-4000-8000-00000000000a'), 0,
   'B no longer sees A''s comment on B''s post');
-select throws_ok($$ insert into public.member_blocks (blocked_id) values ('00000000-0000-4000-8000-000000000005') $$,
+select throws_ok($$ insert into public.member_blocks (blocked_member) values ('30000000-0000-4000-8000-000000000005') $$,
   '42501', 'forbidden', 'nobody can block a staff member');
 set local request.jwt.claims to '{"sub":"00000000-0000-4000-8000-00000000000a","role":"authenticated"}';
 select is((select count(*)::int from public.member_blocks), 0, 'A cannot see B''s block');
@@ -220,15 +222,21 @@ select throws_ok($$ insert into public.board_comments (post_id, author_id, body)
   '42501', 'forbidden', 'even a direct insert of that comment is refused by the trigger');
 
 -- ── Handles ─────────────────────────────────────────────────────────
+-- Names are set and changed only through board-submit's join (the service
+-- role, after the app's full name check): no direct write by a learner.
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"00000000-0000-4000-8000-0000000000f1","role":"authenticated"}';
-select throws_ok($$ insert into public.board_members (handle, guidelines_version) values ('Aurivan Team', '2026-11') $$, '22023', 'reserved_handle', '"Aurivan Team" is reserved');
-select throws_ok($$ insert into public.board_members (handle, guidelines_version) values ('ISACA_mod', '2026-11') $$, '22023', 'reserved_handle', '"ISACA_mod" is reserved');
-select throws_ok($$ insert into public.board_members (handle, guidelines_version) values ('support', '2026-11') $$, '22023', 'reserved_handle', '"support" is reserved');
-select throws_ok($$ insert into public.board_members (handle, guidelines_version) values ('quiet cedar 214', '2026-11') $$, '23505', null, 'handles are unique, whatever the case');
-select lives_ok($$ insert into public.board_members (handle, guidelines_version) values ('Misty Rowan 77', '2026-11') $$, 'Y joins with a pseudonym');
-select lives_ok($$ update public.board_members set handle = 'Misty Rowan 78' $$, 'Y changes their name once');
-select throws_ok($$ update public.board_members set handle = 'Misty Rowan 79' $$, 'P0001', 'rate_limited', 'a second name change within 24 hours is refused');
+select throws_ok($$ insert into public.board_members (handle, guidelines_version) values ('Misty Rowan 77', '2026-11') $$,
+  '42501', null, 'a learner cannot write a member row directly (only board-submit''s join)');
+set local role service_role;
+select throws_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000f1', 'Aurivan Team', 'chosen', '2026-11') $$, '22023', 'reserved_handle', '"Aurivan Team" is reserved');
+select throws_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000f1', 'ISACA_mod', 'chosen', '2026-11') $$, '22023', 'reserved_handle', '"ISACA_mod" is reserved');
+select throws_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000f1', 'support', 'chosen', '2026-11') $$, '22023', 'reserved_handle', '"support" is reserved');
+select throws_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000f1', 'quiet cedar 214', 'chosen', '2026-11') $$, '23505', null, 'handles are unique, whatever the case');
+select lives_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000f1', 'Misty Rowan 77', 'pseudonym', '2026-11') $$, 'Y joins with a pseudonym');
+select lives_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000f1', 'Misty Rowan 78', 'pseudonym', '2026-11') $$, 'Y changes their name once');
+select throws_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000f1', 'Misty Rowan 79', 'pseudonym', '2026-11') $$, 'P0001', 'rate_limited', 'a second name change within 24 hours is refused');
+set local role authenticated;
 select throws_ok($$ update public.board_members set standing = 'active', approved_posts = 9 $$, '42501', null, 'Y cannot set their own standing or trust');
 set local request.jwt.claims to '{"sub":"00000000-0000-4000-8000-00000000000e","role":"authenticated"}';
 select throws_ok($$ insert into public.board_members (handle, guidelines_version) values ('Calm Pine 5', '2026-11') $$,
@@ -371,7 +379,7 @@ set local role authenticated;
 set local request.jwt.claims to '{"sub":"00000000-0000-4000-8000-0000000000e1","role":"authenticated"}';
 select is((select count(*)::int from public.board_posts), 0, 'scope author_staff: R1 (who has no posts) reads none');
 set local request.jwt.claims to '{"sub":"00000000-0000-4000-8000-00000000000a","role":"authenticated"}';
-select ok((select bool_and(author_id = '00000000-0000-4000-8000-00000000000a') from public.board_posts), 'scope author_staff: A reads only their own posts');
+select ok((select bool_and(author_member = '30000000-0000-4000-8000-00000000000a') from public.board_posts), 'scope author_staff: A reads only their own posts');
 select is((select count(*)::int from public.board_comments where is_official), 1, 'scope author_staff: A still reads the team''s reply on their post');
 set local request.jwt.claims to '{"sub":"00000000-0000-4000-8000-000000000005","role":"authenticated"}';
 select ok((select count(*) from public.board_posts) >= 15, 'staff read every post in any scope');
@@ -387,7 +395,7 @@ select is((select count(*)::int from public.board_posts where author_id = '00000
 select is((select count(*)::int from public.board_comments where author_id = '00000000-0000-4000-8000-00000000000a'), 0, 'A''s comments are deleted');
 select is((select count(*)::int from public.board_votes where user_id = '00000000-0000-4000-8000-00000000000a')
           + (select count(*)::int from public.board_follows where user_id = '00000000-0000-4000-8000-00000000000a'), 0, 'A''s votes and follows are deleted');
-select is((select count(*)::int from public.member_blocks where blocked_id = '00000000-0000-4000-8000-00000000000a')
+select is((select count(*)::int from public.member_blocks where blocked_member = '30000000-0000-4000-8000-00000000000a')
           + (select count(*)::int from public.moderation_appeals where user_id = '00000000-0000-4000-8000-00000000000a'), 0, 'blocks of A and A''s appeals are deleted');
 select is((select count(*)::int from public.ugc_reports where reporter_id is null and reason = 'other'), 1, 'A''s report stays for the team, without A');
 
