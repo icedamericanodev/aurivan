@@ -11,6 +11,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   verify:
     name: Repo health (verify_repo.sh)
@@ -38,3 +41,9 @@ jobs:
 
       - name: Run verify_repo.sh
         run: bash scripts/verify_repo.sh
+
+      # Guard G1 on every pull request, whatever it touches (the repo is
+      # public): no secret shapes in any tracked file, no tracked key or .env
+      # file. Patterns and the narrow allowlist live next to the script.
+      - name: No secrets in the repo (cloud guard G1)
+        run: bash scripts/check_secrets.sh

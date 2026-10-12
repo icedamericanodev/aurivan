@@ -22,6 +22,10 @@ concurrency:
   group: eas-update
   cancel-in-progress: true # a newer merge supersedes an older update
 
+# Read-only token: `npm ci` runs third-party install scripts.
+permissions:
+  contents: read
+
 jobs:
   update:
     name: Publish update to preview
@@ -54,6 +58,29 @@ jobs:
         if: steps.token.outputs.ok == 'true'
         working-directory: mobile
         run: npm ci
+
+      # Accounts are built OFF (docs/mobile/ARCHITECTURE.md "Cloud (built OFF)").
+      # An update reaches every preview APK, so a cloud variable in the EAS
+      # environment would switch accounts on remotely. Refuse to publish if
+      # any EXPO_PUBLIC_AURIVAN_* variable is set there (project or account
+      # wide) or in this job. Fails closed: if the list can't be read, no update.
+      - name: Refuse to publish with a cloud variable set
+        if: steps.token.outputs.ok == 'true'
+        working-directory: mobile
+        run: |
+          set -euo pipefail
+          for scope in project account; do
+            vars="$(npx --yes eas-cli@24 env:list --environment preview --format short --scope "$scope" --non-interactive | sed 's/\x1b\[[0-9;]*m//g')"
+            if printf '%s\n' "$vars" | grep -E '(^|[^A-Z0-9_])EXPO_PUBLIC_AURIVAN_[A-Z0-9_]*='; then
+              echo "The EAS 'preview' environment ($scope) sets the variable above. Remove it: accounts are built OFF and only turn on in a new build." >&2
+              exit 1
+            fi
+          done
+          if env | grep -E '^EXPO_PUBLIC_AURIVAN_[A-Z0-9_]*='; then
+            echo "This job sets the variable above. Remove it." >&2
+            exit 1
+          fi
+          echo "No cloud variable is set for the preview update."
 
       - name: Publish the update
         if: steps.token.outputs.ok == 'true'
