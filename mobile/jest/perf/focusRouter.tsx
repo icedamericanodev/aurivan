@@ -96,12 +96,16 @@ function useIsFocused(): boolean {
   return useSyncExternalStore(em ? em.subscribe : always, () => (em ? em.focused : true));
 }
 
-export const routerCalls: { push: unknown[]; setParams: number } = { push: [], setParams: 0 };
+/** What screens asked of the router. `setParams` counts both kinds; `routerSetParams` only `router.setParams` (it acts on the FOCUSED screen). */
+export const routerCalls = { push: [] as unknown[], setParams: 0, routerSetParams: 0 };
+/** The route params every screen reads (tests set them). */
+export const routeParams: Record<string, string | undefined> = {};
 
 // A screen's own navigation object: its setParams changes only that screen's params.
 const navigationStub = {
-  setParams: () => {
+  setParams: (p: Record<string, string | undefined>) => {
     routerCalls.setParams++;
+    Object.assign(routeParams, p);
   },
   isFocused: () => true,
   addListener: () => () => {},
@@ -117,6 +121,7 @@ export function routerMock() {
       navigate: () => {},
       setParams: () => {
         routerCalls.setParams++;
+        routerCalls.routerSetParams++;
       },
       canGoBack: () => true,
       canDismiss: () => false,
@@ -124,7 +129,7 @@ export function routerMock() {
     },
     useFocusEffect,
     useIsFocused,
-    useLocalSearchParams: () => ({}),
+    useLocalSearchParams: () => routeParams,
     useNavigation: () => navigationStub,
     useRouter: () => ({ push: () => {}, back: () => {}, replace: () => {} }),
     Link: ({ children }: { children: ReactNode }) => children,

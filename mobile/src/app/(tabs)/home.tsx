@@ -141,7 +141,10 @@ export default function Today() {
   const certId = j.cert.id;
   useFocusEffect(
     useCallback(() => {
-      setNow(Date.now());
+      // Only a new clock that changes what Today shows re-renders it (performance,
+      // 1.15.x): a new day (the plant's reaction), or a paused timed mock's minutes left.
+      const at = Date.now();
+      setNow((was) => (dayKey(was) === dayKey(at) && !useSession.getState().active?.deadline ? was : at));
       // The plant's exam-ready gate changes with the date: check it whenever Today comes into view.
       checkPlant(certId);
     }, [certId]),

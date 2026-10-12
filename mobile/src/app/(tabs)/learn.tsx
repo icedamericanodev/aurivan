@@ -30,8 +30,9 @@
  * Study notes: one row under the cover opens the notes (every exam topic
  * in plain English). It hides itself while the app has no notes.
  */
+import * as Router from 'expo-router';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { DomainRing, type BotanyKind } from '../../components/glyphs';
 import { BookOpen, ChevronDown, ICON_STROKE, Play } from '../../components/icons';
@@ -60,6 +61,10 @@ export function upNextReason(lesson: Lesson, domain: DomainInfo, opts: { askedDo
   return `Next in ${domain.short}`;
 }
 
+/** This screen's own navigation (absent where a test's expo-router stand-in has none). */
+const useOwnNavigation: () => { setParams?: (p: { domain?: string }) => void } | undefined =
+  (Router as { useNavigation?: () => { setParams?: (p: { domain?: string }) => void } }).useNavigation ?? (() => undefined);
+
 export default function Learn() {
   const { c, isDark } = useTheme();
   const { cert, progress, readiness } = useActiveCert();
@@ -79,7 +84,25 @@ export default function Learn() {
   }, [focused]);
   const { domain } = useLocalSearchParams<{ domain?: string }>();
   // Learn is a tab, so the param would stick; clear it when the learner leaves.
-  useFocusEffect(useCallback(() => () => router.setParams({ domain: undefined }), []));
+  // Through Learn's OWN navigation, and only when there is one to clear
+  // (performance, 1.15.x): `router.setParams` acts on the screen in focus,
+  // which on leaving is already the NEXT tab, so every switch away from Learn
+  // re-rendered that tab and restarted its fade, and Learn's param stayed.
+  const navigation = useOwnNavigation();
+  const domainNow = useRef(domain);
+  useEffect(() => {
+    domainNow.current = domain;
+  }, [domain]);
+  useFocusEffect(
+    useCallback(
+      () => () => {
+        if (domainNow.current === undefined) return;
+        if (navigation?.setParams) navigation.setParams({ domain: undefined });
+        else router.setParams({ domain: undefined });
+      },
+      [navigation],
+    ),
+  );
 
   const lessons = lessonsFor(cert.id);
   const done = (id: string) => progress.lessonsDone.includes(id);
