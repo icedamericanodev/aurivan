@@ -36,6 +36,20 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.14.0',
+    date: '2026-10-12',
+    new: [
+      'Give your plant a look of its own: colours, a planter, a ground and a visitor that stops by on days you clear your plan.',
+      'The badges you earn become keepsakes beside your plant, each one naming the skill behind it.',
+      'Your plant comes alive: it breathes when you visit, smiles back on good days, and grows with a short moment of its own.',
+    ],
+    improved: [
+      'Planting your first plant now ends with a small planting moment.',
+      'Small plant pictures are easier to tell apart.',
+      'With Reduce Motion on, your plant stays still and simply shows its new look.',
+    ],
+  },
+  {
     version: '1.13.0',
     date: '2026-10-11',
     new: [
@@ -234,11 +248,6 @@ export const WHATS_NEXT: readonly NextItem[] = [
   },
   {
     status: 'planned',
-    title: 'A plant that grows with you',
-    body: 'Pick a tree or a flower and watch it grow as you master your exam.',
-  },
-  {
-    status: 'planned',
     title: 'An optional account',
     body: 'Sign in only if you want to, and keep your progress on more than one device. Everything keeps working without one.',
   },
@@ -246,6 +255,12 @@ export const WHATS_NEXT: readonly NextItem[] = [
     status: 'planned',
     title: 'A feedback board',
     body: 'Suggest ideas, see what other learners asked for, and read what we decide and why.',
+  },
+  {
+    status: 'shipped',
+    shippedIn: '1.14.0',
+    title: 'A plant that grows with you',
+    body: 'Pick a tree or a flower, watch it grow as you master your exam, and dress it with keepsakes from your badges.',
   },
   {
     status: 'shipped',

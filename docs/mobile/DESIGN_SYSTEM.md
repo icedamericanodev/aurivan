@@ -356,9 +356,9 @@ Transform and opacity only, never layout (the Daylight pace tick used to animate
 
 One Reanimated jest mock for the whole suite (`mobile/jest/reanimated-mock.ts`, registered in `jest/setup.ts`; Reduce Motion on by default, `setMockReducedMotion(false)` turns it off; React Native's `isReduceMotionEnabled` gives the same answer). Shared values persist and `useAnimatedStyle` runs, so a re-render after effects shows an animation's END state: `motion.test.tsx` renders every primitive reduced and asserts its final static state; `motion-touch.test.tsx` pins that selection never reflows a row. `SHOTS=motion npm run shots` captures the changed screens plus slow-motion frame strips (the page clock runs at 1/10 speed) of the press, select, segment fill, page turn (with its footer), segmented thumb (sliding, and reopened on a later option), a mock's calm turn and the tab fade. `phase2-review-fixes.test.tsx` runs a mock and a practice session with motion ON and fake timers, so the page turn's real leaving phase is on screen (the footer, the bookmark, the announcements). Mobile 1.9: `motion-growth.test.tsx` pins the odometer maths, `useGrowth` (up only, from what was seen, never on a fall, not while out of view), the celebration budget and fatigue, skip, `LeafFall`, `ThemeFade`, `ProgressFill from`, the plan leaf fill and the Stepper roll; `phase3-growth-screens.test.tsx` runs the clearing, Results and You in full motion and reduced (same words, only the movement differs); `phase3-review-fixes.test.tsx` pins occasions, once-ever moments, the 30-minute session, the short form's brighten, no growth off screen, the odometer's gap, re-placing and swap back, and the Stepper's one-step wrap; `phase3.qa.test.tsx` runs the learner journeys on real content. Celebration lines are said after a short pause (`sayLater`): tests call `flushSayLaterForTest()` before counting announcements, and `jest/after-env.ts` drops any still waiting when a test ends. Mobile 1.10: `badge-catalog.test.ts` pins the sets, per-set counts, gates, effort, sorts, "Next for your exam" by stage and "Study for this"; `badge-restore.test.ts` pins tier-safe restores and planters; `badges-screens.test.tsx` runs the case (grid, ×1.3, ×1.6), the sheet, the new dot, Show badges, the moment's 3-a-week cap and the review fixes (on-forest medallion, Sort focus and expanded state, open at a shelf or a sheet, the after-exam album, back-fill dates, press once, the tab's ring); `badges.qa.test.tsx` runs the learner journeys; mobile 1.11: `badge-tiers.test.ts` pins every tier, the gates, Stretch rows, "New in", Took Root, the quiet catalogue fill and that the catalogue and the restore check accept exactly the same keys, `badge-share-screens.test.tsx` the share flow, `share-card.test.ts` the card's words, and `SHOTS=badgesC npm run shots` captures the ladders, the domain emblems, Took Root, "New in", the catalogue line and the share card (`FONT_SCALE=2`: the sheet, its ladder and the share panel at about 200% text; the card itself stays a fixed picture); `stretch-copy.test.tsx` pins that a Stretch tier is never the next step; `badge-art-drift.test.ts` rebuilds the art and compares it byte for byte with `badgeArt.json`; `SHOTS=badges npm run shots` (with `REDUCED=1`, or `FONT_SCALE=1.3` / `2` for the large-text case, shelf and sheets; the web build reports a font scale of 1, so the page sets it and the harness zooms the text) captures the case, each shelf, the sheet, Results with a new badge, You's dot, Show badges and a strip of the unlock moment. Mobile 1.12: `learn-play.test.tsx` pins the new primitives' end states (Collapse, Turn, DrawLine, CheckDraw, TierLeafMorph), that every scene of every lesson renders with motion on and off, the cover's map and reason, Lesson complete (a fresh lesson has its one moment and haptic, a repeat has none), Learn's trail states, one glyph per game and the round header; `SHOTS=learnplay npm run shots` (with `REDUCED=1`, `NARROW=1` or `FONT_SCALE=2`) captures Learn, the lesson cover, the three templates, a check, Lesson complete, Mark as read, Play, each game's header, a recap with its sparkline and a level up, plus strips of the scene turn, the step line, the timeline, the lesson ✓, Lesson complete, a match, a stone and the level-leaf morph. `SHOTS=growth npm run shots` (with `REDUCED=1` for the reduced set) captures Today (normal, cleared, exam-ready, exam eve), Results, You, Milestones, the empty states, the bank grouping and a sheet, plus strips of a number roll, ring growth, the clearing, the milestone moment, You's "+N" and the theme fade.
 
-### 8.8 Planned (later phases, same primitives)
+### 8.8 The plant (mobile 1.14)
 
-The plant companion's idle bursts and reactions (off with Reduce Motion or "Companion moves" off), which will take its place in the celebration budget below. (Lessons, Learn and Play shipped in 1.12, §8.3 rule 12.)
+Shipped in 1.14 as `components/plant/LivePlant.tsx` (§13 "Motion"): the Breathe idle burst, one reaction per occasion, the growth sequence and the onboarding planting, on the `motion.plant` tokens. Reduce Motion stills all of it (the in-app Motion setting covers it; no separate "Companion moves" switch was needed). (Lessons, Learn and Play shipped in 1.12, §8.3 rule 12.)
 
 ### 8.9 Celebrations (mobile 1.9; behavioural review §2)
 
@@ -367,6 +367,7 @@ The plant companion's idle bursts and reactions (off with Reduce Motion or "Comp
 | **Today's clearing** (all plan items done), as Today comes back into view, once a day | T2 | the last plan leaf fills; the day's three numbers roll up 60 ms apart (from 120 ms); the mini ring grows from this morning's readiness to now (from 240 ms); then "Readiness grew to …" and "IS Audit ring +4" fade in (from 840 ms). One `success` haptic | "Today's clearing. Two of two, done. Readiness grew to 67–77%." |
 | **A badge** (Results after the review actions, a round recap; mobile 1.10) | T3 | the badge's 64pt medallion presses in (.4 → 1 on the `leaf` spring, from 120 ms) in its own 64pt column; its rim catches the light once (a glint runs round the frame, 200–600 ms) and its emblem fills from its one-tone outline (fades out 400–600 ms); six leaves drift down that column, never over the words. The words are there from the first frame (the block may already be on screen). On Results it waits until it is scrolled into view AND the rings have settled, and its one haptic comes with it; its words don't wait. A higher tier (Rooted · 30 days, Long Memory · 75, Dress Rehearsal · 2, an 80% tier) always plays short. At most THREE full badge moments in any 7 days (`seen.badgeMoments`, noted when a moment actually plays in full, never when it is only drawn; a short, static or never-scrolled-to moment is not counted): past that the block is replaced by one quiet `meta` line, "New in your badges: Rooted · 30 days", with no haptic | "A new badge, Evergreen: Long Memory. You recalled 25 questions… That's what holds on exam day." |
 | **Exam-ready** (the readiness-holding panel), once ever per cert | T3 | the sap rings grow, the frond takes ONE slow breath (1.5° out and back over 1.2 s) and the words follow. One `success` haptic, the first time it ever shows | "A quiet milestone. Your readiness is holding." |
+| **The plant grows** (Today, once per growth; mobile 1.14) | T3 | in the plant's own slot: the old growth swells to 1.04 and fades while the new one settles from 0.94 (900 ms, from the plant's base). One `success` haptic, silent if the clearing's played within 5 s. Never fatigued (at most five in a life), but it IS the session's one full moment: a milestone that played on Results first leaves it the short form | "Kai grew to Crown." |
 | **Exam eve / exam day** | calm, not a celebration | on the day's first view the reminders arrive one by one (80 ms apart), each leaf pressing in. No particles, ever | the card itself |
 
 Rules: there is no confetti, no sound, no full-screen takeover and no "Congrats!". At most ONE celebration plays in full per app session; the next is the short form. A session is one launch, or the time since the app came back after more than 30 minutes in the background (`SESSION_GAP_MS`): Today can stay open for days, and tomorrow's clearing gets its full form. A kind plays in full its first three times, then short (its end state cross-fades in over 200 ms), so it never wears out its welcome. Each occasion plays once: the clearing once per plan day (even with Today left open overnight), Exam-ready once ever per cert (later launches show the panel still and don't announce it), a milestone once per session. Any tap ends a moment; on Results a new scroll drag does too; a skipped Exam-ready breath stands the frond upright at once. The milestone's one `success` haptic comes with its motion (when it is scrolled into view); its words are announced as Results opens. Nothing ever celebrates a loss. Under Reduce Motion it is the end state with the same words. Counts live in `store/seen.ts`, on this phone only.
@@ -658,7 +659,7 @@ stroke on its soft circle: 6.15:1 light, 8.29:1 dark (3:1 needed for graphics).
 **Old navy compass-A logo (`#0B1E3D`).** Web app only. It no longer appears
 anywhere in the mobile app or its store assets.
 
-## 13. Your plant (mobile 1.13, Phase 4a)
+## 13. Your plant (mobile 1.13–1.14, Phase 4a and 4b)
 
 One optional plant companion that grows only from real learning. No cartoon
 mascot, no needs, no guilt. Rules: `mobile/src/engine/plant.ts`; art:
@@ -698,9 +699,10 @@ bank size. Never "Pokémon".
 |---|---|---|
 | Today | In the slot beside the readiness range, replacing the small mono rings, with its name in `meta` under it (the tap affordance, inside the same target); tap opens Your plant. Its own screen-reader stop; the readiness words keep theirs. Drawn at the small detail level | 104pt |
 | Today, below | One calm line when it grows (`PlantNote`, "Your plant grew", right under the readiness row). With no plant, one quiet "Plant a companion…" line with Plant yours / No thanks (dismissed for good), BELOW the Also today / Tomorrow block: never ahead of the day's study | — |
-| You | Header row under the title: the plant, its name, its growth; or "Plant yours" | 64pt |
+| You | Header row under the title: the plant (in its colours and planter; keepsakes show from 104pt), its name, its growth; or "Plant yours". Two slow breaths when You comes into view | 64pt |
 | Your plant | The plant on the shared 200 × 200 stage (`fit={false}`), name, growth and its look in italic; the back-fill line once; the resting line; What grows it next (rule steps with bars, "Not yet" / "Done"); Your domains as text rows with "Next to grow"; Change species and Rename | 200pt |
 | Picker (onboarding step 3 of 3, Plant yours, Change plant) | A radio grid of the 13 species, each previewed at Crown; the columns come from the measured width and text size (a tile needs 112pt × the text scale, up to ×1.3): three when they fit, else two (a 360 dp phone), and one row per species (56pt plant beside its name and line) at ×1.6 text; names wrap to two lines, never mid-word; selected = 2px ink border. The name field starts empty with an idea as its placeholder ("Another idea" fills one in; empty = "Your oak"); the keyboard never covers it (the footer hides while typing) | 56–96pt |
+| Look (mobile 1.14) | A live preview pinned under the header (it stays in view while the choices scroll), then Colour (swatches), Ground and Visitor two across when two fit, Planter and Keepsakes always one column of rows (an icon, the name, the skill line); one column for everything at ×1.3+ text. Radio groups, keepsakes checkboxes; a tap applies at once (selection haptic) | 96–140pt |
 | Question, mock, lesson, game and Results screens | **Never** (a test checks the imports) | — |
 
 The rings stay on You and Results as the numeric view.
@@ -728,11 +730,55 @@ runs the same gates as live growth on the most generous facts the file
 allows, and evidence a save can lose (mocks past the newest 50, readiness days
 past the log, renamed subtopics) never counts against the plant.
 
-**Motion (4a).** Static. The grow-up line uses `useCelebration('plant-growth')`
-with `shortOnly` (it has no parts to play yet, so it never spends the
-session's one full celebration: a 200 ms fade, or static under Reduce Motion
-and past the budget; the line is spoken once via `sayLater`). Focus never moves for it. The growth
-sequence, idle breathing and reactions come in 4b, each with a Reduce Motion path.
+**Look (mobile 1.14, Phase 4b).** Catalogue and rules: `mobile/src/engine/plantLooks.ts`.
+Five slots, chosen on the Look screen (Your plant → Change its look):
+
+| Slot | Free | Opens with |
+|---|---|---|
+| Colour | two colourways per species | the third at Bough |
+| Ground | Meadow | Stone ring at Crown; Trail blaze (a painted True North waymark) at Elder |
+| Planter | its own ground (meadow soil, the lotus' water bowl, the bonsai tray, the cactus' clay pot); a terracotta pot | one per completed counted badge set (`milestones.planters`): Fieldstone, Five-stone, Celadon, Compass-rose, Banded, Root-woven |
+| Visitor | the wren; "No visitor" | the robin at Shoot. It perches only on days the plan is cleared ("A robin came by: you cleared today's plan.") |
+| Keepsakes (show up to three) | — | each badge's emblem as a small object (the lantern, the sundial, the jay, the fox…), at any tier on any exam; the ribbon when a pass is reported. Firm Footing and Rooted give part marks and undergrowth later instead |
+
+Rules: unlocks are derived, never stored (free OR growth OR a badge on any
+exam OR a completed set OR `kept`). Game levels unlock nothing; nothing is
+paid; there is no "n of m". A locked choice is a dashed outline that says how
+to open it ("Opens with the On Pace badge."), never a guilt line, and can't be
+picked. A look carries no readiness claim (the screen says so). A choice whose
+unlock vanished (a restore) draws the slot's default and stays stored, so it
+returns when re-earned. Reset copies every open unlock into `kept`. Backups
+accept only catalogue ids in their own slot. Keepsakes stand on the shelf
+line: two base slots beside the plant and one behind it (in a pot: in its soil,
+the rim over its foot); the clear dawn is a soft sun behind the crown.
+The badge sheet adds one quiet line to an earned badge: "On your plant: the lantern."
+
+**Moods.** Idle, happy (the plan is cleared), curious (a new topic opened
+today), proud (a growth step today, or a keepsake badge earned today) and
+resting, on the FACE only (no posture, no marks; the resting look keeps its
+moon). Quiet look shows none. Spoken in the label ("Looking proud.").
+
+**Motion (mobile 1.14).** `LivePlant` draws three layers (back, plant, front)
+and moves only the plant layer's wrapper, transform and opacity, pivoting on
+its base; the SVG is built once per species, growth, look and theme and the
+elements are cached, so no path is rebuilt per frame (low-end Android).
+- **Breathe**: two slow breaths (1.1 s in, 1.1 s out, scale ≤ 1.6%, 0.7°) when
+  You or Your plant comes into view, then still; stopped off screen and in
+  the background. Never on Today, never a loop.
+- **Reactions**: happy hops 6pt, curious leans 3°, proud stretches 4%, each
+  ≤ 900 ms, once per occasion (`cert:mood:day`) per app session wherever the
+  plant is first seen, charged to the 3 s decorative budget.
+- **Growth sequence**: see §8.9; `useCelebration('plant-growth')`.
+- **Planting** (onboarding step 4, M8): the seed settles 14pt into the soil,
+  then the first sprout pops from 0.3 (820 ms); one light haptic; then
+  "Start studying".
+- **Reduce Motion**: nothing moves; the end state shows at once with the same
+  words. The plant is one image stop from its first frame.
+
+**24pt chips.** At the icon level the round-crown trees differ by silhouette
+(oak round, maple a flame, narra a flat umbrella, cherry three puffs, mango a
+low dome with fruit); lotus draws one bold bloom over its bowl, sampaguita a
+round mound with three big white stars.
 
 **Large text and narrow phones.** Today stacks the plant above the range at
 ×1.3+ (the ReadinessRow rule). Your plant's rule steps stack their status under
