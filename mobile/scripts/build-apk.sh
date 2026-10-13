@@ -76,17 +76,30 @@ fi
 echo "• Building the question pack…"
 npm run --silent content
 
+# The update "runtime" label must be computed BEFORE the android/ folder exists,
+# the same way GitHub computes it when it publishes an update. Computed inside
+# Gradle it came out different, and such an APK never receives an update.
+echo "• Computing the update runtime…"
+RUNTIME="$(npx expo-updates fingerprint:generate --platform android | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>process.stdout.write(JSON.parse(s).hash))')"
+[ -n "$RUNTIME" ] || { echo "Could not compute the update runtime." >&2; exit 1; }
+echo "  $RUNTIME"
+
 echo "• Preparing the Android project…"
 npx expo prebuild --platform android --no-install
 
 echo "• Building the release app with Gradle (this is the slow part)…"
 # Gradle's default memory runs out during the release lint pass; give it room.
 sed -i.bak 's/^org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g/' android/gradle.properties && rm -f android/gradle.properties.bak
-( cd android && ./gradlew assembleRelease )
+( cd android && EXPO_UPDATES_FINGERPRINT_OVERRIDE="$RUNTIME" ./gradlew assembleRelease )
 
 APK="android/app/build/outputs/apk/release/app-release.apk"
 if [ ! -f "$APK" ]; then
   echo "The build finished but no APK was found at $APK." >&2
+  exit 1
+fi
+EMBEDDED="$(unzip -p "$APK" assets/fingerprint)"
+if [ "$EMBEDDED" != "$RUNTIME" ]; then
+  echo "The APK embeds runtime $EMBEDDED but updates are published for $RUNTIME; it would never update." >&2
   exit 1
 fi
 
