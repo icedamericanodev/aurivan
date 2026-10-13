@@ -23,8 +23,11 @@ and use `bash scripts/dev-sync.sh`.
 ## Install a test APK on an Android phone (no computer needed)
 
 There are two ways to get a test APK. **Both receive the small updates
-described below**, because both are built from `main` with the same native
-parts (the same "fingerprint") and listen on the **preview** update channel.
+described below**: both are built from `main`, stamped with the same update
+"runtime" (the fingerprint of the native parts, computed before the Android
+project is generated, exactly as the phone-update workflow computes it) and
+listen on the **preview** update channel. The GitHub and Mac builds check the
+stamp inside the finished APK and fail if it doesn't match.
 
 1. **GitHub Releases (simplest).** On GitHub: **Actions → Android test APK →
    Run workflow**. It publishes the APK to the repo's Releases page as
@@ -40,9 +43,13 @@ one of them. To switch, uninstall the other first, which erases the progress
 on that phone (save a backup file first: Settings → Your data). Installing a
 newer APK of the same kind over an older one keeps your progress.
 
-**An old expo.dev build gets no updates.** An EAS build made before 12 October
-2026 (version 1.15.0) has older native parts, so its fingerprint no longer
-matches and no update reaches it. Replace it with a new APK from either route.
+**Some older APKs get no updates.** An EAS build made before 12 October 2026
+(version 1.15.0) has older native parts, so its fingerprint no longer matches.
+GitHub Releases APKs `apk-v1.16.0` and `apk-v1.17.0` (and Mac builds made
+before 13 October 2026) were stamped with a runtime computed inside the Gradle
+build, which came out different from the published one, so they never
+updated either. Install a newer APK of the same kind over them (same key, so
+progress is kept); from then on updates arrive.
 
 **Small updates arrive by themselves.** After every merge to `main`, GitHub
 publishes the new code to the **preview** update channel

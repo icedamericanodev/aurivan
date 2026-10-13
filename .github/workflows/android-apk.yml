@@ -74,6 +74,21 @@ jobs:
         if: steps.skip.outputs.skip != 'true'
         run: npm ci
 
+      # The update "runtime" label must be computed BEFORE the Android project
+      # exists, exactly as the phone-update workflow computes it when it
+      # publishes. Computed inside the Gradle build instead, it came out
+      # different (the 1.16.0 and 1.17.0 APKs embedded 783f793…, while every
+      # update was published for 5e26d4b…), so those APKs never received an
+      # update. The value is forced into the build below and checked after.
+      - name: Compute the update runtime (managed, before prebuild)
+        if: steps.skip.outputs.skip != 'true'
+        id: rt
+        run: |
+          runtime="$(npx expo-updates fingerprint:generate --platform android | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>process.stdout.write(JSON.parse(s).hash))')"
+          [ -n "$runtime" ] || { echo "Could not compute the update runtime."; exit 1; }
+          echo "runtime=$runtime" >> "$GITHUB_OUTPUT"
+          echo "Update runtime: $runtime"
+
       - name: Generate the Android project
         if: steps.skip.outputs.skip != 'true'
         run: npx expo prebuild --platform android --no-install
@@ -86,11 +101,21 @@ jobs:
       - name: Build the release APK
         if: steps.skip.outputs.skip != 'true'
         working-directory: mobile/android
+        env:
+          EXPO_UPDATES_FINGERPRINT_OVERRIDE: ${{ steps.rt.outputs.runtime }}
         run: |
           sed -i 's/^org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx6g -XX:MaxMetaspaceSize=2g/' gradle.properties
           grep -q '^org.gradle.jvmargs=' gradle.properties || echo 'org.gradle.jvmargs=-Xmx6g -XX:MaxMetaspaceSize=2g' >> gradle.properties
           ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a,armeabi-v7a --no-daemon
-          test -f app/build/outputs/apk/release/app-release.apk || { echo "No APK was produced; see the Gradle errors above."; exit 1; }
+          apk=app/build/outputs/apk/release/app-release.apk
+          test -f "$apk" || { echo "No APK was produced; see the Gradle errors above."; exit 1; }
+          # The APK must carry the same runtime the updates are published for.
+          embedded="$(unzip -p "$apk" assets/fingerprint)"
+          if [ "$embedded" != "$EXPO_UPDATES_FINGERPRINT_OVERRIDE" ]; then
+            echo "The APK embeds runtime $embedded but updates are published for $EXPO_UPDATES_FINGERPRINT_OVERRIDE; this APK would never update."
+            exit 1
+          fi
+          echo "APK runtime $embedded matches the published updates."
 
       - name: Publish it to a GitHub Release
         if: steps.skip.outputs.skip != 'true'
@@ -103,7 +128,7 @@ jobs:
 
           To install: open this page on the phone while signed in to GitHub, tap $apk under Assets, then open the download and allow \"Install unknown apps\" when asked. Installing a newer APK over an older one keeps your progress.
 
-          Built from ${GITHUB_SHA::7}."
+          Built from ${GITHUB_SHA::7}. Update runtime ${{ steps.rt.outputs.runtime }} (this APK receives the over-the-air updates published for that runtime)."
           if gh release view "$tag" >/dev/null 2>&1; then
             gh release upload "$tag" "$apk" --clobber
           else
