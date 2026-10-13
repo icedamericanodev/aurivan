@@ -54,8 +54,15 @@ progress is kept); from then on updates arrive.
 **Small updates arrive by themselves.** After every merge to `main`, GitHub
 publishes the new code to the **preview** update channel
 (`.github/workflows/eas-update.yml`, needs the `EXPO_TOKEN` repository secret).
-The phone downloads it in the background and uses it the next time the app
-opens (close it fully, then reopen). Changes to native parts (a new library
+The phone looks for it only when the app starts **cold** (not when you come
+back to it from the recent-apps list), downloads it in the background, and
+uses it the **next** cold start after that. So to pick up an update by
+yourself: force-stop the app (or swipe it away from recents) and open it
+again, twice if needed. Since 1.19 there is also a manual way: **Settings →
+Help and about → Check for updates** checks now, downloads, and offers
+"Restart to update"; the "Update … · …" line under the version tells you
+(and support) which update the phone is running ("built-in" means it still
+runs the code shipped inside the APK). Changes to native parts (a new library
 with Android code, the icon, permissions) need a new APK; the "fingerprint"
 runtime policy in `app.json` makes sure a phone never gets an update that
 doesn't match its APK.

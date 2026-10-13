@@ -40,6 +40,12 @@ if [ "${SHOTS:-}" = cloud ]; then
     npx expo export --platform web --clear --output-dir "$TMP/web" >/dev/null
   env -u EXPO_PUBLIC_AURIVAN_CLOUD -u EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND -u EXPO_PUBLIC_AURIVAN_SHOTS -u EXPO_PUBLIC_PRIVACY_URL -u EXPO_PUBLIC_TERMS_URL EXPO_OFFLINE=1 \
     npx expo export --platform web --clear --output-dir "$TMP/web-off" >/dev/null
+elif [ "${SHOTS:-}" = settings ]; then
+  # Mobile 1.19: the web build has no over-the-air updates, so Settings → "Check for
+  # updates" is hidden there. For THIS export only, EXPO_PUBLIC_AURIVAN_SHOTS=1 lets a
+  # demo client stand in (src/lib/updates.ts; web only, never a phone), and
+  # shoot_settings.mjs picks each outcome with window.__AURIVAN_UPDATE_DEMO__.
+  EXPO_OFFLINE=1 EXPO_PUBLIC_AURIVAN_SHOTS=1 npx expo export --platform web --clear --output-dir "$TMP/web" >/dev/null
 else
   EXPO_OFFLINE=1 npx expo export --platform web --clear --output-dir "$TMP/web" >/dev/null
 fi
