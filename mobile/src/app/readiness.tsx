@@ -16,6 +16,7 @@
  *      plainly, never in red.
  *   6. Domain by domain, 1 → n: weight, domain readiness, the evidence behind
  *      it and the last two mocks in it. Never "of N questions" (bank size).
+ *      Mobile 1.20: each row ends in "Lessons and notes ›" (Learn on that domain).
  *   7. Pacing (timed mocks only).
  *   8. Your path: the six steps, the current one marked ("Now"), with why.
  *   9. Your mocks, newest 5 (then "Show all N mocks"): a tap shows how each
@@ -269,7 +270,15 @@ export default function ReadinessReport() {
         {/* 6. Domain by domain */}
         <Section title="Domain by domain" />
         {rows.map((r, i) => (
-          <DomainReportRow key={r.domain.id} row={r} last={i === rows.length - 1} />
+          <DomainReportRow
+            key={r.domain.id}
+            row={r}
+            last={i === rows.length - 1}
+            // Mobile 1.20: into Learn on this domain (Learn reads ?domain= for its "Up next").
+            // navigate, not push: Learn is a tab, so this switches to the tab already there
+            // (as lib/badges.ts does for Today and Play) instead of stacking a second tab bar.
+            onLearn={() => router.navigate({ pathname: '/learn', params: { domain: r.domain.id } })}
+          />
         ))}
 
         {/* 7. Pacing (timed mocks only) */}

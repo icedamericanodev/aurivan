@@ -6,19 +6,23 @@
  * clamped to 3 lines with a "More" toggle, so the first topic shows on the
  * first screen. The real-life analogy follows as plain text under the
  * panel. Below: the topics grouped by outline Part (A/B).
- * Each topic shows its overview, a "You should be able to" list, and its
- * subtopics with a read mark, then "Practice this topic" (Build E): the
- * questions of all its subtopics, interleaved (engine/studyModes.ts). The
- * domain's key terms fold away at the end.
+ * Mobile 1.20: each topic is a collapsible group (the same Collapse + Turn
+ * pattern as Learn's domain groups): a header row (code, name, "2 of 5
+ * read", chevron). Only the first topic with something unread starts open,
+ * so the page reads as a list, not a wall. Inside a group: the overview, a
+ * "You should be able to" list, a "Lesson: …" row when a lesson teaches the
+ * topic, its subtopics with a read mark, then "Practice this topic" (Build
+ * E): the questions of all its subtopics, interleaved (engine/studyModes.ts).
+ * The domain's key terms fold away at the end.
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
-import { ChevronDown, ICON_STROKE } from '../../components/icons';
+import { ChevronDown, ICON_STROKE, Play } from '../../components/icons';
 import { Collapse, Turn } from '../../components/motion';
 import { Bullets, ReadMark, TermList } from '../../components/notes';
-import { Button, Enter, HeroPanel, ICON_SIZE, ListRow, PushedHeader, Row, Screen, Section, T } from '../../components/ui';
+import { Button, Enter, HeroPanel, ICON_SIZE, ListRow, PushedHeader, Row, Screen, Section, T, useFontScale } from '../../components/ui';
 import { findQuestion } from '../../content/loader';
 import { createRng } from '../../engine/random';
 import { interleaveTopic } from '../../engine/studyModes';
@@ -27,8 +31,9 @@ import { domainColor } from '../../content/certifications';
 import { noteDomain, noteSubtopics } from '../../content/notes';
 import type { NoteTopic } from '../../content/notes/types';
 import { readCount } from '../../engine/notesSearch';
+import { topicLessons } from '../../lib/outline';
 import { useActiveCert } from '../../lib/useActiveCert';
-import { space } from '../../theme/tokens';
+import { LARGE_TEXT, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 import type { BotanyKind } from '../../components/glyphs';
 
@@ -40,6 +45,10 @@ export default function NotesDomain() {
   const { cert, progress } = useActiveCert();
   const [termsOpen, setTermsOpen] = useState(false);
   const [overviewOpen, setOverviewOpen] = useState(false);
+  // Topics the learner opened or closed by hand; any other topic follows the default below.
+  const [toggled, setToggled] = useState<Record<string, boolean>>({});
+  // Large text: a topic's "2 of 5 read" drops under its name instead of squeezing it.
+  const large = useFontScale() >= LARGE_TEXT;
   const info = cert.domains.find((d) => d.id === domainId);
   const notes = info ? noteDomain(cert.id, info.id) : undefined;
 
@@ -70,6 +79,11 @@ export default function NotesDomain() {
     .filter((g) => g.topics.length > 0);
   const rest = notes.topics.filter((t) => !listed.has(t.id));
   if (rest.length) groups.push({ title: groups.length ? 'More topics' : 'Topics', topics: rest });
+
+  // Open by default: only the first topic (in page order) with a subtopic not yet read.
+  const firstUnread = groups.flatMap((g) => g.topics).find((t) => t.subtopics.some((st) => !read.includes(st.id)))?.id;
+  const isOpenTopic = (topicId: string) => toggled[topicId] ?? topicId === firstUnread;
+  const toggleTopic = (topicId: string) => setToggled((tg) => ({ ...tg, [topicId]: !isOpenTopic(topicId) }));
 
   return (
     <Screen edges={['top', 'bottom']}>
@@ -123,46 +137,97 @@ export default function NotesDomain() {
         {groups.map((g) => (
           <View key={g.title}>
             <Section title={g.title} />
-            {g.topics.map((t) => (
-              <View key={t.id} style={{ marginTop: space.lg }}>
-                <T v="caption" color={c.accentText}>{t.id}</T>
-                <T v="headline" accessibilityRole="header">{t.name}</T>
-                {t.overview ? <T v="body" color={c.ink2} style={{ marginTop: space.xs }}>{t.overview}</T> : null}
-                {t.canDo.length > 0 && (
-                  <View style={{ marginTop: space.md }}>
-                    <T v="caption">You should be able to</T>
-                    <Bullets items={t.canDo} color={c.ink2} />
-                  </View>
-                )}
-                <View style={{ marginTop: space.sm }}>
-                  {t.subtopics.map((s, i) => {
-                    const isRead = read.includes(s.id);
-                    return (
-                      <ListRow
-                        key={s.id}
-                        title={s.name}
-                        subtitle={isRead ? 'Read' : 'Not read yet'}
-                        trailing={<ReadMark read={isRead} />}
-                        accessibilityLabel={`${s.name}, ${isRead ? 'read' : 'not read yet'}`}
-                        onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(s.id)}`)}
-                        last={i === t.subtopics.length - 1}
+            {g.topics.map((t) => {
+              const isOpen = isOpenTopic(t.id);
+              const readHere = t.subtopics.filter((st) => read.includes(st.id)).length;
+              const readText = readHere === t.subtopics.length ? 'All read' : `${readHere} of ${t.subtopics.length} read`;
+              // The lesson that teaches this outline topic, if any (Play = lessons).
+              const lesson = topicLessons(cert.id, t.id)[0];
+              const lessonDone = lesson ? progress.lessonsDone.includes(lesson.id) : false;
+              return (
+                <View key={t.id} style={{ marginTop: space.sm }}>
+                  {/* Topic header: tap to show or hide this topic (same look as Learn's domain groups). */}
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityState={{ expanded: isOpen }}
+                    accessibilityLabel={`${t.id} ${t.name}, ${readText}`}
+                    accessibilityHint={isOpen ? 'Hides this topic' : 'Shows this topic'}
+                    onPress={() => toggleTopic(t.id)}
+                    style={({ pressed }) => ({
+                      minHeight: 56,
+                      paddingVertical: space.md,
+                      justifyContent: 'center',
+                      backgroundColor: pressed ? c.soft : 'transparent',
+                      // A hairline under a closed topic; none under an open one (its content follows).
+                      borderBottomWidth: isOpen ? 0 : 1,
+                      borderBottomColor: c.line,
+                    })}
+                  >
+                    <Row gap={space.sm}>
+                      <View style={{ flex: 1, minWidth: 0 }}>
+                        <T v="caption" color={c.accentText}>{t.id}</T>
+                        <T v="label">{t.name}</T>
+                        {large && <T v="meta" num>{readText}</T>}
+                      </View>
+                      {!large && <T v="meta" num>{readText}</T>}
+                      {/* Chevron points down when open, right when closed; it turns when tapped. */}
+                      <Turn deg={isOpen ? 0 : -90}>
+                        <ChevronDown size={ICON_SIZE.row} color={c.muted} strokeWidth={ICON_STROKE} />
+                      </Turn>
+                    </Row>
+                  </Pressable>
+                  <Collapse open={isOpen} style={{ marginBottom: space.md }}>
+                    {t.overview ? <T v="body" color={c.ink2}>{t.overview}</T> : null}
+                    {t.canDo.length > 0 && (
+                      <View style={{ marginTop: space.md }}>
+                        <T v="caption">You should be able to</T>
+                        <Bullets items={t.canDo} color={c.ink2} />
+                      </View>
+                    )}
+                    {lesson && (
+                      <View style={{ marginTop: space.sm }}>
+                        <ListRow
+                          icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                          title={`Lesson: ${lesson.title}`}
+                          subtitle={`${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`}
+                          accessibilityLabel={`Lesson: ${lesson.title}, ${lesson.minutes} minutes, ${lessonDone ? 'done' : 'not done yet'}`}
+                          accessibilityHint="Opens the short lesson on this topic"
+                          onPress={() => router.push(`/lesson/${lesson.id}`)}
+                          last
+                        />
+                      </View>
+                    )}
+                    <View style={{ marginTop: space.sm }}>
+                      {t.subtopics.map((s, i) => {
+                        const isRead = read.includes(s.id);
+                        return (
+                          <ListRow
+                            key={s.id}
+                            title={s.name}
+                            subtitle={isRead ? 'Read' : 'Not read yet'}
+                            trailing={<ReadMark read={isRead} />}
+                            accessibilityLabel={`${s.name}, ${isRead ? 'read' : 'not read yet'}`}
+                            onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(s.id)}`)}
+                            last={i === t.subtopics.length - 1}
+                          />
+                        );
+                      })}
+                    </View>
+                    {topicIds(t).some((l) => l.length > 0) && (
+                      <Button
+                        kind="secondary"
+                        label="Practice this topic"
+                        // Several of these buttons sit on one page: name the topic (UX review P4).
+                        accessibilityLabel={`Practice this topic: ${t.name}`}
+                        accessibilityHint={`Starts a practice set mixing every part of ${t.name}`}
+                        onPress={() => practiseTopic(t)}
+                        style={{ marginTop: space.md }}
                       />
-                    );
-                  })}
+                    )}
+                  </Collapse>
                 </View>
-                {topicIds(t).some((l) => l.length > 0) && (
-                  <Button
-                    kind="secondary"
-                    label="Practice this topic"
-                    // Several of these buttons sit on one page: name the topic (UX review P4).
-                    accessibilityLabel={`Practice this topic: ${t.name}`}
-                    accessibilityHint={`Starts a practice set mixing every part of ${t.name}`}
-                    onPress={() => practiseTopic(t)}
-                    style={{ marginTop: space.md }}
-                  />
-                )}
-              </View>
-            ))}
+              );
+            })}
           </View>
         ))}
 

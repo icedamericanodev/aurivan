@@ -5,8 +5,9 @@
  * - Every section of a subtopic renders, in light and dark, with the table
  *   both side by side and stacked (large text); a broken drawing is skipped.
  * - Notes home, a domain, and a subtopic render; "Mark as read" saves;
- *   "Practice this domain" starts a session; "Practice this concept"
- *   starts exactly the note's questions; search finds a note.
+ *   "Practice this concept" starts exactly the note's questions (and, since
+ *   mobile 1.20, marks the note read; "Practice this domain" is gone);
+ *   search finds a note.
  * - The Learn tab shows the Study notes row only when there are notes.
  *
  * Gotcha (see session-screen.regression.test.tsx): never write
@@ -272,7 +273,7 @@ describe('screens', () => {
     expect(allText()).toContain('The longest outage the business can bear.');
   });
 
-  it('subtopic screen: Mark as read saves and toggles; Practice starts a session', () => {
+  it('subtopic screen: Mark as read saves and toggles; no "Practice this domain" (mobile 1.20)', () => {
     mockParams = { id: '4B1.2' };
     mount(<NoteSubtopicScreen />);
     expect(allText()).toContain('Recovery Objectives: RPO, RTO, MTD and MBCO');
@@ -282,11 +283,8 @@ describe('screens', () => {
     press('Marked as read');
     expect(selectCert(useProgress.getState(), 'cisa').notesRead).toEqual([]);
 
-    press('Practice this domain');
-    const s = useSession.getState().active!;
-    expect(s.title).toBe('IS Operations practice');
-    expect(s.questionIds.every((q) => q.startsWith('d4_'))).toBe(true);
-    expect(mockPush).toHaveBeenCalledWith('/session');
+    // Mobile 1.20: four closing actions became two (plus Next); the domain set lives on the domain page.
+    expect(pressable('Practice this domain')).toBeUndefined();
   });
 
   it('subtopic screen: Practice this concept starts exactly the note\'s questions', () => {
@@ -323,11 +321,12 @@ describe('screens', () => {
     act(() => {
       r?.unmount();
     });
-    // 1A1.1 lists no questions: only the domain practice is offered.
+    // 1A1.1 lists no questions: no practice button at all (mobile 1.20: no domain set either).
     mockParams = { id: '1A1.1' };
     mount(<NoteSubtopicScreen />);
     expect(pressable('Practice this concept')).toBeUndefined();
-    expect(pressable('Practice this domain')).toBeDefined();
+    expect(pressable('Practice this domain')).toBeUndefined();
+    expect(pressable('Mark as read')).toBeDefined();
   });
 
   it('subtopic screen: an unknown id shows a friendly empty state', () => {

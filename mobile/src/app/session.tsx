@@ -39,7 +39,7 @@ import {
 import { PageTurn, Pop, useMotion } from '../components/motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LeafSmall } from '../components/glyphs';
-import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ICON_STROKE, Lightbulb, X } from '../components/icons';
+import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ICON_STROKE, Lightbulb, Play, X } from '../components/icons';
 import {
   ConfidenceRow,
   FEEDBACK_DELAY,
@@ -81,6 +81,7 @@ import { useTheme } from '../theme/useTheme';
 
 // Stable empty array: a new [] on every render would make the store re-render forever.
 const NO_BOOKMARKS: string[] = [];
+const NO_LESSONS: string[] = [];
 /** At this text size the confidence chips move out of the sticky footer (spec §10.7). */
 const HUGE_TEXT = 1.6;
 
@@ -94,6 +95,8 @@ export default function SessionScreen() {
   const recordAnswer = useProgress((s) => s.recordAnswer);
   const toggleBookmark = useProgress((s) => s.toggleBookmark);
   const bookmarks = useProgress((s) => (active ? selectCert(s, active.certId).bookmarks : NO_BOOKMARKS));
+  // Lessons already done: a done lesson is not offered again after a miss (mobile 1.20).
+  const lessonsDone = useProgress((s) => (active ? selectCert(s, active.certId).lessonsDone : NO_LESSONS));
   const { fontScale } = useWindowDimensions();
   // Reduce Motion: the navigator sheet fades in instead of sliding.
   const { reduced: reduceMotion } = useMotion();
@@ -419,15 +422,19 @@ export default function SessionScreen() {
         : 'Check who you are in the question.';
   const flagged = active.flagged.includes(qid);
   const shownFlagged = active.flagged.includes(shownQid);
-  // Cross-link: after a miss, offer the lesson written to prepare for this question.
-  const reviewLesson = response && !response.correct ? lessonPreparing(active.certId, q.id) : undefined;
-  // Build E: why this question is here ("Weak spot", "Mixed review"…), and
-  // Smart's support offer: below 55% recent accuracy, a missed weak spot
-  // offers its study note (worked example first, then retrieval).
+  // Build E: why this question is here ("Weak spot", "Mixed review"…).
   const reason = active.reasons?.[qid];
-  const supportNote =
-    response && !response.correct && active.support && reason === 'weak' && !reviewLesson ? subtopicOfQuestion(active.certId, qid) : undefined;
-  const supportName = supportNote ? findNote(active.certId, supportNote)?.name : undefined;
+  // Mobile 1.20, after a miss: the note first, the lesson when there is one.
+  // Practice, review and Guided only (a mock never shows an answer screen, and
+  // this says so out loud). Nothing after a right answer. At most two rows:
+  //  1. "Read the note" whenever a study note lists this question;
+  //  2. "Review the lesson" when a lesson prepares for it and it is not done
+  //     yet (a done lesson is one tap away in Learn; the note is the quicker re-read).
+  const missed = !isMock && Boolean(response && !response.correct);
+  const missNote = missed ? subtopicOfQuestion(active.certId, qid) : undefined;
+  const missNoteName = missNote ? findNote(active.certId, missNote)?.name : undefined;
+  const preparing = missed ? lessonPreparing(active.certId, q.id) : undefined;
+  const reviewLesson = preparing && !lessonsDone.includes(preparing.id) ? preparing : undefined;
   const saved = bookmarks.includes(shownQid);
   const lowTime = isMock && remaining < LOW_TIME_MS;
   // The shared pace strip (components/pace.tsx): mock clock and pace line.
@@ -665,26 +672,29 @@ export default function SessionScreen() {
                 <View ref={vineRef} collapsable={false} onLayout={checkVine}>
                   <Vine key={qid} keyIdea={q.keyConcept} tips={q.tips.map((t) => renderText(t, perm))} visible={vineVisible} />
                 </View>
-                {reviewLesson && (
-                  // Only after a miss, and only if a lesson lists this question in `prepares`.
+                {/* After a miss (mobile 1.20): the note first (BookOpen = notes), then the
+                    lesson when one is still to do (Play = lessons). Both PUSH, so Back lands
+                    here again, on this same answer with its explanation. */}
+                {missNote && missNoteName && (
                   <ListRow
                     icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                    title={`Read the note: ${missNoteName}`}
+                    subtitle="About 2 min · the concept this question tests"
+                    accessibilityLabel={`Read the note: ${missNoteName}, about 2 minutes, the concept this question tests`}
+                    accessibilityHint="Opens the study note. Go back to return to this answer."
+                    onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(missNote)}`)}
+                    // TrustLine below draws its own top rule, so the last row skips its hairline.
+                    last={!reviewLesson}
+                  />
+                )}
+                {reviewLesson && (
+                  <ListRow
+                    icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
                     title={`Review the lesson: ${reviewLesson.title}`}
                     subtitle={`${reviewLesson.minutes} min lesson`}
                     accessibilityLabel={`Review the lesson: ${reviewLesson.title}, ${reviewLesson.minutes} minutes`}
-                    accessibilityHint="Opens the lesson. Come back here when you finish."
+                    accessibilityHint="Opens the lesson. Go back to return to this answer."
                     onPress={() => router.push(`/lesson/${reviewLesson.id}`)}
-                    // TrustLine below draws its own top rule, so skip this row's hairline.
-                    last
-                  />
-                )}
-                {supportNote && supportName && (
-                  <ListRow
-                    icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                    title={`Read the note: ${supportName}`}
-                    subtitle="A short read, then try more like this"
-                    accessibilityHint="Opens the study note. Come back here when you finish."
-                    onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(supportNote)}`)}
                     last
                   />
                 )}

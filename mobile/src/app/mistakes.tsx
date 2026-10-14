@@ -18,6 +18,9 @@
  * these mean?" opens one example for each, so a learner new to audit can tag
  * honestly. The stored slip ids never change (no migration). The button
  * says how many of the open mistakes one set takes ("Practice 20 of 55").
+ *
+ * Mobile 1.20: each open mistake whose question a study note covers gets a
+ * small "Read the note" (BookOpen = notes), so the fix starts with the idea.
  */
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
@@ -25,10 +28,12 @@ import { Modal, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { StickyFooter } from '../components/quiz';
+import { BookOpen, ICON_STROKE } from '../components/icons';
 import { ReportLink } from '../components/support';
 import { useMotion } from '../components/motion';
-import { Button, Chip, Gap, PushedHeader, Row, Section, T } from '../components/ui';
+import { Button, Chip, Gap, ICON_SIZE, PushedHeader, Row, Section, T } from '../components/ui';
 import { findQuestion } from '../content/loader';
+import { findNote, subtopicOfQuestion } from '../content/notes';
 import { shortDate } from '../lib/format';
 import { guardedStart, startFromIds, startPractice } from '../lib/sessions';
 import { questionTarget } from '../lib/support';
@@ -181,6 +186,9 @@ export default function Mistakes() {
         {entries.map(([id, m]) => {
           const q = findQuestion(cert.id, id);
           if (!q) return null;
+          // The study note behind this question (open mistakes only).
+          const noteId = m.resolved ? undefined : subtopicOfQuestion(cert.id, id);
+          const note = noteId ? findNote(cert.id, noteId) : undefined;
           return (
             <View key={id} style={{ paddingVertical: space.lg, borderBottomWidth: 1, borderBottomColor: c.line }}>
               <T v="caption" num>{`${m.resolved ? 'Fixed · ' : ''}${shortDate(m.at)}`}</T>
@@ -196,6 +204,19 @@ export default function Mistakes() {
               )}
               <T v="caption" color={c.correct}>✓ Best answer</T>
               <T v="small" numberOfLines={2}>{q.options[q.correct]}</T>
+              {note && (
+                // The ghost pads 8pt each side: pulled left so its icon lines up with the text above.
+                <Button
+                  kind="ghost"
+                  label="Read the note"
+                  accessibilityLabel={`Read the note: ${note.name}`}
+                  accessibilityHint="Opens the study note on the idea this question tests"
+                  icon={(col) => <BookOpen size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+                  iconLeading
+                  onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(note.id)}`)}
+                  style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
+                />
+              )}
               {/* No letters here, so the report names the pick by its ORIGINAL letter only.
                   Just the link (UX review O8): a meta block on every card was clutter. */}
               <ReportLink certId={cert.id} target={questionTarget(cert.id, q, 'Mistake journal', undefined, m.picked)} />

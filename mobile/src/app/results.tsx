@@ -17,6 +17,11 @@
  * ("Practice the ones you missed", "Done"), before the answer list, so the
  * learning comes first; its motion waits until it is scrolled into view. One
  * "Next:" line under it names the best next badge for the exam.
+ *
+ * Mobile 1.20: under "Practice the N you missed", a ghost "Read the notes
+ * for what you missed" opens up to three study-note rows (most-missed
+ * first). It is the only notes path for a mock's misses (a mock shows no
+ * answer screen), so it works for every session kind.
  */
 import { router } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -27,9 +32,12 @@ import { DomainRings } from '../components/journey';
 import { PacingPanel } from '../components/pace';
 import { MilestoneMomentView } from '../components/milestones';
 import { useOncePerDay } from '../components/motion';
-import { BigNum, Button, Enter, Gap, Row, Screen, Section, Stat, StatRow, T, Tag } from '../components/ui';
+import { BookOpen, ICON_STROKE } from '../components/icons';
+import { BigNum, Button, Enter, Gap, ICON_SIZE, ListRow, Row, Screen, Section, Stat, StatRow, T, Tag } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
+import { findNote, subtopicOfQuestion } from '../content/notes';
+import { missedSubtopics } from '../engine/outline';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
 import { COACHING, coachingTag, practicePaceLine, timeStat, TIMING_LABEL } from '../engine/pace';
 import { msUsed, scoreSession, sessionPacing } from '../lib/finishSession';
@@ -47,6 +55,8 @@ export default function Results() {
   const active = useSession((s) => s.active);
   const clear = useSession((s) => s.clear);
   const [openId, setOpenId] = useState<string | null>(null);
+  // Mobile 1.20: "Read the notes for what you missed" shows its rows once tapped.
+  const [notesOpen, setNotesOpen] = useState(false);
   const score = useMemo(() => (active ? scoreSession(active) : null), [active]);
   // Mock pacing: time used, median, checks, unanswered, last 10%, slowest domain.
   const pacing = useMemo(() => (active?.mode === 'mock' && active.deadline ? sessionPacing(active) : null), [active]);
@@ -114,6 +124,10 @@ export default function Results() {
   // counts as not correct in "Correct n of total"), so Correct + Missed = total.
   const missed = active.questionIds.filter((id) => (active.responses[id] ? !active.responses[id].correct : active.mode === 'mock'));
   const blank = active.mode === 'mock' ? active.questionIds.filter((id) => !active.responses[id]).length : 0;
+  // Up to three study notes behind the misses, most-missed first (only notes that exist).
+  const missedNotes = missedSubtopics(missed, (id) => subtopicOfQuestion(cert.id, id))
+    .map((m) => ({ ...m, name: findNote(cert.id, m.id)?.name }))
+    .filter((m): m is { id: string; missed: number; name: string } => Boolean(m.name));
   const done = () => {
     clear();
     router.replace('/home');
@@ -239,6 +253,35 @@ export default function Results() {
         {missed.length > 0 && (
           <>
             <Button label={missed.length === 1 ? 'Practice the one you missed' : `Practice the ${missed.length} you missed`} onPress={practiseMissed} />
+            <Gap h={space.sm} />
+          </>
+        )}
+        {missedNotes.length > 0 && (
+          <>
+            {/* Mobile 1.20: the notes behind the misses, folded until asked for (BookOpen = notes). */}
+            <Button
+              kind="ghost"
+              label="Read the notes for what you missed"
+              expanded={notesOpen}
+              accessibilityHint={notesOpen ? 'Hides the study notes' : 'Shows the study notes for the ideas you missed'}
+              onPress={() => setNotesOpen(!notesOpen)}
+            />
+            {notesOpen && (
+              <View style={{ marginBottom: space.sm }}>
+                {missedNotes.map((n, i) => (
+                  <ListRow
+                    key={n.id}
+                    icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                    title={n.name}
+                    subtitle={`${n.missed === 1 ? '1 miss' : `${n.missed} misses`} · about 2 min`}
+                    accessibilityLabel={`Read the note: ${n.name}. ${n.missed === 1 ? '1 question' : `${n.missed} questions`} you missed, about 2 minutes`}
+                    accessibilityHint="Opens the study note. Go back to return to your results."
+                    onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(n.id)}`)}
+                    last={i === missedNotes.length - 1}
+                  />
+                ))}
+              </View>
+            )}
             <Gap h={space.sm} />
           </>
         )}

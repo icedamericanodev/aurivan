@@ -22,7 +22,7 @@ import { haptic } from '../lib/haptics';
 import { grewLine, LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { GrowthRings, PlanLeaf } from './glyphs';
-import { BookOpen, ChevronRight, Gamepad2, ICON_STROKE, RotateCcw, Target, Timer } from './icons';
+import { ChevronRight, Gamepad2, ICON_STROKE, Play, RotateCcw, Target, Timer } from './icons';
 import { AnimatedPressable, FadeIn, Pop, usePressScale, type Celebration, type Growth } from './motion';
 import { BigNum, DomainDot, ICON_SIZE, Row, Stat, StatRow, T, useFontScale } from './ui';
 import { aboutMin, timeStat } from '../engine/pace';
@@ -34,7 +34,8 @@ export function planIcon(item: PlanItem, color: string): ReactNode {
     case 'review':
       return <RotateCcw {...p} />;
     case 'lesson':
-      return <BookOpen {...p} />;
+      // Mobile 1.20 icon rule: Play = a lesson (BookOpen is for study notes).
+      return <Play {...p} />;
     case 'practice':
       return <Target {...p} />;
     case 'game':

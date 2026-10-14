@@ -405,7 +405,7 @@ describe('Journey 3: notes, lesson steps and game recaps', () => {
     expect(allText()).toContain(`Code ${note.id}`);
   });
 
-  it('a lesson: plain steps have the link at once; a check only once answered, and again hidden after Back/Next', async () => {
+  it('a lesson: plain steps have no link (mobile 1.20); a check only once answered, and again hidden after Back/Next', async () => {
     const lesson = CISA_LESSONS.find((l) => {
       const at = l.scenes.findIndex((x) => x.type === 'check');
       return at > 0 && l.scenes[at].type === 'check' && (l.scenes[at] as { options: string[] }).options.length >= 3;
@@ -414,7 +414,7 @@ describe('Journey 3: notes, lesson steps and game recaps', () => {
     const check = lesson.scenes[checkAt] as Extract<(typeof lesson.scenes)[number], { type: 'check' }>;
     mockParams = { id: lesson.id };
     mount(<LessonPlayer />);
-    expect(pressables('Report a problem with this lesson step')).toHaveLength(1);
+    expect(pressables('Report a problem with this lesson step')).toHaveLength(0);
     for (let i = 0; i < checkAt; i++) press('Next');
     expect(pressables('Report a problem with this lesson step')).toHaveLength(0);
     // Answer by what is on screen (shuffle is on).

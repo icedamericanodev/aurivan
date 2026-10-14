@@ -23,7 +23,7 @@ import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { PageTurn } from '../components/motion';
-import { Check, ICON_STROKE, Play } from '../components/icons';
+import { BookOpen, Check, ICON_STROKE, Play } from '../components/icons';
 import { ReadMark } from '../components/notes';
 import { StickyFooter } from '../components/quiz';
 import { Button, Enter, Gap, ICON_SIZE, ListRow, PushedHeader, Row, Section, T, Tag } from '../components/ui';
@@ -143,6 +143,8 @@ export default function GuidedStep() {
               return (
                 <ListRow
                   key={l.id}
+                  // Mobile 1.20 icon rule: Play = a lesson, BookOpen = a study note.
+                  icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
                   title={l.title}
                   subtitle={`${l.minutes} min lesson · ${done ? 'Done' : 'Not done yet'}`}
                   trailing={<ReadMark read={done} />}
@@ -157,6 +159,7 @@ export default function GuidedStep() {
               return (
                 <ListRow
                   key={s.id}
+                  icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
                   title={s.name}
                   subtitle={read ? 'Read' : 'Not read yet'}
                   trailing={<ReadMark read={read} />}

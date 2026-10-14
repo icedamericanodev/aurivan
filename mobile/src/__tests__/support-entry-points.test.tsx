@@ -338,10 +338,10 @@ describe('lessons', () => {
   const lesson = CISA_LESSONS.find((l) => l.scenes.some((s) => s.type === 'check'))!;
   const checkAt = lesson.scenes.findIndex((s) => s.type === 'check');
 
-  it('each step has the link; on a check it waits until the check is answered', async () => {
+  it('only a check has the link, once answered (mobile 1.20: plain scenes stay clear)', async () => {
     mockParams = { id: lesson.id };
     mount(<LessonPlayer />);
-    expect(pressables('Report a problem with this lesson step')).toHaveLength(1);
+    expect(pressables('Report a problem with this lesson step')).toHaveLength(0);
     // Walk to the check scene.
     for (let i = 0; i < checkAt; i++) press('Next');
     expect(pressables('Report a problem with this lesson step')).toHaveLength(0);

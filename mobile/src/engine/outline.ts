@@ -98,3 +98,27 @@ export function indexOutline(topics: OutlineTopic[]): OutlineIndex {
 export function topicsIn(topics: OutlineTopic[], domainId?: string): OutlineTopic[] {
   return domainId ? topics.filter((t) => t.domainId === domainId) : topics;
 }
+
+/**
+ * Results → "Read the notes for what you missed" (mobile 1.20): the note
+ * subtopics behind a session's missed questions, most-missed first (ties keep
+ * the order the misses came in), each once, at most `limit`, with how many of
+ * the misses each explains. Questions no note lists are skipped. Works for
+ * mocks too: it only needs the ids.
+ */
+export function missedSubtopics(
+  missedIds: readonly string[],
+  subtopicOf: (questionId: string) => string | undefined,
+  limit = 3,
+): { id: string; missed: number }[] {
+  const count = new Map<string, number>(); // a Map keeps first-miss order
+  for (const q of missedIds) {
+    const s = subtopicOf(q);
+    if (s) count.set(s, (count.get(s) ?? 0) + 1);
+  }
+  return [...count.entries()]
+    .map(([id, missed], i) => ({ id, missed, i }))
+    .sort((x, y) => y.missed - x.missed || x.i - y.i)
+    .slice(0, limit)
+    .map(({ id, missed }) => ({ id, missed }));
+}

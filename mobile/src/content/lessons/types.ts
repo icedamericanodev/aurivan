@@ -58,5 +58,11 @@ export interface Lesson {
    * Used to offer "Review the lesson" when one of them is missed.
    */
   prepares?: string[];
+  /**
+   * Study-note subtopic ids this lesson teaches, e.g. ['4B1.2', '4B5.1'].
+   * 1–4 ids, the primary first (its isaca_rule is the lesson's principle).
+   * Each id must exist in the notes pack and sit under a code in `topics`.
+   */
+  notes?: string[];
   scenes: Scene[];
 }
