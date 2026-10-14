@@ -146,11 +146,24 @@ const noteOnly = (() => {
 
 describe('lessonsForSubtopic (content/lessons)', () => {
   it('falls back to the outline topic: the same lessons as topicLessons', () => {
-    const lesson = lessonsFor('cisa').find((l) => l.topics?.length && !l.notes)!;
-    const topic = lesson.topics![0];
-    const sub = noteDomain('cisa', lesson.domainId)!.topics.find((t) => t.id === topic)!.subtopics[0].id;
-    expect(lessonsForSubtopic('cisa', sub).map((l) => l.id)).toEqual(topicLessons('cisa', topic).map((l) => l.id));
-    expect(lessonsForSubtopic('cisa', sub).map((l) => l.id)).toContain(lesson.id);
+    // Every shipped lesson lists its notes, so clear them for this test to
+    // exercise the fallback a lesson without `notes` takes; restored after.
+    const saved = CISA_LESSONS.map((l) => l.notes);
+    try {
+      for (const l of CISA_LESSONS) l.notes = undefined;
+      const lesson = lessonsFor('cisa').find((l) => l.topics?.length)!;
+      const topic = lesson.topics![0];
+      const sub = noteDomain('cisa', lesson.domainId)!.topics.find((t) => t.id === topic)!.subtopics[0].id;
+      expect(lessonsForSubtopic('cisa', sub).map((l) => l.id)).toEqual(topicLessons('cisa', topic).map((l) => l.id));
+      expect(lessonsForSubtopic('cisa', sub).map((l) => l.id)).toContain(lesson.id);
+    } finally {
+      CISA_LESSONS.forEach((l, i) => (l.notes = saved[i]));
+    }
+  });
+
+  it('with notes listed, a subtopic resolves to the lessons that name it', () => {
+    const lesson = lessonsFor('cisa').find((l) => l.notes?.length)!;
+    expect(lessonsForSubtopic('cisa', lesson.notes![0]).map((l) => l.id)).toContain(lesson.id);
   });
 
   it('a lesson that lists the subtopic in `notes` wins over the topic join', () => {
