@@ -29,7 +29,7 @@ export const UPDATE_WORDS: Record<UpdatePhase, UpdateWords> = {
   idle: { note: 'Small updates usually arrive on their own when the app opens. Tap to look now.' },
   checking: { state: 'Checking…' },
   downloading: { state: 'Downloading…' },
-  ready: { state: 'Ready to restart', note: 'The update is downloaded. Restarting applies it; your progress stays as it is.' },
+  ready: { state: 'Ready to restart', note: 'The update is downloaded. Tap Restart to update below; your progress stays as it is.' },
   current: { state: 'Up to date', note: 'This is the latest version.' },
   'check-failed': { state: 'Couldn’t check', note: 'You may be offline. Try again later.' },
   'download-failed': { state: 'Couldn’t download', note: 'You may be offline. Try again later.' },

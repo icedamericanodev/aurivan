@@ -247,14 +247,14 @@ describe('one tap, every state', () => {
 
     fetch.resolve({ isNew: true, isRollBackToEmbedded: false });
     await settle();
-    expect(row(UPDATE_ROW).props.accessibilityLabel).toBe('Check for updates, Ready to restart, The update is downloaded. Restarting applies it; your progress stays as it is.');
+    expect(row(UPDATE_ROW).props.accessibilityLabel).toBe('Check for updates, Ready to restart, The update is downloaded. Tap Restart to update below; your progress stays as it is.');
     // Nothing more to check: the row stays disabled and the primary action takes over.
     expect(row(UPDATE_ROW).props.accessibilityState).toEqual({ disabled: true });
     const restart = button(RESTART);
     expect(restart).toBeDefined();
     expect(restart.props.accessibilityHint).toBe('Closes and reopens the app with the update.');
     // Each state was said once, in order, queued behind other speech.
-    expect(said()).toEqual(['Checking…', 'Downloading…', 'Ready to restart. The update is downloaded. Restarting applies it; your progress stays as it is.']);
+    expect(said()).toEqual(['Checking…', 'Downloading…', 'Ready to restart. The update is downloaded. Tap Restart to update below; your progress stays as it is.']);
 
     await tap(restart);
     expect(mockUpdates.reloadAsync).toHaveBeenCalledTimes(1);

@@ -43,8 +43,8 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
     version: '1.19.0',
     date: '2026-10-13',
-    new: ['Settings → About can now check for the latest update and restart to apply it.'],
-    improved: ['About shows which update your app is running, which helps if you contact support.'],
+    new: ['Settings can now check for the latest update and restart to apply it, under Help and about.'],
+    improved: ['Settings also shows which update your app is running, which helps if you contact support.'],
   },
   {
     version: '1.18.0',

@@ -1127,7 +1127,7 @@ nothing polls. The row's VALUE is the state, so it is spoken with the row
 even with hints off, and a `meta` note under the title says why or what to
 do: idle "Small updates usually arrive on their own when the app opens. Tap to
 look now." → **Checking…** → **Downloading…** → **Ready to restart** ("The
-update is downloaded. Restarting applies it; your progress stays as it is.")
+update is downloaded. Tap Restart to update below; your progress stays as it is.")
 with a primary "Restart to update" under the group; or **Up to date** ("This
 is the latest version."); or **Couldn't check** / **Couldn't download** ("You
 may be offline. Try again later."); or, after a failed restart, **Couldn't

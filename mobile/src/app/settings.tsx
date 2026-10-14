@@ -451,7 +451,8 @@ export default function Settings() {
             title="Check for updates"
             value={updateWords.state}
             subtitle={updateWords.note}
-            accessibilityHint="Looks for a newer version of the app and downloads it if there is one."
+            // No hint while the row is disabled: a hint says what a tap does, and then a tap does nothing.
+            accessibilityHint={updates.rowDisabled ? undefined : 'Looks for a newer version of the app and downloads it if there is one.'}
             disabled={updates.rowDisabled}
             onPress={updates.check}
             chevron={false}
@@ -472,7 +473,10 @@ export default function Settings() {
       {updates.available && (
         // Mobile 1.19: which update this phone runs ("Update 1a2b3c4d · 5e26d4b", or "built-in"), so support
         // can tell whether an update arrived. The ids are the same on every phone with that update: no personal data.
-        <T v="meta" style={{ marginTop: space.xs }}>{runningUpdateLine()}</T>
+        // Selectable so it can be pasted into a support message; spoken as "…, runtime …" instead of a middle dot.
+        <T v="meta" selectable accessibilityLabel={runningUpdateLine().replace(' · ', ', runtime ')} style={{ marginTop: space.xs }}>
+          {runningUpdateLine()}
+        </T>
       )}
       <Gap h={space.sm} />
       {/* Every certification named anywhere in the app (coming-soon ones too) needs its trademark notice;
