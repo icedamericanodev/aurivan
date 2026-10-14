@@ -1109,9 +1109,43 @@ learner set before was lost, and no saved setting changed shape.
 | Badges and your plant | — | Show badges (+ its "on again" line); Show my plant; Quiet look |
 | Your data | Save a backup; Restore from a backup; Undo restore (while it applies) | — |
 | (set apart) | danger "Reset CISA progress" + `meta` line | — |
-| Help and about | Get help or send feedback; About Aurivan (vision and pillars in a sheet); Privacy policy and Terms of use when configured | — |
+| Help and about | Get help or send feedback; About Aurivan (vision and pillars in a sheet); Privacy policy and Terms of use when configured; Check for updates (mobile 1.19, installed apps only) | — |
 
-Then the version line and the combined trademark notice, always visible.
+Then the version line, the "Update … · …" stamp (mobile 1.19, installed apps
+only) and the combined trademark notice, always visible.
+
+**Check for updates (mobile 1.19).** Small updates reach an installed APK
+over the air, but only when the app starts cold (`checkAutomatically:
+ON_LOAD`), and even then the new code is used on the *next* cold start
+(`fallbackToCacheTimeout: 0`). A phone brought back from the recent-apps list
+for days can stay behind, and until 1.19 there was no way to check by hand or
+to see which update was running. So the last row of Help and about is an
+action row (no chevron), "Check for updates", shown only where
+`expo-updates` is enabled and not on the web (hidden in Expo Go, development
+builds and the web build). One tap is one check: nothing runs on its own,
+nothing polls. The row's VALUE is the state, so it is spoken with the row
+even with hints off, and a `meta` note under the title says why or what to
+do: idle "Small updates usually arrive on their own when the app opens. Tap to
+look now." → **Checking…** → **Downloading…** → **Ready to restart** ("The
+update is downloaded. Tap Restart to update below; your progress stays as it is.")
+with a primary "Restart to update" under the group; or **Up to date** ("This
+is the latest version."); or **Couldn't check** / **Couldn't download** ("You
+may be offline. Try again later."); or, after a failed restart, **Couldn't
+restart** ("Close the app fully and open it again to finish the update."). Raw
+error text is never shown. The row is disabled while checking or downloading,
+and once the update is downloaded (a re-check would say "Up to date" while
+the old code still runs; only Restart, or a cold start, finishes it). Each new
+state is announced once, a moment after it shows, queued behind other speech.
+No animation is involved, so Reduce Motion changes nothing; at ×1.3+ text the
+state drops under the title like any row value. Under the version line, a
+`meta` stamp "Update 1a2b3c4d · 5e26d4b" gives the first 8 characters of the
+running update's id ("built-in" when the phone runs the code shipped inside
+the APK) and the first 7 of the runtime (the native fingerprint), so support
+can tell which update a phone runs. The ids are the same on every phone with
+that update: no personal data. The "Aurivan v…" line keeps reading the
+running update's version (`Constants.expoConfig.version`). The web
+screenshot build draws the states with a demo client (`SHOTS=settings`,
+`src/lib/updates.ts`); a phone never runs it.
 
 **Values.** Short on the row, full when spoken: "8 Jan 2027" / "Friday 8
 January 2027"; "20 min" / "20 minutes a day"; "Some experience" / "Some IT

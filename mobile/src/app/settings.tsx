@@ -12,7 +12,13 @@
  *   Appearance            Theme · Motion · Haptics
  *   Badges and your plant Show badges · Show my plant · Quiet look
  *   Your data             Save a backup · Restore · (Undo restore), then Reset, set apart
- *   Help and about        Get help or send feedback · About Aurivan · Privacy · Terms
+ *   Help and about        Get help or send feedback · About Aurivan · Privacy · Terms · Check for updates
+ *
+ * Mobile 1.19: "Check for updates" (lib/updates.ts) sits last in Help and
+ * about, only where over-the-air updates work (an installed APK or store
+ * build; hidden in Expo Go, dev builds and on the web). One tap checks,
+ * downloads, and offers "Restart to update". Under the version line, the
+ * "Update … · …" stamp says which update this phone runs, for support.
  *
  * Deep links: `?open=exam-date` opens the calendar (Today's and exam week's
  * "Set exam date"); on iOS once the push transition has ended, and its
@@ -57,6 +63,8 @@ import { hideBadges, showBadgesAgain, shownAgainLine } from '../lib/badges';
 import { config } from '../lib/config';
 import { DAY_CHIPS, localHour, localTime, MINUTE_STEP, reminderDays, reminderSummary, stepTime, toggleDay, type ReminderPrefs } from '../engine/reminders';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from '../lib/reminders';
+import { runningUpdateLine, useUpdateCheck } from '../lib/updates';
+import { UPDATE_WORDS } from '../engine/updates';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useReports } from '../lib/useReports';
 import { sweepBackupFiles } from '../lib/backup';
@@ -111,6 +119,11 @@ export default function Settings() {
   const plantOn = plantSettings?.showPlant !== false;
   const clearSession = useSession((x) => x.clear);
   const [busy, setBusy] = useState(false);
+  // Mobile 1.19: "Check for updates" (one tap = one check; nothing runs on its own).
+  const updates = useUpdateCheck();
+  const updateWords = UPDATE_WORDS[updates.phase];
+  // The last row of Help and about has no hairline: Check for updates when shown, else Terms, Privacy or About.
+  const lastHelpRow = updates.available ? 'updates' : config.termsUrl !== '' ? 'terms' : config.privacyUrl !== '' ? 'privacy' : 'about';
   // "Badges are on again…": shown for this visit, right under the switch.
   const [badgesLine, setBadgesLine] = useState<string | null>(null);
 
@@ -421,19 +434,50 @@ export default function Settings() {
           title="About Aurivan"
           subtitle="Our vision and what the app stands for"
           onPress={open('about')}
-          last={config.privacyUrl === '' && config.termsUrl === ''}
+          last={lastHelpRow === 'about'}
         />
         {config.privacyUrl !== '' && (
-          <SettingsRow title="Privacy policy" onPress={() => Linking.openURL(config.privacyUrl)} accessibilityHint="Opens in your browser" last={config.termsUrl === ''} />
+          <SettingsRow title="Privacy policy" onPress={() => Linking.openURL(config.privacyUrl)} accessibilityHint="Opens in your browser" last={lastHelpRow === 'privacy'} />
         )}
-        {config.termsUrl !== '' && <SettingsRow title="Terms of use" onPress={() => Linking.openURL(config.termsUrl)} accessibilityHint="Opens in your browser" last />}
+        {config.termsUrl !== '' && (
+          <SettingsRow title="Terms of use" onPress={() => Linking.openURL(config.termsUrl)} accessibilityHint="Opens in your browser" last={lastHelpRow === 'terms'} />
+        )}
+        {updates.available && (
+          // Mobile 1.19: an action row (no chevron: it acts at once). The state is the row's value
+          // ("Checking…", "Up to date") so it is read with the row even with hints off; the note
+          // under the title says why or what to do. Disabled while busy, and once an update is
+          // downloaded (then only "Restart to update" helps). Each new state is announced once (lib/updates.ts).
+          <SettingsRow
+            title="Check for updates"
+            value={updateWords.state}
+            subtitle={updateWords.note}
+            // No hint while the row is disabled: a hint says what a tap does, and then a tap does nothing.
+            accessibilityHint={updates.rowDisabled ? undefined : 'Looks for a newer version of the app and downloads it if there is one.'}
+            disabled={updates.rowDisabled}
+            onPress={updates.check}
+            chevron={false}
+            last
+          />
+        )}
       </SettingsGroup>
+      {updates.available && updates.canRestart && (
+        // The update is on the phone: restarting applies it now (progress is saved as you go, so nothing is lost).
+        <Button label="Restart to update" onPress={updates.restart} accessibilityHint="Closes and reopens the app with the update." style={{ marginTop: space.md }} />
+      )}
 
       <Gap h={space.xl} />
       <T v="meta">
         {/* The last sentence is "Progress is stored only on this device." with the flag off (content/cloud/copy.ts about.off). */}
         Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. {aboutLine(syncing)}
       </T>
+      {updates.available && (
+        // Mobile 1.19: which update this phone runs ("Update 1a2b3c4d · 5e26d4b", or "built-in"), so support
+        // can tell whether an update arrived. The ids are the same on every phone with that update: no personal data.
+        // Selectable so it can be pasted into a support message; spoken as "…, runtime …" instead of a middle dot.
+        <T v="meta" selectable accessibilityLabel={runningUpdateLine().replace(' · ', ', runtime ')} style={{ marginTop: space.xs }}>
+          {runningUpdateLine()}
+        </T>
+      )}
       <Gap h={space.sm} />
       {/* Every certification named anywhere in the app (coming-soon ones too) needs its trademark notice;
           one combined line instead of five near-identical ones. */}

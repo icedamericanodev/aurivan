@@ -181,5 +181,35 @@ await edit(S, `v.state.onboarded = true;`);
 await go('/you', 2600);
 await shot('st16-you-top');
 
+// ── 7. Mobile 1.19: Check for updates, every state ────────────────────
+// The web build has no real updates: run.sh exports it with
+// EXPO_PUBLIC_AURIVAN_SHOTS=1, so a demo client (src/lib/updates.ts) answers
+// after 1.5 s per step, in the way this window value asks for.
+const demo = async (mode) => {
+  await ctx.addInitScript((m) => (window.__AURIVAN_UPDATE_DEMO__ = m), mode);
+  await go('/settings', 2000);
+  await page.mouse.wheel(0, 30000);
+  await wait(800);
+};
+const UPDATE_ROW = /^Check for updates, /;
+await demo('available');
+await shot('st17-update-idle');
+await press(UPDATE_ROW, 400);
+await shot('st18-update-checking');
+await wait(1400);
+await shot('st19-update-downloading');
+await wait(1700);
+await shot('st20-update-ready');
+await demo('current');
+await press(UPDATE_ROW, 1900);
+await shot('st21-update-up-to-date');
+await demo('offline');
+await press(UPDATE_ROW, 1900);
+await shot('st22-update-offline');
+await demo('restart-fails');
+await press(UPDATE_ROW, 3400);
+await press('Restart to update', 1900);
+await shot('st23-update-restart-failed');
+
 console.log('errors:', errs.slice(0, 5));
 await browser.close();
