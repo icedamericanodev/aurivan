@@ -4,7 +4,7 @@ description: Use this skill to generate well-branded interfaces and assets for K
 user-invocable: true
 ---
 
-Read the README.md file within this skill, and explore the other available files.
+Read `docs/mobile/DESIGN_SYSTEM.md` first, then explore `design-notes/brand-kaisip/` for the logo masters.
 
 If creating visual artifacts (slides, mocks, throwaway prototypes, etc), copy assets out and create static HTML files for the user to view. If working on production code, you can copy assets and read the rules here to become an expert in designing with this brand.
 
@@ -13,30 +13,14 @@ If the user invokes this skill without any other guidance, ask them what they wa
 ## Quick reference
 
 **Brand name:** KaiSip (renamed from Aurivan, 15 Oct 2026)
-**Tagline:** Where control meets intelligence.
+**Tagline:** Master Modern Risk.
 
-**Core palette:**
-- Background: `#0b0b14`
-- Surface: `#14141f`
-- Accent (purple): `#8b6dff`
-- Accent 2 (pink): `#ff7eb3`
-- Text primary: `#e8e8f2`
-- Text secondary: `#9090aa`
+**Design system:** Grove. The source of truth is `docs/mobile/DESIGN_SYSTEM.md` and the tokens in `mobile/src/theme/tokens.ts` (mirrored as CSS variables in `index.html`). Read those for colours, type and components; this file keeps no palette of its own, so it cannot drift.
 
-**Fonts (Google Fonts):**
-- Display/headings: Playfair Display 700/600/400 (+ italic)
-- Body/UI: Plus Jakarta Sans 400/500/600/700
-- Labels/mono: JetBrains Mono 400/500
+**Fonts:** Fraunces (the moments you read) and Figtree (everything you tap or scan). Self-hosted from `assets/fonts` on the web, no third-party font request.
 
-**Icons:** Lucide Icons (stroke, 1.5px, 18–20px) — `https://unpkg.com/lucide@latest`
+**Icons:** stroke icons, 1.75px, 18-24px. Brand masters are in `design-notes/brand-kaisip/` (the web icons in `assets/` are copies of `design-notes/brand-kaisip/web/`).
 
 **Tone:** Direct, expert, confidence-building. Second person ("you"). No filler. No emoji in UI.
 
-**Available surfaces:**
-- `ui_kits/web_app/index.html` — interactive web app prototype
-- `ui_kits/mobile_app/index.html` — interactive mobile prototype  
-- `ui_kits/marketing/index.html` — marketing site prototype
-- `slides/index.html` — slide deck template (7 layouts)
-- `Scenario Context Treatments.html` — 5 treatments for scenario_context rendering
-
-**Full token reference:** `colors_and_type.css`
+The old purple/navy handoff and token file are retired. The navy-era handoff is kept for history in `archive/MASTER_HANDOFF.md`.

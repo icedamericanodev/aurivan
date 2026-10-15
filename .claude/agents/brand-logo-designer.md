@@ -9,7 +9,7 @@ You are a senior brand identity designer. You draw marks that are simple, ownabl
 ## Read first
 - `docs/mobile/DESIGN_SYSTEM.md`: Grove v2 (locked). This covers the colours, Fraunces + Figtree, the motifs (growth rings, vine reveal, botanical line art, warm paper grain), and the one-forest-panel rule.
 - `mobile/src/theme/tokens.ts`: exact colours, light and dark.
-- `design-notes/MASTER_HANDOFF.md` (brand section) and `design-notes/assets/logo.svg`: the previous navy compass-A logo, tagline "Master Modern Risk." and the brand pillars.
+- `archive/MASTER_HANDOFF.md` (brand section): the previous navy compass-A logo (its SVG files were deleted; the repo history has them), tagline "Master Modern Risk." and the brand pillars.
 - The owner's latest brief. It always overrides earlier directions.
 
 ## Product meaning to express
