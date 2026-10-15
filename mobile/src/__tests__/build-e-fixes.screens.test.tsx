@@ -267,6 +267,14 @@ describe('Notes domain page: "Practice this topic" names its topic', () => {
   it('each button is spoken with its topic name', () => {
     mockParams = { domain: '4' };
     mount(<NotesDomain />);
+    // Mobile 1.20: topics fold away; open every closed topic header first.
+    const closed = () =>
+      root().findAll((n) => n.props.accessibilityState?.expanded === false && typeof n.props.onPress === 'function' && /^\d[A-Z]\d+ /.test(n.props.accessibilityLabel ?? ''));
+    for (let guard = 0; closed().length > 0 && guard < 50; guard++) {
+      act(() => {
+        closed()[0].props.onPress();
+      });
+    }
     const buttons = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Practice this topic: ') && typeof n.props.onPress === 'function');
     // (Each Button and its Pressable both carry the label: count distinct ones.)
     const labels = new Set(buttons.map((b) => b.props.accessibilityLabel as string));

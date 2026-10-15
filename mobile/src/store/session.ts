@@ -76,8 +76,9 @@ export interface ActiveSession {
    * - reasons: why each question is here (Smart: due / weak / new /
    *   refresher; In order and Guided: "mixed" for the review tail). Shown
    *   as a small tag on the question.
-   * - support: Smart's rolling accuracy is under 55%, so a missed weak-spot
-   *   question offers its study note.
+   * - support: Smart's rolling accuracy is under 55%. Kept for saved
+   *   sessions; since mobile 1.20 it no longer gates the study note, which
+   *   every missed question offers (session.tsx).
    */
   path?: { mode: StudyMode; scope: string; topicId?: string };
   reasons?: Record<string, PathReason>;

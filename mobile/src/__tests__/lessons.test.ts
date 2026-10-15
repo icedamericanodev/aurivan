@@ -4,6 +4,7 @@ import path from 'path';
 import { CERTIFICATIONS } from '../content/certifications';
 import { lessonPreparing, lessonsFor, nextLesson } from '../content/lessons';
 import { getAllQuestions } from '../content/loader';
+import { findNote, hasNotes } from '../content/notes';
 
 const all = CERTIFICATIONS.flatMap((c) => lessonsFor(c.id));
 
@@ -65,6 +66,8 @@ const ACRONYMS = new Set([
   'WAF',
   // Added with the expert-reviewed flow fixes: change advisory board.
   'CAB',
+  // Added with the Oct 2026 register pass: maximum tolerable downtime.
+  'MTD',
 ]);
 const EXAM_KEYWORDS = new Set(['FIRST', 'BEST', 'MOST', 'GREATEST', 'PRIMARY', 'LEAST', 'NOT', 'MAIN']);
 const capsWords = (text: string) => (text.match(/\b[A-Z]{2,}\b/g) ?? []).filter((w) => !ACRONYMS.has(w));
@@ -131,6 +134,35 @@ describe('lesson metadata', () => {
         const words = opt.trim().split(/\s+/).length;
         expect(words > MAX_OPTION_WORDS ? `${opt} (${words} words)` : opt).toBe(opt);
       }
+    }
+  });
+});
+
+/**
+ * Lesson → study-notes links (curator plan, Oct 2026). A lesson is the first
+ * exposure; its `notes` are the reference pages that go deeper. Each id must
+ * be a real subtopic in the bundled notes pack, and must sit under one of the
+ * lesson's outline `topics`, so a lesson can never point at a page it does
+ * not teach.
+ */
+const MAX_NOTES = 4;
+
+describe('lesson notes links', () => {
+  it('has the CISA notes pack, so the links below are really checked', () => {
+    expect(hasNotes('cisa')).toBe(true);
+  });
+  it.each(all.map((l) => [l.id, l] as const))('%s links 1–4 real notes inside its topics', (_id, l) => {
+    if (!l.notes) return; // optional field
+    expect(l.notes.length).toBeGreaterThanOrEqual(1);
+    expect(l.notes.length).toBeLessThanOrEqual(MAX_NOTES);
+    expect(new Set(l.notes).size).toBe(l.notes.length); // no duplicates
+    if (!hasNotes(l.certId)) return; // a cert without a notes pack cannot be checked yet
+    for (const id of l.notes) {
+      const note = findNote(l.certId, id);
+      // Report the id, so a failure says which link to fix.
+      expect(note ? id : `${id} (not in notes pack)`).toBe(id);
+      if (!note) continue;
+      expect(l.topics?.includes(note.topicId) ? id : `${id} (topic ${note.topicId} not in lesson topics)`).toBe(id);
     }
   });
 });

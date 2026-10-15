@@ -87,7 +87,8 @@ export function reportA11yLabel(t: ReportTarget): string {
     case 'note':
       return `${REPORT_LABEL} with note ${t.id}`;
     case 'lesson':
-      return `${REPORT_LABEL} with this lesson step`;
+      // Lesson complete reports the whole lesson (no step); a check names its step.
+      return t.step ? `${REPORT_LABEL} with this lesson step` : `${REPORT_LABEL} with this lesson`;
     case 'card':
       return `${REPORT_LABEL} with this card`;
     case 'app':

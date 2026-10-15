@@ -41,6 +41,28 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.21.0',
+    date: '2026-10-15',
+    new: ['Search the study notes right from Learn, and jump between the parts of a note.'],
+    improved: [
+      'A calmer, cleaner look across the app, with one clear next step on each screen.',
+      'Diagrams in the notes now fit your screen; tap one to see it larger.',
+      'You now opens with your readiness.',
+    ],
+  },
+  {
+    version: '1.20.0',
+    date: '2026-10-15',
+    new: [
+      'After a wrong answer, you can open the note for exactly that idea, and replay its lesson if you haven’t done it yet.',
+      'Lessons and study notes now point to each other, and your results list the notes for what you missed.',
+    ],
+    improved: [
+      'Lessons and notes now use the wording the exam uses, with terms explained the first time they appear.',
+      'Each domain’s notes fold by topic, so you can see what you’ve read at a glance.',
+    ],
+  },
+  {
     version: '1.19.0',
     date: '2026-10-13',
     new: ['Settings can now check for the latest update and restart to apply it, under Help and about.'],

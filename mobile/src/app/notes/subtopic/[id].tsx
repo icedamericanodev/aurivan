@@ -1,33 +1,37 @@
 /**
  * Study notes, one subtopic: the reading page.
  *
- * Header line (domain dot · topic) and the subtopic name, then every v2
+ * Header line (domain dot · topic) and the subtopic name, then (mobile 1.20)
+ * a "Lesson: …" row when a lesson teaches this subtopic, then every v2
  * section in its fixed order (components/notes.tsx → NoteBody). At the end:
  *   - "Mark as read": a toggle saved on the phone (progress store,
  *     `notesRead`, keyed by subtopic id like "4B1.2");
  *   - "Practice this concept" (only when the note lists questions in
  *     `practiceIds`): exactly those questions, as a normal practice
- *     session, so answers count toward progress and spaced review;
- *   - "Practice this domain": 10 questions from this domain;
+ *     session, so answers count toward progress and spaced review. Starting
+ *     it marks the note read (mobile 1.20); the toggle above is the undo;
  *   - "Next: …": the next subtopic in reading order, so a learner can
  *     keep going without stepping back to the list.
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { ICON_STROKE } from '../../../components/icons';
+import { ICON_STROKE, Play } from '../../../components/icons';
 import { CheckDraw } from '../../../components/motion';
 import { NoteBody } from '../../../components/notes';
 import { ReportRow } from '../../../components/support';
-import { Button, Enter, Gap, ICON_SIZE, PushedHeader, Screen, Tag, T } from '../../../components/ui';
+import { Button, Enter, Gap, ICON_SIZE, ListRow, PushedHeader, Screen, Tag, T } from '../../../components/ui';
 import { EmptyScreen } from '../../../components/emptyScreen';
+import { lessonsForSubtopic } from '../../../content/lessons';
 import { findQuestion } from '../../../content/loader';
 import { findNote, noteDomain, noteSubtopics } from '../../../content/notes';
 import { createRng, shuffled } from '../../../engine/random';
-import { guardedStart, startFromIds, startPractice } from '../../../lib/sessions';
+import { openSessionFromStack } from '../../../lib/actions';
+import { guardedStart, startFromIds } from '../../../lib/sessions';
 import { useActiveCert } from '../../../lib/useActiveCert';
 import { useProgress } from '../../../store/progress';
 import { space } from '../../../theme/tokens';
+import { useTheme } from '../../../theme/useTheme';
 
 const goBack = () => (router.canGoBack() ? router.back() : router.replace('/notes'));
 
@@ -35,6 +39,7 @@ export default function NoteSubtopicScreen() {
   const { id: rawId } = useLocalSearchParams<{ id: string }>();
   const id = decodeURIComponent(rawId ?? '');
   const { cert, progress } = useActiveCert();
+  const { c } = useTheme();
   const setNoteRead = useProgress((s) => s.setNoteRead);
   // Marked as read on this visit: its ✓ draws (a note opened already read shows it still).
   const [justRead, setJustRead] = useState(false);
@@ -58,11 +63,9 @@ export default function NoteSubtopicScreen() {
   const inDomain = noteSubtopics(cert.id, domain.id);
   const next = inDomain[inDomain.findIndex((s) => s.id === note.id) + 1];
 
-  const practise = () =>
-    guardedStart(
-      () => startPractice(cert.id, { count: 10, domainId: domain.id, title: `${domain.short} practice` }),
-      () => router.push('/session'),
-    );
+  // The lesson that teaches this subtopic (the first in course order), if any.
+  const lesson = lessonsForSubtopic(cert.id, note.id)[0];
+  const lessonDone = lesson ? progress.lessonsDone.includes(lesson.id) : false;
 
   // "Practice this concept": the questions this note lists, minus any a
   // content update removed. Empty → no button (most notes have some).
@@ -72,7 +75,13 @@ export default function NoteSubtopicScreen() {
     guardedStart(
       // Shuffled each time, so a repeat run does not replay the same order.
       () => startFromIds(cert.id, shuffled(conceptIds, createRng(Date.now())), note.name),
-      () => router.push('/session'),
+      () => {
+        // Practising the concept means the note was read: mark it, once the
+        // set really starts (not if "Keep it" cancels). The toggle undoes it.
+        if (!isRead) setNoteRead(cert.id, note.id, true);
+        // A note can sit above an old session or Results: start clean (lib/actions.ts).
+        openSessionFromStack();
+      },
     );
 
   return (
@@ -81,6 +90,21 @@ export default function NoteSubtopicScreen() {
       <Enter i={0}>
         <Tag domain={domain} label={topic ? `${topic.id} · ${topic.name}` : note.topicId} />
         <T v="hero" accessibilityRole="header" style={{ marginTop: space.sm }}>{note.name}</T>
+        {lesson && (
+          // Mobile 1.20: the lesson for this idea (Play = lessons). One row, no hairline.
+          <View style={{ marginTop: space.sm }}>
+            <ListRow
+              icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+              // The lesson's own title on screen (no double colon); the spoken label keeps "Lesson:".
+              title={lesson.title}
+              subtitle={`Lesson · ${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`}
+              accessibilityLabel={`Lesson: ${lesson.title}, ${lesson.minutes} minutes, ${lessonDone ? 'done' : 'not done yet'}`}
+              accessibilityHint="Opens the short lesson on this topic"
+              onPress={() => router.push(`/lesson/${lesson.id}`)}
+              last
+            />
+          </View>
+        )}
         <Gap h={space.xl} />
       </Enter>
 
@@ -92,7 +116,8 @@ export default function NoteSubtopicScreen() {
         {/* A toggle: announced as "selected" once read; tap again to undo. */}
         {/* Marking it read draws the ✓ (motion.md M4: what changed); opening a note already read just shows it. */}
         <Button
-          kind="secondary"
+          // The page's one primary action: practice when the note lists questions, else this.
+          kind={n > 0 ? 'secondary' : 'primary'}
           label={isRead ? 'Marked as read' : 'Mark as read'}
           selected={isRead}
           accessibilityHint={isRead ? 'Marks this note as not read' : 'Saves that you have read this note'}
@@ -108,7 +133,7 @@ export default function NoteSubtopicScreen() {
           <View style={{ gap: space.xs }}>
             <Button
               label="Practice this concept"
-              accessibilityHint={`Starts a practice set on ${note.name}`}
+              accessibilityHint={`Starts a practice set on ${note.name} and marks this note as read`}
               onPress={practiseConcept}
             />
             <T v="meta" center>
@@ -116,14 +141,6 @@ export default function NoteSubtopicScreen() {
             </T>
           </View>
         )}
-        {/* One primary action per screen: the domain set steps back when
-            the concept set is there. */}
-        <Button
-          kind={n > 0 ? 'secondary' : 'primary'}
-          label="Practice this domain"
-          accessibilityHint={`Starts 10 questions from ${domain.name}`}
-          onPress={practise}
-        />
         {next && (
           <Button
             kind="ghost"

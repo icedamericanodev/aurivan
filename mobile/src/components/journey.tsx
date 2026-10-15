@@ -34,7 +34,7 @@ export function planIcon(item: PlanItem, color: string): ReactNode {
     case 'review':
       return <RotateCcw {...p} />;
     case 'lesson':
-      // Lessons are the Play glyph everywhere; BookOpen means the notes (mobile 1.21).
+      // Mobile 1.20 icon rule: Play = a lesson (BookOpen is for study notes).
       return <Play {...p} />;
     case 'practice':
       return <Target {...p} />;

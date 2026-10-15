@@ -70,7 +70,7 @@ let mockFocused = true;
 jest.mock('expo-router', () => {
   const React = jest.requireActual('react');
   return {
-    router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), setParams: jest.fn(), canGoBack: () => true, canDismiss: () => false },
+    router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), setParams: jest.fn(), dismissAll: jest.fn(), dismissTo: jest.fn(), canGoBack: () => true, canDismiss: () => false },
     useFocusEffect: (cb: () => void | (() => void)) => {
       const f = mockFocused;
       React.useEffect(() => (f ? cb() : undefined), [cb, f]);
@@ -227,7 +227,7 @@ describe('Journey 1: a lesson from cover to Lesson complete', () => {
     expect(nextDisabled()).toBe(false);
   });
 
-  it('"Practice this topic" starts a session on the lesson’s questions and replaces the lesson with it', () => {
+  it('"Practice this topic" starts a session on the lesson’s questions and opens it (mobile 1.20: from the tabs, never stacked)', () => {
     // The draw is shuffled from the clock: pin it so the test can compare.
     jest.spyOn(Date, 'now').mockReturnValue(FIXED_NOW);
     mockParams = { id: charter.id };
@@ -244,7 +244,9 @@ describe('Journey 1: a lesson from cover to Lesson complete', () => {
       expect(s.title).toBe(charter.title);
       expect([...s.questionIds].sort()).toEqual([...ids].sort());
     }
-    expect(router.replace).toHaveBeenCalledWith('/session');
+    // Mobile 1.20: back to the tabs (when there is a stack to dismiss), then a push,
+    // so a lesson opened from a session never leaves two session screens.
+    expect(router.push).toHaveBeenCalledWith('/session');
   });
 
   it('the moment plays ONCE per lesson: a revisit finishes quietly (no moment, no new leaf, no haptic)', () => {

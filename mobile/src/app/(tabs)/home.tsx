@@ -52,7 +52,7 @@ import { FitCard } from '../../components/fit';
 import { ExamWeekCard } from '../../components/readinessReport';
 import { examWeekCardDue, examWeekCount, examWeekOf } from '../../engine/examWeek';
 import { Celebrate, Pop, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
-import { ICON_STROKE, Inbox, Play, Settings, Sprig, Sprout } from '../../components/icons';
+import { ICON_STROKE, Inbox, Play, Settings, Sprig, Sprout, Target, Timer } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
 import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, InviteRow, ListRow, Row, Screen, ScreenTitle, Section, T } from '../../components/ui';
 import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
@@ -485,7 +485,8 @@ export default function Today() {
               <Section title="Also today" meta={sectionMinutes(alsoMinutes)} metaLabel={alsoMinutes > 0 ? spokenMin(aboutMin(alsoMinutes)) : undefined} headRef={nextHeadRef} />
               {resume && (
                 <ListRow
-                  icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                  // Mobile 1.20: Play now means a lesson; a set resumes with the plan's practice / mock icons.
+                  icon={resume.mode === 'mock' ? <Timer size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} /> : <Target size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
                   title={`Resume: ${resume.title}`}
                   subtitle={`Question ${resume.index + 1} of ${resume.questionIds.length}`}
                   onPress={() => router.push('/session')}

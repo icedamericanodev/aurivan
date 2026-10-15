@@ -185,7 +185,7 @@ export function unnamedSubject(text: string): boolean {
  * "Reviewers sample completed engagements…" (which reviewers?).
  */
 export const DENY_CARDS: ReadonlySet<string> = new Set([
-  'root:4B1.2:2kku2i', // "Management sets targets where combined outage and recovery costs are lowest…"
+  'root:4B1.2:1nmmzhw', // "Management sets targets where combined outage and recovery costs are lowest…" (reworded 1.20: "within the risk appetite")
   'root:2A3.3:kz7n4r', // "One authoritative, version-controlled source holds the current documents…"
   'root:1B6.2:zp9vq9', // "Reviewers sample completed engagements…" (also caught by unnamedSubject)
 ]);

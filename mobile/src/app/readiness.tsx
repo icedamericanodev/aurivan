@@ -16,6 +16,8 @@
  *      plainly, never in red.
  *   6. Domain by domain, 1 → n: weight, domain readiness, the evidence behind
  *      it and the last two mocks in it. Never "of N questions" (bank size).
+ *      Mobile 1.20: each row ends in "Lessons and notes ›" (Learn on that domain),
+ *      or "Study notes ›" (that domain's notes) once all its lessons are done.
  *   7. Pacing (timed mocks only).
  *   8. Your path: the six steps, the current one marked ("Now"), with why.
  *   9. Your mocks, newest 5 (then "Show all N mocks"): a tap shows how each
@@ -26,6 +28,9 @@
  * scores are not scaled exam scores, and the screen says so.
  */
 import { router, useLocalSearchParams } from 'expo-router';
+import { lessonsFor } from '../content/lessons';
+import { noteDomain } from '../content/notes';
+import { openTab } from '../lib/actions';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -33,10 +38,10 @@ import { ReadinessFigure } from '../components/journey';
 import { ICON_STROKE, ListChecks } from '../components/icons';
 import { Collapse } from '../components/motion';
 import { DisclosureRow } from '../components/pathChooser';
-import { DomainReportRow, FRAMING_LINE, HOW_LINE, lowMarks, mockSubtitle, PRACTICE_SCORES_NOTE, ScoreChart, TrendLegend, trendMarks, useChartWidth } from '../components/readinessReport';
+import { DomainReportRow, type DomainLink, FRAMING_LINE, HOW_LINE, lowMarks, mockSubtitle, PRACTICE_SCORES_NOTE, ScoreChart, TrendLegend, trendMarks, useChartWidth } from '../components/readinessReport';
 import { PlanLeaf } from '../components/glyphs';
 import { BigNum, Button, DomainDot, EmptyState, ICON_SIZE, Lead, ListRow, PushedHeader, Section, T, useFontScale } from '../components/ui';
-import type { Certification } from '../content/types';
+import type { Certification, DomainInfo } from '../content/types';
 import { examWeekCount, examWeekOf } from '../engine/examWeek';
 import { aboutSeconds, pacingStats, pacingStatsLine, spokenMin, timingOf } from '../engine/pace';
 import { rangeSpoken } from '../engine/readinessRange';
@@ -88,6 +93,28 @@ export default function ReadinessReport() {
   const width = useChartWidth();
   const back = () => (router.canGoBack() ? router.back() : router.replace('/home'));
   const open = () => router.push('/session');
+  // Mobile 1.20: where each domain row leads. Lessons still to do → Learn on that domain
+  // (Learn reads ?domain= for its "Up next"). Every lesson done → that domain's study
+  // notes, the honest next step (Learn would only offer another domain's lesson).
+  const domainLink = (d: DomainInfo): DomainLink | undefined => {
+    const lessons = lessonsFor(cert.id, d.id);
+    const toDo = lessons.some((l) => !progress.lessonsDone.includes(l.id));
+    if (!toDo && noteDomain(cert.id, d.id)) {
+      return {
+        label: 'Study notes ›',
+        accessibilityLabel: `Study notes for ${d.name}`,
+        hint: 'Every lesson here is done. Opens the study notes for this domain',
+        onPress: () => router.push(`/notes/${encodeURIComponent(d.id)}`),
+      };
+    }
+    if (!lessons.length) return undefined;
+    return {
+      label: 'Lessons and notes ›',
+      accessibilityLabel: `Lessons and notes for ${d.name}`,
+      hint: 'Opens Learn on this domain',
+      onPress: () => openTab({ pathname: '/learn', params: { domain: d.id } }),
+    };
+  };
 
   // 3. What would raise the low end.
   const actions = raiseLowerBound(cert, readiness, range, dueCount);
@@ -269,7 +296,12 @@ export default function ReadinessReport() {
         {/* 6. Domain by domain */}
         <Section title="Domain by domain" />
         {rows.map((r, i) => (
-          <DomainReportRow key={r.domain.id} row={r} last={i === rows.length - 1} />
+          <DomainReportRow
+            key={r.domain.id}
+            row={r}
+            last={i === rows.length - 1}
+            link={domainLink(r.domain)}
+          />
         ))}
 
         {/* 7. Pacing (timed mocks only) */}

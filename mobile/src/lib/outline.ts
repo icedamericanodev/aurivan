@@ -3,9 +3,11 @@
  * per cert from its notes pack, plus the small lookups screens need
  * (which lesson teaches a topic, is a topic studied / clear).
  */
-import { lessonsFor } from '../content/lessons';
+import { lessonsFor, noteIdsForLesson } from '../content/lessons';
+import type { Lesson } from '../content/lessons/types';
 import { findQuestion } from '../content/loader';
-import { getNotes } from '../content/notes';
+import { findNote, getNotes } from '../content/notes';
+import type { NoteSubtopic } from '../content/notes/types';
 import { indexOutline, outlineFromNotes, topicsIn, type OutlineIndex, type OutlineTopic } from '../engine/outline';
 import { topicStatus, topicStudied } from '../engine/studyPath';
 import type { CertProgress } from '../store/progress';
@@ -30,6 +32,18 @@ export function scopeTopics(certId: string, domainId?: string): OutlineTopic[] {
 /** Lessons that teach this outline topic (a lesson lists codes like "4B1" in `topics`). */
 export function topicLessons(certId: string, topicId: string) {
   return lessonsFor(certId).filter((l) => l.topics?.includes(topicId));
+}
+
+/**
+ * The study notes a lesson leads into (mobile 1.20), primary first: the
+ * lesson's own `notes` ids, else the first subtopic of each outline topic it
+ * teaches. Only notes that exist in the pack (an old id never shows a dead row).
+ */
+export function lessonNotes(certId: string, lesson: Lesson): NoteSubtopic[] {
+  const byTopic = (topicId: string) => certOutline(certId).topic(topicId)?.subtopics.map((s) => s.id) ?? [];
+  return noteIdsForLesson(lesson, byTopic)
+    .map((id) => findNote(certId, id))
+    .filter((n): n is NoteSubtopic => Boolean(n));
 }
 
 /** Studied + last-5 status for a topic, from the learner's own progress. */

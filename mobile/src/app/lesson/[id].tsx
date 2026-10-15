@@ -19,7 +19,8 @@
  * - Lesson complete (LP6): the domain's lessons as leaves on its branch,
  *   the new one filling in: ONE calm moment (useCelebration: skippable, the
  *   session budget, shortened on repeats, static under Reduce Motion),
- *   never on a lesson already done before. Then "Practice this topic" and
+ *   never on a lesson already done before. Then "Practice this topic",
+ *   "Read the note: …" (mobile 1.20: the study note that goes deeper) and
  *   "Next lesson". Its one light haptic goes with that moment (Learn then
  *   draws the ✓ without a second buzz).
  */
@@ -28,11 +29,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LessonBranch, type BotanyKind } from '../../components/glyphs';
-import { ArrowRight, ICON_STROKE } from '../../components/icons';
-import { lastPart, partDelay, SceneView } from '../../components/lesson';
+import { ArrowRight, BookOpen, ICON_STROKE } from '../../components/icons';
+import { SceneView } from '../../components/lesson';
 import { Celebrate, FadeIn, PageTurn, useCelebration } from '../../components/motion';
 import { useReportFlow } from '../../components/support';
-import { Button, Gap, ICON_SIZE, PushedHeader, Row, SegmentBar, T } from '../../components/ui';
+import { Button, Gap, ICON_SIZE, PushedHeader, Row, SegmentBar, T, useFontScale } from '../../components/ui';
 import { domainColor, getCertification } from '../../content/certifications';
 import { findQuestion } from '../../content/loader';
 import { findLesson, lessonsFor, nextLesson } from '../../content/lessons';
@@ -46,6 +47,8 @@ import { moveFocus, sayLater } from '../../lib/a11y';
 import { logLesson } from '../../lib/activity';
 import { haptic } from '../../lib/haptics';
 import { noteLessonFinished } from '../../lib/lessonNews';
+import { lessonNotes } from '../../lib/outline';
+import { openSessionFromStack, openTab } from '../../lib/actions';
 import { guardedStart, startFromIds, startPractice } from '../../lib/sessions';
 import { useProgress } from '../../store/progress';
 import { useSettings } from '../../store/settings';
@@ -56,6 +59,8 @@ import { useTheme } from '../../theme/useTheme';
 const DONE = 'done';
 /** One empty list for every render (a fresh `[]` per store snapshot would re-render forever). */
 const NONE: readonly string[] = [];
+/** At this text size Lesson complete's actions scroll with the page instead of a pinned footer (as session.tsx). */
+const HUGE_TEXT = 1.6;
 
 /**
  * "Practice this topic" after a lesson: the questions the study notes list
@@ -74,6 +79,8 @@ export function lessonPracticeIds(lesson: Lesson, seed = Date.now()): string[] {
 
 export default function LessonPlayer() {
   const { c } = useTheme();
+  // Very large text (mobile 1.20): three stacked actions would crowd a pinned footer.
+  const huge = useFontScale() >= HUGE_TEXT;
   const { id } = useLocalSearchParams<{ id: string }>();
   const lesson = findLesson(String(id));
   const completeLesson = useProgress((s) => s.completeLesson);
@@ -122,18 +129,20 @@ export default function LessonPlayer() {
     if (pageId !== DONE) sayLater(`Scene ${Number(pageId) + 1} of ${total}`);
   }, [pageId, total]);
 
-  // Report a problem with THIS step (mobile 1.7). A check step offers its
-  // options in the order shown; the email names the ORIGINAL letters.
+  // Report a problem (mobile 1.7). Since mobile 1.20 it shows only on a
+  // check scene (once answered: it names that step, with its options in the
+  // order shown; the email names the ORIGINAL letters) and on Lesson
+  // complete (the whole lesson, no step), not on every scene.
   const cur = lesson?.scenes[index];
   const curPerm = cur?.type === 'check' ? (perms[index] ?? lettersFor(cur.options.length)) : undefined;
   const report = useReportFlow(lesson?.certId ?? 'cisa', {
     kind: 'lesson',
     id: lesson?.id ?? String(id),
     name: lesson?.title,
-    step: index + 1,
+    ...(finished ? {} : { step: index + 1 }),
     steps: lesson?.scenes.length,
     where: 'Lesson',
-    ...(cur?.type === 'check' && curPerm
+    ...(!finished && cur?.type === 'check' && curPerm
       ? {
           part: 'check',
           perm: curPerm,
@@ -214,7 +223,20 @@ export default function LessonPlayer() {
           pageStyle={{ flexGrow: 1 }}
         >
           {pageId === DONE && finished ? (
-            <LessonComplete lesson={lesson} domain={domain} fresh={finished.fresh} />
+            <View style={{ flexGrow: 1 }}>
+              <LessonComplete lesson={lesson} domain={domain} fresh={finished.fresh} />
+              {/* Very large text: the actions scroll with the page, so none is pushed off-screen. */}
+              {huge && (
+                <View style={{ marginTop: space.xl }}>
+                  <CompleteActions lesson={lesson} domain={domain} />
+                </View>
+              )}
+              {/* Report a problem with the lesson as a whole (mobile 1.20: here and on checks only). */}
+              <View style={{ marginTop: space.lg, alignItems: 'flex-start' }}>
+                {report.link}
+                <View style={{ alignSelf: 'stretch' }}>{report.block}</View>
+              </View>
+            </View>
           ) : (
             <View style={{ flexGrow: 1 }}>
               <SceneView
@@ -228,11 +250,11 @@ export default function LessonPlayer() {
                 art={`branch${toneIndex % 5}` as BotanyKind}
                 tone={domainColor(toneIndex, true)}
               />
-              {/* A quiet "Report a problem" at the end of each step. On a check it waits
-                  until the check is answered, so it never hints at the answer. It arrives
-                  with the scene's last part (it never shows before what it reports on). */}
-              {(lesson.scenes[index].type !== 'check' || checked) && (
-                <FadeIn build rise={false} delay={lesson.scenes[index].type === 'check' ? 0 : partDelay(lastPart(lesson.scenes[index]))}>
+              {/* A quiet "Report a problem", on check scenes only (mobile 1.20: the other
+                  scenes stay clear; Lesson complete has it too). It waits until the check
+                  is answered, so it never hints at the answer, then arrives at once. */}
+              {lesson.scenes[index].type === 'check' && checked && (
+                <FadeIn build rise={false} delay={0}>
                   <View style={{ marginTop: space.xl, alignItems: 'flex-start' }}>
                     {report.link}
                     <View style={{ alignSelf: 'stretch' }}>{report.block}</View>
@@ -252,18 +274,20 @@ export default function LessonPlayer() {
         </PageTurn>
       </ScrollView>
 
-      <View style={{ paddingHorizontal: space.gutter, paddingVertical: space.md, backgroundColor: c.bg }}>
-        {showingDone ? (
-          <CompleteActions lesson={lesson} domain={domain} />
-        ) : (
-          <Row gap={space.sm}>
-            {/* No Back on the first scene (a disabled slab looked broken); Next takes the full width. */}
-            {shownIndex > 0 && <Button kind="secondary" label="Back" onPress={back} style={{ flex: 1 }} />}
-            {/* ONE keyed button whose label changes, so screen-reader focus stays on it. */}
-            <Button key="next" ref={nextRef} label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: 2 }} />
-          </Row>
-        )}
-      </View>
+      {!(showingDone && huge) && (
+        <View style={{ paddingHorizontal: space.gutter, paddingVertical: space.md, backgroundColor: c.bg }}>
+          {showingDone ? (
+            <CompleteActions lesson={lesson} domain={domain} />
+          ) : (
+            <Row gap={space.sm}>
+              {/* No Back on the first scene (a disabled slab looked broken); Next takes the full width. */}
+              {shownIndex > 0 && <Button kind="secondary" label="Back" onPress={back} style={{ flex: 1 }} />}
+              {/* ONE keyed button whose label changes, so screen-reader focus stays on it. */}
+              <Button key="next" ref={nextRef} label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: 2 }} />
+            </Row>
+          )}
+        </View>
+      )}
       {report.sheet}
     </SafeAreaView>
   );
@@ -334,19 +358,25 @@ function LessonComplete({ lesson, domain, fresh }: { lesson: Lesson; domain: Dom
   );
 }
 
-/** Lesson complete's footer: practise what was just learnt (primary), or go on to the next lesson. */
+/**
+ * Lesson complete's footer: practise what was just learnt (primary), read the
+ * note that goes deeper (mobile 1.20: the lesson's first note, else its first
+ * topic's first note; BookOpen = notes), or go on to the next lesson.
+ */
 function CompleteActions({ lesson, domain }: { lesson: Lesson; domain: DomainInfo | undefined }) {
   const done = useProgress((s) => s.byCert[lesson.certId]?.lessonsDone ?? NONE);
   const after = nextLesson(lesson.certId, done, lesson.domainId);
   // Drawn once per screen (the order is shuffled), not on every render.
   const ids = useMemo(() => lessonPracticeIds(lesson), [lesson]);
+  const note = lessonNotes(lesson.certId, lesson)[0];
   const practise = () =>
     guardedStart(
       () =>
         ids.length
           ? startFromIds(lesson.certId, ids, lesson.title)
           : startPractice(lesson.certId, { count: 10, domainId: lesson.domainId, title: `${domain?.short ?? 'Domain'} practice` }),
-      () => router.replace('/session'),
+      // A lesson can be opened from a session ("Review the lesson"): start clean (lib/actions.ts).
+      openSessionFromStack,
     );
   return (
     <View style={{ gap: space.sm }}>
@@ -355,6 +385,19 @@ function CompleteActions({ lesson, domain }: { lesson: Lesson; domain: DomainInf
         accessibilityHint={ids.length ? `Questions on ${lesson.title}` : undefined}
         onPress={practise}
       />
+      {note && (
+        <Button
+          kind="ghost"
+          // Short on screen (a long note name pushed Next lesson off at 200 % text); named when spoken.
+          label="Read the note"
+          accessibilityLabel={`Read the note: ${note.name}`}
+          accessibilityHint="Opens the study note that goes deeper on this lesson"
+          icon={(col) => <BookOpen size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+          iconLeading
+          // Pushed, so Back returns to Lesson complete.
+          onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(note.id)}`)}
+        />
+      )}
       {after ? (
         <Button
           kind="ghost"
@@ -364,7 +407,8 @@ function CompleteActions({ lesson, domain }: { lesson: Lesson; domain: DomainInf
           onPress={() => router.replace(`/lesson/${after.id}`)}
         />
       ) : (
-        <Button kind="ghost" label="Back to Learn" onPress={() => router.back()} />
+        // To the Learn tab itself: Back would return to a session or note this lesson was opened from.
+        <Button kind="ghost" label="Back to Learn" onPress={() => openTab('/learn')} />
       )}
     </View>
   );

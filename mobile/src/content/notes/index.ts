@@ -34,8 +34,19 @@ export function noteSubtopics(certId: string, domainId?: string): NoteSubtopic[]
     .flatMap((d) => d.topics.flatMap((t) => t.subtopics));
 }
 
+/**
+ * One subtopic by id ("4B1.2"). A map built once per cert (mobile 1.20: the
+ * session, Results and every Mistake journal row look notes up by id), then a
+ * map lookup instead of a scan of every note.
+ */
+const noteIndex = new Map<string, Map<string, NoteSubtopic>>();
 export function findNote(certId: string, id: string): NoteSubtopic | undefined {
-  return noteSubtopics(certId).find((s) => s.id === id);
+  let index = noteIndex.get(certId);
+  if (!index) {
+    index = new Map(noteSubtopics(certId).map((s) => [s.id, s]));
+    noteIndex.set(certId, index);
+  }
+  return index.get(id);
 }
 
 /**
@@ -63,4 +74,5 @@ export function subtopicOfQuestion(certId: string, questionId: string): string |
 export function clearNotesCache(): void {
   cache.clear();
   subtopicIndex.clear();
+  noteIndex.clear();
 }
