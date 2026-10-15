@@ -10,7 +10,7 @@
  * - the fixed set runs with no timer and no confidence chips.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { BackHandler } from 'react-native';
+import { BackHandler, Dimensions } from 'react-native';
 import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Results from '../app/results';
@@ -315,5 +315,35 @@ describe('the reminder ask', () => {
     useSettings.setState({ reminder: { enabled: true, hour: 8, minute: 0, days: [0, 1, 2, 3, 4, 5, 6] } });
     mount(<Results />);
     expect(allText()).not.toMatch(/Tomorrow I’ll study at/);
+  });
+});
+
+describe('light, dark and 200% text', () => {
+  const setScale = (fontScale: number) => {
+    const w = Dimensions.get('window');
+    act(() => {
+      Dimensions.set({ window: { ...w, width: 393, fontScale }, screen: { ...w, width: 393, fontScale } });
+    });
+  };
+  afterEach(() => setScale(1));
+
+  it.each([
+    ['light', 1],
+    ['dark', 1],
+    ['light', 2],
+    ['dark', 2],
+  ] as const)('%s at %sx text: every line and every button is still there, and each button has a name', (theme, scale) => {
+    useSettings.setState({ theme });
+    setScale(scale);
+    finishFirstSet(3);
+    mount(<Results />);
+    const t = allText();
+    for (const line of ['3 of 5', '2 will come back tomorrow.', 'Done for today', 'Do 5 more', 'Choose a different plant']) expect(t).toContain(line);
+    // Nothing is clipped by a line cap, and every pressable has a spoken name.
+    const names = new Set(pressable(/./).map((p) => String(p.props.accessibilityLabel)));
+    for (const name of ['Done for today', 'Do 5 more', 'Choose a different plant', 'One hour earlier', 'One hour later', 'Not now']) expect(names).toContain(name);
+    expect([...names].some((n) => /^Tomorrow I’ll study at /.test(n))).toBe(true);
+    const capped = root().findAll((n) => typeof n.type === 'string' && n.props.numberOfLines !== undefined);
+    expect(capped).toHaveLength(0);
   });
 });

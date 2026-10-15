@@ -367,6 +367,10 @@ export default function Today() {
     if (j.range.enough && !firstRangeSeen && !firstRangeDue) useSeen.getState().played(firstRangeKey);
   }, [j.range.enough, firstRangeSeen, firstRangeDue, firstRangeKey]);
 
+  const firstRangeCard = (
+    <FirstRangePanel cert={j.cert} readiness={j.readiness} onOpen={() => router.push('/readiness')} onDismiss={() => useSeen.getState().played(firstRangeKey)} />
+  );
+
   // The reminder's one second chance: the day the 3rd study day is done, if reminders are still off.
   const reminderEnabled = useSettings((x) => x.reminder.enabled);
   const askedFirst = useSeen((x) => x.reminderAsk?.first);
@@ -506,22 +510,10 @@ export default function Today() {
         )}
       </Enter>
 
-      {firstRangeDue && (
-        <Enter i={2} style={{ marginTop: space.xl }}>
-          <FirstRangePanel
-            cert={j.cert}
-            readiness={j.readiness}
-            range={j.range}
-            onOpen={() => router.push('/readiness')}
-            onDismiss={() => useSeen.getState().played(firstRangeKey)}
-          />
-        </Enter>
-      )}
-
       {!allDone && (
         <Enter i={2}>
           {/* The Exam-ready panel draws the rings itself: once per screen (spec §10). Day 0 has nothing to show yet. */}
-          {answeredTotal > 0 && !firstRangeDue && (
+          {answeredTotal > 0 && (
             <ReadinessRow
               cert={j.cert}
               readiness={j.readiness}
@@ -533,6 +525,8 @@ export default function Today() {
               onPress={() => router.push('/readiness')}
             />
           )}
+          {/* "Your first readiness range": one calm card, right under the range it explains (mobile 1.24). */}
+          {firstRangeDue && <View style={{ marginTop: space.lg }}>{firstRangeCard}</View>}
           {weakest && answeredTotal > 0 && !firstRangeDue && (
             <T v="meta" style={{ marginTop: space.md }}>{`${answeredTotal} answered · weakest area: ${weakest.tile ?? weakest.short}`}</T>
           )}
@@ -560,6 +554,8 @@ export default function Today() {
           </Row>
         </Enter>
       )}
+
+      {allDone && firstRangeDue && <View style={{ marginTop: space.xl }}>{firstRangeCard}</View>}
 
       {grown && (
         <Enter i={2} style={{ marginTop: space.xl }}>

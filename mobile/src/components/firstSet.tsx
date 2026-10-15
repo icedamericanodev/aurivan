@@ -9,8 +9,8 @@
  *        missed, or "All five right.") and how close the first readiness
  *        range is;
  *     2. a closing card: tomorrow in one line, "2 will come back tomorrow",
- *        a seed planted for you (oak; "Choose a different plant" opens the
- *        picker), and the reminder ask;
+ *        a seed planted for you (oak; drawn as a seed, "Choose a different
+ *        plant" opens the picker), and the reminder ask;
  *     3. "Done for today" (the one solid button) and a quiet "Do 5 more".
  *   It never says "check" or "diagnose", never offers "Practice the ones you
  *   missed" (a miss is meant to come back tomorrow, not a minute later), and
@@ -20,9 +20,9 @@
  *   study day. "Tomorrow I'll study at 7:00 PM" is the only button with
  *   emphasis; the phone's own permission box appears only when it is tapped;
  *   "Not now" is respected and never asked again after the second chance.
- * - `FirstRangePanel` is the calm card on Today the first time the readiness
- *   range appears: the range, the strongest and the weakest domain. Still,
- *   no confetti.
+ * - `FirstRangePanel` is the calm card on Today, right under the readiness
+ *   range, the first time that range appears: what it is (an estimate), the
+ *   strongest and the weakest domain. Still, no confetti.
  */
 import { router } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -35,9 +35,9 @@ import { findNote, subtopicOfQuestion } from '../content/notes';
 import { FIRST_SET_SIZE } from '../content/firstSet';
 import { comeBackLine, defaultReminderTime, firstRange, firstSetFact, reminderAskLine, tomorrowPreview } from '../engine/firstRun';
 import { missedSubtopics } from '../engine/outline';
-import { plantCallName, plantLabel, plantShown } from '../engine/plant';
+import { plantCallName, plantShown } from '../engine/plant';
 import type { Readiness } from '../engine/readiness';
-import { RANGE_MIN_ANSWERS, type ReadinessRange } from '../engine/readinessRange';
+import { RANGE_MIN_ANSWERS } from '../engine/readinessRange';
 import { localTime, stepTime } from '../engine/reminders';
 import { moveFocus, sayLater } from '../lib/a11y';
 import { deferMissesToTomorrow } from '../lib/firstSet';
@@ -53,10 +53,9 @@ import { useSession, type ActiveSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { ReadinessFigure } from './journey';
+import { Seedling } from './glyphs';
 import { StickyFooter } from './quiz';
 import { Button, Card, Enter, Gap, Row, T } from './ui';
-import { LivePlant } from './plant/LivePlant';
 
 // ── The reminder ask ─────────────────────────────────────────────────────
 type Phase = 'idle' | 'working' | 'on' | 'blocked' | 'later';
@@ -66,7 +65,7 @@ type Phase = 'idle' | 'working' | 'on' | 'blocked' | 'later';
  * 'second' (the one second chance on Today). It draws nothing where reminders
  * cannot work (Expo Go on Android) or are already on.
  */
-export function ReminderAsk({ which }: { which: 'first' | 'second' }) {
+export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; onNotNow?: () => void }) {
   const { c } = useTheme();
   const enabled = useSettings((s) => s.reminder.enabled);
   const asked = useSeen((s) => s.reminderAsk?.first);
@@ -94,6 +93,7 @@ export function ReminderAsk({ which }: { which: 'first' | 'second' }) {
   const notNow = () => {
     useSeen.getState().noteReminderAsk('first', 'later');
     setPhase('later');
+    onNotNow?.();
   };
 
   if (!remindersSupported) return null;
@@ -140,21 +140,24 @@ export function ReminderAsk({ which }: { which: 'first' | 'second' }) {
 /** Today's one second chance at the ask (the day the 3rd study day is done). It counts as shown the moment it appears. */
 export function SecondAskCard() {
   const { c } = useTheme();
+  // "Not now" takes the whole card away (the answer is remembered; it never comes back).
+  const [gone, setGone] = useState(false);
   useEffect(() => {
     useSeen.getState().noteReminderAsk('second');
   }, []);
+  if (gone) return null;
   return (
     <Card style={{ gap: space.sm }}>
       <T v="label">A study time can help</T>
       <T v="small" color={c.ink2}>Studying at about the same time each day makes it easier to keep going.</T>
-      <ReminderAsk which="second" />
+      <ReminderAsk which="second" onNotNow={() => setGone(true)} />
     </Card>
   );
 }
 
 // ── The Day-1 closing screen ─────────────────────────────────────────────
 export function FirstSetDone({ session }: { session: ActiveSession }) {
-  const { c, isDark } = useTheme();
+  const { c } = useTheme();
   const j = useJourney();
   const certId = session.certId;
   const cert = getCertification(certId);
@@ -242,16 +245,10 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
             {comeBack && <T v="body">{comeBack}</T>}
             {plantOn && plant && (
               <Row gap={space.md} style={{ alignItems: 'center' }}>
-                <LivePlant
-                  species={plant.species}
-                  stage={plant.growth}
-                  size={72}
-                  theme={isDark ? 'dark' : 'light'}
-                  fit
-                  quietLook
-                  plantIn
-                  accessibilityLabel={plantLabel({ name: plant.name, species: plant.species, growth: plant.growth })}
-                />
+                {/* A seed, not the plant drawing: Results stays light and the plant keeps its own screens. */}
+                <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ marginLeft: -space.sm }}>
+                  <Seedling color={c.accent} size={64} />
+                </View>
                 <View style={{ flex: 1 }}>
                   <T v="small">{`${plantCallName(plant)} is planted. It grows as you learn.`}</T>
                   <Button
@@ -290,20 +287,19 @@ function domainOf(cert: Certification | undefined, certId: string, questionId: s
 // ── Today: "Your first readiness range" ──────────────────────────────────
 /**
  * The calm card that names the moment the readiness range first appears. It
- * takes the place of Today's readiness row once, then goes. Static: no
- * motion, no confetti, no single percentage, and the plain reminder that it
- * is an estimate.
+ * sits right under the range it explains (Today's readiness row), once, then
+ * goes. Static: no motion, no confetti, no single percentage, and the plain
+ * reminder that it is an estimate. It adds the two facts a first range makes
+ * possible: the strongest and the weakest domain.
  */
 export function FirstRangePanel({
   cert,
   readiness,
-  range,
   onOpen,
   onDismiss,
 }: {
   cert: Certification;
   readiness: Readiness;
-  range: ReadinessRange;
   onOpen: () => void;
   onDismiss: () => void;
 }) {
@@ -315,8 +311,7 @@ export function FirstRangePanel({
   return (
     <Card style={{ gap: space.sm }}>
       <T v="caption" color={c.accentText} accessibilityRole="header">Your first readiness range</T>
-      <ReadinessFigure range={range} size={38} />
-      <T v="small" color={c.ink2}>An estimate of where you stand today, not a prediction of your exam result. It narrows as you answer more.</T>
+      <T v="small" color={c.ink2}>It is an estimate of where you stand today, not a prediction of your exam result. It narrows as you answer more.</T>
       {strong && <T v="body">{`Strongest so far: ${strong}`}</T>}
       {weak && <T v="body">{`Needs the most work: ${weak}`}</T>}
       <Gap h={space.xs} />

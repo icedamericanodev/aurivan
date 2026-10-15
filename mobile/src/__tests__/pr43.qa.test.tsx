@@ -203,22 +203,37 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-// ── J1 Onboarding ────────────────────────────────────────────────────────
-describe('J1 a new learner’s onboarding', () => {
-  // Mobile 1.15: the plant step is step 4 of 4, after "Where are you starting from?" (skipped here) and the date.
-  const toStep3 = () => {
-    press(/^Start my plan$/);
-    press(/^Skip$/); // the optional name step (mobile 1.23)
-    press(/^Continue$/);
-    press(/^Skip this question$/);
-    press(/^Continue$/);
-  };
-
-  it('pick a plant, name it, plant it: Today shows it under the facts (no prompt; the rings stay on the readiness row), You names it', () => {
+// ── J1 Onboarding, then planting ─────────────────────────────────────────
+// Mobile 1.24: onboarding no longer has a plant step. The learner finishes with no plant and no prompt; a seed
+// (oak) is planted on the Day-1 closing screen (first-set-done.test.tsx), and the same picker is reachable from
+// there and from You. The picker's own journeys are tested here as they always were.
+describe('J1 a new learner and the plant', () => {
+  it('onboarding asks nothing about a plant: no plant, no prompt on Today, and You offers "Plant yours"', () => {
     useSettings.setState({ onboarded: false });
     mount(<Onboarding />);
-    toStep3();
-    expect(allText()).toMatch(/Step 4 of 4/);
+    press(/^Get started$/);
+    press(/^Skip$/); // the optional name step (mobile 1.23)
+    press(/^Skip this question$/);
+    expect(allText()).not.toMatch(/Plant|plant/);
+    press(/^Start my first questions$/);
+    expect(useSettings.getState().onboarded).toBe(true);
+    expect(cp().plant).toBeUndefined();
+    expect(router.replace).toHaveBeenCalledWith('/session');
+    unmount();
+    useSession.getState().clear();
+
+    mount(<Today />);
+    expect(byTestID('today-plant')).toHaveLength(0);
+    expect(byTestID('plant-prompt')).toHaveLength(0);
+    unmount();
+
+    mount(<You />);
+    press(/^Plant yours/);
+    expect(router.push).toHaveBeenCalledWith('/plant-pick');
+  });
+
+  it('pick a plant, name it, plant it: Today shows it under the facts (no prompt), You names it', () => {
+    mount(<PlantPick />);
     expect(allText()).not.toMatch(BANNED);
     layoutGrid();
     // Every species is previewed at Crown (growth 5), with the face by default.
@@ -232,12 +247,9 @@ describe('J1 a new learner’s onboarding', () => {
     expect(nameInput().props.value).toBe('Summit Lee');
     press(/^Pine\./);
     press(/^Plant it$/);
-    expect(useSettings.getState().onboarded).toBe(true);
     expect(cp().plant).toMatchObject({ species: 'pine', name: 'Summit Lee', growth: 1 });
     expect(cp().plant!.pending).toBeUndefined();
-    // Mobile 1.14: the planting moment, then Today.
-    press(/^Start studying$/);
-    expect(router.replace).toHaveBeenCalledWith('/home');
+    expect(router.replace).toHaveBeenCalledWith('/plant');
     unmount();
 
     mount(<Today />);
@@ -245,8 +257,6 @@ describe('J1 a new learner’s onboarding', () => {
     expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Growth: Seed, 1 of 6.');
     expect(byTestID('plant-prompt')).toHaveLength(0);
     expect(byTestID('plant-grew')).toHaveLength(0); // planting is not a "grew" moment
-    // Mobile 1.23 (mockup A): the rings are always the readiness row's picture; the plant has its own row under the tiles.
-    expect(ringsShown()).toBe(true);
     unmount();
 
     mount(<You />);
@@ -257,9 +267,7 @@ describe('J1 a new learner’s onboarding', () => {
 
   it('the name starts empty with an idea as its placeholder; "Another idea" fills one in, and it follows the species until the learner types one', () => {
     // UX review P1: nothing is chosen for the learner; an empty name is "Your oak".
-    useSettings.setState({ onboarded: false });
-    mount(<Onboarding />);
-    toStep3();
+    mount(<PlantPick />);
     layoutGrid();
     expect(nameInput().props.value).toBe('');
     expect(['Ledger', 'Atlas', 'Bracken', 'North']).toContain(nameInput().props.placeholder);
@@ -273,9 +281,7 @@ describe('J1 a new learner’s onboarding', () => {
   });
 
   it('a cleared name plants a nameless plant, called "Your oak"', () => {
-    useSettings.setState({ onboarded: false });
-    mount(<Onboarding />);
-    toStep3();
+    mount(<PlantPick />);
     layoutGrid();
     act(() => {
       nameInput().props.onChangeText('   ');
@@ -283,37 +289,6 @@ describe('J1 a new learner’s onboarding', () => {
     press(/^Plant it$/);
     expect(cp().plant).toMatchObject({ species: 'oak', name: '' });
     expect(plantCallName(cp().plant!)).toBe('Your oak');
-  });
-
-  it('Skip for now: no plant; Today has no prompt and keeps the rings; You offers "Plant yours"', () => {
-    useSettings.setState({ onboarded: false });
-    mount(<Onboarding />);
-    toStep3();
-    press(/^Skip for now$/);
-    expect(useSettings.getState().onboarded).toBe(true);
-    expect(cp().plant).toBeUndefined();
-    expect(router.replace).toHaveBeenCalledWith('/home');
-    unmount();
-
-    mount(<Today />);
-    expect(byTestID('today-plant')).toHaveLength(0);
-    expect(byTestID('plant-prompt')).toHaveLength(0);
-    expect(ringsShown()).toBe(true);
-    unmount();
-
-    mount(<You />);
-    press(/^Plant yours/);
-    expect(router.push).toHaveBeenCalledWith('/plant-pick');
-  });
-
-  it('Back from "Plant it" returns to the exam date without planting', () => {
-    useSettings.setState({ onboarded: false });
-    mount(<Onboarding />);
-    toStep3();
-    press(/^Back$/);
-    expect(allText()).toMatch(/Step 3 of 4/);
-    expect(cp().plant).toBeUndefined();
-    expect(useSettings.getState().onboarded).toBe(false);
   });
 });
 

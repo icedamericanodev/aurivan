@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=today|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -159,6 +159,13 @@ elif [ "${SHOTS:-}" = kaisip ]; then
   # its sheet, About (the new name and the move-from-Aurivan note), Your data and the share card
   # (shoot_kaisip.mjs; FONT_SCALE=2 for about 200% text).
   node scripts/screenshots/shoot_kaisip.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = firstdays ]; then
+  # Mobile 1.24 "first five minutes": the welcome, name, starting point, date and minutes (with
+  # what they add up to), the first question, Today on Day 0, the Day-1 closing screen (3 of 5,
+  # tomorrow, the seed, the reminder ask), Today cleared and with "5 of 40 for your first range",
+  # "Your first readiness range", and the reminder's second chance (shoot_firstdays.mjs;
+  # NARROW=1; FONT_SCALE=2 for about 200% text).
+  node scripts/screenshots/shoot_firstdays.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = today ]; then
   # Mobile 1.23 Today (mockup A): the day with a warm-up done, a fresh plan, below the fold,
   # a new learner, no exam date, a mock-only day, the clearing, exam eve and week, and a

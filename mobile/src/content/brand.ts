@@ -28,7 +28,7 @@ export const WELCOME_HEADLINE = 'Think like an IS auditor.';
 export const WELCOME_LINE = 'CISA exam prep, taught the way the exam thinks.';
 export const WELCOME_FACTS: readonly string[] = [
   'Your daily plan, built around your exam date.',
-  'About 20 minutes a day.',
+  'About 20 min a day.',
   'Progress shown as a range, never a promise.',
   'No account. Everything stays on your phone.',
 ];

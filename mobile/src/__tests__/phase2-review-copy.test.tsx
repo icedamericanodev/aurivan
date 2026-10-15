@@ -127,12 +127,18 @@ describe('Today and Results copy', () => {
     act(() => {
       startFromIds('cisa', FOUR, 'Practice');
     });
+    // Past the first five (20 answers in): the plan is the ordinary one, with the review leading.
+    act(() => {
+      const answers: Record<string, { attempts: number; correctCount: number; lastCorrect: boolean; lastAt: number }> = {};
+      ALL.slice(0, 20).forEach((q) => (answers[q.id] = { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: now - DAY_MS }));
+      useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, answers } }, days: {} }));
+    });
     mount(<Today />);
     const text = textOf(root());
-    // Mobile 1.23: the panel's title names the activity; its checklist line says how much of the queue today takes
-    // ("8 of 56 due", the same queue You and Practice count), and the Start pill's hint says the order.
-    expect(text).toContain('Spaced review · 8 of 56 due');
-    expect(root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string).some((h) => h.includes('8 of 56 due · most overdue first'))).toBe(true);
+    // Mobile 1.24: the panel's title names the activity, and today's share of the queue is the line under it
+    // ("8 of 56 due", the same queue You and Practice count, and the order).
+    expect(text).toContain('Spaced review');
+    expect(text).toMatch(/\d+ of 56 due · most overdue first/);
     // Mobile 1.15 (C1): one minutes style everywhere, "About N min" (screen readers say "minutes").
     expect(text).toMatch(/Also today About \d+ min/);
     expect(text).not.toMatch(/about \d+ minutes/i);

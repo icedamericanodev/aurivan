@@ -118,7 +118,7 @@ describe('the welcome screen: literal, names the exam, no metaphors', () => {
     expect(t).toContain('Think like an IS auditor.');
     expect(t).toContain('CISA exam prep, taught the way the exam thinks.');
     expect(t).toContain('Your daily plan, built around your exam date.');
-    expect(t).toContain('About 20 minutes a day.');
+    expect(t).toContain('About 20 min a day.');
     expect(t).toContain('Progress shown as a range, never a promise.');
     expect(t).toContain('No account. Everything stays on your phone.');
     expect(t).toMatch(/Not affiliated with or endorsed by ISACA/);
@@ -266,5 +266,33 @@ describe('onboarding: where you start and how long you have', () => {
     mount(<Onboarding />);
     expect(pressable(/^Restore from a backup$/)).toHaveLength(1);
     expect(allText()).not.toMatch(/Step \d of \d/);
+  });
+});
+
+describe('200% text and dark mode', () => {
+  beforeEach(() => useSettings.setState({ onboarded: false }));
+  const setScale = (fontScale: number) => {
+    const w = Dimensions.get('window');
+    act(() => {
+      Dimensions.set({ window: { ...w, width: 393, fontScale }, screen: { ...w, width: 393, fontScale } });
+    });
+  };
+  afterEach(() => setScale(1));
+
+  it.each(['light', 'dark'] as const)('%s at 200%%: the welcome keeps its four lines and both buttons; the last step keeps its consequence line', (theme) => {
+    useSettings.setState({ theme });
+    setScale(2);
+    mount(<Onboarding />);
+    for (const line of ['Think like an IS auditor.', 'Your daily plan, built around your exam date.', 'About 20 min a day.', 'Progress shown as a range, never a promise.', 'No account. Everything stays on your phone.']) {
+      expect(allText()).toContain(line);
+    }
+    expect(pressable(/^Get started$/)).toHaveLength(1);
+    expect(pressable(/^Restore from a backup$/)).toHaveLength(1);
+    toStartingPoint();
+    press(/^Skip this question$/);
+    expect(allText()).toMatch(/No date yet: your plan starts at about 20 min a day\./);
+    expect(pressable(/^Start my first questions$/)).toHaveLength(1);
+    // The numbered steps are headers a screen reader can jump to.
+    expect(root().findAll((n) => n.props.accessibilityRole === 'header' && n.props.accessibilityLabel === 'When is your exam?').length).toBeGreaterThan(0);
   });
 });

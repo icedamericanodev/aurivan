@@ -90,9 +90,18 @@ afterEach(() => {
   r = undefined;
 });
 
+/** 45 answered questions: enough for a range, so Today's readiness row is there (Day 0 shows none). */
+const answeredEnough = () =>
+  act(() => {
+    const answers: Record<string, { attempts: number; correctCount: number; lastCorrect: boolean; lastAt: number }> = {};
+    getAllQuestions('cisa').slice(0, 45).forEach((q) => (answers[q.id] = { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: Date.now() - 86_400_000 }));
+    useProgress.setState((st) => ({ byCert: { ...st.byCert, cisa: { ...st.byCert.cisa!, answers } } }));
+  });
+
 describe('Today', () => {
   it('T3: with the Exam-ready panel, the rings appear once (in the panel), never twice', () => {
     mockReady = true;
+    answeredEnough();
     mount(<Today />);
     expect(root().findAllByType(GrowthRings)).toHaveLength(1);
     // The panel's own rings: sap on the forest track (mobile 1.9 grows them with the moment).
@@ -102,6 +111,7 @@ describe('Today', () => {
   });
 
   it('T3: without the panel, the readiness row keeps its rings', () => {
+    answeredEnough();
     mount(<Today />);
     expect(root().findAllByType(GrowthRings)).toHaveLength(1);
     // Mobile 1.21: the condensed readiness row draws the small `row` rings.
