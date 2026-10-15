@@ -4,7 +4,7 @@
     "slug": "aurivan",
     "owner": "icedamericanodev",
     "scheme": "kaisip",
-    "version": "1.23.0",
+    "version": "1.24.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -57,7 +57,17 @@
           }
         }
       ],
-      "expo-notifications"
+      "expo-notifications",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableMinifyInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true,
+            "extraProguardRules": "# KaiSip: Bouncy Castle (used by expo-updates) has desktop-only LDAP code that\n# refers to javax.naming, which Android does not have. That code never runs on\n# a phone, so R8 must not stop the build over the missing classes.\n-dontwarn javax.naming.**\n"
+          }
+        }
+      ]
     ],
     "runtimeVersion": {
       "policy": "fingerprint"
@@ -65,10 +75,7 @@
     "updates": {
       "url": "https://u.expo.dev/992746e8-946f-49c0-8a95-67e1e80b2272",
       "checkAutomatically": "ON_LOAD",
-      "fallbackToCacheTimeout": 0,
-      "requestHeaders": {
-        "expo-channel-name": "preview"
-      }
+      "fallbackToCacheTimeout": 0
     },
     "extra": {
       "eas": {

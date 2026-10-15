@@ -30,6 +30,11 @@
  * button mid-screen). The back-fill line is an InviteRow (the green rule is
  * the coach's voice only). Mock exams has no "See report" of its own any
  * more: the Readiness section's is the one, and each mock row opens it too.
+ * Mobile 1.24 (honest readiness): under 30 answers in a domain its legend shows a
+ * word (Building under 70, Steady 70 to 79, Strong 80 and up) instead of a number
+ * that has not earned its precision; from 30 answers it is the number with "%" and
+ * "latest tries" (engine/domainBand.ts). What went up since the last look is said
+ * ONCE under the rings, not on every row. "Badges" and "Field notes" are one row.
  * Uplift Phase 6 (accounts, built OFF): in a cloud build only, the first row
  * of Help and feedback is "Sync across devices" (components/account.tsx).
  * With the flag off (every build today) nothing here changes.
@@ -37,8 +42,8 @@
 import { router } from 'expo-router';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
-import { boundsLabel, DomainRings, RINGS_NOTE, ringsSpoken } from '../../components/journey';
-import { useGrowth, useScreenFocus } from '../../components/motion';
+import { boundsLabel, DomainRings, RINGS_NOTE, ringsChangeLine, ringsSpoken } from '../../components/journey';
+import { FadeIn, useGrowth, useScreenFocus } from '../../components/motion';
 import { creditSubtitle } from '../../components/help';
 import { AccountSection } from '../../components/account';
 import { BoardRow } from '../../components/board';
@@ -54,6 +59,7 @@ import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
 import { mockSubtitle } from '../../components/readinessReport';
 import { rangeLabel, rangeSpoken, readinessRange } from '../../engine/readinessRange';
 import { mockPct } from '../../engine/readinessReport';
+import { BANDS_LINE, domainFigure, LATEST_TRIES_LABEL } from '../../engine/domainBand';
 import { REVIEW_UNIT } from '../../engine/srs';
 import { dayKey } from '../../engine/streak';
 import { guardedStart, reviewSubtitle, startReview } from '../../lib/sessions';
@@ -82,6 +88,10 @@ export default function You() {
   const mastered = readiness.domains.reduce((s, d) => s + d.mastered, 0);
   const openMistakes = Object.values(progress.mistakes).filter((m) => !m.resolved).length;
   const values = readiness.domains.map((d) => (d.answered ? d.mastery : null));
+  // Mobile 1.24: a word below 30 answers in a domain, the number from 30 (engine/domainBand.ts).
+  const figures = readiness.domains.map((d) => domainFigure(d.answered, Math.round(d.mastery * 100)));
+  const anyBand = figures.some((f) => f.banded);
+  const anyNumber = figures.some((f) => !f.banded && f.text !== '–');
   const growth = useMindsetGrowth(cert.id, progress);
   // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
   const { dueItems: creditItems } = useReports();
@@ -119,14 +129,18 @@ export default function You() {
   // "+4" only for what went up since a real last look (not the day's count-up
   // from 0; a first rise from all zeros does count).
   const sinceLook = rings.play && rings.since === true;
+  // What went up, per domain. A domain shown as a word ("Building", under 30 answers) shows no number,
+  // so it gets no "+12" either (mobile 1.24): only the domains that show a number are counted.
+  const ups = ringValues.map((v, i) => (figures[i].banded ? 0 : v - rings.from[i]));
   // The same "+4"s in words: the legend is hidden from screen readers, so the rings' label says them.
   const grewSpoken = sinceLook
     ? cert.domains
-        .map((d, i) => ({ d, up: ringValues[i] - rings.from[i] }))
+        .map((d, i) => ({ d, up: ups[i] }))
         .filter((x) => x.up > 0)
         .map((x) => `${x.d.short} up ${x.up}`)
         .join(', ')
     : '';
+  const changeLine = sinceLook ? ringsChangeLine(cert, ups) : null;
   const statRoll = (k: number, from: string) => ({ play: stats.play, from, run: stats.run, delay: motion.dur.select + k * motion.stagger.stat });
   const plant = usePlantView();
   // The same object while the look is unchanged: the memoised plant skips re-rendering (performance, 1.15.x).
@@ -158,8 +172,8 @@ export default function You() {
           cert={cert}
           values={values}
           grow={{ play: rings.play, from: rings.from.map((v) => v / 100), run: rings.run }}
-          delta={sinceLook ? (i) => ringValues[i] - rings.from[i] : undefined}
-          accessibilityLabel={`Estimated readiness ${rangeSpoken(range)}. ${ringsSpoken(cert, values)}.${grewSpoken ? ` Since you last looked: ${grewSpoken}.` : ''}`}
+          legendValue={(i) => figures[i].text}
+          accessibilityLabel={`Estimated readiness ${rangeSpoken(range)}. ${ringsSpoken(cert, values, (i) => figures[i].spoken)}.${grewSpoken ? ` Since you last looked: ${grewSpoken}.` : ''}`}
           center={
             range.enough ? (
               <View style={{ alignItems: 'center' }}>
@@ -174,7 +188,17 @@ export default function You() {
             )
           }
         />
+        {/* What went up, said once under the rings (mobile 1.24); the rings' own label says it aloud too. */}
+        {changeLine && (
+          <FadeIn rise={false} dur="select" delay={motion.dur.select + RINGS_SETTLED_MS}>
+            <T v="caption" color={c.accentText} style={{ marginTop: space.md }}>{changeLine}</T>
+          </FadeIn>
+        )}
         <T v="meta" style={{ marginTop: space.md }}>{RINGS_NOTE}</T>
+        {/* Say what the word or the number means, once (honest readiness, 1.24). Words and numbers mixed:
+            both lines, so the "%" figures keep their "latest tries" label. */}
+        {anyBand && <T v="meta" style={{ marginTop: space.xs }}>{BANDS_LINE}</T>}
+        {anyNumber && <T v="meta" style={{ marginTop: space.xs }}>{LATEST_TRIES_LABEL}</T>}
       </Enter>
 
       <Enter i={2} style={{ marginTop: space.xl }}>
@@ -373,11 +397,21 @@ const YouLists = memo(function YouLists({
           accessibilityLabel={`Saved questions, ${saved} saved`}
           onPress={() => router.push('/saved')}
         />
-        {!badgesHidden && (
+        {/* One row for both (mobile 1.24): the badge case has the Field notes shelf and its
+            "See game levels" link. With badges hidden in Settings, only Field notes remains. */}
+        {badgesHidden ? (
+          <ListRow
+            icon={icon(Leaf)}
+            title="Field notes"
+            subtitle="Your level in each game"
+            accessibilityLabel="Field notes. Your level in each game"
+            onPress={() => router.push('/field-notes')}
+          />
+        ) : (
           <ListRow
             icon={icon(BadgeIcon)}
-            title="Badges"
-            subtitle="What you’ve mastered, and what’s next for your exam"
+            title="Badges and field notes"
+            subtitle="What you’ve mastered, and your level in each game"
             trailing={
               <Row gap={space.sm}>
                 {/* A badge earned since the case was last opened: a dot (shape, and spoken), never a number. */}
@@ -385,17 +419,10 @@ const YouLists = memo(function YouLists({
                 {badgeCount ? <Trail value={String(badgeCount)} unit="earned" /> : null}
               </Row>
             }
-            accessibilityLabel={`Badges${newBadge ? ', new badge' : ''}, ${badgeCount ? `${badgeCount} earned` : 'none yet'}. What you've mastered, and what's next for your exam`}
+            accessibilityLabel={`Badges and field notes${newBadge ? ', new badge' : ''}, ${badgeCount ? `${badgeCount} earned` : 'none yet'}. What you've mastered, and your level in each game`}
             onPress={() => router.push('/milestones')}
           />
         )}
-        <ListRow
-          icon={icon(Leaf)}
-          title="Field notes"
-          subtitle={badgesHidden ? 'Your level in each game' : 'Game levels and skill badges'}
-          accessibilityLabel={`Field notes. ${badgesHidden ? 'Your level in each game' : 'Game levels and skill badges'}`}
-          onPress={() => router.push('/field-notes')}
-        />
         {/* Share progress as a row (it was a full-width button mid-screen). */}
         <ListRow
           icon={icon(Share2)}

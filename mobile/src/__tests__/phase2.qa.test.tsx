@@ -369,7 +369,7 @@ describe('J2 mock exam with motion on', () => {
     });
 
     // Navigator: back to Q2 (a backwards turn), its pick still there.
-    press('Question navigator');
+    press('Questions, question navigator');
     expect(btn('Question 1, answered, flagged')).toBeDefined();
     expect(btn('Question 3, not answered, flagged')).toBeDefined();
     press('Question 2, answered');
@@ -404,7 +404,7 @@ describe('J2 mock exam with motion on', () => {
     expect(clock.startsWith(`Time left ${spokenClockCoarse(before.deadline - Date.now())}`)).toBe(true);
 
     // Jump to the last question and finish.
-    press('Question navigator');
+    press('Questions, question navigator');
     press(/^Question 6, /);
     tick(motion.dur.select);
     expect(stem()).toEqual([stemOf(5)]);
@@ -773,7 +773,11 @@ describe('J5 quick fixes', () => {
     expect(rings).toHaveLength(1);
     expect(rings[0].props.weights).toHaveLength(1);
     expect(rings[0].props.mastery[0]).toBeCloseTo(3 / 4);
-    expect(allText()).toContain(`All ${CISA.domains[1].short} · 3 of 4`);
+    // Four questions are a handful (mobile 1.24, UX review S7): the count is said once, in the headline,
+    // and the ring names the domain instead of repeating "All IT Governance · 3 of 4".
+    expect(allText()).toContain('3 of 4 right');
+    expect(allText()).not.toContain(`All ${CISA.domains[1].short} ·`);
+    expect(allText()).toContain(CISA.domains[1].short);
     expect(btn('Practice the one you missed')).toBeDefined();
   });
 

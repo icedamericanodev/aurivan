@@ -110,10 +110,12 @@ describe('growth only from real learning, never down', () => {
     plantFor('cisa', 'lotus', 'Padma');
     answerClean(19);
     expect(checkPlant('cisa')).toBeNull();
+    // Five hours later: answering the same questions again within 4 hours is a retest, not a clean answer (mobile 1.24).
+    jest.setSystemTime(T0 + 5 * 3_600_000);
     answerClean(21);
     expect(checkPlant('cisa')).toBe(2);
     expect(cp().plant!.pending).toBe(2);
-    expect(cp().plant!.reached).toEqual({ sprout: T0 });
+    expect(cp().plant!.reached).toEqual({ sprout: T0 + 5 * 3_600_000 });
     seeGrowth('cisa');
     expect(cp().plant!.pending).toBeUndefined();
     expect(checkPlant('cisa')).toBeNull(); // nothing new: no second moment

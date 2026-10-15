@@ -5,12 +5,20 @@
  * Mobile 1.23 (the owner's mockup A). Top to bottom, in screen-reader order:
  *   header     KaiSip lockup | streak pill + Settings gear
  *   meta line  "Thursday · 38 days to CISA", then the greeting by the hour ("Good morning, Maya" when the learner gave a name; Settings → Your name)
- *   forest     "Today’s plan · about N min", the current item's title, the plan as a checklist
- *              (done struck through, current bold, later quiet), ONE full-width pill
- *              ("Start", or "Continue" once something is done; Play only for a lesson)
- *   readiness  rings + the honest range + "a range not a promise" + "Stage 4 · Rehearse the exam"
- *   tiles      answered · accuracy (You's number) · weakest area ("Not yet" until there is data)
- *   below      your plant, "Also today" (the rest of the plan, real titles), quiet cards
+ *   forest     "Today’s plan · about N min", the current item's title, the rest of the plan as a
+ *              checklist (done struck through, later quiet; nothing when the plan is one item),
+ *              ONE hugging pill ("Start", or "Continue" once something is done or the first set is
+ *              begun; Play only for a lesson)
+ *   readiness  rings + the honest range + "Estimated readiness" (Day 0: nothing; before the range:
+ *              "5 of 40 for your first range"); the stage line only for a few days after it changes
+ *   below      your plant, "Also today" (ONLY the optional mock and anything paused: every other open item
+ *              is already a checklist row), quiet cards
+ *
+ * Mobile 1.24 (first five minutes): the three stat tiles are gone (they said "Not yet" on Day 0 and put
+ * a second percentage beside the range); the optional mock is an "Also today" row, not a checklist row;
+ * the hero title is never repeated as the first checklist row; the readiness disclaimer is on the
+ * report and on one calm card, "Your first readiness range", the first time the range appears; and the
+ * reminder ask gets one second chance here, the day the 3rd study day is done.
  *
  * Your plant (mobile 1.13, Phase 4a): it grows only from real learning. A
  * grow-up gets ONE calm line here (the celebration budget, never Results),
@@ -51,7 +59,8 @@ import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingLine, clearingTitle, PlanChecklist, PlanLeaves, planHero, planIcon, planText, ReadinessRow, todayMinutes } from '../../components/journey';
 import { KaisipLockup } from '../../components/brand';
-import { StatTiles, StreakPill } from '../../components/today';
+import { StreakPill } from '../../components/today';
+import { FirstRangePanel, SecondAskCard } from '../../components/firstSet';
 import { FitCard } from '../../components/fit';
 import { ExamWeekCard } from '../../components/readinessReport';
 import { examWeekCardDue, examWeekCount, examWeekOf } from '../../engine/examWeek';
@@ -61,12 +70,18 @@ import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
 import { Button, Enter, HeroPanel, IconButton, ICON_SIZE, InviteRow, ListRow, Row, Screen, Section, T } from '../../components/ui';
 import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
 import { shouldAskFit } from '../../engine/fit';
+import { firstRangePanelDue, secondAskDue } from '../../engine/firstRun';
 import { STAGE_ORDER } from '../../engine/journey';
 import { aboutMin, spokenMin } from '../../engine/pace';
+import { DAY_MS } from '../../engine/srs';
 import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../../lib/a11y';
 import { greetingWithName } from '../../engine/displayName';
 import { useSettings } from '../../store/settings';
 import { runPlanItem } from '../../lib/actions';
+import { firstSetLeftOf } from '../../lib/firstSet';
+import { firstSetIds } from '../../content/firstSet';
+import { refreshReminders } from '../../lib/reminderSync';
+import { remindersSupported } from '../../lib/reminders';
 import { haptic } from '../../lib/haptics';
 import { useTodayMoments } from '../../lib/moments';
 import { useJourney } from '../../lib/useJourney';
@@ -76,8 +91,9 @@ import { grewLabel, growthBefore, plantCallName, type GrowthLevel } from '../../
 import { dayKey } from '../../engine/streak';
 import { useReports } from '../../lib/useReports';
 import { useProgress } from '../../store/progress';
+import { useSeen } from '../../store/seen';
 import { useSession, type ActiveSession } from '../../store/session';
-import type { PlanItem } from '../../engine/planner';
+import { legacyTitle, type PlanItem } from '../../engine/planner';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -110,6 +126,11 @@ const sectionMinutes = (n: number) => (n > 0 ? aboutMin(n) : undefined);
 function rowShort(item: PlanItem, items: readonly PlanItem[], i: number, due: number | undefined, when: 'today' | 'tomorrow' = 'today'): string {
   return isOptional(items, i) ? `Optional this week · ${aboutMin(itemMinutes(item), true)}` : planText(item, due, when).short;
 }
+
+/** The stage line ("Stage 4 · Rehearse the exam") shows for this many days after the stage changes, then rests. */
+const STAGE_NOTE_DAYS = 3;
+/** A local day key ("2026-10-15") as a whole day number, for counting days between two views. */
+const dayNumber = (key: string) => Math.floor(Date.parse(`${key}T00:00:00Z`) / DAY_MS);
 
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -298,10 +319,21 @@ export default function Today() {
     growthMoment.skip();
   };
 
-  // "Also today": an unfinished session first, then the plan items still to do.
-  const resume = active && !active.finishedAt ? active : null;
-  // While the ready panel shows, the current item is listed here too.
-  const rest = plan.items.map((item, i) => ({ item, i })).filter(({ i }) => !plan.done[i] && (showReady || i !== cur));
+  // "Also today": an unfinished session first, then the optional mock (mobile 1.24: only those).
+  // A paused first set is not listed here: the panel's Start already picks it up where it stopped (mobile 1.24).
+  const firstNow = plan.items[cur]?.kind === 'practice' && plan.items[cur].why === 'first';
+  const resume = active && !active.finishedAt && !(active.firstSet && firstNow) ? active : null;
+  // Every other open item is already a checklist row on the forest panel, so it is never said twice here.
+  // While the ready panel shows there is no checklist, so the open items (the current one too) are listed here.
+  const rest = plan.items.map((item, i) => ({ item, i })).filter(({ i }) => !plan.done[i] && (showReady || isOptional(plan.items, i)));
+  // A first set already begun (paused, or ended early with some still unanswered) says "Continue", not "Start".
+  const firstBegun =
+    firstNow &&
+    ((active?.firstSet && !active.finishedAt && active.certId === j.cert.id) ||
+      (() => {
+        const left = firstSetLeftOf(j.cert.id, j.progress.answers).length;
+        return left > 0 && left < firstSetIds(j.cert.id).length;
+      })());
   const alsoCount = rest.length + (resume ? 1 : 0);
   // The list always shows every item, so a count adds nothing: say the time
   // instead, which is what a busy learner budgets (ui.md T4).
@@ -317,28 +349,73 @@ export default function Today() {
   const dayMinutes = plan.budget ? todayMinutes(plan.items, plan.done) : 0;
   const todayCaption = dayMinutes > 0 ? `Today’s plan · ${aboutMin(dayMinutes, true)}` : 'Today’s plan';
   const curItem = plan.items[cur];
-  // The hero's words: the title names the activity (no count). Its minutes are said once: when this item is
-  // the day's only timed one, the caption's total is its own, so its meta leaves them out (the hint under the
-  // Start pill). The meta line is also SHOWN under the title when it tells the learner something the checklist
-  // does not: a mock's length (always long, never in the day's total) and the starting check's "no score yet,
-  // just a starting point".
+  // The hero's words: the title names the activity (no count) and the meta line under it carries the detail
+  // ("16 of 55 due · most overdue first", "8 questions", a mock's length). Mobile 1.24: the meta always shows,
+  // because the item you are on is no longer ALSO the first checklist row (it was said twice). Its minutes are
+  // said once: when this item is the day's only timed one, the caption's total is its own, so the meta leaves them out.
   const openTimed = plan.items.filter((it, i) => !plan.done[i] && it.kind !== 'mock');
   const minutesSaid = dayMinutes > 0 && openTimed.length === 1 && openTimed[0] === curItem;
   const hero = curItem ? planHero(curItem, j.dueCount, { minutesSaid }) : null;
-  const heroNote =
-    curItem && hero
-      ? curItem.kind === 'mock'
-        ? hero.meta
-        : curItem.kind === 'practice' && curItem.why === 'check'
-          ? planHero(curItem, j.dueCount, { minutesSaid: true }).meta
-          : undefined
-      : undefined;
-  // The stat tiles (mockup A). Accuracy is You's number (the share whose latest try was right); the weakest
-  // area waits for a range with enough data (before that the focus is just Domain 1).
+  const heroNote = curItem && hero ? hero.meta : undefined;
+  // Mobile 1.24: no stat tiles. After the range exists, one quiet line names the weakest area.
   const answeredTotal = j.readiness.domains.reduce((n, d) => n + d.answered, 0);
-  const masteredTotal = j.readiness.domains.reduce((n, d) => n + d.mastered, 0);
-  const accuracy = answeredTotal ? Math.round((masteredTotal / answeredTotal) * 100) : null;
   const weakest = j.range.enough && j.focus ? j.focus : null;
+
+  // The stage line rests unless it is useful: only for STAGE_NOTE_DAYS after the stage changes, and never
+  // for the first stage (its words are the first set's, and the plan already says what to do).
+  const stageIdx = STAGE_ORDER.indexOf(j.stage);
+  const stageKey = `stage:${cert}`;
+  const stageSeen = useSeen((x) => x.values?.[stageKey]);
+  const stageToday = dayNumber(plan.day);
+  useEffect(() => {
+    // Remember when this stage was first seen (a changed stage restarts the count).
+    if (!stageSeen || stageSeen[0] !== stageIdx) useSeen.getState().see(stageKey, [stageIdx, stageToday]);
+  }, [stageSeen, stageIdx, stageKey, stageToday]);
+  const showStage = stageIdx > 0 && (!stageSeen || stageSeen[0] !== stageIdx || stageToday - stageSeen[1] < STAGE_NOTE_DAYS);
+
+  // "Your first readiness range": one calm card the first time the range appears (a learner who restores a
+  // backup with many answers already has a settled range, so it is marked seen without showing).
+  const firstRangeKey = `first-range:${cert}`;
+  const firstRangeSeen = useSeen((x) => (x.moments?.[firstRangeKey] ?? 0) > 0);
+  const firstRangeDue = firstRangePanelDue({ enough: j.range.enough, answered: answeredTotal, seen: firstRangeSeen });
+  useEffect(() => {
+    if (j.range.enough && !firstRangeSeen && !firstRangeDue) useSeen.getState().played(firstRangeKey);
+  }, [j.range.enough, firstRangeSeen, firstRangeDue, firstRangeKey]);
+
+  const firstRangeCard = (
+    <FirstRangePanel cert={j.cert} readiness={j.readiness} onOpen={() => router.push('/readiness')} onDismiss={() => {
+      useSeen.getState().played(firstRangeKey);
+      // The panel unmounts under the focused button: say so, then move focus on (as the second ask does).
+      sayLater('Note hidden.');
+      moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50);
+    }} />
+  );
+
+  // The reminder's one second chance: the day the 3rd study day is done, if reminders are still off.
+  const reminderEnabled = useSettings((x) => x.reminder.enabled);
+  const askedFirst = useSeen((x) => x.reminderAsk?.first);
+  const askedSecond = useSeen((x) => Boolean(x.reminderAsk?.second));
+  const newLearner = useSeen((x) => Boolean(x.reminderAsk?.newLearner));
+  const turnedOff = useSeen((x) => Boolean(x.reminderAsk?.turnedOff));
+  const secondDue = secondAskDue({
+    supported: remindersSupported,
+    enabled: reminderEnabled,
+    studyDays: j.progress.milestones?.days ?? 0,
+    studiedToday: j.progress.milestones?.lastDay === plan.day,
+    first: askedFirst,
+    secondShown: askedSecond,
+    newLearner,
+    turnedOff,
+  });
+  // Latched for this visit (showing it counts it as shown, which would otherwise take it away at once).
+  const [secondVisit, setSecondVisit] = useState(false);
+  if (secondDue && !secondVisit) setSecondVisit(true);
+  useFocusEffect(useCallback(() => () => setSecondVisit(false), []));
+
+  // Keep the next week of reminders fresh: on every visit to Today, and when the plan is cleared (today's is skipped).
+  useEffect(() => {
+    if (focused) refreshReminders().catch(() => {});
+  }, [focused, allDone, plan.day, reminderEnabled]);
 
   // Mobile 1.15: the one "Fit your plan" card for learners from before 1.15.
   // One setup line on Today at a time, and the plant's goes first: on a visit
@@ -439,16 +516,15 @@ export default function Today() {
           <HeroPanel
             caption={todayCaption}
             // "Today's plan, about 17 minutes, 1 of 3 done": the checklist's progress, said once for a screen reader.
-            captionLabel={`${spokenMin(todayCaption)}, ${plan.done.filter(Boolean).length} of ${plan.done.length} done`}
+            captionLabel={`${spokenMin(todayCaption)}, ${countedDone(plan).filter(Boolean).length} of ${countedDone(plan).length} done`}
             title={hero!.title}
             meta={heroNote}
             metaLabel={heroNote ? spokenMin(heroNote) : undefined}
             action={{
-              label: plan.done.some(Boolean) ? 'Continue' : 'Start',
+              label: plan.done.some(Boolean) || firstBegun ? 'Continue' : 'Start',
               onPress: () => runPlanItem(curItem, j.cert.id),
               icon: startIcon(curItem?.kind),
-              hint: heroNote ? hero!.title : `${hero!.title}, ${spokenMin(hero!.meta)}`,
-              full: true,
+              hint: hero!.title,
               // Play only for a lesson; everything else goes forward with an arrow after the label.
               iconTrailing: curItem?.kind !== 'lesson',
             }}
@@ -460,18 +536,25 @@ export default function Today() {
 
       {!allDone && (
         <Enter i={2}>
-          {/* The Exam-ready panel draws the rings itself: once per screen (spec §10). */}
-          <ReadinessRow
-            cert={j.cert}
-            readiness={j.readiness}
-            range={j.range}
-            stage={`Stage ${STAGE_ORDER.indexOf(j.stage) + 1} · ${j.stageLine}`}
-            rings={!showReady}
-            ringsGrowth={ringsGrowth}
-            rangeGrowth={rangeGrowth}
-            onPress={() => router.push('/readiness')}
-          />
-          <StatTiles answered={answeredTotal} accuracy={accuracy} weakest={weakest} />
+          {/* The Exam-ready panel draws the rings itself: once per screen (spec §10). Day 0 has nothing to show yet. */}
+          {answeredTotal > 0 && (
+            <ReadinessRow
+              cert={j.cert}
+              readiness={j.readiness}
+              range={j.range}
+              stage={showStage ? `Stage ${stageIdx + 1} · ${j.stageLine}` : undefined}
+              rings={!showReady}
+              ringsGrowth={ringsGrowth}
+              rangeGrowth={rangeGrowth}
+              onPress={() => router.push('/readiness')}
+            />
+          )}
+          {/* "Your first readiness range": one calm card, right under the range it explains (mobile 1.24). */}
+          {firstRangeDue && <View style={{ marginTop: space.lg }}>{firstRangeCard}</View>}
+          {weakest && answeredTotal > 0 && !firstRangeDue && (
+            // The domain's short name ("IS Operations"), not the tile abbreviation ("IS Ops", spoken "I S ops"): UX review S6.
+            <T v="meta" style={{ marginTop: space.md }}>{`${answeredTotal} answered · weakest area: ${weakest.short}`}</T>
+          )}
           {plantView.plant && (
             // Your plant moved under the facts (mobile 1.23): the rings are the readiness row's picture now.
             <Row gap={space.lg} style={{ alignItems: 'center', marginTop: space.xl }}>
@@ -496,6 +579,8 @@ export default function Today() {
           </Row>
         </Enter>
       )}
+
+      {allDone && firstRangeDue && <View style={{ marginTop: space.xl }}>{firstRangeCard}</View>}
 
       {grown && (
         <Enter i={2} style={{ marginTop: space.xl }}>
@@ -556,7 +641,8 @@ export default function Today() {
                 <ListRow
                   // Mobile 1.20: Play now means a lesson; a set resumes with the plan's practice / mock icons.
                   icon={resume.mode === 'mock' ? <Timer size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} /> : <Target size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                  title={`Resume: ${resume.title}`}
+                  // legacyTitle: a set paused in 1.23 was titled "Starting check…"; it reads "Mixed practice" now.
+                  title={`Resume: ${legacyTitle(resume.title)}`}
                   subtitle={`Question ${resume.index + 1} of ${resume.questionIds.length}`}
                   onPress={() => router.push('/session')}
                   last={rest.length === 0}
@@ -575,6 +661,16 @@ export default function Today() {
               ))}
             </>
           )
+        )}
+        {/* Mobile 1.24: the reminder ask's one second chance (the day the 3rd study day is done). */}
+        {secondVisit && (
+          <View style={{ marginTop: space.xl }}>
+            <SecondAskCard
+              // "Not now" takes the card away (it announces "No reminder set…"): move focus to the section
+              // heading above, after the announcement, as the exam-week card does (UX review B1).
+              onGone={() => moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50)}
+            />
+          </View>
         )}
         {/* Mobile 1.15: one quiet "Fit your plan" card, below the day's study (never above the hero). */}
         {askFit && (

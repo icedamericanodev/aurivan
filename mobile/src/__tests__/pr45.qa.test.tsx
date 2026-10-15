@@ -34,7 +34,6 @@ import Settings from '../app/settings';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { getCertification } from '../content/certifications';
 import { getAllQuestions } from '../content/loader';
-import { lessonsFor } from '../content/lessons';
 import type { Certification } from '../content/types';
 import { addDays } from '../engine/examDay';
 import { DAILY_MINUTES, minutesFromGoal, planTolerance, questionsFor, type DailyMinutes, type Familiarity } from '../engine/fit';
@@ -211,65 +210,51 @@ const ROW: Record<Familiarity, RegExp> = { new: /^New to audit/, some: /^Some IT
 function onboard(start: Start, minutes: DailyMinutes) {
   useSettings.setState({ onboarded: false, examDates: {} });
   mount(<Onboarding />);
-  press(/^Start my plan$/);
+  press(/^Get started$/);
   press(/^Skip$/); // the optional name step (mobile 1.23)
-  press(/^Continue$/); // step 1: CISA is preselected
+  // Mobile 1.24: no exam step (CISA is chosen) and no plant step; the last button starts the first set.
   if (start === 'skipped') press(/^Skip this question$/);
   else {
     press(ROW[start]);
     press(/^Continue$/);
   }
   press(new RegExp(`^${minutes} minutes a day$`));
-  press(/^Continue$/); // step 3: the date stays "In 3 months"
-  press(/^Skip for now$/); // step 4: the plant
+  press(/^Start my first questions$/);
   unmount();
+  // The first set is under way (Today lists it as paused work); these journeys look at the plan, so start clean.
+  useSession.getState().clear();
 }
 
 describe('J1 a new learner: onboarding, then an honest day 1', () => {
   const cases = STARTS.flatMap((s) => DAILY_MINUTES.map((m) => [s, m] as const));
 
-  it.each(cases)('%s at %i min: onboarding saves the fit, and day 1 matches the spec', (start, minutes) => {
+  it.each(cases)('%s at %i min: onboarding saves the fit, and day 1 is the same first five for everyone', (start, minutes) => {
     onboard(start, minutes);
     const st = useSettings.getState();
     expect(st).toMatchObject({ onboarded: true, activeCertId: 'cisa', dailyMinutes: minutes, fitPrompt: 'answered' });
     expect(st.familiarity).toBe(start === 'skipped' ? undefined : start);
-    expect(router.replace).toHaveBeenCalledWith('/home');
+    // Straight into the first five questions.
+    expect(router.replace).toHaveBeenCalledWith('/session');
 
     mount(<Today />);
     const plan = storedPlan();
     expect(plan.budget).toBe(minutes);
-    if (start === 'new') {
-      // Teach before testing: the first lesson in order, then 5 questions on its domain.
-      const first = lessonsFor('cisa')[0];
-      expect(plan.items).toEqual([
-        { kind: 'lesson', lessonId: first.id, title: first.title, minutes: first.minutes },
-        { kind: 'practice', count: 5, label: `5 questions · ${cisa.domains.find((d) => d.id === first.domainId)!.short}`, domainId: first.domainId, why: 'learn' },
-      ]);
-      expect(allText()).not.toMatch(/Starting check/);
-    } else {
-      // Everyone else: the starting check, sized to the day (never more than the 20 it needs).
-      const n = Math.min(20, questionsFor(minutes));
-      expect(plan.items).toEqual([{ kind: 'practice', count: n, label: `Starting check: ${n} mixed questions`, why: 'check' }]);
-      expect(allText()).toContain('no score yet, just a starting point');
-    }
-    // No score on day 1, whatever the start.
-    expect(allText()).toMatch(/more answers until your readiness range/);
+    // Mobile 1.24: no lesson first, no 20-question check, whatever the start and the minutes.
+    expect(plan.items).toEqual([{ kind: 'practice', count: 5, label: 'Your first five', why: 'first' }]);
+    expect(allText()).toContain('Your first five');
+    expect(allText()).toContain('5 questions, no timer');
+    expect(allText()).not.toMatch(/\bcheck\b|diagnos/i);
+    // No score and no empty tiles on day 1: nothing about the range until there is an answer.
+    expect(allText()).not.toMatch(/Not yet|until your readiness range|for your first range/);
     // "About N min today" is the sum of what is listed, and fits the day.
     const sum = plan.items.reduce((n, i) => n + itemMinutes(i), 0);
     expect(todayMinutesShown()).toBe(sum);
     expect(sum).toBeLessThanOrEqual(budgetCap(minutes));
-    // The hero's own "About N min" agrees with the item it shows. Mobile 1.21: the minutes are
-    // said once, so when the hero is the day's only timed item the caption's "About N min today"
-    // carries them and the meta leaves them out.
-    // Mobile 1.23: the hero's minutes are in the Start pill's spoken hint (the checklist lines carry counts, not minutes).
+    // The Start pill's spoken hint agrees with the item it shows (the minutes are said once, in the caption).
     const hero = plan.items[0];
     const hint = root().findAll((n) => typeof n.props.accessibilityHint === 'string' && /Start|Continue/.test(String(n.props.accessibilityLabel))).map((n) => n.props.accessibilityHint as string)[0] ?? '';
-    if (plan.items.length === 1) {
-      expect(todayMinutesShown()).toBe(itemMinutes(hero));
-      expect(hint).not.toMatch(/About \d+ minutes ·/);
-    } else {
-      expect(hint).toContain(hero.kind === 'lesson' ? `Lesson · ${itemMinutes(hero)} minutes` : `About ${itemMinutes(hero)} minutes ·`);
-    }
+    expect(todayMinutesShown()).toBe(itemMinutes(hero));
+    expect(hint).not.toMatch(/About \d+ minutes ·/);
     // A learner who just answered never sees the existing-learner card.
     expect(byTestID('fit-card')).toHaveLength(0);
   });
@@ -287,13 +272,19 @@ describe('J1 a new learner: onboarding, then an honest day 1', () => {
     expect(mocks).toBeGreaterThan(more);
   });
 
-  it('a new learner with 45 minutes is still offered only about 9 minutes on day 1 (spec AC1, observation)', () => {
-    // By the spec (§2.3: lesson + 5 questions), but most of the learner's stated time goes unused for
-    // the first ~4 days (5 answers a day towards the 20 that end the "diagnose" stage). Reported as an
-    // observation for the product owner, not a bug.
+  it('day 1 is short on purpose (about 6 minutes at any length); from day 2 the plan uses the minutes they chose', () => {
     onboard('new', 45);
     mount(<Today />);
-    expect(todayMinutesShown()).toBeLessThan(15);
+    expect(todayMinutesShown()).toBeLessThan(10);
+    unmount();
+    // Day 2: five answers are in, so the lesson and questions fit the 45-minute day (it used to wait four days).
+    act(() => {
+      useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: completeCert({ ...selectCert(s, 'cisa'), answers: seedAnswers(1, 1) }) } }));
+      useProgress.setState({ days: {} });
+    });
+    mount(<Today />);
+    expect(storedPlan().items.map((i) => i.kind)).toEqual(['lesson', 'practice']);
+    expect(todayMinutesShown()).toBeGreaterThanOrEqual(12);
   });
 });
 
@@ -408,17 +399,27 @@ describe('J2 the Exam-focused path', () => {
     expect(storedPlan().items.some((i) => i.kind === 'mock')).toBe(false);
     unmount();
     mount(<Today />);
-    expect(allText()).toMatch(/Lesson · \S/); // the lesson is on the checklist; its minutes are in the plan's total and in "Also today"
+    // Mobile 1.24: the lesson leads the plan, so it is the panel's title (not repeated as a checklist row).
+    const lesson = storedPlan().items.find((i) => i.kind === 'lesson')!;
+    expect(allText()).toContain((lesson as { title: string }).title);
     unmount();
     mount(<Practice />);
     const [mocks, more] = sectionOrder(['Mock exams', 'More ways to practice']);
     expect(mocks).toBeGreaterThan(more);
   });
 
-  it('an explicit Exam-focused ON beats "New to audit" (no lessons, starting check on day 1)', () => {
+  it('an explicit Exam-focused ON beats "New to audit" (no lessons; day 1 is the first five, day 2 the rest of the first 20)', () => {
     useSettings.setState({ fitPrompt: 'answered', familiarity: 'new', examFocused: true, dailyMinutes: 20 });
     mount(<Today />);
-    expect(storedPlan().items).toEqual([{ kind: 'practice', count: 16, label: 'Starting check: 16 mixed questions', why: 'check' }]);
+    expect(storedPlan().items).toEqual([{ kind: 'practice', count: 5, label: 'Your first five', why: 'first' }]);
+    unmount();
+    // Day 2: five answers in, the day is sized to the minutes, with a plain label and still no lesson.
+    act(() => {
+      useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: completeCert({ ...selectCert(s, 'cisa'), answers: seedAnswers(1, 1) }) } }));
+      useProgress.setState({ days: {} });
+    });
+    mount(<Today />);
+    expect(storedPlan().items).toEqual([{ kind: 'practice', count: 15, label: '15 mixed questions', why: 'check' }]);
   });
 });
 
@@ -559,10 +560,12 @@ describe('J3 an existing 1.14 learner upgrades', () => {
 describe('J4 Settings → Your study changes the next plan', () => {
   it('with something ticked: today stays, the next day uses the new minutes and start', () => {
     useSettings.setState({ fitPrompt: 'answered', dailyMinutes: 20, familiarity: 'some' });
+    // Five answers are in (day 1 is done), so the next day is a normal, sized plan.
+    setCert({ answers: seedAnswers(1, 1) });
     act(() => {
       useProgress.getState().startDay({
         day: today(), certId: 'cisa', budget: 20,
-        items: [{ kind: 'practice', count: 8, label: 'Starting check: 8 mixed questions', why: 'check' }, { kind: 'practice', count: 8, label: '8 mixed questions' }],
+        items: [{ kind: 'practice', count: 8, label: '8 mixed questions', why: 'check' }, { kind: 'practice', count: 8, label: '8 mixed questions' }],
         done: [true, false], start: { score: 0, domains: {} }, answered: 8, correct: 5, minutes: 9,
       });
     });
@@ -598,7 +601,8 @@ describe('J4 Settings → Your study changes the next plan', () => {
     press(/^Daily time, /);
     press(/^10 minutes a day$/);
     expect(storedPlan()).toMatchObject({ budget: 10, answered: 3, correct: 2, minutes: 4 });
-    expect(storedPlan().items).toEqual([{ kind: 'practice', count: 8, label: 'Starting check: 8 mixed questions', why: 'check' }]);
+    // Nothing answered yet: day 1 is the first five, whatever the minutes.
+    expect(storedPlan().items).toEqual([{ kind: 'practice', count: 5, label: 'Your first five', why: 'first' }]);
   });
 
   it('answers banked toward an unticked item are kept when the fit changes', () => {
@@ -625,9 +629,11 @@ describe('J4 Settings → Your study changes the next plan', () => {
 describe('J5 edge cases', () => {
   it('no exam date: a sized plan, no countdown needed', () => {
     useSettings.setState({ fitPrompt: 'answered', dailyMinutes: 30, examDates: {} });
+    // Past day 1 (five answers in): the rest of the first 20 fills the day, 15 questions.
+    setCert({ answers: seedAnswers(1, 1) });
     mount(<Today />);
     expect(storedPlan().budget).toBe(30);
-    expect(todayMinutesShown()).toBe(24);
+    expect(todayMinutesShown()).toBe(18);
   });
 
   it.each([
@@ -636,12 +642,14 @@ describe('J5 edge cases', () => {
     [10, 55, 'Light review · 8 questions'],
     [45, 3, 'Light review · 3 questions'],
   ])('exam tomorrow at %i min with %i due: one light item (%s), never a cram', (minutes, due, planLabel) => {
-    // Mobile 1.23: the panel's title never holds a count ("Light review"); the count is on its checklist line.
+    // Mobile 1.23: the panel's title never holds a count ("Light review"); mobile 1.24: the count is on the meta line under it.
     useSettings.setState({ fitPrompt: 'answered', dailyMinutes: minutes as DailyMinutes, familiarity: 'experienced', examDates: { cisa: addDays(today(), 1) } });
     if (due) setCert({ review: seedDue(due) });
     mount(<Today />);
     expect(storedPlan().items).toHaveLength(1);
-    expect(allText()).toContain(planLabel);
+    const [title, count] = planLabel.split(' · ');
+    expect(allText()).toContain(title);
+    expect(allText()).toContain(count);
     expect(todayMinutesShown()).toBeLessThanOrEqual(budgetCap(minutes));
   });
 
@@ -658,10 +666,10 @@ describe('J5 edge cases', () => {
     setCert({ review: seedDue(300) });
     mount(<Today />);
     expect(storedPlan().items).toEqual([{ kind: 'review', count: 8, due: 300, capped: true }]);
-    // Mobile 1.23: the title names the activity; today's share of the queue is on its checklist line ("8 of 300 due"),
-    // the order is the Start pill's hint, and the minutes are said once (the caption's, this item's alone).
-    expect(allText()).toContain('Spaced review · 8 of 300 due');
-    expect(root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string).some((h) => h.includes('8 of 300 due · most overdue first'))).toBe(true);
+    // The title names the activity; today's share of the queue and the order are the line under it
+    // (mobile 1.24), and the minutes are said once (the caption's, this item's alone).
+    expect(allText()).toContain('Spaced review');
+    expect(allText()).toContain('8 of 300 due · most overdue first');
     expect(todayMinutesShown()).toBe(10);
   });
 
@@ -691,14 +699,21 @@ describe('J5 edge cases', () => {
     expect(Number(m![1])).toBeLessThanOrEqual(budgetCap(20));
   });
 
-  it('a single-domain certification plans a sized day for every start (no lessons: "new" falls back to the check)', () => {
+  it('a single-domain certification plans a sized day for every start (no lessons: "new" falls back to the plain mixed set)', () => {
     const solo = { ...cisa, id: 'solo', domains: [{ ...cisa.domains[0], weight: 100 }] } as Certification;
     for (const familiarity of ['new', 'some', 'experienced', undefined] as const) {
       for (const minutes of DAILY_MINUTES) {
         const cp = completeCert({});
         const j = buildJourney({ cert: solo, progress: cp, readiness: computeReadiness(solo, cp.answers), dueCount: 0, daysLeft: 60, dailyMinutes: minutes, familiarity, streak: useProgress.getState().streak, now: Date.now() });
         expect(j.stage).toBe('diagnose');
-        expect(j.plan).toEqual([{ kind: 'practice', count: Math.min(20, questionsFor(minutes)), label: `Starting check: ${Math.min(20, questionsFor(minutes))} mixed questions`, why: 'check' }]);
+        // Nothing answered: the first five. With five answers in: the rest of the first 20, sized to the day.
+        expect(j.plan).toEqual([{ kind: 'practice', count: 5, label: 'Your first five', why: 'first' }]);
+        const five: Record<string, AnswerRecord> = {};
+        getAllQuestions('cisa').filter((q) => q.domainId === '1').slice(0, 5).forEach((q) => (five[q.id] = { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: Date.now() - DAY }));
+        const cp5 = completeCert({ answers: five });
+        const j5 = buildJourney({ cert: solo, progress: cp5, readiness: computeReadiness(solo, five), dueCount: 0, daysLeft: 60, dailyMinutes: minutes, familiarity, streak: useProgress.getState().streak, now: Date.now() });
+        const n = Math.min(15, questionsFor(minutes));
+        expect(j5.plan).toEqual([{ kind: 'practice', count: n, label: `${n} mixed questions`, why: 'check' }]);
       }
       // Past the check: one domain, weak.
       const answers: Record<string, AnswerRecord> = {};
@@ -841,18 +856,17 @@ describe('J7 the plant and the badges are unaffected by the fit', () => {
     expect(byTestID('fit-card')).toHaveLength(0);
   });
 
-  it('onboarding with "Plant it" saves the plant and the fit in one tap', () => {
+  it('onboarding saves the fit in one tap and asks nothing about a plant (a seed comes after the first set)', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
-    press(/^Start my plan$/);
+    press(/^Get started$/);
     press(/^Skip$/); // the optional name step (mobile 1.23)
-    press(/^Continue$/);
     press(/^Experienced practitioner/);
     press(/^Continue$/);
     press(/^45 minutes a day$/);
-    press(/^Continue$/);
-    press(/^Plant it$/);
+    press(/^Start my first questions$/);
     expect(useSettings.getState()).toMatchObject({ onboarded: true, familiarity: 'experienced', dailyMinutes: 45, fitPrompt: 'answered' });
-    expect(selectCert(useProgress.getState(), 'cisa').plant).toBeDefined();
+    expect(selectCert(useProgress.getState(), 'cisa').plant).toBeUndefined();
   });
+
 });

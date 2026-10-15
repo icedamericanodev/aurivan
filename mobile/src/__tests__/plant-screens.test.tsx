@@ -8,7 +8,7 @@
  *   back-fill line once, the resting line, change species and rename;
  * - Settings: Show my plant (off = no plant and no prompts anywhere) and
  *   Quiet look; the Reset alert says what happens to the plant;
- * - onboarding: a skippable "Plant it" step with all 13 species;
+ * - onboarding: no plant step any more (mobile 1.24: a seed is planted after the first set; the picker has all 13 species);
  * - never on question, mock, lesson or game screens; never "stage"; never
  *   a guilt or needs word.
  */
@@ -169,10 +169,18 @@ describe('never on question, mock, lesson or game screens', () => {
 describe('Today', () => {
   it('the plant replaces the small rings and opens Your plant', () => {
     setPlant(plantNew('sunflower', 'Sunny', Date.now()));
+    // Enough answers for a range, so the readiness row has something to say (Day 0 shows no readiness row).
+    act(() => {
+      const answers: Record<string, { attempts: number; correctCount: number; lastCorrect: boolean; lastAt: number }> = {};
+      for (const d of ['1', '2', '3', '4', '5']) {
+        getDomainQuestions('cisa', d).slice(0, 9).forEach((q) => (answers[q.id] = { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: Date.now() - 86_400_000 }));
+      }
+      useProgress.setState((st) => ({ byCert: { ...st.byCert, cisa: { ...st.byCert.cisa!, answers } } }));
+    });
     mount(<Today />);
     const plant = byTestID('today-plant');
     expect(plant).toHaveLength(1);
-    expect(plant[0].props.accessibilityLabel).toBe('Sunny, your sunflower. Growth: Seed, 1 of 6.');
+    expect(plant[0].props.accessibilityLabel).toMatch(/^Sunny, your sunflower\. Growth: \w+, \d of 6\./);
     // The readiness words keep their own stop beside it.
     expect(labels().some((l) => l.startsWith('Estimated readiness'))).toBe(true);
     press(/^Sunny, your sunflower/);
@@ -393,42 +401,14 @@ describe('Settings', () => {
 });
 
 describe('onboarding', () => {
-  // Mobile 1.15: the plant step is step 4 of 4, after "Where are you starting from?" (skipped here) and the date.
-  const toStep3 = () => {
-    press(/^Start my plan$/);
+  it('has no plant step any more: nothing is planted, and Today does not nudge', () => {
+    useSettings.setState({ onboarded: false });
+    mount(<Onboarding />);
+    press(/^Get started$/);
     press(/^Skip$/); // the optional name step (mobile 1.23)
-    press(/^Continue$/);
     press(/^Skip this question$/);
-    press(/^Continue$/);
-  };
-
-  it('a skippable "Plant it" step after the exam date', () => {
-    useSettings.setState({ onboarded: false });
-    mount(<Onboarding />);
-    toStep3();
-    expect(allText()).toMatch(/Step 4 of 4/);
-    expect(allText()).toMatch(/never wilts/);
-    const grid = root().findAll((n) => n.props.accessibilityRole === 'radiogroup')[0];
-    act(() => {
-    grid.props.onLayout({ nativeEvent: { layout: { width: 353, height: 0 } } });
-  });
-    expect(root().findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function')).toHaveLength(13);
-    press(/^Lotus\./);
-    press(/^Plant it$/);
-    expect(useSettings.getState().onboarded).toBe(true);
-    expect(cp().plant).toMatchObject({ species: 'lotus', growth: 1 });
-    // Mobile 1.14 (M8): a short planting moment first, then Today.
-    expect(allText()).toMatch(/Planted/);
-    expect(router.replace).not.toHaveBeenCalled();
-    press(/^Start studying$/);
-    expect(router.replace).toHaveBeenCalledWith('/home');
-  });
-
-  it('Skip for now: no plant, and no nudge on Today later', () => {
-    useSettings.setState({ onboarded: false });
-    mount(<Onboarding />);
-    toStep3();
-    press(/^Skip for now$/);
+    expect(allText()).not.toMatch(/Plant it|Planted|never wilts/);
+    press(/^Start my first questions$/);
     expect(useSettings.getState().onboarded).toBe(true);
     expect(cp().plant).toBeUndefined();
     expect(useProgress.getState().plantSettings?.promptHidden).toBe(true);

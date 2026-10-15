@@ -338,6 +338,11 @@ export function ReportSheet({ visible, certId, target, reportedAt, onClose, onOp
   // Logged once per sheet: "Try again" or a second way out doesn't add a second entry.
   const logged = useRef(false);
 
+  const titleRef = useRef<View>(null);
+  useEffect(() => {
+    if (visible) moveFocus(titleRef, 500);
+  }, [visible]);
+
   const askAnswer = Boolean(target.options?.length && target.perm && reason && ASKS_FOR_ANSWER.has(reason));
   const input = {
     target,
@@ -382,7 +387,10 @@ export function ReportSheet({ visible, certId, target, reportedAt, onClose, onOp
 
   return (
     <SheetFrame visible={visible} onClose={() => onClose(panel !== null)}>
-      <T v="display" accessibilityRole="header">{REPORT_LABEL}</T>
+      {/* The first stop is the title, not the Close button (mobile 1.24): focus moves here as the sheet opens. */}
+      <View ref={titleRef} accessible accessibilityRole="header" accessibilityLabel={REPORT_LABEL}>
+        <T v="display">{REPORT_LABEL}</T>
+      </View>
       <T v="meta" style={{ marginTop: space.xs }}>{sheetMeta(target)}</T>
       {reportedAt !== undefined && !panel && (
         <T v="small" color={c.ink2} style={{ marginTop: space.md }}>
@@ -406,6 +414,8 @@ export function ReportSheet({ visible, certId, target, reportedAt, onClose, onOp
           )}
 
           <GroupLabel>What’s wrong?</GroupLabel>
+          {/* The hint sits HERE, with the choice it is about (mobile 1.24), not under the disabled button far below. */}
+          {!reason && <T v="meta" style={{ marginBottom: space.xs }}>{PICK_FIRST}</T>}
           <View accessibilityRole="radiogroup" accessibilityLabel="What’s wrong?">
             {reasons.map((r, i) => (
               <RadioRow key={r.code} title={r.label} checked={reason === r.code} onPress={() => setReason(r.code)} last={i === reasons.length - 1} />
@@ -478,9 +488,6 @@ export function ReportSheet({ visible, certId, target, reportedAt, onClose, onOp
             disabled={!reason || busy}
             onPress={send}
           />
-          {!reason && (
-            <T v="meta" center style={{ marginTop: space.xs }}>{PICK_FIRST}</T>
-          )}
           <Gap h={space.sm} />
           <Button kind="secondary" label="Cancel" onPress={() => onClose(false)} />
           <OwnWayButton disabled={!reason || busy} onPress={ownWay} />

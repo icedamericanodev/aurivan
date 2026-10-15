@@ -365,7 +365,7 @@ describe('Learn’s ✓ for a lesson just finished', () => {
     expect(style(root().find((n) => isHost(n) && n.props.importantForAccessibility === 'no-hide-descendants')).opacity).toBe(1);
   });
 
-  it('the Up next row is an L2 card (mobile 1.21), so it takes the same `soft` press tint as every row', () => {
+  it('the Up next row (no card since mobile 1.24) takes the same `soft` press tint as every row', () => {
     mockParams = { domain: '1' };
     mount(<Learn />);
     const tints = root()

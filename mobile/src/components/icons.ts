@@ -55,6 +55,8 @@ export { default as Target } from 'lucide-react-native/icons/target';
 export { default as MilestoneIcon } from 'lucide-react-native/icons/milestone';
 // Mobile 1.10: You → Badges (a scalloped seal, like the medallions' round seal).
 export { default as BadgeIcon } from 'lucide-react-native/icons/badge';
+// Mobile 1.24: the mock footer's Questions button (the navigator).
+export { default as LayoutGrid } from 'lucide-react-native/icons/layout-grid';
 export { default as Leaf } from 'lucide-react-native/icons/leaf';
 export { default as BookA } from 'lucide-react-native/icons/book-a';
 export { default as TreeDeciduous } from 'lucide-react-native/icons/tree-deciduous';

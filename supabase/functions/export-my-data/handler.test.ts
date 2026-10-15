@@ -44,7 +44,7 @@ Deno.test('no recent sign-in needed: a day-old sign-in exports, then the hourly 
   const { admin, run } = setup();
   const res = await run(post({}, admin.issue(USER_A, { amrAgoMs: 24 * HOUR })));
   assert.equal(res.status, 200);
-  assert.equal(((await res.json()) as { app: string }).app, 'aurivan');
+  assert.equal(((await res.json()) as { app: string }).app, 'kaisip');
   const again = await run(post({}, admin.issue(USER_A, { amrAgoMs: null })));
   assert.equal(again.status, 429);
 });
@@ -100,7 +100,7 @@ Deno.test('happy path: the learner’s own account data, as a no-store JSON down
   assert.match(res.headers.get('content-disposition') ?? '', /attachment/);
   assert.equal(res.headers.get('access-control-allow-origin'), null);
   assert.deepEqual(await res.json(), {
-    app: 'aurivan',
+    app: 'kaisip',
     schema: 1,
     exportedAt: new Date(NOW).toISOString(),
     appVersion: '1.17.0',

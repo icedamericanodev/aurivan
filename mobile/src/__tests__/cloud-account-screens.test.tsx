@@ -599,7 +599,7 @@ describe('A5: Download my data, A6: sign out', () => {
     mount(<Account />);
     await press('Download my data, A copy of everything your account holds, as a file.');
     expect(mockWritten).toHaveLength(1);
-    expect(JSON.parse(mockWritten[0])).toMatchObject({ app: 'aurivan', account: { email: 'maya@example.com' } });
+    expect(JSON.parse(mockWritten[0])).toMatchObject({ app: 'kaisip', account: { email: 'maya@example.com' } });
     expect(allText()).toContain('Your data file is ready.');
     await press('Download my data, A copy of everything your account holds, as a file.');
     expect(allText()).toContain('You can download your data once an hour. Try again later.');

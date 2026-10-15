@@ -24,7 +24,7 @@ import {
   utf8Bytes,
   type BackupFile,
 } from '../engine/backup';
-import { DAILY_ID, weeklyId } from '../engine/reminders';
+import { DAILY_ID, rollingId } from '../engine/reminders';
 import { PROGRESS_VERSION, SETTINGS_VERSION } from '../engine/saveMigrations';
 import { canUndo, checkBackupText, currentBackup, pickBackup, pruneUndo, restoreBackup, saveBackup, undoRestore } from '../lib/backup';
 import { useBackup } from '../store/backup';
@@ -43,7 +43,7 @@ const mockScheduled = new Map<string, { identifier: string; trigger?: unknown }>
 const mockPermission = { granted: true, grantOnAsk: true, asked: 0 };
 jest.mock('expo-notifications', () => ({
   AndroidImportance: { DEFAULT: 5 },
-  SchedulableTriggerInputTypes: { DAILY: 'daily', WEEKLY: 'weekly' },
+  SchedulableTriggerInputTypes: { DATE: 'date' },
   setNotificationChannelAsync: async () => null,
   getPermissionsAsync: async () => ({ granted: mockPermission.granted }),
   requestPermissionsAsync: async () => {
@@ -520,8 +520,17 @@ describe('reminders after a restore', () => {
 
   it('are scheduled the way the backup has them, without asking again', async () => {
     expect(await restoreWithReminder({ enabled: true, hour: 7, minute: 30, days: [1, 3, 5] })).toEqual({ kind: 'ok', reminders: 'on' });
-    expect([...mockScheduled.keys()].sort()).toEqual([weeklyId(1), weeklyId(3), weeklyId(5)].sort());
-    expect(mockScheduled.get(weeklyId(1))!.trigger).toMatchObject({ type: 'weekly', hour: 7, minute: 30 });
+    // Mobile 1.24: the next reminders are one-off dates (Mon, Wed, Fri at 7:30 within the next 8 days), not repeats.
+    const reqs = [...mockScheduled.values()];
+    expect(reqs.length).toBeGreaterThanOrEqual(2);
+    expect(reqs.length).toBeLessThanOrEqual(4);
+    expect([...mockScheduled.keys()].sort()).toEqual(reqs.map((_, i) => rollingId(i + 1)).sort());
+    for (const q of reqs) {
+      const at = (q.trigger as { date: Date }).date;
+      expect(q.trigger).toMatchObject({ type: 'date' });
+      expect([1, 3, 5]).toContain(at.getDay());
+      expect([at.getHours(), at.getMinutes()]).toEqual([7, 30]);
+    }
     expect(mockPermission.asked).toBe(0); // already allowed: no prompt
   });
 
@@ -529,7 +538,7 @@ describe('reminders after a restore', () => {
     Object.assign(mockPermission, { granted: false, grantOnAsk: true });
     expect(await restoreWithReminder({ enabled: true, hour: 19, minute: 0 })).toEqual({ kind: 'ok', reminders: 'on' });
     expect(mockPermission.asked).toBe(1);
-    expect([...mockScheduled.keys()]).toEqual([DAILY_ID]);
+    expect([...mockScheduled.keys()].sort()).toEqual([1, 2, 3, 4, 5, 6, 7].map(rollingId).sort());
 
     mockScheduled.clear();
     Object.assign(mockPermission, { granted: false, grantOnAsk: false, asked: 0 });

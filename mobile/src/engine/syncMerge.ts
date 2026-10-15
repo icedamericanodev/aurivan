@@ -327,7 +327,7 @@ export function activityAt(cp: Cert): number {
 
 /** attempts and correct take the max (never inflated); the "last answer" fields come from the later answer. */
 function mergeAnswer(a: Answer, b: Answer): Answer {
-  const lastOf = (x: Answer) => clean({ lastCorrect: x.lastCorrect, lastAt: x.lastAt, lastAssisted: x.lastAssisted, lastGame: x.lastGame, ms: x.ms, lastConfidence: x.lastConfidence });
+  const lastOf = (x: Answer) => clean({ lastCorrect: x.lastCorrect, lastAt: x.lastAt, lastAssisted: x.lastAssisted, lastRetest: x.lastRetest, lastGame: x.lastGame, ms: x.ms, lastConfidence: x.lastConfidence });
   const last = pick(a, b, (x) => [x.lastAt, stableStringify(lastOf(x))]);
   const attempts = Math.max(a.attempts, b.attempts);
   return clean({ ...lastOf(last), attempts, correctCount: Math.min(attempts, Math.max(a.correctCount, b.correctCount)) }) as Answer;

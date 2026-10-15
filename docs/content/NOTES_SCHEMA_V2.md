@@ -59,7 +59,7 @@ v2 fixes the structure, not just the wording.
 | 5 | `types` | `[{ term, meaning }]` | Optional. Only for a true taxonomy (one kind of thing, several variants). 2–6 items |
 | 6 | `illustration` | unchanged from v1 | Optional. Must be simple, accurate and labeled. Colors use CSS variables |
 | 7 | `example` | string | A realistic scenario with named roles, 30–80 words, ending with what the auditor does |
-| 8 | `isaca_rule` | string | **How ISACA thinks.** A reusable principle, at most 50 words |
+| 8 | `isaca_rule` | string | **The IS auditor’s lens.** A reusable principle, at most 50 words |
 | 9 | `exam_traps` | `[{ trap, why }]` (1–2) | The tempting wrong instinct (at most 25 words) and why it is wrong (at most 40 words) |
 | 10 | `key_terms` | `[{ term, definition }]` (2–5) | One line each, at most 25 words. A term appears in `compare`, `types` or `key_terms`, never in more than one |
 | 11 | `analogy` | string | Optional. Never inside the definition |

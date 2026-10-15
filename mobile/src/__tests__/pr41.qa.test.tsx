@@ -198,7 +198,8 @@ describe('Journey 1 · Results stats', () => {
     answer(IDS.slice(0, 1), 1, 5_000);
     finishAt(T0 + 5_000);
     mount(<Results />);
-    expect(resultStats()).toEqual(['Correct: 1 of 1', 'Missed: none', 'Time: under a minute']);
+    // A handful of answers (mobile 1.24, UX review S7): the headline is the count, so no "Correct" cell.
+    expect(resultStats()).toEqual(['Missed: none', 'Time: under a minute']);
     expect(allText()).not.toMatch(/per question|median|exam pace|to review/i);
   });
 
@@ -256,7 +257,7 @@ describe('Journey 1 · Results stats', () => {
     answer(ids, 3, 40_000);
     finishAt(T0 + 4 * MIN);
     mount(<Results />);
-    expect(resultStats()).toEqual(['Correct: 3 of 5', 'Missed: 2', 'Time: 3 minutes']); // 5 × 40 s of answer time
+    expect(resultStats()).toEqual(['Missed: 2', 'Time: 3 minutes']); // 5 × 40 s of answer time; "3 of 5 right" is the headline
     expect(allText()).toContain('About 40 seconds per question. The exam allows about 96 seconds.');
   });
 

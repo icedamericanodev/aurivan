@@ -26,6 +26,8 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 
 const T0 = new Date(2026, 9, 12, 10, 0, 0).getTime();
 const DAY = 86_400_000;
+/** A re-answer within 4 hours is a retest and never counts as clean (mobile 1.24): the "clean" second try comes later. */
+const LATER = 5 * 3_600_000;
 const d4 = getDomainQuestions('cisa', '4').map((q) => q.id);
 const cp = () => selectCert(useProgress.getState(), 'cisa');
 const facts = () => milestoneFacts('cisa', cp(), { now: Date.now() })!;
@@ -53,6 +55,7 @@ describe('assisted (Coach me) answers never count', () => {
   it('Firm Footing reads clean answers only', () => {
     d4.slice(0, 20).forEach((id) => answer(id, true, { assisted: true }));
     expect(facts().domains.find((d) => d.id === '4')!.answered).toBe(0);
+    jest.setSystemTime(T0 + LATER);
     d4.slice(0, 20).forEach((id) => answer(id));
     expect(met()).toContain('firm-footing:4');
   });
@@ -67,7 +70,7 @@ describe('assisted (Coach me) answers never count', () => {
     });
     expect(facts().topicsClear).toBe(0);
     ids.forEach((id, k) => {
-      jest.setSystemTime(T0 + 10_000 + k * 1000);
+      jest.setSystemTime(T0 + LATER + k * 1000);
       answer(id);
     });
     expect(facts().topicsClear).toBeGreaterThanOrEqual(1);
@@ -101,6 +104,7 @@ describe('game answers never count toward milestones (lastGame)', () => {
 
   it('a later answer outside a game drops the flag, so it counts again', () => {
     answer(d4[0], true, { game: true });
+    jest.setSystemTime(T0 + LATER);
     answer(d4[0]);
     expect('lastGame' in cp().answers[d4[0]]).toBe(false);
     expect(facts().cleanAnswered).toBe(1);
@@ -155,6 +159,8 @@ describe('counters through the store', () => {
     jest.setSystemTime(T0 + DAY);
     answer(b, true, { assisted: true });
     expect(cp().milestones?.counts?.loopFixed).toBeUndefined();
+    // Five hours on: a retest within 4 hours of the last answer is not a fix (mobile 1.24).
+    jest.setSystemTime(T0 + DAY + 5 * 3_600_000);
     answer(a);
     answer(b);
     expect(cp().milestones?.counts?.loopFixed).toBe(2);

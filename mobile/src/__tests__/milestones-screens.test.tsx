@@ -161,11 +161,12 @@ describe('Badges screen', () => {
 });
 
 describe('You', () => {
-  it('has Badges and Field notes rows, and the back-fill line until it is seen', () => {
+  it('has ONE Badges and field notes row (mobile 1.24), and the back-fill line until it is seen', () => {
     d4.slice(0, 20).forEach(answer);
     ensureBackfill('cisa', T0);
     mount(<You />);
-    expect(labels()).toEqual(expect.arrayContaining(["Badges, 2 earned. What you've mastered, and what's next for your exam", 'Field notes. Game levels and skill badges']));
+    expect(labels()).toContain("Badges and field notes, 2 earned. What you've mastered, and your level in each game");
+    expect(labels().some((l) => l.startsWith('Field notes'))).toBe(false); // merged into the row above
     expect(allText()).toContain('You’d already earned 2 badges.');
     // Shown once: You marks it seen, and the line stays for this visit.
     expect(cp().milestones!.backfill!.seen).toBe(true);
@@ -181,7 +182,7 @@ describe('You', () => {
     ensureBackfill('cisa', T0);
     mount(<You />);
     expect(allText()).not.toContain('already earned');
-    expect(labels()).toContain("Badges, none yet. What you've mastered, and what's next for your exam");
+    expect(labels()).toContain("Badges and field notes, none yet. What you've mastered, and your level in each game");
   });
 });
 
@@ -205,6 +206,11 @@ describe('Play', () => {
   it('every game row says its level in words', () => {
     useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { sprint: { tier: 'heartwood', up: 0, down: 0 } } } } });
     mount(<Play />);
+    // Mobile 1.24: three games are in sight; the rest are folded under "More games". Open it.
+    const more = root().findAll((n) => typeof n.props.onPress === 'function' && /^More games/.test(String(n.props.accessibilityLabel)))[0];
+    act(() => {
+      more.props.onPress();
+    });
     const rows = labels().filter((l) => / About \d+ minutes\./.test(l));
     expect(rows.length).toBeGreaterThan(0);
     for (const l of rows) expect(l).toMatch(/Your level: (Seedling|Sapling|Heartwood)\./);

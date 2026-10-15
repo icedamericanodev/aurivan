@@ -2,7 +2,7 @@
 // of the changed screens and frame strips of the new motion.
 //
 // Shots: Learn (cover with its reason, the lesson trail), a lesson cover, the
-// three scene templates (steps, layers, timeline), "How ISACA thinks", a
+// three scene templates (steps, layers, timeline), "The IS auditor’s lens", a
 // check with its verdict leaf, Lesson complete, a note read to its end (p09: since 1.22 the
 // note marks itself read when its ending comes into view; a tap only if it hasn't), Play,
 // each game's header, a recap with its sparkline and a level up.
@@ -241,7 +241,7 @@ await strip(
 );
 await wait(1200);
 await shot('p04-steps');
-await press('Next', 1200); // How ISACA thinks
+await press('Next', 1200); // The IS auditor’s lens
 await shot('p06-how-isaca-thinks');
 
 // Timeline (reporting, scene 4).

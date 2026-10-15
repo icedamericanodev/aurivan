@@ -15,7 +15,8 @@
  *   3. Time left, and reviews cut below what is due? The reviews grow into it.
  *
  * And by where the learner is starting from (engine/fit.ts):
- *   - `new`: day 1 teaches before it tests: the next lesson + 5 questions on it.
+ *   - `new`: from day 2 it teaches before it tests: the next lesson + a few questions on it
+ *     (day 1 is the first set for everyone, see the end of this comment).
  *   - `experienced` (or Exam-focused switched on): no lessons; weak spots
  *     lead, with an optional mini mock once a week.
  *
@@ -25,10 +26,16 @@
  * Mobile 1.16, exam week (PHASE5.md §3.2): a calm taper.
  *   - 7, 6, 5 days out: reviews, a top-up on the focus domain, and ONE
  *     optional full mock, only when none was taken in the last 14 days and
- *     the starting check is done ("a last long rehearsal; skip it if you'd
+ *     the first 20 answers are done ("a last long rehearsal; skip it if you'd
  *     rather rest"). Exempt from the budget, like every mock.
  *   - 4, 3, 2 days out: no mock; the day is sized to min(minutes, 20).
  *   - The eve and the exam day are unchanged.
+ *
+ * Mobile 1.24, "first five minutes": Day 1 is ONE item, the first set (the
+ * same five questions for everyone, no lesson before it, no timer). Those
+ * five answers count toward the 20 that end the first stage, which then
+ * finishes inside ordinary plans on days 2 and 3. Nothing on screen says
+ * "check" or "diagnose".
  */
 import { GAMES, gameMinutes, type GameId } from './games/registry';
 import { DEFAULT_MINUTES, examFocusedOf, planTolerance, questionsFor, type Familiarity } from './fit';
@@ -43,10 +50,11 @@ const gameItem = (gameId: GameId): PlanItem => ({ kind: 'game', gameId, label: `
 /**
  * Why a practice item is in the plan (its meta line says so). Optional:
  * older saved plans have none and read as "new material first".
- *   check: the starting check · learn: right after a lesson · weak: Exam-focused weak spots
- *   topup: exam week's light top-up on the focus domain (mobile 1.16)
+ *   check: the rest of the first 20 answers (Day 2 and 3; the word never shows) · learn: right after a lesson
+ *   weak: Exam-focused weak spots · topup: exam week's light top-up on the focus domain (mobile 1.16)
+ *   first: Day 1's first set, the same five questions for everyone (mobile 1.24)
  */
-export type PracticeWhy = 'check' | 'learn' | 'weak' | 'topup';
+export type PracticeWhy = 'check' | 'learn' | 'weak' | 'topup' | 'first';
 
 export type PlanItem =
   /** `label` is optional: older saved plans have none, and Today then says "Review N due". */
@@ -77,7 +85,7 @@ export interface PlanInput {
   familiarity?: Familiarity;
   /** The learner's explicit Exam-focused choice; unset = follow familiarity (fit.ts examFocusedOf). */
   examFocused?: boolean;
-  /** Questions answered so far: sizes the starting check (it stops at DIAGNOSTIC_SIZE). */
+  /** Questions answered so far: 0 means Day 1 (the first set); it also sizes the rest of the first 20 (DIAGNOSTIC_SIZE). */
   answered?: number;
   focusDomain?: { id: string; short: string };
   /** The lesson to offer (already chosen: fit.ts planLesson), with its length and domain. */
@@ -103,8 +111,25 @@ export interface PlanInput {
 export const EVE_MAX = 10;
 /** Exam day: an optional warm-up only. */
 export const WARM_UP = 5;
-/** Questions answered before the starting check is done (journey.ts DIAGNOSTIC_SIZE). */
+/** Questions answered before the first stage is done (journey.ts DIAGNOSTIC_SIZE). */
 const CHECK_SIZE = 20;
+/** The first set's length (content/firstSet.ts FIRST_SET_SIZE; kept here so the engine imports no content). */
+export const FIRST_SET_COUNT = 5;
+/** The first set's plan label (content/firstSet.ts FIRST_SET_TITLE). */
+export const FIRST_SET_LABEL = 'Your first five';
+
+/**
+ * A plan label or session title saved by mobile 1.23, in today's words.
+ * 1.23 called the mixed starting set "Starting check: 12 mixed questions",
+ * and that text was saved in the day's plan AND as a paused session's title.
+ * The learner never reads "check" now (mobile 1.24), so every place that shows
+ * a saved title (Today's rows, Resume rows, the "Replace your unfinished
+ * session?" alert, Results) passes it through here. Any other title is
+ * returned as it is.
+ */
+export function legacyTitle(title: string): string {
+  return /^Starting check\b/.test(title) ? 'Mixed practice' : title;
+}
 /** The most one planned practice item asks for. */
 export const PRACTICE_MAX = 30;
 /** The fewest questions worth a practice item (fewer than this and it waits). */
@@ -278,19 +303,25 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
     game('trap');
   };
 
-  switch (p.stage) {
+  // Day 1 (mobile 1.24): nothing answered yet means the first set, alone. The same five
+  // questions for everyone, no lesson before them. It replaces the stage rules, so a learner
+  // who set up close to the exam gets it too (their stage is exam week, not the first).
+  const firstDay = (p.answered ?? 0) === 0 && (p.stage === 'diagnose' || p.stage === 'examDay');
+  const route = firstDay ? ('first' as const) : p.stage;
+
+  switch (route) {
+    case 'first':
+      fixed({ kind: 'practice', count: FIRST_SET_COUNT, label: FIRST_SET_LABEL, why: 'first' });
+      break;
     case 'diagnose':
       if (p.familiarity === 'new' && lesson) {
         // Teach before testing (worked examples first): the lesson, then a few questions on it.
         fixed(lessonOf(lesson));
-        // Day 1 tries 5. After that, the questions grow to the minutes the
+        // Day 1 was the first set (above). From day 2 the questions grow to the minutes the
         // learner chose (up to 10, and never past the 20 that end this stage):
         // a 45-minute learner isn't left with 9 minutes a day (UX review O4).
         const answered = p.answered ?? 0;
-        const count =
-          answered === 0
-            ? NEW_LEARNER_QUESTIONS
-            : Math.max(NEW_LEARNER_QUESTIONS, Math.min(NEW_LEARNER_MAX, fitting(left()), CHECK_SIZE - answered));
+        const count = Math.max(NEW_LEARNER_QUESTIONS, Math.min(NEW_LEARNER_MAX, fitting(left()), CHECK_SIZE - answered));
         const short = lesson.domainShort;
         fixed({
           kind: 'practice',
@@ -300,9 +331,10 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
           why: 'learn',
         });
       } else {
-        // The starting check, sized to the day; it ends at 20 answers in all.
+        // The rest of the first 20 answers, sized to the day (the first set was the first five).
+        // The label is plain: the learner never reads "check" or "diagnose".
         const remaining = Math.max(PRACTICE_MIN, CHECK_SIZE - (p.answered ?? 0));
-        practice((n) => `Starting check: ${n} mixed questions`, { why: 'check' }, remaining);
+        practice((n) => `${n} mixed questions`, { why: 'check' }, remaining);
       }
       break;
     case 'learn':
@@ -328,10 +360,10 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
       break;
     case 'examDay': {
       // Exam week (mobile 1.16): reviews came first; then a light top-up on the
-      // focus domain. Before the starting check is done, the top-up IS the
-      // starting check (mixed, sized like it), and no full mock is offered.
+      // focus domain. Before the first 20 answers are done, the top-up is a mixed
+      // set sized to the rest of them, and no full mock is offered.
       const answered = p.answered ?? 0;
-      if (answered < CHECK_SIZE) practice((n) => `Starting check: ${n} mixed questions`, { why: 'check' }, Math.max(PRACTICE_MIN, CHECK_SIZE - answered));
+      if (answered < CHECK_SIZE) practice((n) => `${n} mixed questions`, { why: 'check' }, Math.max(PRACTICE_MIN, CHECK_SIZE - answered));
       // From 4 days out the top-up stays light (at most 10), so a short game still fits.
       else practice((n) => (p.focusDomain ? `Top-up: ${p.focusDomain.short}` : `Top-up: ${n} mixed questions`), { domainId: p.focusDomain?.id, why: 'topup' }, taper ? EVE_MAX : PRACTICE_MAX);
       if (taper) game('priority');

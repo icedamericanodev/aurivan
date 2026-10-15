@@ -288,7 +288,7 @@ export interface PlantFactsInput {
   today: string;
 }
 
-const isClean = (a: AnswerRecord) => !a.lastAssisted && !a.lastGame;
+const isClean = (a: AnswerRecord) => !a.lastAssisted && !a.lastRetest && !a.lastGame;
 
 /** A full, timed mock with nothing unanswered (same rule as the Dress Rehearsal badge). */
 export function isDressMock(m: PlantMock, fullSize: number): boolean {

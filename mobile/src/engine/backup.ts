@@ -274,7 +274,7 @@ const id = str(MAX_KEY);
 const answerRecord = rule(
   obj(
     { attempts: count, correctCount: count, lastCorrect: bool, lastAt: ts },
-    { lastAssisted: bool, lastGame: bool, ms: int(0, MAX_ANSWER_MS), lastConfidence: CONFIDENCE },
+    { lastAssisted: bool, lastRetest: bool, lastGame: bool, ms: int(0, MAX_ANSWER_MS), lastConfidence: CONFIDENCE },
   ),
   (a) => a.correctCount <= a.attempts,
   (a) => ({ ...a, correctCount: Math.min(a.correctCount, a.attempts) }),

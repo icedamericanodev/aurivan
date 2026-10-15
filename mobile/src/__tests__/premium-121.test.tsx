@@ -33,7 +33,9 @@ describe('heroPracticeTitle: the count leaves the title', () => {
   it.each([
     ['12 questions · IS Audit', 'Practice: IS Audit'],
     ['12 mixed questions', 'Mixed practice'],
-    ['Starting check: 20 mixed questions', 'Starting check'],
+    // A plan saved before 1.24 still says "Starting check": nobody reads that word any more.
+    ['Starting check: 20 mixed questions', 'Mixed practice'],
+    ['Your first five', 'Your first five'],
     ['Top-up: 10 mixed questions', 'Top-up'],
     ['Top-up: IS Operations', 'Top-up: IS Operations'],
     ['Light review · 8 questions', 'Light review'],

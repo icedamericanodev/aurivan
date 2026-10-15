@@ -7,7 +7,7 @@
  *   Root (a sound principle) or Rumor (an exam myth).
  * - Rumors are the study notes' exam traps (`examTraps.trap`): the false
  *   beliefs that make wrong options feel right. Roots are true lines from the
- *   same notes: the first sentence of "How ISACA thinks" (`isacaRule`) and
+ *   same notes: the first sentence of "The IS auditor’s lens" (`isacaRule`) and
  *   "How it works" lines of 30 words or fewer.
  * - The content filter (`cleanStatement`) runs on the bundled notes when the
  *   game first loads, and the content-pack tests run it at build time on CI:

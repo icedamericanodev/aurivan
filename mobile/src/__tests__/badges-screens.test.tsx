@@ -139,7 +139,7 @@ describe('the case', () => {
       expect(box.props.accessible).toBe(false);
     }
     // Back-filled (saved quietly when badges arrived): "by" that date, never as if earned that day (UX P6).
-    expect(labels()).toContain('First Foothold. Earned by 12 Oct. Finish the 20-question diagnostic. Groundwork.');
+    expect(labels()).toContain('First Foothold. Earned by 12 Oct. Answer your first 20 questions. Groundwork.');
     expect(labels().some((l) => l.startsWith('Firm Footing · IS Operations, Clay. Earned by 12 Oct.') && l.endsWith('26% of the exam. The Five Domains.'))).toBe(true);
     expect(allText()).toContain('By 12 Oct');
     expect(labels().some((l) => l.startsWith('Mindset Shift. Not yet.') && l.includes('Opens after 100 first tries'))).toBe(true);
@@ -258,7 +258,7 @@ describe('the "new" dot', () => {
     earn('first-foothold', T0);
     expect(hasNewBadge('cisa')).toBe(true);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges, new badge, 1 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges and field notes, new badge, 1 earned.'))).toBe(true);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot').length).toBeGreaterThan(0);
     act(() => r!.unmount());
     jest.setSystemTime(T0 + 1000);
@@ -482,7 +482,7 @@ describe('review fixes (PR #40)', () => {
     earn('first-foothold', T0 - DAY);
     earn('long-memory:999', T0 - DAY);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges, 1 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges and field notes, 1 earned.'))).toBe(true);
   });
 
   it('Show badges back on counts the active exam’s waiting moments only', () => {

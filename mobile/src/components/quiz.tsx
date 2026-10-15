@@ -13,7 +13,7 @@
  *              when it scrolls into view (static under Reduce Motion).
  *   Trust    – "Original · Reviewed Oct 2026 · Report a problem".
  */
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode, type Ref } from 'react';
 import { Pressable, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
@@ -216,15 +216,30 @@ export function ConfidenceRow({ value, onChange }: { value?: Confidence; onChang
 }
 
 // ── Verdict: leaf-mark + "Correct" / "Not quite" + coach line ─────────
-export function Verdict({ correct, coach }: { correct: boolean; coach: string }) {
+export function Verdict({
+  correct,
+  coach,
+  best,
+  ref,
+}: {
+  correct: boolean;
+  coach: string;
+  /** The best answer's DISPLAY letter after a miss: spoken in the label ("Not quite. Best answer D."). */
+  best?: string;
+  /** For moving screen-reader focus here after "Check answer" (lib/a11y.ts moveFocus). */
+  ref?: Ref<View>;
+}) {
   const { c } = useTheme();
   const color = correct ? c.correct : c.wrong;
+  // What a screen reader says when focus lands here. Mobile 1.24 (UX review B3): the session screen no
+  // longer makes a separate announcement (the focus move cut it off on iOS and doubled it on Android),
+  // so the verdict says everything once, the best answer's letter included.
+  const head = correct ? 'Correct' : best ? `Not quite. Best answer ${best}` : 'Not quite';
   // The leaf springs from 60% to full size (spec §10.2, the one signature
   // spring); under Reduce Motion it fades in instead (120 ms).
   return (
-    // No live region: the session screen already calls announceForAccessibility,
-    // so a live region would make screen readers say the verdict twice.
-    <View accessible accessibilityRole="header" accessibilityLabel={`${correct ? 'Correct' : 'Not quite'}. ${coach}`}>
+    // No live region: focus moves here after "Check answer", which reads this label once.
+    <View ref={ref} accessible accessibilityRole="header" accessibilityLabel={`${head}. ${coach}`}>
       <Row gap={space.md} style={{ marginTop: space.md }}>
         <Pop mount spring="pop" style={{ width: 38, height: 38 }}>
           <VerdictLeaf color={color} />
@@ -275,12 +290,12 @@ type VineNode = { kind: 'key' | 'tip'; label: string; body: string };
 
 const STEM_MS = motion.dur.vine; // stem draw time (520)
 
-export function Vine({ keyIdea, tips, visible }: { keyIdea?: string; tips: string[]; visible: boolean }) {
+export function Vine({ keyIdea, tips, tipIndex, visible }: { keyIdea?: string; tips: string[]; /** Each tip's place in the question's full tip list (its legacy label depends on it), when `tips` is only part of it. */ tipIndex?: number[]; visible: boolean }) {
   const { c } = useTheme();
   const { reduced: reduce } = useMotion();
   const nodes: VineNode[] = [
     ...(keyIdea ? [{ kind: 'key' as const, label: 'Key idea', body: keyIdea }] : []),
-    ...tips.map((t, i) => ({ kind: 'tip' as const, ...tipParts(t, i) })),
+    ...tips.map((t, i) => ({ kind: 'tip' as const, ...tipParts(t, tipIndex?.[i] ?? i) })),
   ];
   // 0 → 1 as the stem draws downward. Starts drawn when Reduce Motion is on.
   const grow = useSharedValue(reduce ? 1 : 0);
@@ -293,6 +308,8 @@ export function Vine({ keyIdea, tips, visible }: { keyIdea?: string; tips: strin
   }, [visible, reduce, keyIdea, grow]);
   const stemStyle = useAnimatedStyle(() => ({ transform: [{ scaleY: grow.value }] }));
 
+  // A part with nothing to show (no key idea and no tips here) draws nothing, not an empty stem.
+  if (nodes.length === 0) return null;
   return (
     <View style={{ marginTop: space.xl, paddingLeft: 34 }}>
       {/* The stem: 1.5pt accent at 55% opacity, drawn from the top down. */}
@@ -351,6 +368,41 @@ function VineLeafNode({ node, last, visible, reduce, delay }: { node: VineNode; 
   );
 }
 
+// ── Why: the long explanation, folded after a miss (mobile 1.24) ──────
+/** An explanation this short is shown whole: nothing to fold. */
+export const WHY_FOLD_CHARS = 150;
+
+/**
+ * "Why D" and its explanation. After a miss the Key idea and the Exam cue come
+ * first, so this long paragraph shows its first two lines and a "Read more"
+ * (one tap opens it; the screen reader always hears the whole text). A short
+ * explanation, or any explanation when `fold` is false, is shown in full.
+ */
+export function WhyBlock({ letter, text, fold }: { letter: Letter; text: string; fold: boolean }) {
+  const { c } = useTheme();
+  const [open, setOpen] = useState(false);
+  const folded = fold && text.length > WHY_FOLD_CHARS && !open;
+  const canFold = fold && text.length > WHY_FOLD_CHARS;
+  return (
+    <View>
+      <T v="headline" accessibilityRole="header" style={{ marginTop: space.lg }}>{`Why ${letter}`}</T>
+      <T v="body" numberOfLines={folded ? 2 : undefined} style={{ marginTop: space.xs }}>{text}</T>
+      {canFold && (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={open ? 'Show less of the explanation' : 'Read more of the explanation'}
+          accessibilityState={{ expanded: open }}
+          onPress={() => setOpen(!open)}
+          hitSlop={8}
+          style={{ minHeight: 48, justifyContent: 'center', alignSelf: 'flex-start' }}
+        >
+          <T v="label" color={c.accentText}>{open ? 'Show less' : 'Read more'}</T>
+        </Pressable>
+      )}
+    </View>
+  );
+}
+
 // ── Trust line: provenance + Report a problem ────────────────────────
 // Under every revealed answer: "Original · Reviewed Oct 2026" with the
 // report link on the right, then the code and source. The link, its sheet
@@ -362,7 +414,9 @@ export function TrustLine({ certId, target, reference }: { certId: string; targe
       certId={certId}
       target={target}
       meta={`Original · Reviewed ${config.contentReviewed}`}
-      sub={reference ? `Code ${target.id} · ${shortReference(reference)}` : `Code ${target.id}`}
+      // The question's code (d1_010) lives in the Report sheet, not here (mobile 1.24): the learner
+      // sees the source, and the code travels with a report as before.
+      sub={reference ? shortReference(reference) : undefined}
     />
   );
 }

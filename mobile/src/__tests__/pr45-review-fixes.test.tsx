@@ -228,8 +228,8 @@ describe('planner: sizes that respect the learner', () => {
     const lesson = { id: 'l1', title: 'Audit basics', minutes: 5, domainId: '1', domainShort: 'IS Audit' };
     const day = (answered: number, dailyMinutes: number) =>
       todaysPlan({ stage: 'diagnose', dueReviews: 0, dailyMinutes, familiarity: 'new', answered, nextLesson: lesson, daysLeft: 90, examQuestions: 150 });
-    // Day 1 tries 5 (spec AC1).
-    expect(day(0, 45)[1]).toMatchObject({ kind: 'practice', count: 5, label: '5 questions · IS Audit', why: 'learn' });
+    // Day 1 is the first five, with no lesson before it (mobile 1.24).
+    expect(day(0, 45)).toEqual([{ kind: 'practice', count: 5, label: 'Your first five', why: 'first' }]);
     // Later: the chosen minutes are respected, up to 10, and never past the 20 that end the stage.
     expect(day(5, 45)[1]).toMatchObject({ count: 10, label: '10 questions · IS Audit' });
     expect(day(5, 10)[1]).toMatchObject({ count: 5 });
@@ -389,11 +389,13 @@ describe('Today: the weekly mock beside the day', () => {
     expect(row.props.accessibilityLabel).toBe('Mini mock, Optional this week · about 80 minutes');
     // The caption meta and the hero meta are spoken with "minutes" (O9, M7a).
     const labels = root().findAll((n) => typeof n.props.accessibilityLabel === 'string').map((n) => n.props.accessibilityLabel as string);
-    expect(labels).toContain('Today’s plan · about 19 minutes, 0 of 2 done');
+    // The optional mock is not one of the day's items (mobile 1.24): "0 of 1 done".
+    expect(labels).toContain('Today’s plan · about 19 minutes, 0 of 1 done');
     // Mobile 1.21: the minutes are said once. The hero is the day's only timed item, so the
-    // caption's total carries them and the Start pill's hint is the count and the why (mobile 1.23).
+    // caption's total carries them. Mobile 1.24: the count and the why are the line under the title; the pill's hint is the title.
     const hints = root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string);
-    expect(hints).toContain('Weak spots: IS Operations, 16 questions, most points to gain');
+    expect(hints).toContain('Weak spots: IS Operations');
+    expect(allText()).toContain('16 questions, most points to gain');
     expect(hints.join('|')).not.toContain('About 19 minutes');
   });
 
@@ -473,11 +475,9 @@ describe('Onboarding: each step\u2019s header takes focus (UX review P7, O7)', (
     const header = (title: string) => root().findAll((n) => n.props.accessibilityRole === 'header' && n.props.accessibilityLabel === title && n.props.accessible === true);
     expect(focus).not.toHaveBeenCalled();
     const steps: [RegExp, string][] = [
-      [/^Start my plan$/, 'What should we call you?'],
-      [/^Skip$/, 'Which exam are you preparing for?'],
-      [/^Continue$/, 'Where are you starting from?'],
+      [/^Get started$/, 'What should we call you?'],
+      [/^Skip$/, 'Where are you starting from?'],
       [/^Skip this question$/, 'When is your exam?'],
-      [/^Continue$/, 'Plant something that grows with you'],
     ];
     steps.forEach(([button, title], k) => {
       press(button);

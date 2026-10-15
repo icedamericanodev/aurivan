@@ -470,15 +470,13 @@ describe('F. Onboarding’s date step', () => {
   const toDateStep = () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
-    press('Start my plan');
+    press('Get started');
     press('Skip'); // the optional name step (mobile 1.23)
-    press('Continue');
-    press('Skip this question');
+    press('Skip this question'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
     expect(allText()).toContain('When is your exam?');
   };
   const finish = () => {
-    press('Continue');
-    press('Skip for now');
+    press('Start my first questions');
   };
 
   it('a quick choice saves its date', () => {

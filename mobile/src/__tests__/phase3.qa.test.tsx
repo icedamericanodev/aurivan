@@ -192,7 +192,11 @@ function clearToday(stats = { answered: 31, correct: 25, minutes: 24 }) {
 }
 const clearing = () => r!.root.findByType(ClearingBody).props.celebration as { mode: string; settled: boolean; run: number };
 
-/** A 3- or 5-question practice in IS Audit, `right` of them right, then finished. */
+/**
+ * A 3- to 10-question practice in IS Audit, `right` of them right, then finished. Mobile 1.24 (UX review S7):
+ * under 8 answers Results states the count once, in the headline, so nothing rolls there; the motion
+ * tests below use 8+ questions, where the percent and "Correct" roll.
+ */
 function finishPractice(right: number, of = 3) {
   const qs = inDomain('1').slice(100, 100 + of);
   act(() => {
@@ -332,12 +336,12 @@ describe('J2 practice session → Results', () => {
 
   it('the rings and the score roll once; reopening the same Results shows them still', () => {
     setMockReducedMotion(false);
-    finishPractice(3);
+    finishPractice(8, 8);
     mount(<Results />);
     expect(resultRings().play).toBe(true);
     expect(growingArcs()).toBeGreaterThan(0);
     expect(movingDigits()).toBeGreaterThan(0);
-    expect(allText()).toContain('All IS Audit · 3 of 3');
+    expect(allText()).toContain('All IS Audit · 8 of 8');
     unmount();
     mount(<Results />);
     expect(resultRings().play).toBe(false);
@@ -347,7 +351,7 @@ describe('J2 practice session → Results', () => {
 
   it('60% exactly grows; below 60% nothing animates (same words either way)', () => {
     setMockReducedMotion(false);
-    finishPractice(3, 5);
+    finishPractice(6, 10); // 60%, and 8+ answers so the numbers show (and roll)
     mount(<Results />);
     expect(movingDigits()).toBeGreaterThan(0);
     unmount();
@@ -361,7 +365,8 @@ describe('J2 practice session → Results', () => {
     expect(growingArcs()).toBe(0);
     expect(movingDigits()).toBe(0);
     expect(rollDecisions()).toHaveLength(0);
-    expect(allText()).toContain('40');
+    // Mobile 1.24: five questions are a small sample, so the words are the count, not a percent.
+    expect(allText()).toContain('2 of 5 right');
   });
 
   describe('the milestone moment', () => {
@@ -696,7 +701,7 @@ describe('J5 Reduce Motion (system and in-app)', () => {
 
     it(`${way}: Results, You and Today's first view of the day show their end state at once, same words`, () => {
       seed(60);
-      finishPractice(3);
+      finishPractice(8, 8);
       reduce(way);
       mount(<Results />);
       expect(growingArcs()).toBe(0);
@@ -740,7 +745,7 @@ describe('J5 Reduce Motion (system and in-app)', () => {
     mount(<You />);
     check();
     unmount();
-    finishPractice(3);
+    finishPractice(8, 8);
     mount(<Results />);
     check();
     unmount();

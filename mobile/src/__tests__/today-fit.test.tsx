@@ -17,6 +17,7 @@ import FitScreen from '../app/fit';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { planText } from '../components/journey';
 import { lessonsFor } from '../content/lessons';
+import { getAllQuestions } from '../content/loader';
 import { addDays } from '../engine/examDay';
 import { dayKey } from '../engine/streak';
 import { startMock } from '../lib/sessions';
@@ -122,33 +123,61 @@ const storedPlan = () => useProgress.getState().days.cisa;
 /** A learner from before 1.15: onboarded, no fit answered. */
 const oldLearner = () => useSettings.setState({ onboarded: true, dailyGoal: 20 });
 
+/** Five real answers (day 1 is done): the plan moves on to days 2 and 3. */
+const fiveAnswers = () =>
+  act(() => {
+    const answers: Record<string, { attempts: number; correctCount: number; lastCorrect: boolean; lastAt: number }> = {};
+    getAllQuestions('cisa').slice(0, 5).forEach((q) => (answers[q.id] = { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: Date.now() - 86_400_000 }));
+    useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, answers } } }));
+  });
+
 describe('Today: the day in minutes', () => {
-  it('"About N min today" sums the open items (a 20-minute starting check: about 19 min)', () => {
+  it('Day 1 is the first five, about 6 min whatever the minutes chosen: the title, then "5 questions, no timer"', () => {
     useSettings.setState({ fitPrompt: 'answered', dailyMinutes: 20 });
     mount(<Today />);
-    // Mobile 1.21: the day's minutes are in the caption, said once.
-    expect(allText()).toContain('Today’s plan · about 19 min');
-    // Mobile 1.21: the title never holds a count, and the minutes are said once (the caption's,
-    // this item's alone), so the meta is the count and the why.
-    expect(allText()).toContain('Starting check 16 questions, no score yet, just a starting point');
+    expect(allText()).toContain('Today’s plan · about 6 min');
+    expect(allText()).toContain('Your first five 5 questions, no timer');
+    expect(allText()).not.toMatch(/\bcheck\b|Starting/);
     expect(storedPlan().budget).toBe(20);
   });
 
-  it('new to audit: day 1 is the first lesson, then 5 questions on its domain', () => {
+  it('"About N min today" sums the open items (day 2, a 20-minute day of the first 20 answers: about 18 min)', () => {
+    useSettings.setState({ fitPrompt: 'answered', dailyMinutes: 20 });
+    fiveAnswers();
+    mount(<Today />);
+    // Mobile 1.21: the day's minutes are in the caption, said once.
+    expect(allText()).toContain('Today’s plan · about 18 min');
+    // The title never holds a count, and the minutes are said once (the caption's, this item's alone),
+    // so the meta is the count and the why. Mobile 1.24: plain words, no "Starting check", and no
+    // "no score yet" on the day after the learner saw "3 of 5" (UX review S5).
+    expect(allText()).toContain('Mixed practice 15 questions, mixed across the domains');
+    expect(allText()).not.toMatch(/no score yet/);
+    expect(storedPlan().budget).toBe(20);
+  });
+
+  it('new to audit: day 1 is the first five (no lesson first); day 2 is the first lesson, then questions on its domain', () => {
     useSettings.setState({ fitPrompt: 'answered', dailyMinutes: 20, familiarity: 'new' });
+    mount(<Today />);
+    expect(storedPlan().items).toEqual([{ kind: 'practice', count: 5, label: 'Your first five', why: 'first' }]);
+    unmount();
+    fiveAnswers();
+    act(() => {
+      useProgress.setState({ days: {} });
+    });
     mount(<Today />);
     const first = lessonsFor('cisa')[0];
     expect(storedPlan().items).toEqual([
       { kind: 'lesson', lessonId: first.id, title: first.title, minutes: first.minutes },
-      { kind: 'practice', count: 5, label: '5 questions · IS Audit', domainId: '1', why: 'learn' },
+      { kind: 'practice', count: 10, label: '10 questions · IS Audit', domainId: '1', why: 'learn' },
     ]);
-    // Mobile 1.23: the checklist names the lesson; its length is in the plan's total and in the Start pill's hint.
-    expect(allText()).toContain(`Lesson · ${first.title}`);
-    expect(root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string)).toContain(`${first.title}, Lesson · ${first.minutes} minutes`);
-    expect(allText()).toContain(`Today’s plan · about ${first.minutes + 6} min`);
+    // The lesson leads: its title is the panel's title; the questions are the one row after it.
+    expect(allText()).toContain(first.title);
+    expect(allText()).toContain('Practice: IS Audit · 10 questions');
+    expect(root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string)).toContain(first.title);
+    expect(allText()).toContain(`Today’s plan · about ${first.minutes + 12} min`);
     expect(allText()).not.toMatch(/Starting check/);
-    // Still no score on day 1: the 40-answer countdown stays.
-    expect(allText()).toMatch(/more answers until your readiness range/);
+    // Still no range on day 2: the goal is the countdown.
+    expect(allText()).toContain('5 of 40 for your first range');
   });
 
   it('a plan saved before 1.15 (no budget) shows no "today" total, and is kept for the day', () => {
@@ -181,9 +210,10 @@ describe('Today: the day in minutes', () => {
     // UX review P2: a mock never leads the hero (even in a plan saved with it first).
     // The mock's own row says it is optional and how long it is (no "+ mock" in the caption since 1.21).
     expect(allText()).toContain('Today’s plan · about 19 min Weak spots: IS Operations');
-    // Mobile 1.23: the checklist line has the count; the why is the Start pill's hint.
-    expect(allText()).toContain('Weak spots: IS Operations · 16 questions');
-    expect(root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string)).toContain('Weak spots: IS Operations, 16 questions, most points to gain');
+    // Mobile 1.24: the count and the why are the line under the title; the optional mock is not a checklist row.
+    expect(allText()).toContain('Weak spots: IS Operations 16 questions, most points to gain');
+    expect(root().findAll((n) => n.props.testID === 'plan-checklist')).toHaveLength(0);
+    expect(root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string)).toContain('Weak spots: IS Operations');
     // Its row says it is optional this week, and how long it is.
     expect(allText()).toContain('Mini mock Optional this week · about 80 min');
   });
@@ -212,7 +242,7 @@ describe('a paused untimed mock on Today (C4)', () => {
       startMock('cisa', 50, { timing: 'untimed' });
     });
     mount(<Today />);
-    // The starting check (19 min) is the hero; Also today = the paused mock.
+    // The first five (6 min) is the hero; Also today = the paused mock.
     expect(allText()).toMatch(/Also today About 80 min/);
     useSession.getState().clear();
   });

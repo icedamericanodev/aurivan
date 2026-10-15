@@ -3,7 +3,7 @@
  *
  * Plain English for the founder:
  * - `cisa/roles.json` is the Canopy Call deck: one-line decisions and who
- *   has the authority to make each one. Two ISACA experts reviewed it.
+ *   has the authority to make each one. Two independent expert reviewers checked it.
  *   It is copied here byte for byte, so the reviewed file and the app agree;
  *   this loader renames its snake_case fields (`exclude_chips`,
  *   `auditor_move`) to the app's camelCase.

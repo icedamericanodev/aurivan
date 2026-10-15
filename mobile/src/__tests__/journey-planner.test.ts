@@ -124,22 +124,30 @@ describe("today's plan, sized in minutes (mobile 1.15, PHASE5.md §2.3)", () => 
     expect(todaysPlan(input({ dailyMinutes: 45 })).map((i) => i.kind)).toEqual(['practice', 'lesson', 'game']);
   });
 
-  it('the starting check is sized to the day and ends at 20 answers in all', () => {
-    expect(todaysPlan(input({ stage: 'diagnose', dailyMinutes: 10 }))[0]).toEqual({ kind: 'practice', count: 8, label: 'Starting check: 8 mixed questions', why: 'check' });
-    expect(todaysPlan(input({ stage: 'diagnose', dailyMinutes: 45 }))[0]).toMatchObject({ count: 20, label: 'Starting check: 20 mixed questions' });
+  it('Day 1 (nothing answered) is the first set alone, for every start and every day length', () => {
+    const first = { kind: 'practice', count: 5, label: 'Your first five', why: 'first' };
+    for (const familiarity of [undefined, 'new', 'some', 'experienced'] as const) {
+      for (const B of DAILY_MINUTES) expect(todaysPlan(input({ stage: 'diagnose', dailyMinutes: B, familiarity }))).toEqual([first]);
+    }
+  });
+
+  it('the rest of the first 20 answers is sized to the day, and ends at 20 in all (no "check" word)', () => {
+    expect(todaysPlan(input({ stage: 'diagnose', dailyMinutes: 10, answered: 5 }))[0]).toEqual({ kind: 'practice', count: 8, label: '8 mixed questions', why: 'check' });
+    expect(todaysPlan(input({ stage: 'diagnose', dailyMinutes: 45, answered: 5 }))[0]).toMatchObject({ count: 15, label: '15 mixed questions' });
     expect(todaysPlan(input({ stage: 'diagnose', dailyMinutes: 45, answered: 12 }))[0]).toMatchObject({ count: 8 });
     // Never fewer than 5.
     expect(todaysPlan(input({ stage: 'diagnose', dailyMinutes: 45, answered: 19 }))[0]).toMatchObject({ count: 5 });
   });
 
-  it('new to audit: day 1 is the lesson, then 5 questions on its domain (no 20-question check)', () => {
-    const plan = todaysPlan(input({ stage: 'diagnose', familiarity: 'new' }));
-    expect(plan).toEqual([
+  it('new to audit: Day 1 is the first set (no lesson before it); from day 2 it is the lesson, then questions that fit the day', () => {
+    expect(todaysPlan(input({ stage: 'diagnose', familiarity: 'new' }))).toEqual([{ kind: 'practice', count: 5, label: 'Your first five', why: 'first' }]);
+    const day2 = todaysPlan(input({ stage: 'diagnose', familiarity: 'new', answered: 5 }));
+    expect(day2).toEqual([
       { kind: 'lesson', lessonId: 'l1', title: 'The audit charter', minutes: 5 },
-      { kind: 'practice', count: 5, label: '5 questions · IS Audit', domainId: '1', why: 'learn' },
+      { kind: 'practice', count: 10, label: '10 questions · IS Audit', domainId: '1', why: 'learn' },
     ]);
     // No lesson left (a future cert, or all done): it plans like `some`.
-    expect(todaysPlan(input({ stage: 'diagnose', familiarity: 'new', nextLesson: undefined }))[0]).toMatchObject({ why: 'check' });
+    expect(todaysPlan(input({ stage: 'diagnose', familiarity: 'new', nextLesson: undefined, answered: 5 }))[0]).toMatchObject({ why: 'check' });
   });
 
   it('experienced (or Exam-focused on): never a lesson, weak spots lead, and a mini mock once a week', () => {

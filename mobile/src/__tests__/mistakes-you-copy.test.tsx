@@ -105,18 +105,20 @@ describe('Mistake journal: tags in plain words, with an example each', () => {
       }
     });
 
-  it('the new chip labels, each with its example as the spoken hint', () => {
+  it('the new chip labels, each with its example as the spoken hint (the chips open on tap, mobile 1.24)', () => {
     miss(1);
     mount(<Mistakes />);
+    press(/^Tag why you slipped$/);
     for (const t of ['Acted as the wrong person', 'Missed FIRST or BEST', 'Tool before policy', 'Fixed the symptom, not the cause', 'Misread', 'Didn’t know it']) expect(allText()).toContain(t);
     expect(allText()).not.toMatch(/Wrong role|FIRST\/BEST|Tech before governance/);
-    const chip = root().findAll((x) => x.props.accessibilityLabel === 'Tool before policy' && typeof x.props.onPress === 'function')[0];
+    const chip = root().findAll((x) => x.props.accessibilityLabel === 'Tag: Tool before policy' && typeof x.props.onPress === 'function')[0];
     expect(chip.props.accessibilityHint).toBe('For example: You picked a new tool before anyone agreed who owns the risk.');
   });
 
   it('"What do these mean?" opens one example for each tag', () => {
     miss(1);
     mount(<Mistakes />);
+    press(/^Tag why you slipped$/);
     const sheet = () => root().findAll((x) => x.props.presentationStyle === 'pageSheet')[0];
     expect(sheet().props.visible).toBe(false);
     press(/^What do these mean\?$/);

@@ -68,6 +68,28 @@ export const PATTERN_COPY: Record<SlipPattern, SlipCoachCopy> = {
 /** Tie-break order: game-backed, derived patterns first. */
 export const PATTERN_ORDER: SlipPattern[] = ['runner-up', 'priority', 'overconfident', 'role', 'tech-first', 'symptom', 'misread', 'knowledge'];
 
+/**
+ * The one line under "Not quite" on the answer screen (mobile 1.24). It is
+ * specific only when the learner has TAGGED why they slipped on this question
+ * (Mistake journal); otherwise it is neutral, never a guess at what went
+ * wrong. The runner-up line is not a guess: it comes from the question's own
+ * "Final two" tip and the letter picked (both ORIGINAL letters).
+ */
+export const NEUTRAL_MISS_LINE = 'Here’s the idea to take with you.';
+export const RUNNER_UP_LINE = 'You picked the runner-up. That’s the trap.';
+export const SLIP_LINE: Record<ThinkingSlip, string> = {
+  role: 'Check who you are in the question.',
+  priority: 'Find the priority word before the options.',
+  'tech-first': 'Policy and ownership usually come before tools.',
+  symptom: 'Prefer the option that removes the cause.',
+  misread: 'Slow down on the last line of the question.',
+  knowledge: 'The idea below is the one to learn.',
+};
+export function missCoachLine(pickedRunnerUp: boolean, slip?: ThinkingSlip): string {
+  if (pickedRunnerUp) return RUNNER_UP_LINE;
+  return slip ? SLIP_LINE[slip] : NEUTRAL_MISS_LINE;
+}
+
 /** Every pattern one mistake shows (may be several, may be none). */
 export function patternsOf(m: SlipInput): SlipPattern[] {
   const out: SlipPattern[] = [];

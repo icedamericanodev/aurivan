@@ -6,6 +6,10 @@ name: Mobile
 # ARCHITECTURE.md "Cloud (built OFF)"): the suite again with the cloud flag ON
 # (signed out), and G2 an OFF bundle with no cloud runtime code. (G1, no
 # secrets, runs on every pull request in verify.yml.)
+# Plus two release guards (architecture decision, 15 Oct 2026): store builds
+# listen on the "production" update channel, never "preview"; and size budgets
+# for the Android JavaScript bundle (14 MB) and each certification's content
+# (6 MB).
 
 on:
   pull_request:
@@ -29,8 +33,8 @@ jobs:
       run:
         working-directory: mobile
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '22'
           cache: npm
@@ -39,6 +43,8 @@ jobs:
         run: npm ci
       - name: Typecheck
         run: npm run typecheck
+      - name: Release channels (a store build never listens on preview)
+        run: node scripts/check-release-config.mjs
       - name: Cloud guard G8 (the server's copies of the board's text rules match the engine)
         run: node scripts/sync-shared.mjs --check
       - name: Lint (includes the design-system guard)
@@ -55,3 +61,5 @@ jobs:
         run: |
           EXPO_OFFLINE=1 npx expo export --platform android --output-dir "$RUNNER_TEMP/off-android"
           bash scripts/check_off_bundle.sh "$RUNNER_TEMP/off-android"
+      - name: Size budgets (bundle under 14 MB, content per certification under 6 MB)
+        run: node scripts/check-size-budget.mjs "$RUNNER_TEMP/off-android"

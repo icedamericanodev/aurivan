@@ -68,7 +68,7 @@ mobile/
 ├── scripts/build-content.mjs  # ../data/*.json → src/content/generated (runs on npm install)
 └── src/
     ├── app/                   # SCREENS (Expo Router)
-    │   ├── _layout.tsx        #   fonts, splash, saved-data loading
+    │   ├── _layout.tsx        #   fonts, splash, saved-data loading + recovery screen if it fails (store/useHydrated.ts, store/hydration.ts)
     │   ├── onboarding.tsx     #   pick certification + exam date
     │   ├── (tabs)/            #   Home · Practice · Mock · Progress · Settings
     │   ├── session.tsx        #   answering questions (practice + mock)
@@ -242,7 +242,7 @@ turns the notes (Build C `practiceIds`) into one ordered topic list
 
 **Games (mobile 1.5).** *Root or Rumor* (`engine/games/rootOrRumor.ts`) plays
 one-line statements from the notes: Rumors are the exam traps; Roots are the
-first sentence of "How ISACA thinks" and "How it works" lines, kept only
+first sentence of "The IS auditor’s lens" and "How it works" lines, kept only
 when they are whole standalone sentences of 8–30 words (no questions, no
 e.g. fragments, nothing that leans on the line before; the filter runs on
 the bundled notes at load and on CI). Each statement is a review *card*
@@ -738,7 +738,7 @@ system" after a shuffle; tracked as a separate fix.)
 
 | Phase | Scope | Exit gate |
 |---|---|---|
-| **1 — Store launch (CISA)** · 6–8 wks | ✅ practice, mock, review, readiness, streaks, reminders, offline. ☐ app icon/splash from `design-notes/assets/logo.svg` ☐ privacy/terms URLs ☐ EAS builds ☐ Android closed test (12 testers × 14 days for new personal accounts) ☐ TestFlight | Approved in both stores |
+| **1 — Store launch (CISA)** · 6–8 wks | ✅ practice, mock, review, readiness, streaks, reminders, offline. ✅ app icon/splash (Kasama logo, `design-notes/brand-kaisip/`) ☐ privacy/terms URLs ☐ EAS builds ☐ Android closed test (12 testers × 14 days for new personal accounts) ☐ TestFlight | Approved in both stores |
 | **2 — Monetise + measure** · +6 wks | RevenueCat paywall (free tier + Premium), Sentry, PostHog, review prompt, Topics/notes tab | D7 retention ≥ 20%, crash-free ≥ 99.5% |
 | **3 — Accounts + more certs** · +3 mo | Supabase auth (Apple/Google/email), sync, **in-app account deletion**, downloadable content packs, CISM | Paid conversion ≥ 3% |
 | **4 — Scale** | CRISC, AAIA, CISSP, All-Access plan, team licences, AI tutor | Self-reported pass rate ≥ 75% |

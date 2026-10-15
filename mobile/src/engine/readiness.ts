@@ -13,6 +13,12 @@
  * answering, a correct answer earns HALF a mastery point instead of a full
  * one (ASSISTED_WEIGHT). Getting it right with help is real progress, but
  * it is not yet proof you could do it alone on exam day.
+ *
+ * Retests (mobile 1.24): a right answer given less than 4 hours after a
+ * WRONG answer to the same question (srs.ts isRetestAfterMiss) is recall from
+ * working memory, so it counts half as well. A right answer after a right
+ * answer is a normal answer (full credit). A wrong retest counts in full
+ * (a wrong answer earns nothing, retest or not).
  */
 import type { Certification } from '../content/types';
 import type { Confidence } from './srs';
@@ -28,6 +34,13 @@ export interface AnswerRecord {
    * load as "not assisted" (no migration needed).
    */
   lastAssisted?: boolean;
+  /**
+   * Mobile 1.24: true when the LAST answer was a right retest, given less
+   * than 4 hours after a WRONG answer to the same question. Written only when
+   * true; the next answer rebuilds the record, so a later clean try drops it.
+   * Optional: older saves load as "not a retest".
+   */
+  lastRetest?: boolean;
   /**
    * Build F: true when the LAST answer came from a game (the store writes it
    * when a game records with `mastery: false`). Milestones never count these:
@@ -59,10 +72,10 @@ export const ASSISTED_WEIGHT = 0.5;
 export const HINT_BEFORE_LINE = 'You used a hint, so a right answer counts as half.';
 export const HINT_AFTER_LINE = 'You used a hint, so this counts as half a right answer.';
 
-/** Mastery credit for one answer record: 1 clean correct, 0.5 assisted correct, 0 wrong. */
+/** Mastery credit for one answer record: 1 clean correct, 0.5 for a hinted or retest correct, 0 wrong. */
 export function answerCredit(rec: AnswerRecord): number {
   if (!rec.lastCorrect) return 0;
-  return rec.lastAssisted ? ASSISTED_WEIGHT : 1;
+  return rec.lastAssisted || rec.lastRetest ? ASSISTED_WEIGHT : 1;
 }
 
 /**
@@ -84,6 +97,11 @@ export interface DomainMastery {
   credit: number;
   /** Unique questions whose LAST answer was assisted (Coach me). */
   assisted: number;
+  /**
+   * Unique questions whose LAST answer counted as half evidence: assisted or a
+   * retest (mobile 1.24). The range's honesty (readinessRange.ts) reads this.
+   */
+  halved: number;
   /** Σ unlockWeight: answers counted toward unlocking the range (assisted = half). */
   unlockAnswers: number;
   accuracy: number | null; // mastered / answered, null if none
@@ -101,7 +119,7 @@ export function domainMastery(
   cert: Certification,
   answers: Record<string, AnswerRecord>,
 ): DomainMastery[] {
-  const zero = () => ({ answered: 0, mastered: 0, credit: 0, assisted: 0, unlockAnswers: 0 });
+  const zero = () => ({ answered: 0, mastered: 0, credit: 0, assisted: 0, halved: 0, unlockAnswers: 0 });
   const tally = new Map<string, ReturnType<typeof zero>>();
   for (const [id, rec] of Object.entries(answers)) {
     const d = domainOf(id);
@@ -110,6 +128,7 @@ export function domainMastery(
     if (rec.lastCorrect) t.mastered += 1;
     t.credit += answerCredit(rec);
     if (rec.lastAssisted) t.assisted += 1;
+    if (rec.lastAssisted || rec.lastRetest) t.halved += 1;
     t.unlockAnswers += unlockWeight(rec);
     tally.set(d, t);
   }
@@ -121,6 +140,7 @@ export function domainMastery(
       mastered: t.mastered,
       credit: t.credit,
       assisted: t.assisted,
+      halved: t.halved,
       unlockAnswers: t.unlockAnswers,
       // Accuracy stays the plain "how many did I get right" share.
       accuracy: t.answered ? t.mastered / t.answered : null,

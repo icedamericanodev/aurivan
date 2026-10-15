@@ -84,8 +84,21 @@ RUNTIME="$(npx expo-updates fingerprint:generate --platform android | node -e 'l
 [ -n "$RUNTIME" ] || { echo "Could not compute the update runtime." >&2; exit 1; }
 echo "  $RUNTIME"
 
+# A test APK listens to the "preview" update channel. The committed app.json
+# sets no channel (store builds get "production" from eas.json on EAS), so set
+# it in this separate copy only, after the runtime above. The next run's
+# checkout resets app.json. Older versions set it in app.json already.
+if [ -f scripts/set-update-channel.mjs ]; then
+  node scripts/set-update-channel.mjs preview
+fi
+
 echo "• Preparing the Android project…"
 npx expo prebuild --platform android --no-install
+# The same check GitHub's APK build runs: a test APK that listens to no channel
+# (or the wrong one) would never receive an update, and nothing would say so.
+grep -q 'expo-channel-name&quot;:&quot;preview&quot;' android/app/src/main/AndroidManifest.xml \
+  || { echo "The Android project does not listen to the preview channel; this APK would never update." >&2; exit 1; }
+echo "  The APK will listen to the preview update channel."
 
 echo "• Building the release app with Gradle (this is the slow part)…"
 # Gradle's default memory runs out during the release lint pass; give it room.

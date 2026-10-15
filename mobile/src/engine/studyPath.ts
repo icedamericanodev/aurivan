@@ -52,12 +52,14 @@ export function topicStudied(topic: OutlineTopic, lessonIds: readonly string[], 
 /**
  * The learner's most recent UNASSISTED answers on these questions, newest
  * first (true = right). Each question counts its last answer; an answer
- * given after Coach me is left out.
+ * given after Coach me is left out, and so is a right RETEST (mobile 1.24:
+ * a miss re-answered within 4 hours is working memory, srs.ts), like every
+ * other clean-answer check in the app.
  */
 export function lastUnassisted(questionIds: readonly string[], answers: Record<string, AnswerRecord>, n = CLEAR_OF): boolean[] {
   return questionIds
     .map((id) => answers[id])
-    .filter((r): r is AnswerRecord => Boolean(r) && !r.lastAssisted)
+    .filter((r): r is AnswerRecord => Boolean(r) && !r.lastAssisted && !r.lastRetest)
     .sort((a, b) => b.lastAt - a.lastAt)
     .slice(0, n)
     .map((r) => r.lastCorrect);

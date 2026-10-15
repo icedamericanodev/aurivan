@@ -14,22 +14,32 @@
  * Heartwood) as a leaf glyph AND its name, never colour alone. No
  * leaderboards, no play counts.
  *
+ * Mobile 1.24 (panel decision D5): Play leads with "Today's drill", the game
+ * that trains the learner's own mistake pattern (engine/games/todaysDrill.ts;
+ * a new learner gets Snare Spotter). Beside it sit two related games, so
+ * three games are in sight; the other six wait under "More games", folded.
+ * Every row has a plain subtitle ("Spot the trick answer"). Nine games is
+ * the limit: no new ones are added.
+ *
  * Mobile 1.21: the hero's caption holds two things, not five (the glyph and
  * "Beating distractors · 6 min"); the level (leaf + name) moves under the
  * meta line, clear of the art.
  */
 import { router } from 'expo-router';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { ICON_STROKE, Play as PlayIcon } from '../../components/icons';
 import { GameGlyph, TierLeaf } from '../../components/glyphs';
 import { TierTag } from '../../components/milestones';
+import { DisclosureRow } from '../../components/pathChooser';
 import { Button, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, Section, T, Trail } from '../../components/ui';
 import { GAME_TIER_NAME, growthTier } from '../../engine/games/growth';
 import { scoreSpoken, scoreText } from '../../engine/games/recap';
 import { GAMES, type GameId } from '../../engine/games/registry';
+import { drillPlan } from '../../engine/games/todaysDrill';
 import { spokenMin } from '../../engine/pace';
 import { playableGames } from '../../lib/games';
+import { slipPatternFor } from '../../lib/slipPattern';
 import { CERTIFICATIONS, getCertification } from '../../content/certifications';
 import { selectCert, useProgress } from '../../store/progress';
 import { useSettings } from '../../store/settings';
@@ -47,14 +57,47 @@ export default function Play() {
   // Progress by the active id itself, as useActiveCert reads it, so every tab shows the same exam's progress.
   const gameBest = useProgress((s) => selectCert(s, certId).gameBest);
   const gameGrowth = useProgress((s) => selectCert(s, certId).gameGrowth);
+  const mistakes = useProgress((s) => selectCert(s, certId).mistakes);
   // A game whose question pool is too small for this certification is not
   // offered at all (never explained with a number: no bank-size leaks).
   // Note-based games (Root or Rumor) count the cert's study notes instead.
-  const games = useMemo(() => playableGames(cert.id).map((id) => GAMES[id]), [cert.id]);
-  const [featured, ...others] = games;
+  const playable = useMemo(() => playableGames(cert.id), [cert.id]);
+  // The learner's own mistake pattern (the same coach as the Mistake journal) picks Today's drill.
+  const pattern = useMemo(() => slipPatternFor(cert.id, mistakes), [cert.id, mistakes]);
+  const plan = useMemo(() => drillPlan(pattern.ready ? pattern.game : null, playable), [pattern, playable]);
+  const featured = plan.drill ? GAMES[plan.drill] : undefined;
+  // "More games" starts folded: three games in sight, the rest one tap away.
+  const [moreOpen, setMoreOpen] = useState(false);
   const best = (id: GameId) => gameBest[id];
   // Each game's level (Build F): Seedling until it has been played.
   const level = (id: GameId) => growthTier(gameGrowth?.[id]);
+
+  /** One game as a hairline row: name, plain subtitle, level (once grown), best score. */
+  const gameRow = (id: GameId, last: boolean) => {
+    const g = GAMES[id];
+    const b = best(id);
+    return (
+      <ListRow
+        key={id}
+        icon={<GameGlyph game={id} size={ICON_SIZE.row + 2} color={c.accentText} />}
+        title={g.name}
+        subtitle={
+          <View>
+            <T v="meta">{g.plain}</T>
+            {level(id) !== 'seedling' && (
+              <View style={{ marginTop: 2 }}>
+                <TierTag tier={level(id)} />
+              </View>
+            )}
+          </View>
+        }
+        trailing={b !== undefined ? <Trail value={scoreText(b)} unit="best" /> : undefined}
+        accessibilityLabel={`${g.name}. ${g.plain}. Your level: ${GAME_TIER_NAME[level(id)]}. About ${g.minutes} minutes.${b !== undefined ? ` Best score ${scoreSpoken(b)}.` : ''}`}
+        onPress={() => router.push(`/game/${id}`)}
+        last={last}
+      />
+    );
+  };
 
   return (
     <Screen>
@@ -72,7 +115,13 @@ export default function Play() {
       )}
 
       {featured && (
-        <Enter i={1} style={{ marginTop: space.xl }}>
+        // No extra top margin: the Section below brings its own (a second one left ~64pt under the intro; UX review nit).
+        <Enter i={1}>
+          {/* Today's drill: why this game, in the learner's own pattern words (or a calm default). */}
+          <Section title="Today’s drill" />
+          <T v="meta" style={{ marginBottom: space.md }}>
+            {plan.fromPattern && pattern.ready ? `Picked from your mistakes. ${pattern.title}.` : 'A good place to start. Your mistakes will shape this pick.'}
+          </T>
           <HeroPanel
             captionLead={<GameGlyph game={featured.id} size={20} color={c.sap} />}
             caption={`${featured.skill} · ${featured.minutes} min`}
@@ -100,36 +149,29 @@ export default function Play() {
         </Enter>
       )}
 
-      {others.length > 0 && (
+      {plan.also.length > 0 && (
         <Enter i={2}>
-          {/* Every game starts at Seedling: say it once, and show a level on a row
+          {/* Every game starts at Seedling: say it once, here, and show a level on a row
               only once it has grown past that (ui.md G2). Spoken on every row. */}
-          <Section title="More games" meta={others.every((g) => level(g.id) === 'seedling') ? 'All at Seedling' : undefined} />
-          {others.map((g, i) => {
-            const b = best(g.id);
-            return (
-              <ListRow
-                key={g.id}
-                icon={<GameGlyph game={g.id} size={ICON_SIZE.row + 2} color={c.accentText} />}
-                title={g.name}
-                subtitle={
-                  <View>
-                    <T v="meta">{g.tagline}</T>
-                    {level(g.id) !== 'seedling' && (
-                      <View style={{ marginTop: 2 }}>
-                        <TierTag tier={level(g.id)} />
-                      </View>
-                    )}
-                  </View>
-                }
-                trailing={b !== undefined ? <Trail value={scoreText(b)} unit="best" /> : undefined}
-                accessibilityLabel={`${g.name}. ${g.tagline} Your level: ${GAME_TIER_NAME[level(g.id)]}. About ${g.minutes} minutes.${b !== undefined ? ` Best score ${scoreSpoken(b)}.` : ''}`}
-                onPress={() => router.push(`/game/${g.id}`)}
-                last={i === others.length - 1}
-              />
-            );
-          })}
-          <T v="meta" style={{ marginTop: space.md }}>Each game trains one exam skill in a few minutes.</T>
+          <Section
+            title={plan.fromPattern ? 'Also good for this' : 'Also try'}
+            meta={playable.every((id) => level(id) === 'seedling') ? 'All at Seedling' : undefined}
+          />
+          {plan.also.map((id, i) => gameRow(id, i === plan.also.length - 1))}
+        </Enter>
+      )}
+
+      {plan.more.length > 0 && (
+        <Enter i={3}>
+          <DisclosureRow
+            title="More games"
+            subtitle={`${plan.more.length} more, each trains one exam skill`}
+            expanded={moreOpen}
+            onPress={() => setMoreOpen((o) => !o)}
+            accessibilityHint={moreOpen ? 'Hides the other games' : 'Shows the other games'}
+            last={!moreOpen}
+          />
+          {moreOpen && plan.more.map((id, i) => gameRow(id, i === plan.more.length - 1))}
         </Enter>
       )}
     </Screen>

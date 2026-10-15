@@ -11,9 +11,8 @@ An independent, free CISA exam prep app built to train the **auditor mindset** â
 - **Practice mode** with confidence rating and sub-topic drill-down
 - **Mock exam** with the full 4-hour clock and ISACA-style blueprint mix
 - **Topics tab** with study summaries, real-life analogies, and key terminology per domain
-- **Weak spots** that auto-track your lowest-scoring areas
-- **Readiness score** weighted by exam blueprint, with a personalized 3-step daily study plan
-- **Bookmarks**, **profiles**, **export/import progress**, **dark mode**, **PWA / offline support**
+- **Weak spots** by domain (Building, Steady or Strong until a domain has 30 answers)
+- **Bookmarks**, **export/import progress** (under Your data), and **light and dark mode** that follows your system
 - **In-app feedback** that goes straight to the maintainer
 
 ## Domain coverage
@@ -77,7 +76,8 @@ kaisip/
 - Question banks are static JSON loaded asynchronously per domain
 - localStorage for progress; no backend, no accounts, no PII
 - Optional Google Analytics
-- Optional PWA install (offline-capable)
+- Fraunces and Figtree fonts served from `assets/fonts` (no font service is contacted)
+- Needs an internet connection; there is no offline or install mode
 
 ## Feedback
 

@@ -254,7 +254,7 @@ const g = (id: keyof typeof GAMES) => GAMES[id].name;
 
 /** The 15 milestones, then the 7 skill badges, in display order. */
 export const BADGES: BadgeDef[] = [
-  { id: 'first-foothold', kind: 'milestone', name: 'First Foothold', rule: `Finish the ${DIAGNOSTIC_SIZE}-question diagnostic.` },
+  { id: 'first-foothold', kind: 'milestone', name: 'First Foothold', rule: `Answer your first ${DIAGNOSTIC_SIZE} questions.` },
   { id: 'topic-clear', kind: 'milestone', name: 'Topic Clear', rule: 'Clear your first topic: its lesson done, and 4 of your last 5 answers there right.' },
   { id: 'ten-topics', kind: 'milestone', name: 'Ten Topics Clear', rule: `Clear ${TEN_TOPICS} topics.` },
   {
@@ -713,10 +713,10 @@ export function inferFromSaves(i: BackfillInput): { loopFixed: string[]; sure: b
   const loopFixed: string[] = [];
   for (const [id, m] of Object.entries(i.mistakes)) {
     const a = i.answers[id];
-    if (m.resolved && !m.fixedLater && a && a.lastCorrect && !a.lastAssisted && !a.lastGame && dayKey(a.lastAt) > dayKey(m.at)) loopFixed.push(id);
+    if (m.resolved && !m.fixedLater && a && a.lastCorrect && !a.lastAssisted && !a.lastRetest && !a.lastGame && dayKey(a.lastAt) > dayKey(m.at)) loopFixed.push(id);
   }
   const sure = Object.values(i.answers)
-    .filter((a) => a.lastConfidence === 'sure' && !a.lastAssisted && !a.lastGame)
+    .filter((a) => a.lastConfidence === 'sure' && !a.lastAssisted && !a.lastRetest && !a.lastGame)
     .sort((a, b) => a.lastAt - b.lastAt)
     .slice(-SURE_WINDOW)
     .map((a) => a.lastCorrect);

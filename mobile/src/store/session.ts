@@ -13,6 +13,7 @@ import type { Checkpoint, MockTiming } from '../engine/pace';
 import type { PathReason, StudyMode } from '../engine/studyModes';
 import type { Confidence } from '../engine/srs';
 import type { Permutation } from '../engine/shuffle';
+import { watchHydration } from './hydration';
 import { persistStorage } from './storage';
 
 export type SessionMode = 'practice' | 'review' | 'mock';
@@ -23,6 +24,12 @@ export interface Response {
   confidence?: Confidence;
   /** Answered after "Coach me" showed a hint. Optional: older sessions have none. */
   assisted?: boolean;
+  /**
+   * A RIGHT answer given less than 4 hours after a WRONG answer to this
+   * question (engine/srs.ts isRetestAfterMiss): not promoted, half weight, the answer
+   * screen says "Back in your review tomorrow." Optional: older sessions have none.
+   */
+  retest?: boolean;
   /**
    * Time to answer in ms, background time excluded (engine/answerClock.ts).
    * Mock exams add up every visit until the last change of answer.
@@ -88,6 +95,13 @@ export interface ActiveSession {
    * key from engine/milestones.ts). Optional: most sessions have none.
    */
   milestone?: string;
+  /**
+   * Mobile 1.24: this is the learner's FIRST SET (the same five questions for
+   * everyone, lib/firstSet.ts). It runs with no timer and no confidence chips,
+   * and its Results is the Day-1 closing screen (components/firstSet.tsx).
+   * Optional: older sessions have none.
+   */
+  firstSet?: boolean;
   finishedAt?: number; // set when the learner finishes / submits
 }
 
@@ -159,6 +173,6 @@ export const useSession = create<SessionState>()(
       setMilestone: (key) => set((s) => (s.active ? { active: { ...s.active, milestone: key } } : s)),
       clear: () => set({ active: null }),
     }),
-    { name: 'aurivan.session.v1', storage: persistStorage, version: 1 },
+    { name: 'aurivan.session.v1', storage: persistStorage, version: 1, onRehydrateStorage: watchHydration('session') },
   ),
 );

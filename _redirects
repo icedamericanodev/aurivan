@@ -1,0 +1,17 @@
+# Redirects for the website (Cloudflare Pages reads this file; so does
+# Netlify. GitHub Pages ignores it). scripts/build_site.sh copies it into
+# _site/. Deploy notes: docs/WEBSITE_DEPLOY.md.
+#
+# HOW TO READ IT: each line is  <from>  <to>  <status>.
+# 301 = moved for good (browsers and search engines remember it).
+#
+# Cloudflare already serves /privacy.html at /privacy (and /index.html at /),
+# so those need no line here. The lines below catch the other names people
+# (and store reviewers) often type for the same pages. Keep this list short:
+# a redirect can never point outside this site.
+
+/privacy-policy   /privacy   301
+/terms-of-use     /terms     301
+/terms-of-service /terms     301
+/help             /support   301
+/contact          /support   301

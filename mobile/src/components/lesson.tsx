@@ -2,7 +2,7 @@
  * Lesson scene templates — one composed, animated layout per scene type.
  *
  * Grove v2 (DESIGN_SYSTEM.md §11 "Learn", §2): scene prose is the serif
- * `stem` style (you sit and read it), the takeaway and "How ISACA thinks"
+ * `stem` style (you sit and read it), the takeaway and "The IS auditor’s lens"
  * are the key-idea recipe (a leaf, a caption, the italic `quote` on a 3px
  * green rule), and checks reuse the quiz OptionCard and the session's
  * verdict leaf. Check options are shuffled like practice questions and
@@ -66,7 +66,7 @@ export function lastPart(scene: Scene): number {
     case 'check':
       return scene.options.length;
     default:
-      // The cover, an idea, an analogy, "How ISACA thinks" and the takeaway: two parts.
+      // The cover, an idea, an analogy, "The IS auditor’s lens" and the takeaway: two parts.
       return 1;
   }
 }
@@ -93,6 +93,16 @@ function Part({ i, drop, style, spoken, children }: { i: number; drop?: boolean;
 }
 
 /**
+ * The name of the "coach speaks" scene: the one reasoning tip in each lesson
+ * that shows how an IS auditor would think. The lesson data (content/lessons)
+ * uses this exact text as the scene `heading`, and the code below compares
+ * against it in two places (kicker and key-idea card), so it lives here ONCE.
+ * If you ever rename it, change this line and the headings in cisa.ts together
+ * (a test fails if they drift apart).
+ */
+export const COACH_HEADING = 'The IS auditor’s lens';
+
+/**
  * What KIND of scene this is, in a word or two: the kicker over its heading
  * (mobile 1.22, design spec §4.3). "Think of it like" reads as a lead-in to
  * an analogy's name ("A leaking roof"); an analogy whose heading already
@@ -104,7 +114,7 @@ export function sceneKicker(scene: Scene): string | null {
     case 'title':
       return null;
     case 'idea':
-      return scene.heading === 'How ISACA thinks' ? 'How ISACA thinks' : 'The idea';
+      return scene.heading === COACH_HEADING ? COACH_HEADING : 'The idea';
     case 'analogy':
       return /^think of\b/i.test(scene.heading) ? 'An analogy' : 'Think of it like';
     case 'flow':
@@ -433,10 +443,10 @@ export function SceneView({
       return <LessonCover scene={scene} lesson={lesson} art={art} tone={tone} />;
 
     case 'idea':
-      // "How ISACA thinks" is the coach's voice: the key-idea recipe (ui.md LP3), as on the vine and in
+      // "The IS auditor’s lens" is the coach's voice: the key-idea recipe (ui.md LP3), as on the vine and in
       // notes, at the same anchor line as every other scene (mobile 1.22).
-      if (scene.heading === 'How ISACA thinks') {
-        return <KeyIdea caption="How ISACA thinks" body={scene.body} />;
+      if (scene.heading === COACH_HEADING) {
+        return <KeyIdea caption={COACH_HEADING} body={scene.body} />;
       }
       return (
         <View>

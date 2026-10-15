@@ -762,6 +762,13 @@ describe('Journey 7: an old 1.11 save and a backup restore', () => {
     expect(cp.lessonsDone).toEqual(['cisa-l-d1-charter']);
     mount(<Play />);
     expect(allText()).not.toContain('Sure Footing');
+    // Mobile 1.24: Play leads with three games and folds the rest under "More games": open it.
+    const more = root().findAll((n) => typeof n.props.onPress === 'function' && /^More games/.test(String(n.props.accessibilityLabel)))[0];
+    if (more) {
+      act(() => {
+        more.props.onPress();
+      });
+    }
     const row = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Forecast.'));
     const hero = root().findAll((n) => n.props.title === 'Forecast');
     // Featured or a row: either way the best and the level show.

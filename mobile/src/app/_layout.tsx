@@ -8,7 +8,12 @@
  * 3. Mounts MotionRoot: Reduce Motion (the phone's, live, or Settings →
  *    Motion → Reduced) reaches every animation, Reanimated's included.
  * 4. Mounts ThemeFade: switching Light ⇄ Dark dissolves instead of flashing.
- * 5. Cloud builds only (Uplift Phases 6–7, built OFF): once saved data has
+ * 5. If saved data cannot be loaded (a read throws, or it takes over 8
+ *    seconds), shows a branded recovery screen instead of waiting forever
+ *    (store/useHydrated.ts, components/recovery.tsx); and exports an
+ *    ErrorBoundary so a screen that crashes while drawing shows the same
+ *    calm screen, not a blank one.
+ * 6. Cloud builds only (Uplift Phases 6–7, built OFF): once saved data has
  *    loaded, lib/account.ts initAccount() checks the sign-in and follows it,
  *    then lib/sync.ts initSync() starts sync, and SyncRouteWatch tells sync
  *    when a quiz, lesson or game opens and ends. With the flag off (every
@@ -25,8 +30,7 @@ import { useFonts } from 'expo-font';
 import { Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import { getCertification } from '../content/certifications';
+import { useEffect, useState } from 'react';
 import { CLOUD } from '../cloud/flag';
 import { initAccount } from '../lib/account';
 import { initSync, setRoute } from '../lib/sync';
@@ -34,13 +38,17 @@ import { pruneUndo } from '../lib/backup';
 import { initCaseSeen } from '../lib/badges';
 import { ensureBackfill, ensureCatalog, syncPlanters } from '../lib/milestones';
 import { useProgress } from '../store/progress';
-import { cancelReminders, initNotifications, scheduleReminders } from '../lib/reminders';
+import { cancelReminders, initNotifications } from '../lib/reminders';
+import { refreshReminders } from '../lib/reminderSync';
 import { useSettings } from '../store/settings';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MotionRoot, ThemeFade, useMotion } from '../components/motion';
 import { Grain } from '../components/ui';
 import { motion } from '../theme/tokens';
-import { useHydrated } from '../store/useHydrated';
+import { RecoveryScreen } from '../components/recovery';
+import { sayLater } from '../lib/a11y';
+import type { ErrorBoundaryProps } from 'expo-router';
+import { useHydration } from '../store/useHydrated';
 import { useTheme } from '../theme/useTheme';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
@@ -57,7 +65,8 @@ export default function RootLayout() {
     Figtree_500Medium,
     Figtree_600SemiBold,
   });
-  const hydrated = useHydrated();
+  const { status, retry } = useHydration();
+  const hydrated = status === 'ready';
   const { c, isDark } = useTheme();
   // Reduce Motion (the phone's setting, live, or Settings → Motion → Reduced):
   // screens dissolve instead of sliding or rising. Never a hard cut (Apple's
@@ -67,17 +76,24 @@ export default function RootLayout() {
   // If a font fails to load we still start (system font fallback) rather than hang.
   const ready = (fontsLoaded || Boolean(fontError)) && hydrated;
 
+  // Saved data failed to load (or took too long): never sit on the splash. Wait only for the fonts
+  // (they fall back to the system font if they fail) so the recovery screen is branded.
+  const recovering = status === 'failed' && (fontsLoaded || Boolean(fontError));
+  // Set by the recovery screen's "Try again" (see below).
+  const [retrying, setRetrying] = useState(false);
+
   useEffect(() => {
-    if (ready) SplashScreen.hideAsync().catch(() => {});
-  }, [ready]);
+    if (ready || recovering) SplashScreen.hideAsync().catch(() => {});
+  }, [ready, recovering]);
 
   // Once saved settings have loaded: if reminders are on, re-apply them;
   // if they are off, clear any of ours left behind (e.g. an older
   // version's untagged reminder). Never asks for permission.
   useEffect(() => {
     if (!hydrated) return;
-    const { reminder, activeCertId } = useSettings.getState();
-    if (reminder.enabled) scheduleReminders(reminder, getCertification(activeCertId)?.name ?? 'your exam').catch(() => {});
+    // refreshReminders (lib/reminderSync.ts): the one way to schedule, so "skip today once the plan is
+    // cleared" and the "Your 20-minute plan" title always apply. It never throws.
+    if (useSettings.getState().reminder.enabled) refreshReminders().catch(() => {});
     else cancelReminders().catch(() => {});
     // An "Undo restore" snapshot older than 7 days is dropped once, at launch.
     pruneUndo();
@@ -127,6 +143,26 @@ export default function RootLayout() {
     initCaseSeen(activeCertId);
     syncPlanters(activeCertId);
   }, [hydrated, activeCertId]);
+
+  // "Try again" puts the status back to 'loading' (the splash is already hidden): keep the recovery screen
+  // up in a "Trying again…" state until it loads or fails again, never a blank page (UX review S9).
+  const retryingNow = retrying && status === 'loading';
+  if (recovering || retryingNow) {
+    return (
+      <SafeAreaProvider>
+        <StatusBar style={isDark ? 'light' : 'dark'} />
+        <RecoveryScreen
+          kind="load"
+          retrying={retryingNow}
+          onTryAgain={() => {
+            setRetrying(true);
+            sayLater('Trying again');
+            retry();
+          }}
+        />
+      </SafeAreaProvider>
+    );
+  }
 
   if (!ready) return null;
 
@@ -201,6 +237,15 @@ export default function RootLayout() {
       <Grain />
     </SafeAreaProvider>
   );
+}
+
+/**
+ * Expo Router uses this export as the safety net for every screen: if one
+ * crashes while drawing, the learner sees the branded recovery screen and
+ * "Try again" draws it again (instead of a blank or red screen).
+ */
+export function ErrorBoundary({ retry }: ErrorBoundaryProps) {
+  return <RecoveryScreen kind="crash" onTryAgain={() => void retry()} />;
 }
 
 /**

@@ -158,7 +158,7 @@ describe('lesson scenes: kicker + hero heading', () => {
   const idea: Scene = { type: 'idea', heading: 'What a charter does', body: 'x' };
   it('names every scene kind', () => {
     expect(sceneKicker(idea)).toBe('The idea');
-    expect(sceneKicker({ type: 'idea', heading: 'How ISACA thinks', body: 'x' })).toBe('How ISACA thinks');
+    expect(sceneKicker({ type: 'idea', heading: 'The IS auditor’s lens', body: 'x' })).toBe('The IS auditor’s lens');
     expect(sceneKicker({ type: 'analogy', heading: 'A leaking roof', body: 'x' })).toBe('Think of it like');
     // Never "Think of it like / Think of a referee".
     expect(sceneKicker({ type: 'analogy', heading: 'Think of a referee', body: 'x' })).toBe('An analogy');
@@ -347,7 +347,7 @@ describe('answer screen after a miss', () => {
 
 // ── Results ─────────────────────────────────────────────────────────────
 describe('results: one domain', () => {
-  it('the ring alone, centred, with one line under it; Done is a quiet ghost under the primary', () => {
+  it('the ring alone, centred, with one line under it; Done is the one solid button, Practice the missed is secondary', () => {
     const ids = ['d1_001', 'd1_002', 'd1_003'].filter((id) => findQuestion('cisa', id));
     startFromIds('cisa', ids, 'T');
     ids.forEach((_, i) => {
@@ -361,9 +361,16 @@ describe('results: one domain', () => {
     });
     mount(<Results />);
     expect(root().findByType(DomainRings).props.legend).toBe(false);
-    expect(allText()).toContain(`All IS Audit · ${ids.length - 1} of ${ids.length}`);
-    const done = root().findAll((n) => n.props.label === 'Done' && n.props.kind !== undefined);
-    expect(done[0].props.kind).toBe('ghost');
+    // Three questions is a handful (mobile 1.24, UX review S7): the headline holds the count once, the ring
+    // names the domain, and there is no "All IS Audit · 2 of 3" line repeating it.
+    expect(allText()).toContain(`${ids.length - 1} of ${ids.length} right`);
+    expect(allText()).not.toContain('All IS Audit ·');
+    expect(allText()).toContain('IS Audit');
+    // Mobile 1.24: Done is the one solid button; "Practice the one you missed" is the secondary
+    // (a miss re-answered minutes later is a retest and earns no spacing credit).
+    const kindOf = (label: string) => root().findAll((n) => n.props.label === label && typeof n.props.onPress === 'function')[0].props.kind ?? 'primary';
+    expect(kindOf('Done')).toBe('primary');
+    expect(kindOf('Practice the one you missed')).toBe('secondary');
   });
 });
 

@@ -506,9 +506,10 @@ export function HeroPanel({
   meta?: string;
   /**
    * `iconTrailing` (mobile 1.22): the glyph after the label, for a forward arrow ("Start →", as
-   * "Next question →"); a Play glyph stays leading. `full` (mobile 1.23, Today): the pill spans the panel.
+   * "Next question →"); a Play glyph stays leading. The pill always hugs its label and sits on the left,
+   * in light and dark (mobile 1.24: one hero button style; a full-width bar is for a sticky footer only).
    */
-  action?: { label: string; onPress: () => void; icon?: (color: string) => ReactNode; hint?: string; iconTrailing?: boolean; full?: boolean };
+  action?: { label: string; onPress: () => void; icon?: (color: string) => ReactNode; hint?: string; iconTrailing?: boolean };
   art?: BotanyKind;
   /** Gentle frond sway while the screen is focused (off under Reduce Motion). */
   sway?: boolean;
@@ -610,7 +611,7 @@ export function HeroPanel({
             icon={action.icon}
             iconLeading={!action.iconTrailing}
             follow={lift}
-            style={{ marginTop: space.gutter, alignSelf: action.full ? 'stretch' : 'flex-start', ...(action.full ? { minHeight: 52 } : null) }}
+            style={{ marginTop: space.gutter, alignSelf: 'flex-start', minHeight: 52 }}
           />
         )}
       </View>
@@ -874,6 +875,7 @@ export function ListRow({
   chevron = true,
   dim,
   reading,
+  full,
   onHide,
   testID,
   accessibilityLabel,
@@ -892,6 +894,11 @@ export function ListRow({
    * 600); 4 at large text, so a note's name is not cut to a few words.
    */
   reading?: boolean;
+  /**
+   * With `reading`: show the whole text, never cut to 2 lines (mobile 1.24).
+   * For a question stem, whose ask (FIRST, BEST, MOST) is at the END.
+   */
+  full?: boolean;
   icon?: ReactNode;
   /**
    * Mobile 1.22: a `caption` line in accentText ABOVE the title that says what
@@ -924,7 +931,7 @@ export function ListRow({
       {lead}
       <View style={{ flex: 1, minWidth: 0 }}>
         {kicker ? <T v="caption" color={dim ? c.muted : c.accentText} style={{ marginBottom: 2 }}>{kicker}</T> : null}
-        <T v={reading ? 'body' : 'label'} color={dim ? c.muted : undefined} numberOfLines={reading ? (large ? 4 : 2) : undefined}>{title}</T>
+        <T v={reading ? 'body' : 'label'} color={dim ? c.muted : undefined} numberOfLines={reading && !full ? (large ? 4 : 2) : undefined}>{title}</T>
         {typeof subtitle === 'string' ? <T v="meta" color={dim ? c.muted : undefined}>{subtitle}</T> : subtitle}
       </View>
       {trailing}
@@ -971,7 +978,7 @@ export function ListRow({
 // ── InviteRow: an invitation or a small award, on paper (mobile 1.21) ──
 /**
  * One meaning per device (spec §5): the 3px left rule is the coach's voice
- * only (Key idea, How ISACA thinks, Exam-day shortcut). Invitations ("Plant
+ * only (Key idea, The IS auditor’s lens, Exam-day shortcut). Invitations ("Plant
  * yours"), awards ("You'd already earned 5 badges") and small notices use
  * this instead: an icon circle, a `label` title, a `small` line, then ghost
  * actions under the words (left at the gutter), or, with `onPress` alone, the

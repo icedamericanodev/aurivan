@@ -1,7 +1,8 @@
 // Mobile 1.13 "Your plant" (SHOTS=plant, see run.sh): the end states of the
 // plant's places.
 //
-// Shots: the onboarding pick (top and name), Today with the plant beside the
+// Shots: the "Plant yours" pick (top and name; it was onboarding's step until
+// mobile 1.24), Today with the plant beside the
 // readiness range, Today's grow-up line, Today's one quiet "Plant a
 // companion" line, You's header, Your plant (top, next growth, domains),
 // resting, Quiet look (Your plant and Today), hidden (Today with the rings
@@ -93,18 +94,17 @@ const press = async (name, ms = 800) => {
 const setPlant = (plant) => edit(P, `v.state.byCert.cisa.plant = a; if (!a) delete v.state.byCert.cisa.plant;`, plant);
 const setPlantSettings = (s) => edit(P, `v.state.plantSettings = a;`, s);
 
-// ── 1. Onboarding: "Plant it" (step 3 of 3) ────────────────────────────
+// ── 1. "Plant yours": the species pick and the name ───────────────────
+// Mobile 1.24 took the plant step out of onboarding (a seed is planted after
+// the first five questions). The same species grid and name field now live
+// only in You → "Plant yours" (/plant-pick), so these shots show that screen,
+// for a learner with no plant yet. File names keep the p01 numbers.
 await go('/home', 1500);
-await edit(S, `v.state.onboarded = false;`);
-await go('/onboarding', 1800);
-await press('Start my plan');
-await press('Skip'); // mobile 1.23: the optional "What should we call you?" step
-await press('Continue');
-await press('Continue', 1400);
-await shot('p01-onboarding-pick');
+await setPlant(null);
+await go('/plant-pick', 1800);
+await shot('p01-plant-yours-pick');
 await toTop('Name it', 0);
-await shot('p01b-onboarding-name');
-await edit(S, `v.state.onboarded = true;`);
+await shot('p01b-plant-yours-name');
 
 // The demo plant: an oak called Kai, at Crown (5 of 6), from the seed's study.
 const kai = { species: 'oak', name: 'Kai', plantedAt: now - 30 * DAY, growth: 5, reached: { sprout: now - 29 * DAY, shoot: now - 20 * DAY, bough: now - 9 * DAY, crown: now - 2 * DAY } };
@@ -123,7 +123,8 @@ await shot('p02b-today-grew');
 await setPlant(null);
 await setPlantSettings({});
 await go('/home', 2600);
-await toTop('Plant a companion that grows with your study.', 300);
+// Since mobile 1.21 the line is a row: "Your plant / A companion that grows with your study".
+await toTop('A companion that grows with your study', 300);
 await shot('p02c-today-prompt');
 await setPlant(kai);
 await setPlantSettings({ promptHidden: true });

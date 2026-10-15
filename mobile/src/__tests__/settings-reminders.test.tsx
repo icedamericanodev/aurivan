@@ -8,6 +8,7 @@
  */
 import { Alert } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
+import { useSeen } from '../store/seen';
 import { useSettings } from '../store/settings';
 import Settings from '../app/settings';
 import { localTime } from '../engine/reminders';
@@ -103,9 +104,9 @@ describe('Settings → Study reminder', () => {
       await toggle.props.onValueChange(true);
     });
     expect(mockEnsure).toHaveBeenCalledTimes(1);
-    expect(mockSchedule).toHaveBeenLastCalledWith(expect.objectContaining({ enabled: true, hour: 19, minute: 0 }), 'CISA');
+    expect(mockSchedule).toHaveBeenLastCalledWith(expect.objectContaining({ enabled: true, hour: 19, minute: 0 }), 'CISA', expect.objectContaining({ skipToday: false, minutes: 20 }));
     press('Hour earlier');
-    expect(mockSchedule).toHaveBeenLastCalledWith(expect.objectContaining({ enabled: true, hour: 18 }), 'CISA');
+    expect(mockSchedule).toHaveBeenLastCalledWith(expect.objectContaining({ enabled: true, hour: 18 }), 'CISA', expect.objectContaining({ skipToday: false, minutes: 20 }));
     expect(mockEnsure).toHaveBeenCalledTimes(1);
   });
 
@@ -153,12 +154,14 @@ describe('Settings → Study reminder', () => {
     await flip(false);
     expect(mockCancel).toHaveBeenCalledTimes(1);
     expect(useSettings.getState().reminder).toMatchObject({ enabled: false, hour: 20, days: [1, 2, 3, 4, 5, 6] });
+    // Their own choice (mobile 1.24): the reminder ask's second chance never comes to them.
+    expect(useSeen.getState().reminderAsk.turnedOff).toBe(true);
     expect(allText()).toContain(`Mon, Tue, Wed, Thu, Fri, Sat at ${localTime(20, 0)}`);
     mockSchedule.mockClear();
     await flip(true);
     expect(mockEnsure).toHaveBeenCalledTimes(2);
     expect(mockSchedule).toHaveBeenCalledTimes(1);
-    expect(mockSchedule).toHaveBeenLastCalledWith(expect.objectContaining({ enabled: true, hour: 20, minute: 0, days: [1, 2, 3, 4, 5, 6] }), 'CISA');
+    expect(mockSchedule).toHaveBeenLastCalledWith(expect.objectContaining({ enabled: true, hour: 20, minute: 0, days: [1, 2, 3, 4, 5, 6] }), 'CISA', expect.objectContaining({ skipToday: false, minutes: 20 }));
     expect(useSettings.getState().reminder.enabled).toBe(true);
   });
 
@@ -177,7 +180,7 @@ describe('Settings → Study reminder', () => {
       allow(true);
       await pending;
     });
-    expect(mockSchedule).toHaveBeenLastCalledWith(expect.objectContaining({ enabled: true, hour: 6, days: [1, 2, 3, 4, 5] }), 'CISA');
+    expect(mockSchedule).toHaveBeenLastCalledWith(expect.objectContaining({ enabled: true, hour: 6, days: [1, 2, 3, 4, 5] }), 'CISA', expect.objectContaining({ skipToday: false, minutes: 20 }));
     expect(useSettings.getState().reminder).toMatchObject({ enabled: true, hour: 6, days: [1, 2, 3, 4, 5] });
   });
 

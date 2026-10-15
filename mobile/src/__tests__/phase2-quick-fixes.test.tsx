@@ -90,9 +90,18 @@ afterEach(() => {
   r = undefined;
 });
 
+/** 45 answered questions: enough for a range, so Today's readiness row is there (Day 0 shows none). */
+const answeredEnough = () =>
+  act(() => {
+    const answers: Record<string, { attempts: number; correctCount: number; lastCorrect: boolean; lastAt: number }> = {};
+    getAllQuestions('cisa').slice(0, 45).forEach((q) => (answers[q.id] = { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: Date.now() - 86_400_000 }));
+    useProgress.setState((st) => ({ byCert: { ...st.byCert, cisa: { ...st.byCert.cisa!, answers } } }));
+  });
+
 describe('Today', () => {
   it('T3: with the Exam-ready panel, the rings appear once (in the panel), never twice', () => {
     mockReady = true;
+    answeredEnough();
     mount(<Today />);
     expect(root().findAllByType(GrowthRings)).toHaveLength(1);
     // The panel's own rings: sap on the forest track (mobile 1.9 grows them with the moment).
@@ -102,6 +111,7 @@ describe('Today', () => {
   });
 
   it('T3: without the panel, the readiness row keeps its rings', () => {
+    answeredEnough();
     mount(<Today />);
     expect(root().findAllByType(GrowthRings)).toHaveLength(1);
     // Mobile 1.21: the condensed readiness row draws the small `row` rings.
@@ -188,8 +198,11 @@ describe('Results for a one-domain session (R1, R2) and the assisted line (Q1)',
     expect(rings[0].props.weights).toHaveLength(1);
     expect(rings[0].props.mastery[0]).toBeCloseTo(2 / 3);
     const text = allText();
-    // Mobile 1.22: no stranded one-row legend; one line under the ring.
-    expect(text).toMatch(/All IS Audit · 2 of 3/);
+    // Mobile 1.22: no stranded one-row legend. Mobile 1.24 (UX review S7): three questions are a handful, so
+    // the count is said once, in the headline, and the ring's centre names the domain (no "All IS Audit · 2 of 3").
+    expect(text).toMatch(/2 of 3 right/);
+    expect(text.match(/2 of 3/g)).toHaveLength(1);
+    expect(text).toMatch(/IS Audit/);
     expect(text).not.toMatch(/2\/3/);
     expect(text).not.toMatch(/IT Governance/);
     expect(text).not.toMatch(/–/);

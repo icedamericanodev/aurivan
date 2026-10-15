@@ -4,6 +4,8 @@
  */
 import { router } from 'expo-router';
 import type { PlanItem } from '../engine/planner';
+import { useSession } from '../store/session';
+import { startFirstSet } from './firstSet';
 import { guardedStart, startPractice, startReview } from './sessions';
 
 const openSession = () => router.push('/session');
@@ -47,6 +49,15 @@ export function runPlanItem(item: PlanItem, certId: string) {
       // The id goes in as a route param, never pasted into the path.
       return router.push({ pathname: '/lesson/[id]', params: { id: item.lessonId } });
     case 'practice':
+      // Day 1's item is the fixed first set (the same five questions for everyone), not a random draw.
+      // A first set that was left half-done is resumed where it stopped (never restarted behind an alert).
+      if (item.why === 'first') {
+        const paused = useSession.getState().active;
+        // Only this certification's paused set (a learner who switched certs starts this cert's own).
+        if (paused?.firstSet && !paused.finishedAt && paused.certId === certId) return openSession();
+        // A set ended early starts again with only the questions still unanswered (lib/firstSet.ts).
+        return guardedStart(() => startFirstSet(certId), openSession);
+      }
       return guardedStart(
         () => startPractice(certId, { count: item.count, domainId: item.domainId, title: item.label }),
         openSession,

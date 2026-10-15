@@ -15,9 +15,10 @@ import { Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
 import { domainColor } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { biggestGrowth, clearingTitle, dayAccuracy, isOptional, itemMinutes, type DayPlan } from '../engine/dayPlan';
-import type { PlanItem } from '../engine/planner';
+import { legacyTitle, type PlanItem } from '../engine/planner';
+import { SMALL_SAMPLE } from '../engine/resultsCopy';
 import type { Readiness } from '../engine/readiness';
-import { rangeLabel, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
+import { RANGE_MIN_ANSWERS, rangeLabel, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
 import { haptic } from '../lib/haptics';
 import { grewLine, LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -86,16 +87,21 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
       return { title: item.title, meta: `Lesson · ${mins} min`, short: `Lesson · ${mins} min` };
     case 'practice': {
       const why =
-        item.why === 'check'
-          ? 'no score yet, just a starting point'
-          : item.why === 'learn'
-            ? 'on what you just learned'
-            : item.why === 'weak'
-              ? `${item.count} questions, most points to gain`
-              : item.why === 'topup'
-                ? `${item.count} questions, a light top-up`
-                : 'new material first';
-      return { title: item.label, meta: `${aboutMin(mins)} · ${why}`, short: `Practice · ${mins} min` };
+        item.why === 'first'
+          ? `${item.count} questions, no timer`
+          : item.why === 'check'
+            ? // Not "no score yet, just a starting point" (1.24 UX review S5): by Day 2 the learner has seen
+              // "3 of 5", and the readiness row says how far the first range is.
+              'mixed across the domains'
+            : item.why === 'learn'
+              ? 'on what you just learned'
+              : item.why === 'weak'
+                ? `${item.count} questions, most points to gain`
+                : item.why === 'topup'
+                  ? `${item.count} questions, a light top-up`
+                  : 'new material first';
+      // legacyTitle: a 1.23 "Starting check: 12 mixed questions" row reads "Mixed practice" (no "check").
+      return { title: legacyTitle(item.label), meta: `${aboutMin(mins)} · ${why}`, short: `Practice · ${mins} min` };
     }
     case 'game':
       // Registry name by id: a plan saved before a rename shows today's name.
@@ -114,6 +120,8 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
 /** "IS Audit practice" style titles with the count taken out (the count goes to the meta line). */
 export function heroPracticeTitle(label: string): string {
   return label
+    // A plan saved before mobile 1.24 called these "Starting check": the learner never reads that word now.
+    .replace(/^Starting check\b.*$/, legacyTitle)
     .replace(/^\d+ (?:mixed )?questions? · (.+)$/, 'Practice: $1')
     .replace(/^(.+?): \d+ mixed questions?$/, '$1')
     .replace(/^(.+?) · \d+ questions?$/, '$1')
@@ -151,17 +159,19 @@ export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boo
       return { title: item.title, meta: opts.minutesSaid ? 'Lesson' : `Lesson · ${mins} min` };
     case 'practice': {
       const why =
-        item.why === 'check'
-          ? ', no score yet, just a starting point'
-          : item.why === 'learn'
-            ? ', on what you just learned'
-            : item.why === 'weak'
-              ? ', most points to gain'
-              : item.why === 'topup'
-                ? ', a light top-up'
-                : /review|warm-up/i.test(item.label)
-                  ? ''
-                  : ', new material first';
+        item.why === 'first'
+          ? ', no timer'
+          : item.why === 'check'
+            ? ', mixed across the domains' // "15 questions, mixed across the domains" (UX review S5)
+            : item.why === 'learn'
+              ? ', on what you just learned'
+              : item.why === 'weak'
+                ? ', most points to gain'
+                : item.why === 'topup'
+                  ? ', a light top-up'
+                  : /review|warm-up/i.test(item.label)
+                    ? ''
+                    : ', new material first';
       return { title: heroPracticeTitle(item.label), meta: join(`${qs(item.count)}${why}`) };
     }
     case 'game':
@@ -259,12 +269,17 @@ const MARK = 24;
 
 /**
  * Today's plan as a checklist on the forest panel (mockup A): done = a filled
- * sap check and struck-through text, the current item = a bold ring and
- * bold text, later items = a faint ring and the panel's quiet text. State is
- * never colour alone: the check, the strike and the weight say it, and each
- * line is one screen-reader stop ("Warm-up, 5 questions, done").
- * A line done since Today was last on view presses in (a small spring, one
- * light haptic), like the plan leaves did.
+ * sap check and struck-through text, later items = a faint ring and the
+ * panel's quiet text. State is never colour alone: the check, the strike and
+ * the weight say it, and each line is one screen-reader stop ("Warm-up, 5
+ * questions, done"). A line done since Today was last on view presses in (a
+ * small spring, one light haptic), like the plan leaves did.
+ *
+ * Mobile 1.24 (Today declutter): the list holds what is NOT the hero. The
+ * item you are on now is the panel's title (it used to be said twice, as the
+ * title and again as the first row), and the optional weekly mock is not a
+ * row at all (it sits under "Also today"). With a one-item plan, as on Day 1,
+ * there is no list: just the title and the button.
  */
 export function PlanChecklist({
   items,
@@ -283,14 +298,14 @@ export function PlanChecklist({
 }) {
   const { c } = useTheme();
   const shown = useShownDone(done, focused, seenKey);
+  const rows = items.map((item, i) => ({ item, i })).filter(({ i }) => i !== current && !isOptional(items, i));
+  if (rows.length === 0) return null;
   return (
     <View testID="plan-checklist" style={{ marginTop: space.lg, gap: 10 }}>
-      {items.map((item, i) => {
+      {rows.map(({ item, i }) => {
         const isDone = done[i];
-        const isCur = !isDone && i === current;
         const label = planCheckLabel(item, due);
-        const optional = isOptional(items, i);
-        const said = `${label}${optional ? ', optional this week' : ''}, ${isDone ? 'done' : isCur ? 'next' : 'later'}`;
+        const said = `${label}, ${isDone ? 'done' : 'later'}`;
         return (
           <View key={i} accessible accessibilityLabel={spokenMin(said)} style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
             <Pop trigger={shown.pops.includes(i) ? shown.run : undefined} spring="leaf">
@@ -299,23 +314,10 @@ export function PlanChecklist({
                   <Check size={15} color={c.forest} strokeWidth={3} />
                 </View>
               ) : (
-                <View
-                  style={{
-                    width: MARK,
-                    height: MARK,
-                    borderRadius: MARK / 2,
-                    borderWidth: isCur ? 2.5 : 1.5,
-                    borderColor: isCur ? c.sap : c.onForest2,
-                    opacity: isCur ? 1 : 0.7,
-                  }}
-                />
+                <View style={{ width: MARK, height: MARK, borderRadius: MARK / 2, borderWidth: 1.5, borderColor: c.onForest2, opacity: 0.7 }} />
               )}
             </Pop>
-            <T
-              v={isCur ? 'label' : 'body'}
-              color={isCur ? c.onForest : c.onForest2}
-              style={[{ flex: 1, minWidth: 0 }, isDone && { textDecorationLine: 'line-through' }]}
-            >
+            <T v="body" color={c.onForest2} style={[{ flex: 1, minWidth: 0 }, isDone && { textDecorationLine: 'line-through' }]}>
               {label}
             </T>
           </View>
@@ -346,13 +348,20 @@ export const ESTIMATE_NOTE = 'A study estimate, not a prediction of your exam re
  * 2026): the full sentence is spoken there and shown on the readiness report.
  */
 export const ESTIMATE_SHORT = 'A study estimate, not a prediction.';
-/** Today's readiness line (mockup A, owner copy): said under the range. */
-export const ESTIMATE_LINE = 'Estimated readiness, a range not a promise';
+/**
+ * Today's readiness label, said under the range. Mobile 1.24: just "Estimated readiness". The longer
+ * disclaimer ("a range, not a promise") lives on the readiness report and on the first reveal
+ * ("Your first readiness range"), not on every day's Today.
+ */
+export const ESTIMATE_LINE = 'Estimated readiness';
 
 // ── Readiness row on Today (spec §11 "Today") ─────────────────────────
 // Mobile 1.23 (mockup A): the growth rings (86) with the honest range as a
-// serif numeral beside them, "Estimated readiness, a range not a promise",
-// and the stage in the accent italic serif ("Stage 4 · Rehearse the exam").
+// serif numeral beside them and "Estimated readiness" under it. Mobile 1.24:
+// the stage line shows only when it is passed in (Today passes it for a few
+// days after the stage changes, not every day), the disclaimer is on the
+// report and the first reveal only, and before the range exists the line is
+// the goal: "5 of 40 for your first range".
 // The whole row opens the readiness report. Stacks at large text.
 export function ReadinessRow({
   cert,
@@ -367,8 +376,8 @@ export function ReadinessRow({
   cert: Certification;
   readiness: Readiness;
   range: ReadinessRange;
-  /** The stage as the learner reads it: "Stage 4 · Rehearse the exam". */
-  stage: string;
+  /** The stage as the learner reads it: "Stage 4 · Rehearse the exam". Left out = no stage line. */
+  stage?: string;
   /**
    * false while the Exam-ready panel above already draws the rings: a
    * signature never appears twice on one screen (spec §10).
@@ -385,14 +394,14 @@ export function ReadinessRow({
   const meta = range.enough
     ? // An ESTIMATE, never a prediction (app-store review: no outcome claims).
       ESTIMATE_LINE
-    : // A countdown, not a moving target: `needed` never goes up after an answer.
-      `${range.needed} more ${range.needed === 1 ? 'answer' : 'answers'} until your readiness range`;
-  const spoken = `Estimated readiness ${rangeSpoken(range)}. ${range.enough ? `A range, not a promise. Weighted like the exam. ${ESTIMATE_NOTE}` : meta} ${stage.replace(' · ', ', ')}.`;
+    : // A countdown toward a goal, not a moving target: `needed` never goes up after an answer.
+      `${RANGE_MIN_ANSWERS - range.needed} of ${RANGE_MIN_ANSWERS} for your first range`;
+  const spoken = `${range.enough ? `Estimated readiness ${rangeSpoken(range)}.` : `Not enough data yet. ${meta}.`}${stage ? ` ${stage.replace(' · ', ', ')}.` : ''}`;
   const words = (
     <View style={{ flex: stacked ? undefined : 1, minWidth: 0, alignSelf: stacked ? 'stretch' : undefined }}>
       <ReadinessFigure range={range} size={range.enough ? 38 : 30} growth={rangeGrowth} />
       <T v="meta" style={{ marginTop: space.xs }}>{meta}</T>
-      <T v="stage" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T>
+      {stage ? <T v="stage" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T> : null}
     </View>
   );
   const ringArt = rings && (
@@ -467,7 +476,6 @@ export function DomainRings({
   accessibilityLabel,
   only,
   grow,
-  delta,
   legend = true,
 }: {
   cert: Certification;
@@ -479,28 +487,30 @@ export function DomainRings({
    * the right edge).
    */
   legend?: boolean;
-  /** Legend text per domain; defaults to a whole percent. */
+  /**
+   * Legend text per domain; defaults to a whole number. "72%" draws the number
+   * with a raised %; a word ("Building", mobile 1.24) is drawn as a word.
+   */
   legendValue?: (i: number) => string;
   accessibilityLabel: string;
   only?: number[];
   /** Mobile 1.9: grow now, each domain's arc from `from` (0..1, blueprint order), after `delay`. */
   grow?: { play: boolean; from?: number[]; run?: number; delay?: number };
-  /**
-   * What went up since the learner last looked, in points per domain: a quiet
-   * "+4" beside the legend value, fading in once its arc has settled. Never a
-   * minus (a fall is just shown, never marked).
-   */
-  delta?: (i: number) => number;
 }) {
   const { c, isDark } = useTheme();
   // The legend goes under the rings at large text AND on narrow phones: beside
   // the rings at 360 dp, "IT Governance" wrapped and "26/38" was cut off.
   const narrow = useWindowDimensions().width < RINGS_SIDE_BY_SIDE_MIN;
-  const stacked = useFontScale() >= LARGE_TEXT || narrow;
+  const large = useFontScale() >= LARGE_TEXT;
   const shown = only && only.length > 0 ? only : [...cert.domains.keys()];
   const tones = shown.map((i) => domainColor(cert.domains[i].tone, isDark));
   const weights = shown.length === 1 ? [SINGLE_RING_WEIGHT] : shown.map((i) => cert.domains[i].weight);
   const label = (i: number) => legendValue?.(i) ?? (values[i] === null ? '–' : String(Math.round((values[i] ?? 0) * 100)));
+  // A band word ("Building", about 66pt) beside the rings leaves the name ~70pt, so "IT Governance" ended in
+  // an ellipsis for every new learner (UX review S1). When any row shows a word, the legend goes under the
+  // rings, full width, as it does on narrow phones and at large text.
+  const wordy = legend && shown.some((i) => /[A-Za-z]/.test(label(i)));
+  const stacked = large || narrow || wordy;
   return (
     // Mobile 1.21 (design spec §7): rings and legend read as ONE aligned row: 20 between them,
     // 28pt legend rows, the name in `small`, the numerals in one right-aligned column.
@@ -521,20 +531,25 @@ export function DomainRings({
       {legend && (
       <View style={{ flex: stacked ? undefined : 1, gap: space.xs, alignSelf: stacked ? 'stretch' : undefined }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
         {shown.map((i) => {
-          const up = Math.max(0, Math.round(delta?.(i) ?? 0));
+          const value = label(i);
+          const isWord = /[A-Za-z]/.test(value);
           return (
             <Row key={cert.domains[i].id} gap={space.sm} style={{ minHeight: 28 }}>
               <DomainDot domain={cert.domains[i]} />
-              <T v="small" color={c.ink} style={{ flex: 1, minWidth: 0 }}>{cert.domains[i].short}</T>
-              {up > 0 && (
-                // After this domain's arc has grown (outer ring first, 60 ms apart).
-                <FadeIn rise={false} dur="select" delay={(grow?.delay ?? 0) + motion.dur.grow + (shown.length - 1 - shown.indexOf(i)) * motion.stagger.stat + motion.dur.select}>
-                  <T v="caption" color={c.accentText}>{`+${up}`}</T>
-                </FadeIn>
-              )}
-              {/* The number never shrinks: the name gives way first (it can wrap, the score can't clip). */}
+              {/* One line, never broken mid-word ("Governan / ce", 1.24): the name shrinks first, and
+                  below 380 wide the exam's shorter tile name is used. At large text it may wrap at a space. */}
+              <T v="small" color={c.ink} numberOfLines={large ? 2 : 1} style={{ flex: 1, flexShrink: 1, minWidth: 0 }}>
+                {narrow ? (cert.domains[i].tile ?? cert.domains[i].short) : cert.domains[i].short}
+              </T>
+              {/* The figure never shrinks: the name gives way first. A band word ("Building") is a word. */}
               <View style={{ flexShrink: 0, minWidth: 28, alignItems: 'flex-end' }}>
-                <BigNum value={label(i)} size={17} />
+                {isWord ? (
+                  <T v="label" color={c.ink}>{value}</T>
+                ) : value.endsWith('%') ? (
+                  <BigNum value={value.slice(0, -1)} pct size={17} />
+                ) : (
+                  <BigNum value={value} size={17} />
+                )}
               </View>
             </Row>
           );
@@ -545,10 +560,29 @@ export function DomainRings({
   );
 }
 
-/** Spoken summary for rings: "IS Audit 88, IT Governance 63, …". */
-export function ringsSpoken(cert: Certification, values: (number | null)[]): string {
+/**
+ * The rings' one change line (mobile 1.24): what went up since the learner
+ * last looked, said ONCE under the rings ("Since you last looked: IS
+ * Operations +4 · Info Protection +2") instead of a "+N" on every legend row.
+ * Null when nothing went up. `up` = points per domain in blueprint order.
+ * Never a minus: a fall is just shown, never marked.
+ */
+export function ringsChangeLine(cert: Certification, up: readonly number[]): string | null {
+  const parts = cert.domains
+    .map((d, i) => ({ d, n: Math.max(0, Math.round(up[i] ?? 0)) }))
+    .filter((x) => x.n > 0)
+    .map((x) => `${x.d.short} +${x.n}`);
+  return parts.length ? `Since you last looked: ${parts.join(' · ')}` : null;
+}
+
+/**
+ * Spoken summary for rings: "IS Audit 88, IT Governance 63, …". `spokenOf`
+ * (mobile 1.24) replaces a domain's number with its own words ("Building",
+ * "72 percent, latest tries"), so a screen reader hears what the screen shows.
+ */
+export function ringsSpoken(cert: Certification, values: (number | null)[], spokenOf?: (i: number) => string): string {
   return cert.domains
-    .map((d, i) => `${d.short} ${values[i] === null ? 'not started' : Math.round((values[i] ?? 0) * 100)}`)
+    .map((d, i) => `${d.short} ${spokenOf ? spokenOf(i) : values[i] === null ? 'not started' : Math.round((values[i] ?? 0) * 100)}`)
     .join(', ');
 }
 
@@ -595,6 +629,20 @@ export function ClearingBody({
           <Stat key="q" label="Questions" value={String(plan.answered)} color={c.onForest} labelColor={c.onForest2} roll={statRoll(0)} />,
           acc === null ? (
             <Stat key="a" label="Accuracy" word="Not yet" color={c.onForest} labelColor={c.onForest2} />
+          ) : plan.answered < SMALL_SAMPLE ? (
+            // Mobile 1.24: a percent of a handful of answers says little (Day 1 is 5), so below SMALL_SAMPLE
+            // the day's count, as Results names it: "Correct 3 of 5" (one line, the row's shared baseline;
+            // UX review S4). No percent anywhere on Day 1.
+            <Stat
+              key="a"
+              label="Correct"
+              value={String(plan.correct)}
+              unit={`of ${plan.answered}`}
+              color={c.onForest}
+              labelColor={c.onForest2}
+              unitColor={c.onForest2}
+              roll={statRoll(1)}
+            />
           ) : (
             <Stat key="a" label="Accuracy" value={String(acc)} pct color={c.onForest} labelColor={c.onForest2} roll={statRoll(1)} />
           ),
@@ -619,7 +667,9 @@ export function ClearingBody({
         <FadeIn key={run} delay={full ? wordsAt : 0} rise={false} style={{ flex: 1 }}>
           <Text maxFontSizeMultiplier={2} style={[grewLine, { color: c.onForest }]}>{line}</Text>
           <T v="meta" color={c.onForest2} style={{ marginTop: 2 }}>
-            {grewDomain && grew ? `${grewDomain.short} ring +${grew.points}` : 'Every answer feeds the rings'}
+            {/* No "+10" before the first range exists: a ring delta reads as a score on the day Today
+                says "Not enough data yet" (UX review S4). */}
+            {range.enough && grewDomain && grew ? `${grewDomain.short} ring +${grew.points}` : 'Every answer feeds the rings'}
           </T>
         </FadeIn>
       </View>

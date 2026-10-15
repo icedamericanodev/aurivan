@@ -41,14 +41,27 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.24.0',
+    date: '2026-10-15',
+    new: [
+      'A quicker start: three short questions about you, then your first five practice questions straight away.',
+      'Play now opens with a drill picked from your own mistakes, and every game says in plain words what it trains.',
+    ],
+    improved: [
+      'Today is calmer, with one clear plan and a short note the first time your readiness range appears.',
+      'After a wrong answer, the key idea and the exam cue come first, and the longer explanation opens when you want it.',
+      'Your readiness is more honest: answering a question again a few minutes after missing it no longer counts as learning it.',
+      'Lessons and notes now call their exam-thinking sections The IS auditor’s lens.',
+      'Reminders take a break by themselves when you have been away for a week.',
+    ],
+    fixed: ['If saved progress ever fails to load, KaiSip now offers to try again instead of staying on the start screen.'],
+  },
+  {
     version: '1.23.0',
     date: '2026-10-15',
     new: [
-      'Aurivan is now KaiSip, with a fresh look and a new logo.',
+      'KaiSip has a fresh look and a new logo.',
       'Tell KaiSip what to call you, and Today says hello by your first name. It is optional and stays on your phone.',
-    ],
-    improved: [
-      'Moving from Aurivan? KaiSip installs as a new app. In the old app, go to Settings, then Your data, then Save a backup. Then restore that file in KaiSip.',
     ],
   },
   {
@@ -374,15 +387,6 @@ export const FAQ: readonly FaqEntry[] = [
     answer: [
       'In Settings, under Your data, tap Save a backup and keep the file somewhere the new phone can reach, such as Files, Google Drive or your email.',
       'On the new phone, choose Restore from a backup on the welcome screen, or later in Settings. KaiSip never uploads your progress.',
-    ],
-    topic: 'backup',
-  },
-  {
-    id: 'moving-from-aurivan',
-    question: 'I used Aurivan. How do I bring my progress to KaiSip?',
-    answer: [
-      'Aurivan is now KaiSip. KaiSip installs as a new app next to the old one, so your progress moves with a backup file.',
-      'In the old Aurivan app, open Settings, then Your data, then Save a backup, and keep the file somewhere you can reach it. In KaiSip, choose Restore from a backup on the welcome screen, or later in Settings, and pick that file.',
     ],
     topic: 'backup',
   },

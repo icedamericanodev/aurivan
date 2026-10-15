@@ -4,16 +4,27 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
-## [v12] — Aurivan is now KaiSip
+## [v12.1] — A simpler web app
 
 ### New
-- Aurivan is now KaiSip: a new name and logo, same study tools.
+- Home is now a simple start page, with Practice, Topics, Glossary and Principles one tap away.
 
 ### Improved
-- Your progress, profiles and settings are untouched, and the mobile app carries the same new name and logo.
-- Notes and questions now say that risk above appetite is treated, or needs a documented exception approved at the level the risk policy names.
+- Domain scores show Building, Steady or Strong until a domain has 30 answers, and a mock exam shows your score as an estimate.
+- Profiles are gone: your progress stays in this browser, and Your data in the menu exports, imports or resets it. Progress saved under an older profile is listed there too, so you can export it or switch to it.
+- A shorter welcome, a clearer “The IS auditor’s lens” label in the study notes, and pop-ups that work with the keyboard and screen readers.
+- Privacy, Terms and Help pages now match the app and follow light and dark mode.
+
+### Fixed
+- Removed the install banner and the offline claim: the web app needs an internet connection.
+
+## [v12] — A new name and logo
+
+### New
+- A new name and logo, with the same study tools.
+
+### Improved
 - Practice questions now take the IS auditor's point of view throughout.
-- The privacy policy now explains the optional first name in the mobile app: it stays on your phone and is never sent to us or shown to others.
 
 ## [v11.3] — Study notes in exam wording
 
@@ -56,7 +67,7 @@ For internal/technical history, see git log and PR descriptions.
 - New study notes on AI governance, IT checks during mergers and acquisitions, ESG data, and machine-learning systems.
 
 ### Improved
-- The study notes were reviewed by exam experts: wording now matches how ISACA phrases the exam, and examples are fresh scenarios.
+- The study notes were reviewed by exam experts: wording now follows the plain, exam-style phrasing used for IS auditor roles, and examples are fresh scenarios.
 - Notes across all five domains now agree on who can accept risk, who approves changes and when an auditor must step aside.
 
 ### Fixed
@@ -73,7 +84,7 @@ For internal/technical history, see git log and PR descriptions.
 
 ### New
 - KaiSip has a calm new forest-green look and a new logo, matching the mobile app.
-- The Topics notes are rebuilt so every concept reads the same way: a one-line definition, why it matters, how it works, a real example, how ISACA thinks, and the exam traps to avoid.
+- The Topics notes are rebuilt so every concept reads the same way: a one-line definition, why it matters, how it works, a real example, the IS auditor’s lens, and the exam traps to avoid.
 - Side-by-side comparisons for easily confused ideas, such as RPO and RTO or the types of audit opinion.
 - More exam topics are covered, including RAID and clustering, database integrity, intrusion detection, malware and web attacks, and penetration test types.
 
@@ -98,7 +109,7 @@ For internal/technical history, see git log and PR descriptions.
 - The Topics notes are rewritten from scratch in plain language and follow every topic in the official CISA exam outline.
 
 ### Improved
-- Each topic now tells you how ISACA expects you to think about it and which trap to avoid.
+- Each topic now tells you how an IS auditor reasons about it and which trap to avoid.
 - Topics you already marked as reviewed stay marked.
 
 ## [v10.53.1] — Current sources
@@ -196,7 +207,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v10.44] — Easier to support KaiSip
 
 ### New
-- KaiSip is free, with no ads or paywall. If it is helping your prep, you can now chip in more easily — there is a Support option in the More menu, a support card on the Home screen, and a gentle thank-you prompt after you finish a mock exam.
+- The web practice app is free, with no ads. If it is helping your prep, you can now chip in more easily — there is a Support option in the More menu, a support card on the Home screen, and a gentle thank-you prompt after you finish a mock exam.
 
 ## [v10.43] — A dedicated About page
 
@@ -206,7 +217,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v10.42] — A sharper KaiSip brand
 
 ### New
-- A new Vision & Mission card explains what KaiSip stands for — free, honest CISA preparation that teaches how ISACA thinks.
+- A new Vision & Mission card explains what KaiSip stands for — free, honest CISA preparation that teaches you to reason like an IS auditor.
 
 ### Improved
 - The header logo, name, and slogan have been refined into one clean, balanced lockup that reads as a finished brand.
@@ -246,7 +257,7 @@ For internal/technical history, see git log and PR descriptions.
 
 ### New
 - On a phone, the app now has a bottom navigation bar — Home, Practice, Mock, Topics, and More — always within thumb's reach, so every section is one tap away instead of hidden behind a side-scroll.
-- A new Home screen greets you with a quick way to resume studying, your exam-readiness score, a countdown to your exam date, and your progress in each of the five domains.
+- A new Home screen greets you with a quick way to resume studying, a countdown to your exam date, and your progress in each of the five domains.
 
 ## [v10.34] — Audit Evidence & Reporting are now full study pages
 
@@ -369,14 +380,11 @@ For internal/technical history, see git log and PR descriptions.
 ### Fixed
 - The Tip button in the header and the "Support the mission" card on the practice screen now link to Ko-fi instead of Buy Me a Coffee. Buy Me a Coffee has limited payment support in some regions (including the Philippines); Ko-fi accepts contributions globally. Same KaiSip styling, just a different processor.
 
-## [v10.10] — Exam mode: practice questions exactly as the real ISACA exam presents them
+## [v10.10] — Exam mode: practice questions in a format close to the real exam
 
 ### New
-- Added an Exam / Study toggle in the header. STUDY mode (default) shows dense scenario blocks plus post-answer tips, mindset coaching, and triplet-companion chips so you internalize audit reasoning. EXAM mode merges the scenario into the question stem as one paragraph and hides every pedagogical add-on so the surface matches the real ISACA exam — just the question, four options, and a clean explanation after answering.
+- Added an Exam / Study toggle in the header. STUDY mode (default) shows dense scenario blocks plus post-answer tips, mindset coaching, and triplet-companion chips so you internalize audit reasoning. EXAM mode merges the scenario into the question stem as one paragraph and hides every pedagogical add-on so the surface is close to the real exam — just the question, four options, and a clean explanation after answering.
 - Your preference persists across sessions. Toggle mid-question and the current question re-renders in the new mode immediately.
-
-### Fixed
-- A Domain 1 chest X-ray AI-drift question (d1_108) had a scenario over the 150-word ceiling. Trimmed to 74 words combined while preserving every fact relevant to the audit decision.
 
 ## [v10.9] — Parity hotfix: three Domain 5 wrong-answer options trimmed too short
 
@@ -387,27 +395,17 @@ For internal/technical history, see git log and PR descriptions.
 
 ### Improved
 - Rewrote wrong-answer options on Domain 2 governance questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. The previous releases fixed this pattern in Domains 4 and 5; this pass closes the same gap in Domain 2. Every question in the bank with a compound correct answer now has compound wrong answers in matching format.
-- Trimmed 25 question scenarios (3 Domain 2, 22 Domain 4) that ran over 150 words. ISACA's typical exam stem is 20-50 words with an 80-word ceiling; trimming these to ≤100 words while preserving every fact the correct answer depends on brings the bank closer to the compact stem style candidates will face on the real exam.
-
-### Fixed
-- A Domain 2 cloud-shared-responsibility question (d2_014) used the absolute word "always" in its correct option. Even when factually accurate, ISACA prohibits absolute words because they let candidates eliminate by spotting absolutes. Reworded with the graded language ISACA actually uses.
 
 ## [v10.7] — Authenticity pass complete: D5 wrong-answer options now require real reasoning
 
 ### Improved
 - Rewrote wrong-answer options on Domain 5 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. Combined with the Domain 4 questions fixed in the previous release, every question in the bank where the correct answer used a compound format now has all three wrong answers in the same compound format — eliminating the last structural giveaway in the bank.
 - Each rewritten Domain 5 wrong answer fails for a specific teachable reason: containment-first violations, evidence-preservation gaps, regulator-clock ignorance, defense-in-depth shortcuts, least-privilege violations, harvest-now-decrypt-later misframings, or scope inversions. The wrong-answer explanations name the failure mode (such as "PERIMETER-TRUST INVERSION", "ECB-AS-ACCEPTABLE", "NOTIFY-FIRST when CONTAINMENT-FIRST is the principle") so candidates learn the audit pattern, not the format.
-- Combined effect of v10.6 and v10.7: zero Type-1 structural giveaways remain anywhere in the bank. The independent ISACA-authenticity auditor moves Domain 4 and Domain 5 from HIGH first-time-pass risk to LOW risk.
 
 ## [v10.6] — Authenticity pass: D4 wrong-answer options now require real reasoning
 
 ### Improved
 - Rewrote wrong-answer options on Domain 4 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. A test-savvy candidate could pick the correct answer by format alone. Every wrong option now uses the same compound format and fails for a specific teachable reason (wrong priority order, missing critical element, wrong framing, harmful inclusion, wrong scope) so the question requires genuine audit reasoning to answer.
-
-### Fixed
-- Twenty-seven wrong-answer options across Domain 1, Domain 2, and Domain 3 used absolute words ("always", "never", "common", "rarely") that real ISACA exam options avoid. Each is now phrased with the graded language ISACA actually uses ("typically", "generally", "in most cases", "standard"), so candidates can't eliminate by spotting absolutes — they have to evaluate the audit reasoning.
-- Three Domain 3 explanations had drifted into first-person voice ("we", "our"). Reframed to the third-person voice ISACA uses ("the organization", "the IS auditor", "management").
-- Some Domain 1 questions had scenario contexts over 150 words. Trimmed to under 100 words while preserving every fact relevant to the audit decision — closer to the compact stems ISACA actually writes.
 
 ## [v10.5] — Polish release: cleaner citations, smaller What's New, sharper recall tips
 
@@ -477,7 +475,7 @@ For internal/technical history, see git log and PR descriptions.
 ### Improved
 - Rewrote distractors for more Domain 2, 4, and 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Across the two passes, these questions now have genuinely challenging wrong options.
 - Each rewritten distractor matches the correct option's compound format and fails for a specific teachable reason — wrong priority order, missing critical element, wrong scope, wrong framing, or including a harmful element — so candidates must reason about content rather than pattern-match on format.
-- Wrong-answer explanations for these 240 new options name the failure mode and tie it back to ISACA principles (independence, evidence over assumption, prevention over correction, root cause over symptoms, business risk over compliance).
+- Wrong-answer explanations for these 240 new options name the failure mode and tie it back to core audit principles (independence, evidence over assumption, prevention over correction, root cause over symptoms, business risk over compliance).
 
 ## [v9.8] — Harder distractors: 80 structural giveaways eliminated across D2, D4, D5
 
@@ -512,7 +510,6 @@ For internal/technical history, see git log and PR descriptions.
 ### Fixed
 - Some Domain 2 governance-scenario questions had two answer options that described almost the same approach. Each option now represents a genuinely distinct choice, so the keyed answer is clearly the best one.
 - Fixed a typography slip where the COSO Internal Control framework name was rendered with a semicolon instead of a dash in one Domain 2 stem.
-- Cleaned up a doubled phrase in a Domain 2 citation ("ISACA IT Audit ISACA IT Audit Standard 1207") and a doubled "Article 25" parenthetical in an EDPB citation.
 
 ### Improved
 - Added closing audit-mindset sentences to Domain 2 governance questions so the principle being tested (independence, governance over operations, business alignment) is named, not just demonstrated.
@@ -522,7 +519,6 @@ For internal/technical history, see git log and PR descriptions.
 
 ### Fixed
 - Fixed 12 Domain 1 explanations where the parenthetical letter pointed to the wrong option (for example, the explanation said "(C)" but described option B). Each finding now references the option it actually describes.
-- Cleaned up 33 Domain 1 citations that read "ISACA IT Audit ISACA IT Audit Standard..." — the duplicated phrase has been removed.
 - Removed a doubled "(Audit Sampling)" parenthetical from 10 Domain 1 citations of AICPA AU-C 530, and normalized "1207 (Irregularity..." to "1207 (Irregularities and Illegal Acts)" so the same standard is named consistently across the bank.
 
 ### Improved
@@ -583,7 +579,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v8.2] — Guided first-use onboarding
 
 ### New
-- First-time users are walked through a 3-step setup: overview, profile, and exam date.
+- First-time users are walked through a short setup: overview and exam date.
 - A recommended first action appears right after onboarding so you know where to start.
 
 ## [v8.1] — Dark mode + visual refresh
@@ -602,15 +598,14 @@ For internal/technical history, see git log and PR descriptions.
 ### New
 - Personalized 3-step daily study plan on the dashboard, driven by your domain scores and exam date.
 - Auditor-vs-implementer coaching — when you pick the implementer answer, a callout explains the difference inline.
-- Install the app to your home screen (PWA) and study offline.
 
 ### Improved
 - Each topic now shows an estimated reading time.
 
-## [v7.0] — Exam date + readiness score
+## [v7.0] — Exam date
 
 ### New
-- Set your exam date and see a weighted readiness score across domains.
+- Set your exam date and see a countdown.
 - Train My Weak Spots — one-tap 20-question drill from your weakest domains.
 - Bookmark tagging and bookmark drill mode.
 
@@ -626,11 +621,10 @@ For internal/technical history, see git log and PR descriptions.
 ### Improved
 - High-impact domain badges (D4/D5) and a mock exam confirmation step before you begin.
 
-## [v5.x] — Topics, profiles, export/import
+## [v5.x] — Topics and export/import
 
 ### New
 - Topic Summary tab with board-style review cards.
-- Multiple profiles — separate progress per study cycle or per person.
 - Export and import your progress as a JSON file.
 
 ### Fixed

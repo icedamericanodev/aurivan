@@ -96,7 +96,7 @@ await page.waitForTimeout(1500);
 await scrollTo('Your data');
 await snap('d06-restored');
 
-// A new phone: the welcome screen, with "Restore from a backup" under "Start my plan".
+// A new phone: the welcome screen, with "Restore from a backup" under "Get started".
 const fresh = await browser.newContext({ viewport: { width: 393, height: 852 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
 await fresh.addInitScript((theme) => {
   if (localStorage.getItem('__seeded')) return;

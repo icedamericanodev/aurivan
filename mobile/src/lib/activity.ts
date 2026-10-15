@@ -5,7 +5,7 @@
  */
 import { getCertification } from '../content/certifications';
 import { findLesson } from '../content/lessons';
-import { LESSON_MINUTES, newDayPlan, replanDay, type Activity, type DayPlan } from '../engine/dayPlan';
+import { LESSON_MINUTES, newDayPlan, planComplete, replanDay, type Activity, type DayPlan } from '../engine/dayPlan';
 import { gameMinutes } from '../engine/games/registry';
 import { computeReadiness } from '../engine/readiness';
 import { dueIds } from '../engine/srs';
@@ -14,6 +14,7 @@ import { selectCert, useProgress } from '../store/progress';
 import { dailyMinutesOf, useSettings } from '../store/settings';
 import { haptic } from './haptics';
 import { questionExists } from './outline';
+import { refreshReminders } from './reminderSync';
 import { daysUntil } from './useActiveCert';
 import { buildJourney } from './useJourney';
 
@@ -95,7 +96,13 @@ export function changeFit(certId: string, fit: Parameters<ReturnType<typeof useS
 
 export function logActivity(certId: string, a: Activity) {
   ensureTodayPlan(certId);
-  if (useProgress.getState().logActivity(certId, a)) haptic.light();
+  if (useProgress.getState().logActivity(certId, a)) {
+    haptic.light();
+    // The plan was just cleared: re-plan the reminders now, so today's is skipped even if the learner
+    // closes the app on Results without seeing Today (refreshReminders does nothing when they are off).
+    const plan = useProgress.getState().days[certId];
+    if (plan && certId === useSettings.getState().activeCertId && planComplete(plan)) refreshReminders().catch(() => {});
+  }
 }
 
 // The lesson's own length (mobile 1.15: the same minutes the plan and Learn show).

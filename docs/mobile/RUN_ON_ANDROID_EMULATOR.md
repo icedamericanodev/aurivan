@@ -241,6 +241,29 @@ phone. Live updates work the same way.
 
 ---
 
+## Testing a release build (the R8 smoke test)
+
+The emulator dev build above is not shrunk. Since mobile 1.24, **release**
+builds (test APKs and store builds) are shrunk with R8, which deletes code the
+app seems not to use. If it deletes something a library looks up by name, the
+release app can crash where the dev build is fine. So after any change to
+native libraries, test a release build once:
+
+1. GitHub → **Actions → Android test APK → Run workflow** (or
+   `bash scripts/build-apk.sh` on the Mac). It builds a release APK with R8 on.
+2. Install it: on a phone, open the release page and tap the `.apk`; on an
+   Apple-silicon Mac emulator, `adb -e install -r KaiSip-<version>.apk`. (The
+   APK has no Intel emulator code, so an Intel Mac emulator can't run it.)
+3. Try: first launch and onboarding, a practice set, a mock exam, notes and
+   diagrams, Play games, Settings → reminders (a notification arrives),
+   Your data → Save a backup and restore it, the share card (Save Image), and
+   close and reopen the app (an over-the-air update applies).
+4. A crash on open or on one screen? Send the error. The fix is usually one
+   keep rule in `mobile/app.json` (`expo-build-properties` →
+   `extraProguardRules`).
+
+---
+
 ## Troubleshooting
 
 | You see… | It means | Fix |

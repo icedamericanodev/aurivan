@@ -14,7 +14,7 @@ import { ReadMark } from '../../components/notes';
 import { DomainDot, EmptyState, Enter, ListRow, PushedHeader, Screen, SearchField, Section, T } from '../../components/ui';
 import { domainLabel } from '../../content/certifications';
 import { getNotes, noteSubtopics } from '../../content/notes';
-import { readCount, searchNotes } from '../../engine/notesSearch';
+import { readCount, readProgressText, searchNotes } from '../../engine/notesSearch';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 
@@ -102,11 +102,12 @@ export default function NotesHome() {
         </Enter>
       ) : (
         <Enter i={1}>
-          <Section title="By domain" meta={`${readCount(noteSubtopics(cert.id).map((s) => s.id), read)} of ${total} read`} />
+          {/* Mobile 1.24: no "0 of 252 read" to start with; the counts show once a note has been read. */}
+          <Section title="By domain" meta={readProgressText(readCount(noteSubtopics(cert.id).map((s) => s.id), read), total) ?? undefined} />
           {domains.map((d, i) => {
             const ids = noteSubtopics(cert.id, d.id).map((s) => s.id);
             const done = readCount(ids, read);
-            const state = done === ids.length ? 'All read' : `${done} of ${ids.length} read`;
+            const state = readProgressText(done, ids.length);
             return (
               <ListRow
                 key={d.id}
@@ -120,11 +121,11 @@ export default function NotesHome() {
                 subtitle={
                   <>
                     <T v="meta">{d.name}</T>
-                    <T v="meta">{`${d.weight}% of the exam · ${state}`}</T>
+                    <T v="meta">{state ? `${d.weight}% of the exam · ${state}` : `${d.weight}% of the exam`}</T>
                   </>
                 }
                 trailing={<ReadMark read={done === ids.length && ids.length > 0} />}
-                accessibilityLabel={`Domain ${d.id}, ${d.name}. ${d.weight} percent of the exam. ${state}.`}
+                accessibilityLabel={`Domain ${d.id}, ${d.name}. ${d.weight} percent of the exam.${state ? ` ${state}.` : ''}`}
                 onPress={() => router.push(`/notes/${d.id}`)}
                 last={i === domains.length - 1}
               />

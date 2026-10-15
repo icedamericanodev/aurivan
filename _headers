@@ -1,25 +1,85 @@
-# Host-neutral response headers (Netlify and Cloudflare Pages read this file
-# as-is; other static hosts ignore it, and the site works without it).
-# No Content-Security-Policy here on purpose: the app uses inline scripts and
-# styles plus Google Analytics, Fonts and Forms. Add one only after testing.
+# Response headers for the website (Cloudflare Pages reads this file; so does
+# Netlify. GitHub Pages ignores it, and the site works without it).
+# scripts/build_site.sh copies it into _site/. Deploy notes:
+# docs/WEBSITE_DEPLOY.md.
+#
+# HOW TO READ IT: a line with no indent is a path; the indented lines under
+# it are the headers sent for that path. `*` matches anything.
+#
+# IMPORTANT (Cloudflare): when two rules match one path, Cloudflare JOINS
+# their values for the same header name. So:
+#   - the catch-all /* rule below has NO Content-Security-Policy and NO
+#     Cache-Control;
+#   - every page has its OWN rule with its own policy, so a page never ends
+#     up with two policies.
+# Cloudflare serves /privacy.html at /privacy (it drops ".html"), so each page
+# is listed both ways. A new page needs its own rule here (and a line in
+# scripts/build_site.sh).
 
+# Every response.
+#   HSTS: browsers use HTTPS only for this site for a year. ("preload" is left
+#   out on purpose; add it only after this has run for a month.)
 /*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
-  Content-Security-Policy: frame-ancestors 'none'
+  Cross-Origin-Opener-Policy: same-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
 
-# The app and public pages: always revalidate so a new release shows at once.
+# The web app. Two policies:
+#   1. ENFORCED, small and safe today: no framing, no plugins, no <base> tricks.
+#   2. REPORT-ONLY, the full list of what the app loads today (Google
+#      Analytics, Google Fonts, Google Forms for feedback, the offline helper
+#      made from a blob, Cloudflare Web Analytics). Report-only blocks nothing:
+#      breaks show as warnings in the browser console. When the console is
+#      clean on every screen, rename the header to Content-Security-Policy
+#      (and merge it with policy 1). 'unsafe-inline' stays until the inline
+#      onclick handlers move into a separate .js file. Once the fonts are
+#      self-hosted and Google Analytics is gone, drop those hosts.
 /
   Cache-Control: public, max-age=0, must-revalidate
-/*.html
+  Content-Security-Policy: frame-ancestors 'none'; object-src 'none'; base-uri 'none'
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://docs.google.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com; frame-src https://docs.google.com; form-action https://docs.google.com; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
+/index.html
   Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: frame-ancestors 'none'; object-src 'none'; base-uri 'none'
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://docs.google.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com; frame-src https://docs.google.com; form-action https://docs.google.com; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
+
+# The legal pages have one tiny inline script (it applies the theme saved by
+# the app), allowed by its exact hash; scripts/build_site.sh fails if the
+# script changes without the hash here. Otherwise their policy is ENFORCED
+# and strict: only this site's styles, images and fonts. The one script host
+# allowed is Cloudflare Web Analytics, which Cloudflare adds to every page
+# when it is switched on.
+/privacy
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+/privacy.html
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+/terms
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+/terms.html
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+/support
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+/support.html
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
 
 # Question banks and notes change with releases: short cache, then revalidate.
+# Opened directly in a browser they may do nothing (no scripts, no framing).
 /data/*
   Cache-Control: public, max-age=300, must-revalidate
+  Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
 
-# Icons keep their file names, so no "immutable".
+# Icons and fonts keep their file names, so no "immutable". One day, not a
+# week: when the favicons or the app icon change (the KaiSip rename did), a
+# returning visitor sees the new ones within a day. Fonts barely notice.
 /assets/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=86400
+  Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'

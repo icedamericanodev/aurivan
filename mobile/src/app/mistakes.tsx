@@ -21,6 +21,14 @@
  *
  * Mobile 1.20: each open mistake whose question a study note covers gets a
  * small "Read the note" (BookOpen = notes), so the fix starts with the idea.
+ *
+ * Mobile 1.24 (accessibility): the question is shown whole (the ask, FIRST or
+ * BEST, is at the END of most stems, and the options are no longer cut to two
+ * lines); "Your answer" / "Best answer" are plain words (no ✓ / ✗ glyphs read
+ * aloud as "check mark"); and the six tag chips are not repeated under every
+ * mistake: an untagged mistake has one "Tag why you slipped" button, a tagged
+ * one shows its tag as a line with "Change", and the chips (one labelled radio
+ * group, each spoken as "Tag: ...") open only on tap.
  */
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
@@ -101,6 +109,8 @@ export default function Mistakes() {
   const [showFixed, setShowFixed] = useState(false);
   const [footerH, setFooterH] = useState(120);
   const [tagsOpen, setTagsOpen] = useState(false);
+  // The mistakes whose six tag chips are open (tapped "Tag why you slipped" / "Change").
+  const [tagging, setTagging] = useState<string[]>([]);
   const openSession = () => router.push('/session');
 
   const entries = useMemo(
@@ -193,17 +203,17 @@ export default function Mistakes() {
             <View key={id} style={{ paddingVertical: space.lg, borderBottomWidth: 1, borderBottomColor: c.line }}>
               <T v="caption" num>{`${m.resolved ? 'Fixed · ' : ''}${shortDate(m.at)}`}</T>
               <Gap h={space.xs} />
-              <T v="body">{q.stem.length > 160 ? `${q.stem.slice(0, 160).trimEnd()}…` : q.stem}</T>
+              <T v="body">{q.stem}</T>
               <Gap h={space.md} />
               {m.picked && (
                 <>
-                  <T v="caption" color={c.wrong}>✗ Your answer</T>
-                  <T v="small" numberOfLines={2}>{q.options[m.picked]}</T>
+                  <T v="caption" color={c.wrong}>Your answer</T>
+                  <T v="small">{q.options[m.picked]}</T>
                   <Gap h={space.sm} />
                 </>
               )}
-              <T v="caption" color={c.correct}>✓ Best answer</T>
-              <T v="small" numberOfLines={2}>{q.options[q.correct]}</T>
+              <T v="caption" color={c.correct}>Best answer</T>
+              <T v="small">{q.options[q.correct]}</T>
               {note && (
                 // The ghost pads 8pt each side: pulled left so its icon lines up with the text above.
                 <Button
@@ -223,21 +233,47 @@ export default function Mistakes() {
               {!m.resolved && (
                 <>
                   <Gap h={space.md} />
-                  <Row gap={space.xs} style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
-                    <T v="meta">Why did you slip?</T>
-                    <Button kind="ghost" label="What do these mean?" accessibilityHint="Shows one example for each tag" onPress={() => setTagsOpen(true)} style={{ marginRight: -space.sm }} />
-                  </Row>
-                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
-                    {SLIPS.map((s) => (
-                      <Chip
-                        key={s.id}
-                        label={s.label}
-                        accessibilityHint={`For example: ${s.example}`}
-                        selected={m.slip === s.id}
-                        onPress={() => tagMistake(cert.id, id, s.id)}
-                      />
-                    ))}
-                  </View>
+                  {tagging.includes(id) ? (
+                    <>
+                      <Row gap={space.xs} style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                        <T v="meta">Why did you slip?</T>
+                        <Button kind="ghost" label="What do these mean?" accessibilityHint="Shows one example for each tag" onPress={() => setTagsOpen(true)} style={{ marginRight: -space.sm }} />
+                      </Row>
+                      {/* One group with a name, so a screen reader says which question the six tags are for. */}
+                      <View
+                        accessibilityRole="radiogroup"
+                        accessibilityLabel={`Why you slipped on this question: ${q.stem.split(/\s+/).slice(0, 6).join(' ')}`}
+                        style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}
+                      >
+                        {SLIPS.map((s) => (
+                          <Chip
+                            key={s.id}
+                            label={s.label}
+                            accessibilityLabel={`Tag: ${s.label}`}
+                            accessibilityHint={`For example: ${s.example}`}
+                            selected={m.slip === s.id}
+                            onPress={() => {
+                              tagMistake(cert.id, id, s.id);
+                              setTagging((t) => t.filter((x) => x !== id));
+                            }}
+                          />
+                        ))}
+                      </View>
+                    </>
+                  ) : m.slip ? (
+                    <Row gap={space.xs} style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                      <T v="meta" color={c.ink} style={{ flexShrink: 1 }}>{`Why you slipped: ${SLIPS.find((x) => x.id === m.slip)?.label ?? ''}`}</T>
+                      <Button kind="ghost" label="Change" accessibilityHint="Shows the tags again" onPress={() => setTagging((t) => [...t, id])} style={{ marginRight: -space.sm }} />
+                    </Row>
+                  ) : (
+                    <Button
+                      kind="ghost"
+                      label="Tag why you slipped"
+                      accessibilityHint="Shows the tags to pick from"
+                      onPress={() => setTagging((t) => [...t, id])}
+                      style={{ alignSelf: 'flex-start', marginLeft: -space.sm }}
+                    />
+                  )}
                 </>
               )}
             </View>

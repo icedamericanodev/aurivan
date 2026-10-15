@@ -4,13 +4,13 @@
  * Grove v2 primitives (docs/mobile/DESIGN_SYSTEM.md).
  *
  * Surface rules used here: text sits on the paper; lists use hairlines;
- * "How ISACA thinks" is the key-idea recipe (3px accent rule + italic
+ * "The IS auditor’s lens" is the key-idea recipe (3px accent rule + italic
  * quote, never a card); exam traps are the one tinted block (tipBg).
  *
  * Mobile 1.21 (DESIGN_SYSTEM.md §11 "Study notes"): the page reads in three
  * movements, each opened by a caption kicker over a hairline with 48 above
  * it: Understand (why, how, compare, diagram, example), Think like the
- * auditor (How ISACA thinks, exam traps), Keep it (key terms, analogy and
+ * IS auditor (The IS auditor’s lens, exam traps), Keep it (key terms, analogy and
  * memory aid). An "On this page" row at the top names them (1, 2, 3) and
  * jumps to each; each kicker carries the same serif numeral. Figures and the
  * compare grid sit on an L1 plate (`raised2`, no border, no shadow). A
@@ -440,7 +440,7 @@ export function Movement({ n, title, ref }: { n: number; title: string; ref?: Re
 
 /**
  * "On this page" (mobile 1.21, design spec §3.4): the page's movements in one
- * 48pt row, "1 Understand · 2 Think like the auditor · 3 Keep it", each a
+ * 48pt row, "1 Understand · 2 Think like the IS auditor · 3 Keep it", each a
  * button that scrolls to its movement (smooth, instant under Reduce Motion)
  * and moves screen-reader focus there. A reference page is re-read the night
  * before; this shows its shape up front. At large text the items stack as
@@ -518,7 +518,7 @@ export function NoteBody({ note }: { note: NoteSubtopic }) {
   const keep = useRef<View>(null);
   const movements = [
     { title: 'Understand', ref: understand },
-    { title: 'Think like the auditor', ref: auditor },
+    { title: 'Think like the IS auditor', ref: auditor },
     ...(keepIt ? [{ title: 'Keep it', ref: keep }] : []),
   ];
   return (
@@ -579,9 +579,9 @@ export function NoteBody({ note }: { note: NoteSubtopic }) {
       <Section title="Example" />
       <T v="body">{note.example}</T>
 
-      {/* 2. Think like the auditor */}
-      <Movement n={2} title="Think like the auditor" ref={auditor} />
-      <Section title="How ISACA thinks" style={FIRST} />
+      {/* 2. Think like the IS auditor */}
+      <Movement n={2} title="Think like the IS auditor" ref={auditor} />
+      <Section title="The IS auditor’s lens" style={FIRST} />
       <IsacaRule text={note.isacaRule} />
 
       {note.examTraps.length > 0 && (

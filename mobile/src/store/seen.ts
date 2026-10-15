@@ -20,6 +20,12 @@
  *   (each proud occasion and whether the keepsake cap held it back;
  *   engine/proud.ts). Both drop entries older than 14 days.
  *
+ * - mobile 1.24 `reminderAsk`: how the learner answered the reminder ask on the
+ *   Day-1 closing screen (`first`), and whether the one second chance was shown
+ *   (`second`). Asked once, then at most one more time, then only Settings.
+ *   `newLearner` (onboarded on 1.24+) and `turnedOff` (turned reminders off
+ *   in Settings) decide who may get the second chance (engine/firstRun.ts).
+ *
  * Presentation only: it holds no answers, nothing a backup needs, and losing
  * it only means one number counts up again. So it is NOT in backups. A reset
  * leaves it alone (a value that went down just shows); a restore forgets the
@@ -28,8 +34,10 @@
  */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import type { AskAnswer } from '../engine/firstRun';
 import { admitProud, PROUD_KEEP_DAYS, type ProudLog, type ProudOccasion } from '../engine/proud';
 import { DAY_MS } from '../engine/srs';
+import { watchHydration } from './hydration';
 import { persistStorage } from './storage';
 
 /** At most this many surfaces are remembered (oldest dropped), so it never grows without bound. */
@@ -58,6 +66,12 @@ interface SeenState {
   reactions: Record<string, number>;
   /** Mobile 1.18: the proud occasions written down, with the keepsake cap applied (engine/proud.ts). */
   proud: ProudLog;
+  /** Mobile 1.24: the reminder ask. `first`: the answer to the Day-1 ask; `second`: the one second chance was shown. */
+  /**
+   * `newLearner`: onboarded on 1.24 or later (the second ask is only for them).
+   * `turnedOff`: turned reminders off in Settings (never asked again).
+   */
+  reminderAsk: { first?: AskAnswer; second?: boolean; newLearner?: boolean; turnedOff?: boolean };
   see: (key: string, values: number[]) => void;
   played: (kind: string) => void;
   /** Marks `key`'s first view of the day as used (false: it already was today). */
@@ -76,6 +90,10 @@ interface SeenState {
   noteReaction: (id: string, at: number) => void;
   /** Write down today's proud occasions (the cap applies here). No save when nothing is new. */
   noteProud: (occasions: readonly ProudOccasion[], now: number) => void;
+  /** The reminder ask was answered (`which` 'first') or its second chance was shown ('second'). */
+  noteReminderAsk: (which: 'first' | 'second', answer?: AskAnswer) => void;
+  /** Marks the learner as onboarded on 1.24+ ('newLearner') or as having turned reminders off ('turnedOff'). */
+  noteReminderFlag: (flag: 'newLearner' | 'turnedOff') => void;
 }
 
 /** Badge moments kept (the cap counts the last 7 days, and allows 3). */
@@ -123,6 +141,10 @@ export const useSeen = create<SeenState>()(
       quietGrowth: {},
       reactions: {},
       proud: {},
+      reminderAsk: {},
+      noteReminderAsk: (which, answer) =>
+        set((s) => ({ reminderAsk: which === 'first' ? { ...s.reminderAsk, first: answer } : { ...s.reminderAsk, second: true } })),
+      noteReminderFlag: (flag) => set((s) => (s.reminderAsk?.[flag] ? s : { reminderAsk: { ...s.reminderAsk, [flag]: true } })),
       noteReaction: (id, at) =>
         set((s) => {
           if (s.reactions?.[id] !== undefined) return s;
@@ -147,6 +169,6 @@ export const useSeen = create<SeenState>()(
           return { quietGrowth: next };
         }),
     }),
-    { name: 'aurivan.seen.v1', storage: persistStorage, version: 1 },
+    { name: 'aurivan.seen.v1', storage: persistStorage, version: 1, onRehydrateStorage: watchHydration('seen') },
   ),
 );

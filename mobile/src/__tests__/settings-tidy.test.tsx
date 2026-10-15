@@ -509,10 +509,9 @@ describe('Onboarding: the same calendar on the date step', () => {
   it('"Pick the exact date" opens it, and finishing saves the picked day', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
-    press('Start my plan');
+    press('Get started');
     press('Skip'); // the optional name step (mobile 1.23)
-    press('Continue');
-    press('Skip this question');
+    press('Skip this question'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
     expect(allText()).toContain('When is your exam?');
     press('Pick the exact date');
     press('Next month');
@@ -521,18 +520,16 @@ describe('Onboarding: the same calendar on the date step', () => {
     // A date no quick choice gives is said on the step.
     expect(allText()).toContain('Mon 16 Nov 2026 · In 35 days');
     expect(byLabel('In 1 month')[0].props.accessibilityState).toMatchObject({ selected: false });
-    press('Continue');
-    press('Skip for now');
+    press('Start my first questions');
     expect(useSettings.getState().examDates.cisa).toBe('2026-11-16');
   });
 
   it('left open past midnight: quick choices and the calendar count from the new today', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
-    press('Start my plan');
+    press('Get started');
     press('Skip'); // the optional name step (mobile 1.23)
-    press('Continue');
-    press('Skip this question');
+    press('Skip this question'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
     jest.setSystemTime(new Date(2026, 9, 13, 0, 5));
     press('In 1 month');
     expect(byLabel('In 1 month')[0].props.accessibilityState).toMatchObject({ selected: true });
@@ -543,18 +540,16 @@ describe('Onboarding: the same calendar on the date step', () => {
     expect(day('Tuesday 13 October 2026').props.accessibilityLabel).toBe('Tuesday 13 October 2026, today');
     expect(day('Monday 12 October 2026').props.accessibilityState).toMatchObject({ disabled: true });
     press('Cancel, Exam date');
-    press('Continue');
-    press('Skip for now');
+    press('Start my first questions');
     expect(useSettings.getState().examDates.cisa).toBe('2026-11-13');
   });
 
   it('screen-reader focus returns to "Pick the exact date" after Cancel and after Save', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
-    press('Start my plan');
+    press('Get started');
     press('Skip'); // the optional name step (mobile 1.23)
-    press('Continue');
-    press('Skip this question');
+    press('Skip this question'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
     const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => {});
     const pickButton = () => root().findAll((n) => n.props.accessibilityLabel === 'Pick the exact date');
     const isPick = (ref: unknown) => pickButton().some((n) => n.instance !== null && n.instance === (ref as { current: unknown }).current);
@@ -570,13 +565,11 @@ describe('Onboarding: the same calendar on the date step', () => {
   it('the quick choices still work, and "Not sure yet" stays the default', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
-    press('Start my plan');
+    press('Get started');
     press('Skip'); // the optional name step (mobile 1.23)
-    press('Continue');
-    press('Skip this question');
+    press('Skip this question'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
     expect(byLabel('Not sure yet')[0].props.accessibilityState).toMatchObject({ selected: true });
-    press('Continue');
-    press('Skip for now');
+    press('Start my first questions');
     expect(useSettings.getState().examDates.cisa).toBeUndefined();
   });
 });

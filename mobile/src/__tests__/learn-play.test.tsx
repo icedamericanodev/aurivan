@@ -345,11 +345,11 @@ describe('every scene of every lesson renders', () => {
     expect(CISA_LESSONS.flatMap((l) => l.scenes).filter((s) => s.type === 'flow' && s.layout !== 'timeline').length).toBeGreaterThan(5);
   });
 
-  it('"How ISACA thinks" is the key-idea recipe: a caption over the italic voice on a green rule', () => {
-    const lesson = CISA_LESSONS.find((l) => l.scenes.some((s) => s.type === 'idea' && s.heading === 'How ISACA thinks'))!;
-    const scene = lesson.scenes.find((s) => s.type === 'idea' && s.heading === 'How ISACA thinks')!;
+  it('"The IS auditor’s lens" is the key-idea recipe: a caption over the italic voice on a green rule', () => {
+    const lesson = CISA_LESSONS.find((l) => l.scenes.some((s) => s.type === 'idea' && s.heading === 'The IS auditor’s lens'))!;
+    const scene = lesson.scenes.find((s) => s.type === 'idea' && s.heading === 'The IS auditor’s lens')!;
     mount(<SceneView scene={scene} lesson={lesson} />);
-    expect(allText()).toContain('How ISACA thinks');
+    expect(allText()).toContain('The IS auditor’s lens');
     // The body is the italic `quote` voice (not the bold serif paragraph it used to be)…
     const quote = root().findAll((n) => n.type === T && n.props.v === 'quote');
     expect(quote.map((q) => q.props.children)).toEqual([scene.type === 'idea' ? scene.body : '']);
@@ -434,7 +434,13 @@ describe('Learn', () => {
     expect(rows[0]).toMatch(/, done$/);
     expect(rows[1]).toMatch(/, up next$/);
     expect(rows[2]).toMatch(/, \d+ min$/);
-    expect(allText()).toMatch(/Up next · \d+ min/);
+    // Mobile 1.24: "Up next" is said once, on the cover. The trail row has no caption and no card.
+    expect(allText().match(/Up next/g)).toHaveLength(1);
+    // …and its row is not a raised card that bleeds past the page gutter (no negative margin, no fill).
+    const upRow = root().findAll((n) => n.props.accessibilityRole === 'button' && /, up next$/.test(String(n.props.accessibilityLabel)))[0];
+    const flat = StyleSheet.flatten(upRow.props.style) ?? {};
+    expect(flat.marginHorizontal ?? 0).toBeGreaterThanOrEqual(0);
+    expect(flat.backgroundColor).toBeUndefined();
   });
 
   it('a domain with nothing done draws no empty track (five grey bars read as five failures)', () => {

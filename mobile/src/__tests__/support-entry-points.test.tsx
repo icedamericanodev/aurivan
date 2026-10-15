@@ -254,7 +254,7 @@ describe('mock exams: report after, never during', () => {
     act(() => { root().findAllByType(OptionCard)[0].props.onPress(); });
     expect(pressables(/^Report a problem/)).toHaveLength(0);
     expect(allText()).not.toContain('Report a problem');
-    press('Question navigator');
+    press('Questions, question navigator');
     expect(allText()).toContain('To report a question, open it in the review after you submit.');
   });
 

@@ -132,8 +132,8 @@ describe('Settings → exam date rebuilds today’s plan', () => {
     changeExamDate('cisa', addDays(today, 1));
     changeExamDate('cisa', undefined);
     expect(useSettings.getState().examDates.cisa).toBeUndefined();
-    // The starting check, sized to a 20-minute day (16 questions, about 19 min).
-    expect(useProgress.getState().days.cisa.items[0]).toMatchObject({ kind: 'practice', count: 16, label: 'Starting check: 16 mixed questions' });
+    // Nothing answered yet: Day 1's plan, the first five (mobile 1.24).
+    expect(useProgress.getState().days.cisa.items[0]).toMatchObject({ kind: 'practice', count: 5, label: 'Your first five' });
   });
 });
 

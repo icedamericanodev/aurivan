@@ -49,9 +49,9 @@ export type ReadinessRange =
   | { enough: false; answered: number; needed: number }
   | { enough: true; answered: number; low: number; high: number; centre: number };
 
-/** A domain's effective sample size: each assisted answer counts as half an answer. */
+/** A domain's effective sample size: each assisted or retest answer counts as half an answer. */
 export function effectiveAnswers(dm: DomainMastery): number {
-  return dm.answered - dm.assisted * (1 - ASSISTED_WEIGHT);
+  return dm.answered - (dm.halved ?? dm.assisted) * (1 - ASSISTED_WEIGHT);
 }
 
 export function readinessRange(cert: Certification, readiness: Readiness): ReadinessRange {

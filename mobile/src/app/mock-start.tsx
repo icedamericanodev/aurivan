@@ -8,12 +8,18 @@
  *
  * Every mock starts here (Practice → Mini / Full mock, and Today's plan),
  * so the choice is never skipped. Route param: `questions` (the mock length).
+ *
+ * Mobile 1.24: "Start mock" sits in a sticky footer (it was at the end of the
+ * scroll, below the fold on a small phone or at large text), like every other
+ * flow's main action.
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowRight, ICON_STROKE } from '../components/icons';
-import { Button, Gap, ICON_SIZE, PushedHeader, Screen, Section, T, ToggleRow } from '../components/ui';
+import { StickyFooter } from '../components/quiz';
+import { Button, Gap, ICON_SIZE, PushedHeader, Section, T, ToggleRow } from '../components/ui';
 import { durationSpoken, durationText, mockPace, MOCK_TIMINGS, TIMING_FACTOR, TIMING_LABEL, targetPaceWords, type MockTiming } from '../engine/pace';
 import { guardedStart, startMock } from '../lib/sessions';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -89,6 +95,8 @@ export default function MockStart() {
   const full = questions === cert.exam.questions;
   const [timing, setTiming] = useState<MockTiming>('standard');
   const [hideClock, setHideClock] = useState(false);
+  const [footerH, setFooterH] = useState(96);
+  const { c } = useTheme();
   const pace = mockPace(cert.exam, questions, timing);
   const detail = (t: MockTiming, say = false) => {
     const m = mockPace(cert.exam, questions, t).minutesAllowed;
@@ -102,56 +110,59 @@ export default function MockStart() {
     );
 
   return (
-    <Screen edges={['top', 'bottom']}>
-      <PushedHeader title={full ? 'Full mock' : 'Mini mock'} onBack={() => router.back()} icon="close" />
-      <T
-        v="meta"
-        num
-        style={{ marginTop: space.xs }}
-        accessibilityLabel={`${questions} questions, ${pace.minutesAllowed === null ? 'no time limit' : durationSpoken(pace.minutesAllowed)}, feedback at the end`}
-      >
-        {`${questions} questions · ${pace.minutesAllowed === null ? 'no time limit' : durationText(pace.minutesAllowed)} · feedback at the end`}
-      </T>
+    <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
+        <PushedHeader title={full ? 'Full mock' : 'Mini mock'} onBack={() => router.back()} icon="close" />
+        <T
+          v="meta"
+          num
+          style={{ marginTop: space.xs }}
+          accessibilityLabel={`${questions} questions, ${pace.minutesAllowed === null ? 'no time limit' : durationSpoken(pace.minutesAllowed)}, feedback at the end`}
+        >
+          {`${questions} questions · ${pace.minutesAllowed === null ? 'no time limit' : durationText(pace.minutesAllowed)} · feedback at the end`}
+        </T>
 
-      <Section title="Timing" />
-      <View accessibilityRole="radiogroup" accessibilityLabel="Timing">
-        {MOCK_TIMINGS.map((t, i) => (
-          <TimingRow
-            key={t}
-            label={TIMING_LABEL[t]}
-            detail={detail(t)}
-            detailSpoken={detail(t, true)}
-            note={TIMING_NOTE[t]}
-            selected={timing === t}
-            onPress={() => setTiming(t)}
-            last={i === MOCK_TIMINGS.length - 1}
-          />
-        ))}
-      </View>
+        <Section title="Timing" />
+        <View accessibilityRole="radiogroup" accessibilityLabel="Timing">
+          {MOCK_TIMINGS.map((t, i) => (
+            <TimingRow
+              key={t}
+              label={TIMING_LABEL[t]}
+              detail={detail(t)}
+              detailSpoken={detail(t, true)}
+              note={TIMING_NOTE[t]}
+              selected={timing === t}
+              onPress={() => setTiming(t)}
+              last={i === MOCK_TIMINGS.length - 1}
+            />
+          ))}
+        </View>
 
-      <Gap h={space.md} />
-      <ToggleRow
-        title="Hide the clock (checkpoints only)"
-        subtitle={timing === 'untimed' ? 'An untimed mock has no clock.' : 'The time limit still applies. You see pace checks, not ticking numbers.'}
-        value={hideClock && timing !== 'untimed'}
-        disabled={timing === 'untimed'}
-        onValueChange={setHideClock}
-        last
-      />
+        <Gap h={space.md} />
+        <ToggleRow
+          title="Hide the clock (checkpoints only)"
+          subtitle={timing === 'untimed' ? 'An untimed mock has no clock.' : 'The time limit still applies. You see pace checks, not ticking numbers.'}
+          value={hideClock && timing !== 'untimed'}
+          disabled={timing === 'untimed'}
+          onValueChange={setHideClock}
+          last
+        />
 
-      <Gap h={space.md} />
-      <T v="small">
-        {timing === 'untimed'
-          ? 'Your answers still count toward readiness.'
-          : // Seconds, the same words as Practice and the exam-eve card (mobile 1.15, PHASE5.md C2).
-            `Pace checks at 25, 50 and 75% of the time. ${targetPaceWords(cert.exam, TIMING_FACTOR[timing])}`}
-      </T>
-      <Gap h={space.xl} />
-      <Button
-        label="Start mock"
-        onPress={start}
-        icon={(col) => <ArrowRight size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
-      />
-    </Screen>
+        <Gap h={space.md} />
+        <T v="small">
+          {timing === 'untimed'
+            ? 'Your answers still count toward readiness.'
+            : // Seconds, the same words as Practice and the exam-eve card (mobile 1.15, PHASE5.md C2).
+              `Pace checks at 25, 50 and 75% of the time. ${targetPaceWords(cert.exam, TIMING_FACTOR[timing])}`}
+        </T>
+      </ScrollView>
+      <StickyFooter onHeight={setFooterH}>
+        <Button
+          label="Start mock"
+          onPress={start}
+          icon={(col) => <ArrowRight size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+        />
+      </StickyFooter>
+    </SafeAreaView>
   );
 }
