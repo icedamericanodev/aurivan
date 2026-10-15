@@ -115,7 +115,8 @@ await press('Start my first questions', 2200);
 
 // ── 2. The first question: no timer, no confidence chips ───────────────
 await shot('fd05-first-question');
-await page.getByRole('button', { name: /^A, / }).first().click().catch(() => {});
+// Options are spoken "Option A: <text>" (components/quiz.tsx), so match that label.
+await page.getByLabel(/^Option A:/).first().click();
 await wait(500);
 await shot('fd05b-first-question-picked');
 
@@ -176,10 +177,22 @@ await edit(P, `const c = v.state.byCert.cisa; c.milestones = { earned: {}, days:
 await edit(P, `const d = v.state.days; `, null).catch(() => {});
 await go('/home', 2800);
 await edit(P, `const d = v.state.days.cisa; if (d) { d.done = d.items.map(() => true); d.answered = 10; d.correct = 7; d.minutes = 12; d.celebrated = true; }`);
+// The visit above (made only to build the day's plan) already showed the second
+// ask, and showing it counts it as used (store/seen.ts reminderAsk.second). Forget
+// that, so the card is there again on the cleared day this frame is about.
+await edit(SEEN, `v.state.reminderAsk = {};`);
 await go('/home', 2800);
-await page.mouse.move(W / 2, H / 2);
-await page.mouse.wheel(0, 700);
-await wait(700);
+// Bring the card into view (its place depends on what else Today shows); fall back to a plain scroll.
+const ask = page.getByText('A study time can help', { exact: true }).first();
+if (await ask.count()) {
+  await ask.evaluate((n) => n.scrollIntoView({ block: 'center' }));
+  await wait(700);
+} else {
+  console.log('fd11: the second ask did not show');
+  await page.mouse.move(W / 2, H / 2);
+  await page.mouse.wheel(0, 700);
+  await wait(700);
+}
 await shot('fd11-today-second-ask');
 
 // Put the demo learner back.
