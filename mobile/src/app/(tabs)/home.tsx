@@ -316,7 +316,8 @@ export default function Today() {
   };
 
   // "Also today": an unfinished session first, then the plan items still to do.
-  const resume = active && !active.finishedAt ? active : null;
+  // A paused first set is not listed here: the panel's Start already picks it up where it stopped (mobile 1.24).
+  const resume = active && !active.finishedAt && !(active.firstSet && plan.items[cur]?.kind === 'practice' && plan.items[cur].why === 'first') ? active : null;
   // While the ready panel shows, the current item is listed here too.
   const rest = plan.items.map((item, i) => ({ item, i })).filter(({ i }) => !plan.done[i] && (showReady || i !== cur));
   const alsoCount = rest.length + (resume ? 1 : 0);

@@ -383,7 +383,8 @@ export default function SessionScreen() {
   const next = () => {
     if (!isLast) goTo(active.index + 1);
     else if (isMock) confirmSubmitExam();
-    else finishSession(); // the finishedAt effect navigates to /results
+    // The first set ends on its own closing screen, which shows no badge moment: a badge it earns waits for the next Results.
+    else finishSession({ celebrate: !active.firstSet }); // the finishedAt effect navigates to /results
   };
 
   const confirmSubmitExam = () => {
@@ -418,7 +419,7 @@ export default function SessionScreen() {
           text: 'End',
           onPress: () => {
             if (answered) {
-              finishSession();
+              finishSession({ celebrate: !active.firstSet });
             } else {
               useSession.getState().clear();
               router.replace('/home');

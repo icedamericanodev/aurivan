@@ -134,6 +134,8 @@ const closing = `
     if (!right[i]) { c.review[id] = { box: 1, dueAt: tomorrow.getTime(), lastSeen: a.now, reps: 1 }; c.mistakes[id] = { picked: 'A', at: a.now }; }
   });`;
 await edit(P, closing, { ids: FIRST, now });
+// What finishing the set does to Day 1's plan (the real app does this in finishSession): its one item is done.
+await edit(P, `const d = v.state.days.cisa; if (d) { d.done = d.items.map(() => true); d.credit = d.items.map(() => 5); d.answered = 5; d.correct = 3; d.minutes = 2; }`);
 await edit(
   SESSION,
   `const r = {}; a.ids.forEach((id, i) => (r[id] = { display: 'A', correct: i < 3, ms: 20000, at: a.now }));

@@ -180,15 +180,29 @@ describe('Day 0: the first five is the whole plan', () => {
     expect(router.push).toHaveBeenCalledWith('/session');
   });
 
-  it('a paused first set is listed under "Also today" as the one thing to resume', async () => {
+  it('a paused first set is picked up where it stopped by Start, and is not listed twice', async () => {
     storePlan([FIRST], [false]);
     mount(<Today />);
     await act(async () => {
       pill().props.onPress();
     });
+    // The learner answered one question, then left.
+    const first = useSession.getState().active!;
+    act(() => {
+      useSession.getState().answer(first.questionIds[0], { display: 'A', correct: true, ms: 10_000 });
+      useSession.getState().goTo(1);
+    });
     unmount();
+    jest.mocked(router.push).mockClear();
     mount(<Today />);
-    expect(allText()).toMatch(/Resume: Your first five/);
+    expect(allText()).not.toMatch(/Resume:|Also today/);
+    await act(async () => {
+      pill().props.onPress();
+    });
+    // The same session, at the same place: nothing was restarted or discarded.
+    expect(useSession.getState().active!.id).toBe(first.id);
+    expect(useSession.getState().active!.index).toBe(1);
+    expect(router.push).toHaveBeenCalledWith('/session');
   });
 });
 
