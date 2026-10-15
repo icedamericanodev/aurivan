@@ -31,7 +31,7 @@ import { CrossFade } from '../components/motion';
 import { IllustrationView, NoteBody } from '../components/notes';
 import { NATIVE_FIGURE_IDS, nativeFigureFor, RecoveryTimeline } from '../components/noteFigures';
 import { AnswerRecap } from '../components/quiz';
-import { IconButton, PushedHeader } from '../components/ui';
+import { IconButton, PushedHeader, Screen } from '../components/ui';
 import { CISA_LESSONS } from '../content/lessons/cisa';
 import type { Scene } from '../content/lessons/types';
 import { findQuestion } from '../content/loader';
@@ -77,6 +77,13 @@ jest.mock('react-native-safe-area-context', () => {
   const { View: RNView } = jest.requireActual('react-native');
   return { SafeAreaView: RNView, useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }) };
 });
+const mockSay = jest.fn();
+const mockMoveFocus = jest.fn();
+jest.mock('../lib/a11y', () => ({
+  ...jest.requireActual('../lib/a11y'),
+  sayLater: (...args: unknown[]) => mockSay(...args),
+  moveFocus: (...args: unknown[]) => mockMoveFocus(...args),
+}));
 jest.mock('../lib/haptics', () => ({ haptic: { success: () => {}, selection: () => {}, error: () => {}, light: () => {} } }));
 
 let r: ReactTestRenderer | undefined;
@@ -116,6 +123,12 @@ const layoutAll = (box: { y: number; height: number }) =>
       n.props.onLayout({ nativeEvent: { layout: { x: 0, width: 390, ...box } } });
     }
   });
+/** The learner starts a drag of their own (auto-read waits for one). */
+const drag = () =>
+  act(() => {
+    const sv = root().findAllByType(ScrollView).find((s) => typeof s.props.onScrollBeginDrag === 'function')!;
+    sv.props.onScrollBeginDrag({ nativeEvent: {} });
+  });
 const scrollTo = (y: number, height = 800) =>
   act(() => {
     const sv = root().findAllByType(ScrollView).find((s) => typeof s.props.onScroll === 'function')!;
@@ -124,6 +137,8 @@ const scrollTo = (y: number, height = 800) =>
 
 beforeEach(() => {
   jest.useFakeTimers();
+  mockSay.mockClear();
+  mockMoveFocus.mockClear();
   const w = Dimensions.get('window');
   Dimensions.set({ window: { ...w, fontScale: 1 }, screen: { ...w, fontScale: 1 } });
   mockParams = {};
@@ -185,13 +200,13 @@ describe('lesson player: header flag, round Back, sources date', () => {
   it('the flag is on every scene; Back is the round "Previous step" (a full Back on a check)', () => {
     mockParams = { id: lesson.id };
     mount(<LessonPlayer />);
-    expect(pressables('Report a problem')).toHaveLength(1);
+    expect(pressables('Report a problem with this step')).toHaveLength(1);
     expect(pressables('Previous step')).toHaveLength(0);
     press('Next');
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    expect(pressables('Report a problem')).toHaveLength(1);
+    expect(pressables('Report a problem with this step')).toHaveLength(1);
     const prev = root().findAll((n) => n.type === IconButton && n.props.label === 'Previous step');
     expect(prev).toHaveLength(1);
     expect(prev[0].props.outline).toBe(true);
@@ -206,8 +221,32 @@ describe('lesson player: header flag, round Back, sources date', () => {
     expect(pressables('Back')).toHaveLength(1);
     expect(pressables('Previous step')).toHaveLength(0);
     // The flag opens the report sheet for this step.
-    press('Report a problem');
+    press('Report a problem with this step');
     expect(allText()).toContain('Report a problem');
+  });
+
+  it('Back hands screen-reader focus to the new Back when it changes shape (check ↔ another scene)', () => {
+    mockParams = { id: lesson.id };
+    mount(<LessonPlayer />);
+    const checkAt = lesson.scenes.findIndex((s) => s.type === 'check');
+    expect(lesson.scenes[checkAt - 1].type).not.toBe('check');
+    for (let i = 0; i < checkAt; i++) {
+      press('Next');
+      act(() => {
+        jest.runOnlyPendingTimers();
+      });
+    }
+    // On the check, Back is the pill; back on the scene before, it is the round "Previous step".
+    expect(pressables('Back')).toHaveLength(1);
+    mockMoveFocus.mockClear();
+    press('Back');
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+    expect(pressables('Previous step')).toHaveLength(1);
+    expect(mockMoveFocus).toHaveBeenCalledTimes(1);
+    const target = mockMoveFocus.mock.calls[0][0] as { current: unknown };
+    expect(target.current).toBeTruthy();
   });
 
   it('the last scene says when it was reviewed as "Oct 2026"', () => {
@@ -257,7 +296,8 @@ describe('answer screen after a miss', () => {
     const note = findNote('cisa', '4B1.2')!;
     expect(allText()).toContain(`Read the note ${note.name}`);
     expect(allText()).toContain('the idea this question tests');
-    expect(allText()).toContain('Replay the lesson');
+    expect(allText()).toContain('Take the lesson');
+    expect(allText()).not.toContain('Replay the lesson');
     // The recap: hidden (and silent) until the verdict is under the header.
     const swap = () => root().findAllByType(CrossFade)[0];
     expect(swap().props.showSecond).toBe(false);
@@ -271,9 +311,26 @@ describe('answer screen after a miss', () => {
     scrollTo(400);
     expect(swap().props.showSecond).toBe(true);
     expect(allText()).toContain(`Not quite · Best answer ${best}`);
+    // Hysteresis: resting just above the line (within 8pt) keeps it; past 8pt the segments return.
+    scrollTo(115);
+    expect(swap().props.showSecond).toBe(true);
+    scrollTo(110);
+    expect(swap().props.showSecond).toBe(false);
+    scrollTo(121);
+    expect(swap().props.showSecond).toBe(true);
     // Back up: the segments return.
     scrollTo(10);
     expect(swap().props.showSecond).toBe(false);
+  });
+
+  it('the recap shortens at large text ("Not quite · D"), the spoken label keeps every word', () => {
+    const w = Dimensions.get('window');
+    act(() => {
+      Dimensions.set({ window: { ...w, fontScale: 1.5 }, screen: { ...w, fontScale: 1.5 } });
+    });
+    mount(<AnswerRecap correct={false} letter="D" />);
+    expect(allText()).toBe('Not quite · D');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Not quite. Best answer D').length).toBeGreaterThan(0);
   });
 
   it('the hidden half of a cross-fade is hidden from screen readers', () => {
@@ -326,6 +383,44 @@ describe('note page: title collapse and reading to the end', () => {
     expect(header().props.showTitle).toBe(false);
     scrollTo(300);
     expect(header().props.showTitle).toBe(true);
+    // 8pt of hysteresis on the way back up.
+    scrollTo(110);
+    expect(header().props.showTitle).toBe(true);
+    scrollTo(100);
+    expect(header().props.showTitle).toBe(false);
+    // The collapsed title never reaches a screen reader: it repeats the hero heading.
+    const hidden = root().findByType(PushedHeader).findAll((n) => n.props.accessibilityElementsHidden === true && n.props.importantForAccessibility === 'no-hide-descendants');
+    expect(hidden.some((h) => h.findAll((t) => t.props.children === findNote('cisa', '4B1.2')!.name).length > 0)).toBe(true);
+  });
+
+  it('a layout pass reports the last scroll offset, never 0 (a rotation keeps the header as it was)', () => {
+    const seen = jest.fn();
+    mount(
+      <Screen onScroll={seen}>
+        <View />
+      </Screen>,
+    );
+    scrollTo(300);
+    act(() => {
+      root().findAllByType(ScrollView)[0].props.onLayout({ nativeEvent: { layout: { x: 0, y: 0, width: 390, height: 700 } } });
+    });
+    expect(seen).toHaveBeenLastCalledWith(300, 700);
+  });
+
+  it('the topic tag is one line, and wraps at large text', () => {
+    mockParams = { id: '4B1.2' };
+    mount(<NoteSubtopicScreen />);
+    const tagLines = () => root().findAll((n) => typeof n.props.children === 'string' && n.props.children.startsWith('IS Operations · 4B1 ') && n.props.v === 'meta')[0].props.numberOfLines;
+    expect(tagLines()).toBe(1);
+    act(() => {
+      r?.unmount();
+    });
+    const w = Dimensions.get('window');
+    act(() => {
+      Dimensions.set({ window: { ...w, fontScale: 1.5 }, screen: { ...w, fontScale: 1.5 } });
+    });
+    mount(<NoteSubtopicScreen />);
+    expect(tagLines()).toBeUndefined();
   });
 
   it('reaching the end marks the note read once; "Mark as not read" sticks for the visit', () => {
@@ -335,15 +430,29 @@ describe('note page: title collapse and reading to the end', () => {
     layoutAll({ y: 3000, height: 300 });
     scrollTo(0);
     expect(read()).toEqual([]);
+    // A jump (or an iOS bounce) to the end without the learner's own drag never marks it.
+    scrollTo(2400);
+    expect(read()).toEqual([]);
+    drag();
     scrollTo(1000);
     expect(read()).toEqual([]);
+    expect(mockSay).not.toHaveBeenCalled();
     scrollTo(2400);
     expect(read()).toEqual(['4B1.2']);
     expect(allText()).toContain('About 3 min read · Read');
+    // Said once, with where the undo is.
+    expect(mockSay.mock.calls).toEqual([['Note marked as read. Mark as not read is at the end of the note.']]);
+    scrollTo(2450);
+    expect(mockSay).toHaveBeenCalledTimes(1);
+    expect(root().findAll((n) => n.props.accessibilityLabel === `About ${findNote('cisa', '4B1.2')!.minutes} minutes to read. Marked as read`).length).toBeGreaterThan(0);
     press('Mark as not read');
     expect(read()).toEqual([]);
+    expect(mockSay).toHaveBeenLastCalledWith('Marked as not read');
     scrollTo(2500);
     expect(read()).toEqual([]);
+    press('Mark as read');
+    expect(mockSay).toHaveBeenLastCalledWith('Marked as read');
+    expect(mockSay).toHaveBeenCalledTimes(3);
   });
 });
 
@@ -369,17 +478,28 @@ describe('native note diagrams', () => {
     expect(allText()).toContain('Data lost ≤ RPO');
     expect(allText()).toContain('Downtime ≤ RTO');
     expect(allText()).toContain('MTD: the outer limit');
-    if (note.illustrations![0].caption) expect(allText()).toContain(note.illustrations![0].caption);
+    expect(allText()).toContain('Last good backup');
+    expect(image[0].props.accessibilityLabel).toContain('the last good backup, then the disruption');
+    const caption = note.illustrations![0].caption ?? '';
+    if (caption.includes('RPO and RTO on one timeline.')) {
+      expect(allText()).toContain('RPO, RTO and MTD on one timeline.');
+      expect(allText()).toContain('The MTD is the outer limit, and the RTO must fit inside it.');
+    }
   });
 
   it('a caption that describes the web layout is adapted (4A7.2 runs top to bottom here)', () => {
     const note = findNote('cisa', '4A7.2')!;
     mount(<NoteBody note={note} />);
     const caption = note.illustrations![0].caption ?? '';
-    if (caption.includes('runs left to right')) {
-      expect(allText()).toContain('runs top to bottom');
+    if (caption.includes('An operational incident runs left to right:')) {
+      expect(allText()).toContain('Read the steps top to bottom. In an operational incident,');
       expect(allText()).not.toContain('runs left to right');
     }
+    // The content's own caption is untouched (the web keeps it).
+    expect(findNote('cisa', '4A7.2')!.illustrations![0].caption).toBe(caption);
+    const plan = nativeFigureFor('4B5.4')!.label;
+    expect(plan.startsWith('Recovery plan tests, from least to most thorough: 1, Checklist: Contents checked, nothing moved.')).toBe(true);
+    expect(plan.endsWith('5, Full interruption: Production moved; the riskiest.')).toBe(true);
   });
 });
 

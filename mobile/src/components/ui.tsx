@@ -161,6 +161,8 @@ export function Screen({
   const { c } = useTheme();
   const { reduced } = useMotion();
   const [viewH, setViewH] = useState(0);
+  // The last scroll offset: a layout pass (a rotation, a size change) reports it, never 0 (mobile 1.22 review).
+  const lastY = useRef(0);
   const own = useRef<ScrollView | null>(null);
   // The caller's ref when it gives one (an object ref: Settings opens at a group), else our own.
   const ref = (scrollRef && typeof scrollRef === 'object' ? scrollRef : own) as { current: ScrollView | null };
@@ -197,11 +199,18 @@ export function Screen({
         onScroll
           ? (e) => {
               setViewH(e.nativeEvent.layout.height);
-              onScroll(0, e.nativeEvent.layout.height);
+              onScroll(lastY.current, e.nativeEvent.layout.height);
             }
           : undefined
       }
-      onScroll={onScroll ? (e) => onScroll(e.nativeEvent.contentOffset.y, viewH || e.nativeEvent.layoutMeasurement.height) : undefined}
+      onScroll={
+        onScroll
+          ? (e) => {
+              lastY.current = e.nativeEvent.contentOffset.y;
+              onScroll(lastY.current, viewH || e.nativeEvent.layoutMeasurement.height);
+            }
+          : undefined
+      }
       scrollEventThrottle={onScroll ? 32 : undefined}
       onScrollBeginDrag={onScrollBeginDrag}
     >
@@ -495,7 +504,11 @@ export function HeroPanel({
   captionMetaLabel?: string;
   title: string;
   meta?: string;
-  action?: { label: string; onPress: () => void; icon?: (color: string) => ReactNode; hint?: string };
+  /**
+   * `iconTrailing` (mobile 1.22): the glyph after the label, for a forward arrow ("Start →", as
+   * "Next question →"); a Play glyph stays leading.
+   */
+  action?: { label: string; onPress: () => void; icon?: (color: string) => ReactNode; hint?: string; iconTrailing?: boolean };
   art?: BotanyKind;
   /** Gentle frond sway while the screen is focused (off under Reduce Motion). */
   sway?: boolean;
@@ -595,7 +608,7 @@ export function HeroPanel({
             onPress={action.onPress}
             accessibilityHint={action.hint}
             icon={action.icon}
-            iconLeading
+            iconLeading={!action.iconTrailing}
             follow={lift}
             style={{ marginTop: space.gutter, alignSelf: 'flex-start' }}
           />
@@ -1721,8 +1734,8 @@ export function useFontScale(): number {
 // 52pt bar: a 44pt back (‹) or close (X) button, a centred title, a right slot.
 // Mobile 1.22 (title collapse): with `showTitle`, the title stays empty until
 // the page's own hero title has scrolled under the bar, then cross-fades in
-// (120 ms; at once under Reduce Motion). Hidden, it is hidden from screen
-// readers too: the hero title is the page's heading.
+// (120 ms; at once under Reduce Motion). It is never read by screen readers
+// (shown or not): it only repeats the hero title, which is the page's heading.
 export function PushedHeader({
   title,
   showTitle,
@@ -1760,7 +1773,12 @@ export function PushedHeader({
             <CrossFade
               showSecond={showTitle}
               style={{ alignSelf: 'stretch', minHeight: 44 }}
-              second={<T v="label" accessibilityRole="header" numberOfLines={1} center>{title}</T>}
+              // Hidden from screen readers even when shown: it repeats the page's hero heading.
+              second={
+                <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                  <T v="label" numberOfLines={1} center>{title}</T>
+                </View>
+              }
             />
           ) : title ? (
             <T v="label" accessibilityRole="header" numberOfLines={1}>{title}</T>

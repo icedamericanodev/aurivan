@@ -267,7 +267,8 @@ const answerOnScreen = (right: boolean) => {
   });
 };
 const noteRows = () => pressables(/^Read the note: /);
-const lessonRows = () => pressables(/^Lesson: /);
+// Mobile 1.22: the session's lesson row says "Take the lesson" (it only shows for a lesson not done yet).
+const lessonRows = () => pressables(/^Take the lesson: /);
 
 describe('session: the note first, the lesson when there is one', () => {
   it('a practice miss offers the note, then the lesson; Back returns to the same answer', () => {
@@ -284,16 +285,17 @@ describe('session: the note first, the lesson when there is one', () => {
     expect(allText()).toContain(`Read the note ${name} About ${min} min · the idea this question tests`);
     expect(allText()).not.toContain('Read the note:');
     expect(lessonRows()).toHaveLength(1);
-    expect(lessonRows()[0].props.accessibilityLabel).toBe(`Lesson: ${both.lesson.title}, ${both.lesson.minutes} minutes, not done yet`);
-    expect(allText()).toContain(`Replay the lesson ${both.lesson.title} ${both.lesson.minutes} min · Not done yet`);
+    expect(lessonRows()[0].props.accessibilityLabel).toBe(`Take the lesson: ${both.lesson.title}, ${both.lesson.minutes} minutes, not done yet`);
+    expect(allText()).toContain(`Take the lesson ${both.lesson.title} ${both.lesson.minutes} min · Not done yet`);
     expect(allText()).not.toContain('Review the lesson');
     // Note first, then the lesson.
     const text = allText();
-    expect(text.indexOf('Read the note')).toBeLessThan(text.indexOf('Replay the lesson'));
+    expect(text.indexOf('Read the note')).toBeLessThan(text.indexOf('Take the lesson'));
+    expect(text).not.toContain('Replay the lesson');
     // Both are pushed, so Back lands on this same answer screen.
     press(/^Read the note: /);
     expect(push).toHaveBeenLastCalledWith(`/notes/subtopic/${encodeURIComponent(both.sub)}`);
-    press(/^Lesson: /);
+    press(/^Take the lesson: /);
     expect(push).toHaveBeenLastCalledWith(`/lesson/${both.lesson.id}`);
     expect(router.replace).not.toHaveBeenCalled();
     expect(allText()).toContain('Why '); // the explanation is still on screen
@@ -305,9 +307,9 @@ describe('session: the note first, the lesson when there is one', () => {
     answerOnScreen(false);
     mount(<SessionScreen />);
     expect(noteRows()).toHaveLength(1);
-    // No lesson prepares this one; mobile 1.22: the lesson that teaches its note is offered instead, if any.
-    const teaches = lessonsForSubtopic('cisa', noteOnly.sub)[0];
-    expect(lessonRows()).toHaveLength(teaches ? 1 : 0);
+    // No lesson prepares this one; mobile 1.22: a lesson that teaches its note is offered instead, if any.
+    const teaches = lessonsForSubtopic('cisa', noteOnly.sub);
+    expect(lessonRows()).toHaveLength(teaches.length ? 1 : 0);
   });
 
   it('mobile 1.22: with no lesson preparing the question, the lesson that teaches its note (d4_062 → 4B1.2)', () => {
@@ -319,12 +321,28 @@ describe('session: the note first, the lesson when there is one', () => {
     answerOnScreen(false);
     mount(<SessionScreen />);
     expect(lessonRows()).toHaveLength(1);
-    expect(lessonRows()[0].props.accessibilityLabel).toBe(`Lesson: ${teaches.title}, ${teaches.minutes} minutes, not done yet`);
-    press(/^Lesson: /);
+    expect(lessonRows()[0].props.accessibilityLabel).toBe(`Take the lesson: ${teaches.title}, ${teaches.minutes} minutes, not done yet`);
+    press(/^Take the lesson: /);
     expect(push).toHaveBeenLastCalledWith('/lesson/cisa-l-d4-rpo-rto');
   });
 
-  it('the lesson row hides once that lesson is done; the note stays', () => {
+  it('mobile 1.22: the first lesson NOT done is offered (the preparing one, then the note’s)', () => {
+    const teaching = lessonsForSubtopic('cisa', both.sub).filter((l) => l.id !== both.lesson.id);
+    if (!teaching.length) return; // the note has no other lesson: nothing more to offer
+    act(() => {
+      useProgress.getState().completeLesson('cisa', both.lesson.id);
+    });
+    startFromIds('cisa', [both.qid], 'T');
+    answerOnScreen(false);
+    mount(<SessionScreen />);
+    expect(lessonRows()).toHaveLength(1);
+    expect(lessonRows()[0].props.accessibilityLabel).toMatch(new RegExp(`^Take the lesson: ${teaching[0].title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')},`));
+  });
+
+  it('the lesson row hides once every lesson it could offer is done; the note stays', () => {
+    act(() => {
+      for (const l of lessonsForSubtopic('cisa', both.sub)) useProgress.getState().completeLesson('cisa', l.id);
+    });
     act(() => {
       useProgress.getState().completeLesson('cisa', both.lesson.id);
     });

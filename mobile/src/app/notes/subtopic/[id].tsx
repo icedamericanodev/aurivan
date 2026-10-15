@@ -4,9 +4,10 @@
  * Mobile 1.22 (design spec §3, UI_premium S2):
  * - Header: the back chevron alone; the note's name cross-fades into it only
  *   once the page's own title has scrolled under the bar (at once under
- *   Reduce Motion). The tag above the title reads "IS Operations · 4B1
- *   Business Impact Analysis" on one line, so the page has two levels of
- *   wayfinding, not three.
+ *   Reduce Motion; never read by screen readers, it repeats the hero). The
+ *   tag above the title reads "IS Operations · 4B1 Business Impact
+ *   Analysis" on one line (it wraps at large text), so the page has two
+ *   levels of wayfinding, not three.
  * - Under the title: "About 3 min read" (the note's own `minutes`), plus
  *   "· Read ✓" once read. Then the lesson for this idea (mobile 1.20), its
  *   status in a kicker ("Lesson · 5 min · Not done yet"), hairlines above
@@ -16,7 +17,8 @@
  *   review; starting it marks the note read), then a quiet "Next note" row,
  *   then the source row: "Code 4B1.2 · Mark as not read" and "Report a
  *   problem". Reaching the end of the page marks the note read (once per
- *   visit, after a scroll); the source row's toggle is the undo.
+ *   visit, only after the learner's own drag); the source row's toggle is
+ *   the undo. Both are announced to screen readers.
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
@@ -25,7 +27,7 @@ import { ICON_STROKE, Play } from '../../../components/icons';
 import { CheckDraw } from '../../../components/motion';
 import { NoteBody } from '../../../components/notes';
 import { ReportRow } from '../../../components/support';
-import { Button, Enter, Gap, ICON_SIZE, ListRow, PushedHeader, Row, Screen, Tag, T } from '../../../components/ui';
+import { Button, Enter, Gap, ICON_SIZE, ListRow, PushedHeader, Row, Screen, Tag, T, useFontScale } from '../../../components/ui';
 import { EmptyScreen } from '../../../components/emptyScreen';
 import { lessonsForSubtopic } from '../../../content/lessons';
 import { findQuestion } from '../../../content/loader';
@@ -34,10 +36,14 @@ import { aboutMin, spokenMin } from '../../../engine/pace';
 import { createRng, shuffled } from '../../../engine/random';
 import { openSessionFromStack } from '../../../lib/actions';
 import { guardedStart, startFromIds } from '../../../lib/sessions';
+import { sayLater } from '../../../lib/a11y';
 import { useActiveCert } from '../../../lib/useActiveCert';
 import { useProgress } from '../../../store/progress';
-import { space } from '../../../theme/tokens';
+import { LARGE_TEXT, space } from '../../../theme/tokens';
 import { useTheme } from '../../../theme/useTheme';
+
+/** The header title's hysteresis (pt): it shows past the line, and hides only 8pt back above it. */
+const HYSTERESIS = 8;
 
 const goBack = () => (router.canGoBack() ? router.back() : router.replace('/notes'));
 
@@ -56,6 +62,9 @@ export default function NoteSubtopicScreen() {
   const endTop = useRef(0);
   // The page marks itself read at most once per visit (so "Mark as not read" sticks).
   const autoRead = useRef(false);
+  // The learner has dragged the page themselves (auto-read waits for this).
+  const dragged = useRef(false);
+  const fontScale = useFontScale();
   const note = findNote(cert.id, id);
   const domain = note ? cert.domains.find((d) => d.id === note.domainId) : undefined;
 
@@ -85,9 +94,11 @@ export default function NoteSubtopicScreen() {
   // content update removed. Empty → no button (most notes have some).
   const conceptIds = (note.practiceIds ?? []).filter((q) => findQuestion(cert.id, q));
   const n = conceptIds.length;
-  const markRead = (read: boolean) => {
+  // `say`: what a screen reader hears (mobile 1.22 review H1): the change is never silent.
+  const markRead = (read: boolean, say = read ? 'Marked as read' : 'Marked as not read') => {
     setJustRead(read);
     setNoteRead(cert.id, note.id, read);
+    sayLater(say);
   };
   const practiseConcept = () =>
     guardedStart(
@@ -102,29 +113,34 @@ export default function NoteSubtopicScreen() {
       },
     );
   const onScroll = (y: number, height: number) => {
-    const under = titleBottom.current > 0 && y > titleBottom.current;
+    // 8pt of hysteresis, so a scroll that rests on the line never flickers the title.
+    const edge = titleBottom.current;
+    const under = edge > 0 && (titleUnder ? y > edge - HYSTERESIS : y > edge);
     if (under !== titleUnder) setTitleUnder(under);
-    // Reaching the ending (after the learner has scrolled) reads the note as read, once.
-    if (!autoRead.current && y > 0 && endTop.current > 0 && y + height >= endTop.current) {
+    // Reaching the ending reads the note as read, once, and only after the learner's own drag (a
+    // jump link or an iOS bounce on a short note never marks it).
+    if (!autoRead.current && dragged.current && endTop.current > 0 && y + height >= endTop.current) {
       autoRead.current = true;
-      if (!isRead) markRead(true);
+      if (!isRead) markRead(true, 'Note marked as read. Mark as not read is at the end of the note.');
     }
   };
   const readLine = `${aboutMin(minutes)} read`;
+  const large = fontScale >= LARGE_TEXT;
 
   return (
     <Screen
       edges={['top', 'bottom']}
       onScroll={onScroll}
+      onScrollBeginDrag={() => (dragged.current = true)}
       header={<PushedHeader title={note.name} showTitle={titleUnder} onBack={goBack} />}
     >
       <Enter i={0}>
         {/* The tag and the title: the header's title appears once this has scrolled under it. */}
         <View onLayout={(e) => (titleBottom.current = space.lg + e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
-          <Tag domain={domain} numberOfLines={1} label={topic ? `${domain.short} · ${topic.id} ${topic.name}` : `${domain.short} · ${note.topicId}`} />
+          <Tag domain={domain} numberOfLines={large ? undefined : 1} label={topic ? `${domain.short} · ${topic.id} ${topic.name}` : `${domain.short} · ${note.topicId}`} />
           <T v="hero" accessibilityRole="header" style={{ marginTop: space.sm }}>{note.name}</T>
         </View>
-        <View accessible accessibilityLabel={`${spokenMin(readLine)}${isRead ? '. Read' : ''}`} style={{ marginTop: space.xs }}>
+        <View accessible accessibilityLabel={`${spokenMin(aboutMin(minutes))} to read${isRead ? '. Marked as read' : ''}`} style={{ marginTop: space.xs }}>
           <Row gap={space.xs} style={{ flexWrap: 'wrap' }}>
             <T v="meta">{readLine}</T>
             {isRead && (

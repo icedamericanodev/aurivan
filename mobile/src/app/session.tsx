@@ -92,6 +92,9 @@ const useInView: () => boolean = (Router as { useIsFocused?: () => boolean }).us
 /** At this text size the confidence chips move out of the sticky footer (spec §10.7). */
 const HUGE_TEXT = 1.6;
 
+/** The header recap's hysteresis (pt): it hides only once the verdict is 8pt back below the header. */
+const RECAP_HYSTERESIS = 8;
+
 /** The mock clock's last stretch: shown in clay (never the error colour). */
 const LOW_TIME_MS = 5 * 60_000;
 
@@ -145,10 +148,13 @@ export default function SessionScreen() {
     if (!missed || !missCert || !qid) return null;
     const noteId = subtopicOfQuestion(missCert, qid);
     const note = noteId ? findNote(missCert, noteId) : undefined;
-    // The lesson: the one that prepares for this question, else (mobile 1.22, design spec §6.3) the
-    // lesson that teaches this note, the same one the note page offers (d4_062 → 4B1.2 → RPO and RTO).
-    const preparing = lessonPreparing(missCert, qid) ?? (noteId ? lessonsForSubtopic(missCert, noteId)[0] : undefined);
-    return { noteId, noteName: note?.name, noteMinutes: note?.minutes ?? 2, preparing };
+    // The lesson candidates, in order: the one that prepares for this question, then (mobile 1.22,
+    // design spec §6.3) the lessons that teach its note, as the note page offers them
+    // (d4_062 → 4B1.2 → RPO and RTO). The first one not done yet is offered (below).
+    const prepares = lessonPreparing(missCert, qid);
+    const teaching = noteId ? lessonsForSubtopic(missCert, noteId) : [];
+    const lessons = [...(prepares ? [prepares] : []), ...teaching.filter((l) => l.id !== prepares?.id)];
+    return { noteId, noteName: note?.name, noteMinutes: note?.minutes ?? 2, lessons };
   }, [missed, missCert, qid]);
   // Coach me was opened for this question (never in mock exams).
   const coached = !isMock && Boolean(qid && active?.coached?.includes(qid));
@@ -457,14 +463,13 @@ export default function SessionScreen() {
   const reason = active.reasons?.[qid];
   // After a miss (missLinks, above), at most two rows:
   //  1. "Read the note" whenever a study note lists this question;
-  //  2. "Replay the lesson" when a lesson prepares for it (or, mobile 1.22, teaches its note)
-  //     and it is not done yet (a done lesson is one tap away in Learn; the note is the
+  //  2. "Take the lesson": the first lesson not done yet among the one that prepares for it and
+  //     (mobile 1.22) the ones that teach its note (a done lesson is one tap away in Learn; the note is the
   //     quicker re-read). Each row says what it does in a kicker above the name.
   const missNote = missLinks?.noteId;
   const missNoteName = missLinks?.noteName;
   const missNoteMin = missLinks?.noteMinutes ?? 2;
-  const preparing = missLinks?.preparing;
-  const reviewLesson = preparing && !lessonsDone.includes(preparing.id) ? preparing : undefined;
+  const reviewLesson = missLinks?.lessons.find((l) => !lessonsDone.includes(l.id));
   const saved = bookmarks.includes(shownQid);
   const lowTime = isMock && remaining < LOW_TIME_MS;
   // The shared pace strip (components/pace.tsx): mock clock and pace line.
@@ -522,11 +527,18 @@ export default function SessionScreen() {
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     scrollY.current = e.nativeEvent.contentOffset.y;
     checkVine();
-    // The verdict is under the header once the scroll has passed its bottom edge.
-    const past = verdictBottom.current > 0 && scrollY.current > verdictBottom.current;
+    // The verdict is under the header once the scroll has passed its bottom edge; it comes back
+    // only 8pt above it (hysteresis, so a scroll resting on the line never flickers the header).
+    const edge = verdictBottom.current;
+    const past = edge > 0 && (pastVerdict ? scrollY.current > edge - RECAP_HYSTERESIS : scrollY.current > edge);
     if (past !== pastVerdict) setPastVerdict(past);
   };
-  // The header recap shows on a practice answer screen only, and never mid-turn.
+  // The header recap shows on a practice answer screen only, and never mid-turn. Its words belong
+  // to the page ON SCREEN (`shownQid`, keyed to it): at a turn they FADE out with the old page
+  // instead of vanishing because the next question has no answer yet.
+  const shownResponse = isMock ? undefined : active.responses[shownQid];
+  const shownQ = shownResponse ? findQuestion(active.certId, shownQid) : undefined;
+  const recap = shownResponse && shownQ ? { qid: shownQid, correct: shownResponse.correct, letter: originalToDisplay(shownQ.correct, active.perms[shownQid]) } : null;
   const showRecap = pastVerdict && submitted && Boolean(response) && !turning;
 
   // ── render ───────────────────────────────────────────────────────────
@@ -553,7 +565,7 @@ export default function SessionScreen() {
               <SegmentBar total={total} done={Object.keys(active.responses).length} current={active.index} />
             </View>
           }
-          second={response ? <AnswerRecap correct={response.correct} letter={correctDisplay} /> : null}
+          second={recap ? <AnswerRecap key={recap.qid} correct={recap.correct} letter={recap.letter} /> : null}
         />
         {isMock ? (
           // The clock moved to the pace strip below; this keeps the bar centred.
@@ -745,10 +757,11 @@ export default function SessionScreen() {
                   // Only a lesson not done yet is offered, so the row says so (never "Review").
                   <ListRow
                     icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                    kicker="Replay the lesson"
+                    // Only a lesson not done yet is offered, so it is "Take", never "Replay" (1.22 review).
+                    kicker="Take the lesson"
                     title={reviewLesson.title}
                     subtitle={`${reviewLesson.minutes} min · Not done yet`}
-                    accessibilityLabel={`Lesson: ${reviewLesson.title}, ${reviewLesson.minutes} minutes, not done yet`}
+                    accessibilityLabel={`Take the lesson: ${reviewLesson.title}, ${reviewLesson.minutes} minutes, not done yet`}
                     accessibilityHint="Opens the lesson. Go back to return to this answer."
                     onPress={() => router.push(`/lesson/${reviewLesson.id}`)}
                     last

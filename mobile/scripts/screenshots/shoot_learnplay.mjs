@@ -3,7 +3,8 @@
 //
 // Shots: Learn (cover with its reason, the lesson trail), a lesson cover, the
 // three scene templates (steps, layers, timeline), "How ISACA thinks", a
-// check with its verdict leaf, Lesson complete, a note marked as read, Play,
+// check with its verdict leaf, Lesson complete, a note read to its end (p09: since 1.22 the
+// note marks itself read when its ending comes into view; a tap only if it hasn't), Play,
 // each game's header, a recap with its sparkline and a level up.
 // Strips (slow motion, see shoot_motion.mjs): the scene turn, the step line
 // drawing, the timeline rail, the lesson ✓ on Learn, Lesson complete's leaf,
@@ -273,8 +274,11 @@ await shot('p05b-scene-10');
 const RISK_ID = 'cisa-l-d1-risk-planning';
 const RISK_TITLE = (() => {
   const src = fs.readFileSync('src/content/lessons/cisa.ts', 'utf8');
-  const at = src.indexOf(`id: '${RISK_ID}'`);
-  return at >= 0 ? (/title: '([^']+)'/.exec(src.slice(at))?.[1] ?? '') : '';
+  const at = src.search(new RegExp(`id:\\s*['"\`]${RISK_ID}['"\`]`));
+  if (at < 0) return '';
+  // The lesson's own title: any quote style, escaped quotes allowed ('The auditor\'s plan').
+  const m = /title:\s*(['"`])((?:\\.|(?!\1)[^\\])*)\1/.exec(src.slice(at));
+  return m ? m[2].replace(/\\(.)/g, '$1') : '';
 })();
 await go('/learn?domain=1');
 const fromLearn = RISK_TITLE !== '' && (await visible(RISK_TITLE));
@@ -317,7 +321,7 @@ await wait(1000);
 if (!fromLearn) await go('/learn?domain=1');
 await shot('p01b-learn-after-lesson');
 
-// ── 4. Notes: Mark as read ─────────────────────────────────────────────
+// ── 4. Notes: read to the end (p09 shows the auto-read state, or the tap if it didn't fire) ──
 await go('/notes/subtopic/1A1.1', 1800);
 const noteOk = await visible('Mark as read');
 if (noteOk) {

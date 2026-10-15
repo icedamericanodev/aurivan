@@ -532,7 +532,7 @@ function CheckScene({
   return (
     <View>
       <Part i={0}>
-        <T v="caption" color={c.accentText}>Quick check</T>
+        <T v="caption" color={c.accentText} accessibilityRole="header">Quick check</T>
         <Gap h={space.sm} />
         <Stem>{scene.question}</Stem>
         <Gap h={space.xl} />

@@ -280,7 +280,7 @@ describe('lesson player: Report a problem on a check scene', () => {
     expect(r.root.findAllByType(OptionCard).length).toBeGreaterThan(0);
     // The full row waits for the answer; mobile 1.22: the header's flag is there on every scene.
     expect(pressables(r, 'Report a problem with this lesson step')).toHaveLength(0);
-    expect(pressables(r, 'Report a problem')).toHaveLength(1);
+    expect(pressables(r, 'Report a problem with this step')).toHaveLength(1);
     act(() => {
       r.root.findAllByType(OptionCard)[0].props.onPress();
     });
@@ -429,7 +429,7 @@ describe('a set started above an old session or Results', () => {
     startFromIds('cisa', [prepped.qid], 'Quick 10');
     const first = open('session', <SessionScreen />);
     answerByUi(first, false);
-    press(first, /^Lesson: /); // was "Review the lesson:" before the UX pass
+    press(first, /^Take the lesson: /); // was "Review the lesson:", then "Lesson:" (1.20), now "Take the lesson:" (1.22)
     mockParams = { id: prepped.lesson.id };
     const player = open('lesson', <LessonPlayer />);
     const scenes = prepped.lesson.scenes;

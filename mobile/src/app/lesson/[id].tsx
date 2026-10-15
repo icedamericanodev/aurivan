@@ -100,6 +100,11 @@ export default function LessonPlayer() {
   // The sticky footer's height: the page pads by it, so nothing ends under the buttons.
   const [footerH, setFooterH] = useState(96);
   const nextRef = useRef<View>(null);
+  // The footer's Back, whichever shape it has (the round "Previous step", or the "Back" pill on a check).
+  const backRef = useRef<View>(null);
+  // Back changed shape on this turn (a check ↔ another scene): the old control is gone, so screen-reader
+  // focus is handed to the new one once the new page is placed (mobile 1.22 review P3).
+  const backFocusAfterTurn = useRef(false);
   const scrollRef = useRef<ScrollView>(null);
   // The page on screen: it changes at PageTurn's swap (before paint), so the footer follows the page, not the tap.
   const [onPage, setOnPage] = useState<string | number>(0);
@@ -129,6 +134,12 @@ export default function LessonPlayer() {
     scrollRef.current?.scrollTo({ y: 0, animated: false });
     setOnPage(to);
   }, []);
+  // The new page is placed (its footer with it): hand focus to Back if it changed shape.
+  useEffect(() => {
+    if (!backFocusAfterTurn.current) return;
+    backFocusAfterTurn.current = false;
+    moveFocus(backRef);
+  }, [onPage]);
   // After a turn, say where we are (once, after a short pause so the turn doesn't cut it off).
   // Lesson complete says its own line.
   const firstPage = useRef(true);
@@ -204,6 +215,7 @@ export default function LessonPlayer() {
     if (turning) return;
     // Back to the first scene removes this button: keep screen-reader focus on Next.
     if (index === 1) moveFocus(nextRef);
+    else if ((lesson.scenes[index].type === 'check') !== (lesson.scenes[index - 1].type === 'check')) backFocusAfterTurn.current = true;
     goTo(index - 1);
   };
 
@@ -229,8 +241,8 @@ export default function LessonPlayer() {
                 {/* Mobile 1.22 (DECISION 3): Report a problem is a flag in the header on every
                     scene, always one tap away and never in the reading column. */}
                 <IconButton
-                  label="Report a problem"
-                  hint="Tell us what’s wrong with this step"
+                  label="Report a problem with this step"
+                  hint="Opens a short form, then your email app"
                   onPress={() => {
                     if (!turning) report.open();
                   }}
@@ -319,9 +331,10 @@ export default function LessonPlayer() {
                     mode); a check keeps the full "Back" pill, where it means "the scene before the check". */}
                 {shownIndex > 0 &&
                   (onCheck ? (
-                    <Button kind="secondary" label="Back" onPress={back} style={{ flex: 1 }} />
+                    <Button ref={backRef} kind="secondary" label="Back" onPress={back} style={{ flex: 1 }} />
                   ) : (
                     <IconButton
+                      ref={backRef}
                       outline
                       label="Previous step"
                       onPress={back}

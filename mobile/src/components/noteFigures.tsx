@@ -6,7 +6,7 @@
  * labels are unreadable or need "Tap to enlarge". The figures here are drawn
  * for the phone instead, in the lessons' diagram vocabulary:
  * - lines and marks with react-native-svg, in Grove tokens (the rail in
- *   `accent` at 55%, spans in `ink2`, outer limits in `muted`);
+ *   `accent` at 80%, spans in `ink2`, outer limits in `muted`);
  * - labels as real text in Figtree (`caption` 13 and up, never mono, never
  *   uppercase), so they stay sharp, wrap inside the column and grow with the
  *   phone's text size (capped where a label is tied to a mark's position);
@@ -51,7 +51,7 @@ type FlowStep = { label: string; note?: string };
 
 const flow = (label: string, steps: FlowStep[], opts: { cycle?: string; scale?: [string, string] } = {}): NativeFigure => ({
   label: `${label}: ${steps.map((s, i) => `${i + 1}, ${s.label}${s.note ? `: ${s.note}` : ''}`).join('. ')}.${opts.cycle ? ` ${opts.cycle}.` : ''}${
-    opts.scale ? ` From ${opts.scale[0].toLowerCase()} to ${opts.scale[1].toLowerCase()}.` : ''
+    ''
   }`,
   draw: () => <FlowFigure steps={steps} cycle={opts.cycle} scale={opts.scale} />,
 });
@@ -59,41 +59,52 @@ const flow = (label: string, steps: FlowStep[], opts: { cycle?: string; scale?: 
 const FIGURES: Record<string, NativeFigure> = {
   '4B1.2': {
     label:
-      'Recovery timeline: the last backup, then the disruption, then service restored. The data written between the last backup and the disruption is lost, and that must not exceed the RPO. The downtime from the disruption until service is restored must not exceed the RTO. The MTD, measured forward from the disruption, is the outer limit: the RTO sits inside it.',
+      'Recovery timeline: the last good backup, then the disruption, then service restored. The data written between the last good backup and the disruption is lost, and that amount must not exceed the RPO. The downtime from the disruption until service is restored must not exceed the RTO. The MTD, measured forward from the disruption, is the outer limit: the RTO sits inside it.',
     draw: (width) => <RecoveryTimeline width={width} />,
   },
   '4A7.2': flow('Handling an operational incident, in order', [
     { label: 'Detection', note: 'Logged, classified and prioritized' },
-    { label: 'Containment', note: 'Stop the damage from spreading' },
+    { label: 'Containment', note: 'Any spreading damage stopped' },
     { label: 'Restoration', note: 'Service back by fix or workaround' },
     { label: 'Closure', note: 'Confirmed with the user' },
-    { label: 'Lessons learned', note: 'A blameless review' },
+    { label: 'Lessons learned', note: 'Reviewed without blame' },
   ]),
   '4A8.3': flow('The patch cycle', [
-    { label: 'Identify', note: 'Matched against the asset inventory' },
+    { label: 'Identify', note: 'Matched to the asset inventory and ranked by risk' },
     { label: 'Test', note: 'Shortened when urgent, never removed' },
     { label: 'Approve' },
     { label: 'Deploy', note: 'With a rollback plan' },
-    { label: 'Verify', note: 'Scans confirm it is installed' },
+    { label: 'Verify', note: 'Installation confirmed by scan' },
   ]),
   '4A6.2': flow(
     'The capacity cycle',
     [
-      { label: 'Monitor usage', note: 'Use compared with thresholds' },
-      { label: 'Forecast demand', note: 'Model the peaks, not the averages' },
-      { label: 'Provision ahead', note: 'In time to cover lead times' },
+      { label: 'Monitor usage', note: 'Use and spending checked against thresholds' },
+      { label: 'Forecast demand', note: 'Based on peaks, not averages' },
+      { label: 'Provision ahead', note: 'After demand management, ordered early enough to cover lead times' },
     ],
     { cycle: 'Then monitor again' },
   ),
   '4B5.4': flow(
-    'Recovery plan tests',
-    [{ label: 'Checklist' }, { label: 'Walkthrough' }, { label: 'Simulation' }, { label: 'Parallel' }, { label: 'Full interruption' }],
+    'Recovery plan tests, from least to most thorough',
+    [
+      { label: 'Checklist', note: 'Contents checked, nothing moved' },
+      { label: 'Walkthrough' },
+      { label: 'Simulation', note: 'Timed scenario, live processing untouched' },
+      { label: 'Parallel', note: 'Recovery site runs real data; production continues' },
+      { label: 'Full interruption', note: 'Production moved; the riskiest' },
+    ],
     { scale: ['Least thorough', 'Most thorough'] },
   ),
 };
 
-// The web drawing runs left to right; this one runs top to bottom.
-FIGURES['4A7.2'].caption = (source) => source.replace('runs left to right', 'runs top to bottom');
+// Captions adapted to the native figures (notes curator, 1.22 review); the web data stays as it is.
+// 4B1.2: this timeline also shows the MTD. 4A7.2: the web drawing runs left to right, this one top to bottom.
+FIGURES['4B1.2'].caption = (source) =>
+  source.includes('RPO and RTO on one timeline.')
+    ? `${source.replace('RPO and RTO on one timeline.', 'RPO, RTO and MTD on one timeline.')} The MTD is the outer limit, and the RTO must fit inside it.`
+    : source;
+FIGURES['4A7.2'].caption = (source) => source.replace('An operational incident runs left to right:', 'Read the steps top to bottom. In an operational incident,');
 
 /** The native figure for a subtopic's first diagram, if one has been drawn. */
 export function nativeFigureFor(subtopicId: string): NativeFigure | undefined {
@@ -125,22 +136,23 @@ export function NativeFigureView({ figure, caption, width }: { figure: NativeFig
 // ── 4B1.2: the recovery timeline ──────────────────────────────────────
 
 /**
- * Time runs left to right on one rail: the last backup (a ring), the
+ * Time runs left to right on one rail: the last good backup (a ring), the
  * disruption (a dashed line that runs down the whole figure: left of it is
  * the past, right of it the future), service restored (a filled dot), and
  * the MTD's outer limit (a short dashed tick). Under the rail, spans:
- * "Data lost ≤ RPO" looks BACK from the disruption to the last backup;
+ * "Data lost ≤ RPO" looks BACK from the disruption to the last good backup;
  * "Downtime ≤ RTO" looks FORWARD to service restored; under them, "MTD: the
  * outer limit" from the disruption to the tick. Every label sits on its own
  * side of the dashed line, so none can collide, at any width.
  */
 export function RecoveryTimeline({ width }: { width: number }) {
   const { c } = useTheme();
-  const W = Math.max(240, width);
-  const xB = 7; // the last backup's ring
+  // Exactly the plate's inner width: labels wrap inside their side of the line, however narrow.
+  const W = Math.max(0, width);
+  const xB = 7; // the last good backup's ring
   const xD = Math.round(W * 0.4); // the disruption
   const right = W - xD - space.sm; // the room right of the dashed line
-  const xR = Math.round(xD + space.sm + right / 2); // service restored, centred over its label
+  const xR = Math.round(xD + space.sm + right / 2); // service restored, centered over its label
   const xM = W - 30; // the MTD's outer limit (clear of the arrow)
   const RAIL_H = 28;
   const railY = RAIL_H / 2;
@@ -164,7 +176,7 @@ export function RecoveryTimeline({ width }: { width: number }) {
         </View>
         {/* The rail, with the arrow of time at its end. */}
         <Svg width={W} height={RAIL_H}>
-          <Line x1={xB} y1={railY} x2={W - 3} y2={railY} stroke={c.accent} strokeOpacity={0.55} strokeWidth={2} strokeLinecap="round" />
+          <Line x1={xB} y1={railY} x2={W - 3} y2={railY} stroke={c.accent} strokeOpacity={0.8} strokeWidth={2} strokeLinecap="round" />
           <Path d={`M${W - 9} ${railY - 5} L${W - 3} ${railY} L${W - 9} ${railY + 5}`} stroke={c.accent} strokeOpacity={0.8} strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
           <Line x1={xM} y1={railY - 7} x2={xM} y2={railY + 7} stroke={c.muted} strokeWidth={1.5} strokeDasharray="2 3" />
           <Circle cx={xB} cy={railY} r={6} stroke={c.accent} strokeWidth={2} fill={c.raised2} />
@@ -173,7 +185,7 @@ export function RecoveryTimeline({ width }: { width: number }) {
         {/* Under the rail: the two events, one each side of the line. */}
         <View style={{ flexDirection: 'row', marginTop: space.xs }}>
           <View style={leftBox}>
-            <T v="caption" color={c.ink2} {...pinned}>Last backup</T>
+            <T v="caption" color={c.ink2} {...pinned}>Last good backup</T>
           </View>
           <View style={{ marginLeft: space.lg, width: right, alignItems: 'center' }}>
             <T v="caption" color={c.ink2} {...pinned} center>Service restored</T>
@@ -224,11 +236,12 @@ export function FlowFigure({ steps, cycle, scale }: { steps: FlowStep[]; cycle?:
       {steps.map((step, i) => (
         <View key={step.label} style={{ flexDirection: 'row', gap: space.md }}>
           <View style={{ alignItems: 'center', width: 28 }}>
-            <View style={{ width: 28, height: 28, borderRadius: radius.pill, backgroundColor: c.soft, alignItems: 'center', justifyContent: 'center' }}>
+            {/* Grows with a large numeral instead of clipping it (1.22 review P6). */}
+            <View style={{ minWidth: 28, minHeight: 28, padding: 2, borderRadius: radius.pill, backgroundColor: c.soft, alignItems: 'center', justifyContent: 'center' }}>
               <BigNum value={String(i + 1)} size={17} color={c.accentText} />
             </View>
             {(i < n - 1 || cycle || scale) && (
-              <View style={{ width: 1.5, flex: 1, minHeight: 12, backgroundColor: c.accent, opacity: 0.55 }} />
+              <View style={{ width: 1.5, flex: 1, minHeight: 12, backgroundColor: c.accent, opacity: 0.8 }} />
             )}
           </View>
           <View style={{ flex: 1, paddingTop: 3, paddingBottom: i < n - 1 ? space.md : space.sm }}>

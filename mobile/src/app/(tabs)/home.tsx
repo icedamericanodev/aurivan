@@ -161,7 +161,8 @@ export default function Today() {
     }, [certId]),
   );
   // The Start pill's glyph says what starts (mobile 1.22, the 1.20 icon rule): Play only for a
-  // lesson; reviews, practice, mocks and games go forward with an arrow.
+  // lesson (leading, as on Learn); reviews, practice, mocks and games go forward with a TRAILING
+  // arrow, like "Next question →".
   const startIcon = (kind: string | undefined) =>
     function StartIcon(color: string) {
       const Glyph = kind === 'lesson' ? Play : ArrowRight;
@@ -399,7 +400,7 @@ export default function Today() {
             title={hero!.title}
             meta={hero!.meta}
             metaLabel={spokenMin(hero!.meta)}
-            action={{ label: 'Start', onPress: () => runPlanItem(curItem, j.cert.id), icon: startIcon(curItem?.kind), hint: hero!.title }}
+            action={{ label: 'Start', onPress: () => runPlanItem(curItem, j.cert.id), icon: startIcon(curItem?.kind), iconTrailing: curItem?.kind !== 'lesson', hint: hero!.title }}
           />
         )}
       </Enter>

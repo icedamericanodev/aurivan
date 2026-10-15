@@ -221,6 +221,7 @@ export default function Practice() {
             label: mode === 'guided' ? 'Open step' : 'Start',
             // Play is for lessons (the 1.20 icon rule): practice goes forward with an arrow (mobile 1.22).
             icon: (col) => <ArrowRight size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />,
+            iconTrailing: true,
             hint: mode === 'guided' ? 'Opens your Guided step' : `${pathSize} questions, ${MODE_INFO[mode].name}`,
             onPress: startPath,
           }}
