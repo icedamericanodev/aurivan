@@ -349,12 +349,12 @@ describe('Settings → Your name', () => {
     expect(useSettings.getState().displayName).toBeUndefined();
   });
 
-  it('a link or an email is not saved', () => {
+  it('a link or an email is not saved, and the old name stays', () => {
     useSettings.setState({ displayName: 'Maya' });
     mount(<Settings />);
     openRow();
     type('maya@example.com');
     press('Save');
-    expect(useSettings.getState().displayName).toBeUndefined();
+    expect(useSettings.getState().displayName).toBe('Maya');
   });
 });

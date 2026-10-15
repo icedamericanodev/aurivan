@@ -23,7 +23,7 @@ function setup(opts: { mailer?: boolean; secret?: string | null } = {}) {
         mailer,
         secret: opts.secret === undefined ? SECRET : opts.secret,
         to: 'support@test.invalid',
-        queueUrl: 'aurivan://board/moderation',
+        queueUrl: 'kaisip://board/moderation',
         log,
       },
     );
@@ -60,7 +60,7 @@ Deno.test('something waiting: one email to the support inbox with counts and the
   assert.equal(sent[0].to, 'support@test.invalid');
   assert.deepEqual(
     { subject: sent[0].subject, text: sent[0].text },
-    digestEmail(board.digestCounts, 'aurivan://board/moderation'),
+    digestEmail(board.digestCounts, 'kaisip://board/moderation'),
   );
   assert.match(sent[0].text, /Held: 2\nReported: 1\nAppeals: 0/);
 });

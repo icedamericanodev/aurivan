@@ -52,8 +52,9 @@ export function DisplayNameField({
         returnKeyType="done"
         onSubmitEditing={onSubmit}
         onEndEditing={() => {
+          // Text that cleans to nothing (a link, an email) stays visible, so the explanation under the field stays too.
           const clean = cleanDisplayName(value);
-          if (clean !== value) onChange(clean);
+          if (clean !== value && (clean !== '' || value.trim() === '')) onChange(clean);
         }}
         style={[
           typeScale.body,

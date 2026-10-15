@@ -182,6 +182,13 @@ export default function Settings() {
   const aboutRow = useRef<View>(null);
   // "Your name": the text being edited in its sheet (starts from the saved name each time it opens).
   const [nameDraft, setNameDraft] = useState('');
+  // Save keeps the sheet open (and the old name) when the text is a link or an email; the field explains why.
+  const saveName = () => {
+    const clean = cleanDisplayName(nameDraft);
+    if (clean === '' && nameDraft.trim() !== '') return;
+    s.setDisplayName(clean);
+    close();
+  };
   const open = (id: SheetId) => () => {
     if (id === 'date') setNow(Date.now());
     if (id === 'name') setNameDraft(useSettings.getState().displayName ?? '');
@@ -515,10 +522,7 @@ export default function Settings() {
           <>
             <Button
               label="Save"
-              onPress={() => {
-                s.setDisplayName(cleanDisplayName(nameDraft));
-                close();
-              }}
+              onPress={saveName}
             />
             {s.displayName ? (
               <Button
@@ -537,10 +541,7 @@ export default function Settings() {
         <DisplayNameField
           value={nameDraft}
           onChange={setNameDraft}
-          onSubmit={() => {
-            s.setDisplayName(cleanDisplayName(nameDraft));
-            close();
-          }}
+          onSubmit={saveName}
         />
       </Sheet>
 
