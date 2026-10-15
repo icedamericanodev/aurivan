@@ -33,7 +33,7 @@ import { ArrowRight, BookOpen, ICON_STROKE } from '../../components/icons';
 import { SceneView } from '../../components/lesson';
 import { Celebrate, FadeIn, PageTurn, useCelebration } from '../../components/motion';
 import { useReportFlow } from '../../components/support';
-import { Button, Gap, ICON_SIZE, PushedHeader, Row, SegmentBar, T } from '../../components/ui';
+import { Button, Gap, ICON_SIZE, PushedHeader, Row, SegmentBar, T, useFontScale } from '../../components/ui';
 import { domainColor, getCertification } from '../../content/certifications';
 import { findQuestion } from '../../content/loader';
 import { findLesson, lessonsFor, nextLesson } from '../../content/lessons';
@@ -48,6 +48,7 @@ import { logLesson } from '../../lib/activity';
 import { haptic } from '../../lib/haptics';
 import { noteLessonFinished } from '../../lib/lessonNews';
 import { lessonNotes } from '../../lib/outline';
+import { openSessionFromStack, openTab } from '../../lib/actions';
 import { guardedStart, startFromIds, startPractice } from '../../lib/sessions';
 import { useProgress } from '../../store/progress';
 import { useSettings } from '../../store/settings';
@@ -58,6 +59,8 @@ import { useTheme } from '../../theme/useTheme';
 const DONE = 'done';
 /** One empty list for every render (a fresh `[]` per store snapshot would re-render forever). */
 const NONE: readonly string[] = [];
+/** At this text size Lesson complete's actions scroll with the page instead of a pinned footer (as session.tsx). */
+const HUGE_TEXT = 1.6;
 
 /**
  * "Practice this topic" after a lesson: the questions the study notes list
@@ -76,6 +79,8 @@ export function lessonPracticeIds(lesson: Lesson, seed = Date.now()): string[] {
 
 export default function LessonPlayer() {
   const { c } = useTheme();
+  // Very large text (mobile 1.20): three stacked actions would crowd a pinned footer.
+  const huge = useFontScale() >= HUGE_TEXT;
   const { id } = useLocalSearchParams<{ id: string }>();
   const lesson = findLesson(String(id));
   const completeLesson = useProgress((s) => s.completeLesson);
@@ -220,6 +225,12 @@ export default function LessonPlayer() {
           {pageId === DONE && finished ? (
             <View style={{ flexGrow: 1 }}>
               <LessonComplete lesson={lesson} domain={domain} fresh={finished.fresh} />
+              {/* Very large text: the actions scroll with the page, so none is pushed off-screen. */}
+              {huge && (
+                <View style={{ marginTop: space.xl }}>
+                  <CompleteActions lesson={lesson} domain={domain} />
+                </View>
+              )}
               {/* Report a problem with the lesson as a whole (mobile 1.20: here and on checks only). */}
               <View style={{ marginTop: space.lg, alignItems: 'flex-start' }}>
                 {report.link}
@@ -263,18 +274,20 @@ export default function LessonPlayer() {
         </PageTurn>
       </ScrollView>
 
-      <View style={{ paddingHorizontal: space.gutter, paddingVertical: space.md, backgroundColor: c.bg }}>
-        {showingDone ? (
-          <CompleteActions lesson={lesson} domain={domain} />
-        ) : (
-          <Row gap={space.sm}>
-            {/* No Back on the first scene (a disabled slab looked broken); Next takes the full width. */}
-            {shownIndex > 0 && <Button kind="secondary" label="Back" onPress={back} style={{ flex: 1 }} />}
-            {/* ONE keyed button whose label changes, so screen-reader focus stays on it. */}
-            <Button key="next" ref={nextRef} label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: 2 }} />
-          </Row>
-        )}
-      </View>
+      {!(showingDone && huge) && (
+        <View style={{ paddingHorizontal: space.gutter, paddingVertical: space.md, backgroundColor: c.bg }}>
+          {showingDone ? (
+            <CompleteActions lesson={lesson} domain={domain} />
+          ) : (
+            <Row gap={space.sm}>
+              {/* No Back on the first scene (a disabled slab looked broken); Next takes the full width. */}
+              {shownIndex > 0 && <Button kind="secondary" label="Back" onPress={back} style={{ flex: 1 }} />}
+              {/* ONE keyed button whose label changes, so screen-reader focus stays on it. */}
+              <Button key="next" ref={nextRef} label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: 2 }} />
+            </Row>
+          )}
+        </View>
+      )}
       {report.sheet}
     </SafeAreaView>
   );
@@ -362,7 +375,8 @@ function CompleteActions({ lesson, domain }: { lesson: Lesson; domain: DomainInf
         ids.length
           ? startFromIds(lesson.certId, ids, lesson.title)
           : startPractice(lesson.certId, { count: 10, domainId: lesson.domainId, title: `${domain?.short ?? 'Domain'} practice` }),
-      () => router.replace('/session'),
+      // A lesson can be opened from a session ("Review the lesson"): start clean (lib/actions.ts).
+      openSessionFromStack,
     );
   return (
     <View style={{ gap: space.sm }}>
@@ -374,7 +388,9 @@ function CompleteActions({ lesson, domain }: { lesson: Lesson; domain: DomainInf
       {note && (
         <Button
           kind="ghost"
-          label={`Read the note: ${note.name}`}
+          // Short on screen (a long note name pushed Next lesson off at 200 % text); named when spoken.
+          label="Read the note"
+          accessibilityLabel={`Read the note: ${note.name}`}
           accessibilityHint="Opens the study note that goes deeper on this lesson"
           icon={(col) => <BookOpen size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
           iconLeading
@@ -391,7 +407,8 @@ function CompleteActions({ lesson, domain }: { lesson: Lesson; domain: DomainInf
           onPress={() => router.replace(`/lesson/${after.id}`)}
         />
       ) : (
-        <Button kind="ghost" label="Back to Learn" onPress={() => router.back()} />
+        // To the Learn tab itself: Back would return to a session or note this lesson was opened from.
+        <Button kind="ghost" label="Back to Learn" onPress={() => openTab('/learn')} />
       )}
     </View>
   );

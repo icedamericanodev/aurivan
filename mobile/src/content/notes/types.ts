@@ -62,6 +62,12 @@ export interface NoteSubtopic {
    * screen still drops any id a later content update removed.
    */
   practiceIds?: string[];
+  /**
+   * Mobile 1.20: about how many minutes the page takes to read (200 words a
+   * minute over the rendered text, at least 1), set by scripts/notes-pack.cjs.
+   * Optional so an older pack still loads; screens fall back to 2.
+   */
+  minutes?: number;
 }
 
 /** One outline topic (e.g. 4B1) and its subtopics, foundation first. */

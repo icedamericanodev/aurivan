@@ -641,7 +641,8 @@ describe('3. "Next for your exam" at each journey stage', () => {
   const APP = join(__dirname, '..', 'app');
   const routeExists = (path: string) => [`${path}.tsx`, `(tabs)${path}.tsx`, `${path}/index.tsx`].some((f) => existsSync(join(APP, f)));
   const opened = (): string => {
-    const calls = [...(router.push as jest.Mock).mock.calls, ...(router.navigate as jest.Mock).mock.calls];
+    // Mobile 1.20: a tab opens with dismissTo (or replace, with nothing under the screen).
+    const calls = [router.push, router.navigate, router.replace, router.dismissTo].flatMap((f) => (f as jest.Mock).mock.calls);
     expect(calls).toHaveLength(1);
     const to = calls[0][0] as string | { pathname: string; params?: Record<string, string> };
     const path = typeof to === 'string' ? to : to.pathname;
@@ -672,6 +673,8 @@ describe('3. "Next for your exam" at each journey stage', () => {
       }
       (router.push as jest.Mock).mockClear();
       (router.navigate as jest.Mock).mockClear();
+      (router.replace as jest.Mock).mockClear();
+      (router.dismissTo as jest.Mock).mockClear();
       useSession.getState().clear();
       act(() => {
         studyFor(target, 'cisa', due);

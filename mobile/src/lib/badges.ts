@@ -26,6 +26,7 @@ import { selectCert, useProgress, type CertProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { dailyMinutesOf, useSettings } from '../store/settings';
 import { badgeCase } from './milestones';
+import { openTab } from './actions';
 import { guardedStart, startPractice, startReview, startStudy } from './sessions';
 import { daysUntil } from './useActiveCert';
 
@@ -90,11 +91,13 @@ export function studyFor(target: StudyTarget, certId: string, dueCount: number) 
       return router.push({ pathname: '/mock-start', params: { questions: String(cert?.exam.questions ?? 150) } });
     }
     case 'today':
-      return router.navigate('/home');
+      // A tab, from the Badges screen in the root stack: back to the tabs, never a second set (mobile 1.20).
+      return openTab('/home');
     case 'game':
       return router.push(`/game/${target.game}`);
     case 'play':
-      return router.navigate('/play');
+      // A tab, from the Badges screen in the root stack: back to the tabs, never a second set (mobile 1.20).
+      return openTab('/play');
   }
 }
 

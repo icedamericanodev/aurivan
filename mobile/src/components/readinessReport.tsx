@@ -142,10 +142,16 @@ export function TrendLegend({ points }: { points: readonly TrendPoint[] }) {
  * of the exam and domain readiness, the evidence behind it, the last two
  * mocks in it, and a 3px bar in the domain's tone. One screen-reader stop.
  * Never "of N questions in this domain" (the bank size is never shown).
- * Mobile 1.20: with `onLearn`, a ghost "Lessons and notes ›" under it (its
- * own stop) opens Learn on this domain.
+ * Mobile 1.20: with `link`, a ghost under it (its own stop): "Lessons and
+ * notes ›" (Learn on this domain), or "Study notes ›" once its lessons are done.
  */
-export function DomainReportRow({ row, last, onLearn }: { row: DomainRow; last?: boolean; onLearn?: () => void }) {
+export interface DomainLink {
+  label: string;
+  accessibilityLabel: string;
+  hint: string;
+  onPress: () => void;
+}
+export function DomainReportRow({ row, last, link }: { row: DomainRow; last?: boolean; link?: DomainLink }) {
   const { c, isDark } = useTheme();
   const tone = domainColor(row.domain.tone, isDark);
   const mocks = mockLine(row);
@@ -162,14 +168,14 @@ export function DomainReportRow({ row, last, onLearn }: { row: DomainRow; last?:
           {row.answered > 0 && <View style={{ width: `${Math.max(0, Math.min(100, row.readinessPct))}%`, height: 3, backgroundColor: tone }} />}
         </View>
       </View>
-      {onLearn && (
+      {link && (
         // The ghost pads 8pt each side: pulled left so its text lines up with the row's.
         <Button
           kind="ghost"
-          label="Lessons and notes ›"
-          accessibilityLabel={`Lessons and notes for ${row.domain.name}`}
-          accessibilityHint="Opens Learn on this domain"
-          onPress={onLearn}
+          label={link.label}
+          accessibilityLabel={link.accessibilityLabel}
+          accessibilityHint={link.hint}
+          onPress={link.onPress}
           style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
         />
       )}

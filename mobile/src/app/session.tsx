@@ -19,6 +19,7 @@
  * "Clock hidden" / "Untimed", chosen on the start sheet), with a pace line
  * that changes only at the 25 / 50 / 75% checks (engine/pace.ts).
  */
+import * as Router from 'expo-router';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -53,7 +54,7 @@ import {
   type OptionState,
 } from '../components/quiz';
 import { addMs } from '../engine/answerClock';
-import { dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, statusOf } from '../engine/pace';
+import { aboutMin, dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, spokenMin, statusOf } from '../engine/pace';
 import { PaceStrip, type PaceStripProps } from '../components/pace';
 import { sayLater } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
@@ -82,6 +83,11 @@ import { useTheme } from '../theme/useTheme';
 // Stable empty array: a new [] on every render would make the store re-render forever.
 const NO_BOOKMARKS: string[] = [];
 const NO_LESSONS: string[] = [];
+/**
+ * Is this screen the one in view? The navigator's own useIsFocused; test
+ * stand-ins of expo-router without it count as in view (as before 1.20).
+ */
+const useInView: () => boolean = (Router as { useIsFocused?: () => boolean }).useIsFocused ?? (() => true);
 /** At this text size the confidence chips move out of the sticky footer (spec §10.7). */
 const HUGE_TEXT = 1.6;
 
@@ -125,6 +131,18 @@ export default function SessionScreen() {
   const perm = active && qid ? active.perms[qid] : undefined;
   const response = active && qid ? active.responses[qid] : undefined;
   const isMock = active?.mode === 'mock';
+  // Mobile 1.20, after a miss: the note first, the lesson when there is one.
+  // Practice, review and Guided only (a mock never shows an answer screen, and
+  // this says so out loud). Nothing after a right answer. Looked up once per
+  // question, not on every render (the mock clock re-renders each second).
+  const missed = !isMock && Boolean(response && !response.correct);
+  const missCert = active?.certId;
+  const missLinks = useMemo(() => {
+    if (!missed || !missCert || !qid) return null;
+    const noteId = subtopicOfQuestion(missCert, qid);
+    const note = noteId ? findNote(missCert, noteId) : undefined;
+    return { noteId, noteName: note?.name, noteMinutes: note?.minutes ?? 2, preparing: lessonPreparing(missCert, qid) };
+  }, [missed, missCert, qid]);
   // Coach me was opened for this question (never in mock exams).
   const coached = !isMock && Boolean(qid && active?.coached?.includes(qid));
   // Quiet data (Build C): time on this question, background time excluded.
@@ -275,10 +293,14 @@ export default function SessionScreen() {
   );
 
   // Finished sessions belong on the results screen (the ONLY place that
-  // navigates there, so it never happens twice).
+  // navigates there, so it never happens twice). Backstop (mobile 1.20): only
+  // the session screen in view does it, so a second session screen left in
+  // the stack can never open Results as well. One finished while out of view
+  // goes there when it comes back into view.
+  const inView = useInView();
   useEffect(() => {
-    if (active?.finishedAt) router.replace('/results');
-  }, [active?.finishedAt]);
+    if (active?.finishedAt && inView) router.replace('/results');
+  }, [active?.finishedAt, inView]);
 
   if (!active || !q || !perm || !qid) {
     return (
@@ -424,16 +446,14 @@ export default function SessionScreen() {
   const shownFlagged = active.flagged.includes(shownQid);
   // Build E: why this question is here ("Weak spot", "Mixed review"…).
   const reason = active.reasons?.[qid];
-  // Mobile 1.20, after a miss: the note first, the lesson when there is one.
-  // Practice, review and Guided only (a mock never shows an answer screen, and
-  // this says so out loud). Nothing after a right answer. At most two rows:
+  // After a miss (missLinks, above), at most two rows:
   //  1. "Read the note" whenever a study note lists this question;
   //  2. "Review the lesson" when a lesson prepares for it and it is not done
   //     yet (a done lesson is one tap away in Learn; the note is the quicker re-read).
-  const missed = !isMock && Boolean(response && !response.correct);
-  const missNote = missed ? subtopicOfQuestion(active.certId, qid) : undefined;
-  const missNoteName = missNote ? findNote(active.certId, missNote)?.name : undefined;
-  const preparing = missed ? lessonPreparing(active.certId, q.id) : undefined;
+  const missNote = missLinks?.noteId;
+  const missNoteName = missLinks?.noteName;
+  const missNoteMin = missLinks?.noteMinutes ?? 2;
+  const preparing = missLinks?.preparing;
   const reviewLesson = preparing && !lessonsDone.includes(preparing.id) ? preparing : undefined;
   const saved = bookmarks.includes(shownQid);
   const lowTime = isMock && remaining < LOW_TIME_MS;
@@ -676,11 +696,13 @@ export default function SessionScreen() {
                     lesson when one is still to do (Play = lessons). Both PUSH, so Back lands
                     here again, on this same answer with its explanation. */}
                 {missNote && missNoteName && (
+                  // Title = the note's own name (no "Read the note:" prefix on screen: the
+                  // name can hold a colon itself); the spoken label keeps the verb.
                   <ListRow
                     icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                    title={`Read the note: ${missNoteName}`}
-                    subtitle="About 2 min · the concept this question tests"
-                    accessibilityLabel={`Read the note: ${missNoteName}, about 2 minutes, the concept this question tests`}
+                    title={missNoteName}
+                    subtitle={`Study note · ${aboutMin(missNoteMin, true)}`}
+                    accessibilityLabel={`Read the note: ${missNoteName}, ${spokenMin(aboutMin(missNoteMin, true))}, the idea this question tests`}
                     accessibilityHint="Opens the study note. Go back to return to this answer."
                     onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(missNote)}`)}
                     // TrustLine below draws its own top rule, so the last row skips its hairline.
@@ -688,11 +710,12 @@ export default function SessionScreen() {
                   />
                 )}
                 {reviewLesson && (
+                  // Only a lesson not done yet is offered, so the row says so (never "Review").
                   <ListRow
                     icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                    title={`Review the lesson: ${reviewLesson.title}`}
-                    subtitle={`${reviewLesson.minutes} min lesson`}
-                    accessibilityLabel={`Review the lesson: ${reviewLesson.title}, ${reviewLesson.minutes} minutes`}
+                    title={reviewLesson.title}
+                    subtitle={`Lesson · ${reviewLesson.minutes} min · Not done yet`}
+                    accessibilityLabel={`Lesson: ${reviewLesson.title}, ${reviewLesson.minutes} minutes, not done yet`}
                     accessibilityHint="Opens the lesson. Go back to return to this answer."
                     onPress={() => router.push(`/lesson/${reviewLesson.id}`)}
                     last

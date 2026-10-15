@@ -38,7 +38,7 @@ jest.mock('../components/icons', () => {
 const mockPush = jest.fn();
 let mockParams: Record<string, string> = {};
 jest.mock('expo-router', () => ({
-  router: { push: (...a: unknown[]) => mockPush(...a), replace: jest.fn(), back: jest.fn(), canGoBack: () => true, setParams: jest.fn() },
+  router: { push: (...a: unknown[]) => mockPush(...a), replace: jest.fn(), back: jest.fn(), canGoBack: () => true, canDismiss: () => false, dismissAll: jest.fn(), setParams: jest.fn() },
   useFocusEffect: jest.fn(),
   useLocalSearchParams: () => mockParams,
 }));
@@ -294,7 +294,7 @@ describe('screens', () => {
     expect(allText()).toContain('3 questions that test this concept.');
     const btn = pressable('Practice this concept');
     expect(btn.props.accessibilityRole).toBe('button');
-    expect(btn.props.accessibilityHint).toBe('Starts a practice set on Recovery Objectives: RPO, RTO, MTD and MBCO');
+    expect(btn.props.accessibilityHint).toBe('Starts a practice set on Recovery Objectives: RPO, RTO, MTD and MBCO and marks this note as read');
     press('Practice this concept');
     const s = useSession.getState().active!;
     expect(s.mode).toBe('practice');

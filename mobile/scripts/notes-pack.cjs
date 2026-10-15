@@ -194,7 +194,31 @@ function toSubtopic(s, domainId, topicId, problems, warnings, questionDomains) {
   // Optional: omitted when empty, so the screen simply hides the button.
   const practiceIds = preparePracticeIds(s.practice_ids, domainId, where, questionDomains, problems);
   if (practiceIds.length) sub.practiceIds = practiceIds;
+  sub.minutes = readingMinutes(sub);
   return sub;
+}
+
+/**
+ * Mobile 1.20: about how long the page takes to read ("about 3 min"), from
+ * every text field the page renders, at 200 words a minute, never under 1.
+ */
+function readingMinutes(sub) {
+  const texts = [
+    sub.definition,
+    sub.whyItMatters,
+    ...sub.howItWorks,
+    ...(sub.compare ? [...sub.compare.columns, ...sub.compare.rows.flatMap((r) => [r.label, ...r.cells])] : []),
+    ...(sub.types ?? []).flatMap((t) => [t.term, t.meaning]),
+    ...(sub.illustrations ?? []).map((i) => i.caption ?? ''),
+    sub.example,
+    sub.isacaRule,
+    ...sub.examTraps.flatMap((t) => [t.trap, t.why]),
+    ...sub.keyTerms.flatMap((t) => [t.term, t.definition]),
+    sub.analogy ?? '',
+    sub.memoryAid ?? '',
+  ];
+  const words = texts.reduce((n, t) => n + String(t).split(/\s+/).filter(Boolean).length, 0);
+  return Math.max(1, Math.round(words / 200));
 }
 
 /**

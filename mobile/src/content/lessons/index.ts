@@ -1,5 +1,6 @@
 /** Lesson registry — every certification's lessons in one place. */
 import { CISA_LESSONS } from './cisa';
+import { findNote } from '../notes';
 import type { Lesson } from './types';
 
 const ALL: Lesson[] = [...CISA_LESSONS];
@@ -31,16 +32,17 @@ export function lessonPreparing(certId: string, questionId: string): Lesson | un
 /**
  * Lessons that teach this study-note subtopic ("4B1.2"), in course order.
  * First the lessons that list it in `notes`; when none do, the lessons that
- * teach its outline topic (the part before the dot, "4B1") in `topics`, the
+ * teach its outline topic (the note's own `topicId`, "4B1") in `topics`, the
  * same join as lib/outline.ts topicLessons. Computed, never stored on the
- * note: the lessons are the single source of the link (mobile 1.20).
+ * note: the lessons are the single source of the link (mobile 1.20). An id
+ * the notes pack does not know has no topic, so only `notes` can match it.
  */
 export function lessonsForSubtopic(certId: string, subtopicId: string): Lesson[] {
   const lessons = lessonsFor(certId);
   const direct = lessons.filter((l) => l.notes?.includes(subtopicId));
   if (direct.length) return direct;
-  const topicId = subtopicId.split('.')[0];
-  return lessons.filter((l) => l.topics?.includes(topicId));
+  const topicId = findNote(certId, subtopicId)?.topicId;
+  return topicId ? lessons.filter((l) => l.topics?.includes(topicId)) : [];
 }
 
 /**

@@ -26,6 +26,7 @@ import { lessonsForSubtopic } from '../../../content/lessons';
 import { findQuestion } from '../../../content/loader';
 import { findNote, noteDomain, noteSubtopics } from '../../../content/notes';
 import { createRng, shuffled } from '../../../engine/random';
+import { openSessionFromStack } from '../../../lib/actions';
 import { guardedStart, startFromIds } from '../../../lib/sessions';
 import { useActiveCert } from '../../../lib/useActiveCert';
 import { useProgress } from '../../../store/progress';
@@ -78,7 +79,8 @@ export default function NoteSubtopicScreen() {
         // Practising the concept means the note was read: mark it, once the
         // set really starts (not if "Keep it" cancels). The toggle undoes it.
         if (!isRead) setNoteRead(cert.id, note.id, true);
-        router.push('/session');
+        // A note can sit above an old session or Results: start clean (lib/actions.ts).
+        openSessionFromStack();
       },
     );
 
@@ -93,8 +95,9 @@ export default function NoteSubtopicScreen() {
           <View style={{ marginTop: space.sm }}>
             <ListRow
               icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-              title={`Lesson: ${lesson.title}`}
-              subtitle={`${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`}
+              // The lesson's own title on screen (no double colon); the spoken label keeps "Lesson:".
+              title={lesson.title}
+              subtitle={`Lesson · ${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`}
               accessibilityLabel={`Lesson: ${lesson.title}, ${lesson.minutes} minutes, ${lessonDone ? 'done' : 'not done yet'}`}
               accessibilityHint="Opens the short lesson on this topic"
               onPress={() => router.push(`/lesson/${lesson.id}`)}
@@ -113,7 +116,8 @@ export default function NoteSubtopicScreen() {
         {/* A toggle: announced as "selected" once read; tap again to undo. */}
         {/* Marking it read draws the ✓ (motion.md M4: what changed); opening a note already read just shows it. */}
         <Button
-          kind="secondary"
+          // The page's one primary action: practice when the note lists questions, else this.
+          kind={n > 0 ? 'secondary' : 'primary'}
           label={isRead ? 'Marked as read' : 'Mark as read'}
           selected={isRead}
           accessibilityHint={isRead ? 'Marks this note as not read' : 'Saves that you have read this note'}
@@ -129,7 +133,7 @@ export default function NoteSubtopicScreen() {
           <View style={{ gap: space.xs }}>
             <Button
               label="Practice this concept"
-              accessibilityHint={`Starts a practice set on ${note.name}`}
+              accessibilityHint={`Starts a practice set on ${note.name} and marks this note as read`}
               onPress={practiseConcept}
             />
             <T v="meta" center>

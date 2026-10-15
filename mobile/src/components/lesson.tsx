@@ -168,7 +168,8 @@ export function lessonMap(lesson: Lesson): string[] {
  * domain's branch), then on paper "In this lesson": the lesson's map, each
  * stop a small outline leaf (the leaves the lesson-complete branch fills).
  * Mobile 1.20: one last meta line names the study notes that go deeper
- * ("Goes deeper in the notes: …"), when the lesson's notes resolve.
+ * (a "Goes deeper in the notes" caption over one line per note), when the
+ * lesson's notes resolve.
  */
 function LessonCover({ scene, lesson, art, tone }: { scene: Extract<Scene, { type: 'title' }>; lesson: Lesson; art?: BotanyKind; tone?: string }) {
   const { c } = useTheme();
@@ -207,14 +208,17 @@ function LessonCover({ scene, lesson, art, tone }: { scene: Extract<Scene, { typ
           ))}
         </View>
         {deeper.length > 0 && (
-          // One screen-reader stop; names are split by "·" on screen, by ";" when spoken.
-          <T
-            v="meta"
+          // A caption, then one meta line per note; one screen-reader stop, names split by ";".
+          <View
+            accessible
             accessibilityLabel={`Goes deeper in the notes: ${deeper.join('; ')}.`}
-            style={{ marginTop: space.md }}
+            style={{ marginTop: space.lg }}
           >
-            {`Goes deeper in the notes: ${deeper.join(' · ')}`}
-          </T>
+            <T v="caption" color={c.accentText}>Goes deeper in the notes</T>
+            {deeper.map((name) => (
+              <T key={name} v="meta" style={{ marginTop: 2 }}>{name}</T>
+            ))}
+          </View>
         )}
       </Part>
     </View>

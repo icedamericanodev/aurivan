@@ -5,9 +5,9 @@
  *   topic; noteIdsForLesson / lessonNotes: the notes a lesson leads into;
  *   missedSubtopics: Results' "most-missed first, each once, at most 3".
  * - Session, after a miss (practice, review, Guided; never a mock): "Read
- *   the note" whenever a note lists the question, then "Review the lesson"
+ *   the note" whenever a note lists the question, then the lesson row
  *   only while that lesson is not done. Nothing after a right answer.
- * - Results: "Read the notes for what you missed" reveals the note rows,
+ * - Results: "Notes for what you missed" reveals the note rows,
  *   for a mock too.
  * - Note subtopic page: the "Lesson: …" row (Done / Not done yet);
  *   "Practice this concept" marks the note read; no "Practice this domain".
@@ -42,7 +42,9 @@ import { DomainReportRow } from '../components/readinessReport';
 import { computeReadiness } from '../engine/readiness';
 import { domainBreakdown } from '../engine/readinessReport';
 import { getCertification } from '../content/certifications';
+import * as motion from '../components/motion';
 import { Collapse } from '../components/motion';
+import { Alert, Dimensions, ScrollView } from 'react-native';
 import ReadinessReport from '../app/readiness';
 import LessonPlayer from '../app/lesson/[id]';
 import { OptionCard } from '../components/quiz';
@@ -59,10 +61,23 @@ jest.mock('../components/icons', () => {
 jest.mock('../components/shareCard', () => ({ ShareProgressSheet: () => null }));
 let mockParams: Record<string, string> = {};
 jest.mock('expo-router', () => ({
-  router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), canGoBack: () => true, canDismiss: () => false, setParams: jest.fn() },
+  router: {
+    push: jest.fn(),
+    replace: jest.fn(),
+    back: jest.fn(),
+    navigate: jest.fn(),
+    dismissAll: jest.fn(),
+    dismissTo: jest.fn(),
+    canGoBack: () => true,
+    canDismiss: jest.fn(() => false),
+    setParams: jest.fn(),
+  },
   useFocusEffect: jest.fn(),
   useLocalSearchParams: () => mockParams,
+  // The session's focus backstop reads this (true unless a test says otherwise).
+  useIsFocused: () => mockFocused,
 }));
+let mockFocused = true;
 jest.mock('react-native-safe-area-context', () => {
   const { View } = jest.requireActual('react-native');
   return { SafeAreaView: View, useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }) };
@@ -71,6 +86,16 @@ jest.mock('../lib/haptics', () => ({ haptic: { success: () => {}, selection: () 
 
 const push = router.push as jest.Mock;
 const navigate = router.navigate as jest.Mock;
+const dismissAll = router.dismissAll as jest.Mock;
+const dismissTo = router.dismissTo as jest.Mock;
+const canDismiss = router.canDismiss as jest.Mock;
+/** push('/session') came after dismissAll(): the new set starts on top of the tabs. */
+const freshSessionPushed = () => {
+  const pushAt = push.mock.calls.findIndex((c) => c[0] === '/session');
+  expect(pushAt).toBeGreaterThanOrEqual(0);
+  expect(dismissAll).toHaveBeenCalledTimes(1);
+  expect(dismissAll.mock.invocationCallOrder[0]).toBeLessThan(push.mock.invocationCallOrder[pushAt]);
+};
 
 let r: ReactTestRenderer | undefined;
 const mount = (el: React.ReactElement) => {
@@ -109,10 +134,24 @@ const press = (label: string | RegExp) =>
     pressables(label)[0].props.onPress();
   });
 
+const setFontScale = (fontScale: number) => {
+  const w = Dimensions.get('window');
+  act(() => {
+    Dimensions.set({ window: { ...w, fontScale }, screen: { ...w, fontScale } });
+  });
+};
+
 beforeEach(() => {
   jest.useFakeTimers();
+  mockFocused = true;
+  setFontScale(1);
   push.mockClear();
   navigate.mockClear();
+  dismissAll.mockClear();
+  dismissTo.mockClear();
+  (router.replace as jest.Mock).mockClear();
+  canDismiss.mockReset();
+  canDismiss.mockReturnValue(false);
   mockParams = {};
   useProgress.getState().resetCert('cisa');
   useSession.getState().clear();
@@ -228,7 +267,7 @@ const answerOnScreen = (right: boolean) => {
   });
 };
 const noteRows = () => pressables(/^Read the note: /);
-const lessonRows = () => pressables(/^Review the lesson: /);
+const lessonRows = () => pressables(/^Lesson: /);
 
 describe('session: the note first, the lesson when there is one', () => {
   it('a practice miss offers the note, then the lesson; Back returns to the same answer', () => {
@@ -237,17 +276,23 @@ describe('session: the note first, the lesson when there is one', () => {
     mount(<SessionScreen />);
     const name = findNote('cisa', both.sub)!.name;
     expect(noteRows()).toHaveLength(1);
-    expect(noteRows()[0].props.accessibilityLabel).toBe(`Read the note: ${name}, about 2 minutes, the concept this question tests`);
-    expect(allText()).toContain('About 2 min · the concept this question tests');
+    const min = findNote('cisa', both.sub)!.minutes!;
+    expect(min).toBeGreaterThanOrEqual(1); // the build sets each note's reading time
+    expect(noteRows()[0].props.accessibilityLabel).toBe(`Read the note: ${name}, about ${min} minute${min === 1 ? '' : 's'}, the idea this question tests`);
+    // On screen: the note's own name, then "Study note · about N min" (no double colon).
+    expect(allText()).toContain(`Study note · about ${min} min`);
+    expect(allText()).not.toContain('Read the note:');
     expect(lessonRows()).toHaveLength(1);
-    expect(lessonRows()[0].props.accessibilityLabel).toBe(`Review the lesson: ${both.lesson.title}, ${both.lesson.minutes} minutes`);
+    expect(lessonRows()[0].props.accessibilityLabel).toBe(`Lesson: ${both.lesson.title}, ${both.lesson.minutes} minutes, not done yet`);
+    expect(allText()).toContain(`Lesson · ${both.lesson.minutes} min · Not done yet`);
+    expect(allText()).not.toContain('Review the lesson');
     // Note first, then the lesson.
     const text = allText();
-    expect(text.indexOf(`Read the note: ${name}`)).toBeLessThan(text.indexOf('Review the lesson:'));
+    expect(text.indexOf(`Study note · about ${min} min`)).toBeLessThan(text.indexOf('Lesson · '));
     // Both are pushed, so Back lands on this same answer screen.
     press(/^Read the note: /);
     expect(push).toHaveBeenLastCalledWith(`/notes/subtopic/${encodeURIComponent(both.sub)}`);
-    press(/^Review the lesson: /);
+    press(/^Lesson: /);
     expect(push).toHaveBeenLastCalledWith(`/lesson/${both.lesson.id}`);
     expect(router.replace).not.toHaveBeenCalled();
     expect(allText()).toContain('Why '); // the explanation is still on screen
@@ -291,6 +336,22 @@ describe('session: the note first, the lesson when there is one', () => {
     expect(lessonRows()).toHaveLength(0);
   });
 
+  it('backstop: a session screen out of view never opens Results; back in view, it does', () => {
+    startFromIds('cisa', [both.qid], 'T');
+    answerOnScreen(false);
+    mockFocused = false; // e.g. a second session screen left in the stack
+    mount(<SessionScreen />);
+    act(() => {
+      useSession.setState((s) => ({ active: { ...s.active!, finishedAt: Date.now() } }));
+    });
+    expect(router.replace).not.toHaveBeenCalledWith('/results');
+    mockFocused = true;
+    act(() => {
+      r!.update(<SessionScreen />);
+    });
+    expect((router.replace as jest.Mock).mock.calls.filter((c) => c[0] === '/results')).toHaveLength(1);
+  });
+
   it('never inside a mock', () => {
     startFromIds('cisa', [both.qid, noteOnly.qid], 'T');
     act(() => {
@@ -304,7 +365,7 @@ describe('session: the note first, the lesson when there is one', () => {
 });
 
 // ── Results ───────────────────────────────────────────────────────────
-describe('results: Read the notes for what you missed', () => {
+describe('results: Notes for what you missed', () => {
   const finishWith = (mode: 'practice' | 'mock', ids: string[], wrong: string[]) => {
     startFromIds('cisa', ids, 'T');
     act(() => {
@@ -324,11 +385,13 @@ describe('results: Read the notes for what you missed', () => {
   it.each(['practice', 'mock'] as const)('%s: folded until tapped, then up to three note rows that open the note', (mode) => {
     finishWith(mode, [both.qid, noteOnly.qid], [both.qid, noteOnly.qid]);
     mount(<Results />);
-    const toggle = pressables('Read the notes for what you missed');
+    const toggle = pressables('Notes for what you missed');
     expect(toggle).toHaveLength(1);
     expect(toggle[0].props.accessibilityState).toMatchObject({ expanded: false });
     expect(pressables(/^Read the note: /)).toHaveLength(0);
-    press('Read the notes for what you missed');
+    press('Notes for what you missed');
+    expect(pressables('Notes for what you missed')[0].props.accessibilityState).toMatchObject({ expanded: true });
+    expect(allText()).toMatch(/\d+ miss(es)? · about \d+ min/);
     const rows = pressables(/^Read the note: /);
     const subs = [...new Set([both.sub, noteOnly.sub])];
     expect(rows).toHaveLength(subs.length);
@@ -342,7 +405,7 @@ describe('results: Read the notes for what you missed', () => {
   it('no misses (or none a note covers): no notes action', () => {
     finishWith('practice', [both.qid], []);
     mount(<Results />);
-    expect(pressables('Read the notes for what you missed')).toHaveLength(0);
+    expect(pressables('Notes for what you missed')).toHaveLength(0);
   });
 });
 
@@ -355,7 +418,7 @@ describe('note subtopic page: the lesson row', () => {
     mount(<NoteSubtopicScreen />);
     const row = () => pressables(new RegExp(`^Lesson: `))[0];
     expect(row().props.accessibilityLabel).toBe(`Lesson: ${lesson.title}, ${lesson.minutes} minutes, not done yet`);
-    expect(allText()).toContain(`${lesson.minutes} min · Not done yet`);
+    expect(allText()).toContain(`Lesson · ${lesson.minutes} min · Not done yet`);
     act(() => {
       row().props.onPress();
     });
@@ -363,7 +426,7 @@ describe('note subtopic page: the lesson row', () => {
     act(() => {
       useProgress.getState().completeLesson('cisa', lesson.id);
     });
-    expect(allText()).toContain(`${lesson.minutes} min · Done`);
+    expect(allText()).toContain(`Lesson · ${lesson.minutes} min · Done`);
   });
 
   it('no "Practice this domain"; "Practice this concept" marks the note read (the toggle undoes it)', () => {
@@ -426,17 +489,40 @@ describe('notes domain page: collapsible topics', () => {
     expect(root().findAllByType(Collapse).filter((n) => n.props.open).length).toBeGreaterThanOrEqual(1);
   });
 
-  it('once a topic is all read, the next unread topic is the one open', () => {
+  it('the open topic is chosen once: reading its last note keeps it open; the next visit opens the next one', () => {
     mockParams = { domain: '1' };
     mount(<NotesDomain />);
     const [firstId] = openIds();
     const secondId = (headers()[1].props.accessibilityLabel as string).split(' ')[0];
     const t = topics.find((x) => x.id === firstId)!;
+    // The learner reads every note of the open topic and comes back to this page.
     act(() => {
       for (const st of t.subtopics) useProgress.getState().setNoteRead('cisa', st.id, true);
     });
     expect(header(firstId).props.accessibilityLabel).toMatch(/, All read$/);
+    expect(openIds()).toEqual([firstId]); // it did not snap shut under them
+    // A hand toggle still wins.
+    act(() => {
+      header(firstId).props.onPress();
+    });
+    expect(openIds()).toEqual([]);
+    // Opening the page again: the next unread topic is the one open.
+    act(() => {
+      r?.unmount();
+    });
+    mount(<NotesDomain />);
     expect(openIds()).toEqual([secondId]);
+  });
+
+  it('"Practice this topic" goes back to the tabs before opening the set', () => {
+    canDismiss.mockReturnValue(true);
+    mockParams = { domain: '1' };
+    mount(<NotesDomain />);
+    const btn = pressables(/^Practice this topic: /)[0];
+    act(() => {
+      btn.props.onPress();
+    });
+    freshSessionPushed();
   });
 
   it('an open topic with a lesson shows "Lesson: …" that opens the player', () => {
@@ -454,13 +540,91 @@ describe('notes domain page: collapsible topics', () => {
   });
 });
 
+// ── A set started from a pushed screen never stacks on an old one ─────
+describe('starting a set from a note, deep in the stack (mobile 1.20 review)', () => {
+  it('Results → note → Practice this concept: back to the tabs, then the session; the old Results shows nothing', () => {
+    const once = jest.spyOn(motion, 'useOncePerDay');
+    // A finished practice set, its Results open, then a note opened from it.
+    startFromIds('cisa', [both.qid], 'T');
+    answerOnScreen(false);
+    act(() => {
+      useSession.setState((s) => ({ active: { ...s.active!, finishedAt: Date.now() } }));
+    });
+    canDismiss.mockReturnValue(true);
+    mockParams = { id: both.sub };
+    mount(<NoteSubtopicScreen />);
+    press('Practice this concept');
+    freshSessionPushed();
+    const fresh = useSession.getState().active!;
+    expect(fresh.finishedAt).toBeUndefined();
+    act(() => {
+      r?.unmount();
+    });
+    // Were a Results still mounted, it would see the NEW unfinished set: the empty
+    // state, and it never uses up that set's once-per-day growth key.
+    once.mockClear();
+    mount(<Results />);
+    expect(allText()).toContain('No results to show.');
+    expect(allText()).not.toContain('Review answers');
+    expect(once.mock.calls.map((c) => c[0])).not.toContain(`results:${fresh.id}`);
+    once.mockRestore();
+  });
+
+  it('a finished set keys its growth by its own id', () => {
+    const once = jest.spyOn(motion, 'useOncePerDay');
+    startFromIds('cisa', [both.qid], 'T');
+    answerOnScreen(false);
+    act(() => {
+      useSession.setState((s) => ({ active: { ...s.active!, finishedAt: Date.now() } }));
+    });
+    mount(<Results />);
+    expect(once.mock.calls.map((c) => c[0])).toContain(`results:${useSession.getState().active!.id}`);
+    once.mockRestore();
+  });
+
+  it('Session → miss → note → Practice → "Discard and start": one session screen, not two', () => {
+    startFromIds('cisa', [both.qid, noteOnly.qid], 'T');
+    answerOnScreen(false);
+    // The replace-session alert: the learner taps "Discard and start".
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation((_t, _m, buttons) => {
+      buttons?.find((b) => b.text === 'Discard and start')?.onPress?.();
+    });
+    canDismiss.mockReturnValue(true);
+    mockParams = { id: both.sub };
+    mount(<NoteSubtopicScreen />);
+    press('Practice this concept');
+    expect(alert).toHaveBeenCalledTimes(1);
+    freshSessionPushed();
+    expect(push.mock.calls.filter((c) => c[0] === '/session')).toHaveLength(1);
+    alert.mockRestore();
+  });
+
+  it('"Keep it" starts nothing and goes nowhere', () => {
+    startFromIds('cisa', [both.qid], 'T');
+    const before = useSession.getState().active!.id;
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation((_t, _m, buttons) => {
+      buttons?.find((b) => b.text === 'Keep it')?.onPress?.();
+    });
+    canDismiss.mockReturnValue(true);
+    mockParams = { id: both.sub };
+    mount(<NoteSubtopicScreen />);
+    press('Practice this concept');
+    expect(useSession.getState().active!.id).toBe(before);
+    expect(dismissAll).not.toHaveBeenCalled();
+    expect(push).not.toHaveBeenCalledWith('/session');
+    expect(selectCert(useProgress.getState(), 'cisa').notesRead).toEqual([]); // not marked read either
+    alert.mockRestore();
+  });
+});
+
 // ── Readiness report ──────────────────────────────────────────────────
 describe('readiness report: Lessons and notes ›', () => {
   it('each domain row opens Learn on that domain', () => {
     const cisa = getCertification('cisa')!;
     const row = domainBreakdown(cisa, computeReadiness(cisa, {}), [])[0];
     const onLearn = jest.fn();
-    mount(<DomainReportRow row={row} onLearn={onLearn} />);
+    const link = { label: 'Lessons and notes ›', accessibilityLabel: `Lessons and notes for ${row.domain.name}`, hint: 'Opens Learn on this domain', onPress: onLearn };
+    mount(<DomainReportRow row={row} link={link} />);
     const btn = pressables(`Lessons and notes for ${row.domain.name}`);
     expect(btn).toHaveLength(1);
     expect(allText()).toContain('Lessons and notes ›');
@@ -470,7 +634,7 @@ describe('readiness report: Lessons and notes ›', () => {
     expect(onLearn).toHaveBeenCalled();
   });
 
-  it('without onLearn there is no link (the row stays one stop)', () => {
+  it('without a link there is none (the row stays one stop)', () => {
     const cisa = getCertification('cisa')!;
     const row = domainBreakdown(cisa, computeReadiness(cisa, {}), [])[0];
     mount(<DomainReportRow row={row} />);
@@ -479,12 +643,39 @@ describe('readiness report: Lessons and notes ›', () => {
 });
 
 describe('readiness report screen', () => {
+  it('a domain whose lessons are all done offers its study notes instead', () => {
+    const cisa = getCertification('cisa')!;
+    const d = cisa.domains[0];
+    act(() => {
+      for (const l of lessonsFor('cisa', d.id)) useProgress.getState().completeLesson('cisa', l.id);
+    });
+    mount(<ReadinessReport />);
+    expect(pressables(`Lessons and notes for ${d.name}`)).toHaveLength(0);
+    const btn = pressables(`Study notes for ${d.name}`);
+    expect(btn).toHaveLength(1);
+    expect(btn[0].props.accessibilityHint).toBe('Every lesson here is done. Opens the study notes for this domain');
+    act(() => {
+      btn[0].props.onPress();
+    });
+    expect(push).toHaveBeenLastCalledWith(`/notes/${d.id}`);
+    // The other domains still lead to Learn.
+    expect(pressables(`Lessons and notes for ${cisa.domains[1].name}`)).toHaveLength(1);
+  });
+
   it('"Lessons and notes ›" switches to the Learn tab on that domain', () => {
     mount(<ReadinessReport />);
     const cisa = getCertification('cisa')!;
     const d = cisa.domains[1];
+    // Under it sits the (tabs) navigator: dismiss back to it (never push a second one).
+    canDismiss.mockReturnValue(true);
     press(`Lessons and notes for ${d.name}`);
-    expect(navigate).toHaveBeenLastCalledWith({ pathname: '/learn', params: { domain: d.id } });
+    expect(dismissTo).toHaveBeenLastCalledWith({ pathname: '/learn', params: { domain: d.id } });
+    expect(navigate).not.toHaveBeenCalled();
+    expect(push).not.toHaveBeenCalled();
+    // Opened with nothing under it (a deep link): replace with Learn.
+    canDismiss.mockReturnValue(false);
+    press(`Lessons and notes for ${d.name}`);
+    expect(router.replace).toHaveBeenLastCalledWith({ pathname: '/learn', params: { domain: d.id } });
   });
 });
 
@@ -511,7 +702,9 @@ describe('lesson player: the notes bridge and where Report a problem lives', () 
     mockParams = { id: lesson.id };
     mount(<LessonPlayer />);
     const names = lessonNotes('cisa', lesson).map((n) => n.name);
-    expect(allText()).toContain(`Goes deeper in the notes: ${names.join(' · ')}`);
+    // A caption, then one line per note (P4).
+    expect(allText()).toContain('Goes deeper in the notes');
+    for (const name of names) expect(allText()).toContain(name);
     expect(root().findAll((n) => n.props.accessibilityLabel === `Goes deeper in the notes: ${names.join('; ')}.`).length).toBeGreaterThan(0);
   });
 
@@ -531,11 +724,98 @@ describe('lesson player: the notes bridge and where Report a problem lives', () 
     finish();
     const note = lessonNotes('cisa', lesson)[0];
     const text = allText();
-    const at = [text.indexOf('Practice this topic'), text.indexOf(`Read the note: ${note.name}`), text.indexOf('Next lesson')];
+    const at = [text.indexOf('Practice this topic'), text.indexOf('Read the note'), text.indexOf('Next lesson')];
+    // Short on screen, the note named when spoken (H1).
+    expect(text).not.toContain(`Read the note: ${note.name}`);
+    expect(pressables(`Read the note: ${note.name}`)[0].props.accessibilityHint).toBe('Opens the study note that goes deeper on this lesson');
     expect(at.every((i) => i >= 0)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
     press(`Read the note: ${note.name}`);
     expect(push).toHaveBeenLastCalledWith(`/notes/subtopic/${encodeURIComponent(note.id)}`);
+  });
+
+  it('Lesson complete → Practice this topic: back to the tabs, then the session (it may sit on a session)', () => {
+    mockParams = { id: lesson.id };
+    mount(<LessonPlayer />);
+    finish();
+    canDismiss.mockReturnValue(true);
+    press('Practice this topic');
+    freshSessionPushed();
+    expect(router.replace).not.toHaveBeenCalledWith('/session');
+  });
+});
+
+describe('lesson complete at very large text, and Back to Learn', () => {
+  const lesson = lessonsFor('cisa').find((l) => l.topics?.length && l.scenes.some((x) => x.type === 'check'))!;
+  const finishIt = () => {
+    for (let i = 0; i < lesson.scenes.length; i++) {
+      if (lesson.scenes[i].type === 'check') {
+        act(() => {
+          root().findAllByType(OptionCard)[0].props.onPress();
+        });
+      }
+      press(i === lesson.scenes.length - 1 ? 'Finish lesson' : 'Next');
+      act(() => {
+        jest.runOnlyPendingTimers();
+      });
+    }
+  };
+  const inScroll = (label: string) => {
+    const scroll = root().findAllByType(ScrollView)[0];
+    return scroll.findAll((n) => n.props.accessibilityLabel === label && typeof n.props.onPress === 'function').length > 0;
+  };
+
+  it('at 200 % the actions scroll with the page (none pinned off-screen); at 100 % they are pinned', () => {
+    mockParams = { id: lesson.id };
+    setFontScale(2);
+    mount(<LessonPlayer />);
+    finishIt();
+    expect(pressables('Next lesson')).toHaveLength(1);
+    expect(inScroll('Next lesson')).toBe(true);
+    expect(inScroll(`Read the note: ${lessonNotes('cisa', lesson)[0].name}`)).toBe(true);
+    act(() => {
+      r?.unmount();
+    });
+    setFontScale(1);
+    mount(<LessonPlayer />);
+    finishIt();
+    expect(pressables('Next lesson')).toHaveLength(1);
+    expect(inScroll('Next lesson')).toBe(false);
+  });
+
+  it('"Back to Learn" goes to the Learn tab, not back to wherever the lesson was opened', () => {
+    // Every other lesson done, so this is the last one: no "Next lesson".
+    act(() => {
+      for (const l of lessonsFor('cisa')) if (l.id !== lesson.id) useProgress.getState().completeLesson('cisa', l.id);
+    });
+    canDismiss.mockReturnValue(true);
+    mockParams = { id: lesson.id };
+    mount(<LessonPlayer />);
+    finishIt();
+    press('Back to Learn');
+    expect(dismissTo).toHaveBeenLastCalledWith('/learn');
+    expect(router.back).not.toHaveBeenCalled();
+  });
+});
+
+describe('note page: the one primary action', () => {
+  const primaryOf = (label: string) => root().findAll((n) => n.props.label === label && n.props.kind !== undefined)[0]?.props.kind;
+  it('practice is primary when the note lists questions; else Mark as read is', () => {
+    mockParams = { id: both.sub };
+    mount(<NoteSubtopicScreen />);
+    expect(primaryOf('Mark as read')).toBe('secondary');
+    expect(pressables('Practice this concept')[0].props.accessibilityHint).toMatch(/ and marks this note as read$/);
+    act(() => {
+      r?.unmount();
+    });
+    const bare = ['1', '2', '3', '4', '5']
+      .flatMap((d) => noteDomain('cisa', d)?.topics ?? [])
+      .flatMap((t) => t.subtopics)
+      .find((x) => !(x.practiceIds ?? []).some((q) => findQuestion('cisa', q)));
+    if (!bare) return; // every note lists questions today
+    mockParams = { id: bare.id };
+    mount(<NoteSubtopicScreen />);
+    expect(primaryOf('Mark as read')).toBe('primary');
   });
 });
 
