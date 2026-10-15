@@ -1,7 +1,7 @@
 # Host-neutral response headers (Netlify and Cloudflare Pages read this file
 # as-is; other static hosts ignore it, and the site works without it).
 # No Content-Security-Policy here on purpose: the app uses inline scripts and
-# styles plus Google Analytics, Fonts and Forms. Add one only after testing.
+# styles plus Google Analytics and Forms (fonts are served from /assets/fonts). Add one only after testing.
 
 /*
   X-Content-Type-Options: nosniff
@@ -20,6 +20,6 @@
 /data/*
   Cache-Control: public, max-age=300, must-revalidate
 
-# Icons keep their file names, so no "immutable".
+# Icons and fonts keep their file names, so no "immutable".
 /assets/*
   Cache-Control: public, max-age=604800
