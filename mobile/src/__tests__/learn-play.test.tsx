@@ -18,7 +18,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import LessonPlayer, { lessonPracticeIds } from '../app/lesson/[id]';
-import Learn, { upNextReason } from '../app/(tabs)/learn';
+import Learn, { upNextMeta, upNextReason } from '../app/(tabs)/learn';
 import Play from '../app/(tabs)/play';
 import { branchLeaves, DomainRing, GAME_GLYPHS, GameGlyph, LeafBig, LessonBranch, sparkPoints, TierLeaf, TierLeafMorph } from '../components/glyphs';
 import { T } from '../components/ui';
@@ -280,15 +280,18 @@ describe('helpers', () => {
     for (const l of CISA_LESSONS) expect(lessonMap(l).filter((x) => x === 'Quick check')).toHaveLength(1);
   });
 
-  it('the cover’s reason: the readiness focus once there are answers, else "Next in …"', () => {
-    const cisa = getCertification('cisa')!;
+  it('the cover’s reason (a code since 1.21): the readiness focus once there are answers, else the next in order', () => {
     const lesson = CISA_LESSONS.find((l) => l.domainId === '4')!;
-    const d4 = cisa.domains.find((d) => d.id === '4')!;
-    expect(upNextReason(lesson, d4, { focusDomainId: '4', hasAnswers: true })).toBe('Picked where you can gain the most');
-    expect(upNextReason(lesson, d4, { focusDomainId: '4', hasAnswers: false })).toBe(`Next in ${d4.short}`);
-    expect(upNextReason(lesson, d4, { focusDomainId: '2', hasAnswers: true })).toBe(`Next in ${d4.short}`);
+    expect(upNextReason(lesson, { focusDomainId: '4', hasAnswers: true })).toBe('focus');
+    expect(upNextReason(lesson, { focusDomainId: '4', hasAnswers: false })).toBe('next');
+    expect(upNextReason(lesson, { focusDomainId: '2', hasAnswers: true })).toBe('next');
     // Asked for by name (Today's "Learn IS Operations"): the domain, not the focus.
-    expect(upNextReason(lesson, d4, { askedDomain: '4', focusDomainId: '4', hasAnswers: true })).toBe(`Next in ${d4.short}`);
+    expect(upNextReason(lesson, { askedDomain: '4', focusDomainId: '4', hasAnswers: true })).toBe('next');
+  });
+
+  it('the cover’s meta line says its length and why, and speaks "minute" for one', () => {
+    expect(upNextMeta(5, 'focus', 'lesson 2 of 7')).toEqual({ meta: '5 min · picked where you can gain the most', spoken: '5 minutes, picked where you can gain the most' });
+    expect(upNextMeta(1, 'next', 'lesson 2 of 7')).toEqual({ meta: '1 min · lesson 2 of 7', spoken: '1 minute, lesson 2 of 7' });
   });
 
   it('"Practice this topic" draws only questions that exist, never twice', () => {

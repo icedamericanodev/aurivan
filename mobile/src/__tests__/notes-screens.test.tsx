@@ -15,7 +15,7 @@
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { AccessibilityInfo, Dimensions } from 'react-native';
-import { NoteBody } from '../components/notes';
+import { NoteBody, onThisPageFits } from '../components/notes';
 import { Screen } from '../components/ui';
 import { clearNotesCache, findNote, getNotes } from '../content/notes';
 import type { NoteSubtopic } from '../content/notes/types';
@@ -144,18 +144,26 @@ describe('NoteBody: every section renders', () => {
     expect(allText()).toContain('Analogy and memory aid');
     // Mobile 1.21: never sideways. The whole drawing is FITTED to the plate (390 − 40 − 32 = 318);
     // its 11-unit labels on a 460-wide drawing are then 7.6pt, so the figure is a button,
-    // "Tap to enlarge", that opens it full screen at a readable size (460 wide: 11pt labels).
+    // "Tap to enlarge", that opens it full screen at a readable size (544 wide: 13pt labels).
     expect(allText()).not.toContain('Scroll sideways');
     expect(allText()).not.toContain('Swipe for more');
     expect((image[0].props.style as { width: number }).width).toBe(318);
     expect(allText()).toContain('Tap to enlarge');
-    const opener = root().findAll((x) => x.props.accessibilityRole === 'button' && x.props.accessibilityLabel === ill.label && typeof x.props.onPress === 'function')[0];
+    // WCAG 2.5.3: the spoken name starts with what the button does.
+    const opener = root().findAll((x) => x.props.accessibilityRole === 'button' && x.props.accessibilityLabel === `Enlarge diagram. ${ill.label}` && typeof x.props.onPress === 'function')[0];
     expect(opener.props.accessibilityHint).toBe('Opens the diagram full screen, larger');
+    // The viewer stays mounted (closed) so the Modal can report its dismissal; nothing shows yet.
+    expect(root().findAll((x) => x.props.accessibilityLabel === 'Close diagram')).toHaveLength(0);
     act(() => {
       opener.props.onPress();
     });
-    const big = root().findAll((x) => x.props.accessibilityRole === 'image' && x.props.accessibilityLabel === ill.label && (x.props.style as { width?: number })?.width === 460);
+    const big = root().findAll((x) => x.props.accessibilityRole === 'image' && x.props.accessibilityLabel === ill.label && (x.props.style as { width?: number })?.width === 544);
     expect(big.length).toBeGreaterThan(0);
+    // Only the size is passed as a style (no stray keys such as labelPt).
+    expect(Object.keys(big[0].props.style).sort()).toEqual(['height', 'width']);
+    // A modal for screen readers, and VoiceOver's escape closes it.
+    const modalRoot = root().findAll((x) => x.props.accessibilityViewIsModal === true && typeof x.props.onAccessibilityEscape === 'function');
+    expect(modalRoot.length).toBeGreaterThan(0);
     // Close returns to the page.
     const close = root().findAll((x) => x.props.accessibilityLabel === 'Close diagram' && typeof x.props.onPress === 'function')[0];
     act(() => {
@@ -164,14 +172,61 @@ describe('NoteBody: every section renders', () => {
     expect(root().findAll((x) => x.props.accessibilityLabel === 'Close diagram')).toHaveLength(0);
   });
 
-  it('fits a diagram to the plate when its labels stay 11pt or more: no hint, no scrolling', () => {
+  it('fits a diagram to the plate when its labels stay 13pt or more: no hint, no viewer', () => {
     const n = note('1A1.1');
-    // The same drawing with 18-unit labels: 18 × 318 / 460 = 12.4pt fitted.
-    const big = { ...n.illustrations![0], svg: n.illustrations![0].svg.replace(/font-size=(['"])[\d.]+\1/g, "font-size='18'") };
+    // The same drawing with 20-unit labels: 20 × 318 / 460 = 13.8pt fitted.
+    const big = { ...n.illustrations![0], svg: n.illustrations![0].svg.replace(/font-size=(['"])[\d.]+\1/g, "font-size='20'") };
     mount(<NoteBody note={{ ...n, illustrations: [big] }} />);
     const drawn = root().findAll((x) => x.props.accessibilityRole === 'image')[0].props.style as { width: number };
     expect(drawn.width).toBe(390 - 40 - 32);
     expect(allText()).not.toContain('Tap to enlarge');
+  });
+
+  it('closes the viewer when the figure fits again, so it never reopens by itself', () => {
+    const n = note('1A1.1');
+    const ill = n.illustrations![0];
+    const bigLabels = { ...ill, svg: ill.svg.replace(/font-size=(['"])[\d.]+\1/g, "font-size='20'") };
+    mount(<NoteBody note={n} />);
+    act(() => {
+      root().findAll((x) => x.props.accessibilityLabel === `Enlarge diagram. ${ill.label}` && typeof x.props.onPress === 'function')[0].props.onPress();
+    });
+    expect(root().findAll((x) => x.props.accessibilityLabel === 'Close diagram').length).toBeGreaterThan(0);
+    // Now it fits (bigger labels): no viewer.
+    act(() => {
+      r!.update(<NoteBody note={{ ...n, illustrations: [bigLabels] }} />);
+    });
+    expect(root().findAll((x) => x.props.accessibilityLabel === 'Close diagram')).toHaveLength(0);
+    // Small again: the button is back, the viewer stays closed until tapped.
+    act(() => {
+      r!.update(<NoteBody note={n} />);
+    });
+    expect(allText()).toContain('Tap to enlarge');
+    expect(root().findAll((x) => x.props.accessibilityLabel === 'Close diagram')).toHaveLength(0);
+  });
+
+  it('"On this page" stacks whenever one line would not fit (review H1: it overflowed between ×1.1 and ×1.3)', () => {
+    const titles = ['Understand', 'Think like the auditor', 'Keep it'];
+    expect(onThisPageFits(titles, 350, 1)).toBe(true);
+    expect(onThisPageFits(titles, 350, 1.15)).toBe(false);
+    expect(onThisPageFits(titles, 320, 1)).toBe(false);
+    expect(onThisPageFits(titles.slice(0, 2), 350, 1.15)).toBe(true);
+    setFontScale(1.15);
+    mount(
+      <Screen>
+        <NoteBody note={note('4B1.2')} />
+      </Screen>,
+    );
+    const item = root().findAll((x) => x.props.accessibilityLabel === 'On this page: 1 of 3, Understand' && typeof x.props.onPress === 'function')[0];
+    let row = item.parent;
+    while (row && !(row.props.style && 'flexDirection' in row.props.style && 'borderBottomWidth' in row.props.style)) row = row.parent;
+    expect(row!.props.style.flexDirection).toBe('column');
+  });
+
+  it('a 3-item compare table stacks on a 360dp phone (columns would be narrower than 96pt)', () => {
+    setFontScale(1, 360);
+    mount(<NoteBody note={note('4B1.2')} />);
+    const header = root().findAll((x) => typeof x.type === 'string' && x.props.importantForAccessibility === 'no-hide-descendants' && x.props.style?.flexDirection === 'row');
+    expect(header).toHaveLength(0);
   });
 
   it('"On this page" names the movements and jumps to them, inside a scrolling screen (mobile 1.21)', () => {

@@ -18,7 +18,7 @@ import { createRng } from '../engine/random';
 import { makePermutation, type Permutation } from '../engine/shuffle';
 import { lastScores, reviewLine, runningScore, scoreSpoken, scoreText, trendSpoken, type RecapMiss } from '../engine/games/recap';
 import { useProgress, type GameId } from '../store/progress';
-import { LARGE_TEXT, maxScale, motion, optionText, radius, cardShadow, space, type } from '../theme/tokens';
+import { LARGE_TEXT, maxScale, motion, optionText, radius, space, type } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ScenarioBlock, StickyFooter } from './quiz';
 import { useReportFlow } from './support';
@@ -31,7 +31,7 @@ import { MilestoneMomentView, TierTag } from './milestones';
 import { GAME_TIERS, tierChangeLine, type GameTier } from '../engine/games/growth';
 import type { RoundNews } from '../lib/gameRounds';
 import { Check, Info, ICON_STROKE, Play as PlayIcon, X } from './icons';
-import { BigNum, Button, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, Row, Section, SegmentBar, Segmented, Stem, T, useFontScale } from './ui';
+import { BigNum, Button, CARD_LIFT, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, Row, Section, SegmentBar, Segmented, Stem, T, useFontScale } from './ui';
 
 /**
  * How long the `leaf` spring takes to come to rest (its 280 ms is perceptual;
@@ -634,7 +634,7 @@ export function MatchTile({
     paddingVertical: 12,
     paddingHorizontal: 14,
     marginBottom: space.sm,
-    ...(!isDark && !tinted && !flat ? { boxShadow: cardShadow } : null),
+    ...(!isDark && !tinted && !flat ? CARD_LIFT : null),
   };
   const off = Boolean(locked) || !onPress;
   return (

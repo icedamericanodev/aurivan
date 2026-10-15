@@ -47,12 +47,12 @@
  */
 import * as Router from 'expo-router';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, Pressable, View } from 'react-native';
 import { DomainRing, type BotanyKind } from '../../components/glyphs';
 import { BookOpen, ChevronDown, ICON_STROKE, Play } from '../../components/icons';
 import { AnimatedPressable, CheckDraw, Collapse, Turn, usePressScale, useScreenFocus } from '../../components/motion';
-import { BigNum, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, ProgressBar, Row, Screen, SearchField, Section, T } from '../../components/ui';
+import { BigNum, CARD_LIFT, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, ProgressBar, Row, Screen, SearchField, Section, T } from '../../components/ui';
 import { CERTIFICATIONS, domainColor, domainLabel, getCertification } from '../../content/certifications';
 import { lessonsFor, nextLesson } from '../../content/lessons';
 import type { Lesson } from '../../content/lessons/types';
@@ -63,19 +63,29 @@ import { clearFinishedLessons, wasJustFinished } from '../../lib/lessonNews';
 import { readinessFor } from '../../engine/readiness';
 import { selectCert, useProgress } from '../../store/progress';
 import { useSettings } from '../../store/settings';
-import { cardShadow, motion, radius, space } from '../../theme/tokens';
+import { motion, radius, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 /**
- * Why the cover offers this lesson (ui.md L3), in one plain line. Exported for tests.
- * - asked for a domain (?domain=, e.g. from Today): "Next in IS Audit";
- * - the readiness focus (the domain with the most to gain, weighted by the
- *   exam), once there are answers to judge by: "Picked where you can gain the most";
- * - otherwise the next one in order: "Next in IS Audit".
+ * Why the cover offers this lesson (ui.md L3), as a code. Exported for tests.
+ * - 'focus': the readiness focus (the domain with the most to gain, weighted
+ *   by the exam), once there are answers to judge by, and not asked for by
+ *   ?domain=: the cover says "picked where you can gain the most";
+ * - 'next': the next one in order (or the domain asked for): the cover says
+ *   its place on the trail, "lesson 2 of 7".
  */
-export function upNextReason(lesson: Lesson, domain: DomainInfo, opts: { askedDomain?: string; focusDomainId: string | null; hasAnswers: boolean }): string {
-  if (opts.askedDomain !== lesson.domainId && opts.hasAnswers && opts.focusDomainId === lesson.domainId) return 'Picked where you can gain the most';
-  return `Next in ${domain.short}`;
+export type UpNextReason = 'focus' | 'next';
+export function upNextReason(lesson: Lesson, opts: { askedDomain?: string; focusDomainId: string | null; hasAnswers: boolean }): UpNextReason {
+  return opts.askedDomain !== lesson.domainId && opts.hasAnswers && opts.focusDomainId === lesson.domainId ? 'focus' : 'next';
+}
+
+/**
+ * The cover's one meta line and its spoken form ("5 min · picked where you
+ * can gain the most" / "5 minutes, …"; "1 minute" for one). Exported for tests.
+ */
+export function upNextMeta(minutes: number, reason: UpNextReason, place: string): { meta: string; spoken: string } {
+  const why = reason === 'focus' ? 'picked where you can gain the most' : place;
+  return { meta: `${minutes} min · ${why}`, spoken: `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}, ${why}` };
 }
 
 /** This screen's own navigation (absent where a test's expo-router stand-in has none). */
@@ -83,7 +93,6 @@ const useOwnNavigation: () => { setParams?: (p: { domain?: string }) => void } |
   (Router as { useNavigation?: () => { setParams?: (p: { domain?: string }) => void } }).useNavigation ?? (() => undefined);
 
 export default function Learn() {
-  const { c } = useTheme();
   // Only what Learn shows (performance, 1.15.x): lessons done, notes read,
   // and from readiness only the focus domain and whether there are answers.
   // Learn stays mounted (hidden) during study; an answer that doesn't move
@@ -155,29 +164,11 @@ export default function Learn() {
   const notesState = notesRead === 0
     ? 'Every topic, with traps and key terms'
     : `${notesRead} ${notesRead === 1 ? 'note' : 'notes'} read · every topic, with traps`;
-  const reason =
-    upNext && upDomain
-      ? upNextReason(upNext, upDomain, { askedDomain: knownDomain, focusDomainId, hasAnswers })
-      : null;
   // The cover's one meta line: its length, then why this one. The caption
   // already names the domain, so "next in IS Audit" becomes its place on the trail.
   const upItems = upNext ? lessons.filter((l) => l.domainId === upNext.domainId) : [];
   const upPlace = upNext ? `lesson ${upItems.findIndex((l) => l.id === upNext.id) + 1} of ${upItems.length}` : '';
-  const why = reason === 'Picked where you can gain the most' ? 'picked where you can gain the most' : upPlace;
-  const heroMeta = upNext ? `${upNext.minutes} min · ${why}` : '';
-
-  // Look it up: the notes search, right on Learn (results inline, the first 5).
-  const [query, setQuery] = useState('');
-  const searching = showNotes && query.trim().length >= 2;
-  const hits = useMemo(() => (searching ? searchNotes(getNotes(cert.id), query) : []), [searching, cert.id, query]);
-  const found = hits.length === 0 ? 'No matching notes' : `${hits.length}${hits.length === 30 ? ' or more' : ''} ${hits.length === 1 ? 'note' : 'notes'} found`;
-  // Screen readers hear how many once typing pauses (not on every keystroke).
-  useEffect(() => {
-    if (!searching) return;
-    const t = setTimeout(() => AccessibilityInfo.announceForAccessibility(found), 700);
-    return () => clearTimeout(t);
-  }, [searching, found, query]);
-  const shown = hits.slice(0, SEARCH_INLINE);
+  const hero = upNext ? upNextMeta(upNext.minutes, upNextReason(upNext, { askedDomain: knownDomain, focusDomainId, hasAnswers }), upPlace) : null;
 
   return (
     <Screen>
@@ -196,8 +187,8 @@ export default function Learn() {
             caption={`Up next · ${upDomain.short}`}
             title={upNext.title}
             // Why this one (ui.md L3), on the same line as its length.
-            meta={heroMeta}
-            metaLabel={heroMeta.replace(' min ·', ' minutes,')}
+            meta={hero?.meta}
+            metaLabel={hero?.spoken}
             // One line under the title, over the faint low branch art (design spec §2).
             wideMeta
             art={`branch${upDomain.tone % 5}` as BotanyKind}
@@ -210,60 +201,8 @@ export default function Learn() {
 
       {showNotes && (
         <Enter i={2}>
-          <Section title="Look it up" />
-          <View style={{ marginTop: space.sm }}>
-            <SearchField
-              value={query}
-              onChangeText={setQuery}
-              placeholder="Search the notes, like RTO or SoD"
-              accessibilityLabel="Search the study notes"
-              accessibilityHint="Matching notes show below as you type"
-            />
-          </View>
-          {searching && (
-            <View testID="learn-search-results" style={{ marginTop: space.xs }}>
-              {hits.length === 0 ? (
-                <EmptyState compact art="fieldbook" title="No matching notes" body="Try a shorter word, or an acronym like RTO or SoD." />
-              ) : (
-                shown.map((h) => {
-                  const d = cert.domains.find((x) => x.id === h.subtopic.domainId);
-                  return (
-                    <ListRow
-                      key={h.subtopic.id}
-                      reading
-                      title={h.subtopic.name}
-                      subtitle={
-                        <View>
-                          <T v="meta" numberOfLines={2}>{h.snippet}</T>
-                          {d && <T v="caption" style={{ marginTop: 2 }}>{d.short}</T>}
-                        </View>
-                      }
-                      accessibilityLabel={`${h.subtopic.name}. ${d?.short ?? ''}. ${h.snippet}`}
-                      accessibilityHint="Opens this note"
-                      onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(h.subtopic.id)}`)}
-                    />
-                  );
-                })
-              )}
-              {hits.length > SEARCH_INLINE && (
-                <ListRow
-                  title="See all results"
-                  subtitle={found}
-                  accessibilityHint="Opens Study notes with this search"
-                  onPress={() => router.push({ pathname: '/notes', params: { q: query.trim() } })}
-                />
-              )}
-            </View>
-          )}
-          <ListRow
-            icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-            title="Study notes"
-            subtitle={notesState}
-            accessibilityLabel={`Study notes, ${notesState}`}
-            accessibilityHint="Opens the notes, by domain"
-            onPress={() => router.push('/notes')}
-            last
-          />
+          {/* Memoised, with its own query state: typing re-renders only this block, never the hero or the lessons. */}
+          <LookItUp cert={cert} notesState={notesState} />
         </Enter>
       )}
 
@@ -285,6 +224,87 @@ export default function Learn() {
 
 /** Search results shown on Learn itself; more opens Study notes with the same search. */
 const SEARCH_INLINE = 5;
+
+/**
+ * "Look it up": the notes search with its inline results, then the Study
+ * notes row. Its own memoised block with its own query, so a keystroke never
+ * re-renders the rest of Learn; the search itself runs on a deferred copy of
+ * the query (React keeps the field responsive while results catch up), over
+ * the pack's cached index (engine/notesSearch.ts notesIndex).
+ */
+const LookItUp = memo(function LookItUp({ cert, notesState }: { cert: Certification; notesState: string }) {
+  const { c } = useTheme();
+  const [query, setQuery] = useState('');
+  const deferred = useDeferredValue(query);
+  const searching = deferred.trim().length >= 2;
+  const hits = useMemo(() => (searching ? searchNotes(getNotes(cert.id), deferred) : []), [searching, cert.id, deferred]);
+  const found = hits.length === 0 ? 'No matching notes' : `${hits.length}${hits.length === 30 ? ' or more' : ''} ${hits.length === 1 ? 'note' : 'notes'} found`;
+  // Screen readers hear how many once typing pauses (not on every keystroke).
+  useEffect(() => {
+    if (!searching) return;
+    const t = setTimeout(() => AccessibilityInfo.announceForAccessibility(found), 700);
+    return () => clearTimeout(t);
+  }, [searching, found, deferred]);
+  const shown = hits.slice(0, SEARCH_INLINE);
+  return (
+    <>
+      <Section title="Look it up" />
+      <View style={{ marginTop: space.sm }}>
+        <SearchField
+          value={query}
+          onChangeText={setQuery}
+          placeholder="Search the notes, like RTO or SoD"
+          accessibilityLabel="Search the study notes"
+          accessibilityHint="Matching notes show below as you type"
+        />
+      </View>
+      {searching && (
+        <View testID="learn-search-results" style={{ marginTop: space.xs }}>
+          {hits.length === 0 ? (
+            <EmptyState compact art="fieldbook" title="No matching notes" body="Try a shorter word, or an acronym like RTO or SoD." />
+          ) : (
+            shown.map((h) => {
+              const d = cert.domains.find((x) => x.id === h.subtopic.domainId);
+              return (
+                <ListRow
+                  key={h.subtopic.id}
+                  reading
+                  title={h.subtopic.name}
+                  subtitle={
+                    <View>
+                      <T v="meta" numberOfLines={2}>{h.snippet}</T>
+                      {d && <T v="caption" style={{ marginTop: 2 }}>{d.short}</T>}
+                    </View>
+                  }
+                  accessibilityLabel={`${h.subtopic.name}. ${d?.short ?? ''}. ${h.snippet}`}
+                  accessibilityHint="Opens this note"
+                  onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(h.subtopic.id)}`)}
+                />
+              );
+            })
+          )}
+          {hits.length > SEARCH_INLINE && (
+            <ListRow
+              title="See all results"
+              subtitle={found}
+              accessibilityHint="Opens Study notes with this search"
+              onPress={() => router.push({ pathname: '/notes', params: { q: deferred.trim() } })}
+            />
+          )}
+        </View>
+      )}
+      <ListRow
+        icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+        title="Study notes"
+        subtitle={notesState}
+        accessibilityLabel={`Study notes, ${notesState}`}
+        accessibilityHint="Opens the notes, by domain"
+        onPress={() => router.push('/notes')}
+        last
+      />
+    </>
+  );
+});
 
 /**
  * The lessons, grouped by domain (a group opens and closes). Its props are
@@ -473,11 +493,10 @@ const LessonRow = memo(function LessonRow({
           marginHorizontal: -space.sm,
           paddingLeft: space.sm,
           paddingRight: space.md,
-          marginVertical: space.xs,
           borderWidth: isDark ? 1.5 : 0,
           borderColor: c.line,
         },
-        next && !isDark && { boxShadow: cardShadow },
+        next && !isDark && CARD_LIFT,
         press.style,
       ]}
     >

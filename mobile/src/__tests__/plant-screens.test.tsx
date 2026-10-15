@@ -190,6 +190,7 @@ describe('Today', () => {
 
   it('mobile 1.21: "Not now" on the picker opened from Today hides the Today row; from You it only goes back', () => {
     mount(<PlantPick />);
+    expect(allText()).not.toContain('Not now also hides');
     press(/^Not now$/);
     expect(useProgress.getState().plantSettings?.promptHidden).toBeFalsy();
     act(() => {
@@ -197,6 +198,8 @@ describe('Today', () => {
     });
     mockParams = { from: 'today' };
     mount(<PlantPick />);
+    // It says so before the learner taps it (review decision).
+    expect(allText()).toContain('Not now also hides the plant row on Today. You can plant one from You.');
     press(/^Not now$/);
     expect(useProgress.getState().plantSettings?.promptHidden).toBe(true);
   });
@@ -522,8 +525,16 @@ describe('PR #43 review fixes', () => {
     mount(<Today />);
     const text = allText();
     expect(text.indexOf('A companion that grows with your study')).toBeGreaterThan(text.indexOf('Also today'));
-    // Mobile 1.21: one row, no ghost pair beside the panel's Start; hiding is a named action.
+    // Mobile 1.21: one row, no ghost pair beside the panel's Start; hiding is a named action, never a long press.
     expect(labels()).toContain('Your plant. A companion that grows with your study');
+    // The host node (the pressable row as the screen reader meets it), not the ListRow wrapper.
+    const row = r!.root.findAll(
+      (n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'Your plant. A companion that grows with your study' && Array.isArray(n.props.accessibilityActions),
+    )[0];
+    const rowNodes = r!.root.findAll((n) => n.props.accessibilityLabel === 'Your plant. A companion that grows with your study');
+    expect(rowNodes.some((n) => typeof n.props.onLongPress === 'function')).toBe(false);
+    expect(row.props.accessibilityHint).toBe('Opens the plant picker');
+    expect(row.props.accessibilityActions).toEqual([{ name: 'hide', label: 'Hide from Today' }]);
     expect(labels()).not.toContain('No thanks, hide this note. You can plant one from You.');
   });
 

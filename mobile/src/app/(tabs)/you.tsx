@@ -147,7 +147,8 @@ export default function You() {
           style={{ marginTop: space.lg }}
           action={{
             label: 'See report',
-            accessibilityLabel: 'See your readiness report',
+            // WCAG 2.5.3: the spoken name starts with the visible words.
+            accessibilityLabel: 'See report, your readiness report',
             hint: 'Your mock trend, each domain side by side, and what would raise your low end',
             onPress: () => router.push('/readiness'),
           }}

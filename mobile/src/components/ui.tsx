@@ -98,6 +98,19 @@ export function Grain() {
   );
 }
 
+// ── The L2 card lift ───────────────────────────────────────────────────
+/**
+ * The light-mode lift for L2 cards (spec §4): `cardShadow` drawn with
+ * `boxShadow`, except on Android 7–8 (API < 28), which draws no outset
+ * boxShadow, so a card there takes the old soft `elevation: 1` instead
+ * (review fix). Exported for tests; screens use CARD_LIFT.
+ */
+export function cardLiftFor(os: string, version: string | number): ViewStyle {
+  if (os === 'android' && Number(version) < 28) return { elevation: 1, shadowColor: raisedShadow.shadowColor };
+  return { boxShadow: cardShadow };
+}
+export const CARD_LIFT: ViewStyle = cardLiftFor(Platform.OS, Platform.Version);
+
 // ── Screen: safe-area aware page with optional scrolling ──────────────
 /**
  * Mobile 1.21: a scrolling Screen lets what is inside it bring one of its own
@@ -110,6 +123,16 @@ export interface ScreenScroll {
 }
 const ScreenScrollContext = createContext<ScreenScroll | null>(null);
 export const useScreenScroll = () => useContext(ScreenScrollContext);
+
+/**
+ * Where a jump to a group lands: `offset` pt above the group, never above the
+ * top, and never past the end when the heights are known (a group near the end
+ * stops where the page ends, it does not overshoot and bounce back).
+ */
+export function scrollTarget(y: number, offset: number, content: number, view: number): number {
+  const top = Math.max(0, y - offset);
+  return content > 0 && view > 0 ? Math.min(top, Math.max(0, content - view)) : top;
+}
 
 export function Screen({
   children,
@@ -144,7 +167,15 @@ export function Screen({
         if (!inner) return;
         node.measureLayout(
           inner as View,
-          (_x, y) => sv.scrollTo({ y: Math.max(0, y - offset), animated: !reduced }),
+          (_x, y) => {
+            const go = (content = 0, view = 0) => sv.scrollTo({ y: scrollTarget(y, offset, content, view), animated: !reduced });
+            // The window's and the content's heights, measured at the jump: it never
+            // scrolls past the end (iOS would overshoot and bounce back; review fix).
+            const box = sv as unknown as Partial<View>;
+            const content = inner as Partial<View>;
+            if (typeof box.measure !== 'function' || typeof content.measure !== 'function') return go();
+            box.measure((_a, _b, _w, view) => content.measure!((_c, _d, _e, full) => go(full, view)));
+          },
           () => {},
         );
       },
@@ -156,10 +187,14 @@ export function Screen({
       ref={scrollRef && typeof scrollRef !== 'object' ? scrollRef : ref}
       contentContainerStyle={styles.screenPad}
       keyboardShouldPersistTaps="handled"
-      onLayout={onScroll ? (e) => {
-        setViewH(e.nativeEvent.layout.height);
-        onScroll(0, e.nativeEvent.layout.height);
-      } : undefined}
+      onLayout={
+        onScroll
+          ? (e) => {
+              setViewH(e.nativeEvent.layout.height);
+              onScroll(0, e.nativeEvent.layout.height);
+            }
+          : undefined
+      }
       onScroll={onScroll ? (e) => onScroll(e.nativeEvent.contentOffset.y, viewH || e.nativeEvent.layoutMeasurement.height) : undefined}
       scrollEventThrottle={onScroll ? 32 : undefined}
       onScrollBeginDrag={onScrollBeginDrag}
@@ -808,7 +843,11 @@ export function ListRow({
   accessibilityLabel,
   accessibilityHint,
 }: {
-  /** A quiet way to put the row away: a long press, and the same as a named screen-reader action (Today's plant row). */
+  /**
+   * A quiet way to put the row away, as a named screen-reader action (Today's
+   * plant row: "Hide from Today"). No long press (a hidden gesture nobody
+   * finds; review decision). Works on a row with or without `onPress`.
+   */
   onHide?: { label: string; run: () => void };
   testID?: string;
   /**
@@ -853,9 +892,18 @@ export function ListRow({
   );
   // A row you can't tap is still ONE screen-reader stop when it has a label,
   // not two loose lines.
+  // The hide action, the same on a button row and a plain one.
+  const hideAction = onHide
+    ? {
+        accessibilityActions: [{ name: 'hide', label: onHide.label }],
+        onAccessibilityAction: (e: { nativeEvent: { actionName: string } }) => {
+          if (e.nativeEvent.actionName === 'hide') onHide.run();
+        },
+      }
+    : {};
   if (!onPress)
     return (
-      <View testID={testID} style={styles.listRow} accessible={!!accessibilityLabel} accessibilityLabel={accessibilityLabel}>
+      <View testID={testID} style={styles.listRow} accessible={!!accessibilityLabel || !!onHide} accessibilityLabel={accessibilityLabel ?? (onHide ? title : undefined)} {...hideAction}>
         {body}
       </View>
     );
@@ -865,9 +913,7 @@ export function ListRow({
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? (typeof subtitle === 'string' ? `${title}, ${subtitle}` : title)}
       accessibilityHint={accessibilityHint}
-      accessibilityActions={onHide ? [{ name: 'hide', label: onHide.label }] : undefined}
-      onAccessibilityAction={onHide ? (e) => e.nativeEvent.actionName === 'hide' && onHide.run() : undefined}
-      onLongPress={onHide?.run}
+      {...hideAction}
       onPress={onPress}
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
@@ -1400,8 +1446,9 @@ const styles = StyleSheet.create({
   },
   buttonLabel: { fontFamily: font.sans600, fontSize: 17, lineHeight: 22 },
   card: { borderRadius: radius.md, borderWidth: 1.5, padding: space.lg },
-  // L2 in light mode: the one real shadow (boxShadow, so no Android elevation and no draw-order change).
-  cardLift: { boxShadow: cardShadow },
+  // L2 in light mode: the one real shadow (boxShadow, so no Android elevation and no draw-order change;
+  // Android 7–8 has no outset boxShadow, so it gets elevation 1 there: see cardLiftFor).
+  cardLift: cardLiftFor(Platform.OS, Platform.Version),
   // L1: a tonal plate. No shadow, no border (a 1px outline is never a card edge in light mode).
   plate: { borderRadius: radius.lg, padding: space.lg },
   // No overflow:'hidden' here: the art layer clips itself (heroArtClip), so

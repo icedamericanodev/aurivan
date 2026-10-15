@@ -566,7 +566,7 @@ describe('finishing a mock', () => {
     expect(m.total).toBe(50);
     const pct = Math.round((m.correct / m.total) * 100);
     expect(joined('you')).toContain(`[50 questions, score ${pct} percent`);
-    expect(joined('you')).toContain('[See your readiness report]');
+    expect(joined('you')).toContain('[See report, your readiness report]');
     expect(joined('you')).not.toContain('No mocks yet');
     // A second mock: the newest first, both listed.
     mockExam(20);

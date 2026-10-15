@@ -165,11 +165,13 @@ export const forestHighlight = { light: 'rgba(255,255,255,0.08)', dark: 'rgba(25
 
 /**
  * The one real shadow (mobile 1.21, DESIGN_SYSTEM.md §5 "Surface model"), for
- * L2 cards (things you choose between) and L3 sheets, in light mode only
- * (dark uses a 1.5px `line` outline). A crisp 1px contact ring plus an
- * ambient lift, drawn with `boxShadow` (New Architecture, iOS, Android and
- * web alike), so it never takes Android `elevation`: draw order stays as
- * written. The ink colour is light `ink` (#17231B) at low alpha.
+ * L2 cards (things you choose between) only, in light mode only (dark uses a
+ * 1.5px `line` outline; a sheet sits on its scrim and needs none). A crisp
+ * 1px contact ring plus an ambient lift, drawn with `boxShadow` (New
+ * Architecture, iOS, Android 9+ and web), so it never takes Android
+ * `elevation`: draw order stays as written. Android 7–8 has no outset
+ * boxShadow and falls back to `elevation: 1` (components/ui.tsx CARD_LIFT).
+ * The ink colour is light `ink` (#17231B) at low alpha.
  */
 export const cardShadow = '0 0 0 1px rgba(23,35,27,0.05), 0 1px 2px rgba(23,35,27,0.06), 0 8px 20px -6px rgba(23,35,27,0.10)';
 

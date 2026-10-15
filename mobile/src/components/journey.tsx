@@ -111,7 +111,7 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
 }
 
 /** "IS Audit practice" style titles with the count taken out (the count goes to the meta line). */
-function heroPracticeTitle(label: string): string {
+export function heroPracticeTitle(label: string): string {
   return label
     .replace(/^\d+ (?:mixed )?questions? · (.+)$/, 'Practice: $1')
     .replace(/^(.+?): \d+ mixed questions?$/, '$1')
@@ -166,7 +166,7 @@ export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boo
     case 'game':
       return { title: gameTitle(item.gameId, item.label), meta: opts.minutesSaid ? 'Game' : `Game · ${aboutMin(mins, true)}` };
     case 'mock':
-      // A mock's minutes are never the day's (the caption says "+ mock"), so they always show.
+      // A mock's minutes are never in the day's total (the caption leaves mocks out), so they always show here.
       return {
         title: item.label.split(' · ')[0],
         meta: `${qs(item.questions)} · ${aboutMin(mins, true)} · ${item.why === 'final' ? 'a last long rehearsal; skip it if you’d rather rest' : 'longer than your usual day'}`,
@@ -177,22 +177,6 @@ export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boo
 /** The open items' minutes, mocks left out (they are longer than any day; their rows say so). 0 when only mocks are open. */
 export function todayMinutes(items: readonly PlanItem[], done: readonly boolean[]): number {
   return items.reduce((n, it, i) => n + (done[i] || it.kind === 'mock' ? 0 : itemMinutes(it)), 0);
-}
-
-/**
- * "About 20 min today": the open items' minutes. A mock is left out (it is
- * longer than any day) and adds "+ mock" instead; exam week's last long
- * rehearsal says it is optional ("+ optional mock", UX review O9). null when
- * nothing is open.
- */
-export function todayMinutesLine(items: readonly PlanItem[], done: readonly boolean[]): string | null {
-  const open = items.filter((_, i) => !done[i]);
-  if (open.length === 0) return null;
-  const mocks = open.filter((i) => i.kind === 'mock');
-  const optional = mocks.length > 0 && mocks.every((i) => i.kind === 'mock' && i.why === 'final');
-  const mins = open.reduce((n, i) => n + (i.kind === 'mock' ? 0 : itemMinutes(i)), 0);
-  if (mins === 0) return mocks.length ? (optional ? 'An optional mock today' : 'A mock today') : null;
-  return `${aboutMin(mins)} today${mocks.length ? (optional ? ' + optional mock' : ' + mock') : ''}`;
 }
 
 /**

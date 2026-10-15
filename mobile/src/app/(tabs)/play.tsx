@@ -28,6 +28,7 @@ import { Button, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, 
 import { GAME_TIER_NAME, growthTier } from '../../engine/games/growth';
 import { scoreSpoken, scoreText } from '../../engine/games/recap';
 import { GAMES, type GameId } from '../../engine/games/registry';
+import { spokenMin } from '../../engine/pace';
 import { playableGames } from '../../lib/games';
 import { CERTIFICATIONS, getCertification } from '../../content/certifications';
 import { selectCert, useProgress } from '../../store/progress';
@@ -75,6 +76,7 @@ export default function Play() {
           <HeroPanel
             captionLead={<GameGlyph game={featured.id} size={20} color={c.sap} />}
             caption={`${featured.skill} · ${featured.minutes} min`}
+            captionLabel={spokenMin(`${featured.skill} · ${featured.minutes} min`)}
             title={featured.name}
             meta={best(featured.id) !== undefined ? `${featured.tagline} Best ${scoreText(best(featured.id)!)}.` : featured.tagline}
             art="frond"

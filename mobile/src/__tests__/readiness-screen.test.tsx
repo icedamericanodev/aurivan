@@ -338,7 +338,7 @@ describe('the ways in', () => {
   it('You: the Readiness section\'s "See report", and each mock row opens the report with that mock', () => {
     setCert({ answers: seedAnswers(30, 0.7), mocks: EIGHT });
     mount(<You />);
-    press(/^See your readiness report$/);
+    press(/^See report, your readiness report$/);
     expect(router.push).toHaveBeenLastCalledWith('/readiness');
     // The ListRow elements themselves (each draws a pressable inside).
     const rows = root().findAll((n) => n.props.accessibilityHint === 'Opens your readiness report with this mock’s domains' && typeof n.props.onPress === 'function' && typeof n.props.title === 'string');
@@ -348,13 +348,13 @@ describe('the ways in', () => {
     });
     expect(router.push).toHaveBeenLastCalledWith({ pathname: '/readiness', params: { mock: EIGHT[2].id } });
     // "See report" on the Readiness section is spoken in full; Mock exams has no second one (mobile 1.21).
-    expect(root().findAll((n) => n.props.accessibilityLabel === 'See your readiness report' && typeof n.type === 'string')).toHaveLength(1);
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'See report, your readiness report' && typeof n.type === 'string')).toHaveLength(1);
   });
 
   it('You with no mocks: the Readiness section still offers the report (the Mock exams empty state offers a mini mock)', () => {
     mount(<You />);
     expect(allText()).toContain('See report');
-    expect(root().findAll((n) => n.props.accessibilityLabel === 'See your readiness report' && typeof n.type === 'string')).toHaveLength(1);
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'See report, your readiness report' && typeof n.type === 'string')).toHaveLength(1);
     expect(allText()).toContain('No mocks yet');
   });
 });

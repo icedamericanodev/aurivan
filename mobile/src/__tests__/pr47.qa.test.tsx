@@ -359,8 +359,8 @@ describe('QA 2: entry points', () => {
     const mocks = series([60, 66]);
     setCert({ answers: seedAnswers(30, 0.7), mocks });
     mount(<You />);
-    expect(root().findAll((n) => n.props.accessibilityLabel === 'See your readiness report' && typeof n.type === 'string')).toHaveLength(1);
-    const handlers = [...new Set(root().findAll((n) => n.props.accessibilityLabel === 'See your readiness report' && typeof n.props.onPress === 'function').map((n) => n.props.onPress as () => void))];
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'See report, your readiness report' && typeof n.type === 'string')).toHaveLength(1);
+    const handlers = [...new Set(root().findAll((n) => n.props.accessibilityLabel === 'See report, your readiness report' && typeof n.props.onPress === 'function').map((n) => n.props.onPress as () => void))];
     expect(handlers.length).toBeGreaterThanOrEqual(1);
     for (const onPress of handlers) {
       jest.mocked(router.push).mockClear();

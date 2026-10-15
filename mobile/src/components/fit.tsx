@@ -16,10 +16,10 @@
  */
 import { Pressable, View } from 'react-native';
 import { DAILY_MINUTES, FAMILIARITIES, FAMILIARITY_INFO, minutesSpoken, type DailyMinutes, type Familiarity } from '../engine/fit';
-import { radius, cardShadow, space } from '../theme/tokens';
+import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Check } from './icons';
-import { Button, RadioRow, Row, Segmented, T, ToggleRow } from './ui';
+import { Button, CARD_LIFT, RadioRow, Row, Segmented, T, ToggleRow } from './ui';
 
 /** The question, also the radiogroup's spoken name. */
 export const FAMILIARITY_QUESTION = 'Where are you starting from?';
@@ -69,7 +69,7 @@ export function ChoiceRow({
           paddingHorizontal: selected ? 15.5 : 16,
           marginBottom: 10,
         },
-        !isDark && { boxShadow: cardShadow },
+        !isDark && CARD_LIFT,
         pressed && { transform: [{ scale: 0.98 }] },
       ]}
     >

@@ -20,7 +20,7 @@ import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Today from '../app/(tabs)/home';
 import You from '../app/(tabs)/you';
 import ReadinessReport, { MOCKS_SHOWN } from '../app/readiness';
-import { todayMinutesLine } from '../components/journey';
+import { todayMinutes } from '../components/journey';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { getCertification } from '../content/certifications';
 import { getAllQuestions } from '../content/loader';
@@ -348,11 +348,13 @@ describe('exam week', () => {
     expect(practice && practice.kind === 'review' && practice.label).toBeFalsy();
   });
 
-  it('O9: the hero says "+ optional mock" when the mock is the last rehearsal', () => {
+  it('O9 (mobile 1.21): the day\'s minutes leave a mock out, optional or not; the mock\'s own row says it is optional', () => {
     const top: PlanItem = { kind: 'practice', count: 20, label: 'Top-up: IS Operations' };
-    expect(todayMinutesLine([top, { ...full, minutes: 240 }], [false, false])).toMatch(/^About \d+ min today \+ optional mock$/);
-    expect(todayMinutesLine([top, { ...full, minutes: 240 }], [true, false])).toBe('An optional mock today');
-    expect(todayMinutesLine([top, { kind: 'mock', questions: 50, label: 'Mini mock · 50 questions' }], [false, false])).toMatch(/today \+ mock$/);
+    const topMin = todayMinutes([top], [false]);
+    expect(topMin).toBeGreaterThan(0);
+    expect(todayMinutes([top, { ...full, minutes: 240 }], [false, false])).toBe(topMin);
+    expect(todayMinutes([top, { ...full, minutes: 240 }], [true, false])).toBe(0);
+    expect(todayMinutes([top, { kind: 'mock', questions: 50, label: 'Mini mock · 50 questions' }], [false, false])).toBe(topMin);
   });
 
   it('probes P6/P7: one full mock 7–5 days out across a DST change; exam-focused gets no mini mock', () => {

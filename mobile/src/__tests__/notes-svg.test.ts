@@ -9,7 +9,7 @@
 import fs from 'fs';
 import path from 'path';
 import { parse } from 'react-native-svg';
-import { FIT_LABEL_PT, MIN_LABEL_PT, SVG_VAR_TOKENS, svgFit, svgMinFontSize, svgSize, themeSvg } from '../engine/notesSvg';
+import { MIN_LABEL_PT, SVG_VAR_TOKENS, svgMinFontSize, svgSize, themeSvg } from '../engine/notesSvg';
 import { dark, light, type Palette } from '../theme/tokens';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -107,23 +107,21 @@ describe('svgSize: smallest label at least 13pt', () => {
   });
 });
 
-describe('svgFit (mobile 1.21): fitted to the plate when its labels stay 11pt, else scrolls inside it', () => {
-  it('fits the available width when the smallest label still measures 11pt', () => {
-    // 340-wide drawing, 12-unit labels, 318pt available: 12 × 318 / 340 = 11.2pt.
-    expect(svgFit({ width: 340, height: 170 }, 318, { minFont: 12 })).toEqual({ width: 318, height: 159, labelPt: 11.2, scrolls: false });
+describe('the plate or the viewer (mobile 1.21): a figure needs "Tap to enlarge" when 13pt labels need more than the plate', () => {
+  const needsViewer = (vb: { width: number; height: number }, plate: number, minFont: number, fontScale = 1) =>
+    svgSize(vb, plate, { minFont, fontScale }).width > plate;
+  it('a drawing whose labels already reach 13pt on the plate is just fitted', () => {
+    // 16-unit labels on a 340-wide drawing in a 318pt plate: 15pt.
+    expect(needsViewer({ width: 340, height: 170 }, 318, 16)).toBe(false);
   });
-  it('draws a small-label diagram just wide enough for 11pt, and says it scrolls', () => {
-    const f = svgFit({ width: 480, height: 200 }, 318, { minFont: 10 });
-    expect(f.scrolls).toBe(true);
-    expect(f.labelPt).toBeGreaterThanOrEqual(FIT_LABEL_PT);
-    expect(f.width).toBe(528);
-    // Narrower than the old 13pt zoom: less to swipe.
-    expect(f.width).toBeLessThan(svgSize({ width: 480, height: 200 }, 318, { minFont: 10 }).width);
+  it('a small-label drawing opens in the viewer at the size where its labels reach 13pt', () => {
+    expect(needsViewer({ width: 480, height: 200 }, 318, 10)).toBe(true);
+    const v = svgSize({ width: 480, height: 200 }, 318, { minFont: 10 });
+    expect(v.labelPt).toBeGreaterThanOrEqual(MIN_LABEL_PT);
+    expect(v.width).toBe(624);
   });
-  it('grows with large text (to ×1.5) and never past 4 widths', () => {
-    expect(svgFit({ width: 340, height: 170 }, 318, { minFont: 12, fontScale: 2 }).scrolls).toBe(true);
-    expect(svgFit({ width: 340, height: 170 }, 318, { minFont: 12, fontScale: 2 }).labelPt).toBe(16.5);
-    expect(svgFit({ width: 600, height: 50 }, 300, { minFont: 1 }).width).toBe(1200);
+  it('large text raises the bar (to ×1.5)', () => {
+    expect(needsViewer({ width: 340, height: 170 }, 318, 16, 2)).toBe(true);
   });
 });
 

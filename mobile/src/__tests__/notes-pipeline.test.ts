@@ -16,7 +16,7 @@ import path from 'path';
 import { generatedNotes } from '../content/generated';
 import { getAllQuestions } from '../content/loader';
 import type { NotesPack, NoteSubtopic } from '../content/notes/types';
-import { normalize, readCount, searchNotes, snippetAround } from '../engine/notesSearch';
+import { normalize, notesIndex, readCount, searchNotes, snippetAround } from '../engine/notesSearch';
 import fixture from './fixtures/notes-v2.json';
 
 // CommonJS on purpose (see the file header), so Jest loads it untransformed.
@@ -236,6 +236,17 @@ describe('the generated notes pack matches the source file', () => {
 
 describe('notes search', () => {
   const { pack } = built();
+  it('normalizes the pack once and reuses it for every keystroke (mobile 1.21)', () => {
+    const first = notesIndex(pack);
+    expect(notesIndex(pack)).toBe(first);
+    const count = pack.domains.reduce((n, d) => n + d.topics.reduce((m, t) => m + t.subtopics.length, 0), 0);
+    expect(first).toHaveLength(count);
+    // Searching uses the cached index, and gives the same answer each time.
+    expect(searchNotes(pack, 'recovery')).toEqual(searchNotes(pack, 'recovery'));
+    expect(notesIndex(pack)).toBe(first);
+    // A different pack gets its own index.
+    expect(notesIndex({ ...pack })).not.toBe(first);
+  });
   it('ignores queries under 2 characters and an empty pack', () => {
     expect(searchNotes(pack, 'r')).toEqual([]);
     expect(searchNotes(null, 'rpo')).toEqual([]);

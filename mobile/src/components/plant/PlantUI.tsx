@@ -18,10 +18,10 @@
 import { useState, type ReactNode } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import { cleanPlantName, MAX_NAME, PLANT_SPECIES, SPECIES_INFO, suggestName, type GrowthLevel, type PlantSpecies } from '../../engine/plant';
-import { radius, cardShadow, space, type as typeScale, maxScale, LARGE_TEXT } from '../../theme/tokens';
+import { radius, space, type as typeScale, maxScale, LARGE_TEXT } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 import { ICON_STROKE, Sprout } from '../icons';
-import { Button, ICON_SIZE, InviteRow, T, useFontScale } from '../ui';
+import { Button, CARD_LIFT, ICON_SIZE, InviteRow, T, useFontScale } from '../ui';
 import { Plant } from './Plant';
 import { LivePlant, type LivePlantProps } from './LivePlant';
 import type { ArtLook, Lod } from './art';
@@ -177,7 +177,7 @@ export function SpeciesGrid({ value, onChange, quietLook }: { value: PlantSpecie
                   paddingBottom: selected ? space.sm + 1.5 : space.sm + 2,
                   paddingHorizontal: rows ? (selected ? space.md - 0.5 : space.md) : space.xs,
                 },
-                !isDark && { boxShadow: cardShadow },
+                !isDark && CARD_LIFT,
                 pressed && { transform: [{ scale: 0.98 }] },
               ]}
             >

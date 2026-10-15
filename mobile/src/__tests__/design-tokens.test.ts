@@ -75,6 +75,12 @@ describe('palettes', () => {
     expect(luminance(light.forestTop)).toBeGreaterThan(luminance(light.forest));
   });
 
+  it('muted on soft is pinned at 4.53 light (disabled labels only: a disabled button\'s label on its `soft` fill)', () => {
+    // Mobile 1.21: the warm #E9E6DC took it from 4.68 to 4.53, still AA. Never use this pair for live text.
+    expect(Math.round(contrast(light.muted, light.soft) * 100) / 100).toBeGreaterThanOrEqual(4.53);
+    expect(contrast(dark.muted, dark.soft)).toBeGreaterThanOrEqual(4.5);
+  });
+
   it('green surfaces mean feedback only (mobile 1.21): `soft` is a neutral paper-grey, not a near-copy of correctBg', () => {
     const hue = (hex: string) => {
       const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));

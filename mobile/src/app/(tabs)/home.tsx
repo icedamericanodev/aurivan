@@ -521,9 +521,10 @@ export default function Today() {
         )}
         {/* One quiet row for a learner with no plant, below the day's study (UX review P6): never ahead
             of it. Mobile 1.21 (design spec §5): one row with a chevron, no ghost pair beside the panel's
-            Start. It hides with a long press or the screen-reader action, or "Not now" on the picker. */}
+            Start. It hides with the screen-reader action "Hide from Today", or "Not now" on the picker (which
+            says so). Its own space above, so it never reads as a third "Also today" item. */}
         {!grown && plantPrompt && (
-          <View style={{ marginTop: askFit ? space.lg : space.xs }}>
+          <View style={{ marginTop: space.xl }}>
             <ListRow
               testID="plant-prompt"
               icon={<Sprout size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
@@ -531,7 +532,7 @@ export default function Today() {
               subtitle="A companion that grows with your study"
               accessibilityLabel="Your plant. A companion that grows with your study"
               last
-              accessibilityHint="Opens the plant picker. Not now there hides this row."
+              accessibilityHint="Opens the plant picker"
               onPress={() => router.push({ pathname: '/plant-pick', params: { from: 'today' } })}
               onHide={{
                 label: 'Hide from Today',

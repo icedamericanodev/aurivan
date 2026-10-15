@@ -15,7 +15,7 @@
  * jumps to each; each kicker carries the same serif numeral. Figures and the
  * compare grid sit on an L1 plate (`raised2`, no border, no shadow). A
  * diagram is always FITTED to its plate (never scrolled sideways, never a
- * clipped label); when that makes its smallest label under 11pt, "Tap to
+ * clipped label); when that makes its smallest label under 13pt, "Tap to
  * enlarge" opens it full screen at a readable size (design spec §3).
  */
 import { Component, useMemo, useRef, useState, type ReactNode, type Ref } from 'react';
@@ -23,7 +23,7 @@ import { Modal, Platform, Pressable, ScrollView, useWindowDimensions, View } fro
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { parse, SvgAst, type JsxAST } from 'react-native-svg';
 import type { NoteCompare, NoteIllustration, NoteSubtopic, NoteTerm } from '../content/notes/types';
-import { svgFit, svgMinFontSize, themeSvg } from '../engine/notesSvg';
+import { svgMinFontSize, svgSize, themeSvg } from '../engine/notesSvg';
 import { moveFocus } from '../lib/a11y';
 import { font, LARGE_TEXT, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -110,6 +110,11 @@ export function TermList({ items }: { items: NoteTerm[] }) {
 // ── Compare table ──────────────────────────────────────────────────────
 /** A real grid holds at most this many items side by side; more stack. */
 const GRID_MAX_COLUMNS = 3;
+/**
+ * Narrowest a grid column may be (mobile 1.21 review): 3 columns fit a 390pt
+ * phone (98pt each inside the plate) but not a 360dp one (88pt), which stacks.
+ */
+const GRID_MIN_COL_W = 96;
 
 /**
  * Mobile 1.21: the compare section is ONE L1 plate (never 1px-outlined boxes).
@@ -125,8 +130,11 @@ const GRID_MAX_COLUMNS = 3;
 export function CompareTable({ compare }: { compare: NoteCompare }) {
   const { c } = useTheme();
   const large = useFontScale() >= LARGE_TEXT;
+  const column = useColumnWidth();
   const n = compare.columns.length;
-  const grid = !large && n <= GRID_MAX_COLUMNS;
+  // The plate pads 16 each side; 12 between columns.
+  const colW = (column - space.lg * 2 - space.md * (n - 1)) / n;
+  const grid = !large && n <= GRID_MAX_COLUMNS && colW >= GRID_MIN_COL_W;
   const rowLabel = (r: NoteCompare['rows'][number]) =>
     `${r.label}. ${r.cells.map((cell, i) => `${compare.columns[i]}: ${cell}`).join('. ')}`;
   const divider = (i: number) => (i === 0 ? null : { borderTopWidth: 1, borderTopColor: c.line });
@@ -215,13 +223,13 @@ export function parseIllustration(svg: string, palette: Parameters<typeof themeS
 /**
  * A diagram on its L1 plate (mobile 1.21, design spec §3). Always FITTED to
  * the plate's width, so the whole figure shows and no label is ever cut off.
- * When fitting puts its smallest label under 11pt (engine/notesSvg.ts →
- * svgFit), the figure is a button: "Tap to enlarge" opens it full screen,
- * drawn so that label reaches 11pt (pinch to zoom further on iOS). The page
- * colour inside the drawing is the plate's (`raised2`), so a drawn background
- * never shows as a box. A screen reader hears its description once (the
- * SVG's aria-label); the caption below is normal text that grows with the
- * phone's text size.
+ * When fitting puts its smallest label under 13pt (MIN_LABEL_PT, ×1.5 at
+ * most with large text; engine/notesSvg.ts → svgSize), the figure is a
+ * button, "Tap to enlarge", that opens it full screen at the size where that
+ * label reaches 13pt. The page colour inside the drawing is the plate's
+ * (`raised2`), so a drawn background never shows as a box. A screen reader
+ * hears its description once (the SVG's aria-label); the caption below is
+ * normal text that grows with the phone's text size.
  */
 export function IllustrationView({ illustration, onSection }: { illustration: NoteIllustration; onSection?: ReactNode }) {
   const { c } = useTheme();
@@ -232,17 +240,22 @@ export function IllustrationView({ illustration, onSection }: { illustration: No
   const onPlate = useMemo(() => ({ ...c, bg: c.raised2 }), [c]);
   const ast = useMemo(() => parseIllustration(illustration.svg, onPlate), [illustration.svg, onPlate]);
   const minFont = useMemo(() => svgMinFontSize(illustration.svg), [illustration.svg]);
-  if (!ast) return null;
   // The plate pads 16 each side: the drawing fits what is left.
   const inner = column - space.lg * 2;
-  const readable = svgFit(illustration, inner, { minFont, fontScale });
-  const small = readable.scrolls;
+  const readable = svgSize(illustration, inner, { minFont, fontScale });
+  const small = readable.width > inner;
+  // The figure fits again (a rotation, a smaller text size): the viewer has nothing to add.
+  if (!small && open) setOpen(false);
+  if (!ast) return null;
   const fitted = { width: inner, height: Math.round((inner * illustration.height) / illustration.width) };
   const drawing = (
     <View accessible={!small} accessibilityRole="image" accessibilityLabel={illustration.label} style={fitted}>
       <SvgAst ast={ast} override={fitted} />
     </View>
   );
+  // Focus goes back to the figure once the viewer has gone: on iOS when the
+  // Modal reports it is dismissed, elsewhere after its fade (≥ 500 ms).
+  const refocus = () => moveFocus(opener, Platform.OS === 'ios' ? 50 : 550);
   return (
     <DrawingBoundary>
       {onSection}
@@ -251,7 +264,8 @@ export function IllustrationView({ illustration, onSection }: { illustration: No
           <Pressable
             ref={opener}
             accessibilityRole="button"
-            accessibilityLabel={illustration.label}
+            // WCAG 2.5.3: the spoken name starts with what the button says it does.
+            accessibilityLabel={`Enlarge diagram. ${illustration.label}`}
             accessibilityHint="Opens the diagram full screen, larger"
             onPress={() => setOpen(true)}
             style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}
@@ -267,16 +281,18 @@ export function IllustrationView({ illustration, onSection }: { illustration: No
         )}
         {illustration.caption && <T v="meta" style={{ marginTop: space.md }}>{illustration.caption}</T>}
       </Card>
-      {small && open && (
+      {small && (
         <DiagramViewer
+          visible={open}
           ast={ast}
-          size={readable}
+          size={{ width: readable.width, height: readable.height }}
           label={illustration.label}
           caption={illustration.caption}
           onClose={() => {
             setOpen(false);
-            moveFocus(opener);
+            if (Platform.OS !== 'ios') refocus();
           }}
+          onDismiss={refocus}
         />
       )}
     </DrawingBoundary>
@@ -285,40 +301,66 @@ export function IllustrationView({ illustration, onSection }: { illustration: No
 
 /**
  * The full-screen diagram (mobile 1.21): the drawing at its readable size on
- * the plate colour, scrolling both ways when it is larger than the screen
- * (and pinch-zoom up to 3× on iOS). Close (✕, Android Back, VoiceOver's
- * escape) returns focus to the figure. Fades in; appears at once under
- * Reduce Motion.
+ * the plate colour, scrolling both ways when it is larger than the screen.
+ * On iOS it can pinch from the whole figure (fitted) up to 3×; elsewhere it
+ * opens scrolled to the figure's centre. Close: ✕, Android Back, or
+ * VoiceOver's escape (the viewer is a modal for screen readers). Kept mounted
+ * while its figure is small, so the Modal can report its dismissal. Fades in;
+ * appears at once under Reduce Motion.
  */
 function DiagramViewer({
+  visible,
   ast,
   size,
   label,
   caption,
   onClose,
+  onDismiss,
 }: {
+  visible: boolean;
   ast: JsxAST;
   size: { width: number; height: number };
   label: string;
   caption?: string;
   onClose: () => void;
+  onDismiss: () => void;
 }) {
   const { c } = useTheme();
   const { reduced } = useMotion();
   const { width } = useWindowDimensions();
+  const available = width - space.gutter * 2;
   // Wider than the screen at its readable size: say how to see all of it (the viewer is the one place a figure may pan).
-  const pans = size.width > width - space.gutter * 2;
+  const pans = size.width > available;
+  const sideways = useRef<ScrollView>(null);
   return (
-    <Modal visible animationType={reduced ? 'none' : 'fade'} onRequestClose={onClose} supportedOrientations={['portrait', 'landscape']}>
-      <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.raised2 }} accessibilityViewIsModal>
+    <Modal visible={visible} animationType={reduced ? 'none' : 'fade'} onRequestClose={onClose} onDismiss={onDismiss}>
+      <SafeAreaView
+        edges={['top', 'bottom']}
+        style={{ flex: 1, backgroundColor: c.raised2 }}
+        accessibilityViewIsModal
+        onAccessibilityEscape={onClose}
+      >
         <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: space.sm, minHeight: 52 }}>
           <IconButton label="Close diagram" onPress={onClose} icon={(col) => <X size={ICON_SIZE.bar} color={col} strokeWidth={ICON_STROKE} />} />
           <T v="label" accessibilityRole="header" style={{ flex: 1, textAlign: 'center', marginRight: 48 }}>Diagram</T>
         </View>
-        <ScrollView maximumZoomScale={3} minimumZoomScale={1} contentContainerStyle={{ padding: space.gutter }}>
-          <ScrollView horizontal contentContainerStyle={{ minWidth: '100%', justifyContent: 'center' }}>
+        <ScrollView
+          // iOS: pinch out to the whole figure, in to 3×.
+          maximumZoomScale={3}
+          minimumZoomScale={pans ? Math.min(1, available / size.width) : 1}
+          contentContainerStyle={{ padding: space.gutter }}
+        >
+          <ScrollView
+            ref={sideways}
+            horizontal
+            contentContainerStyle={{ minWidth: '100%', justifyContent: 'center' }}
+            // Elsewhere: open on the figure's centre, not its left edge.
+            onContentSizeChange={(w) => {
+              if (Platform.OS !== 'ios' && w > available) sideways.current?.scrollTo({ x: (w - available) / 2, animated: false });
+            }}
+          >
             <View accessible accessibilityRole="image" accessibilityLabel={label} style={size}>
-              <SvgAst ast={ast} override={{ width: size.width, height: size.height }} />
+              <SvgAst ast={ast} override={size} />
             </View>
           </ScrollView>
           {pans ? (
@@ -404,7 +446,10 @@ export function Movement({ n, title, ref }: { n: number; title: string; ref?: Re
 export function OnThisPage({ items }: { items: { title: string; ref: { current: View | null } }[] }) {
   const { c } = useTheme();
   const scroll = useScreenScroll();
-  const stacked = useFontScale() >= LARGE_TEXT;
+  const scale = useFontScale();
+  const column = useColumnWidth();
+  // Stacks at large text, AND whenever one line would not fit (between ×1.1 and ×1.3 it overflowed).
+  const stacked = scale >= LARGE_TEXT || !onThisPageFits(items.map((x) => x.title), column, scale);
   if (!scroll || items.length < 2) return null;
   return (
     <View
@@ -431,11 +476,25 @@ export function OnThisPage({ items }: { items: { title: string; ref: { current: 
           ]}
         >
           <BigNum value={String(i + 1)} size={17} color={c.accentText} />
-          <T v="meta" color={c.ink}>{it.title}</T>
+          <T v="meta" color={c.ink} style={{ flexShrink: 1 }}>{it.title}</T>
         </Pressable>
       ))}
     </View>
   );
+}
+
+/**
+ * Whether "On this page" fits on one line (mobile 1.21 review H1). An
+ * estimate on the safe side, from Figtree `meta` 14 (about 6.4pt a character
+ * at ×1, measured), each item's serif numeral (capped at ×1.3) and its 6pt
+ * gap, and at least 12pt between items, plus 5% slack. Exported for tests.
+ */
+export function onThisPageFits(titles: string[], column: number, scale: number): boolean {
+  const s = Math.max(1, scale);
+  const text = titles.reduce((n, t) => n + t.length, 0) * 6.4 * s;
+  const marks = titles.length * (9 * Math.min(s, 1.3) + 6);
+  const gaps = 12 * Math.max(0, titles.length - 1);
+  return (text + marks + gaps) * 1.05 <= column;
 }
 
 /** The first heading in a movement sits 16 under the kicker, not a section's 32. */
