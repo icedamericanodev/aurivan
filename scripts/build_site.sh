@@ -72,12 +72,25 @@ while IFS= read -r -d '' f; do
   name="$(basename "$f")"
   ext="$(printf '%s' "${name##*.}" | tr '[:upper:]' '[:lower:]')"
   case "$name" in .*) fail "hidden file $f is not allowed in assets/";; esac
+  # Font licences must travel with the fonts (the SIL Open Font Licence asks for it).
+  case "$f" in assets/fonts/OFL-*.txt) mkdir -p "$OUT/$(dirname "$f")"; cp "$f" "$OUT/$f"; continue;; esac
   printf '%s' "$ext" | grep -Eqx "$ASSET_TYPES" || fail "$f: .$ext files are not allowed in assets/ (allowed: ${ASSET_TYPES//|/, })"
   mkdir -p "$OUT/$(dirname "$f")"
   cp "$f" "$OUT/$f"
 done < <(find assets -type f -print0)
 
 [ -f assets/favicon.ico ] && cp assets/favicon.ico "$OUT/favicon.ico"
+
+# The legal pages' inline theme script is allowed in _headers by its sha256
+# hash. If the script is edited, the hash must change too, or browsers block it.
+for page in privacy.html terms.html support.html; do
+  hash="$(python3 -c 'import re,sys,hashlib,base64
+s=open(sys.argv[1]).read(); m=re.search(r"<script>(.*?)</script>",s,re.S)
+print("sha256-"+base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).decode() if m else "")' "$page")"
+  if [ -n "$hash" ] && ! grep -qF "'$hash'" _headers; then
+    fail "$page: its inline script hash $hash is not in _headers (update the legal-page CSP rules)"
+  fi
+done
 
 # Final guard: nothing outside the list may be in _site/.
 while IFS= read -r -d '' f; do
