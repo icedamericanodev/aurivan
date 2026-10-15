@@ -11,15 +11,44 @@ name: Phone update (EAS Update)
 # Mobile 1.23 (the rename to KaiSip: new name, icon and package id) is such a
 # change: its runtime differs from the Aurivan APKs' (5e26d4b...), so those
 # never receive KaiSip updates, and KaiSip 1.23 itself needs a new APK build.
+# Mobile 1.24 changes the runtime again (Android code shrinking turned on, and
+# the update channel moved from app.json to eas.json), so 1.24 needs new
+# builds too; 1.23 phones keep working but stop getting updates.
 #
-# Needs the EXPO_TOKEN repository secret (an access token from expo.dev). If it
-# is not set, the job says so and stops without failing.
+# Needs the EXPO_TOKEN secret (an access token from expo.dev). If it is not
+# set, the job says so and stops without failing.
+#
+# The token sits behind the GitHub Environment "ota" (architecture decision,
+# 15 Oct 2026): anyone holding it can send code to every phone, so a person
+# approves each publish. The owner sets it up once (docs/WEBSITE_DEPLOY.md,
+# "GitHub settings"): Settings → Environments → New environment "ota" →
+# Required reviewers: the owner; Deployment branches: main only; then add
+# EXPO_TOKEN there as an environment secret and delete the repository secret.
+# Until then GitHub creates "ota" with no rules on the first run, and the job
+# runs as before. Once a reviewer is set, each run waits on the Actions tab
+# for "Review deployments" → Approve.
+#
+# Platforms: Android only today. Once an iOS build exists (EAS Build, any
+# profile), set the repository VARIABLE EAS_UPDATE_PLATFORM to "all"
+# (Settings → Secrets and variables → Actions → Variables) and updates go to
+# both. A manual run can pick the platform too. The first time iOS is on,
+# compare the runtime this job prints with the one on the iOS build's page on
+# expo.dev: they must match, or iPhones will not take the update.
+#
+# Only the "preview" channel is published here, never "production": store
+# builds get updates only when someone sends one on purpose.
 
 on:
   push:
     branches: [main]
     paths: ['mobile/**', 'data/domain*.json']
   workflow_dispatch:
+    inputs:
+      platform:
+        description: Which phones get the update
+        type: choice
+        options: [android, ios, all]
+        default: android
 
 concurrency:
   group: eas-update
@@ -34,12 +63,20 @@ jobs:
     name: Publish update to preview
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Approval gate for the update key (see the top of this file).
+    environment: ota
     env:
       EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      # A manual run's choice, else the repository variable, else Android.
+      PLATFORM: ${{ inputs.platform || vars.EAS_UPDATE_PLATFORM || 'android' }}
     steps:
-      - name: Check for the Expo token
+      - name: Check for the Expo token and the platform
         id: token
         run: |
+          case "$PLATFORM" in
+            android|ios|all) echo "Publishing for: $PLATFORM" ;;
+            *) echo "EAS_UPDATE_PLATFORM must be android, ios or all (it is \"$PLATFORM\")." >&2; exit 1 ;;
+          esac
           if [ -n "$EXPO_TOKEN" ]; then
             echo "ok=true" >> "$GITHUB_OUTPUT"
           else
@@ -47,10 +84,10 @@ jobs:
             echo "ok=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         if: steps.token.outputs.ok == 'true'
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         if: steps.token.outputs.ok == 'true'
         with:
           node-version: '22'
@@ -103,6 +140,6 @@ jobs:
           npx --yes eas-cli@24 update \
             --channel preview \
             --environment preview \
-            --platform android \
+            --platform "$PLATFORM" \
             --message "$message" \
             --non-interactive

@@ -1,0 +1,97 @@
+# Dependabot: GitHub opens a pull request when a package or a GitHub Action
+# we use has a newer version (architecture decision, 15 Oct 2026). Nothing is
+# merged by itself: each pull request runs the normal checks and is reviewed.
+#
+# - npm in mobile/: once a week. Expo's packages move together with the Expo
+#   SDK, so they come as ONE grouped pull request, and only patch/minor
+#   versions. A new SDK (for example 57 → 58) is a planned upgrade done by
+#   hand with `npx expo install --fix`, so Dependabot leaves those majors alone
+#   (and React / React Native minors, which only change with a new SDK).
+#   Everything else comes as a second grouped pull request.
+# - GitHub Actions: once a week. The workflows pin each action to an exact
+#   commit (the "# vX.Y.Z" comment says which version); Dependabot updates the
+#   commit and the comment together.
+#
+# Security alerts (Settings → Code security → Dependabot alerts) are separate
+# and come at once, whatever this schedule says.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /mobile
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      expo:
+        patterns:
+          - expo
+          - expo-*
+          - '@expo/*'
+          - '@expo-google-fonts/*'
+          - jest-expo
+          - eslint-config-expo
+          - react
+          - react-dom
+          - react-native
+          - react-native-*
+          - '@react-native-async-storage/*'
+          - '@types/react'
+          - react-test-renderer
+      other:
+        patterns:
+          - '*'
+        exclude-patterns:
+          - expo
+          - expo-*
+          - '@expo/*'
+          - '@expo-google-fonts/*'
+          - jest-expo
+          - eslint-config-expo
+          - react
+          - react-dom
+          - react-native
+          - react-native-*
+          - '@react-native-async-storage/*'
+          - '@types/react'
+          - react-test-renderer
+    ignore:
+      # The SDK's own versions are chosen by `npx expo install`; a major bump is
+      # an SDK upgrade, done on purpose.
+      - dependency-name: expo
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'expo-*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@expo/*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: jest-expo
+        update-types: ['version-update:semver-major']
+      - dependency-name: eslint-config-expo
+        update-types: ['version-update:semver-major']
+      - dependency-name: react
+        update-types: ['version-update:semver-major', 'version-update:semver-minor']
+      - dependency-name: react-dom
+        update-types: ['version-update:semver-major', 'version-update:semver-minor']
+      - dependency-name: react-test-renderer
+        update-types: ['version-update:semver-major', 'version-update:semver-minor']
+      - dependency-name: react-native
+        update-types: ['version-update:semver-major', 'version-update:semver-minor']
+      - dependency-name: 'react-native-*'
+        update-types: ['version-update:semver-major', 'version-update:semver-minor']
+      - dependency-name: '@react-native-async-storage/*'
+        update-types: ['version-update:semver-major', 'version-update:semver-minor']
+    commit-message:
+      prefix: 'deps(mobile)'
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns:
+          - '*'
+    commit-message:
+      prefix: 'deps(actions)'
