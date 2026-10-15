@@ -212,6 +212,12 @@ await shot('f13-you-legend');
 
 // ── 7. Mistake journal: the tags and what they mean ────────────────────
 await go('/mistakes', 2200);
+// Mobile 1.24: the six tags sit behind a "Tag why you slipped" button (or "Change" on a
+// tagged mistake), so open the first one before looking for "Why did you slip?".
+const openTags = page.getByRole('button', { name: /^(Tag why you slipped|Change)$/ }).first();
+await openTags.evaluate((n) => n.scrollIntoView({ block: 'center' }));
+await openTags.click();
+await wait(700);
 await toTop('Why did you slip?', 260);
 await shot('f14-mistakes-tags');
 await press('What do these mean?', 1200);

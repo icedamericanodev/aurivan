@@ -123,7 +123,8 @@ await shot('p02b-today-grew');
 await setPlant(null);
 await setPlantSettings({});
 await go('/home', 2600);
-await toTop('Plant a companion that grows with your study.', 300);
+// Since mobile 1.21 the line is a row: "Your plant / A companion that grows with your study".
+await toTop('A companion that grows with your study', 300);
 await shot('p02c-today-prompt');
 await setPlant(kai);
 await setPlantSettings({ promptHidden: true });

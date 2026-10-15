@@ -208,7 +208,9 @@ await press(UPDATE_ROW, 1900);
 await shot('st22-update-offline');
 await demo('restart-fails');
 await press(UPDATE_ROW, 3400);
-await press('Restart to update', 1900);
+// Anchored: the "Check for updates" row's own label also says "Tap Restart to update below",
+// and a plain substring match would pick that (disabled) row first.
+await press(/^Restart to update$/, 1900);
 await shot('st23-update-restart-failed');
 
 console.log('errors:', errs.slice(0, 5));
