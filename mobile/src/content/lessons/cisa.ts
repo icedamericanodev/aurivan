@@ -32,25 +32,26 @@ export const CISA_LESSONS: Lesson[] = [
     certId: 'cisa',
     domainId: '1',
     order: 1,
-    title: 'The audit charter: who the auditor answers to',
+    title: 'The audit charter: who the IS auditor answers to',
     minutes: 3,
     provenance: PROVENANCE,
-    references: ['ITAF Standard 1001 — Audit Charter', 'ITAF Standard 1002 — Organisational Independence'],
+    references: ['ITAF Standard 1001 — Audit Charter', 'ITAF Standard 1002 — Organizational Independence'],
     outlineVersion: OUTLINE,
     lastReviewed: '2026-10-06',
     topics: ['1A1'],
     prepares: ['d1_001'],
+    notes: ['1A1.3', '1A1.4'],
     scenes: [
       {
         type: 'title',
         kicker: 'Domain 1 · Audit process',
         title: 'The audit charter',
-        subtitle: 'Why the person who approves the audit function matters more than the person who writes its rules.',
+        subtitle: 'Why who approves the audit charter matters more than who drafts it.',
       },
       {
         type: 'idea',
         heading: 'What a charter does',
-        body: 'An audit charter is the founding document of the audit function. It sets out its purpose, its authority to access people and records, and its responsibilities. Without it, an auditor is a guest who can be shown the door.',
+        body: 'An audit charter is the founding document of the audit function. It sets out the function’s purpose, responsibility, authority to access people and records, and accountability, including where it reports. Without it, an auditor is a guest who can be shown the door.',
       },
       {
         type: 'analogy',
@@ -62,8 +63,8 @@ export const CISA_LESSONS: Lesson[] = [
         heading: 'The reporting lines',
         layers: [
           { label: 'Board / audit committee', note: 'Approves the charter and receives audit results' },
-          { label: 'Chief audit executive', note: 'Reports functionally to the audit committee' },
-          { label: 'Senior management', note: 'Handles administrative matters only (budget, HR)' },
+          { label: 'Chief audit executive', note: 'The head of the audit function; reports functionally to the audit committee' },
+          { label: 'Senior management', note: 'Handles administrative matters only (payroll, expenses, office space); the audit committee oversees the plan and budget' },
           { label: 'IT and the business', note: 'The areas being audited — never the approver' },
         ],
         caption: 'Independence flows from the top layer down, not from the area being audited.',
@@ -72,7 +73,7 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'trap',
         heading: 'The exam trap',
         trap: '“Have the CIO review the charter so IT agrees with it.”',
-        why: 'It sounds collaborative, but letting the audited area shape the auditor’s authority undermines independence. Management can comment; the audit committee approves.',
+        why: 'It sounds collaborative, but letting the audited area shape the IS auditor’s authority undermines independence. Management can comment; the audit committee approves.',
       },
       {
         type: 'tip',
@@ -104,6 +105,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: REVIEWED,
     topics: ['1A3', '1A2'],
     prepares: ['d1_003', 'd1_062', 'd1_111'],
+    notes: ['1A3.1', '1A3.5', '1A2.4'],
     scenes: [
       {
         type: 'title',
@@ -123,7 +125,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'stack',
-        heading: 'The three parts of audit risk',
+        heading: 'Audit risk: the three parts',
         layers: [
           { label: 'Inherent risk', note: 'How risky the area is before any controls' },
           { label: 'Control risk', note: 'The chance controls fail to prevent or catch a problem' },
@@ -134,7 +136,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         // Folds in the integrated-audit idea (IT and financial testing together) that d1_111 needs.
         caption:
-          'When inherent and control risk are high, you lower detection risk by testing results more directly. In an integrated audit (IT controls and financial figures tested together), weak IT controls mean more direct testing of the figures.',
+          'Audit risk is the risk that the IS auditor reaches the wrong conclusion. When inherent and control risk are high, you lower detection risk by testing results more directly (substantive testing). In an integrated audit (IT controls and financial figures tested together), weak IT controls mean more substantive testing of the figures.',
       },
       {
         type: 'idea',
@@ -183,7 +185,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'Midway through an audit, an IS auditor finds that change controls over a billing system failed for most of the year. How should the auditor BEST adjust the remaining fieldwork?',
+          'Midway through an audit, an IS auditor finds that change controls over a billing system failed for most of the year. How should the IS auditor BEST adjust the remaining fieldwork?',
         options: [
           'Stop testing and report all billing figures as unreliable',
           'Ask management to fix the controls, then retest them',
@@ -192,7 +194,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 3,
         explanation:
-          'Failed controls raise control risk, so the auditor lowers detection risk by testing the results directly. Stopping and calling the figures unreliable is tempting, but it is a conclusion without the evidence to support it.',
+          'Failed controls raise control risk, so the IS auditor lowers detection risk by testing the results directly. Stopping and calling the figures unreliable is tempting, but it is a conclusion without the evidence to support it.',
       },
     ],
   },
@@ -209,6 +211,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: REVIEWED,
     topics: ['1B3', '1B4'],
     prepares: ['d1_004', 'd1_032', 'd1_013'],
+    notes: ['1B3.2', '1B3.1', '1B4.2'],
     scenes: [
       {
         type: 'title',
@@ -233,14 +236,14 @@ export const CISA_LESSONS: Lesson[] = [
           title: 'Stronger',
           points: [
             'From an independent source',
-            'Obtained directly by the auditor',
+            'Obtained directly by the IS auditor',
             'Documented or system-generated',
-            'Redone by the auditor (reperformed) or watched happening',
+            'Redone by the IS auditor (reperformed) or watched happening',
           ],
         },
         right: {
           title: 'Weaker',
-          points: ['From the area being audited', 'Passed on by someone else', 'Verbal', 'Asked about'],
+          points: ['From the area being audited', 'Passed on by someone else', 'Verbal', 'Learned by asking (inquiry)'],
         },
         caption: 'Relevance comes first: strong evidence about the wrong control proves nothing.',
       },
@@ -253,28 +256,28 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'As the auditor, you base conclusions on evidence you could defend to an outsider. Independent beats internal, direct beats indirect, documented beats verbal. When the only support is what management told you, you have a lead, not a conclusion.',
+        body: 'As the IS auditor, you base conclusions on evidence you could defend to an outsider. Independent beats internal, direct beats indirect, documented beats verbal. When the only support is what management told you, you have a lead, not a conclusion.',
       },
       {
         type: 'trap',
         heading: 'The exam trap',
         trap: '“We collected hundreds of screenshots, so the evidence is sufficient.”',
-        why: 'Volume is not sufficiency. If the items do not address the control objective, or all come from one source the auditee controls, more of them adds nothing. Check relevance and reliability before quantity.',
+        why: 'Volume is not sufficiency. If the items do not address the control objective, or all come from one source the auditee (the area being audited) controls, more of them adds nothing. Check relevance and reliability before quantity.',
       },
       {
-        // Review fix (MAJOR): a confirmation sent straight to the auditor by a
+        // Review fix (MAJOR): a confirmation sent straight to the IS auditor by a
         // third party is STRONG evidence, so "confirmed" is not a weak cue.
         type: 'tip',
-        body: 'When a question asks for the most reliable evidence, pick the option where the auditor obtains it directly, from the system or an independent party. A confirmation a third party sends straight to the auditor is strong. Words like “told”, “stated” or “assured” usually signal inquiry, the weakest kind.',
+        body: 'When a question asks for the most reliable evidence, pick the option where the IS auditor obtains it directly, from the system or an independent party. A confirmation a third party sends straight to the IS auditor is strong. Words like “told”, “stated” or “assured” usually signal inquiry, the weakest kind.',
       },
       {
         type: 'check',
-        question: 'An IS auditor must confirm that leavers lose system access on their last day. Which evidence is MOST reliable?',
+        question: 'An IS auditor must confirm that departing employees lose system access on their last day. Which evidence is MOST reliable?',
         options: [
           'The HR director’s written assurance that the process works',
-          'A comparison of HR leaver dates with account disable dates',
+          'A comparison of HR termination dates with account disable dates',
           'The documented offboarding procedure approved last year',
-          'Interviews with three managers who recently had leavers',
+          'Interviews with three managers whose staff recently left',
         ],
         correctIndex: 1,
         explanation:
@@ -306,7 +309,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 0,
         explanation:
-          'Using an expert does not hand over responsibility: the auditor must be satisfied the work supports the finding. Referring management to the specialist is tempting, but the conclusion belongs to the auditor.',
+          'Using an expert does not hand over responsibility: the IS auditor must be satisfied the work supports the finding. Referring management to the specialist is tempting, but the conclusion belongs to the IS auditor.',
       },
     ],
   },
@@ -323,6 +326,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: REVIEWED,
     topics: ['1B2'],
     prepares: ['d1_009', 'd1_019', 'd1_049'],
+    notes: ['1B2.2', '1B2.4', '1B2.6'],
     scenes: [
       {
         type: 'title',
@@ -362,7 +366,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'As the auditor, you set the confidence level and tolerable error before testing, based on risk. If the sample shows more deviations than you can tolerate, you conclude the control is not effective and report it. You do not move the threshold to fit the result.',
+        body: 'As the IS auditor, you set the confidence level and tolerable error before testing, based on risk. If the sample shows more deviations than you can tolerate, you conclude the control is not effective and report it. You do not move the threshold to fit the result.',
       },
       {
         type: 'trap',
@@ -380,7 +384,7 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'An IS auditor will test whether user access requests over the past year had manager approval. Which sampling approach is MOST appropriate?',
         options: [
-          'Attribute sampling of the requests the auditor judges riskiest',
+          'Attribute sampling of the requests the IS auditor judges riskiest',
           'Variable sampling of access requests across the year',
           'Testing every request raised in the last month',
           'Attribute sampling of randomly selected access requests',
@@ -406,7 +410,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A sample’s deviation rate exceeds the tolerable rate set at planning. The process owner asks the IS auditor to raise the tolerable rate. What is the auditor’s BEST response?',
+          'A sample’s deviation rate exceeds the tolerable rate set at planning. The process owner asks the IS auditor to raise the tolerable rate. What is the IS auditor’s BEST response?',
         options: [
           'Agree, provided the process owner documents the reason',
           'Remove the failed items as one-off exceptions',
@@ -415,7 +419,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 2,
         explanation:
-          'Thresholds are set before testing so results cannot be argued into a pass. Agreeing with documentation is tempting because it looks controlled, but moving the goalposts after the result destroys the test’s objectivity.',
+          'Thresholds are set before testing so results cannot be argued into a pass. Agreeing with documentation is tempting because it looks controlled, but changing the threshold after seeing the result destroys the test’s objectivity.',
       },
     ],
   },
@@ -436,6 +440,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['1A4'],
     prepares: ['d1_012', 'd1_008', 'd1_023'],
+    notes: ['1A4.3', '1A4.6', '1A4.1'],
     scenes: [
       {
         type: 'title',
@@ -491,11 +496,11 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'Each morning, a bank’s system compares the cash its cash machines paid out the day before with its accounting records, and flags any mismatch to the branch. How is this control BEST classified?',
+          'Each morning, a bank’s system compares the cash its automated teller machines (ATMs) dispensed the day before with its accounting records, and flags any mismatch to the branch. How is this control BEST classified?',
         options: [
           'Preventive, because it protects the bank’s cash',
           'Corrective, because the branch fixes each mismatch',
-          'Compensating, because it covers weak cash machine security',
+          'Compensating, because it covers weak security at the ATMs',
           'Detective, because it finds differences after they occur',
         ],
         correctIndex: 3,
@@ -505,7 +510,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'At a small branch, one clerk both enters and approves customer refunds, and duties cannot be split. Which compensating control should the IS auditor consider BEST?',
+          'At a small branch, one clerk both enters and approves customer refunds, and duties cannot be split. Which compensating control is BEST for the IS auditor to recommend?',
         options: [
           'The IT security team reapproves the clerk’s refund access quarterly',
           'A regional manager checks each week’s refunds against receipts',
@@ -528,7 +533,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 1,
         explanation:
-          'Controls give reasonable, not absolute, assurance: people can collude, err or override them. The auditor should still check whether something was missed, but fraud alone does not prove failure. Blaming the testing is tempting because the controls passed, yet testing shows controls work as designed, not that collusion is impossible. Stopping staff fraud is very much a control matter.',
+          'Controls give reasonable, not absolute, assurance: people can collude, err or override them. The IS auditor should still check whether something was missed, but fraud alone does not prove failure. Blaming the testing is tempting because the controls passed, yet testing shows controls work as designed, not that collusion is impossible. Preventing and detecting employee fraud is a control matter.',
       },
     ],
   },
@@ -547,8 +552,9 @@ export const CISA_LESSONS: Lesson[] = [
     ],
     outlineVersion: OUTLINE,
     lastReviewed: PHASE2_REVIEWED,
-    topics: ['1B1'],
+    topics: ['1B1', '1A3'],
     prepares: ['d1_024', 'd1_011', 'd1_010'],
+    notes: ['1B1.2', '1A3.4'],
     scenes: [
       {
         type: 'title',
@@ -582,7 +588,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'When testing turns up a red flag',
-        body: 'Sometimes fieldwork reveals signs of possible fraud, such as one person creating and approving large payments. The auditor records the facts and raises them within audit, following the organization’s agreed fraud procedure. Investigating is for people with the authority and skills to do it.',
+        body: 'Sometimes fieldwork reveals signs of possible fraud, such as one person creating and approving large payments. The IS auditor records the facts and raises them within audit, following the organization’s agreed fraud procedure. Investigating is for people with the authority and skills to do it.',
       },
       {
         type: 'idea',
@@ -597,12 +603,12 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'For planning order, ask what each step depends on; work built on nothing is the trap. For consistency between auditors, look for whatever tells each of them what to do before testing starts. When a red flag appears, your role shifts from tester to messenger: keep the evidence safe and the news away from anyone involved.',
+        body: 'For planning order, ask what each step depends on; work built on nothing is the trap. For consistency between auditors, look for whatever tells each of them what to do before testing starts. When a red flag appears, your role shifts from testing to escalating: keep the evidence safe and the news away from anyone involved.',
       },
       {
         type: 'check',
         question:
-          'An IS auditor is assigned a new audit of a hospital’s patient-records system. A colleague offers last year’s test steps so fieldwork can start tomorrow. What should the auditor do FIRST?',
+          'An IS auditor is assigned a new audit of a hospital’s patient-records system. A colleague offers last year’s test steps so fieldwork can start tomorrow. What should the IS auditor do FIRST?',
         options: [
           'Agree what this audit should answer, then set its boundaries',
           'Have the audit manager approve reusing last year’s test steps',
@@ -620,7 +626,7 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'A data analytics tool that both auditors were required to use',
           'A shared folder where each auditor could see the other’s work',
-          'The audit manager signs off both sets of work papers afterward',
+          'The audit manager signs off on both sets of work papers afterward',
           'A common audit program listing the planned test procedures',
         ],
         correctIndex: 3,
@@ -630,7 +636,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'While testing purchasing, an IS auditor sees that a buyer approved large orders to a supplier he set up himself. The buyer’s manager is his close friend. To whom should the auditor FIRST report?',
+          'While testing purchasing, an IS auditor sees that a buyer approved large orders to a supplier he set up himself. The buyer’s manager is his close friend. To whom should the IS auditor FIRST report?',
         options: [
           'The chief audit executive, who heads the audit function',
           'The buyer’s manager, who has line authority over the buyer',
@@ -639,7 +645,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 0,
         explanation:
-          'Possible fraud goes up the audit line under the agreed procedure, so people with authority decide how to investigate and evidence is protected. The buyer’s manager is tempting because they manage the buyer, but they are close to him and could tip him off. Going to HR or the police is not the auditor’s call; those steps are decided after escalation.',
+          'Possible fraud goes up the audit line under the agreed procedure, so people with authority decide how to investigate and evidence is protected. The buyer’s manager is tempting because they manage the buyer, but they are close to him and could tip him off. Going to HR or the police is not the IS auditor’s call; those steps are decided after escalation.',
       },
     ],
   },
@@ -656,6 +662,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['1B5'],
     prepares: ['d1_006', 'd1_015', 'd1_036'],
+    notes: ['1B5.3', '1B5.4', '1B5.5'],
     scenes: [
       {
         type: 'title',
@@ -679,22 +686,22 @@ export const CISA_LESSONS: Lesson[] = [
         heading: 'From exit meeting to closure',
         steps: [
           { label: 'Exit meeting', note: 'At the end of testing, management checks the facts and proposes actions' },
-          { label: 'Report', note: 'Findings rated by the auditor, with management’s responses and action dates' },
+          { label: 'Report', note: 'Findings rated by the IS auditor, with management’s responses and action dates' },
           { label: 'Distribution', note: 'The audit committee receives it; executives who must act also get it' },
-          { label: 'Follow-up', note: 'The auditor checks evidence that each agreed action was carried out' },
+          { label: 'Follow-up', note: 'The IS auditor checks evidence that each agreed action was carried out' },
           { label: 'Escalation', note: 'Serious risks left open or overdue go back to the audit committee' },
         ],
-        caption: 'If management disagrees with a finding, the report shows both views. The rating stays the auditor’s call.',
+        caption: 'If management disagrees with a finding, the report shows both views. The rating stays the IS auditor’s call.',
       },
       {
         type: 'idea',
-        heading: 'Overall opinions in one minute',
-        body: 'Some reports give an overall opinion. Unmodified: controls are effective. Qualified: effective except for specific, contained problems. Adverse: problems are so widespread that controls are ineffective overall. Disclaimer: the auditor could not obtain enough evidence to form a view.',
+        heading: 'Overall opinions, in brief',
+        body: 'Some reports give an overall opinion. Unmodified (also called unqualified): controls are effective. Qualified: effective except for specific, contained problems. Adverse: problems are so widespread that controls are ineffective overall. Disclaimer: the IS auditor could not obtain enough evidence to form a view.',
       },
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Right level of authority. As the IS (information systems) auditor, you report to the body that owns the decision and you keep your ratings independent. Management owns the fix. The more severe the finding, the higher and faster it travels. In follow-up you want proof that the fix happened, not a promise that it did.',
+        body: 'Report to the right level of authority. As the IS (information systems) auditor, you report to the body that owns the decision and you keep your ratings independent. Management owns the fix. The more severe the finding, the higher and faster it travels. In follow-up you want proof that the fix happened, not a promise that it did.',
       },
       {
         type: 'trap',
@@ -709,7 +716,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'An IS auditor rates a backup failure as high risk. The IT director asks for the final report to go only to her. What is the auditor’s MOST appropriate response?',
+          'An IS auditor rates a backup failure as high risk. The IT director asks for the final report to go only to her. What is the IS auditor’s MOST appropriate response?',
         options: [
           'Agree, since the IT director owns the backup process and its fix',
           'Send it to the director now and to the committee later',
@@ -732,7 +739,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 2,
         explanation:
-          'Follow-up verifies the action actually happened, so the auditor wants records of reviews done, traced to access really removed. The approved procedure is tempting because it is formal, but it shows the review was designed, not that it ran. An email is a claim, not proof.',
+          'Follow-up verifies the action actually happened, so the IS auditor wants records of reviews done, traced to access really removed. The approved procedure is tempting because it is formal, but it shows the review was designed, not that it ran. An email is a claim, not proof.',
       },
       {
         type: 'check',
@@ -770,6 +777,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: REVIEWED,
     topics: ['2A2'],
     prepares: ['d2_001', 'd2_002', 'd2_004'],
+    notes: ['2A2.1', '2A2.3', '2A2.4'],
     scenes: [
       {
         type: 'title',
@@ -780,7 +788,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Governance decides what the organization needs from IT and how much risk it will take (its risk appetite), then checks that it got it. Management decides how to deliver. A well-aligned IT strategy traces every major investment back to a business goal. With chargeback, IT costs are charged to the business units that use them, which keeps demand visible.',
+        body: 'Governance decides what the organization needs from IT and how much risk it will take (its risk appetite), then checks that it got it. Management decides how to deliver. A well-aligned IT strategy traces every major investment back to a business goal. Chargeback, billing each business unit for the IT it uses, makes the cost of demand visible to the people who create it.',
       },
       {
         type: 'analogy',
@@ -799,19 +807,19 @@ export const CISA_LESSONS: Lesson[] = [
           points: ['Plans and builds', 'Runs operations', 'Monitors delivery', 'Executive-level responsibility'],
         },
         caption:
-          'COBIT 2019 (ISACA’s IT governance framework): governance is evaluate, direct, monitor; management is plan, build, run, monitor.',
+          'COBIT 2019 (ISACA’s framework for governing and managing enterprise IT): governance is evaluate, direct, monitor; management is plan, build, run, monitor.',
       },
       {
         // Review fix: replaces a five-layer stack. Introduces the three lines in
         // plain words, and places the steering committee at management level.
         type: 'idea',
         heading: 'Who does what',
-        body: 'Many organizations use a Three Lines model. The first line runs a process and owns its risk. The second line (risk and compliance) advises and challenges them. Internal audit, the third line, gives independent assurance to the board. An IT steering committee is a management group of business and IT leaders that ranks IT investments against strategy.',
+        body: 'Many organizations use the Three Lines Model from the Institute of Internal Auditors. The first line runs a process and owns its risk. The second line (risk and compliance) advises and challenges them. Internal audit, the third line, gives independent assurance to the board. An IT steering committee is a management group of business and IT leaders that ranks IT investments against strategy.',
       },
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Governance comes before technology. As the auditor, you check for clear direction, ownership and approval at the right level, and whether IT strategy traces to business goals. You test whether the board gets the information it needs to monitor. You recommend; the board and management decide.',
+        body: 'Governance comes before technology. As the IS (information systems) auditor, you check for clear direction, ownership and approval at the right level, and whether IT strategy traces to business goals. You test whether the board gets the information it needs to monitor. You recommend; the board and management decide.',
       },
       {
         type: 'trap',
@@ -883,6 +891,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: REVIEWED,
     topics: ['2A5'],
     prepares: ['d2_011', 'd2_052', 'd2_021'],
+    notes: ['2A5.2', '2A5.1'],
     scenes: [
       {
         type: 'title',
@@ -904,9 +913,9 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'stack',
         heading: 'Four ways to respond',
         layers: [
-          { label: 'Mitigate', note: 'Add controls to cut likelihood or impact' },
-          { label: 'Transfer', note: 'Share the financial impact, for example through insurance' },
-          { label: 'Accept', note: 'Live with it, formally and within appetite' },
+          { label: 'Mitigate', note: 'Also called reduce: add controls to cut likelihood or impact' },
+          { label: 'Transfer', note: 'Also called share: shift part of the financial impact, for example through insurance' },
+          { label: 'Accept', note: 'Live with it, formally and within risk appetite' },
           { label: 'Avoid', note: 'Stop the activity that creates the risk' },
         ],
         caption: 'What is left after a response is residual risk. Transfer moves some of the cost, never the accountability.',
@@ -915,12 +924,12 @@ export const CISA_LESSONS: Lesson[] = [
         // Review fix: was a second structure scene; now one plain idea with an example.
         type: 'idea',
         heading: 'Appetite vs tolerance',
-        body: 'Risk appetite is how much risk the board will take to pursue its goals, stated broadly: “a low appetite for outages”. Risk tolerance turns it into a measurable limit: “the payments system may be down no more than two hours a month”. A breach of tolerance triggers escalation. A key risk indicator (KRI) asks whether exposure is rising; a key control indicator (KCI) asks whether a control is working. A risk register records each risk, its owner and the agreed response.',
+        body: 'Risk appetite is how much risk the board will take to pursue its goals, stated broadly: “a low risk appetite for outages”. Risk tolerance turns it into a measurable limit: “the payments system may be down no more than two hours a month”. A breach of tolerance triggers escalation. A key risk indicator (KRI) asks whether exposure is rising; a key control indicator (KCI) asks whether a control is working. A risk register records each risk, its owner and the agreed response.',
       },
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'The business owns risk. As the auditor, you never accept a risk on management’s behalf, and neither does IT. You check that each risk has an owner at the right level, that acceptance is formal and within appetite, and that responses are tracked. Then you report the gaps.',
+        body: 'The business owns risk. As the IS (information systems) auditor, you never accept a risk on management’s behalf, and neither does IT. You check that each risk has an owner at the right level, that acceptance is formal and within risk appetite, and that responses are tracked. Then you report the gaps.',
       },
       {
         type: 'trap',
@@ -939,13 +948,13 @@ export const CISA_LESSONS: Lesson[] = [
           'A project manager reports that a customer database used by the sales team can no longer get security fixes (patches). Replacing it would be costly. Who is MOST appropriate to formally accept the residual risk?',
         options: [
           'The IT security manager, who understands the risk best',
-          'The business owner of the sales process, within appetite',
+          'The business owner of the sales process',
           'The project manager who raised the risk',
           'The database administrator who maintains the system',
         ],
         correctIndex: 1,
         explanation:
-          'The business owner who relies on the system owns its risk and may accept it within appetite and their authority. The security manager is tempting because they understand the risk best, but advising is not owning.',
+          'The business owner who relies on the system owns its risk and may accept it within the risk appetite and their authority. The security manager is tempting because they understand the risk best, but advising is not owning.',
       },
       {
         type: 'check',
@@ -954,26 +963,26 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'The insurance premium may rise next year',
           'The insurer may take several weeks to pay a claim',
-          'Insurance cannot transfer fines or lost customer trust',
+          'Insurance cannot transfer accountability for the breach',
           'The insurer may ask to review the company’s controls',
         ],
         correctIndex: 2,
         explanation:
-          'Transfer moves part of the financial impact; the company still owns the breach, the fines and its customers’ trust. A slow payout is tempting because it hurts cash flow, but even a full, prompt payout would leave that harm in place.',
+          'Transfer moves part of the financial impact; the company still owns the breach, its regulatory duties and its customers’ trust. A slow payout is tempting because it hurts cash flow, but even a full, prompt payout would leave that harm in place.',
       },
       {
         type: 'check',
         question:
-          'A board states a low appetite for service outages. The IT team then sets its own outage limits for each system. What should the IS auditor recommend as BEST?',
+          'A board states a low risk appetite for service outages. The IT team then sets its own outage limits for each system. What should the IS auditor recommend as BEST?',
         options: [
-          'Have business owners propose tolerances within appetite',
+          'Have business owners propose tolerances within risk appetite',
           'Keep the IT limits, since IT understands the systems best',
           'Replace all limits with one company-wide outage target',
           'Suspend the limits until the board can review them',
         ],
         correctIndex: 0,
         explanation:
-          'Tolerances turn the board’s appetite into measurable limits; the owners who bear the impact propose them and senior leaders approve them. Keeping IT’s limits is tempting because IT knows the systems, but IT does not own the business impact.',
+          'Tolerances turn the board’s risk appetite into measurable limits; the owners who bear the impact propose them and senior management approves them. Keeping IT’s limits is tempting because IT knows the systems, but IT does not own the business impact.',
       },
     ],
   },
@@ -995,6 +1004,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['2A1', '2A3', '2A4'],
     prepares: ['d2_034', 'd2_050', 'd2_069'],
+    notes: ['2A3.1', '2A1.3', '2A4.3'],
     scenes: [
       {
         type: 'title',
@@ -1027,7 +1037,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'Laws and architecture',
-        body: 'Map each legal duty to the controls that meet it, and give each control a named owner. One control often serves several laws, so it is tested once. Enterprise architecture records today’s state first, then the target the business needs. The gap between them becomes the roadmap.',
+        body: 'Management maps each legal duty to the controls that meet it and gives each control a named owner. One control often serves several laws, so it is tested once. Enterprise architecture records today’s state first, then the target the business needs. The gap between them becomes the roadmap.',
       },
       {
         type: 'idea',
@@ -1056,7 +1066,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 1,
         explanation:
-          'What a document requires decides its type, not its label. A specific, mandatory rule is a standard, so the auditor tests against it, reports the gaps and may suggest renaming it. Accepting the teams’ view is tempting because the title supports them, but it lets a real requirement be treated as optional. Rewriting documents is management’s job.',
+          'What a document requires decides its type, not its label. A specific, mandatory rule is a standard, so the IS auditor tests against it, reports the gaps and may suggest renaming it. Accepting the teams’ view is tempting because the title supports them, but it lets a real requirement be treated as optional. Rewriting documents is management’s job.',
       },
       {
         type: 'check',
@@ -1106,6 +1116,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['2A6', '2A7'],
     prepares: ['d2_013', 'd2_049', 'd2_073'],
+    notes: ['2A7.1', '2A6.1', '2A7.3'],
     scenes: [
       {
         type: 'title',
@@ -1134,7 +1145,7 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Apply handling rules', note: 'Access, encryption, retention and disposal to match each level' },
           { label: 'Review and refresh', note: 'Update the inventory as systems and purposes change' },
         ],
-        caption: 'Minimization, collecting and keeping only what you need, applies at every step.',
+        caption: 'Data minimization, collecting and keeping only what you need, applies at every step.',
       },
       {
         type: 'idea',
@@ -1144,7 +1155,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Know what you hold before you protect it, and make accountability explicit. As the IS (information systems) auditor, you check that someone senior is accountable for privacy, that the organization knows what personal data it keeps and why, and that business leaders, not IT, decide how their data is graded and shared. You report the gaps; the owners fix them.',
+        body: 'Know what you hold before you protect it, and make accountability explicit. As the IS (information systems) auditor, you check that someone senior is accountable for privacy, that the organization knows what personal data it keeps and why, and that business leaders, not IT, decide how their data is classified and shared. You report the gaps; the owners fix them.',
       },
       {
         type: 'trap',
@@ -1178,11 +1189,11 @@ export const CISA_LESSONS: Lesson[] = [
           'The system administrator who looks after the HR system',
           'The sales manager’s own line manager, who knows the need',
           'The head of HR, who answers for how salary data is used',
-          'The CISO, who sets the company’s access control policy',
+          'The chief information security officer, who sets access policy',
         ],
         correctIndex: 2,
         explanation:
-          'The business leader accountable for salary data approves access to it. The administrator is the custodian who applies that decision; setting access up is not the same as deciding who should have it. The line manager is tempting because they know why access is wanted, but they can confirm the need, not grant access to data they do not own. The CISO sets the rules for access, not who may see salary data.',
+          'The business leader accountable for salary data approves access to it. The administrator is the custodian who applies that decision; setting access up is not the same as deciding who should have it. The line manager is tempting because they know why access is wanted, but they can confirm the need, not grant access to data they do not own. The chief information security officer sets the rules for access, not who may see salary data.',
       },
       {
         type: 'check',
@@ -1218,6 +1229,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['2B2'],
     prepares: ['d2_099', 'd2_027', 'd2_115'],
+    notes: ['2B2.2', '2B2.3'],
     scenes: [
       {
         type: 'title',
@@ -1238,10 +1250,10 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'flow',
         layout: 'timeline',
-        heading: 'The vendor lifecycle',
+        heading: 'The vendor life cycle',
         steps: [
           { label: 'Decide to source', note: 'Weigh risk, knowledge loss and flexibility, not price alone' },
-          { label: 'Due diligence', note: 'Depth set by how critical the supplier is: money, security, recovery, legal' },
+          { label: 'Due diligence', note: 'Depth set by how critical the supplier is: financial health, security, recovery, legal' },
           {
             label: 'Contract',
             note: 'Measurable service level agreements (SLAs), a right to audit, breach notice and exit terms',
@@ -1255,7 +1267,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'Assurance you can rely on',
-        body: 'For a critical vendor, ask for independent evidence, such as a SOC 2 Type 2 report: an outside auditor’s test of the vendor’s controls over a period, not one day. Read it. Check the scope covers your service and note exceptions. It also lists controls you must run, such as removing leavers’ access.',
+        body: 'For a critical vendor, ask for independent evidence, such as a System and Organization Controls (SOC) 2 Type 2 report: an independent auditor’s test of the vendor’s controls over a period, not one day. Read it. Check that the scope covers your service and note exceptions. It also lists controls you must run yourself, called complementary user entity controls, such as removing departing employees’ access.',
       },
       {
         type: 'idea',
@@ -1270,7 +1282,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'Effort follows risk: the more the business leans on a supplier, the closer the look. A single report, certificate or promise is never the whole picture, and a contract nobody watches protects no one. Plan the way out on the day you sign; once the contract is live, your leverage is gone.',
+        body: 'Effort follows risk: the more the business leans on a supplier, the closer the look. A single report, certificate or promise is never the whole picture, and a contract nobody watches protects no one. Plan the way out on the day you sign; once the contract is live, most of your leverage is gone.',
       },
       {
         type: 'check',
@@ -1292,13 +1304,13 @@ export const CISA_LESSONS: Lesson[] = [
           'A bank’s outsourced data center had a four-hour outage that surprised everyone. The provider’s monthly reports had shown missed targets for a year. What should the IS auditor recommend as BEST?',
         options: [
           'Add stricter outage penalties to the contract at renewal',
-          'A named bank manager reviews each report and acts on misses',
+          'A named bank manager reviews reports and acts on missed targets',
           'The vendor committee approves a revised SLA with tighter targets',
           'Move the data center to a provider with a better record',
         ],
         correctIndex: 1,
         explanation:
-          'The warning signs were in the reports; nobody at the bank owned reading them and acting. Outsourcing moved the work, not the accountability. Stricter penalties or tighter approved targets are tempting, but neither works if no one notices the misses. A new provider would face the same blind spot.',
+          'The warning signs were in the reports; nobody at the bank owned reading them and acting. Outsourcing moved the work, not the accountability. Stricter penalties or tighter approved targets are tempting, but neither works if no one notices the missed targets. A new provider would face the same blind spot.',
       },
       {
         type: 'check',
@@ -1333,6 +1345,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['2B1', '2B3', '2B4'],
     prepares: ['d2_018', 'd2_031', 'd2_110'],
+    notes: ['2B1.1', '2B3.1', '2B4.1'],
     scenes: [
       {
         type: 'title',
@@ -1348,7 +1361,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'analogy',
         heading: 'A restaurant kitchen',
-        body: 'The head chef makes every cook take leave and swap stations, so nobody’s station goes unseen for long. Plates served shows how busy the kitchen is; diners coming back shows whether it is good. Tasting every plate catches bad ones, but only better recipes and training stop them being made.',
+        body: 'The head chef makes every cook take vacation and swap stations, so nobody’s station goes unseen for long. Plates served shows how busy the kitchen is; diners coming back shows whether it is good. Tasting every plate catches bad ones, but only better recipes and training stop them being made.',
       },
       {
         type: 'stack',
@@ -1356,7 +1369,7 @@ export const CISA_LESSONS: Lesson[] = [
         layers: [
           {
             label: 'Nobody hides their work',
-            note: 'Job rotation and mandatory leave mean someone else regularly does, and sees, each critical job',
+            note: 'Job rotation and mandatory vacation mean someone else regularly does, and sees, each critical job',
           },
           {
             label: 'Measures track the goal',
@@ -1377,12 +1390,12 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'trap',
         heading: 'The hero trap',
-        trap: '“Our database administrator never takes leave and knows everything, so they are our most reliable person.”',
-        why: 'When someone with powerful access never steps away, no one else ever sees their work, so errors or fraud can stay hidden. Mandatory leave and job rotation exist to expose that. The trap praises the very pattern these controls watch for.',
+        trap: '“Our database administrator never takes vacation and knows everything, so they are our most reliable person.”',
+        why: 'When someone with powerful access never steps away, no one else ever sees their work, so errors or fraud can stay hidden. Mandatory vacation and job rotation exist to expose that. The trap praises the very pattern these controls watch for.',
       },
       {
         type: 'tip',
-        body: 'When a question praises effort, such as long hours, courses completed or extra testing, ask what would prove the goal is met. For a measure, ask whether the number could improve while the goal gets worse. The “best” answer usually brings in a second pair of eyes or fixes how work is done, not more of the same activity.',
+        body: 'When a question praises effort, such as long hours, courses completed or extra testing, ask what would prove the goal is met. For a measure, ask whether the number could improve while the goal gets worse. The “best” answer usually brings in an independent reviewer or fixes how work is done, not more of the same activity.',
       },
       {
         type: 'check',
@@ -1396,12 +1409,12 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 0,
         explanation:
-          'Rotation is a fraud and error control: a fresh person doing the job sees what the last one may have hidden. Broader skills are tempting because they are a real benefit, but they are a side effect, not why auditors recommend it. Pointing to a policy says who requires rotation, not why it works. The manager still decides; the auditor explains the risk.',
+          'Rotation is a fraud and error control: a fresh person doing the job sees what the last one may have hidden. Broader skills are tempting because they are a real benefit, but they are a side effect, not why IS auditors recommend it. Pointing to a policy says who requires rotation, not why it works. The manager still decides; the IS auditor explains the risk.',
       },
       {
         type: 'check',
         question:
-          'Course completions at a firm rose from 60 to 98 percent this year. Failures on fake-scam (phishing) email tests did not change. What should the IS auditor conclude is MOST likely?',
+          'Course completions at a firm rose from 60 to 98 percent this year. Failures on simulated phishing tests (fake scam emails sent to test staff) did not change. What should the IS auditor conclude is MOST likely?',
         options: [
           'Staff need more courses before phishing results can improve',
           'The phishing tests are too hard to show real progress yet',
@@ -1445,8 +1458,9 @@ export const CISA_LESSONS: Lesson[] = [
     ],
     outlineVersion: OUTLINE,
     lastReviewed: REVIEWED,
-    topics: ['3B4', '3B1'],
+    topics: ['3B4'],
     prepares: ['d3_066', 'd3_092', 'd3_088'],
+    notes: ['3B4.1', '3B4.2', '3B4.3'],
     scenes: [
       {
         type: 'title',
@@ -1457,7 +1471,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Go-live is the day a new system starts running the real business. A post-implementation review, usually held months later, asks three things. Do the controls (the safeguards built into the system) work as designed? Did the promised benefits arrive? What lessons should future projects use?',
+        body: 'Go-live is the day a new system starts running the real business. A post-implementation review, usually held months later, asks three things. Did the benefits promised in the business case (the approved reason for the spend) arrive? Do the controls (the safeguards built into the system) work as designed? What lessons should future projects use? The exam treats the first question as the review’s primary purpose.',
       },
       {
         type: 'analogy',
@@ -1469,14 +1483,14 @@ export const CISA_LESSONS: Lesson[] = [
         layout: 'timeline',
         heading: 'From go-live readiness to lessons learned',
         steps: [
-          { label: 'Readiness check', note: 'Before go-live, accountable owners sign off agreed criteria, with open issues listed' },
+          { label: 'Readiness check', note: 'Before go-live, accountable owners sign off on agreed criteria, with open issues listed' },
           { label: 'Go live', note: 'The system starts running real business' },
           { label: 'Stabilize', note: 'Early fixes settle and normal operation builds up real data, often over months' },
           {
             label: 'Independent review',
-            note: 'Controls, benefits against the business case (the approved reason for the spend), and lessons',
+            note: 'Controls, benefits against the business case, and lessons',
           },
-          { label: 'Act and follow up', note: 'Management fixes what was found; the auditor checks it closed' },
+          { label: 'Act and follow up', note: 'Management fixes what was found; the IS auditor follows up to confirm closure' },
         ],
         caption: 'Lessons feed back into how future projects are planned and approved.',
       },
@@ -1495,18 +1509,18 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'trap',
         heading: 'The readiness trap',
         trap: '“The vendor says the system is ready, so it can go live.”',
-        why: 'A supplier’s word is not evidence, and the vendor does not own the risk. Go-live rests on agreed readiness criteria signed off by the accountable business and IT owners, with open issues visible and any remaining risk formally accepted.',
+        why: 'A vendor’s word is not evidence, and the vendor does not own the risk. Go-live rests on agreed readiness criteria signed off by the accountable business and IT owners, with open issues visible and any residual risk (what remains after fixes) formally accepted by management.',
       },
       {
         type: 'tip',
-        body: 'Exam questions open with a short scenario, called the stem. If the stem asks when to review, look for stable operation first. If it asks who should review, pick someone who did not build it. If it asks who fixes a benefit shortfall, pick the business owner, not the auditor or IT.',
+        body: 'Exam questions open with a short scenario, called the stem. If the stem asks when to review, look for stable operation first. If it asks who should review, pick someone who did not build it. If it asks who fixes a benefit shortfall, pick the business owner, not the IS auditor or IT.',
       },
       {
         type: 'check',
         question:
           'A retailer’s new inventory system went live two weeks ago, and daily fixes are still going in. The sponsor asks the IS auditor to start the post-implementation review now. What is the BEST response?',
         options: [
-          'Agree a later date, once fixes slow and results are measurable',
+          'Agree on a later date, once fixes slow and results are measurable',
           'Start now, while the project team is still together',
           'Replace the review with more testing of the daily fixes',
           'Skip the review, because users signed acceptance before go-live',
@@ -1518,7 +1532,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A new claims system is live and stable. Management must choose who leads its post-implementation review. Which choice should the IS auditor consider BEST?',
+          'A new claims system is live and stable. Management must choose who leads its post-implementation review. Which choice should the IS auditor recommend as BEST?',
         options: [
           'The project manager, who knows the delivery best',
           'The software vendor, who knows the product best',
@@ -1535,13 +1549,13 @@ export const CISA_LESSONS: Lesson[] = [
           'A post-implementation review finds a new self-service portal cut call volumes far less than its business case promised. What should the IS auditor recommend as BEST?',
         options: [
           'The IS auditor redesigns the portal to raise its use',
-          'The sponsor owns a fix plan, and the auditor follows up',
+          'The sponsor owns a fix plan, and the IS auditor follows up',
           'IT adds features until the promised target is met',
           'Report the shortfall to senior management and close the review',
         ],
         correctIndex: 1,
         explanation:
-          'The sponsor promised the benefit, so the sponsor owns the plan to close the gap, and the auditor later checks it worked. Reporting and closing is tempting, but a finding with no owner rarely gets fixed. Redesigning the portal would break the auditor’s independence, and adding features assumes the cause is technical.',
+          'The sponsor promised the benefit, so the sponsor owns the plan to close the gap, and the IS auditor later follows up to confirm it worked. Reporting and closing is tempting, but a finding with no owner rarely gets fixed. Redesigning the portal would impair the IS auditor’s independence, and adding features assumes the cause is technical.',
       },
     ],
   },
@@ -1563,6 +1577,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['3A1', '3A2'],
     prepares: ['d3_001', 'd3_025', 'd3_046'],
+    notes: ['3A1.2', '3A2.1', '3A2.2'],
     scenes: [
       {
         type: 'title',
@@ -1573,7 +1588,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'A business case is the written argument for spending: costs, benefits, risks and options. A feasibility study checks the idea can work technically, financially, operationally, legally and on time. The project charter then formally starts the project and gives the project manager authority.',
+        body: 'A business case is the written argument for spending: costs, benefits, risks and options. A feasibility study checks the idea can work technically, economically, legally, operationally and on schedule. The project charter then formally starts the project and gives the project manager authority.',
       },
       {
         type: 'analogy',
@@ -1601,7 +1616,7 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'trap',
         heading: 'The sunk-cost trap',
         trap: '“We have already spent most of the budget, so we must finish.”',
-        why: 'Money already spent cannot come back, so it should not drive the decision. When costs or benefits shift significantly, the case is refreshed and the people who own the money choose again: continue, change course or stop. Revisit it at every gate, not just at the start.',
+        why: 'Money already spent cannot come back, so it should not drive the decision. When costs or benefits change materially (enough to alter the decision), the case is refreshed and the people who own the money choose again: continue, change course or stop. Revisit it at every gate, not just at the start.',
       },
       {
         type: 'tip',
@@ -1619,7 +1634,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 0,
         explanation:
-          'A resource conflict across a program is a governance decision, so it goes to the body that can commit resources: the steering committee. The project management office is tempting because it sees every project, but it sets standards and supports delivery; it does not decide priorities. The auditor advises and never decides.',
+          'A resource conflict across a program is a governance decision, so it goes to the body that can commit resources: the steering committee. The project management office is tempting because it sees every project, but it sets standards and supports delivery; it does not decide priorities. The IS auditor advises and never decides.',
       },
       {
         type: 'check',
@@ -1633,14 +1648,14 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 2,
         explanation:
-          'Feasibility has several sides, and two are untested here: legal and operational. An app that breaks privacy law or cannot be supported fails whatever its returns. Lower returns are tempting because forecasts often miss, but the study did examine returns. The auditor would recommend completing the study before the go decision.',
+          'Feasibility has several sides, and two are untested here: legal and operational. An app that breaks privacy law or cannot be supported fails whatever its returns. Lower returns are tempting because forecasts often miss, but the study did examine returns. The IS auditor would recommend completing the study before the go decision.',
       },
       {
         type: 'check',
         question:
           'Halfway through a warehouse automation project, the company sells two of its three warehouses. The project manager reports it is on time and on budget. What should concern the IS auditor MOST?',
         options: [
-          'Status reports track cost and schedule but not earned value',
+          'Status reports omit earned value, the value of work done',
           'Its approval rests on savings the business will no longer get',
           'The delivery risk register has not been refreshed this quarter',
           'The steering committee meets too rarely to follow progress closely',
@@ -1670,6 +1685,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['3A3'],
     prepares: ['d3_002', 'd3_017', 'd3_047'],
+    notes: ['3A3.1', '3A3.2', '3A3.3'],
     scenes: [
       {
         type: 'title',
@@ -1680,12 +1696,12 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Every development method covers the same work: agree requirements, design, build, test and release. Waterfall does each step once, in order, with sign-off between them. Agile repeats short cycles called sprints. DevOps joins the builders (development) with the people who run live systems (operations), and automates testing and release, so changes ship often.',
+        body: 'Every development method covers the same work: agree on requirements (what the business needs the system to do), design, build, test and release. Waterfall does each step once, in order, with sign-off between them. Agile repeats short cycles called sprints. DevOps joins the builders (development) with the people who run live systems (operations), and automates testing and release, so changes ship often.',
       },
       {
         type: 'analogy',
         heading: 'A wedding caterer and a café',
-        body: 'A wedding caterer agrees the full menu in writing before buying any food. A café changes its menu each week based on what sold. Both still follow the same food safety rules; the café simply checks them more often, in smaller batches.',
+        body: 'A wedding caterer agrees on the full menu in writing before buying any food. A café changes its menu each week based on what sold. Both still follow the same food safety rules; the café checks them more often, in smaller batches.',
       },
       {
         type: 'compare',
@@ -1709,12 +1725,12 @@ export const CISA_LESSONS: Lesson[] = [
           ],
         },
         caption:
-          'Same control goals either way: approved requirements, tested code and an authorized release. Building before requirements (what the business needs the system to do) are approved risks working software that solves the wrong problem.',
+          'Same control goals either way: approved requirements, tested code and an authorized release. Building before the requirements are approved risks working software that solves the wrong problem.',
       },
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Controls designed early are cheapest, and the method does not change the control goals. As the auditor, you do not choose waterfall or agile. You check that whichever method is used still leaves evidence an outsider can follow, from what was asked for to what was proven. You recommend fixes for gaps; management closes them.',
+        body: 'Controls designed early are cheapest, and the method does not change the control goals. As the IS auditor, you do not choose waterfall or agile. You check that whichever method is used still leaves evidence an outsider can follow, from each approved requirement to the test that proved it. That unbroken line is called traceability. You recommend fixes for gaps; management closes them.',
       },
       {
         type: 'trap',
@@ -1740,7 +1756,7 @@ export const CISA_LESSONS: Lesson[] = [
           'Add testers so defects from changing needs are caught early',
           'Let developers build the loan types they think are most common',
           'Have the IT director decide which loan types are in scope',
-          'Have business owners agree and sign off the loan requirements',
+          'Have business owners agree on and approve the loan requirements',
         ],
         correctIndex: 3,
         explanation:
@@ -1772,7 +1788,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 0,
         explanation:
-          'Code shows what was built, not why. Without recorded reasons, a later change can quietly remove a control nobody knew was deliberate, and auditors cannot judge the design. Server overload is tempting because daily releases feel risky, but frequency is DevOps working as intended; the gap is the missing record of decisions.',
+          'Code shows what was built, not why. Without recorded reasons, a later change can quietly remove a control nobody knew was deliberate, and the IS auditor cannot judge the design. Server overload is tempting because daily releases feel risky, but frequency is DevOps working as intended; the gap is the missing record of decisions.',
       },
     ],
   },
@@ -1795,6 +1811,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['3A4'],
     prepares: ['d3_022', 'd3_061', 'd3_024'],
+    notes: ['3A4.2', '3A4.1', '3A4.3'],
     scenes: [
       {
         type: 'title',
@@ -1827,19 +1844,19 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Prevent at the source. A control at entry stops bad data before it spreads; a report found later only shows that it spread. As the auditor, you advise early, while the design is still cheap to change. Management designs, builds and owns the controls. If you designed them yourself, you could not later audit them objectively.',
+        body: 'Prevent at the source. A control at entry stops bad data before it spreads; a report found later only shows that it spread. As the IS auditor, you advise early, while the design is still cheap to change. Management designs, builds and owns the controls. If you designed them yourself, you could not later audit them objectively.',
       },
       {
         type: 'trap',
         heading: 'The detect-it-later trap',
         trap: '“Invalid records are reaching processing, so add a daily exception report.”',
-        why: 'A report is detective: it finds bad records after they are already in the system. The root cause is a missing input control. An edit check at entry prevents the error where it starts, which is cheaper and more reliable.',
+        why: 'A report is a detective control: it finds bad records after they are already in the system. The root cause is a missing input control. An edit check at entry is a preventive control: it stops the error where it starts, which is cheaper and more reliable.',
       },
       {
         type: 'trap',
         heading: 'The helpful-auditor trap',
-        trap: '“The auditor knows controls best, so the auditor should design them.”',
-        why: 'Designing the controls makes them the auditor’s own work, and no one can objectively audit their own work. Early advice is welcome; authorship is not. Management stays the owner of every control it builds.',
+        trap: '“The IS auditor knows controls best, so the IS auditor should design them.”',
+        why: 'Designing the controls makes them the IS auditor’s own work, and no one can objectively audit their own work; ISACA calls this a self-review threat. Early advice is welcome; authorship is not. Management stays the owner of every control it builds.',
       },
       {
         type: 'tip',
@@ -1853,7 +1870,7 @@ export const CISA_LESSONS: Lesson[] = [
           'Field checks that reject invalid hours when timesheets are entered',
           'Record counts and pay totals compared between the two steps',
           'Access rules limiting who can start the nightly payroll run',
-          'Payslips delivered only to the employees named on them',
+          'Pay stubs delivered only to the employees named on them',
         ],
         correctIndex: 1,
         explanation:
@@ -1871,7 +1888,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 2,
         explanation:
-          'Letting one person both create a payee and release money to it is the classic setup for fraud: a fake employee, paid with nobody else involved. Unnoticed entry errors are tempting because they are a real risk, but a second person in the process would catch those too; the bigger harm is deliberate theft. The fix is a role split the system enforces.',
+          'Letting one person both create a payee and release money to it is the classic setup for fraud: a fake employee, paid with nobody else involved. Unnoticed entry errors are tempting because they are a real risk, but a second person in the process would catch those too; the bigger harm is deliberate theft. The fix is segregation of duties enforced by the system’s roles.',
       },
       {
         type: 'check',
@@ -1885,7 +1902,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 0,
         explanation:
-          'To stop someone denying an action, you need a record nobody can quietly change, tied to a verified identity. Here anyone with admin rights could have edited the entry, so it proves nothing. Encryption is tempting because it protects records, but it keeps them secret, not unchangeable.',
+          'To stop someone denying an action (non-repudiation), you need a record nobody can quietly change, tied to a verified identity. Here anyone with admin rights could have edited the entry, so it proves nothing. Encryption is tempting because it protects records, but it keeps them secret, not unchangeable.',
       },
     ],
   },
@@ -1906,8 +1923,9 @@ export const CISA_LESSONS: Lesson[] = [
     ],
     outlineVersion: OUTLINE,
     lastReviewed: PHASE2_REVIEWED,
-    topics: ['3B1'],
+    topics: ['3B1', '3A3'],
     prepares: ['d3_003', 'd3_007', 'd3_010'],
+    notes: ['3B1.1', '3B1.4', '3A3.5'],
     scenes: [
       {
         type: 'title',
@@ -1944,17 +1962,17 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Evidence quality, and the business decides readiness. As the auditor, you check that results exist at each level, trace back to approved requirements and meet the exit criteria (pass marks agreed before testing). You do not run the tests or accept the system. Business owners accept it; your job is to say whether the evidence supports their decision.',
+        body: 'Two rules: the evidence must be sound, and the business decides readiness. As the IS auditor, you check that results exist at each level, trace back to approved requirements and meet the exit criteria (pass marks agreed before testing). You do not run the tests or accept the system. Business owners accept it; your job is to say whether the evidence supports their decision.',
       },
       {
         type: 'trap',
         heading: 'The wrong-level trap',
-        trap: '“The business signed off acceptance testing, so every interface must work.”',
+        trap: '“The business signed off on acceptance testing, so every interface must work.”',
         why: 'Each level has its own scope. Acceptance shows users are satisfied with what they tried; it does not prove data passes correctly between systems. For interfaces, look for integration test results that trace records across each link.',
       },
       {
         type: 'tip',
-        body: 'Match the question to the test level whose scope covers it: pieces, links, the whole, or business fit. When something is missing, the auditor’s job is to make it visible, not to supply it. For test data, judge the result, not the intention: what could a tester still see?',
+        body: 'Match the question to the test level whose scope covers it: pieces, links, the whole, or business fit. When something is missing, the IS auditor’s job is to make it visible, not to supply it. For test data, judge the result, not the intention: what could a tester still see?',
       },
       {
         type: 'check',
@@ -1982,7 +2000,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 1,
         explanation:
-          'The matrix has done its job: it exposed requirements with no evidence. The auditor makes that gap known to the people deciding on go-live, and the business decides whether to delay or accept the risk. Writing the tests yourself is tempting because it closes the gap fast, but it is management’s work and would impair your objectivity.',
+          'The matrix has done its job: it exposed requirements with no evidence. The IS auditor makes that gap known to the people deciding on go-live, and the business decides whether to delay or accept the risk. Writing the tests yourself is tempting because it closes the gap fast, but it is management’s work and would impair your objectivity.',
       },
       {
         type: 'check',
@@ -2017,8 +2035,9 @@ export const CISA_LESSONS: Lesson[] = [
     ],
     outlineVersion: OUTLINE,
     lastReviewed: PHASE2_REVIEWED,
-    topics: ['3B2'],
+    topics: ['3B2', '3A3'],
     prepares: ['d3_009', 'd3_004', 'd3_013'],
+    notes: ['3B2.1', '3B2.2', '3A3.3'],
     scenes: [
       {
         type: 'title',
@@ -2041,10 +2060,10 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'flow',
         heading: 'How a release reaches production',
         steps: [
-          { label: 'Log the change request', note: 'Linked to its requirement, with purpose, impact and a rollback plan' },
-          { label: 'Peer review, build once', note: 'An independent reviewer checks the code; the pipeline builds it once' },
+          { label: 'Log the change request', note: 'Linked to its requirement, with purpose, impact and a rollback plan (tested steps back to the last working version)' },
+          { label: 'Peer review, build once', note: 'An independent reviewer checks the code; the pipeline (the automated build-and-release chain) builds it once' },
           { label: 'Pass automated gates', note: 'Automated tests and security scans (automatic checks for known weaknesses) block any failing build' },
-          { label: 'Approve on attached evidence', note: 'CAB advises on significant changes; the change authority decides' },
+          { label: 'Approve on attached evidence', note: 'The change advisory board (CAB) advises on significant changes; the change authority, the role empowered to approve, decides' },
           { label: 'Deploy, never by the author', note: 'Through the pipeline or by operations staff, never by the person who wrote the code' },
         ],
         caption: 'Configuration items, everything the release needs (code, designs, settings, scripts), sit in an approved, frozen baseline. Any item left out can change after testing, without approval.',
@@ -2052,13 +2071,13 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Preventive beats detective. A gate that blocks a failed build is stronger than a review that finds the damage later. As the auditor, you check that controls act before release, not after, and that nobody can get around them alone. You recommend; release owners run the process.',
+        body: 'Preventive controls, which stop a bad release, beat detective controls, which find it afterward. A gate that blocks a failed build is stronger than a review that finds the damage later. As the IS auditor, you check that controls act before release, not after, and that nobody can get around them alone. You recommend; the change owner runs the process.',
       },
       {
         type: 'trap',
-        heading: 'The exam trap',
-        trap: '“Every change is reviewed at the monthly board meeting, so our releases are controlled.”',
-        why: 'With releases several times a week, a monthly review finds problems after customers meet them. Routine releases need automated checks that stop them before go-live. The board judges significant changes before approval, not after.',
+        heading: 'The monthly-meeting trap',
+        trap: '“Every change is reviewed at the monthly change advisory board meeting, so our releases are controlled.”',
+        why: 'With releases several times a week, a monthly review finds problems after customers meet them. Routine releases need automated checks that stop them before go-live. The CAB advises on significant changes before they are approved, not after they have shipped.',
       },
       {
         type: 'tip',
@@ -2085,7 +2104,7 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'The release’s code was not tested thoroughly enough before deployment',
           'Server logs were not reviewed often enough to spot the change',
-          'The change board approved the release without a rollback plan',
+          'The CAB approved the release without a rollback plan',
           'Server settings were left out of the controlled baseline',
         ],
         correctIndex: 3,
@@ -2128,6 +2147,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['3B3'],
     prepares: ['d3_012', 'd3_019', 'd3_036'],
+    notes: ['3B3.1', '3B3.2'],
     scenes: [
       {
         type: 'title',
@@ -2158,16 +2178,16 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Convert and reconcile', note: 'Record counts and control totals (sums of key values) matched, old to new' },
           {
             label: 'Go, no-go or fall back',
-            note: 'Owners decide against criteria agreed in advance. A rollback plan gives tested, time-bound steps to restore code, data and settings',
+            note: 'Owners decide against criteria agreed in advance. A fallback plan gives tested, time-bound steps to restore the old system’s code, data and settings',
           },
           { label: 'Retire the old system', note: 'Only after final sign-off and with its records archived' },
         ],
-        caption: 'Big-bang switches everyone at once. Phased moves one group at a time. Parallel runs old and new side by side and compares results.',
+        caption: 'Big-bang (also called direct cutover) switches everyone at once. Pilot lets one site or group go first. Phased moves one group at a time. Parallel runs old and new side by side and compares results.',
       },
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Verify outcomes. Data that looks right on a few screens is not proof. As the auditor, you check that the data owner approved the conversion rules and results, and that the hard calls for cutover night were agreed in advance by the people who own the risk. You advise; management decides.',
+        body: 'Verify outcomes. Data that looks right on a few screens is not proof. As the IS auditor, you check that the data owner approved the conversion rules and results, and that the hard calls for cutover night were agreed in advance by the people who own the risk. You advise; management decides.',
       },
       {
         type: 'trap',
@@ -2179,7 +2199,7 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'trap',
         heading: 'The one-weekend trap',
         trap: '“Big-bang is simpler, so it is always the best cutover.”',
-        why: 'Big-bang avoids building temporary connections that let old and new systems share data during the move, but a failure hits every user at once. When groups differ a lot or the stakes are high, a phased cutover limits the damage and lets the team correct course between waves.',
+        why: 'Big-bang avoids building temporary interfaces (connections that let old and new systems share data during the move), but a failure hits every user at once. When groups differ a lot or the stakes are high, a phased cutover limits the damage and lets the team correct course between waves.',
       },
       {
         type: 'tip',
@@ -2211,7 +2231,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 2,
         explanation:
-          'Criteria agreed in advance stop a tired team talking itself into going live on suspect data, and a clear trigger to return to the old system protects payroll. “Significant” keeps the trigger tied to business impact, not every penny. Letting the vendor decide is tempting because it knows the system, but the business owns the decision and the risk.',
+          'Criteria agreed in advance stop a tired team talking itself into going live on suspect data, and a clear trigger to return to the old system protects payroll. “Significant” (the exam’s word is “material”) keeps the trigger tied to business impact, not every penny. Letting the vendor decide is tempting because it knows the system, but the business owns the decision and the risk.',
       },
       {
         type: 'check',
@@ -2221,7 +2241,7 @@ export const CISA_LESSONS: Lesson[] = [
           'Every store runs the same simple process, with a tested fallback',
           'Stores differ widely, but the vendor promises a smooth switch',
           'The cutover falls on the busiest holiday sales weekend of the year',
-          'The steering committee has signed off the cutover date',
+          'The steering committee has signed off on the cutover date',
         ],
         correctIndex: 0,
         explanation:
@@ -2248,12 +2268,13 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: REVIEWED,
     topics: ['4B1'],
     prepares: ['d4_004', 'd4_020', 'd4_070'],
+    notes: ['4B1.1', '4B1.3'],
     scenes: [
       {
         type: 'title',
         kicker: 'Domain 4 · Business impact analysis',
         title: 'Business impact analysis comes first',
-        subtitle: 'Before you can plan a recovery, you have to know what hurts most, and how fast.',
+        subtitle: 'Before anyone can plan a recovery, the business must know what hurts most, and how fast.',
       },
       {
         type: 'idea',
@@ -2272,7 +2293,7 @@ export const CISA_LESSONS: Lesson[] = [
         steps: [
           { label: 'Identify processes', note: 'And the systems, people and suppliers they depend on' },
           { label: 'Assess impact over time', note: 'Financial, legal, customer and safety harm per hour or day' },
-          { label: 'Rank and set targets', note: 'Enterprise-wide criteria rank processes into tiers, each with a longest survivable outage (maximum tolerable downtime), a recovery time (RTO) inside it, and how much data it can lose (RPO). More on both next lesson' },
+          { label: 'Rank and set targets', note: 'Enterprise-wide criteria rank processes into tiers. Each tier gets a maximum tolerable downtime (MTD), the longest outage it can survive; a recovery time objective (RTO) inside it; and a recovery point objective (RPO), the data it can afford to lose. RTO and RPO are covered in the next lesson' },
           { label: 'Senior management approves', note: 'Approved results become the agreed basis for recovery priorities and spending' },
           { label: 'Feed the strategy', note: 'Recovery options are chosen only after this' },
         ],
@@ -2281,7 +2302,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'The business owns the risk, so the business sets the targets. As the auditor, you check that process owners rated the impacts, senior management approved the targets, and each target is backed by impact and cost. A target without that analysis is a wish, not a requirement.',
+        body: 'The business owns the risk, so the business sets the targets. As the IS auditor, you check that process owners rated the impacts, senior management approved the targets, and each target is backed by impact and cost. A target without that analysis is a wish, not a requirement.',
       },
       {
         type: 'trap',
@@ -2297,7 +2318,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A new CIO wants to contract a hot site (a ready-to-use backup data center) right after recent outages. No BIA exists. What should the IS auditor recommend FIRST?',
+          'A new chief information officer (CIO) wants to contract a hot site (a ready-to-use backup data center) right after recent outages. No BIA exists. What should the IS auditor recommend FIRST?',
         options: [
           'Sign the hot site contract to cut downtime quickly',
           'Write a disaster recovery plan for the current systems',
@@ -2311,10 +2332,10 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'During a BIA, the finance owner says month-end close can tolerate five days of outage. IT thinks one day is the limit. Which view should BEST set the target?',
+          'During a BIA, the owner of the month-end close process says it can tolerate five days of outage. IT thinks one day is the limit. Whose view should BEST determine the target?',
         options: [
           'The stricter of the two views, to be safe',
-          'The finance owner’s view, backed by impact analysis',
+          'The process owner’s view, backed by impact analysis',
           'IT’s view, backed by its recovery experience',
           'The IS auditor’s view, after independent testing',
         ],
@@ -2353,14 +2374,15 @@ export const CISA_LESSONS: Lesson[] = [
     ],
     outlineVersion: OUTLINE,
     lastReviewed: REVIEWED,
-    topics: ['4B5', '4B2'],
+    topics: ['4B1', '4B5', '4B2'],
     prepares: ['d4_074', 'd4_082', 'd4_068'],
+    notes: ['4B1.2', '4B5.1', '4B2.2'],
     scenes: [
       {
         type: 'title',
         kicker: 'Domain 4 · Disaster recovery',
         title: 'RPO and RTO',
-        subtitle: 'Two numbers decide how a business recovers from disaster. Mixing them up is one of the most common exam errors.',
+        subtitle: 'Two numbers decide how a business recovers from disaster. Mixing them up is a common exam error.',
       },
       {
         // Review fix (MAJOR): a plain core idea replaces the off-topic single-points-of-failure scene.
@@ -2403,7 +2425,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'The business sets the targets; IT proposes designs to meet them. As the auditor, you check that the targets came from an approved BIA and that the strategy meets them at a sensible cost. Paying for a mirrored site for a system that can wait days is a finding too. Only a test proves recovery works.',
+        body: 'The business sets the targets; IT proposes designs to meet them. As the IS auditor, you check that the targets came from an approved BIA and that the strategy meets them at a cost the impact justifies. Paying for a mirrored site for a system that can wait days is a finding too. Only a test proves recovery works.',
       },
       {
         type: 'trap',
@@ -2479,22 +2501,23 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: REVIEWED,
     topics: ['4A8'],
     prepares: ['d4_033', 'd4_185', 'd4_028'],
+    notes: ['4A8.1', '4A8.3', '4A8.2'],
     scenes: [
       {
         type: 'title',
         kicker: 'Domain 4 · IT operations',
         title: 'Change, configuration and patching',
-        subtitle: 'Most outages and many frauds start with an unreviewed change. Here is the path a safe change takes.',
+        subtitle: 'Many outages, and some frauds, begin with an unreviewed change. Here is the path a safe change takes.',
       },
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Production means the live systems staff and customers use. Change management makes sure every production change is requested, approved, tested and released by someone other than its builder. A patch is a software fix from the vendor, often for a security flaw. Patching is change management under time pressure: the riskier the flaw, the faster the path, but never no path.',
+        body: 'Production means the live systems staff and customers use. Change management makes sure every production change is requested, approved, tested and released by someone other than its builder. A patch is a software fix from the vendor, often for a security flaw. Patching is change management under time pressure: the riskier the flaw, the faster the path, but there is always a path.',
       },
       {
         type: 'analogy',
         heading: 'A landlord fixing locks',
-        body: 'A landlord hears of break-ins on the street and replaces a broken front-door lock today. A sticky cupboard latch waits for the next scheduled visit. Even the same-day job goes in the maintenance log and gets checked afterwards. Urgency follows risk, and every change is recorded.',
+        body: 'A landlord hears of break-ins on the street and replaces a broken front-door lock today. A sticky cupboard latch waits for the next scheduled visit. Even the same-day job goes in the maintenance log and gets checked afterward. Urgency follows risk, and every change is recorded.',
       },
       {
         // Review fix: normal vs emergency changes folded into the caption (one structure scene).
@@ -2514,7 +2537,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Preventive controls (which stop a problem) beat detective ones (which spot it afterwards), and priority follows risk. As the auditor, you expect every change, even an emergency fix, to be authorized, tested in proportion to its risk, recorded and independently reviewed. You recommend the control; management puts it in place.',
+        body: 'Preventive controls (which stop a problem) beat detective ones (which spot it afterward), and priority follows risk. As the IS auditor, you expect every change, even an emergency fix, to be authorized, tested in proportion to its risk, recorded and independently reviewed. You recommend the control; management puts it in place.',
       },
       {
         type: 'trap',
@@ -2539,12 +2562,12 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 1,
         explanation:
-          'Separating build from release stops unauthorized or untested code before it goes live. Logging is tempting because it is easy, but it only shows the damage afterwards. Peer review helps quality, but developers can still release on their own.',
+          'Separating build from release stops unauthorized or untested code before it goes live. Logging is tempting because it is easy, but it only shows the damage afterward. Peer review helps quality, but developers can still release on their own.',
       },
       {
         type: 'check',
         question:
-          'An IS auditor compares production server settings with the approved configuration baseline and finds several unexplained differences. What should the auditor recommend FIRST?',
+          'An IS auditor compares production server settings with the approved configuration baseline and finds several unexplained differences. What should the IS auditor recommend FIRST?',
         options: [
           'Reset every server to the approved baseline immediately',
           'Update the baseline so it matches production',
@@ -2558,7 +2581,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'An IS auditor finds that emergency changes make up 40% of all changes, and most come from one development team. What should concern the auditor MOST?',
+          'An IS auditor finds that emergency changes make up 40% of all changes, and most come from one development team. What should concern the IS auditor MOST?',
         options: [
           'The change advisory board may meet too rarely for the team’s needs',
           'The team may need more staff for on-call duties',
@@ -2589,6 +2612,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['4A1', '4A2'],
     prepares: ['d4_009', 'd4_029', 'd4_060'],
+    notes: ['4A2.1', '4A1.5', '4A2.2'],
     scenes: [
       {
         type: 'title',
@@ -2617,17 +2641,17 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Maintain and reconcile', note: 'Support, patches and licenses tracked; discovery scans compared with the register, and gaps followed up' },
           { label: 'Retire', note: 'Data securely wiped, record closed' },
         ],
-        caption: 'Discovery keeps the register honest. Comparing it with the register turns a scan into a control.',
+        caption: 'Discovery keeps the register honest: comparing scan results with the register turns a scan into a control.',
       },
       {
         type: 'idea',
         heading: 'When support ends',
-        body: 'When a vendor ends support, security fixes stop. Management then replaces the item, buys extended support, or adds compensating controls (other controls covering the same risk) and formally accepts the risk that remains. Running it as is, with no decision recorded, is the finding.',
+        body: 'When a vendor ends support, security fixes stop. Management then replaces the item, buys extended support, or adds compensating controls (other controls covering the same risk) and formally accepts the risk that remains (the residual risk). Running it as is, with no decision recorded, is the finding.',
       },
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Risk-based thinking starts with a complete inventory. As the auditor, you test whether the register matches reality, not just whether one exists. When a component cannot be replaced in time, you recommend interim controls and a decision recorded by someone with authority over the risk. Management decides; you report what remains.',
+        body: 'Risk-based thinking starts with a complete inventory. As the IS auditor, you test whether the register matches reality, not just whether one exists. When a component cannot be replaced in time, you recommend compensating controls and a decision recorded by someone with authority over the risk. Management decides; you report what remains.',
       },
       {
         type: 'trap',
@@ -2637,7 +2661,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'An inventory is only as good as its last check against reality. A purchase shows what you may run, not what you run, so settle facts before spending. When a fix cannot come in time, shrink the exposure now and make someone own the rest.',
+        body: 'An inventory is only as good as its last check against reality. A purchase shows what you may run, not what you run, so settle facts before spending. When a fix cannot come in time, reduce the exposure now and have an accountable owner formally accept the residual risk.',
       },
       {
         type: 'check',
@@ -2658,13 +2682,13 @@ export const CISA_LESSONS: Lesson[] = [
           'Checkout terminals lose vendor support next month, and replacements will take nine months. IT will isolate and monitor them meanwhile. Who should formally accept the remaining risk?',
         options: [
           'The head of retail operations, who owns the checkout process',
-          'The IT security manager, who will monitor the isolated terminals',
+          'The information security manager, who will monitor the isolated terminals',
           'The IS auditor, who first reported the end-of-support gap',
           'The CIO, who approved the nine-month replacement plan',
         ],
         correctIndex: 0,
         explanation:
-          'Risk is accepted by the business owner who bears the impact, at a level with authority over it, and here that is whoever owns checkout. The security manager is tempting because they run the interim controls, but running a control is not owning the risk. The CIO approved the fix, not the business risk while it waits. The auditor reports the gap and never accepts it.',
+          'Risk is accepted by the business owner who bears the impact, at a level with authority over it, and here that is the owner of the checkout process. The information security manager is tempting because they run the compensating controls, but running a control is not owning the risk. The CIO approved the fix, not the business risk while it waits. The IS auditor reports the gap and never accepts it.',
       },
       {
         type: 'check',
@@ -2700,6 +2724,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['4A3', '4A4', '4A5'],
     prepares: ['d4_026', 'd4_010', 'd4_018'],
+    notes: ['4A3.1', '4A4.2', '4A5.1'],
     scenes: [
       {
         type: 'title',
@@ -2723,7 +2748,7 @@ export const CISA_LESSONS: Lesson[] = [
         layers: [
           {
             label: 'Job scheduling',
-            note: 'Each job serves an approved business need, and a job starts only once the counts from the job before it check out',
+            note: 'Each job serves an approved business need, and a dependent job starts only after the record counts from the job before it reconcile',
           },
           {
             label: 'Interfaces',
@@ -2737,7 +2762,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Governance before technology. As the auditor, you first ask whether each job, interface and user-built tool is known, owned and approved. Then you ask whether a control proves it worked. A “job succeeded” message is not evidence of complete, accurate data. You recommend; the business owner decides the fix.',
+        body: 'Governance before technology. As the IS auditor, you first ask whether each job, interface and user-built tool is known, owned and approved. Then you ask whether a control proves it worked. A “job succeeded” message is not evidence of complete, accurate data. You recommend; the business owner decides the fix.',
       },
       {
         type: 'trap',
@@ -2757,7 +2782,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'check',
-        question: 'An IS auditor reviews the batch scheduler for a billing system. Which finding should concern the auditor MOST?',
+        question: 'An IS auditor reviews the batch scheduler for a billing system. Which finding should concern the IS auditor MOST?',
         options: [
           'Several jobs failed last month and were rerun successfully',
           'The scheduler runs on hardware bought five years ago',
@@ -2815,6 +2840,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['4A6', '4A10'],
     prepares: ['d4_014', 'd4_003', 'd4_019'],
+    notes: ['4A6.2', '4A10.1'],
     scenes: [
       {
         type: 'title',
@@ -2829,8 +2855,8 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'analogy',
-        heading: 'A cinema on opening night',
-        body: 'A cinema adds screenings and staff for opening night, not for an average Tuesday. It also promises the film starts at 7:30. Planning for the rush is capacity management. The promised start time, measured and reported, is the service level.',
+        heading: 'A movie theater on opening night',
+        body: 'A movie theater adds showings and staff for opening night, not for an average Tuesday. It also promises the film starts at 7:30. Planning for the rush is capacity management. The promised start time, measured and reported, is the service level.',
       },
       {
         // Expert review fix (2026-10): OLAs and contracts back the SLA; capacity planning runs alongside, so it moved to the caption.
@@ -2847,7 +2873,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Business alignment: the business need sets the target, and the design follows. As the auditor, you check that targets are measurable, tied to business impact and reported end to end. A near-perfect target for an expense-claims tool is a finding, because it costs more than the need justifies; so is a missing target for payroll. You recommend; service owners decide.',
+        body: 'Business alignment: the business need sets the target, and the design follows. As the IS auditor, you check that targets are measurable, tied to business impact and reported end to end. A near-perfect target for an expense-claims tool is a finding, because it costs more than the need justifies; so is a missing target for payroll. You recommend; service owners decide.',
       },
       {
         type: 'trap',
@@ -2891,14 +2917,14 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 1,
         explanation:
-          'An SLA is only as strong as the agreements behind it. If parts can take 24 hours, a hardware failure can break the four-hour promise however hard IT works. Questioning whether four hours is needed is tempting, but the business set that target; the gap is in the supplier terms that should support it. Penalties don’t close it either: they pay out after the promise is broken, but the parts still take 24 hours.',
+          'An SLA is only as strong as the agreements behind it. If parts can take 24 hours, a hardware failure can break the four-hour promise however hard IT works. Questioning whether four hours is needed is tempting, but the business set that target; the gap is in the supplier terms that should support it. Penalties do not close it either: they pay out after the promise is broken, but the parts still take 24 hours.',
       },
       {
         type: 'check',
         question:
           'A cloud provider, the network team and the application team each met their own targets, yet the customer-facing SLA was breached twice this month. What should the IS auditor recommend FIRST?',
         options: [
-          'Ask each team to sign off that its part met its target',
+          'Ask each team to certify that its part met its target',
           'Lower the SLA target to match what the teams deliver',
           'Trace real failed transactions across every layer of the service',
           'Replace the cloud provider with one promising higher availability targets',
@@ -2926,6 +2952,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['4A7'],
     prepares: ['d4_015', 'd4_031', 'd4_016'],
+    notes: ['4A7.1', '4A7.3', '4A7.2'],
     scenes: [
       {
         type: 'title',
@@ -2950,7 +2977,7 @@ export const CISA_LESSONS: Lesson[] = [
           title: 'Incident management',
           points: [
             'Goal: restore service quickly',
-            'Workarounds are fine',
+            'Workarounds are acceptable',
             'Priority set by business impact and urgency',
             'Judged by fixes that last, not just speed',
           ],
@@ -2969,19 +2996,19 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Root cause beats symptom. As the auditor, you look for repeat incidents closed one by one with quick fixes, and for root cause reviews that stop at “operator error”. Ask why the process allowed it. You also test the metrics, because fast closure can hide poor fixes. You recommend; the process owner fixes.',
+        body: 'Root cause beats symptom. As the IS auditor, you look for repeat incidents closed one by one with quick fixes, and for root cause reviews that stop at “operator error”. Ask why the process allowed it. You also test the metrics, because fast closure can hide poor fixes. You recommend; the process owner fixes.',
       },
       {
         type: 'trap',
         heading: 'The exam trap',
         trap: '“Find the root cause before restoring service.”',
-        why: 'During an outage the business needs service back. Apply a safe workaround first; the search for why it failed continues afterwards. Waiting for the root cause makes the harm last longer.',
+        why: 'During an outage the business needs service back. Apply a safe workaround first; the search for why it failed continues afterward. Waiting for the root cause makes the harm last longer.',
       },
       {
         type: 'trap',
         heading: 'The second trap',
         trap: '“Tickets close faster, so the service desk is improving.”',
-        why: 'Speed alone is easy to game by closing tickets early. Judge a desk by whether its fixes hold, not by how fast tickets disappear.',
+        why: 'Speed alone is easy to inflate by closing tickets early. Judge a desk by whether its fixes hold, not by how fast tickets disappear.',
       },
       {
         type: 'tip',
@@ -2994,12 +3021,12 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'Engineers restored service before diagnosing what had failed',
           'The service desk took too long to close the first incident',
-          'The change board did not approve the workaround beforehand',
+          'The change advisory board did not approve the workaround beforehand',
           'No problem record was opened to find and remove the cause',
         ],
         correctIndex: 3,
         explanation:
-          'Restoring service was right; stopping there was not. A problem record keeps the cause on someone’s list after the incident closes. Blaming the early restore is tempting, but restoring service first is correct incident practice; the gap is the missing follow-through. Change board approval of the workaround would not have found the cause either.',
+          'Restoring service was right; stopping there was not. A problem record keeps the cause on someone’s list after the incident closes. Blaming the early restore is tempting, but restoring service first is correct incident practice; the gap is the missing follow-through. Change advisory board approval of the workaround would not have found the cause either.',
       },
       {
         type: 'check',
@@ -3049,6 +3076,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['4A9', '4A11'],
     prepares: ['d4_035', 'd4_106', 'd4_048'],
+    notes: ['4A9.1', '4A11.5'],
     scenes: [
       {
         type: 'title',
@@ -3086,12 +3114,12 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'Databases',
-        body: 'Database administrators often need broad rights to do their work. When management accepts that, compensate: log their activity where they cannot alter it, and have someone independent review it. Changes to the data dictionary (the definitions of every table and field) go through change control, because one bad change can corrupt data everywhere.',
+        body: 'Database administrators often need broad rights to do their work. When management accepts that, apply a compensating control: log their activity where they cannot alter it, and have someone independent review it. Changes to the data dictionary (the definitions of every table and field) go through change control, because one bad change can corrupt data everywhere.',
       },
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Evidence quality and compensating controls. As the auditor, you ask whether the logs would stand up as evidence: complete, kept long enough and untouched. When a powerful role cannot be restricted, look for a control that watches it independently. You recommend the control; management owns the decision to grant the rights.',
+        body: 'Evidence quality and compensating controls. As the IS auditor, you ask whether the logs would stand up as evidence: complete, kept long enough and untouched. When a powerful role cannot be restricted, look for a control that watches it independently. You recommend the control; management owns the decision to grant the rights.',
       },
       {
         type: 'trap',
@@ -3101,7 +3129,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'Judge a log the way a court would: is it complete, kept long enough, untouched and actually examined? How long to keep it is for whoever answers for the data, never whoever pays for the disk. Powerful roles that cannot be restricted are watched from outside their reach.',
+        body: 'Judge a log the way a court would: is it complete, kept long enough, untouched and actually examined? Retention is decided by the data owner, who answers for the data, never by whoever pays for the storage. Powerful roles that cannot be restricted are watched from outside their reach.',
       },
       {
         type: 'check',
@@ -3124,12 +3152,12 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'The compliance officer, applying the regulator’s minimum period',
           'The IS auditor, as an independent party with log expertise',
-          'The records owner, with legal and compliance input',
-          'The CISO, who runs the logging and monitoring program',
+          'The data owner for patient records, with legal and compliance input',
+          'The chief information security officer (CISO), who runs logging and monitoring',
         ],
         correctIndex: 2,
         explanation:
-          'Retention is a business and legal decision: the owner of the records, advised by legal and compliance, sets it for each log type. The compliance officer is tempting because the regulator sets a floor, but a minimum is one input, and the owner may need the logs for longer. The CISO runs the logging, not the records. The auditor checks the decision and does not make it.',
+          'Retention is a business and legal decision: the data owner, advised by legal and compliance, sets it for each log type. The compliance officer is tempting because the regulator sets a floor, but a minimum is one input, and the owner may need the logs for longer. The CISO runs the logging, not the records. The IS auditor checks the decision and does not make it.',
       },
       {
         type: 'check',
@@ -3165,6 +3193,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['4B3'],
     prepares: ['d4_061', 'd4_063', 'd4_065'],
+    notes: ['4B3.1', '4B3.3', '4B3.4'],
     scenes: [
       {
         type: 'title',
@@ -3206,7 +3235,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Evidence quality: test, don’t assume. As the auditor, you know a backup job that reports success proves a copy was written, not that it can be read back. You look for proof that copies work when needed, and that the offsite stock matches the records. You recommend; operations owns the fix.',
+        body: 'Evidence quality: test, do not assume. As the IS auditor, you know a backup job that reports success proves a copy was written, not that it can be read back. You look for proof that copies work when needed, and that the offsite stock matches the records. You recommend; operations owns the fix.',
       },
       {
         type: 'trap',
@@ -3251,7 +3280,7 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'Which evidence BEST shows that backup tapes held in the offsite vault could actually be used after a disaster?',
         options: [
-          'A count showing the catalogued tapes are present in the vault',
+          'A count showing the cataloged tapes are present in the vault',
           'Backup job logs showing the jobs completed successfully',
           'The vault provider’s physical security certificate, renewed this year',
           'A successful test restore from a tape recalled from the vault',
@@ -3280,6 +3309,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['4B4'],
     prepares: ['d4_071', 'd4_072', 'd4_073'],
+    notes: ['4B4.1', '4B4.2'],
     scenes: [
       {
         type: 'title',
@@ -3305,7 +3335,7 @@ export const CISA_LESSONS: Lesson[] = [
         steps: [
           { label: 'Policy', note: 'Management’s mandate: scope, objectives and who is accountable' },
           { label: 'Business impact analysis', note: 'Which processes matter most, and how fast they must return' },
-          { label: 'Strategy', note: 'Recovery options chosen to meet those targets at sensible cost' },
+          { label: 'Strategy', note: 'Recovery options chosen to meet those targets at a cost the impact justifies' },
           { label: 'Plan', note: 'Roles, decision authority, contacts and procedures' },
           { label: 'Train, test and maintain', note: 'Train people on their roles, then test, starting with simple checks; fix gaps and update after major changes' },
         ],
@@ -3319,7 +3349,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Right level of authority. Continuity is a business duty, so its mandate comes from the top, not from IT, and the plan assigns crisis decisions in advance so nobody waits for permission. As the auditor, you check that the steps ran in order, authority is clear, and each test changes the plan where it should. You recommend; management decides.',
+        body: 'Right level of authority. Continuity is a business duty, so its mandate comes from the top, not from IT, and the plan assigns crisis decisions in advance so nobody waits for permission. As the IS auditor, you check that the steps ran in order, authority is clear, and each test changes the plan where it should. You recommend; management decides.',
       },
       {
         type: 'trap',
@@ -3339,7 +3369,7 @@ export const CISA_LESSONS: Lesson[] = [
           'Exercise findings have no owner or deadline for fixing them',
           'The exercises are walkthroughs rather than full interruption tests',
           'Staff contact details change too often to keep the list current',
-          'Senior management did not sign off the first exercise report',
+          'Senior management did not sign off on the first exercise report',
         ],
         correctIndex: 0,
         explanation:
@@ -3356,7 +3386,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 3,
         explanation:
-          'A continuity policy is a governance document, so senior management, which answers for the whole company, approves it. The recovery manager is tempting because they know the detail, but procedures sit below the policy; the mandate must come from the top. Department heads own their processes, not the company-wide mandate. The auditor reviews the policy and does not approve it.',
+          'A continuity policy is a governance document, so senior management, which answers for the whole company, approves it. The recovery manager is tempting because they know the detail, but procedures sit below the policy; the mandate must come from the top. Department heads own their processes, not the company-wide mandate. The IS auditor reviews the policy and does not approve it.',
       },
       {
         type: 'check',
@@ -3394,6 +3424,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: REVIEWED,
     topics: ['5A3'],
     prepares: ['d5_008', 'd5_023', 'd5_030'],
+    notes: ['5A3.3', '5A3.4', '5A3.5'],
     scenes: [
       {
         type: 'title',
@@ -3404,7 +3435,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Least privilege means each person gets only the access their current role needs, for only as long as they need it. Most access failures are not one bad account but a broken process for joiners, movers and leavers.',
+        body: 'Least privilege means each person gets only the access their current role needs, for only as long as they need it. Many access failures are not one bad account but a broken process for joiners, movers and leavers.',
       },
       {
         type: 'analogy',
@@ -3425,13 +3456,13 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'Separation and privilege',
-        body: 'Segregation of duties splits a task so one person cannot both commit and hide a wrong, such as creating a supplier and paying it. When duties cannot be split, a compensating control, such as an independent review, covers the gap. Powerful administrator rights are safest when granted for a task, approved, and set to expire.',
+        heading: 'Segregation and privilege',
+        body: 'Segregation of duties splits a task so one person cannot both commit and conceal an error or fraud, such as creating a supplier and paying it. When duties cannot be split, a compensating control, such as an independent review, covers the gap. Powerful administrator rights are safest when granted for a task, approved, and set to expire.',
       },
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Root cause beats symptom. As the auditor, one leftover account is a symptom; a mover process that never removes access is the finding. Data owners, not IT, decide who may see their data. You recommend the fix; management makes it.',
+        body: 'Root cause beats symptom. To the IS (information systems) auditor, one leftover account is a symptom; a mover process that never removes access is the finding. Data owners, not IT, decide who may see their data. You recommend the fix; management makes it.',
       },
       {
         type: 'trap',
@@ -3447,7 +3478,7 @@ export const CISA_LESSONS: Lesson[] = [
         // Review fix: the stem no longer hands over the root cause.
         type: 'check',
         question:
-          'An IS auditor finds 12 active accounts for contractors whose contracts ended months ago. What should the auditor recommend as BEST?',
+          'An IS auditor finds 12 active accounts for contractors whose contracts ended months ago. What should the IS auditor recommend as BEST?',
         options: [
           'Disable the 12 accounts and close the finding',
           'Run the access review monthly instead of quarterly',
@@ -3506,6 +3537,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['5A3'],
     prepares: ['d5_024', 'd5_036', 'd5_282'],
+    notes: ['5A3.1'],
     scenes: [
       {
         type: 'title',
@@ -3536,7 +3568,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'Not all second factors are equal',
-        body: 'A hardware security key (a small device you plug in or tap) is tied to the genuine site’s address, so a fake page gets nothing it can reuse. Text or app codes can be typed into a fake page and passed on to the real site. A tricked user can also tap “approve” on a phone pop-up.',
+        body: 'A hardware security key (a small device you plug in or tap) is tied to the genuine site’s address, so a fake page gets nothing it can reuse. This is called phishing-resistant authentication. Text or app codes can be typed into a fake page and passed on to the real site. A tricked user can also tap “approve” on a phone pop-up.',
       },
       {
         type: 'idea',
@@ -3556,7 +3588,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'Warehouse staff sign in to a payroll portal from shared kiosks. Which sign-in design should the IS auditor accept as genuinely multi-factor?',
+          'Warehouse staff sign in to a payroll portal from shared kiosks. Which sign-in design should the IS auditor consider genuinely multi-factor?',
         options: [
           'A password plus the employee’s date of birth',
           'A PIN plus a staff smart card in a card reader',
@@ -3614,6 +3646,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: REVIEWED,
     topics: ['5B5'],
     prepares: ['d5_057', 'd5_039', 'd5_161'],
+    notes: ['5B5.1', '5B5.2'],
     scenes: [
       {
         type: 'title',
@@ -3624,7 +3657,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Incident response is a planned, practiced way to handle security events. Order matters: limit the damage first, then remove the cause, restore service, and finally learn so it does not happen again.',
+        body: 'Incident response is a planned, practiced way to handle security incidents: events that harm, or threaten, the confidentiality, integrity or availability of information. Order matters: limit the damage first, then remove the cause, restore service, and finally learn so it does not happen again.',
       },
       {
         type: 'analogy',
@@ -3633,7 +3666,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'flow',
-        heading: 'The incident lifecycle',
+        heading: 'The incident life cycle',
         steps: [
           { label: 'Prepare', note: 'Plan, roles, tools and practice before anything happens' },
           { label: 'Detect and analyze', note: 'Confirm it is real; judge scope and severity' },
@@ -3642,12 +3675,12 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Learn', note: 'Feed what happened back into controls and the plan' },
         ],
         caption:
-          'Based on the classic NIST SP 800-61 Rev. 2 lifecycle, which Rev. 3 now maps to the CSF 2.0 functions. Evidence is preserved throughout, not only at the end.',
+          'Based on the classic NIST SP 800-61 Rev. 2 life cycle, which Rev. 3 now maps to the CSF 2.0 functions. Evidence is preserved throughout, not only at the end.',
       },
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'During a live incident, “first” means containment, unless people’s safety is at risk, which always comes first. As the auditor, you check that the plan names who declares, who escalates and who speaks for the company, and that lessons learned actually change controls.',
+        body: 'During a live incident, “first” means containment, unless people’s safety is at risk, which always comes first. As the IS (information systems) auditor, you check that the plan names who declares, who escalates and who speaks for the organization, and that lessons learned actually change controls.',
       },
       {
         type: 'trap',
@@ -3722,6 +3755,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['5A1', '5B1', '5A2'],
     prepares: ['d5_001', 'd5_104', 'd5_003'],
+    notes: ['5A1.1', '5A2.1', '5B1.2'],
     scenes: [
       {
         type: 'title',
@@ -3749,12 +3783,12 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Guideline', note: 'Helpful advice, not mandatory' },
         ],
         caption:
-          'Review the policy on a cycle and whenever a law, threat or business change affects it. Pick a published framework (a ready-made set of controls), such as ISO/IEC 27001 or the NIST Cybersecurity Framework (CSF) 2.0, by legal, contract and business need.',
+          'Management reviews the policy on a cycle and whenever a law, threat or business change affects it, and selects a published framework (a ready-made set of controls), such as ISO/IEC 27001 or the NIST Cybersecurity Framework (CSF) 2.0, based on legal, contractual and business requirements.',
       },
       {
         type: 'idea',
         heading: 'People and premises',
-        body: 'Awareness works when behavior changes: staff flag odd messages quickly and without fear. Physical controls limit who can enter and record it, such as personal badges or a two-door entry that admits one person at a time. Environmental controls watch heat, humidity, water, fire and power, and must alert someone who can act.',
+        body: 'Awareness works when behavior changes: staff flag odd messages quickly and without fear. Physical controls limit who can enter and record it, such as personal badges or a two-door entry that admits one person at a time (a mantrap). Environmental controls watch heat, humidity, water, fire and power, and must alert someone who can act.',
       },
       {
         type: 'idea',
@@ -3776,14 +3810,14 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'An IS auditor finds the information security policy was written and signed off by the IT security team alone. It lists detailed firewall settings. Which concern is MOST significant?',
         options: [
-          'It lacks senior management approval, so it lacks authority',
+          'It was not approved by senior management or the board',
           'Its firewall settings will date quickly and need frequent edits',
           'The IS audit team did not review it before it was issued',
           'It has not yet been communicated to staff',
         ],
         correctIndex: 0,
         explanation:
-          'Without senior management or board approval, business units can treat the policy as IT’s opinion. The dated firewall settings are tempting because they are a real flaw, but settings belong in a standard and are easy to move. Auditors assess a policy; they do not clear it before issue. Telling staff comes later: sharing an unauthorized policy only spreads IT’s opinion further.',
+          'Without senior management or board approval, business units can treat the policy as IT’s opinion. The dated firewall settings are tempting because they are a real flaw, but settings belong in a standard and are easy to move. IS auditors assess a policy; they do not clear it before issue. Telling staff comes later: sharing an unauthorized policy only spreads IT’s opinion further.',
       },
       {
         type: 'check',
@@ -3833,6 +3867,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['5A4', '5A9'],
     prepares: ['d5_041', 'd5_044', 'd5_084'],
+    notes: ['5A4.1', '5A4.2', '5A9.2'],
     scenes: [
       {
         type: 'title',
@@ -3848,7 +3883,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'analogy',
         heading: 'An airport',
-        body: 'Anyone can walk into the public hall, but reaching the planes means passing a security check. Staff doors open only with a personal badge, so a lost badge is cancelled on its own. Nobody gives every worker the same master key and hopes it stays secret.',
+        body: 'Anyone can walk into the public hall, but reaching the planes means passing a security check. Staff doors open only with a personal badge, so a lost badge is canceled on its own. Nobody gives every worker the same master key and hopes it stays secret.',
       },
       {
         type: 'stack',
@@ -3879,11 +3914,11 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'trap',
         heading: 'The exam trap',
         trap: '“Hide the wireless network name and allow only listed device addresses.”',
-        why: 'Both are easy to get around: anyone nearby can still see a hidden name, and each device’s built-in network ID can be copied. Neither identifies a person. Individual logins let you remove one leaver without changing a password everyone knows.',
+        why: 'Both are easy to get around: anyone nearby can still see a hidden name, and each device’s built-in network ID can be copied. Neither identifies a person. Individual logins let you remove one departing user without changing a password everyone knows.',
       },
       {
         type: 'tip',
-        body: 'If a question says a fix will take weeks, look for an interim control at the same layer as the flaw. If personal phones hold company data, look for a control that protects company data without touching anything personal.',
+        body: 'If a question says a fix will take weeks, look for a compensating control at the same layer as the flaw. If personal phones hold company data, look for a control that protects company data without touching anything personal.',
       },
       {
         type: 'check',
@@ -3902,7 +3937,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A file server’s sharing service has a critical flaw. The vendor patch is six weeks away, and only finance laptops use the share. What should the IS auditor recommend as the BEST interim control?',
+          'A file server’s sharing service has a critical flaw. The vendor patch is six weeks away, and only finance laptops use the share. What should the IS auditor recommend as the BEST compensating control?',
         options: [
           'A firewall rule letting only finance laptops reach the share',
           'A web application firewall placed in front of the file server',
@@ -3947,6 +3982,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['5A5', '5A6'],
     prepares: ['d5_052', 'd5_061', 'd5_062'],
+    notes: ['5A5.1', '5A6.2', '5A6.3'],
     scenes: [
       {
         type: 'title',
@@ -3995,7 +4031,7 @@ export const CISA_LESSONS: Lesson[] = [
           ],
         },
         caption:
-          'Real systems use both encryption types: public keys safely deliver or agree a one-time shared key (a session key), and that fast key encrypts the bulk data.',
+          'Real systems use both encryption types: public keys safely deliver or agree on a one-time shared key (a session key), and that fast key encrypts the bulk data.',
       },
       {
         type: 'idea',
@@ -4038,7 +4074,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 2,
         explanation:
-          'A costly, salted hash makes each guess expensive for an attacker, while one sign-in barely notices. Account lockout is tempting, but it only stops guessing on the live sign-in page. Attackers who steal the password file guess offline, where no lockout applies. A signed risk acceptance does not make a weak design that is easy to fix any safer.',
+          'A costly, salted hash makes each guess expensive for an attacker, while one sign-in barely notices. Account lockout is tempting, but it only stops guessing on the live sign-in page. Attackers who steal the password file guess offline, where no lockout applies. Management may accept risk, but risk acceptance suits risk that cannot be reduced at reasonable cost; here the fix is cheap, so accepting the risk is not the best approach.',
       },
       {
         type: 'check',
@@ -4048,7 +4084,7 @@ export const CISA_LESSONS: Lesson[] = [
           'Use a longer public key so the backups stay even safer',
           'Use a symmetric key for the data, guarded by the public key',
           'Hash the backups instead, since hashing runs much faster',
-          'Ask the change board to approve a longer nightly backup window',
+          'Ask the change advisory board to approve a longer nightly backup window',
         ],
         correctIndex: 1,
         explanation:
@@ -4072,8 +4108,9 @@ export const CISA_LESSONS: Lesson[] = [
     ],
     outlineVersion: OUTLINE,
     lastReviewed: PHASE2_REVIEWED,
-    topics: ['5A7'],
+    topics: ['5A7', '5A6'],
     prepares: ['d5_064', 'd5_067', 'd5_070'],
+    notes: ['5A7.1', '5A7.2', '5A6.4'],
     scenes: [
       {
         type: 'title',
@@ -4089,7 +4126,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'analogy',
         heading: 'A passport',
-        body: 'The passport office checks who you are before issuing one, and border staff trust it because they trust the office. If it is stolen, you report it and it goes on a cancelled list. That only helps if border staff check the list, and if you renew before it expires.',
+        body: 'The passport office checks who you are before issuing one, and border staff trust it because they trust the office. If it is stolen, you report it and it goes on a canceled list. That only helps if border staff check the list, and if you renew before it expires.',
       },
       {
         // Expert review fix (2026-10): Request added first; revocation can happen at any point, so it moved to the caption.
@@ -4107,7 +4144,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Preventive beats detective. As the IS (information systems) auditor, you look for controls that stop a failure before it happens: identity checks before issuing, revocation checks on every use, warnings well before expiry, and tight control of who can use a private key. Finding out after an outage, or after malware ships under your company’s name, is too late.',
+        body: 'Preventive beats detective. As the IS (information systems) auditor, you look for controls that stop a failure before it happens: identity checks before issuing, revocation checks on every use, warnings well before expiry, and tight control of who can use a private key. Finding out after an outage, or after malware ships under the organization’s name, is too late.',
       },
       {
         type: 'trap',
@@ -4188,6 +4225,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['5A8'],
     prepares: ['d5_073', 'd5_088', 'd5_089'],
+    notes: ['5A8.2', '5A8.3', '5A8.4'],
     scenes: [
       {
         type: 'title',
@@ -4256,7 +4294,7 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'Hypervisor administrators’ actions are logged, but the same administrators review those logs monthly. What should the IS auditor recommend as BEST against hidden misuse?',
         options: [
-          'The infrastructure manager signs off each monthly self-review',
+          'The infrastructure manager signs off on each monthly self-review',
           'Have the administrators review each other’s logs every month',
           'Add more detail to the hypervisor log entries',
           'Move log review to another team, using tamper-proof logs',
@@ -4287,7 +4325,7 @@ export const CISA_LESSONS: Lesson[] = [
     certId: 'cisa',
     domainId: '5',
     order: 9,
-    title: 'How attackers work, and how we test',
+    title: 'How attackers work, and how to test for it',
     minutes: 5,
     provenance: PROVENANCE,
     references: [
@@ -4299,11 +4337,12 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['5B2', '5B3'],
     prepares: ['d5_103', 'd5_125', 'd5_127'],
+    notes: ['5B2.2', '5B3.2', '5B3.4'],
     scenes: [
       {
         type: 'title',
         kicker: 'Domain 5 · Attacks and security testing',
-        title: 'How attackers work, and how we test',
+        title: 'How attackers work, and how to test for it',
         subtitle: 'Know the common attacks, test where attackers would look, and make sure findings get fixed.',
       },
       {
@@ -4356,7 +4395,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'An attacker takes over a real supplier’s mailbox and emails your payables team new bank details. Which control BEST prevents the payment going astray?',
+          'An attacker takes over a real supplier’s mailbox and emails an organization’s accounts payable team new bank details. Which control BEST prevents the payment going astray?',
         options: [
           'Check that the sender address matches the supplier’s domain',
           'Hold new bank details until a second clerk approves them',
@@ -4370,7 +4409,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A company’s annual penetration test covers only its internet-facing systems. Last year’s ransomware spread through the internal network. Which concern should the IS auditor rate GREATEST?',
+          'A company’s annual penetration test covers only its internet-facing systems. Last year’s ransomware spread through the internal network. Which of the following should be of GREATEST concern to the IS auditor?',
         options: [
           'The testing firm was hired without a competitive bid',
           'Testers might cause outages on internet-facing systems',
@@ -4415,6 +4454,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['5B4'],
     prepares: ['d5_122', 'd5_124', 'd5_111'],
+    notes: ['5B4.2', '5B4.1'],
     scenes: [
       {
         type: 'title',
@@ -4447,7 +4487,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'How ISACA thinks',
-        body: 'Prove it works, and govern it first. As the IS (information systems) auditor, you want evidence that detection works today, not proof that a tool is configured. Watching employees needs a lawful, written basis before anyone switches a tool on. If an outside security firm watches alerts, the company still owns the risk and must oversee the firm.',
+        body: 'Prove it works, and govern it first. As the IS (information systems) auditor, you want evidence that detection works today, not proof that a tool is configured. Watching employees needs a lawful, written basis before anyone switches a tool on. If an outside security firm watches alerts, the organization still owns the risk and must oversee the provider.',
       },
       {
         type: 'trap',
@@ -4476,7 +4516,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A lawful policy covers monitoring of staff email. The security chief now wants to scan staff chat too, using the same tool. What should happen FIRST?',
+          'A lawful policy covers monitoring of staff email. The information security manager now wants to scan staff chat too, using the same tool. What should happen FIRST?',
         options: [
           'Extend monitoring to chat, since a policy already exists',
           'Turn on chat monitoring for privileged users first',
@@ -4521,6 +4561,7 @@ export const CISA_LESSONS: Lesson[] = [
     lastReviewed: PHASE2_REVIEWED,
     topics: ['5B6'],
     prepares: ['d5_182', 'd5_184', 'd5_186'],
+    notes: ['5B6.1', '5B6.2'],
     scenes: [
       {
         type: 'title',

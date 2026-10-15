@@ -26,7 +26,7 @@ import LessonPlayer from '../app/lesson/[id]';
 import Learn from '../app/(tabs)/learn';
 import { LEAF_SETTLE_MS, MatchTile, RoundEnd, RoundScore, SparkScores } from '../components/game';
 import { SPARK, TierLeafMorph } from '../components/glyphs';
-import { lastPart, partDelay, SceneView } from '../components/lesson';
+import { SceneView } from '../components/lesson';
 import { CheckDraw, FadeIn, Pop, resetCelebrationsForTest } from '../components/motion';
 import { PushedHeader } from '../components/ui';
 import { CISA_LESSONS } from '../content/lessons/cisa';
@@ -452,14 +452,13 @@ describe('UX fixes', () => {
     });
   });
 
-  it('O3: "Report a problem" arrives with the scene’s last part (after an answer on a check)', () => {
+  it('O3: "Report a problem" arrives at once after an answer on a check (mobile 1.20: checks only)', () => {
     mockParams = { id: charter.id };
     mount(<LessonPlayer />);
     const says = (n: ReactTestInstance, text: string) => n.findAll((x) => isHost(x) && x.children.some((ch) => typeof ch === 'string' && ch.includes(text))).length > 0;
     const reportFade = () => root().findAll((n) => n.type === FadeIn && n.props.build === true && n.props.rise === false && says(n, 'Report a problem'));
-    expect(reportFade()).toHaveLength(1);
-    expect(reportFade()[0].props.delay).toBe(partDelay(lastPart(charter.scenes[0])));
-    expect(lastPart(charter.scenes[0])).toBe(1);
+    // A plain scene has no link now (it was on every scene before mobile 1.20).
+    expect(reportFade()).toHaveLength(0);
     for (let k = 0; k < charter.scenes.length - 1; k++) press('Next');
     expect(reportFade()).toHaveLength(0);
     press(/^Option [A-D]: The audit committee/);

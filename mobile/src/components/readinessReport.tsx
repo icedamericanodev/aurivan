@@ -142,27 +142,43 @@ export function TrendLegend({ points }: { points: readonly TrendPoint[] }) {
  * of the exam and domain readiness, the evidence behind it, the last two
  * mocks in it, and a 3px bar in the domain's tone. One screen-reader stop.
  * Never "of N questions in this domain" (the bank size is never shown).
+ * Mobile 1.20: with `link`, a ghost under it (its own stop): "Lessons and
+ * notes ›" (Learn on this domain), or "Study notes ›" once its lessons are done.
  */
-export function DomainReportRow({ row, last }: { row: DomainRow; last?: boolean }) {
+export interface DomainLink {
+  label: string;
+  accessibilityLabel: string;
+  hint: string;
+  onPress: () => void;
+}
+export function DomainReportRow({ row, last, link }: { row: DomainRow; last?: boolean; link?: DomainLink }) {
   const { c, isDark } = useTheme();
   const tone = domainColor(row.domain.tone, isDark);
   const mocks = mockLine(row);
   return (
-    <View
-      accessible
-      accessibilityLabel={domainSpoken(row)}
-      testID={`domain-row-${row.domain.id}`}
-      style={{ paddingVertical: 13, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line }}
-    >
-      <T v="label">{domainLabel(row.domain)}</T>
-      <T v="meta" color={c.ink}>{readinessLine(row)}</T>
-      <T v="meta">{evidenceLine(row)}</T>
-      {mocks && <T v="meta">{mocks}</T>}
-      {/* The domain's tone fills its readiness (a static bar: nothing grows on a data screen).
-          No answers yet: the empty track only, never a "0%" fill (UX review H2). */}
-      <View testID={`domain-bar-${row.domain.id}`} style={{ height: 3, borderRadius: 2, backgroundColor: c.track, marginTop: space.sm, overflow: 'hidden' }}>
-        {row.answered > 0 && <View style={{ width: `${Math.max(0, Math.min(100, row.readinessPct))}%`, height: 3, backgroundColor: tone }} />}
+    <View style={{ paddingVertical: 13, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line }}>
+      <View accessible accessibilityLabel={domainSpoken(row)} testID={`domain-row-${row.domain.id}`}>
+        <T v="label">{domainLabel(row.domain)}</T>
+        <T v="meta" color={c.ink}>{readinessLine(row)}</T>
+        <T v="meta">{evidenceLine(row)}</T>
+        {mocks && <T v="meta">{mocks}</T>}
+        {/* The domain's tone fills its readiness (a static bar: nothing grows on a data screen).
+            No answers yet: the empty track only, never a "0%" fill (UX review H2). */}
+        <View testID={`domain-bar-${row.domain.id}`} style={{ height: 3, borderRadius: 2, backgroundColor: c.track, marginTop: space.sm, overflow: 'hidden' }}>
+          {row.answered > 0 && <View style={{ width: `${Math.max(0, Math.min(100, row.readinessPct))}%`, height: 3, backgroundColor: tone }} />}
+        </View>
       </View>
+      {link && (
+        // The ghost pads 8pt each side: pulled left so its text lines up with the row's.
+        <Button
+          kind="ghost"
+          label={link.label}
+          accessibilityLabel={link.accessibilityLabel}
+          accessibilityHint={link.hint}
+          onPress={link.onPress}
+          style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
+        />
+      )}
     </View>
   );
 }

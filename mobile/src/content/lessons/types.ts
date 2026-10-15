@@ -58,5 +58,12 @@ export interface Lesson {
    * Used to offer "Review the lesson" when one of them is missed.
    */
   prepares?: string[];
+  /**
+   * Study-note subtopic ids this lesson introduces, e.g. ['4B1.2', '4B5.1'].
+   * 1–4 ids, the primary note first. Each must exist in the notes pack and
+   * belong to one of the lesson's `topics` (lessons.test.ts checks both).
+   * Links a lesson to the reference page that goes deeper.
+   */
+  notes?: string[];
   scenes: Scene[];
 }

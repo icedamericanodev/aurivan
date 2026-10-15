@@ -32,6 +32,7 @@ import type { Lesson, Scene } from '../content/lessons/types';
 import { displayToOriginal, isCheckCorrect, lettersFor, originalToDisplay, renderText, type Permutation } from '../engine/shuffle';
 import { LETTERS, type Letter } from '../content/types';
 import { sayLater } from '../lib/a11y';
+import { lessonNotes } from '../lib/outline';
 import { haptic } from '../lib/haptics';
 import { motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -166,10 +167,15 @@ export function lessonMap(lesson: Lesson): string[] {
  * domain's dot and kicker, the title, "5 min · 7 scenes", the promise, the
  * domain's branch), then on paper "In this lesson": the lesson's map, each
  * stop a small outline leaf (the leaves the lesson-complete branch fills).
+ * Mobile 1.20: one last meta line names the study notes that go deeper
+ * (a "Goes deeper in the notes" caption over one line per note), when the
+ * lesson's notes resolve.
  */
 function LessonCover({ scene, lesson, art, tone }: { scene: Extract<Scene, { type: 'title' }>; lesson: Lesson; art?: BotanyKind; tone?: string }) {
   const { c } = useTheme();
   const map = lessonMap(lesson);
+  // The notes this lesson leads into (its `notes`, else its topics' first notes).
+  const deeper = lessonNotes(lesson.certId, lesson).map((n) => n.name);
   return (
     <View>
       <Part i={0}>
@@ -201,6 +207,19 @@ function LessonCover({ scene, lesson, art, tone }: { scene: Extract<Scene, { typ
             </View>
           ))}
         </View>
+        {deeper.length > 0 && (
+          // A caption, then one meta line per note; one screen-reader stop, names split by ";".
+          <View
+            accessible
+            accessibilityLabel={`Goes deeper in the notes: ${deeper.join('; ')}.`}
+            style={{ marginTop: space.lg }}
+          >
+            <T v="caption" color={c.accentText}>Goes deeper in the notes</T>
+            {deeper.map((name) => (
+              <T key={name} v="meta" style={{ marginTop: 2 }}>{name}</T>
+            ))}
+          </View>
+        )}
       </Part>
     </View>
   );

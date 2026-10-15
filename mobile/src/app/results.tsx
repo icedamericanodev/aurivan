@@ -17,6 +17,11 @@
  * ("Practice the ones you missed", "Done"), before the answer list, so the
  * learning comes first; its motion waits until it is scrolled into view. One
  * "Next:" line under it names the best next badge for the exam.
+ *
+ * Mobile 1.20: under "Practice the N you missed", a ghost "Notes for what
+ * you missed" (with a turning chevron) opens up to three study-note rows (most-missed
+ * first). It is the only notes path for a mock's misses (a mock shows no
+ * answer screen), so it works for every session kind.
  */
 import { router } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -26,12 +31,15 @@ import { useReportFlow } from '../components/support';
 import { DomainRings } from '../components/journey';
 import { PacingPanel } from '../components/pace';
 import { MilestoneMomentView } from '../components/milestones';
-import { useOncePerDay } from '../components/motion';
-import { BigNum, Button, Enter, Gap, Row, Screen, Section, Stat, StatRow, T, Tag } from '../components/ui';
+import { Turn, useOncePerDay } from '../components/motion';
+import { BookOpen, ChevronDown, ICON_STROKE } from '../components/icons';
+import { BigNum, Button, Enter, Gap, ICON_SIZE, ListRow, Row, Screen, Section, Stat, StatRow, T, Tag } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
+import { findNote, subtopicOfQuestion } from '../content/notes';
+import { missedSubtopics } from '../engine/outline';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
-import { COACHING, coachingTag, practicePaceLine, timeStat, TIMING_LABEL } from '../engine/pace';
+import { aboutMin, COACHING, coachingTag, practicePaceLine, spokenMin, timeStat, TIMING_LABEL } from '../engine/pace';
 import { msUsed, scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
 import { badgeNextLine } from '../lib/badges';
@@ -47,6 +55,8 @@ export default function Results() {
   const active = useSession((s) => s.active);
   const clear = useSession((s) => s.clear);
   const [openId, setOpenId] = useState<string | null>(null);
+  // Mobile 1.20: "Read the notes for what you missed" shows its rows once tapped.
+  const [notesOpen, setNotesOpen] = useState(false);
   const score = useMemo(() => (active ? scoreSession(active) : null), [active]);
   // Mock pacing: time used, median, checks, unanswered, last 10%, slowest domain.
   const pacing = useMemo(() => (active?.mode === 'mock' && active.deadline ? sessionPacing(active) : null), [active]);
@@ -66,7 +76,9 @@ export default function Results() {
   // after the screen has dissolved in): the rings from 0 to the score, the
   // score in their centre and "correct" roll up, 60 ms apart (≤ 3 growths).
   // Never on a session that went badly: below 60% it is simply shown.
-  const firstLook = useOncePerDay(`results:${active?.id ?? ''}`);
+  // Keyed only by a FINISHED session (mobile 1.20): a Results left under a new,
+  // unfinished set must never use up that set's one growth.
+  const firstLook = useOncePerDay(active?.finishedAt ? `results:${active.id}` : 'results:unfinished');
   // The milestone moment plays when it is scrolled into view, not off-screen.
   const [statsY, setStatsY] = useState<number | null>(null);
   const [momentY, setMomentY] = useState<number | null>(null);
@@ -97,7 +109,10 @@ export default function Results() {
     return () => clearTimeout(t);
   }, [ringsDone]);
 
-  if (!active || !score) {
+  // Results only ever describes a finished session. An unfinished one (a new set
+  // started while this screen was still in the stack) shows the empty state, never
+  // a half-scored set (mobile 1.20).
+  if (!active || !score || !active.finishedAt) {
     return (
       <Screen>
         <T v="hero">No results to show.</T>
@@ -114,6 +129,15 @@ export default function Results() {
   // counts as not correct in "Correct n of total"), so Correct + Missed = total.
   const missed = active.questionIds.filter((id) => (active.responses[id] ? !active.responses[id].correct : active.mode === 'mock'));
   const blank = active.mode === 'mock' ? active.questionIds.filter((id) => !active.responses[id]).length : 0;
+  // Up to three study notes behind the misses, most-missed first. Only notes that
+  // exist count, so the limit of three applies AFTER an unknown id is dropped.
+  const missedNotes = missedSubtopics(missed, (id) => {
+    const sub = subtopicOfQuestion(cert.id, id);
+    return sub && findNote(cert.id, sub) ? sub : undefined;
+  }).map((m) => {
+    const note = findNote(cert.id, m.id)!;
+    return { ...m, name: note.name, minutes: note.minutes ?? 2 };
+  });
   const done = () => {
     clear();
     router.replace('/home');
@@ -239,6 +263,42 @@ export default function Results() {
         {missed.length > 0 && (
           <>
             <Button label={missed.length === 1 ? 'Practice the one you missed' : `Practice the ${missed.length} you missed`} onPress={practiseMissed} />
+            <Gap h={space.sm} />
+          </>
+        )}
+        {missedNotes.length > 0 && (
+          <>
+            {/* Mobile 1.20: the notes behind the misses, folded until asked for (BookOpen = notes). */}
+            <Button
+              kind="ghost"
+              label="Notes for what you missed"
+              expanded={notesOpen}
+              accessibilityHint={notesOpen ? 'Hides the study notes' : 'Shows the study notes for the ideas you missed'}
+              // Points down when open, right when closed, and turns when tapped (as on Learn).
+              icon={(col) => (
+                <Turn deg={notesOpen ? 0 : -90}>
+                  <ChevronDown size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />
+                </Turn>
+              )}
+              onPress={() => setNotesOpen(!notesOpen)}
+              style={{ alignSelf: 'flex-start', marginLeft: -space.sm }}
+            />
+            {notesOpen && (
+              <View style={{ marginBottom: space.sm }}>
+                {missedNotes.map((n, i) => (
+                  <ListRow
+                    key={n.id}
+                    icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                    title={n.name}
+                    subtitle={`${n.missed === 1 ? '1 miss' : `${n.missed} misses`} · ${aboutMin(n.minutes, true)}`}
+                    accessibilityLabel={`Read the note: ${n.name}. ${n.missed === 1 ? '1 question' : `${n.missed} questions`} you missed, ${spokenMin(aboutMin(n.minutes, true))}`}
+                    accessibilityHint="Opens the study note. Go back to return to your results."
+                    onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(n.id)}`)}
+                    last={i === missedNotes.length - 1}
+                  />
+                ))}
+              </View>
+            )}
             <Gap h={space.sm} />
           </>
         )}

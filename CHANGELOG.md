@@ -4,6 +4,15 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v11.3] — Study notes in exam wording
+
+### Improved
+- The study notes now use the same wording the exam uses throughout, such as the IS auditor, risk appetite and compensating control, while staying easy to follow if you are new to audit.
+- Terms are explained the first time a page uses them, and the notes use US spelling and phrasing consistently.
+
+### Fixed
+- A few notes no longer overstate how often something happens, and a note on independence now agrees with the rest of the notes.
+
 ## [v11.2.1] — Privacy policy update
 
 ### Improved
