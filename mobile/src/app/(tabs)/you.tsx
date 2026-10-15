@@ -23,6 +23,13 @@
  * Mobile 1.16: "See your readiness report" under the rings; each Mock exams
  * row opens the report with that mock's domains shown, and the section has
  * a "See report" button.
+ * Mobile 1.21 (decided 15 Oct 2026: an exam app leads with readiness): the
+ * "Readiness" section comes first (its "See report" action, the rings, the
+ * note), then the stats, THEN the plant (its row, or the "Plant yours" row).
+ * Share progress is a row at the end of Study tools (it was a full-width
+ * button mid-screen). The back-fill line is an InviteRow (the green rule is
+ * the coach's voice only). Mock exams has no "See report" of its own any
+ * more: the Readiness section's is the one, and each mock row opens it too.
  * Uplift Phase 6 (accounts, built OFF): in a cloud build only, the first row
  * of Help and feedback is "Sync across devices" (components/account.tsx).
  * With the flag off (every build today) nothing here changes.
@@ -42,7 +49,7 @@ import { ShareProgressSheet } from '../../components/shareCard';
 import { LivePlant } from '../../components/plant/LivePlant';
 import { growthShort, plantCallName } from '../../engine/plant';
 import { usePlantView } from '../../lib/plant';
-import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Row, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
+import { BigNum, Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Row, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
 import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
 import { mockSubtitle } from '../../components/readinessReport';
 import { rangeLabel, rangeSpoken, readinessRange } from '../../engine/readinessRange';
@@ -131,46 +138,21 @@ export default function You() {
     <Screen>
       <Enter i={0}>
         <ScreenTitle title="You" settings={() => router.push('/settings')} />
-        {plant.plant ? (
-          // The plant opens Your plant; its growth reads in words beside it ("growth", never "stage").
-          <ListRow
-            lead={
-              // Mobile 1.14: one slow breath the first time You comes into view this
-              // session, once the rings have grown (one thing moves at a time), then still.
-              <LivePlant
-                species={plant.plant.species}
-                stage={plant.plant.growth}
-                organs={plant.scales}
-                quietLook={!plant.face}
-                resting={plant.resting}
-                size={64}
-                theme={isDark ? 'dark' : 'light'}
-                // At 64pt keepsakes would shrink the plant to fit them: the row shows the plant and its colours.
-                look={rowLook}
-                mood={plant.look?.mood}
-                breathe="you"
-                breatheDelay={rings.play ? RINGS_SETTLED_MS : 0}
-              />
-            }
-            title={plantCallName(plant.plant)}
-            subtitle={growthShort(plant.plant.growth)}
-            accessibilityLabel={`${plant.label} Your plant.`}
-            accessibilityHint="Opens your plant"
-            onPress={() => router.push('/plant')}
-            last
-          />
-        ) : plant.shown ? (
-          <ListRow
-            icon={<Sprout size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-            title="Plant yours"
-            subtitle="A companion that grows only with your study"
-            onPress={() => router.push('/plant-pick')}
-            last
-          />
-        ) : null}
       </Enter>
 
-      <Enter i={1} style={{ marginTop: space.xl }}>
+      <Enter i={1}>
+        {/* Readiness first (mobile 1.21): the section's action opens the report. */}
+        <Section
+          title="Readiness"
+          style={{ marginTop: space.lg }}
+          action={{
+            label: 'See report',
+            accessibilityLabel: 'See your readiness report',
+            hint: 'Your mock trend, each domain side by side, and what would raise your low end',
+            onPress: () => router.push('/readiness'),
+          }}
+        />
+        <View style={{ marginTop: space.md }} />
         <DomainRings
           cert={cert}
           values={values}
@@ -191,17 +173,10 @@ export default function You() {
             )
           }
         />
-        <T v="meta" style={{ marginTop: 14 }}>{RINGS_NOTE}</T>
-        <Button
-          kind="ghost"
-          label="See your readiness report"
-          accessibilityHint="Your mock trend, each domain side by side, and what would raise your low end"
-          onPress={() => router.push('/readiness')}
-          style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
-        />
+        <T v="meta" style={{ marginTop: space.md }}>{RINGS_NOTE}</T>
       </Enter>
 
-      <Enter i={2} style={{ marginTop: 26 }}>
+      <Enter i={2} style={{ marginTop: space.xl }}>
         <StatRow>
           {[
             <Stat key="a" label="Answered" value={String(answered)} roll={statRoll(0, String(stats.from[0]))} />,
@@ -227,15 +202,48 @@ export default function You() {
         </StatRow>
         {/* Two "Accuracy" stats in the app count different things (C8): say what this one counts. */}
         <T v="meta" style={{ marginTop: space.sm }}>Accuracy counts your latest try at each question.</T>
-        <Button
-          kind="secondary"
-          label="Share progress"
-          onPress={() => setShareDay(dayKey(Date.now()))}
-          accessibilityHint="Opens a preview of a progress card you can share"
-          icon={(col) => <Share2 size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
-          iconLeading
-          style={{ marginTop: space.xl }}
-        />
+        {/* Your plant, below the stats (decided 15 Oct 2026): it never leads a study screen. */}
+        {(plant.plant || plant.shown) && (
+          <View style={{ marginTop: space.lg }}>
+            {plant.plant ? (
+              // The plant opens Your plant; its growth reads in words beside it ("growth", never "stage").
+              <ListRow
+                lead={
+                  // Mobile 1.14: one slow breath the first time You comes into view this
+                  // session, once the rings have grown (one thing moves at a time), then still.
+                  <LivePlant
+                    species={plant.plant.species}
+                    stage={plant.plant.growth}
+                    organs={plant.scales}
+                    quietLook={!plant.face}
+                    resting={plant.resting}
+                    size={64}
+                    theme={isDark ? 'dark' : 'light'}
+                    // At 64pt keepsakes would shrink the plant to fit them: the row shows the plant and its colours.
+                    look={rowLook}
+                    mood={plant.look?.mood}
+                    breathe="you"
+                    breatheDelay={rings.play ? RINGS_SETTLED_MS : 0}
+                  />
+                }
+                title={plantCallName(plant.plant)}
+                subtitle={growthShort(plant.plant.growth)}
+                accessibilityLabel={`${plant.label} Your plant.`}
+                accessibilityHint="Opens your plant"
+                onPress={() => router.push('/plant')}
+                last
+              />
+            ) : plant.shown ? (
+              <ListRow
+                icon={<Sprout size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                title="Plant yours"
+                subtitle="Grows only with your study"
+                onPress={() => router.push('/plant-pick')}
+                last
+              />
+            ) : null}
+          </View>
+        )}
         {growth.show && (
           <View style={{ marginTop: space.xl }}>
             <MindsetGrowthCard earlyIn10={growth.earlyIn10} lateIn10={growth.lateIn10} line={growth.line} spoken={growth.spoken} />
@@ -258,6 +266,8 @@ export default function You() {
           mocks={progress.mocks}
           pacingLine={pacingLine}
           creditItems={creditItems}
+          // The state setter is stable, so the memoised lists never re-render for it.
+          onShare={setShareDay}
         />
       </Enter>
 
@@ -300,7 +310,10 @@ const YouLists = memo(function YouLists({
   mocks,
   pacingLine,
   creditItems,
+  onShare,
 }: {
+  /** Opens the share sheet for the day it was tapped. */
+  onShare: (day: string) => void;
   cert: Certification;
   summary: string | null;
   dueCount: number;
@@ -321,13 +334,15 @@ const YouLists = memo(function YouLists({
     <>
         {summary && (
           // Once, after the launch back-fill: one calm line, not a burst of moments.
-          // Only the text is grouped for screen readers; the button stays its own stop (UX review H1).
-          <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
-            <View accessible accessibilityLabel={`From your study so far. ${summary}`}>
-              <T v="caption" color={c.accentText}>From your study so far</T>
-              <T v="quote" style={{ marginTop: 4 }}>{summary}</T>
-            </View>
-            <Button kind="ghost" label="See your badges" onPress={() => router.push('/milestones')} style={{ alignSelf: 'flex-start' }} />
+          // An InviteRow (mobile 1.21): an award is not the coach's voice, so no green rule or italic.
+          // Only the words are grouped for screen readers; the button stays its own stop (UX review H1).
+          <View style={{ marginTop: space.xl }}>
+            <InviteRow
+              icon={icon(BadgeIcon)}
+              title="From your study so far"
+              body={summary}
+              actions={<Button kind="ghost" label="See your badges" onPress={() => router.push('/milestones')} />}
+            />
           </View>
         )}
         <Section title="Study tools" style={{ marginTop: space.xl }} />
@@ -379,13 +394,18 @@ const YouLists = memo(function YouLists({
           subtitle={badgesHidden ? 'Your level in each game' : 'Game levels and skill badges'}
           accessibilityLabel={`Field notes. ${badgesHidden ? 'Your level in each game' : 'Game levels and skill badges'}`}
           onPress={() => router.push('/field-notes')}
+        />
+        {/* Share progress as a row (it was a full-width button mid-screen). */}
+        <ListRow
+          icon={icon(Share2)}
+          title="Share progress"
+          subtitle="A card with one honest number"
+          accessibilityHint="Opens a preview of a progress card you can share"
+          onPress={() => onShare(dayKey(Date.now()))}
           last
         />
 
-        <Section
-          title="Mock exams"
-          action={mocks.length ? { label: 'See report', onPress: () => router.push('/readiness'), accessibilityLabel: 'See your readiness report' } : undefined}
-        />
+        <Section title="Mock exams" />
         <MockHistory mocks={mocks} miniMock={miniMock} />
         {/* Pacing across timed mocks only (untimed ones are left out). */}
         {pacingLine && <T v="meta" style={{ marginTop: space.md }}>{pacingLine}</T>}

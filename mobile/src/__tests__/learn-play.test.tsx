@@ -421,7 +421,9 @@ describe('Learn', () => {
     useProgress.getState().completeLesson('cisa', 'cisa-l-d1-charter');
     mockParams = { domain: '1' };
     mount(<Learn />);
-    expect(allText()).toContain('Next in IS Audit');
+    // Mobile 1.21: the cover's one meta line, its length and its place on the trail (the caption names the domain).
+    expect(allText()).toMatch(/\d+ min · lesson 2 of \d+/);
+    expect(allText()).toContain('Up next · IS Audit');
     expect(root().findAllByType(DomainRing).length).toBe(getCertification('cisa')!.domains.length);
     const rows = root()
       .findAll((n) => typeof n.props.onPress === 'function' && /^IS Audit lesson \d+:/.test(String(n.props.accessibilityLabel)))
@@ -429,15 +431,19 @@ describe('Learn', () => {
     expect(rows[0]).toMatch(/, done$/);
     expect(rows[1]).toMatch(/, up next$/);
     expect(rows[2]).toMatch(/, \d+ min$/);
-    expect(allText()).toContain('Up next');
+    expect(allText()).toMatch(/Up next · \d+ min/);
   });
 
   it('a domain with nothing done draws no empty track (five grey bars read as five failures)', () => {
     mount(<Learn />);
-    // Nothing done anywhere: every ring is an outline, and no progress bar is drawn.
+    // Nothing done anywhere: every ring is one quiet `track` ring (no centre dot,
+    // never the `control` outline that reads as a radio button), and no progress bar.
     const rings = root().findAllByType(DomainRing);
     expect(rings.every((x) => x.props.done === 0)).toBe(true);
-    for (const ring of rings) expect(ring.findAllByType(Circle).length).toBe(2);
+    for (const ring of rings) {
+      expect(ring.findAllByType(Circle).length).toBe(1);
+      expect(ring.props.outline).toBe(ring.props.track);
+    }
   });
 });
 

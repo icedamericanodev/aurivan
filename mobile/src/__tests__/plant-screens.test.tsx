@@ -79,6 +79,14 @@ const press = (label: RegExp) => {
     n.props.onPress();
   });
 };
+
+/** Mobile 1.21: Today's plant row hides with a long press or the screen-reader action "Hide from Today". */
+const hidePlantRow = () => {
+  const row = root().findAll((n) => Array.isArray(n.props.accessibilityActions) && n.props.accessibilityActions.some((a: { name: string }) => a.name === 'hide') && typeof n.props.onAccessibilityAction === 'function')[0];
+  act(() => {
+    row.props.onAccessibilityAction({ nativeEvent: { actionName: 'hide' } });
+  });
+};
 const cp = () => selectCert(useProgress.getState(), 'cisa');
 const setPlant = (p: CertPlant | undefined) => {
   act(() => {
@@ -171,12 +179,25 @@ describe('Today', () => {
     expect(router.push).toHaveBeenCalledWith('/plant');
   });
 
-  it('no plant: one quiet line until "No thanks"; then never again', () => {
+  it('no plant: one quiet row until it is hidden (long press or "Hide from Today"); then never again', () => {
     mount(<Today />);
     expect(byTestID('plant-prompt')).toHaveLength(1);
-    expect(allText()).toMatch(/Plant a companion that grows with your study\./);
-    press(/^No thanks/);
+    expect(allText()).toMatch(/A companion that grows with your study/);
+    hidePlantRow();
     expect(byTestID('plant-prompt')).toHaveLength(0);
+    expect(useProgress.getState().plantSettings?.promptHidden).toBe(true);
+  });
+
+  it('mobile 1.21: "Not now" on the picker opened from Today hides the Today row; from You it only goes back', () => {
+    mount(<PlantPick />);
+    press(/^Not now$/);
+    expect(useProgress.getState().plantSettings?.promptHidden).toBeFalsy();
+    act(() => {
+      r!.unmount();
+    });
+    mockParams = { from: 'today' };
+    mount(<PlantPick />);
+    press(/^Not now$/);
     expect(useProgress.getState().plantSettings?.promptHidden).toBe(true);
   });
 
@@ -500,8 +521,10 @@ describe('PR #43 review fixes', () => {
     setPlant(undefined);
     mount(<Today />);
     const text = allText();
-    expect(text.indexOf('Plant a companion')).toBeGreaterThan(text.indexOf('Also today'));
-    expect(labels()).toContain('No thanks, hide this note. You can plant one from You.');
+    expect(text.indexOf('A companion that grows with your study')).toBeGreaterThan(text.indexOf('Also today'));
+    // Mobile 1.21: one row, no ghost pair beside the panel's Start; hiding is a named action.
+    expect(labels()).toContain('Your plant. A companion that grows with your study');
+    expect(labels()).not.toContain('No thanks, hide this note. You can plant one from You.');
   });
 
   it('mobile 1.14: the growth sequence is the session’s one full moment (a later milestone plays short)', () => {

@@ -335,7 +335,7 @@ describe('the ways in', () => {
     expect(byTestID('readiness-focus-ring')).toHaveLength(0);
   });
 
-  it('You: "See your readiness report", "See report", and each mock row opens the report with that mock', () => {
+  it('You: the Readiness section\'s "See report", and each mock row opens the report with that mock', () => {
     setCert({ answers: seedAnswers(30, 0.7), mocks: EIGHT });
     mount(<You />);
     press(/^See your readiness report$/);
@@ -347,14 +347,15 @@ describe('the ways in', () => {
       rows[2].props.onPress();
     });
     expect(router.push).toHaveBeenLastCalledWith({ pathname: '/readiness', params: { mock: EIGHT[2].id } });
-    // "See report" on the section is spoken in full.
-    expect(root().findAll((n) => n.props.accessibilityLabel === 'See your readiness report' && typeof n.type === 'string')).toHaveLength(2);
+    // "See report" on the Readiness section is spoken in full; Mock exams has no second one (mobile 1.21).
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'See your readiness report' && typeof n.type === 'string')).toHaveLength(1);
   });
 
-  it('You with no mocks: no "See report" on the section (the empty state offers a mini mock)', () => {
+  it('You with no mocks: the Readiness section still offers the report (the Mock exams empty state offers a mini mock)', () => {
     mount(<You />);
-    expect(allText()).not.toContain('See report');
-    expect(allText()).toContain('See your readiness report');
+    expect(allText()).toContain('See report');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'See your readiness report' && typeof n.type === 'string')).toHaveLength(1);
+    expect(allText()).toContain('No mocks yet');
   });
 });
 

@@ -16,7 +16,7 @@
  */
 import { Pressable, View } from 'react-native';
 import { DAILY_MINUTES, FAMILIARITIES, FAMILIARITY_INFO, minutesSpoken, type DailyMinutes, type Familiarity } from '../engine/fit';
-import { radius, raisedShadow, space } from '../theme/tokens';
+import { radius, cardShadow, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Check } from './icons';
 import { Button, RadioRow, Row, Segmented, T, ToggleRow } from './ui';
@@ -69,7 +69,7 @@ export function ChoiceRow({
           paddingHorizontal: selected ? 15.5 : 16,
           marginBottom: 10,
         },
-        !isDark && raisedShadow,
+        !isDark && { boxShadow: cardShadow },
         pressed && { transform: [{ scale: 0.98 }] },
       ]}
     >

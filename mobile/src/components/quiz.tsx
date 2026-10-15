@@ -24,7 +24,7 @@ import { tipParts } from '../engine/tips';
 import { config } from '../lib/config';
 import { haptic } from '../lib/haptics';
 import { shortReference } from '../lib/format';
-import { badgeLetter, motion, optionText, radius, raisedShadow, space } from '../theme/tokens';
+import { badgeLetter, motion, optionText, radius, cardShadow, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
 import { Check, X } from './icons';
@@ -122,7 +122,7 @@ export function OptionCard({
     borderColor: look.border,
     backgroundColor: look.bg,
     marginBottom: 10, // the gap between option rows (spec §6)
-    ...(!isDark && !tinted ? raisedShadow : null),
+    ...(!isDark && !tinted ? { boxShadow: cardShadow } : null),
   };
   const content = (
     <>

@@ -138,8 +138,9 @@ describe('Play hero renders its content (Android blank-hero regression)', () => 
     expect(kids.length === 2 && kids[0] === art).toBe(true);
     // The panel itself no longer clips its children.
     expect(flat(panel).overflow === 'hidden').toBe(false);
-    // The drawing's slot has an explicit size (no "size from children").
-    const slot = art.children[0] as ReactTestInstance;
+    // The drawing's slot has an explicit size (no "size from children"). Since mobile 1.21 the
+    // panel's top light (one gradient Svg) is drawn first in BOTH themes, so the slot is the last child.
+    const slot = art.children[art.children.length - 1] as ReactTestInstance;
     expect(flat(slot)).toMatchObject(botanySize('frond'));
   });
 
@@ -159,7 +160,9 @@ describe('Play hero renders its content (Android blank-hero regression)', () => 
     expect(byTestId('hero-art')).toHaveLength(1);
     const [content] = byTestId('hero-content');
     // Build E: the hero starts the learner's study path (a new learner: Random, 10 questions).
-    expect(textOf(content)).toContain('10 mixed questions');
+    // Mobile 1.21: the title names the path ("A mixed set"); the count is the meta.
+    expect(textOf(content)).toContain('A mixed set');
+    expect(textOf(content)).toContain('10 questions · ');
   });
 });
 

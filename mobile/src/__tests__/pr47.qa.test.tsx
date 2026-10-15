@@ -355,13 +355,13 @@ describe('QA 2: entry points', () => {
     expect(router.push).toHaveBeenLastCalledWith('/plant');
   });
 
-  it('You: the ghost under the rings, "See report" on Mock exams, and a mock row with its id', () => {
+  it('You: "See report" on the Readiness section (mobile 1.21: the one way in, no duplicate on Mock exams), and a mock row with its id', () => {
     const mocks = series([60, 66]);
     setCert({ answers: seedAnswers(30, 0.7), mocks });
     mount(<You />);
-    expect(root().findAll((n) => n.props.accessibilityLabel === 'See your readiness report' && typeof n.type === 'string')).toHaveLength(2);
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'See your readiness report' && typeof n.type === 'string')).toHaveLength(1);
     const handlers = [...new Set(root().findAll((n) => n.props.accessibilityLabel === 'See your readiness report' && typeof n.props.onPress === 'function').map((n) => n.props.onPress as () => void))];
-    expect(handlers.length).toBeGreaterThanOrEqual(2);
+    expect(handlers.length).toBeGreaterThanOrEqual(1);
     for (const onPress of handlers) {
       jest.mocked(router.push).mockClear();
       act(() => {
@@ -554,8 +554,8 @@ describe('QA 3: the exam-week taper plans', () => {
     setCert({ answers: seedAnswers(30, 0.7) });
     mount(<Today />);
     const t = allText();
-    // The hero says the mock is optional (UX review O9).
-    expect(t).toContain('About 30 min today + optional mock');
+    // The caption gives the day's minutes; the mock's own row says it is optional (UX review O9; mobile 1.21).
+    expect(t).toContain('Start here · about 30 min');
     // While the mock sits in "Also today" its row reads "Optional this week · about 4 h";
     // the "a last long rehearsal; skip it if you’d rather rest" meta only shows once it
     // becomes the hero (after the top-up). Observation, not a bug: both say optional.
@@ -670,14 +670,15 @@ describe('QA 5: Practice sized from the minutes; a chosen length wins', () => {
   ])('%i minutes a day, no length chosen: the hero is %i questions', (minutes, n) => {
     useSettings.setState({ familiarity: 'some', studyMode: 'smart', studySize: undefined, dailyMinutes: minutes as never });
     mount(<Practice />);
-    expect(allText()).toContain(`${n} questions picked for you`);
+    // Mobile 1.21: the hero title never holds a count; the count leads its meta line.
+    expect(allText()).toContain(`Picked for you ${n} questions · `);
   });
 
   it.each([10, 20, 50])('a chosen length (%i) wins at every minutes setting', (size) => {
     for (const minutes of DAILY_MINUTES) {
       useSettings.setState({ familiarity: 'some', studyMode: 'smart', studySize: size, dailyMinutes: minutes });
       mount(<Practice />);
-      expect(allText()).toContain(`${size} questions picked for you`);
+      expect(allText()).toContain(`Picked for you ${size} questions · `);
       unmount();
     }
   });
@@ -685,7 +686,7 @@ describe('QA 5: Practice sized from the minutes; a chosen length wins', () => {
   it('an old save with only a daily goal (no minutes) still sizes sensibly', () => {
     useSettings.setState({ familiarity: 'some', studyMode: 'smart', studySize: undefined, dailyMinutes: undefined, dailyGoal: 40 } as never);
     mount(<Practice />);
-    expect(allText()).toMatch(/(10|20) questions picked for you/);
+    expect(allText()).toMatch(/Picked for you (10|20) questions · /);
   });
 
   it('Start uses the same size the hero shows', () => {

@@ -9,7 +9,7 @@
 import fs from 'fs';
 import path from 'path';
 import { parse } from 'react-native-svg';
-import { MIN_LABEL_PT, SVG_VAR_TOKENS, svgMinFontSize, svgSize, themeSvg } from '../engine/notesSvg';
+import { FIT_LABEL_PT, MIN_LABEL_PT, SVG_VAR_TOKENS, svgFit, svgMinFontSize, svgSize, themeSvg } from '../engine/notesSvg';
 import { dark, light, type Palette } from '../theme/tokens';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -107,6 +107,26 @@ describe('svgSize: smallest label at least 13pt', () => {
   });
 });
 
+describe('svgFit (mobile 1.21): fitted to the plate when its labels stay 11pt, else scrolls inside it', () => {
+  it('fits the available width when the smallest label still measures 11pt', () => {
+    // 340-wide drawing, 12-unit labels, 318pt available: 12 × 318 / 340 = 11.2pt.
+    expect(svgFit({ width: 340, height: 170 }, 318, { minFont: 12 })).toEqual({ width: 318, height: 159, labelPt: 11.2, scrolls: false });
+  });
+  it('draws a small-label diagram just wide enough for 11pt, and says it scrolls', () => {
+    const f = svgFit({ width: 480, height: 200 }, 318, { minFont: 10 });
+    expect(f.scrolls).toBe(true);
+    expect(f.labelPt).toBeGreaterThanOrEqual(FIT_LABEL_PT);
+    expect(f.width).toBe(528);
+    // Narrower than the old 13pt zoom: less to swipe.
+    expect(f.width).toBeLessThan(svgSize({ width: 480, height: 200 }, 318, { minFont: 10 }).width);
+  });
+  it('grows with large text (to ×1.5) and never past 4 widths', () => {
+    expect(svgFit({ width: 340, height: 170 }, 318, { minFont: 12, fontScale: 2 }).scrolls).toBe(true);
+    expect(svgFit({ width: 340, height: 170 }, 318, { minFont: 12, fontScale: 2 }).labelPt).toBe(16.5);
+    expect(svgFit({ width: 600, height: 50 }, 300, { minFont: 1 }).width).toBe(1200);
+  });
+});
+
 describe('every illustration in data/cisa_notes.json parses after theming', () => {
   // Collect every { svg } in the file, v1 or v2: the drawings carry over unchanged.
   const src = path.join(__dirname, '..', '..', '..', 'data', 'cisa_notes.json');
@@ -170,6 +190,23 @@ describe('every illustration in data/cisa_notes.json parses after theming', () =
       }
     }
     expect(checked).toBeGreaterThan(all.length); // every diagram has labels
+    expect(failures).toEqual([]);
+  });
+
+  it.each([
+    ['light', light],
+    ['dark', dark],
+  ] as const)('%s, on the plate (mobile 1.21): every text label still has 4.5:1 with the page colour as `raised2`', (_n, base) => {
+    // A diagram is drawn on an L1 plate, themed with bg = raised2 (components/notes.tsx).
+    const palette = { ...base, bg: base.raised2 };
+    const failures: string[] = [];
+    for (const ill of all) {
+      const r = prepareIllustration(ill);
+      if (!r.ok) continue;
+      for (const f of textContrast(themeSvg(r.value!.svg, palette, FONTS), palette)) {
+        if (f.ratio < 4.5) failures.push(`"${f.text}" ${f.fg} on ${f.bg}: ${f.ratio.toFixed(2)}`);
+      }
+    }
     expect(failures).toEqual([]);
   });
 

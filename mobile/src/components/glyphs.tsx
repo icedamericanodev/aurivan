@@ -402,9 +402,10 @@ export function Sparkline({ values, color, paper, width = SPARK.width, height = 
 // ── Learn: a domain's status ring (mobile 1.12, ui.md L1) ──────────────
 /**
  * Before a Learn domain's name: its lessons as a small ring, in the domain's
- * tone. None done = an outline ring (`control`, 3:1) round the tone dot;
- * some done = the ring fills that far round (an arc); all done = a filled
- * disc with a ✓. Shape, not colour alone. Decorative: the row says "2 of 7 done".
+ * tone. None done = a quiet `track` ring (mobile 1.21: no centre dot and no
+ * `control` outline, which read as a radio button); some done = the ring
+ * fills that far round in the tone (an arc); all done = a filled disc with a
+ * ✓. Shape, not colour alone. Decorative: the row says "2 of 7".
  */
 export function DomainRing({ done, total, tone, track, outline, paper, size = 20 }: { done: number; total: number; tone: string; track: string; outline: string; paper: string; size?: number }) {
   const c = size / 2;
@@ -423,9 +424,10 @@ export function DomainRing({ done, total, tone, track, outline, paper, size = 20
           </>
         ) : (
           <>
+            {/* A status, not a control (mobile 1.21, spec §5 "One meaning per device"):
+                a quiet ring with no centre dot, so it never reads as a radio button. */}
             <Circle cx={c} cy={c} r={rad} stroke={share > 0 ? track : outline} strokeWidth={2} />
             {share > 0 && <Path d={arc} stroke={tone} strokeWidth={2.4} strokeLinecap="round" />}
-            <Circle cx={c} cy={c} r={3} fill={tone} />
           </>
         )}
       </Svg>
@@ -775,6 +777,8 @@ export const RING_PRESETS = {
   /** You and Results: a wider core (38, mockup 34) so a range like "62–70%" fits inside; thinner rings keep it ~178pt. */
   you: { size: 172, k: 0.32, r0: 38, gap: 3.6, pith: false },
   mini: { size: 48, k: 0.13, r0: 5, gap: 1.2, pith: true },
+  /** Mobile 1.21: Today's condensed readiness row (one line of numbers beside it, not a block). */
+  row: { size: 60, k: 0.13, r0: 6, gap: 1.5, pith: true },
 } as const;
 export type RingPreset = keyof typeof RING_PRESETS;
 

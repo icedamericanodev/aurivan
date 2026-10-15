@@ -11,7 +11,7 @@
 import { type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
-import { radius, raisedShadow, space } from '../../theme/tokens';
+import { radius, cardShadow, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 import { Check, ICON_STROKE } from '../icons';
 import { AnimatedPressable, StateLayer, usePressScale } from '../motion';
@@ -87,7 +87,7 @@ export function LookOption({ name, line, art, selected, locked, multi = false, f
           paddingVertical: space.sm,
           paddingHorizontal: space.md,
         },
-        !isDark && !locked && raisedShadow,
+        !isDark && !locked && { boxShadow: cardShadow },
         press.style,
       ]}
     >

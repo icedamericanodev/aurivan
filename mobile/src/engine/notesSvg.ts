@@ -123,3 +123,31 @@ export function svgSize(
   const labelPt = Math.round(((minFont * width) / viewBox.width) * 10) / 10;
   return { width, height, labelPt };
 }
+
+/**
+ * The smallest label a diagram may show when it is FITTED to the page
+ * (mobile 1.21): 11pt, the size of the platforms' smallest caption. Below
+ * that, the figure scrolls sideways inside its plate instead.
+ */
+export const FIT_LABEL_PT = 11;
+
+/**
+ * How a diagram sits in its plate (mobile 1.21, DESIGN_SYSTEM.md §11 "Study
+ * notes"): FITTED to the available width whenever its smallest label still
+ * measures at least 11pt (×1.5 at most with large text); otherwise drawn just
+ * wide enough for that, and it scrolls sideways inside the plate (never wider
+ * than `maxColumns` widths).
+ */
+export function svgFit(
+  viewBox: { width: number; height: number },
+  available: number,
+  opts: { minFont?: number; fontScale?: number; maxColumns?: number } = {},
+): { width: number; height: number; labelPt: number; scrolls: boolean } {
+  const minFont = opts.minFont ?? 16;
+  const target = FIT_LABEL_PT * Math.min(Math.max(opts.fontScale ?? 1, 1), 1.5);
+  const fitted = (minFont * available) / viewBox.width;
+  const width = fitted >= target ? available : Math.round(Math.min((viewBox.width * target) / minFont, available * (opts.maxColumns ?? 4)));
+  const height = Math.round((width * viewBox.height) / viewBox.width);
+  const labelPt = Math.round(((minFont * width) / viewBox.width) * 10) / 10;
+  return { width, height, labelPt, scrolls: width > available };
+}

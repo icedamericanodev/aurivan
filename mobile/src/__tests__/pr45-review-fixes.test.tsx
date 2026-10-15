@@ -389,8 +389,11 @@ describe('Today: the weekly mock beside the day', () => {
     expect(row.props.accessibilityLabel).toBe('Mini mock, Optional this week · about 80 minutes');
     // The caption meta and the hero meta are spoken with "minutes" (O9, M7a).
     const labels = root().findAll((n) => typeof n.props.accessibilityLabel === 'string').map((n) => n.props.accessibilityLabel as string);
-    expect(labels).toContain('About 19 minutes today + mock');
-    expect(labels).toContain('About 19 minutes · 16 questions, most points to gain');
+    expect(labels).toContain('Start here · about 19 minutes');
+    // Mobile 1.21: the minutes are said once. The hero is the day's only timed item, so the
+    // caption's "About 19 min today" carries them and its meta is the count and the why.
+    expect(labels).toContain('16 questions, most points to gain');
+    expect(labels).not.toContain('About 19 minutes · 16 questions, most points to gain');
   });
 
   it('with the timed item done, the day clears, the skipped mock aside', () => {
@@ -413,8 +416,8 @@ describe('Today: the weekly mock beside the day', () => {
       });
     });
     mount(<Today />);
-    expect(allText()).toContain('A mock today');
-    expect(allText()).toContain('Mini mock');
+    // Mobile 1.21: no day minutes in the caption (a mock is longer than any day); the mock is the hero and says its own length.
+    expect(allText()).toMatch(/Start here Mini mock 50 questions · about 80 min/);
   });
 });
 

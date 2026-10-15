@@ -18,7 +18,7 @@ import { createRng } from '../engine/random';
 import { makePermutation, type Permutation } from '../engine/shuffle';
 import { lastScores, reviewLine, runningScore, scoreSpoken, scoreText, trendSpoken, type RecapMiss } from '../engine/games/recap';
 import { useProgress, type GameId } from '../store/progress';
-import { LARGE_TEXT, maxScale, motion, optionText, radius, raisedShadow, space, type } from '../theme/tokens';
+import { LARGE_TEXT, maxScale, motion, optionText, radius, cardShadow, space, type } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ScenarioBlock, StickyFooter } from './quiz';
 import { useReportFlow } from './support';
@@ -634,7 +634,7 @@ export function MatchTile({
     paddingVertical: 12,
     paddingHorizontal: 14,
     marginBottom: space.sm,
-    ...(!isDark && !tinted && !flat ? raisedShadow : null),
+    ...(!isDark && !tinted && !flat ? { boxShadow: cardShadow } : null),
   };
   const off = Boolean(locked) || !onPress;
   return (

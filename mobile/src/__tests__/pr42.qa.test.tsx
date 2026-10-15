@@ -419,7 +419,7 @@ describe('Journey 3: Learn list states', () => {
   it('every lesson of a domain done: the group says All done and the cover moves on', () => {
     for (const l of CISA_LESSONS.filter((x) => x.domainId === '1')) useProgress.getState().completeLesson('cisa', l.id);
     mount(<Learn />);
-    const allDone = new Set(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /lessons?, All done$/.test(n.props.accessibilityLabel)).map((n) => n.props.accessibilityLabel));
+    const allDone = new Set(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /lessons?, all done$/i.test(n.props.accessibilityLabel)).map((n) => n.props.accessibilityLabel));
     expect([...allDone]).toHaveLength(1);
     expect([...allDone][0]).toMatch(/^Information System Auditing Process, /);
     expect(allText()).not.toContain('Up next · IS Audit');
@@ -521,7 +521,9 @@ describe('Journey 4: notes Mark as read', () => {
   it('Learn’s Study notes row counts the read note', () => {
     useProgress.getState().setNoteRead('cisa', note.id, true);
     mount(<Learn />);
-    expect(allText()).toContain(`1 of ${noteSubtopics('cisa').length} read`);
+    // Mobile 1.21: a reference has no finish line, so the row counts notes read (no "of N" meter).
+    expect(allText()).toContain('1 note read · every topic, with traps');
+    expect(allText()).not.toContain(`of ${noteSubtopics('cisa').length} read`);
   });
 });
 
@@ -778,7 +780,7 @@ describe('Journey 7: an old 1.11 save and a backup restore', () => {
     // Learn and notes see the old progress.
     unmount();
     mount(<Learn />);
-    expect(allText()).toContain(`1 of ${noteSubtopics('cisa').length} read`);
+    expect(allText()).toContain('1 note read · every topic, with traps');
     expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^Information System Auditing Process, \d+ lessons, 1 of \d+ done$/.test(n.props.accessibilityLabel)).length).toBeGreaterThan(0);
   });
 

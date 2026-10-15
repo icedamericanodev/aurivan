@@ -222,7 +222,7 @@ await setMocks(MOCKS);
 await go('/you', 2600);
 await toTop('Mock exams', 40);
 await shot('p10-you-mock-exams');
-await toTop('See your readiness report', 300);
+await toTop('See report', 300); // mobile 1.21: the Readiness section's action
 await shot('p10b-you-report-link');
 
 console.log('errors:', errs.slice(0, 5));

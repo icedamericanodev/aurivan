@@ -233,7 +233,8 @@ await page.screenshot({ path: `${out}/29b-mindset-growth-card.png` });
 console.log('shot signature moments');
 // Share card: the preview sheet from You (demo data has a readiness range).
 await shot('31-share-card', '/you');
-await page.getByRole('button', { name: 'Share progress', exact: true }).click();
+// Mobile 1.21: Share progress is a Study tools row (its spoken name adds its subtitle).
+await page.getByRole('button', { name: /^Share progress/ }).first().click();
 await page.waitForTimeout(1200);
 await page.screenshot({ path: `${out}/31-share-card.png` });
 await page.getByRole('button', { name: 'Streak', exact: true }).click().catch(() => {});

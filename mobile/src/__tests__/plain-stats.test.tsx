@@ -84,9 +84,10 @@ function practice(n: number, right: number, ms: number, wallMs: number) {
 
 describe('time as a stat', () => {
   it('never says "1 minute" for seconds; minutes and hours read plainly', () => {
-    // "Under 1 min": short enough never to wrap at 360 dp; spoken in full.
-    expect(timeStat(5_000)).toEqual({ word: 'Under 1 min', spoken: 'under a minute' });
-    expect(timeStat(59_999).word).toBe('Under 1 min');
+    // Mobile 1.21: "<1" "min", the numeral form, so a 3-up stat row keeps one
+    // baseline ("Under 1 min" wrapped at 360 dp); spoken in full.
+    expect(timeStat(5_000)).toEqual({ value: '<1', unit: 'min', spoken: 'under a minute' });
+    expect(timeStat(59_999).value).toBe('<1');
     expect(timeStat(60_000)).toEqual({ value: '1', unit: 'min', spoken: '1 minute' });
     expect(timeStat(23 * 60_000)).toEqual({ value: '23', unit: 'min', spoken: '23 minutes' });
     // An hour or more: one phrase in one size, so "3 h 35 min" never reads as a big "3".
@@ -114,11 +115,11 @@ describe('time as a stat', () => {
 });
 
 describe('Results', () => {
-  it('a 1-question, 5-second practice: "Correct 1 of 1", "Missed None", "Time Under 1 min", and no pace line', () => {
+  it('a 1-question, 5-second practice: "Correct 1 of 1", "Missed None", "Time <1 min", and no pace line', () => {
     practice(1, 1, 5_000, 5_000);
     expect(statLabels()).toEqual(['Correct: 1 of 1', 'Missed: none', 'Time: under a minute']);
     const text = textOf(r!.root);
-    expect(text).toContain('Correct 1 of 1 Missed None Time Under 1 min');
+    expect(text).toContain('Correct 1 of 1 Missed None Time <1 min');
     // One answer says nothing useful about pace.
     expect(text).not.toMatch(/per question/);
     expect(text).not.toMatch(/Median|exam pace|to review/);
@@ -182,7 +183,7 @@ describe('the same time everywhere (QA bugs 2, 3, 5, 7)', () => {
     const readiness = computeReadiness(cisa, {});
     let plan = newDayPlan('2026-10-12', 'cisa', [{ kind: 'review', count: 5 }], readiness);
     plan = logActivity(plan, { kind: 'session', mode: 'review', answered: 1, total: 1, minutes: 5_000 / 60_000 }).plan;
-    expect(timeStat(plan.minutes * 60_000).word).toBe('Under 1 min');
+    expect(timeStat(plan.minutes * 60_000).value).toBe('<1');
     // Short sessions add up.
     for (let i = 0; i < 11; i++) plan = logActivity(plan, { kind: 'session', mode: 'review', answered: 1, total: 1, minutes: 5_000 / 60_000 }).plan;
     expect(timeStat(plan.minutes * 60_000)).toMatchObject({ value: '1', unit: 'min' });

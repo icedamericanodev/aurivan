@@ -120,7 +120,8 @@ describe('Practice: one action, one row', () => {
       radio(/^In order/).props.onPress();
     });
     expect(useSettings.getState().studyMode).toBe('inOrder');
-    expect(heroText()).toContain('10 questions, topic by topic');
+    // Mobile 1.21: the title names the path; the count leads the meta.
+    expect(heroText()).toContain('Topic by topic 10 questions · ');
     expect(pathRow().props.accessibilityLabel).toMatch(/^Your path: In order, All domains, 10 questions/);
     press('Start');
     expect(useSession.getState().active).toMatchObject({ path: { mode: 'inOrder' } });
@@ -164,7 +165,7 @@ describe('Practice: review fixes', () => {
   it('the hero meta says how long, and "· timed" when the switch is on', () => {
     useSettings.setState({ studyMode: 'smart', studySize: 20, practiceTimer: true });
     mount(<Practice />);
-    expect(heroText()).toContain('About 24 min · timed');
+    expect(heroText()).toContain('20 questions · about 24 min · timed');
     expect(heroText()).toContain('Your path');
   });
 });

@@ -104,7 +104,8 @@ describe('Today', () => {
   it('T3: without the panel, the readiness row keeps its rings', () => {
     mount(<Today />);
     expect(root().findAllByType(GrowthRings)).toHaveLength(1);
-    expect(root().findAllByType(GrowthRings)[0].props.preset).toBe('today');
+    // Mobile 1.21: the condensed readiness row draws the small `row` rings.
+    expect(root().findAllByType(GrowthRings)[0].props.preset).toBe('row');
   });
 
   it('T4: "Also today" says how long the rest takes, not a count of a list that shows every item', () => {

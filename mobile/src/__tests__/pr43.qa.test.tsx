@@ -126,10 +126,19 @@ const press = (label: RegExp) => {
     n.props.onPress();
   });
 };
+
+/** Mobile 1.21: Today's plant row hides with a long press or the screen-reader action "Hide from Today". */
+const hidePlantRow = () => {
+  const row = root().findAll((n) => Array.isArray(n.props.accessibilityActions) && n.props.accessibilityActions.some((a: { name: string }) => a.name === 'hide') && typeof n.props.onAccessibilityAction === 'function')[0];
+  act(() => {
+    row.props.onAccessibilityAction({ nativeEvent: { actionName: 'hide' } });
+  });
+};
 /** Every <Plant> drawn on screen (the composite, found by its props). */
 const plants = () => root().findAll((n) => typeof n.type !== 'string' && typeof n.props.species === 'string' && typeof n.props.stage === 'number' && typeof n.props.size === 'number');
 /** Is a growth-ring drawing on screen? (GrowthRings takes `preset`.) */
-const ringsShown = () => root().findAll((n) => typeof n.type !== 'string' && n.props.preset === 'today').length > 0;
+// Mobile 1.21: Today's condensed readiness row draws the small `row` rings (the exam-ready panel keeps `today`).
+const ringsShown = () => root().findAll((n) => typeof n.type !== 'string' && (n.props.preset === 'today' || n.props.preset === 'row')).length > 0;
 const layoutGrid = () => {
   const grid = root().findAll((n) => n.props.accessibilityRole === 'radiogroup')[0];
   act(() => {
@@ -339,8 +348,8 @@ describe('J2 an existing 1.12 save upgrading', () => {
     await loadOldSave();
     mount(<Today />);
     expect(byTestID('plant-prompt')).toHaveLength(1);
-    expect(allText()).toMatch(/Plant a companion that grows with your study\./);
-    press(/^No thanks/);
+    expect(allText()).toMatch(/A companion that grows with your study/);
+    hidePlantRow();
     expect(byTestID('plant-prompt')).toHaveLength(0);
     unmount();
     // It is saved: a cold start (rehydrate from storage) keeps it hidden.
@@ -358,14 +367,15 @@ describe('J2 an existing 1.12 save upgrading', () => {
     unmount();
     mount(<You />);
     expect(allText()).toMatch(/Plant yours/);
-    expect(allText()).toMatch(/A companion that grows only with your study/);
+    expect(allText()).toMatch(/Grows only with your study/);
   });
 
   it('"Plant yours" from the prompt: the study so far sets growth quietly (no Today moment), one back-fill line', async () => {
     await loadOldSave();
     mount(<Today />);
-    press(/^Plant yours$/);
-    expect(router.push).toHaveBeenCalledWith('/plant-pick');
+    // Mobile 1.21: the prompt is one row (no inline ghost pair); it opens the picker.
+    press(/^Your plant\. /);
+    expect(router.push).toHaveBeenCalledWith({ pathname: '/plant-pick', params: { from: 'today' } });
     unmount();
     mount(<PlantPick />);
     expect(allText()).toMatch(/Plant yours/);

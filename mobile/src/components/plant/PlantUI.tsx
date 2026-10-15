@@ -3,9 +3,9 @@
  * the Your plant screen, its picker and onboarding:
  * - PlantButton: the plant you can tap (opens Your plant), one stop for
  *   screen readers with the plant's spoken label;
- * - PlantNote: one calm line with a green rule (the key-idea recipe, like
- *   You's back-fill line), for the grow-up line, the back-fill and Today's
- *   one quiet "Plant a companion" line;
+ * - PlantNote: one calm line as an InviteRow (mobile 1.21; it was a green
+ *   rule), for the grow-up line, the back-fill and Today's one quiet
+ *   "Plant a companion" line;
  * - SpeciesGrid: the 13 species as a radio group, each previewed at Crown
  *   (growth 5), so the learner sees where it goes before choosing; three,
  *   two or one across from the measured width and text size;
@@ -18,9 +18,10 @@
 import { useState, type ReactNode } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import { cleanPlantName, MAX_NAME, PLANT_SPECIES, SPECIES_INFO, suggestName, type GrowthLevel, type PlantSpecies } from '../../engine/plant';
-import { radius, raisedShadow, space, type as typeScale, maxScale, LARGE_TEXT } from '../../theme/tokens';
+import { radius, cardShadow, space, type as typeScale, maxScale, LARGE_TEXT } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
-import { Button, T, useFontScale } from '../ui';
+import { ICON_STROKE, Sprout } from '../icons';
+import { Button, ICON_SIZE, InviteRow, T, useFontScale } from '../ui';
 import { Plant } from './Plant';
 import { LivePlant, type LivePlantProps } from './LivePlant';
 import type { ArtLook, Lod } from './art';
@@ -90,18 +91,22 @@ export function PlantButton({
   );
 }
 
-// ── One calm line (green rule) ─────────────────────────────────────────
+// ── One calm line about the plant (an InviteRow) ───────────────────────
+// Mobile 1.21 (spec §5 "One meaning per device"): the green left rule is the
+// coach's voice only, so the plant's invitations and news are InviteRows: a
+// sprout in an icon circle, the caption as the title, the line under it, the
+// buttons as ghosts under the words. The words are one stop; each button
+// stays its own (UX review H1).
 export function PlantNote({ caption, line, children, testID }: { caption: string; line: string; children?: ReactNode; testID?: string }) {
   const { c } = useTheme();
   return (
-    <View testID={testID} style={{ borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
-      {/* The words are one stop; each button stays its own (UX review H1). */}
-      <View accessible accessibilityLabel={`${caption}. ${line}`}>
-        <T v="caption" color={c.accentText}>{caption}</T>
-        <T v="quote" style={{ marginTop: space.xs }}>{line}</T>
-      </View>
-      {children ? <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: -space.sm }}>{children}</View> : null}
-    </View>
+    <InviteRow
+      testID={testID}
+      icon={<Sprout size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+      title={caption}
+      body={line}
+      actions={children}
+    />
   );
 }
 
@@ -172,7 +177,7 @@ export function SpeciesGrid({ value, onChange, quietLook }: { value: PlantSpecie
                   paddingBottom: selected ? space.sm + 1.5 : space.sm + 2,
                   paddingHorizontal: rows ? (selected ? space.md - 0.5 : space.md) : space.xs,
                 },
-                !isDark && raisedShadow,
+                !isDark && { boxShadow: cardShadow },
                 pressed && { transform: [{ scale: 0.98 }] },
               ]}
             >
