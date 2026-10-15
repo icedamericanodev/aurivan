@@ -11,7 +11,7 @@ For internal/technical history, see git log and PR descriptions.
 
 ### Improved
 - Domain scores show Building, Steady or Strong until a domain has 30 answers, and a mock exam shows your score as an estimate.
-- Profiles are gone: your progress stays in this browser, and Your data in the menu exports, imports or resets it.
+- Profiles are gone: your progress stays in this browser, and Your data in the menu exports, imports or resets it. Progress saved under an older profile is listed there too, so you can export it or switch to it.
 - A shorter welcome, a clearer “The IS auditor’s lens” label in the study notes, and pop-ups that work with the keyboard and screen readers.
 - Privacy, Terms and Help pages now match the app and follow light and dark mode.
 
