@@ -157,7 +157,7 @@ export function pickShareHeadline(input: ShareInput): ShareHeadline {
  * of ISACA."), on every card and in every share text (compliance §5).
  */
 export function shareMessage(h: ShareHeadline, notice: string): string {
-  return `${h.spoken} Studying with Aurivan. ${notice}`;
+  return `${h.spoken} Studying with KaiSip. ${notice}`;
 }
 
 // ── Badge cards (mobile 1.11, badges_game.md §6, compliance review §5) ────
@@ -225,7 +225,7 @@ export interface BadgeCardText {
   name: string;
   tierLine?: string;
   skill: string;
-  /** "Aurivan study badge · Earned 3 Nov 2026": the medallion's caption, so it reads as ours. */
+  /** "KaiSip study badge · Earned 3 Nov 2026": the medallion's caption, so it reads as ours. */
   caption: string;
   /** "Studying for the CISA® exam" */
   headline: string;
@@ -245,7 +245,7 @@ export interface BadgeCardText {
  */
 export function badgeCardText(b: ShareBadge, cert: ShareCert, storeLink?: string | null): BadgeCardText {
   if (!badgeShareable(b)) throw new Error(`badge not shareable: ${b.name}`);
-  const caption = `Aurivan study badge · Earned ${b.earnedOn}`;
+  const caption = `KaiSip study badge · Earned ${b.earnedOn}`;
   const headline = studyingFor(cert);
   const ours = [b.name, b.tierLine ?? '', b.skill, caption, headline];
   if (!ours.every(isHonestShareText)) throw new Error(`share text failed the honesty guard: ${b.name}`);
@@ -258,7 +258,7 @@ export function badgeCardText(b: ShareBadge, cert: ShareCert, storeLink?: string
     caption,
     headline,
     notice: cert.trademarkNotice,
-    message: `${b.skill}: my ${b.name}${tier} study badge from Aurivan, earned ${b.earnedOn}. ${headline}.${link} ${cert.trademarkNotice}`,
+    message: `${b.skill}: my ${b.name}${tier} study badge from KaiSip, earned ${b.earnedOn}. ${headline}.${link} ${cert.trademarkNotice}`,
     spoken: `Badge card. ${b.name}${tier}. ${b.skill}. ${caption.replace(' · ', ', ')}. ${headline}. ${cert.trademarkNotice}`,
   };
 }

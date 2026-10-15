@@ -473,7 +473,8 @@ describe('Onboarding: each step\u2019s header takes focus (UX review P7, O7)', (
     const header = (title: string) => root().findAll((n) => n.props.accessibilityRole === 'header' && n.props.accessibilityLabel === title && n.props.accessible === true);
     expect(focus).not.toHaveBeenCalled();
     const steps: [RegExp, string][] = [
-      [/^Start my plan$/, 'Which exam are you preparing for?'],
+      [/^Start my plan$/, 'What should we call you?'],
+      [/^Skip$/, 'Which exam are you preparing for?'],
       [/^Continue$/, 'Where are you starting from?'],
       [/^Skip this question$/, 'When is your exam?'],
       [/^Continue$/, 'Plant something that grows with you'],

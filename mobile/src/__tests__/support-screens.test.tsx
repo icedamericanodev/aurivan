@@ -4,7 +4,7 @@
  *   (Get help, Updates), every row opens what it says, and the address is
  *   its own selectable line above the not-affiliated line;
  * - Send feedback and Contact support keep what was typed across Cancel;
- * - the Help deep link (aurivan://help?open=…) opens the right sheet, also
+ * - the Help deep link (kaisip://help?open=…) opens the right sheet, also
  *   when Help is already open, and ignores anything else;
  * - Common questions: each answer ends with "Still stuck? Email us", which
  *   opens Contact support with the right topic chosen;
@@ -154,7 +154,7 @@ describe('the Help screen', () => {
     // iOS copies a whole selectable Text: the address must be alone in its own (UX P6).
     const address = root().findAll((n) => n.props.selectable === true && typeof n.type !== 'string' && n.props.children === 'certprep.support@gmail.com');
     expect(address.length).toBeGreaterThan(0);
-    expect(text).toContain('Aurivan is independent and not affiliated with or endorsed by ISACA.');
+    expect(text).toContain('KaiSip is independent and not affiliated with or endorsed by ISACA.');
     // The version the store build carries (app.json), written short ("1.8", "1.8.1"),
     // checked against the file itself, not against the list Help reads it from.
     const shipped = appJson.expo.version;
@@ -177,7 +177,7 @@ describe('the Help screen', () => {
     expect(allText()).toContain('Something didn’t load or froze');
     press('Text is cut off or hard to read');
     await pressAsync('Write the email');
-    expect(lastEmail().subject).toBe('Aurivan · Report · CISA · app:help · display');
+    expect(lastEmail().subject).toBe('KaiSip · Report · CISA · app:help · display');
     expect(lastEmail().body).toContain('Item: The app (Help)');
     const text = allText();
     expect(text.indexOf('Finished in your email app?')).toBeGreaterThan(text.indexOf('Report a problem with the app'));
@@ -192,7 +192,7 @@ describe('the Help screen', () => {
     expect(pressables('An idea')[0].props.selected).toBe(true);
     act(() => { root().findAll((n) => n.props.accessibilityLabel === 'Your message' && typeof n.props.onChangeText === 'function')[0].props.onChangeText('A dark-mode timer'); });
     await pressAsync('Write the email');
-    expect(lastEmail().subject).toBe('Aurivan · Feedback · Idea · CISA');
+    expect(lastEmail().subject).toBe('KaiSip · Feedback · Idea · CISA');
     expect(lastEmail().body).toContain('A dark-mode timer');
     expect(lastEmail().body).not.toContain('Display:'); // only if ticked
     expect(lastEmail().body).toContain('From: Help');
@@ -223,12 +223,12 @@ describe('the Help screen', () => {
     expect(allText()).toContain('Choose what it’s about to continue.');
     press('Backup, restore or a new phone');
     await pressAsync('Write the email');
-    expect(lastEmail().subject).toBe('Aurivan · Support · Backup · CISA');
+    expect(lastEmail().subject).toBe('KaiSip · Support · Backup · CISA');
     expect(lastEmail().body).toContain('Topic: Backup, restore or a new phone');
   });
 });
 
-describe('the Help deep link: aurivan://help?open=…', () => {
+describe('the Help deep link: kaisip://help?open=…', () => {
   it.each([
     ['support', 'Contact support', 'We’re a small independent team.'],
     ['idea', 'Suggest an idea', 'Tell us what helps'],

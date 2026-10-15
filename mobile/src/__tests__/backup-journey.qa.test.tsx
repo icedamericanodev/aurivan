@@ -281,7 +281,7 @@ describe('new-phone journey: A saves a backup, a fresh install restores it', () 
     mount(<Settings />);
     await press('Save a backup');
     unmount();
-    expect(mockShared).toEqual(['file:///cache/aurivan-backup-2026-10-09.json']);
+    expect(mockShared).toEqual(['file:///cache/kaisip-backup-2026-10-09.json']);
     const fileText = mockFiles.get(mockShared[0])!;
     const scheduledA = JSON.parse(JSON.stringify([...mockScheduled.values()].sort((a, b) => a.identifier.localeCompare(b.identifier))));
     expect(scheduledA.length).toBe(5);
@@ -393,12 +393,12 @@ describe('restore validation: nothing changes and the message is clear', () => {
     expect(await tryRestore(JSON.stringify(newerSettings))).toContain(BACKUP_ERROR_COPY.newer);
   });
 
-  // BUG (Minor): a real Aurivan backup that was cut off (a failed download or
-  // sync) is told "This file isn't an Aurivan backup. Pick the file that starts
-  // with “aurivan-backup”" — but the learner DID pick that file. It should say
+  // BUG (Minor): a real KaiSip backup that was cut off (a failed download or
+  // sync) is told "This file isn't a KaiSip backup. Pick the file that starts
+  // with “kaisip-backup”" — but the learner DID pick that file. It should say
   // the backup is damaged. engine/backup.ts readBackup maps every JSON.parse
   // failure to 'not-json'.
-  it('a cut-off Aurivan backup says it is damaged, not that it is not a backup', async () => {
+  it('a cut-off KaiSip backup says it is damaged, not that it is not a backup', async () => {
     const good = await phoneWithBackup();
     const text = JSON.stringify(good);
     const shown = await tryRestore(text.slice(0, Math.floor(text.length / 2)));
@@ -421,7 +421,7 @@ describe('restore validation: nothing changes and the message is clear', () => {
 
   it('a file from another app (JSON, plain text, a picture)', async () => {
     await phoneWithBackup();
-    const notOurs = BACKUP_ERROR_COPY['not-aurivan'];
+    const notOurs = BACKUP_ERROR_COPY['not-kaisip'];
     expect(await tryRestore(JSON.stringify({ app: 'other-quiz', schema: 1, stores: {} }))).toContain(notOurs);
     expect(await tryRestore(JSON.stringify({ version: 2, state: { byCert: {} } }))).toContain(notOurs); // a raw store blob
     expect(await tryRestore('Meeting notes, Tuesday')).toContain(BACKUP_ERROR_COPY['not-json']);

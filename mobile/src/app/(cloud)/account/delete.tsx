@@ -1,10 +1,10 @@
 /**
  * Delete account (spec §2.1 A4, Apple 5.1.1(v), Google account deletion),
- * aurivan://account/delete. Settings → Account → Delete account →
+ * kaisip://account/delete. Settings → Account → Delete account →
  * Continue → (confirm it's you) → Delete account: three taps from Settings'
  * Account row when the sign-in is recent.
  *
- * 1. "Delete your Aurivan account?" with "Also remove my progress from this
+ * 1. "Delete your KaiSip account?" with "Also remove my progress from this
  *    phone" UNticked, then Continue or Cancel.
  * 2. Re-confirm. A sign-in under 10 minutes old: type DELETE (any case).
  *    Otherwise confirm it's you first with the same method (email code,
@@ -21,7 +21,7 @@
  * expired code, or too many tries, goes back to "Send a code to …" so a new
  * one can be sent. Sending says "Code sent to …" to a screen reader.
  *
- * Takes NO link parameters (aurivan://account/delete?confirm=DELETE only
+ * Takes NO link parameters (kaisip://account/delete?confirm=DELETE only
  * opens step 1) and calls nothing until a tap. No swipe-back and no Android
  * back while it deletes; Android back on the last step goes to You (the
  * account screens behind it are for an account that no longer exists).

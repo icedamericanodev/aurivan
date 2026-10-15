@@ -136,7 +136,7 @@ describe('report email: only what we need, nothing about the learner', () => {
   it('greets, then the learner’s space, then the kept block, then the exam-content line', () => {
     const { body } = buildReportEmail(input({ note: 'B fits the stem better.' }));
     const lines = body.split('\n');
-    expect(lines[0]).toBe('Hi Aurivan team,');
+    expect(lines[0]).toBe('Hi KaiSip team,');
     expect(lines[2]).toBe('B fits the stem better.');
     expect(body.trimEnd().endsWith(EXAM_CONTENT_LINE)).toBe(true);
   });
@@ -146,9 +146,9 @@ describe('report email: only what we need, nothing about the learner', () => {
   });
 
   it('subject is parseable for mail filters', () => {
-    expect(reportSubject(input())).toBe('Aurivan · Report · CISA · d4_217 · key');
+    expect(reportSubject(input())).toBe('KaiSip · Report · CISA · d4_217 · key');
     expect(reportSubject(input({ target: { kind: 'note', id: '4A2.3', where: 'Study note' }, reason: 'diagram' }))).toBe(
-      'Aurivan · Report · CISA · note:4A2.3 · diagram',
+      'KaiSip · Report · CISA · note:4A2.3 · diagram',
     );
   });
 
@@ -235,10 +235,10 @@ describe('notes and the mailto: link', () => {
 describe('feedback and support emails', () => {
   it('feedback: kind tag in the subject, optional display line, the exam-content line', () => {
     const e = buildFeedbackEmail({ kind: 'idea', message: 'More mocks', certName: 'CISA', app: { version: '1.7.0', os: 'Android 16' }, from: 'Help' });
-    expect(e.subject).toBe('Aurivan · Feedback · Idea · CISA');
+    expect(e.subject).toBe('KaiSip · Feedback · Idea · CISA');
     expect(e.body).toContain('More mocks');
     expect(e.body).toContain('Kind: An idea');
-    expect(e.body).toContain('App: Aurivan 1.7.0 (Android 16)');
+    expect(e.body).toContain('App: KaiSip 1.7.0 (Android 16)');
     expect(e.body).toContain('From: Help');
     expect(e.body).not.toContain('Display:');
     expect(e.body).toContain(EXAM_CONTENT_LINE);
@@ -246,7 +246,7 @@ describe('feedback and support emails', () => {
 
   it('support: topic tag in the subject; never asks for a backup file', () => {
     const e = buildSupportEmail({ topic: 'backup', certName: 'CISA', app });
-    expect(e.subject).toBe('Aurivan · Support · Backup · CISA');
+    expect(e.subject).toBe('KaiSip · Support · Backup · CISA');
     expect(e.body).toContain('Topic: Backup, restore or a new phone');
     expect(e.body.toLowerCase()).not.toContain('attach');
   });

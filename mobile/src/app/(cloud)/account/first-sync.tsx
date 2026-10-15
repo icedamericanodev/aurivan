@@ -1,5 +1,5 @@
 /**
- * The first-sync preview (spec §3.1 S2, §3.2), aurivan://account/first-sync.
+ * The first-sync preview (spec §3.1 S2, §3.2), kaisip://account/first-sync.
  * Before this phone first syncs, the learner sees what will happen:
  * - only the phone has progress → "Add this phone's progress to your account?"
  * - only the account has progress → "Bring your progress to this phone?"

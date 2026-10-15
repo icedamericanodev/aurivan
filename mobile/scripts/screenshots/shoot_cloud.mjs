@@ -282,7 +282,7 @@ const syncSwitch = async (page) => {
   {
     const day = 86400000;
     const file = JSON.stringify({
-      app: 'aurivan',
+      app: 'kaisip',
       schema: 1,
       exportedAt: new Date(Date.now() - 3 * day).toISOString(),
       appVersion: '1.17.0',
@@ -291,7 +291,7 @@ const syncSwitch = async (page) => {
     await scrollTo(page, 'Your data', 120);
     const chooser = page.waitForEvent('filechooser');
     await page.getByRole('button', { name: 'Restore from a backup' }).first().click();
-    await (await chooser).setFiles({ name: 'aurivan-backup.json', mimeType: 'application/json', buffer: Buffer.from(file) });
+    await (await chooser).setFiles({ name: 'kaisip-backup.json', mimeType: 'application/json', buffer: Buffer.from(file) });
     await page.waitForTimeout(1500);
     await shot(page, 'sync-restore');
   }

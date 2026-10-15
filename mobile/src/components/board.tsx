@@ -57,7 +57,7 @@ export function StatusTag({ status, shippedIn }: { status: PostStatus; shippedIn
   );
 }
 
-/** "Aurivan team", the badge next to a staff handle and on the official response. */
+/** "KaiSip team", the badge next to a staff handle and on the official response. */
 export function TeamBadge() {
   const { c } = useTheme();
   return (
@@ -265,7 +265,7 @@ export function BoardCard({ title, children, tone = 'tip', grouped = false }: { 
   );
 }
 
-/** The official response: an accent left rule, "Aurivan team · official response", the words. */
+/** The official response: an accent left rule, "KaiSip team · official response", the words. */
 export function OfficialCard({ body }: { body: string }) {
   const { c } = useTheme();
   return (

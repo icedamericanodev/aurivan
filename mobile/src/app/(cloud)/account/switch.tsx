@@ -1,6 +1,6 @@
 /**
  * A different account on this phone (spec §3.1 S5, security §4.6),
- * aurivan://account/switch. The phone's progress was synced with another
+ * kaisip://account/switch. The phone's progress was synced with another
  * account; the learner who just signed in chooses:
  * - Start fresh with this account (the default): this phone's progress goes
  *   to the 7-day "Undo sync" slot and the phone takes this account's

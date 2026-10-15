@@ -373,7 +373,7 @@ function removeLocalProgress() {
 }
 
 // ── Download my data ──────────────────────────────────────────────────
-const ACCOUNT_FILE = /^aurivan-account-.*\.json$/;
+const ACCOUNT_FILE = /^(?:kaisip|aurivan)-account-.*\.json$/;
 
 /**
  * "Download my data": the server's file (the backup envelope plus the
@@ -409,7 +409,7 @@ export async function downloadMyData(now = Date.now()): Promise<Result<{ outcome
     const file = new File(Paths.cache, name);
     file.create({ overwrite: true });
     file.write(text);
-    await Sharing.shareAsync(file.uri, { mimeType: 'application/json', UTI: 'public.json', dialogTitle: 'Save your Aurivan account data' });
+    await Sharing.shareAsync(file.uri, { mimeType: 'application/json', UTI: 'public.json', dialogTitle: 'Save your KaiSip account data' });
     return { ok: true, outcome: 'shared' };
   } catch {
     return { ok: false, code: 'server' };

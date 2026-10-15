@@ -1,5 +1,5 @@
 /**
- * The staff queue (spec §4.2 "Moderation", B7), aurivan://board/moderation.
+ * The staff queue (spec §4.2 "Moderation", B7), kaisip://board/moderation.
  * Staff only: the server is asked first (staff-action { whoami }); anyone
  * else gets Today's board back (a Redirect), and every action is checked by
  * the server again. This screen's gate is cosmetic.

@@ -176,7 +176,7 @@ describe('Settings → Your data', () => {
     render();
     await press('Restore from a backup');
     expect(allText()).toContain('Couldn’t restore');
-    expect(allText()).toContain(BACKUP_ERROR_COPY['not-aurivan']);
+    expect(allText()).toContain(BACKUP_ERROR_COPY['not-kaisip']);
     expect(allText()).not.toContain('Replace my progress');
     expect(useProgress.getState().byCert).toBe(before);
   });

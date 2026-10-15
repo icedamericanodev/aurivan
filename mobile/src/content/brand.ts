@@ -1,5 +1,5 @@
 /**
- * The Aurivan brand promise ("Set A: Rings", chosen by the owner 2026-10-07).
+ * The KaiSip brand promise ("Set A: Rings", chosen by the owner 2026-10-07).
  *
  * One place for the tagline, the line under it and the four pillars, so the
  * welcome screen and Settings → About always say the same thing.
@@ -17,6 +17,16 @@ export interface Pillar {
 
 export const TAGLINE = 'Master Modern Risk.';
 export const VISION_LINE = 'Grow your judgment, one ring at a time.';
+
+/**
+ * Mobile 1.23: the app was called Aurivan before. The new name is a new app
+ * on the phone (a new package id), so progress moves by backup file: this is
+ * the one line that says how, shown on the welcome screen, in Settings →
+ * Your data and in About. Uses the real labels from the old app's Settings.
+ */
+/** The steps alone (About already says "Aurivan is now KaiSip." just before it). */
+export const MOVING_STEPS = 'In the old app: Settings → Your data → Save a backup. Then restore that file here.';
+export const MOVING_LINE = `Moving from Aurivan? ${MOVING_STEPS}`;
 
 export const PILLARS: readonly Pillar[] = [
   { glyph: 'path', title: 'See the path', body: 'Know what to study next, and why it matters.' },

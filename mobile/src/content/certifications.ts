@@ -193,13 +193,13 @@ function joinList(items: string[], word: 'and' | 'or' = 'and'): string {
 
 /**
  * One combined notice for every certification the app names, grouped by owner:
- * "Aurivan is not affiliated with or endorsed by ISACA® or ISC2. CISA®, CISM® and
+ * "KaiSip is not affiliated with or endorsed by ISACA® or ISC2. CISA®, CISM® and
  * CRISC® are registered trademarks of ISACA. AAIA is a trademark of ISACA. …"
  * Same legal content as each cert's own notice, without repeating it per cert.
  */
 export function combinedTrademarkNotice(certs: Certification[] = CERTIFICATIONS): string {
   const issuers = [...new Set(certs.map((c) => c.issuer))];
-  const parts = [`Aurivan is not affiliated with or endorsed by ${joinList(issuers.map((i) => ISSUER_MARK[i]), 'or')}.`];
+  const parts = [`KaiSip is not affiliated with or endorsed by ${joinList(issuers.map((i) => ISSUER_MARK[i]), 'or')}.`];
   for (const issuer of issuers) {
     const own = certs.filter((c) => c.issuer === issuer);
     const registered = own.filter((c) => c.trademarkRegistered !== false).map((c) => `${c.name}®`);

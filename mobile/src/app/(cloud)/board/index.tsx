@@ -1,5 +1,5 @@
 /**
- * The feedback board (spec §4.2 "Board home"), aurivan://board. Reached from
+ * The feedback board (spec §4.2 "Board home"), kaisip://board. Reached from
  * You → Account → Feedback board and Settings → Feedback board. No What's
  * next tab: What's next isn't in the app (12 Oct addendum); statuses stay on
  * posts, for their authors and voters.

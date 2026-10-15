@@ -143,7 +143,7 @@ export function SentNote({ title, body }: { title: string; body: string }) {
       if (s !== 'active') left = true;
       else if (left) say();
     });
-    // The email app may open without Aurivan ever leaving the screen (a
+    // The email app may open without KaiSip ever leaving the screen (a
     // chooser, a tablet split view, the web build): announce anyway.
     const t = setTimeout(() => {
       if (!left) say();
@@ -654,7 +654,7 @@ function FeedbackSheet({
       {/* "Suggest an idea" opens this sheet with "An idea" chosen: the title says so. */}
       <T v="display" accessibilityRole="header">{initialKind === 'idea' ? 'Suggest an idea' : 'Send feedback'}</T>
       <T v="body" color={c.ink2} style={{ marginTop: space.sm }}>
-        Tell us what helps, what’s missing, or what feels off. It goes to the people who build Aurivan.
+        Tell us what helps, what’s missing, or what feels off. It goes to the people who build KaiSip.
       </T>
       {panel ? (
         <FallbackPanel email={panel.email} why={panel.why} onRetry={() => setPanel(null)} onClose={() => onClose(true)} />

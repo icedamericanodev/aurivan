@@ -1,4 +1,4 @@
-# Aurivan — Store listing, first release (CISA)
+# KaiSip — Store listing, first release (CISA)
 
 Ready-to-paste copy for App Store Connect and Google Play Console.
 Voice: Grove, warm, calm and credible, like a senior colleague who already passed.
@@ -20,7 +20,7 @@ Character counts below are exact for the short fields (® counts as 1). Long fie
 ### App name (30): 27/30
 
 ```
-Aurivan: IT Audit Exam Prep
+KaiSip: IT Audit Exam Prep
 ```
 
 ### Subtitle (30): 27/30
@@ -43,7 +43,7 @@ Calm, focused CISA® practice for busy professionals. Learn the principle behind
 auditor,cybersecurity,governance,risk,controls,compliance,quiz,certification,study,mock,test,infosec
 ```
 
-- There are no spaces and no repeats. The field leaves out the words already in the name and subtitle (aurivan, it, audit, exam, prep, practice, cisa), because Apple already indexes those.
+- There are no spaces and no repeats. The field leaves out the words already in the name and subtitle (kaisip, it, audit, exam, prep, practice, cisa), because Apple already indexes those.
 - "isaca" is left out on purpose. Guideline 2.3.7 warns against packing keywords with third-party trademarks. CISA already appears descriptively in the subtitle.
 - If you need room, drop `infosec` and use `itgc` (97/100).
 
@@ -52,7 +52,7 @@ auditor,cybersecurity,governance,risk,controls,compliance,quiz,certification,stu
 ```
 Master Modern Risk.
 
-Aurivan helps IT auditors, security and risk professionals prepare for the CISA® exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you grow the judgment the exam rewards, one ring at a time.
+KaiSip helps IT auditors, security and risk professionals prepare for the CISA® exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you grow the judgment the exam rewards, one ring at a time.
 
 PRACTICE THAT TEACHES
 • Original practice questions across all 5 CISA domains
@@ -87,10 +87,10 @@ MADE FOR REAL LIFE
 • Light and dark Grove themes, designed for easy reading
 
 A NOTE ON READINESS
-Your readiness range is a study estimate, not a prediction of your exam result. Aurivan cannot promise a pass. It helps you practise with purpose and walk in prepared.
+Your readiness range is a study estimate, not a prediction of your exam result. KaiSip cannot promise a pass. It helps you practise with purpose and walk in prepared.
 
 
-CISA® is a registered trademark of ISACA. Aurivan is not affiliated with or endorsed by ISACA. All practice questions are original and are not ISACA exam questions.
+CISA® is a registered trademark of ISACA. KaiSip is not affiliated with or endorsed by ISACA. All practice questions are original and are not ISACA exam questions.
 ```
 
 ### What's New
@@ -98,7 +98,7 @@ CISA® is a registered trademark of ISACA. Aurivan is not affiliated with or end
 App Store Connect does not show this field on a version 1.0 submission. Use this text on the first update, or wherever the field appears.
 
 ```
-Welcome to Aurivan. This first release brings calm, focused practice for the CISA® exam: a daily plan, teaching tips on every question, spaced review, games, full mock exams and an estimated readiness range. It works offline, with no account needed.
+Welcome to KaiSip. This first release brings calm, focused practice for the CISA® exam: a daily plan, teaching tips on every question, spaced review, games, full mock exams and an estimated readiness range. It works offline, with no account needed.
 ```
 
 About 250 characters.
@@ -121,7 +121,7 @@ About 250 characters.
 ### Title (30): 27/30
 
 ```
-Aurivan: IT Audit Exam Prep
+KaiSip: IT Audit Exam Prep
 ```
 
 ### Short description (80): 73/80
@@ -158,7 +158,7 @@ Screenshots must not show a question count. Use demo data (`npm run shots`) and 
 ## 4. App Review note (App Store Connect → App Review Information → Notes)
 
 ```
-Thank you for reviewing Aurivan.
+Thank you for reviewing KaiSip.
 
 - No login or account is needed. There is nothing to sign in to, so no demo account is required.
 - All study data (progress, settings, exam date) is stored only on the device. The app collects no data and has no analytics or ads. Settings → Your data lets the user save a backup file through the system share sheet and restore it with the system file picker; the app never uploads it.
@@ -173,7 +173,7 @@ To reach a mock exam:
 2. Open the Practice tab.
 3. Scroll to "Mock exams" and tap "Mini mock" (short) or "Full mock".
 
-CISA® is a registered trademark of ISACA and appears only to describe the exam. Aurivan is not affiliated with or endorsed by ISACA, and all practice questions are original.
+CISA® is a registered trademark of ISACA and appears only to describe the exam. KaiSip is not affiliated with or endorsed by ISACA, and all practice questions are original.
 ```
 
 ---
@@ -192,7 +192,7 @@ Apple Product Page Optimization can test screenshots, icon and preview video, bu
 |---|---|---|---|
 | Play short description | Practice for the CISA® exam: teaching tips, daily plan and spaced review. (73) | CISA® exam practice that teaches the why. Daily plan, spaced review, offline. (77) | Leading with "teaches the why" and "offline" lifts install conversion in markets with patchy data |
 | iOS subtitle (change with a version update) | Practice for the CISA® exam (27) | CISA® exam practice, offline (28) | Same as above, measured as conversion before and after |
-| Name (later, only if data supports it) | Aurivan: IT Audit Exam Prep (27) | Aurivan: IT Audit & Risk Prep (29) | Widens reach to risk professionals ahead of more certifications |
+| Name (later, only if data supports it) | KaiSip: IT Audit Exam Prep (26) | KaiSip: IT Audit & Risk Prep (28) | Widens reach to risk professionals ahead of more certifications |
 | Screenshot 1 caption | Master Modern Risk. | Know what to study next | A concrete benefit first beats the brand line for cold traffic |
 
 Success metric: store listing conversion rate (visitors to installs), read at 90% confidence and at least 7 days per test.

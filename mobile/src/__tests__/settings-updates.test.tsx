@@ -26,7 +26,7 @@ jest.mock('../components/icons', () => {
     get: (t, k: string) => (k in t ? t[k] : Icon),
   });
 });
-jest.mock('../components/brand', () => ({ BrandLockup: () => null, PillarList: () => null }));
+jest.mock('../components/brand', () => ({ KaisipLockup: () => null, KaisipMark: () => null, PillarList: () => null }));
 jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), canGoBack: () => true, canDismiss: () => false },
   useNavigation: () => ({ addListener: () => () => {} }),
@@ -162,10 +162,10 @@ describe('where the row shows', () => {
     expect(t).toContain(STAMP);
     // The version line still comes from the running app's config (Jest has none, so the fallback
     // shows), and the stamp sits right after it.
-    expect(t).toMatch(/Aurivan v\s*1\.0\.0/);
-    expect(t.indexOf('Aurivan v')).toBeLessThan(t.indexOf(STAMP));
+    expect(t).toMatch(/KaiSip v\s*1\.0\.0/);
+    expect(t.indexOf('KaiSip v')).toBeLessThan(t.indexOf(STAMP));
     // The row comes after About (Privacy and Terms are unset in tests).
-    expect(t.indexOf('About Aurivan')).toBeLessThan(t.indexOf(UPDATE_ROW));
+    expect(t.indexOf('About KaiSip')).toBeLessThan(t.indexOf(UPDATE_ROW));
     expect(button(RESTART)).toBeUndefined();
   });
 
@@ -181,7 +181,7 @@ describe('where the row shows', () => {
     expect(row(UPDATE_ROW)).toBeUndefined();
     expect(allText()).not.toMatch(/Update (built-in|1a2b3c4d)/);
     // About is the last row again (its hairline is off), and the version line stays.
-    expect(allText()).toMatch(/Aurivan v\s*1\.0\.0/);
+    expect(allText()).toMatch(/KaiSip v\s*1\.0\.0/);
   });
 
   it('hidden in Expo Go and dev builds (expo-updates disabled), and nothing is called', async () => {

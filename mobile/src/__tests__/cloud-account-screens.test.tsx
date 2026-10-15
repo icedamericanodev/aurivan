@@ -88,7 +88,7 @@ jest.mock('../components/icons', () => {
   const Icon = () => null;
   return new Proxy({ __esModule: true, ICON_STROKE: 2 } as Record<string, unknown>, { get: (t, k: string) => (k in t ? t[k] : Icon) });
 });
-jest.mock('../components/brand', () => ({ BrandLockup: () => null, PillarList: () => null, BrandMark: () => null, KaisipLockup: () => null, KaisipMark: () => null }));
+jest.mock('../components/brand', () => ({ KaisipLockup: () => null, KaisipMark: () => null, PillarList: () => null }));
 jest.mock('../lib/haptics', () => ({ haptic: { success: () => {}, selection: () => {}, error: () => {}, light: () => {}, medium: () => {} } }));
 
 // ── Helpers ────────────────────────────────────────────────────────────
@@ -258,7 +258,7 @@ describe('deep links with hostile params', () => {
       jest.advanceTimersByTime(2000);
     });
     expect(memory.control.calls).toEqual([]);
-    if (path === 'delete') expect(allText()).toContain('Delete your Aurivan account?');
+    if (path === 'delete') expect(allText()).toContain('Delete your KaiSip account?');
     for (const k of ['confirm', 'scope', 'open']) delete routeParams[k];
   });
 
@@ -489,7 +489,7 @@ describe('A4: delete the account', () => {
     answerOne();
     const Delete = screen('delete');
     mount(<Delete />);
-    expect(allText()).toContain('Delete your Aurivan account?');
+    expect(allText()).toContain('Delete your KaiSip account?');
     expect(button('Also remove my progress from this phone').props.checked).toBe(false);
     await press('Continue');
     expect(disabled('Delete account')).toBe(true);
@@ -635,7 +635,7 @@ describe('A5: Download my data, A6: sign out', () => {
       expect(mockNav.push).toHaveBeenCalledWith('/account/sign-out');
       unmount();
       mount(<>{(() => { const S = screen('sign-out'); return <S />; })()}</>);
-      expect(allText()).toContain('Your progress stays on this phone, and Aurivan keeps working without an account.');
+      expect(allText()).toContain('Your progress stays on this phone, and KaiSip keeps working without an account.');
       await press('Sign out on this phone');
       expect(facts().signedIn).toBe(false);
       expect(mockNav.replace).toHaveBeenCalledWith('/you');
@@ -719,7 +719,7 @@ describe('fix round: deleting is never falsely "done"', () => {
     await press('Delete account');
     expect(allText()).toContain('Your sign-in has ended, so nothing was deleted. Sign in again, then delete your account.');
     expect(allText()).not.toContain('Your account is deleted');
-    expect(allText()).toContain('Delete your Aurivan account?');
+    expect(allText()).toContain('Delete your KaiSip account?');
   });
 
   it('B2: no session on this phone is refused before any server call', async () => {

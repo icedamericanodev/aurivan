@@ -183,7 +183,7 @@ describe('R3 joining counts a write attempt (the memory backend plays board-subm
 });
 
 describe('R2 reserved names: "admin" and "staff" inside a name (the reviewer’s RR8-2)', () => {
-  it.each(['AdminTeam', 'SiteAdmin', 'BoardStaff', 'StaffPick', 'Aurivan Admin', 'Admins Only', 'Staffer Pine', 'Ad Min Help', 'S t a f f Pine', 'Badminton Admin', 'Distaff Staff'])(
+  it.each(['AdminTeam', 'SiteAdmin', 'BoardStaff', 'StaffPick', 'KaiSip Admin', 'Admins Only', 'Staffer Pine', 'Ad Min Help', 'S t a f f Pine', 'Badminton Admin', 'Distaff Staff'])(
     '%s is refused',
     (h) => {
       expect(checkHandle(h)).toBe('reserved');

@@ -1,7 +1,7 @@
 /**
  * Mobile 1.23 Today (the owner's mockup A):
  * - header: the KaiSip lockup, a streak pill, the Settings gear;
- * - a meta line ("Thursday · 38 days to CISA"), then the greeting by the hour (no name: the app stores none);
+ * - a meta line ("Thursday · 38 days to CISA"), then the greeting by the hour (with the learner's own name only when they gave one);
  * - the forest plan panel: "Today’s plan · about N min", the title, the plan as a checklist (done struck through,
  *   current bold, later quiet), one full-width pill ("Start", or "Continue" once something is done; Play only for a lesson);
  * - the readiness row (rings, the RANGE, "a range not a promise", "Stage N · name");
@@ -146,7 +146,7 @@ afterEach(() => {
 });
 
 describe('the greeting', () => {
-  it('follows the local hour, and never carries a name (the app stores none)', () => {
+  it('follows the local hour, and carries a name only when the learner gave one (display-name-screens.test.tsx)', () => {
     expect(greeting(0)).toBe('Good morning');
     expect(greeting(11)).toBe('Good morning');
     expect(greeting(12)).toBe('Good afternoon');
@@ -224,7 +224,7 @@ describe('Today, top to bottom', () => {
     expect(stops().some((l) => /-day streak/.test(l))).toBe(false);
   });
 
-  it('meta line and greeting: the real weekday, the real days to the exam, the cert’s name, no learner name', () => {
+  it('meta line and greeting: the real weekday, the real days to the exam, the cert’s name, no name until the learner gives one', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
     expect(allText()).toContain('Thursday · 38 days to CISA');

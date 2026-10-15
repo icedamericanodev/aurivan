@@ -13,8 +13,10 @@ name: Android test APK
 #
 # The APK is signed with the standard Android debug key (fine for personal
 # installs, and the same key every time, so a new APK installs over the old one
-# and keeps the learner's progress). The Play Store upload key comes at store
-# time.
+# and keeps the learner's progress). Since 1.23 the package id is com.kaisip.app
+# (the app was renamed from Aurivan, com.aurivan.app): the first KaiSip APK
+# installs as a NEW app next to the old one, and progress moves by a backup file.
+# The Play Store upload key comes at store time.
 
 on:
   workflow_dispatch:
@@ -122,16 +124,16 @@ jobs:
         run: |
           version="${{ steps.v.outputs.version }}"
           tag="${{ steps.v.outputs.tag }}"
-          apk="Aurivan-$version.apk"
+          apk="KaiSip-$version.apk"
           cp android/app/build/outputs/apk/release/app-release.apk "$apk"
-          notes="Test build of Aurivan $version for your own Android phone (not the Play Store).
+          notes="Test build of KaiSip $version for your own Android phone (not the Play Store).
 
-          To install: open this page on the phone while signed in to GitHub, tap $apk under Assets, then open the download and allow \"Install unknown apps\" when asked. Installing a newer APK over an older one keeps your progress.
+          To install: open this page on the phone while signed in to GitHub, tap $apk under Assets, then open the download and allow \"Install unknown apps\" when asked. Installing a newer KaiSip APK over an older one keeps your progress. KaiSip 1.23 is a new app (new package id com.kaisip.app) and installs next to the old Aurivan app: in the old app use Settings, Your data, Save a backup, then restore that file in KaiSip.
 
           Built from ${GITHUB_SHA::7}. Update runtime ${{ steps.rt.outputs.runtime }} (this APK receives the over-the-air updates published for that runtime)."
           if gh release view "$tag" >/dev/null 2>&1; then
             gh release upload "$tag" "$apk" --clobber
           else
-            gh release create "$tag" "$apk" --title "Aurivan $version (test APK)" --notes "$notes" --prerelease --target "$GITHUB_SHA"
+            gh release create "$tag" "$apk" --title "KaiSip $version (test APK)" --notes "$notes" --prerelease --target "$GITHUB_SHA"
           fi
           echo "Published $apk to release $tag."

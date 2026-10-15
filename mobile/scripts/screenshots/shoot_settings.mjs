@@ -147,7 +147,7 @@ await shot('st11-sheet-motion');
 await closeSheet();
 await page.mouse.wheel(0, 30000);
 await wait(600);
-await press(/^About Aurivan/);
+await press(/^About KaiSip/);
 await shot('st12-sheet-about');
 await closeSheet();
 
@@ -164,6 +164,7 @@ await shot('st14-calendar-no-date');
 await edit(S, `v.state.onboarded = false;`);
 await go('/onboarding', 1800);
 await press('Start my plan');
+await press('Skip'); // mobile 1.23: the optional "What should we call you?" step
 await press('Continue');
 await press('Skip this question');
 await shot('st15-onboarding-date');

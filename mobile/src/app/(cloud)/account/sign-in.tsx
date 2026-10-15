@@ -1,5 +1,5 @@
 /**
- * The sign-in sheet as its own route, aurivan://account/sign-in (spec §2.2).
+ * The sign-in sheet as its own route, kaisip://account/sign-in (spec §2.2).
  * You and Settings open /account, which shows the same sheet while signed
  * out; this route is for places that only need "sign in first" (the
  * feedback board, PR 8). Once signed in it hands over to /account.

@@ -108,6 +108,7 @@ describe('onboarding: where you start and how long you have', () => {
   it('step captions run 1 to 4 of 4, and the plant step is last', () => {
     mount(<Onboarding />);
     press(/^Start my plan$/);
+    press(/^Skip$/); // the optional name step (mobile 1.23)
     expect(caption()).toBe('Step 1 of 4');
     press(/^Continue$/);
     expect(caption()).toBe('Step 2 of 4');
@@ -124,6 +125,7 @@ describe('onboarding: where you start and how long you have', () => {
   it('no row is chosen at first, and Continue waits for one (its hint says how to move on)', () => {
     mount(<Onboarding />);
     press(/^Start my plan$/);
+    press(/^Skip$/); // the optional name step (mobile 1.23)
     press(/^Continue$/);
     expect(checkedRadio('Where are you starting from?')).toEqual([]);
     expect(continueBtn().props.disabled).toBe(true);
@@ -137,6 +139,7 @@ describe('onboarding: where you start and how long you have', () => {
   it('the minutes default to 20, spoken "20 minutes a day"; nothing saves before the last step', () => {
     mount(<Onboarding />);
     press(/^Start my plan$/);
+    press(/^Skip$/); // the optional name step (mobile 1.23)
     press(/^Continue$/);
     press(/^Skip this question$/);
     expect(checkedRadio('Daily time')).toEqual(['20 minutes a day']);
@@ -151,6 +154,7 @@ describe('onboarding: where you start and how long you have', () => {
   it('finishing saves the exam, the date and the fit together, and answers the Today card', () => {
     mount(<Onboarding />);
     press(/^Start my plan$/);
+    press(/^Skip$/); // the optional name step (mobile 1.23)
     press(/^Continue$/);
     press(/^Experienced practitioner/);
     press(/^Continue$/);
@@ -166,6 +170,7 @@ describe('onboarding: where you start and how long you have', () => {
   it('"Skip this question" leaves familiarity unset (it plans like "some"); Plant it saves the same tap', () => {
     mount(<Onboarding />);
     press(/^Start my plan$/);
+    press(/^Skip$/); // the optional name step (mobile 1.23)
     press(/^Continue$/);
     press(/^New to audit/);
     // Skipping after choosing clears the choice: skip means "not said".
@@ -194,6 +199,7 @@ describe('onboarding: where you start and how long you have', () => {
     };
     mount(<Onboarding />);
     press(/^Start my plan$/);
+    press(/^Skip$/); // the optional name step (mobile 1.23)
     press(/^Continue$/);
     press(/^Some IT audit experience/);
     press(/^Continue$/);
@@ -206,6 +212,10 @@ describe('onboarding: where you start and how long you have', () => {
     expect(checkedRadio('Where are you starting from?')).toEqual(['Some IT audit experience, I work in IT, risk or audit, or I’ve studied some of it.']);
     expect(back()).toBe(true);
     expect(caption()).toBe('Step 1 of 4');
+    expect(back()).toBe(true);
+    // The optional name step sits between the welcome and step 1 (mobile 1.23); it has no "Step N of 4".
+    expect(caption()).toBeUndefined();
+    expect(allText()).toContain('What should we call you?');
     expect(back()).toBe(true);
     expect(caption()).toBeUndefined();
     expect(allText()).toContain('Start my plan');

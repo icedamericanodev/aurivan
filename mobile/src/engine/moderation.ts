@@ -335,13 +335,13 @@ export const HANDLE_RE = /^[A-Za-z][A-Za-z0-9 ._'-]{2,23}$/;
 
 /**
  * Names nobody may use, matched anywhere in the folded name without its
- * spaces and punctuation ("Aurivan Team", "ISACA_mod", "s u p p o r t"):
+ * spaces and punctuation ("KaiSip Team", "ISACA_mod", "s u p p o r t"):
  * the team, the exam body and every ISACA certification or framework mark
  * (compliance review P8, item 8). The server's members_guard trigger holds
  * the same list.
  */
 export const RESERVED_HANDLES: readonly string[] = [
-  'aurivan', 'isaca', 'cisa', 'cism', 'crisc', 'cgeit', 'cdpse', 'ccoa', 'aaia', 'aaism', 'cobit', 'csx',
+  'aurivan', 'kaisip', 'isaca', 'cisa', 'cism', 'crisc', 'cgeit', 'cdpse', 'ccoa', 'aaia', 'aaism', 'cobit', 'csx',
   'admin', 'moderator', 'mod', 'team', 'support', 'official', 'staff',
 ];
 /**

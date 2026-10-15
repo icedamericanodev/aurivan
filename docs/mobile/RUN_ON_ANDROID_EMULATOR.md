@@ -1,18 +1,18 @@
-# Running Aurivan on the Android emulator, with live updates
+# Running KaiSip on the Android emulator, with live updates
 
 Written for a beginner. Every step says what it does and why it matters.
-Same idea as Salapify's "run it yourself" guide, adapted for Aurivan, which
+Same idea as Salapify's "run it yourself" guide, adapted for KaiSip, which
 is built with **Expo (React Native)** instead of Flutter.
 
-The goal: Aurivan installed on your Android emulator **as its own app** (its
+The goal: KaiSip installed on your Android emulator **as its own app** (its
 own icon, like Salapify 3), updating by itself whenever new code arrives, so
 you can tap through a feature instead of looking at a screenshot of it.
 
-> **Expo vs Expo Go.** *Expo* is the toolkit Aurivan is built with — like
+> **Expo vs Expo Go.** *Expo* is the toolkit KaiSip is built with — like
 > Flutter is for Salapify — and it stays. *Expo Go* is a separate helper app
 > that can run Expo projects without building them. We do **not** use Expo Go:
 > it cannot run every feature (daily reminders crash in it on Android).
-> Instead you build a **development build**: the real Aurivan app, wired to
+> Instead you build a **development build**: the real KaiSip app, wired to
 > receive live code updates.
 
 ---
@@ -55,7 +55,7 @@ Check it worked:
 
 ---
 
-## Step 1 — Get the Aurivan code (once)
+## Step 1 — Get the KaiSip code (once)
 
     cd ~
     git clone https://github.com/icedamericanodev/aurivan.git
@@ -80,10 +80,10 @@ Downloads every library the app uses and builds the question pack. Look for
 
 Android Studio → **More Actions → Virtual Device Manager** (or **Tools →
 Device Manager**) → press **▶** next to your **Pixel 8**. Wait for the home
-screen. The same emulator can run Salapify and Aurivan side by side — they are
+screen. The same emulator can run Salapify and KaiSip side by side — they are
 separate apps.
 
-## Step 4 — Build and run Aurivan (the first time)
+## Step 4 — Build and run KaiSip (the first time)
 
 Inside `~/aurivan/mobile`:
 
@@ -93,10 +93,10 @@ What happens:
 
 1. Expo generates the Android project (a hidden `android/` folder — never
    edit it, it is regenerated).
-2. Gradle (Android's build tool) compiles Aurivan. **The first build takes
+2. Gradle (Android's build tool) compiles KaiSip. **The first build takes
    5–10 minutes** — it is compiling everything from nothing. Later builds take
    well under a minute. This is normal.
-3. It installs **Aurivan** on the emulator (you'll see the app icon), opens
+3. It installs **KaiSip** on the emulator (you'll see the app icon), opens
    it, and starts the **dev server** that streams your code into the app.
 
 You should see: *"Which exam are you preparing for?"*
@@ -111,7 +111,7 @@ Leave that Terminal running. Keys you can press in it:
 | **Ctrl-C** | Stop the dev server |
 
 > **Next time,** if nothing native changed, you don't need to rebuild: open
-> the Aurivan icon on the emulator and run `npx expo start` — the app
+> the KaiSip icon on the emulator and run `npx expo start` — the app
 > connects to it. `npx expo run:android` also works every time; it just takes
 > a little longer because it checks the build.
 
@@ -127,7 +127,7 @@ instead of Step 4, with the emulator already open:
     cd ~/aurivan/mobile
     bash scripts/dev-sync.sh
 
-It builds/installs Aurivan, starts the dev server, **and** watches GitHub.
+It builds/installs KaiSip, starts the dev server, **and** watches GitHub.
 Every 15 seconds it checks for new commits, pulls them, and prints what
 changed. Code changes appear on the emulator **within a second or two, by
 themselves** (Expo's "Fast Refresh"). It also:
@@ -181,7 +181,7 @@ code: Ctrl-C, run `npx expo start -c` (the `-c` clears the cache), and check
    icon, and check Home shows **Resume** with your answers still there.
 7. **Settings:** Dark/Light, shuffle off (options stay in A–D order), and
    the **daily reminder** — it works in this build. Set it, then check
-   Android's notification settings list Aurivan.
+   Android's notification settings list KaiSip.
 8. **Android back button** inside a quiz should ask before leaving.
 
 Found something odd? Tell me the screen, what you tapped, and what you
@@ -193,7 +193,7 @@ expected. A screenshot (⌘-S in the emulator toolbar) helps a lot.
 
 **It starts completely empty** — exactly what a brand-new learner sees.
 
-**Reset to a brand-new install:** long-press the Aurivan icon → **App info →
+**Reset to a brand-new install:** long-press the KaiSip icon → **App info →
 Storage → Clear storage**, or in the app: **Settings → Reset CISA progress**.
 
 **Your progress lives on the emulator only.** Accounts and sync come later.

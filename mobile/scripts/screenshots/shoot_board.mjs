@@ -130,7 +130,7 @@ const SIGNED_IN = { signedIn: true, authAgeMin: 30 };
   await shot(page, 'board-shipped');
 
   await go(page, ON, '/board/post-timer-lock');
-  await scrollTo(page, 'Aurivan team · official response', 420);
+  await scrollTo(page, 'KaiSip team · official response', 420);
   await shot(page, 'board-post');
   await go(page, ON, '/board/post-change-mgmt');
   await shot(page, 'board-spoiler');
@@ -231,7 +231,7 @@ const SIGNED_IN = { signedIn: true, authAgeMin: 30 };
   await shot(page, 'board-gate');
   await scrollTo(page, 'Choose how you appear', 120);
   await tap(page, 'A name you choose');
-  await fill(page, 'Your name on the board', 'Aurivan Helper');
+  await fill(page, 'Your name on the board', 'KaiSip Helper');
   await tap(page, 'I agree to the community guidelines');
   await shot(page, 'board-handle');
   await ctx.close();
@@ -279,7 +279,7 @@ const SIGNED_IN = { signedIn: true, authAgeMin: 30 };
   await page.waitForTimeout(1600);
   await zoomText(page, 2);
   await page.waitForTimeout(400);
-  await scrollTo(page, 'This looks like text from one of Aurivan’s practice questions', 120);
+  await scrollTo(page, 'This looks like text from one of KaiSip’s practice questions', 120);
   await shot(page, 'compose-bank-xl', 2);
   await ctx.close();
 }

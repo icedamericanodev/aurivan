@@ -3,7 +3,7 @@
  * the benefit in plain words, never a question code, a domain number, a
  * count of items, a version number or an internal label. There is no
  * "What's next" list (removed in 1.17.1), and no copy points to one.
- * The FAQ is 6–10 entries, including "Is Aurivan affiliated with
+ * The FAQ is 6–10 entries, including "Is KaiSip affiliated with
  * ISACA? No." The fixes list passes its own checker.
  */
 import appJson from '../../app.json';

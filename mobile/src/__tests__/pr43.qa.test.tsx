@@ -208,6 +208,7 @@ describe('J1 a new learner’s onboarding', () => {
   // Mobile 1.15: the plant step is step 4 of 4, after "Where are you starting from?" (skipped here) and the date.
   const toStep3 = () => {
     press(/^Start my plan$/);
+    press(/^Skip$/); // the optional name step (mobile 1.23)
     press(/^Continue$/);
     press(/^Skip this question$/);
     press(/^Continue$/);

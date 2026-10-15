@@ -4,7 +4,7 @@
  *
  * Mobile 1.23 (the owner's mockup A). Top to bottom, in screen-reader order:
  *   header     KaiSip lockup | streak pill + Settings gear
- *   meta line  "Thursday · 38 days to CISA", then the greeting by the hour (no name: none is stored)
+ *   meta line  "Thursday · 38 days to CISA", then the greeting by the hour ("Good morning, Maya" when the learner gave a name; Settings → Your name)
  *   forest     "Today’s plan · about N min", the current item's title, the plan as a checklist
  *              (done struck through, current bold, later quiet), ONE full-width pill
  *              ("Start", or "Continue" once something is done; Play only for a lesson)
@@ -64,6 +64,7 @@ import { shouldAskFit } from '../../engine/fit';
 import { STAGE_ORDER } from '../../engine/journey';
 import { aboutMin, spokenMin } from '../../engine/pace';
 import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../../lib/a11y';
+import { greetingWithName } from '../../engine/displayName';
 import { useSettings } from '../../store/settings';
 import { runPlanItem } from '../../lib/actions';
 import { haptic } from '../../lib/haptics';
@@ -123,9 +124,12 @@ function countdown(daysLeft: number | null, examName: string): string {
   return `${daysLeft} day${daysLeft === 1 ? '' : 's'} to ${examName}`;
 }
 
-/** The greeting, by the phone's local time. There is no learner name to add: the app does not store one. */
-export function greeting(hour: number): string {
-  return hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+/**
+ * The greeting, by the phone's local time, with the learner's own name when
+ * they gave one (mobile 1.23; the rule for the name is engine/displayName.ts).
+ */
+export function greeting(hour: number, name?: string | null): string {
+  return greetingWithName(hour, name);
 }
 
 export default function Today() {
@@ -345,6 +349,7 @@ export default function Today() {
   if (plantLineNow && !plantVisit) setPlantVisit(true);
   useFocusEffect(useCallback(() => () => setPlantVisit(false), []));
   const onboarded = useSettings((x) => x.onboarded);
+  const displayName = useSettings((x) => x.displayName);
   const fitPrompt = useSettings((x) => x.fitPrompt);
   const familiarity = useSettings((x) => x.familiarity);
   const fitAskDays = useSettings((x) => x.fitAskDays);
@@ -366,6 +371,9 @@ export default function Today() {
     if (askFit) useSettings.getState().noteFitAsked(plan.day);
   }, [askFit, plan.day]);
 
+  // "Good morning, Maya" (or just "Good morning"): read again each render, so a name changed in Settings shows at once.
+  const greetingText = greeting(new Date().getHours(), displayName);
+
   return (
     <Screen>
       <View onTouchStart={live ? skipAll : undefined}>
@@ -384,7 +392,17 @@ export default function Today() {
           </Row>
         </Row>
         <T v="meta" num style={{ marginTop: space.xl }}>{`${WEEKDAYS[new Date().getDay()]} · ${countdown(j.daysLeft, j.cert.name)}`}</T>
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>{greeting(new Date().getHours())}</T>
+        {/* One header stop that reads the whole greeting. A long name wraps (24 characters at most) and, at the
+            largest text sizes, stops at three lines with an ellipsis instead of pushing the plan off the screen. */}
+        <T
+          v="display"
+          accessibilityRole="header"
+          accessibilityLabel={greetingText}
+          numberOfLines={3}
+          style={{ marginTop: space.xs }}
+        >
+          {greetingText}
+        </T>
       </Enter>
 
       {moments.moment && (

@@ -27,7 +27,7 @@ export const ACCOUNT_COPY = {
 
   // The sign-in sheet.
   'signin.title': 'Keep your progress on every device',
-  'signin.body1': 'An account is optional. Everything in Aurivan works without one.',
+  'signin.body1': 'An account is optional. Everything in KaiSip works without one.',
   'signin.body2': 'With an account, your progress can sync between your devices, and you can join the feedback board.',
   'signin.body3': 'We store your email to sign you in and your progress to sync it. No ads, no tracking.',
   'signin.privacy': 'Privacy policy',
@@ -82,7 +82,7 @@ export const ACCOUNT_COPY = {
   'account.signoutAll': 'Sign out on all devices',
   'account.foot': 'Progress on this phone works with or without an account.',
   'signout.title': 'Sign out?',
-  'signout.body': 'Your progress stays on this phone, and Aurivan keeps working without an account.',
+  'signout.body': 'Your progress stays on this phone, and KaiSip keeps working without an account.',
   'signoutAll.title': 'Sign out on all devices?',
   'signoutAll.body': 'You’ll need to sign in again on every phone and tablet that uses this account.',
   'signout.offline': 'You’re offline. Connect to the internet to sign out on all devices.',
@@ -91,7 +91,7 @@ export const ACCOUNT_COPY = {
   // Delete account.
   'delete.row': 'Delete account',
   'delete.row.sub': 'Permanently delete your account and everything it holds.',
-  'delete.s1.title': 'Delete your Aurivan account?',
+  'delete.s1.title': 'Delete your KaiSip account?',
   'delete.s1.body':
     'This permanently deletes your account, your synced progress, and your posts, comments and votes on the feedback board. Progress saved on this phone stays here unless you tick the box below. This can’t be undone.',
   'delete.s1.local': 'Also remove my progress from this phone',
@@ -108,8 +108,8 @@ export const ACCOUNT_COPY = {
   'delete.s2.go': 'Delete account',
   'delete.busy': 'Deleting your account…',
   'delete.done.title': 'Your account is deleted',
-  'delete.done.body': 'It’s gone from our live systems now, and from backups within 30 days. Aurivan keeps working on this phone without an account.',
-  'delete.done.body.local': 'It’s gone from our live systems now, and from backups within 30 days. Your progress on this phone was removed too. Aurivan keeps working without an account.',
+  'delete.done.body': 'It’s gone from our live systems now, and from backups within 30 days. KaiSip keeps working on this phone without an account.',
+  'delete.done.body.local': 'It’s gone from our live systems now, and from backups within 30 days. Your progress on this phone was removed too. KaiSip keeps working without an account.',
   'delete.done.go': 'Done',
   'delete.offline': 'You’re offline. Connect to the internet to delete your account. Nothing was deleted.',
   'delete.fail': 'We couldn’t delete your account just now. Nothing was deleted. Try again, or email {supportEmail}.',
@@ -128,12 +128,12 @@ export const ACCOUNT_COPY = {
   // Settings → About: the line after the version.
   'about.off': 'Progress is stored only on this device.',
   'about.on.out': 'Progress is stored on this device.',
-  'about.on.sync': 'Progress is stored on this device and syncs to your Aurivan account.',
+  'about.on.sync': 'Progress is stored on this device and syncs to your KaiSip account.',
 
   // ── Sync (Uplift Phase 7; spec §3.3) ───────────────────────────────
   // Settings → Your data's intro in a cloud build (the OFF build keeps its own words in yourData.tsx).
   'data.intro.on': 'Your progress is kept on this phone. A backup file keeps it safe and moves it to a new phone. You choose where the file goes.',
-  'data.intro.sync': 'Your progress is kept on this phone and syncs to your Aurivan account. A backup file is a copy you keep yourself. You choose where the file goes.',
+  'data.intro.sync': 'Your progress is kept on this phone and syncs to your KaiSip account. A backup file is a copy you keep yourself. You choose where the file goes.',
 
   // Account → Sync.
   'sync.section': 'Sync',
@@ -150,7 +150,7 @@ export const ACCOUNT_COPY = {
   'sync.status.retry': 'Couldn’t sync just now. We’ll try again soon.',
   'sync.status.off': 'Sync is off',
   'sync.status.signin': 'Sign in again to keep syncing',
-  'sync.paused.newer': 'Sync is paused. This account has progress from a newer version of Aurivan. Update the app to keep syncing.',
+  'sync.paused.newer': 'Sync is paused. This account has progress from a newer version of KaiSip. Update the app to keep syncing.',
   'sync.paused.unreadable': 'Sync is paused. We couldn’t read the synced copy, so your phone’s progress is unchanged. If this keeps happening, contact us from Help.',
   'sync.paused.toobig': 'Your progress is too large to sync. It stays safe on this phone. You can save a backup file in Settings → Your data.',
   'sync.retry': 'Try again',
@@ -223,7 +223,7 @@ export const ACCOUNT_COPY = {
   'undo.failed.body': 'Something went wrong while saving, so your progress was put back as it was. Please try again.',
 
   // Sign out (account/sign-out).
-  'signout.body.sync': 'Your progress stays on this phone, and Aurivan keeps working without an account. Sync stops until you sign in again.',
+  'signout.body.sync': 'Your progress stays on this phone, and KaiSip keeps working without an account. Sync stops until you sign in again.',
   'signout.remove': 'Remove my progress from this phone (for shared devices)',
   'signout.remove.confirm': 'This removes all your study progress, your plant and your study settings from this phone. Your account’s copy isn’t affected.',
   // Some of it is only on this phone: sync is off, paused, or the last changes didn’t reach the account (UX review H1).
@@ -257,7 +257,7 @@ export const ACCOUNT_COPY = {
   'board.title': 'Feedback board',
   'board.sub': 'Ideas, app problems and questions from learners. We read the posts.',
   // read_scope 'author_staff' (an owner decision at Phase 9): learners see only their own posts.
-  'board.sub.own': 'Ideas, app problems and questions for the Aurivan team. Only you and the team see your posts. We read the posts.',
+  'board.sub.own': 'Ideas, app problems and questions for the KaiSip team. Only you and the team see your posts. We read the posts.',
   'board.tab.top': 'Top',
   'board.tab.new': 'New',
   'board.tab.shipped': 'Shipped',
@@ -292,8 +292,8 @@ export const ACCOUNT_COPY = {
   'board.more': 'Show more',
   'board.foot.contact': 'Questions or concerns: {supportEmail}',
   'board.foot.rules': 'Community guidelines',
-  'board.team': 'Aurivan team · official response',
-  'board.team.badge': 'Aurivan team',
+  'board.team': 'KaiSip team · official response',
+  'board.team.badge': 'KaiSip team',
   'board.teamReplied': 'Team replied',
   'board.history': 'Status history',
   'board.spoiler': 'This post talks about the answer to a practice question.',
@@ -358,7 +358,7 @@ export const ACCOUNT_COPY = {
   'board.compose.rules': 'Be kind, stay on topic, no real exam questions, no personal details.',
   'board.compose.draft': 'You’re offline. Your post is saved here as a draft.',
   'board.compose.checking': 'Checking your words…',
-  'board.leak.title': 'This looks like text from one of Aurivan’s practice questions',
+  'board.leak.title': 'This looks like text from one of KaiSip’s practice questions',
   'board.leak.body': 'To keep answers fresh for everyone, please describe the topic in your own words. If something in that question looks wrong, report it privately: it’s faster, and it won’t spoil it for others.',
   'board.leak.report': 'Report it privately',
   'board.leak.edit': 'Edit my post',
@@ -379,10 +379,10 @@ export const ACCOUNT_COPY = {
 
   // Guidelines gate (version 2026-11). No ISACA text is quoted; checked against the candidate guide before publishing.
   'board.gate.title': 'Before you post',
-  'board.gate.intro': 'The board is where learners help shape Aurivan. Keep it useful and kind.',
+  'board.gate.intro': 'The board is where learners help shape KaiSip. Keep it useful and kind.',
   'board.gate.rule.kind': 'Be kind. No harassment, hate, threats or sexual content. Zero tolerance.',
   'board.gate.rule.exam': 'No real exam questions. Ever. Don’t post, paraphrase or ask for questions from a real certification exam. Candidates agree to keep them confidential. Talk about topics, not items.',
-  'board.gate.rule.ours': 'Don’t paste Aurivan’s practice questions or answers either. Report a question privately instead.',
+  'board.gate.rule.ours': 'Don’t paste KaiSip’s practice questions or answers either. Report a question privately instead.',
   'board.gate.rule.copyright': 'Don’t paste copyrighted material, such as pages from review manuals.',
   'board.gate.rule.private': 'Keep personal details private, yours and other people’s.',
   'board.gate.rule.spam': 'No ads, spam or links to exam dumps.',
@@ -401,7 +401,7 @@ export const ACCOUNT_COPY = {
   'board.gate.busy': 'One moment…',
   'board.gate.updated': 'The guidelines have changed. Please read them again before you post.',
   'board.handle.shape': 'Use 3 to 24 letters, numbers, spaces, dots, dashes or apostrophes, starting with a letter.',
-  'board.handle.reserved': 'That name is kept for the Aurivan team. Choose another.',
+  'board.handle.reserved': 'That name is kept for the KaiSip team. Choose another.',
   'board.handle.words': 'That name has words we don’t allow. Choose another.',
   'board.handle.taken': 'Someone already uses that name. Choose another.',
   'board.handle.rate': 'You can change your name once a day.',
@@ -443,7 +443,7 @@ export const ACCOUNT_COPY = {
   'board.activity.unread': 'New',
   'board.activity.open': 'Open the post',
   'board.notice.status': '“{words}” is now {status}.',
-  'board.notice.official': 'The Aurivan team replied to “{words}”.',
+  'board.notice.official': 'The KaiSip team replied to “{words}”.',
   'board.notice.reply': 'New reply on “{words}”.',
   'board.notice.removed': 'We removed your {item} “{words}” because it {reason}. {who} If you think we got it wrong, you can ask us to look again within 14 days.',
   'board.notice.reason.exam_content': 'appears to share real exam content',

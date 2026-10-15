@@ -2,7 +2,7 @@
  * Help and feedback (You → Help and feedback, Settings → Help and
  * feedback): the Get help and Updates rows (components/help.tsx).
  *
- * Deep link: aurivan://help?open=support | feedback | idea | report opens
+ * Deep link: kaisip://help?open=support | feedback | idea | report opens
  * that sheet straight away (a support reply or the store listing can point
  * here). Any other value just shows the screen.
  * - Read in an effect on the param, so a SECOND link that arrives while
@@ -42,7 +42,7 @@ export default function Help() {
   return (
     <Screen edges={['top', 'bottom']}>
       <PushedHeader title="Help and feedback" onBack={() => (router.canGoBack() ? router.back() : router.replace('/you'))} />
-      <T v="meta" style={{ marginTop: space.sm }}>Quick answers, and an easy way to reach the people who build Aurivan.</T>
+      <T v="meta" style={{ marginTop: space.sm }}>Quick answers, and an easy way to reach the people who build KaiSip.</T>
       <View>
         <HelpRows certId={cert.id} />
       </View>

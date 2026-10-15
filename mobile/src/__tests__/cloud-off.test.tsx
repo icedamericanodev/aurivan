@@ -51,7 +51,7 @@ jest.mock('../components/icons', () => {
   const Icon = () => null;
   return new Proxy({ __esModule: true, ICON_STROKE: 2 } as Record<string, unknown>, { get: (t, k: string) => (k in t ? t[k] : Icon) });
 });
-jest.mock('../components/brand', () => ({ BrandLockup: () => null, PillarList: () => null, BrandMark: () => null, KaisipLockup: () => null, KaisipMark: () => null }));
+jest.mock('../components/brand', () => ({ KaisipLockup: () => null, KaisipMark: () => null, PillarList: () => null }));
 jest.mock('../lib/haptics', () => ({ haptic: { success: () => {}, selection: () => {}, error: () => {}, light: () => {}, medium: () => {} } }));
 
 const offRun = process.env.EXPO_PUBLIC_AURIVAN_CLOUD !== '1';
@@ -141,7 +141,7 @@ describeOff('the cloud flag is off', () => {
     expect(netCalls).toBe(0);
     const text = allText();
     for (const words of [
-      'Sync across devices', 'Account and sync', 'Not signed in', 'Continue with', 'Delete account', 'Progress is stored on this device.', 'Sync this phone', 'Undo sync', 'syncs to your Aurivan account',
+      'Sync across devices', 'Account and sync', 'Not signed in', 'Continue with', 'Delete account', 'Progress is stored on this device.', 'Sync this phone', 'Undo sync', 'syncs to your KaiSip account',
       // The feedback board (Phase 8): no row, no group, no credit line.
       'Feedback board', 'Blocked learners', 'Your activity', 'started as ideas on the feedback board', 'Post publicly instead',
     ]) {

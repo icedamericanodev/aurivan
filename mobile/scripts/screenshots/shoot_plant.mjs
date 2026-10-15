@@ -98,6 +98,7 @@ await go('/home', 1500);
 await edit(S, `v.state.onboarded = false;`);
 await go('/onboarding', 1800);
 await press('Start my plan');
+await press('Skip'); // mobile 1.23: the optional "What should we call you?" step
 await press('Continue');
 await press('Continue', 1400);
 await shot('p01-onboarding-pick');

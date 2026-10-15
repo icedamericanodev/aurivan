@@ -3,7 +3,7 @@
  * keep (Files, Drive, email), and read such a file back.
  *
  * Plain English:
- * - The file is plain JSON: `{ app: 'aurivan', schema: 1, exportedAt,
+ * - The file is plain JSON: `{ app: 'kaisip', schema: 1, exportedAt,
  *   appVersion, stores: { settings, progress } }`. Each store is saved as
  *   `{ version, state }`, exactly as the app keeps it on the phone. No device
  *   ids, no personal data beyond what the stores already hold.
@@ -45,6 +45,7 @@ import {
 import { isLookOfSlot, type LookSlot } from './plantLooks';
 import { examDateLabel } from './examDay';
 import { snapMinutes, type DailyMinutes, type Familiarity } from './fit';
+import { cleanDisplayName } from './displayName';
 import { cleanDone, type ExamWeekItem } from './examWeek';
 import { reminderSummary } from './reminders';
 import { migrateProgress, PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
@@ -52,7 +53,17 @@ import { dayKey } from './streak';
 import { SESSION_SIZES, type StudyMode } from './studyModes';
 import { MAX_REPORTS, parseVersion, REF_RE } from './support';
 
-export const BACKUP_APP = 'aurivan';
+/** What new backup files say in `app` (the app is called KaiSip since 1.23). */
+export const BACKUP_APP = 'kaisip';
+/**
+ * Every `app` marker a file may carry when it is read back. Files made by
+ * Aurivan (1.22 and before, the app's first name) say 'aurivan' and must
+ * keep restoring: moving to the new app (a new package id, so a new install)
+ * happens by backup file, so this is the migration path.
+ */
+export const BACKUP_APPS: readonly string[] = ['kaisip', 'aurivan'];
+/** The words a learner is told to look for in a file name, in every message below. */
+const FILE_HINT = 'Pick the file that starts with “kaisip-backup” (or “aurivan-backup” from the old Aurivan app).';
 /** The file format version. Bump it (and add a step to FILE_MIGRATIONS) if the envelope changes. */
 export const BACKUP_SCHEMA = 1;
 /** Biggest file we will read: 1 MB. A real backup is far smaller (a whole CISA bank answered is ~200 KB). */
@@ -80,7 +91,7 @@ const MAX_TEXT = 500; // any label
 export type BackupErrorCode =
   | 'too-big'
   | 'not-json'
-  | 'not-aurivan'
+  | 'not-kaisip'
   | 'newer'
   | 'unknown-schema'
   | 'unknown-cert'
@@ -89,14 +100,14 @@ export type BackupErrorCode =
 
 /** What the learner reads for each problem. Calm, plain, and always says nothing changed. */
 export const BACKUP_ERROR_COPY: Record<BackupErrorCode, string> = {
-  'too-big': 'This file is too big to be an Aurivan backup. Pick the file that starts with “aurivan-backup”. Nothing was changed.',
-  'not-json': 'This file isn’t an Aurivan backup. Pick the file that starts with “aurivan-backup”. Nothing was changed.',
-  'not-aurivan': 'This file isn’t an Aurivan backup. Pick the file that starts with “aurivan-backup”. Nothing was changed.',
-  newer: 'This backup was made by a newer version of Aurivan. Update the app, then try again. Nothing was changed.',
-  'unknown-schema': 'This backup’s format isn’t one Aurivan knows. Update the app, then try again. Nothing was changed.',
-  'unknown-cert': 'This backup has progress for an exam this version of Aurivan doesn’t know. Update the app, then try again. Nothing was changed.',
+  'too-big': `This file is too big to be a KaiSip backup. ${FILE_HINT} Nothing was changed.`,
+  'not-json': `This file isn’t a KaiSip backup. ${FILE_HINT} Nothing was changed.`,
+  'not-kaisip': `This file isn’t a KaiSip backup. ${FILE_HINT} Nothing was changed.`,
+  newer: 'This backup was made by a newer version of KaiSip. Update the app, then try again. Nothing was changed.',
+  'unknown-schema': 'This backup’s format isn’t one KaiSip knows. Update the app, then try again. Nothing was changed.',
+  'unknown-cert': 'This backup has progress for an exam this version of KaiSip doesn’t know. Update the app, then try again. Nothing was changed.',
   'bad-data': 'Part of this backup is damaged, so it can’t be restored. Try an older backup if you have one. Nothing was changed.',
-  unreadable: 'Aurivan couldn’t open that file. Try again, or move the file to Files or Downloads first. Nothing was changed.',
+  unreadable: 'KaiSip couldn’t open that file. Try again, or move the file to Files or Downloads first. Nothing was changed.',
 };
 
 export class BackupError extends Error {
@@ -305,6 +316,13 @@ const readinessDay = obj({ day: date, min: nullable(percent), last: nullable(per
 const examWeekDone: Check<ExamWeekItem[]> = (x) => (Array.isArray(x) ? cleanDone(x.filter((v) => typeof v === 'string')) : []);
 // `done` is read leniently (above), so a file without it restores with an empty list.
 const examWeek = obj({ for: date, done: examWeekDone }, { hidden: bool });
+/**
+ * Mobile 1.23: the learner's own name for Today's greeting. Read leniently,
+ * like the exam-week ticks (a cosmetic field is never a reason to refuse the
+ * file): anything that isn't a clean name (cleanDisplayName) comes back as
+ * empty text, which the store reads as "no name". Files from before 1.23 have none.
+ */
+const displayNameCheck: Check<string> = (x) => cleanDisplayName(x);
 const moments = obj({}, { readiness: list(readinessDay, MAX_LIST * 2), readySeenAt: ts, examWeek });
 const subtopicMastery = obj({ firstDay: date }, { firstAt: ts, masteredAt: date });
 /** A game score: Forecast can go below zero (a wrong "Sure" is −5). */
@@ -499,6 +517,8 @@ function settingsCheck(certKey: Check<string>) {
       fitChanges: int(0, 9999),
       // The days the "Fit your plan" card showed (at most 3; PR #45 review M4).
       fitAskDays: list(date, 3),
+      // Mobile 1.23: what the learner asked to be called (optional: older files have none).
+      displayName: displayNameCheck,
     },
   );
 }
@@ -605,9 +625,9 @@ export function buildBackup(
   };
 }
 
-/** "aurivan-backup-2026-10-10.json", using the phone's local date. */
+/** "kaisip-backup-2026-10-10.json", using the phone's local date. */
 export function backupFileName(now: number): string {
-  return `aurivan-backup-${dayKey(now)}.json`;
+  return `kaisip-backup-${dayKey(now)}.json`;
 }
 
 /** Size of a text in bytes when saved as UTF-8 (what the 5 MB cap measures). */
@@ -807,11 +827,11 @@ export function readBackup(
     raw = JSON.parse(body);
   } catch {
     // Cut off half-way (a failed download or sync) but clearly ours: say it
-    // is damaged, not "not an Aurivan backup" (the learner DID pick ours).
-    const ours = body.trimStart().startsWith('{') && /"app"\s*:\s*"aurivan"/.test(body);
+    // is damaged, not "not a KaiSip backup" (the learner DID pick ours).
+    const ours = body.trimStart().startsWith('{') && /"app"\s*:\s*"(?:kaisip|aurivan)"/.test(body);
     throw new BackupError(ours ? 'bad-data' : 'not-json');
   }
-  if (!isObj(raw) || raw.app !== BACKUP_APP) throw new BackupError('not-aurivan');
+  if (!isObj(raw) || typeof raw.app !== 'string' || !BACKUP_APPS.includes(raw.app)) throw new BackupError('not-kaisip');
   const fileApp = typeof raw.appVersion === 'string' ? raw.appVersion : '';
   // Made by a newer MINOR or major version: it may hold data this app would
   // silently drop, so ask the learner to update first.

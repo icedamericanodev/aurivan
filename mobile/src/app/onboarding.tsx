@@ -1,5 +1,6 @@
 /**
- * Onboarding — a welcome, then 4 quick steps: pick your certification,
+ * Onboarding — a welcome, an optional "What should we call you?" (mobile
+ * 1.23), then 4 quick steps: pick your certification,
  * where you're starting from (optional, mobile 1.15), your exam date and
  * how long you can study most days (mobile 1.15), then (optionally, mobile
  * 1.13) plant your companion plant. Kept short on purpose: the FTUE decision in
@@ -7,9 +8,15 @@
  * about 10 seconds and can be skipped; skipping never brings a nudge back
  * (You keeps a "Plant yours" entry).
  *
- * Welcome (step 0): the brand moment. A forest panel with the True North
+ * Welcome (step 0): the brand moment. A forest panel with the KaiSip
  * lockup, the tagline and the line, then the four pillars. One tap on
  * "Start my plan" moves on; nothing is saved until the last step.
+ *
+ * Mobile 1.23: the name step (id 6, shown right after the welcome and not
+ * counted in "Step N of 4"). One field, "Only on this phone. It just helps us
+ * say hello." and a clear Skip; leaving it empty is just as fine. The name
+ * is saved with the rest in the same tap as everything else (nothing is
+ * stored before the last step), and Today greets by it.
  *
  * Mobile 1.17: step 3 keeps its quick choices and adds "Pick the exact date",
  * the same calendar sheet as Settings → Exam date (components/calendar.tsx).
@@ -31,7 +38,7 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from 'react'
 import { BackHandler, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle } from 'react-native-svg';
-import { BrandLockup, PillarList } from '../components/brand';
+import { KaisipLockup, PillarList } from '../components/brand';
 import { Seedling } from '../components/glyphs';
 import { ChoiceRow, FamiliarityRows, FAMILIARITY_QUESTION, MinutesControl } from '../components/fit';
 import { StickyFooter } from '../components/quiz';
@@ -44,10 +51,12 @@ import { haptic } from '../lib/haptics';
 import { moveFocus } from '../lib/a11y';
 import { plantFor } from '../lib/plant';
 import { selectCert, useProgress } from '../store/progress';
-import { TAGLINE, VISION_LINE } from '../content/brand';
+import { MOVING_LINE, TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS } from '../content/certifications';
 import { dateInMonths, EXAM_DATE_PRESETS, presetIndexFor } from '../engine/examDay';
 import { CalendarSheet, chosenLine } from '../components/calendar';
+import { DisplayNameField } from '../components/displayName';
+import { cleanDisplayName } from '../engine/displayName';
 import { dayKey } from '../engine/streak';
 import { useKeyboardShown } from '../lib/useKeyboardShown';
 import { useRestoreFlow } from '../lib/useRestoreFlow';
@@ -64,7 +73,10 @@ export default function Onboarding() {
   const { c, isDark } = useTheme();
   const complete = useSettings((s) => s.completeOnboarding);
   const insets = useSafeAreaInsets();
-  const [step, setStep] = useState<0 | 1 | 2 | 3 | 4 | 5>(0);
+  // 0 welcome, 6 the optional name, 1 to 4 the numbered steps, 5 planted.
+  const [step, setStep] = useState<0 | 1 | 2 | 3 | 4 | 5 | 6>(0);
+  // The optional name (mobile 1.23): empty to start; "Skip" and an empty field both mean "no name".
+  const [nameInput, setNameInput] = useState('');
   // Step 2 (mobile 1.15): nothing chosen to start (no default biases the answer); skip leaves it unset.
   const [familiarity, setFamiliarity] = useState<Familiarity | undefined>(undefined);
   // Step 3 (mobile 1.15): minutes most days, 20 to start.
@@ -103,7 +115,7 @@ export default function Onboarding() {
   // Not tied to the step's entrance: the header is there from the first frame.
   const headRef = useRef<View>(null);
   useEffect(() => {
-    if (step >= 1 && step <= 4) moveFocus(headRef);
+    if ((step >= 1 && step <= 4) || step === 6) moveFocus(headRef);
   }, [step]);
 
   // Android's back button steps back through onboarding; on the welcome step
@@ -116,7 +128,8 @@ export default function Onboarding() {
         finishPlanted();
         return true;
       }
-      setStep((step - 1) as 0 | 1 | 2 | 3);
+      // The name step sits between the welcome and step 1.
+      setStep(step === 6 ? 0 : step === 1 ? 6 : ((step - 1) as 1 | 2 | 3));
       return true;
     });
     return () => sub.remove();
@@ -150,7 +163,7 @@ export default function Onboarding() {
             ))}
           </Svg>
         </View>
-        <BrandLockup tone="dark" height={34} />
+        <KaisipLockup tone="dark" height={34} />
         <T v="display" color={c.onForest} accessibilityRole="header" style={{ marginTop: space.xl }}>
           {TAGLINE}
         </T>
@@ -164,7 +177,7 @@ export default function Onboarding() {
 
   // Finish onboarding with the chosen exam, date and fit; then plant (or not).
   const finish = (plant: boolean) => {
-    complete(certId, examDate, { familiarity, dailyMinutes: minutes });
+    complete(certId, examDate, { familiarity, dailyMinutes: minutes }, cleanDisplayName(nameInput) || undefined);
     if (plant) {
       // Mobile 1.14 (M8): plant now (onboarding is already done, so closing
       // the app here loses nothing), then a short planting moment (step 4):
@@ -203,6 +216,21 @@ export default function Onboarding() {
           {planted.growth > 1 ? backfillLine(planted, planted.growth) : `Your first ${SPROUT_ANSWERS} answers give ${plantCallName(planted)} its first sprout.`}
         </T>
         <T v="meta" center style={{ marginTop: space.md }}>It grows only from real progress. It asks for nothing.</T>
+      </Enter>
+    ) : step === 6 ? (
+      <Enter key="s6">
+        <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Optional</T>
+        <StepHeader title="What should we call you?" headRef={headRef} />
+        <T v="meta" style={{ marginTop: space.sm }}>A first name or a nickname, whatever you like.</T>
+        <Gap h={space.xl} />
+        <DisplayNameField
+          value={nameInput}
+          onChange={setNameInput}
+          onSubmit={() => {
+            setNameInput(cleanDisplayName(nameInput));
+            setStep(1);
+          }}
+        />
       </Enter>
     ) : step === 4 ? (
       <Enter key="s4">
@@ -325,27 +353,51 @@ export default function Onboarding() {
           </ScrollView>
         </KeyboardAvoidingView>
       )}
-      {/* Hidden while typing (step 4's name): "Done" on the keyboard brings the buttons back. */}
+      {/* Hidden while typing (step 4's plant name, step 6's own name): "Done" on the keyboard brings the buttons back. */}
       {!typing && (
         <StickyFooter onHeight={setFooterH}>
           {step === 0 ? (
             <>
               {/* A bad file's message sits right above the buttons, where the learner is looking. */}
               {restore.message && <DataMessage message={restore.message} />}
-              <Button label="Start my plan" onPress={() => setStep(1)} disabled={restore.busy !== null} />
-              {/* Moving phones: restore here instead of setting up again. */}
+              <Button label="Start my plan" onPress={() => setStep(6)} disabled={restore.busy !== null} />
+              {/* Moving phones, or from the old Aurivan app: restore here instead of setting up again. */}
+              <T v="meta" center>{MOVING_LINE}</T>
               <Button
                 kind="ghost"
                 label={restore.busy === 'pick' ? 'Opening…' : 'Restore from a backup'}
-                accessibilityHint="Studied on another phone? Pick your Aurivan backup file to bring your progress here."
+                accessibilityHint="Studied on another phone, or in the old Aurivan app? Pick your backup file to bring your progress here."
                 disabled={restore.busy !== null}
                 onPress={restore.pick}
               />
             </>
+          ) : step === 6 ? (
+            <>
+              <Button
+                label="Continue"
+                onPress={() => {
+                  // Save the tidied name; an empty or unusable one is simply no name.
+                  setNameInput(cleanDisplayName(nameInput));
+                  setStep(1);
+                }}
+              />
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                <Button kind="ghost" label="Back" onPress={() => setStep(0)} />
+                <Button
+                  kind="ghost"
+                  label="Skip"
+                  accessibilityHint="Leaves it empty. You can add a name later in Settings."
+                  onPress={() => {
+                    setNameInput('');
+                    setStep(1);
+                  }}
+                />
+              </View>
+            </>
           ) : step === 1 ? (
             <>
               <Button label="Continue" onPress={() => setStep(2)} />
-              <Button kind="ghost" label="Back" onPress={() => setStep(0)} />
+              <Button kind="ghost" label="Back" onPress={() => setStep(6)} />
             </>
           ) : step === 5 ? (
             <Button label="Start studying" onPress={finishPlanted} />

@@ -28,7 +28,7 @@ jest.mock('../components/icons', () => {
     get: (t, k: string) => (k in t ? t[k] : Icon),
   });
 });
-jest.mock('../components/brand', () => ({ BrandLockup: () => null, PillarList: () => null }));
+jest.mock('../components/brand', () => ({ KaisipLockup: () => null, KaisipMark: () => null, PillarList: () => null }));
 let mockParams: Record<string, string> = {};
 /** The stack's event listeners Settings adds (the iOS deep link waits for 'transitionEnd'). */
 let mockNavListeners: Record<string, ((e: { data?: { closing?: boolean } }) => void)[]> = {};
@@ -510,6 +510,7 @@ describe('Onboarding: the same calendar on the date step', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
     press('Start my plan');
+    press('Skip'); // the optional name step (mobile 1.23)
     press('Continue');
     press('Skip this question');
     expect(allText()).toContain('When is your exam?');
@@ -529,6 +530,7 @@ describe('Onboarding: the same calendar on the date step', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
     press('Start my plan');
+    press('Skip'); // the optional name step (mobile 1.23)
     press('Continue');
     press('Skip this question');
     jest.setSystemTime(new Date(2026, 9, 13, 0, 5));
@@ -550,6 +552,7 @@ describe('Onboarding: the same calendar on the date step', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
     press('Start my plan');
+    press('Skip'); // the optional name step (mobile 1.23)
     press('Continue');
     press('Skip this question');
     const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => {});
@@ -568,6 +571,7 @@ describe('Onboarding: the same calendar on the date step', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
     press('Start my plan');
+    press('Skip'); // the optional name step (mobile 1.23)
     press('Continue');
     press('Skip this question');
     expect(byLabel('Not sure yet')[0].props.accessibilityState).toMatchObject({ selected: true });
@@ -612,7 +616,7 @@ describe('Settings and its sheets parse on native', () => {
       useSettings.setState({ theme });
       mount(<Settings />);
       expect(checkTree()).toBeGreaterThan(20);
-      for (const title of ['Certification', 'Exam date', 'Daily time', 'Starting point', 'Default mode', 'Theme', 'Motion', 'About Aurivan']) {
+      for (const title of ['Certification', 'Exam date', 'Daily time', 'Starting point', 'Default mode', 'Theme', 'Motion', 'About KaiSip']) {
         openRow(title);
         checkTree();
         press(new RegExp(`^(Close|Cancel|Done), `));

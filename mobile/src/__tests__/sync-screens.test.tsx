@@ -85,7 +85,7 @@ jest.mock('../components/icons', () => {
   const Icon = () => null;
   return new Proxy({ __esModule: true, ICON_STROKE: 2 } as Record<string, unknown>, { get: (t, k: string) => (k in t ? t[k] : Icon) });
 });
-jest.mock('../components/brand', () => ({ BrandLockup: () => null, PillarList: () => null, BrandMark: () => null }));
+jest.mock('../components/brand', () => ({ KaisipLockup: () => null, KaisipMark: () => null, PillarList: () => null }));
 jest.mock('../lib/haptics', () => ({ haptic: { success: () => {}, selection: () => {}, error: () => {}, light: () => {}, medium: () => {} } }));
 jest.mock('../lib/reminders', () => ({
   remindersSupported: false,
@@ -431,8 +431,8 @@ describe('Settings → Your data, About; You → Account', () => {
       useSyncMeta.setState({ enabled: true });
     });
     mount(<Settings />);
-    expect(allText()).toContain('Your progress is kept on this phone and syncs to your Aurivan account.');
-    expect(allText()).toContain('Progress is stored on this device and syncs to your Aurivan account.');
+    expect(allText()).toContain('Your progress is kept on this phone and syncs to your KaiSip account.');
+    expect(allText()).toContain('Progress is stored on this device and syncs to your KaiSip account.');
   });
 
   it('Undo sync: offered for 7 days; it puts this phone back and turns sync off; the account copy stays', async () => {

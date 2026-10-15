@@ -1,9 +1,9 @@
-# Aurivan — mobile app
+# KaiSip — mobile app
 
-The iOS + Android version of Aurivan, built with React Native + Expo.
+The iOS + Android version of KaiSip, built with React Native + Expo.
 Architecture, roadmap and launch plan: [`docs/mobile/ARCHITECTURE.md`](../docs/mobile/ARCHITECTURE.md).
 
-**Testing on the Android emulator (Aurivan as its own app, auto-updating from GitHub)?**
+**Testing on the Android emulator (KaiSip as its own app, auto-updating from GitHub)?**
 Follow [`docs/mobile/RUN_ON_ANDROID_EMULATOR.md`](../docs/mobile/RUN_ON_ANDROID_EMULATOR.md)
 and use `bash scripts/dev-sync.sh`.
 
@@ -71,6 +71,23 @@ On a Mac with Android Studio there is also `bash scripts/build-apk.sh` (it
 builds in a separate folder, so the emulator and `dev-sync.sh` keep running).
 Its APK is signed like the GitHub Releases one.
 
+**KaiSip 1.23 is a new app on the phone (the rename from Aurivan).** The app
+name, icon and package id (`com.kaisip.app`, was `com.aurivan.app`) are native
+parts, so 1.23 needs a **new APK**: no over-the-air update can deliver it, and
+the old Aurivan APKs keep their old update "runtime" (`5e26d4b…`) and never
+receive KaiSip updates. Android treats a new package id as a different app, so
+KaiSip installs **next to** the old Aurivan app and starts empty. To move your
+progress: in the old app, **Settings → Your data → Save a backup**; in KaiSip,
+**Restore from a backup** on the welcome screen (or later in Settings) and pick
+that file. KaiSip reads both the new `kaisip-backup-…` files and the old
+`aurivan-backup-…` ones. When the new APK is built, run
+`npx expo-updates fingerprint:generate --platform android` and note the hash:
+that is the runtime every later KaiSip update is published for (computed in
+the development sandbox for 1.23.0: `076db17a21d9685df49fdbf3c3e103000ce3445e`;
+trust the value CI or EAS prints). The EAS project, slug and owner in `app.json` are
+unchanged on purpose (renaming the slug needs a new EAS project); the first EAS
+build of `com.kaisip.app` asks to create new signing credentials.
+
 ## Everyday commands (run inside `mobile/`)
 
 | Command | What it does |
@@ -89,11 +106,12 @@ npx eas-cli@latest build --profile production --platform all    # store builds (
 npx eas-cli@latest submit --platform ios                        # upload to App Store Connect
 ```
 
-Before the first store build: set your own `ios.bundleIdentifier` and
-`android.package` in `app.json` (use a domain you own, reversed — e.g.
-`com.yourdomain.aurivan`; **these can never change after launch**), replace
-the placeholder icons in `assets/` with the Aurivan logo, and copy
-`.env.example` to `.env.local` with your privacy/terms URLs.
+Before the first store build: check `ios.bundleIdentifier` and
+`android.package` in `app.json` (both `com.kaisip.app` since 1.23; use a domain
+you own, reversed, if you prefer another; **these can never change after
+launch**), and copy `.env.example` to `.env.local` with your privacy/terms
+URLs. The icons in `assets/` are the KaiSip "Kasama" logo, rendered from the
+masters in `design-notes/brand-kaisip/` (see `docs/mobile/DESIGN_SYSTEM.md` §12).
 
 ## Where things live
 

@@ -16,7 +16,7 @@
  *  6. A fix dated after a report: "Updated after your report", What's new
  *     "Your report helped" once, Today's line once.
  *  7. Settings and You → Help: Contact support, Send feedback, Suggest an
- *     idea, and the aurivan://help?open=… deep link (good and bad values).
+ *     idea, and the kaisip://help?open=… deep link (good and bad values).
  *  8. What's new and Common questions render; no bank size. (What's next
  *     was removed in 1.17.1: no row, and What's new mentions no plans.)
  *
@@ -251,7 +251,7 @@ describe('Journey 1: report a shuffled practice question', () => {
     expect(openUrl).toHaveBeenCalledTimes(1);
     const { to, subject, body, url } = lastEmail();
     expect(to).toBe('certprep.support@gmail.com');
-    expect(subject).toBe(`Aurivan · Report · CISA · ${q.id} · key`);
+    expect(subject).toBe(`KaiSip · Report · CISA · ${q.id} · key`);
     const lines = keptLines(body);
     expect(lines).toContain(`Item: Question ${q.id} (${domainShort(q)})`);
     expect(lines).toContain('Reason: The marked answer looks wrong');
@@ -260,7 +260,7 @@ describe('Journey 1: report a shuffled practice question', () => {
     expect(lines).toContain(`Shown order (screen = bank): ${perm.map((o, i) => `${'ABCD'[i]}=${o}`).join(', ')}`);
     expect(lines).toContain('Where: Practice · Quick 10');
     expect(lines).toContain('Certification: CISA');
-    expect(lines.some((l) => /^App: Aurivan 1\.7\.0 \((iOS|Android|Web)[^)]*\)$/.test(l))).toBe(true);
+    expect(lines.some((l) => /^App: KaiSip 1\.7\.0 \((iOS|Android|Web)[^)]*\)$/.test(l))).toBe(true);
     expect(lines).toContain('Content reviewed: Oct 2026');
     // The same reference in the email and in Your reports.
     const [entry] = useProgress.getState().reports!;
@@ -368,7 +368,7 @@ describe('Journey 2: mocks — report after submitting, never during', () => {
     let lines = keptLines(lastEmail().body);
     expect(lines).toContain(`Your pick: ${displayToOriginal(disp, p0)} (shown as ${disp})`);
     expect(lines).toContain('Where: Mock review · Mini mock');
-    expect(lastEmail().subject).toBe(`Aurivan · Report · CISA · ${id0} · two-right`);
+    expect(lastEmail().subject).toBe(`KaiSip · Report · CISA · ${id0} · two-right`);
 
     // Question 2 was never answered: no pick, and never "undefined".
     press(/^Question 2, /);
@@ -395,7 +395,7 @@ describe('Journey 3: notes, lesson steps and game recaps', () => {
     press('Something important is missing');
     await pressAsync('Write the email');
     const { subject, body } = lastEmail();
-    expect(subject).toBe(`Aurivan · Report · CISA · note:${note.id} · missing`);
+    expect(subject).toBe(`KaiSip · Report · CISA · note:${note.id} · missing`);
     expect(keptLines(body)).toContain(`Item: Note ${note.id} (${note.name})`);
     expect(keptLines(body)).toContain('Where: Study note');
     expectNothingPersonal(body, subject);
@@ -468,7 +468,7 @@ describe('Journey 3: notes, lesson steps and game recaps', () => {
     press('Something on this card is wrong');
     await pressAsync('Write the email');
     let email = lastEmail();
-    expect(email.subject).toBe(`Aurivan · Report · CISA · card:${card.id} · incorrect`);
+    expect(email.subject).toBe(`KaiSip · Report · CISA · card:${card.id} · incorrect`);
     expect(keptLines(email.body)).toContain(`Item: Game card ${card.id} (Root or Rumor)`);
     // The card's own text is not sent.
     expect(email.body).not.toContain(card.text.slice(0, 30));
@@ -479,7 +479,7 @@ describe('Journey 3: notes, lesson steps and game recaps', () => {
     expect(allText()).not.toContain('Which answer do you think is best?');
     await pressAsync('Write the email');
     email = lastEmail();
-    expect(email.subject).toBe(`Aurivan · Report · CISA · ${q.id} · key`);
+    expect(email.subject).toBe(`KaiSip · Report · CISA · ${q.id} · key`);
     expect(keptLines(email.body)).toContain('Where: Game recap · Root or Rumor');
     unmount();
     mount(<Reports />);
@@ -512,7 +512,7 @@ describe('Journey 4: no email app', () => {
     const text = allText();
     expect(text).toContain('We couldn’t open an email app.');
     expect(text).toContain('certprep.support@gmail.com');
-    expect(text).toContain(`Subject: Aurivan · Report · CISA · ${id} · unclear`);
+    expect(text).toContain(`Subject: KaiSip · Report · CISA · ${id} · unclear`);
     expect(text).not.toMatch(/\bsent\b/i); // not even "If you sent it": nothing was opened
     expect(text).not.toContain('Finished in your email app?');
     expect(text).not.toContain('Thank you');
@@ -521,7 +521,7 @@ describe('Journey 4: no email app', () => {
     expect(selectable.some((s) => s.includes(`Item: Question ${id}`))).toBe(true);
     await pressAsync('Share details');
     const msg = share.mock.calls[0][0] as { message: string };
-    expect(msg.message.startsWith('To: certprep.support@gmail.com\nSubject: Aurivan · Report · CISA · ')).toBe(true);
+    expect(msg.message.startsWith('To: certprep.support@gmail.com\nSubject: KaiSip · Report · CISA · ')).toBe(true);
     expect(msg.message).toContain('Reason: The wording is unclear');
     share.mockRestore();
   });
@@ -541,12 +541,12 @@ describe('Journey 4: no email app', () => {
     press('Your data and privacy');
     await pressAsync('Write the email');
     expect(allText()).toContain('We couldn’t open an email app.');
-    expect(allText()).toContain('Subject: Aurivan · Support · Privacy · CISA');
+    expect(allText()).toContain('Subject: KaiSip · Support · Privacy · CISA');
     expect(allText()).not.toMatch(/\bsent\b/i);
     press('Close');
     press('Suggest an idea');
     await pressAsync('Write the email');
-    expect(allText()).toContain('Subject: Aurivan · Feedback · Idea · CISA');
+    expect(allText()).toContain('Subject: KaiSip · Feedback · Idea · CISA');
     await pressAsync('Share details');
     expect((share.mock.calls.at(-1)![0] as { message: string }).message).toContain('Kind: An idea');
     expect(allText()).not.toMatch(/\bsent\b/i);
@@ -739,17 +739,17 @@ describe('Journey 7: Help and feedback from Settings and You, and the deep link'
     expect(mockPush).toHaveBeenCalledWith('/help');
     unmount();
     mount(<Help />);
-    expect(allText()).toContain('Write to us any time at certprep.support@gmail.com Aurivan is independent and not affiliated with or endorsed by ISACA.');
+    expect(allText()).toContain('Write to us any time at certprep.support@gmail.com KaiSip is independent and not affiliated with or endorsed by ISACA.');
     press('Contact support');
     expect(pressables('Write the email')[0].props.disabled).toBe(true);
     press('Reminders');
     await pressAsync('Write the email');
     const { subject, body, to } = lastEmail();
     expect(to).toBe('certprep.support@gmail.com');
-    expect(subject).toBe('Aurivan · Support · Reminders · CISA');
+    expect(subject).toBe('KaiSip · Support · Reminders · CISA');
     expect(body).toContain('Topic: Reminders');
     expect(body).toContain('From: Help');
-    expect(body).toContain('App: Aurivan 1.7.0 (');
+    expect(body).toContain('App: KaiSip 1.7.0 (');
     expect(body).not.toMatch(/backup file/i);
     expectNothingPersonal(body, subject);
     expect(allText()).toContain('If you sent it, thank you. We read every message.');
@@ -761,7 +761,7 @@ describe('Journey 7: Help and feedback from Settings and You, and the deep link'
     expect(allText()).toContain('Tell us what helps');
     expect(pressables('An idea')[0].props.selected).toBe(true);
     await pressAsync('Write the email');
-    expect(lastEmail().subject).toBe('Aurivan · Feedback · Idea · CISA');
+    expect(lastEmail().subject).toBe('KaiSip · Feedback · Idea · CISA');
     expect(lastEmail().body).not.toContain('Display:');
 
     press('Suggest an idea');
@@ -770,7 +770,7 @@ describe('Journey 7: Help and feedback from Settings and You, and the deep link'
     act(() => { root().findAll((n) => n.props.accessibilityLabel === 'Your message' && typeof n.props.onChangeText === 'function')[0].props.onChangeText('The lessons are great.'); });
     await pressAsync('Write the email');
     const { subject, body } = lastEmail();
-    expect(subject).toBe('Aurivan · Feedback · Like · CISA');
+    expect(subject).toBe('KaiSip · Feedback · Like · CISA');
     expect(body.split('\n')[2]).toBe('The lessons are great.');
     expect(body).toMatch(/Display: Theme (light|dark) · Text size \d+% · Reduce Motion (on|off)/);
     expectNothingPersonal(body, subject);
@@ -842,7 +842,7 @@ describe('Journey 7: Help and feedback from Settings and You, and the deep link'
   // render, so a second link while Help was open did nothing. Fixed: an
   // effect on the param, which is then cleared (router.setParams). Still
   // worth one device check: open Help, background the app, tap
-  // aurivan://help?open=support from Notes/Mail.
+  // kaisip://help?open=support from Notes/Mail.
   it('a new deep link while Help is already open still opens its sheet', () => {
     mockParams = {};
     mount(<Help />);

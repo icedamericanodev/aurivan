@@ -29,7 +29,7 @@ import { ICON_SIZE, ListRow, Section, T } from './ui';
 
 /** The footer, in two pieces: the address is selectable on its own. */
 export const HELP_FOOTER_LEAD = 'Write to us any time at';
-export const NOT_AFFILIATED = 'Aurivan is independent and not affiliated with or endorsed by ISACA.';
+export const NOT_AFFILIATED = 'KaiSip is independent and not affiliated with or endorsed by ISACA.';
 
 /** "Something you reported was updated", by how many different things (useReports dueItems). */
 export function creditSubtitle(items: number): string {

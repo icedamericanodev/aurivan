@@ -428,6 +428,7 @@ export function createMemoryBackend(opts: MemoryOptions = {}): MemoryBackend {
         const version = newestApp(Object.values(mine).map((x) => x!.appVersion)) ?? o?.appVersion ?? opts.appVersion;
         const text = JSON.stringify(
           {
+            // The server's export-my-data still writes 'aurivan' (supabase/functions/export-my-data); this stand-in mirrors it. Both markers restore.
             app: 'aurivan',
             schema: 1,
             exportedAt: new Date(now()).toISOString(),

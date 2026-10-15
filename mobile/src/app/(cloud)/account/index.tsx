@@ -1,5 +1,5 @@
 /**
- * Account (spec §2.2), aurivan://account. Reached from You → "Sync across
+ * Account (spec §2.2), kaisip://account. Reached from You → "Sync across
  * devices" / "Account and sync" and Settings → Account, nowhere else.
  *
  * - Signed out: the sign-in sheet (components/account.tsx SignInContent).

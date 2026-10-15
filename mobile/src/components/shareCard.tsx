@@ -30,7 +30,7 @@ import type { Readiness } from '../engine/readiness';
 import { shareMessage, shareOptions, type BadgeCardText, type ShareHeadline, type ShareInput, type ShareKind } from '../engine/shareCard';
 import { cardInk, cardType, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { BrandLockup } from './brand';
+import { KaisipLockup } from './brand';
 import { GrowthRings } from './glyphs';
 import { ICON_STROKE, Share2 } from './icons';
 import { Button, Chip, ChipRow, ICON_SIZE, Row, T } from './ui';
@@ -71,9 +71,9 @@ function ShareCard({ cert, readiness, headline }: { cert: Certification; readine
     >
       {/* Lockup (dark tone: it sits on forest) and cert name. The lockup is
           a drawing, so it never scales with the font size either. Decorative:
-          the wrapper's accessibilityLabel already says "Aurivan". */}
+          the wrapper's accessibilityLabel already says "KaiSip". */}
       <Row style={{ justifyContent: 'space-between', alignItems: 'center' }}>
-        <BrandLockup tone="dark" height={30} decorative />
+        <KaisipLockup tone="dark" height={30} decorative />
         <T v="caption" color={cardInk.sap} maxFontSizeMultiplier={FIXED}>{cert.name}</T>
       </Row>
 
@@ -232,7 +232,7 @@ export function ShareProgressSheet({
                 collapsable={false} // Android must keep this view to capture it
                 accessible
                 accessibilityRole="image"
-                accessibilityLabel={`Share card preview. Aurivan, ${cert.name}. ${headline.spoken} ${cert.trademarkNotice}`}
+                accessibilityLabel={`Share card preview. KaiSip, ${cert.name}. ${headline.spoken} ${cert.trademarkNotice}`}
                 style={{
                   width: CARD_W,
                   height: CARD_H,
@@ -262,7 +262,7 @@ export function ShareProgressSheet({
 // ── Badge cards (mobile 1.11, badges_game.md §6, compliance review §5) ──
 /**
  * One earned badge, as a 320 × 400 forest card (exported at 1080 × 1350):
- * the Aurivan lockup, the medallion, its caption "Aurivan study badge ·
+ * the KaiSip lockup, the medallion, its caption "KaiSip study badge ·
  * Earned 3 Nov 2026" (so it reads as ours, never as an issuer's credential),
  * the badge's name and tier, its skill line, then at the foot, apart from the
  * medallion, "Studying for the CISA® exam" and the cert's full notice.
@@ -273,7 +273,7 @@ export function ShareProgressSheet({
 export function BadgeShareCard({ text, art }: { text: BadgeCardText; art: ReactNode }) {
   return (
     <View style={{ width: CARD_W, height: CARD_H, backgroundColor: cardInk.field, paddingHorizontal: space.xl, paddingVertical: space.lg, overflow: 'hidden' }}>
-      <BrandLockup tone="dark" height={22} decorative />
+      <KaisipLockup tone="dark" height={22} decorative />
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <View accessible={false} importantForAccessibility="no-hide-descendants">
           {art}

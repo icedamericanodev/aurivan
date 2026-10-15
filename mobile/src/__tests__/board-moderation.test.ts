@@ -91,7 +91,7 @@ describe('moderateText (board-submit step 3)', () => {
 });
 
 describe('checkHandle', () => {
-  it.each(['Aurivan Team', 'ISACA_mod', 'support', 'Support', 'CISA mod', 'The Official One', 'Staff Pick', 'adm1n'])('rejects %j as reserved', (h) => {
+  it.each(['KaiSip Team', 'Aurivan Team', 'AURIVAN', 'kaisip', 'Kai Sip fan', 'KAISIP_mod', 'ISACA_mod', 'support', 'Support', 'CISA mod', 'The Official One', 'Staff Pick', 'adm1n'])('rejects %j as reserved', (h) => {
     expect(checkHandle(h)).toBe('reserved');
   });
 
@@ -105,6 +105,13 @@ describe('checkHandle', () => {
 
   it('look-alike letters from other alphabets can’t be used in a name at all', () => {
     expect(checkHandle(`Aur${String.fromCharCode(0x456)}van fan`)).toBe('shape');
+  });
+
+  it('keeps both product names reserved, with look-alike letters (l for i, digits for letters)', () => {
+    expect(checkHandle('KAISlP')).toBe('reserved'); // "l" reads as "i"
+    expect(checkHandle('Ka1s1p Fan')).toBe('reserved'); // digits read as letters
+    expect(checkHandle('AURlVAN')).toBe('reserved');
+    expect(checkHandle('Kaisipan Study')).toBe('reserved'); // anywhere inside the name
   });
 
   it('rejects names with blocked words, and the server’s extra reserved names', () => {

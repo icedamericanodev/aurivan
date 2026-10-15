@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Build an Aurivan APK you can install on your own Android phone (a test
+# Build a KaiSip APK you can install on your own Android phone (a test
 # install, not the Play Store), WITHOUT disturbing the emulator setup.
 #
 #   bash scripts/build-apk.sh              # builds the latest merged app (main)
@@ -17,7 +17,7 @@
 #   2. Installs packages there and builds the question pack.
 #   3. Builds a RELEASE app with Gradle. A release app carries all of its
 #      code inside, so it runs on a phone with no computer attached.
-#   4. Copies the APK to your Desktop as Aurivan-<version>.apk.
+#   4. Copies the APK to your Desktop as KaiSip-<version>.apk.
 #
 # The APK is signed with the standard Android DEBUG key. That is fine for
 # installing on your own phones; the Play Store needs a separate upload key,
@@ -44,7 +44,7 @@ if [ -z "${ANDROID_HOME:-}" ]; then
   exit 1
 fi
 
-echo "Building an installable Aurivan APK from '$REF'."
+echo "Building an installable KaiSip APK from '$REF'."
 echo "Your emulator and dev-sync can keep running."
 echo
 
@@ -63,7 +63,7 @@ fi
 
 cd "$BUILD_DIR/mobile"
 VERSION="$(node -p "require('./app.json').expo.version")"
-OUT="$OUT_DIR/Aurivan-$VERSION.apk"
+OUT="$OUT_DIR/KaiSip-$VERSION.apk"
 
 # Install packages only when the lock file changed since the last build.
 LOCK_HASH="$(shasum package-lock.json | cut -d' ' -f1)"

@@ -1,9 +1,9 @@
-# Aurivan Mobile — Architecture & Launch Plan
+# KaiSip Mobile — Architecture & Launch Plan
 
 **Status:** Phase 1 foundation built (`mobile/`) · **Date:** 2026-10-05
 **Audience:** the founder (beginner-friendly) and every future Claude Code session.
 
-> **In one paragraph.** Aurivan becomes a native iOS + Android app built with
+> **In one paragraph.** KaiSip becomes a native iOS + Android app built with
 > **React Native + Expo** (one TypeScript codebase, both stores). Questions ship
 > inside the app so it works fully offline. Progress is saved on the phone.
 > Cloud builds (EAS) mean **no Mac is needed** to publish to the App Store.
@@ -37,7 +37,7 @@ manager) evaluated the options independently. All three picked **React Native
 | State + offline storage | **Zustand** + AsyncStorage | 1 ✅ | Remembers progress on the phone |
 | Reminders | **expo-notifications** (local) | 1 ✅ | Daily study nudge, no server |
 | Share cards | **react-native-view-shot** 5.1.0 + **expo-sharing** ~57.0 (owner-approved) | 5 ✅ | view-shot turns the fixed 320 × 400 pt card into a 1080 × 1350 PNG; expo-sharing opens the system share sheet with that image on **both iOS and Android** (RN `Share` is text-only on Android). Where expo-sharing is unavailable (web) the same honest sentence is shared as text. Both are native modules: no config plugin needed for sending shares (expo-sharing's plugin only sets up *receiving* shares, which we don't do), but they **need a new dev build** (`eas build --profile development`) before they work on a phone |
-| Backup files | **expo-file-system** ~57.0 + **expo-document-picker** ~57.0 (mobile 1.3) | 1 ✅ | Settings → Your data. file-system writes `aurivan-backup-YYYY-MM-DD.json` to the app's cache, and expo-sharing hands it to Files, Drive, email or AirDrop; document-picker lets the learner choose a backup to restore. No account, no server, works offline. Both are native modules with no config plugin needed, but they **need a new dev build** |
+| Backup files | **expo-file-system** ~57.0 + **expo-document-picker** ~57.0 (mobile 1.3) | 1 ✅ | Settings → Your data. file-system writes `kaisip-backup-YYYY-MM-DD.json` to the app's cache, and expo-sharing hands it to Files, Drive, email or AirDrop; document-picker lets the learner choose a backup to restore. No account, no server, works offline. Both are native modules with no config plugin needed, but they **need a new dev build** |
 | Tests | **Jest** (`jest-expo`) | 1 ✅ | Proves the grading/SRS/readiness logic is right |
 | Builds & store upload | **EAS Build + EAS Submit** | 1 | Builds iOS in the cloud — no Mac needed |
 | Instant fixes | **EAS Update** | 1 | Ship JS/content fixes without store review |
@@ -90,7 +90,7 @@ mobile/
     │   └── streak.ts
     ├── store/                 # WHAT the learner did: progress, settings, session
     ├── lib/                   # glue: session factory, reminders, config
-    └── theme/                 # Aurivan tokens (ported from index.html)
+    └── theme/                 # KaiSip tokens (ported from index.html)
 ```
 
 **The golden rule of the layers:** screens → lib → store/engine → content.
@@ -109,8 +109,12 @@ tap option ─► session.tsx ─► engine/shuffle.isCorrect (grades on ORIGINA
 
 ### Backup and restore (mobile 1.3)
 Settings → Your data (and the welcome screen) save and restore ONE JSON file:
-`{ app: 'aurivan', schema: 1, exportedAt, appVersion, stores: { settings,
-progress } }`, each store as its saved `{ version, state }`. No device ids, no
+`{ app: 'kaisip', schema: 1, exportedAt, appVersion, stores: { settings,
+progress } }`, each store as its saved `{ version, state }`. The file is named
+`kaisip-backup-YYYY-MM-DD.json`. Files made by the app's first name, Aurivan
+(1.22 and before), say `app: 'aurivan'` and are called `aurivan-backup-…`:
+both markers are read, because moving from Aurivan to KaiSip is a backup and
+a restore (see "Rename to KaiSip" below). No device ids, no
 personal data beyond what the stores already hold. `engine/backup.ts` (pure,
 tested) reads a file as untrusted input: 1 MB cap, a leading byte-order mark
 stripped, `JSON.parse` in try/catch (a cut-off file of ours is called damaged,
@@ -322,7 +326,7 @@ Learners report a problem where they see it, and see when it's fixed. No
 server: every email goes through the learner's OWN email app.
 - **Emails** (`engine/support.ts`, pure, tested): Report a problem, Send
   feedback and Contact support. Subjects carry tags for mail filters
-  (`Aurivan · Report · CISA · d4_217 · key`). A report names the bank's
+  (`KaiSip · Report · CISA · d4_217 · key`). A report names the bank's
   ORIGINAL letter with the shown one in brackets ("Your pick: A (shown as
   C)", plus the shown order when shuffled), the item code, reason, app and
   OS major version, review month and a random `R-XXXX` ref. Never a name,
@@ -362,13 +366,13 @@ server: every email goes through the learner's OWN email app.
   Today (with Dismiss) or What's new, whichever comes first. The plural
   counts different items. No streak, growth or badge for reporting.
 - **Screens**: `help` (two groups, Get help and Updates; also
-  `aurivan://help?open=support|feedback|idea|report`, read in an effect and
+  `kaisip://help?open=support|feedback|idea|report`, read in an effect and
   then cleared, so a second link while Help is open still works),
   `faq`, `reports`, `whats-new` (every mobile release in plain words, plus
   "Fixed after learner reports", ending with a fixed feedback line). The
   read-only `whats-next` list was removed in 1.17.1: the plan is internal
   (kept outside this public repo), and `src/app/+native-intent.tsx` sends old
-  `aurivan://whats-next` links to Help (`lib/legacyLinks.ts`). Content
+  `kaisip://whats-next` links to Help (`lib/legacyLinks.ts`). Content
   in `content/support/index.ts`; `support-content.test.ts` enforces the What's
   New style. Maintainer side: `docs/support/PLAYBOOK.md`.
 
@@ -445,7 +449,7 @@ PHASE6_8 (§1–2).
   backup file, never synced. `deviceId.ts` keeps a random UUID in the secure
   store (a restored phone gets a new one).
 - **Screens** (`src/app/(cloud)/`): the group's layout is a `Redirect` to `/`
-  unless the build has a backend, so `aurivan://account/delete` lands on
+  unless the build has a backend, so `kaisip://account/delete` lands on
   Today with the flag off. `/account` is the sign-in sheet when signed out
   and the account screen when signed in; `/account/sign-in` (for "sign in
   first" places), `/account/email` (code sign-in), `/account/delete` (step 1
@@ -655,7 +659,7 @@ What's new (cloud builds only; no names, no counts).
   `supabase/functions/_shared/` by `mobile/scripts/sync-shared.mjs`; guard
   G8 (`--check`, in both workflows and a Jest test) fails if they differ,
   and a 200-string fixture proves the Deno copy gives the same verdicts.
-- **The leak guard.** Near-verbatim text from Aurivan's own questions is
+- **The leak guard.** Near-verbatim text from KaiSip's own questions is
   refused (Post is off in the composer; the server answers `bank_text` and
   writes nothing). Two numbers-only fingerprints of the bundled bank: 5-word
   runs over stem, options, explanations and tips, and 3-word runs over stem
@@ -751,7 +755,7 @@ Freemium with in-app subscriptions (product panel recommendation):
 
 ## 6. Legal & store compliance (must-dos)
 
-1. **Trademarks** — app name "Aurivan"; never "CISA"/"CISSP" etc. in the app
+1. **Trademarks** — app name "KaiSip"; never "CISA"/"CISSP" etc. in the app
    name, icon or developer name. Descriptive use only, with the "not
    affiliated" notice (already in Settings → About and `certifications.ts`).
 2. **Original content only** — ship only questions with `_provenance` records.
@@ -806,6 +810,46 @@ Freemium with in-app subscriptions (product panel recommendation):
    --platform android` must print the same hash while the flag is off.
    Don't touch `mobile/.gitignore` or `mobile/eas.json` casually: both are
    fingerprint inputs.
+
+10. **Rename to KaiSip (mobile 1.23, owner decision 15 Oct 2026).** The app
+   was called Aurivan. What changed: the display name (`app.json` `name`), the
+   icons and splash (rendered from the Kasama masters in
+   `design-notes/brand-kaisip/`), the Android `package` and iOS
+   `bundleIdentifier` (`com.aurivan.app` → `com.kaisip.app`), the URL scheme
+   (`aurivan` → `kaisip`), every learner-visible word, the backup and account
+   file names and their `app` marker. What did NOT change, on purpose, because
+   changing it loses data or needs an account step: the AsyncStorage keys
+   (`aurivan.*`), the notification ids, the `EXPO_PUBLIC_AURIVAN_*` variables
+   and `__AURIVAN_*` globals, and the Expo `slug` (`aurivan`), `owner` and
+   EAS `projectId` (a new slug needs a new EAS project, an owner step).
+   **Consequences.** (a) The name, icon and package id are native, so the
+   Android fingerprint changes: an OTA update cannot deliver 1.23, a new APK
+   or store build is required, and the old Aurivan APKs (runtime `5e26d4b…`)
+   never receive KaiSip updates. (b) Android treats a new package id as a
+   different app: KaiSip installs NEXT TO Aurivan and starts empty, so
+   progress moves by backup file (old app: Settings → Your data → Save a
+   backup; KaiSip: Restore from a backup, on the welcome screen or in
+   Settings). `readBackup` accepts both `app` markers and the welcome screen,
+   Settings → Your data, About, What's new and Help all say how
+   (`MOVING_LINE` in `content/brand.ts`). (c) The first EAS build of
+   `com.kaisip.app` creates new signing credentials. The Android fingerprint
+   for 1.23.0 computed in the development sandbox is
+   `076db17a21d9685df49fdbf3c3e103000ce3445e` (the 1.22 tree gives
+   `f067b2788281514c73427ce40e476f0fad20b4da` there; the `5e26d4b…` value in
+   point 9 came from CI, and the absolute hash depends on the machine's
+   installed packages, so trust what CI or EAS prints for the real build).
+11. **What should we call you? (mobile 1.23).** An optional `displayName`
+   in the settings store (`store/settings.ts`; save version stays 1: the
+   field is optional, so 1.19 to 1.22 saves load as before, and a name read
+   from a save is cleaned again). One rule, `engine/displayName.ts`: trim,
+   collapse spaces, 24 characters, no control or bidi characters, no web
+   addresses or emails, empty = none. Asked on an optional onboarding step,
+   edited in Settings → Your name, used for one thing: Today's greeting. It is
+   saved in the learner's own backup file (`engine/backup.ts` reads it
+   leniently), and is listed as device-only in `engine/syncMerge.ts`, so it
+   never syncs. It must never reach a support email, a share card, the board
+   handle, a link or a log: `src/__tests__/display-name.test.ts` has a source
+   guard listing the only files that may read it.
 
 Run the `app-store-compliance-reviewer` agent before every submission.
 

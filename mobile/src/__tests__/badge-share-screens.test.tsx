@@ -2,7 +2,7 @@
  * Mobile 1.11, slice D: sharing a badge. Only an earned, shareable badge's
  * sheet offers Share; it opens the card INSIDE the same sheet (never a sheet
  * over a sheet, never on its own); the card carries "Studying for the CISA®
- * exam", the full trademark notice and "Aurivan study badge · Earned …";
+ * exam", the full trademark notice and "KaiSip study badge · Earned …";
  * "Share image" captures the card and hands it to the system sheet. Fresh
  * Start is never shareable, and sharing earns nothing.
  */
@@ -103,7 +103,7 @@ describe('sharing a badge', () => {
     const t = textOf(sheet());
     expect(t).toContain('Share this badge');
     expect(t).toContain('Only what is on the card is shared.');
-    expect(t).toContain('Aurivan study badge · Earned 3 Nov 2026');
+    expect(t).toContain('KaiSip study badge · Earned 3 Nov 2026');
     // The card's title is the plain badge name; the tier line and skill line carry the numbers.
     const cardText = textOf(root().findByType(BadgeShareCard));
     expect(cardText).toContain('Long Memory');
@@ -183,7 +183,7 @@ describe('sharing a badge', () => {
     press(/^Share Flown the Nest$/);
     const t = textOf(sheet());
     expect(t).toContain('Moved 50 questions out of spaced review');
-    expect(t).toContain('Aurivan study badge · Earned 3 Nov 2026');
+    expect(t).toContain('KaiSip study badge · Earned 3 Nov 2026');
     expect(t).toContain('Studying for the CISA® exam');
     expect(t).toContain('Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.');
     expect(t).not.toMatch(/graduat|certificat|credential|official/i);

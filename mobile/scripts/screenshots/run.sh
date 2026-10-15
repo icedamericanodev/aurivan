@@ -36,7 +36,7 @@ if [ "${SHOTS:-}" = cloud ]; then
   # both: src/cloud/configGuard.ts), and the guidelines gate's link to the
   # Community guidelines page (community.html next to privacy.html, Phase 8).
   EXPO_OFFLINE=1 EXPO_PUBLIC_AURIVAN_CLOUD=1 EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND=memory EXPO_PUBLIC_AURIVAN_SHOTS=1 \
-    EXPO_PUBLIC_PRIVACY_URL=https://example.com/aurivan/privacy.html EXPO_PUBLIC_TERMS_URL=https://example.com/aurivan/terms.html \
+    EXPO_PUBLIC_PRIVACY_URL=https://example.com/kaisip/privacy.html EXPO_PUBLIC_TERMS_URL=https://example.com/kaisip/terms.html \
     npx expo export --platform web --clear --output-dir "$TMP/web" >/dev/null
   env -u EXPO_PUBLIC_AURIVAN_CLOUD -u EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND -u EXPO_PUBLIC_AURIVAN_SHOTS -u EXPO_PUBLIC_PRIVACY_URL -u EXPO_PUBLIC_TERMS_URL EXPO_OFFLINE=1 \
     npx expo export --platform web --clear --output-dir "$TMP/web-off" >/dev/null
@@ -153,6 +153,12 @@ elif [ "${SHOTS:-}" = proof ]; then
   # out), Today's readiness words as a button, the exam-week checklist and
   # You's Mock exams rows (shoot_proof.mjs; NARROW=1; FONT_SCALE=2 for about 200% text).
   node scripts/screenshots/shoot_proof.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = kaisip ]; then
+  # Mobile 1.23 the KaiSip rename and "What should we call you?": Today with a name (and a long one at
+  # about 200% text), onboarding's name step (empty and typed), Settings with the "Your name" row and
+  # its sheet, About (the new name and the move-from-Aurivan note), Your data and the share card
+  # (shoot_kaisip.mjs; FONT_SCALE=2 for about 200% text).
+  node scripts/screenshots/shoot_kaisip.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = today ]; then
   # Mobile 1.23 Today (mockup A): the day with a warm-up done, a fresh plan, below the fold,
   # a new learner, no exam date, a mock-only day, the clearing, exam eve and week, and a

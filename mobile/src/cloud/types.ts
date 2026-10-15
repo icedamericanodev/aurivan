@@ -207,7 +207,7 @@ export interface PostCard {
   /** The author's PUBLIC member id (never their account id: SEC S4). */
   authorId: string;
   authorHandle: string;
-  /** The author is on the Aurivan team (staff). */
+  /** The author is on the KaiSip team (staff). */
   isTeam: boolean;
   voteCount: number;
   commentCount: number;

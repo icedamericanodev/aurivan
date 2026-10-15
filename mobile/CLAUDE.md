@@ -1,4 +1,4 @@
-# Aurivan mobile — Claude Code memory
+# KaiSip mobile — Claude Code memory
 
 @AGENTS.md
 
