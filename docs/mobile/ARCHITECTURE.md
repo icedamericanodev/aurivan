@@ -738,7 +738,7 @@ system" after a shuffle; tracked as a separate fix.)
 
 | Phase | Scope | Exit gate |
 |---|---|---|
-| **1 — Store launch (CISA)** · 6–8 wks | ✅ practice, mock, review, readiness, streaks, reminders, offline. ☐ app icon/splash from `design-notes/assets/logo.svg` ☐ privacy/terms URLs ☐ EAS builds ☐ Android closed test (12 testers × 14 days for new personal accounts) ☐ TestFlight | Approved in both stores |
+| **1 — Store launch (CISA)** · 6–8 wks | ✅ practice, mock, review, readiness, streaks, reminders, offline. ✅ app icon/splash (Kasama logo, `design-notes/brand-kaisip/`) ☐ privacy/terms URLs ☐ EAS builds ☐ Android closed test (12 testers × 14 days for new personal accounts) ☐ TestFlight | Approved in both stores |
 | **2 — Monetise + measure** · +6 wks | RevenueCat paywall (free tier + Premium), Sentry, PostHog, review prompt, Topics/notes tab | D7 retention ≥ 20%, crash-free ≥ 99.5% |
 | **3 — Accounts + more certs** · +3 mo | Supabase auth (Apple/Google/email), sync, **in-app account deletion**, downloadable content packs, CISM | Paid conversion ≥ 3% |
 | **4 — Scale** | CRISC, AAIA, CISSP, All-Access plan, team licences, AI tutor | Self-reported pass rate ≥ 75% |

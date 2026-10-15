@@ -139,7 +139,7 @@ describe('the case', () => {
       expect(box.props.accessible).toBe(false);
     }
     // Back-filled (saved quietly when badges arrived): "by" that date, never as if earned that day (UX P6).
-    expect(labels()).toContain('First Foothold. Earned by 12 Oct. Finish the 20-question diagnostic. Groundwork.');
+    expect(labels()).toContain('First Foothold. Earned by 12 Oct. Answer your first 20 questions. Groundwork.');
     expect(labels().some((l) => l.startsWith('Firm Footing · IS Operations, Clay. Earned by 12 Oct.') && l.endsWith('26% of the exam. The Five Domains.'))).toBe(true);
     expect(allText()).toContain('By 12 Oct');
     expect(labels().some((l) => l.startsWith('Mindset Shift. Not yet.') && l.includes('Opens after 100 first tries'))).toBe(true);

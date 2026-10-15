@@ -230,7 +230,7 @@ describe('copy', () => {
     expect(howToOpen(lookItem('stone-ring')!)).toBe('Opens when your plant reaches Crown.');
     // UX review P2: what to do, then the badge in brackets.
     expect(howToOpen(lookItem('lantern')!)).toBe('Sit a full, timed mock (the Dress Rehearsal badge).');
-    expect(howToOpen(lookItem('stepping-stone')!)).toBe('Finish your diagnostic (the First Foothold badge).');
+    expect(howToOpen(lookItem('stepping-stone')!)).toBe('Answer your first 20 questions (the First Foothold badge).');
     // Code review M9c: the Domains set is four, five or eight domains, so it is named neutrally.
     expect(howToOpen(lookItem('five-stone')!)).toBe('Opens when you finish the Domains set in Badges.');
     expect(howToOpen(lookItem('ribbon')!)).toBe('Opens when you tell us you passed.');

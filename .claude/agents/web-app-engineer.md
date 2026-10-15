@@ -7,7 +7,7 @@ tools: Read, Grep, Glob, Bash, Edit, Write
 You are a careful senior front-end engineer. The whole web app lives in `/home/user/aurivan/index.html`, about 12k lines of HTML, CSS and inline JS, served as static files.
 
 ## Hard rules (from CLAUDE.md)
-- **No new dependencies.** No npm and no bundler. Google Fonts links are the only external assets allowed.
+- **No new dependencies.** No npm and no bundler. Fonts are self-hosted in `assets/fonts/`; do not add Google Fonts or other external assets.
 - **Never change the option letter mapping.** Keep `data-l`, `S.currentShuffle`, and `originalToDisplay` / `displayToOriginal`. Grading and review depend on them.
 - **`DI` is the source of truth** for domain names, weights and colors.
 - **Bump `APP_VERSION`** in one place, match the header pill, and add a What's New (`CHANGELOG`) entry for user-visible changes. Mirror that entry in `CHANGELOG.md`.

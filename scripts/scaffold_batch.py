@@ -199,7 +199,7 @@ def render_scaffold(qids: List[str], tiers: List[str], positions: List[str]) -> 
     lines.append("- ❌ \"COBIT 2019 (Risk Management)\" → ✓ \"COBIT 2019 APO12 (Managed Risk)\"")
     lines.append("- ❌ \"Sarbanes-Oxley Section 404\" (for retention) → ✓ \"Sarbanes-Oxley Act Section 802 (Records Retention)\"")
     lines.append("- ❌ \"OCC Bulletin 2017-21 (M&A)\" → ✓ \"OCC Comptroller's Licensing Manual — Business Combinations\"")
-    lines.append("- ❌ \"ITAF Standard NNN\" without specific number → ✓ \"ISACA IT Audit Standard 1205 (Evidence)\"")
+    lines.append("- ❌ \"ITAF Standard NNN\" without specific number → ✓ \"ITAF Standard 1205 (Evidence)\"")
     lines.append("")
     lines.append("---")
     lines.append("")

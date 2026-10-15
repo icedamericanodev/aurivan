@@ -132,7 +132,7 @@ After any commit that touches `index.html` (styles, components, copy), invoke
 | `cisa-cross-domain-reviewer` | Contradictions, near-duplicates and drift ACROSS domains | After any domain rewrite; final gate before a bank release |
 
 The UX reviewer reads `docs/mobile/DESIGN_SYSTEM.md` (Grove, shared by web and
-mobile since v11) as the source of truth; `design-notes/MASTER_HANDOFF.md` is
+mobile since v11) as the source of truth; `archive/MASTER_HANDOFF.md` is
 history. Earlier text: it read MASTER_HANDOFF as locked source of
 truth and flags deviations from the variant selections table. Findings are
 tiered HARD ERROR / PRECISION / OBSERVATION — apply HARD ERRORS inline

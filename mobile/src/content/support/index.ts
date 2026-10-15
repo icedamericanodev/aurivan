@@ -41,6 +41,22 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.24.0',
+    date: '2026-10-15',
+    new: [
+      'A quicker start: three short questions about you, then your first five practice questions straight away.',
+      'Play now opens with a drill picked from your own mistakes, and every game says in plain words what it trains.',
+    ],
+    improved: [
+      'Today is calmer, with one clear plan and a short note the first time your readiness range appears.',
+      'After a wrong answer, the key idea and the exam cue come first, and the longer explanation opens when you want it.',
+      'Your readiness is more honest: answering a question again a few minutes after missing it no longer counts as learning it.',
+      'Lessons and notes now call their exam-thinking sections The IS auditor’s lens.',
+      'Reminders take a break by themselves when you have been away for a week.',
+    ],
+    fixed: ['If saved progress ever fails to load, KaiSip now offers to try again instead of staying on the start screen.'],
+  },
+  {
     version: '1.23.0',
     date: '2026-10-15',
     new: [

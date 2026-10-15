@@ -18,7 +18,7 @@ Each task is a separate PR for clean SoD logging. PR letter labels match.
 
 **PR A — Maintenance page** *(human merge)*
 - Replace `index.html` with a single-page maintenance notice (no JS, no fetches, no PWA service-worker registration so installed PWAs eventually invalidate)
-- Move current `index.html` to `archive/index-v8.8.html` for historical reference
+- (Done earlier; the v8.8 archive copy was removed on 15 Oct 2026, it lives in git history)
 - Maintenance copy: forward-looking, quality-focused, no admissions; suggested wording in `Decision log` below
 - After merge: confirm the site is still served by Cloudflare; PWA users will see the maintenance page on next online launch
 

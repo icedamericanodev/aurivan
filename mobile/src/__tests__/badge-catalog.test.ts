@@ -413,7 +413,7 @@ describe('spoken labels and the new dot', () => {
     );
     // A Stretch tier says so, in words, right after its name.
     expect(markSpoken(find(marks, 'long-memory:150'), 'Evergreen')).toMatch(/^Long Memory · 150 recalls\. Stretch, beyond exam need\. Not yet\. Get 150 questions right/);
-    expect(markSpoken(find(marks, 'first-foothold'), 'Groundwork', '12 Oct')).toBe('First Foothold. Earned 12 Oct. Finish the 20-question diagnostic. Groundwork.');
+    expect(markSpoken(find(marks, 'first-foothold'), 'Groundwork', '12 Oct')).toBe('First Foothold. Earned 12 Oct. Answer your first 20 questions. Groundwork.');
     expect(markSpoken(find(marks, 'mindset-shift'), 'Sound Judgement')).toContain('Opens after 100 first tries spread over 2 weeks or more. Sound Judgement.');
   });
   it('a progress arrow is spoken as "now, aiming for", never "of"', () => {

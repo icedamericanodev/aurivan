@@ -719,7 +719,8 @@ export default function SessionScreen() {
                     <Lightbulb size={ICON_SIZE.inline} color={c.accentText} strokeWidth={ICON_STROKE} />
                     <T v="label" color={c.accentText}>Coach me</T>
                     {/* Said up front, so nobody taps it by accident and is surprised. */}
-                    <T v="meta">A right answer after a hint counts as half.</T>
+                    {/* Not on the very first question set: one less thing to read in the first minute. */}
+                    {!active.firstSet && <T v="meta">A right answer after a hint counts as half.</T>}
                   </Row>
                 </Pressable>
               )}

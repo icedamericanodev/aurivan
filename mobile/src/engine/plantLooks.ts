@@ -86,7 +86,7 @@ export interface LookItem {
   /** Keepsakes only. */
   place?: KeepsakePlace;
   shape?: KeepsakeShape;
-  /** Keepsakes only: how to earn it, in plain words ("Finish your diagnostic"). */
+  /** Keepsakes only: how to earn it, in plain words ("Answer your first 20 questions"). */
   how?: string;
 }
 
@@ -170,7 +170,7 @@ const visitorItems: LookItem[] = [
 // opens only when the learner reports a pass. `how` says how to earn it in
 // plain words (UX review P2); the badge's name follows in brackets.
 const KEEPSAKES: [string, string, string, string, KeepsakeShape, string, KeepsakePlace?][] = [
-  ['stepping-stone', 'Stepping stone', 'first-foothold', 'The stepping stone: you finished your diagnostic.', 'flat', 'Finish your diagnostic'],
+  ['stepping-stone', 'Stepping stone', 'first-foothold', 'The stepping stone: you answered your first 20 questions.', 'flat', 'Answer your first 20 questions'],
   ['trail-post', 'Trail post', 'topic-clear', 'The trail post: you cleared your first topic.', 'tall', 'Clear your first topic'],
   ['trail-board', 'Trail board', 'ten-topics', 'The trail board: you cleared ten topics.', 'tall', 'Clear ten topics'],
   // Past tense: a keepsake never claims where readiness stands today (code review M9b).
