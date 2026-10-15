@@ -18,6 +18,9 @@ import { T } from './ui';
 /** The helper line under the field, the same words wherever the field shows. */
 export const NAME_HELPER = 'Only on this phone. It just helps us say hello.';
 
+/** Shown instead of the helper when the typed text looks like a web address or an email. */
+export const NAME_REJECTED = 'That looks like a web address or an email, so we leave it out. Try just your first name.';
+
 export function DisplayNameField({
   value,
   onChange,
@@ -57,7 +60,10 @@ export function DisplayNameField({
           { minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, paddingHorizontal: space.lg, paddingVertical: space.md, color: c.ink, backgroundColor: c.raised, borderColor: c.control },
         ]}
       />
-      <T v="meta" style={{ marginTop: space.sm }}>{NAME_HELPER}</T>
+      {/* A name that looks like a web address or email is left out; say so instead of silently showing "Not set". */}
+      <View accessibilityLiveRegion="polite" style={{ marginTop: space.sm }}>
+        <T v="meta">{value.trim() !== '' && cleanDisplayName(value) === '' ? NAME_REJECTED : NAME_HELPER}</T>
+      </View>
     </View>
   );
 }

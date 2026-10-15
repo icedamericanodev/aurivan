@@ -6414,7 +6414,7 @@ function importProfile(file) {
     try {
       var data = JSON.parse(e.target.result);
       if (!data.cisaMindsetExport || !data.profile) {
-        alert('Invalid file. Please use an KaiSip export file.');
+        alert('Invalid file. Please use a KaiSip export file.');
         return;
       }
       var profile = data.profile;
@@ -6433,7 +6433,7 @@ function importProfile(file) {
       switchProfile(profile.id);
       alert('Profile "' + profile.name + '" imported successfully!');
     } catch(ex) {
-      alert('Could not read file. Make sure it\'s an KaiSip export.');
+      alert('Could not read file. Make sure it\'s a KaiSip export.');
     }
   };
   reader.readAsText(file);

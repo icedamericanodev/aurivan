@@ -447,7 +447,7 @@ export default function Today() {
               label: plan.done.some(Boolean) ? 'Continue' : 'Start',
               onPress: () => runPlanItem(curItem, j.cert.id),
               icon: startIcon(curItem?.kind),
-              hint: `${hero!.title}, ${spokenMin(hero!.meta)}`,
+              hint: heroNote ? hero!.title : `${hero!.title}, ${spokenMin(hero!.meta)}`,
               full: true,
               // Play only for a lesson; everything else goes forward with an arrow after the label.
               iconTrailing: curItem?.kind !== 'lesson',

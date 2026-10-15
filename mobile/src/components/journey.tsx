@@ -306,7 +306,7 @@ export function PlanChecklist({
                     borderRadius: MARK / 2,
                     borderWidth: isCur ? 2.5 : 1.5,
                     borderColor: isCur ? c.sap : c.onForest2,
-                    opacity: isCur ? 1 : 0.55,
+                    opacity: isCur ? 1 : 0.7,
                   }}
                 />
               )}

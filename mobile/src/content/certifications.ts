@@ -46,10 +46,10 @@ export const CERTIFICATIONS: Certification[] = [
     },
     domains: [
       { id: '1', name: 'Information System Auditing Process', short: 'IS Audit', tile: 'IS Audit', weight: 18, tone: 0, emblem: 'domain-audit' },
-      { id: '2', name: 'Governance and Management of IT', short: 'IT Governance', tile: 'IT Gov', weight: 18, tone: 1, emblem: 'domain-governance' },
-      { id: '3', name: 'IS Acquisition, Development & Implementation', short: 'IS Acquisition', tile: 'IS Build', weight: 12, tone: 2, emblem: 'domain-build' },
+      { id: '2', name: 'Governance and Management of IT', short: 'IT Governance', tile: 'Governance', weight: 18, tone: 1, emblem: 'domain-governance' },
+      { id: '3', name: 'IS Acquisition, Development & Implementation', short: 'IS Acquisition', tile: 'Acquisition', weight: 12, tone: 2, emblem: 'domain-build' },
       { id: '4', name: 'IS Operations & Business Resilience', short: 'IS Operations', tile: 'IS Ops', weight: 26, tone: 3, emblem: 'domain-operations' },
-      { id: '5', name: 'Protection of Information Assets', short: 'Info Protection', tile: 'InfoSec', weight: 26, tone: 4, emblem: 'domain-protection' },
+      { id: '5', name: 'Protection of Information Assets', short: 'Info Protection', tile: 'Protection', weight: 26, tone: 4, emblem: 'domain-protection' },
     ],
   },
   {
