@@ -112,6 +112,13 @@ describe('cleanDisplayName', () => {
     }
   });
 
+  it('stays fast on huge hostile text (a restored file cannot freeze the app)', () => {
+    const t0 = Date.now();
+    expect(cleanDisplayName('a-'.repeat(100_000))).toBe('a-a-a-a-a-a-a-a-a-a-a-a-');
+    expect(cleanDisplayName(`Maya ${'x'.repeat(500_000)}`)).toBe('Maya xxxxxxxxxxxxxxxxxxx');
+    expect(Date.now() - t0).toBeLessThan(500);
+  });
+
   it('is the same result when run twice (so saving a cleaned value changes nothing)', () => {
     for (const v of ['  Mary   Jane ', `${RLO}Ma${ZWSP}ya`, 'x'.repeat(60), 'ok']) {
       const once = cleanDisplayName(v);

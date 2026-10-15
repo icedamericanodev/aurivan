@@ -6,7 +6,8 @@
  * - The file is plain JSON: `{ app: 'kaisip', schema: 1, exportedAt,
  *   appVersion, stores: { settings, progress } }`. Each store is saved as
  *   `{ version, state }`, exactly as the app keeps it on the phone. No device
- *   ids, no personal data beyond what the stores already hold.
+ *   ids. The only personal data is what the stores already hold plus the
+ *   learner's optional first name.
  * - A file we read back is UNTRUSTED: someone could pick any file, a broken
  *   one, or one made to cause trouble. So we never run anything from it, we
  *   cap its size and every list in it, we check every field's type with the
@@ -322,7 +323,7 @@ const examWeek = obj({ for: date, done: examWeekDone }, { hidden: bool });
  * file): anything that isn't a clean name (cleanDisplayName) comes back as
  * empty text, which the store reads as "no name". Files from before 1.23 have none.
  */
-const displayNameCheck: Check<string> = (x) => cleanDisplayName(x);
+const displayNameCheck: Check<string> = (x) => (typeof x === 'string' && x.length <= MAX_TEXT ? cleanDisplayName(x) : '');
 const moments = obj({}, { readiness: list(readinessDay, MAX_LIST * 2), readySeenAt: ts, examWeek });
 const subtopicMastery = obj({ firstDay: date }, { firstAt: ts, masteredAt: date });
 /** A game score: Forecast can go below zero (a wrong "Sure" is −5). */

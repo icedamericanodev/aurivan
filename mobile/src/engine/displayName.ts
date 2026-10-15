@@ -16,6 +16,8 @@
 
 /** Longest name we keep, in characters the learner sees (an emoji counts as one). */
 export const MAX_DISPLAY_NAME = 24;
+/** How much typed or restored text is examined at all (keeps the link check fast on huge input). */
+const MAX_SCAN = 256;
 
 // Removed outright: control characters, and the invisible "format" characters
 // that can hide or reorder text (soft hyphen, zero-width spaces and joiners,
@@ -41,7 +43,9 @@ const LINKISH =
 export function cleanDisplayName(input: unknown): string {
   if (typeof input !== 'string') return '';
   // Invisible characters go first, so hiding a link behind them ("w<zero-width>ww.x.com") does not work.
-  const flat = input.replace(UNSAFE, '').replace(LONE_SURROGATE, '').replace(SPACES, ' ').trim();
+  // Only the first MAX_SCAN units are looked at: the link check below slows down badly on very long
+  // text (a hostile backup), and anything past the first 24 characters is cut off anyway.
+  const flat = input.slice(0, MAX_SCAN).replace(UNSAFE, '').replace(LONE_SURROGATE, '').replace(SPACES, ' ').trim();
   if (flat === '' || LINKISH.test(flat)) return '';
   // Cut by characters, not UTF-16 units, so an emoji is never split in half.
   const chars = Array.from(flat);
