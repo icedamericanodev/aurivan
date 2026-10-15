@@ -53,7 +53,9 @@ export function runPlanItem(item: PlanItem, certId: string) {
       // A first set that was left half-done is resumed where it stopped (never restarted behind an alert).
       if (item.why === 'first') {
         const paused = useSession.getState().active;
-        if (paused?.firstSet && !paused.finishedAt) return openSession();
+        // Only this certification's paused set (a learner who switched certs starts this cert's own).
+        if (paused?.firstSet && !paused.finishedAt && paused.certId === certId) return openSession();
+        // A set ended early starts again with only the questions still unanswered (lib/firstSet.ts).
         return guardedStart(() => startFirstSet(certId), openSession);
       }
       return guardedStart(

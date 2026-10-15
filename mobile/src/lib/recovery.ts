@@ -6,17 +6,18 @@
  *   email. It names the app version and phone system (as every report does)
  *   and WHICH kind of saved data would not open, e.g. "progress". It never
  *   includes the saved data itself or anything personal.
- * - "Start fresh" erases the saved data on this phone and starts like a new
- *   install. The screen asks first, and says plainly that it cannot be undone.
- *   Only the app's own saved keys are removed (every key shares the prefix of
- *   the stores' names, which was kept on purpose so nobody loses progress to the
- *   rename; the prefix is read from the store, not typed here).
+ * - "Start fresh" erases ONLY the saved data that would not open (for
+ *   example just the "already seen" record, or just the progress), and keeps
+ *   everything that loaded fine: a damaged badge log must never cost months
+ *   of study. The screen asks first, names exactly what will be erased, and
+ *   says plainly that it cannot be undone. When nothing actually failed (the
+ *   load was only slow, over 8 seconds), there is nothing to erase, so the
+ *   button is not offered at all: Try again and Report this are.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { buildSupportEmail } from '../engine/support';
 import { clearHydrationFailures, failedStoreNames } from '../store/hydration';
-import { useProgress } from '../store/progress';
-import { hydratedStores } from '../store/useHydrated';
+import { hydratedStoresByName, type HydratedStoreName } from '../store/useHydrated';
 import { appInfo, openEmail } from './support';
 
 /** What startFresh needs from each store. */
@@ -34,19 +35,31 @@ export async function reportLoadProblem(what: string): Promise<'opened' | 'faile
   return openEmail(email);
 }
 
+/** The stores whose load failed and that Start fresh can reset (empty after a pure timeout). */
+export function freshTargets(): HydratedStoreName[] {
+  return failedStoreNames().filter((n): n is HydratedStoreName => n in hydratedStoresByName);
+}
+
+/** freshTargets() as one string, so a screen can listen to it (useSyncExternalStore needs a stable value). */
+export function freshTargetsKey(): string {
+  return freshTargets().join(',');
+}
+
 /**
- * Erase every saved key the app owns, put each store back to its starting
- * state, and load again. Throws if the phone refuses (the screen then says so).
+ * Erase the saved data of the stores that FAILED to load (and only those),
+ * put each of them back to its starting state, and load again. Stores that
+ * loaded fine keep their data. Nothing failed: nothing is erased. Throws if
+ * the phone refuses (the screen then says so).
  */
 export async function startFresh(): Promise<void> {
-  const prefix = `${(useProgress.persist.getOptions().name ?? '').split('.')[0]}.`;
-  const keys = (await AsyncStorage.getAllKeys()).filter((k) => prefix.length > 1 && k.startsWith(prefix));
+  const stores = freshTargets().map((n) => hydratedStoresByName[n]);
+  if (stores.length === 0) return;
+  const keys = stores.map((s) => s.persist.getOptions().name).filter((k): k is string => typeof k === 'string' && k.length > 0);
   await AsyncStorage.multiRemove(keys);
   clearHydrationFailures();
-  // The five stores have different state types; here they are only reset, so view them alike.
-  for (const s of hydratedStores as unknown as ResettableStore[]) {
-    // The in-memory copy goes back to its first state too (a store that DID load
-    // would otherwise write its old data back), then loading finds nothing saved.
+  // The stores have different state types; here they are only reset, so view them alike.
+  for (const s of stores as unknown as ResettableStore[]) {
+    // The in-memory copy goes back to its first state too, then loading finds nothing saved.
     s.setState(s.getInitialState(), true);
     await Promise.resolve(s.persist.rehydrate());
   }

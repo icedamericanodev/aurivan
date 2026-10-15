@@ -15,12 +15,16 @@
  * but it is weaker evidence, so it does NOT move the question up a box. It
  * stays in its box and comes back after that box's (shorter) interval.
  *
- * Retest rule (mobile 1.24): answering the SAME question again less than
- * RETEST_WINDOW_MS (4 hours) after the previous answer is a "retest". A right
+ * Retest rule (mobile 1.24): a RIGHT answer to a question you got WRONG
+ * less than RETEST_WINDOW_MS (4 hours) earlier is a "retest". A right
  * answer minutes after reading the explanation is working memory, not
  * remembering, so it earns no spacing credit: the box stays, and the
- * question is due tomorrow at the earliest. A WRONG retest still counts in
- * full (honesty is asymmetric: it falls back to Box 1 like any miss).
+ * question is due at the start of the next local day at the earliest.
+ * Only a miss re-answered soon counts: a right answer after a RIGHT answer
+ * is a normal answer (full credit, normal promotion). A WRONG retest still
+ * counts in full (honesty is asymmetric: it falls back to Box 1 like any
+ * miss). Because a right retest leaves the last answer right, the window
+ * never slides on: the next answer to that question is a normal one.
  */
 export type Confidence = 'sure' | 'unsure' | 'guessing';
 
@@ -54,15 +58,34 @@ export const RETEST_WINDOW_MS = 4 * 3_600_000;
 export const RETEST_LINE = 'Back in your review tomorrow.';
 
 /**
- * Is an answer given at `now` a retest of an answer given at `prevAt`?
+ * The time check alone: is `now` inside the 4-hour window after `prevAt`?
  * Strictly less than 4 hours counts (exactly 4 hours is a fresh try). No
  * previous answer, or a previous answer stamped LATER than this one (an
- * expired mock saved afterwards), is never a retest.
+ * expired mock saved afterwards), is never inside it.
  */
 export function isRetest(prevAt: number | undefined, now: number): boolean {
   if (prevAt === undefined) return false;
   const gap = now - prevAt;
   return gap >= 0 && gap < RETEST_WINDOW_MS;
+}
+
+/**
+ * The full retest rule for a RIGHT answer given at `now`: the previous
+ * answer to the same question was WRONG and less than 4 hours ago. A right
+ * answer after a right answer is never a retest (it is a normal answer).
+ */
+export function isRetestAfterMiss(prev: { lastCorrect: boolean; lastAt: number } | undefined, now: number): boolean {
+  return prev !== undefined && prev.lastCorrect === false && isRetest(prev.lastAt, now);
+}
+
+/**
+ * The start of the next local day (midnight), as epoch ms. Plain Date maths,
+ * so the engine stays pure; setHours(24) is DST-safe.
+ */
+export function startOfNextDay(now: number): number {
+  const d = new Date(now);
+  d.setHours(24, 0, 0, 0);
+  return d.getTime();
 }
 export const MAX_BOX = 5;
 export const DAY_MS = 86_400_000;
@@ -87,14 +110,14 @@ export function nextReview(
     return { box: 1, dueAt: now, lastSeen: now, reps: (current?.reps ?? 0) + 1 };
   }
   if (retest) {
-    // A right answer minutes after the last one: no promotion, and not due
-    // again before tomorrow. A question that was never in the queue and was
-    // answered with confidence stays out of it.
-    const tomorrow = now + DAY_MS;
+    // A right answer minutes after a MISS: no promotion, and not due again
+    // before the start of tomorrow (local midnight, so it is in tomorrow's
+    // plan, as the answer screen promises). The miss normally queued it
+    // already; if it did not (a mock saves without scheduling), it joins
+    // Box 1 now, so "Back in your review tomorrow." is always true.
+    const tomorrow = startOfNextDay(now);
     if (current) return { ...current, dueAt: Math.max(current.dueAt, tomorrow), lastSeen: now, reps: current.reps + 1 };
-    if (confidence === 'guessing') return { box: 1, dueAt: tomorrow, lastSeen: now, reps: 1 };
-    if (confidence === 'unsure') return { box: 2, dueAt: tomorrow, lastSeen: now, reps: 1 };
-    return null;
+    return { box: 1, dueAt: tomorrow, lastSeen: now, reps: 1 };
   }
   if (!current) {
     // First time in the queue. A confident correct answer needs no review.

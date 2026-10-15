@@ -8,6 +8,7 @@ import { findQuestion, getAllQuestions } from '../content/loader';
 import type { Difficulty } from '../content/types';
 import { buildMockExam } from '../engine/blueprint';
 import { mockPace, type MockTiming } from '../engine/pace';
+import { legacyTitle } from '../engine/planner';
 import { buildPracticeQueue, filterPool } from '../engine/queue';
 import { createRng } from '../engine/random';
 import { buildSmart } from '../engine/smartMix';
@@ -273,7 +274,7 @@ export function guardedStart(
   if (current && !current.finishedAt) {
     Alert.alert(
       'Replace your unfinished session?',
-      `You have an unfinished "${current.title}". Starting something new will discard it.`,
+      `You have an unfinished "${legacyTitle(current.title)}". Starting something new will discard it.`,
       [
         { text: 'Keep it', style: 'cancel' },
         { text: 'Discard and start', style: 'destructive', onPress: launch },

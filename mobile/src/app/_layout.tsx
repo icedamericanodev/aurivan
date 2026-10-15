@@ -31,7 +31,6 @@ import { Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { getCertification } from '../content/certifications';
 import { CLOUD } from '../cloud/flag';
 import { initAccount } from '../lib/account';
 import { initSync, setRoute } from '../lib/sync';
@@ -39,7 +38,8 @@ import { pruneUndo } from '../lib/backup';
 import { initCaseSeen } from '../lib/badges';
 import { ensureBackfill, ensureCatalog, syncPlanters } from '../lib/milestones';
 import { useProgress } from '../store/progress';
-import { cancelReminders, initNotifications, scheduleReminders } from '../lib/reminders';
+import { cancelReminders, initNotifications } from '../lib/reminders';
+import { refreshReminders } from '../lib/reminderSync';
 import { useSettings } from '../store/settings';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MotionRoot, ThemeFade, useMotion } from '../components/motion';
@@ -88,8 +88,9 @@ export default function RootLayout() {
   // version's untagged reminder). Never asks for permission.
   useEffect(() => {
     if (!hydrated) return;
-    const { reminder, activeCertId } = useSettings.getState();
-    if (reminder.enabled) scheduleReminders(reminder, getCertification(activeCertId)?.name ?? 'your exam').catch(() => {});
+    // refreshReminders (lib/reminderSync.ts): the one way to schedule, so "skip today once the plan is
+    // cleared" and the "Your 20-minute plan" title always apply. It never throws.
+    if (useSettings.getState().reminder.enabled) refreshReminders().catch(() => {});
     else cancelReminders().catch(() => {});
     // An "Undo restore" snapshot older than 7 days is dropped once, at launch.
     pruneUndo();

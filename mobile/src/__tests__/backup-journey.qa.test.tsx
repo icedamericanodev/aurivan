@@ -36,7 +36,7 @@ import { PROGRESS_VERSION, SETTINGS_VERSION } from '../engine/saveMigrations';
 import { dueIds } from '../engine/srs';
 import { originalToDisplay } from '../engine/shuffle';
 import { finishSession } from '../lib/finishSession';
-import { scheduleReminders } from '../lib/reminders';
+import { refreshReminders } from '../lib/reminderSync';
 import { startMock } from '../lib/sessions';
 import { useBackup } from '../store/backup';
 import { selectCert, useProgress } from '../store/progress';
@@ -244,9 +244,10 @@ async function learnerAStudies() {
   jest.setSystemTime(D1 + 6 * DAY + 9 * 3_600_000 + 20 * 60_000);
   finishSession();
   useSession.getState().clear();
-  // Reminders on: weekdays at 07:30, scheduled the way Settings does it.
+  // Reminders on: weekdays at 07:30, scheduled the way Settings does it (mobile 1.24: refreshReminders,
+  // so the title carries the learner's minutes and a cleared day is skipped).
   useSettings.getState().setReminder({ enabled: true, hour: 7, minute: 30, days: [1, 2, 3, 4, 5] });
-  await scheduleReminders(useSettings.getState().reminder, 'CISA');
+  await refreshReminders();
 }
 
 beforeEach(() => {

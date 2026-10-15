@@ -1,9 +1,10 @@
 /**
  * Mobile 1.24, honest readiness (engine + store):
- *  1. The retest rule: a right answer less than 4 hours after the previous
+ *  1. The retest rule: a right answer less than 4 hours after a WRONG
  *     answer to the same question earns no spacing credit (no promotion, the
- *     mistake is not "fixed", half weight in readiness, due tomorrow at the
- *     earliest). A wrong retest still counts in full.
+ *     mistake is not "fixed", half weight in readiness, due at the start of
+ *     tomorrow at the earliest). A wrong retest still counts in full, and a
+ *     right answer after a right answer is a normal answer.
  *  2. Domain bands: Building / Steady / Strong below 30 answers, the number
  *     (with "%" and "latest tries") from 30.
  *  3. The readiness report's yardstick line uses the app's own bars.
@@ -15,7 +16,7 @@ import { READY_LOW } from '../engine/examReady';
 import { DOMAIN_TARGET } from '../engine/journey';
 import { answerCredit, computeReadiness, type AnswerRecord } from '../engine/readiness';
 import { effectiveAnswers } from '../engine/readinessRange';
-import { DAY_MS, isRetest, nextReview, RETEST_LINE, RETEST_WINDOW_MS, type ReviewEntry } from '../engine/srs';
+import { DAY_MS, isRetest, isRetestAfterMiss, nextReview, RETEST_LINE, RETEST_WINDOW_MS, startOfNextDay, type ReviewEntry } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -42,15 +43,30 @@ describe('isRetest: the 4-hour window and its edges', () => {
     expect(isRetest(undefined, NOW)).toBe(false);
     expect(isRetest(NOW + HOUR, NOW)).toBe(false);
   });
+  it('the full rule needs the previous answer to be WRONG: right after right is never a retest', () => {
+    expect(isRetestAfterMiss({ lastCorrect: false, lastAt: NOW - HOUR }, NOW)).toBe(true);
+    expect(isRetestAfterMiss({ lastCorrect: true, lastAt: NOW - HOUR }, NOW)).toBe(false);
+    expect(isRetestAfterMiss({ lastCorrect: false, lastAt: NOW - RETEST_WINDOW_MS }, NOW)).toBe(false);
+    expect(isRetestAfterMiss(undefined, NOW)).toBe(false);
+  });
+});
+
+describe('startOfNextDay: local midnight, not +24 hours', () => {
+  it('21:30 today is due at 00:00 tomorrow, and 00:00 itself moves on a whole day', () => {
+    const late = new Date(2026, 9, 15, 21, 30).getTime();
+    expect(startOfNextDay(late)).toBe(new Date(2026, 9, 16, 0, 0).getTime());
+    expect(startOfNextDay(new Date(2026, 9, 16, 0, 0).getTime())).toBe(new Date(2026, 9, 17, 0, 0).getTime());
+    expect(startOfNextDay(new Date(2026, 9, 31, 12, 0).getTime())).toBe(new Date(2026, 10, 1, 0, 0).getTime());
+  });
 });
 
 describe('nextReview: a right retest earns no spacing credit', () => {
   const missed: ReviewEntry = { box: 1, dueAt: NOW - HOUR, lastSeen: NOW - HOUR, reps: 1 };
 
-  it('stays in its box and is due tomorrow at the earliest (a miss was due right away)', () => {
+  it('stays in its box and is due at the start of tomorrow at the earliest (a miss was due right away)', () => {
     const e = nextReview(missed, true, 'sure', NOW, false, true)!;
     expect(e.box).toBe(1);
-    expect(e.dueAt).toBe(NOW + DAY_MS);
+    expect(e.dueAt).toBe(startOfNextDay(NOW));
     expect(e.reps).toBe(2);
   });
 
@@ -68,7 +84,7 @@ describe('nextReview: a right retest earns no spacing credit', () => {
   it('a hinted right retest also stays put and waits until tomorrow', () => {
     const e = nextReview(missed, true, 'sure', NOW, true, true)!;
     expect(e.box).toBe(1);
-    expect(e.dueAt).toBe(NOW + DAY_MS);
+    expect(e.dueAt).toBe(startOfNextDay(NOW));
   });
 
   it('a WRONG retest counts in full: back to box 1, due now', () => {
@@ -76,9 +92,9 @@ describe('nextReview: a right retest earns no spacing credit', () => {
     expect(nextReview(box3, false, 'sure', NOW, false, false)).toEqual({ box: 1, dueAt: NOW, lastSeen: NOW, reps: 4 });
   });
 
-  it('a confident right retest of a question that was never queued stays out of the queue; a guess is due tomorrow', () => {
-    expect(nextReview(undefined, true, 'sure', NOW, false, true)).toBeNull();
-    expect(nextReview(undefined, true, 'guessing', NOW, false, true)!.dueAt).toBe(NOW + DAY_MS);
+  it('a right retest of a miss that was never queued (a mock saves without scheduling) joins Box 1, due tomorrow', () => {
+    expect(nextReview(undefined, true, 'sure', NOW, false, true)).toEqual({ box: 1, dueAt: startOfNextDay(NOW), lastSeen: NOW, reps: 1 });
+    expect(nextReview(undefined, true, 'guessing', NOW, false, true)!.dueAt).toBe(startOfNextDay(NOW));
   });
 
   it('says "Back in your review tomorrow." in those words', () => {
@@ -115,14 +131,14 @@ describe('the store applies the rule', () => {
     useProgress.getState().resetCert('cisa');
   });
 
-  it('a miss, then a right answer 1 hour later: not promoted, mistake not fixed, half credit, due tomorrow', () => {
+  it('a miss, then a right answer 1 hour later: not promoted, mistake not fixed, half credit, due at the start of tomorrow', () => {
     const p = useProgress.getState();
     p.recordAnswer('cisa', q, false, 'sure', { at: NOW });
     p.recordMistake('cisa', q, 'A', 'sure');
     p.recordAnswer('cisa', q, true, 'sure', { at: NOW + HOUR });
     const s = state();
     expect(s.review[q].box).toBe(1);
-    expect(s.review[q].dueAt).toBe(NOW + HOUR + DAY_MS);
+    expect(s.review[q].dueAt).toBe(startOfNextDay(NOW + HOUR));
     expect(s.mistakes[q].resolved).toBe(false);
     expect(s.answers[q].lastRetest).toBe(true);
     expect(answerCredit(s.answers[q])).toBe(0.5);
@@ -162,9 +178,29 @@ describe('the store applies the rule', () => {
     expect(state().review[q].box).toBe(2);
   });
 
+  it('right, then right again 1 hour later, is a NORMAL answer: full credit, promoted, no retest mark', () => {
+    const p = useProgress.getState();
+    p.recordAnswer('cisa', q, false, 'sure', { at: NOW - 3 * DAY_MS });
+    p.recordAnswer('cisa', q, true, 'sure', { at: NOW });
+    const box = state().review[q].box;
+    p.recordAnswer('cisa', q, true, 'sure', { at: NOW + HOUR });
+    expect(state().answers[q].lastRetest).toBeUndefined();
+    expect(answerCredit(state().answers[q])).toBe(1);
+    expect(state().review[q].box).toBe(box + 1);
+  });
+
+  it('a right retest after a miss leaves the last answer right, so the NEXT right answer is normal (no sliding window)', () => {
+    const p = useProgress.getState();
+    p.recordAnswer('cisa', q, false, undefined, { at: NOW });
+    p.recordAnswer('cisa', q, true, undefined, { at: NOW + HOUR });
+    expect(state().answers[q].lastRetest).toBe(true);
+    p.recordAnswer('cisa', q, true, undefined, { at: NOW + 2 * HOUR });
+    expect(state().answers[q].lastRetest).toBeUndefined();
+  });
+
   it('a retest is not a clean answer for milestones or mastery dates', () => {
     const p = useProgress.getState();
-    p.recordAnswer('cisa', q, true, undefined, { at: NOW });
+    p.recordAnswer('cisa', q, false, undefined, { at: NOW });
     p.recordAnswer('cisa', q, true, undefined, { at: NOW + HOUR });
     expect(state().answers[q].lastRetest).toBe(true);
     // Same day, so no second mastery day is earned from it either way; the flag is what the badges read.

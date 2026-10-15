@@ -130,6 +130,15 @@ export function reminderAskLine(hour: number, minute: number, locale?: string): 
  * The second (and last) chance to ask: the learner has studied on 3 different
  * days, studied today, reminders are still off, the phone has not said no, and
  * this second ask has not been shown. After it, only Settings.
+ *
+ * It is a second chance, never a nag, so it is also never shown to:
+ * - someone who said yes the first time (`first: 'on'`): if reminders are off
+ *   now, they turned them off themselves;
+ * - someone who turned reminders off in Settings (`turnedOff`);
+ * - a learner who started before 1.24 (`newLearner` false: set when the 1.24
+ *   onboarding finishes). They never had a first ask, and an upgrader with
+ *   reminders off may well have turned them off on purpose in 1.23, which the
+ *   app cannot tell apart from "never set".
  */
 export function secondAskDue(opts: {
   supported: boolean;
@@ -138,7 +147,12 @@ export function secondAskDue(opts: {
   studiedToday: boolean;
   first?: AskAnswer;
   secondShown: boolean;
+  /** Onboarded on mobile 1.24 or later (useSeen reminderAsk.newLearner). */
+  newLearner: boolean;
+  /** Turned reminders off in Settings at some point (useSeen reminderAsk.turnedOff). */
+  turnedOff: boolean;
 }): boolean {
-  if (!opts.supported || opts.enabled || opts.secondShown || opts.first === 'blocked') return false;
+  if (!opts.supported || opts.enabled || opts.secondShown || opts.turnedOff || !opts.newLearner) return false;
+  if (opts.first === 'blocked' || opts.first === 'on') return false;
   return opts.studiedToday && opts.studyDays >= 3;
 }

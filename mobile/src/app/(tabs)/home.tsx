@@ -7,10 +7,12 @@
  *   meta line  "Thursday · 38 days to CISA", then the greeting by the hour ("Good morning, Maya" when the learner gave a name; Settings → Your name)
  *   forest     "Today’s plan · about N min", the current item's title, the rest of the plan as a
  *              checklist (done struck through, later quiet; nothing when the plan is one item),
- *              ONE hugging pill ("Start", or "Continue" once something is done; Play only for a lesson)
+ *              ONE hugging pill ("Start", or "Continue" once something is done or the first set is
+ *              begun; Play only for a lesson)
  *   readiness  rings + the honest range + "Estimated readiness" (Day 0: nothing; before the range:
  *              "5 of 40 for your first range"); the stage line only for a few days after it changes
- *   below      your plant, "Also today" (the optional mock and anything paused), quiet cards
+ *   below      your plant, "Also today" (ONLY the optional mock and anything paused: every other open item
+ *              is already a checklist row), quiet cards
  *
  * Mobile 1.24 (first five minutes): the three stat tiles are gone (they said "Not yet" on Day 0 and put
  * a second percentage beside the range); the optional mock is an "Also today" row, not a checklist row;
@@ -76,6 +78,8 @@ import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../../lib/a11y';
 import { greetingWithName } from '../../engine/displayName';
 import { useSettings } from '../../store/settings';
 import { runPlanItem } from '../../lib/actions';
+import { firstSetLeftOf } from '../../lib/firstSet';
+import { firstSetIds } from '../../content/firstSet';
 import { refreshReminders } from '../../lib/reminderSync';
 import { remindersSupported } from '../../lib/reminders';
 import { haptic } from '../../lib/haptics';
@@ -89,7 +93,7 @@ import { useReports } from '../../lib/useReports';
 import { useProgress } from '../../store/progress';
 import { useSeen } from '../../store/seen';
 import { useSession, type ActiveSession } from '../../store/session';
-import type { PlanItem } from '../../engine/planner';
+import { legacyTitle, type PlanItem } from '../../engine/planner';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -315,11 +319,21 @@ export default function Today() {
     growthMoment.skip();
   };
 
-  // "Also today": an unfinished session first, then the plan items still to do.
+  // "Also today": an unfinished session first, then the optional mock (mobile 1.24: only those).
   // A paused first set is not listed here: the panel's Start already picks it up where it stopped (mobile 1.24).
-  const resume = active && !active.finishedAt && !(active.firstSet && plan.items[cur]?.kind === 'practice' && plan.items[cur].why === 'first') ? active : null;
-  // While the ready panel shows, the current item is listed here too.
-  const rest = plan.items.map((item, i) => ({ item, i })).filter(({ i }) => !plan.done[i] && (showReady || i !== cur));
+  const firstNow = plan.items[cur]?.kind === 'practice' && plan.items[cur].why === 'first';
+  const resume = active && !active.finishedAt && !(active.firstSet && firstNow) ? active : null;
+  // Every other open item is already a checklist row on the forest panel, so it is never said twice here.
+  // While the ready panel shows there is no checklist, so the open items (the current one too) are listed here.
+  const rest = plan.items.map((item, i) => ({ item, i })).filter(({ i }) => !plan.done[i] && (showReady || isOptional(plan.items, i)));
+  // A first set already begun (paused, or ended early with some still unanswered) says "Continue", not "Start".
+  const firstBegun =
+    firstNow &&
+    ((active?.firstSet && !active.finishedAt && active.certId === j.cert.id) ||
+      (() => {
+        const left = firstSetLeftOf(j.cert.id, j.progress.answers).length;
+        return left > 0 && left < firstSetIds(j.cert.id).length;
+      })());
   const alsoCount = rest.length + (resume ? 1 : 0);
   // The list always shows every item, so a count adds nothing: say the time
   // instead, which is what a busy learner budgets (ui.md T4).
@@ -376,6 +390,8 @@ export default function Today() {
   const reminderEnabled = useSettings((x) => x.reminder.enabled);
   const askedFirst = useSeen((x) => x.reminderAsk?.first);
   const askedSecond = useSeen((x) => Boolean(x.reminderAsk?.second));
+  const newLearner = useSeen((x) => Boolean(x.reminderAsk?.newLearner));
+  const turnedOff = useSeen((x) => Boolean(x.reminderAsk?.turnedOff));
   const secondDue = secondAskDue({
     supported: remindersSupported,
     enabled: reminderEnabled,
@@ -383,6 +399,8 @@ export default function Today() {
     studiedToday: j.progress.milestones?.lastDay === plan.day,
     first: askedFirst,
     secondShown: askedSecond,
+    newLearner,
+    turnedOff,
   });
   // Latched for this visit (showing it counts it as shown, which would otherwise take it away at once).
   const [secondVisit, setSecondVisit] = useState(false);
@@ -498,7 +516,7 @@ export default function Today() {
             meta={heroNote}
             metaLabel={heroNote ? spokenMin(heroNote) : undefined}
             action={{
-              label: plan.done.some(Boolean) ? 'Continue' : 'Start',
+              label: plan.done.some(Boolean) || firstBegun ? 'Continue' : 'Start',
               onPress: () => runPlanItem(curItem, j.cert.id),
               icon: startIcon(curItem?.kind),
               hint: hero!.title,
@@ -617,7 +635,8 @@ export default function Today() {
                 <ListRow
                   // Mobile 1.20: Play now means a lesson; a set resumes with the plan's practice / mock icons.
                   icon={resume.mode === 'mock' ? <Timer size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} /> : <Target size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                  title={`Resume: ${resume.title}`}
+                  // legacyTitle: a set paused in 1.23 was titled "Starting check…"; it reads "Mixed practice" now.
+                  title={`Resume: ${legacyTitle(resume.title)}`}
                   subtitle={`Question ${resume.index + 1} of ${resume.questionIds.length}`}
                   onPress={() => router.push('/session')}
                   last={rest.length === 0}

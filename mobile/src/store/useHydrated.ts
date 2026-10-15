@@ -28,6 +28,13 @@ import { useSettings } from './settings';
 // useSeen (mobile 1.9): numbers grow from what was last shown, so it loads first too.
 export const hydratedStores = [useSettings, useProgress, useSession, useBackup, useSeen];
 
+/**
+ * The same stores, by the name each one passes to watchHydration (store/hydration.ts).
+ * "Start fresh" (lib/recovery.ts) uses it to reset ONLY the stores that failed to load.
+ */
+export const hydratedStoresByName = { settings: useSettings, progress: useProgress, session: useSession, backup: useBackup, seen: useSeen } as const;
+export type HydratedStoreName = keyof typeof hydratedStoresByName;
+
 /** How long loading may take before the recovery screen is offered. */
 export const HYDRATION_TIMEOUT_MS = 8000;
 

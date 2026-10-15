@@ -8,8 +8,10 @@
  *      "Try again"    reads the saved data again (the usual fix)
  *      "Report this"  opens the learner's email app with a short support note
  *                     (app version and phone system only; no personal data)
- *      "Start fresh"  erases the saved data on the phone and starts new. It
- *                     asks first and says it cannot be undone. Never silent.
+ *      "Start fresh"  erases ONLY the saved data that would not open (the rest
+ *                     is kept). It asks first, names what it erases and says
+ *                     it cannot be undone. Never silent. Not offered when
+ *                     nothing failed (the load was only slow).
  * 2. A SCREEN CRASHED while drawing (ErrorBoundary below, wired up in
  *    app/_layout.tsx). Same layout; "Try again" draws the screen again.
  *
@@ -17,11 +19,12 @@
  * lockup and plain buttons, not the stores' data. Branded (the lockup),
  * 48pt+ buttons, one solid button, text that survives 200% font scale.
  */
-import { useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { config } from '../lib/config';
-import { reportLoadProblem, startFresh } from '../lib/recovery';
+import { freshTargetsKey, reportLoadProblem, startFresh } from '../lib/recovery';
+import { subscribeHydration } from '../store/hydration';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { KaisipLockup } from './brand';
@@ -33,10 +36,25 @@ export const RECOVERY_COPY = {
   crashTitle: 'Something went wrong on this screen',
   crashBody: 'Your saved progress is safe. Try again, and if it keeps happening, tell us.',
   freshTitle: 'Start fresh?',
-  freshBody: 'This erases all saved progress on this phone and cannot be undone. Only do this if Try again does not work.',
   freshConfirm: 'Erase and start fresh',
   freshFailed: 'We couldn’t erase the saved data. Please tell us, and we will help.',
 };
+
+/** Each saved store in plain words, for the "Start fresh?" question (store names: store/useHydrated.ts). */
+export const STORE_WORDS: Record<string, string> = {
+  progress: 'your study progress (answers, reviews and plans)',
+  settings: 'your settings (exam date, reminders and choices)',
+  session: 'your unfinished study session',
+  backup: 'the copy kept for Undo restore',
+  seen: 'the record of what the app has already shown you',
+};
+
+/** "This erases your settings on this phone…": exactly what Start fresh clears, and that the rest is kept. */
+export function freshBody(names: readonly string[]): string {
+  const words = names.map((n) => STORE_WORDS[n] ?? n);
+  const list = words.length <= 1 ? (words[0] ?? '') : `${words.slice(0, -1).join(', ')} and ${words[words.length - 1]}`;
+  return `This erases ${list} on this phone and cannot be undone. Everything else stays as it is. Only do this if Try again does not work.`;
+}
 
 export function RecoveryScreen({
   kind,
@@ -50,6 +68,9 @@ export function RecoveryScreen({
   const [note, setNote] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const load = kind === 'load';
+  // The stores that failed to load (empty when loading was only slow: then there is nothing to erase).
+  const failedKey = useSyncExternalStore(subscribeHydration, freshTargetsKey, freshTargetsKey);
+  const failedNames = failedKey ? failedKey.split(',') : [];
 
   const report = async () => {
     const result = await reportLoadProblem(load ? 'Saved data would not open' : 'A screen crashed');
@@ -58,7 +79,7 @@ export function RecoveryScreen({
 
   // Always asks first. The erase itself lives in lib/recovery.ts.
   const confirmFresh = () =>
-    Alert.alert(RECOVERY_COPY.freshTitle, RECOVERY_COPY.freshBody, [
+    Alert.alert(RECOVERY_COPY.freshTitle, freshBody(failedNames), [
       { text: 'Cancel', style: 'cancel' },
       {
         text: RECOVERY_COPY.freshConfirm,
@@ -86,8 +107,8 @@ export function RecoveryScreen({
         <View style={{ gap: space.sm }}>
           <Button label="Try again" onPress={onTryAgain} disabled={busy} />
           <Button kind="secondary" label="Report this" onPress={report} disabled={busy} accessibilityHint="Opens your email app with a short note. No personal data is included." />
-          {load && (
-            <Button kind="ghost" label="Start fresh" onPress={confirmFresh} disabled={busy} accessibilityHint="Asks first. Erases saved progress on this phone." />
+          {load && failedNames.length > 0 && (
+            <Button kind="ghost" label="Start fresh" onPress={confirmFresh} disabled={busy} accessibilityHint="Asks first. Erases only the saved data that would not open." />
           )}
         </View>
       </ScrollView>

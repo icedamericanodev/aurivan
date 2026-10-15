@@ -9,7 +9,9 @@
  *   - the app shows the recovery screen after the error, or after 8 seconds,
  *   - "Try again" loads the data once storage works,
  *   - "Report this" opens an email with no personal data,
- *   - "Start fresh" always asks first, and only then erases.
+ *   - "Start fresh" always asks first, and only then erases;
+ *   - it erases ONLY the stores that failed to load, names them in its
+ *     question, and is not offered at all after a pure timeout (nothing failed).
  */
 import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,7 +19,7 @@ import { Alert, Linking } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { create as createStore } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { RecoveryScreen, RECOVERY_COPY } from '../components/recovery';
+import { freshBody, RecoveryScreen, RECOVERY_COPY } from '../components/recovery';
 import { startFresh } from '../lib/recovery';
 import { clearHydrationFailures, hasHydrationFailure, watchHydration } from '../store/hydration';
 import { useProgress } from '../store/progress';
@@ -76,6 +78,12 @@ function Probe() {
   return null;
 }
 const last = () => seen[seen.length - 1];
+/** Mark a store as failed to load, the way zustand reports it (store/hydration.ts). */
+const failLoad = (name: string) => {
+  act(() => {
+    (watchHydration(name) as () => (s?: unknown, e?: unknown) => void)()(undefined, new Error(`${name} would not load`));
+  });
+};
 
 beforeEach(async () => {
   seen = [];
@@ -185,6 +193,7 @@ describe('useHydration: the recovery path', () => {
 
 describe('the recovery screen', () => {
   it('is branded, names the problem in plain words and offers three ways out, the first one solid', () => {
+    failLoad('seen');
     mount(<RecoveryScreen kind="load" onTryAgain={() => {}} />);
     const text = textOf(r!.root);
     expect(text).toContain(RECOVERY_COPY.loadTitle);
@@ -194,6 +203,14 @@ describe('the recovery screen', () => {
     }
     expect(r!.root.findAll((n) => n.props.accessibilityLabel === 'KaiSip').length).toBeGreaterThan(0);
     expect(text).not.toMatch(/ISACA/);
+  });
+
+  it('a pure timeout (nothing failed) offers Try again and Report this, never Start fresh (nothing is damaged)', () => {
+    mount(<RecoveryScreen kind="load" onTryAgain={() => {}} />);
+    const text = textOf(r!.root);
+    expect(text).toContain('Try again');
+    expect(text).toContain('Report this');
+    expect(text).not.toContain('Start fresh');
   });
 
   it('a crashed screen gets the same layout, with no "Start fresh" (the saved data is fine)', () => {
@@ -223,6 +240,7 @@ describe('the recovery screen', () => {
   it('"Start fresh" asks first and erases nothing until the learner confirms', async () => {
     await AsyncStorage.setItem('aurivan.progress.v1', '{"state":{"streak":{"current":9}},"version":2}');
     await AsyncStorage.setItem('someone-elses-key', 'keep');
+    failLoad('progress');
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     mount(<RecoveryScreen kind="load" onTryAgain={() => {}} />);
     press('Start fresh');
@@ -230,6 +248,9 @@ describe('the recovery screen', () => {
     const [title, body, buttons] = alert.mock.calls[0];
     expect(title).toBe(RECOVERY_COPY.freshTitle);
     expect(body).toMatch(/cannot be undone/);
+    // It names exactly what it will erase.
+    expect(body).toBe(freshBody(['progress']));
+    expect(body).toMatch(/your study progress/);
     expect(await AsyncStorage.getItem('aurivan.progress.v1')).toContain('"current":9');
     // Cancel changes nothing.
     expect(buttons![0].text).toBe('Cancel');
@@ -245,14 +266,45 @@ describe('the recovery screen', () => {
 });
 
 describe('startFresh', () => {
-  it('puts every store back to its first state and leaves them loaded', async () => {
+  it('puts a store that FAILED back to its first state and leaves it loaded', async () => {
     await act(async () => {
       useProgress.setState({ streak: { current: 7, best: 7, lastDay: '2026-10-14' } });
     });
+    failLoad('progress');
     await act(async () => {
       await startFresh();
     });
     expect(useProgress.getState().streak.current).toBe(0);
     expect(useProgress.persist.hasHydrated()).toBe(true);
+    expect(hasHydrationFailure()).toBe(false);
+  });
+
+  it('erases ONLY the stores that failed: a damaged "seen" record never costs the learner their progress', async () => {
+    await act(async () => {
+      useProgress.setState({ streak: { current: 7, best: 7, lastDay: '2026-10-14' } });
+    });
+    await flush();
+    expect(await AsyncStorage.getItem('aurivan.progress.v1')).toContain('"current":7');
+    await AsyncStorage.setItem('aurivan.seen.v1', 'not json');
+    failLoad('seen');
+    await act(async () => {
+      await startFresh();
+    });
+    // Progress (in memory and on the phone) is kept; the damaged record is gone.
+    expect(useProgress.getState().streak.current).toBe(7);
+    expect(await AsyncStorage.getItem('aurivan.progress.v1')).toContain('"current":7');
+    expect(await AsyncStorage.getItem('aurivan.seen.v1')).not.toBe('not json');
+  });
+
+  it('erases nothing when nothing failed (the load was only slow)', async () => {
+    await act(async () => {
+      useProgress.setState({ streak: { current: 5, best: 5, lastDay: '2026-10-14' } });
+    });
+    await flush();
+    await act(async () => {
+      await startFresh();
+    });
+    expect(useProgress.getState().streak.current).toBe(5);
+    expect(await AsyncStorage.getItem('aurivan.progress.v1')).toContain('"current":5');
   });
 });

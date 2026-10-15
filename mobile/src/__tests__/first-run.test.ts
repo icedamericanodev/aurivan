@@ -142,7 +142,7 @@ describe('the reminder ask', () => {
     expect(reminderAskLine(19, 0, 'en-GB')).toBe('Tomorrow I’ll study at 19:00');
   });
 
-  const due = { supported: true, enabled: false, studyDays: 3, studiedToday: true, secondShown: false } as const;
+  const due = { supported: true, enabled: false, studyDays: 3, studiedToday: true, secondShown: false, newLearner: true, turnedOff: false } as const;
   it('the second chance: the 3rd study day, studied today, still off, not shown before', () => {
     expect(secondAskDue(due)).toBe(true);
     expect(secondAskDue({ ...due, first: 'later' })).toBe(true);
@@ -155,6 +155,14 @@ describe('the reminder ask', () => {
     expect(secondAskDue({ ...due, first: 'blocked' })).toBe(false);
     expect(secondAskDue({ ...due, supported: false })).toBe(false);
     expect(secondAskDue({ ...due, first: 'on', enabled: true })).toBe(false);
+  });
+  it('never to someone who turned reminders off themselves, said yes once, or started before 1.24', () => {
+    // Turned off in Settings (1.24 marks it).
+    expect(secondAskDue({ ...due, turnedOff: true })).toBe(false);
+    // Said yes on Day 1, later turned them off: their choice, not a reason to ask again.
+    expect(secondAskDue({ ...due, first: 'on', enabled: false })).toBe(false);
+    // A 1.23 upgrader: no first ask, and an "off" that may have been on purpose.
+    expect(secondAskDue({ ...due, newLearner: false })).toBe(false);
   });
 });
 

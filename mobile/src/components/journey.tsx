@@ -15,7 +15,8 @@ import { Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
 import { domainColor } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { biggestGrowth, clearingTitle, dayAccuracy, isOptional, itemMinutes, type DayPlan } from '../engine/dayPlan';
-import type { PlanItem } from '../engine/planner';
+import { legacyTitle, type PlanItem } from '../engine/planner';
+import { countHeadline, SMALL_SAMPLE } from '../engine/resultsCopy';
 import type { Readiness } from '../engine/readiness';
 import { RANGE_MIN_ANSWERS, rangeLabel, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
 import { haptic } from '../lib/haptics';
@@ -97,7 +98,8 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
                 : item.why === 'topup'
                   ? `${item.count} questions, a light top-up`
                   : 'new material first';
-      return { title: item.label, meta: `${aboutMin(mins)} · ${why}`, short: `Practice · ${mins} min` };
+      // legacyTitle: a 1.23 "Starting check: 12 mixed questions" row reads "Mixed practice" (no "check").
+      return { title: legacyTitle(item.label), meta: `${aboutMin(mins)} · ${why}`, short: `Practice · ${mins} min` };
     }
     case 'game':
       // Registry name by id: a plan saved before a rename shows today's name.
@@ -117,7 +119,7 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
 export function heroPracticeTitle(label: string): string {
   return label
     // A plan saved before mobile 1.24 called these "Starting check": the learner never reads that word now.
-    .replace(/^Starting check: \d+ mixed questions?$/, 'Mixed practice')
+    .replace(/^Starting check\b.*$/, legacyTitle)
     .replace(/^\d+ (?:mixed )?questions? · (.+)$/, 'Practice: $1')
     .replace(/^(.+?): \d+ mixed questions?$/, '$1')
     .replace(/^(.+?) · \d+ questions?$/, '$1')
@@ -621,6 +623,10 @@ export function ClearingBody({
           <Stat key="q" label="Questions" value={String(plan.answered)} color={c.onForest} labelColor={c.onForest2} roll={statRoll(0)} />,
           acc === null ? (
             <Stat key="a" label="Accuracy" word="Not yet" color={c.onForest} labelColor={c.onForest2} />
+          ) : plan.answered < SMALL_SAMPLE ? (
+            // Mobile 1.24: a percent of a handful of answers says little (Day 1 is 5), so below SMALL_SAMPLE
+            // the day's count, in Results' words ("3 of 5 right"); no percent anywhere on Day 1.
+            <Stat key="a" label="Answers" word={countHeadline(plan.correct, plan.answered)} color={c.onForest} labelColor={c.onForest2} />
           ) : (
             <Stat key="a" label="Accuracy" value={String(acc)} pct color={c.onForest} labelColor={c.onForest2} roll={statRoll(1)} />
           ),

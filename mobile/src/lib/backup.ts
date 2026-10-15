@@ -52,7 +52,8 @@ import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import { ensureCatalog, syncPlanters } from './milestones';
 import { carryPlantIdentity, plantSubtopics } from './plant';
-import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from './reminders';
+import { cancelReminders, ensurePermission, remindersSupported } from './reminders';
+import { refreshReminders } from './reminderSync';
 
 // ── The data in each store (no actions) ──────────────────────────────────
 const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'motion', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize', 'badgesHidden', 'familiarity', 'dailyMinutes', 'examFocused', 'fitPrompt', 'fitChanges', 'fitAskDays', 'displayName'] as const;
@@ -553,7 +554,7 @@ export type ReminderOutcome = 'on' | 'off' | 'blocked' | 'unsupported';
  */
 export async function reapplyReminders(): Promise<ReminderOutcome> {
   if (!remindersSupported) return 'unsupported';
-  const { reminder, activeCertId } = useSettings.getState();
+  const { reminder } = useSettings.getState();
   if (!reminder.enabled) {
     await cancelReminders();
     return 'off';
@@ -563,7 +564,9 @@ export async function reapplyReminders(): Promise<ReminderOutcome> {
     await cancelReminders();
     return 'blocked';
   }
-  await scheduleReminders(reminder, certName(activeCertId));
+  // The one way to schedule (lib/reminderSync.ts): today is skipped once today's plan is cleared,
+  // and the title carries the learner's minutes. It reads the restored settings and progress.
+  await refreshReminders();
   return 'on';
 }
 

@@ -371,6 +371,8 @@ describe('the reminder ask, second chance', () => {
   beforeEach(() => {
     seed(1, 1);
     storePlan([WARM], [true]);
+    // A learner onboarded on 1.24 (onboarding marks it): the only kind the second chance is for.
+    useSeen.setState({ reminderAsk: { newLearner: true } });
   });
 
   it('shows the day the 3rd study day is done, once, with the same one-button ask', async () => {
@@ -408,7 +410,11 @@ describe('the reminder ask, second chance', () => {
     ['only 2 study days', () => setMilestones(2, today())],
     ['no study today', () => setMilestones(3, dayKey(NOW.getTime() - DAY))],
     ['reminders already on', () => { setMilestones(3, today()); useSettings.setState({ reminder: { enabled: true, hour: 8, minute: 0, days: [0, 1, 2, 3, 4, 5, 6] } }); }],
-    ['the phone said no before', () => { setMilestones(3, today()); useSeen.setState({ reminderAsk: { first: 'blocked' } }); }],
+    ['the phone said no before', () => { setMilestones(3, today()); useSeen.setState({ reminderAsk: { newLearner: true, first: 'blocked' } }); }],
+    // Mobile 1.24 (PR #64 QA MINOR-5): a second chance, never a nag.
+    ['a 1.23 upgrader (no first ask; reminders may be off on purpose)', () => { setMilestones(3, today()); useSeen.setState({ reminderAsk: {} }); }],
+    ['said yes on Day 1, then turned reminders off', () => { setMilestones(3, today()); useSeen.setState({ reminderAsk: { newLearner: true, first: 'on' } }); }],
+    ['turned reminders off in Settings', () => { setMilestones(3, today()); useSeen.setState({ reminderAsk: { newLearner: true, turnedOff: true } }); }],
   ])('not shown: %s', (_name, arrange) => {
     arrange();
     mount(<Today />);

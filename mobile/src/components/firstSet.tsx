@@ -12,6 +12,10 @@
  *        a seed planted for you (oak; drawn as a seed, "Choose a different
  *        plant" opens the picker), and the reminder ask;
  *     3. "Done for today" (the one solid button) and a quiet "Do 5 more".
+ *   A set ended early (X → End after 2 answers) is not "done": the headline
+ *   is the honest count ("2 answered"), one line says how many are left, the
+ *   button says "Back to Today" (Today's Continue asks only those left) and
+ *   "Do 5 more" is not offered.
  *   It never says "check" or "diagnose", never offers "Practice the ones you
  *   missed" (a miss is meant to come back tomorrow, not a minute later), and
  *   never shows a badge moment.
@@ -24,7 +28,7 @@
  *   range, the first time that range appears: what it is (an estimate), the
  *   strongest and the weakest domain. Still, no confetti.
  */
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { BackHandler, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -40,7 +44,7 @@ import type { Readiness } from '../engine/readiness';
 import { RANGE_MIN_ANSWERS } from '../engine/readinessRange';
 import { localTime, stepTime } from '../engine/reminders';
 import { moveFocus, sayLater } from '../lib/a11y';
-import { deferMissesToTomorrow } from '../lib/firstSet';
+import { deferMissesToTomorrow, firstSetLeftOf } from '../lib/firstSet';
 import { scoreSession } from '../lib/finishSession';
 import { plantFor } from '../lib/plant';
 import { refreshReminders } from '../lib/reminderSync';
@@ -73,27 +77,34 @@ export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; on
   const [time, setTime] = useState(() => defaultReminderTime(Date.now()));
   const [phase, setPhase] = useState<Phase>('idle');
 
-  const accept = async () => {
-    setPhase('working');
-    const allowed = await ensurePermission();
-    if (!allowed) {
-      // The phone said no: remember it, say how to change it, and never ask again.
-      useSeen.getState().noteReminderAsk('first', 'blocked');
-      setPhase('blocked');
-      sayLater('Notifications are off for KaiSip on this phone.');
-      return;
-    }
-    const current = useSettings.getState().reminder;
-    useSettings.getState().setReminder({ ...current, enabled: true, hour: time.hour, minute: time.minute });
-    await refreshReminders();
-    useSeen.getState().noteReminderAsk('first', 'on');
-    setPhase('on');
-    sayLater(`Reminder set for ${localTime(time.hour, time.minute)}.`);
-  };
   const notNow = () => {
     useSeen.getState().noteReminderAsk('first', 'later');
     setPhase('later');
     onNotNow?.();
+  };
+  const accept = async () => {
+    setPhase('working');
+    try {
+      const allowed = await ensurePermission();
+      if (!allowed) {
+        // The phone said no: remember it, say how to change it, and never ask again.
+        useSeen.getState().noteReminderAsk('first', 'blocked');
+        setPhase('blocked');
+        sayLater('Notifications are off for KaiSip on this phone.');
+        return;
+      }
+      const current = useSettings.getState().reminder;
+      useSettings.getState().setReminder({ ...current, enabled: true, hour: time.hour, minute: time.minute });
+      await refreshReminders();
+      useSeen.getState().noteReminderAsk('first', 'on');
+      setPhase('on');
+      sayLater(`Reminder set for ${localTime(time.hour, time.minute)}.`);
+    } catch {
+      // A native error (the permission check failed): never leave the button stuck on "working".
+      // The calm way out is the same as "Not now"; Settings can still set a reminder.
+      notNow();
+      sayLater('No reminder set. You can choose one in Settings.');
+    }
   };
 
   if (!remindersSupported) return null;
@@ -165,6 +176,10 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
   const missed = useMemo(() => session.questionIds.filter((id) => session.responses[id] && !session.responses[id].correct), [session]);
   const headRef = useRef<View>(null);
   const [footerH, setFooterH] = useState(120);
+  // Ended early: some of the five have never been answered (this set or, after a resume, an earlier one).
+  const answers = useProgress((s) => selectCert(s, certId).answers);
+  const left = useMemo(() => firstSetLeftOf(certId, answers).length, [certId, answers]);
+  const endedEarly = left > 0;
 
   // The topic most missed: the study note behind the misses, else the domain of the first miss.
   const topic = useMemo(() => {
@@ -211,13 +226,17 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
     );
   };
   // Android Back means "Done for today" here, never a way back into the finished set.
-  useEffect(() => {
-    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
-      done();
-      return true;
-    });
-    return () => sub.remove();
-  }, [done]);
+  // useFocusEffect, not useEffect: with "Choose a different plant" open on top, Back there must close the
+  // picker, so this handler is only active while the closing screen itself is in front.
+  useFocusEffect(
+    useCallback(() => {
+      const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+        done();
+        return true;
+      });
+      return () => sub.remove();
+    }, [done]),
+  );
 
   const tomorrow = tomorrowPreview(j.plan.filter((i) => i.kind !== 'review'));
   const comeBack = comeBackLine(missed.length);
@@ -229,10 +248,18 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingTop: space.xl, paddingBottom: footerH + space.xl }}>
         <Enter i={0}>
           <T v="caption" color={c.accentText}>Your first five</T>
-          <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel={`${score.correct} of ${score.answered} right`} style={{ marginTop: space.sm }}>
-            <T v="display">{`${score.correct} of ${score.answered}`}</T>
+          {/* Ended early: the honest count ("2 answered"), never "2 of 2" as if the set were complete. */}
+          <View
+            ref={headRef}
+            accessible
+            accessibilityRole="header"
+            accessibilityLabel={endedEarly ? `${score.answered} answered` : `${score.correct} of ${score.answered} right`}
+            style={{ marginTop: space.sm }}
+          >
+            <T v="display">{endedEarly ? `${score.answered} answered` : `${score.correct} of ${score.answered}`}</T>
           </View>
           <T v="quote" color={c.ink2} style={{ marginTop: space.sm }}>{fact}</T>
+          {endedEarly && <T v="body" style={{ marginTop: space.sm }}>{`${left} left. Continue them from Today when you are ready.`}</T>}
           <T v="meta" style={{ marginTop: space.md }}>
             {j.range.enough ? 'Your readiness range is on Today.' : `${toward} of ${RANGE_MIN_ANSWERS} for your first range`}
           </T>
@@ -265,14 +292,16 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
         </Enter>
       </ScrollView>
       <StickyFooter onHeight={setFooterH}>
-        <Button label="Done for today" onPress={done} />
-        <Button
-          kind="ghost"
-          label="Do 5 more"
-          accessibilityHint="Starts five more questions"
-          onPress={fiveMore}
-          style={{ alignSelf: 'center' }}
-        />
+        <Button label={endedEarly ? 'Back to Today' : 'Done for today'} onPress={done} />
+        {!endedEarly && (
+          <Button
+            kind="ghost"
+            label="Do 5 more"
+            accessibilityHint="Starts five more questions"
+            onPress={fiveMore}
+            style={{ alignSelf: 'center' }}
+          />
+        )}
       </StickyFooter>
     </SafeAreaView>
   );

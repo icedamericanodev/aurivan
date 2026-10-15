@@ -56,6 +56,7 @@ import { cleanDisplayName } from '../engine/displayName';
 import { DEFAULT_MINUTES, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { dayKey } from '../engine/streak';
 import { useProgress } from '../store/progress';
+import { useSeen } from '../store/seen';
 import { useSettings } from '../store/settings';
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -178,6 +179,8 @@ export default function Onboarding() {
     complete(certId, examDate, { familiarity, dailyMinutes: minutes }, cleanDisplayName(nameInput) || undefined);
     // No plant question in onboarding: a seed is planted after the first set, and You keeps "Plant yours".
     useProgress.getState().setPlantSettings({ promptHidden: true });
+    // A 1.24+ learner: the only kind that may get the reminder ask's second chance (engine/firstRun.ts).
+    useSeen.getState().noteReminderFlag('newLearner');
     // Day 1's plan (the first set) is made now, BEFORE any answer, so the five answers tick it off.
     buildTodayPlan(certId, false);
     if (startFirstSet(certId)) router.replace('/session');

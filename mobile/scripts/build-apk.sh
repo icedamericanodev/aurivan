@@ -94,6 +94,11 @@ fi
 
 echo "• Preparing the Android project…"
 npx expo prebuild --platform android --no-install
+# The same check GitHub's APK build runs: a test APK that listens to no channel
+# (or the wrong one) would never receive an update, and nothing would say so.
+grep -q 'expo-channel-name&quot;:&quot;preview&quot;' android/app/src/main/AndroidManifest.xml \
+  || { echo "The Android project does not listen to the preview channel; this APK would never update." >&2; exit 1; }
+echo "  The APK will listen to the preview update channel."
 
 echo "• Building the release app with Gradle (this is the slow part)…"
 # Gradle's default memory runs out during the release lint pass; give it room.

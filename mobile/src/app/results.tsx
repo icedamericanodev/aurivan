@@ -56,6 +56,7 @@ import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
 import { missedSubtopics } from '../engine/outline';
+import { legacyTitle } from '../engine/planner';
 import { calibrationLine, resultsHeadline, SMALL_SAMPLE, smallSampleFact, TIMES_UP_DETAIL, TIMES_UP_LINE } from '../engine/resultsCopy';
 import { sayLater } from '../lib/a11y';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
@@ -133,14 +134,19 @@ export default function Results() {
   // not reachable again). Set below, once the session is known (a ref, so the one handler
   // registered here always calls the newest version).
   const backRef = useRef<() => void>(() => router.replace('/home'));
+  // Mobile 1.24: a finished first set shows the Day-1 closing screen, which has its own Back
+  // ("Done for today", components/firstSet.tsx). Results registers none then: Android calls the
+  // newest handler first, so a second one here would run instead and leave the set uncleared.
+  const closingScreen = Boolean(active?.firstSet && active.finishedAt && score);
   useFocusEffect(
     useCallback(() => {
+      if (closingScreen) return undefined;
       const sub = BackHandler.addEventListener('hardwareBackPress', () => {
         backRef.current();
         return true;
       });
       return () => sub.remove();
-    }, []),
+    }, [closingScreen]),
   );
   // A timed mock that ended on the clock says so, once, out loud (the line is on screen too).
   const timedOut = Boolean(pacing?.timedOut);
@@ -252,7 +258,7 @@ export default function Results() {
     <Screen edges={['top', 'bottom']} onScroll={moment && !momentSeen ? watch : undefined} onScrollBeginDrag={moment ? () => skipMoment.current?.() : undefined}>
       <Enter i={0}>
         {/* Extra time and untimed mocks say so (standard time is the norm, so it isn't named). */}
-        <T v="meta">{active.mode === 'mock' && active.timing && active.timing !== 'standard' ? `${active.title} · ${TIMING_LABEL[active.timing].toLowerCase()}` : active.title}</T>
+        <T v="meta">{active.mode === 'mock' && active.timing && active.timing !== 'standard' ? `${active.title} · ${TIMING_LABEL[active.timing].toLowerCase()}` : legacyTitle(active.title)}</T>
         {/* A timed mock that ended on the clock says so first (seen here, spoken by the effect above). */}
         {timedOut && (
           <View accessible accessibilityLabel={`${TIMES_UP_LINE} ${TIMES_UP_DETAIL}`} style={{ marginTop: space.sm }}>

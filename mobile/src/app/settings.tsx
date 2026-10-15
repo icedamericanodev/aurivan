@@ -65,7 +65,8 @@ import { moveFocus, sayLater } from '../lib/a11y';
 import { hideBadges, showBadgesAgain, shownAgainLine } from '../lib/badges';
 import { config } from '../lib/config';
 import { DAY_CHIPS, localHour, localTime, MINUTE_STEP, reminderDays, reminderSummary, stepTime, toggleDay, type ReminderPrefs } from '../engine/reminders';
-import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from '../lib/reminders';
+import { cancelReminders, ensurePermission, remindersSupported } from '../lib/reminders';
+import { refreshReminders } from '../lib/reminderSync';
 import { runningUpdateLine, useUpdateCheck } from '../lib/updates';
 import { UPDATE_WORDS } from '../engine/updates';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -73,6 +74,7 @@ import { useReports } from '../lib/useReports';
 import { sweepBackupFiles } from '../lib/backup';
 import { useBackup } from '../store/backup';
 import { selectCert, useProgress } from '../store/progress';
+import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { dailyMinutesOf, useSettings, type MotionPref, type ThemePref } from '../store/settings';
 import { space } from '../theme/tokens';
@@ -236,11 +238,16 @@ export default function Settings() {
         }
         // Read the CURRENT choice after the permission prompt, not the one
         // captured when the switch was tapped (the learner may have changed it).
-        await scheduleReminders({ ...useSettings.getState().reminder, enabled: true }, cert.name);
+        useSettings.getState().setReminder({ ...useSettings.getState().reminder, enabled: true });
+        // The one way to schedule (lib/reminderSync.ts): it skips today once today's plan is cleared and
+        // titles the reminder with the learner's minutes ("Your 20-minute plan is ready").
+        await refreshReminders();
       } else {
         await cancelReminders();
+        useSettings.getState().setReminder({ ...useSettings.getState().reminder, enabled: false });
+        // Their own choice: the reminder ask's second chance never comes to them (engine/firstRun.ts).
+        useSeen.getState().noteReminderFlag('turnedOff');
       }
-      useSettings.getState().setReminder({ ...useSettings.getState().reminder, enabled });
     } finally {
       setBusy(false);
     }
@@ -252,7 +259,8 @@ export default function Settings() {
     const cur = useSettings.getState().reminder;
     const next = { ...cur, ...change(cur) };
     useSettings.getState().setReminder(next);
-    if (next.enabled) scheduleReminders(next, cert.name).catch(() => {});
+    // refreshReminders reads the saved choice just set (it never throws; the catch is a second line of defence).
+    if (next.enabled) refreshReminders().catch(() => {});
   };
   // Which way the time last moved: both steppers roll that way (the hour also
   // moves when the minutes wrap past :00).

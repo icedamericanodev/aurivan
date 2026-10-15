@@ -129,15 +129,18 @@ export default function You() {
   // "+4" only for what went up since a real last look (not the day's count-up
   // from 0; a first rise from all zeros does count).
   const sinceLook = rings.play && rings.since === true;
+  // What went up, per domain. A domain shown as a word ("Building", under 30 answers) shows no number,
+  // so it gets no "+12" either (mobile 1.24): only the domains that show a number are counted.
+  const ups = ringValues.map((v, i) => (figures[i].banded ? 0 : v - rings.from[i]));
   // The same "+4"s in words: the legend is hidden from screen readers, so the rings' label says them.
   const grewSpoken = sinceLook
     ? cert.domains
-        .map((d, i) => ({ d, up: ringValues[i] - rings.from[i] }))
+        .map((d, i) => ({ d, up: ups[i] }))
         .filter((x) => x.up > 0)
         .map((x) => `${x.d.short} up ${x.up}`)
         .join(', ')
     : '';
-  const changeLine = sinceLook ? ringsChangeLine(cert, ringValues.map((v, i) => v - rings.from[i])) : null;
+  const changeLine = sinceLook ? ringsChangeLine(cert, ups) : null;
   const statRoll = (k: number, from: string) => ({ play: stats.play, from, run: stats.run, delay: motion.dur.select + k * motion.stagger.stat });
   const plant = usePlantView();
   // The same object while the look is unchanged: the memoised plant skips re-rendering (performance, 1.15.x).
@@ -192,8 +195,10 @@ export default function You() {
           </FadeIn>
         )}
         <T v="meta" style={{ marginTop: space.md }}>{RINGS_NOTE}</T>
-        {/* Say what the word or the number means, once (honest readiness, 1.24). */}
-        {(anyBand || anyNumber) && <T v="meta" style={{ marginTop: space.xs }}>{anyBand ? BANDS_LINE : LATEST_TRIES_LABEL}</T>}
+        {/* Say what the word or the number means, once (honest readiness, 1.24). Words and numbers mixed:
+            both lines, so the "%" figures keep their "latest tries" label. */}
+        {anyBand && <T v="meta" style={{ marginTop: space.xs }}>{BANDS_LINE}</T>}
+        {anyNumber && <T v="meta" style={{ marginTop: space.xs }}>{LATEST_TRIES_LABEL}</T>}
       </Enter>
 
       <Enter i={2} style={{ marginTop: space.xl }}>

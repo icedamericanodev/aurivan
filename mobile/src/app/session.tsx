@@ -26,8 +26,8 @@
  *   lines come first. A right answer keeps the old order.
  * - The coach line under "Not quite" is specific only when the learner tagged
  *   why they slipped (engine/slipCoach.ts missCoachLine); otherwise neutral.
- * - A right answer given less than 4 hours after the last answer to the same
- *   question is a retest: it counts half and says "Back in your review tomorrow."
+ * - A right answer given less than 4 hours after a MISS on the same question
+ *   is a retest: it counts half and says "Back in your review tomorrow."
  * - A wrong answer gets the neutral tap, not the "error" buzz.
  * - Screen-reader focus moves to the verdict after "Check answer".
  * - "Code d1_xxx" is gone from this view (it is in the Report sheet).
@@ -405,7 +405,7 @@ export default function SessionScreen() {
     // Time from the question appearing to "Check answer" (background excluded).
     const ms = readClock();
     // Progress first: the store decides whether this was a RETEST (a right answer under 4 hours after
-    // the last answer to this question, engine/srs.ts): it counts half and is not promoted.
+    // a miss on this question, engine/srs.ts): it counts half and is not promoted.
     recordAnswer(active.certId, qid, ok, confidence, { assisted: coached, ms });
     const retest = ok && selectCert(useProgress.getState(), active.certId).answers[qid]?.lastRetest === true;
     // Answers after Coach me are "assisted": half weight toward readiness.
@@ -421,8 +421,10 @@ export default function SessionScreen() {
     moveFocus(verdictRef, 400);
   };
 
-  // One question on its own (from the Question bank, Saved, a single open mistake): nothing to
-  // review as a set, so it ends back where it started instead of on a Results page (mobile 1.24).
+  // One question on its own: nothing to review as a set, so it ends back where it started instead
+  // of on a Results page (mobile 1.24). That is ANY one-question practice or review set: the Question
+  // bank, Saved, a single open mistake, and also a 1-due review from Today, a one-question Guided step
+  // or "Practice the one you missed" (all of them go back to the screen they came from).
   // Today's plan and the streak still count it (finishSession logs the activity); a badge moment
   // is left for a later full session (celebrate: false).
   const singleQuestion = !isMock && total === 1;
@@ -779,7 +781,7 @@ export default function SessionScreen() {
                 {/* Lined up with the coach line above it (left 50, under "Correct"). */}
                 {/* Only after a RIGHT hinted answer (UX H1): a wrong one counts nothing, so "half" would be untrue. */}
                 {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>{HINT_AFTER_LINE}</T>}
-                {/* A right retest (under 4 hours since the last answer) is not promoted: say when it is back. */}
+                {/* A right retest (under 4 hours after a miss) is not promoted: say when it is back. */}
                 {response.retest && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>{RETEST_LINE}</T>}
                 <Rise delay={FEEDBACK_DELAY.rows}>
                   <View style={{ marginTop: space.lg }}>

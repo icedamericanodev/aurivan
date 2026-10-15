@@ -29,7 +29,7 @@ import type { MockTiming } from '../engine/pace';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import type { ThinkingSlip } from '../engine/slipCoach';
 import { addReport, type ReportEntry } from '../engine/support';
-import { isRetest, MAX_BOX, nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
+import { isRetestAfterMiss, MAX_BOX, nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
 import { bumpStreak, dayKey, type Streak } from '../engine/streak';
 import { watchHydration } from './hydration';
 import { persistStorage } from './storage';
@@ -327,12 +327,13 @@ export const useProgress = create<ProgressState>()(
           const now = opts?.at ?? Date.now();
           const cp = normalize(s.byCert[certId]);
           const prev = cp.answers[questionId];
-          // Retest rule (mobile 1.24, engine/srs.ts): answering again less than 4
-          // hours after the last answer is recall from working memory, not
-          // remembering. A right retest counts half, is not promoted and does not
-          // fix the mistake. A wrong one counts in full, so only a right one is
-          // marked. Mock answers are saved in a batch at the end, so they too.
-          const retest = correct && isRetest(prev?.lastAt, now);
+          // Retest rule (mobile 1.24, engine/srs.ts): a right answer less than 4
+          // hours after a WRONG answer to the same question is recall from
+          // working memory, not remembering. A right retest counts half, is not
+          // promoted and does not fix the mistake. A right answer after a right
+          // answer is a normal answer. A wrong one counts in full, so only a
+          // right one is marked. Mock answers are saved in a batch at the end, so they too.
+          const retest = correct && isRetestAfterMiss(prev, now);
           // Half evidence for the milestone and mastery counters: a hint or a retest.
           const weak = opts?.assisted === true || retest;
           const answers = {

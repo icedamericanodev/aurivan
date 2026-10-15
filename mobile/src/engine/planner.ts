@@ -117,6 +117,19 @@ const CHECK_SIZE = 20;
 export const FIRST_SET_COUNT = 5;
 /** The first set's plan label (content/firstSet.ts FIRST_SET_TITLE). */
 export const FIRST_SET_LABEL = 'Your first five';
+
+/**
+ * A plan label or session title saved by mobile 1.23, in today's words.
+ * 1.23 called the mixed starting set "Starting check: 12 mixed questions",
+ * and that text was saved in the day's plan AND as a paused session's title.
+ * The learner never reads "check" now (mobile 1.24), so every place that shows
+ * a saved title (Today's rows, Resume rows, the "Replace your unfinished
+ * session?" alert, Results) passes it through here. Any other title is
+ * returned as it is.
+ */
+export function legacyTitle(title: string): string {
+  return /^Starting check\b/.test(title) ? 'Mixed practice' : title;
+}
 /** The most one planned practice item asks for. */
 export const PRACTICE_MAX = 30;
 /** The fewest questions worth a practice item (fewer than this and it waits). */

@@ -14,9 +14,10 @@
  * one (ASSISTED_WEIGHT). Getting it right with help is real progress, but
  * it is not yet proof you could do it alone on exam day.
  *
- * Retests (mobile 1.24): a right answer given less than 4 hours after the
- * previous answer to the same question (srs.ts isRetest) is recall from
- * working memory, so it counts half as well. A wrong retest counts in full
+ * Retests (mobile 1.24): a right answer given less than 4 hours after a
+ * WRONG answer to the same question (srs.ts isRetestAfterMiss) is recall from
+ * working memory, so it counts half as well. A right answer after a right
+ * answer is a normal answer (full credit). A wrong retest counts in full
  * (a wrong answer earns nothing, retest or not).
  */
 import type { Certification } from '../content/types';
@@ -34,8 +35,8 @@ export interface AnswerRecord {
    */
   lastAssisted?: boolean;
   /**
-   * Mobile 1.24: true when the LAST answer was a retest, given less than 4
-   * hours after the previous answer to the same question. Written only when
+   * Mobile 1.24: true when the LAST answer was a right retest, given less
+   * than 4 hours after a WRONG answer to the same question. Written only when
    * true; the next answer rebuilds the record, so a later clean try drops it.
    * Optional: older saves load as "not a retest".
    */
