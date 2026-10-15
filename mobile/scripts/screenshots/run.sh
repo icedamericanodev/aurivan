@@ -131,17 +131,17 @@ elif [ "${SHOTS:-}" = learnplay ]; then
   # FONT_SCALE=2 for approximate 200% text).
   node scripts/screenshots/shoot_learnplay.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = plant ]; then
-  # Mobile 1.13 Your plant: the onboarding pick, Today (the plant, the grow-up
+  # Mobile 1.13 Your plant: the "Plant yours" pick, Today (the plant, the grow-up
   # line, the quiet prompt), You, Your plant, resting, Quiet look, hidden and
   # Change species (shoot_plant.mjs; NARROW=1; FONT_SCALE=2 for about 200% text).
   # Mobile 1.14 Dress and Alive (shoot_plant4b.mjs): the Look screen, dressed
-  # plants, moods, planters, keepsakes, the badge sheet line, the planting
-  # moment, and frame strips of Breathe, a reaction, the growth sequence and
-  # the planting (REDUCED=1 for the reduced set). PLANT=4b runs only these.
+  # plants, moods, planters, keepsakes, the badge sheet line, a plant just
+  # planted from "Plant yours", and frame strips of Breathe, a reaction and the
+  # growth sequence (REDUCED=1 for the reduced set). PLANT=4b runs only these.
   if [ "${PLANT:-}" != 4b ]; then node scripts/screenshots/shoot_plant.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
   node scripts/screenshots/shoot_plant4b.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = fit ]; then
-  # Mobile 1.15 "Fit the plan": onboarding steps 2–4, Today (a new learner's
+  # Mobile 1.15 "Fit the plan": onboarding's Step 1 and Step 2 of 2, Today (a new learner's
   # day 1, a 10-minute day, the Exam-focused mini mock, the "Fit your plan"
   # card, Tomorrow), the fit screen, Settings → Your study, Practice's order,
   # You's legend, the mistake tags and their sheet, an answer after a hint

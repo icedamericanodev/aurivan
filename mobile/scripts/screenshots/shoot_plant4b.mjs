@@ -3,10 +3,11 @@
 //
 // Shots: the Look screen (top, each section, locked choices), Your plant
 // and Today dressed, each mood, planters and keepsakes on three species,
-// the badge sheet's quiet line, and onboarding's planting moment.
+// the badge sheet's quiet line, and a plant just planted from "Plant yours"
+// (onboarding's planting moment was removed in mobile 1.24).
 // Frame strips (FULL motion, the page clock slowed 10×, labelled with the
-// app time): the Breathe burst, a reaction, the growth sequence and the
-// onboarding sprout. REDUCED=1 runs the same with Reduce Motion on: the
+// app time): the Breathe burst, a reaction and the growth sequence.
+// REDUCED=1 runs the same with Reduce Motion on: the
 // strips then show the end state at once.
 // NARROW=1 uses a 360-wide phone; FONT_SCALE=2 approximates 200% text.
 import { createRequire } from 'module';
@@ -317,29 +318,21 @@ await setPlant(dressed);
 await go('/milestones?open=dress-rehearsal', 2800);
 await shot('q06-badge-sheet-line');
 
-// ── 6. Onboarding: the planting moment ────────────────────────────────
-const onboardTo = async () => {
-  await setPlant(null);
-  await edit(S, `v.state.onboarded = false;`);
-  await go('/onboarding', 1800);
-  for (const b of ['Start my plan', 'Skip', 'Continue', 'Continue']) {
-    await page.getByRole('button', { name: b }).first().click();
-    await wait(900);
-  }
-};
-await onboardTo();
+// ── 6. Planting from You → "Plant yours" ──────────────────────────────
+// Mobile 1.24 took the plant step (and its "Planted" screen with the sprout
+// moment) out of onboarding. The nearest real screen: "Plant it" on the
+// picker, which opens Your plant with the new seed. The s04 sprout strip is
+// dropped: nothing in the app plays that moment any more.
+await setPlant(null);
+await go('/plant-pick', 1800);
 await page.getByRole('button', { name: /^Plant it$/ }).first().click();
 await wait(2000);
-await shot('q07-onboarding-planted');
+await shot('q07-plant-yours-planted');
+// Back to the dressed plant for what follows.
+await setPlant(dressed);
 
 // ── 7. Frame strips ────────────────────────────────────────────────────
 if (STRIPS) {
-  // The planting: the seed settles, then the sprout pops (≤ 820 ms).
-  await onboardTo();
-  const plantBtn = page.getByRole('button', { name: /^Plant it$/ }).first();
-  await strip('s04-onboarding-sprout', 'Planting: the seed settles into the soil, then its first sprout pops (820 ms)', async () => plantBtn.click(), [40, 260, 450, 620, 900], { x: 0, y: 40, width: W, height: 360 });
-  await edit(S, `v.state.onboarded = true;`);
-
   // Breathe: one slow breath on arrival (2 s in, 2.4 s out), then still.
   await setPlant({ ...dressed, look: { colourway: 'oak-autumn' } });
   await setPlanCleared(false);

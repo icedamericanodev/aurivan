@@ -327,16 +327,23 @@ await page.screenshot({ path: `${out}/35-settings-reminders.png` });
 console.log('shot settings reminders');
 // Onboarding (last: it marks the learner as new).
 await edit('aurivan.settings.v1', 'v.state.onboarded = false;');
-// 22: the welcome (lockup, tagline, pillars); 22b: the exam; 22c: the date.
+// Mobile 1.24 onboarding: welcome → optional name → "Step 1 of 2" (where you
+// start) → "Step 2 of 2" (exam date and daily minutes). The exam step and the
+// plant step are gone (CISA is chosen for you; a seed is planted after the
+// first five questions). The last button ("Start my first questions") is NOT
+// pressed here: it would start a session (SHOTS=firstdays covers what follows).
+// 22: the welcome (lockup, headline, four plain lines); 22a: the name;
+// 22b: where you start; 22c: the date and minutes.
 await shot('22-onboarding', '/onboarding');
-await page.getByText('Start my plan', { exact: true }).click();
+await page.getByRole('button', { name: 'Get started', exact: true }).click();
 await page.waitForTimeout(900);
-// 22a: the optional name step (mobile 1.23), then Skip to the exam.
 await page.screenshot({ path: `${out}/22a-onboarding-name.png` });
-await page.getByText('Skip', { exact: true }).click();
+await page.getByRole('button', { name: 'Skip', exact: true }).click();
 await page.waitForTimeout(900);
-await page.screenshot({ path: `${out}/22b-onboarding-exam.png` });
-await page.getByText('Continue', { exact: true }).click();
+await page.screenshot({ path: `${out}/22b-onboarding-start.png` });
+await page.getByRole('radio', { name: /^Some IT audit experience/ }).first().click();
+await page.waitForTimeout(500);
+await page.getByRole('button', { name: 'Continue', exact: true }).click();
 await page.waitForTimeout(900);
 await page.screenshot({ path: `${out}/22c-onboarding-date.png` });
 console.log('errors:', errs.slice(0, 5));

@@ -82,7 +82,7 @@ await shot('k01c-today-no-name');
 await edit(S, `v.state.onboarded = false;`);
 await go('/onboarding', 1800);
 await shot('k02-onboarding-welcome');
-await press('Start my plan');
+await press('Get started'); // mobile 1.24 (was "Start my plan")
 await shot('k03-onboarding-name');
 await page.getByRole('textbox', { name: 'Your name' }).fill('Maya');
 await wait(500);

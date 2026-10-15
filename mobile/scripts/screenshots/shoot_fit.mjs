@@ -1,7 +1,7 @@
 // Mobile 1.15 "Fit the plan to each learner" (SHOTS=fit, see run.sh; PHASE5.md §2.11).
 //
-// Shots: onboarding step 2 (nothing chosen, then "New to audit"), step 3
-// (date + minutes), step 4 (the plant, renumbered); Today for a new learner's
+// Shots: onboarding's "Step 1 of 2" (nothing chosen, then "New to audit") and
+// "Step 2 of 2" (date + minutes; mobile 1.24 dropped the plant step); Today for a new learner's
 // day 1, a 10-minute day with a big review queue, the Exam-focused mini mock,
 // the existing-learner "Fit your plan" card and a cleared day's Tomorrow;
 // the fit screen; Settings → Your study with "Today's plan stays"; Practice in
@@ -109,12 +109,14 @@ const SESSION = 'aurivan.session.v1';
 const paused = await page.evaluate((k) => localStorage.getItem(k), SESSION);
 await page.evaluate((k) => localStorage.removeItem(k), SESSION);
 
-// ── 1. Onboarding: steps 2, 3 and 4 of 4 ──────────────────────────────
+// ── 1. Onboarding: "Step 1 of 2" and "Step 2 of 2" (mobile 1.24) ──────
+// The exam step and the plant step are gone, so the name's Skip lands straight
+// on "Where are you starting from?", and the last step is the date and minutes
+// (its button starts the first five questions, so it is not pressed here).
 await edit(S, `v.state.onboarded = false;`);
 await go('/onboarding', 1800);
-await press('Start my plan');
+await press('Get started');
 await press('Skip'); // mobile 1.23: the optional "What should we call you?" step
-await press('Continue');
 await shot('f01-onboarding-start-empty');
 await pick(/^New to audit/);
 await shot('f02-onboarding-start-new');
@@ -125,8 +127,7 @@ if (FONT_SCALE) {
   await toTop('How long can you study most days?', 40);
   await shot('f03b-onboarding-minutes-scrolled');
 }
-await press('Continue', 1400);
-await shot('f04-onboarding-plant');
+// f04 (the plant step) is gone: onboarding no longer asks for a plant (mobile 1.24).
 await edit(S, `v.state.onboarded = true;`);
 
 // ── 2. Today ───────────────────────────────────────────────────────────
