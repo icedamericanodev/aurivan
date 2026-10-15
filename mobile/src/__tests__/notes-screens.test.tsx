@@ -330,11 +330,13 @@ describe('screens', () => {
     const text = allText();
     expect(text).toContain('Information System Auditing Process');
     expect(text).toContain('IS Operations & Business Resilience');
-    expect(text).toContain('26% of the exam · 0 of 1 read');
+    // Mobile 1.24: nothing read yet, so no "0 of 1 read" (the count shows once a note has been read).
+    expect(text).toContain('26% of the exam');
+    expect(text).not.toMatch(/\d+ of \d+ read/);
     // Mobile 1.15 (C9): a list of domains says "Domain 1 · IS Audit", the full name under it.
     expect(text).toContain('Domain 1 · IS Audit');
     expect(text).not.toContain('Governance and Management of IT');
-    press('Domain 1, Information System Auditing Process. 18 percent of the exam. 0 of 1 read.');
+    press('Domain 1, Information System Auditing Process. 18 percent of the exam.');
     expect(mockPush).toHaveBeenCalledWith('/notes/1');
   });
 

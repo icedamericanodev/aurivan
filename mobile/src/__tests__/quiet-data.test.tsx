@@ -287,11 +287,14 @@ describe('subtopic mastery date (store)', () => {
     recordAnswer('cisa', q1.id, true, 'sure', { assisted: true });
     recordAnswer('cisa', q2.id, true, undefined, { mastery: false });
     expect(mastery()).toBeUndefined();
+    // Five hours on (the same day): a re-answer within 4 hours is a retest and would not count (mobile 1.24).
+    const later = T0 + 5 * 3_600_000;
+    jest.setSystemTime(later);
     recordAnswer('cisa', q1.id, true);
     jest.setSystemTime(T0 + DAY);
     recordAnswer('cisa', q2.id, true, 'sure', { assisted: true });
     recordAnswer('cisa', q3.id, true, 'sure', { mastery: false });
-    expect(mastery()).toEqual({ firstDay: '2026-10-05', firstAt: T0 });
+    expect(mastery()).toEqual({ firstDay: '2026-10-05', firstAt: later });
   });
 });
 

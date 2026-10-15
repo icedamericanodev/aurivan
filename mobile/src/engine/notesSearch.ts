@@ -145,3 +145,14 @@ export function readCount(subtopicIds: string[], read: string[]): number {
   const set = new Set(read);
   return subtopicIds.filter((id) => set.has(id)).length;
 }
+
+/**
+ * "2 of 5 read" / "All read" (mobile 1.24), or null while nothing in the group
+ * has been read. A count that starts at "0 of 252 read" is a to-do list, and
+ * counting reading is the weakest way to study, so the screens say nothing
+ * until the learner has read their first note there.
+ */
+export function readProgressText(done: number, total: number): string | null {
+  if (done <= 0 || total <= 0) return null;
+  return done >= total ? 'All read' : `${done} of ${total} read`;
+}

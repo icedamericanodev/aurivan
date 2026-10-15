@@ -18,6 +18,23 @@
  * Build D: the clock lives in the shared PaceStrip under the header (or
  * "Clock hidden" / "Untimed", chosen on the start sheet), with a pace line
  * that changes only at the 25 / 50 / 75% checks (engine/pace.ts).
+ *
+ * Mobile 1.24 (honest readiness + answer screen):
+ * - After a MISS the order is: verdict, your answer with its reason, the best
+ *   answer, then the Key idea and Exam cue, THEN the long "Why" (folded to two
+ *   lines + "Read more"), then Eliminate two / Final two. The short, memorable
+ *   lines come first. A right answer keeps the old order.
+ * - The coach line under "Not quite" is specific only when the learner tagged
+ *   why they slipped (engine/slipCoach.ts missCoachLine); otherwise neutral.
+ * - A right answer given less than 4 hours after the last answer to the same
+ *   question is a retest: it counts half and says "Back in your review tomorrow."
+ * - A wrong answer gets the neutral tap, not the "error" buzz.
+ * - Screen-reader focus moves to the verdict after "Check answer".
+ * - "Code d1_xxx" is gone from this view (it is in the Report sheet).
+ * - A one-question practice session (opened from the Question bank or Saved) ends where
+ *   it started: the button says "Done", there is no Results page, and it goes back.
+ * - The mock footer has icons AND words; the navigator says how many are
+ *   answered / flagged / left and keeps Submit in a sticky footer.
  */
 import * as Router from 'expo-router';
 import { router, useFocusEffect } from 'expo-router';
@@ -40,7 +57,7 @@ import {
 import { CrossFade, PageTurn, Pop, useMotion } from '../components/motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LeafSmall } from '../components/glyphs';
-import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ICON_STROKE, Lightbulb, Play, X } from '../components/icons';
+import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Flag, ICON_STROKE, LayoutGrid, Lightbulb, Play, X } from '../components/icons';
 import {
   AnswerRecap,
   ConfidenceRow,
@@ -52,12 +69,13 @@ import {
   TrustLine,
   Verdict,
   Vine,
+  WhyBlock,
   type OptionState,
 } from '../components/quiz';
 import { addMs } from '../engine/answerClock';
 import { aboutMin, dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, spokenMin, statusOf } from '../engine/pace';
 import { PaceStrip, type PaceStripProps } from '../components/pace';
-import { sayLater } from '../lib/a11y';
+import { moveFocus, sayLater } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
 import { questionTarget, sessionWhere } from '../lib/support';
 import { Button, Gap, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
@@ -68,9 +86,10 @@ import { findNote, subtopicOfQuestion } from '../content/notes';
 import { REASON_LABEL } from '../engine/studyModes';
 import { LETTERS, type Letter } from '../content/types';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../engine/shuffle';
-import type { Confidence } from '../engine/srs';
+import { RETEST_LINE, type Confidence } from '../engine/srs';
 import { priorityWord } from '../engine/games/priorityLens';
-import { eliminateTip, runnerUp, tipParts } from '../engine/tips';
+import { missCoachLine } from '../engine/slipCoach';
+import { eliminateTip, runnerUp, splitMissTips, tipParts } from '../engine/tips';
 import { finishSession } from '../lib/finishSession';
 import { advancePath } from '../lib/sessions';
 import { shortSubtopic } from '../lib/format';
@@ -121,6 +140,8 @@ export default function SessionScreen() {
   const [now, setNow] = useState(() => Date.now());
   // Layout bookkeeping for the sticky footer and the vine reveal.
   const [footerH, setFooterH] = useState(120);
+  // The navigator sheet's own sticky footer ("Submit exam").
+  const [navFooterH, setNavFooterH] = useState(96);
   const [vineVisible, setVineVisible] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
   const scrollY = useRef(0);
@@ -128,6 +149,12 @@ export default function SessionScreen() {
   const verdictBottom = useRef(0);
   const [pastVerdict, setPastVerdict] = useState(false);
   const vineRef = useRef<View>(null);
+  // Mobile 1.24: after a miss the tips come in two parts (Key idea + Exam cue, then
+  // Eliminate / Final two after the folded "Why"); the second part draws on its own.
+  const vine2Ref = useRef<View>(null);
+  const [vine2Visible, setVine2Visible] = useState(false);
+  // Screen-reader focus lands on the verdict after "Check answer".
+  const verdictRef = useRef<View>(null);
   // Coach me: the first line of the hint, and a flag saying "the learner just
   // tapped Coach me, so move the screen reader there once the hint appears".
   const hintRef = useRef<View>(null);
@@ -138,6 +165,8 @@ export default function SessionScreen() {
   const perm = active && qid ? active.perms[qid] : undefined;
   const response = active && qid ? active.responses[qid] : undefined;
   const isMock = active?.mode === 'mock';
+  // Why the learner said they slipped on this question, when they tagged it (Mistake journal).
+  const taggedSlip = useProgress((s) => (active && qid ? selectCert(s, active.certId).mistakes[qid]?.slip : undefined));
   // Mobile 1.20, after a miss: the note first, the lesson when there is one.
   // Practice, review and Guided only (a mock never shows an answer screen, and
   // this says so out loud). Nothing after a right answer. Looked up once per
@@ -208,6 +237,7 @@ export default function SessionScreen() {
     setCurMs(0);
     setConfidence(undefined);
     setVineVisible(false);
+    setVine2Visible(false);
   }
   // At the swap (PageTurn calls this before the new page is painted): back to
   // the top, so the jump is never seen, and tell screen readers where they are
@@ -234,6 +264,9 @@ export default function SessionScreen() {
     const t = setTimeout(() => {
       vineRef.current?.measureInWindow((_x, y) => {
         if (y < Dimensions.get('window').height - 40) setVineVisible(true);
+      });
+      vine2Ref.current?.measureInWindow((_x, y) => {
+        if (y < Dimensions.get('window').height - 40) setVine2Visible(true);
       });
     }, 450);
     return () => clearTimeout(t);
@@ -290,6 +323,7 @@ export default function SessionScreen() {
   }, [lowNow]);
   useEffect(() => {
     if (isMock && active?.deadline && !active.finishedAt && remaining <= 0) {
+      // Results says "Time’s up" in words and out loud (mobile 1.24, engine/resultsCopy.ts).
       finishSession(); // the finishedAt effect below navigates to /results
     }
   }, [isMock, remaining, active?.deadline, active?.finishedAt]);
@@ -363,26 +397,45 @@ export default function SessionScreen() {
   const submit = () => {
     if (!selected) return;
     const ok = isCorrect(q, selected, perm);
+    // A miss gets the same neutral tap as any choice, not an "error" buzz: it should not feel like a
+    // penalty at the moment the learner is meant to learn (mobile 1.24).
     if (ok) haptic.success();
-    else haptic.error();
-    AccessibilityInfo.announceForAccessibility(ok ? 'Correct' : 'Not quite. Explanation below.');
+    else haptic.selection();
+    AccessibilityInfo.announceForAccessibility(ok ? 'Correct.' : `Not quite. Best answer ${originalToDisplay(q.correct, perm)}.`);
     // Time from the question appearing to "Check answer" (background excluded).
     const ms = readClock();
-    // Answers after Coach me are "assisted": half weight toward readiness.
-    answer(qid, { display: selected, correct: ok, confidence, ms, ...(coached ? { assisted: true } : {}) });
+    // Progress first: the store decides whether this was a RETEST (a right answer under 4 hours after
+    // the last answer to this question, engine/srs.ts): it counts half and is not promoted.
     recordAnswer(active.certId, qid, ok, confidence, { assisted: coached, ms });
+    const retest = ok && selectCert(useProgress.getState(), active.certId).answers[qid]?.lastRetest === true;
+    // Answers after Coach me are "assisted": half weight toward readiness.
+    answer(qid, { display: selected, correct: ok, confidence, ms, ...(coached ? { assisted: true } : {}), ...(retest ? { retest: true } : {}) });
     // In order (Build E): remember the place (never from the mixed tail).
     advancePath(active, qid);
     // File every miss in the Mistake Journal, with the ORIGINAL letter picked
     // (and how sure they felt, for the slip coach's "over-confident" pattern).
     if (!ok) useProgress.getState().recordMistake(active.certId, qid, displayToOriginal(selected, perm), confidence);
-    // Start the answer screen at the top, so the verdict is the first thing seen.
+    // Start the answer screen at the top, so the verdict is the first thing seen,
+    // and move the screen reader there (the footer button it was on sits below the explanation).
     scrollRef.current?.scrollTo({ y: 0, animated: false });
+    moveFocus(verdictRef, 400);
   };
 
+  // One question on its own (from the Question bank, Saved, a single open mistake): nothing to
+  // review as a set, so it ends back where it started instead of on a Results page (mobile 1.24).
+  // Today's plan and the streak still count it (finishSession logs the activity); a badge moment
+  // is left for a later full session (celebrate: false).
+  const singleQuestion = !isMock && total === 1;
+  const exitSingle = () => {
+    if (Object.keys(active.responses).length > 0) finishSession({ celebrate: false });
+    useSession.getState().clear();
+    if (router.canGoBack()) router.back();
+    else router.replace('/home');
+  };
   const next = () => {
     if (!isLast) goTo(active.index + 1);
     else if (isMock) confirmSubmitExam();
+    else if (singleQuestion) exitSingle();
     // The first set ends on its own closing screen, which shows no badge moment: a badge it earns waits for the next Results.
     else finishSession({ celebrate: !active.firstSet }); // the finishedAt effect navigates to /results
   };
@@ -404,6 +457,11 @@ export default function SessionScreen() {
   };
 
   const leave = () => {
+    if (singleQuestion) {
+      // Nothing is lost by leaving one question: no "End session?" to answer first.
+      exitSingle();
+      return;
+    }
     if (isMock) {
       // An untimed mock has no clock to keep running.
       const body = active.deadline ? 'Your answers are saved. The clock keeps running — resume from Today.' : 'Your answers are saved. Resume from Today.';
@@ -455,9 +513,7 @@ export default function SessionScreen() {
     ? ''
     : response.correct
       ? 'Clean read.'
-      : pickedOriginal && pickedOriginal === runnerUp(q.tips, q.correct)
-        ? 'You picked the runner-up. That’s the trap.'
-        : 'Check who you are in the question.';
+      : missCoachLine(Boolean(pickedOriginal && pickedOriginal === runnerUp(q.tips, q.correct)), taggedSlip);
   const flagged = active.flagged.includes(qid);
   const shownFlagged = active.flagged.includes(shownQid);
   // Build E: why this question is here ("Weak spot", "Mixed review"…).
@@ -514,16 +570,27 @@ export default function SessionScreen() {
   const hintTip = eliminateTip(q.tips);
   const hintWord = priorityWord(q.stem);
   const canCoach = !isMock && Boolean(hintTip || hintWord);
+  // After a miss: which tips lead (Exam cue) and which follow the folded "Why" (Eliminate, Final two).
+  const missTips = splitMissTips(q.tips);
+  // The navigator's summary: how many answered, flagged and left (the exam's own length, not the bank's).
+  const answeredCount = Object.keys(active.responses).length;
+  const navSummary = `${answeredCount} answered · ${active.flagged.length} flagged · ${total - answeredCount} left`;
   const metaLine = [domain?.short, shortSubtopic(q.subtopic), `${active.index + 1} of ${total}`].filter(Boolean).join(' · ');
 
   // The vine draws itself the first time it scrolls into view: on each
   // scroll we ask where it sits on screen (measureInWindow works on phones
   // and on the web build alike).
   const checkVine = () => {
-    if (vineVisible || !vineRef.current) return;
-    vineRef.current.measureInWindow((_x, y) => {
-      if (y < Dimensions.get('window').height - 40) setVineVisible(true);
-    });
+    if (!vineVisible && vineRef.current) {
+      vineRef.current.measureInWindow((_x, y) => {
+        if (y < Dimensions.get('window').height - 40) setVineVisible(true);
+      });
+    }
+    if (!vine2Visible && vine2Ref.current) {
+      vine2Ref.current.measureInWindow((_x, y) => {
+        if (y < Dimensions.get('window').height - 40) setVine2Visible(true);
+      });
+    }
   };
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     scrollY.current = e.nativeEvent.contentOffset.y;
@@ -551,7 +618,8 @@ export default function SessionScreen() {
           accessibilityRole="button"
           accessibilityLabel={isMock ? 'Pause exam' : 'End session'}
           onPress={leave}
-          style={{ width: 44, height: 44, marginLeft: -10, alignItems: 'center', justifyContent: 'center' }}
+          hitSlop={4}
+          style={{ width: 48, height: 48, marginLeft: -12, alignItems: 'center', justifyContent: 'center' }}
         >
           <X size={ICON_SIZE.bar} color={c.ink} strokeWidth={ICON_STROKE} />
         </Pressable>
@@ -570,7 +638,7 @@ export default function SessionScreen() {
         />
         {isMock ? (
           // The clock moved to the pace strip below; this keeps the bar centred.
-          <View style={{ width: 44, marginRight: -10 }} />
+          <View style={{ width: 48, marginRight: -12 }} />
         ) : (
           <Pressable
             accessibilityRole="button"
@@ -583,7 +651,8 @@ export default function SessionScreen() {
               }
               toggleBookmark(active.certId, qid);
             })}
-            style={{ width: 44, height: 44, marginRight: -10, alignItems: 'center', justifyContent: 'center' }}
+            hitSlop={4}
+            style={{ width: 48, height: 48, marginRight: -12, alignItems: 'center', justifyContent: 'center' }}
           >
             {/* Saving pops the filled mark in (a small leaf spring); un-saving just swaps it. */}
             <Pop trigger={savedTaps}>
@@ -701,13 +770,16 @@ export default function SessionScreen() {
           ) : (
             response && (
               <>
-                {/* Answer: verdict → your pick → best answer → why → vine → trust */}
+                {/* Answer: verdict → your pick → best answer → (after a miss: Key idea + Exam cue → Why, folded →
+                    Eliminate / Final two; after a right answer: Why → the whole vine) → trust */}
                 <View onLayout={(e) => (verdictBottom.current = e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
-                  <Verdict correct={response.correct} coach={coach} />
+                  <Verdict ref={verdictRef} correct={response.correct} coach={coach} />
                 </View>
                 {/* Lined up with the coach line above it (left 50, under "Correct"). */}
                 {/* Only after a RIGHT hinted answer (UX H1): a wrong one counts nothing, so "half" would be untrue. */}
                 {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>{HINT_AFTER_LINE}</T>}
+                {/* A right retest (under 4 hours since the last answer) is not promoted: say when it is back. */}
+                {response.retest && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>{RETEST_LINE}</T>}
                 <Rise delay={FEEDBACK_DELAY.rows}>
                   <View style={{ marginTop: space.lg }}>
                     {!response.correct && pickedOriginal && (
@@ -727,13 +799,42 @@ export default function SessionScreen() {
                     />
                   </View>
                 </Rise>
-                <Rise delay={FEEDBACK_DELAY.why}>
-                  <T v="headline" accessibilityRole="header" style={{ marginTop: 12 }}>{`Why ${correctDisplay}`}</T>
-                  <T v="body" style={{ marginTop: space.xs }}>{renderText(q.explanation, perm)}</T>
-                </Rise>
-                <View ref={vineRef} collapsable={false} onLayout={checkVine}>
-                  <Vine key={qid} keyIdea={q.keyConcept} tips={q.tips.map((t) => renderText(t, perm))} visible={vineVisible} />
-                </View>
+                {response.correct ? (
+                  <>
+                    <Rise delay={FEEDBACK_DELAY.why}>
+                      <WhyBlock letter={correctDisplay} text={renderText(q.explanation, perm)} fold={false} />
+                    </Rise>
+                    <View ref={vineRef} collapsable={false} onLayout={checkVine}>
+                      <Vine key={qid} keyIdea={q.keyConcept} tips={q.tips.map((t) => renderText(t, perm))} visible={vineVisible} />
+                    </View>
+                  </>
+                ) : (
+                  <>
+                    {/* The short, memorable lines first: the Key idea and the Exam cue. */}
+                    <View ref={vineRef} collapsable={false} onLayout={checkVine}>
+                      <Vine
+                        key={`${qid}:a`}
+                        keyIdea={q.keyConcept}
+                        tips={missTips.first.map((i) => renderText(q.tips[i], perm))}
+                        tipIndex={missTips.first}
+                        visible={vineVisible}
+                      />
+                    </View>
+                    {/* Then the long "Why", folded to two lines. */}
+                    <Rise delay={FEEDBACK_DELAY.why}>
+                      <WhyBlock key={qid} letter={correctDisplay} text={renderText(q.explanation, perm)} fold />
+                    </Rise>
+                    {/* Then Eliminate two / Final two. */}
+                    <View ref={vine2Ref} collapsable={false} onLayout={checkVine}>
+                      <Vine
+                        key={`${qid}:b`}
+                        tips={missTips.rest.map((i) => renderText(q.tips[i], perm))}
+                        tipIndex={missTips.rest}
+                        visible={vine2Visible}
+                      />
+                    </View>
+                  </>
+                )}
                 {/* After a miss (mobile 1.20): the note first (BookOpen = notes), then the
                     lesson when one is still to do (Play = lessons). Both PUSH, so Back lands
                     here again, on this same answer with its explanation. */}
@@ -787,19 +888,40 @@ export default function SessionScreen() {
         {/* Sticky bottom action, within thumb reach */}
         <StickyFooter onHeight={setFooterH}>
           {isMock ? (
+            // Icon AND word on every button (mobile 1.24), each at least 56 tall (Button) and 56 wide.
             // Wraps at large text; Next then takes a full row of its own.
             <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
-              <Button kind="secondary" label="‹" accessibilityLabel="Previous question" disabled={active.index === 0} onPress={settled(() => goTo(active.index - 1))} style={{ paddingHorizontal: space.lg }} />
               <Button
                 kind="secondary"
-                label={shownFlagged ? '⚑ Unflag' : '⚐ Flag'}
+                label="Previous"
+                accessibilityLabel="Previous question"
+                disabled={active.index === 0}
+                onPress={settled(() => goTo(active.index - 1))}
+                icon={(col) => <ChevronLeft size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+                iconLeading
+                style={{ paddingHorizontal: space.md, minWidth: 56 }}
+              />
+              <Button
+                kind="secondary"
+                label={shownFlagged ? 'Unflag' : 'Flag'}
                 accessibilityLabel={shownFlagged ? 'Unflag question' : 'Flag question'}
                 selected={shownFlagged}
                 onPress={settled(() => toggleFlag(qid))}
-                style={{ paddingHorizontal: space.lg }}
+                icon={(col) => <Flag size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} fill={shownFlagged ? col : 'none'} />}
+                iconLeading
+                style={{ paddingHorizontal: space.md, minWidth: 56 }}
               />
-              <Button kind="secondary" label="▦" accessibilityLabel="Question navigator" onPress={settled(() => setNavOpen(true))} style={{ paddingHorizontal: space.lg }} />
-              <Button label={isLast ? 'Finish' : 'Next'} onPress={settled(next)} style={largeText ? { flexBasis: '100%' } : { flex: 1 }} />
+              <Button
+                kind="secondary"
+                label="Questions"
+                // Starts with the visible word (WCAG 2.5.3 label in name).
+                accessibilityLabel="Questions, question navigator"
+                onPress={settled(() => setNavOpen(true))}
+                icon={(col) => <LayoutGrid size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+                iconLeading
+                style={{ paddingHorizontal: space.md, minWidth: 56 }}
+              />
+              <Button label={isLast ? 'Finish' : 'Next'} onPress={settled(next)} style={largeText ? { flexBasis: '100%' } : { flex: 1, minWidth: 96 }} />
             </Row>
           ) : (
             <>
@@ -810,28 +932,30 @@ export default function SessionScreen() {
                   (the answer screen): "Next question", and inert. */}
               <Button
                 key="primary"
-                label={turning ? 'Next question' : submitted ? (isLast ? 'See results' : 'Next question') : 'Check answer'}
+                label={turning ? 'Next question' : submitted ? (isLast ? (singleQuestion ? 'Done' : 'See results') : 'Next question') : 'Check answer'}
                 onPress={() => {
                   if (turning) return;
                   if (submitted) next();
                   else submit();
                 }}
                 disabled={!turning && !submitted && !selected}
-                icon={turning || submitted ? (color) => <ArrowRight size={18} color={color} strokeWidth={ICON_STROKE} /> : undefined}
+                icon={turning || (submitted && !(isLast && singleQuestion)) ? (color) => <ArrowRight size={18} color={color} strokeWidth={ICON_STROKE} /> : undefined}
               />
             </>
           )}
         </StickyFooter>
       </View>
-      {/* Mock navigator */}
+      {/* Mock navigator. Mobile 1.24: one summary line (answered · flagged · left), and "Submit exam"
+          in a footer that stays put (it used to sit under the grid, up to 25 rows down). */}
       <Modal visible={navOpen} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>
         <SafeAreaView style={{ flex: 1, backgroundColor: c.raised2 }}>
-          <ScrollView contentContainerStyle={{ padding: space.lg }}>
+          <ScrollView contentContainerStyle={{ padding: space.lg, paddingBottom: navFooterH + space.xl }}>
             <Row style={{ justifyContent: 'space-between' }}>
-              <T v="display">Questions</T>
+              <T v="display" accessibilityRole="header">Questions</T>
               <Button kind="ghost" label="Close" onPress={() => setNavOpen(false)} />
             </Row>
-            <T v="meta">● answered · ○ not answered · ⚑ flagged</T>
+            <T v="small" num color={c.ink}>{navSummary}</T>
+            <T v="meta" style={{ marginTop: space.xs }}>● answered · ○ not answered · ⚑ flagged</T>
             {/* No report button during a live mock (it stays exam-like); the review has one. */}
             <T v="meta" style={{ marginTop: space.xs }}>To report a question, open it in the review after you submit.</T>
             <Gap />
@@ -868,9 +992,10 @@ export default function SessionScreen() {
                 );
               })}
             </View>
-            <Gap h={space.xl} />
-            <Button label="Submit exam" onPress={() => { setNavOpen(false); confirmSubmitExam(); }} />
           </ScrollView>
+          <StickyFooter onHeight={setNavFooterH}>
+            <Button label="Submit exam" onPress={() => { setNavOpen(false); confirmSubmitExam(); }} />
+          </StickyFooter>
         </SafeAreaView>
       </Modal>
     </SafeAreaView>

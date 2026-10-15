@@ -50,9 +50,9 @@ import { useSettings } from '../store/settings';
 import { playableGames } from './games';
 import { certOutline, guidedStatus, questionExists } from './outline';
 
-/** True when an answer can count toward milestones: no Coach me hint, not given in a game. */
+/** True when an answer can count toward milestones: no Coach me hint, not a retest within 4 hours, not given in a game. */
 export function isCleanAnswer(a: AnswerRecord): boolean {
-  return !a.lastAssisted && !a.lastGame;
+  return !a.lastAssisted && !a.lastRetest && !a.lastGame;
 }
 
 /**

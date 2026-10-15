@@ -161,7 +161,8 @@ describe('spaced review', () => {
     const qid = ids[0];
     useProgress.getState().recordAnswer('cisa', qid, false, undefined);
     const box1 = selectCert(useProgress.getState(), 'cisa').review[qid].box;
-    useProgress.getState().recordAnswer('cisa', qid, true, 'sure');
+    // A day later: an answer minutes after the miss is a retest and earns no promotion (srs.ts).
+    useProgress.getState().recordAnswer('cisa', qid, true, 'sure', { at: Date.now() + 24 * 3_600_000 });
     expect(selectCert(useProgress.getState(), 'cisa').review[qid].box).toBeGreaterThan(box1);
   });
 });

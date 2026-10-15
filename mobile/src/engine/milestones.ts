@@ -713,10 +713,10 @@ export function inferFromSaves(i: BackfillInput): { loopFixed: string[]; sure: b
   const loopFixed: string[] = [];
   for (const [id, m] of Object.entries(i.mistakes)) {
     const a = i.answers[id];
-    if (m.resolved && !m.fixedLater && a && a.lastCorrect && !a.lastAssisted && !a.lastGame && dayKey(a.lastAt) > dayKey(m.at)) loopFixed.push(id);
+    if (m.resolved && !m.fixedLater && a && a.lastCorrect && !a.lastAssisted && !a.lastRetest && !a.lastGame && dayKey(a.lastAt) > dayKey(m.at)) loopFixed.push(id);
   }
   const sure = Object.values(i.answers)
-    .filter((a) => a.lastConfidence === 'sure' && !a.lastAssisted && !a.lastGame)
+    .filter((a) => a.lastConfidence === 'sure' && !a.lastAssisted && !a.lastRetest && !a.lastGame)
     .sort((a, b) => a.lastAt - b.lastAt)
     .slice(-SURE_WINDOW)
     .map((a) => a.lastCorrect);

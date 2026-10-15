@@ -29,7 +29,7 @@ import type { MockTiming } from '../engine/pace';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import type { ThinkingSlip } from '../engine/slipCoach';
 import { addReport, type ReportEntry } from '../engine/support';
-import { MAX_BOX, nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
+import { isRetest, MAX_BOX, nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
 import { bumpStreak, dayKey, type Streak } from '../engine/streak';
 import { watchHydration } from './hydration';
 import { persistStorage } from './storage';
@@ -327,6 +327,14 @@ export const useProgress = create<ProgressState>()(
           const now = opts?.at ?? Date.now();
           const cp = normalize(s.byCert[certId]);
           const prev = cp.answers[questionId];
+          // Retest rule (mobile 1.24, engine/srs.ts): answering again less than 4
+          // hours after the last answer is recall from working memory, not
+          // remembering. A right retest counts half, is not promoted and does not
+          // fix the mistake. A wrong one counts in full, so only a right one is
+          // marked. Mock answers are saved in a batch at the end, so they too.
+          const retest = correct && isRetest(prev?.lastAt, now);
+          // Half evidence for the milestone and mastery counters: a hint or a retest.
+          const weak = opts?.assisted === true || retest;
           const answers = {
             ...cp.answers,
             [questionId]: {
@@ -336,6 +344,7 @@ export const useProgress = create<ProgressState>()(
               lastAt: now,
               // Only written when true, so clean answers keep the old shape.
               ...(opts?.assisted ? { lastAssisted: true } : {}),
+              ...(retest ? { lastRetest: true } : {}),
               // Build F: a game answer is marked, so milestones can skip it.
               // Like lastAssisted, the record is rebuilt each answer, so a
               // later non-game answer drops the flag again.
@@ -352,14 +361,14 @@ export const useProgress = create<ProgressState>()(
           const before = cp.review[questionId];
           if (opts?.schedule !== false) {
             // Coach me answers get the shorter, no-promotion schedule (srs.ts).
-            const next = nextReview(cp.review[questionId], correct, confidence, now, opts?.assisted === true);
+            const next = nextReview(cp.review[questionId], correct, confidence, now, opts?.assisted === true, retest);
             review = { ...cp.review };
             if (next) review[questionId] = next;
             else delete review[questionId];
           }
-          // A correct answer later on marks a logged mistake as fixed.
+          // A correct answer later on marks a logged mistake as fixed (not a retest: that is too soon to know).
           let mistakes = cp.mistakes;
-          if (correct && mistakes[questionId] && !mistakes[questionId].resolved) {
+          if (correct && !retest && mistakes[questionId] && !mistakes[questionId].resolved) {
             mistakes = { ...mistakes, [questionId]: { ...mistakes[questionId], resolved: true } };
           }
           // Build F milestone counters (engine/milestones.ts): study days,
@@ -370,7 +379,7 @@ export const useProgress = create<ProgressState>()(
           const ms = afterAnswer(cp.milestones, {
             questionId,
             correct,
-            assisted: opts?.assisted === true,
+            assisted: weak,
             game: opts?.mastery === false,
             confidence,
             at: now,
@@ -387,7 +396,7 @@ export const useProgress = create<ProgressState>()(
           const mastery =
             opts?.mastery === false
               ? cp.mastery
-              : recordMastery(cp.mastery, subtopicOfQuestion(certId, questionId), day, { correct, assisted: opts?.assisted === true }, now);
+              : recordMastery(cp.mastery, subtopicOfQuestion(certId, questionId), day, { correct, assisted: weak }, now);
           // Today's clearing card counts answers for this cert's plan, today only.
           const cur = s.days[certId];
           const days = cur && cur.day === day ? { ...s.days, [certId]: logAnswer(cur, correct) } : s.days;

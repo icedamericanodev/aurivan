@@ -875,6 +875,7 @@ export function ListRow({
   chevron = true,
   dim,
   reading,
+  full,
   onHide,
   testID,
   accessibilityLabel,
@@ -893,6 +894,11 @@ export function ListRow({
    * 600); 4 at large text, so a note's name is not cut to a few words.
    */
   reading?: boolean;
+  /**
+   * With `reading`: show the whole text, never cut to 2 lines (mobile 1.24).
+   * For a question stem, whose ask (FIRST, BEST, MOST) is at the END.
+   */
+  full?: boolean;
   icon?: ReactNode;
   /**
    * Mobile 1.22: a `caption` line in accentText ABOVE the title that says what
@@ -925,7 +931,7 @@ export function ListRow({
       {lead}
       <View style={{ flex: 1, minWidth: 0 }}>
         {kicker ? <T v="caption" color={dim ? c.muted : c.accentText} style={{ marginBottom: 2 }}>{kicker}</T> : null}
-        <T v={reading ? 'body' : 'label'} color={dim ? c.muted : undefined} numberOfLines={reading ? (large ? 4 : 2) : undefined}>{title}</T>
+        <T v={reading ? 'body' : 'label'} color={dim ? c.muted : undefined} numberOfLines={reading && !full ? (large ? 4 : 2) : undefined}>{title}</T>
         {typeof subtitle === 'string' ? <T v="meta" color={dim ? c.muted : undefined}>{subtitle}</T> : subtitle}
       </View>
       {trailing}

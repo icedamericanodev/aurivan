@@ -24,7 +24,7 @@ export default function CaughtUp() {
       header="Spaced review"
       art="fern"
       title="All caught up"
-      body="Questions you miss come back here just before you would forget them."
+      body="Questions you miss come back here, spaced over the next days so they stick."
       next={next ? upcomingReviewLine(next, now, shortDate) : undefined}
       primary={{
         label: 'Practice 10 questions',

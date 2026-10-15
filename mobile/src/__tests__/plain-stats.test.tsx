@@ -235,8 +235,10 @@ describe('the Results ring legend at 360 dp (UX H1)', () => {
       mount(<DomainRings cert={cisa} values={[0.5, 0.6, 0.7, 0.8, 0.9]} legendValue={() => '26/38'} center={null} accessibilityLabel="Score" />);
       const outer = r!.root.findAll((n) => typeof n.type === 'string' && StyleSheet.flatten(n.props.style)?.gap === 16)[0] ?? r!.root.findAll((n) => typeof n.type === 'string')[0];
       expect(StyleSheet.flatten(outer.props.style)).toMatchObject({ flexDirection: 'column' });
-      const names = r!.root.findAll((n) => typeof n.type === 'string' && n.children.includes('IT Governance'));
-      expect(StyleSheet.flatten(names[0].props.style)).toMatchObject({ flex: 1, minWidth: 0 });
+      // Mobile 1.24: below 380 wide the exam's short tile names are used ("Governance", never "Governan / ce"), on one line.
+      const names = r!.root.findAll((n) => typeof n.type === 'string' && n.children.includes('Governance'));
+      expect(StyleSheet.flatten(names[0].props.style)).toMatchObject({ flex: 1, flexShrink: 1, minWidth: 0 });
+      expect(names[0].props.numberOfLines).toBe(1);
       const nums = r!.root.findAll((n) => typeof n.type === 'string' && StyleSheet.flatten(n.props.style)?.flexShrink === 0);
       expect(nums).toHaveLength(5);
     } finally {

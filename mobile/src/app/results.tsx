@@ -27,10 +27,22 @@
  * centred, with one line under it ("All IS Audit · 2 of 3"); "Done" is a
  * centred ghost under the one primary; the notes expander ("Notes for what
  * you missed", the 1.20 label) sits just above "Review answers".
+ *
+ * Mobile 1.24 (honest results):
+ * - The headline is by sample size (engine/resultsCopy.ts): under 8 answers it
+ *   is the plain count ("3 of 4 right", with the topic most missed beneath), never
+ *   "Strong work." or "Every miss is a lesson." on a handful of questions; the ring's
+ *   centre shows "3 of 4", not a percent.
+ * - The per-question "Hint used / Quick pick / Missed" tags are one quiet line.
+ * - When enough answers were rated: "Sure: 7 of 9 right. Unsure: 2 of 4 right."
+ * - "Practice the N you missed" is a secondary button; Done is the one solid button (a miss
+ *   re-answered minutes later is a retest and earns no spacing credit).
+ * - A mock that ended on the clock says "Time’s up" (seen and spoken).
+ * - Android Back leaves Results instead of silently abandoning the review (a mock asks first).
  */
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Alert, BackHandler, Pressable, View } from 'react-native';
 import { OptionCard, TrustLine } from '../components/quiz';
 import { useReportFlow } from '../components/support';
 import { DomainRings } from '../components/journey';
@@ -39,11 +51,13 @@ import { FirstSetDone } from '../components/firstSet';
 import { MilestoneMomentView } from '../components/milestones';
 import { Turn, useOncePerDay } from '../components/motion';
 import { BookOpen, ChevronDown, ICON_STROKE } from '../components/icons';
-import { BigNum, Button, Enter, Gap, ICON_SIZE, ListRow, Row, Screen, Section, Stat, StatRow, T, Tag } from '../components/ui';
+import { BigNum, Button, Enter, Gap, ICON_SIZE, ListRow, Row, Screen, Section, Stat, StatRow, T } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
 import { missedSubtopics } from '../engine/outline';
+import { calibrationLine, resultsHeadline, SMALL_SAMPLE, smallSampleFact, TIMES_UP_DETAIL, TIMES_UP_LINE } from '../engine/resultsCopy';
+import { sayLater } from '../lib/a11y';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
 import { aboutMin, COACHING, coachingTag, practicePaceLine, spokenMin, timeStat, TIMING_LABEL } from '../engine/pace';
 import { msUsed, scoreSession, sessionPacing } from '../lib/finishSession';
@@ -115,6 +129,25 @@ export default function Results() {
     return () => clearTimeout(t);
   }, [ringsDone]);
 
+  // Android Back: leave Results like "Done" does (a mock asks first, since its answer review is
+  // not reachable again). Set below, once the session is known (a ref, so the one handler
+  // registered here always calls the newest version).
+  const backRef = useRef<() => void>(() => router.replace('/home'));
+  useFocusEffect(
+    useCallback(() => {
+      const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+        backRef.current();
+        return true;
+      });
+      return () => sub.remove();
+    }, []),
+  );
+  // A timed mock that ended on the clock says so, once, out loud (the line is on screen too).
+  const timedOut = Boolean(pacing?.timedOut);
+  useEffect(() => {
+    if (timedOut) sayLater(`${TIMES_UP_LINE} ${TIMES_UP_DETAIL}`);
+  }, [timedOut]);
+
   // Results only ever describes a finished session. An unfinished one (a new set
   // started while this screen was still in the stack) shows the empty state, never
   // a half-scored set (mobile 1.20).
@@ -152,6 +185,33 @@ export default function Results() {
     clear();
     router.replace('/home');
   };
+  // Android Back (see backRef above): "Done" for practice; a mock asks first.
+  // It is set during render and only read in the back-button event, never during render.
+  // eslint-disable-next-line react-hooks/refs
+  backRef.current =
+    active.mode === 'mock'
+      ? () =>
+          Alert.alert('Leave your results?', 'Your score is saved. Leaving closes this page, so you cannot open the answer review again.', [
+            { text: 'Stay', style: 'cancel' },
+            { text: 'Leave', onPress: done },
+          ])
+      : done;
+  // Mobile 1.24: small samples get the count, not a verdict (engine/resultsCopy.ts).
+  const tiny = active.mode !== 'mock' && score.answered < SMALL_SAMPLE;
+  const headline = resultsHeadline(score.correct, active.mode === 'mock' ? score.total : score.answered, pct);
+  // The one fact beneath a small-sample headline: the note, else the domain, most missed.
+  const missedDomain = (() => {
+    const tally: Record<string, number> = {};
+    for (const id of missed) {
+      const d = findQuestion(cert.id, id)?.domainId;
+      if (d) tally[d] = (tally[d] ?? 0) + 1;
+    }
+    const top = Object.entries(tally).sort((a, b) => b[1] - a[1])[0]?.[0];
+    return cert.domains.find((d) => d.id === top)?.short;
+  })();
+  const fact = tiny ? smallSampleFact(missedNotes[0]?.name ?? missedDomain, missed.length) : null;
+  // "Sure: 7 of 9 right. Unsure: 2 of 4 right." (practice and review: a mock records no ratings).
+  const calibration = active.mode === 'mock' ? null : calibrationLine(active.questionIds.map((id) => ({ confidence: active.responses[id]?.confidence, correct: Boolean(active.responses[id]?.correct) })));
 
   // Build E: a Guided step goes back to its step screen (topic clear, or next topic).
   const guidedScope = active.path?.mode === 'guided' ? active.path.scope : null;
@@ -193,9 +253,15 @@ export default function Results() {
       <Enter i={0}>
         {/* Extra time and untimed mocks say so (standard time is the norm, so it isn't named). */}
         <T v="meta">{active.mode === 'mock' && active.timing && active.timing !== 'standard' ? `${active.title} · ${TIMING_LABEL[active.timing].toLowerCase()}` : active.title}</T>
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>
-          {pct >= 75 ? 'Strong work.' : pct >= 60 ? 'Getting there.' : 'Every miss is a lesson.'}
-        </T>
+        {/* A timed mock that ended on the clock says so first (seen here, spoken by the effect above). */}
+        {timedOut && (
+          <View accessible accessibilityLabel={`${TIMES_UP_LINE} ${TIMES_UP_DETAIL}`} style={{ marginTop: space.sm }}>
+            <T v="label" color={c.clay}>{TIMES_UP_LINE}</T>
+            <T v="meta">{TIMES_UP_DETAIL}</T>
+          </View>
+        )}
+        <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>{headline}</T>
+        {fact && <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{fact}</T>}
       </Enter>
 
       {/* Score rings in domain tones (spec §10.1, Results 200): arc = this session's score per domain. */}
@@ -211,15 +277,23 @@ export default function Results() {
             const b = score.byDomain[cert.domains[i].id];
             return b ? `${b.correct}/${b.total}` : '–';
           }}
-          accessibilityLabel={`Score ${pct} percent. ${cert.domains
+          accessibilityLabel={`${tiny ? `${score.correct} of ${score.answered} right` : `Score ${pct} percent`}. ${cert.domains
             .map((d) => (score.byDomain[d.id] ? `${d.short} ${score.byDomain[d.id].correct} of ${score.byDomain[d.id].total}` : null))
             .filter(Boolean)
             .join(', ')}.`}
           center={
-            <View style={{ alignItems: 'center' }}>
-              <BigNum value={String(pct)} pct size={30} roll={{ play: grow, from: null, run: 1, delay: at }} />
-              <T v="caption" color={c.ink2}>score</T>
-            </View>
+            tiny ? (
+              // A handful of questions: the count, not a percent (a percent of 4 says little).
+              <View style={{ alignItems: 'center' }}>
+                <BigNum value={String(score.correct)} size={30} />
+                <T v="caption" color={c.ink2}>{`of ${score.answered}`}</T>
+              </View>
+            ) : (
+              <View style={{ alignItems: 'center' }}>
+                <BigNum value={String(pct)} pct size={30} roll={{ play: grow, from: null, run: 1, delay: at }} />
+                <T v="caption" color={c.ink2}>score</T>
+              </View>
+            )
           }
         />
         {oneDomain ? (
@@ -266,6 +340,8 @@ export default function Results() {
         {active.mode !== 'mock' && paceText && (
           <T v="meta" style={{ marginTop: space.md }}>{paceText}</T>
         )}
+        {/* How well "how sure I felt" matched the result (only when enough answers were rated). */}
+        {calibration && <T v="meta" style={{ marginTop: space.sm }}>{calibration}</T>}
         {active.mode === 'mock' && !active.deadline && (
           <T v="meta" style={{ marginTop: space.sm }}>Untimed mock: your answers count toward readiness, and pacing stats leave it out.</T>
         )}
@@ -275,24 +351,25 @@ export default function Results() {
           </View>
         )}
         <Gap h={space.xl} />
-        {missed.length > 0 && (
+        {/* Mobile 1.24: "Practice the N you missed" is a secondary button now. A miss re-answered
+            minutes later is a retest (it earns no spacing credit, engine/srs.ts), so the one solid
+            button is Done (or the Guided step); the missed ones come back in review. */}
+        {guidedScope ? (
           <>
-            <Button label={missed.length === 1 ? 'Practice the one you missed' : `Practice the ${missed.length} you missed`} onPress={practiseMissed} />
+            <Button label="Back to your Guided step" onPress={backToGuided} />
             <Gap h={space.sm} />
           </>
+        ) : (
+          <>
+            <Button label="Done" onPress={done} />
+            <Gap h={space.sm} />
+          </>
+        )}
+        {missed.length > 0 && (
+          <Button kind="secondary" label={missed.length === 1 ? 'Practice the one you missed' : `Practice the ${missed.length} you missed`} onPress={practiseMissed} />
         )}
         {guidedScope && (
-          <>
-            <Button kind={missed.length ? 'secondary' : 'primary'} label="Back to your Guided step" onPress={backToGuided} />
-            <Gap h={space.sm} />
-          </>
-        )}
-        {/* Mobile 1.22 (design spec §8.3): one primary; Done is a quiet centred ghost under it
-            (it is the primary only when there is nothing else to do). */}
-        {missed.length > 0 || guidedScope ? (
-          <Button kind="ghost" label="Done" onPress={done} style={{ alignSelf: 'center', minWidth: 120 }} />
-        ) : (
-          <Button label="Done" onPress={done} />
+          <Button kind="ghost" label="Done" onPress={done} style={{ alignSelf: 'center', minWidth: 120, marginTop: space.sm }} />
         )}
         {moment && (
           <View
@@ -354,11 +431,14 @@ export default function Results() {
         const perm = active.perms[id];
         if (!q || !perm) return null;
         const r = active.responses[id];
-        const status = !r ? '○ Skipped' : r.correct ? '✓ Correct' : '✗ Missed';
-        // Answered after Coach me: a small mark, since a right answer after a hint counts as half.
+        // Plain words (mobile 1.24): the glyphs ("✓", "✗", "○") were read aloud as "check mark", "ballot x".
+        const status = !r ? 'Skipped' : r.correct ? 'Correct' : 'Missed';
+        // Answered after Coach me: a right answer after a hint counts as half.
         const assisted = Boolean(r?.assisted);
         // Coaching (engine/pace.ts): only on a fast miss or a long, right answer.
         const coaching = r ? coachingTag(r.correct, r.ms) : null;
+        // ONE quiet line instead of a row of tags (mobile 1.24): the hint and the pace note, together.
+        const quiet = [assisted ? 'You used a hint.' : null, coaching ? COACHING[coaching].line : null].filter(Boolean).join(' ');
         const color = !r ? c.muted : r.correct ? c.correct : c.wrong;
         const open = openId === id;
         const picked = r ? displayToOriginal(r.display, perm) : undefined;
@@ -370,19 +450,15 @@ export default function Results() {
               accessibilityRole="button"
               accessibilityState={{ expanded: open }}
               // One sentence each; the coaching line ends with its own full stop (O2).
-              accessibilityLabel={`Question ${i + 1}, ${status}${assisted ? ', hint used' : ''}.${coaching ? ` ${COACHING[coaching].tag}: ${COACHING[coaching].line}` : ''} Tap to ${open ? 'collapse' : 'expand'}`}
+              accessibilityLabel={`Question ${i + 1}, ${status}.${quiet ? ` ${quiet}` : ''} Tap to ${open ? 'collapse' : 'expand'}`}
               onPress={() => setOpenId(open ? null : id)}
               style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
             >
               <Row style={{ justifyContent: 'space-between' }}>
                 <T v="label" num>{`Question ${i + 1}`}</T>
-                <Row gap={space.sm} style={{ flexShrink: 1, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-                  {assisted && <Tag label="Hint used" />}
-                  {coaching && <Tag label={COACHING[coaching].tag} />}
-                  <T v="label" color={color}>{status}</T>
-                </Row>
+                <T v="label" color={color}>{status}</T>
               </Row>
-              {coaching && <T v="meta" style={{ marginTop: space.xs }}>{COACHING[coaching].line}</T>}
+              {quiet ? <T v="meta" style={{ marginTop: space.xs }}>{quiet}</T> : null}
               <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : `${q.stem.slice(0, 110)}${q.stem.length > 110 ? '…' : ''}`}</T>
             </Pressable>
             {open && (

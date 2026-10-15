@@ -170,7 +170,8 @@ describe('Results growth', () => {
     finish(1);
     mount(<Results />);
     expect(columns()).toHaveLength(0);
-    expect(allText()).toContain('33');
+    // Mobile 1.24: three questions are a small sample, so Results says the count, not a percent.
+    expect(allText()).toContain('1 of 3 right');
   });
 });
 

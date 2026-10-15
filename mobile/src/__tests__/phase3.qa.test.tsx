@@ -361,7 +361,8 @@ describe('J2 practice session → Results', () => {
     expect(growingArcs()).toBe(0);
     expect(movingDigits()).toBe(0);
     expect(rollDecisions()).toHaveLength(0);
-    expect(allText()).toContain('40');
+    // Mobile 1.24: five questions are a small sample, so the words are the count, not a percent.
+    expect(allText()).toContain('2 of 5 right');
   });
 
   describe('the milestone moment', () => {

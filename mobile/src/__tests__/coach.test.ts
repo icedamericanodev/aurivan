@@ -283,7 +283,8 @@ describe('spaced review after Coach me', () => {
     recordAnswer('cisa', 'd1_001', false, 'sure'); // missed → Box 1
     recordAnswer('cisa', 'd1_001', true, 'sure', { assisted: true });
     expect(selectCert(useProgress.getState(), 'cisa').review.d1_001.box).toBe(1);
-    recordAnswer('cisa', 'd1_001', true, 'sure');
+    // Five hours on: a clean answer within 4 hours of the last one would be a retest (mobile 1.24) and not promote.
+    recordAnswer('cisa', 'd1_001', true, 'sure', { at: Date.now() + 5 * 3_600_000 });
     expect(selectCert(useProgress.getState(), 'cisa').review.d1_001.box).toBe(2);
   });
 });

@@ -412,8 +412,8 @@ describe('journey 5: timed practice', () => {
     unmount();
     mount(<Results />);
     expect(allText()).toContain('About 50 seconds per question. The exam allows about 96 seconds.');
-    // Review fix O2: the tag was renamed from "Slow and right".
-    expect(allText()).toContain('Took its time');
+    // Mobile 1.24: the tags are gone (one quiet line each); the line says it.
+    expect(allText()).toContain('You knew it; trust the first pass.');
   });
 });
 

@@ -256,8 +256,8 @@ describe('Settings → Practice (was Study defaults)', () => {
   });
 });
 
-describe('Results: pace line and coaching tags', () => {
-  it('one pace sentence, and tags only on a fast miss or a long right answer', () => {
+describe('Results: pace line and coaching lines', () => {
+  it('one pace sentence, and a quiet line (no tags, mobile 1.24) only on a fast miss or a long right answer', () => {
     const qs = getAllQuestions('cisa').slice(0, 3);
     startFromIds('cisa', qs.map((q) => q.id), 'Practice');
     act(() => {
@@ -269,14 +269,14 @@ describe('Results: pace line and coaching tags', () => {
     mount(<Results />);
     const text = allText();
     expect(text).toContain('About 74 seconds per question. The exam allows about 96 seconds.');
-    expect(text).toContain('Quick pick');
+    expect(text).not.toContain('Quick pick');
+    expect(text).not.toContain('Took its time');
     expect(text).toContain('Slow down on the question.');
-    expect(text).toContain('Took its time');
     expect(text).toContain('You knew it; trust the first pass.');
     const rows = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Question 3,'));
-    expect(rows[0].props.accessibilityLabel).not.toMatch(/Quick pick|Took its time/);
+    expect(rows[0].props.accessibilityLabel).not.toMatch(/Slow down|trust the first pass/);
     // One full stop between sentences, never two (O2).
     const q1 = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Question 1,'))[0];
-    expect(q1.props.accessibilityLabel).toBe('Question 1, ✗ Missed. Quick pick: Slow down on the question. Tap to expand');
+    expect(q1.props.accessibilityLabel).toBe('Question 1, Missed. Slow down on the question. Tap to expand');
   });
 });

@@ -25,6 +25,12 @@ export interface Response {
   /** Answered after "Coach me" showed a hint. Optional: older sessions have none. */
   assisted?: boolean;
   /**
+   * A RIGHT answer given less than 4 hours after the last answer to this
+   * question (engine/srs.ts isRetest): not promoted, half weight, the answer
+   * screen says "Back in your review tomorrow." Optional: older sessions have none.
+   */
+  retest?: boolean;
+  /**
    * Time to answer in ms, background time excluded (engine/answerClock.ts).
    * Mock exams add up every visit until the last change of answer.
    * Optional: older sessions have none.

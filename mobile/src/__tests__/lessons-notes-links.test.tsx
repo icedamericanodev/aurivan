@@ -503,7 +503,8 @@ describe('notes domain page: collapsible topics', () => {
     // Nothing read yet: the first topic on the page is the one open.
     const firstId = (headers()[0].props.accessibilityLabel as string).split(' ')[0];
     expect(openIds()).toEqual([firstId]);
-    expect(headers()[0].props.accessibilityLabel).toMatch(/, 0 of \d+ read$/);
+    // Mobile 1.24: no "0 of N read" before the first read.
+    expect(headers()[0].props.accessibilityLabel).toBe(`${firstId} ${topics.find((t) => t.id === firstId)!.name}`);
     expect(headers()[0].props.accessibilityHint).toBe('Hides this topic');
     const openTopic = topics.find((t) => t.id === firstId)!;
     const closedTopic = topics.find((t) => t.id !== firstId)!;

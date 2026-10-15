@@ -34,7 +34,7 @@ import { guardedStart, startFromIds } from '../../lib/sessions';
 import { domainColor } from '../../content/certifications';
 import { noteDomain, noteSubtopics } from '../../content/notes';
 import type { NoteDomain, NoteTopic } from '../../content/notes/types';
-import { readCount } from '../../engine/notesSearch';
+import { readCount, readProgressText } from '../../engine/notesSearch';
 import { topicLessons } from '../../lib/outline';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { LARGE_TEXT, space } from '../../theme/tokens';
@@ -113,7 +113,7 @@ export default function NotesDomain() {
           captionLead={<View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: domainColor(info.tone, true) }} />}
           caption={`Domain ${info.id} · ${info.weight}% of the exam`}
           title={info.name}
-          meta={done === ids.length ? 'All read' : `${done} of ${ids.length} read`}
+          meta={readProgressText(done, ids.length) ?? undefined}
           art={`branch${info.tone % 5}` as BotanyKind}
           sway={false}
           wideTitle
@@ -159,7 +159,7 @@ export default function NotesDomain() {
             {g.topics.map((t) => {
               const isOpen = isOpenTopic(t.id);
               const readHere = t.subtopics.filter((st) => read.includes(st.id)).length;
-              const readText = readHere === t.subtopics.length ? 'All read' : `${readHere} of ${t.subtopics.length} read`;
+              const readText = readProgressText(readHere, t.subtopics.length);
               // The lesson that teaches this outline topic, if any (Play = lessons).
               const lesson = topicLessons(cert.id, t.id)[0];
               const lessonDone = lesson ? progress.lessonsDone.includes(lesson.id) : false;
@@ -169,7 +169,7 @@ export default function NotesDomain() {
                   <Pressable
                     accessibilityRole="button"
                     accessibilityState={{ expanded: isOpen }}
-                    accessibilityLabel={`${t.id} ${t.name}, ${readText}`}
+                    accessibilityLabel={readText ? `${t.id} ${t.name}, ${readText}` : `${t.id} ${t.name}`}
                     accessibilityHint={isOpen ? 'Hides this topic' : 'Shows this topic'}
                     onPress={() => toggleTopic(t.id)}
                     style={({ pressed }) => ({
@@ -186,9 +186,9 @@ export default function NotesDomain() {
                       <View style={{ flex: 1, minWidth: 0 }}>
                         <T v="caption" color={c.accentText}>{t.id}</T>
                         <T v="label">{t.name}</T>
-                        {large && <T v="meta" num>{readText}</T>}
+                        {large && readText && <T v="meta" num>{readText}</T>}
                       </View>
-                      {!large && <T v="meta" num>{readText}</T>}
+                      {!large && readText && <T v="meta" num>{readText}</T>}
                       {/* Chevron points down when open, right when closed; it turns when tapped. */}
                       <Turn deg={isOpen ? 0 : -90}>
                         <ChevronDown size={ICON_SIZE.row} color={c.muted} strokeWidth={ICON_STROKE} />

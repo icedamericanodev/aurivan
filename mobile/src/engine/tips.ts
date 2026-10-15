@@ -43,3 +43,21 @@ export function runnerUp(tips: string[], correct: string): string | undefined {
 export function eliminateTip(tips: string[]): string | undefined {
   return tips.find((t) => /^Eliminate:/.test(t));
 }
+
+/**
+ * The answer screen after a miss (mobile 1.24): the short, memorable lines
+ * come FIRST. The Key idea and the Exam cue ("first") show right under the
+ * answers; the long "Why" follows, folded; then Eliminate two / Final two
+ * ("rest"). Older tips have no prefix: their "Exam-day shortcut" counts as
+ * the cue. Returns indexes into `tips`, so a tip keeps its position-based
+ * label (tipParts) wherever it is drawn. Nothing is dropped or repeated.
+ */
+export function splitMissTips(tips: string[]): { first: number[]; rest: number[] } {
+  const first: number[] = [];
+  const rest: number[] = [];
+  tips.forEach((tip, i) => {
+    const label = tipParts(tip, i).label;
+    (label === 'Exam cue' || label === 'Exam-day shortcut' ? first : rest).push(i);
+  });
+  return { first, rest };
+}

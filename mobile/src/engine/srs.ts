@@ -14,6 +14,13 @@
  * Coach me (assisted answers): a right answer after a hint is real progress,
  * but it is weaker evidence, so it does NOT move the question up a box. It
  * stays in its box and comes back after that box's (shorter) interval.
+ *
+ * Retest rule (mobile 1.24): answering the SAME question again less than
+ * RETEST_WINDOW_MS (4 hours) after the previous answer is a "retest". A right
+ * answer minutes after reading the explanation is working memory, not
+ * remembering, so it earns no spacing credit: the box stays, and the
+ * question is due tomorrow at the earliest. A WRONG retest still counts in
+ * full (honesty is asymmetric: it falls back to Box 1 like any miss).
  */
 export type Confidence = 'sure' | 'unsure' | 'guessing';
 
@@ -40,6 +47,23 @@ export const REVIEW_CAP_LINE = `${REVIEW_SESSION_CAP} at a time, most overdue fi
 export const REVIEW_UNIT = 'due';
 
 export const INTERVAL_DAYS: Record<number, number> = { 1: 0, 2: 1, 3: 3, 4: 7, 5: 16 };
+
+/** A re-answer sooner than this after the previous answer to the same question is a retest. */
+export const RETEST_WINDOW_MS = 4 * 3_600_000;
+/** The one line the answer screen shows after a right retest (nothing was promoted). */
+export const RETEST_LINE = 'Back in your review tomorrow.';
+
+/**
+ * Is an answer given at `now` a retest of an answer given at `prevAt`?
+ * Strictly less than 4 hours counts (exactly 4 hours is a fresh try). No
+ * previous answer, or a previous answer stamped LATER than this one (an
+ * expired mock saved afterwards), is never a retest.
+ */
+export function isRetest(prevAt: number | undefined, now: number): boolean {
+  if (prevAt === undefined) return false;
+  const gap = now - prevAt;
+  return gap >= 0 && gap < RETEST_WINDOW_MS;
+}
 export const MAX_BOX = 5;
 export const DAY_MS = 86_400_000;
 
@@ -56,10 +80,21 @@ export function nextReview(
   confidence: Confidence | undefined,
   now: number,
   assisted = false,
+  retest = false,
 ): ReviewEntry | null {
   if (!correct) {
-    // Wrong → back to Box 1, due right away.
+    // Wrong → back to Box 1, due right away. (A wrong retest counts in full.)
     return { box: 1, dueAt: now, lastSeen: now, reps: (current?.reps ?? 0) + 1 };
+  }
+  if (retest) {
+    // A right answer minutes after the last one: no promotion, and not due
+    // again before tomorrow. A question that was never in the queue and was
+    // answered with confidence stays out of it.
+    const tomorrow = now + DAY_MS;
+    if (current) return { ...current, dueAt: Math.max(current.dueAt, tomorrow), lastSeen: now, reps: current.reps + 1 };
+    if (confidence === 'guessing') return { box: 1, dueAt: tomorrow, lastSeen: now, reps: 1 };
+    if (confidence === 'unsure') return { box: 2, dueAt: tomorrow, lastSeen: now, reps: 1 };
+    return null;
   }
   if (!current) {
     // First time in the queue. A confident correct answer needs no review.

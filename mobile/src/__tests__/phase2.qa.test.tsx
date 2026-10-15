@@ -369,7 +369,7 @@ describe('J2 mock exam with motion on', () => {
     });
 
     // Navigator: back to Q2 (a backwards turn), its pick still there.
-    press('Question navigator');
+    press('Questions, question navigator');
     expect(btn('Question 1, answered, flagged')).toBeDefined();
     expect(btn('Question 3, not answered, flagged')).toBeDefined();
     press('Question 2, answered');
@@ -404,7 +404,7 @@ describe('J2 mock exam with motion on', () => {
     expect(clock.startsWith(`Time left ${spokenClockCoarse(before.deadline - Date.now())}`)).toBe(true);
 
     // Jump to the last question and finish.
-    press('Question navigator');
+    press('Questions, question navigator');
     press(/^Question 6, /);
     tick(motion.dur.select);
     expect(stem()).toEqual([stemOf(5)]);

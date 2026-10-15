@@ -258,7 +258,7 @@ describe('the "new" dot', () => {
     earn('first-foothold', T0);
     expect(hasNewBadge('cisa')).toBe(true);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges, new badge, 1 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges and field notes, new badge, 1 earned.'))).toBe(true);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot').length).toBeGreaterThan(0);
     act(() => r!.unmount());
     jest.setSystemTime(T0 + 1000);
@@ -482,7 +482,7 @@ describe('review fixes (PR #40)', () => {
     earn('first-foothold', T0 - DAY);
     earn('long-memory:999', T0 - DAY);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges, 1 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges and field notes, 1 earned.'))).toBe(true);
   });
 
   it('Show badges back on counts the active exam’s waiting moments only', () => {

@@ -472,7 +472,6 @@ export function DomainRings({
   accessibilityLabel,
   only,
   grow,
-  delta,
   legend = true,
 }: {
   cert: Certification;
@@ -484,24 +483,22 @@ export function DomainRings({
    * the right edge).
    */
   legend?: boolean;
-  /** Legend text per domain; defaults to a whole percent. */
+  /**
+   * Legend text per domain; defaults to a whole number. "72%" draws the number
+   * with a raised %; a word ("Building", mobile 1.24) is drawn as a word.
+   */
   legendValue?: (i: number) => string;
   accessibilityLabel: string;
   only?: number[];
   /** Mobile 1.9: grow now, each domain's arc from `from` (0..1, blueprint order), after `delay`. */
   grow?: { play: boolean; from?: number[]; run?: number; delay?: number };
-  /**
-   * What went up since the learner last looked, in points per domain: a quiet
-   * "+4" beside the legend value, fading in once its arc has settled. Never a
-   * minus (a fall is just shown, never marked).
-   */
-  delta?: (i: number) => number;
 }) {
   const { c, isDark } = useTheme();
   // The legend goes under the rings at large text AND on narrow phones: beside
   // the rings at 360 dp, "IT Governance" wrapped and "26/38" was cut off.
   const narrow = useWindowDimensions().width < RINGS_SIDE_BY_SIDE_MIN;
-  const stacked = useFontScale() >= LARGE_TEXT || narrow;
+  const large = useFontScale() >= LARGE_TEXT;
+  const stacked = large || narrow;
   const shown = only && only.length > 0 ? only : [...cert.domains.keys()];
   const tones = shown.map((i) => domainColor(cert.domains[i].tone, isDark));
   const weights = shown.length === 1 ? [SINGLE_RING_WEIGHT] : shown.map((i) => cert.domains[i].weight);
@@ -526,20 +523,25 @@ export function DomainRings({
       {legend && (
       <View style={{ flex: stacked ? undefined : 1, gap: space.xs, alignSelf: stacked ? 'stretch' : undefined }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
         {shown.map((i) => {
-          const up = Math.max(0, Math.round(delta?.(i) ?? 0));
+          const value = label(i);
+          const isWord = /[A-Za-z]/.test(value);
           return (
             <Row key={cert.domains[i].id} gap={space.sm} style={{ minHeight: 28 }}>
               <DomainDot domain={cert.domains[i]} />
-              <T v="small" color={c.ink} style={{ flex: 1, minWidth: 0 }}>{cert.domains[i].short}</T>
-              {up > 0 && (
-                // After this domain's arc has grown (outer ring first, 60 ms apart).
-                <FadeIn rise={false} dur="select" delay={(grow?.delay ?? 0) + motion.dur.grow + (shown.length - 1 - shown.indexOf(i)) * motion.stagger.stat + motion.dur.select}>
-                  <T v="caption" color={c.accentText}>{`+${up}`}</T>
-                </FadeIn>
-              )}
-              {/* The number never shrinks: the name gives way first (it can wrap, the score can't clip). */}
+              {/* One line, never broken mid-word ("Governan / ce", 1.24): the name shrinks first, and
+                  below 380 wide the exam's shorter tile name is used. At large text it may wrap at a space. */}
+              <T v="small" color={c.ink} numberOfLines={large ? 2 : 1} style={{ flex: 1, flexShrink: 1, minWidth: 0 }}>
+                {narrow ? (cert.domains[i].tile ?? cert.domains[i].short) : cert.domains[i].short}
+              </T>
+              {/* The figure never shrinks: the name gives way first. A band word ("Building") is a word. */}
               <View style={{ flexShrink: 0, minWidth: 28, alignItems: 'flex-end' }}>
-                <BigNum value={label(i)} size={17} />
+                {isWord ? (
+                  <T v="label" color={c.ink}>{value}</T>
+                ) : value.endsWith('%') ? (
+                  <BigNum value={value.slice(0, -1)} pct size={17} />
+                ) : (
+                  <BigNum value={value} size={17} />
+                )}
               </View>
             </Row>
           );
@@ -550,10 +552,29 @@ export function DomainRings({
   );
 }
 
-/** Spoken summary for rings: "IS Audit 88, IT Governance 63, …". */
-export function ringsSpoken(cert: Certification, values: (number | null)[]): string {
+/**
+ * The rings' one change line (mobile 1.24): what went up since the learner
+ * last looked, said ONCE under the rings ("Since you last looked: IS
+ * Operations +4 · Info Protection +2") instead of a "+N" on every legend row.
+ * Null when nothing went up. `up` = points per domain in blueprint order.
+ * Never a minus: a fall is just shown, never marked.
+ */
+export function ringsChangeLine(cert: Certification, up: readonly number[]): string | null {
+  const parts = cert.domains
+    .map((d, i) => ({ d, n: Math.max(0, Math.round(up[i] ?? 0)) }))
+    .filter((x) => x.n > 0)
+    .map((x) => `${x.d.short} +${x.n}`);
+  return parts.length ? `Since you last looked: ${parts.join(' · ')}` : null;
+}
+
+/**
+ * Spoken summary for rings: "IS Audit 88, IT Governance 63, …". `spokenOf`
+ * (mobile 1.24) replaces a domain's number with its own words ("Building",
+ * "72 percent, latest tries"), so a screen reader hears what the screen shows.
+ */
+export function ringsSpoken(cert: Certification, values: (number | null)[], spokenOf?: (i: number) => string): string {
   return cert.domains
-    .map((d, i) => `${d.short} ${values[i] === null ? 'not started' : Math.round((values[i] ?? 0) * 100)}`)
+    .map((d, i) => `${d.short} ${spokenOf ? spokenOf(i) : values[i] === null ? 'not started' : Math.round((values[i] ?? 0) * 100)}`)
     .join(', ');
 }
 

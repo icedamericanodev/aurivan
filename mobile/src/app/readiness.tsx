@@ -5,6 +5,8 @@
  *
  * Top to bottom:
  *   1. The range ("67–77%", estimated readiness) or "Not enough data yet".
+ *      Mobile 1.24: one plain yardstick line under it (YARDSTICK_LINE: the app's own 80% low
+ *      end and 70% per-domain bars; a study bar, never a pass mark).
  *   2. What this number is: "A study estimate, not a prediction.", always shown,
  *      with "How it's worked out" one tap away.
  *      (In exam week, the checklist follows, right under the framing.)
@@ -44,6 +46,7 @@ import { BigNum, Button, DomainDot, EmptyState, ICON_SIZE, Lead, ListRow, Pushed
 import type { Certification, DomainInfo } from '../content/types';
 import { examWeekCount, examWeekOf } from '../engine/examWeek';
 import { aboutSeconds, pacingStats, pacingStatsLine, spokenMin, timingOf } from '../engine/pace';
+import { YARDSTICK_LINE } from '../engine/domainBand';
 import { rangeSpoken } from '../engine/readinessRange';
 import {
   domainBreakdown,
@@ -210,6 +213,11 @@ export default function ReadinessReport() {
           <T v="meta" style={{ marginTop: 4 }}>
             {range.enough ? 'estimated readiness' : `${range.needed} more ${range.needed === 1 ? 'answer' : 'answers'} until your readiness range`}
           </T>
+        </View>
+        {/* Mobile 1.24: what to compare the range with, in the app's own bars (80% low end, 70% per domain).
+            Never a pass mark and never a promise: the framing below says so too. */}
+        <View testID="readiness-yardstick" style={{ marginTop: space.sm }}>
+          <T v="small" color={c.ink2}>{YARDSTICK_LINE}</T>
         </View>
 
         {/* 2. What this number is: always on screen, never hidden. Before

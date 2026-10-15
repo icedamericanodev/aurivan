@@ -33,6 +33,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FocusEmitter, FocusScope, routeParams } from '../../jest/perf/focusRouter';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
+import { domainFigure } from '../engine/domainBand';
 import { daysToExam } from '../engine/examDay';
 import { grewLabel } from '../engine/plant';
 import { computeReadiness } from '../engine/readiness';
@@ -203,7 +204,8 @@ const comparable = (t: Tab, xs: string[]) => (t === 'home' ? xs.filter((x) => !G
  * second view (away and back) the tab must match the fresh mount exactly.
  */
 const sinceLast = (xs: string[]) =>
-  xs.filter((x) => !/^\+\d+$/.test(x)).map((x) => x.replace(/ Since you last looked: [^\]]*?\.(?=\]$)/, ''));
+  // Mobile 1.24: You says "Since you last looked: IS Operations +4 · …" once under the rings (no "+N" on each row).
+  xs.filter((x) => !/^\+\d+$/.test(x) && !/^Since you last looked: /.test(x)).map((x) => x.replace(/ Since you last looked: [^\]]*?\.(?=\]$)/, ''));
 
 /** Each tab, opened from the tab bar, shows what a fresh mount shows (first view and second view). */
 function expectTabsFresh(tabs: readonly Tab[] = TABS) {
@@ -350,7 +352,8 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     const rd = computeReadiness(cert, cp().answers);
     for (const d of rd.domains) {
       const short = cert.domains.find((x) => x.id === d.domainId)!.short;
-      expect(joined('you')).toContain(`${short} ${d.answered ? Math.round(d.mastery * 100) : 'not started'}`);
+      // Mobile 1.24: a word below 30 answers in the domain, the number (with "latest tries") from 30.
+      expect(joined('you')).toContain(`${short} ${domainFigure(d.answered, Math.round(d.mastery * 100)).spoken}`);
     }
     // Learn's "Up next" follows the focus domain.
     const focus = cert.domains.find((d) => d.id === rd.focusDomainId)!;
@@ -600,7 +603,7 @@ describe('a badge earned: the tab dot and the count', () => {
       dot = create(<Dot />);
     });
     expect(dot!.root.findAllByProps({ testID: 'you-new-dot' })).toHaveLength(0);
-    expect(joined('you')).toContain('[Badges, none yet.');
+    expect(joined('you')).toContain('[Badges and field notes, none yet.');
     // A finished mock of 50 earns a badge live (after the launch back-fill).
     mockExam(40);
     const earned = caseEarnedCount(cp().milestones?.earned);
@@ -608,7 +611,7 @@ describe('a badge earned: the tab dot and the count', () => {
     expect(hasNewBadge('cisa')).toBe(true);
     expect(dot!.root.findAllByProps({ testID: 'you-new-dot' }).length).toBeGreaterThan(0);
     expectTabsFresh(['you']);
-    expect(joined('you')).not.toContain('[Badges, none yet.');
+    expect(joined('you')).not.toContain('[Badges and field notes, none yet.');
     act(() => dot!.unmount());
   });
 });

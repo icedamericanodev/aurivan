@@ -344,7 +344,7 @@ describe('Journey 2: mocks — report after submitting, never during', () => {
       expect(allText()).not.toContain('Report a problem');
       press('Next');
     }
-    press('Question navigator');
+    press('Questions, question navigator');
     expect(allText()).toContain('To report a question, open it in the review after you submit.');
     expect(pressables(/Report a problem/)).toHaveLength(0);
   });
