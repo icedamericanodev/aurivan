@@ -84,6 +84,14 @@ RUNTIME="$(npx expo-updates fingerprint:generate --platform android | node -e 'l
 [ -n "$RUNTIME" ] || { echo "Could not compute the update runtime." >&2; exit 1; }
 echo "  $RUNTIME"
 
+# A test APK listens to the "preview" update channel. The committed app.json
+# sets no channel (store builds get "production" from eas.json on EAS), so set
+# it in this separate copy only, after the runtime above. The next run's
+# checkout resets app.json. Older versions set it in app.json already.
+if [ -f scripts/set-update-channel.mjs ]; then
+  node scripts/set-update-channel.mjs preview
+fi
+
 echo "• Preparing the Android project…"
 npx expo prebuild --platform android --no-install
 
