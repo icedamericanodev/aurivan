@@ -9,7 +9,7 @@ import fs from 'fs';
 import path from 'path';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import { BackHandler } from 'react-native';
-import { PILLARS, TAGLINE, VISION_LINE } from '../content/brand';
+import { PILLARS, TAGLINE, WELCOME_FACTS, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
 import Onboarding from '../app/onboarding';
 import Settings from '../app/settings';
 import { KaisipLockup } from '../components/brand';
@@ -104,33 +104,35 @@ afterEach(() => {
 });
 
 describe('welcome screen', () => {
-  it('shows the lockup, tagline, line and the four pillars', () => {
+  it('shows the lockup, the headline, the CISA line and four literal lines (not the brand pillars)', () => {
     mount(<Onboarding />);
     expect(r!.root.findAllByType(KaisipLockup)).toHaveLength(1);
     const text = allText();
-    expect(text).toContain(TAGLINE);
-    expect(text).toContain(VISION_LINE);
-    expect(PILLARS).toHaveLength(4);
-    for (const p of PILLARS) {
-      expect(text).toContain(p.title);
-      expect(text).toContain(p.body);
-      // Each pillar is spoken as one sentence.
-      expect(labels()).toContain(`${p.title}. ${p.body}`);
+    expect(text).toContain(WELCOME_HEADLINE);
+    expect(text).toContain(WELCOME_LINE);
+    expect(text).toContain('CISA');
+    expect(WELCOME_FACTS).toHaveLength(4);
+    for (const line of WELCOME_FACTS) {
+      expect(text).toContain(line);
+      expect(labels()).toContain(line);
     }
+    // The pillars live in Settings → About; the welcome is literal.
+    for (const p of PILLARS) expect(text).not.toContain(p.title);
+    expect(text).not.toContain(TAGLINE);
   });
 
-  it('"Start my plan" leads into the certification step, and Back returns', () => {
+  it('"Get started" leads into the optional name, then the starting point, and Back returns', () => {
     mount(<Onboarding />);
-    press('Start my plan');
-    // Mobile 1.23: the optional name step comes first; Skip moves on, Back from the exam returns to it.
+    press('Get started');
+    // The optional name step comes first; Skip moves on, Back from the starting point returns to it.
     expect(allText()).toContain('What should we call you?');
     press('Skip');
-    expect(allText()).toContain('Which exam are you preparing for?');
-    expect(allText()).not.toContain(TAGLINE);
+    expect(allText()).toContain('Where are you starting from?');
+    expect(allText()).not.toContain(WELCOME_HEADLINE);
     press('Back');
     expect(allText()).toContain('What should we call you?');
     press('Back');
-    expect(allText()).toContain(TAGLINE);
+    expect(allText()).toContain(WELCOME_HEADLINE);
   });
 
   it("Android's back button steps back through onboarding instead of closing the app", () => {
@@ -143,23 +145,18 @@ describe('welcome screen', () => {
     });
     mount(<Onboarding />);
     expect(handler!()).toBe(false); // welcome: default behaviour
-    press('Start my plan');
+    press('Get started');
     press('Skip');
-    press('Continue');
     let handled: boolean | null | undefined;
     act(() => {
       handled = handler!();
     });
     expect(handled).toBe(true);
-    expect(allText()).toContain('Which exam are you preparing for?');
-    act(() => {
-      handler!();
-    });
     expect(allText()).toContain('What should we call you?'); // the name step sits between the welcome and step 1
     act(() => {
       handler!();
     });
-    expect(allText()).toContain(TAGLINE);
+    expect(allText()).toContain(WELCOME_HEADLINE);
     spy.mockRestore();
   });
 });

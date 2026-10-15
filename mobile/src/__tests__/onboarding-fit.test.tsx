@@ -1,10 +1,11 @@
 /**
- * Mobile 1.15 onboarding (PHASE5.md §1, §2.1, §2.2): "Where are you starting
- * from?" is step 2 of 4 (no preselected row; Continue waits for a choice;
- * "Skip this question" leaves it unset), the date step asks for minutes too
- * (20 by default), and the plant step is 4 of 4. Nothing saves until the
- * last step, which saves the exam, the date and the fit together and
- * answers the Today card. Android back walks 4 → 0; Restore skips it all.
+ * Onboarding after mobile 1.24 ("first five minutes"): a literal welcome, an
+ * optional name, then 2 numbered steps ("Where are you starting from?" is 1 of 2,
+ * the date and minutes are 2 of 2, with a line saying what they add up to).
+ * There is no exam step (CISA is chosen) and no plant step. Nothing saves
+ * until the last button, which saves the date and the fit together, makes
+ * Day 1's plan, and starts the first five questions. Android back walks
+ * 3 → 2 → 1 → 0; Restore skips it all.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { BackHandler, Dimensions } from 'react-native';
@@ -12,6 +13,7 @@ import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Onboarding from '../app/onboarding';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
+import { firstSetIds } from '../content/firstSet';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
@@ -101,32 +103,61 @@ afterEach(() => {
 
 const caption = () => allText().match(/Step \d of \d/)?.[0];
 const continueBtn = () => root().findAll((x) => x.props.label === 'Continue' && x.props.onPress)[0];
+/** Welcome → name step → skip it → "Where are you starting from?". */
+const toStartingPoint = () => {
+  press(/^Get started$/);
+  press(/^Skip$/); // the optional name step (mobile 1.23)
+};
+
+describe('the welcome screen: literal, names the exam, no metaphors', () => {
+  beforeEach(() => useSettings.setState({ onboarded: false }));
+
+  it('says what it is, in four plain lines, and keeps the not-affiliated line', () => {
+    mount(<Onboarding />);
+    const t = allText();
+    expect(t).toContain('Think like an IS auditor.');
+    expect(t).toContain('CISA exam prep, taught the way the exam thinks.');
+    expect(t).toContain('Your daily plan, built around your exam date.');
+    expect(t).toContain('About 20 minutes a day.');
+    expect(t).toContain('Progress shown as a range, never a promise.');
+    expect(t).toContain('No account. Everything stays on your phone.');
+    expect(t).toMatch(/Not affiliated with or endorsed by ISACA/);
+    // The four metaphor rows and the old-app line are gone.
+    expect(t).not.toMatch(/Grow with the seasons|Grow deep roots|Stand tall|See the path|Moving from|Aurivan/);
+    expect(t).not.toContain('Master Modern Risk.');
+  });
+
+  it('"Get started" leads to the optional name, and Restore from a backup is still there', () => {
+    mount(<Onboarding />);
+    expect(pressable(/^Restore from a backup$/)).toHaveLength(1);
+    // Its hint no longer speaks of the old app.
+    expect(pressable(/^Restore from a backup$/)[0].props.accessibilityHint).toBe('Studied on another phone? Pick your backup file to bring your progress here.');
+    press(/^Get started$/);
+    expect(allText()).toContain('What should we call you?');
+  });
+});
 
 describe('onboarding: where you start and how long you have', () => {
   beforeEach(() => useSettings.setState({ onboarded: false }));
 
-  it('step captions run 1 to 4 of 4, and the plant step is last', () => {
+  it('step captions run 1 to 2 of 2, with no exam step and no plant step', () => {
     mount(<Onboarding />);
-    press(/^Start my plan$/);
-    press(/^Skip$/); // the optional name step (mobile 1.23)
-    expect(caption()).toBe('Step 1 of 4');
-    press(/^Continue$/);
-    expect(caption()).toBe('Step 2 of 4');
+    toStartingPoint();
+    expect(caption()).toBe('Step 1 of 2');
     expect(allText()).toContain('Where are you starting from?');
     expect(allText()).toContain('This shapes your first week. You can change it any time in Settings.');
+    // CISA is chosen for the learner: there are no "coming soon" exams to look at.
+    expect(allText()).not.toMatch(/Which exam|coming soon/i);
     press(/^Skip this question$/);
-    expect(caption()).toBe('Step 3 of 4');
+    expect(caption()).toBe('Step 2 of 2');
     expect(allText()).toContain('How long can you study most days?');
-    press(/^Continue$/);
-    expect(caption()).toBe('Step 4 of 4');
-    expect(allText()).toContain('Plant something that grows with you');
+    expect(allText()).not.toMatch(/Plant|Planted|Step \d of 4/);
+    expect(pressable(/^Start my first questions$/)).toHaveLength(1);
   });
 
   it('no row is chosen at first, and Continue waits for one (its hint says how to move on)', () => {
     mount(<Onboarding />);
-    press(/^Start my plan$/);
-    press(/^Skip$/); // the optional name step (mobile 1.23)
-    press(/^Continue$/);
+    toStartingPoint();
     expect(checkedRadio('Where are you starting from?')).toEqual([]);
     expect(continueBtn().props.disabled).toBe(true);
     expect(continueBtn().props.accessibilityHint).toBe('Choose one, or skip this question.');
@@ -138,9 +169,7 @@ describe('onboarding: where you start and how long you have', () => {
 
   it('the minutes default to 20, spoken "20 minutes a day"; nothing saves before the last step', () => {
     mount(<Onboarding />);
-    press(/^Start my plan$/);
-    press(/^Skip$/); // the optional name step (mobile 1.23)
-    press(/^Continue$/);
+    toStartingPoint();
     press(/^Skip this question$/);
     expect(checkedRadio('Daily time')).toEqual(['20 minutes a day']);
     press(/^45 minutes a day$/);
@@ -151,38 +180,55 @@ describe('onboarding: where you start and how long you have', () => {
     expect(useSettings.getState().dailyMinutes).toBeUndefined();
   });
 
-  it('finishing saves the exam, the date and the fit together, and answers the Today card', () => {
+  it('a plain line says what the date and the minutes add up to, and follows both choices', () => {
     mount(<Onboarding />);
-    press(/^Start my plan$/);
-    press(/^Skip$/); // the optional name step (mobile 1.23)
-    press(/^Continue$/);
+    toStartingPoint();
+    press(/^Skip this question$/);
+    // No date yet: says what the plan does instead.
+    expect(allText()).toMatch(/No date yet: your plan starts at about 20 min a day\./);
+    press(/^In 3 months$/);
+    expect(allText()).toMatch(/\d+ (weeks|months): about 20 min a day adds up to about \d+ hours of study\./);
+    press(/^45 minutes a day$/);
+    expect(allText()).toMatch(/about 45 min a day adds up to about/);
+  });
+
+  it('the last button saves the date and the fit together, makes Day 1, and starts the first five', () => {
+    mount(<Onboarding />);
+    toStartingPoint();
     press(/^Experienced practitioner/);
     press(/^Continue$/);
     press(/^In 3 months$/);
     press(/^30 minutes a day$/);
-    press(/^Continue$/);
-    press(/^Skip for now$/);
+    press(/^Start my first questions$/);
     expect(useSettings.getState()).toMatchObject({ onboarded: true, activeCertId: 'cisa', familiarity: 'experienced', dailyMinutes: 30, dailyGoal: 20, fitPrompt: 'answered' });
     expect(useSettings.getState().examDates.cisa).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-    expect(router.replace).toHaveBeenCalledWith('/home');
+    // Straight into the first set: the same five questions, no timer.
+    const s = useSession.getState().active!;
+    expect(s.firstSet).toBe(true);
+    expect(s.questionIds).toEqual([...firstSetIds('cisa')]);
+    expect(s.timed).toBeFalsy();
+    expect(router.replace).toHaveBeenCalledWith('/session');
+    // Day 1's plan was made before any answer, so the five answers tick it off.
+    const plan = useProgress.getState().days.cisa;
+    expect(plan.items).toEqual([{ kind: 'practice', count: 5, label: 'Your first five', why: 'first' }]);
+    expect(plan.done).toEqual([false]);
+    // No plant question: a seed comes after the first set.
+    expect(selectCert(useProgress.getState(), 'cisa').plant).toBeUndefined();
+    expect(useProgress.getState().plantSettings?.promptHidden).toBe(true);
   });
 
-  it('"Skip this question" leaves familiarity unset (it plans like "some"); Plant it saves the same tap', () => {
+  it('"Skip this question" leaves familiarity unset (it plans like "some"); the same tap saves the rest', () => {
     mount(<Onboarding />);
-    press(/^Start my plan$/);
-    press(/^Skip$/); // the optional name step (mobile 1.23)
-    press(/^Continue$/);
+    toStartingPoint();
     press(/^New to audit/);
     // Skipping after choosing clears the choice: skip means "not said".
     press(/^Skip this question$/);
-    press(/^Continue$/);
-    press(/^Plant it$/);
+    press(/^Start my first questions$/);
     expect(useSettings.getState()).toMatchObject({ onboarded: true, dailyMinutes: 20, fitPrompt: 'answered' });
     expect(useSettings.getState().familiarity).toBeUndefined();
-    expect(selectCert(useProgress.getState(), 'cisa').plant).toBeDefined();
   });
 
-  it('Android back walks 4 → 3 → 2 → 1 → 0, keeping the answers', () => {
+  it('Android back walks 3 → 2 → 1 → 0, keeping the answers', () => {
     type Handler = () => boolean | null | undefined;
     const subs: Handler[] = [];
     jest.spyOn(BackHandler, 'addEventListener').mockImplementation((_e, h) => {
@@ -198,27 +244,20 @@ describe('onboarding: where you start and how long you have', () => {
       return handled;
     };
     mount(<Onboarding />);
-    press(/^Start my plan$/);
-    press(/^Skip$/); // the optional name step (mobile 1.23)
-    press(/^Continue$/);
+    toStartingPoint();
     press(/^Some IT audit experience/);
     press(/^Continue$/);
-    press(/^Continue$/);
-    expect(caption()).toBe('Step 4 of 4');
+    expect(caption()).toBe('Step 2 of 2');
     expect(back()).toBe(true);
-    expect(caption()).toBe('Step 3 of 4');
-    expect(back()).toBe(true);
-    expect(caption()).toBe('Step 2 of 4');
+    expect(caption()).toBe('Step 1 of 2');
     expect(checkedRadio('Where are you starting from?')).toEqual(['Some IT audit experience, I work in IT, risk or audit, or I’ve studied some of it.']);
     expect(back()).toBe(true);
-    expect(caption()).toBe('Step 1 of 4');
-    expect(back()).toBe(true);
-    // The optional name step sits between the welcome and step 1 (mobile 1.23); it has no "Step N of 4".
+    // The optional name step sits between the welcome and step 1; it has no "Step N of 2".
     expect(caption()).toBeUndefined();
     expect(allText()).toContain('What should we call you?');
     expect(back()).toBe(true);
     expect(caption()).toBeUndefined();
-    expect(allText()).toContain('Start my plan');
+    expect(allText()).toContain('Get started');
     // On the welcome step, back is the phone's own (the app closes).
     expect(back()).toBe(false);
   });
@@ -226,6 +265,6 @@ describe('onboarding: where you start and how long you have', () => {
   it('Restore from a backup skips every step (a pre-1.15 file has no fit, so Today may ask later)', () => {
     mount(<Onboarding />);
     expect(pressable(/^Restore from a backup$/)).toHaveLength(1);
-    expect(allText()).not.toMatch(/Step \d of 4/);
+    expect(allText()).not.toMatch(/Step \d of \d/);
   });
 });

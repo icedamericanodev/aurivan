@@ -17,7 +17,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { itemMinutes } from '../engine/dayPlan';
 import { GAMES, gameTitle } from '../engine/games/registry';
-import { DAILY_ID, LEGACY_TITLE, reminderPlan, reminderSummary } from '../engine/reminders';
+import { LEGACY_TITLE, rollingId, rollingPlan, reminderSummary } from '../engine/reminders';
 import { scheduleReminders } from '../lib/reminders';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
@@ -30,7 +30,7 @@ jest.mock('react-native', () => ({ Platform: { OS: 'ios' } }));
 const mockScheduled = new Map<string, { identifier: string; content: { title: string; body?: string }; trigger?: unknown }>();
 jest.mock('expo-notifications', () => ({
   AndroidImportance: { DEFAULT: 5 },
-  SchedulableTriggerInputTypes: { DAILY: 'daily', WEEKLY: 'weekly' },
+  SchedulableTriggerInputTypes: { DATE: 'date' },
   setNotificationChannelAsync: async () => null,
   getAllScheduledNotificationsAsync: async () => [...mockScheduled.values()],
   cancelScheduledNotificationAsync: async (id: string) => {
@@ -137,18 +137,19 @@ describe('updating from 1.1', () => {
     expect(cp.gameRecent).toEqual({ sprint: [6] });
   });
 
-  it("relaunch: the 1.1 reminder (no id, old copy) becomes one calm daily reminder at 19:00", async () => {
+  it("relaunch: the 1.1 reminder (no id, old copy) becomes the next seven calm one-off reminders at 19:00", async () => {
     // What 1.1 left on the phone: its own reminder (random id) and someone else's.
     mockScheduled.set('a1b2-random', { identifier: 'a1b2-random', content: { title: LEGACY_TITLE, body: '10 CISA questions keep your streak alive.' } });
     mockScheduled.set('other-app-thing', { identifier: 'other-app-thing', content: { title: 'Not ours' } });
     // What app/_layout.tsx does once settings have loaded.
     const { reminder } = useSettings.getState();
-    expect(reminderPlan(reminder)).toEqual([{ id: DAILY_ID, kind: 'daily', hour: 19, minute: 0 }]);
-    await scheduleReminders(reminder, 'CISA');
-    expect([...mockScheduled.keys()].sort()).toEqual([DAILY_ID, 'other-app-thing'].sort());
-    const ours = mockScheduled.get(DAILY_ID)!;
+    const now = new Date(2026, 9, 15, 14, 0).getTime();
+    expect(rollingPlan(reminder, now)).toHaveLength(7);
+    await scheduleReminders(reminder, 'CISA', { now });
+    expect([...mockScheduled.keys()].sort()).toEqual([...[1, 2, 3, 4, 5, 6, 7].map(rollingId), 'other-app-thing'].sort());
+    const ours = mockScheduled.get(rollingId(1))!;
     expect(ours.content.title).not.toBe(LEGACY_TITLE);
     expect(ours.content.body).not.toMatch(/streak/i);
-    expect(ours.trigger).toMatchObject({ type: 'daily', hour: 19, minute: 0 });
+    expect(ours.trigger).toMatchObject({ type: 'date', date: new Date(2026, 9, 15, 19, 0) });
   });
 });

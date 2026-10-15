@@ -19,14 +19,21 @@ export const TAGLINE = 'Master Modern Risk.';
 export const VISION_LINE = 'Grow your judgment, one ring at a time.';
 
 /**
- * Mobile 1.23: the app was called Aurivan before. The new name is a new app
- * on the phone (a new package id), so progress moves by backup file: this is
- * the one line that says how, shown on the welcome screen, in Settings →
- * Your data and in About. Uses the real labels from the old app's Settings.
+ * The welcome screen (mobile 1.24): literal, not poetic. It names the exam and
+ * the benefit, then says in four plain lines what a learner will actually do
+ * and what the app does with their data. (The four brand pillars below still
+ * live in Settings → About.)
  */
-/** The steps alone (About already says "Aurivan is now KaiSip." just before it). */
-export const MOVING_STEPS = 'In the old app: Settings → Your data → Save a backup. Then restore that file here.';
-export const MOVING_LINE = `Moving from Aurivan? ${MOVING_STEPS}`;
+export const WELCOME_HEADLINE = 'Think like an IS auditor.';
+export const WELCOME_LINE = 'CISA exam prep, taught the way the exam thinks.';
+export const WELCOME_FACTS: readonly string[] = [
+  'Your daily plan, built around your exam date.',
+  'About 20 minutes a day.',
+  'Progress shown as a range, never a promise.',
+  'No account. Everything stays on your phone.',
+];
+/** Said under the welcome facts (it used to sit on the exam step, which is gone). */
+export const EXAM_TRADEMARK_LINE = 'Not affiliated with or endorsed by ISACA® or ISC2®. Exam names are trademarks of their owners.';
 
 export const PILLARS: readonly Pillar[] = [
   { glyph: 'path', title: 'See the path', body: 'Know what to study next, and why it matters.' },

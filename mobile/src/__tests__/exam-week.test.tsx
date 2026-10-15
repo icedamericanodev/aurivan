@@ -90,10 +90,10 @@ describe('planner: exam week (days 7 to 2)', () => {
     expect(mocks(week(6, { lastMockAt: NOW - DAY }))).toHaveLength(1);
   });
 
-  it('fewer than 20 answers: no full mock, and the practice is the starting check (sized like it)', () => {
+  it('fewer than 20 answers: no full mock, and the practice is the rest of the first 20 answers (sized like it)', () => {
     const plan = week(6, { answered: 12 });
     expect(mocks(plan)).toEqual([]);
-    expect(plan[0]).toMatchObject({ kind: 'practice', why: 'check', label: 'Starting check: 8 mixed questions', count: 8 });
+    expect(plan[0]).toMatchObject({ kind: 'practice', why: 'check', label: '8 mixed questions', count: 8 });
   });
 
   it('4, 3 and 2 days out: never a mock, and the day fits min(minutes, 20)', () => {

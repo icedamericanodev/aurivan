@@ -506,9 +506,10 @@ export function HeroPanel({
   meta?: string;
   /**
    * `iconTrailing` (mobile 1.22): the glyph after the label, for a forward arrow ("Start →", as
-   * "Next question →"); a Play glyph stays leading. `full` (mobile 1.23, Today): the pill spans the panel.
+   * "Next question →"); a Play glyph stays leading. The pill always hugs its label and sits on the left,
+   * in light and dark (mobile 1.24: one hero button style; a full-width bar is for a sticky footer only).
    */
-  action?: { label: string; onPress: () => void; icon?: (color: string) => ReactNode; hint?: string; iconTrailing?: boolean; full?: boolean };
+  action?: { label: string; onPress: () => void; icon?: (color: string) => ReactNode; hint?: string; iconTrailing?: boolean };
   art?: BotanyKind;
   /** Gentle frond sway while the screen is focused (off under Reduce Motion). */
   sway?: boolean;
@@ -610,7 +611,7 @@ export function HeroPanel({
             icon={action.icon}
             iconLeading={!action.iconTrailing}
             follow={lift}
-            style={{ marginTop: space.gutter, alignSelf: action.full ? 'stretch' : 'flex-start', ...(action.full ? { minHeight: 52 } : null) }}
+            style={{ marginTop: space.gutter, alignSelf: 'flex-start', minHeight: 52 }}
           />
         )}
       </View>

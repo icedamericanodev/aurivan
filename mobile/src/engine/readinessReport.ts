@@ -362,7 +362,7 @@ export function chartScale(values: readonly number[], minSpan = 20): { lo: numbe
 
 /** The six steps, in order, each with one plain line (PHASE5.md §3.1, item 8). */
 export const PATH_STEPS: readonly { stage: Exclude<Stage, 'afterExam'>; line: string }[] = [
-  { stage: 'diagnose', line: 'The starting check: a short look at where you are.' },
+  { stage: 'diagnose', line: 'Your first questions: a short look at where you are.' },
   { stage: 'learn', line: 'Lessons for the domains you need.' },
   { stage: 'practice', line: 'Practice and spaced review.' },
   { stage: 'mock', line: 'Mocks at exam pace.' },

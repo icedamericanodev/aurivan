@@ -208,10 +208,11 @@ export function startReview(certId: string, limit = REVIEW_SESSION_CAP) {
  * questions behind a study note…). Same 'practice' mode as any other
  * practice, so grading, progress and spaced review all work as usual.
  * Order is kept; a repeated id is asked once; ids that no longer exist
- * are dropped by newSession (null when none are left).
+ * are dropped by newSession (null when none are left). `extra`: fields to
+ * set on the session (the first set passes `firstSet` and `timed: false`).
  */
-export function startFromIds(certId: string, ids: string[], title: string) {
-  return newSession('practice', certId, title, [...new Set(ids)]);
+export function startFromIds(certId: string, ids: string[], title: string, extra: Partial<ActiveSession> = {}) {
+  return newSession('practice', certId, title, [...new Set(ids)], extra);
 }
 
 export function startBookmarks(certId: string) {

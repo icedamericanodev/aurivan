@@ -2,12 +2,15 @@
  * Mobile 1.23 Today (the owner's mockup A):
  * - header: the KaiSip lockup, a streak pill, the Settings gear;
  * - a meta line ("Thursday · 38 days to CISA"), then the greeting by the hour (with the learner's own name only when they gave one);
- * - the forest plan panel: "Today’s plan · about N min", the title, the plan as a checklist (done struck through,
- *   current bold, later quiet), one full-width pill ("Start", or "Continue" once something is done; Play only for a lesson);
- * - the readiness row (rings, the RANGE, "a range not a promise", "Stage N · name");
- * - three tiles: answered, accuracy (You's number), weakest area; honest "Not yet" until there is data;
+ * - the forest plan panel: "Today’s plan · about N min", the title, the REST of the plan as a checklist (done struck
+ *   through, later quiet; mobile 1.24: the item you are on is the title, not also a row), one hugging pill ("Start", or
+ *   "Continue" once something is done; Play only for a lesson);
+ * - the readiness row (rings, the RANGE, "Estimated readiness"; mobile 1.24: the disclaimer lives on the report and on
+ *   the first-range card, and the stage line rests unless it changed lately);
+ * - mobile 1.24: no stat tiles (one quiet line names the weakest area once there is a range);
  * - never hours studied, never a single readiness percent;
- * - the screen-reader order: header, meta, greeting, plan, readiness, tiles.
+ * - the screen-reader order: header, meta, greeting, plan, readiness.
+ * The first-days states (Day 0, the first range, the reminder's second chance) are in today-first-days.test.tsx.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { Dimensions, StyleSheet } from 'react-native';
@@ -192,7 +195,10 @@ describe('planCheckLabel: the plan as checklist lines, in the plan’s own words
     expect(planCheckLabel(REVIEW, 0)).toBe('Spaced review · all caught up');
     expect(planCheckLabel(LESSON)).toBe('Lesson · Business impact analysis');
     expect(planCheckLabel({ kind: 'practice', count: 20, label: '20 questions · IS Audit' })).toBe('Practice: IS Audit · 20 questions');
-    expect(planCheckLabel({ kind: 'practice', count: 16, label: 'Starting check: 16 mixed questions', why: 'check' })).toBe('Starting check · 16 questions');
+    // A plan saved before 1.24 still says "Starting check": the learner reads the plain words now.
+    expect(planCheckLabel({ kind: 'practice', count: 16, label: 'Starting check: 16 mixed questions', why: 'check' })).toBe('Mixed practice · 16 questions');
+    expect(planCheckLabel({ kind: 'practice', count: 15, label: '15 mixed questions', why: 'check' })).toBe('Mixed practice · 15 questions');
+    expect(planCheckLabel({ kind: 'practice', count: 5, label: 'Your first five', why: 'first' })).toBe('Your first five · 5 questions');
     expect(planCheckLabel({ kind: 'game', gameId: 'trap', label: 'Snare Spotter · 6 min' })).toMatch(/ · \d+ min$/);
     expect(planCheckLabel(MOCK)).toBe('Mini mock · about 80 min');
   });
@@ -250,31 +256,35 @@ describe('Today, top to bottom', () => {
     expect(allText()).toContain('Thursday · 1 day to CISA');
   });
 
-  it('the plan panel: caption with the day’s minutes, the title, a checklist of the real items', () => {
+  it('the plan panel: caption with the day’s minutes, the title, and a checklist of the REST of the plan', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
     expect(allText()).toMatch(/Today’s plan · about \d+ min/);
     const list = byTestID('plan-checklist')[0];
     const lines = list.findAll((n) => typeof n.type === 'string' && n.props.accessible === true).map((n) => n.props.accessibilityLabel as string);
-    expect(lines).toEqual(['Warm-up · 5 questions, next', 'Spaced review · 20 due, later', 'Lesson · Business impact analysis, later']);
+    // Mobile 1.24: the item you are on is the title (with its detail under it), not also the first row.
+    expect(lines).toEqual(['Spaced review · 20 due, later', 'Lesson · Business impact analysis, later']);
+    expect(allText()).toContain('5 questions');
     // The title is the current item's own, with no count in it.
     expect(root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === 'Warm-up').length + root().findAll((n) => n.props.accessibilityRole === 'header' && /^(Warm-up|Optional warm-up)/.test(textOf(n))).length).toBeGreaterThan(0);
   });
 
-  it('done lines are struck through and say "done"; the current line is bold; later lines are quiet', () => {
+  it('done lines are struck through and say "done"; later lines are quiet; the item you are on is the title, not a row', () => {
     storePlan([WARM, REVIEW, LESSON], [true, false, false]);
     mount(<Today />);
     const list = byTestID('plan-checklist')[0];
     const lines = list.findAll((n) => typeof n.type === 'string' && n.props.accessible === true);
-    expect(lines.map((n) => n.props.accessibilityLabel)).toEqual(['Warm-up · 5 questions, done', 'Spaced review · 20 due, next', 'Lesson · Business impact analysis, later']);
+    expect(lines.map((n) => n.props.accessibilityLabel)).toEqual(['Warm-up · 5 questions, done', 'Lesson · Business impact analysis, later']);
     const style = (line: ReactTestInstance) => StyleSheet.flatten(line.findAll((n) => typeof n.type === 'string' && typeof n.props.children === 'string' && n.props.children.includes('·'))[0].props.style);
     expect(style(lines[0]).textDecorationLine).toBe('line-through');
     expect(style(lines[1]).textDecorationLine).toBeUndefined();
-    expect(style(lines[1]).fontFamily).toBe('Figtree_600SemiBold');
-    expect(style(lines[2]).fontFamily).toBe('Figtree_400Regular');
+    expect(style(lines[1]).fontFamily).toBe('Figtree_400Regular');
     // A check mark on the done line: never colour alone.
     expect(iconNames(lines[0])).toContain('Check');
     expect(iconNames(lines[1])).not.toContain('Check');
+    // The current item (the review) is the panel's title, said once.
+    const heading = root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === 'Spaced review');
+    expect(heading.length).toBeGreaterThan(0);
   });
 
   it('one pill: "Start" until something is done today, then "Continue"', () => {
@@ -305,11 +315,13 @@ describe('Today, top to bottom', () => {
     expect(allText()).not.toMatch(/Today’s plan · about/);
   });
 
-  it('the readiness row: the range, "a range not a promise", the stage by number and name; it opens the report', () => {
+  it('the readiness row: the range, "Estimated readiness", the stage by number and name; it opens the report', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
     expect(allText()).toMatch(/\d+–\d+/);
-    expect(allText()).toContain('Estimated readiness, a range not a promise');
+    expect(allText()).toContain('Estimated readiness');
+    // The longer disclaimer is on the report and on the first-range card, not on every day's Today.
+    expect(allText()).not.toContain('a range not a promise');
     const j = root().findAll((n) => n.props.testID === 'readiness-tap')[0];
     const stageText = allText().match(/Stage (\d) · ([A-Za-z ]+?)(?= \d| Also| answered|$)/);
     expect(stageText).not.toBeNull();
@@ -323,20 +335,14 @@ describe('Today, top to bottom', () => {
     expect(root().findAll((n) => typeof n.type !== 'string' && n.props.preset === 'row').length).toBeGreaterThan(0);
   });
 
-  it('the tiles: answered, accuracy (the number You shows) and the weakest area’s short name', () => {
+  it('no stat tiles any more: one quiet line names the weakest area once there is a range, and no accuracy sits beside the range', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
-    const tiles = byTestID('today-tiles')[0];
-    const labels = tiles.findAll((n) => typeof n.type === 'string' && n.props.accessible === true).map((n) => n.props.accessibilityLabel as string);
-    expect(labels[0]).toBe('Answered: 200');
-    expect(labels[1]).toBe('Accuracy: 73 percent'); // 146 of 200, the same share You's Accuracy counts
-    expect(labels[2]).toMatch(/^Weakest area: /);
-    const weakest = cisa.domains.find((d) => labels[2] === `Weakest area: ${d.name}`)!;
-    expect(weakest).toBeDefined();
-    expect(textOf(tiles)).toContain(weakest.tile ?? weakest.short);
-    expect(textOf(tiles)).toContain('answered');
-    expect(textOf(tiles)).toContain('accuracy');
-    expect(textOf(tiles)).toContain('weakest area');
+    expect(byTestID('today-tiles')).toHaveLength(0);
+    expect(allText()).not.toMatch(/accuracy|Not yet/i);
+    const line = allText().match(/200 answered · weakest area: ([^A]+?)(?= Also|$)/);
+    expect(line).not.toBeNull();
+    expect(cisa.domains.some((d) => (d.tile ?? d.short) === line![1].trim())).toBe(true);
   });
 
   it('never hours studied, and no single readiness percent', () => {
@@ -346,35 +352,43 @@ describe('Today, top to bottom', () => {
     expect(allText()).not.toMatch(/studied/i);
   });
 
-  it('the screen-reader order: header, meta line, greeting, plan, readiness, tiles', () => {
+  it('the screen-reader order: header, meta line, greeting, plan, readiness', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
     const t = allText();
     const at = (s: string) => t.indexOf(s);
-    const order = ['Thursday · 38 days to CISA', 'Good morning', 'Today’s plan · about', 'Estimated readiness, a range not a promise', 'weakest area'];
+    const order = ['Thursday · 38 days to CISA', 'Good morning', 'Today’s plan · about', 'Estimated readiness', 'weakest area'];
     const idx = order.map(at);
     expect(idx.every((i) => i >= 0)).toBe(true);
     expect([...idx].sort((a, b) => a - b)).toEqual(idx);
     const s = stops();
     const first = (re: RegExp) => s.findIndex((l) => re.test(l));
-    const seq = [first(/^KaiSip$/), first(/^Today’s plan/), first(/^Estimated readiness/), first(/^Answered:/)];
+    const seq = [first(/^KaiSip$/), first(/^Today’s plan/), first(/^Estimated readiness/)];
     expect(seq.every((i) => i >= 0)).toBe(true);
     expect([...seq].sort((a, b) => a - b)).toEqual(seq);
   });
 });
 
 describe('Today: states with little data', () => {
-  it('a new learner: the range, accuracy and weakest area say "Not yet"; answered says 0', () => {
+  it('a brand-new learner (nothing answered): no readiness row, no tiles, nothing that says "Not yet"', () => {
     storePlan([LESSON, { kind: 'practice', count: 5, label: '5 questions · IS Audit', why: 'learn' }], [false, false]);
     mount(<Today />);
-    const tiles = byTestID('today-tiles')[0];
-    const labels = tiles.findAll((n) => typeof n.type === 'string' && n.props.accessible === true).map((n) => n.props.accessibilityLabel as string);
-    expect(labels).toEqual(['Answered: 0', 'Accuracy: not yet', 'Weakest area: not yet']);
-    expect(allText()).toContain('Not enough data yet');
-    expect(allText()).not.toMatch(/\d+–\d+/);
+    expect(byTestID('today-tiles')).toHaveLength(0);
+    expect(byTestID('readiness-tap')).toHaveLength(0);
+    expect(allText()).not.toMatch(/Not yet|Not enough data yet|\d+–\d+/);
   });
 
-  it('a cleared day shows the clearing, not the checklist or the tiles', () => {
+  it('with a few answers the row is the goal, "5 of 40 for your first range", with no stage line for the first stage', () => {
+    seedAnswers(5, 3);
+    storePlan([WARM], [false]);
+    mount(<Today />);
+    expect(allText()).toContain('Not enough data yet');
+    expect(allText()).toContain('5 of 40 for your first range');
+    expect(allText()).not.toMatch(/Stage \d/);
+    expect(stops().some((l) => /^Not enough data yet\. 5 of 40 for your first range/.test(l))).toBe(true);
+  });
+
+  it('a cleared day shows the clearing, not the checklist', () => {
     seedAnswers(200, 146);
     storePlan([WARM, REVIEW], [true, true]);
     mount(<Today />);
@@ -395,17 +409,16 @@ describe('Today: states with little data', () => {
 });
 
 describe('Today at large text (200%)', () => {
-  it('stacks the tiles into a list and keeps every line', () => {
+  it('keeps every line: the readiness row stacks and the checklist wraps', () => {
     seedAnswers(200, 146);
     storePlan([WARM, REVIEW, LESSON], [true, false, false]);
     setScale(2);
     mount(<Today />);
-    const tiles = byTestID('today-tiles')[0];
-    expect(StyleSheet.flatten(tiles.props.style).flexDirection).toBe('column');
-    expect(textOf(tiles)).toContain('answered');
+    expect(allText()).toContain('Estimated readiness');
+    expect(allText()).toContain('200 answered · weakest area');
     // The checklist lines still wrap rather than clip: no fixed heights or line caps.
     const lines = byTestID('plan-checklist')[0].findAll((n) => typeof n.type === 'string' && n.props.accessible === true);
-    expect(lines).toHaveLength(3);
+    expect(lines).toHaveLength(2);
     for (const l of lines) {
       for (const t of l.findAll((n) => typeof n.type === 'string' && n.props.numberOfLines !== undefined)) expect(t.props.numberOfLines).toBeUndefined();
     }

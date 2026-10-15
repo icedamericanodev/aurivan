@@ -17,7 +17,7 @@ import type { Certification } from '../content/types';
 import { biggestGrowth, clearingTitle, dayAccuracy, isOptional, itemMinutes, type DayPlan } from '../engine/dayPlan';
 import type { PlanItem } from '../engine/planner';
 import type { Readiness } from '../engine/readiness';
-import { rangeLabel, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
+import { RANGE_MIN_ANSWERS, rangeLabel, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
 import { haptic } from '../lib/haptics';
 import { grewLine, LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -86,15 +86,17 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
       return { title: item.title, meta: `Lesson · ${mins} min`, short: `Lesson · ${mins} min` };
     case 'practice': {
       const why =
-        item.why === 'check'
-          ? 'no score yet, just a starting point'
-          : item.why === 'learn'
-            ? 'on what you just learned'
-            : item.why === 'weak'
-              ? `${item.count} questions, most points to gain`
-              : item.why === 'topup'
-                ? `${item.count} questions, a light top-up`
-                : 'new material first';
+        item.why === 'first'
+          ? `${item.count} questions, no timer`
+          : item.why === 'check'
+            ? 'no score yet, just a starting point'
+            : item.why === 'learn'
+              ? 'on what you just learned'
+              : item.why === 'weak'
+                ? `${item.count} questions, most points to gain`
+                : item.why === 'topup'
+                  ? `${item.count} questions, a light top-up`
+                  : 'new material first';
       return { title: item.label, meta: `${aboutMin(mins)} · ${why}`, short: `Practice · ${mins} min` };
     }
     case 'game':
@@ -114,6 +116,8 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
 /** "IS Audit practice" style titles with the count taken out (the count goes to the meta line). */
 export function heroPracticeTitle(label: string): string {
   return label
+    // A plan saved before mobile 1.24 called these "Starting check": the learner never reads that word now.
+    .replace(/^Starting check: \d+ mixed questions?$/, 'Mixed practice')
     .replace(/^\d+ (?:mixed )?questions? · (.+)$/, 'Practice: $1')
     .replace(/^(.+?): \d+ mixed questions?$/, '$1')
     .replace(/^(.+?) · \d+ questions?$/, '$1')
@@ -151,17 +155,19 @@ export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boo
       return { title: item.title, meta: opts.minutesSaid ? 'Lesson' : `Lesson · ${mins} min` };
     case 'practice': {
       const why =
-        item.why === 'check'
-          ? ', no score yet, just a starting point'
-          : item.why === 'learn'
-            ? ', on what you just learned'
-            : item.why === 'weak'
-              ? ', most points to gain'
-              : item.why === 'topup'
-                ? ', a light top-up'
-                : /review|warm-up/i.test(item.label)
-                  ? ''
-                  : ', new material first';
+        item.why === 'first'
+          ? ', no timer'
+          : item.why === 'check'
+            ? ', no score yet, just a starting point'
+            : item.why === 'learn'
+              ? ', on what you just learned'
+              : item.why === 'weak'
+                ? ', most points to gain'
+                : item.why === 'topup'
+                  ? ', a light top-up'
+                  : /review|warm-up/i.test(item.label)
+                    ? ''
+                    : ', new material first';
       return { title: heroPracticeTitle(item.label), meta: join(`${qs(item.count)}${why}`) };
     }
     case 'game':
@@ -259,12 +265,17 @@ const MARK = 24;
 
 /**
  * Today's plan as a checklist on the forest panel (mockup A): done = a filled
- * sap check and struck-through text, the current item = a bold ring and
- * bold text, later items = a faint ring and the panel's quiet text. State is
- * never colour alone: the check, the strike and the weight say it, and each
- * line is one screen-reader stop ("Warm-up, 5 questions, done").
- * A line done since Today was last on view presses in (a small spring, one
- * light haptic), like the plan leaves did.
+ * sap check and struck-through text, later items = a faint ring and the
+ * panel's quiet text. State is never colour alone: the check, the strike and
+ * the weight say it, and each line is one screen-reader stop ("Warm-up, 5
+ * questions, done"). A line done since Today was last on view presses in (a
+ * small spring, one light haptic), like the plan leaves did.
+ *
+ * Mobile 1.24 (Today declutter): the list holds what is NOT the hero. The
+ * item you are on now is the panel's title (it used to be said twice, as the
+ * title and again as the first row), and the optional weekly mock is not a
+ * row at all (it sits under "Also today"). With a one-item plan, as on Day 1,
+ * there is no list: just the title and the button.
  */
 export function PlanChecklist({
   items,
@@ -283,14 +294,14 @@ export function PlanChecklist({
 }) {
   const { c } = useTheme();
   const shown = useShownDone(done, focused, seenKey);
+  const rows = items.map((item, i) => ({ item, i })).filter(({ i }) => i !== current && !isOptional(items, i));
+  if (rows.length === 0) return null;
   return (
     <View testID="plan-checklist" style={{ marginTop: space.lg, gap: 10 }}>
-      {items.map((item, i) => {
+      {rows.map(({ item, i }) => {
         const isDone = done[i];
-        const isCur = !isDone && i === current;
         const label = planCheckLabel(item, due);
-        const optional = isOptional(items, i);
-        const said = `${label}${optional ? ', optional this week' : ''}, ${isDone ? 'done' : isCur ? 'next' : 'later'}`;
+        const said = `${label}, ${isDone ? 'done' : 'later'}`;
         return (
           <View key={i} accessible accessibilityLabel={spokenMin(said)} style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
             <Pop trigger={shown.pops.includes(i) ? shown.run : undefined} spring="leaf">
@@ -299,23 +310,10 @@ export function PlanChecklist({
                   <Check size={15} color={c.forest} strokeWidth={3} />
                 </View>
               ) : (
-                <View
-                  style={{
-                    width: MARK,
-                    height: MARK,
-                    borderRadius: MARK / 2,
-                    borderWidth: isCur ? 2.5 : 1.5,
-                    borderColor: isCur ? c.sap : c.onForest2,
-                    opacity: isCur ? 1 : 0.7,
-                  }}
-                />
+                <View style={{ width: MARK, height: MARK, borderRadius: MARK / 2, borderWidth: 1.5, borderColor: c.onForest2, opacity: 0.7 }} />
               )}
             </Pop>
-            <T
-              v={isCur ? 'label' : 'body'}
-              color={isCur ? c.onForest : c.onForest2}
-              style={[{ flex: 1, minWidth: 0 }, isDone && { textDecorationLine: 'line-through' }]}
-            >
+            <T v="body" color={c.onForest2} style={[{ flex: 1, minWidth: 0 }, isDone && { textDecorationLine: 'line-through' }]}>
               {label}
             </T>
           </View>
@@ -346,13 +344,20 @@ export const ESTIMATE_NOTE = 'A study estimate, not a prediction of your exam re
  * 2026): the full sentence is spoken there and shown on the readiness report.
  */
 export const ESTIMATE_SHORT = 'A study estimate, not a prediction.';
-/** Today's readiness line (mockup A, owner copy): said under the range. */
-export const ESTIMATE_LINE = 'Estimated readiness, a range not a promise';
+/**
+ * Today's readiness label, said under the range. Mobile 1.24: just "Estimated readiness". The longer
+ * disclaimer ("a range, not a promise") lives on the readiness report and on the first reveal
+ * ("Your first readiness range"), not on every day's Today.
+ */
+export const ESTIMATE_LINE = 'Estimated readiness';
 
 // ── Readiness row on Today (spec §11 "Today") ─────────────────────────
 // Mobile 1.23 (mockup A): the growth rings (86) with the honest range as a
-// serif numeral beside them, "Estimated readiness, a range not a promise",
-// and the stage in the accent italic serif ("Stage 4 · Rehearse the exam").
+// serif numeral beside them and "Estimated readiness" under it. Mobile 1.24:
+// the stage line shows only when it is passed in (Today passes it for a few
+// days after the stage changes, not every day), the disclaimer is on the
+// report and the first reveal only, and before the range exists the line is
+// the goal: "5 of 40 for your first range".
 // The whole row opens the readiness report. Stacks at large text.
 export function ReadinessRow({
   cert,
@@ -367,8 +372,8 @@ export function ReadinessRow({
   cert: Certification;
   readiness: Readiness;
   range: ReadinessRange;
-  /** The stage as the learner reads it: "Stage 4 · Rehearse the exam". */
-  stage: string;
+  /** The stage as the learner reads it: "Stage 4 · Rehearse the exam". Left out = no stage line. */
+  stage?: string;
   /**
    * false while the Exam-ready panel above already draws the rings: a
    * signature never appears twice on one screen (spec §10).
@@ -385,14 +390,14 @@ export function ReadinessRow({
   const meta = range.enough
     ? // An ESTIMATE, never a prediction (app-store review: no outcome claims).
       ESTIMATE_LINE
-    : // A countdown, not a moving target: `needed` never goes up after an answer.
-      `${range.needed} more ${range.needed === 1 ? 'answer' : 'answers'} until your readiness range`;
-  const spoken = `Estimated readiness ${rangeSpoken(range)}. ${range.enough ? `A range, not a promise. Weighted like the exam. ${ESTIMATE_NOTE}` : meta} ${stage.replace(' · ', ', ')}.`;
+    : // A countdown toward a goal, not a moving target: `needed` never goes up after an answer.
+      `${RANGE_MIN_ANSWERS - range.needed} of ${RANGE_MIN_ANSWERS} for your first range`;
+  const spoken = `${range.enough ? `Estimated readiness ${rangeSpoken(range)}.` : `Not enough data yet. ${meta}.`}${stage ? ` ${stage.replace(' · ', ', ')}.` : ''}`;
   const words = (
     <View style={{ flex: stacked ? undefined : 1, minWidth: 0, alignSelf: stacked ? 'stretch' : undefined }}>
       <ReadinessFigure range={range} size={range.enough ? 38 : 30} growth={rangeGrowth} />
       <T v="meta" style={{ marginTop: space.xs }}>{meta}</T>
-      <T v="stage" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T>
+      {stage ? <T v="stage" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T> : null}
     </View>
   );
   const ringArt = rings && (

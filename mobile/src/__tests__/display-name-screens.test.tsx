@@ -177,18 +177,16 @@ describe('onboarding: "What should we call you?"', () => {
 
   const toNameStep = () => {
     mount(<Onboarding />);
-    press('Start my plan');
+    press('Get started');
   };
-  /** From the exam step to the end: Continue, skip the starting point, Continue, skip the plant. */
-  const finishFromExam = () => {
-    press('Continue'); // exam → starting point
-    press('Skip this question');
-    press('Continue'); // date → plant
-    press('Skip for now');
+  /** From the starting-point step to the end: skip it, then start the first questions. */
+  const finishFromStart = () => {
+    press('Skip this question'); // starting point → date and minutes
+    press('Start my first questions');
   };
   const finish = () => {
-    press('Continue'); // name → exam
-    finishFromExam();
+    press('Continue'); // name → starting point
+    finishFromStart();
   };
 
   it('comes right after the welcome, is optional, and says it stays on the phone', () => {
@@ -197,7 +195,7 @@ describe('onboarding: "What should we call you?"', () => {
     expect(allText()).toContain('Optional');
     expect(allText()).toContain(NAME_HELPER);
     expect(NAME_HELPER).toBe('Only on this phone. It just helps us say hello.');
-    // Not one of the numbered steps: those are still "of 4".
+    // Not one of the numbered steps (those are "of 2").
     expect(allText()).not.toMatch(/Step \d of/);
     expect(field().props.maxLength).toBe(MAX_DISPLAY_NAME);
     expect(field().props.value).toBe('');
@@ -224,27 +222,24 @@ describe('onboarding: "What should we call you?"', () => {
     expect(allText()).toContain('Good morning, Maya Jane');
   });
 
-  it('Skip leaves no name, even when something was typed (and the exam step follows)', () => {
+  it('Skip leaves no name, even when something was typed (and the starting-point step follows)', () => {
     toNameStep();
     type('Maya');
     press('Skip');
-    expect(allText()).toContain('Which exam are you preparing for?');
-    // Back from the exam step returns to the name step, empty.
+    expect(allText()).toContain('Where are you starting from?');
+    // Back from the starting-point step returns to the name step, empty.
     press('Back');
     expect(field().props.value).toBe('');
     press('Skip');
-    finishFromExam();
+    finishFromStart();
     expect(useSettings.getState().displayName).toBeUndefined();
   });
 
   it('Continue with the field empty is just as fine as Skip', () => {
     toNameStep();
     press('Continue');
-    expect(allText()).toContain('Which exam are you preparing for?');
-    press('Continue');
-    press('Skip this question');
-    press('Continue');
-    press('Skip for now');
+    expect(allText()).toContain('Where are you starting from?');
+    finishFromStart();
     expect(useSettings.getState().onboarded).toBe(true);
     expect(useSettings.getState().displayName).toBeUndefined();
   });
@@ -254,7 +249,7 @@ describe('onboarding: "What should we call you?"', () => {
     type('maya@example.com');
     press('Continue');
     expect(field()).toBeUndefined();
-    expect(allText()).toContain('Which exam are you preparing for?');
+    expect(allText()).toContain('Where are you starting from?');
     press('Back');
     expect(field().props.value).toBe('');
   });
@@ -265,21 +260,20 @@ describe('onboarding: "What should we call you?"', () => {
     act(() => {
       field().props.onSubmitEditing();
     });
-    expect(allText()).toContain('Which exam are you preparing for?');
-    finishFromExam();
+    expect(allText()).toContain('Where are you starting from?');
+    finishFromStart();
     expect(useSettings.getState().displayName).toBe('Maya');
   });
 
-  it('the exam is still saved when the name is skipped (onboarding is otherwise unchanged)', () => {
+  it('CISA is still chosen when the name is skipped (there is no exam step any more)', () => {
     toNameStep();
     press('Skip');
-    press('Continue');
     press('Skip this question');
-    press('Continue');
-    press('Skip for now');
+    press('Start my first questions');
     expect(useSettings.getState().activeCertId).toBe('cisa');
     expect(selectCert(useProgress.getState(), 'cisa')).toBeTruthy();
-    expect(router.replace).toHaveBeenCalledWith('/home');
+    // Straight into the first five questions.
+    expect(router.replace).toHaveBeenCalledWith('/session');
   });
 });
 

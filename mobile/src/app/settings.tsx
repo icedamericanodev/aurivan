@@ -57,7 +57,7 @@ import { Button, Chip, Gap, PushedHeader, Screen, Stepper, T, ToggleRow } from '
 import { spokenDate } from '../engine/calendar';
 import { DAILY_MINUTES, examFocusedOf, FAMILIARITIES, FAMILIARITY_INFO, KEEP_TODAY_LINE, minutesLabel, minutesSpoken, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { MODE_INFO, STUDY_MODES, type StudyMode } from '../engine/studyModes';
-import { MOVING_STEPS, TAGLINE, VISION_LINE } from '../content/brand';
+import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certifications';
 import { examDateLabel } from '../engine/examDay';
 import { changeExamDate, changeFit } from '../lib/activity';
@@ -706,9 +706,6 @@ export default function Settings() {
         <T v="quote" color={c.ink2} style={{ marginTop: space.xs }}>{VISION_LINE}</T>
         <Gap h={space.lg} />
         <PillarList look="rows" />
-        {/* Mobile 1.23: KaiSip was called Aurivan; progress moves by backup file (a new app on the phone). */}
-        <T v="caption" color={c.accentText} accessibilityRole="header" style={{ marginTop: space.xl }}>New name</T>
-        <T v="meta" color={c.ink2} style={{ marginTop: space.xs }}>{`Aurivan is now KaiSip. ${MOVING_STEPS}`}</T>
       </Sheet>
     </Screen>
   );

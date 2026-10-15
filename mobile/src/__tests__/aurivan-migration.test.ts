@@ -13,7 +13,6 @@ import { checkBackupText, currentBackup, restoreBackup, sweepBackupFiles } from 
 import { useBackup } from '../store/backup';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
-import { MOVING_LINE } from '../content/brand';
 import { FAQ, WHATS_NEW } from '../content/support';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -151,21 +150,17 @@ describe('a backup from Aurivan 1.19 to 1.22 restores in KaiSip', () => {
   });
 });
 
-describe('the move is explained in plain words', () => {
-  it('one line says how, in the old app and here', () => {
-    expect(MOVING_LINE).toBe('Moving from Aurivan? In the old app: Settings → Your data → Save a backup. Then restore that file here.');
+describe('the old name is no longer explained to every learner (mobile 1.24)', () => {
+  it('What’s new and the Help questions do not mention Aurivan', () => {
+    const news = WHATS_NEW.flatMap((e) => [...(e.new ?? []), ...(e.improved ?? []), ...(e.fixed ?? [])]).join(' ');
+    expect(news).not.toMatch(/Aurivan|Moving from/);
+    expect(FAQ.find((f) => f.id === 'moving-from-aurivan')).toBeUndefined();
+    expect(FAQ.flatMap((f) => [f.question, ...f.answer]).join(' ')).not.toMatch(/Aurivan/);
   });
 
-  it('What’s new says it, the Help questions say it, and 1.23.0 is the newest entry', () => {
-    const top = WHATS_NEW[0];
-    expect(top.version).toBe('1.23.0');
-    const all = [...(top.new ?? []), ...(top.improved ?? [])].join(' ');
-    expect(all).toMatch(/Aurivan is now KaiSip/);
-    expect(all).toMatch(/call you/);
-    expect(all).toMatch(/Moving from Aurivan\?/);
-    expect(all).toMatch(/Save a backup/);
-    const faq = FAQ.find((f) => f.id === 'moving-from-aurivan')!;
-    expect(faq.topic).toBe('backup');
-    expect(faq.answer.join(' ')).toMatch(/Restore from a backup/);
+  it('a backup is still how progress moves to a new phone, and the old file still restores', () => {
+    // The Restore button stays on the welcome screen; only the old-app line is gone.
+    expect(FAQ.find((f) => f.id === 'moving-phones' || f.topic === 'backup')).toBeDefined();
+    expect(BACKUP_APPS).toContain('aurivan');
   });
 });

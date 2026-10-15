@@ -44,11 +44,8 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.23.0',
     date: '2026-10-15',
     new: [
-      'Aurivan is now KaiSip, with a fresh look and a new logo.',
+      'KaiSip has a fresh look and a new logo.',
       'Tell KaiSip what to call you, and Today says hello by your first name. It is optional and stays on your phone.',
-    ],
-    improved: [
-      'Moving from Aurivan? KaiSip installs as a new app. In the old app, go to Settings, then Your data, then Save a backup. Then restore that file in KaiSip.',
     ],
   },
   {
@@ -374,15 +371,6 @@ export const FAQ: readonly FaqEntry[] = [
     answer: [
       'In Settings, under Your data, tap Save a backup and keep the file somewhere the new phone can reach, such as Files, Google Drive or your email.',
       'On the new phone, choose Restore from a backup on the welcome screen, or later in Settings. KaiSip never uploads your progress.',
-    ],
-    topic: 'backup',
-  },
-  {
-    id: 'moving-from-aurivan',
-    question: 'I used Aurivan. How do I bring my progress to KaiSip?',
-    answer: [
-      'Aurivan is now KaiSip. KaiSip installs as a new app next to the old one, so your progress moves with a backup file.',
-      'In the old Aurivan app, open Settings, then Your data, then Save a backup, and keep the file somewhere you can reach it. In KaiSip, choose Restore from a backup on the welcome screen, or later in Settings, and pick that file.',
     ],
     topic: 'backup',
   },

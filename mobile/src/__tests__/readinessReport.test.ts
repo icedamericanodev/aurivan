@@ -319,7 +319,7 @@ describe('Your path: the six steps', () => {
     expect(Object.keys(PATH_REASON)).toEqual(PATH_STEPS.map((s) => s.stage));
     expect(PATH_NOTE).toMatch(/^The plan moves between these as you go\./);
     expect(PATH_STEPS.map((s) => s.line)).toEqual([
-      'The starting check: a short look at where you are.',
+      'Your first questions: a short look at where you are.',
       'Lessons for the domains you need.',
       'Practice and spaced review.',
       'Mocks at exam pace.',

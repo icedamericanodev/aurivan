@@ -4,6 +4,7 @@
  */
 import { router } from 'expo-router';
 import type { PlanItem } from '../engine/planner';
+import { startFirstSet } from './firstSet';
 import { guardedStart, startPractice, startReview } from './sessions';
 
 const openSession = () => router.push('/session');
@@ -47,6 +48,8 @@ export function runPlanItem(item: PlanItem, certId: string) {
       // The id goes in as a route param, never pasted into the path.
       return router.push({ pathname: '/lesson/[id]', params: { id: item.lessonId } });
     case 'practice':
+      // Day 1's item is the fixed first set (the same five questions for everyone), not a random draw.
+      if (item.why === 'first') return guardedStart(() => startFirstSet(certId), openSession);
       return guardedStart(
         () => startPractice(certId, { count: item.count, domainId: item.domainId, title: item.label }),
         openSession,

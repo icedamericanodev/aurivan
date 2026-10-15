@@ -3,6 +3,10 @@
  * learner's time and days (the rules live in engine/reminders.ts).
  * No server, no push tokens, no personal data leaves the device.
  *
+ * Mobile 1.24: the next 7 reminders are scheduled as one-off notifications
+ * and re-planned each time the app opens (lib/reminderSync.ts), so they stop
+ * on their own after a week away instead of firing forever.
+ *
  * WHY THE LIBRARY IS LOADED LAZILY: inside Expo Go on Android, merely
  * importing `expo-notifications` throws ("push notifications were removed
  * from Expo Go"), because a part of the library runs as soon as it loads.
@@ -13,7 +17,7 @@
  */
 import { isRunningInExpoGo } from 'expo';
 import { Platform } from 'react-native';
-import { isStudyReminder, reminderCopy, reminderPlan, type ReminderPrefs } from '../engine/reminders';
+import { isStudyReminder, reminderCopy, rollingPlan, type ReminderPrefs } from '../engine/reminders';
 
 type NotificationsModule = typeof import('expo-notifications');
 
@@ -97,30 +101,37 @@ async function cancelOurs(N: NotificationsModule) {
   }
 }
 
-/**
- * Replace our reminders with the learner's choice: at most one a day, at
- * their time, on their days (engine/reminders.ts reminderPlan). Does NOT ask
- * for permission: Settings asks only when the learner turns reminders on.
- */
-export async function scheduleReminders(prefs: ReminderPrefs, certName: string) {
-  const N = notifications();
-  if (!N) return;
-  return oneAtATime(() => replaceOurs(N, prefs, certName));
+/** Optional facts for one scheduling pass. All have safe defaults, so older callers work unchanged. */
+export interface ScheduleOptions {
+  /** The moment to plan from (default: now). Tests pass a fixed one. */
+  now?: number;
+  /** Today's plan is already cleared: no reminder today. */
+  skipToday?: boolean;
+  /** The learner's daily minutes, for the title ("Your 15-minute plan is ready"). */
+  minutes?: number;
 }
 
-async function replaceOurs(N: NotificationsModule, prefs: ReminderPrefs, certName: string) {
+/**
+ * Replace our reminders with the learner's choice: the next 7, at their time,
+ * on their days (engine/reminders.ts rollingPlan). Does NOT ask for
+ * permission: Settings asks only when the learner turns reminders on.
+ */
+export async function scheduleReminders(prefs: ReminderPrefs, certName: string, opts: ScheduleOptions = {}) {
+  const N = notifications();
+  if (!N) return;
+  return oneAtATime(() => replaceOurs(N, prefs, certName, opts));
+}
+
+async function replaceOurs(N: NotificationsModule, prefs: ReminderPrefs, certName: string, opts: ScheduleOptions) {
   await ensureAndroidChannel(N);
   await cancelOurs(N);
-  const content = reminderCopy(certName);
-  for (const r of reminderPlan(prefs)) {
+  const content = reminderCopy(certName, opts.minutes);
+  for (const r of rollingPlan(prefs, opts.now ?? Date.now(), { skipToday: opts.skipToday })) {
     await N.scheduleNotificationAsync({
       identifier: r.id,
       content,
       // channelId is ignored on iOS; on Android it files the reminder under "Study reminders".
-      trigger:
-        r.kind === 'daily'
-          ? { type: N.SchedulableTriggerInputTypes.DAILY, hour: r.hour, minute: r.minute, channelId: REMINDER_CHANNEL_ID }
-          : { type: N.SchedulableTriggerInputTypes.WEEKLY, weekday: r.weekday, hour: r.hour, minute: r.minute, channelId: REMINDER_CHANNEL_ID },
+      trigger: { type: N.SchedulableTriggerInputTypes.DATE, date: new Date(r.at), channelId: REMINDER_CHANNEL_ID },
     });
   }
 }

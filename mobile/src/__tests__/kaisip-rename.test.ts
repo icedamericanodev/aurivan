@@ -1,8 +1,9 @@
 /**
  * Mobile 1.23: the app is called KaiSip. Nothing a learner can read says
  * "Aurivan" any more, except the few places that exist BECAUSE of the old
- * name: the move-from-Aurivan words, the backup file compatibility, the
- * reserved board names. The identifiers that must never change (saved-data
+ * name: the backup file compatibility, the reserved board names. (Mobile 1.24
+ * removed the "Moving from Aurivan?" words from the welcome screen, About,
+ * Your data, Help and What's new.) The identifiers that must never change (saved-data
  * keys "aurivan.*", EXPO_PUBLIC_AURIVAN_* variables, __AURIVAN_* globals,
  * the notification ids) are fine anywhere.
  *
@@ -32,10 +33,6 @@ jest.mock('react-native-safe-area-context', () => {
 const SRC = join(__dirname, '..');
 /** Where the old name may appear in words or code, and why. */
 const ALLOWED_FILES: Record<string, string> = {
-  'content/brand.ts': 'the "Moving from Aurivan?" line',
-  'content/support/index.ts': 'What’s new and the Help question for people moving from Aurivan',
-  'app/settings.tsx': 'About → "Aurivan is now KaiSip"',
-  'app/onboarding.tsx': 'the welcome screen’s restore hint',
   'engine/backup.ts': 'old backups (marker "aurivan", file name "aurivan-backup") still restore',
   'engine/moderation.ts': '"aurivan" stays a reserved board name',
   'lib/backup.ts': 'cleans up old aurivan-backup files',

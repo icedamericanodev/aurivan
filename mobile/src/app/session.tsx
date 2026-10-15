@@ -691,7 +691,7 @@ export default function SessionScreen() {
               </View>
               {/* Very large text: the confidence chips live here, under option D,
                   so the sticky footer stays small enough to leave room for the question. */}
-              {!isMock && selected && confidenceInScroll && (
+              {!isMock && !active.firstSet && selected && confidenceInScroll && (
                 <View style={{ marginTop: space.md }}>
                   <ConfidenceRow value={confidence} onChange={setConfidence} />
                 </View>
@@ -802,7 +802,8 @@ export default function SessionScreen() {
             </Row>
           ) : (
             <>
-              {!turning && !submitted && selected && !confidenceInScroll && <ConfidenceRow value={confidence} onChange={setConfidence} />}
+              {/* The first set (mobile 1.24) has no confidence chips: they come in with the next set. */}
+              {!turning && !submitted && selected && !confidenceInScroll && !active.firstSet && <ConfidenceRow value={confidence} onChange={setConfidence} />}
               {/* ONE primary button for every state, so screen-reader focus stays on
                   it as it changes. Mid-turn it still belongs to the leaving page
                   (the answer screen): "Next question", and inert. */}

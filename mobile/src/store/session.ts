@@ -89,6 +89,13 @@ export interface ActiveSession {
    * key from engine/milestones.ts). Optional: most sessions have none.
    */
   milestone?: string;
+  /**
+   * Mobile 1.24: this is the learner's FIRST SET (the same five questions for
+   * everyone, lib/firstSet.ts). It runs with no timer and no confidence chips,
+   * and its Results is the Day-1 closing screen (components/firstSet.tsx).
+   * Optional: older sessions have none.
+   */
+  firstSet?: boolean;
   finishedAt?: number; // set when the learner finishes / submits
 }
 

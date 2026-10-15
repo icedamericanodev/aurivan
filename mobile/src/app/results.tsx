@@ -35,6 +35,7 @@ import { OptionCard, TrustLine } from '../components/quiz';
 import { useReportFlow } from '../components/support';
 import { DomainRings } from '../components/journey';
 import { PacingPanel } from '../components/pace';
+import { FirstSetDone } from '../components/firstSet';
 import { MilestoneMomentView } from '../components/milestones';
 import { Turn, useOncePerDay } from '../components/motion';
 import { BookOpen, ChevronDown, ICON_STROKE } from '../components/icons';
@@ -126,6 +127,10 @@ export default function Results() {
       </Screen>
     );
   }
+
+  // Mobile 1.24: the first set (the same five questions for everyone) ends on its own
+  // closing screen, not on this page (components/firstSet.tsx).
+  if (active.firstSet) return <FirstSetDone session={active} />;
 
   const cert = getCertification(active.certId)!;
   const denominator = active.mode === 'mock' ? score.total : Math.max(score.answered, 1);
