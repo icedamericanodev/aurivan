@@ -97,8 +97,8 @@ export const CISA_LESSONS: Lesson[] = [
     minutes: 5,
     provenance: PROVENANCE,
     references: [
-      'ISACA IT Audit Standard 1201 (Risk Assessment in Planning)',
-      'ISACA IT Audit Standard 1202 (Audit Scheduling)',
+      'ITAF Standard 1201 (Risk Assessment in Planning)',
+      'ITAF Standard 1202 (Audit Scheduling)',
       'ISO 31000:2018 (Risk management — Guidelines)',
     ],
     outlineVersion: OUTLINE,
@@ -140,7 +140,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'As an IS (information systems) auditor, you put effort where impact times likelihood is highest. You plan from business objectives, keep the risk assessment current, and adjust testing to the risk you find. Weak controls never mean less work; they mean you test the results more.',
       },
       {
@@ -206,7 +206,7 @@ export const CISA_LESSONS: Lesson[] = [
     title: 'Which evidence wins',
     minutes: 5,
     provenance: PROVENANCE,
-    references: ['ISACA IT Audit Standard 1205 (Evidence)', 'ISACA IT Audit Standard 1206 (Using the Work of Other Experts)'],
+    references: ['ITAF Standard 1205 (Evidence)', 'ITAF Standard 1206 (Using the Work of Other Experts)'],
     outlineVersion: OUTLINE,
     lastReviewed: REVIEWED,
     topics: ['1B3', '1B4'],
@@ -255,7 +255,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'As the IS auditor, you base conclusions on evidence you could defend to an outsider. Independent beats internal, direct beats indirect, documented beats verbal. When the only support is what management told you, you have a lead, not a conclusion.',
       },
       {
@@ -321,7 +321,7 @@ export const CISA_LESSONS: Lesson[] = [
     title: 'Sampling without guesswork',
     minutes: 5,
     provenance: PROVENANCE,
-    references: ['AICPA AU-C 530 (Audit Sampling) (analogous guidance)', 'ISACA IT Audit Standard 1205 (Evidence)'],
+    references: ['AICPA AU-C 530 (Audit Sampling) (analogous guidance)', 'ITAF Standard 1205 (Evidence)'],
     outlineVersion: OUTLINE,
     lastReviewed: REVIEWED,
     topics: ['1B2'],
@@ -365,7 +365,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'As the IS auditor, you set the confidence level and tolerable error before testing, based on risk. If the sample shows more deviations than you can tolerate, you conclude the control is not effective and report it. You do not move the threshold to fit the result.',
       },
       {
@@ -480,7 +480,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Start from the risk, not the tool. As the IS (information systems) auditor, you first name the risk a control must cover, then judge whether the control really covers it. A stand-in for a missing control counts only if it targets that same risk. You recommend; management chooses and runs the control.',
       },
       {
@@ -546,9 +546,9 @@ export const CISA_LESSONS: Lesson[] = [
     minutes: 5,
     provenance: PROVENANCE,
     references: [
-      'ISACA IT Audit Standard 1203 (Engagement Planning)',
-      'ISACA IT Audit Standard 1204 (Performance and Supervision)',
-      'ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts)',
+      'ITAF Standard 1203 (Engagement Planning)',
+      'ITAF Standard 1204 (Performance and Supervision)',
+      'ITAF Standard 1207 (Irregularity and Illegal Acts)',
     ],
     outlineVersion: OUTLINE,
     lastReviewed: PHASE2_REVIEWED,
@@ -592,7 +592,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Read the role. As the IS (information systems) auditor, you assess, document, report and escalate; you do not fix problems or investigate alone. Questioning the people involved, blocking a system or widening your testing before you escalate can alert suspects, spoil evidence and step outside your authority.',
       },
       {
@@ -657,7 +657,7 @@ export const CISA_LESSONS: Lesson[] = [
     title: 'Reporting and follow-up',
     minutes: 5,
     provenance: PROVENANCE,
-    references: ['ISACA IT Audit Standard 1401 (Reporting)', 'ISACA IT Audit Standard 1402 (Follow-up Activities)'],
+    references: ['ITAF Standard 1401 (Reporting)', 'ITAF Standard 1402 (Follow-up Activities)'],
     outlineVersion: OUTLINE,
     lastReviewed: PHASE2_REVIEWED,
     topics: ['1B5'],
@@ -700,7 +700,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Report to the right level of authority. As the IS (information systems) auditor, you report to the body that owns the decision and you keep your ratings independent. Management owns the fix. The more severe the finding, the higher and faster it travels. In follow-up you want proof that the fix happened, not a promise that it did.',
       },
       {
@@ -818,7 +818,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Governance comes before technology. As the IS (information systems) auditor, you check for clear direction, ownership and approval at the right level, and whether IT strategy traces to business goals. You test whether the board gets the information it needs to monitor. You recommend; the board and management decide.',
       },
       {
@@ -928,7 +928,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'The business owns risk. As the IS (information systems) auditor, you never accept a risk on management’s behalf, and neither does IT. You check that each risk has an owner at the right level, that acceptance is formal and within risk appetite, and that responses are tracked. Then you report the gaps.',
       },
       {
@@ -1041,7 +1041,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Governance comes before technology. As the IS (information systems) auditor, you first check that a policy exists, that senior management approved it, and that it is reviewed on a schedule and after major change. You judge compliance against mandatory documents, not advice. You recommend; management writes and approves.',
       },
       {
@@ -1154,7 +1154,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Know what you hold before you protect it, and make accountability explicit. As the IS (information systems) auditor, you check that someone senior is accountable for privacy, that the organization knows what personal data it keeps and why, and that business leaders, not IT, decide how their data is classified and shared. You report the gaps; the owners fix them.',
       },
       {
@@ -1271,7 +1271,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Accountability stays with the organization. As the IS (information systems) auditor, you do not choose the vendor or write the contract. You check that management weighed the risks, sized its checks to the supplier’s importance, secured measurable terms and audit rights, keeps monitoring, and has an exit plan. Then you report the gaps.',
       },
       {
@@ -1384,7 +1384,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Busy is not the same as well run. As the IS (information systems) auditor, you look past effort to evidence: someone else sees privileged work, measures track the business outcome, and defects are prevented by a better process, not only caught at the end. You recommend; management acts.',
       },
       {
@@ -1496,7 +1496,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Two rules apply: the reviewer must be independent, and the business owns the results. As the IS (information systems) auditor, you check that the reviewer did not build or deliver the system. You report and recommend; management decides and acts. The sponsor (the leader who funded the project and promised its benefits) owns any shortfall. Then you follow up.',
       },
       {
@@ -1609,7 +1609,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Right level of authority: each decision belongs to whoever owns its money and risk. Delivery roles run the work; governance roles fund it and choose at each gate. As the IS (information systems) auditor, you check the business case is complete and current, and you recommend. You never approve the spend yourself.',
       },
       {
@@ -1729,7 +1729,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Controls designed early are cheapest, and the method does not change the control goals. As the IS auditor, you do not choose waterfall or agile. You check that whichever method is used still leaves evidence an outsider can follow, from each approved requirement to the test that proved it. That unbroken line is called traceability. You recommend fixes for gaps; management closes them.',
       },
       {
@@ -1843,7 +1843,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Prevent at the source. A control at entry stops bad data before it spreads; a report found later only shows that it spread. As the IS auditor, you advise early, while the design is still cheap to change. Management designs, builds and owns the controls. If you designed them yourself, you could not later audit them objectively.',
       },
       {
@@ -1856,7 +1856,7 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'trap',
         heading: 'The helpful-auditor trap',
         trap: '“The IS auditor knows controls best, so the IS auditor should design them.”',
-        why: 'Designing the controls makes them the IS auditor’s own work, and no one can objectively audit their own work; ISACA calls this a self-review threat. Early advice is welcome; authorship is not. Management stays the owner of every control it builds.',
+        why: 'Designing the controls makes them the IS auditor’s own work, and no one can objectively audit their own work; this is a self-review threat to objectivity. Early advice is welcome; authorship is not. Management stays the owner of every control it builds.',
       },
       {
         type: 'tip',
@@ -1961,7 +1961,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Two rules: the evidence must be sound, and the business decides readiness. As the IS auditor, you check that results exist at each level, trace back to approved requirements and meet the exit criteria (pass marks agreed before testing). You do not run the tests or accept the system. Business owners accept it; your job is to say whether the evidence supports their decision.',
       },
       {
@@ -2070,7 +2070,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Preventive controls, which stop a bad release, beat detective controls, which find it afterward. A gate that blocks a failed build is stronger than a review that finds the damage later. As the IS auditor, you check that controls act before release, not after, and that nobody can get around them alone. You recommend; the change owner runs the process.',
       },
       {
@@ -2186,7 +2186,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Verify outcomes. Data that looks right on a few screens is not proof. As the IS auditor, you check that the data owner approved the conversion rules and results, and that the hard calls for cutover night were agreed in advance by the people who own the risk. You advise; management decides.',
       },
       {
@@ -2301,7 +2301,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'The business owns the risk, so the business sets the targets. As the IS auditor, you check that process owners rated the impacts, senior management approved the targets, and each target is backed by impact and cost. A target without that analysis is a wish, not a requirement.',
       },
       {
@@ -2424,7 +2424,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'The business sets the targets; IT proposes designs to meet them. As the IS auditor, you check that the targets came from an approved BIA and that the strategy meets them at a cost the impact justifies. Paying for a mirrored site for a system that can wait days is a finding too. Only a test proves recovery works.',
       },
       {
@@ -2536,7 +2536,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Preventive controls (which stop a problem) beat detective ones (which spot it afterward), and priority follows risk. As the IS auditor, you expect every change, even an emergency fix, to be authorized, tested in proportion to its risk, recorded and independently reviewed. You recommend the control; management puts it in place.',
       },
       {
@@ -2650,7 +2650,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Risk-based thinking starts with a complete inventory. As the IS auditor, you test whether the register matches reality, not just whether one exists. When a component cannot be replaced in time, you recommend compensating controls and a decision recorded by someone with authority over the risk. Management decides; you report what remains.',
       },
       {
@@ -2761,7 +2761,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Governance before technology. As the IS auditor, you first ask whether each job, interface and user-built tool is known, owned and approved. Then you ask whether a control proves it worked. A “job succeeded” message is not evidence of complete, accurate data. You recommend; the business owner decides the fix.',
       },
       {
@@ -2872,7 +2872,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Business alignment: the business need sets the target, and the design follows. As the IS auditor, you check that targets are measurable, tied to business impact and reported end to end. A near-perfect target for an expense-claims tool is a finding, because it costs more than the need justifies; so is a missing target for payroll. You recommend; service owners decide.',
       },
       {
@@ -2995,7 +2995,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Root cause beats symptom. As the IS auditor, you look for repeat incidents closed one by one with quick fixes, and for root cause reviews that stop at “operator error”. Ask why the process allowed it. You also test the metrics, because fast closure can hide poor fixes. You recommend; the process owner fixes.',
       },
       {
@@ -3118,7 +3118,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Evidence quality and compensating controls. As the IS auditor, you ask whether the logs would stand up as evidence: complete, kept long enough and untouched. When a powerful role cannot be restricted, look for a control that watches it independently. You recommend the control; management owns the decision to grant the rights.',
       },
       {
@@ -3234,7 +3234,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Evidence quality: test, do not assume. As the IS auditor, you know a backup job that reports success proves a copy was written, not that it can be read back. You look for proof that copies work when needed, and that the offsite stock matches the records. You recommend; operations owns the fix.',
       },
       {
@@ -3348,7 +3348,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Right level of authority. Continuity is a business duty, so its mandate comes from the top, not from IT, and the plan assigns crisis decisions in advance so nobody waits for permission. As the IS auditor, you check that the steps ran in order, authority is clear, and each test changes the plan where it should. You recommend; management decides.',
       },
       {
@@ -3461,7 +3461,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Root cause beats symptom. To the IS (information systems) auditor, one leftover account is a symptom; a mover process that never removes access is the finding. Data owners, not IT, decide who may see their data. You recommend the fix; management makes it.',
       },
       {
@@ -3572,7 +3572,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Match strength to risk. As the IS (information systems) auditor, you expect the strongest factors where misuse would hurt most: administrators, remote access and payments. You also check accountability: on a shared account, even with MFA, nobody can say who acted. You recommend; management chooses the design.',
       },
       {
@@ -3679,7 +3679,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'During a live incident, “first” means containment, unless people’s safety is at risk, which always comes first. As the IS (information systems) auditor, you check that the plan names who declares, who escalates and who speaks for the organization, and that lessons learned actually change controls.',
       },
       {
@@ -3792,7 +3792,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Governance first, and a control counts only if it works in practice. As the IS (information systems) auditor, you check who stands behind the policy and who owns each control, then look for proof it works: changed habits, not slogans; alarms that get answered. You report the gaps and recommend; management fixes them.',
       },
       {
@@ -3907,7 +3907,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Fix the cause, and cover the risk until the fix lands. As the IS (information systems) auditor, when a flaw takes weeks to fix, you expect a compensating control (one that covers the same risk another way) in the meantime. Contain devices that cannot be hardened, and tie access to individuals. You recommend; management decides.',
       },
       {
@@ -4035,7 +4035,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Know your data before you buy the tool. As the IS (information systems) auditor, you check that data owners, not IT, classified the data, that leak rules were proven accurate before enforcement, and that encryption keys are kept apart from the data and changed on a schedule. Strong encryption with the key stored beside the data protects very little.',
       },
       {
@@ -4143,7 +4143,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Preventive beats detective. As the IS (information systems) auditor, you look for controls that stop a failure before it happens: identity checks before issuing, revocation checks on every use, warnings well before expiry, and tight control of who can use a private key. Finding out after an outage, or after malware ships under the organization’s name, is too late.',
       },
       {
@@ -4262,7 +4262,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'You can outsource the work, not the accountability. As the IS (information systems) auditor, you may rely on the provider’s SOC 2 report, an independent auditor’s report on its controls, for what it covers; a Type 2 report tests them over a period. You still test the complementary user entity controls (CUECs): the checks the report assumes the customer runs.',
       },
       {
@@ -4379,7 +4379,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Strong controls work even when people slip. As the IS (information systems) auditor, you favor a process check over hoping staff spot every fake, and you test where the value sits. When findings keep returning, the real finding is a broken loop: nobody is accountable and nothing proves the fixes work. You recommend; management does the fixing.',
       },
       {
@@ -4486,7 +4486,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Prove it works, and govern it first. As the IS (information systems) auditor, you want evidence that detection works today, not proof that a tool is configured. Watching employees needs a lawful, written basis before anyone switches a tool on. If an outside security firm watches alerts, the organization still owns the risk and must oversee the provider.',
       },
       {
@@ -4594,7 +4594,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'idea',
-        heading: 'How ISACA thinks',
+        heading: 'The IS auditor’s lens',
         body: 'Evidence quality decides. As the IS (information systems) auditor, you check that the process keeps evidence complete, unaltered and traceable: trained staff for the first response, tested tools, and logs kept long enough to investigate. Conclusions must state only what the evidence shows, and no more.',
       },
       {

@@ -1,7 +1,7 @@
 // export-my-data: POST { appVersion? }
 // "Download my data" (GDPR access and portability). Returns the learner's own
 // data only, as one JSON document for the share sheet:
-//   { app: 'aurivan', schema: 1, exportedAt, appVersion, stores, account, board }
+//   { app: 'kaisip', schema: 1, exportedAt, appVersion, stores, account, board }
 // `stores` holds the learner's synced snapshots (Phase 7) as backup-file
 // stores, so the download is also a backup the app can restore (empty when
 // sync was never used); `appVersion` is the newest app that wrote one of
@@ -30,7 +30,7 @@ export interface ExportDeps {
   log: Logger;
 }
 
-export const EXPORT_APP = 'aurivan';
+export const EXPORT_APP = 'kaisip';
 export const EXPORT_SCHEMA = 1;
 const RETRY_AFTER_SEC = 60 * 60;
 const SEMVER = /^\d{1,3}\.\d{1,3}\.\d{1,3}$/;

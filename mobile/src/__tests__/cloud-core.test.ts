@@ -429,7 +429,7 @@ describe('the memory backend plays the server’s rules', () => {
     const b = make();
     await b.auth.signInWithGoogle();
     const file = JSON.parse(await b.auth.exportMyData());
-    expect(file).toMatchObject({ app: 'aurivan', schema: 1, appVersion: '1.17.0', account: { email: 'maya@example.com', providers: ['google'] } });
+    expect(file).toMatchObject({ app: 'kaisip', schema: 1, appVersion: '1.17.0', account: { email: 'maya@example.com', providers: ['google'] } });
     // The server's export takes { appVersion } for the envelope.
     t += 60 * 60_000;
     expect(JSON.parse(await b.auth.exportMyData({ appVersion: '1.18.0' })).appVersion).toBe('1.18.0');

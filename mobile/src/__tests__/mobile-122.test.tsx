@@ -158,7 +158,7 @@ describe('lesson scenes: kicker + hero heading', () => {
   const idea: Scene = { type: 'idea', heading: 'What a charter does', body: 'x' };
   it('names every scene kind', () => {
     expect(sceneKicker(idea)).toBe('The idea');
-    expect(sceneKicker({ type: 'idea', heading: 'How ISACA thinks', body: 'x' })).toBe('How ISACA thinks');
+    expect(sceneKicker({ type: 'idea', heading: 'The IS auditor’s lens', body: 'x' })).toBe('The IS auditor’s lens');
     expect(sceneKicker({ type: 'analogy', heading: 'A leaking roof', body: 'x' })).toBe('Think of it like');
     // Never "Think of it like / Think of a referee".
     expect(sceneKicker({ type: 'analogy', heading: 'Think of a referee', body: 'x' })).toBe('An analogy');

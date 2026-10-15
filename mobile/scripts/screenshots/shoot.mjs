@@ -58,7 +58,7 @@ await page.mouse.move(196, 500);
 await page.mouse.wheel(0, 500);
 await page.waitForTimeout(600);
 await page.screenshot({ path: `${out}/02d-learn-domains.png` });
-// Lessons: a middle scene, the "How ISACA thinks" scene, and a check with its
+// Lessons: a middle scene, the "The IS auditor’s lens" scene, and a check with its
 // feedback. Scenes are 0-based indexes; `answer` is the option text to tap.
 const lessonShots = [
   { id: 'cisa-l-d4-bia', name: '03b-lesson-bia', middle: 3, isaca: 4, check: 7, answer: 'Complete a BIA to set recovery priorities and targets' },

@@ -68,7 +68,7 @@ mobile/
 ├── scripts/build-content.mjs  # ../data/*.json → src/content/generated (runs on npm install)
 └── src/
     ├── app/                   # SCREENS (Expo Router)
-    │   ├── _layout.tsx        #   fonts, splash, saved-data loading
+    │   ├── _layout.tsx        #   fonts, splash, saved-data loading + recovery screen if it fails (store/useHydrated.ts, store/hydration.ts)
     │   ├── onboarding.tsx     #   pick certification + exam date
     │   ├── (tabs)/            #   Home · Practice · Mock · Progress · Settings
     │   ├── session.tsx        #   answering questions (practice + mock)
@@ -242,7 +242,7 @@ turns the notes (Build C `practiceIds`) into one ordered topic list
 
 **Games (mobile 1.5).** *Root or Rumor* (`engine/games/rootOrRumor.ts`) plays
 one-line statements from the notes: Rumors are the exam traps; Roots are the
-first sentence of "How ISACA thinks" and "How it works" lines, kept only
+first sentence of "The IS auditor’s lens" and "How it works" lines, kept only
 when they are whole standalone sentences of 8–30 words (no questions, no
 e.g. fragments, nothing that leans on the line before; the filter runs on
 the bundled notes at load and on CI). Each statement is a review *card*

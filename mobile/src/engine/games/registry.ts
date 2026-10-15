@@ -42,6 +42,11 @@ export interface GameInfo {
   name: string;
   /** One line under the name: what you do and why it helps. */
   tagline: string;
+  /**
+   * A plain few-word subtitle for lists ("Spot the trick answer"): says what
+   * you DO, with no game vocabulary. Shown under the name on Play.
+   */
+  plain: string;
   /** The exam skill it trains (the hero caption). */
   skill: string;
   /** Questions per round. */
@@ -79,6 +84,7 @@ export const GAMES: Record<GameId, GameInfo> = {
     id: 'trap',
     name: 'Snare Spotter',
     tagline: 'Find the answer built to fool you, then the best one.',
+    plain: 'Spot the trick answer',
     skill: 'Beating distractors',
     size: 5,
     pool: trapPool,
@@ -89,6 +95,7 @@ export const GAMES: Record<GameId, GameInfo> = {
     id: 'sprint',
     name: 'Forecast',
     tagline: 'How sure are you, really? Honest confidence scores best.',
+    plain: 'Say how sure you are',
     skill: 'Knowing what you know',
     size: 8,
     pool: (qs) => qs,
@@ -97,6 +104,7 @@ export const GAMES: Record<GameId, GameInfo> = {
     id: 'priority',
     name: 'Signpost',
     tagline: 'Read the word that decides which true answer wins.',
+    plain: 'Find the word that decides',
     skill: 'Reading like the examiner',
     size: 5,
     pool: priorityPool,
@@ -106,6 +114,7 @@ export const GAMES: Record<GameId, GameInfo> = {
     id: 'daylight',
     name: 'Daylight',
     tagline: 'Answer at exam pace.',
+    plain: 'Answer at exam pace',
     skill: 'Pacing',
     size: DAYLIGHT_SIZE,
     minutes: DAYLIGHT_MINUTES,
@@ -117,6 +126,7 @@ export const GAMES: Record<GameId, GameInfo> = {
     id: 'rumor',
     name: 'Root or Rumor',
     tagline: 'Tell a sound principle from an exam myth.',
+    plain: 'Sound principle or exam myth',
     skill: 'Rejecting exam myths',
     size: RUMOR_SIZE,
     minutes: 4,
@@ -128,6 +138,7 @@ export const GAMES: Record<GameId, GameInfo> = {
     id: 'callit',
     name: 'Call It First',
     tagline: 'Name the principle before you see the options.',
+    plain: 'Answer before you see the options',
     skill: 'Answering before the options',
     size: CALL_SIZE,
     pool: callPool,
@@ -138,6 +149,7 @@ export const GAMES: Record<GameId, GameInfo> = {
     id: 'field',
     name: 'Field Guide',
     tagline: 'Match each term to what it means.',
+    plain: 'Match terms to meanings',
     skill: 'Exact meanings',
     size: FIELD_SIZE,
     minutes: 3,
@@ -151,6 +163,7 @@ export const GAMES: Record<GameId, GameInfo> = {
     id: 'canopy',
     name: 'Canopy Call',
     tagline: 'Choose who has the authority to decide.',
+    plain: 'Who has the authority to decide',
     skill: 'The right level of authority',
     size: CANOPY_SIZE,
     minutes: 3,
@@ -164,6 +177,7 @@ export const GAMES: Record<GameId, GameInfo> = {
     id: 'stones',
     name: 'Stepping Stones',
     tagline: 'Put each process in the right order.',
+    plain: 'Put the steps in order',
     skill: 'What comes first',
     size: STONES_PER_ROUND,
     minutes: 3,

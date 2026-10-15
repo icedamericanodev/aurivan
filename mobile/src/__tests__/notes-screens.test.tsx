@@ -90,7 +90,7 @@ const setFontScale = (fontScale: number, width = 390) => {
 };
 
 const note = (id: string) => findNote('cisa', id)!;
-const SECTIONS = ['In one line', 'Understand', 'Why it matters', 'How it works', 'Compare', 'Example', 'Think like the auditor', 'How ISACA thinks', 'Exam traps', 'Keep it', 'Key terms'];
+const SECTIONS = ['In one line', 'Understand', 'Why it matters', 'How it works', 'Compare', 'Example', 'Think like the IS auditor', 'The IS auditor’s lens', 'Exam traps', 'Keep it', 'Key terms'];
 
 beforeEach(() => {
   mockNotesOn = true;
@@ -204,12 +204,12 @@ describe('NoteBody: every section renders', () => {
     expect(root().findAll((x) => x.props.accessibilityLabel === 'Close diagram')).toHaveLength(0);
   });
 
-  it('"On this page" stacks whenever one line would not fit (review H1: it overflowed between ×1.1 and ×1.3)', () => {
-    const titles = ['Understand', 'Think like the auditor', 'Keep it'];
-    expect(onThisPageFits(titles, 350, 1)).toBe(true);
-    expect(onThisPageFits(titles, 350, 1.15)).toBe(false);
-    expect(onThisPageFits(titles, 320, 1)).toBe(false);
-    expect(onThisPageFits(titles.slice(0, 2), 350, 1.15)).toBe(true);
+  it('"On this page" stacks whenever one line would not fit (review H1: it overflowed between ×1.1 and ×1.3; the longer "Think like the IS auditor" needs about 355pt, so most phones stack it)', () => {
+    const titles = ['Understand', 'Think like the IS auditor', 'Keep it'];
+    expect(onThisPageFits(titles, 360, 1)).toBe(true);
+    expect(onThisPageFits(titles, 360, 1.15)).toBe(false);
+    expect(onThisPageFits(titles, 340, 1)).toBe(false);
+    expect(onThisPageFits(titles.slice(0, 2), 360, 1.15)).toBe(true);
     setFontScale(1.15);
     mount(
       <Screen>
@@ -242,7 +242,7 @@ describe('NoteBody: every section renders', () => {
     const items = root().findAll((x) => typeof x.props.accessibilityLabel === 'string' && x.props.accessibilityLabel.startsWith('On this page') && typeof x.props.onPress === 'function');
     expect(items.map((x) => x.props.accessibilityLabel)).toEqual([
       'On this page: 1 of 3, Understand',
-      'On this page: 2 of 3, Think like the auditor',
+      'On this page: 2 of 3, Think like the IS auditor',
       'On this page: 3 of 3, Keep it',
     ]);
     // A tap never throws (the scroll is measured from the rendered page).
@@ -318,7 +318,7 @@ describe('NoteBody: every section renders', () => {
     const n = note('4B1.2');
     mount(<NoteBody note={{ ...n, keyTerms: [], analogy: undefined, memoryAid: undefined }} />);
     expect(allText()).not.toContain('Keep it');
-    expect(allText()).toContain('Think like the auditor');
+    expect(allText()).toContain('Think like the IS auditor');
     // The movements are headings, so a screen-reader user can jump between them.
     expect(root().findAll((x) => x.props.accessibilityRole === 'header' && x.props.accessibilityLabel === 'Understand').length).toBeGreaterThan(0);
   });

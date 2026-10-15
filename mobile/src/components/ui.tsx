@@ -971,7 +971,7 @@ export function ListRow({
 // ── InviteRow: an invitation or a small award, on paper (mobile 1.21) ──
 /**
  * One meaning per device (spec §5): the 3px left rule is the coach's voice
- * only (Key idea, How ISACA thinks, Exam-day shortcut). Invitations ("Plant
+ * only (Key idea, The IS auditor’s lens, Exam-day shortcut). Invitations ("Plant
  * yours"), awards ("You'd already earned 5 badges") and small notices use
  * this instead: an icon circle, a `label` title, a `small` line, then ghost
  * actions under the words (left at the gutter), or, with `onPress` alone, the

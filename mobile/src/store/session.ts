@@ -13,6 +13,7 @@ import type { Checkpoint, MockTiming } from '../engine/pace';
 import type { PathReason, StudyMode } from '../engine/studyModes';
 import type { Confidence } from '../engine/srs';
 import type { Permutation } from '../engine/shuffle';
+import { watchHydration } from './hydration';
 import { persistStorage } from './storage';
 
 export type SessionMode = 'practice' | 'review' | 'mock';
@@ -159,6 +160,6 @@ export const useSession = create<SessionState>()(
       setMilestone: (key) => set((s) => (s.active ? { active: { ...s.active, milestone: key } } : s)),
       clear: () => set({ active: null }),
     }),
-    { name: 'aurivan.session.v1', storage: persistStorage, version: 1 },
+    { name: 'aurivan.session.v1', storage: persistStorage, version: 1, onRehydrateStorage: watchHydration('session') },
   ),
 );

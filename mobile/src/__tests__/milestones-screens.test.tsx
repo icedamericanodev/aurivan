@@ -205,6 +205,11 @@ describe('Play', () => {
   it('every game row says its level in words', () => {
     useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { sprint: { tier: 'heartwood', up: 0, down: 0 } } } } });
     mount(<Play />);
+    // Mobile 1.24: three games are in sight; the rest are folded under "More games". Open it.
+    const more = root().findAll((n) => typeof n.props.onPress === 'function' && /^More games/.test(String(n.props.accessibilityLabel)))[0];
+    act(() => {
+      more.props.onPress();
+    });
     const rows = labels().filter((l) => / About \d+ minutes\./.test(l));
     expect(rows.length).toBeGreaterThan(0);
     for (const l of rows) expect(l).toMatch(/Your level: (Seedling|Sapling|Heartwood)\./);

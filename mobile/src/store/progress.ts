@@ -31,6 +31,7 @@ import type { ThinkingSlip } from '../engine/slipCoach';
 import { addReport, type ReportEntry } from '../engine/support';
 import { MAX_BOX, nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
 import { bumpStreak, dayKey, type Streak } from '../engine/streak';
+import { watchHydration } from './hydration';
 import { persistStorage } from './storage';
 
 export interface MockResult {
@@ -641,6 +642,8 @@ export const useProgress = create<ProgressState>()(
     {
       name: 'aurivan.progress.v1',
       storage: persistStorage,
+      // A failed load is noticed (store/hydration.ts), so the app shows a recovery screen, not a forever splash.
+      onRehydrateStorage: watchHydration('progress'),
       // v2: the single `day` plan became `days`, keyed by cert id.
       // Phase 5a added only OPTIONAL fields (AnswerRecord.lastAssisted,
       // MistakeEntry.confidence), so no version bump: old saves load as-is.

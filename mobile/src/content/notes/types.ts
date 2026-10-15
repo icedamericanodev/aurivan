@@ -49,7 +49,7 @@ export interface NoteSubtopic {
   /** One or more diagrams (the source allows a single one or a list). */
   illustrations?: NoteIllustration[];
   example: string;
-  /** "How ISACA thinks". */
+  /** "The IS auditor’s lens". */
   isacaRule: string;
   examTraps: { trap: string; why: string }[];
   keyTerms: NoteTerm[];

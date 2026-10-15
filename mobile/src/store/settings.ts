@@ -9,6 +9,7 @@ import { FIT_ASK_DAYS, goalFromMinutes, minutesFromGoal, type DailyMinutes, type
 import { DEFAULT_REMINDER, type ReminderPrefs } from '../engine/reminders';
 import { SETTINGS_VERSION } from '../engine/saveMigrations';
 import type { StudyMode } from '../engine/studyModes';
+import { watchHydration } from './hydration';
 import { persistStorage } from './storage';
 
 export type ThemePref = 'system' | 'dark' | 'light';
@@ -218,6 +219,8 @@ export const useSettings = create<SettingsState>()(
     {
       name: 'aurivan.settings.v1',
       storage: persistStorage,
+      // A failed load is noticed (store/hydration.ts), so the app shows a recovery screen, not a forever splash.
+      onRehydrateStorage: watchHydration('settings'),
       version: SETTINGS_VERSION,
       // Saves from 1.19 to 1.22 have no `displayName`: nothing to upgrade (the field is optional,
       // so SETTINGS_VERSION stays 1). A save that does have one is cleaned again as it loads, so an

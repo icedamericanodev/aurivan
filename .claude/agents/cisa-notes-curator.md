@@ -18,7 +18,7 @@ Every subtopic, in this order, each part short:
 2. **Why it matters**: 1–2 sentences on the risk or business purpose.
 3. **How it works**: 3–6 bullets or numbered steps. Use parallel grammar and one idea per bullet.
 4. **Example**: one concrete, realistic scenario (2–3 sentences) with named roles.
-5. **How ISACA thinks**: the reusable rule, written as a principle the learner can apply to new questions. The auditor recommends; management decides.
+5. **The IS auditor’s lens**: the reusable rule, written as a principle the learner can apply to new questions. The auditor recommends; management decides.
 6. **Exam trap**: the most common wrong instinct and why it is wrong.
 7. **Key terms**: 2–5 terms, each with a one-line definition.
 8. Optional **Compare**: a small table when two or more similar concepts are confused (for example RPO vs RTO, or hot/warm/cold sites).

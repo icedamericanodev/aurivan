@@ -30,6 +30,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { admitProud, PROUD_KEEP_DAYS, type ProudLog, type ProudOccasion } from '../engine/proud';
 import { DAY_MS } from '../engine/srs';
+import { watchHydration } from './hydration';
 import { persistStorage } from './storage';
 
 /** At most this many surfaces are remembered (oldest dropped), so it never grows without bound. */
@@ -147,6 +148,6 @@ export const useSeen = create<SeenState>()(
           return { quietGrowth: next };
         }),
     }),
-    { name: 'aurivan.seen.v1', storage: persistStorage, version: 1 },
+    { name: 'aurivan.seen.v1', storage: persistStorage, version: 1, onRehydrateStorage: watchHydration('seen') },
   ),
 );

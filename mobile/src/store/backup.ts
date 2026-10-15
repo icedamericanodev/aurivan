@@ -10,6 +10,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { UndoSnapshot } from '../engine/backup';
+import { watchHydration } from './hydration';
 import { persistStorage } from './storage';
 
 interface BackupState {
@@ -37,6 +38,6 @@ export const useBackup = create<BackupState>()(
       setLastBackup: (lastBackupAt) => set({ lastBackupAt }),
       setUndo: (undo) => set({ undo }),
     }),
-    { name: 'aurivan.backup.v1', storage: persistStorage, version: 1 },
+    { name: 'aurivan.backup.v1', storage: persistStorage, version: 1, onRehydrateStorage: watchHydration('backup') },
   ),
 );

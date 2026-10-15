@@ -12,8 +12,9 @@
  * and notes BookOpen. The notes row has no "x of N" meter: a reference has no
  * finish line, so it counts notes read instead. Status marks are quiet: a
  * `track` ring for not started, a tone arc, a filled ✓ (never the `control`
- * outline, which reads as a radio button). The Up next lesson is the one L2
- * card in the list, with a filled play disc; other rows have no trailing mark.
+ * outline, which reads as a radio button). The Up next lesson row has
+ * only a filled play disc (mobile 1.24: no second card or caption, the cover
+ * above already says "Up next"); other rows have no trailing mark.
  *
  * Earlier (mobile 1.12–1.20), still true:
  *   forest "Up next" lesson cover (domain dot + short name, the full lesson
@@ -52,7 +53,7 @@ import { AccessibilityInfo, Pressable, View } from 'react-native';
 import { DomainRing, type BotanyKind } from '../../components/glyphs';
 import { BookOpen, ChevronDown, ICON_STROKE, Play } from '../../components/icons';
 import { AnimatedPressable, CheckDraw, Collapse, Turn, usePressScale, useScreenFocus } from '../../components/motion';
-import { BigNum, CARD_LIFT, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, ProgressBar, Row, Screen, SearchField, Section, T } from '../../components/ui';
+import { BigNum, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, ProgressBar, Row, Screen, SearchField, Section, T } from '../../components/ui';
 import { CERTIFICATIONS, domainColor, domainLabel, getCertification } from '../../content/certifications';
 import { lessonsFor, nextLesson } from '../../content/lessons';
 import type { Lesson } from '../../content/lessons/types';
@@ -439,11 +440,12 @@ const LessonGroups = memo(function LessonGroups({
  * thin path that joins this lesson to the ones before and after (accent
  * where walked, `track` ahead), so the domain reads as a trail, not a list.
  * Done: an accent ✓ circle and the title in ink2 (its ✓ draws once when it
- * was finished in the player since Learn was last on view). Up next (mobile
- * 1.21): the one L2 card in the list (raised + cardShadow; a `line` outline in
- * dark), the caption "Up next · 5 min" and a filled accent play disc. Others:
- * nothing trailing (the whole row is the button). One button, spoken
- * "IS Audit lesson 2: …, done | up next | 5 min" (unchanged).
+ * was finished in the player since Learn was last on view). Up next: a filled
+ * accent play disc. Mobile 1.24 (review): it is no longer a raised card with its
+ * own "Up next" caption. The forest panel at the top already says "Up next" and
+ * names the same lesson, so saying it twice read as two lessons, and the card
+ * pushed past the page gutter. Others: nothing trailing (the whole row is the
+ * button). One button, spoken "IS Audit lesson 2: …, done | up next | 5 min".
  */
 const LessonRow = memo(function LessonRow({
   domain,
@@ -471,8 +473,8 @@ const LessonRow = memo(function LessonRow({
   first: boolean;
   last: boolean;
 }) {
-  const { c, isDark } = useTheme();
-  // The pressed tint: `soft`, on paper and on the Up next card alike.
+  const { c } = useTheme();
+  // The pressed tint: `soft`, as on every row.
   const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: radius.md });
   const state = done ? 'done' : next ? 'up next' : `${lesson.minutes} min`;
   const segment = (on: boolean, hidden: boolean) => (
@@ -487,16 +489,6 @@ const LessonRow = memo(function LessonRow({
       onPressOut={press.onPressOut}
       style={[
         { flexDirection: 'row', alignItems: 'stretch', gap: space.md, minHeight: 64, borderRadius: radius.md },
-        // Up next: the L2 card ("the one to pick"), never a green tint (green means feedback).
-        next && {
-          backgroundColor: c.raised,
-          marginHorizontal: -space.sm,
-          paddingLeft: space.sm,
-          paddingRight: space.md,
-          borderWidth: isDark ? 1.5 : 0,
-          borderColor: c.line,
-        },
-        next && !isDark && CARD_LIFT,
         press.style,
       ]}
     >
@@ -511,11 +503,7 @@ const LessonRow = memo(function LessonRow({
       </View>
       <View style={{ flex: 1, minWidth: 0, justifyContent: 'center', paddingVertical: space.md }}>
         <T v="label" color={done ? c.ink2 : c.ink}>{lesson.title}</T>
-        {next ? (
-          <T v="caption" color={c.accentText} style={{ marginTop: space.xs }}>{`Up next · ${lesson.minutes} min`}</T>
-        ) : (
-          <T v="meta">{done ? 'Done' : `${lesson.minutes} min`}</T>
-        )}
+        <T v="meta">{done ? 'Done' : `${lesson.minutes} min`}</T>
       </View>
       {/* Two meaningful marks only (R10): the filled ✓ on done rows, the filled play disc on Up next. */}
       {(done || next) && (
