@@ -129,9 +129,9 @@ const sectionOrder = (names: string[]) => {
 const today = () => dayKey(Date.now());
 const storedPlan = () => useProgress.getState().days.cisa;
 const budgetCap = (m: number) => m + planTolerance(m);
-/** The day's minutes in the panel's caption ("Start here · about N min", mobile 1.21), as a number (null when absent). */
+/** The day's minutes in the panel's caption ("Today’s plan · about N min", mobile 1.21), as a number (null when absent). */
 const todayMinutesShown = () => {
-  const m = allText().match(/Start here · about (\d+) min/);
+  const m = allText().match(/Today’s plan · about (\d+) min/);
   return m ? Number(m[1]) : null;
 };
 
@@ -260,12 +260,14 @@ describe('J1 a new learner: onboarding, then an honest day 1', () => {
     // The hero's own "About N min" agrees with the item it shows. Mobile 1.21: the minutes are
     // said once, so when the hero is the day's only timed item the caption's "About N min today"
     // carries them and the meta leaves them out.
+    // Mobile 1.23: the hero's minutes are in the Start pill's spoken hint (the checklist lines carry counts, not minutes).
     const hero = plan.items[0];
+    const hint = root().findAll((n) => typeof n.props.accessibilityHint === 'string' && /Start|Continue/.test(String(n.props.accessibilityLabel))).map((n) => n.props.accessibilityHint as string)[0] ?? '';
     if (plan.items.length === 1) {
       expect(todayMinutesShown()).toBe(itemMinutes(hero));
-      expect(allText()).not.toContain(`About ${itemMinutes(hero)} min ·`);
+      expect(hint).not.toMatch(/About \d+ minutes ·/);
     } else {
-      expect(allText()).toContain(hero.kind === 'lesson' ? `Lesson · ${itemMinutes(hero)} min` : `About ${itemMinutes(hero)} min ·`);
+      expect(hint).toContain(hero.kind === 'lesson' ? `Lesson · ${itemMinutes(hero)} minutes` : `About ${itemMinutes(hero)} minutes ·`);
     }
     // A learner who just answered never sees the existing-learner card.
     expect(byTestID('fit-card')).toHaveLength(0);
@@ -310,7 +312,7 @@ describe('J2 the Exam-focused path', () => {
     expect(items[1]).toMatchObject({ kind: 'mock', questions: 50, minutes: 80 });
     expect(allText()).toContain('Mini mock');
     expect(allText()).toContain('Optional this week · about 80 min');
-    expect(allText()).toMatch(/Start here · about \d+ min/);
+    expect(allText()).toMatch(/Today’s plan · about \d+ min/);
     // The mock is exempt; everything else fits the day.
     expect(planMinutes(items)).toBeLessThanOrEqual(budgetCap(20));
     // The stage is never "Learn the concepts" for the Exam-focused plan.
@@ -405,7 +407,7 @@ describe('J2 the Exam-focused path', () => {
     expect(storedPlan().items.some((i) => i.kind === 'mock')).toBe(false);
     unmount();
     mount(<Today />);
-    expect(allText()).toMatch(/Lesson · \d+ min/);
+    expect(allText()).toMatch(/Lesson · \S/); // the lesson is on the checklist; its minutes are in the plan's total and in "Also today"
     unmount();
     mount(<Practice />);
     const [mocks, more] = sectionOrder(['Mock exams', 'More ways to practice']);
@@ -633,13 +635,12 @@ describe('J5 edge cases', () => {
     [10, 55, 'Light review · 8 questions'],
     [45, 3, 'Light review · 3 questions'],
   ])('exam tomorrow at %i min with %i due: one light item (%s), never a cram', (minutes, due, planLabel) => {
-    // Mobile 1.21: the panel's title never holds a count ("Light review"); the count is its meta line.
-    const label = planLabel.replace(' · ', ' ');
+    // Mobile 1.23: the panel's title never holds a count ("Light review"); the count is on its checklist line.
     useSettings.setState({ fitPrompt: 'answered', dailyMinutes: minutes as DailyMinutes, familiarity: 'experienced', examDates: { cisa: addDays(today(), 1) } });
     if (due) setCert({ review: seedDue(due) });
     mount(<Today />);
     expect(storedPlan().items).toHaveLength(1);
-    expect(allText()).toContain(label);
+    expect(allText()).toContain(planLabel);
     expect(todayMinutesShown()).toBeLessThanOrEqual(budgetCap(minutes));
   });
 
@@ -656,9 +657,10 @@ describe('J5 edge cases', () => {
     setCert({ review: seedDue(300) });
     mount(<Today />);
     expect(storedPlan().items).toEqual([{ kind: 'review', count: 8, due: 300, capped: true }]);
-    // Mobile 1.21: the title names the activity; today's share of the queue is the meta, and the
-    // minutes are said once (the caption's "About 10 min today", this item's alone).
-    expect(allText()).toContain('Spaced review 8 of 300 due · most overdue first');
+    // Mobile 1.23: the title names the activity; today's share of the queue is on its checklist line ("8 of 300 due"),
+    // the order is the Start pill's hint, and the minutes are said once (the caption's, this item's alone).
+    expect(allText()).toContain('Spaced review · 8 of 300 due');
+    expect(root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string).some((h) => h.includes('8 of 300 due · most overdue first'))).toBe(true);
     expect(todayMinutesShown()).toBe(10);
   });
 

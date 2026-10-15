@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=today|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -153,6 +153,11 @@ elif [ "${SHOTS:-}" = proof ]; then
   # out), Today's readiness words as a button, the exam-week checklist and
   # You's Mock exams rows (shoot_proof.mjs; NARROW=1; FONT_SCALE=2 for about 200% text).
   node scripts/screenshots/shoot_proof.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = today ]; then
+  # Mobile 1.23 Today (mockup A): the day with a warm-up done, a fresh plan, below the fold,
+  # a new learner, no exam date, a mock-only day, the clearing, exam eve and week, and a
+  # plant (shoot_today.mjs; NARROW=1; FONT_SCALE=2 for about 200% text; REDUCED=1).
+  node scripts/screenshots/shoot_today.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = settings ]; then
   # Mobile 1.17 "a tidy Settings": Settings top, middle and end, every sheet
   # (the exam-date calendar too), Settings opened at the plant's group and

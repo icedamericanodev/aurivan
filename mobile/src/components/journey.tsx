@@ -14,7 +14,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
 import { domainColor } from '../content/certifications';
 import type { Certification } from '../content/types';
-import { biggestGrowth, clearingTitle, dayAccuracy, itemMinutes, type DayPlan } from '../engine/dayPlan';
+import { biggestGrowth, clearingTitle, dayAccuracy, isOptional, itemMinutes, type DayPlan } from '../engine/dayPlan';
 import type { PlanItem } from '../engine/planner';
 import type { Readiness } from '../engine/readiness';
 import { rangeLabel, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
@@ -22,10 +22,10 @@ import { haptic } from '../lib/haptics';
 import { grewLine, LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { GrowthRings, PlanLeaf } from './glyphs';
-import { ChevronRight, ICON_STROKE, Pinwheel, Play, RotateCcw, Target, Timer } from './icons';
+import { Check, ICON_STROKE, Pinwheel, Play, RotateCcw, Target, Timer } from './icons';
 import { AnimatedPressable, FadeIn, Pop, usePressScale, type Celebration, type Growth } from './motion';
 import { BigNum, DomainDot, ICON_SIZE, Row, Stat, StatRow, T, useFontScale } from './ui';
-import { aboutMin, timeStat } from '../engine/pace';
+import { aboutMin, spokenMin, timeStat } from '../engine/pace';
 
 // ── Plan items: icon, title, meta ─────────────────────────────────────
 export function planIcon(item: PlanItem, color: string): ReactNode {
@@ -190,9 +190,8 @@ export function todayMinutes(items: readonly PlanItem[], done: readonly boolean[
 /** The leaves last seen on view, per plan day: the panel swaps from "Start here" to the clearing (a new tree) while a session is on top. */
 const leavesSeen = new Map<string, boolean[]>();
 
-export function PlanLeaves({ done, focused = true, seenKey }: { done: boolean[]; focused?: boolean; seenKey?: string }) {
-  const { c } = useTheme();
-  // What the learner last saw (also across the panel's swap), and which leaves to press in now.
+/** What the learner last saw of the plan (also across the panel's swap), and which marks to press in now. */
+function useShownDone(done: boolean[], focused: boolean, seenKey?: string) {
   const [shown, setShown] = useState(() => ({ done: (seenKey && leavesSeen.get(seenKey)) || done, pops: [] as number[], run: 0 }));
   const changed = shown.done.length !== done.length || shown.done.some((d, i) => d !== done[i]);
   if (focused && changed) {
@@ -206,6 +205,12 @@ export function PlanLeaves({ done, focused = true, seenKey }: { done: boolean[];
   useEffect(() => {
     if (focused && seenKey) leavesSeen.set(seenKey, done);
   }, [focused, seenKey, done]);
+  return shown;
+}
+
+export function PlanLeaves({ done, focused = true, seenKey }: { done: boolean[]; focused?: boolean; seenKey?: string }) {
+  const { c } = useTheme();
+  const shown = useShownDone(done, focused, seenKey);
   return (
     <View
       accessible
@@ -221,11 +226,110 @@ export function PlanLeaves({ done, focused = true, seenKey }: { done: boolean[];
   );
 }
 
+/**
+ * One plan item as a checklist line (mobile 1.23, Today): what it is, with its
+ * real size. "Warm-up · 5 questions", "Spaced review · 20 due", "Lesson ·
+ * Business impact analysis". The title never changes the plan's own words;
+ * it only puts the count or the length after them.
+ */
+export function planCheckLabel(item: PlanItem, due?: number): string {
+  const qs = (n: number) => `${n} ${n === 1 ? 'question' : 'questions'}`;
+  switch (item.kind) {
+    case 'review': {
+      const queue = due ?? item.due ?? item.count;
+      // A labelled review is exam week's ("Light review · 8 questions"); an old save's "Review 20 due" is a count.
+      if (item.label && !/^Review \d/.test(item.label)) return item.label;
+      // A review that takes part of the queue says how much of it TODAY takes ("8 of 56 due", the same
+      // queue You and Practice count), not the session's size.
+      if (queue === 0) return 'Spaced review · all caught up';
+      return queue > item.count ? `Spaced review · ${item.count} of ${queue} ${REVIEW_UNIT}` : `Spaced review · ${queue} ${REVIEW_UNIT}`;
+    }
+    case 'lesson':
+      return `Lesson · ${item.title}`;
+    case 'practice':
+      return `${heroPracticeTitle(item.label)} · ${qs(item.count)}`;
+    case 'game':
+      return `${gameTitle(item.gameId, item.label)} · ${itemMinutes(item)} min`;
+    case 'mock':
+      return `${item.label.split(' · ')[0]} · ${aboutMin(itemMinutes(item), true)}`;
+  }
+}
+
+const MARK = 24;
+
+/**
+ * Today's plan as a checklist on the forest panel (mockup A): done = a filled
+ * sap check and struck-through text, the current item = a bold ring and
+ * bold text, later items = a faint ring and the panel's quiet text. State is
+ * never colour alone: the check, the strike and the weight say it, and each
+ * line is one screen-reader stop ("Warm-up, 5 questions, done").
+ * A line done since Today was last on view presses in (a small spring, one
+ * light haptic), like the plan leaves did.
+ */
+export function PlanChecklist({
+  items,
+  done,
+  current,
+  due,
+  focused = true,
+  seenKey,
+}: {
+  items: readonly PlanItem[];
+  done: boolean[];
+  current: number;
+  due?: number;
+  focused?: boolean;
+  seenKey?: string;
+}) {
+  const { c } = useTheme();
+  const shown = useShownDone(done, focused, seenKey);
+  return (
+    <View testID="plan-checklist" style={{ marginTop: space.lg, gap: 10 }}>
+      {items.map((item, i) => {
+        const isDone = done[i];
+        const isCur = !isDone && i === current;
+        const label = planCheckLabel(item, due);
+        const optional = isOptional(items, i);
+        const said = `${label}${optional ? ', optional this week' : ''}, ${isDone ? 'done' : isCur ? 'next' : 'later'}`;
+        return (
+          <View key={i} accessible accessibilityLabel={spokenMin(said)} style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
+            <Pop trigger={shown.pops.includes(i) ? shown.run : undefined} spring="leaf">
+              {isDone ? (
+                <View style={{ width: MARK, height: MARK, borderRadius: MARK / 2, backgroundColor: c.sap, alignItems: 'center', justifyContent: 'center' }}>
+                  <Check size={15} color={c.forest} strokeWidth={3} />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    width: MARK,
+                    height: MARK,
+                    borderRadius: MARK / 2,
+                    borderWidth: isCur ? 2.5 : 1.5,
+                    borderColor: isCur ? c.sap : c.onForest2,
+                    opacity: isCur ? 1 : 0.55,
+                  }}
+                />
+              )}
+            </Pop>
+            <T
+              v={isCur ? 'label' : 'body'}
+              color={isCur ? c.onForest : c.onForest2}
+              style={[{ flex: 1, minWidth: 0 }, isDone && { textDecorationLine: 'line-through' }]}
+            >
+              {label}
+            </T>
+          </View>
+        );
+      })}
+    </View>
+  );
+}
+
 // ── Readiness number: "62–70%" or "Not enough data yet" ───────────────
 /** "62–70" for two bounds (what a rolling range starts from). */
 export const boundsLabel = (b: number[]) => (b.length === 2 ? rangeLabel({ enough: true, answered: 0, low: b[0], high: b[1], centre: b[0] }) : null);
 
-export function ReadinessFigure({ range, size = 52, growth }: { range: ReadinessRange; size?: 52 | 34 | 30 | 24; growth?: Growth }) {
+export function ReadinessFigure({ range, size = 52, growth }: { range: ReadinessRange; size?: 52 | 38 | 34 | 30 | 24; growth?: Growth }) {
   const { c } = useTheme();
   if (!range.enough) {
     return <T v={size === 52 ? 'hero' : 'headline'} color={c.ink}>Not enough data yet</T>;
@@ -242,13 +346,14 @@ export const ESTIMATE_NOTE = 'A study estimate, not a prediction of your exam re
  * 2026): the full sentence is spoken there and shown on the readiness report.
  */
 export const ESTIMATE_SHORT = 'A study estimate, not a prediction.';
+/** Today's readiness line (mockup A, owner copy): said under the range. */
+export const ESTIMATE_LINE = 'Estimated readiness, a range not a promise';
 
 // ── Readiness row on Today (spec §11 "Today") ─────────────────────────
-// Mobile 1.21: condensed to ONE row under the forest panel (the plan is
-// Today's one job): small mono rings (60) or the plant, then the range as a
-// serif 30 numeral with "estimated readiness" beside it, the short estimate
-// line, and the stage, labelled ("Your stage" + the italic coach line).
-// Stacks at large text.
+// Mobile 1.23 (mockup A): the growth rings (86) with the honest range as a
+// serif numeral beside them, "Estimated readiness, a range not a promise",
+// and the stage in the accent italic serif ("Stage 4 · Rehearse the exam").
+// The whole row opens the readiness report. Stacks at large text.
 export function ReadinessRow({
   cert,
   readiness,
@@ -257,20 +362,13 @@ export function ReadinessRow({
   rings = true,
   ringsGrowth,
   rangeGrowth,
-  lead,
   onPress,
 }: {
   cert: Certification;
   readiness: Readiness;
   range: ReadinessRange;
-  /** The journey's coach line, e.g. "Make it stick" (no number: the plant beside it counts its growth). */
+  /** The stage as the learner reads it: "Stage 4 · Rehearse the exam". */
   stage: string;
-  /**
-   * Mobile 1.13: the learner's plant, drawn INSTEAD of the rings (Today). It
-   * is its own tap target and screen-reader stop, so the text keeps its own
-   * label beside it. The rings stay on You and Results.
-   */
-  lead?: ReactNode;
   /**
    * false while the Exam-ready panel above already draws the rings: a
    * signature never appears twice on one screen (spec §10).
@@ -279,52 +377,25 @@ export function ReadinessRow({
   /** Mobile 1.9: the rings and the range grow from what was last seen (motion.tsx useGrowth). */
   ringsGrowth?: Growth;
   rangeGrowth?: Growth;
-  /**
-   * Mobile 1.16: opens the readiness report. With a plant, the words are the
-   * button (the plant still opens Your plant); without one, the whole row is.
-   * A chevron says it can be tapped.
-   */
+  /** Mobile 1.16: opens the readiness report (the whole row is the button). */
   onPress?: () => void;
 }) {
   const { c } = useTheme();
   const stacked = useFontScale() >= LARGE_TEXT;
   const meta = range.enough
     ? // An ESTIMATE, never a prediction (app-store review: no outcome claims).
-      'estimated readiness, weighted like the exam'
+      ESTIMATE_LINE
     : // A countdown, not a moving target: `needed` never goes up after an answer.
       `${range.needed} more ${range.needed === 1 ? 'answer' : 'answers'} until your readiness range`;
-  const spoken = `Estimated readiness ${rangeSpoken(range)}. ${range.enough ? `Weighted like the exam. ${ESTIMATE_NOTE}` : meta} Your stage: ${stage}.`;
+  const spoken = `Estimated readiness ${rangeSpoken(range)}. ${range.enough ? `A range, not a promise. Weighted like the exam. ${ESTIMATE_NOTE}` : meta} ${stage.replace(' · ', ', ')}.`;
   const words = (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, flex: stacked ? undefined : 1, alignSelf: stacked ? 'stretch' : undefined }}>
-      <View style={{ flex: 1, minWidth: 0 }}>
-        {range.enough ? (
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: space.sm }}>
-            <ReadinessFigure range={range} size={30} growth={rangeGrowth} />
-            <T v="meta" color={c.ink}>estimated readiness</T>
-          </View>
-        ) : (
-          <>
-            <ReadinessFigure range={range} size={30} growth={rangeGrowth} />
-            <T v="meta" style={{ marginTop: space.xs }}>{meta}</T>
-          </>
-        )}
-        {/* The short form (the full sentence is spoken, and on the report), only once there is a range to explain. */}
-        {range.enough && <T v="meta" style={{ marginTop: space.xs }}>{ESTIMATE_SHORT}</T>}
-        {/* The stage, labelled: a beginner reads "Your stage" before the coach's italic line. */}
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: space.sm, marginTop: space.xs }}>
-          <T v="caption" color={c.ink2}>Your stage</T>
-          <T v="stage">{stage}</T>
-        </View>
-      </View>
-      {onPress && (
-        <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-          <ChevronRight size={18} color={c.muted} strokeWidth={ICON_STROKE} />
-        </View>
-      )}
+    <View style={{ flex: stacked ? undefined : 1, minWidth: 0, alignSelf: stacked ? 'stretch' : undefined }}>
+      <ReadinessFigure range={range} size={range.enough ? 38 : 30} growth={rangeGrowth} />
+      <T v="meta" style={{ marginTop: space.xs }}>{meta}</T>
+      <T v="stage" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T>
     </View>
   );
-  const rowStyle = { flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: stacked ? space.md : space.lg, marginTop: space.xl } as const;
-  const ringArt = rings && !lead && (
+  const ringArt = rings && (
     <GrowthRings
       preset="row"
       mastery={readiness.domains.map((d) => d.mastery)}
@@ -334,33 +405,16 @@ export function ReadinessRow({
       grow={ringsGrowth ? { play: ringsGrowth.play, from: ringsGrowth.from.map((v) => v / 100), run: ringsGrowth.run } : undefined}
     />
   );
-  // No plant: the whole row (rings and words) is one stop, and one button when it opens the report.
-  if (!lead) {
-    return onPress ? (
-      <ReportTap onPress={onPress} label={spoken} style={{ ...rowStyle, marginTop: rowStyle.marginTop - 6 }} testID="readiness-tap">
-        {ringArt}
-        {words}
-      </ReportTap>
-    ) : (
-      <View accessible accessibilityLabel={spoken} style={rowStyle}>
-        {ringArt}
-        {words}
-      </View>
-    );
-  }
-  // With a plant, the row is two stops: the plant (Your plant), then the words (the report).
-  return (
-    <View style={rowStyle}>
-      {lead}
-      {onPress ? (
-        <ReportTap onPress={onPress} label={spoken} style={{ flex: stacked ? undefined : 1, alignSelf: stacked ? 'stretch' : undefined }} testID="readiness-tap">
-          {words}
-        </ReportTap>
-      ) : (
-        <View accessible accessibilityLabel={spoken} style={{ flex: stacked ? undefined : 1, alignSelf: stacked ? 'stretch' : undefined }}>
-          {words}
-        </View>
-      )}
+  const rowStyle = { flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: stacked ? space.md : space.lg, marginTop: space.xl } as const;
+  return onPress ? (
+    <ReportTap onPress={onPress} label={spoken} style={{ ...rowStyle, marginTop: rowStyle.marginTop - 6 }} testID="readiness-tap">
+      {ringArt}
+      {words}
+    </ReportTap>
+  ) : (
+    <View accessible accessibilityLabel={spoken} style={rowStyle}>
+      {ringArt}
+      {words}
     </View>
   );
 }

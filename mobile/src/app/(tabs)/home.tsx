@@ -2,13 +2,15 @@
  * Today — "what is my one next step, and how am I growing?"
  * Spec: docs/mobile/DESIGN_SYSTEM.md §11 "Today" and "Daily clearing card".
  *
- * Top to bottom:
- *   meta row   weekday · days to exam | sprig streak (serif numeral)
- *   "Today"
- *   forest     "Start here" + leaf marks for the plan, the current item, Start
- *   readiness  your plant (mobile 1.13; the mono growth rings when there is
- *              none or it is hidden) + the honest range ("62–70%") + italic stage
- *   Also today the rest of the plan (real, unshortened titles)
+ * Mobile 1.23 (the owner's mockup A). Top to bottom, in screen-reader order:
+ *   header     KaiSip lockup | streak pill + Settings gear
+ *   meta line  "Thursday · 38 days to CISA", then the greeting by the hour (no name: none is stored)
+ *   forest     "Today’s plan · about N min", the current item's title, the plan as a checklist
+ *              (done struck through, current bold, later quiet), ONE full-width pill
+ *              ("Start", or "Continue" once something is done; Play only for a lesson)
+ *   readiness  rings + the honest range + "a range not a promise" + "Stage 4 · Rehearse the exam"
+ *   tiles      answered · accuracy (You's number) · weakest area ("Not yet" until there is data)
+ *   below      your plant, "Also today" (the rest of the plan, real titles), quiet cards
  *
  * Your plant (mobile 1.13, Phase 4a): it grows only from real learning. A
  * grow-up gets ONE calm line here (the celebration budget, never Results),
@@ -47,16 +49,19 @@ import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
-import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planHero, planIcon, planText, ReadinessRow, todayMinutes } from '../../components/journey';
+import { ClearingBody, clearingLine, clearingTitle, PlanChecklist, PlanLeaves, planHero, planIcon, planText, ReadinessRow, todayMinutes } from '../../components/journey';
+import { KaisipLockup } from '../../components/brand';
+import { StatTiles, StreakPill } from '../../components/today';
 import { FitCard } from '../../components/fit';
 import { ExamWeekCard } from '../../components/readinessReport';
 import { examWeekCardDue, examWeekCount, examWeekOf } from '../../engine/examWeek';
-import { Celebrate, Pop, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
-import { ArrowRight, ICON_STROKE, Inbox, Play, Settings, Sprig, Sprout, Target, Timer } from '../../components/icons';
+import { Celebrate, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
+import { ArrowRight, ICON_STROKE, Inbox, Play, Settings, Sprout, Target, Timer } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
-import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, InviteRow, ListRow, Row, Screen, ScreenTitle, Section, T } from '../../components/ui';
+import { Button, Enter, HeroPanel, IconButton, ICON_SIZE, InviteRow, ListRow, Row, Screen, Section, T } from '../../components/ui';
 import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
 import { shouldAskFit } from '../../engine/fit';
+import { STAGE_ORDER } from '../../engine/journey';
 import { aboutMin, spokenMin } from '../../engine/pace';
 import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../../lib/a11y';
 import { useSettings } from '../../store/settings';
@@ -110,11 +115,17 @@ const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
 /** The growth's haptic stays silent this soon after the clearing's (one haptic for one return to Today). */
 const CLEARING_TAP_MS = 5000;
 
-function countdown(daysLeft: number | null): string {
+/** "38 days to CISA". No date set, past and exam day keep their own words. */
+function countdown(daysLeft: number | null, examName: string): string {
   if (daysLeft === null) return 'No exam date set';
   if (daysLeft < 0) return 'Exam done';
   if (daysLeft === 0) return 'Exam day';
-  return `${daysLeft} day${daysLeft === 1 ? '' : 's'} to exam`;
+  return `${daysLeft} day${daysLeft === 1 ? '' : 's'} to ${examName}`;
+}
+
+/** The greeting, by the phone's local time. There is no learner name to add: the app does not store one. */
+export function greeting(hour: number): string {
+  return hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
 }
 
 export default function Today() {
@@ -296,17 +307,34 @@ export default function Today() {
   // is sized to the minutes, so this never previews more than the day has.
   const tomorrow = j.plan.slice(0, 2);
   const tomorrowMinutes = sectionMinutes(tomorrow.reduce((n, t) => n + (t.kind === 'mock' ? 0 : itemMinutes(t)), 0));
-  // The day's minutes, in the caption: "Start here · about 19 min" (mobile 1.21, design spec §5; was a
-  // second line, "About 19 min today + mock"). Only for plans sized in minutes (1.15+). A mock is left
-  // out: its own row says it is optional and how long it is.
+  // The day's minutes, in the caption: "Today’s plan · about 19 min" (mobile 1.23, mockup A; was "Start here ·").
+  // The open items only, so it shrinks as the day goes. Only for plans sized in minutes (1.15+). A mock is left
+  // out: its own line says it is optional and how long it is.
   const dayMinutes = plan.budget ? todayMinutes(plan.items, plan.done) : 0;
-  const startCaption = dayMinutes > 0 ? `Start here · ${aboutMin(dayMinutes, true)}` : 'Start here';
-  // The hero's words: no count in the title, and the minutes said once. When the caption's day
-  // total is this item's alone (every other open item is a mock), the meta leaves them out.
+  const todayCaption = dayMinutes > 0 ? `Today’s plan · ${aboutMin(dayMinutes, true)}` : 'Today’s plan';
   const curItem = plan.items[cur];
+  // The hero's words: the title names the activity (no count). Its minutes are said once: when this item is
+  // the day's only timed one, the caption's total is its own, so its meta leaves them out (the hint under the
+  // Start pill). The meta line is also SHOWN under the title when it tells the learner something the checklist
+  // does not: a mock's length (always long, never in the day's total) and the starting check's "no score yet,
+  // just a starting point".
   const openTimed = plan.items.filter((it, i) => !plan.done[i] && it.kind !== 'mock');
   const minutesSaid = dayMinutes > 0 && openTimed.length === 1 && openTimed[0] === curItem;
   const hero = curItem ? planHero(curItem, j.dueCount, { minutesSaid }) : null;
+  const heroNote =
+    curItem && hero
+      ? curItem.kind === 'mock'
+        ? hero.meta
+        : curItem.kind === 'practice' && curItem.why === 'check'
+          ? planHero(curItem, j.dueCount, { minutesSaid: true }).meta
+          : undefined
+      : undefined;
+  // The stat tiles (mockup A). Accuracy is You's number (the share whose latest try was right); the weakest
+  // area waits for a range with enough data (before that the focus is just Domain 1).
+  const answeredTotal = j.readiness.domains.reduce((n, d) => n + d.answered, 0);
+  const masteredTotal = j.readiness.domains.reduce((n, d) => n + d.mastered, 0);
+  const accuracy = answeredTotal ? Math.round((masteredTotal / answeredTotal) * 100) : null;
+  const weakest = j.range.enough && j.focus ? j.focus : null;
 
   // Mobile 1.15: the one "Fit your plan" card for learners from before 1.15.
   // One setup line on Today at a time, and the plant's goes first: on a visit
@@ -342,24 +370,21 @@ export default function Today() {
     <Screen>
       <View onTouchStart={live ? skipAll : undefined}>
       <Enter i={0}>
-        <Row style={{ justifyContent: 'space-between', minHeight: 24 }}>
-          <T v="meta" num>{`${WEEKDAYS[new Date().getDay()]} · ${countdown(j.daysLeft)}`}</T>
-          {j.streak > 0 && (
-            <Row gap={space.xs} style={{ minHeight: 24 }}>
-              <Pop trigger={streakGrowth.play ? streakGrowth.run : undefined} spring="leaf">
-                <Sprig size={ICON_SIZE.row} color={c.clay} strokeWidth={ICON_STROKE} />
-              </Pop>
-              <BigNum
-                value={String(j.streak)}
-                size={20}
-                color={c.clay}
-                accessibilityLabel={`${j.streak}-day streak`}
-                roll={{ play: streakGrowth.play, from: String(streakGrowth.from[0] ?? ''), run: streakGrowth.run }}
-              />
-            </Row>
-          )}
+        {/* The KaiSip lockup at the left; the streak pill and the Settings gear at the right (they wrap under it at large text). */}
+        <Row style={{ justifyContent: 'space-between', flexWrap: 'wrap', rowGap: space.sm }}>
+          <KaisipLockup height={28} />
+          <Row gap={space.sm} style={{ marginRight: -10 }}>
+            {j.streak > 0 && <StreakPill streak={j.streak} growth={streakGrowth} />}
+            <IconButton
+              label="Settings"
+              hint="Exam date, reminders and more"
+              onPress={() => router.push('/settings')}
+              icon={(col) => <Settings size={ICON_SIZE.bar} color={col} strokeWidth={ICON_STROKE} />}
+            />
+          </Row>
         </Row>
-        <ScreenTitle title="Today" settings={() => router.push('/settings')} />
+        <T v="meta" num style={{ marginTop: space.xl }}>{`${WEEKDAYS[new Date().getDay()]} · ${countdown(j.daysLeft, j.cert.name)}`}</T>
+        <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>{greeting(new Date().getHours())}</T>
       </Enter>
 
       {moments.moment && (
@@ -394,14 +419,24 @@ export default function Today() {
           </Celebrate>
         ) : (
           <HeroPanel
-            caption={startCaption}
-            captionLabel={spokenMin(startCaption)}
-            captionExtra={<PlanLeaves done={plan.done} focused={focused} seenKey={`${cert}:${plan.day}`} />}
+            caption={todayCaption}
+            // "Today's plan, about 17 minutes, 1 of 3 done": the checklist's progress, said once for a screen reader.
+            captionLabel={`${spokenMin(todayCaption)}, ${plan.done.filter(Boolean).length} of ${plan.done.length} done`}
             title={hero!.title}
-            meta={hero!.meta}
-            metaLabel={spokenMin(hero!.meta)}
-            action={{ label: 'Start', onPress: () => runPlanItem(curItem, j.cert.id), icon: startIcon(curItem?.kind), iconTrailing: curItem?.kind !== 'lesson', hint: hero!.title }}
-          />
+            meta={heroNote}
+            metaLabel={heroNote ? spokenMin(heroNote) : undefined}
+            action={{
+              label: plan.done.some(Boolean) ? 'Continue' : 'Start',
+              onPress: () => runPlanItem(curItem, j.cert.id),
+              icon: startIcon(curItem?.kind),
+              hint: `${hero!.title}, ${spokenMin(hero!.meta)}`,
+              full: true,
+              // Play only for a lesson; everything else goes forward with an arrow after the label.
+              iconTrailing: curItem?.kind !== 'lesson',
+            }}
+          >
+            <PlanChecklist items={plan.items} done={plan.done} current={cur} due={j.dueCount} focused={focused} seenKey={`${cert}:${plan.day}`} />
+          </HeroPanel>
         )}
       </Enter>
 
@@ -412,13 +447,22 @@ export default function Today() {
             cert={j.cert}
             readiness={j.readiness}
             range={j.range}
-            stage={j.stageLine}
+            stage={`Stage ${STAGE_ORDER.indexOf(j.stage) + 1} · ${j.stageLine}`}
             rings={!showReady}
             ringsGrowth={ringsGrowth}
             rangeGrowth={rangeGrowth}
-            lead={plantView.plant && !showReady ? todayPlant(72, 'today-plant') : undefined}
             onPress={() => router.push('/readiness')}
           />
+          <StatTiles answered={answeredTotal} accuracy={accuracy} weakest={weakest} />
+          {plantView.plant && (
+            // Your plant moved under the facts (mobile 1.23): the rings are the readiness row's picture now.
+            <Row gap={space.lg} style={{ alignItems: 'center', marginTop: space.xl }}>
+              {todayPlant(72, 'today-plant')}
+              <T v="meta" style={{ flex: 1 }}>
+                {plantView.look?.visiting ? `A ${plantView.look.resolved.visitor} came by.` : 'Your plant grows with your study.'}
+              </T>
+            </Row>
+          )}
         </Enter>
       )}
 

@@ -795,8 +795,8 @@ export const RING_PRESETS = {
   /** You and Results: a wider core (38, mockup 34) so a range like "62–70%" fits inside; thinner rings keep it ~178pt. */
   you: { size: 172, k: 0.32, r0: 38, gap: 3.6, pith: false },
   mini: { size: 48, k: 0.13, r0: 5, gap: 1.2, pith: true },
-  /** Mobile 1.21: Today's condensed readiness row (one line of numbers beside it, not a block). */
-  row: { size: 60, k: 0.13, r0: 6, gap: 1.5, pith: true },
+  /** Mobile 1.21: Today's readiness row (one row beside its numbers, not a block); mobile 1.23 (mockup A): 86, so the rings read at a glance. */
+  row: { size: 88, k: 0.14, r0: 13, gap: 3.4, pith: true },
 } as const;
 export type RingPreset = keyof typeof RING_PRESETS;
 
