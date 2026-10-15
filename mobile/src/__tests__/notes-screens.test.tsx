@@ -15,7 +15,8 @@
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { AccessibilityInfo, Dimensions } from 'react-native';
-import { NoteBody } from '../components/notes';
+import { NoteBody, onThisPageFits } from '../components/notes';
+import { Screen } from '../components/ui';
 import { clearNotesCache, findNote, getNotes } from '../content/notes';
 import type { NoteSubtopic } from '../content/notes/types';
 import { selectCert, useProgress } from '../store/progress';
@@ -89,7 +90,7 @@ const setFontScale = (fontScale: number, width = 390) => {
 };
 
 const note = (id: string) => findNote('cisa', id)!;
-const SECTIONS = ['In one line', 'Why it matters', 'How it works', 'Compare', 'Example', 'How ISACA thinks', 'Exam traps', 'Key terms'];
+const SECTIONS = ['In one line', 'Understand', 'Why it matters', 'How it works', 'Compare', 'Example', 'Think like the auditor', 'How ISACA thinks', 'Exam traps', 'Keep it', 'Key terms'];
 
 beforeEach(() => {
   mockNotesOn = true;
@@ -131,20 +132,123 @@ describe('NoteBody: every section renders', () => {
     }
   });
 
-  it('draws the illustration with its spoken description and caption (1A1.1)', () => {
+  it('draws the diagram on its plate with its spoken description and caption (1A1.1)', () => {
     const n = note('1A1.1');
     mount(<NoteBody note={n} />);
     const ill = n.illustrations![0];
     const image = root().findAll((x) => x.props.accessibilityRole === 'image');
     expect(image.length).toBeGreaterThan(0);
     expect(image[0].props.accessibilityLabel).toBe(ill.label);
-    expect(allText()).toContain('Illustration');
+    expect(allText()).toContain('Diagram');
     expect(allText()).toContain(ill.caption!);
     expect(allText()).toContain('Analogy and memory aid');
-    // Its 11-unit labels need more than the phone's width to reach 13pt: it scrolls.
-    expect(allText()).toContain('Scroll sideways to see the whole diagram.');
-    const drawn = image[0].props.style as { width: number };
-    expect(drawn.width).toBeGreaterThan(350);
+    // Mobile 1.21: never sideways. The whole drawing is FITTED to the plate (390 − 40 − 32 = 318);
+    // its 11-unit labels on a 460-wide drawing are then 7.6pt, so the figure is a button,
+    // "Tap to enlarge", that opens it full screen at a readable size (544 wide: 13pt labels).
+    expect(allText()).not.toContain('Scroll sideways');
+    expect(allText()).not.toContain('Swipe for more');
+    expect((image[0].props.style as { width: number }).width).toBe(318);
+    expect(allText()).toContain('Tap to enlarge');
+    // WCAG 2.5.3: the spoken name starts with what the button does.
+    const opener = root().findAll((x) => x.props.accessibilityRole === 'button' && x.props.accessibilityLabel === `Enlarge diagram. ${ill.label}` && typeof x.props.onPress === 'function')[0];
+    expect(opener.props.accessibilityHint).toBe('Opens the diagram full screen, larger');
+    // The viewer stays mounted (closed) so the Modal can report its dismissal; nothing shows yet.
+    expect(root().findAll((x) => x.props.accessibilityLabel === 'Close diagram')).toHaveLength(0);
+    act(() => {
+      opener.props.onPress();
+    });
+    const big = root().findAll((x) => x.props.accessibilityRole === 'image' && x.props.accessibilityLabel === ill.label && (x.props.style as { width?: number })?.width === 544);
+    expect(big.length).toBeGreaterThan(0);
+    // Only the size is passed as a style (no stray keys such as labelPt).
+    expect(Object.keys(big[0].props.style).sort()).toEqual(['height', 'width']);
+    // A modal for screen readers, and VoiceOver's escape closes it.
+    const modalRoot = root().findAll((x) => x.props.accessibilityViewIsModal === true && typeof x.props.onAccessibilityEscape === 'function');
+    expect(modalRoot.length).toBeGreaterThan(0);
+    // Close returns to the page.
+    const close = root().findAll((x) => x.props.accessibilityLabel === 'Close diagram' && typeof x.props.onPress === 'function')[0];
+    act(() => {
+      close.props.onPress();
+    });
+    expect(root().findAll((x) => x.props.accessibilityLabel === 'Close diagram')).toHaveLength(0);
+  });
+
+  it('fits a diagram to the plate when its labels stay 13pt or more: no hint, no viewer', () => {
+    const n = note('1A1.1');
+    // The same drawing with 20-unit labels: 20 × 318 / 460 = 13.8pt fitted.
+    const big = { ...n.illustrations![0], svg: n.illustrations![0].svg.replace(/font-size=(['"])[\d.]+\1/g, "font-size='20'") };
+    mount(<NoteBody note={{ ...n, illustrations: [big] }} />);
+    const drawn = root().findAll((x) => x.props.accessibilityRole === 'image')[0].props.style as { width: number };
+    expect(drawn.width).toBe(390 - 40 - 32);
+    expect(allText()).not.toContain('Tap to enlarge');
+  });
+
+  it('closes the viewer when the figure fits again, so it never reopens by itself', () => {
+    const n = note('1A1.1');
+    const ill = n.illustrations![0];
+    const bigLabels = { ...ill, svg: ill.svg.replace(/font-size=(['"])[\d.]+\1/g, "font-size='20'") };
+    mount(<NoteBody note={n} />);
+    act(() => {
+      root().findAll((x) => x.props.accessibilityLabel === `Enlarge diagram. ${ill.label}` && typeof x.props.onPress === 'function')[0].props.onPress();
+    });
+    expect(root().findAll((x) => x.props.accessibilityLabel === 'Close diagram').length).toBeGreaterThan(0);
+    // Now it fits (bigger labels): no viewer.
+    act(() => {
+      r!.update(<NoteBody note={{ ...n, illustrations: [bigLabels] }} />);
+    });
+    expect(root().findAll((x) => x.props.accessibilityLabel === 'Close diagram')).toHaveLength(0);
+    // Small again: the button is back, the viewer stays closed until tapped.
+    act(() => {
+      r!.update(<NoteBody note={n} />);
+    });
+    expect(allText()).toContain('Tap to enlarge');
+    expect(root().findAll((x) => x.props.accessibilityLabel === 'Close diagram')).toHaveLength(0);
+  });
+
+  it('"On this page" stacks whenever one line would not fit (review H1: it overflowed between ×1.1 and ×1.3)', () => {
+    const titles = ['Understand', 'Think like the auditor', 'Keep it'];
+    expect(onThisPageFits(titles, 350, 1)).toBe(true);
+    expect(onThisPageFits(titles, 350, 1.15)).toBe(false);
+    expect(onThisPageFits(titles, 320, 1)).toBe(false);
+    expect(onThisPageFits(titles.slice(0, 2), 350, 1.15)).toBe(true);
+    setFontScale(1.15);
+    mount(
+      <Screen>
+        <NoteBody note={note('4B1.2')} />
+      </Screen>,
+    );
+    const item = root().findAll((x) => x.props.accessibilityLabel === 'On this page: 1 of 3, Understand' && typeof x.props.onPress === 'function')[0];
+    let row = item.parent;
+    while (row && !(row.props.style && 'flexDirection' in row.props.style && 'borderBottomWidth' in row.props.style)) row = row.parent;
+    expect(row!.props.style.flexDirection).toBe('column');
+  });
+
+  it('a 3-item compare table stacks on a 360dp phone (columns would be narrower than 96pt)', () => {
+    setFontScale(1, 360);
+    mount(<NoteBody note={note('4B1.2')} />);
+    const header = root().findAll((x) => typeof x.type === 'string' && x.props.importantForAccessibility === 'no-hide-descendants' && x.props.style?.flexDirection === 'row');
+    expect(header).toHaveLength(0);
+  });
+
+  it('"On this page" names the movements and jumps to them, inside a scrolling screen (mobile 1.21)', () => {
+    const n = note('4B1.2');
+    // Outside a Screen there is nowhere to scroll: no row.
+    mount(<NoteBody note={n} />);
+    expect(root().findAll((x) => typeof x.props.accessibilityLabel === 'string' && x.props.accessibilityLabel.startsWith('On this page'))).toHaveLength(0);
+    remount(
+      <Screen>
+        <NoteBody note={n} />
+      </Screen>,
+    );
+    const items = root().findAll((x) => typeof x.props.accessibilityLabel === 'string' && x.props.accessibilityLabel.startsWith('On this page') && typeof x.props.onPress === 'function');
+    expect(items.map((x) => x.props.accessibilityLabel)).toEqual([
+      'On this page: 1 of 3, Understand',
+      'On this page: 2 of 3, Think like the auditor',
+      'On this page: 3 of 3, Keep it',
+    ]);
+    // A tap never throws (the scroll is measured from the rendered page).
+    act(() => {
+      items[1].props.onPress();
+    });
   });
 
   // Side by side shows the column names once, in a header row hidden from
@@ -157,32 +261,38 @@ describe('NoteBody: every section renders', () => {
     mount(el);
   };
 
-  it('stacks a 3-column table on a phone (row labels never scroll away)', () => {
+  const headerRows = () =>
+    root().findAll((x) => typeof x.type === 'string' && x.props.importantForAccessibility === 'no-hide-descendants' && x.props.style?.flexDirection === 'row');
+
+  it('a 3-item table is a real grid on a phone (mobile 1.21): the names once, one stop per dimension', () => {
     const n = note('4B1.2');
     mount(<NoteBody note={n} />);
+    // The item names once, in a header row hidden from screen readers.
+    expect(headerRows()).toHaveLength(1);
     expect(timesShown('RTO:')).toBe(0);
     expect(timesShown('Smaller value means')).toBe(1);
-    // Every row's cells sit under their column name (4 rows → "MTD" 4 times plus mentions in the text).
-    expect(timesShown('MTD')).toBeGreaterThanOrEqual(4);
-    // One screen-reader stop per row, naming each column.
+    // One screen-reader stop per dimension, naming each item.
     const rows = root().findAll((x) => typeof x.props.accessibilityLabel === 'string' && x.props.accessibilityLabel.startsWith('Measured.'));
     expect(rows[0].props.accessibilityLabel).toContain('RPO: Backward from the disruption');
   });
 
-  it('shows a table side by side when it fits: 2 columns on a phone, 3 on a wide screen', () => {
+  it('a table stacks with 4 or more items, and always at large text', () => {
     const n = note('4B1.2');
-    const two = { columns: ['RPO', 'RTO'], rows: n.compare!.rows.map((x) => ({ label: x.label, cells: x.cells.slice(0, 2) })) };
-    const headerRows = () =>
-      root().findAll((x) => typeof x.type === 'string' && x.props.importantForAccessibility === 'no-hide-descendants' && x.props.style?.flexDirection === 'row');
-    mount(<NoteBody note={{ ...n, compare: two }} />);
-    expect(headerRows()).toHaveLength(1);
-    setFontScale(1, 800);
-    remount(<NoteBody note={n} />);
-    expect(headerRows()).toHaveLength(1);
-    // Large text stacks even on a wide screen.
+    const four = { columns: [...n.compare!.columns, 'MBCO'], rows: n.compare!.rows.map((x) => ({ label: x.label, cells: [...x.cells, 'Minimum service'] })) };
+    mount(<NoteBody note={{ ...n, compare: four }} />);
+    expect(headerRows()).toHaveLength(0);
+    // Stacked: every dimension repeats the item names (4 rows → "MBCO" 4 times or more).
+    expect(timesShown('MBCO')).toBeGreaterThanOrEqual(4);
     setFontScale(2, 800);
     remount(<NoteBody note={n} />);
     expect(headerRows()).toHaveLength(0);
+  });
+
+  it('never outlines the compare table with 1px boxes (one plate, hairlines only)', () => {
+    const n = note('4B1.2');
+    mount(<NoteBody note={n} />);
+    const boxed = root().findAll((x) => typeof x.type === 'string' && x.props.style && [x.props.style].flat().some((st: { borderWidth?: number } | null) => st?.borderWidth === 1));
+    expect(boxed).toHaveLength(0);
   });
 
   it('skips a drawing that cannot be parsed, without crashing', () => {
@@ -202,6 +312,15 @@ describe('NoteBody: every section renders', () => {
     expect(text).not.toContain('Compare');
     expect(text).not.toContain('Analogy');
     expect(text).not.toContain('Types');
+  });
+
+  it('a movement with nothing in it is left out (no "Keep it" without terms, analogy or memory aid)', () => {
+    const n = note('4B1.2');
+    mount(<NoteBody note={{ ...n, keyTerms: [], analogy: undefined, memoryAid: undefined }} />);
+    expect(allText()).not.toContain('Keep it');
+    expect(allText()).toContain('Think like the auditor');
+    // The movements are headings, so a screen-reader user can jump between them.
+    expect(root().findAll((x) => x.props.accessibilityRole === 'header' && x.props.accessibilityLabel === 'Understand').length).toBeGreaterThan(0);
   });
 });
 
@@ -336,23 +455,66 @@ describe('screens', () => {
   });
 });
 
-describe('Learn: the Study notes entry', () => {
-  it('shows with notes and opens the notes', () => {
+describe('Learn: the course and the reference (mobile 1.21)', () => {
+  it('says what each is for, and opens the notes', () => {
     mount(<Learn />);
-    expect(allText()).toContain('Lessons and study notes');
-    expect(allText()).toContain('Lessons by domain');
+    expect(allText()).toContain('Lessons are the course. Study notes are the reference.');
+    expect(allText()).toContain('Look it up');
+    expect(allText()).toContain('Lessons');
     expect(allText()).toContain('Study notes');
-    press('Study notes, Every exam topic in plain English');
+    // A reference has no finish line: no "x of N read" meter on its row.
+    press('Study notes, Every topic, with traps and key terms');
     expect(mockPush).toHaveBeenCalledWith('/notes');
+    expect(allText()).not.toMatch(/\d+ of \d+ read/);
+    // Never claims a lesson for every topic (one outline topic has none).
+    expect(allText()).not.toMatch(/lesson for every topic/i);
+    expect(allText()).toContain('In exam order. Each ends with a quick check.');
+    expect(allText()).toContain('Short lessons across every domain of the exam outline. IS means information systems.');
   });
 
-  it('hides itself while the notes pack is empty (v1 source)', () => {
+  it('counts notes read on the notes row once any are read', () => {
+    act(() => {
+      useProgress.getState().setNoteRead('cisa', '4B1.2', true);
+    });
+    mount(<Learn />);
+    expect(allText()).toContain('1 note read · every topic, with traps');
+  });
+
+  it('searches the notes right on Learn, announces the count, and opens a hit', () => {
+    jest.useFakeTimers();
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+    mount(<Learn />);
+    const input = root().findAll((n) => n.props.accessibilityLabel === 'Search the study notes' && n.props.onChangeText)[0];
+    expect(input.props.placeholder).toBe('Search the notes, like RTO or SoD');
+    act(() => {
+      input.props.onChangeText('payroll');
+    });
+    expect(allText()).toContain('ITAF: Standards, Guidelines, and Tools and Techniques');
+    act(() => {
+      jest.advanceTimersByTime(800);
+    });
+    expect(announce).toHaveBeenLastCalledWith('1 note found');
+    const hit = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('ITAF') && n.props.onPress)[0];
+    act(() => {
+      hit.props.onPress();
+    });
+    expect(mockPush).toHaveBeenCalledWith('/notes/subtopic/1A1.1');
+    act(() => {
+      input.props.onChangeText('zzzz nothing');
+    });
+    expect(allText()).toContain('No matching notes');
+    announce.mockRestore();
+    jest.useRealTimers();
+  });
+
+  it('hides "Look it up" while the notes pack is empty (v1 source)', () => {
     mockNotesOn = false;
     clearNotesCache();
     mount(<Learn />);
     expect(allText()).not.toContain('Study notes,');
+    expect(allText()).not.toContain('Look it up');
     expect(root().findAll((n) => n.props.accessibilityLabel?.startsWith?.('Study notes,'))).toHaveLength(0);
-    expect(allText()).toContain('Lessons by domain'); // the lessons are still there
+    expect(allText()).toContain('Lessons'); // the lessons are still there
   });
 
   it('notes home shows a friendly empty screen when the pack is empty', () => {

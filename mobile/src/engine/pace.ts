@@ -376,8 +376,11 @@ export function durationWords(ms: number): { text: string; spoken: string } {
 
 /**
  * How a time reads as a stat: a serif number and its unit ("24" "min"), or
- * a short phrase in one size ("Under 1 min", "3 h 35 min"). An hour or more
- * is a phrase, so "3 h 35 min" never reads as a big "3" with small print.
+ * a short phrase in one size ("3 h 35 min"). An hour or more is a phrase, so
+ * "3 h 35 min" never reads as a big "3" with small print. Under a minute is
+ * the numeral form "<1" "min" (mobile 1.21): the phrase "Under 1 min" wrapped
+ * in a 3-up stat row at 360 dp and broke the row's shared baseline. It is
+ * still spoken "under a minute".
  */
 export interface TimeStat {
   value?: string;
@@ -387,13 +390,13 @@ export interface TimeStat {
   spoken: string;
 }
 
-/** A session's time as a stat (never "1 minute" for 5 seconds; "Under 1 min" never wraps at 360 dp). */
+/** A session's time as a stat (never "1 minute" for 5 seconds; "<1 min" never wraps at 360 dp). */
 export function timeStat(ms: number): TimeStat {
   const w = durationWords(ms);
   const total = ms >= 60_000 ? Math.round(ms / 60_000) : 0;
   // A number keeps its unit on a narrow cell: "3 h" and "35 min" may sit on
   // two lines, but "35" never ends a line with "min" alone below it.
-  if (total === 0) return { word: w.text, spoken: w.spoken };
+  if (total === 0) return { value: '<1', unit: 'min', spoken: w.spoken };
   if (total >= 60) return { word: w.text.replace(/(\d) (h|min)\b/g, '$1\u00a0$2'), spoken: w.spoken };
   return { value: String(total), unit: 'min', spoken: w.spoken };
 }

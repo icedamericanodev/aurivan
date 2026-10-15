@@ -24,13 +24,13 @@ import { tipParts } from '../engine/tips';
 import { config } from '../lib/config';
 import { haptic } from '../lib/haptics';
 import { shortReference } from '../lib/format';
-import { badgeLetter, motion, optionText, radius, raisedShadow, space } from '../theme/tokens';
+import { badgeLetter, motion, optionText, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
 import { Check, X } from './icons';
 import { AnimatedPressable, ease, FadeIn, Pop, StateLayer, tween, useMotion, usePressScale } from './motion';
 import { ReportRow } from './support';
-import { Chip, Gap, Row, T } from './ui';
+import { CARD_LIFT, Chip, Gap, Row, T } from './ui';
 
 
 // ── Scenario block: a longer case study above the stem, collapsible ───
@@ -122,7 +122,7 @@ export function OptionCard({
     borderColor: look.border,
     backgroundColor: look.bg,
     marginBottom: 10, // the gap between option rows (spec §6)
-    ...(!isDark && !tinted ? raisedShadow : null),
+    ...(!isDark && !tinted ? CARD_LIFT : null),
   };
   const content = (
     <>

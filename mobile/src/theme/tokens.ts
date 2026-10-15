@@ -18,7 +18,7 @@ export interface Palette {
   bg: string; // screen background (warm paper / forest night)
   raised: string; // option rows, inputs
   raised2: string; // the second surface tier: page sheets (one step above the screen behind them)
-  soft: string; // icon circles, pressed rows, tags
+  soft: string; // icon circles, pressed rows, tags. Neutral (warm paper-grey in light since 1.21): green surfaces mean feedback only
   line: string; // hairlines, dark-mode option outline
   control: string; // idle chip / checkbox outlines (≥3:1)
   track: string; // progress and ring tracks
@@ -30,7 +30,7 @@ export interface Palette {
   btn: string; // primary button fill
   onBtn: string; // text on the primary button
   forest: string; // the hero panel
-  forestTop: string; // the forest panel's lit top edge (a vertical gradient down to `forest`; = forest in light)
+  forestTop: string; // the forest panel's lit top edge (a vertical gradient down to `forest`, in both themes since mobile 1.21)
   onForest: string; // text on forest
   onForest2: string; // secondary text on forest
   forestLine: string; // botanical line art on forest (decorative)
@@ -52,7 +52,7 @@ export const light: Palette = {
   bg: '#F3F1EA',
   raised: '#FFFFFF',
   raised2: '#F8F7F2',
-  soft: '#E6EBE2',
+  soft: '#E9E6DC',
   line: '#DFDCD1',
   control: '#7D897F',
   track: '#E2E0D6',
@@ -64,7 +64,7 @@ export const light: Palette = {
   btn: '#1E4A34',
   onBtn: '#F7F5EF',
   forest: '#1E4A34',
-  forestTop: '#1E4A34',
+  forestTop: '#245A40',
   onForest: '#F3F1EA',
   onForest2: '#C9DACD',
   forestLine: '#3A6B51',
@@ -112,7 +112,7 @@ export const dark: Palette = {
   wrong: '#FF9CA6',
   wrongBg: '#3A1A1D',
   tip: '#E9C46A',
-  tipBg: '#2C2715',
+  tipBg: '#2B2418', // 1.21: a warmer amber (#2C2715 read muddy olive behind the notes' trap cards)
   scrim: '#000000',
 };
 
@@ -152,14 +152,34 @@ export const scrimOp = { light: 0.4, dark: 0.6 } as const;
  * Paper grain overlay opacity (spec §10.5). Never higher: at 5% the weakest
  * text pair (muted on bg) still passes 4.7:1. Dark is 4.5% (mobile 1.9; was
  * 6%): white specks over the forest night read as dust, and every light-on-
- * dark pair gains contrast with less of them.
+ * dark pair gains contrast with less of them. Light is 3.5% (mobile 1.21;
+ * was 5%): white cards stopped looking speckled, and it still reads as paper.
  */
-export const grainOp = { light: 0.05, dark: 0.045 } as const;
+export const grainOp = { light: 0.035, dark: 0.045 } as const;
 
-/** 1px inner top highlight on the dark forest panel, so it lifts off `bg`. */
-export const forestHighlight = 'rgba(255,255,255,0.06)';
+/**
+ * 1px inner top highlight on the forest panel, so it lifts off `bg`: 6% in
+ * dark (mobile 1.9), 8% in light (mobile 1.21, with the light top edge).
+ */
+export const forestHighlight = { light: 'rgba(255,255,255,0.08)', dark: 'rgba(255,255,255,0.06)' } as const;
 
-/** Soft shadow for raised rows (light mode only; dark uses a 1.5px `line` outline). */
+/**
+ * The one real shadow (mobile 1.21, DESIGN_SYSTEM.md §5 "Surface model"), for
+ * L2 cards (things you choose between) only, in light mode only (dark uses a
+ * 1.5px `line` outline; a sheet sits on its scrim and needs none). A crisp
+ * 1px contact ring plus an ambient lift, drawn with `boxShadow` (New
+ * Architecture, iOS, Android 9+ and web), so it never takes Android
+ * `elevation`: draw order stays as written. Android 7–8 has no outset
+ * boxShadow and falls back to `elevation: 1` (components/ui.tsx CARD_LIFT).
+ * The ink colour is light `ink` (#17231B) at low alpha.
+ */
+export const cardShadow = '0 0 0 1px rgba(23,35,27,0.05), 0 1px 2px rgba(23,35,27,0.06), 0 8px 20px -6px rgba(23,35,27,0.10)';
+
+/**
+ * The old soft shadow, kept only for the Segmented thumb (a layer drawn
+ * under its own labels, spread without `elevation`). Everything else that
+ * lifts uses `cardShadow`. Light mode only.
+ */
 export const raisedShadow = {
   shadowColor: '#17231B',
   shadowOpacity: 0.06,

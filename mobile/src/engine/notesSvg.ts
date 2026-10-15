@@ -104,9 +104,11 @@ export function svgMinFontSize(svg: string): number {
 export const MIN_LABEL_PT = 13;
 
 /**
- * Drawing size for a diagram. It is drawn wide enough that its SMALLEST
- * label is at least 13pt (×1.5 at most with large text), never narrower
- * than the content column; anything wider than the column scrolls sideways.
+ * A diagram's READABLE size: wide enough that its SMALLEST label is at least
+ * 13pt (×1.5 at most with large text), never narrower than `columnWidth`.
+ * Since mobile 1.21 the page always shows a figure fitted to its plate; when
+ * this size is wider than the plate, the figure offers "Tap to enlarge" and
+ * the full-screen viewer draws it at this size (components/notes.tsx).
  * `maxColumns` caps the width so a tiny label can't make a huge drawing.
  */
 export function svgSize(

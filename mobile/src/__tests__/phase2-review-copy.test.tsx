@@ -129,7 +129,8 @@ describe('Today and Results copy', () => {
     });
     mount(<Today />);
     const text = textOf(root());
-    expect(text).toContain('Review 56 due');
+    // Mobile 1.21: the panel's title names the activity; the queue is its meta ("8 of 56 due").
+    expect(text).toContain('Spaced review About 10 min · 8 of 56 due · most overdue first');
     // Mobile 1.15 (C1): one minutes style everywhere, "About N min" (screen readers say "minutes").
     expect(text).toMatch(/Also today About \d+ min/);
     expect(text).not.toMatch(/about \d+ minutes/i);

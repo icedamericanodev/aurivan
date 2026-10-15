@@ -29,6 +29,12 @@
  * stages. The one-time "Practice at exam pace?" card sits under the Timed
  * switch it changes, never above the hero. Session titles use a domain's
  * short name (C9), and the exam pace is said in seconds (C2).
+ *
+ * Mobile 1.21 (premium pass): the hero title names the path and never holds
+ * a count ("Picked for you"); the count and the minutes go to its meta line
+ * ("10 questions · about 12 min"). The title is short, so it keeps clear of
+ * the frond (no wideTitle). The "Practice at exam pace?" offer is an L1
+ * plate, not a raised card: it is an offer, not a choice between things.
  */
 import { router } from 'expo-router';
 import { useRef, useState } from 'react';
@@ -39,7 +45,7 @@ import { DisclosureRow, FieldLabel, PathChooser, pathSummary } from '../../compo
 import { Button, Card, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, ToggleRow, Trail } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
 import { topicQuestionIds } from '../../engine/outline';
-import { aboutMin, examPaceWords, MINUTES_PER_QUESTION, shouldOfferTimer } from '../../engine/pace';
+import { aboutMin, examPaceWords, MINUTES_PER_QUESTION, shouldOfferTimer, spokenMin } from '../../engine/pace';
 import { REVIEW_UNIT } from '../../engine/srs';
 import { activeMode, MODE_INFO, scopeKey, SESSION_SIZES, sessionSize, suggestedMode } from '../../engine/studyModes';
 import { currentGuidedTopic } from '../../engine/studyPath';
@@ -122,6 +128,10 @@ export default function Practice() {
   const [setOpen, setSetOpen] = useState(false);
   const pathRowRef = useRef<View>(null);
   const summary = pathSummary(mode, pathDomain, pathSize);
+  const heroMeta =
+    mode === 'guided'
+      ? 'Learn it, practice it, then mix it with earlier topics.'
+      : `${pathSize} questions · ${aboutMin(pathSize * MINUTES_PER_QUESTION, true)}${timed ? ' · timed' : ''}`;
 
   // ── Build a set ──
   const [domainId, setDomainId] = useState<string | undefined>(undefined);
@@ -142,7 +152,7 @@ export default function Practice() {
     // Offered ONCE (behavioural review §2): close to the exam or at the
     // mock / ready stage. Never switched on without the learner's tap.
     // Mobile 1.15 (ui.md P1): under the Timed switch it changes, not above the hero.
-    <Card style={{ marginTop: space.md }}>
+    <Card variant="plate" style={{ marginTop: space.md }}>
       <T v="headline" accessibilityRole="header">Practice at exam pace?</T>
       <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>
         {`${examPaceWords(cert.exam)} A timer counts up while you answer, never down, and stops while you read the explanation.`}
@@ -158,7 +168,7 @@ export default function Practice() {
   /** Mock exams: under the hero for the Exam-focused plan and the mock / ready stages (`top`), else last. */
   const mockExams = (top: boolean) => (
     <Enter i={top ? 2 : 4}>
-        <Section title="Mock exams" style={{ marginTop: top ? 22 : space.xl }} />
+        <Section title="Mock exams" />
         <ListRow
           lead={<Lead value={String(mini)} unit="questions" />}
           title="Mini mock"
@@ -187,29 +197,26 @@ export default function Practice() {
         <T v="meta" style={{ marginTop: space.xs }}>Every option explained, every trap named.</T>
       </Enter>
 
-      <Enter i={1} style={{ marginTop: 18 }}>
+      <Enter i={1} style={{ marginTop: space.xl }}>
         <HeroPanel
           // The mode, domain and length live in the summary row below (O2: said once).
           caption="Your path"
+          // Mobile 1.21: the title names the path, never a count (the count goes to the meta).
           title={
             mode === 'guided'
               ? guidedTopic
                 ? `Next topic: ${guidedTopic.name}`
                 : 'Your next topic'
               : mode === 'smart'
-                ? `${pathSize} questions picked for you`
+                ? 'Picked for you'
                 : mode === 'inOrder'
-                  ? `${pathSize} questions, topic by topic`
-                  : `${pathSize} mixed questions`
+                  ? 'Topic by topic'
+                  : 'A mixed set'
           }
-          // The mode's why lives once, under its radio (O2); the hero says how long.
-          meta={
-            mode === 'guided'
-              ? 'Learn it, practice it, then mix it with earlier topics.'
-              : `${aboutMin(pathSize * MINUTES_PER_QUESTION)}${timed ? ' · timed' : ''}`
-          }
+          // The mode's why lives once, under its radio (O2); the hero says how many and how long.
+          meta={heroMeta}
+          metaLabel={spokenMin(heroMeta)}
           art="frond2"
-          wideTitle
           action={{
             label: mode === 'guided' ? 'Open step' : 'Start',
             icon: (col) => <Play size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />,
@@ -272,7 +279,7 @@ export default function Practice() {
       {mocksFirst && paceCard && <Enter i={2}>{paceCard}</Enter>}
 
       <Enter i={3}>
-        <Section title="More ways to practice" style={{ marginTop: 22 }} />
+        <Section title="More ways to practice" />
         <ListRow
           icon={icon(RotateCcw)}
           title="Spaced review"

@@ -62,18 +62,33 @@ describe('palettes', () => {
     expect(dark.btn).toBe('#A9D9BA'); // dark primary button is light mint
   });
 
-  it('keeps the paper grain faint (5% light, 4.5% dark since mobile 1.9)', () => {
-    expect(grainOp.light).toBeLessThanOrEqual(0.05);
+  it('keeps the paper grain faint (3.5% light since mobile 1.21, 4.5% dark since 1.9)', () => {
+    expect(grainOp.light).toBeLessThanOrEqual(0.035);
     expect(grainOp.dark).toBeLessThanOrEqual(0.045);
   });
 
-  it('dark depth (mobile 1.9): sheets sit one tier above the screen, the forest panel is lit from the top', () => {
-    // Dark: bg < raised2 (sheets) and the panel's top edge is lighter than its body.
+  it('depth: sheets sit one tier above the screen, and the forest panel is lit from the top in both themes (light since 1.21)', () => {
+    // bg < raised2 (sheets, plates) and the panel's top edge is lighter than its body.
     expect(luminance(dark.raised2)).toBeGreaterThan(luminance(dark.bg));
     expect(luminance(dark.forestTop)).toBeGreaterThan(luminance(dark.forest));
-    // Light: the sheet is a lifted paper; the forest panel stays flat (no gradient layer).
     expect(luminance(light.raised2)).toBeGreaterThan(luminance(light.bg));
-    expect(light.forestTop).toBe(light.forest);
+    expect(luminance(light.forestTop)).toBeGreaterThan(luminance(light.forest));
+  });
+
+  it('muted on soft is pinned at 4.53 light (disabled labels only: a disabled button\'s label on its `soft` fill)', () => {
+    // Mobile 1.21: the warm #E9E6DC took it from 4.68 to 4.53, still AA. Never use this pair for live text.
+    expect(Math.round(contrast(light.muted, light.soft) * 100) / 100).toBeGreaterThanOrEqual(4.53);
+    expect(contrast(dark.muted, dark.soft)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('green surfaces mean feedback only (mobile 1.21): `soft` is a neutral paper-grey, not a near-copy of correctBg', () => {
+    const hue = (hex: string) => {
+      const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+      return { warm: r >= g, greenish: g > r && g > b };
+    };
+    expect(hue(light.soft).greenish).toBe(false);
+    expect(hue(light.soft).warm).toBe(true);
+    expect(hue(light.correctBg).greenish).toBe(true);
   });
 });
 
@@ -240,9 +255,11 @@ describe('badge art contrast (WCAG 1.4.11, 3:1)', () => {
     ['dark', dark],
   ] as const)('the stitched outline against the not-yet field stays where it is in %s (it is judged on the page, 3:1+ above)', (_mode, p) => {
     // The outline sits ON the field's edge, so its 3:1 is against the page
-    // (tested above). Against the field itself it is 3.01 light / 2.98 dark:
-    // pinned here so a token change can never quietly make it worse.
-    expect(contrast(p.control, p.soft)).toBeGreaterThanOrEqual(2.95);
+    // (tested above). Against the field itself it is 2.92 light / 2.98 dark:
+    // pinned here so a token change can never quietly make it worse. (Mobile
+    // 1.21: light `soft` became the warm #E9E6DC, decided 15 Oct 2026; it was
+    // 3.01 against the old mint-grey.)
+    expect(contrast(p.control, p.soft)).toBeGreaterThanOrEqual(2.9);
   });
   it('a one-mark badge is struck in the calm sage: unnamed, not a tier metal, and it reads like one', () => {
     expect(badgeStruck.name).toBe('');

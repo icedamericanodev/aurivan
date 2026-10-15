@@ -312,9 +312,9 @@ describe('Journey 1 · Results stats', () => {
   });
 
   it('hour-long and boundary durations read plainly', () => {
-    // "Under 1 min" (never wraps at 360 dp); an hour or more is one phrase in one size (UX P4).
-    expect(timeStat(59_999)).toEqual({ word: 'Under 1 min', spoken: 'under a minute' });
-    expect(timeStat(NaN).word).toBe('Under 1 min');
+    // "<1 min" (mobile 1.21: the numeral form never wraps at 360 dp); an hour or more is one phrase in one size (UX P4).
+    expect(timeStat(59_999)).toEqual({ value: '<1', unit: 'min', spoken: 'under a minute' });
+    expect(timeStat(NaN).value).toBe('<1');
     expect(timeStat(60 * MIN)).toEqual({ word: '1\u00a0h', spoken: '1 hour' });
     expect(timeStat(59.6 * MIN)).toEqual({ word: '1\u00a0h', spoken: '1 hour' });
     expect(timeStat(211 * MIN)).toEqual({ word: '3\u00a0h 31\u00a0min', spoken: '3 hours 31 minutes' });

@@ -3,6 +3,9 @@
  * Empty: a bookmark in the soil (mobile 1.9) and how to save one. Otherwise: the saved stems as a
  * hairline list (tap a row to answer that question; the trailing bookmark
  * removes it), and one sticky action to practise them all.
+ * Mobile 1.21: the stems read in `body` (reading text is never 600), and the
+ * "Tap a question… Tap the bookmark…" line is gone: the rows explain
+ * themselves, and the bookmark's spoken hint says what it does.
  */
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -11,7 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { BookmarkCheck, ICON_STROKE } from '../components/icons';
 import { StickyFooter } from '../components/quiz';
-import { Button, ICON_SIZE, ListRow, PushedHeader, T } from '../components/ui';
+import { Button, ICON_SIZE, ListRow, PushedHeader } from '../components/ui';
 import { findQuestion } from '../content/loader';
 import { guardedStart, startBookmarks, startFromIds, startPractice } from '../lib/sessions';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -43,13 +46,13 @@ export default function Saved() {
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
         <PushedHeader title="Saved questions" onBack={() => router.back()} />
-        <T v="meta" style={{ marginTop: space.sm }}>Tap a question to answer it. Tap the bookmark to remove it.</T>
         {saved.map(({ id, q }, i) => (
           // The row and the remove button are siblings (not nested), so each
           // is its own target for touch and for screen readers.
           <View key={id} style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
             <View style={{ flex: 1 }}>
               <ListRow
+                reading
                 title={q!.stem.length > 120 ? `${q!.stem.slice(0, 120).trimEnd()}…` : q!.stem}
                 subtitle={cert.domains.find((d) => d.id === q!.domainId)?.short}
                 accessibilityLabel={`Answer saved question: ${q!.stem.slice(0, 80)}`}
@@ -62,6 +65,7 @@ export default function Saved() {
             <Pressable
               accessibilityRole="button"
               accessibilityLabel="Remove from saved"
+              accessibilityHint="Takes this question out of your saved set"
               onPress={() => toggleBookmark(cert.id, id)}
               hitSlop={2}
               style={({ pressed }) => ({

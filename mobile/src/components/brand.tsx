@@ -194,29 +194,31 @@ export function PillarGlyph({ kind, size = 24, isDark }: { kind: PillarGlyphKind
 // ── The four pillars as a list ─────────────────────────────────────────
 /**
  * The brand pillars, each with its glyph in a soft circle.
- * - `cards` (welcome screen): each pillar is a raised card.
- * - `rows` (Settings → About): plain rows, matching the hairline sections there.
+ * - `rows` (the welcome screen and Settings → About, mobile 1.21): plain rows
+ *   on the paper. The pillars are not choices, so they are never cards
+ *   (spec §5: raised cards only for things you choose between).
+ * - `cards`: kept for compatibility; nothing uses it any more.
  * Each pillar is read as one sentence ("See the path. Know what to study next…").
  */
-export function PillarList({ look = 'cards' }: { look?: 'cards' | 'rows' }) {
+export function PillarList({ look = 'rows' }: { look?: 'cards' | 'rows' }) {
   const { c, isDark } = useTheme();
   return (
-    <View style={{ gap: look === 'cards' ? 10 : space.md }}>
+    <View style={{ gap: look === 'cards' ? space.sm : space.lg }}>
       {PILLARS.map((p) => {
         const inner = (
-          <Row gap={14} style={{ alignItems: 'flex-start' }}>
+          <Row gap={space.md} style={{ alignItems: 'flex-start' }}>
             <IconCircle>
               <PillarGlyph kind={p.glyph} isDark={isDark} />
             </IconCircle>
             <View style={{ flex: 1 }}>
               <T v="label">{p.title}</T>
-              <T v="meta" color={c.ink2} style={{ marginTop: 2 }}>{p.body}</T>
+              <T v="meta" color={c.ink2} style={{ marginTop: space.xs }}>{p.body}</T>
             </View>
           </Row>
         );
         return (
           <View key={p.glyph} accessible accessibilityRole="text" accessibilityLabel={`${p.title}. ${p.body}`}>
-            {look === 'cards' ? <Card style={{ paddingVertical: 14 }}>{inner}</Card> : inner}
+            {look === 'cards' ? <Card style={{ paddingVertical: space.md }}>{inner}</Card> : inner}
           </View>
         );
       })}

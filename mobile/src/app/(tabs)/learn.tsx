@@ -1,6 +1,21 @@
 /**
- * Learn — short motion lessons (3–5 minutes each).
- * Spec: DESIGN_SYSTEM.md §11 "Learn":
+ * Learn — the course (short lessons) and the reference (study notes).
+ * Spec: DESIGN_SYSTEM.md §11 "Learn".
+ *
+ * Mobile 1.21 (course + reference, decided 15 Oct 2026): lessons are the
+ * course you follow, study notes the reference you look things up in, and
+ * the screen says so in one line. Top to bottom: the Up next lesson on the
+ * forest panel (one meta line: its length and why this one), "Look it up"
+ * (a notes search with inline results, then the Study notes row, BookOpen),
+ * "Lessons" (one progress meter, "1 of 41 done", and its role line), the
+ * domain groups, a Guided pointer and the footer. Lessons use the Play glyph
+ * and notes BookOpen. The notes row has no "x of N" meter: a reference has no
+ * finish line, so it counts notes read instead. Status marks are quiet: a
+ * `track` ring for not started, a tone arc, a filled ✓ (never the `control`
+ * outline, which reads as a radio button). The Up next lesson is the one L2
+ * card in the list, with a filled play disc; other rows have no trailing mark.
+ *
+ * Earlier (mobile 1.12–1.20), still true:
  *   forest "Up next" lesson cover (domain dot + short name, the full lesson
  *   title, "3 min · 7 scenes", WHY this one, Start lesson, a branch drawn per
  *   domain) → "By domain": one collapsible group per domain (status ring ·
@@ -27,23 +42,23 @@
  *   here: Lesson complete already gave the moment's one. A lesson that
  *   arrived any other way (a restore, a certification switch) is just done.
  *
- * Study notes: one row under the cover opens the notes (every exam topic
- * in plain English). It hides itself while the app has no notes.
+ * Study notes: "Look it up" (the search and the Study notes row) hides
+ * itself while the app has no notes.
  */
 import * as Router from 'expo-router';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
+import { AccessibilityInfo, Pressable, View } from 'react-native';
 import { DomainRing, type BotanyKind } from '../../components/glyphs';
 import { BookOpen, ChevronDown, ICON_STROKE, Play } from '../../components/icons';
 import { AnimatedPressable, CheckDraw, Collapse, Turn, usePressScale, useScreenFocus } from '../../components/motion';
-import { BigNum, Enter, HeroPanel, ICON_SIZE, ListRow, ProgressBar, Row, Screen, Section, T } from '../../components/ui';
+import { BigNum, CARD_LIFT, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, ProgressBar, Row, Screen, SearchField, Section, T } from '../../components/ui';
 import { CERTIFICATIONS, domainColor, domainLabel, getCertification } from '../../content/certifications';
 import { lessonsFor, nextLesson } from '../../content/lessons';
 import type { Lesson } from '../../content/lessons/types';
-import { hasNotes, noteSubtopics } from '../../content/notes';
+import { getNotes, hasNotes, noteSubtopics } from '../../content/notes';
 import type { Certification, DomainInfo } from '../../content/types';
-import { readCount } from '../../engine/notesSearch';
+import { readCount, searchNotes } from '../../engine/notesSearch';
 import { clearFinishedLessons, wasJustFinished } from '../../lib/lessonNews';
 import { readinessFor } from '../../engine/readiness';
 import { selectCert, useProgress } from '../../store/progress';
@@ -52,15 +67,25 @@ import { motion, radius, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 /**
- * Why the cover offers this lesson (ui.md L3), in one plain line. Exported for tests.
- * - asked for a domain (?domain=, e.g. from Today): "Next in IS Audit";
- * - the readiness focus (the domain with the most to gain, weighted by the
- *   exam), once there are answers to judge by: "Picked where you can gain the most";
- * - otherwise the next one in order: "Next in IS Audit".
+ * Why the cover offers this lesson (ui.md L3), as a code. Exported for tests.
+ * - 'focus': the readiness focus (the domain with the most to gain, weighted
+ *   by the exam), once there are answers to judge by, and not asked for by
+ *   ?domain=: the cover says "picked where you can gain the most";
+ * - 'next': the next one in order (or the domain asked for): the cover says
+ *   its place on the trail, "lesson 2 of 7".
  */
-export function upNextReason(lesson: Lesson, domain: DomainInfo, opts: { askedDomain?: string; focusDomainId: string | null; hasAnswers: boolean }): string {
-  if (opts.askedDomain !== lesson.domainId && opts.hasAnswers && opts.focusDomainId === lesson.domainId) return 'Picked where you can gain the most';
-  return `Next in ${domain.short}`;
+export type UpNextReason = 'focus' | 'next';
+export function upNextReason(lesson: Lesson, opts: { askedDomain?: string; focusDomainId: string | null; hasAnswers: boolean }): UpNextReason {
+  return opts.askedDomain !== lesson.domainId && opts.hasAnswers && opts.focusDomainId === lesson.domainId ? 'focus' : 'next';
+}
+
+/**
+ * The cover's one meta line and its spoken form ("5 min · picked where you
+ * can gain the most" / "5 minutes, …"; "1 minute" for one). Exported for tests.
+ */
+export function upNextMeta(minutes: number, reason: UpNextReason, place: string): { meta: string; spoken: string } {
+  const why = reason === 'focus' ? 'picked where you can gain the most' : place;
+  return { meta: `${minutes} min · ${why}`, spoken: `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}, ${why}` };
 }
 
 /** This screen's own navigation (absent where a test's expo-router stand-in has none). */
@@ -68,7 +93,6 @@ const useOwnNavigation: () => { setParams?: (p: { domain?: string }) => void } |
   (Router as { useNavigation?: () => { setParams?: (p: { domain?: string }) => void } }).useNavigation ?? (() => undefined);
 
 export default function Learn() {
-  const { c } = useTheme();
   // Only what Learn shows (performance, 1.15.x): lessons done, notes read,
   // and from readiness only the focus domain and whether there are answers.
   // Learn stays mounted (hidden) during study; an answer that doesn't move
@@ -130,57 +154,55 @@ export default function Learn() {
   const upNext = nextLesson(cert.id, lessonsDone, knownDomain ?? focusDomainId ?? undefined);
   const upDomain = upNext ? cert.domains.find((d) => d.id === upNext.domainId) : undefined;
   const play = (col: string, size: number = ICON_SIZE.inline) => <Play size={size} color={col} strokeWidth={ICON_STROKE} />;
-  // Study notes progress: "3 of 120 read" (hidden when there are no notes).
+  // Study notes: a reference has no finish line, so no "x of N" meter here
+  // (one progress meter per screen: the lessons'). Once any are read, it
+  // counts them. Hidden when there are no notes.
   const showNotes = hasNotes(cert.id);
   const noteIds = showNotes ? noteSubtopics(cert.id).map((s) => s.id) : [];
   const notesRead = readCount(noteIds, notesReadIds);
-  const notesState = notesRead === 0 ? 'Every exam topic in plain English' : `${notesRead} of ${noteIds.length} read`;
-  const reason =
-    upNext && upDomain
-      ? upNextReason(upNext, upDomain, { askedDomain: knownDomain, focusDomainId, hasAnswers })
-      : null;
+  // One line each (design spec §2): the subtitle above already says "reference".
+  const notesState = notesRead === 0
+    ? 'Every topic, with traps and key terms'
+    : `${notesRead} ${notesRead === 1 ? 'note' : 'notes'} read · every topic, with traps`;
+  // The cover's one meta line: its length, then why this one. The caption
+  // already names the domain, so "next in IS Audit" becomes its place on the trail.
+  const upItems = upNext ? lessons.filter((l) => l.domainId === upNext.domainId) : [];
+  const upPlace = upNext ? `lesson ${upItems.findIndex((l) => l.id === upNext.id) + 1} of ${upItems.length}` : '';
+  const hero = upNext ? upNextMeta(upNext.minutes, upNextReason(upNext, { askedDomain: knownDomain, focusDomainId, hasAnswers }), upPlace) : null;
 
   return (
     <Screen>
       <Enter i={0}>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Learn</T>
-        <T v="meta" style={{ marginTop: space.xs }}>Lessons and study notes</T>
+        <T v="meta" style={{ marginTop: space.xs }}>
+          {showNotes ? 'Lessons are the course. Study notes are the reference.' : 'Short lessons, in exam order.'}
+        </T>
       </Enter>
 
-      <Enter i={1} style={{ marginTop: 18 }}>
+      <Enter i={1} style={{ marginTop: space.xl }}>
         {upNext && upDomain ? (
           <HeroPanel
             // On the dark forest panel the brighter (dark-mode) domain tone reads best.
             captionLead={<View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: domainColor(upDomain.tone, true) }} />}
             caption={`Up next · ${upDomain.short}`}
             title={upNext.title}
-            meta={`${upNext.minutes} min · ${upNext.scenes.length} scenes`}
+            // Why this one (ui.md L3), on the same line as its length.
+            meta={hero?.meta}
+            metaLabel={hero?.spoken}
+            // One line under the title, over the faint low branch art (design spec §2).
+            wideMeta
             art={`branch${upDomain.tone % 5}` as BotanyKind}
             action={{ label: 'Start lesson', icon: (col) => play(col), hint: upNext.title, onPress: () => router.push(`/lesson/${upNext.id}`) }}
-          >
-            {/* Why this one (ui.md L3): a beginner sees the reason for the jump. */}
-            {reason && (
-              <T v="meta" color={c.onForest2} style={{ marginTop: 2 }}>
-                {reason}
-              </T>
-            )}
-          </HeroPanel>
+          />
         ) : (
-          <HeroPanel caption="All caught up" title="Every lesson done" meta="Every exam topic covered. Revisit any lesson anytime." art="branch1" />
+          <HeroPanel caption="All caught up" title="Every lesson done" meta={showNotes ? 'Revisit any lesson anytime, or look a topic up in the notes.' : 'Revisit any lesson anytime.'} art="branch1" />
         )}
       </Enter>
 
       {showNotes && (
-        <Enter i={2} style={{ marginTop: space.md }}>
-          <ListRow
-            icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-            title="Study notes"
-            subtitle={notesState}
-            accessibilityLabel={`Study notes, ${notesState}`}
-            accessibilityHint="Opens the notes for every exam topic"
-            onPress={() => router.push('/notes')}
-            last
-          />
+        <Enter i={2}>
+          {/* Memoised, with its own query state: typing re-renders only this block, never the hero or the lessons. */}
+          <LookItUp cert={cert} notesState={notesState} />
         </Enter>
       )}
 
@@ -199,6 +221,90 @@ export default function Learn() {
     </Screen>
   );
 }
+
+/** Search results shown on Learn itself; more opens Study notes with the same search. */
+const SEARCH_INLINE = 5;
+
+/**
+ * "Look it up": the notes search with its inline results, then the Study
+ * notes row. Its own memoised block with its own query, so a keystroke never
+ * re-renders the rest of Learn; the search itself runs on a deferred copy of
+ * the query (React keeps the field responsive while results catch up), over
+ * the pack's cached index (engine/notesSearch.ts notesIndex).
+ */
+const LookItUp = memo(function LookItUp({ cert, notesState }: { cert: Certification; notesState: string }) {
+  const { c } = useTheme();
+  const [query, setQuery] = useState('');
+  const deferred = useDeferredValue(query);
+  const searching = deferred.trim().length >= 2;
+  const hits = useMemo(() => (searching ? searchNotes(getNotes(cert.id), deferred) : []), [searching, cert.id, deferred]);
+  const found = hits.length === 0 ? 'No matching notes' : `${hits.length}${hits.length === 30 ? ' or more' : ''} ${hits.length === 1 ? 'note' : 'notes'} found`;
+  // Screen readers hear how many once typing pauses (not on every keystroke).
+  useEffect(() => {
+    if (!searching) return;
+    const t = setTimeout(() => AccessibilityInfo.announceForAccessibility(found), 700);
+    return () => clearTimeout(t);
+  }, [searching, found, deferred]);
+  const shown = hits.slice(0, SEARCH_INLINE);
+  return (
+    <>
+      <Section title="Look it up" />
+      <View style={{ marginTop: space.sm }}>
+        <SearchField
+          value={query}
+          onChangeText={setQuery}
+          placeholder="Search the notes, like RTO or SoD"
+          accessibilityLabel="Search the study notes"
+          accessibilityHint="Matching notes show below as you type"
+        />
+      </View>
+      {searching && (
+        <View testID="learn-search-results" style={{ marginTop: space.xs }}>
+          {hits.length === 0 ? (
+            <EmptyState compact art="fieldbook" title="No matching notes" body="Try a shorter word, or an acronym like RTO or SoD." />
+          ) : (
+            shown.map((h) => {
+              const d = cert.domains.find((x) => x.id === h.subtopic.domainId);
+              return (
+                <ListRow
+                  key={h.subtopic.id}
+                  reading
+                  title={h.subtopic.name}
+                  subtitle={
+                    <View>
+                      <T v="meta" numberOfLines={2}>{h.snippet}</T>
+                      {d && <T v="caption" style={{ marginTop: 2 }}>{d.short}</T>}
+                    </View>
+                  }
+                  accessibilityLabel={`${h.subtopic.name}. ${d?.short ?? ''}. ${h.snippet}`}
+                  accessibilityHint="Opens this note"
+                  onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(h.subtopic.id)}`)}
+                />
+              );
+            })
+          )}
+          {hits.length > SEARCH_INLINE && (
+            <ListRow
+              title="See all results"
+              subtitle={found}
+              accessibilityHint="Opens Study notes with this search"
+              onPress={() => router.push({ pathname: '/notes', params: { q: deferred.trim() } })}
+            />
+          )}
+        </View>
+      )}
+      <ListRow
+        icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+        title="Study notes"
+        subtitle={notesState}
+        accessibilityLabel={`Study notes, ${notesState}`}
+        accessibilityHint="Opens the notes, by domain"
+        onPress={() => router.push('/notes')}
+        last
+      />
+    </>
+  );
+});
 
 /**
  * The lessons, grouped by domain (a group opens and closes). Its props are
@@ -238,21 +344,25 @@ const LessonGroups = memo(function LessonGroups({
   const toggleGroup = (domainId: string) => setToggled((t) => ({ ...t, [domainId]: !isOpenGroup(domainId) }));
   return (
     <>
-        <Section title="Lessons by domain" meta={`${doneCount} of ${lessons.length} done`} />
-        {/* J25: the short names keep "IS"; say once what it stands for. */}
-        {cert.domains.some((d) => /\bIS\b/.test(d.short)) && <T v="meta" style={{ marginTop: space.xs }}>IS means information systems.</T>}
+        {/* The one progress meter on Learn (the notes row counts, it never meters). */}
+        <Section title="Lessons" meta={`${doneCount} of ${lessons.length} done`} />
+        {/* The course's role, in one line; never "a lesson for every topic" (one outline topic has none).
+            J25: the short names keep "IS"; say once what it stands for. */}
+        <T v="meta">In exam order. Each ends with a quick check.</T>
         {groups.map(({ domain: d, items }, g) => {
           const groupDone = items.filter((l) => done(l.id)).length;
           const isOpen = isOpenGroup(d.id);
           const lastGroup = g === groups.length - 1;
-          const progressText = groupDone === items.length ? 'All done' : `${groupDone} of ${items.length} done`;
+          // "of 7" without "done": the section meta says "done" once, not five times.
+          const progressText = groupDone === items.length ? 'All done' : `${groupDone} of ${items.length}`;
+          const spokenProgress = groupDone === items.length ? 'all done' : `${groupDone} of ${items.length} done`;
           return (
             <View key={d.id}>
               {/* Group header: tap to show or hide this domain's lessons. */}
               <Pressable
                 accessibilityRole="button"
                 accessibilityState={{ expanded: isOpen }}
-                accessibilityLabel={`${d.name}, ${items.length} ${items.length === 1 ? 'lesson' : 'lessons'}, ${progressText}`}
+                accessibilityLabel={`${d.name}, ${items.length} ${items.length === 1 ? 'lesson' : 'lessons'}, ${spokenProgress}`}
                 accessibilityHint={isOpen ? 'Hides these lessons' : 'Shows these lessons'}
                 onPress={() => toggleGroup(d.id)}
                 style={({ pressed }) => ({
@@ -266,8 +376,8 @@ const LessonGroups = memo(function LessonGroups({
                 })}
               >
                 <Row gap={space.sm}>
-                  {/* L1: the domain's status by SHAPE (outline · arc · filled ✓), in its tone. */}
-                  <DomainRing done={groupDone} total={items.length} tone={domainColor(d.tone, isDark)} track={c.track} outline={c.control} paper={c.bg} />
+                  {/* L1: the domain's status by SHAPE (quiet ring · arc · filled ✓), in its tone. A status, so `track`, never `control`. */}
+                  <DomainRing done={groupDone} total={items.length} tone={domainColor(d.tone, isDark)} track={c.track} outline={c.track} paper={c.bg} />
                   {/* C9: a list of domains says "Domain 1 · IS Audit". */}
                   <T v="label" style={{ flex: 1 }}>{domainLabel(d)}</T>
                   <T v="meta" num>{progressText}</T>
@@ -305,7 +415,20 @@ const LessonGroups = memo(function LessonGroups({
             </View>
           );
         })}
-        <T v="meta" style={{ marginTop: space.md }}>One lesson for every topic in the CISA exam outline.</T>
+        {/* Guided: the step-by-step path (Practice → Change → Guided), pointed at from the course. */}
+        <View style={{ marginTop: space.xl }}>
+          <ListRow
+            title="Prefer a step-by-step path?"
+            subtitle="Guided pairs each lesson with practice"
+            accessibilityHint="Opens Guided"
+            onPress={() => router.push('/guided')}
+            last
+          />
+        </View>
+        {/* J25: the short names keep "IS"; say once what it stands for (in the footer since 1.21, so the role line stays one line). */}
+        <T v="meta" style={{ marginTop: space.xl }}>
+          {`Short lessons across every domain of the exam outline.${cert.domains.some((d) => /\bIS\b/.test(d.short)) ? ' IS means information systems.' : ''}`}
+        </T>
         <T v="meta" color={c.muted} style={{ marginTop: space.xs }}>Original content, reviewed against public frameworks.</T>
     </>
   );
@@ -316,9 +439,11 @@ const LessonGroups = memo(function LessonGroups({
  * thin path that joins this lesson to the ones before and after (accent
  * where walked, `track` ahead), so the domain reads as a trail, not a list.
  * Done: an accent ✓ circle and the title in ink2 (its ✓ draws once when it
- * was finished in the player since Learn was last on view). Up next: a soft highlight and
- * the caption "Up next". Others: an outline circle with ▶. One button,
- * spoken "IS Audit lesson 2: …, done | up next | 5 min" (unchanged).
+ * was finished in the player since Learn was last on view). Up next (mobile
+ * 1.21): the one L2 card in the list (raised + cardShadow; a `line` outline in
+ * dark), the caption "Up next · 5 min" and a filled accent play disc. Others:
+ * nothing trailing (the whole row is the button). One button, spoken
+ * "IS Audit lesson 2: …, done | up next | 5 min" (unchanged).
  */
 const LessonRow = memo(function LessonRow({
   domain,
@@ -346,9 +471,9 @@ const LessonRow = memo(function LessonRow({
   first: boolean;
   last: boolean;
 }) {
-  const { c } = useTheme();
-  // The pressed tint: `soft` on paper; the Up next row is already `soft`, so it darkens to `track`.
-  const press = usePressScale({ scale: 1, tint: next ? c.track : c.soft, tintRadius: radius.md });
+  const { c, isDark } = useTheme();
+  // The pressed tint: `soft`, on paper and on the Up next card alike.
+  const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: radius.md });
   const state = done ? 'done' : next ? 'up next' : `${lesson.minutes} min`;
   const segment = (on: boolean, hidden: boolean) => (
     <View style={{ flex: 1, width: 1.5, backgroundColor: hidden ? 'transparent' : on ? c.accent : c.track, opacity: on ? 0.7 : 1 }} />
@@ -361,8 +486,17 @@ const LessonRow = memo(function LessonRow({
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
       style={[
-        { flexDirection: 'row', alignItems: 'stretch', gap: 14, minHeight: 64, borderRadius: radius.md },
-        next && { backgroundColor: c.soft, marginHorizontal: -space.sm, paddingHorizontal: space.sm },
+        { flexDirection: 'row', alignItems: 'stretch', gap: space.md, minHeight: 64, borderRadius: radius.md },
+        // Up next: the L2 card ("the one to pick"), never a green tint (green means feedback).
+        next && {
+          backgroundColor: c.raised,
+          marginHorizontal: -space.sm,
+          paddingLeft: space.sm,
+          paddingRight: space.md,
+          borderWidth: isDark ? 1.5 : 0,
+          borderColor: c.line,
+        },
+        next && !isDark && CARD_LIFT,
         press.style,
       ]}
     >
@@ -375,34 +509,26 @@ const LessonRow = memo(function LessonRow({
         </View>
         {segment(walkedOut, last)}
       </View>
-      <View style={{ flex: 1, minWidth: 0, justifyContent: 'center', paddingVertical: 13 }}>
+      <View style={{ flex: 1, minWidth: 0, justifyContent: 'center', paddingVertical: space.md }}>
         <T v="label" color={done ? c.ink2 : c.ink}>{lesson.title}</T>
         {next ? (
-          <T v="caption" color={c.accentText} style={{ marginTop: 2 }}>Up next</T>
+          <T v="caption" color={c.accentText} style={{ marginTop: space.xs }}>{`Up next · ${lesson.minutes} min`}</T>
         ) : (
           <T v="meta">{done ? 'Done' : `${lesson.minutes} min`}</T>
         )}
       </View>
-      <View style={{ justifyContent: 'center' }} accessible={false} importantForAccessibility="no-hide-descendants">
-        <View
-          style={{
-            width: 28,
-            height: 28,
-            borderRadius: radius.pill,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: done ? c.accent : next ? c.bg : 'transparent',
-            borderWidth: done ? 0 : 1.5,
-            borderColor: c.control,
-          }}
-        >
-          {done ? (
-            <CheckDraw play={fresh} hold={hold} color={c.bg} size={16} delay={fresh ? motion.dur.select : 0} />
-          ) : (
-            <Play size={12} color={c.ink2} strokeWidth={ICON_STROKE} />
-          )}
+      {/* Two meaningful marks only (R10): the filled ✓ on done rows, the filled play disc on Up next. */}
+      {(done || next) && (
+        <View style={{ justifyContent: 'center' }} accessible={false} importantForAccessibility="no-hide-descendants">
+          <View style={{ width: 28, height: 28, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center', backgroundColor: c.accent }}>
+            {done ? (
+              <CheckDraw play={fresh} hold={hold} color={c.bg} size={16} delay={fresh ? motion.dur.select : 0} />
+            ) : (
+              <Play size={12} color={c.bg} fill={c.bg} strokeWidth={ICON_STROKE} />
+            )}
+          </View>
         </View>
-      </View>
+      )}
     </AnimatedPressable>
   );
 });

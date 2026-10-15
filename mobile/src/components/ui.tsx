@@ -10,8 +10,17 @@
  * default; lists use hairlines, not boxes; raised white rows only for
  * things you choose between; one forest panel per screen; tinted blocks
  * only for feedback.
+ *
+ * The surface model (mobile 1.21, spec §5 "Surface model"):
+ *   L0 paper   the screen (`bg` + grain);
+ *   L1 plate   figures, compare grids, quiet offers: `raised2`, radius 24, no
+ *              shadow, no border (Card variant="plate");
+ *   L2 card    things you choose between: `raised` + `cardShadow` in light,
+ *              a 1.5 `line` outline in dark (Card, the default);
+ *   L3 sheet   bottom sheets (`raised2`, 28 corners, over the scrim);
+ *   brand      the forest panel, one per screen, lit from the top.
  */
-import { createContext, useContext, useEffect, useRef, useState, type ComponentProps, type ReactNode, type Ref } from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type ComponentProps, type ReactNode, type Ref } from 'react';
 import {
   Image,
   Platform,
@@ -35,6 +44,7 @@ import { domainColor } from '../content/certifications';
 import type { DomainInfo } from '../content/types';
 import { lastWholeWordIndex } from '../engine/games/priorityLens';
 import {
+  cardShadow,
   font,
   forestHighlight,
   grainOp,
@@ -57,7 +67,7 @@ import {
 } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Botany, botanySize, EmptyArt, type BotanyKind, type EmptyArtKind } from './glyphs';
-import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Settings as SettingsIcon, X } from './icons';
+import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Search, Settings as SettingsIcon, X } from './icons';
 import { AnimatedPressable, FadeIn, ProgressFill, RollingText, StateLayer, tween, useMotion, usePressScale } from './motion';
 
 /** Icon sizes: inline with text, in rows/circles, and in the tab bar/header. */
@@ -88,7 +98,42 @@ export function Grain() {
   );
 }
 
+// ── The L2 card lift ───────────────────────────────────────────────────
+/**
+ * The light-mode lift for L2 cards (spec §4): `cardShadow` drawn with
+ * `boxShadow`, except on Android 7–8 (API < 28), which draws no outset
+ * boxShadow, so a card there takes the old soft `elevation: 1` instead
+ * (review fix). Exported for tests; screens use CARD_LIFT.
+ */
+export function cardLiftFor(os: string, version: string | number): ViewStyle {
+  if (os === 'android' && Number(version) < 28) return { elevation: 1, shadowColor: raisedShadow.shadowColor };
+  return { boxShadow: cardShadow };
+}
+export const CARD_LIFT: ViewStyle = cardLiftFor(Platform.OS, Platform.Version);
+
 // ── Screen: safe-area aware page with optional scrolling ──────────────
+/**
+ * Mobile 1.21: a scrolling Screen lets what is inside it bring one of its own
+ * views to the top (the notes page's "On this page" row jumps to a movement).
+ * Smooth, or instant under Reduce Motion. null outside a scrolling Screen.
+ */
+export interface ScreenScroll {
+  /** Scroll so `node` sits `offset` pt under the top of the page. */
+  scrollToView: (node: View | null, offset?: number) => void;
+}
+const ScreenScrollContext = createContext<ScreenScroll | null>(null);
+export const useScreenScroll = () => useContext(ScreenScrollContext);
+
+/**
+ * Where a jump to a group lands: `offset` pt above the group, never above the
+ * top, and never past the end when the heights are known (a group near the end
+ * stops where the page ends, it does not overshoot and bounce back).
+ */
+export function scrollTarget(y: number, offset: number, content: number, view: number): number {
+  const top = Math.max(0, y - offset);
+  return content > 0 && view > 0 ? Math.min(top, Math.max(0, content - view)) : top;
+}
+
 export function Screen({
   children,
   scroll = true,
@@ -108,21 +153,53 @@ export function Screen({
   onScrollBeginDrag?: () => void;
 }) {
   const { c } = useTheme();
+  const { reduced } = useMotion();
   const [viewH, setViewH] = useState(0);
+  const own = useRef<ScrollView | null>(null);
+  // The caller's ref when it gives one (an object ref: Settings opens at a group), else our own.
+  const ref = (scrollRef && typeof scrollRef === 'object' ? scrollRef : own) as { current: ScrollView | null };
+  const scrollApi = useMemo<ScreenScroll>(
+    () => ({
+      scrollToView: (node, offset = space.sm) => {
+        const sv = ref.current as (ScrollView & { getInnerViewRef?: () => unknown; getInnerViewNode?: () => unknown }) | null;
+        if (!sv || !node) return;
+        const inner = sv.getInnerViewRef?.() ?? sv.getInnerViewNode?.();
+        if (!inner) return;
+        node.measureLayout(
+          inner as View,
+          (_x, y) => {
+            const go = (content = 0, view = 0) => sv.scrollTo({ y: scrollTarget(y, offset, content, view), animated: !reduced });
+            // The window's and the content's heights, measured at the jump: it never
+            // scrolls past the end (iOS would overshoot and bounce back; review fix).
+            const box = sv as unknown as Partial<View>;
+            const content = inner as Partial<View>;
+            if (typeof box.measure !== 'function' || typeof content.measure !== 'function') return go();
+            box.measure((_a, _b, _w, view) => content.measure!((_c, _d, _e, full) => go(full, view)));
+          },
+          () => {},
+        );
+      },
+    }),
+    [reduced, ref],
+  );
   const inner = scroll ? (
     <ScrollView
-      ref={scrollRef}
+      ref={scrollRef && typeof scrollRef !== 'object' ? scrollRef : ref}
       contentContainerStyle={styles.screenPad}
       keyboardShouldPersistTaps="handled"
-      onLayout={onScroll ? (e) => {
-        setViewH(e.nativeEvent.layout.height);
-        onScroll(0, e.nativeEvent.layout.height);
-      } : undefined}
+      onLayout={
+        onScroll
+          ? (e) => {
+              setViewH(e.nativeEvent.layout.height);
+              onScroll(0, e.nativeEvent.layout.height);
+            }
+          : undefined
+      }
       onScroll={onScroll ? (e) => onScroll(e.nativeEvent.contentOffset.y, viewH || e.nativeEvent.layoutMeasurement.height) : undefined}
       scrollEventThrottle={onScroll ? 32 : undefined}
       onScrollBeginDrag={onScrollBeginDrag}
     >
-      {children}
+      <ScreenScrollContext.Provider value={scrollApi}>{children}</ScreenScrollContext.Provider>
     </ScrollView>
   ) : (
     <View style={[styles.screenPad, { flex: 1 }]}>{children}</View>
@@ -317,8 +394,9 @@ export function Button({
 }
 
 // ── Card: a surface ───────────────────────────────────────────────────
-// raised = white row with a soft shadow (dark: 1.5px outline) for things you
-// choose between; plain = no box at all; forest = the one brand panel.
+// raised (L2) = white card with `cardShadow` (dark: 1.5px outline) for things
+// you choose between; plate (L1) = a quiet tonal panel for figures, grids and
+// offers, never a choice; plain = no box at all; forest = the one brand panel.
 export function Card({
   children,
   style,
@@ -332,20 +410,22 @@ export function Card({
   onPress?: () => void;
   /** A 1.5px brand-green outline: "this matters most right now". */
   emphasis?: boolean;
-  variant?: 'raised' | 'plain' | 'forest';
+  variant?: 'raised' | 'plate' | 'plain' | 'forest';
   accessibilityLabel?: string;
 }) {
   const { c, isDark } = useTheme();
   const look =
     variant === 'forest'
-      ? [styles.forest, { backgroundColor: c.forest }, isDark && styles.forestLift]
+      ? [styles.forest, { backgroundColor: c.forest, borderTopColor: forestHighlight[isDark ? 'dark' : 'light'] }]
       : variant === 'plain'
         ? null
-        : [
-            styles.card,
-            { backgroundColor: c.raised, borderColor: emphasis ? c.accent : isDark ? c.line : 'transparent' },
-            !isDark && raisedShadow,
-          ];
+        : variant === 'plate'
+          ? [styles.plate, { backgroundColor: c.raised2 }]
+          : [
+              styles.card,
+              { backgroundColor: c.raised, borderColor: emphasis ? c.accent : isDark ? c.line : 'transparent' },
+              !isDark && styles.cardLift,
+            ];
   const base = [look, style];
   // A static card has no press feedback, so it builds no animated styles (long lists on low-end Android).
   if (!onPress) return <View style={base}>{children}</View>;
@@ -390,6 +470,8 @@ export function HeroPanel({
   titleLabel,
   metaLabel,
   wideTitle,
+  wideMeta,
+  captionLabel,
 }: {
   caption?: string;
   /** Before the caption on the same line (e.g. a domain dot). */
@@ -417,6 +499,10 @@ export function HeroPanel({
   metaLabel?: string;
   /** Let a short title use the full width (art there is low and sparse). */
   wideTitle?: boolean;
+  /** Let only the meta line run full width (one line over the low, faint art; mobile 1.21, Learn). */
+  wideMeta?: boolean;
+  /** Spoken caption, when it differs ("Start here, about 19 minutes" for "Start here · about 19 min"). */
+  captionLabel?: string;
 }) {
   const { c } = useTheme();
   const { reduced } = useMotion();
@@ -442,9 +528,9 @@ export function HeroPanel({
         accessible={false}
         importantForAccessibility="no-hide-descendants"
       >
-        {/* Dark depth (mobile 1.9): the panel is lit from the top, a vertical
-            gradient from `forestTop` down to `forest`, with the 1px highlight
-            above it. Flat in light mode (forestTop = forest), so no layer. */}
+        {/* Depth: the panel is lit from the top, a vertical gradient from
+            `forestTop` down to `forest`, with the 1px highlight above it (dark
+            since mobile 1.9, light since 1.21). */}
         {c.forestTop !== c.forest && <ForestLight top={c.forestTop} bottom={c.forest} />}
         <View style={[styles.heroArt, botanySize(art)]}>
           <Botany kind={art} color={c.forestLine} sway={sway} breathe={breathe} />
@@ -459,16 +545,16 @@ export function HeroPanel({
               // it, the pair keeps clear of the art like the title (full width at large text).
               <Row gap={space.sm} style={{ flexShrink: 1, maxWidth: !captionExtra && !large && !wideTitle ? 250 : '100%' }}>
                 {captionLead}
-                <T v="caption" color={c.onForest2} style={{ flexShrink: 1 }}>{caption}</T>
+                <T v="caption" color={c.onForest2} accessibilityLabel={captionLabel} style={{ flexShrink: 1 }}>{caption}</T>
               </Row>
             ) : (
-              <T v="caption" color={c.onForest2}>{caption}</T>
+              <T v="caption" color={c.onForest2} accessibilityLabel={captionLabel}>{caption}</T>
             )}
             {captionExtra}
           </Row>
         )}
         {captionMeta ? (
-          <T v="meta" color={c.onForest2} accessibilityLabel={captionMetaLabel} style={{ marginTop: 2 }}>
+          <T v="meta" color={c.onForest2} accessibilityLabel={captionMetaLabel} style={{ marginTop: space.xs }}>
             {captionMeta}
           </T>
         ) : null}
@@ -486,7 +572,7 @@ export function HeroPanel({
         {/* The meta line keeps clear of the art too (it wraps instead), except
             with wideTitle or large text, where it runs full width like the title. */}
         {meta && (
-          <T v="meta" color={c.onForest2} accessibilityLabel={metaLabel} style={{ marginTop: 6, maxWidth: !large && !wideTitle ? 250 : undefined }}>
+          <T v="meta" color={c.onForest2} accessibilityLabel={metaLabel} style={{ marginTop: space.xs, maxWidth: !large && !wideTitle && !wideMeta ? 250 : undefined }}>
             {meta}
           </T>
         )}
@@ -500,7 +586,7 @@ export function HeroPanel({
             icon={action.icon}
             iconLeading
             follow={lift}
-            style={{ marginTop: 18, alignSelf: 'flex-start' }}
+            style={{ marginTop: space.gutter, alignSelf: 'flex-start' }}
           />
         )}
       </View>
@@ -751,9 +837,25 @@ export function ListRow({
   last,
   chevron = true,
   dim,
+  reading,
+  onHide,
+  testID,
   accessibilityLabel,
   accessibilityHint,
 }: {
+  /**
+   * A quiet way to put the row away, as a named screen-reader action (Today's
+   * plant row: "Hide from Today"). No long press (a hidden gesture nobody
+   * finds; review decision). Works on a row with or without `onPress`.
+   */
+  onHide?: { label: string; run: () => void };
+  testID?: string;
+  /**
+   * The title is something you READ (a question stem, a search hit), not a
+   * name: `body` 400 in ink, at most 2 lines (spec §2: reading text is never
+   * 600); 4 at large text, so a note's name is not cut to a few words.
+   */
+  reading?: boolean;
   icon?: ReactNode;
   /** A leading serif numeral block instead of an icon (e.g. "50 / questions"). */
   lead?: ReactNode;
@@ -771,6 +873,7 @@ export function ListRow({
   accessibilityHint?: string;
 }) {
   const { c } = useTheme();
+  const large = useFontScale() >= LARGE_TEXT;
   // Pressed: a soft tint fades in under the row (no squeeze: rows are wide).
   const press = usePressScale({ scale: 1, tint: c.soft });
   const body = (
@@ -778,28 +881,39 @@ export function ListRow({
       {icon && <IconCircle>{icon}</IconCircle>}
       {lead}
       <View style={{ flex: 1, minWidth: 0 }}>
-        <T v="label" color={dim ? c.muted : undefined}>{title}</T>
+        <T v={reading ? 'body' : 'label'} color={dim ? c.muted : undefined} numberOfLines={reading ? (large ? 4 : 2) : undefined}>{title}</T>
         {typeof subtitle === 'string' ? <T v="meta" color={dim ? c.muted : undefined}>{subtitle}</T> : subtitle}
       </View>
       {trailing}
       {onPress && chevron && <ChevronRight size={18} color={c.muted} strokeWidth={ICON_STROKE} />}
       {/* Hairline inset to where the text starts. */}
-      {!last && <View style={[styles.hairline, { left: icon ? 54 : 0, backgroundColor: c.line }]} />}
+      {!last && <View style={[styles.hairline, { left: icon ? 40 + space.md : 0, backgroundColor: c.line }]} />}
     </>
   );
   // A row you can't tap is still ONE screen-reader stop when it has a label,
   // not two loose lines.
+  // The hide action, the same on a button row and a plain one.
+  const hideAction = onHide
+    ? {
+        accessibilityActions: [{ name: 'hide', label: onHide.label }],
+        onAccessibilityAction: (e: { nativeEvent: { actionName: string } }) => {
+          if (e.nativeEvent.actionName === 'hide') onHide.run();
+        },
+      }
+    : {};
   if (!onPress)
     return (
-      <View style={styles.listRow} accessible={!!accessibilityLabel} accessibilityLabel={accessibilityLabel}>
+      <View testID={testID} style={styles.listRow} accessible={!!accessibilityLabel || !!onHide} accessibilityLabel={accessibilityLabel ?? (onHide ? title : undefined)} {...hideAction}>
         {body}
       </View>
     );
   return (
     <AnimatedPressable
+      testID={testID}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? (typeof subtitle === 'string' ? `${title}, ${subtitle}` : title)}
       accessibilityHint={accessibilityHint}
+      {...hideAction}
       onPress={onPress}
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
@@ -808,6 +922,76 @@ export function ListRow({
       {press.layer}
       {body}
     </AnimatedPressable>
+  );
+}
+
+// ── InviteRow: an invitation or a small award, on paper (mobile 1.21) ──
+/**
+ * One meaning per device (spec §5): the 3px left rule is the coach's voice
+ * only (Key idea, How ISACA thinks, Exam-day shortcut). Invitations ("Plant
+ * yours"), awards ("You'd already earned 5 badges") and small notices use
+ * this instead: an icon circle, a `label` title, a `small` line, then ghost
+ * actions under the words (left at the gutter), or, with `onPress` alone, the
+ * whole row is one button with a chevron. The words are one screen-reader
+ * stop; each action stays its own.
+ */
+export function InviteRow({
+  icon,
+  title,
+  body,
+  actions,
+  onPress,
+  accessibilityHint,
+  testID,
+}: {
+  icon: ReactNode;
+  title: string;
+  body: string;
+  /** Ghost buttons under the words ("Plant yours", "No thanks"). */
+  actions?: ReactNode;
+  /** The whole row opens something (no actions). */
+  onPress?: () => void;
+  accessibilityHint?: string;
+  testID?: string;
+}) {
+  const { c } = useTheme();
+  const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: radius.md });
+  const words = (
+    <View style={{ flex: 1, minWidth: 0 }}>
+      <T v="label">{title}</T>
+      <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{body}</T>
+    </View>
+  );
+  if (onPress && !actions) {
+    return (
+      <AnimatedPressable
+        testID={testID}
+        accessibilityRole="button"
+        accessibilityLabel={`${title}. ${body}`}
+        accessibilityHint={accessibilityHint}
+        onPress={onPress}
+        onPressIn={press.onPressIn}
+        onPressOut={press.onPressOut}
+        style={[styles.invite, styles.inviteRow, press.style]}
+      >
+        {press.layer}
+        <IconCircle>{icon}</IconCircle>
+        {words}
+        <ChevronRight size={18} color={c.muted} strokeWidth={ICON_STROKE} />
+      </AnimatedPressable>
+    );
+  }
+  return (
+    <View testID={testID} style={styles.invite}>
+      <IconCircle>{icon}</IconCircle>
+      <View style={{ flex: 1, minWidth: 0 }}>
+        <View accessible accessibilityLabel={`${title}. ${body}`}>
+          <T v="label">{title}</T>
+          <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{body}</T>
+        </View>
+        {actions ? <View style={styles.inviteActions}>{actions}</View> : null}
+      </View>
+    </View>
   );
 }
 
@@ -1213,8 +1397,8 @@ const styles = StyleSheet.create({
   pushed: { flexDirection: 'row', alignItems: 'center', minHeight: 52, gap: space.sm },
   pushedIcon: { width: 44, minHeight: 44, justifyContent: 'center' },
   pushedRight: { minWidth: 44, minHeight: 44, justifyContent: 'center' },
-  tagRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: space.sm, marginTop: 18 },
-  teachTag: { minHeight: 32, paddingHorizontal: space.md, borderRadius: radius.pill, flexDirection: 'row', alignItems: 'center', gap: 7 },
+  tagRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: space.sm, marginTop: space.lg },
+  teachTag: { minHeight: 32, paddingHorizontal: space.md, borderRadius: radius.pill, flexDirection: 'row', alignItems: 'center', gap: space.sm },
   teachDot: { width: 6, height: 6, borderRadius: 3 },
   // The empty state's "next" line: a leaf and a sentence, centred, that may wrap.
   nextLine: { marginTop: space.lg, maxWidth: '100%', paddingHorizontal: space.md, flexDirection: 'row', alignItems: 'center', gap: space.sm },
@@ -1225,7 +1409,7 @@ const styles = StyleSheet.create({
   // Covers the segment's own transparent 1.5 border, like the thumb does.
   segOn: { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5 },
   // 44 tall + a 2pt hitSlop all round = a 48pt touch target (P9).
-  segItem: { minHeight: 44, borderRadius: 22, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, paddingHorizontal: space.sm },
+  segItem: { minHeight: 44, borderRadius: 22, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: space.xs, paddingHorizontal: space.sm },
   chipScroll: { gap: space.sm, paddingVertical: 4, paddingRight: space.xxxl },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, paddingVertical: 4 },
   chipFade: { position: 'absolute', right: 0, top: 0, bottom: 0 },
@@ -1245,7 +1429,7 @@ const styles = StyleSheet.create({
     minHeight: 48,
     borderRadius: radius.pill,
     borderWidth: 0,
-    paddingHorizontal: 22,
+    paddingHorizontal: space.xl,
     flexDirection: 'row',
     gap: space.sm,
     alignItems: 'center',
@@ -1262,26 +1446,31 @@ const styles = StyleSheet.create({
   },
   buttonLabel: { fontFamily: font.sans600, fontSize: 17, lineHeight: 22 },
   card: { borderRadius: radius.md, borderWidth: 1.5, padding: space.lg },
+  // L2 in light mode: the one real shadow (boxShadow, so no Android elevation and no draw-order change;
+  // Android 7–8 has no outset boxShadow, so it gets elevation 1 there: see cardLiftFor).
+  cardLift: cardLiftFor(Platform.OS, Platform.Version),
+  // L1: a tonal plate. No shadow, no border (a 1px outline is never a card edge in light mode).
+  plate: { borderRadius: radius.lg, padding: space.lg },
   // No overflow:'hidden' here: the art layer clips itself (heroArtClip), so
   // the panel's text is never inside a clipping parent with a rotating SVG.
-  forest: { borderRadius: radius.lg, padding: 22 },
-  // Dark mode: 1px inner top highlight so the panel separates from `bg`.
-  forestLift: { borderTopWidth: 1, borderTopColor: forestHighlight },
+  // The 1px inner top highlight separates the panel from `bg` (both themes).
+  forest: { borderRadius: radius.lg, padding: space.xl, borderTopWidth: 1 },
   screenTitle: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space.sm, marginTop: space.xs, marginRight: -10 },
   iconButton: { width: 48, height: 48, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
   heroArtClip: { borderRadius: radius.lg, overflow: 'hidden', zIndex: 0 },
   heroArt: { position: 'absolute', right: -18, top: -14 },
   heroContent: { zIndex: 1 },
-  sectionStacked: { flexDirection: 'column', alignItems: 'flex-start', gap: 2 },
+  sectionStacked: { flexDirection: 'column', alignItems: 'flex-start', gap: space.xs },
   // With a ghost button: centred on the button's 48pt target (a baseline would float the title).
   sectionAction: { alignItems: 'center', marginBottom: -space.sm },
+  // The rhythm rule (spec §4): 32 between sections, 4 from a heading to its first line.
   section: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
     gap: space.md,
-    marginTop: 30,
-    marginBottom: 2,
+    marginTop: space.xxl,
+    marginBottom: space.xs,
   },
   iconCircle: {
     width: 40,
@@ -1290,7 +1479,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  listRow: { flexDirection: 'row', alignItems: 'center', gap: 14, minHeight: 64, paddingVertical: 13 },
+  listRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 64, paddingVertical: space.md },
+  // The icon sits beside the title's first line; ghost actions line up with the words (the ghost pads 8).
+  invite: { flexDirection: 'row', alignItems: 'flex-start', gap: space.md, paddingVertical: space.md, borderRadius: radius.md },
+  inviteActions: { flexDirection: 'row', flexWrap: 'wrap', marginLeft: -space.sm, marginTop: space.xs },
+  // A whole-row button reads like a list row: centred, 64 min, no extra radius inset.
+  inviteRow: { alignItems: 'center', minHeight: 64 },
   hairline: { position: 'absolute', right: 0, bottom: 0, height: 1 },
   radio: { width: 22, height: 22, borderRadius: 11, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
   checkRow: { alignItems: 'flex-start' },
@@ -1323,7 +1517,8 @@ const styles = StyleSheet.create({
   // Covers the 1.5 outline too, so the selected chip reads as one ink shape.
   chipFill: { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5, borderRadius: radius.pill },
   tabLabel: { alignItems: 'center', gap: 1 },
-  search: { minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, paddingLeft: space.lg, flexDirection: 'row', alignItems: 'center' },
+  search: { minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, paddingLeft: space.md, flexDirection: 'row', alignItems: 'center' },
+  searchGlyph: { marginRight: space.sm },
   searchClear: { width: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' },
   note: { minHeight: 112, borderRadius: radius.md, borderWidth: 1.5, paddingHorizontal: space.lg, paddingTop: space.md, paddingBottom: space.md },
   field: { minHeight: 56, marginTop: space.sm, borderRadius: radius.md, borderWidth: 1.5, paddingHorizontal: space.lg, paddingVertical: space.md },
@@ -1559,11 +1754,11 @@ export function EmptyState({
 }) {
   const { c } = useTheme();
   return (
-    <View style={{ alignItems: 'center', marginTop: compact ? space.sm : 46 }}>
+    <View style={{ alignItems: 'center', marginTop: compact ? space.sm : space.xxxl }}>
       <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
         <EmptyArt art={art} color={c.accent} paper={c.bg} size={compact ? 96 : 170} />
       </View>
-      <T v={compact ? 'headline' : 'hero'} center accessibilityRole="header" style={{ marginTop: compact ? space.xs : 22 }}>{title}</T>
+      <T v={compact ? 'headline' : 'hero'} center accessibilityRole="header" style={{ marginTop: compact ? space.xs : space.xl }}>{title}</T>
       <T v={compact ? 'meta' : 'body'} color={c.ink2} center style={{ marginTop: space.sm, marginHorizontal: space.md }}>{body}</T>
       {next ? (
         // A sentence with a small leaf, not a pill: the pills below are teaching tags.
@@ -1736,35 +1931,54 @@ export function ChipRow({ children }: { children: ReactNode }) {
   );
 }
 
-// ── SearchField: a rounded text box for searching (Study notes) ───────
-// Body type, so typed text grows with the phone's text size (×2 cap).
-// 48pt tall minimum; a ✕ button (48pt) clears it when there is text.
+/**
+ * Input focus (mobile 1.21, spec §6 "Inputs"): idle = a 1.5 `control` outline
+ * in BOTH themes (dark `line` was 1.24:1, failing WCAG 1.4.11); focused = the
+ * same outline in `ink`, the app's "selected" colour (no layout shift). On the
+ * web the browser's own focus ring is turned off, so it never draws a square
+ * box inside the rounded field.
+ */
+const NO_WEB_OUTLINE: TextStyle | null = Platform.OS === 'web' ? { outlineWidth: 0 } : null;
+
+// ── SearchField: a rounded text box for searching (Learn, Study notes) ─
+// A leading search glyph (20, muted) says what the box is for. Body type, so
+// typed text grows with the phone's text size (×2 cap). 48pt tall minimum;
+// a ✕ button (48pt) clears it when there is text.
 export function SearchField({
   value,
   onChangeText,
   placeholder,
   accessibilityLabel,
+  accessibilityHint,
 }: {
   value: string;
   onChangeText: (v: string) => void;
   placeholder: string;
   accessibilityLabel: string;
+  accessibilityHint?: string;
 }) {
-  const { c, isDark } = useTheme();
+  const { c } = useTheme();
+  const [focused, setFocused] = useState(false);
   return (
-    <View style={[styles.search, { backgroundColor: c.raised, borderColor: isDark ? c.line : c.control }]}>
+    <View style={[styles.search, { backgroundColor: c.raised, borderColor: focused ? c.ink : c.control }]}>
+      <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={styles.searchGlyph}>
+        <Search size={ICON_SIZE.row} color={c.muted} strokeWidth={ICON_STROKE} />
+      </View>
       <TextInput
         value={value}
         onChangeText={onChangeText}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         placeholder={placeholder}
         placeholderTextColor={c.muted}
         accessibilityLabel={accessibilityLabel}
+        accessibilityHint={accessibilityHint}
         maxFontSizeMultiplier={maxScale.body}
         autoCorrect={false}
         autoCapitalize="none"
         returnKeyType="search"
         clearButtonMode="never"
-        style={[type.body, { flex: 1, color: c.ink, paddingVertical: space.md }]}
+        style={[type.body, { flex: 1, color: c.ink, paddingVertical: space.md }, NO_WEB_OUTLINE]}
       />
       {value.length > 0 && (
         <Pressable
@@ -1805,6 +2019,7 @@ export function NoteField({
   ref?: Ref<TextInput>;
 }) {
   const { c } = useTheme();
+  const [focused, setFocused] = useState(false);
   const change = (next: string) => {
     if (next.length >= maxLength && value.length < maxLength) sayLater(`That’s the limit, ${maxLength} characters.`);
     onChangeText(next);
@@ -1815,6 +2030,8 @@ export function NoteField({
         ref={ref}
         value={value}
         onChangeText={change}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         placeholder={placeholder}
         placeholderTextColor={c.muted}
         accessibilityLabel={accessibilityLabel}
@@ -1826,7 +2043,8 @@ export function NoteField({
         style={[
           type.body,
           styles.note,
-          { color: c.ink, backgroundColor: c.raised, borderColor: c.control },
+          { color: c.ink, backgroundColor: c.raised, borderColor: focused ? c.ink : c.control },
+          NO_WEB_OUTLINE,
         ]}
       />
       <T v="meta" num style={{ textAlign: 'right', marginTop: space.xs }} accessibilityLabel={`${value.length} of ${maxLength} characters`}>
@@ -1873,6 +2091,7 @@ export function TextField({
   'keyboardType' | 'autoComplete' | 'textContentType' | 'autoCapitalize' | 'maxLength' | 'onSubmitEditing' | 'returnKeyType' | 'editable' | 'placeholder' | 'autoFocus'
 >) {
   const { c } = useTheme();
+  const [focused, setFocused] = useState(false);
   const said = useRef<string | null>(null);
   useEffect(() => {
     if (problem && problem !== said.current) sayLater(problem);
@@ -1893,11 +2112,15 @@ export function TextField({
         maxFontSizeMultiplier={maxScale.body}
         autoCorrect={false}
         {...input}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         style={[
           type.body,
           tabular ? { fontVariant: ['tabular-nums'] } : null,
           styles.field,
-          { color: c.ink, backgroundColor: c.raised, borderColor: problem ? c.tip : c.control },
+          // A problem keeps its `tip` outline while focused (the problem is what matters).
+          { color: c.ink, backgroundColor: c.raised, borderColor: problem ? c.tip : focused ? c.ink : c.control },
+          NO_WEB_OUTLINE,
         ]}
       />
       {problem ? (

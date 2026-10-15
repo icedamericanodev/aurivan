@@ -6,7 +6,7 @@
  * every domain (engine/notesSearch.ts). Domain names and weights come from
  * content/certifications.ts, the single source of exam facts.
  */
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { AccessibilityInfo, View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
@@ -22,7 +22,9 @@ const goBack = () => (router.canGoBack() ? router.back() : router.replace('/lear
 
 export default function NotesHome() {
   const { cert, progress } = useActiveCert();
-  const [query, setQuery] = useState('');
+  // Mobile 1.21: Learn's "See all results" opens here with its search (?q=).
+  const { q } = useLocalSearchParams<{ q?: string }>();
+  const [query, setQuery] = useState(typeof q === 'string' ? q : '');
   const pack = getNotes(cert.id);
   const read = progress.notesRead;
 
@@ -59,13 +61,13 @@ export default function NotesHome() {
       <PushedHeader title="Study notes" onBack={goBack} />
       <Enter i={0}>
         <T v="meta" style={{ marginTop: space.xs }}>
-          Every exam topic in plain English, with examples and exam traps.
+          Every exam topic in plain words, with examples and exam traps.
         </T>
         <View style={{ marginTop: space.lg }}>
           <SearchField
             value={query}
             onChangeText={setQuery}
-            placeholder="Search the notes"
+            placeholder="Search the notes, like RTO or SoD"
             accessibilityLabel="Search the study notes"
           />
         </View>
@@ -82,6 +84,7 @@ export default function NotesHome() {
               return (
                 <ListRow
                   key={h.subtopic.id}
+                  reading
                   title={h.subtopic.name}
                   subtitle={
                     <View>

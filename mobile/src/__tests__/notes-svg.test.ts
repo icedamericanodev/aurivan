@@ -107,6 +107,24 @@ describe('svgSize: smallest label at least 13pt', () => {
   });
 });
 
+describe('the plate or the viewer (mobile 1.21): a figure needs "Tap to enlarge" when 13pt labels need more than the plate', () => {
+  const needsViewer = (vb: { width: number; height: number }, plate: number, minFont: number, fontScale = 1) =>
+    svgSize(vb, plate, { minFont, fontScale }).width > plate;
+  it('a drawing whose labels already reach 13pt on the plate is just fitted', () => {
+    // 16-unit labels on a 340-wide drawing in a 318pt plate: 15pt.
+    expect(needsViewer({ width: 340, height: 170 }, 318, 16)).toBe(false);
+  });
+  it('a small-label drawing opens in the viewer at the size where its labels reach 13pt', () => {
+    expect(needsViewer({ width: 480, height: 200 }, 318, 10)).toBe(true);
+    const v = svgSize({ width: 480, height: 200 }, 318, { minFont: 10 });
+    expect(v.labelPt).toBeGreaterThanOrEqual(MIN_LABEL_PT);
+    expect(v.width).toBe(624);
+  });
+  it('large text raises the bar (to ×1.5)', () => {
+    expect(needsViewer({ width: 340, height: 170 }, 318, 16, 2)).toBe(true);
+  });
+});
+
 describe('every illustration in data/cisa_notes.json parses after theming', () => {
   // Collect every { svg } in the file, v1 or v2: the drawings carry over unchanged.
   const src = path.join(__dirname, '..', '..', '..', 'data', 'cisa_notes.json');
@@ -170,6 +188,23 @@ describe('every illustration in data/cisa_notes.json parses after theming', () =
       }
     }
     expect(checked).toBeGreaterThan(all.length); // every diagram has labels
+    expect(failures).toEqual([]);
+  });
+
+  it.each([
+    ['light', light],
+    ['dark', dark],
+  ] as const)('%s, on the plate (mobile 1.21): every text label still has 4.5:1 with the page colour as `raised2`', (_n, base) => {
+    // A diagram is drawn on an L1 plate, themed with bg = raised2 (components/notes.tsx).
+    const palette = { ...base, bg: base.raised2 };
+    const failures: string[] = [];
+    for (const ill of all) {
+      const r = prepareIllustration(ill);
+      if (!r.ok) continue;
+      for (const f of textContrast(themeSvg(r.value!.svg, palette, FONTS), palette)) {
+        if (f.ratio < 4.5) failures.push(`"${f.text}" ${f.fg} on ${f.bg}: ${f.ratio.toFixed(2)}`);
+      }
+    }
     expect(failures).toEqual([]);
   });
 

@@ -157,7 +157,7 @@ export default function Onboarding() {
         <T v="quote" color={c.onForest2} style={{ marginTop: space.xs }}>{VISION_LINE}</T>
       </View>
       <View style={{ paddingHorizontal: space.gutter, paddingTop: space.xl }}>
-        <PillarList look="cards" />
+        <PillarList look="rows" />
       </View>
     </Enter>
   );

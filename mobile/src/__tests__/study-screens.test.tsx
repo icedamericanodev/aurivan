@@ -83,7 +83,8 @@ describe('Practice: the mode picker', () => {
     });
     expect(useSettings.getState().studyMode).toBe('inOrder');
     expect(radio(/^In order/).props.accessibilityState).toEqual({ checked: true });
-    expect(allText()).toContain('10 questions, topic by topic');
+    // Mobile 1.21: the hero title names the path; the count leads its meta.
+    expect(allText()).toContain('Topic by topic 10 questions · ');
     press('Start');
     expect(useSession.getState().active).toMatchObject({ path: { mode: 'inOrder' } });
   });

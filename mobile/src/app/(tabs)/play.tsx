@@ -13,6 +13,10 @@
  * Build F: every game shows the learner's level (Seedling / Sapling /
  * Heartwood) as a leaf glyph AND its name, never colour alone. No
  * leaderboards, no play counts.
+ *
+ * Mobile 1.21: the hero's caption holds two things, not five (the glyph and
+ * "Beating distractors · 6 min"); the level (leaf + name) moves under the
+ * meta line, clear of the art.
  */
 import { router } from 'expo-router';
 import { useMemo } from 'react';
@@ -24,6 +28,7 @@ import { Button, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, 
 import { GAME_TIER_NAME, growthTier } from '../../engine/games/growth';
 import { scoreSpoken, scoreText } from '../../engine/games/recap';
 import { GAMES, type GameId } from '../../engine/games/registry';
+import { spokenMin } from '../../engine/pace';
 import { playableGames } from '../../lib/games';
 import { CERTIFICATIONS, getCertification } from '../../content/certifications';
 import { selectCert, useProgress } from '../../store/progress';
@@ -67,21 +72,11 @@ export default function Play() {
       )}
 
       {featured && (
-        <Enter i={1} style={{ marginTop: 18 }}>
+        <Enter i={1} style={{ marginTop: space.xl }}>
           <HeroPanel
             captionLead={<GameGlyph game={featured.id} size={20} color={c.sap} />}
-            caption={`${featured.skill} · about ${featured.minutes} min`}
-            captionExtra={
-              // The level on forest: the leaf in sap, its name in text.
-              <Row gap={6} style={{ flexWrap: 'wrap' }}>
-                <View accessible={false} importantForAccessibility="no-hide-descendants">
-                  <TierLeaf tier={level(featured.id)} color={c.sap} rib={c.forest} />
-                </View>
-                <T v="caption" color={c.onForest2} accessibilityLabel={`Your level: ${GAME_TIER_NAME[level(featured.id)]}`}>
-                  {GAME_TIER_NAME[level(featured.id)]}
-                </T>
-              </Row>
-            }
+            caption={`${featured.skill} · ${featured.minutes} min`}
+            captionLabel={spokenMin(`${featured.skill} · ${featured.minutes} min`)}
             title={featured.name}
             meta={best(featured.id) !== undefined ? `${featured.tagline} Best ${scoreText(best(featured.id)!)}.` : featured.tagline}
             art="frond"
@@ -91,7 +86,17 @@ export default function Play() {
               hint: featured.name,
               onPress: () => router.push(`/game/${featured.id}`),
             }}
-          />
+          >
+            {/* The level on forest: the leaf in sap, its name in text (under the meta, clear of the art). */}
+            <Row gap={space.sm} style={{ marginTop: space.sm }}>
+              <View accessible={false} importantForAccessibility="no-hide-descendants">
+                <TierLeaf tier={level(featured.id)} color={c.sap} rib={c.forest} />
+              </View>
+              <T v="caption" color={c.onForest2} accessibilityLabel={`Your level: ${GAME_TIER_NAME[level(featured.id)]}`}>
+                {GAME_TIER_NAME[level(featured.id)]}
+              </T>
+            </Row>
+          </HeroPanel>
         </Enter>
       )}
 

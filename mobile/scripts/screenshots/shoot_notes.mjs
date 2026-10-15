@@ -39,7 +39,7 @@ await open('/notes/4'); await snap('n03-domain4');
 await scrollBy(700); await snap('n03b-domain4-topics');
 await open('/notes/subtopic/4B1.2'); await snap('n04-4B1.2-top');
 await scrollTo('Compare'); await snap('n04b-4B1.2-compare');
-await scrollTo('Illustration'); await snap('n04c-4B1.2-diagram');
+await scrollTo('Diagram'); await snap('n04c-4B1.2-diagram'); // mobile 1.21: the section is "Diagram"
 // The end of the note: "Practice this concept" + helper, then the session it opens.
 await page.mouse.wheel(0, 20000); await page.waitForTimeout(700); await snap('n04d-4B1.2-practice');
 // The demo seed has an unfinished session (that would ask "Replace it?"), so drop it first.

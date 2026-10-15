@@ -29,6 +29,15 @@
  * to 2 days before the exam, one quiet "Exam week" card sits under the
  * readiness row, above "Also today": the checklist, or Hide.
  *
+ * Mobile 1.21 (one focal element): the forest panel's title names the
+ * activity and never holds a count ("Spaced review"; the counts go to its
+ * meta line), and the day's minutes are said once, in the caption ("Start
+ * here · about 19 min"; the meta leaves them out when they are this item's).
+ * The readiness row under it is one condensed row (small rings or the plant,
+ * the range, the short estimate line, the labelled stage). The plant's
+ * invitation is one plain row (no ghost pair beside Start; it hides on a long
+ * press); "Updated after your report" is an InviteRow, not the coach's rule.
+ *
  * Signature moments (Phase 5b, components/moments.tsx):
  *   - the day before the exam / exam day: a calm card above the panel;
  *   - "Your readiness is holding" (lower bound ≥ 80% for 7 days): the forest
@@ -38,14 +47,14 @@ import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
-import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow, todayMinutesLine } from '../../components/journey';
+import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planHero, planIcon, planText, ReadinessRow, todayMinutes } from '../../components/journey';
 import { FitCard } from '../../components/fit';
 import { ExamWeekCard } from '../../components/readinessReport';
 import { examWeekCardDue, examWeekCount, examWeekOf } from '../../engine/examWeek';
 import { Celebrate, Pop, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
-import { ICON_STROKE, Play, Settings, Sprig, Target, Timer } from '../../components/icons';
+import { ICON_STROKE, Inbox, Play, Settings, Sprig, Sprout, Target, Timer } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
-import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, ScreenTitle, Section, T } from '../../components/ui';
+import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, InviteRow, ListRow, Row, Screen, ScreenTitle, Section, T } from '../../components/ui';
 import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
 import { shouldAskFit } from '../../engine/fit';
 import { aboutMin, spokenMin } from '../../engine/pace';
@@ -280,8 +289,17 @@ export default function Today() {
   // is sized to the minutes, so this never previews more than the day has.
   const tomorrow = j.plan.slice(0, 2);
   const tomorrowMinutes = sectionMinutes(tomorrow.reduce((n, t) => n + (t.kind === 'mock' ? 0 : itemMinutes(t)), 0));
-  // "About 20 min today" under the leaf marks: only for plans sized in minutes (1.15+).
-  const todayLine = plan.budget ? todayMinutesLine(plan.items, plan.done) : null;
+  // The day's minutes, in the caption: "Start here · about 19 min" (mobile 1.21, design spec §5; was a
+  // second line, "About 19 min today + mock"). Only for plans sized in minutes (1.15+). A mock is left
+  // out: its own row says it is optional and how long it is.
+  const dayMinutes = plan.budget ? todayMinutes(plan.items, plan.done) : 0;
+  const startCaption = dayMinutes > 0 ? `Start here · ${aboutMin(dayMinutes, true)}` : 'Start here';
+  // The hero's words: no count in the title, and the minutes said once. When the caption's day
+  // total is this item's alone (every other open item is a mock), the meta leaves them out.
+  const curItem = plan.items[cur];
+  const openTimed = plan.items.filter((it, i) => !plan.done[i] && it.kind !== 'mock');
+  const minutesSaid = dayMinutes > 0 && openTimed.length === 1 && openTimed[0] === curItem;
+  const hero = curItem ? planHero(curItem, j.dueCount, { minutesSaid }) : null;
 
   // Mobile 1.15: the one "Fit your plan" card for learners from before 1.15.
   // One setup line on Today at a time, and the plant's goes first: on a visit
@@ -369,14 +387,13 @@ export default function Today() {
           </Celebrate>
         ) : (
           <HeroPanel
-            caption="Start here"
+            caption={startCaption}
+            captionLabel={spokenMin(startCaption)}
             captionExtra={<PlanLeaves done={plan.done} focused={focused} seenKey={`${cert}:${plan.day}`} />}
-            captionMeta={todayLine ?? undefined}
-            captionMetaLabel={todayLine ? spokenMin(todayLine) : undefined}
-            title={planText(plan.items[cur], j.dueCount).title}
-            meta={planText(plan.items[cur], j.dueCount).meta}
-            metaLabel={spokenMin(planText(plan.items[cur], j.dueCount).meta)}
-            action={{ label: 'Start', onPress: () => runPlanItem(plan.items[cur], j.cert.id), icon: playIcon, hint: planText(plan.items[cur], j.dueCount).title }}
+            title={hero!.title}
+            meta={hero!.meta}
+            metaLabel={spokenMin(hero!.meta)}
+            action={{ label: 'Start', onPress: () => runPlanItem(curItem, j.cert.id), icon: playIcon, hint: hero!.title }}
           />
         )}
       </Enter>
@@ -392,7 +409,7 @@ export default function Today() {
             rings={!showReady}
             ringsGrowth={ringsGrowth}
             rangeGrowth={rangeGrowth}
-            lead={plantView.plant && !showReady ? todayPlant(104, 'today-plant') : undefined}
+            lead={plantView.plant && !showReady ? todayPlant(72, 'today-plant') : undefined}
             onPress={() => router.push('/readiness')}
           />
         </Enter>
@@ -457,7 +474,7 @@ export default function Today() {
             <View style={{ alignSelf: 'flex-start', marginTop: space.sm, marginLeft: -space.sm }}>
               <Button
                 kind="ghost"
-                label="Keep going anyway"
+                label="Do a little more"
                 onPress={() => (j.plan[0] ? runPlanItem(j.plan[0], j.cert.id) : router.push('/practice'))}
               />
             </View>
@@ -502,38 +519,52 @@ export default function Today() {
             />
           </View>
         )}
-        {/* One quiet offer for a learner with no plant, below the day's study (UX review P6): never ahead of it. */}
+        {/* One quiet row for a learner with no plant, below the day's study (UX review P6): never ahead
+            of it. Mobile 1.21 (design spec §5): one row with a chevron, no ghost pair beside the panel's
+            Start. It hides with the screen-reader action "Hide from Today", or "Not now" on the picker (which
+            says so). Its own space above, so it never reads as a third "Also today" item. */}
         {!grown && plantPrompt && (
           <View style={{ marginTop: space.xl }}>
-            <PlantNote caption="Your plant" line="Plant a companion that grows with your study." testID="plant-prompt">
-              <Button kind="ghost" label="Plant yours" onPress={() => router.push('/plant-pick')} />
-              <Button
-                kind="ghost"
-                label="No thanks"
-                accessibilityLabel="No thanks, hide this note. You can plant one from You."
-                onPress={() => setPlantSettings({ promptHidden: true })}
-              />
-            </PlantNote>
+            <ListRow
+              testID="plant-prompt"
+              icon={<Sprout size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+              title="Your plant"
+              subtitle="A companion that grows with your study"
+              accessibilityLabel="Your plant. A companion that grows with your study"
+              last
+              accessibilityHint="Opens the plant picker"
+              onPress={() => router.push({ pathname: '/plant-pick', params: { from: 'today' } })}
+              onHide={{
+                label: 'Hide from Today',
+                run: () => {
+                  setPlantSettings({ promptHidden: true });
+                  sayLater('Hidden. You can plant one from You.');
+                },
+              }}
+            />
           </View>
         )}
         {credit.items > 0 && !credit.hidden && (
-          // The key-idea recipe (a green rule, not a card), like You's back-fill line.
+          // A small notice, so an InviteRow (mobile 1.21: the green rule is the coach's voice only).
           // "Updated after your report", not "Your report helped": another
           // learner's report may have led to the same fix (compliance W2).
-          <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
-            <View accessible accessibilityLabel={`Updated after your report. ${creditLine(credit.items)}`}>
-              <T v="caption" color={c.accentText}>Updated after your report</T>
-              <T v="small" style={{ marginTop: space.xs }}>{creditLine(credit.items)}</T>
-            </View>
-            <Row gap={space.xs} style={{ flexWrap: 'wrap', marginLeft: -space.sm }}>
-              <Button kind="ghost" label="See your reports" onPress={() => router.push('/reports')} />
-              <Button
-                kind="ghost"
-                label="Dismiss"
-                accessibilityLabel="Dismiss this note"
-                onPress={() => setCredit((x) => ({ ...x, hidden: true }))}
-              />
-            </Row>
+          <View style={{ marginTop: space.xl }}>
+            <InviteRow
+              icon={<Inbox size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+              title="Updated after your report"
+              body={creditLine(credit.items)}
+              actions={
+                <>
+                  <Button kind="ghost" label="See your reports" onPress={() => router.push('/reports')} />
+                  <Button
+                    kind="ghost"
+                    label="Dismiss"
+                    accessibilityLabel="Dismiss this note"
+                    onPress={() => setCredit((x) => ({ ...x, hidden: true }))}
+                  />
+                </>
+              }
+            />
           </View>
         )}
       </Enter>

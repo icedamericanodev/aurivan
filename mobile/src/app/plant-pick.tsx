@@ -20,6 +20,7 @@ import { SPECIES_INFO, suggestName, type PlantSpecies } from '../engine/plant';
 import { plantFor, usePlantView } from '../lib/plant';
 import { useKeyboardShown } from '../lib/useKeyboardShown';
 import { useProgress } from '../store/progress';
+import { sayLater } from '../lib/a11y';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
@@ -28,7 +29,8 @@ const TITLE: Record<Mode, string> = { new: 'Plant yours', species: 'Change plant
 
 export default function PlantPick() {
   const { c } = useTheme();
-  const params = useLocalSearchParams<{ mode?: string }>();
+  // `from=today`: opened from Today's plant row, where "Not now" also hides that row (mobile 1.21).
+  const params = useLocalSearchParams<{ mode?: string; from?: string }>();
   const view = usePlantView();
   const p = view.plant;
   // Without a plant, every mode is "plant yours".
@@ -82,6 +84,10 @@ export default function PlantPick() {
             <>
               <T v="display" accessibilityRole="header" style={{ marginTop: space.md }}>Choose what you’ll grow</T>
               <T v="meta" style={{ marginTop: space.sm }}>It grows only from real progress across the exam outline. Never from taps or time. It asks for nothing and never wilts.</T>
+              {/* Opened from Today's plant row: say what "Not now" does there (review decision). */}
+              {params.from === 'today' && (
+                <T v="meta" style={{ marginTop: space.sm }}>Not now also hides the plant row on Today. You can plant one from You.</T>
+              )}
             </>
           )}
           {mode === 'species' && <T v="meta" style={{ marginTop: space.md }}>Same growth, new look. Each is shown at Crown.</T>}
@@ -111,7 +117,18 @@ export default function PlantPick() {
       {!typing && (
         <StickyFooter onHeight={setFooterH}>
           <Button label={mode === 'new' ? 'Plant it' : mode === 'species' ? 'Use this plant' : 'Save name'} onPress={confirm} />
-          <Button kind="ghost" label={mode === 'new' ? 'Not now' : 'Cancel'} onPress={back} />
+          <Button
+            kind="ghost"
+            label={mode === 'new' ? 'Not now' : 'Cancel'}
+            accessibilityHint={mode === 'new' && params.from === 'today' ? 'Hides the plant row on Today. You can plant one from You.' : undefined}
+            onPress={() => {
+              if (mode === 'new' && params.from === 'today') {
+                useProgress.getState().setPlantSettings({ promptHidden: true });
+                sayLater('Hidden from Today. You can plant one from You.');
+              }
+              back();
+            }}
+          />
         </StickyFooter>
       )}
     </SafeAreaView>

@@ -110,20 +110,73 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
   }
 }
 
+/** "IS Audit practice" style titles with the count taken out (the count goes to the meta line). */
+export function heroPracticeTitle(label: string): string {
+  return label
+    .replace(/^\d+ (?:mixed )?questions? · (.+)$/, 'Practice: $1')
+    .replace(/^(.+?): \d+ mixed questions?$/, '$1')
+    .replace(/^(.+?) · \d+ questions?$/, '$1')
+    .replace(/^\d+ (?:mixed )?questions?$/, 'Mixed practice');
+}
+
 /**
- * "About 20 min today": the open items' minutes. A mock is left out (it is
- * longer than any day) and adds "+ mock" instead; exam week's last long
- * rehearsal says it is optional ("+ optional mock", UX review O9). null when
- * nothing is open.
+ * The forest panel's words for the current plan item (mobile 1.21, spec §11
+ * "Today"): the TITLE names the activity and never holds a count ("Spaced
+ * review", not "Review 55 due"); the counts and the minutes go to the META
+ * line. `minutesSaid`: the panel's caption already gives the day's minutes
+ * and they are this item's alone, so the meta leaves them out (said once).
+ * The rows under the panel keep planText's titles.
  */
-export function todayMinutesLine(items: readonly PlanItem[], done: readonly boolean[]): string | null {
-  const open = items.filter((_, i) => !done[i]);
-  if (open.length === 0) return null;
-  const mocks = open.filter((i) => i.kind === 'mock');
-  const optional = mocks.length > 0 && mocks.every((i) => i.kind === 'mock' && i.why === 'final');
-  const mins = open.reduce((n, i) => n + (i.kind === 'mock' ? 0 : itemMinutes(i)), 0);
-  if (mins === 0) return mocks.length ? (optional ? 'An optional mock today' : 'A mock today') : null;
-  return `${aboutMin(mins)} today${mocks.length ? (optional ? ' + optional mock' : ' + mock') : ''}`;
+export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boolean } = {}): { title: string; meta: string } {
+  const mins = itemMinutes(item);
+  const join = (detail: string) => {
+    if (!opts.minutesSaid) return `${aboutMin(mins)} · ${detail}`;
+    return detail.charAt(0).toUpperCase() + detail.slice(1);
+  };
+  const qs = (n: number) => `${n} ${n === 1 ? 'question' : 'questions'}`;
+  switch (item.kind) {
+    case 'review': {
+      const queue = due ?? item.due ?? item.count;
+      const more = queue > item.count;
+      // A labelled review is exam week's ("Light review · 8 questions"). An old save's "Review 20 due" label is a count, so it reads as the plain review.
+      if (item.label && !/^Review \d/.test(item.label)) return { title: item.label.split(' · ')[0], meta: join(`${qs(item.count)}, most overdue first`) };
+      return {
+        title: 'Spaced review',
+        // "16 of 55 due": today's share of the live queue (the same "55 due" as You and Practice).
+        meta: join(queue === 0 ? 'all caught up' : more ? `${item.count} of ${queue} ${REVIEW_UNIT} · most overdue first` : `${qs(queue)} to revisit`),
+      };
+    }
+    case 'lesson':
+      return { title: item.title, meta: opts.minutesSaid ? 'Lesson' : `Lesson · ${mins} min` };
+    case 'practice': {
+      const why =
+        item.why === 'check'
+          ? ', no score yet, just a starting point'
+          : item.why === 'learn'
+            ? ', on what you just learned'
+            : item.why === 'weak'
+              ? ', most points to gain'
+              : item.why === 'topup'
+                ? ', a light top-up'
+                : /review|warm-up/i.test(item.label)
+                  ? ''
+                  : ', new material first';
+      return { title: heroPracticeTitle(item.label), meta: join(`${qs(item.count)}${why}`) };
+    }
+    case 'game':
+      return { title: gameTitle(item.gameId, item.label), meta: opts.minutesSaid ? 'Game' : `Game · ${aboutMin(mins, true)}` };
+    case 'mock':
+      // A mock's minutes are never in the day's total (the caption leaves mocks out), so they always show here.
+      return {
+        title: item.label.split(' · ')[0],
+        meta: `${qs(item.questions)} · ${aboutMin(mins, true)} · ${item.why === 'final' ? 'a last long rehearsal; skip it if you’d rather rest' : 'longer than your usual day'}`,
+      };
+  }
+}
+
+/** The open items' minutes, mocks left out (they are longer than any day; their rows say so). 0 when only mocks are open. */
+export function todayMinutes(items: readonly PlanItem[], done: readonly boolean[]): number {
+  return items.reduce((n, it, i) => n + (done[i] || it.kind === 'mock' ? 0 : itemMinutes(it)), 0);
 }
 
 /**
@@ -171,7 +224,7 @@ export function PlanLeaves({ done, focused = true, seenKey }: { done: boolean[];
 /** "62–70" for two bounds (what a rolling range starts from). */
 export const boundsLabel = (b: number[]) => (b.length === 2 ? rangeLabel({ enough: true, answered: 0, low: b[0], high: b[1], centre: b[0] }) : null);
 
-export function ReadinessFigure({ range, size = 52, growth }: { range: ReadinessRange; size?: 52 | 34 | 24; growth?: Growth }) {
+export function ReadinessFigure({ range, size = 52, growth }: { range: ReadinessRange; size?: 52 | 34 | 30 | 24; growth?: Growth }) {
   const { c } = useTheme();
   if (!range.enough) {
     return <T v={size === 52 ? 'hero' : 'headline'} color={c.ink}>Not enough data yet</T>;
@@ -183,9 +236,18 @@ export function ReadinessFigure({ range, size = 52, growth }: { range: Readiness
 
 /** Shown with the readiness range: it is a study estimate, not a promise of a pass. */
 export const ESTIMATE_NOTE = 'A study estimate, not a prediction of your exam result.';
+/**
+ * Its short form, the readiness row's secondary line on Today (decided 15 Oct
+ * 2026): the full sentence is spoken there and shown on the readiness report.
+ */
+export const ESTIMATE_SHORT = 'A study estimate, not a prediction.';
 
 // ── Readiness row on Today (spec §11 "Today") ─────────────────────────
-// Rings 104 (monochrome) + range + meta + italic stage. Stacks at large text.
+// Mobile 1.21: condensed to ONE row under the forest panel (the plan is
+// Today's one job): small mono rings (60) or the plant, then the range as a
+// serif 30 numeral with "estimated readiness" beside it, the short estimate
+// line, and the stage, labelled ("Your stage" + the italic coach line).
+// Stacks at large text.
 export function ReadinessRow({
   cert,
   readiness,
@@ -230,15 +292,28 @@ export function ReadinessRow({
       'estimated readiness, weighted like the exam'
     : // A countdown, not a moving target: `needed` never goes up after an answer.
       `${range.needed} more ${range.needed === 1 ? 'answer' : 'answers'} until your readiness range`;
-  const spoken = `Estimated readiness ${rangeSpoken(range)}. ${range.enough ? `Weighted like the exam. ${ESTIMATE_NOTE}` : meta} ${stage}.`;
+  const spoken = `Estimated readiness ${rangeSpoken(range)}. ${range.enough ? `Weighted like the exam. ${ESTIMATE_NOTE}` : meta} Your stage: ${stage}.`;
   const words = (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, flex: stacked ? undefined : 1, alignSelf: stacked ? 'stretch' : undefined }}>
       <View style={{ flex: 1, minWidth: 0 }}>
-        <ReadinessFigure range={range} growth={rangeGrowth} />
-        <T v="meta" style={{ marginTop: 4 }}>{meta}</T>
-        {/* One quiet line, only once there is a range to explain. */}
-        {range.enough && <T v="meta" style={{ marginTop: 2 }}>{ESTIMATE_NOTE}</T>}
-        <T v="stage" style={{ marginTop: 6 }}>{stage}</T>
+        {range.enough ? (
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: space.sm }}>
+            <ReadinessFigure range={range} size={30} growth={rangeGrowth} />
+            <T v="meta" color={c.ink}>estimated readiness</T>
+          </View>
+        ) : (
+          <>
+            <ReadinessFigure range={range} size={30} growth={rangeGrowth} />
+            <T v="meta" style={{ marginTop: space.xs }}>{meta}</T>
+          </>
+        )}
+        {/* The short form (the full sentence is spoken, and on the report), only once there is a range to explain. */}
+        {range.enough && <T v="meta" style={{ marginTop: space.xs }}>{ESTIMATE_SHORT}</T>}
+        {/* The stage, labelled: a beginner reads "Your stage" before the coach's italic line. */}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: space.sm, marginTop: space.xs }}>
+          <T v="caption" color={c.ink2}>Your stage</T>
+          <T v="stage">{stage}</T>
+        </View>
       </View>
       {onPress && (
         <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
@@ -247,10 +322,10 @@ export function ReadinessRow({
       )}
     </View>
   );
-  const rowStyle = { flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: stacked ? 10 : 18, marginTop: 22 } as const;
+  const rowStyle = { flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: stacked ? space.md : space.lg, marginTop: space.xl } as const;
   const ringArt = rings && !lead && (
     <GrowthRings
-      preset="today"
+      preset="row"
       mastery={readiness.domains.map((d) => d.mastery)}
       weights={cert.domains.map((d) => d.weight)}
       colors={c.accent}
@@ -365,7 +440,9 @@ export function DomainRings({
   const weights = shown.length === 1 ? [SINGLE_RING_WEIGHT] : shown.map((i) => cert.domains[i].weight);
   const label = (i: number) => legendValue?.(i) ?? (values[i] === null ? '–' : String(Math.round((values[i] ?? 0) * 100)));
   return (
-    <View style={{ flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: space.lg }}>
+    // Mobile 1.21 (design spec §7): rings and legend read as ONE aligned row: 20 between them,
+    // 28pt legend rows, the name in `small`, the numerals in one right-aligned column.
+    <View style={{ flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: space.gutter }}>
       <View accessible accessibilityRole="image" accessibilityLabel={accessibilityLabel}>
         <GrowthRings
           preset="you"
@@ -379,13 +456,13 @@ export function DomainRings({
           {center}
         </View>
       </View>
-      <View style={{ flex: stacked ? undefined : 1, gap: 9, alignSelf: stacked ? 'stretch' : undefined }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+      <View style={{ flex: stacked ? undefined : 1, gap: space.xs, alignSelf: stacked ? 'stretch' : undefined }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
         {shown.map((i) => {
           const up = Math.max(0, Math.round(delta?.(i) ?? 0));
           return (
-            <Row key={cert.domains[i].id} gap={9}>
+            <Row key={cert.domains[i].id} gap={space.sm} style={{ minHeight: 28 }}>
               <DomainDot domain={cert.domains[i]} />
-              <T v="meta" color={c.ink} style={{ flex: 1, minWidth: 0 }}>{cert.domains[i].short}</T>
+              <T v="small" color={c.ink} style={{ flex: 1, minWidth: 0 }}>{cert.domains[i].short}</T>
               {up > 0 && (
                 // After this domain's arc has grown (outer ring first, 60 ms apart).
                 <FadeIn rise={false} dur="select" delay={(grow?.delay ?? 0) + motion.dur.grow + (shown.length - 1 - shown.indexOf(i)) * motion.stagger.stat + motion.dur.select}>
@@ -393,7 +470,7 @@ export function DomainRings({
                 </FadeIn>
               )}
               {/* The number never shrinks: the name gives way first (it can wrap, the score can't clip). */}
-              <View style={{ flexShrink: 0 }}>
+              <View style={{ flexShrink: 0, minWidth: 28, alignItems: 'flex-end' }}>
                 <BigNum value={label(i)} size={17} />
               </View>
             </Row>

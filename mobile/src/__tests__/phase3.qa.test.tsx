@@ -254,7 +254,8 @@ afterEach(() => {
 
 // ── J1 ───────────────────────────────────────────────────────────────────
 describe('J1 first open of the day (Today)', () => {
-  const todayRings = () => r!.root.findAllByType(GrowthRings).find((n) => n.props.preset === 'today')!.props.grow as { play: boolean; from?: number[] };
+  // Mobile 1.21: Today's condensed readiness row draws the small `row` rings.
+  const todayRings = () => r!.root.findAllByType(GrowthRings).find((n) => n.props.preset === 'row')!.props.grow as { play: boolean; from?: number[] };
   const rangeRoll = () => r!.root.findAllByType(RollingText).find((n) => /\d–\d/.test(n.props.value))!.props;
 
   it('grows once on the first view, shows still on a revisit and a remount, grows again the next day, never after a fall', () => {
@@ -481,7 +482,7 @@ describe('J3 finishing the day’s plan (the clearing)', () => {
     expect(clearing().settled).toBe(true);
     expect(movingDigits()).toBe(0);
     // The same tap's press goes through.
-    const keepGoing = r!.root.find((n) => n.props.accessibilityRole === 'button' && /Keep going anyway/.test(String(n.props.accessibilityLabel ?? textOf(n))) && typeof n.props.onPress === 'function');
+    const keepGoing = r!.root.find((n) => n.props.accessibilityRole === 'button' && /Do a little more/.test(String(n.props.accessibilityLabel ?? textOf(n))) && typeof n.props.onPress === 'function');
     act(() => keepGoing.props.onPress());
     expect((router.push as jest.Mock).mock.calls.length + (router.replace as jest.Mock).mock.calls.length).toBeGreaterThan(0);
   });

@@ -197,7 +197,7 @@ await edit(P, `const c = v.state.byCert.cisa;
 await go('/learn');
 await shot('p00-learn-cover');
 await go('/learn?domain=1');
-await scrollTo('Lessons by domain', 40);
+await scrollTo('Lessons', 40); // mobile 1.21: the section is "Lessons"
 await shot('p01-learn-trail');
 
 // ── 2. A lesson: the cover, then the templates ─────────────────────────

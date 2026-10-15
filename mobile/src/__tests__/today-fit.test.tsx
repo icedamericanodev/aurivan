@@ -75,6 +75,14 @@ const press = (label: RegExp) => {
     n.props.onPress();
   });
 };
+
+/** Mobile 1.21: Today's plant row hides with a long press or the screen-reader action "Hide from Today". */
+const hidePlantRow = () => {
+  const row = root().findAll((n) => Array.isArray(n.props.accessibilityActions) && n.props.accessibilityActions.some((a: { name: string }) => a.name === 'hide') && typeof n.props.onAccessibilityAction === 'function')[0];
+  act(() => {
+    row.props.onAccessibilityAction({ nativeEvent: { actionName: 'hide' } });
+  });
+};
 const switchValue = (name: string) => root().findAll((x) => typeof x.props.onValueChange === 'function' && x.props.accessibilityLabel === name)[0]?.props.value;
 const checkedRadio = (group: string) => {
   const g = root().findAll((x) => x.props.accessibilityRole === 'radiogroup' && x.props.accessibilityLabel === group && typeof x.type !== 'string')[0];
@@ -118,9 +126,11 @@ describe('Today: the day in minutes', () => {
   it('"About N min today" sums the open items (a 20-minute starting check: about 19 min)', () => {
     useSettings.setState({ fitPrompt: 'answered', dailyMinutes: 20 });
     mount(<Today />);
-    expect(allText()).toContain('About 19 min today');
-    expect(allText()).toContain('Starting check: 16 mixed questions');
-    expect(allText()).toContain('About 19 min · no score yet, just a starting point');
+    // Mobile 1.21: the day's minutes are in the caption, said once.
+    expect(allText()).toContain('Start here · about 19 min');
+    // Mobile 1.21: the title never holds a count, and the minutes are said once (the caption's,
+    // this item's alone), so the meta is the count and the why.
+    expect(allText()).toContain('Starting check 16 questions, no score yet, just a starting point');
     expect(storedPlan().budget).toBe(20);
   });
 
@@ -133,7 +143,7 @@ describe('Today: the day in minutes', () => {
       { kind: 'practice', count: 5, label: '5 questions · IS Audit', domainId: '1', why: 'learn' },
     ]);
     expect(allText()).toContain(`Lesson · ${first.minutes} min`);
-    expect(allText()).toContain(`About ${first.minutes + 6} min today`);
+    expect(allText()).toContain(`Start here · about ${first.minutes + 6} min`);
     expect(allText()).not.toMatch(/Starting check/);
     // Still no score on day 1: the 40-answer countdown stays.
     expect(allText()).toMatch(/more answers until your readiness range/);
@@ -148,7 +158,7 @@ describe('Today: the day in minutes', () => {
       });
     });
     mount(<Today />);
-    expect(allText()).not.toMatch(/min today/);
+    expect(allText()).not.toMatch(/Start here · about/);
     expect(storedPlan().items[0]).toMatchObject({ label: 'Diagnostic: 20 mixed questions' });
   });
 
@@ -167,8 +177,9 @@ describe('Today: the day in minutes', () => {
     });
     mount(<Today />);
     // UX review P2: a mock never leads the hero (even in a plan saved with it first).
-    expect(allText()).toContain('Start here About 19 min today + mock Weak spots: IS Operations');
-    expect(allText()).toContain('About 19 min · 16 questions, most points to gain');
+    // The mock's own row says it is optional and how long it is (no "+ mock" in the caption since 1.21).
+    expect(allText()).toContain('Start here · about 19 min Weak spots: IS Operations');
+    expect(allText()).toContain('Weak spots: IS Operations 16 questions, most points to gain');
     // Its row says it is optional this week, and how long it is.
     expect(allText()).toContain('Mini mock Optional this week · about 80 min');
   });
@@ -247,7 +258,7 @@ describe('Today: the one "Fit your plan" card', () => {
     expect(byTestID('plant-prompt')).toHaveLength(1);
     expect(byTestID('fit-card')).toHaveLength(0);
     // "No thanks" on the plant's line: still not on the same visit (one setup line per visit).
-    press(/^No thanks/);
+    hidePlantRow();
     expect(byTestID('plant-prompt')).toHaveLength(0);
     expect(byTestID('fit-card')).toHaveLength(0);
     unmount();

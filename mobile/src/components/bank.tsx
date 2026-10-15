@@ -22,12 +22,13 @@ import { ICON_SIZE, T } from './ui';
 export function StatusMark({ status }: { status: QuestionStatus }) {
   const { c } = useTheme();
   if (status === 'new') {
-    // Not yet answered: a small open ring in the control colour (≥3:1 on paper),
-    // centred in the mark's place. Small on purpose (mobile 1.9, E3): a full-size
-    // ring read as a radio button to tap.
+    // Not yet answered: a small open ring in `track`, centred in the mark's
+    // place. Small on purpose (mobile 1.9, E3): a full-size ring read as a
+    // radio button to tap. `track`, not `control` (mobile 1.21): `control` is
+    // for things you tap; this is a status, and "Not tried" is printed beside it.
     return (
       <View style={[styles.mark, styles.markNew]}>
-        <View style={[styles.ring, { borderColor: c.control }]} />
+        <View style={[styles.ring, { borderColor: c.track }]} />
       </View>
     );
   }
@@ -112,7 +113,7 @@ export function BankQuestionRow({
 const styles = StyleSheet.create({
   mark: { width: 24, height: 24, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
   markNew: { backgroundColor: 'transparent' },
-  ring: { width: 12, height: 12, borderRadius: 6, borderWidth: 1.5 },
+  ring: { width: 12, height: 12, borderRadius: 6, borderWidth: 2 },
   ownTopic: { marginBottom: 2 },
   // The gap a header would open, without a header: the group above has ended.
   afterGroup: { marginTop: space.lg },
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: space.md,
     minHeight: 64,
-    paddingVertical: 13,
+    paddingVertical: space.md,
     borderBottomWidth: 1,
   },
   metaRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: space.md, rowGap: 2, marginTop: 2 },
