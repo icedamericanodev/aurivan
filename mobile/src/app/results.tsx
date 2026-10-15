@@ -31,10 +31,11 @@
  * Mobile 1.24 (honest results):
  * - The headline is by sample size (engine/resultsCopy.ts): under 8 answers it
  *   is the plain count ("3 of 4 right", with the topic most missed beneath), never
- *   "Strong work." or "Every miss is a lesson." on a handful of questions; the ring's
- *   centre shows "3 of 4", not a percent.
+ *   "Strong work." or "Every miss is a lesson." on a handful of questions. The count is said
+ *   once, in the headline: the ring's centre names the domain (one domain) or stays empty, and
+ *   the stat row leaves out "Correct" (UX review S7).
  * - The per-question "Hint used / Quick pick / Missed" tags are one quiet line.
- * - When enough answers were rated: "Sure: 7 of 9 right. Unsure: 2 of 4 right."
+ * - When enough answers were rated: "How sure you felt: Sure 7 of 9 right · Unsure 2 of 4 right".
  * - "Practice the N you missed" is a secondary button; Done is the one solid button (a miss
  *   re-answered minutes later is a retest and earns no spacing credit).
  * - A mock that ended on the clock says "Time’s up" (seen and spoken).
@@ -216,7 +217,7 @@ export default function Results() {
     return cert.domains.find((d) => d.id === top)?.short;
   })();
   const fact = tiny ? smallSampleFact(missedNotes[0]?.name ?? missedDomain, missed.length) : null;
-  // "Sure: 7 of 9 right. Unsure: 2 of 4 right." (practice and review: a mock records no ratings).
+  // "How sure you felt: Sure 7 of 9 right · Unsure 2 of 4 right" (practice and review: a mock records no ratings).
   const calibration = active.mode === 'mock' ? null : calibrationLine(active.questionIds.map((id) => ({ confidence: active.responses[id]?.confidence, correct: Boolean(active.responses[id]?.correct) })));
 
   // Build E: a Guided step goes back to its step screen (topic clear, or next topic).
@@ -289,11 +290,11 @@ export default function Results() {
             .join(', ')}.`}
           center={
             tiny ? (
-              // A handful of questions: the count, not a percent (a percent of 4 says little).
-              <View style={{ alignItems: 'center' }}>
-                <BigNum value={String(score.correct)} size={30} />
-                <T v="caption" color={c.ink2}>{`of ${score.answered}`}</T>
-              </View>
+              // A handful of questions: no percent (a percent of 4 says little), and no count either: the
+              // headline already says "2 of 3 right" (UX review S7, the count once). One domain names it here.
+              oneDomain ? (
+                <T v="caption" color={c.ink2} center style={{ maxWidth: 96 }}>{oneDomain.short}</T>
+              ) : null
             ) : (
               <View style={{ alignItems: 'center' }}>
                 <BigNum value={String(pct)} pct size={30} roll={{ play: grow, from: null, run: 1, delay: at }} />
@@ -302,8 +303,9 @@ export default function Results() {
             )
           }
         />
-        {oneDomain ? (
-          // Mobile 1.22 (design spec §8.2): one centred line, "All IS Audit · 2 of 3".
+        {tiny ? null : oneDomain ? (
+          // Mobile 1.22 (design spec §8.2): one centred line, "All IS Audit · 12 of 15". A handful of
+          // questions has none: the headline holds the count and the ring names the domain (UX review S7).
           <T v="meta" center style={{ marginTop: 14 }}>
             {`All ${oneDomain.short} · ${score.byDomain[oneDomain.id].correct} of ${score.byDomain[oneDomain.id].total}`}
           </T>
@@ -316,14 +318,17 @@ export default function Results() {
       <Enter i={2}>
         <StatRow>
           {[
-            <Stat
-              key="a"
-              label="Correct"
-              value={String(score.correct)}
-              unit={`of ${denominator}`}
-              // The number right rolls up from 0; "of 20" stays put.
-              roll={{ play: grow, from: '0', run: 1, delay: at + motion.stagger.stat }}
-            />,
+            // A handful of questions: no "Correct" cell, the headline above is that count (UX review S7).
+            tiny ? null : (
+              <Stat
+                key="a"
+                label="Correct"
+                value={String(score.correct)}
+                unit={`of ${denominator}`}
+                // The number right rolls up from 0; "of 20" stays put.
+                roll={{ play: grow, from: '0', run: 1, delay: at + motion.stagger.stat }}
+              />
+            ),
             // Answered wrong (and, on a mock, left blank): what "Practice the ones you missed" opens.
             missed.length ? (
               <Stat key="b" label="Missed" value={String(missed.length)} spoken={blank ? `${missed.length}, ${blank} of them left blank` : undefined} />
@@ -444,7 +449,9 @@ export default function Results() {
         // Coaching (engine/pace.ts): only on a fast miss or a long, right answer.
         const coaching = r ? coachingTag(r.correct, r.ms) : null;
         // ONE quiet line instead of a row of tags (mobile 1.24): the hint and the pace note, together.
-        const quiet = [assisted ? 'You used a hint.' : null, coaching ? COACHING[coaching].line : null].filter(Boolean).join(' ');
+        // Each on its own line, so "You used a hint." never reads as the cause of the pace advice (UX review nit).
+        const quietLines = [assisted ? 'You used a hint.' : null, coaching ? COACHING[coaching].line : null].filter((x): x is string => Boolean(x));
+        const quiet = quietLines.join(' ');
         const color = !r ? c.muted : r.correct ? c.correct : c.wrong;
         const open = openId === id;
         const picked = r ? displayToOriginal(r.display, perm) : undefined;
@@ -464,7 +471,9 @@ export default function Results() {
                 <T v="label" num>{`Question ${i + 1}`}</T>
                 <T v="label" color={color}>{status}</T>
               </Row>
-              {quiet ? <T v="meta" style={{ marginTop: space.xs }}>{quiet}</T> : null}
+              {quietLines.map((line) => (
+                <T key={line} v="meta" style={{ marginTop: space.xs }}>{line}</T>
+              ))}
               <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : `${q.stem.slice(0, 110)}${q.stem.length > 110 ? '…' : ''}`}</T>
             </Pressable>
             {open && (

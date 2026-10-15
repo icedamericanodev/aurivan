@@ -142,7 +142,9 @@ describe('Today’s clearing (T2)', () => {
 });
 
 describe('Results growth', () => {
-  const d1 = getAllQuestions('cisa').filter((q) => q.domainId === '1').slice(0, 3);
+  // 8 questions, the smallest set whose Results shows numbers (under 8 the headline is the count, said once,
+  // and nothing rolls: mobile 1.24, UX review S7).
+  const d1 = getAllQuestions('cisa').filter((q) => q.domainId === '1').slice(0, 8);
   const finish = (right: number) => {
     act(() => {
       startFromIds('cisa', d1.map((q) => q.id), 'Practice · IS Audit');
@@ -159,19 +161,18 @@ describe('Results growth', () => {
 
   it('a good session grows in: the score and "correct" roll (full motion)', () => {
     setMockReducedMotion(false);
-    finish(2);
+    finish(6);
     mount(<Results />);
     expect(columns().length).toBeGreaterThan(0);
-    expect(allText()).toContain('All IS Audit · 2 of 3');
+    expect(allText()).toContain('All IS Audit · 6 of 8');
   });
 
   it('never on a session that went badly: below 60% it is simply shown', () => {
     setMockReducedMotion(false);
-    finish(1);
+    finish(2);
     mount(<Results />);
     expect(columns()).toHaveLength(0);
-    // Mobile 1.24: three questions are a small sample, so Results says the count, not a percent.
-    expect(allText()).toContain('1 of 3 right');
+    expect(allText()).toContain('All IS Audit · 2 of 8');
   });
 });
 

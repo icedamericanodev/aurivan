@@ -173,8 +173,11 @@ describe('Day 1 on Today, after "Done for today"', () => {
     mount(<Today />);
     expect(allText()).toContain('Today’s clearing');
     expect(allText()).not.toMatch(/Accuracy \d+ ?%/);
-    // The count, in Results' words.
-    expect(allText()).toContain('3 of 5 right');
+    // The count, as Results names it: "Correct 3 of 5" (UX review S4: one line, the row's shared baseline).
+    expect(allText()).toContain('Correct 3 of 5');
+    // No ring "+N" before the first range exists: it would read as a score on a "Not enough data yet" day.
+    expect(allText()).not.toMatch(/ring \+\d/);
+    expect(allText()).toContain('Every answer feeds the rings');
   });
 });
 

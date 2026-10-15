@@ -187,9 +187,9 @@ describe('onboarding: where you start and how long you have', () => {
     // No date yet: says what the plan does instead.
     expect(allText()).toMatch(/No date yet: your plan starts at about 20 min a day\./);
     press(/^In 3 months$/);
-    expect(allText()).toMatch(/\d+ (weeks|months): about 20 min a day adds up to about \d+ hours of study\./);
+    expect(allText()).toMatch(/\d+ (weeks|months): 20 min a day adds up to about \d+ hours of study\./);
     press(/^45 minutes a day$/);
-    expect(allText()).toMatch(/about 45 min a day adds up to about/);
+    expect(allText()).toMatch(/: 45 min a day adds up to about/);
   });
 
   it('the last button saves the date and the fit together, makes Day 1, and starts the first five', () => {

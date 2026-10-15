@@ -30,7 +30,7 @@ import { useFonts } from 'expo-font';
 import { Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { CLOUD } from '../cloud/flag';
 import { initAccount } from '../lib/account';
 import { initSync, setRoute } from '../lib/sync';
@@ -46,6 +46,7 @@ import { MotionRoot, ThemeFade, useMotion } from '../components/motion';
 import { Grain } from '../components/ui';
 import { motion } from '../theme/tokens';
 import { RecoveryScreen } from '../components/recovery';
+import { sayLater } from '../lib/a11y';
 import type { ErrorBoundaryProps } from 'expo-router';
 import { useHydration } from '../store/useHydrated';
 import { useTheme } from '../theme/useTheme';
@@ -78,6 +79,8 @@ export default function RootLayout() {
   // Saved data failed to load (or took too long): never sit on the splash. Wait only for the fonts
   // (they fall back to the system font if they fail) so the recovery screen is branded.
   const recovering = status === 'failed' && (fontsLoaded || Boolean(fontError));
+  // Set by the recovery screen's "Try again" (see below).
+  const [retrying, setRetrying] = useState(false);
 
   useEffect(() => {
     if (ready || recovering) SplashScreen.hideAsync().catch(() => {});
@@ -141,11 +144,22 @@ export default function RootLayout() {
     syncPlanters(activeCertId);
   }, [hydrated, activeCertId]);
 
-  if (recovering) {
+  // "Try again" puts the status back to 'loading' (the splash is already hidden): keep the recovery screen
+  // up in a "Trying again…" state until it loads or fails again, never a blank page (UX review S9).
+  const retryingNow = retrying && status === 'loading';
+  if (recovering || retryingNow) {
     return (
       <SafeAreaProvider>
         <StatusBar style={isDark ? 'light' : 'dark'} />
-        <RecoveryScreen kind="load" onTryAgain={retry} />
+        <RecoveryScreen
+          kind="load"
+          retrying={retryingNow}
+          onTryAgain={() => {
+            setRetrying(true);
+            sayLater('Trying again');
+            retry();
+          }}
+        />
       </SafeAreaProvider>
     );
   }

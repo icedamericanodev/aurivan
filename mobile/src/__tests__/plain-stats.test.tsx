@@ -115,11 +115,14 @@ describe('time as a stat', () => {
 });
 
 describe('Results', () => {
-  it('a 1-question, 5-second practice: "Correct 1 of 1", "Missed None", "Time <1 min", and no pace line', () => {
+  it('a 1-question, 5-second practice: "Missed None", "Time <1 min", and no pace line', () => {
     practice(1, 1, 5_000, 5_000);
-    expect(statLabels()).toEqual(['Correct: 1 of 1', 'Missed: none', 'Time: under a minute']);
+    // A handful of questions (mobile 1.24, UX review S7): the headline ("Right") is the count, so the
+    // stat row leaves out "Correct" instead of saying it a second time.
+    expect(statLabels()).toEqual(['Missed: none', 'Time: under a minute']);
     const text = textOf(r!.root);
-    expect(text).toContain('Correct 1 of 1 Missed None Time <1 min');
+    expect(text).toContain('Missed None Time <1 min');
+    expect(text).not.toContain('Correct 1 of 1');
     // One answer says nothing useful about pace.
     expect(text).not.toMatch(/per question/);
     expect(text).not.toMatch(/Median|exam pace|to review/);

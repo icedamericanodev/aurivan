@@ -1,7 +1,7 @@
 /**
  * Mobile 1.24 copy rules that are pure functions:
  *  - Results headlines by sample size (no verdict on a handful of questions),
- *  - the calibration line ("Sure: 7 of 9 right. Unsure: 2 of 4 right."),
+ *  - the calibration line ("How sure you felt: Sure 7 of 9 right · Unsure 2 of 4 right"),
  *  - the answer screen's coach line (specific only when a slip is tagged),
  *  - which tips lead after a miss (Key idea + Exam cue first),
  *  - the notes "read" count that stays quiet until the first read.
@@ -28,7 +28,8 @@ describe('Results headline by sample size', () => {
     expect(resultsHeadline(120, 150, 80)).toBe('Strong work.');
   });
   it('the one fact under a small count is the topic most missed, or nothing', () => {
-    expect(smallSampleFact('Risk planning', 1)).toBe('Most missed: Risk planning.');
+    expect(smallSampleFact('Risk planning', 1)).toBe('Missed: Risk planning.'); // one miss: "most" would overstate
+    expect(smallSampleFact('Risk planning', 2)).toBe('Most missed: Risk planning.');
     expect(smallSampleFact('Risk planning', 0)).toBeNull();
     expect(smallSampleFact(undefined, 2)).toBeNull();
   });
@@ -38,12 +39,13 @@ describe('calibration line', () => {
   const row = (confidence: Confidence | undefined, correct: boolean) => ({ confidence, correct });
   const many = (c: Confidence, right: number, wrong: number) => [...Array(right).fill(row(c, true)), ...Array(wrong).fill(row(c, false))];
 
-  it('"Sure: 7 of 9 right. Unsure: 2 of 4 right." when enough answers were rated', () => {
+  it('"How sure you felt: Sure 7 of 9 right · Unsure 2 of 4 right" when enough answers were rated', () => {
     const rows = [...many('sure', 7, 2), ...many('unsure', 2, 2), row(undefined, true)];
-    expect(calibrationLine(rows)).toBe('Sure: 7 of 9 right. Unsure: 2 of 4 right.');
+    // The lead-in says what "Sure" refers to (UX review S8).
+    expect(calibrationLine(rows)).toBe('How sure you felt: Sure 7 of 9 right · Unsure 2 of 4 right');
   });
   it('only the levels that were used; Guessing appears when it was', () => {
-    expect(calibrationLine([...many('sure', 3, 0), ...many('guessing', 1, 2)])).toBe('Sure: 3 of 3 right. Guessing: 1 of 3 right.');
+    expect(calibrationLine([...many('sure', 3, 0), ...many('guessing', 1, 2)])).toBe('How sure you felt: Sure 3 of 3 right · Guessing 1 of 3 right');
   });
   it('nothing when fewer than 5 answers were rated (a few ratings say little)', () => {
     expect(calibrationLine([...many('sure', 2, 1), row(undefined, true), row(undefined, false)])).toBeNull();

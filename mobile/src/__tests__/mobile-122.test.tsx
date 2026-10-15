@@ -361,7 +361,11 @@ describe('results: one domain', () => {
     });
     mount(<Results />);
     expect(root().findByType(DomainRings).props.legend).toBe(false);
-    expect(allText()).toContain(`All IS Audit · ${ids.length - 1} of ${ids.length}`);
+    // Three questions is a handful (mobile 1.24, UX review S7): the headline holds the count once, the ring
+    // names the domain, and there is no "All IS Audit · 2 of 3" line repeating it.
+    expect(allText()).toContain(`${ids.length - 1} of ${ids.length} right`);
+    expect(allText()).not.toContain('All IS Audit ·');
+    expect(allText()).toContain('IS Audit');
     // Mobile 1.24: Done is the one solid button; "Practice the one you missed" is the secondary
     // (a miss re-answered minutes later is a retest and earns no spacing credit).
     const kindOf = (label: string) => root().findAll((n) => n.props.label === label && typeof n.props.onPress === 'function')[0].props.kind ?? 'primary';

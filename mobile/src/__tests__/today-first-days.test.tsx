@@ -11,7 +11,8 @@
  * - the reminder ask's one second chance: the day the 3rd study day is done, once, never after "no".
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { StyleSheet } from 'react-native';
+import { AccessibilityInfo, StyleSheet } from 'react-native';
+import { ANNOUNCE_DELAY, flushSayLaterForTest, moveFocus } from '../lib/a11y';
 import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Today from '../app/(tabs)/home';
@@ -50,6 +51,7 @@ jest.mock('react-native-safe-area-context', () => {
   return { SafeAreaView: View, useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }) };
 });
 jest.mock('../lib/haptics', () => ({ haptic: { success: () => {}, selection: () => {}, error: () => {}, light: () => {} } }));
+jest.mock('../lib/a11y', () => ({ ...jest.requireActual('../lib/a11y'), moveFocus: jest.fn() }));
 const mockEnsure = jest.fn(async () => true);
 const mockSchedule = jest.fn(async () => {});
 jest.mock('../lib/reminders', () => ({
@@ -321,8 +323,9 @@ describe('"Your first readiness range"', () => {
     const t = allText();
     expect(t).toContain('Your first readiness range');
     expect(t).toContain('not a prediction of your exam result');
-    expect(t).toContain('Strongest so far: Information System Auditing Process');
-    expect(t).toContain('Needs the most work: Governance and Management of IT');
+    // The short names, as the rings and Today's lines call each domain.
+    expect(t).toContain('Strongest so far: IS Audit');
+    expect(t).toContain('Needs the most work: IT Governance');
     // The range itself is the readiness row just above the card, shown once (never repeated in the card).
     expect(t.match(/\d+–\d+/g)).toHaveLength(1);
     expect(t.indexOf('Estimated readiness')).toBeLessThan(t.indexOf('Your first readiness range'));
@@ -397,13 +400,32 @@ describe('the reminder ask, second chance', () => {
     expect(allText()).not.toContain('A study time can help');
   });
 
-  it('"Not now" is respected', async () => {
+  it('"Not now" is respected, said aloud, and focus moves to a heading that is still there', async () => {
+    const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     setMilestones(3, today());
     mount(<Today />);
+    jest.mocked(moveFocus).mockClear();
     await press(/^Not now$/);
     expect(mockEnsure).not.toHaveBeenCalled();
     expect(useSettings.getState().reminder.enabled).toBe(false);
     expect(allText()).not.toContain('A study time can help');
+    // UX review B1: the card unmounts under the learner's finger, so it says so and focus moves on.
+    flushSayLaterForTest();
+    expect(say).toHaveBeenCalledWith('No reminder set. You can choose one in Settings.');
+    expect(moveFocus).toHaveBeenCalledWith(expect.objectContaining({ current: expect.anything() }), ANNOUNCE_DELAY + 50);
+    say.mockRestore();
+  });
+
+  it('Earlier / Later say the new study time', async () => {
+    const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+    setMilestones(3, today());
+    mount(<Today />);
+    await press(/^One hour later$/);
+    flushSayLaterForTest();
+    // 9 AM now, so one hour later is 10 (the phone's own time format).
+    expect(say.mock.calls.map((c) => String(c[0])).some((s) => /^Study time 10[:.]00/.test(s))).toBe(true);
+    expect(allText()).toMatch(/Tomorrow I’ll study at 10[:.]00/);
+    say.mockRestore();
   });
 
   it.each([

@@ -57,16 +57,16 @@ describe('the first set: five questions, the same for everyone', () => {
 
 describe('onboarding: what the two choices add up to', () => {
   it('says the span and the daily minutes in plain words', () => {
-    expect(planConsequence(42, 20)).toBe('6 weeks: about 20 min a day adds up to about 14 hours of study.');
-    expect(planConsequence(30, 45)).toBe('4 weeks: about 45 min a day adds up to about 23 hours of study.');
-    expect(planConsequence(90, 10)).toBe('13 weeks: about 10 min a day adds up to about 15 hours of study.');
+    expect(planConsequence(42, 20)).toBe('6 weeks: 20 min a day adds up to about 14 hours of study.');
+    expect(planConsequence(30, 45)).toBe('4 weeks: 45 min a day adds up to about 23 hours of study.');
+    expect(planConsequence(90, 10)).toBe('13 weeks: 10 min a day adds up to about 15 hours of study.');
   });
   it('short spans count days; long ones count months', () => {
     expect(spanLabel(1)).toBe('1 day');
     expect(spanLabel(10)).toBe('10 days');
     expect(spanLabel(14)).toBe('2 weeks');
     expect(spanLabel(180)).toBe('6 months');
-    expect(planConsequence(5, 10)).toBe('5 days: about 10 min a day adds up to about 50 min of study.');
+    expect(planConsequence(5, 10)).toBe('5 days: 10 min a day adds up to about 50 min of study.');
   });
   it('no date: says what the plan does instead; never "check" or "diagnose"', () => {
     for (const d of [null, 0, -3]) {
@@ -82,13 +82,15 @@ describe('Day-1 closing words', () => {
   it('the one fact under "3 of 5"', () => {
     expect(firstSetFact(5, 5)).toBe('All five right.');
     expect(firstSetFact(3, 5, 'Audit independence')).toBe('Most missed: Audit independence.');
+    // One miss: "Missed:", never "Most missed" (it would overstate).
+    expect(firstSetFact(4, 5, 'Audit independence')).toBe('Missed: Audit independence.');
     expect(firstSetFact(2, 5)).toMatch(/come back/);
     expect(firstSetFact(1, 1)).toBe('Right.');
   });
-  it('"N will come back tomorrow"', () => {
+  it('"The N you missed come back then." (under the "Tomorrow" caption, so the word is not said twice)', () => {
     expect(comeBackLine(0)).toBeNull();
-    expect(comeBackLine(1)).toBe('1 will come back tomorrow.');
-    expect(comeBackLine(2)).toBe('2 will come back tomorrow.');
+    expect(comeBackLine(1)).toBe('The one you missed comes back then.');
+    expect(comeBackLine(2)).toBe('The 2 you missed come back then.');
   });
   it('tomorrow in one line, from the plan, leaving reviews out', () => {
     const lesson: PlanItem = { kind: 'lesson', lessonId: 'l', title: 'Business impact analysis', minutes: 12 };

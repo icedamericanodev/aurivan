@@ -250,7 +250,8 @@ export default function Onboarding() {
         {/* A date no quick choice gives: say which one, so the choice is never invisible. */}
         {examDate && preset < 0 ? <T v="meta" color={c.ink}>{chosenLine(examDate, dayKey(now))}</T> : null}
         {/* Daily time: the plan is sized to it (mobile 1.15). A second group on the same step, never a second screen. */}
-        <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Daily time</T>
+        {/* space.xl, not xxl: after the ghost "Pick the exact date" a bigger gap read as a page break (UX review nit). */}
+        <T v="caption" color={c.accentText} style={{ marginTop: space.xl }}>Daily time</T>
         <T v="headline" accessibilityRole="header" style={{ marginTop: space.sm }}>How long can you study most days?</T>
         <View style={{ marginTop: space.md }}>
           <MinutesControl value={minutes} onChange={setMinutes} />

@@ -9,8 +9,8 @@
  * - `deferMissesToTomorrow` moves the review time of any question missed in
  *   that set to the start of tomorrow. A miss is normally due again at once,
  *   which would let a learner "fix" it from memory a minute later (that is not
- *   spaced review). The closing screen promises "N will come back tomorrow",
- *   and this is what makes that true.
+ *   spaced review). The closing screen promises, under "Tomorrow", "The N you
+ *   missed come back then.", and this is what makes that true.
  */
 import { FIRST_SET_SIZE, FIRST_SET_TITLE, firstSetIds } from '../content/firstSet';
 import { startOfNextDay } from '../engine/srs';

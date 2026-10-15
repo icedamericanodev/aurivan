@@ -2,7 +2,7 @@
  * Mobile 1.24: the end of Day 1. The first set (the same five questions for
  * everyone) ends on its own closing screen instead of the normal Results:
  * - "3 of 5" with no percentage ring, and one fact (the topic most missed, or "All five right.");
- * - the closing card: tomorrow in one line, "2 will come back tomorrow", a seed planted for you (oak), the reminder ask;
+ * - the closing plate: tomorrow in one line, "The 2 you missed come back then.", a seed planted for you (oak), the reminder ask;
  * - "Done for today" is the one solid button; "Do 5 more" is a quiet link; never "Practice the ones you missed";
  * - the words "check" and "diagnose" never appear;
  * - the phone's permission box appears only when the ask is tapped, "Not now" is respected;
@@ -10,7 +10,7 @@
  * - the fixed set runs with no timer and no confidence chips.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { BackHandler, Dimensions } from 'react-native';
+import { AccessibilityInfo, BackHandler, Dimensions } from 'react-native';
 import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Results from '../app/results';
@@ -18,6 +18,7 @@ import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotio
 import { firstSetIds } from '../content/firstSet';
 import { buildTodayPlan } from '../lib/activity';
 import { finishSession } from '../lib/finishSession';
+import { ANNOUNCE_DELAY, flushSayLaterForTest, moveFocus } from '../lib/a11y';
 import { startFirstSet, startOfTomorrow } from '../lib/firstSet';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
@@ -44,6 +45,7 @@ jest.mock('react-native-safe-area-context', () => {
   return { SafeAreaView: View, useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }) };
 });
 jest.mock('../lib/haptics', () => ({ haptic: { success: () => {}, selection: () => {}, error: () => {}, light: () => {} } }));
+jest.mock('../lib/a11y', () => ({ ...jest.requireActual('../lib/a11y'), moveFocus: jest.fn() }));
 // The phone's notifications: allowed or refused per test.
 const mockEnsure = jest.fn(async () => true);
 const mockSchedule = jest.fn(async () => {});
@@ -152,7 +154,7 @@ describe('the closing screen', () => {
     const t = allText();
     expect(t).toContain('3 of 5');
     expect(t).toMatch(/Most missed: .+\.|come back/);
-    expect(t).toContain('2 will come back tomorrow.');
+    expect(t).toContain('The 2 you missed come back then.');
     expect(t).toContain('Done for today');
     expect(t).toContain('Do 5 more');
     expect(t).not.toMatch(/check|diagnos/i);
@@ -166,7 +168,7 @@ describe('the closing screen', () => {
     finishFirstSet(5);
     mount(<Results />);
     expect(allText()).toContain('All five right.');
-    expect(allText()).not.toMatch(/will come back/);
+    expect(allText()).not.toMatch(/you missed/);
   });
 
   it('says how far the first range is: "5 of 40 for your first range"', () => {
@@ -305,6 +307,32 @@ describe('the reminder ask', () => {
     expect(allText()).not.toMatch(/Tomorrow I’ll study at/);
   });
 
+  it('"Not now" says so, and focus moves to "Done for today" (never left on a removed button)', async () => {
+    const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+    finishFirstSet(3);
+    mount(<Results />);
+    jest.mocked(moveFocus).mockClear();
+    await press(/^Not now$/);
+    flushSayLaterForTest();
+    expect(say).toHaveBeenCalledWith('No reminder set. You can choose one in Settings.');
+    const call = jest.mocked(moveFocus).mock.calls.find((c) => c[1] === ANNOUNCE_DELAY + 50);
+    expect(call).toBeDefined();
+    // The ref is the footer's solid button.
+    const target = (call![0] as { current: { props?: { accessibilityLabel?: string } } | null }).current;
+    expect(target).not.toBeNull();
+    say.mockRestore();
+  });
+
+  it('Earlier / Later say the new time', async () => {
+    const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+    finishFirstSet(3);
+    mount(<Results />);
+    await press(/^One hour earlier$/);
+    flushSayLaterForTest();
+    expect(say.mock.calls.map((c) => String(c[0])).some((s) => /^Study time (8:00 PM|20:00)/.test(s))).toBe(true);
+    say.mockRestore();
+  });
+
   it('already answered (or already on): the closing screen does not ask again', () => {
     useSeen.setState({ reminderAsk: { first: 'later' } });
     finishFirstSet(3);
@@ -338,7 +366,7 @@ describe('light, dark and 200% text', () => {
     finishFirstSet(3);
     mount(<Results />);
     const t = allText();
-    for (const line of ['3 of 5', '2 will come back tomorrow.', 'Done for today', 'Do 5 more', 'Choose a different plant']) expect(t).toContain(line);
+    for (const line of ['3 of 5 right', 'The 2 you missed come back then.', 'Done for today', 'Do 5 more', 'Choose a different plant']) expect(t).toContain(line);
     // Nothing is clipped by a line cap, and every pressable has a spoken name.
     const names = new Set(pressable(/./).map((p) => String(p.props.accessibilityLabel)));
     for (const name of ['Done for today', 'Do 5 more', 'Choose a different plant', 'One hour earlier', 'One hour later', 'Not now']) expect(names).toContain(name);

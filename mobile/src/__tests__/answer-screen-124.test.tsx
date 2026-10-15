@@ -5,7 +5,7 @@
  *  - no "Code d1_xxx" in the learner view;
  *  - the coach line is neutral unless a slip was tagged; no "error" buzz;
  *  - a right retest says "Back in your review tomorrow.";
- *  - screen-reader focus moves to the verdict; the announcement has no "below";
+ *  - screen-reader focus moves to the verdict, which says the best answer (no "below", no second announcement);
  *  - a one-question session ends back where it started (no Results page);
  *  - the mock footer has words, the navigator a summary and a sticky Submit;
  *  - Results: headline by sample size, calibration line, no tag soup,
@@ -194,16 +194,23 @@ describe('the answer screen after a miss', () => {
     expect(haptic.success).toHaveBeenCalled();
   });
 
-  it('screen-reader focus moves to the verdict; the announcement says the best answer, not "below"', () => {
+  it('screen-reader focus moves to the verdict, whose label says the best answer (no separate announcement)', () => {
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     startFromIds('cisa', [others[0].id, others[1].id], 'T');
     mount(<SessionScreen />);
     pickBy(false);
     press('Check answer');
     expect(moveFocus).toHaveBeenCalledWith(expect.objectContaining({ current: expect.anything() }), 400);
+    // UX review B3: said once, through the focused verdict, never also as an announcement that the focus move cuts off.
     const said = say.mock.calls.map((c) => String(c[0]));
-    expect(said.some((s) => /^Not quite\. Best answer [A-D]\.$/.test(s))).toBe(true);
-    expect(said.join(' ')).not.toMatch(/below/i);
+    expect(said.some((s) => /Not quite/.test(s))).toBe(false);
+    // The letter spoken is the DISPLAY letter of the original key (grading stays on original letters).
+    const s = useSession.getState().active!;
+    const qid = s.questionIds[s.index];
+    const best = ['A', 'B', 'C', 'D'].find((d, i) => s.perms[qid][i] === bank.find((x) => x.id === qid)!.correct);
+    const label = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith(`Not quite. Best answer ${best}. `));
+    expect(label.length).toBeGreaterThan(0);
+    expect(String(label[0].props.accessibilityLabel)).not.toMatch(/below/i);
   });
 });
 
@@ -302,7 +309,12 @@ describe('Results', () => {
     expect(t).toContain('3 of 4 right');
     expect(t).not.toContain('Strong work');
     expect(t).not.toContain('Every miss is a lesson');
-    expect(t).toMatch(/Most missed: /);
+    // One miss: "Missed:", never "Most missed" (it would overstate).
+    expect(t).toMatch(/(^| )Missed: .+\./);
+    expect(t).not.toMatch(/Most missed/);
+    // The count is said once (UX review S7): no "Correct" cell and no count in the ring's centre.
+    expect(t.match(/3 of 4/g)).toHaveLength(1);
+    expect(t).not.toMatch(/Correct 3/);
     const rings = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('3 of 4 right.'));
     expect(rings.length).toBeGreaterThan(0);
   });
@@ -317,13 +329,13 @@ describe('Results', () => {
     finished(10, 7, ['sure', 'sure', 'sure', 'sure', 'sure', 'sure', 'sure', 'unsure', 'unsure', 'unsure']);
     mount(<Results />);
     // Seven are right (the first seven); the sure ones are all right, the unsure ones all wrong.
-    expect(allText()).toContain('Sure: 7 of 7 right. Unsure: 0 of 3 right.');
+    expect(allText()).toContain('How sure you felt: Sure 7 of 7 right · Unsure 0 of 3 right');
   });
 
   it('no calibration line when nothing was rated', () => {
     finished(10, 5);
     mount(<Results />);
-    expect(allText()).not.toContain('Sure:');
+    expect(allText()).not.toContain('How sure you felt');
   });
 
   it('no tag soup: a hinted miss row is one quiet line, in plain words', () => {

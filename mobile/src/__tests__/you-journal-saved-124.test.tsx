@@ -199,6 +199,24 @@ describe('the rings legend', () => {
     expect(legendNames().map((n) => n.text)).toEqual(expect.arrayContaining(['IT Governance', 'Info Protection']));
   });
 
+  it('a band word on any row puts the legend under the rings, full width, even on a wide phone (UX review S1)', () => {
+    setWidth(412);
+    /** The legend's own box (hidden from screen readers: the rings' label says it all). */
+    const legendBox = () =>
+      root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityElementsHidden === true && n.props.importantForAccessibility === 'no-hide-descendants')[0];
+    const flat = (n: ReactTestInstance) => Object.assign({}, ...[n.props.style].flat(Infinity).filter(Boolean));
+    // Numbers only: beside the rings.
+    mount(<DomainRings cert={cisa} values={values} center={null} accessibilityLabel="rings" />);
+    expect(flat(legendBox()).alignSelf).toBeUndefined();
+    act(() => {
+      r!.unmount();
+    });
+    // "Building" on one row: under the rings, stretched, and the full short names, never cut.
+    mount(<DomainRings cert={cisa} values={values} center={null} accessibilityLabel="rings" legendValue={(i) => (i === 1 ? 'Building' : '50')} />);
+    expect(flat(legendBox()).alignSelf).toBe('stretch');
+    expect(legendNames().map((n) => n.text)).toEqual(expect.arrayContaining(['IT Governance', 'IS Acquisition', 'IS Operations', 'Info Protection']));
+  });
+
   it('at large text a name may wrap at a space (two lines) but is never cut', () => {
     setWidth(393, 2);
     mount(<DomainRings cert={cisa} values={values} center={null} accessibilityLabel="rings" />);

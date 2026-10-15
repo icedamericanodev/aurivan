@@ -6,7 +6,7 @@
 // Today on Day 0 (one title, one pill, nothing else), the Day-1 closing screen
 // ("3 of 5", tomorrow, the seed, the reminder ask), Today cleared, Today with
 // five answers ("5 of 40 for your first range"), "Your first readiness range",
-// and the reminder's one second chance.
+// the reminder's one second chance, and You with band words (12 answers a domain).
 // NARROW=1 uses a 360-wide phone; FONT_SCALE=2 approximates 200% text.
 import { createRequire } from 'module';
 import fs from 'fs';
@@ -172,7 +172,9 @@ await go('/home', 2800);
 await shot('fd10-today-first-range');
 
 // ── 8. The reminder's one second chance (the 3rd study day, reminders off) ──
-await edit(SEEN, `v.state.moments = { 'first-range:cisa': 1 }; v.state.reminderAsk = {};`);
+// newLearner: the second chance is only for learners onboarded on 1.24 (onboarding sets it); an empty
+// reminderAsk reads as a 1.23 upgrader, so the card would never show (UX review S11).
+await edit(SEEN, `v.state.moments = { 'first-range:cisa': 1 }; v.state.reminderAsk = { newLearner: true };`);
 await edit(P, `const c = v.state.byCert.cisa; c.milestones = { earned: {}, days: 3, lastDay: a }; v.state.days = {};`, dk(now));
 await edit(P, `const d = v.state.days; `, null).catch(() => {});
 await go('/home', 2800);
@@ -180,7 +182,7 @@ await edit(P, `const d = v.state.days.cisa; if (d) { d.done = d.items.map(() => 
 // The visit above (made only to build the day's plan) already showed the second
 // ask, and showing it counts it as used (store/seen.ts reminderAsk.second). Forget
 // that, so the card is there again on the cleared day this frame is about.
-await edit(SEEN, `v.state.reminderAsk = {};`);
+await edit(SEEN, `v.state.reminderAsk = { newLearner: true };`);
 await go('/home', 2800);
 // Bring the card into view (its place depends on what else Today shows); fall back to a plain scroll.
 const ask = page.getByText('A study time can help', { exact: true }).first();
@@ -194,6 +196,20 @@ if (await ask.count()) {
   await wait(700);
 }
 await shot('fd11-today-second-ask');
+
+// ── 9. You with band words: 12 answers in every domain (under 30, so each shows "Building" or the like).
+// The legend goes under the rings whenever a word shows, so no domain name is cut off (UX review S1).
+await edit(
+  P,
+  `const c = v.state.byCert.cisa; c.answers = {};
+   for (let d = 1; d <= 5; d++) for (let i = 1; i <= 12; i++) {
+     const id = 'd' + d + '_' + String(i).padStart(3, '0'); const ok = (i + d) % 3 !== 0;
+     c.answers[id] = { attempts: 1, correctCount: ok ? 1 : 0, lastCorrect: ok, lastAt: a - 3600000 };
+   }`,
+  now,
+);
+await go('/you', 3000);
+await shot('fd12-you-bands');
 
 // Put the demo learner back.
 await page.evaluate(([k, v, k2, v2]) => {

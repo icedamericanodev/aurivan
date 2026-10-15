@@ -8,19 +8,21 @@
  *   - the failure is noticed (store/hydration.ts),
  *   - the app shows the recovery screen after the error, or after 8 seconds,
  *   - "Try again" loads the data once storage works,
- *   - "Report this" opens an email with no personal data,
+ *   - "Report this" opens an email with no personal data, and its note is said aloud,
+ *   - while "Try again" works, the screen says "Trying again…" (never a blank page),
  *   - "Start fresh" always asks first, and only then erases;
  *   - it erases ONLY the stores that failed to load, names them in its
  *     question, and is not offered at all after a pure timeout (nothing failed).
  */
 import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert, Linking } from 'react-native';
+import { AccessibilityInfo, Alert, Linking } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { create as createStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { freshBody, RecoveryScreen, RECOVERY_COPY } from '../components/recovery';
 import { startFresh } from '../lib/recovery';
+import { flushSayLaterForTest } from '../lib/a11y';
 import { clearHydrationFailures, hasHydrationFailure, watchHydration } from '../store/hydration';
 import { useProgress } from '../store/progress';
 import { persistStorage } from '../store/storage';
@@ -235,6 +237,30 @@ describe('the recovery screen', () => {
     expect(url).toContain('Saved data would not open');
     expect(url).toContain('1.24.0');
     expect(textOf(r!.root)).toContain('Your email app is open');
+  });
+
+  it('the note "Report this" leaves is said aloud, above all the support address when no email app opens', async () => {
+    jest.spyOn(Linking, 'openURL').mockRejectedValue(new Error('no mail app'));
+    jest.spyOn(Linking, 'canOpenURL').mockResolvedValue(false as never);
+    const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+    mount(<RecoveryScreen kind="load" onTryAgain={() => {}} />);
+    await act(async () => {
+      press('Report this');
+      for (let i = 0; i < 10; i++) await Promise.resolve();
+    });
+    flushSayLaterForTest();
+    // UX review B2 (WCAG 4.1.3): the note on screen is also spoken, word for word.
+    const said = say.mock.calls.map((c) => String(c[0])).filter((t) => /email app/.test(t));
+    expect(said).toHaveLength(1);
+    expect(textOf(r!.root)).toContain(said[0]);
+  });
+
+  it('while "Try again" is reading the data, the button says "Trying again…" and cannot be tapped twice', () => {
+    mount(<RecoveryScreen kind="load" retrying onTryAgain={() => {}} />);
+    const b = r!.root.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && textOf(n) === 'Trying again…')[0];
+    expect(b).toBeDefined();
+    expect(b.props.accessibilityState).toMatchObject({ disabled: true });
+    expect(textOf(r!.root)).toContain(RECOVERY_COPY.loadTitle);
   });
 
   it('"Start fresh" asks first and erases nothing until the learner confirms', async () => {

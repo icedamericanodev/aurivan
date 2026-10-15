@@ -40,7 +40,7 @@ export interface DomainInfo {
   name: string;
   short: string;
   /**
-   * An even shorter name for a narrow tile (Today's "weakest area": "IS Ops"). Optional:
+   * An even shorter name for a narrow place (the rings' legend below 380 dp: "IS Ops"). Optional:
    * a domain without one shows `short`. The full name is still what a screen reader says.
    */
   tile?: string;

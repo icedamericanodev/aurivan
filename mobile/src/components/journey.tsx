@@ -16,7 +16,7 @@ import { domainColor } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { biggestGrowth, clearingTitle, dayAccuracy, isOptional, itemMinutes, type DayPlan } from '../engine/dayPlan';
 import { legacyTitle, type PlanItem } from '../engine/planner';
-import { countHeadline, SMALL_SAMPLE } from '../engine/resultsCopy';
+import { SMALL_SAMPLE } from '../engine/resultsCopy';
 import type { Readiness } from '../engine/readiness';
 import { RANGE_MIN_ANSWERS, rangeLabel, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
 import { haptic } from '../lib/haptics';
@@ -90,7 +90,9 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
         item.why === 'first'
           ? `${item.count} questions, no timer`
           : item.why === 'check'
-            ? 'no score yet, just a starting point'
+            ? // Not "no score yet, just a starting point" (1.24 UX review S5): by Day 2 the learner has seen
+              // "3 of 5", and the readiness row says how far the first range is.
+              'mixed across the domains'
             : item.why === 'learn'
               ? 'on what you just learned'
               : item.why === 'weak'
@@ -160,7 +162,7 @@ export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boo
         item.why === 'first'
           ? ', no timer'
           : item.why === 'check'
-            ? ', no score yet, just a starting point'
+            ? ', mixed across the domains' // "15 questions, mixed across the domains" (UX review S5)
             : item.why === 'learn'
               ? ', on what you just learned'
               : item.why === 'weak'
@@ -500,11 +502,15 @@ export function DomainRings({
   // the rings at 360 dp, "IT Governance" wrapped and "26/38" was cut off.
   const narrow = useWindowDimensions().width < RINGS_SIDE_BY_SIDE_MIN;
   const large = useFontScale() >= LARGE_TEXT;
-  const stacked = large || narrow;
   const shown = only && only.length > 0 ? only : [...cert.domains.keys()];
   const tones = shown.map((i) => domainColor(cert.domains[i].tone, isDark));
   const weights = shown.length === 1 ? [SINGLE_RING_WEIGHT] : shown.map((i) => cert.domains[i].weight);
   const label = (i: number) => legendValue?.(i) ?? (values[i] === null ? '–' : String(Math.round((values[i] ?? 0) * 100)));
+  // A band word ("Building", about 66pt) beside the rings leaves the name ~70pt, so "IT Governance" ended in
+  // an ellipsis for every new learner (UX review S1). When any row shows a word, the legend goes under the
+  // rings, full width, as it does on narrow phones and at large text.
+  const wordy = legend && shown.some((i) => /[A-Za-z]/.test(label(i)));
+  const stacked = large || narrow || wordy;
   return (
     // Mobile 1.21 (design spec §7): rings and legend read as ONE aligned row: 20 between them,
     // 28pt legend rows, the name in `small`, the numerals in one right-aligned column.
@@ -625,8 +631,18 @@ export function ClearingBody({
             <Stat key="a" label="Accuracy" word="Not yet" color={c.onForest} labelColor={c.onForest2} />
           ) : plan.answered < SMALL_SAMPLE ? (
             // Mobile 1.24: a percent of a handful of answers says little (Day 1 is 5), so below SMALL_SAMPLE
-            // the day's count, in Results' words ("3 of 5 right"); no percent anywhere on Day 1.
-            <Stat key="a" label="Answers" word={countHeadline(plan.correct, plan.answered)} color={c.onForest} labelColor={c.onForest2} />
+            // the day's count, as Results names it: "Correct 3 of 5" (one line, the row's shared baseline;
+            // UX review S4). No percent anywhere on Day 1.
+            <Stat
+              key="a"
+              label="Correct"
+              value={String(plan.correct)}
+              unit={`of ${plan.answered}`}
+              color={c.onForest}
+              labelColor={c.onForest2}
+              unitColor={c.onForest2}
+              roll={statRoll(1)}
+            />
           ) : (
             <Stat key="a" label="Accuracy" value={String(acc)} pct color={c.onForest} labelColor={c.onForest2} roll={statRoll(1)} />
           ),
@@ -651,7 +667,9 @@ export function ClearingBody({
         <FadeIn key={run} delay={full ? wordsAt : 0} rise={false} style={{ flex: 1 }}>
           <Text maxFontSizeMultiplier={2} style={[grewLine, { color: c.onForest }]}>{line}</Text>
           <T v="meta" color={c.onForest2} style={{ marginTop: 2 }}>
-            {grewDomain && grew ? `${grewDomain.short} ring +${grew.points}` : 'Every answer feeds the rings'}
+            {/* No "+10" before the first range exists: a ring delta reads as a score on the day Today
+                says "Not enough data yet" (UX review S4). */}
+            {range.enough && grewDomain && grew ? `${grewDomain.short} ring +${grew.points}` : 'Every answer feeds the rings'}
           </T>
         </FadeIn>
       </View>

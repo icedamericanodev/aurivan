@@ -342,7 +342,8 @@ describe('Today, top to bottom', () => {
     expect(allText()).not.toMatch(/accuracy|Not yet/i);
     const line = allText().match(/200 answered · weakest area: ([^A]+?)(?= Also|$)/);
     expect(line).not.toBeNull();
-    expect(cisa.domains.some((d) => (d.tile ?? d.short) === line![1].trim())).toBe(true);
+    // The domain's short name ("IS Operations"), never the tile abbreviation ("IS Ops"): UX review S6.
+    expect(cisa.domains.some((d) => d.short === line![1].trim())).toBe(true);
   });
 
   it('never hours studied, and no single readiness percent', () => {

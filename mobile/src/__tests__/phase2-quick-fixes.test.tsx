@@ -198,8 +198,11 @@ describe('Results for a one-domain session (R1, R2) and the assisted line (Q1)',
     expect(rings[0].props.weights).toHaveLength(1);
     expect(rings[0].props.mastery[0]).toBeCloseTo(2 / 3);
     const text = allText();
-    // Mobile 1.22: no stranded one-row legend; one line under the ring.
-    expect(text).toMatch(/All IS Audit · 2 of 3/);
+    // Mobile 1.22: no stranded one-row legend. Mobile 1.24 (UX review S7): three questions are a handful, so
+    // the count is said once, in the headline, and the ring's centre names the domain (no "All IS Audit · 2 of 3").
+    expect(text).toMatch(/2 of 3 right/);
+    expect(text.match(/2 of 3/g)).toHaveLength(1);
+    expect(text).toMatch(/IS Audit/);
     expect(text).not.toMatch(/2\/3/);
     expect(text).not.toMatch(/IT Governance/);
     expect(text).not.toMatch(/–/);

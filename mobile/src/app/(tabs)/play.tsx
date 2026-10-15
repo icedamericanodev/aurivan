@@ -115,7 +115,8 @@ export default function Play() {
       )}
 
       {featured && (
-        <Enter i={1} style={{ marginTop: space.xl }}>
+        // No extra top margin: the Section below brings its own (a second one left ~64pt under the intro; UX review nit).
+        <Enter i={1}>
           {/* Today's drill: why this game, in the learner's own pattern words (or a calm default). */}
           <Section title="Today’s drill" />
           <T v="meta" style={{ marginBottom: space.md }}>

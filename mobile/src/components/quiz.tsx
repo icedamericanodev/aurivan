@@ -216,15 +216,30 @@ export function ConfidenceRow({ value, onChange }: { value?: Confidence; onChang
 }
 
 // ── Verdict: leaf-mark + "Correct" / "Not quite" + coach line ─────────
-export function Verdict({ correct, coach, ref }: { correct: boolean; coach: string; /** For moving screen-reader focus here after "Check answer" (lib/a11y.ts moveFocus). */ ref?: Ref<View> }) {
+export function Verdict({
+  correct,
+  coach,
+  best,
+  ref,
+}: {
+  correct: boolean;
+  coach: string;
+  /** The best answer's DISPLAY letter after a miss: spoken in the label ("Not quite. Best answer D."). */
+  best?: string;
+  /** For moving screen-reader focus here after "Check answer" (lib/a11y.ts moveFocus). */
+  ref?: Ref<View>;
+}) {
   const { c } = useTheme();
   const color = correct ? c.correct : c.wrong;
+  // What a screen reader says when focus lands here. Mobile 1.24 (UX review B3): the session screen no
+  // longer makes a separate announcement (the focus move cut it off on iOS and doubled it on Android),
+  // so the verdict says everything once, the best answer's letter included.
+  const head = correct ? 'Correct' : best ? `Not quite. Best answer ${best}` : 'Not quite';
   // The leaf springs from 60% to full size (spec §10.2, the one signature
   // spring); under Reduce Motion it fades in instead (120 ms).
   return (
-    // No live region: the session screen already calls announceForAccessibility,
-    // so a live region would make screen readers say the verdict twice.
-    <View ref={ref} accessible accessibilityRole="header" accessibilityLabel={`${correct ? 'Correct' : 'Not quite'}. ${coach}`}>
+    // No live region: focus moves here after "Check answer", which reads this label once.
+    <View ref={ref} accessible accessibilityRole="header" accessibilityLabel={`${head}. ${coach}`}>
       <Row gap={space.md} style={{ marginTop: space.md }}>
         <Pop mount spring="pop" style={{ width: 38, height: 38 }}>
           <VerdictLeaf color={color} />

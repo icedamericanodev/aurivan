@@ -6,7 +6,7 @@
  * Plain English for the founder:
  * - `planConsequence`: the one line under the exam date and daily minutes,
  *   so the learner sees what their two choices add up to.
- * - `firstSetFact`: the single fact under "3 of 5" (the topic most missed, or
+ * - `firstSetFact`: the single fact under "3 of 5 right" (the topic most missed, or
  *   "All five right.").
  * - `tomorrowPreview`: "A 12-minute lesson on X, then 5 questions", built
  *   from the plan the app would make next.
@@ -28,24 +28,27 @@ export function spanLabel(days: number): string {
 }
 
 /**
- * The line under the exam date and daily minutes: "6 weeks: about 20 min a
- * day adds up to about 14 hours of study." No date yet says what the plan will
+ * The line under the exam date and daily minutes: "6 weeks: 20 min a day
+ * adds up to about 14 hours of study." No date yet says what the plan will
  * do instead. A date that has passed or is today reads like "no date" (the
  * onboarding presets never offer one).
  */
 export function planConsequence(daysLeft: number | null, minutes: number): string {
-  const day = `about ${minutes} min a day`;
-  if (daysLeft === null || daysLeft < 1) return `No date yet: your plan starts at ${day}. Add your date any time in Settings and it will fit.`;
+  if (daysLeft === null || daysLeft < 1) return `No date yet: your plan starts at about ${minutes} min a day. Add your date any time in Settings and it will fit.`;
   const total = daysLeft * minutes;
   const study = total < 90 ? `${total} min` : `${Math.round(total / 60)} hours`;
-  return `${spanLabel(daysLeft)}: ${day} adds up to about ${study} of study.`;
+  // "about" once (UX review nit): the minutes are the learner's own choice, the total is the estimate.
+  return `${spanLabel(daysLeft)}: ${minutes} min a day adds up to about ${study} of study.`;
 }
 
 // ── Day-1 closing screen ─────────────────────────────────────────────────
-/** The one fact under "3 of 5". `topic`: the most-missed topic's name, when we have one. */
+/**
+ * The one fact under "3 of 5 right". `topic`: the most-missed topic's name, when we have one.
+ * One miss says "Missed:", since "Most missed" after a single miss overstates (UX review nit).
+ */
 export function firstSetFact(correct: number, total: number, topic?: string): string {
   if (total > 0 && correct >= total) return total === 1 ? 'Right.' : `All ${numberWord(total)} right.`;
-  if (topic) return `Most missed: ${topic}.`;
+  if (topic) return total - correct === 1 ? `Missed: ${topic}.` : `Most missed: ${topic}.`;
   return 'Every one you missed will come back, so it sticks.';
 }
 
@@ -55,15 +58,18 @@ export function numberWord(n: number): string {
   return NUMBER_WORDS[n] ?? String(n);
 }
 
-/** "2 will come back tomorrow." (null when nothing was missed). */
+/**
+ * "The 2 you missed come back then." (null when nothing was missed). It sits under the "Tomorrow"
+ * caption, so "then" is tomorrow; "2 will come back tomorrow." said the word twice (UX review nit).
+ */
 export function comeBackLine(missed: number): string | null {
   if (missed <= 0) return null;
-  return missed === 1 ? '1 will come back tomorrow.' : `${missed} will come back tomorrow.`;
+  return missed === 1 ? 'The one you missed comes back then.' : `The ${missed} you missed come back then.`;
 }
 
 /**
  * Tomorrow, in one line, from the plan the app would build next (reviews are
- * left out: the closing screen says "N will come back" on its own line).
+ * left out: the closing screen says "The N you missed come back then." on its own line).
  * "A 12-minute lesson on Business impact analysis, then 5 questions".
  */
 export function tomorrowPreview(plan: readonly PlanItem[]): string | null {

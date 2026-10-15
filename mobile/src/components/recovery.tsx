@@ -5,7 +5,8 @@
  * 1. SAVED DATA WOULD NOT LOAD (a damaged value, a failed upgrade or a storage
  *    error; or loading took over 8 seconds). Before 1.24 the app sat on the
  *    splash screen forever. Now it says so, with three ways out:
- *      "Try again"    reads the saved data again (the usual fix)
+ *      "Try again"    reads the saved data again (the usual fix); the screen stays
+ *                     up, saying "Trying again…", until it loads or fails again
  *      "Report this"  opens the learner's email app with a short support note
  *                     (app version and phone system only; no personal data)
  *      "Start fresh"  erases ONLY the saved data that would not open (the rest
@@ -22,6 +23,7 @@
 import { useState, useSyncExternalStore } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { sayLater } from '../lib/a11y';
 import { config } from '../lib/config';
 import { freshTargetsKey, reportLoadProblem, startFresh } from '../lib/recovery';
 import { subscribeHydration } from '../store/hydration';
@@ -59,14 +61,27 @@ export function freshBody(names: readonly string[]): string {
 export function RecoveryScreen({
   kind,
   onTryAgain,
+  retrying = false,
 }: {
   /** 'load' = saved data would not open; 'crash' = a screen failed to draw. */
   kind: 'load' | 'crash';
   onTryAgain: () => void;
+  /**
+   * "Try again" is reading the saved data again (UX review S9): the screen stays up and the button
+   * says "Trying again…" (disabled) instead of the app showing a blank page while it loads.
+   */
+  retrying?: boolean;
 }) {
   const { c } = useTheme();
   const [note, setNote] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
+  const [erasing, setErasing] = useState(false);
+  const busy = erasing || retrying;
+  // A note appears in place of nothing: say it as well (UX review B2; WCAG 4.1.3). When no email app
+  // opens it holds the support address, the learner's only way out, so it must never be silent.
+  const show = (s: string) => {
+    setNote(s);
+    sayLater(s);
+  };
   const load = kind === 'load';
   // The stores that failed to load (empty when loading was only slow: then there is nothing to erase).
   const failedKey = useSyncExternalStore(subscribeHydration, freshTargetsKey, freshTargetsKey);
@@ -74,7 +89,7 @@ export function RecoveryScreen({
 
   const report = async () => {
     const result = await reportLoadProblem(load ? 'Saved data would not open' : 'A screen crashed');
-    setNote(result === 'opened' ? 'Your email app is open. Send the note when you are ready.' : `We couldn’t open an email app. You can write to us at ${config.feedbackEmail}.`);
+    show(result === 'opened' ? 'Your email app is open. Send the note when you are ready.' : `We couldn’t open an email app. You can write to us at ${config.feedbackEmail}.`);
   };
 
   // Always asks first. The erase itself lives in lib/recovery.ts.
@@ -85,10 +100,10 @@ export function RecoveryScreen({
         text: RECOVERY_COPY.freshConfirm,
         style: 'destructive',
         onPress: () => {
-          setBusy(true);
+          setErasing(true);
           startFresh()
-            .catch(() => setNote(RECOVERY_COPY.freshFailed))
-            .finally(() => setBusy(false));
+            .catch(() => show(RECOVERY_COPY.freshFailed))
+            .finally(() => setErasing(false));
         },
       },
     ]);
@@ -105,7 +120,7 @@ export function RecoveryScreen({
         )}
         <Gap h={space.xl} />
         <View style={{ gap: space.sm }}>
-          <Button label="Try again" onPress={onTryAgain} disabled={busy} />
+          <Button label={retrying ? 'Trying again…' : 'Try again'} onPress={onTryAgain} disabled={busy} />
           <Button kind="secondary" label="Report this" onPress={report} disabled={busy} accessibilityHint="Opens your email app with a short note. No personal data is included." />
           {load && failedNames.length > 0 && (
             <Button kind="ghost" label="Start fresh" onPress={confirmFresh} disabled={busy} accessibilityHint="Asks first. Erases only the saved data that would not open." />

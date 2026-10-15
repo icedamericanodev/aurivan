@@ -6,7 +6,7 @@
  *   of 5, reads like a pat on the head: four questions say very little. So
  *   under SMALL_SAMPLE answers the headline is just the count ("3 of 4
  *   right") and one fact (the topic most missed), not a verdict.
- * - The calibration line ("Sure: 7 of 9 right. Unsure: 2 of 4.") shows how
+ * - The calibration line ("How sure you felt: Sure 7 of 9 right · Unsure 2 of 4 right") shows how
  *   well "how sure I felt" matched what happened. Optional: only when the
  *   learner rated enough answers.
  *
@@ -38,10 +38,13 @@ export function resultsHeadline(correct: number, answered: number, pct: number):
   return pct >= 75 ? 'Strong work.' : pct >= 60 ? 'Getting there.' : 'Every miss is a lesson.';
 }
 
-/** One calm fact under a small-sample headline: the topic most missed. Null when there is nothing to say. */
+/**
+ * One calm fact under a small-sample headline: the topic most missed ("Missed:" after a single miss,
+ * where "most" would overstate). Null when there is nothing to say.
+ */
 export function smallSampleFact(missedTopic: string | undefined, missed: number): string | null {
   if (missed === 0 || !missedTopic) return null;
-  return `Most missed: ${missedTopic}.`;
+  return missed === 1 ? `Missed: ${missedTopic}.` : `Most missed: ${missedTopic}.`;
 }
 
 export interface CalibrationTally {
@@ -67,15 +70,16 @@ export function calibrationTally(rows: readonly { confidence?: Confidence; corre
 const LEVEL_NAME: Record<Confidence, string> = { sure: 'Sure', unsure: 'Unsure', guessing: 'Guessing' };
 
 /**
- * "Sure: 7 of 9 right. Unsure: 2 of 4 right." — only the levels the learner
- * used, and only when at least CALIBRATION_MIN answers were rated. Otherwise null.
+ * "How sure you felt: Sure 7 of 9 right · Unsure 2 of 4 right" — only the
+ * levels the learner used, and only when at least CALIBRATION_MIN answers were
+ * rated. Otherwise null. The lead-in says what "Sure" refers to (UX review S8).
  */
 export function calibrationLine(rows: readonly { confidence?: Confidence; correct: boolean }[]): string | null {
   const t = calibrationTally(rows);
   const rated = t.sure.total + t.unsure.total + t.guessing.total;
   if (rated < CALIBRATION_MIN) return null;
-  return (['sure', 'unsure', 'guessing'] as const)
+  const parts = (['sure', 'unsure', 'guessing'] as const)
     .filter((k) => t[k].total > 0)
-    .map((k) => `${LEVEL_NAME[k]}: ${t[k].right} of ${t[k].total} right.`)
-    .join(' ');
+    .map((k) => `${LEVEL_NAME[k]} ${t[k].right} of ${t[k].total} right`);
+  return `How sure you felt: ${parts.join(' · ')}`;
 }

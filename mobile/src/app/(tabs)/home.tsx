@@ -383,7 +383,12 @@ export default function Today() {
   }, [j.range.enough, firstRangeSeen, firstRangeDue, firstRangeKey]);
 
   const firstRangeCard = (
-    <FirstRangePanel cert={j.cert} readiness={j.readiness} onOpen={() => router.push('/readiness')} onDismiss={() => useSeen.getState().played(firstRangeKey)} />
+    <FirstRangePanel cert={j.cert} readiness={j.readiness} onOpen={() => router.push('/readiness')} onDismiss={() => {
+      useSeen.getState().played(firstRangeKey);
+      // The panel unmounts under the focused button: say so, then move focus on (as the second ask does).
+      sayLater('Note hidden.');
+      moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50);
+    }} />
   );
 
   // The reminder's one second chance: the day the 3rd study day is done, if reminders are still off.
@@ -547,7 +552,8 @@ export default function Today() {
           {/* "Your first readiness range": one calm card, right under the range it explains (mobile 1.24). */}
           {firstRangeDue && <View style={{ marginTop: space.lg }}>{firstRangeCard}</View>}
           {weakest && answeredTotal > 0 && !firstRangeDue && (
-            <T v="meta" style={{ marginTop: space.md }}>{`${answeredTotal} answered · weakest area: ${weakest.tile ?? weakest.short}`}</T>
+            // The domain's short name ("IS Operations"), not the tile abbreviation ("IS Ops", spoken "I S ops"): UX review S6.
+            <T v="meta" style={{ marginTop: space.md }}>{`${answeredTotal} answered · weakest area: ${weakest.short}`}</T>
           )}
           {plantView.plant && (
             // Your plant moved under the facts (mobile 1.23): the rings are the readiness row's picture now.
@@ -659,7 +665,11 @@ export default function Today() {
         {/* Mobile 1.24: the reminder ask's one second chance (the day the 3rd study day is done). */}
         {secondVisit && (
           <View style={{ marginTop: space.xl }}>
-            <SecondAskCard />
+            <SecondAskCard
+              // "Not now" takes the card away (it announces "No reminder set…"): move focus to the section
+              // heading above, after the announcement, as the exam-week card does (UX review B1).
+              onGone={() => moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50)}
+            />
           </View>
         )}
         {/* Mobile 1.15: one quiet "Fit your plan" card, below the day's study (never above the hero). */}

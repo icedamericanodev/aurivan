@@ -148,8 +148,10 @@ describe('Today: the day in minutes', () => {
     // Mobile 1.21: the day's minutes are in the caption, said once.
     expect(allText()).toContain('Today’s plan · about 18 min');
     // The title never holds a count, and the minutes are said once (the caption's, this item's alone),
-    // so the meta is the count and the why. Mobile 1.24: plain words, no "Starting check".
-    expect(allText()).toContain('Mixed practice 15 questions, no score yet, just a starting point');
+    // so the meta is the count and the why. Mobile 1.24: plain words, no "Starting check", and no
+    // "no score yet" on the day after the learner saw "3 of 5" (UX review S5).
+    expect(allText()).toContain('Mixed practice 15 questions, mixed across the domains');
+    expect(allText()).not.toMatch(/no score yet/);
     expect(storedPlan().budget).toBe(20);
   });
 

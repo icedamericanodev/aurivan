@@ -401,7 +401,8 @@ export default function SessionScreen() {
     // penalty at the moment the learner is meant to learn (mobile 1.24).
     if (ok) haptic.success();
     else haptic.selection();
-    AccessibilityInfo.announceForAccessibility(ok ? 'Correct.' : `Not quite. Best answer ${originalToDisplay(q.correct, perm)}.`);
+    // No separate announcement (UX review B3): the focus move below lands on the verdict, whose label says
+    // "Not quite. Best answer D." itself. An announcement as well was cut off on iOS and doubled on Android.
     // Time from the question appearing to "Check answer" (background excluded).
     const ms = readClock();
     // Progress first: the store decides whether this was a RETEST (a right answer under 4 hours after
@@ -776,7 +777,7 @@ export default function SessionScreen() {
                 {/* Answer: verdict → your pick → best answer → (after a miss: Key idea + Exam cue → Why, folded →
                     Eliminate / Final two; after a right answer: Why → the whole vine) → trust */}
                 <View onLayout={(e) => (verdictBottom.current = e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
-                  <Verdict ref={verdictRef} correct={response.correct} coach={coach} />
+                  <Verdict ref={verdictRef} correct={response.correct} coach={coach} best={response.correct ? undefined : correctDisplay} />
                 </View>
                 {/* Lined up with the coach line above it (left 50, under "Correct"). */}
                 {/* Only after a RIGHT hinted answer (UX H1): a wrong one counts nothing, so "half" would be untrue. */}

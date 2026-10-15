@@ -5,10 +5,10 @@
  * - `FirstSetDone` is the screen a new learner sees right after their first
  *   five questions. It replaces the normal Results page for that one set
  *   (results.tsx hands over to it). Short and kind, one bounded finish:
- *     1. "3 of 5" with no percentage ring, plus one fact (the topic most
+ *     1. "3 of 5 right" with no percentage ring, plus one fact (the topic most
  *        missed, or "All five right.") and how close the first readiness
  *        range is;
- *     2. a closing card: tomorrow in one line, "2 will come back tomorrow",
+ *     2. a closing plate: tomorrow in one line, "The 2 you missed come back then.",
  *        a seed planted for you (oak; drawn as a seed, "Choose a different
  *        plant" opens the picker), and the reminder ask;
  *     3. "Done for today" (the one solid button) and a quiet "Do 5 more".
@@ -43,7 +43,7 @@ import { plantCallName, plantShown } from '../engine/plant';
 import type { Readiness } from '../engine/readiness';
 import { RANGE_MIN_ANSWERS } from '../engine/readinessRange';
 import { localTime, stepTime } from '../engine/reminders';
-import { moveFocus, sayLater } from '../lib/a11y';
+import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../lib/a11y';
 import { deferMissesToTomorrow, firstSetLeftOf } from '../lib/firstSet';
 import { scoreSession } from '../lib/finishSession';
 import { plantFor } from '../lib/plant';
@@ -77,9 +77,19 @@ export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; on
   const [time, setTime] = useState(() => defaultReminderTime(Date.now()));
   const [phase, setPhase] = useState<Phase>('idle');
 
+  // Earlier / Later: the time on the other button changes, so say the new time (UX review B1; WCAG 4.1.3).
+  // Focus stays on the stepper, so the learner can keep tapping.
+  const step = (delta: number) => {
+    const n = stepTime(time.hour, time.minute, delta);
+    setTime(n);
+    sayLater(`Study time ${localTime(n.hour, n.minute)}`);
+  };
+  // "Not now" takes the ask away: say so, then the caller moves focus somewhere that still exists
+  // (UX review B1; focus must never be left on a removed button).
   const notNow = () => {
     useSeen.getState().noteReminderAsk('first', 'later');
     setPhase('later');
+    sayLater('No reminder set. You can choose one in Settings.');
     onNotNow?.();
   };
   const accept = async () => {
@@ -101,9 +111,8 @@ export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; on
       sayLater(`Reminder set for ${localTime(time.hour, time.minute)}.`);
     } catch {
       // A native error (the permission check failed): never leave the button stuck on "working".
-      // The calm way out is the same as "Not now"; Settings can still set a reminder.
+      // The calm way out is the same as "Not now" (which says "No reminder set…"); Settings can still set a reminder.
       notNow();
-      sayLater('No reminder set. You can choose one in Settings.');
     }
   };
 
@@ -134,13 +143,13 @@ export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; on
           kind="ghost"
           label="Earlier"
           accessibilityLabel="One hour earlier"
-          onPress={() => setTime((t) => stepTime(t.hour, t.minute, -60))}
+          onPress={() => step(-60)}
         />
         <Button
           kind="ghost"
           label="Later"
           accessibilityLabel="One hour later"
-          onPress={() => setTime((t) => stepTime(t.hour, t.minute, 60))}
+          onPress={() => step(60)}
         />
         <Button kind="ghost" label="Not now" accessibilityHint="No reminder. You can set one in Settings." onPress={notNow} />
       </Row>
@@ -149,7 +158,7 @@ export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; on
 }
 
 /** Today's one second chance at the ask (the day the 3rd study day is done). It counts as shown the moment it appears. */
-export function SecondAskCard() {
+export function SecondAskCard({ onGone }: { /** "Not now" took the card away: move screen-reader focus to something still on screen. */ onGone?: () => void }) {
   const { c } = useTheme();
   // "Not now" takes the whole card away (the answer is remembered; it never comes back).
   const [gone, setGone] = useState(false);
@@ -158,10 +167,17 @@ export function SecondAskCard() {
   }, []);
   if (gone) return null;
   return (
-    <Card style={{ gap: space.sm }}>
+    // An L1 plate, not a raised card: it is an invitation, not something to choose between (spec §5 rule 3).
+    <Card variant="plate" style={{ gap: space.sm }}>
       <T v="label">A study time can help</T>
       <T v="small" color={c.ink2}>Studying at about the same time each day makes it easier to keep going.</T>
-      <ReminderAsk which="second" onNotNow={() => setGone(true)} />
+      <ReminderAsk
+        which="second"
+        onNotNow={() => {
+          setGone(true);
+          onGone?.();
+        }}
+      />
     </Card>
   );
 }
@@ -175,6 +191,8 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
   const score = useMemo(() => scoreSession(session), [session]);
   const missed = useMemo(() => session.questionIds.filter((id) => session.responses[id] && !session.responses[id].correct), [session]);
   const headRef = useRef<View>(null);
+  // "Not now" on the reminder ask removes it: screen-reader focus goes to the footer's main button (UX review B1).
+  const doneRef = useRef<View>(null);
   const [footerH, setFooterH] = useState(120);
   // Ended early: some of the five have never been answered (this set or, after a resume, an earlier one).
   const answers = useProgress((s) => selectCert(s, certId).answers);
@@ -256,9 +274,11 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
             accessibilityLabel={endedEarly ? `${score.answered} answered` : `${score.correct} of ${score.answered} right`}
             style={{ marginTop: space.sm }}
           >
-            <T v="display">{endedEarly ? `${score.answered} answered` : `${score.correct} of ${score.answered}`}</T>
+            {/* "3 of 5 right": the words a screen reader says, and the same headline Results uses. */}
+            <T v="display">{endedEarly ? `${score.answered} answered` : `${score.correct} of ${score.answered} right`}</T>
           </View>
-          <T v="quote" color={c.ink2} style={{ marginTop: space.sm }}>{fact}</T>
+          {/* The fact in Results' small style: the italic `quote` voice is kept for Key idea and the plant (UX review S2). */}
+          <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{fact}</T>
           {endedEarly && <T v="body" style={{ marginTop: space.sm }}>{`${left} left. Continue them from Today when you are ready.`}</T>}
           <T v="meta" style={{ marginTop: space.md }}>
             {j.range.enough ? 'Your readiness range is on Today.' : `${toward} of ${RANGE_MIN_ANSWERS} for your first range`}
@@ -266,14 +286,16 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
         </Enter>
 
         <Enter i={1} style={{ marginTop: space.xl }}>
-          <Card style={{ gap: space.md }}>
+          {/* An L1 plate, not a raised card: a closing summary is not something to choose between (spec §5 rule 3). */}
+          <Card variant="plate" style={{ gap: space.md }}>
             <T v="caption" color={c.accentText}>Tomorrow</T>
             {tomorrow ? <T v="body">{tomorrow}</T> : <T v="body">Your next plan is ready when you open the app.</T>}
             {comeBack && <T v="body">{comeBack}</T>}
             {plantOn && plant && (
               <Row gap={space.md} style={{ alignItems: 'center' }}>
-                {/* A seed, not the plant drawing: Results stays light and the plant keeps its own screens. */}
-                <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ marginLeft: -space.sm }}>
+                {/* A seed, not the plant drawing: Results stays light and the plant keeps its own screens.
+                    Decorative: hidden from TalkBack (importantForAccessibility) and VoiceOver (accessibilityElementsHidden). */}
+                <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ marginLeft: -space.sm }}>
                   <Seedling color={c.accent} size={64} />
                 </View>
                 <View style={{ flex: 1 }}>
@@ -287,12 +309,12 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
                 </View>
               </Row>
             )}
-            <ReminderAsk which="first" />
+            <ReminderAsk which="first" onNotNow={() => moveFocus(doneRef, ANNOUNCE_DELAY + 50)} />
           </Card>
         </Enter>
       </ScrollView>
       <StickyFooter onHeight={setFooterH}>
-        <Button label={endedEarly ? 'Back to Today' : 'Done for today'} onPress={done} />
+        <Button ref={doneRef} label={endedEarly ? 'Back to Today' : 'Done for today'} onPress={done} />
         {!endedEarly && (
           <Button
             kind="ghost"
@@ -334,11 +356,13 @@ export function FirstRangePanel({
 }) {
   const { c } = useTheme();
   const { strongest, weakest } = firstRange(readiness.domains.map((d) => ({ domainId: d.domainId, mastery: d.mastery, answered: d.answered })));
-  const nameOf = (id: string | null) => cert.domains.find((d) => d.id === id)?.name;
+  // The short name ("IS Audit"), as the rings and Today's lines call each domain.
+  const nameOf = (id: string | null) => cert.domains.find((d) => d.id === id)?.short;
   const strong = nameOf(strongest);
   const weak = nameOf(weakest);
   return (
-    <Card style={{ gap: space.sm }}>
+    // An L1 plate: a notice, not a choice (spec §5 rule 3).
+    <Card variant="plate" style={{ gap: space.sm }}>
       <T v="caption" color={c.accentText} accessibilityRole="header">Your first readiness range</T>
       <T v="small" color={c.ink2}>It is an estimate of where you stand today, not a prediction of your exam result. It narrows as you answer more.</T>
       {strong && <T v="body">{`Strongest so far: ${strong}`}</T>}
