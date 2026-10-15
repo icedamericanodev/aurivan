@@ -669,6 +669,7 @@ export const useProgress = create<ProgressState>()(
       // Mobile 1.13 added CertProgress.plant and the top-level plantSettings,
       // both OPTIONAL: an old save loads as-is and has no plant until the
       // learner plants one (never one made up for them).
+      // Mobile 1.24 added AnswerRecord.lastRetest (the retest rule), OPTIONAL: same.
       version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },

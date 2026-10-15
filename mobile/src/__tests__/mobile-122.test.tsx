@@ -347,7 +347,7 @@ describe('answer screen after a miss', () => {
 
 // ── Results ─────────────────────────────────────────────────────────────
 describe('results: one domain', () => {
-  it('the ring alone, centred, with one line under it; Done is a quiet ghost under the primary', () => {
+  it('the ring alone, centred, with one line under it; Done is the one solid button, Practice the missed is secondary', () => {
     const ids = ['d1_001', 'd1_002', 'd1_003'].filter((id) => findQuestion('cisa', id));
     startFromIds('cisa', ids, 'T');
     ids.forEach((_, i) => {
@@ -362,8 +362,11 @@ describe('results: one domain', () => {
     mount(<Results />);
     expect(root().findByType(DomainRings).props.legend).toBe(false);
     expect(allText()).toContain(`All IS Audit · ${ids.length - 1} of ${ids.length}`);
-    const done = root().findAll((n) => n.props.label === 'Done' && n.props.kind !== undefined);
-    expect(done[0].props.kind).toBe('ghost');
+    // Mobile 1.24: Done is the one solid button; "Practice the one you missed" is the secondary
+    // (a miss re-answered minutes later is a retest and earns no spacing credit).
+    const kindOf = (label: string) => root().findAll((n) => n.props.label === label && typeof n.props.onPress === 'function')[0].props.kind ?? 'primary';
+    expect(kindOf('Done')).toBe('primary');
+    expect(kindOf('Practice the one you missed')).toBe('secondary');
   });
 });
 
