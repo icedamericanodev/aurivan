@@ -39,7 +39,7 @@
 import { router } from 'expo-router';
 import { useRef, useState } from 'react';
 import { AccessibilityInfo, View, type Switch } from 'react-native';
-import { Crosshair, ICON_STROKE, Library, ListChecks, Play, RotateCcw } from '../../components/icons';
+import { ArrowRight, Crosshair, ICON_STROKE, Library, ListChecks, RotateCcw } from '../../components/icons';
 import { Collapse } from '../../components/motion';
 import { DisclosureRow, FieldLabel, PathChooser, pathSummary } from '../../components/pathChooser';
 import { Button, Card, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, ToggleRow, Trail } from '../../components/ui';
@@ -219,7 +219,8 @@ export default function Practice() {
           art="frond2"
           action={{
             label: mode === 'guided' ? 'Open step' : 'Start',
-            icon: (col) => <Play size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />,
+            // Play is for lessons (the 1.20 icon rule): practice goes forward with an arrow (mobile 1.22).
+            icon: (col) => <ArrowRight size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />,
             hint: mode === 'guided' ? 'Opens your Guided step' : `${pathSize} questions, ${MODE_INFO[mode].name}`,
             onPress: startPath,
           }}

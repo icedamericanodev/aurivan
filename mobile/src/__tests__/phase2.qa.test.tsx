@@ -773,7 +773,7 @@ describe('J5 quick fixes', () => {
     expect(rings).toHaveLength(1);
     expect(rings[0].props.weights).toHaveLength(1);
     expect(rings[0].props.mastery[0]).toBeCloseTo(3 / 4);
-    expect(allText()).toContain(`This session was all ${CISA.domains[1].short}: the ring is your score.`);
+    expect(allText()).toContain(`All ${CISA.domains[1].short} · 3 of 4`);
     expect(btn('Practice the one you missed')).toBeDefined();
   });
 
@@ -782,10 +782,12 @@ describe('J5 quick fixes', () => {
       mockParams = { id: lesson.id };
       mount(<LessonPlayer />);
       expect(btn('Back')).toBeUndefined();
+      expect(btn('Previous step')).toBeUndefined();
       const nextBtn = btn('Next');
       if (nextBtn && !nextBtn.props.disabled) {
         press('Next');
-        expect(btn('Back')).toBeDefined();
+        // Mobile 1.22: the round "Previous step" (a full "Back" pill on a check).
+        expect(btn(lesson.scenes[1].type === 'check' ? 'Back' : 'Previous step')).toBeDefined();
       }
       unmount();
     }

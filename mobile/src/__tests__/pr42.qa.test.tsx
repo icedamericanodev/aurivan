@@ -325,10 +325,12 @@ describe('Journey 2: back navigation mid-lesson', () => {
     press('Next');
     press('Next');
     expect(sceneLabel()).toBe(`Scene 3 of ${charter.scenes.length}`);
-    press('Back');
+    // Mobile 1.22: on a scene that isn't a check, Back is the round "Previous step".
+    press('Previous step');
     expect(sceneLabel()).toBe(`Scene 2 of ${charter.scenes.length}`);
-    press('Back');
+    press('Previous step');
     expect(sceneLabel()).toBe(`Scene 1 of ${charter.scenes.length}`);
+    expect(hasButton('Previous step')).toBe(false);
     expect(hasButton('Back')).toBe(false);
   });
 
@@ -377,7 +379,7 @@ describe('Journey 2: back navigation mid-lesson', () => {
     });
     expect(sceneLabel()).toBe(`Scene 3 of ${charter.scenes.length}`);
     press('Next');
-    press('Back');
+    press('Previous step');
     act(() => {
       jest.advanceTimersByTime(motion.dur.select + 10);
     });
@@ -504,13 +506,14 @@ describe('Journey 4: notes Mark as read', () => {
   it('marking draws the ✓ and saves it; tapping again unmarks; a note opened already read shows it still', () => {
     mockParams = { id: encodeURIComponent(note.id) };
     mount(<NoteSubtopicScreen />);
+    // Mobile 1.22: the toggle sits in the source row ("Code 1A1.1 · Mark as read"); the ✓ draws in the read line.
     expect(hasButton('Mark as read')).toBe(true);
     expect(draws()).toHaveLength(0);
     press('Mark as read');
     expect(selectCert(useProgress.getState(), 'cisa').notesRead).toEqual([note.id]);
-    expect(hasButton('Marked as read')).toBe(true);
+    expect(hasButton('Mark as not read')).toBe(true);
     expect(draws().map((d) => d.props.play)).toEqual([true]);
-    press('Marked as read');
+    press('Mark as not read');
     expect(selectCert(useProgress.getState(), 'cisa').notesRead).toEqual([]);
     expect(draws()).toHaveLength(0);
     unmount();

@@ -23,17 +23,23 @@
  *   "Read the note: …" (mobile 1.20: the study note that goes deeper) and
  *   "Next lesson". Its one light haptic goes with that moment (Learn then
  *   draws the ✓ without a second buzz).
+ *
+ * Mobile 1.22 (design spec §4): every scene starts on one anchor line under
+ * the header; the header carries a flag ("Report a problem") on every scene;
+ * the footer is the shared sticky footer with its paper fade, and Back is a
+ * 56pt round "Previous step" beside Next (a full "Back" pill on checks).
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LessonBranch, type BotanyKind } from '../../components/glyphs';
-import { ArrowRight, BookOpen, ICON_STROKE } from '../../components/icons';
+import { ArrowRight, BookOpen, ChevronLeft, Flag, ICON_STROKE } from '../../components/icons';
 import { SceneView } from '../../components/lesson';
 import { Celebrate, FadeIn, PageTurn, useCelebration } from '../../components/motion';
+import { StickyFooter } from '../../components/quiz';
 import { useReportFlow } from '../../components/support';
-import { Button, Gap, ICON_SIZE, PushedHeader, Row, SegmentBar, T, useFontScale } from '../../components/ui';
+import { Button, Gap, ICON_SIZE, IconButton, PushedHeader, Row, SegmentBar, T, useFontScale } from '../../components/ui';
 import { domainColor, getCertification } from '../../content/certifications';
 import { findQuestion } from '../../content/loader';
 import { findLesson, lessonsFor, nextLesson } from '../../content/lessons';
@@ -47,6 +53,7 @@ import { moveFocus, sayLater } from '../../lib/a11y';
 import { logLesson } from '../../lib/activity';
 import { haptic } from '../../lib/haptics';
 import { noteLessonFinished } from '../../lib/lessonNews';
+import { monthYear } from '../../lib/format';
 import { lessonNotes } from '../../lib/outline';
 import { openSessionFromStack, openTab } from '../../lib/actions';
 import { guardedStart, startFromIds, startPractice } from '../../lib/sessions';
@@ -61,6 +68,8 @@ const DONE = 'done';
 const NONE: readonly string[] = [];
 /** At this text size Lesson complete's actions scroll with the page instead of a pinned footer (as session.tsx). */
 const HUGE_TEXT = 1.6;
+/** Mobile 1.22: every scene's first line sits this far under the header (design spec §4.2). */
+const ANCHOR = space.xxl + space.md;
 
 /**
  * "Practice this topic" after a lesson: the questions the study notes list
@@ -88,6 +97,8 @@ export default function LessonPlayer() {
   // Lesson complete: shown after "Finish lesson". `fresh` = finished for the first time (only then is there a moment).
   const [finished, setFinished] = useState<{ fresh: boolean } | null>(null);
   const [checked, setChecked] = useState(false);
+  // The sticky footer's height: the page pads by it, so nothing ends under the buttons.
+  const [footerH, setFooterH] = useState(96);
   const nextRef = useRef<View>(null);
   const scrollRef = useRef<ScrollView>(null);
   // The page on screen: it changes at PageTurn's swap (before paint), so the footer follows the page, not the tap.
@@ -129,10 +140,10 @@ export default function LessonPlayer() {
     if (pageId !== DONE) sayLater(`Scene ${Number(pageId) + 1} of ${total}`);
   }, [pageId, total]);
 
-  // Report a problem (mobile 1.7). Since mobile 1.20 it shows only on a
-  // check scene (once answered: it names that step, with its options in the
-  // order shown; the email names the ORIGINAL letters) and on Lesson
-  // complete (the whole lesson, no step), not on every scene.
+  // Report a problem (mobile 1.7). Mobile 1.22 (DECISION 3): a flag in the
+  // header on every scene, naming that step (a check: with its options in the
+  // order shown; the email names the ORIGINAL letters). The full row shows
+  // only on an answered check and on Lesson complete (the whole lesson, no step).
   const cur = lesson?.scenes[index];
   const curPerm = cur?.type === 'check' ? (perms[index] ?? lettersFor(cur.options.length)) : undefined;
   const report = useReportFlow(lesson?.certId ?? 'cisa', {
@@ -196,6 +207,11 @@ export default function LessonPlayer() {
     goTo(index - 1);
   };
 
+  // Every scene starts on the same anchor line under the header (design spec §4.2); the cover and
+  // Lesson complete keep the closer 24 (a forest panel and a moment, not a page of text).
+  const anchor = showingDone || scene.type === 'title' ? space.xl : ANCHOR;
+  const onCheck = scene.type === 'check';
+
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <View style={{ paddingHorizontal: space.gutter }}>
@@ -205,89 +221,120 @@ export default function LessonPlayer() {
           center={<SegmentBar total={total} done={showingDone ? total : shownIndex} current={showingDone ? total : shownIndex} />}
           right={
             showingDone ? undefined : (
-              // Capped at ×1.3: at 200% "10/11" would not fit beside the progress bar (the slot grows from 44pt).
-              <T v="meta" num maxFontSizeMultiplier={1.3} accessibilityLabel={`Scene ${shownIndex + 1} of ${total}`}>
-                {`${shownIndex + 1}/${total}`}
-              </T>
+              <Row gap={space.xs}>
+                {/* Capped at ×1.3: at 200% "10/11" would not fit beside the progress bar (the slot grows from 44pt). */}
+                <T v="meta" num maxFontSizeMultiplier={1.3} accessibilityLabel={`Scene ${shownIndex + 1} of ${total}`}>
+                  {`${shownIndex + 1}/${total}`}
+                </T>
+                {/* Mobile 1.22 (DECISION 3): Report a problem is a flag in the header on every
+                    scene, always one tap away and never in the reading column. */}
+                <IconButton
+                  label="Report a problem"
+                  hint="Tell us what’s wrong with this step"
+                  onPress={() => {
+                    if (!turning) report.open();
+                  }}
+                  icon={() => <Flag size={20} color={c.muted} strokeWidth={ICON_STROKE} />}
+                />
+              </Row>
             )
           }
         />
       </View>
 
-      <ScrollView ref={scrollRef} contentContainerStyle={{ flexGrow: 1, paddingHorizontal: space.gutter, paddingTop: space.xl, paddingBottom: space.xl }}>
-        <PageTurn
-          id={pageId}
-          direction={pageId === DONE ? 1 : undefined}
-          onSwap={onSwap}
-          style={{ flexGrow: 1 }}
-          pageStyle={{ flexGrow: 1 }}
+      <View style={{ flex: 1 }}>
+        <ScrollView
+          ref={scrollRef}
+          // Pad by the sticky footer + 24, so the sources line on the last scene is never under it.
+          contentContainerStyle={{ flexGrow: 1, paddingHorizontal: space.gutter, paddingTop: anchor, paddingBottom: footerH + space.xl }}
         >
-          {pageId === DONE && finished ? (
-            <View style={{ flexGrow: 1 }}>
-              <LessonComplete lesson={lesson} domain={domain} fresh={finished.fresh} />
-              {/* Very large text: the actions scroll with the page, so none is pushed off-screen. */}
-              {huge && (
-                <View style={{ marginTop: space.xl }}>
-                  <CompleteActions lesson={lesson} domain={domain} />
-                </View>
-              )}
-              {/* Report a problem with the lesson as a whole (mobile 1.20: here and on checks only). */}
-              <View style={{ marginTop: space.lg, alignItems: 'flex-start' }}>
-                {report.link}
-                <View style={{ alignSelf: 'stretch' }}>{report.block}</View>
-              </View>
-            </View>
-          ) : (
-            <View style={{ flexGrow: 1 }}>
-              <SceneView
-                scene={lesson.scenes[index]}
-                lesson={lesson}
-                onCheck={(_ok, letter) => {
-                  setChecked(true);
-                  setPicked(letter);
-                }}
-                perm={perms[index]}
-                art={`branch${toneIndex % 5}` as BotanyKind}
-                tone={domainColor(toneIndex, true)}
-              />
-              {/* A quiet "Report a problem", on check scenes only (mobile 1.20: the other
-                  scenes stay clear; Lesson complete has it too). It waits until the check
-                  is answered, so it never hints at the answer, then arrives at once. */}
-              {lesson.scenes[index].type === 'check' && checked && (
-                <FadeIn build rise={false} delay={0}>
-                  <View style={{ marginTop: space.xl, alignItems: 'flex-start' }}>
-                    {report.link}
-                    <View style={{ alignSelf: 'stretch' }}>{report.block}</View>
+          <PageTurn
+            id={pageId}
+            direction={pageId === DONE ? 1 : undefined}
+            onSwap={onSwap}
+            style={{ flexGrow: 1 }}
+            pageStyle={{ flexGrow: 1 }}
+          >
+            {pageId === DONE && finished ? (
+              <View style={{ flexGrow: 1 }}>
+                <LessonComplete lesson={lesson} domain={domain} fresh={finished.fresh} />
+                {/* Very large text: the actions scroll with the page, so none is pushed off-screen. */}
+                {huge && (
+                  <View style={{ marginTop: space.xl }}>
+                    <CompleteActions lesson={lesson} domain={domain} />
                   </View>
-                </FadeIn>
-              )}
-              {index === total - 1 && (
-                <>
-                  <Gap h={space.xl} />
-                  <T v="meta" color={c.muted}>
-                    {`${lesson.provenance} Last reviewed ${lesson.lastReviewed}. Sources: ${lesson.references.join('; ')}.`}
-                  </T>
-                </>
-              )}
-            </View>
-          )}
-        </PageTurn>
-      </ScrollView>
+                )}
+                {/* Report a problem with the lesson as a whole (mobile 1.20: here and on checks, as a row). */}
+                <View style={{ marginTop: space.lg, alignItems: 'flex-start' }}>
+                  {report.link}
+                  <View style={{ alignSelf: 'stretch' }}>{report.block}</View>
+                </View>
+              </View>
+            ) : (
+              <View style={{ flexGrow: 1 }}>
+                <SceneView
+                  scene={lesson.scenes[index]}
+                  lesson={lesson}
+                  onCheck={(_ok, letter) => {
+                    setChecked(true);
+                    setPicked(letter);
+                  }}
+                  perm={perms[index]}
+                  art={`branch${toneIndex % 5}` as BotanyKind}
+                  tone={domainColor(toneIndex, true)}
+                />
+                {/* The full "Report a problem" row, on check scenes only (mobile 1.20; the header's
+                    flag covers every scene). It waits until the check is answered, so it never
+                    hints at the answer, then arrives at once. */}
+                {lesson.scenes[index].type === 'check' && checked && (
+                  <FadeIn build rise={false} delay={0}>
+                    <View style={{ marginTop: space.xl, alignItems: 'flex-start' }}>
+                      {report.link}
+                      <View style={{ alignSelf: 'stretch' }}>{report.block}</View>
+                    </View>
+                  </FadeIn>
+                )}
+                {index === total - 1 && (
+                  <>
+                    <Gap h={space.xl} />
+                    <T v="meta" color={c.muted}>
+                      {`${lesson.provenance} Last reviewed ${monthYear(lesson.lastReviewed)}. Sources: ${lesson.references.join('; ')}.`}
+                    </T>
+                  </>
+                )}
+              </View>
+            )}
+          </PageTurn>
+        </ScrollView>
 
-      {!(showingDone && huge) && (
-        <View style={{ paddingHorizontal: space.gutter, paddingVertical: space.md, backgroundColor: c.bg }}>
-          {showingDone ? (
-            <CompleteActions lesson={lesson} domain={domain} />
-          ) : (
-            <Row gap={space.sm}>
-              {/* No Back on the first scene (a disabled slab looked broken); Next takes the full width. */}
-              {shownIndex > 0 && <Button kind="secondary" label="Back" onPress={back} style={{ flex: 1 }} />}
-              {/* ONE keyed button whose label changes, so screen-reader focus stays on it. */}
-              <Button key="next" ref={nextRef} label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: 2 }} />
-            </Row>
-          )}
-        </View>
-      )}
+        {showingDone && huge ? null : (
+          // The sticky footer with the paper fade above it (spec §6), as on the question screen.
+          <StickyFooter onHeight={setFooterH}>
+            {showingDone ? (
+              <CompleteActions lesson={lesson} domain={domain} />
+            ) : (
+              <Row gap={space.sm}>
+                {/* No Back on the first scene (a disabled slab looked broken); Next takes the full width.
+                    Mobile 1.22: a 56pt round "Previous step" beside Next (half the bright area in dark
+                    mode); a check keeps the full "Back" pill, where it means "the scene before the check". */}
+                {shownIndex > 0 &&
+                  (onCheck ? (
+                    <Button kind="secondary" label="Back" onPress={back} style={{ flex: 1 }} />
+                  ) : (
+                    <IconButton
+                      outline
+                      label="Previous step"
+                      onPress={back}
+                      icon={(col) => <ChevronLeft size={ICON_SIZE.bar} color={col} strokeWidth={ICON_STROKE} />}
+                    />
+                  ))}
+                {/* ONE keyed button whose label changes, so screen-reader focus stays on it. */}
+                <Button key="next" ref={nextRef} label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: onCheck ? 2 : 1 }} />
+              </Row>
+            )}
+          </StickyFooter>
+        )}
+      </View>
       {report.sheet}
     </SafeAreaView>
   );

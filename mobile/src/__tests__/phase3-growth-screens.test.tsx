@@ -162,7 +162,7 @@ describe('Results growth', () => {
     finish(2);
     mount(<Results />);
     expect(columns().length).toBeGreaterThan(0);
-    expect(allText()).toContain('2/3');
+    expect(allText()).toContain('All IS Audit · 2 of 3');
   });
 
   it('never on a session that went badly: below 60% it is simply shown', () => {

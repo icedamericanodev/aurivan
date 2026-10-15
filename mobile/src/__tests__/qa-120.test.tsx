@@ -278,7 +278,9 @@ describe('lesson player: Report a problem on a check scene', () => {
       });
     }
     expect(r.root.findAllByType(OptionCard).length).toBeGreaterThan(0);
-    expect(pressables(r, /^Report a problem/)).toHaveLength(0);
+    // The full row waits for the answer; mobile 1.22: the header's flag is there on every scene.
+    expect(pressables(r, 'Report a problem with this lesson step')).toHaveLength(0);
+    expect(pressables(r, 'Report a problem')).toHaveLength(1);
     act(() => {
       r.root.findAllByType(OptionCard)[0].props.onPress();
     });

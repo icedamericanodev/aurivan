@@ -41,6 +41,17 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.22.0',
+    date: '2026-10-15',
+    new: ['The recovery timeline and other key diagrams in the notes are now drawn for your phone, so every label is easy to read.'],
+    improved: [
+      'Lessons read like pages of a book, start in the same place on every step, and keep Report a problem one tap away.',
+      'After a wrong answer, the note and the lesson say what they open, and the result stays at the top as you read on.',
+      'Study notes end with one clear next step, and mark themselves as read when you reach the end.',
+      'Results are tidier after a short practice, and the Play tab has its own icon.',
+    ],
+  },
+  {
     version: '1.21.0',
     date: '2026-10-15',
     new: ['Search the study notes right from Learn, and jump between the parts of a note.'],

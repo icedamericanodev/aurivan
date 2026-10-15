@@ -398,8 +398,10 @@ describe('screens', () => {
     expect(allText()).toContain('Recovery Objectives: RPO, RTO, MTD and MBCO');
     press('Mark as read');
     expect(selectCert(useProgress.getState(), 'cisa').notesRead).toEqual(['4B1.2']);
-    expect(pressable('Marked as read').props.accessibilityState).toMatchObject({ selected: true });
-    press('Marked as read');
+    // Mobile 1.22: the toggle lives in the source row and says what it will do next.
+    expect(pressable('Mark as not read')).toBeDefined();
+    expect(allText()).toContain('About 3 min read · Read');
+    press('Mark as not read');
     expect(selectCert(useProgress.getState(), 'cisa').notesRead).toEqual([]);
 
     // Mobile 1.20: four closing actions became two (plus Next); the domain set lives on the domain page.
@@ -410,7 +412,7 @@ describe('screens', () => {
     mockParams = { id: '4B1.2' };
     mount(<NoteSubtopicScreen />);
     // Helper line names the set size (never the bank size).
-    expect(allText()).toContain('3 questions that test this concept.');
+    expect(allText()).toContain('3 questions on this idea. Your answers count toward your progress.');
     const btn = pressable('Practice this concept');
     expect(btn.props.accessibilityRole).toBe('button');
     expect(btn.props.accessibilityHint).toBe('Starts a practice set on Recovery Objectives: RPO, RTO, MTD and MBCO and marks this note as read');
@@ -431,7 +433,7 @@ describe('screens', () => {
     try {
       mockParams = { id: '4B1.2' };
       mount(<NoteSubtopicScreen />);
-      expect(allText()).toContain('1 question that tests this concept.');
+      expect(allText()).toContain('1 question on this idea.');
       press('Practice this concept');
       expect(useSession.getState().active!.questionIds).toEqual(['d4_005']);
     } finally {

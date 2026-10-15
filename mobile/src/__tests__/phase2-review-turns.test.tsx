@@ -231,14 +231,14 @@ describe('a lesson’s Back on scene 2', () => {
     mount(<LessonPlayer />);
     press('Next');
     // Mobile 1.12: scenes turn like pages, and the footer follows the page on screen:
-    // while scene 1 is leaving there is still no Back.
-    expect(btn('Back')).toBeUndefined();
+    // while scene 1 is leaving there is still no Back (mobile 1.22: the round "Previous step").
+    expect(btn('Previous step')).toBeUndefined();
     tick(motion.dur.select);
-    expect(btn('Back')).toBeDefined();
-    press('Back');
+    expect(btn('Previous step')).toBeDefined();
+    press('Previous step');
     expect(mockMoveFocus).toHaveBeenCalledTimes(1);
     tick(motion.dur.select);
-    expect(btn('Back')).toBeUndefined();
+    expect(btn('Previous step')).toBeUndefined();
     // Going forward again (Back reappears) moves nothing.
     press('Next');
     tick(motion.dur.select);

@@ -23,7 +23,7 @@ import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { PageTurn } from '../components/motion';
-import { BookOpen, Check, ICON_STROKE, Play } from '../components/icons';
+import { ArrowRight, BookOpen, Check, ICON_STROKE, Play } from '../components/icons';
 import { ReadMark } from '../components/notes';
 import { StickyFooter } from '../components/quiz';
 import { Button, Enter, Gap, ICON_SIZE, ListRow, PushedHeader, Row, Section, T, Tag } from '../components/ui';
@@ -203,7 +203,7 @@ export default function GuidedStep() {
         <Button
           label="Start this step"
           accessibilityHint={first ? `${GUIDED_BLOCK} questions on ${topic.name}` : `${GUIDED_BLOCK} questions on ${topic.name}, then ${GUIDED_TAIL} from earlier topics`}
-          icon={(col) => <Play size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+          icon={(col) => <ArrowRight size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
           onPress={() => {
             if (!turning) start();
           }}

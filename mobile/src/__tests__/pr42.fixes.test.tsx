@@ -231,10 +231,11 @@ describe('the lesson player at full motion (CR minors 1, 2, 10)', () => {
     press('Next');
     // The cover is leaving (120 ms): still "1 of N", still no Back.
     expect(counter()).toBe(`Scene 1 of ${total}`);
-    expect(buttons('Back')).toHaveLength(0);
+    // Mobile 1.22: Back is the round "Previous step" beside Next (a full "Back" only on checks).
+    expect(buttons('Previous step')).toHaveLength(0);
     advance(motion.dur.select + 10);
     expect(counter()).toBe(`Scene 2 of ${total}`);
-    expect(buttons('Back')).toHaveLength(1);
+    expect(buttons('Previous step')).toHaveLength(1);
   });
 
   it('Finish keeps its button (and focus) until Lesson complete is placed; then one moment, one haptic', () => {

@@ -240,6 +240,25 @@ export function Verdict({ correct, coach }: { correct: boolean; coach: string })
   );
 }
 
+/**
+ * Mobile 1.22 (design spec §6.4): the answer screen's outcome, kept in the
+ * header once the verdict has scrolled away: an 18pt disc (`wrong` with an
+ * ✗, or `correct` with a ✓) and one `meta` line, "Not quite · Best answer
+ * D". One screen-reader stop that says the same.
+ */
+export function AnswerRecap({ correct, letter }: { correct: boolean; letter: Letter }) {
+  const { c } = useTheme();
+  const words = `${correct ? 'Correct' : 'Not quite'} · Best answer ${letter}`;
+  return (
+    <View accessible accessibilityLabel={`${correct ? 'Correct' : 'Not quite'}. Best answer ${letter}`} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: space.sm }}>
+      <View style={{ width: 18, height: 18, borderRadius: 9, backgroundColor: correct ? c.correct : c.wrong, alignItems: 'center', justifyContent: 'center' }}>
+        {correct ? <Check size={12} color={c.bg} strokeWidth={2.75} /> : <X size={12} color={c.bg} strokeWidth={2.75} />}
+      </View>
+      <T v="meta" color={c.ink} numberOfLines={1} maxFontSizeMultiplier={1.3} style={{ flexShrink: 1 }}>{words}</T>
+    </View>
+  );
+}
+
 /** Entrance wrapper for the answer rows and explanation: fade + 8pt rise over `reveal` (200 ms). */
 export function Rise({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (

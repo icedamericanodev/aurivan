@@ -279,16 +279,17 @@ describe('session: the note first, the lesson when there is one', () => {
     const min = findNote('cisa', both.sub)!.minutes!;
     expect(min).toBeGreaterThanOrEqual(1); // the build sets each note's reading time
     expect(noteRows()[0].props.accessibilityLabel).toBe(`Read the note: ${name}, about ${min} minute${min === 1 ? '' : 's'}, the idea this question tests`);
-    // On screen: the note's own name, then "Study note · about N min" (no double colon).
-    expect(allText()).toContain(`Study note · about ${min} min`);
+    // On screen (mobile 1.22): the verb as a kicker, the note's own name, then "About N min · the idea
+    // this question tests" (no double colon).
+    expect(allText()).toContain(`Read the note ${name} About ${min} min · the idea this question tests`);
     expect(allText()).not.toContain('Read the note:');
     expect(lessonRows()).toHaveLength(1);
     expect(lessonRows()[0].props.accessibilityLabel).toBe(`Lesson: ${both.lesson.title}, ${both.lesson.minutes} minutes, not done yet`);
-    expect(allText()).toContain(`Lesson · ${both.lesson.minutes} min · Not done yet`);
+    expect(allText()).toContain(`Replay the lesson ${both.lesson.title} ${both.lesson.minutes} min · Not done yet`);
     expect(allText()).not.toContain('Review the lesson');
     // Note first, then the lesson.
     const text = allText();
-    expect(text.indexOf(`Study note · about ${min} min`)).toBeLessThan(text.indexOf('Lesson · '));
+    expect(text.indexOf('Read the note')).toBeLessThan(text.indexOf('Replay the lesson'));
     // Both are pushed, so Back lands on this same answer screen.
     press(/^Read the note: /);
     expect(push).toHaveBeenLastCalledWith(`/notes/subtopic/${encodeURIComponent(both.sub)}`);
@@ -304,7 +305,23 @@ describe('session: the note first, the lesson when there is one', () => {
     answerOnScreen(false);
     mount(<SessionScreen />);
     expect(noteRows()).toHaveLength(1);
-    expect(lessonRows()).toHaveLength(0); // no lesson prepares this one
+    // No lesson prepares this one; mobile 1.22: the lesson that teaches its note is offered instead, if any.
+    const teaches = lessonsForSubtopic('cisa', noteOnly.sub)[0];
+    expect(lessonRows()).toHaveLength(teaches ? 1 : 0);
+  });
+
+  it('mobile 1.22: with no lesson preparing the question, the lesson that teaches its note (d4_062 → 4B1.2)', () => {
+    expect(lessonPreparing('cisa', 'd4_062')).toBeUndefined();
+    expect(subtopicOfQuestion('cisa', 'd4_062')).toBe('4B1.2');
+    const teaches = lessonsForSubtopic('cisa', '4B1.2')[0];
+    expect(teaches?.id).toBe('cisa-l-d4-rpo-rto');
+    startFromIds('cisa', ['d4_062'], 'T');
+    answerOnScreen(false);
+    mount(<SessionScreen />);
+    expect(lessonRows()).toHaveLength(1);
+    expect(lessonRows()[0].props.accessibilityLabel).toBe(`Lesson: ${teaches.title}, ${teaches.minutes} minutes, not done yet`);
+    press(/^Lesson: /);
+    expect(push).toHaveBeenLastCalledWith('/lesson/cisa-l-d4-rpo-rto');
   });
 
   it('the lesson row hides once that lesson is done; the note stays', () => {
@@ -436,7 +453,7 @@ describe('note subtopic page: the lesson row', () => {
     press('Practice this concept');
     expect(push).toHaveBeenLastCalledWith('/session');
     expect(selectCert(useProgress.getState(), 'cisa').notesRead).toEqual([both.sub]);
-    press('Marked as read');
+    press('Mark as not read');
     expect(selectCert(useProgress.getState(), 'cisa').notesRead).toEqual([]);
   });
 
@@ -799,12 +816,17 @@ describe('lesson complete at very large text, and Back to Learn', () => {
 });
 
 describe('note page: the one primary action', () => {
-  const primaryOf = (label: string) => root().findAll((n) => n.props.label === label && n.props.kind !== undefined)[0]?.props.kind;
-  it('practice is primary when the note lists questions; else Mark as read is', () => {
+  const kinds = () => root().findAll((n) => typeof n.props.label === 'string' && n.props.kind !== undefined && typeof n.props.onPress === 'function');
+  it('practice is the one primary when the note lists questions; the read toggle is a quiet text button (mobile 1.22)', () => {
     mockParams = { id: both.sub };
     mount(<NoteSubtopicScreen />);
-    expect(primaryOf('Mark as read')).toBe('secondary');
     expect(pressables('Practice this concept')[0].props.accessibilityHint).toMatch(/ and marks this note as read$/);
+    // No second pill: "Mark as read" lives in the source row, beside the code.
+    expect(kinds().map((n) => n.props.label)).not.toContain('Mark as read');
+    expect(pressables('Mark as read')).toHaveLength(1);
+    expect(allText()).toContain(`Code ${both.sub} · Mark as read`);
+    // And no "Next: …" ghost: the next note is one quiet row with a kicker.
+    expect(allText()).not.toMatch(/Next: /);
     act(() => {
       r?.unmount();
     });
@@ -815,7 +837,8 @@ describe('note page: the one primary action', () => {
     if (!bare) return; // every note lists questions today
     mockParams = { id: bare.id };
     mount(<NoteSubtopicScreen />);
-    expect(primaryOf('Mark as read')).toBe('primary');
+    expect(pressables('Practice this concept')).toHaveLength(0);
+    expect(pressables('Mark as read')).toHaveLength(1);
   });
 });
 

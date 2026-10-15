@@ -17,6 +17,8 @@
  * diagram is always FITTED to its plate (never scrolled sideways, never a
  * clipped label); when that makes its smallest label under 13pt, "Tap to
  * enlarge" opens it full screen at a readable size (design spec §3).
+ * Mobile 1.22: a note whose first diagram has been redrawn for the phone
+ * (components/noteFigures.tsx) shows that native figure instead.
  */
 import { Component, useMemo, useRef, useState, type ReactNode, type Ref } from 'react';
 import { Modal, Platform, Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
@@ -29,6 +31,7 @@ import { font, LARGE_TEXT, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Check, ICON_STROKE, Maximize2, X } from './icons';
 import { useMotion } from './motion';
+import { nativeFigureFor, NativeFigureView } from './noteFigures';
 import { BigNum, Card, Gap, IconButton, ICON_SIZE, Section, T, useFontScale, useScreenScroll } from './ui';
 
 /** Content column: screen minus the 20pt gutters, never wider than 560 (spec §2). */
@@ -507,6 +510,8 @@ const FIRST = { marginTop: space.lg };
  */
 export function NoteBody({ note }: { note: NoteSubtopic }) {
   const { c } = useTheme();
+  const column = useColumnWidth();
+  const native = nativeFigureFor(note.id);
   const keepIt = note.keyTerms.length > 0 || Boolean(note.analogy || note.memoryAid);
   const understand = useRef<View>(null);
   const auditor = useRef<View>(null);
@@ -549,22 +554,27 @@ export function NoteBody({ note }: { note: NoteSubtopic }) {
 
       {/* The heading travels with the FIRST drawing, so if that drawing
           can't be parsed the heading goes too (later drawings still show). */}
-      {note.illustrations?.map((ill, i) => (
-        <IllustrationView
-          key={i}
-          illustration={ill}
-          onSection={
-            i === 0 ? (
-              <>
-                <Section title="Diagram" />
-                <View style={{ height: space.sm }} />
-              </>
-            ) : (
-              <View style={{ height: space.xl }} />
-            )
-          }
-        />
-      ))}
+      {note.illustrations?.map((ill, i) => {
+        const onSection =
+          i === 0 ? (
+            <>
+              <Section title="Diagram" />
+              <View style={{ height: space.sm }} />
+            </>
+          ) : (
+            <View style={{ height: space.xl }} />
+          );
+        // Mobile 1.22: a note whose first diagram has been drawn for the phone shows that instead.
+        if (i === 0 && native) {
+          return (
+            <View key={i}>
+              {onSection}
+              <NativeFigureView figure={native} caption={ill.caption} width={column} />
+            </View>
+          );
+        }
+        return <IllustrationView key={i} illustration={ill} onSection={onSection} />;
+      })}
 
       <Section title="Example" />
       <T v="body">{note.example}</T>

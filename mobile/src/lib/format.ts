@@ -17,6 +17,17 @@ export function longDate(ms: number): string {
 }
 
 /**
+ * A review date "2026-10-06" (YYYY-MM-DD) as "Oct 2026" (mobile 1.22): the
+ * lesson's sources line says it the way the question trust line does. Anything
+ * that isn't such a date is returned as it is.
+ */
+export function monthYear(isoDate: string): string {
+  const m = /^(\d{4})-(\d{2})/.exec(isoDate);
+  const month = m ? MONTHS[Number(m[2]) - 1] : undefined;
+  return m && month ? `${month} ${m[1]}` : isoDate;
+}
+
+/**
  * A subtopic shortened for the question meta line (≤ 3 words, sentence case):
  * "Year-End Close. Job Scheduling Control Bypass" → "Year-end close".
  * Keeps acronyms (BCM, IS) and drops a dangling "and"/"of"/"the".
