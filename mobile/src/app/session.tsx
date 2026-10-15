@@ -37,11 +37,12 @@ import {
   type NativeScrollEvent,
   type NativeSyntheticEvent,
 } from 'react-native';
-import { PageTurn, Pop, useMotion } from '../components/motion';
+import { CrossFade, PageTurn, Pop, useMotion } from '../components/motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LeafSmall } from '../components/glyphs';
 import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ICON_STROKE, Lightbulb, Play, X } from '../components/icons';
 import {
+  AnswerRecap,
   ConfidenceRow,
   FEEDBACK_DELAY,
   OptionCard,
@@ -61,7 +62,7 @@ import { haptic } from '../lib/haptics';
 import { questionTarget, sessionWhere } from '../lib/support';
 import { Button, Gap, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
 import { getCertification, getDomain } from '../content/certifications';
-import { lessonPreparing } from '../content/lessons';
+import { lessonPreparing, lessonsForSubtopic } from '../content/lessons';
 import { findQuestion } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
 import { REASON_LABEL } from '../engine/studyModes';
@@ -90,6 +91,9 @@ const NO_LESSONS: string[] = [];
 const useInView: () => boolean = (Router as { useIsFocused?: () => boolean }).useIsFocused ?? (() => true);
 /** At this text size the confidence chips move out of the sticky footer (spec §10.7). */
 const HUGE_TEXT = 1.6;
+
+/** The header recap's hysteresis (pt): it hides only once the verdict is 8pt back below the header. */
+const RECAP_HYSTERESIS = 8;
 
 /** The mock clock's last stretch: shown in clay (never the error colour). */
 const LOW_TIME_MS = 5 * 60_000;
@@ -120,6 +124,9 @@ export default function SessionScreen() {
   const [vineVisible, setVineVisible] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
   const scrollY = useRef(0);
+  // The answer screen's verdict: where it ends in the scroll, and whether it has scrolled under the header.
+  const verdictBottom = useRef(0);
+  const [pastVerdict, setPastVerdict] = useState(false);
   const vineRef = useRef<View>(null);
   // Coach me: the first line of the hint, and a flag saying "the learner just
   // tapped Coach me, so move the screen reader there once the hint appears".
@@ -141,7 +148,13 @@ export default function SessionScreen() {
     if (!missed || !missCert || !qid) return null;
     const noteId = subtopicOfQuestion(missCert, qid);
     const note = noteId ? findNote(missCert, noteId) : undefined;
-    return { noteId, noteName: note?.name, noteMinutes: note?.minutes ?? 2, preparing: lessonPreparing(missCert, qid) };
+    // The lesson candidates, in order: the one that prepares for this question, then (mobile 1.22,
+    // design spec §6.3) the lessons that teach its note, as the note page offers them
+    // (d4_062 → 4B1.2 → RPO and RTO). The first one not done yet is offered (below).
+    const prepares = lessonPreparing(missCert, qid);
+    const teaching = noteId ? lessonsForSubtopic(missCert, noteId) : [];
+    const lessons = [...(prepares ? [prepares] : []), ...teaching.filter((l) => l.id !== prepares?.id)];
+    return { noteId, noteName: note?.name, noteMinutes: note?.minutes ?? 2, lessons };
   }, [missed, missCert, qid]);
   // Coach me was opened for this question (never in mock exams).
   const coached = !isMock && Boolean(qid && active?.coached?.includes(qid));
@@ -201,6 +214,8 @@ export default function SessionScreen() {
   // (focus stays on the footer button, whose label has just changed).
   const onSwap = useCallback(() => {
     scrollRef.current?.scrollTo({ y: 0, animated: false });
+    setPastVerdict(false);
+    verdictBottom.current = 0;
     const s = useSession.getState().active;
     if (s) sayLater(`Question ${s.index + 1} of ${s.questionIds.length}`);
   }, []);
@@ -448,13 +463,13 @@ export default function SessionScreen() {
   const reason = active.reasons?.[qid];
   // After a miss (missLinks, above), at most two rows:
   //  1. "Read the note" whenever a study note lists this question;
-  //  2. "Review the lesson" when a lesson prepares for it and it is not done
-  //     yet (a done lesson is one tap away in Learn; the note is the quicker re-read).
+  //  2. "Take the lesson": the first lesson not done yet among the one that prepares for it and
+  //     (mobile 1.22) the ones that teach its note (a done lesson is one tap away in Learn; the note is the
+  //     quicker re-read). Each row says what it does in a kicker above the name.
   const missNote = missLinks?.noteId;
   const missNoteName = missLinks?.noteName;
   const missNoteMin = missLinks?.noteMinutes ?? 2;
-  const preparing = missLinks?.preparing;
-  const reviewLesson = preparing && !lessonsDone.includes(preparing.id) ? preparing : undefined;
+  const reviewLesson = missLinks?.lessons.find((l) => !lessonsDone.includes(l.id));
   const saved = bookmarks.includes(shownQid);
   const lowTime = isMock && remaining < LOW_TIME_MS;
   // The shared pace strip (components/pace.tsx): mock clock and pace line.
@@ -512,7 +527,19 @@ export default function SessionScreen() {
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     scrollY.current = e.nativeEvent.contentOffset.y;
     checkVine();
+    // The verdict is under the header once the scroll has passed its bottom edge; it comes back
+    // only 8pt above it (hysteresis, so a scroll resting on the line never flickers the header).
+    const edge = verdictBottom.current;
+    const past = edge > 0 && (pastVerdict ? scrollY.current > edge - RECAP_HYSTERESIS : scrollY.current > edge);
+    if (past !== pastVerdict) setPastVerdict(past);
   };
+  // The header recap shows on a practice answer screen only, and never mid-turn. Its words belong
+  // to the page ON SCREEN (`shownQid`, keyed to it): at a turn they FADE out with the old page
+  // instead of vanishing because the next question has no answer yet.
+  const shownResponse = isMock ? undefined : active.responses[shownQid];
+  const shownQ = shownResponse ? findQuestion(active.certId, shownQid) : undefined;
+  const recap = shownResponse && shownQ ? { qid: shownQid, correct: shownResponse.correct, letter: originalToDisplay(shownQ.correct, active.perms[shownQid]) } : null;
+  const showRecap = pastVerdict && submitted && Boolean(response) && !turning;
 
   // ── render ───────────────────────────────────────────────────────────
   return (
@@ -527,7 +554,19 @@ export default function SessionScreen() {
         >
           <X size={ICON_SIZE.bar} color={c.ink} strokeWidth={ICON_STROKE} />
         </Pressable>
-        <SegmentBar total={total} done={Object.keys(active.responses).length} current={active.index} />
+        {/* Mobile 1.22 (design spec §6.4): once the verdict has scrolled under the bar, the
+            segments cross-fade to a one-line recap ("Not quite · Best answer D"); scrolling
+            back up brings them back. 120 ms, at once under Reduce Motion. */}
+        <CrossFade
+          showSecond={showRecap}
+          style={{ flex: 1, minHeight: 44 }}
+          first={
+            <View style={{ flexDirection: 'row' }}>
+              <SegmentBar total={total} done={Object.keys(active.responses).length} current={active.index} />
+            </View>
+          }
+          second={recap ? <AnswerRecap key={recap.qid} correct={recap.correct} letter={recap.letter} /> : null}
+        />
         {isMock ? (
           // The clock moved to the pace strip below; this keeps the bar centred.
           <View style={{ width: 44, marginRight: -10 }} />
@@ -662,7 +701,9 @@ export default function SessionScreen() {
             response && (
               <>
                 {/* Answer: verdict → your pick → best answer → why → vine → trust */}
-                <Verdict correct={response.correct} coach={coach} />
+                <View onLayout={(e) => (verdictBottom.current = e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
+                  <Verdict correct={response.correct} coach={coach} />
+                </View>
                 {/* Lined up with the coach line above it (left 50, under "Correct"). */}
                 {/* Only after a RIGHT hinted answer (UX H1): a wrong one counts nothing, so "half" would be untrue. */}
                 {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>{HINT_AFTER_LINE}</T>}
@@ -695,13 +736,16 @@ export default function SessionScreen() {
                 {/* After a miss (mobile 1.20): the note first (BookOpen = notes), then the
                     lesson when one is still to do (Play = lessons). Both PUSH, so Back lands
                     here again, on this same answer with its explanation. */}
+                {/* A hairline sets the next steps apart from the vine (design spec §6). */}
+                {Boolean((missNote && missNoteName) || reviewLesson) && <View style={{ height: 1, backgroundColor: c.line, marginTop: space.md }} />}
                 {missNote && missNoteName && (
-                  // Title = the note's own name (no "Read the note:" prefix on screen: the
-                  // name can hold a colon itself); the spoken label keeps the verb.
+                  // Title = the note's own name; the verb is the kicker above it (mobile 1.22:
+                  // "Read the note" on screen, not only in the spoken label).
                   <ListRow
                     icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                    kicker="Read the note"
                     title={missNoteName}
-                    subtitle={`Study note · ${aboutMin(missNoteMin, true)}`}
+                    subtitle={`${aboutMin(missNoteMin)} · the idea this question tests`}
                     accessibilityLabel={`Read the note: ${missNoteName}, ${spokenMin(aboutMin(missNoteMin, true))}, the idea this question tests`}
                     accessibilityHint="Opens the study note. Go back to return to this answer."
                     onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(missNote)}`)}
@@ -713,9 +757,11 @@ export default function SessionScreen() {
                   // Only a lesson not done yet is offered, so the row says so (never "Review").
                   <ListRow
                     icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                    // Only a lesson not done yet is offered, so it is "Take", never "Replay" (1.22 review).
+                    kicker="Take the lesson"
                     title={reviewLesson.title}
-                    subtitle={`Lesson · ${reviewLesson.minutes} min · Not done yet`}
-                    accessibilityLabel={`Lesson: ${reviewLesson.title}, ${reviewLesson.minutes} minutes, not done yet`}
+                    subtitle={`${reviewLesson.minutes} min · Not done yet`}
+                    accessibilityLabel={`Take the lesson: ${reviewLesson.title}, ${reviewLesson.minutes} minutes, not done yet`}
                     accessibilityHint="Opens the lesson. Go back to return to this answer."
                     onPress={() => router.push(`/lesson/${reviewLesson.id}`)}
                     last

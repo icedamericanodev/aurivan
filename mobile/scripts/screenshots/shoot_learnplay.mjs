@@ -3,7 +3,8 @@
 //
 // Shots: Learn (cover with its reason, the lesson trail), a lesson cover, the
 // three scene templates (steps, layers, timeline), "How ISACA thinks", a
-// check with its verdict leaf, Lesson complete, a note marked as read, Play,
+// check with its verdict leaf, Lesson complete, a note read to its end (p09: since 1.22 the
+// note marks itself read when its ending comes into view; a tap only if it hasn't), Play,
 // each game's header, a recap with its sparkline and a level up.
 // Strips (slow motion, see shoot_motion.mjs): the scene turn, the step line
 // drawing, the timeline rail, the lesson ✓ on Learn, Lesson complete's leaf,
@@ -181,7 +182,11 @@ async function compose(name, title, frames) {
 }
 /** A clip around the element with this text (full width, `above`/`below` points around it). */
 const around = (text, above = 40, below = 120) => async () => {
-  const b = await page.getByText(text, { exact: true }).first().boundingBox();
+  // Mobile 1.22: a text that is not on screen any more (Learn moved on) frames the whole screen, never a timeout.
+  const el = page.getByText(text, { exact: true }).first();
+  if (!(await el.count()) || !(await el.isVisible())) return { x: 0, y: 0, width: W, height: H };
+  const b = await el.boundingBox();
+  if (!b) return { x: 0, y: 0, width: W, height: H };
   const y = Math.max(0, Math.round(b.y - above));
   return { x: 0, y, width: W, height: Math.min(H - y, above + below + Math.round(b.height)) };
 };
@@ -263,9 +268,26 @@ for (let k = 4; k < 10; k++) {
 await shot('p05b-scene-10');
 
 // ── 3. Lesson complete (a fresh lesson) and the ✓ back on Learn ────────
+// The lesson's title is read from the content (mobile 1.22: a hard-coded title
+// went stale when the lesson was renamed, and the run stopped here). Opened
+// from its Learn row when the row is on screen, else straight from its link.
+const RISK_ID = 'cisa-l-d1-risk-planning';
+const RISK_TITLE = (() => {
+  const src = fs.readFileSync('src/content/lessons/cisa.ts', 'utf8');
+  const at = src.search(new RegExp(`id:\\s*['"\`]${RISK_ID}['"\`]`));
+  if (at < 0) return '';
+  // The lesson's own title: any quote style, escaped quotes allowed ('The auditor\'s plan').
+  const m = /title:\s*(['"`])((?:\\.|(?!\1)[^\\])*)\1/.exec(src.slice(at));
+  return m ? m[2].replace(/\\(.)/g, '$1') : '';
+})();
 await go('/learn?domain=1');
-await scrollTo('Plan by risk, not by rotation', 120);
-await tapText('Plan by risk, not by rotation', 1600);
+const fromLearn = RISK_TITLE !== '' && (await visible(RISK_TITLE));
+if (fromLearn) {
+  await scrollTo(RISK_TITLE, 120);
+  await tapText(RISK_TITLE, 1600);
+} else {
+  await go(`/lesson/${RISK_ID}`, 1600);
+}
 for (let k = 0; k < 14; k++) {
   if (await visible('Finish lesson')) break;
   const option = page.getByRole('radio', { name: /^Option A:/ });
@@ -293,17 +315,20 @@ await strip(
   ['Back on Learn: the lesson just finished draws its ✓ (200 ms), with one light haptic', 'Back on Learn, Reduce Motion: the ✓ fades in (120 ms)'],
   () => button('Close').click(),
   [40, 300, 420, 700],
-  around('Plan by risk, not by rotation', 120, 140),
+  fromLearn ? around(RISK_TITLE, 120, 140) : undefined,
 );
 await wait(1000);
+if (!fromLearn) await go('/learn?domain=1');
 await shot('p01b-learn-after-lesson');
 
-// ── 4. Notes: Mark as read ─────────────────────────────────────────────
+// ── 4. Notes: read to the end (p09 shows the auto-read state, or the tap if it didn't fire) ──
 await go('/notes/subtopic/1A1.1', 1800);
 const noteOk = await visible('Mark as read');
 if (noteOk) {
   await scrollTo('Mark as read', 120);
-  await press('Mark as read', 900);
+  // Mobile 1.22: reaching the end of a note marks it read by itself; tap only if it hasn't.
+  if (await visible('Mark as read')) await press('Mark as read', 900);
+  else await wait(900);
   await shot('p09-note-marked-read');
 }
 

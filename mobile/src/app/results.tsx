@@ -22,6 +22,11 @@
  * you missed" (with a turning chevron) opens up to three study-note rows (most-missed
  * first). It is the only notes path for a mock's misses (a mock shows no
  * answer screen), so it works for every session kind.
+ *
+ * Mobile 1.22 (design spec §8): a one-domain session shows the ring alone,
+ * centred, with one line under it ("All IS Audit · 2 of 3"); "Done" is a
+ * centred ghost under the one primary; the notes expander ("Notes for what
+ * you missed", the 1.20 label) sits just above "Review answers".
  */
 import { router } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -194,6 +199,8 @@ export default function Results() {
           cert={cert}
           values={values}
           only={inSession}
+          // One domain: the ring alone, centred, with its one line under it (no stranded legend row).
+          legend={!oneDomain}
           grow={{ play: grow, run: 1, delay: at }}
           legendValue={(i) => {
             const b = score.byDomain[cert.domains[i].id];
@@ -210,11 +217,14 @@ export default function Results() {
             </View>
           }
         />
-        <T v="meta" style={{ marginTop: 14 }}>
-          {oneDomain
-            ? `This session was all ${oneDomain.short}: the ring is your score.`
-            : 'Each ring is a domain in this session. Thicker rings weigh more on the exam.'}
-        </T>
+        {oneDomain ? (
+          // Mobile 1.22 (design spec §8.2): one centred line, "All IS Audit · 2 of 3".
+          <T v="meta" center style={{ marginTop: 14 }}>
+            {`All ${oneDomain.short} · ${score.byDomain[oneDomain.id].correct} of ${score.byDomain[oneDomain.id].total}`}
+          </T>
+        ) : (
+          <T v="meta" style={{ marginTop: 14 }}>Each ring is a domain in this session. Thicker rings weigh more on the exam.</T>
+        )}
       </Enter>
 
       <View style={{ marginTop: space.xl }} onLayout={(e) => setStatsY(e.nativeEvent.layout.y)}>
@@ -266,49 +276,19 @@ export default function Results() {
             <Gap h={space.sm} />
           </>
         )}
-        {missedNotes.length > 0 && (
-          <>
-            {/* Mobile 1.20: the notes behind the misses, folded until asked for (BookOpen = notes). */}
-            <Button
-              kind="ghost"
-              label="Notes for what you missed"
-              expanded={notesOpen}
-              accessibilityHint={notesOpen ? 'Hides the study notes' : 'Shows the study notes for the ideas you missed'}
-              // Points down when open, right when closed, and turns when tapped (as on Learn).
-              icon={(col) => (
-                <Turn deg={notesOpen ? 0 : -90}>
-                  <ChevronDown size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />
-                </Turn>
-              )}
-              onPress={() => setNotesOpen(!notesOpen)}
-              style={{ alignSelf: 'flex-start', marginLeft: -space.sm }}
-            />
-            {notesOpen && (
-              <View style={{ marginBottom: space.sm }}>
-                {missedNotes.map((n, i) => (
-                  <ListRow
-                    key={n.id}
-                    icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                    title={n.name}
-                    subtitle={`${n.missed === 1 ? '1 miss' : `${n.missed} misses`} · ${aboutMin(n.minutes, true)}`}
-                    accessibilityLabel={`Read the note: ${n.name}. ${n.missed === 1 ? '1 question' : `${n.missed} questions`} you missed, ${spokenMin(aboutMin(n.minutes, true))}`}
-                    accessibilityHint="Opens the study note. Go back to return to your results."
-                    onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(n.id)}`)}
-                    last={i === missedNotes.length - 1}
-                  />
-                ))}
-              </View>
-            )}
-            <Gap h={space.sm} />
-          </>
-        )}
         {guidedScope && (
           <>
             <Button kind={missed.length ? 'secondary' : 'primary'} label="Back to your Guided step" onPress={backToGuided} />
             <Gap h={space.sm} />
           </>
         )}
-        <Button kind="secondary" label="Done" onPress={done} />
+        {/* Mobile 1.22 (design spec §8.3): one primary; Done is a quiet centred ghost under it
+            (it is the primary only when there is nothing else to do). */}
+        {missed.length > 0 || guidedScope ? (
+          <Button kind="ghost" label="Done" onPress={done} style={{ alignSelf: 'center', minWidth: 120 }} />
+        ) : (
+          <Button label="Done" onPress={done} />
+        )}
         {moment && (
           <View
             style={{ marginTop: space.xl }}
@@ -327,6 +307,42 @@ export default function Results() {
       </Enter>
       </View>
 
+      {missedNotes.length > 0 && (
+        <View style={{ marginTop: space.sm }}>
+          {/* Mobile 1.20: the notes behind the misses, folded until asked for (BookOpen = notes).
+              Mobile 1.22 (design spec §8.4): its own place just above the review, after the actions. */}
+          <Button
+            kind="ghost"
+            label="Notes for what you missed"
+            expanded={notesOpen}
+            accessibilityHint={notesOpen ? 'Hides the study notes' : 'Shows the study notes for the ideas you missed'}
+            // Points down when open, right when closed, and turns when tapped (as on Learn).
+            icon={(col) => (
+              <Turn deg={notesOpen ? 0 : -90}>
+                <ChevronDown size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />
+              </Turn>
+            )}
+            onPress={() => setNotesOpen(!notesOpen)}
+            style={{ alignSelf: 'flex-start', marginLeft: -space.sm }}
+          />
+          {notesOpen && (
+            <View style={{ marginBottom: space.sm }}>
+              {missedNotes.map((n, i) => (
+                <ListRow
+                  key={n.id}
+                  icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                  title={n.name}
+                  subtitle={`${n.missed === 1 ? '1 miss' : `${n.missed} misses`} · ${aboutMin(n.minutes, true)}`}
+                  accessibilityLabel={`Read the note: ${n.name}. ${n.missed === 1 ? '1 question' : `${n.missed} questions`} you missed, ${spokenMin(aboutMin(n.minutes, true))}`}
+                  accessibilityHint="Opens the study note. Go back to return to your results."
+                  onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(n.id)}`)}
+                  last={i === missedNotes.length - 1}
+                />
+              ))}
+            </View>
+          )}
+        </View>
+      )}
       <Section title="Review answers" />
       {active.questionIds.map((id, i) => {
         const q = findQuestion(active.certId, id);

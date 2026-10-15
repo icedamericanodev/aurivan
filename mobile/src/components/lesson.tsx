@@ -20,8 +20,12 @@
  *   - layers (`stack`): bands that settle onto the stack from above;
  *   - timeline (`flow` with layout 'timeline'): phases on a time rail that
  *     draws down the whole build, ending in an arrow (time runs on).
- * - Text-only scenes are composed, not left half empty: the block sits a
- *   third of the way down the page, like a title on a printed page.
+ * - Mobile 1.22 (design spec §4): every scene starts at ONE anchor line
+ *   under the header (the player pads it), with a kicker naming the scene
+ *   kind ("The idea", "How it flows", "The trap"…) over its heading in
+ *   `hero`. Nothing is pushed down to the middle any more, so a page turn
+ *   lands on the same line each time. A heading that only repeats its
+ *   kicker ("The core idea") is left out.
  * - Under Reduce Motion every part fades in together (120 ms), lines are
  *   simply drawn, and nothing moves; the same words are there.
  * Every part is mounted (and readable) from the first frame.
@@ -38,6 +42,7 @@ import { motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, PlanLeaf, type BotanyKind } from './glyphs';
 import { DrawLine, FadeIn } from './motion';
+import { Bullets } from './notes';
 import { OptionCard, Verdict, type OptionState } from './quiz';
 import { BigNum, Gap, HeroPanel, Stem, T } from './ui';
 
@@ -87,11 +92,67 @@ function Part({ i, drop, style, spoken, children }: { i: number; drop?: boolean;
   );
 }
 
-function Heading({ children }: { children: string }) {
+/**
+ * What KIND of scene this is, in a word or two: the kicker over its heading
+ * (mobile 1.22, design spec §4.3). "Think of it like" reads as a lead-in to
+ * an analogy's name ("A leaking roof"); an analogy whose heading already
+ * says "Think of…" gets "An analogy" instead, so the page never says it
+ * twice. Exported for tests.
+ */
+export function sceneKicker(scene: Scene): string | null {
+  switch (scene.type) {
+    case 'title':
+      return null;
+    case 'idea':
+      return scene.heading === 'How ISACA thinks' ? 'How ISACA thinks' : 'The idea';
+    case 'analogy':
+      return /^think of\b/i.test(scene.heading) ? 'An analogy' : 'Think of it like';
+    case 'flow':
+      return 'How it flows';
+    case 'stack':
+      return 'The layers';
+    case 'compare':
+      return 'Side by side';
+    case 'trap':
+      return 'The trap';
+    case 'tip':
+      return 'Exam-day shortcut';
+    case 'check':
+      return 'Quick check';
+  }
+}
+
+/**
+ * Whether a heading only repeats its kicker ("The core idea" under "The
+ * idea", "The exam trap" under "The trap"): then the kicker stands alone and
+ * the first sentence of the body leads. Exported for tests.
+ */
+export function headingRepeatsKicker(kicker: string, heading: string): boolean {
+  const norm = (t: string) => t.toLowerCase().replace(/\b(core|exam|main|key|big)\s+/g, '').replace(/\s+/g, ' ').trim();
+  return norm(kicker) === norm(heading);
+}
+
+/**
+ * The top of every scene (mobile 1.22, design spec §4.2–4.4): the kicker
+ * (`caption`, accentText; honey for the trap) naming the scene kind, 6pt,
+ * then the heading in `hero` (Fraunces 28/34), then 16pt to the body. Every
+ * scene starts at the same anchor line under the header, so a page turn
+ * lands on the same y each time and nothing jumps. One screen-reader
+ * heading: the kicker and heading are spoken together ("The idea: What a
+ * charter does").
+ */
+function SceneTop({ kicker, heading, tone }: { kicker: string; heading?: string; tone?: string }) {
+  const { c } = useTheme();
+  const showHeading = Boolean(heading) && !headingRepeatsKicker(kicker, heading!);
   return (
     <Part i={0}>
-      <T v="headline" accessibilityRole="header">{children}</T>
-      <Gap h={space.md} />
+      <View accessible accessibilityRole="header" accessibilityLabel={showHeading ? `${kicker}: ${heading}` : kicker}>
+        <T v="caption" color={tone ?? c.accentText}>{kicker}</T>
+        {showHeading && (
+          <T v="hero" style={{ marginTop: 6 }}>{heading}</T>
+        )}
+      </View>
+      <Gap h={space.lg} />
     </Part>
   );
 }
@@ -99,22 +160,6 @@ function Heading({ children }: { children: string }) {
 /** Scene prose: the serif reading style. */
 function Prose({ children }: { children: string }) {
   return <Stem>{children}</Stem>;
-}
-
-/**
- * A text-only scene, composed: the block sits about a third of the way down
- * the page (a 1 : 2 split of the spare height, with a floor), so a short
- * idea reads as a printed page, not as a half-empty slide. Long text simply
- * starts at the top.
- */
-function Composed({ children }: { children: ReactNode }) {
-  return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flex: 1, minHeight: space.sm, maxHeight: 180 }} />
-      <View>{children}</View>
-      <View style={{ flex: 2 }} />
-    </View>
-  );
 }
 
 /** The key-idea recipe (as on the vine and in notes): a leaf and a caption, then the italic voice on a green rule. */
@@ -144,9 +189,8 @@ export function sceneLabel(scene: Scene): string | null {
     case 'title':
       return null;
     case 'tip':
-      return 'Exam-day shortcut';
     case 'check':
-      return 'Quick check';
+      return sceneKicker(scene);
     default:
       return scene.heading;
   }
@@ -231,7 +275,7 @@ function StepsScene({ scene }: { scene: Extract<Scene, { type: 'flow' }> }) {
   const n = scene.steps.length;
   return (
     <View>
-      <Heading>{scene.heading}</Heading>
+      <SceneTop kicker={sceneKicker(scene)!} heading={scene.heading} />
       {scene.steps.map((step, i) => (
         <Part key={step.label} i={i + 1} spoken={`Step ${i + 1} of ${n}: ${step.label}. ${step.note}`} style={{ flexDirection: 'row', gap: space.md }}>
           <View style={{ alignItems: 'center', width: 32 }} accessible={false} importantForAccessibility="no-hide-descendants">
@@ -275,7 +319,7 @@ function TimelineScene({ scene }: { scene: Extract<Scene, { type: 'flow' }> }) {
   const RAIL = 9; // the rail's x, and the rings' centre
   return (
     <View>
-      <Heading>{scene.heading}</Heading>
+      <SceneTop kicker={sceneKicker(scene)!} heading={scene.heading} />
       <View style={{ paddingLeft: 32 }}>
         {/* The rail: from the first ring to below the last, drawn over the whole build. */}
         <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ position: 'absolute', left: RAIL - 1, top: 10, bottom: 4, width: 2, alignItems: 'center' }}>
@@ -318,7 +362,7 @@ function LayersScene({ scene }: { scene: Extract<Scene, { type: 'stack' }> }) {
   const n = scene.layers.length;
   return (
     <View>
-      <Heading>{scene.heading}</Heading>
+      <SceneTop kicker={sceneKicker(scene)!} heading={scene.heading} />
       <View style={{ gap: 4 }}>
         {scene.layers.map((layer, i) => (
           <Part
@@ -389,35 +433,28 @@ export function SceneView({
       return <LessonCover scene={scene} lesson={lesson} art={art} tone={tone} />;
 
     case 'idea':
-      // "How ISACA thinks" is the coach's voice: the key-idea recipe (ui.md LP3), as on the vine and in notes.
+      // "How ISACA thinks" is the coach's voice: the key-idea recipe (ui.md LP3), as on the vine and in
+      // notes, at the same anchor line as every other scene (mobile 1.22).
       if (scene.heading === 'How ISACA thinks') {
-        return (
-          <Composed>
-            <KeyIdea caption="How ISACA thinks" body={scene.body} />
-          </Composed>
-        );
+        return <KeyIdea caption="How ISACA thinks" body={scene.body} />;
       }
       return (
-        <Composed>
-          <Heading>{scene.heading}</Heading>
+        <View>
+          <SceneTop kicker="The idea" heading={scene.heading} />
           <Part i={1}>
             <Prose>{scene.body}</Prose>
           </Part>
-        </Composed>
+        </View>
       );
 
     case 'analogy':
       return (
-        <Composed>
-          <Part i={0}>
-            <T v="caption" color={c.accentText}>Real-life analogy</T>
-            <Gap h={space.xs} />
-          </Part>
-          <Heading>{scene.heading}</Heading>
+        <View>
+          <SceneTop kicker={sceneKicker(scene)!} heading={scene.heading} />
           <Part i={1} style={{ borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.lg }}>
             <Prose>{scene.body}</Prose>
           </Part>
-        </Composed>
+        </View>
       );
 
     case 'stack':
@@ -429,14 +466,12 @@ export function SceneView({
     case 'compare':
       return (
         <View>
-          <Heading>{scene.heading}</Heading>
+          <SceneTop kicker="Side by side" heading={scene.heading} />
           {[scene.left, scene.right].map((side, i) => (
             <Part key={side.title} i={i + 1} style={{ borderLeftWidth: 3, borderLeftColor: i === 0 ? c.accent : c.control, paddingLeft: space.lg, marginBottom: space.xl }}>
               <T v="headline" color={i === 0 ? c.accentText : c.ink}>{side.title}</T>
-              <Gap h={space.xs} />
-              {side.points.map((p) => (
-                <T key={p} v="body">{`·  ${p}`}</T>
-              ))}
+              {/* Real bullets (the notes' dot, hanging indent), never typed "·" characters. */}
+              <Bullets items={side.points} />
             </Part>
           ))}
           {scene.caption && (
@@ -450,11 +485,8 @@ export function SceneView({
     case 'trap':
       return (
         <View>
-          <Part i={0}>
-            <T v="caption" color={c.tip}>The trap</T>
-            <Gap h={space.xs} />
-          </Part>
-          <Heading>{scene.heading}</Heading>
+          {/* The trap's kicker is honey: trap = honey everywhere (spec §5). */}
+          <SceneTop kicker="The trap" heading={scene.heading} tone={c.tip} />
           {/* Trap warnings are the one tinted block in a lesson (spec §5). */}
           <Part i={1} style={{ backgroundColor: c.tipBg, borderRadius: radius.md, padding: space.lg }}>
             <Prose>{scene.trap}</Prose>
@@ -469,12 +501,8 @@ export function SceneView({
       );
 
     case 'tip':
-      // The takeaway: the coach's italic voice, the key-idea recipe.
-      return (
-        <Composed>
-          <KeyIdea caption="Exam-day shortcut" body={scene.body} />
-        </Composed>
-      );
+      // The takeaway: the coach's italic voice, the key-idea recipe, at the anchor line.
+      return <KeyIdea caption="Exam-day shortcut" body={scene.body} />;
 
     case 'check':
       return <CheckScene scene={scene} onCheck={onCheck} perm={perm ?? lettersFor(scene.options.length)} />;
@@ -504,7 +532,7 @@ function CheckScene({
   return (
     <View>
       <Part i={0}>
-        <T v="caption" color={c.accentText}>Quick check</T>
+        <T v="caption" color={c.accentText} accessibilityRole="header">Quick check</T>
         <Gap h={space.sm} />
         <Stem>{scene.question}</Stem>
         <Gap h={space.xl} />

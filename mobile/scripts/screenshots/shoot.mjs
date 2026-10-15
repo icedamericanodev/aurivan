@@ -94,6 +94,13 @@ for (const l of lessonShots) {
   await page.screenshot({ path: `${out}/${l.name}-feedback.png` });
   console.log('shot lesson', l.id);
 }
+// Mobile 1.22: an idea scene (the kicker, the hero heading, the anchor line and the round Back), as in the north-star mockup.
+await page.goto('http://127.0.0.1:8093/lesson/cisa-l-d1-charter', { waitUntil: 'networkidle' });
+await page.waitForTimeout(1200);
+await page.getByRole('button', { name: 'Next', exact: true }).click();
+await page.waitForTimeout(1200);
+await page.screenshot({ path: `${out}/03a-lesson-idea.png` });
+console.log('shot lesson idea');
 // Settings → About: the brand vision (lockup, tagline, four pillars).
 // Mobile 1.17: the vision sits behind the "About Aurivan" row, in a sheet.
 await shot0('16b-settings-about', '/settings');

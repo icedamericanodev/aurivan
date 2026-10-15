@@ -24,13 +24,13 @@ import { tipParts } from '../engine/tips';
 import { config } from '../lib/config';
 import { haptic } from '../lib/haptics';
 import { shortReference } from '../lib/format';
-import { badgeLetter, motion, optionText, radius, space } from '../theme/tokens';
+import { badgeLetter, LARGE_TEXT, motion, optionText, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
 import { Check, X } from './icons';
 import { AnimatedPressable, ease, FadeIn, Pop, StateLayer, tween, useMotion, usePressScale } from './motion';
 import { ReportRow } from './support';
-import { CARD_LIFT, Chip, Gap, Row, T } from './ui';
+import { CARD_LIFT, Chip, Gap, Row, T, useFontScale } from './ui';
 
 
 // ── Scenario block: a longer case study above the stem, collapsible ───
@@ -236,6 +236,27 @@ export function Verdict({ correct, coach }: { correct: boolean; coach: string })
         <T v="hero" color={color} style={{ flexShrink: 1 }}>{correct ? 'Correct' : 'Not quite'}</T>
       </Row>
       <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>{coach}</T>
+    </View>
+  );
+}
+
+/**
+ * Mobile 1.22 (design spec §6.4): the answer screen's outcome, kept in the
+ * header once the verdict has scrolled away: an 18pt disc (`wrong` with an
+ * ✗, or `correct` with a ✓) and one `meta` line, "Not quite · Best answer
+ * D" ("Not quite · D" at large text). One screen-reader stop with every word.
+ */
+export function AnswerRecap({ correct, letter }: { correct: boolean; letter: Letter }) {
+  const { c } = useTheme();
+  // Large text (×1.3+): the short form fits the bar ("Not quite · D"); the spoken label keeps every word.
+  const short = useFontScale() >= LARGE_TEXT;
+  const words = `${correct ? 'Correct' : 'Not quite'} · ${short ? '' : 'Best answer '}${letter}`;
+  return (
+    <View accessible accessibilityLabel={`${correct ? 'Correct' : 'Not quite'}. Best answer ${letter}`} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: space.sm }}>
+      <View style={{ width: 18, height: 18, borderRadius: 9, backgroundColor: correct ? c.correct : c.wrong, alignItems: 'center', justifyContent: 'center' }}>
+        {correct ? <Check size={12} color={c.bg} strokeWidth={2.75} /> : <X size={12} color={c.bg} strokeWidth={2.75} />}
+      </View>
+      <T v="meta" color={c.ink} numberOfLines={1} maxFontSizeMultiplier={1.3} style={{ flexShrink: 1 }}>{words}</T>
     </View>
   );
 }

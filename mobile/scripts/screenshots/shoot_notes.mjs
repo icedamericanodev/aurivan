@@ -47,6 +47,10 @@ await page.evaluate(() => localStorage.removeItem('aurivan.session.v1'));
 await open('/notes/subtopic/4B1.2'); await page.mouse.wheel(0, 20000); await page.waitForTimeout(700);
 await page.getByRole('button', { name: 'Practice this concept' }).click();
 await page.waitForTimeout(1800); await snap('n04e-4B1.2-concept-session');
+// Mobile 1.22: the native diagrams drawn for the phone (components/noteFigures.tsx).
+for (const id of ['4A7.2', '4A8.3', '4A6.2', '4B5.4']) {
+  await open(`/notes/subtopic/${id}`); await scrollTo('Diagram'); await snap(`n04f-${id}-diagram`);
+}
 await open('/notes/subtopic/1A2.4'); await snap('n05-1A2.4-top');
 for (let i = 1; i <= 4; i++) { await scrollBy(700); await snap(`n05${'bcde'[i - 1]}-1A2.4-scroll${i}`); }
 await page.mouse.wheel(0, 20000); await page.waitForTimeout(700); await snap('n05f-1A2.4-end');

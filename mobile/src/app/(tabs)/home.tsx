@@ -52,7 +52,7 @@ import { FitCard } from '../../components/fit';
 import { ExamWeekCard } from '../../components/readinessReport';
 import { examWeekCardDue, examWeekCount, examWeekOf } from '../../engine/examWeek';
 import { Celebrate, Pop, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
-import { ICON_STROKE, Inbox, Play, Settings, Sprig, Sprout, Target, Timer } from '../../components/icons';
+import { ArrowRight, ICON_STROKE, Inbox, Play, Settings, Sprig, Sprout, Target, Timer } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
 import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, InviteRow, ListRow, Row, Screen, ScreenTitle, Section, T } from '../../components/ui';
 import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
@@ -160,7 +160,14 @@ export default function Today() {
       checkPlant(certId);
     }, [certId]),
   );
-  const playIcon = (color: string) => <Play size={ICON_SIZE.inline} color={color} strokeWidth={ICON_STROKE} />;
+  // The Start pill's glyph says what starts (mobile 1.22, the 1.20 icon rule): Play only for a
+  // lesson (leading, as on Learn); reviews, practice, mocks and games go forward with a TRAILING
+  // arrow, like "Next question →".
+  const startIcon = (kind: string | undefined) =>
+    function StartIcon(color: string) {
+      const Glyph = kind === 'lesson' ? Play : ArrowRight;
+      return <Glyph size={ICON_SIZE.inline} color={color} strokeWidth={ICON_STROKE} />;
+    };
 
   // Mobile 1.9 motion: growth plays when Today is ON VIEW (it changes while a
   // session sits on top), shows what went up since you last looked, and
@@ -393,7 +400,7 @@ export default function Today() {
             title={hero!.title}
             meta={hero!.meta}
             metaLabel={spokenMin(hero!.meta)}
-            action={{ label: 'Start', onPress: () => runPlanItem(curItem, j.cert.id), icon: playIcon, hint: hero!.title }}
+            action={{ label: 'Start', onPress: () => runPlanItem(curItem, j.cert.id), icon: startIcon(curItem?.kind), iconTrailing: curItem?.kind !== 'lesson', hint: hero!.title }}
           />
         )}
       </Enter>

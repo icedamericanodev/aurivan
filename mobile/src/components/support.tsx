@@ -569,13 +569,46 @@ export function ReportLink({ certId, target }: { certId: string; target: ReportT
  * line on the left and the report link on the right (it wraps under at
  * large text), an optional second meta line, then the note after sending.
  */
-export function ReportRow({ certId, target, meta, sub }: { certId: string; target: ReportTarget; meta: string; sub?: string }) {
+export function ReportRow({
+  certId,
+  target,
+  meta,
+  sub,
+  action,
+}: {
+  certId: string;
+  target: ReportTarget;
+  meta: string;
+  sub?: string;
+  /**
+   * Mobile 1.22: a quiet text button after the meta ("Code 4B1.2 · Mark as
+   * not read"), 48pt tall. A study note's read toggle lives here now that the
+   * page reads itself as read at its end.
+   */
+  action?: { label: string; onPress: () => void; hint?: string };
+}) {
   const { c } = useTheme();
   const flow = useReportFlow(certId, target);
   return (
     <View style={{ borderTopWidth: 1, borderTopColor: c.line, marginTop: space.xs, paddingTop: space.xs }}>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: space.sm }}>
-        <T v="meta" style={{ flexShrink: 1 }}>{meta}</T>
+        {action ? (
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', flexShrink: 1, columnGap: space.xs }}>
+            <T v="meta">{`${meta} ·`}</T>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={action.label}
+              accessibilityHint={action.hint}
+              onPress={action.onPress}
+              hitSlop={4}
+              style={({ pressed }) => ({ minHeight: 48, justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}
+            >
+              <T v="meta" color={c.accentText}>{action.label}</T>
+            </Pressable>
+          </View>
+        ) : (
+          <T v="meta" style={{ flexShrink: 1 }}>{meta}</T>
+        )}
         {flow.link}
       </View>
       {sub ? <T v="meta" color={c.muted}>{sub}</T> : null}

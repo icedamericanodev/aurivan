@@ -22,7 +22,7 @@ import { haptic } from '../lib/haptics';
 import { grewLine, LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { GrowthRings, PlanLeaf } from './glyphs';
-import { ChevronRight, Gamepad2, ICON_STROKE, Play, RotateCcw, Target, Timer } from './icons';
+import { ChevronRight, ICON_STROKE, Pinwheel, Play, RotateCcw, Target, Timer } from './icons';
 import { AnimatedPressable, FadeIn, Pop, usePressScale, type Celebration, type Growth } from './motion';
 import { BigNum, DomainDot, ICON_SIZE, Row, Stat, StatRow, T, useFontScale } from './ui';
 import { aboutMin, timeStat } from '../engine/pace';
@@ -39,7 +39,8 @@ export function planIcon(item: PlanItem, color: string): ReactNode {
     case 'practice':
       return <Target {...p} />;
     case 'game':
-      return <Gamepad2 {...p} />;
+      // Mobile 1.22: the Play tab's own glyph.
+      return <Pinwheel {...p} />;
     case 'mock':
       return <Timer {...p} />;
   }
@@ -413,10 +414,17 @@ export function DomainRings({
   only,
   grow,
   delta,
+  legend = true,
 }: {
   cert: Certification;
   values: (number | null)[];
   center: ReactNode;
+  /**
+   * Mobile 1.22: false = the rings alone, centred (a one-domain Results says
+   * its single line under the ring instead of a one-row legend stranded at
+   * the right edge).
+   */
+  legend?: boolean;
   /** Legend text per domain; defaults to a whole percent. */
   legendValue?: (i: number) => string;
   accessibilityLabel: string;
@@ -442,7 +450,7 @@ export function DomainRings({
   return (
     // Mobile 1.21 (design spec §7): rings and legend read as ONE aligned row: 20 between them,
     // 28pt legend rows, the name in `small`, the numerals in one right-aligned column.
-    <View style={{ flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: space.gutter }}>
+    <View style={{ flexDirection: stacked || !legend ? 'column' : 'row', alignItems: !legend ? 'center' : stacked ? 'flex-start' : 'center', gap: space.gutter }}>
       <View accessible accessibilityRole="image" accessibilityLabel={accessibilityLabel}>
         <GrowthRings
           preset="you"
@@ -456,6 +464,7 @@ export function DomainRings({
           {center}
         </View>
       </View>
+      {legend && (
       <View style={{ flex: stacked ? undefined : 1, gap: space.xs, alignSelf: stacked ? 'stretch' : undefined }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
         {shown.map((i) => {
           const up = Math.max(0, Math.round(delta?.(i) ?? 0));
@@ -477,6 +486,7 @@ export function DomainRings({
           );
         })}
       </View>
+      )}
     </View>
   );
 }

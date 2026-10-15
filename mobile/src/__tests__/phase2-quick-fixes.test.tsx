@@ -180,7 +180,7 @@ describe('Results for a one-domain session (R1, R2) and the assisted line (Q1)',
     });
   };
 
-  it('R1: one thick ring in the domain’s tone, one legend row, and a line that says why', () => {
+  it('R1: one thick ring in the domain’s tone and one centred line that names the domain (mobile 1.22)', () => {
     finishOneDomain(2);
     mount(<Results />);
     const rings = root().findAllByType(GrowthRings);
@@ -188,7 +188,9 @@ describe('Results for a one-domain session (R1, R2) and the assisted line (Q1)',
     expect(rings[0].props.weights).toHaveLength(1);
     expect(rings[0].props.mastery[0]).toBeCloseTo(2 / 3);
     const text = allText();
-    expect(text).toMatch(/This session was all IS Audit: the ring is your score\./);
+    // Mobile 1.22: no stranded one-row legend; one line under the ring.
+    expect(text).toMatch(/All IS Audit · 2 of 3/);
+    expect(text).not.toMatch(/2\/3/);
     expect(text).not.toMatch(/IT Governance/);
     expect(text).not.toMatch(/–/);
   });

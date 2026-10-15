@@ -609,6 +609,48 @@ export function Turn({ deg, style, children }: { deg: number; style?: StyleProp<
 }
 
 /**
+ * Mobile 1.22: two states of one slot that swap in place. A pushed header's
+ * title appears once the page's own title has scrolled under it; the answer
+ * screen's recap ("Not quite · Best answer D") takes the progress segments'
+ * place once the verdict has scrolled away. `first` sits in the layout (it
+ * sizes the slot), `second` lies over it, centred. A 120 ms cross-fade on
+ * the standard curve, never on mount; at once under Reduce Motion. The
+ * hidden layer is hidden from screen readers and takes no touches.
+ */
+export function CrossFade({
+  showSecond,
+  first,
+  second,
+  style,
+}: {
+  showSecond: boolean;
+  first?: ReactNode;
+  second: ReactNode;
+  style?: StyleProp<ViewStyle>;
+}) {
+  const { reduced } = useMotion();
+  const o = useSharedValue(showSecond ? 1 : 0);
+  useEffect(() => {
+    const to = showSecond ? 1 : 0;
+    o.set(reduced ? to : tween(to, 'select', ease.standard));
+  }, [showSecond, reduced, o]);
+  const firstStyle = useAnimatedStyle(() => ({ opacity: 1 - o.value }));
+  const secondStyle = useAnimatedStyle(() => ({ opacity: o.value }));
+  const hide = (hidden: boolean) =>
+    hidden ? ({ accessibilityElementsHidden: true, importantForAccessibility: 'no-hide-descendants' } as const) : {};
+  return (
+    <View style={style}>
+      <Animated.View {...hide(showSecond)} style={[styles.swapFirst, showSecond && styles.noTouch, firstStyle]}>
+        {first}
+      </Animated.View>
+      <Animated.View {...hide(!showSecond)} style={[StyleSheet.absoluteFill, styles.swapSecond, !showSecond && styles.noTouch, secondStyle]}>
+        {second}
+      </Animated.View>
+    </View>
+  );
+}
+
+/**
  * A line in a lesson diagram that draws itself (the step path, a timeline
  * rail): it grows from its start (top, or left) over `dur`, after `delay`,
  * when it mounts with `play`. Transform only (scaleY / scaleX from its
@@ -1538,6 +1580,8 @@ export function ThemeFade({ isDark, bg }: { isDark: boolean; bg: string }) {
 
 const styles = StyleSheet.create({
   noTouch: { pointerEvents: 'none' },
+  swapFirst: { flexGrow: 1, justifyContent: 'center' },
+  swapSecond: { justifyContent: 'center' },
   rollRow: { flexDirection: 'row', alignItems: 'flex-start' },
   hidden: { opacity: 0 },
   clip: { position: 'absolute', overflow: 'hidden' },

@@ -68,7 +68,7 @@ import {
 import { useTheme } from '../theme/useTheme';
 import { Botany, botanySize, EmptyArt, type BotanyKind, type EmptyArtKind } from './glyphs';
 import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Search, Settings as SettingsIcon, X } from './icons';
-import { AnimatedPressable, FadeIn, ProgressFill, RollingText, StateLayer, tween, useMotion, usePressScale } from './motion';
+import { AnimatedPressable, CrossFade, FadeIn, ProgressFill, RollingText, StateLayer, tween, useMotion, usePressScale } from './motion';
 
 /** Icon sizes: inline with text, in rows/circles, and in the tab bar/header. */
 export const ICON_SIZE = { inline: 16, row: 20, bar: 24 } as const;
@@ -141,8 +141,14 @@ export function Screen({
   onScroll,
   onScrollBeginDrag,
   scrollRef,
+  header,
 }: {
   children: ReactNode;
+  /**
+   * Mobile 1.22: a bar that stays put above the scrolling page (a pushed
+   * header whose title collapses in once the page's own title is under it).
+   */
+  header?: ReactNode;
   scroll?: boolean;
   edges?: ('top' | 'bottom')[];
   /** The scroll view, for a screen that opens at one of its groups (Settings → Badges and plant). */
@@ -155,6 +161,8 @@ export function Screen({
   const { c } = useTheme();
   const { reduced } = useMotion();
   const [viewH, setViewH] = useState(0);
+  // The last scroll offset: a layout pass (a rotation, a size change) reports it, never 0 (mobile 1.22 review).
+  const lastY = useRef(0);
   const own = useRef<ScrollView | null>(null);
   // The caller's ref when it gives one (an object ref: Settings opens at a group), else our own.
   const ref = (scrollRef && typeof scrollRef === 'object' ? scrollRef : own) as { current: ScrollView | null };
@@ -191,11 +199,18 @@ export function Screen({
         onScroll
           ? (e) => {
               setViewH(e.nativeEvent.layout.height);
-              onScroll(0, e.nativeEvent.layout.height);
+              onScroll(lastY.current, e.nativeEvent.layout.height);
             }
           : undefined
       }
-      onScroll={onScroll ? (e) => onScroll(e.nativeEvent.contentOffset.y, viewH || e.nativeEvent.layoutMeasurement.height) : undefined}
+      onScroll={
+        onScroll
+          ? (e) => {
+              lastY.current = e.nativeEvent.contentOffset.y;
+              onScroll(lastY.current, viewH || e.nativeEvent.layoutMeasurement.height);
+            }
+          : undefined
+      }
       scrollEventThrottle={onScroll ? 32 : undefined}
       onScrollBeginDrag={onScrollBeginDrag}
     >
@@ -204,7 +219,12 @@ export function Screen({
   ) : (
     <View style={[styles.screenPad, { flex: 1 }]}>{children}</View>
   );
-  return <SafeAreaView edges={edges} style={{ flex: 1, backgroundColor: c.bg }}>{inner}</SafeAreaView>;
+  return (
+    <SafeAreaView edges={edges} style={{ flex: 1, backgroundColor: c.bg }}>
+      {header ? <View style={{ paddingHorizontal: space.gutter }}>{header}</View> : null}
+      {inner}
+    </SafeAreaView>
+  );
 }
 
 // ── Text: the Grove v2 type scale ──────────────────────────────────────
@@ -484,7 +504,11 @@ export function HeroPanel({
   captionMetaLabel?: string;
   title: string;
   meta?: string;
-  action?: { label: string; onPress: () => void; icon?: (color: string) => ReactNode; hint?: string };
+  /**
+   * `iconTrailing` (mobile 1.22): the glyph after the label, for a forward arrow ("Start →", as
+   * "Next question →"); a Play glyph stays leading.
+   */
+  action?: { label: string; onPress: () => void; icon?: (color: string) => ReactNode; hint?: string; iconTrailing?: boolean };
   art?: BotanyKind;
   /** Gentle frond sway while the screen is focused (off under Reduce Motion). */
   sway?: boolean;
@@ -584,7 +608,7 @@ export function HeroPanel({
             onPress={action.onPress}
             accessibilityHint={action.hint}
             icon={action.icon}
-            iconLeading
+            iconLeading={!action.iconTrailing}
             follow={lift}
             style={{ marginTop: space.gutter, alignSelf: 'flex-start' }}
           />
@@ -621,7 +645,17 @@ export function IconButton({
   selected,
   expanded,
   disabled,
+  outline,
+  ref,
 }: {
+  /**
+   * Mobile 1.22: a 56pt round SECONDARY button (1.5 `control` ring, the
+   * secondary pill's look) for a footer beside a primary pill: the lesson's
+   * "Previous step". Plain (no ring, 48pt) by default, for headers.
+   */
+  outline?: boolean;
+  /** For moving screen-reader focus here. */
+  ref?: Ref<View>;
   label: string;
   onPress: () => void;
   /** Draw the icon in the colour given (ink, or muted when disabled). */
@@ -640,9 +674,10 @@ export function IconButton({
     ...(disabled ? { disabled } : {}),
   };
   // Pressed: a soft circle grows in behind the icon (.9 → 1) and fades.
-  const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: 24, tintFrom: 0.9 });
+  const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: outline ? 28 : 24, tintFrom: 0.9 });
   return (
     <AnimatedPressable
+      ref={ref}
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityHint={hint}
@@ -651,7 +686,7 @@ export function IconButton({
       disabled={disabled}
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
-      style={[styles.iconButton, press.style]}
+      style={[styles.iconButton, outline && [styles.iconButtonOutline, { borderColor: c.control }], press.style]}
     >
       {press.layer}
       {icon(disabled ? c.muted : c.ink)}
@@ -830,6 +865,7 @@ export function IconCircle({ children }: { children: ReactNode }) {
 export function ListRow({
   icon,
   lead,
+  kicker,
   title,
   subtitle,
   trailing,
@@ -857,6 +893,12 @@ export function ListRow({
    */
   reading?: boolean;
   icon?: ReactNode;
+  /**
+   * Mobile 1.22: a `caption` line in accentText ABOVE the title that says what
+   * the row is or does ("Read the note", "Lesson · 5 min · Not done yet",
+   * "Next note"), so a row whose title is a name still has its verb on screen.
+   */
+  kicker?: string;
   /** A leading serif numeral block instead of an icon (e.g. "50 / questions"). */
   lead?: ReactNode;
   title: string;
@@ -881,6 +923,7 @@ export function ListRow({
       {icon && <IconCircle>{icon}</IconCircle>}
       {lead}
       <View style={{ flex: 1, minWidth: 0 }}>
+        {kicker ? <T v="caption" color={dim ? c.muted : c.accentText} style={{ marginBottom: 2 }}>{kicker}</T> : null}
         <T v={reading ? 'body' : 'label'} color={dim ? c.muted : undefined} numberOfLines={reading ? (large ? 4 : 2) : undefined}>{title}</T>
         {typeof subtitle === 'string' ? <T v="meta" color={dim ? c.muted : undefined}>{subtitle}</T> : subtitle}
       </View>
@@ -911,7 +954,7 @@ export function ListRow({
     <AnimatedPressable
       testID={testID}
       accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel ?? (typeof subtitle === 'string' ? `${title}, ${subtitle}` : title)}
+      accessibilityLabel={accessibilityLabel ?? `${kicker ? `${kicker}: ` : ''}${typeof subtitle === 'string' ? `${title}, ${subtitle}` : title}`}
       accessibilityHint={accessibilityHint}
       {...hideAction}
       onPress={onPress}
@@ -1187,11 +1230,11 @@ export function DomainDot({ domain }: { domain: DomainInfo }) {
 }
 
 // ── Tag: non-interactive label, no fill ("● IS Audit · Analysis") ─────
-export function Tag({ label, domain, color }: { label: string; domain?: DomainInfo; color?: string }) {
+export function Tag({ label, domain, color, numberOfLines }: { label: string; domain?: DomainInfo; color?: string; numberOfLines?: number }) {
   return (
     <View style={styles.tag}>
       {domain && <DomainDot domain={domain} />}
-      <T v="meta" color={color} style={{ flexShrink: 1 }}>{label}</T>
+      <T v="meta" color={color} numberOfLines={numberOfLines} style={{ flexShrink: 1 }}>{label}</T>
     </View>
   );
 }
@@ -1457,6 +1500,7 @@ const styles = StyleSheet.create({
   forest: { borderRadius: radius.lg, padding: space.xl, borderTopWidth: 1 },
   screenTitle: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space.sm, marginTop: space.xs, marginRight: -10 },
   iconButton: { width: 48, height: 48, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
+  iconButtonOutline: { width: 56, height: 56, borderWidth: 1.5 },
   heroArtClip: { borderRadius: radius.lg, overflow: 'hidden', zIndex: 0 },
   heroArt: { position: 'absolute', right: -18, top: -14 },
   heroContent: { zIndex: 1 },
@@ -1688,14 +1732,21 @@ export function useFontScale(): number {
 
 // ── Pushed-screen header (spec §6 "Header") ───────────────────────────
 // 52pt bar: a 44pt back (‹) or close (X) button, a centred title, a right slot.
+// Mobile 1.22 (title collapse): with `showTitle`, the title stays empty until
+// the page's own hero title has scrolled under the bar, then cross-fades in
+// (120 ms; at once under Reduce Motion). It is never read by screen readers
+// (shown or not): it only repeats the hero title, which is the page's heading.
 export function PushedHeader({
   title,
+  showTitle,
   onBack,
   icon = 'back',
   right,
   center,
 }: {
   title?: string;
+  /** Collapse mode: true once the page's own title is under the bar (leave out = always shown). */
+  showTitle?: boolean;
   onBack: () => void;
   icon?: 'back' | 'close';
   right?: ReactNode;
@@ -1717,7 +1768,21 @@ export function PushedHeader({
       </Pressable>
       {/* A custom centre (progress bar) stretches; a title is centred. */}
       <View style={{ flex: 1, alignItems: center ? 'stretch' : 'center' }}>
-        {center ?? (title ? <T v="label" accessibilityRole="header" numberOfLines={1}>{title}</T> : null)}
+        {center ??
+          (title && showTitle !== undefined ? (
+            <CrossFade
+              showSecond={showTitle}
+              style={{ alignSelf: 'stretch', minHeight: 44 }}
+              // Hidden from screen readers even when shown: it repeats the page's hero heading.
+              second={
+                <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                  <T v="label" numberOfLines={1} center>{title}</T>
+                </View>
+              }
+            />
+          ) : title ? (
+            <T v="label" accessibilityRole="header" numberOfLines={1}>{title}</T>
+          ) : null)}
       </View>
       {/* At least the back button's 44pt (so a title stays centred), wider when its content needs it
           (a lesson's "10/11" at large text): never a fixed width that clips. */}

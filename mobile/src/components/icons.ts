@@ -1,7 +1,7 @@
 /**
  * The icons Aurivan uses — imported one by one so the app bundles only
  * these (the full Lucide set is ~1,800 icons). Lucide, stroke 1.75.
- * Grove v2 custom glyphs (Sprout, Rings, Sprig) live in glyphs.tsx.
+ * Grove v2 custom glyphs (Sprout, Rings, Pinwheel, Sprig) live in glyphs.tsx.
  */
 export { default as ArrowRight } from 'lucide-react-native/icons/arrow-right';
 export { default as BookOpen } from 'lucide-react-native/icons/book-open';
@@ -17,7 +17,6 @@ export { default as Compass } from 'lucide-react-native/icons/compass';
 export { default as Crosshair } from 'lucide-react-native/icons/crosshair';
 export { default as Flame } from 'lucide-react-native/icons/flame';
 export { default as Flag } from 'lucide-react-native/icons/flag';
-export { default as Gamepad2 } from 'lucide-react-native/icons/gamepad-2';
 export { default as Gauge } from 'lucide-react-native/icons/gauge';
 export { default as Info } from 'lucide-react-native/icons/info';
 export { default as Library } from 'lucide-react-native/icons/library';
@@ -71,6 +70,7 @@ export { default as LifeBuoy } from 'lucide-react-native/icons/life-buoy';
 export { default as Inbox } from 'lucide-react-native/icons/inbox';
 // Uplift Phase 8 (built OFF): the feedback board's row in You (cloud builds only).
 export { default as MessagesSquare } from 'lucide-react-native/icons/messages-square';
-export { Rings, Sprig, Sprout } from './glyphs';
+// Mobile 1.22: Pinwheel replaces Lucide's gamepad as the Play glyph (tab bar, plan items).
+export { Pinwheel, Rings, Sprig, Sprout } from './glyphs';
 
 export const ICON_STROKE = 1.75;

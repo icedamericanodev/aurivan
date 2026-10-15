@@ -3,7 +3,7 @@
  *
  * - Tab/streak glyphs drawn on Lucide's 24 grid with a 1.75 stroke, so they
  *   sit next to Lucide icons without looking different: Sprout (Today tab),
- *   Rings (You tab), Sprig (streak).
+ *   Rings (You tab), Pinwheel (Play tab, mobile 1.22), Sprig (streak).
  * - Leaf marks used by the answer screen: the verdict leaf, the big Key idea
  *   leaf and the small tip leaves on the vine.
  * - Botanical line art for the forest panel: one quadratic stem with
@@ -64,6 +64,24 @@ export function Sprig({ size = 24, color, strokeWidth = 1.75 }: GlyphProps) {
       <Path d="M11 21c.2-5 1.5-9.4 5-13" />
       <Path d="M12.2 14.5C8.6 15 5.6 13.4 4.6 10c3.6-.6 6.6.9 7.6 4.5z" fill={color} fillOpacity={0.22} />
       <Path d="M14.5 10.5c-.6-3.6 1-6.6 4.9-8 .6 3.7-1.2 6.8-4.9 8z" fill={color} fillOpacity={0.22} />
+    </Svg>
+  );
+}
+
+/**
+ * Mobile 1.22: the Play tab. Four leaves turning about one centre like a
+ * pinwheel: a toy, so "play", drawn from the house's leaf (the same lens
+ * leaves as Sprout and the vine), not a borrowed game controller. Stroke
+ * only, like the other tab glyphs; rotationally balanced so it sits in the
+ * bar at the same visual weight as Sprout and Rings.
+ */
+export function Pinwheel({ size = 24, color, strokeWidth = 1.75 }: GlyphProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+      <Path d="M12 12C12 8 13.5 4.5 17 3.5C17.5 7 15.5 10.5 12 12Z" />
+      <Path d="M12 12C16 12 19.5 13.5 20.5 17C17 17.5 13.5 15.5 12 12Z" />
+      <Path d="M12 12C12 16 10.5 19.5 7 20.5C6.5 17 8.5 13.5 12 12Z" />
+      <Path d="M12 12C8 12 4.5 10.5 3.5 7C7 6.5 10.5 8.5 12 12Z" />
     </Svg>
   );
 }

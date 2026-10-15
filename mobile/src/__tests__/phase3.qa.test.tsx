@@ -337,7 +337,7 @@ describe('J2 practice session → Results', () => {
     expect(resultRings().play).toBe(true);
     expect(growingArcs()).toBeGreaterThan(0);
     expect(movingDigits()).toBeGreaterThan(0);
-    expect(allText()).toContain('3/3');
+    expect(allText()).toContain('All IS Audit · 3 of 3');
     unmount();
     mount(<Results />);
     expect(resultRings().play).toBe(false);

@@ -12,7 +12,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { ICON_STROKE, Play } from '../components/icons';
+import { ArrowRight, ICON_STROKE } from '../components/icons';
 import { Button, Gap, ICON_SIZE, PushedHeader, Screen, Section, T, ToggleRow } from '../components/ui';
 import { durationSpoken, durationText, mockPace, MOCK_TIMINGS, TIMING_FACTOR, TIMING_LABEL, targetPaceWords, type MockTiming } from '../engine/pace';
 import { guardedStart, startMock } from '../lib/sessions';
@@ -150,7 +150,7 @@ export default function MockStart() {
       <Button
         label="Start mock"
         onPress={start}
-        icon={(col) => <Play size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+        icon={(col) => <ArrowRight size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
       />
     </Screen>
   );
