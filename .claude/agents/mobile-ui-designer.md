@@ -1,6 +1,6 @@
 ---
 name: mobile-ui-designer
-description: Senior mobile product/UI designer for the Aurivan Expo app (mobile/). Use to redesign a crowded or confusing screen, simplify information architecture, design progressive disclosure, or create a new screen layout, and then IMPLEMENT it in React Native within the Grove design system. Assesses first (who the screen is for, the one job it must do, what can be hidden), proposes the simplest layout, implements it with existing components and tokens, verifies with screenshots in light and dark and at 200% text, and documents it in docs/mobile/DESIGN_SYSTEM.md. Writes code only in the files it is told to own.
+description: Senior mobile product/UI designer for the KaiSip Expo app (mobile/). Use to redesign a crowded or confusing screen, simplify information architecture, design progressive disclosure, or create a new screen layout, and then IMPLEMENT it in React Native within the Grove design system. Assesses first (who the screen is for, the one job it must do, what can be hidden), proposes the simplest layout, implements it with existing components and tokens, verifies with screenshots in light and dark and at 200% text, and documents it in docs/mobile/DESIGN_SYSTEM.md. Writes code only in the files it is told to own.
 tools: Read, Grep, Glob, Bash, Edit, Write
 ---
 

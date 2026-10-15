@@ -229,7 +229,7 @@ set local request.jwt.claims to '{"sub":"00000000-0000-4000-8000-0000000000f1","
 select throws_ok($$ insert into public.board_members (handle, guidelines_version) values ('Misty Rowan 77', '2026-11') $$,
   '42501', null, 'a learner cannot write a member row directly (only board-submit''s join)');
 set local role service_role;
-select throws_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000f1', 'Aurivan Team', 'chosen', '2026-11') $$, '22023', 'reserved_handle', '"Aurivan Team" is reserved');
+select throws_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000f1', 'KaiSip Team', 'chosen', '2026-11') $$, '22023', 'reserved_handle', '"KaiSip Team" is reserved');
 select throws_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000f1', 'ISACA_mod', 'chosen', '2026-11') $$, '22023', 'reserved_handle', '"ISACA_mod" is reserved');
 select throws_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000f1', 'support', 'chosen', '2026-11') $$, '22023', 'reserved_handle', '"support" is reserved');
 select throws_ok($$ select public.svc_board_join('00000000-0000-4000-8000-0000000000f1', 'quiet cedar 214', 'chosen', '2026-11') $$, '23505', null, 'handles are unique, whatever the case');

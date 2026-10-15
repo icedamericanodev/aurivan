@@ -1,14 +1,14 @@
-# Aurivan Instagram walkthrough video script
+# KaiSip Instagram walkthrough video script
 
 A 60 to 90 second Taglish voiceover for an Instagram video that taps through
-the Aurivan app on a phone. Generate the voiceover in ElevenLabs first, then
+the KaiSip app on a phone. Generate the voiceover in ElevenLabs first, then
 navigate the app to match. Upbeat and energetic. Estimated runtime about 75
 to 85 seconds.
 
 ## Storyboard (navigation cue + Taglish voiceover)
 
 1. Hook. Open the app, Home screen showing.
-   "Mag-take ka ng CISA exam? Wag kang gagastos ng libo-libo. Eto, libreng reviewer. Aurivan."
+   "Mag-take ka ng CISA exam? Wag kang gagastos ng libo-libo. Eto, libreng reviewer. KaiSip."
 
 2. Home tab. Slowly scroll the Home screen (readiness score, exam countdown, domain progress).
    "Pagbukas mo, nasa Home na agad ang importante: readiness score mo, countdown papuntang exam date, at progress mo per domain."
@@ -32,11 +32,11 @@ to 85 seconds.
    "May glossary, principles library, pwede mong i-save ang mahihirap na tanong, at oo, may dark mode."
 
 9. Close. Back on Home or the logo.
-   "Libre lahat to. Walang account, walang ads. Hindi to shortcut, pero sobrang laking tulong sa review mo. Aurivan. Nasa bio ang link. I-try mo na."
+   "Libre lahat to. Walang account, walang ads. Hindi to shortcut, pero sobrang laking tulong sa review mo. KaiSip. Nasa bio ang link. I-try mo na."
 
 ## Clean voiceover script (paste this into ElevenLabs)
 
-Mag-take ka ng CISA exam? Wag kang gagastos ng libo-libo. Eto, libreng reviewer. Aurivan.
+Mag-take ka ng CISA exam? Wag kang gagastos ng libo-libo. Eto, libreng reviewer. KaiSip.
 
 Pagbukas mo, nasa Home na agad ang importante: readiness score mo, countdown papuntang exam date, at progress mo per domain.
 
@@ -52,7 +52,7 @@ Hindi mo alam kung saan ka mahina? Andiyan ang Weak Spots. At yung mga namali mo
 
 May glossary, principles library, pwede mong i-save ang mahihirap na tanong, at oo, may dark mode.
 
-Libre lahat to. Walang account, walang ads. Hindi to shortcut, pero sobrang laking tulong sa review mo. Aurivan. Nasa bio ang link. I-try mo na.
+Libre lahat to. Walang account, walang ads. Hindi to shortcut, pero sobrang laking tulong sa review mo. KaiSip. Nasa bio ang link. I-try mo na.
 
 ## Recording and sync tips
 
@@ -64,7 +64,7 @@ Libre lahat to. Walang account, walang ads. Hindi to shortcut, pero sobrang laki
   unhurried while it plays.
 - Add on-screen captions when editing. Most Instagram viewers watch on mute,
   and captions also reinforce the feature names.
-- Keep the ethics rule: Aurivan is a big help but not a shortcut, never a
+- Keep the ethics rule: KaiSip is a big help but not a shortcut, never a
   guaranteed pass. Do not add pass-guarantee claims.
 
 ## English-only version (for international followers)
@@ -72,7 +72,7 @@ Libre lahat to. Walang account, walang ads. Hindi to shortcut, pero sobrang laki
 Same 9 beats and navigation cues as above; only the voiceover changes.
 
 1. Hook. Open the app, Home screen showing.
-   "Taking the CISA exam? Don't spend thousands. This reviewer is completely free. Aurivan."
+   "Taking the CISA exam? Don't spend thousands. This reviewer is completely free. KaiSip."
 
 2. Home tab. Slowly scroll the Home screen.
    "The moment you open it, the Home screen shows what matters: your readiness score, a countdown to your exam date, and your progress in every domain."
@@ -96,11 +96,11 @@ Same 9 beats and navigation cues as above; only the voiceover changes.
    "There is a glossary, a principles library, you can save the hard questions, and yes, there is dark mode."
 
 9. Close. Back on Home or the logo.
-   "All of it is free. No account, no ads. It is not a shortcut, but it is a huge help for your prep. Aurivan. Link in bio. Go try it."
+   "All of it is free. No account, no ads. It is not a shortcut, but it is a huge help for your prep. KaiSip. Link in bio. Go try it."
 
 ### Clean voiceover script, English (paste this into ElevenLabs)
 
-Taking the CISA exam? Don't spend thousands. This reviewer is completely free. Aurivan.
+Taking the CISA exam? Don't spend thousands. This reviewer is completely free. KaiSip.
 
 The moment you open it, the Home screen shows what matters: your readiness score, a countdown to your exam date, and your progress in every domain.
 
@@ -116,4 +116,4 @@ Not sure where you are weak? Weak Spots shows you. And the questions you miss co
 
 There is a glossary, a principles library, you can save the hard questions, and yes, there is dark mode.
 
-All of it is free. No account, no ads. It is not a shortcut, but it is a huge help for your prep. Aurivan. Link in bio. Go try it.
+All of it is free. No account, no ads. It is not a shortcut, but it is a huge help for your prep. KaiSip. Link in bio. Go try it.

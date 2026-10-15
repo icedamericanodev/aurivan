@@ -1,4 +1,4 @@
-# Aurivan support playbook (maintainer)
+# KaiSip support playbook (maintainer)
 
 How learner emails reach the team, how to sort them, what to reply, and how
 a fix closes the loop in the app. Written for mobile 1.7 ("Ask and fix").
@@ -15,13 +15,13 @@ Inbox: **certprep.support@gmail.com** (built into the app as the default in
 
 ## 1. What arrives
 
-Every subject starts with `Aurivan ·` and carries tags a filter can read:
+Every subject starts with `KaiSip ·` and carries tags a filter can read:
 
 | Kind | Subject | Example |
 |---|---|---|
-| Report a problem | `Aurivan · Report · <CERT> · <item> · <reason>` | `Aurivan · Report · CISA · d4_217 · key` |
-| Send feedback | `Aurivan · Feedback · <Idea \| Like \| Other> · <CERT>` | `Aurivan · Feedback · Idea · CISA` |
-| Contact support | `Aurivan · Support · <topic> · <CERT>` | `Aurivan · Support · Backup · CISA` |
+| Report a problem | `KaiSip · Report · <CERT> · <item> · <reason>` | `KaiSip · Report · CISA · d4_217 · key` |
+| Send feedback | `KaiSip · Feedback · <Idea \| Like \| Other> · <CERT>` | `KaiSip · Feedback · Idea · CISA` |
+| Contact support | `KaiSip · Support · <topic> · <CERT>` | `KaiSip · Support · Backup · CISA` |
 
 `<item>` is the question code as learners see it (`d4_217`), or a reference
 for everything else: `note:4A2.3`, `lesson:cisa-l-d1-charter#3` (step 3),
@@ -50,7 +50,7 @@ Suggested answer: B (shown as D)
 Shown order (screen = bank): A=C, B=D, C=A, D=B
 Where: Practice review · Quick 10
 Certification: CISA
-App: Aurivan 1.7.0 (iOS 26)
+App: KaiSip 1.7.0 (iOS 26)
 Content reviewed: Oct 2026
 Ref: R-7K2Q
 ```
@@ -70,19 +70,19 @@ Ref: R-7K2Q
 1. **Account hygiene.** A dedicated Google account (not a personal one), with
    2-Step Verification on a passkey or security key, and recovery options
    the business owns. Expect spam: the address ships inside the app.
-2. **Labels:** `Aurivan/Report`, `Aurivan/Report/Key`, `Aurivan/Feedback`,
-   `Aurivan/Support`, and status labels applied by hand: `Checking`,
+2. **Labels:** `KaiSip/Report`, `KaiSip/Report/Key`, `KaiSip/Feedback`,
+   `KaiSip/Support`, and status labels applied by hand: `Checking`,
    `Fixed vX`, `No change`, `Disputed`, `Exam content`.
 3. **Filters** (Settings → Filters → Create). Gmail ignores the `·` dots, so
    the phrase matches. Press **Search** first and confirm a test email shows up.
 
    | Search | Action |
    |---|---|
-   | `subject:"Aurivan Report"` | Label `Aurivan/Report` |
-   | `subject:"Aurivan Report" subject:(key OR "two-right")` | Label `Aurivan/Report/Key`, star it, mark important |
-   | `subject:"Aurivan Feedback"` | Label `Aurivan/Feedback` |
-   | `subject:"Aurivan Support"` | Label `Aurivan/Support` |
-   | `subject:"Aurivan"` | Send the auto-acknowledgement template (§4.1) |
+   | `subject:"KaiSip Report"` | Label `KaiSip/Report` |
+   | `subject:"KaiSip Report" subject:(key OR "two-right")` | Label `KaiSip/Report/Key`, star it, mark important |
+   | `subject:"KaiSip Feedback"` | Label `KaiSip/Feedback` |
+   | `subject:"KaiSip Support"` | Label `KaiSip/Support` |
+   | `subject:"KaiSip"` | Send the auto-acknowledgement template (§4.1) |
 
 4. **Templates:** Settings → Advanced → Templates → On. Save each reply in §4
    as a template.
@@ -135,18 +135,18 @@ of user reports lead to a fix). The reply is what earns trust then.
 
 ## 4. Canned replies
 
-Plain words, one idea per sentence, sign off "The Aurivan team". Never quote
+Plain words, one idea per sentence, sign off "The KaiSip team". Never quote
 the learner's exam date, scores or anything else about them.
 
-### 4.1 Auto-acknowledgement (Gmail filter on `subject:"Aurivan"`)
-> Thanks for writing to Aurivan. This is an automatic note to say your message
+### 4.1 Auto-acknowledgement (Gmail filter on `subject:"KaiSip"`)
+> Thanks for writing to KaiSip. This is an automatic note to say your message
 > arrived. A person reads every one, and if your report leads to a fix it will
 > be listed in What's new in the app.
-> The Aurivan team. Aurivan is independent and not affiliated with ISACA.
+> The KaiSip team. KaiSip is independent and not affiliated with ISACA.
 
 ### 4.2 Fixed
 > Thank you. You were right about question {code}: {one plain sentence on what
-> was wrong}. It's corrected in Aurivan {version}. Once you update, Your reports
+> was wrong}. It's corrected in KaiSip {version}. Once you update, Your reports
 > (Settings → Help and feedback) will show it as updated. Reports like yours
 > are how the questions get better.
 
@@ -187,7 +187,7 @@ once done.
 > Thank you for taking the time to write. Your message seems to describe a
 > question from the live exam. Candidates agree to keep exam content
 > confidential, so we've deleted it and won't use it. If something in one of
-> Aurivan's own questions looks wrong, send us its code and we'll review it.
+> KaiSip's own questions looks wrong, send us its code and we'll review it.
 
 Then: delete the exam content from the thread, never paraphrase it into the
 bank, label `Exam content`, and log only "rejected: possible live exam

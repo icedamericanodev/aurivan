@@ -1,4 +1,4 @@
--- Aurivan: the feedback board (Uplift Phase 8). NOT APPLIED ANYWHERE.
+-- KaiSip: the feedback board (Uplift Phase 8). NOT APPLIED ANYWHERE.
 -- Spec PHASE6_8.md §4.4 and its 12 Oct addendum. Append-only from the first
 -- `supabase db push` (Phase 9, owner go-ahead).
 --
@@ -114,7 +114,7 @@ grant select, insert, update, delete on public.board_members to service_role;
 create policy members_read_anon on public.board_members for select to anon
   using (exists (select 1 from public.board_settings s where s.read_scope = 'everyone'));
 -- The team's names are always readable, so their replies on a learner's own
--- post show "Aurivan team" in the 'author_staff' scope too (CR N1).
+-- post show "KaiSip team" in the 'author_staff' scope too (CR N1).
 create policy members_read on public.board_members for select to authenticated
   using (user_id = (select auth.uid())
          or is_team
@@ -896,7 +896,7 @@ begin
     -- only as a whole word ("Modest Pine"); the rest anywhere in the name, and
     -- "admin" and "staff" once the everyday words are out ("SiteAdmin" is
     -- refused, "Badminton Fan" is fine: re-review RR_P8 R2).
-    foreach v_term in array array['aurivan', 'isaca', 'cisa', 'cism', 'crisc', 'cgeit', 'cdpse', 'ccoa', 'aaia', 'aaism',
+    foreach v_term in array array['aurivan', 'kaisip', 'isaca', 'cisa', 'cism', 'crisc', 'cgeit', 'cdpse', 'ccoa', 'aaia', 'aaism',
                                    'cobit', 'csx', 'admin', 'moderator', 'mod', 'team', 'support', 'official', 'staff'] loop
       v_t := private.fold_handle(v_term);
       if (length(v_t) <= 4 and (v_t = any (v_words) or v_squashed = v_t))
@@ -941,7 +941,7 @@ end $$;
 create trigger members_guard before insert or update on public.board_members
   for each row execute function private.members_guard();
 
--- Staff changes keep the public "Aurivan team" mark in step.
+-- Staff changes keep the public "KaiSip team" mark in step.
 create function private.staff_mark() returns trigger
 language plpgsql security definer set search_path = '' as $$
 begin

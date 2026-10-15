@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Aurivan Mobile Fix Script
+ * KaiSip Mobile Fix Script
  * Applies safe, mechanical CSS/HTML fixes to a single-page HTML file.
  *
  * Usage:

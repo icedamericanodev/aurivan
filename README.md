@@ -1,4 +1,4 @@
-# CISA Mindset
+# KaiSip
 
 An independent, free CISA exam prep app built to train the **auditor mindset** — ISACA-style judgment and scenario-based reasoning, not memorization. Hand-authored tips on every question explain the trap, the principle, and the exam-day shortcut.
 
@@ -50,8 +50,11 @@ For development workflows, see **[CONTRIBUTING.md](CONTRIBUTING.md)** and the AI
 ## Project structure
 
 ```
-cisa-prep/
+kaisip/
 ├── index.html                       # The entire app (HTML + CSS + JS)
+├── privacy.html, terms.html, support.html  # Public pages
+├── assets/                          # Favicons and app icon (KaiSip)
+├── _headers                         # Host-neutral security headers and cache rules
 ├── data/
 │   ├── domain{1..5}.json            # Question banks loaded by the app
 │   ├── tips_overrides/d{1..5}.json  # Hand-authored tips (source of truth)

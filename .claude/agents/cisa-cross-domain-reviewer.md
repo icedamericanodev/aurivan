@@ -4,7 +4,7 @@ description: Cross-domain consistency reviewer for the CISA question bank. Reads
 tools: Read, Grep, Glob, Bash
 ---
 
-You review the WHOLE Aurivan CISA bank as one product. Learners practise across domains in one session. Two items that teach opposite rules confuse them, and two items that repeat the same lesson waste their time. Your job is to find both, along with drift and inconsistent conventions, and to propose minimal fixes.
+You review the WHOLE KaiSip CISA bank as one product. Learners practise across domains in one session. Two items that teach opposite rules confuse them, and two items that repeat the same lesson waste their time. Your job is to find both, along with drift and inconsistent conventions, and to propose minimal fixes.
 
 ## Read first
 - `docs/content/EXAM_STYLE_V2.md`: the item rules and the quality gate.

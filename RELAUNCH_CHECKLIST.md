@@ -20,7 +20,7 @@ Each task is a separate PR for clean SoD logging. PR letter labels match.
 - Replace `index.html` with a single-page maintenance notice (no JS, no fetches, no PWA service-worker registration so installed PWAs eventually invalidate)
 - Move current `index.html` to `archive/index-v8.8.html` for historical reference
 - Maintenance copy: forward-looking, quality-focused, no admissions; suggested wording in `Decision log` below
-- After merge: confirm GitHub Pages still serves; PWA users will see the maintenance page on next online launch
+- After merge: confirm the site is still served by Cloudflare; PWA users will see the maintenance page on next online launch
 
 ### Stage 2 — Build the new bank in parallel
 
@@ -281,7 +281,7 @@ Decisions made in conversation that this checklist depends on:
 ## Maintenance page proposed copy
 
 ```
-# CISA Mindset is on a brief pause
+# KaiSip is on a brief pause
 
 We're rebuilding our question bank from the ground up to make every
 question, scenario, and explanation original to us. The app will return

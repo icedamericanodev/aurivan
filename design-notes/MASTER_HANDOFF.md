@@ -4,8 +4,14 @@
 > [`docs/mobile/DESIGN_SYSTEM.md`](../docs/mobile/DESIGN_SYSTEM.md) (tokens in
 > `mobile/src/theme/tokens.ts`). This file is kept as history only; its
 > navy/blue variant locks no longer apply.
+>
+> **Renamed on 2026-10-15.** The product is now **KaiSip** (formerly Aurivan) and
+> the logo is the Kasama mark, a K of three leaves with the lowercase wordmark
+> "kaisip"; masters are in `design-notes/brand-kaisip/`. The True North and
+> compass-A marks described below, and the files in `design-notes/assets/`, are
+> history only.
 
-# MASTER HANDOFF — Aurivan v9.0
+# MASTER HANDOFF — KaiSip v9.0
 > Single source of truth for Claude Code.
 > This file supersedes HANDOFF.md.
 > Last updated: May 2026
@@ -45,7 +51,7 @@
 
 ## THE SITUATION IN ONE PARAGRAPH
 
-There is an existing single-page CISA exam-prep web app (~9,000 lines of inline HTML/CSS/JS). It is being relaunched as **v9.0** after a major rebuild. The rebuild includes: a brand-new original 1,004-question bank (authored from ISACA/NIST/ISO primary sources, not recycled exam banks), a new brand identity (Aurivan), and a set of UX improvements designed in this project. Your job is to integrate everything in this handoff into the existing app. You are not building from scratch — you are uplifting an existing working app.
+There is an existing single-page CISA exam-prep web app (~9,000 lines of inline HTML/CSS/JS). It is being relaunched as **v9.0** after a major rebuild. The rebuild includes: a brand-new original 1,004-question bank (authored from ISACA/NIST/ISO primary sources, not recycled exam banks), a new brand identity (KaiSip), and a set of UX improvements designed in this project. Your job is to integrate everything in this handoff into the existing app. You are not building from scratch — you are uplifting an existing working app.
 
 ---
 
@@ -56,7 +62,7 @@ This design system project (the one you are reading from) contains:
 | File/Folder | What it is |
 |---|---|
 | `colors_and_type.css` | Full design token file — all colours, type, spacing, shadows, radii, motion tokens |
-| `assets/logo.svg` | Aurivan logo — three-arc continuous-cycle mark + lowercase wordmark |
+| `assets/logo.svg` | KaiSip logo — three-arc continuous-cycle mark + lowercase wordmark |
 | `preview/` | 12 design reference cards (colours, type, spacing, components) |
 | `ui_kits/web_app/index.html` | Interactive web app prototype — Dashboard, Practice, Flashcards, Progress |
 | `ui_kits/mobile_app/index.html` | Mobile prototype — iOS frame, 5 screens |
@@ -76,14 +82,14 @@ This design system project (the one you are reading from) contains:
 
 ## BRAND IDENTITY
 
-**Name:** Aurivan
+**Name:** KaiSip
 **Logo files:** `assets/logo.svg` (dark bg) · `assets/logo-light.svg` (light bg)
 **Brand pillars:** Navigate with clarity · Master with confidence · Adapt to change · Lead the future
 **Positioning:** "A continuous learning and readiness platform for IT Audit, Cyber Risk, and AI Governance professionals."
 **Tagline:** "Master Modern Risk."
 
 **Decision: Evolve to Navy/Blue — final brand logo confirmed**
-The Aurivan logo (compass + A mark, uploaded May 2026) uses a navy/blue palette, not purple. Update `--acc` from `#8b6dff` → `#3B82F6` and `--acc2` from `#ff7eb3` → `#14B8A6` across the app. Deep dark backgrounds stay unchanged — only the accent colours shift.
+The KaiSip logo (compass + A mark, uploaded May 2026) uses a navy/blue palette, not purple. Update `--acc` from `#8b6dff` → `#3B82F6` and `--acc2` from `#ff7eb3` → `#14B8A6` across the app. Deep dark backgrounds stay unchanged — only the accent colours shift.
 
 ### Fonts — Google Fonts
 ```html
@@ -302,7 +308,7 @@ renderQuestion(getNextQuestion());
 ```html
 <div id="welcome-banner">
   <div class="wb-dot"></div>
-  <span>Welcome to Aurivan — <strong>no account needed.</strong>
+  <span>Welcome to KaiSip — <strong>no account needed.</strong>
     Progress saves automatically in your browser.</span>
   <button onclick="dismissBanner()">×</button>
 </div>
@@ -421,7 +427,7 @@ All four pieces written and ready to paste. Full text in `relaunch-copy-v9.md`.
 | Landing page hero | Headline: "Built from the source." | Ready |
 | Twitter + LinkedIn post | Two versions (long/short) | Ready |
 
-**Note:** Copy uses "CISA Mindset" as the app name — update to "Aurivan" or whichever final name is confirmed before sending.
+**Note:** Copy uses "CISA Mindset" as the app name — update to "KaiSip" or whichever final name is confirmed before sending.
 
 ---
 
@@ -437,7 +443,7 @@ Work through this in sequence. Each phase is independently deployable.
 - [ ] Replace all body/UI font-family with Plus Jakarta Sans
 - [ ] Replace all label/chip/code font-family with JetBrains Mono
 - [ ] Fix `#505068` on any readable text → `#9090aa`
-- [ ] Update `<title>` to "Aurivan"
+- [ ] Update `<title>` to "KaiSip"
 - [ ] Add logo SVG from `assets/logo.svg` to the header
 
 ### Phase 2 — Question rendering (highest user-facing impact)

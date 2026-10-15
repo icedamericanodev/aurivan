@@ -1,6 +1,6 @@
 # CISA exam content outline (effective 1 August 2024)
 
-The topic map every Aurivan CISA question is tagged against. Use it to find
+The topic map every KaiSip CISA question is tagged against. Use it to find
 thin or missing topics before writing new questions.
 
 **Status: partly verified (2026-10-07).** The cloud environment blocks

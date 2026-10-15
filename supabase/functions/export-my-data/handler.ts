@@ -68,7 +68,7 @@ export function handleExportMyData(req: Request, deps: ExportDeps): Promise<Resp
     };
 
     // Everything that can fail is done: only now is the hour used.
-    const res = json(200, doc, { 'content-disposition': 'attachment; filename="aurivan-my-data.json"' });
+    const res = json(200, doc, { 'content-disposition': 'attachment; filename="kaisip-my-data.json"' });
     if (!(await deps.admin.claimExport(user.id))) {
       throw new HttpError(429, 'rate_limited', undefined, RETRY_AFTER_SEC);
     }

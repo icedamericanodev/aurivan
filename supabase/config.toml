@@ -1,4 +1,4 @@
-# Aurivan: LOCAL Supabase only (`supabase start`, CI's supabase.yml job).
+# KaiSip: LOCAL Supabase only (`supabase start`, CI's supabase.yml job).
 # No hosted project exists. There is no project ref, URL or key in this repo,
 # and nothing here is ever pushed to a hosted project automatically.
 # At Phase 9 (owner go-ahead) the [auth] values below are mirrored by hand on
@@ -98,19 +98,19 @@ otp_expiry = 600
 
 # Code-only emails: the templates carry {{ .Token }} and no link.
 [auth.email.template.confirmation]
-subject = "Your Aurivan sign-in code"
+subject = "Your KaiSip sign-in code"
 content_path = "./supabase/templates/otp_code.html"
 
 [auth.email.template.magic_link]
-subject = "Your Aurivan sign-in code"
+subject = "Your KaiSip sign-in code"
 content_path = "./supabase/templates/otp_code.html"
 
 [auth.email.template.email_change]
-subject = "Confirm your new email for Aurivan"
+subject = "Confirm your new email for KaiSip"
 content_path = "./supabase/templates/email_change_code.html"
 
 [auth.email.template.reauthentication]
-subject = "Your Aurivan confirmation code"
+subject = "Your KaiSip confirmation code"
 content_path = "./supabase/templates/otp_code.html"
 
 [auth.sms]

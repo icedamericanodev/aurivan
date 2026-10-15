@@ -6,7 +6,7 @@
 
 ## What was shipped in the previous session
 
-1. **PR #106 (merged → v9.2):** mobile header hamburger menu + "Free CISA Exam Prep" tagline below the Aurivan logo.
+1. **PR #106 (merged → v9.2):** mobile header hamburger menu + "Free CISA Exam Prep" tagline below the KaiSip logo.
 2. **PR #107 (awaiting maintainer merge):** professional-style prose pass across all 1,004 questions (em dashes, contractions, en dashes) + 7 new specialist review agents under `.claude/agents/`.
 
 **Confirm before doing anything else:** check if PR #107 is merged. If not, ask the user whether to wait for the merge or branch off `claude/add-cisa-questions-json-QnqYl` directly.

@@ -1,5 +1,5 @@
 /**
- * Aurivan Mobile Audit Script
+ * KaiSip Mobile Audit Script
  * Paste this entire block into Chrome/Safari DevTools console
  * while viewing your app at 375×667 (Device Toolbar on in DevTools)
  *
@@ -113,7 +113,7 @@
   const warnings = issues.filter(i => i.severity.startsWith('⚠'));
   const passes   = issues.filter(i => i.severity.startsWith('✓'));
 
-  console.group('%cAurivan Mobile Audit', 'font-weight:bold;font-size:14px');
+  console.group('%cKaiSip Mobile Audit', 'font-weight:bold;font-size:14px');
   console.log(`%c${failures.length} failures  ${warnings.length} warnings  ${passes.length} passing`,
     'color:gray;font-size:12px');
 

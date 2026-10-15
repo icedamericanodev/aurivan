@@ -1,4 +1,4 @@
-# Contributing to CISA Mindset
+# Contributing to KaiSip
 
 Thanks for caring enough to help. This document covers the practical bits — how to set up locally, the conventions to follow, and the most common workflows. For an AI-assistant-oriented version of the same information, see [CLAUDE.md](CLAUDE.md).
 
