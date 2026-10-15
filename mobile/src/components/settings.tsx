@@ -20,7 +20,7 @@
  * Simple on/off settings are NOT rows here: they stay `ToggleRow`s in the group.
  */
 import { useEffect, useRef, type ReactNode, type Ref } from 'react';
-import { Modal, ScrollView, StyleSheet, Pressable, useWindowDimensions, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, Platform, ScrollView, StyleSheet, Pressable, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { moveFocus } from '../lib/a11y';
 import { LARGE_TEXT, radius, scrimOp, space } from '../theme/tokens';
@@ -139,7 +139,8 @@ export function Sheet({
   }, [visible]);
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} statusBarTranslucent navigationBarTranslucent>
-      <View style={styles.sheetHost}>
+      {/* A sheet with a text field (Your name) must stay above the keyboard; for the others this does nothing. */}
+      <KeyboardAvoidingView style={styles.sheetHost} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         {/* The dim: a tap closes the sheet. Hidden from screen readers (the header button closes it). */}
         <Pressable
           accessible={false}
@@ -177,7 +178,7 @@ export function Sheet({
             {footer ? <View style={styles.sheetFoot}>{footer}</View> : null}
           </View>
         </FadeIn>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }

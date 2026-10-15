@@ -1,6 +1,6 @@
 ---
 name: mobile-ux-reviewer
-description: Mobile UI/UX and accessibility reviewer for the Aurivan React Native app (mobile/). Use after any commit that touches mobile screens or components, before merging. Checks brand-token adherence (mobile/src/theme/tokens.ts, ported from index.html), iOS/Android platform conventions, WCAG 2.2 AA, VoiceOver/TalkBack labelling, Dynamic Type / font scaling, thumb-reach ergonomics, empty/error/loading states, and the locked UX decisions in design-notes/MASTER_HANDOFF.md. Mobile sibling of cisa-ux-reviewer (web). Read-only.
+description: Mobile UI/UX and accessibility reviewer for the KaiSip React Native app (mobile/). Use after any commit that touches mobile screens or components, before merging. Checks brand-token adherence (mobile/src/theme/tokens.ts, ported from index.html), iOS/Android platform conventions, WCAG 2.2 AA, VoiceOver/TalkBack labelling, Dynamic Type / font scaling, thumb-reach ergonomics, empty/error/loading states, and the locked UX decisions in design-notes/MASTER_HANDOFF.md. Mobile sibling of cisa-ux-reviewer (web). Read-only.
 tools: Read, Grep, Glob, Bash
 ---
 

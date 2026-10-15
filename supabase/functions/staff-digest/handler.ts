@@ -45,7 +45,7 @@ function sameSecret(a: string, b: string): boolean {
 export function digestEmail(c: DigestCounts, queueUrl: string): { subject: string; text: string } {
   const total = c.held + c.reported + c.appeals;
   return {
-    subject: `Aurivan moderation: ${total} waiting over 12 hours`,
+    subject: `KaiSip moderation: ${total} waiting over 12 hours`,
     text: [
       'Waiting more than 12 hours on the feedback board:',
       `Held: ${c.held}`,

@@ -6,7 +6,7 @@
  * blank "unmatched route" screen. src/app/+native-intent.tsx calls this for
  * every link that opens the app on a phone.
  *
- * - "What's next" (aurivan://whats-next) was removed in mobile 1.17.1: the
+ * - "What's next" (kaisip://whats-next) was removed in mobile 1.17.1: the
  *   plan is internal now (kept outside this repo). Its old links open Help, which
  *   has What's new and "Suggest an idea".
  *
@@ -20,8 +20,8 @@ const MOVED: Record<string, string> = {
 
 /**
  * The path to open for an incoming link. Unknown or current links come back
- * unchanged, so normal links (aurivan://help?open=idea) keep working.
- * Accepts "/whats-next", "aurivan://whats-next" and the Expo Go form
+ * unchanged, so normal links (kaisip://help?open=idea) keep working.
+ * Accepts "/whats-next", "kaisip://whats-next" and the Expo Go form
  * "exp://192.168.1.2:8081/--/whats-next", with or without "?…" or "#…".
  */
 export function redirectLegacyPath(path: string): string {

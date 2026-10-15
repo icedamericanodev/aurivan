@@ -43,7 +43,7 @@ jest.mock('../components/icons', () => {
     get: (t, k: string) => (k in t ? t[k] : Icon),
   });
 });
-jest.mock('../components/brand', () => ({ BrandLockup: () => null, PillarList: () => null }));
+jest.mock('../components/brand', () => ({ KaisipLockup: () => null, KaisipMark: () => null, PillarList: () => null }));
 let mockParams: Record<string, string> = {};
 jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), canGoBack: () => true, canDismiss: () => false },
@@ -471,6 +471,7 @@ describe('F. Onboarding’s date step', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
     press('Start my plan');
+    press('Skip'); // the optional name step (mobile 1.23)
     press('Continue');
     press('Skip this question');
     expect(allText()).toContain('When is your exam?');

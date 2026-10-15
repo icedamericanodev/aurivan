@@ -1,4 +1,4 @@
-# CISA Mindset — Project Memory
+# KaiSip — Project Memory
 
 A static, single-page CISA exam prep app. No build step, no framework, no
 backend — just `index.html` + JSON data files served as-is. This document
@@ -10,6 +10,7 @@ work without rediscovering the layout.
 | Path | Purpose |
 |---|---|
 | `index.html` | The entire app — HTML, CSS, and inline JS in one file (~8.7k lines) |
+| `assets/` | Favicons, apple-touch-icon and the 512 px app icon (KaiSip, generated from `design-notes/brand-kaisip/icon.svg`). Masters for the logo live in `design-notes/brand-kaisip/` |
 | `data/domain{1..5}.json` | **Generated.** Per-domain question banks. Don't edit by hand. |
 | `data/tips_overrides/d{1..5}.json` | **Hand-authored.** Per-question tips, keyed by question ID. Source of truth for tips. |
 | `data/cisa_notes.json` | Topics notes (web Topics tab + mobile Study notes). Schema v2: `docs/content/NOTES_SCHEMA_V2.md`; lint with `scripts/lint_notes.py` |
@@ -174,6 +175,12 @@ kill %1
   HTTP; we keep it framework-free, no npm install, no bundler.
   (This rule is for the **web app** only. `mobile/` is an npm project —
   add packages there with `npx expo install` and justify each one.)
+- **Product name is KaiSip** (one word, capital K and S; renamed from Aurivan
+  on 15 Oct 2026, web v12). Logo is the Kasama mark (a K of three leaves) with
+  the lowercase wordmark "kaisip"; the header uses an inline, theme-aware SVG.
+  Saved-data keys that start with `aurivan_` (localStorage) and the `aurivan`
+  backup marker are kept ON PURPOSE so existing learners keep their progress;
+  do not rename them.
 - **Don't surface the total question count in user-facing copy.** The
   bank size is intentionally not advertised in the app; use generic
   phrasing ("practice questions across all 5 domains") instead.

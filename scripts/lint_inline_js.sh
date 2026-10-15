@@ -5,8 +5,8 @@ set -uo pipefail
 
 cd "$(dirname "$0")/.."
 
-OUT="/tmp/cisa-prep-inline.js"
-RC="/tmp/cisa-prep-eslintrc.json"
+OUT="/tmp/kaisip-inline.js"
+RC="/tmp/kaisip-eslintrc.json"
 
 python3 - <<PY > "$OUT"
 import re

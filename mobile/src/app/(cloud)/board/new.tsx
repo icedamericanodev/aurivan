@@ -1,5 +1,5 @@
 /**
- * The composer (spec §4.2 "Composer"), aurivan://board/new (and
+ * The composer (spec §4.2 "Composer"), kaisip://board/new (and
  * ?edit=<post id> for your own post). The type chips, the title, the
  * details, "Link an item (optional)", "Posting as {handle} · Change", the
  * live leak card, the rules line, the guidelines and the not-affiliated

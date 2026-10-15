@@ -1,5 +1,5 @@
 /**
- * "What syncs" (spec §3.3), aurivan://account/what-syncs: a short sheet
+ * "What syncs" (spec §3.3), kaisip://account/what-syncs: a short sheet
  * saying what travels with the account and what stays on this phone, and
  * the one v1 limit (removals don't sync yet). Reads nothing, calls nothing.
  */

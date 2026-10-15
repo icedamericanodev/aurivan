@@ -1,5 +1,5 @@
 /**
- * Sign out on this phone (spec §3.1 S5, §3.3), aurivan://account/sign-out.
+ * Sign out on this phone (spec §3.1 S5, §3.3), kaisip://account/sign-out.
  * "Sign out?" with "Remove my progress from this phone (for shared
  * devices)", UNticked. Progress stays unless the box is ticked. Ticked, the
  * button turns into the red "Remove and sign out", and a tap (Phase 7

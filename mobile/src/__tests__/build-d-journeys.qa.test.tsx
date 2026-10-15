@@ -53,7 +53,7 @@ jest.mock('../components/icons', () => {
     get: (t, k: string) => (k in t ? t[k] : Icon),
   });
 });
-jest.mock('../components/brand', () => ({ BrandLockup: () => null, PillarList: () => null }));
+jest.mock('../components/brand', () => ({ KaisipLockup: () => null, KaisipMark: () => null, PillarList: () => null }));
 jest.mock('expo-router', () => ({
   router: { replace: jest.fn(), back: jest.fn(), push: jest.fn(), canGoBack: () => true },
   useFocusEffect: jest.fn(),

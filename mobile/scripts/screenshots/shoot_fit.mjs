@@ -113,6 +113,7 @@ await page.evaluate((k) => localStorage.removeItem(k), SESSION);
 await edit(S, `v.state.onboarded = false;`);
 await go('/onboarding', 1800);
 await press('Start my plan');
+await press('Skip'); // mobile 1.23: the optional "What should we call you?" step
 await press('Continue');
 await shot('f01-onboarding-start-empty');
 await pick(/^New to audit/);

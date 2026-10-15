@@ -156,13 +156,13 @@ describe('practice: under the answer', () => {
     // Line ends in the link are CRLF (RFC 6068), never a bare %0A.
     expect(url).toContain('%0D%0A');
     expect(url).not.toMatch(/(?<!%0D)%0A/);
-    expect(decodeURIComponent(url.split('subject=')[1].split('&body=')[0])).toBe(`Aurivan · Report · CISA · ${q.id} · key`);
+    expect(decodeURIComponent(url.split('subject=')[1].split('&body=')[0])).toBe(`KaiSip · Report · CISA · ${q.id} · key`);
     const body = lastBody();
     expect(body).toContain('Your pick: C (shown as B)');
     expect(body).toContain('Suggested answer: D (shown as A)');
     expect(body).toContain('Shown order (screen = bank): A=D, B=C, C=B, D=A');
     expect(body).toContain('Where: Practice · Quick 10');
-    expect(body).toContain('App: Aurivan 1.7.0 (');
+    expect(body).toContain('App: KaiSip 1.7.0 (');
     // The question's own text never goes in the email.
     expect(body).not.toContain(q.stem.slice(0, 40));
 
@@ -227,7 +227,7 @@ describe('no email app: the fallback', () => {
     const text = allText();
     expect(text).toContain('We couldn’t open an email app.');
     expect(text).toContain('certprep.support@gmail.com');
-    expect(text).toContain(`Subject: Aurivan · Report · CISA · ${q.id} · outdated`);
+    expect(text).toContain(`Subject: KaiSip · Report · CISA · ${q.id} · outdated`);
     expect(text).toContain('Reason: Outdated standard or reference');
     // Selectable, so it can be copied by hand too.
     expect(root().findAll((n) => n.props.selectable === true && typeof n.type === 'string').length).toBeGreaterThan(1);

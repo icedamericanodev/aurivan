@@ -8,6 +8,9 @@ name: Phone update (EAS Update)
 # Safety: app.json uses the "fingerprint" runtime policy, so an update only
 # reaches APKs whose native parts match it. A change to native code (a new
 # library with Android code, the icon, permissions) needs a new APK instead.
+# Mobile 1.23 (the rename to KaiSip: new name, icon and package id) is such a
+# change: its runtime differs from the Aurivan APKs' (5e26d4b...), so those
+# never receive KaiSip updates, and KaiSip 1.23 itself needs a new APK build.
 #
 # Needs the EXPO_TOKEN repository secret (an access token from expo.dev). If it
 # is not set, the job says so and stops without failing.

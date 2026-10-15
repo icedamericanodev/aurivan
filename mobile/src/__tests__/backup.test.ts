@@ -155,7 +155,7 @@ describe('round trip', () => {
     const before = { settings: settingsData(), progress: progressData() };
     expect(await saveBackup(NOW)).toBe('shared');
     // The file is named by date and opened in the share sheet.
-    expect(mockShared).toEqual(['file:///cache/aurivan-backup-2026-10-10.json']);
+    expect(mockShared).toEqual(['file:///cache/kaisip-backup-2026-10-10.json']);
     expect(useBackup.getState().lastBackupAt).toBe(NOW);
     const text = mockFiles.get(mockShared[0])!;
 
@@ -175,7 +175,7 @@ describe('round trip', () => {
   it('the file holds the envelope and both stores, and nothing about the device', () => {
     studiedLearner();
     const file = currentBackup(NOW);
-    expect(file).toMatchObject({ app: 'aurivan', schema: BACKUP_SCHEMA, appVersion: '1.3.0', exportedAt: new Date(NOW).toISOString() });
+    expect(file).toMatchObject({ app: 'kaisip', schema: BACKUP_SCHEMA, appVersion: '1.3.0', exportedAt: new Date(NOW).toISOString() });
     expect(file.stores.settings.version).toBe(SETTINGS_VERSION);
     expect(file.stores.progress.version).toBe(PROGRESS_VERSION);
     expect(Object.keys(file).sort()).toEqual(['app', 'appVersion', 'exportedAt', 'schema', 'stores']);
@@ -304,8 +304,24 @@ describe('a bad file is refused and changes nothing', () => {
   };
 
   it('wrong app', () => {
-    expect(codeOf(JSON.stringify({ ...good(), app: 'other' }))).toBe('not-aurivan');
-    expect(codeOf('[1,2,3]')).toBe('not-aurivan');
+    expect(codeOf(JSON.stringify({ ...good(), app: 'other' }))).toBe('not-kaisip');
+    expect(codeOf('[1,2,3]')).toBe('not-kaisip');
+  });
+
+  it('accepts the new "kaisip" marker AND the old "aurivan" one (1.22 and before)', () => {
+    expect(codeOf(JSON.stringify({ ...good(), app: 'kaisip' }))).toBe('ok');
+    // A backup made by the old Aurivan app (the move to KaiSip is a new install, so this is the migration path).
+    expect(codeOf(JSON.stringify({ ...good(), app: 'aurivan' }))).toBe('ok');
+    expect(codeOf(JSON.stringify({ ...good(), app: 'Aurivan' }))).toBe('not-kaisip'); // exact markers only
+    expect(codeOf(JSON.stringify({ ...good(), app: null }))).toBe('not-kaisip');
+    expect(codeOf(JSON.stringify({ ...good(), app: ['kaisip'] }))).toBe('not-kaisip');
+  });
+
+  it('the wrong-file message names both file name starts', () => {
+    expect(BACKUP_ERROR_COPY['not-kaisip']).toContain('kaisip-backup');
+    expect(BACKUP_ERROR_COPY['not-kaisip']).toContain('aurivan-backup');
+    expect(BACKUP_ERROR_COPY['not-json']).toContain('kaisip-backup');
+    expect(BACKUP_ERROR_COPY['too-big']).toContain('kaisip-backup');
   });
 
   it('unknown or newer schema', () => {
@@ -327,8 +343,9 @@ describe('a bad file is refused and changes nothing', () => {
   it('bad JSON', () => {
     expect(codeOf('{"apps":[1,2')).toBe('not-json');
     expect(codeOf('')).toBe('not-json');
-    // Cut off, but clearly ours: "damaged", not "not an Aurivan backup".
+    // Cut off, but clearly ours: "damaged", not "not a KaiSip backup".
     expect(codeOf('{"app":"aurivan",')).toBe('bad-data');
+    expect(codeOf('{"app":"kaisip",')).toBe('bad-data');
   });
 
   it('wrong types, anywhere in the file', () => {
@@ -391,7 +408,7 @@ describe('a bad file is refused and changes nothing', () => {
     mockFiles.set('file:///picked/bad.json', '{"app":"other"}');
     mockPick = { canceled: false, assets: [{ uri: 'file:///picked/bad.json', name: 'bad.json', size: 15, lastModified: NOW }] };
     const out = await pickBackup();
-    expect(out).toEqual({ kind: 'error', code: 'not-aurivan' });
+    expect(out).toEqual({ kind: 'error', code: 'not-kaisip' });
     expect(settingsData()).toEqual(before.settings);
     expect(progressData()).toEqual(before.progress);
     expect(useBackup.getState().undo).toBeNull();
@@ -431,7 +448,7 @@ describe('the preview', () => {
   });
 
   it('file name and byte size helpers', () => {
-    expect(backupFileName(NOW)).toBe('aurivan-backup-2026-10-10.json');
+    expect(backupFileName(NOW)).toBe('kaisip-backup-2026-10-10.json');
     expect(utf8Bytes('aé€😀')).toBe(1 + 2 + 3 + 4);
   });
 });
@@ -693,7 +710,7 @@ describe('hardening from the reviews', () => {
     expect(useBackup.getState().undo).not.toBeNull();
     // Damage the snapshot.
     const snap = useBackup.getState().undo!;
-    useBackup.setState({ undo: { ...snap, file: { ...snap.file, app: 'other' as 'aurivan' } } });
+    useBackup.setState({ undo: { ...snap, file: { ...snap.file, app: 'other' as 'kaisip' } } });
     expect(await undoRestore(NOW + DAY)).toEqual({ kind: 'invalid' });
     expect(useBackup.getState().undo).toBeNull();
   });

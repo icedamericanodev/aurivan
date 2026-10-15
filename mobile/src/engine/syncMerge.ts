@@ -78,9 +78,10 @@ export const SYNCED_SETTINGS = [
 /**
  * Settings that never leave the phone: reminders, theme, motion and haptics
  * belong to the device; `onboarded` is this install's; the fit card's local
- * counters (`fitChanges`, `fitAskDays`) are "never sent anywhere" by design.
+ * counters (`fitChanges`, `fitAskDays`) are "never sent anywhere" by design;
+ * `displayName` (mobile 1.23, what the learner asked to be called) is "only on this phone".
  */
-export const DEVICE_LOCAL_SETTINGS = ['onboarded', 'theme', 'motion', 'reminder', 'haptics', 'fitChanges', 'fitAskDays'] as const;
+export const DEVICE_LOCAL_SETTINGS = ['onboarded', 'theme', 'motion', 'reminder', 'haptics', 'fitChanges', 'fitAskDays', 'displayName'] as const;
 type DeviceLocalSetting = (typeof DEVICE_LOCAL_SETTINGS)[number];
 /** Progress that never leaves the phone: today's count and plans, and the plant display choices. */
 export const DEVICE_LOCAL_PROGRESS = ['today', 'days', 'plantSettings'] as const;

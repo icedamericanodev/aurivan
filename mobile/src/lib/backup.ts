@@ -55,7 +55,7 @@ import { carryPlantIdentity, plantSubtopics } from './plant';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from './reminders';
 
 // ── The data in each store (no actions) ──────────────────────────────────
-const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'motion', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize', 'badgesHidden', 'familiarity', 'dailyMinutes', 'examFocused', 'fitPrompt', 'fitChanges', 'fitAskDays'] as const;
+const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'motion', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize', 'badgesHidden', 'familiarity', 'dailyMinutes', 'examFocused', 'fitPrompt', 'fitChanges', 'fitAskDays', 'displayName'] as const;
 const PROGRESS_KEYS = ['byCert', 'streak', 'today', 'days', 'reports', 'plantSettings'] as const;
 
 type SettingsData = Pick<ReturnType<typeof useSettings.getState>, (typeof SETTINGS_KEYS)[number]>;
@@ -129,7 +129,7 @@ export function backupSummary(data: BackupData): BackupSummary {
 }
 
 // ── Old backup files in the cache ────────────────────────────────────────
-const BACKUP_NAME = /^aurivan-backup-.*\.json$/;
+const BACKUP_NAME = /^(?:kaisip|aurivan)-backup-.*\.json$/;
 /**
  * Delete backup files we wrote to the app's cache more than an hour ago.
  * (Not right after sharing: some share targets read the file a little later.)
@@ -173,7 +173,7 @@ export async function saveBackup(now = Date.now()): Promise<SaveOutcome> {
     const file = new File(Paths.cache, name);
     file.create({ overwrite: true });
     file.write(text);
-    await Sharing.shareAsync(file.uri, { mimeType: 'application/json', UTI: 'public.json', dialogTitle: 'Save your Aurivan backup' });
+    await Sharing.shareAsync(file.uri, { mimeType: 'application/json', UTI: 'public.json', dialogTitle: 'Save your KaiSip backup' });
   }
   useBackup.getState().setLastBackup(now);
   return 'shared';
@@ -329,6 +329,10 @@ async function writeAll(
   // Likewise "Show badges" (1.10): a learner who hid badges keeps them hidden
   // when restoring a file from before the switch existed.
   if (data.settings.badgesHidden === undefined) settings.badgesHidden = useSettings.getState().badgesHidden;
+  // And the name (1.23): a file from before it existed has none, so keep the one this phone already has.
+  if (data.settings.displayName === undefined) settings.displayName = useSettings.getState().displayName;
+  // A file's name that wasn't clean arrives as '': that is "no name", saved as no key.
+  if (settings.displayName === '') settings.displayName = undefined;
   const byCert: ProgressData['byCert'] = {};
   const phoneCerts = useProgress.getState().byCert;
   const at = Date.now();

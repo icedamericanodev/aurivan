@@ -102,9 +102,9 @@ await page.waitForTimeout(1200);
 await page.screenshot({ path: `${out}/03a-lesson-idea.png` });
 console.log('shot lesson idea');
 // Settings → About: the brand vision (lockup, tagline, four pillars).
-// Mobile 1.17: the vision sits behind the "About Aurivan" row, in a sheet.
+// Mobile 1.17: the vision sits behind the "About KaiSip" row, in a sheet.
 await shot0('16b-settings-about', '/settings');
-await page.getByRole('button', { name: /^About Aurivan/ }).first().click();
+await page.getByRole('button', { name: /^About KaiSip/ }).first().click();
 await page.waitForTimeout(900);
 await page.screenshot({ path: `${out}/16b-settings-about.png` });
 console.log('shot settings about');
@@ -330,6 +330,10 @@ await edit('aurivan.settings.v1', 'v.state.onboarded = false;');
 // 22: the welcome (lockup, tagline, pillars); 22b: the exam; 22c: the date.
 await shot('22-onboarding', '/onboarding');
 await page.getByText('Start my plan', { exact: true }).click();
+await page.waitForTimeout(900);
+// 22a: the optional name step (mobile 1.23), then Skip to the exam.
+await page.screenshot({ path: `${out}/22a-onboarding-name.png` });
+await page.getByText('Skip', { exact: true }).click();
 await page.waitForTimeout(900);
 await page.screenshot({ path: `${out}/22b-onboarding-exam.png` });
 await page.getByText('Continue', { exact: true }).click();

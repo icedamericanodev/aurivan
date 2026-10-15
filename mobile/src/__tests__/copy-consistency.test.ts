@@ -108,7 +108,11 @@ describe('the scanner itself (code review M3 probes)', () => {
 describe('copy consistency: the old words stay gone', () => {
   it('no "weighted by the blueprint", "Stage N", "Follow my stage" or "Counts half toward readiness"', () => {
     expect(hits(/weighted by the (exam )?blueprint/i)).toEqual([]);
-    expect(hits(/^Stage …|\bStage \d/)).toEqual([]);
+    // Mobile 1.23 (owner's mockup A, decided): ONLY Today's readiness row says "Stage 4 · Rehearse the exam".
+    // The plant no longer sits beside it (its row is under the tiles and shows no number), so the two
+    // numbered ladders of PR #43 are never side by side. Everywhere else the old rule holds.
+    expect(hits(/^Stage …|\bStage \d/, { in: (f) => f !== join('app', '(tabs)', 'home.tsx') })).toEqual([]);
+    expect(hits(/^Stage …|\bStage \d/, { in: (f) => f === join('app', '(tabs)', 'home.tsx') })).toEqual(['app/(tabs)/home.tsx: Stage … · …']);
     expect(hits(/Follow my stage/i)).toEqual([]);
     expect(hits(/counts? half toward readiness/i)).toEqual([]);
   });

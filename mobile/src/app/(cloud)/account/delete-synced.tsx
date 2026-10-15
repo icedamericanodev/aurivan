@@ -1,6 +1,6 @@
 /**
  * Delete synced progress (spec §3.1 S6, compliance 4.7),
- * aurivan://account/delete-synced: "Delete synced progress?" with what it
+ * kaisip://account/delete-synced: "Delete synced progress?" with what it
  * does (the copy in the account goes; the account and this phone's progress
  * stay; sync turns off; the learner's other devices stop syncing when they
  * next connect), the destructive button, and Cancel. A sheet rather

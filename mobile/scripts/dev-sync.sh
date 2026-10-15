@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
-# Run Aurivan on your Android emulator and keep it in sync with GitHub.
+# Run KaiSip on your Android emulator and keep it in sync with GitHub.
 #
 #   bash scripts/dev-sync.sh          # from inside the mobile/ folder
 #
-# Aurivan runs as its OWN app on the emulator (a "development build"), not
+# KaiSip runs as its OWN app on the emulator (a "development build"), not
 # inside Expo Go. On start this builds and installs that app (first time
 # ~5-10 minutes, later runs under a minute), then serves your code to it.
 #
@@ -36,7 +36,7 @@ INTERVAL=15
 
 cd "$(dirname "$0")/.." || exit 1          # → mobile/
 if [ ! -f package.json ] || [ ! -f app.json ]; then
-  echo "Run this from inside the Aurivan repository (mobile/ folder)." >&2
+  echo "Run this from inside the KaiSip repository (mobile/ folder)." >&2
   exit 1
 fi
 
@@ -131,7 +131,7 @@ WATCH_PID=$!
 
 # ── The app (foreground, so r / j / m keys work) ───────────────────────
 while true; do
-  # Builds (incrementally), installs the Aurivan development build on the
+  # Builds (incrementally), installs the KaiSip development build on the
   # running emulator, and starts the dev server that streams code to it.
   npx expo run:android
   [ "$STOPPING" = "1" ] && break
@@ -141,7 +141,7 @@ while true; do
     # npm ci installs exactly what the lock file lists and never rewrites it
     # (npm install can, which then blocks the next git pull).
     npm ci --silent   # also rebuilds the question pack (postinstall)
-    echo "Rebuilding Aurivan with the new libraries."
+    echo "Rebuilding KaiSip with the new libraries."
     continue
   fi
 

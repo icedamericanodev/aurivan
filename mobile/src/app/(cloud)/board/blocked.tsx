@@ -1,5 +1,5 @@
 /**
- * Blocked learners (spec §4.1 B5), aurivan://board/blocked, from Settings →
+ * Blocked learners (spec §4.1 B5), kaisip://board/blocked, from Settings →
  * Feedback board. Each blocked learner's name and "Unblock". Blocking hides
  * their posts and comments for you everywhere, and they can't comment on
  * your posts; they aren't told either way.

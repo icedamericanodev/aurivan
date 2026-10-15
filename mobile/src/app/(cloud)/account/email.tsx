@@ -1,5 +1,5 @@
 /**
- * Sign in with email (spec §2.1 A2, §2.2), aurivan://account/email.
+ * Sign in with email (spec §2.1 A2, §2.2), kaisip://account/email.
  *
  * Step 1: the email field and "Send code". Step 2: the 6-digit code,
  * "Sign in", "Send a new code in 0:42" (60 seconds between sends) and

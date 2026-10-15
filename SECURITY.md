@@ -2,7 +2,7 @@
 
 ## Scope
 
-CISA Mindset is a **fully client-side, single-file HTML application**. It has:
+KaiSip is a **fully client-side, single-file HTML application**. It has:
 
 - No backend server
 - No database
@@ -37,10 +37,9 @@ Out of scope:
 
 ## Reporting a vulnerability
 
-Please **do not** open a public GitHub issue for security findings. Instead:
+The source repository is private, so please report security findings by email:
 
-1. Open a [private security advisory](https://github.com/laladev-ai/cisa-prep/security/advisories/new) on this repository, **or**
-2. Email **`certprep.support@gmail.com`** with the subject line `Security report — CISA Mindset`.
+- Email **`certprep.support@gmail.com`** with the subject line `Security report — KaiSip`.
 
 Include:
 
@@ -56,7 +55,7 @@ You'll get an acknowledgment within **48 hours** and, for confirmed issues, a fi
 For non-security bugs and feature requests, the easiest path is:
 
 - Click **Feedback** in the app header → category **Bug** or **Feature**
-- Or open a regular [GitHub issue](https://github.com/laladev-ai/cisa-prep/issues/new)
+- Or email **`certprep.support@gmail.com`** with the subject line `KaiSip · Feedback`
 
 ## Privacy summary
 

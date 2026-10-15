@@ -41,6 +41,17 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.23.0',
+    date: '2026-10-15',
+    new: [
+      'Aurivan is now KaiSip, with a fresh look and a new logo.',
+      'Tell KaiSip what to call you, and Today says hello by your first name. It is optional and stays on your phone.',
+    ],
+    improved: [
+      'Moving from Aurivan? KaiSip installs as a new app. In the old app, go to Settings, then Your data, then Save a backup. Then restore that file in KaiSip.',
+    ],
+  },
+  {
     version: '1.22.0',
     date: '2026-10-15',
     new: ['The recovery timeline and other key diagrams in the notes are now drawn for your phone, so every label is easy to read.'],
@@ -121,7 +132,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.15.0',
     date: '2026-10-12',
     new: [
-      'Tell Aurivan where you’re starting from and how long you have most days, and Today’s plan fits your time.',
+      'Tell KaiSip where you’re starting from and how long you have most days, and Today’s plan fits your time.',
       'New to audit? Your first days start with a short lesson before any questions.',
       'Experienced? An exam-focused plan leads with mocks and your weak spots.',
     ],
@@ -310,7 +321,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.1.0',
     date: '2026-10-09',
     new: [
-      'The first Aurivan: a daily plan, practice and mock exams, spaced review and a mistake journal.',
+      'The first KaiSip: a daily plan, practice and mock exams, spaced review and a mistake journal.',
       'Short lessons for every exam topic, study notes and brain games.',
       'Share your progress as a card.',
     ],
@@ -362,7 +373,16 @@ export const FAQ: readonly FaqEntry[] = [
     question: 'How do I move my progress to a new phone?',
     answer: [
       'In Settings, under Your data, tap Save a backup and keep the file somewhere the new phone can reach, such as Files, Google Drive or your email.',
-      'On the new phone, choose Restore from a backup on the welcome screen, or later in Settings. Aurivan never uploads your progress.',
+      'On the new phone, choose Restore from a backup on the welcome screen, or later in Settings. KaiSip never uploads your progress.',
+    ],
+    topic: 'backup',
+  },
+  {
+    id: 'moving-from-aurivan',
+    question: 'I used Aurivan. How do I bring my progress to KaiSip?',
+    answer: [
+      'Aurivan is now KaiSip. KaiSip installs as a new app next to the old one, so your progress moves with a backup file.',
+      'In the old Aurivan app, open Settings, then Your data, then Save a backup, and keep the file somewhere you can reach it. In KaiSip, choose Restore from a backup on the welcome screen, or later in Settings, and pick that file.',
     ],
     topic: 'backup',
   },
@@ -379,7 +399,7 @@ export const FAQ: readonly FaqEntry[] = [
     id: 'reminders',
     question: 'Why don’t I get study reminders?',
     answer: [
-      'Reminders stay off until you turn them on in Settings, under Study. Your phone must also allow notifications for Aurivan.',
+      'Reminders stay off until you turn them on in Settings, under Study. Your phone must also allow notifications for KaiSip.',
       'You get at most one reminder a day, on the days you choose.',
     ],
     topic: 'reminders',
@@ -388,7 +408,7 @@ export const FAQ: readonly FaqEntry[] = [
     id: 'data',
     question: 'What data does the app keep?',
     answer: [
-      'Your progress, settings and the list of problems you reported stay on this phone. There is no account, no analytics and no tracking.',
+      'Your progress, settings, the name you ask us to call you (optional) and the list of problems you reported stay on this phone. There is no account, no analytics and no tracking.',
       'If you email us, we see your email address and what you write. We use them only to reply and to fix the problem.',
     ],
     topic: 'privacy',
@@ -397,16 +417,16 @@ export const FAQ: readonly FaqEntry[] = [
     id: 'exam-questions',
     question: 'Can I send you a question from my exam?',
     answer: [
-      'Please don’t. Candidates agree to keep exam content confidential, so we can’t accept or use questions from the real exam. Every Aurivan question is written from scratch.',
+      'Please don’t. Candidates agree to keep exam content confidential, so we can’t accept or use questions from the real exam. Every KaiSip question is written from scratch.',
       'Tell us the topic you’d like more practice on instead.',
     ],
     topic: 'study',
   },
   {
     id: 'isaca',
-    question: 'Is Aurivan affiliated with ISACA?',
+    question: 'Is KaiSip affiliated with ISACA?',
     answer: [
-      'No. Aurivan is independent and is not affiliated with, endorsed by or sponsored by ISACA. CISA® is a registered trademark of ISACA.',
+      'No. KaiSip is independent and is not affiliated with, endorsed by or sponsored by ISACA. CISA® is a registered trademark of ISACA.',
     ],
     topic: 'other',
   },

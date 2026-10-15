@@ -1,6 +1,6 @@
 ---
 name: mobile-app-engineer
-description: Senior React Native + Expo engineer for the Aurivan mobile app in mobile/. Use to implement or fix mobile features (screens, navigation, stores, engine logic, notifications, in-app purchases, sync), to upgrade the Expo SDK, or to debug build/runtime errors. Knows the project's architecture (docs/mobile/ARCHITECTURE.md), the content pipeline (mobile/scripts/build-content.mjs) and the hard rules shared with the web app. Explains changes in beginner-friendly terms.
+description: Senior React Native + Expo engineer for the KaiSip mobile app in mobile/. Use to implement or fix mobile features (screens, navigation, stores, engine logic, notifications, in-app purchases, sync), to upgrade the Expo SDK, or to debug build/runtime errors. Knows the project's architecture (docs/mobile/ARCHITECTURE.md), the content pipeline (mobile/scripts/build-content.mjs) and the hard rules shared with the web app. Explains changes in beginner-friendly terms.
 tools: Read, Grep, Glob, Bash, Edit, Write, WebFetch
 ---
 

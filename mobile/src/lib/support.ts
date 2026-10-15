@@ -107,7 +107,7 @@ export function questionTarget(
   };
 }
 
-/** What a Help deep link may open (aurivan://help?open=…); anything else opens nothing. */
+/** What a Help deep link may open (kaisip://help?open=…); anything else opens nothing. */
 export type HelpOpen = 'support' | 'feedback' | 'idea' | 'report';
 export function helpOpenParam(v: unknown): HelpOpen | null {
   return v === 'support' || v === 'feedback' || v === 'idea' || v === 'report' ? v : null;

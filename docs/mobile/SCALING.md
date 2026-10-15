@@ -3,7 +3,7 @@
 Written in Uplift Phase 7 (sync, built OFF). Nothing here is live: no
 hosted project exists until the owner's go-live (Phase 9). This page sizes
 the backend for **up to 5,000 accounts**, says what to watch, and what to
-change, in order, if Aurivan grows past that. The plan and region are the
+change, in order, if KaiSip grows past that. The plan and region are the
 **owner's decision** (PHASE6_8 §9 #4); the numbers below are what that
 decision rests on.
 

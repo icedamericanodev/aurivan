@@ -18,7 +18,7 @@ Deno.serve((req) => {
     mailer: null,
     secret: Deno.env.get('STAFF_DIGEST_SECRET') ?? null,
     to: Deno.env.get('SUPPORT_EMAIL') ?? 'certprep.support@gmail.com',
-    queueUrl: 'aurivan://board/moderation',
+    queueUrl: 'kaisip://board/moderation',
     log,
   });
 });

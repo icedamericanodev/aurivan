@@ -1,4 +1,4 @@
--- Aurivan: progress sync (Uplift Phase 7). NOT APPLIED ANYWHERE.
+-- KaiSip: progress sync (Uplift Phase 7). NOT APPLIED ANYWHERE.
 -- One validated snapshot per store per learner (security.md §4.1; spec
 -- PHASE6_8.md §3.7). Append-only from the first `supabase db push` (Phase 9).
 --

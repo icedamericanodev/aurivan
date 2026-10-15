@@ -1,0 +1,70 @@
+/**
+ * The "What should we call you?" text field, used twice: on the optional
+ * onboarding step and in Settings → Your name (mobile 1.23).
+ *
+ * Plain English:
+ * - The learner types a first name or nickname. It is optional and stays on
+ *   this phone (engine/displayName.ts has the one rule for what is kept).
+ * - The field does NOT tidy the text while the learner types (that would eat
+ *   the space they just typed between two words). It tidies it when they
+ *   finish editing, and the screens save the tidied value.
+ */
+import { TextInput, View } from 'react-native';
+import { cleanDisplayName, MAX_DISPLAY_NAME } from '../engine/displayName';
+import { radius, space, type as typeScale, maxScale } from '../theme/tokens';
+import { useTheme } from '../theme/useTheme';
+import { T } from './ui';
+
+/** The helper line under the field, the same words wherever the field shows. */
+export const NAME_HELPER = 'Only on this phone. It just helps us say hello.';
+
+/** Shown instead of the helper when the typed text looks like a web address or an email. */
+export const NAME_REJECTED = 'That looks like a web address or an email, so we leave it out. Try just your first name.';
+
+export function DisplayNameField({
+  value,
+  onChange,
+  onSubmit,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  /** The keyboard's "Done" key. */
+  onSubmit?: () => void;
+}) {
+  const { c } = useTheme();
+  return (
+    <View>
+      <TextInput
+        value={value}
+        onChangeText={onChange}
+        placeholder="Your first name"
+        placeholderTextColor={c.muted}
+        accessibilityLabel="Your name"
+        accessibilityHint={`Optional. Up to ${MAX_DISPLAY_NAME} characters. ${NAME_HELPER}`}
+        maxFontSizeMultiplier={maxScale.body}
+        // The field never takes more than the save keeps (an emoji uses two of these units, so it keeps even less).
+        maxLength={MAX_DISPLAY_NAME}
+        autoCapitalize="words"
+        autoCorrect={false}
+        spellCheck={false}
+        textContentType="givenName"
+        autoComplete="name-given"
+        returnKeyType="done"
+        onSubmitEditing={onSubmit}
+        onEndEditing={() => {
+          // Text that cleans to nothing (a link, an email) stays visible, so the explanation under the field stays too.
+          const clean = cleanDisplayName(value);
+          if (clean !== value && (clean !== '' || value.trim() === '')) onChange(clean);
+        }}
+        style={[
+          typeScale.body,
+          { minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, paddingHorizontal: space.lg, paddingVertical: space.md, color: c.ink, backgroundColor: c.raised, borderColor: c.control },
+        ]}
+      />
+      {/* A name that looks like a web address or email is left out; say so instead of silently showing "Not set". */}
+      <View accessibilityLiveRegion="polite" style={{ marginTop: space.sm }}>
+        <T v="meta">{value.trim() !== '' && cleanDisplayName(value) === '' ? NAME_REJECTED : NAME_HELPER}</T>
+      </View>
+    </View>
+  );
+}

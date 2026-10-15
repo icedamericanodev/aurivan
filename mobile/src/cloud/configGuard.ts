@@ -40,7 +40,7 @@ export interface CloudConfig {
 
 export class CloudConfigError extends Error {
   constructor(message: string) {
-    super(`Aurivan cloud config: ${message}`);
+    super(`KaiSip cloud config: ${message}`);
     this.name = 'CloudConfigError';
   }
 }

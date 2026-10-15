@@ -1,4 +1,4 @@
-# Aurivan — Product Vision
+# KaiSip — Product Vision
 
 **The trusted companion from "I booked my exam" to "I passed."**
 Status: direction agreed 2026-10-06 · Built from four specialist reports
@@ -6,11 +6,11 @@ Status: direction agreed 2026-10-06 · Built from four specialist reports
 
 ---
 
-## 1. Why learners will choose — and keep — Aurivan
+## 1. Why learners will choose — and keep — KaiSip
 
 What the market gets wrong (competitive scan, Oct 2026):
 
-| Gap in today's exam-prep apps | Aurivan's answer |
+| Gap in today's exam-prep apps | KaiSip's answer |
 |---|---|
 | **Wrong answer keys** — the #1 complaint across third-party banks; nobody shows errors being fixed | A **Trust card** on every question (source, last reviewed, Report issue) and a public "fixed" changelog |
 | **Only the right answer is explained** | Every option explained, plus a named **trap** — already in our content |
@@ -66,7 +66,7 @@ Why this beats MP4 for a solo founder at many-certification scale:
 - Real text → screen readers, captions and large text work automatically.
 - Add MP4 "domain intro" videos later where storytelling adds value.
 
-**Content rule:** lessons are **original Aurivan writing**. The existing
+**Content rule:** lessons are **original KaiSip writing**. The existing
 `data/cisa_notes.json` cites a commercial review manual as its source, so it
 is used only as a *topic map*, never copied. Every lesson records its
 provenance, framework references and a `lastReviewed` date.

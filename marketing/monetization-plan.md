@@ -1,6 +1,6 @@
-# Aurivan monetization plan
+# KaiSip monetization plan
 
-How Aurivan goes from a free app to a sustainable one without breaking the
+How KaiSip goes from a free app to a sustainable one without breaking the
 trust the free launch was built on. This is a strategy document, not a
 spec. It is internal: nothing here is user-facing copy.
 
@@ -16,7 +16,7 @@ spec. It is internal: nothing here is user-facing copy.
 
 ## The constraint that shapes everything
 
-Aurivan is a single static `index.html` plus JSON files. No backend, no
+KaiSip is a single static `index.html` plus JSON files. No backend, no
 accounts, progress saved in the browser's `localStorage`.
 
 That has one hard consequence: **static content cannot be truly hidden
@@ -56,7 +56,7 @@ on. A monthly subscription against that lifecycle either churns almost
 immediately (little revenue) or quietly keeps billing people after their
 exam (predatory, and it would destroy the brand). A single payment for a
 year of access fits the study lifecycle, needs no churn management, and
-reinforces Aurivan's core position as the affordable alternative to
+reinforces KaiSip's core position as the affordable alternative to
 ISACA's costly official materials.
 
 ### Free vs Pro split
@@ -76,14 +76,14 @@ honest. Free must stay genuinely useful as a study tool on its own.
 
 Around $19 to $29 for the year, with an early-bird price near $12 to $15
 for the first adopters. The framing writes itself: ISACA's official
-question database costs $300 or more for a year of access; Aurivan Pro
+question database costs $300 or more for a year of access; KaiSip Pro
 is a fraction of that for the same window.
 
 ### No accounts needed
 
 The license key is the credential. A learner buys Pro, receives a key,
 and pastes it into the app. This preserves the "no signup" promise that
-sets Aurivan apart. In v1, moving to a new device means re-entering the
+sets KaiSip apart. In v1, moving to a new device means re-entering the
 key; "sync" is a manual export and import of a progress file. True cloud
 sync is a Phase 2 item because it genuinely needs a backend.
 
@@ -123,7 +123,7 @@ path it does not compromise the static-app model.
   message: the free tier stays genuinely free and complete enough to
   study with, and Pro is extra value rather than a wall around the
   basics.
-- **Grandfather every current free user.** Anyone using Aurivan free
+- **Grandfather every current free user.** Anyone using KaiSip free
   before Pro launches keeps their access.
 
 ## Phase 2: only if Pro proves itself

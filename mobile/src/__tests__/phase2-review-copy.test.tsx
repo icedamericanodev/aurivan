@@ -129,8 +129,10 @@ describe('Today and Results copy', () => {
     });
     mount(<Today />);
     const text = textOf(root());
-    // Mobile 1.21: the panel's title names the activity; the queue is its meta ("8 of 56 due").
-    expect(text).toContain('Spaced review About 10 min · 8 of 56 due · most overdue first');
+    // Mobile 1.23: the panel's title names the activity; its checklist line says how much of the queue today takes
+    // ("8 of 56 due", the same queue You and Practice count), and the Start pill's hint says the order.
+    expect(text).toContain('Spaced review · 8 of 56 due');
+    expect(root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string).some((h) => h.includes('8 of 56 due · most overdue first'))).toBe(true);
     // Mobile 1.15 (C1): one minutes style everywhere, "About N min" (screen readers say "minutes").
     expect(text).toMatch(/Also today About \d+ min/);
     expect(text).not.toMatch(/about \d+ minutes/i);

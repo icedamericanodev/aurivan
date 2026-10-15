@@ -3,7 +3,7 @@
  * support" (mobile 1.7, Uplift Phase 1 "Ask and fix").
  *
  * Plain English:
- * - Aurivan never sends anything itself. These functions only WRITE an
+ * - KaiSip never sends anything itself. These functions only WRITE an
  *   email (subject + body); lib/support.ts hands it to the learner's own
  *   email app through a mailto: link, and the learner reads, edits and
  *   sends it there.
@@ -293,12 +293,12 @@ export function displayLine(d: DisplayDetails): string {
   return `Display: Theme ${d.theme} · Text size ${Math.round(d.textScale * 100)}% · Reduce Motion ${d.reduceMotion ? 'on' : 'off'}`;
 }
 
-/** The app and OS, as the email shows them: "Aurivan 1.7.0 (iOS 26)". */
+/** The app and OS, as the email shows them: "KaiSip 1.7.0 (iOS 26)". */
 export interface AppInfo {
   version: string;
   os: string;
 }
-const appLine = (app: AppInfo) => `App: Aurivan ${app.version} (${app.os})`;
+const appLine = (app: AppInfo) => `App: KaiSip ${app.version} (${app.os})`;
 
 export interface Email {
   subject: string;
@@ -353,13 +353,13 @@ export function reportDetails(input: Omit<ReportInput, 'note'>): string[] {
   return lines;
 }
 
-/** Subject: "Aurivan · Report · CISA · d4_217 · key" (parseable for Gmail filters). */
+/** Subject: "KaiSip · Report · CISA · d4_217 · key" (parseable for Gmail filters). */
 export function reportSubject(input: Pick<ReportInput, 'target' | 'reason' | 'certName'>): string {
-  return `Aurivan · Report · ${input.certName} · ${subjectItem(input.target)} · ${input.reason}`;
+  return `KaiSip · Report · ${input.certName} · ${subjectItem(input.target)} · ${input.reason}`;
 }
 
 function letter(opening: string, details: string[], keepLine: string): string {
-  return ['Hi Aurivan team,', '', opening, '', '', '', keepLine, ...details, '', EXAM_CONTENT_LINE].join('\n');
+  return ['Hi KaiSip team,', '', opening, '', '', '', keepLine, ...details, '', EXAM_CONTENT_LINE].join('\n');
 }
 
 export function buildReportEmail(input: ReportInput): Email {
@@ -393,7 +393,7 @@ export function buildFeedbackEmail(input: FeedbackInput): Email {
   if (input.display) details.push(displayLine(input.display));
   const message = cleanNote(input.message ?? '');
   return {
-    subject: `Aurivan · Feedback · ${kind.tag} · ${input.certName}`,
+    subject: `KaiSip · Feedback · ${kind.tag} · ${input.certName}`,
     body: letter(message || 'What would you like to tell us?', details, DETAILS_LINE),
   };
 }
@@ -417,7 +417,7 @@ export interface SupportInput {
 }
 
 /**
- * Subject "Aurivan · Support · Backup · CISA". No message box in the app:
+ * Subject "KaiSip · Support · Backup · CISA". No message box in the app:
  * the learner writes in their email app. We never ask for a backup file;
  * if one is ever needed, the team asks in the reply.
  */
@@ -426,7 +426,7 @@ export function buildSupportEmail(input: SupportInput): Email {
   const details = [`Topic: ${topic.label}`, `Certification: ${input.certName}`, appLine(input.app)];
   if (input.from) details.push(`From: ${input.from}`);
   return {
-    subject: `Aurivan · Support · ${topic.tag} · ${input.certName}`,
+    subject: `KaiSip · Support · ${topic.tag} · ${input.certName}`,
     body: letter('What do you need help with?', details, DETAILS_LINE),
   };
 }

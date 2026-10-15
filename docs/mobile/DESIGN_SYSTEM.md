@@ -1,4 +1,4 @@
-# Aurivan mobile — "Grove v2" design spec
+# KaiSip mobile — "Grove v2" design spec
 
 Status: **locked 2026-10-07** by the maintainer. Supersedes "Forest". This file is the source of truth for `mobile/`; code that disagrees with it is a bug.
 
@@ -590,7 +590,7 @@ Reduced paths per §8.5 (the phone's Reduce Motion, live, or Settings → Motion
 
 **Badge sheet** (tap a medallion): a `pageSheet` Modal on `raised2` (dissolves under Reduce Motion), ghost "Close" (spoken "Close <name>"), the 160pt medallion turning in once, a header group (`hero` name, `meta` "Rooted · Lichen, tier 2 of 3" / "The Five Domains · 26% of the exam") that takes focus. Earned: the key-idea block (`caption` "Earned 11 Oct", or "Already earned when badges arrived (by 11 Oct)" for a back-filled badge; `quote` unlock line; `meta` "This completed Groundwork on 2 Nov." on the ONE badge that did: of two earned together, the later in catalogue order, and never on a back-filled badge). Every tiered badge (mobile 1.11: Rooted, Long Memory, Dress Rehearsal, each Firm Footing domain) shows its ladder: a "Tiers" row of 56pt medallions, each with the metal name (`label`), the tier in words (`meta` "30 days", "75 recalls", "2 mocks", "80%"), its state on a line of its own ("Earned" in `accentText`, "Next", "Not yet", "Opens later") and "Stretch" (`caption`) under a Stretch tier; spoken "30 days, Lichen: earned 2 Nov. 75 recalls, Lichen: 52 of 75 remembered, next. 150 recalls, Gold leaf, Stretch: 52 of 150 remembered" ("next" is the first unearned CORE tier, whichever was opened; a Stretch tier is never "Next", even when it is the only one left). A Stretch badge's header adds `caption` "Stretch: beyond exam need" in `accentText`. Then `caption` "The rule" + `body` rule + bar and progress (or the gate line), `caption` "How to earn it" + `body` (open only; mock badges before their stage add "Best once every domain reaches 65%. It counts whenever you do it."), the effort fact in `meta` (never rarity), and a primary "Study for this" (spoken with the name) for open badges; it opens its session only once the sheet has slid away (iOS `onDismiss`, else a short wait). After the exam: no "How to earn it", no Study button, no progress.
 
-**Badge share card** (mobile 1.11, slice D; compliance review §5, mandatory): an earned badge's sheet ends with a secondary "Share" (share icon, spoken "Share <name>", hint "Shows a card you can share. Nothing is shared until you choose."). Never on a badge not yet earned, a Moment (Fresh Start, and the planned self-reported "Passed"), a badge on the never-share list (`NEVER_SHARED_BADGES`, empty since mobile 1.18: "Graduate" was renamed "Flown the Nest", a name for the questions leaving review rather than the learner, so it no longer reads like a credential and shares like any other badge with the skill line "Moved 50 questions out of spaced review"; its saved id stays `graduate`), or one whose words fail the honesty guard; never offered or opened automatically; sharing earns nothing. The sheet builds the card's words before it offers Share, inside a try: if they fail, there is simply no Share (never a crash). It swaps the sheet's content (never a sheet over a sheet): `hero` "Share this badge" (takes focus), `meta` "Only what is on the card is shared.", the card (preview scaled to fit, its corners rounded by an outer box that is not captured; the PNG itself has square corners), primary "Share image" (react-native-view-shot 1080 × 1350 → the system share sheet; web: the share text), ghost "Back to the badge" (Android back does the same: it returns to the badge, never closes the sheet), `meta` "Nothing is posted for you. You choose where it goes." **The card** (320 × 400 pt, a fixed picture: text never scales, and its colours are FIXED, `cardInk` in `theme/tokens.ts`: the badge forest enamel `#1E4A34` with the light theme's on-forest inks, so the PNG is the same in light and dark; the progress card on You uses them too): the Aurivan lockup (22pt, top left, no cert name beside it) → the 124pt medallion → `caption` "Aurivan study badge · Earned 3 Nov 2026" in `cardInk.ink2` (so it reads as ours, never an issuer's credential) → the plain badge name in `cardType.name` (Fraunces 21/26) `cardInk.ink` ("Firm Footing", "Long Memory": never "Firm Footing · IS Operations · 80%") → the tier line `caption` "Lichen · tier 2 of 3" in `cardInk.sap` → the skill line in `cardType.skill` (Fraunces italic 16/22), which carries the domain and the number ("Reached 70% in IS Operations in practice", "Recalled 75 answers a week or more later", "Thirty days of steady study") → a `cardInk.line` hairline → `caption` "Studying for the CISA® exam" (built from the cert: the mark as an adjective, ® only when registered) → the cert's full `trademarkNotice` in `cardType.notice` (Figtree 11/15, `cardInk.ink2`). The cert name is never on, in or directly above the medallion; no issuer logo, colours or fonts; no verification id or URL, no "add to profile", no Open Badges format. The share text carries the same words and the notice, plus a plain store link once one exists (`content/storeLinks.ts`, no referral or tracking codes; none yet). The spoken label is the whole card. Every line we write passes `isHonestShareText` (now also refusing certificate/certification/credential/accredited/official/graduated), the badge's name included; only the notice is exempt (it says "not … endorsed"), and the never-share list (empty today) is the only way a badge name stays off a card. The progress share card (You) now prints the full notice too.
+**Badge share card** (mobile 1.11, slice D; compliance review §5, mandatory): an earned badge's sheet ends with a secondary "Share" (share icon, spoken "Share <name>", hint "Shows a card you can share. Nothing is shared until you choose."). Never on a badge not yet earned, a Moment (Fresh Start, and the planned self-reported "Passed"), a badge on the never-share list (`NEVER_SHARED_BADGES`, empty since mobile 1.18: "Graduate" was renamed "Flown the Nest", a name for the questions leaving review rather than the learner, so it no longer reads like a credential and shares like any other badge with the skill line "Moved 50 questions out of spaced review"; its saved id stays `graduate`), or one whose words fail the honesty guard; never offered or opened automatically; sharing earns nothing. The sheet builds the card's words before it offers Share, inside a try: if they fail, there is simply no Share (never a crash). It swaps the sheet's content (never a sheet over a sheet): `hero` "Share this badge" (takes focus), `meta` "Only what is on the card is shared.", the card (preview scaled to fit, its corners rounded by an outer box that is not captured; the PNG itself has square corners), primary "Share image" (react-native-view-shot 1080 × 1350 → the system share sheet; web: the share text), ghost "Back to the badge" (Android back does the same: it returns to the badge, never closes the sheet), `meta` "Nothing is posted for you. You choose where it goes." **The card** (320 × 400 pt, a fixed picture: text never scales, and its colours are FIXED, `cardInk` in `theme/tokens.ts`: the badge forest enamel `#1E4A34` with the light theme's on-forest inks, so the PNG is the same in light and dark; the progress card on You uses them too): the KaiSip lockup (22pt, top left, no cert name beside it) → the 124pt medallion → `caption` "KaiSip study badge · Earned 3 Nov 2026" in `cardInk.ink2` (so it reads as ours, never an issuer's credential) → the plain badge name in `cardType.name` (Fraunces 21/26) `cardInk.ink` ("Firm Footing", "Long Memory": never "Firm Footing · IS Operations · 80%") → the tier line `caption` "Lichen · tier 2 of 3" in `cardInk.sap` → the skill line in `cardType.skill` (Fraunces italic 16/22), which carries the domain and the number ("Reached 70% in IS Operations in practice", "Recalled 75 answers a week or more later", "Thirty days of steady study") → a `cardInk.line` hairline → `caption` "Studying for the CISA® exam" (built from the cert: the mark as an adjective, ® only when registered) → the cert's full `trademarkNotice` in `cardType.notice` (Figtree 11/15, `cardInk.ink2`). The cert name is never on, in or directly above the medallion; no issuer logo, colours or fonts; no verification id or URL, no "add to profile", no Open Badges format. The share text carries the same words and the notice, plus a plain store link once one exists (`content/storeLinks.ts`, no referral or tracking codes; none yet). The spoken label is the whole card. Every line we write passes `isHonestShareText` (now also refusing certificate/certification/credential/accredited/official/graduated), the badge's name included; only the notice is exempt (it says "not … endorsed"), and the never-share list (empty today) is the only way a badge name stays off a card. The progress share card (You) now prints the full notice too.
 
 **Field notes** (You → Field notes, `app/field-notes.tsx`): pushed header → `meta` "Your level in each game, and how it grows." → `Section` "Game levels": one hairline row per playable game, `label` name left and `TierTag` (leaf + `meta` level name) right (wraps under at large text), `meta` how it grows → `meta` the step-back rule → (badges shown) `Section` "Skill badges" with one ListRow "Your skill badges" ("2 of 7 earned, in your badges") that opens the case at its Field notes shelf.
 
@@ -612,17 +612,19 @@ Reduced paths per §8.5 (the phone's Reduce Motion, live, or Settings → Motion
 
 **Send feedback / Contact support sheets**: same frame, the same "Copy or share instead" and message panel, and they stay mounted once opened, so Cancel, a swipe down or Android back keeps the typed message (a new kind, topic or place, or a sent message, starts fresh). Feedback: `display` ("Suggest an idea" when opened from that row, else "Send feedback") → `body` `ink2` "Tell us what helps, what's missing, or what feels off…" → `caption` "What kind?" + chips (An idea · Something I like · Something else) → NoteField → exam line → `ToggleRow` "Include display details" (off) → disclosure → primary / secondary. Support: `display` → `body` `ink2` "We're a small independent team. We read every message." → `caption` "What's it about?" + `RadioRow`s (A study question or topic · Backup, restore or a new phone · Reminders · Your data and privacy · Something else) → `small` + exam line → primary "Write the email" (disabled until a topic, with a centred `meta` "Choose what it's about to continue." until then) → `meta` "Or write to us at" + selectable address → `meta` "Found a problem in a question or note? Use "Report a problem" under it…" → secondary "Cancel". After sending: the same `SentNote` ("…We read every message."), under the row or answer that opened the sheet.
 
-**Help and feedback** (the `help` screen; reached from ONE row, "Get help or send feedback" (`life-buoy`), in Settings (the "Help and about" group, beside "About Aurivan") and in You): two `Section`s of `ListRow`s with icon circles. *Get help*: Common questions (`circle-question-mark`), Contact support (`mail`), Report a problem with the app (`flag`), Suggest an idea (`lightbulb`). *Updates*: Your reports (`inbox`, "3 started on this phone · 1 updated"), What's new (`sparkles`, "Version 1.7", or "Something you reported was updated" until seen; the last row). There is no What's next row (removed in 1.17.1). "Finished in your email app?" sits under the row that opened the sheet. Then `small` `ink2` "Write to us any time at" → the address alone as a selectable `label` in `accentText` (iOS copies a whole Text, so the address is its own) → `small` `ink2` "Aurivan is independent and not affiliated with or endorsed by ISACA."
+**Help and feedback** (the `help` screen; reached from ONE row, "Get help or send feedback" (`life-buoy`), in Settings (the "Help and about" group, beside "About KaiSip") and in You): two `Section`s of `ListRow`s with icon circles. *Get help*: Common questions (`circle-question-mark`), Contact support (`mail`), Report a problem with the app (`flag`), Suggest an idea (`lightbulb`). *Updates*: Your reports (`inbox`, "3 started on this phone · 1 updated"), What's new (`sparkles`, "Version 1.7", or "Something you reported was updated" until seen; the last row). There is no What's next row (removed in 1.17.1). "Finished in your email app?" sits under the row that opened the sheet. Then `small` `ink2` "Write to us any time at" → the address alone as a selectable `label` in `accentText` (iOS copies a whole Text, so the address is its own) → `small` `ink2` "KaiSip is independent and not affiliated with or endorsed by ISACA."
 
 **What's new** (`whats-new`): pushed header → once, the key-idea recipe (3px `accent` rule, `caption` "Updated after your report" in `accentText`, `small` "Something you reported has been updated since. Thank you for telling us." ("Things…" only for two or more different items), ghost "See your reports") → `Section` "Fixed after learner reports": hairline rows (`body` note + `meta` date) and `meta` "Thanks to the learners who reported these.", or a `meta` line explaining the loop while there are none. It sits ABOVE the versions, so a fix never reads as part of the latest release → per version a `Section` "Version 1.7" with `meta` "Latest · 11 Oct 2026" → `caption` New / Improved / Fixed over `Bullets` → after the oldest release, one `meta` line (`xl` above): "We improve the app regularly based on learner feedback. Have an idea? Send it from Help." Plain text, not a link (an inline word can't be a 48pt target; Help is one Back away). One benefit sentence per item: no codes, no counts, no version numbers inside an item, no design-spec detail (how something moves, how long it lasts, internal names). Never "Your report helped": another learner's report may have led to the same fix. **Today** shows the same recipe ONCE ("Updated after your report" / "Something you reported was updated." / ghost "See your reports" + ghost "Dismiss") under Also today: it is marked seen as soon as it shows and kept for that visit, so What's new only repeats it if the learner went there first. No haptic, no growth, no badge.
 
-**What's next**: removed in mobile 1.17.1 (owner decision). Plans stay internal (kept outside this public repo, never bundled), so the app shows no planned or in-progress work beyond the labelled "Coming soon" exam choices; learners see a change once it ships, in What's new. An old `aurivan://whats-next` link opens Help (`src/app/+native-intent.tsx`).
+**What's next**: removed in mobile 1.17.1 (owner decision). Plans stay internal (kept outside this public repo, never bundled), so the app shows no planned or in-progress work beyond the labelled "Coming soon" exam choices; learners see a change once it ships, in What's new. An old `kaisip://whats-next` link opens Help (`src/app/+native-intent.tsx`).
 
 **Common questions** (`faq`): `meta` "Tap a question to read the answer." → `DisclosureRow` per question; open = `body` paragraphs + ghost "Still stuck? Email us" (opens Contact support with the entry's topic chosen). One open at a time.
 
 **Your reports** (`reports`): `meta` intro → hairline rows, one screen-reader stop each: `label` title by name ("Question in IS Audit", "Note: …", "Lesson: …, step 4", "Game card: Root or Rumor", "The app") → `small` `ink2` reason → when updated: 14 ✓ + `caption` "Updated after your report · 30 Oct 2026" in `accentText` + `small` `ink2` public note → ONE `meta` `muted` line "Started 11 Oct · Code d1_010 · Ref R-7K2Q" ("No longer in the app" for a retired question) → ghost "Clear this list" (asks first). Empty: the seedling empty screen "No reports yet".
 
-**Welcome → Restore from a backup**: on onboarding step 0, a ghost "Restore from a backup" sits under the primary "Start my plan" in the sticky footer (hint: "Studied on another phone? Pick your Aurivan backup file to bring your progress here."). A bad file's message (the same feedback block) appears above the two buttons. A successful restore finishes onboarding and goes straight to Today.
+**Welcome → Restore from a backup**: on onboarding step 0, a ghost "Restore from a backup" sits under the primary "Start my plan" in the sticky footer (hint: "Studied on another phone, or in the old Aurivan app? Pick your backup file to bring your progress here."). Since 1.23 a `meta` line sits above it, in the same footer: "Moving from Aurivan? In the old app: Settings → Your data → Save a backup. Then restore that file here." (`MOVING_LINE`, `content/brand.ts`; the same words are in Settings → Your data, About and Help). The new package id makes KaiSip a NEW app on the phone, so progress moves by backup file.
+
+**Welcome → "What should we call you?"** (mobile 1.23, the owner's personalise decision): "Start my plan" opens ONE optional step before "Step 1 of 4" (it is not counted in "of 4"): `caption` "Optional", `display` header "What should we call you?", `meta` "A first name or a nickname, whatever you like.", one text field (placeholder "Your first name", 48+ tall, `raised` fill, `control` border, 24 characters at most), `meta` helper "Only on this phone. It just helps us say hello." (`NAME_HELPER`). Footer: primary "Continue" (saves the tidied name with the rest in the last tap), ghost "Back" and a clear ghost "Skip" (an empty field is just as fine). The keyboard's Done also moves on. Nothing is saved before the last step. The rule for what may be kept is `engine/displayName.ts` (`cleanDisplayName`: trim, collapse spaces, 24 characters, no control or bidi characters, no web addresses or emails; empty = none). The name is on Today and in the learner's own backup file only: never in an email, a share card, the board handle, a link or sync.. A bad file's message (the same feedback block) appears above the two buttons. A successful restore finishes onboarding and goes straight to Today.
 
 **Daily clearing card** (Today, when all plan items are done; replaces "Well done.")
 - `forest` panel, tall frond art. Caption "Today's clearing" + 3 filled `sap` leaf marks. `hero` "Three of three, done." (count-aware: "Two of two, done.").
@@ -631,7 +633,16 @@ Reduced paths per §8.5 (the phone's Reduce Motion, live, or Settings → Motion
 - Below the panel: `Tomorrow` section (headline + "about 15 min") with the next 2 plan items as non-tappable preview rows, then ghost "Do a little more" (1.21; was "Keep going anyway").
 - Time under a minute shows as "<1 min" (1.21), like Results.
 
-**Today (mobile 1.21, one focal element)**: the panel's caption carries the day's minutes on one line, "Start here · about 19 min", then the plan leaves (spoken "Start here, about 19 minutes"); mocks are left out of the sum, and their own row says "Optional this week · about 80 min" (no "+ mock" line). A mock-only day's caption is just "Start here". The forest panel's `hero` names the activity and never holds a count ("Spaced review", "Practice: IS Audit", "Light review"; `planHero` in `components/journey.tsx`); counts and minutes go to its `meta` ("16 of 55 due · most overdue first": today's share of the same live queue You and Practice show). The day's minutes are said once: when the caption's "About 19 min today" is this item's alone (every other open item is a mock), the meta leaves the minutes out. "Also today" rows keep their titles. The **readiness row** is one condensed row under the panel: mono rings 60 (preset `row`) or the plant at 72 → the range as a Fraunces 30 numeral with `meta` "estimated readiness" on its baseline → `meta` "A study estimate, not a prediction." (the short form; the full sentence is in the spoken label and on the report, decided 15 Oct 2026) → `caption` "Your stage" + italic `stage` "Rehearse the exam" on one wrapping line → chevron (opens the report). The plant invitation is ONE plain `ListRow` (sprout circle, "Your plant", `meta` "A companion that grows with your study", chevron), with no ghost pair beside the panel's Start (design spec §5). It opens the picker (`?from=today`), which says under its intro "Not now also hides the plant row on Today. You can plant one from You." and does so; the screen-reader action "Hide from Today" hides it at once (no long press). Hint: "Opens the plant picker". It sits 24 below the list above it, so it never reads as a third "Also today" item. "Updated after your report" stays an InviteRow with its two ghosts. The clearing's ghost reads "Do a little more" (was "Keep going anyway", which sounded apologetic).
+**Today (mobile 1.23, the owner's mockup A; supersedes the 1.21 layout below where they differ)**: top to bottom, in screen-reader order: header → meta line → greeting → plan panel → readiness row → three tiles → (below the fold) the plant row, the quiet cards, "Also today".
+- **Header**: the `KaisipLockup` (height 28, theme-aware, spoken "KaiSip") at the left; at the right the **streak pill** (`StreakPill`, `components/today.tsx`: a 40pt outlined pill, `raised` + `cardShadow` in light, `raised` + 1.5 `line` in dark; a `clay` sprig, a Fraunces 20 `clay` numeral that rolls, `meta` "day streak"; spoken "6-day streak"; none at 0) and the 48pt **Settings gear** (the 1.15 "Settings one tap from Today" rule stands; the mockup has no gear, this is a deliberate addition). The row wraps at large text.
+- **Meta line** (`meta`): "Thursday · 38 days to CISA" (the real weekday, real days, `cert.name`); no exam date: "No exam date set"; past: "Exam done"; the day: "Exam day". **Greeting** (`display`, a heading): "Good morning" before 12:00, "Good afternoon" before 18:00, else "Good evening", by local time. Since 1.23 it adds the learner's own name when they gave one: "Good morning, Maya" (onboarding's optional step or Settings → Your name); nothing is invented when there is none. The heading is one screen-reader stop reading the whole greeting; a long name (24 characters at most) wraps and stops at three lines at 200% text.
+- **Plan panel** (the one forest panel, `HeroPanel`): caption "Today’s plan · about 19 min" (the open items' minutes, mocks left out; spoken with "minutes" and ", 1 of 3 done"; just "Today’s plan" on a plan saved before 1.15) → `hero` title = the current item's own planner title with no count ("Spaced review", "Business impact analysis", "Light review") → the **checklist** (`PlanChecklist`, `components/journey.tsx`) → ONE full-width pill, 52 tall: **"Start"**, or **"Continue"** once anything is done today; the icon rule of 1.22 stands: **Play only when the current item is a lesson, otherwise a trailing arrow** (`HeroPanel` `action.full` / `action.trailing`). The botanical frond stays. A `meta` line sits under the title ONLY when it says something the checklist does not: a mock's length and "longer than your usual day", and the starting check's "16 questions, no score yet, just a starting point". Otherwise the item's minutes and why are the pill's spoken hint ("Weak spots: IS Operations, 16 questions, most points to gain").
+- **Checklist lines** (`planCheckLabel`, the plan's own words with their real size): "Warm-up · 5 questions", "Spaced review · 20 due" (or "8 of 56 due" when today takes part of the queue; "all caught up" at 0), "Lesson · Business impact analysis", "Practice: IS Audit · 20 questions", "Snare Spotter · 6 min", "Mini mock · about 80 min". Marker 24: **done** = a filled `sap` disc with a `forest` check, text struck through in `onForest2`; **current** = a 2.5 `sap` ring, `label` (600) in `onForest`; **later** = a 1.5 `onForest2` ring at 70% (about 4:1 on forest, over 3:1 on the lit top edge too) and `body` in `onForest2`. State is never colour alone (the check, the strike and the weight), and each line is one stop spoken "Warm-up · 5 questions, done / next / later". A line done since Today was last on view presses in (the plan leaves' small spring and one light haptic). The lines are not buttons: the pill is the one control ("Also today" below still launches the other items).
+- **Readiness row** (`ReadinessRow`): the growth rings (preset `row`, now 88: the Grove wobble stays) at the left; the range as a Fraunces **38** numeral with the raised `%` (the number is a RANGE, never one percent); `meta` "Estimated readiness, a range not a promise"; the stage as the accent italic serif `stage` in `accentText`: "Stage 4 · Rehearse the exam" (the stage's real index in `STAGE_ORDER`, 1 to 7, and its name). Below 40 answers: "Not enough data yet", the countdown line and the stage. The whole row is one button to the readiness report ("Opens your readiness report"); no chevron. While the Exam-ready panel shows the rings the row draws none. The plant no longer replaces the rings (it moved, see below).
+- **Tiles** (`StatTiles`, three equal cards in a row, gap 8, radius 24; an L2 look, an exception to §5 because the mockup shows them raised): **answered** (every answered question), **accuracy** (the number You's Accuracy shows: the share whose LATEST try was right; the mockup's "first-try right" was NOT used, it would be untrue), **weakest area** (the readiness focus domain's `tile` name: "IS Ops", falling back to `short`; spoken with its full name). Until the range has enough data, accuracy and weakest area say "Not yet" (a zero or Domain 1 would mislead). No hours studied, no single readiness percent. At 130% text and over the tiles stack as a list (label left, value right).
+- **Below the fold** (unchanged in behaviour): "Also today" (resume, then the open plan items), the plant (a learner with a plant gets a quiet row under the tiles: the plant at 72 with its name, or the visitor line; without one, the invitation row), the grow-up note, the exam-week card, "Fit your plan", "Updated after your report", the exam-eve card above the panel, the exam-ready panel in the panel's place, the clearing card (no checklist and no tiles on a cleared day), "Tomorrow", and "How did it go?" with no plan.
+
+**Today (mobile 1.21, one focal element; the panel, readiness row and header below are replaced by 1.23 above)**: the panel's caption carries the day's minutes on one line, "Start here · about 19 min", then the plan leaves (spoken "Start here, about 19 minutes"); mocks are left out of the sum, and their own row says "Optional this week · about 80 min" (no "+ mock" line). A mock-only day's caption is just "Start here". The forest panel's `hero` names the activity and never holds a count ("Spaced review", "Practice: IS Audit", "Light review"; `planHero` in `components/journey.tsx`); counts and minutes go to its `meta` ("16 of 55 due · most overdue first": today's share of the same live queue You and Practice show). The day's minutes are said once: when the caption's "About 19 min today" is this item's alone (every other open item is a mock), the meta leaves the minutes out. "Also today" rows keep their titles. The **readiness row** is one condensed row under the panel: mono rings 60 (preset `row`) or the plant at 72 → the range as a Fraunces 30 numeral with `meta` "estimated readiness" on its baseline → `meta` "A study estimate, not a prediction." (the short form; the full sentence is in the spoken label and on the report, decided 15 Oct 2026) → `caption` "Your stage" + italic `stage` "Rehearse the exam" on one wrapping line → chevron (opens the report). The plant invitation is ONE plain `ListRow` (sprout circle, "Your plant", `meta` "A companion that grows with your study", chevron), with no ghost pair beside the panel's Start (design spec §5). It opens the picker (`?from=today`), which says under its intro "Not now also hides the plant row on Today. You can plant one from You." and does so; the screen-reader action "Hide from Today" hides it at once (no long press). Hint: "Opens the plant picker". It sits 24 below the list above it, so it never reads as a third "Also today" item. "Updated after your report" stays an InviteRow with its two ghosts. The clearing's ghost reads "Do a little more" (was "Keep going anyway", which sounded apologetic).
 
 **Today (in progress, before 1.21)**: meta row (weekday · days to exam | sprig streak in Fraunces 20 `clay`) → `display` → forest panel "Start here" with 3 leaf marks for the plan (filled = done, current outline) → readiness row (rings 104 mono + `number` + `meta` "ready, weighted by the blueprint" + italic `stage` "Make it stick" (no number since mobile 1.13); no rings while the Exam-ready panel shows them) → "Also today" list with real, unshortened titles (2 lines allowed) under `Section` "Also today" + `meta` "about 64 minutes" (the time, not a count: the list always shows every item; spelled out like the items' own "About 24 minutes"). A paused timed mock counts its unanswered questions at study pace, but never more than its clock has left. A capped review reads "Review 55 due" / "About 24 minutes · 20 at a time, most overdue first" in the panel, and "Spaced review · 20 at a time" as an "Also today" row: the same count and line as You and Practice. The count is the LIVE queue (the day's plan is frozen in the morning, the number is not), and an empty queue reads "Review · all caught up".
 
@@ -685,50 +696,38 @@ Reduced paths per §8.5 (the phone's Reduce Motion, live, or Settings → Motion
 
 **Question bank → a domain** (1.9, ui.md E3): a topic header (`caption` `accentText` + the learner's own counts) only when the topic shows 2 rows or more under the current filter; a lone row names its topic itself in a `caption` `ink2` line above its stem (and says it, after its status). A lone row right after a grouped topic's rows is set `space.lg` apart, the gap a header would open, so it never reads as that group's last row. The "not yet answered" mark is a small 12pt open ring in `control`, centred in the 24pt mark (a full-size ring read as a radio button); ✓ and ✗ stay filled 24pt circles.
 
-## 12. Brand: "True North" (mobile app, chosen 2026-10-07)
+## 12. Brand: KaiSip "Kasama" (the owner's choice, 15 Oct 2026; True North is retired)
 
-**Mark.** A compass needle rising from an open book, under one growth-ring
-arc, with a honey north tip: your direction comes from the study. The gaps
-between needle, ring and book are real cut-outs (SVG masks), so the mark works
-on any background. Honey appears once per mark and never carries meaning.
+The app is called **KaiSip** (written exactly "KaiSip" in running text; the lowercase wordmark "kaisip" appears only inside the logo). It was called Aurivan until mobile 1.22; the "True North" mark (a compass needle over an open book) and its `BrandMark` / `BrandLockup` code are gone.
 
-**Lockup.** Mark + "aurivan" in Fraunces 600 lowercase (outlined, with a leaf
-over the i). Two fixed tones that do not follow the theme: `light` on paper,
-`dark` on forest or the dark bg. Code: `components/brand.tsx`
-(`BrandMark`, `BrandLockup`, `PillarGlyph`, `PillarList`); colours:
-`brand` and `pillarGlyph` in `theme/tokens.ts`.
+**Mark.** Kasama is a K built from three leaves: the upright leaf (with its vein) is you; the pair growing toward it is your kasama (companion). It reads as a letter at 29 px, which makes it the strongest app-icon shape. The vein is a real cut-out (an SVG mask), so the mark works on any background.
 
-**Vision (Set A "Rings").** Copy lives only in `content/brand.ts`.
-Tagline "Master Modern Risk." · line "Grow your judgment, one ring at a time."
-· pillars See the path / Grow deep roots / Grow with the seasons / Stand tall.
-Shown on the welcome screen (onboarding step 0, the screen's one forest panel)
-and in Settings → About ("Our vision"). The share card carries the dark lockup.
-The pillars are plain rows on the paper in both places since 1.21 (`PillarList`
-`rows`, 16 apart): they are not choices, so they are never raised cards.
+**Lockup.** Mark + lowercase "kaisip" in Fraunces 600 (outlined, with the wordmark's own small leaf as the dot of the i). The wordmark never wraps; the lockup is never recoloured, stretched or re-set in another font.
 
-**Store assets** (`mobile/assets`, rendered from the master SVGs):
+**Masters.** `design-notes/brand-kaisip/`: `icon.svg`, `foreground.svg`, `monochrome.svg`, `splash_light.svg`, `splash_dark.svg`, `lockup_light.svg`, `lockup_dark.svg`, `sheet.png` (usage), `png/` (renders) and `web/` (favicons, apple-touch-icon, icon-512 and the lockups for the website). All store assets are re-rendered from these SVGs, never redrawn by hand.
+
+**In the app.** `KaisipMark` and `KaisipLockup` in `components/brand.tsx` are the only brand drawings (react-native-svg; paths copied from the masters, the wordmark already outlined, so no font has to load). Colours are the `kaisip` tones in `theme/tokens.ts`: on paper the upright leaf is forest `#1E4A34`, the pair and the dot of the i are `accent` `#2B6E4A`, the wordmark is `ink`; in dark the leaf and wordmark are paper `#F3F1EA` and the pair is `sap` `#A9D9BA` (contrast 8.91 / 5.41 / 14.37 on paper, 16.19 / 11.6 / 16.19 on the dark bg; 3:1 is needed for a mark, 4.5:1 for text). `tone="auto"` (default) follows the theme; `light` / `dark` force one (the welcome forest panel and the share cards use `dark`). Spoken "KaiSip" as one image; pass `decorative` when a parent already says it. Used on Today's header (height 28), the welcome panel (34), Settings → About (28) and the share cards (30, badge card 22).
+
+**Vision (Set A "Rings").** Copy lives only in `content/brand.ts`. Tagline "Master Modern Risk." · line "Grow your judgment, one ring at a time." · pillars See the path / Grow deep roots / Grow with the seasons / Stand tall. Shown on the welcome screen (onboarding step 0, the screen's one forest panel) and in Settings → About ("Our vision"). The pillars are plain rows on the paper in both places (`PillarList` `rows`, 16 apart): they are not choices, so they are never raised cards.
+
+**Store assets** (`mobile/assets`, same file names and sizes as before the rename):
 
 | File | Size | Notes |
 |---|---|---|
-| `icon.png` | 1024 | Forest icon. iOS `ios.icon.light` and the default icon |
-| `icon-dark.png` / `icon-tinted.png` | 1024 | iOS 18 dark and tinted (white mark on black) |
-| `android-icon-foreground.png` | 512 | Transparent, mark inside the 66% safe zone |
-| `android-icon-background.png` | 512 | Solid forest `#1E4A34` |
-| `android-icon-monochrome.png` | 432 | Android 13+ themed icon (alpha only) |
+| `icon.png` | 1024 | Forest gradient square, paper upright leaf, sap pair. iOS `ios.icon.light` and the default icon. Full-bleed, no pre-rounded corners (the OS rounds it) |
+| `icon-dark.png` | 1024 | iOS dark: the same mark on a transparent background |
+| `icon-tinted.png` | 1024 | iOS tinted: grayscale on black (white upright leaf, light-gray pair) |
+| `android-icon-foreground.png` | 512 | Transparent; the mark spans about 47% of the canvas, inside the 66 dp safe circle (61%) |
+| `android-icon-background.png` | 512 | Solid forest `#1E4A34` (also `adaptiveIcon.backgroundColor`) |
+| `android-icon-monochrome.png` | 432 | Android 13+ themed icon: one colour, alpha only |
 | `splash-icon.png` / `splash-icon-dark.png` | 1024 | Transparent mark + wordmark; splash bg paper `#F3F1EA` / forest `#1E4A34`, `imageWidth` 200 |
 | `favicon.png` | 48 | Web |
 
-**Never alpha on iOS icons.** `icon.png`, `icon-dark.png` and `icon-tinted.png`
-must be opaque RGB (PNG colour type 2); App Store Connect rejects an icon with
-an alpha channel. `src/__tests__/brand.test.tsx` checks this.
+There is no separate notification icon configured (`expo-notifications` runs with its defaults).
 
-**Contrast (all pass).** Mark on forest: paper needle 7.16:1, sap 5.13:1,
-honey 4.84:1. Mark on paper: forest needle 8.91:1, ring 5.41:1, honey 6.18:1.
-Lockup wordmark: ink on paper 14.37:1, paper on forest 8.91:1. Pillar glyph
-stroke on its soft circle: 6.15:1 light, 8.29:1 dark (3:1 needed for graphics).
+**Never alpha on the main iOS icon.** `icon.png` and `icon-tinted.png` must be opaque RGB (PNG colour type 2); App Store Connect rejects an icon with an alpha channel. `icon-dark.png` is the one iOS icon allowed to be transparent. `src/__tests__/brand.test.tsx` checks the opaque ones.
 
-**Old navy compass-A logo (`#0B1E3D`).** Web app only. It no longer appears
-anywhere in the mobile app or its store assets.
+**Old marks.** The navy compass-A logo (`#0B1E3D`, web only, before v11) and the Aurivan True North mark no longer appear in the mobile app or its store assets.
 
 ## 13. Your plant (mobile 1.13–1.14, Phase 4a and 4b)
 
@@ -756,9 +755,12 @@ taps, minutes, streaks or games. Growth never goes down; only the learner's
 Reset (back to a seed, name, species and look kept) or a restore clamp lowers it.
 
 **Words.** Always "growth", never "stage" ("Bough · growth 4 of 6"). The
-journey line beside it carries no number since PR #43 ("Rehearse the exam",
-not "Stage 4 · Rehearse the exam"), so Today never shows two numbered ladders
-side by side; Phase 5's numbered "Step 3 of 6" belongs only to the Your path
+journey line carried no number from PR #43 ("Rehearse the exam"), so Today
+never showed two numbered ladders side by side. Mobile 1.23 (the owner's
+mockup A, decided) says "Stage 4 · Rehearse the exam" on Today's readiness
+row again; the plant no longer sits beside it (its row is under the tiles
+and shows only its name), so the two ladders are still never side by side
+and `copy-consistency.test.ts` allows "Stage N" in `home.tsx` only; Phase 5's numbered "Step 3 of 6" belongs only to the Your path
 list, where no plant appears. The rules say where their numbers come from:
 "The low end of your readiness, without hints or games, reaches 55%", and
 Elder's "The low end of your readiness holds at 80% or more for a week". Never a guilt or needs word (wilting, thirsty, misses you). Never the
@@ -1156,11 +1158,12 @@ minutes, radio lists, steppers, day chips) with every choice open at once.
 **The pattern.** Titled groups of rows (`SettingsGroup`, `SettingsRow`, §6).
 Each row shows its current value and opens a bottom sheet with the choices
 (`ChoiceSheet`; the calendar for the date). On/off settings stay switches in
-place. Rarely needed things move behind one row (About Aurivan). Nothing a
+place. Rarely needed things move behind one row (About KaiSip). Nothing a
 learner set before was lost, and no saved setting changed shape.
 
 | Group | Rows (value shown) | Switches |
 |---|---|---|
+| You (mobile 1.23) | Your name · Maya / Not set (a sheet with the text field, Save, Cancel and "Clear my name") | — |
 | Exam | Certification · CISA; Exam date · 8 Jan 2027 (calendar) | — |
 | Your study | Daily time · 20 min; Starting point · Some experience | Exam-focused plan (+ the "Today's plan stays…" line) |
 | Practice | Default mode · Let the app choose | Timed practice; Shuffle answer options |
@@ -1169,7 +1172,7 @@ learner set before was lost, and no saved setting changed shape.
 | Badges and your plant | — | Show badges (+ its "on again" line); Show my plant; Quiet look |
 | Your data | Save a backup; Restore from a backup; Undo restore (while it applies) | — |
 | (set apart) | danger "Reset CISA progress" + `meta` line | — |
-| Help and about | Get help or send feedback; About Aurivan (vision and pillars in a sheet); Privacy policy and Terms of use when configured; Check for updates (mobile 1.19, installed apps only) | — |
+| Help and about | Get help or send feedback; About KaiSip (vision and pillars in a sheet); Privacy policy and Terms of use when configured; Check for updates (mobile 1.19, installed apps only) | — |
 
 Then the version line, the "Update … · …" stamp (mobile 1.19, installed apps
 only) and the combined trademark notice, always visible.
@@ -1202,7 +1205,7 @@ state drops under the title like any row value. Under the version line, a
 running update's id ("built-in" when the phone runs the code shipped inside
 the APK) and the first 7 of the runtime (the native fingerprint), so support
 can tell which update a phone runs. The ids are the same on every phone with
-that update: no personal data. The "Aurivan v…" line keeps reading the
+that update: no personal data. The "KaiSip v…" line keeps reading the
 running update's version (`Constants.expoConfig.version`). The web
 screenshot build draws the states with a demo client (`SHOTS=settings`,
 `src/lib/updates.ts`); a phone never runs it.
@@ -1311,7 +1314,7 @@ the delete screen's last button. The Sync section sits under the email (§18).
 
 **Delete** (`/account/delete`, no swipe-back; Android back does nothing
 while it deletes and goes to You once it is done): `hero` title "Delete your
-Aurivan account?" (focus moves to it at each step), the `body` explanation,
+KaiSip account?" (focus moves to it at each step), the `body` explanation,
 a `CheckRow` "Also remove my progress from this phone" (unticked), primary
 "Continue" ("One moment…" in `meta` while it checks), ghost "Cancel". Step 2:
 either "For your security, confirm it's you first." with ONE `secondary`
@@ -1446,13 +1449,13 @@ Offline or a server problem: the `tipBg` notice, and nothing is deleted.
 
 **Settings → Your data** (cloud builds): the intro reads "Your progress is
 kept on this phone. …" (never "only") and, while syncing, "Your progress is
-kept on this phone and syncs to your Aurivan account. A backup file is a
+kept on this phone and syncs to your KaiSip account. A backup file is a
 copy you keep yourself. …" (UX review O2). The copy taken before a first
 sync shows as an action row "Undo sync · Put back this phone's progress
 from before it first synced (until 19 Oct).", which asks first ("Undo
 sync?") and turns sync off; its result is the usual tinted message. About's
 last sentence becomes "Progress is stored on this device and syncs to your
-Aurivan account." while syncing. While syncing, the Reset alert adds "Sync
+KaiSip account." while syncing. While syncing, the Reset alert adds "Sync
 is on: progress removed here can come back from another device that syncs
 with your account. To start fresh everywhere, first use Delete synced
 progress in Account." (true with one phone too), plus "This also removes
@@ -1511,7 +1514,7 @@ green). Spoken "Vote for: {title}. {n} votes. Voted." / "Not voted yet."; its
 hint is "Takes your vote back." once voted; off (a locked or waiting post) it
 fades to 50%. Then
 the title (`headline`), a `meta` line "Idea · ◑ Planned · Quiet Cedar 214"
-("Aurivan team" for staff) and a `meta` comments line ("12 comments · Team
+("KaiSip team" for staff) and a `meta` comments line ("12 comments · Team
 replied"). Rows are hairline-ruled, no cards. Your own post waiting for
 review says "Waiting for review" in place of its status (never "○ Open"
 beside it).
@@ -1529,10 +1532,10 @@ yourself); Edit · Withdraw (`danger`) on your own. Report and Block need
 only an account (no guidelines gate). The chosen action runs once the sheet
 has closed (≈350 ms), so iOS never drops the Report sheet or the Block
 alert. Then the
-`hero` title, the meta row (kind, `StatusTag`, handle or the "Aurivan team"
+`hero` title, the meta row (kind, `StatusTag`, handle or the "KaiSip team"
 badge), the body as plain `body` Text, the vote pill beside a full-width
 `secondary` Follow / Following, the **official response** (a 3pt
-`accentText` left rule, `caption` "Aurivan team · official response", the
+`accentText` left rule, `caption` "KaiSip team · official response", the
 `body`), "Status history" (`small` "Planned · 9 Oct" with a `meta` note), and
 the comments: `meta` "handle · date", the words, a ghost Reply on top-level
 comments, replies indented with a `line` rule (one level), each with its own
@@ -1557,7 +1560,7 @@ told."). The menu never offers to block a team member.
 specific"; under 8 characters, the problem in `tip`) and Link an item (a
 code like q:d4_217); Details in a `NoteField`; "Similar posts. Vote
 instead?" with up to three rows; the **leak card** in `tipBg` (a `label`
-title "This looks like text from one of Aurivan's practice questions", the
+title "This looks like text from one of KaiSip's practice questions", the
 `small` explanation, a `secondary` "Report it privately" that opens the
 private report on that question, and a ghost "Edit my post"), or the recall
 warning, or the words/links line; "Posting as Misty Rowan 77 · Change"; the

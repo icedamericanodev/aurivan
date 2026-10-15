@@ -208,7 +208,7 @@ Deno.test('me: the learner’s own facts only; join checks the name', async () =
   assert.notEqual(me.member.memberId, USER_A);
   assert.ok(!JSON.stringify(me).includes(USER_A));
   assert.deepEqual(await (await run({ op: 'me' }, USER_B)).json(), { member: null });
-  for (const handle of ['Aurivan Team', 'ISACA_mod', 'support']) {
+  for (const handle of ['Aurivan Team', 'KaiSip Team', 'ISACA_mod', 'support']) {
     assert.deepEqual(
       await errorOf(await run({ op: 'join', handle, handleKind: 'chosen', guidelinesVersion: '2026-11' }, USER_B)),
       {

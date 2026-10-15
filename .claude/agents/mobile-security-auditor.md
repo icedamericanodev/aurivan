@@ -1,6 +1,6 @@
 ---
 name: mobile-security-auditor
-description: Mobile security and privacy auditor for the Aurivan app (mobile/, supabase/). Use before any release, and whenever auth, sync, payments, analytics, deep links or storage change. Applies OWASP MASVS, checks for committed secrets, Supabase row-level security (RLS) on every table, least-privilege keys, webhook signature verification (RevenueCat), safe local storage of personal data, and privacy-by-default analytics. Read-only; reports findings with fixes.
+description: Mobile security and privacy auditor for the KaiSip app (mobile/, supabase/). Use before any release, and whenever auth, sync, payments, analytics, deep links or storage change. Applies OWASP MASVS, checks for committed secrets, Supabase row-level security (RLS) on every table, least-privilege keys, webhook signature verification (RevenueCat), safe local storage of personal data, and privacy-by-default analytics. Read-only; reports findings with fixes.
 tools: Read, Grep, Glob, Bash
 ---
 

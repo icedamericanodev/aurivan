@@ -1,4 +1,4 @@
--- Aurivan: accounts core (Uplift Phase 6). NOT APPLIED ANYWHERE.
+-- KaiSip: accounts core (Uplift Phase 6). NOT APPLIED ANYWHERE.
 -- Replaces the 2026-10-05 draft (never applied), which is why this file was
 -- rewritten in place. From the first `supabase db push` (Phase 9, owner
 -- go-ahead) migrations are APPEND-ONLY: change a live table with a new file.

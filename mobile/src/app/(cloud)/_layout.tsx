@@ -3,8 +3,8 @@
  * Every account and feedback board screen lives under `(cloud)`.
  *
  * With the flag off, or in a cloud build without a backend, this layout is
- * just a Redirect to Today: a deep link such as aurivan://account or
- * aurivan://account/delete lands on Today, and no cloud code runs (guard G5).
+ * just a Redirect to Today: a deep link such as kaisip://account or
+ * kaisip://account/delete lands on Today, and no cloud code runs (guard G5).
  *
  * Inside, a stack of its own, with the root stack's motion: a push, or a
  * dissolve under Reduce Motion (Settings → Motion or the phone's setting).

@@ -60,7 +60,7 @@ jest.mock('../components/icons', () => {
   const Icon = () => null;
   return new Proxy({ __esModule: true, ICON_STROKE: 2 } as Record<string, unknown>, { get: (t, k: string) => (k in t ? t[k] : Icon) });
 });
-jest.mock('../components/brand', () => ({ BrandLockup: () => null, PillarList: () => null, BrandMark: () => null }));
+jest.mock('../components/brand', () => ({ KaisipLockup: () => null, KaisipMark: () => null, PillarList: () => null }));
 jest.mock('../lib/haptics', () => ({ haptic: { success: () => {}, selection: () => {}, error: () => {}, light: () => {}, medium: () => {} } }));
 
 const DAY = 86_400_000;
@@ -438,7 +438,7 @@ describe('fix round P8: the post screen', () => {
     expect(menuLabels()).toContain('Withdraw');
     expect(menuLabels().some((l) => l.startsWith('Block') || l.startsWith('Report'))).toBe(false);
     // The team's official reply: it can be reported, but its author can't be blocked.
-    expect(allText()).toContain('Aurivan team');
+    expect(allText()).toContain('KaiSip team');
   });
   it('CR B7: the folded post’s "Show it" is its own button for screen readers', async () => {
     await openPost(P.change);
@@ -473,7 +473,7 @@ describe('fix round P8: the post screen', () => {
     expect(memory.control.board.votes().some((v) => v.userId === MAYA && v.postId === P.audio)).toBe(false);
   });
   it('UX H3: a comment refused for practice-question text gets the whole explanation', () => {
-    expect(board.postProblem('bank_text')).toBe('This looks like text from one of Aurivan’s practice questions. To keep answers fresh for everyone, please describe the topic in your own words. If something in that question looks wrong, report it privately: it’s faster, and it won’t spoil it for others.');
+    expect(board.postProblem('bank_text')).toBe('This looks like text from one of KaiSip’s practice questions. To keep answers fresh for everyone, please describe the topic in your own words. If something in that question looks wrong, report it privately: it’s faster, and it won’t spoil it for others.');
   });
 });
 

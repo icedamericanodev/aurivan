@@ -20,7 +20,7 @@ describe('combined trademark notice', () => {
 
   it('reads as plain sentences', () => {
     expect(notice).toBe(
-      'Aurivan is not affiliated with or endorsed by ISACA® or ISC2. CISA®, CISM® and CRISC® are registered trademarks of ISACA. AAIA is a trademark of ISACA. CISSP® is a registered trademark of ISC2, Inc.',
+      'KaiSip is not affiliated with or endorsed by ISACA® or ISC2. CISA®, CISM® and CRISC® are registered trademarks of ISACA. AAIA is a trademark of ISACA. CISSP® is a registered trademark of ISC2, Inc.',
     );
   });
 });

@@ -14,8 +14,8 @@ v2 fixes the structure, not just the wording.
 ## File
 ```jsonc
 {
-  "title": "Aurivan CISA Topic Notes",
-  "source": "Original Aurivan study notes ... Not affiliated with or endorsed by ISACA.",
+  "title": "KaiSip CISA Topic Notes",
+  "source": "Original KaiSip study notes ... Not affiliated with or endorsed by ISACA.",
   "description": "...",
   "schema_version": 2,
   "domains": [ /* Domain */ ],

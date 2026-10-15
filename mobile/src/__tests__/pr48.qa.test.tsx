@@ -358,7 +358,8 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     // Today's plan: the session ticked it.
     const plan = useProgress.getState().days.cisa;
     const doneN = plan.done.filter(Boolean).length;
-    expect(joined('home')).toContain(`[${doneN} of ${plan.items.length} done]`);
+    // Mobile 1.23: the checklist's progress is said once, at the end of the plan caption's spoken label.
+    expect(joined('home')).toMatch(new RegExp(`(, |\\[)${doneN} of ${plan.items.length} done\\]`));
   });
 
   it('answers recorded while a tab is ON VIEW (no switch) update it in place', () => {
@@ -436,9 +437,9 @@ describe('midnight rollover', () => {
     expect(useProgress.getState().days.cisa.day).toBe(dayKey(T0 + DAY));
     const plan = useProgress.getState().days.cisa;
     expect(plan.done.every((d) => !d)).toBe(true);
-    expect(joined('home')).toContain(`[0 of ${plan.items.length} done]`);
+    expect(joined('home')).toContain(`, 0 of ${plan.items.length} done]`);
     // The countdown moved by one day too.
-    expect(joined('home')).toContain(`${daysToExam('2027-06-01', dayKey(T0 + DAY))} days to exam`);
+    expect(joined('home')).toContain(`${daysToExam('2027-06-01', dayKey(T0 + DAY))} days to CISA`);
     expectTabsFresh();
   });
 
@@ -544,13 +545,13 @@ describe('changing the exam date', () => {
   it('Today’s countdown and every tab follow the new date', () => {
     studySession(10);
     mountAll();
-    expect(joined('home')).toContain(`${daysToExam('2027-06-01', dayKey(T0))} days to exam`);
+    expect(joined('home')).toContain(`${daysToExam('2027-06-01', dayKey(T0))} days to CISA`);
     tap('you');
     act(() => {
       useSettings.setState({ examDates: { cisa: '2026-12-01' } });
     });
     expectTabsFresh();
-    expect(joined('home')).toContain(`${daysToExam('2026-12-01', dayKey(T0))} days to exam`);
+    expect(joined('home')).toContain(`${daysToExam('2026-12-01', dayKey(T0))} days to CISA`);
   });
 });
 

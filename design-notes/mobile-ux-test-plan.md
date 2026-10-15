@@ -126,7 +126,7 @@ Low priority for a mostly multiple-choice app, but test anywhere text input exis
 - ☐ Mono labels / question IDs: ≥ 11px and letter-spaced enough to be legible
 - ☐ No text is set in `vw` units alone (e.g. `font-size: 3vw` = 11.25px at 375px)
 
-**Contrast** (check against Aurivan palette)
+**Contrast** (check against KaiSip palette)
 - ☐ Primary text `#e8e8f2` on `#0b0b14`: ~16:1 ✓
 - ☐ Secondary text `#9090aa` on `#0b0b14`: ~6.3:1 ✓
 - ☐ Muted text `#505068` on `#0b0b14`: ~2.8:1 ✗ — use only for decorative non-readable elements (dividers, counters the user doesn't need to read)

@@ -934,11 +934,11 @@ describe('Journey 5 · share card', () => {
       expect([skill, badgeShareable({ status: 'earned', set: 'evergreen', skill })]).toEqual([skill, false]);
   });
 
-  it('every card: "Studying for the CISA® exam", the full notice, the Aurivan caption, and no credential words', () => {
+  it('every card: "Studying for the CISA® exam", the full notice, the KaiSip caption, and no credential words', () => {
     for (const m of everyMark().filter((x) => badgeShareable(x))) {
       const t = badgeCardText(shareOf(m), cisa, null);
       expect(t.headline).toBe('Studying for the CISA® exam');
-      expect(t.caption).toBe('Aurivan study badge · Earned 3 Nov 2026');
+      expect(t.caption).toBe('KaiSip study badge · Earned 3 Nov 2026');
       expect(t.notice).toBe(NOTICE);
       expect(t.message.endsWith(NOTICE)).toBe(true);
       expect(t.spoken).toContain(NOTICE);
@@ -958,7 +958,7 @@ describe('Journey 5 · share card', () => {
     const walk = (x: ReactTestInstance | string) => (typeof x === 'string' ? strings.push(x) : x.children.forEach(walk));
     walk(root());
     const at = (s: string) => strings.indexOf(s);
-    expect(at('Aurivan study badge · Earned 3 Nov 2026')).toBeGreaterThanOrEqual(0);
+    expect(at('KaiSip study badge · Earned 3 Nov 2026')).toBeGreaterThanOrEqual(0);
     expect(at(text.caption)).toBeLessThan(at(text.name));
     expect(at(text.name)).toBeLessThan(at(text.skill));
     const firstCert = strings.findIndex((s) => /CISA|ISACA/.test(s));

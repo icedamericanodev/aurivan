@@ -76,12 +76,12 @@ describe('the exact §2.3 strings', () => {
   });
 
   it('keeps the spec’s wording for the key promises', () => {
-    expect(ACCOUNT_COPY['signin.body1']).toBe('An account is optional. Everything in Aurivan works without one.');
+    expect(ACCOUNT_COPY['signin.body1']).toBe('An account is optional. Everything in KaiSip works without one.');
     expect(ACCOUNT_COPY['signin.age']).toBe('I’m 16 or older and I agree to the Terms of Use.');
     expect(ACCOUNT_COPY['delete.s1.body']).toBe(
       'This permanently deletes your account, your synced progress, and your posts, comments and votes on the feedback board. Progress saved on this phone stays here unless you tick the box below. This can’t be undone.',
     );
-    expect(ACCOUNT_COPY['delete.done.body']).toBe('It’s gone from our live systems now, and from backups within 30 days. Aurivan keeps working on this phone without an account.');
+    expect(ACCOUNT_COPY['delete.done.body']).toBe('It’s gone from our live systems now, and from backups within 30 days. KaiSip keeps working on this phone without an account.');
   });
 
   it('has every §3.3 sync key (Phase 7), word for word where it matters', () => {
@@ -123,13 +123,13 @@ describe('the exact §2.3 strings', () => {
       ['board.empty.body', 'Be the first to suggest an idea or tell us what to fix.'],
       ['board.offline', 'You’re offline. Showing what was last loaded.'],
       ['board.foot.contact', 'Questions or concerns: {supportEmail}'],
-      ['board.team', 'Aurivan team · official response'],
+      ['board.team', 'KaiSip team · official response'],
       ['board.spoiler', 'This post talks about the answer to a practice question.'],
       ['board.vote.a11y', 'Vote for: {title}. {n} votes. {state}.'],
       ['board.compose.private', 'Reporting one question? Report it privately instead. It’s faster, and it won’t spoil the answer for others.'],
       ['board.compose.rules', 'Be kind, stay on topic, no real exam questions, no personal details.'],
       ['board.compose.draft', 'You’re offline. Your post is saved here as a draft.'],
-      ['board.leak.title', 'This looks like text from one of Aurivan’s practice questions'],
+      ['board.leak.title', 'This looks like text from one of KaiSip’s practice questions'],
       ['board.leak.body', 'To keep answers fresh for everyone, please describe the topic in your own words. If something in that question looks wrong, report it privately: it’s faster, and it won’t spoil it for others.'],
       ['board.leak.recall', 'This looks like it might be a question from a real exam. Real exam questions can’t be posted: candidates agree to keep them confidential. Describe the topic instead.'],
       ['board.held.title', 'Waiting for review'],

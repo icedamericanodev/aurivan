@@ -1,6 +1,6 @@
 {
-  "title": "Aurivan CISA Topic Notes",
-  "source": "Original Aurivan study notes, organized by the 2024 CISA exam content outline. Not affiliated with or endorsed by ISACA.",
+  "title": "KaiSip CISA Topic Notes",
+  "source": "Original KaiSip study notes, organized by the 2024 CISA exam content outline. Not affiliated with or endorsed by ISACA.",
   "description": "Plain-language notes for every topic in the CISA exam outline: what each idea means, how ISACA expects you to think about it, and the traps to avoid.",
   "schema_version": 2,
   "domains": [
@@ -1922,7 +1922,7 @@
                 "Start from inherent risk: the exposure if no controls existed.",
                 "Judge how much the controls in place reduce likelihood or impact, based on testing rather than descriptions.",
                 "Compare the remaining risk with the organization's risk appetite, the amount of risk it is willing to take.",
-                "Management treats residual risk above risk appetite by mitigating, transferring (sharing) or avoiding it; keeping it needs a board-approved exception.",
+                "Management treats residual risk above risk appetite by mitigating, transferring (sharing) or avoiding it; keeping it needs a documented exception approved at the level the risk policy names.",
                 "The IS auditor evaluates and reports residual risk and recommends action; management decides and owns the risk.",
                 "Untested or failing controls mean residual risk is closer to inherent risk than management may think."
               ],
@@ -1930,8 +1930,8 @@
                 "svg": "<svg viewBox='0 0 460 120' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Controls reduce inherent risk to a smaller residual risk that remains'><rect x='14' y='38' width='130' height='46' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='79' y='65' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Inherent risk</text><rect x='174' y='38' width='112' height='46' rx='4' fill='var(--accent-fill)'/><text x='230' y='65' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Controls</text><rect x='316' y='38' width='130' height='46' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='381' y='65' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Residual risk</text><line x1='146' y1='61' x2='165' y2='61' stroke='var(--text2)' stroke-width='1.5'/><path d='M165,57 L172,61 L165,65 Z' fill='var(--text2)'/><line x1='288' y1='61' x2='307' y2='61' stroke='var(--text2)' stroke-width='1.5'/><path d='M307,57 L314,61 L307,65 Z' fill='var(--text2)'/><text x='79' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>risk before controls</text><text x='230' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>what they remove</text><text x='381' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>the risk that remains</text></svg>",
                 "caption": "Controls bring inherent risk down to residual risk. Some risk remains; within appetite, management decides whether to accept it."
               },
-              "example": "An IS auditor at an insurer finds that weak password settings on the claims system leave residual risk above the stated risk appetite. The IT director asks the IS auditor to sign off on the risk as acceptable so the project can close. The IS auditor declines, reports the residual risk and recommends that the claims business owner treat it, or seek a board-approved exception to keep it.",
-              "isaca_rule": "Residual risk never reaches zero. Within risk appetite, an authorized manager accepts it in a documented decision; above risk appetite, it is treated, or kept only by board-approved exception. The IS auditor evaluates, reports and recommends, and never accepts risk.",
+              "example": "An IS auditor at an insurer finds that weak password settings on the claims system leave residual risk above the stated risk appetite. The IT director asks the IS auditor to sign off on the risk as acceptable so the project can close. The IS auditor declines, reports the residual risk and recommends that the claims business owner treat it or obtain a documented exception at the level the risk policy requires.",
+              "isaca_rule": "Residual risk never reaches zero. Within risk appetite, an authorized manager accepts it in a documented decision; above risk appetite, it is treated, or kept only under a documented exception approved at the level the risk policy names. The IS auditor evaluates, reports and recommends, and never accepts risk.",
               "exam_traps": [
                 {
                   "trap": "The IS auditor can accept residual risk on behalf of the business.",
@@ -4033,7 +4033,7 @@
         "Reasonable assurance": "A high but not absolute level of confidence, reflecting the limits of any control system.",
         "Key control": "A control whose failure would leave a significant risk uncovered, so the IS auditor relies on it and tests it first.",
         "Compensating control": "An alternative control that reduces the same risk when the preferred control is impractical; a review-type substitute works only if the reviewer is independent.",
-        "Residual risk": "The risk left after controls are applied; management, never the IS auditor, accepts it within risk appetite, and only the board can approve keeping it above risk appetite.",
+        "Residual risk": "The risk left after controls are applied; management, never the IS auditor, accepts it within risk appetite, and keeping it above risk appetite needs a documented exception approved at the level the risk policy names.",
         "SOC report": "A System and Organization Controls report: a service auditor's report on a service provider's controls.",
         "Integrated audit": "One engagement that combines IT, financial and operational audit work, linking IT weaknesses to business impact.",
         "Sufficient and appropriate evidence": "Enough evidence (sufficient) that is relevant and reliable (appropriate) to support a conclusion.",
@@ -5407,7 +5407,7 @@
                 },
                 {
                   "term": "Residual risk",
-                  "definition": "The risk left after responses; it must fit within risk appetite, or be treated further unless the board approves an exception."
+                  "definition": "The risk left after responses; it must fit within risk appetite or be treated further, unless a documented exception is approved at the right level."
                 },
                 {
                   "term": "Risk owner",
@@ -5437,7 +5437,7 @@
                 "Senior management or the board sets tolerances within risk appetite: measurable limits for specific risks, such as maximum yearly outage hours.",
                 "Risk capacity is the most loss the organization can absorb; risk appetite must sit well below it.",
                 "Risk within risk appetite can be accepted by the risk owner or senior management under delegated authority; tolerance breaches go to senior management.",
-                "Risk above risk appetite must be treated until it fits; senior management cannot accept it alone, and keeping it needs a board-approved exception."
+                "Risk above risk appetite is treated until it fits; keeping it needs a documented exception approved at the level the risk policy names, never by the IS auditor."
               ],
               "compare": {
                 "columns": [
@@ -5481,7 +5481,7 @@
                   {
                     "label": "When exceeded",
                     "cells": [
-                      "Treat the risk; only the board can approve an exception",
+                      "Treat the risk; any exception is approved at the level the risk policy names",
                       "Escalate to senior management to decide",
                       "Survival is at stake; a projected breach goes to the board at once"
                     ]
@@ -5489,15 +5489,15 @@
                 ]
               },
               "example": "A hospital group's board has set a low risk appetite for patient-data exposure. The head of radiology wants to keep an unvetted overseas scan-reading service and offers to sign off on the risk. The IS auditor reports that the exposure exceeds risk appetite and the department head lacks authority, and recommends escalation to senior management for treatment.",
-              "isaca_rule": "Authority to accept rises with the risk: owners accept within tolerance, senior management decides tolerance breaches within risk appetite, and risk above risk appetite is treated until it fits or the board approves an exception. The IS auditor never accepts risk.",
+              "isaca_rule": "Authority to accept rises with the risk: owners accept within tolerance, senior management decides tolerance breaches within risk appetite, and risk above risk appetite is treated until it fits or a documented exception is approved at the level the risk policy names. The IS auditor never accepts risk.",
               "exam_traps": [
                 {
                   "trap": "A four-hour yearly outage limit is the board's risk appetite.",
                   "why": "A measurable limit for one specific risk is a tolerance. Appetite is the broad statement of how much risk to take."
                 },
                 {
-                  "trap": "The CIO, or senior management alone, can sign off on risk above risk appetite to keep a project moving.",
-                  "why": "Above risk appetite, the risk must be treated until it fits. Only the board, which set the risk appetite, can approve keeping the excess as an exception."
+                  "trap": "The CIO can sign off on risk above risk appetite to keep a project moving.",
+                  "why": "Above risk appetite, the risk must be treated until it fits. Keeping the excess is a documented exception approved at the level the risk policy names, not a sign-off by the CIO or the project sponsor."
                 }
               ],
               "key_terms": [
@@ -5511,7 +5511,7 @@
                 },
                 {
                   "term": "Appetite exception",
-                  "definition": "A documented board decision to keep a specific risk above risk appetite for a set time, with a plan to bring it within limits."
+                  "definition": "A documented, time-limited decision, approved at the level the risk policy names, to keep a risk above risk appetite while it is brought within limits."
                 }
               ]
             },
@@ -5630,7 +5630,7 @@
               "definition": "Risk response, also called risk treatment, is management's choice to accept, mitigate (reduce), transfer (share) or avoid a risk so the residual risk fits within risk appetite.",
               "why_it_matters": "The wrong response wastes money or leaves the enterprise exposed. A clear, owned choice for each significant risk is what turns analysis into protection.",
               "how_it_works": [
-                "Accept the risk when it is within risk appetite, with the owner's decision recorded; risk above risk appetite needs another response or a board-approved exception.",
+                "Accept the risk when it is within risk appetite, with the owner's decision recorded; above it, use another response or a documented exception at the level the risk policy names.",
                 "Mitigate (reduce) it by adding or improving controls that lower likelihood or impact.",
                 "Transfer (share) financial impact through insurance or contracts; accountability and reputational harm stay with the organization.",
                 "Avoid it by stopping or redesigning the activity when no other response brings the risk within risk appetite.",
@@ -5649,7 +5649,7 @@
                 },
                 {
                   "trap": "Accept a high-likelihood, high-impact risk because the fix is expensive.",
-                  "why": "Acceptance suits risks within risk appetite. Mitigate a severe risk when a fix exists; when no control or insurance brings it within risk appetite, avoid it. Only the board could approve keeping it as an exception."
+                  "why": "Acceptance suits risks within risk appetite. Mitigate a severe risk when a fix exists; when no control or insurance brings it within risk appetite, avoid it. Keeping it would need a documented exception at the right level."
                 }
               ],
               "key_terms": [
@@ -7681,7 +7681,7 @@
         "Architecture waiver": "An approved, time-limited exception to an architecture standard, tracked as technical debt.",
         "Enterprise risk management (ERM)": "An organization-wide approach to identifying, assessing, responding to and monitoring risk against the board-set risk appetite.",
         "Risk appetite": "The broad amount of risk the board will take on for its objectives; tolerances set measurable limits within it.",
-        "Residual risk": "The risk that remains after responses are applied; it must fit within risk appetite, or be treated further unless the board approves an exception.",
+        "Residual risk": "The risk that remains after responses are applied; it must fit within risk appetite, or be treated further unless a documented exception is approved at the level the risk policy names.",
         "Risk treatment": "The chosen response to a risk, also called risk response: accept, mitigate (reduce), transfer (share) or avoid.",
         "Annualized loss expectancy (ALE)": "Expected yearly loss from a risk: single loss expectancy times annualized rate of occurrence.",
         "Lawful basis": "The legal ground that permits processing personal data, such as consent or a legal obligation.",
@@ -9544,7 +9544,7 @@
                 "Agree on measurable acceptance criteria, tied to business requirements, with the business owner before testing.",
                 "Rehearse the cutover in stages, covering technical and business steps, and confirm users are trained and support is ready before go-live.",
                 "Collect sign-offs on a readiness checklist: testers certify that controls meet requirements, and a senior official accredits the system, accepting the residual risk (what remains after controls) and exceptions.",
-                "Fix high-risk findings before go-live. Within risk appetite (the level the organization accepts), the risk owner or senior management may accept them; above it, they need a board-approved exception.",
+                "Fix high-risk findings before go-live. Within risk appetite (what the organization accepts), the owner or senior management may accept them; above it, only a documented exception at the right level.",
                 "If user acceptance testing (UAT) misses its exit criteria, defer go-live; any deviation is decided and documented by the steering committee.",
                 "Under a fixed deadline, release a fully tested smaller scope and defer the rest with documented risk acceptance."
               ],
@@ -10856,7 +10856,7 @@
                 },
                 {
                   "term": "Residual risk",
-                  "definition": "The risk left after controls are applied; above risk appetite, it must be treated unless the board approves an exception."
+                  "definition": "The risk left after controls; above risk appetite, it must be treated unless a documented exception is approved at the right level."
                 },
                 {
                   "term": "Warranty",

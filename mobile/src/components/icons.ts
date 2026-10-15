@@ -1,5 +1,5 @@
 /**
- * The icons Aurivan uses — imported one by one so the app bundles only
+ * The icons KaiSip uses — imported one by one so the app bundles only
  * these (the full Lucide set is ~1,800 icons). Lucide, stroke 1.75.
  * Grove v2 custom glyphs (Sprout, Rings, Pinwheel, Sprig) live in glyphs.tsx.
  */

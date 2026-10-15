@@ -1,5 +1,5 @@
 /**
- * Your activity (spec §4.2), aurivan://board/activity: your posts and their
+ * Your activity (spec §4.2), kaisip://board/activity: your posts and their
  * statuses (a waiting one says so), then the notices (status changes, the
  * team's replies, replies, and moderation: a removal with its reason and
  * "Ask us to look again" for 14 days, a warning, a suspension, an appeal's

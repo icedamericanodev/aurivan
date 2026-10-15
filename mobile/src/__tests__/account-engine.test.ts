@@ -41,7 +41,7 @@ describe('sha256 (FIPS 180-4 test vectors)', () => {
   });
 
   it('encodes UTF-8 like TextEncoder (accents, emoji, a lone surrogate)', () => {
-    for (const s of ['é', '€', '😀', 'Aurivan · 16+', '\ud800']) {
+    for (const s of ['é', '€', '😀', 'KaiSip · 16+', '\ud800']) {
       expect(toHex(utf8(s))).toBe(toHex(new TextEncoder().encode(s)));
     }
   });
@@ -203,7 +203,7 @@ describe('ids, nonces and files', () => {
   });
 
   it('names the data file with the local date', () => {
-    expect(accountExportFileName(new Date(2026, 9, 12, 23, 30).getTime())).toBe('aurivan-account-2026-10-12.json');
+    expect(accountExportFileName(new Date(2026, 9, 12, 23, 30).getTime())).toBe('kaisip-account-2026-10-12.json');
   });
 
   it('terms version is YYYY-MM (the database checks the same pattern)', () => {

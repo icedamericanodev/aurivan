@@ -1,5 +1,5 @@
 /**
- * Aurivan design tokens for mobile: the "Grove v2" design system.
+ * KaiSip design tokens for mobile: the "Grove v2" design system.
  *
  * Source of truth: docs/mobile/DESIGN_SYSTEM.md (locked 2026-10-07).
  * If this file and that doc disagree, the doc wins.
@@ -117,22 +117,21 @@ export const dark: Palette = {
 };
 
 /**
- * Brand colours for the "True North" mark and lockup (DESIGN_SYSTEM.md, "Brand").
- * The lockup has two fixed tones that do NOT follow the theme:
- * - `light`: on paper (bg). Ring/book in accent, honey tip, forest needle half.
- * - `dark`: on forest or the dark bg. Ring/book in sap, light honey, paper half.
- * Honey appears once per mark, on the needle's north tip, and never carries meaning.
+ * KaiSip "Kasama" mark and lockup colours (design-notes/brand-kaisip/, chosen
+ * by the owner). Two tones that follow the theme the lockup sits on: on paper the upright leaf is forest ink, the companion
+ * pair is accent green and the wordmark is `ink`; on the dark theme the leaf
+ * and wordmark are paper and the pair is sap. Contrast (brand sheet): upright
+ * leaf 8.91:1 on paper and 16.19:1 on the dark bg, pair 5.41:1 and 11.6:1,
+ * wordmark 14.37:1 and 16.19:1 (3:1 needed for a mark, 4.5:1 for text).
  */
-export interface BrandTone {
-  ring: string; // the growth-ring arc and the open book
-  honey: string; // the needle's west (left) half: the north tip
-  needle: string; // the needle's east (right) half
-  word: string; // the "aurivan" wordmark
-  leaf: string; // the leaf over the i
+export interface KaisipTone {
+  leaf: string; // the upright leaf ("you")
+  pair: string; // the companion pair ("your kasama") and the dot of the i
+  word: string; // the lowercase "kaisip" wordmark
 }
-export const brand: { light: BrandTone; dark: BrandTone } = {
-  light: { ring: '#2B6E4A', honey: '#7A5100', needle: '#1E4A34', word: '#17231B', leaf: '#2B6E4A' },
-  dark: { ring: '#A9D9BA', honey: '#E9C46A', needle: '#F3F1EA', word: '#F3F1EA', leaf: '#A9D9BA' },
+export const kaisip: { light: KaisipTone; dark: KaisipTone } = {
+  light: { leaf: '#1E4A34', pair: '#2B6E4A', word: '#17231B' },
+  dark: { leaf: '#F3F1EA', pair: '#A9D9BA', word: '#F3F1EA' },
 };
 
 /** Pillar glyph leaf fill (welcome + About). The line colour is the theme's accentText. */
@@ -285,11 +284,12 @@ export const badgeLetter: TextStyle = { fontFamily: font.sans600, fontSize: 14, 
  * Serif numeral system (spec §10.4): every number a learner reads as an
  * achievement or a quantity is Fraunces 500. Inline sizes: 17 (ring legend),
  * 20 (streak, segmented control), 22 (row counts, lesson numerals),
- * 26 (mock lead numerals), 30 (clearing stats). `number` 52 and `stat` 34
+ * 26 (mock lead numerals), 30 (clearing stats), 38 (Today's range). `number` 52 and `stat` 34
  * are full type variants above.
  */
 export type NumeralSize = 17 | 20 | 22 | 24 | 26 | 30;
-export function serifNumeral(size: NumeralSize | 34 | 52): TextStyle {
+/** 38 (mobile 1.23): Today's readiness range, between the stat numerals (34) and the full-size number (52). */
+export function serifNumeral(size: NumeralSize | 34 | 38 | 52): TextStyle {
   return { fontFamily: font.serif500, fontSize: size, lineHeight: Math.round(size * 1.08), letterSpacing: size >= 30 ? -0.6 : -0.3 };
 }
 /** The unit under or after a serif numeral ("due", "questions"): Figtree 500 12/16. */

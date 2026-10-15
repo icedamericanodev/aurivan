@@ -97,7 +97,7 @@ export function AccountSettingsGroup() {
   );
 }
 
-/** Settings → About's last sentence: unchanged with the flag off; "…and syncs to your Aurivan account" while this phone syncs. */
+/** Settings → About's last sentence: unchanged with the flag off; "…and syncs to your KaiSip account" while this phone syncs. */
 export function aboutLine(syncing = false): string {
   if (!CLOUD) return copy('about.off');
   return copy(syncing ? 'about.on.sync' : 'about.on.out');

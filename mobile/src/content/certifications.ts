@@ -45,11 +45,11 @@ export const CERTIFICATIONS: Certification[] = [
       passingNote: 'ISACA reports scaled scores from 200–800; 450 is the passing mark.',
     },
     domains: [
-      { id: '1', name: 'Information System Auditing Process', short: 'IS Audit', weight: 18, tone: 0, emblem: 'domain-audit' },
-      { id: '2', name: 'Governance and Management of IT', short: 'IT Governance', weight: 18, tone: 1, emblem: 'domain-governance' },
-      { id: '3', name: 'IS Acquisition, Development & Implementation', short: 'IS Acquisition', weight: 12, tone: 2, emblem: 'domain-build' },
-      { id: '4', name: 'IS Operations & Business Resilience', short: 'IS Operations', weight: 26, tone: 3, emblem: 'domain-operations' },
-      { id: '5', name: 'Protection of Information Assets', short: 'Info Protection', weight: 26, tone: 4, emblem: 'domain-protection' },
+      { id: '1', name: 'Information System Auditing Process', short: 'IS Audit', tile: 'IS Audit', weight: 18, tone: 0, emblem: 'domain-audit' },
+      { id: '2', name: 'Governance and Management of IT', short: 'IT Governance', tile: 'Governance', weight: 18, tone: 1, emblem: 'domain-governance' },
+      { id: '3', name: 'IS Acquisition, Development & Implementation', short: 'IS Acquisition', tile: 'Acquisition', weight: 12, tone: 2, emblem: 'domain-build' },
+      { id: '4', name: 'IS Operations & Business Resilience', short: 'IS Operations', tile: 'IS Ops', weight: 26, tone: 3, emblem: 'domain-operations' },
+      { id: '5', name: 'Protection of Information Assets', short: 'Info Protection', tile: 'Protection', weight: 26, tone: 4, emblem: 'domain-protection' },
     ],
   },
   {
@@ -193,13 +193,13 @@ function joinList(items: string[], word: 'and' | 'or' = 'and'): string {
 
 /**
  * One combined notice for every certification the app names, grouped by owner:
- * "Aurivan is not affiliated with or endorsed by ISACA® or ISC2. CISA®, CISM® and
+ * "KaiSip is not affiliated with or endorsed by ISACA® or ISC2. CISA®, CISM® and
  * CRISC® are registered trademarks of ISACA. AAIA is a trademark of ISACA. …"
  * Same legal content as each cert's own notice, without repeating it per cert.
  */
 export function combinedTrademarkNotice(certs: Certification[] = CERTIFICATIONS): string {
   const issuers = [...new Set(certs.map((c) => c.issuer))];
-  const parts = [`Aurivan is not affiliated with or endorsed by ${joinList(issuers.map((i) => ISSUER_MARK[i]), 'or')}.`];
+  const parts = [`KaiSip is not affiliated with or endorsed by ${joinList(issuers.map((i) => ISSUER_MARK[i]), 'or')}.`];
   for (const issuer of issuers) {
     const own = certs.filter((c) => c.issuer === issuer);
     const registered = own.filter((c) => c.trademarkRegistered !== false).map((c) => `${c.name}®`);

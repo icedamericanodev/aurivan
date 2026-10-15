@@ -506,9 +506,9 @@ export function HeroPanel({
   meta?: string;
   /**
    * `iconTrailing` (mobile 1.22): the glyph after the label, for a forward arrow ("Start →", as
-   * "Next question →"); a Play glyph stays leading.
+   * "Next question →"); a Play glyph stays leading. `full` (mobile 1.23, Today): the pill spans the panel.
    */
-  action?: { label: string; onPress: () => void; icon?: (color: string) => ReactNode; hint?: string; iconTrailing?: boolean };
+  action?: { label: string; onPress: () => void; icon?: (color: string) => ReactNode; hint?: string; iconTrailing?: boolean; full?: boolean };
   art?: BotanyKind;
   /** Gentle frond sway while the screen is focused (off under Reduce Motion). */
   sway?: boolean;
@@ -610,7 +610,7 @@ export function HeroPanel({
             icon={action.icon}
             iconLeading={!action.iconTrailing}
             follow={lift}
-            style={{ marginTop: space.gutter, alignSelf: 'flex-start' }}
+            style={{ marginTop: space.gutter, alignSelf: action.full ? 'stretch' : 'flex-start', ...(action.full ? { minHeight: 52 } : null) }}
           />
         )}
       </View>
@@ -1629,7 +1629,7 @@ export function BigNum({
 }: {
   value: string;
   pct?: boolean;
-  size: NumeralSize | 34 | 52;
+  size: NumeralSize | 34 | 38 | 52;
   color?: string;
   accessibilityLabel?: string;
   /**
@@ -1668,7 +1668,7 @@ export function BigNum({
  * The raised "%". On a count-up from blank it fades in as the first digit
  * arrives (never a lone "%" waiting for its number); otherwise it is simply there.
  */
-function Percent({ size, color, roll }: { size: NumeralSize | 34 | 52; color: string; roll?: Roll }) {
+function Percent({ size, color, roll }: { size: NumeralSize | 34 | 38 | 52; color: string; roll?: Roll }) {
   const { reduced } = useMotion();
   const sign = <Text maxFontSizeMultiplier={1.3} style={[percentSup(size), { color, marginLeft: 2 }]}>%</Text>;
   if (!roll?.play || reduced || roll.from) return sign;

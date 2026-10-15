@@ -1,4 +1,4 @@
-// HTTP helpers shared by Aurivan's Edge Functions (pure: no Deno or network APIs).
+// HTTP helpers shared by KaiSip's Edge Functions (pure: no Deno or network APIs).
 //
 // The functions serve the native app only, so there are NO CORS headers: a
 // browser page on another origin cannot read any response. Error bodies carry

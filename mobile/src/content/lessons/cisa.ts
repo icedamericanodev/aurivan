@@ -1,5 +1,5 @@
 /**
- * CISA motion lessons — ORIGINAL Aurivan writing.
+ * CISA motion lessons — ORIGINAL KaiSip writing.
  *
  * Not copied or paraphrased from any review manual, QAE or study guide;
  * topics follow the public CISA job practice areas, and facts are anchored
@@ -20,7 +20,7 @@
  */
 import type { Lesson } from './types';
 
-const PROVENANCE = 'Original Aurivan content. Not affiliated with or endorsed by ISACA.';
+const PROVENANCE = 'Original KaiSip content. Not affiliated with or endorsed by ISACA.';
 const OUTLINE = 'CISA job practice 2024';
 const REVIEWED = '2026-10-07';
 const PHASE2_REVIEWED = '2026-10-08'; // Phase 2 lessons, after concept, teaching and novice reviews
@@ -2222,7 +2222,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A payroll team is writing go or no-go criteria for an overnight cutover. Which criterion is MOST important to include?',
+          'An IS auditor reviews a payroll team’s draft go or no-go criteria for an overnight cutover. Which criterion is MOST important to include?',
         options: [
           'Go live once ninety percent of the planned test cases have passed',
           'Let the vendor decide on the night whether go-live should proceed',
@@ -3695,7 +3695,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'Monitoring shows a sales manager’s account downloading the customer database from an unusual country at 3 a.m. What should the incident responder do FIRST?',
+          'Monitoring shows a sales manager’s account downloading the customer database from an unusual country at 3 a.m. What should the IS auditor recommend the incident responder do FIRST?',
         options: [
           'Call the sales manager to ask whether they are traveling',
           'Analyze the account’s download history for the past year',
@@ -3724,7 +3724,7 @@ export const CISA_LESSONS: Lesson[] = [
         // Review fix (MAJOR): plausible distractors, including a true-but-not-BEST option.
         type: 'check',
         question:
-          'Ransomware (malware that locks files until a ransom is paid) has been contained on three servers. The team wants to restore them at once from last night’s backups. What should the incident manager ensure FIRST?',
+          'Ransomware (malware that locks files until a ransom is paid) has been contained on three servers. The team wants to restore them at once from last night’s backups. What should the IS auditor recommend management ensure FIRST?',
         options: [
           'Confirm the backups are clean and the entry point is closed',
           'Restore the most critical server first to cut downtime',
@@ -4516,7 +4516,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A lawful policy covers monitoring of staff email. The information security manager now wants to scan staff chat too, using the same tool. What should happen FIRST?',
+          'A lawful policy covers monitoring of staff email. Management now wants to scan staff chat too, using the same tool. What should the IS auditor advise must happen FIRST?',
         options: [
           'Extend monitoring to chat, since a policy already exists',
           'Turn on chat monitoring for privileged users first',
@@ -4610,7 +4610,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A laptop under investigation is still switched on and unlocked, and its disk is fully encrypted. What should the examiner do FIRST?',
+          'A laptop under investigation is still switched on and unlocked, and its disk is fully encrypted. What should the IS auditor recommend the examiner do FIRST?',
         options: [
           'Ask the employee for the disk password at interview',
           'Copy the documents folder to a clean portable drive',

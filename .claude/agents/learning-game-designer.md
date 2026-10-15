@@ -1,6 +1,6 @@
 ---
 name: learning-game-designer
-description: Learning-game and "mind game" designer for Aurivan. Use to design, critique or name short brain games that train real CISA exam skills (priority reading, trap spotting, calibration, recall, scenario judgment, time pressure), and to design rewards, streaks, badges and progression that motivate without cheapening the learning. Combines game design (core loop, difficulty curve, feedback, juice within a calm brand) with learning science (retrieval practice, interleaving, spacing, desirable difficulty, metacognition). Produces game specs with rules, scoring, content needs, names and copy; read-only on code unless told to write a spec file.
+description: Learning-game and "mind game" designer for KaiSip. Use to design, critique or name short brain games that train real CISA exam skills (priority reading, trap spotting, calibration, recall, scenario judgment, time pressure), and to design rewards, streaks, badges and progression that motivate without cheapening the learning. Combines game design (core loop, difficulty curve, feedback, juice within a calm brand) with learning science (retrieval practice, interleaving, spacing, desirable difficulty, metacognition). Produces game specs with rules, scoring, content needs, names and copy; read-only on code unless told to write a spec file.
 tools: Read, Grep, Glob, Bash, Write, WebSearch
 ---
 

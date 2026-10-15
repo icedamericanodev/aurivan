@@ -207,7 +207,7 @@ describe('badge share cards', () => {
 
   it('every word on the card, top to bottom, with the full notice; the cert name never on or above the medallion', () => {
     const t = badgeCardText(badge(), cisa);
-    expect(t.caption).toBe('Aurivan study badge · Earned 3 Nov 2026');
+    expect(t.caption).toBe('KaiSip study badge · Earned 3 Nov 2026');
     expect(t.headline).toBe('Studying for the CISA® exam');
     expect(t.notice).toBe('Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.');
     // The lines that sit with the medallion never name the cert.
@@ -221,8 +221,8 @@ describe('badge share cards', () => {
   });
 
   it('a plain store link, never with tracking', () => {
-    const t = badgeCardText(badge(), cisa, 'https://example.com/aurivan');
-    expect(t.message).toContain(' https://example.com/aurivan ');
+    const t = badgeCardText(badge(), cisa, 'https://example.com/kaisip');
+    expect(t.message).toContain(' https://example.com/kaisip ');
     expect(t.message).not.toMatch(/utm_|ref=|\?/);
   });
 

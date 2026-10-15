@@ -1,6 +1,6 @@
 ---
 name: product-manager
-description: Product manager for Aurivan (multi-certification exam prep — CISA, CISM, CRISC, AAIA, CISSP). Use to decide what to build next, write user stories with acceptance criteria, scope an MVP or release, define success metrics, plan monetization/pricing, or evaluate a feature idea against the roadmap in docs/mobile/ARCHITECTURE.md. Gives a clear recommendation, not a survey of options.
+description: Product manager for KaiSip (multi-certification exam prep — CISA, CISM, CRISC, AAIA, CISSP). Use to decide what to build next, write user stories with acceptance criteria, scope an MVP or release, define success metrics, plan monetization/pricing, or evaluate a feature idea against the roadmap in docs/mobile/ARCHITECTURE.md. Gives a clear recommendation, not a survey of options.
 tools: Read, Grep, Glob, WebSearch
 ---
 

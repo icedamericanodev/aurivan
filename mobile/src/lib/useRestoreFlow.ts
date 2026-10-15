@@ -25,7 +25,7 @@ export function announce(text: string) {
 /** One extra sentence about reminders after a restore or undo. */
 export function reminderLine(r: ReminderOutcome): string {
   if (r === 'on') return ' Your study reminder is set again.';
-  if (r === 'blocked') return ' Reminders are off because notifications aren’t allowed for Aurivan. You can turn them on in Settings.';
+  if (r === 'blocked') return ' Reminders are off because notifications aren’t allowed for KaiSip. You can turn them on in Settings.';
   return '';
 }
 
@@ -72,14 +72,14 @@ export function useRestoreFlow(opts: { onRestored?: () => void; onboard?: boolea
         say({
           tone: 'problem',
           title: 'Couldn’t restore',
-          text: 'Aurivan couldn’t keep a copy of this phone’s progress to undo with, so it didn’t replace anything. Nothing was changed.',
+          text: 'KaiSip couldn’t keep a copy of this phone’s progress to undo with, so it didn’t replace anything. Nothing was changed.',
         });
       } else {
         // The write failed and the old data was written back (lib/backup.ts writeAll).
         say({
           tone: 'problem',
           title: 'Restore didn’t finish',
-          text: 'Something went wrong while saving the backup to this phone, so it wasn’t restored and your progress was put back as it was. If anything looks wrong, close and reopen Aurivan.',
+          text: 'Something went wrong while saving the backup to this phone, so it wasn’t restored and your progress was put back as it was. If anything looks wrong, close and reopen KaiSip.',
         });
       }
     } finally {

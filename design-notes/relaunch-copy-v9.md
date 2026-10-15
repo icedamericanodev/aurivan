@@ -1,4 +1,4 @@
-# Aurivan — Relaunch Copy v9.0
+# KaiSip — Relaunch Copy v9.0
 > Four copy surfaces. Ready to implement.
 
 ---
@@ -85,7 +85,7 @@ Free. No account.
 
 ## Notes
 
-- **App name:** Copy above uses "CISA Mindset" — update to "Aurivan" or the final product name before sending.
-- **Email sender name:** Should be a person, not "The Aurivan Team." These read better from a name.
+- **App name:** Copy above uses "CISA Mindset" — update to "KaiSip" or the final product name before sending.
+- **Email sender name:** Should be a person, not "The KaiSip Team." These read better from a name.
 - **LinkedIn vs Twitter:** The LinkedIn version is intentionally dense — that audience scans for technical substance. Don't soften it.
 - **"No exam-bank citations in the chain"** is the sharpest differentiator claim. Lead with it wherever possible.

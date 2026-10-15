@@ -208,12 +208,13 @@ describe('J1 a new learner’s onboarding', () => {
   // Mobile 1.15: the plant step is step 4 of 4, after "Where are you starting from?" (skipped here) and the date.
   const toStep3 = () => {
     press(/^Start my plan$/);
+    press(/^Skip$/); // the optional name step (mobile 1.23)
     press(/^Continue$/);
     press(/^Skip this question$/);
     press(/^Continue$/);
   };
 
-  it('pick a plant, name it, plant it: Today shows it (no prompt, no rings), You names it', () => {
+  it('pick a plant, name it, plant it: Today shows it under the facts (no prompt; the rings stay on the readiness row), You names it', () => {
     useSettings.setState({ onboarded: false });
     mount(<Onboarding />);
     toStep3();
@@ -244,7 +245,8 @@ describe('J1 a new learner’s onboarding', () => {
     expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Growth: Seed, 1 of 6.');
     expect(byTestID('plant-prompt')).toHaveLength(0);
     expect(byTestID('plant-grew')).toHaveLength(0); // planting is not a "grew" moment
-    expect(ringsShown()).toBe(false);
+    // Mobile 1.23 (mockup A): the rings are always the readiness row's picture; the plant has its own row under the tiles.
+    expect(ringsShown()).toBe(true);
     unmount();
 
     mount(<You />);

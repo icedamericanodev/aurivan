@@ -50,7 +50,7 @@ Object.assign(newer.state.byCert.cisa.answers, Object.fromEntries(Object.entries
 newer.state.streak = { ...newer.state.streak, best: 11 };
 const newerSettings = structuredClone(settings);
 newerSettings.state.reminder = { enabled: true, hour: 7, minute: 30, days: [1, 2, 3, 4, 5] };
-const file = (st, pr, daysAgo) => JSON.stringify({ app: 'aurivan', schema: 1, exportedAt: new Date(Date.now() - daysAgo * day).toISOString(), appVersion: '1.3.0', stores: { settings: st, progress: pr } });
+const file = (st, pr, daysAgo) => JSON.stringify({ app: 'kaisip', schema: 1, exportedAt: new Date(Date.now() - daysAgo * day).toISOString(), appVersion: '1.3.0', stores: { settings: st, progress: pr } });
 const olderBackup = file(olderSettings, older, 3);
 const newerBackup = file(newerSettings, newer, 0);
 
@@ -74,13 +74,13 @@ await page.waitForTimeout(900);
 await scrollTo('Your data');
 await snap('d02-save-confirmation');
 
-// A file that isn't an Aurivan backup: one calm message, nothing changes.
+// A file that isn't a KaiSip backup: one calm message, nothing changes.
 await pick('holiday-photos.json', JSON.stringify({ app: 'something-else', photos: [] }));
 await scrollTo('Your data');
 await snap('d03-restore-error');
 
 // A newer backup: the normal preview (with the Study reminder row).
-await pick('aurivan-backup-today.json', newerBackup);
+await pick('kaisip-backup-today.json', newerBackup);
 await snap('d04-restore-preview');
 await toEnd();
 await snap('d04b-restore-preview-end');
@@ -88,7 +88,7 @@ await page.getByRole('button', { name: 'Cancel' }).click();
 await page.waitForTimeout(800);
 
 // An older backup: the "Older backup" warning, then Replace.
-await pick('aurivan-backup-old-phone.json', olderBackup);
+await pick('kaisip-backup-old-phone.json', olderBackup);
 await snap('d05-restore-preview-behind');
 await toEnd();
 await page.getByRole('button', { name: 'Replace my progress' }).click();
@@ -111,7 +111,7 @@ await page2.waitForTimeout(1800);
 await page2.screenshot({ path: `${out}/d07-welcome-restore${sfx}.png` }); console.log('shot', 'd07-welcome-restore' + sfx);
 const chooser2 = page2.waitForEvent('filechooser');
 await page2.getByRole('button', { name: 'Restore from a backup' }).click();
-await (await chooser2).setFiles({ name: 'aurivan-backup-old-phone.json', mimeType: 'application/json', buffer: Buffer.from(olderBackup) });
+await (await chooser2).setFiles({ name: 'kaisip-backup-old-phone.json', mimeType: 'application/json', buffer: Buffer.from(olderBackup) });
 await page2.waitForTimeout(1200);
 await page2.screenshot({ path: `${out}/d08-restore-preview-fresh${sfx}.png` }); console.log('shot', 'd08-restore-preview-fresh' + sfx);
 await page2.getByRole('button', { name: 'Restore my progress' }).click();

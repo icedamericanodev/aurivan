@@ -1,5 +1,5 @@
 /**
- * One post (spec §4.2 "Post detail"), aurivan://board/<id>. The ⋯ menu in
+ * One post (spec §4.2 "Post detail"), kaisip://board/<id>. The ⋯ menu in
  * the header (Report post · Report {handle} · Block {handle} · Edit ·
  * Withdraw on your own), the title and meta line, the body (a post about a
  * practice question's answer is folded: "Show it"), Vote and Follow, the

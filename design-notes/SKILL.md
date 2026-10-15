@@ -1,6 +1,6 @@
 ---
-name: aurivan-design
-description: Use this skill to generate well-branded interfaces and assets for Aurivan, a CISA (Certified Information Systems Auditor) exam prep platform. Contains essential design guidelines, colors, type, fonts, assets, and UI kit components for prototyping across web app, mobile app, and marketing site surfaces.
+name: kaisip-design
+description: Use this skill to generate well-branded interfaces and assets for KaiSip, a CISA (Certified Information Systems Auditor) exam prep platform. Contains essential design guidelines, colors, type, fonts, assets, and UI kit components for prototyping across web app, mobile app, and marketing site surfaces.
 user-invocable: true
 ---
 
@@ -12,7 +12,7 @@ If the user invokes this skill without any other guidance, ask them what they wa
 
 ## Quick reference
 
-**Brand name:** Aurivan (working name — confirm with client)
+**Brand name:** KaiSip (renamed from Aurivan, 15 Oct 2026)
 **Tagline:** Where control meets intelligence.
 
 **Core palette:**

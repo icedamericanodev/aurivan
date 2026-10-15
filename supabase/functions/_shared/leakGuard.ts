@@ -7,7 +7,7 @@
  * No React, no storage, no network.
  *
  * Two jobs, in plain English:
- * 1. BLOCK near-verbatim copies of Aurivan's own practice questions
+ * 1. BLOCK near-verbatim copies of KaiSip's own practice questions
  *    (`leakMatch`). Pasting a question, its options, explanation or tips on
  *    the board would spoil it for everyone. Text is cut into short runs of
  *    words ("shingles"), and each run becomes a 32-bit number (a hash). The
@@ -353,7 +353,7 @@ export const RECALL_HOLD = 3;
  * words +3, three or more option lines ("A) …") +2 (+3 with a question:
  * a pasted question with its options is held on its own), exam-stem
  * phrasing with a question mark +1, and −2 when the post links one of
- * Aurivan's own PRACTICE QUESTIONS (`q:…`) and has no option list (it is
+ * KaiSip's own PRACTICE QUESTIONS (`q:…`) and has no option list (it is
  * about our question, not a real exam's). A pasted option list never gets
  * the discount, and nor does any other link (fix round P8, SEC S5).
  * RECALL_HOLD (3) or more: held.

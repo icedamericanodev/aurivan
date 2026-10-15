@@ -1,5 +1,5 @@
 /**
- * Brand ("True North" + the Set A vision):
+ * Brand (the KaiSip Kasama mark + the Set A vision):
  * - the store icons have NO alpha channel (App Store Connect rejects them);
  * - the welcome screen shows the lockup, tagline, line and all four pillars,
  *   and "Start my plan" still leads into the existing onboarding steps;
@@ -12,7 +12,7 @@ import { BackHandler } from 'react-native';
 import { PILLARS, TAGLINE, VISION_LINE } from '../content/brand';
 import Onboarding from '../app/onboarding';
 import Settings from '../app/settings';
-import { BrandLockup } from '../components/brand';
+import { KaisipLockup } from '../components/brand';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -41,7 +41,32 @@ function pngColorType(file: string): number {
   return buf[25];
 }
 
+/** Width and height from the PNG header (IHDR: bytes 16 to 23). */
+function pngSize(file: string): [number, number] {
+  const buf = fs.readFileSync(path.join(__dirname, '../../assets', file));
+  return [buf.readUInt32BE(16), buf.readUInt32BE(20)];
+}
+
 describe('store icons', () => {
+  // The KaiSip icons (mobile 1.23) keep the exact sizes app.json and the stores expect.
+  it.each([
+    ['icon.png', 1024],
+    ['icon-dark.png', 1024],
+    ['icon-tinted.png', 1024],
+    ['splash-icon.png', 1024],
+    ['splash-icon-dark.png', 1024],
+    ['android-icon-foreground.png', 512],
+    ['android-icon-background.png', 512],
+    ['android-icon-monochrome.png', 432],
+    ['favicon.png', 48],
+  ])('%s is %i px square', (f, size) => {
+    expect(pngSize(f)).toEqual([size, size]);
+  });
+  it('every icon app.json names exists', () => {
+    const named = JSON.stringify(require('../../app.json')).match(/\.\/assets\/[\w.-]+\.png/g) ?? [];
+    expect(named.length).toBeGreaterThanOrEqual(10);
+    for (const f of named) expect(fs.existsSync(path.join(__dirname, '../..', f))).toBe(true);
+  });
   // Apple rejects an app icon with an alpha channel; the light and tinted icons must be opaque RGB.
   it.each(['icon.png', 'icon-tinted.png'])('%s has no alpha channel', (f) => {
     expect(pngColorType(f)).toBe(2);
@@ -81,7 +106,7 @@ afterEach(() => {
 describe('welcome screen', () => {
   it('shows the lockup, tagline, line and the four pillars', () => {
     mount(<Onboarding />);
-    expect(r!.root.findAllByType(BrandLockup)).toHaveLength(1);
+    expect(r!.root.findAllByType(KaisipLockup)).toHaveLength(1);
     const text = allText();
     expect(text).toContain(TAGLINE);
     expect(text).toContain(VISION_LINE);
@@ -97,8 +122,13 @@ describe('welcome screen', () => {
   it('"Start my plan" leads into the certification step, and Back returns', () => {
     mount(<Onboarding />);
     press('Start my plan');
+    // Mobile 1.23: the optional name step comes first; Skip moves on, Back from the exam returns to it.
+    expect(allText()).toContain('What should we call you?');
+    press('Skip');
     expect(allText()).toContain('Which exam are you preparing for?');
     expect(allText()).not.toContain(TAGLINE);
+    press('Back');
+    expect(allText()).toContain('What should we call you?');
     press('Back');
     expect(allText()).toContain(TAGLINE);
   });
@@ -114,6 +144,7 @@ describe('welcome screen', () => {
     mount(<Onboarding />);
     expect(handler!()).toBe(false); // welcome: default behaviour
     press('Start my plan');
+    press('Skip');
     press('Continue');
     let handled: boolean | null | undefined;
     act(() => {
@@ -121,6 +152,10 @@ describe('welcome screen', () => {
     });
     expect(handled).toBe(true);
     expect(allText()).toContain('Which exam are you preparing for?');
+    act(() => {
+      handler!();
+    });
+    expect(allText()).toContain('What should we call you?'); // the name step sits between the welcome and step 1
     act(() => {
       handler!();
     });
@@ -132,10 +167,10 @@ describe('welcome screen', () => {
 describe('Settings → About', () => {
   it('carries the same vision and pillars', () => {
     mount(<Settings />);
-    // Mobile 1.17: behind the "About Aurivan" row (a sheet), so Settings stays short.
+    // Mobile 1.17: behind the "About KaiSip" row (a sheet), so Settings stays short.
     expect(allText()).not.toContain(TAGLINE);
     act(() => {
-      r!.root.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && String(n.props.accessibilityLabel).startsWith('About Aurivan'))[0].props.onPress();
+      r!.root.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && String(n.props.accessibilityLabel).startsWith('About KaiSip'))[0].props.onPress();
     });
     const text = allText();
     expect(text).toContain('Our vision');

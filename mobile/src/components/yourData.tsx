@@ -31,6 +31,7 @@ import { copy } from '../content/cloud/copy';
 import { pruneUndo, saveBackup, sweepBackupFiles, undoRestore, type ReadyToRestore } from '../lib/backup';
 import { undoSync, useSyncing } from '../lib/sync';
 import { reminderLine, useRestoreFlow, type FlowMessage } from '../lib/useRestoreFlow';
+import { MOVING_LINE } from '../content/brand';
 import { useBackup } from '../store/backup';
 import { LARGE_TEXT, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -149,7 +150,7 @@ export function YourData() {
         intro={
           CLOUD
             ? copy(syncing ? 'data.intro.sync' : 'data.intro.on')
-            : 'Your progress is kept only on this phone. A backup file keeps it safe and moves it to a new phone. You choose where the file goes.'
+            : `Your progress is kept only on this phone. A backup file keeps it safe and moves it to a new phone. You choose where the file goes. ${MOVING_LINE}`
         }
       >
         {/* Action rows: no chevron (they act; they don't open a list). The status is part of the

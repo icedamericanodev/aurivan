@@ -4,6 +4,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { DEFAULT_CERT_ID } from '../content/certifications';
+import { cleanDisplayName } from '../engine/displayName';
 import { FIT_ASK_DAYS, goalFromMinutes, minutesFromGoal, type DailyMinutes, type Familiarity, type FitPrompt } from '../engine/fit';
 import { DEFAULT_REMINDER, type ReminderPrefs } from '../engine/reminders';
 import { SETTINGS_VERSION } from '../engine/saveMigrations';
@@ -89,8 +90,23 @@ interface SettingsState {
   fitPrompt?: FitPrompt;
   fitChanges?: number;
   fitAskDays?: string[];
+  /**
+   * Mobile 1.23: what the learner asked to be called (optional; unset = none).
+   * Today says "Good morning, <name>". Kept on this phone and in the learner's
+   * own backup file; never synced, shared or put in an email (engine/displayName.ts
+   * is the one rule for what may be kept). Saves from 1.19 to 1.22 have none.
+   */
+  displayName?: string;
 
-  completeOnboarding: (certId: string, examDate?: string, fit?: { familiarity?: Familiarity; dailyMinutes: DailyMinutes }) => void;
+  completeOnboarding: (
+    certId: string,
+    examDate?: string,
+    fit?: { familiarity?: Familiarity; dailyMinutes: DailyMinutes },
+    /** The name typed on the optional onboarding step (cleaned here; empty = none). */
+    displayName?: string,
+  ) => void;
+  /** Save the name (cleaned: see cleanDisplayName). Empty or "not a name" clears it. */
+  setDisplayName: (name: string | undefined) => void;
   /**
    * Change the fit (Settings → Your study, the fit screen). `null` clears a
    * key: familiarity back to "not said", examFocused back to "follow
@@ -142,9 +158,11 @@ export const useSettings = create<SettingsState>()(
       // Older saves have no key: persist merges this default in (badges shown).
       badgesHidden: false,
 
-      completeOnboarding: (certId, examDate, fit) =>
+      completeOnboarding: (certId, examDate, fit, displayName) =>
         set((s) => ({
           onboarded: true,
+          // Only a typed name changes it (a skipped step leaves what is saved, e.g. from a restore).
+          ...(displayName !== undefined ? { displayName: cleanDisplayName(displayName) || undefined } : {}),
           activeCertId: certId,
           examDates: { ...s.examDates, [certId]: examDate },
           // A new learner has chosen already (even with familiarity skipped): no Today card later.
@@ -194,8 +212,24 @@ export const useSettings = create<SettingsState>()(
       setStudyDomain: (studyDomain) => set({ studyDomain }),
       setStudySize: (studySize) => set({ studySize }),
       setBadgesHidden: (badgesHidden) => set({ badgesHidden }),
+      // JSON drops an undefined key, so "no name" saves as no key at all (the older shape).
+      setDisplayName: (name) => set({ displayName: cleanDisplayName(name) || undefined }),
     }),
-    { name: 'aurivan.settings.v1', storage: persistStorage, version: SETTINGS_VERSION },
+    {
+      name: 'aurivan.settings.v1',
+      storage: persistStorage,
+      version: SETTINGS_VERSION,
+      // Saves from 1.19 to 1.22 have no `displayName`: nothing to upgrade (the field is optional,
+      // so SETTINGS_VERSION stays 1). A save that does have one is cleaned again as it loads, so an
+      // edited or damaged value can never reach the screen.
+      merge: (persisted, current) => {
+        const merged = { ...current, ...((persisted ?? {}) as Partial<SettingsState>) };
+        const clean = cleanDisplayName(merged.displayName) || undefined;
+        if (clean === undefined) delete merged.displayName;
+        else merged.displayName = clean;
+        return merged;
+      },
+    },
   ),
 );
 

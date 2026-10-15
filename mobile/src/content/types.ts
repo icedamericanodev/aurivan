@@ -39,6 +39,11 @@ export interface DomainInfo {
   id: string; // "1".."n"
   name: string;
   short: string;
+  /**
+   * An even shorter name for a narrow tile (Today's "weakest area": "IS Ops"). Optional:
+   * a domain without one shows `short`. The full name is still what a screen reader says.
+   */
+  tile?: string;
   weight: number; // % of the real exam (all domains sum to 100)
   /** Colour tone 0–4 (see domainColor in certifications.ts). Never a hex value. */
   tone: DomainTone;

@@ -125,7 +125,7 @@ describe('posting through board-submit’s rules', () => {
 
   it('names: reserved and taken ones are refused; one change a day', async () => {
     const b = make({ signedIn: RAJ });
-    expect(await code(b.board.join({ handle: 'Aurivan Team', handleKind: 'chosen', guidelinesVersion: '2026-11' }))).toBe('invalid:handle_reserved');
+    expect(await code(b.board.join({ handle: 'KaiSip Team', handleKind: 'chosen', guidelinesVersion: '2026-11' }))).toBe('invalid:handle_reserved');
     expect(await code(b.board.join({ handle: 'quiet cedar 214', handleKind: 'chosen', guidelinesVersion: '2026-11' }))).toBe('invalid:handle_taken');
     expect(await code(b.board.join({ handle: 'Calm Pine 7', handleKind: 'pseudonym', guidelinesVersion: '2025-01' }))).toBe('invalid:guidelines');
     await b.board.join({ handle: 'Calm Pine 7', handleKind: 'pseudonym', guidelinesVersion: '2026-11' });

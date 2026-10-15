@@ -61,7 +61,7 @@ jest.mock('../components/icons', () => {
   const Icon = () => null;
   return new Proxy({ __esModule: true, ICON_STROKE: 2 } as Record<string, unknown>, { get: (t, k: string) => (k in t ? t[k] : Icon) });
 });
-jest.mock('../components/brand', () => ({ BrandLockup: () => null, PillarList: () => null, BrandMark: () => null }));
+jest.mock('../components/brand', () => ({ KaisipLockup: () => null, KaisipMark: () => null, PillarList: () => null }));
 jest.mock('../lib/haptics', () => ({ haptic: { success: () => {}, selection: () => {}, error: () => {}, light: () => {}, medium: () => {} } }));
 
 const DAY = 86_400_000;
@@ -236,9 +236,9 @@ describe('the guidelines gate can’t be skipped', () => {
     expect(allText()).toContain('Your email address is never shown.');
     expect(button('I agree, continue').props.disabled).toBe(true);
     await press('A name you choose');
-    type('Your name on the board', 'Aurivan Team');
+    type('Your name on the board', 'KaiSip Team');
     await press('I agree to the community guidelines');
-    expect(allText()).toContain('That name is kept for the Aurivan team. Choose another.');
+    expect(allText()).toContain('That name is kept for the KaiSip team. Choose another.');
     expect(button('I agree, continue').props.disabled).toBe(true);
     expect(boardCalls()).not.toContain('board.join');
     type('Your name on the board', 'Maya B');
@@ -358,7 +358,7 @@ describe('the composer', () => {
     type('Title', 'About one question here');
     type('Details (optional)', q.stem);
     await flush(500);
-    expect(allText()).toContain('This looks like text from one of Aurivan’s practice questions');
+    expect(allText()).toContain('This looks like text from one of KaiSip’s practice questions');
     expect(button('Post').props.disabled).toBe(true);
     // The private report on that question is offered (its text is never shown).
     expect(has('Report it privately')).toBe(true);

@@ -181,9 +181,9 @@ export function clockSpoken(ms: number): string {
   return s === 1 ? '1 second' : `${s} seconds`;
 }
 
-/** The account data file's name: aurivan-account-2026-10-12.json (local date). */
+/** The account data file's name: kaisip-account-2026-10-12.json (local date). */
 export function accountExportFileName(now: number): string {
-  return `aurivan-account-${dayKey(now)}.json`;
+  return `kaisip-account-${dayKey(now)}.json`;
 }
 
 /**

@@ -5,6 +5,7 @@
  * switches in place. Nothing a learner set before is lost; only where it
  * lives on screen changed.
  *
+ *   You                   Your name (mobile 1.23: what Today calls you; optional, only on this phone)
  *   Exam                  Certification · Exam date (a calendar, components/calendar.tsx)
  *   Your study            Daily time · Starting point · Exam-focused plan
  *   Practice              Default mode · Timed practice · Shuffle answer options
@@ -12,7 +13,7 @@
  *   Appearance            Theme · Motion · Haptics
  *   Badges and your plant Show badges · Show my plant · Quiet look
  *   Your data             Save a backup · Restore · (Undo restore), then Reset, set apart
- *   Help and about        Get help or send feedback · About Aurivan · Privacy · Terms · Check for updates
+ *   Help and about        Get help or send feedback · About KaiSip · Privacy · Terms · Check for updates
  *
  * Mobile 1.19: "Check for updates" (lib/updates.ts) sits last in Help and
  * about, only where over-the-air updates work (an installed APK or store
@@ -40,11 +41,13 @@ import { Alert, Linking, Platform, View, type ScrollView } from 'react-native';
 import { aboutLine, AccountSettingsGroup } from '../components/account';
 import { BoardSettingsGroup } from '../components/board';
 import { useSyncing } from '../lib/sync';
-import { BrandLockup, PillarList } from '../components/brand';
+import { KaisipLockup, PillarList } from '../components/brand';
 import { CLOUD } from '../cloud/flag';
 import { copy as cloudCopy } from '../content/cloud/copy';
 import { undoAvailable } from '../engine/backup';
 import { CalendarSheet } from '../components/calendar';
+import { DisplayNameField } from '../components/displayName';
+import { cleanDisplayName } from '../engine/displayName';
 import { EXAM_FOCUSED_SUBTITLE, EXAM_FOCUSED_TITLE, FAMILIARITY_QUESTION } from '../components/fit';
 import { creditSubtitle } from '../components/help';
 import { useMotion, useSystemReducedMotion } from '../components/motion';
@@ -54,7 +57,7 @@ import { Button, Chip, Gap, PushedHeader, Screen, Stepper, T, ToggleRow } from '
 import { spokenDate } from '../engine/calendar';
 import { DAILY_MINUTES, examFocusedOf, FAMILIARITIES, FAMILIARITY_INFO, KEEP_TODAY_LINE, minutesLabel, minutesSpoken, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { MODE_INFO, STUDY_MODES, type StudyMode } from '../engine/studyModes';
-import { TAGLINE, VISION_LINE } from '../content/brand';
+import { MOVING_STEPS, TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certifications';
 import { examDateLabel } from '../engine/examDay';
 import { changeExamDate, changeFit } from '../lib/activity';
@@ -79,7 +82,7 @@ import { useTheme } from '../theme/useTheme';
 const phoneSetting = () => (Platform.OS === 'android' ? 'Remove animations' : 'Reduce Motion');
 
 /** Which sheet is open (one at a time). */
-type SheetId = 'exam' | 'date' | 'minutes' | 'start' | 'mode' | 'remind' | 'theme' | 'motion' | 'about';
+type SheetId = 'name' | 'exam' | 'date' | 'minutes' | 'start' | 'mode' | 'remind' | 'theme' | 'motion' | 'about';
 
 /** "Starting point" values short enough to sit beside the title; the sheet and screen readers use the full titles. */
 const START_SHORT: Record<Familiarity, string> = { new: 'New to audit', some: 'Some experience', experienced: 'Experienced' };
@@ -104,7 +107,7 @@ export default function Settings() {
   // Cloud builds only: true while this phone syncs (About says so). Always false with the flag off.
   const syncing = useSyncing();
   const { cert } = useActiveCert();
-  const { c, isDark } = useTheme();
+  const { c } = useTheme();
   const s = useSettings();
   const { reduced } = useMotion();
   // The phone's own Reduce Motion, live: the Motion sheet says when it already applies.
@@ -167,6 +170,7 @@ export default function Settings() {
   const scrollRef = useRef<ScrollView>(null);
   const scrolled = useRef(false);
   // Each row that opens a sheet gets screen-reader focus back when its sheet closes.
+  const nameRow = useRef<View>(null);
   const examRow = useRef<View>(null);
   const dateRow = useRef<View>(null);
   const minutesRow = useRef<View>(null);
@@ -176,8 +180,18 @@ export default function Settings() {
   const themeRow = useRef<View>(null);
   const motionRow = useRef<View>(null);
   const aboutRow = useRef<View>(null);
+  // "Your name": the text being edited in its sheet (starts from the saved name each time it opens).
+  const [nameDraft, setNameDraft] = useState('');
+  // Save keeps the sheet open (and the old name) when the text is a link or an email; the field explains why.
+  const saveName = () => {
+    const clean = cleanDisplayName(nameDraft);
+    if (clean === '' && nameDraft.trim() !== '') return;
+    s.setDisplayName(clean);
+    close();
+  };
   const open = (id: SheetId) => () => {
     if (id === 'date') setNow(Date.now());
+    if (id === 'name') setNameDraft(useSettings.getState().displayName ?? '');
     setSheet(id);
   };
   /** True when closing the calendar should leave Settings: the link opened it and there is a screen to go back to. */
@@ -194,7 +208,7 @@ export default function Settings() {
       return;
     }
     // Looked up here, in the handler (never during render).
-    const back: Record<SheetId, RefObject<View | null>> = { exam: examRow, date: dateRow, minutes: minutesRow, start: startRow, mode: modeRow, remind: remindRow, theme: themeRow, motion: motionRow, about: aboutRow };
+    const back: Record<SheetId, RefObject<View | null>> = { name: nameRow, exam: examRow, date: dateRow, minutes: minutesRow, start: startRow, mode: modeRow, remind: remindRow, theme: themeRow, motion: motionRow, about: aboutRow };
     moveFocus(back[id], 450);
   };
 
@@ -217,7 +231,7 @@ export default function Settings() {
     try {
       if (enabled) {
         if (!(await ensurePermission())) {
-          Alert.alert('Notifications are off', 'Allow notifications for Aurivan in your phone settings to get reminders.');
+          Alert.alert('Notifications are off', 'Allow notifications for KaiSip in your phone settings to get reminders.');
           return;
         }
         // Read the CURRENT choice after the permission prompt, not the one
@@ -281,6 +295,19 @@ export default function Settings() {
     <Screen edges={['top', 'bottom']} scrollRef={scrollRef}>
       {/* Same pushed header as Saved and Mistakes: the title lives in the bar. */}
       <PushedHeader title="Settings" onBack={() => router.back()} />
+
+      {/* You (mobile 1.23): what Today calls the learner. Optional, and only on this phone. */}
+      <SettingsGroup title="You">
+        <SettingsRow
+          ref={nameRow}
+          title="Your name"
+          value={s.displayName ? s.displayName : 'Not set'}
+          spokenValue={s.displayName ? s.displayName : 'not set'}
+          accessibilityHint="Opens a box to change or clear the name Today uses"
+          onPress={open('name')}
+          last
+        />
+      </SettingsGroup>
 
       {/* Exam: which certification, and the exam date (the countdown, the
           exam-eve and exam-day plans and exam week all follow it). */}
@@ -431,7 +458,7 @@ export default function Settings() {
         />
         <SettingsRow
           ref={aboutRow}
-          title="About Aurivan"
+          title="About KaiSip"
           subtitle="Our vision and what the app stands for"
           onPress={open('about')}
           last={lastHelpRow === 'about'}
@@ -468,7 +495,7 @@ export default function Settings() {
       <Gap h={space.xl} />
       <T v="meta">
         {/* The last sentence is "Progress is stored only on this device." with the flag off (content/cloud/copy.ts about.off). */}
-        Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. {aboutLine(syncing)}
+        KaiSip v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. {aboutLine(syncing)}
       </T>
       {updates.available && (
         // Mobile 1.19: which update this phone runs ("Update 1a2b3c4d · 5e26d4b", or "built-in"), so support
@@ -484,6 +511,40 @@ export default function Settings() {
       <T v="meta">{combinedTrademarkNotice(CERTIFICATIONS)}</T>
 
       {/* ── The sheets ─────────────────────────────────────────────── */}
+      {/* Your name: edit, save or clear. Saving tidies the text (engine/displayName.ts), so what the row shows is what Today uses. */}
+      <Sheet
+        visible={sheet === 'name'}
+        onClose={close}
+        title="Your name"
+        closeLabel="Cancel"
+        intro="What should we call you? Today will say hello with it."
+        footer={
+          <>
+            <Button
+              label="Save"
+              onPress={saveName}
+            />
+            {s.displayName ? (
+              <Button
+                kind="ghost"
+                label="Clear my name"
+                accessibilityHint="Today says hello without a name"
+                onPress={() => {
+                  s.setDisplayName(undefined);
+                  close();
+                }}
+              />
+            ) : null}
+          </>
+        }
+      >
+        <DisplayNameField
+          value={nameDraft}
+          onChange={setNameDraft}
+          onSubmit={saveName}
+        />
+      </Sheet>
+
       <ChoiceSheet
         visible={sheet === 'exam'}
         onClose={close}
@@ -635,16 +696,19 @@ export default function Settings() {
         onChange={s.setMotion}
       />
 
-      <Sheet visible={sheet === 'about'} onClose={close} title="About Aurivan">
+      <Sheet visible={sheet === 'about'} onClose={close} title="About KaiSip">
         {/* Our vision: the same promise as the welcome screen (content/brand.ts). */}
         <View style={{ marginTop: space.sm }}>
-          <BrandLockup tone={isDark ? 'dark' : 'light'} height={28} />
+          <KaisipLockup height={28} />
         </View>
         <T v="caption" color={c.accentText} accessibilityRole="header" style={{ marginTop: space.lg }}>Our vision</T>
         <T v="hero" style={{ marginTop: space.xs }}>{TAGLINE}</T>
         <T v="quote" color={c.ink2} style={{ marginTop: space.xs }}>{VISION_LINE}</T>
         <Gap h={space.lg} />
         <PillarList look="rows" />
+        {/* Mobile 1.23: KaiSip was called Aurivan; progress moves by backup file (a new app on the phone). */}
+        <T v="caption" color={c.accentText} accessibilityRole="header" style={{ marginTop: space.xl }}>New name</T>
+        <T v="meta" color={c.ink2} style={{ marginTop: space.xs }}>{`Aurivan is now KaiSip. ${MOVING_STEPS}`}</T>
       </Sheet>
     </Screen>
   );

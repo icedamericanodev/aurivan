@@ -1,10 +1,10 @@
-# Aurivan Reddit posting pack
+# KaiSip Reddit posting pack
 
 Ready-to-post content for r/CISA and r/ISACA. Questions are pulled from the
-Aurivan question bank. No em dashes, so the posts read naturally.
+KaiSip question bank. No em dashes, so the posts read naturally.
 
 Link to use until the custom domain is live:
-`https://laladev-ai.github.io/cisa-prep` (swap for the real domain later).
+`[KaiSip site URL]` (fill in once the site is hosted at its final domain).
 
 ---
 
@@ -62,7 +62,7 @@ It's a supplement to your prep, not a replacement for official ISACA
 materials, and I'd never claim it guarantees a pass. Sharing in case it helps
 anyone here. Honest feedback very welcome.
 
-Link: https://laladev-ai.github.io/cisa-prep
+Link: [KaiSip site URL]
 
 ---
 

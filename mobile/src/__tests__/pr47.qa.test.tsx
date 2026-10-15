@@ -555,7 +555,7 @@ describe('QA 3: the exam-week taper plans', () => {
     mount(<Today />);
     const t = allText();
     // The caption gives the day's minutes; the mock's own row says it is optional (UX review O9; mobile 1.21).
-    expect(t).toContain('Start here · about 30 min');
+    expect(t).toContain('Today’s plan · about 30 min');
     // While the mock sits in "Also today" its row reads "Optional this week · about 4 h";
     // the "a last long rehearsal; skip it if you’d rather rest" meta only shows once it
     // becomes the hero (after the top-up). Observation, not a bug: both say optional.

@@ -4,6 +4,17 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12] — Aurivan is now KaiSip
+
+### New
+- Aurivan is now KaiSip: a new name and logo, same study tools.
+
+### Improved
+- Your progress, profiles and settings are untouched, and the mobile app carries the same new name and logo.
+- Notes and questions now say that risk above appetite is treated, or needs a documented exception approved at the level the risk policy names.
+- Practice questions now take the IS auditor's point of view throughout.
+- The privacy policy now explains the optional first name in the mobile app: it stays on your phone and is never sent to us or shown to others.
+
 ## [v11.3] — Study notes in exam wording
 
 ### Improved
@@ -61,7 +72,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v11] — A fresh look and new study notes
 
 ### New
-- Aurivan has a calm new forest-green look and a new logo, matching the mobile app.
+- KaiSip has a calm new forest-green look and a new logo, matching the mobile app.
 - The Topics notes are rebuilt so every concept reads the same way: a one-line definition, why it matters, how it works, a real example, how ISACA thinks, and the exam traps to avoid.
 - Side-by-side comparisons for easily confused ideas, such as RPO and RTO or the types of audit opinion.
 - More exam topics are covered, including RAID and clustering, database integrity, intrusion detection, malware and web attacks, and penetration test types.
@@ -179,23 +190,23 @@ For internal/technical history, see git log and PR descriptions.
 ## [v10.45] — Your privacy, clearly explained
 
 ### New
-- Aurivan now asks before using analytics — a clear cookie choice on your first visit. Decline and nothing is stored; accept and it stays anonymous. You can change your choice any time from the footer.
+- KaiSip now asks before using analytics — a clear cookie choice on your first visit. Decline and nothing is stored; accept and it stays anonymous. You can change your choice any time from the footer.
 - A full Privacy Policy and Terms of Use are now published and linked from the footer, so it is easy to see exactly how the app works and how your data is handled.
 
-## [v10.44] — Easier to support Aurivan
+## [v10.44] — Easier to support KaiSip
 
 ### New
-- Aurivan is free, with no ads or paywall. If it is helping your prep, you can now chip in more easily — there is a Support option in the More menu, a support card on the Home screen, and a gentle thank-you prompt after you finish a mock exam.
+- KaiSip is free, with no ads or paywall. If it is helping your prep, you can now chip in more easily — there is a Support option in the More menu, a support card on the Home screen, and a gentle thank-you prompt after you finish a mock exam.
 
 ## [v10.43] — A dedicated About page
 
 ### Improved
-- Aurivan now has its own About page — open it from the More menu to read what Aurivan stands for, its vision and mission, and the wider roadmap, all in one place.
+- KaiSip now has its own About page — open it from the More menu to read what KaiSip stands for, its vision and mission, and the wider roadmap, all in one place.
 
-## [v10.42] — A sharper Aurivan brand
+## [v10.42] — A sharper KaiSip brand
 
 ### New
-- A new Vision & Mission card explains what Aurivan stands for — free, honest CISA preparation that teaches how ISACA thinks.
+- A new Vision & Mission card explains what KaiSip stands for — free, honest CISA preparation that teaches how ISACA thinks.
 
 ### Improved
 - The header logo, name, and slogan have been refined into one clean, balanced lockup that reads as a finished brand.
@@ -203,7 +214,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v10.41] — Refreshed section banners
 
 ### Improved
-- The banners at the top of the Glossary and FAQ pages have been restyled to match the rest of the app — a clean, light Aurivan card instead of the old dark panel.
+- The banners at the top of the Glossary and FAQ pages have been restyled to match the rest of the app — a clean, light KaiSip card instead of the old dark panel.
 
 ## [v10.40] — New FAQ & Help section
 
@@ -356,7 +367,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v10.11] — Ko-fi replaces Buy Me a Coffee for tip support
 
 ### Fixed
-- The Tip button in the header and the "Support the mission" card on the practice screen now link to Ko-fi instead of Buy Me a Coffee. Buy Me a Coffee has limited payment support in some regions (including the Philippines); Ko-fi accepts contributions globally. Same Aurivan styling, just a different processor.
+- The Tip button in the header and the "Support the mission" card on the practice screen now link to Ko-fi instead of Buy Me a Coffee. Buy Me a Coffee has limited payment support in some regions (including the Philippines); Ko-fi accepts contributions globally. Same KaiSip styling, just a different processor.
 
 ## [v10.10] — Exam mode: practice questions exactly as the real ISACA exam presents them
 

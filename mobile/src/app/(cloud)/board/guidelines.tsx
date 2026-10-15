@@ -1,6 +1,6 @@
 /**
  * The guidelines gate (spec §4.3 "Guidelines gate", version 2026-11),
- * aurivan://board/guidelines. Shown before the first post, comment or vote,
+ * kaisip://board/guidelines. Shown before the first post, comment or vote,
  * and again whenever the guidelines version changes (Apple 1.2 and Google
  * Play UGC: an unskippable, version-stamped consent before posting).
  *
