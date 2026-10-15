@@ -55,6 +55,31 @@ echo
 STOPPING=0
 WATCH_PID=""
 
+# NATIVE CHANGES, AND WHY: the generated android/ folder (never edit it, never
+# committed) bakes in the app's id, name, icons and splash. If a pull changes
+# any of those (the KaiSip rename did), the already-installed development
+# build is OUT OF DATE: its JavaScript reloads fine but it is still the old
+# app underneath, and the emulator can show a blank white screen. So we keep
+# a "fingerprint" of the native settings (app.json without its version number,
+# plus the icon files) and rebuild from scratch when it changes.
+native_sig() {
+  {
+    node -e "const a=require('./app.json').expo; delete a.version; console.log(JSON.stringify(a))" 2>/dev/null
+    cat assets/*.png 2>/dev/null
+  } | shasum | cut -d' ' -f1
+}
+
+# Start-up check: is the android/ folder from an OLDER app id or name?
+want_id="$(node -p "require('./app.json').expo.android.package" 2>/dev/null)"
+have_id="$(grep -ho 'applicationId "[^"]*"' android/app/build.gradle 2>/dev/null | head -1 | sed 's/.*"\(.*\)"/\1/')"
+if [ -d android ] && [ -n "$want_id" ] && [ -n "$have_id" ] && [ "$have_id" != "$want_id" ]; then
+  echo "The generated android/ folder is from an older app ($have_id); this version is $want_id."
+  echo "Removing it so the app is built fresh (the first build takes 5-10 minutes)."
+  echo "The old app stays on the emulator: long-press its icon -> Uninstall."
+  rm -rf android
+  echo
+fi
+
 cleanup() {
   STOPPING=1
   [ -n "$WATCH_PID" ] && kill "$WATCH_PID" 2>/dev/null
@@ -84,6 +109,8 @@ watch_github() {
     # are noise, and leaving them would make git refuse every pull from here on.
     git checkout --quiet -- package-lock.json tsconfig.json 2>/dev/null
 
+    SIG_BEFORE="$(native_sig)"
+
     if ! git pull --quiet --ff-only origin "$BRANCH"; then
       # Claude's working branch is reset onto main after every merge (see
       # CLAUDE.md "Post-merge branch hygiene"), so a plain pull can no longer
@@ -105,6 +132,15 @@ watch_github() {
     fi
 
     CHANGED="$(git --no-pager diff --name-only "$LOCAL" HEAD)"
+
+    # The app's id, name, icons or splash changed: rebuild from scratch (see
+    # NATIVE CHANGES above). The loop below removes android/ when it sees "clean".
+    if [ "$SIG_BEFORE" != "$(native_sig)" ]; then
+      echo "  The app's id, name or icons changed: rebuilding KaiSip from scratch (5-10 minutes)."
+      echo clean >"$RESTART_FLAG"
+      pkill -INT -f "expo run:android" 2>/dev/null
+      continue
+    fi
 
     # New libraries: the app must be rebuilt. Ask the foreground loop to do it
     # (flag file), then stop the running dev server so the loop takes over.
@@ -137,6 +173,7 @@ while true; do
   [ "$STOPPING" = "1" ] && break
 
   if [ -f "$RESTART_FLAG" ]; then
+    if grep -q clean "$RESTART_FLAG" 2>/dev/null; then rm -rf android; fi
     rm -f "$RESTART_FLAG"
     # npm ci installs exactly what the lock file lists and never rewrites it
     # (npm install can, which then blocks the next git pull).

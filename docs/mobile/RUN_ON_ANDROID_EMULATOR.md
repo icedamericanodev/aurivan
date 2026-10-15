@@ -165,6 +165,35 @@ code: Ctrl-C, run `npx expo start -c` (the `-c` clears the cache), and check
 
 ---
 
+## The emulator shows a blank white screen
+
+Three common causes, most likely first:
+
+1. **The dev server is not running.** The window that ran `dev-sync.sh` was
+   closed or restarted (VS Code can restore a terminal as a plain prompt).
+   A plain prompt is NOT the dev server: pressing `r` there does nothing
+   useful (it may even run another project's helper). Start it again:
+
+       cd ~/aurivan/mobile && bash scripts/dev-sync.sh
+
+2. **The app on the emulator is from before a rename.** The app's id, name or
+   icons live in the generated `android/` folder, which is not updated by a
+   `git pull`. `dev-sync.sh` now notices this by itself and rebuilds from
+   scratch (5-10 minutes, once). To do it by hand: Ctrl-C, then
+
+       rm -rf android
+       bash scripts/dev-sync.sh
+
+   The old app stays on the emulator as a separate icon; long-press it and
+   choose **Uninstall**.
+3. **Metro's cache is stale.** Ctrl-C, run `npx expo start -c`, then reopen
+   the app.
+
+Still white? Open the terminal that runs the dev server and look for a red
+error or "Unable to resolve": that line names the problem.
+
+---
+
 ## What to test — a 10-minute tour
 
 1. **Onboarding:** pick CISA (others show "Coming soon"), pick an exam date.
