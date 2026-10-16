@@ -93,7 +93,27 @@ the web practice needs a sample pack instead (see the A2 report).
 7. Later, with the domain: **Custom domains → Set up a custom domain**, add
    the bare domain and `www`. **Web Analytics → Enable** (no cookies).
 
-Then tell Claude the `pages.dev` address. Claude checks every page returns
+### If Cloudflare only shows the Workers screen
+
+Cloudflare's newer screen ("Set up your application… Configure your Worker
+project") also works. The repository has a `wrangler.jsonc` that tells it to
+publish only `_site/`, with the same headers and redirects. Fill in:
+
+| Setting | Value |
+|---|---|
+| Project name | `kaisip` (must match `name` in `wrangler.jsonc`) |
+| Build command | `bash scripts/build_site.sh` |
+| Deploy command | `npx wrangler deploy` (the default) |
+| Enable preview builds / non-production branch builds | **off** |
+| Protect with Cloudflare Access | off |
+| Advanced: Path | `/` |
+| Advanced: API token | let it create a new one |
+| Advanced: Variables | none |
+
+The address is then `kaisip.<your-account>.workers.dev`. Never clear the
+build command: without it there is no `_site/` to publish.
+
+Then tell Claude the `pages.dev` (or `workers.dev`) address. Claude checks every page returns
 200, the headers arrive once each, and the browser console shows no policy
 reports, and runs the accessibility checks against it.
 

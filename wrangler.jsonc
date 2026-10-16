@@ -1,0 +1,22 @@
+// Cloudflare settings for the KaiSip website, used ONLY if the site is
+// connected through Cloudflare's "Workers" screen instead of "Pages".
+// (Cloudflare Pages ignores this file.) Deploy notes: docs/WEBSITE_DEPLOY.md.
+//
+// Plain English: publish only the _site/ folder that scripts/build_site.sh
+// makes, never the whole repository. There is no server code here; the site
+// is static files only.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Must match the project name typed on the Cloudflare screen.
+  "name": "kaisip",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    // The allowlisted website build. _headers and _redirects inside it are
+    // applied by Cloudflare, the same way Pages applies them.
+    "directory": "./_site",
+    // /privacy serves privacy.html, like Pages.
+    "html_handling": "auto-trailing-slash",
+    // An unknown address shows the web app, like Pages does with no 404.html.
+    "not_found_handling": "single-page-application"
+  }
+}
