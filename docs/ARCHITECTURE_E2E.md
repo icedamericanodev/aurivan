@@ -95,10 +95,10 @@ are built, and CI tests all of it. What is missing is mostly free settings:
 - [ ] GitHub → Settings → Code security: turn on secret scanning, push
       protection and Dependabot alerts.
 - [ ] Turn on 2FA for GitHub, Expo, Supabase, Google and Apple.
-- [ ] Create a free Cloudflare account and connect Cloudflare Pages to the
-      repository (Claude sends the build settings first).
-- [ ] Buy the domain at Cloudflare Registrar (about $10–14 a year, the only
-      cost).
+- [x] Create a free Cloudflare account and connect the repository (done
+      16 Oct 2026 through the Workers screen; see `docs/WEBSITE_DEPLOY.md`).
+- [x] Buy the domain at Cloudflare Registrar: **kaisip.com** (16 Oct 2026),
+      live with `www.kaisip.com`.
 - [ ] Start recruiting 12+ testers. A new personal Google Play account must
       run a 14-day closed test before it can publish.
 

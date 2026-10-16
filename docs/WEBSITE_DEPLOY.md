@@ -4,6 +4,24 @@ This page lists the exact settings the owner clicks. Claude wrote the files;
 these steps need the owner's accounts. The architecture decision behind them
 is in `docs/ARCHITECTURE_E2E.md` (sections 2, 4 and 5).
 
+## Current setup (16 Oct 2026)
+
+- **Live addresses:** https://kaisip.com and https://www.kaisip.com (custom
+  domains on the Cloudflare Worker `kaisip`), plus the test address
+  https://kaisip.certprep-support.workers.dev.
+- Connected through Cloudflare's **Workers** screen (see "If Cloudflare only
+  shows the Workers screen" below), so `wrangler.jsonc` decides what is
+  published. Preview builds and preview URLs are **off**.
+- Domain `kaisip.com` is registered at Cloudflare Registrar, with auto-renew on.
+- Checked on the workers.dev address: all pages return 200, the redirects
+  work, every header arrives once, and repo paths (`/docs/`, `/mobile/`,
+  `/.git/`, `/CLAUDE.md` …) return the app page, not the files.
+- **Launch is on hold** (owner, 16 Oct 2026) while content and features are
+  improved. Before launch: point the app and store listings at
+  `https://kaisip.com/privacy`, `/terms` and `/support`; switch analytics to
+  Cloudflare Web Analytics; consider turning the workers.dev address off so
+  only kaisip.com serves the site; then retire GitHub Pages.
+
 ## What gets published
 
 `scripts/build_site.sh` copies **only** these files into `_site/`, and
