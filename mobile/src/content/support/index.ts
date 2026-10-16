@@ -41,6 +41,11 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.24.1',
+    date: '2026-10-16',
+    fixed: ['KaiSip no longer shows a blank white screen when its fonts are slow to load: it starts with your phone’s own font instead.'],
+  },
+  {
     version: '1.24.0',
     date: '2026-10-15',
     new: [

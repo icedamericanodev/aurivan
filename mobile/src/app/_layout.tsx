@@ -47,6 +47,7 @@ import { Grain } from '../components/ui';
 import { motion } from '../theme/tokens';
 import { RecoveryScreen } from '../components/recovery';
 import { sayLater } from '../lib/a11y';
+import { useFontsSettled } from '../lib/fontGate';
 import type { ErrorBoundaryProps } from 'expo-router';
 import { useHydration } from '../store/useHydrated';
 import { useTheme } from '../theme/useTheme';
@@ -65,6 +66,8 @@ export default function RootLayout() {
     Figtree_500Medium,
     Figtree_600SemiBold,
   });
+  // Fonts that never finish loading must not leave a blank screen: after a few seconds, use the system font.
+  const fontsSettled = useFontsSettled(fontsLoaded, fontError);
   const { status, retry } = useHydration();
   const hydrated = status === 'ready';
   const { c, isDark } = useTheme();
@@ -74,11 +77,11 @@ export default function RootLayout() {
   const { reduced } = useMotion();
   const rise = reduced ? 'fade' : 'fade_from_bottom';
   // If a font fails to load we still start (system font fallback) rather than hang.
-  const ready = (fontsLoaded || Boolean(fontError)) && hydrated;
+  const ready = fontsSettled && hydrated;
 
   // Saved data failed to load (or took too long): never sit on the splash. Wait only for the fonts
   // (they fall back to the system font if they fail) so the recovery screen is branded.
-  const recovering = status === 'failed' && (fontsLoaded || Boolean(fontError));
+  const recovering = status === 'failed' && fontsSettled;
   // Set by the recovery screen's "Try again" (see below).
   const [retrying, setRetrying] = useState(false);
 
