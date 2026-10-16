@@ -17,6 +17,8 @@ work without rediscovering the layout.
 | `data/cisa_concepts.json` | Orphan file kept in sync for hygiene; not loaded by the app |
 | `data/glossary.json` | Glossary tab data |
 | `scripts/convert_test_bank.py` | Idempotent converter: xlsm + tips overrides → `data/domain{N}.json` |
+| `scripts/build_site.sh` | Builds the public website into `_site/` (allowlist only). Deploy steps: `docs/WEBSITE_DEPLOY.md` |
+| `wrangler.jsonc` | Cloudflare settings, used only if the site is connected via the Workers screen: publish `_site/` only |
 | `scripts/verify_repo.sh` | Repo health check (run via the SessionStart hook) |
 | `scripts/lint_exam_style_v2.py` | Harness for exam-style v2 questions (short stems, Eliminate / Final two / Exam cue tips). Rules: `docs/content/EXAM_STYLE_V2.md` |
 | `scripts/print_alignment.py` | Prints v2 options beside their explanations and tips for the alignment read (catches option texts under the wrong letters) |
