@@ -4954,7 +4954,11 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 .gt-chip[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
 .gt-toolbar-end { display: flex; align-items: center; gap: 2px; margin-left: auto; }
 .gt-menu { position: relative; }
-.gt-menu > summary { cursor: pointer; }
+.gt-menu > summary { cursor: pointer; list-style: none; }
+.gt-menu > summary::-webkit-details-marker { display: none; }
+.gt-menu-btn { padding: 0 4px 0 8px; white-space: nowrap; }
+.gt-menu-btn .ico { transition: transform .2s ease; }
+.gt-menu[open] > .gt-menu-btn .ico { transform: rotate(180deg); }
 .gt-menu-pop {
   position: absolute; right: 0; top: calc(100% + 4px); z-index: 30; min-width: 260px; padding: 6px;
   background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow-lg);
@@ -4994,14 +4998,26 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 .gt-row { border-bottom: 1px solid var(--border); }
 .gt-row:last-child { border-bottom: 0; }
 .gt-row-head { display: flex; align-items: flex-start; gap: 0; }
-.gt-check {
-  width: 34px; flex-shrink: 0; display: flex; align-items: center; justify-content: flex-start; color: var(--bg);
+/* Read-state mark ("fill the circle"): an empty ring = not opened, a half
+   disc = started, a full disc = read. It only shows status, trailing before
+   the chevron as on mobile; the whole row is the button. A leading circle
+   read as a checkbox. */
+.gt-mark { width: 24px; height: 24px; flex-shrink: 0; display: block; overflow: visible; }
+.gt-mark-ring { fill: none; stroke: var(--track); stroke-width: 2; }
+.gt-mark-pie { fill: none; stroke: var(--accent); stroke-width: 10; stroke-dasharray: 0 31.416; }
+.gt-mark-started .gt-mark-ring, .gt-mark-read .gt-mark-ring { stroke: var(--accent); }
+.gt-mark-started .gt-mark-pie { stroke-dasharray: 15.708 31.416; }
+.gt-mark-read .gt-mark-pie { stroke-dasharray: 31.416 31.416; }
+/* Only a note becoming read sweeps its pie, once (see gtPlayJustRead). */
+.gt-mark-play .gt-mark-pie { transition: stroke-dasharray 300ms cubic-bezier(.33,1,.68,1); }
+@keyframes gtMarkFade { from { opacity: .4; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .gt-mark .gt-mark-pie { transition: none !important; }
+  .gt-mark.gt-mark-fade .gt-mark-pie { animation: gtMarkFade 120ms linear 1 both !important; }
 }
-.gt-check-dot {
-  width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--track);
-  display: inline-flex; align-items: center; justify-content: center; color: transparent; transition: background .15s ease;
-}
-.gt-row.done .gt-check-dot { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.gt-group-btn .gt-mark { margin-left: -2px; }
+/* Narrow phones: the "N of M read" count says it; the title gets the room. */
+@media (max-width: 399px) { .gt-group-btn .gt-mark { display: none; } }
 .gt-row-h { flex: 1; min-width: 0; margin: 0; }
 .gt-row-btn {
   width: 100%; display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 12px 0;
@@ -5013,7 +5029,7 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 .gt-row-snippet { font: 400 14px/20px var(--f-sans); color: var(--text2); margin-top: 2px; }
 .gt-row.open .gt-row-snippet { display: none; }
 .gt-row.done .gt-row-title { color: var(--text2); }
-.gt-body { display: none; padding: 0 0 20px 44px; }
+.gt-body { display: none; padding: 0 0 20px; }
 .gt-row.open .gt-body { display: block; }
 .gt-row.flash-highlight { animation: gtFlash 1.4s ease 1; }
 @keyframes gtFlash { 0% { background: var(--surface2); } 100% { background: transparent; } }
@@ -5135,7 +5151,6 @@ body.gt-zoom-open { overflow: hidden; }
 @media (max-width: 600px) { .cp-done .sd-actions .act-btn { width: 100%; justify-content: center; text-align: center; } }
 @media (max-width: 600px) {
   .gt-title { font-size: 32px; line-height: 38px; }
-  .gt-body { padding-left: 0; }
 }
 .ws-rec-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 .bk-btn.saved { background: var(--tip-bg); border-color: var(--tip); color: var(--tip); }
@@ -5259,7 +5274,7 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
 .yd-actions .act-btn, .yd-other .act-btn, .yd-danger-row .act-btn { min-height: 44px; }
 .yd-confirm { flex-basis: 100%; font: 400 14px/20px var(--f-sans); color: var(--text); margin: 0 0 4px; }
 /* Grove danger: a --wrong-light fill with a --wrong label, on its own row */
-.yd-danger-row { border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 20px; }
+.yd-danger-row { border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 12px; }
 .act-btn.danger, .act-btn.danger:hover { background: var(--wrong-light); color: var(--wrong); border-color: var(--wrong-light); }
 .act-btn.danger:hover { border-color: var(--wrong); }
 
@@ -6442,6 +6457,9 @@ var S_DEFAULTS = {
   answeredIds: {},
   glossMastered: {},
   topicReviewed: {},
+  // Notes the learner has had open for 10 s of visible time ("Started"):
+  // id -> first time. Kept beside topicReviewed; read outranks it.
+  topicViewed: {},
   // 2 = ticks already use notes-v2 subtopic ids. New profiles start at 2; a
   // save from before v11 has no value, reads as 0 and is migrated once.
   topicTicksSchema: 2,
@@ -7058,7 +7076,7 @@ function normalizeImportedState(state) {
   var clean = {};
   var fields = ["score","ds","streak","bookmarks","answeredIds","missedQuestions",
                 "confidenceLog","sessionHistory","selectedDomain","diff",
-                "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed",
+                "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed",
                 "current","qn","activeTab","review","topicTicksSchema",
                 "answerLog","mistakeLog","studyDays","mockHistory"];
   fields.forEach(function(k) {
@@ -7086,6 +7104,8 @@ function normalizeImportedState(state) {
   if (!clean.answeredIds || typeof clean.answeredIds !== 'object') clean.answeredIds = {};
   if (!clean.glossMastered || typeof clean.glossMastered !== 'object') clean.glossMastered = {};
   if (!clean.topicReviewed || typeof clean.topicReviewed !== 'object') clean.topicReviewed = {};
+  // Saves from before the Started state have no topicViewed: load as empty.
+  if (!clean.topicViewed || typeof clean.topicViewed !== 'object' || Array.isArray(clean.topicViewed)) clean.topicViewed = {};
   clean.topicTicksSchema = Number(clean.topicTicksSchema) || 0;
   if (!clean.lastOpenedSubtopic || typeof clean.lastOpenedSubtopic !== 'object') clean.lastOpenedSubtopic = {};
   if (["1","2","3","4","5","all"].indexOf(String(clean.selectedDomain)) === -1) clean.selectedDomain = "1";
@@ -7142,7 +7162,7 @@ function saveState() {
     selectedDomain: S.selectedDomain, diff: S.diff,
     timerEnabled: S.timerEnabled, timerSeconds: S.timerSeconds,
     qIdx: S.qIdx, mindsetIdx: S.mindsetIdx,
-    glossMastered: S.glossMastered, topicReviewed: S.topicReviewed,
+    glossMastered: S.glossMastered, topicReviewed: S.topicReviewed, topicViewed: S.topicViewed,
     topicTicksSchema: S.topicTicksSchema || 0,
     current: shouldResumeCurrent() ? S.current : null,
     qn: S.qn,
@@ -7172,7 +7192,7 @@ function loadState() {
   var saved = normalizeImportedState(profiles[id].state) || {};
   var fields = ["score","ds","streak","bookmarks","answeredIds","missedQuestions",
                 "confidenceLog","sessionHistory","review","selectedDomain","diff",
-                "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicTicksSchema",
+                "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed","topicTicksSchema",
                 "current","qn","activeTab",
                 "answerLog","mistakeLog","studyDays","mockHistory"];
   fields.forEach(function(k) {
@@ -7345,6 +7365,7 @@ function showYourData() {
     + '</div>'
     + othersHtml
     + '<div class="yd-danger-row">'
+    + '<button type="button" class="act-btn danger" onclick="confirmResetReadingProgress()">Reset reading progress</button>'
     + '<button type="button" class="act-btn danger" onclick="confirmResetProgress()">Reset progress</button>'
     + '</div>'
     + '<button class="cl-close" onclick="closeSummary()">Done</button>'
@@ -7393,6 +7414,17 @@ var conceptsLoading = false;    // true during fetch
 // UI state for the Topics tab — which domain is selected, what search/filter is active,
 // which groups/items are open, etc.
 var topicState = { domain: "1", search: "", openGroups: {}, openItems: {}, filter: "all" };
+// Read-state tracking for this visit only (see READ-STATE TRACKING); the
+// saved state is S.topicReviewed (read) and S.topicViewed (started).
+var GT_STARTED_MS = 10000;
+var GT_AUTOREAD_MS = 20000;
+var GT_USER_SCROLL_MS = 1500; // how long after a wheel/touch/key a scroll still counts as the learner's
+var gtOpenMs = {};     // id -> ms open and visible this visit
+var gtJustRead = {};   // id -> the state it showed before it became read (until the sweep plays)
+var gtAutoFired = {};  // id -> auto-read already used in this opening
+var gtFootSeen = {};   // id -> its end line is on screen
+var gtTicker = null, gtLastTick = 0, gtUserScrollAt = 0;
+var gtFootIO = null, gtJustIO = null;
 
 // ── NORMALIZE: convert cisa_notes structure to internal format ──
 function buildConceptsData() {
@@ -7452,6 +7484,7 @@ function buildConceptsData() {
 // ticks, and saves only when it added one.
 function migrateTopicTicks(data) {
   var reviewed = getTopicReviewedSet();
+  var viewed = getTopicViewedSet();
   var changed = false;
   data.domains.forEach(function(dom) {
     dom.groups.forEach(function(g) {
@@ -7459,6 +7492,9 @@ function migrateTopicTicks(data) {
         var legacy = (it.raw && it.raw.legacy_ids) || [];
         if (!reviewed[it.id] && legacy.some(function(old) { return reviewed[old]; })) {
           reviewed[it.id] = true; changed = true;
+        }
+        if (!viewed[it.id] && legacy.some(function(old) { return viewed[old]; })) {
+          viewed[it.id] = true; changed = true;
         }
       });
     });
@@ -7475,16 +7511,19 @@ function migrateTopicTicksToV2(data) {
   if (!CISA_NOTES_RAW || CISA_NOTES_RAW.schema_version !== 2) return;
   if (S.topicTicksSchema === 2) return;
   var old = (S.topicReviewed && typeof S.topicReviewed === 'object') ? S.topicReviewed : {};
-  var newSet = {};
+  var oldViewed = (S.topicViewed && typeof S.topicViewed === 'object') ? S.topicViewed : {};
+  var newSet = {}, newViewed = {};
   data.domains.forEach(function(dom) {
     dom.groups.forEach(function(g) {
       g.items.forEach(function(it) {
         var legacy = (it.raw && Array.isArray(it.raw.legacy_ids)) ? it.raw.legacy_ids : [];
         if (legacy.some(function(oldId) { return !!old[oldId]; })) newSet[it.id] = true;
+        if (legacy.some(function(oldId) { return !!oldViewed[oldId]; })) newViewed[it.id] = true;
       });
     });
   });
   S.topicReviewed = newSet;
+  S.topicViewed = newViewed;
   S.topicTicksSchema = 2;
   try { saveState(); } catch (e) {}
 }
@@ -7493,6 +7532,16 @@ function migrateTopicTicksToV2(data) {
 function getTopicReviewedSet() {
   if (!S.topicReviewed || typeof S.topicReviewed !== 'object') S.topicReviewed = {};
   return S.topicReviewed;
+}
+function getTopicViewedSet() {
+  if (!S.topicViewed || typeof S.topicViewed !== 'object') S.topicViewed = {};
+  return S.topicViewed;
+}
+// A note's read state: 'read' outranks 'started' (open 10 s), else 'none'.
+function gtNoteState(id) {
+  if (getTopicReviewedSet()[id]) return 'read';
+  if (getTopicViewedSet()[id]) return 'started';
+  return 'none';
 }
 
 function getConceptDomainProgress(domainId) {
@@ -7805,7 +7854,9 @@ function gtValue(val, t) {
 function gtFooter(itemId, domainId, practiceHtml) {
   var done = !!getTopicReviewedSet()[itemId];
   var domainBtn = domainId ? '<button class="gt-btn-ghost" onclick="event.stopPropagation();startTopicPractice(\'' + domainId + '\')">Practice Domain ' + domainId + ' questions ' + ico('chevron', 16) + '</button>' : '';
-  return '<div class="gt-foot">'
+  // data-gtfoot: the note's end line; reaching it by the learner's own
+  // scrolling marks the note read (gtCheckAutoRead).
+  return '<div class="gt-foot" data-gtfoot="' + escapeHtml(itemId) + '">'
     + '<button class="gt-btn-secondary gt-read-btn" aria-pressed="' + done + '" onclick="event.stopPropagation();toggleConceptReviewed(\'' + escapeHtml(itemId) + '\')">'
     + ico('check', 18) + '<span>' + (done ? 'Read' : 'Mark as read') + '</span></button>'
     + (practiceHtml ? '' : domainBtn)
@@ -7981,25 +8032,53 @@ function gtRingSvg(pct) {
     + '</svg>';
 }
 
+// ── NOTE READ STATE ("fill the circle") ──
+// Three states by shape: an empty ring (not opened), a half disc (started:
+// open 10 s in all, page visible) and a full disc (read). Words carry it too,
+// so the state never rests on the faint ring alone.
+var GT_STATE_WORD = { none: 'Not read yet', started: 'Started', read: 'Read' };
+var GT_STATE_SR = { none: ', not read yet', started: ', started, not finished', read: ', read' };
+function gtMarkSvg(state, extraClass, attrs) {
+  return '<svg class="gt-mark gt-mark-' + state + (extraClass ? ' ' + extraClass : '') + '"' + (attrs || '')
+    + ' width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+    + '<circle class="gt-mark-ring" cx="12" cy="12" r="11"/>'
+    + '<circle class="gt-mark-pie" cx="12" cy="12" r="5" transform="rotate(-90 12 12)"/></svg>';
+}
+function gtSetMarkState(mark, state) {
+  ['none', 'started', 'read'].forEach(function(k) { mark.classList.toggle('gt-mark-' + k, k === state); });
+}
+// A topic's mark: empty until anything is started, half while partly read,
+// full when every note is read.
+function gtGroupState(items) {
+  var reviewed = getTopicReviewedSet(), viewed = getTopicViewedSet();
+  var done = 0, any = false;
+  items.forEach(function(it) { if (reviewed[it.id]) { done++; any = true; } else if (viewed[it.id]) any = true; });
+  if (items.length && done === items.length) return 'read';
+  return any ? 'started' : 'none';
+}
+
 function gtItemRow(it, d, tokens, opts) {
   opts = opts || {};
-  var reviewed = getTopicReviewedSet();
-  var isDone = !!reviewed[it.id];
+  var state = gtNoteState(it.id);
+  var isDone = state === 'read';
   var isOpen = !!topicState.openItems[it.id];
   var idE = escapeHtml(it.id);
   var body = isOpen ? renderItemBody(it.raw, String(d), topicState.search, it.id) : '';
+  // Just read this session and not yet seen: draw the old state, and let
+  // gtWatchJustRead sweep it to full once the row is on screen.
+  var shown = (isDone && gtJustRead[it.id]) ? gtJustRead[it.id] : state;
   return '<div class="gt-row' + (isOpen ? ' open' : '') + (isDone ? ' done' : '') + '" id="ni-' + idE + '">'
     + '<div class="gt-row-head">'
-    // The circle only SHOWS read status; the whole row opens the note. A note
-    // is marked read from inside it ("Mark as read" at its end), as on mobile:
-    // a tappable circle here was mistaken for "open" and ticked unread notes.
+    // The mark only SHOWS read status; the whole row opens the note. A note
+    // is marked read from inside it ("Mark as read" at its end), as on mobile.
     + '<h4 class="gt-row-h"><button class="gt-row-btn" aria-expanded="' + isOpen + '" aria-controls="nb-' + idE + '" onclick="toggleNotesItem(\'' + idE + '\')">'
-    + '<span class="gt-check" aria-hidden="true"><span class="gt-check-dot">' + ico('check', 14) + '</span></span>'
     + '<span class="gt-row-text"><span class="gt-row-title">' + highlightText(it.name, tokens) + '</span>'
-    + '<span class="sr-only gt-row-state">' + (isDone ? ', read' : ', not read yet') + '</span>'
-    + (opts.meta ? '<span class="gt-row-meta">' + opts.meta + '</span>' : '')
+    + '<span class="sr-only gt-row-state">' + GT_STATE_SR[state] + '</span>'
+    + '<span class="gt-row-meta"><span class="gt-row-status" aria-hidden="true">' + GT_STATE_WORD[state] + '</span>'
+    + (opts.meta ? '<span aria-hidden="true"> &middot; </span>' + opts.meta : '') + '</span>'
     + (opts.snippet ? '<span class="gt-row-snippet">' + highlightText(opts.snippet, tokens) + '</span>' : '')
-    + '</span>' + ico('chevron-down', 20, 'ico gt-chev') + '</button></h4>'
+    + '</span>' + gtMarkSvg(shown, '', shown !== state ? ' data-gtjust="' + idE + '"' : '')
+    + ico('chevron-down', 20, 'ico gt-chev') + '</button></h4>'
     + '</div>'
     + '<div class="gt-body" id="nb-' + idE + '"' + (isOpen ? ' data-rendered="1"' : '') + '>' + body + '</div>'
     + '</div>';
@@ -8112,7 +8191,7 @@ function renderTopics() {
     + '<div class="gt-toolbar-row"><div class="gt-chips" role="group" aria-label="Show">' + filterBtn('all', 'All') + filterBtn('unreviewed', 'To review') + filterBtn('reviewed', 'Read') + '</div>'
     + '<div class="gt-toolbar-end">'
     + (searchQ ? '' : '<button class="gt-btn-ghost" onclick="' + (anyOpen ? 'collapseAllGroups()' : 'expandAllGroups()') + '">' + (anyOpen ? 'Collapse all' : 'Expand all') + '</button>')
-    + '<details class="gt-menu"><summary class="gt-icon-btn" aria-label="Reading progress options">' + ico('dots', 20) + '</summary>'
+    + '<details class="gt-menu"><summary class="gt-btn-ghost gt-menu-btn">Reading progress' + ico('chevron-down', 16) + '</summary>'
     + '<div class="gt-menu-pop" role="group" aria-label="Reading progress">'
     + '<button class="gt-menu-item" onclick="this.closest(\'details\').open=false;markAllDomainTopics(' + d + ')">' + ico('check', 18) + 'Mark all in Domain ' + d + ' as read</button>'
     + '<button class="gt-menu-item gt-danger" onclick="this.closest(\'details\').open=false;confirmResetDomain(' + d + ')">' + ico('x', 18) + 'Reset Domain ' + d + ' progress&hellip;</button>'
@@ -8168,6 +8247,7 @@ function renderTopics() {
         + '<span class="gt-group-text"><span class="gt-group-title">' + escapeHtml(g.group_title) + '</span>'
         + '<span class="gt-group-meta">' + gTotal + ' notes &middot; about ' + readMin + ' min</span></span>'
         + '<span class="gt-group-count" data-gcount="' + escapeHtml(gKey) + '"><span class="gt-num">' + gDone + '</span><span class="gt-of"> of ' + gTotal + ' read</span></span>'
+        + gtMarkSvg(gtGroupState(g.items), '', ' data-gmark="' + escapeHtml(gKey) + '"')
         + ico('chevron-down', 20, 'ico gt-chev') + '</button></h3>'
         + '<div class="gt-group-body" id="ngb-' + escapeHtml(gKey) + '">' + bodyHtml + '</div>'
         + '</section>';
@@ -8187,6 +8267,7 @@ function renderTopics() {
     var inp = document.getElementById('newTopicSearch');
     if (inp) { inp.focus(); var L = inp.value.length; try { inp.setSelectionRange(L, L); } catch (e) {} }
   }
+  gtAfterRender();
 }
 
 // ── DOMAIN GLOSSARY (key_terminologies) ──
@@ -8383,7 +8464,9 @@ function toggleNotesItem(itemId) {
     var it = findTopicItem(itemId);
     S.lastOpenedSubtopic[dom2] = { id: itemId, name: it ? it.name : itemId, ts: Date.now() };
     saveState();
+    gtAutoFired[itemId] = false; // a new opening may auto-read once
   }
+  gtAfterRender();
 }
 
 // Backward-compat
@@ -8411,39 +8494,200 @@ function refreshTopicProgress(d) {
   if (dom) dom.groups.forEach(function(g) {
     var n = document.querySelector('[data-gcount="' + d + '-g-' + g.group_id + '"] .gt-num');
     if (n) n.textContent = g.items.filter(function(it){ return reviewed[it.id]; }).length;
+    var m = document.querySelector('[data-gmark="' + d + '-g-' + g.group_id + '"]');
+    if (m) gtSetMarkState(m, gtGroupState(g.items));
   });
   return p;
 }
 
-function toggleConceptReviewed(itemId) {
+// ── READ-STATE TRACKING ──
+// Started: a note open (row expanded) for 10 s in all while the page is
+// visible. Auto-read: the learner scrolls to the note's end line by their own
+// scrolling (wheel, touch or keys) after it has been open 20 s. A jump link
+// or a programmatic scroll never counts. Everything here but the saved
+// topicReviewed / topicViewed sets lasts for this visit only.
+
+function gtOpenIds() {
+  return Object.keys(topicState.openItems).filter(function(id) { return topicState.openItems[id]; });
+}
+// Expanded and actually displayed (Topics on screen, its topic open).
+function gtRowShown(id) {
+  var el = document.getElementById('ni-' + id);
+  return !!(el && el.classList.contains('open') && el.getClientRects().length);
+}
+function gtAfterRender() {
+  gtObserveFooters();
+  gtWatchJustRead();
+  if (gtOpenIds().length) gtEnsureTicker();
+}
+function gtEnsureTicker() {
+  if (gtTicker) return;
+  gtLastTick = Date.now();
+  gtTicker = setInterval(gtTick, 500);
+}
+function gtTick() {
+  var now = Date.now();
+  // Capped, so a throttled or sleeping tab never adds a burst of time.
+  var dt = Math.min(1000, Math.max(0, now - gtLastTick));
+  gtLastTick = now;
+  var ids = gtOpenIds();
+  if (!ids.length) { clearInterval(gtTicker); gtTicker = null; return; }
+  if (document.visibilityState !== 'visible') return;
+  var changed = false;
+  ids.forEach(function(id) {
+    if (!gtRowShown(id)) return;
+    gtOpenMs[id] = (gtOpenMs[id] || 0) + dt;
+    if (gtOpenMs[id] >= GT_STARTED_MS && !getTopicViewedSet()[id]) {
+      getTopicViewedSet()[id] = Date.now();
+      changed = true;
+      gtUpdateRow(id);
+    }
+    if (gtOpenMs[id] >= GT_AUTOREAD_MS) gtCheckAutoRead(id);
+  });
+  if (changed) { saveState(); refreshTopicProgress(parseInt(topicState.domain) || 1); }
+}
+document.addEventListener('visibilitychange', function() { gtLastTick = Date.now(); });
+
+function gtOnUserScroll() {
+  gtUserScrollAt = Date.now();
+  gtOpenIds().forEach(gtCheckAutoRead);
+}
+document.addEventListener('wheel', gtOnUserScroll, { passive: true, capture: true });
+document.addEventListener('touchmove', gtOnUserScroll, { passive: true, capture: true });
+document.addEventListener('keydown', function(e) {
+  var k = e.key;
+  if (['PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'End', 'Home', ' ', 'Spacebar'].indexOf(k) < 0) return;
+  var t = e.target;
+  if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName || ''))) return;
+  // Space on a button presses it; it does not scroll.
+  if ((k === ' ' || k === 'Spacebar') && t && t.closest && t.closest('button, summary, a, [role="button"], [role="tab"]')) return;
+  gtOnUserScroll();
+}, true);
+// A flick's momentum and a wheel's smooth scroll keep counting as the learner's.
+window.addEventListener('scroll', function() {
+  if (Date.now() - gtUserScrollAt < 250) gtOnUserScroll();
+}, { passive: true, capture: true });
+
+function gtObserveFooters() {
+  if (typeof IntersectionObserver === 'undefined') return;
+  if (!gtFootIO) gtFootIO = new IntersectionObserver(function(entries) {
+    entries.forEach(function(en) {
+      var id = en.target.getAttribute('data-gtfoot');
+      if (!id) return;
+      gtFootSeen[id] = en.isIntersecting;
+      if (en.isIntersecting) gtCheckAutoRead(id);
+    });
+  });
+  gtFootIO.disconnect();
+  gtFootSeen = {};
+  document.querySelectorAll('#topicsArea .gt-row.open [data-gtfoot]').forEach(function(f) { gtFootIO.observe(f); });
+}
+function gtCheckAutoRead(id) {
+  if (!gtFootSeen[id] || gtAutoFired[id]) return;
+  if (!topicState.openItems[id] || !gtRowShown(id)) return;
+  if (Date.now() - gtUserScrollAt > GT_USER_SCROLL_MS) return; // not the learner's own scroll
+  if ((gtOpenMs[id] || 0) < GT_AUTOREAD_MS) return;
+  gtAutoFired[id] = true; // once per opening, so "not read" sticks
+  if (getTopicReviewedSet()[id]) return;
+  gtSetRead(id, true, 'auto');
+}
+
+// The one way a single note changes between read and not read.
+// how: 'button' (the end-of-note button), 'auto' (scrolled to the end) or
+// 'practice' (Practice this concept; silent).
+function gtSetRead(id, read, how) {
   var reviewed = getTopicReviewedSet();
-  var wasDone = !!reviewed[itemId];
-  if (wasDone) { delete reviewed[itemId]; } else { reviewed[itemId] = Date.now(); }
+  var was = gtNoteState(id);
+  if (read) {
+    if (was === 'read') return;
+    gtJustRead[id] = was;
+    reviewed[id] = Date.now();
+  } else {
+    if (was !== 'read') return;
+    delete reviewed[id];
+    delete gtJustRead[id];
+    // "Mark as not read" goes back to Started, never to not opened.
+    var viewed = getTopicViewedSet();
+    if (!viewed[id]) viewed[id] = Date.now();
+    gtAutoFired[id] = true;
+  }
   S.topicReviewed = reviewed;
   saveState();
-  var isDone = !!reviewed[itemId];
-  var el = document.getElementById('ni-' + itemId);
-  if (el) {
-    el.classList.toggle('done', isDone);
-    el.querySelectorAll('.gt-read-btn').forEach(function(b) { b.setAttribute('aria-pressed', String(isDone)); });
-    var st = el.querySelector('.gt-row-state');
-    if (st) st.textContent = isDone ? ', read' : ', not read yet';
-    var lab = el.querySelector('.gt-read-btn span');
-    if (lab) lab.textContent = isDone ? 'Read' : 'Mark as read';
-  }
+  gtUpdateRow(id);
   var d = parseInt(topicState.domain) || 1;
   var p = refreshTopicProgress(d);
-  if (isDone && !wasDone && p.done === p.total && p.total > 0) {
+  if (how === 'practice') return;
+  if (read && p.done === p.total && p.total > 0) {
     showToast('Domain ' + d + ' notes all read', 'correct', 3000);
   } else {
-    showToast(isDone ? 'Marked as read' : 'Marked as to review', isDone ? 'correct' : 'info', 1400);
+    showToast(read ? 'Marked as read' : 'Marked as not read', read ? 'correct' : 'info', 1400);
   }
+}
+
+// Update one row in place: classes, words, button and mark.
+function gtUpdateRow(id) {
+  var el = document.getElementById('ni-' + id);
+  if (!el) return;
+  var state = gtNoteState(id), isDone = state === 'read';
+  el.classList.toggle('done', isDone);
+  el.querySelectorAll('.gt-read-btn').forEach(function(b) { b.setAttribute('aria-pressed', String(isDone)); });
+  var lab = el.querySelector('.gt-read-btn span');
+  if (lab) lab.textContent = isDone ? 'Read' : 'Mark as read';
+  var st = el.querySelector('.gt-row-state');
+  if (st) st.textContent = GT_STATE_SR[state];
+  var w = el.querySelector('.gt-row-status');
+  if (w) w.textContent = GT_STATE_WORD[state];
+  var mark = el.querySelector('.gt-row-btn .gt-mark');
+  if (!mark) return;
+  if (isDone && gtJustRead[id]) {
+    // Keep showing the old state; the sweep plays once the row is on screen.
+    mark.setAttribute('data-gtjust', id);
+    gtWatchJustRead();
+  } else {
+    mark.removeAttribute('data-gtjust');
+    gtSetMarkState(mark, state);
+  }
+}
+
+function gtWatchJustRead() {
+  var marks = document.querySelectorAll('#topicsArea .gt-mark[data-gtjust]');
+  if (gtJustIO) gtJustIO.disconnect();
+  if (!marks.length) return;
+  if (typeof IntersectionObserver === 'undefined') { marks.forEach(gtPlayJustRead); return; }
+  if (!gtJustIO) gtJustIO = new IntersectionObserver(function(entries) {
+    entries.forEach(function(en) {
+      if (!en.isIntersecting) return;
+      gtJustIO.unobserve(en.target);
+      gtPlayJustRead(en.target);
+    });
+  }, { threshold: 1 });
+  marks.forEach(function(m) { gtJustIO.observe(m); });
+}
+// The pie sweeps from where it was to full: 300 ms ease-out, once. Reduce
+// Motion gets a 120 ms cross-fade instead. No scale, no bounce.
+function gtPlayJustRead(mark) {
+  var id = mark.getAttribute('data-gtjust');
+  mark.removeAttribute('data-gtjust');
+  var state = gtNoteState(id);
+  delete gtJustRead[id];
+  if (state !== 'read') { gtSetMarkState(mark, state); return; }
+  var pie = mark.querySelector('.gt-mark-pie');
+  if (pie) void getComputedStyle(pie).strokeDasharray; // commit the old state first
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cls = reduce ? 'gt-mark-fade' : 'gt-mark-play';
+  mark.classList.add(cls);
+  gtSetMarkState(mark, 'read');
+  setTimeout(function() { mark.classList.remove(cls); }, 600);
+}
+
+function toggleConceptReviewed(itemId) {
+  gtSetRead(itemId, !getTopicReviewedSet()[itemId], 'button');
 }
 
 // Reset needs a confirm: one mis-tap must not wipe a learner's progress.
 function confirmResetDomain(d) {
   var ok = true;
-  try { ok = window.confirm('Reset reading progress for Domain ' + d + '? Every note in this domain goes back to "to review".'); } catch (e) {}
+  try { ok = window.confirm('Reset reading progress for Domain ' + d + '? Every note in this domain goes back to not read.'); } catch (e) {}
   if (ok) resetConceptDomain(d);
 }
 
@@ -8465,9 +8709,12 @@ function resetConceptDomain(domainId) {
   var data = buildConceptsData();
   var dom = data.domains.find(function(d){ return d.domain_id === Number(domainId); });
   if (!dom) return;
-  var reviewed = getTopicReviewedSet();
+  var reviewed = getTopicReviewedSet(), viewed = getTopicViewedSet();
   dom.groups.forEach(function(g) {
-    g.items.forEach(function(it) { delete reviewed[it.id]; });
+    g.items.forEach(function(it) {
+      delete reviewed[it.id]; delete viewed[it.id];
+      delete gtOpenMs[it.id]; delete gtJustRead[it.id];
+    });
   });
   S.topicReviewed = reviewed;
   saveState();
@@ -8475,11 +8722,22 @@ function resetConceptDomain(domainId) {
   showToast('Domain ' + domainId + ' progress reset', 'info', 1800);
 }
 
+// Every note in every domain back to not read (not opened). Answers stay.
 function resetAllTopicReviews() {
   S.topicReviewed = {};
+  S.topicViewed = {};
+  gtOpenMs = {}; gtJustRead = {}; gtAutoFired = {};
   saveState();
-  renderTopics();
-  showToast('All topic review progress reset', 'info', 1800);
+  if (document.querySelector('#topicsArea .gt')) renderTopics();
+  showToast('Reading progress reset', 'info', 1800);
+}
+// You → Your data: "Reset reading progress".
+function confirmResetReadingProgress() {
+  var ok = false;
+  try { ok = window.confirm('Reset reading progress? Every note goes back to not read. Your answers and scores stay.'); } catch (e) {}
+  if (!ok) return;
+  closeSummary();
+  resetAllTopicReviews();
 }
 
 // Backward-compat aliases
@@ -8548,6 +8806,8 @@ function startConceptPractice(itemId) {
   }
   var qs = conceptPracticeQuestions(found.item.raw, d);
   if (!qs.length) { showToast('No practice questions for this concept yet', 'info', 2200); return; }
+  // Practising the concept means the note was read (as on mobile).
+  if (!getTopicReviewedSet()[itemId]) gtSetRead(itemId, true, 'practice');
   for (var i = qs.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
     var tmp = qs[i]; qs[i] = qs[j]; qs[j] = tmp;
