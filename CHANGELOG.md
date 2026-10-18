@@ -4,6 +4,17 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.5] — A calmer answer screen
+
+### Improved
+- After you answer, you see a clear verdict, your answer beside the best answer, and the key idea and exam tips together, with Next question always in reach.
+- Choosing how sure you are is now one simple control.
+
+### Fixed
+- A mock exam now picks up where you left off after a reload or closing the tab, with your answers and time left kept.
+- Tapping the circle beside a study note now opens the note instead of marking it as read; mark it read at the end of the note.
+- The Practice button on each domain card and the mastered button on glossary cards no longer cover the text next to them.
+
 ## [v12.4] — Same layout as the app
 
 ### New

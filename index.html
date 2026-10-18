@@ -2952,6 +2952,9 @@ header {
 .gloss-card.mastered.dl0 { border-left-color: var(--correct); }
 .gloss-card.mastered .gloss-card-term { color: var(--correct); }
 .gloss-card-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+/* Keep the term clear of the round "mastered" button in the corner. */
+.gloss-card > .gloss-card-top:first-of-type { padding-right: 28px; }
+@media (max-width: 600px) { .gloss-card > .gloss-card-top:first-of-type { padding-right: 46px; } }
 .gloss-card-term {
   font-family: Fraunces,Georgia,serif; font-size: 15px; font-weight: 500;
   color: var(--text); line-height: 1.2; flex: 1; min-width: 0;
@@ -5740,7 +5743,7 @@ header.app-header .brand-lockup { height: 28px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.4</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.5</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -5999,7 +6002,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.4';
+const APP_VERSION = 'v12.5';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11582,7 +11585,7 @@ function renderGlossList() {
       ? ' id="gloss-letter-' + letter + '"' : '';
     if (anchorAttr) lastLetter = letter;
     html += '<div class="gloss-card dl' + t.domain + (mastered ? ' mastered' : '') + '"' + anchorAttr + ' onclick="showGlossDetail(' + t.id + ')">'
-      + '<button class="gloss-card-master-btn" onclick="event.stopPropagation();toggleMasteredCard(' + t.id + ')" title="' + (mastered ? 'Unmark mastered' : 'Mark as mastered') + '">' + (mastered ? '&#10003;' : '') + '</button>'
+      + '<button class="gloss-card-master-btn" onclick="event.stopPropagation();toggleMasteredCard(' + t.id + ')" aria-pressed="' + mastered + '" aria-label="Mastered: ' + escHtml(t.term) + '" title="' + (mastered ? 'Unmark mastered' : 'Mark as mastered') + '">' + (mastered ? '&#10003;' : '') + '</button>'
       + '<div class="gloss-card-top">'
       +   '<div class="gloss-card-term">' + highlightSearch(t.term, glossState.search) + '</div>'
       + '</div>'
@@ -13104,6 +13107,17 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'A calmer answer screen',
+    items: [
+      { cat: 'improved', text: 'After you answer, you see a clear verdict, your answer beside the best answer, and the key idea and exam tips together, with Next question always in reach.' },
+      { cat: 'improved', text: 'Choosing how sure you are is now one simple control.' },
+      { cat: 'fixed', text: 'A mock exam now picks up where you left off after a reload or closing the tab, with your answers and time left kept.' },
+      { cat: 'fixed', text: 'Tapping the circle beside a study note now opens the note instead of marking it as read; mark it read at the end of the note.' },
+      { cat: 'fixed', text: 'The Practice button on each domain card and the mastered button on glossary cards no longer cover the text next to them.' }
+    ]
+  },
+  {
+    version: 'v12.4',
     title: 'Same layout as the app',
     items: [
       { cat: 'new', text: 'The website now uses the same sections as the KaiSip app: Today, Learn, Practice and You, with a side menu on larger screens.' },
