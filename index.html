@@ -524,6 +524,7 @@ body::before {
 }
 .mock-confirm-row:last-of-type { border-bottom:none; }
 .mock-confirm-row strong { color:var(--text);font-weight: 600; }
+.mock-confirm-note { font-size: 14px; line-height: 1.5; color: var(--text2); margin: 0 0 16px; }
 .mock-confirm-warn {
   background:var(--warning-light);border:2px solid var(--warning);border-radius:10px;
   padding:10px 14px;font-size:13px;color:var(--warning-strong);font-weight:600;margin:14px 0;
@@ -2954,7 +2955,7 @@ header {
 .gloss-card-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 /* Keep the term clear of the round "mastered" button in the corner. */
 .gloss-card > .gloss-card-top:first-of-type { padding-right: 28px; }
-@media (max-width: 600px) { .gloss-card > .gloss-card-top:first-of-type { padding-right: 46px; } }
+@media (max-width: 600px) { .gloss-card > .gloss-card-top:first-of-type { padding-right: 48px; } }
 .gloss-card-term {
   font-family: Fraunces,Georgia,serif; font-size: 15px; font-weight: 500;
   color: var(--text); line-height: 1.2; flex: 1; min-width: 0;
@@ -2983,8 +2984,8 @@ header {
 }
 .gloss-card-master-btn {
   position: absolute; top: 10px; right: 10px;
-  width: 24px; height: 24px; border: 2px solid var(--border2);
-  border-radius: 50%; background: var(--surface2); cursor: pointer;
+  width: 24px; height: 24px; border: 1.5px solid var(--control);
+  border-radius: 50%; background: transparent; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   font-size: 13px; transition: var(--tr); color: var(--muted);
 }
@@ -4997,7 +4998,7 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
   width: 34px; flex-shrink: 0; display: flex; align-items: center; justify-content: flex-start; color: var(--bg);
 }
 .gt-check-dot {
-  width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--control);
+  width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--track);
   display: inline-flex; align-items: center; justify-content: center; color: transparent; transition: background .15s ease;
 }
 .gt-row.done .gt-check-dot { background: var(--accent); border-color: var(--accent); color: var(--bg); }
@@ -5433,7 +5434,7 @@ header.app-header .brand-lockup { height: 28px; }
 .conf-q { font: var(--t-label); color: var(--text); margin: 0 0 var(--sp-md); }
 .conf-seg {
   display: flex; flex-wrap: wrap; gap: var(--sp-xs); padding: var(--sp-xs); max-width: 520px;
-  border-radius: 24px; background: var(--surface2);
+  border-radius: var(--r-lg); background: var(--surface2);
 }
 .conf-seg .conf-btn {
   position: relative; flex: 1 1 auto; justify-content: center; min-height: 40px; padding: 0 var(--sp-lg);
@@ -5449,6 +5450,7 @@ header.app-header .brand-lockup { height: 28px; }
 /* After checking: the option list steps aside ("Show all options" brings
    the others back inside the answer screen). */
 .q-card.is-answered .opts { display: none; }
+.q-card.is-answered #bkBtn { display: none; } /* the footer Save takes over */
 
 .result-panel.vr-panel { display: block; border-top: 0; padding: var(--sp-sm) 0 0; animation: none; }
 .vr-verdict { display: flex; align-items: center; gap: var(--sp-md); }
@@ -5483,13 +5485,13 @@ header.app-header .brand-lockup { height: 28px; }
 
 .vr-toggle {
   display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 44px; margin-top: var(--sp-sm); padding: 0;
-  background: none; border: 0; cursor: pointer; font: 600 16px/22px var(--f-sans); color: var(--accent-text);
+  background: none; border: 0; cursor: pointer; font: var(--t-label); color: var(--accent-text);
 }
 .vr-toggle:hover .vr-toggle-t { text-decoration: underline; }
 .vr-toggle[aria-expanded="true"] .ico { transform: rotate(180deg); }
 .vr-others[hidden] { display: none; }
 .vr-row-other { padding: var(--sp-md) 0; border-radius: 0; border-top: 1px solid var(--border); }
-.vr-row-other .vr-badge { background: transparent; border: 1.5px solid var(--control); color: var(--text2); font: 600 14px/18px var(--f-sans); }
+.vr-row-other .vr-badge { background: transparent; border: 1.5px solid var(--border); color: var(--text2); font: 600 14px/18px var(--f-sans); }
 .vr-row-other .vr-tag { color: var(--text2); }
 
 .vr-why { margin: var(--sp-xxl) 0 var(--sp-sm); font: var(--t-headline); color: var(--text); }
@@ -5522,7 +5524,7 @@ header.app-header .brand-lockup { height: 28px; }
 .vr-src-ref { flex: 1 1 240px; min-width: 0; font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
 .vr-report {
   min-height: 44px; padding: 0; background: none; border: 0; cursor: pointer;
-  font: 600 16px/22px var(--f-sans); color: var(--accent-text);
+  font: var(--t-label); color: var(--accent-text);
 }
 .vr-report:hover { text-decoration: underline; }
 
@@ -6581,13 +6583,16 @@ document.addEventListener('qb:domain-loaded', function() {
 // answer time; `q` is saved as a small { id, domain } stub and filled from
 // the bank again on resume.
 var MOCK_SECONDS_TOTAL = 240 * 60;
-var MOCK_SAVE_EVERY_SEC = 15;
+var MOCK_SAVE_EVERY_SEC = 60;
 var MOCK_ID_RE = /^web-[a-z0-9-]{1,40}$/;
 var MOCK_MAX_ITEMS = 1000;
 // The saved mock while its banks are still loading (like saved questions
 // above). saveState writes it back as it is, so a save made before the banks
 // arrive never drops the mock.
 var mockResumePending = null;
+// Set just before a reload that has already written new progress (import,
+// switching records): the leave-save must not write the old state over it.
+var leavingForReload = false;
 
 function newMockId() {
   return 'web-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 7);
@@ -6716,6 +6721,7 @@ document.addEventListener('qb:domain-loaded', function() {
 });
 // The clock is saved as it runs; this keeps the last seconds before a close.
 function saveMockOnLeave() {
+  if (leavingForReload) return;
   try { if (isMockInProgress()) saveState(); } catch (e) {}
 }
 window.addEventListener('pagehide', saveMockOnLeave);
@@ -7261,6 +7267,7 @@ function importProgress(file) {
       profiles[id].totalAnswered = state.score ? Number(state.score.t) || 0 : 0;
       profiles[id].lastActive = Date.now();
       saveProfiles(profiles);
+      leavingForReload = true;
       location.reload();
     } catch (ex) {
       showToast('Could not read that file.', 'info', 3200);
@@ -7304,6 +7311,7 @@ function useProgress(id) {
   if (!getProfiles()[id]) return;
   saveState();               // keep the record in use exactly as it is
   setActiveProfileId(id);
+  leavingForReload = true;
   location.reload();
 }
 
@@ -7986,9 +7994,9 @@ function gtItemRow(it, d, tokens, opts) {
     // is marked read from inside it ("Mark as read" at its end), as on mobile:
     // a tappable circle here was mistaken for "open" and ticked unread notes.
     + '<h4 class="gt-row-h"><button class="gt-row-btn" aria-expanded="' + isOpen + '" aria-controls="nb-' + idE + '" onclick="toggleNotesItem(\'' + idE + '\')">'
-    + '<span class="gt-check" aria-hidden="true"><span class="gt-check-dot">' + ico('check', 16) + '</span></span>'
+    + '<span class="gt-check" aria-hidden="true"><span class="gt-check-dot">' + ico('check', 14) + '</span></span>'
     + '<span class="gt-row-text"><span class="gt-row-title">' + highlightText(it.name, tokens) + '</span>'
-    + '<span class="sr-only gt-row-state">' + (isDone ? ', read' : '') + '</span>'
+    + '<span class="sr-only gt-row-state">' + (isDone ? ', read' : ', not read yet') + '</span>'
     + (opts.meta ? '<span class="gt-row-meta">' + opts.meta + '</span>' : '')
     + (opts.snippet ? '<span class="gt-row-snippet">' + highlightText(opts.snippet, tokens) + '</span>' : '')
     + '</span>' + ico('chevron-down', 20, 'ico gt-chev') + '</button></h4>'
@@ -8419,7 +8427,7 @@ function toggleConceptReviewed(itemId) {
     el.classList.toggle('done', isDone);
     el.querySelectorAll('.gt-read-btn').forEach(function(b) { b.setAttribute('aria-pressed', String(isDone)); });
     var st = el.querySelector('.gt-row-state');
-    if (st) st.textContent = isDone ? ', read' : '';
+    if (st) st.textContent = isDone ? ', read' : ', not read yet';
     var lab = el.querySelector('.gt-read-btn span');
     if (lab) lab.textContent = isDone ? 'Read' : 'Mark as read';
   }
@@ -10308,7 +10316,7 @@ function showResult(chosen, correct, timeout, info) {
   }).join('');
   var othersHtml = others
     ? '<button type="button" class="vr-toggle" id="vrToggle" aria-expanded="false" aria-controls="vrOthers" onclick="toggleOtherOptions()">'
-        + '<span class="vr-toggle-t">Show all options</span>' + ico('chevron-down', 18) + '</button>'
+        + '<span class="vr-toggle-t">Show other options</span>' + ico('chevron-down', 18) + '</button>'
       + '<div class="vr-others" id="vrOthers" hidden>' + others + '</div>'
     : '';
 
@@ -10395,7 +10403,7 @@ function toggleOtherOptions() {
   btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   box.hidden = !open;
   var t = btn.querySelector('.vr-toggle-t');
-  if (t) t.textContent = open ? 'Hide other options' : 'Show all options';
+  if (t) t.textContent = open ? 'Hide other options' : 'Show other options';
 }
 
 // Vine motion (DESIGN_SYSTEM §10.2): the stem draws down and each leaf pops
@@ -10716,7 +10724,7 @@ function showMockConfirm() {
     + '<div class="mock-confirm-row"><span>Domain distribution</span><strong>'+domainBreakdown+'</strong></div>'
     + '<div class="mock-confirm-row"><span>Explanations</span><strong>After exam only</strong></div>'
     + '<div class="mock-confirm-row"><span>Timer</span><strong>Single 4-hour countdown &mdash; no per-question limit</strong></div>'
-    + '<div class="mock-confirm-warn">If you close this tab, your answers are saved and you can resume later. The exam clock pauses while the tab is closed.</div>'
+    + '<div class="mock-confirm-note">If you close this tab, your answers are saved and you can resume later. The exam clock pauses while the tab is closed.</div>'
     + resumeHtml
     + '<div class="mock-confirm-btns">'
     + '<button class="mock-confirm-btn cancel" onclick="closeFlagModal()">Cancel</button>'
@@ -10730,13 +10738,12 @@ function checkMockResume() {
   if (!area) return false;
   if (S.mockQueue && S.mockQueue.length > 0 && S.mockCurrent < S.mockQueue.length) {
     if (area.querySelector('.mock-resume-banner')) return true;
-    var pct = Math.round((S.mockCurrent / S.mockQueue.length) * 100);
     var left = Math.max(0, Math.round(Number(S.mockTotalSecondsLeft) || 0));
     var lh = Math.floor(left / 3600), lm = Math.floor((left % 3600) / 60);
     var leftLabel = (lh ? lh + 'h ' : '') + (lh || lm ? lm + 'm' : left + 's') + ' left';
     area.insertAdjacentHTML('afterbegin',
       '<div class="mock-resume-banner">'
-      + '<div class="mock-resume-text">Exam in progress &mdash; Q' + (S.mockCurrent+1) + '/' + S.mockQueue.length + ' (' + pct + '% done) &middot; ' + leftLabel + '</div>'
+      + '<div class="mock-resume-text">Exam in progress: question ' + (S.mockCurrent+1) + ' of ' + S.mockQueue.length + ' &middot; ' + leftLabel + '</div>'
       + '<button class="mock-resume-btn" onclick="showMockQuestion()">Resume Exam &rarr;</button>'
       + '</div>'
     );
