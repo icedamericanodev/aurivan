@@ -143,16 +143,19 @@ address (A2 report, section 9). Turn GitHub Pages off about a week after that.
 These protect the update key and `main`. Anything merged to `main` can reach
 every test phone as an over-the-air update, so this matters.
 
-### 1. The `ota` environment (approval before any phone update)
+### 1. The `ota` environment (holds the phone-update key)
 
-The **Phone update (EAS Update)** workflow now runs in a GitHub Environment
-named `ota`. Until you add a reviewer it runs as before; after, each update
-waits for your approval.
+Phone updates are **automatic** (owner decision, 18 Oct 2026). After each
+merge that changes the app, the **Phone update (EAS Update)** workflow
+re-runs all the app's checks (the same ones as the Mobile workflow) and, if
+they all pass, sends the update to test
+phones with no click from you. The `ota` environment keeps the update key so
+only `main` can use it.
 
-1. Repository → **Settings → Environments → New environment**, name `ota`,
-   **Configure environment**.
-2. Tick **Required reviewers**, add yourself. Leave **Prevent self-review**
-   off (you are the only reviewer). **Save protection rules.**
+1. Repository → **Settings → Environments → `ota`** (or **New environment**,
+   name `ota`, **Configure environment**).
+2. Leave **Required reviewers** unticked. This is what makes updates
+   automatic. (Done, 18 Oct 2026.)
 3. **Deployment branches and tags → Selected branches and tags → Add
    deployment branch or tag rule:** `main`.
 4. **Environment secrets → Add environment secret:** name `EXPO_TOKEN`, value
@@ -162,12 +165,13 @@ waits for your approval.
 5. **Settings → Secrets and variables → Actions → Repository secrets:**
    delete the old `EXPO_TOKEN` there, so only the environment holds it.
 
-After each merge that changes the app, open **Actions → Phone update → the
-waiting run → Review deployments → tick `ota` → Approve and deploy.** A newer
-merge cancels an older waiting run, so you only approve the latest.
+To check an update went out: **Actions → Phone update** shows a green run
+for the merge. A red run means a check failed and nothing was sent.
 
-Note: environment approvals are free on a public repository. If the
-repository later becomes private, they need a paid GitHub plan (GitHub Pro).
+To go back to approving each update by hand: tick **Required reviewers**,
+add yourself, leave **Prevent self-review** off, and save. Each run then
+waits for **Review deployments → tick `ota` → Approve and deploy.**
+(Approvals are free on a public repository; a private one needs GitHub Pro.)
 
 ### 2. iPhone updates (later, once an iOS build exists)
 

@@ -18,15 +18,23 @@ name: Phone update (EAS Update)
 # Needs the EXPO_TOKEN secret (an access token from expo.dev). If it is not
 # set, the job says so and stops without failing.
 #
-# The token sits behind the GitHub Environment "ota" (architecture decision,
-# 15 Oct 2026): anyone holding it can send code to every phone, so a person
-# approves each publish. The owner sets it up once (docs/WEBSITE_DEPLOY.md,
-# "GitHub settings"): Settings → Environments → New environment "ota" →
-# Required reviewers: the owner; Deployment branches: main only; then add
-# EXPO_TOKEN there as an environment secret and delete the repository secret.
-# Until then GitHub creates "ota" with no rules on the first run, and the job
-# runs as before. Once a reviewer is set, each run waits on the Actions tab
-# for "Review deployments" → Approve.
+# Automatic since 18 Oct 2026 (owner decision): each merge that changes the
+# app publishes by itself, with no approval click. What keeps it safe instead:
+# - The update key (EXPO_TOKEN) lives in the GitHub Environment "ota", which
+#   only the main branch can use.
+# - This job re-runs every check in mobile.yml (typecheck, release channels,
+#   shared-rules sync, lint, tests with the cloud flag off and on, the OFF
+#   bundle guard and size budgets) and publishes only if all pass. Mobile CI
+#   is not a required check on main, so this is the gate that counts.
+# - Only the Expo steps receive the key, and eas-cli is pinned to one exact
+#   version (a new, possibly hijacked release is never fetched with the key).
+#   Install scripts could still reach the later steps (GITHUB_ENV, patched
+#   node_modules), so the key is only as safe as the dependency tree.
+# - It publishes to "preview" (test phones) only, never "production".
+# Owner setup (docs/WEBSITE_DEPLOY.md, "GitHub settings"): Settings →
+# Environments → "ota": no Required reviewers; Deployment branches: main only;
+# EXPO_TOKEN as an environment secret. (15 Oct 2026 to 18 Oct 2026 a person
+# approved each publish; turning that back on needs no change here.)
 #
 # Platforms: Android only today. Once an iOS build exists (EAS Build, any
 # profile), set the repository VARIABLE EAS_UPDATE_PLATFORM to "all"
@@ -41,7 +49,7 @@ name: Phone update (EAS Update)
 on:
   push:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json']
+    paths: ['mobile/**', 'data/domain*.json', '.github/workflows/eas-update.yml']
   workflow_dispatch:
     inputs:
       platform:
@@ -63,15 +71,16 @@ jobs:
     name: Publish update to preview
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    # Approval gate for the update key (see the top of this file).
+    # Holds the update key; main-only (see the top of this file).
     environment: ota
     env:
-      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       # A manual run's choice, else the repository variable, else Android.
       PLATFORM: ${{ inputs.platform || vars.EAS_UPDATE_PLATFORM || 'android' }}
     steps:
       - name: Check for the Expo token and the platform
         id: token
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
           case "$PLATFORM" in
             android|ios|all) echo "Publishing for: $PLATFORM" ;;
@@ -99,6 +108,22 @@ jobs:
         working-directory: mobile
         run: npm ci
 
+      # The safety check that replaced the approval click: every check in
+      # mobile.yml. Any failure stops the publish.
+      - name: Check the app before publishing
+        if: steps.token.outputs.ok == 'true'
+        working-directory: mobile
+        run: |
+          npm run typecheck
+          node scripts/check-release-config.mjs
+          node scripts/sync-shared.mjs --check
+          npm run lint
+          npm test -- --ci
+          EXPO_PUBLIC_AURIVAN_CLOUD=1 EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND=memory npm test -- --ci
+          EXPO_OFFLINE=1 npx expo export --platform android --output-dir "$RUNNER_TEMP/off-android"
+          bash scripts/check_off_bundle.sh "$RUNNER_TEMP/off-android"
+          node scripts/check-size-budget.mjs "$RUNNER_TEMP/off-android"
+
       # Accounts are built OFF (docs/mobile/ARCHITECTURE.md "Cloud (built OFF)").
       # An update reaches every preview APK, so a cloud variable in the EAS
       # environment would switch accounts on remotely. Refuse to publish if
@@ -111,10 +136,12 @@ jobs:
       - name: Refuse to publish with a cloud variable set
         if: steps.token.outputs.ok == 'true'
         working-directory: mobile
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
           set -uo pipefail
           for scope in project account; do
-            if ! raw="$(npx --yes eas-cli@24 env:list --environment preview --format short --scope "$scope" 2>&1)"; then
+            if ! raw="$(npx --yes eas-cli@24.14.0 env:list --environment preview --format short --scope "$scope" 2>&1)"; then
               echo "::warning::Couldn't read the EAS '$scope' variables, so this check was skipped for them: $raw"
               continue
             fi
@@ -134,12 +161,13 @@ jobs:
         if: steps.token.outputs.ok == 'true'
         working-directory: mobile
         env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
           message="$(printf '%s' "${COMMIT_MESSAGE:-Manual update}" | head -n 1)"
-          npx --yes eas-cli@24 update \
+          npx --yes eas-cli@24.14.0 update \
             --channel preview \
             --environment preview \
             --platform "$PLATFORM" \
-            --message "$message" \
+            --message="$message" \
             --non-interactive
