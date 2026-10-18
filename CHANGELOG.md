@@ -4,6 +4,18 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.6] — See how far you are in your notes
+
+### New
+- Study notes now show how far you have got: an empty circle for notes you have not opened, a half circle for ones you have started, and a full circle once you have read them.
+
+### Improved
+- Scroll to the end of a note you have spent time with and it is marked as read for you. Practising a concept marks its note as read too.
+- Resetting your reading progress is easier to find: use the Reading progress button in Topics, or Reset reading progress in Your data.
+
+### Fixed
+- Resetting all progress now clears your reading progress too.
+
 ## [v12.5] — A calmer answer screen
 
 ### Improved

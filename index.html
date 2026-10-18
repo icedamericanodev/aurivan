@@ -5760,7 +5760,7 @@ header.app-header .brand-lockup { height: 28px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.5</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.6</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6019,7 +6019,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.5';
+const APP_VERSION = 'v12.6';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11413,6 +11413,9 @@ function doResetProgress() {
   S.studyDays = [];
   S.mockHistory = [];
   S.mockId = null;
+  // Reading progress too: kept in memory, the next save wrote it back.
+  S.topicReviewed = {};
+  S.topicViewed = {};
   // An unfinished mock goes too.
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
   mockResumePending = null;
@@ -13374,6 +13377,16 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'See how far you are in your notes',
+    items: [
+      { cat: 'new', text: 'Study notes now show how far you have got: an empty circle for notes you have not opened, a half circle for ones you have started, and a full circle once you have read them.' },
+      { cat: 'improved', text: 'Scroll to the end of a note you have spent time with and it is marked as read for you. Practising a concept marks its note as read too.' },
+      { cat: 'improved', text: 'Resetting your reading progress is easier to find: use the Reading progress button in Topics, or Reset reading progress in Your data.' },
+      { cat: 'fixed', text: 'Resetting all progress now clears your reading progress too.' }
+    ]
+  },
+  {
+    version: 'v12.5',
     title: 'A calmer answer screen',
     items: [
       { cat: 'improved', text: 'After you answer, you see a clear verdict, your answer beside the best answer, and the key idea and exam tips together, with Next question always in reach.' },
