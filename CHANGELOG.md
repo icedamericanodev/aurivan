@@ -4,6 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.4] — Same layout as the app
+
+### New
+- The website now uses the same sections as the KaiSip app: Today, Learn, Practice and You, with a side menu on larger screens.
+
+### Improved
+- Dark mode, exam-style questions, your data and help now live together on the You page.
+
 ## [v12.3] — Saved questions and the practice timer
 
 ### Fixed

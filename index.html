@@ -92,7 +92,7 @@
 .ep-skip:focus-visible,
 .ec-edit:focus-visible,
 .wb-close:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   border-radius: var(--r-sm, 6px);
 }
@@ -165,10 +165,39 @@
   --warning: var(--tip); --warning-light: var(--tip-bg); --warning-strong: var(--tip);
 
   --radius: 16px; --tr: 0.2s ease;
-  --shadow: 0 1px 2px rgba(23,35,27,.05), 0 2px 8px rgba(23,35,27,.04);
+  /* Grove card shadow (DESIGN_SYSTEM §4): a crisp 1px contact ring plus an
+     ambient lift. Dark mode has no shadow; cards take a 1.5px line edge. */
+  --shadow: 0 0 0 1px rgba(23,35,27,.05), 0 1px 2px rgba(23,35,27,.06), 0 8px 20px -6px rgba(23,35,27,.10);
+  --card-edge: 0 0 0 0 transparent;
   --shadow-lg: 0 2px 4px rgba(23,35,27,.06), 0 8px 24px rgba(23,35,27,.08);
   --glow: 0 0 0 3px rgba(43,110,74,0.22);
   --raised-outline: transparent;
+
+  /* ── Grove Desk tokens (web redesign, 2026-10-18) ── */
+  --raised: var(--surface);
+  --raised2: #F8F7F2;      /* page-sheet / plate tier between bg and raised */
+  --forest-top: #245A40;   /* the forest panel's lit top edge */
+  --forest-hl: rgba(255,255,255,.08);
+  --forest-panel: linear-gradient(180deg, var(--forest-top), var(--forest));
+  --scrim: rgba(23,35,27,.4);
+  --grain-op: .035;
+  --focus-ring: var(--text);   /* 2px ink ring, offset 2: green never means "focused" or "selected" */
+  --r-pill: 999px;
+  --sp-4: 4px; --sp-8: 8px; --sp-12: 12px; --sp-16: 16px; --sp-20: 20px; --sp-24: 24px; --sp-32: 32px; --sp-48: 48px;
+  /* Type scale (DESIGN_SYSTEM §2). Use as `font: var(--t-body)`. Body 16, floor 14. */
+  --t-number: 500 52px/52px var(--f-serif);    --tr-number: -1.4px;
+  --t-display: 500 36px/42px var(--f-serif);   --tr-display: -0.6px;
+  --t-hero: 500 28px/34px var(--f-serif);      --tr-hero: -0.4px;
+  --t-stem: 400 21px/30px var(--f-serif);
+  --t-quote: italic 400 18px/26px var(--f-serif);
+  --t-stage: italic 400 19px/25px var(--f-serif);
+  --t-headline: 600 17px/24px var(--f-sans);
+  --t-label: 600 16px/22px var(--f-sans);
+  --t-body: 400 16px/24px var(--f-sans);
+  --t-small: 400 15px/22px var(--f-sans);
+  --t-meta: 500 14px/20px var(--f-sans);
+  --t-caption: 600 13px/18px var(--f-sans);
+  --t-tab: 600 11px/14px var(--f-sans);
 }
 
 /* ── DARK MODE (Grove night) ── */
@@ -204,9 +233,16 @@
   --wrong: #FF9CA6; --wrong-light: #3A1A1D; --wrong-strong: #FF9CA6;
 
   --shadow: none;
+  --card-edge: 0 0 0 1.5px var(--border);
   --shadow-lg: 0 8px 32px rgba(0,0,0,0.45);
   --glow: 0 0 0 3px rgba(127,195,156,0.28);
   --raised-outline: var(--border);
+
+  --raised2: #1B231E;
+  --forest-top: #285139;
+  --forest-hl: rgba(255,255,255,.06);
+  --scrim: rgba(0,0,0,.6);
+  --grain-op: .045;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -758,7 +794,7 @@ header {
 .bnav-icon { font-size: 19px; line-height: 1; }
 .bnav-label { font-size: 13px; font-weight: 600; letter-spacing: 0.02em; }
 .bnav-item.active { color: var(--accent); }
-.bnav-item:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; border-radius: 8px; }
+.bnav-item:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -3px; border-radius: 8px; }
 
 /* More sheet */
 #moreSheetBackdrop {
@@ -1542,7 +1578,7 @@ header {
 .consent-btn.accept:hover { filter: brightness(1.08); }
 .consent-btn.decline { background: var(--surface); color: var(--text); border: 2px solid var(--accent); }
 .consent-btn.decline:hover { background: var(--surface2); }
-.consent-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.consent-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .consent-close {
   display: inline-flex; align-items: center; justify-content: center;
   width: 44px; height: 44px; flex-shrink: 0;
@@ -1552,7 +1588,7 @@ header {
 }
 .consent-close[hidden] { display: none; }
 .consent-close:hover { border-color: var(--accent); color: var(--text); }
-.consent-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.consent-close:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 @media (max-width: 600px) {
   .consent-banner { gap: 10px; padding: 12px 14px calc(12px + env(safe-area-inset-bottom)); }
   .consent-actions { width: 100%; }
@@ -4125,7 +4161,7 @@ header {
 .legal-disclaimer .legal-links a:hover,
 .legal-disclaimer .legal-link-btn:hover { text-decoration: underline; }
 .legal-disclaimer .legal-link-btn:focus-visible {
-  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px;
+  outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px;
 }
 
 @media (max-width: 600px) {
@@ -4487,14 +4523,14 @@ body {
   -webkit-font-smoothing: antialiased;
   font-variant-numeric: tabular-nums;
 }
-/* Paper grain (spec §10.5): 5% warm-black noise on light, 6% white on dark. */
+/* Paper grain (spec §10.5): 3.5% warm-black noise on light, 4.5% white on dark (--grain-op). */
 body::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.14 0 0 0 0 0.11 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: .05; z-index: 0;
+  opacity: var(--grain-op); z-index: 0;
 }
 [data-theme="dark"] body::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: .06;
+  opacity: var(--grain-op);
 }
 ::selection { background: var(--sap); color: #17231B; }
 a { color: var(--accent-text); }
@@ -4502,7 +4538,7 @@ mark { background: var(--tip-bg); color: var(--text); border-radius: 3px; paddin
 .ico { display: inline-block; vertical-align: middle; flex-shrink: 0; }
 .dom-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-right: 6px; vertical-align: 1px; }
 .app { padding-left: 20px; padding-right: 20px; }
-:where(button, a, input, select, textarea):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+:where(button, a, input, select, textarea):focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 /* ── Header + KaiSip lockup ── */
 header {
@@ -5005,7 +5041,7 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 .gt-kv-k { font-weight: 600; color: var(--text); }
 @media (min-width: 760px) { .gt-sec .gt-dl { column-count: 1; } }
 .gt-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; border-radius: 12px; }
-.gt-table-wrap:focus-visible { outline: 2px solid var(--accent); }
+.gt-table-wrap:focus-visible { outline: 2px solid var(--focus-ring); }
 .gt-table { border-collapse: collapse; width: 100%; min-width: 480px; font: 400 15px/22px var(--f-sans); color: var(--text); }
 .gt-table thead th { background: var(--surface2); font: 600 13px/18px var(--f-sans); color: var(--text2); text-align: left; padding: 10px 12px; }
 .gt-table thead td { background: var(--surface2); }
@@ -5040,7 +5076,7 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 .gt-zoom-title { flex: 1; min-width: 0; font: 600 15px/20px var(--f-sans); color: var(--text); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .gt-zoom-close { min-height: 44px; padding: 0 16px; }
 .gt-zoom-scroll { flex: 1; overflow: auto; -webkit-overflow-scrolling: touch; padding: 20px; touch-action: auto; }
-.gt-zoom-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+.gt-zoom-scroll:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -4px; }
 .gt-zoom-inner svg, .gt-zoom-inner img { display: block; width: 100%; height: auto; }
 .gt-zoom-hint { font: 500 13px/18px var(--f-sans); color: var(--text2); padding: 8px 16px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); }
 body.gt-zoom-open { overflow: hidden; }
@@ -5088,7 +5124,7 @@ body.gt-zoom-open { overflow: hidden; }
 .cp-strip-n { font: 500 14px/20px var(--f-sans); color: var(--text2); white-space: nowrap; }
 .cp-strip .gt-btn-ghost { margin-left: -4px; min-height: 48px; }
 .cp-strip-t:focus { outline: none; }
-.cp-strip-t:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.cp-strip-t:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
 .cp-done { margin-bottom: 0; }
 .cp-done:focus { outline: none; }
 .cp-done .sd-label { color: var(--accent-text); }
@@ -5192,7 +5228,7 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
   cursor: pointer; color: var(--text); font-family: var(--f-sans);
 }
 .land-card:hover { background: var(--surface2); }
-.land-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.land-card:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .land-card-title { font: 500 20px/26px var(--f-serif); }
 .land-card-desc { font: 400 15px/22px var(--f-sans); color: var(--text2); }
 .land-note { font: 400 14px/20px var(--f-sans); color: var(--text2); margin: 0 0 8px; }
@@ -5240,6 +5276,147 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
 @media (max-width: 600px) {
   .toast { bottom: calc(84px + env(safe-area-inset-bottom)); white-space: normal; text-align: center; width: max-content; max-width: calc(100vw - 32px); border-radius: 16px; }
 }
+
+/* ── GROVE DESK SHELL (2026-10-18) ─────────────────────────────────────────
+   The app's four sections (Today, Learn, Practice, You): a 248px left rail
+   from 1024px up, a 72px bottom bar below that. Selected = ink (never green);
+   the accent marks the current section's icon and dot. */
+.skip-link {
+  position: absolute; left: 12px; top: -200px; z-index: 500;
+  background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: var(--r-pill);
+  font: var(--t-label); text-decoration: none;
+}
+.skip-link:focus { top: 12px; }
+.route-marks { position: absolute; top: 0; left: 0; width: 0; height: 0; overflow: hidden; }
+main.app:focus { outline: none; }
+
+/* The forest panel is lit from the top (DESIGN_SYSTEM §6, Hero panel). */
+.vision-panel, .gt-panel, .readiness-card { background: var(--forest-panel); box-shadow: inset 0 1px 0 var(--forest-hl); }
+/* Focus on the forest panel: the ink ring would vanish, so it turns light. */
+.vision-panel :focus-visible, .gt-panel :focus-visible, .readiness-card :focus-visible { outline-color: var(--on-forest); }
+
+/* Header: a slim logo bar on phones and tablets; the top of the rail on desktop. */
+.app-rail { position: relative; z-index: 2; }
+header.app-header {
+  display: flex; align-items: center; justify-content: flex-start; flex-wrap: nowrap;
+  max-width: 1200px; height: 56px; margin: 0 auto; padding: 0 20px;
+  border: 0; animation: none;
+}
+header.app-header .brand-lockup { height: 28px; }
+.side-nav, .rail-foot { display: none; }
+
+/* Rail items */
+.sn-list, .sn-sub { list-style: none; margin: 0; padding: 0; }
+.sn-list { display: flex; flex-direction: column; gap: 4px; }
+.sn-item {
+  display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px;
+  border-radius: 12px; font: 600 15px/20px var(--f-sans); color: var(--text2); text-decoration: none;
+}
+.sn-item .ico { width: 22px; height: 22px; }
+.sn-item:hover, .sn-subitem:hover { color: var(--text); }
+.sn-item[aria-current] { color: var(--text); }
+.sn-item[aria-current] .ico { color: var(--accent-text); }
+.sn-item[aria-current="page"], .sn-subitem[aria-current="page"] { background: var(--surface2); }
+.sn-sub { display: flex; flex-direction: column; margin: 2px 0 6px 34px; }
+.sn-subitem {
+  display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px;
+  border-radius: 12px; font: 500 14px/20px var(--f-sans); color: var(--text2); text-decoration: none;
+}
+.sn-subitem[aria-current="page"] { color: var(--text); font-weight: 600; }
+.sn-subitem .tab-badge { margin-left: auto; background: none; color: var(--text2); padding: 0; font: 500 14px/20px var(--f-sans); }
+.rail-foot { margin-top: auto; padding: 16px 12px 0; border-top: 1px solid var(--border); font: var(--t-meta); color: var(--text2); }
+.rail-days { display: block; font: 500 22px/26px var(--f-serif); letter-spacing: -0.2px; color: var(--text); }
+
+/* Bottom bar (phones and tablets) */
+#bottomNav { justify-content: center; }
+#bottomNav .bnav-item {
+  flex: 1 1 0; max-width: 168px; min-height: 72px; padding: 10px 4px 14px; gap: 2px;
+  color: var(--muted); text-decoration: none; position: relative;
+}
+#bottomNav .bnav-icon { display: flex; height: 24px; }
+#bottomNav .bnav-label { font: var(--t-tab); letter-spacing: 0; }
+#bottomNav .bnav-item[aria-current] { color: var(--text); }
+#bottomNav .bnav-item[aria-current] .bnav-icon { color: var(--accent-text); }
+#bottomNav .bnav-item[aria-current]::after {
+  content: ''; position: absolute; left: 50%; bottom: 6px; width: 4px; height: 4px; margin-left: -2px;
+  border-radius: 50%; background: var(--accent);
+}
+#bottomNav .bnav-item:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; border-radius: 12px; }
+
+/* Section pages (phones): Study notes · Glossary · Principles, Practice · Mock exam · Saved.
+   On You's own pages: the way back to You. */
+.sub-nav { display: flex; gap: 4px; margin: 0 0 20px; border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+.sub-nav::-webkit-scrollbar { display: none; }
+.sub-nav[hidden] { display: none; }
+.sub-nav a {
+  flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 0 12px;
+  margin-bottom: -1px; border-bottom: 2px solid transparent;
+  font: 600 15px/20px var(--f-sans); color: var(--muted); text-decoration: none; white-space: nowrap;
+}
+.sub-nav a:hover { color: var(--text); }
+.sub-nav a[aria-current="page"] { color: var(--text); border-bottom-color: var(--text); }
+.sub-nav a:focus-visible { outline-offset: -2px; border-radius: 8px; }
+.sub-nav.sub-nav-back { border-bottom: 0; margin-bottom: 4px; }
+.sub-nav.sub-nav-back a { padding: 0 12px 0 0; color: var(--accent-text); }
+.ico-back { transform: rotate(180deg); }
+
+/* You: rows on the paper with hairlines (DESIGN_SYSTEM §6, Settings group and row) */
+.you { max-width: 720px; }
+.you-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: 4px 0 0; }
+.you-group { margin-top: 32px; }
+.you-head { font: var(--t-headline); color: var(--text); margin: 0 0 4px; }
+.you-list { list-style: none; margin: 0; padding: 0; }
+.you-row {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px; padding: 12px 0;
+  background: none; border: 0; border-bottom: 1px solid var(--border); border-radius: 0;
+  text-align: left; cursor: pointer; color: var(--text); text-decoration: none; font: inherit;
+}
+.you-ico {
+  width: 40px; height: 40px; border-radius: 50%; background: var(--surface2); color: var(--accent-text);
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.you-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.you-t { font: var(--t-label); color: var(--text); }
+.you-m { font: var(--t-meta); color: var(--text2); }
+.you-chev { display: inline-flex; color: var(--muted); flex-shrink: 0; }
+.you-row:hover .you-chev { color: var(--text); }
+.you-row:focus-visible { outline-offset: 2px; border-radius: 12px; }
+.you-switch {
+  position: relative; flex-shrink: 0; width: 46px; height: 28px; border-radius: var(--r-pill);
+  border: 1.5px solid var(--control); background: transparent;
+}
+.you-switch::after {
+  content: ''; position: absolute; top: 3.5px; left: 3.5px; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--control);
+}
+.you-row[aria-checked="true"] .you-switch { background: var(--text); border-color: var(--text); }
+.you-row[aria-checked="true"] .you-switch::after { transform: translateX(18px); background: var(--bg); }
+@media (prefers-reduced-motion: no-preference) {
+  .you-switch, .you-switch::after { transition: background .15s ease, border-color .15s ease, transform .15s ease; }
+}
+.about-version { display: flex; align-items: center; gap: 8px; font: var(--t-meta); color: var(--text2); margin: -8px 0 20px; }
+
+@media (max-width: 1023px) {
+  #bottomNav { display: flex; }
+  .app { padding-bottom: calc(104px + env(safe-area-inset-bottom)); }
+  .toast { bottom: calc(88px + env(safe-area-inset-bottom)); }
+}
+@media (min-width: 1024px) {
+  body { padding-left: 248px; }
+  .app-rail {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 248px; z-index: 60;
+    display: flex; flex-direction: column; padding: 28px 20px 24px;
+    border-right: 1px solid var(--border); overflow-y: auto; overscroll-behavior: contain;
+  }
+  header.app-header { height: auto; max-width: none; margin: 0 0 28px; padding: 0 8px; }
+  header.app-header .brand-lockup { height: 30px; }
+  .side-nav { display: block; }
+  .rail-foot:not([hidden]) { display: block; }
+  #bottomNav { display: none !important; }
+  .app { padding-top: 40px; padding-left: 48px; padding-right: 48px; }
+  .sub-nav.sub-nav-pages { display: none; }
+  .toast { left: calc(50% + 124px); }
+}
 /* GROVE-LAYER-END */
 </style>
 </head>
@@ -5258,32 +5435,44 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
   </div>
 </div>
 
-<div class="app">
-
-<!-- HEADER -->
-<header>
+<!-- APP SHELL (Grove Desk): the left rail on desktop (>=1024px) holds the
+     wordmark, the four sections and the exam countdown; on smaller screens the
+     header is a slim logo bar and the sections move to the bottom bar. -->
+<!-- Address markers for the section links (#today, #notes ...). The router
+     reads the address; these empty markers sit at the very top of the page so
+     every in-page link has a real target and opening one never scrolls. -->
+<div class="route-marks" aria-hidden="true"><span id="today"></span><span id="learn"></span><span id="notes"></span><span id="glossary"></span><span id="principles"></span><span id="practice"></span><span id="mock"></span><span id="saved"></span><span id="you"></span><span id="weak-spots"></span><span id="help"></span><span id="about"></span></div>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app-rail" id="appRail">
+<header class="app-header">
   <div class="logo">
     <svg class="brand-lockup" viewBox="0 0 460.33 140" role="img" aria-label="KaiSip"><title>KaiSip</title><g transform="translate(70 70) scale(0.90228) translate(-102.999 -100.123)"><defs><mask id="kslr" maskUnits="userSpaceOnUse" x="-100" y="-100" width="400" height="400"><rect x="-100" y="-100" width="400" height="400" fill="white"/><path d="M72 146 V66" stroke="black" stroke-width="4" stroke-linecap="round"/></mask></defs><path d="M72 168 C90 129.92 90 78.24 72 32 C54 78.24 54 129.92 72 168Z" style="fill:var(--tn-needle)" mask="url(#kslr)"/><path d="M94 100 C120.2 93.85 140.92 69.43 150 34 C113.47 46.14 92.75 70.56 94 100Z" style="fill:var(--tn-ring)"/><path d="M94 100 C93.48 129.7 114.94 154.12 152 166 C141.98 130.36 120.52 105.94 94 100Z" style="fill:var(--tn-ring)"/></g><g transform="translate(149.21 96.94) scale(0.05272)"><path d="M130 0Q101 0 90.0 -11.0Q79 -22 79 -41Q79 -56 87.5 -66.5Q96 -77 116 -84L155 -94Q173 -101 181.5 -115.0Q190 -129 190 -160V-1255Q190 -1280 182.5 -1291.0Q175 -1302 158 -1305L105 -1309Q87 -1314 79.0 -1323.0Q71 -1332 71 -1346Q71 -1362 80.5 -1372.0Q90 -1382 117 -1392L303 -1460Q341 -1474 364.0 -1480.5Q387 -1487 408 -1487Q439 -1487 455.0 -1469.5Q471 -1452 471 -1423V-160Q471 -129 480.0 -115.0Q489 -101 507 -94L543 -84Q575 -71 575 -44Q575 0 519 0ZM387 -434 797 -768Q832 -796 828.5 -820.5Q825 -845 786 -857L751 -866Q732 -872 725.0 -881.0Q718 -890 718 -905Q718 -925 732.0 -936.0Q746 -947 771 -947H1121Q1145 -947 1159.5 -936.0Q1174 -925 1174 -907Q1174 -888 1162.0 -876.0Q1150 -864 1112 -855Q1061 -844 1021.5 -822.0Q982 -800 922 -752L418 -349ZM734 -673 1090 -159Q1114 -126 1132.0 -112.5Q1150 -99 1183 -88Q1204 -78 1214.5 -66.0Q1225 -54 1225 -39Q1225 -21 1210.5 -10.5Q1196 0 1172 0H764Q742 0 729.0 -11.0Q716 -22 716 -41Q716 -54 723.0 -63.0Q730 -72 746 -78L778 -87Q806 -95 808.0 -111.5Q810 -128 782 -167L546 -508Z M1905 -127V-148L1886 -152V-749Q1886 -819 1850.5 -857.5Q1815 -896 1750 -896Q1691 -896 1659.0 -871.0Q1627 -846 1627 -809V-721Q1627 -661 1587.0 -628.5Q1547 -596 1474 -596Q1412 -596 1380.0 -625.5Q1348 -655 1348 -706Q1348 -769 1400.0 -829.5Q1452 -890 1553.0 -929.5Q1654 -969 1802 -969Q1986 -969 2075.5 -894.5Q2165 -820 2165 -693V-173Q2165 -145 2176.5 -131.0Q2188 -117 2209 -117Q2231 -117 2242.0 -127.5Q2253 -138 2261 -149Q2266 -156 2272.0 -160.5Q2278 -165 2287 -165Q2299 -165 2305.0 -156.0Q2311 -147 2311 -132Q2311 -98 2287.5 -62.0Q2264 -26 2217.5 -0.5Q2171 25 2101 25Q2012 25 1958.5 -15.5Q1905 -56 1905 -127ZM1306 -209Q1306 -334 1417.5 -411.0Q1529 -488 1729 -488Q1794 -488 1846.5 -477.0Q1899 -466 1937 -447L1915 -383Q1881 -399 1845.5 -408.0Q1810 -417 1769 -417Q1686 -417 1639.5 -374.5Q1593 -332 1593 -257Q1593 -182 1632.5 -142.0Q1672 -102 1735 -102Q1789 -102 1838.5 -126.5Q1888 -151 1922 -195L1944 -138Q1889 -60 1796.5 -17.5Q1704 25 1600 25Q1469 25 1387.5 -40.0Q1306 -105 1306 -209Z M2797.0 -916V-160Q2797.0 -130 2806.5 -115.5Q2816.0 -101 2833.0 -94L2870.0 -84Q2887.0 -78 2896.5 -67.5Q2906.0 -57 2906.0 -41Q2906.0 -22 2892.0 -11.0Q2878.0 0 2853.0 0H2462.0Q2438.0 0 2424.0 -11.0Q2410.0 -22 2410.0 -41Q2410.0 -56 2419.0 -66.5Q2428.0 -77 2445.0 -84L2484.0 -94Q2501.0 -102 2510.0 -115.5Q2519.0 -129 2519.0 -160V-737Q2519.0 -763 2511.0 -773.5Q2503.0 -784 2487.0 -788L2434.0 -791Q2417.0 -796 2408.5 -804.5Q2400.0 -813 2400.0 -827Q2400.0 -843 2411.0 -853.5Q2422.0 -864 2446.0 -873L2657.0 -944Q2690.0 -955 2709.5 -959.5Q2729.0 -964 2749.0 -964Q2771.0 -964 2784.0 -951.0Q2797.0 -938 2797.0 -916Z M3460.0 -66Q3529.0 -66 3566.5 -100.5Q3604.0 -135 3604.0 -187Q3604.0 -220 3589.5 -247.0Q3575.0 -274 3533.5 -296.0Q3492.0 -318 3413.0 -337Q3259.0 -368 3174.5 -416.0Q3090.0 -464 3057.5 -527.5Q3025.0 -591 3025.0 -667Q3025.0 -806 3123.5 -888.0Q3222.0 -970 3408.0 -970Q3475.0 -970 3517.5 -959.0Q3560.0 -948 3587.0 -936.5Q3614.0 -925 3635.0 -925Q3657.0 -925 3668.5 -936.5Q3680.0 -948 3691.5 -959.0Q3703.0 -970 3724.0 -970Q3739.0 -970 3751.0 -960.5Q3763.0 -951 3771.0 -924L3837.0 -723Q3849.0 -688 3844.5 -666.0Q3840.0 -644 3817.0 -635Q3794.0 -626 3777.5 -634.5Q3761.0 -643 3745.0 -666Q3701.0 -745 3649.5 -791.5Q3598.0 -838 3541.5 -858.5Q3485.0 -879 3424.0 -879Q3339.0 -879 3296.0 -844.5Q3253.0 -810 3253.0 -751Q3253.0 -716 3271.0 -688.0Q3289.0 -660 3338.5 -636.5Q3388.0 -613 3480.0 -591Q3611.0 -563 3687.0 -518.5Q3763.0 -474 3796.5 -411.5Q3830.0 -349 3830.0 -265Q3830.0 -179 3785.5 -113.5Q3741.0 -48 3661.5 -11.5Q3582.0 25 3478.0 25Q3412.0 25 3372.5 12.0Q3333.0 -1 3307.5 -13.5Q3282.0 -26 3258.0 -26Q3236.0 -26 3221.5 -13.5Q3207.0 -1 3194.0 12.0Q3181.0 25 3162.0 25Q3147.0 25 3136.5 14.0Q3126.0 3 3121.0 -23L3082.0 -214Q3075.0 -254 3079.5 -273.5Q3084.0 -293 3105.0 -301Q3127.0 -310 3144.0 -299.5Q3161.0 -289 3178.0 -261Q3240.0 -156 3312.5 -111.0Q3385.0 -66 3460.0 -66Z M4387.0 -902V-160Q4387.0 -129 4395.5 -114.5Q4404.0 -100 4422.0 -94L4460.0 -84Q4479.0 -78 4488.0 -67.5Q4497.0 -57 4497.0 -41Q4497.0 -22 4484.0 -11.0Q4471.0 0 4442.0 0H4048.0Q4020.0 0 4007.0 -11.0Q3994.0 -22 3994.0 -41Q3994.0 -56 4003.0 -66.5Q4012.0 -77 4031.0 -84L4070.0 -94Q4088.0 -101 4096.5 -115.0Q4105.0 -129 4105.0 -160V-733Q4105.0 -759 4097.5 -770.0Q4090.0 -781 4073.0 -784L4020.0 -788Q4002.0 -792 3994.0 -801.0Q3986.0 -810 3986.0 -824Q3986.0 -841 3995.5 -851.0Q4005.0 -861 4032.0 -871L4218.0 -939Q4257.0 -953 4280.5 -959.0Q4304.0 -965 4320.0 -965Q4354.0 -965 4370.5 -947.5Q4387.0 -930 4387.0 -902ZM4224.0 -1118Q4144.0 -1118 4095.5 -1159.5Q4047.0 -1201 4047.0 -1268Q4047.0 -1335 4095.5 -1375.5Q4144.0 -1416 4224.0 -1416Q4305.0 -1416 4353.5 -1375.5Q4402.0 -1335 4402.0 -1268Q4402.0 -1201 4353.5 -1159.5Q4305.0 -1118 4224.0 -1118Z M4985.0 -902V-790L4997.0 -766V306Q4997.0 337 5005.5 351.5Q5014.0 366 5032.0 371L5085.0 382Q5105.0 388 5114.0 398.5Q5123.0 409 5123.0 425Q5123.0 444 5109.5 455.0Q5096.0 466 5067.0 466H4658.0Q4630.0 466 4617.0 455.0Q4604.0 444 4604.0 425Q4604.0 410 4613.0 399.5Q4622.0 389 4641.0 382L4680.0 372Q4698.0 366 4706.5 351.5Q4715.0 337 4715.0 306V-734Q4715.0 -759 4707.5 -770.0Q4700.0 -781 4683.0 -784L4630.0 -788Q4612.0 -792 4604.0 -801.0Q4596.0 -810 4596.0 -824Q4596.0 -841 4605.5 -850.0Q4615.0 -859 4642.0 -870L4817.0 -939Q4853.0 -954 4876.5 -959.5Q4900.0 -965 4918.0 -965Q4952.0 -965 4968.5 -947.5Q4985.0 -930 4985.0 -902ZM4939.0 -651 4895.0 -708Q4974.0 -832 5077.0 -901.0Q5180.0 -970 5306.0 -970Q5424.0 -970 5517.0 -910.0Q5610.0 -850 5663.5 -743.5Q5717.0 -637 5717.0 -498Q5717.0 -339 5653.5 -221.5Q5590.0 -104 5481.0 -39.5Q5372.0 25 5237.0 25Q5118.0 25 5026.0 -31.0Q4934.0 -87 4874.0 -193L4943.0 -251Q4992.0 -169 5053.5 -129.0Q5115.0 -89 5186.0 -89Q5255.0 -89 5308.5 -129.0Q5362.0 -169 5393.0 -253.5Q5424.0 -338 5424.0 -468Q5424.0 -590 5394.0 -670.0Q5364.0 -750 5311.5 -789.5Q5259.0 -829 5192.0 -829Q5120.0 -829 5056.5 -785.5Q4993.0 -742 4939.0 -651Z" style="fill:var(--tn-word)"/><path d="M2434.38 -1156.95 C2687.94 -1066.66 2872.54 -1185.23 2895.88 -1453.38 C2600.11 -1609.38 2415.51 -1490.81 2434.38 -1156.95Z" style="fill:var(--tn-leaf)"/></g></svg>
-    <span class="logo-tagline">Free CISA&reg; exam prep</span>
-  </div>
-  <div class="header-right">
-    <span class="bank-pill" id="versionPill">v12.3</span>
-    <button class="exam-mode-btn" id="examModeBtn" onclick="toggleExamMode()" aria-label="Toggle exam-realistic mode" title="Study mode (current): dense scenario blocks, tips revealed after answering. Exam mode: compact stems and minimal post-answer feedback — closer to the real exam."><span id="examModeIcon" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.5 19.5A2.5 2.5 0 0 1 7 17h12.5V3H7a2.5 2.5 0 0 0-2.5 2.5z"/><path d="M4.5 19.5A2.5 2.5 0 0 0 7 22h12.5v-5"/></svg></span><span id="examModeLabel">Study</span></button>
-    <button class="dark-toggle-btn hdr-icon-btn" id="darkToggleBtn" onclick="toggleDarkMode()" aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 1 1 9.4 4a6.6 6.6 0 0 0 10.6 10.6z"/></svg></button>
-    <button id="hdrMenuBtn" class="hdr-icon-btn" onclick="toggleHdrMenu()" aria-label="More options" aria-expanded="false" aria-controls="hdrMenu"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-    <div id="hdrMenu">
-      <button class="hdr-menu-item" onclick="showChangelog();closeHdrMenu()"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5 13.8 9 19.5 10.5 13.8 12 12 17.5 10.2 12 4.5 10.5 10.2 9z"/><path d="M19 17v4M17 19h4"/></svg>What&#39;s New</button>
-      <button class="hdr-menu-item" onclick="showSessionSummary();closeHdrMenu()"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-7.5 4 15 3-7.5h4"/></svg>Summary</button>
-      <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 15a2 2 0 0 1-2 2H8l-4.5 3.5V5.5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg>Feedback</button>
-      <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6"/><path d="M12 16.8h.01"/></svg>Help</button>
-      <button class="hdr-menu-item" onclick="showYourData();closeHdrMenu()"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5v11"/><path d="m7.5 10 4.5 4.5 4.5-4.5"/><path d="M4.5 19.5h15"/></svg>Your data</button>
-      <button class="hdr-menu-item" onclick="switchTab('faq');closeHdrMenu()"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6"/><path d="M12 16.8h.01"/></svg>FAQ &amp; Help</button>
-      <button class="hdr-menu-item" onclick="switchTab('about');closeHdrMenu()"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg>About KaiSip</button>
-      <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v12.1</span>
-    </div>
   </div>
 </header>
+<nav class="side-nav" id="sideNav" aria-label="Main">
+  <ul class="sn-list">
+    <li><a class="sn-item" data-sec="today" href="#today" onclick="return navTo(event,'home')"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg><span>Today</span></a></li>
+    <li><a class="sn-item" data-sec="learn" href="#learn" onclick="return navTo(event,'sec:learn')"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2z"/><path d="M22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg><span>Learn</span></a>
+      <ul class="sn-sub">
+        <li><a class="sn-subitem" data-tab="topics" href="#notes" onclick="return navTo(event,'topics')">Study notes</a></li>
+        <li><a class="sn-subitem" data-tab="glossary" href="#glossary" onclick="return navTo(event,'glossary')">Glossary</a></li>
+        <li><a class="sn-subitem" data-tab="principles" href="#principles" onclick="return navTo(event,'principles')">Principles</a></li>
+      </ul>
+    </li>
+    <li><a class="sn-item" data-sec="practice" href="#practice" onclick="return navTo(event,'sec:practice')"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 6 2 2 4-4"/><path d="m3 14 2 2 4-4"/><path d="M13 6h8M13 14h8M13 20h8"/></svg><span>Practice</span></a>
+      <ul class="sn-sub">
+        <li><a class="sn-subitem" data-tab="practice" href="#practice" onclick="return navTo(event,'practice')">Practice</a></li>
+        <li><a class="sn-subitem" data-tab="mock" href="#mock" onclick="return navTo(event,'mock')">Mock exam</a></li>
+        <li><a class="sn-subitem" data-tab="bookmarks" href="#saved" onclick="return navTo(event,'bookmarks')">Saved <span class="tab-badge" id="bkBadge" style="display:none">0</span></a></li>
+      </ul>
+    </li>
+    <li><a class="sn-item" data-sec="you" href="#you" onclick="return navTo(event,'you')"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span>You</span></a></li>
+  </ul>
+</nav>
+<div class="rail-foot" id="railCountdown" hidden></div>
+</div>
+
+<main class="app" id="main" tabindex="-1">
 
 <!-- MINDSET STRIP -->
 <div class="mindset-strip">
@@ -5300,17 +5489,9 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
   <div class="stat-card"><span class="stat-num" id="sStreak">0</span><span class="stat-label">Streak</span></div>
 </div>
 
-<!-- NAV TABS -->
-<div class="nav-tabs-wrap"><div class="nav-tabs" id="navTabsRow">
-  <button class="nav-tab" onclick="switchTab('home')" id="tab-home"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-8.5"/><path d="M12 12.5C12 8.6 9.3 6.2 5 6.2c0 4 2.8 6.3 7 6.3z"/><path d="M12 10.5c0-3.7 2.5-6.3 7-6.3 0 4.2-2.8 6.3-7 6.3z"/><path d="M7 21h10"/></svg>Home</button>
-  <button class="nav-tab" onclick="switchTab('topics')" id="tab-topics"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 4.5h6a3.5 3.5 0 0 1 3.5 3.5v12.5a2.5 2.5 0 0 0-2.5-2.5h-7z"/><path d="M21.5 4.5h-6A3.5 3.5 0 0 0 12 8v12.5a2.5 2.5 0 0 1 2.5-2.5h7z"/></svg>Topics</button>
-  <button class="nav-tab" onclick="switchTab('principles')" id="tab-principles"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1z"/></svg>Principles</button>
-  <button class="nav-tab" onclick="switchTab('glossary')" id="tab-glossary"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.5 19.5A2.5 2.5 0 0 1 7 17h12.5V3H7a2.5 2.5 0 0 0-2.5 2.5z"/><path d="M4.5 19.5A2.5 2.5 0 0 0 7 22h12.5v-5"/><path d="M9 8h6M9 11.5h4"/></svg>Glossary</button>
-  <button class="nav-tab" onclick="switchTab('practice')" id="tab-practice"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Practice</button>
-  <button class="nav-tab" onclick="switchTab('bookmarks')" id="tab-bookmarks"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/></svg>Saved <span class="tab-badge" id="bkBadge" style="display:none">0</span></button>
-  <button class="nav-tab" onclick="switchTab('weakspots')" id="tab-weakspots"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5h17"/><path d="M7 17v-5M12 17V6M17 17v-8"/></svg>Weak spots</button>
-  <button class="nav-tab" onclick="switchTab('mock')" id="tab-mock"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9.5 2.5h5"/></svg>Mock exam</button>
-</div></div><!-- /nav-tabs-wrap -->
+<!-- SECTION PAGES: Learn and Practice sub-pages on phones; a link back to You
+     from its pages. Filled by syncNav(). -->
+<nav class="sub-nav" id="subNav" aria-label="Section pages" hidden></nav>
 
 <!-- HOME DASHBOARD -->
 <div id="screen-home" class="screen">
@@ -5397,6 +5578,7 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.4</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -5446,6 +5628,44 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
   </section>
 </div>
 
+<!-- YOU: progress, settings, your data, help and about (replaces the More sheet and header menu) -->
+<div id="screen-you" class="screen" role="region" aria-labelledby="youTitle">
+  <div class="you">
+    <h1 class="you-title" id="youTitle">You</h1>
+    <section class="you-group" aria-labelledby="youProgressH">
+      <h2 class="you-head" id="youProgressH">Your progress</h2>
+      <ul class="you-list">
+        <li><a class="you-row" href="#weak-spots" onclick="return navTo(event,'weakspots')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5h17"/><path d="M7 17v-5M12 17V6M17 17v-8"/></svg></span><span class="you-text"><span class="you-t">Weak spots</span><span class="you-m">Where to focus next</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
+        <li><button type="button" class="you-row" onclick="showSessionSummary()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-7.5 4 15 3-7.5h4"/></svg></span><span class="you-text"><span class="you-t">Session summary</span><span class="you-m">What you did this session</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
+      </ul>
+    </section>
+    <section class="you-group" aria-labelledby="youSettingsH">
+      <h2 class="you-head" id="youSettingsH">Settings</h2>
+      <ul class="you-list">
+        <li><button type="button" class="you-row" id="darkToggleBtn" role="switch" aria-checked="false" aria-labelledby="youDarkT" aria-describedby="youDarkM" onclick="toggleDarkMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 1 1 9.4 4a6.6 6.6 0 0 0 10.6 10.6z"/></svg></span><span class="you-text"><span class="you-t" id="youDarkT">Dark mode</span><span class="you-m" id="youDarkM">Easier on the eyes at night</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
+        <li><button type="button" class="you-row" id="examModeBtn" role="switch" aria-checked="false" aria-labelledby="youExamT" aria-describedby="youExamM" onclick="toggleExamMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4"/><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg></span><span class="you-text"><span class="you-t" id="youExamT">Exam-style questions</span><span class="you-m" id="youExamM">Shorter questions, no tips after you answer</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
+      </ul>
+    </section>
+    <section class="you-group" aria-labelledby="youDataH">
+      <h2 class="you-head" id="youDataH">Your data</h2>
+      <ul class="you-list">
+        <li><button type="button" class="you-row" onclick="showYourData()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t">Your data</span><span class="you-m">Back up, restore or start fresh</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
+      </ul>
+    </section>
+    <section class="you-group" aria-labelledby="youHelpH">
+      <h2 class="you-head" id="youHelpH">Help and about</h2>
+      <ul class="you-list">
+        <li><button type="button" class="you-row" onclick="showChangelog()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5 13.8 9 19.5 10.5 13.8 12 12 17.5 10.2 12 4.5 10.5 10.2 9z"/><path d="M19 17v4M17 19h4"/></svg></span><span class="you-text"><span class="you-t">What&#39;s New</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
+        <li><a class="you-row" href="#help" onclick="return navTo(event,'faq')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6"/><path d="M12 16.8h.01"/></svg></span><span class="you-text"><span class="you-t">FAQ and help</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
+        <li><button type="button" class="you-row" onclick="showOnboarding()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg></span><span class="you-text"><span class="you-t">Welcome tour</span><span class="you-m">How KaiSip works</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
+        <li><button type="button" class="you-row" onclick="showFeedback()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 15a2 2 0 0 1-2 2H8l-4.5 3.5V5.5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></span><span class="you-text"><span class="you-t">Send feedback</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
+        <li><button type="button" class="you-row" onclick="openSupport()" aria-label="Support KaiSip (opens in a new tab)"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg></span><span class="you-text"><span class="you-t">Support KaiSip</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
+        <li><a class="you-row" href="#about" onclick="return navTo(event,'about')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg></span><span class="you-text"><span class="you-t">About KaiSip</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
+      </ul>
+    </section>
+  </div>
+</div>
+
   <!-- ── TIP JAR — optional support for the project (v9.2) ──
        Switched from Buy Me a Coffee to Ko-fi in v10.11 (BMC has limited support in some regions including PH).
        Hide the section by adding the `hidden` attribute if not desired. -->
@@ -5477,60 +5697,31 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
       <button type="button" class="legal-link-btn" onclick="openConsentBanner()">Cookie preferences</button>
     </p>
   </section>
-</div>
+</main>
 
 <div id="flagModal"></div>
 <div id="changelogModal"></div>
 <div id="feedbackModal"></div>
 
-<!-- MOBILE BOTTOM NAVIGATION (v10.35) -->
-<nav id="bottomNav" aria-label="Primary">
-  <button class="bnav-item active" data-bnav="home" onclick="switchTab('home')" aria-label="Home">
-    <span class="bnav-icon" aria-hidden="true"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-8.5"/><path d="M12 12.5C12 8.6 9.3 6.2 5 6.2c0 4 2.8 6.3 7 6.3z"/><path d="M12 10.5c0-3.7 2.5-6.3 7-6.3 0 4.2-2.8 6.3-7 6.3z"/><path d="M7 21h10"/></svg></span><span class="bnav-label">Home</span>
-  </button>
-  <button class="bnav-item" data-bnav="practice" onclick="switchTab('practice')" aria-label="Practice">
-    <span class="bnav-icon" aria-hidden="true"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><span class="bnav-label">Practice</span>
-  </button>
-  <button class="bnav-item" data-bnav="mock" onclick="switchTab('mock')" aria-label="Mock exam">
-    <span class="bnav-icon" aria-hidden="true"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9.5 2.5h5"/></svg></span><span class="bnav-label">Mock</span>
-  </button>
-  <button class="bnav-item" data-bnav="topics" onclick="switchTab('topics')" aria-label="Topics">
-    <span class="bnav-icon" aria-hidden="true"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 4.5h6a3.5 3.5 0 0 1 3.5 3.5v12.5a2.5 2.5 0 0 0-2.5-2.5h-7z"/><path d="M21.5 4.5h-6A3.5 3.5 0 0 0 12 8v12.5a2.5 2.5 0 0 1 2.5-2.5h7z"/></svg></span><span class="bnav-label">Topics</span>
-  </button>
-  <button class="bnav-item" data-bnav="more" id="bnavMore" onclick="openMoreSheet()" aria-label="More" aria-haspopup="true" aria-expanded="false">
-    <span class="bnav-icon" aria-hidden="true"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span><span class="bnav-label">More</span>
-  </button>
+<!-- PHONE / TABLET BOTTOM BAR (<1024px): the four sections. Active = ink label,
+     accent icon and a dot, so it is never colour-only. Play stays hidden on web. -->
+<nav id="bottomNav" aria-label="Main">
+  <a class="bnav-item" data-sec="today" href="#today" onclick="return navTo(event,'home')"><span class="bnav-icon"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg></span><span class="bnav-label">Today</span></a>
+  <a class="bnav-item" data-sec="learn" href="#learn" onclick="return navTo(event,'sec:learn')"><span class="bnav-icon"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2z"/><path d="M22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg></span><span class="bnav-label">Learn</span></a>
+  <a class="bnav-item" data-sec="practice" href="#practice" onclick="return navTo(event,'sec:practice')"><span class="bnav-icon"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 6 2 2 4-4"/><path d="m3 14 2 2 4-4"/><path d="M13 6h8M13 14h8M13 20h8"/></svg></span><span class="bnav-label">Practice</span></a>
+  <a class="bnav-item" data-sec="you" href="#you" onclick="return navTo(event,'you')"><span class="bnav-icon"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><span class="bnav-label">You</span></a>
 </nav>
-<div id="moreSheetBackdrop" onclick="closeMoreSheet()"></div>
-<div id="moreSheet" role="dialog" aria-modal="true" aria-label="More sections">
-  <div class="more-sheet-handle"></div>
-  <div class="more-sheet-title">More sections</div>
-  <button class="more-item" onclick="switchTab('weakspots');closeMoreSheet()"><span class="more-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5h17"/><path d="M7 17v-5M12 17V6M17 17v-8"/></svg></span> Weak spots</button>
-  <button class="more-item" onclick="switchTab('principles');closeMoreSheet()"><span class="more-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1z"/></svg></span> Principles</button>
-  <button class="more-item" onclick="switchTab('glossary');closeMoreSheet()"><span class="more-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.5 19.5A2.5 2.5 0 0 1 7 17h12.5V3H7a2.5 2.5 0 0 0-2.5 2.5z"/><path d="M4.5 19.5A2.5 2.5 0 0 0 7 22h12.5v-5"/><path d="M9 8h6M9 11.5h4"/></svg></span> Glossary</button>
-  <button class="more-item" onclick="switchTab('faq');closeMoreSheet()"><span class="more-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6"/><path d="M12 16.8h.01"/></svg></span> FAQ &amp; Help</button>
-  <button class="more-item" onclick="switchTab('bookmarks');closeMoreSheet()"><span class="more-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/></svg></span> Saved <span class="more-badge" id="moreBkBadge" style="display:none">0</span></button>
-  <div class="more-divider"></div>
-  <div class="more-sheet-title">App</div>
-  <button class="more-item" onclick="showYourData();closeMoreSheet()"><span class="more-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5v11"/><path d="m7.5 10 4.5 4.5 4.5-4.5"/><path d="M4.5 19.5h15"/></svg></span>Your data</button>
-  <button class="more-item" onclick="showChangelog();closeMoreSheet()"><span class="more-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5 13.8 9 19.5 10.5 13.8 12 12 17.5 10.2 12 4.5 10.5 10.2 9z"/><path d="M19 17v4M17 19h4"/></svg></span> What&#39;s New</button>
-  <button class="more-item" onclick="showSessionSummary();closeMoreSheet()"><span class="more-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-7.5 4 15 3-7.5h4"/></svg></span> Session Summary</button>
-  <button class="more-item" onclick="showFeedback();closeMoreSheet()"><span class="more-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 15a2 2 0 0 1-2 2H8l-4.5 3.5V5.5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></span> Feedback</button>
-  <button class="more-item" onclick="showOnboarding();closeMoreSheet()"><span class="more-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6"/><path d="M12 16.8h.01"/></svg></span> Help</button>
-  <button class="more-item" onclick="switchTab('about');closeMoreSheet()"><span class="more-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg></span> About KaiSip</button>
-  <button class="more-item" onclick="openSupport();closeMoreSheet()"><span class="more-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg></span> Support KaiSip</button>
-</div>
 <script id="glossData" type="application/json">[{"id":1,"term":"Acceptable use policy (AUP)","acronym":"AUP","def":"A policy that establishes an agreement between users and the enterprise that defines, for all parties, the ranges of use that are approved before gaining access to a network or the Internet","scopeNotes":"","domain":2,"category":"Control"},{"id":2,"term":"Access control","acronym":null,"def":"The processes, rules and deployment mechanisms that control access to information systems, resources and physical access to premises","scopeNotes":"","domain":5,"category":"Control"},{"id":3,"term":"Access control list (ACL)","acronym":"ACL","def":"An internal computerized table of access rules regarding the levels of computer access permitted to logon IDs and computer terminals","scopeNotes":"Also referred to as access control table","domain":5,"category":"Control"},{"id":4,"term":"Access control table","acronym":null,"def":"An internal computerized table of access rules regarding the levels of computer access permitted to logon IDs and computer terminals","scopeNotes":"","domain":5,"category":"Control"},{"id":5,"term":"Access method","acronym":null,"def":"The technique used for selecting records in a file, one at a time, for processing, retrieval or storage. The access method is related to, but distinct from, the file organization, which determines how the records are stored.","scopeNotes":"","domain":0,"category":"Process"},{"id":6,"term":"Access rights","acronym":null,"def":"The permission or privileges granted to users, programs or workstations to create, change, delete or view data and files within a system, as defined by rules established by data owners and the information security policy","scopeNotes":"","domain":2,"category":"Technology"},{"id":7,"term":"Administrative controls","acronym":null,"def":"The rules, procedures and practices dealing with operational effectiveness, efficiency and adherence to regulations and management policies","scopeNotes":"","domain":2,"category":"Control"},{"id":8,"term":"Anonymous File Transfer Protocol (AFTP)","acronym":"AFTP","def":"A method of downloading public files using the File Transfer Protocol (FTP). AFTP does not require users to identify themselves before accessing files from a particular server. In general, users enter the word â€œanonymousâ€ when the host prompts for a username. Anything can be entered for the password, such as the user's email address or simply the word â€œguest.â€ In many cases, an AFTP site will not prompt a user for a name and password.","scopeNotes":"","domain":5,"category":"Technology"},{"id":9,"term":"Antivirus software","acronym":null,"def":"An application software deployed at multiple points in an IT architecture. It is designed to detect and potentially eliminate virus code before damage is done and repair or quarantine files that have already been infected.","scopeNotes":"","domain":5,"category":"Technology"},{"id":10,"term":"Application","acronym":null,"def":"A computer program or set of programs that performs the processing of records for a specific function","scopeNotes":"Applications contrast with systems programs, such as an operating system or network control program, and with utility programs, such as copy or sort.","domain":3,"category":"Technology"},{"id":11,"term":"Application controls","acronym":null,"def":"The policies, procedures and activities designed to provide reasonable assurance that objectives relevant to a given automated solution (application) are achieved","scopeNotes":"","domain":3,"category":"Control"},{"id":12,"term":"Application layer","acronym":null,"def":"The application layer provides services for an application program to ensure that effective communication with another application program in a network is possible in the Open Systems Interconnection (OSI) communications model","scopeNotes":"","domain":3,"category":"Technology"},{"id":13,"term":"Application programming interface (API)","acronym":"API","def":"A set of routines, protocols and tools referred to as building blocks used in business application software development","scopeNotes":"","domain":3,"category":"Technology"},{"id":14,"term":"Artificial intelligence (AI)","acronym":"AI","def":"An advanced computer system that can simulate human capabilities, such as analysis, based on a predetermined set of rules","scopeNotes":"","domain":0,"category":"Technology"},{"id":15,"term":"Asymmetric key (public key)","acronym":null,"def":"A cipher technique in which different cryptographic keys are used to encrypt and decrypt a message","scopeNotes":"See public key encryption.","domain":5,"category":"Technology"},{"id":16,"term":"Audit evidence","acronym":null,"def":"The information used to support the audit opinion","scopeNotes":"","domain":1,"category":"Concept"},{"id":17,"term":"Audit objective","acronym":null,"def":"The specific goal(s) of an audit","scopeNotes":"These often center on substantiating the existence of internal controls to minimize business risk","domain":1,"category":"Concept"},{"id":18,"term":"Audit plan","acronym":null,"def":"1. A plan containing the nature, timing and extent of audit procedures to be performed by engagement team members in order to obtain sufficient appropriate audit evidence to form an opinion.","scopeNotes":"Includes the areas to be audited, the type of work planned, the high-level objectives and scope of the work. It also includes topics such as budget, resource allocation, schedule dates, type of report and its intended audience and other general aspects of the work. 2. A high-level description of the audit work to be performed in a certain period of time","domain":2,"category":"Control"},{"id":19,"term":"Audit program","acronym":null,"def":"A step-by-step set of audit procedures and instructions that should be performed to complete an audit","scopeNotes":"","domain":2,"category":"Control"},{"id":20,"term":"Audit risk","acronym":null,"def":"The risk of reaching an incorrect conclusion based upon audit findings","scopeNotes":"The three components of audit risk are: Control risk Detection risk Inherent risk","domain":1,"category":"Concept"},{"id":21,"term":"Audit trail","acronym":null,"def":"A logical path linking a sequence of events, in the form of data, used to trace the transactions that have affected the contents of a record Source : ISO","scopeNotes":"","domain":1,"category":"Concept"},{"id":22,"term":"Authentication","acronym":null,"def":"The act of verifying the identity of a user, the user's eligibility to access computerized information","scopeNotes":"Authentication is designed to protect against fraudulent logon activity. It can also refer to the verification of the correctness of a piece of data.","domain":5,"category":"Technology"},{"id":23,"term":"Backup","acronym":null,"def":"The files, equipment, data and procedures available for use in the event of a failure or loss, if the originals are destroyed or out of service","scopeNotes":"","domain":4,"category":"Control"},{"id":24,"term":"Balanced scorecard (BSC)","acronym":"BSC","def":"A coherent set of performance measures organized into four categories that include traditional financial measures and customer, internal business process and learning and growth perspectives. Developed by Robert S. Kaplan and David P. Norton.","scopeNotes":"","domain":4,"category":"Process"},{"id":25,"term":"Benchmarking","acronym":null,"def":"A systematic approach to comparing enterprise performance against peers and competitors in an effort to learn the best ways of conducting business","scopeNotes":"Examples include benchmarking of quality, logistic efficiency and various other metrics.","domain":0,"category":"Technology"},{"id":26,"term":"Biometrics","acronym":null,"def":"A security technique that verifies an individual's identity by analyzing a unique physical attribute, such as a handprint","scopeNotes":"","domain":5,"category":"Process"},{"id":27,"term":"Black box testing","acronym":null,"def":"A testing approach that focuses on the functionality of the application or product and does not require knowledge of the code intervals","scopeNotes":"","domain":3,"category":"Process"},{"id":28,"term":"Broadband","acronym":null,"def":"Multiple channels that are formed by dividing the transmission medium into discrete frequency segments","scopeNotes":"Broadband generally requires the use of a modem.","domain":0,"category":"Concept"},{"id":29,"term":"Brouter","acronym":null,"def":"A device that performs the functions of both a bridge and a router","scopeNotes":"A brouter operates at both the data link and network layers. It connects same data link type LAN segments as well as different data link ones, which is a significant advantage. Like a bridge, it forwards packets based on the data link layer address to a different network of the same type. Also, it processes and forwards messages to a different data link type network based on the network protocol address whenever required. When connecting same data link type networks, it is as fast as a bridge.","domain":0,"category":"Technology"},{"id":30,"term":"Bus","acronym":null,"def":"A common path or channel between hardware devices","scopeNotes":"Can be located between internal computer components or between external computers in a communication network","domain":0,"category":"Technology"},{"id":31,"term":"Bus configuration","acronym":null,"def":"A configuration in which all devices (nodes) are linked along one communication line where transmissions are received by all attached nodes","scopeNotes":"This architecture is reliable in very small networks, as well as easy to use and understand. This configuration requires the least amount of cable to connect the computers together and, therefore, is less expensive than other cabling arrangements. It is also easy to extend, and two cables can be easily joined with a connector to make a longer cable to allow more computers to join the network. A repeater can also be used to extend a bus configuration.","domain":0,"category":"Technology"},{"id":32,"term":"Business case","acronym":null,"def":"Documentation of the rationale for making a business investment that is used both to support a business decision on whether to proceed with the investment and as an operational tool to support management of the investment through its full economic life cycle","scopeNotes":"","domain":2,"category":"Process"},{"id":33,"term":"Business continuity plan (BCP)","acronym":"BCP","def":"A plan used by an enterprise to respond to the disruption of critical business processes (depends on the contingency plan for the restoration of critical systems)","scopeNotes":"","domain":4,"category":"Technology"},{"id":34,"term":"Business impact analysis (BIA)","acronym":"BIA","def":"The process of evaluating the criticality and sensitivity of information assets by determining the impact of losing the support of any resource to an enterprise. This establishes the escalation of a loss over time, identifies the minimum resources needed to recover and prioritizes the recovery of processes and the supporting system.","scopeNotes":"This process captures income loss, unexpected expense, legal issues (regulatory compliance or contractual), interdependent processes and loss of public reputation or public confidence.","domain":4,"category":"Technology"},{"id":35,"term":"Business process reengineering (BPR)","acronym":"BPR","def":"The thorough analysis and significant redesign of business processes and management systems to establish a better-performing structure that is more responsive to the customer base and market conditions while yielding material cost savings","scopeNotes":"","domain":3,"category":"Technology"},{"id":36,"term":"Business risk","acronym":null,"def":"The probability that a situation with uncertain frequency and magnitude of loss (or gain) could prevent the enterprise from meeting its business objectives","scopeNotes":"","domain":3,"category":"Concept"},{"id":37,"term":"Capability Maturity Model Integration (CMMI)","acronym":"CMMI","def":"An integrated model of best practices that enable businesses to improve performance by improving their processes. Product teams developed the model with global members from across the industry. The CMMI provides a best-practice framework for building, improving and sustaining process capability. See CMMI product suite","scopeNotes":"","domain":3,"category":"Process"},{"id":38,"term":"Card swipe","acronym":null,"def":"A physical control technique that uses a secured card or ID to gain access to a highly sensitive location","scopeNotes":"If built correctly, card swipes act as a preventive control over physical access to sensitive locations. After a card has been swiped, the application attached to the physical card swipe device logs all card users who try to access the secured location. In this way, the card swipe device prevents unauthorized access and logs all attempts to enter the secured location.","domain":3,"category":"Control"},{"id":39,"term":"Central processing unit (CPU)","acronym":"CPU","def":"Computer hardware that houses the electronic circuits that control/direct all operations of a computer system","scopeNotes":"","domain":0,"category":"Control"},{"id":40,"term":"Certificate (Certification) authority (CA)","acronym":"CA","def":"A trusted third party that serves authentication infrastructures or enterprises, registers entities and issues entities certificates","scopeNotes":"","domain":5,"category":"Concept"},{"id":41,"term":"Certificate revocation list (CRL)","acronym":"CRL","def":"An instrument for checking the continued validity of the certificates for which the certification authority (CA) has responsibility","scopeNotes":"The CRL details digital certificates that are no longer valid. The time gap between two updates is critical and poses a risk in digital certificate verification.","domain":5,"category":"Concept"},{"id":42,"term":"Certification practice statement (CPS)","acronym":"CPS","def":"A detailed set of rules governing the certificate authority's (CA) operations. It provides an understanding of the value and trustworthiness of certificates issued by a given CA.","scopeNotes":"In terms of the controls an enterprise observes, this is the method used to validate the authenticity of certificate applicants and the CA's expectations of how its certificates may be used.","domain":5,"category":"Concept"},{"id":43,"term":"Chain of custody","acronym":null,"def":"The process of evidence handling (from collection to presentation) that is necessary to maintain the validity and integrity of evidence","scopeNotes":"Includes documentation of who had access to the evidence and when and the ability to identify that the evidence is the exact item that was recovered or tested. Lack of control over evidence can lead to it being discredited. Chain of custody depends on verifying that evidence could not have been tampered with. This is accomplished by sealing off the evidence so it cannot be changed and providing a documentary record of custody to prove that the evidence was, at all times, under strict control and not subject to tampering.","domain":1,"category":"Process"},{"id":44,"term":"Challenge/response token","acronym":null,"def":"A method of user authentication carried out through use of the Challenge Handshake Authentication Protocol (CHAP)","scopeNotes":"When a user tries to log into the server using CHAP, the server sends the user a â€œchallenge,â€ which is a random value. The user enters a password, which is used as an encryption key to encrypt the â€œchallengeâ€ and return it to the server. The server is aware of the password. It, therefore, encrypts the â€œchallengeâ€ value and compares it with the value received from the user. If the values match, the user is authenticated. The challenge/response activity continues throughout the session, protecting it from password- sniffing attacks. In addition, CHAP is not vulnerable to â€œman-in-the-middleâ€ attacks because the challenge value is a random value that changes on each access attempt.","domain":5,"category":"Technology"},{"id":45,"term":"Change management (CM)","acronym":"CM","def":"A holistic and proactive approach to managing the transition from a current to a desired organizational state, focusing specifically on the critical human, or \"soft,\" elements of change (ISACA)","scopeNotes":"Includes activities such as culture change (values, beliefs and attitudes), development of reward systems (measures and appropriate incentives), organizational design, stakeholder management, human resources policies and procedures, executive coaching, change leadership training, team building and communication planning and execution.","domain":3,"category":"Process"},{"id":46,"term":"Ciphertext","acronym":null,"def":"Information generated by an encryption algorithm to protect the plaintext that is unintelligible to the unauthorized reader","scopeNotes":"","domain":5,"category":"Technology"},{"id":47,"term":"Circuit-switched network","acronym":null,"def":"A data transmission service that requires establishing a circuit-switched connection before data can be transferred from source data terminal equipment (DTE) to a sink DTE","scopeNotes":"A circuit-switched data transmission service uses a connection network.","domain":0,"category":"Technology"},{"id":48,"term":"Circular routing","acronym":null,"def":"In open systems architecture, the logical path of a message in a communication network based on a series of gates at the physical network layer in the open systems interconnection (OSI) model","scopeNotes":"","domain":0,"category":"Technology"},{"id":49,"term":"Client-server","acronym":null,"def":"A term used to broadly describe the relationship between the receiver and provider of a service. Generally, the client-server describes a networked system where front-end applications, like the client, make service requests to another networked system. Client-server relationships are defined primarily by software. In a local area network (LAN), the workstation is the client, and the file server is the server. However, client-server systems are inherently more complex than file-server systems. Two disparate programs must work in tandem, and there are many more decisions to make about separating data and processing between the client workstations and the database server. The database server encapsulates database files and indexes, restricts access, enforces security and provides applications with a consistent interface to data via a data dictionary.","scopeNotes":"","domain":3,"category":"Technology"},{"id":50,"term":"Cloud computing","acronym":null,"def":"Convenient, scalable on-demand network access to a shared pool of resources that can be provisioned rapidly and released with minimal management effort or service provider interaction","scopeNotes":"","domain":3,"category":"Technology"},{"id":51,"term":"Coaxial cable","acronym":null,"def":"A cable composed of an insulated wire that runs through the middle of each cable, a second wire that surrounds the insulation of the inner wire like a sheath and the outer insulation that wraps the second wire","scopeNotes":"Has a greater transmission capacity than standard twisted-pair cables but has a limited range of effective distance","domain":0,"category":"Concept"},{"id":52,"term":"Cold site","acronym":null,"def":"An IS backup facility that has the necessary electrical and physical components of a computer facility but does not have the computer equipment in place","scopeNotes":"The site is ready to receive the necessary replacement computer equipment in the event that the users have to move from the main computing location to the alternative computer facility.","domain":4,"category":"Technology"},{"id":53,"term":"Compensating control","acronym":null,"def":"An internal control that reduces the risk of an existing or potential control weakness resulting in errors and omissions","scopeNotes":"","domain":1,"category":"Control"},{"id":54,"term":"Completely connected (mesh) configuration","acronym":null,"def":"A network topology in which devices are connected with many redundant interconnections between network nodes (primarily used for backbone networks)","scopeNotes":"","domain":4,"category":"Technology"},{"id":55,"term":"Compliance testing","acronym":null,"def":"Control tests designed to obtain evidence on both the effectiveness of the controls and their operation during the audit period","scopeNotes":"","domain":3,"category":"Control"},{"id":56,"term":"Comprehensive audit","acronym":null,"def":"An audit designed to determine the accuracy of financial records and evaluate the internal controls of a function or department","scopeNotes":"","domain":3,"category":"Control"},{"id":57,"term":"Computer emergency response team (CERT)","acronym":"CERT","def":"A group of people integrated at the enterprise with clear lines of reporting and responsibilities for standby support in case of an information systems emergency. This group acts as an efficient corrective control and should also be the single point of contact for all incidents and issues related to information systems.","scopeNotes":"","domain":4,"category":"Technology"},{"id":58,"term":"Computer forensics","acronym":null,"def":"The application of the scientific method to digital media to establish factual information for judicial review","scopeNotes":"This process often involves investigating computer systems to determine whether they have been used for illegal or unauthorized activities. As a discipline, it combines elements of law and computer science to collect and analyze data from information systems (e.g., personal computers, networks, wireless communication and digital storage devices) in a way that makes it admissible as evidence in a court of law.","domain":5,"category":"Technology"},{"id":59,"term":"Computer-assisted audit technique (CAAT)","acronym":"CAAT","def":"Any automated audit technique, such as generalized audit software (GAS), test data generators, computerized audit programs and specialized audit utilities","scopeNotes":"","domain":3,"category":"Technology"},{"id":60,"term":"Configuration management (CM)","acronym":"CM","def":"The control of changes to a set of configuration items over a system life cycle","scopeNotes":"","domain":2,"category":"Control"},{"id":61,"term":"Contingency planning","acronym":null,"def":"Process of developing advance arrangements and procedures that enable an enterprise to respond to an event that might occur by chance or unforeseen circumstances","scopeNotes":"","domain":2,"category":"Control"},{"id":62,"term":"Continuous auditing approach","acronym":null,"def":"Allows IS auditors to monitor system reliability on a continuous basis and to gather selective audit evidence through the computer","scopeNotes":"","domain":1,"category":"Technology"},{"id":63,"term":"Control objective","acronym":null,"def":"A statement of the desired result or purpose to be achieved by implementing control procedures in a particular process","scopeNotes":"","domain":4,"category":"Control"},{"id":64,"term":"Control practice","acronym":null,"def":"Key control mechanism that supports the achievement of control objectives through responsible use of resources, appropriate management of risk and alignment of IT with business","scopeNotes":"","domain":2,"category":"Control"},{"id":65,"term":"Control risk","acronym":null,"def":"Risk that assets are lost/compromised or that financial statements are materially misstated, due to lack of, or ineffective, design and/or implementation of internal controls","scopeNotes":"","domain":3,"category":"Control"},{"id":66,"term":"Cookie","acronym":null,"def":"A web browser message used for the purpose of identifying users and possibly preparing customized web pages for them","scopeNotes":"The first time a cookie is set, a user may be required to go through a registration process. Subsequent to this, whenever the cookie's message is sent to the server, a customized view based on that user's preferences can be produced. The browser's implementation of cookies has, however, brought several security concerns, allowing breaches of security and the theft of personal information (e.g., user passwords that validate the user identity and enable restricted web services).","domain":4,"category":"Concept"},{"id":67,"term":"Corrective control","acronym":null,"def":"A control designed to correct errors, omissions, unauthorized uses and intrusions, once they are detected","scopeNotes":"","domain":5,"category":"Control"},{"id":68,"term":"Countermeasure","acronym":null,"def":"The reduction of threats or vulnerabilities through any direct process","scopeNotes":"","domain":5,"category":"Process"},{"id":69,"term":"Critical success factor (CSF)","acronym":"CSF","def":"The most important issue or action for management to achieve control over and within its IT processes","scopeNotes":"","domain":2,"category":"Control"},{"id":70,"term":"Data custodian","acronym":null,"def":"Individual(s) and department(s) responsible for the storage and safeguarding of computerized data","scopeNotes":"","domain":0,"category":"Technology"},{"id":71,"term":"Data Encryption Standard (DES)","acronym":"DES","def":"A legacy algorithm for encoding binary data that was deprecated in 2006. DES and its variants were replaced by the Advanced Encryption Standard (AES).","scopeNotes":"","domain":5,"category":"Control"},{"id":72,"term":"Data leakage","acronym":null,"def":"Unauthorized transmission of data from an organization, either electronically or physically","scopeNotes":"","domain":0,"category":"Concept"},{"id":73,"term":"Data owner","acronym":null,"def":"Individual(s) who has responsibility for the integrity, accurate reporting and use of computerized data","scopeNotes":"","domain":0,"category":"Technology"},{"id":74,"term":"Data security","acronym":null,"def":"The controls that seek to maintain confidentiality, integrity and availability of information","scopeNotes":"","domain":4,"category":"Control"},{"id":75,"term":"Database","acronym":null,"def":"A collection of data, often with controlled redundancy, organized according to a schema to serve one or more applications. The data are stored so that they can be used by different programs without considering the data structure or organization. A common approach is used to add new data and modify and retrieve existing data.","scopeNotes":"","domain":4,"category":"Technology"},{"id":76,"term":"Database administrator (DBA)","acronym":"DBA","def":"An individual or department responsible for the security and information classification of the shared data stored on a database system. This responsibility includes the design, definition and maintenance of the database.","scopeNotes":"","domain":3,"category":"Technology"},{"id":77,"term":"Database management system (DBMS)","acronym":"DBMS","def":"A software system that controls the organization, storage and retrieval of data in a database","scopeNotes":"","domain":2,"category":"Control"},{"id":78,"term":"Decision support systems (DSS)","acronym":"DSS","def":"An interactive system that provides the user with easy access to decision models and data to support semistructured decision-making tasks","scopeNotes":"","domain":0,"category":"Technology"},{"id":79,"term":"Decryption","acronym":null,"def":"A technique used to recover the original plaintext from the ciphertext so that it is intelligible to the reader. The decryption is a reverse process of the encryption.","scopeNotes":"","domain":5,"category":"Technology"},{"id":80,"term":"Decryption key","acronym":null,"def":"A digital piece of information used to recover plaintext from the corresponding ciphertext by decryption","scopeNotes":"","domain":5,"category":"Technology"},{"id":81,"term":"Degauss","acronym":null,"def":"The application of variable levels of alternating current for the purpose of demagnetizing magnetic recording media.","scopeNotes":"The process involves increasing the alternating current field gradually from zero to some maximum value and back to zero, leaving a very low residue of magnetic induction on the media. Degauss loosely means to erase.","domain":4,"category":"Concept"},{"id":82,"term":"Detective control","acronym":null,"def":"Controls designed to detect and report when errors, omissions and unauthorized uses or entries occur","scopeNotes":"","domain":3,"category":"Control"},{"id":83,"term":"Digital certificate","acronym":null,"def":"An electronic credential that permits an entity to exchange information securely via the Internet using the public key infrastructure (PKI)","scopeNotes":"","domain":5,"category":"Concept"},{"id":84,"term":"Digital signature","acronym":null,"def":"An electronic identification of a person or entity using a public key algorithm that serves as a way for the recipient to verify the identity of the sender, integrity of the data and proof of transaction","scopeNotes":"","domain":5,"category":"Concept"},{"id":85,"term":"Disaster recovery plan (DRP)","acronym":"DRP","def":"A set of human, physical, technical and procedural resources to recover, within a defined time and cost, an activity interrupted by an emergency or disaster","scopeNotes":"","domain":4,"category":"Concept"},{"id":86,"term":"Discovery sampling","acronym":null,"def":"A form of attribute sampling that is used to determine a specified probability of finding at least one example of an occurrence (attribute) in a population.","scopeNotes":"","domain":1,"category":"Concept"},{"id":87,"term":"Discretionary access control (DAC)","acronym":"DAC","def":"Logical access control filters that may be configured or modified by the users or data owners","scopeNotes":"","domain":5,"category":"Control"},{"id":88,"term":"Domain name system (DNS)","acronym":"DNS","def":"A hierarchical database distributed across the Internet, which allows names to be resolved into IP addresses (and vice versa) to locate services, such as web and email servers","scopeNotes":"","domain":0,"category":"Technology"},{"id":89,"term":"Domain name system (DNS) poisoning","acronym":"DNS","def":"Corrupts the table of an Internet server's DNS, replacing an Internet address with the address of a vagrant or scoundrel address","scopeNotes":"If a web user looks for the page with that address, the request is redirected by the scoundrel entry in the table to a different address. Cache poisoning differs from another form of DNS poisoning in which the attacker spoofs valid email accounts and floods the in-boxes of administrative and technical contacts. Cache poisoning is related to URL poisoning or location poisoning, in which an Internet user's behavior is tracked by adding an identification number to the location line of the browser that can be recorded as the user visits successive pages on the site. It is also called DNS cache poisoning or cache poisoning.","domain":0,"category":"Technology"},{"id":90,"term":"Dry-pipe fire extinguisher system","acronym":null,"def":"A sprinkler system that does not have water in the pipes during idle usage, unlike a fully charged fire extinguisher system that has water in the pipes at all times","scopeNotes":"The dry-pipe system is activated at the time of the fire alarm and water is emitted to the pipes from a water reservoir for discharge to the location of the fire.","domain":4,"category":"Technology"},{"id":91,"term":"Dynamic Host Configuration Protocol (DHCP)","acronym":"DHCP","def":"A protocol used by networked computers (clients) to obtain IP addresses from DHCP servers, and parameters such as default gateways, subnet masks and domain name system (DNS) server IP addresses","scopeNotes":"The DHCP server ensures that all IP addresses are unique (e.g., no IP address is assigned to a second client while the first client's assignment is valid [its lease has not expired]). Thus, IP address pool management is done by the server and not by a human network administrator.","domain":4,"category":"Technology"},{"id":92,"term":"Ecommerce","acronym":null,"def":"The processes by which enterprises conduct business electronically with their customers, suppliers and other external business partners, using the Internet as an enabling technology.","scopeNotes":"Ecommerce encompasses both business-to-business (B2B) and business-to-consumer (B2C) ecommerce models, but does not include existing non-Internet ecommerce methods based on private networks such as electronic data interchange (EDI) and Society for Worldwide Interbank Financial Telecommunication (SWIFT).","domain":0,"category":"Process"},{"id":93,"term":"Electronic data interchange (EDI)","acronym":"EDI","def":"The electronic transmission of transactions (information) between two enterprises. EDI promotes a more efficient paperless environment. EDI transmissions can replace the use of standard documents, including invoices or purchase orders.","scopeNotes":"","domain":2,"category":"Concept"},{"id":94,"term":"Electronic funds transfer (EFT)","acronym":"EFT","def":"The exchange of money via telecommunications. EFT refers to any financial transaction that originates at a terminal and transfers a sum of money from one account to another.","scopeNotes":"","domain":0,"category":"Concept"},{"id":95,"term":"Email/interpersonal messaging","acronym":null,"def":"An individual using a terminal, PC or an application can access a network to send an unstructured message to another individual or group of people","scopeNotes":"","domain":3,"category":"Technology"},{"id":96,"term":"Embedded audit module (EAM)","acronym":"EAM","def":"Integral part of an application system that is designed to identify and report specific transactions or other information based on pre-determined criteria. Identification of reportable items occurs as part of real-time processing. Reporting may be real-time online or may use store and forward methods. Also known as integrated test facility or continuous auditing module.","scopeNotes":"","domain":3,"category":"Technology"},{"id":97,"term":"Encryption","acronym":null,"def":"The process of taking an unencrypted message (plaintext), applying a mathematical function to it (encryption algorithm with a key) and producing an encrypted message (ciphertext).","scopeNotes":"","domain":5,"category":"Technology"},{"id":98,"term":"Encryption key","acronym":null,"def":"A piece of information, in a digitized form, used by an encryption algorithm to convert the plaintext to the ciphertext","scopeNotes":"","domain":5,"category":"Technology"},{"id":99,"term":"End-user computing","acronym":null,"def":"The ability of end users to design and implement their own information system utilizing computer software products.","scopeNotes":"","domain":3,"category":"Technology"},{"id":100,"term":"Enterprise resource planning (ERP)","acronym":"ERP","def":"A packaged business software system that allows an enterprise to automate and integrate the majority of its business processes; to share common data and practices across the entire enterprise; and to produce and access information in a real-time environment","scopeNotes":"","domain":0,"category":"Technology"},{"id":101,"term":"Ethernet","acronym":null,"def":"A popular network protocol and cabling scheme that uses a bus topology and carrier sense multiple access/ collision detection (CSMA/CD) to prevent network failures or collisions when two devices try to access the network at the same time","scopeNotes":"","domain":0,"category":"Technology"},{"id":102,"term":"Evidence","acronym":null,"def":"Information that an auditor gathers in the course of performing an IS audit; relevant if it pertains to the audit objectives and has a logical relationship to the findings and conclusions it is used to support","scopeNotes":"Audit perspective","domain":1,"category":"Concept"},{"id":103,"term":"Exception reports","acronym":null,"def":"An exception report is generated by a program that identifies transactions or data that appear to be incorrect.","scopeNotes":"Exception reports may be outside a predetermined range or may not conform to specified criteria.","domain":0,"category":"Concept"},{"id":104,"term":"eXtensible Markup Language (XML)","acronym":"XML","def":"Promulgated through the World Wide Web Consortium, XML is a web-based application development technique that allows designers to create their own customized tags, thus, enabling the definition, transmission, validation and interpretation of data between applications and enterprises.","scopeNotes":"","domain":3,"category":"Process"},{"id":105,"term":"Extranet","acronym":null,"def":"A private network that resides on the Internet and allows a company to securely share business information with customers, suppliers or other businesses as well as to execute electronic transactions.","scopeNotes":"Different from an Intranet in that it is located beyond the company's firewall. Therefore, an extranet relies on the use of securely issued digital certificates (or alternative methods of user authentication) and encryption of messages. A virtual private network (VPN) and tunneling are often used to implement extranets, to ensure security and privacy.","domain":0,"category":"Technology"},{"id":106,"term":"Fallback procedures","acronym":null,"def":"A plan of action or set of procedures to be performed if a system implementation, upgrade or modification does not work as intended.","scopeNotes":"May involve restoring the system to its state prior to the implementation or change. Fallback procedures are needed to ensure that normal business processes continue in the event of failure and should always be considered in system migration or implementation.","domain":3,"category":"Control"},{"id":107,"term":"False authorization","acronym":null,"def":"Also called false acceptance, occurs when an unauthorized person is identified as an authorized person by the biometric system.","scopeNotes":"","domain":5,"category":"Technology"},{"id":108,"term":"False enrollment","acronym":null,"def":"Occurs when an unauthorized person manages to enroll into the biometric system.","scopeNotes":"Enrollment is the initial process of acquiring a biometric feature and saving it as a personal reference on a smart card, a PC or in a central database.","domain":5,"category":"Technology"},{"id":109,"term":"Feasibility study","acronym":null,"def":"Analysis of the known or anticipated need for a product, system or component to assess the degree to which the requirements, designs or plans can be implemented","scopeNotes":"","domain":3,"category":"Technology"},{"id":110,"term":"Fiber-optic cable","acronym":null,"def":"Glass fibers that transmit binary signals over a telecommunications network.","scopeNotes":"Fiber-optic systems have low transmission losses as compared to twisted-pair cables. They do not radiate energy or conduct electricity. They are free from corruption and lightning-induced interference, and they reduce the risk of wiretaps.","domain":0,"category":"Technology"},{"id":111,"term":"File Transfer Protocol (FTP)","acronym":"FTP","def":"A protocol used to transfer files over a Transmission Control Protocol/ Internet Protocol (TCP/IP) network (Internet, UNIX, etc.)","scopeNotes":"","domain":0,"category":"Control"},{"id":112,"term":"Financial audit","acronym":null,"def":"An audit designed to determine the accuracy of financial records and information.","scopeNotes":"","domain":3,"category":"Concept"},{"id":113,"term":"Firewall","acronym":null,"def":"A system or combination of systems that enforces a boundary between two or more networks, typically forming a barrier between a secure and an open environment such as the Internet","scopeNotes":"","domain":5,"category":"Technology"},{"id":114,"term":"Firmware","acronym":null,"def":"The combination of a hardware device, e.g., an IC, and computer instructions and data that reside as read only software on that device. Such software cannot be modified by the computer during processing.","scopeNotes":"","domain":0,"category":"Technology"},{"id":115,"term":"Fourth-generation language (4GL)","acronym":null,"def":"High-level, user-friendly, nonprocedural computer language used to program and/or read and process computer files.","scopeNotes":"","domain":0,"category":"Technology"},{"id":116,"term":"Frame relay","acronym":null,"def":"A packet-switched wide-area-network (WAN) technology that provides faster performance than older packet- switched WAN technologies.","scopeNotes":"Best suited for data and image transfers. Because of its variable-length packet architecture, it is not the most efficient technology for real-time voice and video. In a frame-relay network, end nodes establish a connection via a permanent virtual circuit (PVC).","domain":0,"category":"Technology"},{"id":117,"term":"Function point analysis (FPA)","acronym":"FPA","def":"A technique used to determine the size of a development task, based on the number of function points","scopeNotes":"Function points are factors such as inputs, outputs, inquiries and logical internal sites.","domain":3,"category":"Process"},{"id":118,"term":"Gateway","acronym":null,"def":"A physical or logical device on a network that serves as an entrance to another network (e.g., router, firewall or software)","scopeNotes":"","domain":5,"category":"Technology"},{"id":119,"term":"Generalized audit software (GAS)","acronym":"GAS","def":"Multipurpose audit software that can be used for general processes, such as record selection, matching, recalculation and reporting","scopeNotes":"","domain":4,"category":"Technology"},{"id":120,"term":"Governance","acronym":null,"def":"The method by which an enterprise evaluates stakeholder needs, conditions and options to determine balanced, agreed-upon enterprise objectives to be achieved. It involves setting direction through prioritization, decision making and monitoring performance and compliance against the agreed-upon direction and objectives.","scopeNotes":"","domain":3,"category":"Process"},{"id":121,"term":"Hacker","acronym":null,"def":"An individual who attempts to gain unauthorized access to a computer system","scopeNotes":"","domain":0,"category":"Technology"},{"id":122,"term":"Handprint scanner","acronym":null,"def":"A biometric device used to authenticate a user through palm scans","scopeNotes":"","domain":5,"category":"Technology"},{"id":123,"term":"Hash total","acronym":null,"def":"The total of any numeric data field in a document or computer file. This total is checked against a control total of the same field to facilitate the accuracy of processing.","scopeNotes":"","domain":5,"category":"Control"},{"id":124,"term":"Help desk","acronym":null,"def":"A service offered via telephone/Internet by an enterprise to its clients or employees that provides information, assistance and troubleshooting advice regarding software, hardware or networks","scopeNotes":"A help desk is staffed by people who can either resolve the problem on their own or escalate the problem to specialized personnel. A help desk is often equipped with dedicated customer relationship management (CRM) software that logs the problems and tracks them until they are solved.","domain":0,"category":"Technology"},{"id":125,"term":"Hierarchical database","acronym":null,"def":"A database structured in a tree/ root or parent/child relationship.","scopeNotes":"Each parent can have many children, but each child may have only one parent.","domain":0,"category":"Technology"},{"id":126,"term":"Honeypot","acronym":null,"def":"A specially configured server, also known as a decoy server, designed to attract and monitor intruders in a manner so that their actions do not affect production systems","scopeNotes":"","domain":5,"category":"Technology"},{"id":127,"term":"Hot site","acronym":null,"def":"A fully operational offsite data processing facility equipped with both hardware and system software to be used in the event of a disaster","scopeNotes":"","domain":4,"category":"Technology"},{"id":128,"term":"Hypertext Markup Language (HTML)","acronym":"HTML","def":"A language designed for the creation of web pages with hypertext and other information to be displayed in a web browser; used to structure informationâ€“denoting certain text such as headings, paragraphs and listsâ€“and can be used to describe, to some degree, the appearance and semantics of a document","scopeNotes":"","domain":3,"category":"Concept"},{"id":129,"term":"Incident","acronym":null,"def":"A violation or imminent threat of violation of computer security policies, acceptable use policies, guidelines or standard security practices","scopeNotes":"","domain":5,"category":"Control"},{"id":130,"term":"Incident response","acronym":null,"def":"The response of an enterprise to a disaster or other significant event that may significantly affect the enterprise, its people or its ability to function productively. Incident response may include evacuation of a facility, initiating a disaster recovery plan (DRP), performing a damage assessment or any other measures necessary to bring an enterprise to a more stable status.","scopeNotes":"","domain":4,"category":"Concept"},{"id":131,"term":"Information processing facility (IPF)","acronym":"IPF","def":"The computer room and support areas.","scopeNotes":"","domain":0,"category":"Technology"},{"id":132,"term":"Information systems (IS)","acronym":"IS","def":"The combination of strategic, managerial and operational activities involved in gathering, processing, storing, distributing and using information and its related technologies","scopeNotes":"Information systems are distinct from information technology (IT) in that an information system has an IT component that interacts with the process components.","domain":0,"category":"Technology"},{"id":133,"term":"Inherent risk","acronym":null,"def":"The level of risk or exposure that does not account for the actions management has taken or might take (e.g., implementing controls)","scopeNotes":"","domain":2,"category":"Control"},{"id":134,"term":"Instant messaging (IM)","acronym":"IM","def":"An online mechanism or a form of real-time communication between two or more people based on typed text and multimedia data","scopeNotes":"Text is conveyed via computers or another electronic device (e.g., cellular phone or handheld device) and connected over a network, such as the Internet.","domain":0,"category":"Concept"},{"id":135,"term":"Integrated services digital network (ISDN)","acronym":"ISDN","def":"A public end-to-end digital telecommunications network with signaling, switching and transport capabilities that support a wide range of services accessed by standardized interfaces with integrated customer control","scopeNotes":"The standard allows transmission of digital voice, video and data over 64-kbps lines.","domain":2,"category":"Technology"},{"id":136,"term":"Integrated test facilities (ITF)","acronym":"ITF","def":"A testing methodology in which test data are processed in production systems","scopeNotes":"The data usually represent a set of fictitious entities such as departments, customers or products. Output reports are verified to confirm the correctness of the processing.","domain":3,"category":"Technology"},{"id":137,"term":"Integrity","acronym":null,"def":"The guarding against improper information modification or destruction. This includes ensuring information nonrepudiation and authenticity.","scopeNotes":"","domain":0,"category":"Concept"},{"id":138,"term":"Internal controls","acronym":null,"def":"The policies, procedures, practices and organizational structures designed to provide reasonable assurance that business objectives will be achieved and undesired events will be prevented or detected and corrected","scopeNotes":"","domain":3,"category":"Concept"},{"id":139,"term":"IP Security (IPSec)","acronym":null,"def":"A set of protocols developed by the Internet Engineering Task Force (IETF) to support the secure exchange of packets","scopeNotes":"","domain":5,"category":"Technology"},{"id":140,"term":"IT steering committee","acronym":null,"def":"An executive-management-level committee that assists in the delivery of the IT strategy, oversees day-to-day management of IT service delivery and IT projects, and focuses on implementation aspects.","scopeNotes":"","domain":3,"category":"Process"},{"id":141,"term":"IT strategic plan","acronym":null,"def":"A long-term plan (i.e., three- to five-year horizon) in which business and IT management cooperatively describe how IT resources will contribute to the enterprise's strategic objectives (goals).","scopeNotes":"","domain":2,"category":"Process"},{"id":142,"term":"Key goal indicator (KGI)","acronym":"KGI","def":"A measure that tells management, after the fact, whether an IT process has achieved its business requirements; usually expressed in terms of information criteria.","scopeNotes":"","domain":3,"category":"Process"},{"id":143,"term":"Key performance indicator (KPI)","acronym":"KPI","def":"A type of performance measurement","scopeNotes":"","domain":2,"category":"Concept"},{"id":144,"term":"Leased line","acronym":null,"def":"A communication line permanently assigned to connect two points, as opposed to a dial-up line that is only available and open when a connection is made by dialing the target machine or network. Also known as a dedicated line.","scopeNotes":"","domain":0,"category":"Technology"},{"id":145,"term":"Licensing agreement","acronym":null,"def":"A contract that establishes the terms and conditions under which a piece of software is being licensed (i.e., made legally available for use) from the software developer (owner) to the user.","scopeNotes":"","domain":2,"category":"Technology"},{"id":146,"term":"Local area network (LAN)","acronym":"LAN","def":"Communication network that serves several users within a specified limited geographic area","scopeNotes":"","domain":0,"category":"Technology"},{"id":147,"term":"Log","acronym":null,"def":"To record details of information or events in an organized record-keeping system, usually sequenced in the order in which they occurred","scopeNotes":"","domain":0,"category":"Technology"},{"id":148,"term":"Logical access controls","acronym":null,"def":"The policies, procedures, organizational structure and electronic access controls designed to restrict access to computer software and data files","scopeNotes":"","domain":5,"category":"Control"},{"id":149,"term":"Logon","acronym":null,"def":"The act of connecting to the computer, which typically requires entry of a user ID and password into a computer terminal.","scopeNotes":"","domain":5,"category":"Technology"},{"id":150,"term":"Malware","acronym":null,"def":"Short for malicious software. Designed to infiltrate, damage or obtain information from a computer system without the owner's consent. Examples of malware include computer viruses, worms, Trojan horses, spyware and adware.","scopeNotes":"","domain":5,"category":"Technology"},{"id":151,"term":"Mandatory access control (MAC)","acronym":"MAC","def":"Logical access control filters used to validate access credentials that cannot be controlled or modified by normal users or data owners","scopeNotes":"","domain":5,"category":"Control"},{"id":152,"term":"Media access control (MAC)","acronym":"MAC","def":"Lower sublayer of the OSI Model Data Link layer","scopeNotes":"","domain":5,"category":"Control"},{"id":153,"term":"Middleware","acronym":null,"def":"Another term for an application programmer interface (API). It refers to the interfaces that allow programmers to access lower- or higher-level services by providing an intermediary layer that includes function calls to the services.","scopeNotes":"","domain":3,"category":"Concept"},{"id":154,"term":"Mobile site","acronym":null,"def":"The use of a mobile/temporary facility to serve as a business resumption location. The facility can usually be delivered to any site and can house information technology and staff.","scopeNotes":"","domain":3,"category":"Concept"},{"id":155,"term":"Network","acronym":null,"def":"A system of interconnected computers and the communication equipment used to connect them.","scopeNotes":"","domain":0,"category":"Technology"},{"id":156,"term":"Network administrator","acronym":null,"def":"Responsible for planning, implementing and maintaining the telecommunications infrastructure; also may be responsible for voice networks.","scopeNotes":"For smaller enterprises, the network administrator may also maintain a local area network (LAN) and assist end users.","domain":0,"category":"Technology"},{"id":157,"term":"Network attached storage (NAS)","acronym":"NAS","def":"Utilizes dedicated storage devices that centralize storage of data.","scopeNotes":"NA storage devices generally do not provide traditional file/print or application services.","domain":0,"category":"Technology"},{"id":158,"term":"Network interface card (NIC)","acronym":"NIC","def":"A communication card that when inserted into a computer, allows it to communicate with other computers on a network.","scopeNotes":"Most NICs are designed for a particular type of network or protocol.","domain":0,"category":"Technology"},{"id":159,"term":"Nondisclosure agreement (NDA)","acronym":"NDA","def":"A legal contract between at least two parties that outlines confidential materials that the parties wish to share with one another for certain purposes, but wish to restrict from generalized use; a contract through which the parties agree not to disclose information covered by the agreement.","scopeNotes":"Also called a confidential disclosure agreement (CDA), confidentiality agreement or secrecy agreement. An NDA creates a confidential relationship between the parties to protect any type of trade secret. As such, an NDA can protect non-public business information. In the case of certain governmental entities, the confidentiality of information other than trade secrets may be subject to applicable statutory requirements, and in some cases may be required to be revealed to an outside party requesting the information. Generally, the governmental entity will include a provision in the contract to allow the seller to review a request for information that the seller identifies as confidential and the seller may appeal such a decision requiring disclosure. NDAs are commonly signed when two companies or individuals are considering doing business together and need to understand the processes used in one another's businesses solely for the purpose of evaluating the potential business relationship. NDAs can be â€œmutual,â€ meaning that both parties are restricted in their use of the materials provided, or they can only restrict a single party. It is also possible for an employee to sign an NDA or NDA-like agreement with a company at the time of hiring; in fact, some employment agreements will include a clause restricting â€œconfidential informationâ€ in general.","domain":4,"category":"Concept"},{"id":160,"term":"Operating system (OS)","acronym":"OS","def":"A master control program that runs the computer and acts as a scheduler and traffic controller","scopeNotes":"The operating system is the first program copied into the computer memory after the computer is turned on; it must reside in memory at all times. It is the software that interfaces between the computer hardware (disk, keyboard, mouse, network, modem and printer) and the application software (word processor, spreadsheet email) which also controls access to the devices, is partially responsible for security components and sets the standards for the application programs that run in it.","domain":0,"category":"Control"},{"id":161,"term":"Operational audit","acronym":null,"def":"An audit designed to evaluate the various internal controls, economy and efficiency of a function or department.","scopeNotes":"","domain":3,"category":"Control"},{"id":162,"term":"Outsourcing","acronym":null,"def":"A formal agreement with a third party to perform IS or other business functions for an enterprise","scopeNotes":"","domain":2,"category":"Concept"},{"id":163,"term":"Paper test","acronym":null,"def":"A walk-through of the steps of a regular test, but without actually performing the steps.","scopeNotes":"Usually used in disaster recovery and contingency testing; team members review and become familiar with the plans and their specific roles and responsibilities","domain":3,"category":"Concept"},{"id":164,"term":"Password","acronym":null,"def":"A protected, generally computer-encrypted string of characters that authenticate a computer user to the computer system","scopeNotes":"","domain":5,"category":"Technology"},{"id":165,"term":"Patch management","acronym":null,"def":"An area of systems management that involves acquiring, testing and installing multiple patches (code changes) to an administered computer system to maintain up-to-date software and often to address security risk","scopeNotes":"Patch management tasks include maintaining current knowledge of available patches, deciding what patches are appropriate for particular systems, ensuring that patches are installed properly, testing systems after installation and documenting all associated procedures, such as specific configurations required. A number of products are available to automate patch management tasks. Patches are sometimes ineffective and can sometimes cause more problems than they fix. Patch management experts suggest that system administrators take simple steps to avoid problems, such as performing backups and testing patches on noncritical systems prior to installations. Patch management can be viewed as part of change management.","domain":3,"category":"Technology"},{"id":166,"term":"Penetration testing","acronym":null,"def":"A live test of the effectiveness of security defenses through mimicking the actions of real-life attackers","scopeNotes":"","domain":5,"category":"Concept"},{"id":167,"term":"Phishing","acronym":null,"def":"A type of electronic mail (email) attack that attempts to convince a user that the originator is genuine, but with the intention of obtaining information for use in social engineering","scopeNotes":"Phishing attacks may take the form of masquerading as a lottery organization advising the recipient or the user's bank of a large win; in either case, the intent is to obtain account and personal identification number (PIN) details. Alternative attacks may seek to obtain apparently innocuous business information, which may be used in another form of active attack.","domain":5,"category":"Concept"},{"id":168,"term":"Phreakers","acronym":null,"def":"Those who crack security, most frequently telephone and other communication networks.","scopeNotes":"","domain":0,"category":"Technology"},{"id":169,"term":"Plaintext","acronym":null,"def":"Digital information, such as cleartext, that is intelligible to the reader.","scopeNotes":"","domain":0,"category":"Concept"},{"id":170,"term":"Point-to-Point Protocol (PPP)","acronym":"PPP","def":"A protocol used for transmitting data between two ends of a connection.","scopeNotes":"","domain":0,"category":"Technology"},{"id":171,"term":"Policy","acronym":null,"def":"A document that communicates required and prohibited activities and behaviors","scopeNotes":"","domain":2,"category":"Control"},{"id":172,"term":"Preventive control","acronym":null,"def":"An internal control that is used to avoid undesirable events, errors and other occurrences that an enterprise has determined could have a negative material effect on a process or end product.","scopeNotes":"","domain":1,"category":"Control"},{"id":173,"term":"Privacy","acronym":null,"def":"The right of an individual to trust that others will appropriately and respectfully use, store, share and dispose of his/her associated personal and sensitive information within the context, and according to the purposes for which it was collected or derived","scopeNotes":"","domain":4,"category":"Concept"},{"id":174,"term":"Private key cryptosystems","acronym":null,"def":"A cryptosystem that involves secret, private keys. The keys are also known as \"symmetric ciphers\" because the same key both encrypts message plaintext from the sender and decrypts resulting ciphertext for a recipient.","scopeNotes":"","domain":5,"category":"Technology"},{"id":175,"term":"Procedure","acronym":null,"def":"A document containing a detailed description of the steps necessary to perform specific operations in conformance with applicable standards. Procedures are defined as part of processes.","scopeNotes":"","domain":2,"category":"Control"},{"id":176,"term":"Process","acronym":null,"def":"Generally, a collection of activities influenced by the enterprise's policies and procedures that takes inputs from a number of sources, (including other processes), manipulates the inputs and produces outputs.","scopeNotes":"","domain":2,"category":"Process"},{"id":177,"term":"Protocol","acronym":null,"def":"The rules by which a network operates and controls the flow and priority of transmissions","scopeNotes":"","domain":0,"category":"Control"},{"id":178,"term":"Public key cryptosystem","acronym":null,"def":"A cryptosystem that combines a widely distributed public key and a closely held, protected private key. A message that is encrypted by the public key can only be decrypted by the mathematically related counterpart private key. Conversely, only the public key can decrypt data that was encrypted by its corresponding private key.","scopeNotes":"","domain":5,"category":"Technology"},{"id":179,"term":"Public key encryption","acronym":null,"def":"A cryptographic system that uses two keys: one is a public key, which is known to everyone, and the second is a private or secret key, which is only known to the recipient of the message. See also Asymmetric Key.","scopeNotes":"","domain":5,"category":"Technology"},{"id":180,"term":"Public key infrastructure (PKI)","acronym":"PKI","def":"A series of processes and technologies for the association of cryptographic keys with the entity to whom those keys were issued","scopeNotes":"","domain":5,"category":"Process"},{"id":181,"term":"Quality assurance (QA)","acronym":"QA","def":"A planned and systematic pattern of all actions necessary to provide adequate confidence that an item or product conforms to established technical requirements. (ISO/IEC 24765)","scopeNotes":"","domain":3,"category":"Technology"},{"id":182,"term":"Reciprocal agreement","acronym":null,"def":"Emergency processing agreement between two or more enterprises with similar equipment or applications.","scopeNotes":"Typically, participants of a reciprocal agreement promise to provide processing time to each other when an emergency arises.","domain":3,"category":"Process"},{"id":183,"term":"Recovery point objective (RPO)","acronym":"RPO","def":"Determined based on the acceptable data loss in case of a disruption of operations. It indicates the earliest point in time that is acceptable to recover the data. The RPO effectively quantifies the permissible amount of data loss in case of interruption.","scopeNotes":"","domain":4,"category":"Concept"},{"id":184,"term":"Recovery strategy","acronym":null,"def":"An approach by an enterprise that will ensure its recovery and continuity in the face of a disaster or other major outage.","scopeNotes":"Plans and methodologies are determined by the enterprise's strategy. There may be more than one methodology or solution for an enterprise's strategy. Examples of methodologies and solutions include: contracting for hot site or cold site, building an internal hot site or cold site, identifying an alternate work area, a consortium or reciprocal agreement, contracting for mobile recovery or crate and ship, and many others.","domain":4,"category":"Process"},{"id":185,"term":"Recovery time objective (RTO)","acronym":"RTO","def":"The amount of time allowed for the recovery of a business function or resource after a disaster occurs","scopeNotes":"","domain":4,"category":"Concept"},{"id":186,"term":"Registration authority (RA)","acronym":"RA","def":"An authority in a network that verifies user requests for a digital certificate and tells the certificate authority (CA) to issue it","scopeNotes":"","domain":5,"category":"Technology"},{"id":187,"term":"Remote access service (RAS)","acronym":"RAS","def":"Refers to any combination of hardware and software to enable the remote access to tools or information that typically reside on a network of IT devices.","scopeNotes":"Originally coined by Microsoft when referring to their built-in NT remote access tools, RAS was a service provided by Windows NT which allowed most of the services that would be available on a network to be accessed over a modem link. Over the years, many vendors have provided both hardware and software solutions to gain remote access to various types of networked information. In fact, most modern routers include a basic RAS capability that can be enabled for any dial-up interface.","domain":0,"category":"Technology"},{"id":188,"term":"Remote procedure call (RPC)","acronym":"RPC","def":"The traditional Internet service protocol widely used for many years on UNIX-based operating systems and supported by the Internet Engineering Task Force (IETF) that allows a program on one computer to execute a program on another (e.g., server).","scopeNotes":"The primary benefit derived from its use is that a system developer need not develop specific procedures for the targeted computer system. For example, in a client-server arrangement, the client program sends a message to the server with appropriate arguments, and the server returns a message containing the results of the program executed. Common Object Request Broker Architecture (CORBA) and Distributed Component Object Model (DCOM) are two newer object-oriented methods for related RPC functionality.","domain":2,"category":"Technology"},{"id":189,"term":"Repeaters","acronym":null,"def":"A physical layer device that regenerates and propagates electrical signals between two network segments.","scopeNotes":"Repeaters receive signals from one network segment and amplify (regenerate) the signal to compensate for signals (analog or digital) distorted by transmission loss due to reduction of signal strength during transmission (i.e., attenuation)","domain":0,"category":"Technology"},{"id":190,"term":"Request for proposal (RFP)","acronym":"RFP","def":"A document distributed to software vendors requesting them to submit a proposal to develop or provide a software product.","scopeNotes":"","domain":2,"category":"Technology"},{"id":191,"term":"Ring topology","acronym":null,"def":"A type of local area network (LAN) architecture in which the cable forms a loop, with stations attached at intervals around the loop.","scopeNotes":"In ring topology, signals transmitted around the ring take the form of messages. Each station receives the messages and each station determines, on the basis of an address, whether to accept or process a given message. However, after receiving a message, each station acts as a repeater, retransmitting the message at its original signal strength.","domain":0,"category":"Technology"},{"id":192,"term":"Risk","acronym":null,"def":"The combination of the likelihood of an event and its impact (ISACA)","scopeNotes":"","domain":1,"category":"Concept"},{"id":193,"term":"Risk analysis","acronym":null,"def":"The initial steps of risk management: analyzing the value of assets to the business, identifying threats to those assets and evaluating how vulnerable each asset is to those threats.","scopeNotes":"It often involves an evaluation of the probable frequency of a particular event, as well as the probable impact of that event.","domain":5,"category":"Process"},{"id":194,"term":"Risk appetite","acronym":null,"def":"The amount of risk, on a broad level, that an entity is willing to accept in pursuit of its mission.","scopeNotes":"","domain":0,"category":"Concept"},{"id":195,"term":"Risk assessment","acronym":null,"def":"A process used to identify and evaluate risk and its potential effects","scopeNotes":"Risk assessments are used to identify those items or areas that present the highest risk, vulnerability or exposure to the enterprise for inclusion in the IS annual audit plan. Risk assessments are also used to manage project delivery risk and project benefit risk.","domain":3,"category":"Process"},{"id":196,"term":"Risk evaluation","acronym":null,"def":"The process of comparing the estimated risk against given risk criteria to determine the significance of the risk. [ISO/IEC Guide 73:2002].","scopeNotes":"","domain":3,"category":"Process"},{"id":197,"term":"Risk management","acronym":null,"def":"The coordinated activities to direct and control an enterprise with regard to risk","scopeNotes":"In the International Standard, the term \"control\" is used as a synonym for \"measure.\" (ISO/IEC Guide 73:2002)","domain":2,"category":"Control"},{"id":198,"term":"Risk mitigation","acronym":null,"def":"The management of risk through the use of countermeasures and controls (ISACA)","scopeNotes":"","domain":2,"category":"Control"},{"id":199,"term":"Risk tolerance","acronym":null,"def":"The acceptable level of variation that management is willing to allow for any particular risk as the enterprise pursues its objectives","scopeNotes":"","domain":2,"category":"Process"},{"id":200,"term":"Risk transfer","acronym":null,"def":"The process of assigning risk to another enterprise, usually through the purchase of an insurance policy or by outsourcing the service","scopeNotes":"Also known as risk sharing","domain":2,"category":"Control"},{"id":201,"term":"Risk treatment","acronym":null,"def":"The process of selection and implementation of measures to modify risk (ISO/IEC Guide 73:2002)","scopeNotes":"","domain":3,"category":"Process"},{"id":202,"term":"Router","acronym":null,"def":"A networking device that can send (route) data packets from one local area network (LAN) or wide area network (WAN) to another, based on addressing at the network layer (Layer 3) in the open systems interconnection (OSI) model","scopeNotes":"Networks connected by routers can use different or similar networking protocols. Routers usually are capable of filtering packets based on parameters, such as source addresses, destination addresses, protocol and network applications (ports).","domain":0,"category":"Technology"},{"id":203,"term":"RSA (RSA)","acronym":"RSA","def":"A public key cryptosystem developed by R. Rivest, A. Shamir and L. Adleman used for both encryption and digital signatures","scopeNotes":"The RSA has two different keys, the public encryption key and the secret decryption key. The strength of the RSA depends on the difficulty of the prime number factorization. For applications with high- level security, the number of the decryption key bits should be greater than 512 bits.","domain":5,"category":"Technology"},{"id":204,"term":"Secure Sockets Layer (SSL)","acronym":"SSL","def":"A protocol that is used to transmit private documents through the Internet","scopeNotes":"The SSL protocol uses a private key to encrypt the data that are to be transferred through the SSL connection.","domain":5,"category":"Technology"},{"id":205,"term":"Segregation/separation of duties (SoD)","acronym":null,"def":"A basic internal control that prevents or detects errors and irregularities by assigning to separate individuals the responsibility for initiating and recording transactions and for the custody of assets.","scopeNotes":"Segregation/separation of duties is commonly used in large IT organizations so that no single person is in a position to introduce fraudulent or malicious code without detection.","domain":1,"category":"Concept"},{"id":206,"term":"Service level agreement (SLA)","acronym":"SLA","def":"An agreement, preferably documented, between a service provider and the customer(s)/user(s) that defines minimum performance targets for a service and how they will be measured","scopeNotes":"","domain":4,"category":"Concept"},{"id":207,"term":"Simple Object Access Protocol (SOAP)","acronym":"SOAP","def":"A platform-independent formatted protocol based on extensible markup language (XML) enabling applications to communicate with each other over the Internet.","scopeNotes":"Use of SOAP may provide a significant security risk to web application operations because use of SOAP piggybacks onto a web-based document object model and is transmitted via HyperText Transfer Protocol (HTTP) (port 80) to penetrate server firewalls, which are usually configured to accept port 80 and port 21 File Transfer Protocol (FTP) requests. Web-based document models define how objects on a web page are associated with each other and how they can be manipulated while being sent from a server to a client browser. SOAP typically relies on XML for presentation formatting and also adds appropriate HTTP-based headers to send it. SOAP forms the foundation layer of the web services stack, providing a basic messaging framework on which more abstract layers can build. There are several different types of messaging patterns in SOAP, but by far the most common is the Remote Procedure Call (RPC) pattern, in which one network node (the client) sends a request message to another node (the server), and the server immediately sends a response message to the client.","domain":3,"category":"Technology"},{"id":208,"term":"Spyware","acronym":null,"def":"Software whose purpose is to monitor a computer user's actions (e.g., websites visited) and report these actions to a third party, without the informed consent of that machine's owner or legitimate user","scopeNotes":"","domain":5,"category":"Technology"},{"id":209,"term":"Standard","acronym":null,"def":"A mandatory requirement, code of practice or specification approved by a recognized external standards organization, such as International Organization for Standardization (ISO).","scopeNotes":"","domain":3,"category":"Control"},{"id":210,"term":"Star topology","acronym":null,"def":"A type of local area network (LAN) architecture that utilizes a central controller to which all nodes are directly connected.","scopeNotes":"With star topology, all transmissions from one station to another pass through the central controller which is responsible for managing and controlling all communication. The central controller often acts as a switching device.","domain":0,"category":"Control"},{"id":211,"term":"Statistical sampling","acronym":null,"def":"A method of selecting a portion of a population, by means of mathematical calculations and probabilities, for the purpose of making scientifically and mathematically sound inferences regarding the characteristics of the entire population.","scopeNotes":"","domain":4,"category":"Process"},{"id":212,"term":"Storage area networks (SANs)","acronym":null,"def":"A variation of a local area network (LAN) that is dedicated for the express purpose of connecting storage devices to servers and other computing devices.","scopeNotes":"SANs centralize the process for the storage and administration of data.","domain":4,"category":"Technology"},{"id":213,"term":"Structured Query Language (SQL)","acronym":"SQL","def":"A language used to interrogate and process data in a relational database. Originally developed for IBM mainframes, many implementations have been created for mini- and microcomputer database applications. SQL commands can be used to interactively work with a database or embedded with a programming language to interface with a database.","scopeNotes":"","domain":3,"category":"Technology"},{"id":214,"term":"Switches","acronym":null,"def":"Typically associated as a data link layer device, switches enable local area network (LAN) segments to be created and interconnected, which has the added benefit of reducing collision domains in Ethernet-based networks.","scopeNotes":"","domain":0,"category":"Technology"},{"id":215,"term":"System development life cycle (SDLC)","acronym":"SDLC","def":"The phases deployed in the development or acquisition of a software system.","scopeNotes":"SDLC is an approach used to plan, design, develop, test and implement an application system or a major modification to an application system. Typical phases of SDLC include the feasibility study, requirements study, requirements definition, detailed design, programming, testing, installation and post- implementation review, but not the service delivery or benefits realization activities.","domain":3,"category":"Technology"},{"id":216,"term":"Threat","acronym":null,"def":"Anything (e.g., object, substance, human) that is capable of acting against an asset in a manner that can result in harm","scopeNotes":"A potential cause of an unwanted incident (ISO/IEC 13335)","domain":5,"category":"Concept"},{"id":217,"term":"Token ring topology","acronym":null,"def":"A type of local area network (LAN) ring topology in which a frame containing a specific format, called the token, is passed from one station to the next around the ring","scopeNotes":"When a station receives the token, it is allowed to transmit. The station can send as many frames as desired until a predefined time limit is reached. When a station either has no more frames to send or reaches the time limit, it transmits the token. Token passing prevents data collisions that can occur when two computers begin transmitting at the same time.","domain":0,"category":"Technology"},{"id":218,"term":"Transmission Control Protocol/Internet Protocol (TCP/IP)","acronym":"TCP/IP","def":"Provides the basis for the Internet; a set of communication protocols that encompass media access, packet transport, session communication, file transfer, electronic mail (email), terminal emulation, remote file access and network management","scopeNotes":"","domain":2,"category":"Technology"},{"id":219,"term":"Trojan horse","acronym":null,"def":"Purposefully hidden malicious or damaging code within an authorized computer program","scopeNotes":"","domain":5,"category":"Technology"},{"id":220,"term":"Twisted pair","acronym":null,"def":"A low-capacity transmission medium; a pair of small, insulated wires that are twisted around each other to minimize interference from other wires in the cable","scopeNotes":"","domain":4,"category":"Concept"},{"id":221,"term":"Uninterruptible power supply (UPS)","acronym":"UPS","def":"Provides short-term backup power from batteries for a computer system when the electrical power fails or drops to an unacceptable voltage level.","scopeNotes":"","domain":4,"category":"Technology"},{"id":222,"term":"Universal Serial BUS (USB)","acronym":"USB","def":"An external bus standard that provides capabilities to transfer data at a rate of 12 Mbps.","scopeNotes":"A USB port can connect up to 127 peripheral devices.","domain":2,"category":"Control"},{"id":223,"term":"Variable sampling","acronym":null,"def":"A sampling technique used to estimate the average or total value of a population based on a sample","scopeNotes":"","domain":1,"category":"Process"},{"id":224,"term":"Voice-over Internet Protocol (VoIP)","acronym":null,"def":"Also called IP Telephony, Internet Telephony and Broadband Phone, a technology that makes it possible to have a voice conversation over the Internet or over any dedicated Internet Protocol (IP) network instead of over dedicated voice transmission lines","scopeNotes":"","domain":0,"category":"Technology"},{"id":225,"term":"Vulnerability","acronym":null,"def":"A weakness in the design, implementation, operation or internal control of a process that could expose the system to adverse threats from threat events","scopeNotes":"","domain":5,"category":"Control"},{"id":226,"term":"Vulnerability analysis","acronym":null,"def":"A process of identifying and classifying vulnerabilities","scopeNotes":"","domain":5,"category":"Process"},{"id":227,"term":"Warm site","acronym":null,"def":"Similar to a hot site but not fully equipped with all of the necessary hardware needed for recovery.","scopeNotes":"","domain":4,"category":"Technology"},{"id":228,"term":"White box testing","acronym":null,"def":"A testing approach that uses knowledge of a program/module's underlying implementation and code intervals to verify its expected behavior.","scopeNotes":"","domain":3,"category":"Process"},{"id":229,"term":"Wi-Fi Protected Access (WPA)","acronym":"WPA","def":"A class of security protocols used to secure wireless (Wi-Fi) computer networks","scopeNotes":"","domain":5,"category":"Technology"},{"id":230,"term":"Wide area network (WAN)","acronym":"WAN","def":"A computer network connecting multiple offices or buildings over a larger area","scopeNotes":"","domain":0,"category":"Technology"},{"id":231,"term":"Wide area network (WAN) switch","acronym":"WAN","def":"A data link layer device used for implementing various WAN technologies such as asynchronous transfer mode, point-to-point frame relay solutions, and integrated services digital network (ISDN).","scopeNotes":"WAN switches are typically associated with carrier networks providing dedicated WAN switching and router services to enterprises via T-1 or T-3 connections.","domain":0,"category":"Technology"},{"id":232,"term":"Wired Equivalent Privacy (WEP)","acronym":"WEP","def":"A scheme that is part of the IEEE 802.11 wireless networking standard to secure IEEE 802.11 wireless networks (also known as Wi-Fi networks).","scopeNotes":"Because a wireless network broadcasts messages using radio, it is particularly susceptible to eavesdropping. WEP was intended to provide comparable confidentiality to a traditional wired network (in particular, it does not protect users of the network from each other), hence the name. Several serious weaknesses were identified by cryptanalysts, and WEP was superseded by Wi-Fi Protected Access (WPA) in 2003, and then by the full IEEE 802.11i standard (also known as WPA2) in 2004. Despite the weaknesses, WEP provides a level of security that can deter casual snooping.","domain":5,"category":"Control"},{"id":233,"term":"Wiretapping","acronym":null,"def":"The practice of eavesdropping on information being transmitted over telecommunications links.","scopeNotes":"","domain":5,"category":"Concept"},{"id":234,"term":"X.25 Interface","acronym":null,"def":"An interface between data terminal equipment (DTE) and data circuit-terminating equipment (DCE) for terminals operating in the packet mode on some public data networks.","scopeNotes":"","domain":0,"category":"Technology"}]</script>
 <script id="faqData" type="application/json">[
 {"cat":"Using the app","q":"How do I start practicing?","a":"Open Practice from the bottom navigation, choose a domain (or 'All domains'), and answer questions one at a time. Your first question loads automatically — read the explanation after every answer, right or wrong."},
-{"cat":"Using the app","q":"What is the difference between Study mode and Exam mode?","a":"Study mode shows the full scenario plus tips and mindset coaching after you answer. Exam mode compacts the question and hides the extras so the screen feels closer to the real exam. Toggle it with the STUDY / EXAM button in the header."},
+{"cat":"Using the app","q":"What is the difference between Study mode and Exam mode?","a":"Study mode shows the full scenario plus tips and mindset coaching after you answer. Exam mode compacts the question and hides the extras so the screen feels closer to the real exam. Turn it on or off with Exam-style questions under You."},
 {"cat":"Using the app","q":"How does the Mock Exam work?","a":"The Mock Exam builds a 150-question timed test that mirrors the real CISA blueprint — the same domain mix and a realistic spread of difficulty. You get a scored result and a breakdown at the end."},
 {"cat":"Using the app","q":"What is the Review queue?","a":"Questions you answer incorrectly come back on a spaced schedule — soon at first, then at widening intervals as you get them right, until they retire. The Home screen shows how many are due and lets you start a review session in one tap."},
-{"cat":"Using the app","q":"How do I save a question for later?","a":"Use the bookmark control on a question to save it. Saved questions live under 'Saved' in the More menu, where you can revisit them any time."},
+{"cat":"Using the app","q":"How do I save a question for later?","a":"Use the bookmark control on a question to save it. Saved questions live under Practice, then Saved, where you can revisit them any time."},
 {"cat":"Using the app","q":"What does the Weak Spots tab show?","a":"Weak Spots shows how each of the five domains is going and lets you start a drill on the ones that need work. Until a domain has 30 answers it shows Building, Steady or Strong instead of a number, so a few answers never read as a verdict."},
 {"cat":"Using the app","q":"Some tabs are missing on my phone — where are they?","a":"The bottom navigation shows Home, Practice, Mock, Topics, and More. 'More' opens the rest — Weak Spots, Principles, Glossary, Saved, and this FAQ."},
 {"cat":"Using the app","q":"What is the Topics tab?","a":"Topics is a study reference. Each topic has a plain-language explanation, clear diagrams, and the common mistakes to watch for, organized by domain."},
-{"cat":"Using the app","q":"How do I switch to dark mode?","a":"Tap the moon icon in the header. Your choice is remembered for next time."},
+{"cat":"Using the app","q":"How do I switch to dark mode?","a":"Open You and turn on Dark mode. Your choice is remembered for next time."},
 {"cat":"The CISA exam","q":"How many questions are on the CISA exam?","a":"The CISA exam has 150 multiple-choice questions."},
 {"cat":"The CISA exam","q":"How long is the exam?","a":"You are given 4 hours to complete the CISA exam."},
 {"cat":"The CISA exam","q":"What score do I need to pass?","a":"CISA is scored on a scale of 200 to 800, and a score of 450 or higher is a passing result."},
@@ -5548,8 +5739,8 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
 {"cat":"About & your data","q":"Is this app affiliated with ISACA?","a":"No. It is an independent, free study resource. CISA is a registered trademark of ISACA; this app is for educational use only and is not a substitute for official ISACA materials."},
 {"cat":"About & your data","q":"Does the app cost anything?","a":"No. The web practice app is free, with no account and no ads."},
 {"cat":"About & your data","q":"Is my data private?","a":"Yes. Your progress is stored only in your own browser and never leaves your device. There is no sign-up, and your answers are not sent to any server."},
-{"cat":"About & your data","q":"Where is my progress saved?","a":"All progress is saved locally in your browser. Clearing your browser data or using a different device or browser will start you fresh. Open Your data in the menu to export a copy, import one, or reset."},
-{"cat":"About & your data","q":"How do I report a problem or suggest a feature?","a":"Use the Feedback option in the More menu — it goes straight to the team."}
+{"cat":"About & your data","q":"Where is my progress saved?","a":"All progress is saved locally in your browser. Clearing your browser data or using a different device or browser will start you fresh. Open You, then Your data, to export a copy, import one, or reset."},
+{"cat":"About & your data","q":"How do I report a problem or suggest a feature?","a":"Open You, then Send feedback — it goes straight to the team."}
 ]</script>
 <script id="qbData" type="application/json">{"1":[],"2":[],"3":[],"4":[],"5":[]}</script>
 <script>
@@ -5645,7 +5836,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.3';
+const APP_VERSION = 'v12.4';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -8251,6 +8442,8 @@ function getNextQ(domainStr, diff) {
 
 // â”€â”€ TAB SWITCHING â”€â”€
 function switchTab(t, opts) {
+  // A stale or unknown page name (an older save, a typo'd link) opens Today.
+  if (!NAV_SECTION[t]) t = 'home';
   clearAllTimers(); // always clear timers when switching tabs
   // Leaving any review-replay session — clear the mode flags so the gen
   // button and nextQ() return to normal practice behaviour. startReviewQueue
@@ -8263,16 +8456,10 @@ function switchTab(t, opts) {
   // Lets CSS drop the shared dashboard above Topics on phones.
   document.body.setAttribute('data-tab', t);
   document.body.removeAttribute('data-mock-results');
-  document.querySelectorAll('.nav-tab').forEach(function(x){
-    x.classList.toggle('active', x.id === 'tab-' + t);
-  });
   document.querySelectorAll('.screen').forEach(function(x){
     x.classList.toggle('active', x.id === 'screen-' + t);
   });
-  var bgroup = bnavGroupFor(t);
-  document.querySelectorAll('.bnav-item').forEach(function(x){
-    x.classList.toggle('active', x.dataset.bnav === bgroup);
-  });
+  syncNav(t);
   if (t === 'home') renderHome();
   if (t === 'bookmarks') renderBookmarks();
   if (t === 'weakspots') renderWeakSpots();
@@ -8291,67 +8478,147 @@ function switchTab(t, opts) {
   // heading sits at the top of the viewport instead of the page header.
   // The first-load restore passes {noScroll:true} so the page opens at the
   // top (header and logo visible) instead of scrolled down to the screen.
+  // With the section sub-pages bar showing (phones), land on that bar so the
+  // learner can see where they are and hop between the section's pages.
   try {
     if (opts && opts.noScroll) return;
-    var sc = document.getElementById('screen-' + t);
+    var sub = document.getElementById('subNav');
+    var sc = (sub && !sub.hidden && sub.offsetParent !== null) ? sub : document.getElementById('screen-' + t);
     if (sc && sc.scrollIntoView) sc.scrollIntoView({ block: 'start' });
     else window.scrollTo(0, 0);
   } catch (e) {}
 }
 
-// â”€â”€ MOBILE BOTTOM NAV (v10.35) â”€â”€
-// Maps any of the 7 tabs to one of the 5 bottom-nav slots; overflow tabs
-// (weakspots/principles/glossary/bookmarks) light up the "More" slot.
-function bnavGroupFor(t) {
-  if (t === 'home' || t === 'practice' || t === 'mock' || t === 'topics') return t;
-  return 'more';
+// ── SECTIONS (Grove Desk, 2026-10-18) ──
+// The web app shows the mobile app's sections: Today, Learn, Practice, You
+// (Play stays hidden on web until a game is ported). Every existing page keeps
+// its own name (S.activeTab, switchTab('topics'), the keyboard shortcuts), and
+// each page belongs to one section. Old links (#topics, #weak, #bookmarks...)
+// still open the right page.
+var NAV_SECTION = {
+  home: 'today',
+  topics: 'learn', glossary: 'learn', principles: 'learn',
+  practice: 'practice', mock: 'practice', bookmarks: 'practice',
+  you: 'you', weakspots: 'you', faq: 'you', about: 'you'
+};
+// The page a section opens on (its first page) and its listed sub-pages.
+var NAV_HOME = { today: 'home', learn: 'topics', practice: 'practice', you: 'you' };
+var NAV_PAGES = {
+  learn: [['topics', 'Study notes'], ['glossary', 'Glossary'], ['principles', 'Principles']],
+  practice: [['practice', 'Practice'], ['mock', 'Mock exam'], ['bookmarks', 'Saved']]
+};
+// The address each page shows (#notes, #saved ...) and every name we accept.
+var NAV_HASH = {
+  home: 'today', topics: 'notes', glossary: 'glossary', principles: 'principles',
+  practice: 'practice', mock: 'mock', bookmarks: 'saved',
+  you: 'you', weakspots: 'weak-spots', faq: 'help', about: 'about'
+};
+var NAV_ALIAS = {
+  today: 'home', home: 'home',
+  learn: 'sec:learn', notes: 'topics', 'study-notes': 'topics', topics: 'topics',
+  glossary: 'glossary', principles: 'principles',
+  practice: 'practice', mock: 'mock', 'mock-exam': 'mock',
+  saved: 'bookmarks', bookmarks: 'bookmarks',
+  you: 'you', settings: 'you', more: 'you',
+  weak: 'weakspots', weakspots: 'weakspots', 'weak-spots': 'weakspots',
+  faq: 'faq', help: 'faq', about: 'about',
+  'whats-new': 'you!changelog', changelog: 'you!changelog',
+  data: 'you!data', 'your-data': 'you!data'
+};
+// The last page used in each section, so Learn reopens where you were.
+var navLastPage = { learn: 'topics', practice: 'practice' };
+
+// Turns a nav target into a page name. 'sec:learn' = the Learn section:
+// its last page, or its first page when you are already inside it.
+function navResolve(target) {
+  if (target.indexOf('sec:') !== 0) return target;
+  var sec = target.slice(4);
+  var cur = NAV_SECTION[S.activeTab] || '';
+  if (cur === sec) return NAV_HOME[sec];
+  return navLastPage[sec] || NAV_HOME[sec];
 }
-// Opens the Ko-fi support page. Centralised so the More menu, the Home
+// Nav links are real links (#notes, #saved ...) so they can be opened in a
+// new tab; a plain click switches the page in place.
+function navTo(e, target) {
+  if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.button && e.button !== 0))) return true;
+  if (e && e.preventDefault) e.preventDefault();
+  switchTab(navResolve(target));
+  return false;
+}
+// Reads an address like #weak or #whats-new. Returns { tab, action } or null.
+function navFromHash(hash) {
+  var key = String(hash || '').replace(/^#\/?/, '').toLowerCase();
+  if (!key) return null;
+  var v = NAV_ALIAS[key];
+  if (!v) return null;
+  var parts = v.split('!');
+  return { tab: navResolve(parts[0]), action: parts[1] || '' };
+}
+function navRunAction(action) {
+  if (action === 'changelog' && typeof showChangelog === 'function') showChangelog();
+  if (action === 'data' && typeof showYourData === 'function') showYourData();
+}
+// Marks the current section and page in the rail and the bottom bar, draws
+// the section's page links (phones) or the way back to You, and keeps the
+// address in step (without adding history entries).
+function syncNav(t) {
+  var sec = NAV_SECTION[t] || 'today';
+  if (NAV_PAGES[sec]) navLastPage[sec] = t;
+  document.body.setAttribute('data-section', sec);
+  document.querySelectorAll('.sn-item, .bnav-item').forEach(function (x) {
+    if (x.getAttribute('data-sec') !== sec) { x.removeAttribute('aria-current'); return; }
+    // The section's own first page is "the page"; inside a sub-page the
+    // section is the current set and the sub-link is the page.
+    x.setAttribute('aria-current', (t === NAV_HOME[sec] && !NAV_PAGES[sec]) ? 'page' : 'true');
+  });
+  document.querySelectorAll('.sn-subitem').forEach(function (x) {
+    if (x.getAttribute('data-tab') === t) x.setAttribute('aria-current', 'page');
+    else x.removeAttribute('aria-current');
+  });
+  var sub = document.getElementById('subNav');
+  if (sub) {
+    var html = '';
+    if (NAV_PAGES[sec]) {
+      sub.setAttribute('aria-label', sec === 'learn' ? 'Learn pages' : 'Practice pages');
+      sub.className = 'sub-nav sub-nav-pages';
+      html = NAV_PAGES[sec].map(function (p) {
+        return '<a href="#' + NAV_HASH[p[0]] + '" onclick="return navTo(event,\'' + p[0] + '\')"'
+          + (p[0] === t ? ' aria-current="page"' : '') + '>' + p[1] + '</a>';
+      }).join('');
+    } else if (sec === 'you' && t !== 'you') {
+      sub.setAttribute('aria-label', 'Back');
+      sub.className = 'sub-nav sub-nav-back';
+      html = '<a href="#you" onclick="return navTo(event,\'you\')">' + ico('chevron', 18, 'ico ico-back') + 'You</a>';
+    }
+    sub.innerHTML = html;
+    sub.hidden = !html;
+  }
+  if (t === 'you') syncYouSettings();
+  updateHeaderCountdown();
+  try {
+    var want = '#' + (NAV_HASH[t] || 'today');
+    if (location.hash !== want && window.history && history.replaceState) {
+      history.replaceState(history.state, '', want);
+    }
+  } catch (e) {}
+}
+// The You page's on/off rows show the saved choices.
+function syncYouSettings() {
+  try { syncThemeSwitch(); syncExamModeBtn(); } catch (e) {}
+}
+// Someone follows or types an address (#glossary, an old #topics link ...).
+window.addEventListener('hashchange', function () {
+  var r = navFromHash(location.hash);
+  if (!r) return;
+  if (r.tab !== S.activeTab) switchTab(r.tab);
+  if (r.action) navRunAction(r.action);
+});
+
+// Opens the Ko-fi support page. Centralised so the You page, the Home
 // card, and the post-mock prompt all point at the same destination.
 function openSupport() {
   window.open('https://ko-fi.com/aurivan', '_blank', 'noopener,noreferrer');
 }
-function openMoreSheet() {
-  var sheet = document.getElementById('moreSheet');
-  var bd = document.getElementById('moreSheetBackdrop');
-  var btn = document.getElementById('bnavMore');
-  var bk = document.getElementById('moreBkBadge');
-  var n = (S.bookmarks && S.bookmarks.length) || 0;
-  if (bk) { bk.textContent = n; bk.style.display = n > 0 ? '' : 'none'; }
-  if (sheet) sheet.classList.add('open');
-  if (bd) bd.classList.add('open');
-  if (btn) btn.setAttribute('aria-expanded', 'true');
-  // Move focus into the sheet (it asserts aria-modal).
-  var first = sheet && sheet.querySelector('.more-item');
-  if (first) first.focus();
-}
-function closeMoreSheet() {
-  var sheet = document.getElementById('moreSheet');
-  var bd = document.getElementById('moreSheetBackdrop');
-  var btn = document.getElementById('bnavMore');
-  if (sheet) sheet.classList.remove('open');
-  if (bd) bd.classList.remove('open');
-  if (btn) btn.setAttribute('aria-expanded', 'false');
-  // Restore focus to the More button — but only if focus is still inside
-  // the sheet or was lost (not when an item opened a modal that took focus).
-  var ae = document.activeElement;
-  if (btn && (!ae || ae === document.body || (sheet && sheet.contains(ae)))) {
-    btn.focus();
-  }
-}
-document.addEventListener('keydown', function(e) {
-  var sheet = document.getElementById('moreSheet');
-  if (!sheet || !sheet.classList.contains('open')) return;
-  if (e.key === 'Escape') { closeMoreSheet(); return; }
-  if (e.key === 'Tab') {
-    // Trap Tab within the sheet while it is open (aria-modal).
-    var items = sheet.querySelectorAll('.more-item');
-    if (!items.length) return;
-    var first = items[0], last = items[items.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  }
-});
 
 // â”€â”€ HOME DASHBOARD (v10.35) â”€â”€
 // Store links go here when the apps are live; the "Get the app" button stays
@@ -9210,9 +9477,27 @@ function dismissExamPrompt() {
   var area = document.getElementById('examCountdownArea');
   if (area) area.innerHTML = '';
 }
+// The desktop rail's footer shows the days to the exam once a date is set
+// (hidden when there is no date, or the date has passed).
 function updateHeaderCountdown() {
-  // No header slot allocated by spec — keep the pill in the practice tab only
-  // for v9.0. Adding a topbar countdown chip can come in v9.1.
+  var foot = document.getElementById('railCountdown');
+  if (!foot) return;
+  var days = null;
+  try {
+    var d = localStorage.getItem('aurivan_exam_date');
+    if (d) {
+      var exam = new Date(/T/.test(d) ? d : d + 'T00:00:00');
+      exam.setHours(0, 0, 0, 0);
+      var today = new Date(); today.setHours(0, 0, 0, 0);
+      var diff = Math.round((exam - today) / 86400000);
+      if (!isNaN(diff) && diff >= 0) days = diff;
+    }
+  } catch (e) {}
+  if (days === null) { foot.hidden = true; foot.innerHTML = ''; return; }
+  foot.innerHTML = days === 0
+    ? '<span class="rail-days">Today</span>is your CISA exam'
+    : '<span class="rail-days">' + days + (days === 1 ? ' day' : ' days') + '</span>to your CISA exam';
+  foot.hidden = false;
 }
 
 // ── DECISION 9: SESSION INTENT → PRACTICE → DEBRIEF ──
@@ -10479,12 +10764,12 @@ function resetAllDomains() {
 }
 
 // â”€â”€ KEYBOARD SHORTCUTS â”€â”€
-// True while a popup, the More sheet, the header menu or a zoomed figure is
+// True while a popup or a zoomed figure is
 // open, or the key comes from inside one. Shortcuts must never reach the
 // question behind it (Space scrolls a long What's New, it must not submit).
 function overlayOpen(target) {
   if (target && target.closest && target.closest('[role="dialog"], [aria-modal="true"]')) return true;
-  return !!document.querySelector('#flagModal > *, #changelogModal > *, #feedbackModal > *, #glossDetailModal > *, #moreSheet.open, #hdrMenu.open, #gtZoom');
+  return !!document.querySelector('#flagModal > *, #changelogModal > *, #feedbackModal > *, #glossDetailModal > *, #gtZoom');
 }
 document.addEventListener('keydown', function(e) {
   // Escape closes the glossary card (dialogs close themselves, see the modal helper).
@@ -11689,6 +11974,10 @@ ensureLocalProfile();
 loadState();
 buildQueues();
 initConsentBanner(); // cookie consent — gates Google Analytics
+// An address like #glossary (or an old #topics / #weak link) opens that page
+// instead of the one used last.
+var bootNav = navFromHash(location.hash);
+if (bootNav) S.activeTab = bootNav.tab;
 // Decision 8 + 9: countdown + session-start render on practice screen (lazy
 // init — only if practice tab is the active screen on boot)
 try {
@@ -11700,8 +11989,6 @@ try {
 (function syncHeaderVersion(){
   var pill = document.getElementById('versionPill');
   if (pill) pill.textContent = APP_VERSION;
-  var menuPill = document.getElementById('hdrMenuPill');
-  if (menuPill) menuPill.textContent = APP_VERSION;
 })();
 loadExamMode();  // v10.10 — restore exam-mode preference
 renderDomainGrid();
@@ -11719,7 +12006,7 @@ if (S.activeTab && S.activeTab !== 'practice') {
 } else {
   // Practice is showing: tell the stylesheet, so Practice-only chrome (stats) appears.
   document.body.setAttribute('data-tab', 'practice');
-  document.getElementById('tab-practice').classList.add('active');
+  syncNav('practice');
   if (shouldResumeCurrent()) renderResumePrompt();
 }
 
@@ -11727,16 +12014,8 @@ if (shouldResumeCurrent() && (!S.activeTab || S.activeTab === 'practice')) {
   renderResumePrompt();
 }
 
-// v10.35 — sync the mobile bottom-nav active slot on boot (covers the
-// case where activeTab is 'practice' and switchTab was not called above).
-(function syncBottomNavOnBoot(){
-  try {
-    var bgroup = bnavGroupFor(S.activeTab || 'home');
-    document.querySelectorAll('.bnav-item').forEach(function(x){
-      x.classList.toggle('active', x.dataset.bnav === bgroup);
-    });
-  } catch (e) {}
-})();
+// An address that asks for a popup (#whats-new, #your-data) opens it on You.
+if (bootNav && bootNav.action) setTimeout(function () { navRunAction(bootNav.action); }, 0);
 
 // First visit: the welcome (onboarding) opens after a short pause.
 checkOnboarding();
@@ -12423,6 +12702,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Same layout as the app',
+    items: [
+      { cat: 'new', text: 'The website now uses the same sections as the KaiSip app: Today, Learn, Practice and You, with a side menu on larger screens.' },
+      { cat: 'improved', text: 'Dark mode, exam-style questions, your data and help now live together on the You page.' }
+    ]
+  },
+  {
+    version: 'v12.3',
     title: 'Saved questions and the practice timer',
     items: [
       { cat: 'fixed', text: 'Bookmarked questions, their labels and your list of missed questions now stay saved when you reload the page.' },
@@ -13420,8 +13707,15 @@ function toggleDarkMode() {
   var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   var newTheme = isDark ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', newTheme);
-  document.getElementById('darkToggleBtn').innerHTML = ico(isDark ? 'moon' : 'sun', 20);
+  syncThemeSwitch();
   try { localStorage.setItem('cisa_theme', newTheme); } catch(e){}
+}
+// The "Dark mode" switch on You shows the theme in use.
+function syncThemeSwitch() {
+  var btn = document.getElementById('darkToggleBtn');
+  if (!btn) return;
+  var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  btn.setAttribute('aria-checked', dark ? 'true' : 'false');
 }
 
 // ── EXAM-REALISTIC MODE TOGGLE (v10.10) ──
@@ -13450,6 +13744,8 @@ function syncExamModeBtn() {
   var icon = document.getElementById('examModeIcon');
   var label = document.getElementById('examModeLabel');
   if (!btn) return;
+  // The control is the "Exam-style questions" switch on You.
+  btn.setAttribute('aria-checked', S.examMode ? 'true' : 'false');
   if (S.examMode) {
     if (icon) icon.innerHTML = ico('exam', 18);
     if (label) label.textContent = 'Exam';
@@ -13498,8 +13794,9 @@ function loadExamMode() {
       if (at >= 0) {
         order.splice(at, 1);
         var back = openers[id]; delete openers[id];
-        // The opener can be gone (a menu that closed): fall back to the menu buttons.
-        if (!visible(back)) back = [document.getElementById('hdrMenuBtn'), document.getElementById('bnavMore')].filter(visible)[0];
+        // The opener can be gone (a page that re-rendered): fall back to the
+        // current section in whichever nav is showing.
+        if (!visible(back)) back = Array.prototype.filter.call(document.querySelectorAll('.sn-item[aria-current], .bnav-item[aria-current]'), visible)[0];
         if (back && !top()) { try { back.focus(); } catch (e) {} }
       }
       return;
@@ -13555,52 +13852,6 @@ function loadExamMode() {
   }, true);
 })();
 
-// The header menu is a disclosure (a button that shows a list of buttons):
-// opening moves focus to the first item, Esc closes it and hands focus back.
-function toggleHdrMenu() {
-  var menu = document.getElementById('hdrMenu');
-  var btn = document.getElementById('hdrMenuBtn');
-  var open = menu.classList.toggle('open');
-  btn.setAttribute('aria-expanded', String(open));
-  if (open) {
-    var first = menu.querySelector('.hdr-menu-item');
-    if (first) first.focus();
-  }
-}
-function closeHdrMenu(returnFocus) {
-  var menu = document.getElementById('hdrMenu');
-  var btn = document.getElementById('hdrMenuBtn');
-  if (menu) menu.classList.remove('open');
-  if (btn) btn.setAttribute('aria-expanded', 'false');
-  if (returnFocus === true && btn) btn.focus();
-}
-document.addEventListener('keydown', function(e) {
-  var menu = document.getElementById('hdrMenu');
-  if (!menu || !menu.classList.contains('open')) return;
-  if (e.key === 'Escape') { e.preventDefault(); closeHdrMenu(true); return; }
-  // Up/Down move between the items, as people expect in a list of actions.
-  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-    var items = Array.prototype.slice.call(menu.querySelectorAll('.hdr-menu-item'));
-    if (!items.length) return;
-    var i = items.indexOf(document.activeElement);
-    var next = e.key === 'ArrowDown' ? (i + 1) % items.length : (i <= 0 ? items.length - 1 : i - 1);
-    e.preventDefault();
-    items[next].focus();
-  }
-});
-// Tabbing out of the open menu closes it.
-document.addEventListener('focusin', function(e) {
-  var menu = document.getElementById('hdrMenu');
-  var btn = document.getElementById('hdrMenuBtn');
-  if (menu && menu.classList.contains('open') && !menu.contains(e.target) && e.target !== btn) closeHdrMenu();
-});
-document.addEventListener('click', function(e) {
-  var menu = document.getElementById('hdrMenu');
-  var btn = document.getElementById('hdrMenuBtn');
-  if (menu && menu.classList.contains('open') && !menu.contains(e.target) && !(btn && btn.contains(e.target))) {
-    closeHdrMenu();
-  }
-});
 // Eagerly preload notes data on app start so the readiness card,
 // study recommendation, and other consumers have data ready when needed.
 // (Topics tab will use the cached result once available.)
@@ -13609,10 +13860,8 @@ document.addEventListener('click', function(e) {
 })();
 
 (function initTheme() {
-  // The theme itself is set in <head> before first paint; this syncs the toggle icon.
-  var saved = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-  var btn = document.getElementById('darkToggleBtn');
-  if (btn) btn.innerHTML = ico(saved === 'dark' ? 'sun' : 'moon', 20);
+  // The theme itself is set in <head> before first paint; this syncs the switch.
+  syncThemeSwitch();
 })();
 
 // Clean up any old subscribe-state flags from previous app versions
