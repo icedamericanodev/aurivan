@@ -5267,7 +5267,7 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
     <span class="logo-tagline">Free CISA&reg; exam prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v12.2</span>
+    <span class="bank-pill" id="versionPill">v12.3</span>
     <button class="exam-mode-btn" id="examModeBtn" onclick="toggleExamMode()" aria-label="Toggle exam-realistic mode" title="Study mode (current): dense scenario blocks, tips revealed after answering. Exam mode: compact stems and minimal post-answer feedback — closer to the real exam."><span id="examModeIcon" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.5 19.5A2.5 2.5 0 0 1 7 17h12.5V3H7a2.5 2.5 0 0 0-2.5 2.5z"/><path d="M4.5 19.5A2.5 2.5 0 0 0 7 22h12.5v-5"/></svg></span><span id="examModeLabel">Study</span></button>
     <button class="dark-toggle-btn hdr-icon-btn" id="darkToggleBtn" onclick="toggleDarkMode()" aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 1 1 9.4 4a6.6 6.6 0 0 0 10.6 10.6z"/></svg></button>
     <button id="hdrMenuBtn" class="hdr-icon-btn" onclick="toggleHdrMenu()" aria-label="More options" aria-expanded="false" aria-controls="hdrMenu"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
@@ -5645,7 +5645,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.2';
+const APP_VERSION = 'v12.3';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -6093,6 +6093,12 @@ var S_DEFAULTS = {
   // A Leitner-style schedule — questions missed in practice resurface on a
   // spreading interval until they graduate out of box 5.
   review: {},
+  // Parity foundation: per-question records, mistakes, study days and mock
+  // history kept like the mobile app (see "PARITY FOUNDATION" below).
+  answerLog: {},
+  mistakeLog: {},
+  studyDays: [],
+  mockHistory: [],
   activeTab: "home",
 };
 
@@ -6164,19 +6170,44 @@ function findQuestionById(id) {
   return null;
 }
 
+// The banks load in the background (loadRemoteDomains), usually AFTER the
+// saved state is read. A saved question whose domain has not loaded yet is
+// kept as saved and refreshed once its bank arrives (see the
+// qb:domain-loaded listener below); it is dropped only when its bank is
+// loaded and the question is really gone. Dropping it early wiped every
+// bookmark and missed question on reload (fixed v12.2.1).
+function savedQuestionBankLoaded(id) {
+  var m = /^d(\d+)_/.exec(String(id || ''));
+  var d = m ? m[1] : null;
+  return !!(d && QB[d] && QB[d].length);
+}
 function rehydrateSavedQuestions(list) {
   if (!Array.isArray(list)) return [];
   var seen = {};
   var out = [];
   list.forEach(function(q) {
-    var bankQ = q && q.id ? findQuestionById(q.id) : null;
-    if (bankQ && !seen[bankQ.id]) {
-      out.push(JSON.parse(JSON.stringify(bankQ)));
-      seen[bankQ.id] = true;
+    if (!q || !q.id || seen[q.id]) return;
+    var bankQ = findQuestionById(q.id);
+    if (bankQ) {
+      var copy = JSON.parse(JSON.stringify(bankQ));
+      // Keep what the learner added to the saved copy (e.g. a bookmark tag).
+      Object.keys(q).forEach(function(k) { if (!(k in copy)) copy[k] = q[k]; });
+      out.push(copy);
+      seen[q.id] = true;
+    } else if (!savedQuestionBankLoaded(q.id)) {
+      out.push(q);
+      seen[q.id] = true;
     }
   });
   return out;
 }
+document.addEventListener('qb:domain-loaded', function() {
+  try {
+    if (typeof S === 'undefined' || !S) return;
+    S.bookmarks = rehydrateSavedQuestions(S.bookmarks);
+    S.missedQuestions = rehydrateSavedQuestions(S.missedQuestions);
+  } catch (e) {}
+});
 
 // ── ADAPTIVE REVIEW QUEUE (v10.39) ──
 // Leitner-style spaced repetition. Each missed question gets a review
@@ -6252,16 +6283,272 @@ function getDueReview() {
     });
 }
 
+// ── PARITY FOUNDATION (quiet; nothing on screen reads these yet) ──
+// From now on the web keeps learner progress in the same detail as the
+// mobile app, so readiness, the plant, badges and a future sync can be
+// honest. Each field MIRRORS a mobile shape (mobile/src/store/progress.ts,
+// checked by mobile/src/engine/backup.ts, merged by engine/syncMerge.ts), so
+// a later importer can map it field for field:
+// - S.answerLog[qId] = mobile AnswerRecord (engine/readiness.ts):
+//     { attempts, correctCount, lastCorrect, lastAt (epoch ms),
+//       lastRetest?, ms?, lastConfidence? }
+//   lastRetest: a RIGHT answer less than 4 h after a WRONG one (srs.ts).
+//   ms: time to answer, capped at 30 min. lastConfidence uses the mobile
+//   scale: Sure -> 'sure', Educated Guess -> 'unsure', Guessing -> 'guessing'.
+//   Optional flags are written only when true / present, like mobile. The
+//   web has no "Coach me" hint before answering (tips open after the
+//   answer), so lastAssisted is never written here.
+// - S.mistakeLog[qId] = mobile MistakeEntry: { picked?, at, resolved,
+//   confidence? }. picked is the ORIGINAL option letter (never the display
+//   letter); none for a timed-out answer.
+// - S.studyDays = distinct local days with an answer, "YYYY-MM-DD" (mobile
+//   streak dayKey), oldest first, last PARITY_MAX_STUDY_DAYS kept.
+// - S.mockHistory = mobile MockResult list, newest first, last
+//   PARITY_MAX_MOCKS kept: { id, finishedAt, total, correct, minutesUsed,
+//   byDomain: { "1": { total, correct } }, timing, minutesAllowed,
+//   medianSec?, unanswered }.
+// Filled from the moment this shipped: no history is invented for answers
+// given before (older saves load these as empty). The older fields
+// (answeredIds, confidenceLog, streak, ds, score ...) are kept as they are.
+var PARITY_MAX_ANSWER_MS = 30 * 60000;
+var PARITY_RETEST_MS = 4 * 3600000;
+var PARITY_MAX_MOCKS = 50;
+var PARITY_MAX_STUDY_DAYS = 730;
+var PARITY_MAX_IDS = 20000;
+var PARITY_ID_RE = /^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$/;
+var PARITY_DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
+var PARITY_CONFIDENCE = ['sure', 'unsure', 'guessing'];
+var PARITY_LETTERS = ['A', 'B', 'C', 'D'];
+
+function parityDayKey(ms) {
+  var d = new Date(ms);
+  var mm = String(d.getMonth() + 1); if (mm.length < 2) mm = '0' + mm;
+  var dd = String(d.getDate()); if (dd.length < 2) dd = '0' + dd;
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+
+// The web confidence chips, on the mobile scale (undefined = no rating).
+function parityConfidence(c) {
+  if (c === 'sure') return 'sure';
+  if (c === 'educated') return 'unsure';
+  if (c === 'guessing') return 'guessing';
+  return undefined;
+}
+
+function parityCount(n) {
+  n = Math.round(Number(n));
+  return isFinite(n) && n > 0 ? n : 0;
+}
+
+function ensureParityFields() {
+  if (!S.answerLog || typeof S.answerLog !== 'object' || Array.isArray(S.answerLog)) S.answerLog = {};
+  if (!S.mistakeLog || typeof S.mistakeLog !== 'object' || Array.isArray(S.mistakeLog)) S.mistakeLog = {};
+  if (!Array.isArray(S.studyDays)) S.studyDays = [];
+  if (!Array.isArray(S.mockHistory)) S.mockHistory = [];
+}
+
+function noteStudyDay(at) {
+  ensureParityFields();
+  var day = parityDayKey(at);
+  if (S.studyDays.indexOf(day) >= 0) return;
+  S.studyDays.push(day);
+  S.studyDays.sort();
+  if (S.studyDays.length > PARITY_MAX_STUDY_DAYS) S.studyDays = S.studyDays.slice(-PARITY_MAX_STUDY_DAYS);
+}
+
+// One graded answer (practice or mock). `ok` is the already-graded result;
+// opts.picked is the ORIGINAL letter chosen (null for a timeout),
+// opts.confidence the web chip value, opts.ms the time to answer.
+function recordAnswerParity(qId, ok, opts) {
+  if (!qId || !PARITY_ID_RE.test(String(qId))) return;
+  opts = opts || {};
+  ensureParityFields();
+  var now = Date.now();
+  var prev = S.answerLog[qId];
+  var gap = prev ? now - prev.lastAt : -1;
+  var retest = !!(ok && prev && prev.lastCorrect === false && gap >= 0 && gap < PARITY_RETEST_MS);
+  var rec = {
+    attempts: (prev ? parityCount(prev.attempts) : 0) + 1,
+    correctCount: (prev ? parityCount(prev.correctCount) : 0) + (ok ? 1 : 0),
+    lastCorrect: !!ok,
+    lastAt: now
+  };
+  if (retest) rec.lastRetest = true;
+  if (typeof opts.ms === 'number' && isFinite(opts.ms)) {
+    rec.ms = Math.min(PARITY_MAX_ANSWER_MS, Math.max(0, Math.round(opts.ms)));
+  }
+  var conf = parityConfidence(opts.confidence);
+  if (conf) rec.lastConfidence = conf;
+  S.answerLog[qId] = rec;
+  // Mistakes, like mobile: a miss starts a fresh entry; a later right answer
+  // (not a retest, which is too soon to know) marks it fixed.
+  var picked = PARITY_LETTERS.indexOf(opts.picked) >= 0 ? opts.picked : null;
+  if (!ok) {
+    var entry = { at: now, resolved: false };
+    if (picked) entry.picked = picked;
+    if (conf) entry.confidence = conf;
+    S.mistakeLog[qId] = entry;
+  } else if (!retest && S.mistakeLog[qId] && !S.mistakeLog[qId].resolved) {
+    S.mistakeLog[qId].resolved = true;
+  }
+  noteStudyDay(now);
+}
+
+// A finished mock, once (mobile MockResult). `answers` is S.mockAnswers,
+// `queue` S.mockQueue; unanswered items count in totals, never as answers.
+function recordMockParity(answers, queue) {
+  ensureParityFields();
+  answers = Array.isArray(answers) ? answers : [];
+  queue = Array.isArray(queue) ? queue : [];
+  var now = Date.now();
+  // One record per started mock: a second results call (timer ending during
+  // the pause after an answer) finds no id and stops.
+  if (!S.mockId) return;
+  var id = S.mockId;
+  S.mockId = null;
+  for (var h = 0; h < S.mockHistory.length; h++) if (S.mockHistory[h].id === id) return;
+  var n = Math.max(queue.length, answers.length);
+  if (!n) return;
+  var byDomain = {}, correct = 0, unanswered = 0, times = [];
+  for (var i = 0; i < n; i++) {
+    var a = answers[i];
+    var q = queue[i] || (a && a.q) || null;
+    var d = q && q.domain !== undefined ? String(q.domain) : null;
+    if (d && !byDomain[d]) byDomain[d] = { total: 0, correct: 0 };
+    if (d) byDomain[d].total++;
+    if (!a || a.timedOut || !a.chosenOriginal) { unanswered++; continue; }
+    if (a.ok) { correct++; if (d) byDomain[d].correct++; }
+    if (typeof a.ms === 'number' && isFinite(a.ms) && a.ms >= 0) times.push(Math.min(a.ms, PARITY_MAX_ANSWER_MS));
+  }
+  var allowedSec = S.mockTotalSecondsTotal || (240 * 60);
+  var usedSec = Math.max(0, allowedSec - Math.max(0, Number(S.mockTotalSecondsLeft) || 0));
+  var result = {
+    id: id,
+    finishedAt: now,
+    total: n,
+    correct: correct,
+    minutesUsed: Math.min(1440, Math.round(usedSec / 60)),
+    byDomain: byDomain,
+    timing: 'standard',
+    minutesAllowed: Math.round(allowedSec / 60),
+    unanswered: unanswered
+  };
+  if (times.length) {
+    times.sort(function(x, y) { return x - y; });
+    var mid = Math.floor(times.length / 2);
+    var med = times.length % 2 ? times[mid] : (times[mid - 1] + times[mid]) / 2;
+    result.medianSec = Math.round(med / 1000);
+  }
+  S.mockHistory.unshift(result);
+  if (S.mockHistory.length > PARITY_MAX_MOCKS) S.mockHistory = S.mockHistory.slice(0, PARITY_MAX_MOCKS);
+}
+
+// Load / import checks: keep only well-formed entries, within the caps.
+function sanitizeAnswerLog(m) {
+  var out = {};
+  if (!m || typeof m !== 'object' || Array.isArray(m)) return out;
+  Object.keys(m).slice(0, PARITY_MAX_IDS).forEach(function(id) {
+    var e = m[id];
+    if (!PARITY_ID_RE.test(id) || !e || typeof e !== 'object') return;
+    var at = Number(e.lastAt);
+    if (!isFinite(at) || at <= 0) return;
+    var attempts = Math.max(1, parityCount(e.attempts));
+    var rec = {
+      attempts: attempts,
+      correctCount: Math.min(attempts, parityCount(e.correctCount)),
+      lastCorrect: e.lastCorrect === true,
+      lastAt: at
+    };
+    if (e.lastAssisted === true) rec.lastAssisted = true;
+    if (e.lastRetest === true) rec.lastRetest = true;
+    if (e.lastGame === true) rec.lastGame = true;
+    if (typeof e.ms === 'number' && isFinite(e.ms)) rec.ms = Math.min(PARITY_MAX_ANSWER_MS, Math.max(0, Math.round(e.ms)));
+    if (PARITY_CONFIDENCE.indexOf(e.lastConfidence) >= 0) rec.lastConfidence = e.lastConfidence;
+    out[id] = rec;
+  });
+  return out;
+}
+
+function sanitizeMistakeLog(m) {
+  var out = {};
+  if (!m || typeof m !== 'object' || Array.isArray(m)) return out;
+  Object.keys(m).slice(0, PARITY_MAX_IDS).forEach(function(id) {
+    var e = m[id];
+    if (!PARITY_ID_RE.test(id) || !e || typeof e !== 'object') return;
+    var at = Number(e.at);
+    if (!isFinite(at) || at <= 0) return;
+    var entry = { at: at, resolved: e.resolved === true };
+    if (PARITY_LETTERS.indexOf(e.picked) >= 0) entry.picked = e.picked;
+    if (PARITY_CONFIDENCE.indexOf(e.confidence) >= 0) entry.confidence = e.confidence;
+    if (e.fixedLater === true) entry.fixedLater = true;
+    if (typeof e.slip === 'string' && /^[a-z-]{1,20}$/.test(e.slip)) entry.slip = e.slip;
+    out[id] = entry;
+  });
+  return out;
+}
+
+function sanitizeStudyDays(list) {
+  if (!Array.isArray(list)) return [];
+  var seen = {}, out = [];
+  list.forEach(function(d) {
+    if (typeof d === 'string' && PARITY_DAY_RE.test(d) && !seen[d]) { seen[d] = true; out.push(d); }
+  });
+  out.sort();
+  return out.slice(-PARITY_MAX_STUDY_DAYS);
+}
+
+function sanitizeMockHistory(list) {
+  if (!Array.isArray(list)) return [];
+  var seen = {}, out = [];
+  list.forEach(function(m) {
+    if (!m || typeof m !== 'object' || typeof m.id !== 'string' || !PARITY_ID_RE.test(m.id) || seen[m.id]) return;
+    var at = Number(m.finishedAt);
+    if (!isFinite(at) || at <= 0) return;
+    var total = parityCount(m.total);
+    var byDomain = {};
+    if (m.byDomain && typeof m.byDomain === 'object') {
+      Object.keys(m.byDomain).slice(0, 50).forEach(function(d) {
+        var t = m.byDomain[d];
+        if (!/^[A-Za-z0-9]{1,8}$/.test(d) || !t || typeof t !== 'object') return;
+        var dt = parityCount(t.total);
+        byDomain[d] = { total: dt, correct: Math.min(dt, parityCount(t.correct)) };
+      });
+    }
+    var r = {
+      id: m.id,
+      finishedAt: at,
+      total: total,
+      correct: Math.min(total, parityCount(m.correct)),
+      minutesUsed: Math.min(1440, Math.max(0, Number(m.minutesUsed) || 0)),
+      byDomain: byDomain
+    };
+    if (['standard', 'plus25', 'plus50', 'untimed'].indexOf(m.timing) >= 0) r.timing = m.timing;
+    if (typeof m.minutesAllowed === 'number' && isFinite(m.minutesAllowed)) r.minutesAllowed = Math.min(1440, Math.max(0, m.minutesAllowed));
+    if (typeof m.medianSec === 'number' && isFinite(m.medianSec)) r.medianSec = Math.min(PARITY_MAX_ANSWER_MS / 1000, Math.max(0, m.medianSec));
+    if (m.unanswered !== undefined) r.unanswered = Math.min(total, parityCount(m.unanswered));
+    seen[m.id] = true;
+    out.push(r);
+  });
+  out.sort(function(a, b) { return b.finishedAt - a.finishedAt; });
+  return out.slice(0, PARITY_MAX_MOCKS);
+}
+
 function normalizeImportedState(state) {
   if (!state || typeof state !== 'object') return null;
   var clean = {};
   var fields = ["score","ds","streak","bookmarks","answeredIds","missedQuestions",
                 "confidenceLog","sessionHistory","selectedDomain","diff",
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed",
-                "current","qn","activeTab","review","topicTicksSchema"];
+                "current","qn","activeTab","review","topicTicksSchema",
+                "answerLog","mistakeLog","studyDays","mockHistory"];
   fields.forEach(function(k) {
     if (state[k] !== undefined) clean[k] = state[k];
   });
+  // Parity fields: older saves have none and load as empty (no invented history).
+  clean.answerLog = sanitizeAnswerLog(clean.answerLog);
+  clean.mistakeLog = sanitizeMistakeLog(clean.mistakeLog);
+  clean.studyDays = sanitizeStudyDays(clean.studyDays);
+  clean.mockHistory = sanitizeMockHistory(clean.mockHistory);
   clean.bookmarks = rehydrateSavedQuestions(clean.bookmarks);
   clean.missedQuestions = rehydrateSavedQuestions(clean.missedQuestions);
   clean.review = sanitizeReviewMap(clean.review);
@@ -6315,6 +6602,8 @@ function saveState() {
     answeredIds: S.answeredIds, missedQuestions: S.missedQuestions,
     confidenceLog: S.confidenceLog, sessionHistory: S.sessionHistory,
     review: S.review,
+    answerLog: S.answerLog, mistakeLog: S.mistakeLog,
+    studyDays: S.studyDays, mockHistory: S.mockHistory,
     selectedDomain: S.selectedDomain, diff: S.diff,
     timerEnabled: S.timerEnabled, timerSeconds: S.timerSeconds,
     qIdx: S.qIdx, mindsetIdx: S.mindsetIdx,
@@ -6327,6 +6616,7 @@ function saveState() {
     mockAnswers: mockInProgress ? S.mockAnswers : [],
     mockCurrent: mockInProgress ? S.mockCurrent : 0,
     mockTotalSecondsLeft: mockInProgress ? S.mockTotalSecondsLeft : 0,
+    mockId: mockInProgress ? (S.mockId || null) : null,
   };
   profiles[id].state = persist;
   profiles[id].lastActive = Date.now();
@@ -6348,7 +6638,8 @@ function loadState() {
   var fields = ["score","ds","streak","bookmarks","answeredIds","missedQuestions",
                 "confidenceLog","sessionHistory","review","selectedDomain","diff",
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicTicksSchema",
-                "current","qn","activeTab","mockAnswers","mockCurrent","mockTotalSecondsLeft"];
+                "current","qn","activeTab","mockAnswers","mockCurrent","mockTotalSecondsLeft",
+                "answerLog","mistakeLog","studyDays","mockHistory"];
   fields.forEach(function(k) {
     if (saved[k] !== undefined) S[k] = saved[k];
   });
@@ -6359,8 +6650,10 @@ function loadState() {
       (QB[d]||[]).forEach(function(q){ idMap[q.id] = q; });
     });
     S.mockQueue = saved.mockQueueIds.map(function(id){ return idMap[id]; }).filter(Boolean);
+    if (typeof saved.mockId === 'string' && /^web-[a-z0-9-]{1,40}$/.test(saved.mockId)) S.mockId = saved.mockId;
   }
   ensureAnsweredBuckets();
+  ensureParityFields();
   if (!S.qIdx["all"]) S.qIdx["all"] = 0;
   if (!S.queues) S.queues = {};
   if (!S.queues["all"]) S.queues["all"] = [];
@@ -7746,7 +8039,7 @@ function conceptStripHtml(ctx, pos, total) {
 }
 
 function showNextConcept() {
-  clearAllTimers();
+  clearQuestionTimers();
   var ctx = conceptPracticeCtx;
   var area = document.getElementById('qArea');
   if (!ctx || !area) return;
@@ -7771,6 +8064,7 @@ function onConceptPracticeAnswer(ok) {
 }
 
 function showConceptPracticeDone() {
+  stopSessionTimer();
   var ctx = conceptPracticeCtx;
   var area = document.getElementById('qArea');
   conceptPracticeMode = false;
@@ -8202,6 +8496,10 @@ function toggleTimer() {
 function setTimerDuration(mins) {
   S.timerSeconds = mins; // stored as minutes selection (0=auto)
   S.timerEnabled = true;
+  // A new choice starts a fresh countdown now if a question is on screen;
+  // otherwise it starts with the next question.
+  stopSessionTimer();
+  if (S.activeTab === 'practice' && S.current && document.querySelector('#qArea .opt')) startDomainTimer();
   updateTimerDisplay();
   saveState();
 }
@@ -8225,6 +8523,27 @@ function clearAllTimers() {
   S.domainTimerActive = false;
   var ta = document.getElementById('timerArea');
   if (ta) ta.style.display = 'none';
+}
+
+// Between questions only the per-question mock clock stops. The practice
+// session timer (Off / Auto / 15 / 30 / 60 min) covers the WHOLE session, so
+// answering or moving on must not restart it; leaving practice, a finished
+// bank or a new timer choice ends it (clearAllTimers / stopSessionTimer).
+function clearQuestionTimers() {
+  if (S.mockTimerInt) { clearInterval(S.mockTimerInt); S.mockTimerInt = null; }
+}
+function stopSessionTimer() {
+  if (S.practiceTimerInt) { clearInterval(S.practiceTimerInt); S.practiceTimerInt = null; }
+  S.domainTimerActive = false;
+  var ta = document.getElementById('timerArea');
+  if (ta) ta.style.display = 'none';
+}
+function continueWithoutTimer() {
+  S.timerEnabled = false;
+  stopSessionTimer();
+  updateTimerDisplay();
+  saveState();
+  backToPractice();
 }
 
 // â”€â”€ PRACTICE TIMER â”€â”€
@@ -8283,7 +8602,7 @@ function startDomainTimer() {
         + '<div class="empty-sub">Your ' + totalMins + '-minute session has ended.</div>'
         + '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
         + '<button class="act-btn primary" onclick="showSessionSummary()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">View Summary</button>'
-        + '<button class="act-btn secondary" onclick="backToPractice()">Continue Without Timer</button>'
+        + '<button class="act-btn secondary" onclick="continueWithoutTimer()">Continue Without Timer</button>'
         + '</div></div>';
       var genBtn = document.querySelector('.gen-btn');
       if (genBtn) genBtn.style.display = 'none';
@@ -8513,7 +8832,7 @@ function resumeCurrentQuestion() {
   var q = findQuestionById(S.current.id);
   if (!q) { discardResumeQuestion(); return; }
   S.current = q;
-  clearAllTimers();
+  clearQuestionTimers();
   renderQuestion(q);
   if (S.timerEnabled && !S.domainTimerActive) startDomainTimer();
 }
@@ -8526,7 +8845,7 @@ function discardResumeQuestion() {
 
 // â”€â”€ NEXT PRACTICE QUESTION â”€â”€
 function nextQ() {
-  clearAllTimers();
+  clearQuestionTimers();
   if (reviewQueueMode) {
     reviewQueueIndex++;
     showNextReview();
@@ -8556,6 +8875,7 @@ function nextQ() {
   }
   var q = getNextQ(S.selectedDomain, S.diff);
   if (!q) {
+    stopSessionTimer();
     // Check if a filter is active — show filter-complete screen, not domain-complete
     if (activeSubtopic || S.diff !== "any") {
       showFilterComplete();
@@ -8602,6 +8922,8 @@ function onPracticeTimeout() {
     S.answeredIds[d][S.current.id] = true;
   }
   S.sessionHistory.push({domain:d,correct:false,confidence:"none",question:S.current.question.substring(0,80)});
+  // Parity record: a timeout is a wrong answer with no option picked.
+  try { recordAnswerParity(S.current.id, false, { picked: null, ms: questionStartTime ? Date.now() - questionStartTime : undefined }); } catch(e) {}
   onConceptPracticeAnswer(false);
   updateStats();
   renderDomainGrid();
@@ -9192,7 +9514,7 @@ function submitAnswer() {
 
 function selectAnswer(chosen, _ignoredCorrect) {
   if (!S.current) return;
-  clearAllTimers();
+  clearQuestionTimers();
   // chosen is a DISPLAY letter — translate to original via the shuffle
   // map so we can compare to S.current.correct (which is original).
   var shuffle = S.currentShuffle || DISPLAY_LETTERS;
@@ -9258,6 +9580,15 @@ function selectAnswer(chosen, _ignoredCorrect) {
     confidence: currentConfidence,
     question: S.current.question.substring(0, 80)
   });
+
+  // Parity record (mobile shape). Stores the ORIGINAL letter picked.
+  try {
+    recordAnswerParity(S.current.id, ok, {
+      picked: displayToOriginal(chosen, shuffle),
+      confidence: currentConfidence,
+      ms: questionStartTime ? Date.now() - questionStartTime : undefined
+    });
+  } catch(e) {}
 
   currentConfidence = "none";
 
@@ -9727,6 +10058,7 @@ function startMock() {
   S.mockAnswers = [];
   S.mockCurrent = 0;
   mockAnswerLock = false;
+  S.mockId = 'web-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 7); // parity mock id
 
   // Don't let the user start an exam while a domain bank is still fetching —
   // that would silently drop those questions from the simulation.
@@ -9858,7 +10190,8 @@ function selectMockAnswer(chosen, _ignoredCorrect) {
     chosenOriginal: origChosen, // original letter (for grading + review)
     correct: S.current.correct, // original correct letter
     shuffle: shuffle.slice(),   // snapshot the shuffle used for this question
-    ok: ok
+    ok: ok,
+    ms: questionStartTime ? Math.max(0, Date.now() - questionStartTime) : undefined // time to answer (parity)
   };
   // Auto-save checkpoint every 5 questions
   if ((S.mockCurrent + 1) % 5 === 0) { saveMockCheckpoint(); }
@@ -9874,6 +10207,10 @@ function selectMockAnswer(chosen, _ignoredCorrect) {
     // Track answered ID
     if (S.current.id && S.answeredIds && S.answeredIds[d]) {
       S.answeredIds[d][S.current.id] = true;
+    }
+    // Parity record (mobile shape): a skipped mock item is not an answer.
+    if (origChosen) {
+      try { recordAnswerParity(S.current.id, ok, { picked: origChosen, ms: S.mockAnswers[S.mockCurrent].ms }); } catch(e) {}
     }
     // Track incorrect for review
     if (!ok) {
@@ -9906,6 +10243,8 @@ function selectMockAnswer(chosen, _ignoredCorrect) {
   }
   setTimeout(function(){
     mockAnswerLock = false; // reset lock before showing next
+    // The exam clock may have ended during this pause and shown results.
+    if (document.body.getAttribute('data-mock-results') === '1') return;
     S.mockCurrent++;
     if (S.mockCurrent >= S.mockQueue.length) showMockResults();
     else showMockQuestion();
@@ -9917,6 +10256,8 @@ function showMockResults() {
   clearAllTimers();
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
   var answers = S.mockAnswers;
+  // Parity: keep this mock in the history (once), and save it now.
+  try { recordMockParity(answers, S.mockQueue); saveState(); } catch(e) {}
   var tot = answers.length;
   var cor = 0;
   for (var i=0;i<answers.length;i++) { if(answers[i].ok) cor++; }
@@ -10102,6 +10443,11 @@ function doResetProgress() {
   S.confidenceLog = [];
   S.sessionHistory = [];
   S.review = {};
+  S.answerLog = {};
+  S.mistakeLog = {};
+  S.studyDays = [];
+  S.mockHistory = [];
+  S.mockId = null;
   S.answeredIds = {"1":{},"2":{},"3":{},"4":{},"5":{},"all":{}};
   S.qIdx = {"1":0,"2":0,"3":0,"4":0,"5":0,"all":0};
   S.selectedDomain = "1";
@@ -11644,13 +11990,14 @@ function reviewSpecificMissed(d, idx) {
 }
 
 function showNextMissed() {
-  clearAllTimers();
+  clearQuestionTimers();
   if (missedReviewIndex >= missedReviewQueue.length) {
     // All missed reviewed
     missedReviewMode = false;
     var remaining = S.missedQuestions.filter(function(q){ 
       return missedReviewDomain === "all" || String(q.domain) === missedReviewDomain; 
     }).length;
+    stopSessionTimer();
     document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct-light);border-radius:var(--radius);padding:36px">'
       + '<div class="empty-icon"></div>'
       + '<div class="empty-title" style="color:var(--correct)">Review Complete!</div>'
@@ -11708,10 +12055,11 @@ function startReviewQueue() {
 }
 
 function showNextReview() {
-  clearAllTimers();
+  clearQuestionTimers();
   if (reviewQueueIndex >= reviewQueueList.length) {
     reviewQueueMode = false;
     var stillDue = getDueReview().length;
+    stopSessionTimer();
     document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct);border-radius:var(--radius);padding:36px">'
       + '<div class="empty-icon">🎉</div>'
       + '<div class="empty-title" style="color:var(--correct)">Review session complete</div>'
@@ -12075,6 +12423,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Saved questions and the practice timer',
+    items: [
+      { cat: 'fixed', text: 'Bookmarked questions, their labels and your list of missed questions now stay saved when you reload the page.' },
+      { cat: 'fixed', text: 'The practice timer now counts down across your whole session instead of starting over on each question, and "Continue without timer" turns it off.' }
+    ]
+  },
+  {
+    version: 'v12.2',
     title: 'Questions re-checked',
     items: [
       { cat: 'improved', text: 'Every practice question was re-checked by independent reviewers: clearer wording, more realistic wrong answers and up-to-date references.' },

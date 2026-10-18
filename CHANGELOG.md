@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.3] — Saved questions and the practice timer
+
+### Fixed
+- Bookmarked questions, their labels and your list of missed questions now stay saved when you reload the page.
+- The practice timer now counts down across your whole session instead of starting over on each question, and "Continue without timer" turns it off.
+
 ## [v12.2] — Questions re-checked
 
 ### Improved
