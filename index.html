@@ -5223,7 +5223,7 @@ body[data-mock-results="1"] #readinessCard { display: none; }
    Practice only; the support card and disclaimer sit on Home / About / Help. */
 body[data-tab]:not([data-tab="practice"]) .mindset-strip { display: none; }
 body[data-tab]:not([data-tab="home"]):not([data-tab="about"]) .tipjar-card { display: none; }
-body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer { display: none; }
+body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer { display: none; }
 
 /* ── TODAY (Grove Desk step 4, 2026-10-18) ──────────────────────────────────
    The calm home, like the mobile Today tab: the day line (countdown left,
@@ -5238,6 +5238,16 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
 .td-streak .ico { color: var(--clay); flex-shrink: 0; }
 .td-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: var(--sp-xs) 0 0; overflow-wrap: anywhere; }
 .td-title:focus { outline: none; }
+.td-intro { font: var(--t-body); color: var(--text2); margin: var(--sp-sm) 0 0; max-width: 52ch; }
+.td-setdate {
+  position: relative; display: inline; padding: 0; margin: 0; background: none; border: 0; cursor: pointer;
+  font: inherit; color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px;
+}
+/* A taller tap area that takes no room in the layout. */
+.td-setdate::after { content: ''; position: absolute; left: -4px; right: -4px; top: -12px; bottom: -12px; }
+.td-setdate:hover { color: var(--text); }
+.td-setdate:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
+@media (min-width: 1024px) { .td-count { display: none; } }
 .td-hero { margin: 0; padding: var(--sp-xxl); }
 .td-hero-t { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--on-forest); margin: var(--sp-xs) 0; }
 .td-hero-m { font: var(--t-meta); color: var(--on-forest2); margin: 0; }
@@ -5245,18 +5255,18 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
 .td-hero-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-lg); margin-top: var(--sp-xl); }
 .td-go { padding: 0 var(--sp-xxl); }
 /* Readiness plate (L1: tonal, never tapped) */
-.td-plate { margin-top: var(--sp-section); background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xxl); }
+.td-plate { margin-top: 32px; background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xxl); }
 .td-fig { display: flex; flex-direction: column; align-items: center; gap: var(--sp-md); text-align: center; }
 .td-rings { display: block; max-width: 100%; height: auto; }
 .td-big { font: var(--t-number); letter-spacing: var(--tr-number); color: var(--text); margin: 0; white-space: nowrap; }
-.td-big sup { font-size: .48em; line-height: 0; vertical-align: .8em; margin-left: 2px; letter-spacing: 0; }
+.td-big sup { font-size: .48em; line-height: 0; vertical-align: .8em; margin-left: 0; letter-spacing: 0; }
 .td-none { font: var(--t-headline); color: var(--text); margin: 0; }
 .td-cap { font: var(--t-meta); color: var(--text2); margin: var(--sp-xs) 0 0; }
 .td-legend { list-style: none; margin: var(--sp-xl) 0 0; padding: 0; border-top: 1px solid var(--border); }
 .td-legend li { display: flex; align-items: center; gap: var(--sp-sm); min-height: 44px; padding: var(--sp-sm) 0; border-bottom: 1px solid var(--border); }
 .td-dname { flex: 1; min-width: 0; font: var(--t-small); color: var(--text); }
 .td-dval { flex-shrink: 0; text-align: right; }
-.td-num { font: 500 18px/20px var(--f-serif); color: var(--text); }
+.td-num { font: var(--t-headline); font-family: var(--f-serif); font-weight: 500; color: var(--text); }
 .td-num sup { font-size: .5em; line-height: 0; vertical-align: .9em; }
 .td-word { font: var(--t-label); color: var(--text); }
 .td-note { font: var(--t-meta); color: var(--text2); margin: var(--sp-md) 0 0; }
@@ -5265,6 +5275,7 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
 .td-next .you-list { margin-top: var(--sp-xs); }
 .td-kicker { font: var(--t-caption); color: var(--accent-text); }
 .td-apps { font: var(--t-meta); color: var(--text2); margin: var(--sp-xl) 0 0; }
+.td-legal { font: var(--t-meta); color: var(--text2); margin: var(--sp-section) 0 0; }
 /* Single column with room: the rings beside their legend */
 @media (min-width: 560px) and (max-width: 1179px) {
   .td-plate { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--sp-section); align-items: center; }
@@ -5273,7 +5284,11 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
 @media (min-width: 1180px) {
   .td { max-width: none; display: grid; grid-template-columns: minmax(0, 1fr) 320px; grid-template-rows: auto auto 1fr; column-gap: var(--sp-xxxl); align-items: start; }
   .td-head, .td-hero, .td-next, .td-apps { grid-column: 1; }
-  .td-plate { grid-column: 2; grid-row: 1 / span 3; margin-top: 0; position: sticky; top: 40px; }
+  .td-legal { grid-column: 1 / -1; }
+  .td-plate { grid-column: 2; grid-row: 1 / span 3; margin-top: 0; }
+}
+@media (min-width: 1180px) and (min-height: 720px) {
+  .td-plate { position: sticky; top: 40px; }
 }
 /* The rings draw in once a day, outer ring first (DESIGN_SYSTEM §10.1); still under reduced motion. */
 @keyframes tdArc { from { stroke-dashoffset: 1; opacity: 0; } 4% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
@@ -5289,7 +5304,7 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
   display: block; width: 100%; max-width: 360px; min-height: 48px; padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md);
   border: 1.5px solid var(--control); background: var(--raised); color: var(--text); font: var(--t-body);
 }
-.you-name-input:focus { outline: none; border-color: var(--text); }
+.you-name-input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .you-name-acts { display: flex; flex-wrap: wrap; gap: var(--sp-sm); margin-top: var(--sp-lg); }
 .you-name-acts .ph-done { margin-top: 0; }
 .you-name-acts .you-name-save { background: var(--btn); border-color: var(--btn); color: var(--on-btn); }
@@ -7037,12 +7052,21 @@ function updateReviewSchedule(qId, ok, confidence) {
   e.lastSeen = now; e.reps = (e.reps || 0) + 1;
 }
 
+// A review id the queue can still open: a saved missed question, a question
+// in a loaded bank, or one whose bank is still loading (kept until it
+// arrives). An id whose question is gone from a loaded bank is not counted.
+function reviewIdOpenable(id) {
+  if (!savedQuestionBankLoaded(id)) return true;
+  var missed = S.missedQuestions || [];
+  for (var i = 0; i < missed.length; i++) if (missed[i] && missed[i].id === id) return true;
+  return !!findQuestionById(id);
+}
 // Question ids that are due for review now, most-overdue / weakest first.
 function getDueReview() {
   if (!S.review || typeof S.review !== 'object') return [];
   var now = Date.now();
   return Object.keys(S.review)
-    .filter(function(id){ return S.review[id] && S.review[id].dueAt <= now; })
+    .filter(function(id){ return S.review[id] && S.review[id].dueAt <= now && reviewIdOpenable(id); })
     .sort(function(a, b){
       var ra = S.review[a], rb = S.review[b];
       return (ra.dueAt - rb.dueAt) || (ra.box - rb.box);
@@ -9656,8 +9680,10 @@ function sdBump(s, now) {
 }
 function studyDayStreak(now) {
   var s = { current: 0, best: 0, lastDay: null, restDay: null };
+  var today = parityDayKey(now);
   (Array.isArray(S.studyDays) ? S.studyDays.slice().sort() : []).forEach(function (day) {
-    if (PARITY_DAY_RE.test(day)) s = sdBump(s, sdNoon(day));
+    // A day after today (a clock that was set ahead) never counts.
+    if (PARITY_DAY_RE.test(day) && day <= today) s = sdBump(s, sdNoon(day));
   });
   if (!s.lastDay) return 0;
   if (s.lastDay === parityDayKey(now) || s.lastDay === sdDaysBefore(now, 1)) return s.current;
@@ -9789,7 +9815,7 @@ function todayNextStep(r, range) {
   var due = 0;
   try { due = getDueReview().length; } catch (e) {}
   if (due > 0) {
-    return { icon: 'review', kicker: 'Due today', title: 'Spaced review', meta: due + ' due &middot; most overdue first', run: 'startReviewQueue()' };
+    return { icon: 'review', kicker: 'Due today', title: 'Spaced review', meta: due + ' due &middot; most overdue first', go: { step: 'review' } };
   }
   var note = function (hit, kicker) {
     var mins = 0;
@@ -9797,7 +9823,7 @@ function todayNextStep(r, range) {
     return {
       icon: 'topics', kicker: kicker, title: escapeHtml(hit.item.name),
       meta: escapeHtml(DI[hit.domain] ? DI[hit.domain].short : '') + (mins ? ' &middot; about ' + mins + ' min' : ''),
-      run: "todayOpenNote('" + hit.domain + "','" + escapeHtml(String(hit.item.id)).replace(/'/g, '&#39;') + "')"
+      go: { step: 'note', d: hit.domain, id: String(hit.item.id) }
     };
   };
   var started = todayStartedNote();
@@ -9810,9 +9836,10 @@ function todayNextStep(r, range) {
   var weak = range.enough ? r.domains.filter(function (x) { return x.id === r.focusId; })[0] : null;
   var practiceWeak = function () {
     var f = domainFigure(weak.answered, Math.round(weak.mastery * 100));
+    var fresh = weak.answered === 0;
     return {
-      icon: 'weak', kicker: 'Your weakest area', title: 'Practice ' + escapeHtml(DI[weak.id].short),
-      meta: escapeHtml(f.text) + ' &middot; ' + DI[weak.id].weight + '% of the exam', run: "todayPracticeDomain('" + weak.id + "')"
+      icon: 'weak', kicker: fresh ? 'Not started yet' : 'Your weakest area', title: 'Practice ' + escapeHtml(DI[weak.id].short),
+      meta: (fresh ? '' : escapeHtml(f.text) + ' &middot; ') + DI[weak.id].weight + '% of the exam', go: { step: 'domain', d: weak.id }
     };
   };
   if (weak && weak.mastery < DOMAIN_TARGET_PCT / 100) return practiceWeak();
@@ -9821,6 +9848,49 @@ function todayNextStep(r, range) {
     if (hit) return note(hit, 'Read next');
   }
   return weak ? practiceWeak() : null;
+}
+// The next-step row's button carries what it opens in data- attributes.
+function todayStepGo(btn) {
+  var g = (btn && btn.dataset) || {};
+  if (g.step === 'review') startReviewQueue();
+  else if (g.step === 'domain' && DI[g.d]) todayPracticeDomain(g.d);
+  else if (g.step === 'note' && g.id) todayOpenNote(g.d, g.id);
+}
+// "Set exam date" on the day line: the Practice page's exam-date field.
+function todaySetExamDate() {
+  switchTab('practice', { noScroll: true });
+  try { renderExamCountdown(); } catch (e) {}
+  var area = document.getElementById('examCountdownArea');
+  if (area && area.scrollIntoView) area.scrollIntoView({ block: 'center' });
+  var inp = document.getElementById('exam-date-input');
+  if (inp) { try { inp.focus({ preventScroll: true }); } catch (e) {} }
+}
+function todayNextHtml(step) {
+  if (!step) return '';
+  var data = Object.keys(step.go).map(function (k) { return ' data-' + k + '="' + escapeHtml(String(step.go[k])) + '"'; }).join('');
+  return '<section class="td-next" aria-labelledby="tdNextH">'
+    + '<h2 class="ph-h" id="tdNextH">Your next step</h2>'
+    + '<ul class="you-list"><li><button type="button" class="you-row td-row"' + data + ' onclick="todayStepGo(this)">'
+    + '<span class="you-ico" aria-hidden="true">' + ico(step.icon, 20) + '</span>'
+    + '<span class="you-text"><span class="td-kicker">' + step.kicker + '</span>'
+    + '<span class="you-t">' + step.title + '</span>'
+    + '<span class="you-m">' + step.meta + '</span></span>'
+    + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
+    + '</button></li></ul></section>';
+}
+// The notes arrive after the first paint: only the next step is drawn again
+// (the rest of Today, and the rings' daily draw-in, stay as they are).
+function refreshTodayNext() {
+  if (S.activeTab !== 'home') return;
+  var td = document.querySelector('#homeArea .td');
+  if (!td) return;
+  var r = computeTodayReadiness();
+  var html = todayNextHtml(todayNextStep(r, todayReadinessRange(r)));
+  var old = td.querySelector('.td-next');
+  var focused = !!(old && old.contains(document.activeElement));
+  if (old) old.outerHTML = html;
+  else if (html) td.querySelector('.td-plate').insertAdjacentHTML('beforebegin', html);
+  if (focused) { var b = td.querySelector('.td-next .you-row'); if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} } }
 }
 function todayOpenNote(domainId, itemId) {
   topicState.domain = String(domainId);
@@ -9847,7 +9917,14 @@ function renderHome() {
   // The day, the exam countdown (when a date is set) and the streak.
   var days = examDaysLeft();
   var when = TODAY_WEEKDAYS[now.getDay()];
-  if (days !== null) when += ' &middot; ' + (days < 0 ? 'Exam done' : days === 0 ? 'Exam day' : days + (days === 1 ? ' day' : ' days') + ' to ' + escapeHtml(ACTIVE.name));
+  if (days === null) {
+    when += ' &middot; <button type="button" class="td-setdate" onclick="todaySetExamDate()">Set exam date</button>';
+  } else if (days < 0) {
+    when += ' &middot; Exam done';
+  } else {
+    // The desktop rail's footer shows the same countdown, so it hides here from 1024px.
+    when += '<span class="td-count"> &middot; ' + (days === 0 ? 'Exam day' : days + (days === 1 ? ' day' : ' days') + ' to ' + escapeHtml(ACTIVE.name)) + '</span>';
+  }
   var streak = studyDayStreak(now.getTime());
   var name = getDisplayName();
   var greeting = greetingForHour(now.getHours()) + (name ? ', ' + name : '');
@@ -9856,8 +9933,8 @@ function renderHome() {
   var p = practicePrimary();
   var hero = '<section class="gt-panel td-hero" aria-labelledby="tdHeroT">'
     + gtFrondSvg()
-    + '<p class="gt-panel-cap">Today&rsquo;s practice</p>'
-    + '<h2 class="td-hero-t" id="tdHeroT">' + p.title + '</h2>'
+    + '<p class="gt-panel-cap" aria-hidden="true">Today&rsquo;s practice</p>'
+    + '<h2 class="td-hero-t" id="tdHeroT"><span class="sr-only">Today&rsquo;s practice: </span>' + p.title + '</h2>'
     + '<p class="td-hero-m">' + p.meta + '</p>'
     + '<div class="td-hero-acts"><button type="button" class="gt-pill td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPractice()">' + p.label + ico('arrow-right', 18) + '</button></div>'
     + '</section>';
@@ -9895,19 +9972,7 @@ function renderHome() {
   plate += '</section>';
 
   // One next step.
-  var step = todayNextStep(r, range);
-  var next = '';
-  if (step) {
-    next = '<section class="td-next" aria-labelledby="tdNextH">'
-      + '<h2 class="ph-h" id="tdNextH">Your next step</h2>'
-      + '<ul class="you-list"><li><button type="button" class="you-row td-row" onclick="' + step.run + '">'
-      + '<span class="you-ico" aria-hidden="true">' + ico(step.icon, 20) + '</span>'
-      + '<span class="you-text"><span class="td-kicker">' + step.kicker + '</span>'
-      + '<span class="you-t">' + step.title + '</span>'
-      + '<span class="you-m">' + step.meta + '</span></span>'
-      + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
-      + '</button></li></ul></section>';
-  }
+  var next = todayNextHtml(todayNextStep(r, range));
   var apps = [];
   if (STORE_LINKS.ios) apps.push('<a href="' + escapeHtml(STORE_LINKS.ios) + '" target="_blank" rel="noopener noreferrer">iPhone</a>');
   if (STORE_LINKS.android) apps.push('<a href="' + escapeHtml(STORE_LINKS.android) + '" target="_blank" rel="noopener noreferrer">Android</a>');
@@ -9918,15 +9983,18 @@ function renderHome() {
     + (streak > 0 ? '<p class="td-streak">' + ico('sprig', 20) + '<span>' + streak + '-day study streak</span></p>' : '')
     + '</div>'
     + '<h1 class="td-title" id="tdTitle" tabindex="-1">' + escapeHtml(greeting) + '</h1>'
+    + (r.answered === 0 ? '<p class="td-intro">Free practice for the CISA exam. Start with a short set below.</p>' : '')
     + '</div>'
     // Phones read it top to bottom as the web mock-up: practice, next step, then readiness.
     + hero + next + plate
     + (apps.length ? '<p class="td-apps">Get the app: ' + apps.join(' &middot; ') + '</p>' : '')
+    // The full disclaimer lives on About (and Help); Today keeps one line.
+    + '<p class="td-legal">KaiSip is independent and not affiliated with ISACA.</p>'
     + '</div>';
 
   // The notes arrive after the first paint: draw the next step again then.
   if (!CISA_NOTES_RAW && !conceptsLoadFailed) {
-    loadConceptsData(function () { if (S.activeTab === 'home') renderHome(); });
+    loadConceptsData(refreshTodayNext);
   }
 }
 
@@ -10636,17 +10704,23 @@ function renderPracticeHub() {
 }
 
 // ── PRACTICE HUB: DOMAIN PICKS ──
-// One row per domain (DI order): its read (a band word until 30 answers,
-// then the number), how many you have seen, and a bar that fills only once
-// the read is real. A row starts a set in that domain.
+// One row per domain (DI order): its read, how many you have seen, and a
+// bar that fills only once the read is a number. A row starts a set there.
+// The read is Today's figure (domainFigure over the latest try at each
+// question, the mobile rule): a band word until 30 answers, then the number,
+// so a learner sees one figure per domain everywhere.
 function renderDomainGrid() {
   var g = document.getElementById('domainGrid');
   if (!g) return;
-  g.innerHTML = Object.keys(DI).map(function (d) {
+  var rd = computeTodayReadiness();
+  g.innerHTML = Object.keys(DI).map(function (d, i) {
     var info = DI[d];
-    var r = domainRead(S.ds[d] || { t: 0, c: 0 });
+    var x = rd.domains[i];
+    var pct = Math.round(x.mastery * 100);
+    var f = domainFigure(x.answered, pct);
     var seen = (S.answeredIds && S.answeredIds[d]) ? Object.keys(S.answeredIds[d]).length : 0;
-    var read = r.pct === null ? 'Not started' : domainReadLabel(r);
+    var read = x.answered <= 0 ? 'Not started' : f.text;
+    var bar = (x.answered > 0 && !f.banded) ? pct : 0;
     var meta = info.weight + '% of the exam' + (seen ? ' &middot; ' + seen + ' seen' : '');
     if (isQBLoading(d)) meta += ' &middot; loading';
     else if (window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]) meta += ' &middot; could not load';
@@ -10655,7 +10729,7 @@ function renderDomainGrid() {
       + '<span class="ph-dom-text">'
       + '<span class="ph-dom-t"><span class="dom-dot" style="background:' + info.color + '"></span>' + escapeHtml(info.short) + '</span>'
       + '<span class="ph-dom-m">' + meta + '</span>'
-      + '<span class="ph-dom-bar" aria-hidden="true"><span style="width:' + readBarWidth(r) + '%"></span></span>'
+      + '<span class="ph-dom-bar" aria-hidden="true"><span style="width:' + bar + '%"></span></span>'
       + '</span>'
       + '<span class="ph-dom-r">' + read + '</span>'
       + '<span class="sr-only">. Start a set</span>'
