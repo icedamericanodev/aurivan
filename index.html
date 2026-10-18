@@ -6189,7 +6189,10 @@ function rehydrateSavedQuestions(list) {
     if (!q || !q.id || seen[q.id]) return;
     var bankQ = findQuestionById(q.id);
     if (bankQ) {
-      out.push(JSON.parse(JSON.stringify(bankQ)));
+      var copy = JSON.parse(JSON.stringify(bankQ));
+      // Keep what the learner added to the saved copy (e.g. a bookmark tag).
+      Object.keys(q).forEach(function(k) { if (!(k in copy)) copy[k] = q[k]; });
+      out.push(copy);
       seen[q.id] = true;
     } else if (!savedQuestionBankLoaded(q.id)) {
       out.push(q);
@@ -6398,7 +6401,10 @@ function recordMockParity(answers, queue) {
   answers = Array.isArray(answers) ? answers : [];
   queue = Array.isArray(queue) ? queue : [];
   var now = Date.now();
-  var id = S.mockId || ('web-' + now.toString(36));
+  // One record per started mock: a second results call (timer ending during
+  // the pause after an answer) finds no id and stops.
+  if (!S.mockId) return;
+  var id = S.mockId;
   S.mockId = null;
   for (var h = 0; h < S.mockHistory.length; h++) if (S.mockHistory[h].id === id) return;
   var n = Math.max(queue.length, answers.length);
@@ -6610,6 +6616,7 @@ function saveState() {
     mockAnswers: mockInProgress ? S.mockAnswers : [],
     mockCurrent: mockInProgress ? S.mockCurrent : 0,
     mockTotalSecondsLeft: mockInProgress ? S.mockTotalSecondsLeft : 0,
+    mockId: mockInProgress ? (S.mockId || null) : null,
   };
   profiles[id].state = persist;
   profiles[id].lastActive = Date.now();
@@ -6643,6 +6650,7 @@ function loadState() {
       (QB[d]||[]).forEach(function(q){ idMap[q.id] = q; });
     });
     S.mockQueue = saved.mockQueueIds.map(function(id){ return idMap[id]; }).filter(Boolean);
+    if (typeof saved.mockId === 'string' && /^web-[a-z0-9-]{1,40}$/.test(saved.mockId)) S.mockId = saved.mockId;
   }
   ensureAnsweredBuckets();
   ensureParityFields();
@@ -10208,6 +10216,8 @@ function selectMockAnswer(chosen, _ignoredCorrect) {
   }
   setTimeout(function(){
     mockAnswerLock = false; // reset lock before showing next
+    // The exam clock may have ended during this pause and shown results.
+    if (document.body.getAttribute('data-mock-results') === '1') return;
     S.mockCurrent++;
     if (S.mockCurrent >= S.mockQueue.length) showMockResults();
     else showMockQuestion();
