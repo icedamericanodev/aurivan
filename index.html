@@ -4525,13 +4525,13 @@ body {
   font-variant-numeric: tabular-nums;
 }
 /* Paper grain (spec §10.5): 3.5% warm-black noise on light, 4.5% white on dark (--grain-op). */
-body::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.14 0 0 0 0 0.11 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+/* The grain image is a custom property so a sticky bar (the answer screen's
+   Next question footer) can carry the same viewport-anchored grain. */
+body { --grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.14 0 0 0 0 0.11 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E"); }
+[data-theme="dark"] body { --grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E"); }
+body::before, [data-theme="dark"] body::before {
+  background-image: var(--grain-img);
   opacity: var(--grain-op); z-index: 0;
-}
-[data-theme="dark"] body::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: var(--grain-op);
 }
 ::selection { background: var(--sap); color: #17231B; }
 a { color: var(--accent-text); }
@@ -5415,6 +5415,170 @@ header.app-header .brand-lockup { height: 28px; }
   .sub-nav.sub-nav-pages { display: none; }
   .toast { left: calc(50% + 124px); }
 }
+
+/* ── ANSWER MOMENT (Grove Desk step 2, 2026-10-18) ──────────────────────────
+   Before checking: one "How sure?" segmented control, then Check answer.
+   After: the vine reveal (DESIGN_SYSTEM §10.2): verdict leaf + hero + coach
+   line, your answer / best answer rows, Why X, the vine, the source row and
+   a sticky "Next question". The option list hides; How sure? is removed. */
+.q-keys { margin: 12px 0 0; text-align: center; font: 500 13px/18px var(--f-sans); color: var(--muted); }
+@media (max-width: 600px) { .q-keys { display: none; } }
+
+.conf-stage { margin-top: var(--sp-xxl); padding-top: 0; border-top: 0; }
+.conf-stage[hidden] { display: none; }
+.conf-tip { margin-bottom: var(--sp-lg); }
+.conf-q { font: var(--t-label); color: var(--text); margin: 0 0 var(--sp-md); }
+.conf-seg {
+  display: flex; flex-wrap: wrap; gap: var(--sp-xs); padding: var(--sp-xs); max-width: 520px;
+  border-radius: 24px; background: var(--surface2);
+}
+.conf-seg .conf-btn {
+  position: relative; flex: 1 1 auto; justify-content: center; min-height: 40px; padding: 0 var(--sp-lg);
+  border: 0; border-radius: var(--r-pill); background: transparent; color: var(--text);
+  font: 600 15px/20px var(--f-sans); text-align: center; box-shadow: none; transform: none;
+}
+/* 40px to the eye, 44px to the finger */
+.conf-seg .conf-btn::before { content: ''; position: absolute; left: 0; right: 0; top: -2px; bottom: -2px; }
+.conf-seg .conf-btn:hover { background: var(--surface); color: var(--text); transform: none; box-shadow: none; }
+.conf-seg .conf-btn.picked, .conf-seg .conf-btn.picked:hover { background: var(--text); color: var(--bg); }
+.conf-stage .submit-btn { margin-top: var(--sp-lg); letter-spacing: 0; }
+
+/* After checking: the option list steps aside ("Show all options" brings
+   the others back inside the answer screen). */
+.q-card.is-answered .opts { display: none; }
+
+.result-panel.vr-panel { display: block; border-top: 0; padding: var(--sp-sm) 0 0; animation: none; }
+.vr-verdict { display: flex; align-items: center; gap: var(--sp-md); }
+.vr-leaf { width: 38px; height: 38px; flex-shrink: 0; overflow: visible; }
+.vr-leaf-fill { fill: var(--correct-fill); }
+.vr-wrong .vr-leaf-fill { fill: var(--wrong-fill); }
+.vr-timeout .vr-leaf-fill { fill: var(--tip-fill); }
+.vr-leaf-mark { fill: none; stroke: var(--on-fill); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.vr-hero { margin: 0; font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--correct); }
+.vr-wrong .vr-hero { color: var(--wrong); }
+.vr-timeout .vr-hero { color: var(--tip); }
+.vr-hero:focus { outline: none; }
+.vr-coach { margin: var(--sp-xs) 0 0 50px; font: var(--t-meta); color: var(--text2); }
+
+.vr-rows { display: flex; flex-direction: column; gap: var(--sp-md); margin-top: var(--sp-xl); }
+.vr-row { display: flex; align-items: flex-start; gap: var(--sp-md); padding: var(--sp-lg); border-radius: var(--r-md); }
+.vr-row-wrong { background: var(--wrong-light); }
+.vr-row-right { background: var(--correct-light); }
+.vr-badge {
+  width: 30px; height: 30px; flex-shrink: 0; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center; color: var(--on-fill);
+}
+.vr-badge .ico { stroke-width: 2.5; }
+.vr-row-wrong .vr-badge { background: var(--wrong-fill); }
+.vr-row-right .vr-badge { background: var(--correct-fill); }
+.vr-row-body { display: flex; flex-direction: column; gap: var(--sp-xs); min-width: 0; padding-top: 1px; }
+.vr-tag { font: var(--t-caption); letter-spacing: 0.1px; }
+.vr-row-wrong .vr-tag { color: var(--wrong); }
+.vr-row-right .vr-tag { color: var(--correct); }
+.vr-opt { font: var(--t-body); color: var(--text); overflow-wrap: anywhere; }
+.vr-note { font: var(--t-small); color: var(--text); margin-top: var(--sp-xs); }
+
+.vr-toggle {
+  display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 44px; margin-top: var(--sp-sm); padding: 0;
+  background: none; border: 0; cursor: pointer; font: 600 16px/22px var(--f-sans); color: var(--accent-text);
+}
+.vr-toggle:hover .vr-toggle-t { text-decoration: underline; }
+.vr-toggle[aria-expanded="true"] .ico { transform: rotate(180deg); }
+.vr-others[hidden] { display: none; }
+.vr-row-other { padding: var(--sp-md) 0; border-radius: 0; border-top: 1px solid var(--border); }
+.vr-row-other .vr-badge { background: transparent; border: 1.5px solid var(--control); color: var(--text2); font: 600 14px/18px var(--f-sans); }
+.vr-row-other .vr-tag { color: var(--text2); }
+
+.vr-why { margin: var(--sp-xxl) 0 var(--sp-sm); font: var(--t-headline); color: var(--text); }
+.vr-exp { margin: 0; font: var(--t-body); color: var(--text); }
+
+/* The vine: one stem with a leaf per node. The stem is drawn in pieces from
+   leaf to leaf with a 2px gap, so it seems to pass behind each leaf without a
+   paper knock-out (that would show as a flat square on the grain).
+   Key idea = filled leaf + italic quote (the coach's voice). */
+.vine { position: relative; display: flex; flex-direction: column; gap: var(--sp-xl); margin-top: var(--sp-xxl); padding-left: 34px; }
+.vine-node { position: relative; }
+.vine-node::after {
+  content: ''; position: absolute; left: -23.75px; top: 22px; bottom: calc(2px - var(--sp-xl)); width: 1.5px;
+  background: var(--accent); opacity: .55; transform-origin: top;
+}
+.vine-node:last-child::after { bottom: 4px; }
+.vine-leaf { position: absolute; left: -34px; top: -2px; width: 22px; height: 22px; color: var(--text2); }
+.vine-cap { margin: 0 0 var(--sp-xs); font: var(--t-caption); letter-spacing: 0.1px; color: var(--text2); }
+.vine-quote { margin: 0; font: var(--t-quote); color: var(--text); }
+.vine-tip { margin: 0; font: var(--t-small); color: var(--text); }
+.vine-key .vine-leaf, .vine-cue .vine-leaf { color: var(--accent); }
+.vine-key .vine-cap, .vine-cue .vine-cap { color: var(--accent-text); }
+.vine-elim .vine-leaf, .vine-elim .vine-cap { color: var(--tip); }
+.vr-panel .triplet-companions { margin-top: var(--sp-xxl); }
+
+.vr-src {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--sp-lg);
+  margin-top: var(--sp-section); padding-top: var(--sp-md); border-top: 1px solid var(--border);
+}
+.vr-src-ref { flex: 1 1 240px; min-width: 0; font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
+.vr-report {
+  min-height: 44px; padding: 0; background: none; border: 0; cursor: pointer;
+  font: 600 16px/22px var(--f-sans); color: var(--accent-text);
+}
+.vr-report:hover { text-decoration: underline; }
+
+/* Footer: Save + Next question, held at the bottom of the screen while the
+   answer is in view (above the phone tab bar); sits in its own slot at the
+   end, so it never covers the last line. */
+.vr-foot {
+  position: sticky; bottom: 0; z-index: 5; display: flex; align-items: center; gap: var(--sp-md);
+  margin-top: var(--sp-xl); padding: var(--sp-xl) 0 var(--sp-lg);
+  background: linear-gradient(to bottom, transparent, var(--bg) var(--sp-xl));
+}
+/* The page's grain, anchored to the viewport like body::before, so the bar
+   never reads as a flat box on the paper. */
+.vr-foot::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: var(--grain-img); background-attachment: fixed; opacity: var(--grain-op);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black var(--sp-xl));
+  mask-image: linear-gradient(to bottom, transparent, black var(--sp-xl));
+}
+@media (max-width: 1023px) {
+  .vr-foot { bottom: calc(73px + env(safe-area-inset-bottom)); }
+}
+.vr-next {
+  flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-sm);
+  min-height: 56px; padding: 0 var(--sp-xxl); border: 0; border-radius: var(--r-pill); cursor: pointer;
+  background: var(--btn); color: var(--on-btn); font: 600 17px/22px var(--f-sans);
+}
+.vr-next:hover { opacity: .92; }
+.vr-save {
+  flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--bg); border: 1.5px solid var(--control); color: var(--text);
+}
+.vr-save:hover { background: var(--surface2); }
+.vr-save.saved { background: var(--tip-bg); border-color: var(--tip); color: var(--tip); }
+.vr-save.saved svg { fill: currentColor; }
+.vr-next:focus-visible, .vr-save:focus-visible, .vr-toggle:focus-visible, .vr-report:focus-visible {
+  outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-pill);
+}
+.vr-toggle:focus-visible, .vr-report:focus-visible { border-radius: var(--r-sm); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .conf-seg .conf-btn { transition: background-color .12s ease, color .12s ease; }
+  .vr-panel .vr-leaf { animation: vrLeafIn .42s cubic-bezier(.34, 1.56, .64, 1) both; transform-origin: 50% 50%; }
+  .vr-panel .vr-rows { animation: vrRise .2s ease-out .08s both; }
+  /* The stem draws down over 520ms; each leaf pops as the stem reaches it. */
+  .vine.vine-arm .vine-node::after { transform: scaleY(0); }
+  .vine.vine-arm .vine-leaf { transform: scale(.4); opacity: 0; }
+  .vine.vine-in .vine-node::after {
+    animation: vineDraw calc(520ms / var(--vine-n, 1)) linear forwards;
+    animation-delay: calc(var(--i, 0) * 520ms / var(--vine-n, 1));
+  }
+  .vine.vine-in .vine-leaf { animation: vineLeaf .16s ease-out forwards; animation-delay: calc(var(--i, 0) * 520ms / var(--vine-n, 1)); }
+  .vr-toggle .ico { transition: transform .15s ease; }
+}
+@keyframes vrLeafIn { from { transform: scale(.6); } to { transform: scale(1); } }
+@keyframes vrRise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes vineDraw { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes vineLeaf { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 /* GROVE-LAYER-END */
 </style>
 </head>
@@ -5766,6 +5930,7 @@ var ICONS = {
   "exam": "<rect x=\"5\" y=\"4\" width=\"14\" height=\"17\" rx=\"2\"/><path d=\"M9 4V2.8h6V4\"/><path d=\"M8.5 10h7M8.5 13.5h7M8.5 17h4\"/>",
   "flag": "<path d=\"M5.5 21V4h11l-2 4.2 2 4.3h-11\"/>",
   "check": "<path d=\"m5 12.5 4.5 4.5L19 7.5\"/>",
+  "arrow-right": "<path d=\"M4.5 12h15M13.5 6l6 6-6 6\"/>",
   "x": "<path d=\"M6 6l12 12M18 6 6 18\"/>",
   "chevron": "<path d=\"m9 6 6 6-6 6\"/>",
   "chevron-down": "<path d=\"m6 9 6 6 6-6\"/>",
@@ -9356,12 +9521,13 @@ function onPracticeTimeout() {
   S.ds[d].t++;
   S.streak = 0;
   // Track as missed (timeout = wrong)
+  var addedToReview = false;
   if (S.current && S.missedQuestions) {
     var alreadyMissed = false;
     for (var m = 0; m < S.missedQuestions.length; m++) {
       if (S.missedQuestions[m].id === S.current.id) { alreadyMissed = true; break; }
     }
-    if (!alreadyMissed) S.missedQuestions.push(JSON.parse(JSON.stringify(S.current)));
+    if (!alreadyMissed) { S.missedQuestions.push(JSON.parse(JSON.stringify(S.current))); addedToReview = true; }
     // A timed-out question is a miss — schedule it for review too.
     try { updateReviewSchedule(S.current.id, false, 'none'); } catch(e) {}
   }
@@ -9374,7 +9540,7 @@ function onPracticeTimeout() {
   onConceptPracticeAnswer(false);
   updateStats();
   renderDomainGrid();
-  showResult(null, correctDisplay, true);
+  showResult(null, correctDisplay, true, { addedToReview: addedToReview });
   saveState();
 }
 
@@ -9788,10 +9954,10 @@ function endSession() {
   sessionCorrect = 0;
 }
 
-// ── SEQUENTIAL TIPS REVEAL — Decision 3 (Treatment C) ──
-// Strict order Trap → Mindset → Exam-day; user can only unlock the next tip.
+// ── TIP LABELS ──
 // Exam-style v2 tips carry their own label ("Eliminate: …", "Final two: …",
 // "Exam cue: …"); older tips are labelled by position (Trap → Mindset → Exam-day).
+// The answer screen shows them all at once as leaves on the vine (showResult).
 var V2_TIP_LABELS = { 'Eliminate': 'Eliminate two', 'Final two': 'Final two', 'Exam cue': 'Exam cue' };
 function tipParts(text, idx) {
   var m = /^(Eliminate|Final two|Exam cue):\s*/.exec(text);
@@ -9801,57 +9967,6 @@ function tipParts(text, idx) {
   }
   var legacy = ['Trap', 'Mindset', 'Exam-day'];
   return { label: legacy[idx] || 'Exam-day', body: text };
-}
-
-function unlockTip(qId, idx, total) {
-  var container = document.getElementById('tips-seq-' + qId);
-  if (!container) return;
-  var currentUnlocked = parseInt(container.getAttribute('data-unlocked') || '0', 10);
-  // Strict order: can only unlock the next sequential tip
-  if (idx !== currentUnlocked) return;
-  var newUnlocked = currentUnlocked + 1;
-  container.setAttribute('data-unlocked', String(newUnlocked));
-  var tipEl = document.getElementById('seqtip-' + qId + '-' + idx);
-  if (!tipEl) return;
-  // Find the original tip text from S.current to re-render the body
-  if (!S.current || !S.current.tips || !S.current.tips[idx]) return;
-  var rawText = S.current.tips[idx];
-  // Apply letter remapping for shuffled options
-  var shuffle = S.currentShuffle || DISPLAY_LETTERS;
-  var text = tipParts(mapLettersInText(rawText, shuffle), idx).body;
-  var bodyText = escapeHtml(text);
-  // Linkify principle IDs in Mindset tip
-  var tipTypes = ['trap', 'mind', 'exam'];
-  if (tipTypes[idx] === 'mind') {
-    bodyText = bodyText.replace(/\b([A-Z]{3,}(?:-[A-Z]+){1,5})\b/g, function(_, pid){
-      return '<button type="button" class="principle-link" onclick="openPrinciple(\'' + pid + '\')">' + pid + '</button>';
-    });
-  }
-  tipEl.classList.remove('locked');
-  tipEl.classList.add('unlocked');
-  tipEl.onclick = null;
-  // Replace header lock-cue and append body
-  var lockEl = tipEl.querySelector('.seq-lock');
-  if (lockEl) lockEl.remove();
-  var bodyDiv = document.createElement('div');
-  bodyDiv.className = 'seq-tip-body';
-  bodyDiv.innerHTML = '<p>' + bodyText + '</p>';
-  tipEl.appendChild(bodyDiv);
-  // Update counter
-  var counter = document.getElementById('tips-counter-' + qId);
-  if (counter) {
-    counter.innerHTML = 'Tips &mdash; <strong>' + newUnlocked + '</strong> of ' + total + ' revealed';
-  }
-}
-
-function skipTips(qId, total) {
-  var container = document.getElementById('tips-seq-' + qId);
-  if (!container) return;
-  var unlocked = parseInt(container.getAttribute('data-unlocked') || '0', 10);
-  while (unlocked < total) {
-    unlockTip(qId, unlocked, total);
-    unlocked++;
-  }
 }
 
 function openPrinciple(pid) {
@@ -9903,7 +10018,7 @@ function renderQuestion(q) {
   try { showConfTip = !localStorage.getItem('aurivan_conf_tip_seen'); } catch (e) {}
   var confTipHtml = showConfTip
     ? '<div id="conf-tip" class="conf-tip">'
-        + '<span>Rate your confidence — this affects how often the question resurfaces in your review queue.</span>'
+        + '<span>How sure you are decides how soon this question comes back for review.</span>'
         + '<button onclick="dismissConfTip()" aria-label="Dismiss">' + ico('x', 18) + '</button>'
       + '</div>'
     : '';
@@ -9916,29 +10031,31 @@ function renderQuestion(q) {
     + subtopicHtml
     + '<div class="q-meta">'
     + '<span class="q-num">#' + getQuestionNumber(q) + '</span>'
-    + '<button class="bk-btn' + (isBk?' saved':'') + '" id="bkBtn" aria-label="Toggle bookmark" onclick="toggleBookmark()">' + ico('saved', 20) + '</button>'
+    + '<button class="bk-btn' + (isBk?' saved':'') + '" id="bkBtn" aria-label="Save question" aria-pressed="' + (isBk ? 'true' : 'false') + '" onclick="toggleBookmark()">' + ico('saved', 20) + '</button>'
     + '<button class="fl-btn" onclick="showFlagModal()" aria-label="Flag for review" title="Flag this question">' + ico('flag', 20) + '</button>'
     + '</div></div>'
     + '<div class="q-body">'
     + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + q.id + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + q.id + '" onclick="expandScenario(\'' + q.id + '\')">Read scenario ▾</button></div>' : '')
     + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(q.scenario_context) + ' ' : '') + escapeHtml(q.question) + '</p>'
     + '<div class="opts">' + optsHtml + '</div>'
+    // "How sure?" (redesign step 2): one segmented control, then the action.
+    // Shown once an option is picked; removed (not disabled) after checking.
     + '<div class="conf-stage" id="confStage" hidden>'
       + confTipHtml
-      + '<div class="conf-step-label step1"><span class="conf-step-num">1</span> Rate your confidence</div>'
-      + '<div class="conf-row">'
-        + '<button class="conf-btn" data-conf="sure" onclick="setConfidence(\'sure\')">Sure</button>'
-        + '<button class="conf-btn" data-conf="educated" onclick="setConfidence(\'educated\')">Educated Guess</button>'
-        + '<button class="conf-btn" data-conf="guessing" onclick="setConfidence(\'guessing\')">Guessing</button>'
+      + '<p class="conf-q" id="confQ">How sure?</p>'
+      + '<div class="conf-seg" role="group" aria-labelledby="confQ">'
+        + '<button type="button" class="conf-btn" data-conf="sure" aria-pressed="false" onclick="setConfidence(\'sure\')">Sure</button>'
+        + '<button type="button" class="conf-btn" data-conf="educated" aria-pressed="false" onclick="setConfidence(\'educated\')">Educated guess</button>'
+        + '<button type="button" class="conf-btn" data-conf="guessing" aria-pressed="false" onclick="setConfidence(\'guessing\')">Guessing</button>'
       + '</div>'
-      + '<button class="submit-btn" id="submitBtn" onclick="submitAnswer()" disabled>Select confidence to submit</button>'
+      + '<button type="button" class="submit-btn" id="submitBtn" onclick="submitAnswer()" disabled>Check answer</button>'
     + '</div>'
     + '</div>'
     + '<div class="result-panel" id="rPanel"></div>'
     + '</div>'
-    + '<div style="text-align:center;margin-top:10px;font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted);letter-spacing:0">'
-    + 'Keys: <strong>A&#8211;D</strong> Answer &middot; <strong>1</strong> Sure / <strong>2</strong> Edu.Guess / <strong>3</strong> Guessing &middot; <strong>Enter</strong> Submit / Next'
-    + '</div>';
+    + '<p class="q-keys">'
+    + 'Keys: <strong>A&#8211;D</strong> pick &middot; <strong>1</strong>&#8211;<strong>3</strong> how sure &middot; <strong>Enter</strong> check, then next'
+    + '</p>';
   // Reset transient state for fresh question
   pendingAnswer = null;
   currentConfidence = null;
@@ -9958,13 +10075,18 @@ function pickAnswer(chosen) {
   // Reveal confidence stage
   var stage = document.getElementById('confStage');
   if (stage) stage.hidden = false;
+  // How sure? may already be set (key 1–3 first): then Check is ready.
+  var sb = document.getElementById('submitBtn');
+  if (sb) sb.disabled = !currentConfidence;
   // Smooth-scroll the confidence stage into view
   setTimeout(function(){
     var el = document.getElementById('confStage');
     if (!el) return;
     var rect = el.getBoundingClientRect();
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    window.scrollTo({top: scrollTop + rect.top - 80, behavior: 'smooth'});
+    // Only when the control is below the fold: never yank the stem away.
+    if (rect.bottom <= window.innerHeight - 96) return;
+    window.scrollTo({top: scrollTop + rect.bottom - (window.innerHeight - 96), behavior: cpScrollBehavior()});
   }, 80);
 }
 
@@ -10009,7 +10131,9 @@ function selectAnswer(chosen, _ignoredCorrect) {
     S.answeredIds[d][S.current.id] = true;
   }
 
-  // Track missed questions for spaced repetition
+  // Track missed questions for spaced repetition. The answer screen's coach
+  // line says so (no toast: it covered the explanation).
+  var addedToReview = false;
   if (!ok && S.current) {
     var alreadyMissed = false;
     for (var m = 0; m < S.missedQuestions.length; m++) {
@@ -10017,7 +10141,7 @@ function selectAnswer(chosen, _ignoredCorrect) {
     }
     if (!alreadyMissed) {
       S.missedQuestions.push(JSON.parse(JSON.stringify(S.current)));
-      showToast('Added to your review queue', 'info', 1800);
+      addedToReview = true;
     }
   }
   // Remove from missed if answered correctly
@@ -10060,7 +10184,7 @@ function selectAnswer(chosen, _ignoredCorrect) {
   try { recordQuestionEnd(ok); } catch(e) {}
   updateStats();
   renderDomainGrid();
-  showResult(chosen, correctDisplay, false);
+  showResult(chosen, correctDisplay, false, { addedToReview: addedToReview });
   rotateMindset();
   saveState();
   // A "Practice this concept" set keeps its own score, apart from a goal session.
@@ -10068,130 +10192,222 @@ function selectAnswer(chosen, _ignoredCorrect) {
   else { try { onAnswerSubmittedForSession(ok); } catch(e) {} } // Decision 9
 }
 
-// ── SHOW RESULT ──
+// ── SHOW RESULT: the "vine reveal" (DESIGN_SYSTEM §10.2, redesign step 2) ──
 // `correct` here is the DISPLAY letter — callers must translate from
 // the original via originalToDisplay(q.correct, S.currentShuffle).
-function showResult(chosen, correct, timeout) {
+// Order: verdict leaf + hero + coach line → "Your answer" row (with its
+// wrong-answer note) → "Best answer" row (only after a miss) → "Why X" →
+// the vine (Key idea + Eliminate / Final two / Exam cue) → source row →
+// "Next question". Exam-style questions keep their compact contract: no
+// coaching, no key idea, no tips, no companion strip.
+var VR_LEAF_PATH = 'M35.5 2.5V19A16.5 16.5 0 1 1 19 2.5z';
+var VR_TICK = 'M12.5 19.5l4.5 4.5 9-9.5';
+var VR_CROSS = 'M13 13l12 12M25 13 13 25';
+
+// The "runner-up": the other option named in the "Final two:" tip, as an
+// ORIGINAL letter (tips are stored on original letters, before shuffling).
+function runnerUpLetter(q) {
+  var t = (q.tips || []).filter(function(x){ return /^Final two:/.test(x || ''); })[0];
+  if (!t) return null;
+  var re = /\b([A-D])\b(?![-&.]\w|['’](?!s\b))/g, m;
+  while ((m = re.exec(t))) {
+    if (isOptionLetterRef(t, m[1], m.index) && m[1] !== q.correct) return m[1];
+  }
+  return null;
+}
+
+// One short coach line under the verdict (mobile parity, engine/slipCoach).
+function verdictCoachLine(q, ok, timeout, chosenOrig, exam) {
+  if (exam) return '';
+  if (timeout) return 'Time ran out on this one.';
+  if (ok) return 'Clean read.';
+  if (chosenOrig && chosenOrig === runnerUpLetter(q)) return 'You picked the runner-up. That’s the trap.';
+  if (detectMindsetIssue(q, chosenOrig)) return 'That’s the implementer’s move. Auditors assess and report.';
+  return 'Here’s the idea to take with you.';
+}
+
+// A leaf on the vine: Key idea is a filled 22px leaf with a paper midrib;
+// tips are 16px outline leaves with an 18% fill, in their own tone.
+function vineLeafSvg(key) {
+  return key
+    ? '<svg class="vine-leaf" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M11 1.5C17 6.5 17 15.5 11 20.5C5 15.5 5 6.5 11 1.5Z" fill="currentColor"/><path d="M11 5V17.5" stroke="var(--bg)" stroke-width="1.4" stroke-linecap="round"/></svg>'
+    : '<svg class="vine-leaf" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M11 3.5C15.5 7.2 15.5 14.8 11 18.5C6.5 14.8 6.5 7.2 11 3.5Z" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M11 6.5V16" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
+}
+
+function vrOptionRow(kind, tag, displayL, text, note) {
+  return '<div class="vr-row vr-row-' + kind + '">'
+    + '<span class="vr-badge" aria-hidden="true">' + (kind === 'other' ? displayL : ico(kind === 'wrong' ? 'x' : 'check', 16)) + '</span>'
+    + '<span class="vr-row-body">'
+      + '<span class="vr-tag">' + tag + '</span>'
+      + '<span class="vr-opt">' + text + '</span>'
+      + (note ? '<span class="vr-note">' + note + '</span>' : '')
+    + '</span>'
+    + '</div>';
+}
+
+function showResult(chosen, correct, timeout, info) {
   var q = S.current;
   var p = document.getElementById('rPanel');
-  if (!p) return;
+  if (!p || !q) return;
+  info = info || {};
   var shuffle = S.currentShuffle || DISPLAY_LETTERS;
   var ok = !timeout && chosen === correct;
   var vc = timeout ? 'timeout' : ok ? 'correct' : 'wrong';
-  var vi = ''; // the leaf mark is drawn in CSS; the verdict words carry the meaning
-  var vt = timeout
-    ? 'Time is up! Correct answer: <strong>' + correct + '</strong>'
-    : ok
-      ? 'Correct! That is how an IS auditor reasons.'
-      : 'Correct answer is <strong>' + correct + '</strong>. Review below.';
+  var inExamMode = !!(window.S && S.examMode);
+  // detectMindsetIssue / runner-up compare ORIGINAL letters, never display ones.
+  var chosenOrig = chosen ? displayToOriginal(chosen, shuffle) : null;
+  var correctOrig = displayToOriginal(correct, shuffle);
 
-  // Breakdown: iterate display order. For each display position, look up
-  // the original letter via the shuffle and pull that option's explanation.
-  var breakdownHtml = DISPLAY_LETTERS.map(function(displayL, idx){
+  // The question card: hide the option list (it stays one tap away under
+  // "Show all options") and REMOVE the How sure? control and Check button.
+  var card = p.closest('.q-card');
+  if (card) card.classList.add('is-answered');
+  var stage = document.getElementById('confStage');
+  if (stage) stage.remove();
+
+  function optText(origL) { return escapeHtml((q.options || {})[origL] || ''); }
+  function wrongNote(origL) {
+    var w = q.wrong_explanations && q.wrong_explanations[origL];
+    return w ? escapeHtml(mapLettersInText(w, shuffle, origL)) : '';
+  }
+
+  // 1. Verdict: leaf mark + hero, then one coach line (the review-queue
+  //    note folds into it).
+  var hero = timeout ? 'Time’s up' : ok ? 'Correct' : 'Not quite';
+  var coach = verdictCoachLine(q, ok, timeout, chosenOrig, inExamMode);
+  if (info.addedToReview) coach = (coach ? coach + ' ' : '') + 'Added to your review queue.';
+  var verdictHtml = '<div class="vr-verdict vr-' + vc + '">'
+      + '<svg class="vr-leaf" viewBox="0 0 38 38" aria-hidden="true" focusable="false">'
+        + '<path d="' + VR_LEAF_PATH + '" class="vr-leaf-fill"/>'
+        + '<path d="' + (ok ? VR_TICK : VR_CROSS) + '" class="vr-leaf-mark"/>'
+      + '</svg>'
+      + '<h2 class="vr-hero" id="vrHero" tabindex="-1">' + hero
+        + '<span class="sr-only">. Best answer ' + correct + '.</span></h2>'
+    + '</div>'
+    + (coach ? '<p class="vr-coach">' + escapeHtml(coach) + '</p>' : '');
+
+  // 2. Answer rows: your answer (with its note), then the best answer only
+  //    after a miss. A timeout has no "your answer".
+  var rows = '';
+  if (chosen && ok) {
+    rows += vrOptionRow('right', 'Your answer &middot; ' + chosen, chosen, optText(correctOrig), '');
+  } else if (chosen) {
+    rows += vrOptionRow('wrong', 'Your answer &middot; ' + chosen, chosen, optText(chosenOrig), wrongNote(chosenOrig));
+  }
+  if (!ok) rows += vrOptionRow('right', 'Best answer &middot; ' + correct, correct, optText(correctOrig), '');
+
+  // The other options, in display order, each with its note: hidden until
+  // "Show all options" (this replaces the option-by-option breakdown).
+  var others = DISPLAY_LETTERS.map(function(displayL, idx){
     var origL = shuffle[idx];
-    var isRight = displayL === correct;
-    var expText = isRight
-      ? '<strong>CORRECT.</strong> ' + escapeHtml(mapLettersInText(q.correct_explanation, shuffle))
-      : (q.wrong_explanations && q.wrong_explanations[origL])
-        ? escapeHtml(mapLettersInText(q.wrong_explanations[origL], shuffle, origL))
-        : 'This option does not reflect the primary IS auditor priority in this scenario.';
-    return '<div class="opt-exp ' + (isRight ? 'right' : 'wrong') + '">'
-      + '<span class="opt-exp-letter ' + (isRight?'right':'wrong') + '">' + displayL + '</span>'
-      + '<span class="opt-exp-text">' + expText + '</span>'
-      + '</div>';
+    if (displayL === correct || displayL === chosen) return '';
+    return vrOptionRow('other', 'Option ' + displayL, displayL, optText(origL), wrongNote(origL));
   }).join('');
-
-  // Sequential tips reveal — Treatment C (Decision 3 in MASTER_HANDOFF.md).
-  // Order is ALWAYS: Trap → Mindset → Exam-day (strict 1→2→3).
-  // First tip auto-unlocks if user got it wrong; all-collapsed if correct.
-  // Principle IDs in Mindset body link to Principles Library (Decision 3a).
-  var tipsArr = (q.tips || [])
-    .filter(function(t){ return t && t.trim(); })
-    .map(function(t){ return mapLettersInText(t, shuffle); });
-  var tipTypes = ['trap', 'mind', 'exam']; // 1=Trap, 2=Mindset, 3=Exam-day
-  var tipQid = q.id || 'q';
-  // Auto-unlock count: 1 if wrong, 0 if correct (per Decision 3 state rules)
-  var initialUnlocked = (!ok && !timeout) ? 1 : 0;
-  var tipsHtml = tipsArr.map(function(t, i){
-    var type = tipTypes[i] || 'exam';
-    var isUnlocked = i < initialUnlocked;
-    var parts = tipParts(t, i);
-    // Linkify principle IDs in Mindset (index 1) body. Pattern: ALL-CAPS-WITH-HYPHENS, 2+ segments.
-    var bodyText = escapeHtml(parts.body);
-    if (type === 'mind') {
-      bodyText = bodyText.replace(/\b([A-Z]{3,}(?:-[A-Z]+){1,5})\b/g, function(_, pid){
-        return '<button type="button" class="principle-link" onclick="openPrinciple(\'' + pid + '\')">' + pid + '</button>';
-      });
-    }
-    return '<div class="seq-tip seq-' + type + ' ' + (isUnlocked ? 'unlocked' : 'locked') + '"'
-      + ' id="seqtip-' + tipQid + '-' + i + '"'
-      + (!isUnlocked ? ' onclick="unlockTip(\'' + tipQid + '\', ' + i + ', ' + tipsArr.length + ')"' : '')
-      + '>'
-      + '<div class="seq-tip-header">'
-        + '<span class="seq-num">0' + (i + 1) + '</span>'
-        + '<span class="seq-dot"></span>'
-        + '<span class="seq-label">' + escapeHtml(parts.label) + '</span>'
-        + (!isUnlocked ? '<span class="seq-lock">Tap to reveal ›</span>' : '')
-      + '</div>'
-      + (isUnlocked
-          ? '<div class="seq-tip-body"><p>' + bodyText + '</p></div>'
-          : '')
-      + '</div>';
-  }).join('');
-
-  // Top-of-reveal metadata row: subtopic + difficulty + framework_ref (if any)
-  var dInfo = DI[String(q.domain)] || {};
-  var diffClass = /^[a-z-]+$/.test(q.difficulty || '') ? q.difficulty : 'application';
-  var bloomLabel = q.bloom_level || 'Application';
-  var metaRow = '<div class="reveal-meta-row">'
-    + '<span class="q-tag">' + '<span class="dom-dot" style="background:' + (dInfo.color||'var(--muted)') + '"></span>' + 'D' + q.domain + ' &middot; ' + escapeHtml(dInfo.short || '') + '</span>'
-    + (q.subtopic ? '<span class="q-subtopic-tag">' + escapeHtml(q.subtopic) + '</span>' : '')
-    + '<span class="diff-tag ' + diffClass + '">' + escapeHtml(bloomLabel) + '</span>'
-    + (q.framework_ref ? '<span class="fw-tag">' + escapeHtml(q.framework_ref) + '</span>' : '')
-    + '</div>';
-
-  var tipsBlock = tipsArr.length
-    ? '<div class="exp-block">'
-        + '<div class="tips-section-head">'
-          + '<div class="exp-heading" style="margin:0">Exam strategy &mdash; tips</div>'
-          + '<button class="seq-tips-skip" onclick="skipTips(\'' + tipQid + '\', ' + tipsArr.length + ')">Skip tips ›</button>'
-        + '</div>'
-        + '<div class="tips-seq-counter" id="tips-counter-' + tipQid + '">'
-          + 'Tips &mdash; <strong>' + initialUnlocked + '</strong> of ' + tipsArr.length + ' revealed'
-        + '</div>'
-        + '<div class="tips-seq" id="tips-seq-' + tipQid + '" data-unlocked="' + initialUnlocked + '">' + tipsHtml + '</div>'
-      + '</div>'
+  var othersHtml = others
+    ? '<button type="button" class="vr-toggle" id="vrToggle" aria-expanded="false" aria-controls="vrOthers" onclick="toggleOtherOptions()">'
+        + '<span class="vr-toggle-t">Show all options</span>' + ico('chevron-down', 18) + '</button>'
+      + '<div class="vr-others" id="vrOthers" hidden>' + others + '</div>'
     : '';
 
-  // detectMindsetIssue expects the ORIGINAL letter the user picked, not the display letter.
-  var chosenOrig = chosen ? displayToOriginal(chosen, shuffle) : null;
-  // v10.10 exam mode: hide pedagogical add-ons (mindset alert, tips, triplet companions)
-  // to match the surface of the real ISACA exam, where only explanation + per-option
-  // breakdown are presented.
-  var inExamMode = !!(window.S && S.examMode);
-  var mindsetAlertHtml = (!ok && !timeout && !inExamMode) ? buildMindsetAlertHtml(q, chosenOrig) : '';
-  p.innerHTML =
-    mindsetAlertHtml
-    + '<div class="verdict ' + vc + '"><span class="verdict-icon" aria-hidden="true">' + vi + '</span><span>' + vt + '</span></div>'
-    + metaRow
-    + '<div class="exp-block"><div class="exp-heading">Why the correct answer is right</div><p class="exp-body">' + escapeHtml(mapLettersInText(q.correct_explanation, shuffle)) + '</p></div>'
-    + '<div class="exp-block"><div class="exp-heading">Option-by-option breakdown</div><div class="opt-breakdown">' + breakdownHtml + '</div></div>'
-    + (inExamMode ? '' : tipsBlock)
-    + (inExamMode ? '' : buildTripletCompanionsHtml(q))
-    + '<div class="result-actions">'
-    + '<button class="act-btn secondary" onclick="toggleBookmark()">Save</button>'
-    + '<button class="act-btn secondary" onclick="showFlagModal()" style="border-color:var(--wrong);color:var(--wrong)">Flag</button>'
-    + '<button class="act-btn primary" onclick="nextQ()">Next Question &rarr;</button>'
+  // 3. Why X + the explanation.
+  var whyHtml = '<h3 class="vr-why">Why ' + correct + '</h3>'
+    + '<p class="vr-exp">' + escapeHtml(mapLettersInText(q.correct_explanation, shuffle)) + '</p>';
+
+  // 4. The vine: Key idea, then the tips as leaves on one stem.
+  var vineHtml = '';
+  if (!inExamMode) {
+    var nodes = [];
+    if (q.key_concept) {
+      nodes.push('<div class="vine-node vine-key" style="--i:0">' + vineLeafSvg(true)
+        + '<p class="vine-cap">Key idea</p>'
+        + '<p class="vine-quote">' + escapeHtml(mapLettersInText(q.key_concept, shuffle)) + '</p></div>');
+    }
+    (q.tips || []).filter(function(t){ return t && t.trim(); }).forEach(function(t, i){
+      var parts = tipParts(mapLettersInText(t, shuffle), i);
+      var tone = parts.label === 'Eliminate two' ? 'elim'
+        : parts.label === 'Final two' ? 'final'
+        : (parts.label === 'Exam cue' || parts.label === 'Exam-day') ? 'cue' : 'plain';
+      var body = escapeHtml(parts.body);
+      // Older "Mindset" tips name a principle: link it to the Principles library.
+      if (parts.label === 'Mindset') {
+        body = body.replace(/\b([A-Z]{3,}(?:-[A-Z]+){1,5})\b/g, function(_, pid){
+          return '<button type="button" class="principle-link" onclick="openPrinciple(\'' + pid + '\')">' + pid + '</button>';
+        });
+      }
+      nodes.push('<div class="vine-node vine-' + tone + '" style="--i:' + nodes.length + '">' + vineLeafSvg(false)
+        + '<p class="vine-cap">' + escapeHtml(parts.label) + '</p>'
+        + '<p class="vine-tip">' + body + '</p></div>');
+    });
+    if (nodes.length) {
+      vineHtml = '<div class="vine" id="vrVine" style="--vine-n:' + nodes.length + '">'
+        + nodes.join('') + '</div>';
+    }
+  }
+
+  // 5. Source row: the reference, and Report a problem.
+  var srcHtml = '<div class="vr-src">'
+    + '<span class="vr-src-ref">' + (q.framework_ref ? escapeHtml(q.framework_ref) : 'KaiSip original question') + '</span>'
+    + '<button type="button" class="vr-report" onclick="showFlagModal()">Report a problem</button>'
     + '</div>';
-  p.classList.add('show');
-  // Scroll to result panel using scrollTop instead of scrollIntoView
+
+  // 6. Footer: Save (outline icon button) + Next question (sticky on phones).
+  var isBk = S.bookmarks.some(function(b){ return b.id === q.id; });
+  var footHtml = '<div class="vr-foot">'
+    + '<button type="button" class="vr-save' + (isBk ? ' saved' : '') + '" id="bkBtnFoot" aria-label="Save question" aria-pressed="' + (isBk ? 'true' : 'false') + '" onclick="toggleBookmark()">' + ico('saved', 22) + '</button>'
+    + '<button type="button" class="vr-next" id="vrNext" onclick="nextQ()">Next question' + ico('arrow-right', 18) + '</button>'
+    + '</div>';
+
+  p.innerHTML = verdictHtml
+    + (rows ? '<div class="vr-rows">' + rows + '</div>' : '')
+    + othersHtml
+    + whyHtml
+    + vineHtml
+    + (inExamMode ? '' : buildTripletCompanionsHtml(q))
+    + srcHtml
+    + footHtml;
+  p.classList.add('show', 'vr-panel');
+  p.classList.toggle('vr-exam', inExamMode);
+
+  // The vine draws itself as it scrolls into view (motion allowed only).
+  armVine(document.getElementById('vrVine'));
+
+  // Focus the verdict so keyboard and screen-reader users land on it (the
+  // Check button they were on is gone), then bring the verdict into view.
+  var heroEl = document.getElementById('vrHero');
+  if (heroEl) { try { heroEl.focus({ preventScroll: true }); } catch (e) { heroEl.focus(); } }
   setTimeout(function(){
-    var container = document.documentElement;
     var rect = p.getBoundingClientRect();
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    var targetY = scrollTop + rect.top - 20;
-    window.scrollTo({top: targetY, behavior: 'smooth'});
-  }, 100);
+    window.scrollTo({ top: scrollTop + rect.top - 20, behavior: cpScrollBehavior() });
+  }, 60);
+}
+
+// "Show all options" on the answer screen: the options that are not your
+// answer or the best answer, each with why it is not the best.
+function toggleOtherOptions() {
+  var btn = document.getElementById('vrToggle');
+  var box = document.getElementById('vrOthers');
+  if (!btn || !box) return;
+  var open = btn.getAttribute('aria-expanded') !== 'true';
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  box.hidden = !open;
+  var t = btn.querySelector('.vr-toggle-t');
+  if (t) t.textContent = open ? 'Hide other options' : 'Show all options';
+}
+
+// Vine motion (DESIGN_SYSTEM §10.2): the stem draws down and each leaf pops
+// when the vine scrolls into view. Static under reduced motion or without
+// IntersectionObserver: nothing is hidden unless the animation can run.
+function armVine(vine) {
+  if (!vine || typeof IntersectionObserver === 'undefined') return;
+  if (!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: no-preference)').matches)) return;
+  vine.classList.add('vine-arm');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting) { vine.classList.add('vine-in'); io.disconnect(); }
+    });
+  }, { threshold: 0.15 });
+  io.observe(vine);
 }
 
 // â”€â”€ BOOKMARKS â”€â”€
@@ -10204,9 +10420,14 @@ function toggleBookmark() {
   else S.bookmarks.push(JSON.parse(JSON.stringify(q)));
   updateStats();
   saveState();
-  var btn = document.getElementById('bkBtn');
   var isBk = S.bookmarks.some(function(b){return b.id===q.id;});
-  if (btn) { if(isBk) btn.classList.add('saved'); else btn.classList.remove('saved'); }
+  // The header button and the answer screen's footer button stay in step.
+  ['bkBtn', 'bkBtnFoot'].forEach(function(id){
+    var btn = document.getElementById(id);
+    if (!btn) return;
+    btn.classList.toggle('saved', isBk);
+    btn.setAttribute('aria-pressed', isBk ? 'true' : 'false');
+  });
 }
 
 function renderBookmarks_old() { /* replaced by Phase 2 version below */ }
@@ -12233,19 +12454,14 @@ var pendingAnswer = null; // Phase 2b — selected option awaiting confidence + 
 function setConfidence(level) {
   currentConfidence = level;
   document.querySelectorAll(".conf-btn").forEach(function(b) {
-    b.classList.toggle("picked", b.dataset.conf === level);
+    var on = b.dataset.conf === level;
+    b.classList.toggle("picked", on);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
   });
-  // Phase 2b (Decision 5): enable submit button after both answer + confidence picked.
+  // Phase 2b (Decision 5): Check answer is enabled once both an answer and
+  // How sure? are picked.
   var submitBtn = document.getElementById("submitBtn");
-  if (submitBtn) {
-    if (pendingAnswer) {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Submit answer";
-    } else {
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Pick an answer to submit";
-    }
-  }
+  if (submitBtn) submitBtn.disabled = !pendingAnswer;
 }
 
 // ── ONE-TIME CONFIDENCE TOOLTIP — Decision 5 ──
