@@ -6398,6 +6398,163 @@ document.addEventListener('qb:domain-loaded', function() {
   } catch (e) {}
 });
 
+// ── MOCK RESUME ──
+// One resume path: an unfinished mock lives in the progress record, saved by
+// saveState as mockQueueIds, mockAnswers, mockCurrent, mockTotalSecondsLeft
+// and mockId. It is saved after every answer, every MOCK_SAVE_EVERY_SEC
+// seconds of exam clock, and when the page is hidden or closed. (The older
+// every-5-questions checkpoint is retired; see MOCK_CHECKPOINT_KEY.)
+// Clock: the time left is kept as saved. The 4-hour clock pauses while the
+// tab is closed and resumes from the same time on "Resume Exam" (the web
+// clock already paused on the setup screen). A saved mock with no time left,
+// or with every question answered, goes straight to its results, which are
+// recorded once under the saved mockId.
+// Answers are saved with the ORIGINAL letters and the shuffle shown, as at
+// answer time; `q` is saved as a small { id, domain } stub and filled from
+// the bank again on resume.
+var MOCK_SECONDS_TOTAL = 240 * 60;
+var MOCK_SAVE_EVERY_SEC = 15;
+var MOCK_ID_RE = /^web-[a-z0-9-]{1,40}$/;
+var MOCK_MAX_ITEMS = 1000;
+// The saved mock while its banks are still loading (like saved questions
+// above). saveState writes it back as it is, so a save made before the banks
+// arrive never drops the mock.
+var mockResumePending = null;
+
+function newMockId() {
+  return 'web-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 7);
+}
+function isMockInProgress() {
+  return !!(S.mockQueue && S.mockQueue.length > 0 && S.mockCurrent < S.mockQueue.length);
+}
+function isLetterShuffle(s) {
+  if (!Array.isArray(s) || s.length !== DISPLAY_LETTERS.length) return false;
+  return DISPLAY_LETTERS.every(function(l) { return s.indexOf(l) >= 0; });
+}
+// The saved form of one answer: everything but the full question object.
+function slimMockAnswer(a) {
+  if (!a || typeof a !== 'object') return null;
+  var out = {};
+  Object.keys(a).forEach(function(k) { if (k !== 'q') out[k] = a[k]; });
+  if (a.q && a.q.id) out.q = { id: a.q.id, domain: String(a.q.domain) };
+  return out;
+}
+function sanitizeSavedMockAnswer(a, id) {
+  if (!a || typeof a !== 'object') return null;
+  if (a.q && typeof a.q === 'object' && a.q.id && a.q.id !== id) return null;
+  var shuffle = isLetterShuffle(a.shuffle) ? a.shuffle.slice() : DISPLAY_LETTERS.slice();
+  // The original letter is what grading uses; the display letter follows from it.
+  var orig = DISPLAY_LETTERS.indexOf(a.chosenOriginal) >= 0 ? a.chosenOriginal
+    : (DISPLAY_LETTERS.indexOf(a.chosen) >= 0 ? displayToOriginal(a.chosen, shuffle) : null);
+  var out = {
+    chosen: orig ? originalToDisplay(orig, shuffle) : null,
+    chosenOriginal: orig,
+    correct: DISPLAY_LETTERS.indexOf(a.correct) >= 0 ? a.correct : null,
+    shuffle: shuffle,
+    ok: a.ok === true
+  };
+  // Timed-out entries were saved without a question; keep them that way.
+  if (a.q && typeof a.q === 'object') {
+    var m = /^d(\d+)_/.exec(id);
+    out.q = { id: id, domain: /^\d{1,2}$/.test(String(a.q.domain)) ? String(a.q.domain) : (m ? m[1] : '') };
+  }
+  if (typeof a.ms === 'number' && isFinite(a.ms) && a.ms >= 0) out.ms = Math.min(PARITY_MAX_ANSWER_MS, Math.round(a.ms));
+  if (typeof a.ts === 'number' && isFinite(a.ts)) out.ts = a.ts;
+  if (a.timedOut === true) out.timedOut = true;
+  return out;
+}
+// A saved mock (progress record or imported file) in its saved shape, or
+// null when there is nothing to resume. Old saves (full question objects in
+// the answers, no mockId) load too.
+function sanitizeSavedMock(state) {
+  if (!state || typeof state !== 'object' || !Array.isArray(state.mockQueueIds)) return null;
+  var ids = state.mockQueueIds.slice(0, MOCK_MAX_ITEMS);
+  if (!ids.length) return null;
+  for (var i = 0; i < ids.length; i++) {
+    if (typeof ids[i] !== 'string' || !PARITY_ID_RE.test(ids[i])) return null;
+  }
+  var raw = Array.isArray(state.mockAnswers) ? state.mockAnswers : [];
+  // Answers are given in order, so the mock carries on at the first question
+  // without one (a reload in the pause after an answer still moves on).
+  var answers = [];
+  for (var j = 0; j < ids.length && j < raw.length; j++) {
+    var a = sanitizeSavedMockAnswer(raw[j], ids[j]);
+    if (!a) break;
+    answers.push(a);
+  }
+  var left = state.mockTotalSecondsLeft;
+  left = (typeof left === 'number' && isFinite(left)) ? Math.max(0, Math.min(MOCK_SECONDS_TOTAL, Math.round(left))) : MOCK_SECONDS_TOTAL;
+  var mid = (typeof state.mockId === 'string' && MOCK_ID_RE.test(state.mockId)) ? state.mockId : null;
+  // Out of time with no id: an older save kept a mock the clock had already
+  // ended and recorded. Nothing to resume.
+  if (left <= 0 && !mid) return null;
+  return { mockQueueIds: ids, mockAnswers: answers, mockCurrent: answers.length, mockTotalSecondsLeft: left, mockId: mid };
+}
+
+// Rebuilds the saved mock once every bank it uses has loaded. Until then the
+// saved ids stay as they are.
+function tryResumeSavedMock() {
+  var p = mockResumePending;
+  if (!p) return;
+  for (var i = 0; i < p.mockQueueIds.length; i++) {
+    if (!savedQuestionBankLoaded(p.mockQueueIds[i])) return;
+  }
+  var byId = {};
+  Object.keys(QB).forEach(function(d) { (QB[d] || []).forEach(function(q) { byId[q.id] = q; }); });
+  var queue = [], answers = [];
+  p.mockQueueIds.forEach(function(id, k) {
+    var q = byId[id];
+    if (!q) return; // gone from the bank since the save
+    queue.push(q);
+    var a = p.mockAnswers[k];
+    if (!a) return;
+    var copy = JSON.parse(JSON.stringify(a));
+    if (copy.q) copy.q = q;
+    copy.correct = q.correct;
+    copy.ok = !!copy.chosenOriginal && copy.chosenOriginal === q.correct;
+    answers.push(copy);
+  });
+  mockResumePending = null;
+  if (!queue.length) { saveState(); return; }
+  S.mockQueue = queue;
+  S.mockAnswers = answers;
+  S.mockCurrent = answers.length;
+  S.mockTotalSecondsTotal = MOCK_SECONDS_TOTAL;
+  S.mockTotalSecondsLeft = p.mockTotalSecondsLeft;
+  // A save from before mock ids still gets one, so its results are kept.
+  S.mockId = p.mockId || newMockId();
+  mockAnswerLock = false;
+  if (S.mockCurrent >= queue.length || S.mockTotalSecondsLeft <= 0) {
+    setTimeout(finishResumedMock, 0);
+    return;
+  }
+  // The Mock page offers "Resume Exam" (checkMockResume).
+  if (S.activeTab === 'mock' && !document.getElementById('mOpts') && document.body.getAttribute('data-mock-results') !== '1') {
+    renderMockSetup();
+  }
+}
+// Every answer in, or no time left: straight to the results.
+function finishResumedMock() {
+  // The id is cleared once the results are recorded, so this runs once.
+  if (!S.mockQueue || !S.mockQueue.length || !S.mockId) return;
+  while (S.mockAnswers.length < S.mockQueue.length) {
+    S.mockAnswers.push({chosen: null, correct: S.mockQueue[S.mockAnswers.length].correct, ts: Date.now(), timedOut: true});
+  }
+  if (S.activeTab !== 'mock') switchTab('mock', { noScroll: true });
+  showMockResults();
+}
+document.addEventListener('qb:domain-loaded', function() {
+  try { tryResumeSavedMock(); } catch (e) {}
+});
+// The clock is saved as it runs; this keeps the last seconds before a close.
+function saveMockOnLeave() {
+  try { if (isMockInProgress()) saveState(); } catch (e) {}
+}
+window.addEventListener('pagehide', saveMockOnLeave);
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'hidden') saveMockOnLeave();
+});
+
 // ── ADAPTIVE REVIEW QUEUE (v10.39) ──
 // Leitner-style spaced repetition. Each missed question gets a review
 // entry { box, dueAt, lastSeen, reps }; the box advances on correct
@@ -6733,6 +6890,13 @@ function normalizeImportedState(state) {
   fields.forEach(function(k) {
     if (state[k] !== undefined) clean[k] = state[k];
   });
+  // An unfinished mock, checked (it was dropped here, so a reload lost it).
+  var mock = sanitizeSavedMock(state);
+  clean.mockQueueIds = mock ? mock.mockQueueIds : [];
+  clean.mockAnswers = mock ? mock.mockAnswers : [];
+  clean.mockCurrent = mock ? mock.mockCurrent : 0;
+  clean.mockTotalSecondsLeft = mock ? mock.mockTotalSecondsLeft : 0;
+  clean.mockId = mock ? mock.mockId : null;
   // Parity fields: older saves have none and load as empty (no invented history).
   clean.answerLog = sanitizeAnswerLog(clean.answerLog);
   clean.mistakeLog = sanitizeMistakeLog(clean.mistakeLog);
@@ -6784,8 +6948,16 @@ function saveState() {
   if (!id) return; // no profile, no save
   var profiles = getProfiles();
   if (!profiles[id]) return;
-  // Save mock exam progress as IDs only (avoids bloating localStorage with full question objects)
-  var mockInProgress = S.mockQueue && S.mockQueue.length > 0 && S.mockCurrent < S.mockQueue.length;
+  // Save mock exam progress as IDs only (avoids bloating localStorage with full
+  // question objects). A saved mock whose banks are still loading is written
+  // back as it is (see MOCK RESUME).
+  var mockSave = mockResumePending || (isMockInProgress() ? {
+    mockQueueIds: S.mockQueue.map(function(q){ return q.id; }),
+    mockAnswers: (S.mockAnswers || []).map(slimMockAnswer),
+    mockCurrent: S.mockCurrent,
+    mockTotalSecondsLeft: Math.max(0, Number(S.mockTotalSecondsLeft) || 0),
+    mockId: S.mockId || null
+  } : null);
   var persist = {
     score: S.score, ds: S.ds, streak: S.streak, bookmarks: S.bookmarks,
     answeredIds: S.answeredIds, missedQuestions: S.missedQuestions,
@@ -6801,11 +6973,11 @@ function saveState() {
     current: shouldResumeCurrent() ? S.current : null,
     qn: S.qn,
     activeTab: S.activeTab || "home",
-    mockQueueIds: mockInProgress ? S.mockQueue.map(function(q){ return q.id; }) : [],
-    mockAnswers: mockInProgress ? S.mockAnswers : [],
-    mockCurrent: mockInProgress ? S.mockCurrent : 0,
-    mockTotalSecondsLeft: mockInProgress ? S.mockTotalSecondsLeft : 0,
-    mockId: mockInProgress ? (S.mockId || null) : null,
+    mockQueueIds: mockSave ? mockSave.mockQueueIds : [],
+    mockAnswers: mockSave ? mockSave.mockAnswers : [],
+    mockCurrent: mockSave ? mockSave.mockCurrent : 0,
+    mockTotalSecondsLeft: mockSave ? mockSave.mockTotalSecondsLeft : 0,
+    mockId: mockSave ? mockSave.mockId : null,
   };
   profiles[id].state = persist;
   profiles[id].lastActive = Date.now();
@@ -6827,20 +6999,14 @@ function loadState() {
   var fields = ["score","ds","streak","bookmarks","answeredIds","missedQuestions",
                 "confidenceLog","sessionHistory","review","selectedDomain","diff",
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicTicksSchema",
-                "current","qn","activeTab","mockAnswers","mockCurrent","mockTotalSecondsLeft",
+                "current","qn","activeTab",
                 "answerLog","mistakeLog","studyDays","mockHistory"];
   fields.forEach(function(k) {
     if (saved[k] !== undefined) S[k] = saved[k];
   });
-  // Reconstruct mockQueue from saved IDs (avoids storing full objects in localStorage)
-  if (saved.mockQueueIds && saved.mockQueueIds.length > 0) {
-    var idMap = {};
-    Object.keys(QB).forEach(function(d) {
-      (QB[d]||[]).forEach(function(q){ idMap[q.id] = q; });
-    });
-    S.mockQueue = saved.mockQueueIds.map(function(id){ return idMap[id]; }).filter(Boolean);
-    if (typeof saved.mockId === 'string' && /^web-[a-z0-9-]{1,40}$/.test(saved.mockId)) S.mockId = saved.mockId;
-  }
+  // The unfinished mock (if any) is rebuilt from its saved ids once its banks
+  // have loaded; see MOCK RESUME and tryResumeSavedMock at the end.
+  mockResumePending = sanitizeSavedMock(saved);
   ensureAnsweredBuckets();
   ensureParityFields();
   if (!S.qIdx["all"]) S.qIdx["all"] = 0;
@@ -6849,6 +7015,7 @@ function loadState() {
   seedReviewFromMissed();
   // A profile loaded after the notes arrived still gets its v2 tick move.
   if (CISA_NOTES_RAW && CONCEPTS_DATA) migrateTopicTicksToV2(CONCEPTS_DATA);
+  tryResumeSavedMock();
 }
 
 // One-time migration for users from before the adaptive review queue:
@@ -8944,6 +9111,9 @@ function startMockTotalTimer() {
         S.mockAnswers.push({chosen: null, correct: S.mockQueue[S.mockAnswers.length].correct, ts: Date.now(), timedOut: true});
       }
       showMockResults();
+    } else if (S.mockTotalSecondsLeft % MOCK_SAVE_EVERY_SEC === 0) {
+      // Keep the time left saved, so a reload resumes close to it.
+      saveState();
     }
   }, 1000);
 }
@@ -10322,7 +10492,7 @@ function showMockConfirm() {
     + '<div class="mock-confirm-row"><span>Domain distribution</span><strong>'+domainBreakdown+'</strong></div>'
     + '<div class="mock-confirm-row"><span>Explanations</span><strong>After exam only</strong></div>'
     + '<div class="mock-confirm-row"><span>Timer</span><strong>Single 4-hour countdown &mdash; no per-question limit</strong></div>'
-    + '<div class="mock-confirm-warn">Progress will not be saved if you close this tab during the exam.</div>'
+    + '<div class="mock-confirm-warn">If you close this tab, your answers are saved and you can resume later. The exam clock pauses while the tab is closed.</div>'
     + resumeHtml
     + '<div class="mock-confirm-btns">'
     + '<button class="mock-confirm-btn cancel" onclick="closeFlagModal()">Cancel</button>'
@@ -10335,10 +10505,14 @@ function checkMockResume() {
   var area = document.getElementById('mockArea');
   if (!area) return false;
   if (S.mockQueue && S.mockQueue.length > 0 && S.mockCurrent < S.mockQueue.length) {
+    if (area.querySelector('.mock-resume-banner')) return true;
     var pct = Math.round((S.mockCurrent / S.mockQueue.length) * 100);
+    var left = Math.max(0, Math.round(Number(S.mockTotalSecondsLeft) || 0));
+    var lh = Math.floor(left / 3600), lm = Math.floor((left % 3600) / 60);
+    var leftLabel = (lh ? lh + 'h ' : '') + (lh || lm ? lm + 'm' : left + 's') + ' left';
     area.insertAdjacentHTML('afterbegin',
       '<div class="mock-resume-banner">'
-      + '<div class="mock-resume-text">Exam in progress &mdash; Q' + (S.mockCurrent+1) + '/' + S.mockQueue.length + ' (' + pct + '% done)</div>'
+      + '<div class="mock-resume-text">Exam in progress &mdash; Q' + (S.mockCurrent+1) + '/' + S.mockQueue.length + ' (' + pct + '% done) &middot; ' + leftLabel + '</div>'
       + '<button class="mock-resume-btn" onclick="showMockQuestion()">Resume Exam &rarr;</button>'
       + '</div>'
     );
@@ -10348,20 +10522,24 @@ function checkMockResume() {
 }
 
 function startMock() {
-  clearAllTimers();
-  S.mockQueue = [];
-  S.mockAnswers = [];
-  S.mockCurrent = 0;
-  mockAnswerLock = false;
-  S.mockId = 'web-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 7); // parity mock id
-
   // Don't let the user start an exam while a domain bank is still fetching —
-  // that would silently drop those questions from the simulation.
+  // that would silently drop those questions from the simulation. Checked
+  // first, so an unfinished mock is not discarded by a start that can't run.
   if (Object.keys(window.QB_LOADING || {}).length > 0) {
     showToast && showToast('Question banks still loading — try again in a moment', 'info', 2200);
     renderMockSetup();
     return;
   }
+
+  clearAllTimers();
+  if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
+  // A new exam replaces any unfinished one, saved or still waiting to load.
+  mockResumePending = null;
+  S.mockQueue = [];
+  S.mockAnswers = [];
+  S.mockCurrent = 0;
+  mockAnswerLock = false;
+  S.mockId = newMockId(); // parity mock id
 
   function shuffle(arr){ for(var i=arr.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=arr[i];arr[i]=arr[j];arr[j]=t; } return arr; }
 
@@ -10384,6 +10562,7 @@ function startMock() {
   S.mockTotalSecondsLeft = S.mockTotalSecondsTotal;
 
   showMockQuestion();
+  saveState(); // the new exam replaces the old one in the saved record now
 }
 
 function showMockQuestion() {
@@ -10488,9 +10667,6 @@ function selectMockAnswer(chosen, _ignoredCorrect) {
     ok: ok,
     ms: questionStartTime ? Math.max(0, Date.now() - questionStartTime) : undefined // time to answer (parity)
   };
-  // Auto-save checkpoint every 5 questions
-  if ((S.mockCurrent + 1) % 5 === 0) { saveMockCheckpoint(); }
-
   // Track in domain stats so Weak Spots reflects mock performance
   if (S.current) {
     var d = String(S.current.domain);
@@ -10551,6 +10727,9 @@ function showMockResults() {
   clearAllTimers();
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
   var answers = S.mockAnswers;
+  // The exam is over (all answered, or the clock ended): it is no longer an
+  // exam in progress, so the save below clears it and a reload can't resume it.
+  S.mockCurrent = S.mockQueue.length;
   // Parity: keep this mock in the history (once), and save it now.
   try { recordMockParity(answers, S.mockQueue); saveState(); } catch(e) {}
   var tot = answers.length;
@@ -10743,6 +10922,12 @@ function doResetProgress() {
   S.studyDays = [];
   S.mockHistory = [];
   S.mockId = null;
+  // An unfinished mock goes too.
+  if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
+  mockResumePending = null;
+  S.mockQueue = [];
+  S.mockAnswers = [];
+  S.mockCurrent = 0;
   S.answeredIds = {"1":{},"2":{},"3":{},"4":{},"5":{},"all":{}};
   S.qIdx = {"1":0,"2":0,"3":0,"4":0,"5":0,"all":0};
   S.selectedDomain = "1";
@@ -11862,23 +12047,14 @@ function drillSingleBookmark(qId) {
   setTimeout(function(){ nextQ(); }, 200);
 }
 
-// ── PHASE 2: MOCK CHECKPOINT (save every 5 Q) ──
+// ── PHASE 2: MOCK CHECKPOINT (retired) ──
+// This key held a copy of the mock (full questions, every 5th answer) that
+// nothing ever read back: no time left, no mock id, and never cleared, so a
+// finished mock's copy looked unfinished. Every answer was already saved in
+// the progress record, which is now the one resume path (see MOCK RESUME).
+// The key is no longer written or read; a value already in a browser is
+// left as it is (saved keys are never removed or renamed).
 var MOCK_CHECKPOINT_KEY = 'cisa_mock_ckpt_v1';
-
-function saveMockCheckpoint() {
-  try {
-    localStorage.setItem(MOCK_CHECKPOINT_KEY, JSON.stringify({
-      mockQueue: S.mockQueue,
-      mockCurrent: S.mockCurrent,
-      mockAnswers: S.mockAnswers,
-      ts: Date.now()
-    }));
-  } catch(e) {}
-}
-
-function clearMockCheckpoint() {
-  try { localStorage.removeItem(MOCK_CHECKPOINT_KEY); } catch(e) {}
-}
 
 // ── PHASE 2: MOCK RESULTS ADVISORY ──
 function buildMockAdvisory(domainStats) {
