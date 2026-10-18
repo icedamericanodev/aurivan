@@ -183,7 +183,8 @@
   --grain-op: .035;
   --focus-ring: var(--text);   /* 2px ink ring, offset 2: green never means "focused" or "selected" */
   --r-pill: 999px;
-  --sp-4: 4px; --sp-8: 8px; --sp-12: 12px; --sp-16: 16px; --sp-20: 20px; --sp-24: 24px; --sp-32: 32px; --sp-48: 48px;
+  --sp-xs: 4px; --sp-sm: 8px; --sp-md: 12px; --sp-lg: 16px; --sp-xl: 20px; --sp-xxl: 24px; --sp-section: 28px; --sp-xxxl: 48px;
+  --r-sm: 8px; --r-md: 16px; --r-lg: 24px;
   /* Type scale (DESIGN_SYSTEM §2). Use as `font: var(--t-body)`. Body 16, floor 14. */
   --t-number: 500 52px/52px var(--f-serif);    --tr-number: -1.4px;
   --t-display: 500 36px/42px var(--f-serif);   --tr-display: -0.6px;
@@ -2842,7 +2843,7 @@ header {
   font-family: Figtree,system-ui,sans-serif;
   font-size: 14px; font-weight: 600; color: var(--text); transition: var(--tr);
 }
-.faq-q:hover, .faq-q:focus-visible { color: var(--accent); outline: none; }
+.faq-q:hover { color: var(--accent); }
 .faq-q-chev { margin-left: auto; flex-shrink: 0; font-size: 13px; color: var(--muted); transition: transform var(--tr); }
 .faq-item.open .faq-q-chev { transform: rotate(180deg); }
 .faq-a {
@@ -5310,7 +5311,7 @@ header.app-header .brand-lockup { height: 28px; }
 .sn-list { display: flex; flex-direction: column; gap: 4px; }
 .sn-item {
   display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px;
-  border-radius: 12px; font: 600 15px/20px var(--f-sans); color: var(--text2); text-decoration: none;
+  border-radius: var(--r-sm); font: 600 15px/20px var(--f-sans); color: var(--text2); text-decoration: none;
 }
 .sn-item .ico { width: 22px; height: 22px; }
 .sn-item:hover, .sn-subitem:hover { color: var(--text); }
@@ -5320,7 +5321,7 @@ header.app-header .brand-lockup { height: 28px; }
 .sn-sub { display: flex; flex-direction: column; margin: 2px 0 6px 34px; }
 .sn-subitem {
   display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px;
-  border-radius: 12px; font: 500 14px/20px var(--f-sans); color: var(--text2); text-decoration: none;
+  border-radius: var(--r-sm); font: 500 14px/20px var(--f-sans); color: var(--text2); text-decoration: none;
 }
 .sn-subitem[aria-current="page"] { color: var(--text); font-weight: 600; }
 .sn-subitem .tab-badge { margin-left: auto; background: none; color: var(--text2); padding: 0; font: 500 14px/20px var(--f-sans); }
@@ -5473,6 +5474,7 @@ header.app-header .brand-lockup { height: 28px; }
 </div>
 
 <main class="app" id="main" tabindex="-1">
+<nav class="sub-nav" id="subNav" aria-label="Section pages" hidden></nav>
 
 <!-- MINDSET STRIP -->
 <div class="mindset-strip">
@@ -5491,7 +5493,6 @@ header.app-header .brand-lockup { height: 28px; }
 
 <!-- SECTION PAGES: Learn and Practice sub-pages on phones; a link back to You
      from its pages. Filled by syncNav(). -->
-<nav class="sub-nav" id="subNav" aria-label="Section pages" hidden></nav>
 
 <!-- HOME DASHBOARD -->
 <div id="screen-home" class="screen">
@@ -5719,8 +5720,8 @@ header.app-header .brand-lockup { height: 28px; }
 {"cat":"Using the app","q":"What is the Review queue?","a":"Questions you answer incorrectly come back on a spaced schedule — soon at first, then at widening intervals as you get them right, until they retire. The Home screen shows how many are due and lets you start a review session in one tap."},
 {"cat":"Using the app","q":"How do I save a question for later?","a":"Use the bookmark control on a question to save it. Saved questions live under Practice, then Saved, where you can revisit them any time."},
 {"cat":"Using the app","q":"What does the Weak Spots tab show?","a":"Weak Spots shows how each of the five domains is going and lets you start a drill on the ones that need work. Until a domain has 30 answers it shows Building, Steady or Strong instead of a number, so a few answers never read as a verdict."},
-{"cat":"Using the app","q":"Some tabs are missing on my phone — where are they?","a":"The bottom navigation shows Home, Practice, Mock, Topics, and More. 'More' opens the rest — Weak Spots, Principles, Glossary, Saved, and this FAQ."},
-{"cat":"Using the app","q":"What is the Topics tab?","a":"Topics is a study reference. Each topic has a plain-language explanation, clear diagrams, and the common mistakes to watch for, organized by domain."},
+{"cat":"Using the app","q":"Some tabs are missing on my phone — where are they?","a":"On phones the bottom bar shows Today, Learn, Practice and You. Learn holds Study notes, Glossary and Principles; Practice holds Mock exam and Saved; You holds Weak spots, settings and help."},
+{"cat":"Using the app","q":"What are Study notes?","a":"Study notes are a study reference. Each topic has a plain-language explanation, clear diagrams, and the common mistakes to watch for, organized by domain."},
 {"cat":"Using the app","q":"How do I switch to dark mode?","a":"Open You and turn on Dark mode. Your choice is remembered for next time."},
 {"cat":"The CISA exam","q":"How many questions are on the CISA exam?","a":"The CISA exam has 150 multiple-choice questions."},
 {"cat":"The CISA exam","q":"How long is the exam?","a":"You are given 4 hours to complete the CISA exam."},
@@ -8561,8 +8562,15 @@ function navRunAction(action) {
 // Marks the current section and page in the rail and the bottom bar, draws
 // the section's page links (phones) or the way back to You, and keeps the
 // address in step (without adding history entries).
+var NAV_TITLE = {
+  topics: 'Study notes', glossary: 'Glossary', principles: 'Principles',
+  practice: 'Practice', mock: 'Mock exam', bookmarks: 'Saved',
+  you: 'You', weakspots: 'Weak spots', faq: 'Help', about: 'About'
+};
 function syncNav(t) {
   var sec = NAV_SECTION[t] || 'today';
+  // Screen readers announce the new title, so a page change is not silent.
+  document.title = NAV_TITLE[t] ? NAV_TITLE[t] + ' · KaiSip' : 'KaiSip — Master Modern Risk';
   if (NAV_PAGES[sec]) navLastPage[sec] = t;
   document.body.setAttribute('data-section', sec);
   document.querySelectorAll('.sn-item, .bnav-item').forEach(function (x) {
