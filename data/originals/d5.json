@@ -1809,7 +1809,7 @@
       "question": "Reviewing endpoint detection and response (EDR), an IS auditor notes the console reports strong detection results. Which finding should concern the auditor MOST?",
       "options": {
         "A": "Detection rules were last tuned more than a year ago",
-        "B": "About 30 percent of laptops have no EDR agent installed",
+        "B": "About 30 percent of laptops have no agent installed",
         "C": "The console uses the vendor's default dashboard layout",
         "D": "Laptop agents send telemetry to a console hosted by the vendor"
       },
@@ -8977,15 +8977,15 @@
       "correct": "D",
       "key_concept": "Credential stuffing is stopped by multi-factor authentication, which the cloud customer must configure under shared responsibility.",
       "pre_read": "Notice what the attackers held and what the warehouse checked. Ask which control makes that stolen item useless.",
-      "correct_explanation": "Stolen passwords worked because a password was the only thing the warehouse checked. Requiring multi-factor authentication for every login means a leaked password alone no longer grants access, and under shared responsibility configuring it is the customer's job. Checking new passwords against breach lists sounds protective, but it only blocks passwords already known to be leaked; stolen passwords that are still in use keep working.",
+      "correct_explanation": "Stolen passwords worked because a password was the only thing the warehouse checked. Requiring multi-factor authentication for every login means a leaked password alone no longer grants access, and under shared responsibility configuring it is the customer's job. Breach-list checks sound protective, but they screen only new passwords as they are set, so stolen passwords users never changed keep working, and freshly stolen ones are not yet listed.",
       "wrong_explanations": {
         "A": "Breach-list checks stop users choosing known-leaked passwords, but passwords already stolen still work, and new dumps appear constantly; a second factor stops them all.",
         "B": "Provider defaults may leave multi-factor authentication off. Under shared responsibility, the customer must configure its own login controls.",
         "C": "Volume alerts detect large exports after attackers are already in, and small exports stay under the threshold. Prevention at login comes first."
       },
       "tips": [
-        "Eliminate: B trusts the defaults that allowed the breach, and C only detects exports after access is gained.",
-        "Final two: D beats A because a second factor makes stolen passwords useless, while breach-list checks only block passwords already known to be leaked.",
+        "Eliminate: B leaves login security to whatever the provider sets by default, and C only detects exports after access is gained.",
+        "Final two: D beats A because a second factor makes stolen passwords useless, while breach-list checks screen only new passwords and leave existing stolen ones working.",
         "Exam cue: when stolen passwords are the attack path, the lasting fix is a second factor, not more password rules."
       ],
       "_provenance": "Authored from concept: 'Reused customer credentials → mass tenant data exfil from cloud data warehouse'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: Snowflake customer-credential 2024 tonal echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from the reset-does-not-end-sessions lesson (kept in d5_233): now the preventive control for credential stuffing under shared responsibility.",

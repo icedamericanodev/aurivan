@@ -1339,15 +1339,15 @@
       "correct": "A",
       "key_concept": "Phased cutover suits complex, multi-unit replacements because staged waves limit blast radius and allow mid-course correction.",
       "pre_read": "Weigh complexity and impact. Ask how many units a single failure would hit under each approach.",
-      "correct_explanation": "With six units and very different processes, a phased rollout limits the blast radius of any failure to one unit and lets lessons from early waves correct later ones. A single big-bang weekend avoids temporary interfaces between old and new systems, but it exposes every unit at once, with no chance to correct course before the whole bank is affected.",
+      "correct_explanation": "With six units and very different processes, a phased rollout limits the blast radius of any failure to one unit and lets lessons from early waves correct later ones. A pilot followed by a single cutover limits early risk, but the remaining five units, each with different processes, would still go live together, so one failure would hit most of the bank.",
       "wrong_explanations": {
         "B": "Big-bang suits simpler, lower-risk replacements. Here a single failure would hit all six units at once with no chance to adjust.",
         "C": "Parallel running is a time-limited validation step. Running both systems indefinitely doubles effort and never completes the transition.",
         "D": "A pilot reduces early risk, but moving the other five very different units in one step still exposes most of the bank to a single failure."
       },
       "tips": [
-        "Eliminate: C never completes the transition, and D still moves five very different units in one big-bang step after the pilot.",
-        "Final two: A beats B because staged waves contain failures and allow correction; big-bang is simpler but exposes every unit at once.",
+        "Eliminate: C never completes the transition, and B exposes all six units to one weekend's failure.",
+        "Final two: A beats D because a pilot tests only one unit; the five very different remaining units would still fail together.",
         "Exam cue: complex, multi-unit, high-impact replacements point to phased cutover; small, low-risk systems suit big-bang."
       ],
       "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); ISACA Systems Development and Project Management Audit Program",
@@ -1781,15 +1781,15 @@
       "correct": "B",
       "key_concept": "API breaking changes are prevented by versioning interfaces and running consumer contract tests in the pipeline before deployment.",
       "pre_read": "Notice the word prevent. Separate options that stop the break before release from those that warn about or react to it.",
-      "correct_explanation": "Versioned endpoints let existing consumers stay on the old interface while they migrate, and consumer-driven contract tests run in the provider's pipeline catch a breaking change before it is deployed. Together they prevent the incident. Advance email notice is courteous and helps planning, but it still relies on every partner reading it and finishing migration in a week; the break happens anyway when they cannot.",
+      "correct_explanation": "Versioned endpoints let existing consumers stay on the old interface while they migrate, and consumer-driven contract tests run in the provider's pipeline catch a breaking change before it is deployed. Together they prevent the incident. A shared staging environment helps partners find breaks early, but it depends on every partner testing every release; nothing in the provider's pipeline blocks a breaking change.",
       "wrong_explanations": {
         "A": "Notice informs but does not prevent. Partners who miss the email or cannot migrate in time still break on release day.",
         "C": "Shared staging helps partners find breaks early, but it relies on every partner testing every release; nothing in the provider's pipeline stops a breaking change.",
         "D": "A frozen interface blocks needed improvements and security fixes. Change must be controlled, not stopped."
       },
       "tips": [
-        "Eliminate: C depends on every partner testing each release, and D stops the API from improving at all.",
-        "Final two: B beats A because testing contracts before release prevents the break, while notice only warns partners it is coming.",
+        "Eliminate: A only warns partners, and D stops the API from improving at all.",
+        "Final two: B beats C because contract tests in the provider's pipeline block a breaking change, while staging depends on every partner testing every release.",
         "Exam cue: to PREVENT a failure, prefer a control that tests before release over one that communicates or reacts."
       ],
       "framework_ref": "OWASP API Security Top 10 (2023); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
@@ -1995,22 +1995,22 @@
       "question": "Before approving a high-risk release, the change advisory board reviews the rollback plan. Which feature is MOST important?",
       "options": {
         "A": "A copy of the prior build artifact kept in the repository",
-        "B": "A rollback runbook approved by the change owner but never rehearsed",
+        "B": "A detailed rollback runbook reviewed and approved by the change owner",
         "C": "A tested, time-bound procedure restoring code, data and configuration",
         "D": "A standing decision to fix forward instead of reverting"
       },
       "correct": "C",
       "key_concept": "A robust rollback plan is tested, time-bound and restores data and configuration consistency, not just the previous code version.",
       "pre_read": "Ask what would make the board confident the rollback will actually work on the night.",
-      "correct_explanation": "A rollback plan provides assurance only if it has been exercised, can be completed within a defined window, and restores data and configuration as well as code. Many failed rollbacks happen because a schema or configuration change was not reversible. Keeping the prior build artifact is necessary, but on its own it is untested and does not address data written in the new format.",
+      "correct_explanation": "A rollback plan provides assurance only if it has been exercised, can be completed within a defined window, and restores data and configuration as well as code. Many failed rollbacks happen because a schema or configuration change was not reversible. An approved runbook shows the steps were reviewed, but until it is rehearsed nobody knows whether it restores code, data and configuration within the window.",
       "wrong_explanations": {
         "A": "Having the old binary is a starting point, not a plan. It is untested and ignores data and configuration changes.",
-        "B": "A documented runbook is a start, but until it is rehearsed nobody knows whether it restores data and configuration within the window.",
+        "B": "Approval shows the runbook was reviewed, not that it restores code, data and configuration within the window.",
         "D": "Fixing forward can be valid, but ruling out rollback removes the fallback when a fix cannot be produced quickly."
       },
       "tips": [
-        "Eliminate: B is still unrehearsed, and D removes the fallback option entirely.",
-        "Final two: C beats A because a tested, complete procedure gives assurance, while an untested artifact ignores data and configuration.",
+        "Eliminate: A is only the old build, and D removes the fallback entirely.",
+        "Final two: C beats B because only a rehearsed procedure proves restoration within the window; an approved runbook is still untested.",
         "Exam cue: for recovery plans, tested beats documented, and documented beats merely available."
       ],
       "framework_ref": "ITIL 4 (Change Enablement); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",

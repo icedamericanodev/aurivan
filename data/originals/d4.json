@@ -8030,7 +8030,7 @@
       "correct": "D",
       "key_concept": "Integrity of settlement data comes first; the fastest verified recovery path plus early regulator contact beats settling on corrupt data.",
       "pre_read": "Compare the recovery options against the deadline. Which one produces verified data in time, and who should hear early?",
-      "correct_explanation": "Settlement must rest on accurate records. Restoring the clean backup and replaying the transaction logs is the fastest route to verified data, and telling the regulator early protects the firm if timing slips. Manual reconciliation is accurate in principle, but reworking thousands of trades by hand is far slower and more error-prone than a replay.",
+      "correct_explanation": "Settlement must rest on accurate records. Restoring the clean backup and replaying the transaction logs is the fastest route to verified data. Manual reconciliation is accurate in principle, but reworking thousands of trades by hand is far slower and more error-prone than a replay.",
       "wrong_explanations": {
         "A": "Settling on known-corrupt data harms customers and breaches books-and-records duties. Later correction does not undo that.",
         "B": "Manually reconciling thousands of trades takes far longer than a replay and introduces human error under deadline pressure.",
@@ -8039,7 +8039,7 @@
       "tips": [
         "Eliminate: A knowingly settles on corrupt data, and C spends scarce hours waiting for an unlikely extension.",
         "Final two: D beats B because a backup replay yields verified data far faster and more reliably than manual rework.",
-        "Exam cue: for corrupted data, choose the fastest verified recovery and engage regulators before deadlines, not after."
+        "Exam cue: for corrupted data, choose the fastest verified recovery over settling on bad data or manual rework."
       ],
       "framework_ref": "SEC Rule 15c6-1 (T+1 Settlement Cycle); SEC Rule 17a-4 (Books and Records Preservation); FINRA Rule 4511 (General Requirements); SEC Rule 15c3-3 (Customer Protection); FFIEC Business Continuity Management Booklet; ISO/IEC 27040 (Storage Security)",
       "related_concepts": [
@@ -8138,7 +8138,7 @@
       "options": {
         "A": "Measure SLA performance against the remediation plan for another quarter",
         "B": "Migrate production to an alternative cloud vendor right away",
-        "C": "Issue a formal cure notice and await the vendor's response",
+        "C": "Issue a formal cure notice with escalating penalties for further misses",
         "D": "Build resilience to vendor failures and plan an exit"
       },
       "correct": "D",
@@ -8148,7 +8148,7 @@
       "wrong_explanations": {
         "A": "The roadmap has already failed for 90 days. Another quarter of measurement leaves the business absorbing losses that credits barely cover.",
         "B": "An immediate migration is a large, risky change, and a new vendor can also degrade without resilient design.",
-        "C": "A cure notice adds formal pressure, but an agreed roadmap has already failed for 90 days, and waiting on the vendor leaves customers exposed."
+        "C": "Penalties add contract pressure, but an agreed roadmap has already failed for 90 days, and credits or penalties do not protect customers."
       },
       "tips": [
         "Eliminate: A waits another quarter on a failing roadmap, and B makes a rushed, risky move that does not remove vendor dependence.",
