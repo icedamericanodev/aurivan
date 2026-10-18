@@ -180,7 +180,7 @@ describe('ReadMark: fill the circle', () => {
     expect(circlesOf(none).map((x) => [x.props.r, x.props.stroke, x.props.strokeWidth])).toEqual([[11, light.track, 2]]);
     const [ring, pie] = circlesOf(started);
     expect([ring.props.r, ring.props.stroke, ring.props.fill]).toEqual([11, light.accent, 'none']);
-    expect(pie.props).toMatchObject({ cx: 12, cy: 12, r: 5, fill: 'none', stroke: light.accent, strokeWidth: 10, strokeDasharray: '15.708 31.416', rotation: -90, origin: '12,12' });
+    expect(pie.props).toMatchObject({ cx: 12, cy: 12, r: 5.5, fill: 'none', stroke: light.accent, strokeWidth: 11, strokeDasharray: '17.279 34.558', rotation: -90, origin: '12,12' });
     expect(circlesOf(read).map((x) => [x.props.cx, x.props.cy, x.props.r, x.props.fill, x.props.stroke])).toEqual([[12, 12, 12, light.accent, undefined]]);
     // The older two-state prop still draws the same.
     expect(circlesOf(oldRead).map((x) => [x.props.r, x.props.fill])).toEqual([[12, light.accent]]);
@@ -320,7 +320,7 @@ describe('lists: words, labels and the one-time fill', () => {
     openTopicOf(NOTE);
     const name = noteName();
     expect(byLabel(`${name}, started, not finished`).length).toBeGreaterThan(0);
-    expect(circlesOf(markIn(`${name}, started, not finished`))[1].props.strokeDasharray).toBe('15.708 31.416');
+    expect(circlesOf(markIn(`${name}, started, not finished`))[1].props.strokeDasharray).toBe('17.279 34.558');
     unmount();
     useProgress.getState().setNoteRead('cisa', NOTE, true);
     mount(<NotesDomain />);
@@ -398,14 +398,14 @@ describe('lists: words, labels and the one-time fill', () => {
       noteJustRead('k', 0.5);
       mount(<ReadMark state="read" play="k" />);
       const m = marks()[0];
-      const pie = circlesOf(m).find((x) => x.props.r === 5 && x.props.animatedProps)!;
+      const pie = circlesOf(m).find((x) => x.props.r === 5.5 && x.props.animatedProps)!;
       // The mock finishes an animation at once; a re-render shows its end state.
       act(() => {
         r!.update(<ReadMark state="read" play="k" />);
       });
       const overlay = m.findAll((n) => Array.isArray(n.props.style) && n.props.style.some((s: { opacity?: number } | undefined) => s && typeof s.opacity === 'number'))[0];
       const opacity = (overlay.props.style as ({ opacity?: number } | undefined)[]).find((s) => s && typeof s.opacity === 'number')!.opacity;
-      const offset = circlesOf(marks()[0]).find((x) => x.props.r === 5 && x.props.animatedProps)!.props.animatedProps.strokeDashoffset;
+      const offset = circlesOf(marks()[0]).find((x) => x.props.r === 5.5 && x.props.animatedProps)!.props.animatedProps.strokeDashoffset;
       expect(pie).toBeDefined();
       unmount();
       return { opacity, offset };
@@ -416,7 +416,7 @@ describe('lists: words, labels and the one-time fill', () => {
     expect(moving.opacity).toBe(1);
     const calm = playOnce(true);
     // Reduced: the pie stays where it was (half) and the full disc fades in over it.
-    expect(calm.offset).toBeCloseTo(15.708);
+    expect(calm.offset).toBeCloseTo(17.279);
     expect(calm.opacity).toBe(1);
     setSystemReducedMotionForTest(null);
     setMockReducedMotion(true);
@@ -430,7 +430,7 @@ describe('lists: words, labels and the one-time fill', () => {
     unmount();
     useProgress.getState().markNoteViewed('cisa', NOTE);
     mount(<NotesHome />);
-    expect(circlesOf(domainMark())[1].props.strokeDasharray).toBe('15.708 31.416');
+    expect(circlesOf(domainMark())[1].props.strokeDasharray).toBe('17.279 34.558');
     expect(d4().props.accessibilityLabel).toMatch(/ Started\.$/);
     unmount();
     for (const id of D4) useProgress.getState().setNoteRead('cisa', id, true);

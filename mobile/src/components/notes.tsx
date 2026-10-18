@@ -101,10 +101,11 @@ export function ReadMark({ state, read, play }: { state?: NoteReadState; read?: 
   );
 }
 
-// The pie: a circle of r=5 drawn with a 10pt stroke covers radius 0 to 10, and
-// its dash length is how much of it shows. 2 x pi x 5 = 31.416.
-const PIE_R = 5;
-const PIE_C = 31.416;
+// The pie: a circle of r=5.5 drawn with an 11pt stroke covers radius 0 to 11,
+// reaching into the ring (10 to 12) so no seam shows between them (as on web);
+// its dash length is how much of it shows. 2 x pi x 5.5 = 34.558.
+const PIE_R = 5.5;
+const PIE_C = 34.558;
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 /**
@@ -131,7 +132,7 @@ function StillMark({ state }: { state: NoteReadState }) {
           r={PIE_R}
           fill="none"
           stroke={c.accent}
-          strokeWidth={10}
+          strokeWidth={11}
           // The right half, from 12 o'clock, clockwise.
           strokeDasharray={`${PIE_C / 2} ${PIE_C}`}
           rotation={-90}
@@ -215,7 +216,7 @@ function FillingMark({ from, playKey }: { from: number; playKey: string }) {
           r={PIE_R}
           fill="none"
           stroke={c.accent}
-          strokeWidth={10}
+          strokeWidth={11}
           strokeDasharray={`${PIE_C} ${PIE_C}`}
           rotation={-90}
           origin="12,12"
