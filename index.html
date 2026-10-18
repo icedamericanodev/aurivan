@@ -5004,10 +5004,10 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
    read as a checkbox. */
 .gt-mark { width: 24px; height: 24px; flex-shrink: 0; display: block; overflow: visible; }
 .gt-mark-ring { fill: none; stroke: var(--track); stroke-width: 2; }
-.gt-mark-pie { fill: none; stroke: var(--accent); stroke-width: 10; stroke-dasharray: 0 31.416; }
+.gt-mark-pie { fill: none; stroke: var(--accent); stroke-width: 11; stroke-dasharray: 0 34.558; }
 .gt-mark-started .gt-mark-ring, .gt-mark-read .gt-mark-ring { stroke: var(--accent); }
-.gt-mark-started .gt-mark-pie { stroke-dasharray: 15.708 31.416; }
-.gt-mark-read .gt-mark-pie { stroke-dasharray: 31.416 31.416; }
+.gt-mark-started .gt-mark-pie { stroke-dasharray: 17.279 34.558; }
+.gt-mark-read .gt-mark-pie { stroke-dasharray: 34.558 34.558; }
 /* Only a note becoming read sweeps its pie, once (see gtPlayJustRead). */
 .gt-mark-play .gt-mark-pie { transition: stroke-dasharray 300ms cubic-bezier(.33,1,.68,1); }
 @keyframes gtMarkFade { from { opacity: .4; } to { opacity: 1; } }
@@ -8042,7 +8042,7 @@ function gtMarkSvg(state, extraClass, attrs) {
   return '<svg class="gt-mark gt-mark-' + state + (extraClass ? ' ' + extraClass : '') + '"' + (attrs || '')
     + ' width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
     + '<circle class="gt-mark-ring" cx="12" cy="12" r="11"/>'
-    + '<circle class="gt-mark-pie" cx="12" cy="12" r="5" transform="rotate(-90 12 12)"/></svg>';
+    + '<circle class="gt-mark-pie" cx="12" cy="12" r="5.5" transform="rotate(-90 12 12)"/></svg>';
 }
 function gtSetMarkState(mark, state) {
   ['none', 'started', 'read'].forEach(function(k) { mark.classList.toggle('gt-mark-' + k, k === state); });
