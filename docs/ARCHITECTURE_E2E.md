@@ -66,6 +66,25 @@ The reason: a paused project cannot process an account-deletion request.
 Store rules and the Philippine Data Privacy Act both require us to handle
 those. The free plan also has no backups of people's accounts.
 
+### Update, 18 Oct 2026 (owner agreed)
+
+- **Free plan first.** At around 3,000 learners KaiSip fits Supabase Free
+  (50,000 monthly sign-ins, 500 MB database). The one limit at risk is the
+  5 GB monthly transfer if many learners sync two devices; gzip the sync
+  snapshots before accounts go public (about 15× smaller,
+  `docs/mobile/SCALING.md`). Run Free with the safeguards above (keep-awake
+  job, our own encrypted nightly backup).
+- **Upgrade to Pro ($25/month)** when KaiSip earns money (a paid tier), when
+  usage reaches about 60% of any free quota, or if the project ever pauses.
+  This replaces "Pro at the first public account".
+- **New-phone restore at $0 already exists:** Android Auto Backup is on
+  (`android.allowBackup: true` in `mobile/app.json`) and iOS includes app
+  data in iCloud Backup. It is a restore, not live sync. Test it in the
+  private preview before promising it.
+- **Order of work:** quality phase → private preview (accounts off) →
+  store readiness → public launch (accounts off) → optional accounts and
+  sync when learners ask for it or a paid tier starts.
+
 ## 4. Security, the short version
 
 The server side is already strong. Row-level security is on for every table,
