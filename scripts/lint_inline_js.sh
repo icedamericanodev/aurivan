@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Extract every inline <script> block from index.html into a single JS file
-# and run ESLint's no-undef rule. Skips non-JS scripts (type="application/json").
+# and run ESLint's no-undef and no-redeclare rules (a second function with the
+# same name silently replaces the first: that hid every topic's notes in v12.1). Skips non-JS scripts (type="application/json").
 set -uo pipefail
 
 cd "$(dirname "$0")/.."
@@ -37,8 +38,8 @@ cat > "$RC" <<'EOF'
     "QB_LOADED": "writable",
     "dataLayer": "writable"
   },
-  "rules": {"no-undef": "error"}
+  "rules": {"no-undef": "error", "no-redeclare": "error"}
 }
 EOF
 
-npx --yes --package=eslint@8 -- eslint --no-eslintrc -c "$RC" --rule 'no-undef: error' "$OUT"
+npx --yes --package=eslint@8 -- eslint --no-eslintrc -c "$RC" --rule 'no-undef: error' --rule 'no-redeclare: error' "$OUT"

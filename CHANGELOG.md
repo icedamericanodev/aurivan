@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.1.1] — Topic notes open again
+
+### Fixed
+- Opening a topic showed "More on this topic is coming soon" instead of its study notes. Every topic now opens in full.
+
 ## [v12.1] — A simpler web app
 
 ### New
