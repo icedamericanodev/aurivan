@@ -5267,7 +5267,7 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
     <span class="logo-tagline">Free CISA&reg; exam prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v12.2.1</span>
+    <span class="bank-pill" id="versionPill">v12.3</span>
     <button class="exam-mode-btn" id="examModeBtn" onclick="toggleExamMode()" aria-label="Toggle exam-realistic mode" title="Study mode (current): dense scenario blocks, tips revealed after answering. Exam mode: compact stems and minimal post-answer feedback — closer to the real exam."><span id="examModeIcon" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.5 19.5A2.5 2.5 0 0 1 7 17h12.5V3H7a2.5 2.5 0 0 0-2.5 2.5z"/><path d="M4.5 19.5A2.5 2.5 0 0 0 7 22h12.5v-5"/></svg></span><span id="examModeLabel">Study</span></button>
     <button class="dark-toggle-btn hdr-icon-btn" id="darkToggleBtn" onclick="toggleDarkMode()" aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 1 1 9.4 4a6.6 6.6 0 0 0 10.6 10.6z"/></svg></button>
     <button id="hdrMenuBtn" class="hdr-icon-btn" onclick="toggleHdrMenu()" aria-label="More options" aria-expanded="false" aria-controls="hdrMenu"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
@@ -5645,7 +5645,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.2.1';
+const APP_VERSION = 'v12.3';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -8039,7 +8039,7 @@ function conceptStripHtml(ctx, pos, total) {
 }
 
 function showNextConcept() {
-  clearAllTimers();
+  clearQuestionTimers();
   var ctx = conceptPracticeCtx;
   var area = document.getElementById('qArea');
   if (!ctx || !area) return;
@@ -8064,6 +8064,7 @@ function onConceptPracticeAnswer(ok) {
 }
 
 function showConceptPracticeDone() {
+  stopSessionTimer();
   var ctx = conceptPracticeCtx;
   var area = document.getElementById('qArea');
   conceptPracticeMode = false;
@@ -8495,6 +8496,10 @@ function toggleTimer() {
 function setTimerDuration(mins) {
   S.timerSeconds = mins; // stored as minutes selection (0=auto)
   S.timerEnabled = true;
+  // A new choice starts a fresh countdown now if a question is on screen;
+  // otherwise it starts with the next question.
+  stopSessionTimer();
+  if (S.activeTab === 'practice' && S.current && document.querySelector('#qArea .opt')) startDomainTimer();
   updateTimerDisplay();
   saveState();
 }
@@ -8518,6 +8523,27 @@ function clearAllTimers() {
   S.domainTimerActive = false;
   var ta = document.getElementById('timerArea');
   if (ta) ta.style.display = 'none';
+}
+
+// Between questions only the per-question mock clock stops. The practice
+// session timer (Off / Auto / 15 / 30 / 60 min) covers the WHOLE session, so
+// answering or moving on must not restart it; leaving practice, a finished
+// bank or a new timer choice ends it (clearAllTimers / stopSessionTimer).
+function clearQuestionTimers() {
+  if (S.mockTimerInt) { clearInterval(S.mockTimerInt); S.mockTimerInt = null; }
+}
+function stopSessionTimer() {
+  if (S.practiceTimerInt) { clearInterval(S.practiceTimerInt); S.practiceTimerInt = null; }
+  S.domainTimerActive = false;
+  var ta = document.getElementById('timerArea');
+  if (ta) ta.style.display = 'none';
+}
+function continueWithoutTimer() {
+  S.timerEnabled = false;
+  stopSessionTimer();
+  updateTimerDisplay();
+  saveState();
+  backToPractice();
 }
 
 // â”€â”€ PRACTICE TIMER â”€â”€
@@ -8576,7 +8602,7 @@ function startDomainTimer() {
         + '<div class="empty-sub">Your ' + totalMins + '-minute session has ended.</div>'
         + '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
         + '<button class="act-btn primary" onclick="showSessionSummary()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">View Summary</button>'
-        + '<button class="act-btn secondary" onclick="backToPractice()">Continue Without Timer</button>'
+        + '<button class="act-btn secondary" onclick="continueWithoutTimer()">Continue Without Timer</button>'
         + '</div></div>';
       var genBtn = document.querySelector('.gen-btn');
       if (genBtn) genBtn.style.display = 'none';
@@ -8806,7 +8832,7 @@ function resumeCurrentQuestion() {
   var q = findQuestionById(S.current.id);
   if (!q) { discardResumeQuestion(); return; }
   S.current = q;
-  clearAllTimers();
+  clearQuestionTimers();
   renderQuestion(q);
   if (S.timerEnabled && !S.domainTimerActive) startDomainTimer();
 }
@@ -8819,7 +8845,7 @@ function discardResumeQuestion() {
 
 // â”€â”€ NEXT PRACTICE QUESTION â”€â”€
 function nextQ() {
-  clearAllTimers();
+  clearQuestionTimers();
   if (reviewQueueMode) {
     reviewQueueIndex++;
     showNextReview();
@@ -8849,6 +8875,7 @@ function nextQ() {
   }
   var q = getNextQ(S.selectedDomain, S.diff);
   if (!q) {
+    stopSessionTimer();
     // Check if a filter is active — show filter-complete screen, not domain-complete
     if (activeSubtopic || S.diff !== "any") {
       showFilterComplete();
@@ -9487,7 +9514,7 @@ function submitAnswer() {
 
 function selectAnswer(chosen, _ignoredCorrect) {
   if (!S.current) return;
-  clearAllTimers();
+  clearQuestionTimers();
   // chosen is a DISPLAY letter — translate to original via the shuffle
   // map so we can compare to S.current.correct (which is original).
   var shuffle = S.currentShuffle || DISPLAY_LETTERS;
@@ -11963,13 +11990,14 @@ function reviewSpecificMissed(d, idx) {
 }
 
 function showNextMissed() {
-  clearAllTimers();
+  clearQuestionTimers();
   if (missedReviewIndex >= missedReviewQueue.length) {
     // All missed reviewed
     missedReviewMode = false;
     var remaining = S.missedQuestions.filter(function(q){ 
       return missedReviewDomain === "all" || String(q.domain) === missedReviewDomain; 
     }).length;
+    stopSessionTimer();
     document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct-light);border-radius:var(--radius);padding:36px">'
       + '<div class="empty-icon"></div>'
       + '<div class="empty-title" style="color:var(--correct)">Review Complete!</div>'
@@ -12027,10 +12055,11 @@ function startReviewQueue() {
 }
 
 function showNextReview() {
-  clearAllTimers();
+  clearQuestionTimers();
   if (reviewQueueIndex >= reviewQueueList.length) {
     reviewQueueMode = false;
     var stillDue = getDueReview().length;
+    stopSessionTimer();
     document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct);border-radius:var(--radius);padding:36px">'
       + '<div class="empty-icon">🎉</div>'
       + '<div class="empty-title" style="color:var(--correct)">Review session complete</div>'
@@ -12394,9 +12423,10 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
-    title: 'Saved questions stay saved',
+    title: 'Saved questions and the practice timer',
     items: [
-      { cat: 'fixed', text: 'Bookmarked questions and your list of missed questions now stay saved when you reload the page.' }
+      { cat: 'fixed', text: 'Bookmarked questions, their labels and your list of missed questions now stay saved when you reload the page.' },
+      { cat: 'fixed', text: 'The practice timer now counts down across your whole session instead of starting over on each question, and "Continue without timer" turns it off.' }
     ]
   },
   {
