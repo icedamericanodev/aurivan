@@ -8711,6 +8711,8 @@ function isOptionLetterRef(text, letter, offset, selfLetter) {
       if (!((namesOthers || opensOwnExplanation) && thirdPerson)) return false;
     }
     if (/^\s+\d/.test(after)) return false; // "A 15-minute RPO"
+    // "A SOC 2 report", "A KPI should" → article before a capitalised word.
+    if (nextWord && /^[A-Z]/.test(nextWord)) return false;
   }
   return true;
 }

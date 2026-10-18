@@ -1337,7 +1337,7 @@
         "A": "Phased rollout by unit, limiting impact and allowing correction",
         "B": "Big-bang cutover over one weekend, avoiding temporary interfaces",
         "C": "Indefinite parallel running of both systems in every unit",
-        "D": "Big-bang cutover scheduled for the quarter-end closing weekend"
+        "D": "Pilot in the smallest unit, then big-bang the remaining five together"
       },
       "correct": "A",
       "key_concept": "Phased cutover suits complex, multi-unit replacements because staged waves limit blast radius and allow mid-course correction.",
@@ -1346,10 +1346,10 @@
       "wrong_explanations": {
         "B": "Big-bang suits simpler, lower-risk replacements. Here a single failure would hit all six units at once with no chance to adjust.",
         "C": "Parallel running is a time-limited validation step. Running both systems indefinitely doubles effort and never completes the transition.",
-        "D": "Quarter-end is a bank's busiest, highest-risk period. A full cutover then compounds migration risk with closing pressure."
+        "D": "A pilot reduces early risk, but moving the other five very different units in one step still exposes most of the bank to a single failure."
       },
       "tips": [
-        "Eliminate: C never completes the transition, and D stacks cutover on the riskiest weekend of the quarter.",
+        "Eliminate: C never completes the transition, and D still moves five very different units in one big-bang step after the pilot.",
         "Final two: A beats B because staged waves contain failures and allow correction; big-bang is simpler but exposes every unit at once.",
         "Exam cue: complex, multi-unit, high-impact replacements point to phased cutover; small, low-risk systems suit big-bang."
       ],
@@ -1522,7 +1522,7 @@
       "subtopic": "Project Lifecycle Phases. PMBOK Process Groups",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A project plan maps the five PMI process groups one-to-one onto five sequential SDLC phases. What should the IS auditor identify as the MOST significant flaw?",
+      "question": "A project plan maps the five PMI process groups one-to-one onto five sequential SDLC phases. What should the IS auditor identify as the MOST significant control weakness?",
       "options": {
         "A": "Monitoring and controlling would run once, not across every phase",
         "B": "Planning would not be revisited as later phases add detail",
@@ -1778,7 +1778,7 @@
       "options": {
         "A": "Emailing partners a week before deploying any breaking change to production",
         "B": "Versioning endpoints and running consumer contract tests before each deployment",
-        "C": "Deploying changes quietly and patching once partners report errors",
+        "C": "A shared staging environment where partners can test before each release",
         "D": "Freezing the API interface so that it can no longer evolve"
       },
       "correct": "B",
@@ -1787,11 +1787,11 @@
       "correct_explanation": "Versioned endpoints let existing consumers stay on the old interface while they migrate, and consumer-driven contract tests run in the provider's pipeline catch a breaking change before it is deployed. Together they prevent the incident. Advance email notice is courteous and helps planning, but it still relies on every partner reading it and finishing migration in a week; the break happens anyway when they cannot.",
       "wrong_explanations": {
         "A": "Notice informs but does not prevent. Partners who miss the email or cannot migrate in time still break on release day.",
-        "C": "Silent deployment makes partners the test team. Errors surface in production, damaging trust and service.",
+        "C": "Shared staging helps partners find breaks early, but it relies on every partner testing every release; nothing in the provider's pipeline stops a breaking change.",
         "D": "A frozen interface blocks needed improvements and security fixes. Change must be controlled, not stopped."
       },
       "tips": [
-        "Eliminate: C finds breaks in production, and D stops the API from improving at all.",
+        "Eliminate: C depends on every partner testing each release, and D stops the API from improving at all.",
         "Final two: B beats A because testing contracts before release prevents the break, while notice only warns partners it is coming.",
         "Exam cue: to PREVENT a failure, prefer a control that tests before release over one that communicates or reacts."
       ],
@@ -1998,7 +1998,7 @@
       "question": "Before approving a high-risk release, the change advisory board reviews the rollback plan. Which feature is MOST important?",
       "options": {
         "A": "A copy of the prior build artifact kept in the repository",
-        "B": "An agreement that the team will improvise if deployment fails",
+        "B": "A rollback runbook approved by the change owner but never rehearsed",
         "C": "A tested, time-bound procedure restoring code, data and configuration",
         "D": "A standing decision to fix forward instead of reverting"
       },
@@ -2008,11 +2008,11 @@
       "correct_explanation": "A rollback plan provides assurance only if it has been exercised, can be completed within a defined window, and restores data and configuration as well as code. Many failed rollbacks happen because a schema or configuration change was not reversible. Keeping the prior build artifact is necessary, but on its own it is untested and does not address data written in the new format.",
       "wrong_explanations": {
         "A": "Having the old binary is a starting point, not a plan. It is untested and ignores data and configuration changes.",
-        "B": "Improvising under outage pressure produces slow, error-prone recovery. The board cannot rely on an unplanned response.",
+        "B": "A documented runbook is a start, but until it is rehearsed nobody knows whether it restores data and configuration within the window.",
         "D": "Fixing forward can be valid, but ruling out rollback removes the fallback when a fix cannot be produced quickly."
       },
       "tips": [
-        "Eliminate: B is no plan at all, and D removes the fallback option entirely.",
+        "Eliminate: B is still unrehearsed, and D removes the fallback option entirely.",
         "Final two: C beats A because a tested, complete procedure gives assurance, while an untested artifact ignores data and configuration.",
         "Exam cue: for recovery plans, tested beats documented, and documented beats merely available."
       ],
@@ -3282,7 +3282,7 @@
       "subtopic": "Post-Implementation Review. Control Objective Attainment",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "The business owner is measuring benefits in the post-implementation review of a new trade settlement system. Which question should the IS auditor's work MOST directly answer?",
+      "question": "Because the business owner is already measuring benefits in the post-implementation review of a new trade settlement system, which question should the IS auditor's own work MOST directly answer?",
       "options": {
         "A": "Whether the designed controls operate and meet their objectives",
         "B": "Whether the project finished within its approved budget and schedule",
@@ -4559,19 +4559,19 @@
       "subtopic": "Certification / Accreditation in Regulated Builds",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A bank's regulated payments platform has passed independent control certification, and the CIO wants to skip formal accreditation, now called authorization, to protect the timeline. Which recommendation by the IS auditor is BEST?",
+      "question": "A bank's regulated payments platform has passed independent control certification, and the CIO wants to skip formal accreditation (authorization) to protect the timeline. Which recommendation by the IS auditor is BEST?",
       "options": {
         "A": "Release now, relying on the certification results as approval",
-        "B": "Have an authorized official accept residual risk before deployment",
+        "B": "Have the authorizing official accept residual risk before deployment",
         "C": "Treat passing development tests as sufficient evidence for release",
         "D": "Authorize the platform after go-live using production feedback"
       },
       "correct": "B",
       "key_concept": "Authorization (accreditation) is a management decision: an authorized official accepts residual risk, based on certification evidence, before go-live.",
       "pre_read": "Ask who owns the decision to accept risk on a regulated system, and when it must happen.",
-      "correct_explanation": "Accreditation, called authorization in current NIST guidance, is the formal management decision in which an authorized official reviews certification evidence and accepts the residual risk before the system operates, keeping accountability with management. Releasing on the certification results sounds rigorous, but certification only evaluates whether controls work; it is evidence for the decision, not the decision, so the accountable risk acceptance would be skipped.",
+      "correct_explanation": "Accreditation, called authorization in current NIST guidance, is the formal management decision in which the authorizing official reviews certification evidence and accepts the residual risk before the system operates, keeping accountability with management. Releasing on the certification results sounds rigorous, but certification only evaluates whether controls work; it is evidence for the decision, not the decision, so the accountable risk acceptance would be skipped.",
       "wrong_explanations": {
-        "A": "Certification shows the controls work, but it is evidence, not approval. No authorized official has accepted the residual risk, so no one is accountable.",
+        "A": "Certification shows the controls work, but it is evidence, not approval. No authorizing official has accepted the residual risk, so no one is accountable.",
         "C": "Development testing shows functions work but does not document control evidence or formal risk acceptance.",
         "D": "Authorization is a pre-deployment gate; doing it after go-live leaves customers exposed to risk nobody has accepted."
       },

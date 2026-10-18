@@ -31,7 +31,7 @@
       "wrong_explanations": {
         "A": "Naming products would itself be a mistake. A policy should be technology-neutral so it survives tool changes; product detail belongs in standards.",
         "C": "A review cycle should be added, but its absence risks staleness later; missing responsibilities mean nobody acts on the policy now.",
-        "D": "This is the correct document hierarchy. Policies state intent, and lower-level standards and procedures hold the configuration detail."
+        "D": "Not a concern: leaving configuration steps to separate standards is the proper document hierarchy. Policies state intent, and lower-level standards and procedures hold the configuration detail."
       },
       "tips": [
         "Eliminate: A describes detail a policy should leave out, and D describes the proper split between policy and standards.",
@@ -1617,7 +1617,7 @@
         "Stateful inspection",
         "TLS inspection"
       ],
-      "framework_ref": "OWASP Top 10 (2021); PCI DSS v4.0.1 Requirement 6.4 (Public-Facing Web Applications Are Protected Against Attacks); OWASP ModSecurity Core Rule Set (CRS)",
+      "framework_ref": "OWASP Top 10:2025 A05 (Injection); PCI DSS v4.0.1 Requirement 6.4 (Public-Facing Web Applications Are Protected Against Attacks); OWASP ModSecurity Core Rule Set (CRS)",
       "question": "A penetration test finds SQL injection in a customer-facing web application, and the code fix will take three months. Which interim control should the IS auditor recommend FIRST?",
       "options": {
         "A": "A stateful firewall restricting the application server to web ports",
@@ -1803,10 +1803,10 @@
         "SIEM/SOAR integration"
       ],
       "framework_ref": "CIS Controls v8 Control 1 (Inventory and Control of Enterprise Assets); CIS Controls v8 Control 10 (Malware Defenses); NIST SP 800-53 Rev 5 SI-4 (System Monitoring)",
-      "question": "Reviewing endpoint detection and response, an IS auditor finds 30 percent of laptops have no agent, while the console reports strong detection results. Which finding should concern the auditor MOST?",
+      "question": "Reviewing endpoint detection and response (EDR), an IS auditor notes the console reports strong detection results. Which finding should concern the auditor MOST?",
       "options": {
         "A": "Detection rules were last tuned more than a year ago",
-        "B": "Three laptops in ten have no agent installed",
+        "B": "About 30 percent of laptops have no EDR agent installed",
         "C": "The console uses the vendor's default dashboard layout",
         "D": "Laptop agents send telemetry to a console hosted by the vendor"
       },
@@ -1953,23 +1953,23 @@
       "framework_ref": "ISO/IEC 27002:2022 Control 8.12 (Data Leakage Prevention); CIS Controls v8 Control 3 (Data Protection); NIST SP 800-53 Rev 5 AC-4 (Information Flow Enforcement)",
       "question": "An IS auditor finds the data loss prevention (DLP) tool inspects email, web uploads and USB copies, while staff share most client files through sanctioned cloud collaboration tools. Which gap should concern the auditor MOST?",
       "options": {
-        "A": "Sanctioned cloud collaboration tools are never inspected by DLP",
+        "A": "Files shared in collaboration tools are not inspected",
         "B": "Printed client files are not watermarked with the user's name",
-        "C": "DLP rules for email are retuned by the security team quarterly",
-        "D": "The DLP policy was last approved by management eighteen months ago"
+        "C": "USB copies by senior staff are logged but not blocked",
+        "D": "Encrypted email attachments pass without content inspection"
       },
       "correct": "A",
       "key_concept": "Data loss prevention must cover the channels where sensitive data actually leaves; an uninspected main channel leaves the largest blind spot.",
       "pre_read": "Notice which channel staff use most for client files. Ask where sensitive data could leave without anyone seeing it.",
-      "correct_explanation": "Staff move most client files through cloud collaboration tools, yet that channel is never inspected, so the busiest route for sensitive data has no prevention or detection at all. Unwatermarked printouts are a real gap, but printing is a lower-volume channel and watermarks only deter and trace; they do not stop the leak. Coverage of the main egress channel comes first.",
+      "correct_explanation": "Staff move most client files through cloud collaboration tools, yet that channel is never inspected, so the busiest route for sensitive data has no prevention or detection at all. Uninspected encrypted attachments are a real blind spot, but they are a narrower gap in a channel that is otherwise inspected. Coverage of the main egress channel comes first.",
       "wrong_explanations": {
         "B": "Watermarking printouts helps deter and trace leaks, but printing carries far less client data here than the uninspected collaboration channel.",
-        "C": "Quarterly tuning of email rules is normal practice. It keeps the rules current and is not a coverage gap.",
-        "D": "A policy approved eighteen months ago may be slightly overdue for review, but it is still approved and in force."
+        "C": "Logged USB copies can still be detected and traced, and USB carries far less client data here than the uninspected collaboration channel.",
+        "D": "Encrypted attachments are a real blind spot, but email is otherwise inspected and carries less client data here than the collaboration channel, which has no inspection at all."
       },
       "tips": [
-        "Eliminate: C describes routine rule tuning, and D is a slightly late policy review, not a missing control.",
-        "Final two: A beats B because the busiest channel for client files has no inspection, while printing is a smaller, deterred channel.",
+        "Eliminate: B only deters low-volume printing, and C covers a channel that is already logged.",
+        "Final two: A beats D because the busiest channel for client files has no inspection, while encrypted attachments are a narrower gap in a channel that is otherwise inspected.",
         "Exam cue: when judging DLP coverage, ask where most sensitive data actually leaves and check that route first."
       ],
       "_provenance": "Authored from concept: 'DLP egress channel canonical coverage'. Public sources: ISACA, Gartner, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed stem echo from the key. Final polish (Oct 2026).",
@@ -2986,7 +2986,7 @@
         "Insecure design",
         "SSRF"
       ],
-      "framework_ref": "OWASP Top 10 (2021); NIST SP 800-53 Rev 5 AC-3 (Access Enforcement)",
+      "framework_ref": "OWASP Top 10:2025 A01 (Broken Access Control); NIST SP 800-53 Rev 5 AC-3 (Access Enforcement)",
       "question": "A penetration test of a customer portal that requires multi-factor authentication reports four findings. Which should the IS auditor consider MOST serious?",
       "options": {
         "A": "Error pages display the web server's software version number",
@@ -3134,7 +3134,7 @@
         "False-positive tuning",
         "CDN+WAF sequencing"
       ],
-      "framework_ref": "PCI DSS v4.0.1 Requirement 6.4 (Public-Facing Web Applications Are Protected Against Attacks); OWASP ModSecurity Core Rule Set (CRS); OWASP Top 10 (2021)",
+      "framework_ref": "PCI DSS v4.0.1 Requirement 6.4 (Public-Facing Web Applications Are Protected Against Attacks); OWASP ModSecurity Core Rule Set (CRS); OWASP Top 10:2025",
       "question": "An IS auditor reviews the web application firewall protecting a public payment website. Which finding should concern the auditor MOST?",
       "options": {
         "A": "The firewall has stayed in monitoring-only mode since tuning finished",
@@ -3948,7 +3948,7 @@
         "Business-logic abuse",
         "Anti-CSRF tokens + SameSite cookies"
       ],
-      "framework_ref": "OWASP Top 10 (2021); OWASP SQL Injection Prevention Cheat Sheet; PCI DSS v4.0.1 Requirement 6.2.4 (Software Engineering Techniques to Prevent Common Software Attacks)",
+      "framework_ref": "OWASP Top 10:2025 A05 (Injection); OWASP SQL Injection Prevention Cheat Sheet; PCI DSS v4.0.1 Requirement 6.2.4 (Software Engineering Techniques to Prevent Common Software Attacks)",
       "question": "An IS auditor finds the customer portal builds database queries by joining user input directly into SQL text. Which control BEST addresses this?",
       "options": {
         "A": "Encrypt the customer database at rest with strong keys",
@@ -5243,7 +5243,7 @@
         "Sigstore cosign verification",
         "Executive Order 14028"
       ],
-      "framework_ref": "NIST SP 800-218 (Secure Software Development Framework, SSDF); OWASP Top 10 (2021) A06 Vulnerable and Outdated Components; Executive Order 14028 (Improving the Nation's Cybersecurity)",
+      "framework_ref": "NIST SP 800-218 (Secure Software Development Framework, SSDF); OWASP Top 10:2025 A03 (Software Supply Chain Failures); Executive Order 14028 (Improving the Nation's Cybersecurity)",
       "question": "An IS auditor finds that software composition analysis scans only the libraries developers declare directly, not those pulled in by other libraries. Which risk should concern the auditor MOST?",
       "options": {
         "A": "Findings may duplicate those from static code analysis",
@@ -8964,25 +8964,25 @@
         "shared responsibility"
       ],
       "framework_ref": "NIST SP 800-63B-4 (Digital Identity Guidelines: Authentication and Authenticator Management); NIST SP 800-53 Rev 5 IA-2 (Identification and Authentication (Organizational Users)); CIS Controls v8 Safeguard 6.3 (Require MFA for Externally-Exposed Applications)",
-      "question": "Attackers used passwords from old infostealer dumps to export data from a firm's cloud data warehouse, which never enforced multi-factor authentication. Which control should the IS auditor recommend as BEST?",
+      "question": "Attackers signed in with valid passwords from old infostealer dumps and exported data from a firm's cloud data warehouse. Which control should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Require warehouse users to change passwords every sixty days",
+        "A": "Check new passwords against known breached-password lists",
         "B": "Rely on the provider's default security settings for logins",
-        "C": "Ask the provider to accept liability for breaches by contract",
+        "C": "Alert when warehouse exports exceed a set volume",
         "D": "Require multi-factor authentication for every warehouse login"
       },
       "correct": "D",
       "key_concept": "Credential stuffing is stopped by multi-factor authentication, which the cloud customer must configure under shared responsibility.",
       "pre_read": "Notice what the attackers held and what the warehouse checked. Ask which control makes that stolen item useless.",
-      "correct_explanation": "Stolen passwords worked because a password was the only thing the warehouse checked. Requiring multi-factor authentication for every login means a leaked password alone no longer grants access, and under shared responsibility configuring it is the customer's job. Regular password changes sound protective, but leaked passwords are often used within days and users make predictable changes, so the next dump still works.",
+      "correct_explanation": "Stolen passwords worked because a password was the only thing the warehouse checked. Requiring multi-factor authentication for every login means a leaked password alone no longer grants access, and under shared responsibility configuring it is the customer's job. Checking new passwords against breach lists sounds protective, but it only blocks passwords already known to be leaked; stolen passwords that are still in use keep working.",
       "wrong_explanations": {
-        "A": "Periodic changes leave each password usable until it changes, and stolen passwords are often used within days.",
-        "B": "The defaults left multi-factor authentication off. Under shared responsibility, the customer must configure its own login controls.",
-        "C": "Contract terms may shift some cost, but they do not stop the next login with a stolen password."
+        "A": "Breach-list checks stop users choosing known-leaked passwords, but passwords already stolen still work, and new dumps appear constantly; a second factor stops them all.",
+        "B": "Provider defaults may leave multi-factor authentication off. Under shared responsibility, the customer must configure its own login controls.",
+        "C": "Volume alerts detect large exports after attackers are already in, and small exports stay under the threshold. Prevention at login comes first."
       },
       "tips": [
-        "Eliminate: B trusts the defaults that allowed the breach, and C shifts cost without stopping attackers.",
-        "Final two: D beats A because a second factor makes stolen passwords useless; rotation only shortens their life.",
+        "Eliminate: B trusts the defaults that allowed the breach, and C only detects exports after access is gained.",
+        "Final two: D beats A because a second factor makes stolen passwords useless, while breach-list checks only block passwords already known to be leaked.",
         "Exam cue: when stolen passwords are the attack path, the lasting fix is a second factor, not more password rules."
       ],
       "_provenance": "Authored from concept: 'Reused customer credentials → mass tenant data exfil from cloud data warehouse'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: Snowflake customer-credential 2024 tonal echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from the reset-does-not-end-sessions lesson (kept in d5_233): now the preventive control for credential stuffing under shared responsibility.",

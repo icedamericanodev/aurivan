@@ -2301,8 +2301,8 @@
       "question": "A risk team has reliable loss data for some IT risks but only expert judgment for others. Which analysis method should the IS auditor recommend as MOST appropriate?",
       "options": {
         "A": "Semi-quantitative scoring on calibrated scales with defined loss ranges",
-        "B": "Qualitative high, medium and low ratings applied to every risk",
-        "C": "Monte Carlo simulation for every risk regardless of available data",
+        "B": "Qualitative high, medium and low ratings agreed in a risk workshop",
+        "C": "Monte Carlo simulation fed with single-point expert guesses",
         "D": "Business unit intuition without a formal analysis method"
       },
       "correct": "A",
@@ -3557,7 +3557,7 @@
       "subtopic": "Data Inventory. Refresh and Drift Detection",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor reviews how a healthcare technology firm keeps its data inventory accurate over time. Which mechanism MOST effectively detects inventory drift?",
+      "question": "An IS auditor reviews how a logistics firm keeps its data inventory accurate over time. Which mechanism MOST effectively detects inventory drift?",
       "options": {
         "A": "An annual survey asking units to report new or retired data",
         "B": "Recurring discovery scans reconciled to the inventory by data stewards",
@@ -4410,10 +4410,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a media company reviews its Cloud Center of Excellence. Which role MOST supports cloud governance maturity?",
       "options": {
-        "A": "Setting standards and guardrails, with teams managing their own usage",
-        "B": "Provisioning each cloud resource centrally on behalf of every team",
-        "C": "Advising teams on request, with no authority over any standards",
-        "D": "Owning cloud security for every workload, replacing business units"
+        "A": "Setting guardrails while teams manage their own cloud usage",
+        "B": "Provisioning cloud resources centrally on behalf of business teams",
+        "C": "Advising teams on request, without setting or enforcing standards",
+        "D": "Owning workload security on behalf of the business units"
       },
       "correct": "A",
       "key_concept": "A mature Cloud Center of Excellence enables: it sets standards and guardrails while teams manage their own consumption within them.",
@@ -6445,9 +6445,9 @@
       "subtopic": "Quantum Computing Readiness. Cryptographic Migration",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A bank's post-quantum migration plan has stalled, with business units moving at different speeds and the audit committee unaware of status. What should the IS auditor recommend as BEST?",
+      "question": "A bank's post-quantum migration plan, built on a completed cryptographic inventory, has stalled, with business units moving at different speeds and the audit committee unaware of status. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Commission a cryptographic inventory before any further migration work",
+        "A": "Refresh the cryptographic inventory before further migration work",
         "B": "Fund an accelerated migration of every system within twelve months",
         "C": "Rely on technology vendors to ship quantum-safe upgrades",
         "D": "Assign an executive owner and report progress to the board"
@@ -6455,15 +6455,15 @@
       "correct": "D",
       "key_concept": "Long-running security programs need an accountable executive owner and regular board reporting to stay funded and on track.",
       "pre_read": "Notice the plan exists but has stalled. Ask what governance element is missing.",
-      "correct_explanation": "A stalled, uneven migration and an uninformed audit committee point to missing governance: a named executive accountable for delivery and regular progress reporting to the board, so slippage is visible and funded. A fresh cryptographic inventory is tempting because inventory starts every migration, but the plan already exists; repeating discovery delays the work and still leaves no one accountable.",
+      "correct_explanation": "A stalled, uneven migration and an uninformed audit committee point to missing governance: a named executive accountable for delivery and regular progress reporting to the board, so slippage is visible and funded. A fresh cryptographic inventory is tempting because inventory starts every migration, but the inventory is already complete; repeating discovery delays the work and still leaves no one accountable.",
       "wrong_explanations": {
-        "A": "The plan already exists, so another inventory delays work again. The stall comes from missing ownership and oversight, which an inventory does not supply.",
+        "A": "The inventory is already complete, so refreshing it delays work again. The stall comes from missing ownership and oversight, which an inventory does not supply.",
         "B": "More money and a deadline do not fix the cause. Without an accountable owner and reporting, an accelerated program stalls the same way.",
         "C": "Vendors cover only their products, not the bank's own systems, priorities and long-lived data."
       },
       "tips": [
         "Eliminate: C hands the bank's accountability to vendors, and B adds money and a deadline without fixing why the plan stalled.",
-        "Final two: D beats A because the plan exists; the gap is ownership and oversight, which another inventory does not supply.",
+        "Final two: D beats A because the inventory is done; the gap is ownership and oversight, which another inventory does not supply.",
         "Exam cue: when a plan exists but stalls, look for missing ownership and oversight, not more discovery or more money."
       ],
       "framework_ref": "COBIT 2019 BAI01 (Managed Programs); COBIT 2019 EDM05 (Ensured Stakeholder Engagement); Quantum-Readiness: Migration to Post-Quantum Cryptography (CISA, NSA, NIST, 2023)",
@@ -6503,7 +6503,7 @@
         "Final two: B beats D because drafting by IT security is normal and authority comes at approval, but missing stakeholder input makes rules unworkable.",
         "Exam cue: policies that skip consultation with those who must apply them invite workarounds; look for stakeholder input before approval."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1002 (Organizational Independence); ISACA Code of Professional Ethics (Independence); COBIT 2019 APO01 (Managed I&T Management Framework)",
+      "framework_ref": "ISACA IT Audit Standard 1002 (Organizational Independence); ISACA Code of Professional Ethics, Item 6 (Disclosure of All Significant Facts); COBIT 2019 APO01 (Managed I&T Management Framework)",
       "related_concepts": [
         "Policy ownership",
         "Auditor independence",

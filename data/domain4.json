@@ -866,10 +866,10 @@
       "bloom_level": "Foundational",
       "question": "Twelve approved changes are bundled into a weekend deployment. Which activity should the IS auditor expect to be the release manager's PRIMARY responsibility?",
       "options": {
-        "A": "Recording developer contributions for appraisals",
-        "B": "Testing the combined package before go-live",
-        "C": "Approving each individual change for production",
-        "D": "Drafting customer marketing for the new features"
+        "A": "Recording each developer's contributions for their performance appraisals",
+        "B": "Ensuring the combined package is tested before go-live",
+        "C": "Approving each individual change for production release",
+        "D": "Resolving the production incidents users raise after go-live"
       },
       "correct": "B",
       "key_concept": "Release management plans, builds, tests and deploys a coordinated package of approved changes; change management authorizes each change individually.",
@@ -878,11 +878,11 @@
       "wrong_explanations": {
         "A": "Tracking individual contributions is a performance management activity unrelated to controlling what reaches production.",
         "C": "Approval of individual changes belongs to change management and has already happened. Release management integrates and tests the approved changes as one package.",
-        "D": "Marketing announcements are a communications task. They do not plan, test or deploy the release."
+        "D": "Resolving incidents after go-live is incident management. It does not plan, test or deploy the release."
       },
       "tips": [
-        "Eliminate: D is marketing and A is performance management; neither controls the release.",
-        "Final two: B beats C because the changes are already approved; release management tests them together as one package.",
+        "Eliminate: D is incident management and A is performance management; neither controls the release.",
+        "Final two: B beats C because the changes are already approved; release management makes sure they are tested together as one package.",
         "Exam cue: change management authorizes each change; release management plans, tests and deploys the bundle."
       ],
       "framework_ref": "ITIL 4 Release Management practice; ITIL 4 Deployment Management practice; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
@@ -2833,7 +2833,7 @@
         "A": "Wait for the CIO to authorize the cross-region failover",
         "B": "Wait for the provider to declare a confirmed regional incident",
         "C": "Manually reroute the customers who have complained so far",
-        "D": "Invoke the documented failover under delegated authority"
+        "D": "Start the documented cross-region failover without further delay"
       },
       "correct": "D",
       "key_concept": "When documented invocation criteria are met, the person holding delegated authority acts per the playbook without waiting for further confirmation.",
@@ -3724,7 +3724,7 @@
         "Final two: C beats B because QoS already protects voice quality, while a shared-core outage stops storage and voice together.",
         "Exam cue: when separate services share one transport, look first for the single point of failure."
       ],
-      "framework_ref": "RFC 7143 (iSCSI Protocol, Consolidated); INCITS T11 (FCoE specifications); RFC 3031 (MPLS Architecture); RFC 3261 (SIP for VoIP); NIST SP 800-58 (Security Considerations for Voice Over IP Systems)",
+      "framework_ref": "RFC 7143 (iSCSI Protocol, Consolidated); RFC 3261 (SIP for VoIP); NIST SP 800-58 (Security Considerations for Voice Over IP Systems)",
       "related_concepts": [
         "iSCSI",
         "FCoE",
@@ -6659,7 +6659,7 @@
       "options": {
         "A": "Let the provider lead recovery as the continuity plan specifies",
         "B": "Restore core systems from the bank's own offline backups",
-        "C": "Engage incident responders who are independent of the provider",
+        "C": "Cut the provider's access and engage independent responders",
         "D": "Negotiate a ransom payment to shorten the core banking outage"
       },
       "correct": "C",
@@ -6673,7 +6673,7 @@
       },
       "tips": [
         "Eliminate: A trusts the compromised party, and D pays criminals with no guarantee of recovery.",
-        "Final two: C beats B because containment by an independent responder must precede restoration, or the attacker can reinfect restored systems.",
+        "Final two: C beats B because cutting the provider's access and independent containment must precede restoration, or the attacker can reinfect restored systems.",
         "Exam cue: when the recovery partner is the attack path, bring in an independent responder before restoring anything."
       ],
       "framework_ref": "#StopRansomware Guide (CISA, FBI, NSA, MS-ISAC, 2023); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); FBI Ransomware Guidance (Internet Crime Complaint Center IC3)",
@@ -7679,7 +7679,7 @@
       "subtopic": "Capacity Exhaustion During Peak Event",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An online retailer's autoscaling hits a soft cloud quota its provider can raise on request, and 28% of requests time out; no queueing exists. What should the IS auditor recommend the operations head do FIRST?",
+      "question": "An online retailer's autoscaling hits a soft service quota in its cloud account, and 28% of requests time out; no queueing exists. What should the IS auditor recommend the operations head do FIRST?",
       "options": {
         "A": "Raise an urgent quota-increase request with the cloud provider",
         "B": "Deploy the full site to a secondary region immediately",
@@ -8022,7 +8022,7 @@
         "A": "Settle using best-available data and correct the records afterward",
         "B": "Reconcile each affected trade manually before settling",
         "C": "Ask the clearing firm for an extension before taking action",
-        "D": "Restore and replay from backup while notifying the regulator early"
+        "D": "Restore the clean backup and replay the logs"
       },
       "correct": "D",
       "key_concept": "Integrity of settlement data comes first; the fastest verified recovery path plus early regulator contact beats settling on corrupt data.",
@@ -8135,21 +8135,21 @@
       "options": {
         "A": "Measure SLA performance against the remediation plan for another quarter",
         "B": "Migrate production to an alternative cloud vendor right away",
-        "C": "Issue a formal cure notice demanding a remediation roadmap",
-        "D": "Redesign critical services to tolerate the vendor's degradations"
+        "C": "Issue a formal cure notice and await the vendor's response",
+        "D": "Build resilience to vendor failures and plan an exit"
       },
       "correct": "D",
       "key_concept": "SLA credits do not transfer business impact; the organization stays accountable for resilience and must design critical services around vendor failures.",
       "pre_read": "Compare the credits with the business impact. Ask who really bears the cost when the vendor falls short.",
-      "correct_explanation": "Credits cover a small fraction of the impact, which shows the firm, not the vendor, carries the risk. The firm remains accountable for its service, so the lasting fix is to design critical services to tolerate vendor degradation. A cure notice is a legitimate contractual step, but the vendor has already agreed a remediation roadmap and the pattern continues; more contract pressure changes little for customers.",
+      "correct_explanation": "Credits cover a small fraction of the impact, which shows the firm, not the vendor, carries the risk. The firm remains accountable for its service, so the lasting fix is to design critical services to tolerate vendor degradation and to prepare an exit plan. A cure notice is a legitimate contractual step, but the vendor has already agreed a remediation roadmap and the pattern continues; more contract pressure changes little for customers.",
       "wrong_explanations": {
         "A": "The roadmap has already failed for 90 days. Another quarter of measurement leaves the business absorbing losses that credits barely cover.",
         "B": "An immediate migration is a large, risky change, and a new vendor can also degrade without resilient design.",
-        "C": "A remediation roadmap is already agreed and still failing. A formal cure notice adds pressure but does not protect customers."
+        "C": "A cure notice adds formal pressure, but an agreed roadmap has already failed for 90 days, and waiting on the vendor leaves customers exposed."
       },
       "tips": [
         "Eliminate: A waits another quarter on a failing roadmap, and B makes a rushed, risky move that does not remove vendor dependence.",
-        "Final two: D beats C because the firm stays accountable for resilience, and an agreed roadmap has not changed the pattern.",
+        "Final two: D beats C because credits cover only 8% of the impact; the firm must own resilience and an exit path, not apply more contract pressure.",
         "Exam cue: SLA credits are not a risk response; when a vendor keeps failing, build resilience you control."
       ],
       "framework_ref": "COBIT 2019 APO10 (Managed Vendors); COBIT 2019 APO09 (Managed Service Agreements); ITIL 4 Supplier Management practice",

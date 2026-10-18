@@ -123,7 +123,7 @@
         "A": "A signed statement from the IT manager confirming the setting",
         "B": "Auditor inspection of the system's password parameter settings",
         "C": "A vendor document stating the product supports complexity rules",
-        "D": "Auditor's own attempt to set a noncompliant password"
+        "D": "Auditor's own noncompliant password attempt on a test account"
       },
       "correct": "D",
       "key_concept": "Evidence the auditor obtains directly by observation or reperformance is more reliable than representations, documents or configuration inspection.",
@@ -651,7 +651,7 @@
         "Final two: C beats D because opaque logic undermines the evidence itself; over-reliance is a behavior that follows from it.",
         "Exam cue: with any audit tool, the auditor must understand and be able to defend how its output was produced."
       ],
-      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); ISACA IT Audit Standard 1205 (Evidence); ISACA Auditing Artificial Intelligence (white paper, 2018)",
+      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); ISACA IT Audit Standard 1205 (Evidence); ISACA Artificial Intelligence Audit Toolkit (2024); ISACA Auditing Artificial Intelligence (white paper, 2018)",
       "related_concepts": [
         "AI/ML in audit",
         "Explainability",
@@ -1380,7 +1380,7 @@
       "correct": "D",
       "key_concept": "When regimes overlap, map the framework a regulation mandates to other recognized standards to build one control set.",
       "pre_read": "Check which regulation names a specific framework. That requirement cannot be traded away for convenience.",
-      "correct_explanation": "DFARS contractually requires defense contractors to implement NIST SP 800-171, so it cannot be dropped. NIS2 sets outcomes rather than naming a framework, and ISO/IEC 27001 is widely recognized by EU regulators. Mapping the two into one control set meets both regimes with a single reporting structure. ISO/IEC 27001 alone is broad and international, but it leaves the DFARS requirement unmet.",
+      "correct_explanation": "DFARS contractually requires defense contractors to implement NIST SP 800-171, and CMMC Level 2 assessments verify it, so it cannot be dropped. NIS2 sets outcomes rather than naming a framework, and ISO/IEC 27001 is widely recognized by EU regulators. Mapping the two into one control set meets both regimes with a single reporting structure. ISO/IEC 27001 alone is broad and international, but it leaves the DFARS requirement unmet.",
       "wrong_explanations": {
         "A": "ISO/IEC 27001 suits the EU operations, but DFARS specifically requires NIST SP 800-171, so this choice leaves a contractual obligation unmet.",
         "B": "CIS Controls are a useful baseline but do not satisfy the DFARS requirement for NIST SP 800-171 or EU regulatory expectations.",
@@ -1391,7 +1391,7 @@
         "Final two: D beats A because DFARS mandates NIST SP 800-171, so any single control set must map to it.",
         "Exam cue: when a regulation names a framework, start there and map other regimes onto it."
       ],
-      "framework_ref": "NIST SP 800-171; ISO/IEC 27001:2022 (Information Security Management Systems); DFARS 252.204-7012; EU NIS2 Directive",
+      "framework_ref": "NIST SP 800-171; ISO/IEC 27001:2022 (Information Security Management Systems); DFARS 252.204-7012; EU NIS2 Directive; 32 CFR Part 170 (CMMC Program, effective 16 Dec 2024)",
       "related_concepts": [
         "Prescriptive frameworks",
         "Regulatory mapping",
@@ -1672,7 +1672,7 @@
         "A": "Monthly generalized audit software analysis of extracts",
         "B": "Snapshots of transactions captured at random times",
         "C": "Parallel simulation run against month-end data",
-        "D": "Embedded audit modules screening each live transaction"
+        "D": "Embedded audit modules within the production application"
       },
       "correct": "D",
       "key_concept": "Embedded audit modules test every live transaction inside the application, giving near-real-time detection at the cost of some production load.",
@@ -2097,7 +2097,7 @@
         "Final two: B beats A because model behavior risks are unique to AI, while change control applies to every application.",
         "Exam cue: when asked what is distinctive to AI, choose model risk: drift, bias and explainability."
       ],
-      "framework_ref": "ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0)",
+      "framework_ref": "ISACA Artificial Intelligence Audit Toolkit (2024); ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0)",
       "related_concepts": [
         "AI/ML audit risk",
         "Model risk",
@@ -2433,7 +2433,7 @@
         "Final two: C beats B because data quality determines model behavior; retraining often on flawed data only repeats the flaw.",
         "Exam cue: in AI audits, training data quality, meaning representativeness, bias and labeling, comes before tuning and infrastructure."
       ],
-      "framework_ref": "ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0)",
+      "framework_ref": "ISACA Artificial Intelligence Audit Toolkit (2024); ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0)",
       "related_concepts": [
         "AI/ML training-data review",
         "Model risk",
@@ -2528,7 +2528,7 @@
       "options": {
         "A": "Sole control of supplier setup, with no vacation in years",
         "B": "Completion of advanced training on the payables system",
-        "C": "Repeated complaints about being underpaid and overlooked for promotion",
+        "C": "Repeated complaints to coworkers about being underpaid",
         "D": "Nineteen years of tenure in the same accounts payable role"
       },
       "correct": "A",
@@ -2954,7 +2954,7 @@
         "Final two: D beats A because auditability means verifying decisions; an accurate but opaque model must be taken on trust.",
         "Exam cue: auditable means the auditor can re-perform and trace, so look for reproducibility and explainability."
       ],
-      "framework_ref": "ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0)",
+      "framework_ref": "ISACA Artificial Intelligence Audit Toolkit (2024); ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0)",
       "related_concepts": [
         "Algorithmic auditability",
         "Reproducibility",
@@ -3141,7 +3141,7 @@
         "Final two: B beats C because an independent reference exposes systematic errors; rerunning the team's own scripts only confirms the arithmetic.",
         "Exam cue: when evidence comes from the system being audited, look for the option that adds an independent point of comparison."
       ],
-      "framework_ref": "ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0)",
+      "framework_ref": "ISACA Artificial Intelligence Audit Toolkit (2024); ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0)",
       "related_concepts": [
         "Challenger model",
         "AI/ML model validation",
@@ -3893,7 +3893,7 @@
         "Final two: D beats C because threats are judged separately; an accepted job at the auditee is too severe for supervision alone.",
         "Exam cue: when several threats appear, rate each one; the most severe threat drives the response."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1003 (Auditor Objectivity); ISACA IT Audit Standard 1002 (Organizational Independence); ISACA Code of Professional Ethics (Independence)",
+      "framework_ref": "ISACA IT Audit Standard 1003 (Auditor Objectivity); ISACA IT Audit Standard 1002 (Organizational Independence); ISACA Code of Professional Ethics, Item 2 (Objectivity, Due Diligence and Professional Care)",
       "related_concepts": [
         "Self-interest threat",
         "Self-review threat",
@@ -4006,7 +4006,7 @@
         "Final two: B beats C because overrides rose with the population change, a drift signal; reviewer inconsistency would not track that shift.",
         "Exam cue: stable lab metrics plus rising real-world disagreement after a data change signals drift."
       ],
-      "framework_ref": "ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0)",
+      "framework_ref": "ISACA Artificial Intelligence Audit Toolkit (2024); ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0)",
       "related_concepts": [
         "AI/ML drift",
         "Concept drift",
@@ -4269,7 +4269,7 @@
         "Final two: B beats C because strong evidence calls for prompt escalation through audit leadership; any further work is directed by governance and counsel.",
         "Exam cue: a staff auditor escalates through audit leadership, and the CAE takes it to governance; with strong evidence, escalate before doing more work."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts); FinCEN regulations 31 CFR 1010.320 (Suspicious Activity Report); ACFE Fraud Examiners Manual on Reporting",
+      "framework_ref": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts); FinCEN 31 CFR 1020.320 (Reports by Banks of Suspicious Transactions); ACFE Fraud Examiners Manual on Reporting",
       "related_concepts": [
         "Fraud reporting channels",
         "Suspicious Activity Report (SAR)",
@@ -4420,7 +4420,7 @@
         "Final two: B beats C because controls outside the model hold even when crafted input overrides the model's own instructions.",
         "Exam cue: for AI systems, prefer defense in depth around the model over trusting the model to protect itself."
       ],
-      "framework_ref": "OWASP LLM Top 10 (LLM01: Prompt Injection); NIST AI Risk Management Framework (AI RMF 1.0) — adversarial robustness guidance; ISACA Auditing Artificial Intelligence (white paper, 2018)",
+      "framework_ref": "OWASP LLM Top 10 (LLM01: Prompt Injection); NIST AI Risk Management Framework (AI RMF 1.0) — adversarial robustness guidance; ISACA Artificial Intelligence Audit Toolkit (2024); ISACA Auditing Artificial Intelligence (white paper, 2018)",
       "related_concepts": [
         "Prompt injection",
         "Adversarial robustness",
@@ -4645,7 +4645,7 @@
         "Final two: C beats D because a threat must be reduced by a safeguard; disclosure alone informs but does not mitigate.",
         "Exam cue: for independence threats, choose the safeguard that reduces the threat, not mere disclosure or drastic removal."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1003 (Auditor Objectivity); ISACA Code of Professional Ethics (Independence); IIA Global Internal Audit Standards (2024), Standard 2.2 (Safeguarding Objectivity)",
+      "framework_ref": "ISACA IT Audit Standard 1003 (Auditor Objectivity); ISACA Code of Professional Ethics, Item 2 (Objectivity, Due Diligence and Professional Care); IIA Global Internal Audit Standards (2024), Standard 2.2 (Safeguarding Objectivity)",
       "related_concepts": [
         "Familiarity threat",
         "Long-tenure threat",
@@ -4797,7 +4797,7 @@
         "Final two: A beats C because persistent disagreement is reported to the committee; it does not give management a veto on timing.",
         "Exam cue: when management disagrees, report your finding with their response and let governance decide."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ISACA Code of Professional Ethics (Independence)",
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ISACA Code of Professional Ethics, Item 6 (Disclosure of All Significant Facts)",
       "related_concepts": [
         "Auditor-management disagreement",
         "Severity rating",
@@ -5168,7 +5168,7 @@
       "correct_explanation": "Section 407 is a disclosure rule: the company must state whether at least one audit committee member is a financial expert and, if none is, explain why. The auditor checks that disclosure and reports any gap. Appointing an expert sounds like the stronger fix, but the section does not mandate one; whether and whom to appoint is the board's decision, not a compliance condition.",
       "wrong_explanations": {
         "B": "No rule requires members to hold a professional certification. Financial-expert criteria rest on experience and understanding, not on a designation.",
-        "C": "Section 407 requires disclosure of whether an expert serves, not an appointment. Choosing members is the board's decision; the auditor reports any disclosure gap.",
+        "C": "Section 407 requires disclosure, not an appointment. Exchange listing rules may require financial expertise, but Section 407 itself requires only disclosure; the auditor reports any gap.",
         "D": "A sitting CFO is management. Placing them on the committee would destroy its independence from the people it oversees."
       },
       "tips": [
@@ -5366,7 +5366,7 @@
         "Final two: B beats A because risks at each stage interact, and data-only scope leaves documented later-stage concerns unexamined.",
         "Exam cue: when the stem lists concerns across several stages, the scope should cover every stage and integrate the results."
       ],
-      "framework_ref": "ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0)",
+      "framework_ref": "ISACA Artificial Intelligence Audit Toolkit (2024); ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0)",
       "related_concepts": [
         "AI/ML lifecycle",
         "Training-data audit",
@@ -5862,7 +5862,7 @@
         "Final two: D beats C because a scope note that softens findings still yields to pressure; only evidence should change a report.",
         "Exam cue: when stakeholders object to findings, discuss the facts but change the report only if the evidence changes."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ISACA Code of Professional Ethics (Independence)",
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ISACA Code of Professional Ethics, Item 6 (Disclosure of All Significant Facts)",
       "related_concepts": [
         "Multi-stakeholder communication",
         "Audit independence",
@@ -6050,7 +6050,7 @@
         "Final two: D beats B because the report omits model behavior; output testing covers the gap it leaves.",
         "Exam cue: when a third-party report does not cover a key risk, add procedures for that risk rather than relying on the report."
       ],
-      "framework_ref": "ISACA Auditing Artificial Intelligence (white paper, 2018); ISACA IT Audit Standard 1206 (Using the Work of Other Experts)",
+      "framework_ref": "ISACA Artificial Intelligence Audit Toolkit (2024); ISACA Auditing Artificial Intelligence (white paper, 2018); ISACA IT Audit Standard 1206 (Using the Work of Other Experts)",
       "related_concepts": [
         "Vendor AI/ML model audit",
         "SOC 2 Type 2 reliance",
@@ -6504,7 +6504,7 @@
         "Final two: D beats C because deletion is irreversible and destroys accountability for past decisions; validation concerns the new model.",
         "Exam cue: when anything is retired or decommissioned, ask first what records must survive it."
       ],
-      "framework_ref": "ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0); IIA Global Internal Audit Standards (2024), Standard 14.6 (Engagement Documentation)",
+      "framework_ref": "ISACA Artificial Intelligence Audit Toolkit (2024); ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0); IIA Global Internal Audit Standards (2024), Standard 14.6 (Engagement Documentation)",
       "related_concepts": [
         "AI/ML model retirement",
         "Evidence preservation",

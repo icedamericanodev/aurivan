@@ -139,6 +139,9 @@ export function tokenizeLetters(text, selfLetter) {
       }
       // "A 15-minute RPO" → article.
       if (/^\s+\d/.test(after)) return false;
+      // "A SOC 2 report", "A KPI should" → article before a capitalised word.
+      // (Real references before capitals were already caught above.)
+      if (nextWord && /^[A-Z]/.test(nextWord)) return false;
     }
     return true;
   }
