@@ -4599,7 +4599,7 @@ header {
 .stat-card::before { display: none; }
 .stat-card:hover { transform: none; box-shadow: none; }
 .stat-num { font: 500 34px/34px var(--f-serif); letter-spacing: -0.8px; }
-#sStreak { color: var(--clay); }
+#sStreak { color: var(--text); } /* right answers in a row: ink (clay means study days) */
 .stat-label { font: 500 14px/20px var(--f-sans); color: var(--text2); }
 @media (max-width: 580px) {
   .stat-card:nth-child(3) { border-left: 0; }
@@ -5221,7 +5221,6 @@ body[data-mock-results="1"] #readinessCard { display: none; }
 /* ── WEB v12.1: slim web, honest reads, real dialogs ──────────────────────
    Home is a landing page; the dashboard chrome (stats, mindset line) belongs to
    Practice only; the support card and disclaimer sit on Home / About / Help. */
-body[data-tab]:not([data-tab="practice"]) .stats-row,
 body[data-tab]:not([data-tab="practice"]) .mindset-strip { display: none; }
 body[data-tab]:not([data-tab="home"]):not([data-tab="about"]) .tipjar-card { display: none; }
 body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer { display: none; }
@@ -5608,7 +5607,7 @@ header.app-header .brand-lockup { height: 28px; }
    the question. */
 .ph { max-width: 720px; }
 .ph[hidden], .pf[hidden] { display: none; }
-.ph-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: 4px 0 var(--sp-lg); }
+.ph-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: var(--sp-xs) 0 var(--sp-lg); }
 .ph-title:focus { outline: none; }
 .ph .mindset-strip { margin-bottom: var(--sp-xxl); }
 .ph #sessionBoundaryArea .session-debrief { margin-bottom: var(--sp-xl); }
@@ -5641,9 +5640,9 @@ header.app-header .brand-lockup { height: 28px; }
 .ph-field { font: var(--t-caption); color: var(--text2); margin: var(--sp-xl) 0 var(--sp-md); }
 .ph-hint { font: var(--t-meta); color: var(--text2); margin: var(--sp-md) 0 0; max-width: 60ch; }
 .ph-timer .ph-hint { margin: calc(-1 * var(--sp-sm)) 0 var(--sp-md); }
-.ph-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ph-chips { display: flex; flex-wrap: wrap; gap: var(--sp-sm); }
 .ph-chip {
-  display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: var(--r-pill);
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--sp-lg); border-radius: var(--r-pill);
   border: 1.5px solid var(--control); background: transparent; color: var(--text); font: 600 15px/20px var(--f-sans); cursor: pointer;
 }
 .ph-chip:hover { background: var(--surface2); }
@@ -5659,11 +5658,11 @@ header.app-header .brand-lockup { height: 28px; }
 .ph-panel .subtopic-drawer { margin-top: var(--sp-md); }
 
 /* Sections */
-.ph-sec { margin-top: 32px; }
+.ph-sec { margin-top: var(--sp-section); }
 .ph-h { font: var(--t-headline); color: var(--text); margin: 0; }
 .ph-h-meta { font: var(--t-meta); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xs); }
-.ph .stats-row { margin: var(--sp-md) 0 0; }
-.ph #examCountdownArea:not(:empty) { margin-top: 32px; }
+.you-stats { margin: var(--sp-md) 0 var(--sp-lg); }
+.ph #examCountdownArea:not(:empty) { margin-top: var(--sp-section); }
 
 /* Domain picks: list rows with a lead serif numeral and a quiet read bar. */
 .ph-dom {
@@ -5677,7 +5676,7 @@ header.app-header .brand-lockup { height: 28px; }
 .ph-dom-t { display: inline-flex; align-items: center; font: var(--t-label); color: var(--text); }
 .ph-dom-t .dom-dot { margin-right: var(--sp-sm); }
 .ph-dom-m { font: var(--t-meta); color: var(--text2); }
-.ph-dom-bar { display: block; height: 4px; max-width: 280px; margin-top: 6px; border-radius: 2px; background: var(--track); overflow: hidden; }
+.ph-dom-bar { display: block; height: 4px; max-width: 280px; margin-top: var(--sp-sm); border-radius: 2px; background: var(--track); overflow: hidden; }
 .ph-dom-bar > span { display: block; height: 100%; border-radius: 2px; background: var(--accent); }
 .ph-dom-r { flex-shrink: 0; font: 600 15px/20px var(--f-sans); color: var(--text2); }
 
@@ -5693,7 +5692,9 @@ header.app-header .brand-lockup { height: 28px; }
 .pf-btn[hidden] { display: none; }
 .pf-exit { margin-left: -12px; }
 .pf-strip .bk-btn { min-width: 48px; min-height: 48px; margin-right: -12px; border: 0; }
-.pf-strip .bk-btn.saved { background: var(--tip-bg); color: var(--tip); }
+/* Saved = ink (Grove: ink means selected; tip colours belong to traps). */
+.pf-strip .bk-btn.saved, .pf-strip .bk-btn.saved:hover { background: transparent; border-color: transparent; color: var(--text); }
+.vr-save.saved, .vr-save.saved:hover { background: transparent; border-color: var(--text); color: var(--text); }
 /* After checking, the footer's Save takes over (the slot stays, so nothing shifts). */
 .pf.pf-answered .pf-strip .bk-btn { visibility: hidden; }
 .pf-mid { flex: 1; min-width: 0; display: flex; align-items: center; }
@@ -5706,7 +5707,7 @@ header.app-header .brand-lockup { height: 28px; }
 .pf-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: var(--t-label); color: var(--text); }
 .pf-label-n { font: var(--t-meta); color: var(--text2); }
 .pf-strip #timerArea { max-width: none; margin: 0; }
-.pf-timer { position: relative; display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; color: var(--text2); }
+.pf-timer { position: relative; display: inline-flex; align-items: center; gap: var(--sp-sm); flex-shrink: 0; color: var(--text2); }
 .pf-timer .timer-digits { font: 600 16px/22px var(--f-sans); font-variant-numeric: tabular-nums; color: var(--text); }
 .pf-timer .timer-digits.warn { color: var(--tip); }
 .pf-timer .timer-digits.urgent { color: var(--wrong); }
@@ -5730,6 +5731,17 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .ph-sum .ico { transition: transform .15s ease; }
+}
+/* Sub-topic chips show sentence case (subtopicLabel), not Title Case. */
+.subtopic-chip { text-transform: none; }
+/* The exam-date prompt: 44px targets on every screen size. */
+.exam-prompt .ep-set, .exam-prompt .ep-skip { min-height: 44px; }
+.exam-prompt .ep-skip { min-width: 44px; }
+/* Keyboard focus never lands under the answer screen's sticky footer (or
+   the phone bottom bar under it): focused controls scroll clear of both. */
+html { scroll-padding-bottom: 104px; }
+@media (max-width: 1023px) {
+  html { scroll-padding-bottom: calc(177px + env(safe-area-inset-bottom)); }
 }
 /* GROVE-LAYER-END */
 </style>
@@ -5808,7 +5820,7 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
     <div class="mindset-strip">
       <span class="ms-label">Mindset</span>
       <div class="ms-divider"></div>
-      <span class="ms-text" id="msText">You are an auditor - you assess, recommend, and report. You don't fix.</span>
+      <span class="ms-text" id="msText">You are an auditor: you assess, recommend, and report. You don't fix.</span>
     </div>
     <!-- Decision 9 — a finished set's debrief, when you leave from it -->
     <div id="sessionBoundaryArea"></div>
@@ -5849,20 +5861,12 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
       <h2 class="ph-h" id="phMoreH">Review and saved</h2>
       <ul class="you-list" id="phMore"></ul>
     </section>
-    <section class="ph-sec" aria-labelledby="phStatsH">
-      <h2 class="ph-h" id="phStatsH">Your practice so far</h2>
-      <div class="stats-row">
-        <div class="stat-card"><span class="stat-num" id="sTotal">0</span><span class="stat-label">Answered</span></div>
-        <div class="stat-card"><span class="stat-num good" id="sCorrect">0</span><span class="stat-label">Correct</span></div>
-        <div class="stat-card"><span class="stat-num" id="sPct">--</span><span class="stat-label">Accuracy</span></div>
-        <div class="stat-card"><span class="stat-num" id="sStreak">0</span><span class="stat-label">Streak</span></div>
-      </div>
-    </section>
     <!-- Decision 8 — Exam-date countdown / set-date prompt -->
     <div id="examCountdownArea"></div>
   </div>
 
   <div class="pf" id="practiceFocus" hidden>
+    <h1 class="sr-only" id="pfH">Practice</h1>
     <div class="pf-strip" id="pfStrip">
       <button type="button" class="pf-btn pf-exit" id="pfExit" onclick="exitPracticeFocus()" aria-label="End practice" title="End practice"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       <div class="pf-mid" id="pfMid"></div>
@@ -5975,6 +5979,14 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
     <h1 class="you-title" id="youTitle">You</h1>
     <section class="you-group" aria-labelledby="youProgressH">
       <h2 class="you-head" id="youProgressH">Your progress</h2>
+      <!-- Practice totals (moved from the Practice page, web step 3). "In a
+           row" = right answers in a row, in ink: clay is for study days. -->
+      <div class="stats-row you-stats">
+        <div class="stat-card"><span class="stat-num" id="sTotal">0</span><span class="stat-label">Answered</span></div>
+        <div class="stat-card"><span class="stat-num good" id="sCorrect">0</span><span class="stat-label">Correct</span></div>
+        <div class="stat-card"><span class="stat-num" id="sPct">--</span><span class="stat-label">Accuracy</span></div>
+        <div class="stat-card"><span class="stat-num" id="sStreak">0</span><span class="stat-label">In a row</span></div>
+      </div>
       <ul class="you-list">
         <li><a class="you-row" href="#weak-spots" onclick="return navTo(event,'weakspots')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5h17"/><path d="M7 17v-5M12 17V6M17 17v-8"/></svg></span><span class="you-text"><span class="you-t">Weak spots</span><span class="you-m">Where to focus next</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
         <li><button type="button" class="you-row" onclick="showSessionSummary()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-7.5 4 15 3-7.5h4"/></svg></span><span class="you-text"><span class="you-t">Session summary</span><span class="you-m">What you did this session</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
@@ -6569,7 +6581,7 @@ const TOPIC_STUDY_DETAILS = {
 };
 
 const MINDSET = [
-  "You are an auditor - you assess, recommend, and report. You do not fix.",
+  "You are an auditor: you assess, recommend, and report. You do not fix.",
   "When you see FIRST - eliminate any option that implements a solution.",
   "Risk-based thinking: always address the highest risk area first.",
   "Preventive controls > Detective controls > Corrective controls.",
@@ -9077,7 +9089,6 @@ function renderTopicTerms(items) {
 function showRemoteBankLoading(d) {
   var area = document.getElementById('qArea');
   if (!area) return;
-  var label = (d === 'all') ? 'all domains' : ('Domain ' + d);
   var err = (d !== 'all' && window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]) ? window.QB_LOAD_ERROR[d] : null;
   if (err) {
     // Decision 7 (b) — Network error state
@@ -9096,15 +9107,25 @@ function showRemoteBankLoading(d) {
     heading: 'Fetching questions…',
     body: 'The question bank is loading from data/domain' + d + '.json. This usually takes less than a second.'
   });
-  // Auto-retry rendering once the domain finishes loading
+  // Once the bank arrives, draw the question in place, but only while this
+  // card is still what the learner is looking at (they may have left for the
+  // hub or another page; then nothing happens).
+  var loadingCard = area.firstElementChild;
+  var stillWaiting = function () {
+    var a = document.getElementById('qArea');
+    return S.activeTab === 'practice' && practiceView === 'focus' && !!a && a.firstElementChild === loadingCard;
+  };
   var onLoaded = function(ev){
     if (!ev.detail) return;
     if (String(ev.detail.domain) === String(d) || d === 'all') {
       document.removeEventListener('qb:domain-loaded', onLoaded);
       document.removeEventListener('qb:domain-error', onError);
-      // Surface a helpful "ready" state — user can hit Start again
-      var a = document.getElementById('qArea');
-      if (a) a.innerHTML = '<div class="empty" style="padding:32px"><div class="empty-icon">✓</div><div class="empty-title">Ready!</div><div class="empty-sub">' + escapeHtml(label) + ' loaded. Press <strong>Start Practice</strong> to begin.</div></div>';
+      if (stillWaiting()) {
+        var hadFocus = loadingCard.contains(document.activeElement);
+        nextQ();
+        var m = document.getElementById('qMeta');
+        if (hadFocus && m) { try { m.focus({ preventScroll: true }); } catch (e) {} }
+      }
     }
   };
   var onError = function(ev){
@@ -9112,7 +9133,7 @@ function showRemoteBankLoading(d) {
     if (String(ev.detail.domain) === String(d)) {
       document.removeEventListener('qb:domain-loaded', onLoaded);
       document.removeEventListener('qb:domain-error', onError);
-      showRemoteBankLoading(d);
+      if (stillWaiting()) showRemoteBankLoading(d);
     }
   };
   document.addEventListener('qb:domain-loaded', onLoaded);
@@ -9190,6 +9211,8 @@ function getNextQ(domainStr, diff) {
 function switchTab(t, opts) {
   // A stale or unknown page name (an older save, a typo'd link) opens Today.
   if (!NAV_SECTION[t]) t = 'home';
+  // Leaving a set mid-way pauses its clock (Continue picks it up again).
+  if (S.activeTab === 'practice' && S.domainTimerActive && S.domainTimerRemaining > 0 && practiceLeftOpen()) S.domainTimerPaused = true;
   clearAllTimers(); // always clear timers when switching tabs
   // Leaving any review-replay session — clear the mode flags so the gen
   // button and nextQ() return to normal practice behaviour. startReviewQueue
@@ -9525,6 +9548,7 @@ function toggleTimer() {
 function setTimerDuration(mins) {
   S.timerSeconds = mins; // stored as minutes selection (0=auto)
   S.timerEnabled = true;
+  S.domainTimerPaused = false;
   // A new choice starts a fresh countdown now if a question is on screen;
   // otherwise it starts with the next question.
   stopSessionTimer();
@@ -9536,6 +9560,7 @@ function setTimerDuration(mins) {
 // The hub's "Off" choice.
 function setTimerOff() {
   S.timerEnabled = false;
+  S.domainTimerPaused = false;
   stopSessionTimer();
   updateTimerDisplay();
   saveState();
@@ -9584,6 +9609,7 @@ function stopSessionTimer() {
 // the set carries on, with the question that was open when time ran out.
 function continueWithoutTimer() {
   S.timerEnabled = false;
+  S.domainTimerPaused = false;
   stopSessionTimer();
   updateTimerDisplay();
   saveState();
@@ -9607,7 +9633,12 @@ function startDomainTimer() {
     totalMins = S.timerSeconds;
   }
   var totalSecs = totalMins * 60;
-  S.domainTimerRemaining = totalSecs;
+  // A clock paused when the learner left the set resumes where it was.
+  var resume = !!S.domainTimerPaused && S.domainTimerRemaining > 0;
+  S.domainTimerPaused = false;
+  if (resume) totalSecs = S.domainTimerTotal || totalSecs;
+  else S.domainTimerRemaining = totalSecs;
+  S.domainTimerTotal = totalSecs;
   S.domainTimerActive = true;
 
   var ta = document.getElementById('timerArea');
@@ -9624,7 +9655,7 @@ function startDomainTimer() {
   // The focus strip's clock: digits only (the hub says what the timer does).
   // role="timer" is never announced on each tick.
   ta.title = S.timerSeconds === 0 ? 'Session timer (auto)' : 'Session timer (' + totalMins + ' min)';
-  ta.innerHTML = ico('mock', 18) + '<span class="sr-only">Time left in this set: </span><span class="timer-digits ok" id="tDig" role="timer">' + formatTime(totalSecs) + '</span>';
+  ta.innerHTML = ico('mock', 18) + '<span class="sr-only">Time left in this set: </span><span class="timer-digits ok" id="tDig" role="timer">' + formatTime(S.domainTimerRemaining) + '</span>';
 
   if (S.practiceTimerInt) { clearInterval(S.practiceTimerInt); S.practiceTimerInt = null; }
   S.practiceTimerInt = setInterval(function(){
@@ -9767,17 +9798,22 @@ function domainOrder(a, b) {
 }
 
 // â”€â”€ MINDSET ROTATION â”€â”€
+// Reduced motion: the line never changes on its own (no timer, no fade,
+// WCAG 2.2.2); the hub picks the next line each time it opens.
+function mindsetReduced() {
+  return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
+function nextMindsetLine() {
+  var el = document.getElementById('msText');
+  if (!el) return;
+  S.mindsetIdx = (S.mindsetIdx + 1) % MINDSET.length;
+  el.textContent = MINDSET[S.mindsetIdx];
+  el.style.opacity = '';
+}
 function rotateMindset() {
   var el = document.getElementById('msText');
   if (!el) return;
-  // Reduced motion: the next line simply replaces the last one (no fade,
-  // and no 400 ms gap with the line blanked out).
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    S.mindsetIdx = (S.mindsetIdx + 1) % MINDSET.length;
-    el.textContent = MINDSET[S.mindsetIdx];
-    el.style.opacity = '';
-    return;
-  }
+  if (mindsetReduced()) return;
   el.style.opacity = '0';
   setTimeout(function(){
     S.mindsetIdx = (S.mindsetIdx + 1) % MINDSET.length;
@@ -9796,6 +9832,8 @@ var practiceView = 'hub';      // 'hub' | 'focus'
 var phSetupOpen = false;       // the hub's "Change" panel
 var focusAnswered = 0;         // answers since the focused view opened (sets without a length)
 var pendingDebrief = null;     // a finished set's result, shown after its last answer
+var bookmarkReviewMode = false;  // a saved question opened from Saved: not part of any set
+var pfMoveFocus = false;       // the focused view just opened: focus goes to the question's meta line
 // The set length the hub starts (10 / 20 / 30, or -1 = open-ended). A new
 // device-level key beside the old ones; nothing is renamed.
 var practiceLen = (function () {
@@ -9813,6 +9851,20 @@ function setPracticeLen(n) {
   try { localStorage.setItem('aurivan_practice_len', String(n)); } catch (e) {}
   renderPracticeHub();
 }
+// Display only: stored sub-topic values are Title Case ("Attribute Vs
+// Variable Selection"); learners read sentence case. Acronyms (ITAF, AI/ML,
+// LLM) and the word after a full stop keep their capitals.
+function subtopicLabel(st) {
+  var words = String(st || '').replace(/-/g, ' ').split(/\s+/);
+  var cap = true;
+  return words.map(function (w) {
+    var letters = w.replace(/[^A-Za-z]/g, '');
+    var acronym = letters.length > 1 && letters === letters.toUpperCase();
+    var out = acronym ? w : (cap ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : w.toLowerCase());
+    cap = /[.:?!]$/.test(w);
+    return out;
+  }).join(' ');
+}
 function practiceScopeName() {
   var d = S.selectedDomain;
   return (d && d !== 'all' && DI[d]) ? DI[d].short : 'All domains';
@@ -9826,16 +9878,36 @@ function setPracticeView(v) {
   if (foc) foc.hidden = v !== 'focus';
 }
 
-// The hub. Leaving the focused view ends its clock and empties the question
-// area; an unanswered question waits behind the hub's Continue.
-function showPracticeHub() {
+// Is something left open that the hub's Continue would pick up?
+function practiceLeftOpen() {
+  var open = false;
+  try { open = shouldResumeCurrent(); } catch (e) {}
+  return open || (sessionGoal > 0 && sessionAnswered > 0 && sessionAnswered < sessionGoal);
+}
+// The session clock pauses (not stops) while a set or question is left open,
+// so Continue picks up the time left instead of a fresh countdown.
+function pauseSessionTimer() {
+  var running = S.domainTimerActive;
   stopSessionTimer();
+  if (running && S.domainTimerRemaining > 0) S.domainTimerPaused = true;
+}
+
+// The hub. Leaving the focused view pauses its clock (or ends it, when
+// nothing is left open) and empties the question area; an unanswered
+// question waits behind the hub's Continue.
+function showPracticeHub() {
+  if (practiceLeftOpen()) pauseSessionTimer();
+  else { stopSessionTimer(); S.domainTimerPaused = false; }
   var area = document.getElementById('qArea');
   if (area) area.innerHTML = '';
   var deb = document.getElementById('sessionBoundaryArea');
   if (deb) deb.innerHTML = '';
   focusAnswered = 0;
+  bookmarkReviewMode = false;
   setPracticeView('hub');
+  // Reduced motion: the Mindset line never rotates on its own; a new line
+  // is picked each time the hub opens.
+  if (mindsetReduced()) nextMindsetLine();
   try { renderExamCountdown(); } catch (e) {}
   renderDomainGrid();
   renderSubtopicFilter();
@@ -9843,9 +9915,12 @@ function showPracticeHub() {
   renderPracticeHub();
 }
 
-// Called for every question shown (renderQuestion) and for the end cards.
+// Called by every start action (nextQ, renderQuestion). When the view
+// changes from the hub, keyboard and screen-reader focus moves to the
+// question's meta line (or the card shown instead), so it is never left on
+// a button that just disappeared.
 function enterPracticeFocus() {
-  if (practiceView !== 'focus') setPracticeView('focus');
+  if (practiceView !== 'focus') { setPracticeView('focus'); pfMoveFocus = true; }
   updateFocusStrip();
 }
 
@@ -9858,6 +9933,7 @@ function focusProgress(fresh) {
   }
   if (reviewQueueMode) return { pos: reviewQueueIndex + 1, total: reviewQueueList.length, done: reviewQueueIndex + (answered ? 1 : 0) };
   if (missedReviewMode) return { pos: missedReviewIndex + 1, total: missedReviewQueue.length, done: missedReviewIndex + (answered ? 1 : 0) };
+  if (bookmarkReviewMode) return { pos: 0, total: 0, done: 0 };
   if (pendingDebrief) return { pos: pendingDebrief.goal, total: pendingDebrief.goal, done: pendingDebrief.goal };
   if (sessionGoal > 0) {
     return { pos: Math.min(sessionAnswered + (answered ? 0 : 1), sessionGoal), total: sessionGoal, done: Math.min(sessionAnswered, sessionGoal) };
@@ -9868,6 +9944,8 @@ function focusSetName() {
   if (conceptPracticeMode && conceptPracticeCtx) return conceptPracticeCtx.name;
   if (reviewQueueMode) return 'Spaced review';
   if (missedReviewMode) return 'Missed questions';
+  if (bookmarkReviewMode) return 'Saved question';
+  if (sessionLabel) return sessionLabel;
   return practiceScopeName();
 }
 
@@ -9878,6 +9956,20 @@ function updateFocusStrip() {
   if (!mid) return;
   var pr = focusProgress();
   var html;
+  // A set with a length is a progress bar to assistive tech too; a set
+  // without one is plain text (its name and how many answered).
+  if (pr.total > 0) {
+    mid.setAttribute('role', 'progressbar');
+    mid.setAttribute('aria-label', 'Set progress');
+    mid.setAttribute('aria-valuemin', '0');
+    mid.setAttribute('aria-valuemax', String(pr.total));
+    mid.setAttribute('aria-valuenow', String(pr.done));
+    mid.setAttribute('aria-valuetext', pr.done + ' of ' + pr.total + ' answered');
+  } else {
+    ['role', 'aria-label', 'aria-valuemin', 'aria-valuemax', 'aria-valuenow', 'aria-valuetext'].forEach(function (a) { mid.removeAttribute(a); });
+  }
+  var ph = document.getElementById('pfH');
+  if (ph) ph.textContent = 'Practice: ' + focusSetName();
   if (pr.total > 0 && pr.total <= 20) {
     html = '<span class="pf-segs" aria-hidden="true">';
     for (var i = 0; i < pr.total; i++) {
@@ -9907,6 +9999,19 @@ function updateFocusStrip() {
     bk.classList.toggle('saved', on);
     bk.setAttribute('aria-pressed', on ? 'true' : 'false');
     bk.hidden = !card;
+  }
+  // Just opened from the hub: focus lands on the question's meta line (or
+  // the card shown instead), without scrolling.
+  if (pfMoveFocus) {
+    var area = document.getElementById('qArea');
+    var target = document.getElementById('qMeta')
+      || (area && area.querySelector('[tabindex="-1"], h2, h3, .es-heading, .empty-title'))
+      || null;
+    if (target) {
+      pfMoveFocus = false;
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      try { target.focus({ preventScroll: true }); } catch (e) {}
+    }
   }
 }
 
@@ -9958,7 +10063,7 @@ function renderPracticeHub() {
   var hero = document.getElementById('phHero');
   if (!hero || typeof S === 'undefined' || !S) return;
   var scope = practiceScopeName();
-  var timedWords = S.timerEnabled ? (S.timerSeconds === 0 ? 'timed at exam pace' : S.timerSeconds + '-min timer') : '';
+  var timedWords = S.timerEnabled ? (S.timerSeconds === 0 ? 'exam-pace timer' : S.timerSeconds + '-min timer') : '';
   var open = null;
   try { open = shouldResumeCurrent() ? S.current : null; } catch (e) {}
   var midSet = sessionGoal > 0 && sessionAnswered > 0 && sessionAnswered < sessionGoal;
@@ -9967,18 +10072,18 @@ function renderPracticeHub() {
   var fresh = '<button type="button" class="ph-ghost" onclick="startPracticeSet()">Start a new set</button>';
   if (open || midSet) {
     var oq = open && DI[String(open.domain)] ? DI[String(open.domain)].short : scope;
-    cap = 'Continue';
+    // Meta lines stay at six words or fewer (DESIGN_SYSTEM §6, Hero panel).
+    cap = 'Where you left off';
     title = open ? 'Your open question' : 'Your set';
     meta = midSet ? sessionAnswered + ' of ' + sessionGoal + ' answered &middot; ' + escapeHtml(oq) : escapeHtml(oq) + ' &middot; not answered yet';
     acts = go('Continue', 'continuePractice()') + fresh;
   } else {
     cap = 'Quick practice';
     title = scope === 'All domains' ? 'A mixed set' : escapeHtml(scope);
-    meta = practiceLen === -1 ? 'Open-ended &middot; stop when you like'
-      : practiceLen + ' questions &middot; about ' + Math.round(practiceLen * MINUTES_PER_PRACTICE_Q) + ' min';
+    var lenPart = practiceLen === -1 ? 'Open-ended' : practiceLen + ' questions';
+    meta = lenPart + ' &middot; ' + (timedWords || (practiceLen === -1 ? 'stop any time' : 'about ' + Math.round(practiceLen * MINUTES_PER_PRACTICE_Q) + ' min'));
     acts = go('Start', 'startPracticeSet()');
   }
-  if (timedWords) meta += ' &middot; ' + timedWords;
   hero.innerHTML = '<section class="gt-panel ph-hero" aria-labelledby="phHeroT">'
     + gtFrondSvg()
     + '<p class="gt-panel-cap">' + cap + '</p>'
@@ -9990,7 +10095,7 @@ function renderPracticeHub() {
   // One row says what the set is; it opens the options right here.
   var sum = [escapeHtml(scope), practiceLen === -1 ? 'Open-ended' : practiceLen + ' questions'];
   if (S.diff && S.diff !== 'any') sum.push(S.diff.charAt(0).toUpperCase() + S.diff.slice(1));
-  if (activeSubtopic) sum.push(escapeHtml(activeSubtopic.replace(/-/g, ' ')));
+  if (activeSubtopic) sum.push(escapeHtml(subtopicLabel(activeSubtopic)));
   var st = document.getElementById('phSumText');
   if (st) st.innerHTML = sum.join(' &middot; ');
   var sb = document.getElementById('phSumBtn');
@@ -10079,13 +10184,15 @@ function renderResumePrompt() {
 // Kept for old callers: the hub's start action replaced the session card.
 function showSessionStart() { renderPracticeHub(); }
 
-// Anything that fills the question area (a question, Time is up, a finished
-// set) belongs to the focused view.
+// End cards drawn into the focused view (Time is up, a finished set, a
+// loading or empty state) keep the strip in step. This never switches
+// views: only a start action opens the focused view (nextQ, renderQuestion
+// and the replay starts), so nothing can pull a learner off the hub.
 (function watchQuestionArea() {
   var area = document.getElementById('qArea');
   if (!area || typeof MutationObserver === 'undefined') return;
   new MutationObserver(function () {
-    if (S.activeTab === 'practice' && area.firstChild) enterPracticeFocus();
+    if (S.activeTab === 'practice' && practiceView === 'focus' && area.firstChild) updateFocusStrip();
   }).observe(area, { childList: true });
 })();
 
@@ -10108,6 +10215,10 @@ function discardResumeQuestion() {
 // â”€â”€ NEXT PRACTICE QUESTION â”€â”€
 function nextQ() {
   clearQuestionTimers();
+  bookmarkReviewMode = false;
+  // Asking for a question is a start action: the focused view opens (and
+  // its end cards, loading and empty states show there).
+  if (S.activeTab === 'practice') enterPracticeFocus();
   // A set just reached its length: "See how you did" shows the debrief here.
   if (pendingDebrief) {
     var deb = pendingDebrief;
@@ -10514,12 +10625,16 @@ var sessionGoal = null;        // null | 10 | 20 | 30 | -1 (open-ended)
 var sessionAnswered = 0;
 var sessionCorrect = 0;
 var sessionDomain = 'all';
+var sessionLabel = null;       // a set's own name in the strip ("Weak spots drill"), else the domain
 
-function startSession(n, domain) {
+function startSession(n, domain, label) {
   sessionGoal = (n === null || n === 0) ? -1 : n;
   sessionAnswered = 0;
   sessionCorrect = 0;
+  sessionLabel = label || null;
   pendingDebrief = null;
+  // A new set gets a fresh clock.
+  S.domainTimerPaused = false;
   sessionDomain = domain || 'all';
   if (sessionDomain !== 'all') {
     S.selectedDomain = sessionDomain;
@@ -10655,6 +10770,7 @@ function renderQuestion(q) {
   else metaParts.push(escapeHtml(info.short));
   if (reviewQueueMode) metaParts.push('Spaced review');
   else if (missedReviewMode) metaParts.push('Missed question');
+  else if (bookmarkReviewMode) metaParts.push('Saved question');
   else if (!(window.S && S.examMode)) metaParts.push(escapeHtml(bloomLabel));
   if (pr.total > 0) metaParts.push(pr.pos + ' of ' + pr.total);
 
@@ -11088,6 +11204,7 @@ function reviewBookmark(i) {
   S.current = q;
   switchTab('practice');
   clearAllTimers();
+  bookmarkReviewMode = true; // not part of any set: no "N of M" (cleared by nextQ / the hub)
   renderQuestion(q);
   // renderQuestion populated S.currentShuffle — translate the original
   // correct letter into its display position for the result panel.
@@ -12601,7 +12718,7 @@ function renderSubtopicFilter() {
   // Filter chip helper — returns the HTML for one chip
   function chipHtml(st, opts){
     opts = opts || {};
-    var label = st.replace(/-/g, ' ');
+    var label = subtopicLabel(st); // display only; the stored value is unchanged
     var active = activeSubtopic === st ? ' active' : '';
     var accClass = '';
     if (opts.showAccuracy && accuracy[st] !== undefined) {
@@ -12631,7 +12748,7 @@ function renderSubtopicFilter() {
     activeChip = '<button class="subtopic-chip active selected-elsewhere"'
       + ' onclick="setSubtopicFilter(null)"'
       + ' title="Click to clear">'
-      + escapeHtml(activeSubtopic.replace(/-/g, ' ')) + ' ' + ico('x', 16) + '</button>';
+      + escapeHtml(subtopicLabel(activeSubtopic)) + ' ' + ico('x', 16) + '</button>';
   }
 
   // Expanded view: search + categorized chip groups
@@ -12782,7 +12899,8 @@ function startWeakSpotsDrill() {
   renderSubtopicFilter();
   switchTab('practice');
   showToast('Weak spots drill loaded', 'info', 2200);
-  setTimeout(function() { nextQ(); }, 350);
+  // Its own set (no length), never "4 of 10" of a set left open.
+  setTimeout(function() { startSession(null, 'all', 'Weak spots drill'); }, 350);
 }
 
 // ── PHASE 2: BOOKMARK TAGGING ──
@@ -12879,7 +12997,7 @@ function startBookmarkDrill(tagFilter) {
   renderSubtopicFilter();
   switchTab('practice');
   showToast('Bookmark Drill — ' + fullQs.length + ' questions', 'info', 2000);
-  setTimeout(function(){ nextQ(); }, 300);
+  setTimeout(function(){ startSession(null, 'all', 'Saved questions'); }, 300);
 }
 
 function bkTagChange(el) {
@@ -12915,7 +13033,7 @@ function drillSingleBookmark(qId) {
   activeSubtopic = null;
   S.current = null;
   switchTab('practice');
-  setTimeout(function(){ nextQ(); }, 200);
+  setTimeout(function(){ startSession(null, d, 'Saved question'); }, 200);
 }
 
 // ── PHASE 2: MOCK CHECKPOINT (retired) ──
@@ -13050,7 +13168,7 @@ updateStats();
 updateTimerDisplay();
 // Restore difficulty button state
 syncDiffChips();
-setInterval(rotateMindset, 7500);
+if (!mindsetReduced()) setInterval(rotateMindset, 7500);
 
 if (S.activeTab && S.activeTab !== 'practice') {
   switchTab(S.activeTab, { noScroll: true });
@@ -13126,7 +13244,7 @@ function showFilterComplete() {
 
   // Build a human-readable description of what filter was active
   var filterDesc = [];
-  if (activeSubtopic) filterDesc.push('\u201c' + activeSubtopic.replace(/-/g, ' ') + '\u201d');
+  if (activeSubtopic) filterDesc.push('\u201c' + subtopicLabel(activeSubtopic) + '\u201d');
   if (S.diff !== "any") filterDesc.push(S.diff + ' difficulty');
   var filterLabel = filterDesc.join(' + ');
 
@@ -13466,7 +13584,7 @@ function showSessionSummary() {
     + '<div class="summary-grid">'
     + '<div class="summary-stat"><span class="summary-stat-num">' + t + '</span><span class="summary-stat-label">Answered</span></div>'
     + '<div class="summary-stat"><span class="summary-stat-num" style="color:var(--correct)">' + c + '</span><span class="summary-stat-label">Correct</span></div>'
-    + '<div class="summary-stat"><span class="summary-stat-num">' + S.streak + '</span><span class="summary-stat-label">Best Streak</span></div>'
+    + '<div class="summary-stat"><span class="summary-stat-num">' + S.streak + '</span><span class="summary-stat-label">In a row</span></div>'
     + '</div>'
     + '<div class="summary-section-label">Confidence Breakdown</div>'
     + confCards
