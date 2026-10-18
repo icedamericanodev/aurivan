@@ -44,6 +44,11 @@ for (const cert of CERTIFICATIONS.filter((c) => c.status === 'available')) {
         for (const m of all.matchAll(/\{\{([A-D])\}\}/g)) {
           if (!letters.includes(m[1] as never)) problems.push(`${q.id}: token {{${m[1]}}} not an option`);
         }
+        // The article "A" before a capitalised word ("A SOC 2 report") must
+        // stay text, or shuffling shows "C SOC 2 report…" (review, 18 Oct 2026).
+        for (const field of [q.explanation, ...Object.values(q.wrongExplanations)]) {
+          if (/(^|[.;:!?]\s+)\{\{A\}\} [A-Z][A-Za-z]/.test(field)) problems.push(`${q.id}: article A tokenized`);
+        }
       }
       expect(problems).toEqual([]);
     });

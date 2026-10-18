@@ -5267,7 +5267,7 @@ body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq
     <span class="logo-tagline">Free CISA&reg; exam prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v12.1.1</span>
+    <span class="bank-pill" id="versionPill">v12.2</span>
     <button class="exam-mode-btn" id="examModeBtn" onclick="toggleExamMode()" aria-label="Toggle exam-realistic mode" title="Study mode (current): dense scenario blocks, tips revealed after answering. Exam mode: compact stems and minimal post-answer feedback — closer to the real exam."><span id="examModeIcon" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.5 19.5A2.5 2.5 0 0 1 7 17h12.5V3H7a2.5 2.5 0 0 0-2.5 2.5z"/><path d="M4.5 19.5A2.5 2.5 0 0 0 7 22h12.5v-5"/></svg></span><span id="examModeLabel">Study</span></button>
     <button class="dark-toggle-btn hdr-icon-btn" id="darkToggleBtn" onclick="toggleDarkMode()" aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 1 1 9.4 4a6.6 6.6 0 0 0 10.6 10.6z"/></svg></button>
     <button id="hdrMenuBtn" class="hdr-icon-btn" onclick="toggleHdrMenu()" aria-label="More options" aria-expanded="false" aria-controls="hdrMenu"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
@@ -5645,7 +5645,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.1.1';
+const APP_VERSION = 'v12.2';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -8711,6 +8711,8 @@ function isOptionLetterRef(text, letter, offset, selfLetter) {
       if (!((namesOthers || opensOwnExplanation) && thirdPerson)) return false;
     }
     if (/^\s+\d/.test(after)) return false; // "A 15-minute RPO"
+    // "A SOC 2 report", "A KPI should" → article before a capitalised word.
+    if (nextWord && /^[A-Z]/.test(nextWord)) return false;
   }
   return true;
 }
@@ -12073,6 +12075,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Questions re-checked',
+    items: [
+      { cat: 'improved', text: 'Every practice question was re-checked by independent reviewers: clearer wording, more realistic wrong answers and up-to-date references.' },
+      { cat: 'fixed', text: 'Explanations no longer turn words like "A SOC 2 report" into an answer letter after the options are shuffled.' }
+    ]
+  },
+  {
+    version: 'v12.1.1',
     title: 'Topic notes open again',
     items: [
       { cat: 'fixed', text: 'Opening a topic showed "More on this topic is coming soon" instead of its study notes. Every topic now opens in full.' }

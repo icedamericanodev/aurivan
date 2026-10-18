@@ -4,6 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.2] — Questions re-checked
+
+### Improved
+- Every practice question was re-checked by independent reviewers: clearer wording, more realistic wrong answers and up-to-date references.
+
+### Fixed
+- Explanations no longer turn words like "A SOC 2 report" into an answer letter after the options are shuffled.
+
 ## [v12.1.1] — Topic notes open again
 
 ### Fixed

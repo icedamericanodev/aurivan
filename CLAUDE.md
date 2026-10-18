@@ -103,21 +103,16 @@ work without rediscovering the layout.
 Run from repo root:
 
 ```bash
-# JSON validity + override coverage
-python3 -c "
-import json
-counts={1:164,2:164,3:120,4:263,5:284}
-for d,e in counts.items():
-    ov=len([k for k in json.load(open(f'data/tips_overrides/d{d}.json')) if not k.startswith('_')])
-    dom=json.load(open(f'data/domain{d}.json'))
-    wt=sum(1 for q in dom['questions'] if q.get('tips') and len(q['tips'])>=3)
-    qc=len(dom['questions'])
-    ok='OK' if ov==e and qc==e and wt==e else 'FAIL'
-    print(f'D{d}: ov={ov} qc={qc} wt={wt} (expected {e}) [{ok}]')
-"
+# Question counts, tips, schema, JS lint (no-undef + no-redeclare), version pill
+bash scripts/verify_repo.sh
+# Exam-style rules per domain (option lengths, tips, explanations)
+for d in 1 2 3 4 5; do python3 scripts/lint_exam_style_v2.py $d; done
+# Mobile content pack and tests (after touching data/ or mobile/)
+(cd mobile && npm run check)
+```
 
-# JS lint (extracts inline scripts and runs eslint no-undef)
-# See scripts/lint_inline_js.sh — invoked automatically by the SessionStart hook.
+The question source of truth is `data/originals/d{N}.json`; rebuild the
+served files with `python3 scripts/originals_to_domain.py`.
 ```
 
 ## UI/UX review workflow (added v9.0)
@@ -182,7 +177,11 @@ kill %1
   the lowercase wordmark "kaisip"; the header uses an inline, theme-aware SVG.
   Saved-data keys that start with `aurivan_` (localStorage) and the `aurivan`
   backup marker are kept ON PURPOSE so existing learners keep their progress;
-  do not rename them.
+  do not rename them. The same goes for the web's `cisa_` keys, which hold
+  most web progress (`cisa_profiles_v1`, `cisa_active_profile`, `cisa_theme`,
+  `cisa_exam_mode`, `cisa_onboarded_v6`, `cisa_mock_ckpt_v1`), the web export
+  marker `cisaMindsetExport`, and the mobile stores `aurivan.*.v1`. Add new
+  fields beside old ones; never rename or replace them.
 - **Don't surface the total question count in user-facing copy.** The
   bank size is intentionally not advertised in the app; use generic
   phrasing ("practice questions across all 5 domains") instead.
