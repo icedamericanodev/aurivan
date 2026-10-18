@@ -41,6 +41,15 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.25.0',
+    date: '2026-10-18',
+    new: ['Study notes now show how far you got: a circle that fills halfway once you start a note and all the way when you finish it.'],
+    improved: [
+      'A quick scroll to the bottom of a note no longer marks it as read before you have had time to read it.',
+      'Settings can reset your note reading on its own. Your answers and scores stay.',
+    ],
+  },
+  {
     version: '1.24.2',
     date: '2026-10-18',
     improved: ['Every practice question was re-checked by independent reviewers: clearer wording, more realistic wrong answers and up-to-date references.'],

@@ -19,12 +19,24 @@
  *   problem". Reaching the end of the page marks the note read (once per
  *   visit, only after the learner's own drag); the source row's toggle is
  *   the undo. Both are announced to screen readers.
+ *
+ * Mobile 1.25 ("fill the circle", engine/noteReadState.ts):
+ * - After 10 seconds open on screen with the app in front, the note is
+ *   STARTED (saved in notesViewed; its row shows a half-filled circle). The
+ *   time adds up across visits in the same app session (lib/useNoteDwell.ts).
+ * - Reaching the end marks it read only once the note has been open for 20
+ *   seconds on this visit, so a quick flick to the bottom does not count.
+ *   "Mark as read" and "Practice this concept" are not held back. A jump
+ *   link that lands at the end is not the learner's own drag: it never counts.
+ * - Each time it becomes read here, its list row (and its domain row, when
+ *   this was the domain's last note) fills its circle once, the next time
+ *   that row is on screen (lib/noteNews.ts, in memory only).
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ICON_STROKE, Play } from '../../../components/icons';
-import { CheckDraw } from '../../../components/motion';
+import { CheckDraw, useScreenFocus } from '../../../components/motion';
 import { NoteBody } from '../../../components/notes';
 import { ReportRow } from '../../../components/support';
 import { Button, Enter, Gap, ICON_SIZE, ListRow, PushedHeader, Row, Screen, Tag, T, useFontScale } from '../../../components/ui';
@@ -37,6 +49,9 @@ import { createRng, shuffled } from '../../../engine/random';
 import { openSessionFromStack } from '../../../lib/actions';
 import { guardedStart, startFromIds } from '../../../lib/sessions';
 import { sayLater } from '../../../lib/a11y';
+import { forgetJustRead, noteJustRead, readMarkKey } from '../../../lib/noteNews';
+import { useNoteDwell } from '../../../lib/useNoteDwell';
+import { canAutoRead, groupReadState, READ_FILL, noteReadState } from '../../../engine/noteReadState';
 import { useActiveCert } from '../../../lib/useActiveCert';
 import { useProgress } from '../../../store/progress';
 import { LARGE_TEXT, space } from '../../../theme/tokens';
@@ -53,6 +68,7 @@ export default function NoteSubtopicScreen() {
   const { cert, progress } = useActiveCert();
   const { c } = useTheme();
   const setNoteRead = useProgress((s) => s.setNoteRead);
+  const markNoteViewed = useProgress((s) => s.markNoteViewed);
   // Marked as read on this visit: its ✓ draws (a note opened already read shows it still).
   const [justRead, setJustRead] = useState(false);
   // Title collapse: the hero title has scrolled under the header.
@@ -67,6 +83,10 @@ export default function NoteSubtopicScreen() {
   const fontScale = useFontScale();
   const note = findNote(cert.id, id);
   const domain = note ? cert.domains.find((d) => d.id === note.domainId) : undefined;
+  // Mobile 1.25: time open on screen (paused out of view or in the background).
+  // 10 s marks the note started; the auto-read below waits for 20 s.
+  const focused = useScreenFocus();
+  const openMs = useNoteDwell(id, focused && Boolean(note), () => markNoteViewed(cert.id, id));
 
   if (!note || !domain) {
     return (
@@ -94,9 +114,27 @@ export default function NoteSubtopicScreen() {
   // content update removed. Empty → no button (most notes have some).
   const conceptIds = (note.practiceIds ?? []).filter((q) => findQuestion(cert.id, q));
   const n = conceptIds.length;
+  // Mobile 1.25: tell the list rows this note just became read (or not), so
+  // its circle fills once when the learner sees it. The domain row fills too
+  // when this was the last unread note of the domain.
+  const tellRows = (read: boolean) => {
+    const noteKey = readMarkKey(cert.id, 'note', note.id);
+    const domainKey = readMarkKey(cert.id, 'domain', domain.id);
+    if (!read) {
+      forgetJustRead(noteKey);
+      forgetJustRead(domainKey);
+      return;
+    }
+    noteJustRead(noteKey, READ_FILL[noteReadState(note.id, progress.notesRead, progress.notesViewed)]);
+    const others = inDomain.filter((s) => s.id !== note.id);
+    // From the domain's real state before this note (half, or empty for a one-note domain never started).
+    const before = groupReadState(inDomain.map((s) => s.id), progress.notesRead, progress.notesViewed);
+    if (others.every((s) => progress.notesRead.includes(s.id))) noteJustRead(domainKey, READ_FILL[before]);
+  };
   // `say`: what a screen reader hears (mobile 1.22 review H1): the change is never silent.
   const markRead = (read: boolean, say = read ? 'Marked as read' : 'Marked as not read') => {
     setJustRead(read);
+    if (read !== isRead) tellRows(read);
     setNoteRead(cert.id, note.id, read);
     sayLater(say);
   };
@@ -107,7 +145,10 @@ export default function NoteSubtopicScreen() {
       () => {
         // Practising the concept means the note was read: mark it, once the
         // set really starts (not if "Keep it" cancels). The source row undoes it.
-        if (!isRead) setNoteRead(cert.id, note.id, true);
+        if (!isRead) {
+          tellRows(true);
+          setNoteRead(cert.id, note.id, true);
+        }
         // A note can sit above an old session or Results: start clean (lib/actions.ts).
         openSessionFromStack();
       },
@@ -118,8 +159,10 @@ export default function NoteSubtopicScreen() {
     const under = edge > 0 && (titleUnder ? y > edge - HYSTERESIS : y > edge);
     if (under !== titleUnder) setTitleUnder(under);
     // Reaching the ending reads the note as read, once, and only after the learner's own drag (a
-    // jump link or an iOS bounce on a short note never marks it).
-    if (!autoRead.current && dragged.current && endTop.current > 0 && y + height >= endTop.current) {
+    // jump link or an iOS bounce on a short note never marks it). Mobile 1.25: and only once the
+    // note has been open for 20 s (a quick flick to the bottom does not count; a later scroll
+    // at the end, after 20 s, still does).
+    if (!autoRead.current && dragged.current && endTop.current > 0 && y + height >= endTop.current && canAutoRead(openMs())) {
       autoRead.current = true;
       if (!isRead) markRead(true, 'Note marked as read. Mark as not read is at the end of the note.');
     }
@@ -132,6 +175,9 @@ export default function NoteSubtopicScreen() {
       edges={['top', 'bottom']}
       onScroll={onScroll}
       onScrollBeginDrag={() => (dragged.current = true)}
+      // A jump link ("On this page") scrolls for the learner: it never counts as their own drag,
+      // so landing at the end that way never marks the note read (only a later drag of theirs).
+      onJump={() => (dragged.current = false)}
       header={<PushedHeader title={note.name} showTitle={titleUnder} onBack={goBack} />}
     >
       <Enter i={0}>

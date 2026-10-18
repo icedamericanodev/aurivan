@@ -83,7 +83,7 @@ const DAY_MS = 24 * 3_600_000;
 // Generous next to real use (the store itself keeps at most 50 mocks), but
 // small enough that a hostile file can't make the phone churn.
 const MAX_IDS = 5_000; // answers, reviews, mistakes, bookmarks (per cert)
-const MAX_SMALL = 5_000; // lessons done, notes read, mastery
+const MAX_SMALL = 5_000; // lessons done, notes read and started, mastery
 const MAX_LIST = 200; // mocks, recent days, readiness log
 const MAX_KEY = 120; // any id or map key
 const MAX_TEXT = 500; // any label
@@ -451,6 +451,10 @@ const certProgress = obj(
     gameBest: map(gameScore, 50),
     gameRecent: map(list(gameScore, 50), 50),
     notesRead: list(id, MAX_SMALL),
+    // Mobile 1.25: notes started (open 10 s). Optional: older files have none. Same cap as notesRead.
+    notesViewed: list(id, MAX_SMALL),
+    // Mobile 1.25: how many notes were ever read (a whole count, at most the notes cap). Optional.
+    notesEverRead: int(0, MAX_SMALL),
     moments,
     mastery: map(subtopicMastery, MAX_SMALL),
     // Build E: where In order / Guided stopped (per scope), and the Root or Rumor note cards.
@@ -739,6 +743,7 @@ export function keepKnownIds(progress: BackupProgress, known: (certId: string) =
     if (cp.bookmarks) next.bookmarks = keepIds(cp.bookmarks, k.questions);
     if (cp.lessonsDone) next.lessonsDone = keepIds(cp.lessonsDone, k.lessons);
     if (cp.notesRead) next.notesRead = keepIds(cp.notesRead, k.notes);
+    if (cp.notesViewed) next.notesViewed = keepIds(cp.notesViewed, k.notes);
     if (cp.mastery) next.mastery = keepKeys(cp.mastery, k.notes);
     // In order's place is a question id: a removed question just starts that scope over.
     if (cp.studyPath?.inOrder) next.studyPath = { ...cp.studyPath, inOrder: keepValues(cp.studyPath.inOrder, k.questions) };

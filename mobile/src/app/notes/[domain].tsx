@@ -16,6 +16,9 @@
  * "You should be able to" list, a "Lesson: …" row when a lesson teaches the
  * topic, its subtopics with a read mark, then "Practice this topic" (Build
  * E): the questions of all its subtopics, interleaved (engine/studyModes.ts).
+ * Mobile 1.25: each subtopic's mark has three states ("fill the circle":
+ * not read yet, started, read; engine/noteReadState.ts), and a note just
+ * read fills its circle once when this page is back in view.
  * The domain's key terms fold away at the end.
  */
 import { router, useLocalSearchParams } from 'expo-router';
@@ -35,6 +38,8 @@ import { domainColor } from '../../content/certifications';
 import { noteDomain, noteSubtopics } from '../../content/notes';
 import type { NoteDomain, NoteTopic } from '../../content/notes/types';
 import { readCount, readProgressText } from '../../engine/notesSearch';
+import { noteReadState, readStateLabel, readStateWords } from '../../engine/noteReadState';
+import { readMarkKey } from '../../lib/noteNews';
 import { topicLessons } from '../../lib/outline';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { LARGE_TEXT, space } from '../../theme/tokens';
@@ -87,6 +92,7 @@ export default function NotesDomain() {
   }
 
   const read = progress.notesRead;
+  const viewed = progress.notesViewed;
   // "Practice this topic": every subtopic's listed questions (that still
   // exist), interleaved and capped. No questions → no button.
   const topicIds = (t: NoteTopic) => t.subtopics.map((st) => (st.practiceIds ?? []).filter((q) => findQuestion(cert.id, q)));
@@ -219,14 +225,15 @@ export default function NotesDomain() {
                     )}
                     <View style={{ marginTop: space.sm }}>
                       {t.subtopics.map((s, i) => {
-                        const isRead = read.includes(s.id);
+                        // Not read yet, started (open 10 s) or read.
+                        const state = noteReadState(s.id, read, viewed);
                         return (
                           <ListRow
                             key={s.id}
                             title={s.name}
-                            subtitle={isRead ? 'Read' : 'Not read yet'}
-                            trailing={<ReadMark read={isRead} />}
-                            accessibilityLabel={`${s.name}, ${isRead ? 'read' : 'not read yet'}`}
+                            subtitle={readStateWords(state)}
+                            trailing={<ReadMark state={state} play={readMarkKey(cert.id, 'note', s.id)} />}
+                            accessibilityLabel={readStateLabel(s.name, state)}
                             onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(s.id)}`)}
                             last={i === t.subtopics.length - 1}
                           />

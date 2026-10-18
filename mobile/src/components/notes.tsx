@@ -20,17 +20,20 @@
  * Mobile 1.22: a note whose first diagram has been redrawn for the phone
  * (components/noteFigures.tsx) shows that native figure instead.
  */
-import { Component, useMemo, useRef, useState, type ReactNode, type Ref } from 'react';
-import { Modal, Platform, Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
+import { Component, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type Ref } from 'react';
+import { Modal, Platform, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import Animated, { ReduceMotion, useAnimatedProps, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { parse, SvgAst, type JsxAST } from 'react-native-svg';
+import Svg, { Circle, parse, SvgAst, type JsxAST } from 'react-native-svg';
 import type { NoteCompare, NoteIllustration, NoteSubtopic, NoteTerm } from '../content/notes/types';
+import type { NoteReadState } from '../engine/noteReadState';
 import { svgMinFontSize, svgSize, themeSvg } from '../engine/notesSvg';
 import { moveFocus } from '../lib/a11y';
-import { font, LARGE_TEXT, radius, space } from '../theme/tokens';
+import { justReadFrom, takeJustRead } from '../lib/noteNews';
+import { font, LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { Check, ICON_STROKE, Maximize2, X } from './icons';
-import { useMotion } from './motion';
+import { ICON_STROKE, Maximize2, X } from './icons';
+import { tween, useMotion, useScreenFocus } from './motion';
 import { nativeFigureFor, NativeFigureView } from './noteFigures';
 import { BigNum, Card, Gap, IconButton, ICON_SIZE, Section, T, useFontScale, useScreenScroll } from './ui';
 
@@ -63,29 +66,167 @@ export function Bullets({ items, color }: { items: string[]; color?: string }) {
 }
 
 /**
- * Read status (the lessons list's recipe): a filled accent ✓ when read; not
- * read yet is a quiet 2pt ring in `track` (mobile 1.21: a status, not a
- * control, so never the `control` outline that reads as a checkbox to tap).
- * The row's words say the state too.
+ * Read status, "fill the circle" (mobile 1.25; the agreed read-state design).
+ * Three states by SHAPE, not colour, so it never relies on colour alone:
+ * - none: a quiet 2pt ring in `track` (a status, not a control: never the
+ *   `control` outline that reads as a checkbox to tap);
+ * - started: the ring in `accent`, with the right half filled (a half pie,
+ *   clockwise from 12 o'clock), like a half Harvey ball;
+ * - read: a solid accent disc. No check mark, so nothing says "tap me".
+ * Hidden from screen readers and never pressable: the row's words say the
+ * state ("Not read yet" / "Started" / "Read").
+ *
+ * `read` is the older two-state prop, kept so a caller that still passes it
+ * works (every screen passes `state` since 1.25); `state` wins when both are
+ * given.
+ *
+ * `play`: the row's key in lib/noteNews.ts. When that note was just read in
+ * this app session, the circle fills to full ONCE, the next time this row is
+ * on screen: 300 ms, ease-out (motion `fill`); a 120 ms cross-fade under
+ * Reduce Motion. No haptic, no scale. Becoming started never animates.
  */
-export function ReadMark({ read }: { read: boolean }) {
-  const { c } = useTheme();
+export function ReadMark({ state, read, play }: { state?: NoteReadState; read?: boolean; play?: string }) {
+  const resolved: NoteReadState = state ?? (read ? 'read' : 'none');
+  // News waiting for this row (how full the circle was before it became read).
+  const waiting = resolved === 'read' ? justReadFrom(play) : undefined;
+  // Once a fill starts, this row keeps its animated circle (so a re-render
+  // mid-fill never swaps it for the still one and cuts the motion).
+  const [sweepFrom, setSweepFrom] = useState<number | undefined>(waiting);
+  if (waiting !== undefined && sweepFrom !== waiting) setSweepFrom(waiting);
+  if (resolved !== 'read' && sweepFrom !== undefined) setSweepFrom(undefined);
   return (
-    <View
-      accessible={false}
-      importantForAccessibility="no-hide-descendants"
-      style={{
-        width: 24,
-        height: 24,
-        borderRadius: radius.pill,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: read ? c.accent : 'transparent',
-        borderWidth: read ? 0 : 2,
-        borderColor: c.track,
-      }}
-    >
-      {read && <Check size={14} color={c.bg} strokeWidth={2.5} />}
+    <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ width: 24, height: 24 }}>
+      {sweepFrom !== undefined && play && resolved === 'read' ? <FillingMark from={sweepFrom} playKey={play} /> : <StillMark state={resolved} />}
+    </View>
+  );
+}
+
+// The pie: a circle of r=5.5 drawn with an 11pt stroke covers radius 0 to 11,
+// reaching into the ring (10 to 12) so no seam shows between them (as on web);
+// its dash length is how much of it shows. 2 x pi x 5.5 = 34.558.
+const PIE_R = 5.5;
+const PIE_C = 34.558;
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+
+/**
+ * The circle as it is (a plain SVG, no animated nodes: a notes list can hold
+ * many rows). Read is ONE solid disc (r=12): drawn as a ring plus a full pie,
+ * a faint seam showed where the two met (1.25 review).
+ */
+function StillMark({ state }: { state: NoteReadState }) {
+  const { c } = useTheme();
+  if (state === 'read') {
+    return (
+      <Svg width={24} height={24} viewBox="0 0 24 24">
+        <Circle cx={12} cy={12} r={12} fill={c.accent} />
+      </Svg>
+    );
+  }
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24">
+      <Circle cx={12} cy={12} r={11} fill="none" stroke={state === 'none' ? c.track : c.accent} strokeWidth={2} />
+      {state === 'started' && (
+        <Circle
+          cx={12}
+          cy={12}
+          r={PIE_R}
+          fill="none"
+          stroke={c.accent}
+          strokeWidth={11}
+          // The right half, from 12 o'clock, clockwise.
+          strokeDasharray={`${PIE_C / 2} ${PIE_C}`}
+          rotation={-90}
+          origin="12,12"
+        />
+      )}
+    </Svg>
+  );
+}
+
+/**
+ * A just-read row: drawn as it was before (`from`: 0 or 0.5) until the row is
+ * really on screen (its screen in view AND the row inside the window, not
+ * scrolled away), then filled to full once. The fill moves the pie's dash
+ * offset (the same picture as the still mark's dash length); when it ends,
+ * the solid disc takes over (no seam). Reduce Motion: the solid disc
+ * cross-fades in over the old mark instead (120 ms).
+ *
+ * Off screen when its screen comes into view: it checks again each time the
+ * page comes to rest after a scroll (the Screen's onSettle).
+ */
+function FillingMark({ from, playKey }: { from: number; playKey: string }) {
+  const { c } = useTheme();
+  const { reduced } = useMotion();
+  const focused = useScreenFocus();
+  const page = useScreenScroll();
+  const { height: windowH } = useWindowDimensions();
+  const box = useRef<View>(null);
+  // The current in-window check (set while a fill waits), also run when the row is laid out.
+  const recheck = useRef<(() => void) | null>(null);
+  const fill = useSharedValue(from);
+  const fade = useSharedValue(0);
+  // Before paint, so the frame the row comes into view never shows the end first.
+  useLayoutEffect(() => {
+    if (!focused || justReadFrom(playKey) === undefined) return;
+    let over = false;
+    const play = () => {
+      if (over || justReadFrom(playKey) === undefined) return;
+      over = true;
+      takeJustRead(playKey);
+      if (reduced) {
+        fade.set(tween(1, 'reduced'));
+        return;
+      }
+      fill.set(tween(1, 'fill'));
+      // The sweep done, the solid disc replaces the ring and pie at once.
+      fade.set(withDelay(motion.dur.fill, withTiming(1, { duration: 0, reduceMotion: ReduceMotion.Never })));
+    };
+    // Only inside the window: a row scrolled above or below the screen keeps waiting.
+    const check = () => {
+      const node = box.current;
+      if (!node || typeof node.measureInWindow !== 'function') return play();
+      node.measureInWindow((_x, y, _w, h) => {
+        if (h > 0 && y + h > 0 && y < windowH) play();
+      });
+    };
+    recheck.current = check;
+    check();
+    const stop = page?.onSettle(check);
+    return () => {
+      // Out of view or gone: a measure still on its way never plays.
+      over = true;
+      recheck.current = null;
+      stop?.();
+    };
+  }, [focused, reduced, playKey, fill, fade, page, windowH]);
+  // The ring turns accent as soon as the pie has anything in it.
+  const ringProps = useAnimatedProps(() => ({ strokeOpacity: fill.value > 0.001 ? 1 : 0 }));
+  const pieProps = useAnimatedProps(() => ({ strokeDashoffset: PIE_C * (1 - fill.value), strokeOpacity: fill.value > 0.001 ? 1 : 0 }));
+  const overlay = useAnimatedStyle(() => ({ opacity: fade.value }));
+  return (
+    // collapsable={false}: Android must keep this view, so it can be measured.
+    // onLayout: a first measure taken before layout (height 0) is tried again once it is laid out.
+    <View ref={box} collapsable={false} style={StyleSheet.absoluteFill} onLayout={() => recheck.current?.()}>
+      <Svg width={24} height={24} viewBox="0 0 24 24">
+        <Circle cx={12} cy={12} r={11} fill="none" stroke={c.track} strokeWidth={2} />
+        <AnimatedCircle cx={12} cy={12} r={11} fill="none" stroke={c.accent} strokeWidth={2} animatedProps={ringProps} />
+        <AnimatedCircle
+          cx={12}
+          cy={12}
+          r={PIE_R}
+          fill="none"
+          stroke={c.accent}
+          strokeWidth={11}
+          strokeDasharray={`${PIE_C} ${PIE_C}`}
+          rotation={-90}
+          origin="12,12"
+          animatedProps={pieProps}
+        />
+      </Svg>
+      {/* The solid disc: in at the end of the sweep, or cross-faded in under Reduce Motion. */}
+      <Animated.View style={[StyleSheet.absoluteFill, overlay]}>
+        <StillMark state="read" />
+      </Animated.View>
     </View>
   );
 }

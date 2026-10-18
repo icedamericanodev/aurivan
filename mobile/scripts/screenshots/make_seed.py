@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build demo learner data for screenshots: ~200 answers, mistakes, a streak,
 an exam date 38 days out. Written as localStorage entries (web build)."""
-import json, random, sys, time
+import json, os, random, sys, time
 from pathlib import Path
 
 GEN = Path(__file__).resolve().parents[2] / "src/content/generated/cisa"
@@ -26,6 +26,19 @@ progress = {"state": {"byCert": {"cisa": {"answers": answers, "review": review, 
             "gameRecent": {"trap": [3, 5, 4, 7], "sprint": [6, 9, 4, 14], "priority": [4, 6, 5, 7]}}},
             "streak": {"current": 6, "best": 9, "lastDay": days[-1], "restDay": dk(now - 3 * day), "recentDays": days},
             "today": {"day": days[-1], "answered": 12}}, "version": 1}
+# Mobile 1.25 ("fill the circle"): SHOTS=notes gets notes in all three states, so the
+# shots show an empty ring, a half circle and a full disc side by side:
+# - Domain 3: every note read (a full circle on the notes home);
+# - Domain 4: in its first topic, two notes read and one started (the rest not read);
+# - Domain 2: one note started and none read (the home row says "Started");
+# - Domains 1 and 5: nothing yet (empty rings).
+# Other SHOTS sets keep the old seed (no notes progress), so their shots don't change.
+if os.environ.get("SHOTS") == "notes":
+    notes = json.loads((GEN / "notes.json").read_text())
+    d3 = [s["id"] for dom in notes["domains"] if dom["id"] == "3" for t in dom["topics"] for s in t["subtopics"]]
+    cp = progress["state"]["byCert"]["cisa"]
+    cp["notesRead"] = d3 + ["4A1.1", "4A1.3"]
+    cp["notesViewed"] = ["4A1.2", "4A1.3", "2A1.1"]
 theme = sys.argv[2] if len(sys.argv) > 2 else "dark"
 settings = {"state": {"onboarded": True, "activeCertId": "cisa", "examDates": {"cisa": dk(now + 38 * day)},
             "theme": theme, "shuffleOptions": True, "dailyGoal": 20,

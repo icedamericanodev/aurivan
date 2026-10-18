@@ -725,7 +725,10 @@ a required field, or a duplicate subtopic id, fails the build. Diagram colours
 are CSS variables, which `react-native-svg` cannot resolve, so
 `src/engine/notesSvg.ts` swaps them for the current theme's tokens at render
 time (light and dark). Read ticks live in the progress store (`notesRead`,
-subtopic ids). Routes: `notes/index`, `notes/[domain]`, `notes/subtopic/[id]`.
+subtopic ids); since mobile 1.25 a note open 10 s is also "started"
+(`notesViewed`, beside it; rules in `src/engine/noteReadState.ts`), and the
+mark fills an empty ring, a half circle or a full disc. Routes: `notes/index`,
+`notes/[domain]`, `notes/subtopic/[id]`.
 
 The mobile builder renames fields, drops author-only fields (`_provenance`),
 validates every answer key, and marks real option-letter references as

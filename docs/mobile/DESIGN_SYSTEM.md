@@ -179,7 +179,13 @@ A plate is tonal, not boxed (about 1.05:1 against the paper in light): it gather
 
 **One meaning per device (1.21).** The same device never does two jobs:
 - The **3px `accent` left rule** + `quote` is the coach's voice only: Key idea, The IS auditor’s lens, Exam-day shortcut (and the exam-eve card, which is the coach speaking). Invitations, awards and small notices are an **InviteRow** (§6): the plant invitation, "Your plant grew", the badge back-fill line, "Updated after your report".
-- **`control`** is for interactive outlines only (chips, radios, checkboxes, inputs, the secondary button). A **status** mark uses `track` for "not started" (a 2pt ring, no centre dot), a tone or `accent` arc for progress and a filled ✓ for done: Learn's domain rings, the notes read mark, the bank's "Not tried" ring. A grey hollow `control` circle read as a radio button.
+- **`control`** is for interactive outlines only (chips, radios, checkboxes, inputs, the secondary button). A **status** mark uses `track` for "not started" (a 2pt ring, no centre dot), a tone or `accent` arc for progress and a filled ✓ for done: Learn's domain rings, the bank's "Not tried" ring. A grey hollow `control` circle read as a radio button.
+- **The notes read mark fills the circle** (no ✓; web and mobile). Three states by shape, 24pt, decorative (`aria-hidden`), never tappable, trailing the row just before the chevron:
+  - **Not read yet:** a 2pt `track` ring (r 11).
+  - **Started** (the note has been open 10 s in all while on screen): the ring in `accent` plus a right-half pie, clockwise from 12 o'clock (a pie that reaches into the ring so no seam shows: r 5.5, stroke 11, half its 34.558 length drawn, rotated −90°).
+  - **Read:** a full `accent` disc with no seam (the whole pie drawn, or one filled circle r 12).
+  - The row's meta line says the state in words ("Not read yet", "Started", "Read") in `ink2`; screen readers hear "{name}, not read yet / started, not finished / read".
+  - Only becoming Read moves: the pie sweeps to full, 300 ms `cubic-bezier(.33,1,.68,1)`, once, the next time the row is on screen; Reduce Motion gets a 120 ms cross-fade. No scale, bounce or haptic. Read outranks Started, and "Mark as not read" goes back to Started.
 - **Ghost links:** left at the gutter when they follow content; centred only directly under a centred primary in a footer; right only as a `Section` action or in the source row.
 - **Trailing marks in rows:** a chevron (it navigates) or nothing (the row is the button). Learn shows only two meaningful marks: the filled ✓ on done lessons and the filled play disc on Up next.
 

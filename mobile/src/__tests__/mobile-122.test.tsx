@@ -19,7 +19,7 @@
  * Real content and real stores. Never `act(() => store.action())`: use braces.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { Dimensions, ScrollView, View } from 'react-native';
+import { AppState, Dimensions, ScrollView, View, type AppStateStatus } from 'react-native';
 import LessonPlayer from '../app/lesson/[id]';
 import NoteSubtopicScreen from '../app/notes/subtopic/[id]';
 import Results from '../app/results';
@@ -137,6 +137,8 @@ const scrollTo = (y: number, height = 800) =>
 
 beforeEach(() => {
   jest.useFakeTimers();
+  // The app is in front (the note's open-time clock runs only then; mobile 1.25).
+  Object.defineProperty(AppState, 'currentState', { value: 'active' as AppStateStatus, configurable: true });
   mockSay.mockClear();
   mockMoveFocus.mockClear();
   const w = Dimensions.get('window');
@@ -444,6 +446,14 @@ describe('note page: title collapse and reading to the end', () => {
     scrollTo(1000);
     expect(read()).toEqual([]);
     expect(mockSay).not.toHaveBeenCalled();
+    // Mobile 1.25: a quick flick to the end (under 20 s open) does not count…
+    scrollTo(2400);
+    expect(read()).toEqual([]);
+    expect(mockSay).not.toHaveBeenCalled();
+    // …the same end, once the note has been open for 20 s, does.
+    act(() => {
+      jest.advanceTimersByTime(20_000);
+    });
     scrollTo(2400);
     expect(read()).toEqual(['4B1.2']);
     expect(allText()).toContain('About 3 min read · Read');

@@ -523,6 +523,10 @@ function mergeCert(certId: string, a: Cert, as: Stamps, b: Cert, bs: Stamps, fir
     ...working(w),
     gameGrowth: mergeMap(a.gameGrowth as Record<string, Growth> | undefined, b.gameGrowth as Record<string, Growth> | undefined, mergeGrowth) as Cert['gameGrowth'],
     notesRead: union(a.notesRead, b.notesRead),
+    // Mobile 1.25: a note started on either phone is started (never cleared, so a union).
+    notesViewed: union(a.notesViewed, b.notesViewed),
+    // Mobile 1.25: notes ever read only goes up, so the higher count wins.
+    notesEverRead: max(a.notesEverRead, b.notesEverRead),
     moments,
     mastery: mergeMap(a.mastery, b.mastery, (x, y) =>
       clean({ firstDay: minDay(x.firstDay, y.firstDay)!, firstAt: min(x.firstAt, y.firstAt), masteredAt: minDay(x.masteredAt, y.masteredAt) }),
@@ -718,7 +722,7 @@ export function holdsStudy(p: SyncedProgress, s: Partial<SyncedSettings>): boole
   const some = (x: object | readonly unknown[] | undefined) => (Array.isArray(x) ? x.length > 0 : Boolean(x && Object.keys(x).length > 0));
   const certHolds = Object.values(p.byCert).some(
     (cp) =>
-      some(cp.bookmarks) || some(cp.notesRead) || some(cp.mocks) || some(cp.mistakes) || some(cp.review) || some(cp.cards) ||
+      some(cp.bookmarks) || some(cp.notesRead) || some(cp.notesViewed) || some(cp.mocks) || some(cp.mistakes) || some(cp.review) || some(cp.cards) ||
       some(cp.gameBest) || some(cp.gameGrowth) || some(cp.mastery) || some(cp.milestones?.earned) || Boolean(cp.plant),
   );
   return certHolds || Object.values(s.examDates ?? {}).some(Boolean);

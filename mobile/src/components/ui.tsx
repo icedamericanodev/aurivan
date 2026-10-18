@@ -120,6 +120,12 @@ export const CARD_LIFT: ViewStyle = cardLiftFor(Platform.OS, Platform.Version);
 export interface ScreenScroll {
   /** Scroll so `node` sits `offset` pt under the top of the page. */
   scrollToView: (node: View | null, offset?: number) => void;
+  /**
+   * Mobile 1.25: call `fn` each time the page comes to rest after a scroll (a
+   * drag lets go, or its glide ends). Returns the unsubscribe. Used by a
+   * notes row whose circle waits until it is really on screen.
+   */
+  onSettle: (fn: () => void) => () => void;
 }
 const ScreenScrollContext = createContext<ScreenScroll | null>(null);
 export const useScreenScroll = () => useContext(ScreenScrollContext);
@@ -140,6 +146,7 @@ export function Screen({
   edges = ['top'],
   onScroll,
   onScrollBeginDrag,
+  onJump,
   scrollRef,
   header,
 }: {
@@ -157,6 +164,8 @@ export function Screen({
   onScroll?: (y: number, height: number) => void;
   /** The learner starts a new drag (a moment on the screen skips to its end). */
   onScrollBeginDrag?: () => void;
+  /** Mobile 1.25: a jump link inside the page starts scrolling (scrollToView), not the learner's own drag. */
+  onJump?: () => void;
 }) {
   const { c } = useTheme();
   const { reduced } = useMotion();
@@ -166,9 +175,25 @@ export function Screen({
   const own = useRef<ScrollView | null>(null);
   // The caller's ref when it gives one (an object ref: Settings opens at a group), else our own.
   const ref = (scrollRef && typeof scrollRef === 'object' ? scrollRef : own) as { current: ScrollView | null };
+  // Mobile 1.25: who wants to know when the page comes to rest (onSettle).
+  const settleListeners = useRef(new Set<() => void>());
+  const settled = () => settleListeners.current.forEach((fn) => fn());
+  // The latest onJump, read when a jump starts (scrollApi itself stays stable).
+  const jumpRef = useRef(onJump);
+  useEffect(() => {
+    jumpRef.current = onJump;
+  });
   const scrollApi = useMemo<ScreenScroll>(
     () => ({
+      onSettle: (fn) => {
+        const set = settleListeners.current;
+        set.add(fn);
+        return () => {
+          set.delete(fn);
+        };
+      },
       scrollToView: (node, offset = space.sm) => {
+        jumpRef.current?.();
         const sv = ref.current as (ScrollView & { getInnerViewRef?: () => unknown; getInnerViewNode?: () => unknown }) | null;
         if (!sv || !node) return;
         const inner = sv.getInnerViewRef?.() ?? sv.getInnerViewNode?.();
@@ -213,6 +238,9 @@ export function Screen({
       }
       scrollEventThrottle={onScroll ? 32 : undefined}
       onScrollBeginDrag={onScrollBeginDrag}
+      // Only when the page rests (a few events per scroll, never per frame).
+      onScrollEndDrag={settled}
+      onMomentumScrollEnd={settled}
     >
       <ScreenScrollContext.Provider value={scrollApi}>{children}</ScreenScrollContext.Provider>
     </ScrollView>

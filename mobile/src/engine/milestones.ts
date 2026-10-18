@@ -739,6 +739,12 @@ export interface MarkEvidence {
   mocks?: unknown[];
   lessonsDone?: string[];
   notesRead?: string[];
+  /**
+   * Mobile 1.25: how many notes were ever read (only goes up). "Reset reading
+   * progress" empties notesRead, but the reading happened: Topic Clear and
+   * Ten Topics keep their evidence. Older data has none (notesRead counts).
+   */
+  notesEverRead?: number;
   gameBest?: Record<string, unknown>;
   gameGrowth?: Record<string, { hits?: boolean[] } | undefined>;
   milestones?: Pick<CertMilestones, 'counts' | 'sure' | 'days' | 'myths' | 'signposts' | 'longIds'>;
@@ -804,7 +810,8 @@ export function dressChain(mocks: readonly unknown[], fullSize: number): number[
 export function markSupported(key: string, e: MarkEvidence): boolean {
   const answers = Object.keys(e.answers ?? {});
   const n = answers.length;
-  const studied = (e.lessonsDone?.length ?? 0) + (e.notesRead?.length ?? 0);
+  // Notes: the higher of the notes read now and the notes ever read (a reading reset keeps the second).
+  const studied = (e.lessonsDone?.length ?? 0) + Math.max(e.notesEverRead ?? 0, e.notesRead?.length ?? 0);
   const c = (id: CounterId) => e.milestones?.counts?.[id] ?? 0;
   const days = e.milestones?.days ?? 0;
   const parts = key.split(':');

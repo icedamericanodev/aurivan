@@ -7,7 +7,7 @@
  *
  *   You                   Your name (mobile 1.23: what Today calls you; optional, only on this phone)
  *   Exam                  Certification · Exam date (a calendar, components/calendar.tsx)
- *   Your study            Daily time · Starting point · Exam-focused plan
+ *   Your study            Daily time · Starting point · Exam-focused plan · Reset reading progress (1.25)
  *   Practice              Default mode · Timed practice · Shuffle answer options
  *   Reminders             Study reminder · Time and days
  *   Appearance            Theme · Motion · Haptics
@@ -59,10 +59,12 @@ import { DAILY_MINUTES, examFocusedOf, FAMILIARITIES, FAMILIARITY_INFO, KEEP_TOD
 import { MODE_INFO, STUDY_MODES, type StudyMode } from '../engine/studyModes';
 import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certifications';
+import { hasNotes } from '../content/notes';
 import { examDateLabel } from '../engine/examDay';
 import { changeExamDate, changeFit } from '../lib/activity';
 import { moveFocus, sayLater } from '../lib/a11y';
 import { hideBadges, showBadgesAgain, shownAgainLine } from '../lib/badges';
+import { clearJustRead } from '../lib/noteNews';
 import { config } from '../lib/config';
 import { DAY_CHIPS, localHour, localTime, MINUTE_STEP, reminderDays, reminderSummary, stepTime, toggleDay, type ReminderPrefs } from '../engine/reminders';
 import { cancelReminders, ensurePermission, remindersSupported } from '../lib/reminders';
@@ -117,6 +119,13 @@ export default function Settings() {
   // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
   const { dueItems } = useReports();
   const resetCert = useProgress((p) => p.resetCert);
+  // Mobile 1.25: Reset reading progress (notes only), and whether there is any to reset.
+  const resetNotesReading = useProgress((p) => p.resetNotesReading);
+  const readingTouched = useProgress((p) => {
+    const cp = selectCert(p, cert.id);
+    return cp.notesRead.length > 0 || (cp.notesViewed ?? []).length > 0;
+  });
+  const showReading = hasNotes(cert.id);
   // Mobile 1.13: the plant switches (for every exam), and whether this exam has a plant (the Reset line).
   const plantSettings = useProgress((p) => p.plantSettings);
   const setPlantSettings = useProgress((p) => p.setPlantSettings);
@@ -278,6 +287,27 @@ export default function Settings() {
     const syncUndo = CLOUD && undo?.kind === 'sync' && undoAvailable(undo, Date.now());
     return `${syncing ? ` ${cloudCopy('reset.sync')}` : ''}${syncUndo ? ` ${cloudCopy('reset.undo')}` : ''}`;
   };
+  // Mobile 1.25: only the notes' read and started marks, for this exam. Answers, scores,
+  // lessons and badges stay. It asks first; the row is greyed out when nothing is read.
+  const confirmResetReading = () =>
+    Alert.alert(
+      'Reset reading progress?',
+      // Cloud builds only: while this phone syncs, the same warning as the full reset (with the flag off, nothing).
+      `Every ${cert.name} note goes back to not read. Your answers and scores stay.${syncing ? ` ${cloudCopy('reset.sync')}` : ''}`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Reset reading',
+          style: 'destructive',
+          onPress: () => {
+            resetNotesReading(cert.id);
+            // No circle waits to fill for a note that is no longer read.
+            clearJustRead();
+            sayLater('Reading progress reset. Every note is not read yet.');
+          },
+        },
+      ],
+    );
   const confirmReset = () =>
     Alert.alert(
       `Reset ${cert.name} progress?`,
@@ -342,7 +372,19 @@ export default function Settings() {
           spokenValue={s.familiarity ? FAMILIARITY_INFO[s.familiarity].title : 'not set'}
           onPress={open('start')}
         />
-        <ToggleRow title={EXAM_FOCUSED_TITLE} subtitle={EXAM_FOCUSED_SUBTITLE} value={examFocused} onValueChange={(on) => fit({ examFocused: on })} last />
+        <ToggleRow title={EXAM_FOCUSED_TITLE} subtitle={EXAM_FOCUSED_SUBTITLE} value={examFocused} onValueChange={(on) => fit({ examFocused: on })} last={!showReading} />
+        {showReading && (
+          // An action row (no chevron): it asks first, then clears only the notes' read marks.
+          <SettingsRow
+            title="Reset reading progress"
+            subtitle={readingTouched ? 'Every study note goes back to not read' : 'No notes started or read yet'}
+            onPress={confirmResetReading}
+            disabled={!readingTouched}
+            accessibilityHint="Asks first. Your answers and scores stay."
+            chevron={false}
+            last
+          />
+        )}
         {keptToday ? (
           // Android announces it when it appears (iOS: sayLater above; UX review P6).
           <View accessibilityLiveRegion="polite">
