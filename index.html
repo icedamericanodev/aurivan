@@ -4863,7 +4863,10 @@ header {
 .gt-panel-cap { font: 600 13px/18px var(--f-sans); color: var(--on-forest2); display: flex; align-items: center; }
 .gt-panel-cap .dom-dot { box-shadow: 0 0 0 1.5px var(--on-forest2); }
 .gt-panel-title { font: 500 28px/34px var(--f-serif); letter-spacing: -0.4px; color: var(--on-forest); margin: 6px 0 14px; max-width: 520px; padding-right: 90px; }
-.gt-panel-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+/* Progress and the Practice button share one row; the button drops below
+   when the row runs out of room (never overlaps the progress text). */
+.gt-panel-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.gt-panel-row { display: flex; align-items: center; gap: 12px; }
 .gt-panel-meta { font: 500 14px/20px var(--f-sans); color: var(--on-forest2); }
 .gt-panel-meta .gt-num { font-size: 20px; color: var(--on-forest); }
 .gt-ring { flex-shrink: 0; }
@@ -4895,10 +4898,6 @@ header {
 .gt-mapchip::after { content: ''; position: absolute; inset: -4px 0; }
 .gt-mapchip:hover { background: var(--border); }
 .gt-mapchips-row { -webkit-mask-image: linear-gradient(to right, #000 88%, transparent); mask-image: linear-gradient(to right, #000 88%, transparent); padding-right: 40px; }
-@media (min-width: 601px) {
-  .gt-panel-row { margin-bottom: 0; }
-  .gt-pill { position: absolute; right: 22px; bottom: 22px; }
-}
 .gt-link { background: none; border: 0; padding: 0; min-height: 44px; color: var(--accent-text); font: 600 15px/22px var(--f-sans); cursor: pointer; text-align: left; }
 .gt-link:hover { text-decoration: underline; }
 
@@ -4992,15 +4991,13 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 .gt-row:last-child { border-bottom: 0; }
 .gt-row-head { display: flex; align-items: flex-start; gap: 0; }
 .gt-check {
-  width: 44px; height: 64px; flex-shrink: 0; display: flex; align-items: center; justify-content: flex-start;
-  background: none; border: 0; cursor: pointer; padding: 0; color: var(--bg);
+  width: 34px; flex-shrink: 0; display: flex; align-items: center; justify-content: flex-start; color: var(--bg);
 }
 .gt-check-dot {
-  width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--control);
+  width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--control);
   display: inline-flex; align-items: center; justify-content: center; color: transparent; transition: background .15s ease;
 }
-.gt-check:hover .gt-check-dot { border-color: var(--text); }
-.gt-check[aria-pressed="true"] .gt-check-dot { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.gt-row.done .gt-check-dot { background: var(--accent); border-color: var(--accent); color: var(--bg); }
 .gt-row-h { flex: 1; min-width: 0; margin: 0; }
 .gt-row-btn {
   width: 100%; display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 12px 0;
@@ -7650,10 +7647,13 @@ function gtItemRow(it, d, tokens, opts) {
   var body = isOpen ? renderItemBody(it.raw, String(d), topicState.search, it.id) : '';
   return '<div class="gt-row' + (isOpen ? ' open' : '') + (isDone ? ' done' : '') + '" id="ni-' + idE + '">'
     + '<div class="gt-row-head">'
-    + '<button class="gt-check" aria-pressed="' + isDone + '" aria-label="Mark ' + escapeHtml(it.name) + ' as read" onclick="toggleConceptReviewed(\'' + idE + '\')">'
-    + '<span class="gt-check-dot">' + ico('check', 16) + '</span></button>'
+    // The circle only SHOWS read status; the whole row opens the note. A note
+    // is marked read from inside it ("Mark as read" at its end), as on mobile:
+    // a tappable circle here was mistaken for "open" and ticked unread notes.
     + '<h4 class="gt-row-h"><button class="gt-row-btn" aria-expanded="' + isOpen + '" aria-controls="nb-' + idE + '" onclick="toggleNotesItem(\'' + idE + '\')">'
+    + '<span class="gt-check" aria-hidden="true"><span class="gt-check-dot">' + ico('check', 16) + '</span></span>'
     + '<span class="gt-row-text"><span class="gt-row-title">' + highlightText(it.name, tokens) + '</span>'
+    + '<span class="sr-only gt-row-state">' + (isDone ? ', read' : '') + '</span>'
     + (opts.meta ? '<span class="gt-row-meta">' + opts.meta + '</span>' : '')
     + (opts.snippet ? '<span class="gt-row-snippet">' + highlightText(opts.snippet, tokens) + '</span>' : '')
     + '</span>' + ico('chevron-down', 20, 'ico gt-chev') + '</button></h4>'
@@ -7707,9 +7707,9 @@ function renderTopics() {
     + gtFrondSvg()
     + '<p class="gt-panel-cap"><span class="dom-dot" style="background:' + info.color + '"></span>Domain ' + d + ' &middot; ' + escapeHtml(domainData.exam_weight) + ' of the exam</p>'
     + '<h3 class="gt-panel-title" id="gtPanelTitle">' + escapeHtml(domainData.domain_name) + '</h3>'
-    + '<div class="gt-panel-row">' + gtRingSvg(domProg.pct)
+    + '<div class="gt-panel-foot"><div class="gt-panel-row">' + gtRingSvg(domProg.pct)
     + '<p class="gt-panel-meta" id="gtPanelMeta">' + domainData.groups.length + ' topics &middot; <span class="gt-num">' + domProg.done + '</span> of ' + totalItems + ' read</p></div>'
-    + '<button class="gt-pill" onclick="startTopicPractice(\'' + d + '\')">' + ico('play', 16) + 'Practice Domain ' + d + '</button>'
+    + '<button class="gt-pill" onclick="startTopicPractice(\'' + d + '\')">' + ico('play', 16) + 'Practice Domain ' + d + '</button></div>'
     + '</section>';
 
   // ── Intro: overview + analogy, two lines until opened (remembered) ──
@@ -8082,7 +8082,9 @@ function toggleConceptReviewed(itemId) {
   var el = document.getElementById('ni-' + itemId);
   if (el) {
     el.classList.toggle('done', isDone);
-    el.querySelectorAll('.gt-check, .gt-read-btn').forEach(function(b) { b.setAttribute('aria-pressed', String(isDone)); });
+    el.querySelectorAll('.gt-read-btn').forEach(function(b) { b.setAttribute('aria-pressed', String(isDone)); });
+    var st = el.querySelector('.gt-row-state');
+    if (st) st.textContent = isDone ? ', read' : '';
     var lab = el.querySelector('.gt-read-btn span');
     if (lab) lab.textContent = isDone ? 'Read' : 'Mark as read';
   }
