@@ -122,6 +122,14 @@ export interface CertProgress {
    * Kept beside notesRead (never renamed), backed up and synced (a union).
    */
   notesViewed?: string[];
+  /**
+   * Mobile 1.25 (review fix): how many notes were ever read, at its highest.
+   * "Reset reading progress" empties notesRead but keeps this, so the badges
+   * that count reading (Topic Clear, Ten Topics) keep their evidence through a
+   * backup or a sync (engine/milestones.ts markSupported). Optional: older
+   * saves have none and `normalize` fills it from notesRead.
+   */
+  notesEverRead?: number;
   /** Phase 5b: optional, see CertMoments. */
   moments?: CertMoments;
   /**
@@ -197,7 +205,9 @@ function normalize(cp: CertProgress | undefined): CertProgress {
   if (hit) return hit;
   // Mobile 1.25: notesViewed is filled here (the loader), not in emptyCert, so a
   // restored file stays exactly as it was saved (old-saves-backup.qa test).
-  const full = { ...emptyCert(), notesViewed: [], ...cp };
+  const full: CertProgress = { ...emptyCert(), notesViewed: [], ...cp };
+  // An older save has no count of notes ever read: it is at least the notes read now.
+  if (full.notesEverRead === undefined) full.notesEverRead = full.notesRead.length;
   normalized.set(cp, full);
   return full;
 }
@@ -493,7 +503,9 @@ export const useProgress = create<ProgressState>()(
           const viewedBefore = cp.notesViewed ?? [];
           const next = withNoteRead(cp.notesRead, viewedBefore, subtopicId, read);
           if (next.read === cp.notesRead) return s; // already in that state: no save
-          return { byCert: { ...s.byCert, [certId]: { ...cp, notesRead: [...next.read], notesViewed: [...next.viewed] } } };
+          // The count of notes ever read only goes up (a badge's evidence; see notesEverRead).
+          const notesEverRead = Math.max(cp.notesEverRead ?? 0, next.read.length);
+          return { byCert: { ...s.byCert, [certId]: { ...cp, notesRead: [...next.read], notesViewed: [...next.viewed], notesEverRead } } };
         }),
 
       markNoteViewed: (certId, subtopicId) =>
@@ -510,7 +522,10 @@ export const useProgress = create<ProgressState>()(
           const cp = s.byCert[certId];
           // Nothing saved for this exam, or nothing read or started: no save.
           if (!cp || ((cp.notesRead ?? []).length === 0 && (cp.notesViewed ?? []).length === 0)) return s;
-          return { byCert: { ...s.byCert, [certId]: { ...normalize(cp), notesRead: [], notesViewed: [] } } };
+          // The notes go back to not read, but the count of notes ever read stays (badges keep their evidence).
+          const full = normalize(cp);
+          const notesEverRead = Math.max(full.notesEverRead ?? 0, full.notesRead.length);
+          return { byCert: { ...s.byCert, [certId]: { ...full, notesRead: [], notesViewed: [], notesEverRead } } };
         }),
 
       recordGame: (certId, game, score) =>
@@ -704,8 +719,9 @@ export const useProgress = create<ProgressState>()(
       // both OPTIONAL: an old save loads as-is and has no plant until the
       // learner plants one (never one made up for them).
       // Mobile 1.24 added AnswerRecord.lastRetest (the retest rule), OPTIONAL: same.
-      // Mobile 1.25 added CertProgress.notesViewed (started notes), OPTIONAL: same
-      // (`normalize` gives old saves []).
+      // Mobile 1.25 added CertProgress.notesViewed (started notes) and
+      // notesEverRead (a count), both OPTIONAL: same (`normalize` gives old
+      // saves [] and the count of notes read).
       version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },

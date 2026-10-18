@@ -453,6 +453,8 @@ const certProgress = obj(
     notesRead: list(id, MAX_SMALL),
     // Mobile 1.25: notes started (open 10 s). Optional: older files have none. Same cap as notesRead.
     notesViewed: list(id, MAX_SMALL),
+    // Mobile 1.25: how many notes were ever read (a whole count, at most the notes cap). Optional.
+    notesEverRead: int(0, MAX_SMALL),
     moments,
     mastery: map(subtopicMastery, MAX_SMALL),
     // Build E: where In order / Guided stopped (per scope), and the Root or Rumor note cards.

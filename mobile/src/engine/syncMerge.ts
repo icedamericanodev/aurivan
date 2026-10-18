@@ -525,6 +525,8 @@ function mergeCert(certId: string, a: Cert, as: Stamps, b: Cert, bs: Stamps, fir
     notesRead: union(a.notesRead, b.notesRead),
     // Mobile 1.25: a note started on either phone is started (never cleared, so a union).
     notesViewed: union(a.notesViewed, b.notesViewed),
+    // Mobile 1.25: notes ever read only goes up, so the higher count wins.
+    notesEverRead: max(a.notesEverRead, b.notesEverRead),
     moments,
     mastery: mergeMap(a.mastery, b.mastery, (x, y) =>
       clean({ firstDay: minDay(x.firstDay, y.firstDay)!, firstAt: min(x.firstAt, y.firstAt), masteredAt: minDay(x.masteredAt, y.masteredAt) }),

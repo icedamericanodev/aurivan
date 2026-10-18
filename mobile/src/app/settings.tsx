@@ -290,19 +290,24 @@ export default function Settings() {
   // Mobile 1.25: only the notes' read and started marks, for this exam. Answers, scores,
   // lessons and badges stay. It asks first; the row is greyed out when nothing is read.
   const confirmResetReading = () =>
-    Alert.alert('Reset reading progress?', 'Every note goes back to not read. Your answers and scores stay.', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Reset',
-        style: 'destructive',
-        onPress: () => {
-          resetNotesReading(cert.id);
-          // No circle waits to fill for a note that is no longer read.
-          clearJustRead();
-          sayLater('Reading progress reset. Every note is not read yet.');
+    Alert.alert(
+      'Reset reading progress?',
+      // Cloud builds only: while this phone syncs, the same warning as the full reset (with the flag off, nothing).
+      `Every ${cert.name} note goes back to not read. Your answers and scores stay.${syncing ? ` ${cloudCopy('reset.sync')}` : ''}`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Reset reading',
+          style: 'destructive',
+          onPress: () => {
+            resetNotesReading(cert.id);
+            // No circle waits to fill for a note that is no longer read.
+            clearJustRead();
+            sayLater('Reading progress reset. Every note is not read yet.');
+          },
         },
-      },
-    ]);
+      ],
+    );
   const confirmReset = () =>
     Alert.alert(
       `Reset ${cert.name} progress?`,

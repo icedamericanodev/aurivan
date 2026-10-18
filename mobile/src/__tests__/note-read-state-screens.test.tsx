@@ -26,6 +26,7 @@ import { setSystemReducedMotionForTest } from '../components/motion';
 import { ReadMark } from '../components/notes';
 import { noteSubtopics } from '../content/notes';
 import { clearJustRead, justReadFrom, noteJustRead, readMarkKey } from '../lib/noteNews';
+import { resetNoteDwellForTest } from '../lib/useNoteDwell';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { light } from '../theme/tokens';
@@ -134,8 +135,13 @@ const D4 = noteSubtopics('cisa', '4').map((s) => s.id);
 const NOTE = '4B1.2';
 const noteName = () => noteSubtopics('cisa', '4').find((s) => s.id === NOTE)!.name;
 
+// Where every view sits in the window (a just-read row plays only inside it). Jest's View
+// never answers measureInWindow by itself, so the test gives the answer.
+let mockRowY = 100;
 beforeEach(() => {
   jest.useFakeTimers();
+  mockRowY = 100;
+  jest.spyOn(View.prototype, 'measureInWindow').mockImplementation((cb) => cb(0, mockRowY, 24, 24));
   appListeners = [];
   jest.spyOn(AppState, 'addEventListener').mockImplementation((_type, l) => {
     appListeners.push(l as (s: AppStateStatus) => void);
@@ -150,6 +156,7 @@ beforeEach(() => {
   useProgress.getState().resetCert('cisa');
   useSession.getState().clear();
   clearJustRead();
+  resetNoteDwellForTest();
 });
 afterEach(() => {
   unmount();
@@ -159,7 +166,7 @@ afterEach(() => {
 
 // ── The mark ───────────────────────────────────────────────────────────
 describe('ReadMark: fill the circle', () => {
-  it('none: one 2pt ring in track; started: accent ring + half pie; read: accent ring + full pie; no check', () => {
+  it('none: one 2pt ring in track; started: accent ring + half pie; read: ONE solid accent disc (no seam); no check', () => {
     mount(
       <View>
         <ReadMark state="none" />
@@ -174,10 +181,9 @@ describe('ReadMark: fill the circle', () => {
     const [ring, pie] = circlesOf(started);
     expect([ring.props.r, ring.props.stroke, ring.props.fill]).toEqual([11, light.accent, 'none']);
     expect(pie.props).toMatchObject({ cx: 12, cy: 12, r: 5, fill: 'none', stroke: light.accent, strokeWidth: 10, strokeDasharray: '15.708 31.416', rotation: -90, origin: '12,12' });
-    expect(circlesOf(read)[1].props.strokeDasharray).toBe('31.416 31.416');
-    expect(circlesOf(read)[0].props.stroke).toBe(light.accent);
+    expect(circlesOf(read).map((x) => [x.props.cx, x.props.cy, x.props.r, x.props.fill, x.props.stroke])).toEqual([[12, 12, 12, light.accent, undefined]]);
     // The older two-state prop still draws the same.
-    expect(circlesOf(oldRead)[1].props.strokeDasharray).toBe('31.416 31.416');
+    expect(circlesOf(oldRead).map((x) => [x.props.r, x.props.fill])).toEqual([[12, light.accent]]);
     expect(circlesOf(oldNone)).toHaveLength(1);
     // Hidden from screen readers and never a control.
     for (const m of marks()) {
@@ -204,6 +210,42 @@ describe('note page: started after 10 s, read only after 20 s', () => {
     wait(200);
     expect(cert().notesViewed).toEqual([NOTE]);
     expect(cert().notesRead).toEqual([]);
+  });
+
+  it('the 10 s add up across visits in the same session (6 s, leave, 4 s more = started)', () => {
+    mockParams = { id: NOTE };
+    mount(<NoteSubtopicScreen />);
+    wait(6_000);
+    unmount();
+    expect(cert().notesViewed).toEqual([]);
+    mount(<NoteSubtopicScreen />);
+    wait(3_900);
+    expect(cert().notesViewed).toEqual([]);
+    wait(200);
+    expect(cert().notesViewed).toEqual([NOTE]);
+    // A new app launch (memory cleared) starts from 0 for another note.
+    resetNoteDwellForTest();
+  });
+
+  it('a jump link that lands at the end never marks it read, even after an earlier drag', () => {
+    mockParams = { id: NOTE };
+    mount(<NoteSubtopicScreen />);
+    layoutAll({ y: 3000, height: 300 });
+    wait(25_000);
+    drag();
+    scrollTo(500);
+    // "On this page" jumps (the page scrolls for the learner), and the scroll lands at the end.
+    const jump = root().findAll((n) => typeof n.props.onPress === 'function' && /^On this page: /.test(String(n.props.accessibilityLabel)))[0];
+    expect(jump).toBeDefined();
+    act(() => {
+      jump.props.onPress();
+    });
+    scrollTo(2400);
+    expect(cert().notesRead).toEqual([]);
+    // The learner's own drag that reaches the end does.
+    drag();
+    scrollTo(2450);
+    expect(cert().notesRead).toEqual([NOTE]);
   });
 
   it('out of view (another screen on top) does not count either', () => {
@@ -314,7 +356,41 @@ describe('lists: words, labels and the one-time fill', () => {
     expect(isFilling(markIn(label))).toBe(false);
   });
 
-  it('motion on: the pie sweeps (dash offset to 0); Reduce Motion: the full disc cross-fades in instead', () => {
+  it('a just-read row scrolled off screen waits; it plays when the page comes to rest with it in the window', () => {
+    useProgress.getState().setNoteRead('cisa', NOTE, true);
+    const key = readMarkKey('cisa', 'note', NOTE);
+    noteJustRead(key, 0.5);
+    mockParams = { domain: '4' };
+    // First far below the screen.
+    mockRowY = 5000;
+    const windowH = Dimensions.get('window').height;
+    mount(<NotesDomain />);
+    openTopicOf(NOTE);
+    const label = `${noteName()}, read`;
+    expect(isFilling(markIn(label))).toBe(true);
+    expect(justReadFrom(key)).toBe(0.5); // below the window: still waiting
+    // The learner scrolls; the page comes to rest with the row on screen.
+    mockRowY = Math.min(400, windowH - 100);
+    const sv = root().findAllByType(ScrollView)[0];
+    act(() => {
+      sv.props.onScrollEndDrag?.({ nativeEvent: {} });
+    });
+    expect(justReadFrom(key)).toBeUndefined(); // played, once
+    // Above the window counts as off screen too.
+    noteJustRead(key, 0.5);
+    unmount();
+    mockRowY = -200;
+    mount(<NotesDomain />);
+    openTopicOf(NOTE);
+    expect(justReadFrom(key)).toBe(0.5);
+    mockRowY = 100;
+    act(() => {
+      root().findAllByType(ScrollView)[0].props.onMomentumScrollEnd?.({ nativeEvent: {} });
+    });
+    expect(justReadFrom(key)).toBeUndefined();
+  });
+
+  it('motion on: the pie sweeps (dash offset to 0), then the solid disc takes over; Reduce Motion: the disc cross-fades in instead', () => {
     const playOnce = (reduced: boolean) => {
       setSystemReducedMotionForTest(reduced);
       setMockReducedMotion(reduced);
@@ -336,7 +412,8 @@ describe('lists: words, labels and the one-time fill', () => {
     };
     const moving = playOnce(false);
     expect(moving.offset).toBeCloseTo(0);
-    expect(moving.opacity).toBe(0);
+    // The solid disc (no seam) is on top once the sweep has ended.
+    expect(moving.opacity).toBe(1);
     const calm = playOnce(true);
     // Reduced: the pie stays where it was (half) and the full disc fades in over it.
     expect(calm.offset).toBeCloseTo(15.708);
@@ -358,7 +435,7 @@ describe('lists: words, labels and the one-time fill', () => {
     unmount();
     for (const id of D4) useProgress.getState().setNoteRead('cisa', id, true);
     mount(<NotesHome />);
-    expect(circlesOf(domainMark())[1].props.strokeDasharray).toBe('31.416 31.416');
+    expect(circlesOf(domainMark()).map((x) => [x.props.r, x.props.fill])).toEqual([[12, light.accent]]);
     expect(d4().props.accessibilityLabel).toMatch(/All read\.$/);
   });
 });
@@ -381,11 +458,13 @@ describe('Settings: Reset reading progress', () => {
     });
     const [title, body, buttons] = alert.mock.calls[0] as [string, string, { text: string; onPress?: () => void }[]];
     expect(title).toBe('Reset reading progress?');
-    expect(body).toBe('Every note goes back to not read. Your answers and scores stay.');
+    // Names the exam; the sync warning is added only while a cloud build syncs (off here).
+    expect(body).toBe('Every CISA note goes back to not read. Your answers and scores stay.');
+    expect(buttons.map((b) => b.text)).toEqual(['Cancel', 'Reset reading']);
     // Nothing happens until "Reset" is tapped.
     expect(cert().notesRead).toEqual([NOTE]);
     act(() => {
-      buttons.find((b) => b.text === 'Reset')!.onPress!();
+      buttons.find((b) => b.text === 'Reset reading')!.onPress!();
     });
     expect(cert().notesRead).toEqual([]);
     expect(cert().notesViewed).toEqual([]);

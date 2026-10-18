@@ -241,6 +241,62 @@ describe('backup: started notes', () => {
   });
 });
 
+// ── Review fix (1.25 QA): a reading reset never costs a badge ─────────
+describe('badges survive Reset reading progress (notesEverRead)', () => {
+  // The reviewer's repro: 4 correct answers, one note read, no lessons, Topic Clear earned.
+  const earnTopicClear = () => {
+    const p = useProgress.getState();
+    for (const id of ['d1_001', 'd1_002', 'd1_003', 'd1_004']) p.recordAnswer('cisa', id, true);
+    p.setNoteRead('cisa', '4B1.2', true);
+    p.updateMilestones('cisa', (m) => ({ milestones: { ...m, earned: { ...m?.earned, 'topic-clear': T0 } } }));
+    expect(cert().milestones?.earned).toHaveProperty('topic-clear');
+  };
+  const restoredEarned = () => {
+    const s = useProgress.getState();
+    const file = buildBackup({ settings: SETTINGS, progress: { byCert: s.byCert, streak: s.streak, today: s.today, days: s.days } }, { now: T0, appVersion: '1.25.0' });
+    return readBackup(JSON.stringify(file), CERT_IDS).progress.byCert.cisa.milestones?.earned;
+  };
+
+  it('after the reset, a backup and restore keeps Topic Clear', () => {
+    earnTopicClear();
+    useProgress.getState().resetNotesReading('cisa');
+    expect(cert().notesRead).toEqual([]);
+    expect(Object.keys(restoredEarned() ?? {})).toEqual(['topic-clear']);
+    // The count of notes ever read is kept (it only ever goes up).
+    expect(cert().notesEverRead).toBe(1);
+  });
+
+  it('after the reset, a sync merge keeps it too, and takes the higher count', () => {
+    earnTopicClear();
+    useProgress.getState().resetNotesReading('cisa');
+    const ctx = { now: T0, knownCertIds: CERT_IDS };
+    const mine = { state: { byCert: useProgress.getState().byCert, streak: useProgress.getState().streak } as unknown as SyncedProgress, stamps: {} };
+    const other = { state: { byCert: { cisa: { notesEverRead: 3 } }, streak: { current: 0, best: 0, lastDay: null } } as unknown as SyncedProgress, stamps: {} };
+    const m = mergeSides('progress', mine, other, ctx).state.byCert.cisa;
+    expect(m.milestones?.earned).toHaveProperty('topic-clear');
+    expect(m.notesEverRead).toBe(3);
+    expect(mergeSides('progress', other, mine, ctx).state.byCert.cisa.notesEverRead).toBe(3);
+  });
+
+  it('the count: kept through unmarking, filled from notesRead for an old save, capped in a file', () => {
+    const p = useProgress.getState();
+    p.setNoteRead('cisa', '4B1.2', true);
+    p.setNoteRead('cisa', '1A1.1', true);
+    p.setNoteRead('cisa', '1A1.1', false);
+    expect(cert().notesEverRead).toBe(2);
+    // An old save has no count: the loader reads it from the notes read.
+    useProgress.setState({ byCert: { cisa: { answers: {}, review: {}, bookmarks: [], mocks: [], lessonsDone: [], mistakes: {}, gameBest: {}, gameRecent: {}, notesRead: ['1A1.1', '4B1.2'] } } });
+    expect(cert().notesEverRead).toBe(2);
+    // In a file it is a whole count within the cap.
+    const file = buildBackup({ settings: SETTINGS, progress: { byCert: { cisa: { notesRead: [], notesEverRead: 2 } }, streak: { current: 0, best: 0, lastDay: null }, today: { day: '', answered: 0 }, days: {} } }, { now: T0, appVersion: '1.25.0' });
+    expect(readBackup(JSON.stringify(file), CERT_IDS).progress.byCert.cisa.notesEverRead).toBe(2);
+    for (const bad of [-1, 1.5, 'x', 5_001]) {
+      (file.stores.progress.state.byCert.cisa as { notesEverRead?: unknown }).notesEverRead = bad;
+      expect(() => readBackup(JSON.stringify(file), CERT_IDS)).toThrow();
+    }
+  });
+});
+
 // ── Sync ───────────────────────────────────────────────────────────────
 describe('sync: started notes', () => {
   const ctx = { now: T0, knownCertIds: CERT_IDS };
