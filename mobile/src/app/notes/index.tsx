@@ -5,6 +5,10 @@
  * Typing in the search box swaps the list for matching subtopics across
  * every domain (engine/notesSearch.ts). Domain names and weights come from
  * content/certifications.ts, the single source of exam facts.
+ * Mobile 1.25: each domain's circle is empty until a note in it is started
+ * or read, half full until every note is read, then full
+ * (engine/noteReadState.ts groupReadState). It fills once, in view, when
+ * the domain's last note was just read.
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
@@ -15,6 +19,8 @@ import { DomainDot, EmptyState, Enter, ListRow, PushedHeader, Screen, SearchFiel
 import { domainLabel } from '../../content/certifications';
 import { getNotes, noteSubtopics } from '../../content/notes';
 import { readCount, readProgressText, searchNotes } from '../../engine/notesSearch';
+import { groupReadState } from '../../engine/noteReadState';
+import { readMarkKey } from '../../lib/noteNews';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 
@@ -27,6 +33,7 @@ export default function NotesHome() {
   const [query, setQuery] = useState(typeof q === 'string' ? q : '');
   const pack = getNotes(cert.id);
   const read = progress.notesRead;
+  const viewed = progress.notesViewed;
 
   // Only the domains that have notes, in the cert's domain order.
   const domains = cert.domains.filter((d) => pack?.domains.some((n) => n.id === d.id));
@@ -108,6 +115,8 @@ export default function NotesHome() {
             const ids = noteSubtopics(cert.id, d.id).map((s) => s.id);
             const done = readCount(ids, read);
             const state = readProgressText(done, ids.length);
+            // None / started / read for the whole domain (the circle; the words above say the count).
+            const mark = groupReadState(ids, read, viewed);
             return (
               <ListRow
                 key={d.id}
@@ -121,11 +130,12 @@ export default function NotesHome() {
                 subtitle={
                   <>
                     <T v="meta">{d.name}</T>
-                    <T v="meta">{state ? `${d.weight}% of the exam · ${state}` : `${d.weight}% of the exam`}</T>
+                    {/* Started but nothing read yet: say so, so the half circle always has words. */}
+                    <T v="meta">{state ? `${d.weight}% of the exam · ${state}` : mark === 'started' ? `${d.weight}% of the exam · Started` : `${d.weight}% of the exam`}</T>
                   </>
                 }
-                trailing={<ReadMark read={done === ids.length && ids.length > 0} />}
-                accessibilityLabel={`Domain ${d.id}, ${d.name}. ${d.weight} percent of the exam.${state ? ` ${state}.` : ''}`}
+                trailing={<ReadMark state={mark} play={readMarkKey(cert.id, 'domain', d.id)} />}
+                accessibilityLabel={`Domain ${d.id}, ${d.name}. ${d.weight} percent of the exam.${state ? ` ${state}.` : mark === 'started' ? ' Started.' : ''}`}
                 onPress={() => router.push(`/notes/${d.id}`)}
                 last={i === domains.length - 1}
               />

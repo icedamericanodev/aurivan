@@ -20,17 +20,20 @@
  * Mobile 1.22: a note whose first diagram has been redrawn for the phone
  * (components/noteFigures.tsx) shows that native figure instead.
  */
-import { Component, useMemo, useRef, useState, type ReactNode, type Ref } from 'react';
-import { Modal, Platform, Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
+import { Component, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type Ref } from 'react';
+import { Modal, Platform, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import Animated, { useAnimatedProps, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { parse, SvgAst, type JsxAST } from 'react-native-svg';
+import Svg, { Circle, parse, SvgAst, type JsxAST } from 'react-native-svg';
 import type { NoteCompare, NoteIllustration, NoteSubtopic, NoteTerm } from '../content/notes/types';
+import type { NoteReadState } from '../engine/noteReadState';
 import { svgMinFontSize, svgSize, themeSvg } from '../engine/notesSvg';
 import { moveFocus } from '../lib/a11y';
+import { justReadFrom, takeJustRead } from '../lib/noteNews';
 import { font, LARGE_TEXT, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { Check, ICON_STROKE, Maximize2, X } from './icons';
-import { useMotion } from './motion';
+import { ICON_STROKE, Maximize2, X } from './icons';
+import { tween, useMotion, useScreenFocus } from './motion';
 import { nativeFigureFor, NativeFigureView } from './noteFigures';
 import { BigNum, Card, Gap, IconButton, ICON_SIZE, Section, T, useFontScale, useScreenScroll } from './ui';
 
@@ -63,30 +66,116 @@ export function Bullets({ items, color }: { items: string[]; color?: string }) {
 }
 
 /**
- * Read status (the lessons list's recipe): a filled accent ✓ when read; not
- * read yet is a quiet 2pt ring in `track` (mobile 1.21: a status, not a
- * control, so never the `control` outline that reads as a checkbox to tap).
- * The row's words say the state too.
+ * Read status, "fill the circle" (mobile 1.25; the agreed read-state design).
+ * Three states by SHAPE, not colour, so it never relies on colour alone:
+ * - none: a quiet 2pt ring in `track` (a status, not a control: never the
+ *   `control` outline that reads as a checkbox to tap);
+ * - started: the ring in `accent`, with the right half filled (a half pie,
+ *   clockwise from 12 o'clock), like a half Harvey ball;
+ * - read: a solid accent disc. No check mark, so nothing says "tap me".
+ * Hidden from screen readers and never pressable: the row's words say the
+ * state ("Not read yet" / "Started" / "Read").
+ *
+ * `read` is the older two-state prop (Guided's lesson rows still use it);
+ * `state` wins when both are given.
+ *
+ * `play`: the row's key in lib/noteNews.ts. When that note was just read in
+ * this app session, the circle fills to full ONCE, the next time this row is
+ * on screen: 300 ms, ease-out (motion `fill`); a 120 ms cross-fade under
+ * Reduce Motion. No haptic, no scale. Becoming started never animates.
  */
-export function ReadMark({ read }: { read: boolean }) {
+export function ReadMark({ state, read, play }: { state?: NoteReadState; read?: boolean; play?: string }) {
+  const resolved: NoteReadState = state ?? (read ? 'read' : 'none');
+  // News waiting for this row (how full the circle was before it became read).
+  const waiting = resolved === 'read' ? justReadFrom(play) : undefined;
+  // Once a fill starts, this row keeps its animated circle (so a re-render
+  // mid-fill never swaps it for the still one and cuts the motion).
+  const [sweepFrom, setSweepFrom] = useState<number | undefined>(waiting);
+  if (waiting !== undefined && sweepFrom !== waiting) setSweepFrom(waiting);
+  if (resolved !== 'read' && sweepFrom !== undefined) setSweepFrom(undefined);
+  return (
+    <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ width: 24, height: 24 }}>
+      {sweepFrom !== undefined && play && resolved === 'read' ? <FillingMark from={sweepFrom} playKey={play} /> : <StillMark state={resolved} />}
+    </View>
+  );
+}
+
+// The pie: a circle of r=5 drawn with a 10pt stroke covers radius 0 to 10, and
+// its dash length is how much of it shows. 2 x pi x 5 = 31.416.
+const PIE_R = 5;
+const PIE_C = 31.416;
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+
+/** The circle as it is (a plain SVG, no animated nodes: a notes list can hold many rows). */
+function StillMark({ state }: { state: NoteReadState }) {
   const { c } = useTheme();
   return (
-    <View
-      accessible={false}
-      importantForAccessibility="no-hide-descendants"
-      style={{
-        width: 24,
-        height: 24,
-        borderRadius: radius.pill,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: read ? c.accent : 'transparent',
-        borderWidth: read ? 0 : 2,
-        borderColor: c.track,
-      }}
-    >
-      {read && <Check size={14} color={c.bg} strokeWidth={2.5} />}
-    </View>
+    <Svg width={24} height={24} viewBox="0 0 24 24">
+      <Circle cx={12} cy={12} r={11} fill="none" stroke={state === 'none' ? c.track : c.accent} strokeWidth={2} />
+      {state !== 'none' && (
+        <Circle
+          cx={12}
+          cy={12}
+          r={PIE_R}
+          fill="none"
+          stroke={c.accent}
+          strokeWidth={10}
+          // Half (started) or whole (read), from 12 o'clock, clockwise.
+          strokeDasharray={state === 'read' ? `${PIE_C} ${PIE_C}` : `${PIE_C / 2} ${PIE_C}`}
+          rotation={-90}
+          origin="12,12"
+        />
+      )}
+    </Svg>
+  );
+}
+
+/**
+ * A just-read row: drawn as it was before (`from`: 0 or 0.5) until the row is
+ * on screen, then filled to full once. The fill moves the pie's dash offset
+ * (the same picture as the still mark's dash length). Reduce Motion: the full
+ * disc cross-fades in over the old mark instead (120 ms).
+ */
+function FillingMark({ from, playKey }: { from: number; playKey: string }) {
+  const { c } = useTheme();
+  const { reduced } = useMotion();
+  const focused = useScreenFocus();
+  const fill = useSharedValue(from);
+  const fade = useSharedValue(0);
+  // Before paint, so the frame the row comes into view never shows the end first.
+  useLayoutEffect(() => {
+    if (!focused || justReadFrom(playKey) === undefined) return;
+    takeJustRead(playKey);
+    if (reduced) fade.set(tween(1, 'reduced'));
+    else fill.set(tween(1, 'fill'));
+  }, [focused, reduced, playKey, fill, fade]);
+  // The ring turns accent as soon as the pie has anything in it.
+  const ringProps = useAnimatedProps(() => ({ strokeOpacity: fill.value > 0.001 ? 1 : 0 }));
+  const pieProps = useAnimatedProps(() => ({ strokeDashoffset: PIE_C * (1 - fill.value), strokeOpacity: fill.value > 0.001 ? 1 : 0 }));
+  const overlay = useAnimatedStyle(() => ({ opacity: fade.value }));
+  return (
+    <>
+      <Svg width={24} height={24} viewBox="0 0 24 24">
+        <Circle cx={12} cy={12} r={11} fill="none" stroke={c.track} strokeWidth={2} />
+        <AnimatedCircle cx={12} cy={12} r={11} fill="none" stroke={c.accent} strokeWidth={2} animatedProps={ringProps} />
+        <AnimatedCircle
+          cx={12}
+          cy={12}
+          r={PIE_R}
+          fill="none"
+          stroke={c.accent}
+          strokeWidth={10}
+          strokeDasharray={`${PIE_C} ${PIE_C}`}
+          rotation={-90}
+          origin="12,12"
+          animatedProps={pieProps}
+        />
+      </Svg>
+      {/* Reduce Motion only: the full disc fading in on top (opacity 0 otherwise). */}
+      <Animated.View style={[StyleSheet.absoluteFill, overlay]}>
+        <StillMark state="read" />
+      </Animated.View>
+    </>
   );
 }
 

@@ -28,6 +28,8 @@ import { ReadMark } from '../components/notes';
 import { StickyFooter } from '../components/quiz';
 import { Button, Enter, Gap, ICON_SIZE, ListRow, PushedHeader, Row, Section, T, Tag } from '../components/ui';
 import { scopeKey, MODE_INFO } from '../engine/studyModes';
+import { noteReadState, readStateLabel, readStateWords } from '../engine/noteReadState';
+import { readMarkKey } from '../lib/noteNews';
 import { CLEAR_OF, CLEAR_RIGHT, currentGuidedTopic, GUIDED_BLOCK, GUIDED_TAIL, nextTopic } from '../engine/studyPath';
 import { guidedStatus, scopeTopics, topicLessons } from '../lib/outline';
 import { moveFocus } from '../lib/a11y';
@@ -147,7 +149,8 @@ export default function GuidedStep() {
                   icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
                   title={l.title}
                   subtitle={`${l.minutes} min lesson · ${done ? 'Done' : 'Not done yet'}`}
-                  trailing={<ReadMark read={done} />}
+                  // A lesson is done or not (two states): an empty ring or a full circle.
+                  trailing={<ReadMark state={done ? 'read' : 'none'} />}
                   accessibilityLabel={`Lesson: ${l.title}, ${l.minutes} minutes, ${done ? 'done' : 'not done yet'}`}
                   onPress={() => router.push(`/lesson/${l.id}`)}
                   last={i === lessons.length - 1}
@@ -155,15 +158,16 @@ export default function GuidedStep() {
               );
             })
           : topic.subtopics.map((s, i) => {
-              const read = progress.notesRead.includes(s.id);
+              // Mobile 1.25: not read yet, started (open 10 s) or read, as on the notes list.
+              const state = noteReadState(s.id, progress.notesRead, progress.notesViewed);
               return (
                 <ListRow
                   key={s.id}
                   icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
                   title={s.name}
-                  subtitle={read ? 'Read' : 'Not read yet'}
-                  trailing={<ReadMark read={read} />}
-                  accessibilityLabel={`Study note: ${s.name}, ${read ? 'read' : 'not read yet'}`}
+                  subtitle={readStateWords(state)}
+                  trailing={<ReadMark state={state} play={readMarkKey(cert.id, 'note', s.id)} />}
+                  accessibilityLabel={`Study note: ${readStateLabel(s.name, state)}`}
                   onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(s.id)}`)}
                   last={i === topic.subtopics.length - 1}
                 />

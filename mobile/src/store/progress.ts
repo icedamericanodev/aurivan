@@ -26,6 +26,7 @@ import { afterAnswer, afterCard, noteStudyDay, type CertMilestones } from '../en
 import { freezeKeepsakes, keepThroughOtherReset, renamePlant, resetPlant, switchSpecies, withLook, type CertPlant, type PlantLook, type PlantSettings, type PlantSpecies } from '../engine/plant';
 import { keepOnReset } from '../engine/plantLooks';
 import type { MockTiming } from '../engine/pace';
+import { withNoteRead, withNoteViewed } from '../engine/noteReadState';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import type { ThinkingSlip } from '../engine/slipCoach';
 import { addReport, type ReportEntry } from '../engine/support';
@@ -113,6 +114,14 @@ export interface CertProgress {
    * Added with Study notes; older saves have none and `normalize` fills [].
    */
   notesRead: string[];
+  /**
+   * Mobile 1.25 ("fill the circle"): study notes the learner has STARTED, that
+   * is, kept open on screen for 10 seconds in total (engine/noteReadState.ts).
+   * Never cleared by reading; "Mark as not read" adds the note here, so it
+   * shows as started. Optional: older saves have none and `normalize` fills [].
+   * Kept beside notesRead (never renamed), backed up and synced (a union).
+   */
+  notesViewed?: string[];
   /** Phase 5b: optional, see CertMoments. */
   moments?: CertMoments;
   /**
@@ -186,7 +195,9 @@ function normalize(cp: CertProgress | undefined): CertProgress {
   if (!cp) return emptyCert();
   const hit = normalized.get(cp);
   if (hit) return hit;
-  const full = { ...emptyCert(), ...cp };
+  // Mobile 1.25: notesViewed is filled here (the loader), not in emptyCert, so a
+  // restored file stays exactly as it was saved (old-saves-backup.qa test).
+  const full = { ...emptyCert(), notesViewed: [], ...cp };
   normalized.set(cp, full);
   return full;
 }
@@ -248,8 +259,12 @@ export interface ProgressState {
   recordMistake: (certId: string, questionId: string, picked?: Letter, confidence?: Confidence) => void;
   tagMistake: (certId: string, questionId: string, slip: ThinkingSlip) => void;
   completeLesson: (certId: string, lessonId: string) => void;
-  /** Mark a study-notes subtopic read (true) or unread (false). */
+  /** Mark a study-notes subtopic read (true) or unread (false). Unread goes back to started. */
   setNoteRead: (certId: string, subtopicId: string, read: boolean) => void;
+  /** Mobile 1.25: the note has been open for 10 seconds (it shows as started). */
+  markNoteViewed: (certId: string, subtopicId: string) => void;
+  /** Mobile 1.25: Settings → Reset reading progress. Every note goes back to not read; nothing else changes. */
+  resetNotesReading: (certId: string) => void;
   recordGame: (certId: string, game: GameId, score: number) => void;
   recordMock: (certId: string, result: MockResult) => void;
   /** Log today's readiness lower bound (null = not enough data) for the exam-ready hold. */
@@ -474,10 +489,28 @@ export const useProgress = create<ProgressState>()(
       setNoteRead: (certId, subtopicId, read) =>
         set((s) => {
           const cp = normalize(s.byCert[certId]);
-          const has = cp.notesRead.includes(subtopicId);
-          if (has === read) return s; // already in that state: no save
-          const notesRead = read ? [...cp.notesRead, subtopicId] : cp.notesRead.filter((id) => id !== subtopicId);
-          return { byCert: { ...s.byCert, [certId]: { ...cp, notesRead } } };
+          // Mobile 1.25: unmarking keeps the note as started (engine/noteReadState.ts).
+          const viewedBefore = cp.notesViewed ?? [];
+          const next = withNoteRead(cp.notesRead, viewedBefore, subtopicId, read);
+          if (next.read === cp.notesRead) return s; // already in that state: no save
+          return { byCert: { ...s.byCert, [certId]: { ...cp, notesRead: [...next.read], notesViewed: [...next.viewed] } } };
+        }),
+
+      markNoteViewed: (certId, subtopicId) =>
+        set((s) => {
+          const cp = normalize(s.byCert[certId]);
+          const before = cp.notesViewed ?? [];
+          const notesViewed = withNoteViewed(before, subtopicId);
+          if (notesViewed === before) return s; // already started: no save
+          return { byCert: { ...s.byCert, [certId]: { ...cp, notesViewed: [...notesViewed] } } };
+        }),
+
+      resetNotesReading: (certId) =>
+        set((s) => {
+          const cp = s.byCert[certId];
+          // Nothing saved for this exam, or nothing read or started: no save.
+          if (!cp || ((cp.notesRead ?? []).length === 0 && (cp.notesViewed ?? []).length === 0)) return s;
+          return { byCert: { ...s.byCert, [certId]: { ...normalize(cp), notesRead: [], notesViewed: [] } } };
         }),
 
       recordGame: (certId, game, score) =>
@@ -671,6 +704,8 @@ export const useProgress = create<ProgressState>()(
       // both OPTIONAL: an old save loads as-is and has no plant until the
       // learner plants one (never one made up for them).
       // Mobile 1.24 added AnswerRecord.lastRetest (the retest rule), OPTIONAL: same.
+      // Mobile 1.25 added CertProgress.notesViewed (started notes), OPTIONAL: same
+      // (`normalize` gives old saves []).
       version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },

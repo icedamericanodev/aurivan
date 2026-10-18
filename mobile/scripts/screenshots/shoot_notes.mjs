@@ -59,6 +59,8 @@ await page.getByLabel('Search the study notes').fill('RPO');
 await page.waitForTimeout(900); await snap('n06-search-RPO');
 await page.getByLabel('Search the study notes').fill('zzqx');
 await page.waitForTimeout(900); await snap('n07-search-empty');
+// Mobile 1.25: Settings → Your study → "Reset reading progress", and its confirm.
+await open('/settings'); await scrollTo('Your study'); await snap('n10-settings-reset-reading');
 await open('/notes/9'); await snap('n08-domain-not-found');
 await open('/notes/subtopic/9Z9.9'); await snap('n09-note-not-found');
 console.log('errors:', errs.slice(0, 5));
