@@ -4599,7 +4599,7 @@ header {
 .stat-card::before { display: none; }
 .stat-card:hover { transform: none; box-shadow: none; }
 .stat-num { font: 500 34px/34px var(--f-serif); letter-spacing: -0.8px; }
-#sStreak { color: var(--clay); }
+#sStreak { color: var(--text); } /* right answers in a row: ink (clay means study days) */
 .stat-label { font: 500 14px/20px var(--f-sans); color: var(--text2); }
 @media (max-width: 580px) {
   .stat-card:nth-child(3) { border-left: 0; }
@@ -5221,7 +5221,6 @@ body[data-mock-results="1"] #readinessCard { display: none; }
 /* ── WEB v12.1: slim web, honest reads, real dialogs ──────────────────────
    Home is a landing page; the dashboard chrome (stats, mindset line) belongs to
    Practice only; the support card and disclaimer sit on Home / About / Help. */
-body[data-tab]:not([data-tab="practice"]) .stats-row,
 body[data-tab]:not([data-tab="practice"]) .mindset-strip { display: none; }
 body[data-tab]:not([data-tab="home"]):not([data-tab="about"]) .tipjar-card { display: none; }
 body[data-tab]:not([data-tab="home"]):not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer { display: none; }
@@ -5599,6 +5598,151 @@ header.app-header .brand-lockup { height: 28px; }
 @keyframes vrRise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes vineDraw { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 @keyframes vineLeaf { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* ── PRACTICE HUB + FOCUSED SESSION (Grove Desk step 3, 2026-10-18) ─────────
+   Hub: one calm column like the mobile Practice tab (title, the coach's
+   line, the forest start panel, the set's options folded behind one row,
+   the session timer, domains, more ways to practice, totals). Focus: a
+   720px column with a slim strip (exit, progress, clock, save), then only
+   the question. */
+.ph { max-width: 720px; }
+.ph[hidden], .pf[hidden] { display: none; }
+.ph-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: var(--sp-xs) 0 var(--sp-lg); }
+.ph-title:focus { outline: none; }
+.ph .mindset-strip { margin-bottom: var(--sp-xxl); }
+.ph #sessionBoundaryArea .session-debrief { margin-bottom: var(--sp-xl); }
+
+/* Start panel: the screen's one forest panel (DESIGN_SYSTEM §6, Hero panel). */
+.ph-hero { margin-bottom: var(--sp-sm); padding: var(--sp-xxl); }
+.ph-hero-t { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--on-forest); margin: var(--sp-xs) 0; }
+.ph-hero-m { font: var(--t-meta); color: var(--on-forest2); margin: 0; }
+.ph-hero-t, .ph-hero-m { max-width: min(520px, calc(100% - 110px)); }
+.ph-hero-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-lg); margin-top: var(--sp-xl); }
+.ph-go { padding: 0 var(--sp-xxl); }
+.ph-ghost {
+  min-height: 48px; padding: 0 var(--sp-xs); background: none; border: 0; cursor: pointer;
+  color: var(--on-forest); font: 600 16px/22px var(--f-sans); text-decoration: underline; text-underline-offset: 3px;
+}
+
+/* The set's options: one row that says what Start does, opening in place. */
+.ph-setup { margin-bottom: var(--sp-xs); }
+.ph-sum {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-md); width: 100%; min-height: 56px;
+  padding: var(--sp-md) 0; background: none; border: 0; border-bottom: 1px solid var(--border); border-radius: 0;
+  color: var(--text); font: var(--t-label); text-align: left; cursor: pointer;
+}
+.ph-sum-t { min-width: 0; text-transform: none; }
+.ph-sum-a { display: inline-flex; align-items: center; gap: var(--sp-xs); flex-shrink: 0; color: var(--accent-text); }
+.ph-sum[aria-expanded="true"] .ph-sum-a .ico { transform: rotate(180deg); }
+.ph-sum:focus-visible, .ph-dom:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 12px; }
+.ph-panel { padding: 0 0 var(--sp-xl); border-bottom: 1px solid var(--border); }
+.ph-panel[hidden] { display: none; }
+.ph-field { font: var(--t-caption); color: var(--text2); margin: var(--sp-xl) 0 var(--sp-md); }
+.ph-hint { font: var(--t-meta); color: var(--text2); margin: var(--sp-md) 0 0; max-width: 60ch; }
+.ph-timer .ph-hint { margin: calc(-1 * var(--sp-sm)) 0 var(--sp-md); }
+.ph-chips { display: flex; flex-wrap: wrap; gap: var(--sp-sm); }
+.ph-chip {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--sp-lg); border-radius: var(--r-pill);
+  border: 1.5px solid var(--control); background: transparent; color: var(--text); font: 600 15px/20px var(--f-sans); cursor: pointer;
+}
+.ph-chip:hover { background: var(--surface2); }
+.ph-chip.active, .ph-chip.active:hover { background: var(--text); border-color: var(--text); color: var(--bg); }
+.ph-chip.active .dom-dot { box-shadow: 0 0 0 1.5px var(--bg); }
+.ph-chip:focus-visible, .ph-done:focus-visible, .ph-ghost:focus-visible, .pf-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.ph-done {
+  margin-top: var(--sp-xl); min-height: 48px; padding: 0 var(--sp-xxl); border-radius: var(--r-pill); cursor: pointer;
+  border: 1.5px solid var(--control); background: transparent; color: var(--text); font: 600 16px/22px var(--f-sans);
+}
+/* The sub-topic filter sits on the paper inside the panel, not in a box. */
+.ph-panel .subtopic-filter-row { background: transparent; border: 0; border-radius: 0; padding: 0; margin: var(--sp-xl) 0 0; animation: none; }
+.ph-panel .subtopic-drawer { margin-top: var(--sp-md); }
+
+/* Sections */
+.ph-sec { margin-top: var(--sp-section); }
+.ph-h { font: var(--t-headline); color: var(--text); margin: 0; }
+.ph-h-meta { font: var(--t-meta); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xs); }
+.you-stats { margin: var(--sp-md) 0 var(--sp-lg); }
+.ph #examCountdownArea:not(:empty) { margin-top: var(--sp-section); }
+
+/* Domain picks: list rows with a lead serif numeral and a quiet read bar. */
+.ph-dom {
+  display: flex; align-items: center; gap: var(--sp-md); width: 100%; min-height: 72px; padding: var(--sp-md) 0;
+  background: none; border: 0; border-bottom: 1px solid var(--border); border-radius: 0;
+  color: var(--text); text-align: left; cursor: pointer; font: inherit;
+}
+.ph-dom:hover .you-chev { color: var(--text); }
+.ph-dom-n { width: 40px; flex-shrink: 0; text-align: center; font: 500 24px/28px var(--f-serif); color: var(--text); }
+.ph-dom-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ph-dom-t { display: inline-flex; align-items: center; font: var(--t-label); color: var(--text); }
+.ph-dom-t .dom-dot { margin-right: var(--sp-sm); }
+.ph-dom-m { font: var(--t-meta); color: var(--text2); }
+.ph-dom-bar { display: block; height: 4px; max-width: 280px; margin-top: var(--sp-sm); border-radius: 2px; background: var(--track); overflow: hidden; }
+.ph-dom-bar > span { display: block; height: 100%; border-radius: 2px; background: var(--accent); }
+.ph-dom-r { flex-shrink: 0; font: 600 15px/20px var(--f-sans); color: var(--text2); }
+
+/* Focused session */
+.pf { max-width: 720px; margin: 0 auto; }
+.pf #qArea { max-width: none; margin: 0; }
+.pf-strip { display: flex; align-items: center; gap: var(--sp-md); min-height: 56px; margin: 0 0 var(--sp-md); }
+.pf-btn {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 48px; height: 48px;
+  padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--text); cursor: pointer;
+}
+.pf-btn:hover { background: var(--surface2); }
+.pf-btn[hidden] { display: none; }
+.pf-exit { margin-left: -12px; }
+.pf-strip .bk-btn { min-width: 48px; min-height: 48px; margin-right: -12px; border: 0; }
+/* Saved = ink (Grove: ink means selected; tip colours belong to traps). */
+.pf-strip .bk-btn.saved, .pf-strip .bk-btn.saved:hover { background: transparent; border-color: transparent; color: var(--text); }
+.vr-save.saved, .vr-save.saved:hover { background: transparent; border-color: var(--text); color: var(--text); }
+/* After checking, the footer's Save takes over (the slot stays, so nothing shifts). */
+.pf.pf-answered .pf-strip .bk-btn { visibility: hidden; }
+.pf-mid { flex: 1; min-width: 0; display: flex; align-items: center; }
+.pf-segs { display: flex; gap: 3px; width: 100%; }
+.pf-seg { flex: 1; height: 4px; border-radius: 2px; background: var(--track); }
+.pf-seg.cur { background: var(--text2); }
+.pf-seg.done { background: var(--accent); }
+.pf-bar { display: block; width: 100%; height: 4px; border-radius: 2px; background: var(--track); overflow: hidden; }
+.pf-bar > span { display: block; height: 100%; background: var(--accent); }
+.pf-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: var(--t-label); color: var(--text); }
+.pf-label-n { font: var(--t-meta); color: var(--text2); }
+.pf-strip #timerArea { max-width: none; margin: 0; }
+.pf-timer { position: relative; display: inline-flex; align-items: center; gap: var(--sp-sm); flex-shrink: 0; color: var(--text2); }
+.pf-timer .timer-digits { font: 600 16px/22px var(--f-sans); font-variant-numeric: tabular-nums; color: var(--text); }
+.pf-timer .timer-digits.warn { color: var(--tip); }
+.pf-timer .timer-digits.urgent { color: var(--wrong); }
+/* The question's one meta line: "● IS Audit · Application · 3 of 10". */
+.q-line { display: flex; align-items: center; flex-wrap: wrap; margin: 0; font: var(--t-meta); color: var(--text2); }
+.q-line .dom-dot { margin-right: var(--sp-sm); }
+.q-line:focus { outline: none; }
+.q-line:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
+.pf .q-body { padding-top: var(--sp-md); }
+/* Only the session on screen: the section's page links and, on phones and
+   tablets, the logo bar step aside (the bottom bar stays). */
+body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
+@media (max-width: 1023px) {
+  body[data-tab="practice"][data-pview="focus"] .app-rail { display: none; }
+  body[data-tab="practice"][data-pview="focus"] .pf { padding-top: var(--sp-sm); }
+  /* The cookie banner floats above the bottom bar, never over it. */
+  .consent-banner { left: 12px; right: 12px; bottom: calc(81px + env(safe-area-inset-bottom)); padding-bottom: 12px; }
+}
+@media (min-width: 1024px) {
+  .consent-banner { left: calc(248px + 24px); right: 24px; bottom: 24px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ph-sum .ico { transition: transform .15s ease; }
+}
+/* Sub-topic chips show sentence case (subtopicLabel), not Title Case. */
+.subtopic-chip { text-transform: none; }
+/* The exam-date prompt: 44px targets on every screen size. */
+.exam-prompt .ep-set, .exam-prompt .ep-skip { min-height: 44px; }
+.exam-prompt .ep-skip { min-width: 44px; }
+/* Keyboard focus never lands under the answer screen's sticky footer (or
+   the phone bottom bar under it): focused controls scroll clear of both. */
+html { scroll-padding-bottom: 104px; }
+@media (max-width: 1023px) {
+  html { scroll-padding-bottom: calc(177px + env(safe-area-inset-bottom)); }
+}
 /* GROVE-LAYER-END */
 </style>
 </head>
@@ -5657,21 +5801,6 @@ header.app-header .brand-lockup { height: 28px; }
 <main class="app" id="main" tabindex="-1">
 <nav class="sub-nav" id="subNav" aria-label="Section pages" hidden></nav>
 
-<!-- MINDSET STRIP -->
-<div class="mindset-strip">
-  <span class="ms-label">Mindset</span>
-  <div class="ms-divider"></div>
-  <span class="ms-text" id="msText">You are an auditor - you assess, recommend, and report. You don't fix.</span>
-</div>
-
-<!-- STATS -->
-<div class="stats-row">
-  <div class="stat-card"><span class="stat-num" id="sTotal">0</span><span class="stat-label">Answered</span></div>
-  <div class="stat-card"><span class="stat-num good" id="sCorrect">0</span><span class="stat-label">Correct</span></div>
-  <div class="stat-card"><span class="stat-num" id="sPct">--</span><span class="stat-label">Accuracy</span></div>
-  <div class="stat-card"><span class="stat-num" id="sStreak">0</span><span class="stat-label">Streak</span></div>
-</div>
-
 <!-- SECTION PAGES: Learn and Practice sub-pages on phones; a link back to You
      from its pages. Filled by syncNav(). -->
 
@@ -5680,38 +5809,72 @@ header.app-header .brand-lockup { height: 28px; }
   <div id="homeArea"></div>
 </div>
 
-<!-- PRACTICE -->
+<!-- PRACTICE (Grove Desk step 3): a calm hub (one start action, the set's
+     settings, domains, review and saved) and a focused session view (a slim
+     strip with exit, progress, the timer and save, then only the question).
+     setPracticeView() switches between them. -->
 <div id="screen-practice" class="screen active">
-  <!-- Decision 8 — Exam-date countdown / set-date prompt -->
-  <div id="examCountdownArea"></div>
-  <!-- Decision 9 — Session start / debrief inline card -->
-  <div id="sessionBoundaryArea"></div>
-  <p class="section-label">Domain Performance</p>
-  <div class="domain-grid" id="domainGrid"></div>
-
-  <div class="controls-row">
-    <div class="ctrl-group">
-      <span class="ctrl-label" title="Foundational=Recall, Application=Scenario, Analysis=Best Judgment (CISA is mostly Application + Analysis)">Difficulty <span style="border-bottom:1px dashed var(--border2);cursor:help;font-size:13px" role="img" aria-label="Show help" tabindex="0">?</span></span>
-      <button class="ctrl-btn active" data-diff="any" onclick="setDiff(this,'any')">Any</button>
-      <button class="ctrl-btn" data-diff="foundational" onclick="setDiff(this,'foundational')" title="Foundational: Knowledge recall">Foundational</button>
-      <button class="ctrl-btn" data-diff="application" onclick="setDiff(this,'application')" title="Application: Scenario-based judgment">Application</button>
-      <button class="ctrl-btn" data-diff="analysis" onclick="setDiff(this,'analysis')" title="Analysis: Best-judgment in complex scenarios">Analysis</button>
+  <div class="ph" id="practiceHub">
+    <h1 class="ph-title" id="phTitle" tabindex="-1">Practice</h1>
+    <!-- MINDSET LINE (the coach's voice) -->
+    <div class="mindset-strip">
+      <span class="ms-label">Mindset</span>
+      <div class="ms-divider"></div>
+      <span class="ms-text" id="msText">You are an auditor: you assess, recommend, and report. You don't fix.</span>
     </div>
-    <div class="ctrl-group" style="margin-left:auto" id="timerCtrlArea">
-      <span class="ctrl-label">Timer</span>
-      <button class="ctrl-btn active" onclick="setTimerDuration(90)">90s</button>
+    <!-- Decision 9 — a finished set's debrief, when you leave from it -->
+    <div id="sessionBoundaryArea"></div>
+    <div id="phHero"></div>
+    <div class="ph-setup">
+      <button type="button" class="ph-sum" id="phSumBtn" aria-expanded="false" aria-controls="phPanel" onclick="togglePracticeSetup()">
+        <span class="ph-sum-t" id="phSumText">All domains &middot; 10 questions</span>
+        <span class="ph-sum-a"><span id="phSumAct">Change</span><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span>
+      </button>
+      <div class="ph-panel" id="phPanel" role="region" aria-label="Set options" hidden>
+        <p class="ph-field" id="phDomL">Domain</p>
+        <div class="ph-chips" role="group" aria-labelledby="phDomL" id="phDomChips"></div>
+        <div id="subtopicFilterArea"></div>
+        <p class="ph-field" id="phLenL">Length</p>
+        <div class="ph-chips" role="group" aria-labelledby="phLenL" id="phLenChips"></div>
+        <p class="ph-field" id="phDiffL">Difficulty</p>
+        <div class="ph-chips" role="group" aria-labelledby="phDiffL">
+          <button type="button" class="ph-chip active" data-diff="any" aria-pressed="true" onclick="setDiff(this,'any')">Any</button>
+          <button type="button" class="ph-chip" data-diff="foundational" aria-pressed="false" onclick="setDiff(this,'foundational')">Foundational</button>
+          <button type="button" class="ph-chip" data-diff="application" aria-pressed="false" onclick="setDiff(this,'application')">Application</button>
+          <button type="button" class="ph-chip" data-diff="analysis" aria-pressed="false" onclick="setDiff(this,'analysis')">Analysis</button>
+        </div>
+        <p class="ph-hint">Foundational is recall, Application is a scenario, Analysis is best judgment. The exam is mostly Application and Analysis.</p>
+        <button type="button" class="ph-done" onclick="togglePracticeSetup(false)">Done</button>
+      </div>
+      <div class="ph-timer">
+        <p class="ph-field" id="phTimerL">Session timer</p>
+        <p class="ph-hint" id="phTimerM">Counts down across the whole set, not per question.</p>
+        <div class="ph-chips" role="group" aria-labelledby="phTimerL" aria-describedby="phTimerM" id="timerCtrlArea"></div>
+      </div>
     </div>
+    <section class="ph-sec" aria-labelledby="phDomH">
+      <h2 class="ph-h" id="phDomH">By domain</h2>
+      <p class="ph-h-meta">Starts a set in that domain.</p>
+      <div class="ph-doms" id="domainGrid"></div>
+    </section>
+    <section class="ph-sec" aria-labelledby="phMoreH">
+      <h2 class="ph-h" id="phMoreH">Review and saved</h2>
+      <ul class="you-list" id="phMore"></ul>
+    </section>
+    <!-- Decision 8 — Exam-date countdown / set-date prompt -->
+    <div id="examCountdownArea"></div>
   </div>
 
-  <div id="subtopicFilterArea"></div>
-  <div id="missedBtnArea"></div>
-  <button class="gen-btn" onclick="nextQ()">
-    <span class="gen-icon">Start</span>
-    <span id="genBtnText">Start Practice</span>
-  </button>
-
-  <div id="timerArea" style="display:none"></div>
-  <div id="qArea"></div>
+  <div class="pf" id="practiceFocus" hidden>
+    <h1 class="sr-only" id="pfH">Practice</h1>
+    <div class="pf-strip" id="pfStrip">
+      <button type="button" class="pf-btn pf-exit" id="pfExit" onclick="exitPracticeFocus()" aria-label="End practice" title="End practice"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <div class="pf-mid" id="pfMid"></div>
+      <div class="pf-timer" id="timerArea" style="display:none"></div>
+      <button type="button" class="pf-btn bk-btn" id="bkBtn" aria-label="Save question" aria-pressed="false" onclick="toggleBookmark()"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/></svg></button>
+    </div>
+    <div id="qArea"></div>
+  </div>
 </div>
 
 <!-- MOCK -->
@@ -5760,7 +5923,7 @@ header.app-header .brand-lockup { height: 28px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.6</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.7</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -5816,6 +5979,14 @@ header.app-header .brand-lockup { height: 28px; }
     <h1 class="you-title" id="youTitle">You</h1>
     <section class="you-group" aria-labelledby="youProgressH">
       <h2 class="you-head" id="youProgressH">Your progress</h2>
+      <!-- Practice totals (moved from the Practice page, web step 3). "In a
+           row" = right answers in a row, in ink: clay is for study days. -->
+      <div class="stats-row you-stats">
+        <div class="stat-card"><span class="stat-num" id="sTotal">0</span><span class="stat-label">Answered</span></div>
+        <div class="stat-card"><span class="stat-num good" id="sCorrect">0</span><span class="stat-label">Correct</span></div>
+        <div class="stat-card"><span class="stat-num" id="sPct">--</span><span class="stat-label">Accuracy</span></div>
+        <div class="stat-card"><span class="stat-num" id="sStreak">0</span><span class="stat-label">In a row</span></div>
+      </div>
       <ul class="you-list">
         <li><a class="you-row" href="#weak-spots" onclick="return navTo(event,'weakspots')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5h17"/><path d="M7 17v-5M12 17V6M17 17v-8"/></svg></span><span class="you-text"><span class="you-t">Weak spots</span><span class="you-m">Where to focus next</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
         <li><button type="button" class="you-row" onclick="showSessionSummary()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-7.5 4 15 3-7.5h4"/></svg></span><span class="you-text"><span class="you-t">Session summary</span><span class="you-m">What you did this session</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
@@ -5957,6 +6128,8 @@ var ICONS = {
   "search": "<circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20.5 20.5-4.5-4.5\"/>",
   "dots": "<circle cx=\"5\" cy=\"12\" r=\"1.2\"/><circle cx=\"12\" cy=\"12\" r=\"1.2\"/><circle cx=\"19\" cy=\"12\" r=\"1.2\"/>",
   "play": "<path d=\"M7 4.5v15l12-7.5z\"/>",
+  "review": "<path d=\"M3.5 12a8.5 8.5 0 1 0 2.6-6.1L3.5 8.5\"/><path d=\"M3.5 3.5v5h5\"/>",
+  "missed": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m9.2 9.2 5.6 5.6M14.8 9.2l-5.6 5.6\"/>",
   "install": "<path d=\"M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5\"/><path d=\"M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17\"/>"
   };
 // Grove line icons (24 grid, 1.75 stroke). Decorative: always aria-hidden.
@@ -6019,7 +6192,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.6';
+const APP_VERSION = 'v12.7';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -6408,7 +6581,7 @@ const TOPIC_STUDY_DETAILS = {
 };
 
 const MINDSET = [
-  "You are an auditor - you assess, recommend, and report. You do not fix.",
+  "You are an auditor: you assess, recommend, and report. You do not fix.",
   "When you see FIRST - eliminate any option that implements a solution.",
   "Risk-based thinking: always address the highest risk area first.",
   "Preventive controls > Detective controls > Corrective controls.",
@@ -8819,20 +8992,10 @@ function startConceptPractice(itemId) {
   conceptPracticeIndex = 0;
   conceptPracticeCtx = { itemId: itemId, name: found.item.name, domain: d, answered: 0, correct: 0 };
   hideSessionStart();
-  var genBtn = document.querySelector('.gen-btn');
-  if (genBtn) genBtn.style.display = 'flex';
   showNextConcept();
-  // Focus moves with the learner: start on the strip naming the concept.
-  var title = document.getElementById('cpStripTitle');
+  // Focus moves with the learner: start on the line naming the concept.
+  var title = document.getElementById('qMeta');
   if (title) title.focus({ preventScroll: true });
-}
-
-function conceptStripHtml(ctx, pos, total) {
-  return '<div class="cp-strip" id="cpStrip">'
-    + '<p class="cp-strip-t" id="cpStripTitle" tabindex="-1"><span class="cp-strip-k">Practicing this concept</span>' + escapeHtml(ctx.name) + '</p>'
-    + '<span class="cp-strip-n">' + pos + ' of ' + total + '</span>'
-    + '<button type="button" class="gt-btn-ghost" onclick="backToConceptTopic()">Back to topic</button>'
-    + '</div>';
 }
 
 function showNextConcept() {
@@ -8846,11 +9009,10 @@ function showNextConcept() {
   S.current = q;
   S.qn++;
   saveState();
-  document.getElementById('genBtnText').textContent = 'Next question'; // the strip shows "N of M"
+  // The focus strip shows the way back to the topic and the progress; the
+  // question's meta line names the concept and says "N of M".
   renderQuestion(q);
-  area.insertAdjacentHTML('afterbegin', conceptStripHtml(ctx, conceptPracticeIndex + 1, total));
   if (S.timerEnabled && !S.domainTimerActive) startDomainTimer();
-  setTimeout(function() { cpScrollTo(area); }, 100);
 }
 
 // Called once per graded practice question (answer or timeout).
@@ -8882,14 +9044,10 @@ function showConceptPracticeDone() {
     + '<div class="sd-actions">'
     + '<button type="button" class="act-btn primary" onclick="backToConceptTopic()">Back to topic</button>'
     + '<button type="button" class="act-btn secondary" onclick="startConceptPractice(\'' + idE + '\')">Practice again</button>'
-    + '<button type="button" class="act-btn secondary" onclick="backToPractice();if(sessionGoal===null)showSessionStart();">Keep practicing</button>'
+    + '<button type="button" class="act-btn secondary" onclick="backToPractice()">Keep practicing</button>'
     + '</div></div>';
-  // The end card's own buttons are the next step; hide the big Start button.
-  document.getElementById('genBtnText').textContent = 'Start Practice';
-  var genBtn = document.querySelector('.gen-btn');
-  if (genBtn) genBtn.style.display = 'none';
   var card = document.getElementById('cpDone');
-  cpScrollTo(card);
+  try { window.scrollTo(0, 0); } catch (e) {}
   card.focus({ preventScroll: true });
 }
 
@@ -8912,15 +9070,9 @@ function resetConceptPractice() {
   var wasOn = conceptPracticeMode || conceptPracticeDone;
   conceptPracticeMode = false;
   conceptPracticeDone = false;
-  var strip = document.getElementById('cpStrip');
-  if (strip) strip.remove();
   var done = document.getElementById('cpDone');
   if (done) done.remove();
-  if (!wasOn) return;
-  var label = document.getElementById('genBtnText');
-  if (label) label.textContent = 'Start Practice';
-  var genBtn = document.querySelector('.gen-btn');
-  if (genBtn) genBtn.style.display = '';
+  return wasOn;
 }
 
 
@@ -8937,7 +9089,6 @@ function renderTopicTerms(items) {
 function showRemoteBankLoading(d) {
   var area = document.getElementById('qArea');
   if (!area) return;
-  var label = (d === 'all') ? 'all domains' : ('Domain ' + d);
   var err = (d !== 'all' && window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]) ? window.QB_LOAD_ERROR[d] : null;
   if (err) {
     // Decision 7 (b) — Network error state
@@ -8956,15 +9107,25 @@ function showRemoteBankLoading(d) {
     heading: 'Fetching questions…',
     body: 'The question bank is loading from data/domain' + d + '.json. This usually takes less than a second.'
   });
-  // Auto-retry rendering once the domain finishes loading
+  // Once the bank arrives, draw the question in place, but only while this
+  // card is still what the learner is looking at (they may have left for the
+  // hub or another page; then nothing happens).
+  var loadingCard = area.firstElementChild;
+  var stillWaiting = function () {
+    var a = document.getElementById('qArea');
+    return S.activeTab === 'practice' && practiceView === 'focus' && !!a && a.firstElementChild === loadingCard;
+  };
   var onLoaded = function(ev){
     if (!ev.detail) return;
     if (String(ev.detail.domain) === String(d) || d === 'all') {
       document.removeEventListener('qb:domain-loaded', onLoaded);
       document.removeEventListener('qb:domain-error', onError);
-      // Surface a helpful "ready" state — user can hit Start again
-      var a = document.getElementById('qArea');
-      if (a) a.innerHTML = '<div class="empty" style="padding:32px"><div class="empty-icon">✓</div><div class="empty-title">Ready!</div><div class="empty-sub">' + escapeHtml(label) + ' loaded. Press <strong>Start Practice</strong> to begin.</div></div>';
+      if (stillWaiting()) {
+        var hadFocus = loadingCard.contains(document.activeElement);
+        nextQ();
+        var m = document.getElementById('qMeta');
+        if (hadFocus && m) { try { m.focus({ preventScroll: true }); } catch (e) {} }
+      }
     }
   };
   var onError = function(ev){
@@ -8972,7 +9133,7 @@ function showRemoteBankLoading(d) {
     if (String(ev.detail.domain) === String(d)) {
       document.removeEventListener('qb:domain-loaded', onLoaded);
       document.removeEventListener('qb:domain-error', onError);
-      showRemoteBankLoading(d);
+      if (stillWaiting()) showRemoteBankLoading(d);
     }
   };
   document.addEventListener('qb:domain-loaded', onLoaded);
@@ -9050,6 +9211,8 @@ function getNextQ(domainStr, diff) {
 function switchTab(t, opts) {
   // A stale or unknown page name (an older save, a typo'd link) opens Today.
   if (!NAV_SECTION[t]) t = 'home';
+  // Leaving a set mid-way pauses its clock (Continue picks it up again).
+  if (S.activeTab === 'practice' && S.domainTimerActive && S.domainTimerRemaining > 0 && practiceLeftOpen()) S.domainTimerPaused = true;
   clearAllTimers(); // always clear timers when switching tabs
   // Leaving any review-replay session — clear the mode flags so the gen
   // button and nextQ() return to normal practice behaviour. startReviewQueue
@@ -9075,9 +9238,11 @@ function switchTab(t, opts) {
   if (t === 'faq') renderFAQ();
   if (t === 'principles') renderPrinciplesLibrary();
   if (t === 'practice') {
-    renderExamCountdown(); // Decision 8
-    if (sessionGoal === null) showSessionStart(); // Decision 9 — offer session start when no active session
-    if (shouldResumeCurrent()) renderResumePrompt();
+    // Practice opens on its hub; a question opens the focused view
+    // (renderQuestion). An open question waits behind the hub's Continue.
+    showPracticeHub();
+  } else {
+    pendingDebrief = null;
   }
   // Land on the newly opened section's own content — scroll the active
   // screen element into view rather than the page origin, so the section
@@ -9355,15 +9520,22 @@ function selectDomain(d) {
   saveState();
   renderDomainGrid();
   renderSubtopicFilter();
+  renderPracticeHub();
 }
 
 // â”€â”€ DIFFICULTY â”€â”€
 function setDiff(btn, d) {
   S.diff = d;
-  document.querySelectorAll('[data-diff]').forEach(function(b){
-    b.classList.toggle('active', b.dataset.diff === d);
-  });
+  syncDiffChips();
   saveState();
+  renderPracticeHub();
+}
+function syncDiffChips() {
+  document.querySelectorAll('[data-diff]').forEach(function(b){
+    var on = b.dataset.diff === S.diff;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
 }
 
 // â”€â”€ TIMER TOGGLE â”€â”€
@@ -9376,24 +9548,39 @@ function toggleTimer() {
 function setTimerDuration(mins) {
   S.timerSeconds = mins; // stored as minutes selection (0=auto)
   S.timerEnabled = true;
+  S.domainTimerPaused = false;
   // A new choice starts a fresh countdown now if a question is on screen;
   // otherwise it starts with the next question.
   stopSessionTimer();
   if (S.activeTab === 'practice' && S.current && document.querySelector('#qArea .opt')) startDomainTimer();
   updateTimerDisplay();
   saveState();
+  renderPracticeHub();
+}
+// The hub's "Off" choice.
+function setTimerOff() {
+  S.timerEnabled = false;
+  S.domainTimerPaused = false;
+  stopSessionTimer();
+  updateTimerDisplay();
+  saveState();
+  renderPracticeHub();
 }
 
 function updateTimerDisplay() {
   var area = document.getElementById('timerCtrlArea');
   if (!area) return;
-  var html = '<span class="ctrl-label" title="Session timer counts down for your whole domain session. Auto = exam pace, up to 4 hours.">Timer</span>'
-    + '<button class="ctrl-btn' + (!S.timerEnabled ? ' active' : '') + '" onclick="S.timerEnabled=false;S.domainTimerActive=false;clearAllTimers();updateTimerDisplay()" title="No timer — practice at your own pace">OFF</button>'
-    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 0 ? ' active' : '') + '" onclick="setTimerDuration(0)" title="Auto: exam pace for the questions you have not answered yet, up to 4 hours">Auto</button>'
-    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 15 ? ' active' : '') + '" onclick="setTimerDuration(15)" title="15 minute session">15min</button>'
-    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 30 ? ' active' : '') + '" onclick="setTimerDuration(30)" title="30 minute session">30min</button>'
-    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 60 ? ' active' : '') + '" onclick="setTimerDuration(60)" title="60 minute session">60min</button>';
-  area.innerHTML = html;
+  var choices = [
+    [null, 'Off', 'No timer: practice at your own pace'],
+    [0, 'Auto', 'Exam pace for the questions you have not answered yet, up to 4 hours'],
+    [15, '15 min', ''], [30, '30 min', ''], [60, '60 min', '']
+  ];
+  area.innerHTML = choices.map(function (c) {
+    var on = c[0] === null ? !S.timerEnabled : (S.timerEnabled && S.timerSeconds === c[0]);
+    return '<button type="button" class="ph-chip' + (on ? ' active' : '') + '" aria-pressed="' + on + '"'
+      + (c[2] ? ' title="' + c[2] + '"' : '')
+      + ' onclick="' + (c[0] === null ? 'setTimerOff()' : 'setTimerDuration(' + c[0] + ')') + '">' + c[1] + '</button>';
+  }).join('');
 }
 
 // â”€â”€ CLEAR ALL TIMERS â”€â”€
@@ -9418,12 +9605,17 @@ function stopSessionTimer() {
   var ta = document.getElementById('timerArea');
   if (ta) ta.style.display = 'none';
 }
+// "Continue without timer" (on the Time is up card): the timer goes off and
+// the set carries on, with the question that was open when time ran out.
 function continueWithoutTimer() {
   S.timerEnabled = false;
+  S.domainTimerPaused = false;
   stopSessionTimer();
   updateTimerDisplay();
   saveState();
-  backToPractice();
+  if (practiceView !== 'focus') { renderPracticeHub(); return; }
+  if (shouldResumeCurrent()) resumeCurrentQuestion();
+  else nextQ();
 }
 
 // â”€â”€ PRACTICE TIMER â”€â”€
@@ -9441,12 +9633,17 @@ function startDomainTimer() {
     totalMins = S.timerSeconds;
   }
   var totalSecs = totalMins * 60;
-  S.domainTimerRemaining = totalSecs;
+  // A clock paused when the learner left the set resumes where it was.
+  var resume = !!S.domainTimerPaused && S.domainTimerRemaining > 0;
+  S.domainTimerPaused = false;
+  if (resume) totalSecs = S.domainTimerTotal || totalSecs;
+  else S.domainTimerRemaining = totalSecs;
+  S.domainTimerTotal = totalSecs;
   S.domainTimerActive = true;
 
   var ta = document.getElementById('timerArea');
   if (!ta) return;
-  ta.style.display = 'block';
+  ta.style.display = '';
   var total = totalSecs;
 
   function formatTime(s) {
@@ -9455,7 +9652,10 @@ function startDomainTimer() {
     return m + ':' + (sec < 10 ? '0' : '') + sec;
   }
 
-  ta.innerHTML = '<div class="timer-wrap"><div><div class="timer-digits ok" id="tDig">' + formatTime(totalSecs) + '</div><div class="timer-sub">' + (S.timerSeconds === 0 ? 'Session timer (auto)' : 'Session timer (' + totalMins + ' min)') + '</div></div><div class="timer-track"><div class="timer-fill" id="tFill" style="width:100%;background:var(--accent)"></div></div></div>';
+  // The focus strip's clock: digits only (the hub says what the timer does).
+  // role="timer" is never announced on each tick.
+  ta.title = S.timerSeconds === 0 ? 'Session timer (auto)' : 'Session timer (' + totalMins + ' min)';
+  ta.innerHTML = ico('mock', 18) + '<span class="sr-only">Time left in this set: </span><span class="timer-digits ok" id="tDig" role="timer">' + formatTime(S.domainTimerRemaining) + '</span>';
 
   if (S.practiceTimerInt) { clearInterval(S.practiceTimerInt); S.practiceTimerInt = null; }
   S.practiceTimerInt = setInterval(function(){
@@ -9478,14 +9678,12 @@ function startDomainTimer() {
       S.domainTimerActive = false;
       document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--wrong-light);border:2px solid var(--wrong);border-radius:var(--radius);padding:36px">'
         + '<div class="empty-icon">\u23f0</div>'
-        + '<div class="empty-title" style="color:var(--wrong)">Time is Up!</div>'
+        + '<div class="empty-title" style="color:var(--wrong)">Time is up</div>'
         + '<div class="empty-sub">Your ' + totalMins + '-minute session has ended.</div>'
         + '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
-        + '<button class="act-btn primary" onclick="showSessionSummary()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">View Summary</button>'
-        + '<button class="act-btn secondary" onclick="continueWithoutTimer()">Continue Without Timer</button>'
+        + '<button class="act-btn primary" onclick="showSessionSummary()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">View summary</button>'
+        + '<button class="act-btn secondary" onclick="continueWithoutTimer()">Continue without timer</button>'
         + '</div></div>';
-      var genBtn = document.querySelector('.gen-btn');
-      if (genBtn) genBtn.style.display = 'none';
     }
   }, 1000);
 }
@@ -9600,9 +9798,22 @@ function domainOrder(a, b) {
 }
 
 // â”€â”€ MINDSET ROTATION â”€â”€
+// Reduced motion: the line never changes on its own (no timer, no fade,
+// WCAG 2.2.2); the hub picks the next line each time it opens.
+function mindsetReduced() {
+  return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
+function nextMindsetLine() {
+  var el = document.getElementById('msText');
+  if (!el) return;
+  S.mindsetIdx = (S.mindsetIdx + 1) % MINDSET.length;
+  el.textContent = MINDSET[S.mindsetIdx];
+  el.style.opacity = '';
+}
 function rotateMindset() {
   var el = document.getElementById('msText');
   if (!el) return;
+  if (mindsetReduced()) return;
   el.style.opacity = '0';
   setTimeout(function(){
     S.mindsetIdx = (S.mindsetIdx + 1) % MINDSET.length;
@@ -9611,104 +9822,379 @@ function rotateMindset() {
   }, 400);
 }
 
-// â”€â”€ RENDER DOMAIN GRID â”€â”€
+// ── PRACTICE HUB + FOCUSED SESSION (Grove Desk step 3, 2026-10-18) ──
+// Practice opens on a calm hub, like the mobile Practice tab: one start
+// action (Continue, or Quick practice with the set's settings), the set's
+// options folded behind one row, the session timer, a row per domain, and
+// review and saved. Answering happens in a focused view: a slim strip (exit,
+// progress, the clock when it is on, Save) and the question, nothing else.
+var practiceView = 'hub';      // 'hub' | 'focus'
+var phSetupOpen = false;       // the hub's "Change" panel
+var focusAnswered = 0;         // answers since the focused view opened (sets without a length)
+var pendingDebrief = null;     // a finished set's result, shown after its last answer
+var bookmarkReviewMode = false;  // a saved question opened from Saved: not part of any set
+var pfMoveFocus = false;       // the focused view just opened: focus goes to the question's meta line
+// The set length the hub starts (10 / 20 / 30, or -1 = open-ended). A new
+// device-level key beside the old ones; nothing is renamed.
+var practiceLen = (function () {
+  try {
+    var v = parseInt(localStorage.getItem('aurivan_practice_len'), 10);
+    return [10, 20, 30, -1].indexOf(v) >= 0 ? v : 10;
+  } catch (e) { return 10; }
+})();
+var PRACTICE_LENGTHS = [[10, '10'], [20, '20'], [30, '30'], [-1, 'Open-ended']];
+var MINUTES_PER_PRACTICE_Q = 1.2; // the mobile app's estimate (engine/pace.ts)
+
+function practiceLenGoal() { return practiceLen === -1 ? null : practiceLen; }
+function setPracticeLen(n) {
+  practiceLen = n;
+  try { localStorage.setItem('aurivan_practice_len', String(n)); } catch (e) {}
+  renderPracticeHub();
+}
+// Display only: stored sub-topic values are Title Case ("Attribute Vs
+// Variable Selection"); learners read sentence case. Acronyms (ITAF, AI/ML,
+// LLM) and the word after a full stop keep their capitals.
+function subtopicLabel(st) {
+  var words = String(st || '').replace(/-/g, ' ').split(/\s+/);
+  var cap = true;
+  return words.map(function (w) {
+    var letters = w.replace(/[^A-Za-z]/g, '');
+    var acronym = letters.length > 1 && letters === letters.toUpperCase();
+    var out = acronym ? w : (cap ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : w.toLowerCase());
+    cap = /[.:?!]$/.test(w);
+    return out;
+  }).join(' ');
+}
+function practiceScopeName() {
+  var d = S.selectedDomain;
+  return (d && d !== 'all' && DI[d]) ? DI[d].short : 'All domains';
+}
+function setPracticeView(v) {
+  practiceView = v;
+  document.body.setAttribute('data-pview', v);
+  var hub = document.getElementById('practiceHub');
+  var foc = document.getElementById('practiceFocus');
+  if (hub) hub.hidden = v !== 'hub';
+  if (foc) foc.hidden = v !== 'focus';
+}
+
+// Is something left open that the hub's Continue would pick up?
+function practiceLeftOpen() {
+  var open = false;
+  try { open = shouldResumeCurrent(); } catch (e) {}
+  return open || (sessionGoal > 0 && sessionAnswered > 0 && sessionAnswered < sessionGoal);
+}
+// The session clock pauses (not stops) while a set or question is left open,
+// so Continue picks up the time left instead of a fresh countdown.
+function pauseSessionTimer() {
+  var running = S.domainTimerActive;
+  stopSessionTimer();
+  if (running && S.domainTimerRemaining > 0) S.domainTimerPaused = true;
+}
+
+// The hub. Leaving the focused view pauses its clock (or ends it, when
+// nothing is left open) and empties the question area; an unanswered
+// question waits behind the hub's Continue.
+function showPracticeHub() {
+  if (practiceLeftOpen()) pauseSessionTimer();
+  else { stopSessionTimer(); S.domainTimerPaused = false; }
+  var area = document.getElementById('qArea');
+  if (area) area.innerHTML = '';
+  var deb = document.getElementById('sessionBoundaryArea');
+  if (deb) deb.innerHTML = '';
+  focusAnswered = 0;
+  bookmarkReviewMode = false;
+  setPracticeView('hub');
+  // Reduced motion: the Mindset line never rotates on its own; a new line
+  // is picked each time the hub opens.
+  if (mindsetReduced()) nextMindsetLine();
+  try { renderExamCountdown(); } catch (e) {}
+  renderDomainGrid();
+  renderSubtopicFilter();
+  updateTimerDisplay();
+  renderPracticeHub();
+}
+
+// Called by every start action (nextQ, renderQuestion). When the view
+// changes from the hub, keyboard and screen-reader focus moves to the
+// question's meta line (or the card shown instead), so it is never left on
+// a button that just disappeared.
+function enterPracticeFocus() {
+  if (practiceView !== 'focus') { setPracticeView('focus'); pfMoveFocus = true; }
+  updateFocusStrip();
+}
+
+// Where the learner is in the set. `fresh` = a new question is about to be
+// drawn (the card on screen still belongs to the last one).
+function focusProgress(fresh) {
+  var answered = !fresh && !!document.querySelector('#qArea .q-card.is-answered');
+  if (conceptPracticeMode && conceptPracticeCtx) {
+    return { pos: conceptPracticeIndex + 1, total: conceptPracticeList.length, done: conceptPracticeCtx.answered };
+  }
+  if (reviewQueueMode) return { pos: reviewQueueIndex + 1, total: reviewQueueList.length, done: reviewQueueIndex + (answered ? 1 : 0) };
+  if (missedReviewMode) return { pos: missedReviewIndex + 1, total: missedReviewQueue.length, done: missedReviewIndex + (answered ? 1 : 0) };
+  if (bookmarkReviewMode) return { pos: 0, total: 0, done: 0 };
+  if (pendingDebrief) return { pos: pendingDebrief.goal, total: pendingDebrief.goal, done: pendingDebrief.goal };
+  if (sessionGoal > 0) {
+    return { pos: Math.min(sessionAnswered + (answered ? 0 : 1), sessionGoal), total: sessionGoal, done: Math.min(sessionAnswered, sessionGoal) };
+  }
+  return { pos: 0, total: 0, done: focusAnswered };
+}
+function focusSetName() {
+  if (conceptPracticeMode && conceptPracticeCtx) return conceptPracticeCtx.name;
+  if (reviewQueueMode) return 'Spaced review';
+  if (missedReviewMode) return 'Missed questions';
+  if (bookmarkReviewMode) return 'Saved question';
+  if (sessionLabel) return sessionLabel;
+  return practiceScopeName();
+}
+
+// The strip: exit · progress (segments up to 20, then one bar; a set without
+// a length shows its name) · the clock (startDomainTimer) · Save.
+function updateFocusStrip() {
+  var mid = document.getElementById('pfMid');
+  if (!mid) return;
+  var pr = focusProgress();
+  var html;
+  // A set with a length is a progress bar to assistive tech too; a set
+  // without one is plain text (its name and how many answered).
+  if (pr.total > 0) {
+    mid.setAttribute('role', 'progressbar');
+    mid.setAttribute('aria-label', 'Set progress');
+    mid.setAttribute('aria-valuemin', '0');
+    mid.setAttribute('aria-valuemax', String(pr.total));
+    mid.setAttribute('aria-valuenow', String(pr.done));
+    mid.setAttribute('aria-valuetext', pr.done + ' of ' + pr.total + ' answered');
+  } else {
+    ['role', 'aria-label', 'aria-valuemin', 'aria-valuemax', 'aria-valuenow', 'aria-valuetext'].forEach(function (a) { mid.removeAttribute(a); });
+  }
+  var ph = document.getElementById('pfH');
+  if (ph) ph.textContent = 'Practice: ' + focusSetName();
+  if (pr.total > 0 && pr.total <= 20) {
+    html = '<span class="pf-segs" aria-hidden="true">';
+    for (var i = 0; i < pr.total; i++) {
+      html += '<span class="pf-seg' + (i < pr.done ? ' done' : (i === pr.pos - 1 ? ' cur' : '')) + '"></span>';
+    }
+    html += '</span>';
+  } else if (pr.total > 0) {
+    html = '<span class="pf-bar" aria-hidden="true"><span style="width:' + Math.round((pr.done / pr.total) * 100) + '%"></span></span>';
+  } else {
+    html = '<span class="pf-label">' + escapeHtml(focusSetName())
+      + (pr.done ? '<span class="pf-label-n"> &middot; ' + pr.done + ' answered</span>' : '') + '</span>';
+  }
+  mid.innerHTML = html;
+  var ex = document.getElementById('pfExit');
+  if (ex) {
+    var lbl = (conceptPracticeMode || conceptPracticeDone) ? 'Back to topic'
+      : (reviewQueueMode || missedReviewMode) ? 'End review' : 'End practice';
+    ex.setAttribute('aria-label', lbl);
+    ex.title = lbl;
+  }
+  var card = document.querySelector('#qArea .q-card');
+  var foc = document.getElementById('practiceFocus');
+  if (foc) foc.classList.toggle('pf-answered', !!(card && card.classList.contains('is-answered')));
+  var bk = document.getElementById('bkBtn');
+  if (bk) {
+    var on = !!(S.current && S.bookmarks.some(function (b) { return b.id === S.current.id; }));
+    bk.classList.toggle('saved', on);
+    bk.setAttribute('aria-pressed', on ? 'true' : 'false');
+    bk.hidden = !card;
+  }
+  // Just opened from the hub: focus lands on the question's meta line (or
+  // the card shown instead), without scrolling.
+  if (pfMoveFocus) {
+    var area = document.getElementById('qArea');
+    var target = document.getElementById('qMeta')
+      || (area && area.querySelector('[tabindex="-1"], h2, h3, .es-heading, .empty-title'))
+      || null;
+    if (target) {
+      pfMoveFocus = false;
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      try { target.focus({ preventScroll: true }); } catch (e) {}
+    }
+  }
+}
+
+// The strip's X: back to the topic for a concept set, otherwise the hub.
+// Leaving straight after a set's last answer still shows how it went.
+function exitPracticeFocus() {
+  if (conceptPracticeMode || conceptPracticeDone) { backToConceptTopic(); return; }
+  var deb = pendingDebrief;
+  backToPractice();
+  if (deb) {
+    var area = document.getElementById('sessionBoundaryArea');
+    if (area) area.innerHTML = debriefHtml(deb);
+  }
+}
+
+// The hub's start action: a set with the hub's domain, length, difficulty,
+// sub-topic and timer.
+function startPracticeSet() {
+  startSession(practiceLenGoal(), S.selectedDomain || 'all');
+}
+// A domain row: a set in that domain, same length and timer.
+function practiceDomain(d) {
+  selectDomain(String(d));
+  startSession(practiceLenGoal(), String(d));
+}
+function practiceMissed() {
+  if (!S.missedQuestions || !S.missedQuestions.length) { showToast('No missed questions yet', 'info', 2200); return; }
+  startMissedReview('all');
+}
+function continuePractice() {
+  if (shouldResumeCurrent()) resumeCurrentQuestion();
+  else nextQ();
+}
+function togglePracticeSetup(open) {
+  phSetupOpen = typeof open === 'boolean' ? open : !phSetupOpen;
+  renderPracticeHub();
+  if (open === false) { var b = document.getElementById('phSumBtn'); if (b) b.focus(); }
+}
+
+function hubRow(icon, title, meta, onclick) {
+  return '<li><button type="button" class="you-row" onclick="' + onclick + '">'
+    + '<span class="you-ico" aria-hidden="true">' + ico(icon, 20) + '</span>'
+    + '<span class="you-text"><span class="you-t">' + title + '</span><span class="you-m">' + meta + '</span></span>'
+    + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
+    + '</button></li>';
+}
+
+function renderPracticeHub() {
+  var hero = document.getElementById('phHero');
+  if (!hero || typeof S === 'undefined' || !S) return;
+  var scope = practiceScopeName();
+  var timedWords = S.timerEnabled ? (S.timerSeconds === 0 ? 'exam-pace timer' : S.timerSeconds + '-min timer') : '';
+  var open = null;
+  try { open = shouldResumeCurrent() ? S.current : null; } catch (e) {}
+  var midSet = sessionGoal > 0 && sessionAnswered > 0 && sessionAnswered < sessionGoal;
+  var cap, title, meta, acts;
+  var go = function (label, fn) { return '<button type="button" class="gt-pill ph-go" onclick="' + fn + '">' + label + ico('arrow-right', 18) + '</button>'; };
+  var fresh = '<button type="button" class="ph-ghost" onclick="startPracticeSet()">Start a new set</button>';
+  if (open || midSet) {
+    var oq = open && DI[String(open.domain)] ? DI[String(open.domain)].short : scope;
+    // Meta lines stay at six words or fewer (DESIGN_SYSTEM §6, Hero panel).
+    cap = 'Where you left off';
+    title = open ? 'Your open question' : 'Your set';
+    meta = midSet ? sessionAnswered + ' of ' + sessionGoal + ' answered &middot; ' + escapeHtml(oq) : escapeHtml(oq) + ' &middot; not answered yet';
+    acts = go('Continue', 'continuePractice()') + fresh;
+  } else {
+    cap = 'Quick practice';
+    title = scope === 'All domains' ? 'A mixed set' : escapeHtml(scope);
+    var lenPart = practiceLen === -1 ? 'Open-ended' : practiceLen + ' questions';
+    meta = lenPart + ' &middot; ' + (timedWords || (practiceLen === -1 ? 'stop any time' : 'about ' + Math.round(practiceLen * MINUTES_PER_PRACTICE_Q) + ' min'));
+    acts = go('Start', 'startPracticeSet()');
+  }
+  hero.innerHTML = '<section class="gt-panel ph-hero" aria-labelledby="phHeroT">'
+    + gtFrondSvg()
+    + '<p class="gt-panel-cap">' + cap + '</p>'
+    + '<h2 class="ph-hero-t" id="phHeroT">' + title + '</h2>'
+    + '<p class="ph-hero-m">' + meta + '</p>'
+    + '<div class="ph-hero-acts">' + acts + '</div>'
+    + '</section>';
+
+  // One row says what the set is; it opens the options right here.
+  var sum = [escapeHtml(scope), practiceLen === -1 ? 'Open-ended' : practiceLen + ' questions'];
+  if (S.diff && S.diff !== 'any') sum.push(S.diff.charAt(0).toUpperCase() + S.diff.slice(1));
+  if (activeSubtopic) sum.push(escapeHtml(subtopicLabel(activeSubtopic)));
+  var st = document.getElementById('phSumText');
+  if (st) st.innerHTML = sum.join(' &middot; ');
+  var sb = document.getElementById('phSumBtn');
+  if (sb) {
+    sb.setAttribute('aria-expanded', phSetupOpen ? 'true' : 'false');
+    sb.setAttribute('aria-label', 'Your set: ' + sum.join(', ').replace(/&middot;/g, '') + '. ' + (phSetupOpen ? 'Close' : 'Change'));
+  }
+  var sa = document.getElementById('phSumAct');
+  if (sa) sa.textContent = phSetupOpen ? 'Close' : 'Change';
+  var panel = document.getElementById('phPanel');
+  if (panel) panel.hidden = !phSetupOpen;
+
+  var dc = document.getElementById('phDomChips');
+  if (dc) {
+    var sel = S.selectedDomain || 'all';
+    dc.innerHTML = [['all', 'All domains']].concat(Object.keys(DI).map(function (d) { return [d, DI[d].short]; }))
+      .map(function (c) {
+        var on = sel === c[0];
+        return '<button type="button" class="ph-chip' + (on ? ' active' : '') + '" aria-pressed="' + on + '" onclick="selectDomain(\'' + c[0] + '\')">'
+          + (c[0] !== 'all' ? '<span class="dom-dot" style="background:' + DI[c[0]].color + '"></span>' : '') + escapeHtml(c[1]) + '</button>';
+      }).join('');
+  }
+  var lc = document.getElementById('phLenChips');
+  if (lc) {
+    lc.innerHTML = PRACTICE_LENGTHS.map(function (c) {
+      var on = practiceLen === c[0];
+      return '<button type="button" class="ph-chip' + (on ? ' active' : '') + '" aria-pressed="' + on + '"'
+        + (c[0] > 0 ? ' aria-label="' + c[0] + ' questions"' : '') + ' onclick="setPracticeLen(' + c[0] + ')">' + c[1] + '</button>';
+    }).join('');
+  }
+  syncDiffChips();
+
+  // More ways to practice: review, missed, saved, weak spots, the mock.
+  var more = document.getElementById('phMore');
+  if (more) {
+    var due = 0;
+    try { due = getDueReview().length; } catch (e) {}
+    var missed = (S.missedQuestions || []).length;
+    var saved = (S.bookmarks || []).length;
+    more.innerHTML = hubRow('review', 'Spaced review', due ? due + ' due &middot; most overdue first' : 'All caught up', 'startReviewQueue()')
+      + hubRow('missed', 'Missed questions', missed ? missed + ' to try again' : 'None yet', 'practiceMissed()')
+      + hubRow('saved', 'Saved questions', saved ? saved + ' saved' : 'Save a question to find it here', "switchTab('bookmarks')")
+      + hubRow('weak', 'Weak spots drill', 'Questions from the areas you miss most', 'startWeakSpotsDrill()')
+      + hubRow('mock', 'Mock exam', 'Timed like the real exam, reviewed at the end', "switchTab('mock')");
+  }
+}
+
+// ── PRACTICE HUB: DOMAIN PICKS ──
+// One row per domain (DI order): its read (a band word until 30 answers,
+// then the number), how many you have seen, and a bar that fills only once
+// the read is real. A row starts a set in that domain.
 function renderDomainGrid() {
   var g = document.getElementById('domainGrid');
   if (!g) return;
-  var html = '';
-
-  // "All Domains" card
-  var totalBank = 0, totalCovered = 0, totalT = 0, totalC = 0;
-  Object.keys(DI).forEach(function(d) {
-    totalBank += (QB[d]||[]).length;
-    totalCovered += S.answeredIds && S.answeredIds[d] ? Object.keys(S.answeredIds[d]).length : 0;
-    var st = S.ds[d] || {t:0,c:0};
-    totalT += st.t; totalC += st.c;
-  });
-  var allRead = domainRead({t: totalT, c: totalC});
-  var allPc = 'var(--text)';
-  var isAllSelected = S.selectedDomain === "all";
-  html += '<div class="domain-card ' + (isAllSelected?'selected':'') + '" data-d="all" onclick="selectDomain(\'all\')" style="'
-    + ''
-    + '">'
-    + '<span class="dc-num">All</span>'
-    + '<span class="dc-name">All domains</span>'
-    + '<span class="dc-pct" style="color:' + allPc + '">' + domainReadLabel(allRead) + '</span>'
-    + (function(){
-        var inner;
-        if (totalT === 0 && totalCovered === 0) {
-          inner = '<span class="dc-stat-empty">Tap to begin</span>';
-        } else {
-          var pairs = [];
-          if (totalT > 0) {
-            pairs.push('<span class="dc-stat-pair"><span class="dc-stat-key">Score</span><span class="dc-stat-val">' + totalC + '/' + totalT + '</span></span>');
-          }
-          pairs.push('<span class="dc-stat-pair"><span class="dc-stat-key">Seen</span><span class="dc-stat-val">' + totalCovered + '</span></span>');
-          inner = pairs.join('<span class="dc-stat-divider"></span>');
-        }
-        return '<div class="dc-stats">' + inner + '</div>';
-      })()
-    + '<div class="bar" style="width:' + readBarWidth(allRead) + '%;background:' + 'var(--accent)' + '"></div>'
-    + '</div>';
-
-  Object.keys(DI).forEach(function(d) {
+  g.innerHTML = Object.keys(DI).map(function (d) {
     var info = DI[d];
-    var st = S.ds[d] || {t:0,c:0};
-    var pc = 'var(--text)';
-    var isSelected = S.selectedDomain === d;
-    var bankCount = (QB[d]||[]).length;
-    var coveredCount = (S.answeredIds && S.answeredIds[d]) ? Object.keys(S.answeredIds[d]).length : 0;
-    var pctText = domainReadLabel(domainRead(st));
-    var wBadgeClass = info.weight >= 25 ? 'dc-weight high-impact' : 'dc-weight';
-    html += '<div class="domain-card ' + (isSelected?'selected':'') + '" data-d="' + d + '" onclick="selectDomain(' + d + ')" title="D' + d + ': ' + info.weight + '% of CISA exam">';
-    html += '<span class="dc-num"><span class="dom-dot" style="background:' + info.color + '"></span>' + d + '</span>';
-    html += '<span class="dc-name">' + info.short + '</span>';
-    html += '<span class="dc-pct" style="color:' + pc + '">' + pctText + '</span>';
-    html += '<span class="' + wBadgeClass + '">' + info.weight + '% exam</span>';
-    var loadingBadge = '';
-    if (isQBLoading(d)) {
-      loadingBadge = '<span class="dc-loading" title="Fetching question bank…">⟳ loading</span>';
-    } else if (window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]) {
-      loadingBadge = '<span class="dc-loading dc-load-err" title="Could not load remote bank: ' + escapeHtml(window.QB_LOAD_ERROR[d]) + '">! offline</span>';
-    }
-    var statsInner;
-    if (st.t === 0 && coveredCount === 0) {
-      statsInner = '<span class="dc-stat-empty">Tap to begin</span>';
-    } else {
-      var pairs = [];
-      if (st.t > 0) {
-        pairs.push('<span class="dc-stat-pair"><span class="dc-stat-key">Score</span><span class="dc-stat-val">' + st.c + '/' + st.t + '</span></span>');
-      }
-      pairs.push('<span class="dc-stat-pair"><span class="dc-stat-key">Seen</span><span class="dc-stat-val">' + coveredCount + '</span></span>');
-      statsInner = pairs.join('<span class="dc-stat-divider"></span>');
-    }
-    html += '<div class="dc-stats">' + statsInner + (loadingBadge ? ' ' + loadingBadge : '') + '</div>';
-    html += '<div class="bar" style="width:' + readBarWidth(domainRead(st)) + '%"></div>';
-    html += '</div>';
-  });
-  g.innerHTML = html;
+    var r = domainRead(S.ds[d] || { t: 0, c: 0 });
+    var seen = (S.answeredIds && S.answeredIds[d]) ? Object.keys(S.answeredIds[d]).length : 0;
+    var read = r.pct === null ? 'Not started' : domainReadLabel(r);
+    var meta = info.weight + '% of the exam' + (seen ? ' &middot; ' + seen + ' seen' : '');
+    if (isQBLoading(d)) meta += ' &middot; loading';
+    else if (window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]) meta += ' &middot; could not load';
+    return '<button type="button" class="ph-dom" data-d="' + d + '" onclick="practiceDomain(\'' + d + '\')">'
+      + '<span class="ph-dom-n" aria-hidden="true">' + d + '</span>'
+      + '<span class="ph-dom-text">'
+      + '<span class="ph-dom-t"><span class="dom-dot" style="background:' + info.color + '"></span>' + escapeHtml(info.short) + '</span>'
+      + '<span class="ph-dom-m">' + meta + '</span>'
+      + '<span class="ph-dom-bar" aria-hidden="true"><span style="width:' + readBarWidth(r) + '%"></span></span>'
+      + '</span>'
+      + '<span class="ph-dom-r">' + read + '</span>'
+      + '<span class="sr-only">. Start a set</span>'
+      + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
+      + '</button>';
+  }).join('');
 }
 
+// An open question from last time: refresh it from the bank, then the hub's
+// Continue offers it.
 function renderResumePrompt() {
   if (!S.current || !S.current.id) return;
   var q = findQuestionById(S.current.id);
   if (!q) { S.current = null; saveState(); return; }
   S.current = q;
-  var info = DI[String(q.domain)];
-  var area = document.getElementById('qArea');
-  if (!area) return;
-  area.innerHTML = '<div class="resume-strip">'
-    + '<div class="resume-copy">'
-    + '<div class="resume-title">Resume your last question</div>'
-    + '<div class="resume-sub">D' + escapeHtml(q.domain) + ' &middot; ' + escapeHtml(info.short) + ' &middot; #' + getQuestionNumber(q) + '</div>'
-    + '</div>'
-    + '<div class="resume-actions">'
-    + '<button class="resume-btn" onclick="discardResumeQuestion()">Start Fresh</button>'
-    + '<button class="resume-btn primary" onclick="resumeCurrentQuestion()">Continue</button>'
-    + '</div>'
-    + '</div>';
-  document.getElementById('genBtnText').textContent = 'Next Question';
+  renderPracticeHub();
 }
+// Kept for old callers: the hub's start action replaced the session card.
+function showSessionStart() { renderPracticeHub(); }
+
+// End cards drawn into the focused view (Time is up, a finished set, a
+// loading or empty state) keep the strip in step. This never switches
+// views: only a start action opens the focused view (nextQ, renderQuestion
+// and the replay starts), so nothing can pull a learner off the hub.
+(function watchQuestionArea() {
+  var area = document.getElementById('qArea');
+  if (!area || typeof MutationObserver === 'undefined') return;
+  new MutationObserver(function () {
+    if (S.activeTab === 'practice' && practiceView === 'focus' && area.firstChild) updateFocusStrip();
+  }).observe(area, { childList: true });
+})();
 
 function resumeCurrentQuestion() {
   if (!S.current || !S.current.id) { nextQ(); return; }
@@ -9729,6 +10215,21 @@ function discardResumeQuestion() {
 // â”€â”€ NEXT PRACTICE QUESTION â”€â”€
 function nextQ() {
   clearQuestionTimers();
+  bookmarkReviewMode = false;
+  // Asking for a question is a start action: the focused view opens (and
+  // its end cards, loading and empty states show there).
+  if (S.activeTab === 'practice') enterPracticeFocus();
+  // A set just reached its length: "See how you did" shows the debrief here.
+  if (pendingDebrief) {
+    var deb = pendingDebrief;
+    pendingDebrief = null;
+    stopSessionTimer();
+    document.getElementById('qArea').innerHTML = debriefHtml(deb);
+    var dh = document.getElementById('sdTitle');
+    if (dh) { try { dh.focus({ preventScroll: true }); } catch (e) {} }
+    try { window.scrollTo(0, 0); } catch (e) {}
+    return;
+  }
   if (reviewQueueMode) {
     reviewQueueIndex++;
     showNextReview();
@@ -9763,7 +10264,7 @@ function nextQ() {
     if (activeSubtopic || S.diff !== "any") {
       showFilterComplete();
     } else if (S.selectedDomain === "all") {
-      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Bank Complete!</div><div class="empty-sub">You have answered every question in the bank. Impressive!</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Reset All & Restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View Summary</button></div></div>';
+      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Bank complete</div><div class="empty-sub">You have answered every question in the bank. Impressive!</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Reset all and restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View summary</button></div></div>';
     } else {
       showDomainComplete(S.selectedDomain);
     }
@@ -9772,7 +10273,6 @@ function nextQ() {
   S.current = q;
   S.qn++;
   saveState();
-  document.getElementById('genBtnText').textContent = 'Next Question';
   renderQuestion(q);
   if (S.timerEnabled && !S.domainTimerActive) startDomainTimer();
 }
@@ -9809,6 +10309,7 @@ function onPracticeTimeout() {
   // Parity record: a timeout is a wrong answer with no option picked.
   try { recordAnswerParity(S.current.id, false, { picked: null, ms: questionStartTime ? Date.now() - questionStartTime : undefined }); } catch(e) {}
   onConceptPracticeAnswer(false);
+  focusAnswered++;
   updateStats();
   renderDomainGrid();
   showResult(null, correctDisplay, true, { addedToReview: addedToReview });
@@ -10124,11 +10625,16 @@ var sessionGoal = null;        // null | 10 | 20 | 30 | -1 (open-ended)
 var sessionAnswered = 0;
 var sessionCorrect = 0;
 var sessionDomain = 'all';
+var sessionLabel = null;       // a set's own name in the strip ("Weak spots drill"), else the domain
 
-function startSession(n, domain) {
+function startSession(n, domain, label) {
   sessionGoal = (n === null || n === 0) ? -1 : n;
   sessionAnswered = 0;
   sessionCorrect = 0;
+  sessionLabel = label || null;
+  pendingDebrief = null;
+  // A new set gets a fresh clock.
+  S.domainTimerPaused = false;
   sessionDomain = domain || 'all';
   if (sessionDomain !== 'all') {
     S.selectedDomain = sessionDomain;
@@ -10139,45 +10645,13 @@ function startSession(n, domain) {
   // Trigger first question
   try { nextQ(); } catch (e) {}
 }
-function showSessionStart() {
-  var area = document.getElementById('sessionBoundaryArea');
-  if (!area) return;
-  // Build domain options dynamically from DI
-  var domOpts = '<option value="all">All domains</option>';
-  if (typeof DI === 'object') {
-    Object.keys(DI).forEach(function(k){
-      var info = DI[k];
-      if (!info || !info.name) return;
-      domOpts += '<option value="' + k + '">D' + k + ' &middot; ' + info.short + '</option>';
-    });
-  }
-  area.innerHTML =
-    '<div class="session-start">'
-      + '<div class="ss-head">'
-        + '<div class="ss-title">Start a practice session</div>'
-        + '<div class="ss-sub">Pick a goal — sessions end with a debrief.</div>'
-      + '</div>'
-      + '<div class="ss-row">'
-        + '<span class="ss-label">Questions</span>'
-        + '<div class="ss-chips">'
-          + '<button class="ss-chip" onclick="startSession(10, document.getElementById(\'ss-dom\').value)">10</button>'
-          + '<button class="ss-chip primary" onclick="startSession(20, document.getElementById(\'ss-dom\').value)">20</button>'
-          + '<button class="ss-chip" onclick="startSession(30, document.getElementById(\'ss-dom\').value)">30</button>'
-          + '<button class="ss-chip ghost" onclick="startSession(null, document.getElementById(\'ss-dom\').value)">Open-ended</button>'
-        + '</div>'
-      + '</div>'
-      + '<div class="ss-row">'
-        + '<span class="ss-label">Focus</span>'
-        + '<select id="ss-dom" aria-label="Focus domain" class="ss-select">' + domOpts + '</select>'
-      + '</div>'
-    + '</div>';
-}
 function hideSessionStart() {
   var area = document.getElementById('sessionBoundaryArea');
   if (area) area.innerHTML = '';
 }
 function onAnswerSubmittedForSession(wasCorrect) {
   if (sessionGoal === null) return; // not in a session
+  if (reviewQueueMode || missedReviewMode) return; // a review run is not part of the set
   sessionAnswered++;
   if (wasCorrect) sessionCorrect++;
   if (sessionGoal > 0 && sessionAnswered >= sessionGoal) {
@@ -10185,24 +10659,11 @@ function onAnswerSubmittedForSession(wasCorrect) {
     showSessionDebrief();
   }
 }
+// The set reached its length. The answer screen stays; its Next button
+// becomes "See how you did", which shows the debrief (nextQ).
 function showSessionDebrief() {
-  var area = document.getElementById('sessionBoundaryArea');
-  if (!area) return;
   var goal = sessionGoal > 0 ? sessionGoal : sessionAnswered;
-  var pct = goal > 0 ? Math.round((sessionCorrect / goal) * 100) : 0;
-  var pctLabel = pct >= 70 ? 'on track' : pct >= 50 ? 'borderline' : 'needs work';
-  area.innerHTML =
-    '<div class="session-debrief">'
-      + '<div class="sd-head">'
-        + '<div class="sd-label">Session complete</div>'
-        + '<div class="sd-score"><span class="sd-num">' + sessionCorrect + '</span><span class="sd-of">/ ' + goal + '</span></div>'
-        + '<div class="sd-pct">' + pct + '% correct — ' + pctLabel + '</div>'
-      + '</div>'
-      + '<div class="sd-actions">'
-        + '<button class="es-btn primary" onclick="startSession(' + goal + ', \'' + sessionDomain + '\')">Practice another set &rarr;</button>'
-        + '<button class="es-btn ghost" onclick="endSession()">Back to dashboard</button>'
-      + '</div>'
-    + '</div>';
+  pendingDebrief = { goal: goal, correct: sessionCorrect, domain: sessionDomain };
   // Persist
   try {
     localStorage.setItem('aurivan_last_session', JSON.stringify({
@@ -10217,6 +10678,25 @@ function showSessionDebrief() {
   sessionGoal = null;
   sessionAnswered = 0;
   sessionCorrect = 0;
+  var next = document.getElementById('vrNext');
+  if (next) next.innerHTML = 'See how you did' + ico('arrow-right', 18);
+  updateFocusStrip();
+}
+function debriefHtml(deb) {
+  var pct = deb.goal > 0 ? Math.round((deb.correct / deb.goal) * 100) : 0;
+  var pctLabel = pct >= 70 ? 'on track' : pct >= 50 ? 'borderline' : 'needs work';
+  var dom = /^(all|[0-9]+)$/.test(String(deb.domain)) ? String(deb.domain) : 'all';
+  return '<div class="session-debrief" role="region" aria-labelledby="sdTitle">'
+      + '<div class="sd-head">'
+        + '<div class="sd-label" id="sdTitle" role="heading" aria-level="2" tabindex="-1">Set complete</div>'
+        + '<div class="sd-score"><span class="sd-num">' + deb.correct + '</span><span class="sd-of">/ ' + deb.goal + '</span></div>'
+        + '<div class="sd-pct">' + pct + '% correct, ' + pctLabel + '</div>'
+      + '</div>'
+      + '<div class="sd-actions">'
+        + '<button type="button" class="es-btn primary" onclick="startSession(' + deb.goal + ', \'' + dom + '\')">Practice another set &rarr;</button>'
+        + '<button type="button" class="es-btn ghost" onclick="backToPractice()">Back to Practice</button>'
+      + '</div>'
+    + '</div>';
 }
 function endSession() {
   hideSessionStart();
@@ -10280,9 +10760,19 @@ function renderQuestion(q) {
       + '</button>';
   }).join('');
 
-  var diffClass = /^[a-z-]+$/.test(q.difficulty || '') ? q.difficulty : 'application';
   var bloomLabel = q.bloom_level || 'Application';
-  var subtopicHtml = q.subtopic ? '<span class="q-subtopic-tag">' + escapeHtml(q.subtopic) + '</span>' : '';
+  // One quiet meta line instead of a row of tags (DESIGN_SYSTEM §6, tag):
+  // "● IS Audit · Application · 3 of 10". Exam-style mode leaves out the
+  // difficulty, like the real exam. A concept set names its concept.
+  var pr = focusProgress(true);
+  var metaParts = [];
+  if (conceptPracticeMode && conceptPracticeCtx) metaParts.push('Practicing: ' + escapeHtml(conceptPracticeCtx.name));
+  else metaParts.push(escapeHtml(info.short));
+  if (reviewQueueMode) metaParts.push('Spaced review');
+  else if (missedReviewMode) metaParts.push('Missed question');
+  else if (bookmarkReviewMode) metaParts.push('Saved question');
+  else if (!(window.S && S.examMode)) metaParts.push(escapeHtml(bloomLabel));
+  if (pr.total > 0) metaParts.push(pr.pos + ' of ' + pr.total);
 
   // One-time confidence tooltip (first question only) — Decision 5
   var showConfTip = false;
@@ -10296,15 +10786,7 @@ function renderQuestion(q) {
 
   document.getElementById('qArea').innerHTML =
     '<div class="q-card">'
-    + '<div class="q-header">'
-    + '<span class="q-tag">' + '<span class="dom-dot" style="background:' + info.color + '"></span>' + 'D' + q.domain + ' &middot; ' + info.short + '</span>'
-    + '<span class="diff-tag ' + diffClass + '">' + escapeHtml(bloomLabel) + '</span>'
-    + subtopicHtml
-    + '<div class="q-meta">'
-    + '<span class="q-num">#' + getQuestionNumber(q) + '</span>'
-    + '<button class="bk-btn' + (isBk?' saved':'') + '" id="bkBtn" aria-label="Save question" aria-pressed="' + (isBk ? 'true' : 'false') + '" onclick="toggleBookmark()">' + ico('saved', 20) + '</button>'
-    + '<button class="fl-btn" onclick="showFlagModal()" aria-label="Flag for review" title="Flag this question">' + ico('flag', 20) + '</button>'
-    + '</div></div>'
+    + '<p class="q-line" id="qMeta" tabindex="-1"><span class="dom-dot" style="background:' + info.color + '"></span>' + metaParts.join(' &middot; ') + '</p>'
     + '<div class="q-body">'
     + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + q.id + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + q.id + '" onclick="expandScenario(\'' + q.id + '\')">Read scenario ▾</button></div>' : '')
     + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(q.scenario_context) + ' ' : '') + escapeHtml(q.question) + '</p>'
@@ -10330,6 +10812,14 @@ function renderQuestion(q) {
   // Reset transient state for fresh question
   pendingAnswer = null;
   currentConfidence = null;
+  // The focused view: the strip's Save follows this question; a new
+  // question starts at the top of the page.
+  var bk = document.getElementById('bkBtn');
+  if (bk) { bk.classList.toggle('saved', isBk); bk.setAttribute('aria-pressed', isBk ? 'true' : 'false'); }
+  if (S.activeTab === 'practice') {
+    enterPracticeFocus();
+    try { window.scrollTo(0, 0); } catch (e) {}
+  }
 }
 
 // â”€â”€ SELECT ANSWER â”€â”€
@@ -10461,6 +10951,8 @@ function selectAnswer(chosen, _ignoredCorrect) {
   // A "Practice this concept" set keeps its own score, apart from a goal session.
   if (conceptPracticeMode) onConceptPracticeAnswer(ok);
   else { try { onAnswerSubmittedForSession(ok); } catch(e) {} } // Decision 9
+  focusAnswered++;
+  updateFocusStrip();
 }
 
 // ── SHOW RESULT: the "vine reveal" (DESIGN_SYSTEM §10.2, redesign step 2) ──
@@ -10641,6 +11133,8 @@ function showResult(chosen, correct, timeout, info) {
 
   // The vine draws itself as it scrolls into view (motion allowed only).
   armVine(document.getElementById('vrVine'));
+  // The strip: progress moves on, and its Save hands over to the footer's.
+  try { updateFocusStrip(); } catch (e) {}
 
   // Focus the verdict so keyboard and screen-reader users land on it (the
   // Check button they were on is gone), then bring the verdict into view.
@@ -10710,6 +11204,7 @@ function reviewBookmark(i) {
   S.current = q;
   switchTab('practice');
   clearAllTimers();
+  bookmarkReviewMode = true; // not part of any set: no "N of M" (cleared by nextQ / the hub)
   renderQuestion(q);
   // renderQuestion populated S.currentShuffle — translate the original
   // correct letter into its display position for the result panel.
@@ -10988,7 +11483,7 @@ function showMockConfirm() {
     + resumeHtml
     + '<div class="mock-confirm-btns">'
     + '<button class="mock-confirm-btn cancel" onclick="closeFlagModal()">Cancel</button>'
-    + '<button class="mock-confirm-btn gostart" onclick="closeFlagModal();startMock()">Start Simulation &rarr;</button>'
+    + '<button class="mock-confirm-btn gostart" onclick="closeFlagModal();startMock()">Start simulation &rarr;</button>'
     + '</div>'
     + '</div></div></div>';
 }
@@ -11004,7 +11499,7 @@ function checkMockResume() {
     area.insertAdjacentHTML('afterbegin',
       '<div class="mock-resume-banner">'
       + '<div class="mock-resume-text">Exam in progress: question ' + (S.mockCurrent+1) + ' of ' + S.mockQueue.length + ' &middot; ' + leftLabel + '</div>'
-      + '<button class="mock-resume-btn" onclick="showMockQuestion()">Resume Exam &rarr;</button>'
+      + '<button class="mock-resume-btn" onclick="showMockQuestion()">Resume exam &rarr;</button>'
       + '</div>'
     );
     return true;
@@ -11435,7 +11930,6 @@ function doResetProgress() {
   closeFlagModal();
   closeSummary();
   document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">&#128256;</div><div class="empty-title">Progress Reset</div><div class="empty-sub">All scores and history cleared. Fresh start!</div></div>';
-  document.getElementById('genBtnText').textContent = 'Start Practice';
 }
 
 // â”€â”€ RESET ALL DOMAINS â”€â”€
@@ -11471,7 +11965,7 @@ document.addEventListener('keydown', function(e) {
   // Answer shortcuts belong to the screen showing the question: practice keys
   // only on Practice, mock keys only on Mock, so a hidden practice question is
   // never answered from another tab.
-  var onPractice = S.activeTab === 'practice';
+  var onPractice = S.activeTab === 'practice' && practiceView === 'focus';
   var onMock = S.activeTab === 'mock';
   // Enter/Space on a focused control (a link, "Back to topic", Next…) is that
   // control's own click; only answers, confidence and Submit use the shortcut.
@@ -12224,7 +12718,7 @@ function renderSubtopicFilter() {
   // Filter chip helper — returns the HTML for one chip
   function chipHtml(st, opts){
     opts = opts || {};
-    var label = st.replace(/-/g, ' ');
+    var label = subtopicLabel(st); // display only; the stored value is unchanged
     var active = activeSubtopic === st ? ' active' : '';
     var accClass = '';
     if (opts.showAccuracy && accuracy[st] !== undefined) {
@@ -12254,7 +12748,7 @@ function renderSubtopicFilter() {
     activeChip = '<button class="subtopic-chip active selected-elsewhere"'
       + ' onclick="setSubtopicFilter(null)"'
       + ' title="Click to clear">'
-      + escapeHtml(activeSubtopic.replace(/-/g, ' ')) + ' ' + ico('x', 16) + '</button>';
+      + escapeHtml(subtopicLabel(activeSubtopic)) + ' ' + ico('x', 16) + '</button>';
   }
 
   // Expanded view: search + categorized chip groups
@@ -12405,7 +12899,8 @@ function startWeakSpotsDrill() {
   renderSubtopicFilter();
   switchTab('practice');
   showToast('Weak spots drill loaded', 'info', 2200);
-  setTimeout(function() { nextQ(); }, 350);
+  // Its own set (no length), never "4 of 10" of a set left open.
+  setTimeout(function() { startSession(null, 'all', 'Weak spots drill'); }, 350);
 }
 
 // ── PHASE 2: BOOKMARK TAGGING ──
@@ -12502,7 +12997,7 @@ function startBookmarkDrill(tagFilter) {
   renderSubtopicFilter();
   switchTab('practice');
   showToast('Bookmark Drill — ' + fullQs.length + ' questions', 'info', 2000);
-  setTimeout(function(){ nextQ(); }, 300);
+  setTimeout(function(){ startSession(null, 'all', 'Saved questions'); }, 300);
 }
 
 function bkTagChange(el) {
@@ -12538,7 +13033,7 @@ function drillSingleBookmark(qId) {
   activeSubtopic = null;
   S.current = null;
   switchTab('practice');
-  setTimeout(function(){ nextQ(); }, 200);
+  setTimeout(function(){ startSession(null, d, 'Saved question'); }, 200);
 }
 
 // ── PHASE 2: MOCK CHECKPOINT (retired) ──
@@ -12658,13 +13153,9 @@ initConsentBanner(); // cookie consent — gates Google Analytics
 // instead of the one used last.
 var bootNav = navFromHash(location.hash);
 if (bootNav) S.activeTab = bootNav.tab;
-// Decision 8 + 9: countdown + session-start render on practice screen (lazy
-// init — only if practice tab is the active screen on boot)
+// Decision 8: the exam-date prompt sits on the Practice hub.
 try {
-  if (S.activeTab === 'practice' || !S.activeTab) {
-    renderExamCountdown();
-    showSessionStart();
-  }
+  if (S.activeTab === 'practice' || !S.activeTab) renderExamCountdown();
 } catch (e) {}
 (function syncHeaderVersion(){
   var pill = document.getElementById('versionPill');
@@ -12676,10 +13167,8 @@ renderSubtopicFilter();
 updateStats();
 updateTimerDisplay();
 // Restore difficulty button state
-document.querySelectorAll('[data-diff]').forEach(function(b){
-  b.classList.toggle('active', b.dataset.diff === S.diff);
-});
-setInterval(rotateMindset, 7500);
+syncDiffChips();
+if (!mindsetReduced()) setInterval(rotateMindset, 7500);
 
 if (S.activeTab && S.activeTab !== 'practice') {
   switchTab(S.activeTab, { noScroll: true });
@@ -12687,6 +13176,7 @@ if (S.activeTab && S.activeTab !== 'practice') {
   // Practice is showing: tell the stylesheet, so Practice-only chrome (stats) appears.
   document.body.setAttribute('data-tab', 'practice');
   syncNav('practice');
+  showPracticeHub();
   if (shouldResumeCurrent()) renderResumePrompt();
 }
 
@@ -12754,7 +13244,7 @@ function showFilterComplete() {
 
   // Build a human-readable description of what filter was active
   var filterDesc = [];
-  if (activeSubtopic) filterDesc.push('\u201c' + activeSubtopic.replace(/-/g, ' ') + '\u201d');
+  if (activeSubtopic) filterDesc.push('\u201c' + subtopicLabel(activeSubtopic) + '\u201d');
   if (S.diff !== "any") filterDesc.push(S.diff + ' difficulty');
   var filterLabel = filterDesc.join(' + ');
 
@@ -12780,30 +13270,26 @@ function showFilterComplete() {
   var pct = answered > 0 ? Math.round((S.ds[d] ? (S.ds[d].c / Math.max(S.ds[d].t, 1)) * 100 : 0)) : 0;
   var pctColor = 'var(--text)';
 
-  var genBtn = document.querySelector('.gen-btn');
-  if (genBtn) genBtn.style.display = 'none';
 
   var domainLabel = info ? 'Domain ' + d + ': ' + info.name : 'All Domains';
 
   document.getElementById('qArea').innerHTML =
     '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct-light);border-radius:var(--radius);padding:36px 28px">'
     + '<div class="empty-icon">\u2705</div>'
-    + '<div class="empty-title" style="color:var(--correct)">Filter Complete!</div>'
+    + '<div class="empty-title" style="color:var(--correct)">Filter complete</div>'
     + '<div class="empty-sub" style="margin-bottom:4px"><strong>' + filterLabel + '</strong></div>'
     + '<div class="empty-sub">' + domainLabel + ' \u2014 every question answered</div>'
     + '<div style="margin-top:16px;font-family:Fraunces,Georgia,serif;font-size:40px;font-weight:500;color:' + pctColor + '">' + pct + '%</div>'
     + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted);margin-bottom:20px">accuracy on ' + domainLabel + ' overall</div>'
     + '<div style="margin-top:8px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
-    + '<button class="act-btn primary" onclick="clearFilterAndContinue()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Continue (all sub-topics)</button>'
-    + '<button class="act-btn secondary" onclick="showSessionSummary()">View Summary</button>'
+    + '<button class="act-btn primary" onclick="clearFilterAndContinue()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Continue with all sub-topics</button>'
+    + '<button class="act-btn secondary" onclick="showSessionSummary()">View summary</button>'
     + '</div></div>';
 }
 
 function clearFilterAndContinue() {
   activeSubtopic = null;
   renderSubtopicFilter();
-  var genBtn = document.querySelector('.gen-btn');
-  if (genBtn) genBtn.style.display = 'flex';
   nextQ();
 }
 
@@ -12816,16 +13302,10 @@ function showDomainComplete(d) {
   var pctColor = 'var(--text)';
   var domMissed = S.missedQuestions ? S.missedQuestions.filter(function(mq){ return String(mq.domain) === d; }) : [];
 
-  // Hide the generate button and missed button
-  var genBtn = document.querySelector('.gen-btn');
-  if (genBtn) genBtn.style.display = 'none';
-  var missedArea = document.getElementById('missedBtnArea');
-  if (missedArea) missedArea.innerHTML = '';
-
   var missedListHtml = '';
   if (domMissed.length > 0) {
     missedListHtml = '<div style="margin-top:20px;text-align:left">'
-      + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:10px">Incorrect Answers to Review (' + domMissed.length + ')</div>';
+      + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:10px">Answers to review (' + domMissed.length + ')</div>';
     for (var i = 0; i < domMissed.length; i++) {
       var mq = domMissed[i];
       var qNum = getQuestionNumber(mq);
@@ -12840,21 +13320,19 @@ function showDomainComplete(d) {
 
   document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct-light);border-radius:var(--radius);padding:36px 28px">'
     + '<div class="empty-icon"></div>'
-    + '<div class="empty-title" style="color:var(--correct)">Domain ' + d + ' Complete!</div>'
+    + '<div class="empty-title" style="color:var(--correct)">Domain ' + d + ' complete</div>'
     + '<div class="empty-sub">You have answered every question in ' + info.name + '</div>'
     + '<div style="margin-top:16px;font-family:Fraunces,Georgia,serif;font-size:48px;font-weight:500;color:' + pctColor + '">' + pct + '%</div>'
     + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted);margin-bottom:20px">' + st.c + ' of ' + st.t + ' correct</div>'
     + missedListHtml
     + '<div style="margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
-    + '<button class="act-btn primary" onclick="restartAndShowBtn(\x27' + d + '\x27)" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Restart Domain</button>'
-    + (domMissed.length > 0 ? '<button class="act-btn primary" onclick="startMissedReview(\x27' + d + '\x27)" style="background:var(--wrong-fill);border-color:var(--wrong-fill);color:var(--on-fill)">Review All Incorrect ' + domMissed.length + ' Missed</button>' : '')
-    + '<button class="act-btn secondary" onclick="showSessionSummary()">View Summary</button>'
+    + '<button class="act-btn primary" onclick="restartAndShowBtn(\x27' + d + '\x27)" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Restart domain</button>'
+    + (domMissed.length > 0 ? '<button class="act-btn primary" onclick="startMissedReview(\x27' + d + '\x27)" style="background:var(--wrong-fill);border-color:var(--wrong-fill);color:var(--on-fill)">Review the ' + domMissed.length + ' you missed</button>' : '')
+    + '<button class="act-btn secondary" onclick="showSessionSummary()">View summary</button>'
     + '</div></div>';
 }
 
 function restartAndShowBtn(d) {
-  var genBtn = document.querySelector('.gen-btn');
-  if (genBtn) genBtn.style.display = 'flex';
   resetDomain(d);
 }
 
@@ -12886,20 +13364,10 @@ function resetDomain(d) {
 }
 
 // â”€â”€ REVIEW MISSED QUESTIONS â”€â”€
+// The hub's "Missed questions" row carries the count (renderPracticeHub);
+// the old button over the question is gone.
 function updateMissedBtn() {
-  var area = document.getElementById("missedBtnArea");
-  if (!area) return;
-  if (S.missedQuestions && S.missedQuestions.length > 0) {
-    var domMissed = S.missedQuestions.filter(function(q){ return String(q.domain) === S.selectedDomain; });
-    var missedLabel = domMissed.length > 0
-      ? 'Review Incorrect (D' + S.selectedDomain + ': ' + domMissed.length + ' | Total: ' + S.missedQuestions.length + ')'
-      : 'Review All Incorrect Answers';
-    area.innerHTML = '<button class="review-incorrect-btn" onclick="reviewMissed()">'
-      + missedLabel + ' <span class="incorrect-count">' + S.missedQuestions.length + '</span>'
-      + '</button>';
-  } else {
-    area.innerHTML = "";
-  }
+  if (practiceView === 'hub') renderPracticeHub();
 }
 
 var missedReviewMode = false;
@@ -12926,9 +13394,6 @@ function startMissedReview(d) {
   }
   missedReviewIndex = 0;
   missedReviewMode = true;
-  // Show gen button again
-  var genBtn = document.querySelector('.gen-btn');
-  if (genBtn) genBtn.style.display = 'flex';
   showNextMissed();
 }
 
@@ -12938,8 +13403,6 @@ function reviewSpecificMissed(d, idx) {
   missedReviewQueue = S.missedQuestions.filter(function(q){ return String(q.domain) === d; });
   missedReviewIndex = idx;
   missedReviewMode = true;
-  var genBtn = document.querySelector('.gen-btn');
-  if (genBtn) genBtn.style.display = 'flex';
   showNextMissed();
 }
 
@@ -12954,31 +13417,19 @@ function showNextMissed() {
     stopSessionTimer();
     document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct-light);border-radius:var(--radius);padding:36px">'
       + '<div class="empty-icon"></div>'
-      + '<div class="empty-title" style="color:var(--correct)">Review Complete!</div>'
+      + '<div class="empty-title" style="color:var(--correct)">Review complete</div>'
       + '<div class="empty-sub">' + (remaining > 0 ? remaining + ' questions still in your review queue (answered incorrectly again).' : 'You answered all review questions correctly! Great work!') + '</div>'
       + '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
-      + (remaining > 0 ? '<button class="act-btn primary" onclick="startMissedReview(\x27' + missedReviewDomain + '\x27)" style="background:var(--wrong-fill);border-color:var(--wrong-fill);color:var(--on-fill)">Review Incorrect Again (' + remaining + ')</button>' : '')
+      + (remaining > 0 ? '<button class="act-btn primary" onclick="startMissedReview(\x27' + missedReviewDomain + '\x27)" style="background:var(--wrong-fill);border-color:var(--wrong-fill);color:var(--on-fill)">Review missed again (' + remaining + ')</button>' : '')
       + '<button class="act-btn secondary" onclick="backToPractice()">Back to Practice</button>'
       + '</div></div>';
-    document.getElementById("genBtnText").textContent = "Start Practice";
     return;
   }
   var q = missedReviewQueue[missedReviewIndex];
   S.current = q;
   S.qn++;
-  var totalInReview = missedReviewQueue.length;
-  var currentInReview = missedReviewIndex + 1;
-  document.getElementById("genBtnText").textContent = "Next Review (" + currentInReview + "/" + totalInReview + ")";
   renderQuestion(q);
   if (S.timerEnabled && !S.domainTimerActive) startDomainTimer();
-  setTimeout(function(){
-    var qArea = document.getElementById("qArea");
-    if (qArea) {
-      var rect = qArea.getBoundingClientRect();
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      window.scrollTo({top: scrollTop + rect.top - 20, behavior: 'smooth'});
-    }
-  }, 100);
 }
 
 // ── ADAPTIVE REVIEW QUEUE — SESSION (v10.39) ──
@@ -13003,8 +13454,6 @@ function startReviewQueue() {
   reviewQueueIndex = 0;
   switchTab('practice');     // clears the review-mode flags…
   reviewQueueMode = true;    // …so set ours after the tab switch
-  var genBtn = document.querySelector('.gen-btn');
-  if (genBtn) genBtn.style.display = 'flex';
   showNextReview();
 }
 
@@ -13024,35 +13473,27 @@ function showNextReview() {
       + (stillDue > 0 ? '<button class="act-btn primary" onclick="startReviewQueue()">Continue review (' + stillDue + ')</button>' : '')
       + '<button class="act-btn secondary" onclick="backToPractice()">Back to Practice</button>'
       + '</div></div>';
-    document.getElementById("genBtnText").textContent = "Start Practice";
     return;
   }
   var q = reviewQueueList[reviewQueueIndex];
   S.current = q;
   S.qn++;
-  document.getElementById("genBtnText").textContent = "Next Review (" + (reviewQueueIndex + 1) + "/" + reviewQueueList.length + ")";
   renderQuestion(q);
   if (S.timerEnabled && !S.domainTimerActive) startDomainTimer();
-  setTimeout(function(){
-    var qArea = document.getElementById("qArea");
-    if (qArea) {
-      var rect = qArea.getBoundingClientRect();
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      window.scrollTo({top: scrollTop + rect.top - 20, behavior: 'smooth'});
-    }
-  }, 100);
 }
 
+// Back to the Practice hub (the strip's X, "Back to Practice" on the end
+// cards). Keyboard and screen-reader users land on the hub's title.
 function backToPractice() {
   missedReviewMode = false;
   reviewQueueMode = false;
   resetConceptPractice();
-  document.getElementById("genBtnText").textContent = "Start Practice";
-  var genBtn = document.querySelector('.gen-btn');
-  if (genBtn) genBtn.style.display = 'flex';
-  document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon"></div><div class="empty-title">Ready to continue?</div><div class="empty-sub">Select a domain and hit Start Practice.</div></div>';
-  renderDomainGrid();
+  pendingDebrief = null;
+  showPracticeHub();
   updateStats();
+  try { window.scrollTo(0, 0); } catch (e) {}
+  var t = document.getElementById('phTitle');
+  if (t && S.activeTab === 'practice') { try { t.focus({ preventScroll: true }); } catch (e) {} }
 }
 
 // â”€â”€ SESSION SUMMARY â”€â”€
@@ -13143,7 +13584,7 @@ function showSessionSummary() {
     + '<div class="summary-grid">'
     + '<div class="summary-stat"><span class="summary-stat-num">' + t + '</span><span class="summary-stat-label">Answered</span></div>'
     + '<div class="summary-stat"><span class="summary-stat-num" style="color:var(--correct)">' + c + '</span><span class="summary-stat-label">Correct</span></div>'
-    + '<div class="summary-stat"><span class="summary-stat-num">' + S.streak + '</span><span class="summary-stat-label">Best Streak</span></div>'
+    + '<div class="summary-stat"><span class="summary-stat-num">' + S.streak + '</span><span class="summary-stat-label">In a row</span></div>'
     + '</div>'
     + '<div class="summary-section-label">Confidence Breakdown</div>'
     + confCards
@@ -13377,6 +13818,17 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'A calmer Practice page',
+    items: [
+      { cat: 'improved', text: 'Practice now opens on a calm start page: one button to start or pick up where you left off, your set options behind one row, and each domain one tap away.' },
+      { cat: 'improved', text: 'While you answer, the screen shows only the question, a progress bar, the timer when it is on, and Save.' },
+      { cat: 'improved', text: 'A practice set is now 10 questions by default, like the app; you can still choose 20, 30 or open-ended.' },
+      { cat: 'fixed', text: 'Leaving a timed set and coming back keeps the time you had left.' },
+      { cat: 'fixed', text: 'The cookie notice no longer covers the bottom menu on phones.' }
+    ]
+  },
+  {
+    version: 'v12.6',
     title: 'See how far you are in your notes',
     items: [
       { cat: 'new', text: 'Study notes now show how far you have got: an empty circle for notes you have not opened, a half circle for ones you have started, and a full circle once you have read them.' },
@@ -14428,7 +14880,7 @@ function toggleExamMode() {
   // Re-render the current question if one is showing so the user sees the
   // mode change immediately without having to advance.
   try {
-    if (S.current && typeof renderQuestion === 'function' && S.activeTab !== 'mock') {
+    if (S.current && typeof renderQuestion === 'function' && S.activeTab === 'practice' && document.querySelector('#qArea .opt:not(:disabled)')) {
       renderQuestion(S.current);
     } else if (S.activeTab === 'mock' && typeof showMockQuestion === 'function') {
       showMockQuestion();

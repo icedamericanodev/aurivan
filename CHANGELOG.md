@@ -4,6 +4,17 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.7] — A calmer Practice page
+
+### Improved
+- Practice now opens on a calm start page: one button to start or pick up where you left off, your set options behind one row, and each domain one tap away.
+- While you answer, the screen shows only the question, a progress bar, the timer when it is on, and Save.
+- A practice set is now 10 questions by default, like the app; you can still choose 20, 30 or open-ended.
+
+### Fixed
+- Leaving a timed set and coming back keeps the time you had left.
+- The cookie notice no longer covers the bottom menu on phones.
+
 ## [v12.6] — See how far you are in your notes
 
 ### New
