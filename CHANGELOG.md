@@ -4,13 +4,13 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
-## [v12.17] — More practice on encryption, identity and databases
+## [v12.17] — More practice on security, networks and IT operations
 
 ### New
-- New practice questions on encryption and keys, digital certificates, sign-in and biometrics, databases, change rollback plans and safely wiping old storage.
+- New practice questions on encryption, sign-in and biometrics, firewalls and wireless security, databases, storage, batch jobs and safely wiping old drives.
 
 ### Improved
-- The study notes on databases and on secure disposal of storage media are clearer, including why solid-state drives need different wiping.
+- The study notes on databases, storage, fire suppression and secure disposal of storage media are clearer, including why solid-state drives need different wiping.
 
 ## [v12.16] — Practice for every topic
 

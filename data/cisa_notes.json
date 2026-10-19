@@ -10517,7 +10517,9 @@
                 "4A1.2"
               ],
               "practice_ids": [
-                "d4_001"
+                "d4_001",
+                "d4_283",
+                "d4_284"
               ],
               "definition": "The OSI (Open Systems Interconnection) and TCP/IP (Transmission Control Protocol/Internet Protocol) models are layered maps of network communication, where each layer serves the one above.",
               "why_it_matters": "Layers give IS auditors and engineers a shared map. Placing a control at its layer shows what it can and cannot stop, and which layers have no control at all.",
@@ -10578,7 +10580,7 @@
                 "svg": "<svg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='OSI model seven-layer pyramid from Physical at the base to Application at the peak'><rect x='135' y='10' width='130' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>7 · Application</text><rect x='115' y='50' width='170' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='72' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>6 · Presentation</text><rect x='95' y='90' width='210' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='112' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>5 · Session</text><rect x='75' y='130' width='250' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='152' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>4 · Transport</text><rect x='55' y='170' width='290' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='192' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>3 · Network</text><rect x='35' y='210' width='330' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='232' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>2 · Data Link</text><rect x='15' y='250' width='370' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='272' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>1 · Physical</text></svg>",
                 "caption": "The seven OSI layers, from Physical at the base to Application at the top. Layers 1 to 4 move data across the network; layers 5 to 7 prepare it for the application."
               },
-              "example": "An IS auditor at an insurer maps a network control list to the TCP/IP layers. Firewall port rules sit at transport and the web application firewall at application, but remote offices have no link-layer control: any device plugged into a wall port joins the network. She reports the gap to the network manager, who decides on a fix.",
+              "example": "An IS auditor at an insurer maps a network control list to the TCP/IP layers. Firewall port rules sit at transport and the web application firewall at application, but remote offices have no link-layer control: any device plugged into a wall port joins the network. The IS auditor reports the gap to the network manager, who decides on a fix.",
               "isaca_rule": "Map each control to the layer where it acts, then look for layers with no control at all. A control can judge only what its own layer can see, so match each control to the threat's layer; content threats need application-layer controls.",
               "exam_traps": [
                 {
@@ -10611,7 +10613,9 @@
               "name": "Storage Architecture and Network Topologies",
               "legacy_ids": [],
               "practice_ids": [
-                "d4_101"
+                "d4_101",
+                "d4_285",
+                "d4_286"
               ],
               "definition": "Storage architecture is how disks connect to the servers that use them: attached directly, shared as files over the network, or reached through a dedicated storage network.",
               "why_it_matters": "Shared storage puts many systems' data on a few devices and links. One fault can stop dozens of applications at once, and broad storage administrator rights expose all of that data.",
@@ -10682,7 +10686,7 @@
                   "meaning": "Each device links to two neighbors. A single ring fails at one break; a dual ring survives it."
                 }
               ],
-              "example": "At a media company, storage administrators can present any storage area network (SAN) volume to any server. The IS auditor finds a test server that can read the payroll database's disk volume because LUN masking, the setting that limits which servers see which volumes, was never set for it. She recommends assigning volumes only through approved requests, enforcing masking and reviewing assignments quarterly, and reports the exposure to the infrastructure manager.",
+              "example": "At a media company, storage administrators can present any storage area network (SAN) volume to any server. The IS auditor finds a test server that can read the payroll database's disk volume because LUN masking was never set for it. The IS auditor recommends assigning volumes only through approved requests, enforcing masking and reviewing assignments quarterly, and reports the exposure to the infrastructure manager.",
               "isaca_rule": "Consolidation trades cost for concentration. When many systems share one storage network, switch or path, look for redundancy, controlled admin rights and tested failover, and report any single point of failure with its business impact.",
               "exam_traps": [
                 {
@@ -10995,7 +10999,9 @@
               ],
               "practice_ids": [
                 "d4_029",
-                "d4_142"
+                "d4_142",
+                "d4_287",
+                "d4_288"
               ],
               "definition": "Software license compliance means every installed or used copy of software is covered by an entitlement the organization holds and is used within that license's terms.",
               "why_it_matters": "Over-deployment leads to vendor audit charges and legal claims, while unused licenses waste money. Open-source terms carry duties too, and breaking them can expose proprietary code.",
@@ -11188,7 +11194,9 @@
               ],
               "practice_ids": [
                 "d4_158",
-                "d4_258"
+                "d4_258",
+                "d4_289",
+                "d4_290"
               ],
               "definition": "Restart and rerun procedures are documented steps for recovering a failed batch job so that no record is skipped and none is processed twice.",
               "why_it_matters": "Batches often fail midway. A careless recovery can post the same transactions twice or silently drop some, and a slow batch can spill into business hours and delay customers.",
@@ -11270,7 +11278,9 @@
               ],
               "practice_ids": [
                 "d4_151",
-                "d4_197"
+                "d4_197",
+                "d4_291",
+                "d4_292"
               ],
               "definition": "Robotic process automation (RPA) uses software robots, called bots, to perform rule-based screen tasks a person would do, such as keying data from one system into another.",
               "why_it_matters": "Bots act fast and at scale, so a faulty rule or a stolen bot credential can post thousands of wrong entries unnoticed. A bot needs the controls of both a user and a program.",
@@ -11339,7 +11349,9 @@
               ],
               "practice_ids": [
                 "d4_044",
-                "d4_111"
+                "d4_111",
+                "d4_293",
+                "d4_294"
               ],
               "definition": "A system interface is an automated link that moves data from one application to another, either directly or through middleware that routes and reformats it.",
               "why_it_matters": "Interfaces carry payments, orders and journal entries with no human review. An error at any hop can silently lose, alter or duplicate records while both ends report success.",
@@ -11369,7 +11381,7 @@
                   "meaning": "Standard business documents, such as orders and invoices, exchanged with trading partners. Risk: rejected or misread documents when formats or mappings differ."
                 }
               ],
-              "example": "A health insurer's claims interface sends files to a payment processor over an encrypted channel, and the interface owner cites the encryption as proof the data is complete. The IS auditor traces sample claims and finds that a middleware rule cuts amounts above 99,999 to five digits. She explains that encryption protects confidentiality, not accuracy, and reports the mapping error to the application owner.",
+              "example": "A health insurer's claims interface sends files to a payment processor over an encrypted channel, and the interface owner cites the encryption as proof the data is complete. The IS auditor traces sample claims and finds that a middleware rule cuts amounts above 99,999 to five digits. The IS auditor explains that encryption protects confidentiality, not accuracy, and reports the mapping error to the application owner.",
               "isaca_rule": "Scope follows the data, end to end. An interface is only as reliable as its weakest hop, so test the sender, transport, middleware and receiver, not just the system that owns the data.",
               "exam_traps": [
                 {
