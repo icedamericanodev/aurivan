@@ -11018,16 +11018,18 @@
                 "d4_045",
                 "d4_046",
                 "d4_057",
-                "d4_168"
+                "d4_168",
+                "d4_313",
+                "d4_314"
               ],
               "definition": "An operating system (OS) is the base software that runs the hardware and every application; utility programs are powerful admin tools that work on it directly.",
               "why_it_matters": "A weak OS weakens everything above it. Utilities can read or change data directly, skipping application checks, so misuse may leave no trace in application records.",
               "how_it_works": [
                 "Vendor default settings favor ease of use, with extra services and known accounts left on.",
-                "A hardened baseline, often based on a Center for Internet Security (CIS) Benchmark, sets secure values for services, accounts, logging and privileges.",
+                "A hardened baseline, often a Center for Internet Security (CIS) Benchmark, secures accounts, logging and privileges and turns off any service the server's function does not need.",
                 "Configuration scans compare each server with its baseline and flag drift for follow-up.",
                 "File integrity monitoring (FIM) alerts on any change to system files compared with a known-good copy.",
-                "Utilities such as disk editors and data loaders are limited to named administrators, used through approved requests and logged.",
+                "Utilities such as disk editors and data loaders are inventoried, limited to named administrators, used through approved requests and logged.",
                 "Where a server class cannot meet the baseline, the asset owner accepts a documented, expiring exception with compensating controls."
               ],
               "compare": {
@@ -11075,7 +11077,7 @@
               "exam_traps": [
                 {
                   "trap": "Hardening caused outages, so roll the whole fleet back to vendor default settings.",
-                  "why": "That replaces one risk with a greater one. Tailor the baseline per server class, and handle the rest through documented exceptions with compensating controls that the asset owner formally accepts."
+                  "why": "That swaps one risk for a greater one. Tailor the baseline per server class; handle the rest through documented, owner-accepted exceptions with compensating controls."
                 },
                 {
                   "trap": "Developers need utilities on production for support, so logging their use is enough.",
@@ -11824,7 +11826,9 @@
                 "d4_012",
                 "d4_018",
                 "d4_209",
-                "d4_256"
+                "d4_256",
+                "d4_315",
+                "d4_316"
               ],
               "definition": "Shadow IT is hardware, software or cloud services used for business without the organization's approval; shadow AI is the same thing with artificial intelligence (AI) tools.",
               "why_it_matters": "Unapproved services can hold client data with no contract, security review, backup or exit plan. With public AI tools, staff may paste confidential data into a service that keeps it or learns from it.",
@@ -11977,7 +11981,9 @@
                 "d4_032",
                 "d4_041",
                 "d4_143",
-                "d4_154"
+                "d4_154",
+                "d4_307",
+                "d4_308"
               ],
               "definition": "Availability is the share of agreed service time during which users can actually complete their work on a service, usually stated as a percentage.",
               "why_it_matters": "Availability targets decide how much redundancy is bought. A figure that excludes business-hours maintenance, or measures only servers, can report the target as met while customers cannot finish a transaction.",
@@ -12503,12 +12509,14 @@
               "practice_ids": [
                 "d4_028",
                 "d4_153",
-                "d4_155"
+                "d4_155",
+                "d4_311",
+                "d4_312"
               ],
               "definition": "Configuration management records the approved settings and versions of each system, called the configuration baseline, and keeps checking that live systems still match it.",
               "why_it_matters": "Settings drift as people make quick fixes. A change nobody logged can create a security weakness or break recovery, and no change ticket will ever reveal it.",
               "how_it_works": [
-                "Each managed component, such as a server, network device or application, has an approved baseline of settings and versions.",
+                "Each managed component, such as a server, network device or application, has an approved, secure baseline of settings and versions, not a copy of whatever is running.",
                 "Automated tools compare running configurations with the baseline and alert on any difference.",
                 "Every alert is traced to an approved change; unexplained differences are investigated and reversed.",
                 "Production source code lives in one access-controlled repository with full change history, not on developers' machines.",
@@ -12745,12 +12753,14 @@
                 "d4_036",
                 "d4_106",
                 "d4_163",
-                "d4_221"
+                "d4_221",
+                "d4_309",
+                "d4_310"
               ],
               "definition": "Operational log management decides which events each system records, how long each type of log is kept, and how logs stay usable for operations and evidence.",
               "why_it_matters": "A gap at any layer is a blind spot, and logs deleted too early cannot answer a regulator. Logs that capture too much can themselves leak personal data.",
               "how_it_works": [
-                "Every layer keeps its own logs, and all of them are in scope: network, operating system, database and application.",
+                "Every layer keeps its own logs, and all are in scope: network, operating system, database, application and, in the cloud, the account activity log.",
                 "Privileged actions, such as commands run as administrator, are logged with the individual who ran them, not just the login.",
                 "All clocks synchronize to redundant, trusted time sources, with alerts on drift, so events from different systems line up.",
                 "Retention is set per log type from legal, regulatory and business requirements, not one uniform period or storage cost.",
@@ -12772,6 +12782,10 @@
                 {
                   "term": "Network device log",
                   "meaning": "Connections allowed or blocked, and setting changes, on firewalls, routers and switches."
+                },
+                {
+                  "term": "Cloud account activity log",
+                  "meaning": "Who created, changed or deleted cloud resources and access rights, through the console or programming interfaces."
                 }
               ],
               "illustration": {
@@ -13047,7 +13061,9 @@
               "practice_ids": [
                 "d4_042",
                 "d4_055",
-                "d4_056"
+                "d4_056",
+                "d4_317",
+                "d4_318"
               ],
               "definition": "A database model is the way a database organizes data and relationships: as trees, as networks, as related tables, or as flexible non-relational (NoSQL) structures such as documents.",
               "why_it_matters": "The model decides where integrity is enforced. When the database does not enforce structure, validation moves into the application, and that is where the IS auditor must look.",
@@ -13086,7 +13102,7 @@
                     "cells": [
                       "Older mainframe systems",
                       "Transactions, joins and reporting",
-                      "Huge volumes and fast-changing data"
+                      "Huge volumes, fast-changing data, or many-step links (graph stores)"
                     ]
                   },
                   {

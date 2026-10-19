@@ -11399,6 +11399,450 @@
       ],
       "_provenance": "Authored from concept: 'Restore Testing. Audit Evidence'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B3.4 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_126 (adding restores to a contract-only control) and d4_075 (checksums on restored data): tests the reliability of restore-test evidence prepared by the administrator against restores of sets the IS auditor selects and observes. Public sources: ISACA ITAF, CIS Controls v8.",
       "style_version": 2
+    },
+    {
+      "id": "d4_307",
+      "domain": 4,
+      "subtopic": "Availability Measurement. Verifying a Reported Figure",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "The IT operations manager reports 99.95% quarterly availability for a claims system, taken from the monitoring team's own dashboard. Which procedure would give the IS auditor the BEST evidence that the figure is accurate?",
+      "options": {
+        "A": "Review the dashboard tool's settings and alert thresholds",
+        "B": "Obtain the operations manager's signed confirmation of the figure",
+        "C": "Compare the figure with the availability reported in the previous quarter",
+        "D": "Recalculate the figure from incident records of each outage's duration"
+      },
+      "correct": "D",
+      "key_concept": "Reperforming a reported metric from independent source records gives stronger evidence than reviewing the tool or the people that produced it.",
+      "pre_read": "Ask who produced the figure, and which independent records would let the IS auditor rebuild it.",
+      "correct_explanation": "Reperformance gives the strongest evidence: the IS auditor rebuilds the figure from incident records showing when each outage started and ended, independent of the dashboard that produced it. Missed or excluded outages then show up as differences. Reviewing the tool's settings is the runner-up: it shows how the dashboard measures, but not whether this quarter's figure is right.",
+      "wrong_explanations": {
+        "A": "Settings show how the dashboard measures availability, not whether this quarter's figure is correct; outages the tool missed would stay hidden.",
+        "B": "A confirmation from the person reporting the figure adds no independent evidence; it simply restates management's claim.",
+        "C": "A comparison with last quarter shows a trend, not whether either quarter's figure is accurate."
+      },
+      "tips": [
+        "Eliminate: B and C, because a manager's confirmation restates the claim and a trend comparison cannot show either figure is right.",
+        "Final two: D beats A because rebuilding the figure from incident records tests the number itself; reviewing settings only tests the tool.",
+        "Exam cue: to verify a reported metric, prefer reperforming it from independent source records over reviewing whoever or whatever produced it."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 BAI04 (Managed Availability and Capacity); ITIL 4 Measurement and Reporting practice",
+      "related_concepts": [
+        "Availability",
+        "Reperformance",
+        "Audit evidence reliability",
+        "Incident records"
+      ],
+      "_provenance": "Authored from concept: 'Availability Measurement. Verifying a Reported Figure'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A6.1 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_032 (synthetic transactions), d4_143 (maintenance excluded from service hours), d4_180 (reconciling customer and provider figures with the contract) and d4_019 (outage timeline for root cause): tests reperforming a self-reported availability figure from incident records. Public sources: ISACA ITAF, COBIT 2019, ITIL 4.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_308",
+      "domain": 4,
+      "subtopic": "Availability Improvement. Long Repair Times",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A warehouse system fails twice a year, and each repair takes two days while parts ship, though the business tolerates only four-hour outages. Which recommendation should the IS auditor consider MOST cost-effective?",
+      "options": {
+        "A": "Hold critical spare parts on site with tested repair steps",
+        "B": "Build a redundant second site that fails over automatically",
+        "C": "Replace components more often under a planned preventive maintenance program",
+        "D": "Report availability without the time spent waiting for parts"
+      },
+      "correct": "A",
+      "key_concept": "Availability rises by failing less often or recovering faster; fix the factor that actually drives downtime, at a cost matched to business need.",
+      "pre_read": "Ask whether the downtime comes from how often the system fails or from how long each repair takes.",
+      "correct_explanation": "Downtime here comes from slow repair, not frequent failure, so the cheapest fix is cutting mean time to repair. Spare parts on site and tested repair steps can bring each outage within the four-hour tolerance. A redundant site with automatic failover is the runner-up: it would also meet the need, but at a cost far beyond what two failures a year justify.",
+      "wrong_explanations": {
+        "B": "Automatic failover would meet the tolerance, but its cost far exceeds what is needed when faster repair alone fixes the problem.",
+        "C": "Preventive maintenance cuts how often failures happen; failures are already rare, and each one would still take two days to fix.",
+        "D": "Leaving parts delays out of the figure hides downtime instead of reducing it; the business would still face two-day outages."
+      },
+      "tips": [
+        "Eliminate: C and D, because preventive maintenance targets failures that are already rare, and changing the report hides downtime rather than cutting it.",
+        "Final two: A beats B because faster repair alone meets the four-hour tolerance; a failover site buys resilience the business does not need.",
+        "Exam cue: split downtime into how often and how long; recommend the cheapest fix for the factor that breaks the business tolerance."
+      ],
+      "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); COBIT 2019 DSS01 (Managed Operations)",
+      "related_concepts": [
+        "Mean time to repair (MTTR)",
+        "Mean time between failures (MTBF)",
+        "Availability",
+        "Cost-effective resilience"
+      ],
+      "_provenance": "Authored from concept: 'Availability Improvement. Long Repair Times'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A6.1 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_154 (interpreting MTTR and MTBF trends) and d4_041 (setting targets from business impact): tests choosing the improvement by the factor that drives downtime, at a cost matched to tolerance. Public sources: COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_309",
+      "domain": 4,
+      "subtopic": "Log Coverage. Testing Completeness of Log Sources",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An IS auditor must confirm that every production server sends logs to the central log store. Which procedure would MOST LIKELY reveal servers that were never connected to it?",
+      "options": {
+        "A": "Review source-health alerts for log sources that stopped sending",
+        "B": "Compare the server inventory with sources reporting to the log store",
+        "C": "Inspect the approved logging standard's list of required log sources",
+        "D": "Trace a sample of log store alerts back to their servers"
+      },
+      "correct": "B",
+      "key_concept": "Completeness is tested from the full population toward the records; a server that never sent logs leaves nothing in the log store to find.",
+      "pre_read": "Ask which direction each test runs, and whether it could find something that left no trace at all.",
+      "correct_explanation": "To find servers that never sent logs, the IS auditor must start from the full population, the server inventory, and check each server against the sources reporting to the log store. Anything missing shows up as a gap. Source-health alerts are the runner-up: they flag sources that stop sending, but a server never connected was never expected, so it raises no alert.",
+      "wrong_explanations": {
+        "A": "Source-health alerts cover only sources the log store expects; a server that was never connected raises no alert at all.",
+        "C": "A standard shows which sources should send logs, not which servers actually do; it is design evidence only.",
+        "D": "Tracing alerts starts from logs that already arrive, so it cannot reveal servers that send nothing."
+      },
+      "tips": [
+        "Eliminate: C and D, because a standard shows only intended sources, and tracing alerts starts from logs that already arrive.",
+        "Final two: B beats A because source-health alerts watch only sources already configured; the inventory shows servers the log store never knew.",
+        "Exam cue: to prove completeness, test from the full population toward the records; tests that start from the records cannot find what is missing."
+      ],
+      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); CIS Controls v8 Control 8 (Audit Log Management); NIST SP 800-53 Rev 5 CM-8 (System Component Inventory)",
+      "related_concepts": [
+        "Log coverage",
+        "Completeness testing",
+        "Asset inventory",
+        "Source-health monitoring"
+      ],
+      "_provenance": "Authored from concept: 'Log Coverage. Testing Completeness of Log Sources'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A9.1 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_163 (finding that network segments send no data), d4_035 (operating system and database logs overwritten) and the 4A9.2 source-health control: tests the completeness procedure, from inventory to log sources. Public sources: NIST SP 800-92, CIS Controls v8, NIST SP 800-53.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_310",
+      "domain": 4,
+      "subtopic": "Log Coverage. Cloud Account Activity Log Retention",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds a firm keeps its public cloud account's activity log only for the provider's short default period and never exports it. Which risk should the IS auditor consider GREATEST?",
+      "options": {
+        "A": "Operating system events on the firm's cloud servers would go unrecorded",
+        "B": "Errors inside the firm's cloud-hosted applications would go unrecorded",
+        "C": "Older changes to cloud resources and permissions could not be traced",
+        "D": "The firm could not check the provider's monthly usage charges"
+      },
+      "correct": "C",
+      "key_concept": "Each layer keeps its own log; in the cloud, the account activity log is the only record of who changed resources and access rights.",
+      "pre_read": "Ask which layer the missing log covers, and which actions happen only at that layer.",
+      "correct_explanation": "A cloud account's activity log records management actions: who created, changed or deleted servers, storage, network rules and access rights, through the console or programming interfaces. Providers keep only a short default history, so without a trail exported to the firm's own store, older changes by an administrator or attacker cannot be traced. Unrecorded operating system events are the runner-up, but those are logged on each server separately, not by the account activity log.",
+      "wrong_explanations": {
+        "A": "Operating system events are logged on each server by its own logging; the account activity log covers management actions, not server internals.",
+        "B": "Application errors go to each application's own log, not the account activity log.",
+        "D": "Usage charges come from the provider's billing records, which exist however long the activity log is kept."
+      },
+      "tips": [
+        "Eliminate: B and D, because application errors go to each application's own log, and billing records exist however long the activity log is kept.",
+        "Final two: C beats A because server events are logged on each server; only the account activity log records changes to resources and access.",
+        "Exam cue: map each missing log to its layer; the biggest risk is losing the only record of actions taken at that layer."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 AU-2 (Event Logging); CIS Benchmarks (AWS/Azure/GCP Foundations); ISO/IEC 27002:2022 Control 8.15 (Logging)",
+      "related_concepts": [
+        "Log coverage",
+        "Cloud account activity log",
+        "Management plane",
+        "Accountability"
+      ],
+      "_provenance": "Authored from concept: 'Log Coverage. Cloud Account Activity Log Retention'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A9.1 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_163 and d4_035 (on-premises layers not logged) and d5_154 and d5_279 (restoring console changes from the code baseline): tests that the cloud management layer's activity log must be exported and kept beyond the provider's short default. Public sources: NIST SP 800-53, CIS Foundations Benchmarks, ISO/IEC 27002.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_311",
+      "domain": 4,
+      "subtopic": "Configuration Baselines. Baseline Taken From Live Settings",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A retailer installs a configuration drift tool on its payment servers and saves each server's settings on installation day as its baseline. What should the IS auditor consider the GREATEST concern?",
+      "options": {
+        "A": "Settings that were already insecure would never raise an alert",
+        "B": "Approved later changes would raise alerts until baselines are updated",
+        "C": "Configuration scans could slow the payment servers at peak hours",
+        "D": "Server changes would no longer need change tickets or approval"
+      },
+      "correct": "A",
+      "key_concept": "A baseline must be the approved, secure configuration; capturing whatever is running makes existing weaknesses the standard that drift is measured against.",
+      "pre_read": "Ask what the baseline was checked against before it was accepted as correct.",
+      "correct_explanation": "Drift detection only reports differences from the baseline. If the baseline is whatever each server ran on installation day, any insecure or unauthorized setting already present becomes the standard and is never flagged. The baseline should be an approved secure configuration. Alerts on later approved changes are the runner-up: they are noise, managed by updating baselines through change management, not a hidden weakness.",
+      "wrong_explanations": {
+        "B": "Updating baselines after approved changes is routine upkeep; the extra alerts are manageable noise, not an undetected weakness.",
+        "C": "Scans can be scheduled and tuned; possible load on the servers is an operational detail, not a gap in configuration control.",
+        "D": "Drift detection checks changes after they happen; it never replaces approval, so change tickets are still required."
+      },
+      "tips": [
+        "Eliminate: C and D, because scan load can be scheduled, and drift detection never replaces change approval.",
+        "Final two: A beats B because alerts on approved changes are fixable noise, while a baseline copied from live settings hides existing weaknesses.",
+        "Exam cue: a detective control is only as good as its reference point; ask who approved the baseline before trusting a clean drift report."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 CM-2 (Baseline Configuration); NIST SP 800-128 (Security-Focused Configuration Management); COBIT 2019 BAI10 (Managed Configuration)",
+      "related_concepts": [
+        "Configuration baseline",
+        "Drift detection",
+        "Secure configuration",
+        "Change management"
+      ],
+      "_provenance": "Authored from concept: 'Configuration Baselines. Baseline Taken From Live Settings'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A8.2 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_155 (drift alerts against change tickets as evidence) and d5_048 (scanning hardened servers against their baseline); shares the reference-point principle of d5_300 (an intrusion detection baseline learned during an attack) but tests it in configuration management. Public sources: NIST SP 800-53, NIST SP 800-128, COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_312",
+      "domain": 4,
+      "subtopic": "Configuration Management. Handling Drift Alerts",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Drift alerts on a bank's production servers go to the operations team, who close each with a brief comment and no change record. What is the PRIMARY weakness for the IS auditor to report?",
+      "options": {
+        "A": "Alerts are not escalated to the security team for review",
+        "B": "Alert comments do not follow a standard written format",
+        "C": "The tool reports changes after they are made, not before",
+        "D": "Closed alerts are not traced to an authorized request"
+      },
+      "correct": "D",
+      "key_concept": "Drift detection works only when every alert is traced to an authorized change; unexplained differences are investigated and reversed.",
+      "pre_read": "Ask which step turns an alert into a conclusion about whether the change was allowed.",
+      "correct_explanation": "A drift alert shows only that something changed. The control works when each alert is traced to an authorized change request, and differences with no request are investigated and reversed. Closing alerts with a comment lets an unauthorized change pass as explained. Escalating alerts to the security team is the runner-up: it adds reviewers, but still no one confirms each change was allowed.",
+      "wrong_explanations": {
+        "A": "Escalation adds reviewers, but without matching each alert to an authorized request, no one confirms the change was allowed.",
+        "B": "A standard comment format tidies the record but still would not show whether each change was authorized.",
+        "C": "Drift detection is detective by design; preventing changes is the job of access and change controls, not this tool."
+      },
+      "tips": [
+        "Eliminate: B and C, because comment format is cosmetic, and drift tools are meant to detect changes after they happen.",
+        "Final two: D beats A because escalation adds reviewers but never confirms each change was authorized; tracing to a request does.",
+        "Exam cue: monitoring without a response step is a weak control; look for the option that closes each alert against an authorization."
+      ],
+      "framework_ref": "NIST SP 800-128 (Security-Focused Configuration Management); NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control); COBIT 2019 BAI10 (Managed Configuration)",
+      "related_concepts": [
+        "Drift detection",
+        "Configuration management",
+        "Change authorization",
+        "Monitoring response"
+      ],
+      "_provenance": "Authored from concept: 'Configuration Management. Handling Drift Alerts'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A8.2 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_155 (which evidence shows no change happened outside the process) and d4_311 (where the baseline comes from): tests that each drift alert must be closed against an authorized change. Public sources: NIST SP 800-128, NIST SP 800-53, COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_313",
+      "domain": 4,
+      "subtopic": "Operating System Hardening. Extra Services on a New Server",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A newly built file server has remote shell, web and print services running, although it only shares department files. Which recommendation should the IS auditor consider BEST?",
+      "options": {
+        "A": "Block the extra services' ports at the network firewall",
+        "B": "Patch the extra services to the vendor's latest versions",
+        "C": "Disable the services the file-sharing function does not use",
+        "D": "Check the extra services' logs each week for any misuse"
+      },
+      "correct": "C",
+      "key_concept": "Least functionality: remove services a system's function does not need rather than shield them; what is not running cannot be attacked.",
+      "pre_read": "Ask whether each option removes the exposure or only places a guard in front of it.",
+      "correct_explanation": "A hardened baseline runs only the services a server's function needs. Disabling the remote shell, web and print services removes their attack surface entirely, so future flaws in them cannot be exploited. Blocking their ports at the firewall is the runner-up: it shields one path, but the services still run and stay reachable from inside the network or if a rule changes.",
+      "wrong_explanations": {
+        "A": "Firewall blocking shields one path only; the services still run and stay reachable from inside the network or after a rule change.",
+        "B": "Patching fixes known flaws but keeps services the server does not need, so future flaws remain exposed.",
+        "D": "Log review may detect misuse after it happens; it does not remove the exposure the extra services create."
+      },
+      "tips": [
+        "Eliminate: B and D, because patching keeps unneeded services exposed to future flaws, and log review only finds misuse afterward.",
+        "Final two: C beats A because a firewall rule only shields the services; disabling them removes the exposure entirely.",
+        "Exam cue: when a system runs something its function does not need, prefer removing it over guarding, patching or watching it."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 CM-7 (Least Functionality); NIST SP 800-123 (Guide to General Server Security); CIS Benchmarks for Operating Systems",
+      "related_concepts": [
+        "Least functionality",
+        "Server hardening",
+        "Attack surface",
+        "Hardened baseline"
+      ],
+      "_provenance": "Authored from concept: 'Operating System Hardening. Extra Services on a New Server'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A1.4 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_045 (vendor defaults replaced by a hardened baseline), d4_057 (hardening that breaks operations) and d5_048 (scanning to keep hardening in place): tests removing unneeded services rather than shielding them. Public sources: NIST SP 800-53, NIST SP 800-123, CIS Benchmarks.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_314",
+      "domain": 4,
+      "subtopic": "Utility Programs. Unknown Utilities on Production Servers",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds that no one at a hospital can say which data-editing and disk utilities are installed on its production servers. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Restrict each utility to named administrators through approved requests",
+        "B": "Remove every utility program from the production servers at once",
+        "C": "Inventory each server's utilities and who can run them",
+        "D": "Log every utility session for a monthly security review"
+      },
+      "correct": "C",
+      "key_concept": "Control starts with knowing what exists: identify privileged utilities and who can run them before restricting, logging or removing them.",
+      "pre_read": "Ask whether each control could be applied yet, given what the organization currently knows.",
+      "correct_explanation": "Utilities can change data directly and skip application controls, so they belong with named administrators. But no one knows which utilities exist or who can run them, so the first step is an inventory of each server's utilities and their users. Restricting utilities to named administrators is the runner-up: it is the right control, but it cannot be applied to tools nobody has identified.",
+      "wrong_explanations": {
+        "A": "Restriction is the right control, but it cannot be applied to utilities nobody has identified; the inventory must come first.",
+        "B": "Administrators need some utilities for maintenance and recovery; removing them blindly could disrupt clinical systems. Control them instead.",
+        "D": "Logging finds misuse only after data has changed, and it cannot cover utilities nobody knows are installed."
+      },
+      "tips": [
+        "Eliminate: B and D, because blanket removal disrupts needed administration, and logging only finds misuse after data has changed.",
+        "Final two: C beats A because restriction is the right control but needs a list of utilities and users to apply to.",
+        "Exam cue: with FIRST, ask what must be known before any control can work; an inventory usually comes before restriction or monitoring."
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.18 (Use of Privileged Utility Programs); CIS Controls v8 Control 2 (Inventory and Control of Software Assets)",
+      "related_concepts": [
+        "Utility programs",
+        "Software inventory",
+        "Privileged access",
+        "Least privilege"
+      ],
+      "_provenance": "Authored from concept: 'Utility Programs. Unknown Utilities on Production Servers'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A1.4 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_030 (restricting a known utility), d4_168 (a finding in utility logs) and d4_149 (spreadsheet inventory): tests that unknown utilities must be identified before any control can be applied. Public sources: ISO/IEC 27002, CIS Controls v8.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_315",
+      "domain": 4,
+      "subtopic": "Shadow IT Discovery. Remote Staff Outside the Proxy",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is measuring shadow IT from proxy logs, but most staff work from home without passing through the proxy. Which additional evidence would MOST LIKELY reveal the unsanctioned services they use?",
+      "options": {
+        "A": "Survey responses from department heads listing the tools in use",
+        "B": "Corporate card and expense records of software subscriptions",
+        "C": "Single sign-on logs for the applications IT has configured",
+        "D": "Help desk tickets that mention problems with unapproved tools"
+      },
+      "correct": "B",
+      "key_concept": "When one evidence source has a blind spot, use an independent source it does not affect; payments for cloud services appear wherever staff work.",
+      "pre_read": "Ask what each source can see, and whether working from home hides the services from it.",
+      "correct_explanation": "Paid cloud services leave a financial trail wherever staff work: card charges and expense claims for subscriptions show unsanctioned services the proxy never saw. Free services leave no payment trail, so this adds to other sources rather than replacing them. Single sign-on logs are the runner-up: they are reliable records, but they cover only applications IT has configured, which are sanctioned by definition.",
+      "wrong_explanations": {
+        "A": "Self-reported lists under-report, because people forget tools or choose not to declare them; independent records are more reliable.",
+        "C": "Single sign-on covers only applications IT has set up, which are sanctioned by definition.",
+        "D": "Tickets capture only tools that fail and that someone chooses to report, a small and biased part of actual use."
+      },
+      "tips": [
+        "Eliminate: A and D, because surveys rely on people declaring their own tools and tickets capture only tools that break.",
+        "Final two: B beats C because sign-on logs cover only applications IT configured, while payments for paid services show up wherever staff work.",
+        "Exam cue: when one evidence source has a blind spot, choose an independent source that the blind spot does not affect."
+      ],
+      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "Shadow IT discovery",
+        "Independent evidence",
+        "Remote work",
+        "Expense analysis"
+      ],
+      "_provenance": "Authored from concept: 'Shadow IT Discovery. Remote Staff Outside the Proxy'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A5.1 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_012 (proxy and CASB logs over a survey), d4_018 (risk-ranking services found) and d2_156 (shadow APIs): tests choosing evidence that the proxy's remote-work blind spot does not affect. Public sources: COBIT 2019, ISACA ITAF.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_316",
+      "domain": 4,
+      "subtopic": "Shadow IT. Service Registered to a Personal Account",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A business unit's unsanctioned file-sharing service, which holds client contracts, was registered by a project manager using a personal email address. What is the PRIMARY risk for the IS auditor to report?",
+      "options": {
+        "A": "Control of the contracts could be lost when the manager leaves",
+        "B": "Subscription fees for the service are paid outside the IT budget",
+        "C": "The service may not enforce sign-in rules protecting the contracts",
+        "D": "The service does not appear in the firm's software inventory"
+      },
+      "correct": "A",
+      "key_concept": "Data in a service the organization does not own or administer is outside its control; ownership comes before any other control on it.",
+      "pre_read": "Ask who could access, recover or delete the data tomorrow if the person who set it up left.",
+      "correct_explanation": "The account belongs to an individual, not the firm, so the firm has no administrative or contractual control over the client contracts in it. If the manager leaves or loses access, the firm may be unable to retrieve, preserve or delete them. Weak sign-in rules are the runner-up: they matter, but the firm could not enforce any control on an account it does not own.",
+      "wrong_explanations": {
+        "B": "Paying fees outside the IT budget is a spending governance issue; it does not put the client contracts at risk.",
+        "C": "Weak sign-in rules matter, but the firm cannot enforce any rule on an account it does not own; ownership comes first.",
+        "D": "A missing inventory entry is a symptom of shadow IT, not the main risk to the client contracts held in the service."
+      },
+      "tips": [
+        "Eliminate: B and D, because budget coding and inventory records are governance gaps that do not threaten the contracts themselves.",
+        "Final two: A beats C because the firm cannot enforce sign-in rules on an account it does not own; losing control of the data comes first.",
+        "Exam cue: for shadow IT, ask who owns the account and the data; without ownership, no other control can be enforced."
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 5.23 (Information Security for Use of Cloud Services); COBIT 2019 APO14 (Managed Data)",
+      "related_concepts": [
+        "Shadow IT",
+        "Data ownership",
+        "Cloud service accounts",
+        "Exit planning"
+      ],
+      "_provenance": "Authored from concept: 'Shadow IT. Service Registered to a Personal Account'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A5.1 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_256 (sanctioning a useful tool), d4_018 (risk-ranking many services) and d4_213 (batch jobs under a leaver's account): tests that a service owned by an individual leaves the firm without control of its data. Public sources: ISO/IEC 27002, COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_317",
+      "domain": 4,
+      "subtopic": "Database Models. Moving From Relational to Document Storage",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A retailer is moving its customer master data from a relational database to a document store that does not require a fixed schema. What should the IS auditor review FIRST?",
+      "options": {
+        "A": "Reconciliation of record counts between the old and new systems",
+        "B": "Staff skills for administering the new document store",
+        "C": "Query response times of the new store under peak load",
+        "D": "Where each old table constraint will now be enforced"
+      },
+      "correct": "D",
+      "key_concept": "When a database stops enforcing structure by default, its integrity rules must be rebuilt elsewhere; the IS auditor checks where each one went.",
+      "pre_read": "Ask what the old database did automatically that the new one will not.",
+      "correct_explanation": "The relational database enforced keys, required fields and allowed values on every write. A document store without a fixed schema enforces none of these by default, so each rule must be rebuilt in the application or the store's own validation rules, or it is silently lost. Mapping where each constraint will be enforced comes first. Reconciling record counts is the runner-up: it proves the one-time move was complete, not that later records stay valid.",
+      "wrong_explanations": {
+        "A": "Count reconciliation confirms the one-time move was complete, but it cannot show that records written afterward obey the old rules.",
+        "B": "Administration skills affect operations, but no amount of skill restores integrity rules the new store does not enforce by default.",
+        "C": "Query speed is a performance question; fast queries say nothing about whether stored customer data stays valid."
+      },
+      "tips": [
+        "Eliminate: B and C, because skills and query speed are operational concerns that do not protect the data's integrity.",
+        "Final two: D beats A because count reconciliation checks only the one-time move; lost constraints let every later write store invalid data.",
+        "Exam cue: when a control moves out of the database, look for where it lands; integrity rules not rebuilt elsewhere are lost."
+      ],
+      "framework_ref": "COBIT 2019 APO14 (Managed Data); DAMA-DMBOK 2nd Edition (Data Modeling and Design, Data Storage and Operations); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "related_concepts": [
+        "Relational database",
+        "Document store",
+        "Integrity constraints",
+        "Data migration"
+      ],
+      "_provenance": "Authored from concept: 'Database Models. Moving From Relational to Document Storage'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.1 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_042 (the risk of a schema-less store), d4_055 (when NoSQL fits) and the Domain 3 conversion reconciliation items: tests where the old database's integrity rules land after a move to a document store. Public sources: COBIT 2019, DAMA-DMBOK.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_318",
+      "domain": 4,
+      "subtopic": "Database Models. Many-Step Relationship Queries",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor reviews a bank's database choice for fraud analysts tracing links among accounts, devices and payees, often many steps apart. Which model would the IS auditor expect as the BEST fit?",
+      "options": {
+        "A": "A relational database that joins tables on shared keys",
+        "B": "A graph database that stores records as linked nodes",
+        "C": "A key-value store that looks up each account by number",
+        "D": "A hierarchical database that gives each record one parent"
+      },
+      "correct": "B",
+      "key_concept": "Choose the database model by the workload: graph stores suit many-step relationship queries, relational suits transactions, key-value suits simple lookups.",
+      "pre_read": "Ask what the workload mostly does with the data: look it up, total it, or follow links.",
+      "correct_explanation": "A graph database stores each account, device and payee as a node and each link as a stored relationship, so following a chain many steps deep is fast and direct. That fits fraud-ring analysis. A relational database is the runner-up: it can join tables on shared keys, but every extra step adds another join, so deep link queries grow slow and complex.",
+      "wrong_explanations": {
+        "A": "Relational joins work for a few steps, but each extra step adds another join, so deep link searches become slow and complex.",
+        "C": "A key-value store finds one record by its key quickly but holds no relationships between records to follow.",
+        "D": "A hierarchical model gives each record a single parent, so a device or payee shared by many accounts fits poorly."
+      },
+      "tips": [
+        "Eliminate: C and D, because key-value stores hold no links between records and hierarchical trees allow only one parent per record.",
+        "Final two: B beats A because relational joins slow down with every extra step, while a graph stores the links themselves.",
+        "Exam cue: match the model to the workload; following relationships points to graph, totaling transactions to relational, simple lookups to key-value."
+      ],
+      "framework_ref": "COBIT 2019 BAI03 (Managed Solutions Identification and Build); DAMA-DMBOK 2nd Edition (Data Modeling and Design, Data Storage and Operations)",
+      "related_concepts": [
+        "Graph database",
+        "Relational database",
+        "NoSQL database types",
+        "Database model selection"
+      ],
+      "_provenance": "Authored from concept: 'Database Models. Many-Step Relationship Queries'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.1 (Wave 3 coverage batch Q15: thin subtopic). Distinct from d4_055 (which workload supports choosing NoSQL in general) and d4_056 (legacy hierarchical database risks): tests matching a many-step relationship workload to the graph model. Public sources: COBIT 2019, DAMA-DMBOK.",
+      "style_version": 2
     }
   ]
 }
