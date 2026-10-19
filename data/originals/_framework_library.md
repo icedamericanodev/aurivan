@@ -1923,3 +1923,12 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - MITRE ATT&CK T1550.002 (Use Alternate Authentication Material: Pass the Hash)
 - IETF RFC 3647 (Internet X.509 Public Key Infrastructure Certificate Policy and Certification Practices Framework)
 - PCI DSS v4.0.1
+
+## Added in Wave 1 batch Q3 review (Oct 2026)
+
+- PCAOB AS 1105 (Audit Evidence)
+- PCAOB AS 1105 (Audit Evidence), para .10
+- The Zachman Framework for Enterprise Architecture, Version 3.0 (Zachman International)
+- ISO/IEC/IEEE 42010:2022 (Architecture Description)
+- TOGAF Standard, 10th Edition, ADM Phase G (Implementation Governance) and Phase H (Architecture Change Management)
+- PCI DSS v4.0 Requirement 12.7.1 (Personnel Screening)

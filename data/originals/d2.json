@@ -7256,24 +7256,24 @@
       "bloom_level": "Application",
       "question": "A bank adopted TOGAF without changes, and its architects now spend months on each deliverable while project teams bypass architecture review. What should be the IS auditor's PRIMARY recommendation?",
       "options": {
-        "A": "Tailor the development method to the bank's scale and risk",
+        "A": "Tailor the TOGAF method to the bank's scale and risk",
         "B": "Hire more architects so each deliverable is produced faster",
-        "C": "Replace TOGAF with the Zachman grid to speed up work",
+        "C": "Replace TOGAF with the Zachman Framework to speed up work",
         "D": "Let project teams choose their own architecture standards"
       },
       "correct": "A",
-      "key_concept": "EA frameworks are tailored to the organization; adopting TOGAF whole can make architecture too slow to guide real decisions.",
+      "key_concept": "Enterprise architecture (EA) frameworks are tailored to the organization; adopting TOGAF whole can make architecture too slow to guide real decisions.",
       "pre_read": "Ask why projects avoid the review, and whether the cause is capacity or the way the method was adopted.",
-      "correct_explanation": "TOGAF is meant to be tailored to an organization's size and needs. Adopted whole, it produces heavy deliverables that arrive too late, so projects route around the architecture. Tailoring the development method restores architecture's role in decisions. Adding architects treats the symptom: the same oversized method would still slow every review, just with more people producing it.",
+      "correct_explanation": "TOGAF is meant to be tailored to an organization's size and needs. Adopted whole, it produces heavy deliverables that arrive too late, so projects route around the architecture. Tailoring its Architecture Development Method (ADM) restores architecture's role in decisions. Adding architects treats the symptom: the same oversized method would still slow every review, just with more people producing it.",
       "wrong_explanations": {
         "B": "More staff only speeds up an oversized method. Projects would still face the same heavy deliverables before review.",
         "C": "Zachman classifies architecture descriptions but gives no method for developing them, so it cannot replace a development process.",
-        "D": "Team-chosen standards fragment the technology estate, the very problem enterprise architecture exists to prevent."
+        "D": "Team-chosen standards fragment the technology environment, the very problem enterprise architecture exists to prevent."
       },
       "tips": [
         "Eliminate: C swaps in a classification grid that has no development method, and D abandons common standards.",
         "Final two: A beats B because the cause is an untailored method; more architects run the same heavy process faster.",
-        "Exam cue: a framework is a means, not proof; when it slows decisions, tailor it to the organization."
+        "Exam cue: a framework is a means, not an end; when it slows decisions, tailor it to the organization."
       ],
       "framework_ref": "TOGAF Standard, 10th Edition; COBIT 2019 APO03 (Managed Enterprise Architecture)",
       "related_concepts": [
@@ -7282,7 +7282,7 @@
         "Architecture review",
         "Enterprise architecture governance"
       ],
-      "_provenance": "Authored from concept: 'TOGAF must be tailored to the organization'. Original KaiSip item (Oct 2026), written for CISA topic 2A4 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted.",
+      "_provenance": "Authored from concept: 'TOGAF must be tailored to the organization'. Original KaiSip item (Oct 2026), written for CISA topic 2A4 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
       "style_version": 2
     },
     {
@@ -7291,7 +7291,7 @@
       "subtopic": "Enterprise Architecture Frameworks. Zachman as Completeness Criteria",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor wants to find which aspects or audiences a retailer's architecture repository fails to describe. Which reference is MOST useful as audit criteria?",
+      "question": "An IS auditor wants to find which architecture views a retailer's repository is missing. Which reference is MOST useful as audit criteria?",
       "options": {
         "A": "The TOGAF development cycle and its phase sequence",
         "B": "The project portfolio's approval and funding records",
@@ -7312,14 +7312,14 @@
         "Final two: D beats A because a completeness check needs a classification grid; the TOGAF cycle describes how work is done.",
         "Exam cue: Zachman is the filing cabinet, TOGAF the recipe; match the framework to whether you audit content or process."
       ],
-      "framework_ref": "COBIT 2019 APO03 (Managed Enterprise Architecture); TOGAF Standard, 10th Edition; ISO/IEC/IEEE 42010 (Architecture Description)",
+      "framework_ref": "The Zachman Framework for Enterprise Architecture, Version 3.0 (Zachman International); COBIT 2019 APO03 (Managed Enterprise Architecture); TOGAF Standard, 10th Edition; ISO/IEC/IEEE 42010:2022 (Architecture Description)",
       "related_concepts": [
         "Zachman Framework",
         "Architecture taxonomy",
         "Stakeholder perspective",
         "Audit criteria"
       ],
-      "_provenance": "Authored from concept: 'Zachman as a taxonomy for checking completeness of architecture descriptions'. Original KaiSip item (Oct 2026), written for CISA topic 2A4 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted.",
+      "_provenance": "Authored from concept: 'Zachman as a taxonomy for checking completeness of architecture descriptions'. Original KaiSip item (Oct 2026), written for CISA topic 2A4 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
       "style_version": 2
     },
     {
@@ -7338,7 +7338,7 @@
       "correct": "C",
       "key_concept": "TOGAF's cycle continues past planning into implementation governance and change management; without them, delivered systems can drift from the target.",
       "pre_read": "Notice which part of the development cycle was skipped. Ask what that work protects against.",
-      "correct_explanation": "The TOGAF development cycle does not end with a migration plan: architects then govern implementation, checking that projects conform to the target, and manage change afterward. Skipping that work lets delivered systems drift from the approved target, recreating the fragmentation the architecture was meant to remove. An outdated repository is a real consequence too, but it is a documentation problem; nonconforming systems carry the business risk.",
+      "correct_explanation": "TOGAF's Architecture Development Method (ADM) does not end with a migration plan: architects then govern implementation, checking that projects conform to the target, and manage change afterward. Skipping that work lets delivered systems drift from the approved target, recreating the fragmentation the architecture was meant to remove. An outdated repository is a real consequence too, but it is a documentation problem; nonconforming systems carry the business risk.",
       "wrong_explanations": {
         "A": "Too much baseline detail wastes effort, but it does not result from skipping governance of delivery.",
         "B": "A stale repository is the lesser, documentary effect. The business harm comes from systems that do not conform.",
@@ -7349,51 +7349,51 @@
         "Final two: C beats B because nonconforming systems create lasting cost and risk; a stale repository is the lesser, documentary effect.",
         "Exam cue: architecture must be governed through delivery; a plan nobody enforces is where drift begins."
       ],
-      "framework_ref": "TOGAF Standard, 10th Edition; COBIT 2019 APO03 (Managed Enterprise Architecture)",
+      "framework_ref": "TOGAF Standard, 10th Edition, ADM Phase G (Implementation Governance) and Phase H (Architecture Change Management); COBIT 2019 APO03 (Managed Enterprise Architecture)",
       "related_concepts": [
         "TOGAF Architecture Development Method",
         "Implementation governance",
         "Architecture compliance",
         "Target architecture"
       ],
-      "_provenance": "Authored from concept: 'TOGAF cycle continues into implementation governance'. Original KaiSip item (Oct 2026), written for CISA topic 2A4 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted.",
+      "_provenance": "Authored from concept: 'TOGAF cycle continues into implementation governance'. Original KaiSip item (Oct 2026), written for CISA topic 2A4 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
       "style_version": 2
     },
     {
       "id": "d2_200",
       "domain": 2,
-      "subtopic": "Hiring and Termination Controls. Leaver Accounts Still Active",
+      "subtopic": "Hiring and Termination Controls. HR Ownership of Leaver Notices",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Matching HR records to active accounts, an IS auditor finds nine former employees' accounts still enabled, two with sign-ins after the holder left. What should the auditor recommend FIRST?",
+      "question": "Nine former employees' accounts were still enabled; IT disabled them the day the IS auditor reported it. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Disable the accounts and investigate the post-departure sign-ins",
-        "B": "Automate the HR feed that notifies IT of departures",
-        "C": "Add the finding to the next quarterly access review",
-        "D": "Ask the managers of the departed staff to explain the accounts"
+        "A": "Make HR the named owner of leaver notices, with a set deadline",
+        "B": "Have IT reconcile the HR leaver list against active accounts every month",
+        "C": "Have IT review user accounts once a year",
+        "D": "Disable any account left unused for ninety days"
       },
       "correct": "A",
-      "key_concept": "Active accounts of departed staff are disabled and checked for misuse first; the HR-to-IT trigger that let them survive is fixed next.",
-      "pre_read": "Two accounts were used after their owners left. Ask what must stop, and be checked, before fixing the process.",
-      "correct_explanation": "Enabled accounts of former employees are an open door, and sign-ins after departure may already be misuse. The first recommendation is that management disable the accounts and investigate those sign-ins to contain any harm and preserve evidence. Automating the HR-to-IT feed is the right root-cause fix, but it protects future leavers; it does nothing about accounts that remain open and may be in use today.",
+      "key_concept": "Leaver access fails when no one owns telling IT that someone has left; a named HR owner with a deadline closes accounts when people leave.",
+      "pre_read": "The accounts are already disabled. Ask why they stayed open, and which fix stops the next leaver's account from staying open.",
+      "correct_explanation": "With the accounts already disabled, what remains is why they stayed open. Termination controls start in HR: when no one owns telling IT that someone has left, accounts outlive their holders. Making HR the named owner of leaver notices, with a deadline, fixes the cause and prevents the gap for future leavers. A monthly reconciliation is a sound backup, but it is detective: it finds open accounts weeks later instead of stopping them.",
       "wrong_explanations": {
-        "B": "This is the lasting fix, but it comes second. It prevents future gaps while today's open accounts stay usable.",
-        "C": "Waiting for the next review leaves the accounts open for weeks, despite signs they are already being used.",
-        "D": "Managers may explain the gap, but waiting for answers delays disabling accounts that show possible misuse."
+        "B": "A useful detective backup, but it treats the symptom: leaver accounts still stay open until the next monthly run.",
+        "C": "A yearly review leaves leaver accounts open for months and does nothing about the missing HR notice.",
+        "D": "An inactivity rule misses accounts a leaver keeps using, and leaves the rest open for ninety days."
       },
       "tips": [
-        "Eliminate: C waits for a scheduled review, and D gathers explanations while the accounts stay open.",
-        "Final two: A beats B because live exposure is contained first; the feed fix protects future leavers, not today's accounts.",
-        "Exam cue: for leaver access, disable and check for misuse first, then fix the HR-to-IT trigger."
+        "Eliminate: C waits up to a year between checks, and D relies on inactivity, which misses accounts a leaver keeps using.",
+        "Final two: A beats B because a named HR owner with a deadline prevents the gap; a monthly reconciliation only finds it later.",
+        "Exam cue: once exposure is contained, fix the process owner; prevention at the source beats detection downstream."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 PS-4 (Personnel Termination); ISO/IEC 27001:2022 Annex A.5.18 (Access rights)",
+      "framework_ref": "NIST SP 800-53 Rev 5 PS-4 (Personnel Termination); COBIT 2019 APO07 (Managed Human Resources); ISO/IEC 27001:2022 Annex A.5.18 (Access rights)",
       "related_concepts": [
         "Leaver process",
         "HR-to-IT notification",
-        "Account deprovisioning",
-        "Misuse investigation"
+        "Process ownership",
+        "Preventive versus detective controls"
       ],
-      "_provenance": "Authored from concept: 'contain active leaver accounts before fixing the HR-to-IT trigger'. Original KaiSip item (Oct 2026), written for CISA topic 2B1 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted.",
+      "_provenance": "Authored from concept: 'HR owns the leaver notice that triggers access removal'. Original KaiSip item (Oct 2026), written for CISA topic 2B1 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): recast from contain-first to the HR process layer, to avoid overlap with d1_155 and d5_263.",
       "style_version": 2
     },
     {
@@ -7405,7 +7405,7 @@
       "question": "A payments firm runs the same basic reference check for every new hire, including system administrators who can reach cardholder data. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Run full criminal and credit checks on every new hire",
-        "B": "Scale screening depth to each role's sensitivity, within the law",
+        "B": "Scale screening depth to the sensitivity of each role",
         "C": "Replace pre-hire checks with monitoring of administrators' activity",
         "D": "Have administrators sign a confidentiality agreement before access"
       },
@@ -7423,14 +7423,14 @@
         "Final two: B beats D because screening tests trustworthiness before access; a signed agreement only records a promise.",
         "Exam cue: screening scales with role sensitivity and stays within the law; privileged roles get the deepest checks."
       ],
-      "framework_ref": "COBIT 2019 APO07 (Managed Human Resources); ISO/IEC 27002:2022 (Control 6.1 Screening)",
+      "framework_ref": "COBIT 2019 APO07 (Managed Human Resources); ISO/IEC 27002:2022 (Control 6.1 Screening); PCI DSS v4.0 Requirement 12.7.1 (Personnel Screening)",
       "related_concepts": [
         "Background screening",
         "Role sensitivity",
         "Privacy and employment law",
         "Confidentiality agreement"
       ],
-      "_provenance": "Authored from concept: 'background screening scaled to role sensitivity within the law'. Original KaiSip item (Oct 2026), written for CISA topic 2B1 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted.",
+      "_provenance": "Authored from concept: 'background screening scaled to role sensitivity within the law'. Original KaiSip item (Oct 2026), written for CISA topic 2B1 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
       "style_version": 2
     },
     {
@@ -7439,17 +7439,17 @@
       "subtopic": "Hiring and Termination Controls. Involuntary Termination Timing",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Management will dismiss a network administrator for misconduct but wants him to work a two-week notice period with his current privileged access. What should the IS auditor recommend FIRST?",
+      "question": "Management will dismiss a network administrator for misconduct but wants the administrator to work a two-week notice period with current privileged access. What should the IS auditor recommend as MOST important?",
       "options": {
-        "A": "Monitor his privileged activity closely during the notice period",
-        "B": "Remove his privileged and remote access at or before notice",
-        "C": "Have him sign a renewed confidentiality agreement before notice",
-        "D": "Keep access until a successor has taken over his duties"
+        "A": "Monitor the administrator's privileged activity during the notice period",
+        "B": "Remove the administrator's privileged and remote access at or before notice",
+        "C": "Have the administrator sign a renewed confidentiality agreement before notice",
+        "D": "Keep the administrator's access until a successor takes over the duties"
       },
       "correct": "B",
       "key_concept": "For involuntary terminations, privileged and remote access is removed at or before notice; a disgruntled insider with access is the main risk.",
       "pre_read": "Picture a dismissed administrator with two weeks of full access. Ask which step prevents harm rather than detecting it.",
-      "correct_explanation": "An administrator dismissed for misconduct is the classic sabotage and data-theft risk, and privileged access makes the damage fast and hard to undo. Removing privileged and remote access at or before notice prevents that harm; any handover can continue under supervision with ordinary access. Close monitoring is a useful backup, but it detects misuse after it happens, by which time systems or data may be damaged.",
+      "correct_explanation": "An administrator dismissed for misconduct is the classic sabotage and data-theft risk, and privileged access makes damage fast and hard to undo. Removing privileged and remote access at or before notice prevents that harm; handover can continue under supervision with ordinary access. Monitoring is a useful backup, but it detects misuse only after it happens. If management still keeps the access, that is a risk-acceptance decision it must formally own.",
       "wrong_explanations": {
         "A": "Monitoring is detective. A privileged administrator can cause serious damage before anyone reviews the alerts.",
         "C": "A renewed agreement is a promise from someone being dismissed; it does nothing to stop misuse of live privileges.",
@@ -7458,7 +7458,7 @@
       "tips": [
         "Eliminate: C relies on a promise from a dismissed employee, and D keeps privileges open for continuity.",
         "Final two: B beats A because removing access prevents harm; monitoring only detects it after the damage is done.",
-        "Exam cue: involuntary termination means access ends at or before notice; prefer preventive removal to detective monitoring."
+        "Exam cue: for a dismissed privileged user, access ends at or before notice; prevention beats detection."
       ],
       "framework_ref": "NIST SP 800-53 Rev 5 PS-4 (Personnel Termination); COBIT 2019 APO07 (Managed Human Resources)",
       "related_concepts": [
@@ -7467,7 +7467,7 @@
         "Insider threat",
         "Preventive versus detective controls"
       ],
-      "_provenance": "Authored from concept: 'access removal at or before notice for involuntary terminations'. Original KaiSip item (Oct 2026), written for CISA topic 2B1 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted.",
+      "_provenance": "Authored from concept: 'access removal at or before notice for involuntary terminations'. Original KaiSip item (Oct 2026), written for CISA topic 2B1 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
       "style_version": 2
     }
   ]
