@@ -2031,3 +2031,5 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - ISO/IEC 27002:2022 Control 8.31 (Separation of Development, Test and Production Environments)
 - COBIT 2019 APO10.02 (Select vendors)
 - COBIT 2019 BAI07.08 (Perform a post-implementation review)
+- COBIT 2019 BAI07.04 (Establish a test environment)
+- COBIT 2019 BAI03.04 (Procure solution components)

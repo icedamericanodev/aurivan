@@ -5229,7 +5229,7 @@
       "subtopic": "Test Environments and Test Data. Proposal to Test in Production",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "With no test environment that matches production, a retailer's project team proposes running user acceptance testing (UAT) in the live order system using dummy customers. What should the IS auditor recommend as BEST?",
+      "question": "With no test environment that matches production, a retailer's project team proposes running user acceptance testing (UAT) in the live order system using test customer accounts. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Allow testing in production, then reverse every test transaction afterward",
         "B": "Run the tests in the development environment the programmers use",
@@ -5238,10 +5238,10 @@
       },
       "correct": "C",
       "key_concept": "Testing belongs in a separate environment that resembles production, never in the live system itself.",
-      "pre_read": "Ask what dummy transactions could set off in a live system before anyone reverses them.",
-      "correct_explanation": "Testing belongs in a separate environment that mirrors production in configuration and versions, so results are reliable without putting live data or service at risk. Building one fixes the real gap. Testing live and reversing transactions afterward is the runner-up: dummy orders can still trigger shipments, postings and interface messages, and reversals may miss some, so live data and service stay exposed.",
+      "pre_read": "Ask what test transactions could set off in a live system before anyone reverses them.",
+      "correct_explanation": "Testing belongs in a separate environment that mirrors production in configuration and versions, so results are reliable without putting live data or service at risk. Building one fixes the real gap. Testing live and reversing transactions afterward is the runner-up: test orders can still trigger shipments, postings and interface messages, and reversals may miss some, so live data and service stay exposed.",
       "wrong_explanations": {
-        "A": "Dummy orders can still trigger shipments, financial postings and interface messages, and reversals may be incomplete, so live data and service remain at risk.",
+        "A": "Test orders can still trigger shipments, financial postings and interface messages, and reversals may be incomplete, so live data and service remain at risk.",
         "B": "A development environment is controlled by programmers and rarely matches production, so results would be unreliable and testing would lack independence.",
         "D": "Inquiry-only testing cannot exercise order entry, pricing or posting, so the functions users must accept would go untested."
       },
@@ -5250,13 +5250,13 @@
         "Final two: C beats A because reversing test transactions cannot undo shipments, postings and interface messages already triggered in the live system.",
         "Exam cue: testing belongs in a separate, production-like environment; testing in production puts live data and service at risk."
       ],
-      "framework_ref": "ISO/IEC 27002:2022 Control 8.31 (Separation of Development, Test and Production Environments); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.31 (Separation of Development, Test and Production Environments); COBIT 2019 BAI07.04 (Establish a test environment)",
       "related_concepts": [
         "Environment segregation",
         "Production-like environment",
         "User acceptance testing"
       ],
-      "_provenance": "Authored from concept: 'Test Environments and Test Data. Proposal to Test in Production'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B1.4 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_010 (masking production data before extraction) and d3_079 (production-scale data volumes for performance tests): tests that the missing environment must be built rather than testing in the live system, and that reversing test transactions does not remove the risk. All scenario specifics invented for this question. Public sources: ISO/IEC 27002:2022 Control 8.31; COBIT 2019 BAI07.",
+      "_provenance": "Authored from concept: 'Test Environments and Test Data. Proposal to Test in Production'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B1.4 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_010 (masking production data before extraction) and d3_079 (production-scale data volumes for performance tests): tests that the missing environment must be built rather than testing in the live system, and that reversing test transactions does not remove the risk. All scenario specifics invented for this question. Public sources: ISO/IEC 27002:2022 Control 8.31; COBIT 2019 BAI07.04.",
       "style_version": 2
     },
     {
@@ -5269,7 +5269,7 @@
       "options": {
         "A": "A masked extract of the full production member history",
         "B": "Live member records edited in production to create the cases",
-        "C": "Production records copied to test, then edited into the cases",
+        "C": "Unmasked production records copied to test, then edited into the cases",
         "D": "Synthetic records generated to cover each specified scenario"
       },
       "correct": "D",
@@ -5301,9 +5301,9 @@
       "subtopic": "Performance and Specialized Testing. New System on a Shared Cluster",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A new warehouse system passed functional and load tests alone but will share production's database cluster with order entry. What should the IS auditor recommend as the PRIMARY focus of further testing?",
+      "question": "A new warehouse system passed functional and load tests run in isolation but will share production's database cluster with order entry. What should the IS auditor recommend as the PRIMARY focus of further testing?",
       "options": {
-        "A": "Both systems running together on shared, production-like servers",
+        "A": "Both systems tested together under combined peak load",
         "B": "Stress testing the warehouse system beyond its expected peak volume",
         "C": "Beta testing by selected warehouse staff at two sites",
         "D": "Unit testing of the warehouse database queries by developers"
@@ -5373,11 +5373,11 @@
       "subtopic": "Test Types and Techniques. Retesting Only Changed Modules",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "To shorten two-week release cycles, a claims team reruns tests only for the modules each release changes. Which defect is this practice MOST LIKELY to let through?",
+      "question": "To shorten two-week release cycles, a claims team reruns tests only for changed modules. Which defect should the IS auditor consider MOST LIKELY to slip through?",
       "options": {
         "A": "A coding error inside one of the modules the release altered",
-        "B": "A slowdown that appears at peak claim volumes",
-        "C": "A known flaw in an outdated third-party library",
+        "B": "A slowdown that appears when peak claim volumes hit the new release",
+        "C": "A known flaw in an outdated third-party library the system uses",
         "D": "A failure in an unchanged function that depends on altered modules"
       },
       "correct": "D",
@@ -5406,7 +5406,7 @@
     {
       "id": "d3_148",
       "domain": 3,
-      "subtopic": "Financial Measures and Investment Decisions. Projects of Very Different Sizes",
+      "subtopic": "Financial Measures and Investment Decisions. Ranking Two Approved Projects",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "Management will pick one of two projects by internal rate of return: $0.3 million at 45%, or $6 million at 20%, both above the hurdle rate. Which advice from the IS auditor is BEST?",
@@ -5436,7 +5436,7 @@
         "Net present value",
         "Hurdle rate"
       ],
-      "_provenance": "Authored from concept: 'Financial Measures and Investment Decisions. Projects of Very Different Sizes'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A2.3 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_006 (net present value versus payback for late benefits) and d3_100/d3_105 (sunk cost in continue-or-stop decisions): tests that internal rate of return misleads between projects of very different sizes. All scenario specifics invented for this question. Public sources: ISACA Val IT Framework; COBIT 2019 APO05.",
+      "_provenance": "Authored from concept: 'Financial Measures and Investment Decisions. Ranking Two Approved Projects'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A2.3 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_006 (net present value versus payback for late benefits) and d3_100/d3_105 (sunk cost in continue-or-stop decisions): tests that internal rate of return misleads between projects of very different sizes. All scenario specifics invented for this question. Public sources: ISACA Val IT Framework; COBIT 2019 APO05.",
       "style_version": 2
     },
     {
@@ -5445,7 +5445,7 @@
       "subtopic": "Financial Measures and Investment Decisions. Lender's Recovery Condition",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A manufacturer's loan covenant requires new systems to recover their cost within 18 months, or the lender can recall the loan. Which measure should the IS auditor expect as the PRIMARY screen for proposals?",
+      "question": "Under a cash-preservation plan agreed with its lender, a manufacturer will fund only systems that recover their cost within 18 months. Which measure should the IS auditor expect as the PRIMARY screen for proposals?",
       "options": {
         "A": "The net present value of each proposed system",
         "B": "The payback period each proposed system is forecast to achieve",
@@ -5454,16 +5454,16 @@
       },
       "correct": "B",
       "key_concept": "Choose the financial measure that fits the decision: payback when quick recovery of cost is the binding constraint.",
-      "pre_read": "Ask which question the lender's condition forces management to answer first.",
-      "correct_explanation": "Measures answer different questions, and the covenant makes speed of recovery the binding constraint: a system that pays back in 30 months puts the loan at risk, however valuable it is. Payback period answers exactly that question, so it is the primary screen. Net present value is the runner-up: it best shows whole-life value and can rank the proposals that pass, but it does not show when cost is recovered.",
+      "pre_read": "Ask which question the 18-month rule forces management to answer first.",
+      "correct_explanation": "Measures answer different questions, and the plan agreed with the lender makes speed of recovery the binding constraint: a system that pays back in 30 months fails it, however valuable it is. Payback period answers exactly that question, so it is the primary screen. Net present value is the runner-up: it best shows whole-life value and can rank the proposals that pass, but it does not show when cost is recovered.",
       "wrong_explanations": {
-        "A": "Net present value shows whole-life value, but a high-value proposal may still take too long to recover its cost under the covenant.",
+        "A": "Net present value shows whole-life value, but a high-value proposal may still take too long to recover its cost under the 18-month rule.",
         "C": "Total cost of ownership counts costs only; without benefits and their timing it cannot show whether cost is recovered in time.",
         "D": "Requirements fit matters for selection, but it is not a financial measure and says nothing about recovering cost within 18 months."
       },
       "tips": [
         "Eliminate: C ignores benefits entirely, and D is not a financial measure at all.",
-        "Final two: B beats A because the covenant makes speed of recovery the deciding constraint, which payback measures and net present value does not.",
+        "Final two: B beats A because the 18-month rule makes speed of recovery the deciding constraint, which payback measures and net present value does not.",
         "Exam cue: match the measure to the question; when cash or a recovery deadline binds, payback comes first."
       ],
       "framework_ref": "ISACA Val IT Framework; COBIT 2019 APO06 (Managed Budget and Costs)",
@@ -5481,34 +5481,34 @@
       "subtopic": "Acquiring Software from Vendors. Award to the Lowest Bid",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Four proposals for hospital scheduling software meet the minimum requirements, and procurement wants the lowest bid to win, though the request for proposal weighted cost at 30%. What is the IS auditor's MOST appropriate recommendation?",
+      "question": "Four proposals for transit fare-collection software meet the minimum requirements, and procurement wants the lowest bid to win, though the request for proposal set cost at 30%. What is the IS auditor's MOST appropriate recommendation?",
       "options": {
         "A": "Accept the lowest bid, since each proposal meets the requirements",
         "B": "Seek best and final offers from the two cheapest bidders",
-        "C": "Select the vendor scoring highest under the published weights",
-        "D": "Rescore the four proposals using fresh criteria agreed with clinicians"
+        "C": "Select the vendor ranking highest across the stated criteria",
+        "D": "Rescore the four proposals using new weights agreed with operations staff"
       },
       "correct": "C",
       "key_concept": "Select vendors on weighted criteria fixed before proposals arrive; meeting minimum requirements only makes a bid eligible.",
-      "pre_read": "Ask what the published weighting says about how much price should decide.",
-      "correct_explanation": "Vendors should be selected against criteria and weights fixed before proposals arrive. The request for proposal gave cost 30%, so fit, support and stability carry the rest, and meeting minimum requirements makes a proposal eligible, not equal. Rescoring with fresh criteria is the runner-up: clinician input sounds sound, but changing criteria after seeing the bids invites bias toward a favored vendor.",
+      "pre_read": "Ask how much the request for proposal said price should decide.",
+      "correct_explanation": "Vendors should be selected against criteria and weights fixed before proposals arrive. The request for proposal gave cost 30%, so fit, support and stability carry the rest, and meeting minimum requirements makes a proposal eligible, not equal. Rescoring with new weights is the runner-up: input from operations staff sounds sensible, but changing weights after seeing the bids invites bias toward a favored vendor.",
       "wrong_explanations": {
         "A": "Meeting minimum requirements makes a proposal eligible, not equal; awarding on price alone ignores the 70% of the score set for other criteria.",
         "B": "Best and final offers still decide on price and pass over vendors that may score highest on fit, support and stability.",
-        "D": "Criteria changed after proposals arrive can be tilted toward a favored vendor; clinicians' views belong in the criteria before proposals are requested."
+        "D": "Weights changed after proposals arrive can be tilted toward a favored vendor; operations staff's views belong in the criteria before proposals are requested."
       },
       "tips": [
         "Eliminate: A treats eligibility as equality, and B still lets price alone decide.",
-        "Final two: C beats D because criteria changed after bids arrive invite bias, while the published weights keep the selection fair.",
+        "Final two: C beats D because weights changed after bids arrive invite bias, while the stated criteria keep the selection fair.",
         "Exam cue: fix weighted criteria before proposals arrive, then select on the full score; meeting minimums only earns a place."
       ],
-      "framework_ref": "COBIT 2019 APO10.02 (Select vendors); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "framework_ref": "COBIT 2019 APO10.02 (Select vendors); COBIT 2019 BAI03.04 (Procure solution components)",
       "related_concepts": [
         "Request for proposal",
         "Weighted evaluation criteria",
         "Vendor selection"
       ],
-      "_provenance": "Authored from concept: 'Acquiring Software from Vendors. Award to the Lowest Bid'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A2.4 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_015/d3_130 (source code escrow) and d3_077 (vendor abandonment): tests selection on weighted criteria fixed in advance, not on lowest price or criteria rewritten after bids. All scenario specifics invented for this question. Public sources: COBIT 2019 APO10.02; COBIT 2019 BAI03.",
+      "_provenance": "Authored from concept: 'Acquiring Software from Vendors. Award to the Lowest Bid'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A2.4 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_015/d3_130 (source code escrow) and d3_077 (vendor abandonment): tests selection on weighted criteria fixed in advance, not on lowest price or weights rewritten after bids. All scenario specifics invented for this question. Public sources: COBIT 2019 APO10.02; COBIT 2019 BAI03.04.",
       "style_version": 2
     },
     {
@@ -5517,7 +5517,7 @@
       "subtopic": "Acquiring Software from Vendors. Proposal Request Before Requirements",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "To meet a funding deadline, a county plans to send a request for proposal (RFP) for a permitting system before user requirements are documented. What should the IS auditor consider the GREATEST risk?",
+      "question": "Facing a funding deadline, a county will issue a request for proposal (RFP) for a permitting system before documenting user requirements. What should the IS auditor consider the GREATEST risk of issuing the RFP now?",
       "options": {
         "A": "Proposals cannot be scored against what the county needs",
         "B": "The chosen vendor may charge heavily for later change requests",
@@ -5531,10 +5531,10 @@
       "wrong_explanations": {
         "B": "Change-request costs are likely, but they are a symptom of the root problem: selecting a system without defined needs to judge it by.",
         "C": "A shorter bidding window may reduce responses, but more proposals would not help with no requirements to judge them against.",
-        "D": "Losing the funding is the risk the plan tries to avoid; the question asks for the risk the plan itself creates."
+        "D": "Losing the funding is the risk that issuing now tries to avoid; the question asks for the risk that issuing the request now creates."
       },
       "tips": [
-        "Eliminate: C is a minor competition concern, and D is the risk the plan avoids, not one it creates.",
+        "Eliminate: C is a minor competition concern, and D is the risk that issuing now avoids, not one it creates.",
         "Final two: A beats B because change-request costs follow from the root flaw: no defined needs to judge proposals against.",
         "Exam cue: in acquisition, requirements come before the request for proposal; without them, no proposal can be scored fairly."
       ],
@@ -5558,7 +5558,7 @@
         "A": "Agreement with the plan, because independence outweighs early advisory input",
         "B": "A voting seat on the steering committee from project start",
         "C": "Reliance on quality assurance reviews in place of audit input",
-        "D": "Advisory input from requirements onward, never designing or approving"
+        "D": "Advisory input from requirements onward, without design or approval duties"
       },
       "correct": "D",
       "key_concept": "The IS auditor advises from requirements onward; independence comes from not designing, building or approving, not from staying away.",
@@ -5622,24 +5622,24 @@
     {
       "id": "d3_154",
       "domain": 3,
-      "subtopic": "Purpose and Timing of the Review. Benefits Tied to a Filing Season",
+      "subtopic": "Purpose and Timing of the Review. Scheduling the First Review",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A tax agency's new e-filing system went live in May, and its business case promised faster processing during the January-to-April filing season. Which timing for the post-implementation review should the IS auditor recommend as BEST?",
+      "question": "A ski resort's new booking system went live in May, and its business case promised faster bookings during the December-to-March season. Which timing for the post-implementation review should the IS auditor recommend as BEST?",
       "options": {
         "A": "Three months after go-live, as the usual settling interval",
         "B": "One week after go-live, while the project team is still assembled",
-        "C": "After the first peak season, once its volumes can be measured",
-        "D": "After two full years, once planned enhancements are finished"
+        "C": "Soon after the first December-to-March period has ended",
+        "D": "After two full booking periods, once planned enhancements are finished"
       },
       "correct": "C",
       "key_concept": "Schedule the post-implementation review once the system has run under conditions that let the promised benefits be measured.",
       "pre_read": "Ask when the benefit promised in the business case can first be observed.",
-      "correct_explanation": "A review must wait until the system has run long enough, under representative conditions, to measure the promised benefits. Here the benefit is faster processing in filing season, so the review belongs shortly after the first season ends, while fixes are still practical. Three months after go-live is the runner-up: it is a common settling period, but summer data shows off-season volumes and cannot confirm the peak-season benefit.",
+      "correct_explanation": "A review must wait until the system has run long enough, under representative conditions, to measure the promised benefits. Here the benefit is faster bookings from December to March, so the review belongs soon after the first such period ends, while fixes are still practical. Three months after go-live is the runner-up: it is a common settling period, but August data shows off-season volumes and cannot confirm the peak-season benefit.",
       "wrong_explanations": {
-        "A": "Three months is a common settling period, but summer volumes cannot show whether processing is faster in filing season.",
+        "A": "Three months is a common settling period, but August volumes cannot show whether bookings are faster from December to March.",
         "B": "One week after go-live shows start-up problems and the learning curve, not the normal or peak results the review must measure.",
-        "D": "Two years later, context is lost and changes have piled up, so findings come too late to correct cheaply."
+        "D": "Two booking periods later, context is lost and changes have piled up, so findings come too late to correct cheaply."
       },
       "tips": [
         "Eliminate: B is too early to show anything but start-up issues, and D is too late to act on findings cheaply.",
@@ -5652,7 +5652,7 @@
         "Benefits realization",
         "Review timing"
       ],
-      "_provenance": "Authored from concept: 'Purpose and Timing of the Review. Benefits Tied to a Filing Season'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B4.1 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_066 (review one week after go-live), d3_016 (benefits as the primary focus) and d3_097 (risk-based selection of reviews): tests timing the review to the period when the promised benefit can be measured. All scenario specifics invented for this question. Public sources: ISACA Val IT Framework; COBIT 2019 BAI07.08.",
+      "_provenance": "Authored from concept: 'Purpose and Timing of the Review. Scheduling the First Review'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B4.1 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_066 (review one week after go-live), d3_016 (benefits as the primary focus) and d3_097 (risk-based selection of reviews): tests timing the review to the period when the promised benefit can be measured. All scenario specifics invented for this question. Public sources: ISACA Val IT Framework; COBIT 2019 BAI07.08.",
       "style_version": 2
     }
   ]
