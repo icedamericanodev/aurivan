@@ -10,7 +10,7 @@
  * Mobile 1.21 (DESIGN_SYSTEM.md §11 "Study notes"): the page reads in three
  * movements, each opened by a caption kicker over a hairline with 48 above
  * it: Understand (why, how, compare, diagram, example), Think like the
- * IS auditor (The IS auditor’s lens, exam traps), Keep it (key terms, analogy and
+ * IS auditor (auditing it, The IS auditor’s lens, exam traps), Keep it (key terms, analogy and
  * memory aid). An "On this page" row at the top names them (1, 2, 3) and
  * jumps to each; each kicker carries the same serif numeral. Figures and the
  * compare grid sit on an L1 plate (`raised2`, no border, no shadow). A
@@ -25,7 +25,7 @@ import { Modal, Platform, Pressable, ScrollView, StyleSheet, useWindowDimensions
 import Animated, { ReduceMotion, useAnimatedProps, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Circle, parse, SvgAst, type JsxAST } from 'react-native-svg';
-import type { NoteCompare, NoteIllustration, NoteSubtopic, NoteTerm } from '../content/notes/types';
+import type { NoteAuditFocus, NoteCompare, NoteIllustration, NoteSubtopic, NoteTerm } from '../content/notes/types';
 import type { NoteReadState } from '../engine/noteReadState';
 import { svgMinFontSize, svgSize, themeSvg } from '../engine/notesSvg';
 import { moveFocus } from '../lib/a11y';
@@ -532,6 +532,64 @@ export function IsacaRule({ text }: { text: string }) {
   );
 }
 
+/**
+ * Mobile 1.29: "Auditing it", how an IS auditor would audit this idea.
+ *
+ * Plain English: one calm L1 plate (`Card variant="plate"`: tonal, no border,
+ * no shadow, never tappable; DESIGN_SYSTEM.md §5) holding three labelled
+ * parts, hairlines between them, like the stacked compare table:
+ *   - "What to review": the audit steps, as bullets;
+ *   - "Evidence to ask for": the records that prove it works, as bullets;
+ *   - "Typical recommendation": one sentence, starting with the action (the
+ *     label already says the IS auditor recommends it);
+ *   - "Who decides" (optional): who decides or accepts the risk. It is the
+ *     exam lesson (the auditor recommends, management decides), so its
+ *     sentence is in `label` (Figtree 600): a little emphasis, no new colour.
+ * Each label is a `caption` in `accentText` over its content, so the parts
+ * are told apart by words, never by colour alone. Each part is ONE
+ * screen-reader stop that says its label first ("What to review: …").
+ * Text only (no fixed heights), so it reflows at 200% text. No animation.
+ */
+export function AuditFocus({ focus }: { focus: NoteAuditFocus }) {
+  const { c } = useTheme();
+  // The two lists share one recipe; the recommendation is a sentence, not a list.
+  const lists = [
+    { label: 'What to review', items: focus.review },
+    { label: 'Evidence to ask for', items: focus.evidence },
+  ];
+  const hairline = { borderTopWidth: 1, borderTopColor: c.line };
+  return (
+    <Card variant="plate" style={{ marginTop: space.sm, paddingVertical: space.xs }}>
+      {lists.map((part, i) => (
+        <View
+          key={part.label}
+          accessible
+          // The steps have no closing period (schema rule), so add one between them when spoken.
+          accessibilityLabel={`${part.label}: ${part.items.join('. ')}.`}
+          style={[{ paddingVertical: space.md }, i > 0 && hairline]}
+        >
+          <T v="caption" color={c.accentText}>{part.label}</T>
+          <Bullets items={part.items} />
+        </View>
+      ))}
+      <View
+        accessible
+        accessibilityLabel={`Typical recommendation: ${focus.recommend}`}
+        style={[{ paddingVertical: space.md }, hairline]}
+      >
+        <T v="caption" color={c.accentText}>Typical recommendation</T>
+        <T v="body" style={{ marginTop: space.sm }}>{focus.recommend}</T>
+      </View>
+      {focus.decides ? (
+        <View accessible accessibilityLabel={`Who decides: ${focus.decides}`} style={[{ paddingVertical: space.md }, hairline]}>
+          <T v="caption" color={c.accentText}>Who decides</T>
+          <T v="label" style={{ marginTop: space.sm }}>{focus.decides}</T>
+        </View>
+      ) : null}
+    </Card>
+  );
+}
+
 /** Exam traps: the one tinted block on the page, in the tip colours. */
 export function ExamTraps({ traps }: { traps: NoteSubtopic['examTraps'] }) {
   const { c } = useTheme();
@@ -646,8 +704,8 @@ const FIRST = { marginTop: space.lg };
 
 /**
  * Every section of a subtopic, in the fixed v2 order, grouped in three
- * movements. Optional sections (compare, types, illustration, analogy,
- * memory aid) are simply skipped; a movement with nothing in it is too.
+ * movements. Optional sections (compare, types, illustration, auditing it,
+ * analogy, memory aid) are simply skipped; a movement with nothing in it is too.
  */
 export function NoteBody({ note }: { note: NoteSubtopic }) {
   const { c } = useTheme();
@@ -722,7 +780,15 @@ export function NoteBody({ note }: { note: NoteSubtopic }) {
 
       {/* 2. Think like the IS auditor */}
       <Movement n={2} title="Think like the IS auditor" ref={auditor} />
-      <Section title="The IS auditor’s lens" style={FIRST} />
+      {/* Mobile 1.29: "Auditing it", after the example and right before the lens (learner review:
+          kept apart from the compare table and diagram). Absent → nothing at all. */}
+      {note.auditFocus && (
+        <>
+          <Section title="Auditing it" style={FIRST} />
+          <AuditFocus focus={note.auditFocus} />
+        </>
+      )}
+      <Section title="The IS auditor’s lens" style={note.auditFocus ? undefined : FIRST} />
       <IsacaRule text={note.isacaRule} />
 
       {note.examTraps.length > 0 && (

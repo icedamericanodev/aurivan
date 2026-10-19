@@ -220,6 +220,80 @@ describe('notes pipeline: practice ids ("Practice this concept")', () => {
   });
 });
 
+describe('notes pipeline: audit_focus ("Auditing it", mobile 1.29)', () => {
+  const focus = {
+    review: ['Sample keys from the inventory and compare their age with the cryptoperiod', '  Trace each key to an owner  '],
+    evidence: ['Key inventory with rotation dates', 'Destruction records signed by two custodians'],
+    // Starts with the action: the "Typical recommendation" label already says who recommends it.
+    recommend: 'Rotate keys past their cryptoperiod and record each rotation in the inventory.',
+    decides: '  Management accepts the residual risk or funds the fix ',
+  };
+  const withFocus = (value: unknown) => {
+    const raw = clone(fixture);
+    raw.domains[0].topics[0].subtopics[0].audit_focus = value;
+    return buildNotesPack(raw);
+  };
+
+  it('carries audit_focus through as auditFocus (trimmed), and omits it when absent', () => {
+    const r = withFocus(focus);
+    expect(r.problems).toEqual([]);
+    expect(r.warnings).toEqual([]);
+    expect(sub(r.pack, '4B1.2').auditFocus).toEqual({
+      ...focus,
+      review: [focus.review[0], 'Trace each key to an owner'],
+      decides: 'Management accepts the residual risk or funds the fix',
+    });
+    expect(sub(r.pack, '1A1.1')).not.toHaveProperty('auditFocus');
+    expect(JSON.stringify(r.pack)).not.toMatch(/audit_focus/);
+  });
+
+  it('decides is optional: absent stays absent', () => {
+    const { decides: _omit, ...noDecides } = focus;
+    const r = withFocus(noDecides);
+    expect(r.warnings).toEqual([]);
+    expect(sub(r.pack, '4B1.2').auditFocus).not.toHaveProperty('decides');
+  });
+
+  it('counts it toward the reading time once it is shown', () => {
+    const long = { ...focus, review: [...focus.review, 'word '.repeat(400).trim()] };
+    expect(sub(withFocus(long).pack, '4B1.2').minutes!).toBeGreaterThan(sub(built().pack, '4B1.2').minutes!);
+  });
+
+  it.each([
+    ['not an object', 'Review the keys', /not an object/],
+    ['a list', [focus.review], /not an object/],
+    ['an unknown key', { ...focus, owner: 'CISO' }, /unknown key owner/],
+    ['one review step', { ...focus, review: ['Sample keys'] }, /review needs 2 or 3 items/],
+    ['four evidence items', { ...focus, evidence: ['a', 'b', 'c', 'd'] }, /evidence needs 2 or 3 items/],
+    ['no evidence', { review: focus.review, recommend: focus.recommend }, /evidence needs 2 or 3 items/],
+    ['a blank step', { ...focus, review: ['Sample keys', '  '] }, /review has an empty or non-text item/],
+    ['a non-text item', { ...focus, evidence: ['Key inventory', 3] }, /evidence has an empty or non-text item/],
+    ['no recommendation', { ...focus, recommend: '' }, /recommend must be one sentence/],
+    ['a list as the recommendation', { ...focus, recommend: ['a'] }, /recommend must be one sentence/],
+    ['a blank decides', { ...focus, decides: ' ' }, /decides must be text when present/],
+    ['a list as decides', { ...focus, decides: ['Management'] }, /decides must be text when present/],
+  ])('drops %s with a warning, keeping the rest of the note', (_name, value, reason) => {
+    const r = withFocus(value);
+    expect(r.problems).toEqual([]);
+    expect(r.warnings).toEqual([expect.stringMatching(/^4B1\.2: audit_focus dropped/)]);
+    expect(r.warnings[0]).toMatch(reason);
+    expect(sub(r.pack, '4B1.2')).not.toHaveProperty('auditFocus');
+    expect(sub(r.pack, '4B1.2').example).toBeTruthy();
+  });
+
+  it('the six pilot notes in ../data/cisa_notes.json all reach the app pack', () => {
+    const notes = generatedNotes.cisa();
+    for (const id of ['1A3.2', '2B2.1', '3A4.2', '4B1.1', '4B3.1', '5A6.5']) {
+      const f = sub(notes, id).auditFocus!;
+      expect(f.review.length).toBeGreaterThanOrEqual(2);
+      expect(f.evidence.length).toBeGreaterThanOrEqual(2);
+      expect(f.recommend.length).toBeGreaterThan(0);
+    }
+    // A note without the field gets none (4B1.2 is not a pilot).
+    expect(sub(notes, '4B1.2')).not.toHaveProperty('auditFocus');
+  });
+});
+
 describe('the generated notes pack matches the source file', () => {
   it('src/content/generated/cisa/notes.json is what the pipeline makes from ../data/cisa_notes.json', () => {
     const src = path.join(__dirname, '..', '..', '..', 'data', 'cisa_notes.json');

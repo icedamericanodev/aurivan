@@ -34,6 +34,30 @@ export interface NoteIllustration {
   height: number;
 }
 
+/**
+ * Mobile 1.29: "Auditing it", the IS auditor's process view of a subtopic
+ * (source field `audit_focus`, docs/content/NOTES_SCHEMA_V2.md). The build
+ * guarantees the shape: 2–3 non-empty strings in each list, one sentence in
+ * `recommend`, and `decides` either absent or a non-empty sentence.
+ */
+export interface NoteAuditFocus {
+  /** "What to review": audit steps ("Sample keys from the inventory…"). */
+  review: string[];
+  /** "Evidence to ask for": records, logs or test results that prove it works. */
+  evidence: string[];
+  /**
+   * "Typical recommendation": one sentence that starts with the action
+   * ("Rotate overdue keys…"); the label already says who recommends it.
+   */
+  recommend: string;
+  /**
+   * "Who decides" (optional): who decides or accepts the risk ("Management
+   * accepts the residual risk or funds the fix"). The exam lesson, so the
+   * page gives it a little emphasis.
+   */
+  decides?: string;
+}
+
 /** One subtopic: the page a learner reads. Fields are in render order. */
 export interface NoteSubtopic {
   id: string; // e.g. "4B1.2": also the key for the learner's "read" tick
@@ -49,6 +73,11 @@ export interface NoteSubtopic {
   /** One or more diagrams (the source allows a single one or a list). */
   illustrations?: NoteIllustration[];
   example: string;
+  /**
+   * Mobile 1.29: "Auditing it", shown after the example, just before the
+   * IS auditor's lens. Absent on notes that do not have it yet.
+   */
+  auditFocus?: NoteAuditFocus;
   /** "The IS auditor’s lens". */
   isacaRule: string;
   examTraps: { trap: string; why: string }[];
