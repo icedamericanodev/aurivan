@@ -6112,7 +6112,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.8</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.9</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6391,7 +6391,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.8';
+const APP_VERSION = 'v12.9';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -14780,6 +14780,16 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Mini mock and calmer results',
+    items: [
+      { cat: 'new', text: 'A 50-question mini mock with the real exam\'s domain weights and pace, about 80 minutes. Your past mocks are listed on the Mock page.' },
+      { cat: 'improved', text: 'Mock exams now show right or wrong only at the end, like the real exam; pick an answer, then go to the next question.' },
+      { cat: 'improved', text: 'Calmer results after a practice set or mock: your score by domain, time and accuracy, and a quick way to review your mistakes.' },
+      { cat: 'improved', text: 'Mock questions use the same focused view as practice, with the exam clock and a flag to mark questions for your review.' }
+    ]
+  },
+  {
+    version: 'v12.8',
     title: 'Today, your calm home',
     items: [
       { cat: 'new', text: 'Today is your calm home: one tap to start or continue today\'s practice, your estimated readiness with a ring for each domain, and your study streak.' },

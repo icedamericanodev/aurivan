@@ -4,6 +4,16 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.9] — Mini mock and calmer results
+
+### New
+- A 50-question mini mock with the real exam's domain weights and pace, about 80 minutes. Your past mocks are listed on the Mock page.
+
+### Improved
+- Mock exams now show right or wrong only at the end, like the real exam; pick an answer, then go to the next question.
+- Calmer results after a practice set or mock: your score by domain, time and accuracy, and a quick way to review your mistakes.
+- Mock questions use the same focused view as practice, with the exam clock and a flag to mark questions for your review.
+
 ## [v12.8] — Today, your calm home
 
 ### New
