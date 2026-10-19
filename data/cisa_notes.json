@@ -3523,14 +3523,14 @@
               "example": "A bank's AI model approves small-business loans. After a regional downturn, loan officers there override it twice as often, yet the launch validation report still shows strong accuracy. The IS auditor compares recent applications with the training data, finds the input mix has shifted, and recommends drift monitoring and retraining triggers.",
               "audit_focus": {
                 "review": [
-                  "Plan procedures for each life-cycle stage, then combine them into one conclusion",
-                  "Run a challenger model or human sample against production outputs to detect drift",
+                  "Scope procedures for each life-cycle stage, then combine their results into one conclusion",
+                  "Compare recent production decisions with an independent challenger model's results on the same cases",
                   "Reperform a sample of decisions to test reproducibility"
                 ],
                 "evidence": [
-                  "Results of tests the IS auditor ran on company data",
-                  "Source and labeling records for each training set",
-                  "Override counts and accuracy trends since launch"
+                  "Production decision logs with inputs, model version and output for each decision",
+                  "Override counts and accuracy trends since launch",
+                  "Source, labeling and bias-test records for each training set"
                 ],
                 "recommend": "Have the model owner add drift monitoring, independent challenge for high-stakes models and record retention at retirement.",
                 "decides": "The business risk owner decides whether the model stays in use"
@@ -12631,7 +12631,7 @@
                   "Time server monitoring alerts and clock drift readings across systems",
                   "Sample log entries showing card and personal data masked"
                 ],
-                "recommend": "Have the IT operations manager bring every system into logging, set retention per log type and mask sensitive fields.",
+                "recommend": "Have the IT operations manager bring every system into logging, apply approved retention per log type and mask sensitive fields.",
                 "decides": "The data owner, with legal and compliance advice, approves retention periods"
               },
               "isaca_rule": "Coverage first, then retention, then protection. Every layer logs, privileged actions tie to a named person, clocks agree, and each log type is kept as long as law and business require. Capture what is needed and mask what is sensitive.",
@@ -14185,14 +14185,14 @@
               "example": "A mining company sends backup tapes to a vault 400 miles away to avoid shared hazards, but retrieval takes two days against a 12-hour RTO. The IS auditor reports the conflict and recommends a second copy closer by, still outside the hazard zone, or network vaulting. The chief information officer prices the options.",
               "audit_focus": {
                 "review": [
-                  "Pick tapes from the catalog and find them in the vault, and vice versa",
+                  "Sample tapes from the catalog and locate them in the vault, and vice versa",
                   "Trace a sample of media movements through signed handover receipts",
-                  "Compare the vault's distance, hazards and retrieval time with the RTO"
+                  "Compare flood and power-grid maps for the vault and the data center"
                 ],
                 "evidence": [
-                  "Retrieval test records showing time from request to media on site",
-                  "Audit reports for every facility holding the media",
-                  "Cloud backup settings showing customer-managed keys and the storage region"
+                  "Retrieval test records timing request to media on site against the RTO",
+                  "Cloud backup settings showing customer-managed keys and the storage region",
+                  "Assurance reports for every facility holding the media"
                 ],
                 "recommend": "Have IT operations reconcile the vault regularly, keep a catalog offsite and control keys for vendor-held backups.",
                 "decides": "The business owner approves the vault location against recovery and residency needs"
@@ -14753,7 +14753,7 @@
               "example": "A manufacturer has run from its hot site for five weeks after a warehouse fire, and the contract allows six. No one owns the move back to the rebuilt site. The IS auditor recommends assigning the relocation team now, with a tested cutover plan and data synchronization steps.",
               "audit_focus": {
                 "review": [
-                  "Test each invocation trigger: could two people read it and reach the same decision?",
+                  "Test each invocation trigger by whether two readers would reach the same decision",
                   "Confirm a named authority and alternate can invoke without group agreement",
                   "Observe an alternate, not the usual expert, run the procedures in a test"
                 ],
@@ -14762,7 +14762,7 @@
                   "Recovery schedule mapping dependencies, workstreams and their named leads",
                   "Delegation records naming the invocation authority and alternates"
                 ],
-                "recommend": "Have the business continuity manager set measurable triggers, name delegates and give each parallel workstream its own lead.",
+                "recommend": "Have the business continuity manager set measurable triggers, document named delegates and give each parallel workstream its own lead.",
                 "decides": "The plan's named executive, or the delegate, declares the disaster"
               },
               "isaca_rule": "Invoke fast, on measurable criteria, under authority named in advance. Then restore by business priority, adjusted for technical dependencies. The IS auditor evaluates triggers, delegation, procedure detail and team structure, because a weakness in any one can delay recovery beyond the RTO.",
@@ -15777,7 +15777,7 @@
               "example": "An online university moves 40 applications behind one cloud identity provider. The IS auditor finds the provider's administrator accounts use passwords only, and nobody has planned for online exams if the provider fails. The IS auditor recommends phishing-resistant multi-factor authentication for those administrators and a tested continuity plan for sign-in.",
               "audit_focus": {
                 "review": [
-                  "Disable a test user at the IdP and time how long application access lasts",
+                  "Observe a test user being disabled at the IdP and time remaining application access",
                   "Inspect application settings for signature checks on SAML assertions",
                   "List applications that still accept a local password beside SSO"
                 ],
@@ -15787,7 +15787,7 @@
                   "Session and token lifetime settings for each connected application"
                 ],
                 "recommend": "Have the identity team require MFA at the IdP, retire local logins and revoke sessions when users leave.",
-                "decides": "Application owners accept any risk from apps that cannot meet the standard"
+                "decides": "Application owners accept residual risk for apps that cannot meet the sign-in standard"
               },
               "isaca_rule": "SSO moves the front door to one place, so that door needs the strongest authentication and monitoring. Disabling an identity is not the same as ending access: sessions and tokens must be revoked too.",
               "exam_traps": [
@@ -18292,16 +18292,16 @@
               "example": "A shipping line's phishing simulations use generic prize-draw lures, while real attacks against it impersonate port authorities and freight invoices. Click rates are low, and the awareness lead reports success to senior management. The IS auditor recommends lures modeled on the attacks the company actually receives, each rated for difficulty, so results reflect real risk.",
               "audit_focus": {
                 "review": [
-                  "Compare simulation lures with the real phishing the company received",
+                  "Compare awareness metrics with incidents caused by staff error over the same period",
                   "Break click and report rates down by department and role",
-                  "Compare awareness metrics with incidents caused by staff error over the same period"
+                  "Compare simulation lures with the real phishing the company received"
                 ],
                 "evidence": [
                   "Incident records attributing causes to staff actions",
                   "Campaign results set beside the rated difficulty of each test",
                   "Report-rate trends and records of coaching after clicks"
                 ],
-                "recommend": "Have the awareness lead use realistic, difficulty-rated lures and reward reporting instead of punishing clicks.",
+                "recommend": "Have the awareness lead rate each lure's difficulty, track report rates and incidents, and reward reporting instead of punishing clicks.",
                 "decides": "Senior management decides the awareness budget based on outcome evidence"
               },
               "isaca_rule": "Effectiveness is shown by changed behavior and fewer incidents, not by completion, satisfaction or quiz scores. Metrics count only when tests stay comparable, and reporting must be rewarded, never punished. Diagnose a stalled program before changing vendors or budgets.",
@@ -18769,8 +18769,8 @@
               "audit_focus": {
                 "review": [
                   "Compare who can run scripting tools with who needs them for their job",
-                  "Review sign-in logs for domain administrators using ordinary workstations",
-                  "Test the lockout rule for failures counted across many accounts, not just one"
+                  "Inspect sign-in logs for domain administrators using ordinary workstations",
+                  "Test whether sign-in monitoring catches one password tried across many accounts"
                 ],
                 "evidence": [
                   "MFA coverage report for every internet-facing login, by method",
@@ -18868,15 +18868,15 @@
               "audit_focus": {
                 "review": [
                   "Map detection rules to MITRE ATT&CK, a public catalog of attacker techniques",
-                  "Inspect the zero-day procedure for a compensating control or exposure cut within hours",
+                  "Inspect the zero-day procedure for a compensating control or removing exposure within hours",
                   "Trace software updates to a verified source and a known-good rollback version"
                 ],
                 "evidence": [
-                  "Detection coverage map against attacker techniques, with gaps owned",
+                  "Detection rule list exported from the monitoring tool",
                   "Records of emergency firewall rules applied for past zero-days, with times",
                   "Software inventory listing component sources and approved versions"
                 ],
-                "recommend": "Have the security operations manager close detection gaps and keep tested playbooks for zero-days and bad updates.",
+                "recommend": "Have the security operations manager close detection gaps and keep tested playbooks for zero-days and compromised updates.",
                 "decides": "Senior management decides when to take visible action against a hidden intruder"
               },
               "isaca_rule": "Act on real risk, not labels. With no patch, cut exposure now through a compensating control. Against a hidden, patient attacker, map the whole intrusion before visible action, unless sensitive data is actively leaving.",
@@ -19861,12 +19861,12 @@
               "example": "A payroll software provider finds a faulty report emailed one client's salary file to another client. Its account manager plans to mention it at next month's review. The IS auditor explains that the provider, as processor, must tell the affected client without undue delay so the client, as controller, can meet its regulator deadline, and recommends notifying now.",
               "audit_focus": {
                 "review": [
-                  "Sample affected-person locations and confirm the duty register covers each country",
+                  "Sample affected people's countries; confirm the notification register lists each regulator's deadline",
                   "Trace a past incident from discovery to each notice and its deadline",
                   "Inspect vendor contracts for breach-notice times and cooperation duties"
                 ],
                 "evidence": [
-                  "Incident timeline showing discovery time and when each notice was sent",
+                  "Incident ticket timestamps and regulator portal receipts for each notice",
                   "Documented decisions on whether notice was needed, such as for encrypted devices",
                   "Log analysis the organization ran itself after each vendor incident"
                 ],
