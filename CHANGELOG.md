@@ -8,7 +8,7 @@ For internal/technical history, see git log and PR descriptions.
 
 ### New
 - Many study notes now end with "Auditing it": what the IS auditor reviews, the evidence to ask for, the typical recommendation and who makes the decision.
-- New practice questions on continuous auditing, independence, types of audit and quality reviews, and on project schedules, input checks, releasing machine-learning models, software reuse and audit trails.
+- New practice questions on continuous auditing, independence and types of audit; vendors, licensing, privacy and AI governance; and project schedules, testing, business cases, buying software, machine-learning releases and audit trails.
 
 ## [v12.19] — More practice on IT governance
 
