@@ -11536,15 +11536,15 @@
               "audit_focus": {
                 "review": [
                   "Reperform the reconciliation for a sample of runs, using sender and receiver totals",
-                  "Retry a test message and confirm the receiver rejects the repeat",
-                  "Trace recent patches to connected systems to interface regression test results"
+                  "Reperform a retry in testing and confirm the receiver rejects the repeat",
+                  "Trace recent patches to interface regression test results dated before go-live"
                 ],
                 "evidence": [
                   "Receiver error logs listing duplicates blocked before posting",
-                  "Suspense queue aging report with a named owner",
+                  "Suspense queue aging report showing item ages and owner",
                   "Signed reconciliations of sent, posted and rejected records, with differences explained"
                 ],
-                "recommend": "Have the interface owner reconcile every run at the receiver, reject duplicates by message identifier and test interfaces after patches.",
+                "recommend": "Have the interface owner reconcile every run at the receiver, reject duplicates by identifier and regression-test interfaces before go-live.",
                 "decides": "The business process owner decides how to treat unresolved differences"
               },
               "isaca_rule": "Reconcile at the receiving end and act on every exception. Prevent duplicates before posting with unique message identifiers, because reconciliation only finds them afterward; sequence checks reveal gaps. Job status is never proof of completeness.",
@@ -15114,11 +15114,11 @@
               "audit_focus": {
                 "review": [
                   "Compare each new use of personal data with its stated purpose and lawful basis",
-                  "Trace cross-border data flows to an adequacy decision or signed contractual clauses",
-                  "Match the access list to signed AUP acknowledgments, including non-employees"
+                  "Trace each cross-border data flow to its adequacy decision or signed standard contractual clauses",
+                  "Compare the access list with signed AUP acknowledgments, including contractors"
                 ],
                 "evidence": [
-                  "Consent logs showing a clear opt-in, not pre-ticked boxes",
+                  "Consent forms as users see them, showing boxes start unchecked",
                   "Request log with identity checks and response dates",
                   "Processing records listing purpose, lawful basis and retention per data set"
                 ],
@@ -16644,14 +16644,14 @@
                 "review": [
                   "Inspect encryption settings for the cipher and mode, flagging DES, Triple DES or ECB",
                   "Trace where each key is stored and how it reached the other party",
-                  "Compare keys across devices and partners to find one key shared by many"
+                  "Inspect the key inventory for one key shared across devices or partners"
                 ],
                 "evidence": [
                   "Configuration exports showing algorithm, key length and mode for each system",
                   "Key store records showing keys held apart from the data they protect"
                 ],
-                "recommend": "Have the system owner move to AES in an authenticated mode and hold keys separately from the data.",
-                "decides": "The data owner approves the migration date and accepts risk until then"
+                "recommend": "Have the system owner replace retired ciphers and weak modes and give each device its own, separately stored key.",
+                "decides": "The data owner approves the migration date and accepts residual risk until then"
               },
               "isaca_rule": "The algorithm is rarely the weak point; the key and how it is used are. Strong encryption with a badly stored key or a weak mode gives little protection. Use symmetric encryption for bulk data, with keys delivered and stored separately from the data.",
               "exam_traps": [
@@ -16855,12 +16855,12 @@
               "audit_focus": {
                 "review": [
                   "Inspect password storage settings for salt, a slow hash and no reversible encryption",
-                  "Compare published integrity checksums against the approved list of hash algorithms",
+                  "Compare the hash algorithm behind each published checksum with the approved list",
                   "Trace card numbers through systems to confirm only the vault holds real values"
                 ],
                 "evidence": [
                   "Sample of stored password records showing unique salts and the hash algorithm",
-                  "Data-flow map showing which systems hold tokens and which hold card numbers"
+                  "Card data discovery scan results showing full card numbers only in the vault"
                 ],
                 "recommend": "Have application owners retire MD5 and SHA-1, fix weak password storage and tokenize card numbers where possible.",
                 "decides": "The data owner accepts any residual risk until fixes are in place"
@@ -16927,10 +16927,10 @@
                 "evidence": [
                   "Access list and usage logs for the signing key's protected store",
                   "Verifier configuration showing public keys come from trusted certificates",
-                  "Signing records showing time-stamps and the person who approved each release"
+                  "Signing records showing timestamps and the person who approved each release"
                 ],
-                "recommend": "Have the release manager move signing keys to protected hardware and verify signatures only against trusted certificates.",
-                "decides": "The business owner decides which content needs encryption as well as signing"
+                "recommend": "Have system owners keep signing keys in a hardware security module (HSM) and verify signatures only against trusted certificates.",
+                "decides": "The data owner decides which content needs encryption as well as signing"
               },
               "isaca_rule": "A signature gives integrity, authentication and non-repudiation, never confidentiality. The sender signs with its own private key; the receiver verifies with the sender's public key. A signature is only as trustworthy as the custody of the signing key, which must stay under the signer's sole control.",
               "exam_traps": [
@@ -17795,14 +17795,14 @@
                 "review": [
                   "Inspect controller settings for the security mode: WPA2 or WPA3, enterprise or personal",
                   "Confirm laptop profiles enforce validation of the authentication server's certificate",
-                  "Map which internal systems each wireless network, including guest and scanner networks, can reach"
+                  "Trace what each wireless network, including guest and legacy-device networks, can reach internally"
                 ],
                 "evidence": [
                   "Wireless controller configuration export listing each network and its security mode",
-                  "Device profile settings pushed to company laptops",
+                  "Laptop profile settings showing server certificate validation is enforced",
                   "Firewall rules showing what each wireless segment can reach"
                 ],
-                "recommend": "Have the network team adopt enterprise mode with individual logins and limit weak or guest networks.",
+                "recommend": "Have the network team require enterprise mode with individual logins, admit only managed devices and contain weak networks.",
                 "decides": "The business owner accepts the risk of legacy devices until replacement"
               },
               "isaca_rule": "Tie wireless access to individuals so it can be revoked and traced. Enterprise mode with server certificate validation is the standard for organizations; hiding the network name, address filtering and passphrase rotation are weak substitutes.",
@@ -18232,15 +18232,15 @@
               "audit_focus": {
                 "review": [
                   "Sample recent supplier bank-detail changes for evidence of independent verification",
-                  "List users holding both supplier-maintenance and payment-release access",
+                  "Compare supplier-maintenance and payment-release access lists for users holding both",
                   "Inspect the domain's DMARC record to confirm a reject policy is published"
                 ],
                 "evidence": [
                   "Payment release logs showing a second approver for changed accounts",
                   "Email gateway reports of messages rejected under the DMARC policy",
-                  "Callback records showing who verified each change and how"
+                  "Callback records showing who verified each change, using the number on file"
                 ],
-                "recommend": "Have the finance manager split bank-detail changes from payment release and require callbacks for every change.",
+                "recommend": "Have the finance manager segregate bank-detail changes from payment release and require callbacks to a number on file.",
                 "decides": "Senior management sets payment approval limits and accepts residual fraud risk"
               },
               "isaca_rule": "Assume someone will be fooled, and design the process so one deceived person cannot cause the loss. Verify through a channel the attacker does not control, and segregate duties. If money is moving, stop the loss first.",
@@ -18328,15 +18328,15 @@
               "audit_focus": {
                 "review": [
                   "Inspect sample code for queries built by joining user input into SQL text",
-                  "Use a test account to request another user's record by changing its identifier",
+                  "Reperform an authorized test: change a record identifier to reach another user's data",
                   "Compare the application programming interface (API) inventory with gateway traffic to find unlisted ones"
                 ],
                 "evidence": [
-                  "Penetration test or code scan results, ranked by data exposure",
-                  "Code showing validation and permission checks run on the server",
+                  "Penetration test and code scan results ranked by exposure",
+                  "WAF alerts and rejected-request logs showing regular review",
                   "API gateway inventory listing an owner for every API"
                 ],
-                "recommend": "Have the application owner fix flaws in code and route every API through the gateway.",
+                "recommend": "Have the application owner parameterize queries, check access on the server and route every API through the gateway.",
                 "decides": "The business owner accepts any residual risk while fixes are pending"
               },
               "isaca_rule": "Fix application flaws at the source, in the code and on the server. Filters in front of the application are compensating layers that buy time. When ranking web risks, letting users reach data they are not entitled to outranks cosmetic weaknesses.",
@@ -18996,7 +18996,7 @@
               "example": "A hospital wants to know whether its new monitoring service would notice a real intrusion. The information security manager proposes a white-box test with the operations team warned in advance. The IS auditor notes that warned defenders cannot show whether detection works and recommends a double-blind test with written authorization.",
               "audit_focus": {
                 "review": [
-                  "Inspect the signed approval: who signed, which systems and which dates it covers",
+                  "Inspect the signed approval and rules of engagement for signer, systems and dates",
                   "Compare the test's type and starting point with the question management wants answered",
                   "Trace each reported finding to a fix and a retest"
                 ],
@@ -19005,7 +19005,7 @@
                   "Monitoring team's alert and escalation records from double-blind tests",
                   "Remediation tracker with retest results for each finding"
                 ],
-                "recommend": "Have the information security manager match each test type to its purpose and get signed approval first.",
+                "recommend": "Have the information security manager match each test to its purpose and obtain senior management's written authorization first.",
                 "decides": "Senior management authorizes each test and accepts the risk of testing live systems"
               },
               "isaca_rule": "Choose the test type from the question being asked. To test defenses deeply, share more knowledge; to test detection and response, tell defenders less. Every type needs written management authorization, an agreed scope and rules of engagement first.",
