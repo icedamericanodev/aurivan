@@ -214,12 +214,14 @@
         "answer": "Report the risk and recommend a formal exception decided by the accountable data owner at the level the policy names, with an expiration date and compensating controls. Approving it would make the IS auditor the risk owner."
       },
       "domains": [
+        1,
         2,
         3,
         4,
         5
       ],
       "subtopics": [
+        "1A4.7",
         "2A2.3",
         "2A3.3",
         "2A5.2",
@@ -232,6 +234,7 @@
         "5B4.3"
       ],
       "practice_ids": [
+        "d1_193",
         "d2_082",
         "d2_123",
         "d3_062",
@@ -415,9 +418,65 @@
       "aliases": []
     },
     {
-      "id": "evidence-quality",
+      "id": "fit-method-to-objective",
       "family": "assurance",
       "order": 2,
+      "title": "Fit the method to the objective",
+      "rule": "Pick the engagement, test, sampling method or technique that answers what the objective asks, not just a valid one.",
+      "why": "Each method answers one kind of question. A compliance test (test of controls) shows how often a control fails, a substantive test shows whether amounts or records are misstated, discovery sampling looks for at least one occurrence, and a SOC 1 report covers controls relevant to financial reporting. A well-run procedure aimed at the wrong question cannot support the conclusion.",
+      "triggers": [
+        "estimate the dollar value",
+        "confidence that the control operates",
+        "find at least one",
+        "zero tolerance",
+        "which type of engagement",
+        "which report should the IS auditor obtain",
+        "every transaction as it is processed"
+      ],
+      "trap": {
+        "move": "Reaching for a familiar or impressive method: one sample for several objectives, requesting a SOC 2 report for a financial-reporting objective, or periodic extracts when the objective needs real-time detection.",
+        "why_wrong": "A well-run procedure still fails if it measures the wrong thing. Attribute sampling gives a deviation rate, not a dollar misstatement, and a SOC 2 report is not designed for financial-reporting reliance."
+      },
+      "example": {
+        "scenario": "An IS auditor must confirm that no refund over $500 was paid last year without a matching return record. The audit manager suggests a random sample of 40 refunds.",
+        "answer": "The objective is \"none\", so test the whole population: use generalized audit software (GAS) on a complete extract and match every refund over $500 to a return. A sample can estimate how often refunds lack a match, but cannot show that none did."
+      },
+      "nuance": "Cost, tools and staffing decide only among methods that answer the objective. If none is feasible, the IS auditor informs audit management and reports the scope limitation rather than substituting a test that answers a different question.",
+      "domains": [
+        1,
+        3,
+        5
+      ],
+      "subtopics": [
+        "1A2.1",
+        "1A2.2",
+        "1A2.3",
+        "1A2.6",
+        "1B2.1",
+        "1B2.4",
+        "1B4.1",
+        "1B4.3",
+        "3B1.2",
+        "5B3.3"
+      ],
+      "practice_ids": [
+        "d1_009",
+        "d1_086",
+        "d1_152",
+        "d1_158",
+        "d1_185",
+        "d1_186",
+        "d1_207",
+        "d1_216"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "evidence-quality",
+      "family": "assurance",
+      "order": 3,
       "title": "Evidence quality decides",
       "rule": "Prefer sufficient, relevant and reliable evidence: from independent sources, obtained directly by the IS auditor and documented.",
       "why": "A conclusion is only as strong as the evidence beneath it. Evidence the IS auditor obtains directly, through reperformance, observation or confirmation from independent sources, leaves less room for error or bias than what the auditee says or prepares. More volume does not make up for poor quality.",
@@ -472,7 +531,7 @@
     {
       "id": "materiality-judgment",
       "family": "assurance",
-      "order": 3,
+      "order": 4,
       "title": "Materiality takes judgment, not just arithmetic",
       "rule": "Judge significance by its effect on decisions, including qualitative factors and small items added together.",
       "why": "A weakness is material when it could change what users of the audit report decide. A small amount can still matter if it touches regulatory reporting, repeats thousands of times or shows that a control others rely on has failed. Pervasiveness matters too: a contained issue may qualify the opinion; a pervasive one can make it adverse.",
@@ -520,7 +579,7 @@
     {
       "id": "report-agree-follow-up",
       "family": "assurance",
-      "order": 4,
+      "order": 5,
       "title": "Report, agree, then verify",
       "rule": "Report findings factually, record management's response, and verify the agreed actions with evidence.",
       "why": "An audit adds value only when risks are understood and addressed. Ratings rest on the IS auditor's evidence, so they change for new facts, not for pressure or seniority. Disagreement is reported beside the finding, and closure depends on proof that the agreed action works, not on a promise.",
@@ -998,8 +1057,8 @@
       ],
       "subtopics": [],
       "practice_ids": [
-        "d1_001",
-        "d1_018",
+        "d1_122",
+        "d1_047",
         "d2_021",
         "d3_016",
         "d4_015"
@@ -1039,7 +1098,7 @@
       "subtopics": [],
       "practice_ids": [
         "d1_090",
-        "d1_102",
+        "d1_137",
         "d2_118",
         "d3_103",
         "d4_090",

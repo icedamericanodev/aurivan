@@ -49,11 +49,45 @@ it is `escalate-to-decision-owner`.
   (committee, counsel, fraud channel) → `escalate-to-decision-owner`. Who
   accepts residual risk or owns the controls → `management-owns-risk`.
 - **Inside `assurance`.** What to do before testing (universe, population,
-  scope, objectives, tailoring a program) → `plan-before-testing`. Which
-  evidence or source to trust → `evidence-quality`. Design or configuration
-  versus operation over the period → `proven-not-configured`. Size, aggregation
-  or pervasiveness → `materiality-judgment`. How findings are reported, rated,
-  disputed or followed up → `report-agree-follow-up`.
+  scope, objectives, tailoring a program) → `plan-before-testing`. Which kind
+  of engagement, test, sampling method, technique or report answers the
+  objective → `fit-method-to-objective`. Whether the evidence in hand is
+  trustworthy and enough → `evidence-quality`. Size, aggregation or
+  pervasiveness → `materiality-judgment`. How findings are reported, rated,
+  disputed or followed up → `report-agree-follow-up`. (Design or configuration
+  versus operation over the period → `proven-not-configured`, which sits in the
+  `remedies` family in `principles.json`.)
+- **Boundary line: plan, method, evidence.** `plan-before-testing` settles
+  **what** must be answered and over **which population**;
+  `fit-method-to-objective` picks **which kind of procedure** answers it;
+  `evidence-quality` judges whether **the evidence in hand** is trustworthy and
+  enough. Test: if a perfectly run runner-up would still answer a different
+  question → `fit-method-to-objective`. If a better-sourced or more complete
+  version of the runner-up would win → `evidence-quality`. If the runner-up acts
+  before objective, scope or population is settled → `plan-before-testing`.
+- **Precedence notes.**
+  - Design vs operation (SOC Type 1 vs Type 2, configured vs worked all
+    period) stays `proven-not-configured`, the more specific principle.
+  - A report already in hand that does not cover the objective (a SOC
+    carve-out, a SOC 2 without the needed scope) is `evidence-quality`
+    (relevance or sufficiency). Choosing which report to request is
+    `fit-method-to-objective`.
+  - A stated constraint that eliminates the runner-up (zero production impact,
+    a two-person team) is `answer-from-the-stem`.
+  - How much testing, as opposed to which kind, follows assessed risk. That is
+    not `fit-method-to-objective`; sampling mechanics (sample-size drivers,
+    projection, when to extend a sample, which audit-risk component a test
+    reduces) stay untagged as knowledge unless the runner-up is the wrong kind
+    of test.
+- **Tightened `evidence-quality`.** Tag it only when the runner-up loses
+  because of a property of the evidence itself: its source or independence,
+  how it was obtained, its completeness and accuracy, its integrity, its
+  relevance to the objective, or its sufficiency. If the runner-up loses
+  because of **which kind of procedure** it is → `fit-method-to-objective`;
+  **when** or **over what scope** → `plan-before-testing`; **who** performs or
+  controls the work → `role` family; the **purpose** of a document or process →
+  usually a reading principle or untagged. The words "evidence" or "work
+  papers" in the stem are not enough.
 - **`evidence-quality` vs `proven-not-configured`.** Choosing between sources
   (auditee report vs system log vs third party) → `evidence-quality`. Choosing
   between "it is set up" and "it worked all period" → `proven-not-configured`.
