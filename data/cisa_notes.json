@@ -1816,6 +1816,11 @@
               "id": "1A4.5",
               "name": "Key Controls and IT-Dependent Manual Controls",
               "legacy_ids": [],
+              "practice_ids": [
+                "d1_189",
+                "d1_190",
+                "d1_191"
+              ],
               "definition": "A key control is one the IS auditor relies on to cover a significant risk; an IT-dependent manual control is a person's check that uses system-produced information.",
               "why_it_matters": "Auditors cannot test every control, so they focus on key ones. Many key controls are manual reviews of system reports, and a review is only as good as the report behind it.",
               "how_it_works": [
@@ -1915,6 +1920,11 @@
               "legacy_ids": [
                 "1.4.4",
                 "1A4.6"
+              ],
+              "practice_ids": [
+                "d1_192",
+                "d1_193",
+                "d1_194"
               ],
               "definition": "Residual risk is the risk that remains after controls are applied to inherent risk, which is the risk that would exist with no controls at all.",
               "why_it_matters": "No set of controls removes all risk, so someone must decide whether what remains is acceptable. That decision belongs to management, and auditors must not take it on.",
@@ -5167,6 +5177,11 @@
               "id": "2A4.2",
               "name": "Enterprise Architecture Frameworks: Zachman and TOGAF",
               "legacy_ids": [],
+              "practice_ids": [
+                "d2_197",
+                "d2_198",
+                "d2_199"
+              ],
               "definition": "An enterprise architecture (EA) framework is a published scheme or method that tells architects what to describe and how to develop the architecture consistently.",
               "why_it_matters": "Frameworks give architects a common language and a repeatable approach, so different teams produce comparable models. IS auditors use them as criteria for judging completeness and process.",
               "how_it_works": [
@@ -6478,6 +6493,11 @@
               "id": "2B1.2",
               "name": "Hiring and Termination Controls",
               "legacy_ids": [],
+              "practice_ids": [
+                "d2_200",
+                "d2_201",
+                "d2_202"
+              ],
               "definition": "Hiring and termination controls screen people before they get access, and promptly remove that access and company assets when they leave or change roles.",
               "why_it_matters": "Much insider damage happens at the edges of employment: a poorly screened hire, or a former employee whose account still works. These gaps are common and easy to exploit.",
               "how_it_works": [
@@ -6521,7 +6541,7 @@
                   }
                 ]
               },
-              "example": "A ferry operator will dismiss a network engineer at a Friday afternoon meeting, and IT has been told to remove his access on Monday. The IS auditor recommends disabling his remote and privileged access at or before the meeting, collecting his laptop and token there, and changing shared passwords he knew. The HR director agrees to the new timing.",
+              "example": "A ferry operator will dismiss a network engineer at a Friday afternoon meeting, and IT has been told to remove the engineer's access on Monday. The IS auditor recommends disabling remote and privileged access at or before the meeting, collecting the engineer's laptop and token there, and changing shared passwords the engineer knew. The HR director agrees to the new timing.",
               "isaca_rule": "Access ends when employment or the role ends, not when paperwork catches up; involuntary terminations need removal at or before notice. Active accounts of departed staff are disabled and checked for misuse first, then the HR-to-IT trigger is fixed. The IS auditor tests by matching HR records to active accounts.",
               "exam_traps": [
                 {
@@ -13145,7 +13165,8 @@
                 "d4_124",
                 "d4_208",
                 "d4_261",
-                "d4_262"
+                "d4_262",
+                "d4_270"
               ],
               "definition": "Recovery objectives are the business's limits for a disruption: the data it can lose, the downtime it can bear, and the minimum service it needs.",
               "why_it_matters": "These numbers set backup frequency, the recovery site and the cost of continuity. If wrong or unapproved, a plan can pass every test and still fail the business.",
@@ -13230,6 +13251,10 @@
                 {
                   "term": "Maximum tolerable outage (MTO)",
                   "definition": "The longest the organization can operate in alternate mode before it must return to normal; not the same as the MTD."
+                },
+                {
+                  "term": "Work recovery time (WRT)",
+                  "definition": "Time after systems return to check data and clear backlogs; the RTO plus the WRT must fit inside the MTD."
                 }
               ],
               "memory_aid": "RPO looks back at the Point you restore to; RTO looks ahead to the Time you are running again."
@@ -13783,7 +13808,10 @@
                 }
               ],
               "practice_ids": [
-                "d4_225"
+                "d4_225",
+                "d4_267",
+                "d4_268",
+                "d4_269"
               ]
             },
             {
@@ -17195,7 +17223,7 @@
                 "svg": "<svg viewBox='0 0 440 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Software-defined networking separates the control plane that decides from the data plane that forwards'><text x='220' y='14' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>CONTROL PLANE — MAKES DECISIONS</text><rect x='140' y='22' width='160' height='40' rx='4' fill='var(--accent-fill)'/><text x='220' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>SDN Controller</text><text x='220' y='100' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>DATA PLANE — FORWARDS TRAFFIC</text><rect x='20' y='110' width='112' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='76' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Switch</text><line x1='220' y1='62' x2='76' y2='110' stroke='var(--text2)' stroke-width='1.5'/><rect x='164' y='110' width='112' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='220' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Switch</text><line x1='220' y1='62' x2='220' y2='110' stroke='var(--text2)' stroke-width='1.5'/><rect x='308' y='110' width='112' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='364' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Switch</text><line x1='220' y1='62' x2='364' y2='110' stroke='var(--text2)' stroke-width='1.5'/></svg>",
                 "caption": "SDN splits the network in two. A central controller holds the control plane and decides routes; the switches keep only the data plane and forward traffic."
               },
-              "example": "A university moves its campus network to software-defined networking to speed up changes. The IS auditor finds network engineers all use one login to the SDN controller, and automation scripts push changes without approval records. He recommends individual accounts with multi-factor authentication, change control for scripted changes, and logging of every controller action.",
+              "example": "A university moves its campus network to software-defined networking to speed up changes. The IS auditor finds network engineers all use one login to the SDN controller, and automation scripts push changes without approval records. The IS auditor recommends individual accounts with multi-factor authentication, change control for scripted changes, and logging of every controller action.",
               "isaca_rule": "Centralizing control centralizes risk. Protect the SDN controller like any critical management system: restricted access, individual accounts with strong authentication, change control, logging and redundancy.",
               "exam_traps": [
                 {
@@ -17220,6 +17248,10 @@
                   "term": "SDN controller",
                   "definition": "The central software that decides traffic paths and pushes rules to every switch; whoever controls it controls the network."
                 }
+              ],
+              "practice_ids": [
+                "d5_306",
+                "d5_307"
               ]
             }
           ]
@@ -17720,6 +17752,12 @@
                   "term": "Scrubbing service",
                   "definition": "A provider that diverts incoming traffic, filters out the attack and forwards only clean traffic."
                 }
+              ],
+              "practice_ids": [
+                "d5_308",
+                "d5_309",
+                "d5_310",
+                "d5_311"
               ]
             },
             {

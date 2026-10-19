@@ -907,7 +907,10 @@ describe('Journey 8: What’s new and Common questions; no bank size anywhere', 
 
   it('Help, Settings’ Help row, Your reports and every email carry no bank size', async () => {
     mount(<Settings />);
-    for (const f of sizeForms.filter((x) => x.length >= 3)) expect(allText()).not.toContain(f);
+    // Whole numbers only: a domain size such as 202 must not match inside a year such as 2026.
+    for (const f of sizeForms.filter((x) => x.length >= 3)) {
+      expect(allText()).not.toMatch(new RegExp(`(^|[^\\w.])${f.replace(/[+.]/g, '\\$&')}(?![\\w])`));
+    }
     unmount();
     mount(<Help />);
     expectNoBankSize(allText());

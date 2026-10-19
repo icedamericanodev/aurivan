@@ -4,6 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.16] — Practice for every topic
+
+### New
+- New practice questions for the last topics that had none: control testing and risk assessment, enterprise architecture, hiring and leaving, backup and replication, recovery time, network controllers, and malware defense.
+
+### Improved
+- Recovery time objectives now include work recovery time in the study notes.
+
 ## [v12.15] — New practice for security testing and cloud
 
 ### New

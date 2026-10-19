@@ -1925,6 +1925,22 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - IETF RFC 3647 (Internet X.509 Public Key Infrastructure Certificate Policy and Certification Practices Framework)
 - PCI DSS v4.0.1
 
+## Added in Wave 1 batch Q3 review (Oct 2026)
+
+- PCAOB AS 1105 (Audit Evidence)
+- PCAOB AS 1105 (Audit Evidence), para .10
+- The Zachman Framework for Enterprise Architecture, Version 3.0 (Zachman International)
+- ISO/IEC/IEEE 42010:2022 (Architecture Description)
+- TOGAF Standard, 10th Edition, ADM Phase G (Implementation Governance) and Phase H (Architecture Change Management)
+- PCI DSS v4.0 Requirement 12.7.1 (Personnel Screening)
+
 ## Added with Wave 1 coverage batch Q1 (Domain 5, Oct 2026)
 
 - NIST SP 800-53 Rev 5 SC-26 (Decoys)
+
+## Added with Wave 1 coverage batch Q2 (Domains 4 and 5, Oct 2026)
+
+- ONF TR-511 (Principles and Practices for Securing Software-Defined Networks)
+- NIST SP 800-167 (Guide to Application Whitelisting)
+- MITRE ATT&CK T1014 (Rootkit)
+- NIST SP 800-189 (Resilient Interdomain Traffic Exchange: BGP Security and DDoS Mitigation)

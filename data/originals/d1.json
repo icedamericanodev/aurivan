@@ -7005,6 +7005,228 @@
       ],
       "_provenance": "Authored from concept: 'capability maturity assessment versus assurance audit'. Original Aurivan item (Oct 2026), written for CISA topic 1A2.",
       "style_version": 2
+    },
+    {
+      "id": "d1_189",
+      "domain": 1,
+      "subtopic": "Key Controls. IT-Dependent Manual Control and Report Completeness",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor confirms a controller signed every monthly review of a system report listing manual journal entries above $50,000. Which additional procedure is MOST important before relying on the review?",
+      "options": {
+        "A": "Test that the report captures every entry above the threshold",
+        "B": "Interview the controller about how each journal entry is reviewed",
+        "C": "Re-perform the controller's review for a sample of months",
+        "D": "Confirm the controller's sign-off authority in the delegation matrix"
+      },
+      "correct": "A",
+      "key_concept": "An IT-dependent manual control is only as reliable as the report behind it; test the report's completeness and accuracy, not just the sign-off.",
+      "pre_read": "Notice the review depends on a system report. Ask what the reviewer can never see if that report is incomplete.",
+      "correct_explanation": "The review is an IT-dependent manual control: the controller can only examine entries the report shows. Testing the report's completeness and accuracy, so that it captures every entry above the threshold, is what makes the review reliable. Re-performing the review checks the controller's diligence, but it uses the same report, so entries the report omits would escape both the controller and the IS auditor.",
+      "wrong_explanations": {
+        "B": "Inquiry alone is weak evidence. The controller's description cannot show whether the report behind the review was complete.",
+        "C": "Re-performance uses the same report. If the report drops entries, the IS auditor repeats the controller's blind spot.",
+        "D": "Sign-off authority matters, but an authorized reviewer working from an incomplete report still misses entries."
+      },
+      "tips": [
+        "Eliminate: B relies on inquiry alone, and D checks who signs rather than what the review covers.",
+        "Final two: A beats C because re-performing the review inherits any gap in the report; only testing the report closes it.",
+        "Exam cue: when a manual review uses system output, test the report as well as the reviewer."
+      ],
+      "framework_ref": "PCAOB AS 1105 (Audit Evidence), para .10; PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting); ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "IT-dependent manual control",
+        "Information produced by the entity",
+        "Completeness and accuracy",
+        "Key control testing"
+      ],
+      "_provenance": "Authored from concept: 'IT-dependent manual control relies on a complete and accurate report'. Original KaiSip item (Oct 2026), written for CISA topic 1A4.5 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_190",
+      "domain": 1,
+      "subtopic": "Key Controls. Risk-Based Selection of Key Controls",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor scoping a payroll audit finds fourteen controls documented over salary changes but time to test only a few. What should be the PRIMARY basis for selecting controls to test?",
+      "options": {
+        "A": "How often each control has been tested in past audits",
+        "B": "Whether the control's failure leaves a significant risk uncovered",
+        "C": "How easily the evidence for each control can be obtained",
+        "D": "Whether the control is automated and can be tested with one item"
+      },
+      "correct": "B",
+      "key_concept": "Key controls are those whose failure would leave a significant risk uncovered; they are tested first and most thoroughly.",
+      "pre_read": "With time for only a few tests, ask which controls the audit conclusion actually rests on.",
+      "correct_explanation": "Testing is risk-based: the IS auditor relies on key controls, the ones whose failure would leave a significant risk uncovered, so they are tested first and most thoroughly. Automation affects how a control is tested and how large the sample is, not whether it matters. A cheap-to-test automated control that covers a minor risk adds little to the conclusion.",
+      "wrong_explanations": {
+        "A": "Choosing by test history is rotation, not risk. A control tested often may still be key and need testing again.",
+        "C": "Ease of obtaining evidence is convenience. It can steer testing toward controls that cover little risk.",
+        "D": "Automation can shrink the sample once a control is chosen, but it does not decide which controls the conclusion relies on."
+      },
+      "tips": [
+        "Eliminate: A selects by rotation history, and C selects by convenience; neither looks at risk.",
+        "Final two: B beats D because key controls are chosen by the risk they cover; automation only changes how they are tested.",
+        "Exam cue: when time is short, test the controls the conclusion rests on, the key controls over significant risks."
+      ],
+      "framework_ref": "PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting); COSO Internal Control – Integrated Framework (2013)",
+      "related_concepts": [
+        "Key control",
+        "Risk-based testing",
+        "Non-key control",
+        "Sample size for automated controls"
+      ],
+      "_provenance": "Authored from concept: 'key controls are selected by the significance of the risk they cover'. Original KaiSip item (Oct 2026), written for CISA topic 1A4.5 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_191",
+      "domain": 1,
+      "subtopic": "Key Controls. Automated Control Reliance on IT General Controls",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An IS auditor plans to test an ERP's automated three-way match with a single invoice, then learns developers can change its tolerance settings in production without approval. Which concern about the test is GREATEST?",
+      "options": {
+        "A": "The match tolerance may be set too wide for the business",
+        "B": "Developers may lack training on the ERP's matching configuration",
+        "C": "A single test cannot show the match operated all period",
+        "D": "The invoice chosen may not represent typical transactions"
+      },
+      "correct": "C",
+      "key_concept": "One test of an automated control supports reliance only when IT general controls, especially change control, keep its logic unchanged all period.",
+      "pre_read": "Ask what lets one test of an automated control stand for the whole period, and whether that still holds here.",
+      "correct_explanation": "An automated control performs the same way every time, so one test item can support reliance, but only while change management prevents unapproved changes to its settings. Because developers can alter the tolerance in production without approval, a single passing test shows the match worked on that day, not across the period. Choosing a more typical invoice does not help: the weakness is that the configuration itself may have changed.",
+      "wrong_explanations": {
+        "A": "Nothing suggests the tolerance is wrong today. The issue is that it can change unnoticed, whatever its current value.",
+        "B": "Training gaps are speculation here. The stated fact is uncontrolled change access, which undermines reliance on any single test.",
+        "D": "For an automated control every item runs through the same logic, so representativeness matters little; unchanged logic over the period matters."
+      },
+      "tips": [
+        "Eliminate: A guesses at a design flaw the stem never shows, and B guesses at training gaps.",
+        "Final two: C beats D because automated logic treats every invoice alike; the risk is that the logic changed during the period.",
+        "Exam cue: a one-item test of an automated control needs effective change control behind it; weak IT general controls break that reliance."
+      ],
+      "framework_ref": "PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting); COBIT 2019 BAI06 (Managed IT Changes)",
+      "related_concepts": [
+        "Automated application control",
+        "IT general controls",
+        "Change management",
+        "Test of one"
+      ],
+      "_provenance": "Authored from concept: 'testing an automated control with one item depends on effective change control'. Original KaiSip item (Oct 2026), written for CISA topic 1A4.5 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_192",
+      "domain": 1,
+      "subtopic": "Residual Risk. Ratings Based on Untested Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds a risk register rates residual risk on a customer database as low, based on controls described in policy but never tested. What is the MOST LIKELY implication?",
+      "options": {
+        "A": "The controls described in policy are probably poorly designed",
+        "B": "Inherent risk for the database has been rated too high",
+        "C": "The risk owner can accept the low rating without further review",
+        "D": "Actual residual risk may be closer to inherent risk than rated"
+      },
+      "correct": "D",
+      "key_concept": "Residual risk ratings must rest on tested controls; untested controls mean actual residual risk may sit near inherent risk.",
+      "pre_read": "Ask what the low rating assumes about the controls, and whether anyone has checked that assumption.",
+      "correct_explanation": "Residual risk is inherent risk reduced by controls that actually operate. A low rating based on controls nobody has tested assumes they work, so actual residual risk may be closer to inherent risk than the register shows. Concluding that the controls are poorly designed goes too far: their design may be sound; what is unknown is whether they operate effectively.",
+      "wrong_explanations": {
+        "A": "Nothing shows the design is weak. The gap is missing evidence that the controls operate, which leaves the rating unsupported.",
+        "B": "The stem gives no reason to doubt the inherent rating. The weakness lies in the credit taken for untested controls.",
+        "C": "An unsupported rating is a poor basis for any acceptance decision; it needs evidence before an owner relies on it."
+      },
+      "tips": [
+        "Eliminate: B questions an inherent rating the stem never challenges, and C treats an untested rating as reliable.",
+        "Final two: D beats A because untested controls are unproven, not proven weak; the rating's credit for them is unsupported.",
+        "Exam cue: residual risk counts only controls shown to work; untested controls leave it closer to inherent risk."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; COBIT 2019 APO12 (Managed Risk); ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "Inherent risk",
+        "Residual risk",
+        "Control effectiveness testing",
+        "Risk register"
+      ],
+      "_provenance": "Authored from concept: 'residual risk ratings that rely on untested controls'. Original KaiSip item (Oct 2026), written for CISA topic 1A4.7 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_193",
+      "domain": 1,
+      "subtopic": "Residual Risk. The IS Auditor Does Not Accept Risk",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Residual risk from a system's weak logging exceeds risk appetite, which policy says only the risk committee may accept; the sponsor asks the IS auditor to approve go-live. What is the IS auditor's BEST response?",
+      "options": {
+        "A": "Approve go-live, since weak logging is merely a detective gap",
+        "B": "Ask the project sponsor to sign a risk acceptance for the gap",
+        "C": "Decline approval and report the exposure to the risk committee",
+        "D": "Delay the audit report until logging meets the standard"
+      },
+      "correct": "C",
+      "key_concept": "The IS auditor evaluates and reports residual risk; accepting it, or approving go-live despite it, is a management decision.",
+      "pre_read": "Notice who is being asked to decide. Ask whether that decision belongs to the IS auditor at all.",
+      "correct_explanation": "Deciding whether to proceed with residual risk above appetite belongs to management: the risk must be treated, or formally accepted at the level the risk policy sets, here the risk committee. The IS auditor declines to approve and reports the exposure to that committee. Arranging the sponsor's signature looks constructive, but the IS auditor would be steering a risk decision, and the sponsor lacks the authority policy requires.",
+      "wrong_explanations": {
+        "A": "Approving go-live is a management decision. An IS auditor who approves it takes on risk ownership and impairs independence.",
+        "B": "The IS auditor would be steering a risk decision, and policy reserves acceptance above appetite for the risk committee, not the sponsor.",
+        "D": "Holding back the report hides the exposure from those who must decide. The IS auditor reports the risk; management fixes it."
+      },
+      "tips": [
+        "Eliminate: A has the IS auditor approve a risk decision, and D delays reporting the exposure management must act on.",
+        "Final two: C beats B because the IS auditor reports to the body policy names; arranging the sponsor's sign-off steers the decision to someone without authority.",
+        "Exam cue: the IS auditor evaluates, reports and recommends; any option where the IS auditor accepts or approves risk is out."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; COBIT 2019 APO12 (Managed Risk); ISO 31000:2018 (Risk Management)",
+      "related_concepts": [
+        "Risk appetite",
+        "Risk acceptance",
+        "Risk owner",
+        "Auditor independence"
+      ],
+      "_provenance": "Authored from concept: 'residual risk above appetite is a management decision, not the auditor's'. Original KaiSip item (Oct 2026), written for CISA topic 1A4.7 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_194",
+      "domain": 1,
+      "subtopic": "Residual Risk. Documented Acceptance Within Appetite",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A CIO wants controls added to a payments platform until its residual risk reaches zero, although that risk is already within appetite. Which recommendation from the IS auditor is MOST appropriate?",
+      "options": {
+        "A": "Have the risk owner document acceptance with a review date",
+        "B": "Keep adding controls until no residual risk remains",
+        "C": "Stop adding controls and close the risk in the register",
+        "D": "Lower the risk appetite so that further controls are justified"
+      },
+      "correct": "A",
+      "key_concept": "Residual risk never reaches zero; within appetite, an authorized owner accepts it in a documented decision that is reviewed over time.",
+      "pre_read": "Ask whether zero risk is achievable, and what should happen to risk that already sits within appetite.",
+      "correct_explanation": "No set of controls removes all risk, and each added control costs money. Once residual risk is within appetite, the right step is a documented acceptance by the authorized risk owner, with reasons and a review date. Closing the risk in the register also stops the spending, but it drops the decision record and the review that would catch the risk growing later.",
+      "wrong_explanations": {
+        "B": "Zero residual risk is unreachable. Each extra control adds cost while the risk already sits inside the accepted appetite.",
+        "C": "Closing the entry removes the decision record and the scheduled review, so a growing risk could go unnoticed.",
+        "D": "The board sets risk appetite to reflect strategy. Lowering it just to justify more spending reverses the logic."
+      },
+      "tips": [
+        "Eliminate: B chases zero residual risk, which no control set achieves, and D bends the risk appetite to fit spending.",
+        "Final two: A beats C because accepted risk still needs a documented owner decision and periodic review, not deletion.",
+        "Exam cue: residual risk within appetite is accepted on record by its owner, never removed and never ignored."
+      ],
+      "framework_ref": "ISO 31000:2018 (Risk Management); COBIT 2019 EDM03 (Ensured Risk Optimization); ISACA Risk IT Framework",
+      "related_concepts": [
+        "Residual risk",
+        "Risk appetite",
+        "Risk acceptance",
+        "Cost-benefit of controls"
+      ],
+      "_provenance": "Authored from concept: 'residual risk never reaches zero; acceptance within appetite is documented'. Original KaiSip item (Oct 2026), written for CISA topic 1A4.7 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
+      "style_version": 2
     }
   ]
 }
