@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.15] — New practice for security testing and cloud
+
+### New
+- New practice questions on penetration testing, intrusion detection, decoy systems and cloud models, topics that had no practice before.
+
 ## [v12.14] — Exam guide and final review week
 
 ### New
