@@ -5,6 +5,7 @@ Usage:
     python3 scripts/lint_notes.py                      # data/cisa_notes.json, all domains
     python3 scripts/lint_notes.py path/to/domain4.json # one domain object (writer drafts)
     python3 scripts/lint_notes.py --domain 4           # one domain of the main file
+    python3 scripts/lint_notes.py --audit-focus        # also list each subtopic without audit_focus
 
 Errors break the schema or a hard limit; warnings are style targets.
 Exit code 1 if there are errors.
@@ -19,7 +20,8 @@ ECO = ROOT / "docs" / "content" / "CISA_ECO.md"
 
 REQUIRED_SUB = ["id", "name", "definition", "why_it_matters", "how_it_works",
                 "example", "isaca_rule", "exam_traps", "key_terms"]
-OPTIONAL_SUB = ["legacy_ids", "practice_ids", "compare", "types", "illustration", "analogy", "memory_aid"]
+OPTIONAL_SUB = ["legacy_ids", "practice_ids", "compare", "types", "illustration", "analogy", "memory_aid",
+                "audit_focus"]
 V1_FIELDS = ["summary", "key_point", "exam_tip", "common_mistakes", "categories"]
 EMOJI = re.compile("[\U0001F300-\U0001FAFF☀-➿]")
 BRITISH = re.compile(r"\b(\w+is(e|ed|es|ing|ation)|colour\w*|behaviour\w*|centre\w*|"
@@ -40,6 +42,24 @@ BRITISH_OK = {"raise", "raised", "raises", "raising", "advise", "advised", "advi
               "sunrise", "otherwise", "clockwise", "crosswise", "lengthwise", "streetwise",
               "advertise", "advertised", "advertises", "advertising", "apprise", "apprised",
               "premised", "noises", "praised", "rises", "wisest", "wiser"}
+
+# audit_focus: the IS auditor's process view (NOTES_SCHEMA_V2.md). Optional while it is
+# rolled out: a missing field is ONE summary warning (list them with --audit-focus).
+AF_REQUIRED = {"review", "evidence", "recommend"}
+AF_OPTIONAL = {"decides"}
+AF_ITEM_WORDS = (4, 14)     # each review / evidence item
+AF_REC_WORDS = (8, 24)      # recommend: an imperative sentence naming who acts
+AF_DEC_WORDS = (4, 16)      # decides: who decides or accepts the risk
+AF_MAX_WORDS = 95           # the whole field, counted apart from the 180-380 core
+AF_OVERLAP_MAX = 0.6        # share of an item's content words found in one how_it_works bullet, the rule or the example
+AF_AUDITOR_DOES = re.compile(r"\b(IS )?auditors?\b[^;.]*?\b(implements?|fix(es)?|configures?|designs?|approves?|"
+                             r"accepts?|drafts?|owns?|decides?)\b", re.I)
+# Who acts / who decides: a role or body, not the auditor.
+# Role words match in any case ("Management decides" opens many lines); acronyms stay upper case.
+AF_ACTOR = re.compile(r"\b((?i:management|managers?|owners?|officers?|committees?|board|team|operations|directors?|"
+                      r"executives?|administrators?|staff|council|leads?|sponsors?|custodians?|steering|department|"
+                      r"function|counsel|leaders?)|CISO|CIO|CFO|CEO|IT)\b")
+AF_MISSING = []
 
 PRACTICE_SEEN = {}
 _BANK = None
@@ -104,6 +124,73 @@ def text_checks(r, where, field, s):
             r.warn(where, f"{field}: British spelling? '{m.group(0)}'")
     if re.search(r"\b\d[\d,]*\s+(practice\s+)?questions\b", s, re.I):
         r.err(where, f"{field} may mention the bank size")
+
+def lint_audit_focus(r, s, where):
+    """Validate the optional audit_focus field. Returns its word count (0 if absent or malformed)."""
+    af = s.get("audit_focus")
+    if af is None:
+        AF_MISSING.append(where)
+        return 0
+    if not isinstance(af, dict) or not AF_REQUIRED <= set(af) or set(af) - AF_REQUIRED - AF_OPTIONAL:
+        r.err(where, "audit_focus must have review, evidence and recommend, and optionally decides (nothing else)")
+        return 0
+    total, parts = 0, []
+    for key in ("review", "evidence"):
+        items = af[key]
+        if not isinstance(items, list) or not 2 <= len(items) <= 3 \
+                or not all(isinstance(x, str) and x.strip() for x in items):
+            r.err(where, f"audit_focus.{key} must be a list of 2-3 non-empty strings")
+            continue
+        for i, x in enumerate(items):
+            n = words(x)
+            total += n
+            lo, hi = AF_ITEM_WORDS
+            if not lo <= n <= hi:
+                r.err(where, f"audit_focus.{key}[{i}] is {n} words ({lo}-{hi})")
+            if x.rstrip().endswith("."):
+                r.warn(where, f"audit_focus.{key}[{i}] is a phrase; drop the closing period")
+            if key == "review" and re.match(r"\s*check that\b", x, re.I):
+                r.warn(where, f"audit_focus.review[{i}] starts 'Check that'; name the procedure and the record examined")
+            text_checks(r, where, f"audit_focus.{key}", x)
+            parts.append((f"audit_focus.{key}[{i}]", x))
+    for key, (lo, hi) in (("recommend", AF_REC_WORDS), ("decides", AF_DEC_WORDS)):
+        if key not in af:
+            continue
+        x = af[key]
+        if not isinstance(x, str) or not x.strip():
+            r.err(where, f"audit_focus.{key} must be a non-empty string")
+            continue
+        n = words(x)
+        total += n
+        if not lo <= n <= hi:
+            r.err(where, f"audit_focus.{key} is {n} words ({lo}-{hi})")
+        if not AF_ACTOR.search(x):
+            r.warn(where, f"audit_focus.{key} names no role; say who {'acts' if key == 'recommend' else 'decides'}")
+        if AF_AUDITOR_DOES.search(x):
+            r.warn(where, f"audit_focus.{key} has the auditor implementing, approving or accepting "
+                          "(the auditor recommends; management decides)")
+        text_checks(r, where, f"audit_focus.{key}", x)
+        parts.append((f"audit_focus.{key}", x))
+    rec = af.get("recommend")
+    if isinstance(rec, str) and re.match(r"\s*(the )?(IS )?auditor", rec, re.I):
+        r.warn(where, "audit_focus.recommend should start with the action verb (the label already says who recommends)")
+    if total > AF_MAX_WORDS:
+        r.err(where, f"audit_focus is {total} words (max {AF_MAX_WORDS})")
+    # The field adds the audit procedure and its evidence; it must not restate the
+    # mechanism (how_it_works), the principle (isaca_rule) or the story (example).
+    others = [("how_it_works", b) for b in s.get("how_it_works", []) if isinstance(b, str)]
+    others += [(f, s.get(f, "")) for f in ("isaca_rule", "example")]
+    for label, x in parts:
+        cw = content_words(x)
+        if len(cw) < 4:
+            continue
+        for f, y in others:
+            # Containment, not Jaccard: a short item lifted from a long example still counts.
+            score = len(cw & content_words(y)) / len(cw)
+            if score >= AF_OVERLAP_MAX:
+                r.warn(where, f"{label} repeats {f} (overlap {score:.2f}); name the audit step or the evidence instead")
+                break
+    return total
 
 def lint_sub(r, s, topic_id, seen_terms):
     where = s.get("id", "?")
@@ -221,6 +308,7 @@ def lint_sub(r, s, topic_id, seen_terms):
             r.warn(where, f"key term '{t}' also defined in {seen_terms[t]}")
         else:
             seen_terms.setdefault(t, where)
+    lint_audit_focus(r, s, where)
     mem = s.get("memory_aid")
     if mem and words(mem) > 20:
         r.err(where, f"memory_aid is {words(mem)} words (max 20)")
@@ -309,6 +397,12 @@ def main(argv):
         if only and dom.get("domain_number") != only:
             continue
         count += lint_domain(r, dom, codes)
+    if AF_MISSING:
+        r.warn("notes", f"{len(AF_MISSING)} of {count} subtopic(s) have no audit_focus yet (optional for now; "
+                        "priority order in docs/content/AUDIT_FOCUS_PLAN.md; list them with --audit-focus)")
+        if "--audit-focus" in argv:
+            for sid in AF_MISSING:
+                r.warn(sid, "no audit_focus")
     for line in r.errors + r.warnings:
         print(line)
     print(f"{count} subtopic(s) checked · {len(r.errors)} error(s) · {len(r.warnings)} warning(s)")
