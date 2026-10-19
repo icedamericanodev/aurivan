@@ -240,7 +240,9 @@ export function startMock(certId: string, questions?: number, opts: MockOptions 
   const total = questions ?? cert.exam.questions;
   const timing = opts.timing ?? 'standard';
   const { minutesAllowed } = mockPace(cert.exam, total, timing);
-  const ids = buildMockExam(cert, getAllQuestions(certId), createRng(Date.now()), total);
+  // The outline spreads each domain's picks across its topics (Wave 5 / M1);
+  // a cert without notes has an empty outline and keeps the random pick.
+  const ids = buildMockExam(cert, getAllQuestions(certId), createRng(Date.now()), total, certOutline(certId).topics);
   return newSession('mock', certId, total === cert.exam.questions ? 'Full mock exam' : 'Mini mock', ids, {
     ...(minutesAllowed !== null ? { deadline: Date.now() + minutesAllowed * 60_000 } : {}),
     timing,

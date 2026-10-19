@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.22] — Mock exams that cover every topic
+
+### Improved
+- Mock exams now spread their questions across every topic in the exam outline, so each mock covers the whole exam the way the real one does.
+
 ## [v12.21.1] — Fairer topic filters
 
 ### Fixed
