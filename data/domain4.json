@@ -8389,39 +8389,38 @@
     {
       "id": "d4_225",
       "domain": 4,
-      "subtopic": "Cyber Insurance Claim Dispute",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
-      "question": "A cyber insurer denies a $40M ransomware claim, citing inconsistent MFA and stale penetration tests, and offers $4M as goodwill. What should the IS auditor recommend the CFO do FIRST?",
+      "subtopic": "Data Backup. Electronic Vaulting and RPO Fit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A BIA sets a one-hour RPO for a firm's order database. If the firm relied on one of these copy methods, which would be the GREATEST concern for the IS auditor?",
       "options": {
-        "A": "Accept the $4M goodwill offer and redirect effort to remediation",
-        "B": "File suit against the carrier to recover the full claim",
-        "C": "Lodge a complaint with the insurance regulator to press the carrier",
-        "D": "Gather control evidence and obtain an independent coverage review"
+        "A": "Remote journaling of each transaction to the recovery site",
+        "B": "Asynchronous replication of the database to the recovery site",
+        "C": "Electronic vaulting of backup batches every 30 minutes",
+        "D": "Nightly backup tapes couriered to an offsite vault"
       },
       "correct": "D",
-      "key_concept": "Disputed claims turn on evidence: documented control status and an independent reading of the policy come before settling, suing or complaining.",
-      "pre_read": "Look at the carrier's three reasons. Ask what the firm needs before it can judge whether any of them hold.",
-      "correct_explanation": "The denial rests on factual claims about MFA and penetration testing. Gathering contemporaneous control evidence and an independent coverage review shows whether the exclusions actually apply, and informs every later choice. A regulator complaint is a legitimate lever, but filed before the firm knows its own evidence, it relies on outside pressure instead of a documented position.",
+      "key_concept": "A copy method's data-loss window is the gap between copies; it must be shorter than the RPO set by the BIA.",
+      "pre_read": "For each option, estimate the most data it could lose, then compare it with the one-hour RPO.",
+      "correct_explanation": "The concern is any method whose possible data loss exceeds the one-hour RPO. Nightly couriered tapes can lose up to a day of orders, so they are the greatest concern. Electronic vaulting every 30 minutes is the slowest of the network methods and looks like the weak link, but its worst-case loss of about half an hour stays within the objective.",
       "wrong_explanations": {
-        "A": "Accepting a tenth of the claim before testing the exclusions may forfeit a valid recovery permanently.",
-        "B": "Litigation before assessing the evidence is costly and premature, and may fail if an exclusion genuinely applies.",
-        "C": "A regulator complaint can help, but without the firm's own evidence it rests on pressure rather than a documented position."
+        "A": "Journaling sends each transaction as it happens, so loss is limited to the last few moments; it meets a one-hour RPO easily.",
+        "B": "Asynchronous replication copies writes moments after they commit, so the possible loss is seconds or minutes, well within an hour.",
+        "C": "Batches every 30 minutes cap the loss at about half an hour, so this method still meets the one-hour objective."
       },
       "tips": [
-        "Eliminate: A concedes before testing the exclusions, and B litigates before knowing whether the evidence supports it.",
-        "Final two: D beats C because the firm's documented evidence must come before any outside pressure on the carrier.",
-        "Exam cue: in any dispute, establish your own evidence first; it decides which response is worth pursuing."
+        "Eliminate: A and B send data continuously or within moments, so both clearly meet the one-hour objective.",
+        "Final two: D beats C because nightly tapes can lose a full day of orders; 30-minute vaulting is slower but stays inside the hour.",
+        "Exam cue: compare each method's worst-case data loss with the RPO; the method whose gap between copies exceeds it is the finding."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 MEA02 (Managed System of Internal Control); COBIT 2019 APO12 (Managed Risk)",
+      "framework_ref": "NIST SP 800-34 Rev 1 (Contingency Planning Guide for Federal Information Systems); NIST SP 800-53 Rev 5 CP-9 (System Backup); COBIT 2019 DSS04 (Managed Continuity)",
       "related_concepts": [
-        "Insurance coverage interpretation",
-        "Contra proferentem rule",
-        "State insurance commissioner",
-        "Coverage attorney",
-        "Contemporaneous documentation"
+        "Electronic vaulting",
+        "Remote journaling",
+        "Asynchronous replication",
+        "Recovery point objective"
       ],
-      "_provenance": "Authored from concept: 'Cyber insurance claim dispute multi-track response'. Public sources: NAIC, state AGs, HHS. Scenario specifics (healthcare $1.8B, ransomware 3.2M records, $40M claim, carrier $4M goodwill, three exclusion grounds, $50M policy) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Cyber insurance claim dispute multi-track response'. Public sources: NAIC, state AGs, HHS. Scenario specifics (healthcare $1.8B, ransomware 3.2M records, $40M claim, carrier $4M goodwill, three exclusion grounds, $50M policy) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Wave 0-A re-scope (Oct 2026): rewritten in place to test D4 electronic vaulting, journaling and replication against the RPO (4B3.2) instead of a cyber-insurance claim dispute; id kept so learner history is preserved.",
       "style_version": 2
     },
     {
@@ -8465,39 +8464,38 @@
     {
       "id": "d4_227",
       "domain": 4,
-      "subtopic": "Acquisition Integration Extending Beyond Window",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
-      "question": "An acquisition's IT integration is 40% complete with two months left, and the IT sponsor wants to declare it finished. What should the IS auditor recommend to the COO FIRST?",
+      "subtopic": "Database Integrity. Referential Integrity",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds that customer records can be deleted while open orders still point to them, leaving orphan orders. Which database control is MOST LIKELY missing?",
       "options": {
-        "A": "Add contractors to finish the integration inside the original window",
-        "B": "Present an honest status with a go-forward cost-benefit analysis",
-        "C": "Extend the integration window by twelve months with added budget",
-        "D": "Declare completion and hand the open gaps to business-as-usual teams"
+        "A": "Entity integrity requiring a unique key for each customer",
+        "B": "Referential integrity enforced between orders and customers",
+        "C": "Record locking during simultaneous updates to customer data",
+        "D": "Nightly backups of the customer and order tables"
       },
       "correct": "B",
-      "key_concept": "For an off-track integration, give decision-makers an honest status and go-forward cost-benefit before committing to any recovery path.",
-      "pre_read": "Notice the gap between 40% done and two months left. Ask what management needs before it can choose any path.",
-      "correct_explanation": "Leaders cannot choose well between extending, restructuring or stopping without an accurate picture of where the integration stands and what each path costs from here. An honest status with go-forward cost-benefit analysis lets management decide on facts, ignoring sunk cost. Extending by twelve months may prove right, but it commits money to one option before anyone has compared the alternatives.",
+      "key_concept": "Referential integrity makes every foreign key match an existing primary key, so linked records cannot be orphaned by deletes.",
+      "pre_read": "Decide whether the fault is inside one table or in the link between two tables, then pick the matching rule.",
+      "correct_explanation": "Referential integrity requires every foreign key, such as the customer number on an order, to match an existing primary key. Enforced in the database, it blocks deleting a customer who still has open orders, so orphans cannot arise. Entity integrity sounds close, but it only makes each customer's own key unique and non-empty; it says nothing about records in other tables that point to it.",
       "wrong_explanations": {
-        "A": "Adding people late to a complex migration rarely recovers 60% of the scope in two months, and it adds onboarding and coordination risk.",
-        "C": "Extension may be a sound outcome, but choosing it before analysis commits budget without comparing restructuring or hybrid options.",
-        "D": "Declaring success at 40% hides the true state from governance and shifts unfunded integration work onto operational teams."
+        "A": "Entity integrity keeps each row's primary key unique and present. It does not stop a referenced customer from being deleted.",
+        "C": "Locking prevents two users overwriting each other's changes at the same moment. It does not check links between tables.",
+        "D": "Backups help recover lost data but do not stop the deletion that creates orphan orders."
       },
       "tips": [
-        "Eliminate: A expects late staffing to finish most of the scope in weeks, and D misreports progress to governance.",
-        "Final two: B beats C because management needs facts and options compared before committing another year of budget.",
-        "Exam cue: when a project is off track, the auditor's first recommendation is an accurate status and options analysis, not a chosen fix."
+        "Eliminate: C handles simultaneous updates and D recovers data after the fact; neither checks links between tables.",
+        "Final two: B beats A because the fault is a broken link between tables; entity integrity covers only a table's own keys.",
+        "Exam cue: MOST LIKELY asks for the best-fitting cause; match the symptom, here a broken link between tables, to the control that governs it."
       ],
-      "framework_ref": "COBIT 2019 EDM02 (Ensured Benefits Delivery); COBIT 2019 BAI01 (Managed Programs); ISACA Systems Development and Project Management Audit Program",
+      "framework_ref": "ISO/IEC 9075 (SQL Standard); COBIT 2019 DSS06 (Managed Business Process Controls)",
       "related_concepts": [
-        "M&A IT integration",
-        "Hybrid steady-state",
-        "Integration progress reporting",
-        "Sunk-cost vs go-forward analysis",
-        "Divestiture option"
+        "Referential integrity",
+        "Foreign key",
+        "Orphan records",
+        "Entity integrity"
       ],
-      "_provenance": "Authored from concept: 'Acquisition IT integration extending beyond planned window'. Public sources: ISACA, COBIT, McKinsey. Scenario specifics (specialty retailer $2.8B, 16 months post-close, 40% complete, $11M annual parallel-cost, $4M over-budget retention) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Acquisition IT integration extending beyond planned window'. Public sources: ISACA, COBIT, McKinsey. Scenario specifics (specialty retailer $2.8B, 16 months post-close, 40% complete, $11M annual parallel-cost, $4M over-budget retention) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Wave 0-A re-scope (Oct 2026): rewritten in place to test D4 database integrity (4A11.3) instead of acquisition integration status; id kept so learner history is preserved.",
       "style_version": 2
     },
     {

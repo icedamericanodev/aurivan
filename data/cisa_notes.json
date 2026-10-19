@@ -12792,7 +12792,8 @@
               "name": "Data Integrity and Simultaneous Updates",
               "legacy_ids": [],
               "practice_ids": [
-                "d4_103"
+                "d4_103",
+                "d4_227"
               ],
               "definition": "Database integrity controls keep stored data accurate and consistent, using normalized design, enforced keys and rules, and locking when many users change data at once.",
               "why_it_matters": "Without them, one fact is stored twice and the copies drift apart, records point to customers who no longer exist, and simultaneous updates overwrite each other.",
@@ -13780,6 +13781,9 @@
                   "term": "Database shadowing",
                   "definition": "A remote duplicate database kept current by applying the primary's journal entries, ready to take over."
                 }
+              ],
+              "practice_ids": [
+                "d4_225"
               ]
             },
             {
