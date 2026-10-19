@@ -2025,3 +2025,14 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - U.S. GAO Government Auditing Standards: 2024 Revision
 - PCI DSS v4.0.1
 - IIA Global Internal Audit Standards (2024), Standard 12.2 (Performance Measurement)
+
+## Added with Wave 3 coverage batch Q12 (Domain 2, Oct 2026)
+
+- COBIT 2019 APO10.03 (Manage vendor relationships and contracts)
+- COBIT 2019 APO10.04 (Manage vendor risk)
+- ISO/IEC 27002:2022 Control 5.20 (Addressing Information Security within Supplier Agreements)
+- ISO/IEC 27002:2022 Control 5.21 (Managing Information Security in the ICT Supply Chain)
+- COBIT 2019 BAI09.05 (Manage licenses)
+- NIST AI Risk Management Framework (AI RMF 1.0), GOVERN 1.6 (AI system inventory)
+- COBIT 2019 Design Guide: Designing an Information and Technology Governance Solution
+- ISO/IEC 33020:2019 (Process Measurement Framework for Assessment of Process Capability)

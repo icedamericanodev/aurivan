@@ -2,7 +2,7 @@
   "domain": 2,
   "title": "Governance and Management of IT",
   "weight": "18%",
-  "count": 214,
+  "count": 224,
   "questions": [
     {
       "id": "d2_001",
@@ -7909,6 +7909,376 @@
         "Breach notification"
       ],
       "_provenance": "Authored from concept: 'mandatory legal obligations are not open to cost trade-offs'. Original KaiSip item (Oct 2026), written for CISA topic 2A1 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_215",
+      "domain": 2,
+      "subtopic": "Due Diligence, Contracts and SLAs. Right-to-Audit Clause",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A payroll provider offers a bank its annual System and Organization Controls (SOC) 2 Type 2 report if the bank drops the draft contract's right-to-audit clause. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Accept the report and drop the clause, as Type 2 testing suffices",
+        "B": "Keep the clause, using the report as routine assurance evidence",
+        "C": "Sign now and negotiate the clause again at the first renewal",
+        "D": "Choose another provider that permits unrestricted on-site audits"
+      },
+      "correct": "B",
+      "key_concept": "A SOC report supports routine vendor oversight but cannot replace contractual audit rights for scope gaps, incidents and regulator requests.",
+      "pre_read": "Ask what each option leaves the bank able to examine once the contract is signed.",
+      "correct_explanation": "A SOC 2 Type 2 report is efficient routine evidence, but the provider sets its scope and period, so it may miss what the bank or its regulators later need, such as evidence after an incident. Keeping the right to audit preserves that backstop while the report covers normal oversight. Dropping the clause looks reasonable because Type 2 tests operating effectiveness, yet no report reaches what it does not cover.",
+      "wrong_explanations": {
+        "A": "A Type 2 report covers only the scope and period the provider chose. Without audit rights, the bank cannot examine gaps, incidents or regulator requests.",
+        "C": "Leverage is highest before signing. At renewal the bank depends on the provider, which then has little reason to restore the clause.",
+        "D": "Rejecting a provider over one negotiable clause is disproportionate, and unrestricted on-site audits are neither needed nor realistic."
+      },
+      "tips": [
+        "Eliminate: C waits until the bank's leverage is gone, and D abandons the provider over a negotiable clause.",
+        "Final two: B beats A because a SOC report covers only its own scope and period, while audit rights reach what the report misses.",
+        "Exam cue: independent reports are routine evidence and contract rights are the backstop; keep both, and negotiate them before signing."
+      ],
+      "framework_ref": "COBIT 2019 APO10.03 (Manage vendor relationships and contracts); ISO/IEC 27002:2022 Control 5.20 (Addressing Information Security within Supplier Agreements); Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29)",
+      "related_concepts": [
+        "Right to audit",
+        "SOC 2 Type 2 report",
+        "Vendor contracts",
+        "Regulator access"
+      ],
+      "_provenance": "Authored from concept: 'an independent assurance report does not replace contractual audit rights'. Original KaiSip item (Oct 2026), written for CISA topic 2B2 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_216",
+      "domain": 2,
+      "subtopic": "Due Diligence, Contracts and SLAs. Source Code Escrow",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A hospital plans to run patient scheduling on a start-up's software as a service (SaaS) platform, relying on a source code escrow agreement if the start-up fails. What should be the IS auditor's PRIMARY concern?",
+      "options": {
+        "A": "Released code alone could not quickly restore the hosted service",
+        "B": "The escrow agent might not confirm that deposits are complete",
+        "C": "Escrow fees would add to the total cost of the service",
+        "D": "Escrow could expose the start-up's code to its competitors"
+      },
+      "correct": "A",
+      "key_concept": "Source code escrow helps only customers able to run the code; hosted services need data return and service transition terms.",
+      "pre_read": "Picture the day after the start-up fails: what would the hospital actually need to keep scheduling patients?",
+      "correct_explanation": "Source code escrow protects a customer that can run the software itself. For a SaaS platform, the hospital has no hosting environment, operating staff or current copy of its data, so released code would not restore scheduling for weeks. Continuity needs data return and service transition terms. Deposit verification matters, but even a complete, verified deposit leaves the same gap, so it is a secondary concern.",
+      "wrong_explanations": {
+        "B": "Verification strengthens escrow, but even a complete, verified deposit would not give the hospital the infrastructure, data and staff to run the service.",
+        "C": "Escrow fees are small next to the cost of losing patient scheduling. Cost does not decide whether the protection works.",
+        "D": "Escrow agents hold deposits in confidence and release them only to the customer when agreed conditions occur, such as vendor failure."
+      },
+      "tips": [
+        "Eliminate: C weighs a minor fee against service continuity, and D misreads escrow, which releases code only to the customer on agreed triggers.",
+        "Final two: A beats B because even a verified deposit cannot run a hosted service without infrastructure, data and operating staff.",
+        "Exam cue: match the protection to the delivery model; for hosted services, look for data return and service transition, not code alone."
+      ],
+      "framework_ref": "COBIT 2019 APO10.03 (Manage vendor relationships and contracts); ISO/IEC 27002:2022 Control 5.23 (Information Security for Use of Cloud Services)",
+      "related_concepts": [
+        "Source code escrow",
+        "SaaS continuity",
+        "Exit provisions",
+        "Vendor failure"
+      ],
+      "_provenance": "Authored from concept: 'source code escrow protects only a customer able to run the released code'. Original KaiSip item (Oct 2026), written for CISA topic 2B2 to add practice to a thin subtopic and test a lesson its existing items do not (d3_015 and d3_130 test when to use escrow and how to verify deposits). All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_217",
+      "domain": 2,
+      "subtopic": "Monitoring, Assurance and Offboarding. Shared Vendor Outage",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A credit union reviews each critical vendor every year, yet one hosting company's outage recently stopped three of those vendors at once. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Review each critical vendor's continuity test results every year",
+        "B": "Replace the three affected vendors with providers using other hosts",
+        "C": "Seek audit rights over the hosting company through a direct contract",
+        "D": "Have critical vendors disclose key subcontractors and map overlaps"
+      },
+      "correct": "D",
+      "key_concept": "Fourth-party risk reaches the customer indirectly; disclosure and mapping of key subcontractors reveal concentration that vendor-level reviews miss.",
+      "pre_read": "Ask what one review per vendor can and cannot reveal about what the vendors share.",
+      "correct_explanation": "Vendor-by-vendor reviews cannot show that several critical vendors depend on the same fourth party. Requiring disclosure of key subcontractors, and mapping where they overlap, lets management see and treat this hidden concentration. Reviewing each vendor's continuity tests looks thorough, but each vendor can pass its own test while all rely on one hosting company, so the shared exposure stays invisible.",
+      "wrong_explanations": {
+        "A": "Each vendor can pass its own continuity test while all depend on the same host. Vendor-level results do not reveal shared fourth-party dependencies.",
+        "B": "Replacing vendors after the event treats one symptom. New providers could share another hidden dependency, because nothing yet tracks subcontractors.",
+        "C": "The credit union has no relationship with the hosting company, and rights over one host would not reveal other shared dependencies."
+      },
+      "tips": [
+        "Eliminate: B swaps vendors without seeing their dependencies, and C seeks rights over a company the credit union has no relationship with.",
+        "Final two: D beats A because separate vendor reviews, however thorough, cannot reveal that several vendors rely on one fourth party.",
+        "Exam cue: when several vendors fail together, look for the answer that maps shared fourth-party dependencies across the portfolio."
+      ],
+      "framework_ref": "COBIT 2019 APO10.04 (Manage vendor risk); ISO/IEC 27002:2022 Control 5.21 (Managing Information Security in the ICT Supply Chain); NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management)",
+      "related_concepts": [
+        "Fourth-party risk",
+        "Concentration risk",
+        "Vendor monitoring",
+        "Subcontractors"
+      ],
+      "_provenance": "Authored from concept: 'fourth-party dependencies create concentration that vendor-by-vendor reviews cannot see'. Original KaiSip item (Oct 2026), written for CISA topic 2B2 to add practice to a thin subtopic and test a lesson its existing items do not (d2_118 and d2_123 test direct concentration; d1_187 tests SOC carve-out). All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_218",
+      "domain": 2,
+      "subtopic": "IT Due Diligence in Mergers and Acquisitions. Ranking Deal Findings",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "During due diligence on a software company whose revenue depends on one platform, an IS auditor records four findings. Which poses the GREATEST risk to the buyer's deal?",
+      "options": {
+        "A": "Two senior developers hold undocumented knowledge of the platform",
+        "B": "The platform's database license lapses if the company is sold",
+        "C": "The company uses a different email system from the buyer",
+        "D": "Several security policies have not been reviewed in two years"
+      },
+      "correct": "B",
+      "key_concept": "Change-of-control clauses can end licenses or contracts a target depends on, so due diligence flags them before closing.",
+      "pre_read": "Ask which finding could stop the buyer from using what it is paying for, and which can be managed later.",
+      "correct_explanation": "A change-of-control clause that ends the database license threatens the buyer's right to run the platform that produces all the revenue. Only terms agreed before closing, such as the licensor's consent or a price change, can address it. Undocumented developer knowledge is a serious key-person risk, but retention agreements and documentation can reduce it, while losing the license stops the business outright.",
+      "wrong_explanations": {
+        "A": "Key-person dependency is a serious exposure, but retention agreements and knowledge transfer can reduce it. It does not remove the right to run the platform.",
+        "C": "Different email systems are a routine integration task after closing. They do not affect the value or legality of what is being bought.",
+        "D": "Overdue policy reviews are a minor governance gap the buyer can fix after closing, with little effect on the price or the deal."
+      },
+      "tips": [
+        "Eliminate: C is a routine integration task after closing, and D is a minor policy gap the buyer can fix later.",
+        "Final two: B beats A because losing the license stops the revenue platform outright, while key-person risk can be reduced with retention terms.",
+        "Exam cue: in due diligence, rank findings by whether they threaten what the buyer is paying for; change-of-control clauses often do."
+      ],
+      "framework_ref": "COBIT 2019 BAI09.05 (Manage licenses); COBIT 2019 APO12.02 (Analyze risk)",
+      "related_concepts": [
+        "Change-of-control clause",
+        "Software licensing",
+        "Key-person risk",
+        "Deal-breaker criteria"
+      ],
+      "_provenance": "Authored from concept: 'change-of-control clauses can remove rights the target depends on'. Original KaiSip item (Oct 2026), written for CISA topic 2A5 to add practice to a thin subtopic and test a lesson its existing items do not (d2_128 tests risk-based depth of review). All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_219",
+      "domain": 2,
+      "subtopic": "ESG and Climate Disclosure Data. Quarterly Comparability",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A manufacturer's analyst changed the emission factor in its data-center emissions spreadsheet mid-year on personal judgment, so published quarterly figures no longer compare. What should the IS auditor recommend as MOST appropriate?",
+      "options": {
+        "A": "Restate the earlier quarters using the newer emission factor",
+        "B": "Move the calculation into a carbon accounting software tool",
+        "C": "Bring calculation method changes under approved change control",
+        "D": "Have the external assurance provider select future emission factors"
+      },
+      "correct": "C",
+      "key_concept": "Sustainability figures need the same change control over calculation methods as financial data, so results stay comparable and assurable.",
+      "pre_read": "Separate options that fix this year's numbers from options that stop the problem from recurring.",
+      "correct_explanation": "The root cause is an uncontrolled change to how a published figure is calculated. Treating method and factor changes like changes to financial calculations, with documented reasons, approval by the data owner, versioning and disclosure of effects, keeps figures comparable and assurable. Restating earlier quarters repairs this year's comparison, but without change control the next undocumented change will break comparability again.",
+      "wrong_explanations": {
+        "A": "Restating repairs the current comparison but leaves the cause in place. The next undocumented method change would break comparability again.",
+        "B": "A new tool does not decide who may change the method. Without change control, users can alter factors in software as easily as in spreadsheets.",
+        "D": "Choosing the factors would have the assurance provider assess its own decisions, impairing its independence. Management owns the calculation method."
+      },
+      "tips": [
+        "Eliminate: B changes the tool but not who may alter the method, and D has the assurance provider assess its own choices.",
+        "Final two: C beats A because restating fixes one comparison, while change control stops the next undocumented method change.",
+        "Exam cue: treat sustainability figures like financial data; a recurring data problem calls for a control, not a one-time correction."
+      ],
+      "framework_ref": "COBIT 2019 BAI06.01 (Evaluate, prioritize and authorize change requests); GHG Protocol Corporate Standard; ISSB IFRS S2 (Climate-related Disclosures)",
+      "related_concepts": [
+        "ESG data governance",
+        "Change management",
+        "Emission factors",
+        "Sustainability assurance"
+      ],
+      "_provenance": "Authored from concept: 'calculation methods behind disclosed ESG figures need change control'. Original KaiSip item (Oct 2026), written for CISA topic 2A7 to add practice to a thin subtopic and test a lesson its existing items do not (d2_179 tests bringing ESG data under IT governance). All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_220",
+      "domain": 2,
+      "subtopic": "Governing Artificial Intelligence and Emerging Technology. AI in Purchased Systems",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A city government's departments have switched on artificial intelligence (AI) features in several purchased systems that serve residents, but no one knows how many exist. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Build an inventory of AI uses, each rated by its impact",
+        "B": "Test each AI feature found so far for biased outcomes",
+        "C": "Ask each vendor to certify that its AI features are fair",
+        "D": "Disable the AI features until a council policy is approved"
+      },
+      "correct": "A",
+      "key_concept": "AI governance starts with an inventory of every AI use, including vendor and embedded features, ranked by impact.",
+      "pre_read": "Ask what the city must know before it can decide which AI features to assess, test or switch off.",
+      "correct_explanation": "Governance starts with knowing what exists. An inventory of AI uses, with an owner and an impact rating for each, shows which features affect residents most and where assessment and monitoring must go first. Testing features for bias is valuable, but testing only those found so far, without an inventory, leaves unknown high-impact uses untested and gives no basis for ranking the effort.",
+      "wrong_explanations": {
+        "B": "Bias testing before knowing what exists covers only the features already found. High-impact uses could stay unknown and untested.",
+        "C": "The city stays accountable for decisions made with vendor AI. A vendor's self-certification is not independent evidence of fair outcomes.",
+        "D": "Disabling the features could halt services to residents before anyone knows which ones are low risk. It is a disproportionate first response."
+      },
+      "tips": [
+        "Eliminate: C hands assurance to vendors although the city stays accountable, and D halts services before knowing which features matter.",
+        "Final two: A beats B because testing cannot be targeted or complete until an inventory shows which AI uses exist and which matter most.",
+        "Exam cue: when no one knows what exists, the first step is an inventory ranked by risk; assessment and testing follow."
+      ],
+      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0), GOVERN 1.6 (AI system inventory); ISO/IEC 42001:2023 (Artificial Intelligence Management System)",
+      "related_concepts": [
+        "AI inventory",
+        "Embedded AI",
+        "AI governance",
+        "Vendor accountability"
+      ],
+      "_provenance": "Authored from concept: 'AI governance starts with an inventory that includes embedded vendor AI'. Original KaiSip item (Oct 2026), written for CISA topic 2A2 to add practice to a thin subtopic and test a lesson its existing items do not (d2_163 tests response to found bias; d4_209 tests staff use of public AI tools). All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_221",
+      "domain": 2,
+      "subtopic": "Capability and Maturity Models. Level 5 Proposal",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "After a process capability assessment, the chief information officer proposes that every technology process reach level 5 (Optimizing) within two years. What should the IS auditor recommend as MOST appropriate?",
+      "options": {
+        "A": "Bring every process to level 3 first, then reassess",
+        "B": "Base each target on levels that peer organizations have reached",
+        "C": "Set each process's target level from business need and cost",
+        "D": "Support the plan, since higher capability lowers process risk"
+      },
+      "correct": "C",
+      "key_concept": "Management sets each process's target capability level from business need, risk and cost-benefit, not the highest level everywhere.",
+      "pre_read": "Ask which option ties the target to what each process means to the business.",
+      "correct_explanation": "Management should set each process's target level from its business importance, risk and the cost of improvement, so effort goes where it pays. Level 5 everywhere would spend heavily on processes that need only defined, repeatable practice. A level 3 floor sounds prudent, but it is still one uniform target; some critical processes need more and minor ones less, so it does not reflect business need either.",
+      "wrong_explanations": {
+        "A": "A uniform floor ignores differences in business importance. Some critical processes need more than level 3, and some minor ones need less.",
+        "B": "Peer levels reflect other organizations' needs and costs. Targets should follow this organization's business objectives and risk.",
+        "D": "Higher levels cost more, and the gain is often not worth it. Level 5 everywhere spends heavily where the business gains little."
+      },
+      "tips": [
+        "Eliminate: B copies peers' targets rather than this organization's needs, and D assumes higher capability is worth any cost.",
+        "Final two: C beats A because a uniform level 3 floor is still one target for all, not one set by each process's business need.",
+        "Exam cue: capability targets come from business need and cost-benefit; be wary of any answer that sets one level for every process."
+      ],
+      "framework_ref": "COBIT 2019 Design Guide: Designing an Information and Technology Governance Solution; COBIT 2019 Framework: Introduction and Methodology",
+      "related_concepts": [
+        "Target capability level",
+        "Cost-benefit",
+        "Process capability",
+        "COBIT 2019"
+      ],
+      "_provenance": "Authored from concept: 'target capability levels follow business need and cost-benefit'. Original KaiSip item (Oct 2026), written for CISA topic 2B4 to add practice to a thin subtopic and test a lesson its existing items do not (d2_168 tests choosing a capability assessment over benchmarks). All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_222",
+      "domain": 2,
+      "subtopic": "Capability and Maturity Models. Self-Assessed Ratings",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Process owners rated the incident management process at capability level 4 in a self-assessment, but the IS auditor finds no one collects data on how it performs. What is the MOST LIKELY conclusion?",
+      "options": {
+        "A": "The rating stands, because process owners know the process best",
+        "B": "The rating is overstated, since level 4 needs measured performance data",
+        "C": "The process likely reaches level 5, with results tracked informally",
+        "D": "No conclusion is possible until an external assessor repeats the rating"
+      },
+      "correct": "B",
+      "key_concept": "Capability ratings must rest on evidence; level 4 requires quantitative measurement, so a rating without performance data is overstated.",
+      "pre_read": "Recall what separates level 4 from level 3, then check whether the evidence meets it.",
+      "correct_explanation": "Level 4 means the process is measured and controlled with quantitative data. If no one collects performance data, that criterion cannot be met, so the self-assessed rating is most likely overstated, and the IS auditor reports it. An independent reassessment could confirm the true level, but the evidence already contradicts level 4, so the conclusion does not have to wait for one.",
+      "wrong_explanations": {
+        "A": "Owners rating their own processes tend to be optimistic. A rating must rest on evidence, and here the evidence contradicts it.",
+        "C": "Level 5 builds on measurement to drive continual improvement. Without performance data the process cannot meet level 4, let alone level 5.",
+        "D": "The missing performance data already fails the level 4 criterion. A reassessment may set the exact level, but the overstatement is clear now."
+      },
+      "tips": [
+        "Eliminate: A trusts a self-rating the evidence contradicts, and C claims a higher level that also depends on measurement.",
+        "Final two: B beats D because the missing data already fails the level 4 criterion, so the IS auditor can conclude without waiting.",
+        "Exam cue: know what each capability level requires; level 4 means measured, data-driven control, and level 5 adds continual improvement."
+      ],
+      "framework_ref": "ISO/IEC 33020:2019 (Process Measurement Framework for Assessment of Process Capability); COBIT 2019 Framework: Introduction and Methodology",
+      "related_concepts": [
+        "Capability levels",
+        "Self-assessment",
+        "Process measurement",
+        "Audit evidence"
+      ],
+      "_provenance": "Authored from concept: 'capability ratings must meet each level's evidence criteria'. Original KaiSip item (Oct 2026), written for CISA topic 2B4 to add practice to a thin subtopic and test a lesson its existing items do not (d2_168 tests choosing a capability assessment; d1_188 tests maturity versus assurance). All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_223",
+      "domain": 2,
+      "subtopic": "Privacy Documentation and Impact Assessments. Undisclosed Collection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds a European fitness app collects users' precise location, although neither its privacy notice nor its record of processing activities mentions this. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Update the notice and the record to describe the location collection",
+        "B": "Delete the location data the app has stored so far",
+        "C": "Report the undisclosed collection directly to the data protection regulator",
+        "D": "Have management assess the location processing in an impact assessment"
+      },
+      "correct": "D",
+      "key_concept": "Undocumented processing is first assessed for necessity and risk; the notice and processing records then reflect the decision.",
+      "pre_read": "Ask which option decides whether the collection should continue, rather than only describing it.",
+      "correct_explanation": "Undisclosed collection raises a prior question: should the app collect precise location at all? An impact assessment tests necessity, lawful basis and risk to users, and its result decides whether to stop, reduce or properly document the collection. Updating the notice and record looks like the direct fix, but it would describe processing that may be unnecessary or unlawful instead of deciding whether it should continue.",
+      "wrong_explanations": {
+        "A": "Documenting first would describe processing that may be unnecessary or unlawful. The documents should reflect a decision on necessity, not replace it.",
+        "B": "Deleting data before assessment is premature. It may remove data with a lawful use and destroy evidence of what was collected.",
+        "C": "The IS auditor reports findings to management. Whether and when to inform the regulator is the controller's decision, not the IS auditor's."
+      },
+      "tips": [
+        "Eliminate: B deletes data before anyone knows whether it has a lawful use, and C bypasses management, which decides on regulator contact.",
+        "Final two: D beats A because the notice and record should describe processing only after an assessment confirms it is needed.",
+        "Exam cue: when undocumented processing is found, decide whether it should exist before documenting it."
+      ],
+      "framework_ref": "GDPR Article 35 (Data Protection Impact Assessment); GDPR Article 5 (Principles relating to processing of personal data); GDPR Article 30 (Records of Processing Activities)",
+      "related_concepts": [
+        "Privacy impact assessment",
+        "Privacy notice",
+        "Record of processing activities",
+        "Data minimization"
+      ],
+      "_provenance": "Authored from concept: 'undocumented processing is assessed for necessity before it is documented'. Original KaiSip item (Oct 2026), written for CISA topic 2A6 to add practice to a thin subtopic and test a lesson its existing items do not (d2_039 tests the RoPA as regulator evidence; d2_084 tests a DPIA before new processing). All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_224",
+      "domain": 2,
+      "subtopic": "Privacy by Design and by Default. Readmission Analytics",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A European hospital's analysts must follow each patient across visits to study readmissions, but never need names or contact details. Which design should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Replace identifiers with codes, holding the linking key separately",
+        "B": "Encrypt the full records and give analysts the decryption key",
+        "C": "Give analysts full records under signed confidentiality agreements",
+        "D": "Remove names, using the hospital record number to link visits"
+      },
+      "correct": "A",
+      "key_concept": "Privacy by design minimizes exposure: pseudonymization supports linked analysis, while a separately protected key prevents re-identification.",
+      "pre_read": "List what the analysts actually need, then find the option that gives them that and nothing more.",
+      "correct_explanation": "Pseudonymization gives analysts what they need, a consistent code linking each patient's visits, without identities. Because the key linking codes to patients is held separately under its own access control, analysts cannot re-identify anyone. Removing names looks similar, but the hospital record number is itself an identifier that many staff can look up, so patients remain easily identifiable and little exposure is removed.",
+      "wrong_explanations": {
+        "B": "Encryption protects data in storage, but analysts holding the key see every identity. It does not reduce the personal data they are exposed to.",
+        "C": "Agreements add accountability but still expose identities the analysis never needs, so they do not minimize the data used.",
+        "D": "The hospital record number is an identifier many staff can look up, so patients stay easily identifiable. No separately protected key exists."
+      },
+      "tips": [
+        "Eliminate: B protects data only in storage, since key holders see everything, and C relies on promises instead of reducing the data shown.",
+        "Final two: A beats D because a hospital record number is a widely known identifier, while true pseudonyms need a separately protected key.",
+        "Exam cue: when a task needs linkage but not identity, look for pseudonymization with the re-identification key held apart."
+      ],
+      "framework_ref": "GDPR Article 25 (Data Protection by Design and by Default); ISO/IEC 27002:2022 Control 8.11 (Data Masking)",
+      "related_concepts": [
+        "Pseudonymization",
+        "Data minimization",
+        "Privacy by design",
+        "Re-identification risk"
+      ],
+      "_provenance": "Authored from concept: 'pseudonymization with a separately held key supports linked analysis without identities'. Original KaiSip item (Oct 2026), written for CISA topic 2A6 to add practice to a thin subtopic and test a lesson its existing items do not (d2_086 tests default settings; d2_097 tests SDLC gates; d3_010 tests test-data masking). All scenario specifics invented for this question. No legacy bank consulted.",
       "style_version": 2
     }
   ]
