@@ -151,6 +151,16 @@ if ! python3 scripts/lint_principles.py; then
   status=1
 fi
 
+# 6c. Exam guide + final review week (data/exam/*.json) ---------------------
+# Schema, https sources, as_of dates, word limits, domain weights against DI
+# and mobile, principle ids, note codes, app action kinds, US spelling, no
+# bank-size statements. Errors fail the check; warnings (e.g. stale facts)
+# are reported only.
+printf "\n"
+if ! python3 scripts/lint_exam_guide.py; then
+  status=1
+fi
+
 # 7. Accessibility (pa11y, WCAG AA) -----------------------------------------
 # pa11y runs WCAG AA against a served URL. We skip silently if node/npx is
 # absent or no local server is running on port 8000 — the maintainer can run
