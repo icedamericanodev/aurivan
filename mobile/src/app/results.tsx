@@ -45,6 +45,7 @@ import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, BackHandler, Pressable, View } from 'react-native';
 import { OptionCard, TrustLine } from '../components/quiz';
+import { QuestionNote } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
 import { DomainRings } from '../components/journey';
 import { PacingPanel } from '../components/pace';
@@ -496,6 +497,8 @@ export default function Results() {
                     {renderText(trapTip(q), perm)}
                   </T>
                 )}
+                {/* "Your note": the review is the best moment to reflect, and the only place a mock offers it. */}
+                <QuestionNote certId={active.certId} questionId={id} />
                 {/* Report a problem: mock questions are reported here, after the exam (never during it). */}
                 <TrustLine
                   certId={active.certId}

@@ -75,6 +75,7 @@ import {
 import { addMs } from '../engine/answerClock';
 import { aboutMin, dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, spokenMin, statusOf } from '../engine/pace';
 import { PaceStrip, type PaceStripProps } from '../components/pace';
+import { QuestionNote } from '../components/questionNote';
 import { moveFocus, sayLater } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
 import { questionTarget, sessionWhere } from '../lib/support';
@@ -873,6 +874,10 @@ export default function SessionScreen() {
                     last
                   />
                 )}
+                {/* "Your note" (components/questionNote.tsx): only here, on a CHECKED practice or
+                    review answer (this branch never renders in a mock). Not on the very first
+                    set: one less thing in the first minute, like Coach me's line. */}
+                {!active.firstSet && <QuestionNote certId={active.certId} questionId={qid} />}
                 {/* Report a problem (mobile 1.7): the sheet gets the options in the order shown,
                     and the email names letters as the bank's ORIGINAL ones. */}
                 <TrustLine

@@ -14,16 +14,25 @@
  *   saved. Undo" for UNDO_MS and only then is it really removed (leaving the
  *   screen makes it final at once). It is also said aloud.
  * - The remove button is a 48pt target.
+ *
+ * "Your note": under the saved questions, a "Your notes" group lists every
+ * question the learner wrote a note on (newest first): the start of the stem
+ * and a quiet "Your note" marker. NEVER the note's text: a note may hold the
+ * answer, and here the question is not answered yet (UX review, hard rule).
+ * A row opens that question; the whole note shows after it is answered
+ * (components/questionNote.tsx). The group only shows once a note exists.
+ * The screen is "empty" only when there are no saved questions AND no notes.
  */
 import { router } from 'expo-router';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
-import { BookmarkCheck, ICON_STROKE } from '../components/icons';
+import { BookmarkCheck, ICON_STROKE, PencilLine } from '../components/icons';
 import { StickyFooter } from '../components/quiz';
-import { Button, ICON_SIZE, ListRow, PushedHeader, Row, T } from '../components/ui';
+import { Button, ICON_SIZE, ListRow, PushedHeader, Row, Section, T } from '../components/ui';
 import { findQuestion } from '../content/loader';
+import { liveNotes, noteSnippet } from '../engine/questionNotes';
 import { sayLater } from '../lib/a11y';
 import { guardedStart, startBookmarks, startFromIds, startPractice } from '../lib/sessions';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -34,6 +43,8 @@ import { useTheme } from '../theme/useTheme';
 /** How long "Removed from saved. Undo" waits before the question is really removed. */
 export const UNDO_MS = 5000;
 export const REMOVED_LINE = 'Removed from saved.';
+/** How much of the stem a "Your notes" row shows. */
+const STEM_PREVIEW = 110;
 
 export default function Saved() {
   const { c } = useTheme();
@@ -84,7 +95,17 @@ export default function Saved() {
     };
   }, [certId]);
 
-  if (progress.bookmarks.length === 0) {
+  // The learner's notes (tombstones left out), newest first, on questions this app still has.
+  const qNotes = progress.qNotes;
+  const notes = useMemo(
+    () =>
+      liveNotes(qNotes)
+        .map((n) => ({ ...n, q: findQuestion(certId, n.id) }))
+        .filter((n) => n.q),
+    [qNotes, certId],
+  );
+
+  if (progress.bookmarks.length === 0 && notes.length === 0) {
     return (
       <EmptyScreen
         header="Saved questions"
@@ -102,6 +123,8 @@ export default function Saved() {
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
         <PushedHeader title="Saved questions" onBack={() => router.back()} />
+        {/* Notes but nothing saved: say how to save, then the notes below. */}
+        {saved.length === 0 && <T v="meta" style={{ marginTop: space.sm }}>Nothing saved yet. Tap the bookmark on any question to build your own revision set.</T>}
         {saved.map(({ id, q }, i) => (
           // The row and the remove button are siblings (not nested), so each
           // is its own target for touch and for screen readers.
@@ -151,6 +174,27 @@ export default function Saved() {
             )}
           </View>
         ))}
+        {notes.length > 0 && <Section title="Your notes" />}
+        {notes.map(({ id, q }, i) => {
+          const stem = noteSnippet(q!.stem, STEM_PREVIEW);
+          return (
+            <ListRow
+              key={id}
+              reading
+              icon={<PencilLine size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+              title={stem}
+              // A marker only, never the note's text (it could give the answer away before answering).
+              subtitle="Your note"
+              accessibilityLabel={`Question: ${stem}. You have a note on it.`}
+              accessibilityHint="Opens the question. Your note shows after you answer it."
+              // A one-question session, like a saved row: answer first, then the note shows.
+              // A neutral title: it can reach a report email's "where" line, which must not hint at notes.
+              onPress={() => guardedStart(() => startFromIds(cert.id, [id], 'One question'), open)}
+              chevron={false}
+              last={i === notes.length - 1}
+            />
+          );
+        })}
       </ScrollView>
       {keptCount > 0 && (
         <StickyFooter onHeight={setFooterH}>

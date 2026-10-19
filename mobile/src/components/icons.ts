@@ -25,6 +25,8 @@ export { default as ListChecks } from 'lucide-react-native/icons/list-checks';
 export { default as Lock } from 'lucide-react-native/icons/lock';
 export { default as Minus } from 'lucide-react-native/icons/minus';
 export { default as NotebookPen } from 'lucide-react-native/icons/notebook-pen';
+// "Your note" on a question (Add a note, Saved → Your notes). Not NotebookPen: that means the Mistake journal.
+export { default as PencilLine } from 'lucide-react-native/icons/pencil-line';
 export { default as Play } from 'lucide-react-native/icons/play';
 export { default as Plus } from 'lucide-react-native/icons/plus';
 export { default as RotateCcw } from 'lucide-react-native/icons/rotate-ccw';

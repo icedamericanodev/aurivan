@@ -2109,6 +2109,7 @@ export function NoteField({
   accessibilityLabel,
   maxLength,
   ref,
+  counterFrom,
 }: {
   value: string;
   onChangeText: (v: string) => void;
@@ -2117,6 +2118,11 @@ export function NoteField({
   maxLength: number;
   /** To focus the field (the board composer's "Edit my post"). */
   ref?: Ref<TextInput>;
+  /**
+   * Show the "120 / 1000" counter only from this many characters ("Your note"
+   * shows it near the limit). Left out, the counter always shows.
+   */
+  counterFrom?: number;
 }) {
   const { c } = useTheme();
   const [focused, setFocused] = useState(false);
@@ -2147,9 +2153,11 @@ export function NoteField({
           NO_WEB_OUTLINE,
         ]}
       />
-      <T v="meta" num style={{ textAlign: 'right', marginTop: space.xs }} accessibilityLabel={`${value.length} of ${maxLength} characters`}>
-        {`${value.length} / ${maxLength}`}
-      </T>
+      {counterFrom === undefined || value.length >= counterFrom ? (
+        <T v="meta" num style={{ textAlign: 'right', marginTop: space.xs }} accessibilityLabel={`${value.length} of ${maxLength} characters`}>
+          {`${value.length} / ${maxLength}`}
+        </T>
+      ) : null}
     </View>
   );
 }

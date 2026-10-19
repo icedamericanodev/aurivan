@@ -158,8 +158,8 @@ export const ACCOUNT_COPY = {
   'sync.what.title': 'What syncs',
   // Everything that syncs (security review P7 S7: matches the privacy notice).
   'sync.what.body':
-    'Your answers (whether right, how sure you were and how long you took), reviews, your mistake journal, saved questions, mocks, lessons and notes done, your study days and streak, badges, game levels, your readiness log and exam-week checklist, your plant, the questions you reported to us, your exam date and study settings. These stay on this phone: reminders, theme, motion, haptics, plant display choices and a quiz in progress.',
-  'sync.what.limits': 'Removals don’t sync yet: a question you unsave, or progress you reset, on one device can come back from another.',
+    'Your answers (whether right, how sure you were and how long you took), reviews, your mistake journal, saved questions, the notes you write on questions, mocks, lessons and notes done, your study days and streak, badges, game levels, your readiness log and exam-week checklist, your plant, the questions you reported to us, your exam date and study settings. These stay on this phone: reminders, theme, motion, haptics, plant display choices and a quiz in progress.',
+  'sync.what.limits': 'Removals don’t sync yet: a question you unsave, or progress you reset, on one device can come back from another. Deleting a note does sync.',
   'sync.what.kept': 'Turning sync off stops syncing. The copy in your account stays until you use Delete synced progress.',
   'sync.what.done': 'Done',
   'sync.delete.row': 'Delete synced progress',

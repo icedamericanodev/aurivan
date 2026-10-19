@@ -29,6 +29,7 @@ import { noteSubtopics } from '../content/notes';
 import {
   BackupError,
   backupFileName,
+  backupTooBig,
   buildBackup,
   isBehind,
   isFresh,
@@ -148,7 +149,8 @@ export function sweepBackupFiles(now = Date.now()) {
 }
 
 // ── Save a backup ────────────────────────────────────────────────────────
-export type SaveOutcome = 'shared' | 'unavailable';
+/** 'too-big': the file would be over the 1 MB a restore accepts, so none was made (it could never be restored). */
+export type SaveOutcome = 'shared' | 'unavailable' | 'too-big';
 
 /**
  * Write the backup file and open the share sheet. Resolves once the sheet
@@ -157,6 +159,8 @@ export type SaveOutcome = 'shared' | 'unavailable';
  */
 export async function saveBackup(now = Date.now()): Promise<SaveOutcome> {
   const text = JSON.stringify(currentBackup(now));
+  // Never hand the learner a file this app would refuse to restore (security review).
+  if (backupTooBig(text)) return 'too-big';
   const name = backupFileName(now);
   if (Platform.OS === 'web') {
     // Web (the screenshot build, a browser): a normal file download.

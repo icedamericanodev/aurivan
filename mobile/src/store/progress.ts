@@ -28,6 +28,7 @@ import { keepOnReset } from '../engine/plantLooks';
 import type { MockTiming } from '../engine/pace';
 import { withNoteRead, withNoteViewed } from '../engine/noteReadState';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
+import { withNote, type QuestionNotes } from '../engine/questionNotes';
 import type { ThinkingSlip } from '../engine/slipCoach';
 import { addReport, type ReportEntry } from '../engine/support';
 import { isRetestAfterMiss, MAX_BOX, nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
@@ -174,6 +175,15 @@ export interface CertProgress {
    * reached: only Reset or a restore clamp lowers it.
    */
   plant?: CertPlant;
+  /**
+   * "Your note" on a question (engine/questionNotes.ts): the learner's own
+   * words, keyed by question id, `{ text, ts }`. The same name and shape as
+   * the web's S.qNotes. A deleted note stays as `{ text: '', ts }` (a
+   * tombstone, so sync can't bring it back). Optional: older saves have none,
+   * which reads as "no notes". Backed up; never in a report, share card or
+   * analytics. Reset progress removes them (resetCert starts from emptyCert).
+   */
+  qNotes?: QuestionNotes;
 }
 
 export interface StudyPathState {
@@ -275,6 +285,11 @@ export interface ProgressState {
   markNoteViewed: (certId: string, subtopicId: string) => void;
   /** Mobile 1.25: Settings → Reset reading progress. Every note goes back to not read; nothing else changes. */
   resetNotesReading: (certId: string) => void;
+  /**
+   * Save the learner's own note on a question (cut to 1,000 characters).
+   * Empty text deletes it (a tombstone stays, see CertProgress.qNotes).
+   */
+  setQuestionNote: (certId: string, questionId: string, text: string) => void;
   recordGame: (certId: string, game: GameId, score: number) => void;
   recordMock: (certId: string, result: MockResult) => void;
   /** Log today's readiness lower bound (null = not enough data) for the exam-ready hold. */
@@ -528,6 +543,14 @@ export const useProgress = create<ProgressState>()(
           return { byCert: { ...s.byCert, [certId]: { ...full, notesRead: [], notesViewed: [], notesEverRead } } };
         }),
 
+      setQuestionNote: (certId, questionId, text) =>
+        set((s) => {
+          const cp = normalize(s.byCert[certId]);
+          const qNotes = withNote(cp.qNotes, questionId, text, Date.now());
+          if (qNotes === cp.qNotes) return s; // the same text: no save
+          return { byCert: { ...s.byCert, [certId]: { ...cp, qNotes } } };
+        }),
+
       recordGame: (certId, game, score) =>
         set((s) => {
           const cp = normalize(s.byCert[certId]);
@@ -722,6 +745,7 @@ export const useProgress = create<ProgressState>()(
       // Mobile 1.25 added CertProgress.notesViewed (started notes) and
       // notesEverRead (a count), both OPTIONAL: same (`normalize` gives old
       // saves [] and the count of notes read).
+      // "Your note" added CertProgress.qNotes, OPTIONAL: same (no notes until one is written).
       version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },
