@@ -231,6 +231,9 @@ export default function RootLayout() {
         {/* Mobile 1.16: the readiness report and the exam-week checklist. */}
         <Stack.Screen name="readiness" />
         <Stack.Screen name="exam-week" />
+        {/* The exam guide (Learn, Help) and the final review week's cheat sheet (data/exam/). */}
+        <Stack.Screen name="exam-guide" />
+        <Stack.Screen name="cheat-sheet" />
         {/* Mobile 1.13: Your plant, and its picker (plant, change species, rename). */}
         <Stack.Screen name="plant" />
         <Stack.Screen name="plant-pick" options={{ animation: rise }} />

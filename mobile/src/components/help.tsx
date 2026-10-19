@@ -6,6 +6,9 @@
  * (UX review O2):
  * - Get help: Common questions, Contact support, Report a problem with the
  *   app, Suggest an idea. These open a screen or a short sheet.
+ *   Since the exam guide (data/exam/): "About the CISA exam" right after
+ *   Common questions (hidden when the cert has no guide), for "how do I book,
+ *   what do I bring" questions that aren't about the app.
  * - Updates: Your reports, What's new. These open a screen. (What's next
  *   was removed in 1.17.1: the plan is kept internal, outside this repo.)
  * Under the rows: the support address as its OWN selectable line (so iOS
@@ -18,12 +21,14 @@
  */
 import { router } from 'expo-router';
 import { View } from 'react-native';
+import { getCertification } from '../content/certifications';
+import { hasExamGuide } from '../content/exam';
 import { shortVersion, WHATS_NEW } from '../content/support';
 import { config } from '../lib/config';
 import { reportsSubtitle, useReports } from '../lib/useReports';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { CircleQuestionMark, Flag, ICON_STROKE, Inbox, Lightbulb, Mail, Sparkles } from './icons';
+import { CircleQuestionMark, Flag, ICON_STROKE, Inbox, Info, Lightbulb, Mail, Sparkles } from './icons';
 import { useContactFlow, useReportFlow } from './support';
 import { ICON_SIZE, ListRow, Section, T } from './ui';
 
@@ -59,6 +64,15 @@ export function HelpRows({ certId }: { certId: string }) {
         subtitle="Quick answers before you write"
         onPress={() => router.push('/faq')}
       />
+      {hasExamGuide(certId) && (
+        <ListRow
+          icon={icon(Info)}
+          title={`About the ${getCertification(certId)?.name ?? ''} exam`.replace('  ', ' ')}
+          subtitle="Booking, exam day, results and after"
+          accessibilityHint="Opens the exam guide"
+          onPress={() => router.push('/exam-guide')}
+        />
+      )}
       <ListRow
         icon={icon(Mail)}
         title="Contact support"

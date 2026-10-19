@@ -6,14 +6,16 @@ app and the mobile app (mobile through its content build), the same way as
 
 | File | Screen |
 |---|---|
-| `data/exam/cisa_exam_guide.json` | "About the CISA exam" (Learn → Start here) |
-| `data/exam/final_review_week.json` | "Final review week" (the guide under Learn, and the exam-week cards) |
+| `data/exam/cisa_exam_guide.json` | "About the CISA exam" (web: Learn → `#exam-guide`; mobile: Learn → Look it up, and Help → Get help) |
+| `data/exam/final_review_week.json` | "Final review week" (web: Learn → `#final-week`; mobile: Learn → Look it up, and Today's exam-week card from 8 days out) |
 
 `scripts/lint_exam_guide.py` enforces this document and runs in
 `scripts/verify_repo.sh` as a blocking check. The web app reads both (Learn →
 "About the CISA exam" at `#exam-guide`, "Final review week" at `#final-week`),
 and both are on the `DATA` allowlist in `scripts/build_site.sh`. The mobile app
-does not read them yet.
+reads both through its content build (`mobile/scripts/exam-guide-pack.cjs`,
+which also fails on unknown note or principle ids, unknown action kinds and
+"stem"; see `docs/mobile/ARCHITECTURE.md`).
 
 ## Exam guide (`cisa_exam_guide.json`)
 
@@ -142,12 +144,12 @@ any day.
 ## App hooks wanted (not content; for the apps that read these files)
 - **Flagged mock answers:** a mock answer that was flagged but correct is lost
   after Results. Queue it for review the way "guessing" answers are queued in
-  practice (`mobile/src/engine/srs.ts`).
+  practice (`mobile/src/engine/srs.ts`). *Mobile: not built yet.*
 - **`top_slip` with no thinking slip:** when the top tag is "Didn’t know it"
   (`slip_map.knowledge` is `null`), open the note for the most-missed topic
-  instead of an empty principles view.
+  instead of an empty principles view. *Mobile: built (`lib/finalWeek.ts`).*
 - **Cover mode on the cheat sheet:** tap to reveal each must-remember point, so
-  the recall-then-check tasks are one tap.
+  the recall-then-check tasks are one tap. *Mobile: built ("Cover the points").*
 
 ## Writing rules (both files)
 - **Original wording only.** Never copy ISACA's or PSI's text; paraphrase in plain English.

@@ -535,7 +535,10 @@ describe('J3 an existing 1.14 learner upgrades', () => {
     [0, false],
     [1, false],
     [7, false],
-    [8, true],
+    // CISA has a final review week, whose card shows from 8 days out: the Fit card rests from 8
+    // too (QA review of the final week; engine rule in final-week-engine.test.ts). 9 is the first day it may show.
+    [8, false],
+    [9, true],
     [30, true],
   ])('with the exam %i days away, the card shows: %s (never in exam week)', (days, shows) => {
     learner114(20);

@@ -12,7 +12,7 @@ import { subtopicOfQuestion } from '../content/notes';
 import type { Letter } from '../content/types';
 import { MAX_ANSWER_MS } from '../engine/answerClock';
 import { logReadinessDay, type ReadinessDay } from '../engine/examReady';
-import { hideExamWeek, toggleExamWeek, type ExamWeekItem, type ExamWeekSaved } from '../engine/examWeek';
+import { hideExamWeek, toggleExamWeek, toggleWeekDay, type ExamWeekItem, type ExamWeekSaved } from '../engine/examWeek';
 import { MAX_MOCKS } from '../engine/journey';
 import { noteRound, type GameGrowth, type RoundOutcome, type TierChange } from '../engine/games/growth';
 import { pushScore } from '../engine/games/recap';
@@ -91,7 +91,9 @@ export interface CertMoments {
   /**
    * Mobile 1.16: the exam-week checklist's ticks, for ONE exam date
    * (engine/examWeek.ts). Optional: older saves have none and read as a
-   * fresh list. Moving the exam date starts a fresh list.
+   * fresh list. Moving the exam date starts a fresh list. Since the final
+   * review week it also keeps the day cards marked done (`days`, beside
+   * `done`, same exam date). The store name and shape stay: fields are only added.
    */
   examWeek?: ExamWeekSaved;
 }
@@ -300,6 +302,8 @@ export interface ProgressState {
   tickExamWeek: (certId: string, examDate: string, id: ExamWeekItem) => void;
   /** Mobile 1.16: hide Today's exam-week card for this exam date (the ticks stay). */
   hideExamWeek: (certId: string, examDate: string) => void;
+  /** Final review week: mark one day card ("day-7" … "day-1") done or not done, for this exam date. */
+  toggleWeekDay: (certId: string, examDate: string, dayId: string) => void;
   resetCert: (certId: string) => void;
   /** Build E: save where In order / Guided stopped for a scope ("all" or a domain id). */
   setPathCursor: (certId: string, mode: keyof StudyPathState, scope: string, value: string) => void;
@@ -594,6 +598,13 @@ export const useProgress = create<ProgressState>()(
         set((s) => {
           const cp = normalize(s.byCert[certId]);
           const examWeek = hideExamWeek(cp.moments?.examWeek, examDate);
+          return { byCert: { ...s.byCert, [certId]: { ...cp, moments: { ...cp.moments, examWeek } } } };
+        }),
+
+      toggleWeekDay: (certId, examDate, dayId) =>
+        set((s) => {
+          const cp = normalize(s.byCert[certId]);
+          const examWeek = toggleWeekDay(cp.moments?.examWeek, examDate, dayId);
           return { byCert: { ...s.byCert, [certId]: { ...cp, moments: { ...cp.moments, examWeek } } } };
         }),
 

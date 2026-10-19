@@ -15,6 +15,12 @@
  *   5. Practice's hero sized from the daily minutes; a chosen length wins.
  *   6. Copy: never a pass prediction, never the bank size.
  *
+ * Final review week (Oct 2026): CISA now has a final-week plan, which turns
+ * the exam-week card, screen and report row into the plan (8 days out to the
+ * eve; final-week-screens.test.tsx). The checklist journeys below switch the
+ * plan off (getFinalWeek → null): that checklist-only path is what an exam
+ * without a plan still gets, and it must behave exactly as before.
+ *
  * The three bugs QA found (B1, B2: a junk or missing checklist list refused
  * the whole backup; B3: "NaN%" on You for a 0-question mock) are fixed and
  * the tests here now assert the fixed behaviour ("Fixed (QA Bn)").
@@ -31,6 +37,7 @@ import ReadinessReport from '../app/readiness';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { planText } from '../components/journey';
 import { getCertification } from '../content/certifications';
+import * as examContent from '../content/exam';
 import { getAllQuestions } from '../content/loader';
 import { readBackup } from '../engine/backup';
 import { addDays } from '../engine/examDay';
@@ -391,6 +398,8 @@ describe('QA 2: entry points', () => {
   });
 
   it('the exam-week screen links to the report; the report links back to the checklist in exam week', () => {
+    // The checklist-only path (an exam without a final-week plan; see the header).
+    jest.spyOn(examContent, 'getFinalWeek').mockReturnValue(null);
     useSettings.setState({ examDates: { cisa: addDays(today(), 5) } });
     mount(<ExamWeekScreen />);
     press(/^See your readiness report$/);
@@ -409,6 +418,10 @@ describe('QA 2: entry points', () => {
 
 // ── 3. Exam week ─────────────────────────────────────────────────────────
 describe('QA 3: the Today card and the checklist', () => {
+  // The checklist-only path (an exam without a final-week plan; see the header). Restored after each test.
+  beforeEach(() => {
+    jest.spyOn(examContent, 'getFinalWeek').mockReturnValue(null);
+  });
   const hasCard = () => root().findAll((n) => n.props.testID === 'exam-week-card').length > 0;
 
   it('the card shows only from 7 to 2 days out (engine, every day from 10 to −3)', () => {

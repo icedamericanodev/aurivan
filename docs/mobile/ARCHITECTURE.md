@@ -746,6 +746,46 @@ problem, a `principle` report carrying only its id and title). The Mistake journ
 pattern" links to the principle that coaches it through `slip_map`. Nothing is
 saved: there are no new store fields.
 
+**Exam guide and final review week.** The same builder reads the shared
+`data/exam/cisa_exam_guide.json` and `data/exam/final_review_week.json`
+(schema `docs/content/EXAM_GUIDE_SCHEMA.md`, one pair of files for web and
+mobile) through `mobile/scripts/exam-guide-pack.cjs` and writes
+`src/content/generated/cisa/exam.json` (types and loader: `src/content/exam/`).
+Each cert names its own two files in `PACKS`; a missing file gives a null half
+and its rows hide. A note code or principle id that doesn't exist (task targets,
+cheat-sheet points and the cheat sheet's principle list), an unknown action
+kind or cheat-sheet part, a non-https source, or the word "stem" in learner text
+fails the build; the Jest pack test also checks the guide's domain weights
+against `certifications.ts`. Mobile CI runs on `data/exam/**`.
+- **About the exam** (`app/exam-guide.tsx`, `?section=<id>` deep link): from
+  Learn → Look it up (under Principles) and Help → Get help. One calm "check
+  isaca.org before you book" notice with the last-checked date, "On this page"
+  jump rows, then each section (summary, domain weights, steps, bullets) with a
+  quiet Sources line whose links open in the browser. Nothing is saved.
+- **Final review week** is the exam-week feature (mobile 1.16), not a second
+  screen: `app/exam-week.tsx` shows the plan when the cert has one and the old
+  checklist screen when it doesn't. Same route, Today card, readiness-report
+  row and saved record (`moments.examWeek`, store `aurivan.progress.v1`); the
+  six checklist ticks stay, under "Before the day". New beside them:
+  `examWeek.days` (day ids marked done, same exam date; lenient in backups,
+  a union in sync). Today's card window with a plan is 8 days out to the eve
+  (`FINAL_WEEK_WINDOW`), 7 to 2 without. Day cards (goal, tasks, remember line,
+  "Mark this day done"); task buttons resolve in `engine/finalWeek.ts`
+  (`resolveAction`, pure) and route in `lib/finalWeek.ts`: note, principle or
+  family (`principles?family=`), practice 10 in a domain (`focus` /
+  `next_focus` = readiness focus and next weighted gap; heaviest domains with
+  no answers), mini (a third of the exam) or full mock start sheet, Mistake
+  journal, notes search. `top_slip` uses the Mistake journal's slip coach; a
+  "Didn't know it" top slip opens the note behind most open mistakes, and
+  fewer than 5 tagged mistakes opens the principles library. The cheat sheet
+  (`app/cheat-sheet.tsx`, `?parts=4,5|focus|…`) has a "Cover the points"
+  switch (tap to show each point and focus moves onto it; not saved). The week's tasks are the
+  learner's choice, not plan items. Review follow-ups: on the eve Today shows
+  only the eve card, with a "Tonight's list" link (`/exam-week?section=eve`),
+  so the plan card is on Today from 8 to 2 days out; with a plan the weekly
+  mini mock and the Fit card also rest from 8 days out (`PlanInput.finalWeek`,
+  `FitAskInput.finalWeek`), so day 7's full rehearsal never follows a mock.
+
 **Your note on a question.** Not a study note: the learner's own words on one
 question, written after its answer is checked (never in a live mock; in the
 mock review). Kept per exam in the progress store as `qNotes: { [questionId]:

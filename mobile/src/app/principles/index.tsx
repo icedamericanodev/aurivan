@@ -16,11 +16,17 @@
  * glyph only on the Learn row that leads here. Rows grow at large text (the
  * rule is never cut off at 200%). No motion beyond the shared `Enter` fade,
  * which already respects Reduce Motion.
+ *
+ * ?family=<id> (Final review week's "Read the principles on …" tasks): only
+ * that family's section, with "Showing one family" and "See all principles"
+ * under the title. An unknown id
+ * shows the whole list.
  */
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useState } from 'react';
 import { View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
-import { Enter, ListRow, PushedHeader, Screen, Section, T, useFontScale } from '../../components/ui';
+import { Button, Enter, ListRow, PushedHeader, Screen, Section, T, useFontScale } from '../../components/ui';
 import { CERTIFICATIONS, getCertification } from '../../content/certifications';
 import { principleFamilies } from '../../content/principles';
 import { useSettings } from '../../store/settings';
@@ -33,8 +39,13 @@ export default function PrinciplesHome() {
   const { c } = useTheme();
   const certId = useSettings((s) => s.activeCertId);
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
-  const groups = principleFamilies(cert.id);
+  const all = principleFamilies(cert.id);
   const large = useFontScale() >= LARGE_TEXT;
+  // One family when a link asks for it (and it exists), until "See all principles".
+  const { family: asked } = useLocalSearchParams<{ family?: string }>();
+  const [showAll, setShowAll] = useState(false);
+  const only = !showAll && typeof asked === 'string' && all.some((g) => g.family.id === asked) ? asked : undefined;
+  const groups = only ? all.filter((g) => g.family.id === only) : all;
 
   if (groups.length === 0) {
     return (
@@ -54,6 +65,18 @@ export default function PrinciplesHome() {
         <T v="meta" style={{ marginTop: space.xs }}>
           The thinking the exam rewards. Learn the rule, spot it in the question, avoid the trap.
         </T>
+        {/* One family from a link (UX review P5): say so up top, with the way back to all of them. */}
+        {only && (
+          <View testID="principles-one-family" style={{ marginTop: space.sm }}>
+            <T v="small" color={c.ink}>{`Showing one family: ${groups[0]?.family.title ?? ''}`}</T>
+            <Button
+              kind="ghost"
+              label="See all principles"
+              onPress={() => setShowAll(true)}
+              style={{ alignSelf: 'flex-start', marginLeft: -space.sm }}
+            />
+          </View>
+        )}
       </Enter>
 
       {groups.map(({ family, principles }, g) => (

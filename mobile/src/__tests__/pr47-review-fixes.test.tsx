@@ -23,6 +23,7 @@ import ReadinessReport, { MOCKS_SHOWN } from '../app/readiness';
 import { todayMinutes } from '../components/journey';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { getCertification } from '../content/certifications';
+import * as examContent from '../content/exam';
 import { getAllQuestions } from '../content/loader';
 import { activityMatches } from '../engine/dayPlan';
 import { addDays } from '../engine/examDay';
@@ -300,6 +301,9 @@ describe('the readiness report', () => {
   });
 
   it('O6 + probes P3/P4: in exam week the checklist sits right under the framing; after the exam there is none', () => {
+    // An exam without a final-week plan keeps the checklist row (CISA's plan renames it "Final review week":
+    // final-week-screens.test.tsx). Restored at the end of this test.
+    const noPlan = jest.spyOn(examContent, 'getFinalWeek').mockReturnValue(null);
     useSettings.setState({ examDates: { cisa: addDays(today(), 1) } });
     setCert({ answers: seedAnswers(30, 0.7) });
     mount(<ReadinessReport />);
@@ -311,6 +315,7 @@ describe('the readiness report', () => {
     mount(<ReadinessReport />);
     expect(allText()).not.toContain('Exam-week checklist');
     expect(allText()).toContain('After the exam');
+    noPlan.mockRestore();
   });
 
   it('P1 + O8: the path says where you are and why, with no step counter', () => {

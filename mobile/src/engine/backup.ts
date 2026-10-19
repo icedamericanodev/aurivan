@@ -47,7 +47,7 @@ import { isLookOfSlot, type LookSlot } from './plantLooks';
 import { examDateLabel } from './examDay';
 import { snapMinutes, type DailyMinutes, type Familiarity } from './fit';
 import { cleanDisplayName } from './displayName';
-import { cleanDone, type ExamWeekItem } from './examWeek';
+import { cleanDays, cleanDone, type ExamWeekItem } from './examWeek';
 import { reminderSummary } from './reminders';
 import { capNoteText, pruneTombstones, type QuestionNotes } from './questionNotes';
 import { migrateProgress, PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
@@ -316,8 +316,13 @@ const readinessDay = obj({ day: date, min: nullable(percent), last: nullable(per
  * only the six known ids, so a long junk list can't grow the save.
  */
 const examWeekDone: Check<ExamWeekItem[]> = (x) => (Array.isArray(x) ? cleanDone(x.filter((v) => typeof v === 'string')) : []);
+/**
+ * Final review week: the day cards marked done. Lenient like the ticks: only
+ * "day-1" … "day-7", once each; anything else is dropped, never refused.
+ */
+const examWeekDays: Check<string[]> = (x) => (Array.isArray(x) ? cleanDays(x) : []);
 // `done` is read leniently (above), so a file without it restores with an empty list.
-const examWeek = obj({ for: date, done: examWeekDone }, { hidden: bool });
+const examWeek = obj({ for: date, done: examWeekDone }, { hidden: bool, days: examWeekDays });
 /**
  * Mobile 1.23: the learner's own name for Today's greeting. Read leniently,
  * like the exam-week ticks (a cosmetic field is never a reason to refuse the

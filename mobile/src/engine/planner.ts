@@ -97,6 +97,12 @@ export interface PlanInput {
   /** Now (ms), for the once-a-week mock rule. Optional: the clock's now. */
   now?: number;
   daysLeft: number | null;
+  /**
+   * The cert has a final review week (content/exam). Its day 7 is a full
+   * rehearsal, so the weekly mini mock also rests 8 days out: never two
+   * mocks on back-to-back days (product call, QA review of the final week).
+   */
+  finalWeek?: boolean;
   examQuestions: number; // full mock length for this certification
   /** The exam's minutes (a mock's length at exam pace). Optional: EXAM_MINUTES_PER_QUESTION. */
   examMinutes?: number;
@@ -189,6 +195,9 @@ function reviewItem(count: number, due: number, label?: string): PlanItem {
   };
 }
 
+/** With a final review week, the weekly mini mock rests from this many days out (day 7's full mock follows). */
+export const FINAL_WEEK_MOCK_REST = 8;
+
 export function todaysPlan(p: PlanInput): PlanItem[] {
   // A missing or broken number plans the default day, never a NaN one.
   const minutes = Number.isFinite(p.dailyMinutes) ? Math.max(1, p.dailyMinutes) : DEFAULT_MINUTES;
@@ -271,9 +280,10 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
   const focusPractice = () =>
     practice((n) => (p.focusDomain ? `${n} questions · ${p.focusDomain.short}` : `${n} mixed questions`), { domainId: p.focusDomain?.id });
   // Calendar days, not hours (code review M1): a mock finished Monday evening
-  // is due again next Monday morning, DST weeks included. Never in exam week.
+  // is due again next Monday morning, DST weeks included. Never in exam week
+  // (with a final review week, not the day before it either: day 7 is a full mock).
   const mockDue =
-    (p.daysLeft === null || p.daysLeft > 7) &&
+    (p.daysLeft === null || p.daysLeft > (p.finalWeek ? FINAL_WEEK_MOCK_REST : 7)) &&
     (p.lastMockAt == null || daysBetween(dayKey(p.lastMockAt), dayKey(p.now ?? Date.now())) >= MOCK_GAP_DAYS);
   const miniMock = (): PlanItem => {
     const questions = Math.round(p.examQuestions / 3);

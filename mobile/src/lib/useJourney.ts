@@ -9,6 +9,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AppState } from 'react-native';
 import { getDomain } from '../content/certifications';
+import { hasFinalWeek } from '../content/exam';
 import type { Certification } from '../content/types';
 import { lessonsFor } from '../content/lessons';
 import { examFocusedOf, planLesson, skippableDomains, type Familiarity } from '../engine/fit';
@@ -86,6 +87,8 @@ export function buildJourney(i: JourneyInput) {
     lastFullMockAt,
     now: i.now,
     daysLeft,
+    // A final review week starts with a full mock: no mini mock the day before it.
+    finalWeek: hasFinalWeek(cert.id),
     examQuestions: cert.exam.questions,
     examMinutes: cert.exam.minutes,
     // Today never plans a game this certification can't play (registry minPool).

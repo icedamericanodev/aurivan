@@ -37,7 +37,7 @@
  */
 import { BackupError, fitForBackup, hasProtoKey, readStores, utf8Bytes, type BackupProgress, type BackupSettings } from './backup';
 import { LOG_KEEP_DAYS } from './examReady';
-import { cleanDone } from './examWeek';
+import { cleanDays, cleanDone } from './examWeek';
 import { GAME_TIERS } from './games/growth';
 import { MAX_MOCKS } from './journey';
 import { LONG_IDS_CAP } from './milestones';
@@ -512,7 +512,9 @@ function mergeCert(certId: string, a: Cert, as: Stamps, b: Cert, bs: Stamps, fir
       const q = y.examWeek;
       if (!p || !q) return p ?? q;
       if (p.for !== q.for) return p.for > q.for ? p : q;
-      return clean({ for: p.for, done: cleanDone([...p.done, ...q.done]), hidden: p.hidden || q.hidden || undefined });
+      // Final review week: a day marked done on either phone stays done (a union, like the ticks).
+      const days = cleanDays([...(p.days ?? []), ...(q.days ?? [])]);
+      return clean({ for: p.for, done: cleanDone([...p.done, ...q.done]), hidden: p.hidden || q.hidden || undefined, days: days.length ? days : undefined });
     })();
     return clean({ readiness: mergeReadiness(x.readiness, y.readiness), readySeenAt: max(x.readySeenAt, y.readySeenAt), examWeek: ew });
   })();

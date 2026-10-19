@@ -187,21 +187,41 @@ export function DomainReportRow({ row, last, link }: { row: DomainRow; last?: bo
  * Today's exam-week card (days 7 to 2 before the exam): the key-idea recipe
  * under the hero. The words are one stop; each button is its own. Never a
  * red or "overdue" state: "2 of 5 done" is all it counts.
+ *
+ * Final review week (Oct 2026): with a final-week plan the same card shows
+ * from 8 days out to the eve and says so: caption "Final review week", the
+ * day's title ("Today: Pace check") and "2 of 7 days done", with "Open the
+ * plan". The words come in through `copy`; without it, the checklist card is
+ * exactly as before.
  */
-export function ExamWeekCard({ count, onOpen, onHide }: { count: string; onOpen: () => void; onHide: () => void }) {
+export interface ExamWeekCardCopy {
+  caption: string;
+  line: string;
+  open: string;
+  openHint: string;
+  /** Spoken name of Hide: says where the list or plan stays. */
+  hide: string;
+}
+export const CHECKLIST_CARD: ExamWeekCardCopy = {
+  // "This week", not "Exam week": the readiness row's stage line already says Exam week (UX review P5).
+  caption: 'This week',
+  line: 'A calm week. A short checklist, then light review.',
+  open: 'Open checklist',
+  openHint: 'A short practical list for the week before your exam',
+  hide: 'Hide this card. The checklist stays in your readiness report.',
+};
+export function ExamWeekCard({ count, onOpen, onHide, copy = CHECKLIST_CARD }: { count: string; onOpen: () => void; onHide: () => void; copy?: ExamWeekCardCopy }) {
   const { c } = useTheme();
-  const line = 'A calm week. A short checklist, then light review.';
   return (
     <View testID="exam-week-card" style={{ borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
-      {/* "This week", not "Exam week": the readiness row's stage line already says Exam week (UX review P5). */}
-      <View accessible accessibilityLabel={`This week. ${line} ${count}.`}>
-        <T v="caption" color={c.accentText}>This week</T>
-        <T v="small" style={{ marginTop: space.xs }}>{line}</T>
+      <View accessible accessibilityLabel={`${copy.caption}. ${copy.line} ${count}.`}>
+        <T v="caption" color={c.accentText}>{copy.caption}</T>
+        <T v="small" style={{ marginTop: space.xs }}>{copy.line}</T>
         <T v="meta" style={{ marginTop: 2 }}>{count}</T>
       </View>
       <Row gap={space.xs} style={{ flexWrap: 'wrap', marginLeft: -space.sm }}>
-        <Button kind="ghost" label="Open checklist" accessibilityHint="A short practical list for the week before your exam" onPress={onOpen} />
-        <Button kind="ghost" label="Hide" accessibilityLabel="Hide this card. The checklist stays in your readiness report." onPress={onHide} />
+        <Button kind="ghost" label={copy.open} accessibilityHint={copy.openHint} onPress={onOpen} />
+        <Button kind="ghost" label="Hide" accessibilityLabel={copy.hide} onPress={onHide} />
       </Row>
     </View>
   );

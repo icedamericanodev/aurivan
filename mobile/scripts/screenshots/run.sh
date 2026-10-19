@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -78,6 +78,10 @@ if [ "${SHOTS:-}" = notes ]; then
   node scripts/screenshots/shoot_notes.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = data ]; then
   node scripts/screenshots/shoot_data.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = guides ]; then
+  # The exam guide and final review week: Learn's rows, About the CISA exam, the
+  # week's day cards, the cheat sheet (and cover mode) and Today's card (shoot_guides.mjs).
+  node scripts/screenshots/shoot_guides.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = pace ]; then
   node scripts/screenshots/shoot_pace.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = qnote ]; then
