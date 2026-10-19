@@ -4442,38 +4442,38 @@
     {
       "id": "d2_120",
       "domain": 2,
-      "subtopic": "IT Incident Classification and Prioritization",
+      "subtopic": "IT Performance Reporting. Incident Measures for Governance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor reviews a bank's IT incident management process. Which classification approach MOST supports consistent prioritization?",
+      "question": "An IS auditor finds the IT steering committee's monthly report shows only the number of incidents closed. Which change would MOST improve the report's value for governance?",
       "options": {
-        "A": "Categories by technology area, used to route each incident",
-        "B": "Severity set by the business owner's judgment, without criteria",
-        "C": "An impact-and-urgency matrix with defined criteria per tier",
-        "D": "Incidents handled in the order in which they are reported"
+        "A": "Add the average time taken to resolve incidents each month",
+        "B": "List the incidents each support engineer closed during the month",
+        "C": "Show incident trends by business impact against agreed targets",
+        "D": "Attach the full list of incident tickets opened that month"
       },
       "correct": "C",
-      "key_concept": "Consistent prioritization comes from a documented matrix of business impact and urgency, with defined criteria and response targets per tier.",
-      "pre_read": "Notice the word consistent. Ask which approach makes two engineers rate the same incident the same way, by business impact.",
-      "correct_explanation": "Priority should reflect business consequence and urgency, and consistency needs written criteria. A matrix of impact and urgency with defined criteria per tier gives every engineer the same answer for the same incident and links tiers to response targets. Technology categories are useful for routing to the right team, but they say nothing about business impact, so they cannot set priority.",
+      "key_concept": "Governance reporting links IT measures to business impact, with targets and trends, rather than counting activity.",
+      "pre_read": "Ask what a steering committee needs to decide, then which measure shows whether IT serves the business.",
+      "correct_explanation": "Governance needs to know whether IT is meeting the business's needs, so measures must link to goals, with targets and trends. Showing incident trends by business impact against agreed targets tells the committee whether critical services are affected and whether performance is improving. Average resolution time adds a useful efficiency view, but it treats a payroll outage like a printer fault, so it still hides business impact.",
       "wrong_explanations": {
-        "A": "Technology categories decide who responds, not how urgently. Without an impact dimension, a minor and a critical outage rank the same.",
-        "B": "Undocumented judgment, even a business owner's, varies between people and shifts, so the same incident gets different priorities.",
-        "D": "Arrival order ignores impact, so a critical outage can wait behind minor requests."
+        "A": "An average mixes critical and trivial incidents and has no target, so the committee still cannot see business impact.",
+        "B": "Per-engineer counts are operational management detail. They help a team lead, not a committee judging IT's value to the business.",
+        "D": "A raw ticket list buries the committee in detail; governance reports summarize targets, trends and exceptions."
       },
       "tips": [
-        "Eliminate: B depends on undocumented judgment, and D ignores impact altogether.",
-        "Final two: C beats A because priority must reflect business impact; technology categories route incidents but do not rank them.",
-        "Exam cue: prioritization questions favor business impact with documented criteria over technical category or arrival order."
+        "Eliminate: B is team-level productivity detail, and D hands the committee raw tickets instead of insight.",
+        "Final two: C beats A because governance needs business impact against targets; an overall average hides which incidents mattered.",
+        "Exam cue: reports to governance link measures to business goals, with targets and trends, rather than activity counts or raw data."
       ],
-      "framework_ref": "ITIL 4 Incident Management; COBIT 2019 DSS02 (Managed Service Requests and Incidents)",
+      "framework_ref": "COBIT 2019 MEA01 (Managed Performance and Conformance Monitoring); COBIT 2019 EDM05 (Ensured Stakeholder Engagement)",
       "related_concepts": [
-        "Incident classification",
-        "Severity matrix",
-        "ITIL 4",
-        "Response SLAs"
+        "Performance reporting",
+        "IT steering committee",
+        "Business impact",
+        "Governance metrics"
       ],
-      "_provenance": "Authored from concept: 'IT incident classification multi-dimensional severity matrix - complements d2_105 (incident response escalation analysis) and d2_110 (crisis communication)'. Public source: ITIL 4 + FFIEC. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'IT incident classification multi-dimensional severity matrix - complements d2_105 (incident response escalation analysis) and d2_110 (crisis communication)'. Public source: ITIL 4 + FFIEC. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Wave 0-A re-scope (Oct 2026): rewritten in place to test D2 IT performance reporting to governance (2B3.3) through the IS auditor's lens instead of D4 incident classification; id kept so learner history is preserved.",
       "style_version": 2
     },
     {

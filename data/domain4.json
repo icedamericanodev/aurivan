@@ -230,76 +230,75 @@
     {
       "id": "d4_007",
       "domain": 4,
-      "subtopic": "USB Mass Storage Devices. Risk Management",
+      "subtopic": "USB Mass Storage Devices. Asset Inventory",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An organization's data loss review shows staff copying client files to personal USB drives. Which control BEST addresses this risk while preserving legitimate business use?",
+      "question": "An IS auditor finds that USB drives issued to staff to carry client files are not recorded in the IT asset inventory. What is the GREATEST risk of this gap?",
       "options": {
-        "A": "An annual signed policy acknowledgment banning personal drives",
-        "B": "Antivirus scanning of each drive when it is connected",
-        "C": "Epoxy sealing of the USB ports on every endpoint",
-        "D": "Device control allowing approved encrypted drives, with logging"
+        "A": "The firm may overspend by buying drives it already holds",
+        "B": "Unapproved personal drives may be connected to company laptops",
+        "C": "Encryption software licenses on the drives may be undercounted",
+        "D": "Lost or unreturned drives holding client files may go unnoticed"
       },
       "correct": "D",
-      "key_concept": "Device-control policies enforce removable media rules technically: approved encrypted drives allowed, others blocked, and all use logged.",
-      "pre_read": "Note that staff already broke the expectation. Ask which option enforces the rule rather than restating it.",
-      "correct_explanation": "Endpoint device control enforces the rule technically: approved, encrypted drives work, unapproved drives are blocked, and transfers are logged for review. That stops copies to personal drives yet keeps business use. A signed policy sets expectations and supports discipline, but it is a directive control that relies on staff choosing to comply, which is exactly what failed here.",
+      "key_concept": "An asset inventory assigns each issued device to a holder, so missing or unreturned devices, and the data on them, are noticed.",
+      "pre_read": "Ask what an asset inventory lets the firm do, then what goes wrong when issued drives are missing from it.",
+      "correct_explanation": "An asset inventory gives each issued item a named holder, so the firm can confirm drives come back when staff leave and notice when one goes missing. Without records, a lost or kept drive full of client files goes undetected, and no response starts. Personal drives being plugged in is a real risk, but device control addresses it; recording issued drives would neither cause nor prevent it.",
       "wrong_explanations": {
-        "A": "A policy states the rule but does not enforce it. Staff already ignored expectations, so a directive control alone leaves the copying possible.",
-        "B": "Antivirus addresses malware on the drive, not data leaving the organization. Clean drives can still carry client files out.",
-        "C": "Sealing ports stops the copying but also blocks legitimate business use, which the stem requires the control to preserve."
+        "A": "Overspending is a minor cost issue. The gap that matters is losing track of drives that carry client data.",
+        "B": "This is a real risk, but it comes from missing device control. Recording issued drives would neither cause nor fix it.",
+        "C": "License counts are a compliance and cost matter. They say nothing about where drives holding client files are."
       },
       "tips": [
-        "Eliminate: B targets malware rather than data leaving, and C blocks the legitimate use the stem says to preserve.",
-        "Final two: D beats A because a technical preventive control enforces the rule; a signed policy only asks for compliance.",
-        "Exam cue: when a directive control has already failed, the BEST answer usually enforces the rule technically."
+        "Eliminate: A and C are cost and licensing matters, minor beside client data leaving the firm's control unnoticed.",
+        "Final two: D beats B because the inventory gap is what hides lost drives; personal drives are a device-control problem.",
+        "Exam cue: when asked for the risk of a specific gap, pick the risk that gap creates, not a different weakness."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 MP-7 (Media Use); ISO/IEC 27002:2022 Control 7.10 (Storage Media)",
+      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); NIST SP 800-53 Rev 5 CM-8 (System Component Inventory)",
       "related_concepts": [
-        "USB device control",
+        "IT asset inventory",
         "Removable media",
-        "Endpoint management",
-        "Data exfiltration"
+        "Asset ownership",
+        "Leaver returns"
       ],
-      "_provenance": "Authored from concept: 'USB device-control per ISACA Removable Media guidance and NIST SP 800-114'. Public sources: ISACA, NIST. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'USB device-control per ISACA Removable Media guidance and NIST SP 800-114'. Public sources: ISACA, NIST. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Wave 0-A re-scope (Oct 2026): rewritten in place to test D4 IT asset management (4A2.1) through the IS auditor's lens instead of D5 data loss prevention; id kept so learner history is preserved.",
       "style_version": 2
     },
     {
       "id": "d4_008",
       "domain": 4,
-      "subtopic": "Wireless Network. Security Controls",
+      "subtopic": "Wireless Network. Controller Redundancy",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor reviews the design of a new corporate wireless network for employee laptops. Which configuration provides the STRONGEST protection against unauthorized access?",
+      "question": "A distributor's warehouse scanners use 300 wireless access points that all depend on one controller, so its failure would halt shipping. Which recommendation should the IS auditor consider MOST effective?",
       "options": {
-        "A": "WEP encryption combined with a hidden network name",
-        "B": "WPA3-Enterprise with 802.1X and certificate-based EAP-TLS",
-        "C": "An open network restricted by MAC address filtering",
-        "D": "WPA3-Personal with a long, regularly rotated passphrase"
+        "A": "Add access points so their coverage overlaps across the warehouse",
+        "B": "Add a second controller that takes over automatically on failure",
+        "C": "Keep a preconfigured spare controller ready in the warehouse",
+        "D": "Back up the controller's configuration to a secure server nightly"
       },
       "correct": "B",
-      "key_concept": "Enterprise wireless should use WPA3-Enterprise with 802.1X and EAP-TLS so access is authenticated and revocable per user, not shared.",
-      "pre_read": "Two options use modern encryption. Ask how each one decides who may connect.",
-      "correct_explanation": "WPA3-Enterprise uses 802.1X to authenticate each user or device individually, and EAP-TLS adds certificates, so access ties to corporate identity and can be revoked per person. WPA3-Personal encrypts well, but everyone shares one passphrase: anyone who learns it gets in, and removing one leaver means changing it for every user.",
+      "key_concept": "A component every service path depends on is a single point of failure; redundancy with automatic failover removes it.",
+      "pre_read": "Ask which single part every access point depends on, and which option keeps service running without anyone acting.",
+      "correct_explanation": "The controller is a single point of failure for every access point, so the design needs a redundant partner. A second controller that takes over automatically keeps scanners connected when the first fails, with no one needing to act. A preconfigured spare speeds recovery, but someone must notice the failure, swap the hardware and bring it online, so shipping still stops in the meantime.",
       "wrong_explanations": {
-        "A": "WEP is broken and can be cracked in minutes. Hiding the network name adds little because it still appears in wireless traffic.",
-        "C": "An open network has no encryption, and MAC addresses are easily spoofed, so access control is trivial to bypass.",
-        "D": "A shared passphrase gives no individual accountability. Once leaked or known by a leaver, anyone can connect until it is changed for everyone."
+        "A": "More access points add coverage, but every one still depends on the same controller, so its failure still stops them all.",
+        "C": "A spare shortens recovery, but shipping halts until someone detects the failure and installs it.",
+        "D": "A configuration backup helps rebuild a controller, but the single hardware dependency remains and shipping stops while it is replaced."
       },
       "tips": [
-        "Eliminate: A relies on broken WEP, and C leaves traffic unencrypted behind spoofable MAC filtering.",
-        "Final two: B beats D because per-user certificate authentication is revocable and accountable; a shared passphrase is not.",
-        "Exam cue: for enterprise access, individual authentication tied to the directory beats any shared secret, however strong."
+        "Eliminate: A duplicates the access points, which are not the weak point, and D only speeds a rebuild after failure.",
+        "Final two: B beats C because automatic failover keeps shipping running; a spare still means an outage while it is installed.",
+        "Exam cue: find the component every path depends on; the strongest fix gives it a redundant partner that takes over automatically."
       ],
-      "framework_ref": "WPA3 (Wi-Fi Protected Access 3); IEEE 802.11 (Wireless LAN Standards); IEEE 802.1X (Network Access Control); NIST SP 800-97 (Wireless Network Security)",
+      "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); NIST SP 800-34 Rev 1 (Contingency Planning Guide for Federal Information Systems)",
       "related_concepts": [
-        "WPA3",
-        "802.1X",
-        "EAP-TLS",
-        "Wireless security",
-        "MAC filtering"
+        "Single point of failure",
+        "Controller redundancy",
+        "Automatic failover",
+        "Wireless LAN availability"
       ],
-      "_provenance": "Authored from concept: 'Enterprise wireless security per WPA3 and IEEE 802.1X with EAP-TLS'. Public sources: Wi-Fi Alliance, IEEE, NIST. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Enterprise wireless security per WPA3 and IEEE 802.1X with EAP-TLS'. Public sources: Wi-Fi Alliance, IEEE, NIST. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Wave 0-A re-scope (Oct 2026): rewritten in place to test D4 redundancy and system resilience (4B2.2) through the IS auditor's lens instead of D5 wireless security; id kept so learner history is preserved.",
       "style_version": 2
     },
     {
@@ -7939,38 +7938,38 @@
     {
       "id": "d4_213",
       "domain": 4,
-      "subtopic": "Leaver Deprovisioning. Orphaned Account Containment",
+      "subtopic": "Leaver Deprovisioning. Scheduled Job Accounts",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "At a hospital, an IS auditor finds 47 terminated users still hold clinical system access because HR emails leaver lists to IT weekly. What should the auditor recommend FIRST?",
+      "question": "Twelve production batch jobs run under the personal account of an administrator who left last month, kept active so the jobs do not fail. Which recommendation from the IS auditor is BEST?",
       "options": {
-        "A": "Disable the 47 accounts and check them for post-termination logins",
-        "B": "Automate the leaver feed from the HR system into identity management",
-        "C": "Ask managers to recertify team access at next quarter's review",
-        "D": "Accept the risk since clinical areas also need badge entry"
+        "A": "Move the jobs to owned service accounts, then disable the leaver's account",
+        "B": "Reset the account's password and give it to the operations manager",
+        "C": "Keep the account active and review its activity each month",
+        "D": "Delete the jobs from the scheduler until a new owner is found"
       },
       "correct": "A",
-      "key_concept": "Deprovisioning must be timely; when orphaned accounts are found, disable them and check for misuse before re-engineering the leaver process.",
-      "pre_read": "Notice the accounts are still active today. Ask what removes the exposure fastest, then what prevents recurrence.",
-      "correct_explanation": "The 47 active accounts are a live exposure today, so the first step is to disable them and check whether any were used after termination, which may reveal an incident to handle. Automating the HR feed is the right root-cause fix and should follow, but building it takes weeks while the known orphaned accounts stay open to misuse.",
+      "key_concept": "Scheduled production jobs run under owned service accounts, not personal ones, so leavers can be removed without breaking processing.",
+      "pre_read": "Notice why the account was kept active. Ask which option removes the leaver's access without stopping the jobs.",
+      "correct_explanation": "Jobs tied to a person's account break or stay exposed whenever that person leaves. Moving them, through change management, to dedicated service accounts with a named owner and restricted rights lets the leaver's account be disabled without stopping production. Resetting the password removes the leaver's access, but the jobs still depend on a personal identity, now shared, so actions are no longer traceable to one person.",
       "wrong_explanations": {
-        "B": "Automation fixes future leavers but takes time to build, leaving the 47 known orphaned accounts usable in the meantime.",
-        "C": "Quarterly recertification is a slow detective control; it leaves known orphaned accounts open for months.",
-        "D": "Badge control does not stop remote or shared-workstation use of a valid account, so the logical exposure remains."
+        "B": "This cuts off the leaver, but a shared personal login loses accountability, and the jobs still depend on one person's account.",
+        "C": "A monthly review only detects misuse after it happens; the leaver's access stays live throughout.",
+        "D": "Removing the jobs stops production processing, trading a security gap for an availability failure."
       },
       "tips": [
-        "Eliminate: C leaves known orphaned accounts open until a quarterly review, and D relies on physical access to cover a logical gap.",
-        "Final two: A beats B because known live exposure is removed first; the automated feed fixes the process afterward.",
-        "Exam cue: when a review finds active exposure, contain the known cases first, then fix the process that created them."
+        "Eliminate: C leaves a leaver's access live and only watches it, and D stops production processing to fix an account issue.",
+        "Final two: A beats B because service accounts remove the personal dependency; a reset password just shares one person's identity.",
+        "Exam cue: production jobs should run under owned, non-personal accounts, so staff changes never force a choice between security and availability."
       ],
-      "framework_ref": "COBIT 2019 DSS05 (Managed Security Services); COBIT 2019 DSS06 (Managed Business Process Controls); NIST SP 800-53 Rev 5 AC-2 (Account Management); NIST SP 800-53 Rev 5 PS-4 (Personnel Termination)",
+      "framework_ref": "COBIT 2019 DSS01 (Managed Operations); NIST SP 800-53 Rev 5 AC-2 (Account Management); NIST SP 800-53 Rev 5 PS-4 (Personnel Termination)",
       "related_concepts": [
-        "Deprovisioning",
-        "Orphaned accounts",
-        "HR-to-IAM feed",
-        "Leaver process"
+        "Job scheduling",
+        "Service accounts",
+        "Leaver process",
+        "Accountability"
       ],
-      "_provenance": "Authored from concept: 'SOX 404 material weakness finding pre-10-K filing'. Public sources: PCAOB, SEC, ISACA. Scenario specifics (publicly-traded healthcare $2.8B, 10-K filing one week, SOX 404 IT general controls, 47 access instances, terminated employees retained access 30+ days) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
+      "_provenance": "Authored from concept: 'SOX 404 material weakness finding pre-10-K filing'. Public sources: PCAOB, SEC, ISACA. Scenario specifics (publicly-traded healthcare $2.8B, 10-K filing one week, SOX 404 IT general controls, 47 access instances, terminated employees retained access 30+ days) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit. Wave 0-A re-scope (Oct 2026): rewritten in place to test D4 job scheduling controls (4A3.1) through the IS auditor's lens instead of D5 identity life cycle; id kept so learner history is preserved.",
       "style_version": 2
     },
     {
@@ -8277,39 +8276,38 @@
     {
       "id": "d4_222",
       "domain": 4,
-      "subtopic": "Active Directory Compromise. Golden Ticket",
+      "subtopic": "Active Directory Recovery. Restore Testing",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An attacker has forged Golden Tickets using a krbtgt account whose password has not changed in seven years. Which action should the IS auditor recommend management prioritize FIRST?",
+      "question": "A firm's disaster recovery tests restore every application server, but its Active Directory domain controllers have never been restored from backup. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Rotate the krbtgt password twice, with replication in between",
-        "B": "Reset the krbtgt password once and force user password changes",
-        "C": "Reimage every compromised workstation from a clean baseline",
-        "D": "Hand incident command to the vendor's response team"
+        "A": "Include an isolated directory restore in the next recovery test",
+        "B": "Rely on the domain controllers replicating to the recovery site",
+        "C": "Back up the domain controllers more often than at present",
+        "D": "Have the backup vendor certify its software supports directories"
       },
       "correct": "A",
-      "key_concept": "Golden Tickets are signed with the krbtgt key; only a double rotation removes both current and previous keys that validate forged tickets.",
-      "pre_read": "Think about how domain controllers validate Kerberos tickets. Which keys still work after one password change?",
-      "correct_explanation": "Forged Golden Tickets are signed with the krbtgt key, and domain controllers accept tickets signed with the current or previous password. Rotating it twice, allowing replication between resets, invalidates both keys and every forged ticket. A single reset looks like it fixes the problem, but the old key survives as the previous password, so the attacker's tickets keep working.",
+      "key_concept": "Directory services underpin every recovered system, so their restore from backup must be tested; replication is not a backup.",
+      "pre_read": "Ask what every restored application needs before users can log in, and what replication would copy along with the data.",
+      "correct_explanation": "Every application restored in a test still needs the directory to authenticate users and services, so an untested directory restore puts the whole recovery at risk. An isolated restore proves the backups work without touching production. Replication to the recovery site gives availability, but it copies corruption, mass deletions or an attacker's changes to every controller at once; only a known-good backup recovers from those.",
       "wrong_explanations": {
-        "B": "After one reset the old key remains valid as the previous password, so forged tickets still work. User password changes do not affect them.",
-        "C": "Reimaging workstations removes footholds but leaves forged tickets valid. The attacker can return with domain-wide access.",
-        "D": "Outside responders may help, but management keeps incident command and accountability for the response."
+        "B": "Replication keeps a live copy but also spreads corruption or malicious changes, so it cannot replace a tested restore from backup.",
+        "C": "More frequent backups do not show that any of them can be restored; the gap is the missing test.",
+        "D": "A vendor's certification describes the product, not whether this firm's directory backups restore in its environment."
       },
       "tips": [
-        "Eliminate: C cleans endpoints while forged tickets stay valid, and D gives away accountability for the incident.",
-        "Final two: A beats B because domain controllers still honor the previous krbtgt key after a single reset.",
-        "Exam cue: fix the root of trust an attacker forged before cleaning individual machines."
+        "Eliminate: C adds backups without proving any restore, and D relies on a vendor claim instead of a test.",
+        "Final two: A beats B because replication copies damage to every controller; only a tested restore from backup proves recovery.",
+        "Exam cue: shared services such as the directory come first in recovery, so their restore must be proven, not assumed."
       ],
-      "framework_ref": "Microsoft Securing Privileged Access (Tier Model); MITRE ATT&CK T1558.001 (Golden Ticket); Detecting and Mitigating Active Directory Compromises (ASD, CISA, NSA et al., 2024); NIST SP 800-53 Rev 5 IA-5 (Authenticator Management); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
+      "framework_ref": "NIST SP 800-53 Rev 5 CP-9 (System Backup); NIST SP 800-53 Rev 5 CP-10 (System Recovery and Reconstitution); COBIT 2019 DSS04 (Managed Continuity)",
       "related_concepts": [
-        "Kerberoasting",
-        "Golden Ticket",
-        "krbtgt double rotation",
-        "Tier-zero hardening",
-        "MITRE ATT&CK T1558"
+        "Restore testing",
+        "Directory services",
+        "Replication versus backup",
+        "Recovery order"
       ],
-      "_provenance": "Authored from concept: 'AD Golden Ticket attack response per Microsoft + MITRE ATT&CK'. Public sources: Microsoft, MITRE, CISA, NIST. Scenario specifics (manufacturing $2.1B, krbtgt 7-year-old password, ~140 workstations compromised, 11-day attack chain) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'AD Golden Ticket attack response per Microsoft + MITRE ATT&CK'. Public sources: Microsoft, MITRE, CISA, NIST. Scenario specifics (manufacturing $2.1B, krbtgt 7-year-old password, ~140 workstations compromised, 11-day attack chain) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Wave 0-A re-scope (Oct 2026): rewritten in place to test D4 restoration and restore testing (4B3.4) through the IS auditor's lens instead of D5 attack response; id kept so learner history is preserved.",
       "style_version": 2
     },
     {
@@ -9178,39 +9176,38 @@
     {
       "id": "d4_246",
       "domain": 4,
-      "subtopic": "Major Data Center Physical Security Breach",
+      "subtopic": "Colocation Services. Service Level Reporting",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A colocation provider reports intruders spent 40 minutes near the firm's racks; remote diagnostics show no tampering. What should the IS auditor recommend as the BEST next step?",
+      "question": "A firm learned of an intrusion near its colocation racks weeks later, from the provider's SOC 2 report, though every uptime target was met. What is the PRIMARY weakness the IS auditor should report?",
       "options": {
-        "A": "Accept the remote diagnostics as evidence of no tampering",
-        "B": "Arrange an independent on-site inspection of the firm's equipment",
-        "C": "Await an independent analysis of the provider's access logs",
-        "D": "Relocate the equipment to a new colocation provider immediately"
+        "A": "The uptime target in the agreement is set too low",
+        "B": "The agreement sets no deadline for reporting security incidents",
+        "C": "The provider's monthly service reports exclude security events",
+        "D": "The service credits in the agreement are too small"
       },
       "correct": "B",
-      "key_concept": "Physical access breaches need independent physical inspection; remote diagnostics and access logs cannot show whether hardware was altered.",
-      "pre_read": "Ask what remote diagnostics and access logs can and cannot see. Then ask who is independent of the control that failed.",
-      "correct_explanation": "Remote diagnostics cannot detect physical implants or added hardware, so only a hands-on inspection can confirm the equipment's integrity. Making it independent ensures the finding does not depend on the party whose controls failed. An independent review of the provider's access logs sounds rigorous, but logs show who entered and when, not whether anyone altered the firm's hardware.",
+      "key_concept": "Service levels should include timed incident notification; periodic reports and uptime targets do not tell the customer about events promptly.",
+      "pre_read": "Notice the gap between when the intrusion happened and when the firm heard. Ask what controls that timing.",
+      "correct_explanation": "The delay came from what the agreement requires: it measures uptime but sets no deadline for reporting security incidents, so the provider had no duty to tell the firm promptly. Adding timed incident notification to the agreed service levels fixes the cause. Adding security events to the monthly service report helps, but periodic reporting can still leave an intrusion unreported for weeks; notification must be triggered by the event.",
       "wrong_explanations": {
-        "A": "Remote diagnostics cannot see hardware implants or physical changes, so they cannot prove the equipment is untouched.",
-        "C": "Access logs show who entered, not whether hardware was altered, and waiting delays the hands-on check that can.",
-        "D": "Moving equipment before inspection may destroy evidence and moves possibly tampered hardware into a new site."
+        "A": "Uptime measures availability, and every target was met. A higher target would not require the provider to report security events.",
+        "C": "Monthly reporting would help, but it is periodic, so an intrusion early in the month could still take weeks to reach the firm.",
+        "D": "Credits compensate for missed targets. None were missed, and larger credits would not make the provider report incidents sooner."
       },
       "tips": [
-        "Eliminate: A trusts tools that cannot see physical tampering, and D relocates hardware before checking it.",
-        "Final two: B beats C because only a physical inspection can reveal tampering; access logs show entry, not changes to hardware.",
-        "Exam cue: after a physical breach, verify with independent physical evidence; remote checks and the breached party's word are not enough."
+        "Eliminate: A raises an availability target that was already met, and D enlarges credits when no target was missed.",
+        "Final two: B beats C because a reporting deadline is triggered by the event; a monthly report can still arrive weeks later.",
+        "Exam cue: if a supplier problem reaches you late, look first at what the agreement requires the supplier to report, and how fast."
       ],
-      "framework_ref": "ISO/IEC 27001:2022 Annex A.7 (Physical Controls); HHS HIPAA Security Rule 45 CFR §164.310 (Physical Safeguards); PCI DSS v4.0.1 Requirement 9 (Restrict Physical Access to Cardholder Data); ISO/IEC 27037 (Digital Evidence)",
+      "framework_ref": "ITIL 4 Service Level Management practice; ISO/IEC 20000-1:2018 (Service Management System)",
       "related_concepts": [
-        "Colocation tenant security",
-        "Tailgating breach",
-        "Hardware implants",
-        "Forensic imaging",
-        "Chain-of-custody at colo"
+        "Service level agreement",
+        "Supplier reporting",
+        "Colocation",
+        "Incident notification"
       ],
-      "_provenance": "Authored from concept: 'Major colocation physical security breach response'. Public sources: ISO/IEC, HHS, PCI SSC, ISACA. Scenario specifics (colo SOC report disclosed breach, 2 tailgaters 40 minutes, 3 weeks ago, firm's equipment present) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Major colocation physical security breach response'. Public sources: ISO/IEC, HHS, PCI SSC, ISACA. Scenario specifics (colo SOC report disclosed breach, 2 tailgaters 40 minutes, 3 weeks ago, firm's equipment present) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Wave 0-A re-scope (Oct 2026): rewritten in place to test D4 service level management (4A10.1) through the IS auditor's lens instead of D5 physical access response; id kept so learner history is preserved.",
       "style_version": 2
     },
     {
@@ -9366,39 +9363,38 @@
     {
       "id": "d4_251",
       "domain": 4,
-      "subtopic": "Geographic Data Sovereignty. Russia Exit Sanctions",
+      "subtopic": "Data Center Exit. Media Sanitization Evidence",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A firm must exit Russia within 90 days under new sanctions, while customer data sits in local data centers under a localization law. What should the IS auditor recommend FIRST to the chief privacy officer?",
+      "question": "A firm closing an overseas data center will sell its storage arrays to a reseller. Which evidence BEST shows the IS auditor that customer data was removed?",
       "options": {
-        "A": "Delete Russian-hosted customer data once local operations cease",
-        "B": "Migrate the customer data to EU data centers before the deadline",
-        "C": "Map each data set to its sanctions and localization obligations",
-        "D": "Freeze the data in place until the sanctions are lifted"
+        "A": "IT staff's confirmation that the array volumes were deleted",
+        "B": "A clause in the reseller's contract requiring it to wipe every drive",
+        "C": "Sanitization certificates matched to the inventory by drive serial number",
+        "D": "Photos of the arrays sealed and leaving the data center"
       },
       "correct": "C",
-      "key_concept": "In a sanctions-driven exit, inventory the data and map each set's legal obligations before choosing to delete, transfer or retain it.",
-      "pre_read": "Notice two legal regimes pull in opposite directions. Ask what must be known before any data can safely move or be destroyed.",
-      "correct_explanation": "Sanctions rules and the localization law impose conflicting duties, and the right action differs by data set: some must be returned to customers, some retained, some cannot leave the country. Mapping each set to its obligations, with counsel, is the basis for every later decision. Migrating to the EU is decisive but may itself breach the export rules the map would reveal.",
+      "key_concept": "Sanitize media before they leave the organization's control, and keep per-drive records reconciled to the asset inventory as evidence.",
+      "pre_read": "Ask which option proves each drive was sanitized, and whether the data would leave the firm's control first.",
+      "correct_explanation": "Media should be sanitized, verified and recorded before they leave the organization's control. Certificates tied to drive serial numbers and reconciled to the asset inventory show that every drive was sanitized and none was missed. A contract requiring the reseller to wipe the drives is a useful control, but it is a promise rather than proof, and the data leaves the firm's control before any wipe happens.",
       "wrong_explanations": {
-        "A": "Blanket deletion may breach retention duties and customer contracts, and destroys data customers may be entitled to extract.",
-        "B": "Cross-border transfer out of Russia is restricted by the localization and export rules. Moving data before mapping those obligations creates new legal exposure.",
-        "D": "Waiting for sanctions to lift ignores the 90-day exit deadline and keeps the firm exposed to sanctions risk."
+        "A": "Deleting volumes leaves data recoverable, and a staff statement is weaker evidence than records for each drive.",
+        "B": "A contract clause is a promise, not proof, and the drives would leave the firm's control still holding data.",
+        "D": "Photos show the arrays left the building, not that the data on their drives was removed."
       },
       "tips": [
-        "Eliminate: A destroys data without checking retention or customer rights, and D ignores both the deadline and the sanctions exposure.",
-        "Final two: C beats B because the obligations must be known before data moves; a transfer may itself breach export rules.",
-        "Exam cue: when laws conflict, the FIRST step is to understand obligations, not to pick a physical action."
+        "Eliminate: A relies on deletion, which leaves data recoverable, and D shows shipment rather than sanitization.",
+        "Final two: C beats B because per-drive records prove sanitization happened; a reseller's contract only promises it, after the data has left.",
+        "Exam cue: for disposal, prefer verified, per-item records reconciled to the inventory over promises or statements."
       ],
-      "framework_ref": "COBIT 2019 APO14 (Managed Data); US OFAC Sanctions Regulations (31 CFR Chapter V); Council Regulation (EU) No 833/2014 (Russia Sectoral Sanctions); Russian Federal Law on Personal Data (152-FZ, Data Localization); GDPR Article 49 (Derogations for Specific Situations)",
+      "framework_ref": "NIST SP 800-88 (Media Sanitization); COBIT 2019 BAI09 (Managed Assets); ISACA IT Audit Standard 1205 (Evidence)",
       "related_concepts": [
-        "OFAC SDN list",
-        "Russian Data Localization Law 152-FZ",
-        "Roskomnadzor",
-        "Sanctions wind-down period",
-        "Multi-jurisdiction data wind-down"
+        "Media sanitization",
+        "Certificate of sanitization",
+        "Asset disposal",
+        "Data center exit"
       ],
-      "_provenance": "Authored from concept: 'Russia exit data sovereignty during sanctions'. Public sources: OFAC, EU, Russian Federation, ISACA. Scenario specifics (multinational software $580M ARR, Russia wind-down 90 days, Russian customers and employees, Russian DCs) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Russia exit data sovereignty during sanctions'. Public sources: OFAC, EU, Russian Federation, ISACA. Scenario specifics (multinational software $580M ARR, Russia wind-down 90 days, Russian customers and employees, Russian DCs) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Wave 0-A re-scope (Oct 2026): rewritten in place to test D4 secure disposal and media sanitization (4A2.3) through the IS auditor's lens instead of D2/D5 data sovereignty; id kept so learner history is preserved.",
       "style_version": 2
     },
     {
