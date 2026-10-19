@@ -261,10 +261,12 @@ describe('entry points', () => {
     expect(text.indexOf('Look it up')).toBeLessThan(notesRow);
     expect(notesRow).toBeLessThan(text.indexOf('The thinking the exam rewards'));
     expect(text.indexOf('The thinking the exam rewards')).toBeLessThan(text.indexOf('In exam order. Each ends with a quick check.'));
-    // Only the final row drops its hairline.
+    // Only the final row drops its hairline. Since the exam guide, "About the CISA exam" and
+    // "Final review week" follow Principles (exam-guide-screens.test.tsx), so the week row is last.
     const rowNamed = (title: string) => root().findAll((n) => n.props.title === title && 'last' in n.props)[0];
     expect(rowNamed('Study notes').props.last).toBe(false);
-    expect(rowNamed('Principles').props.last).toBe(true);
+    expect(rowNamed('Principles').props.last).toBe(false);
+    expect(rowNamed('Final review week').props.last).toBe(true);
     press('Principles, the thinking the exam rewards');
     expect(mockPush).toHaveBeenCalledWith('/principles');
   });

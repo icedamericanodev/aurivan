@@ -28,6 +28,17 @@ export function monthYear(isoDate: string): string {
 }
 
 /**
+ * A calendar date "2026-10-19" (YYYY-MM-DD) as "19 Oct 2026": the exam
+ * guide's "Last checked" line. Read as written (no time zone shift). Anything
+ * that isn't such a date is returned as it is.
+ */
+export function isoLongDate(isoDate: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isoDate);
+  const month = m ? MONTHS[Number(m[2]) - 1] : undefined;
+  return m && month ? `${Number(m[3])} ${month} ${m[1]}` : isoDate;
+}
+
+/**
  * A subtopic shortened for the question meta line (≤ 3 words, sentence case):
  * "Year-End Close. Job Scheduling Control Bypass" → "Year-end close".
  * Keeps acronyms (BCM, IS) and drops a dangling "and"/"of"/"the".

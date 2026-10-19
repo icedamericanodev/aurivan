@@ -50,19 +50,25 @@
  * Study notes (Compass glyph), that opens the principles by family
  * (app/principles). Hidden while the cert has no principles; "Look it up"
  * shows while there are notes OR principles (the search only with notes).
+ *
+ * Exam guide and final review week (data/exam/): two more rows under
+ * Principles, "About the CISA exam" (Info) and "Final review week"
+ * (CalendarCheck), each hidden while the cert has no such file. "Look it up"
+ * shows while any of its rows has something to open.
  */
 import * as Router from 'expo-router';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, Pressable, View } from 'react-native';
 import { DomainRing, type BotanyKind } from '../../components/glyphs';
-import { BookOpen, ChevronDown, Compass, ICON_STROKE, Play } from '../../components/icons';
+import { BookOpen, CalendarCheck, ChevronDown, Compass, ICON_STROKE, Info, Play } from '../../components/icons';
 import { AnimatedPressable, CheckDraw, Collapse, Turn, usePressScale, useScreenFocus } from '../../components/motion';
 import { BigNum, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, ProgressBar, Row, Screen, SearchField, Section, T } from '../../components/ui';
 import { CERTIFICATIONS, domainColor, domainLabel, getCertification } from '../../content/certifications';
 import { lessonsFor, nextLesson } from '../../content/lessons';
 import type { Lesson } from '../../content/lessons/types';
 import { getNotes, hasNotes, noteSubtopics } from '../../content/notes';
+import { hasExamGuide, hasFinalWeek } from '../../content/exam';
 import { hasPrinciples } from '../../content/principles';
 import type { Certification, DomainInfo } from '../../content/types';
 import { readCount, searchNotes } from '../../engine/notesSearch';
@@ -167,6 +173,10 @@ export default function Learn() {
   const showNotes = hasNotes(cert.id);
   // The exam-mindset principles: their own row, hidden when the cert has none.
   const showPrinciples = hasPrinciples(cert.id);
+  // The exam guide and the final review week: one row each, hidden when the cert has none.
+  const showGuide = hasExamGuide(cert.id);
+  const showWeek = hasFinalWeek(cert.id);
+  const showLookUp = showNotes || showPrinciples || showGuide || showWeek;
   const noteIds = showNotes ? noteSubtopics(cert.id).map((s) => s.id) : [];
   const notesRead = readCount(noteIds, notesReadIds);
   // One line each (design spec §2): the subtitle above already says "reference".
@@ -208,14 +218,14 @@ export default function Learn() {
         )}
       </Enter>
 
-      {(showNotes || showPrinciples) && (
+      {showLookUp && (
         <Enter i={2}>
           {/* Memoised, with its own query state: typing re-renders only this block, never the hero or the lessons. */}
-          <LookItUp cert={cert} notesState={notesState} showNotes={showNotes} showPrinciples={showPrinciples} />
+          <LookItUp cert={cert} notesState={notesState} showNotes={showNotes} showPrinciples={showPrinciples} showGuide={showGuide} showWeek={showWeek} />
         </Enter>
       )}
 
-      <Enter i={showNotes || showPrinciples ? 3 : 2}>
+      <Enter i={showLookUp ? 3 : 2}>
         {/* Memoised (performance, 1.15.x): a focus change or a store write that
             leaves the lessons as they were never re-renders the whole list. */}
         <LessonGroups
@@ -246,11 +256,15 @@ const LookItUp = memo(function LookItUp({
   notesState,
   showNotes,
   showPrinciples,
+  showGuide,
+  showWeek,
 }: {
   cert: Certification;
   notesState: string;
   showNotes: boolean;
   showPrinciples: boolean;
+  showGuide: boolean;
+  showWeek: boolean;
 }) {
   const { c } = useTheme();
   const [query, setQuery] = useState('');
@@ -322,7 +336,7 @@ const LookItUp = memo(function LookItUp({
           accessibilityLabel={`Study notes, ${notesState}`}
           accessibilityHint="Opens the notes, by domain"
           onPress={() => router.push('/notes')}
-          last={!showPrinciples}
+          last={!showPrinciples && !showGuide && !showWeek}
         />
       )}
       {/* The exam-mindset principles: the second reference row (Compass = how to think). */}
@@ -334,6 +348,28 @@ const LookItUp = memo(function LookItUp({
           accessibilityLabel="Principles, the thinking the exam rewards"
           accessibilityHint="Opens the exam-mindset principles, by family"
           onPress={() => router.push('/principles')}
+          last={!showGuide && !showWeek}
+        />
+      )}
+      {/* About the exam: the format, booking, the day and after (Info = facts, not study). */}
+      {showGuide && (
+        <ListRow
+          icon={<Info size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+          title={`About the ${cert.name} exam`}
+          subtitle="Format, booking, exam day and after"
+          accessibilityHint="Opens the exam guide"
+          onPress={() => router.push('/exam-guide')}
+          last={!showWeek}
+        />
+      )}
+      {/* The last seven days before the exam, day by day (the same screen Today opens in exam week). */}
+      {showWeek && (
+        <ListRow
+          icon={<CalendarCheck size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+          title="Final review week"
+          subtitle="Your last seven days, day by day"
+          accessibilityHint="Opens the final review week"
+          onPress={() => router.push('/exam-week')}
           last
         />
       )}

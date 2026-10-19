@@ -21,6 +21,11 @@
  *      ../data/mindset/principles.json via principles-pack.cjs (schema:
  *      docs/content/PRINCIPLES_SCHEMA.md). Its practice ids are checked the
  *      same way. A missing file gives an empty pack (Learn hides the row).
+ *   8. Builds the exam pack (<cert>/exam.json) from ../data/exam/
+ *      cisa_exam_guide.json and final_review_week.json via exam-guide-pack.cjs
+ *      (schema: docs/content/EXAM_GUIDE_SCHEMA.md). Every note code and
+ *      principle id they link is checked against the packs built in steps 6
+ *      and 7. A missing file gives a null half (its rows hide).
  *
  * WHEN IT RUNS: automatically after `npm install` (postinstall), and any
  * time you run `npm run content`. The output folder is gitignored because
@@ -37,6 +42,7 @@ import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const { buildNotesPack } = require('./notes-pack.cjs');
 const { buildPrinciplesPack } = require('./principles-pack.cjs');
+const { buildExamPack } = require('./exam-guide-pack.cjs');
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const MOBILE_ROOT = path.resolve(HERE, '..');
@@ -57,6 +63,11 @@ const PACKS = [
     // Exam-mindset principles (schema v2; docs/content/PRINCIPLES_SCHEMA.md).
     // Another cert adds its own file here. PRINCIPLES_SRC previews a draft locally.
     principles: process.env.PRINCIPLES_SRC || path.join(REPO_ROOT, 'data', 'mindset', 'principles.json'),
+    // "About the exam" and "Final review week" (docs/content/EXAM_GUIDE_SCHEMA.md).
+    // Another cert adds its own two files here; a missing file hides its rows.
+    // EXAM_GUIDE_SRC / FINAL_WEEK_SRC preview drafts locally (never in CI).
+    examGuide: process.env.EXAM_GUIDE_SRC || path.join(REPO_ROOT, 'data', 'exam', 'cisa_exam_guide.json'),
+    finalWeek: process.env.FINAL_WEEK_SRC || path.join(REPO_ROOT, 'data', 'exam', 'final_review_week.json'),
   },
 ];
 
@@ -198,7 +209,7 @@ function validate(q) {
  * Write <cert>/notes.json. A missing or v1 notes file gives an EMPTY pack
  * (the Study notes entry hides itself), never a failed build.
  * `questions` = this cert's questions (to check the "Practice this concept" ids).
- * Returns the index.ts line for this cert's notes loader.
+ * Returns the index.ts line for this cert's notes loader, and the pack.
  */
 function buildNotes(pack, certDir, questions) {
   let raw = null;
@@ -219,14 +230,14 @@ function buildNotes(pack, certDir, questions) {
   console.log(skipped
     ? `• ${pack.certId} notes: ${skipped} source, wrote an empty notes pack (Study notes stays hidden)`
     : `✓ ${pack.certId} notes: ${subs} subtopics → notes.json`);
-  return `  ${pack.certId}: () => require('./${pack.certId}/notes.json') as NotesPack,`;
+  return { line: `  ${pack.certId}: () => require('./${pack.certId}/notes.json') as NotesPack,`, pack: notes };
 }
 
 /**
  * Write <cert>/principles.json. A missing file or another schema version
  * gives an EMPTY pack (the Learn → Principles row hides), never a failed
  * build; a practice id that is not in this cert's bank DOES fail it.
- * Returns the index.ts line for this cert's principles loader.
+ * Returns the index.ts line for this cert's principles loader, and the pack.
  */
 function buildPrinciples(pack, certDir, questions) {
   let raw = null;
@@ -246,15 +257,53 @@ function buildPrinciples(pack, certDir, questions) {
   console.log(skipped
     ? `• ${pack.certId} principles: ${skipped} source, wrote an empty principles pack (the Learn row stays hidden)`
     : `✓ ${pack.certId} principles: ${out.principles.length} principles in ${out.families.length} families → principles.json`);
-  return `  ${pack.certId}: () => require('./${pack.certId}/principles.json') as PrinciplesPack,`;
+  return { line: `  ${pack.certId}: () => require('./${pack.certId}/principles.json') as PrinciplesPack,`, pack: out };
+}
+
+/** Read one optional JSON source: null when there is none (a broken file fails the build). */
+function readOptional(file) {
+  if (!file || !fs.existsSync(file)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (e) {
+    console.error(`✗ ${file} is not valid JSON: ${e.message}`);
+    process.exitCode = 1;
+    return null;
+  }
+}
+
+/**
+ * Write <cert>/exam.json: the exam guide and the final review week. A
+ * missing file gives a null half (its Learn, Help and Today rows hide),
+ * never a failed build; a link to a note or principle that doesn't exist,
+ * an unknown action kind or "stem" in learner text DOES fail it.
+ * Returns the index.ts line for this cert's exam loader.
+ */
+function buildExam(pack, certDir, notes, principles) {
+  const { pack: out, problems, warnings, skipped } = buildExamPack(readOptional(pack.examGuide), readOptional(pack.finalWeek), pack.certId, {
+    notes,
+    principles,
+    // Domain ids only: the weights live in src/content/certifications.ts alone (checked by Jest).
+    domains: pack.domains.map((id) => ({ id })),
+  });
+  for (const w of warnings) console.warn(`! exam ${w}`);
+  for (const p of problems) console.error(`✗ exam ${p}`);
+  if (problems.length) process.exitCode = 1;
+  fs.writeFileSync(path.join(certDir, 'exam.json'), JSON.stringify(out));
+  console.log(skipped
+    ? `• ${pack.certId} exam: no source, wrote an empty exam pack (the guide and final week rows stay hidden)`
+    : `✓ ${pack.certId} exam: guide ${out.guide ? `${out.guide.sections.length} sections` : 'none'}, final week ${out.week ? `${out.week.days.length} days` : 'none'} → exam.json`);
+  return `  ${pack.certId}: () => require('./${pack.certId}/exam.json') as ExamPack,`;
 }
 
 function main() {
   fs.mkdirSync(OUT_ROOT, { recursive: true });
   const notesLines = [];
   const principlesLines = [];
+  const examLines = [];
   const indexLines = [
     '// AUTO-GENERATED by scripts/build-content.mjs — do not edit by hand.',
+    "import type { ExamPack } from '../exam/types';",
     "import type { NotesPack } from '../notes/types';",
     "import type { PrinciplesPack } from '../principles/types';",
     "import type { PackQuestion } from '../types';",
@@ -294,14 +343,19 @@ function main() {
       total += questions.length;
     }
     indexLines.push('  },');
-    notesLines.push(buildNotes(pack, certDir, certQuestions));
-    principlesLines.push(buildPrinciples(pack, certDir, certQuestions));
+    const notes = buildNotes(pack, certDir, certQuestions);
+    const principles = buildPrinciples(pack, certDir, certQuestions);
+    notesLines.push(notes.line);
+    principlesLines.push(principles.line);
+    examLines.push(buildExam(pack, certDir, notes.pack, principles.pack));
   }
   indexLines.push('};', '');
   // Study notes: one lazily parsed pack per certification.
   indexLines.push('export const generatedNotes: Record<string, () => NotesPack> = {', ...notesLines, '};', '');
   // Exam-mindset principles: one lazily parsed pack per certification.
   indexLines.push('export const generatedPrinciples: Record<string, () => PrinciplesPack> = {', ...principlesLines, '};', '');
+  // The exam guide and final review week: one lazily parsed pack per certification.
+  indexLines.push('export const generatedExam: Record<string, () => ExamPack> = {', ...examLines, '};', '');
   fs.writeFileSync(path.join(OUT_ROOT, 'index.ts'), indexLines.join('\n'));
 
   if (errors) {

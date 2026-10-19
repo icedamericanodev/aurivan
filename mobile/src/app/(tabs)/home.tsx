@@ -39,6 +39,11 @@
  * to 2 days before the exam, one quiet "Exam week" card sits under the
  * readiness row, above "Also today": the checklist, or Hide.
  *
+ * Final review week (Oct 2026): when the exam has a final-week plan, that
+ * same card (same place, same Hide, same saved record) shows from 8 days
+ * out to the eve, names today's day ("Today: Pace check"), counts the days
+ * marked done, and opens the plan (app/exam-week.tsx).
+ *
  * Mobile 1.21 (one focal element): the forest panel's title names the
  * activity and never holds a count ("Spaced review"; the counts go to its
  * meta line), and the day's minutes are said once, in the caption ("Start
@@ -62,8 +67,11 @@ import { KaisipLockup } from '../../components/brand';
 import { StreakPill } from '../../components/today';
 import { FirstRangePanel, SecondAskCard } from '../../components/firstSet';
 import { FitCard } from '../../components/fit';
-import { ExamWeekCard } from '../../components/readinessReport';
-import { examWeekCardDue, examWeekCount, examWeekOf } from '../../engine/examWeek';
+import { ExamWeekCard, type ExamWeekCardCopy } from '../../components/readinessReport';
+import { getFinalWeek } from '../../content/exam';
+import type { FinalWeek } from '../../content/exam/types';
+import { examWeekCardDue, examWeekCount, examWeekOf, FINAL_WEEK_WINDOW, weekDaysCount, weekDaysOf } from '../../engine/examWeek';
+import { dayForToday } from '../../engine/finalWeek';
 import { Celebrate, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
 import { ArrowRight, ICON_STROKE, Inbox, Play, Settings, Sprout, Target, Timer } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
@@ -136,6 +144,22 @@ const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
 
 /** The growth's haptic stays silent this soon after the clearing's (one haptic for one return to Today). */
 const CLEARING_TAP_MS = 5000;
+
+/**
+ * Today's card words for the final review week: today's day by name, or
+ * "Starts tomorrow" 8 days out. Exported for tests.
+ */
+export function finalWeekCard(week: FinalWeek, daysLeft: number | null): ExamWeekCardCopy {
+  const day = dayForToday(week.days, daysLeft);
+  const first = week.days[0];
+  return {
+    caption: week.title,
+    line: day ? `Today: ${day.title}.` : `Starts tomorrow: ${first?.title ?? 'day one'}.`,
+    open: 'Open the plan',
+    openHint: 'Seven short days of review before your exam',
+    hide: 'Hide this card. The plan stays in Learn and your readiness report.',
+  };
+}
 
 /** "38 days to CISA". No date set, past and exam day keep their own words. */
 function countdown(daysLeft: number | null, examName: string): string {
@@ -430,6 +454,8 @@ export default function Today() {
   const fitPrompt = useSettings((x) => x.fitPrompt);
   const familiarity = useSettings((x) => x.familiarity);
   const fitAskDays = useSettings((x) => x.fitAskDays);
+  // The final review week (content/exam), when this exam has one: Today's card and the Fit card follow it.
+  const finalWeek = getFinalWeek(j.cert.id);
   const askFit = shouldAskFit({
     onboarded,
     fitPrompt,
@@ -440,9 +466,12 @@ export default function Today() {
     plantLine: plantLineNow || plantVisit,
     askedDays: fitAskDays,
     today: plan.day,
+    finalWeek: Boolean(finalWeek),
   });
   // Mobile 1.16: the exam-week card, 7 to 2 days out, until hidden for this exam date.
-  const examWeekDue = examWeekCardDue(j.daysLeft, j.progress.moments?.examWeek, j.examDate);
+  // With a final review week: 8 days out to the eve, and it opens the plan.
+  // Never beside the eve / exam-day card (UX review H1): that card links to tonight's list itself.
+  const examWeekDue = !moments.moment && examWeekCardDue(j.daysLeft, j.progress.moments?.examWeek, j.examDate, finalWeek ? FINAL_WEEK_WINDOW : undefined);
   // Count the day the card showed: after 3 separate days it stays away (code review M4).
   useEffect(() => {
     if (askFit) useSettings.getState().noteFitAsked(plan.day);
@@ -484,7 +513,13 @@ export default function Today() {
 
       {moments.moment && (
         <Enter i={1} style={{ marginTop: space.lg }}>
-          <ExamEveCard moment={moments.moment} reminders={moments.reminders} pace={moments.pace} />
+          <ExamEveCard
+            moment={moments.moment}
+            reminders={moments.reminders}
+            pace={moments.pace}
+            // The eve with a final review week: one link to tonight's list (the plan's own card waits).
+            onTonight={finalWeek ? () => router.push({ pathname: '/exam-week', params: { section: 'eve' } }) : undefined}
+          />
         </Enter>
       )}
 
@@ -597,11 +632,16 @@ export default function Today() {
         {examWeekDue && j.examDate && (
           <View style={{ marginTop: space.xl }}>
             <ExamWeekCard
-              count={examWeekCount(examWeekOf(j.progress.moments?.examWeek, j.examDate).done)}
+              count={
+                finalWeek
+                  ? weekDaysCount(weekDaysOf(j.progress.moments?.examWeek, j.examDate).length, finalWeek.days.length)
+                  : examWeekCount(examWeekOf(j.progress.moments?.examWeek, j.examDate).done)
+              }
+              copy={finalWeek ? finalWeekCard(finalWeek, j.daysLeft) : undefined}
               onOpen={() => router.push('/exam-week')}
               onHide={() => {
                 useProgress.getState().hideExamWeek(j.cert.id, j.examDate!);
-                sayLater('Hidden. The checklist stays in your readiness report.');
+                sayLater(finalWeek ? 'Hidden. The plan stays in Learn and your readiness report.' : 'Hidden. The checklist stays in your readiness report.');
                 // The card unmounts under the focused button: move focus to the next heading, after the announcement.
                 moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50);
               }}

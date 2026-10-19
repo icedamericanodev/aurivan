@@ -44,7 +44,8 @@ import { DomainReportRow, type DomainLink, FRAMING_LINE, HOW_LINE, lowMarks, moc
 import { PlanLeaf } from '../components/glyphs';
 import { BigNum, Button, DomainDot, EmptyState, ICON_SIZE, Lead, ListRow, PushedHeader, Section, T, useFontScale } from '../components/ui';
 import type { Certification, DomainInfo } from '../content/types';
-import { examWeekCount, examWeekOf } from '../engine/examWeek';
+import { examWeekCount, examWeekOf, FINAL_WEEK_WINDOW, weekDaysCount, weekDaysOf } from '../engine/examWeek';
+import { getFinalWeek } from '../content/exam';
 import { aboutSeconds, pacingStats, pacingStatsLine, spokenMin, timingOf } from '../engine/pace';
 import { YARDSTICK_LINE } from '../engine/domainBand';
 import { rangeSpoken } from '../engine/readinessRange';
@@ -166,7 +167,15 @@ export default function ReadinessReport() {
   const { mocks, trend, low, words, scores, rows, pacingLine, paced } = data;
 
   // Exam week: the checklist is one tap away here, even after Today's card was hidden.
-  const examWeek = daysLeft !== null && daysLeft >= 0 && daysLeft <= 7 && examDate ? examWeekOf(progress.moments?.examWeek, examDate) : null;
+  // With a final review week it is the plan (from 8 days out, as on Today), counting the days marked done.
+  const finalWeek = getFinalWeek(cert.id);
+  const weekFrom = finalWeek ? FINAL_WEEK_WINDOW.from : 7;
+  const examWeek = daysLeft !== null && daysLeft >= 0 && daysLeft <= weekFrom && examDate ? examWeekOf(progress.moments?.examWeek, examDate) : null;
+  const examWeekRow = examWeek
+    ? finalWeek
+      ? { title: 'Final review week', subtitle: weekDaysCount(weekDaysOf(progress.moments?.examWeek, examDate).length, finalWeek.days.length) }
+      : { title: 'Exam-week checklist', subtitle: examWeekCount(examWeek.done) }
+    : null;
 
   // 9. Your mocks; `?mock=<id>` opens that one and scrolls it into view (an
   // unknown id opens nothing). An older one shows the whole list first.
@@ -232,12 +241,12 @@ export default function ReadinessReport() {
         <HowItWorks />
 
         {/* Exam week: the checklist sits right under the framing (UX review O6). */}
-        {examWeek && (
+        {examWeekRow && (
           <View style={{ marginTop: space.sm }}>
             <ListRow
               icon={<ListChecks size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-              title="Exam-week checklist"
-              subtitle={examWeekCount(examWeek.done)}
+              title={examWeekRow.title}
+              subtitle={examWeekRow.subtitle}
               onPress={() => router.push('/exam-week')}
               last
             />
