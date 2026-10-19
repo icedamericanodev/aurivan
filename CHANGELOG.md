@@ -4,6 +4,16 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.8] — Today, your calm home
+
+### New
+- Today is your calm home: one tap to start or continue today's practice, your estimated readiness with a ring for each domain, and your study streak.
+- Today suggests one next step: reviews that are due, a note you started, or the area where you can gain most.
+- Add your first name in You and Today will greet you by name. It stays on this device.
+
+### Improved
+- Each domain now shows the same figure on Today and on the Practice page.
+
 ## [v12.7] — A calmer Practice page
 
 ### Improved
