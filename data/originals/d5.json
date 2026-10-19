@@ -11443,6 +11443,450 @@
       ],
       "_provenance": "Authored from concept: 'Malware Types. Rootkits and Rebuilding From Trusted Media'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B2.1 (Wave 1 coverage batch Q2: a subtopic with no practice yet). Public sources: NIST, MITRE.",
       "style_version": 2
+    },
+    {
+      "id": "d5_312",
+      "domain": 5,
+      "subtopic": "Symmetric Encryption. Retiring Legacy Ciphers",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Triple DES",
+        "Advanced Encryption Standard (AES)",
+        "Algorithm transition",
+        "Compensating control"
+      ],
+      "framework_ref": "NIST SP 800-131A Rev 2 (Transitioning the Use of Cryptographic Algorithms and Key Lengths); NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management)",
+      "question": "A laboratory application still encrypts result files with Triple DES, which NIST no longer allows for encryption, and the vendor notes no breach has occurred. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Accept the vendor's view, since no breach has been reported",
+        "B": "Encrypt each result file a second time with Triple DES",
+        "C": "Migrate to AES by a date the data owner approves",
+        "D": "Add monitoring of who opens the encrypted result files"
+      },
+      "correct": "C",
+      "key_concept": "A retired cipher should be replaced on a dated plan owned by the data owner; monitoring or reusing the old cipher only compensates.",
+      "pre_read": "Ask whether each action fixes the weak cipher itself or only works around it.",
+      "correct_explanation": "NIST no longer allows Triple DES for encryption, so the files lack the assurance a current cipher gives, whatever the incident history. Migrating to the Advanced Encryption Standard (AES) by a date the data owner approves fixes the root cause and assigns accountability for it. Monitoring who opens the files is the runner-up: it may detect misuse, but copies taken from the system could still be attacked offline.",
+      "wrong_explanations": {
+        "A": "No reported breach is not evidence of strength; a weak cipher can be broken without anyone noticing.",
+        "B": "Encrypting twice with the same retired cipher still depends on an algorithm no longer allowed for encryption.",
+        "D": "Monitoring is detective only; copies taken from the system could still be decrypted offline because the cipher stays weak."
+      },
+      "tips": [
+        "Eliminate: A treats the absence of a reported breach as proof of strength, and B keeps the same retired cipher.",
+        "Final two: C beats D because replacing the cipher fixes the root cause; monitoring only compensates for it.",
+        "Exam cue: when an algorithm is retired, recommend a dated migration that the business owns, not a compensating control around it."
+      ],
+      "_provenance": "Authored from concept: 'Symmetric Encryption. Retiring Legacy Ciphers'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.1 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_313",
+      "domain": 5,
+      "subtopic": "Symmetric Encryption. One Key Shared Across Many Devices",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Shared symmetric key",
+        "Key compromise",
+        "IoT device security",
+        "Per-device keys"
+      ],
+      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); NISTIR 8259A (IoT Device Cybersecurity Capability Core Baseline)",
+      "question": "A utility ships every smart meter with the same AES key built into its firmware to protect the readings sent to head office. Which risk should the IS auditor consider GREATEST?",
+      "options": {
+        "A": "Changing the key later needs a firmware update on every meter",
+        "B": "Meters may lack the processing power that AES requires",
+        "C": "Readings could arrive late when the network is congested",
+        "D": "Extracting the key from any one meter exposes all meters' readings"
+      },
+      "correct": "D",
+      "key_concept": "A symmetric key shared by every device is only as safe as the least protected device; each device needs its own key.",
+      "pre_read": "Ask what an attacker gains by extracting the key from a single meter.",
+      "correct_explanation": "Because every meter holds the same secret, the key is only as safe as the least protected meter: anyone who pulls it from one device's firmware can read, and forge, readings from the whole fleet. The cost of changing a built-in key is the runner-up; it is real, but it slows the response after a compromise rather than being the exposure itself. Unique keys per device limit the damage.",
+      "wrong_explanations": {
+        "A": "A costly key change is a real drawback, but it follows from the shared key; the exposure of every meter is the larger risk.",
+        "B": "AES is designed to run efficiently on small devices, so processing power is not the main concern here.",
+        "C": "Network delay affects timeliness, not the confidentiality of readings protected by a shared key."
+      },
+      "tips": [
+        "Eliminate: B doubts that AES can run on small devices, which it is designed to do, and C is a network timing issue.",
+        "Final two: D beats A because one extracted key opens the whole fleet; a costly key change only slows the response.",
+        "Exam cue: when one symmetric key is shared by many devices or parties, the greatest risk is that a single leak exposes them all."
+      ],
+      "_provenance": "Authored from concept: 'Symmetric Encryption. One Key Shared Across Many Devices'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.1 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_314",
+      "domain": 5,
+      "subtopic": "Symmetric Encryption. Delivering the Key Apart From the Data",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "related_concepts": [
+        "Key distribution",
+        "Out-of-band delivery",
+        "Shared secret key",
+        "Confidentiality"
+      ],
+      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); NIST SP 800-175B Rev 1 (Guideline for Using Cryptographic Standards: Cryptographic Mechanisms)",
+      "question": "A partner emails a payroll file encrypted with AES-256 and includes the decryption key in the same message. What is the PRIMARY weakness the IS auditor should report?",
+      "options": {
+        "A": "Anyone holding the email can read the payroll file",
+        "B": "The file cannot show which partner employee encrypted it",
+        "C": "AES-256 is too weak a cipher for payroll data",
+        "D": "Email size limits may corrupt a large encrypted file"
+      },
+      "correct": "A",
+      "key_concept": "Encryption protects data only while the key stays apart from it; deliver keys through a separate, protected channel.",
+      "pre_read": "Ask who could read the payroll file if the email were forwarded or intercepted.",
+      "correct_explanation": "Sending the key with the data defeats the encryption: anyone who intercepts, forwards or later finds the email holds both the file and the key needed to read it. The key must travel by a separate, protected route. Weak proof of who encrypted the file is the runner-up; it is a limit of shared keys, but it matters far less than payroll data that anyone can read.",
+      "wrong_explanations": {
+        "B": "A shared key cannot show which person encrypted the file, but that matters less than the payroll data being readable.",
+        "C": "AES-256 is a current, strong cipher; the weakness lies in how the key was sent, not in the algorithm.",
+        "D": "Size limits are an operational issue; they do not expose the payroll data to anyone."
+      },
+      "tips": [
+        "Eliminate: C blames a strong cipher, and D is a delivery problem that exposes no data.",
+        "Final two: A beats B because a key sent with the file lets any reader decrypt it; proof of origin is secondary.",
+        "Exam cue: the algorithm is rarely the weak point; check how the key is delivered and stored, apart from the data."
+      ],
+      "_provenance": "Authored from concept: 'Symmetric Encryption. Delivering the Key Apart From the Data'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.1 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_315",
+      "domain": 5,
+      "subtopic": "Digital Signatures. Signing Is Not Encrypting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Digital signature",
+        "Confidentiality",
+        "Public key encryption",
+        "Recipient's public key"
+      ],
+      "framework_ref": "NIST FIPS 186-5 (Digital Signature Standard (DSS)); NIST SP 800-175B Rev 1 (Guideline for Using Cryptographic Standards: Cryptographic Mechanisms)",
+      "question": "An insurer's sales team emails digitally signed price quotes to brokers, believing the signatures stop rival brokers from reading the prices. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Sign each quote with a stronger hashing algorithm",
+        "B": "Also encrypt quotes with each broker's public key",
+        "C": "Sign each quote with the broker's private key",
+        "D": "Limit the quote mailbox to named sales staff"
+      },
+      "correct": "B",
+      "key_concept": "A digital signature never hides content; confidentiality needs encryption with the recipient's public key.",
+      "pre_read": "Ask which security property the sales team actually needs, and whether a signature can provide it.",
+      "correct_explanation": "A digital signature proves who sent a quote and that it was not changed, but it leaves the content readable to anyone who handles the email. Encrypting each quote with the broker's public key means only that broker's private key can open it. Limiting the sales mailbox is the runner-up: it narrows access inside the insurer but leaves quotes readable in transit and on the brokers' mail systems.",
+      "wrong_explanations": {
+        "A": "A stronger hash improves the signature's integrity check but still leaves every quote readable.",
+        "C": "The insurer never holds a broker's private key, and signing with any key does not hide the content.",
+        "D": "Mailbox limits narrow access inside the insurer but leave quotes readable in transit and on the brokers' mail systems."
+      },
+      "tips": [
+        "Eliminate: A strengthens the signature, which never hides content, and C uses a private key that the insurer would never hold.",
+        "Final two: B beats D because encryption protects each quote wherever it travels; mailbox limits guard only one stop.",
+        "Exam cue: signatures give integrity, origin and non-repudiation, never confidentiality; secrecy needs encryption with the recipient's public key."
+      ],
+      "_provenance": "Authored from concept: 'Digital Signatures. Signing Is Not Encrypting'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.4 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_316",
+      "domain": 5,
+      "subtopic": "Digital Signatures. MAC vs Signature for Non-Repudiation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Message authentication code (MAC)",
+        "Non-repudiation",
+        "Shared secret key",
+        "Digital signature"
+      ],
+      "framework_ref": "NIST FIPS 198-1 (The Keyed-Hash Message Authentication Code (HMAC)); NIST SP 800-53 Rev 5 AU-10 (Non-repudiation)",
+      "question": "Two trading partners authenticate payment instructions with a message authentication code (MAC) using a shared secret key. If one partner denies sending an instruction, what will the IS auditor MOST LIKELY conclude?",
+      "options": {
+        "A": "The code proves which partner created the disputed instruction",
+        "B": "Either key holder could have produced the same code",
+        "C": "The code failed because it does not hide the instruction",
+        "D": "The key's length decides whether the code can be trusted"
+      },
+      "correct": "B",
+      "key_concept": "A MAC proves integrity between holders of a shared key but cannot show which holder acted, so it gives no non-repudiation.",
+      "pre_read": "Ask who else, besides the sender, could have produced a valid code.",
+      "correct_explanation": "A message authentication code shows an instruction was not changed and came from someone holding the shared key, but both partners hold that key. Either could have produced a valid code, so it cannot show a third party which one sent the instruction. Believing the code identifies the sender is the runner-up; only a digital signature made with one party's private key supports non-repudiation.",
+      "wrong_explanations": {
+        "A": "Both partners can compute the same code, so it cannot single out the sender; that needs a private-key signature.",
+        "C": "A MAC is designed for integrity and origin between key holders, not secrecy, so not hiding content is no failure.",
+        "D": "Key length affects resistance to guessing; it cannot show which of two key holders produced the code."
+      },
+      "tips": [
+        "Eliminate: C faults the code for not hiding content, which it never aims to do, and D confuses key strength with proof of sender.",
+        "Final two: B beats A because a shared key lets either holder make a valid code; only a private-key signature singles one out.",
+        "Exam cue: when a party denies an action, look for a private-key signature; shared-secret codes cannot give non-repudiation."
+      ],
+      "_provenance": "Authored from concept: 'Digital Signatures. MAC vs Signature for Non-Repudiation'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.4 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_317",
+      "domain": 5,
+      "subtopic": "Digital Signatures. Trusting the Verification Key",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Signature verification",
+        "Public key certificate",
+        "Invoice fraud",
+        "Trusted key source"
+      ],
+      "framework_ref": "NIST SP 800-89 (Recommendation for Obtaining Assurances for Digital Signature Applications); NIST FIPS 186-5 (Digital Signature Standard (DSS))",
+      "question": "An accounts payable system checks each supplier invoice's digital signature using the public key attached to that same invoice file. Which concern should the IS auditor consider MOST significant?",
+      "options": {
+        "A": "Signed invoices stay readable to anyone who intercepts them",
+        "B": "Each invoice exposes the supplier's private signing key",
+        "C": "Fraudsters could sign fake invoices with their own keys",
+        "D": "Checking every signature could slow down invoice processing"
+      },
+      "correct": "C",
+      "key_concept": "Verify signatures with a public key from a trusted certificate or registered record, never a key supplied with the signed item.",
+      "pre_read": "Ask how the system knows the attached public key really belongs to the supplier.",
+      "correct_explanation": "A signature check proves only that the invoice matches the key used to verify it. If that key arrives inside the invoice, a fraudster can sign a fake invoice with a private key of their own and attach the matching public key, and the check passes. Keys must come from a trusted certificate or the supplier's registered record. Readable invoices are the runner-up: a confidentiality gap, not payment fraud.",
+      "wrong_explanations": {
+        "A": "Signatures never hide content, but readable invoices are a minor confidentiality issue next to paying forged ones.",
+        "B": "Only the public key travels with a signed invoice; the private key stays with the signer.",
+        "D": "Signature checks are fast; any delay is minor beside the fraud that the flawed check allows."
+      },
+      "tips": [
+        "Eliminate: B assumes a private key travels with the invoice, and D raises a minor speed concern.",
+        "Final two: C beats A because a key taken from the invoice itself proves nothing about the signer; readability is a lesser gap.",
+        "Exam cue: a signature is only as trustworthy as the source of the public key used to check it; that key must come from a trusted certificate."
+      ],
+      "_provenance": "Authored from concept: 'Digital Signatures. Trusting the Verification Key'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.4 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_318",
+      "domain": 5,
+      "subtopic": "PKI Chain of Trust. Governing the Trusted Root Store",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Trust anchor",
+        "Root certificate store",
+        "Chain of trust",
+        "Change control"
+      ],
+      "framework_ref": "IETF RFC 5280 (Internet X.509 PKI Certificate and CRL Profile); NIST SP 800-53 Rev 5 SC-17 (Public Key Infrastructure Certificates)",
+      "question": "An IS auditor finds that desktop support staff can add root certificates to the trusted store on every company laptop without approval. Which concern is MOST significant?",
+      "options": {
+        "A": "A rogue root could make forged sites look genuine",
+        "B": "Laptops could run out of space to store certificates",
+        "C": "Expired roots could stay in the store without anyone noticing",
+        "D": "Staff could see more certificate warnings on internal sites"
+      },
+      "correct": "A",
+      "key_concept": "Systems trust any certificate that chains to a root in their store, so changes to trusted roots need approval and logging.",
+      "pre_read": "Ask what a laptop will trust once someone adds a new root certificate.",
+      "correct_explanation": "Every laptop trusts any certificate that chains to a root in its store. If unapproved roots can be added, an attacker or careless technician can insert one, issue certificates for any website and intercept staff traffic without a single warning. Changes to trust anchors need approval and logging. Expired roots left in the store are the runner-up: untidy, but they let no one create new certificates the laptops trust.",
+      "wrong_explanations": {
+        "B": "Root certificates are small files; storage space is not a realistic concern.",
+        "C": "Leftover expired roots are untidy, but they do not let anyone create new certificates the laptops trust.",
+        "D": "Adding roots makes more certificates trusted, so warnings would fall, not rise; the danger is silent trust."
+      },
+      "tips": [
+        "Eliminate: B worries about storage for small files, and D gets the effect backwards, since added roots reduce warnings.",
+        "Final two: A beats C because a new root lets anyone issue trusted certificates; an expired root grants nothing new.",
+        "Exam cue: the trust anchor sits at the top of every chain, so control who can change the trusted root store."
+      ],
+      "_provenance": "Authored from concept: 'PKI Chain of Trust. Governing the Trusted Root Store'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A7.1 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: IETF, NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_319",
+      "domain": 5,
+      "subtopic": "PKI Components. End-Entity Certificates That Can Issue Others",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "End-entity certificate",
+        "Intermediate CA",
+        "Certificate permitted uses",
+        "Chain of trust"
+      ],
+      "framework_ref": "IETF RFC 5280 (Internet X.509 PKI Certificate and CRL Profile); CA/Browser Forum Baseline Requirements",
+      "question": "An IS auditor finds a web server's certificate from the internal public key infrastructure (PKI) carries certificate-signing rights like an intermediate certificate authority (CA). What is the PRIMARY risk if that server is breached?",
+      "options": {
+        "A": "Attackers could create certificates that company systems trust",
+        "B": "The internal root CA's private key would be exposed",
+        "C": "The server's certificate would expire sooner than planned",
+        "D": "Visitors would see warnings when opening the server's site"
+      },
+      "correct": "A",
+      "key_concept": "End-entity certificates must not be able to issue others; if one can, its stolen key can create certificates the organization trusts.",
+      "pre_read": "Ask what the server's private key can now sign that it never should.",
+      "correct_explanation": "An end-entity certificate should not be able to issue others. Because this one can, whoever steals the server's private key can sign certificates for any name, and company systems will trust them because the chain leads back to the internal root. Exposure of the root CA's key is the runner-up: it would be worse, but that key is not on the web server, so this breach does not reveal it.",
+      "wrong_explanations": {
+        "B": "The root's private key stays with the root CA, ideally offline; breaching the web server does not reveal it.",
+        "C": "A breach does not change a certificate's validity dates; expiry is not the risk here.",
+        "D": "The certificate stays valid and trusted, so visitors see no warnings; the danger is silent misuse."
+      },
+      "tips": [
+        "Eliminate: C and D describe effects a breach would not cause, since the certificate's dates and trust are unchanged.",
+        "Final two: A beats B because the stolen server key can now sign trusted certificates; the root's own key is not on that server.",
+        "Exam cue: end-entity certificates must not be able to issue others; check the permitted uses recorded in each certificate."
+      ],
+      "_provenance": "Authored from concept: 'PKI Components. End-Entity Certificates That Can Issue Others'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A7.1 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: IETF, CA/Browser Forum.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_320",
+      "domain": 5,
+      "subtopic": "Biometrics. Crossover Error Rate for Comparing Products",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Crossover error rate (CER)",
+        "False acceptance rate (FAR)",
+        "False rejection rate (FRR)",
+        "Biometric product selection"
+      ],
+      "framework_ref": "ISO/IEC 19795-1:2021 (Information Technology — Biometric Performance Testing and Reporting — Part 1: Principles and Framework)",
+      "question": "Management is choosing between two fingerprint readers for a server room, and each vendor quotes accuracy figures at a different sensitivity setting. Which comparison basis should the IS auditor consider MOST appropriate?",
+      "options": {
+        "A": "The number of fingers each product lets a user enroll",
+        "B": "The false acceptance rate quoted at each vendor's setting",
+        "C": "The crossover error rate measured for each product",
+        "D": "The average time each product takes to read a finger"
+      },
+      "correct": "C",
+      "key_concept": "The crossover error rate, where false acceptance equals false rejection, is the standard basis for comparing biometric products; lower is better.",
+      "pre_read": "Ask whether figures quoted at different settings can be compared fairly.",
+      "correct_explanation": "The crossover error rate is the setting where false acceptance and false rejection are equal, so it gives one comparable accuracy figure for each product, whatever setting the vendors chose; lower is better. False acceptance rates quoted at different settings are the runner-up: they matter for security, but each vendor can lower its figure by tightening its own setting, so they cannot be compared.",
+      "wrong_explanations": {
+        "A": "Enrollment options affect convenience, not how accurately each product tells genuine users from impostors.",
+        "B": "Rates quoted at different settings are not comparable; either vendor could lower its figure by tightening the setting.",
+        "D": "Speed affects queues at the door, not how accurately each product matches fingerprints."
+      },
+      "tips": [
+        "Eliminate: A and D measure convenience, not how accurately each reader tells genuine users from impostors.",
+        "Final two: C beats B because the crossover rate is one comparable figure; rates quoted at different settings are not.",
+        "Exam cue: comparing biometric products overall points to the lowest crossover error rate; a concern about impostors points to false acceptance."
+      ],
+      "_provenance": "Authored from concept: 'Biometrics. Crossover Error Rate for Comparing Products'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A3.1 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: ISO/IEC.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_321",
+      "domain": 5,
+      "subtopic": "Biometrics. Threshold Changes and False Acceptance",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Match threshold",
+        "False acceptance rate (FAR)",
+        "False rejection rate (FRR)",
+        "Audit evidence"
+      ],
+      "framework_ref": "ISO/IEC 19795-1:2021 (Information Technology — Biometric Performance Testing and Reporting — Part 1: Principles and Framework); ISACA IT Audit Standard 1205 (Evidence)",
+      "question": "After staff complained of being rejected, a branch manager lowered the match threshold on the fingerprint readers guarding the cash vault. What should the IS auditor do FIRST?",
+      "options": {
+        "A": "Re-enroll every user's fingerprints to improve match quality",
+        "B": "Recommend restoring the original threshold on every reader",
+        "C": "Survey staff on how often the readers now reject them",
+        "D": "Obtain the false acceptance rate at the new setting"
+      },
+      "correct": "D",
+      "key_concept": "Loosening a biometric match threshold trades fewer rejections for more false acceptances; measure that rate before concluding.",
+      "pre_read": "Ask which error rate rises when the match threshold is lowered.",
+      "correct_explanation": "Lowering the match threshold cuts false rejections but usually lets more impostors through. The IS auditor should first obtain the false acceptance rate at the new setting, so any finding rests on evidence of how far the vault's risk has risen. Recommending the original threshold is the runner-up: it may well be the right outcome, but recommending it before measuring the impact skips the evidence step.",
+      "wrong_explanations": {
+        "A": "Re-enrollment is a fix management may choose later; it does not show how much the impostor risk has risen.",
+        "B": "Restoring the threshold may be the right outcome, but recommending it before measuring the impact skips the evidence step.",
+        "C": "A survey measures rejections, the convenience side, not how many impostors the readers now accept."
+      },
+      "tips": [
+        "Eliminate: A jumps to a fix without measuring anything, and C measures rejections rather than impostor risk.",
+        "Final two: D beats B because the IS auditor needs evidence of the new false acceptance rate before recommending a setting.",
+        "Exam cue: when a biometric threshold is loosened to stop complaints, check false acceptance first; that is where the security risk moves."
+      ],
+      "_provenance": "Authored from concept: 'Biometrics. Threshold Changes and False Acceptance'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A3.1 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: ISO/IEC, ISACA.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_322",
+      "domain": 5,
+      "subtopic": "Single Sign-On. Validating Assertion Signatures",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Security Assertion Markup Language (SAML)",
+        "Identity provider (IdP)",
+        "Assertion signature",
+        "Federation"
+      ],
+      "framework_ref": "OASIS SAML 2.0 Core; NIST SP 800-63C (Federation and Assertions)",
+      "question": "An IS auditor finds a web application accepts Security Assertion Markup Language (SAML) assertions from the identity provider without checking their signatures. Which attack does this MOST LIKELY allow?",
+      "options": {
+        "A": "Reading assertions as they travel to the application",
+        "B": "Locking users out by flooding the identity provider",
+        "C": "Guessing user passwords at the identity provider's login page",
+        "D": "Forging an assertion to sign in as any user"
+      },
+      "correct": "D",
+      "key_concept": "Applications must validate the identity provider's signature on each assertion; otherwise anyone can forge one and sign in as any user.",
+      "pre_read": "Ask what stops someone from writing an assertion of their own.",
+      "correct_explanation": "The identity provider signs each assertion so applications can confirm it is genuine and unchanged. An application that skips the check will accept an assertion anyone writes, so an attacker can claim to be any user, including an administrator, without a password. Reading assertions in transit is the runner-up, but signatures never provided secrecy; that depends on encrypting the connection or the assertion.",
+      "wrong_explanations": {
+        "A": "Signature checks protect authenticity, not secrecy; reading assertions in transit depends on whether the connection is encrypted.",
+        "B": "Flooding is an availability attack on the identity provider; it is unaffected by how the application checks signatures.",
+        "C": "Password guessing targets the identity provider's login, which the application's missing signature check does not weaken."
+      },
+      "tips": [
+        "Eliminate: B and C attack the identity provider itself, which the application's missing check does not weaken.",
+        "Final two: D beats A because unchecked assertions let anyone write one; signatures never kept assertions secret.",
+        "Exam cue: in single sign-on, every application must validate the identity provider's signature, or anyone can claim any identity."
+      ],
+      "_provenance": "Authored from concept: 'Single Sign-On. Validating Assertion Signatures'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A3.2 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: OASIS, NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_323",
+      "domain": 5,
+      "subtopic": "Single Sign-On. Local Logins That Bypass the Identity Provider",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Single sign-on (SSO)",
+        "Multi-factor authentication (MFA)",
+        "Local accounts",
+        "Deprovisioning"
+      ],
+      "framework_ref": "NIST SP 800-63C (Federation and Assertions); NIST SP 800-53 Rev 5 AC-2 (Account Management)",
+      "question": "After a firm moved 30 applications behind single sign-on with multi-factor authentication, each application kept its own password login as a backup. Which risk should the IS auditor consider GREATEST?",
+      "options": {
+        "A": "Users may forget backup passwords they seldom use",
+        "B": "A stolen password alone could open any application",
+        "C": "Application password rules may be weaker than the firm's policy",
+        "D": "Users may be confused by two different sign-in screens"
+      },
+      "correct": "B",
+      "key_concept": "Single sign-on protects only if every login goes through the identity provider; local backup logins skip its multi-factor authentication and deprovisioning.",
+      "pre_read": "Ask which controls the identity provider applies that a local password login would skip.",
+      "correct_explanation": "Single sign-on makes the identity provider the one front door, where multi-factor authentication is enforced and access is removed when staff leave. A password login kept on each application is a side door around both: a stolen password works without a second factor, and unless each local account is also disabled, former staff keep access. Weaker local password rules are the runner-up; even strong passwords still skip those controls.",
+      "wrong_explanations": {
+        "A": "Forgotten passwords cause help desk calls, an inconvenience rather than a security exposure.",
+        "C": "Weak local rules add to the risk, but even strong backup passwords still skip the second factor and central disabling.",
+        "D": "Two sign-in screens may confuse users, but confusion is a usability issue, not a control gap."
+      },
+      "tips": [
+        "Eliminate: A and D describe user inconvenience, not a way around the security controls.",
+        "Final two: B beats C because any backup login, strong or weak, skips the second factor and central disabling.",
+        "Exam cue: single sign-on moves the front door to one place; any login that bypasses it must be removed or tightly controlled."
+      ],
+      "_provenance": "Authored from concept: 'Single Sign-On. Local Logins That Bypass the Identity Provider'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A3.2 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: NIST.",
+      "style_version": 2
     }
   ]
 }

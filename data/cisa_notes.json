@@ -15216,7 +15216,9 @@
                 "d5_035",
                 "d5_036",
                 "d5_282",
-                "d5_283"
+                "d5_283",
+                "d5_320",
+                "d5_321"
               ],
               "definition": "Authentication proves who a user is, authorization decides what that user may do, and accountability traces each action back to one person.",
               "why_it_matters": "Every access decision and every log entry depends on knowing exactly who acted. Weak authentication lets attackers in, and shared accounts leave investigators unable to name anyone.",
@@ -15307,7 +15309,9 @@
               "practice_ids": [
                 "d5_031",
                 "d5_224",
-                "d5_243"
+                "d5_243",
+                "d5_322",
+                "d5_323"
               ],
               "definition": "Single sign-on (SSO) lets a user authenticate once and reach many systems; federation extends that trust across organizations through a trusted identity provider.",
               "why_it_matters": "SSO cuts password fatigue and lets access be removed in one place. It also concentrates risk: one stolen login or failed identity provider can expose or stop every connected system.",
@@ -16336,7 +16340,10 @@
                 "5A6.1"
               ],
               "practice_ids": [
-                "d5_065"
+                "d5_065",
+                "d5_312",
+                "d5_313",
+                "d5_314"
               ],
               "definition": "Symmetric encryption uses one shared secret key both to encrypt and to decrypt data; the Advanced Encryption Standard (AES) is the common example.",
               "why_it_matters": "It is fast enough to protect whole disks, databases and network sessions. Its weakness is key sharing: both sides need the same secret, delivered safely, and every pair of parties needs its own.",
@@ -16571,7 +16578,10 @@
                 "5A6.4"
               ],
               "practice_ids": [
-                "d5_070"
+                "d5_070",
+                "d5_315",
+                "d5_316",
+                "d5_317"
               ],
               "definition": "A digital signature is a hash of a message signed with the sender's private key, proving who sent it and that it was not changed.",
               "why_it_matters": "Signatures let software, documents and transactions be trusted at a distance, and they support non-repudiation. That proof is only as good as the custody of the signing key.",
@@ -16720,7 +16730,9 @@
               "practice_ids": [
                 "d5_222",
                 "d5_291",
-                "d5_293"
+                "d5_293",
+                "d5_318",
+                "d5_319"
               ],
               "definition": "Public key infrastructure (PKI) is the set of authorities, certificates and rules that binds public keys to verified identities so others can trust them.",
               "why_it_matters": "Asymmetric encryption and signatures help only if a public key really belongs to its claimed owner. PKI provides that assurance, and a weak link anywhere undermines every certificate it issues.",
@@ -16749,7 +16761,7 @@
                 "svg": "<svg viewBox='0 0 470 250' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='PKI chain of trust: a root CA signs intermediate CAs, which sign end-entity certificates'><text x='235' y='12' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>Self-signed root — the trust anchor, kept offline</text><rect x='180' y='18' width='110' height='40' rx='4' fill='var(--accent-fill)'/><text x='235' y='42' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Root CA</text><rect x='56' y='110' width='132' height='40' rx='4' fill='var(--accent-fill)'/><text x='122' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Intermediate CA</text><rect x='282' y='110' width='132' height='40' rx='4' fill='var(--accent-fill)'/><text x='348' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Intermediate CA</text><rect x='74' y='202' width='96' height='38' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='122' y='225' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Server cert</text><rect x='300' y='202' width='96' height='38' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='348' y='225' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Email cert</text><line x1='235' y1='58' x2='122' y2='110' stroke='var(--text2)' stroke-width='1.5'/><line x1='235' y1='58' x2='348' y2='110' stroke='var(--text2)' stroke-width='1.5'/><line x1='122' y1='150' x2='122' y2='202' stroke='var(--text2)' stroke-width='1.5'/><line x1='348' y1='150' x2='348' y2='202' stroke='var(--text2)' stroke-width='1.5'/><text x='235' y='180' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>End-entity certificates — used by sites, people, devices</text></svg>",
                 "caption": "Trust flows down the chain. An offline root signs intermediate CAs, which sign the certificates used by sites, people and devices; a verifier traces the chain back up to a root it trusts."
               },
-              "example": "A parcel carrier's handheld scanners were set to accept any server certificate, because the vendor disabled chain checks to stop connection errors. The IS auditor notes that anyone could then impersonate the dispatch server. She finds the errors came from an expired intermediate certificate, and recommends renewing it and restoring chain validation to the company's root as trust anchor.",
+              "example": "A parcel carrier's handheld scanners were set to accept any server certificate, because the vendor disabled chain checks to stop connection errors. The IS auditor notes that anyone could then impersonate the dispatch server. The errors came from an expired intermediate certificate, so the IS auditor recommends renewing it and restoring chain validation to the company's root as trust anchor.",
               "isaca_rule": "A certificate is only as trustworthy as the identity check behind it and the protection of the CA's keys. Keep the root offline, use intermediates for routine issuance, and review an outside CA's practice statement before relying on its certificates.",
               "exam_traps": [
                 {

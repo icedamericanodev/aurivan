@@ -1944,3 +1944,10 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - NIST SP 800-167 (Guide to Application Whitelisting)
 - MITRE ATT&CK T1014 (Rootkit)
 - NIST SP 800-189 (Resilient Interdomain Traffic Exchange: BGP Security and DDoS Mitigation)
+
+## Added with Wave 2 coverage batch Q4 (Domain 5, Oct 2026)
+
+- NIST SP 800-131A Rev 2 (Transitioning the Use of Cryptographic Algorithms and Key Lengths)
+- NIST FIPS 186-5 (Digital Signature Standard (DSS))
+- NIST FIPS 198-1 (The Keyed-Hash Message Authentication Code (HMAC))
+- ISO/IEC 19795-1:2021 (Information Technology — Biometric Performance Testing and Reporting — Part 1: Principles and Framework)
