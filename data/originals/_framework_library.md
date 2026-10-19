@@ -1944,3 +1944,9 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - NIST SP 800-167 (Guide to Application Whitelisting)
 - MITRE ATT&CK T1014 (Rootkit)
 - NIST SP 800-189 (Resilient Interdomain Traffic Exchange: BGP Security and DDoS Mitigation)
+
+## Added with Wave 2 coverage batch Q6 (Domain 4, Oct 2026)
+
+- NIST SP 800-53 Rev 5 CM-4 (Impact Analyses)
+- ISO/IEC 27002:2022 Control 7.14 (Secure Disposal or Re-Use of Equipment)
+- Härder and Reuter (1983), Principles of Transaction-Oriented Database Recovery (ACM Computing Surveys)

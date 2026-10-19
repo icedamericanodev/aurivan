@@ -11060,7 +11060,9 @@
               "practice_ids": [
                 "d4_121",
                 "d4_125",
-                "d4_251"
+                "d4_251",
+                "d4_281",
+                "d4_282"
               ],
               "definition": "Media sanitization makes data on retired or reused storage unrecoverable by clearing, purging or destroying it, matched to the data's sensitivity and destination.",
               "why_it_matters": "Retired laptops, disks, tapes and leased equipment leave with whatever data they held. Deleting files or formatting a drive leaves the data recoverable with ordinary tools.",
@@ -12065,7 +12067,9 @@
               "practice_ids": [
                 "d4_185",
                 "d4_231",
-                "d4_254"
+                "d4_254",
+                "d4_271",
+                "d4_272"
               ],
               "definition": "Change management is the process that records, assesses, approves and reviews every change to production, so only authorized, tested changes go live.",
               "why_it_matters": "Unauthorized or untested changes are a leading cause of outages and security gaps. The process also shows auditors and regulators that production is controlled.",
@@ -12754,14 +12758,16 @@
               ],
               "practice_ids": [
                 "d4_054",
-                "d4_108"
+                "d4_108",
+                "d4_273",
+                "d4_274"
               ],
               "definition": "A database management system (DBMS) is the software that stores, retrieves and protects data; its data dictionary holds the definitions of every table, field and relationship.",
               "why_it_matters": "Change one definition in the dictionary and every program that relies on it is affected. Uncontrolled changes can corrupt data silently or break reports across the business.",
               "how_it_works": [
                 "The DBMS controls storage, access, concurrent use, backup and logging for every program that uses the data.",
                 "The three-schema design separates what users see, how data is logically organized and how it is physically stored, so one can change without breaking the others.",
-                "The data dictionary records each data element's name, type, meaning, owner and relationships.",
+                "The data dictionary records each data element's name, type, meaning, owner and relationships, and which programs use it.",
                 "Schema and dictionary changes are limited to database administrators (DBAs) using logged, versioned scripts under change control.",
                 "Named data stewards own business definitions, so different units do not define the same field differently."
               ],
@@ -12813,7 +12819,9 @@
               "legacy_ids": [],
               "practice_ids": [
                 "d4_103",
-                "d4_227"
+                "d4_227",
+                "d4_275",
+                "d4_276"
               ],
               "definition": "Database integrity controls keep stored data accurate and consistent, using normalized design, enforced keys and rules, and locking when many users change data at once.",
               "why_it_matters": "Without them, one fact is stored twice and the copies drift apart, records point to customers who no longer exist, and simultaneous updates overwrite each other.",
@@ -12900,7 +12908,9 @@
               "practice_ids": [
                 "d4_110",
                 "d4_117",
-                "d4_215"
+                "d4_215",
+                "d4_277",
+                "d4_278"
               ],
               "definition": "Database recovery returns a database to a correct, consistent state after a failure, using backups plus a transaction log that records every change.",
               "why_it_matters": "Crashes, corrupt storage and erroneous updates will happen. Backup and log-copy frequency decides how much work can be lost, which must stay within the recovery point objective (RPO).",
@@ -12983,7 +12993,9 @@
                 "d4_047",
                 "d4_048",
                 "d4_156",
-                "d4_182"
+                "d4_182",
+                "d4_279",
+                "d4_280"
               ],
               "definition": "Database administrator (DBA) controls limit, separate and monitor the powerful rights needed to run databases, so every change to data or structure is authorized and traceable.",
               "why_it_matters": "DBAs can read, change or delete any record. One misused DBA account can cause unnoticed fraud or data loss, so their power needs oversight from outside the team.",
