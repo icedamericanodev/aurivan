@@ -877,15 +877,16 @@
               "example": "In an integrated audit of a wine distributor's order-to-cash process, the IS auditor finds that developers can change the pricing engine in production without approval. Ana, the engagement leader, tells the financial auditors not to rely on the system's automated price checks. The team instead tests invoice prices directly against the approved price list, and the report links the change-control gap to revenue risk.",
               "audit_focus": {
                 "review": [
-                  "Inspect the engagement plan for the interdependence that justified integrating",
-                  "Trace ITGC results to the reliance placed on automated controls in financial testing",
+                  "Inspect the engagement plan for the interdependence that justified integration",
+                  "Trace ITGC results to the reliance placed on automated controls",
                   "Sample report findings for a stated link from IT cause to business effect"
                 ],
                 "evidence": [
                   "Workpapers showing ITGC test results and the resulting substantive sample sizes",
-                  "Timesheets showing ITGC testing finished before substantive work began"
+                  "Workpaper sign-off dates showing ITGC tests came before substantive work",
+                  "Staffing plan naming each discipline and one engagement leader"
                 ],
-                "recommend": "Have the engagement leader test ITGCs first, set substantive testing from the results and link each IT finding to its business effect.",
+                "recommend": "Have the engagement leader test ITGCs first, size substantive testing from the results and tie IT findings to business effects.",
                 "decides": "The chief audit executive decides whether to integrate, based on interdependence"
               },
               "isaca_rule": "The reason to integrate is interdependence, not cost. Weak IT general controls cut reliance on automated controls and push the IS auditor toward more substantive testing. A truly integrated report connects each IT cause to its business effect.",
@@ -5293,7 +5294,7 @@
                   "Architecture compliance reviews of systems after delivery",
                   "Tailored method documents showing which framework steps apply"
                 ],
-                "recommend": "Have the enterprise architecture team tailor the framework to the organization and govern delivery, not just design.",
+                "recommend": "Have the chief information officer tailor the architecture framework to the organization and require architecture review through delivery.",
                 "decides": "The IT steering committee approves the architecture standards projects must follow"
               },
               "isaca_rule": "A framework is a means to aligned architecture, not proof of it. Tailor it to the organization and judge EA by whether decisions follow it. Zachman classifies what to describe; TOGAF guides how to develop and govern it.",
@@ -6009,7 +6010,7 @@
                   "Project gate records showing PIA sign-off before build",
                   "Approved PIA reports with design changes made in response"
                 ],
-                "recommend": "Have the data protection officer keep the RoPA current and block launches that lack a completed PIA.",
+                "recommend": "Have the project management office gate launches on a completed PIA, and the data protection officer keep the RoPA current.",
                 "decides": "Management decides launch timing once the PIA's findings are addressed"
               },
               "isaca_rule": "A PIA (a DPIA under the GDPR) comes before new or high-risk processing, while its findings can still change the design. The RoPA is the main evidence of what an organization processes. Policies speak to staff; notices speak to individuals.",
@@ -6786,7 +6787,7 @@
                   "Purchase records showing lead times for past capacity additions",
                   "Forum minutes recording capacity decisions and the decision rights used"
                 ],
-                "recommend": "Have the chief information officer base capacity on validated forecasts, fund it in stages and give a cross-team forum decision rights.",
+                "recommend": "Have IT management plan capacity from validated forecasts, and have the steering committee stage funding and define decision rights for shared resources.",
                 "decides": "Business owners set service priorities and the governance forum allocates shared resources"
               },
               "isaca_rule": "Capacity follows business demand and value. Plan from validated forecasts, act on thresholds before limits are hit, and settle contested resources in an accountable forum, not by whoever escalates loudest.",
@@ -6873,7 +6874,7 @@
                   }
                 ]
               },
-              "example": "A hospital network's new electronic health record went live a year ago. Clinicians still keep paper notes, overtime has doubled, and the steering group's monthly report still shows every milestone green. The IS auditor rates the inaccurate status reporting as the most serious finding, because it blocks correction, and recommends business-set adoption measures, clinician engagement and go/no-go gates for the remaining sites.",
+              "example": "A hospital network's new electronic health record went live a year ago. Clinicians still keep paper notes, overtime has doubled, and the steering committee's monthly report still shows every milestone green. The IS auditor rates the inaccurate status reporting as the most serious finding, because it blocks correction, and recommends business-set adoption measures, clinician engagement and go/no-go gates for the remaining sites.",
               "audit_focus": {
                 "review": [
                   "Compare program status reports with actual milestones, costs and adoption data",
@@ -6881,11 +6882,11 @@
                   "Trace go/no-go decisions to business-set readiness criteria"
                 ],
                 "evidence": [
-                  "System usage data showing who uses the new process and who works around it",
-                  "Help desk and overtime records since go-live",
+                  "System usage reports showing which staff use the new process and which do not",
+                  "Help desk tickets and overtime records showing the strain since go-live",
                   "Gate records showing criteria, results and who approved each go-live"
                 ],
-                "recommend": "Have the program sponsor set business adoption measures, engage each stakeholder group and report status honestly to governance.",
+                "recommend": "Have the program sponsor set business adoption measures, engage each stakeholder group and report true status to the steering committee.",
                 "decides": "Business process owners decide go/no-go at each gate from readiness evidence"
               },
               "isaca_rule": "Major initiatives need both IT change management and enterprise change management, with business-set go/no-go criteria. Inaccurate status reporting to governance is among the most serious failures, because it stops leaders from correcting course.",
@@ -8099,7 +8100,7 @@
                   "Progress reports showing actual against planned dates",
                   "Change requests recording schedule and resource decisions"
                 ],
-                "recommend": "Have the project manager report progress against the critical path and approve schedule changes through change control.",
+                "recommend": "Have the project manager report progress against the critical path and route schedule changes through change control.",
                 "decides": "The project sponsor approves any change to the committed end date"
               },
               "isaca_rule": "Protect the critical path. Its tasks have zero slack, so schedule risk, monitoring and extra resources belong there first. A delay elsewhere matters only once it uses up that task's slack.",
@@ -10791,16 +10792,16 @@
               "example": "An IS auditor at an insurer maps a network control list to the TCP/IP layers. Firewall port rules sit at transport and the web application firewall at application, but remote offices have no link-layer control: any device plugged into a wall port joins the network. The IS auditor reports the gap to the network manager.",
               "audit_focus": {
                 "review": [
-                  "Inspect network diagrams for layers, such as wall ports, with no control",
-                  "Evaluate whether content threats, such as email attachments, meet an application-layer control",
+                  "Inspect network diagrams and device settings for any layer left with no control",
+                  "Evaluate whether an application-layer control inspects content threats such as attachments",
                   "Inspect how traffic between sites is encrypted for legacy applications"
                 ],
                 "evidence": [
-                  "Device configurations showing what each firewall and gateway inspects",
+                  "Firewall, mail gateway and switch port configurations showing what each inspects",
                   "Mail gateway logs showing attachments scanned and blocked",
-                  "Switch port settings showing which ports admit unknown devices"
+                  "Gateway router settings showing encrypted tunnels between the offices"
                 ],
-                "recommend": "Have the network manager close uncontrolled layers, inspect content in allowed traffic and join offices with an Internet Protocol Security (IPsec) tunnel.",
+                "recommend": "Have the network manager add a control at each uncontrolled layer, including content inspection and Internet Protocol Security (IPsec) tunnels between offices.",
                 "decides": "The system owner accepts the risk of any layer left uncontrolled"
               },
               "isaca_rule": "Map each control to the layer where it acts, then look for layers with no control at all. A control can judge only what its own layer can see, so match each control to the threat's layer; content threats need application-layer controls.",
@@ -13031,7 +13032,7 @@
                 "review": [
                   "Inspect the NoSQL design for where the application validates record fields",
                   "Evaluate whether financial balances sit in a store with full transaction guarantees",
-                  "Inquire which legacy databases remain and who can still maintain them"
+                  "Compare legacy databases with vendor end-of-support dates and the trained staff on hand"
                 ],
                 "evidence": [
                   "Query results showing records with missing or invalid fields",
@@ -13039,7 +13040,7 @@
                   "Staffing records listing people trained on the legacy database"
                 ],
                 "recommend": "Have the application owner add validation where the database has no fixed schema and plan for legacy support gaps.",
-                "decides": "The data owner approves the database choice for critical records"
+                "decides": "The data owner accepts residual integrity risk; senior management funds legacy replacement"
               },
               "isaca_rule": "Choose the model by workload, then follow the controls. Where the database enforces structure, test its constraints and access; where it does not, test validation in the application. For legacy models, current risk comes from vendor support status and scarce skills.",
               "exam_traps": [
@@ -15565,7 +15566,7 @@
               "example": "A logistics company's new data center must include a water-based system under local fire code. The facilities manager proposes cheap wet-pipe sprinklers. The IS auditor notes that one knocked head would soak the racks, and recommends a pre-action design that stays dry until detectors confirm a fire.",
               "audit_focus": {
                 "review": [
-                  "Inspect the room's suppression type against how often staff work there",
+                  "Compare the room's suppression type with how often staff work there",
                   "Inspect walls, floors and ceilings for unsealed openings in gas-protected rooms",
                   "Observe a detector test and confirm the alarm reaches the fire panel"
                 ],
@@ -15574,7 +15575,7 @@
                   "Room integrity test results showing the gas concentration holds",
                   "Maintenance contractor reports for detectors, valves and gas cylinders"
                 ],
-                "recommend": "Have the facilities manager fit clean-agent gas with early detection in staffed rooms, seal openings and keep detectors tested.",
+                "recommend": "Have the facilities manager fit clean-agent gas with early detection in staffed rooms, seal openings in gas-protected rooms and test detection regularly.",
                 "decides": "Senior management accepts residual fire risk within local fire code"
               },
               "isaca_rule": "Protect people first, then equipment. Clean-agent gas with early detection fits occupied server rooms best. Among water systems, pipes that stay dry until a fire is detected (pre-action, which exam questions often group under the dry-pipe label) beat wet pipe. Carbon dioxide never belongs where people work.",
@@ -16105,7 +16106,7 @@
                 "review": [
                   "Sample internal application requests and trace each to a per-request policy decision",
                   "Inspect service-to-service rules for explicit authorization, not just authentication",
-                  "Observe a device failing a health check mid-session and confirm access is restricted"
+                  "Observe a simulated device-health failure mid-session and confirm access is restricted"
                 ],
                 "evidence": [
                   "Policy decision point logs showing allow, limit and block results per request",
@@ -16350,16 +16351,16 @@
               "example": "A consulting firm lets remote laptops use split tunneling, so web browsing bypasses the corporate proxy. A consultant's laptop picks up malware on a hotel network and then connects to the firm's file servers through the VPN. The IS auditor recommends full tunneling, or equivalent cloud web filtering, for devices handling client data, and a device health check before each connection.",
               "audit_focus": {
                 "review": [
-                  "Compare VPN accounts with MFA settings to find password-only logins",
-                  "Inspect server logs for partners still connecting with TLS 1.0 or 1.1",
-                  "Inspect VPN settings for traffic that skips web controls"
+                  "Inspect gateway logs for partners still on TLS 1.0 or 1.1",
+                  "Compare VPN accounts with MFA enforcement settings to find password-only logins",
+                  "Inspect VPN settings for internet traffic that skips company web controls"
                 ],
                 "evidence": [
                   "VPN authentication logs showing the factor used for each login",
                   "Gateway reports of protocol versions and ciphers in use",
                   "Endpoint compliance reports for devices allowed to connect"
                 ],
-                "recommend": "Have the network team require MFA on every remote login and retire TLS 1.0 and 1.1 once usage is measured.",
+                "recommend": "Have the network team require MFA and device checks for remote access and retire old TLS after measuring use.",
                 "decides": "The business owner approves the cutoff date for partners on old TLS versions"
               },
               "isaca_rule": "Encryption protects the tunnel, not the login. Remote access must require multi-factor authentication and a healthy device, and give only the access the user needs. Retire weak protocol versions on a plan, after measuring who still relies on them.",
@@ -16548,7 +16549,7 @@
                 "review": [
                   "Inspect sensor settings for which detection methods are active",
                   "Compare the current rule set with last quarter's to find rules switched off",
-                  "Inquire when the anomaly baseline was learned and compare with incident history"
+                  "Compare the anomaly baseline's learning period with incident history for that time"
                 ],
                 "evidence": [
                   "Results of simulated attacks showing which ones raised alerts",
