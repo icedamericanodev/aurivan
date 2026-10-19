@@ -15,7 +15,7 @@ still without the field.
 ## Scope
 These are the 60 notes from the October 2026 curriculum coverage review whose
 `how_it_works` has no audit step, so the process lens rests on the example and
-the rule alone. Fifty-one are done (pilot and N4 to N8); 9 remain.
+the rule alone. All 60 are done (pilot and N4 to N9).
 
 ## Priority order
 1. **Exam importance:** subtopics rated high-yield in the curriculum checklist come first.
@@ -81,15 +81,15 @@ line appears once on the card.
 | 49 | 5A3.6 | Zero Trust Architecture | medium | 3 | N8 (done) |
 | 50 | 5A4.3 | Secure Remote Access and VPNs | medium | 3 | N8 (done) |
 | 51 | 5A4.5 | Intrusion Detection Methods | medium | 3 | N8 (done) |
-| 52 | 5B1.1 | Role-Based Security Awareness Programs | medium | 3 | N9 |
-| 53 | 5B2.4 | Network Attacks: Spoofing, Interception and Tunneling | medium | 3 | N9 |
-| 54 | 2A4.2 | Enterprise Architecture Frameworks: Zachman and TOGAF | medium | 3 | N9 |
-| 55 | 2A5.3 | Risk Analysis Methods | medium | 3 | N9 |
-| 56 | 3A2.3 | Financial Measures and Investment Decisions | medium | 3 | N9 |
-| 57 | 5A8.5 | Software-Defined Networking | medium | 2 | N9 |
-| 58 | 2A6.2 | Privacy Documentation and Impact Assessments | medium | 2 | N9 |
-| 59 | 1A1.2* | ISACA Code of Professional Ethics | medium | 1 | N9 |
-| 60 | 3A1.3 | Scheduling and the Critical Path | medium | 0 | N9 |
+| 52 | 5B1.1 | Role-Based Security Awareness Programs | medium | 3 | N9 (done) |
+| 53 | 5B2.4 | Network Attacks: Spoofing, Interception and Tunneling | medium | 3 | N9 (done) |
+| 54 | 2A4.2 | Enterprise Architecture Frameworks: Zachman and TOGAF | medium | 3 | N9 (done) |
+| 55 | 2A5.3 | Risk Analysis Methods | medium | 3 | N9 (done) |
+| 56 | 3A2.3 | Financial Measures and Investment Decisions | medium | 3 | N9 (done) |
+| 57 | 5A8.5 | Software-Defined Networking | medium | 2 | N9 (done) |
+| 58 | 2A6.2 | Privacy Documentation and Impact Assessments | medium | 2 | N9 (done) |
+| 59 | 1A1.2 | ISACA Code of Professional Ethics | medium | 1 | N9 (done; trimmed) |
+| 60 | 3A1.3 | Scheduling and the Critical Path | medium | 0 | N9 (done) |
 
 "Bank" is the number of questions homed in the note today; it is internal and is
 never shown to learners.

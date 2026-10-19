@@ -55,9 +55,10 @@ AF_OVERLAP_MAX = 0.6        # share of an item's content words found in one how_
 AF_AUDITOR_DOES = re.compile(r"\b(IS )?auditors?\b[^;.]*?\b(implements?|fix(es)?|configures?|designs?|approves?|"
                              r"accepts?|drafts?|owns?|decides?)\b", re.I)
 # Who acts / who decides: a role or body, not the auditor.
-AF_ACTOR = re.compile(r"\b(management|managers?|owners?|officers?|committees?|board|team|operations|directors?|"
-                      r"CISO|CIO|CFO|CEO|executives?|administrators?|staff|council|leads?|sponsors?|custodians?|"
-                      r"steering|department|function|IT)\b")
+# Role words match in any case ("Management decides" opens many lines); acronyms stay upper case.
+AF_ACTOR = re.compile(r"\b((?i:management|managers?|owners?|officers?|committees?|board|team|operations|directors?|"
+                      r"executives?|administrators?|staff|council|leads?|sponsors?|custodians?|steering|department|"
+                      r"function|counsel)|CISO|CIO|CFO|CEO|IT)\b")
 AF_MISSING = []
 
 PRACTICE_SEEN = {}

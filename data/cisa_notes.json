@@ -151,7 +151,7 @@
               "practice_ids": [
                 "d1_031"
               ],
-              "definition": "The ISACA Code of Professional Ethics is a set of seven conduct principles that every ISACA member and certification holder agrees to follow in professional work.",
+              "definition": "The ISACA Code of Professional Ethics is a set of seven conduct principles that every ISACA member and certification holder agrees to follow.",
               "why_it_matters": "Boards trust audit results only if auditors are honest, careful and discreet. A breach can lead to an investigation and disciplinary action, up to losing the certification.",
               "how_it_works": [
                 "Governance: support sound standards, procedures and controls for information systems and technology.",
@@ -162,6 +162,20 @@
                 "Education: help stakeholders understand governance, risk, control and security, and help the profession grow."
               ],
               "example": "Kenji, an IS auditor at a shipping line, finds that the vendor running its cargo-tracking system still has unrestricted administrator access. The vendor's account manager then offers him a free resort week. Kenji declines, reports the finding in full, and tells the chief audit executive (CAE) about the offer so it is recorded.",
+              "audit_focus": {
+                "review": [
+                  "Compare issued reports with workpapers for significant findings left out",
+                  "Inspect gift and conflict-of-interest declarations for each engagement team",
+                  "Compare staff continuing professional education hours with ISACA requirements"
+                ],
+                "evidence": [
+                  "Workpaper findings log for each engagement",
+                  "Gift register entries showing offers and how they were handled",
+                  "Continuing professional education records from the certification body"
+                ],
+                "recommend": "Have the chief audit executive require full disclosure of significant findings and recorded declarations of any offers.",
+                "decides": "The audit committee oversees the audit function's ethics and independence"
+              },
               "isaca_rule": "Ethics questions usually turn on honest, complete reporting. Disclose every significant fact to the people entitled to it, protect information from everyone else, and refuse any reward or role that could sway the IS auditor's judgment.",
               "exam_traps": [
                 {
@@ -5268,6 +5282,20 @@
                 ]
               },
               "example": "A university's architecture team has hundreds of diagrams but no agreed way to produce or update them. The chief information officer asks whether adopting TOGAF in full will fix this. The IS auditor recommends tailoring the TOGAF development cycle to the team's size, using a Zachman-style grid to spot missing views, and tying both to the project approval process.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the architecture repository for views the Zachman grid says should exist",
+                  "Sample recent projects and trace each to an architecture review",
+                  "Inspect delivered systems against the approved target architecture"
+                ],
+                "evidence": [
+                  "Project approval records showing architecture review sign-off",
+                  "Architecture compliance reviews of systems after delivery",
+                  "Tailored method documents showing which framework steps apply"
+                ],
+                "recommend": "Have the enterprise architecture team tailor the framework to the organization and govern delivery, not just design.",
+                "decides": "The IT steering committee approves the architecture standards projects must follow"
+              },
               "isaca_rule": "A framework is a means to aligned architecture, not proof of it. Tailor it to the organization and judge EA by whether decisions follow it. Zachman classifies what to describe; TOGAF guides how to develop and govern it.",
               "exam_traps": [
                 {
@@ -5636,7 +5664,21 @@
                 "svg": "<svg viewBox='0 0 340 146' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Qualitative analysis uses ratings, semi-quantitative uses calibrated scores, quantitative uses money values'><rect x='6' y='8' width='134' height='38' rx='4' fill='var(--accent-fill)'/><text x='73' y='32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>Qualitative</text><line x1='142' y1='27' x2='157' y2='27' stroke='var(--text2)' stroke-width='1.5'/><path d='M157,23 L164,27 L157,31 Z' fill='var(--text2)'/><rect x='166' y='8' width='168' height='38' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='250' y='32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text)'>High, medium, low</text><rect x='6' y='54' width='134' height='38' rx='4' fill='var(--accent-fill)'/><text x='73' y='78' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>Semi-quantitative</text><line x1='142' y1='73' x2='157' y2='73' stroke='var(--text2)' stroke-width='1.5'/><path d='M157,69 L164,73 L157,77 Z' fill='var(--text2)'/><rect x='166' y='54' width='168' height='38' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='250' y='78' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text)'>Calibrated scores</text><rect x='6' y='100' width='134' height='38' rx='4' fill='var(--accent-fill)'/><text x='73' y='124' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>Quantitative</text><line x1='142' y1='119' x2='157' y2='119' stroke='var(--text2)' stroke-width='1.5'/><path d='M157,115 L164,119 L157,123 Z' fill='var(--text2)'/><rect x='166' y='100' width='168' height='38' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='250' y='124' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text)'>Money: ALE = SLE × ARO</text></svg>",
                 "caption": "Qualitative analysis uses ratings, semi-quantitative uses calibrated scores, and quantitative puts a money value on risk, which needs more and better data."
               },
-              "example": "A university's risk committee wants every IT risk priced in dollars, but loss history exists only for laptop theft. A $2,000 laptop loses 80% of its value per theft, so SLE is $1,600; about 25 thefts a year (ARO 25) give an ALE of $40,000. The IS auditor recommends money values only where data like this exists and calibrated scores elsewhere; management chooses the method.",
+              "example": "A university's risk committee wants every IT risk priced in dollars, but loss history exists only for laptop theft. A $2,000 laptop loses 80% of its value per theft, so SLE is $1,600; about 25 thefts a year (ARO 25) give an ALE of $40,000. The IS auditor recommends money values only where data like this exists and calibrated scores elsewhere.",
+              "audit_focus": {
+                "review": [
+                  "Compare the analysis method chosen for each risk with the loss data available",
+                  "Inspect each claimed FAIR analysis for frequency and magnitude stated as ranges",
+                  "Trace quantitative inputs to their loss data sources"
+                ],
+                "evidence": [
+                  "Loss event records from incident and insurance systems behind each estimate",
+                  "Written scoring guides showing what each score level means in loss terms",
+                  "Risk register entries showing method and assumptions"
+                ],
+                "recommend": "Have the risk manager match each method to the data and decision, and document the inputs behind every money estimate.",
+                "decides": "Management chooses the analysis method and accepts the resulting risk ratings"
+              },
               "isaca_rule": "Choose the method that fits the available data and the decision it must support. Quantitative analysis helps only when its inputs are reliable; otherwise it gives false precision.",
               "exam_traps": [
                 {
@@ -5955,7 +5997,21 @@
                 "svg": "<svg viewBox='0 0 340 104' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='A privacy policy tells staff how to handle data; a privacy notice tells individuals what is collected and why'><rect x='10' y='10' width='152' height='40' rx='4' fill='var(--accent-fill)'/><text x='86' y='35' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='#ffffff'>Privacy policy</text><rect x='178' y='10' width='152' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='254' y='35' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='var(--text)'>Privacy notice</text><text x='86' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>For staff:</text><text x='86' y='92' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>how to handle data</text><text x='254' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>For individuals:</text><text x='254' y='92' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>what is collected, why</text></svg>",
                 "caption": "Two documents with two audiences: the policy guides the organization's own people, the notice informs the individuals whose data is used."
               },
-              "example": "A European city transit agency plans to add voice recording and emotion analysis to its customer-service chatbot next quarter. The vendor contract is signed, but no privacy assessment exists. The IS auditor recommends a privacy impact assessment (a DPIA under the GDPR) before any processing starts, and reports that launch should wait for the result. Management decides on timing.",
+              "example": "A European city transit agency plans to add voice recording and emotion analysis to its customer-service chatbot next quarter. The vendor contract is signed, but no privacy assessment exists. The IS auditor recommends a privacy impact assessment (a DPIA under the GDPR) before any processing starts, and reports that launch should wait for the result.",
+              "audit_focus": {
+                "review": [
+                  "Compare the RoPA with systems that actually hold personal data",
+                  "Sample recent launches and compare go-live dates with PIA completion dates",
+                  "Compare the external privacy notice with what the systems actually collect"
+                ],
+                "evidence": [
+                  "Data discovery scan results showing where personal data sits",
+                  "Project gate records showing PIA sign-off before build",
+                  "Approved PIA reports with design changes made in response"
+                ],
+                "recommend": "Have the data protection officer keep the RoPA current and block launches that lack a completed PIA.",
+                "decides": "Management decides launch timing once the PIA's findings are addressed"
+              },
               "isaca_rule": "A PIA (a DPIA under the GDPR) comes before new or high-risk processing, while its findings can still change the design. The RoPA is the main evidence of what an organization processes. Policies speak to staff; notices speak to individuals.",
               "exam_traps": [
                 {
@@ -8032,6 +8088,20 @@
                 "caption": "Only the longest chain of dependent tasks decides when the project finishes. Shorter chains have slack and can absorb some delay."
               },
               "example": "A bank's mobile app project has two chains: building the app (30 days) and setting up servers (18 days), so the server chain has 12 days of slack. The servers slip 10 days, and the project manager warns the sponsor that launch will be late. The IS auditor points out that 2 days of slack remain, so the end date holds, and recommends reporting focused on the critical path.",
+              "audit_focus": {
+                "review": [
+                  "Reperform the critical path from task durations and dependencies in the plan",
+                  "Compare reported delays with each task's remaining slack",
+                  "Inspect whether added resources target critical-path tasks"
+                ],
+                "evidence": [
+                  "Scheduling tool export of task dates, dependencies and slack",
+                  "Progress reports showing actual against planned dates",
+                  "Change requests recording schedule and resource decisions"
+                ],
+                "recommend": "Have the project manager report progress against the critical path and approve schedule changes through change control.",
+                "decides": "The project sponsor approves any change to the committed end date"
+              },
               "isaca_rule": "Protect the critical path. Its tasks have zero slack, so schedule risk, monitoring and extra resources belong there first. A delay elsewhere matters only once it uses up that task's slack.",
               "exam_traps": [
                 {
@@ -8458,6 +8528,20 @@
                 ]
               },
               "example": "A manufacturer has spent $4 million on a half-built supplier portal. Finishing it will cost $3 million more for benefits worth $2.5 million, while a subscription service would cost $1 million for similar benefits. The chief information officer argues they cannot walk away from $4 million. The IS auditor advises the steering committee to compare only remaining costs and benefits, which favor the subscription.",
+              "audit_focus": {
+                "review": [
+                  "Compare the measure used with the decision's horizon and cash needs",
+                  "Inspect each continue-or-stop case for sunk costs counted as a reason to continue",
+                  "Evaluate whether each cancellation case weighs the impact on live processes"
+                ],
+                "evidence": [
+                  "Actual cost and benefit figures from finance systems",
+                  "Business case with discounted cash flows and hurdle rate",
+                  "Steering committee minutes recording options compared, including stopping"
+                ],
+                "recommend": "Have the program sponsor present forward-looking options, including stopping, with the measure that fits the decision.",
+                "decides": "The steering committee decides whether to continue, change or stop the investment"
+              },
               "isaca_rule": "Decide on what lies ahead. Compare the future costs and benefits of each option, including stopping, and ignore money already spent. Choose the financial measure that fits the question being asked.",
               "exam_traps": [
                 {
@@ -17848,6 +17932,20 @@
                 "caption": "SDN splits the network in two. A central controller holds the control plane and decides routes; the switches keep only the data plane and forward traffic."
               },
               "example": "A university moves its campus network to software-defined networking to speed up changes. The IS auditor finds network engineers all use one login to the SDN controller, and automation scripts push changes without approval records. The IS auditor recommends individual accounts with multi-factor authentication, change control for scripted changes, and logging of every controller action.",
+              "audit_focus": {
+                "review": [
+                  "Inspect who can log in to the controller and whether accounts are individual",
+                  "Inspect the controller's programming interfaces for authentication on every call",
+                  "Sample controller-pushed rule changes and trace each to an approval"
+                ],
+                "evidence": [
+                  "Controller audit logs showing each action and the person behind it",
+                  "Failover test results for a standby controller at another site",
+                  "Change tickets matched to controller-pushed rules"
+                ],
+                "recommend": "Have the network manager require authenticated interface calls, individual controller accounts with multi-factor authentication and a standby controller.",
+                "decides": "The infrastructure owner accepts the risk of any single controller dependency"
+              },
               "isaca_rule": "Centralizing control centralizes risk. Protect the SDN controller like any critical management system: restricted access, individual accounts with strong authentication, change control, logging and redundancy.",
               "exam_traps": [
                 {
@@ -18210,6 +18308,20 @@
                 "Where training has visibly failed, a technical control closes the attack path."
               ],
               "example": "A construction firm's finance team paid a fraudster after a phone call that imitated the chief financial officer's voice. Their only training is a generic annual phishing module. The IS auditor recommends role-based training for finance staff on voice and video impersonation, refreshed as attack methods change, and confirms that a callback to a known number is required before any urgent payment.",
+              "audit_focus": {
+                "review": [
+                  "Compare account creation dates with training completion dates for new staff",
+                  "Compare the course each high-risk role receives with the general staff course",
+                  "Inspect social engineering test results for attacks that training has not stopped"
+                ],
+                "evidence": [
+                  "Identity system records showing account creation and first access dates",
+                  "Learning system completion records by role and course",
+                  "Device control logs showing blocked unapproved drives"
+                ],
+                "recommend": "Have human resources and the identity team grant access only after training, and the security manager add role-based content and device control.",
+                "decides": "Senior management sets which roles are high risk and accepts residual risk"
+              },
               "isaca_rule": "Awareness is matched to risk: the more damage a role can do, the deeper its training, and nobody gets access untrained. Training supports controls but does not replace them. When people keep falling for an attack, add a preventive technical control.",
               "exam_traps": [
                 {
@@ -18672,6 +18784,20 @@
                 ]
               },
               "example": "Staff at a law firm's branch land on a fake webmail page although they typed the correct address. The branch router was using an outside name server that returned forged answers. The IT manager proposes password resets only. The IS auditor recommends the resets plus forcing all lookups through internal resolvers that validate signed responses.",
+              "audit_focus": {
+                "review": [
+                  "Inspect switch configurations for protection against forged address replies",
+                  "Inspect router and endpoint DNS settings for outside name servers",
+                  "Inspect websites for the HTTP Strict Transport Security (HSTS) header"
+                ],
+                "evidence": [
+                  "DNS query monitoring alerts for unusual length, volume or destinations, with follow-up",
+                  "Switch logs of dropped forged address replies",
+                  "Resolver configuration showing signature validation is enforced"
+                ],
+                "recommend": "Have the network team enable dynamic ARP inspection and DNS monitoring, and web owners enforce HSTS with preloading.",
+                "decides": "The system owner accepts residual interception risk where encryption is not possible"
+              },
               "isaca_rule": "Choose the control that works where the attack happens: stop local spoofing at the switch, defeat eavesdropping with encryption, and find hidden channels by analyzing permitted traffic. Prevention at the source beats an alert after the data has gone.",
               "exam_traps": [
                 {
