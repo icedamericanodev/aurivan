@@ -91,6 +91,8 @@ export function reportA11yLabel(t: ReportTarget): string {
       return t.step ? `${REPORT_LABEL} with this lesson step` : `${REPORT_LABEL} with this lesson`;
     case 'card':
       return `${REPORT_LABEL} with this card`;
+    case 'principle':
+      return `${REPORT_LABEL} with principle ${t.id}`;
     case 'app':
       return `${REPORT_LABEL} with the app`;
   }
@@ -107,6 +109,8 @@ function sheetMeta(t: ReportTarget): string {
       return [t.name, t.step && t.steps ? `Step ${t.step} of ${t.steps}` : undefined].filter(Boolean).join(' · ');
     case 'card':
       return [t.name, 'game card'].filter(Boolean).join(' · ');
+    case 'principle':
+      return [`Principle ${t.id}`, t.name].filter(Boolean).join(' · ');
     case 'app':
       return `The app · ${t.where}`;
   }

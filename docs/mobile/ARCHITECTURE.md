@@ -730,6 +730,22 @@ subtopic ids); since mobile 1.25 a note open 10 s is also "started"
 mark fills an empty ring, a half circle or a full disc. Routes: `notes/index`,
 `notes/[domain]`, `notes/subtopic/[id]`.
 
+**Exam-mindset principles.** The same builder reads the shared
+`data/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`, one
+file for web and mobile) through `mobile/scripts/principles-pack.cjs` and writes
+`src/content/generated/cisa/principles.json` (types and loader:
+`src/content/principles/`). Each cert names its own file in `PACKS`, so another
+exam can add principles later; a missing file gives an empty pack and the Learn
+→ Look it up → Principles row hides. A practice id that is not in the bank (or
+sits outside the principle's domains), an unknown family, a broken `slip_map`,
+or the word "stem" in any learner-facing text (the app says "question") fails
+the build. Routes: `principles/index` (the six families) and `principles/[id]` (Rule,
+Why it matters, Spot it in the question, The trap, Worked example, Nuance, then
+"Practice this principle" on its `practice_ids`, then "Code <id>" and Report a
+problem, a `principle` report carrying only its id and title). The Mistake journal's "Your
+pattern" links to the principle that coaches it through `slip_map`. Nothing is
+saved: there are no new store fields.
+
 The mobile builder renames fields, drops author-only fields (`_provenance`),
 validates every answer key, and marks real option-letter references as
 `{{B}}` tokens so tips stay correct after shuffling — while words like

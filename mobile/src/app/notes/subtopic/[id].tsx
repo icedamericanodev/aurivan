@@ -46,7 +46,7 @@ import { findQuestion } from '../../../content/loader';
 import { findNote, noteDomain, noteSubtopics } from '../../../content/notes';
 import { aboutMin, spokenMin } from '../../../engine/pace';
 import { createRng, shuffled } from '../../../engine/random';
-import { openSessionFromStack } from '../../../lib/actions';
+import { openSessionFromStack, safeDecode } from '../../../lib/actions';
 import { guardedStart, startFromIds } from '../../../lib/sessions';
 import { sayLater } from '../../../lib/a11y';
 import { forgetJustRead, noteJustRead, readMarkKey } from '../../../lib/noteNews';
@@ -64,7 +64,8 @@ const goBack = () => (router.canGoBack() ? router.back() : router.replace('/note
 
 export default function NoteSubtopicScreen() {
   const { id: rawId } = useLocalSearchParams<{ id: string }>();
-  const id = decodeURIComponent(rawId ?? '');
+  // safeDecode: a malformed link (a lone "%") shows "Note not found" instead of crashing.
+  const id = safeDecode(rawId ?? '');
   const { cert, progress } = useActiveCert();
   const { c } = useTheme();
   const setNoteRead = useProgress((s) => s.setNoteRead);

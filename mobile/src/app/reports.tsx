@@ -23,6 +23,7 @@ import { getCertification } from '../content/certifications';
 import { findLesson } from '../content/lessons';
 import { findQuestion } from '../content/loader';
 import { findNote } from '../content/notes';
+import { findPrinciple } from '../content/principles';
 import { FIXES } from '../content/support';
 import { examDateLabel as dayLabel } from '../engine/examDay';
 import { fixFor, labelOf, parseItemRef, REASONS, type ReportEntry } from '../engine/support';
@@ -62,6 +63,10 @@ function describeReport(r: ReportEntry): { title: string; code: string; gone: bo
     }
     case 'card':
       return { title: `Game card: ${CARD_GAME[ref.id.split(':')[0]] ?? 'a game'}`, code: ref.id, gone: false };
+    case 'principle': {
+      const p = findPrinciple(r.cert, ref.id);
+      return { title: p ? `Principle: ${p.title}` : 'A principle', code: ref.id, gone: !p };
+    }
     case 'app':
       return { title: 'The app', code: `app:${ref.id}`, gone: false };
   }

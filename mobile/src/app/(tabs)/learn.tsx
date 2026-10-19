@@ -45,19 +45,25 @@
  *
  * Study notes: "Look it up" (the search and the Study notes row) hides
  * itself while the app has no notes.
+ *
+ * Principles (exam mindset): a second reference row in "Look it up", under
+ * Study notes (Compass glyph), that opens the principles by family
+ * (app/principles). Hidden while the cert has no principles; "Look it up"
+ * shows while there are notes OR principles (the search only with notes).
  */
 import * as Router from 'expo-router';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, Pressable, View } from 'react-native';
 import { DomainRing, type BotanyKind } from '../../components/glyphs';
-import { BookOpen, ChevronDown, ICON_STROKE, Play } from '../../components/icons';
+import { BookOpen, ChevronDown, Compass, ICON_STROKE, Play } from '../../components/icons';
 import { AnimatedPressable, CheckDraw, Collapse, Turn, usePressScale, useScreenFocus } from '../../components/motion';
 import { BigNum, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, ProgressBar, Row, Screen, SearchField, Section, T } from '../../components/ui';
 import { CERTIFICATIONS, domainColor, domainLabel, getCertification } from '../../content/certifications';
 import { lessonsFor, nextLesson } from '../../content/lessons';
 import type { Lesson } from '../../content/lessons/types';
 import { getNotes, hasNotes, noteSubtopics } from '../../content/notes';
+import { hasPrinciples } from '../../content/principles';
 import type { Certification, DomainInfo } from '../../content/types';
 import { readCount, searchNotes } from '../../engine/notesSearch';
 import { clearFinishedLessons, wasJustFinished } from '../../lib/lessonNews';
@@ -159,6 +165,8 @@ export default function Learn() {
   // (one progress meter per screen: the lessons'). Once any are read, it
   // counts them. Hidden when there are no notes.
   const showNotes = hasNotes(cert.id);
+  // The exam-mindset principles: their own row, hidden when the cert has none.
+  const showPrinciples = hasPrinciples(cert.id);
   const noteIds = showNotes ? noteSubtopics(cert.id).map((s) => s.id) : [];
   const notesRead = readCount(noteIds, notesReadIds);
   // One line each (design spec §2): the subtitle above already says "reference".
@@ -200,14 +208,14 @@ export default function Learn() {
         )}
       </Enter>
 
-      {showNotes && (
+      {(showNotes || showPrinciples) && (
         <Enter i={2}>
           {/* Memoised, with its own query state: typing re-renders only this block, never the hero or the lessons. */}
-          <LookItUp cert={cert} notesState={notesState} />
+          <LookItUp cert={cert} notesState={notesState} showNotes={showNotes} showPrinciples={showPrinciples} />
         </Enter>
       )}
 
-      <Enter i={showNotes ? 3 : 2}>
+      <Enter i={showNotes || showPrinciples ? 3 : 2}>
         {/* Memoised (performance, 1.15.x): a focus change or a store write that
             leaves the lessons as they were never re-renders the whole list. */}
         <LessonGroups
@@ -233,11 +241,21 @@ const SEARCH_INLINE = 5;
  * the query (React keeps the field responsive while results catch up), over
  * the pack's cached index (engine/notesSearch.ts notesIndex).
  */
-const LookItUp = memo(function LookItUp({ cert, notesState }: { cert: Certification; notesState: string }) {
+const LookItUp = memo(function LookItUp({
+  cert,
+  notesState,
+  showNotes,
+  showPrinciples,
+}: {
+  cert: Certification;
+  notesState: string;
+  showNotes: boolean;
+  showPrinciples: boolean;
+}) {
   const { c } = useTheme();
   const [query, setQuery] = useState('');
   const deferred = useDeferredValue(query);
-  const searching = deferred.trim().length >= 2;
+  const searching = showNotes && deferred.trim().length >= 2;
   const hits = useMemo(() => (searching ? searchNotes(getNotes(cert.id), deferred) : []), [searching, cert.id, deferred]);
   const found = hits.length === 0 ? 'No matching notes' : `${hits.length}${hits.length === 30 ? ' or more' : ''} ${hits.length === 1 ? 'note' : 'notes'} found`;
   // Screen readers hear how many once typing pauses (not on every keystroke).
@@ -250,15 +268,17 @@ const LookItUp = memo(function LookItUp({ cert, notesState }: { cert: Certificat
   return (
     <>
       <Section title="Look it up" />
-      <View style={{ marginTop: space.sm }}>
-        <SearchField
-          value={query}
-          onChangeText={setQuery}
-          placeholder="Search the notes, like RTO or SoD"
-          accessibilityLabel="Search the study notes"
-          accessibilityHint="Matching notes show below as you type"
-        />
-      </View>
+      {showNotes && (
+        <View style={{ marginTop: space.sm }}>
+          <SearchField
+            value={query}
+            onChangeText={setQuery}
+            placeholder="Search the notes, like RTO or SoD"
+            accessibilityLabel="Search the study notes"
+            accessibilityHint="Matching notes show below as you type"
+          />
+        </View>
+      )}
       {searching && (
         <View testID="learn-search-results" style={{ marginTop: space.xs }}>
           {hits.length === 0 ? (
@@ -294,15 +314,29 @@ const LookItUp = memo(function LookItUp({ cert, notesState }: { cert: Certificat
           )}
         </View>
       )}
-      <ListRow
-        icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-        title="Study notes"
-        subtitle={notesState}
-        accessibilityLabel={`Study notes, ${notesState}`}
-        accessibilityHint="Opens the notes, by domain"
-        onPress={() => router.push('/notes')}
-        last
-      />
+      {showNotes && (
+        <ListRow
+          icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+          title="Study notes"
+          subtitle={notesState}
+          accessibilityLabel={`Study notes, ${notesState}`}
+          accessibilityHint="Opens the notes, by domain"
+          onPress={() => router.push('/notes')}
+          last={!showPrinciples}
+        />
+      )}
+      {/* The exam-mindset principles: the second reference row (Compass = how to think). */}
+      {showPrinciples && (
+        <ListRow
+          icon={<Compass size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+          title="Principles"
+          subtitle="The thinking the exam rewards"
+          accessibilityLabel="Principles, the thinking the exam rewards"
+          accessibilityHint="Opens the exam-mindset principles, by family"
+          onPress={() => router.push('/principles')}
+          last
+        />
+      )}
     </>
   );
 });

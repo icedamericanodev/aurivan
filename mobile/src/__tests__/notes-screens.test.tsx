@@ -457,6 +457,12 @@ describe('screens', () => {
     mount(<NoteSubtopicScreen />);
     expect(allText()).toContain('Note not found');
   });
+
+  it('subtopic screen: a malformed link id (a lone "%") shows "Note not found" instead of crashing', () => {
+    mockParams = { id: '%' };
+    mount(<NoteSubtopicScreen />);
+    expect(allText()).toContain('Note not found');
+  });
 });
 
 describe('Learn: the course and the reference (mobile 1.21)', () => {

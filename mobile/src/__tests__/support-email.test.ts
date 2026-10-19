@@ -252,6 +252,24 @@ describe('feedback and support emails', () => {
   });
 });
 
+describe('report email: a principle', () => {
+  const principle: ReportTarget = { kind: 'principle', id: 'recommend-dont-implement', name: 'Recommend, don’t implement', where: 'Principle' };
+  it('names the principle by its id and title, with its own reasons and parts', () => {
+    const i = input({ target: principle, reason: 'example', parts: ['rule', 'example'], contentReviewed: undefined });
+    expect(reportSubject(i)).toBe('KaiSip · Report · CISA · principle:recommend-dont-implement · example');
+    const { body } = buildReportEmail(i);
+    expect(body).toContain('Item: Principle recommend-dont-implement (Recommend, don’t implement)');
+    expect(body).toContain('Reason: The example doesn’t fit the rule');
+    expect(body).toContain('Rule, Worked example');
+  });
+
+  it('carries no study-note reference and none of the principle’s own text', () => {
+    const { body } = buildReportEmail(input({ target: principle, reason: 'unclear', contentReviewed: undefined }));
+    expect(body).not.toMatch(/\bnote:|Item: Note /);
+    expect(body).not.toContain('The IS auditor assesses, reports and recommends');
+  });
+});
+
 describe('references', () => {
   it('a report ref is "R-" and 4 easy-to-read characters', () => {
     let seed = 0;
@@ -267,6 +285,7 @@ describe('references', () => {
       { kind: 'note', id: '4A2.3', where: '' },
       { kind: 'lesson', id: 'cisa-l-d1-charter', step: 3, where: '' },
       { kind: 'card', id: 'rumor:4B1.2:k1x9', where: '' },
+      { kind: 'principle', id: 'recommend-dont-implement', where: '' },
       { kind: 'app', id: 'settings', where: '' },
     ];
     for (const t of targets) {
