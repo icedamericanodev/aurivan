@@ -13926,9 +13926,9 @@
                 "evidence": [
                   "Cluster logs showing node load and past takeovers",
                   "Carrier route maps showing separate paths and building entries",
-                  "Backup records showing point-in-time copies kept apart from the RAID arrays"
+                  "Backup records showing point-in-time copies apart from RAID arrays"
                 ],
-                "recommend": "Have the infrastructure manager pair each single point of failure with an independent unit that takes over automatically and keep point-in-time backups.",
+                "recommend": "Have the infrastructure manager pair single points of failure with independent automatic takeover units, use double-parity RAID for long rebuilds and keep point-in-time backups.",
                 "decides": "The business owner decides how much redundancy each service warrants"
               },
               "isaca_rule": "Name the failure first, then the control: RAID for disk failure, clustering for server failure, diverse routing for cable failure, a distant second site for site loss, and backups for lost or damaged data. High availability in one site is not disaster recovery. Untested redundancy proves nothing.",
