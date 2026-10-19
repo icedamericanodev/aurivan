@@ -28,7 +28,8 @@ import { useSession } from '../store/session';
 import SessionScreen from '../app/session';
 import Results from '../app/results';
 import Saved from '../app/saved';
-import { ADD_NOTE, NOTE_INTRO, NOTE_SAVE_MS } from '../components/questionNote';
+import { ADD_NOTE, NOTE_INTRO, NOTE_INTRO_SYNC, NOTE_SAVE_MS } from '../components/questionNote';
+import { CLOUD } from '../cloud/flag';
 import { Sheet, sheetLayout } from '../components/settings';
 import { NOTES_FULL_LINE, NOTES_TOTAL_MAX, QNOTE_MAX } from '../engine/questionNotes';
 import { space } from '../theme/tokens';
@@ -145,7 +146,8 @@ describe('the answer screen', () => {
   it('the sheet saves as you type (600 ms) and on Done; the note comes back as a plate with Edit', () => {
     answerFirst([qa.id, qb.id]);
     press(ADD_NOTE);
-    expect(allText()).toContain(NOTE_INTRO);
+    // Builds that can sync (CI runs the suite a second time with the cloud on) say so.
+    expect(allText()).toContain(CLOUD ? NOTE_INTRO_SYNC : NOTE_INTRO);
     type('Escalate first.');
     expect(noteOf(qa.id)).toBeUndefined();
     act(() => {
