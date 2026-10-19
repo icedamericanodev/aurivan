@@ -11060,7 +11060,9 @@
               "practice_ids": [
                 "d4_121",
                 "d4_125",
-                "d4_251"
+                "d4_251",
+                "d4_281",
+                "d4_282"
               ],
               "definition": "Media sanitization makes data on retired or reused storage unrecoverable by clearing, purging or destroying it, matched to the data's sensitivity and destination.",
               "why_it_matters": "Retired laptops, disks, tapes and leased equipment leave with whatever data they held. Deleting files or formatting a drive leaves the data recoverable with ordinary tools.",
@@ -11085,7 +11087,7 @@
                   "meaning": "Shreds, disintegrates or burns media so it can never be used again. Fits the most sensitive data and media that cannot be purged."
                 }
               ],
-              "example": "A city council's IT team plans to degauss the solid-state drives of retired laptops that held resident tax records, then sell the laptops. The IS auditor notes that degaussing does not erase solid-state drives. She recommends a purge method suited to them, such as the drive's verified secure-erase command, with each serial number recorded on a sanitization certificate. The IT manager updates the procedure.",
+              "example": "A city council's IT team plans to degauss the solid-state drives of retired laptops that held resident tax records, then sell the laptops. The IS auditor notes that degaussing does not erase solid-state drives and recommends a purge method suited to them, such as the drive's verified secure-erase command, with each serial number on a sanitization certificate. The IT manager updates the procedure.",
               "isaca_rule": "Match the method to the data's sensitivity and where the media is going, then verify and document. Evidence of sanitization, such as a certificate or a key-destruction log, matters as much as the act itself.",
               "exam_traps": [
                 {
@@ -12065,7 +12067,9 @@
               "practice_ids": [
                 "d4_185",
                 "d4_231",
-                "d4_254"
+                "d4_254",
+                "d4_271",
+                "d4_272"
               ],
               "definition": "Change management is the process that records, assesses, approves and reviews every change to production, so only authorized, tested changes go live.",
               "why_it_matters": "Unauthorized or untested changes are a leading cause of outages and security gaps. The process also shows auditors and regulators that production is controlled.",
@@ -12754,14 +12758,16 @@
               ],
               "practice_ids": [
                 "d4_054",
-                "d4_108"
+                "d4_108",
+                "d4_273",
+                "d4_274"
               ],
               "definition": "A database management system (DBMS) is the software that stores, retrieves and protects data; its data dictionary holds the definitions of every table, field and relationship.",
               "why_it_matters": "Change one definition in the dictionary and every program that relies on it is affected. Uncontrolled changes can corrupt data silently or break reports across the business.",
               "how_it_works": [
                 "The DBMS controls storage, access, concurrent use, backup and logging for every program that uses the data.",
                 "The three-schema design separates what users see, how data is logically organized and how it is physically stored, so one can change without breaking the others.",
-                "The data dictionary records each data element's name, type, meaning, owner and relationships.",
+                "The data dictionary records each data element's name, type, meaning, owner and relationships, and which programs, reports and interfaces use it (where-used cross-references).",
                 "Schema and dictionary changes are limited to database administrators (DBAs) using logged, versioned scripts under change control.",
                 "Named data stewards own business definitions, so different units do not define the same field differently."
               ],
@@ -12813,7 +12819,9 @@
               "legacy_ids": [],
               "practice_ids": [
                 "d4_103",
-                "d4_227"
+                "d4_227",
+                "d4_275",
+                "d4_276"
               ],
               "definition": "Database integrity controls keep stored data accurate and consistent, using normalized design, enforced keys and rules, and locking when many users change data at once.",
               "why_it_matters": "Without them, one fact is stored twice and the copies drift apart, records point to customers who no longer exist, and simultaneous updates overwrite each other.",
@@ -12900,7 +12908,9 @@
               "practice_ids": [
                 "d4_110",
                 "d4_117",
-                "d4_215"
+                "d4_215",
+                "d4_277",
+                "d4_278"
               ],
               "definition": "Database recovery returns a database to a correct, consistent state after a failure, using backups plus a transaction log that records every change.",
               "why_it_matters": "Crashes, corrupt storage and erroneous updates will happen. Backup and log-copy frequency decides how much work can be lost, which must stay within the recovery point objective (RPO).",
@@ -12983,15 +12993,17 @@
                 "d4_047",
                 "d4_048",
                 "d4_156",
-                "d4_182"
+                "d4_182",
+                "d4_279",
+                "d4_280"
               ],
               "definition": "Database administrator (DBA) controls limit, separate and monitor the powerful rights needed to run databases, so every change to data or structure is authorized and traceable.",
-              "why_it_matters": "DBAs can read, change or delete any record. One misused DBA account can cause unnoticed fraud or data loss, so their power needs oversight from outside the team.",
+              "why_it_matters": "DBAs can read, change or delete any record, so one misused DBA account can cause unnoticed fraud or data loss without outside oversight.",
               "how_it_works": [
-                "Each person, including analysts and DBAs, uses a named account with only the rights the role needs; shared accounts are removed.",
-                "DBA duties stay separate from development, from approving data changes, and from running the database audit trail.",
+                "Everyone, DBAs included, uses a named account with only the rights the role needs; shared accounts are removed.",
+                "DBA duties stay separate from development, so no one both writes code and changes production, and from approving data fixes and the audit trail.",
                 "If management accepts that DBAs need full rights, their activity is logged where they cannot alter it and reviewed by someone outside the team.",
-                "Direct fixes to production data go through approved requests, never ad hoc changes.",
+                "Data owners approve each direct fix to production data before a DBA applies it.",
                 "Trended performance metrics are compared with agreed thresholds, so slowdowns are found before users notice.",
                 "Sensitive fields are encrypted or masked, so database access does not expose everything in clear text."
               ],
@@ -12999,7 +13011,7 @@
                 "svg": "<svg viewBox='0 0 460 132' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Database controls: access controls, encryption, audit trails, backup and recovery'><rect x='14' y='16' width='210' height='44' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='119' y='42' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Access controls</text><rect x='236' y='16' width='210' height='44' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='341' y='42' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Encryption</text><rect x='14' y='74' width='210' height='44' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='119' y='100' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Audit trails</text><rect x='236' y='74' width='210' height='44' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='341' y='100' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Backup and recovery</text></svg>",
                 "caption": "Core database controls: access control decides who sees what, encryption protects the data itself, audit trails record changes, and backups make recovery possible."
               },
-              "example": "Billing staff at a telecom company email database administrators to correct customer balances, and the DBAs edit production tables directly. The IS auditor finds 300 such fixes in a quarter, none with an approved request or a record of the old value. She recommends approved data-fix requests, logged before and after values, and review outside the DBA team. The billing director owns it.",
+              "example": "Billing staff at a telecom company email DBAs to correct customer balances, and the DBAs edit production tables directly. The IS auditor finds 300 such fixes in a quarter, none with an approved request or a record of the old value. The IS auditor recommends owner-approved fix requests, logged before and after values, and review outside the DBA team. The billing director owns it.",
               "isaca_rule": "Where a role must hold broad power, control it through accountability: named accounts, separated duties, and independent review of activity the role cannot alter. Full DBA rights are acceptable only with that compensating oversight in place.",
               "exam_traps": [
                 {

@@ -10067,6 +10067,450 @@
       ],
       "_provenance": "Authored from concept: 'Work Recovery Time. RTO Plus WRT Within the MTD'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B1.2 (Wave 1 coverage batch Q2: work recovery time had no practice). Public sources: NIST, BCI.",
       "style_version": 2
+    },
+    {
+      "id": "d4_271",
+      "domain": 4,
+      "subtopic": "Change Management. Tracing Production Back to Requests",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An IS auditor selected 40 approved change requests from the ticketing system and confirmed each was tested and released as approved. Which issue is this test MOST LIKELY to miss?",
+      "options": {
+        "A": "Emergency fixes that the change board approved after release",
+        "B": "A sample of 40 too small to support a conclusion",
+        "C": "Production fixes that never entered the workflow",
+        "D": "Approved changes whose testing the developer performed alone"
+      },
+      "correct": "C",
+      "key_concept": "A forward trace from approved requests cannot find unauthorized changes; tracing production changes back to approvals tests completeness.",
+      "pre_read": "Ask where the sample came from. A population drawn from approved records can never contain items that bypassed approval.",
+      "correct_explanation": "Selecting approved requests and tracing them forward shows that ticketed changes followed the process, but it cannot reveal changes that never had a ticket. To find unauthorized changes, the IS auditor starts from production, such as system change logs or code versions, and traces back to approvals. Developer self-testing is the runner-up: a real weakness, but it sits inside the sampled tickets, where this test can see it.",
+      "wrong_explanations": {
+        "A": "Emergency changes may be approved soon after release under the procedure; this is an expected route, not a blind spot of the test.",
+        "B": "Forty items is a common attribute sample. Even testing every ticket would still miss changes that never entered the ticketing system.",
+        "D": "Who tested each change shows in the sampled tickets' test evidence, so this test can detect it; the blind spot lies outside the population."
+      },
+      "tips": [
+        "Eliminate: A describes the allowed emergency route, and B blames sample size, though even testing every ticket keeps the same blind spot.",
+        "Final two: C beats D because self-testing would show in the sampled tickets, while fixes that never entered the workflow cannot appear in that population.",
+        "Exam cue: tracing requests forward proves approved changes were handled well; only tracing production back to approvals finds unauthorized changes."
+      ],
+      "framework_ref": "COBIT 2019 BAI06 (Managed IT Changes); ITIL 4 Change Enablement practice; NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control); ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "Unauthorized change",
+        "Direction of testing",
+        "Population completeness",
+        "Change enablement"
+      ],
+      "_provenance": "Authored from concept: 'Change Management. Tracing Production Back to Requests'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A8.1 (Wave 2 coverage batch Q6: thin subtopic). Distinct from d4_185 (emergency route), d4_231 (rollback) and d4_254 (decommissioning): tests the direction of testing needed to detect unauthorized changes. Public sources: COBIT 2019, ITIL 4, NIST, ISACA ITAF.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_272",
+      "domain": 4,
+      "subtopic": "Change Management. Untested Backout Plan",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A core banking upgrade goes live in two weeks, and its change record includes a written backout plan that has never been rehearsed. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Test the reversal steps once in a production-like environment",
+        "B": "Take a full backup just before the upgrade starts",
+        "C": "Obtain a second change advisory board approval for the release",
+        "D": "Ask the vendor to certify that the upgrade has no defects"
+      },
+      "correct": "A",
+      "key_concept": "Significant changes need a backout plan that has been tested; a documented but unrehearsed plan gives no assurance it will work.",
+      "pre_read": "When a control exists only on paper, ask whether there is still time to prove it before it is needed.",
+      "correct_explanation": "A backout plan that has never been tried is a document, not a proven control. Rehearsing it in a production-like environment shows the steps work and how long they take, while there is still time to fix them. A pre-upgrade backup is the runner-up: it is usually already a step in the plan, and restoring a whole core banking database is the slowest, least tested way back.",
+      "wrong_explanations": {
+        "B": "A pre-upgrade backup is normally already in the backout plan; it does not prove the reversal steps work or fit the change window.",
+        "C": "A second approval adds paperwork but tells no one whether the backout steps work; approvers would still rely on an untested plan.",
+        "D": "No vendor can certify an upgrade free of defects, and such a statement would not test the organization's own ability to reverse the change."
+      },
+      "tips": [
+        "Eliminate: C adds a signature, not evidence, and D asks for a guarantee no vendor can give; neither proves the reversal works.",
+        "Final two: A beats B because a rehearsal proves the planned reversal works in time, while a full restore is a slower, untested last resort.",
+        "Exam cue: a written plan that has never been exercised is unproven; when time allows, test it before relying on it."
+      ],
+      "framework_ref": "ITIL 4 Change Enablement practice; COBIT 2019 BAI06 (Managed IT Changes); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "related_concepts": [
+        "Backout plan",
+        "Tested versus documented controls",
+        "Change enablement",
+        "Release readiness"
+      ],
+      "_provenance": "Authored from concept: 'Change Management. Untested Backout Plan'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A8.1 (Wave 2 coverage batch Q6: thin subtopic). Distinct from d4_231 (deciding to roll back after harm): tests that a backout plan must be proven before release. Public sources: ITIL 4, COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_273",
+      "domain": 4,
+      "subtopic": "DBMS Structure. DDL Rights Beyond the Role",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Database logs show that the account of an analyst who only builds reports ran ALTER TABLE commands on the payroll schema. Which control weakness does this MOST LIKELY indicate to the IS auditor?",
+      "options": {
+        "A": "Payroll amounts changed without an approved data-fix request",
+        "B": "Structure-changing rights granted beyond what the role needs",
+        "C": "No nightly full backup of the payroll tables",
+        "D": "Missing referential integrity between the payroll tables"
+      },
+      "correct": "B",
+      "key_concept": "Structure-changing DDL rights belong to DBAs under change control; read-only roles should hold only the rights they need.",
+      "pre_read": "Identify what kind of command was run before deciding which control failed.",
+      "correct_explanation": "ALTER TABLE is a data definition language (DDL) command: it adds, drops or redefines fields and other structure, which only database administrators should do under change control. A report builder needs read access, so the account holds rights far beyond its role. Unapproved changes to payroll amounts are the runner-up, but those would come from data manipulation commands such as UPDATE, not from ALTER TABLE.",
+      "wrong_explanations": {
+        "A": "Changing amounts uses data manipulation language (DML) commands such as UPDATE; ALTER TABLE changes the table's structure, not the values stored in it.",
+        "C": "Backup frequency concerns recovery after loss; it does not explain how a reporting account could run structure-changing commands.",
+        "D": "Referential integrity governs links between tables; its absence would not let an account run structure-changing commands."
+      },
+      "tips": [
+        "Eliminate: C is about recovering lost data and D about links between tables; neither explains how a reporting account could run these commands.",
+        "Final two: B beats A because ALTER TABLE redefines structure (DDL), while changing payroll amounts would need data manipulation (DML) commands.",
+        "Exam cue: data definition language (DDL) defines structure, data manipulation language (DML) manipulates data, data control language (DCL) controls access; match the command type before naming the weakness."
+      ],
+      "framework_ref": "ISO/IEC 9075 (SQL Standard); NIST SP 800-53 Rev 5 AC-6 (Least Privilege); NIST SP 800-53 Rev 5 CM-5 (Access Restrictions for Change)",
+      "related_concepts": [
+        "Data definition language",
+        "Data manipulation language",
+        "Least privilege",
+        "Database administration"
+      ],
+      "_provenance": "Authored from concept: 'DBMS Structure. DDL Rights Beyond the Role'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.2 (Wave 2 coverage batch Q6: thin subtopic). Distinct from d4_054 (dictionary change control) and d4_108 (data stewards): tests the DDL/DML distinction applied to an access finding. Public sources: ISO/IEC 9075, NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_274",
+      "domain": 4,
+      "subtopic": "Data Dictionary. Where-Used Impact of a Field Change",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A database administrator (DBA) plans to shorten the customer-name field in a database that many programs share. What is the PRIMARY source the IS auditor should expect the impact assessment to use?",
+      "options": {
+        "A": "Interviews with the owners of the main applications",
+        "B": "Query response statistics for the past quarter",
+        "C": "Restore test results for the latest full backup",
+        "D": "Where-used cross-references held in the data dictionary"
+      },
+      "correct": "D",
+      "key_concept": "The data dictionary records where each data element is used, so it anchors the impact assessment for any structure change.",
+      "pre_read": "For a change to shared data, ask which record lists every program that depends on it.",
+      "correct_explanation": "A data dictionary records each data element and, through its cross-references, the programs, reports and interfaces that use it. That makes it the complete starting point for finding everything a shorter field could truncate or break. Interviews with application owners are the runner-up: they confirm details, but they rely on memory and miss programs whose owners were not asked.",
+      "wrong_explanations": {
+        "A": "Owners recall the uses they know about; smaller programs, reports and interfaces can be missed, so interviews confirm the dictionary rather than replace it.",
+        "B": "Performance statistics show how fast queries run, not which programs depend on the field's length.",
+        "C": "Restore test results prove recoverability; they say nothing about which programs read or write the customer-name field."
+      },
+      "tips": [
+        "Eliminate: B measures speed and C proves backups restore; neither shows which programs depend on the field.",
+        "Final two: D beats A because the dictionary's cross-references record the dependent programs, while interviews depend on who is asked and what they remember.",
+        "Exam cue: before changing a shared data element, start from the metadata that records where it is used; interviews confirm that record but cannot replace it."
+      ],
+      "framework_ref": "COBIT 2019 APO14 (Managed Data); COBIT 2019 BAI06 (Managed IT Changes); NIST SP 800-53 Rev 5 CM-4 (Impact Analyses)",
+      "related_concepts": [
+        "Data dictionary",
+        "Metadata",
+        "Change impact analysis",
+        "DBMS structure"
+      ],
+      "_provenance": "Authored from concept: 'Data Dictionary. Where-Used Impact of a Field Change'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.2 (Wave 2 coverage batch Q6: thin subtopic). Distinct from d4_054 (who may change the dictionary) and d4_108 (conflicting definitions): tests the dictionary as the source for change impact. Public sources: COBIT 2019, NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_275",
+      "domain": 4,
+      "subtopic": "Data Integrity. Constraints in the Database, Not the Screens",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A claims system validates policy numbers on its entry screens, but nightly interface files load claims straight into the database. What should the IS auditor recommend as the BEST way to keep invalid claims out?",
+      "options": {
+        "A": "Copy the screen checks into the interface program's code",
+        "B": "Restrict the entry screens to trained claims staff",
+        "C": "Enforce integrity constraints in the database for every insert",
+        "D": "Reconcile each night's file record count to the sending system"
+      },
+      "correct": "C",
+      "key_concept": "Integrity rules enforced in the database apply to every program, interface and utility, unlike checks built into one screen or program.",
+      "pre_read": "Trace every route data takes into the system, then ask which control covers all of them.",
+      "correct_explanation": "Integrity rules held in the database apply to every path that writes data: entry screens, interface loads, scripts and utilities. Screen validation protects only one path. Copying the checks into the interface program is the runner-up: it closes today's gap, but the next load script or utility bypasses it, and two copies of the rule can drift apart.",
+      "wrong_explanations": {
+        "A": "This fixes one more path but leaves scripts, utilities and future interfaces unchecked, and rules duplicated in programs drift apart over time.",
+        "B": "The screens already validate policy numbers; the invalid claims arrive through the interface files, which no screen user touches.",
+        "D": "Record counts confirm that every row arrived; they cannot tell whether a policy number is valid, and they detect rather than prevent."
+      },
+      "tips": [
+        "Eliminate: B tightens the path that already works, and D counts records without checking whether policy numbers are valid.",
+        "Final two: C beats A because rules enforced by the database cover every load path, while program code covers only the program it sits in.",
+        "Exam cue: enforce integrity as close to the data as possible; a control in one program protects only that path."
+      ],
+      "framework_ref": "ISO/IEC 9075 (SQL Standard); NIST SP 800-53 Rev 5 SI-10 (Information Input Validation); COBIT 2019 DSS06 (Managed Business Process Controls)",
+      "related_concepts": [
+        "Integrity constraints",
+        "Input validation",
+        "Interface controls",
+        "Preventive controls"
+      ],
+      "_provenance": "Authored from concept: 'Data Integrity. Constraints in the Database, Not the Screens'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.3 (Wave 2 coverage batch Q6: thin subtopic). Distinct from d4_103 (atomicity) and d4_227 (referential integrity): tests where integrity rules should be enforced when data has several entry paths. Public sources: ISO/IEC 9075, NIST, COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_276",
+      "domain": 4,
+      "subtopic": "Data Integrity. Denormalization and Reconciliation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "To meet reporting speed targets, management approved storing each customer's credit rating in both the customer master table and a reporting summary table. Which control is MOST important for the IS auditor to verify?",
+      "options": {
+        "A": "Referential integrity linking every summary row to a valid customer",
+        "B": "A scheduled reconciliation that flags and fixes mismatched copies",
+        "C": "A redesign that keeps a single stored copy of each rating",
+        "D": "Record locking while two users update the same row"
+      },
+      "correct": "B",
+      "key_concept": "Storing a value twice for speed (denormalization) needs a compensating reconciliation to keep the copies consistent.",
+      "pre_read": "When management has made an informed design trade-off, ask which control manages the risk it accepted.",
+      "correct_explanation": "Storing the credit rating twice is a deliberate trade of integrity for speed: when the master record changes and the summary does not, reports show a stale rating. The expected compensating control is a regular reconciliation that finds and fixes mismatches. A redesign to one stored copy is the runner-up: it removes the risk, but it reverses a decision management made to meet a business need.",
+      "wrong_explanations": {
+        "A": "Referential integrity makes each summary row point to an existing customer; it does nothing to keep two stored copies of a rating identical.",
+        "C": "Management accepted the duplication to meet reporting targets; the IS auditor looks for controls over the trade-off rather than reversing the design decision.",
+        "D": "Locking stops two users overwriting each other's update to one row; it cannot keep values stored in two different tables in step."
+      },
+      "tips": [
+        "Eliminate: A only checks that summary rows point to real customers, and D only isolates simultaneous updates; neither keeps two stored copies alike.",
+        "Final two: B beats C because management chose duplication for speed; the IS auditor expects a compensating check, not a reversal of a business decision.",
+        "Exam cue: when a design trades integrity for performance, look for the compensating control, such as a reconciliation, before questioning the design."
+      ],
+      "framework_ref": "COBIT 2019 APO14 (Managed Data); COBIT 2019 DSS06 (Managed Business Process Controls); DAMA Data Management Body of Knowledge (DMBOK)",
+      "related_concepts": [
+        "Denormalization",
+        "Normalization",
+        "Compensating control",
+        "Data integrity"
+      ],
+      "_provenance": "Authored from concept: 'Data Integrity. Denormalization and Reconciliation'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.3 (Wave 2 coverage batch Q6: thin subtopic). Distinct from d4_103 and d4_227: tests the compensating control expected when a design deliberately trades normalization for speed. Public sources: COBIT 2019, DAMA-DMBOK.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_277",
+      "domain": 4,
+      "subtopic": "Database Recovery. Crash Restart Undo and Redo",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A database server lost power with transactions in progress; its data files and transaction log are intact. Which recovery approach is MOST appropriate for the IS auditor to expect?",
+      "options": {
+        "A": "Restore last night's full backup, then roll the log forward",
+        "B": "Reapply every logged change, whether finished or not",
+        "C": "Rekey the day's entries from source documents",
+        "D": "Undo unfinished work and redo committed work automatically"
+      },
+      "correct": "D",
+      "key_concept": "After a crash with intact data files, the database redoes committed work and undoes unfinished work from the log, without a restore.",
+      "pre_read": "First ask what was damaged: the running system or the stored data. The answer picks the recovery path.",
+      "correct_explanation": "A power loss leaves the data files intact, so the database recovers itself at restart. It reads the log, starting from the last checkpoint, redoes committed work from after-images and undoes unfinished work from before-images, keeping every committed transaction with the shortest outage. Restoring last night's backup and rolling forward is the runner-up: it reaches the same state, but it is the slower media-loss path and adds avoidable downtime.",
+      "wrong_explanations": {
+        "A": "Restore and roll forward is the path for damaged or lost data files. Here the files survived, so a restore only lengthens the outage.",
+        "B": "Reapplying unfinished work would commit half-done transactions, such as a debit without its credit, breaking atomicity.",
+        "C": "Rekeying is slow and error-prone, and it is unnecessary when the log already holds every committed change."
+      },
+      "tips": [
+        "Eliminate: B would commit half-finished transactions, and C rekeys work the log already holds.",
+        "Final two: D beats A because intact data files need only a crash restart from the log; a full restore is the slower path for media loss.",
+        "Exam cue: a crash with intact files means undo uncommitted and redo committed work from the log; media loss means restore, then roll forward."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 CP-10 (System Recovery and Reconstitution); COBIT 2019 DSS04 (Managed Continuity); Härder and Reuter (1983), Principles of Transaction-Oriented Database Recovery (ACM Computing Surveys)",
+      "related_concepts": [
+        "Transaction log",
+        "Checkpoint",
+        "Rollback and roll-forward",
+        "Crash recovery"
+      ],
+      "_provenance": "Authored from concept: 'Database Recovery. Crash Restart Undo and Redo'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.4 (Wave 2 coverage batch Q6: thin subtopic). Distinct from d4_110, d4_117 and d4_215 (RPO depth and management trade-offs): tests crash-recovery mechanics, undo and redo from the log. Public sources: NIST, COBIT 2019, Härder and Reuter (1983).",
+      "style_version": 2
+    },
+    {
+      "id": "d4_278",
+      "domain": 4,
+      "subtopic": "Database Recovery. Log Copies Stored Apart",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A database with a 15-minute recovery point objective (RPO) copies its transaction log every 10 minutes to the same storage array as the database. Which risk is GREATEST for the IS auditor to report?",
+      "options": {
+        "A": "One failure destroying the database and its log copies",
+        "B": "Ten-minute log copies falling short of the 15-minute target",
+        "C": "Log copies competing with live transactions for array capacity",
+        "D": "Log replay pushing recovery past the recovery time objective"
+      },
+      "correct": "A",
+      "key_concept": "Log copies meet the RPO only when stored apart from the database; one failure must not destroy both.",
+      "pre_read": "Check where a recovery copy is kept as well as how often it is made.",
+      "correct_explanation": "Ten-minute log copies meet the 15-minute RPO only if they survive the failure they guard against. On the same array, one failure destroys the database and its log copies together, so every change since the last backup is lost, far beyond the RPO. Replay time is the runner-up: it affects how long recovery takes, measured against a recovery time objective, not how much data survives.",
+      "wrong_explanations": {
+        "B": "Copies every 10 minutes are more frequent than the 15-minute RPO requires; the schedule is sound, but the storage location is not.",
+        "C": "Capacity contention can slow transactions, but monitoring and capacity planning manage it; it does not threaten the ability to recover data.",
+        "D": "The stated target is an RPO, not an RTO; replay time affects how long recovery takes, not how much data survives."
+      },
+      "tips": [
+        "Eliminate: B misreads the numbers, since 10-minute copies meet a 15-minute RPO, and C is a performance concern, not a recovery failure.",
+        "Final two: A beats D because the stated target is an RPO; one array failure loses the log copies with the database, while replay time affects only recovery time.",
+        "Exam cue: a backup or log copy stored with what it protects shares its fate; check where copies live, not only how often they run."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 CP-9 (System Backup); NIST SP 800-53 Rev 5 CP-6 (Alternate Storage Site); ISO/IEC 27002:2022 Control 8.13 (Information Backup)",
+      "related_concepts": [
+        "Recovery point objective",
+        "Transaction log",
+        "Roll-forward recovery",
+        "Backup storage separation"
+      ],
+      "_provenance": "Authored from concept: 'Database Recovery. Log Copies Stored Apart'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.4 (Wave 2 coverage batch Q6: thin subtopic). Distinct from d4_110 (log interval too long for the RPO): here the interval meets the RPO but the copies share the database's storage, so roll-forward fails. Public sources: NIST, ISO/IEC 27002.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_279",
+      "domain": 4,
+      "subtopic": "Database Administration. Owner Approval of Data Fixes",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A database administrator (DBA) team approves and applies requested corrections to production billing records, logging old and new values. Which recommendation should the IS auditor consider MOST important?",
+      "options": {
+        "A": "Monthly independent review of the logged old and new values",
+        "B": "Data owner authorization of each fix before it runs",
+        "C": "Encryption of the billing tables and their backups",
+        "D": "Removal of DBA write access to the billing tables"
+      },
+      "correct": "B",
+      "key_concept": "Data owners authorize changes to their data and DBAs execute them; separating approval from execution prevents unjustified fixes.",
+      "pre_read": "Ask who approves and who executes. If it is the same group, the control is missing a second party.",
+      "correct_explanation": "The same team both approves and applies the corrections, so nothing stops an unjustified change to billing balances. Moving approval to the data owner, before each fix runs, separates authorizing from executing and prevents the problem. Independent review of the logged values is the runner-up: it is a useful detective check, but it finds a bad correction only after customers' balances have changed.",
+      "wrong_explanations": {
+        "A": "Reviewing logs afterward detects improper fixes but cannot stop them; the missing control is authorization by someone outside the team that runs the change.",
+        "C": "Encryption protects data from outsiders reading it; the DBAs applying the corrections would still change balances with no outside approval.",
+        "D": "Approved fixes still have to be applied by someone; removing DBA write access blocks the work instead of separating who authorizes it."
+      },
+      "tips": [
+        "Eliminate: C protects confidentiality, not authorization, and D blocks the work itself, since approved fixes still need someone with rights to apply them.",
+        "Final two: B beats A because owner sign-off before each fix prevents an unjustified change, while a later log review only detects one.",
+        "Exam cue: when one team both approves and executes, move approval to the data owner; prevention beats after-the-fact review."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 AC-5 (Separation of Duties); COBIT 2019 APO14 (Managed Data); COBIT 2019 DSS06 (Managed Business Process Controls)",
+      "related_concepts": [
+        "Segregation of duties",
+        "Data owner",
+        "Data correction controls",
+        "Database administration"
+      ],
+      "_provenance": "Authored from concept: 'Database Administration. Owner Approval of Data Fixes'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.5 (Wave 2 coverage batch Q6: thin subtopic). Distinct from d4_047, d4_048, d4_156 and d4_182 (shared accounts, DBA logging, audit-trail ownership, performance): tests segregating approval of data fixes from DBA execution. Public sources: NIST, COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_280",
+      "domain": 4,
+      "subtopic": "Database Administration. Developer and DBA Segregation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "To speed up fixes, management plans to give the claims application's developers the production database administrator (DBA) role as well. What is the GREATEST risk for the IS auditor to report?",
+      "options": {
+        "A": "Slower handling of database incidents outside business hours",
+        "B": "Patches falling behind while developers learn the new role",
+        "C": "Changes going live without an independent check",
+        "D": "Developers seeing claimant personal data during fixes"
+      },
+      "correct": "C",
+      "key_concept": "Development and database administration are segregated so no one can change and promote code or data without an independent check.",
+      "pre_read": "Look for a role change that lets one person both create a change and apply it to production.",
+      "correct_explanation": "Holding both roles lets the same people write code and change production structure and data with no one else involved, so errors or fraud can go live unseen. Segregating development from database administration is the control the plan removes. Patching falling behind is the runner-up: a real but temporary skills gap that training and oversight can close, unlike a built-in conflict of duties.",
+      "wrong_explanations": {
+        "A": "Developers on call would, if anything, respond faster; the plan's weakness is the loss of an independent check, not slower incident handling.",
+        "B": "A learning curve is temporary and fixable with training; the conflict of duties lasts as long as the combined role exists.",
+        "D": "Masking and access logging can limit what developers see; the plan's core flaw is that no one independent checks their changes to production."
+      },
+      "tips": [
+        "Eliminate: A predicts slower response from a plan designed to speed fixes, and D is a confidentiality exposure that masking can limit.",
+        "Final two: C beats B because a combined role permanently removes the independent check, while a skills gap is temporary and fixable.",
+        "Exam cue: when one role can both build and run production, segregation of duties is lost; that outranks transitional problems."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 AC-5 (Separation of Duties); NIST SP 800-53 Rev 5 CM-5 (Access Restrictions for Change); COBIT 2019 DSS06.03 (Manage roles, responsibilities, access privileges and levels of authority); COBIT 2019 BAI06 (Managed IT Changes)",
+      "related_concepts": [
+        "Segregation of duties",
+        "Database administration",
+        "Production access",
+        "Change control"
+      ],
+      "_provenance": "Authored from concept: 'Database Administration. Developer and DBA Segregation'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.5 (Wave 2 coverage batch Q6: thin subtopic). Distinct from d4_156 (DBAs and the audit trail): tests segregation between application development and database administration. Public sources: NIST, COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_281",
+      "domain": 4,
+      "subtopic": "Media Sanitization. Verifying Wipes Before Reuse",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Technicians overwrite the hard disk drives of human resources (HR) laptops before reissuing them and log each serial number, but no one checks that the overwrite worked. What is the IS auditor's PRIMARY concern?",
+      "options": {
+        "A": "Failed wipes leaving personnel files readable by the next user",
+        "B": "Logs that omit the name of the technician who wiped each laptop",
+        "C": "Overwriting instead of shredding drives that stay in-house",
+        "D": "One overwrite pass being too few for modern drives"
+      },
+      "correct": "A",
+      "key_concept": "Sanitization must be verified, not just performed and logged; an unchecked wipe can fail silently and leave data recoverable.",
+      "pre_read": "Separate doing a control from proving it worked. Only the second gives assurance.",
+      "correct_explanation": "Overwriting is a suitable clearing method for laptops that stay inside the organization, but an overwrite can fail silently, for example on a faulty drive or an interrupted run. With no one checking, personnel data could pass to the next user unnoticed. Missing technician names are the runner-up: accountability matters, but a log naming who ran a failed wipe still leaves the data exposed.",
+      "wrong_explanations": {
+        "B": "Naming the technician adds accountability, but it does not show the wipe worked; the data stays exposed until someone verifies the result.",
+        "C": "Clearing by overwrite fits media reused inside the organization; shredding reusable laptops wastes assets and still leaves the missing verification unaddressed.",
+        "D": "Pass count is not the issue: one pass suffices for hard drives, and solid-state drives need built-in sanitize or cryptographic erase instead; neither is proven without a check."
+      },
+      "tips": [
+        "Eliminate: C demands destruction for media staying in-house, where clearing fits, and D blames the pass count, which is not what makes a wipe trustworthy.",
+        "Final two: A beats B because an unverified wipe can leave data exposed, while a missing name only weakens accountability for the result.",
+        "Exam cue: a sanitization record without verification is documentation, not assurance; look for someone confirming the method worked."
+      ],
+      "framework_ref": "NIST SP 800-88 Rev 2 (Guidelines for Media Sanitization); ISO/IEC 27002:2022 Control 7.14 (Secure Disposal or Re-Use of Equipment)",
+      "related_concepts": [
+        "Media sanitization",
+        "Clear, purge and destroy",
+        "Verification of sanitization",
+        "Equipment reuse"
+      ],
+      "_provenance": "Authored from concept: 'Media Sanitization. Verifying Wipes Before Reuse'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A2.3 (Wave 2 coverage batch Q6: thin subtopic). Distinct from d4_121 (method for leased disks), d4_125 (cloud key destruction) and d4_251 (certificates matched to serials): tests verification of sanitization for internal reuse. Public sources: NIST, ISO/IEC 27002.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_282",
+      "domain": 4,
+      "subtopic": "Media Sanitization. Failed Drives Under Warranty",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Failed, unencrypted solid-state drives from an array holding customer data no longer respond to commands, and the warranty requires returning them to the manufacturer. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Wipe them with the array vendor's overwrite utility first",
+        "B": "Rely on the manufacturer's confidentiality clause in the warranty",
+        "C": "Seal them in tamper-evident bags for the courier trip",
+        "D": "Destroy them on site under a keep-your-drive support option"
+      },
+      "correct": "D",
+      "key_concept": "Media that cannot be cleared or purged, such as failed solid-state drives, must be destroyed before leaving the organization's control.",
+      "pre_read": "Check whether the sanitization method can physically work on the media in its current state.",
+      "correct_explanation": "Solid-state drives that no longer accept commands cannot be overwritten or securely erased, and degaussing does not work on flash memory, so the customer data stays readable to anyone who repairs or resells them. Destroying them on site, under a support option that waives the return, keeps the data under the organization's control. The confidentiality clause is the runner-up: it gives a legal remedy after a leak, not prevention.",
+      "wrong_explanations": {
+        "A": "The drives no longer respond to commands, so an overwrite utility cannot run on them, and the data would leave the organization intact.",
+        "B": "A contract clause offers a remedy after data is exposed; it does not stop readable customer data leaving the organization's control.",
+        "C": "Tamper-evident bags protect the drives in transit only; the manufacturer still receives them with the customer data readable."
+      },
+      "tips": [
+        "Eliminate: A assumes the dead drives can still be overwritten, and C protects only the courier trip, not what happens at the manufacturer.",
+        "Final two: D beats B because destroying the drives keeps the data under the organization's control; a contract clause offers only recourse after a leak.",
+        "Exam cue: media that cannot be sanitized must be destroyed before leaving control; a contract gives recourse, not protection."
+      ],
+      "framework_ref": "NIST SP 800-88 Rev 2 (Guidelines for Media Sanitization); ISO/IEC 27002:2022 Control 7.13 (Equipment Maintenance); ISO/IEC 27002:2022 Control 7.14 (Secure Disposal or Re-Use of Equipment)",
+      "related_concepts": [
+        "Media sanitization",
+        "Destroy",
+        "Equipment maintenance",
+        "Third-party handling of media"
+      ],
+      "_provenance": "Authored from concept: 'Media Sanitization. Failed Drives Under Warranty'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A2.3 (Wave 2 coverage batch Q6: thin subtopic). Distinct from d4_121 (purge before returning working leased disks): tests media that cannot be sanitized because the drives have failed. Public sources: NIST, ISO/IEC 27002.",
+      "style_version": 2
     }
   ]
 }

@@ -1953,3 +1953,10 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - ISO/IEC 19795-1:2021 (Information Technology — Biometric Performance Testing and Reporting — Part 1: Principles and Framework)
 - NIST SP 800-175B Rev 1 (Guideline for Using Cryptographic Standards in the Federal Government: Cryptographic Mechanisms)
 - IETF RFC 5280 (Internet X.509 PKI Certificate and CRL Profile), 4.2.1.3 Key Usage and 4.2.1.9 Basic Constraints
+
+## Added with Wave 2 coverage batch Q6 (Domain 4, Oct 2026)
+
+- NIST SP 800-53 Rev 5 CM-4 (Impact Analyses)
+- ISO/IEC 27002:2022 Control 7.14 (Secure Disposal or Re-Use of Equipment)
+- Härder and Reuter (1983), Principles of Transaction-Oriented Database Recovery (ACM Computing Surveys)
+- COBIT 2019 DSS06.03 (Manage roles, responsibilities, access privileges and levels of authority)
