@@ -22,6 +22,10 @@
  *      every practice id must exist and belong to the subtopic's domain;
  *      a bad id is a PROBLEM (the build fails), because a "Practice this
  *      concept" button that opens the wrong questions would mislead.
+ *   6. Mobile 1.29: carries `audit_focus` ("Auditing it": what to review,
+ *      evidence to ask for, the typical recommendation, and optionally who
+ *      decides) as `auditFocus`.
+ *      A malformed one is dropped with a warning, like a bad compare table.
  */
 
 // Elements our diagrams may use. Anything else (script, image, foreignObject,
@@ -94,6 +98,44 @@ function prepareIllustration(ill) {
 
 const str = (v) => (typeof v === 'string' ? v.trim() : '');
 const strList = (v) => (Array.isArray(v) ? v.map(str).filter(Boolean) : []);
+
+/** The exact keys of `audit_focus` (docs/content/NOTES_SCHEMA_V2.md "audit_focus"). */
+const AUDIT_FOCUS_KEYS = ['review', 'evidence', 'recommend', 'decides'];
+
+/**
+ * Mobile 1.29: check a subtopic's optional `audit_focus` ("Auditing it") and
+ * prepare it for the app. Returns { ok: true, value } or { ok: false, reason }.
+ *
+ * Plain English: the note's "how would an IS auditor audit this?" box. It has
+ * three parts: `review` (2–3 audit steps), `evidence` (2–3 records that
+ * prove the control works) and `recommend` (one sentence that starts with the
+ * action: the label already says "the IS auditor recommends"), plus an
+ * optional `decides` (who decides or accepts the risk: the exam lesson). Like the
+ * compare table, a malformed one is DROPPED with a warning and the rest of
+ * the note stays; the page then simply has no "Auditing it" section.
+ * Word limits are the notes linter's job (scripts/lint_notes.py), not ours.
+ */
+function prepareAuditFocus(raw) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return { ok: false, reason: 'not an object' };
+  const extra = Object.keys(raw).filter((k) => !AUDIT_FOCUS_KEYS.includes(k));
+  if (extra.length) return { ok: false, reason: `unknown key ${extra.join(', ')}` };
+  // Each list: 2 or 3 entries, every one a non-empty string (a blank is not skipped quietly).
+  for (const key of ['review', 'evidence']) {
+    const list = raw[key];
+    if (!Array.isArray(list) || list.length < 2 || list.length > 3) {
+      return { ok: false, reason: `${key} needs 2 or 3 items` };
+    }
+    if (!list.every((item) => str(item))) return { ok: false, reason: `${key} has an empty or non-text item` };
+  }
+  const recommend = str(raw.recommend);
+  if (!recommend) return { ok: false, reason: 'recommend must be one sentence of text' };
+  // Optional: absent is fine; present means a non-empty sentence.
+  const decides = str(raw.decides);
+  if (raw.decides != null && !decides) return { ok: false, reason: 'decides must be text when present' };
+  const value = { review: raw.review.map(str), evidence: raw.evidence.map(str), recommend };
+  if (decides) value.decides = decides;
+  return { ok: true, value };
+}
 
 /**
  * Check a subtopic's `practice_ids` and return the clean list (may be empty).
@@ -189,6 +231,12 @@ function toSubtopic(s, domainId, topicId, problems, warnings, questionDomains) {
     });
     if (good.length) sub.illustrations = good;
   }
+  // Mobile 1.29: "Auditing it" (optional). Renamed to camelCase; a bad one is dropped, not fatal.
+  if (s.audit_focus != null) {
+    const focus = prepareAuditFocus(s.audit_focus);
+    if (focus.ok) sub.auditFocus = focus.value;
+    else warnings.push(`${where}: audit_focus dropped (${focus.reason})`);
+  }
   if (str(s.analogy)) sub.analogy = str(s.analogy);
   if (str(s.memory_aid)) sub.memoryAid = str(s.memory_aid);
   // Optional: omitted when empty, so the screen simply hides the button.
@@ -210,7 +258,11 @@ function readingMinutes(sub) {
     ...(sub.compare ? [...sub.compare.columns, ...sub.compare.rows.flatMap((r) => [r.label, ...r.cells])] : []),
     ...(sub.types ?? []).flatMap((t) => [t.term, t.meaning]),
     ...(sub.illustrations ?? []).map((i) => i.caption ?? ''),
+    // Mobile 1.29: "Auditing it" is rendered, so it counts toward the reading time.
     sub.example,
+    ...(sub.auditFocus
+      ? [...sub.auditFocus.review, ...sub.auditFocus.evidence, sub.auditFocus.recommend, sub.auditFocus.decides ?? '']
+      : []),
     sub.isacaRule,
     ...sub.examTraps.flatMap((t) => [t.trap, t.why]),
     ...sub.keyTerms.flatMap((t) => [t.term, t.definition]),
@@ -330,4 +382,4 @@ function buildNotesPack(raw, certId = 'cisa', opts = {}) {
   };
 }
 
-module.exports = { buildNotesPack, prepareIllustration, emptyPack };
+module.exports = { buildNotesPack, prepareIllustration, prepareAuditFocus, emptyPack };

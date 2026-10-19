@@ -1,7 +1,7 @@
 // Study notes screenshots (393x852 @2x): Learn entry, notes home, Domain 4,
 // a subtopic with a compare table + diagram (4B1.2) and its "Practice this
 // concept" button + the session it opens, a long subtopic (1A2.4),
-// and search results for "RPO". Usage: node shoot_notes.mjs <seed.json> <out> <suffix>
+// and search results for "RPO", and (mobile 1.29) "Auditing it" on 4B1.1. Usage: node shoot_notes.mjs <seed.json> <out> <suffix>
 // Run via: SHOTS=notes bash scripts/screenshots/run.sh <out> <dark|light>
 import { createRequire } from 'module';
 import fs from 'fs';
@@ -32,6 +32,16 @@ const scrollTo = async (text) => {
   await page.waitForTimeout(700);
 };
 const scrollBy = async (dy) => { await page.mouse.move(196, 500); await page.mouse.wheel(0, dy); await page.waitForTimeout(700); };
+
+// Mobile 1.29: "Auditing it" on a pilot note (4B1.1): the section and the lens under it.
+// NOTES_SHOTS=audit shoots only these (a quick check of the section).
+await open('/notes/subtopic/4B1.1'); await scrollTo('Auditing it'); await snap('n11-4B1.1-auditing-it');
+await scrollBy(400); await snap('n11b-4B1.1-auditing-it-end');
+if (process.env.NOTES_SHOTS === 'audit') {
+  console.log('errors:', errs.slice(0, 5));
+  await browser.close();
+  process.exit(0);
+}
 
 await open('/learn'); await snap('n01-learn-entry');
 await open('/notes'); await snap('n02-notes-home');
