@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.19] — More practice on IT governance
+
+### New
+- New practice questions on board oversight, separating duties, mandatory leave and key roles, data retention, weighing a control's cost against the risk it removes, and meeting legal and card-industry requirements.
+
 ## [v12.18] — More practice on audit judgment and keeping systems running
 
 ### New

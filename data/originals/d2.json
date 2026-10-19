@@ -676,7 +676,7 @@
         "Final two: C beats A because avoiding leave and cross-training protects a concealed scheme; A is a continuity risk, not a fraud signal.",
         "Exam cue: sensitive access combined with no leave and no backup is the classic fraud red flag; mandatory vacation exists to expose it."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts); COBIT 2019 APO07 (Managed Human Resources); ACFE Fraud Examiners Manual",
+      "framework_ref": "ISACA IS Audit and Assurance Standard 1207 (Irregularity and Illegal Acts); COBIT 2019 APO07 (Managed Human Resources); ACFE Fraud Examiners Manual",
       "related_concepts": [
         "Mandatory vacation",
         "Cross-training",
@@ -7468,6 +7468,450 @@
         "Preventive versus detective controls"
       ],
       "_provenance": "Authored from concept: 'access removal at or before notice for involuntary terminations'. Original KaiSip item (Oct 2026), written for CISA topic 2B1 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_203",
+      "domain": 2,
+      "subtopic": "Governance Versus Management. Board IT Agenda",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A university's board spends its entire IT agenda approving software license renewals and server upgrades. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "An IT steering committee takes over those purchase approvals",
+        "B": "The chief information officer sets IT priorities for the board to note",
+        "C": "The board sets IT direction and risk appetite, then monitors results",
+        "D": "The board adds a technology expert to strengthen its technical reviews"
+      },
+      "correct": "C",
+      "key_concept": "Governance sets direction, priorities and risk appetite and monitors results; approving purchases and upgrades is management work.",
+      "pre_read": "Ask which governance activity is missing, not only which activity is misplaced.",
+      "correct_explanation": "A board that spends its whole IT agenda on purchase approvals is doing management's work, leaving no time to set priorities or risk limits. Setting direction and risk appetite, then monitoring results, restores the evaluate, direct and monitor role that COBIT 2019 gives governance. Moving the approvals to a steering committee helps, since those decisions belong to management, but it leaves direction unset, so the core gap remains.",
+      "wrong_explanations": {
+        "A": "This moves management decisions to a better forum but nothing in it makes the board set direction or risk limits.",
+        "B": "Management would then set its own direction unchecked. Priorities and risk limits are the board's to set, with management carrying them out.",
+        "D": "Expert review deepens the board's involvement in management detail. Governance needs direction and oversight, not better technical approvals."
+      },
+      "tips": [
+        "Eliminate: B hands the board's direction role to management, and D makes the board better at work that is not its job.",
+        "Final two: C beats A because it fills the missing direction role; A only relocates approvals that never belonged to the board.",
+        "Exam cue: when a board is busy with technical approvals, look for the answer that restores evaluate, direct and monitor."
+      ],
+      "framework_ref": "COBIT 2019 EDM01.02 (Direct the governance system); ISO/IEC 38500:2024 Information technology - Governance of IT for the organization; COBIT 2019 EDM03.01 (Evaluate risk management)",
+      "related_concepts": [
+        "Governance versus management",
+        "Evaluate, direct and monitor",
+        "Risk appetite",
+        "IT steering committee"
+      ],
+      "_provenance": "Authored from concept: 'a board absorbed in management approvals leaves its direction role empty'. Original KaiSip item (Oct 2026), written for CISA topic 2A2 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_204",
+      "domain": 2,
+      "subtopic": "Governance Versus Management. Board Oversight in Practice",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A shipping company's board receives detailed monthly IT reports, yet its minutes show no IT decisions, questions or follow-up actions in two years. Which conclusion is MOST appropriate for the IS auditor to draw?",
+      "options": {
+        "A": "The board is informed about IT but is not governing it",
+        "B": "IT performed well, so no board decisions were needed",
+        "C": "Management is probably keeping serious IT problems out of its reports",
+        "D": "The board has formally delegated IT accountability to management"
+      },
+      "correct": "A",
+      "key_concept": "A board governs IT only when it sets direction and challenges results; receiving reports alone is not oversight.",
+      "pre_read": "Look at what the board does with information, not how much information it receives.",
+      "correct_explanation": "Governance means evaluating, directing and monitoring. Two years of reports with no decisions, questions or follow-up show the board receiving information without exercising any of those roles, so IT is in effect steering itself. Good performance does not explain the silence: even when results are on target, a governing board still sets direction, approves priorities and challenges what it is told. Passive receipt of reports is information, not oversight.",
+      "wrong_explanations": {
+        "B": "Even strong results need a board that sets direction and challenges reports. Two years without a single question cannot be explained by performance alone.",
+        "C": "Nothing in the facts suggests concealment. The evidence describes how the board behaves, not what management discloses, so this is speculation.",
+        "D": "Nothing shows a formal delegation, and accountability for IT cannot be delegated anyway; the board keeps it whatever it hands to management."
+      },
+      "tips": [
+        "Eliminate: C assumes concealment that nothing in the facts suggests, and D claims a delegation of accountability that a board cannot make.",
+        "Final two: A beats B because governing means directing and challenging, which good results do not replace; B mistakes silence for oversight.",
+        "Exam cue: reports that are received but never questioned or acted on point to information, not governance."
+      ],
+      "framework_ref": "COBIT 2019 EDM01.03 (Monitor the governance system); ISO/IEC 38500:2024 Information technology - Governance of IT for the organization",
+      "related_concepts": [
+        "Board oversight of IT",
+        "Evaluate, direct and monitor",
+        "Governance evidence",
+        "Board accountability"
+      ],
+      "_provenance": "Authored from concept: 'a board that receives IT reports but never acts on them is not governing'. Original KaiSip item (Oct 2026), written for CISA topic 2A2 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_205",
+      "domain": 2,
+      "subtopic": "Segregation of Duties in IT. IT Asset Handling Roles",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a hospital, one IT asset coordinator holds the spare laptop stock, updates the asset register and performs the annual inventory count. What should be the IS auditor's PRIMARY concern?",
+      "options": {
+        "A": "Losses could go unnoticed for up to a year between counts",
+        "B": "Laptops could be issued to staff without a documented request",
+        "C": "The register could charge laptops to the wrong departments",
+        "D": "Missing laptops could be hidden by editing the register to match"
+      },
+      "correct": "D",
+      "key_concept": "Keep custody, recording and reconciliation apart; one person holding all three can remove assets and make the records agree.",
+      "pre_read": "List which of the four functions each person performs, then ask what that person could hide.",
+      "correct_explanation": "The coordinator holds the laptops, records them and counts them, so custody, recording and reconciliation sit with one person. Anyone in that position can take a laptop and adjust the register so the count still agrees, leaving no evidence. Counting more often would not help, because the same person would perform each count. The remedy is separation: an independent person reconciles the stock to the register.",
+      "wrong_explanations": {
+        "A": "More frequent counts by the same person could still be matched to an adjusted register. The issue is who counts, not how often.",
+        "B": "Issuance approval matters, but this combination of duties creates a bigger risk: losses hidden by changing the records.",
+        "C": "A misallocated cost is a correctable recording error. It does not let anyone remove assets and conceal the loss."
+      },
+      "tips": [
+        "Eliminate: B is an approval gap the combined duties do not create, and C is a low-impact recording error.",
+        "Final two: D beats A because one person both holds and counts the stock; more frequent counts by that person would not expose an edited register.",
+        "Exam cue: when custody, recording and reconciliation share one owner, look for concealment, then for an independent reconciliation."
+      ],
+      "framework_ref": "COBIT 2019 DSS06.03 (Manage roles, responsibilities, access privileges and levels of authority); ISO/IEC 27002:2022 Control 5.3 (Segregation of Duties); COBIT 2019 BAI09 (Managed Assets)",
+      "related_concepts": [
+        "Segregation of duties",
+        "Custody, recording and reconciliation",
+        "IT asset management",
+        "Concealment of losses"
+      ],
+      "_provenance": "Authored from concept: 'custody, recording and reconciliation held by one person allow concealment'. Original KaiSip item (Oct 2026), written for CISA topic 2A2 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_206",
+      "domain": 2,
+      "subtopic": "Segregation of Duties in IT. Defining Conflict Rules",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An IT security team built the segregation of duties conflict rules for a new enterprise resource planning (ERP) system without consulting finance process owners. Which risk is GREATEST for the IS auditor to report?",
+      "options": {
+        "A": "Users may be blocked from tasks their jobs legitimately need",
+        "B": "Finance task combinations that enable fraud may go unflagged",
+        "C": "Security staff may grant themselves finance roles undetected",
+        "D": "Finance owners may reject the rules and delay go-live"
+      },
+      "correct": "B",
+      "key_concept": "Business process owners define which duties conflict; IT implements the rules. Rules built without them miss business-specific conflicts.",
+      "pre_read": "Ask who knows which task combinations are dangerous, and what fails silently if they were not asked.",
+      "correct_explanation": "Process owners know which combinations of finance tasks let one person commit and hide fraud, such as posting and approving the same journal entry. Rules written by IT alone are likely to miss business-specific conflicts, so dangerous access would pass every check and look compliant. Overly strict rules are the lesser risk: blocked users complain, so the error surfaces quickly, while a missing conflict stays silent.",
+      "wrong_explanations": {
+        "A": "Over-blocking is real but visible: users report it and the rules get tuned. Missing conflicts produce no complaints and leave fraud paths open.",
+        "C": "Nothing suggests security staff can assign finance roles to themselves. The gap described is who defined the rules, not administrator access.",
+        "D": "Rejection and delay are project risks. They would expose the problem early, which is better than live rules that miss real conflicts."
+      },
+      "tips": [
+        "Eliminate: C invents an administrator-access problem the facts do not describe, and D is a schedule risk, not a control failure.",
+        "Final two: B beats A because missing conflicts stay silent, while over-blocking is reported by frustrated users and then fixed.",
+        "Exam cue: business process owners define which duties conflict; IT builds and enforces the rules they define."
+      ],
+      "framework_ref": "COBIT 2019 DSS06.03 (Manage roles, responsibilities, access privileges and levels of authority); NIST SP 800-53 Rev 5 AC-5 (Separation of Duties); ISO/IEC 27002:2022 Control 5.3 (Segregation of Duties)",
+      "related_concepts": [
+        "Segregation of duties",
+        "Conflict rule set",
+        "Business process owner",
+        "Toxic combination"
+      ],
+      "_provenance": "Authored from concept: 'business process owners must define which duties conflict'. Original KaiSip item (Oct 2026), written for CISA topic 2A2 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_207",
+      "domain": 2,
+      "subtopic": "Managing IT People. Mandatory Leave in Practice",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A treasury systems administrator takes the required two-week annual leave but keeps remote access and approves payment-interface jobs from home. What should be the IS auditor's GREATEST concern?",
+      "options": {
+        "A": "Remote approvals could let the administrator release unauthorized payments",
+        "B": "No one else performs the role, so irregularities stay hidden",
+        "C": "Two weeks is too short for leave to expose concealed fraud",
+        "D": "The administrator may become fatigued without a genuine break"
+      },
+      "correct": "B",
+      "key_concept": "Mandatory leave detects concealed irregularities only when the holder steps away and someone else performs the role.",
+      "pre_read": "Ask what the control is meant to reveal, and whether anyone else actually does the job.",
+      "correct_explanation": "Mandatory leave works because someone else performs the role for a sustained period and may notice what the regular holder has been hiding. An administrator who keeps remote access and keeps approving jobs never hands over, so the leave gives no detection value. Misuse through remote approvals is possible, but the administrator could do the same from the office; the new concern is that the leave no longer exposes it.",
+      "wrong_explanations": {
+        "A": "The administrator could misuse approvals from the office too. The new concern is that leave without a handover no longer exposes such misuse.",
+        "C": "Two consecutive weeks is a common, adequate period. Length is not the problem when the person keeps doing the job throughout.",
+        "D": "Wellbeing matters, but mandatory leave is a detective control here. Treating it as a perk misses why the IS auditor reviews it."
+      },
+      "tips": [
+        "Eliminate: C blames the length of the leave rather than the missing handover, and D treats leave as a welfare benefit rather than a control.",
+        "Final two: B beats A because remote misuse is possible from the office too; the new problem is that no substitute ever sees the work.",
+        "Exam cue: mandatory leave counts only if access is suspended and another trained person performs the role."
+      ],
+      "framework_ref": "COBIT 2019 APO07.02 (Identify key IT personnel); ISACA IS Audit and Assurance Standard 1207 (Irregularity and Illegal Acts)",
+      "related_concepts": [
+        "Mandatory vacation",
+        "Detective controls",
+        "Insider fraud",
+        "Privileged access"
+      ],
+      "_provenance": "Authored from concept: 'mandatory leave detects nothing if the holder keeps working remotely'. Original KaiSip item (Oct 2026), written for CISA topic 2B1 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_208",
+      "domain": 2,
+      "subtopic": "Managing IT People. Key-Person Dependency",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "After two unplanned resignations stalled IT services, management wants to reduce the organization's dependence on individual staff. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Cross-train backups for the most senior engineer in each team",
+        "B": "Offer retention bonuses to staff in hard-to-fill technical roles",
+        "C": "Write detailed procedures for every system the IT function runs",
+        "D": "Identify the roles and people that critical services rely on"
+      },
+      "correct": "D",
+      "key_concept": "Reducing key-person risk starts by identifying the roles critical services depend on; remedies follow that analysis.",
+      "pre_read": "For a FIRST question, ask what must be known before any remedy can be aimed.",
+      "correct_explanation": "Reducing dependence starts with knowing where it lies: which roles and individuals critical services cannot run without. That analysis directs cross-training, documentation and succession planning to the right places. Cross-training senior engineers acts before that analysis and assumes seniority equals criticality, yet the person a service depends on may be a junior specialist. Once key roles are known, cross-training them becomes the main remedy.",
+      "wrong_explanations": {
+        "A": "Seniority is not the same as criticality. Without first identifying key roles, backups may be trained for the wrong people.",
+        "B": "Bonuses may keep people longer, but services still depend on them; illness or a later resignation leaves the same gap.",
+        "C": "Documenting everything at once spreads effort thinly and still leaves no trained backup for the systems that matter most."
+      },
+      "tips": [
+        "Eliminate: B keeps the dependency in place, and C spreads effort across every system without creating a trained backup.",
+        "Final two: D beats A because cross-training works only once the critical roles are known; seniority is a poor guide to criticality.",
+        "Exam cue: for a FIRST question on people risk, identify key roles and single points of knowledge before choosing remedies."
+      ],
+      "framework_ref": "COBIT 2019 APO07.02 (Identify key IT personnel); COBIT 2019 BAI08 (Managed Knowledge)",
+      "related_concepts": [
+        "Key-person dependency",
+        "Succession planning",
+        "Cross-training",
+        "Knowledge management"
+      ],
+      "_provenance": "Authored from concept: 'identify key IT personnel before choosing dependency remedies'. Original KaiSip item (Oct 2026), written for CISA topic 2B1 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_209",
+      "domain": 2,
+      "subtopic": "Retention and Disposal. Backup Copies",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A clinic deletes patient records from its live system when their seven-year retention period ends, but backup copies are kept for ten years. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Align backup retention with the records retention schedule",
+        "B": "Encrypt the backups so expired records cannot be read",
+        "C": "Extend live retention to match the ten-year backup period",
+        "D": "Shorten live retention to offset the longer backup period"
+      },
+      "correct": "A",
+      "key_concept": "Retention and disposal rules cover every copy of the data, including backups, archives and copies held by vendors.",
+      "pre_read": "Trace every place an expired record still exists after the live copy is deleted.",
+      "correct_explanation": "A retention schedule covers every copy of the data, not just the live system. Keeping backups three years longer means expired patient records still exist, can be restored, and may have to be produced in litigation or exposed in a breach. Aligning backup retention with the schedule makes disposal complete. Encryption protects confidentiality, but the clinic holds the keys, so the records stay recoverable and over-retained.",
+      "wrong_explanations": {
+        "B": "The clinic holds the keys, so the records can still be restored and must be produced if requested. Encryption limits exposure; it is not disposal.",
+        "C": "Extending live retention keeps patient data longer than its purpose needs, enlarging breach and privacy exposure instead of closing the gap.",
+        "D": "Cutting live retention below seven years breaks the documented period for live records and still leaves the backup copies over-retained."
+      },
+      "tips": [
+        "Eliminate: C closes the mismatch by keeping more data for longer, and D cuts live records below their documented period.",
+        "Final two: A beats B because encrypted records the clinic can still restore have not been disposed of; retention must govern every copy.",
+        "Exam cue: disposal is complete only when every copy, including backups, archives and vendor copies, follows the schedule."
+      ],
+      "framework_ref": "COBIT 2019 APO14.09 (Support data archiving and retention); ISO/IEC 27002:2022 Control 8.13 (Information Backup); ISO/IEC 27002:2022 Control 8.10 (Information Deletion); COBIT 2019 APO14.10 (Manage data backup and restore arrangements)",
+      "related_concepts": [
+        "Records retention schedule",
+        "Backup retention",
+        "Secure disposal",
+        "Over-retention"
+      ],
+      "_provenance": "Authored from concept: 'retention and disposal apply to backup copies as well as live data'. Original KaiSip item (Oct 2026), written for CISA topic 2A7 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_210",
+      "domain": 2,
+      "subtopic": "Retention and Disposal. Former Customer Data",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A retailer's marketing team wants to keep former customers' identifiable purchase histories indefinitely for trend analysis, beyond their documented retention period. Which approach should the IS auditor recommend as MOST appropriate?",
+      "options": {
+        "A": "Ask former customers to consent to keeping their histories",
+        "B": "Keep the histories, since trend analysis is a legitimate business purpose",
+        "C": "Anonymize the histories once their retention period ends",
+        "D": "Delete each customer's history as soon as the customer leaves"
+      },
+      "correct": "C",
+      "key_concept": "At the end of retention, data is deleted or made anonymous; anonymous data can still serve analysis without identifying anyone.",
+      "pre_read": "Ask whether the stated purpose actually needs to know who each person is.",
+      "correct_explanation": "Trend analysis needs patterns, not identities. Anonymizing the histories when the retention period ends honors the schedule, because data that can no longer identify anyone is no longer personal data, while still giving marketing what it needs. Seeking consent from former customers is a weaker route: few will reply, consent can be withdrawn, and it keeps identifiable data indefinitely for a purpose that does not require it.",
+      "wrong_explanations": {
+        "A": "Few former customers will respond, consent can be withdrawn, and it still keeps identifiable data the purpose no longer needs, which breaks data minimization.",
+        "B": "A legitimate purpose does not justify keeping identifiable data indefinitely when the purpose can be met without identities.",
+        "D": "Deleting at departure ignores the documented retention period, which may exist for tax, warranty or dispute needs."
+      },
+      "tips": [
+        "Eliminate: B lets a business purpose override the retention period, and D destroys records before their documented period ends.",
+        "Final two: C beats A because the analysis does not need identities, so anonymizing meets it without chasing consent from people who left.",
+        "Exam cue: when a purpose needs patterns rather than people, anonymize at the end of retention instead of keeping identifiable data."
+      ],
+      "framework_ref": "GDPR Article 5(1)(e) (Storage Limitation); ISO/IEC 27002:2022 Control 8.11 (Data Masking); COBIT 2019 APO14.09 (Support data archiving and retention); GDPR Recital 26 (Anonymous information)",
+      "related_concepts": [
+        "Storage limitation",
+        "Anonymization",
+        "Records retention schedule",
+        "Data minimization"
+      ],
+      "_provenance": "Authored from concept: 'anonymize rather than keep identifiable data past its retention period'. Original KaiSip item (Oct 2026), written for CISA topic 2A7 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_211",
+      "domain": 2,
+      "subtopic": "Risk Analysis Methods. Annualized Loss Expectancy",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Management's business case says a control costing $30,000 a year would cut a risk's annualized loss expectancy (ALE) from $40,000 to $15,000. On these figures alone, which conclusion is MOST appropriate for the IS auditor?",
+      "options": {
+        "A": "The control pays off because it costs less than the current ALE",
+        "B": "The control is needed until the remaining ALE reaches zero",
+        "C": "The control costs more each year than the loss it avoids",
+        "D": "The figures need qualitative ratings before any conclusion is drawn"
+      },
+      "correct": "C",
+      "key_concept": "A control is financially justified when the reduction in annualized loss expectancy exceeds its annual cost.",
+      "pre_read": "Work out the loss the control removes before comparing it with the control's cost.",
+      "correct_explanation": "A control's financial benefit is the loss it removes: $40,000 minus $15,000, or $25,000 a year. It costs $30,000 a year, so on these figures it costs $5,000 more than it saves each year. Comparing its cost with the full current ALE overstates the benefit, because the control does not remove the whole exposure. Management may still choose it for regulatory or other reasons the figures do not show.",
+      "wrong_explanations": {
+        "A": "The benefit is the reduction in ALE, $25,000, not the full $40,000. Measured correctly, the control costs more than it saves.",
+        "B": "Zero risk is neither achievable nor required; treatment aims to bring risk within appetite at a cost the benefit justifies.",
+        "D": "Money figures already support a cost-benefit comparison. Converting them to qualitative ratings would lose precision, not add it."
+      },
+      "tips": [
+        "Eliminate: B chases zero risk regardless of cost, and D discards money figures that already allow a direct comparison.",
+        "Final two: C beats A because a control's benefit is the drop in ALE ($25,000), not the whole ALE ($40,000).",
+        "Exam cue: compare a control's annual cost with the ALE it removes (before minus after), never with the starting ALE."
+      ],
+      "framework_ref": "COBIT 2019 APO12.02 (Analyze risk); ISACA Risk IT Framework, 2nd Edition; IEC 31010:2019 (Risk Assessment Techniques)",
+      "related_concepts": [
+        "Annualized loss expectancy",
+        "Cost-benefit analysis",
+        "Quantitative risk analysis",
+        "Risk treatment"
+      ],
+      "_provenance": "Authored from concept: 'compare a control's cost with the reduction in ALE, not the whole ALE'. Original KaiSip item (Oct 2026), written for CISA topic 2A5 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_212",
+      "domain": 2,
+      "subtopic": "Risk Analysis Methods. Scoring Scales",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A risk team multiplies 1-to-5 likelihood and impact ratings and reports a risk scoring 20 as twice as severe as one scoring 10. What is the IS auditor's PRIMARY concern?",
+      "options": {
+        "A": "Scores can rank risks but cannot show how much worse one is",
+        "B": "Likelihood and impact ratings should be added, not multiplied",
+        "C": "Ratings must be converted to money values before risks can be ranked",
+        "D": "Risk owners, not the risk team, should assign the ratings"
+      },
+      "correct": "A",
+      "key_concept": "Scores built from rating scales rank risks but cannot show how much larger one risk is than another.",
+      "pre_read": "Check whether the numbers measure an amount or only label a position on a scale.",
+      "correct_explanation": "Ratings of 1 to 5 are labels that put risks in order; the gaps between them are not measured amounts. Multiplying them gives a score that is useful for ranking, but a 20 is not shown to be twice a 10 in likely loss. Money values would support that kind of comparison, yet ranking itself does not need them: the flaw is the claim of proportion, not the use of scores.",
+      "wrong_explanations": {
+        "B": "Adding rating labels has the same flaw as multiplying them; neither operation turns positions on a scale into measured amounts.",
+        "C": "Ranking is a valid use of rating scores. Money values are needed only to claim how much greater one risk is, and they require reliable data.",
+        "D": "Who assigns the ratings is a process question. Even owner-assigned ratings could not support the claim that one risk is twice another."
+      },
+      "tips": [
+        "Eliminate: B swaps one arithmetic operation for another, and D changes who rates without fixing what the numbers mean.",
+        "Final two: A beats C because scores can still rank risks; only the claim of proportion fails, so money is not needed for ranking.",
+        "Exam cue: numbers from rating scales show order; distrust any claim that one risk is a multiple of another."
+      ],
+      "framework_ref": "IEC 31010:2019 (Risk Assessment Techniques); COBIT 2019 APO12.02 (Analyze risk)",
+      "related_concepts": [
+        "Semi-quantitative analysis",
+        "Risk matrix",
+        "Rating scales",
+        "False precision"
+      ],
+      "_provenance": "Authored from concept: 'scores from rating scales show order, not proportion'. Original KaiSip item (Oct 2026), written for CISA topic 2A5 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_213",
+      "domain": 2,
+      "subtopic": "How Outside Rules Shape IT Governance. Industry Standards",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A hotel's IT director treats the Payment Card Industry Data Security Standard (PCI DSS) as voluntary since no law mandates it, although the card acquirer's agreement requires it. What should the IS auditor BEST recommend?",
+      "options": {
+        "A": "Obtain a legal opinion on whether any law makes the standard enforceable",
+        "B": "Accept ISO/IEC 27001 certification in place of the standard",
+        "C": "Let the IT director accept the gap with a documented reason",
+        "D": "Record the standard as a binding obligation and plan to meet it"
+      },
+      "correct": "D",
+      "key_concept": "Industry standards can bind through contracts; a contractual obligation is mandatory even when no law requires it.",
+      "pre_read": "Ask where each obligation comes from: law, regulation or contract. All three bind the organization.",
+      "correct_explanation": "The card acquirer's agreement makes the standard binding even though no law names it; outside obligations come from contracts as well as statutes. The IS auditor should recommend that management record it as an obligation and plan compliance. A legal opinion on whether a law applies asks the wrong question: the agreement already binds the hotel, and breaching it can bring fees, higher card processing costs or loss of card acceptance.",
+      "wrong_explanations": {
+        "A": "Whether a law applies is beside the point. The acquirer's agreement already binds the hotel, so the opinion would not change the duty.",
+        "B": "An ISO/IEC 27001 certificate does not show that the specific card-data requirements in the agreement are met, so it cannot replace them.",
+        "C": "A contractual obligation is not a risk the IT director may waive; doing so exposes the hotel to penalties and loss of card acceptance."
+      },
+      "tips": [
+        "Eliminate: B swaps in a different framework the agreement does not accept, and C lets the IT director waive a binding duty.",
+        "Final two: D beats A because the acquirer's agreement already makes the standard binding; asking whether a law also applies cannot change that.",
+        "Exam cue: obligations come from contracts as well as laws; industry standards such as PCI DSS often bind through contracts."
+      ],
+      "framework_ref": "PCI DSS v4.0.1; ISO/IEC 27002:2022 Control 5.31 (Legal, Statutory, Regulatory and Contractual Requirements); COBIT 2019 MEA03.01 (Identify external compliance requirements)",
+      "related_concepts": [
+        "PCI DSS",
+        "Contractual obligations",
+        "External compliance requirements",
+        "Compliance obligations register"
+      ],
+      "_provenance": "Authored from concept: 'industry standards can bind through contracts as well as law'. Original KaiSip item (Oct 2026), written for CISA topic 2A1 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_214",
+      "domain": 2,
+      "subtopic": "How Outside Rules Shape IT Governance. Cost of Compliance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A software firm's management proposes not complying with a new law requiring breach reports within 72 hours, because expected fines would cost less than compliance. Which response should the IS auditor recommend as MOST appropriate?",
+      "options": {
+        "A": "Have the board accept the risk of noncompliance",
+        "B": "Comply with the law in the most cost-effective way",
+        "C": "Delay compliance until the regulator has fined another company",
+        "D": "Have the IS audit team run breach reporting to save cost"
+      },
+      "correct": "B",
+      "key_concept": "Mandatory legal obligations are not open to cost trade-offs; management chooses how to comply, not whether to comply.",
+      "pre_read": "Sort the options into ways of complying and ways of not complying before weighing costs.",
+      "correct_explanation": "A legal duty is not a risk to buy out with a fine: management decides how to comply, not whether. The appropriate response is to meet the 72-hour requirement in the most cost-effective way. Board acceptance looks like proper risk governance, but no level of the organization can accept deliberately breaking the law, and fines often bring regulatory orders and reputational damage on top.",
+      "wrong_explanations": {
+        "A": "Risk acceptance covers risks within appetite, not deliberate breaches of law. Board approval would make the violation a board decision, not a lawful one.",
+        "C": "The duty applies from the law's effective date, not from the first enforcement action. Waiting means knowingly breaking the law in the meantime.",
+        "D": "Running an operational process would impair the IS audit team's independence when it later audits breach reporting."
+      },
+      "tips": [
+        "Eliminate: C ties compliance to enforcement rather than to the law's effective date, and D puts the IS auditors in charge of a process they must audit.",
+        "Final two: B beats A because no one, not even the board, can accept a deliberate breach of law as a risk decision.",
+        "Exam cue: for mandatory obligations, choose the answer about how to comply cost-effectively, never whether to comply."
+      ],
+      "framework_ref": "COBIT 2019 MEA03.02 (Optimize response to external requirements); ISO/IEC 27002:2022 Control 5.31 (Legal, Statutory, Regulatory and Contractual Requirements)",
+      "related_concepts": [
+        "Regulatory compliance",
+        "Risk acceptance",
+        "Mandatory obligations",
+        "Breach notification"
+      ],
+      "_provenance": "Authored from concept: 'mandatory legal obligations are not open to cost trade-offs'. Original KaiSip item (Oct 2026), written for CISA topic 2A1 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
       "style_version": 2
     }
   ]
