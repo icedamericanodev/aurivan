@@ -507,31 +507,31 @@ body::before {
 /* ── MOCK CONFIRM MODAL ── */
 /* Step 5: a calm sheet on the paper (Grove raised2), label above value. */
 .mock-confirm-overlay {
-  position:fixed;inset:0;background:var(--scrim);z-index:200;padding:16px;
+  position:fixed;inset:0;background:var(--scrim);z-index:200;padding:var(--sp-lg);
   display:flex;align-items:center;justify-content:center;animation:flagFadeIn 0.25s ease;
 }
 .mock-confirm-modal {
-  background:var(--raised2);border:1px solid var(--raised-outline);border-radius:24px;
-  max-width:480px;width:100%;max-height:calc(100vh - 32px);overflow:auto;box-shadow:var(--shadow);animation:slideUp 0.35s ease both;
+  background:var(--raised2);border:1px solid var(--raised-outline);border-radius:var(--r-lg);
+  max-width:480px;width:100%;max-height:calc(100vh - 2 * var(--sp-lg));overflow:auto;box-shadow:var(--shadow);animation:slideUp 0.35s ease both;
 }
 .mock-confirm-head {
-  margin:0;padding:24px 24px 4px;color:var(--text);
-  font:500 28px/34px Fraunces,Georgia,serif;letter-spacing:-0.4px;
+  margin:0;padding:var(--sp-xxl) var(--sp-xxl) var(--sp-xs);color:var(--text);
+  font:var(--t-hero);letter-spacing:var(--tr-hero);
 }
-.mock-confirm-body { padding:8px 24px 24px; }
+.mock-confirm-body { padding:var(--sp-sm) var(--sp-xxl) var(--sp-xxl); }
 .mock-confirm-row {
   display:flex;flex-direction:column;gap:2px;
-  padding:12px 0;border-bottom:1px solid var(--border);font:600 13px/18px Figtree,system-ui,sans-serif;color:var(--text2);
+  padding:var(--sp-md) 0;border-bottom:1px solid var(--border);font:var(--t-caption);color:var(--text2);
 }
-.mock-confirm-row strong { color:var(--text);font:400 16px/24px Figtree,system-ui,sans-serif; }
-.mock-confirm-note { font: 500 14px/20px Figtree,system-ui,sans-serif; color: var(--text2); margin: 16px 0; }
+.mock-confirm-row strong { color:var(--text);font:var(--t-body); }
+.mock-confirm-note { font:var(--t-meta); color: var(--text2); margin: var(--sp-lg) 0; }
 .mock-confirm-warn {
-  background:var(--tip-bg);border-radius:16px;
-  padding:12px 16px;font:600 15px/22px Figtree,system-ui,sans-serif;color:var(--tip);margin:0 0 16px;
+  background:var(--tip-bg);border-radius:var(--r-md);
+  padding:var(--sp-md) var(--sp-lg);font:var(--t-small);font-weight:600;color:var(--tip);margin:0 0 var(--sp-lg);
 }
-.mock-confirm-btns { display:flex;flex-wrap:wrap;gap:8px 12px;margin-top:4px; }
+.mock-confirm-btns { display:flex;flex-wrap:wrap;gap:var(--sp-sm) var(--sp-md);margin-top:var(--sp-xs); }
 .mock-confirm-btn {
-  flex:1 1 140px;min-height:48px;padding:0 20px;border-radius:999px;font:600 16px/22px Figtree,system-ui,sans-serif;
+  flex:1 1 140px;min-height:48px;padding:0 var(--sp-xl);border-radius:var(--r-pill);font:var(--t-label);
   cursor:pointer;border:1.5px solid;
 }
 .mock-confirm-btn.cancel { background:transparent;border-color:var(--control);color:var(--text); }
@@ -5905,6 +5905,19 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .mk-clock .timer-digits.ok { color: var(--text); }
 .mk-clock .timer-digits.warn { color: var(--tip); }
 .mk-clock .timer-digits.urgent { color: var(--clay); animation: none; }
+/* Pick, then Next: no right or wrong during a mock (owner, step 5 review). */
+.mk-q .opt.picked .opt-letter { background: var(--text); border-color: var(--text); color: var(--bg); }
+.mk-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-lg); margin-top: var(--sp-xl); }
+.mk-hint { font: var(--t-meta); color: var(--text2); margin: 0; flex: 1 1 220px; }
+.rs-btn.primary:disabled, .rs-btn.primary:disabled:hover { background: var(--surface2); border-color: var(--surface2); color: var(--muted); opacity: 1; cursor: default; }
+/* An outlined start button stays outlined on hover (the old .mock-start hover filled it). */
+.mk-type .rs-btn.mock-start:not(.primary):hover { background: var(--surface2); color: var(--text); border-color: var(--control); opacity: 1; }
+/* The confirm sheet: Grove raised2 at radius lg (the shared modal rule above sets 28px / surface). */
+.mock-confirm-overlay { background: var(--scrim); }
+.mock-confirm-overlay .mock-confirm-modal { background: var(--raised2); border-radius: var(--r-lg); box-shadow: var(--shadow); }
+@media (max-width: 400px) { .mk-resume-t { max-width: calc(100% - 56px); } }
+/* Very narrow: the "7 of 9" column goes (its sr-only text still says it). */
+@media (max-width: 360px) { .rs-plate .rs-dcount { display: none; } }
 body[data-tab="mock"][data-mview="q"] #subNav { display: none; }
 @media (max-width: 1023px) {
   body[data-tab="mock"][data-mview="q"] .app-rail { display: none; }
@@ -6252,7 +6265,7 @@ html { scroll-padding-bottom: 104px; }
 <script id="faqData" type="application/json">[
 {"cat":"Using the app","q":"How do I start practicing?","a":"Open Practice from the bottom navigation, choose a domain (or 'All domains'), and answer questions one at a time. Your first question loads automatically — read the explanation after every answer, right or wrong."},
 {"cat":"Using the app","q":"What is the difference between Study mode and Exam mode?","a":"Study mode shows the full scenario plus tips and mindset coaching after you answer. Exam mode compacts the question and hides the extras so the screen feels closer to the real exam. Turn it on or off with Exam-style questions under You."},
-{"cat":"Using the app","q":"How does the Mock Exam work?","a":"The Mock Exam builds a 150-question timed test that mirrors the real CISA blueprint — the same domain mix and a realistic spread of difficulty. You get a scored result and a breakdown at the end."},
+{"cat":"Using the app","q":"How does the Mock Exam work?","a":"Choose a full mock (150 questions, 4 hours) or a mini mock (50 questions, 80 minutes). Both follow the real CISA blueprint: the same domain mix and a realistic spread of difficulty. Like the real exam, you see no right or wrong while you answer. Your score, a breakdown by domain and every explanation come at the end."},
 {"cat":"Using the app","q":"What is the Review queue?","a":"Questions you answer incorrectly come back on a spaced schedule — soon at first, then at widening intervals as you get them right, until they retire. The Home screen shows how many are due and lets you start a review session in one tap."},
 {"cat":"Using the app","q":"How do I save a question for later?","a":"Use the bookmark control on a question to save it. Saved questions live under Practice, then Saved, where you can revisit them any time."},
 {"cat":"Using the app","q":"What does the Weak Spots tab show?","a":"Weak Spots shows how each of the five domains is going and lets you start a drill on the ones that need work. Until a domain has 30 answers it shows Building, Steady or Strong instead of a number, so a few answers never read as a verdict."},
@@ -10435,6 +10448,11 @@ function startMockTotalTimer() {
   S.mockTotalTimerInt = setInterval(function(){
     S.mockTotalSecondsLeft--;
     tick();
+    // One polite line at 30 and at 5 minutes left (the timer itself is not live).
+    if (S.mockTotalSecondsLeft === 30 * 60 || S.mockTotalSecondsLeft === 5 * 60) {
+      var say = document.getElementById('mkClockSay');
+      if (say) say.textContent = (S.mockTotalSecondsLeft === 30 * 60 ? '30' : '5') + ' minutes left in this mock.';
+    }
     if (S.mockTotalSecondsLeft <= 0) {
       clearInterval(S.mockTotalTimerInt);
       S.mockTotalTimerInt = null;
@@ -11347,6 +11365,7 @@ var sessionByDomain = {};      // domain -> { t, c } in this set
 var sessionMissedIds = [];     // questions missed in this set, in order
 var sessionMs = 0;             // summed answer time in this set
 var lastSetMissedIds = [];     // the misses behind the results on screen ("Review your mistakes")
+var setMistakesReview = false; // the missed-review run is one set's mistakes (reviewSetMistakes)
 
 function resetSessionTally() {
   sessionByDomain = {};
@@ -11478,9 +11497,11 @@ function resultsBodyHtml(o) {
       + '<span class="td-dval" aria-hidden="true">' + val + '</span></li>';
   }).join('');
   var t = resultsTime(o.ms);
+  var lvl = o.level === 2 ? 2 : 3;
   return '<div class="rs-plate">'
     + '<div class="td-fig">' + growthRingsSvg(values, pct >= 60) + '</div>'
-    + '<div class="rs-detail"><h3 class="sr-only">By domain</h3><ul class="td-legend">' + rows + '</ul>'
+    // The section heading's level follows the page: h2 under a mock's h1, h3 under a set's h2.
+    + '<div class="rs-detail"><h' + lvl + ' class="sr-only">By domain</h' + lvl + '><ul class="td-legend">' + rows + '</ul>'
     + (banded ? '<p class="td-note">Building is under ' + DOMAIN_TARGET_PCT + ', Steady ' + DOMAIN_TARGET_PCT + ' to 79, Strong 80 and up. A number shows from ' + DOMAIN_READ_MIN + ' answers in a domain.</p>' : '')
     + '</div></div>'
     + '<ul class="rs-stats">'
@@ -11508,7 +11529,7 @@ function debriefHtml(deb, inHub) {
     + '<p class="rs-kicker" id="sdKick">Set complete &middot; ' + escapeHtml(name) + '</p>'
     + '<h2 class="rs-title" id="sdTitle" tabindex="-1">' + resultsHeadline(deb.correct, total) + '</h2>'
     + fact
-    + resultsBodyHtml({ byDomain: byDomain, correct: deb.correct, total: total, ms: deb.ms })
+    + resultsBodyHtml({ byDomain: byDomain, correct: deb.correct, total: total, ms: deb.ms, level: 3 })
     + '<div class="rs-acts">'
     + '<button type="button" class="rs-btn primary" onclick="startSession(' + deb.goal + ', \'' + dom + '\')">Practice another set' + ico('arrow-right', 18) + '</button>'
     + (missed.length ? '<button type="button" class="rs-btn" onclick="reviewSetMistakes()">Review your mistakes</button>' : '')
@@ -11526,6 +11547,7 @@ function reviewSetMistakes() {
   missedReviewDomain = 'all';
   missedReviewIndex = 0;
   missedReviewMode = true;
+  setMistakesReview = true;
   showNextMissed();
 }
 function closeSetResults() {
@@ -12270,10 +12292,12 @@ function renderMockSetup() {
       + '<button type="button" class="rs-btn' + (primary ? ' primary' : '') + ' ' + btnCls + '" aria-describedby="mkN-' + type + '" onclick="showMockConfirm(\'' + type + '\')">Start ' + t.name.toLowerCase() + ico('arrow-right', 18) + '</button>'
       + '</div>';
   };
+  // One solid action per screen: with a mock unfinished, Resume (the forest
+  // panel) is it, and both start buttons are outlined.
   var types = '<section class="ph-sec" aria-labelledby="mkPickH">'
-    + '<h2 class="ph-h" id="mkPickH">Choose a mock</h2>'
+    + '<h2 class="ph-h" id="mkPickH">' + (isMockInProgress() ? 'Or start a new mock' : 'Choose a mock') + '</h2>'
     + '<div class="mk-types">'
-    + card('full', full, 'The real exam&rsquo;s length and pace.', 'mock-start', true)
+    + card('full', full, 'The real exam&rsquo;s length and pace.', 'mock-start', !isMockInProgress())
     + card('mini', mini, 'A third of the exam: the same domain weights and pace.', 'mock-start-mini', false)
     + '</div></section>';
 
@@ -12336,7 +12360,7 @@ function showMockConfirm(type) {
     + '<div class="mock-confirm-row"><span>Questions</span><strong>' + actualQ + '</strong></div>'
     + '<div class="mock-confirm-row"><span>Time</span><strong>' + mockMinutesWords(t.minutes) + ', one clock for the whole exam</strong></div>'
     + '<div class="mock-confirm-row"><span>Domains</span><strong>' + domainBreakdown + '</strong></div>'
-    + '<div class="mock-confirm-row"><span>Explanations</span><strong>At the end</strong></div>'
+    + '<div class="mock-confirm-row"><span>Answers and explanations</span><strong>At the end, like the real exam</strong></div>'
     + '<p class="mock-confirm-note">If you close this tab, your answers are saved and you can resume later. The exam clock pauses while the tab is closed.</p>'
     + resumeHtml
     + '<div class="mock-confirm-btns">'
@@ -12424,6 +12448,12 @@ function startMock(type) {
 // offers Resume. Nothing is lost.
 function exitMock() {
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
+  // A pick not yet recorded with Next is dropped; an answered question is
+  // never shown again (answers are recorded in order, once).
+  mockPick = null;
+  mockAnswerLock = false;
+  while (S.mockQueue && S.mockCurrent < S.mockQueue.length && S.mockAnswers[S.mockCurrent]) S.mockCurrent++;
+  if (S.mockQueue && S.mockQueue.length && S.mockCurrent >= S.mockQueue.length) { showMockResults(); return; }
   saveState();
   renderMockSetup();
   try { window.scrollTo(0, 0); } catch (e) {}
@@ -12461,13 +12491,18 @@ function showMockQuestion() {
   S.currentShuffle = makeShuffleMap();
   var shuffle = S.currentShuffle;
 
+  // Owner decision (step 5 review): like the real exam, a mock shows no
+  // right or wrong. Picking an option selects it; "Next question" records
+  // the answer (once) and moves on. Everything is shown in the end review.
+  mockPick = null;
   var optsHtml = DISPLAY_LETTERS.map(function(displayL, idx){
     var origL = shuffle[idx];
-    return '<button class="opt" data-l="' + displayL + '" onclick="selectMockAnswer(\'' + displayL + '\')">'
+    return '<button type="button" class="opt" data-l="' + displayL + '" aria-pressed="false" onclick="pickMockAnswer(\'' + displayL + '\')">'
       + '<span class="opt-letter">' + displayL + '</span>'
       + '<span>' + escapeHtml(q.options[origL]) + '</span>'
       + '</button>';
   }).join('');
+  var last = cur >= tot;
 
   var done = cur - 1;
   var name = MOCK_TYPES[mockTypeOf(S.mockType)].name;
@@ -12484,6 +12519,8 @@ function showMockQuestion() {
     + '<div class="pf-mid" role="progressbar" aria-label="Mock progress" aria-valuemin="0" aria-valuemax="' + tot + '" aria-valuenow="' + done + '" aria-valuetext="' + done + ' of ' + tot + ' answered">'
     + '<span class="pf-bar" aria-hidden="true"><span style="width:' + Math.round((done / tot) * 100) + '%"></span></span></div>'
     + '<div class="pf-timer mk-clock" title="Time left">' + ico('mock', 18) + '<span class="sr-only">Time left: </span><span class="timer-digits ' + clsLeft + '" id="mTotalTD" role="timer">' + mockClock(sLeft) + '</span></div>'
+    // The clock is never read out on each tick; this says 30 and 5 minutes left, once each.
+    + '<p class="sr-only" id="mkClockSay" aria-live="polite"></p>'
     + '<button type="button" class="pf-btn mk-flag' + (flagged ? ' on' : '') + '" id="mkFlag" aria-pressed="' + (flagged ? 'true' : 'false') + '" aria-label="Flag for review" title="Flag for review" onclick="toggleMockFlag()">' + ico('flag', 22) + '</button>'
     + '</div>'
     + '<div class="q-card">'
@@ -12491,8 +12528,11 @@ function showMockQuestion() {
     + '<div class="q-body">'
     + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + q.id + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + q.id + '" onclick="expandScenario(\'' + q.id + '\')">Read scenario ▾</button></div>' : '')
     + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(q.scenario_context) + ' ' : '') + escapeHtml(q.question) + '</p>'
-    + '<div class="opts" id="mOpts">' + optsHtml + '</div>'
-    + '<div id="mFeedback" aria-live="polite"></div>'
+    + '<div class="opts" id="mOpts" role="group" aria-labelledby="mkMeta">' + optsHtml + '</div>'
+    + '<div class="mk-acts">'
+    + '<button type="button" class="rs-btn primary mk-next" id="mkNext" disabled onclick="nextMockQuestion()">' + (last ? 'Finish mock' : 'Next question') + ico('arrow-right', 18) + '</button>'
+    + '<p class="mk-hint" id="mkHint">' + (last ? 'This is the last question. Your results come next.' : 'Pick an answer to go on. You see how you did at the end.') + '</p>'
+    + '</div>'
     + '</div></div>'
     + '</div>';
 
@@ -12514,16 +12554,37 @@ function showMockQuestion() {
 }
 
 var mockAnswerLock = false; // prevent double-fire race condition
+var mockPick = null;         // the display letter picked on the question on screen (not yet recorded)
 
+// Picking selects (ink, aria-pressed); it can be changed until Next.
+function pickMockAnswer(l) {
+  if (DISPLAY_LETTERS.indexOf(l) < 0 || !document.getElementById('mOpts')) return;
+  mockPick = l;
+  document.querySelectorAll('#mOpts .opt').forEach(function (b) {
+    var on = b.dataset.l === l;
+    b.classList.toggle('picked', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  var n = document.getElementById('mkNext');
+  if (n) n.disabled = false;
+}
+// "Next question" / "Finish mock": records the picked answer, then moves on.
+function nextMockQuestion() {
+  if (!mockPick || !document.getElementById('mOpts')) return;
+  selectMockAnswer(mockPick);
+}
+
+// Records the answer for the question on screen (once), with no right or
+// wrong shown, and moves straight on: the next question, or the results.
 function selectMockAnswer(chosen, _ignoredCorrect) {
   if (mockAnswerLock) return; // already answered
+  if (!S.mockQueue || S.mockCurrent >= S.mockQueue.length || S.mockAnswers[S.mockCurrent]) return;
   mockAnswerLock = true;
   if (S.mockTimerInt) { clearInterval(S.mockTimerInt); S.mockTimerInt = null; }
   // chosen is a DISPLAY letter; translate via the shuffle to compare
   // against the original correct letter stored in the question.
   var shuffle = S.currentShuffle || DISPLAY_LETTERS;
   var origChosen = chosen ? displayToOriginal(chosen, shuffle) : null;
-  var correct = originalToDisplay(S.current.correct, shuffle);
   var ok = origChosen === S.current.correct;
   // Persist BOTH letters so the post-exam review can render with or
   // without a shuffle and still know what the candidate clicked.
@@ -12565,33 +12626,14 @@ function selectMockAnswer(chosen, _ignoredCorrect) {
   }
   updateStats();
   renderDomainGrid();
+  // No verdict and no pause (owner decision, step 5 review): straight on.
+  // There is no delayed advance left, so nothing can carry into another mock.
+  mockPick = null;
+  S.mockCurrent++;
+  mockAnswerLock = false;
   saveState();
-  document.querySelectorAll('#mOpts .opt').forEach(function(b){
-    b.disabled = true;
-    var l = b.dataset.l;
-    if (l===correct && l===chosen) b.classList.add('correct');
-    else if (l===chosen && l!==correct) b.classList.add('wrong');
-    else if (l===correct) b.classList.add('reveal');
-  });
-  var fb = document.getElementById('mFeedback');
-  if (fb) {
-    var msg = !chosen
-      ? 'Time is up! Correct: <strong>' + correct + '</strong>'
-      : ok ? 'Correct!' : 'Correct: <strong>' + correct + '</strong>';
-    var icon = '';
-    fb.innerHTML = '<div class="verdict ' + (ok?'correct':'wrong') + '" style="margin-top:16px"><span class="verdict-icon" aria-hidden="true">' + icon + '</span>' + msg + '</div>';
-  }
-  setTimeout(function(){
-    mockAnswerLock = false; // reset lock before showing next
-    // The exam clock may have ended during this pause and shown results.
-    if (document.body.getAttribute('data-mock-results') === '1') return;
-    S.mockCurrent++;
-    if (S.mockCurrent >= S.mockQueue.length) showMockResults();
-    // Still on the question: the next one. Paused (the strip's X) in the
-    // meantime: the mock waits on the setup page, one question further on.
-    else if (document.getElementById('mOpts')) showMockQuestion();
-    else if (S.activeTab === 'mock' && document.body.getAttribute('data-mview') === 'setup') renderMockSetup();
-  }, 1800);
+  if (S.mockCurrent >= S.mockQueue.length) showMockResults();
+  else showMockQuestion();
 }
 
 function showMockResults() {
@@ -12636,7 +12678,7 @@ function showMockResults() {
     + '<p class="rs-kicker" id="mrKick">' + MOCK_TYPES[kind].name + ' &middot; ' + tot + ' questions</p>'
     + (timedOut ? '<p class="rs-timesup">Time&rsquo;s up. Your exam was submitted.</p><p class="rs-fact">Questions you did not answer count as not correct.</p>' : '')
     + '<h1 class="rs-title" id="mrTitle" tabindex="-1">' + resultsHeadline(cor, tot) + '</h1>'
-    + resultsBodyHtml({ byDomain: db, correct: cor, total: tot, ms: usedSec * 1000 })
+    + resultsBodyHtml({ byDomain: db, correct: cor, total: tot, ms: usedSec * 1000, level: 2 })
     + (blank > 0 ? '<p class="rs-note">' + (blank === 1 ? '1 question was' : blank + ' questions were') + ' left blank: a blank counts as not correct.</p>' : '')
     + '<p class="rs-note">An estimate from this mock, not a prediction of your exam result. Practice scores are not scaled exam scores.</p>'
     + '<div class="rs-acts">' + acts + '</div>'
@@ -12645,18 +12687,12 @@ function showMockResults() {
     + '<h2 class="ph-h" id="mrRevH" tabindex="-1">Review answers</h2>'
     + '<div class="ph-chips rs-filter" role="group" aria-label="Show">'
     + '<button type="button" class="ph-chip active" data-f="all" aria-pressed="true" onclick="mockReviewFilter(\'all\')">All ' + tot + '</button>'
-    + '<button type="button" class="ph-chip" data-f="miss" aria-pressed="false" onclick="mockReviewFilter(\'miss\')">Mistakes ' + missed + '</button>'
+    + (missed ? '<button type="button" class="ph-chip" data-f="miss" aria-pressed="false" onclick="mockReviewFilter(\'miss\')">Mistakes ' + missed + '</button>' : '')
     + (flagged ? '<button type="button" class="ph-chip" data-f="flag" aria-pressed="false" onclick="mockReviewFilter(\'flag\')">Flagged ' + flagged + '</button>' : '')
     + '</div>'
     + '<div class="mr-list" id="mrList" data-filter="all">' + buildMockAnswerKey(answers, queue) + '</div>'
     + '</section>'
-    + '<div class="support-inline-card">'
-    + '<div class="support-inline-card-text">'
-    + '<div class="support-inline-card-title">Found this mock helpful?</div>'
-    + '<div class="support-inline-card-desc">The web practice app is free. A small tip funds new questions and features.</div>'
-    + '</div>'
-    + '<button class="act-btn" onclick="openSupport()" style="white-space:nowrap">' + ico('heart', 18) + ' Support KaiSip</button>'
-    + '</div>'
+    // (The support card lives on About only, as on Today: owner, step 5 review.)
     + '</div>';
   if (S.activeTab === 'mock') {
     try { window.scrollTo(0, 0); } catch (e) {}
@@ -12914,6 +12950,13 @@ document.addEventListener('keydown', function(e) {
     if (key === '1') { var cb = document.querySelector('.conf-btn[data-conf="sure"]'); if (cb && !cb.disabled) { cb.click(); e.preventDefault(); } }
     if (key === '2') { var cb2 = document.querySelector('.conf-btn[data-conf="educated"]'); if (cb2 && !cb2.disabled) { cb2.click(); e.preventDefault(); } }
     if (key === '3') { var cb3 = document.querySelector('.conf-btn[data-conf="guessing"]'); if (cb3 && !cb3.disabled) { cb3.click(); e.preventDefault(); } }
+  }
+
+  // Mock: Enter (with no control focused) is "Next question" once an answer is picked.
+  if (onMock && !ctl && key === 'ENTER') {
+    var mn = document.getElementById('mkNext');
+    if (mn && !mn.disabled) { e.preventDefault(); mn.click(); }
+    return;
   }
 
   // Enter/Space â€” Submit (Phase 2b) OR Next Question
@@ -13970,14 +14013,14 @@ function buildMockAdvisory(domainStats) {
   advisories.sort(function(a,b){ return (b.weight*(DOMAIN_TARGET_PCT-b.pct)) - (a.weight*(DOMAIN_TARGET_PCT-a.pct)); });
 
   if (!advisories.length) {
-    return '<div class="mock-advisory"><div class="mock-advisory-title">Where to look next</div><div class="mock-advisory-item">No domain with enough questions in this mock fell below the ' + DOMAIN_TARGET_PCT + '% target. Keep practicing across all five.</div></div>';
+    return '<section class="mock-advisory" aria-labelledby="mrNextH"><h2 class="mock-advisory-title" id="mrNextH">Where to look next</h2><div class="mock-advisory-item">No domain with enough questions in this mock fell below the ' + DOMAIN_TARGET_PCT + '% target. Keep practicing across all five.</div></section>';
   }
 
   var items = advisories.map(function(a) {
     return '<div class="mock-advisory-item"><strong>D' + a.d + ' ' + escapeHtml(a.name) + '</strong> &#8212; ' + a.pct + '% in this mock, and this domain is <strong>' + a.weight + '%</strong> of the exam blueprint. A topic review and a short drill would help.</div>';
   }).join('');
 
-  return '<div class="mock-advisory"><div class="mock-advisory-title">Where to look next</div>' + items + '</div>';
+  return '<section class="mock-advisory" aria-labelledby="mrNextH"><h2 class="mock-advisory-title" id="mrNextH">Where to look next</h2>' + items + '</section>';
 }
 
 
@@ -14297,6 +14340,7 @@ function reviewMissed() {
 }
 
 function startMissedReview(d) {
+  setMistakesReview = false; // the whole Missed list, not one set's
   d = String(d);
   missedReviewDomain = d;
   missedReviewQueue = S.missedQuestions.filter(function(q){ return String(q.domain) === d; });
@@ -14310,6 +14354,7 @@ function startMissedReview(d) {
 }
 
 function reviewSpecificMissed(d, idx) {
+  setMistakesReview = false;
   d = String(d);
   missedReviewDomain = d;
   missedReviewQueue = S.missedQuestions.filter(function(q){ return String(q.domain) === d; });
@@ -14323,16 +14368,22 @@ function showNextMissed() {
   if (missedReviewIndex >= missedReviewQueue.length) {
     // All missed reviewed
     missedReviewMode = false;
-    var remaining = S.missedQuestions.filter(function(q){ 
-      return missedReviewDomain === "all" || String(q.domain) === missedReviewDomain; 
+    // A set's "Review your mistakes" counts only that set's misses, and its
+    // retry replays the ones still missed (not the whole Missed list).
+    var setOnly = setMistakesReview;
+    var stillIds = setOnly ? (lastSetMissedIds || []).filter(function(id){ return S.missedQuestions.some(function(q){ return q.id === id; }); }) : null;
+    if (setOnly) lastSetMissedIds = stillIds;
+    var remaining = setOnly ? stillIds.length : S.missedQuestions.filter(function(q){
+      return missedReviewDomain === "all" || String(q.domain) === missedReviewDomain;
     }).length;
+    var retry = setOnly ? 'reviewSetMistakes()' : 'startMissedReview(\x27' + missedReviewDomain + '\x27)';
     stopSessionTimer();
     document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct-light);border-radius:var(--radius);padding:36px">'
       + '<div class="empty-icon"></div>'
       + '<div class="empty-title" style="color:var(--correct)">Review complete</div>'
-      + '<div class="empty-sub">' + (remaining > 0 ? remaining + ' questions still in your review queue (answered incorrectly again).' : 'You answered all review questions correctly! Great work!') + '</div>'
+      + '<div class="empty-sub">' + (remaining > 0 ? remaining + ' questions still in your review queue (answered incorrectly again).' : 'You answered every review question correctly this time.') + '</div>'
       + '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
-      + (remaining > 0 ? '<button class="act-btn primary" onclick="startMissedReview(\x27' + missedReviewDomain + '\x27)" style="background:var(--wrong-fill);border-color:var(--wrong-fill);color:var(--on-fill)">Review missed again (' + remaining + ')</button>' : '')
+      + (remaining > 0 ? '<button class="act-btn primary" onclick="' + retry + '" style="background:var(--wrong-fill);border-color:var(--wrong-fill);color:var(--on-fill)">Review missed again (' + remaining + ')</button>' : '')
       + '<button class="act-btn secondary" onclick="backToPractice()">Back to Practice</button>'
       + '</div></div>';
     return;
@@ -14672,7 +14723,7 @@ function buildMockAnswerKey(answers, queue) {
 
     // Explanation
     if (q.correct_explanation) {
-      html += '<h4 class="mr-why">Why ' + escapeHtml(correctAns) + '</h4>'
+      html += '<h3 class="mr-why">Why ' + escapeHtml(correctAns) + '</h3>'
         + '<p class="mr-exp">' + escapeHtml(mapLettersInText(q.correct_explanation, shuffle)) + '</p>';
     }
     if (q.framework_ref) {
