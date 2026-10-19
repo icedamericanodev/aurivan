@@ -892,6 +892,7 @@ export function IconCircle({ children }: { children: ReactNode }) {
 
 // ── ListRow: icon circle · title/subtitle · trailing · chevron, hairline below
 export function ListRow({
+  ref,
   icon,
   lead,
   kicker,
@@ -916,6 +917,8 @@ export function ListRow({
    */
   onHide?: { label: string; run: () => void };
   testID?: string;
+  /** The row itself, for moving screen-reader focus here (lib/a11y.ts moveFocus), e.g. a point just shown. */
+  ref?: Ref<View>;
   /**
    * The title is something you READ (a question stem, a search hit), not a
    * name: `body` 400 in ink, at most 2 lines (spec §2: reading text is never
@@ -981,12 +984,13 @@ export function ListRow({
     : {};
   if (!onPress)
     return (
-      <View testID={testID} style={styles.listRow} accessible={!!accessibilityLabel || !!onHide} accessibilityLabel={accessibilityLabel ?? (onHide ? title : undefined)} {...hideAction}>
+      <View ref={ref} testID={testID} style={styles.listRow} accessible={!!accessibilityLabel || !!onHide} accessibilityLabel={accessibilityLabel ?? (onHide ? title : undefined)} {...hideAction}>
         {body}
       </View>
     );
   return (
     <AnimatedPressable
+      ref={ref}
       testID={testID}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? `${kicker ? `${kicker}: ` : ''}${typeof subtitle === 'string' ? `${title}, ${subtitle}` : title}`}

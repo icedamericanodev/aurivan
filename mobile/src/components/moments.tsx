@@ -24,7 +24,7 @@ import { GrowthRings, PlanLeaf } from './glyphs';
 import { ringsSpoken } from './journey';
 import { Check, ICON_STROKE, Timer } from './icons';
 import { Celebrate, FadeIn, Pop, useOncePerDay, type Celebration } from './motion';
-import { HeroPanel, ICON_SIZE, Row, T, useFontScale } from './ui';
+import { Button, HeroPanel, ICON_SIZE, Row, T, useFontScale } from './ui';
 
 // ── 1. Exam-ready panel ────────────────────────────────────────────────
 /**
@@ -113,8 +113,14 @@ export function ExamEveCard({
   moment,
   reminders,
   pace,
+  onTonight,
 }: {
   moment: ExamMoment;
+  /**
+   * The eve, with a final review week: a quiet "Tonight's list" link to the
+   * plan's eve checklist (Today shows this card instead of the plan's own card).
+   */
+  onTonight?: () => void;
   /** The eve's reminder lines; `own` = from the learner's mistake journal. */
   reminders: { own: boolean; lines: string[] } | null;
   pace: string;
@@ -171,6 +177,15 @@ export function ExamEveCard({
           ? 'Rest tonight rather than cram. A calm, early night does more than one more set.'
           : 'Read each question to the last line, find the priority word, and take your time.'}
       </T>
+      {eve && onTonight && (
+        <Button
+          kind="ghost"
+          label="Tonight’s list"
+          accessibilityHint="Opens the eve checklist in your final review week"
+          onPress={onTonight}
+          style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
+        />
+      )}
     </View>
   );
 }

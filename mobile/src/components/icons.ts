@@ -7,6 +7,8 @@ export { default as ArrowRight } from 'lucide-react-native/icons/arrow-right';
 export { default as BookOpen } from 'lucide-react-native/icons/book-open';
 export { default as Bookmark } from 'lucide-react-native/icons/bookmark';
 export { default as BookmarkCheck } from 'lucide-react-native/icons/bookmark-check';
+// Learn → Look it up: "Final review week" (a calendar with a tick).
+export { default as CalendarCheck } from 'lucide-react-native/icons/calendar-check';
 export { default as Clock } from 'lucide-react-native/icons/clock';
 export { default as Brain } from 'lucide-react-native/icons/brain';
 export { default as Check } from 'lucide-react-native/icons/check';

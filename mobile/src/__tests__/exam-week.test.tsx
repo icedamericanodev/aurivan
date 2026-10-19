@@ -8,6 +8,13 @@
  *   Hide persists, an unknown id is dropped, and it round-trips a backup.
  * - Today's card shows only 7…2 days out; Open and Hide; the checklist
  *   screen ticks, and links to the readiness report.
+ *
+ * Final review week (Oct 2026): an exam WITH a final-week plan (CISA now
+ * has one, data/exam/final_review_week.json) turns the same card and screen
+ * into the plan; final-week.test.tsx covers that. The Today card and screen
+ * tests below run with the plan switched off (getFinalWeek → null), because
+ * that checklist-only path is still what an exam without a plan gets, and it
+ * must stay exactly as it was.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { AccessibilityInfo, Dimensions } from 'react-native';
@@ -17,6 +24,7 @@ import Today from '../app/(tabs)/home';
 import ExamWeekScreen from '../app/exam-week';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { getCertification } from '../content/certifications';
+import * as examContent from '../content/exam';
 import { getAllQuestions } from '../content/loader';
 import { readBackup } from '../engine/backup';
 import { addDays } from '../engine/examDay';
@@ -294,7 +302,18 @@ const press = (label: RegExp) => {
 };
 const hasCard = () => root().findAll((n) => n.props.testID === 'exam-week-card').length > 0;
 
+/** An exam without a final-week plan: the checklist-only card and screen (see the header). */
+const withoutPlan = () => {
+  beforeEach(() => {
+    jest.spyOn(examContent, 'getFinalWeek').mockReturnValue(null);
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+};
+
 describe('Today: the Exam week card', () => {
+  withoutPlan();
   it('shows from 7 to 2 days out, with the count; never before, on the eve or the day', () => {
     act(() => {
       useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, answers: seedAnswers(10, 0.7) } } }));
@@ -340,6 +359,7 @@ describe('Today: the Exam week card', () => {
 });
 
 describe('the Exam week screen', () => {
+  withoutPlan();
   const boxes = () => root().findAll((n) => n.props.accessibilityRole === 'checkbox' && typeof n.props.onPress === 'function');
 
   it('six checkbox rows (48pt+), ticked by tap, saved for this exam date', () => {

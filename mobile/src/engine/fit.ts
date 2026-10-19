@@ -142,12 +142,18 @@ export interface FitAskInput {
   /** The days the card has already shown (settings.fitAskDays), and today's ("YYYY-MM-DD"). */
   askedDays?: readonly string[];
   today?: string;
+  /**
+   * The cert has a final review week: Today's plan card shows from 8 days out
+   * (FINAL_WEEK_WINDOW), so the Fit card rests from 8 days out too.
+   */
+  finalWeek?: boolean;
 }
 
 /**
  * Whether Today shows the one "Fit your plan" card. Only for a learner who
  * has never answered or dismissed it, on at most FIT_ASK_DAYS separate days
- * (the last of them all day long), never in exam week (7 days or fewer),
+ * (the last of them all day long), never in exam week (7 days or fewer; 8
+ * with a final review week, whose card shows from 8 days out),
  * never beside another moment, and never on the same visit as the plant's
  * setup line (one setup line on Today at a time).
  */
@@ -155,6 +161,6 @@ export function shouldAskFit(i: FitAskInput): boolean {
   if (!i.onboarded || i.fitPrompt || i.familiarity) return false;
   const asked = i.askedDays ?? [];
   if (asked.length >= FIT_ASK_DAYS && !(i.today && asked.includes(i.today))) return false;
-  if (i.daysLeft !== null && i.daysLeft <= 7) return false;
+  if (i.daysLeft !== null && i.daysLeft <= (i.finalWeek ? 8 : 7)) return false;
   return !i.examMoment && !i.readyPanel && !i.plantLine;
 }

@@ -3,7 +3,9 @@ name: Mobile
 # Typecheck + lint + unit tests for the Expo app. Also runs when question data
 # changes, because the content-pack integrity test reads data/domain*.json,
 # and when the shared mindset principles change (data/mindset/: the build
-# checks every principle's practice ids against the bank).
+# checks every principle's practice ids against the bank), and when the exam
+# guide or final review week change (data/exam/: the build checks every note,
+# principle and action they link).
 # Plus the cloud guards (Uplift Phase 6, accounts built OFF; docs/mobile/
 # ARCHITECTURE.md "Cloud (built OFF)"): the suite again with the cloud flag ON
 # (signed out), and G2 an OFF bundle with no cloud runtime code. (G1, no
@@ -16,10 +18,10 @@ name: Mobile
 on:
   pull_request:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/mindset/**', 'assets/kaisip-plant.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/mindset/**', 'data/exam/**', 'assets/kaisip-plant.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
   push:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/mindset/**', 'assets/kaisip-plant.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/mindset/**', 'data/exam/**', 'assets/kaisip-plant.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
 
 # Read-only token: `npm ci` runs third-party install scripts, which must not
 # be able to push to the repo.
