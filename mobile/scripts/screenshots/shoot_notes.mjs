@@ -3,13 +3,15 @@
 // concept" button + the session it opens, a long subtopic (1A2.4),
 // and search results for "RPO", and (mobile 1.29) "Auditing it" on 4B1.1. Usage: node shoot_notes.mjs <seed.json> <out> <suffix>
 // Run via: SHOTS=notes bash scripts/screenshots/run.sh <out> <dark|light>
+// FONT_SCALE=2 approximates 200% text (as shoot_settings.mjs); file names gain "-fs200".
 import { createRequire } from 'module';
 import fs from 'fs';
 const require = createRequire(process.env.PLAYWRIGHT_REQUIRE_FROM || import.meta.url);
 const { chromium } = require('playwright');
 const seed = JSON.parse(fs.readFileSync(process.argv[2]));
 const out = process.argv[3];
-const sfx = process.argv[4] ? `-${process.argv[4]}` : '';
+const FONT_SCALE = Number(process.env.FONT_SCALE) || 0;
+const sfx = `${process.argv[4] ? `-${process.argv[4]}` : ''}${FONT_SCALE ? `-fs${Math.round(FONT_SCALE * 100)}` : ''}`;
 const base = 'http://127.0.0.1:8093';
 const browser = await chromium.launch({ ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}) });
 const ctx = await browser.newContext({ viewport: { width: 393, height: 852 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
@@ -18,11 +20,38 @@ await ctx.addInitScript((s) => {
   for (const [k, v] of Object.entries(s)) localStorage.setItem(k, v);
   localStorage.setItem('__seeded', '1');
 }, seed);
+// The app reads this on web to lay out for large text (components/ui.tsx useFontScale).
+if (FONT_SCALE) await ctx.addInitScript((f) => (window.__AURIVAN_FONT_SCALE__ = f), FONT_SCALE);
 const page = await ctx.newPage();
 const errs = [];
 page.on('pageerror', (e) => errs.push(e.message));
-const snap = async (name) => { await page.screenshot({ path: `${out}/${name}${sfx}.png` }); console.log('shot', name + sfx); };
-const open = async (path, wait = 1800) => { await page.goto(base + path, { waitUntil: 'networkidle' }); await page.waitForTimeout(wait); };
+const TEXT_RUNS = 'div[dir="auto"], [role="heading"][dir="auto"], h1[dir="auto"], h2[dir="auto"], h3[dir="auto"]';
+// FONT_SCALE: each text run zooms like the app's text size, up to its style's
+// cap (tokens.ts maxScale; titles 26px and up stop at ×1.3). The calendar's day
+// numbers and weekday headings are capped at ×1.5 in the app, so they are too.
+const zoomText = () =>
+  page.evaluate(
+    ([sel, f]) => {
+      for (const el of document.querySelectorAll(sel)) {
+        if (el.dataset.zoomed) continue;
+        const px = parseFloat(getComputedStyle(el).fontSize) || 16;
+        const inDay = el.closest('[aria-label*=" 20"]') && /^\d{1,2}$|^(Mo|Tu|We|Th|Fr|Sa|Su)$/.test(el.textContent || '');
+        el.style.zoom = String(px >= 26 ? Math.min(1.3, f) : inDay ? Math.min(1.5, f) : f);
+        el.dataset.zoomed = '1';
+      }
+    },
+    [TEXT_RUNS, FONT_SCALE],
+  );
+const snap = async (name) => {
+  if (FONT_SCALE) { await zoomText(); await page.waitForTimeout(400); }
+  await page.screenshot({ path: `${out}/${name}${sfx}.png` }); console.log('shot', name + sfx);
+};
+const open = async (path, wait = 1800) => {
+  await page.goto(base + path, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(wait);
+  // Zoom before any scrolling, so "scroll to a heading" lands where the large text puts it.
+  if (FONT_SCALE) { await zoomText(); await page.waitForTimeout(400); }
+};
 // Scroll so the given heading text sits near the top of the screen.
 const scrollTo = async (text) => {
   const el = page.getByText(text, { exact: true }).first();
@@ -33,10 +62,13 @@ const scrollTo = async (text) => {
 };
 const scrollBy = async (dy) => { await page.mouse.move(196, 500); await page.mouse.wheel(0, dy); await page.waitForTimeout(700); };
 
-// Mobile 1.29: "Auditing it" on a pilot note (4B1.1): the section and the lens under it.
+// Mobile 1.29: "Auditing it" on 4B1.1 and on 5B2.1 (the longest): the section and the lens under it.
 // NOTES_SHOTS=audit shoots only these (a quick check of the section).
 await open('/notes/subtopic/4B1.1'); await scrollTo('Auditing it'); await snap('n11-4B1.1-auditing-it');
 await scrollBy(400); await snap('n11b-4B1.1-auditing-it-end');
+await open('/notes/subtopic/5B2.1'); await scrollTo('Auditing it'); await snap('n12-5B2.1-auditing-it');
+await scrollBy(500); await snap('n12b-5B2.1-auditing-it-more');
+await scrollBy(500); await snap('n12c-5B2.1-auditing-it-end');
 if (process.env.NOTES_SHOTS === 'audit') {
   console.log('errors:', errs.slice(0, 5));
   await browser.close();
