@@ -5949,11 +5949,11 @@ html { scroll-padding-bottom: 104px; }
 .sr-rows li:last-child .you-row { border-bottom: 0; }
 .sr-row[data-rail-start="review"] .sr-kick { color: var(--accent-text); }
 .sr-link {
-  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: var(--sp-xs);
-  font: 600 15px/22px var(--f-sans); color: var(--accent-text); text-decoration: none;
+  display: inline-flex; align-items: center; gap: var(--sp-sm); min-height: 44px; margin-top: var(--sp-xs);
+  font: var(--t-label); color: var(--accent-text); text-decoration: none;
 }
 .sr-link:hover { text-decoration: underline; text-underline-offset: 3px; }
-.sr-link:focus-visible, .sr-btn:focus-visible, .sr-toc-row:focus-visible, .vr-add-note:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 8px; }
+.sr-link:focus-visible, .sr-btn:focus-visible, .sr-toc-row:focus-visible, .vr-add-note:focus-visible, .sr-term summary:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 8px; }
 /* L1 plate: tonal, never a card inside a card */
 .sr-plate { background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xl); }
 .sr-note-h { display: flex; align-items: flex-start; gap: var(--sp-md); }
@@ -5966,7 +5966,7 @@ html { scroll-padding-bottom: 104px; }
 .sr-btn {
   display: flex; align-items: center; justify-content: center; gap: var(--sp-sm); width: 100%; min-height: 48px;
   margin-top: var(--sp-lg); padding: 0 var(--sp-xl); border: 0; border-radius: var(--r-pill); cursor: pointer;
-  background: var(--btn); color: var(--on-btn); font: 600 15px/20px var(--f-sans);
+  background: var(--btn); color: var(--on-btn); font: var(--t-label);
 }
 .sr-btn:hover { opacity: .92; }
 .sr-area {
@@ -5977,10 +5977,11 @@ html { scroll-padding-bottom: 104px; }
 .sr-area::placeholder { color: var(--muted); }
 .sr-area:focus-visible, .sr-input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .sr-hint { margin-top: var(--sp-sm); }
-.sr-saved:empty { display: none; }
-.sr-saved { margin-top: var(--sp-xs); }
+/* Holds its line, so "Saved." never shifts what is below it. */
+.sr-saved { min-height: 20px; margin-top: var(--sp-xs); }
+.sr-mine-t { margin: 0; font: var(--t-small); color: var(--text); white-space: pre-wrap; overflow-wrap: anywhere; }
 .sr-field {
-  display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 var(--sp-lg);
+  display: flex; align-items: center; gap: var(--sp-md); min-height: 48px; padding: 0 var(--sp-lg);
   border: 1.5px solid var(--control); border-radius: var(--r-md); background: var(--raised); color: var(--muted);
 }
 .sr-field:focus-within { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
@@ -5989,14 +5990,14 @@ html { scroll-padding-bottom: 104px; }
 .sr-input::placeholder { color: var(--muted); }
 .sr-input::-webkit-search-cancel-button { display: none; }
 .sr-dl { margin: var(--sp-md) 0 0; }
-.sr-dl dt { margin: var(--sp-md) 0 0; font: 600 15px/22px var(--f-sans); color: var(--text); }
+.sr-dl dt { margin: var(--sp-md) 0 0; font: var(--t-label); color: var(--text); }
 .sr-dl dt:first-child { margin-top: 0; }
 .sr-dl dd { margin: 2px 0 0; font: var(--t-small); color: var(--text2); }
 .sr-dl mark { background: var(--surface2); color: inherit; border-radius: 3px; }
 .sr-defs > .sr-meta { margin-top: var(--sp-md); }
 .sr-toc { list-style: none; margin: 0; padding: 0; }
 .sr-toc-row {
-  display: flex; align-items: center; gap: var(--sp-md); width: 100%; min-height: 48px; padding: 10px 0;
+  display: flex; align-items: center; gap: var(--sp-md); width: 100%; min-height: 48px; padding: var(--sp-sm) 0;
   background: none; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; cursor: pointer;
   text-align: left; font: var(--t-small); color: var(--text2);
 }
@@ -6005,7 +6006,19 @@ html { scroll-padding-bottom: 104px; }
 .sr-toc-row.cur { color: var(--text); font-weight: 600; }
 .sr-toc-t { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .sr-mocks { margin-top: 0; border-top: 0; }
-.sr-mocks .rs-dcount { display: block; }
+/* Terms in this question: tap a term for its definition. */
+.sr-terms { list-style: none; margin: 0; padding: 0; }
+.sr-term summary {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-md); min-height: 44px; padding: var(--sp-sm) 0;
+  border-bottom: 1px solid var(--border); cursor: pointer; list-style: none; font: var(--t-small); color: var(--text);
+}
+.sr-term summary::-webkit-details-marker { display: none; }
+.sr-term-chev { flex-shrink: 0; color: var(--muted); }
+.sr-term[open] .sr-term-chev { transform: rotate(180deg); }
+.sr-term p { margin: 0; padding: var(--sp-sm) 0 var(--sp-md); border-bottom: 1px solid var(--border); font: var(--t-small); color: var(--text2); }
+.sr-term[open] summary { border-bottom-color: transparent; }
+.sr-terms li:last-child .sr-term:not([open]) summary, .sr-terms li:last-child .sr-term p { border-bottom: 0; }
+.sr-sec[data-sec="look"] .sr-field { margin-top: 0; }
 @keyframes srFade { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: no-preference) {
   .sr-sec.sr-in { animation: srFade 120ms ease-out both; }
@@ -6018,11 +6031,9 @@ html { scroll-padding-bottom: 104px; }
   body[data-rail] main.app { max-width: none; margin: 0; padding-left: 0; padding-right: 0; min-width: 0; }
   body[data-rail] .study-rail {
     position: sticky; top: 32px; z-index: 1; max-height: calc(100vh - 64px); overflow-y: auto; overscroll-behavior: contain;
-    margin: 36px -4px 40px; padding: 4px;
+    /* 36 + 4 padding = the page's 40px top; --rail-lead is measured (railAlign). */
+    margin: calc(36px + var(--rail-lead, 0px)) -4px 40px; padding: 4px;
   }
-  /* Line the rail up with the page's first block (below the title / the strip). */
-  body[data-rail="hub"] .study-rail, body[data-rail="mock"] .study-rail { margin-top: 98px; }
-  body[data-rail="q"] .study-rail { margin-top: 104px; }
   body[data-rail="hub"] .ph .mindset-strip { display: none; }
   body[data-rail="notes"] #screen-topics .gt-practice { display: none; }
   body[data-rail="mock"] .mk-past-sec { display: none; }
@@ -6044,10 +6055,10 @@ html { scroll-padding-bottom: 104px; }
   cursor: pointer; font: var(--t-label); color: var(--accent-text);
 }
 .vr-add-note:hover span { text-decoration: underline; text-underline-offset: 3px; }
-#vrMine[hidden] { display: none; }
+.vr-mine .sr-mine-t, .sr-sec .sr-mine-t { margin-bottom: var(--sp-xs); }
 /* The learner's note where a question is listed (Saved, mock review). */
-.q-note { margin-top: var(--sp-sm); padding: var(--sp-md) var(--sp-lg); border-left: 3px solid var(--accent); background: var(--raised2); border-radius: 0 var(--r-sm) var(--r-sm) 0; }
-.q-note-cap { margin: 0; font: var(--t-caption); color: var(--accent-text); }
+.q-note { margin-top: var(--sp-sm); padding-top: var(--sp-sm); border-top: 1px solid var(--border); }
+.q-note-cap { margin: 0; font: var(--t-caption); color: var(--text2); }
 .q-note-t { margin: 2px 0 0; font: var(--t-small); color: var(--text); white-space: pre-wrap; overflow-wrap: anywhere; }
 /* GROVE-LAYER-END */
 </style>
@@ -10157,7 +10168,7 @@ function todayNextStep(r, range) {
   var due = 0;
   try { due = getDueReview().length; } catch (e) {}
   if (due > 0) {
-    return { icon: 'review', kicker: 'Due today', title: 'Spaced review', meta: due + ' due &middot; most overdue first', go: { step: 'review' } };
+    return { icon: 'review', kicker: 'Due today', title: 'Spaced review', meta: railShowCount(due) + ' due &middot; most overdue first', go: { step: 'review' } };
   }
   var note = function (hit, kicker) {
     var mins = 0;
@@ -11031,17 +11042,16 @@ function renderPracticeHub() {
   }
   syncDiffChips();
 
-  // More ways to practice: review, missed, saved, weak spots, the mock.
+  // The full lists (owner decision, 19 Oct): Focus next carries the smart
+  // picks (what is due, one weak spot, this week's mistakes); this list holds
+  // everything, so it has no spaced-review row of its own.
   var more = document.getElementById('phMore');
   if (more) {
-    var due = 0;
-    try { due = getDueReview().length; } catch (e) {}
     var missed = (S.missedQuestions || []).length;
     var saved = (S.bookmarks || []).length;
-    more.innerHTML = hubRow('review', 'Spaced review', due ? due + ' due &middot; most overdue first' : 'All caught up', 'startReviewQueue()')
-      + hubRow('missed', 'Missed questions', missed ? missed + ' to try again' : 'None yet', 'practiceMissed()')
-      + hubRow('saved', 'Saved questions', saved ? saved + ' saved' : 'Save a question to find it here', "switchTab('bookmarks')")
-      + hubRow('weak', 'Weak spots drill', 'Questions from the areas you miss most', 'startWeakSpotsDrill()')
+    more.innerHTML = hubRow('missed', 'All missed questions', missed ? missed + ' to try again' : 'None yet', 'practiceMissed()')
+      + hubRow('weak', 'Weak spots drill (by domain)', 'Questions from the domains you miss most', 'startWeakSpotsDrill()')
+      + hubRow('saved', 'All saved questions', saved ? saved + ' saved' : 'Save a question to find it here', "switchTab('bookmarks')")
       + hubRow('mock', 'Mock exam', isMockInProgress() ? 'In progress &middot; resume where you left off' : 'Full or mini, timed like the real exam', "switchTab('mock')");
   }
   // Focus next and Today's principle (the study rail, or rows under the panel).
@@ -11102,7 +11112,8 @@ function showSessionStart() { renderPracticeHub(); }
 // - Practice hub (>=1180px): "Focus next" (due review, the weakest topic as
 //   a short MIXED set, recent mistakes to retry) and Today's principle.
 // - A practice question (>=1320px): nothing until the answer is checked; then
-//   the matching study note, the learner's own note and a glossary lookup.
+//   the matching study note, the learner's own note (behind "Add a note"),
+//   the glossary terms used in the question and a glossary lookup.
 // - Study notes (>=1180px): "Check yourself" for the note in view, the topic's
 //   notes with their read marks (following the scroll), and the lookup.
 // - Mock setup (>=1180px): the last 3 mocks (the main column's list steps
@@ -11123,8 +11134,15 @@ var railQIdx = null;             // question id -> question (all loaded banks)
 var railNoteIdx = null;          // question id -> the study note that practises it
 var railLookQ = '';              // the lookup's text, kept while the rail redraws
 var railNoteTimer = null;
+var railNoteEditing = null;      // the question whose note field is open ("Add a note" / "Edit")
 var railNotesAsked = false;     // the notes fetch was started for the rail
 var railScrollQueued = false;
+var railLookTimer = null;
+var RAIL_TERMS_MAX = 5;          // glossary terms shown for one question
+var RAIL_TERM_DF_MAX = 0.12;     // a term in more than 12% of questions is too general to list
+var railGlossRe = null;          // [{ t, res: [RegExp] }] built once from the glossary
+var railTermDf = {};             // term id -> share of loaded questions that use it
+var railQTexts = null;           // every loaded question's searchable text (for railTermDf)
 
 function railWide(page) {
   var bp = RAIL_BP[page];
@@ -11211,12 +11229,12 @@ function railWeakSpot() {
 // Recent mistakes to retry: not fixed yet, from this week, and at least a few
 // hours old (a retry straight after a miss tests short-term memory, not
 // learning). Mistakes already due in spaced review are left to that row.
-function railRecentMistakes() {
+// `due`: the due ids as a map, when the caller already has them.
+function railRecentMistakes(due) {
   var idx = railQuestionIndex();
   var log = S.mistakeLog || {};
   var now = Date.now();
-  var due = {};
-  railDueIds().forEach(function (id) { due[id] = true; });
+  if (!due) { due = {}; railDueIds().forEach(function (id) { due[id] = true; }); }
   return Object.keys(log).filter(function (id) {
     var e = log[id];
     if (!e || e.resolved || !idx[id] || due[id]) return false;
@@ -11224,15 +11242,18 @@ function railRecentMistakes() {
     return age >= PARITY_RETEST_MS && age <= RAIL_RECENT_MS;
   }).sort(function (a, b) { return log[b].at - log[a].at; });
 }
-// Up to 3 rows, in learning-impact order. None for a new learner.
+// Up to 3 smart picks, in learning-impact order (the hub's "Review and saved"
+// holds the full lists). None for a new learner. The due list is read once.
 function railFocusRows() {
   var rows = [];
-  var due = railDueIds().length;
-  if (due) rows.push({ kind: 'review', icon: 'review', cap: 'Due today', title: 'Spaced review', meta: railShowCount(due) + ' due &middot; most overdue first' });
+  var dueIds = railDueIds();
+  var dueMap = {};
+  dueIds.forEach(function (id) { dueMap[id] = true; });
+  if (dueIds.length) rows.push({ kind: 'review', icon: 'review', cap: 'Due today', title: 'Spaced review', meta: railShowCount(dueIds.length) + ' due &middot; most overdue first' });
   var w = railWeakSpot();
-  if (w) rows.push({ kind: 'weak', icon: 'target', cap: 'Weak spot &middot; ' + escapeHtml(DI[w.d].short), title: escapeHtml(w.name), meta: w.right + ' of ' + w.n + ' right &middot; a short mixed set' });
-  var m = railRecentMistakes().length;
-  if (m) rows.push({ kind: 'mistakes', icon: 'retry', cap: 'Recent mistakes', title: 'Try them again', meta: railShowCount(m) + ' from this week' });
+  if (w) rows.push({ kind: 'weak', icon: 'target', cap: 'Weak spot &middot; mixed set', title: escapeHtml(w.name), meta: escapeHtml(DI[w.d].short) + ' &middot; ' + w.right + ' of ' + w.n + ' right' });
+  var m = railRecentMistakes(dueMap).length;
+  if (m) rows.push({ kind: 'mistakes', icon: 'retry', cap: 'Recent mistakes', title: 'Try this week&rsquo;s mistakes', meta: railShowCount(m) + ' to retry' });
   return rows.slice(0, 3);
 }
 function railRowHtml(r) {
@@ -11400,6 +11421,12 @@ function railNoteAreaHtml(qid, areaId, labelId, hintId) {
     + '<p class="sr-meta sr-hint" id="' + hintId + '">Saved with the question. You see it again when you review it.</p>'
     + '<p class="sr-meta sr-saved" aria-live="polite"></p>';
 }
+// "Reset all progress": the open field must not write its old text back.
+function railForgetNotes() {
+  if (railNoteTimer) { clearTimeout(railNoteTimer); railNoteTimer = null; }
+  railNoteEditing = null;
+  [].forEach.call(document.querySelectorAll('textarea.sr-area'), function (el) { el.removeAttribute('data-qid'); });
+}
 function railNoteInput(el) {
   if (railNoteTimer) clearTimeout(railNoteTimer);
   railNoteTimer = setTimeout(function () { railNoteTimer = null; railNoteCommit(el); }, 600);
@@ -11424,20 +11451,34 @@ function railNoteFlush() {
   var el = document.querySelector('textarea.sr-area');
   if (el && railNoteTimer) railNoteCommit(el);
 }
-// Below the breakpoint the note sits behind "Add a note"; opened, the link
-// becomes the field's caption.
-function railToggleInlineNote() {
-  var b = document.getElementById('vrAddNote');
-  var box = document.getElementById('vrMine');
-  if (!b || !box) return;
-  box.hidden = false;
-  var cap = document.createElement('p');
-  cap.className = 'vine-cap';
-  cap.id = 'vrMineL';
-  cap.textContent = 'Your note on this question';
-  b.parentNode.replaceChild(cap, b);
-  var t = document.getElementById('vrNoteText');
-  if (t) t.focus();
+// The note, calm by default: "Add a note" (none yet), or the note's text with
+// "Edit your note"; the field opens on request and stays open for this
+// question. `pre` is 'sr' (the rail) or 'vr' (the answer screen's fallback);
+// labelId names the caption that labels the field.
+function railMineHtml(qid, pre, labelId) {
+  var text = qNoteText(qid);
+  if (railNoteEditing === qid) {
+    return railNoteAreaHtml(qid, pre === 'sr' ? 'srNote' : 'vrNoteText', labelId, pre + 'NoteHint');
+  }
+  if (!text) {
+    return '<button type="button" class="vr-add-note" id="' + pre + 'AddNote" aria-describedby="' + labelId + '" onclick="railEditNote(\'' + pre + '\')">'
+      + ico('feedback', 18) + '<span>Add a note</span></button>';
+  }
+  return '<p class="sr-mine-t" id="' + pre + 'MineT">' + escapeHtml(text) + '</p>'
+    + '<button type="button" class="vr-add-note" id="' + pre + 'EditNote" aria-describedby="' + labelId + '" onclick="railEditNote(\'' + pre + '\')">'
+    + ico('practice', 18) + '<span>Edit your note</span></button>';
+}
+// The key a note block redraws on: the question, open or shown, and the text.
+function railMineKey(qid) {
+  return 'mine:' + qid + ':' + (railNoteEditing === qid ? 'edit' : 'view:' + qNoteText(qid));
+}
+// "Add a note" / "Edit your note": open the field and put the caret at its end.
+function railEditNote(pre) {
+  if (!S.current) return;
+  railNoteEditing = S.current.id;
+  railSync();
+  var t = document.getElementById(pre === 'sr' ? 'srNote' : 'vrNoteText');
+  if (t) { try { t.focus(); var L = t.value.length; t.setSelectionRange(L, L); } catch (e) {} }
 }
 function sanitizeQNotes(m) {
   var out = {};
@@ -11462,9 +11503,16 @@ function qNoteBlockHtml(id, cls) {
 // ── Look up a term (the Glossary's own filter, after the answer only) ──
 function railLookupHtml() {
   return '<div class="sr-field">' + ico('search', 20)
-    + '<input type="search" class="sr-input" id="srLook" aria-labelledby="srhLook" aria-describedby="srLookOut" placeholder="Search the glossary" autocomplete="off" spellcheck="false"'
+    + '<input type="search" class="sr-input" id="srLook" aria-labelledby="srhLook" placeholder="Search the glossary" autocomplete="off" spellcheck="false"'
     + ' value="' + escapeHtml(railLookQ) + '" oninput="railLookup(this.value)"></div>'
-    + '<div class="sr-defs" id="srLookOut" aria-live="polite">' + railLookupResults(railLookQ) + '</div>';
+    + '<div class="sr-defs" id="srLookOut">' + railLookupResults(railLookQ) + '</div>'
+    // One short line for screen readers, once typing pauses (not every keystroke).
+    + '<p class="sr-only" role="status" id="srLookN"></p>';
+}
+// How many glossary terms match (all of them, not only the 3 shown).
+function railLookupCount(q) {
+  q = String(q || '').trim();
+  return q ? glossTermsMatching(q, 'all', 'all').length : 0;
 }
 function railLookupResults(q) {
   q = String(q || '').trim();
@@ -11487,6 +11535,82 @@ function railLookup(v) {
   railLookQ = String(v || '').slice(0, 80);
   var out = document.getElementById('srLookOut');
   if (out) out.innerHTML = railLookupResults(railLookQ);
+  if (railLookTimer) clearTimeout(railLookTimer);
+  railLookTimer = setTimeout(function () {
+    railLookTimer = null;
+    var say = document.getElementById('srLookN');
+    if (!say) return;
+    var n = railLookupCount(railLookQ);
+    say.textContent = !railLookQ.trim() ? '' : n ? n + (n === 1 ? ' term found' : ' terms found') : 'No terms found';
+  }, 500);
+}
+
+// ── Terms in this question: glossary terms named in the stem, scenario or
+// options (whole words, any case; a plural "s" counts). An acronym matches
+// only in capitals, so "IT" never matches "it". Terms used in more than
+// RAIL_TERM_DF_MAX of all questions are too general to list ("Risk").
+function railGlossPatterns() {
+  if (railGlossRe) return railGlossRe;
+  var esc = function (s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+'); };
+  railGlossRe = GLOSS.map(function (t) {
+    var res = [];
+    var name = String(t.term || '').replace(/\s*\([^)]*\)/g, '').trim();
+    if (name.length >= 3) res.push(new RegExp('(^|[^A-Za-z0-9])(' + esc(name) + ')s?(?=$|[^A-Za-z0-9])', 'i'));
+    var acr = String(t.acronym || '').trim();
+    if (acr.length >= 2 && /[A-Z]/.test(acr)) res.push(new RegExp('(^|[^A-Za-z0-9])(' + esc(acr) + ')s?(?=$|[^A-Za-z0-9])'));
+    return { t: t, res: res };
+  }).filter(function (x) { return x.res.length; });
+  return railGlossRe;
+}
+function railQuestionText(q) {
+  var opts = q && q.options ? Object.keys(q.options).map(function (k) { return q.options[k]; }) : [];
+  return [q.scenario_context || '', q.question || ''].concat(opts).join(' \n ');
+}
+// The first place a term's patterns match, as { at, len }, or null.
+function railTermHit(g, text) {
+  var best = null;
+  g.res.forEach(function (re) {
+    var m = re.exec(text);
+    if (m) { var at = m.index + m[1].length; if (!best || at < best.at) best = { at: at, len: m[2].length }; }
+  });
+  return best;
+}
+function railTermShare(g) {
+  var id = g.t.id;
+  if (railTermDf[id] !== undefined) return railTermDf[id];
+  if (!railQTexts) {
+    var qs = railQuestionIndex();
+    railQTexts = Object.keys(qs).map(function (k) { return railQuestionText(qs[k]); });
+  }
+  var n = 0;
+  railQTexts.forEach(function (tx) { if (railTermHit(g, tx)) n++; });
+  railTermDf[id] = railQTexts.length ? n / railQTexts.length : 0;
+  return railTermDf[id];
+}
+// Up to RAIL_TERMS_MAX terms, the more specific (longer) first when they
+// overlap, then in the order they appear in the question.
+function railQuestionTerms(q) {
+  var text = railQuestionText(q);
+  var hits = [];
+  railGlossPatterns().forEach(function (g) {
+    var h = railTermHit(g, text);
+    if (h && railTermShare(g) <= RAIL_TERM_DF_MAX) hits.push({ t: g.t, at: h.at, end: h.at + h.len });
+  });
+  hits.sort(function (a, b) { return (b.end - b.at) - (a.end - a.at); });
+  var kept = [];
+  hits.forEach(function (h) {
+    if (kept.length >= RAIL_TERMS_MAX) return;
+    if (kept.some(function (k) { return h.at < k.end && k.at < h.end; })) return;
+    kept.push(h);
+  });
+  kept.sort(function (a, b) { return a.at - b.at; });
+  return kept.map(function (h) { return h.t; });
+}
+function railTermsHtml(terms) {
+  return '<ul class="sr-terms">' + terms.map(function (t) {
+    return '<li><details class="sr-term"><summary>' + escHtml(t.term) + ico('chevron-down', 18, 'ico sr-term-chev') + '</summary>'
+      + '<p>' + escHtml(t.def) + '</p></details></li>';
+  }).join('') + '</ul>';
 }
 function railOpenGlossary(e) {
   if (e && e.preventDefault) e.preventDefault();
@@ -11583,7 +11707,10 @@ function railQSections() {
   var res = railNoteFor(q.id);
   if (res.state !== 'none') secs.push({ id: 'note', key: 'note:' + q.id + ':' + res.state + ':' + (exam ? 1 : 0) + ':' + (res.note ? gtNoteState(res.note.id) : ''),
     html: '<h2 class="sr-cap" id="srhNote">From your study notes</h2>' + railNoteCardHtml(res, exam, false) });
-  secs.push({ id: 'mine', key: 'mine:' + q.id, html: '<h2 class="sr-cap" id="srhMine">Your note on this question</h2>' + railNoteAreaHtml(q.id, 'srNote', 'srhMine', 'srNoteHint') });
+  secs.push({ id: 'mine', key: railMineKey(q.id), html: '<h2 class="sr-cap" id="srhMine">Your note on this question</h2>' + railMineHtml(q.id, 'sr', 'srhMine') });
+  // The glossary terms this question uses first; the search box below them.
+  var terms = railQuestionTerms(q);
+  if (terms.length) secs.push({ id: 'terms', key: 'terms:' + q.id, html: '<h2 class="sr-cap" id="srhTerms">Terms in this question</h2>' + railTermsHtml(terms) });
   secs.push({ id: 'look', key: 'look', html: '<h2 class="sr-cap" id="srhLook">Look up a term</h2>' + railLookupHtml() });
   return secs;
 }
@@ -11603,22 +11730,38 @@ function railHubInline(show) {
     + '<ul class="you-list">' + rows.map(railRowHtml).join('') + '</ul></section>' : '';
   if (slot.innerHTML !== html) slot.innerHTML = html;
 }
+// The answer screen's fallback: the note link, then the learner's note (both
+// patched in place like the rail, so an open field never loses focus).
 function railQInline(show) {
   var slot = document.getElementById('vrStudy');
   if (!slot) return;
-  if (!show || !railQAnswered()) { if (slot.innerHTML) { railNoteFlush(); slot.innerHTML = ''; } return; }
-  var q = S.current;
-  var res = railNoteFor(q.id);
-  var key = q.id + ':' + res.state + ':' + (S.examMode ? 1 : 0);
-  if (slot.getAttribute('data-key') === key) return;
-  railNoteFlush();
-  slot.setAttribute('data-key', key);
-  var has = !!qNoteText(q.id);
-  slot.innerHTML = (res.state === 'found' ? railNoteCardHtml(res, !!S.examMode, true) : '')
-    + '<div class="vr-mine">'
-    + (has ? '<p class="vine-cap" id="vrMineL">Your note on this question</p>'
-      : '<button type="button" class="vr-add-note" id="vrAddNote" aria-expanded="false" aria-controls="vrMine" onclick="railToggleInlineNote()">' + ico('feedback', 18) + '<span>Add a note</span></button>')
-    + '<div id="vrMine"' + (has ? '' : ' hidden') + '>' + railNoteAreaHtml(q.id, 'vrNoteText', 'vrMineL', 'vrNoteHint') + '</div></div>';
+  var parts = [];
+  if (show && railQAnswered()) {
+    var q = S.current;
+    var res = railNoteFor(q.id);
+    if (res.state === 'found') parts.push({ id: 'nl', key: 'nl:' + q.id + ':' + (S.examMode ? 1 : 0), html: railNoteCardHtml(res, !!S.examMode, true) });
+    parts.push({ id: 'mine', key: railMineKey(q.id), html: '<p class="vine-cap" id="vrMineL">Your note on this question</p>' + railMineHtml(q.id, 'vr', 'vrMineL') });
+  }
+  railPatch(slot, parts, function (s) {
+    var el = document.createElement('div');
+    el.className = s.id === 'mine' ? 'vr-mine' : 'vr-nl-wrap';
+    el.innerHTML = s.html;
+    return el;
+  });
+}
+// Lines the rail up with the page's first block (the start panel, the
+// question, the first section): measured, so it holds at any text size.
+function railAlign(aside, page) {
+  var main = document.getElementById('main');
+  var a = page === 'hub' ? document.getElementById('phHero')
+    : page === 'q' ? document.getElementById('qArea')
+    : page === 'mock' ? document.querySelector('#mkResume:not(:empty), #mockArea .ph-sec') : null;
+  var lead = 0;
+  if (a && main && a.getClientRects().length) {
+    var pad = parseFloat(getComputedStyle(main).paddingTop) || 0;
+    lead = Math.max(0, Math.round(a.getBoundingClientRect().top - main.getBoundingClientRect().top - pad));
+  }
+  aside.style.setProperty('--rail-lead', lead + 'px');
 }
 
 // Draws the rail for the page on screen. Sections keep their element while
@@ -11642,49 +11785,67 @@ function railSync() {
   else document.body.removeAttribute('data-rail');
   railRender(aside, on ? secs : []);
   aside.hidden = !on || !secs.length;
+  if (on) railAlign(aside, page);
 }
 function railRender(aside, secs) {
-  var have = [].slice.call(aside.children);
-  var sameOrder = have.length === secs.length && have.every(function (el, i) { return el.getAttribute('data-sec') === secs[i].id; });
-  var make = function (s) {
+  railPatch(aside, secs, function (s) {
     var el = document.createElement('section');
     el.className = 'sr-sec sr-in';
-    el.setAttribute('data-sec', s.id);
-    el.setAttribute('data-key', s.key);
     var h = /^<h2[^>]* id="([^"]+)"/.exec(s.html);
     if (h) el.setAttribute('aria-labelledby', h[1]);
     el.innerHTML = s.html;
     return el;
+  });
+}
+// Brings `box`'s children in line with `items` ([{ id, key, html }]) without
+// clearing it: a child whose key is unchanged stays exactly where it is (so
+// focus and typing in it survive), changed or unwanted children are removed,
+// new ones are inserted after the previous wanted child. A note being typed
+// in a block that goes is saved first.
+function railPatch(box, items, make) {
+  var have = {};
+  [].slice.call(box.children).forEach(function (el) { have[el.getAttribute('data-sec')] = el; });
+  var want = {};
+  items.forEach(function (s) { want[s.id] = s; });
+  var drop = function (el) {
+    var ta = el.querySelector('textarea.sr-area');
+    if (ta && railNoteTimer) railNoteCommit(ta);
+    if (el.parentNode === box) box.removeChild(el);
   };
-  if (sameOrder) {
-    secs.forEach(function (s, i) {
-      if (have[i].getAttribute('data-key') !== s.key) {
-        if (have[i].contains(document.activeElement) && s.id === 'mine') return;
-        if (s.id === 'mine') railNoteFlush();
-        aside.replaceChild(make(s), have[i]);
-      }
-    });
-    return;
-  }
-  railNoteFlush();
-  var keep = {};
-  have.forEach(function (el) { keep[el.getAttribute('data-sec') + '\u0000' + el.getAttribute('data-key')] = el; });
-  aside.innerHTML = '';
-  secs.forEach(function (s) {
-    var old = keep[s.id + '\u0000' + s.key];
-    if (old) { old.classList.remove('sr-in'); aside.appendChild(old); }
-    else aside.appendChild(make(s));
+  Object.keys(have).forEach(function (id) {
+    if (!want[id] || have[id].getAttribute('data-key') !== want[id].key) { drop(have[id]); delete have[id]; }
+  });
+  var prev = null;
+  items.forEach(function (s) {
+    var el = have[s.id];
+    // Never move a kept child: one found before the insertion point is redrawn.
+    if (el && prev && !(prev.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING)) { drop(el); el = null; }
+    if (!el) {
+      el = make(s);
+      el.setAttribute('data-sec', s.id);
+      el.setAttribute('data-key', s.key);
+      box.insertBefore(el, prev ? prev.nextSibling : box.firstChild);
+    }
+    prev = el;
   });
 }
 
 // Banks and notes arrive in the background; the notes rail follows the scroll.
-document.addEventListener('qb:domain-loaded', function () { railQIdx = null; try { railSync(); } catch (e) {} });
+document.addEventListener('qb:domain-loaded', function () { railQIdx = null; railQTexts = null; railTermDf = {}; try { railSync(); } catch (e) {} });
 window.addEventListener('scroll', function () {
   if (railScrollQueued || railPage() !== 'notes') return;
   railScrollQueued = true;
   (window.requestAnimationFrame || setTimeout)(function () { railScrollQueued = false; try { railSync(); } catch (e) {} });
 }, { passive: true });
-window.addEventListener('pagehide', function () { try { railNoteFlush(); } catch (e) {} });
+// A reload that already wrote new progress (import, switching records) must
+// not have an old note written over it (as saveMockOnLeave).
+window.addEventListener('pagehide', function () { if (leavingForReload) return; try { railNoteFlush(); } catch (e) {} });
+// Text zoom changes the page's first block: keep the rail lined up with it.
+window.addEventListener('resize', function () {
+  var aside = document.getElementById('studyRail');
+  var page = document.body.getAttribute('data-rail');
+  if (aside && page) { try { railAlign(aside, page); } catch (e) {} }
+});
 
 // End cards drawn into the focused view (Time is up, a finished set, a
 // loading or empty state) keep the strip in step. This never switches
@@ -12446,7 +12607,9 @@ function renderQuestion(q) {
     enterPracticeFocus();
     try { window.scrollTo(0, 0); } catch (e) {}
   }
-  // The study rail stays empty until the answer is checked.
+  // The study rail stays empty until the answer is checked; a note field
+  // opened on another question starts closed again.
+  railNoteEditing = null;
   try { railSync(); } catch (e) {}
 }
 
@@ -13660,6 +13823,9 @@ function doResetProgress() {
   closeFlagModal();
   closeSummary();
   document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">&#128256;</div><div class="empty-title">Progress Reset</div><div class="empty-sub">All scores and history cleared. Fresh start!</div></div>';
+  // A note field still open (or a save waiting to run) must not bring a
+  // deleted note back; the rail redraws for the page as it is now.
+  try { railForgetNotes(); railSync(); } catch (e) {}
 }
 
 // â”€â”€ RESET ALL DOMAINS â”€â”€
