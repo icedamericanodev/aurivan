@@ -5222,7 +5222,7 @@ body[data-mock-results="1"] #readinessCard { display: none; }
    Home is a landing page; the dashboard chrome (stats, mindset line) belongs to
    Practice only; the support card and disclaimer sit on Home / About / Help. */
 body[data-tab]:not([data-tab="practice"]) .mindset-strip { display: none; }
-body[data-tab]:not([data-tab="home"]):not([data-tab="about"]) .tipjar-card { display: none; }
+body[data-tab]:not([data-tab="about"]) .tipjar-card { display: none; } /* owner, 19 Oct: support card lives on About, not on Today */
 body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer { display: none; }
 
 /* ── TODAY (Grove Desk step 4, 2026-10-18) ──────────────────────────────────
@@ -5983,7 +5983,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.7</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.8</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6262,7 +6262,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.7';
+const APP_VERSION = 'v12.8';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -14384,6 +14384,16 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Today, your calm home',
+    items: [
+      { cat: 'new', text: 'Today is your calm home: one tap to start or continue today\'s practice, your estimated readiness with a ring for each domain, and your study streak.' },
+      { cat: 'new', text: 'Today suggests one next step: reviews that are due, a note you started, or the area where you can gain most.' },
+      { cat: 'new', text: 'Add your first name in You and Today will greet you by name. It stays on this device.' },
+      { cat: 'improved', text: 'Each domain now shows the same figure on Today and on the Practice page.' }
+    ]
+  },
+  {
+    version: 'v12.7',
     title: 'A calmer Practice page',
     items: [
       { cat: 'improved', text: 'Practice now opens on a calm start page: one button to start or pick up where you left off, your set options behind one row, and each domain one tap away.' },
