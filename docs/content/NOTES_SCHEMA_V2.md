@@ -58,15 +58,68 @@ v2 fixes the structure, not just the wording.
 | 4 | `compare` | `{ columns: [], rows: [{ label, cells: [] }] }` | Optional. Use when 2–4 similar ideas get confused. At most 5 rows. Each row has one cell per column |
 | 5 | `types` | `[{ term, meaning }]` | Optional. Only for a true taxonomy (one kind of thing, several variants). 2–6 items |
 | 6 | `illustration` | unchanged from v1 | Optional. Must be simple, accurate and labeled. Colors use CSS variables |
-| 7 | `example` | string | A realistic scenario with named roles, 30–80 words, ending with what the auditor does |
-| 8 | `isaca_rule` | string | **The IS auditor’s lens.** A reusable principle, at most 50 words |
-| 9 | `exam_traps` | `[{ trap, why }]` (1–2) | The tempting wrong instinct (at most 25 words) and why it is wrong (at most 40 words) |
-| 10 | `key_terms` | `[{ term, definition }]` (2–5) | One line each, at most 25 words. A term appears in `compare`, `types` or `key_terms`, never in more than one |
-| 11 | `analogy` | string | Optional. Never inside the definition |
-| 12 | `memory_aid` | string | Optional, at most 20 words |
+| 7 | `audit_focus` | `{ review: [], evidence: [], recommend }` | Optional for now. **Auditing it:** the IS auditor’s process view. See [audit_focus](#audit_focus-auditing-it) below |
+| 8 | `example` | string | A realistic scenario with named roles, 30–80 words, ending with what the auditor does |
+| 9 | `isaca_rule` | string | **The IS auditor’s lens.** A reusable principle, at most 50 words |
+| 10 | `exam_traps` | `[{ trap, why }]` (1–2) | The tempting wrong instinct (at most 25 words) and why it is wrong (at most 40 words) |
+| 11 | `key_terms` | `[{ term, definition }]` (2–5) | One line each, at most 25 words. A term appears in `compare`, `types` or `key_terms`, never in more than one |
+| 12 | `analogy` | string | Optional. Never inside the definition |
+| 13 | `memory_aid` | string | Optional, at most 20 words |
 
 Target length: 180–380 words per subtopic, counting every text field except
-`compare`, `types` and the illustration.
+`compare`, `types`, the illustration and `audit_focus`. `audit_focus` has its own
+limit (at most 85 words), so adding it never pushes a note over the 380-word target.
+
+## audit_focus: Auditing it
+A short, checklist-style answer to "how would an IS auditor audit this?" It gives
+the process lens that many technical notes otherwise leave to the example alone.
+
+```jsonc
+"audit_focus": {
+  "review":   ["Sample keys from the inventory and compare their age with the approved cryptoperiod", "..."],
+  "evidence": ["Key ceremony and destruction records signed by two custodians", "..."],
+  "recommend": "The IS auditor recommends that the key owner ...; the data owner accepts residual risk."
+}
+```
+
+| Key | Type | Rule |
+|---|---|---|
+| `review` | string[2–3] | **What to review.** Audit steps, 4–14 words each, starting with an audit verb such as Compare, Trace, Sample, Inspect, Observe, Reperform or Confirm. Name what is examined, not how the technology works. No closing period |
+| `evidence` | string[2–3] | **Evidence that it works.** 4–14 words each, a noun phrase naming a record, log, report or test result and what it shows. Prefer evidence that is system-generated, independent or reperformed by the auditor over statements from the auditee. No closing period |
+| `recommend` | string | **Typical recommendation.** One sentence, 12–28 words, containing "recommends". Name who acts (management or an owner role) and, where it helps, who decides or accepts the risk. The auditor never designs, implements or approves the fix |
+
+The whole field is at most 85 words. The keys are exactly these three.
+
+**How it differs from the fields around it** (the linter warns when an item repeats them):
+
+| Field | Answers | Example for key management |
+|---|---|---|
+| `how_it_works` | How does the control or technology work? | Keys have a cryptoperiod |
+| `audit_focus` | What would I examine, and what proves it? | Sample keys and compare their age with the cryptoperiod; key inventory with rotation dates |
+| `example` | What does it look like in one real case? | One story, named roles, ends with the auditor’s action |
+| `isaca_rule` | Which principle do I apply to a new question? | Every key needs a cryptoperiod, even in an HSM |
+
+Rules:
+- **Don’t restate.** Don’t turn a `how_it_works` bullet into "Check that …". Name the
+  audit procedure (sample, compare, trace, reperform) and the artifact instead. Keep
+  `recommend` general: it is the usual recommendation for this subtopic, not a copy
+  of the example’s specific one.
+- **Agree with the bank.** Read the stems and keys of the note’s `practice_ids` first.
+  The recommendation must match what the keyed answers recommend.
+- **Auditor recommends, management decides.** The usual pattern is "The IS auditor
+  recommends that <owner> …; <management or owner> decides / accepts the risk."
+- **Move, don’t duplicate.** When a note gains `audit_focus`, move any audit bullet in
+  `how_it_works` into it, so `how_it_works` stays about the mechanism.
+- **Leave it out when it doesn’t fit.** Pure reference subtopics (a model or
+  framework with no control to test) may skip it. A missing field is a single lint
+  warning, never an error. Roll-out order: `docs/content/AUDIT_FOCUS_PLAN.md`.
+
+Renderers (Wave 3a: not yet shown): the web and mobile renderers skip unknown fields,
+so the field is safe in the data before either shows it. Suggested display: a section
+headed "Auditing it" between the illustration and the example, with the labels
+"What to review", "Evidence that it works" and "Typical recommendation". Mobile’s
+`notes-pack.cjs` copies fields one by one, so it drops `audit_focus` until it adds
+an `auditFocus` mapping; the reading-time estimate should count it once it renders.
 
 ## Writing rules
 - **Original wording only.** Never copy or closely paraphrase the ISACA Review
@@ -78,6 +131,7 @@ Target length: 180–380 words per subtopic, counting every text field except
 - **Agree with the reviewed question bank** (`data/originals/d{N}.json`). Grep it
   for the rule you teach.
 - **The auditor recommends and reports; management decides and owns the risk.**
+  `audit_focus.recommend` always follows this rule.
 - **US English and plain language** (about grade 9). Define every acronym at first
   use in a subtopic.
 - **Formatting:** no emoji, no "Precise term:" closing sentences, no "Trap:"
