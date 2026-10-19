@@ -224,7 +224,7 @@ acceptable when the reference is to the broader topical body of guidance.
 - NIST SP 800-34 (Contingency Planning Guide)
 - NIST SP 800-50 (Building an Information Technology Security Awareness Program)
 - ITIL 4 Incident Management
-- OCC Bulletin 2017-21 (Mergers and Acquisitions)
+- OCC Bulletin 2017-21 (Third-Party Relationships: Frequently Asked Questions to Supplement OCC Bulletin 2013-29) [rescinded 2023]
 - OCC Comptroller's Licensing Manual — Business Combinations
 - GDPR Article 3 (Territorial Scope)
 - GDPR Article 12 (Information and Modalities for Exercise of Rights)
@@ -2001,3 +2001,50 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - COBIT 2019 EDM03.01 (Evaluate risk management)
 - COBIT 2019 APO14.10 (Manage data backup and restore arrangements)
 - GDPR Recital 26 (Anonymous information)
+
+## Added with Wave 3 coverage batch Q13 (Domain 3, Oct 2026)
+
+- PMBOK Guide 6th Edition, Section 6.4 (Estimate Activity Durations)
+- PMBOK Guide 6th Edition, Section 6.6 (Control Schedule)
+- PMBOK Guide 6th Edition, Sections 6.5 (Develop Schedule) and 6.6 (Control Schedule)
+- PMI The Standard for Earned Value Management (2019)
+- COBIT 2019 BAI11.04 (Develop and maintain the project plan)
+- COBIT 2019 BAI11.07 (Monitor and control projects)
+- COBIT 2019 DSS06.02 (Control the processing of information)
+- COBIT 2019 DSS06.04 (Manage errors and exceptions)
+- COBIT 2019 DSS06.05 (Ensure traceability and accountability for information events)
+- COBIT 2019 BAI06.01 (Evaluate, prioritize and authorize change requests)
+- COBIT 2019 BAI03.08 (Execute solution testing)
+- ISO/IEC 27002:2022 Control 5.32 (Intellectual Property Rights)
+- ISO/IEC 42001:2023 Annex A control A.6.2.8 (AI system recording of event logs)
+- ISO/IEC 25010:2023 (Product Quality Model)
+- OWASP ASVS 5.0 V16 (Security Logging and Error Handling)
+
+## Added with Wave 3 coverage batch Q10 (Domain 1, Oct 2026)
+
+- U.S. GAO Government Auditing Standards: 2024 Revision
+- PCI DSS v4.0.1
+- IIA Global Internal Audit Standards (2024), Standard 12.2 (Performance Measurement)
+
+## Added with Wave 3 coverage batch Q14 (Domain 3, Oct 2026)
+
+- ISO/IEC 27002:2022 Control 8.31 (Separation of Development, Test and Production Environments)
+- COBIT 2019 APO10.02 (Select vendors)
+- COBIT 2019 BAI07.08 (Perform a post-implementation review)
+- COBIT 2019 BAI07.04 (Establish a test environment)
+- COBIT 2019 BAI03.04 (Procure solution components)
+
+## Added with Wave 3 coverage batch Q12 (Domain 2, Oct 2026)
+
+- COBIT 2019 APO10.03 (Manage vendor relationships and contracts)
+- COBIT 2019 APO10.04 (Manage vendor risk)
+- ISO/IEC 27002:2022 Control 5.20 (Addressing Information Security within Supplier Agreements)
+- ISO/IEC 27002:2022 Control 5.21 (Managing Information Security in the ICT Supply Chain)
+- COBIT 2019 BAI09.05 (Manage licenses)
+- NIST AI Risk Management Framework (AI RMF 1.0), GOVERN 1.6 (Mechanisms are in place to inventory AI systems)
+- Interagency Guidance on Third-Party Relationships: Risk Management (OCC Bulletin 2023-17, June 2023)
+- NIST SP 800-161 Rev. 1 (Cybersecurity Supply Chain Risk Management Practices for Systems and Organizations)
+- GHG Protocol Corporate Accounting and Reporting Standard (Revised Edition)
+- GDPR Article 13 (Information to be provided where personal data are collected from the data subject)
+- COBIT 2019 Design Guide: Designing an Information and Technology Governance Solution
+- ISO/IEC 33020:2019 (Process Measurement Framework for Assessment of Process Capability)

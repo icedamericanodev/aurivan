@@ -149,9 +149,11 @@
                 "1A1.5"
               ],
               "practice_ids": [
-                "d1_031"
+                "d1_031",
+                "d1_210",
+                "d1_211"
               ],
-              "definition": "The ISACA Code of Professional Ethics is a set of seven conduct principles that every ISACA member and certification holder agrees to follow in professional work.",
+              "definition": "The ISACA Code of Professional Ethics is a set of seven conduct principles that every ISACA member and certification holder agrees to follow.",
               "why_it_matters": "Boards trust audit results only if auditors are honest, careful and discreet. A breach can lead to an investigation and disciplinary action, up to losing the certification.",
               "how_it_works": [
                 "Governance: support sound standards, procedures and controls for information systems and technology.",
@@ -162,6 +164,20 @@
                 "Education: help stakeholders understand governance, risk, control and security, and help the profession grow."
               ],
               "example": "Kenji, an IS auditor at a shipping line, finds that the vendor running its cargo-tracking system still has unrestricted administrator access. The vendor's account manager then offers him a free resort week. Kenji declines, reports the finding in full, and tells the chief audit executive (CAE) about the offer so it is recorded.",
+              "audit_focus": {
+                "review": [
+                  "Compare issued reports with workpapers for significant findings left out",
+                  "Inspect gift and conflict-of-interest declarations for each engagement team",
+                  "Compare staff continuing professional education hours with ISACA requirements"
+                ],
+                "evidence": [
+                  "Workpaper findings log for each engagement",
+                  "Gift register entries showing offers and how they were handled",
+                  "Continuing professional education records from the certification body"
+                ],
+                "recommend": "Have the chief audit executive require full disclosure of significant findings and recorded declarations of any offers.",
+                "decides": "The audit committee decides how to address ethics breaches in the audit function"
+              },
               "isaca_rule": "Ethics questions usually turn on honest, complete reporting. Disclose every significant fact to the people entitled to it, protect information from everyone else, and refuse any reward or role that could sway the IS auditor's judgment.",
               "exam_traps": [
                 {
@@ -453,7 +469,8 @@
                 "1A1.6"
               ],
               "practice_ids": [
-                "d1_170"
+                "d1_170",
+                "d1_215"
               ],
               "definition": "Conflicting standards arise when an IS auditor is bound by more than one set of standards, such as ISACA's IT Audit Framework (ITAF) and Institute of Internal Auditors (IIA) standards.",
               "why_it_matters": "The standards mostly agree but can differ on details, such as documentation or review timing. Without a rule for conflicts, auditors could pick the easiest option and breach a commitment.",
@@ -591,7 +608,9 @@
                 "1A2.1"
               ],
               "practice_ids": [
-                "d1_158"
+                "d1_158",
+                "d1_212",
+                "d1_213"
               ],
               "definition": "Audit types are named for the question an engagement answers and the criteria it tests against, such as laws, efficiency goals, accounting rules or information systems (IS) controls.",
               "why_it_matters": "The audit type decides the criteria, the evidence and what the report can conclude. The wrong type produces a sound answer to a question nobody asked.",
@@ -751,7 +770,8 @@
                 "1A2.3"
               ],
               "practice_ids": [
-                "d1_188"
+                "d1_188",
+                "d1_216"
               ],
               "definition": "Readiness and maturity assessments are non-assurance reviews: readiness checks whether controls are designed for a coming audit, and maturity rates a process's capability against a model.",
               "why_it_matters": "They help management prepare and set improvement targets. They are often mistaken for proof that controls work, which gives boards comfort that was never tested.",
@@ -861,6 +881,20 @@
                 "caption": "Integrated auditing. IT, financial and operational work come together in a single engagement and one report."
               },
               "example": "In an integrated audit of a wine distributor's order-to-cash process, the IS auditor finds that developers can change the pricing engine in production without approval. Ana, the engagement leader, tells the financial auditors not to rely on the system's automated price checks. The team instead tests invoice prices directly against the approved price list, and the report links the change-control gap to revenue risk.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the engagement plan for the interdependence that justified integration",
+                  "Trace ITGC results to the reliance placed on automated controls",
+                  "Sample report findings for a stated link from IT cause to business effect"
+                ],
+                "evidence": [
+                  "Workpapers showing ITGC test results and the resulting substantive sample sizes",
+                  "Workpaper sign-off dates showing ITGC tests came before substantive work",
+                  "Staffing plan naming each discipline and one engagement leader"
+                ],
+                "recommend": "Have the engagement leader test ITGCs first, size substantive testing from the results and tie IT findings to business effects.",
+                "decides": "The chief audit executive decides whether to integrate, based on interdependence"
+              },
               "isaca_rule": "The reason to integrate is interdependence, not cost. Weak IT general controls cut reliance on automated controls and push the IS auditor toward more substantive testing. A truly integrated report connects each IT cause to its business effect.",
               "exam_traps": [
                 {
@@ -1197,6 +1231,20 @@
                 ]
               },
               "example": "An insurer's IS auditor ranks risks for next year's plan. Claims-system outages have ten years of reliable loss data, so she expresses that risk as expected annual loss. A new mobile app has no history, so she rates it on the defined high, medium and low scales used across the register. Both feed one ranking, and she records the assumptions behind each.",
+              "audit_focus": {
+                "review": [
+                  "Re-rate a sample of the audit function's risk ratings; wide gaps mean unclear scales",
+                  "Trace top-ranked risks into the audit plan and confirm they receive priority coverage",
+                  "Compare register update dates with recent mergers, system launches and new regulations"
+                ],
+                "evidence": [
+                  "Approved rating criteria and the dated risk register they were applied to",
+                  "Data sources and assumptions behind each quantitative loss estimate",
+                  "Audit committee minutes approving the risk-based audit plan"
+                ],
+                "recommend": "Have audit management define rating scales, record assumptions and re-rate risks after major business change.",
+                "decides": "The audit committee approves the audit plan built from the ranking"
+              },
               "isaca_rule": "Rank on likelihood and impact together, adjusted for existing controls. Fit the method to each area's data: numbers where history is reliable, defined qualitative scales where it is not. Consistency means shared definitions, not one method forced on every area.",
               "exam_traps": [
                 {
@@ -2920,7 +2968,8 @@
                 "1B3.3"
               ],
               "practice_ids": [
-                "d1_025"
+                "d1_025",
+                "d1_214"
               ],
               "definition": "Interviews and observation are evidence techniques that show how people actually run a process, by asking them about it and by watching it happen.",
               "why_it_matters": "They reveal workarounds and gaps that policies and documents hide. They are also easy to over-trust, because people describe the ideal and behave better while watched.",
@@ -3260,7 +3309,10 @@
               "legacy_ids": [],
               "practice_ids": [
                 "d1_046",
-                "d1_083"
+                "d1_083",
+                "d1_207",
+                "d1_208",
+                "d1_209"
               ],
               "definition": "Online audit techniques are audit tools built into or running alongside a live application that examine transactions while they are processed, not afterward.",
               "why_it_matters": "Some systems process too fast, or leave too little trail, for periodic review. These techniques catch problems as they happen, but each trades coverage against cost and load on production.",
@@ -3438,7 +3490,8 @@
                 "1B4.4"
               ],
               "practice_ids": [
-                "d1_018"
+                "d1_018",
+                "d1_218"
               ],
               "definition": "Artificial intelligence (AI) in the audit means using machine-learning tools to scan large datasets and flag unusual items, while the IS auditor interprets the results and owns the conclusions.",
               "why_it_matters": "AI can find patterns no sample would catch. But output the IS auditor cannot explain, reproduce or validate cannot support a conclusion, and accountability for the opinion never passes to a tool.",
@@ -3496,14 +3549,27 @@
               "definition": "Auditing AI systems means assessing the risks of an organization's own artificial intelligence (AI) models across their life cycle, from training data through production use to retirement.",
               "why_it_matters": "AI models can drift, carry bias from their training data and make decisions nobody can explain. Standard change and access tests miss these risks.",
               "how_it_works": [
-                "Give each life-cycle stage its own procedures, then combine the results into one conclusion.",
-                "Check that training data is representative, free of harmful bias and labeled through a documented, reliable process.",
-                "Confirm the model is reproducible and can be explained at a depth that fits the risk of its decisions.",
-                "In production, look for drift monitoring, tracking of human overrides and, for high-stakes models, an independent challenger model.",
-                "For generative AI that uses tools or data, check controls on inputs, outputs and which tools it may call, to resist prompt injection.",
+                "Training data must be representative, free of harmful bias and labeled through a documented, reliable process.",
+                "The model must be reproducible and explainable at a depth that fits the risk of its decisions.",
+                "In production, drift monitoring and tracking of human overrides catch decay; high-stakes models also need an independent challenger model.",
+                "Generative AI that uses tools or data needs controls on inputs, outputs and which tools it may call, to resist prompt injection.",
                 "At retirement, preserve the model version, data lineage (where data came from) and decision logs so past decisions can be explained."
               ],
-              "example": "A bank's AI model approves small-business loans. After a regional downturn, loan officers there override it twice as often, yet the launch validation report still shows strong accuracy. The IS auditor compares recent applications with the training data, finds the input mix has shifted, and recommends drift monitoring and retraining triggers; the credit risk officer decides.",
+              "example": "A bank's AI model approves small-business loans. After a regional downturn, loan officers there override it twice as often, yet the launch validation report still shows strong accuracy. The IS auditor compares recent applications with the training data, finds the input mix has shifted, and recommends drift monitoring and retraining triggers.",
+              "audit_focus": {
+                "review": [
+                  "Scope procedures for each life-cycle stage, then combine their results into one conclusion",
+                  "Compare recent production decisions with an independent challenger model's results on the same cases",
+                  "Reperform a sample of decisions to test reproducibility"
+                ],
+                "evidence": [
+                  "Production decision logs with inputs, model version and output for each decision",
+                  "Override counts and accuracy trends since launch",
+                  "Source, labeling and bias-test records for each training set"
+                ],
+                "recommend": "Have the model owner add drift monitoring, independent challenge for high-stakes models and record retention at retirement.",
+                "decides": "The business risk owner decides whether the model stays in use"
+              },
               "isaca_rule": "Audit an AI model across its whole life, starting with its training data. Expect reproducibility and explainability, independent challenge for high-stakes models, and preserved records. Frozen test results and vendor reports are inputs, not the full answer.",
               "exam_traps": [
                 {
@@ -4002,7 +4068,8 @@
                 "1B6.4"
               ],
               "practice_ids": [
-                "d1_044"
+                "d1_044",
+                "d1_217"
               ],
               "definition": "Continuous improvement is the part of the quality program that turns review results, feedback and performance data into better audit methods, skills and tools.",
               "why_it_matters": "Finding quality problems is pointless if the same ones keep coming back. Improvement keeps the function's skills and methods in step with the risks it must audit.",
@@ -4829,7 +4896,8 @@
               "name": "Governing Artificial Intelligence and Emerging Technology",
               "legacy_ids": [],
               "practice_ids": [
-                "d2_163"
+                "d2_163",
+                "d2_220"
               ],
               "definition": "Artificial intelligence (AI) governance is the board-approved policy, ownership, inventory and monitoring that keep an organization's AI use lawful, fair, explainable and within risk appetite.",
               "why_it_matters": "AI models can make biased, opaque or wrong decisions at scale, and the organization answers for them even when a vendor built the model.",
@@ -5247,6 +5315,20 @@
                 ]
               },
               "example": "A university's architecture team has hundreds of diagrams but no agreed way to produce or update them. The chief information officer asks whether adopting TOGAF in full will fix this. The IS auditor recommends tailoring the TOGAF development cycle to the team's size, using a Zachman-style grid to spot missing views, and tying both to the project approval process.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the architecture repository for views the Zachman grid says should exist",
+                  "Sample recent projects and trace each to an architecture review",
+                  "Inspect delivered systems against the approved target architecture"
+                ],
+                "evidence": [
+                  "Project approval records showing architecture review sign-off",
+                  "Architecture compliance reviews of systems after delivery",
+                  "Tailored method documents showing which framework steps apply"
+                ],
+                "recommend": "Have the chief information officer tailor the architecture framework to the organization and require architecture review through delivery.",
+                "decides": "The IT steering committee approves the architecture standards projects must follow"
+              },
               "isaca_rule": "A framework is a means to aligned architecture, not proof of it. Tailor it to the organization and judge EA by whether decisions follow it. Zachman classifies what to describe; TOGAF guides how to develop and govern it.",
               "exam_traps": [
                 {
@@ -5618,7 +5700,21 @@
                 "svg": "<svg viewBox='0 0 340 146' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Qualitative analysis uses ratings, semi-quantitative uses calibrated scores, quantitative uses money values'><rect x='6' y='8' width='134' height='38' rx='4' fill='var(--accent-fill)'/><text x='73' y='32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>Qualitative</text><line x1='142' y1='27' x2='157' y2='27' stroke='var(--text2)' stroke-width='1.5'/><path d='M157,23 L164,27 L157,31 Z' fill='var(--text2)'/><rect x='166' y='8' width='168' height='38' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='250' y='32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text)'>High, medium, low</text><rect x='6' y='54' width='134' height='38' rx='4' fill='var(--accent-fill)'/><text x='73' y='78' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>Semi-quantitative</text><line x1='142' y1='73' x2='157' y2='73' stroke='var(--text2)' stroke-width='1.5'/><path d='M157,69 L164,73 L157,77 Z' fill='var(--text2)'/><rect x='166' y='54' width='168' height='38' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='250' y='78' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text)'>Calibrated scores</text><rect x='6' y='100' width='134' height='38' rx='4' fill='var(--accent-fill)'/><text x='73' y='124' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>Quantitative</text><line x1='142' y1='119' x2='157' y2='119' stroke='var(--text2)' stroke-width='1.5'/><path d='M157,115 L164,119 L157,123 Z' fill='var(--text2)'/><rect x='166' y='100' width='168' height='38' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='250' y='124' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text)'>Money: ALE = SLE × ARO</text></svg>",
                 "caption": "Qualitative analysis uses ratings, semi-quantitative uses calibrated scores, and quantitative puts a money value on risk, which needs more and better data."
               },
-              "example": "A university's risk committee wants every IT risk priced in dollars, but loss history exists only for laptop theft. A $2,000 laptop loses 80% of its value per theft, so SLE is $1,600; about 25 thefts a year (ARO 25) give an ALE of $40,000. The IS auditor recommends money values only where data like this exists and calibrated scores elsewhere; management chooses the method.",
+              "example": "A university's risk committee wants every IT risk priced in dollars, but loss history exists only for laptop theft. A $2,000 laptop loses 80% of its value per theft, so SLE is $1,600; about 25 thefts a year (ARO 25) give an ALE of $40,000. The IS auditor recommends money values only where data like this exists and calibrated scores elsewhere.",
+              "audit_focus": {
+                "review": [
+                  "Compare the analysis method chosen for each risk with the loss data available",
+                  "Inspect each claimed FAIR analysis for frequency and magnitude stated as ranges",
+                  "Trace quantitative inputs to their loss data sources"
+                ],
+                "evidence": [
+                  "Loss event records from incident and insurance systems behind each estimate",
+                  "Written scoring guides showing what each score level means in loss terms",
+                  "Risk register entries showing method and assumptions"
+                ],
+                "recommend": "Have the risk manager match each method to the data and decision, and document the inputs behind every money estimate.",
+                "decides": "The risk committee approves the method; management accepts the residual risk"
+              },
               "isaca_rule": "Choose the method that fits the available data and the decision it must support. Quantitative analysis helps only when its inputs are reliable; otherwise it gives false precision.",
               "exam_traps": [
                 {
@@ -5711,7 +5807,8 @@
               "name": "IT Due Diligence in Mergers and Acquisitions",
               "legacy_ids": [],
               "practice_ids": [
-                "d2_128"
+                "d2_128",
+                "d2_218"
               ],
               "definition": "IT due diligence is a risk-based review of an acquisition target's systems, security, data and contracts before a deal, so leaders can price, condition or stop it.",
               "why_it_matters": "Buying a company also buys its breaches, unsupported systems, license gaps and regulatory problems. Issues missed before closing become the buyer's cost and liability.",
@@ -5889,7 +5986,8 @@
               ],
               "practice_ids": [
                 "d2_039",
-                "d2_084"
+                "d2_084",
+                "d2_223"
               ],
               "definition": "Privacy documentation is the set of records showing how personal data is handled: the internal policy, the external notice, processing records and impact assessments.",
               "why_it_matters": "Regulators and individuals judge an organization by what it can show. Missing records, or an assessment done too late, turn good intentions into findings.",
@@ -5937,7 +6035,21 @@
                 "svg": "<svg viewBox='0 0 340 104' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='A privacy policy tells staff how to handle data; a privacy notice tells individuals what is collected and why'><rect x='10' y='10' width='152' height='40' rx='4' fill='var(--accent-fill)'/><text x='86' y='35' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='#ffffff'>Privacy policy</text><rect x='178' y='10' width='152' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='254' y='35' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='var(--text)'>Privacy notice</text><text x='86' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>For staff:</text><text x='86' y='92' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>how to handle data</text><text x='254' y='74' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>For individuals:</text><text x='254' y='92' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>what is collected, why</text></svg>",
                 "caption": "Two documents with two audiences: the policy guides the organization's own people, the notice informs the individuals whose data is used."
               },
-              "example": "A European city transit agency plans to add voice recording and emotion analysis to its customer-service chatbot next quarter. The vendor contract is signed, but no privacy assessment exists. The IS auditor recommends a privacy impact assessment (a DPIA under the GDPR) before any processing starts, and reports that launch should wait for the result. Management decides on timing.",
+              "example": "A European city transit agency plans to add voice recording and emotion analysis to its customer-service chatbot next quarter. The vendor contract is signed, but no privacy assessment exists. The IS auditor recommends a privacy impact assessment (a DPIA under the GDPR) before any processing starts, and reports that launch should wait for the result.",
+              "audit_focus": {
+                "review": [
+                  "Sample recent launches and compare go-live dates with PIA completion dates",
+                  "Compare the RoPA with systems that actually hold personal data",
+                  "Compare the external privacy notice with what the systems actually collect"
+                ],
+                "evidence": [
+                  "Data discovery scan results showing where personal data sits",
+                  "Project gate records showing PIA sign-off before build",
+                  "Approved PIA reports with design changes made in response"
+                ],
+                "recommend": "Have the project management office gate each launch on a completed PIA, and process owners keep their RoPA entries current.",
+                "decides": "Management decides launch timing once the PIA's findings are addressed"
+              },
               "isaca_rule": "A PIA (a DPIA under the GDPR) comes before new or high-risk processing, while its findings can still change the design. The RoPA is the main evidence of what an organization processes. Policies speak to staff; notices speak to individuals.",
               "exam_traps": [
                 {
@@ -5972,7 +6084,8 @@
               ],
               "practice_ids": [
                 "d2_086",
-                "d2_097"
+                "d2_097",
+                "d2_224"
               ],
               "definition": "Privacy by design builds privacy requirements into systems from the start; privacy by default sets them to use only the personal data needed unless users choose more.",
               "why_it_matters": "Privacy added at the end is costly and often impossible to retrofit. Building it in early prevents harm and avoids redesign after launch.",
@@ -6407,7 +6520,8 @@
               "name": "ESG and Climate Disclosure Data",
               "legacy_ids": [],
               "practice_ids": [
-                "d2_179"
+                "d2_179",
+                "d2_219"
               ],
               "definition": "Environmental, social and governance (ESG) data governance applies ownership, quality controls and audit trails to published sustainability figures, such as data-center energy use and emissions.",
               "why_it_matters": "Climate and sustainability disclosures are now required in several jurisdictions and checked by assurance providers and investors. Figures pulled from IT systems without controls can be wrong, inconsistent and impossible to defend.",
@@ -6704,7 +6818,21 @@
                 "Funding is released in stages as validated forecasts change, rather than fixed a year ahead.",
                 "When teams dispute a shared resource, a governance forum with defined decision rights settles it."
               ],
-              "example": "A regional garden-center chain will open 40 new stores next year, but its IT service desk plans staffing by copying this year's headcount, and two teams dispute who gets a shared contractor pool. The IS auditor recommends staffing from business-validated demand forecasts and giving a cross-team forum clear decision rights over shared resources. The chief technology officer agrees.",
+              "example": "A regional garden-center chain will open 40 new stores next year, but its IT service desk plans staffing by copying this year's headcount, and two teams dispute who gets a shared contractor pool. The IS auditor recommends staffing from business-validated demand forecasts and giving a cross-team forum clear decision rights over shared resources.",
+              "audit_focus": {
+                "review": [
+                  "Compare capacity plans with the sales and growth forecasts the business signed off",
+                  "Compare utilization trends with headroom thresholds and procurement lead times",
+                  "Inspect how shared-resource disputes were settled and by whom"
+                ],
+                "evidence": [
+                  "Monitoring reports of utilization against headroom thresholds",
+                  "Purchase records showing lead times for past capacity additions",
+                  "Forum minutes recording capacity decisions and the decision rights used"
+                ],
+                "recommend": "Have IT management plan capacity from validated forecasts, and have the steering committee stage funding and define decision rights for shared resources.",
+                "decides": "Business owners set service priorities and the governance forum allocates shared resources"
+              },
               "isaca_rule": "Capacity follows business demand and value. Plan from validated forecasts, act on thresholds before limits are hit, and settle contested resources in an accountable forum, not by whoever escalates loudest.",
               "exam_traps": [
                 {
@@ -6789,7 +6917,21 @@
                   }
                 ]
               },
-              "example": "A hospital network's new electronic health record went live a year ago. Clinicians still keep paper notes, overtime has doubled, and the steering group's monthly report still shows every milestone green. The IS auditor rates the inaccurate status reporting as the most serious finding, because it blocks correction, and recommends business-set adoption measures, clinician engagement and go/no-go gates for the remaining sites.",
+              "example": "A hospital network's new electronic health record went live a year ago. Clinicians still keep paper notes, overtime has doubled, and the steering committee's monthly report still shows every milestone green. The IS auditor rates the inaccurate status reporting as the most serious finding, because it blocks correction, and recommends business-set adoption measures, clinician engagement and go/no-go gates for the remaining sites.",
+              "audit_focus": {
+                "review": [
+                  "Compare program status reports with actual milestones, costs and adoption data",
+                  "Inspect the stakeholder plan for each group's engagement and feedback channel",
+                  "Trace go/no-go decisions to business-set readiness criteria"
+                ],
+                "evidence": [
+                  "System usage reports showing which staff use the new process and which do not",
+                  "Help desk tickets and overtime records showing the strain since go-live",
+                  "Gate records showing criteria, results and who approved each go-live"
+                ],
+                "recommend": "Have the program sponsor set business adoption measures, engage each stakeholder group and report true status to the steering committee.",
+                "decides": "Business process owners decide go/no-go at each gate from readiness evidence"
+              },
               "isaca_rule": "Major initiatives need both IT change management and enterprise change management, with business-set go/no-go criteria. Inaccurate status reporting to governance is among the most serious failures, because it stops leaders from correcting course.",
               "exam_traps": [
                 {
@@ -6898,7 +7040,21 @@
                 "svg": "<svg viewBox='0 0 340 150' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Work is outsourced to a vendor under an SLA and right to audit, but accountability for the data stays with your organization'><rect x='20' y='8' width='300' height='50' rx='4' fill='var(--accent-fill)'/><text x='170' y='29' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='#ffffff'>Your organization</text><text x='170' y='48' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='#ffffff'>Keeps accountability for data and results</text><line x1='170' y1='62' x2='170' y2='93' stroke='var(--text2)' stroke-width='1.5'/><path d='M166,93 L170,100 L174,93 Z' fill='var(--text2)'/><text x='182' y='85' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>SLA, right to audit</text><rect x='20' y='102' width='300' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='170' y='127' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='var(--text)'>Vendor does the work</text></svg>",
                 "caption": "Outsourcing moves the work to a vendor under contract. Accountability for the data and the result stays with the organization."
               },
-              "example": "A state pension fund's managers propose outsourcing development of the member-benefits system to a near-shore provider, citing a 30% cost cut. Their analysis ignores where member data would be stored, how much system knowledge would leave with retiring staff, and how hard it would be to bring the work back. The IS auditor recommends adding these risks to the analysis and leaves the sourcing decision to management.",
+              "example": "A state pension fund's managers propose outsourcing development of the member-benefits system to a near-shore provider, citing a 30% cost cut. Their analysis ignores where member data would be stored, how much system knowledge would leave with retiring staff, and how hard it would be to bring the work back. The IS auditor recommends adding these risks to the analysis.",
+              "audit_focus": {
+                "review": [
+                  "Trace the sourcing decision to business strategy and a documented risk analysis",
+                  "Compare the retained team's roles and skills with what provider oversight requires",
+                  "Evaluate the exit plan for data return, knowledge transfer and a realistic timeline"
+                ],
+                "evidence": [
+                  "Business case and risk analysis signed by the accountable business owner",
+                  "Board or steering committee minutes recording the decision and accepted risks",
+                  "Exit plan and transition checkpoint records with named owners"
+                ],
+                "recommend": "Have management complete the risk analysis, keep oversight skills in-house and plan an exit before contracting.",
+                "decides": "Senior management chooses the sourcing option and stays accountable"
+              },
               "isaca_rule": "Outsourcing transfers the work, never the accountability. The IS auditor verifies that management weighed every material risk beyond cost; management makes the sourcing decision.",
               "exam_traps": [
                 {
@@ -6938,7 +7094,9 @@
                 "d2_083",
                 "d2_099",
                 "d2_115",
-                "d2_135"
+                "d2_135",
+                "d2_215",
+                "d2_216"
               ],
               "definition": "Vendor due diligence checks a provider before signing, scaled to its risk; the contract and its service level agreement (SLA) then set out the customer's protections.",
               "why_it_matters": "After signing, the customer's leverage drops sharply. Weak checks or vague contracts leave it unable to measure service, audit controls or leave cleanly.",
@@ -7001,7 +7159,8 @@
                 "d2_155",
                 "d2_160",
                 "d2_161",
-                "d2_166"
+                "d2_166",
+                "d2_217"
               ],
               "definition": "Third-party oversight is the customer's ongoing monitoring of a vendor's performance, controls and risk after signing, through to a controlled exit.",
               "why_it_matters": "Vendor risk changes after the contract starts: finances weaken, staff turn over, breaches happen. Oversight that stops at signing misses warning signs.",
@@ -7574,7 +7733,9 @@
               "name": "Capability and Maturity Models",
               "legacy_ids": [],
               "practice_ids": [
-                "d2_168"
+                "d2_168",
+                "d2_221",
+                "d2_222"
               ],
               "definition": "A capability or maturity model rates how well processes are performed and managed on a defined scale, usually 0 to 5, to guide improvement targets.",
               "why_it_matters": "Leaders need to know not only whether a process exists, but how reliable and repeatable it is. Ratings show where to invest and how far to go.",
@@ -7801,7 +7962,9 @@
               "practice_ids": [
                 "d3_045",
                 "d3_085",
-                "d3_121"
+                "d3_121",
+                "d3_152",
+                "d3_153"
               ],
               "definition": "Project roles divide accountability: the sponsor funds the project and owns the benefits, the project manager delivers it, and the steering committee decides escalated issues.",
               "why_it_matters": "When roles are vague, nobody decides, nobody owns the benefits and problems surface late. Exam scenarios often ask who should approve, fund or be accountable.",
@@ -7943,13 +8106,18 @@
                 "3.1.4",
                 "3A1.3"
               ],
+              "practice_ids": [
+                "d3_131",
+                "d3_132",
+                "d3_133"
+              ],
               "definition": "The critical path is the longest chain of dependent tasks through a project; its total duration sets the earliest date the project can finish.",
               "why_it_matters": "Delays on the critical path delay the whole project, while other tasks can slip a little without harm. Knowing which is which tells managers where to focus people and attention.",
               "how_it_works": [
                 "List the tasks, estimate each duration and record which tasks must finish before others can start.",
                 "Add up the durations along every chain of dependent tasks, from start to finish.",
                 "The chain with the longest total time is the critical path, and its tasks have zero slack.",
-                "Tasks off the critical path can slip by their slack without moving the end date.",
+                "Tasks off the critical path can slip by their slack without moving the end date. Early work on them can make overall progress look healthy while critical tasks run late.",
                 "If a task uses up all its slack, its chain becomes critical and the critical path can change.",
                 "Adding resources or overlapping tasks shortens the project only when applied to critical-path tasks."
               ],
@@ -7976,6 +8144,20 @@
                 "caption": "Only the longest chain of dependent tasks decides when the project finishes. Shorter chains have slack and can absorb some delay."
               },
               "example": "A bank's mobile app project has two chains: building the app (30 days) and setting up servers (18 days), so the server chain has 12 days of slack. The servers slip 10 days, and the project manager warns the sponsor that launch will be late. The IS auditor points out that 2 days of slack remain, so the end date holds, and recommends reporting focused on the critical path.",
+              "audit_focus": {
+                "review": [
+                  "Reperform the critical path from task durations and dependencies in the plan",
+                  "Compare reported delays with each task's remaining slack",
+                  "Trace added resources to their tasks and flag any off the critical path"
+                ],
+                "evidence": [
+                  "Scheduling tool export of task dates, dependencies and slack",
+                  "Progress reports showing actual against planned dates",
+                  "Change requests recording schedule and resource decisions"
+                ],
+                "recommend": "Have the project manager report progress against the critical path and route schedule changes through change control.",
+                "decides": "The project sponsor approves any change to the committed end date"
+              },
               "isaca_rule": "Protect the critical path. Its tasks have zero slack, so schedule risk, monitoring and extra resources belong there first. A delay elsewhere matters only once it uses up that task's slack.",
               "exam_traps": [
                 {
@@ -8343,7 +8525,9 @@
               "practice_ids": [
                 "d3_006",
                 "d3_100",
-                "d3_105"
+                "d3_105",
+                "d3_148",
+                "d3_149"
               ],
               "definition": "Investment measures, such as net present value (NPV), payback period, return on investment (ROI) and internal rate of return (IRR), express an investment's financial worth in different ways.",
               "why_it_matters": "Each measure answers a different question, so the wrong one can make a good project look bad. Continue-or-stop decisions also go wrong when past spending clouds judgment.",
@@ -8402,6 +8586,20 @@
                 ]
               },
               "example": "A manufacturer has spent $4 million on a half-built supplier portal. Finishing it will cost $3 million more for benefits worth $2.5 million, while a subscription service would cost $1 million for similar benefits. The chief information officer argues they cannot walk away from $4 million. The IS auditor advises the steering committee to compare only remaining costs and benefits, which favor the subscription.",
+              "audit_focus": {
+                "review": [
+                  "Compare the measure used with the decision's horizon and cash needs",
+                  "Inspect each continue-or-stop case for sunk costs counted as a reason to continue",
+                  "Evaluate whether each cancellation case weighs the impact on live processes"
+                ],
+                "evidence": [
+                  "Actual cost and benefit figures from finance systems",
+                  "Business case with discounted cash flows and hurdle rate",
+                  "Steering committee minutes recording options compared, including stopping"
+                ],
+                "recommend": "Have the program sponsor present forward-looking options, including stopping, with the fitting measure and the effect on live processes.",
+                "decides": "The steering committee decides whether to continue, change or stop the investment"
+              },
               "isaca_rule": "Decide on what lies ahead. Compare the future costs and benefits of each option, including stopping, and ignore money already spent. Choose the financial measure that fits the question being asked.",
               "exam_traps": [
                 {
@@ -8434,7 +8632,9 @@
               "practice_ids": [
                 "d3_015",
                 "d3_077",
-                "d3_130"
+                "d3_130",
+                "d3_150",
+                "d3_151"
               ],
               "definition": "Software acquisition is the controlled process of choosing a supplier and contracting for software, from written requirements through scored proposals to a contract that protects the buyer.",
               "why_it_matters": "A weak selection locks the organization into a poor fit, and a weak contract leaves no remedy or exit if the vendor fails. Critical custom software also needs a plan for vendor collapse.",
@@ -8761,7 +8961,9 @@
               "legacy_ids": [],
               "practice_ids": [
                 "d3_055",
-                "d3_109"
+                "d3_109",
+                "d3_139",
+                "d3_140"
               ],
               "definition": "Object-oriented and component-based development build systems from self-contained, reusable parts, while reverse engineering works backward from existing software to recover its design.",
               "why_it_matters": "Reuse speeds delivery but spreads one flaw to every system sharing a part. Reverse engineering helps replace undocumented legacy systems but can breach license terms. Both need specific controls.",
@@ -8883,7 +9085,10 @@
               "name": "Developing and Releasing Machine Learning Systems",
               "legacy_ids": [],
               "practice_ids": [
-                "d3_038"
+                "d3_038",
+                "d3_136",
+                "d3_137",
+                "d3_138"
               ],
               "definition": "Machine learning (ML) system development builds software that learns its behavior from training data, so the data, the trained model and its monitoring need life-cycle controls like code.",
               "why_it_matters": "A model can pass testing and still make biased or worsening decisions as real-world data changes. Without an owner, validation and monitoring, nobody notices until customers or regulators do.",
@@ -9020,7 +9225,9 @@
               ],
               "practice_ids": [
                 "d3_022",
-                "d3_042"
+                "d3_042",
+                "d3_134",
+                "d3_135"
               ],
               "definition": "Application controls are checks built into a business application that keep its data complete, accurate, valid and authorized as it is entered, processed and reported.",
               "why_it_matters": "Many business errors and frauds pass through applications. Controls at each stage of the data flow stop or catch problems before they reach financial records or customers.",
@@ -9062,6 +9269,20 @@
                 "caption": "Data enters, gets processed and comes out. Each stage has its own controls, and together they protect data integrity end to end."
               },
               "example": "At a distributor, a clerk types a credit memo of 15,000 instead of 150.00, and the application accepts it. The sales manager relies on a monthly report to catch such errors. The IS auditor recommends a range check on memo amounts and supervisor approval for memos above a set value, so errors are stopped before they post.",
+              "audit_focus": {
+                "review": [
+                  "Walk one transaction from entry to report, noting where each control acts",
+                  "Enter invalid test data in a test environment and confirm it is rejected",
+                  "Follow a sample of rejected items through to correction and resubmission"
+                ],
+                "evidence": [
+                  "Signed batch and run-to-run reconciliations, with every difference explained",
+                  "Error log showing when each rejected item was fixed, and any still open",
+                  "Application settings listing the active edit checks and their limits"
+                ],
+                "recommend": "Have the application owner add missing edit checks at entry and reconciliations between processing stages.",
+                "decides": "The business process owner accepts any residual risk of errors"
+              },
               "isaca_rule": "Validate data at the point of entry. Input controls that reject invalid data before processing are cheaper and more effective than finding errors in output. Match each control to the stage it protects.",
               "exam_traps": [
                 {
@@ -9180,12 +9401,14 @@
               ],
               "practice_ids": [
                 "d3_068",
-                "d3_084"
+                "d3_084",
+                "d3_141",
+                "d3_142"
               ],
               "definition": "An audit trail is a reliable, time-ordered record of who did what, when and to which data, designed into a system so actions can be traced and proven.",
               "why_it_matters": "Without trustworthy records, nobody can investigate fraud, prove compliance or hold users accountable. Logs added as an afterthought are often incomplete, editable or impossible to link to a person.",
               "how_it_works": [
-                "Decide during design which security-relevant events to log, such as logins, approvals, privilege changes and changes to key data.",
+                "Decide during design which security-relevant and business events to log, such as logins, approvals, privilege changes and changes to key data with their old and new values.",
                 "Send logs to a central store outside the system they describe, so its own administrators cannot alter them.",
                 "Synchronize system clocks to one time source, so events from different systems line up.",
                 "Tie every logged action to an individual, authenticated identity; shared accounts break that link.",
@@ -9352,12 +9575,13 @@
                 "d3_031",
                 "d3_050",
                 "d3_081",
-                "d3_082"
+                "d3_082",
+                "d3_147"
               ],
               "definition": "Test types and techniques describe what a test is trying to find and how its test cases are chosen, from regression checks to boundary values and security probes.",
               "why_it_matters": "Test time is always limited. The right types and techniques find the most serious defects for the effort, and show whether a passing test suite really proves anything.",
               "how_it_works": [
-                "Regression testing reruns existing tests after any change to confirm that what worked before still works.",
+                "Regression testing reruns existing tests after any change to confirm that unchanged functions, including those relying on changed code, still work.",
                 "Choose a test design approach by how much of the code testers can see: black-box, white-box or gray-box, as listed below.",
                 "Boundary-value analysis tests values on and either side of each limit, where off-by-one errors cluster.",
                 "Risk-based testing concentrates effort where failure would have the greatest impact and is most likely.",
@@ -9398,6 +9622,20 @@
                 ]
               },
               "example": "A water utility changes one rounding rule in its billing engine, and the team lead wants to release it without regression testing because 'only one line changed'. Rounding feeds tax, late fees and payment plans. The IS auditor recommends rerunning the billing regression suite, and asks that test effort be weighted toward the calculations where an error would hit the most customers.",
+              "audit_focus": {
+                "review": [
+                  "Trace high-risk functions to the test cases that cover them",
+                  "Sample release-log changes and trace each to a regression run",
+                  "Compare coverage figures with mutation-test results before relying on coverage"
+                ],
+                "evidence": [
+                  "Regression run reports for each release, with failures resolved before go-live",
+                  "Mutation scores showing the share of planted faults the tests caught",
+                  "Defect logs with root causes, to tell better detection from worse code"
+                ],
+                "recommend": "Have the test manager set risk-based test plans, require regression runs for every change and track mutation scores.",
+                "decides": "The business process owner accepts residual risk from untested functions"
+              },
               "isaca_rule": "Test effort follows risk: concentrate it where failure impact and likelihood are highest. Every change gets regression testing, and coverage alone proves only which code ran, not whether the tests would catch a defect.",
               "exam_traps": [
                 {
@@ -9444,7 +9682,9 @@
               "legacy_ids": [],
               "practice_ids": [
                 "d3_051",
-                "d3_079"
+                "d3_079",
+                "d3_145",
+                "d3_146"
               ],
               "definition": "Performance and specialized tests check how a system behaves in real conditions: under heavy or long load, with large data volumes, beside other systems, and with real users.",
               "why_it_matters": "A system can pass every functional test and still collapse on payday or slow down after a week. These tests expose failures that appear only at scale or over time.",
@@ -9508,7 +9748,9 @@
                 "3B1.3"
               ],
               "practice_ids": [
-                "d3_010"
+                "d3_010",
+                "d3_143",
+                "d3_144"
               ],
               "definition": "Test environments and test data are the separate systems and data sets used for testing; they should resemble production closely without exposing real production data.",
               "why_it_matters": "Tests in an unrealistic environment give false confidence. Copies of live personal data in loosely controlled test systems are a common cause of data breaches.",
@@ -9516,7 +9758,7 @@
                 "Keep development, test and production environments separate, with different access rights and no developer write access to production.",
                 "Make the test environment production-like in configuration and software versions, and in data volume for performance work.",
                 "Mask or pseudonymize personal data before it is extracted from production, not after it lands in test.",
-                "Use synthetic data where real patterns are not needed.",
+                "Use synthetic data where real patterns are not needed, or to create cases that production data does not contain.",
                 "Control test data like any sensitive data set: owner approval, restricted access and deletion when testing ends."
               ],
               "compare": {
@@ -9829,6 +10071,20 @@
                 ]
               },
               "example": "A ride-hailing app's reliability target allows 40 minutes of failed requests a month. By mid-month, three faulty releases have used 55 minutes, yet the product team plans two more feature releases that week. The IS auditor notes that the agreed error-budget policy pauses non-essential releases once the budget is spent, and recommends that the release manager enforce it and put reliability fixes first.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the last rollback test's duration and code, data and configuration restored",
+                  "Trace a failed staged release to when it was halted and rolled back",
+                  "Compare error-budget use with releases shipped after the budget ran out"
+                ],
+                "evidence": [
+                  "Deployment tool logs showing rollout stages, halts and rollbacks with times",
+                  "Error rates by rollout stage from monitoring",
+                  "Change tickets showing releases approved during a budget freeze"
+                ],
+                "recommend": "Have the release manager stage risky releases, halt on agreed error limits and test rollback plans that preserve new data.",
+                "decides": "The service owner decides when non-essential releases resume after a budget freeze"
+              },
               "isaca_rule": "When a release starts failing, stop the spread and restore service first, following the tested playbook; root cause comes after. A rollback plan counts only if it is tested, time-bound and restores data and configuration while preserving valid new data.",
               "exam_traps": [
                 {
@@ -10196,12 +10452,13 @@
               "practice_ids": [
                 "d3_016",
                 "d3_066",
-                "d3_097"
+                "d3_097",
+                "d3_154"
               ],
               "definition": "A post-implementation review (PIR) checks, once a system has run stably for a while, whether it delivered the business case benefits and works as designed.",
               "why_it_matters": "Projects are approved on promised benefits. Without a review, nobody learns whether the money was well spent, and benefit shortfalls and weak controls go unnoticed.",
               "how_it_works": [
-                "Schedule the review after a period of stable operation, often a few months, so the data reflects normal use.",
+                "Schedule the review after a period of stable operation, often a few months, so the data reflects normal use and any peak period the benefits depend on.",
                 "Compare realized benefits with the targets and baselines in the approved business case.",
                 "Check that the system meets its requirements and that its designed controls operate.",
                 "Scale the depth of the review to the significance and risk of the change, as set out in policy.",
@@ -10606,7 +10863,21 @@
                 "svg": "<svg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='OSI model seven-layer pyramid from Physical at the base to Application at the peak'><rect x='135' y='10' width='130' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>7 · Application</text><rect x='115' y='50' width='170' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='72' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>6 · Presentation</text><rect x='95' y='90' width='210' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='112' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>5 · Session</text><rect x='75' y='130' width='250' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='152' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>4 · Transport</text><rect x='55' y='170' width='290' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='192' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>3 · Network</text><rect x='35' y='210' width='330' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='232' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>2 · Data Link</text><rect x='15' y='250' width='370' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='272' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>1 · Physical</text></svg>",
                 "caption": "The seven OSI layers, from Physical at the base to Application at the top. Layers 1 to 4 move data across the network; layers 5 to 7 prepare it for the application."
               },
-              "example": "An IS auditor at an insurer maps a network control list to the TCP/IP layers. Firewall port rules sit at transport and the web application firewall at application, but remote offices have no link-layer control: any device plugged into a wall port joins the network. The IS auditor reports the gap to the network manager, who decides on a fix.",
+              "example": "An IS auditor at an insurer maps a network control list to the TCP/IP layers. Firewall port rules sit at transport and the web application firewall at application, but remote offices have no link-layer control: any device plugged into a wall port joins the network. The IS auditor reports the gap to the network manager.",
+              "audit_focus": {
+                "review": [
+                  "Inspect network diagrams and device settings for any layer left with no control",
+                  "Evaluate whether an application-layer control inspects content threats such as attachments",
+                  "Inspect how traffic between sites is encrypted for legacy applications"
+                ],
+                "evidence": [
+                  "Firewall, mail gateway and switch port configurations showing what each inspects",
+                  "Mail gateway logs showing attachments scanned and blocked",
+                  "Gateway router settings showing encrypted tunnels between the offices"
+                ],
+                "recommend": "Have the network manager add a control at each uncontrolled layer, including content inspection and Internet Protocol Security (IPsec) tunnels between offices.",
+                "decides": "The system owner accepts the risk of any layer left uncontrolled"
+              },
               "isaca_rule": "Map each control to the layer where it acts, then look for layers with no control at all. A control can judge only what its own layer can see, so match each control to the threat's layer; content threats need application-layer controls.",
               "exam_traps": [
                 {
@@ -11489,7 +11760,21 @@
                   }
                 ]
               },
-              "example": "A university's nightly student-fee file to its finance system has a rejected-records queue of 1,400 items, some eight months old. Control totals compare only the records that posted, so the gap never shows. The IS auditor recommends reconciling the sender's totals to posted plus rejected records, and naming an owner who clears the queue within set days. The bursar agrees.",
+              "example": "A university's nightly student-fee file to its finance system has a rejected-records queue of 1,400 items, some eight months old. Control totals compare only the records that posted, so the gap never shows. The IS auditor recommends reconciling the sender's totals to posted plus rejected records, and naming an owner who clears the queue within set days.",
+              "audit_focus": {
+                "review": [
+                  "Reperform the reconciliation for a sample of runs, using sender and receiver totals",
+                  "Reperform a retry in testing and confirm the receiver rejects the repeat",
+                  "Trace recent patches to interface regression test results dated before go-live"
+                ],
+                "evidence": [
+                  "Receiver error logs listing duplicates blocked before posting",
+                  "Suspense queue aging report showing item ages and owner",
+                  "Signed reconciliations of sent, posted and rejected records, with differences explained"
+                ],
+                "recommend": "Have the interface owner reconcile every run at the receiver, reject duplicates by identifier and regression-test interfaces before go-live.",
+                "decides": "The business process owner decides how to treat unresolved differences"
+              },
               "isaca_rule": "Reconcile at the receiving end and act on every exception. Prevent duplicates before posting with unique message identifiers, because reconciliation only finds them afterward; sequence checks reveal gaps. Job status is never proof of completeness.",
               "exam_traps": [
                 {
@@ -11740,7 +12025,21 @@
                   }
                 ]
               },
-              "example": "A ticketing platform's monthly outages fell from six to two, but each now lasts five hours instead of one. The service owner calls the platform more available. The IS auditor shows that monthly downtime rose from six to ten hours: failures are rarer, but repairs are slower. She recommends tracking MTBF and MTTR together, and the operations director agrees.",
+              "example": "A ticketing platform's monthly outages fell from six to two, but each now lasts five hours instead of one. The service owner calls the platform more available. The IS auditor shows that monthly downtime rose from six to ten hours: failures are rarer, but repairs are slower. She recommends tracking MTBF and MTTR together.",
+              "audit_focus": {
+                "review": [
+                  "Compare the availability target with the business impact analysis for the service",
+                  "Reperform the availability calculation from incident records over agreed service hours",
+                  "Compare synthetic transaction failures with component dashboards for outages the dashboards missed"
+                ],
+                "evidence": [
+                  "Synthetic transaction results showing whether customers could complete work",
+                  "Incident records with start, end and repair times for each outage",
+                  "Maintenance records showing planned outages excluded from reported availability"
+                ],
+                "recommend": "Have the service owner add synthetic transaction monitoring and report availability over the hours the business needs it.",
+                "decides": "Business process owners set the availability target from business impact"
+              },
               "isaca_rule": "Availability is defined by the business and measured as users experience it, over the hours they need the service. When component dashboards report normal service but customers cannot complete transactions, trust the end-to-end measure.",
               "exam_traps": [
                 {
@@ -11759,7 +12058,7 @@
                 },
                 {
                   "term": "Planned downtime",
-                  "definition": "Agreed outage time for maintenance; it counts against availability unless the agreement excludes it."
+                  "definition": "Agreed outage time for maintenance; exclude it from availability only when it falls outside the hours the business needs the service."
                 },
                 {
                   "term": "Service hours",
@@ -11865,8 +12164,7 @@
                 "Priority combines business impact and urgency, so exposed customer data outranks a broken office printer.",
                 "Agents restore service first, using a workaround if needed, and raise a problem record when the cause is unknown.",
                 "Incidents beyond the desk's skill or authority are escalated, and calls that look like security incidents go to the response team.",
-                "An incident closes only after the user confirms that service works.",
-                "Effectiveness shows in outcome measures, such as first-contact resolution and reopen rates, not speed or volume alone."
+                "An incident closes only after the user confirms that service works."
               ],
               "compare": {
                 "columns": [
@@ -11898,6 +12196,20 @@
                 ]
               },
               "example": "A warehouse scanning outage at a logistics company has passed its four-hour resolution target, and the service desk agent keeps retrying fixes alone. The IS auditor finds no functional escalation to the network team and no hierarchical escalation to the service manager when the target was missed. She recommends defined escalation triggers, and the IT service manager updates the procedure.",
+              "audit_focus": {
+                "review": [
+                  "Sample closed tickets for the user's confirmation that service works",
+                  "Trace security-related calls from the desk log to the incident response team",
+                  "Evaluate desk metrics for reopen rates and first-contact resolution, not only speed"
+                ],
+                "evidence": [
+                  "Ticket history showing escalations, priority changes and user sign-off",
+                  "Reset logs showing out-of-band caller checks before each multi-factor authentication (MFA) reset",
+                  "Priority matrix scoring business impact, and overrides raising live incidents at once"
+                ],
+                "recommend": "Have the IT service manager require user confirmation before closure and out-of-band caller verification before credential resets.",
+                "decides": "Business process owners set priority rules and service targets with IT"
+              },
               "isaca_rule": "For an ordinary outage, restore service first, even by workaround, then pursue the cause through problem management. When harm is still spreading, as in a security incident, contain before restoring. Judge the desk by outcomes such as reopen rates.",
               "exam_traps": [
                 {
@@ -12055,7 +12367,21 @@
                   }
                 ]
               },
-              "example": "A broadband provider's problem team closes a recurring router-crash problem as soon as a firmware fix is deployed. Two weeks later the crashes resume. The IS auditor recommends reopening the problem and closing problems only after monitoring shows the incidents have stopped for an agreed period. The service owner agrees.",
+              "example": "A broadband provider's problem team closes a recurring router-crash problem as soon as a firmware fix is deployed. Two weeks later the crashes resume. The IS auditor recommends reopening the problem and closing problems only after monitoring shows the incidents have stopped for an agreed period.",
+              "audit_focus": {
+                "review": [
+                  "Group six months of incidents by symptom to find repeats lacking a problem record",
+                  "Sample closed problems and flag any whose cause stops at human error",
+                  "Confirm known errors and workarounds are in the knowledge base the desk uses"
+                ],
+                "evidence": [
+                  "Impact-weighted incident trend reports linking repeats to shared root causes",
+                  "Problem records with timelines rebuilt from monitoring data",
+                  "Change records proving each permanent fix was approved and verified"
+                ],
+                "recommend": "Have the problem manager open a problem record whenever incidents recur and close it only once the fix holds.",
+                "decides": "The IT steering committee sets priorities for permanent fixes"
+              },
               "isaca_rule": "Recurring incidents signal a problem. Find the common root cause from facts before choosing a permanent fix, look past human error to the process that allowed it, and report trends by business impact so management can act.",
               "exam_traps": [
                 {
@@ -12453,6 +12779,20 @@
                 "caption": "The log pipeline: collect from every layer, store where they cannot be altered, then monitor and analyze. Skipping the last two steps means the logs detect nothing."
               },
               "example": "A card issuer uses a software as a service (SaaS) customer-service platform whose vendor keeps activity logs for seven days. The issuer's rules require one year for records of agent access to card data. The IS auditor recommends exporting those logs daily to the issuer's own log store and adding retention terms to the contract. The vendor manager arranges both.",
+              "audit_focus": {
+                "review": [
+                  "Compare the system inventory with log sources reaching the central log store",
+                  "Sample privileged commands and trace each to a named individual",
+                  "Match how long each kind of log is actually kept to what law requires"
+                ],
+                "evidence": [
+                  "Log source coverage report showing silent systems and segments",
+                  "Time server monitoring alerts and clock drift readings across systems",
+                  "Sample log entries showing card and personal data masked"
+                ],
+                "recommend": "Have the IT operations manager bring every system into logging, apply approved retention per log type and mask sensitive fields.",
+                "decides": "The data owner, with legal and compliance advice, approves retention periods"
+              },
               "isaca_rule": "Coverage first, then retention, then protection. Every layer logs, privileged actions tie to a named person, clocks agree, and each log type is kept as long as law and business require. Capture what is needed and mask what is sensitive.",
               "exam_traps": [
                 {
@@ -12764,6 +13104,20 @@
                 "caption": "Two families of databases. Relational stores data in linked tables with a fixed structure; NoSQL gives up some of that structure to handle flexible or unstructured data."
               },
               "example": "A ride-hailing company plans to keep driver payout balances in a NoSQL key-value store with eventual consistency. The IS auditor notes that two copies could briefly show different balances, so a payout might be made twice. She asks the engineering lead to show how the design prevents this, such as a strongly consistent store for balances, before go-live.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the NoSQL design for where the application validates record fields",
+                  "Evaluate whether financial balances sit in a store with full transaction guarantees",
+                  "Compare legacy databases with vendor end-of-support dates and the trained staff on hand"
+                ],
+                "evidence": [
+                  "Query results showing records with missing or invalid fields",
+                  "Vendor support notices with end-of-support dates",
+                  "Staffing records listing people trained on the legacy database"
+                ],
+                "recommend": "Have the application owner add validation where the database has no fixed schema and plan for legacy support gaps.",
+                "decides": "The data owner accepts residual integrity risk; senior management funds legacy replacement"
+              },
               "isaca_rule": "Choose the model by workload, then follow the controls. Where the database enforces structure, test its constraints and access; where it does not, test validation in the application. For legacy models, current risk comes from vendor support status and scarce skills.",
               "exam_traps": [
                 {
@@ -12911,6 +13265,20 @@
                 ]
               },
               "example": "Two booking agents at a ferry operator sell the last cabin seconds apart, and both customers get confirmations. The IS auditor finds the reservation program reads availability, then writes the sale, without locking the record. She reports a missing isolation control and recommends locking within a transaction. The systems owner schedules the fix.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the database schema for primary keys, foreign keys and enforced constraints",
+                  "Trace interface loads that write straight to tables and bypass screen checks",
+                  "Reperform a transfer that fails midway in testing and confirm nothing commits"
+                ],
+                "evidence": [
+                  "Auditor-run query results counting orphan records and invalid values",
+                  "Database catalog export listing keys, constraints and their enforcement status",
+                  "Reconciliation reports for denormalized copies, with mismatches fixed"
+                ],
+                "recommend": "Have the database administrator move integrity rules into the database and schedule reconciliations for duplicated data.",
+                "decides": "The data owner approves any design that stores the same data twice for speed"
+              },
               "isaca_rule": "Enforce integrity as close to the data as possible: keys, constraints and transactions in the database rather than in each program. Where a design trades integrity for speed, expect compensating checks such as reconciliations.",
               "exam_traps": [
                 {
@@ -12959,8 +13327,7 @@
                 "Checkpoints periodically write changes to disk, so crash recovery starts from a known point.",
                 "After a crash, the database undoes uncommitted work from before-images and redoes committed work from after-images.",
                 "After media loss, the last backup is restored and the log is rolled forward to the latest or a chosen point.",
-                "Backups and log copies run at least as often as the RPO requires and are stored apart from the database.",
-                "Scheduled restore tests prove both the recovery time and the data recovered."
+                "Backups and log copies run often enough to meet the recovery point objective (RPO), the most data loss the business accepts, and are stored apart from the database."
               ],
               "compare": {
                 "columns": [
@@ -12995,7 +13362,21 @@
                   }
                 ]
               },
-              "example": "At 2 p.m., a faulty script at an online grocer overwrites 40,000 delivery addresses. The last full backup is from midnight, and the transaction log is intact. The IS auditor reviews the database administrator's plan and finds it sound: restore the backup to a separate server, roll the log forward to 1:59 p.m., verify, then copy back the correct addresses. The operations director approves.",
+              "example": "At 2 p.m., a faulty script at an online grocer overwrites 40,000 delivery addresses. The last full backup is from midnight, and the transaction log is intact. The IS auditor reviews the database administrator's plan and finds it sound: restore the backup to a separate server, roll the log forward to 1:59 p.m., verify, then copy back the correct addresses.",
+              "audit_focus": {
+                "review": [
+                  "Compare log-copy frequency with each RPO and inspect where copies are stored",
+                  "Observe a scheduled restore test, timing it and checking the data recovered",
+                  "Inspect the recovery plan for documented options trading recovery speed against completeness"
+                ],
+                "evidence": [
+                  "Restore test results showing recovery time and data checked",
+                  "Log-copy job history with storage locations separate from the database",
+                  "Recovery procedure covering rollback, roll-forward and restore"
+                ],
+                "recommend": "Have the database administrator copy logs to separate storage within the RPO and test restores on a schedule.",
+                "decides": "The business process owner signs off on the chosen path and any data lost"
+              },
               "isaca_rule": "Backup and log-copy frequency must meet the RPO, or the possible loss exceeds what the business accepted. When recovery paths trade data loss against time, the IS auditor reports each path's impact and the business owner decides.",
               "exam_traps": [
                 {
@@ -13155,7 +13536,21 @@
                   }
                 ]
               },
-              "example": "A hospital's BIA gives the pharmacy dispensing process one 'high impact' score. The IS auditor recommends scoring each process at one hour, one day and one week, because harm grows as an outage continues and the steepest rise sets recovery priority. The continuity manager rescores them, and the executive committee approves the tiers.",
+              "example": "A hospital's BIA gives the pharmacy dispensing process one 'high impact' score. The IS auditor recommends scoring each process at one hour, one day and one week, because harm grows as an outage continues and the steepest rise sets recovery priority. The continuity manager rescores them.",
+              "audit_focus": {
+                "review": [
+                  "Compare the BIA's process list with the organization's full list of business processes",
+                  "Confirm that process owners, not IT, signed off on each impact rating",
+                  "Trace how fast each process must resume, per the BIA, into recovery plans"
+                ],
+                "evidence": [
+                  "Owner-signed BIA questionnaires scoring impact at several outage lengths",
+                  "Approved impact criteria applied the same way across all business units",
+                  "Dependency records reconciled to the supplier list and IT asset inventory"
+                ],
+                "recommend": "Have the business continuity manager add missing processes, impacts, dependencies and minimum resources, rated at peak.",
+                "decides": "Senior management approves the priority tiers (critical, vital, sensitive, nonsensitive)"
+              },
               "isaca_rule": "Start from business processes, measure harm over time at worst-case timing, and set likelihood aside. Criticality is a business judgment: process owners and senior management decide it, and the IS auditor evaluates the method and advises.",
               "exam_traps": [
                 {
@@ -13448,7 +13843,21 @@
                   }
                 ]
               },
-              "example": "A food processor runs its plant-scheduling system on two server clusters in separate buildings, and IT reports no single point of failure. The IS auditor finds both buildings take power through one shared switchgear room, reports the common-cause exposure and asks for a test with one power feed cut. The plant director decides.",
+              "example": "A food processor runs its plant-scheduling system on two server clusters in separate buildings, and IT reports no single point of failure. The IS auditor finds both buildings take power through one shared switchgear room, reports the common-cause exposure and asks for a test with one power feed cut.",
+              "audit_focus": {
+                "review": [
+                  "Trace each critical service's path for shared power, cable routes and providers",
+                  "Observe a controlled fault-injection test of a critical dependency",
+                  "Inspect the degraded-mode procedure for which features stop and who triggers it"
+                ],
+                "evidence": [
+                  "Past fault-injection and failover test results, with recovery times and issues found",
+                  "Facility and carrier records showing separate power feeds and cable routes",
+                  "Architecture records pairing each single point of failure"
+                ],
+                "recommend": "Have the infrastructure manager remove shared dependencies, add circuit breakers and alert on failed redundant units with a repair deadline.",
+                "decides": "The business owner decides which features may stop in degraded mode"
+              },
               "isaca_rule": "Redundancy counts only when it is independent and tested. The IS auditor looks for hidden shared dependencies, such as one cable route, power grid or provider, and asks for fault-injection or failover evidence before accepting a resilience claim.",
               "exam_traps": [
                 {
@@ -13555,7 +13964,21 @@
                   "meaning": "Mirrored pairs that are then striped; fast, and survives one failure in each pair."
                 }
               ],
-              "example": "A call center buys internet circuits from two carriers, but both enter the building through one duct from the street. Roadworks cut the duct, and both circuits fail. The IS auditor reports the shared path and recommends last-mile protection, such as a second building entry or a wireless backup link. The facilities and network managers decide.",
+              "example": "A call center buys internet circuits from two carriers, but both enter the building through one duct from the street. Roadworks cut the duct, and both circuits fail. The IS auditor reports the shared path and recommends last-mile protection, such as a second building entry or a wireless backup link.",
+              "audit_focus": {
+                "review": [
+                  "Compare each redundancy control with the failure it is meant to cover",
+                  "Trace both carrier circuits from the building to the carrier network",
+                  "Observe a cluster failover test while the surviving node carries full load"
+                ],
+                "evidence": [
+                  "Cluster logs showing node load and past takeovers",
+                  "Carrier route maps showing separate paths and building entries",
+                  "Backup records showing point-in-time copies apart from RAID arrays"
+                ],
+                "recommend": "Have the infrastructure manager pair single points of failure with independent automatic takeover units, use double-parity RAID for long rebuilds and keep point-in-time backups.",
+                "decides": "The business owner decides how much redundancy each service warrants"
+              },
               "isaca_rule": "Name the failure first, then the control: RAID for disk failure, clustering for server failure, diverse routing for cable failure, a distant second site for site loss, and backups for lost or damaged data. High availability in one site is not disaster recovery. Untested redundancy proves nothing.",
               "exam_traps": [
                 {
@@ -13699,7 +14122,7 @@
                 "d4_304"
               ],
               "definition": "A backup scheme is the pattern of full, incremental and differential copies an organization takes; rotation is the schedule for reusing and retiring backup media.",
-              "why_it_matters": "The scheme sets how long backups take, how much storage they use and how long a restore will take. A poor choice can make restores miss the recovery time objective (RTO) or leave no clean copy.",
+              "why_it_matters": "The scheme sets backup time, storage use and restore time. A poor choice can make restores miss the recovery time objective (RTO) or leave no clean copy.",
               "how_it_works": [
                 "Schemes are combined, such as a weekly full backup with daily incrementals, trading backup time against restore time.",
                 "Backups run at least as often as the recovery point objective (RPO) requires.",
@@ -13754,6 +14177,20 @@
                 "caption": "Three backup schemes side by side: full copies everything, incremental copies what changed since the last backup, differential copies what changed since the last full backup."
               },
               "example": "A payroll bureau keeps 14 days of backups. Its incident records show corrupted tax codes usually go unnoticed for about five weeks, until employees query their pay. The IS auditor reports that a clean copy may no longer exist when corruption is found, and recommends retention longer than the usual detection time. The operations manager estimates the cost.",
+              "audit_focus": {
+                "review": [
+                  "Compare backup schedules and retention settings with each system's RPO and retention requirement",
+                  "Inspect each copy's location and how the immutable or offline copy is protected",
+                  "Observe a sample restore, or rerun one, and time it against the RTO"
+                ],
+                "evidence": [
+                  "Restore test records showing time taken and data checked against the source",
+                  "Backup job logs showing completion, with every failure followed up",
+                  "Offsite custody receipts and immutability settings for the protected copy"
+                ],
+                "recommend": "Have IT operations align backups with recovery targets, keep one copy offsite and test restores regularly.",
+                "decides": "The data owner accepts any residual risk"
+              },
               "isaca_rule": "Backups are designed from business targets: frequency from the RPO, restore speed from the RTO, and retention from legal and corruption-detection needs. At least one copy must be offsite and one out of ransomware's reach.",
               "exam_traps": [
                 {
@@ -13835,7 +14272,21 @@
                   }
                 ]
               },
-              "example": "A logistics firm couriers backup tapes to a vault nightly, but its business impact analysis (BIA) now sets a one-hour RPO for bookings. The IS auditor reports that a site loss could destroy a day of bookings. The chief information officer prices vaulting, journaling and asynchronous replication, each with isolated backups. The operations director, as RPO owner, chooses.",
+              "example": "A logistics firm couriers backup tapes to a vault nightly, but its business impact analysis (BIA) now sets a one-hour recovery point objective (RPO) for bookings. The IS auditor reports that a site loss could destroy a day of bookings. The chief information officer prices vaulting, journaling and asynchronous replication, each with isolated backups.",
+              "audit_focus": {
+                "review": [
+                  "Compare each copy method's possible data loss with the system's RPO",
+                  "Observe a restore with journal replay, timed against the recovery time objective (RTO)",
+                  "Inspect whether isolated, point-in-time backups exist alongside replication"
+                ],
+                "evidence": [
+                  "Replication and journaling logs showing lag and gaps",
+                  "Backup records showing immutable point-in-time copies",
+                  "Business impact analysis records showing the approved RPO"
+                ],
+                "recommend": "Have the infrastructure manager match each copy method to the RPO, test restore time against the RTO and keep isolated backups.",
+                "decides": "The business owner sets the acceptable data loss and approves any trade-off with speed"
+              },
               "isaca_rule": "Pick the technique from the RPO and the distance needed, not from what is newest. Every network copy also copies mistakes and attacks, so it never replaces isolated, point-in-time backups.",
               "exam_traps": [
                 {
@@ -13898,7 +14349,21 @@
                 "Backups held by a vendor or cloud provider are encrypted with keys the organization controls.",
                 "Data residency rules are confirmed before choosing a cloud backup region; encryption does not change where data legally resides."
               ],
-              "example": "A mining company sends backup tapes to a vault 400 miles away to avoid shared hazards, but retrieval takes two days against a 12-hour RTO. The IS auditor reports the conflict and recommends a second copy closer by, still outside the hazard zone, or network vaulting. The chief information officer prices the options, and the business owner decides.",
+              "example": "A mining company sends backup tapes to a vault 400 miles away to avoid shared hazards, but retrieval takes two days against a 12-hour RTO. The IS auditor reports the conflict and recommends a second copy closer by, still outside the hazard zone, or network vaulting. The chief information officer prices the options.",
+              "audit_focus": {
+                "review": [
+                  "Sample tapes from the catalog and locate them in the vault, and vice versa",
+                  "Trace a sample of media movements through signed handover receipts",
+                  "Compare flood and power-grid maps for the vault and the data center"
+                ],
+                "evidence": [
+                  "Retrieval test records timing request to media on site against the RTO",
+                  "Cloud backup settings showing customer-managed keys and the storage region",
+                  "Assurance reports for every facility holding the media"
+                ],
+                "recommend": "Have IT operations reconcile the vault regularly, keep a catalog offsite and control keys for vendor-held backups.",
+                "decides": "The business owner confirms residency and recovery needs before any storage contract"
+              },
               "isaca_rule": "Offsite storage is a control only when distance, custody, inventory and security equal to the primary site are all proven. When a third party holds the data, the organization still controls the encryption keys and the legal location.",
               "exam_traps": [
                 {
@@ -14456,7 +14921,21 @@
                   "meaning": "Tracks progress across all teams and reports to management and stakeholders."
                 }
               ],
-              "example": "A manufacturer has run from its hot site for five weeks after a warehouse fire, and the contract allows six. No one owns the move back to the rebuilt site. The IS auditor recommends assigning the relocation team now, with a tested cutover plan and data synchronization steps. The chief operating officer approves the return date.",
+              "example": "A manufacturer has run from its hot site for five weeks after a warehouse fire, and the contract allows six. No one owns the move back to the rebuilt site. The IS auditor recommends assigning the relocation team now, with a tested cutover plan and data synchronization steps.",
+              "audit_focus": {
+                "review": [
+                  "Test each invocation trigger by whether two readers would reach the same decision",
+                  "Confirm a named authority and alternate can invoke without group agreement",
+                  "Observe an alternate, not the usual expert, run the procedures in a test"
+                ],
+                "evidence": [
+                  "Test reports timing invocation and recovery against the RTO",
+                  "Recovery schedule mapping dependencies, workstreams and their named leads",
+                  "Delegation records naming the invocation authority and alternates"
+                ],
+                "recommend": "Have the business continuity manager set measurable triggers, document named delegates and give each parallel workstream its own lead.",
+                "decides": "The plan's named executive, or the delegate, declares the disaster"
+              },
               "isaca_rule": "Invoke fast, on measurable criteria, under authority named in advance. Then restore by business priority, adjusted for technical dependencies. The IS auditor evaluates triggers, delegation, procedure detail and team structure, because a weakness in any one can delay recovery beyond the RTO.",
               "exam_traps": [
                 {
@@ -14956,6 +15435,20 @@
                 "The AUP covers employees, contractors and temporary staff, and each user acknowledges it before getting access."
               ],
               "example": "A retailer's marketing team wants to train a sales model on customer support call recordings collected to resolve complaints. The recordings are well encrypted. The IS auditor notes that reuse for an incompatible purpose may breach the GDPR and recommends a documented compatibility assessment before any reuse.",
+              "audit_focus": {
+                "review": [
+                  "Compare each new use of personal data with its stated purpose and lawful basis",
+                  "Trace each cross-border data flow to its adequacy decision or signed standard contractual clauses",
+                  "Compare the access list with signed AUP acknowledgments, including contractors"
+                ],
+                "evidence": [
+                  "Consent forms as users see them, showing boxes start unchecked",
+                  "Request log with identity checks and response dates",
+                  "Processing records listing purpose, lawful basis and retention per data set"
+                ],
+                "recommend": "Have the privacy officer, with legal and human resources, confirm a lawful basis before new processing.",
+                "decides": "The data owner, with legal advice, decides whether a new use proceeds"
+              },
               "isaca_rule": "Privacy limits the purpose, not just the access. Strong security does not make collection, reuse or transfer lawful; each needs its own lawful basis, and employee monitoring needs one in each country.",
               "exam_traps": [
                 {
@@ -15157,6 +15650,20 @@
                 ]
               },
               "example": "A logistics company's new data center must include a water-based system under local fire code. The facilities manager proposes cheap wet-pipe sprinklers. The IS auditor notes that one knocked head would soak the racks, and recommends a pre-action design that stays dry until detectors confirm a fire.",
+              "audit_focus": {
+                "review": [
+                  "Compare the room's suppression type with how often staff work there",
+                  "Inspect walls, floors and ceilings for unsealed openings in gas-protected rooms",
+                  "Observe a detector test and confirm the alarm reaches the fire panel"
+                ],
+                "evidence": [
+                  "Fire panel event logs showing detector alarms and system status",
+                  "Room integrity test results showing the gas concentration holds",
+                  "Maintenance contractor reports for detectors, valves and gas cylinders"
+                ],
+                "recommend": "Have the facilities manager fit clean-agent gas and early alarms in staffed rooms, pre-action sprinklers where code mandates water, and seal openings.",
+                "decides": "Senior management accepts residual fire risk within local fire code"
+              },
               "isaca_rule": "Protect people first, then equipment. Clean-agent gas with early detection fits occupied server rooms best. Among water systems, pipes that stay dry until a fire is detected (pre-action, which exam questions often group under the dry-pipe label) beat wet pipe. Carbon dioxide never belongs where people work.",
               "exam_traps": [
                 {
@@ -15340,6 +15847,20 @@
                 "caption": "The three As in order. Authorization only means something after authentication, and accountability only works when each action ties to one person."
               },
               "example": "A pharmaceutical warehouse installs palm-vein readers on its controlled-drug cage. After night-shift complaints about rejections, the facilities supervisor lowers the match threshold. The IS auditor obtains the vendor's test results at the new setting, finds the false acceptance rate has risen sharply, and recommends restoring the threshold and improving enrollment quality instead.",
+              "audit_focus": {
+                "review": [
+                  "Trace a sample of administrator log entries to one named person",
+                  "Inspect MFA settings for remote and administrator access; factors must differ in category",
+                  "Obtain each installed reader's false acceptance rate at its live threshold"
+                ],
+                "evidence": [
+                  "Authentication settings exported from the central sign-in system",
+                  "Directory account list matched to human resources records, shared accounts flagged",
+                  "Reader change history showing who changed each threshold and who approved it"
+                ],
+                "recommend": "Have the access management team replace shared accounts with named ones and require phishing-resistant MFA for administrators.",
+                "decides": "System and data owners approve each user's rights and accept residual risk"
+              },
               "isaca_rule": "Each action must trace to one identified person, so unique accounts come first. Real MFA mixes factor categories. When the risk is impostors, look at the false acceptance rate; when comparing biometric products overall, the lower crossover error rate wins.",
               "exam_traps": [
                 {
@@ -15424,7 +15945,21 @@
                   }
                 ]
               },
-              "example": "An online university moves 40 applications behind one cloud identity provider. The IS auditor finds the provider's administrator accounts use passwords only, and nobody has planned for online exams if the provider fails. The IS auditor recommends phishing-resistant multi-factor authentication for those administrators and a tested continuity plan for sign-in, agreed with the provost.",
+              "example": "An online university moves 40 applications behind one cloud identity provider. The IS auditor finds the provider's administrator accounts use passwords only, and nobody has planned for online exams if the provider fails. The IS auditor recommends phishing-resistant multi-factor authentication for those administrators and a tested continuity plan for sign-in.",
+              "audit_focus": {
+                "review": [
+                  "Observe a test user being disabled at the IdP and time remaining application access",
+                  "Inspect application settings for signature checks on SAML assertions",
+                  "List applications that still accept a local password beside SSO"
+                ],
+                "evidence": [
+                  "IdP configuration showing MFA for every user and administrator",
+                  "App consent logs showing who approved each permission grant",
+                  "Session and token lifetime settings for each connected application"
+                ],
+                "recommend": "Have the identity team require MFA at the IdP, retire local logins, revoke sessions at exit and require administrator approval for apps.",
+                "decides": "Application owners accept residual risk for apps that cannot meet the sign-in standard"
+              },
               "isaca_rule": "SSO moves the front door to one place, so that door needs the strongest authentication and monitoring. Disabling an identity is not the same as ending access: sessions and tokens must be revoked too.",
               "exam_traps": [
                 {
@@ -15652,7 +16187,21 @@
                 "svg": "<svg viewBox='0 0 450 168' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Comparison of the traditional perimeter model and zero trust'><rect x='10' y='8' width='209' height='152' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><rect x='10' y='8' width='209' height='26' rx='6' fill='var(--accent-fill)'/><rect x='10' y='20' width='209' height='14' fill='var(--accent-fill)'/><text x='114' y='25' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='600' fill='#ffffff'>PERIMETER MODEL</text><text x='24' y='58' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>TRUST</text><text x='24' y='72' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Trust everything inside</text><text x='24' y='92' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>BOUNDARY</text><text x='24' y='106' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>One hard outer wall</text><text x='24' y='126' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>IF BREACHED</text><text x='24' y='140' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Attacker moves freely</text><rect x='231' y='8' width='209' height='152' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><rect x='231' y='8' width='209' height='26' rx='6' fill='var(--accent-fill)'/><rect x='231' y='20' width='209' height='14' fill='var(--accent-fill)'/><text x='335' y='25' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='600' fill='#ffffff'>ZERO TRUST</text><text x='245' y='58' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>TRUST</text><text x='245' y='72' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Trust nothing by default</text><text x='245' y='92' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>BOUNDARY</text><text x='245' y='106' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Verify at every resource</text><text x='245' y='126' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>IF BREACHED</text><text x='245' y='140' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Lateral movement limited</text></svg>",
                 "caption": "A perimeter model trusts whatever is inside the wall. Zero trust checks every request at the resource, so a single breach does not open the whole network."
               },
-              "example": "A logistics firm's board is told the company now has zero trust after it bought a secure remote access product. The IS auditor finds the product brokers only remote connections, while office users and internal servers still trust anything on the local network. The IS auditor reports zero trust as partly implemented and recommends a roadmap covering users, devices, workloads and data, with senior management setting priorities.",
+              "example": "A logistics firm's board is told the company now has zero trust after it bought a secure remote access product. The IS auditor finds the product brokers only remote connections, while office users and internal servers still trust anything on the local network. The IS auditor reports zero trust as partly implemented and recommends a roadmap covering users, devices, workloads and data.",
+              "audit_focus": {
+                "review": [
+                  "Sample internal application requests and trace each to a per-request policy decision",
+                  "Inspect service-to-service rules for explicit authorization, not just authentication",
+                  "Observe a simulated device-health failure mid-session and confirm access is restricted"
+                ],
+                "evidence": [
+                  "Policy decision point logs showing allow, limit and block results per request",
+                  "Service-to-service policy export listing which calls are allowed",
+                  "Session logs showing access cut when device health changed"
+                ],
+                "recommend": "Have the security architecture team authorize every user and service request by policy, re-check device health during sessions and restrict access on failure.",
+                "decides": "Senior management sets zero trust priorities and funding"
+              },
               "isaca_rule": "Zero trust is an architecture of continuous, policy-based decisions, not a product. Proving identity is only the first step; a policy must still decide what that identity, on that device, may reach right now.",
               "exam_traps": [
                 {
@@ -15886,6 +16435,20 @@
                 ]
               },
               "example": "A consulting firm lets remote laptops use split tunneling, so web browsing bypasses the corporate proxy. A consultant's laptop picks up malware on a hotel network and then connects to the firm's file servers through the VPN. The IS auditor recommends full tunneling, or equivalent cloud web filtering, for devices handling client data, and a device health check before each connection.",
+              "audit_focus": {
+                "review": [
+                  "Inspect gateway logs for partners still on TLS 1.0 or 1.1",
+                  "Compare VPN accounts with MFA enforcement settings to find password-only logins",
+                  "Inspect VPN settings for internet traffic that skips company web controls"
+                ],
+                "evidence": [
+                  "VPN authentication logs showing the factor used for each login",
+                  "Gateway reports of protocol versions and ciphers in use",
+                  "Endpoint compliance reports for devices allowed to connect"
+                ],
+                "recommend": "Have the network team require MFA and device checks for remote access and retire old TLS after measuring use.",
+                "decides": "The business owner approves the cutoff date for partners on old TLS versions"
+              },
               "isaca_rule": "Encryption protects the tunnel, not the login. Remote access must require multi-factor authentication and a healthy device, and give only the access the user needs. Retire weak protocol versions on a plan, after measuring who still relies on them.",
               "exam_traps": [
                 {
@@ -15971,7 +16534,21 @@
                 "svg": "<svg viewBox='0 0 450 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Unified Threat Management consolidates five security functions into one appliance'><text x='225' y='20' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>ONE UTM APPLIANCE</text><rect x='15' y='30' width='420' height='66' rx='8' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><rect x='23' y='50' width='72' height='30' rx='4' fill='var(--accent-fill)'/><text x='59' y='69' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Firewall</text><rect x='106' y='50' width='72' height='30' rx='4' fill='var(--accent-fill)'/><text x='142' y='69' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>IPS / IDS</text><rect x='189' y='50' width='72' height='30' rx='4' fill='var(--accent-fill)'/><text x='225' y='69' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Antivirus</text><rect x='272' y='50' width='72' height='30' rx='4' fill='var(--accent-fill)'/><text x='308' y='69' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>VPN</text><rect x='355' y='50' width='72' height='30' rx='4' fill='var(--accent-fill)'/><text x='391' y='69' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Web filter</text><text x='225' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>Firewall, intrusion prevention, antivirus, VPN and web filtering — managed as one</text></svg>",
                 "caption": "A UTM appliance packs several security functions into one managed box. Simple to run, but one failure can take them all down together."
               },
-              "example": "An airline's inline intrusion prevention system in front of its check-in platform fails closed. When it crashed during an update, check-in stopped for 40 minutes. The network manager proposes moving it to a mirrored port. The IS auditor notes that this would end all blocking and recommends redundant inline units with tested failover, with the system owner deciding the failure mode based on the risk assessment.",
+              "example": "An airline's inline intrusion prevention system in front of its check-in platform fails closed. When it crashed during an update, check-in stopped for 40 minutes. The network manager proposes moving it to a mirrored port. The IS auditor notes that this would end all blocking and recommends redundant inline units with tested failover.",
+              "audit_focus": {
+                "review": [
+                  "Inspect network diagrams and switch settings to confirm the IPS sits inline",
+                  "Trace the fail-open or fail-closed setting to the business owner's documented approval",
+                  "Compare NAC exemptions with device inventories; exempt devices need a restricted segment"
+                ],
+                "evidence": [
+                  "Switch or tap configuration showing where each sensor sits in the traffic path",
+                  "NAC logs showing which devices were quarantined and why",
+                  "Signed risk acceptance for the chosen failure mode"
+                ],
+                "recommend": "Have the network team place blocking devices inline with failover and segment devices that skip health checks.",
+                "decides": "The business owner chooses fail-open or fail-closed and accepts the resulting risk"
+              },
               "isaca_rule": "Evaluate a control against its purpose. An IPS that cannot block is only an IDS, and a NAC that checks only passwords lets infected devices in. Placement and configuration decide what a device can actually do.",
               "exam_traps": [
                 {
@@ -16054,6 +16631,20 @@
                 ]
               },
               "example": "A logistics company's IDS uses only signatures, updated monthly, and the security operations manager reports zero critical alerts for the quarter. The IS auditor notes that a signature-only sensor with stale updates would also stay quiet during a new attack. She recommends automatic signature updates and anomaly detection on the warehouse network, verified with simulated attacks.",
+              "audit_focus": {
+                "review": [
+                  "Inspect sensor settings for which detection methods are active",
+                  "Compare the current rule set with last quarter's to find rules switched off",
+                  "Compare the anomaly baseline's learning period with incident history for that time"
+                ],
+                "evidence": [
+                  "Results of simulated attacks showing which ones raised alerts",
+                  "Sensor configuration export listing active methods and rules",
+                  "Change records explaining each disabled or tuned rule"
+                ],
+                "recommend": "Have the security operations manager add anomaly detection, relearn baselines from clean periods and tune noisy rules instead of disabling them.",
+                "decides": "Senior management accepts the risk of any detection gap left open"
+              },
               "isaca_rule": "For an IDS, a missed attack is worse than a false alarm. Signature detection catches the known; anomaly detection is needed for the new. Fix noise by tuning rules, not by disabling them, and prove detection works by testing it.",
               "exam_traps": [
                 {
@@ -16153,14 +16744,27 @@
                 "Hardening applies a configuration baseline, such as a Center for Internet Security (CIS) Benchmark, and regular scans detect drift from it.",
                 "Endpoint detection and response (EDR) watches process behavior, catching attacks that misuse built-in tools and leave no malware file.",
                 "Application allowlisting and limits on scripting tools stop many fileless attacks before detection is needed.",
-                "Full-disk encryption protects lost devices; removable-media controls protect copies on portable drives.",
-                "Coverage reports compare the device inventory with the devices actually running the agent."
+                "Full-disk encryption protects lost devices; removable-media controls protect copies on portable drives."
               ],
               "illustration": {
                 "svg": "<svg viewBox='0 0 452 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Layered security controls on every endpoint device'><rect x='126' y='12' width='200' height='40' rx='4' fill='var(--accent-fill)'/><text x='226' y='36' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Endpoint device</text><rect x='14' y='70' width='136' height='30' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='82' y='89' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Antivirus / EDR</text><rect x='162' y='70' width='136' height='30' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='230' y='89' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Host firewall</text><rect x='310' y='70' width='136' height='30' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='378' y='89' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Disk encryption</text><rect x='14' y='110' width='136' height='30' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='82' y='129' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Patch management</text><rect x='162' y='110' width='136' height='30' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='230' y='129' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>DLP agent</text><rect x='310' y='110' width='136' height='30' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='378' y='129' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Device mgmt (MDM)</text></svg>",
                 "caption": "No single control secures an endpoint. Each layer closes a different gap, from malware and open ports to lost devices and missing patches."
               },
               "example": "A casino's self-service kiosks run a full desktop operating system, and staff have installed games and remote-support tools on several of them. The IT manager plans weekly antivirus scans. The IS auditor notes that each kiosk has one fixed purpose and recommends application allowlisting so only the kiosk software can run, plus removing local administrator rights.",
+              "audit_focus": {
+                "review": [
+                  "Compare the device inventory with devices reporting to the EDR console",
+                  "Sample servers and compare live settings with the CIS Benchmark baseline",
+                  "Observe whether a laptop allows copying files to an unencrypted portable drive"
+                ],
+                "evidence": [
+                  "Endpoint detection alerts on suspicious use of built-in tools, with analyst follow-up",
+                  "Configuration scan reports showing drift from the hardening baseline",
+                  "Allowlisting tool logs showing unapproved programs blocked from running"
+                ],
+                "recommend": "Have IT management close EDR agent gaps, scan for baseline drift and enforce encryption on portable media.",
+                "decides": "System owners approve any device exempted from the baseline and accept its risk"
+              },
               "isaca_rule": "Coverage comes first: a device without the agent sends no data, so confirm the population before trusting results. Prevent misuse of powerful tools through least privilege instead of relying only on detection. Encryption must follow sensitive data onto every portable medium.",
               "exam_traps": [
                 {
@@ -16428,7 +17032,20 @@
                 "svg": "<svg viewBox='0 0 470 156' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Symmetric encryption: the same secret key both encrypts and decrypts'><rect x='6' y='84' width='78' height='42' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='45' y='109' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Plaintext</text><rect x='102' y='84' width='72' height='42' rx='4' fill='var(--accent-fill)'/><text x='138' y='109' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Encrypt</text><rect x='192' y='84' width='82' height='42' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='233' y='109' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Ciphertext</text><rect x='292' y='84' width='72' height='42' rx='4' fill='var(--accent-fill)'/><text x='328' y='109' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Decrypt</text><rect x='382' y='84' width='80' height='42' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='422' y='109' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Plaintext</text><line x1='86' y1='105' x2='93' y2='105' stroke='var(--text2)' stroke-width='1.5'/><path d='M93,101 L100,105 L93,109 Z' fill='var(--text2)'/><line x1='176' y1='105' x2='183' y2='105' stroke='var(--text2)' stroke-width='1.5'/><path d='M183,101 L190,105 L183,109 Z' fill='var(--text2)'/><line x1='276' y1='105' x2='283' y2='105' stroke='var(--text2)' stroke-width='1.5'/><path d='M283,101 L290,105 L283,109 Z' fill='var(--text2)'/><line x1='366' y1='105' x2='373' y2='105' stroke='var(--text2)' stroke-width='1.5'/><path d='M373,101 L380,105 L373,109 Z' fill='var(--text2)'/><g fill='var(--accent-fill)'><circle cx='127' cy='34' r='5'/><rect x='131' y='32.5' width='15' height='3' rx='1'/><rect x='140' y='35' width='2.5' height='4.5' rx='0.5'/><rect x='144' y='35' width='2.5' height='4.5' rx='0.5'/></g><g fill='var(--accent-fill)'><circle cx='317' cy='34' r='5'/><rect x='321' y='32.5' width='15' height='3' rx='1'/><rect x='330' y='35' width='2.5' height='4.5' rx='0.5'/><rect x='334' y='35' width='2.5' height='4.5' rx='0.5'/></g><line x1='138' y1='42' x2='138' y2='84' stroke='var(--accent-fill)' stroke-width='1' stroke-dasharray='3 3'/><line x1='328' y1='42' x2='328' y2='84' stroke='var(--accent-fill)' stroke-width='1' stroke-dasharray='3 3'/><line x1='148' y1='34' x2='318' y2='34' stroke='var(--accent-fill)' stroke-width='1' stroke-dasharray='4 3'/><text x='235' y='20' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>One shared secret key — identical on both sides</text></svg>",
                 "caption": "Symmetric encryption. The same secret key locks and unlocks the data, so both sides must already share it securely."
               },
-              "example": "A hospital's legacy laboratory system still encrypts result files with Triple DES, and the vendor says the files are safe because nobody has complained. The IS auditor notes the cipher is retired and the key sits in the same folder as the files. The IS auditor recommends AES-256 in an authenticated mode on a dated plan approved by the lab director, with the key held in a separate key store.",
+              "example": "A hospital's legacy laboratory system still encrypts result files with Triple DES, and the vendor says the files are safe because nobody has complained. The IS auditor notes the cipher is retired and the key sits in the same folder as the files. The IS auditor recommends AES-256 in an authenticated mode on a dated plan, with the key held in a separate key store.",
+              "audit_focus": {
+                "review": [
+                  "Inspect encryption settings for the cipher and mode, flagging DES, Triple DES or ECB",
+                  "Trace where each key is stored and how it reached the other party",
+                  "Inspect the key inventory for one key shared across devices or partners"
+                ],
+                "evidence": [
+                  "Configuration exports showing algorithm, key length and mode for each system",
+                  "Key store records showing keys held apart from the data they protect"
+                ],
+                "recommend": "Have the system owner replace retired ciphers and weak modes and give each device its own, separately stored key.",
+                "decides": "The data owner approves the migration date and accepts residual risk until then"
+              },
               "isaca_rule": "The algorithm is rarely the weak point; the key and how it is used are. Strong encryption with a badly stored key or a weak mode gives little protection. Use symmetric encryption for bulk data, with keys delivered and stored separately from the data.",
               "exam_traps": [
                 {
@@ -16531,6 +17148,20 @@
                 }
               ],
               "example": "A medical device maker's insulin pumps send readings to a phone app, and engineers plan RSA with 4,096-bit keys, which drains pump batteries. The IS auditor confirms that elliptic-curve cryptography gives comparable strength with shorter keys and less processing. The IS auditor recommends it, built so algorithms can later be swapped for post-quantum ones through configuration.",
+              "audit_focus": {
+                "review": [
+                  "Compare the cryptographic inventory with a scan of live systems to find gaps",
+                  "Sample transfer designs and flag bulk data encrypted directly with RSA",
+                  "Compare the migration order with how long each data set must stay secret"
+                ],
+                "evidence": [
+                  "Scan results showing algorithms and key lengths actually in use",
+                  "Design documents showing where algorithms can be swapped through configuration",
+                  "Approved post-quantum migration roadmap with priorities and funding"
+                ],
+                "recommend": "Have the security architecture team keep the inventory current and build new systems so algorithms can be swapped.",
+                "decides": "Senior management approves the migration roadmap and its funding"
+              },
               "isaca_rule": "Use asymmetric cryptography to exchange keys and to sign, and symmetric for bulk data. Confidentiality uses the recipient's public key; proof of origin uses the sender's private key. Plan post-quantum migration from an inventory, long-lived secrets first, with swappable algorithms.",
               "exam_traps": [
                 {
@@ -16614,6 +17245,19 @@
                 ]
               },
               "example": "A loyalty program hashes customer phone numbers with SHA-256 and shares them with an advertising partner, describing the data as anonymous. The IS auditor notes that phone numbers have few possible values, so the partner could hash every number and match the list. The IS auditor recommends treating the data as personal, replacing the hashes with tokens, and obtaining a privacy review before sharing.",
+              "audit_focus": {
+                "review": [
+                  "Inspect password storage settings for salt, a slow hash and no reversible encryption",
+                  "Compare the hash algorithm behind each published checksum with the approved list",
+                  "Trace card numbers through systems to confirm only the vault holds real values"
+                ],
+                "evidence": [
+                  "Sample of stored password records showing unique salts and the hash algorithm",
+                  "Card data discovery scan results showing full card numbers only in the vault"
+                ],
+                "recommend": "Have application owners retire MD5 and SHA-1, fix weak password storage and tokenize card numbers where possible.",
+                "decides": "The data owner accepts any residual risk until fixes are in place"
+              },
               "isaca_rule": "Hashing gives integrity, not confidentiality; encryption gives confidentiality; tokenization removes the sensitive value from most systems. Store passwords as salted, slow hashes so they can be verified but never recovered.",
               "exam_traps": [
                 {
@@ -16667,6 +17311,20 @@
                 "caption": "Signing and checking. The sender signs a hash with their private key; the receiver checks it with the sender's public key against a fresh hash. A match shows the message is genuine and unchanged."
               },
               "example": "A city procurement office requires suppliers to email digitally signed bids and believes this keeps prices hidden from rival bidders. The IS auditor explains that a signature proves who sent a bid and that it was not changed, but leaves its content readable. The IS auditor recommends that suppliers also encrypt each bid with the office's public key until the deadline passes.",
+              "audit_focus": {
+                "review": [
+                  "Inspect who can use the signing key and where it is stored",
+                  "Trace how the verifier obtains each signer's public key",
+                  "Confirm sensitive signed content is also encrypted for the recipient"
+                ],
+                "evidence": [
+                  "Access list and usage logs for the signing key's protected store",
+                  "Verifier configuration showing public keys come from trusted certificates",
+                  "Signing records showing timestamps and the person who approved each release"
+                ],
+                "recommend": "Have system owners keep signing keys in a hardware security module (HSM) and verify signatures only against trusted certificates.",
+                "decides": "The data owner decides which content needs encryption as well as signing"
+              },
               "isaca_rule": "A signature gives integrity, authentication and non-repudiation, never confidentiality. The sender signs with its own private key; the receiver verifies with the sender's public key. A signature is only as trustworthy as the custody of the signing key, which must stay under the signer's sole control.",
               "exam_traps": [
                 {
@@ -16752,6 +17410,19 @@
                 ]
               },
               "example": "A broadcaster encrypts its film archive with keys held in a single hardware security module, with no backup. The IS auditor notes that losing that module would make decades of footage unreadable. The IS auditor recommends an encrypted backup of the keys held under dual control at a second site, tested by restoring a sample, and a key destruction rule tied to the archive's retention period.",
+              "audit_focus": {
+                "review": [
+                  "Compare key-policy decrypt and export rights with administrator and developer lists; overlaps are findings",
+                  "Sample keys from the inventory and compare their age with the approved cryptoperiod",
+                  "Match key destruction dates to the retention periods of the data protected"
+                ],
+                "evidence": [
+                  "Key inventory from the HSM or key service, with creation and rotation dates",
+                  "Key creation and destruction records, each signed by two authorized staff (dual control)"
+                ],
+                "recommend": "Have the key management team keep high-value keys in HSMs, remove excess rights, enforce cryptoperiods and require dual control.",
+                "decides": "The data owner accepts any residual risk to the protected data"
+              },
               "isaca_rule": "Separate who holds the keys from who holds the data, and require dual control for the most sensitive key operations. Every key needs a cryptoperiod; secure storage does not remove the need to rotate. Never destroy a key before the data it protects is no longer needed.",
               "exam_traps": [
                 {
@@ -16897,6 +17568,20 @@
                 }
               ],
               "example": "An online grocer's security team watches Certificate Transparency logs and spots a certificate for its checkout domain from an authority it has never used. The web operations manager suggests waiting to see whether it is misused. The IS auditor recommends asking that authority to revoke it now and investigating how the request passed validation.",
+              "audit_focus": {
+                "review": [
+                  "Compare the certificate inventory with a network scan to find untracked certificates",
+                  "Inspect relying applications' validation settings to confirm revocation status is checked",
+                  "Trace past key compromises to revocation, checking delays and dating back to the compromise"
+                ],
+                "evidence": [
+                  "Renewal tool reports listing certificates renewed, failed or near expiry",
+                  "Application configuration showing CRL or OCSP checking is enforced",
+                  "Revocation records with compromise, request and publication times"
+                ],
+                "recommend": "Have the certificate management team automate renewal and enforce revocation checking in every relying application.",
+                "decides": "Senior management pre-authorizes emergency revocation and accepts its operational impact"
+              },
               "isaca_rule": "The organization owns its certificate inventory instead of relying on reminders from a CA or vendor. A compromised CA or signing key must lose trust at once, even at heavy operational cost, and revocation works only where relying systems check it.",
               "exam_traps": [
                 {
@@ -17128,6 +17813,20 @@
                 ]
               },
               "example": "A marketing agency uses a cloud file-sharing service and assumes the provider decides who can see its files. The IS auditor finds 4,000 client files shared through public links that never expire. The IS auditor explains that in software as a service the customer still controls sharing settings, and recommends link expiry, a ban on public links for client work and regular reviews of shared files.",
+              "audit_focus": {
+                "review": [
+                  "Compare the full list of cloud accounts with those the posture tool monitors",
+                  "Map each control the SOC 2 report assigns to the customer to an owner",
+                  "Test the organization's own access, key and data-access logging settings directly"
+                ],
+                "evidence": [
+                  "Account lists exported from each cloud provider's organization console",
+                  "Drift alerts and fix times from continuous configuration scanning",
+                  "Sample of data-access log entries for the most sensitive storage"
+                ],
+                "recommend": "Have the cloud team assign an owner to every customer-side control and scan all accounts continuously.",
+                "decides": "The data owner stays accountable for cloud data and accepts residual risk"
+              },
               "isaca_rule": "Outsourcing a service never outsources accountability. The customer remains responsible for its data, identities and the settings it chooses, and needs its own evidence for them. A provider's report covers only the provider's side.",
               "exam_traps": [
                 {
@@ -17206,6 +17905,20 @@
                 "caption": "The virtualization stack. The hypervisor sits between the hardware and the virtual machines and keeps each guest operating system separate."
               },
               "example": "At a regional newspaper, the IS auditor finds 140 virtual machines that nobody claims, several unpatched for two years, and copies of the subscriber database's VM snapshots on a share open to all IT staff. The infrastructure manager says the hypervisor itself is fully patched. The IS auditor recommends an owner for every VM, retiring unclaimed ones, and protecting snapshots like the data inside them.",
+              "audit_focus": {
+                "review": [
+                  "Inspect which networks can reach the hypervisor management console",
+                  "Inspect permissions on the log store for any hypervisor administrator access",
+                  "Compare the VM inventory with running VMs to find unowned or unpatched ones"
+                ],
+                "evidence": [
+                  "Isolation test results from attempts to reach other tenants' VMs",
+                  "Firewall rules showing the management network's allowed sources",
+                  "Patch reports for hypervisors and guest VMs, with dates"
+                ],
+                "recommend": "Have the infrastructure manager isolate the management plane, send administrator logs to a store administrators cannot alter and give every VM an owner.",
+                "decides": "The data owner decides whether sensitive workloads need dedicated hosts"
+              },
               "isaca_rule": "Protect the hypervisor's management plane as the keys to every VM: isolated network, strong authentication and logs that administrators cannot alter. Direct testing of isolation is stronger evidence than vendor statements. Patching reduces escape risk; dedicated hosts remove co-tenant exposure.",
               "exam_traps": [
                 {
@@ -17306,6 +18019,20 @@
                 "caption": "SDN splits the network in two. A central controller holds the control plane and decides routes; the switches keep only the data plane and forward traffic."
               },
               "example": "A university moves its campus network to software-defined networking to speed up changes. The IS auditor finds network engineers all use one login to the SDN controller, and automation scripts push changes without approval records. The IS auditor recommends individual accounts with multi-factor authentication, change control for scripted changes, and logging of every controller action.",
+              "audit_focus": {
+                "review": [
+                  "Inspect who can log in to the controller and whether accounts are individual",
+                  "Inspect the controller's programming interfaces for authentication on every call",
+                  "Sample controller-pushed rule changes and trace each to an approval"
+                ],
+                "evidence": [
+                  "Controller audit logs showing each action and the person behind it",
+                  "Failover test results for a standby controller at another site",
+                  "Change tickets matched to controller-pushed rules"
+                ],
+                "recommend": "Have the network manager require authentication on every controller interface call, individual controller accounts and an automatic standby controller at another site.",
+                "decides": "The infrastructure owner accepts the risk of any single controller dependency"
+              },
               "isaca_rule": "Centralizing control centralizes risk. Protect the SDN controller like any critical management system: restricted access, individual accounts with strong authentication, change control, logging and redundancy.",
               "exam_traps": [
                 {
@@ -17485,6 +18212,20 @@
                 ]
               },
               "example": "A boutique hotel chain's back-office Wi-Fi uses a WPA2 personal passphrase, a hidden network name and a list of approved device addresses, which the IT contractor calls three layers of protection. The IS auditor explains that hidden names and hardware addresses are easily discovered and copied, and recommends WPA3 enterprise authentication tied to each employee's own account.",
+              "audit_focus": {
+                "review": [
+                  "Inspect controller settings for the security mode: WPA2 or WPA3, enterprise or personal",
+                  "Confirm laptop profiles enforce validation of the authentication server's certificate",
+                  "Trace what each wireless network, including guest and legacy-device networks, can reach internally"
+                ],
+                "evidence": [
+                  "Wireless controller configuration export listing each network and its security mode",
+                  "Laptop profile settings showing server certificate validation is enforced",
+                  "Firewall rules showing what each wireless segment can reach"
+                ],
+                "recommend": "Have the network team require enterprise mode with individual logins, admit only managed devices and contain weak networks.",
+                "decides": "The business owner accepts the risk of legacy devices until replacement"
+              },
               "isaca_rule": "Tie wireless access to individuals so it can be revoked and traced. Enterprise mode with server certificate validation is the standard for organizations; hiding the network name, address filtering and passphrase rotation are weak substitutes.",
               "exam_traps": [
                 {
@@ -17654,6 +18395,20 @@
                 "Where training has visibly failed, a technical control closes the attack path."
               ],
               "example": "A construction firm's finance team paid a fraudster after a phone call that imitated the chief financial officer's voice. Their only training is a generic annual phishing module. The IS auditor recommends role-based training for finance staff on voice and video impersonation, refreshed as attack methods change, and confirms that a callback to a known number is required before any urgent payment.",
+              "audit_focus": {
+                "review": [
+                  "Compare account creation dates with training completion dates for new staff",
+                  "Compare the course each high-risk role receives with the general staff course",
+                  "Inspect social engineering test results for attacks that training has not stopped"
+                ],
+                "evidence": [
+                  "Identity system records showing account creation and first access dates",
+                  "Learning system completion records by role and course",
+                  "Device control logs showing blocked unapproved drives"
+                ],
+                "recommend": "Have the information security manager require training before system access, add role-based content for high-risk roles and enforce device control.",
+                "decides": "Senior management sets which roles are high risk and accepts residual risk"
+              },
               "isaca_rule": "Awareness is matched to risk: the more damage a role can do, the deeper its training, and nobody gets access untrained. Training supports controls but does not replace them. When people keep falling for an attack, add a preventive technical control.",
               "exam_traps": [
                 {
@@ -17734,6 +18489,20 @@
                 ]
               },
               "example": "A shipping line's phishing simulations use generic prize-draw lures, while real attacks against it impersonate port authorities and freight invoices. Click rates are low, and the awareness lead reports success to senior management. The IS auditor recommends lures modeled on the attacks the company actually receives, each rated for difficulty, so results reflect real risk.",
+              "audit_focus": {
+                "review": [
+                  "Compare awareness metrics with incidents caused by staff error over the same period",
+                  "Break click and report rates down by department and role",
+                  "Compare simulation lures with the real phishing the company received"
+                ],
+                "evidence": [
+                  "Incident records attributing causes to staff actions",
+                  "Campaign results set beside the rated difficulty of each test",
+                  "Report-rate trends and records of coaching after clicks"
+                ],
+                "recommend": "Have the awareness lead rate each lure's difficulty, track report rates and incidents, and reward reporting instead of punishing clicks.",
+                "decides": "Senior management decides the awareness budget based on outcome evidence"
+              },
               "isaca_rule": "Effectiveness is shown by changed behavior and fewer incidents, not by completion, satisfaction or quiz scores. Metrics count only when tests stay comparable, and reporting must be rewarded, never punished. Diagnose a stalled program before changing vendors or budgets.",
               "exam_traps": [
                 {
@@ -17813,7 +18582,21 @@
                   "meaning": "Quietly record activity, such as keystrokes and passwords, and send it to the attacker."
                 }
               ],
-              "example": "A retailer's card payments fail when a huge flood fills its head office internet link. The network manager keeps adding firewall rules, but the link is already full. Afterward, the IS auditor finds no contracted upstream mitigation and no DDoS playbook, and recommends both for the operations director to approve.",
+              "example": "A retailer's card payments fail when a huge flood fills its head office internet link. The network manager keeps adding firewall rules, but the link is already full. Afterward, the IS auditor finds no contracted upstream mitigation and no DDoS playbook, and recommends both.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the contract for upstream DDoS mitigation and the response playbook",
+                  "Inspect outbound firewall rules for servers allowed to reach any internet address",
+                  "Compare endpoint protection on fixed-purpose devices with an allowlisting standard"
+                ],
+                "evidence": [
+                  "Firewall logs of blocked outbound connections, reviewed by security staff",
+                  "Endpoint alerts on unknown code, with records of hosts rebuilt from known-good media",
+                  "Mitigation provider test report showing scrubbing activates within agreed time"
+                ],
+                "recommend": "Have the information security manager arrange upstream mitigation, restrict outbound traffic and allowlist programs on fixed-purpose devices.",
+                "decides": "Senior management approves the mitigation contract and accepts residual outage risk"
+              },
               "isaca_rule": "Match the defense to where the attack works. Malware is stopped by layered prevention, such as patching, least privilege and allowlisting, backed by behavior detection. A flood that fills the internet link is stopped upstream, by mitigation arranged in advance.",
               "exam_traps": [
                 {
@@ -17862,7 +18645,7 @@
               "definition": "Social engineering is manipulating people, rather than technology, into giving away access, information or money, usually by faking urgency, authority or trust.",
               "why_it_matters": "It works through people who already have access, so technical controls rarely see it. Business email compromise causes some of the largest cybercrime losses.",
               "how_it_works": [
-                "The attacker researches the target, then uses a pretext, such as an urgent executive request, to rush the victim.",
+                "The attacker researches the target, then uses a pretext, such as an urgent executive request.",
                 "Business email compromise (BEC) uses a spoofed, look-alike or hijacked mailbox to redirect payments or change supplier bank details.",
                 "Process controls defeat it: a callback control confirms payment changes through a number already on file, and changing bank details is split from releasing payments.",
                 "Sender Policy Framework (SPF), DomainKeys Identified Mail (DKIM) and a Domain-based Message Authentication, Reporting and Conformance (DMARC) reject policy block mail faking the exact domain, not look-alikes.",
@@ -17895,6 +18678,20 @@
                 }
               ],
               "example": "A caller posing as an external auditor phones a hospital's payroll office and asks for a staff salary list for sampling. The clerk emails it to the address the caller gives. The IS auditor recommends verifying every request for personal data through a known contact before release, and adding pretexting examples to payroll training.",
+              "audit_focus": {
+                "review": [
+                  "Sample recent supplier bank-detail changes for evidence of independent verification",
+                  "Compare supplier-maintenance and payment-release access lists for users holding both",
+                  "Inspect the domain's DMARC record to confirm a reject policy is published"
+                ],
+                "evidence": [
+                  "Payment release logs showing a second approver for changed accounts",
+                  "Email gateway reports of messages rejected under the DMARC policy",
+                  "Callback records showing who verified each change, using the number on file"
+                ],
+                "recommend": "Have the finance manager segregate bank-detail changes from payment release and require callbacks to a number on file.",
+                "decides": "Senior management sets payment approval limits and accepts residual fraud risk"
+              },
               "isaca_rule": "Assume someone will be fooled, and design the process so one deceived person cannot cause the loss. Verify through a channel the attacker does not control, and segregate duties. If money is moving, stop the loss first.",
               "exam_traps": [
                 {
@@ -17977,6 +18774,20 @@
                 ]
               },
               "example": "A concert ticketing site limits each customer to four tickets through a check in the web page's script. Resellers send requests straight to the server and buy hundreds of seats. The IS auditor recommends enforcing the limit, and every input check that matters, on the server, with rejected requests logged for review.",
+              "audit_focus": {
+                "review": [
+                  "Inspect sample code for queries built by joining user input into SQL text",
+                  "Reperform an authorized test: change a record identifier to reach another user's data",
+                  "Compare the application programming interface (API) inventory with gateway traffic to find unlisted ones"
+                ],
+                "evidence": [
+                  "Penetration test and code scan results ranked by exposure",
+                  "WAF alerts and rejected-request logs showing regular review",
+                  "API gateway inventory listing an owner for every API"
+                ],
+                "recommend": "Have the application owner parameterize queries, check access on the server and route every API through the gateway.",
+                "decides": "The business owner accepts any residual risk while fixes are pending"
+              },
               "isaca_rule": "Fix application flaws at the source, in the code and on the server. Filters in front of the application are compensating layers that buy time. When ranking web risks, letting users reach data they are not entitled to outranks cosmetic weaknesses.",
               "exam_traps": [
                 {
@@ -18060,6 +18871,20 @@
                 ]
               },
               "example": "Staff at a law firm's branch land on a fake webmail page although they typed the correct address. The branch router was using an outside name server that returned forged answers. The IT manager proposes password resets only. The IS auditor recommends the resets plus forcing all lookups through internal resolvers that validate signed responses.",
+              "audit_focus": {
+                "review": [
+                  "Inspect switch configurations for protection against forged address replies",
+                  "Inspect router and endpoint DNS settings for outside name servers",
+                  "Inspect public websites for the HTTP Strict Transport Security (HSTS) header and preload status"
+                ],
+                "evidence": [
+                  "DNS query monitoring alerts for unusual length, volume or destinations, with follow-up",
+                  "Switch logs of dropped forged address replies",
+                  "Resolver configuration showing signature validation is enforced"
+                ],
+                "recommend": "Have the network team enable dynamic ARP inspection and DNS lookup monitoring, and application owners enforce HSTS with preloading.",
+                "decides": "The system owner accepts residual interception risk where encryption is not possible"
+              },
               "isaca_rule": "Choose the control that works where the attack happens: stop local spoofing at the switch, defeat eavesdropping with encryption, and find hidden channels by analyzing permitted traffic. Prevention at the source beats an alert after the data has gone.",
               "exam_traps": [
                 {
@@ -18110,7 +18935,7 @@
               "definition": "Credential attacks steal, guess or reuse sign-in secrets, and endpoint attacks abuse a compromised device, so attackers act as real users and spread further.",
               "why_it_matters": "Activity under a valid account looks normal, so it slips past many defenses. One stolen administrator credential can open the whole network.",
               "how_it_works": [
-                "Attackers gain a first account through phishing, leaked passwords or guessing, then hunt for more powerful credentials.",
+                "Attackers gain a first account through phishing, leaked passwords or guessing, then hunt for administrator credentials.",
                 "Privilege escalation raises their rights on one system; lateral movement uses stolen credentials to hop between systems.",
                 "Administrators who sign in to ordinary workstations leave reusable credential material behind for an attacker on that machine.",
                 "Fileless attacks live off the land, running through built-in tools such as the PowerShell scripting tool; restricting those tools to people who need them removes the path.",
@@ -18154,6 +18979,20 @@
                 ]
               },
               "example": "An online pharmacy sees thousands of successful customer logins from unusual locations, using correct passwords leaked from other websites. The product owner proposes stricter password complexity rules. The IS auditor explains that complexity cannot help when the password is already correct, and recommends MFA for customers plus screening new passwords against known breached passwords.",
+              "audit_focus": {
+                "review": [
+                  "Compare who can run scripting tools with who needs them for their job",
+                  "Inspect sign-in logs for domain administrators using ordinary workstations",
+                  "Test whether sign-in monitoring catches one password tried across many accounts"
+                ],
+                "evidence": [
+                  "MFA coverage report for every internet-facing login, by method",
+                  "Access lists showing which support staff can change customer account emails",
+                  "Session revocation records from past account compromises"
+                ],
+                "recommend": "Have the identity team require phishing-resistant MFA, limit administrator sign-ins to secure workstations and restrict scripting tools.",
+                "decides": "System owners decide who keeps powerful rights and accept residual risk"
+              },
               "isaca_rule": "Match the control to how the attack works, not to the word password. Limit where powerful credentials are exposed, require MFA, and end active sessions when an account is compromised. Least privilege shrinks what any one stolen account can do.",
               "exam_traps": [
                 {
@@ -18198,7 +19037,6 @@
               "why_it_matters": "These attacks defeat routine defenses and target high-value data; a zero-day has no patch, so exposure must be cut in other ways.",
               "how_it_works": [
                 "Attacks follow a life cycle: reconnaissance, initial access, persistence, privilege escalation, lateral movement, command and control, then theft or damage.",
-                "MITRE ATT&CK is a public catalog of real attacker techniques; mapping detection rules to it shows which behaviors go unseen.",
                 "Against a stealthy attacker with unknown reach, the team quietly searches for indicators of compromise (IOCs), then removes every foothold in one coordinated step.",
                 "For a zero-day with public exploit code, apply a compensating control, such as a firewall rule, at once, or remove internet exposure.",
                 "Supply chain attacks hide in trusted updates: roll back the bad component first, then rebuild hosts from clean images and rotate secrets."
@@ -18240,6 +19078,20 @@
                 ]
               },
               "example": "An aerospace supplier's analysts find a stealthy intruder, present for months, who since this morning has been sending engineering drawings to an outside server. The incident lead wants to keep watching quietly to map every foothold. The IS auditor points out that sensitive data is leaving now, so blocking the outbound channel comes first, with scoping continuing in parallel.",
+              "audit_focus": {
+                "review": [
+                  "Map detection rules to MITRE ATT&CK, a public catalog of attacker techniques",
+                  "Inspect the zero-day procedure for a compensating control or removing exposure within hours",
+                  "Trace software updates to a verified source and a known-good rollback version"
+                ],
+                "evidence": [
+                  "Detection rule list exported from the monitoring tool",
+                  "Records of emergency firewall rules applied for past zero-days, with times",
+                  "Software inventory listing component sources and approved versions"
+                ],
+                "recommend": "Have the security operations manager close detection gaps and keep tested playbooks for zero-days and compromised updates.",
+                "decides": "Senior management decides when to take visible action against a hidden intruder"
+              },
               "isaca_rule": "Act on real risk, not labels. With no patch, cut exposure now through a compensating control. Against a hidden, patient attacker, map the whole intrusion before visible action, unless sensitive data is actively leaving.",
               "exam_traps": [
                 {
@@ -18604,7 +19456,21 @@
                   "meaning": "Testers and the target's staff both know the details and work together, often on one system."
                 }
               ],
-              "example": "A hospital wants to know whether its new monitoring service would notice a real intrusion. The information security manager proposes a white-box test with the operations team warned in advance. The IS auditor notes that warned defenders cannot show whether detection works and recommends a double-blind test, authorized in writing by senior management.",
+              "example": "A hospital wants to know whether its new monitoring service would notice a real intrusion. The information security manager proposes a white-box test with the operations team warned in advance. The IS auditor notes that warned defenders cannot show whether detection works and recommends a double-blind test with written authorization.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the signed approval and rules of engagement for signer, systems and dates",
+                  "Compare the test's type and starting point with the question management wants answered",
+                  "Trace each reported finding to a fix and a retest"
+                ],
+                "evidence": [
+                  "Test report stating knowledge level, notice level and starting point",
+                  "Monitoring team's alert and escalation records from double-blind tests",
+                  "Remediation tracker with retest results for each finding"
+                ],
+                "recommend": "Have the information security manager match each test to its purpose and obtain senior management's written authorization first.",
+                "decides": "Senior management authorizes each test and accepts the risk of testing live systems"
+              },
               "isaca_rule": "Choose the test type from the question being asked. To test defenses deeply, share more knowledge; to test detection and response, tell defenders less. Every type needs written management authorization, an agreed scope and rules of engagement first.",
               "exam_traps": [
                 {
@@ -19206,6 +20072,20 @@
                 ]
               },
               "example": "A payroll software provider finds a faulty report emailed one client's salary file to another client. Its account manager plans to mention it at next month's review. The IS auditor explains that the provider, as processor, must tell the affected client without undue delay so the client, as controller, can meet its regulator deadline, and recommends notifying now.",
+              "audit_focus": {
+                "review": [
+                  "Sample affected people's countries; confirm the notification register lists each regulator's deadline",
+                  "Trace a past incident from discovery to each notice and its deadline",
+                  "Inspect vendor contracts for breach-notice times and cooperation duties"
+                ],
+                "evidence": [
+                  "Incident ticket timestamps and regulator portal receipts for each notice",
+                  "Documented decisions on whether notice was needed, such as for encrypted devices",
+                  "Log analysis the organization ran itself after each vendor incident"
+                ],
+                "recommend": "Have the legal team keep a notification register with every deadline and test it in incident exercises.",
+                "decides": "Senior management, advised by counsel, approves each notice and its timing"
+              },
               "isaca_rule": "Outsourcing processing does not outsource accountability. The organization establishes exposure with its own evidence, maps every deadline, and notifies on confirmed facts rather than waiting for certainty. Insurance and vendor promises never pause containment or its own legal duties.",
               "exam_traps": [
                 {
