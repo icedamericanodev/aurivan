@@ -6340,7 +6340,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.14</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.15</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6631,7 +6631,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.14';
+const APP_VERSION = 'v12.15';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -17676,6 +17676,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'New practice for security testing and cloud',
+    items: [
+      { cat: 'new', text: 'New practice questions on penetration testing, intrusion detection, decoy systems and cloud models, topics that had no practice before.' }
+    ]
+  },
+  {
+    version: 'v12.14',
     title: 'Exam guide and final review week',
     items: [
       { cat: 'new', text: 'About the CISA exam: registration and fees, test center or online, exam day, results, and how to become certified, with links to the official sources and the date we last checked them.' },
