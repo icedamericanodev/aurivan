@@ -2,7 +2,7 @@
   "domain": 5,
   "title": "Protection of Information Assets",
   "weight": "26%",
-  "count": 305,
+  "count": 311,
   "questions": [
     {
       "id": "d5_001",
@@ -11217,6 +11217,228 @@
         "Exam cue: in hybrid and multi-cloud designs, look for one common control standard and identity source across every environment."
       ],
       "_provenance": "Authored from concept: 'Cloud Deployment Models. Hybrid Cloud Control Consistency'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.1 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_306",
+      "domain": 5,
+      "subtopic": "Software-Defined Networking. Controller Interface Access",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "SDN controller",
+        "Control plane",
+        "Northbound API",
+        "Service authentication"
+      ],
+      "framework_ref": "ONF TR-511 (Principles and Practices for Securing Software-Defined Networks); NIST SP 800-53 Rev 5 IA-9 (Service Identification and Authentication)",
+      "question": "An IS auditor finds that any internal server can call the programming interface of a firm's software-defined network controller without authenticating. What is the GREATEST risk?",
+      "options": {
+        "A": "Switches could run out of memory for forwarding rules",
+        "B": "Interface calls could slow the forwarding of user packets",
+        "C": "One compromised host could redirect or drop any traffic",
+        "D": "Unauthenticated callers could map the full routing layout"
+      },
+      "correct": "C",
+      "key_concept": "An SDN controller's programming interfaces can change the whole network, so they need authentication, authorization and logging.",
+      "pre_read": "Ask what the interface lets a caller do, not just what it lets a caller see.",
+      "correct_explanation": "The controller decides where all traffic goes, and its programming interface accepts change requests. Without authentication, any compromised internal server could push rules that reroute, intercept or drop traffic anywhere in the network. Exposure of the routing layout is the runner-up: reconnaissance matters, but an interface that accepts changes lets an attacker alter the network itself, a far greater integrity and availability risk.",
+      "wrong_explanations": {
+        "A": "Forwarding-table capacity is a sizing concern for switches; it is unrelated to who may call the controller's interface.",
+        "B": "Interface calls are control-plane traffic to the controller; switches keep forwarding user packets in the data plane.",
+        "D": "Seeing the routing layout helps an attacker plan, but an interface that accepts changes lets that attacker reroute or drop traffic directly."
+      },
+      "tips": [
+        "Eliminate: A is a switch capacity issue, and B mixes up the control plane with the data plane that forwards packets.",
+        "Final two: C beats D because the interface accepts changes; altering the network outweighs merely learning its layout.",
+        "Exam cue: whoever can instruct the SDN controller controls the network; its interfaces need authentication, authorization and logging."
+      ],
+      "_provenance": "Authored from concept: 'Software-Defined Networking. Controller Interface Access'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.5 (Wave 1 coverage batch Q2: a subtopic with no practice yet). Public sources: ONF, NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_307",
+      "domain": 5,
+      "subtopic": "Software-Defined Networking. Controller Redundancy",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "SDN controller",
+        "Single point of failure",
+        "Automatic failover",
+        "Configuration backup"
+      ],
+      "framework_ref": "ONF TR-511 (Principles and Practices for Securing Software-Defined Networks); ISO/IEC 27002:2022 Control 8.14 (Redundancy of Information Processing Facilities)",
+      "question": "A hospital's new software-defined network depends on one controller hosted in a single server room. Which recommendation is MOST important for the IS auditor to make?",
+      "options": {
+        "A": "A standby instance elsewhere that takes over automatically",
+        "B": "Daily configuration backups kept on separate storage",
+        "C": "Larger forwarding tables so switches hold more rules",
+        "D": "Separate management of each switch to avoid central control"
+      },
+      "correct": "A",
+      "key_concept": "An SDN controller is a single point of failure; critical networks need a redundant controller in a separate location.",
+      "pre_read": "Ask what stops working if this one component fails, and how long that would last.",
+      "correct_explanation": "The controller is a single point of failure: if it or its server room fails, the network cannot accept changes and new traffic paths may not be set up, which a hospital cannot tolerate. A standby in another location that takes over automatically removes that dependence. Configuration backups are the runner-up: they speed a rebuild, but the network stays impaired until someone restores them.",
+      "wrong_explanations": {
+        "B": "Backups let staff rebuild the controller, but the network stays impaired while they restore it; they shorten an outage rather than prevent it.",
+        "C": "Bigger forwarding tables add switch capacity but leave the network dependent on one controller in one room.",
+        "D": "Returning to per-switch management gives up central control and consistency instead of making the controller resilient."
+      },
+      "tips": [
+        "Eliminate: C adds switch capacity without removing the single point of failure, and D abandons the design instead of protecting it.",
+        "Final two: A beats B because a standby keeps the network running, while backups only speed a rebuild after an outage.",
+        "Exam cue: centralizing control centralizes risk; protect a critical controller with automatic failover, not just backups."
+      ],
+      "_provenance": "Authored from concept: 'Software-Defined Networking. Controller Redundancy'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.5 (Wave 1 coverage batch Q2: a subtopic with no practice yet). Public sources: ONF, ISO/IEC.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_308",
+      "domain": 5,
+      "subtopic": "Denial of Service. Upstream Mitigation for Volumetric Floods",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Distributed denial of service",
+        "Volumetric attack",
+        "Scrubbing service",
+        "Botnet"
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 SC-5 (Denial-of-Service Protection); NIST SP 800-189 (Resilient Interdomain Traffic Exchange)",
+      "question": "A large flood attack filled an online broker's internet links for six hours, halting trading. Which control should the IS auditor recommend as BEST against a repeat?",
+      "options": {
+        "A": "Firewalls with higher throughput and stricter rate limits",
+        "B": "Blocking the source addresses logged during the attack",
+        "C": "Endpoint detection and response tools on the trading servers",
+        "D": "Upstream scrubbing arranged in advance with a provider"
+      },
+      "correct": "D",
+      "key_concept": "Volumetric denial-of-service floods fill the internet link first, so mitigation must sit upstream and be contracted in advance.",
+      "pre_read": "Ask where the attack overwhelms the service, then pick a defense that sits in front of that point.",
+      "correct_explanation": "A flood large enough to fill the internet links overwhelms them before any traffic reaches on-site equipment, so the defense must sit upstream. Scrubbing arranged in advance with a provider diverts and filters attack traffic and passes clean traffic on. Stronger firewalls are the runner-up: they help against smaller or application-level attacks, but they sit behind the saturated link and never see most of the flood.",
+      "wrong_explanations": {
+        "A": "Firewalls sit behind the internet link; once the link is full, legitimate traffic is lost before any rate limit applies.",
+        "B": "Distributed attacks come from thousands of hijacked devices whose addresses change, so blocking past sources does not stop the next flood.",
+        "C": "Endpoint tools detect malicious code on servers; they cannot stop traffic that fills the links before reaching the servers."
+      },
+      "tips": [
+        "Eliminate: B blocks yesterday's sources in a botnet that keeps changing, and C targets malware, not traffic floods.",
+        "Final two: D beats A because a flood that fills the link arrives before the firewall; only filtering upstream can absorb it.",
+        "Exam cue: match the defense to where the attack works; volumetric floods need upstream mitigation arranged before the attack."
+      ],
+      "_provenance": "Authored from concept: 'Denial of Service. Upstream Mitigation for Volumetric Floods'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B2.1 (Wave 1 coverage batch Q2: a subtopic with no practice yet). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_309",
+      "domain": 5,
+      "subtopic": "Malware. Egress Filtering Against Command and Control",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Egress filtering",
+        "Command and control (C2)",
+        "Data exfiltration",
+        "Boundary protection"
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 SC-7 (Boundary Protection); NIST SP 800-83 Rev 1 (Malware Incident Prevention and Handling)",
+      "question": "An IS auditor finds that a firm's database servers may open connections to any internet address and port. What is the PRIMARY risk of this setting?",
+      "options": {
+        "A": "Attackers on the internet could reach the servers directly",
+        "B": "Malware could send stolen records to attacker-controlled systems",
+        "C": "Administrators could install unapproved software from vendor sites",
+        "D": "The servers could use more bandwidth than the link allows"
+      },
+      "correct": "B",
+      "key_concept": "Egress filtering limits outbound traffic to approved destinations, cutting malware's command channel and a key exfiltration path.",
+      "pre_read": "Ask what an infected server needs to do over the network once it is compromised.",
+      "correct_explanation": "Outbound rules decide where internal systems may send traffic. With none, malware on a database server can reach its command and control (C2) server and move stolen records out over any port. Egress filtering to approved destinations cuts both channels. Unapproved software downloads are the runner-up: open outbound access makes them easier, but change control and administrator rights govern installs, so the open path for theft is the greater exposure.",
+      "wrong_explanations": {
+        "A": "Inbound connections are governed by separate inbound rules; open outbound access does not by itself let outsiders reach the servers.",
+        "C": "Open outbound access makes downloads easier, but installs are governed mainly by change control and administrator rights, not egress rules.",
+        "D": "Bandwidth use is a capacity concern; it is not the security exposure that open outbound access creates."
+      },
+      "tips": [
+        "Eliminate: A confuses outbound rules with inbound access, and D is a capacity concern, not a security exposure.",
+        "Final two: B beats C because an open outbound path lets malware take orders and carry data out; installs fall under change control.",
+        "Exam cue: egress filtering stops malware reaching its command server and keeps stolen data and attack traffic from leaving."
+      ],
+      "_provenance": "Authored from concept: 'Malware. Egress Filtering Against Command and Control'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B2.1 (Wave 1 coverage batch Q2: a subtopic with no practice yet). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_310",
+      "domain": 5,
+      "subtopic": "Malware. Application Allowlisting on Fixed-Function Devices",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Application allowlisting",
+        "Signature-based antivirus",
+        "Endpoint detection and response",
+        "Point-of-sale security"
+      ],
+      "framework_ref": "NIST SP 800-167 (Guide to Application Whitelisting); NIST SP 800-83 Rev 1 (Malware Incident Prevention and Handling)",
+      "question": "Custom malware that antivirus signatures did not recognize ran on a retailer's point-of-sale terminals, which use a fixed set of programs. Which control should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Application allowlisting that blocks any unapproved executable",
+        "B": "Antivirus signature updates pushed several times a day",
+        "C": "Behavior-based detection that alerts analysts to suspicious activity",
+        "D": "Security awareness training for store cashiers and managers"
+      },
+      "correct": "A",
+      "key_concept": "Application allowlisting blocks any unapproved program, stopping new malware that signatures miss; it suits fixed-function devices best.",
+      "pre_read": "Notice the devices run a fixed set of programs, then ask which control can block anything outside that set.",
+      "correct_explanation": "Point-of-sale terminals run a small, fixed set of programs, so application allowlisting is practical: anything not on the approved list cannot run, including custom code no signature has seen. Behavior-based detection is the runner-up: it can spot new malware, but it alerts after the code is already running and needs analysts to act, while allowlisting stops it from running at all.",
+      "wrong_explanations": {
+        "B": "Signatures match only code already seen; more frequent updates still miss custom malware written for this attack.",
+        "C": "Behavior detection can catch new code, but it acts after the code runs; on fixed-function devices, prevention by allowlisting is stronger.",
+        "D": "Training helps against tricks aimed at people, but it puts no technical barrier on the terminals against code that should never run."
+      },
+      "tips": [
+        "Eliminate: B still depends on signatures that custom code lacks, and D relies on people instead of a technical control on the device.",
+        "Final two: A beats C because allowlisting stops unapproved code before it runs; behavior detection only raises an alert afterward.",
+        "Exam cue: where devices run a fixed set of programs, allowlisting is the strongest malware control; signatures miss new code."
+      ],
+      "_provenance": "Authored from concept: 'Malware. Application Allowlisting on Fixed-Function Devices'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B2.1 (Wave 1 coverage batch Q2: a subtopic with no practice yet). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_311",
+      "domain": 5,
+      "subtopic": "Malware Types. Rootkits Hiding From the Operating System",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Rootkit",
+        "Trojan",
+        "Trusted media",
+        "System rebuild"
+      ],
+      "framework_ref": "NIST SP 800-83 Rev 1 (Malware Incident Prevention and Handling); MITRE ATT&CK T1014 (Rootkit)",
+      "question": "An IS auditor reviewing a breach learns that scanning a server's disk from a separate, trusted computer found malware the server's own tools never showed. Which malware type is MOST LIKELY involved?",
+      "options": {
+        "A": "A worm copying itself across the network",
+        "B": "A trojan disguised as a legitimate utility program",
+        "C": "Ransomware encrypting files and demanding payment",
+        "D": "A rootkit hiding inside the operating system"
+      },
+      "correct": "D",
+      "key_concept": "Rootkits hide malware from the operating system's own tools, so detection needs an outside check and recovery needs a rebuild.",
+      "pre_read": "Ask why the server's own tools would miss something that an outside check found.",
+      "correct_explanation": "A rootkit hides itself and other malware deep in the operating system, often with administrator rights, so the system's own tools report a clean machine. Only checking from outside, such as scanning the disk from a trusted computer, reveals it. A trojan is the runner-up: it disguises itself to get installed, but it normally still appears to the system's own tools, just under an innocent name.",
+      "wrong_explanations": {
+        "A": "Worms are defined by spreading on their own across networks; spreading does not explain why the server's own tools saw nothing.",
+        "B": "A trojan tricks users into installing it, but it usually still appears in the system's own listings, just under an innocent name.",
+        "C": "Ransomware announces itself by encrypting files and demanding payment; it does not stay hidden from the server's tools."
+      },
+      "tips": [
+        "Eliminate: A describes how malware spreads, and C announces itself with a ransom demand instead of hiding.",
+        "Final two: D beats B because a trojan hides its purpose, not its presence; only a rootkit makes the system's own tools lie.",
+        "Exam cue: if a system's own tools report clean but a trusted outside check finds malware, suspect a rootkit and rebuild from trusted media."
+      ],
+      "_provenance": "Authored from concept: 'Malware Types. Rootkits Hiding From the Operating System'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B2.1 (Wave 1 coverage batch Q2: a subtopic with no practice yet). Public sources: NIST, MITRE.",
       "style_version": 2
     }
   ]
