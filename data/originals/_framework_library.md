@@ -1937,3 +1937,10 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 ## Added with Wave 1 coverage batch Q1 (Domain 5, Oct 2026)
 
 - NIST SP 800-53 Rev 5 SC-26 (Decoys)
+
+## Added with Wave 1 coverage batch Q2 (Domains 4 and 5, Oct 2026)
+
+- ONF TR-511 (Principles and Practices for Securing Software-Defined Networks)
+- NIST SP 800-167 (Guide to Application Whitelisting)
+- MITRE ATT&CK T1014 (Rootkit)
+- NIST SP 800-189 (Resilient Interdomain Traffic Exchange: BGP Security and DDoS Mitigation)

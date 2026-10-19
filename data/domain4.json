@@ -2,7 +2,7 @@
   "domain": 4,
   "title": "Information Systems Operations and Business Resilience",
   "weight": "26%",
-  "count": 266,
+  "count": 270,
   "questions": [
     {
       "id": "d4_001",
@@ -9915,6 +9915,154 @@
       ],
       "framework_ref": "Storage Networking Industry Association (SNIA) Common RAID Disk Data Format Specification; ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)",
       "_provenance": "Authored from concept: 'RAID 1 mirroring definition'. Foundational recall tier. Public sources: SNIA Common RAID DDF, ISACA CISA Review Manual. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_267",
+      "domain": 4,
+      "subtopic": "Replication. No Substitute for Point-in-Time Backups",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Asynchronous replication",
+        "Point-in-time backup",
+        "Immutable backup",
+        "Ransomware resilience"
+      ],
+      "framework_ref": "NIST SP 800-209 (Security Guidelines for Storage Infrastructure); NIST SP 800-53 Rev 5 CP-9 (System Backup); ISO/IEC 27002:2022 Control 8.13 (Information Backup)",
+      "question": "A retailer has replaced its nightly backups with continuous replication to a distant data center. Which risk should the IS auditor report as MOST significant?",
+      "options": {
+        "A": "Operators may not yet know the new failover procedure",
+        "B": "Corruption or ransomware would reach both copies at once",
+        "C": "Replication traffic could slow the network during business hours",
+        "D": "The distant site could lose the last few seconds of writes"
+      },
+      "correct": "B",
+      "key_concept": "Replication copies corruption and encryption within moments, so it never replaces isolated, point-in-time backups.",
+      "pre_read": "Ask what a near-instant copy carries besides good data, and what is left if both copies go bad.",
+      "correct_explanation": "Replication copies every change within moments, including deletions, corruption and ransomware encryption, so both copies can be ruined together and no clean restore point remains. Isolated, point-in-time backups are still needed. Losing the last few seconds of writes is the runner-up: replication over a long distance often carries that small window, but the loss is bounded and usually within the RPO, not the loss of every good copy.",
+      "wrong_explanations": {
+        "A": "A new procedure is learned through training and testing; the gap does not leave the retailer without a usable copy of its data.",
+        "C": "Bandwidth affects performance and can be sized or scheduled; it does not threaten the retailer's ability to recover clean data.",
+        "D": "A distant asynchronous copy may lose seconds of writes, but that loss is small and bounded; replicated corruption can leave no clean copy at all."
+      },
+      "tips": [
+        "Eliminate: A is a training gap and C a performance issue; neither leaves the retailer without a clean copy.",
+        "Final two: B beats D because a few lost seconds are a bounded loss, while copied corruption can ruin every recoverable version.",
+        "Exam cue: replication protects against site loss, not bad data; only isolated, point-in-time backups restore a clean state."
+      ],
+      "_provenance": "Authored from concept: 'Replication. No Substitute for Point-in-Time Backups'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B3.2 (Wave 1 coverage batch Q2: a subtopic with thin practice). Public sources: NIST, ISO/IEC.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_268",
+      "domain": 4,
+      "subtopic": "Remote Journaling. Restore and Replay Time Against the RTO",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Remote journaling",
+        "Recovery time objective",
+        "Database shadowing",
+        "Point-in-time recovery"
+      ],
+      "framework_ref": "NIST SP 800-34 Rev 1 (Contingency Planning Guide for Federal Information Systems); NIST SP 800-53 Rev 5 CP-10 (System Recovery and Reconstitution)",
+      "question": "An airline's booking database has a five-minute RPO and a one-hour RTO, and its recovery relies on last night's backup plus remote journaling. What is the GREATEST concern for the IS auditor?",
+      "options": {
+        "A": "Entries still in transit may exceed the allowed data loss",
+        "B": "Journaling every transaction may slow booking response times",
+        "C": "A corrupted transaction would be copied to the recovery site",
+        "D": "Restore and replay time may exceed the allowed downtime"
+      },
+      "correct": "D",
+      "key_concept": "Remote journaling limits data loss, but recovery means restoring the last backup and replaying entries, which takes time against the RTO.",
+      "pre_read": "Check each objective separately: how much data the method can lose, and how long it takes to run again.",
+      "correct_explanation": "Journaling keeps loss to seconds, inside the five-minute RPO, but bookings resume only after last night's backup is restored and a day of entries replayed. No option shows a certain breach, and replay time cannot be read from the schedule, so the untested restore-and-replay window is the greatest risk to the one-hour RTO. A copied corrupt transaction is the runner-up: replay can stop just before it.",
+      "wrong_explanations": {
+        "A": "Journaling sends each entry as it happens, so only seconds of work are at risk, well inside a five-minute RPO.",
+        "B": "Journaling overhead can be measured and tuned; it threatens neither recovery objective.",
+        "C": "A bad transaction is journaled too, but replay can stop just before it, so point-in-time recovery remains possible."
+      },
+      "tips": [
+        "Eliminate: A overlooks that journaling loses only seconds, and B is a performance issue, not a recovery gap.",
+        "Final two: D beats C because replay can stop before a bad transaction, but rebuilding from last night's backup takes hours against a one-hour RTO.",
+        "Exam cue: journaling protects the RPO; ask how long restore plus replay takes before trusting it to meet the RTO."
+      ],
+      "_provenance": "Authored from concept: 'Remote Journaling. Restore and Replay Time Against the RTO'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B3.2 (Wave 1 coverage batch Q2: a subtopic with thin practice). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_269",
+      "domain": 4,
+      "subtopic": "Synchronous Replication. Distance, Latency and the RPO Trade-off",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Synchronous replication",
+        "Asynchronous replication",
+        "Latency",
+        "Recovery point objective"
+      ],
+      "framework_ref": "NIST SP 800-34 Rev 1 (Contingency Planning Guide for Federal Information Systems); ISO/IEC 27002:2022 Control 8.14 (Redundancy of Information Processing Facilities); COBIT 2019 DSS04 (Managed Continuity)",
+      "question": "Synchronous replication to a recovery site 900 miles away has slowed a bank's payment processing. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Upgrade the link between the two sites to higher bandwidth",
+        "B": "Switch to asynchronous replication so payments run faster",
+        "C": "Have the business owner reconfirm the acceptable data loss",
+        "D": "Move the recovery site to a nearby metro-area data center"
+      },
+      "correct": "C",
+      "key_concept": "Synchronous replication is limited by distance; moving to asynchronous adds a loss window the business owner must accept first.",
+      "pre_read": "Ask what limits a write that must be confirmed far away, and who decides how much data loss is acceptable.",
+      "correct_explanation": "Distance adds delay to every synchronous write, and bandwidth cannot remove it, so the realistic fixes are asynchronous copying, a nearer synchronous site or both. Each trades data loss, cost and regional protection, and the RPO is a business decision, so the business owner must first decide what loss is acceptable. Switching to asynchronous replication is the runner-up: it may be right, but adopting it first quietly changes the RPO.",
+      "wrong_explanations": {
+        "A": "More bandwidth does not shorten the travel time of each write over 900 miles, so synchronous writes stay slow.",
+        "B": "Asynchronous copying may be right, but it opens a small data-loss window that the business owner must accept first.",
+        "D": "A nearer site cuts write delay but shares regional disasters; that trade-off, like the RPO, is the business owner's to accept first."
+      },
+      "tips": [
+        "Eliminate: A adds bandwidth, which does not cut distance delay, and D trades regional protection for speed without a business decision.",
+        "Final two: C beats B because asynchronous copying changes the RPO, and only the business owner can accept that loss window.",
+        "Exam cue: when a recovery design trades data loss for speed or cost, the business owner sets the RPO before IT changes the design."
+      ],
+      "_provenance": "Authored from concept: 'Synchronous Replication. Distance, Latency and the RPO Trade-off'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B3.2 (Wave 1 coverage batch Q2: a subtopic with thin practice). Public sources: NIST, ISO/IEC, ISACA COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_270",
+      "domain": 4,
+      "subtopic": "Work Recovery Time. RTO Plus WRT Within the MTD",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Work recovery time",
+        "Recovery time objective",
+        "Maximum tolerable downtime",
+        "Business impact analysis"
+      ],
+      "framework_ref": "NIST SP 800-34 Rev 1 (Contingency Planning Guide for Federal Information Systems); BCI Good Practice Guidelines PP3 (Analysis)",
+      "question": "An insurer's claims unit has a maximum tolerable downtime (MTD) of 10 hours and a six-hour RTO; adjusters then need five hours to reconcile records and queued claims. What is the IS auditor's PRIMARY finding?",
+      "options": {
+        "A": "Restoring systems plus catch-up work would exceed the MTD",
+        "B": "The six-hour RTO by itself is longer than the MTD",
+        "C": "The five hours of reconciling should count toward the RPO",
+        "D": "Recovery targets are adequate because the RTO falls inside the MTD"
+      },
+      "correct": "A",
+      "key_concept": "The RTO plus the work recovery time (WRT) needed to verify data and clear backlogs must fit inside the MTD.",
+      "pre_read": "Add up every step until normal work resumes, not just the time to restore systems, then compare the total with the MTD.",
+      "correct_explanation": "Work recovery time (WRT) is the time after systems return to verify and reconcile data, clear the backlog and resume normal work. The RTO plus the WRT must fit inside the MTD: here six plus five is 11 hours, one beyond the 10-hour limit. Concluding the targets are adequate is the runner-up: the RTO alone does sit inside the MTD, but the unit stays down until the catch-up work ends.",
+      "wrong_explanations": {
+        "B": "Six hours is within the 10-hour MTD; the problem appears only when the five hours of catch-up work are added.",
+        "C": "The RPO measures how much data can be lost; reconciling and backlog time is work recovery time, which counts against the MTD.",
+        "D": "Comparing the RTO alone with the MTD ignores the five hours of catch-up work before the unit is truly running again."
+      },
+      "tips": [
+        "Eliminate: B misreads the numbers, since six hours is inside the MTD, and C confuses catch-up time with the RPO, which measures data loss.",
+        "Final two: A beats D because the unit is not back until catch-up work ends; six plus five hours breaches the 10-hour limit.",
+        "Exam cue: the RTO plus the work recovery time must fit inside the MTD; checking the RTO alone hides the catch-up work."
+      ],
+      "_provenance": "Authored from concept: 'Work Recovery Time. RTO Plus WRT Within the MTD'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B1.2 (Wave 1 coverage batch Q2: work recovery time had no practice). Public sources: NIST, BCI.",
       "style_version": 2
     }
   ]

@@ -13165,7 +13165,8 @@
                 "d4_124",
                 "d4_208",
                 "d4_261",
-                "d4_262"
+                "d4_262",
+                "d4_270"
               ],
               "definition": "Recovery objectives are the business's limits for a disruption: the data it can lose, the downtime it can bear, and the minimum service it needs.",
               "why_it_matters": "These numbers set backup frequency, the recovery site and the cost of continuity. If wrong or unapproved, a plan can pass every test and still fail the business.",
@@ -13250,6 +13251,10 @@
                 {
                   "term": "Maximum tolerable outage (MTO)",
                   "definition": "The longest the organization can operate in alternate mode before it must return to normal; not the same as the MTD."
+                },
+                {
+                  "term": "Work recovery time (WRT)",
+                  "definition": "Time after systems return to check data and clear backlogs; the RTO plus the WRT must fit inside the MTD."
                 }
               ],
               "memory_aid": "RPO looks back at the Point you restore to; RTO looks ahead to the Time you are running again."
@@ -13803,7 +13808,10 @@
                 }
               ],
               "practice_ids": [
-                "d4_225"
+                "d4_225",
+                "d4_267",
+                "d4_268",
+                "d4_269"
               ]
             },
             {
@@ -17215,7 +17223,7 @@
                 "svg": "<svg viewBox='0 0 440 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Software-defined networking separates the control plane that decides from the data plane that forwards'><text x='220' y='14' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>CONTROL PLANE — MAKES DECISIONS</text><rect x='140' y='22' width='160' height='40' rx='4' fill='var(--accent-fill)'/><text x='220' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>SDN Controller</text><text x='220' y='100' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>DATA PLANE — FORWARDS TRAFFIC</text><rect x='20' y='110' width='112' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='76' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Switch</text><line x1='220' y1='62' x2='76' y2='110' stroke='var(--text2)' stroke-width='1.5'/><rect x='164' y='110' width='112' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='220' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Switch</text><line x1='220' y1='62' x2='220' y2='110' stroke='var(--text2)' stroke-width='1.5'/><rect x='308' y='110' width='112' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='364' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Switch</text><line x1='220' y1='62' x2='364' y2='110' stroke='var(--text2)' stroke-width='1.5'/></svg>",
                 "caption": "SDN splits the network in two. A central controller holds the control plane and decides routes; the switches keep only the data plane and forward traffic."
               },
-              "example": "A university moves its campus network to software-defined networking to speed up changes. The IS auditor finds network engineers all use one login to the SDN controller, and automation scripts push changes without approval records. He recommends individual accounts with multi-factor authentication, change control for scripted changes, and logging of every controller action.",
+              "example": "A university moves its campus network to software-defined networking to speed up changes. The IS auditor finds network engineers all use one login to the SDN controller, and automation scripts push changes without approval records. The IS auditor recommends individual accounts with multi-factor authentication, change control for scripted changes, and logging of every controller action.",
               "isaca_rule": "Centralizing control centralizes risk. Protect the SDN controller like any critical management system: restricted access, individual accounts with strong authentication, change control, logging and redundancy.",
               "exam_traps": [
                 {
@@ -17240,6 +17248,10 @@
                   "term": "SDN controller",
                   "definition": "The central software that decides traffic paths and pushes rules to every switch; whoever controls it controls the network."
                 }
+              ],
+              "practice_ids": [
+                "d5_306",
+                "d5_307"
               ]
             }
           ]
@@ -17740,6 +17752,12 @@
                   "term": "Scrubbing service",
                   "definition": "A provider that diverts incoming traffic, filters out the attack and forwards only clean traffic."
                 }
+              ],
+              "practice_ids": [
+                "d5_308",
+                "d5_309",
+                "d5_310",
+                "d5_311"
               ]
             },
             {
