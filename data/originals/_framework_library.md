@@ -31,7 +31,7 @@ Sub-bullets and free-text content are ignored by the linter.
 - ISACA IT Audit Standard 1008 (Criteria)
 - ISACA IT Audit Standard 1205 (Evidence)
 - ISACA IT Audit Standard 1206 (Using the Work of Other Experts)
-- ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts)
+- ISACA IS Audit and Assurance Standard 1207 (Irregularity and Illegal Acts)
 - ISACA IT Audit Standard 1401 (Reporting)
 - ISACA IT Audit Standard 1402 (Follow-up Activities)
 - Standard 1401 (Reporting)
@@ -1972,3 +1972,32 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - RFC 4301 (Security Architecture for the Internet Protocol)
 - ISO/IEC 27002:2022 Control 8.19 (Installation of Software on Operational Systems)
 - CIS Controls v8 Safeguard 2.5 (Allowlist Authorized Software)
+
+## Added with Wave 2 coverage batch Q8 (Domain 4, Oct 2026)
+
+- NIST SP 800-53 Rev 5 CP-4 (Contingency Plan Testing)
+- NIST SP 800-53 Rev 5 CP-8 (Telecommunications Services)
+- CIS Controls v8 Safeguard 11.5 (Test Data Recovery)
+
+## Added with Wave 3 coverage batch Q9 (Domain 1, Oct 2026)
+
+- ISA 450, Evaluation of Misstatements Identified during the Audit
+- ISA 530 (Audit Sampling)
+- COBIT 2019 BAI06.02 (Manage emergency changes)
+- PCI DSS v4.0.1 Appendix B (Compensating Controls)
+- NIST SP 800-53 Rev 5 AC-7 (Unsuccessful Logon Attempts)
+
+## Added with Wave 3 coverage batch Q11 (Domain 2, Oct 2026)
+
+- COBIT 2019 EDM01.02 (Direct the governance system)
+- COBIT 2019 EDM01.03 (Monitor the governance system)
+- COBIT 2019 APO07.02 (Identify key IT personnel)
+- COBIT 2019 APO12.02 (Analyze risk)
+- COBIT 2019 APO14.09 (Support data archiving and retention)
+- COBIT 2019 MEA03.01 (Identify external compliance requirements)
+- COBIT 2019 MEA03.02 (Optimize response to external requirements)
+- ISO/IEC 27002:2022 Control 8.10 (Information Deletion)
+- ISO/IEC 27002:2022 Control 8.11 (Data Masking)
+- COBIT 2019 EDM03.01 (Evaluate risk management)
+- COBIT 2019 APO14.10 (Manage data backup and restore arrangements)
+- GDPR Recital 26 (Anonymous information)

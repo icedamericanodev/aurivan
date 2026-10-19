@@ -39,7 +39,8 @@ import { GAMES, type GameId } from '../../engine/games/registry';
 import { drillPlan } from '../../engine/games/todaysDrill';
 import { spokenMin } from '../../engine/pace';
 import { playableGames } from '../../lib/games';
-import { slipPatternFor } from '../../lib/slipPattern';
+import { topSlipPattern } from '../../lib/slipPattern';
+import { PATTERN_COPY } from '../../engine/slipCoach';
 import { CERTIFICATIONS, getCertification } from '../../content/certifications';
 import { selectCert, useProgress } from '../../store/progress';
 import { useSettings } from '../../store/settings';
@@ -57,14 +58,17 @@ export default function Play() {
   // Progress by the active id itself, as useActiveCert reads it, so every tab shows the same exam's progress.
   const gameBest = useProgress((s) => selectCert(s, certId).gameBest);
   const gameGrowth = useProgress((s) => selectCert(s, certId).gameGrowth);
-  const mistakes = useProgress((s) => selectCert(s, certId).mistakes);
   // A game whose question pool is too small for this certification is not
   // offered at all (never explained with a number: no bank-size leaks).
   // Note-based games (Root or Rumor) count the cert's study notes instead.
   const playable = useMemo(() => playableGames(cert.id), [cert.id]);
   // The learner's own mistake pattern (the same coach as the Mistake journal) picks Today's drill.
-  const pattern = useMemo(() => slipPatternFor(cert.id, mistakes), [cert.id, mistakes]);
-  const plan = useMemo(() => drillPlan(pattern.ready ? pattern.game : null, playable), [pattern, playable]);
+  // Subscribed as the pattern's id, not the whole mistakes record (performance,
+  // PR #90): a right answer that marks a logged mistake fixed changes the
+  // record but not the pattern, and must not re-render this hidden tab.
+  const top = useProgress((s) => topSlipPattern(cert.id, selectCert(s, certId).mistakes));
+  const pattern = top ? PATTERN_COPY[top] : null;
+  const plan = useMemo(() => drillPlan(pattern ? pattern.game : null, playable), [pattern, playable]);
   const featured = plan.drill ? GAMES[plan.drill] : undefined;
   // "More games" starts folded: three games in sight, the rest one tap away.
   const [moreOpen, setMoreOpen] = useState(false);
@@ -120,7 +124,7 @@ export default function Play() {
           {/* Today's drill: why this game, in the learner's own pattern words (or a calm default). */}
           <Section title="Today’s drill" />
           <T v="meta" style={{ marginBottom: space.md }}>
-            {plan.fromPattern && pattern.ready ? `Picked from your mistakes. ${pattern.title}.` : 'A good place to start. Your mistakes will shape this pick.'}
+            {plan.fromPattern && pattern ? `Picked from your mistakes. ${pattern.title}.` : 'A good place to start. Your mistakes will shape this pick.'}
           </T>
           <HeroPanel
             captionLead={<GameGlyph game={featured.id} size={20} color={c.sap} />}

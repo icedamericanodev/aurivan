@@ -6340,7 +6340,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.17</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.19</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6631,7 +6631,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.17';
+const APP_VERSION = 'v12.19';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -17676,6 +17676,21 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'More practice on IT governance',
+    items: [
+      { cat: 'new', text: 'New practice questions on board oversight, separating duties, mandatory leave and key roles, data retention, weighing a control\'s cost against the risk it removes, and meeting legal and card-industry requirements.' }
+    ]
+  },
+  {
+    version: 'v12.18',
+    title: 'More practice on audit judgment and keeping systems running',
+    items: [
+      { cat: 'new', text: 'New practice questions on audit risk, materiality, compensating controls and reporting findings, and on backups, failover, recovery sites, supplier agreements and restore tests.' },
+      { cat: 'fixed', text: 'The phone app no longer redraws a hidden tab after you answer a question, so it stays quick with a long study history.' }
+    ]
+  },
+  {
+    version: 'v12.17',
     title: 'More practice on security, networks and IT operations',
     items: [
       { cat: 'new', text: 'New practice questions on encryption, sign-in and biometrics, firewalls and wireless security, databases, storage, batch jobs and safely wiping old drives.' },

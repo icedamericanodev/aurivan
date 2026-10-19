@@ -1402,7 +1402,9 @@
               ],
               "practice_ids": [
                 "d1_062",
-                "d1_126"
+                "d1_126",
+                "d1_198",
+                "d1_199"
               ],
               "definition": "Audit risk is the risk that the IS auditor reaches the wrong conclusion, such as reporting controls as effective when a material problem exists.",
               "why_it_matters": "It explains why testing must grow as the subject gets riskier. The IS auditor controls only one part of audit risk, so every adjustment happens there.",
@@ -1490,7 +1492,9 @@
               ],
               "practice_ids": [
                 "d1_007",
-                "d1_094"
+                "d1_094",
+                "d1_200",
+                "d1_201"
               ],
               "definition": "Materiality is the point at which an error, weakness or omission could change the decisions of the people who rely on the audit.",
               "why_it_matters": "It tells the IS auditor what is worth finding and reporting. Judging it by dollar size alone lets small but sensitive problems slip through.",
@@ -1698,7 +1702,9 @@
               ],
               "practice_ids": [
                 "d1_012",
-                "d1_155"
+                "d1_155",
+                "d1_202",
+                "d1_203"
               ],
               "definition": "Preventive, detective and corrective controls sort controls by timing: stopping a problem before it happens, finding it afterward, or fixing its effects.",
               "why_it_matters": "When a control acts shows what it can and cannot do. Good design mixes all three, because prevention fails and detection without correction leaves the damage in place.",
@@ -1917,7 +1923,9 @@
               ],
               "practice_ids": [
                 "d1_008",
-                "d1_156"
+                "d1_156",
+                "d1_204",
+                "d1_205"
               ],
               "definition": "A compensating control reduces a risk when the preferred control is impractical; defense in depth layers several controls so one failure does not expose the asset.",
               "why_it_matters": "Small teams and old systems often cannot have the ideal control. Knowing what makes a substitute or a layered design truly work prevents false comfort from controls that only look reassuring.",
@@ -2826,7 +2834,8 @@
               ],
               "practice_ids": [
                 "d1_102",
-                "d1_183"
+                "d1_183",
+                "d1_206"
               ],
               "definition": "Audit evidence must be sufficient, meaning there is enough of it, and appropriate, meaning it is relevant to the objective and reliable.",
               "why_it_matters": "A conclusion built on too little evidence, or on evidence that is off-topic or untrustworthy, can mislead the board. More of it cannot rescue poor-quality evidence.",
@@ -3597,7 +3606,10 @@
                 "1B5.1"
               ],
               "practice_ids": [
-                "d1_079"
+                "d1_079",
+                "d1_195",
+                "d1_196",
+                "d1_197"
               ],
               "definition": "An audit finding is a documented gap between what should happen and what does happen, with its cause and risk, plus a recommendation to fix it.",
               "why_it_matters": "A finding that is vague, overstated or missing its cause gets disputed, or fixed only on the surface. A clear finding helps management act on the real problem.",
@@ -4161,7 +4173,9 @@
                 "2A1.1"
               ],
               "practice_ids": [
-                "d2_173"
+                "d2_173",
+                "d2_213",
+                "d2_214"
               ],
               "definition": "Legal and regulatory compliance means meeting the mandatory duties that laws, regulators and binding contracts place on how an organization uses and protects information.",
               "why_it_matters": "Outside rules decide what data may be kept, for how long, who may see it and what must be reported. Breaking them brings fines, lost licenses and lost trust.",
@@ -4173,7 +4187,7 @@
                 "The board stays accountable for compliance even when legal, compliance or IT teams do the work.",
                 "When a regulator investigates, legal counsel (the organization's lawyers) coordinates: preserve evidence, review what is produced, and meet the requested scope and deadline."
               ],
-              "example": "A retailer takes card payments online and plans to store card numbers for one-click checkout. Its merchant agreement requires PCI DSS, though no law names that standard, and the chief information officer treated it as optional. The IS auditor reports that the contract makes the standard binding and recommends that management add it to the compliance plan.",
+              "example": "A regional airline's call center keeps customer card numbers in booking notes. Management deferred PCI DSS work to next year, expecting only a new law to make it urgent, yet the acquiring bank's contract already demands it. The IS auditor reports that the contract binds the airline today and recommends that management schedule the work this year.",
               "isaca_rule": "Mandatory obligations are not open to a cost trade-off. Management decides how to comply, not whether to comply, and the board stays accountable. The IS auditor verifies that every applicable obligation is identified and treated, and reports gaps without ruling on legal questions.",
               "exam_traps": [
                 {
@@ -4367,7 +4381,9 @@
               ],
               "practice_ids": [
                 "d2_001",
-                "d2_059"
+                "d2_059",
+                "d2_203",
+                "d2_204"
               ],
               "definition": "Enterprise governance of information and technology (EGIT) is the board's direction and oversight of IT, so that technology supports strategy, creates value and stays within risk limits.",
               "why_it_matters": "When the board does management's job, or management sets its own direction unchecked, accountability blurs. A clear split lets the board hold executives to account for results.",
@@ -4376,7 +4392,8 @@
                 "Executives plan, build, run and monitor IT within the direction the board sets.",
                 "COBIT 2019 keeps governance objectives separate from management objectives, so each role stays distinct.",
                 "EGIT is part of enterprise governance and applies to every organization that depends on IT, not only regulated firms.",
-                "The board can delegate execution, but it keeps accountability for how IT serves the enterprise."
+                "The board can delegate execution, but it keeps accountability for how IT serves the enterprise.",
+                "Receiving IT reports is not oversight; a governing board questions the results and acts on them."
               ],
               "compare": {
                 "columns": [
@@ -4785,7 +4802,9 @@
               ],
               "practice_ids": [
                 "d2_008",
-                "d2_037"
+                "d2_037",
+                "d2_205",
+                "d2_206"
               ],
               "definition": "Segregation of duties (SoD) splits a sensitive task among different people, so no one person can start, approve, carry out and hide a transaction or change.",
               "why_it_matters": "If one person controls every step, an error or fraud can go unnoticed. Splitting duties means a wrongdoer needs a partner, which makes fraud harder to commit and easier to detect.",
@@ -4793,8 +4812,8 @@
                 "Keep four functions apart: authorization (approving a transaction), custody (holding the asset), recording it, and reconciliation (checking records against what exists).",
                 "In IT, keep development, production operations, database administration and security administration apart, so no one can change code or data and also grant access or clear logs.",
                 "Watch for toxic combinations, where one account can change data or code and also alter the logs that would reveal it.",
-                "Where a small team cannot split duties, add compensating controls: usually an independent person reviews activity afterward to detect problems.",
-                "Review role assignments regularly, because access tends to build up as people change jobs."
+                "Where a small team cannot split duties, add compensating controls, usually an independent after-the-fact review.",
+                "Business process owners decide which duties conflict; review roles regularly, since access builds up as people move."
               ],
               "compare": {
                 "columns": [
@@ -5610,15 +5629,18 @@
               "practice_ids": [
                 "d2_012",
                 "d2_062",
-                "d2_080"
+                "d2_080",
+                "d2_211",
+                "d2_212"
               ],
               "definition": "Risk analysis sizes each risk by likelihood and impact, using descriptive ratings (qualitative), calibrated scores (semi-quantitative) or money values (quantitative).",
               "why_it_matters": "The method shapes how decision makers see risk. False precision from weak data misleads them as badly as vague labels do when solid data exists.",
               "how_it_works": [
                 "Qualitative analysis rates likelihood and impact with words such as high, medium and low; it is fast and suits sparse data.",
-                "Semi-quantitative analysis uses calibrated numeric scales with defined ranges, so loss data and expert judgment compare consistently.",
+                "Semi-quantitative analysis scores risks on calibrated scales with defined ranges; the scores rank risks but do not show how much worse one is.",
                 "Quantitative analysis estimates loss in money: single loss expectancy (SLE), annualized rate of occurrence (ARO) and annualized loss expectancy (ALE).",
-                "The Factor Analysis of Information Risk (FAIR) model is a quantitative method: it estimates how often losses happen and how big they are as ranges, not single numbers."
+                "The Factor Analysis of Information Risk (FAIR) model is a quantitative method: it estimates how often losses happen and how big they are as ranges, not single numbers.",
+                "A control pays off when the yearly loss it removes, ALE before minus ALE after, exceeds its yearly cost."
               ],
               "compare": {
                 "columns": [
@@ -6408,7 +6430,9 @@
                 "2A7.4"
               ],
               "practice_ids": [
-                "d2_098"
+                "d2_098",
+                "d2_209",
+                "d2_210"
               ],
               "definition": "A records retention schedule sets how long each category of data is kept, based on legal and business needs, and how it is securely destroyed afterward.",
               "why_it_matters": "Keeping data too briefly breaks legal duties; keeping it too long adds breach exposure, storage cost and privacy violations. Both are compliance failures.",
@@ -6416,7 +6440,7 @@
                 "Each data category gets a retention period with a documented basis, such as tax law or a contract.",
                 "Where several laws apply, the period meets each law's minimum without keeping personal data longer than needed.",
                 "A legal hold suspends disposal of data linked to litigation or an investigation until counsel releases it.",
-                "When retention ends, data is destroyed by a method matched to its classification, and evidence is kept.",
+                "When retention ends, data is destroyed by a method matched to its classification, or anonymized so it no longer identifies anyone, and evidence is kept.",
                 "Retention rules cover every copy, including backups, archives and data held by vendors."
               ],
               "compare": {
@@ -6540,15 +6564,17 @@
               ],
               "practice_ids": [
                 "d2_018",
-                "d2_055"
+                "d2_055",
+                "d2_207",
+                "d2_208"
               ],
               "definition": "IT human resource management is how an organization hires, develops, deploys and keeps IT staff, so the right skills are available and people risks stay controlled.",
               "why_it_matters": "People make IT work, and they are also its most common source of risk. Skill gaps slow delivery, one-person dependencies stall operations, and unchecked insiders can hide fraud for years.",
               "how_it_works": [
                 "Controls follow the employee's journey: screening when joining, development and oversight while working, and prompt removal when leaving.",
                 "Role-based competency frameworks set the skills each job needs; staff are assessed, trained on gaps and reassessed.",
-                "Mandatory vacations and job rotation put someone else in the role, which can reveal concealed fraud or errors.",
-                "Cross-training and succession plans reduce dependence on a single expert.",
+                "Mandatory vacations (with the holder's access suspended) and job rotation put someone else in the role, which can reveal concealed fraud or errors.",
+                "Identifying key roles first lets cross-training and succession plans reduce dependence on a single expert.",
                 "Performance goals for IT staff link to business and IT objectives and are reviewed regularly."
               ],
               "illustration": {
@@ -12823,7 +12849,9 @@
                 "d4_165",
                 "d4_171",
                 "d4_180",
-                "d4_246"
+                "d4_246",
+                "d4_301",
+                "d4_302"
               ],
               "definition": "A service level agreement (SLA) is a documented agreement between a service provider and its customer that sets measurable service targets, reporting and remedies.",
               "why_it_matters": "An SLA turns good service into numbers both sides can check. Targets that cannot be measured, or that measure only speed, give false comfort and make penalties unenforceable.",
@@ -13718,13 +13746,14 @@
                 "d4_067",
                 "d4_183",
                 "d4_184",
-                "d4_205"
+                "d4_205",
+                "d4_295"
               ],
               "definition": "Resilient technology design builds systems that keep working, sometimes at reduced capacity, when a component fails, instead of relying only on recovery afterward.",
               "why_it_matters": "Recovery always costs some downtime and often some data. Resilience prevents many outages altogether, which matters most for services with very short recovery time objectives (RTOs).",
               "how_it_works": [
                 "Designers trace each critical service end to end and list every single point of failure: one disk, server, network link, provider or site.",
-                "Each single point of failure gets a redundant partner, so the service continues when one fails.",
+                "Each single point of failure gets a monitored redundant partner, so the service continues and a failed part is repaired quickly.",
                 "Redundant parts must be truly independent, with different carriers, physical routes, power feeds and hazard zones.",
                 "Applications isolate a failing dependency with a circuit breaker and degrade gracefully, so core functions stay available.",
                 "If the backup path has failed or was never tested, deliberately run with reduced features rather than rushing to an untested environment.",
@@ -13766,7 +13795,7 @@
                   }
                 ]
               },
-              "example": "A food processor runs its plant-scheduling system on two server clusters in separate buildings, and the IT manager reports no single point of failure. The IS auditor finds both buildings take power through one shared switchgear room. She reports the common-cause exposure and asks for a test with one power feed cut before accepting the claim.",
+              "example": "A food processor runs its plant-scheduling system on two server clusters in separate buildings, and IT reports no single point of failure. The IS auditor finds both buildings take power through one shared switchgear room, reports the common-cause exposure and asks for a test with one power feed cut.",
               "audit_focus": {
                 "review": [
                   "Trace each critical service's path for shared power, cable routes and providers",
@@ -13776,9 +13805,9 @@
                 "evidence": [
                   "Past fault-injection and failover test results, with recovery times and issues found",
                   "Facility and carrier records showing separate power feeds and cable routes",
-                  "Architecture records listing each single point of failure and its partner"
+                  "Architecture records pairing each single point of failure"
                 ],
-                "recommend": "Have the infrastructure manager remove shared dependencies, add circuit breakers and run fault-injection tests on a schedule.",
+                "recommend": "Have the infrastructure manager remove shared dependencies, add circuit breakers and alert on failed redundant units with a repair deadline.",
                 "decides": "The business owner decides which features may stop in degraded mode"
               },
               "isaca_rule": "Redundancy counts only when it is independent and tested. The IS auditor looks for hidden shared dependencies, such as one cable route, power grid or provider, and asks for fault-injection or failover evidence before accepting a resilience claim.",
@@ -13815,7 +13844,10 @@
                 "d4_008",
                 "d4_068",
                 "d4_069",
-                "d4_266"
+                "d4_266",
+                "d4_296",
+                "d4_297",
+                "d4_298"
               ],
               "definition": "Redundancy techniques duplicate disks, servers and network links so one failure does not stop a service. Examples are RAID (redundant array of independent disks), clustering and diverse routing.",
               "why_it_matters": "Each technique protects against one kind of failure only. Spare disks or servers do nothing against deletion, corruption, ransomware or a shared cable route, so the IS auditor matches each technique to its risk.",
@@ -14037,7 +14069,9 @@
                 "d4_063",
                 "d4_064",
                 "d4_162",
-                "d4_233"
+                "d4_233",
+                "d4_303",
+                "d4_304"
               ],
               "definition": "A backup scheme is the pattern of full, incremental and differential copies an organization takes; rotation is the schedule for reusing and retiring backup media.",
               "why_it_matters": "The scheme sets backup time, storage use and restore time. A poor choice can make restores miss the recovery time objective (RTO) or leave no clean copy.",
@@ -14320,7 +14354,9 @@
                 "d4_126",
                 "d4_181",
                 "d4_222",
-                "d4_249"
+                "d4_249",
+                "d4_305",
+                "d4_306"
               ],
               "definition": "Restore testing means recovering data from real backup media into a test environment and checking that it is complete, correct and usable.",
               "why_it_matters": "A backup job marked successful shows only that something was written. Without test restores, the organization may discover its backups are unusable in the middle of a disaster.",
@@ -14365,7 +14401,7 @@
                   }
                 ]
               },
-              "example": "An online retailer restores a sample file each month and calls its backups tested. The IS auditor asks how long a full restore of the order database takes, and nobody knows. A timed test takes 31 hours against a 12-hour RTO. She reports the gap and recommends regular timed full restores. The IT operations manager decides how to speed recovery.",
+              "example": "A university restores one sample file each term and calls its backups tested. The IS auditor asks how long a full restore of the student records system takes, and nobody knows. A timed test takes 40 hours against a 24-hour RTO. The IS auditor reports the gap and recommends regular timed full restores. The IT operations manager decides how to speed recovery.",
               "isaca_rule": "Recoverability is proven only by restoring data and checking it. Job logs, creation-time verification, contracts and provider assurances are weaker evidence. The IS auditor asks for recent, timed test restores with integrity checks.",
               "exam_traps": [
                 {
@@ -14721,7 +14757,9 @@
               "practice_ids": [
                 "d4_084",
                 "d4_099",
-                "d4_252"
+                "d4_252",
+                "d4_299",
+                "d4_300"
               ],
               "definition": "Recovery site agreements are the arrangements that secure a place to recover: commercial shared sites, reciprocal agreements, mobile units, duplicate sites or cloud services.",
               "why_it_matters": "A recovery site helps only if it is available when needed. Contract terms, shared capacity and dependence on one provider decide whether the organization can recover.",
