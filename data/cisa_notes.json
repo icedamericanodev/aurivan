@@ -174,7 +174,7 @@
                   "Continuing professional education records from the certification body"
                 ],
                 "recommend": "Have the chief audit executive require full disclosure of significant findings and recorded declarations of any offers.",
-                "decides": "The audit committee oversees the audit function's ethics and independence"
+                "decides": "The audit committee decides how to address ethics breaches in the audit function"
               },
               "isaca_rule": "Ethics questions usually turn on honest, complete reporting. Disclose every significant fact to the people entitled to it, protect information from everyone else, and refuse any reward or role that could sway the IS auditor's judgment.",
               "exam_traps": [
@@ -5678,7 +5678,7 @@
                   "Risk register entries showing method and assumptions"
                 ],
                 "recommend": "Have the risk manager match each method to the data and decision, and document the inputs behind every money estimate.",
-                "decides": "Management chooses the analysis method and accepts the resulting risk ratings"
+                "decides": "The risk committee approves the method; management accepts the residual risk"
               },
               "isaca_rule": "Choose the method that fits the available data and the decision it must support. Quantitative analysis helps only when its inputs are reliable; otherwise it gives false precision.",
               "exam_traps": [
@@ -6001,8 +6001,8 @@
               "example": "A European city transit agency plans to add voice recording and emotion analysis to its customer-service chatbot next quarter. The vendor contract is signed, but no privacy assessment exists. The IS auditor recommends a privacy impact assessment (a DPIA under the GDPR) before any processing starts, and reports that launch should wait for the result.",
               "audit_focus": {
                 "review": [
-                  "Compare the RoPA with systems that actually hold personal data",
                   "Sample recent launches and compare go-live dates with PIA completion dates",
+                  "Compare the RoPA with systems that actually hold personal data",
                   "Compare the external privacy notice with what the systems actually collect"
                 ],
                 "evidence": [
@@ -6010,7 +6010,7 @@
                   "Project gate records showing PIA sign-off before build",
                   "Approved PIA reports with design changes made in response"
                 ],
-                "recommend": "Have the project management office gate launches on a completed PIA, and the data protection officer keep the RoPA current.",
+                "recommend": "Have the project management office gate each launch on a completed PIA, and process owners keep their RoPA entries current.",
                 "decides": "Management decides launch timing once the PIA's findings are addressed"
               },
               "isaca_rule": "A PIA (a DPIA under the GDPR) comes before new or high-risk processing, while its findings can still change the design. The RoPA is the main evidence of what an organization processes. Policies speak to staff; notices speak to individuals.",
@@ -8093,7 +8093,7 @@
                 "review": [
                   "Reperform the critical path from task durations and dependencies in the plan",
                   "Compare reported delays with each task's remaining slack",
-                  "Inspect whether added resources target critical-path tasks"
+                  "Trace added resources to their tasks and flag any off the critical path"
                 ],
                 "evidence": [
                   "Scheduling tool export of task dates, dependencies and slack",
@@ -8540,7 +8540,7 @@
                   "Business case with discounted cash flows and hurdle rate",
                   "Steering committee minutes recording options compared, including stopping"
                 ],
-                "recommend": "Have the program sponsor present forward-looking options, including stopping, with the measure that fits the decision.",
+                "recommend": "Have the program sponsor present forward-looking options, including stopping, with the fitting measure and the effect on live processes.",
                 "decides": "The steering committee decides whether to continue, change or stop the investment"
               },
               "isaca_rule": "Decide on what lies ahead. Compare the future costs and benefits of each option, including stopping, and ignore money already spent. Choose the financial measure that fits the question being asked.",
@@ -10006,10 +10006,10 @@
                 ],
                 "evidence": [
                   "Deployment tool logs showing rollout stages, halts and rollbacks with times",
-                  "Monitoring data showing error rates at each rollout stage",
+                  "Error rates by rollout stage from monitoring",
                   "Change tickets showing releases approved during a budget freeze"
                 ],
-                "recommend": "Have the release manager stage risky releases, halt on agreed error limits and test rollback plans before go-live.",
+                "recommend": "Have the release manager stage risky releases, halt on agreed error limits and test rollback plans that preserve new data.",
                 "decides": "The service owner decides when non-essential releases resume after a budget freeze"
               },
               "isaca_rule": "When a release starts failing, stop the spread and restore service first, following the tested playbook; root cause comes after. A rollback plan counts only if it is tested, time-bound and restores data and configuration while preserving valid new data.",
@@ -11961,9 +11961,9 @@
                 "evidence": [
                   "Synthetic transaction results showing whether customers could complete work",
                   "Incident records with start, end and repair times for each outage",
-                  "Service level agreement listing service hours and allowed exclusions"
+                  "Maintenance records showing planned outages excluded from reported availability"
                 ],
-                "recommend": "Have the service owner add synthetic transaction monitoring and report availability against agreed service hours.",
+                "recommend": "Have the service owner add synthetic transaction monitoring and report availability over the hours the business needs it.",
                 "decides": "Business process owners set the availability target from business impact"
               },
               "isaca_rule": "Availability is defined by the business and measured as users experience it, over the hours they need the service. When component dashboards report normal service but customers cannot complete transactions, trust the end-to-end measure.",
@@ -11984,7 +11984,7 @@
                 },
                 {
                   "term": "Planned downtime",
-                  "definition": "Agreed outage time for maintenance; it counts against availability unless the agreement excludes it."
+                  "definition": "Agreed outage time for maintenance; exclude it from availability only when it falls outside the hours the business needs the service."
                 },
                 {
                   "term": "Service hours",
@@ -12131,7 +12131,7 @@
                 "evidence": [
                   "Ticket history showing escalations, priority changes and user sign-off",
                   "Reset logs showing out-of-band caller checks before each multi-factor authentication (MFA) reset",
-                  "Priority matrix that scores business impact, including customer data exposure"
+                  "Priority matrix scoring business impact, and overrides raising live incidents at once"
                 ],
                 "recommend": "Have the IT service manager require user confirmation before closure and out-of-band caller verification before credential resets.",
                 "decides": "Business process owners set priority rules and service targets with IT"
@@ -12301,7 +12301,7 @@
                   "Confirm known errors and workarounds are in the knowledge base the desk uses"
                 ],
                 "evidence": [
-                  "Incident trend reports linking repeats to shared root causes",
+                  "Impact-weighted incident trend reports linking repeats to shared root causes",
                   "Problem records with timelines rebuilt from monitoring data",
                   "Change records proving each permanent fix was approved and verified"
                 ],
@@ -13472,7 +13472,7 @@
                   "Approved impact criteria applied the same way across all business units",
                   "Dependency records reconciled to the supplier list and IT asset inventory"
                 ],
-                "recommend": "Have the business continuity manager add missing processes, impact types or dependencies before plans are built.",
+                "recommend": "Have the business continuity manager add missing processes, impacts, dependencies and minimum resources, rated at peak.",
                 "decides": "Senior management approves the priority tiers (critical, vital, sensitive, nonsensitive)"
               },
               "isaca_rule": "Start from business processes, measure harm over time at worst-case timing, and set likelihood aside. Criticality is a business judgment: process owners and senior management decide it, and the IS auditor evaluates the method and advises.",
@@ -14106,7 +14106,7 @@
                   "Backup job logs showing completion, with every failure followed up",
                   "Offsite custody receipts and immutability settings for the protected copy"
                 ],
-                "recommend": "Have IT operations align backups with recovery targets and test restores on a schedule.",
+                "recommend": "Have IT operations align backups with recovery targets, keep one copy offsite and test restores regularly.",
                 "decides": "The data owner accepts any residual risk"
               },
               "isaca_rule": "Backups are designed from business targets: frequency from the RPO, restore speed from the RTO, and retention from legal and corruption-detection needs. At least one copy must be offsite and one out of ransomware's reach.",
@@ -14280,7 +14280,7 @@
                   "Assurance reports for every facility holding the media"
                 ],
                 "recommend": "Have IT operations reconcile the vault regularly, keep a catalog offsite and control keys for vendor-held backups.",
-                "decides": "The business owner approves the vault location against recovery and residency needs"
+                "decides": "The business owner confirms residency and recovery needs before any storage contract"
               },
               "isaca_rule": "Offsite storage is a control only when distance, custody, inventory and security equal to the primary site are all proven. When a third party holds the data, the organization still controls the encryption keys and the legal location.",
               "exam_traps": [
@@ -15360,7 +15360,7 @@
                   "Request log with identity checks and response dates",
                   "Processing records listing purpose, lawful basis and retention per data set"
                 ],
-                "recommend": "Have the privacy officer require a privacy impact assessment before any new use, transfer or monitoring.",
+                "recommend": "Have the privacy officer, with legal and human resources, confirm a lawful basis before new processing.",
                 "decides": "The data owner, with legal advice, decides whether a new use proceeds"
               },
               "isaca_rule": "Privacy limits the purpose, not just the access. Strong security does not make collection, reuse or transfer lawful; each needs its own lawful basis, and employee monitoring needs one in each country.",
@@ -15575,7 +15575,7 @@
                   "Room integrity test results showing the gas concentration holds",
                   "Maintenance contractor reports for detectors, valves and gas cylinders"
                 ],
-                "recommend": "Have the facilities manager fit clean-agent gas with early detection in staffed rooms, seal openings in gas-protected rooms and test detection regularly.",
+                "recommend": "Have the facilities manager fit clean-agent gas and early alarms in staffed rooms, pre-action sprinklers where code mandates water, and seal openings.",
                 "decides": "Senior management accepts residual fire risk within local fire code"
               },
               "isaca_rule": "Protect people first, then equipment. Clean-agent gas with early detection fits occupied server rooms best. Among water systems, pipes that stay dry until a fire is detected (pre-action, which exam questions often group under the dry-pipe label) beat wet pipe. Carbon dioxide never belongs where people work.",
@@ -15765,7 +15765,7 @@
                 "review": [
                   "Trace a sample of administrator log entries to one named person",
                   "Inspect MFA settings for remote and administrator access; factors must differ in category",
-                  "Obtain the false acceptance rate at each biometric reader's current setting"
+                  "Obtain each installed reader's false acceptance rate at its live threshold"
                 ],
                 "evidence": [
                   "Authentication settings exported from the central sign-in system",
@@ -15871,7 +15871,7 @@
                   "App consent logs showing who approved each permission grant",
                   "Session and token lifetime settings for each connected application"
                 ],
-                "recommend": "Have the identity team require MFA at the IdP, retire local logins and revoke sessions when users leave.",
+                "recommend": "Have the identity team require MFA at the IdP, retire local logins, revoke sessions at exit and require administrator approval for apps.",
                 "decides": "Application owners accept residual risk for apps that cannot meet the sign-in standard"
               },
               "isaca_rule": "SSO moves the front door to one place, so that door needs the strongest authentication and monitoring. Disabling an identity is not the same as ending access: sessions and tokens must be revoked too.",
@@ -16113,7 +16113,7 @@
                   "Service-to-service policy export listing which calls are allowed",
                   "Session logs showing access cut when device health changed"
                 ],
-                "recommend": "Have the security architecture team authorize every user and service request by policy and re-check device health during sessions.",
+                "recommend": "Have the security architecture team authorize every user and service request by policy, re-check device health during sessions and restrict access on failure.",
                 "decides": "Senior management sets zero trust priorities and funding"
               },
               "isaca_rule": "Zero trust is an architecture of continuous, policy-based decisions, not a product. Proving identity is only the first step; a policy must still decide what that identity, on that device, may reach right now.",
@@ -17334,7 +17334,7 @@
                   "Key inventory from the HSM or key service, with creation and rotation dates",
                   "Key creation and destruction records, each signed by two authorized staff (dual control)"
                 ],
-                "recommend": "Have the key management team remove excess key rights, enforce cryptoperiods and require dual control.",
+                "recommend": "Have the key management team keep high-value keys in HSMs, remove excess rights, enforce cryptoperiods and require dual control.",
                 "decides": "The data owner accepts any residual risk to the protected data"
               },
               "isaca_rule": "Separate who holds the keys from who holds the data, and require dual control for the most sensitive key operations. Every key needs a cryptoperiod; secure storage does not remove the need to rotate. Never destroy a key before the data it protects is no longer needed.",
@@ -17486,7 +17486,7 @@
                 "review": [
                   "Compare the certificate inventory with a network scan to find untracked certificates",
                   "Inspect relying applications' validation settings to confirm revocation status is checked",
-                  "Trace past key compromises to revocation, checking delays and backdated effective dates"
+                  "Trace past key compromises to revocation, checking delays and dating back to the compromise"
                 ],
                 "evidence": [
                   "Renewal tool reports listing certificates renewed, failed or near expiry",
@@ -17494,7 +17494,7 @@
                   "Revocation records with compromise, request and publication times"
                 ],
                 "recommend": "Have the certificate management team automate renewal and enforce revocation checking in every relying application.",
-                "decides": "Senior management approves emergency revocation and accepts its operational impact"
+                "decides": "Senior management pre-authorizes emergency revocation and accepts its operational impact"
               },
               "isaca_rule": "The organization owns its certificate inventory instead of relying on reminders from a CA or vendor. A compromised CA or signing key must lose trust at once, even at heavy operational cost, and revocation works only where relying systems check it.",
               "exam_traps": [
@@ -17944,7 +17944,7 @@
                   "Failover test results for a standby controller at another site",
                   "Change tickets matched to controller-pushed rules"
                 ],
-                "recommend": "Have the network manager require authenticated interface calls, individual controller accounts with multi-factor authentication and a standby controller.",
+                "recommend": "Have the network manager require authentication on every controller interface call, individual controller accounts and an automatic standby controller at another site.",
                 "decides": "The infrastructure owner accepts the risk of any single controller dependency"
               },
               "isaca_rule": "Centralizing control centralizes risk. Protect the SDN controller like any critical management system: restricted access, individual accounts with strong authentication, change control, logging and redundancy.",
@@ -18320,7 +18320,7 @@
                   "Learning system completion records by role and course",
                   "Device control logs showing blocked unapproved drives"
                 ],
-                "recommend": "Have human resources and the identity team grant access only after training, and the security manager add role-based content and device control.",
+                "recommend": "Have the information security manager require training before system access, add role-based content for high-risk roles and enforce device control.",
                 "decides": "Senior management sets which roles are high risk and accepts residual risk"
               },
               "isaca_rule": "Awareness is matched to risk: the more damage a role can do, the deeper its training, and nobody gets access untrained. Training supports controls but does not replace them. When people keep falling for an attack, add a preventive technical control.",
@@ -18789,14 +18789,14 @@
                 "review": [
                   "Inspect switch configurations for protection against forged address replies",
                   "Inspect router and endpoint DNS settings for outside name servers",
-                  "Inspect websites for the HTTP Strict Transport Security (HSTS) header"
+                  "Inspect public websites for the HTTP Strict Transport Security (HSTS) header and preload status"
                 ],
                 "evidence": [
                   "DNS query monitoring alerts for unusual length, volume or destinations, with follow-up",
                   "Switch logs of dropped forged address replies",
                   "Resolver configuration showing signature validation is enforced"
                 ],
-                "recommend": "Have the network team enable dynamic ARP inspection and DNS monitoring, and web owners enforce HSTS with preloading.",
+                "recommend": "Have the network team enable dynamic ARP inspection and DNS lookup monitoring, and application owners enforce HSTS with preloading.",
                 "decides": "The system owner accepts residual interception risk where encryption is not possible"
               },
               "isaca_rule": "Choose the control that works where the attack happens: stop local spoofing at the switch, defeat eavesdropping with encryption, and find hidden channels by analyzing permitted traffic. Prevention at the source beats an alert after the data has gone.",
