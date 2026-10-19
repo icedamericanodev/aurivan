@@ -224,7 +224,7 @@ acceptable when the reference is to the broader topical body of guidance.
 - NIST SP 800-34 (Contingency Planning Guide)
 - NIST SP 800-50 (Building an Information Technology Security Awareness Program)
 - ITIL 4 Incident Management
-- OCC Bulletin 2017-21 (Mergers and Acquisitions)
+- OCC Bulletin 2017-21 (Third-Party Relationships: Frequently Asked Questions to Supplement OCC Bulletin 2013-29) [rescinded 2023]
 - OCC Comptroller's Licensing Manual — Business Combinations
 - GDPR Article 3 (Territorial Scope)
 - GDPR Article 12 (Information and Modalities for Exercise of Rights)
@@ -2033,6 +2033,10 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - ISO/IEC 27002:2022 Control 5.20 (Addressing Information Security within Supplier Agreements)
 - ISO/IEC 27002:2022 Control 5.21 (Managing Information Security in the ICT Supply Chain)
 - COBIT 2019 BAI09.05 (Manage licenses)
-- NIST AI Risk Management Framework (AI RMF 1.0), GOVERN 1.6 (AI system inventory)
+- NIST AI Risk Management Framework (AI RMF 1.0), GOVERN 1.6 (Mechanisms are in place to inventory AI systems)
+- Interagency Guidance on Third-Party Relationships: Risk Management (OCC Bulletin 2023-17, June 2023)
+- NIST SP 800-161 Rev. 1 (Cybersecurity Supply Chain Risk Management Practices for Systems and Organizations)
+- GHG Protocol Corporate Accounting and Reporting Standard (Revised Edition)
+- GDPR Article 13 (Information to be provided where personal data are collected from the data subject)
 - COBIT 2019 Design Guide: Designing an Information and Technology Governance Solution
 - ISO/IEC 33020:2019 (Process Measurement Framework for Assessment of Process Capability)

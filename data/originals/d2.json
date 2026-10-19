@@ -7941,7 +7941,7 @@
         "Final two: B beats A because a SOC report covers only its own scope and period, while audit rights reach what the report misses.",
         "Exam cue: independent reports are routine evidence and contract rights are the backstop; keep both, and negotiate them before signing."
       ],
-      "framework_ref": "COBIT 2019 APO10.03 (Manage vendor relationships and contracts); ISO/IEC 27002:2022 Control 5.20 (Addressing Information Security within Supplier Agreements); Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29)",
+      "framework_ref": "COBIT 2019 APO10.03 (Manage vendor relationships and contracts); ISO/IEC 27002:2022 Control 5.20 (Addressing Information Security within Supplier Agreements); Interagency Guidance on Third-Party Relationships: Risk Management (OCC Bulletin 2023-17, June 2023)",
       "related_concepts": [
         "Right to audit",
         "SOC 2 Type 2 report",
@@ -7961,7 +7961,7 @@
       "options": {
         "A": "Released code alone could not quickly restore the hosted service",
         "B": "The escrow agent might not confirm that deposits are complete",
-        "C": "Escrow fees would add to the total cost of the service",
+        "C": "The escrow release triggers might not cover a service shutdown",
         "D": "Escrow could expose the start-up's code to its competitors"
       },
       "correct": "A",
@@ -7970,11 +7970,11 @@
       "correct_explanation": "Source code escrow protects a customer that can run the software itself. For a SaaS platform, the hospital has no hosting environment, operating staff or current copy of its data, so released code would not restore scheduling for weeks. Continuity needs data return and service transition terms. Deposit verification matters, but even a complete, verified deposit leaves the same gap, so it is a secondary concern.",
       "wrong_explanations": {
         "B": "Verification strengthens escrow, but even a complete, verified deposit would not give the hospital the infrastructure, data and staff to run the service.",
-        "C": "Escrow fees are small next to the cost of losing patient scheduling. Cost does not decide whether the protection works.",
+        "C": "Clear triggers matter, but even a timely release would give the hospital code it has no infrastructure or staff to run.",
         "D": "Escrow agents hold deposits in confidence and release them only to the customer when agreed conditions occur, such as vendor failure."
       },
       "tips": [
-        "Eliminate: C weighs a minor fee against service continuity, and D misreads escrow, which releases code only to the customer on agreed triggers.",
+        "Eliminate: C refines release terms that still deliver only code, and D misreads escrow, which releases code only to the customer on agreed triggers.",
         "Final two: A beats B because even a verified deposit cannot run a hosted service without infrastructure, data and operating staff.",
         "Exam cue: match the protection to the delivery model; for hosted services, look for data return and service transition, not code alone."
       ],
@@ -8004,18 +8004,18 @@
       "correct": "D",
       "key_concept": "Fourth-party risk reaches the customer indirectly; disclosure and mapping of key subcontractors reveal concentration that vendor-level reviews miss.",
       "pre_read": "Ask what one review per vendor can and cannot reveal about what the vendors share.",
-      "correct_explanation": "Vendor-by-vendor reviews cannot show that several critical vendors depend on the same fourth party. Requiring disclosure of key subcontractors, and mapping where they overlap, lets management see and treat this hidden concentration. Reviewing each vendor's continuity tests looks thorough, but each vendor can pass its own test while all rely on one hosting company, so the shared exposure stays invisible.",
+      "correct_explanation": "Vendor-by-vendor reviews cannot show that several critical vendors depend on the same fourth party (a vendor's own subcontractor). Requiring disclosure of key subcontractors, and mapping where they overlap, lets management see and treat this hidden concentration. Reviewing each vendor's continuity tests looks thorough, but each vendor can pass its own test while all rely on one hosting company, so the shared exposure stays invisible.",
       "wrong_explanations": {
         "A": "Each vendor can pass its own continuity test while all depend on the same host. Vendor-level results do not reveal shared fourth-party dependencies.",
         "B": "Replacing vendors after the event treats one symptom. New providers could share another hidden dependency, because nothing yet tracks subcontractors.",
-        "C": "The credit union has no relationship with the hosting company, and rights over one host would not reveal other shared dependencies."
+        "C": "A direct contract with one host is rarely obtainable and covers only that host; it would not reveal other fourth parties vendors share."
       },
       "tips": [
-        "Eliminate: B swaps vendors without seeing their dependencies, and C seeks rights over a company the credit union has no relationship with.",
+        "Eliminate: B swaps vendors without seeing their dependencies, and C seeks rights over one host that would not reveal other shared dependencies.",
         "Final two: D beats A because separate vendor reviews, however thorough, cannot reveal that several vendors rely on one fourth party.",
         "Exam cue: when several vendors fail together, look for the answer that maps shared fourth-party dependencies across the portfolio."
       ],
-      "framework_ref": "COBIT 2019 APO10.04 (Manage vendor risk); ISO/IEC 27002:2022 Control 5.21 (Managing Information Security in the ICT Supply Chain); NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management)",
+      "framework_ref": "COBIT 2019 APO10.04 (Manage vendor risk); ISO/IEC 27002:2022 Control 5.21 (Managing Information Security in the ICT Supply Chain); NIST SP 800-161 Rev. 1 (Cybersecurity Supply Chain Risk Management Practices for Systems and Organizations)",
       "related_concepts": [
         "Fourth-party risk",
         "Concentration risk",
@@ -8034,14 +8034,14 @@
       "question": "During due diligence on a software company whose revenue depends on one platform, an IS auditor records four findings. Which poses the GREATEST risk to the buyer's deal?",
       "options": {
         "A": "Two senior developers hold undocumented knowledge of the platform",
-        "B": "The platform's database license lapses if the company is sold",
+        "B": "The platform's core component license ends if the company is sold",
         "C": "The company uses a different email system from the buyer",
-        "D": "Several security policies have not been reviewed in two years"
+        "D": "Several security policies have not been reviewed in over two years"
       },
       "correct": "B",
       "key_concept": "Change-of-control clauses can end licenses or contracts a target depends on, so due diligence flags them before closing.",
       "pre_read": "Ask which finding could stop the buyer from using what it is paying for, and which can be managed later.",
-      "correct_explanation": "A change-of-control clause that ends the database license threatens the buyer's right to run the platform that produces all the revenue. Only terms agreed before closing, such as the licensor's consent or a price change, can address it. Undocumented developer knowledge is a serious key-person risk, but retention agreements and documentation can reduce it, while losing the license stops the business outright.",
+      "correct_explanation": "A change-of-control clause that ends the core component license threatens the buyer's right to run the platform that produces all the revenue. Only terms agreed before closing, such as the licensor's consent or a price change, can address it. Undocumented developer knowledge is a serious key-person risk, but retention agreements and documentation can reduce it, while the clause lets the licensor end or reprice the right to run the revenue platform.",
       "wrong_explanations": {
         "A": "Key-person dependency is a serious exposure, but retention agreements and knowledge transfer can reduce it. It does not remove the right to run the platform.",
         "C": "Different email systems are a routine integration task after closing. They do not affect the value or legality of what is being bought.",
@@ -8049,7 +8049,7 @@
       },
       "tips": [
         "Eliminate: C is a routine integration task after closing, and D is a minor policy gap the buyer can fix later.",
-        "Final two: B beats A because losing the license stops the revenue platform outright, while key-person risk can be reduced with retention terms.",
+        "Final two: B beats A because the licensor could end or reprice the right to run the revenue platform, while key-person risk can be reduced with retention terms.",
         "Exam cue: in due diligence, rank findings by whether they threaten what the buyer is paying for; change-of-control clauses often do."
       ],
       "framework_ref": "COBIT 2019 BAI09.05 (Manage licenses); COBIT 2019 APO12.02 (Analyze risk)",
@@ -8068,7 +8068,7 @@
       "subtopic": "ESG and Climate Disclosure Data. Quarterly Comparability",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A manufacturer's analyst changed the emission factor in its data-center emissions spreadsheet mid-year on personal judgment, so published quarterly figures no longer compare. What should the IS auditor recommend as MOST appropriate?",
+      "question": "A manufacturer's analyst revised the emission factor in its data-center emissions spreadsheet mid-year on personal judgment, so published quarterly figures no longer compare. What should the IS auditor recommend as MOST appropriate?",
       "options": {
         "A": "Restate the earlier quarters using the newer emission factor",
         "B": "Move the calculation into a carbon accounting software tool",
@@ -8089,7 +8089,7 @@
         "Final two: C beats A because restating fixes one comparison, while change control stops the next undocumented method change.",
         "Exam cue: treat sustainability figures like financial data; a recurring data problem calls for a control, not a one-time correction."
       ],
-      "framework_ref": "COBIT 2019 BAI06.01 (Evaluate, prioritize and authorize change requests); GHG Protocol Corporate Standard; ISSB IFRS S2 (Climate-related Disclosures)",
+      "framework_ref": "COBIT 2019 BAI06.01 (Evaluate, prioritize and authorize change requests); GHG Protocol Corporate Accounting and Reporting Standard (Revised Edition); ISSB IFRS S2 (Climate-related Disclosures)",
       "related_concepts": [
         "ESG data governance",
         "Change management",
@@ -8105,7 +8105,7 @@
       "subtopic": "Governing Artificial Intelligence and Emerging Technology. AI in Purchased Systems",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A city government's departments have switched on artificial intelligence (AI) features in several purchased systems that serve residents, but no one knows how many exist. What should the IS auditor recommend FIRST?",
+      "question": "A city government's departments have enabled artificial intelligence (AI) features in several purchased systems that serve residents, but no one knows how many exist. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Build an inventory of AI uses, each rated by its impact",
         "B": "Test each AI feature found so far for biased outcomes",
@@ -8126,7 +8126,7 @@
         "Final two: A beats B because testing cannot be targeted or complete until an inventory shows which AI uses exist and which matter most.",
         "Exam cue: when no one knows what exists, the first step is an inventory ranked by risk; assessment and testing follow."
       ],
-      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0), GOVERN 1.6 (AI system inventory); ISO/IEC 42001:2023 (Artificial Intelligence Management System)",
+      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0), GOVERN 1.6 (Mechanisms are in place to inventory AI systems); ISO/IEC 42001:2023 (Artificial Intelligence Management System)",
       "related_concepts": [
         "AI inventory",
         "Embedded AI",
@@ -8182,8 +8182,8 @@
       "question": "Process owners rated the incident management process at capability level 4 in a self-assessment, but the IS auditor finds no one collects data on how it performs. What is the MOST LIKELY conclusion?",
       "options": {
         "A": "The rating stands, because process owners know the process best",
-        "B": "The rating is overstated, since level 4 needs measured performance data",
-        "C": "The process likely reaches level 5, with results tracked informally",
+        "B": "The rating is overstated, as quantitative measurement is absent",
+        "C": "The rating stands, since practices are documented and followed",
         "D": "No conclusion is possible until an external assessor repeats the rating"
       },
       "correct": "B",
@@ -8192,11 +8192,11 @@
       "correct_explanation": "Level 4 means the process is measured and controlled with quantitative data. If no one collects performance data, that criterion cannot be met, so the self-assessed rating is most likely overstated, and the IS auditor reports it. An independent reassessment could confirm the true level, but the evidence already contradicts level 4, so the conclusion does not have to wait for one.",
       "wrong_explanations": {
         "A": "Owners rating their own processes tend to be optimistic. A rating must rest on evidence, and here the evidence contradicts it.",
-        "C": "Level 5 builds on measurement to drive continual improvement. Without performance data the process cannot meet level 4, let alone level 5.",
+        "C": "Documented, consistent practice describes level 3. Level 4 also needs performance measured and controlled with data.",
         "D": "The missing performance data already fails the level 4 criterion. A reassessment may set the exact level, but the overstatement is clear now."
       },
       "tips": [
-        "Eliminate: A trusts a self-rating the evidence contradicts, and C claims a higher level that also depends on measurement.",
+        "Eliminate: A trusts a self-rating the evidence contradicts, and C mistakes level 3 practice for level 4.",
         "Final two: B beats D because the missing data already fails the level 4 criterion, so the IS auditor can conclude without waiting.",
         "Exam cue: know what each capability level requires; level 4 means measured, data-driven control, and level 5 adds continual improvement."
       ],
@@ -8216,7 +8216,7 @@
       "subtopic": "Privacy Documentation and Impact Assessments. Undisclosed Collection",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds a European fitness app collects users' precise location, although neither its privacy notice nor its record of processing activities mentions this. What should the IS auditor recommend FIRST?",
+      "question": "An IS auditor finds a European fitness app collects precise location that no feature appears to use, and that neither its privacy notice nor its processing record mentions. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Update the notice and the record to describe the location collection",
         "B": "Delete the location data the app has stored so far",
@@ -8237,7 +8237,7 @@
         "Final two: D beats A because the notice and record should describe processing only after an assessment confirms it is needed.",
         "Exam cue: when undocumented processing is found, decide whether it should exist before documenting it."
       ],
-      "framework_ref": "GDPR Article 35 (Data Protection Impact Assessment); GDPR Article 5 (Principles relating to processing of personal data); GDPR Article 30 (Records of Processing Activities)",
+      "framework_ref": "GDPR Article 35 (Data Protection Impact Assessment); GDPR Article 5 (Principles relating to processing of personal data); GDPR Article 30 (Records of Processing Activities); GDPR Article 13 (Information to be provided where personal data are collected from the data subject)",
       "related_concepts": [
         "Privacy impact assessment",
         "Privacy notice",
@@ -8261,9 +8261,9 @@
         "D": "Remove names, using the hospital record number to link visits"
       },
       "correct": "A",
-      "key_concept": "Privacy by design minimizes exposure: pseudonymization supports linked analysis, while a separately protected key prevents re-identification.",
+      "key_concept": "Privacy by design minimizes exposure: pseudonymization supports linked analysis, while a separately protected key limits re-identification risk.",
       "pre_read": "List what the analysts actually need, then find the option that gives them that and nothing more.",
-      "correct_explanation": "Pseudonymization gives analysts what they need, a consistent code linking each patient's visits, without identities. Because the key linking codes to patients is held separately under its own access control, analysts cannot re-identify anyone. Removing names looks similar, but the hospital record number is itself an identifier that many staff can look up, so patients remain easily identifiable and little exposure is removed.",
+      "correct_explanation": "Pseudonymization gives analysts what they need, a consistent code linking each patient's visits, without identities. Because the key linking codes to patients is held separately under its own access control, analysts cannot readily re-identify patients, although the coded data remains personal data under the General Data Protection Regulation (GDPR). Removing names looks similar, but the hospital record number is itself an identifier that many staff can look up, so patients remain easily identifiable.",
       "wrong_explanations": {
         "B": "Encryption protects data in storage, but analysts holding the key see every identity. It does not reduce the personal data they are exposed to.",
         "C": "Agreements add accountability but still expose identities the analysis never needs, so they do not minimize the data used.",
