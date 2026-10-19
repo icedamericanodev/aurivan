@@ -6245,7 +6245,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.9</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.10</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6531,7 +6531,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.9';
+const APP_VERSION = 'v12.10';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -15734,6 +15734,15 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'A study panel on wide screens',
+    items: [
+      { cat: 'new', text: 'On wide screens, Practice and Study notes have a study panel beside the page: what to focus on next and today\'s principle.' },
+      { cat: 'new', text: 'After you check an answer, the panel shows the matching study note, the key terms in the question, and a place to write your own note. Your note comes back when you see the question again, in Saved and in your mock review.' },
+      { cat: 'new', text: 'Weak spots now start a short mixed set, so you practise telling ideas apart, not just repeating one topic.' }
+    ]
+  },
+  {
+    version: 'v12.9',
     title: 'Mini mock and calmer results',
     items: [
       { cat: 'new', text: 'A 50-question mini mock with the real exam\'s domain weights and pace, about 80 minutes. Your past mocks are listed on the Mock page.' },

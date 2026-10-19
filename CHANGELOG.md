@@ -4,6 +4,13 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.10] — A study panel on wide screens
+
+### New
+- On wide screens, Practice and Study notes have a study panel beside the page: what to focus on next and today's principle.
+- After you check an answer, the panel shows the matching study note, the key terms in the question, and a place to write your own note. Your note comes back when you see the question again, in Saved and in your mock review.
+- Weak spots now start a short mixed set, so you practise telling ideas apart, not just repeating one topic.
+
 ## [v12.9] — Mini mock and calmer results
 
 ### New
