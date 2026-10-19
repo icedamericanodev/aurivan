@@ -394,6 +394,30 @@ describe('budgets with the heavy save', () => {
     expect(total(s).saves).toBe(1); // the answer itself
   });
 
+  // Pinned on purpose, whatever question the seeded save makes a mistake: a
+  // right answer that marks a logged mistake fixed changes the mistakes record
+  // but not the learner's pattern, so hidden Play must not re-render. (PR #90:
+  // 48 new questions made d3_005 an open mistake in the save and Play
+  // re-rendered 230 components on the answer above, because it read the whole
+  // mistakes record.)
+  it('a right answer that fixes a logged mistake re-renders neither Play nor Learn', () => {
+    openAll();
+    tapTab('practice');
+    const open = Object.entries(useProgress.getState().byCert.cisa!.mistakes).find(([, m]) => !m.resolved);
+    expect(open).toBeDefined();
+    const id = open![0];
+    startMeasure();
+    act(() => {
+      useProgress.getState().recordAnswer('cisa', id, true, 'sure');
+    });
+    expect(useProgress.getState().byCert.cisa!.mistakes[id].resolved).toBe(true);
+    const s = snapshot();
+    expect(s.play.renders).toBe(0); // before the fix: 230
+    expect(s.learn.renders).toBe(0);
+    expect(total(s).renders).toBeLessThan(1150);
+    expect(total(s).saves).toBe(1);
+  });
+
   it('a store write that changes nothing re-renders nothing and saves nothing', () => {
     openAll();
     startMeasure();

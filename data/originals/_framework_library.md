@@ -1944,3 +1944,31 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - NIST SP 800-167 (Guide to Application Whitelisting)
 - MITRE ATT&CK T1014 (Rootkit)
 - NIST SP 800-189 (Resilient Interdomain Traffic Exchange: BGP Security and DDoS Mitigation)
+
+## Added with Wave 2 coverage batch Q4 (Domain 5, Oct 2026)
+
+- NIST SP 800-131A Rev 2 (Transitioning the Use of Cryptographic Algorithms and Key Lengths)
+- NIST FIPS 186-5 (Digital Signature Standard (DSS))
+- NIST FIPS 198-1 (The Keyed-Hash Message Authentication Code (HMAC))
+- ISO/IEC 19795-1:2021 (Information Technology — Biometric Performance Testing and Reporting — Part 1: Principles and Framework)
+- NIST SP 800-175B Rev 1 (Guideline for Using Cryptographic Standards in the Federal Government: Cryptographic Mechanisms)
+- IETF RFC 5280 (Internet X.509 PKI Certificate and CRL Profile), 4.2.1.3 Key Usage and 4.2.1.9 Basic Constraints
+
+## Added with Wave 2 coverage batch Q6 (Domain 4, Oct 2026)
+
+- NIST SP 800-53 Rev 5 CM-4 (Impact Analyses)
+- ISO/IEC 27002:2022 Control 7.14 (Secure Disposal or Re-Use of Equipment)
+- Härder and Reuter (1983), Principles of Transaction-Oriented Database Recovery (ACM Computing Surveys)
+- COBIT 2019 DSS06.03 (Manage roles, responsibilities, access privileges and levels of authority)
+
+## Added with Wave 2 coverage batch Q5 (Domain 5, Oct 2026)
+
+- NIST SP 800-53 Rev 5 PE-13 (Fire Protection)
+- NIST SP 800-53 Rev 5 SC-7(5) (Deny by Default — Allow by Exception)
+
+## Added with Wave 2 coverage batch Q7 (Domain 4, Oct 2026)
+
+- NIST SP 800-77 Rev 1 (Guide to IPsec VPNs)
+- RFC 4301 (Security Architecture for the Internet Protocol)
+- ISO/IEC 27002:2022 Control 8.19 (Installation of Software on Operational Systems)
+- CIS Controls v8 Safeguard 2.5 (Allowlist Authorized Software)
