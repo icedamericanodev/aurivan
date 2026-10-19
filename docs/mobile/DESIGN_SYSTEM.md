@@ -945,6 +945,25 @@ round mound with three big white stars.
 ×1.3+ (the ReadinessRow rule). Your plant's rule steps stack their status under
 the rule at ×1.3+. Checked at 360 dp and about 200% text (`SHOTS=plant`).
 
+**On the website (web v12.11).** The web draws the same plant from the same
+code: `mobile/scripts/build-web-plant.mjs` compiles `engine/plant.ts`,
+`engine/plantLooks.ts`, `components/plant/art.ts` and the outline code into
+`assets/kaisip-plant.js` (never edited by hand; `npm run check` fails when it
+is stale), and `index.html` draws the part tree as SVG. What differs from the
+app, and why:
+
+| Place | App | Web |
+|---|---|---|
+| Today | Beside the readiness range at 104pt (88 cleared); "Plant a companion" row below Also today | Inside the readiness plate, under the domains: a 72px plant row (name, growth, opens You); the invitation sits in the same spot. The plate is the web's readiness column, so the plant stays beside the readiness it reads from |
+| You | 64pt header row; the full Your plant screen is its own route | From 1180px: the study rail's right column holds the whole Your plant content (200px shared stage, what grows it next, look actions). Below 1180px: a compact row near the top (112px, framed tight) with the rules and the look behind one disclosure, so progress still leads on a phone |
+| Picker, rename, change plant, look | Pushed screens | One dialog (the shared popup holder, so Esc, the focus trap and focus return behave like every web popup); the look preview is sticky like the app's pinned preview |
+| Motion | Breathe burst, reactions, the growth sequence, planting | The Breathe burst only (CSS, once per visit on You, none under reduced motion); the grow-up is one calm line on Today |
+| First plant | Planted for you (an oak) after the first set | Picked by the learner from Today's invitation or You (species, optional name) |
+| Keepsakes, badge-set planters | From badges | Closed (the web has no badges yet); growth unlocks all work |
+| Visitor, happy face | On a cleared day plan | No day plan on the web: the visitor shows in the look preview only |
+| Elder's week | The readiness log | Logged on the web from v12.11 on, so an existing learner's week starts then |
+| Settings: Show my plant, Quiet look | Settings → Badges and your plant | Not on the web yet (the face shows) |
+
 ## 14. Fit your plan (mobile 1.15, Phase 5a)
 
 Two answers shape Today: where the learner is starting from, and how long

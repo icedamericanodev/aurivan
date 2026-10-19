@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.13] — Your plant companion, now on the web
+
+### New
+- Grow your own plant companion on the web, just like in the app. Pick one of 13 plants and give it a name. It grows only from real progress across the exam outline, and you will find it on Today and on You.
+- Change its look as it grows: colors, ground and planter unlock with your progress.
+
 ## [v12.12] — A clearer glossary and tidier topics
 
 ### Improved
