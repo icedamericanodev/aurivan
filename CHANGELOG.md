@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.20] — Auditing it: the IS auditor's view in your notes
+
+### New
+- Many study notes now end with "Auditing it": what the IS auditor reviews, the evidence to ask for, the typical recommendation and who makes the decision.
+- New practice questions on continuous auditing, independence, types of audit and quality reviews, and on project schedules, input checks, releasing machine-learning models, software reuse and audit trails.
+
 ## [v12.19] — More practice on IT governance
 
 ### New

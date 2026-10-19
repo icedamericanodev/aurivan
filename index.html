@@ -5036,15 +5036,15 @@ body.gt-zoom-open { overflow: hidden; }
 .gt-audit-h .ico { flex: none; }
 .gt-audit-card { background: var(--surface); border: 1px solid var(--raised-outline); box-shadow: var(--shadow); border-radius: var(--r-md); overflow: hidden; }
 .gt-audit-body { padding: 4px 20px; }
-.gt-audit-decides { background: var(--surface2); padding: 14px 20px 16px; }
+.gt-audit-decides { background: var(--surface2); border-top: 1px solid var(--border); padding: 14px 20px 16px; }
 .gt-audit-dec { font: 600 16px/24px var(--f-sans); color: var(--text); margin: 0; }
 .gt-audit-part { padding: 14px 0; }
 .gt-audit-part + .gt-audit-part { border-top: 1px solid var(--border); }
-.gt-audit-k { font: 600 13px/18px var(--f-sans); color: var(--text2); letter-spacing: 0.1px; margin: 0 0 8px; }
+.gt-audit-k { font: 600 14px/20px var(--f-sans); color: var(--text); letter-spacing: 0.1px; margin: 0 0 8px; }
 .gt-audit .gt-list > li { font-size: 15px; line-height: 22px; }
-.gt-audit .gt-list > li::before { top: 8px; }
+.gt-audit .gt-list > li::before { top: 8px; background: var(--text2); }
 .gt-audit .gt-list > li:last-child { margin-bottom: 0; }
-.gt-audit-rec { font: 400 16px/24px var(--f-sans); color: var(--text); margin: 0; }
+.gt-audit-rec { font: 400 15px/22px var(--f-sans); color: var(--text); margin: 0; }
 @media (max-width: 600px) { .gt-audit-body { padding: 2px 16px; } .gt-audit-part { padding: 12px 0; } .gt-audit-decides { padding: 12px 16px 14px; } }
 .gt-example { background: var(--surface2); border-radius: 16px; padding: 16px; font: 400 15px/22px var(--f-sans); color: var(--text); }
 .gt-rule { border-left: 3px solid var(--accent); padding-left: 16px; margin-top: 22px; }
@@ -6357,7 +6357,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.19</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.20</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6648,7 +6648,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.19';
+const APP_VERSION = 'v12.20';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -17714,6 +17714,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Auditing it: the IS auditor\'s view in your notes',
+    items: [
+      { cat: 'new', text: 'Many study notes now end with \u201cAuditing it\u201d: what the IS auditor reviews, the evidence to ask for, the typical recommendation and who makes the decision.' },
+      { cat: 'new', text: 'New practice questions on continuous auditing, independence, types of audit and quality reviews, and on project schedules, input checks, releasing machine-learning models, software reuse and audit trails.' }
+    ]
+  },
+  {
+    version: 'v12.19',
     title: 'More practice on IT governance',
     items: [
       { cat: 'new', text: 'New practice questions on board oversight, separating duties, mandatory leave and key roles, data retention, weighing a control\'s cost against the risk it removes, and meeting legal and card-industry requirements.' }
