@@ -1966,3 +1966,4 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - NIST SP 800-77 Rev 1 (Guide to IPsec VPNs)
 - RFC 4301 (Security Architecture for the Internet Protocol)
 - ISO/IEC 27002:2022 Control 8.19 (Installation of Software on Operational Systems)
+- CIS Controls v8 Safeguard 2.5 (Allowlist Authorized Software)

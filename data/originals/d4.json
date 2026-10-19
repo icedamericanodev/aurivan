@@ -10515,44 +10515,44 @@
     {
       "id": "d4_283",
       "domain": 4,
-      "subtopic": "OSI and TCP/IP Models. Matching Controls to the Threat's Layer",
+      "subtopic": "OSI and TCP/IP Models. Threats Inside Permitted Traffic",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A retailer's firewall filters traffic by address and port, yet attackers keep slipping malicious database commands into permitted web requests. Which control should the IS auditor recommend as MOST effective?",
+      "question": "A firm's firewall filters traffic by address and port, yet malware keeps arriving inside attachments on permitted email traffic. Which control should the IS auditor recommend as MOST effective?",
       "options": {
-        "A": "Firewall rules limiting web access to known customer addresses",
-        "B": "TLS encryption of every web session from browser to server",
-        "C": "An application-layer filter that inspects the content of web sessions",
-        "D": "A separate network segment isolating the web servers from other systems"
+        "A": "Firewall rules limiting inbound mail to known partner addresses",
+        "B": "Transport Layer Security (TLS) encryption of every mail session between servers",
+        "C": "A mail gateway that inspects message content and files",
+        "D": "A separate network segment isolating the mail servers from other systems"
       },
       "correct": "C",
-      "key_concept": "A control can judge only what its own layer can see; attacks hidden inside permitted traffic need application-layer inspection.",
+      "key_concept": "A control can judge only what its own layer can see; threats hidden inside permitted traffic need application-layer inspection.",
       "pre_read": "Ask at which layer the threat travels, then pick the control that can see that layer.",
-      "correct_explanation": "Address and port rules act at the network and transport layers, so they cannot read what travels inside a permitted web request. An application-layer filter, such as a web application firewall, inspects request content and can block injected database commands. Segmenting the web servers is the runner-up: it limits how far an attacker moves afterward, but the malicious requests still reach the application through the permitted path.",
+      "correct_explanation": "Address and port rules act at the network and transport layers, so they cannot see what an email attachment contains. A mail gateway works at the application layer: it opens messages and their files, scans them and blocks malware before delivery. Segmenting the mail servers is the runner-up: it limits how far malware spreads afterward, but infected attachments still reach users through the permitted mail path.",
       "wrong_explanations": {
-        "A": "Address rules still act below the application layer and cannot read request content; a public store also cannot limit access to known customers.",
-        "B": "Encryption protects confidentiality in transit; it delivers the malicious commands intact and can even hide them from inspection.",
-        "D": "Segmentation limits movement after a compromise, but the injected commands still arrive through the permitted web path."
+        "A": "Address rules still act below the application layer and cannot see attachment content; malware also arrives from partners whose accounts are compromised.",
+        "B": "Encryption protects confidentiality between servers; it delivers infected attachments intact and can hide them from network inspection.",
+        "D": "Segmentation limits spread after an infection, but infected attachments still arrive through the permitted mail path."
       },
       "tips": [
-        "Eliminate: A still filters by address, below the content, and B encrypts the attack rather than inspecting it.",
-        "Final two: C beats D because the threat rides inside allowed requests, so only a control that reads content stops it; segmentation limits spread afterward.",
-        "Exam cue: match the control to the threat's layer; content attacks need an application-layer control, not more port rules."
+        "Eliminate: A still filters by address, below the content, and B encrypts the malware rather than inspecting it.",
+        "Final two: C beats D because the threat rides inside allowed mail, so only a control that reads content stops it; segmentation limits spread afterward.",
+        "Exam cue: match the control to the threat's layer; content threats need an application-layer control, not more port rules."
       ],
-      "framework_ref": "OSI Reference Model (ISO/IEC 7498-1); NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy); ISO/IEC 27002:2022 Control 8.20 (Networks Security)",
+      "framework_ref": "OSI Reference Model (ISO/IEC 7498-1); NIST SP 800-177 Rev 1 (Trustworthy Email); NIST SP 800-83 Rev 1 (Malware Incident Prevention and Handling)",
       "related_concepts": [
         "OSI application layer",
-        "Web application firewall",
+        "Email content filtering",
         "Limits of port filtering",
         "Network segmentation"
       ],
-      "_provenance": "Authored from concept: 'OSI and TCP/IP Models. Matching Controls to the Threat's Layer'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A1.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_001 (which OSI layers the TCP/IP application layer covers): tests matching a control to the layer where the threat travels. Public sources: ISO/IEC 7498-1, NIST SP 800-41, ISO/IEC 27002.",
+      "_provenance": "Authored from concept: 'OSI and TCP/IP Models. Threats Inside Permitted Traffic'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A1.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_001 (which OSI layers the TCP/IP application layer covers) and d5_044 (web application firewall against injection): tests matching a control to the layer where an email-borne threat travels. Public sources: ISO/IEC 7498-1, NIST SP 800-177, NIST SP 800-83.",
       "style_version": 2
     },
     {
       "id": "d4_284",
       "domain": 4,
-      "subtopic": "OSI and TCP/IP Models. Layer Sets a Control's Reach",
+      "subtopic": "OSI and TCP/IP Models. Encrypting Traffic Between Sites",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A firm must encrypt all traffic between two offices across the internet, including legacy applications that cannot use TLS. Which approach should the IS auditor recommend as BEST?",
@@ -10568,7 +10568,7 @@
       "correct_explanation": "IPsec works at the network layer, so a tunnel between the office gateways encrypts every packet crossing the internet, whatever application sent it, including legacy ones without TLS. Secure file transfer is the runner-up: it protects files moved between the offices, but other traffic, such as legacy application sessions, still crosses the internet in clear text. A network-layer control covers every application above it.",
       "wrong_explanations": {
         "B": "The stem says the legacy applications cannot use TLS, so their traffic would still cross the internet unencrypted.",
-        "C": "MACsec encrypts each local link at the data link layer; traffic is decrypted at each hop and crosses the internet unprotected.",
+        "C": "MACsec (Media Access Control security) encrypts each local link at the data link layer; traffic is decrypted at each hop and crosses the internet unprotected.",
         "D": "Secure file transfer covers only files; interactive and legacy application traffic between the offices stays unencrypted."
       },
       "tips": [
@@ -10583,13 +10583,13 @@
         "Link-layer encryption",
         "Layer and control coverage"
       ],
-      "_provenance": "Authored from concept: 'OSI and TCP/IP Models. Layer Sets a Control's Reach'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A1.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_001 (layer mapping between models) and d4_283 (content inspection): tests how a control's layer decides which applications and which part of the path it protects. Public sources: NIST SP 800-77, RFC 4301, ISO/IEC 7498-1.",
+      "_provenance": "Authored from concept: 'OSI and TCP/IP Models. Encrypting Traffic Between Sites'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A1.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_001 (layer mapping between models) and d4_283 (content inspection): tests how a control's layer decides which applications and which part of the path it protects. Public sources: NIST SP 800-77, RFC 4301, ISO/IEC 7498-1.",
       "style_version": 2
     },
     {
       "id": "d4_285",
       "domain": 4,
-      "subtopic": "Storage Architecture. Volume Presentation and LUN Masking",
+      "subtopic": "Storage Architecture. Shared Volume Access",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "An IS auditor finds that a newly built reporting server can mount the HR database's disk volume on the storage area network (SAN), although nobody requested it. Which control is MOST LIKELY missing?",
@@ -10600,9 +10600,9 @@
         "D": "Role-based access rights inside the HR application itself"
       },
       "correct": "B",
-      "key_concept": "On a SAN, LUN masking decides which servers can see each volume; without it, any server may read another system's data.",
+      "key_concept": "On a SAN, logical unit number (LUN) masking decides which servers can see each volume; without it, any server may read another system's data.",
       "pre_read": "Find the layer where the unwanted access happens: the disk volume, not the application.",
-      "correct_explanation": "Each SAN volume should be presented only to the servers approved to use it, through LUN masking; a reporting server mounting the HR volume shows that restriction is missing. Encryption at rest is the runner-up: the array decrypts data for any server the volume is presented to, so it protects disks removed from the array, not a wrongly mapped server. The fix is controlled, reviewed volume assignment.",
+      "correct_explanation": "Each SAN volume should be presented only to the servers approved to use it, through logical unit number (LUN) masking; a reporting server mounting the HR volume shows that restriction is missing. Encryption at rest is the runner-up: the array decrypts data for any server the volume is presented to, so it protects removed disks, not a wrongly mapped server. The fix is fabric zoning plus LUN masking, assigned through approved, reviewed requests.",
       "wrong_explanations": {
         "A": "Array encryption protects disks removed from the array; it decrypts data for any server the volume is presented to.",
         "C": "Extra paths improve availability; they do nothing to stop an unapproved server from reading another system's volume.",
@@ -10620,13 +10620,13 @@
         "Encryption at rest limits",
         "Least privilege"
       ],
-      "_provenance": "Authored from concept: 'Storage Architecture. Volume Presentation and LUN Masking'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A1.3 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_101 (single point of failure on a converged core): tests access control over which servers can see shared storage volumes. Public sources: NIST SP 800-209, ISO/IEC 27040, NIST SP 800-53.",
+      "_provenance": "Authored from concept: 'Storage Architecture. Shared Volume Access'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A1.3 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_101 (single point of failure on a converged core): tests access control over which servers can see shared storage volumes. Public sources: NIST SP 800-209, ISO/IEC 27040, NIST SP 800-53.",
       "style_version": 2
     },
     {
       "id": "d4_286",
       "domain": 4,
-      "subtopic": "Storage Architecture. Redundant Parts Behind a Single Path",
+      "subtopic": "Storage Architecture. Resilience of a Shared SAN",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "A storage area network serving 30 critical databases has dual controllers and RAID 6, but every server connects through one SAN switch. What is the GREATEST risk the IS auditor should report?",
@@ -10657,19 +10657,19 @@
         "RAID 6",
         "Redundant paths"
       ],
-      "_provenance": "Authored from concept: 'Storage Architecture. Redundant Parts Behind a Single Path'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A1.3 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_101 (converged storage and voice sharing one core): tests spotting a single path behind otherwise redundant storage components. Public sources: ISO/IEC 27002, NIST SP 800-209, ISO/IEC 27040.",
+      "_provenance": "Authored from concept: 'Storage Architecture. Resilience of a Shared SAN'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A1.3 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_101 (converged storage and voice sharing one core): tests spotting a single path behind otherwise redundant storage components. Public sources: ISO/IEC 27002, NIST SP 800-209, ISO/IEC 27040.",
       "style_version": 2
     },
     {
       "id": "d4_287",
       "domain": 4,
-      "subtopic": "Software Licensing. Counting Cores in a Virtual Cluster",
+      "subtopic": "Software Licensing. Moving to a Virtual Cluster",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "A database licensed by the core was moved onto virtual machines spanning 20 hosts, and the vendor may charge for every physical core those hosts hold. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Buy core licenses covering every host the database might use",
-        "B": "Establish how the license terms count cores in virtual environments",
+        "B": "Confirm how the license counts cores in virtual environments",
         "C": "Move the database back to its original physical server",
         "D": "Cap each virtual machine at the licensed number of processors"
       },
@@ -10694,13 +10694,13 @@
         "Software asset management (SAM)",
         "Confirm before acting"
       ],
-      "_provenance": "Authored from concept: 'Software Licensing. Counting Cores in a Virtual Cluster'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A2.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_029 (reconcile installs with entitlements before a vendor audit) and d4_142 (copyleft): tests how the license metric changes exposure when software moves to a virtual cluster. Public sources: ISO/IEC 19770-1, COBIT 2019, ITIL 4.",
+      "_provenance": "Authored from concept: 'Software Licensing. Moving to a Virtual Cluster'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A2.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_029 (reconcile installs with entitlements before a vendor audit) and d4_142 (copyleft): tests how the license metric changes exposure when software moves to a virtual cluster. Public sources: ISO/IEC 19770-1, COBIT 2019, ITIL 4.",
       "style_version": 2
     },
     {
       "id": "d4_288",
       "domain": 4,
-      "subtopic": "Software Licensing. Stopping the Gap From Growing Back",
+      "subtopic": "Software Licensing. Follow-Up After a Shortfall",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A reconciliation found 300 unlicensed installations, mostly programs staff downloaded using local administrator rights, and management has bought the shortfall. What should the IS auditor recommend as the PRIMARY follow-up?",
@@ -10713,7 +10713,7 @@
       "correct": "C",
       "key_concept": "Closing a license gap treats the symptom; controlling how software gets installed stops the gap from growing back.",
       "pre_read": "Find what caused the gap, then pick the option that removes that cause.",
-      "correct_explanation": "Buying the shortfall fixes the symptom, but staff can still install whatever they like, so the gap will grow back. Limiting installation to an approved catalog, with a license check before each install, prevents new unlicensed copies. Monthly reconciliation is the runner-up: it finds new gaps, but only after they exist, and each one then needs licenses or removal.",
+      "correct_explanation": "Buying the shortfall fixes the symptom, but staff can still install whatever they like, so the gap will grow back. Limiting installation to an approved catalog, with a license check before each install, prevents new unlicensed copies, once local administrator rights are removed so staff cannot bypass the catalog. Monthly reconciliation is the runner-up: it finds new gaps, but only after they exist.",
       "wrong_explanations": {
         "A": "Monthly reconciliation detects new gaps after they appear; it does not stop staff from installing unlicensed software.",
         "B": "An unlimited agreement is costly, rarely covers every vendor, and leaves the uncontrolled installation itself in place.",
@@ -10724,26 +10724,26 @@
         "Final two: C beats A because stopping unapproved installs prevents new gaps; monthly reconciliation only finds them afterward.",
         "Exam cue: once a compliance gap is closed, fix the process that let it grow; prefer a preventive follow-up over a detective one."
       ],
-      "framework_ref": "ISO/IEC 27002:2022 Control 8.19 (Installation of Software on Operational Systems); ISO/IEC 19770-1 (Software Asset Management); CIS Controls v8 Safeguard 2 (Inventory and Control of Software Assets)",
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.19 (Installation of Software on Operational Systems); ISO/IEC 19770-1 (Software Asset Management); CIS Controls v8 Safeguard 2.5 (Allowlist Authorized Software)",
       "related_concepts": [
         "Software installation control",
         "Approved software catalog",
         "Preventive versus detective controls",
         "Root cause"
       ],
-      "_provenance": "Authored from concept: 'Software Licensing. Stopping the Gap From Growing Back'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A2.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_029 (reconcile before a vendor audit) and d4_142 (copyleft risk): tests fixing the installation process that created the gap after the shortfall is bought. Public sources: ISO/IEC 27002, ISO/IEC 19770-1, CIS Controls v8.",
+      "_provenance": "Authored from concept: 'Software Licensing. Follow-Up After a Shortfall'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A2.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_029 (reconcile before a vendor audit) and d4_142 (copyleft risk): tests fixing the installation process that created the gap after the shortfall is bought. Public sources: ISO/IEC 27002, ISO/IEC 19770-1, CIS Controls v8",
       "style_version": 2
     },
     {
       "id": "d4_289",
       "domain": 4,
-      "subtopic": "Batch Recovery. Backing Out Before a Rerun",
+      "subtopic": "Batch Recovery. Rerun After a Corrupt Checkpoint",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A billing batch failed midway, and its checkpoint file is corrupt, so operators plan to rerun the job from the beginning. What should the IS auditor confirm FIRST?",
+      "question": "A billing batch failed midway after posting part of the run, and its checkpoint file is corrupt, so operators plan to rerun the job from the beginning. What should the IS auditor confirm FIRST?",
       "options": {
         "A": "The aborted run's partial postings have been backed out",
-        "B": "The restart begins from the most recent valid checkpoint",
+        "B": "The billing owner has approved the rerun in writing",
         "C": "Billing totals will be reconciled with the ledger afterward",
         "D": "The rerun is moved to staffed business hours instead"
       },
@@ -10752,12 +10752,12 @@
       "pre_read": "Check what the failed job already changed before deciding how to recover it.",
       "correct_explanation": "Records posted before the failure are already in the billing files, so a rerun from the beginning would post them again unless those partial updates are reversed or the files restored first. Reconciling totals afterward is the runner-up: it would reveal duplicate bills, but only after customers may have received them. When recovering a batch, prevention comes before detection.",
       "wrong_explanations": {
-        "B": "The stem says the checkpoint file is corrupt, so no reliable restart point exists; that is why a full rerun is planned.",
+        "B": "Approval authorizes the rerun but does not stop it posting the same records a second time.",
         "C": "Reconciliation detects duplicates after they post; it does not stop the rerun from billing customers twice.",
         "D": "Running in business hours changes who is present, not whether the rerun posts records twice."
       },
       "tips": [
-        "Eliminate: B relies on the checkpoint the stem says is corrupt, and D changes the timing without protecting the data.",
+        "Eliminate: B authorizes the rerun without protecting the data, and D only changes when it runs.",
         "Final two: A beats C because backing out partial updates prevents double billing; reconciling afterward only detects it.",
         "Exam cue: before any rerun from the start, ask what the failed run already posted and whether it was reversed."
       ],
@@ -10768,13 +10768,13 @@
         "Checkpoint restart",
         "Duplicate processing"
       ],
-      "_provenance": "Authored from concept: 'Batch Recovery. Backing Out Before a Rerun'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A3.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_258 (define restart points after a rerun double-posted) and d4_158 (deadline alerts): tests the precondition for a full rerun when no valid checkpoint exists. Public sources: COBIT 2019.",
+      "_provenance": "Authored from concept: 'Batch Recovery. Rerun After a Corrupt Checkpoint'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A3.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_258 (define restart points after a rerun double-posted) and d4_158 (deadline alerts): tests the precondition for a full rerun when no valid checkpoint exists. Public sources: COBIT 2019.",
       "style_version": 2
     },
     {
       "id": "d4_290",
       "domain": 4,
-      "subtopic": "Batch Recovery. Evidence That a Restart Was Complete",
+      "subtopic": "Batch Recovery. Evidence After Checkpoint Restarts",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "Operators restarted three failed payment batches last quarter using checkpoints. Which evidence would BEST satisfy the IS auditor that each recovery processed every payment exactly once?",
@@ -10805,34 +10805,34 @@
         "Sufficient appropriate evidence",
         "Completeness and accuracy"
       ],
-      "_provenance": "Authored from concept: 'Batch Recovery. Evidence That a Restart Was Complete'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A3.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_258 (restart points) and d4_158 (deadline alerts): tests which evidence proves that restarted batches were complete and accurate. Public sources: ISACA ITAF, COBIT 2019.",
+      "_provenance": "Authored from concept: 'Batch Recovery. Evidence After Checkpoint Restarts'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A3.2 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_258 (restart points) and d4_158 (deadline alerts): tests which evidence proves that restarted batches were complete and accurate. Public sources: ISACA ITAF, COBIT 2019.",
       "style_version": 2
     },
     {
       "id": "d4_291",
       "domain": 4,
-      "subtopic": "RPA. Segregation of Duties for Bots",
+      "subtopic": "RPA. Risks in an Unattended Payment Bot",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "One unattended bot uses a single identity to create supplier payments and approve them for release. What is the GREATEST risk the IS auditor should report?",
       "options": {
-        "A": "Erroneous or unauthorized payments released with no independent check",
-        "B": "Payment runs halting whenever the bot's server is unavailable",
+        "A": "Wrong or misused payments released with no second check",
+        "B": "Bot-released payments that cannot be traced to an accountable person",
         "C": "Supplier bank details exposed in the bot's activity logs",
         "D": "Bot software license costs rising as payment volume grows"
       },
       "correct": "A",
       "key_concept": "Segregation of duties applies to bots: one identity should not both create and approve the same payment.",
       "pre_read": "Identify which duties the single identity combines, then ask what that combination lets go unchecked.",
-      "correct_explanation": "When one identity both creates and approves payments, no second party checks either step, so a faulty rule, a tampered script or misuse of the bot's credential releases payments unchallenged. Segregation of duties applies to bots as it does to people. A halted payment run is the runner-up: it delays suppliers, but it is visible and recoverable, whereas unchecked payments can lose money silently.",
+      "correct_explanation": "When one identity both creates and approves payments, no second party checks either step, so a faulty rule, a tampered script or misuse of the bot's credential releases payments unchallenged. Segregation of duties applies to bots as it does to people. Weak traceability is the runner-up: it slows investigation after the fact, but the combined duties are what let wrong payments leave unchecked.",
       "wrong_explanations": {
-        "B": "An outage delays payments visibly and can be recovered; it is less severe than money leaving without any check.",
+        "B": "Weak traceability hampers investigation afterward; the conflicting duties let wrong payments leave in the first place.",
         "C": "Nothing in the stem suggests logging bank details; the stated weakness is one identity holding conflicting duties.",
         "D": "Licensing cost is a budgeting matter; it does not threaten the integrity of payments."
       },
       "tips": [
         "Eliminate: C invents a logging problem the stem does not raise, and D is a cost concern, not a control risk.",
-        "Final two: A beats B because conflicting duties let wrong payments leave silently; an outage is visible and recoverable.",
+        "Final two: A beats B because conflicting duties let wrong payments leave; weak traceability only hampers investigation afterward.",
         "Exam cue: apply segregation of duties to bots as to people; one identity creating and approving the same transaction is the red flag."
       ],
       "framework_ref": "ISO/IEC 27002:2022 Control 5.3 (Segregation of Duties); NIST SP 800-53 Rev 5 AC-5 (Separation of Duties); COBIT 2019 DSS06 (Managed Business Process Controls)",
@@ -10842,13 +10842,13 @@
         "Payment authorization",
         "Bot identity"
       ],
-      "_provenance": "Authored from concept: 'RPA. Segregation of Duties for Bots'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A3.3 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_151 (bot running under a person's login) and d4_197 (bot logic change control): tests conflicting duties held by one bot identity. Public sources: ISO/IEC 27002, NIST SP 800-53, COBIT 2019.",
+      "_provenance": "Authored from concept: 'RPA. Risks in an Unattended Payment Bot'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A3.3 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_151 (bot running under a person's login) and d4_197 (bot logic change control): tests conflicting duties held by one bot identity. Public sources: ISO/IEC 27002, NIST SP 800-53, COBIT 2019.",
       "style_version": 2
     },
     {
       "id": "d4_292",
       "domain": 4,
-      "subtopic": "RPA. Exception Handling for Unreadable Items",
+      "subtopic": "RPA. Items a Bot Cannot Read",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "An invoice-posting bot silently discards scanned invoices it cannot interpret, and suppliers have started chasing unpaid bills. Which control should the IS auditor recommend as MOST important?",
@@ -10879,53 +10879,53 @@
         "Robotic process automation (RPA)",
         "Silent failure"
       ],
-      "_provenance": "Authored from concept: 'RPA. Exception Handling for Unreadable Items'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A3.3 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_151 (bot identity) and d4_197 (bot change control): tests completeness when a bot cannot process an item. Public sources: COBIT 2019.",
+      "_provenance": "Authored from concept: 'RPA. Items a Bot Cannot Read'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A3.3 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_151 (bot identity) and d4_197 (bot change control): tests completeness when a bot cannot process an item. Public sources: COBIT 2019.",
       "style_version": 2
     },
     {
       "id": "d4_293",
       "domain": 4,
-      "subtopic": "Interface Risk. Scoping an Audit of a Fed System",
+      "subtopic": "Interface Risk. Unlisted Feeds Into a Ledger",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Journal entries reach a general ledger from 14 feeder systems through automated interfaces. In planning an audit of the ledger, what should the IS auditor do FIRST?",
+      "question": "Journal entries reach a general ledger from 14 source systems through automated interfaces that no one has listed. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Test the ledger's user access rights and journal approval controls",
-        "B": "Obtain each feeder owner's written attestation that its feed is accurate",
-        "C": "Reconcile every interface's transactions for the whole year",
-        "D": "Map the data flows feeding the ledger and rank their risk"
+        "A": "Tighter user access and journal approval controls in the ledger",
+        "B": "Written attestations from each source owner that its feed is accurate",
+        "C": "A full reconciliation of every feed's transactions for the year",
+        "D": "A register recording each feed's data flow, owner and risk"
       },
       "correct": "D",
-      "key_concept": "Interface risk sits at every hop into a system, so audit scope starts by mapping the data flows and ranking them by risk.",
-      "pre_read": "Ask where errors could enter before the data reaches the system under audit.",
-      "correct_explanation": "Scope follows the data: entries can be lost, altered or duplicated in any of the 14 feeds before the ledger sees them. Mapping each flow and ranking it by risk tells the IS auditor which interfaces to test end to end. Testing the ledger's own access and approval controls is the runner-up: it matters, but it covers only the receiving system and misses errors introduced upstream.",
+      "key_concept": "Interface risk sits at every hop into a system; an inventory of each feed, its owner and its risk comes before other controls.",
+      "pre_read": "Ask where errors could enter before the data reaches the system, and whether anyone knows those paths.",
+      "correct_explanation": "Interfaces no one has listed cannot be owned, monitored or tested, and entries can be lost, altered or duplicated in any of them before the ledger sees them. A register of each feed's data flow, owner and risk is the foundation for every other interface control. Tighter ledger controls are the runner-up: they matter, but they cover only the receiving system and miss errors introduced upstream.",
       "wrong_explanations": {
-        "A": "Ledger controls cover only the receiving end; errors introduced by the feeds or their mappings would pass unnoticed.",
-        "B": "Owner attestations are self-reported and weak evidence; they do not show where interface risk actually sits.",
-        "C": "Full reconciliation of every feed is not risk-based and spends effort on low-risk flows before priorities are known."
+        "A": "Ledger controls cover only the receiving end; errors introduced by unlisted feeds or their mappings would pass unnoticed.",
+        "B": "Owner attestations are self-reported and weak evidence, and no owner can attest to a feed no one has identified.",
+        "C": "Reconciling every feed in full is costly, and it cannot start until someone knows which feeds exist."
       },
       "tips": [
-        "Eliminate: B accepts self-reported assurance, and C tests everything in full before knowing which feeds matter.",
-        "Final two: D beats A because interface risk sits across all the feeds; testing only the ledger misses errors introduced upstream.",
-        "Exam cue: for a system fed by interfaces, scope follows the data; map the flows and rank them before testing."
+        "Eliminate: B relies on self-reported assurance, and C tries to reconcile feeds before anyone knows which ones exist.",
+        "Final two: D beats A because interface risk sits across all the feeds; tightening only the ledger misses errors introduced upstream.",
+        "Exam cue: interfaces that are not inventoried cannot be owned or controlled; list them, with owners and risk, before anything else."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1201 (Risk Assessment in Planning); ISACA IT Audit Standard 1203 (Engagement Planning); COBIT 2019 DSS06 (Managed Business Process Controls)",
+      "framework_ref": "COBIT 2019 APO03 (Managed Enterprise Architecture); COBIT 2019 DSS06 (Managed Business Process Controls)",
       "related_concepts": [
         "Interface inventory",
-        "Risk-based audit scoping",
         "Data flow mapping",
+        "Interface ownership",
         "Feeder systems"
       ],
-      "_provenance": "Authored from concept: 'Interface Risk. Scoping an Audit of a Fed System'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A4.1 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_111 (trace one interface through every hop) and d4_044 (delivery acknowledgments): tests mapping and ranking all the feeds into a system before choosing which to test. Public sources: ISACA ITAF, COBIT 2019.",
+      "_provenance": "Authored from concept: 'Interface Risk. Unlisted Feeds Into a Ledger'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A4.1 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_111 (trace one interface through every hop) and d4_044 (delivery acknowledgments): tests inventorying unlisted feeds, with owners and risk, before other interface controls. Public sources: COBIT 2019.",
       "style_version": 2
     },
     {
       "id": "d4_294",
       "domain": 4,
-      "subtopic": "Interface Risk. Sender Extract Gaps Behind Matching Totals",
+      "subtopic": "Interface Risk. Missing Records Despite Matching Totals",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A nightly warehouse load always matches its extract file's record count and amount total, yet sales back-dated in the ledger never reach the warehouse. What should the IS auditor identify as the MOST LIKELY cause?",
+      "question": "A nightly data warehouse load always matches its extract file's record count and amount total, yet sales back-dated in the source ledger never arrive. What should the IS auditor identify as the MOST LIKELY cause?",
       "options": {
         "A": "Files corrupted in transit between the ledger and the warehouse",
         "B": "Extract logic selecting only sales dated after the previous run",
@@ -10953,7 +10953,7 @@
         "Interface hops",
         "Completeness"
       ],
-      "_provenance": "Authored from concept: 'Interface Risk. Sender Extract Gaps Behind Matching Totals'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A4.1 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_111 (trace every hop when scoping) and the 4A4.2 control items d4_010 and d4_187 (reconciling totals): tests why matching file-to-load totals cannot reveal records the sender never extracted. Public sources: COBIT 2019.",
+      "_provenance": "Authored from concept: 'Interface Risk. Missing Records Despite Matching Totals'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A4.1 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_111 (trace every hop when scoping) and the 4A4.2 control items d4_010 and d4_187 (reconciling totals): tests why matching file-to-load totals cannot reveal records the sender never extracted. Public sources: COBIT 2019.",
       "style_version": 2
     }
   ]
