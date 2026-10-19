@@ -29,7 +29,9 @@
  * - no deletions travel: a bookmark removed on one phone can come back from
  *   another, and progress reset on one phone comes back from another device
  *   that still has it (with only one phone syncing, the reset is simply sent
- *   to the account); tombstones are a later step;
+ *   to the account); tombstones are a later step. The one exception is
+ *   "Your note" on a question: a deleted note is kept as `{ text: '', ts }`,
+ *   so the newer deletion wins over an older copy (engine/questionNotes.ts);
  * - set-like lists are kept in a canonical (sorted) order, so two phones
  *   converge on the same bytes instead of swapping orders forever.
  */
@@ -40,6 +42,7 @@ import { GAME_TIERS } from './games/growth';
 import { MAX_MOCKS } from './journey';
 import { LONG_IDS_CAP } from './milestones';
 import { MAX_KEPT } from './plant';
+import { isLiveNote, mergeNote } from './questionNotes';
 import { PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
 import { dayKey, daysBetween } from './streak';
 import { MAX_REPORTS } from './support';
@@ -235,6 +238,8 @@ export function clampFuture<T>(store: SyncStoreName, side: Side<T>, now: number)
     for (const r of Object.values(cp.cards ?? {})) r.lastSeen = t(r.lastSeen) as number;
     for (const m of Object.values(cp.mistakes ?? {})) m.at = t(m.at) as number;
     for (const m of cp.mocks ?? []) m.finishedAt = t(m.finishedAt) as number;
+    // A note edited "in the future" would win every later edit: pulled back to now.
+    for (const n of Object.values(cp.qNotes ?? {})) n.ts = t(n.ts) as number;
     for (const m of Object.values(cp.mastery ?? {})) {
       m.firstDay = d(m.firstDay) as string;
       if (m.firstAt !== undefined) m.firstAt = t(m.firstAt) as number;
@@ -534,6 +539,8 @@ function mergeCert(certId: string, a: Cert, as: Stamps, b: Cert, bs: Stamps, fir
     cards: mergeMap(a.cards, b.cards, (x, y) => later(x, y, (v) => v.lastSeen)!),
     milestones: mergeMilestones(a.milestones, b.milestones),
     plant: mergePlant(certId, a.plant, as, b.plant, bs, firstSync),
+    // "Your note": per question, the newer edit wins, a deletion (tombstone) included.
+    qNotes: mergeMap(a.qNotes, b.qNotes, mergeNote),
   }) as Cert;
 }
 
@@ -723,7 +730,9 @@ export function holdsStudy(p: SyncedProgress, s: Partial<SyncedSettings>): boole
   const certHolds = Object.values(p.byCert).some(
     (cp) =>
       some(cp.bookmarks) || some(cp.notesRead) || some(cp.notesViewed) || some(cp.mocks) || some(cp.mistakes) || some(cp.review) || some(cp.cards) ||
-      some(cp.gameBest) || some(cp.gameGrowth) || some(cp.mastery) || some(cp.milestones?.earned) || Boolean(cp.plant),
+      some(cp.gameBest) || some(cp.gameGrowth) || some(cp.mastery) || some(cp.milestones?.earned) || Boolean(cp.plant) ||
+      // A note the learner wrote (a deleted one is not data to keep).
+      Object.values(cp.qNotes ?? {}).some(isLiveNote),
   );
   return certHolds || Object.values(s.examDates ?? {}).some(Boolean);
 }

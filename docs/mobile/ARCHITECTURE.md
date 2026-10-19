@@ -746,6 +746,28 @@ problem, a `principle` report carrying only its id and title). The Mistake journ
 pattern" links to the principle that coaches it through `slip_map`. Nothing is
 saved: there are no new store fields.
 
+**Your note on a question.** Not a study note: the learner's own words on one
+question, written after its answer is checked (never in a live mock; in the
+mock review). Kept per exam in the progress store as `qNotes: { [questionId]:
+{ text, ts } }`, the same name and shape as the web's `S.qNotes`, capped at
+1,000 characters (`QNOTE_MAX`). A deleted note stays as `{ text: '', ts }` (a
+tombstone) so sync, when it is switched on, can't bring it back; per question
+the newer `ts` wins. Rules: `src/engine/questionNotes.ts`; UI:
+`src/components/questionNote.tsx`. Saved → Your notes lists the questions
+with a note as a marker only, never the note's text (it could give the answer
+away before answering). Backed up and restored (cut to the cap, unknown
+question ids dropped; tombstones older than 90 days left out of files); reset
+with progress; never in a report email, share card or analytics (guarded by
+tests). All notes in one exam are capped at 300,000 characters together
+(`NOTES_TOTAL_MAX`), and "Save a backup" refuses to make a file over the 1 MB a
+restore accepts. Deleting a saved note always asks first (the Delete button,
+or closing the sheet with the field emptied); an emptied field is never
+autosaved. The sheet's one privacy line (changed from the design spec's "Only
+you see it…"): "Kept on this phone and in backups you save. It shows here each
+time you answer this question.", and in builds that can sync, "Kept on this
+phone, in backups you save, and in your account if sync is on. …". The shared bottom sheet fits above the keyboard on both
+platforms (`padding`, and its tallest size minus the keyboard's height).
+
 The mobile builder renames fields, drops author-only fields (`_provenance`),
 validates every answer key, and marks real option-letter references as
 `{{B}}` tokens so tips stay correct after shuffling — while words like

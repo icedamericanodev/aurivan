@@ -40,6 +40,9 @@ import { Button, Gap, T, useFontScale } from './ui';
 /** "6 Oct 2026" for a timestamp, in the phone's local time. */
 const dateOf = (ms: number) => examDateLabel(dayKey(ms));
 
+/** Said when the learner's data is too large for one backup file (security review). */
+export const BACKUP_TOO_BIG_LINE = 'Your study data is too large for one backup file, so none was made. Deleting or shortening some of your notes on questions makes it smaller. Nothing was changed.';
+
 export function YourData() {
   const lastBackupAt = useBackup((s) => s.lastBackupAt);
   const restoredSavedAt = useBackup((s) => s.restoredSavedAt ?? null);
@@ -69,6 +72,9 @@ export function YourData() {
       // The share sheet can't tell us whether the file was really saved, so the copy says "if".
       if (out === 'shared') {
         say({ tone: 'ok', title: 'Backup file ready', text: 'If you saved it, you’re set. On a new phone, choose “Restore from a backup” and pick this file.' });
+      } else if (out === 'too-big') {
+        // Over the 1 MB a restore accepts: a file that could never be restored is not made.
+        say({ tone: 'problem', title: 'Backup not made', text: BACKUP_TOO_BIG_LINE });
       } else {
         say({ tone: 'problem', title: 'Can’t share from here', text: 'This device can’t open the share sheet, so no backup file was made.' });
       }

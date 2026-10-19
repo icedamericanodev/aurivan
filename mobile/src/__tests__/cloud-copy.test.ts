@@ -99,7 +99,7 @@ describe('the exact §2.3 strings', () => {
     );
     // Security review S7: everything that syncs, as the privacy notice lists it.
     expect(ACCOUNT_COPY['sync.what.body']).toBe(
-      'Your answers (whether right, how sure you were and how long you took), reviews, your mistake journal, saved questions, mocks, lessons and notes done, your study days and streak, badges, game levels, your readiness log and exam-week checklist, your plant, the questions you reported to us, your exam date and study settings. These stay on this phone: reminders, theme, motion, haptics, plant display choices and a quiz in progress.',
+      'Your answers (whether right, how sure you were and how long you took), reviews, your mistake journal, saved questions, the notes you write on questions, mocks, lessons and notes done, your study days and streak, badges, game levels, your readiness log and exam-week checklist, your plant, the questions you reported to us, your exam date and study settings. These stay on this phone: reminders, theme, motion, haptics, plant display choices and a quiz in progress.',
     );
     // UX P3 / P4.
     expect(ACCOUNT_COPY['switch.fresh.sub']).toBe('This phone switches to this account’s progress. What’s here now is kept for 7 days in Settings → Your data → Undo sync.');

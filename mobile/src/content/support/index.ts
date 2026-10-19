@@ -41,6 +41,15 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.27.0',
+    date: '2026-10-19',
+    new: [
+      'Your note: after you check an answer, add a short note in your own words. It comes back each time you see that question.',
+      'Saved now lists the questions you have a note on.',
+    ],
+    improved: ['Bottom sheets stay above the keyboard while you type.'],
+  },
+  {
     version: '1.26.0',
     date: '2026-10-19',
     new: [
@@ -444,7 +453,7 @@ export const FAQ: readonly FaqEntry[] = [
     id: 'data',
     question: 'What data does the app keep?',
     answer: [
-      'Your progress, settings, the name you ask us to call you (optional) and the list of problems you reported stay on this phone. There is no account, no analytics and no tracking.',
+      'Your progress, settings, the notes you write on questions, the name you ask us to call you (optional) and the list of problems you reported stay on this phone, and in backups you save. There is no account, no analytics and no tracking.',
       'If you email us, we see your email address and what you write. We use them only to reply and to fix the problem.',
     ],
     topic: 'privacy',

@@ -49,6 +49,7 @@ import { snapMinutes, type DailyMinutes, type Familiarity } from './fit';
 import { cleanDisplayName } from './displayName';
 import { cleanDone, type ExamWeekItem } from './examWeek';
 import { reminderSummary } from './reminders';
+import { capNoteText, pruneTombstones, type QuestionNotes } from './questionNotes';
 import { migrateProgress, PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
 import { dayKey } from './streak';
 import { SESSION_SIZES, type StudyMode } from './studyModes';
@@ -436,6 +437,17 @@ const plant: Check<CertPlant> = (x, at) => {
   }
   return plantShape(x, at);
 };
+/**
+ * "Your note" on a question (engine/questionNotes.ts): `{ text, ts }`. The
+ * text is the learner's own words, so a note that is too long is CUT to the
+ * 1,000-character limit (on export and on restore), never a reason to refuse
+ * the whole file, like the name for Today's greeting. Text that isn't text
+ * is still bad data. An empty text is a deleted note (kept so sync can't
+ * bring it back). Older files have none.
+ */
+const noteText: Check<string> = (x, at) => (typeof x === 'string' ? capNoteText(x) : bad(at));
+const questionNote = obj({ text: noteText, ts });
+
 /** The plant settings (all optional switches). */
 const plantSettings = obj({}, { showPlant: bool, quietLook: bool, promptHidden: bool });
 
@@ -465,6 +477,8 @@ const certProgress = obj(
     milestones,
     // Mobile 1.13: the plant (optional: older files have none).
     plant,
+    // "Your note" per question (optional: older files have none). Same cap as answers.
+    qNotes: map(questionNote, MAX_IDS),
   },
 );
 
@@ -618,6 +632,8 @@ export function buildBackup(
 ): BackupFile {
   // Never write a file this app would refuse to restore.
   const stores = fitForBackup(rawStores);
+  // A deleted note's tombstone only matters to sync; in a FILE an old one is dead weight (security review).
+  stores.progress = withoutOldTombstones(stores.progress, meta.now);
   return {
     app: BACKUP_APP,
     schema: BACKUP_SCHEMA,
@@ -628,6 +644,25 @@ export function buildBackup(
       progress: { version: PROGRESS_VERSION, state: toPlain(stores.progress) as BackupProgress },
     },
   };
+}
+
+/** The progress store with note tombstones older than 90 days left out (anything not progress-shaped is left alone). */
+function withoutOldTombstones(progress: unknown, now: number): unknown {
+  if (!isObj(progress) || !isObj(progress.byCert)) return progress;
+  const byCert: Record<string, unknown> = {};
+  for (const [id, cp] of Object.entries(progress.byCert)) {
+    if (!isObj(cp) || !isObj(cp.qNotes)) {
+      byCert[id] = cp;
+      continue;
+    }
+    byCert[id] = { ...cp, qNotes: pruneTombstones(cp.qNotes as unknown as QuestionNotes, now) };
+  }
+  return { ...progress, byCert };
+}
+
+/** True when a backup file's text is over the size a restore accepts (it would be refused, so it is never written). */
+export function backupTooBig(text: string): boolean {
+  return utf8Bytes(text) > MAX_BACKUP_BYTES;
 }
 
 /** "kaisip-backup-2026-10-10.json", using the phone's local date. */
@@ -741,6 +776,8 @@ export function keepKnownIds(progress: BackupProgress, known: (certId: string) =
     if (cp.review) next.review = keepKeys(cp.review, k.questions);
     if (cp.mistakes) next.mistakes = keepKeys(cp.mistakes, k.questions);
     if (cp.bookmarks) next.bookmarks = keepIds(cp.bookmarks, k.questions);
+    // A note on a question this app doesn't have can never be shown: dropped.
+    if (cp.qNotes) next.qNotes = keepKeys(cp.qNotes, k.questions);
     if (cp.lessonsDone) next.lessonsDone = keepIds(cp.lessonsDone, k.lessons);
     if (cp.notesRead) next.notesRead = keepIds(cp.notesRead, k.notes);
     if (cp.notesViewed) next.notesViewed = keepIds(cp.notesViewed, k.notes);

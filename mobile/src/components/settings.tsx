@@ -20,9 +20,10 @@
  * Simple on/off settings are NOT rows here: they stay `ToggleRow`s in the group.
  */
 import { useEffect, useRef, type ReactNode, type Ref } from 'react';
-import { KeyboardAvoidingView, Modal, Platform, ScrollView, StyleSheet, Pressable, useWindowDimensions, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, ScrollView, StyleSheet, Pressable, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { moveFocus } from '../lib/a11y';
+import { useKeyboardHeight } from '../lib/useKeyboardShown';
 import { LARGE_TEXT, radius, scrimOp, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ChevronRight, ICON_STROKE } from './icons';
@@ -109,6 +110,27 @@ export function SettingsRow({
 }
 
 // ── Sheet: a bottom sheet over a dimmed screen ────────────────────────
+/**
+ * The sheet's tallest size and its bottom padding. With the keyboard up, the
+ * sheet must fit in the space ABOVE it: otherwise a long text (a note) grows
+ * the sheet past the top and its header button ("Done") goes off screen. The
+ * home-indicator inset is under the keyboard then, so only a small gap stays.
+ */
+export function sheetLayout(windowHeight: number, insets: { top: number; bottom: number }, keyboard: number): { maxHeight: number; paddingBottom: number } {
+  return {
+    maxHeight: Math.max(0, windowHeight - insets.top - space.lg - keyboard),
+    paddingBottom: keyboard > 0 ? space.sm : insets.bottom,
+  };
+}
+
+/**
+ * The keyboard behaviour: `padding` on BOTH platforms. Android draws edge to
+ * edge (the window no longer shrinks for the keyboard), and React Native's
+ * `height` mode depends on the first height it measured, so a Modal that opens
+ * with the keyboard already moving could end up the wrong size.
+ */
+export const SHEET_KEYBOARD_BEHAVIOR = 'padding' as const;
+
 export function Sheet({
   visible,
   onClose,
@@ -132,6 +154,8 @@ export function Sheet({
   const { c, isDark } = useTheme();
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
+  const keyboard = useKeyboardHeight();
+  const layout = sheetLayout(height, insets, keyboard);
   // The title takes screen-reader focus as the sheet opens.
   const titleRef = useRef<View>(null);
   useEffect(() => {
@@ -140,7 +164,7 @@ export function Sheet({
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} statusBarTranslucent navigationBarTranslucent>
       {/* A sheet with a text field (Your name) must stay above the keyboard; for the others this does nothing. */}
-      <KeyboardAvoidingView style={styles.sheetHost} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingView style={styles.sheetHost} behavior={SHEET_KEYBOARD_BEHAVIOR}>
         {/* The dim: a tap closes the sheet. Hidden from screen readers (the header button closes it). */}
         <Pressable
           accessible={false}
@@ -157,9 +181,9 @@ export function Sheet({
               styles.sheet,
               {
                 backgroundColor: c.raised2,
-                // Never taller than the screen below the status bar; tall content scrolls.
-                maxHeight: height - insets.top - space.lg,
-                paddingBottom: insets.bottom,
+                // Never taller than the screen below the status bar (and above the keyboard); tall content scrolls.
+                maxHeight: layout.maxHeight,
+                paddingBottom: layout.paddingBottom,
               },
               // Dark: no shadow, so a hairline edge separates the sheet from the dim (spec §4).
               isDark && { borderWidth: 1.5, borderBottomWidth: 0, borderColor: c.line },
