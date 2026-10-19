@@ -217,6 +217,9 @@ export default function RootLayout() {
         <Stack.Screen name="notes/index" />
         <Stack.Screen name="notes/[domain]" />
         <Stack.Screen name="notes/subtopic/[id]" />
+        {/* Exam-mindset principles: the list by family → one principle (Learn, Mistake journal). */}
+        <Stack.Screen name="principles/index" />
+        <Stack.Screen name="principles/[id]" />
         {/* Mobile 1.7: Help and feedback (You), common questions, Your reports and What's new.
             (What's next was removed in 1.17.1; +native-intent sends old links to Help.) */}
         <Stack.Screen name="help" />

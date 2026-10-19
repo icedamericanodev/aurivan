@@ -33,6 +33,19 @@ export function openTab(href: TabHref) {
 }
 type TabHref = '/home' | '/learn' | '/practice' | '/play' | '/you' | { pathname: '/learn'; params: { domain: string } };
 
+/**
+ * A route param decoded for lookup. A malformed one (a lone "%" in a link)
+ * makes decodeURIComponent throw, which would crash the screen: use it as
+ * it came instead, so the screen shows its calm "not found".
+ */
+export function safeDecode(raw: string): string {
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
+}
+
 export function openSessionFromStack() {
   if (router.canDismiss()) router.dismissAll();
   router.push('/session');

@@ -45,7 +45,7 @@ export const EXAM_CONTENT_LINE =
   'Please don’t include questions from the real exam. Candidates agree to keep exam content confidential, and we can’t use them.';
 
 // ── What can be reported ─────────────────────────────────────────────────
-export type ReportKind = 'question' | 'note' | 'lesson' | 'card' | 'app';
+export type ReportKind = 'question' | 'note' | 'lesson' | 'card' | 'principle' | 'app';
 
 /** One choice in a list: a short code (for the subject and Gmail filters) and the words a learner reads. */
 export interface Choice {
@@ -59,6 +59,7 @@ export interface Choice {
  * - note: id "4A2.3", name = the note's title;
  * - lesson: id "cisa-l-d1-charter", name = the lesson title, step / steps (1-based);
  * - card: a game card id ("rumor:4B1.2:k1x9"), name = the game's name;
+ * - principle: an exam-mindset principle id ("recommend-dont-implement"), name = its title;
  * - app: a screen ("settings", "session-results"), name = how a learner calls it.
  */
 export interface ReportTarget {
@@ -121,6 +122,14 @@ export const REASONS: Record<ReportKind, Choice[]> = {
     { code: 'typo', label: 'Typo or grammar' },
     { code: 'other', label: 'Something else' },
   ],
+  principle: [
+    { code: 'incorrect', label: 'Something here is incorrect' },
+    { code: 'example', label: 'The example doesn’t fit the rule' },
+    { code: 'practice', label: 'A practice question doesn’t fit this idea' },
+    { code: 'unclear', label: 'Hard to follow' },
+    { code: 'typo', label: 'Typo or grammar' },
+    { code: 'other', label: 'Something else' },
+  ],
   app: [
     { code: 'freeze', label: 'Something didn’t load or froze' },
     { code: 'display', label: 'Text is cut off or hard to read' },
@@ -157,6 +166,12 @@ export const PARTS: Record<ReportKind, Choice[]> = {
     { code: 'answer', label: 'Answer' },
     { code: 'other', label: 'Something else' },
   ],
+  principle: [
+    { code: 'rule', label: 'Rule' },
+    { code: 'trap', label: 'Trap' },
+    { code: 'example', label: 'Worked example' },
+    { code: 'other', label: 'Something else' },
+  ],
   app: [],
 };
 
@@ -172,7 +187,7 @@ export function labelOf(choices: readonly Choice[], code: string): string {
 /**
  * A stable reference for the reported item, used in "Your reports" and to
  * match fixes: "q:d4_217", "note:4A2.3", "lesson:cisa-l-d1-charter#3",
- * "card:rumor:4B1.2:k1x9", "app:settings".
+ * "card:rumor:4B1.2:k1x9", "principle:recommend-dont-implement", "app:settings".
  */
 export function itemRef(t: Pick<ReportTarget, 'kind' | 'id' | 'step'>): string {
   switch (t.kind) {
@@ -184,6 +199,8 @@ export function itemRef(t: Pick<ReportTarget, 'kind' | 'id' | 'step'>): string {
       return t.step ? `lesson:${t.id}#${t.step}` : `lesson:${t.id}`;
     case 'card':
       return `card:${t.id}`;
+    case 'principle':
+      return `principle:${t.id}`;
     case 'app':
       return `app:${t.id}`;
   }
@@ -196,7 +213,7 @@ export function parseItemRef(item: string): { kind: ReportKind; id: string; step
   const head = item.slice(0, at);
   const rest = item.slice(at + 1);
   if (!rest) return null;
-  const KINDS: Record<string, ReportKind> = { q: 'question', note: 'note', lesson: 'lesson', card: 'card', app: 'app' };
+  const KINDS: Record<string, ReportKind> = { q: 'question', note: 'note', lesson: 'lesson', card: 'card', principle: 'principle', app: 'app' };
   const kind: ReportKind | undefined = Object.prototype.hasOwnProperty.call(KINDS, head) ? KINDS[head] : undefined;
   if (!kind) return null;
   if (kind === 'lesson') {
@@ -219,6 +236,8 @@ export function itemLine(t: ReportTarget): string {
       return `Lesson ${t.id}${t.step ? `, step ${t.step}${t.steps ? ` of ${t.steps}` : ''}` : ''}${t.name ? ` (${t.name})` : ''}`;
     case 'card':
       return named(`Game card ${t.id}`);
+    case 'principle':
+      return named(`Principle ${t.id}`);
     case 'app':
       return `The app (${t.name ?? t.id})`;
   }

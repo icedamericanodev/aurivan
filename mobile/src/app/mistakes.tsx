@@ -22,6 +22,11 @@
  * Mobile 1.20: each open mistake whose question a study note covers gets a
  * small "Read the note" (BookOpen = notes), so the fix starts with the idea.
  *
+ * Principles: "Your pattern" links to the exam-mindset principle that
+ * coaches it ("Read the principle", Compass), looked up through the shared
+ * file's slip map (content/principles principleForSlip). No link for "Didn't
+ * know it": a content gap has no thinking rule to read.
+ *
  * Mobile 1.24 (accessibility): the question is shown whole (the ask, FIRST or
  * BEST, is at the END of most stems, and the options are no longer cut to two
  * lines); "Your answer" / "Best answer" are plain words (no ✓ / ✗ glyphs read
@@ -36,12 +41,13 @@ import { Modal, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { StickyFooter } from '../components/quiz';
-import { BookOpen, ICON_STROKE } from '../components/icons';
+import { BookOpen, Compass, ICON_STROKE } from '../components/icons';
 import { ReportLink } from '../components/support';
 import { useMotion } from '../components/motion';
 import { Button, Chip, Gap, ICON_SIZE, PushedHeader, Row, Section, T } from '../components/ui';
 import { findQuestion } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
+import { principleForSlip } from '../content/principles';
 import { shortDate } from '../lib/format';
 import { guardedStart, startFromIds, startPractice } from '../lib/sessions';
 import { questionTarget } from '../lib/support';
@@ -133,6 +139,8 @@ export default function Mistakes() {
     }
     return slipCoach(inputs);
   }, [cert.id, progress.mistakes]);
+  // The principle that coaches this pattern (none for a content gap, or a cert without principles).
+  const patternPrinciple = pattern.ready ? principleForSlip(cert.id, pattern.pattern) : undefined;
 
   if (entries.length === 0) {
     return (
@@ -163,6 +171,19 @@ export default function Mistakes() {
             <T v="headline" accessibilityRole="header" style={{ marginTop: 2 }}>{pattern.title}</T>
             <T v="small" color={c.ink}>{pattern.coach}</T>
             <T v="meta" num style={{ marginTop: space.xs }}>{`Seen in ${pattern.count} of ${pattern.tagged} tagged mistakes`}</T>
+            {patternPrinciple && (
+              // The thinking rule behind this slip. The ghost pads 8pt each side: pulled left so its icon lines up with the text.
+              <Button
+                kind="ghost"
+                label="Read the principle"
+                accessibilityLabel={`Read the principle: ${patternPrinciple.title}`}
+                accessibilityHint="Opens the exam-mindset principle that fixes this slip"
+                icon={(col) => <Compass size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+                iconLeading
+                onPress={() => router.push({ pathname: '/principles/[id]', params: { id: patternPrinciple.id } })}
+                style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
+              />
+            )}
             <Gap h={space.md} />
             {/* "Drill it" only when that game can be played for this exam (registry minPool). */}
             {pattern.game && canPlay(cert.id, pattern.game) ? (

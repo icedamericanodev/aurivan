@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=principles|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -187,6 +187,10 @@ elif [ "${SHOTS:-}" = cloud ]; then
   # CLOUD_PART=account or CLOUD_PART=board runs only one of the two.
   if [ "${CLOUD_PART:-}" != board ]; then node scripts/screenshots/shoot_cloud.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
   if [ "${CLOUD_PART:-}" != account ]; then node scripts/screenshots/shoot_board.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
+elif [ "${SHOTS:-}" = principles ]; then
+  # Exam-mindset principles: the Learn row, the list by family, one principle
+  # (top, trap and example, the Practice ending) and an old id (shoot_principles.mjs).
+  node scripts/screenshots/shoot_principles.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).

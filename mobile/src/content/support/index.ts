@@ -41,6 +41,18 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.26.0',
+    date: '2026-10-19',
+    new: [
+      'Principles: 20 rules of the IS auditor’s mindset in Learn, each with the words that signal it, the trap to avoid, a worked example and a short practice set.',
+      'Your Mistake journal now links your most common slip to the principle that fixes it.',
+    ],
+    improved: [
+      'Clearer wording for a few practice questions that sat in the wrong topic, and more questions now link to their study note.',
+    ],
+    fixed: ['A broken link to a note or principle now shows a calm “not found” page instead of an error.'],
+  },
+  {
     version: '1.25.0',
     date: '2026-10-18',
     new: ['Study notes now show how far you got: a circle that fills halfway once you start a note and all the way when you finish it.'],
