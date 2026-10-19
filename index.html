@@ -14242,7 +14242,8 @@ function mockOutline() {
 // Fetch the notes in the background (the setup page asks early, so a start
 // rarely waits). Never shows an error: the mock just keeps the old pick.
 function mockPrefetchNotes() {
-  if (CISA_NOTES_RAW || conceptsLoadFailed || conceptsLoading) return;
+  if (CISA_NOTES_RAW || conceptsLoading) return;
+  conceptsLoadFailed = false;   // an earlier failed fetch: ask again
   try { loadConceptsData(function () {}); } catch (e) {}
 }
 // Calls `cb` once: when the notes are here, have failed, or after 3 s.
@@ -14618,7 +14619,13 @@ function startMock(type, notesWaited) {
     if (mockNotesWait) return;
     mockNotesWait = true;
     try { showToast('Getting the questions ready\u2026', 'info', 1800); } catch (e) {}
-    mockWhenNotes(function () { mockNotesWait = false; startMock(type, true); });
+    mockWhenNotes(function () {
+      mockNotesWait = false;
+      // Only start if the learner is still on the mock setup page: not after
+      // Resume (it would replace the resumed exam) or another tab.
+      if (S.activeTab !== 'mock' || document.body.getAttribute('data-mview') !== 'setup') return;
+      startMock(type, true);
+    });
     return;
   }
 
