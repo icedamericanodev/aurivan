@@ -505,53 +505,42 @@ body::before {
 .conf-step-label.step2.unlocked .conf-step-num { background: var(--ink); border-color: var(--ink); color: var(--on-forest); }
 
 /* ── MOCK CONFIRM MODAL ── */
+/* Step 5: a calm sheet on the paper (Grove raised2), label above value. */
 .mock-confirm-overlay {
-  position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:200;
+  position:fixed;inset:0;background:var(--scrim);z-index:200;padding:16px;
   display:flex;align-items:center;justify-content:center;animation:flagFadeIn 0.25s ease;
 }
 .mock-confirm-modal {
-  background:var(--surface);border:2px solid var(--border2);border-radius:var(--radius);
-  max-width:440px;width:92%;box-shadow:var(--shadow-lg);animation:slideUp 0.35s ease both;overflow:hidden;
+  background:var(--raised2);border:1px solid var(--raised-outline);border-radius:24px;
+  max-width:480px;width:100%;max-height:calc(100vh - 32px);overflow:auto;box-shadow:var(--shadow);animation:slideUp 0.35s ease both;
 }
 .mock-confirm-head {
-  background:var(--ink);color:var(--ink-fg);padding:20px 24px;
-  font-family:Fraunces,Georgia,serif;font-size:20px;font-weight: 500;
+  margin:0;padding:24px 24px 4px;color:var(--text);
+  font:500 28px/34px Fraunces,Georgia,serif;letter-spacing:-0.4px;
 }
-.mock-confirm-body { padding:20px 24px; }
+.mock-confirm-body { padding:8px 24px 24px; }
 .mock-confirm-row {
-  display:flex;justify-content:space-between;align-items:center;
-  padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);font-weight:500;
+  display:flex;flex-direction:column;gap:2px;
+  padding:12px 0;border-bottom:1px solid var(--border);font:600 13px/18px Figtree,system-ui,sans-serif;color:var(--text2);
 }
-.mock-confirm-row:last-of-type { border-bottom:none; }
-.mock-confirm-row strong { color:var(--text);font-weight: 600; }
-.mock-confirm-note { font-size: 14px; line-height: 1.5; color: var(--text2); margin: 0 0 16px; }
+.mock-confirm-row strong { color:var(--text);font:400 16px/24px Figtree,system-ui,sans-serif; }
+.mock-confirm-note { font: 500 14px/20px Figtree,system-ui,sans-serif; color: var(--text2); margin: 16px 0; }
 .mock-confirm-warn {
-  background:var(--warning-light);border:2px solid var(--warning);border-radius:10px;
-  padding:10px 14px;font-size:13px;color:var(--warning-strong);font-weight:600;margin:14px 0;
+  background:var(--tip-bg);border-radius:16px;
+  padding:12px 16px;font:600 15px/22px Figtree,system-ui,sans-serif;color:var(--tip);margin:0 0 16px;
 }
-.mock-confirm-btns { display:flex;gap:10px;margin-top:4px; }
+.mock-confirm-btns { display:flex;flex-wrap:wrap;gap:8px 12px;margin-top:4px; }
 .mock-confirm-btn {
-  flex:1;padding:12px;border-radius:10px;font-family:Figtree,system-ui,sans-serif;
-  font-size:13px;font-weight: 600;cursor:pointer;transition:var(--tr);border:2px solid;
+  flex:1 1 140px;min-height:48px;padding:0 20px;border-radius:999px;font:600 16px/22px Figtree,system-ui,sans-serif;
+  cursor:pointer;border:1.5px solid;
 }
-.mock-confirm-btn.cancel { background:transparent;border-color:var(--border2);color:var(--muted); }
-.mock-confirm-btn.cancel:hover { border-color:var(--text);color:var(--text); }
-.mock-confirm-btn.gostart { background:var(--btn);border-color:var(--accent-fill);color: var(--on-btn); }
-.mock-confirm-btn.gostart:hover { opacity:0.9;transform:translateY(-1px); }
+.mock-confirm-btn.cancel { background:transparent;border-color:var(--control);color:var(--text); }
+.mock-confirm-btn.cancel:hover { background:var(--surface2); }
+.mock-confirm-btn.gostart { background:var(--btn);border-color:var(--btn);color: var(--on-btn); }
+.mock-confirm-btn.gostart:hover { opacity:0.92; }
+.mock-confirm-btn:focus-visible { outline:2px solid var(--focus-ring);outline-offset:2px; }
 
-/* ── MOCK RESUME BANNER ── */
-.mock-resume-banner {
-  background:var(--warning-light);border:2px solid var(--warning);border-radius:12px;
-  padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;
-  justify-content:space-between;gap:12px;
-}
-.mock-resume-text { font-size:13px;font-weight:600;color:var(--warning);line-height:1.5; }
-.mock-resume-btn {
-  padding:8px 16px;border-radius:8px;background:var(--tip-fill);border:none;
-  color: var(--on-fill);font-family:Figtree,system-ui,sans-serif;font-size:13px;font-weight: 600;
-  cursor:pointer;transition:var(--tr);flex-shrink:0;
-}
-.mock-resume-btn:hover { opacity:0.9; }
+/* ── MOCK RESUME BANNER ── (step 5: the setup page's forest panel, .mk-resume) */
 
 /* ── ISACA DISCLAIMER ── */
 .isaca-disclaimer {
@@ -5797,6 +5786,133 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 /* The exam-date prompt: 44px targets on every screen size. */
 .exam-prompt .ep-set, .exam-prompt .ep-skip { min-height: 44px; }
 .exam-prompt .ep-skip { min-width: 44px; }
+
+/* ── RESULTS + MOCK EXAM (Grove Desk step 5, 2026-10-19) ────────────────────
+   Results (a practice set's end card, a mock's results), like the mobile
+   Results screen: kicker, one headline, the rings beside a row per domain
+   (Today's figure rule), three plain stats, "Review your mistakes" and one
+   next action. Mock setup: the two mocks as raised cards (things you choose
+   between), the domain weights, your past mocks; an unfinished mock is the
+   page's one forest panel. A mock question reuses the practice strip. */
+.rs { max-width: 720px; }
+.session-debrief.rs { background: none; border: 0; border-radius: 0; box-shadow: none; padding: 0; margin: 0; }
+.ph #sessionBoundaryArea .session-debrief.rs { margin-bottom: var(--sp-section); padding-bottom: var(--sp-section); border-bottom: 1px solid var(--border); }
+.rs-kicker { font: var(--t-meta); color: var(--text2); margin: 0; }
+.rs-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: var(--sp-xs) 0 0; overflow-wrap: anywhere; }
+.rs-set .rs-title { font: var(--t-hero); letter-spacing: var(--tr-hero); }
+.rs-title:focus { outline: none; }
+.rs-fact { font: var(--t-small); color: var(--text2); margin: var(--sp-xs) 0 0; }
+.rs-timesup { font: var(--t-label); color: var(--clay); margin: var(--sp-sm) 0 0; }
+.rs-plate { margin-top: var(--sp-xxl); background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xxl); }
+.rs-plate .td-legend { margin-top: var(--sp-xl); }
+.rs-dcount { flex-shrink: 0; font: var(--t-meta); color: var(--text2); font-variant-numeric: tabular-nums; }
+.rs-plate .td-dval { min-width: 72px; }
+@media (min-width: 560px) {
+  .rs-plate { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--sp-section); align-items: center; }
+  .rs-plate .td-legend { margin-top: 0; }
+}
+.rs-stats { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-md); margin: var(--sp-xxl) 0 0; padding: 0; }
+.rs-stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rs-stat-l { font: var(--t-caption); color: var(--text2); }
+.rs-stat-v { font: 500 30px/34px var(--f-serif); letter-spacing: -0.8px; color: var(--text); font-variant-numeric: tabular-nums; }
+.rs-unit { font: var(--t-meta); letter-spacing: 0; color: var(--text2); }
+.rs-note { font: var(--t-meta); color: var(--text2); margin: var(--sp-md) 0 0; max-width: 62ch; }
+.rs-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-md); margin-top: var(--sp-xxl); }
+.rs-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-sm); min-height: 48px; padding: 0 var(--sp-xxl);
+  border-radius: var(--r-pill); border: 1.5px solid var(--control); background: transparent; color: var(--text);
+  font: 600 16px/22px var(--f-sans); letter-spacing: 0; cursor: pointer; text-align: center; box-shadow: none; transform: none;
+}
+.rs-btn:hover { background: var(--surface2); color: var(--text); transform: none; box-shadow: none; }
+.rs-btn.primary, .rs-btn.primary:hover { background: var(--btn); border-color: var(--btn); color: var(--on-btn); }
+.rs-btn.primary:hover { opacity: .92; }
+.rs-btn.ghost { border-color: transparent; padding: 0 var(--sp-md); }
+.rs-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.rs-mock .mock-advisory { margin-top: var(--sp-section); padding: 0; background: none; border: 0; border-radius: 0; }
+.rs-mock .mock-advisory-title { font: var(--t-headline); color: var(--text); margin: 0 0 var(--sp-xs); }
+.rs-mock .mock-advisory-item { font: var(--t-small); color: var(--text2); padding: var(--sp-md) 0; border-bottom: 1px solid var(--border); }
+.rs-mock .mock-advisory-item:last-child { border-bottom: 1px solid var(--border); }
+.rs-mock .support-inline-card { margin-top: var(--sp-section); }
+/* Review answers: list rows on the paper, opening in place. */
+.rs-review { margin-top: var(--sp-section); }
+.rs-review .ph-h:focus { outline: none; }
+.rs-filter { margin: var(--sp-md) 0 var(--sp-xs); }
+.mr-list { border-top: 1px solid var(--border); margin-top: var(--sp-md); }
+.mr-list[data-filter="miss"] .mr-item[data-ok="1"], .mr-list[data-filter="flag"] .mr-item[data-flag="0"] { display: none; }
+.mr-item { border-bottom: 1px solid var(--border); }
+.mr-row {
+  display: flex; flex-direction: column; gap: var(--sp-xs); width: 100%; min-height: 64px; padding: var(--sp-md) 0;
+  background: none; border: 0; border-radius: 0; color: var(--text); text-align: left; cursor: pointer; font: inherit;
+}
+.mr-row:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 12px; }
+.mr-top { display: flex; align-items: center; gap: var(--sp-md); }
+.mr-n { flex: 1; min-width: 0; font: var(--t-label); }
+.mr-status { font: var(--t-label); }
+.mr-status.ok { color: var(--correct); }
+.mr-status.no { color: var(--wrong); }
+.mr-status.skip { color: var(--text2); }
+.mr-chev { display: inline-flex; color: var(--muted); }
+.mr-row[aria-expanded="true"] .mr-chev .ico { transform: rotate(180deg); }
+.mr-meta { display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--sp-xs); font: var(--t-meta); color: var(--text2); }
+.mr-meta .dom-dot { margin-right: var(--sp-xs); }
+.mr-flag { display: inline-flex; align-items: center; gap: var(--sp-xs); color: var(--text); }
+.mr-stem { font: var(--t-small); color: var(--text); }
+/* Open: the full stem below replaces the cut-off one. */
+.mr-row[aria-expanded="true"] .mr-stem { display: none; }
+.mr-detail { padding: 0 0 var(--sp-xl); }
+.mr-detail[hidden] { display: none; }
+.mr-full { font: var(--t-small); color: var(--text); margin: 0 0 var(--sp-md); }
+.mr-opt { display: flex; align-items: flex-start; gap: var(--sp-md); padding: var(--sp-md); margin-bottom: var(--sp-sm); border-radius: var(--r-md); background: var(--raised); border: 1px solid var(--raised-outline); box-shadow: var(--shadow); }
+.mr-opt.best { background: var(--correct-light); box-shadow: none; }
+.mr-opt.yours { background: var(--wrong-light); box-shadow: none; }
+.mr-l { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font: 600 14px/20px var(--f-sans); border: 1.5px solid var(--control); color: var(--text); }
+.mr-opt.best .mr-l { background: var(--correct-fill); border-color: var(--correct-fill); color: var(--on-fill); }
+.mr-opt.yours .mr-l { background: var(--wrong-fill); border-color: var(--wrong-fill); color: var(--on-fill); }
+.mr-o { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.mr-ot { font: var(--t-small); color: var(--text); }
+.mr-tag { font: var(--t-caption); color: var(--text2); }
+.mr-why { font: var(--t-headline); color: var(--text); margin: var(--sp-lg) 0 var(--sp-xs); }
+.mr-exp { font: var(--t-body); color: var(--text); margin: 0; }
+.mr-ref { font: var(--t-meta); color: var(--text2); margin: var(--sp-sm) 0 0; }
+
+/* Mock setup */
+.mk { max-width: 720px; }
+.mk-title { margin-bottom: var(--sp-xs); }
+.mk-intro { font: var(--t-body); color: var(--text2); margin: 0 0 var(--sp-xxl); max-width: 56ch; }
+.mk-loading { font: var(--t-body); color: var(--text2); margin: 0; }
+.mk-resume { padding: var(--sp-xxl); margin: 0 0 var(--sp-xs); }
+.mk-resume-t { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--on-forest); margin: var(--sp-xs) 0; max-width: min(520px, calc(100% - 110px)); }
+.mk-resume-m { font: var(--t-meta); color: var(--on-forest2); margin: 0; }
+.mk-resume-acts { margin-top: var(--sp-xl); }
+.mk-types { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-md); margin-top: var(--sp-md); }
+@media (min-width: 640px) { .mk-types { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.mk-type { display: flex; flex-direction: column; align-items: flex-start; padding: var(--sp-xxl); background: var(--raised); border: 1px solid var(--raised-outline); border-radius: var(--r-md); box-shadow: var(--shadow); }
+.mk-type-t { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); margin: 0; }
+.mk-type-n { font: var(--t-label); color: var(--text); margin: var(--sp-xs) 0 0; font-variant-numeric: tabular-nums; }
+.mk-type-m { font: var(--t-small); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xl); flex: 1; }
+.mk-type .rs-btn { width: 100%; }
+.mk-weights, .mk-past { margin-top: var(--sp-md); }
+.mk-foot { font: var(--t-meta); color: var(--text2); margin: var(--sp-section) 0 0; max-width: 62ch; }
+
+/* Mock question: the practice strip, with the exam clock and Flag. */
+.mk-q { margin: 0 auto; }
+.mk-q .q-line { margin-bottom: 0; }
+.mk-q .q-body { padding-top: var(--sp-md); }
+.mk-q .pf-exit { margin-left: -12px; }
+.mk-q .mk-flag { margin-right: -12px; color: var(--text2); }
+.mk-q .mk-flag.on { color: var(--text); }
+.mk-q .mk-flag.on .ico path { fill: currentColor; }
+.mk-clock .timer-digits.ok { color: var(--text); }
+.mk-clock .timer-digits.warn { color: var(--tip); }
+.mk-clock .timer-digits.urgent { color: var(--clay); animation: none; }
+body[data-tab="mock"][data-mview="q"] #subNav { display: none; }
+@media (max-width: 1023px) {
+  body[data-tab="mock"][data-mview="q"] .app-rail { display: none; }
+  body[data-tab="mock"][data-mview="q"] .mk-q { padding-top: var(--sp-sm); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mr-chev .ico { transition: transform .15s ease; }
+}
 /* Keyboard focus never lands under the answer screen's sticky footer (or
    the phone bottom bar under it): focused controls scroll clear of both. */
 html { scroll-padding-bottom: 104px; }
@@ -6696,6 +6812,10 @@ var S_DEFAULTS = {
   mockQueue: [],
   mockCurrent: 0,
   mockAnswers: [],
+  // Step 5: which mock is running ('full' or 'mini') and the questions
+  // flagged for review in it (id -> true). Saved beside the mock fields.
+  mockType: 'full',
+  mockFlags: {},
   missedQuestions: [],
   answeredIds: {},
   glossMastered: {},
@@ -6844,6 +6964,17 @@ document.addEventListener('qb:domain-loaded', function() {
 // answer time; `q` is saved as a small { id, domain } stub and filled from
 // the bank again on resume.
 var MOCK_SECONDS_TOTAL = 240 * 60;
+// Step 5: two mocks. The full mock is the real exam's length and clock; the
+// mini mock is a third of it (mobile: exam questions / 3) with the same
+// domain weights and the same pace, so its clock is scaled to match.
+var MOCK_MINI_TOTAL = Math.round(MOCK_TOTAL / 3);
+var MOCK_TYPES = {
+  full: { total: MOCK_TOTAL, minutes: 240, name: 'Full mock' },
+  mini: { total: MOCK_MINI_TOTAL, minutes: Math.round(240 * MOCK_MINI_TOTAL / MOCK_TOTAL), name: 'Mini mock' }
+};
+// Anything that is not 'mini' (older saves have no type) is the full mock.
+function mockTypeOf(t) { return t === 'mini' ? 'mini' : 'full'; }
+function mockSecondsFor(t) { return MOCK_TYPES[mockTypeOf(t)].minutes * 60; }
 var MOCK_SAVE_EVERY_SEC = 60;
 var MOCK_ID_RE = /^web-[a-z0-9-]{1,40}$/;
 var MOCK_MAX_ITEMS = 1000;
@@ -6916,13 +7047,23 @@ function sanitizeSavedMock(state) {
     if (!a) break;
     answers.push(a);
   }
+  // Saves from before the mini mock have no type: they are full mocks.
+  var type = mockTypeOf(state.mockType);
+  var allowed = mockSecondsFor(type);
   var left = state.mockTotalSecondsLeft;
-  left = (typeof left === 'number' && isFinite(left)) ? Math.max(0, Math.min(MOCK_SECONDS_TOTAL, Math.round(left))) : MOCK_SECONDS_TOTAL;
+  left = (typeof left === 'number' && isFinite(left)) ? Math.max(0, Math.min(allowed, Math.round(left))) : allowed;
   var mid = (typeof state.mockId === 'string' && MOCK_ID_RE.test(state.mockId)) ? state.mockId : null;
   // Out of time with no id: an older save kept a mock the clock had already
   // ended and recorded. Nothing to resume.
   if (left <= 0 && !mid) return null;
-  return { mockQueueIds: ids, mockAnswers: answers, mockCurrent: answers.length, mockTotalSecondsLeft: left, mockId: mid };
+  // Flags: only questions in this mock, each once.
+  var flags = [];
+  if (Array.isArray(state.mockFlagIds)) {
+    state.mockFlagIds.slice(0, MOCK_MAX_ITEMS).forEach(function(f) {
+      if (typeof f === 'string' && ids.indexOf(f) >= 0 && flags.indexOf(f) < 0) flags.push(f);
+    });
+  }
+  return { mockQueueIds: ids, mockAnswers: answers, mockCurrent: answers.length, mockTotalSecondsLeft: left, mockId: mid, mockType: type, mockFlagIds: flags };
 }
 
 // Rebuilds the saved mock once every bank it uses has loaded. Until then the
@@ -6953,8 +7094,11 @@ function tryResumeSavedMock() {
   S.mockQueue = queue;
   S.mockAnswers = answers;
   S.mockCurrent = answers.length;
-  S.mockTotalSecondsTotal = MOCK_SECONDS_TOTAL;
+  S.mockType = mockTypeOf(p.mockType);
+  S.mockTotalSecondsTotal = mockSecondsFor(S.mockType);
   S.mockTotalSecondsLeft = p.mockTotalSecondsLeft;
+  S.mockFlags = {};
+  (p.mockFlagIds || []).forEach(function(f) { S.mockFlags[f] = true; });
   // A save from before mock ids still gets one, so its results are kept.
   S.mockId = p.mockId || newMockId();
   mockAnswerLock = false;
@@ -7096,7 +7240,7 @@ function getDueReview() {
 // - S.mockHistory = mobile MockResult list, newest first, last
 //   PARITY_MAX_MOCKS kept: { id, finishedAt, total, correct, minutesUsed,
 //   byDomain: { "1": { total, correct } }, timing, minutesAllowed,
-//   medianSec?, unanswered }.
+//   medianSec?, unanswered, type? ('full' | 'mini', from step 5) }.
 // Filled from the moment this shipped: no history is invented for answers
 // given before (older saves load these as empty). The older fields
 // (answeredIds, confidenceLog, streak, ds, score ...) are kept as they are.
@@ -7221,7 +7365,10 @@ function recordMockParity(answers, queue) {
     byDomain: byDomain,
     timing: 'standard',
     minutesAllowed: Math.round(allowedSec / 60),
-    unanswered: unanswered
+    unanswered: unanswered,
+    // Step 5: a mini mock and a full mock are told apart by this field
+    // (mobile tells them apart by length; both work on either record).
+    type: mockTypeOf(S.mockType)
   };
   if (times.length) {
     times.sort(function(x, y) { return x - y; });
@@ -7316,6 +7463,7 @@ function sanitizeMockHistory(list) {
     if (typeof m.minutesAllowed === 'number' && isFinite(m.minutesAllowed)) r.minutesAllowed = Math.min(1440, Math.max(0, m.minutesAllowed));
     if (typeof m.medianSec === 'number' && isFinite(m.medianSec)) r.medianSec = Math.min(PARITY_MAX_ANSWER_MS / 1000, Math.max(0, m.medianSec));
     if (m.unanswered !== undefined) r.unanswered = Math.min(total, parityCount(m.unanswered));
+    if (m.type === 'full' || m.type === 'mini') r.type = m.type;
     seen[m.id] = true;
     out.push(r);
   });
@@ -7341,6 +7489,8 @@ function normalizeImportedState(state) {
   clean.mockCurrent = mock ? mock.mockCurrent : 0;
   clean.mockTotalSecondsLeft = mock ? mock.mockTotalSecondsLeft : 0;
   clean.mockId = mock ? mock.mockId : null;
+  clean.mockType = mock ? mock.mockType : 'full';
+  clean.mockFlagIds = mock ? mock.mockFlagIds : [];
   // Parity fields: older saves have none and load as empty (no invented history).
   clean.answerLog = sanitizeAnswerLog(clean.answerLog);
   clean.mistakeLog = sanitizeMistakeLog(clean.mistakeLog);
@@ -7402,7 +7552,9 @@ function saveState() {
     mockAnswers: (S.mockAnswers || []).map(slimMockAnswer),
     mockCurrent: S.mockCurrent,
     mockTotalSecondsLeft: Math.max(0, Number(S.mockTotalSecondsLeft) || 0),
-    mockId: S.mockId || null
+    mockId: S.mockId || null,
+    mockType: mockTypeOf(S.mockType),
+    mockFlagIds: Object.keys(S.mockFlags || {}).filter(function(f) { return S.mockFlags[f]; })
   } : null);
   var persist = {
     score: S.score, ds: S.ds, streak: S.streak, bookmarks: S.bookmarks,
@@ -7424,6 +7576,9 @@ function saveState() {
     mockCurrent: mockSave ? mockSave.mockCurrent : 0,
     mockTotalSecondsLeft: mockSave ? mockSave.mockTotalSecondsLeft : 0,
     mockId: mockSave ? mockSave.mockId : null,
+    // Step 5 (new fields beside the old ones): the mock's type and its flags.
+    mockType: mockSave ? mockTypeOf(mockSave.mockType) : 'full',
+    mockFlagIds: mockSave ? (mockSave.mockFlagIds || []) : [],
   };
   profiles[id].state = persist;
   profiles[id].lastActive = Date.now();
@@ -10260,17 +10415,12 @@ function startMockTimer(seconds, onExpire) {
 // exam, no per-question limit, matching the real CISA exam clock.
 function startMockTotalTimer() {
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
-  function fmt(s) {
-    var h = Math.floor(s / 3600);
-    var m = Math.floor((s % 3600) / 60);
-    var sec = s % 60;
-    return (h > 0 ? h + 'h ' : '') + (m < 10 && h > 0 ? '0' : '') + m + 'm ' + (sec < 10 ? '0' : '') + sec + 's';
-  }
   function tick() {
     var d = document.getElementById('mTotalTD');
     var f = document.getElementById('mTotalTF');
     if (d) {
-      d.textContent = fmt(Math.max(0, S.mockTotalSecondsLeft));
+      // The strip's clock: "3:52:10", then "52:10" (step 5).
+      d.textContent = mockClock(S.mockTotalSecondsLeft);
       var lowSecs = 5 * 60;
       var medSecs = 30 * 60;
       d.className = 'timer-digits ' + (S.mockTotalSecondsLeft <= lowSecs ? 'urgent' : S.mockTotalSecondsLeft <= medSecs ? 'warn' : 'ok');
@@ -10571,7 +10721,7 @@ function exitPracticeFocus() {
   backToPractice();
   if (deb) {
     var area = document.getElementById('sessionBoundaryArea');
-    if (area) area.innerHTML = debriefHtml(deb);
+    if (area) area.innerHTML = debriefHtml(deb, true);
   }
 }
 
@@ -10699,7 +10849,7 @@ function renderPracticeHub() {
       + hubRow('missed', 'Missed questions', missed ? missed + ' to try again' : 'None yet', 'practiceMissed()')
       + hubRow('saved', 'Saved questions', saved ? saved + ' saved' : 'Save a question to find it here', "switchTab('bookmarks')")
       + hubRow('weak', 'Weak spots drill', 'Questions from the areas you miss most', 'startWeakSpotsDrill()')
-      + hubRow('mock', 'Mock exam', 'Timed like the real exam, reviewed at the end', "switchTab('mock')");
+      + hubRow('mock', 'Mock exam', isMockInProgress() ? 'In progress &middot; resume where you left off' : 'Full or mini, timed like the real exam', "switchTab('mock')");
   }
 }
 
@@ -11192,11 +11342,23 @@ var sessionAnswered = 0;
 var sessionCorrect = 0;
 var sessionDomain = 'all';
 var sessionLabel = null;       // a set's own name in the strip ("Weak spots drill"), else the domain
+// Step 5: what the set's results show (per domain, the misses, answer time).
+var sessionByDomain = {};      // domain -> { t, c } in this set
+var sessionMissedIds = [];     // questions missed in this set, in order
+var sessionMs = 0;             // summed answer time in this set
+var lastSetMissedIds = [];     // the misses behind the results on screen ("Review your mistakes")
+
+function resetSessionTally() {
+  sessionByDomain = {};
+  sessionMissedIds = [];
+  sessionMs = 0;
+}
 
 function startSession(n, domain, label) {
   sessionGoal = (n === null || n === 0) ? -1 : n;
   sessionAnswered = 0;
   sessionCorrect = 0;
+  resetSessionTally();
   sessionLabel = label || null;
   pendingDebrief = null;
   // A new set gets a fresh clock.
@@ -11220,6 +11382,17 @@ function onAnswerSubmittedForSession(wasCorrect) {
   if (reviewQueueMode || missedReviewMode) return; // a review run is not part of the set
   sessionAnswered++;
   if (wasCorrect) sessionCorrect++;
+  // The results' per-domain rows, misses and time (the answer's own record).
+  var q = S.current;
+  if (q && q.id) {
+    var d = String(q.domain);
+    if (!sessionByDomain[d]) sessionByDomain[d] = { t: 0, c: 0 };
+    sessionByDomain[d].t++;
+    if (wasCorrect) sessionByDomain[d].c++;
+    else if (sessionMissedIds.indexOf(q.id) < 0) sessionMissedIds.push(q.id);
+    var rec = S.answerLog && S.answerLog[q.id];
+    if (rec && typeof rec.ms === 'number' && isFinite(rec.ms)) sessionMs += rec.ms;
+  }
   if (sessionGoal > 0 && sessionAnswered >= sessionGoal) {
     // Goal reached — show debrief
     showSessionDebrief();
@@ -11229,7 +11402,10 @@ function onAnswerSubmittedForSession(wasCorrect) {
 // becomes "See how you did", which shows the debrief (nextQ).
 function showSessionDebrief() {
   var goal = sessionGoal > 0 ? sessionGoal : sessionAnswered;
-  pendingDebrief = { goal: goal, correct: sessionCorrect, domain: sessionDomain };
+  pendingDebrief = {
+    goal: goal, correct: sessionCorrect, domain: sessionDomain, label: sessionLabel,
+    answered: sessionAnswered, byDomain: sessionByDomain, missed: sessionMissedIds.slice(), ms: sessionMs
+  };
   // Persist
   try {
     localStorage.setItem('aurivan_last_session', JSON.stringify({
@@ -11244,31 +11420,125 @@ function showSessionDebrief() {
   sessionGoal = null;
   sessionAnswered = 0;
   sessionCorrect = 0;
+  resetSessionTally();
   var next = document.getElementById('vrNext');
   if (next) next.innerHTML = 'See how you did' + ico('arrow-right', 18);
   updateFocusStrip();
 }
-function debriefHtml(deb) {
-  var pct = deb.goal > 0 ? Math.round((deb.correct / deb.goal) * 100) : 0;
-  var pctLabel = pct >= 70 ? 'on track' : pct >= 50 ? 'borderline' : 'needs work';
+// ── RESULTS (Grove Desk step 5; mobile app/results.tsx) ──
+// One layout for a practice set's end card and a mock's results: a kicker,
+// one headline (the plain count under 8 answers, mobile resultsCopy), the
+// rings beside a row per domain in the set (Today's figure rule, domainFigure:
+// a band word under 30 answers, then the number), three plain stats, then
+// "Review your mistakes" and one next action.
+var RS_SMALL_SAMPLE = 8;
+function resultsHeadline(correct, total) {
+  if (total < RS_SMALL_SAMPLE) {
+    if (total > 0 && correct === total) return total === 1 ? 'Right' : 'All ' + total + ' right';
+    return correct + ' of ' + total + ' right';
+  }
+  var pct = Math.round((correct / total) * 100);
+  return pct >= 75 ? 'Strong work.' : pct >= 60 ? 'Getting there.' : 'Every miss is a lesson.';
+}
+// "Under 1 min", "24 min", "3 h 12 min" as a value and its unit (HTML-safe).
+function resultsTime(ms) {
+  var min = Math.round((Number(ms) || 0) / 60000);
+  if (min < 1) return { v: '&lt;1', u: 'min', s: 'under a minute' };
+  if (min < 60) return { v: String(min), u: 'min', s: min + (min === 1 ? ' minute' : ' minutes') };
+  var h = Math.floor(min / 60), m = min % 60;
+  return { v: h + '&nbsp;h', u: m ? m + '&nbsp;min' : '', s: h + (h === 1 ? ' hour' : ' hours') + (m ? ' ' + m + (m === 1 ? ' minute' : ' minutes') : '') };
+}
+// The domain most missed (for the one fact under a small-sample headline).
+function resultsMostMissed(byDomain) {
+  var best = null;
+  Object.keys(DI).forEach(function (d) {
+    var x = byDomain[d];
+    if (!x) return;
+    var miss = x.t - x.c;
+    if (miss > 0 && (!best || miss > best.miss)) best = { d: d, miss: miss };
+  });
+  return best;
+}
+// The rings + domain rows + stats. o = { byDomain: { d: { t, c } }, correct, total, ms }.
+function resultsBodyHtml(o) {
+  var keys = Object.keys(DI);
+  var inSet = keys.filter(function (d) { return o.byDomain[d] && o.byDomain[d].t > 0; });
+  var values = keys.map(function (d) { var x = o.byDomain[d]; return x && x.t ? x.c / x.t : 0; });
+  var pct = o.total > 0 ? Math.round((o.correct / o.total) * 100) : 0;
+  var banded = false;
+  var rows = inSet.map(function (d) {
+    var x = o.byDomain[d];
+    var f = domainFigure(x.t, Math.round((x.c / x.t) * 100));
+    if (f.banded) banded = true;
+    var val = f.banded || f.text === '–' ? '<span class="td-word">' + f.text + '</span>' : '<span class="td-num">' + f.text.replace('%', '') + '<sup>%</sup></span>';
+    return '<li><span class="dom-dot" style="background:' + DI[d].color + '" aria-hidden="true"></span>'
+      + '<span class="td-dname">' + escapeHtml(DI[d].short) + '</span>'
+      + '<span class="rs-dcount" aria-hidden="true">' + x.c + ' of ' + x.t + '</span>'
+      + '<span class="sr-only">: ' + x.c + ' of ' + x.t + ' right, ' + f.spoken + '</span>'
+      + '<span class="td-dval" aria-hidden="true">' + val + '</span></li>';
+  }).join('');
+  var t = resultsTime(o.ms);
+  return '<div class="rs-plate">'
+    + '<div class="td-fig">' + growthRingsSvg(values, pct >= 60) + '</div>'
+    + '<div class="rs-detail"><h3 class="sr-only">By domain</h3><ul class="td-legend">' + rows + '</ul>'
+    + (banded ? '<p class="td-note">Building is under ' + DOMAIN_TARGET_PCT + ', Steady ' + DOMAIN_TARGET_PCT + ' to 79, Strong 80 and up. A number shows from ' + DOMAIN_READ_MIN + ' answers in a domain.</p>' : '')
+    + '</div></div>'
+    + '<ul class="rs-stats">'
+    + '<li class="rs-stat"><span class="rs-stat-l">Correct</span><span class="rs-stat-v rs-correct">' + o.correct + '<span class="rs-unit"> of ' + o.total + '</span></span></li>'
+    + '<li class="rs-stat"><span class="rs-stat-l">Time</span><span class="rs-stat-v"><span aria-hidden="true">' + t.v + (t.u ? '<span class="rs-unit"> ' + t.u + '</span>' : '') + '</span><span class="sr-only">' + t.s + '</span></span></li>'
+    + '<li class="rs-stat"><span class="rs-stat-l">Accuracy</span><span class="rs-stat-v">' + pct + '<span class="rs-unit">%</span></span></li>'
+    + '</ul>';
+}
+
+// A practice set's results. `inHub`: shown on the Practice hub (the learner
+// left from the last answer), so it can be closed there.
+function debriefHtml(deb, inHub) {
   var dom = /^(all|[0-9]+)$/.test(String(deb.domain)) ? String(deb.domain) : 'all';
-  return '<div class="session-debrief" role="region" aria-labelledby="sdTitle">'
-      + '<div class="sd-head">'
-        + '<div class="sd-label" id="sdTitle" role="heading" aria-level="2" tabindex="-1">Set complete</div>'
-        + '<div class="sd-score"><span class="sd-num">' + deb.correct + '</span><span class="sd-of">/ ' + deb.goal + '</span></div>'
-        + '<div class="sd-pct">' + pct + '% correct, ' + pctLabel + '</div>'
-      + '</div>'
-      + '<div class="sd-actions">'
-        + '<button type="button" class="es-btn primary" onclick="startSession(' + deb.goal + ', \'' + dom + '\')">Practice another set &rarr;</button>'
-        + '<button type="button" class="es-btn ghost" onclick="backToPractice()">Back to Practice</button>'
-      + '</div>'
-    + '</div>';
+  var total = deb.answered || deb.goal;
+  var byDomain = deb.byDomain || {};
+  var missed = Array.isArray(deb.missed) ? deb.missed : [];
+  lastSetMissedIds = missed.slice();
+  var name = deb.label || (dom !== 'all' && DI[dom] ? DI[dom].short : 'Mixed set');
+  var fact = '';
+  if (total < RS_SMALL_SAMPLE) {
+    var mm = resultsMostMissed(byDomain);
+    if (mm) fact = '<p class="rs-fact">' + (missed.length === 1 ? 'Missed: ' : 'Most missed: ') + escapeHtml(DI[mm.d].short) + '.</p>';
+  }
+  return '<section class="session-debrief rs rs-set" role="region" aria-labelledby="sdKick sdTitle">'
+    + '<p class="rs-kicker" id="sdKick">Set complete &middot; ' + escapeHtml(name) + '</p>'
+    + '<h2 class="rs-title" id="sdTitle" tabindex="-1">' + resultsHeadline(deb.correct, total) + '</h2>'
+    + fact
+    + resultsBodyHtml({ byDomain: byDomain, correct: deb.correct, total: total, ms: deb.ms })
+    + '<div class="rs-acts">'
+    + '<button type="button" class="rs-btn primary" onclick="startSession(' + deb.goal + ', \'' + dom + '\')">Practice another set' + ico('arrow-right', 18) + '</button>'
+    + (missed.length ? '<button type="button" class="rs-btn" onclick="reviewSetMistakes()">Review your mistakes</button>' : '')
+    + (inHub ? '<button type="button" class="rs-btn ghost" onclick="closeSetResults()">Close</button>' : '')
+    + '</div>'
+    + '</section>';
+}
+// "Review your mistakes" on a set's results: this set's misses, again.
+function reviewSetMistakes() {
+  var qs = (lastSetMissedIds || []).map(function (id) { return findQuestionById(id); }).filter(Boolean);
+  if (!qs.length) { showToast('No mistakes to review', 'info', 2200); return; }
+  if (S.activeTab !== 'practice') switchTab('practice', { noScroll: true });
+  hideSessionStart();
+  missedReviewQueue = qs;
+  missedReviewDomain = 'all';
+  missedReviewIndex = 0;
+  missedReviewMode = true;
+  showNextMissed();
+}
+function closeSetResults() {
+  hideSessionStart();
+  var t = document.getElementById('phTitle');
+  if (t) { try { t.focus({ preventScroll: true }); } catch (e) {} }
 }
 function endSession() {
   hideSessionStart();
   sessionGoal = null;
   sessionAnswered = 0;
   sessionCorrect = 0;
+  resetSessionTally();
 }
 
 // ── TIP LABELS ──
@@ -11937,143 +12207,171 @@ function planMockAllocation(total) {
   return { plan: plan, domainTarget: domainTarget, total: totalAssigned(), avail: avail };
 }
 
+// ── MOCK EXAM (Grove Desk step 5; mobile app/mock-start.tsx) ──
+// Setup: a calm page with the two mocks as cards you choose between (the
+// full mock, and a 50-question mini mock with the same domain weights and
+// pace), the domain weights, and your past mocks. An unfinished mock shows
+// as the page's one forest panel with Resume. A mock question uses the
+// practice strip (exit, progress, clock, flag for review).
+function mockSetMview(v) {
+  if (v) document.body.setAttribute('data-mview', v);
+  else document.body.removeAttribute('data-mview');
+}
+// "3:52:10" / "52:10" for the strip's clock.
+function mockClock(s) {
+  s = Math.max(0, Math.round(Number(s) || 0));
+  var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  return (h > 0 ? h + ':' + (m < 10 ? '0' : '') : '') + m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+// "4 hours", "80 minutes", "1 hour 20 minutes"
+function mockMinutesWords(min) {
+  var h = Math.floor(min / 60), m = min % 60;
+  if (!h) return m + (m === 1 ? ' minute' : ' minutes');
+  return h + (h === 1 ? ' hour' : ' hours') + (m ? ' ' + m + (m === 1 ? ' minute' : ' minutes') : '');
+}
+// A mock's kind from its record: its type, else its length (mobile's rule).
+function mockKindOf(m) {
+  if (m && (m.type === 'full' || m.type === 'mini')) return m.type;
+  if (m && m.total === MOCK_TOTAL) return 'full';
+  if (m && m.total === MOCK_MINI_TOTAL) return 'mini';
+  return null;
+}
+function mockPlanCounts(total) {
+  var plan = planMockAllocation(total).plan, out = {};
+  Object.keys(DI).forEach(function (d) { out[d] = plan[d].analysis + plan[d].application + plan[d].foundational; });
+  return out;
+}
+
 function renderMockSetup() {
   document.body.removeAttribute('data-mock-results');
+  mockSetMview('setup');
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
+  var area = document.getElementById('mockArea');
+  if (!area) return;
 
-  // If any domain bank is still being fetched, show a loading card
-  // instead of a half-baked plan. The fetch handler re-renders this tab.
+  var head = '<h1 class="ph-title mk-title" id="mkTitle" tabindex="-1">Mock exam</h1>'
+    + '<p class="mk-intro">Timed like the real exam, with ISACA&rsquo;s domain weights. Answers and explanations come at the end.</p>';
+
+  // If any domain bank is still being fetched, say so instead of a
+  // half-made plan. The fetch handler draws this page again.
   if (Object.keys(window.QB_LOADING || {}).length > 0) {
-    document.getElementById('mockArea').innerHTML =
-      '<div class="mock-setup-card">'
-      + '<div class="mock-title">CISA Full Exam Simulation</div>'
-      + '<div class="mock-sub">Fetching all 5 domain banks…</div>'
-      + '<div style="text-align:center;padding:32px"><div style="font-size:36px;animation:dcLoadingPulse 1.4s ease-in-out infinite">⟳</div></div>'
-      + '</div>';
+    area.innerHTML = '<div class="mk">' + head
+      + '<p class="mk-loading" role="status">Getting the questions ready&hellip;</p></div>';
     return;
   }
 
-  var domainKeys = Object.keys(DI);
-  var planRes = planMockAllocation(MOCK_TOTAL);
-  var plan = planRes.plan;
-  var actualTotal = planRes.total;
-
-  var aTotal = 0, mTotal = 0, fTotal = 0;
-  domainKeys.forEach(function(d){
-    aTotal += plan[d].analysis;
-    mTotal += plan[d].application;
-    fTotal += plan[d].foundational;
-  });
-
-  // Domain chips: show the planned count + the official weight
-  var chipsHtml = domainKeys.map(function(d){
-    var i = DI[d];
-    var domTotal = plan[d].analysis + plan[d].application + plan[d].foundational;
-    return '<div class="mock-chip">'
-      + '<span class="dom-dot" style="background:' + i.color + '"></span>' + '<span style="font-weight:600">D' + d + '</span> ' + i.weight + '%'
-      + '<br><span style="font-size:13px;opacity:0.7">' + domTotal + ' questions</span>'
+  var full = MOCK_TYPES.full, mini = MOCK_TYPES.mini;
+  var fullN = mockPlanCounts(full.total), miniN = mockPlanCounts(mini.total);
+  var card = function (type, t, desc, btnCls, primary) {
+    return '<div class="mk-type">'
+      + '<h3 class="mk-type-t" id="mkT-' + type + '">' + t.name + '</h3>'
+      + '<p class="mk-type-n" id="mkN-' + type + '">' + t.total + ' questions &middot; ' + mockMinutesWords(t.minutes) + '</p>'
+      + '<p class="mk-type-m">' + desc + '</p>'
+      + '<button type="button" class="rs-btn' + (primary ? ' primary' : '') + ' ' + btnCls + '" aria-describedby="mkN-' + type + '" onclick="showMockConfirm(\'' + type + '\')">Start ' + t.name.toLowerCase() + ico('arrow-right', 18) + '</button>'
       + '</div>';
-  }).join('');
-
-  function statTile(color, value, label) {
-    // `color` arrives as '--d5'; the variable names below add their own '--'.
-    var c = color ? color.replace(/^--/, '') : '';
-    var bg = c ? c + '-light' : 'surface2';
-    var bd = c ? c + '-border' : 'border2';
-    var fg = c ? c : 'text';
-    return '<div style="background:var(--' + bg + ');border:2px solid var(--' + bd + ');border-radius:12px;padding:14px 20px;text-align:center;min-width:90px">'
-      + '<div style="font-family:Fraunces,Georgia,serif;font-size:26px;font-weight:500;color:var(--text)">' + value + '</div>'
-      + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--text2);margin-top:2px">' + (c ? '<span class="dom-dot" style="background:var(--' + fg + ')"></span> ' : '') + label + '</div>'
-      + '</div>';
-  }
+  };
+  var types = '<section class="ph-sec" aria-labelledby="mkPickH">'
+    + '<h2 class="ph-h" id="mkPickH">Choose a mock</h2>'
+    + '<div class="mk-types">'
+    + card('full', full, 'The real exam&rsquo;s length and pace.', 'mock-start', true)
+    + card('mini', mini, 'A third of the exam: the same domain weights and pace.', 'mock-start-mini', false)
+    + '</div></section>';
 
   var aPct = Math.round(MOCK_DIFFICULTY_MIX.analysis * 100);
   var mPct = Math.round(MOCK_DIFFICULTY_MIX.application * 100);
   var fPct = Math.round(MOCK_DIFFICULTY_MIX.foundational * 100);
+  var weights = '<section class="ph-sec" aria-labelledby="mkWH">'
+    + '<h2 class="ph-h" id="mkWH">Domain weights</h2>'
+    + '<p class="ph-h-meta">Both mocks follow these weights, with about ' + aPct + '% harder, ' + mPct + '% middle and ' + fPct + '% easier questions.</p>'
+    + '<ul class="td-legend mk-weights">' + Object.keys(DI).map(function (d) {
+      return '<li><span class="dom-dot" style="background:' + DI[d].color + '" aria-hidden="true"></span>'
+        + '<span class="td-dname">' + escapeHtml(DI[d].short) + '</span>'
+        + '<span class="rs-dcount">' + fullN[d] + ' full &middot; ' + miniN[d] + ' mini</span>'
+        + '<span class="td-dval"><span class="td-num">' + DI[d].weight + '<sup>%</sup></span></span></li>';
+    }).join('') + '</ul></section>';
 
-  document.getElementById('mockArea').innerHTML =
-    '<div class="mock-setup-card">'
-    + '<div class="mock-title">CISA Full Exam Simulation</div>'
-    + '<div class="mock-sub">' + actualTotal + ' questions · 4-hour timed exam · domain mix follows the exam blueprint<br>'
-    + '<strong style="color:var(--accent-text)">A realistic spread of difficulty: about ' + aPct + '% harder, ' + mPct + '% middle, ' + fPct + '% easier</strong>'
-    + '</div>'
-    + '<div class="mock-chips">' + chipsHtml + '</div>'
-    + '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">'
-    + statTile(null, actualTotal, 'Questions')
-    + statTile(null, '4h', '240 min clock')
-    + statTile('--d5', aTotal, MOCK_TIER_LABEL.analysis + ' questions')
-    + statTile('--d3', mTotal, MOCK_TIER_LABEL.application + ' questions')
-    + statTile('--d1', fTotal, MOCK_TIER_LABEL.foundational + ' questions')
-    + '</div>'
-    + '<button class="mock-start" onclick="showMockConfirm()">Begin CISA Simulation →</button>'
+  // Your mocks: the newest few, a full and a mini told apart.
+  var hist = (Array.isArray(S.mockHistory) ? S.mockHistory : []).slice(0, 5);
+  var past = '';
+  if (hist.length) {
+    past = '<section class="ph-sec" aria-labelledby="mkPastH">'
+      + '<h2 class="ph-h" id="mkPastH">Your mocks</h2>'
+      + '<ul class="td-legend mk-past">' + hist.map(function (m) {
+        var kind = mockKindOf(m);
+        var name = kind ? MOCK_TYPES[kind].name : m.total + ' questions';
+        var pct = m.total ? Math.round((m.correct / m.total) * 100) : 0;
+        var when = '';
+        try { when = new Date(m.finishedAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }); } catch (e) {}
+        return '<li><span class="td-dname">' + name + '</span>'
+          + '<span class="rs-dcount">' + escapeHtml(when) + ' &middot; ' + m.correct + ' of ' + m.total + '</span>'
+          + '<span class="td-dval"><span class="td-num">' + pct + '<sup>%</sup></span></span></li>';
+      }).join('') + '</ul></section>';
+  }
+
+  area.innerHTML = '<div class="mk">' + head
+    + '<div id="mkResume"></div>'
+    + types + weights + past
+    + '<p class="mk-foot">If you close this tab, your answers are saved and you can carry on later. The exam clock pauses while the tab is closed.</p>'
     + '</div>';
-  setTimeout(function(){ checkMockResume(); }, 50);
+  checkMockResume();
 }
 
-function showMockConfirm() {
-  var domainKeys = Object.keys(DI);
-  var planRes = planMockAllocation(MOCK_TOTAL);
-  var plan = planRes.plan;
-  var actualQ = planRes.total;
-
-  var aTotal = 0, mTotal = 0, fTotal = 0;
-  domainKeys.forEach(function(d){
-    aTotal += plan[d].analysis;
-    mTotal += plan[d].application;
-    fTotal += plan[d].foundational;
-  });
-
-  var domainBreakdown = domainKeys.map(function(d){
-    var dt = plan[d].analysis + plan[d].application + plan[d].foundational;
-    return 'D' + d + ': ' + dt + ' (' + DI[d].weight + '%)';
+function showMockConfirm(type) {
+  type = mockTypeOf(type);
+  var t = MOCK_TYPES[type];
+  var counts = mockPlanCounts(t.total);
+  var actualQ = Object.keys(counts).reduce(function (s, d) { return s + counts[d]; }, 0);
+  var domainBreakdown = Object.keys(DI).map(function (d) {
+    return escapeHtml(DI[d].short) + ' ' + counts[d];
   }).join(' &middot; ');
 
-  // Same names as the mock setup tiles.
-  var tierNote = aTotal + ' ' + MOCK_TIER_LABEL.analysis.toLowerCase() + ' &middot; ' + mTotal + ' ' + MOCK_TIER_LABEL.application.toLowerCase() + ' &middot; ' + fTotal + ' ' + MOCK_TIER_LABEL.foundational.toLowerCase();
-
-  var inProgress = S.mockQueue && S.mockQueue.length > 0 && S.mockCurrent < S.mockQueue.length;
+  var inProgress = isMockInProgress();
   var resumeHtml = inProgress
-    ? '<div class="mock-confirm-warn">You have an exam in progress (Q'+(S.mockCurrent+1)+'/'+S.mockQueue.length+'). Starting a new exam will discard it.</div>'
+    ? '<div class="mock-confirm-warn">You have an exam in progress (question ' + (S.mockCurrent + 1) + ' of ' + S.mockQueue.length + '). Starting a new one discards it.</div>'
     : '';
   document.getElementById('flagModal').innerHTML = '<div class="mock-confirm-overlay">'
-    + '<div class="mock-confirm-modal">'
-    + '<div class="mock-confirm-head">CISA Full Exam Simulation</div>'
+    + '<div class="mock-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="mkConfH">'
+    + '<h2 class="mock-confirm-head" id="mkConfH">' + t.name + '</h2>'
     + '<div class="mock-confirm-body">'
-    + '<div class="mock-confirm-row"><span>Questions</span><strong>'+actualQ+' total</strong></div>'
-    + '<div class="mock-confirm-row"><span>Difficulty breakdown</span><strong>'+tierNote+'</strong></div>'
-    + '<div class="mock-confirm-row"><span>Duration</span><strong>240 minutes (4 hours)</strong></div>'
-    + '<div class="mock-confirm-row"><span>Domain distribution</span><strong>'+domainBreakdown+'</strong></div>'
-    + '<div class="mock-confirm-row"><span>Explanations</span><strong>After exam only</strong></div>'
-    + '<div class="mock-confirm-row"><span>Timer</span><strong>Single 4-hour countdown &mdash; no per-question limit</strong></div>'
-    + '<div class="mock-confirm-note">If you close this tab, your answers are saved and you can resume later. The exam clock pauses while the tab is closed.</div>'
+    + '<div class="mock-confirm-row"><span>Questions</span><strong>' + actualQ + '</strong></div>'
+    + '<div class="mock-confirm-row"><span>Time</span><strong>' + mockMinutesWords(t.minutes) + ', one clock for the whole exam</strong></div>'
+    + '<div class="mock-confirm-row"><span>Domains</span><strong>' + domainBreakdown + '</strong></div>'
+    + '<div class="mock-confirm-row"><span>Explanations</span><strong>At the end</strong></div>'
+    + '<p class="mock-confirm-note">If you close this tab, your answers are saved and you can resume later. The exam clock pauses while the tab is closed.</p>'
     + resumeHtml
     + '<div class="mock-confirm-btns">'
-    + '<button class="mock-confirm-btn cancel" onclick="closeFlagModal()">Cancel</button>'
-    + '<button class="mock-confirm-btn gostart" onclick="closeFlagModal();startMock()">Start simulation &rarr;</button>'
+    + '<button type="button" class="mock-confirm-btn cancel" onclick="closeFlagModal()">Cancel</button>'
+    + '<button type="button" class="mock-confirm-btn gostart" onclick="closeFlagModal();startMock(\'' + type + '\')">Start ' + t.name.toLowerCase() + '</button>'
     + '</div>'
     + '</div></div></div>';
+  var go = document.querySelector('.mock-confirm-btn.gostart');
+  if (go) { try { go.focus({ preventScroll: true }); } catch (e) {} }
 }
 
+// An unfinished mock: the setup page's one forest panel, with Resume.
 function checkMockResume() {
   var area = document.getElementById('mockArea');
   if (!area) return false;
-  if (S.mockQueue && S.mockQueue.length > 0 && S.mockCurrent < S.mockQueue.length) {
-    if (area.querySelector('.mock-resume-banner')) return true;
-    var left = Math.max(0, Math.round(Number(S.mockTotalSecondsLeft) || 0));
-    var lh = Math.floor(left / 3600), lm = Math.floor((left % 3600) / 60);
-    var leftLabel = (lh ? lh + 'h ' : '') + (lh || lm ? lm + 'm' : left + 's') + ' left';
-    area.insertAdjacentHTML('afterbegin',
-      '<div class="mock-resume-banner">'
-      + '<div class="mock-resume-text">Exam in progress: question ' + (S.mockCurrent+1) + ' of ' + S.mockQueue.length + ' &middot; ' + leftLabel + '</div>'
-      + '<button class="mock-resume-btn" onclick="showMockQuestion()">Resume exam &rarr;</button>'
-      + '</div>'
-    );
-    return true;
-  }
-  return false;
+  if (!isMockInProgress()) return false;
+  if (area.querySelector('.mock-resume-banner')) return true;
+  var left = Math.max(0, Math.round(Number(S.mockTotalSecondsLeft) || 0));
+  var lh = Math.floor(left / 3600), lm = Math.floor((left % 3600) / 60);
+  var leftLabel = (lh ? lh + 'h ' : '') + (lh || lm ? lm + 'm' : left + 's') + ' left';
+  var name = MOCK_TYPES[mockTypeOf(S.mockType)].name;
+  var html = '<section class="gt-panel mk-resume mock-resume-banner" aria-labelledby="mkResT">'
+    + gtFrondSvg()
+    + '<p class="gt-panel-cap">Exam in progress</p>'
+    + '<h2 class="mk-resume-t" id="mkResT">Your ' + name.toLowerCase() + '</h2>'
+    + '<p class="mk-resume-m mock-resume-text">Question ' + (S.mockCurrent + 1) + ' of ' + S.mockQueue.length + ' &middot; ' + leftLabel + '</p>'
+    + '<div class="mk-resume-acts"><button type="button" class="gt-pill mock-resume-btn" aria-describedby="mkResT" onclick="showMockQuestion()">Resume exam' + ico('arrow-right', 18) + '</button></div>'
+    + '</section>';
+  var slot = document.getElementById('mkResume');
+  if (slot) slot.innerHTML = html;
+  else area.insertAdjacentHTML('afterbegin', html);
+  return true;
 }
 
-function startMock() {
+function startMock(type) {
   // Don't let the user start an exam while a domain bank is still fetching —
   // that would silently drop those questions from the simulation. Checked
   // first, so an unfinished mock is not discarded by a start that can't run.
@@ -12082,6 +12380,7 @@ function startMock() {
     renderMockSetup();
     return;
   }
+  type = mockTypeOf(type);
 
   clearAllTimers();
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
@@ -12090,12 +12389,15 @@ function startMock() {
   S.mockQueue = [];
   S.mockAnswers = [];
   S.mockCurrent = 0;
+  S.mockType = type;
+  S.mockFlags = {};
   mockAnswerLock = false;
   S.mockId = newMockId(); // parity mock id
 
   function shuffle(arr){ for(var i=arr.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=arr[i];arr[i]=arr[j];arr[j]=t; } return arr; }
 
-  var planRes = planMockAllocation(MOCK_TOTAL);
+  // The same blueprint for both: domain weights and difficulty mix, scaled.
+  var planRes = planMockAllocation(MOCK_TYPES[type].total);
   var plan = planRes.plan;
 
   Object.keys(DI).forEach(function(d){
@@ -12109,16 +12411,45 @@ function startMock() {
   });
   shuffle(S.mockQueue);
 
-  // Always 4-hour clock
-  S.mockTotalSecondsTotal = 240 * 60;
+  // One clock for the whole exam: 4 hours for the full mock, the same pace
+  // scaled for the mini mock.
+  S.mockTotalSecondsTotal = mockSecondsFor(type);
   S.mockTotalSecondsLeft = S.mockTotalSecondsTotal;
 
   showMockQuestion();
   saveState(); // the new exam replaces the old one in the saved record now
 }
 
+// The strip's X: the mock pauses (its clock stops) and the setup page
+// offers Resume. Nothing is lost.
+function exitMock() {
+  if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
+  saveState();
+  renderMockSetup();
+  try { window.scrollTo(0, 0); } catch (e) {}
+  var b = document.querySelector('#mockArea .mock-resume-btn') || document.getElementById('mkTitle');
+  if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} }
+}
+
+// Flag for review: the question is marked in the answer review at the end.
+function toggleMockFlag() {
+  var q = S.mockQueue && S.mockQueue[S.mockCurrent];
+  if (!q || !q.id) return;
+  if (!S.mockFlags || typeof S.mockFlags !== 'object') S.mockFlags = {};
+  if (S.mockFlags[q.id]) delete S.mockFlags[q.id];
+  else S.mockFlags[q.id] = true;
+  var on = !!S.mockFlags[q.id];
+  var b = document.getElementById('mkFlag');
+  if (b) {
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    b.classList.toggle('on', on);
+  }
+  saveState();
+}
+
 function showMockQuestion() {
   document.body.removeAttribute('data-mock-results');
+  mockSetMview('q');
   clearAllTimers();
   var q = S.mockQueue[S.mockCurrent];
   var tot = S.mockQueue.length;
@@ -12129,7 +12460,6 @@ function showMockQuestion() {
   // Per-render shuffle (mock exam shares the same shuffle infrastructure as practice)
   S.currentShuffle = makeShuffleMap();
   var shuffle = S.currentShuffle;
-  var isFullExam = true; // always 4-hour clock for CISA simulation
 
   var optsHtml = DISPLAY_LETTERS.map(function(displayL, idx){
     var origL = shuffle[idx];
@@ -12139,60 +12469,47 @@ function showMockQuestion() {
       + '</button>';
   }).join('');
 
-  var progressPct = ((cur-1)/tot)*100;
+  var done = cur - 1;
+  var name = MOCK_TYPES[mockTypeOf(S.mockType)].name;
+  var flagged = !!(S.mockFlags && S.mockFlags[q.id]);
+  var sLeft = Math.max(0, S.mockTotalSecondsLeft || 0);
+  var clsLeft = sLeft <= 5 * 60 ? 'urgent' : sLeft <= 30 * 60 ? 'warn' : 'ok';
 
-  // Timer block: total exam clock for 150-Q full simulation, per-question for shorter modes.
-  var timerHtml;
-  if (isFullExam) {
-    var sLeft = Math.max(0, S.mockTotalSecondsLeft || 0);
-    var sTot = S.mockTotalSecondsTotal || (240 * 60);
-    var hh = Math.floor(sLeft / 3600);
-    var mm = Math.floor((sLeft % 3600) / 60);
-    var ss = sLeft % 60;
-    var initLabel = (hh > 0 ? hh + 'h ' : '') + (mm < 10 && hh > 0 ? '0' : '') + mm + 'm ' + (ss < 10 ? '0' : '') + ss + 's';
-    var initPct = Math.max(0, (sLeft / sTot) * 100);
-    var initCls = sLeft <= 5 * 60 ? 'urgent' : sLeft <= 30 * 60 ? 'warn' : 'ok';
-    var initBg = sLeft <= 5 * 60 ? 'var(--wrong)' : sLeft <= 30 * 60 ? 'var(--tip)' : 'var(--accent)';
-    timerHtml =
-      '<div class="timer-wrap" style="margin-bottom:16px">'
-      + '<div><div class="timer-digits ' + initCls + '" id="mTotalTD">' + initLabel + '</div><div class="timer-sub">Total Exam Clock &mdash; Full CISA Simulation</div></div>'
-      + '<div class="timer-track"><div class="timer-fill" id="mTotalTF" style="width:' + initPct + '%;background:' + initBg + '"></div></div>'
-      + '</div>';
-  } else {
-    timerHtml =
-      '<div class="timer-wrap" style="margin-bottom:16px">'
-      + '<div><div class="timer-digits ok" id="mTD">90s</div><div class="timer-sub">Per Question (Mock Exam)</div></div>'
-      + '<div class="timer-track"><div class="timer-fill" id="mTF" style="width:100%;background:var(--accent)"></div></div>'
-      + '</div>';
-  }
-
+  // The practice strip (step 3): exit · progress · the exam clock · flag.
   document.getElementById('mockArea').innerHTML =
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
-    + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted);letter-spacing:0;text-transform: none">CISA Simulation &mdash; Blueprint Mix</span>'
-    + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted)">Q' + cur + ' of ' + tot + '</span>'
+    '<div class="pf mk-q">'
+    + '<h1 class="sr-only" id="mkH">' + name + '</h1>'
+    + '<div class="pf-strip">'
+    + '<button type="button" class="pf-btn pf-exit" id="mkExit" onclick="exitMock()" aria-label="Pause and leave the mock" title="Pause and leave the mock">' + ico('x', 24) + '</button>'
+    + '<div class="pf-mid" role="progressbar" aria-label="Mock progress" aria-valuemin="0" aria-valuemax="' + tot + '" aria-valuenow="' + done + '" aria-valuetext="' + done + ' of ' + tot + ' answered">'
+    + '<span class="pf-bar" aria-hidden="true"><span style="width:' + Math.round((done / tot) * 100) + '%"></span></span></div>'
+    + '<div class="pf-timer mk-clock" title="Time left">' + ico('mock', 18) + '<span class="sr-only">Time left: </span><span class="timer-digits ' + clsLeft + '" id="mTotalTD" role="timer">' + mockClock(sLeft) + '</span></div>'
+    + '<button type="button" class="pf-btn mk-flag' + (flagged ? ' on' : '') + '" id="mkFlag" aria-pressed="' + (flagged ? 'true' : 'false') + '" aria-label="Flag for review" title="Flag for review" onclick="toggleMockFlag()">' + ico('flag', 22) + '</button>'
     + '</div>'
-    + '<div style="height:6px;background:var(--border2);border-radius:3px;margin-bottom:20px;overflow:hidden">'
-    + '<div style="height:100%;width:' + progressPct + '%;background:var(--accent);border-radius:3px;transition:width 0.4s ease"></div></div>'
-    + timerHtml
     + '<div class="q-card">'
-    + '<div class="q-header">'
-    + '<span class="q-tag">' + '<span class="dom-dot" style="background:' + info.color + '"></span>' + 'D' + q.domain + ' &middot; ' + info.short + '</span>'
-    + '<span class="diff-tag ' + (/^[a-z-]+$/.test(q.difficulty || '') ? q.difficulty : 'application') + '">' + escapeHtml(q.bloom_level||'Application') + '</span>'
-    + '<div class="q-meta"><span style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted)">No explanations in mock mode</span></div>'
-    + '</div>'
+    + '<p class="q-line" id="mkMeta" tabindex="-1"><span class="dom-dot" style="background:' + info.color + '"></span>' + escapeHtml(info.short) + ' &middot; Question ' + cur + ' of ' + tot + '</p>'
     + '<div class="q-body">'
     + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + q.id + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + q.id + '" onclick="expandScenario(\'' + q.id + '\')">Read scenario ▾</button></div>' : '')
     + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(q.scenario_context) + ' ' : '') + escapeHtml(q.question) + '</p>'
     + '<div class="opts" id="mOpts">' + optsHtml + '</div>'
-    + '<div id="mFeedback"></div>'
-    + '</div></div>';
+    + '<div id="mFeedback" aria-live="polite"></div>'
+    + '</div></div>'
+    + '</div>';
 
   recordQuestionStart();
-  if (isFullExam) {
-    // The total exam clock is shared across all 150 questions; only start it once.
-    if (!S.mockTotalTimerInt) startMockTotalTimer();
-  } else {
-    startMockTimer(90, function(){ selectMockAnswer(null); });
+  // The exam clock is shared across every question; only start it once.
+  if (!S.mockTotalTimerInt) startMockTotalTimer();
+  // A new question starts at the top, with focus on its meta line.
+  if (S.activeTab === 'mock') {
+    try { window.scrollTo(0, 0); } catch (e) {}
+    var meta = document.getElementById('mkMeta');
+    if (meta) { try { meta.focus({ preventScroll: true }); } catch (e) {} }
+    // Started from the confirm sheet: closing it hands focus back to its
+    // opener (gone now), so the meta line takes it once that has run.
+    setTimeout(function () {
+      var m = document.getElementById('mkMeta'), area = document.getElementById('mockArea');
+      if (m && S.activeTab === 'mock' && area && !area.contains(document.activeElement)) { try { m.focus({ preventScroll: true }); } catch (e) {} }
+    }, 0);
   }
 }
 
@@ -12270,58 +12587,69 @@ function selectMockAnswer(chosen, _ignoredCorrect) {
     if (document.body.getAttribute('data-mock-results') === '1') return;
     S.mockCurrent++;
     if (S.mockCurrent >= S.mockQueue.length) showMockResults();
-    else showMockQuestion();
+    // Still on the question: the next one. Paused (the strip's X) in the
+    // meantime: the mock waits on the setup page, one question further on.
+    else if (document.getElementById('mOpts')) showMockQuestion();
+    else if (S.activeTab === 'mock' && document.body.getAttribute('data-mview') === 'setup') renderMockSetup();
   }, 1800);
 }
 
 function showMockResults() {
   document.body.setAttribute('data-mock-results', '1');
+  mockSetMview('results');
   clearAllTimers();
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
   var answers = S.mockAnswers;
+  var queue = S.mockQueue || [];
   // The exam is over (all answered, or the clock ended): it is no longer an
   // exam in progress, so the save below clears it and a reload can't resume it.
   S.mockCurrent = S.mockQueue.length;
+  // Timed out: some questions were never answered (the clock ended).
+  var timedOut = answers.some(function (a) { return a && a.timedOut; });
   // Parity: keep this mock in the history (once), and save it now.
   try { recordMockParity(answers, S.mockQueue); saveState(); } catch(e) {}
-  var tot = answers.length;
-  var cor = 0;
-  for (var i=0;i<answers.length;i++) { if(answers[i].ok) cor++; }
-  var pct = Math.round((cor/tot)*100);
+  // Every question counts: a blank is not correct (graded on original letters).
+  var tot = Math.max(queue.length, answers.length);
+  var cor = 0, blank = 0;
   var db = {};
-  Object.keys(DI).forEach(function(d){ db[d]={c:0,t:0}; });
-  answers.forEach(function(a){
-    if (!a.q) return;
-    var d = String(a.q.domain);
-    if (!db[d]) db[d]={c:0,t:0};
-    db[d].t++;
-    if (a.ok) db[d].c++;
-  });
+  for (var i = 0; i < tot; i++) {
+    var a = answers[i];
+    var q = queue[i] || (a && a.q) || null;
+    var d = q && q.domain !== undefined ? String(q.domain) : null;
+    if (d && !db[d]) db[d] = { c: 0, t: 0 };
+    if (d) db[d].t++;
+    if (!a || a.timedOut || !a.chosenOriginal) { blank++; continue; }
+    if (a.ok) { cor++; if (d) db[d].c++; }
+  }
+  var missed = tot - cor;
+  var kind = mockTypeOf(S.mockType);
+  var usedSec = Math.max(0, (S.mockTotalSecondsTotal || mockSecondsFor(kind)) - Math.max(0, Number(S.mockTotalSecondsLeft) || 0));
+  var flagged = queue.filter(function (q) { return q && S.mockFlags && S.mockFlags[q.id]; }).length;
 
-  var bdHtml = Object.keys(DI).map(function(d){
-    var s = db[d]||{c:0,t:0};
-    var dp = s.t>0?Math.round((s.c/s.t)*100):0;
-    var dc = DI[d].color;
-    var bc = 'var(--accent)';
-    var pctLabel = s.t>0?dp+'%':'--';
-    return '<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">'
-      + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--text2);width:110px;font-weight:500;display:inline-flex;align-items:center;gap:6px">' + '<span class="dom-dot" style="background:' + dc + '"></span>' + 'D' + d + ' ' + DI[d].short + '</span>'
-      + '<div style="flex:1;height:10px;background:var(--border2);border-radius:5px;overflow:hidden"><div style="height:100%;width:' + dp + '%;background:' + bc + ';border-radius:5px"></div></div>'
-      + '<span style="font-family:Fraunces,Georgia,serif;font-size:16px;font-weight:500;color:var(--text);width:44px;text-align:right">' + pctLabel + '</span>'
-      + '</div>';
-  }).join('');
+  var acts = missed > 0
+    ? '<button type="button" class="rs-btn primary" onclick="reviewMockMistakes()">Review your mistakes</button>'
+      + '<button type="button" class="rs-btn" onclick="startWeakSpotsDrill()">Practice your weak spots</button>'
+    : '<button type="button" class="rs-btn primary" onclick="switchTab(\'home\')">Back to Today' + ico('arrow-right', 18) + '</button>';
 
   document.getElementById('mockArea').innerHTML =
-    '<div class="mock-results-card">'
-    + '<div class="mock-results-header">'
-    + '<div class="mock-score">' + pct + '%</div>'
-    + '<div class="mock-score-label">' + cor + ' of ' + tot + ' correct</div>'
-    + '<p class="mock-estimate">An estimate from this mock, not a prediction of your exam result.</p>'
-    + '</div>'
-    + '<div style="padding:24px 28px">'
-    + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:16px">Domain Breakdown</div>'
-    + bdHtml
+    '<div class="rs rs-mock">'
+    + '<p class="rs-kicker" id="mrKick">' + MOCK_TYPES[kind].name + ' &middot; ' + tot + ' questions</p>'
+    + (timedOut ? '<p class="rs-timesup">Time&rsquo;s up. Your exam was submitted.</p><p class="rs-fact">Questions you did not answer count as not correct.</p>' : '')
+    + '<h1 class="rs-title" id="mrTitle" tabindex="-1">' + resultsHeadline(cor, tot) + '</h1>'
+    + resultsBodyHtml({ byDomain: db, correct: cor, total: tot, ms: usedSec * 1000 })
+    + (blank > 0 ? '<p class="rs-note">' + (blank === 1 ? '1 question was' : blank + ' questions were') + ' left blank: a blank counts as not correct.</p>' : '')
+    + '<p class="rs-note">An estimate from this mock, not a prediction of your exam result. Practice scores are not scaled exam scores.</p>'
+    + '<div class="rs-acts">' + acts + '</div>'
     + buildMockAdvisory(db)
+    + '<section class="rs-review" aria-labelledby="mrRevH">'
+    + '<h2 class="ph-h" id="mrRevH" tabindex="-1">Review answers</h2>'
+    + '<div class="ph-chips rs-filter" role="group" aria-label="Show">'
+    + '<button type="button" class="ph-chip active" data-f="all" aria-pressed="true" onclick="mockReviewFilter(\'all\')">All ' + tot + '</button>'
+    + '<button type="button" class="ph-chip" data-f="miss" aria-pressed="false" onclick="mockReviewFilter(\'miss\')">Mistakes ' + missed + '</button>'
+    + (flagged ? '<button type="button" class="ph-chip" data-f="flag" aria-pressed="false" onclick="mockReviewFilter(\'flag\')">Flagged ' + flagged + '</button>' : '')
+    + '</div>'
+    + '<div class="mr-list" id="mrList" data-filter="all">' + buildMockAnswerKey(answers, queue) + '</div>'
+    + '</section>'
     + '<div class="support-inline-card">'
     + '<div class="support-inline-card-text">'
     + '<div class="support-inline-card-title">Found this mock helpful?</div>'
@@ -12329,16 +12657,32 @@ function showMockResults() {
     + '</div>'
     + '<button class="act-btn" onclick="openSupport()" style="white-space:nowrap">' + ico('heart', 18) + ' Support KaiSip</button>'
     + '</div>'
-    + '<div style="margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
-    + '<button class="act-btn secondary" onclick="renderMockSetup()">Retake Mock</button>'
-    + '<button class="act-btn" onclick="startWeakSpotsDrill()">Train Weak Spots</button>'
-    + '<button class="act-btn primary" onclick="switchTab(\x27weakspots\x27)">View Weak Spots &rarr;</button>'
-    + '</div>'
-    + '<div style="margin-top:28px">'
-    + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px">Answer Key<span style=\x27flex:1;height:1px;background:var(--border2)\x27></span></div>'
-    + buildMockAnswerKey(answers)
-    + '</div>'
-    + '</div></div>';
+    + '</div>';
+  if (S.activeTab === 'mock') {
+    try { window.scrollTo(0, 0); } catch (e) {}
+    var h = document.getElementById('mrTitle');
+    if (h) { try { h.focus({ preventScroll: true }); } catch (e) {} }
+  }
+}
+
+// The review list: all, only the mistakes, or only the flagged questions.
+function mockReviewFilter(f) {
+  var list = document.getElementById('mrList');
+  if (!list) return;
+  list.setAttribute('data-filter', f);
+  document.querySelectorAll('.rs-filter .ph-chip').forEach(function (b) {
+    var on = b.getAttribute('data-f') === f;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+}
+// "Review your mistakes": the review shows only the misses, from its heading.
+function reviewMockMistakes() {
+  mockReviewFilter('miss');
+  var h = document.getElementById('mrRevH');
+  if (!h) return;
+  try { h.scrollIntoView({ block: 'start' }); } catch (e) {}
+  try { h.focus({ preventScroll: true }); } catch (e) {}
 }
 
 
@@ -12474,6 +12818,8 @@ function doResetProgress() {
   S.studyDays = [];
   S.mockHistory = [];
   S.mockId = null;
+  S.mockType = 'full';
+  S.mockFlags = {};
   // Reading progress too: kept in memory, the next save wrote it back.
   S.topicReviewed = {};
   S.topicViewed = {};
@@ -14267,36 +14613,44 @@ function submitFlag() {
 
 
 // â”€â”€ MOCK EXAM ANSWER KEY â”€â”€
-function buildMockAnswerKey(answers) {
+function buildMockAnswerKey(answers, queue) {
+  // Step 5: list rows on the paper (mobile Results "Review answers"): the
+  // status in words, the domain, a flag mark, the stem; a row opens to the
+  // options in the order the candidate saw them, with the explanation.
+  queue = Array.isArray(queue) ? queue : [];
+  var n = Math.max(answers.length, queue.length);
   var html = '';
-  for (var i = 0; i < answers.length; i++) {
-    var a = answers[i];
-    if (!a.q) continue;
-    var info = DI[String(a.q.domain)];
-    var isCorrect = a.ok;
-    var borderColor = isCorrect ? 'var(--correct-light)' : 'var(--wrong)';
-    var bgColor = isCorrect ? 'var(--correct-light)' : 'var(--wrong-light)';
-    var statusIcon = '<span class="rv-mark ' + (isCorrect ? 'ok' : 'no') + '" role="img" aria-label="' + (isCorrect ? 'Correct' : 'Incorrect') + '">' + ico(isCorrect ? 'check' : 'x', 16) + '</span>';
+  for (var i = 0; i < n; i++) {
+    var a = answers[i] || {};
+    var q = queue[i] || a.q;
+    if (!q || !q.options) continue;
+    var info = DI[String(q.domain)] || { short: '', color: 'var(--muted)' };
+    var answered = !!(a.chosen && !a.timedOut);
+    var isCorrect = answered && a.ok === true;
+    var status = !answered ? 'Not answered' : isCorrect ? 'Correct' : 'Missed';
+    var flag = !!(S.mockFlags && S.mockFlags[q.id]);
     // a.chosen is the DISPLAY letter the candidate clicked; a.correct is the
     // ORIGINAL correct letter from the JSON. Translate the original correct
     // letter to its display position via the snapshotted shuffle so the
     // review pane shows the same A/B/C/D the candidate saw during the exam.
     var shuffle = a.shuffle || DISPLAY_LETTERS;
-    var userAns = a.chosen || 'Timed out';
-    var correctAns = originalToDisplay(a.correct, shuffle);
+    var correctAns = originalToDisplay(a.correct || q.correct, shuffle);
+    var stem = String(q.question || '');
+    var short = stem.length > 110 ? stem.slice(0, 110) + '…' : stem;
+    var metaBits = ['<span class="dom-dot" style="background:' + info.color + '" aria-hidden="true"></span>' + escapeHtml(info.short)];
+    if (flag) metaBits.push('<span class="mr-flag">' + ico('flag', 14) + 'Flagged</span>');
+    if (answered && !isCorrect) metaBits.push('You: ' + escapeHtml(a.chosen) + ' &middot; Best: ' + escapeHtml(correctAns));
 
-    html += '<div style="background:' + bgColor + ';border:2px solid ' + borderColor + ';border-radius:12px;padding:14px 16px;margin-bottom:8px">'
-      + '<div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="toggleMockDetail(' + i + ')">'
-      + statusIcon
-      + '<span class="dom-dot" style="background:' + info.color + '"></span>' + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:14px;font-weight:600;color:var(--text)">Q' + (i + 1) + ' &middot; D' + a.q.domain + '</span>'
-      + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted)">' + escapeHtml(a.q.subtopic || '') + '</span>'
-      + '<span style="margin-left:auto;display:flex;align-items:center;gap:8px">'
-      + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:13px;font-weight:500">' + (isCorrect ? '' : 'You: <strong style=\"color:var(--wrong)\">' + userAns + '</strong> Correct: <strong style=\"color:var(--correct)\">' + correctAns + '</strong>') + '</span>'
-      + '<span style="color:var(--muted);transition:transform 0.2s;display:inline-flex" id="mockChevron' + i + '" aria-hidden="true">' + ico('chevron-down', 18) + '</span>'
-      + '</span>'
-      + '</div>'
-      + '<div id="mockDetail' + i + '" style="display:none;margin-top:12px">'
-      + '<div style="font-family:Fraunces,Georgia,serif;font-size:13px;font-weight:500;line-height:1.7;margin-bottom:10px;color:var(--text)">' + escapeHtml(a.q.question) + '</div>';
+    html += '<div class="mr-item" data-ok="' + (isCorrect ? '1' : '0') + '" data-flag="' + (flag ? '1' : '0') + '">'
+      + '<button type="button" class="mr-row" aria-expanded="false" aria-controls="mockDetail' + i + '" onclick="toggleMockDetail(' + i + ')">'
+      + '<span class="mr-top"><span class="mr-n">Question ' + (i + 1) + '</span>'
+      + '<span class="mr-status ' + (!answered ? 'skip' : isCorrect ? 'ok' : 'no') + '">' + status + '</span>'
+      + '<span class="mr-chev" id="mockChevron' + i + '" aria-hidden="true">' + ico('chevron-down', 18) + '</span></span>'
+      + '<span class="mr-meta">' + metaBits.join(' &middot; ') + '</span>'
+      + '<span class="mr-stem">' + escapeHtml(short) + '</span>'
+      + '</button>'
+      + '<div class="mr-detail" id="mockDetail' + i + '" hidden>'
+      + '<p class="mr-full">' + escapeHtml(stem) + '</p>';
 
     // Show all 4 options in the SAME display order the candidate saw,
     // mapping each display position back to its original letter for
@@ -14305,29 +14659,24 @@ function buildMockAnswerKey(answers) {
     for (var j = 0; j < DISPLAY_LETTERS.length; j++) {
       var displayL = DISPLAY_LETTERS[j];
       var origL = shuffle[j];
-      var optText = a.q.options[origL] || '';
+      var optText = q.options[origL] || '';
       var isThisCorrect = displayL === correctAns;
-      var isThisChosen = displayL === a.chosen;
-      var optStyle = isThisCorrect
-        ? 'background:var(--correct-light);border:2px solid var(--correct-light);'
-        : isThisChosen
-          ? 'background:var(--wrong-light);border:2px solid var(--wrong);'
-          : 'background:var(--surface2);border:2px solid var(--border);';
-      var optIcon = isThisCorrect ? '<span class="rv-mark ok" role="img" aria-label="Correct answer">' + ico('check', 14) + '</span> ' : isThisChosen && !isThisCorrect ? '<span class="rv-mark no" role="img" aria-label="Your answer">' + ico('x', 14) + '</span> ' : '';
-      html += '<div style="' + optStyle + 'border-radius:10px;padding:10px 14px;margin-bottom:6px;display:flex;align-items:flex-start;gap:10px">'
-        + '<span style="font-family:Fraunces,Georgia,serif;font-size:13px;font-weight:500;flex-shrink:0;margin-top:1px">' + optIcon + displayL + '</span>'
-        + '<span style="font-size:13px;line-height:1.6;color:var(--text2)">' + escapeHtml(optText) + '</span>'
+      var isThisChosen = answered && displayL === a.chosen;
+      var tag = isThisCorrect ? (isThisChosen ? 'Your answer &middot; best answer' : 'Best answer') : isThisChosen ? 'Your answer' : '';
+      html += '<div class="mr-opt' + (isThisCorrect ? ' best' : isThisChosen ? ' yours' : '') + '">'
+        + '<span class="mr-l">' + displayL + '</span>'
+        + '<span class="mr-o"><span class="mr-ot">' + escapeHtml(optText) + '</span>'
+        + (tag ? '<span class="mr-tag">' + tag + '</span>' : '') + '</span>'
         + '</div>';
     }
 
     // Explanation
-    if (a.q.correct_explanation) {
-      html += '<div style="font-size:13px;line-height:1.7;color:var(--text2);font-weight:500;padding:12px 14px;background:var(--surface);border-radius:10px;margin-top:8px">'
-        + '<strong style="color:var(--correct)">Why ' + escapeHtml(correctAns) + ' is correct:</strong> ' + escapeHtml(mapLettersInText(a.q.correct_explanation, shuffle))
-        + '</div>';
+    if (q.correct_explanation) {
+      html += '<h4 class="mr-why">Why ' + escapeHtml(correctAns) + '</h4>'
+        + '<p class="mr-exp">' + escapeHtml(mapLettersInText(q.correct_explanation, shuffle)) + '</p>';
     }
-    if (a.q.framework_ref) {
-      html += '<div style="margin-top:6px"><span style="display:inline-flex;align-items:center;gap:5px;background:var(--d2-light);border:1.5px solid var(--d2-border);border-radius:100px;padding:3px 10px;font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--d2)">' + escapeHtml(a.q.framework_ref) + '</span></div>';
+    if (q.framework_ref) {
+      html += '<p class="mr-ref">' + escapeHtml(q.framework_ref) + '</p>';
     }
 
     html += '</div></div>';
@@ -14337,15 +14686,11 @@ function buildMockAnswerKey(answers) {
 
 function toggleMockDetail(i) {
   var detail = document.getElementById('mockDetail' + i);
-  var chevron = document.getElementById('mockChevron' + i);
   if (!detail) return;
-  if (detail.style.display === 'none') {
-    detail.style.display = 'block';
-    if (chevron) chevron.style.transform = 'rotate(180deg)';
-  } else {
-    detail.style.display = 'none';
-    if (chevron) chevron.style.transform = 'rotate(0deg)';
-  }
+  var row = detail.previousElementSibling;
+  var open = detail.hidden;
+  detail.hidden = !open;
+  if (row) row.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
 
 // ── TRIPLET COMPANIONS DATA ──
