@@ -3501,14 +3501,27 @@
               "definition": "Auditing AI systems means assessing the risks of an organization's own artificial intelligence (AI) models across their life cycle, from training data through production use to retirement.",
               "why_it_matters": "AI models can drift, carry bias from their training data and make decisions nobody can explain. Standard change and access tests miss these risks.",
               "how_it_works": [
-                "Give each life-cycle stage its own procedures, then combine the results into one conclusion.",
-                "Check that training data is representative, free of harmful bias and labeled through a documented, reliable process.",
-                "Confirm the model is reproducible and can be explained at a depth that fits the risk of its decisions.",
-                "In production, look for drift monitoring, tracking of human overrides and, for high-stakes models, an independent challenger model.",
-                "For generative AI that uses tools or data, check controls on inputs, outputs and which tools it may call, to resist prompt injection.",
+                "Training data must be representative, free of harmful bias and labeled through a documented, reliable process.",
+                "The model must be reproducible and explainable at a depth that fits the risk of its decisions.",
+                "In production, drift monitoring and tracking of human overrides catch decay; high-stakes models also need an independent challenger model.",
+                "Generative AI that uses tools or data needs controls on inputs, outputs and which tools it may call, to resist prompt injection.",
                 "At retirement, preserve the model version, data lineage (where data came from) and decision logs so past decisions can be explained."
               ],
-              "example": "A bank's AI model approves small-business loans. After a regional downturn, loan officers there override it twice as often, yet the launch validation report still shows strong accuracy. The IS auditor compares recent applications with the training data, finds the input mix has shifted, and recommends drift monitoring and retraining triggers; the credit risk officer decides.",
+              "example": "A bank's AI model approves small-business loans. After a regional downturn, loan officers there override it twice as often, yet the launch validation report still shows strong accuracy. The IS auditor compares recent applications with the training data, finds the input mix has shifted, and recommends drift monitoring and retraining triggers.",
+              "audit_focus": {
+                "review": [
+                  "Plan procedures for each life-cycle stage, then combine them into one conclusion",
+                  "Run a challenger model or human sample against production outputs to detect drift",
+                  "Reperform a sample of decisions to test reproducibility"
+                ],
+                "evidence": [
+                  "Results of tests the IS auditor ran on company data",
+                  "Source and labeling records for each training set",
+                  "Override counts and accuracy trends since launch"
+                ],
+                "recommend": "Have the model owner add drift monitoring, independent challenge for high-stakes models and record retention at retirement.",
+                "decides": "The business risk owner decides whether the model stays in use"
+              },
               "isaca_rule": "Audit an AI model across its whole life, starting with its training data. Expect reproducibility and explainability, independent challenge for high-stakes models, and preserved records. Frozen test results and vendor reports are inputs, not the full answer.",
               "exam_traps": [
                 {
@@ -12524,6 +12537,20 @@
                 "caption": "The log pipeline: collect from every layer, store where they cannot be altered, then monitor and analyze. Skipping the last two steps means the logs detect nothing."
               },
               "example": "A card issuer uses a software as a service (SaaS) customer-service platform whose vendor keeps activity logs for seven days. The issuer's rules require one year for records of agent access to card data. The IS auditor recommends exporting those logs daily to the issuer's own log store and adding retention terms to the contract. The vendor manager arranges both.",
+              "audit_focus": {
+                "review": [
+                  "Compare the system inventory with log sources reaching the central log store",
+                  "Sample privileged commands and trace each to a named individual",
+                  "Match how long each kind of log is actually kept to what law requires"
+                ],
+                "evidence": [
+                  "Log source coverage report showing silent systems and segments",
+                  "Time server monitoring alerts and clock drift readings across systems",
+                  "Sample log entries showing card and personal data masked"
+                ],
+                "recommend": "Have the IT operations manager bring every system into logging, set retention per log type and mask sensitive fields.",
+                "decides": "The data owner, with legal and compliance advice, approves retention periods"
+              },
               "isaca_rule": "Coverage first, then retention, then protection. Every layer logs, privileged actions tie to a named person, clocks agree, and each log type is kept as long as law and business require. Capture what is needed and mask what is sensitive.",
               "exam_traps": [
                 {
@@ -14002,7 +14029,21 @@
                 "Backups held by a vendor or cloud provider are encrypted with keys the organization controls.",
                 "Data residency rules are confirmed before choosing a cloud backup region; encryption does not change where data legally resides."
               ],
-              "example": "A mining company sends backup tapes to a vault 400 miles away to avoid shared hazards, but retrieval takes two days against a 12-hour RTO. The IS auditor reports the conflict and recommends a second copy closer by, still outside the hazard zone, or network vaulting. The chief information officer prices the options, and the business owner decides.",
+              "example": "A mining company sends backup tapes to a vault 400 miles away to avoid shared hazards, but retrieval takes two days against a 12-hour RTO. The IS auditor reports the conflict and recommends a second copy closer by, still outside the hazard zone, or network vaulting. The chief information officer prices the options.",
+              "audit_focus": {
+                "review": [
+                  "Pick tapes from the catalog and find them in the vault, and vice versa",
+                  "Trace a sample of media movements through signed handover receipts",
+                  "Compare the vault's distance, hazards and retrieval time with the RTO"
+                ],
+                "evidence": [
+                  "Retrieval test records showing time from request to media on site",
+                  "Audit reports for every facility holding the media",
+                  "Cloud backup settings showing customer-managed keys and the storage region"
+                ],
+                "recommend": "Have IT operations reconcile the vault regularly, keep a catalog offsite and control keys for vendor-held backups.",
+                "decides": "The business owner approves the vault location against recovery and residency needs"
+              },
               "isaca_rule": "Offsite storage is a control only when distance, custody, inventory and security equal to the primary site are all proven. When a third party holds the data, the organization still controls the encryption keys and the legal location.",
               "exam_traps": [
                 {
@@ -14557,6 +14598,20 @@
                 }
               ],
               "example": "A manufacturer has run from its hot site for five weeks after a warehouse fire, and the contract allows six. No one owns the move back to the rebuilt site. The IS auditor recommends assigning the relocation team now, with a tested cutover plan and data synchronization steps. The chief operating officer approves the return date.",
+              "audit_focus": {
+                "review": [
+                  "Test each invocation trigger: could two people read it and reach the same decision?",
+                  "Confirm a named authority and alternate can invoke without group agreement",
+                  "Observe an alternate, not the usual expert, run the procedures in a test"
+                ],
+                "evidence": [
+                  "Test reports timing invocation and recovery against the RTO",
+                  "Recovery schedule mapping dependencies, workstreams and their named leads",
+                  "Delegation records naming the invocation authority and alternates"
+                ],
+                "recommend": "Have the business continuity manager set measurable triggers, name delegates and give each parallel workstream its own lead.",
+                "decides": "The plan's named executive, or the delegate, declares the disaster"
+              },
               "isaca_rule": "Invoke fast, on measurable criteria, under authority named in advance. Then restore by business priority, adjusted for technical dependencies. The IS auditor evaluates triggers, delegation, procedure detail and team structure, because a weakness in any one can delay recovery beyond the RTO.",
               "exam_traps": [
                 {
@@ -15553,6 +15608,20 @@
                 ]
               },
               "example": "An online university moves 40 applications behind one cloud identity provider. The IS auditor finds the provider's administrator accounts use passwords only, and nobody has planned for online exams if the provider fails. The IS auditor recommends phishing-resistant multi-factor authentication for those administrators and a tested continuity plan for sign-in, agreed with the provost.",
+              "audit_focus": {
+                "review": [
+                  "Disable a test user at the IdP and time how long application access lasts",
+                  "Inspect application settings for signature checks on SAML assertions",
+                  "List applications that still accept a local password beside SSO"
+                ],
+                "evidence": [
+                  "IdP configuration showing MFA for every user and administrator",
+                  "App consent logs showing who approved each permission grant",
+                  "Session and token lifetime settings for each connected application"
+                ],
+                "recommend": "Have the identity team require MFA at the IdP, retire local logins and revoke sessions when users leave.",
+                "decides": "Application owners accept any risk from apps that cannot meet the standard"
+              },
               "isaca_rule": "SSO moves the front door to one place, so that door needs the strongest authentication and monitoring. Disabling an identity is not the same as ending access: sessions and tokens must be revoked too.",
               "exam_traps": [
                 {
@@ -17985,6 +18054,20 @@
                 ]
               },
               "example": "A shipping line's phishing simulations use generic prize-draw lures, while real attacks against it impersonate port authorities and freight invoices. Click rates are low, and the awareness lead reports success to senior management. The IS auditor recommends lures modeled on the attacks the company actually receives, each rated for difficulty, so results reflect real risk.",
+              "audit_focus": {
+                "review": [
+                  "Compare simulation lures with the real phishing the company received",
+                  "Break click and report rates down by department and role",
+                  "Compare awareness metrics with incidents caused by staff error over the same period"
+                ],
+                "evidence": [
+                  "Incident records attributing causes to staff actions",
+                  "Campaign results set beside the rated difficulty of each test",
+                  "Report-rate trends and records of coaching after clicks"
+                ],
+                "recommend": "Have the awareness lead use realistic, difficulty-rated lures and reward reporting instead of punishing clicks.",
+                "decides": "Senior management decides the awareness budget based on outcome evidence"
+              },
               "isaca_rule": "Effectiveness is shown by changed behavior and fewer incidents, not by completion, satisfaction or quiz scores. Metrics count only when tests stay comparable, and reporting must be rewarded, never punished. Diagnose a stalled program before changing vendors or budgets.",
               "exam_traps": [
                 {
@@ -18389,7 +18472,7 @@
               "definition": "Credential attacks steal, guess or reuse sign-in secrets, and endpoint attacks abuse a compromised device, so attackers act as real users and spread further.",
               "why_it_matters": "Activity under a valid account looks normal, so it slips past many defenses. One stolen administrator credential can open the whole network.",
               "how_it_works": [
-                "Attackers gain a first account through phishing, leaked passwords or guessing, then hunt for more powerful credentials.",
+                "Attackers gain a first account through phishing, leaked passwords or guessing, then hunt for admin credentials.",
                 "Privilege escalation raises their rights on one system; lateral movement uses stolen credentials to hop between systems.",
                 "Administrators who sign in to ordinary workstations leave reusable credential material behind for an attacker on that machine.",
                 "Fileless attacks live off the land, running through built-in tools such as the PowerShell scripting tool; restricting those tools to people who need them removes the path.",
@@ -18433,6 +18516,20 @@
                 ]
               },
               "example": "An online pharmacy sees thousands of successful customer logins from unusual locations, using correct passwords leaked from other websites. The product owner proposes stricter password complexity rules. The IS auditor explains that complexity cannot help when the password is already correct, and recommends MFA for customers plus screening new passwords against known breached passwords.",
+              "audit_focus": {
+                "review": [
+                  "Compare who can run scripting tools with who needs them for their job",
+                  "Review sign-in logs for domain administrators using ordinary workstations",
+                  "Test the lockout rule for failures counted across many accounts, not just one"
+                ],
+                "evidence": [
+                  "MFA coverage report for every internet-facing login, by method",
+                  "Access lists showing which support staff can change customer account emails",
+                  "Session revocation records from past account compromises"
+                ],
+                "recommend": "Have the identity team require phishing-resistant MFA, limit admin sign-ins to secure workstations and restrict scripting tools.",
+                "decides": "System owners decide who keeps powerful rights and accept residual risk"
+              },
               "isaca_rule": "Match the control to how the attack works, not to the word password. Limit where powerful credentials are exposed, require MFA, and end active sessions when an account is compromised. Least privilege shrinks what any one stolen account can do.",
               "exam_traps": [
                 {
@@ -18477,7 +18574,6 @@
               "why_it_matters": "These attacks defeat routine defenses and target high-value data; a zero-day has no patch, so exposure must be cut in other ways.",
               "how_it_works": [
                 "Attacks follow a life cycle: reconnaissance, initial access, persistence, privilege escalation, lateral movement, command and control, then theft or damage.",
-                "MITRE ATT&CK is a public catalog of real attacker techniques; mapping detection rules to it shows which behaviors go unseen.",
                 "Against a stealthy attacker with unknown reach, the team quietly searches for indicators of compromise (IOCs), then removes every foothold in one coordinated step.",
                 "For a zero-day with public exploit code, apply a compensating control, such as a firewall rule, at once, or remove internet exposure.",
                 "Supply chain attacks hide in trusted updates: roll back the bad component first, then rebuild hosts from clean images and rotate secrets."
@@ -18519,6 +18615,20 @@
                 ]
               },
               "example": "An aerospace supplier's analysts find a stealthy intruder, present for months, who since this morning has been sending engineering drawings to an outside server. The incident lead wants to keep watching quietly to map every foothold. The IS auditor points out that sensitive data is leaving now, so blocking the outbound channel comes first, with scoping continuing in parallel.",
+              "audit_focus": {
+                "review": [
+                  "Map detection rules to MITRE ATT&CK, a public catalog of attacker techniques",
+                  "Inspect the zero-day procedure for a compensating control or exposure cut within hours",
+                  "Trace software updates to a verified source and a known-good rollback version"
+                ],
+                "evidence": [
+                  "Detection coverage map against attacker techniques, with gaps owned",
+                  "Records of emergency firewall rules applied for past zero-days, with times",
+                  "Software inventory listing component sources and approved versions"
+                ],
+                "recommend": "Have the security operations manager close detection gaps and keep tested playbooks for zero-days and bad updates.",
+                "decides": "Senior management decides when to take visible action against a hidden intruder"
+              },
               "isaca_rule": "Act on real risk, not labels. With no patch, cut exposure now through a compensating control. Against a hidden, patient attacker, map the whole intrusion before visible action, unless sensitive data is actively leaving.",
               "exam_traps": [
                 {
@@ -19499,6 +19609,20 @@
                 ]
               },
               "example": "A payroll software provider finds a faulty report emailed one client's salary file to another client. Its account manager plans to mention it at next month's review. The IS auditor explains that the provider, as processor, must tell the affected client without undue delay so the client, as controller, can meet its regulator deadline, and recommends notifying now.",
+              "audit_focus": {
+                "review": [
+                  "Sample affected-person locations and confirm the duty register covers each country",
+                  "Trace a past incident from discovery to each notice and its deadline",
+                  "Inspect vendor contracts for breach-notice times and cooperation duties"
+                ],
+                "evidence": [
+                  "Incident timeline showing discovery time and when each notice was sent",
+                  "Documented decisions on whether notice was needed, such as for encrypted devices",
+                  "Log analysis the organization ran itself after each vendor incident"
+                ],
+                "recommend": "Have the legal team keep a notification register with every deadline and test it in incident exercises.",
+                "decides": "Senior management, advised by counsel, approves each notice and its timing"
+              },
               "isaca_rule": "Outsourcing processing does not outsource accountability. The organization establishes exposure with its own evidence, maps every deadline, and notifies on confirmed facts rather than waiting for certainty. Insurance and vendor promises never pause containment or its own legal duties.",
               "exam_traps": [
                 {

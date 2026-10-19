@@ -15,7 +15,7 @@ still without the field.
 ## Scope
 These are the 60 notes from the October 2026 curriculum coverage review whose
 `how_it_works` has no audit step, so the process lens rests on the example and
-the rule alone. Twenty-four are done (pilot, N4 and N5); 36 remain.
+the rule alone. Thirty-three are done (pilot and N4 to N6); 27 remain.
 
 ## Priority order
 1. **Exam importance:** subtopics rated high-yield in the curriculum checklist come first.
@@ -53,16 +53,16 @@ line appears once on the card.
 | 21 | 5B2.3 | Web Application Attacks | high | 3 | N5 (done) |
 | 22 | 3A4.2 | Application Controls: Input, Processing, Output | high | 2 | Pilot (done) |
 | 23 | 5A1.5 | Privacy Principles and Acceptable Use | medium | 12 | N5 (done) |
-| 24 | 5B5.3 | Breach Notification, Legal Duties and Third Parties | medium | 11 | N6 |
-| 25 | 4B5.3 | Invocation and Recovery Procedures | medium | 10 | N6 |
-| 26 | 5B2.5* | Credential and Endpoint Attacks | medium | 9 | N6 |
-| 27 | 1B4.6 | Auditing AI Systems | medium | 9 | N6 |
-| 28 | 5B2.6 | Advanced Persistent Threats and Zero-Day Exploits | medium | 8 | N6 |
-| 29 | 4B3.3 | Offsite Storage and Custody | medium | 7 | N6 |
-| 30 | 4A9.1 | Log Coverage and Retention | medium | 6 | N6 |
-| 31 | 5B1.2 | Phishing Simulations and Awareness Metrics | medium | 6 | N6 |
+| 24 | 5B5.3 | Breach Notification, Legal Duties and Third Parties | medium | 11 | N6 (done) |
+| 25 | 4B5.3 | Invocation and Recovery Procedures | medium | 10 | N6 (done) |
+| 26 | 5B2.5 | Credential and Endpoint Attacks | medium | 9 | N6 (done; trimmed) |
+| 27 | 1B4.6 | Auditing AI Systems | medium | 9 | N6 (done) |
+| 28 | 5B2.6 | Advanced Persistent Threats and Zero-Day Exploits | medium | 8 | N6 (done) |
+| 29 | 4B3.3 | Offsite Storage and Custody | medium | 7 | N6 (done) |
+| 30 | 4A9.1 | Log Coverage and Retention | medium | 6 | N6 (done) |
+| 31 | 5B1.2 | Phishing Simulations and Awareness Metrics | medium | 6 | N6 (done) |
 | 32 | 2B2.1 | Sourcing Decisions | medium | 6 | Pilot (done) |
-| 33 | 5A3.2 | Single Sign-On and Federation | medium | 5 | N6 |
+| 33 | 5A3.2 | Single Sign-On and Federation | medium | 5 | N6 (done) |
 | 34 | 3B2.3 | Deployment Strategies and Rollback | medium | 5 | N7 |
 | 35 | 4A11.3 | Data Integrity and Simultaneous Updates | medium | 4 | N7 |
 | 36 | 4A6.1 | Availability and Its Measures | medium | 4 | N7 |
