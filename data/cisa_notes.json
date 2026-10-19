@@ -11532,7 +11532,7 @@
                   }
                 ]
               },
-              "example": "A university's nightly student-fee file to its finance system has a rejected-records queue of 1,400 items, some eight months old. Control totals compare only the records that posted, so the gap never shows. The IS auditor recommends reconciling the sender's totals to posted plus rejected records, and naming an owner who clears the queue within set days. The bursar agrees.",
+              "example": "A university's nightly student-fee file to its finance system has a rejected-records queue of 1,400 items, some eight months old. Control totals compare only the records that posted, so the gap never shows. The IS auditor recommends reconciling the sender's totals to posted plus rejected records, and naming an owner who clears the queue within set days.",
               "audit_focus": {
                 "review": [
                   "Reperform the reconciliation for a sample of runs, using sender and receiver totals",
@@ -11540,9 +11540,9 @@
                   "Trace recent patches to connected systems to interface regression test results"
                 ],
                 "evidence": [
-                  "Signed reconciliations of sent, posted and rejected records, with differences explained",
                   "Receiver error logs listing duplicates blocked before posting",
-                  "Suspense queue aging report with a named owner"
+                  "Suspense queue aging report with a named owner",
+                  "Signed reconciliations of sent, posted and rejected records, with differences explained"
                 ],
                 "recommend": "Have the interface owner reconcile every run at the receiver, reject duplicates by message identifier and test interfaces after patches.",
                 "decides": "The business process owner decides how to treat unresolved differences"
@@ -14597,7 +14597,7 @@
                   "meaning": "Tracks progress across all teams and reports to management and stakeholders."
                 }
               ],
-              "example": "A manufacturer has run from its hot site for five weeks after a warehouse fire, and the contract allows six. No one owns the move back to the rebuilt site. The IS auditor recommends assigning the relocation team now, with a tested cutover plan and data synchronization steps. The chief operating officer approves the return date.",
+              "example": "A manufacturer has run from its hot site for five weeks after a warehouse fire, and the contract allows six. No one owns the move back to the rebuilt site. The IS auditor recommends assigning the relocation team now, with a tested cutover plan and data synchronization steps.",
               "audit_focus": {
                 "review": [
                   "Test each invocation trigger: could two people read it and reach the same decision?",
@@ -15118,9 +15118,9 @@
                   "Match the access list to signed AUP acknowledgments, including non-employees"
                 ],
                 "evidence": [
-                  "Processing records listing purpose, lawful basis and retention per data set",
                   "Consent logs showing a clear opt-in, not pre-ticked boxes",
-                  "Request log with identity checks and response dates"
+                  "Request log with identity checks and response dates",
+                  "Processing records listing purpose, lawful basis and retention per data set"
                 ],
                 "recommend": "Have the privacy officer require a privacy impact assessment before any new use, transfer or monitoring.",
                 "decides": "The data owner, with legal advice, decides whether a new use proceeds"
@@ -15607,7 +15607,7 @@
                   }
                 ]
               },
-              "example": "An online university moves 40 applications behind one cloud identity provider. The IS auditor finds the provider's administrator accounts use passwords only, and nobody has planned for online exams if the provider fails. The IS auditor recommends phishing-resistant multi-factor authentication for those administrators and a tested continuity plan for sign-in, agreed with the provost.",
+              "example": "An online university moves 40 applications behind one cloud identity provider. The IS auditor finds the provider's administrator accounts use passwords only, and nobody has planned for online exams if the provider fails. The IS auditor recommends phishing-resistant multi-factor authentication for those administrators and a tested continuity plan for sign-in.",
               "audit_focus": {
                 "review": [
                   "Disable a test user at the IdP and time how long application access lasts",
@@ -16639,7 +16639,7 @@
                 "svg": "<svg viewBox='0 0 470 156' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Symmetric encryption: the same secret key both encrypts and decrypts'><rect x='6' y='84' width='78' height='42' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='45' y='109' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Plaintext</text><rect x='102' y='84' width='72' height='42' rx='4' fill='var(--accent-fill)'/><text x='138' y='109' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Encrypt</text><rect x='192' y='84' width='82' height='42' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='233' y='109' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Ciphertext</text><rect x='292' y='84' width='72' height='42' rx='4' fill='var(--accent-fill)'/><text x='328' y='109' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Decrypt</text><rect x='382' y='84' width='80' height='42' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='422' y='109' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Plaintext</text><line x1='86' y1='105' x2='93' y2='105' stroke='var(--text2)' stroke-width='1.5'/><path d='M93,101 L100,105 L93,109 Z' fill='var(--text2)'/><line x1='176' y1='105' x2='183' y2='105' stroke='var(--text2)' stroke-width='1.5'/><path d='M183,101 L190,105 L183,109 Z' fill='var(--text2)'/><line x1='276' y1='105' x2='283' y2='105' stroke='var(--text2)' stroke-width='1.5'/><path d='M283,101 L290,105 L283,109 Z' fill='var(--text2)'/><line x1='366' y1='105' x2='373' y2='105' stroke='var(--text2)' stroke-width='1.5'/><path d='M373,101 L380,105 L373,109 Z' fill='var(--text2)'/><g fill='var(--accent-fill)'><circle cx='127' cy='34' r='5'/><rect x='131' y='32.5' width='15' height='3' rx='1'/><rect x='140' y='35' width='2.5' height='4.5' rx='0.5'/><rect x='144' y='35' width='2.5' height='4.5' rx='0.5'/></g><g fill='var(--accent-fill)'><circle cx='317' cy='34' r='5'/><rect x='321' y='32.5' width='15' height='3' rx='1'/><rect x='330' y='35' width='2.5' height='4.5' rx='0.5'/><rect x='334' y='35' width='2.5' height='4.5' rx='0.5'/></g><line x1='138' y1='42' x2='138' y2='84' stroke='var(--accent-fill)' stroke-width='1' stroke-dasharray='3 3'/><line x1='328' y1='42' x2='328' y2='84' stroke='var(--accent-fill)' stroke-width='1' stroke-dasharray='3 3'/><line x1='148' y1='34' x2='318' y2='34' stroke='var(--accent-fill)' stroke-width='1' stroke-dasharray='4 3'/><text x='235' y='20' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>One shared secret key — identical on both sides</text></svg>",
                 "caption": "Symmetric encryption. The same secret key locks and unlocks the data, so both sides must already share it securely."
               },
-              "example": "A hospital's legacy laboratory system still encrypts result files with Triple DES, and the vendor says the files are safe because nobody has complained. The IS auditor notes the cipher is retired and the key sits in the same folder as the files. The IS auditor recommends AES-256 in an authenticated mode on a dated plan approved by the lab director, with the key held in a separate key store.",
+              "example": "A hospital's legacy laboratory system still encrypts result files with Triple DES, and the vendor says the files are safe because nobody has complained. The IS auditor notes the cipher is retired and the key sits in the same folder as the files. The IS auditor recommends AES-256 in an authenticated mode on a dated plan, with the key held in a separate key store.",
               "audit_focus": {
                 "review": [
                   "Inspect encryption settings for the cipher and mode, flagging DES, Triple DES or ECB",
@@ -18236,9 +18236,9 @@
                   "Inspect the domain's DMARC record to confirm a reject policy is published"
                 ],
                 "evidence": [
-                  "Callback records showing who verified each change and how",
                   "Payment release logs showing a second approver for changed accounts",
-                  "Email gateway reports of messages rejected under the DMARC policy"
+                  "Email gateway reports of messages rejected under the DMARC policy",
+                  "Callback records showing who verified each change and how"
                 ],
                 "recommend": "Have the finance manager split bank-detail changes from payment release and require callbacks for every change.",
                 "decides": "Senior management sets payment approval limits and accepts residual fraud risk"
@@ -18328,8 +18328,8 @@
               "audit_focus": {
                 "review": [
                   "Inspect sample code for queries built by joining user input into SQL text",
-                  "Try changing a record identifier in a test account to reach another user's data",
-                  "Compare the API inventory with gateway traffic to find unlisted APIs"
+                  "Use a test account to request another user's record by changing its identifier",
+                  "Compare the application programming interface (API) inventory with gateway traffic to find unlisted ones"
                 ],
                 "evidence": [
                   "Penetration test or code scan results, ranked by data exposure",
@@ -18472,7 +18472,7 @@
               "definition": "Credential attacks steal, guess or reuse sign-in secrets, and endpoint attacks abuse a compromised device, so attackers act as real users and spread further.",
               "why_it_matters": "Activity under a valid account looks normal, so it slips past many defenses. One stolen administrator credential can open the whole network.",
               "how_it_works": [
-                "Attackers gain a first account through phishing, leaked passwords or guessing, then hunt for admin credentials.",
+                "Attackers gain a first account through phishing, leaked passwords or guessing, then hunt for administrator credentials.",
                 "Privilege escalation raises their rights on one system; lateral movement uses stolen credentials to hop between systems.",
                 "Administrators who sign in to ordinary workstations leave reusable credential material behind for an attacker on that machine.",
                 "Fileless attacks live off the land, running through built-in tools such as the PowerShell scripting tool; restricting those tools to people who need them removes the path.",
@@ -18527,7 +18527,7 @@
                   "Access lists showing which support staff can change customer account emails",
                   "Session revocation records from past account compromises"
                 ],
-                "recommend": "Have the identity team require phishing-resistant MFA, limit admin sign-ins to secure workstations and restrict scripting tools.",
+                "recommend": "Have the identity team require phishing-resistant MFA, limit administrator sign-ins to secure workstations and restrict scripting tools.",
                 "decides": "System owners decide who keeps powerful rights and accept residual risk"
               },
               "isaca_rule": "Match the control to how the attack works, not to the word password. Limit where powerful credentials are exposed, require MFA, and end active sessions when an account is compromised. Least privilege shrinks what any one stolen account can do.",
@@ -18993,7 +18993,7 @@
                   "meaning": "Testers and the target's staff both know the details and work together, often on one system."
                 }
               ],
-              "example": "A hospital wants to know whether its new monitoring service would notice a real intrusion. The information security manager proposes a white-box test with the operations team warned in advance. The IS auditor notes that warned defenders cannot show whether detection works and recommends a double-blind test, authorized in writing by senior management.",
+              "example": "A hospital wants to know whether its new monitoring service would notice a real intrusion. The information security manager proposes a white-box test with the operations team warned in advance. The IS auditor notes that warned defenders cannot show whether detection works and recommends a double-blind test with written authorization.",
               "audit_focus": {
                 "review": [
                   "Inspect the signed approval: who signed, which systems and which dates it covers",
@@ -19002,8 +19002,8 @@
                 ],
                 "evidence": [
                   "Test report stating knowledge level, notice level and starting point",
-                  "Remediation tracker with retest results for each finding",
-                  "Monitoring team's alert and escalation records from double-blind tests"
+                  "Monitoring team's alert and escalation records from double-blind tests",
+                  "Remediation tracker with retest results for each finding"
                 ],
                 "recommend": "Have the information security manager match each test type to its purpose and get signed approval first.",
                 "decides": "Senior management authorizes each test and accepts the risk of testing live systems"
