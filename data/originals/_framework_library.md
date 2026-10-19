@@ -235,6 +235,7 @@ acceptable when the reference is to the broader topical body of guidance.
 - FAIR (Factor Analysis of Information Risk)
 - The Open Group O-RT/O-RA standards
 - CSA Cloud Controls Matrix
+- CSA Cloud Controls Matrix v4 (IAM, LOG and CCC domains)
 - CSA Security Guidance v4.0
 - OWASP LLM Top 10
 - OWASP LLM Top 10 (LLM01: Prompt Injection)
@@ -1932,3 +1933,7 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - ISO/IEC/IEEE 42010:2022 (Architecture Description)
 - TOGAF Standard, 10th Edition, ADM Phase G (Implementation Governance) and Phase H (Architecture Change Management)
 - PCI DSS v4.0 Requirement 12.7.1 (Personnel Screening)
+
+## Added with Wave 1 coverage batch Q1 (Domain 5, Oct 2026)
+
+- NIST SP 800-53 Rev 5 SC-26 (Decoys)

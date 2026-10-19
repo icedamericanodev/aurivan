@@ -10778,6 +10778,449 @@
       ],
       "_provenance": "Authored from concept: 'Relying on External PKI. Certification Practice Statement'. Original Aurivan item (Oct 2026), written for CISA topic 5A7.",
       "style_version": 2
+    },
+    {
+      "id": "d5_294",
+      "domain": 5,
+      "subtopic": "Penetration Test Types. Testing Detection and Response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Double-blind test",
+        "Blind test",
+        "Rules of engagement",
+        "Detection and response"
+      ],
+      "framework_ref": "NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment); NIST SP 800-53 Rev 5 CA-8 (Penetration Testing)",
+      "question": "A retailer's board asks whether its outsourced security monitoring provider would detect and escalate an attack in progress. Which penetration test should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "A white-box test with full network diagrams and source code",
+        "B": "A blind test with the provider's analysts told in advance",
+        "C": "A double-blind test with only senior management informed",
+        "D": "A targeted test run jointly with the provider's analysts"
+      },
+      "correct": "C",
+      "key_concept": "To test detection and response, keep defenders uninformed; senior management still authorizes the test in writing.",
+      "pre_read": "Ask whether the question is about how much testers know or about who is told.",
+      "correct_explanation": "Detection and response can only be tested if the defenders do not know an attack is coming. In a double-blind test, testers get little information and the provider's analysts are not told, while senior management authorizes it and can confirm it is a test. A blind test is the runner-up: testers start with little knowledge, but warned defenders are on alert, so their reaction proves little.",
+      "wrong_explanations": {
+        "A": "A white-box test gives deep coverage of weaknesses, but it only changes what testers know; it does not check whether the provider's analysts notice an attack.",
+        "B": "Testers start with little information, but defenders who know a test is coming will be watching, so their response shows little about a real attack.",
+        "D": "In a targeted test the analysts work alongside the testers, which helps fix one system but cannot test unprompted detection."
+      },
+      "tips": [
+        "Eliminate: A sets how much testers know, not who is warned, and D has defenders working with the testers.",
+        "Final two: C beats B because a blind test still warns the defenders; a double-blind test checks their unprompted response.",
+        "Exam cue: to test detection and response, tell the defenders less; to test defenses deeply, tell the testers more."
+      ],
+      "_provenance": "Authored from concept: 'Penetration Test Types. Testing Detection and Response'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B3.3 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_295",
+      "domain": 5,
+      "subtopic": "Penetration Test Types. Knowledge Levels and Coverage",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "White-box testing",
+        "Black-box testing",
+        "Gray-box testing",
+        "Test coverage"
+      ],
+      "framework_ref": "NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment); PTES (Penetration Testing Execution Standard)",
+      "question": "A bank has five testing days for its new loan platform and wants the deepest coverage of weaknesses in that time. Which approach should the IS auditor consider MOST effective?",
+      "options": {
+        "A": "Black-box testing that starts from the platform's name alone",
+        "B": "White-box testing with design documents, source code and accounts",
+        "C": "An automated vulnerability scan of the platform's public interfaces",
+        "D": "A double-blind test that keeps the operations team unaware"
+      },
+      "correct": "B",
+      "key_concept": "White-box testing gives the deepest coverage for the time spent; black-box testing trades depth for an outsider's realism.",
+      "pre_read": "Find the goal in the stem: realism, depth or detection. Each points to a different test type.",
+      "correct_explanation": "With a short, fixed budget, sharing full details lets testers spend their days probing flaws instead of rediscovering the design, so white-box testing gives the deepest coverage. Black-box testing is the runner-up because it mirrors an outside attacker, but testers spend much of the five days on discovery and may never reach the deeper weaknesses a patient real attacker could find.",
+      "wrong_explanations": {
+        "A": "Black-box testing is realistic about an outsider's view, but most of a short budget goes to discovery, leaving deep flaws untested.",
+        "C": "A scan lists known weaknesses on exposed interfaces; it does not exploit them or examine internal logic and code.",
+        "D": "Double-blind testing checks whether defenders notice an attack; it does nothing to deepen coverage of the platform's weaknesses."
+      },
+      "tips": [
+        "Eliminate: C discovers known flaws without exploiting them, and D tests the defenders rather than the platform's depth.",
+        "Final two: B beats A because, in a short test, inside knowledge buys depth; black box spends the budget rediscovering the design.",
+        "Exam cue: black box is not always best. When the goal is coverage for the time spent, give testers more knowledge."
+      ],
+      "_provenance": "Authored from concept: 'Penetration Test Types. Knowledge Levels and Coverage'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B3.3 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_296",
+      "domain": 5,
+      "subtopic": "Penetration Testing. Written Authorization and Rules of Engagement",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Written authorization",
+        "Rules of engagement",
+        "Penetration test scope"
+      ],
+      "framework_ref": "NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment); PTES (Penetration Testing Execution Standard)",
+      "question": "An external firm will start an internal penetration test tomorrow, approved only by an email from the IT manager. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Back up every in-scope production system before testing starts",
+        "B": "Confirm that the external testers hold recognized industry certifications",
+        "C": "Warn every employee so test traffic is not reported as attacks",
+        "D": "Obtain senior management's signed approval and rules of engagement"
+      },
+      "correct": "D",
+      "key_concept": "Penetration testing needs signed approval from management with authority to accept the risk, plus agreed scope and rules of engagement.",
+      "pre_read": "Before judging how a test runs, check who approved it and whether they had the authority.",
+      "correct_explanation": "Signed approval from senior management, with agreed scope and rules of engagement, is what separates a lawful test from an attack, and it must exist before any testing starts. An IT manager's email may lack the authority to accept risk to business systems. Backing up in-scope systems is the runner-up: a sensible precaution, but one the rules of engagement should require, not a substitute for authority.",
+      "wrong_explanations": {
+        "A": "Backups reduce the damage if testing disrupts systems, but they give the firm no lawful permission and set no limits on what it may attack.",
+        "B": "Certifications show competence, not permission; qualified testers still need proper authorization and agreed limits before attacking internal systems.",
+        "C": "Telling every employee spoils the test's realism and does nothing about the missing authority behind the approval."
+      },
+      "tips": [
+        "Eliminate: B confirms skill rather than permission, and C warns everyone, which spoils the test without fixing the approval.",
+        "Final two: D beats A because authorization and rules of engagement come before any test step; backups belong inside those rules.",
+        "Exam cue: no testing starts until senior management signs off on scope, timing and rules of engagement."
+      ],
+      "_provenance": "Authored from concept: 'Penetration Testing. Written Authorization and Rules of Engagement'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B3.3 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_297",
+      "domain": 5,
+      "subtopic": "Penetration Test Types. Limits of an External Black-Box Test",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Black-box testing",
+        "Internal penetration test",
+        "Gray-box testing",
+        "Insider threat"
+      ],
+      "framework_ref": "NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment); NIST SP 800-53 Rev 5 CA-8 (Penetration Testing)",
+      "question": "Management cites a clean external black-box penetration test as proof that its network is protected against malicious insiders. What is the IS auditor's GREATEST concern?",
+      "options": {
+        "A": "No tester started with a valid account or internal access",
+        "B": "The result is a point-in-time view that may soon be outdated",
+        "C": "The testers may not have used the latest commercial attack toolkits",
+        "D": "The report went to IT management, not to the audit committee"
+      },
+      "correct": "A",
+      "key_concept": "Evidence must fit the claim: an external black-box test cannot give assurance about insiders or attackers already inside.",
+      "pre_read": "Compare what the test simulated with the threat management claims it covers.",
+      "correct_explanation": "An external black-box test shows what an outsider with no knowledge could reach from the internet. It says nothing about a malicious insider, who already has an account and network access, so the evidence does not support management's claim; an internal or gray-box test would. The point-in-time limit is the runner-up: it applies to any test, but it does not make this evidence irrelevant to the claim.",
+      "wrong_explanations": {
+        "B": "Every test is a snapshot, but the bigger flaw is that this test never examined the insider threat it is cited for.",
+        "C": "Tool choice affects thoroughness, but no external toolkit can show what someone with inside access could reach.",
+        "D": "Reporting lines matter for follow-up, but they do not change what the test was able to prove."
+      },
+      "tips": [
+        "Eliminate: C worries about tools, and D about the reporting line; neither touches what the test could prove.",
+        "Final two: A beats B because evidence must match the claim; a snapshot ages, but a test that starts with no account or internal access never examined insiders.",
+        "Exam cue: match the test type to the threat claimed. External black box shows the outsider's view, not the insider's."
+      ],
+      "_provenance": "Authored from concept: 'Penetration Test Types. Limits of an External Black-Box Test'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B3.3 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_298",
+      "domain": 5,
+      "subtopic": "Intrusion Detection Methods. Signature vs Anomaly-Based",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Signature-based detection",
+        "Anomaly-based detection",
+        "Zero-day attack",
+        "False positive"
+      ],
+      "framework_ref": "NIST SP 800-94 (Guide to Intrusion Detection and Prevention Systems); NIST SP 800-53 Rev 5 SI-4 (System Monitoring)",
+      "question": "A manufacturer's intrusion detection system relies only on vendor signatures, and the CISO worries about attacks no vendor has seen yet. Which addition should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Anomaly-based detection that learns a baseline of normal traffic",
+        "B": "Daily instead of weekly downloads of vendor signature updates",
+        "C": "Inline prevention mode that blocks traffic matching known signatures",
+        "D": "Full packet capture kept for 90 days for later investigation"
+      },
+      "correct": "A",
+      "key_concept": "Signature detection is precise but blind to new attacks; anomaly detection catches unknown attacks at the cost of more false positives.",
+      "pre_read": "Ask whether each option still depends on someone having already described the attack.",
+      "correct_explanation": "Signature-based detection recognizes only attacks someone has already described, so it stays blind to new ones however often it is updated. Anomaly-based detection flags departures from normal behavior, so it can catch attacks with no signature, at the price of more false alarms that need tuning. Faster signature updates are the runner-up: they shrink the gap for known attacks but still miss anything without a signature.",
+      "wrong_explanations": {
+        "B": "Faster updates close the gap for newly published signatures, but an attack no vendor has seen still has no signature to match.",
+        "C": "Prevention mode acts on the same signature matches, so it blocks known attacks faster but still misses new ones.",
+        "D": "Packet capture helps investigate after the fact but raises no alert on a new attack."
+      },
+      "tips": [
+        "Eliminate: C blocks the same signature matches, and D only stores traffic for later review; neither alerts on an attack with no known pattern.",
+        "Final two: A beats B because new attacks have no signature to update; anomaly detection looks for unusual behavior instead.",
+        "Exam cue: signatures catch the known; anomaly detection is needed for the new, and brings more false positives to tune."
+      ],
+      "_provenance": "Authored from concept: 'Intrusion Detection Methods. Signature vs Anomaly-Based'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.5 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_299",
+      "domain": 5,
+      "subtopic": "Intrusion Detection Methods. Tuning vs Disabling Rules",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "False negative",
+        "False positive",
+        "Rule tuning",
+        "Alert fatigue"
+      ],
+      "framework_ref": "NIST SP 800-94 (Guide to Intrusion Detection and Prevention Systems); NIST SP 800-53 Rev 5 SI-4 (System Monitoring)",
+      "question": "To cut alert volume, the security operations team switched off 40 noisy rules on the intrusion detection system. Which risk should concern the IS auditor MOST?",
+      "options": {
+        "A": "The alert queue may still be too long for analysts to review",
+        "B": "Attacks those rules would have caught now raise no alert",
+        "C": "The sensor's log storage may now fill faster than planned",
+        "D": "The vendor may stop supporting a sensor whose rules were altered"
+      },
+      "correct": "B",
+      "key_concept": "Disabling detection rules turns false positives into false negatives; tuning reduces noise while keeping coverage.",
+      "pre_read": "For any change to a detection tool, ask what it will now fail to see.",
+      "correct_explanation": "Switching rules off trades false positives for false negatives: attacks those rules would have flagged now pass in silence, and a missed attack is the more dangerous error for a detection tool. The better fix is to tune each rule at the source so noise drops while coverage stays. Lingering alert overload is the runner-up: it is a real cost, but it is not the new exposure this change created.",
+      "wrong_explanations": {
+        "A": "Alert fatigue is a genuine concern, but this change reduces alerts; the new risk it creates is attacks passing unseen.",
+        "C": "Fewer active rules usually mean fewer alerts and log entries, so storage pressure is unlikely to rise.",
+        "D": "Changing rule settings is a normal, supported administrator task and does not usually affect vendor support."
+      },
+      "tips": [
+        "Eliminate: C expects more data from fewer rules, and D treats routine rule changes as a support issue.",
+        "Final two: B beats A because the change creates false negatives, which are worse than noise for a detection tool.",
+        "Exam cue: fix noisy alerts by tuning rules, not switching them off; a missed attack is worse than a false alarm."
+      ],
+      "_provenance": "Authored from concept: 'Intrusion Detection Methods. Tuning vs Disabling Rules'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.5 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_300",
+      "domain": 5,
+      "subtopic": "Intrusion Detection Methods. Anomaly Baseline Integrity",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Anomaly-based detection",
+        "Baseline",
+        "False negative",
+        "Data exfiltration"
+      ],
+      "framework_ref": "NIST SP 800-94 (Guide to Intrusion Detection and Prevention Systems); NIST SP 800-53 Rev 5 SI-4(13) (Analyze Traffic and Event Patterns)",
+      "question": "An anomaly-based intrusion detection system learned its baseline during a month when, it was later found, an attacker was copying data out. Which risk should concern the IS auditor MOST?",
+      "options": {
+        "A": "Security analysts may need fresh training on the sensor's console",
+        "B": "The sensor may raise many false alarms on legitimate traffic",
+        "C": "The attacker's file transfers may be treated as normal activity",
+        "D": "Signature updates for the sensor may have lapsed that month"
+      },
+      "correct": "C",
+      "key_concept": "An anomaly baseline learned while an attacker is active absorbs the attack as normal, producing false negatives.",
+      "pre_read": "Ask what the sensor counted as normal while it was learning.",
+      "correct_explanation": "An anomaly-based sensor treats whatever it saw while learning as normal. If an attacker was active during that period, the exfiltration became part of the baseline and will raise no alert, a false negative. The baseline must be relearned from a known-clean period. A flood of false alarms is the runner-up: it is the usual weakness of anomaly detection, but a poisoned baseline makes the sensor miss the attacker instead.",
+      "wrong_explanations": {
+        "A": "Training may help analysts, but the sensor's flaw lies in what it learned, not in how staff use its console.",
+        "B": "Extra false alarms are the usual drawback of anomaly detection, but a poisoned baseline causes the opposite problem: missed attacks.",
+        "D": "Anomaly-based detection works from a learned baseline rather than signatures, so update timing does not explain this outcome."
+      },
+      "tips": [
+        "Eliminate: A blames the analysts' training, and D blames signatures, which an anomaly baseline does not rely on.",
+        "Final two: C beats B because a baseline learned during an attack makes that attack look normal, so it goes unflagged.",
+        "Exam cue: learn anomaly baselines in clean periods and relearn them when the business changes, or the attack becomes normal."
+      ],
+      "_provenance": "Authored from concept: 'Intrusion Detection Methods. Anomaly Baseline Integrity'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.5 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_301",
+      "domain": 5,
+      "subtopic": "Deception Tools. Honeypot Isolation and Monitoring",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Honeypot",
+        "Network isolation",
+        "Detective control",
+        "Security monitoring"
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 SC-26 (Decoys); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection)",
+      "question": "An IS auditor reviews a newly deployed honeypot that imitates a payroll database server. Which finding represents the GREATEST risk?",
+      "options": {
+        "A": "The honeypot can connect directly to production servers",
+        "B": "The honeypot has recorded no interactions since it went live",
+        "C": "Honeypot alerts go to a shared mailbox reviewed once a week",
+        "D": "The honeypot runs an older database version than production"
+      },
+      "correct": "A",
+      "key_concept": "Honeypots must be isolated from production and monitored; a decoy that connects to real systems becomes an attacker's foothold.",
+      "pre_read": "Ask which finding turns the decoy from a detection tool into a route for attackers.",
+      "correct_explanation": "A decoy that can reach production gives any attacker who compromises it a launch point into real systems, so the deception tool now adds risk instead of reducing it. Decoys must be isolated. Weekly review of alerts is the runner-up: it wastes the honeypot's high-confidence alerts and delays response, but it weakens detection rather than opening a new path to production.",
+      "wrong_explanations": {
+        "B": "Silence is normal for a decoy nobody should use; it may prompt a check of placement, but it is not a risk in itself.",
+        "C": "Slow review wastes the honeypot's strong alerts, but it limits detection; it does not open a route into production systems.",
+        "D": "A decoy is meant to look attractive, and an older version can make it more convincing to an intruder."
+      },
+      "tips": [
+        "Eliminate: B describes the normal state of a decoy, and D a version gap that can make it more convincing.",
+        "Final two: A beats C because a poorly isolated decoy becomes a foothold; slow monitoring weakens detection but opens no path.",
+        "Exam cue: deception adds detection, not prevention. A decoy must be isolated and watched, or it adds risk."
+      ],
+      "_provenance": "Authored from concept: 'Deception Tools. Honeypot Isolation and Monitoring'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.6 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_302",
+      "domain": 5,
+      "subtopic": "Deception Tools. Honeytokens as Detective Controls",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "related_concepts": [
+        "Honeytoken",
+        "Detective control",
+        "Insider threat",
+        "False positive"
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 SC-26 (Decoys); NIST SP 800-53 Rev 5 SI-4 (System Monitoring)",
+      "question": "Concerned about staff browsing payroll data, management plants a fake executive salary file that no business process uses. What should the IS auditor identify as the PRIMARY benefit of this control?",
+      "options": {
+        "A": "It stops insiders from opening the real salary records",
+        "B": "It removes the need for periodic access reviews on the share",
+        "C": "It draws curious staff away from the genuine payroll files",
+        "D": "Any access to the file gives a high-confidence alert"
+      },
+      "correct": "D",
+      "key_concept": "A honeytoken has no legitimate use, so any access to it is a high-confidence, low-noise detective alert.",
+      "pre_read": "Decide whether the control prevents, detects or corrects before weighing its benefit.",
+      "correct_explanation": "Because no legitimate process uses the fake file, anyone who opens it is almost certainly misusing access, so each alert is high-confidence with very few false alarms. That is the honeytoken's main benefit: detection. Diverting staff from real files is the runner-up, a common belief about decoys, but a curious insider can still open the genuine records; the decoy reveals misuse rather than preventing it.",
+      "wrong_explanations": {
+        "A": "The decoy file changes no permissions, so anyone who can reach the real salary records can still open them.",
+        "B": "Spotting misuse after the fact does not replace periodic reviews that remove unneeded access before it can be misused.",
+        "C": "Some decoys can deflect attackers, but one fake file beside the real records does not keep insiders away from them; management's stated aim is to catch browsing, which is detection."
+      },
+      "tips": [
+        "Eliminate: A expects the decoy to block access, and B lets it replace access reviews; it does neither.",
+        "Final two: D beats C because a decoy detects misuse with little noise; it does not keep anyone from the real records.",
+        "Exam cue: honeypots and honeytokens are detective controls. Their value is high-confidence alerts, not prevention."
+      ],
+      "_provenance": "Authored from concept: 'Deception Tools. Honeytokens as Detective Controls'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.6 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_303",
+      "domain": 5,
+      "subtopic": "Cloud Deployment Models. Choosing by Data Sensitivity",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Public cloud",
+        "Data residency",
+        "Data classification",
+        "Data owner accountability"
+      ],
+      "framework_ref": "NIST SP 800-145 (The NIST Definition of Cloud Computing); ISO/IEC 27002:2022 Control 5.23 (Information Security for Use of Cloud Services)",
+      "question": "A university wants to move export-controlled research data to the cheapest cloud platform it can find. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Choose the lowest-cost public cloud provider with an in-country region",
+        "B": "Move to a private cloud, which isolates data from other tenants",
+        "C": "Have the data owner approve a legal and sensitivity risk assessment",
+        "D": "Review shortlisted providers' assurance reports for scope and exceptions"
+      },
+      "correct": "C",
+      "key_concept": "Choose a cloud deployment model from data sensitivity, legal duties and risk appetite, with the data owner accountable, not from cost alone.",
+      "pre_read": "When cost drives a cloud move, ask who has assessed the data's legal and sensitivity requirements.",
+      "correct_explanation": "The deployment model must follow data sensitivity, legal duties and risk appetite, not cost alone. A documented risk assessment of legal duties, such as export control and residency, and classification, approved by the data owner who stays accountable, sets the requirements every option must meet. Reviewing providers' assurance reports is the runner-up: it is needed, but only once the requirements exist, because without them the IS auditor cannot judge whether a report's scope is adequate.",
+      "wrong_explanations": {
+        "A": "Picking on price with an in-country region treats location as the only duty and skips the sensitivity and risk decision the data owner must make.",
+        "B": "A private cloud removes co-tenant risk, but choosing a model before assessing the data's requirements is premature; export rules may still restrict who administers it.",
+        "D": "Assurance reports matter, but without agreed requirements the IS auditor cannot tell whether a report's scope covers what this data needs."
+      },
+      "tips": [
+        "Eliminate: A lets price drive the choice, and B picks a model before the requirements are known.",
+        "Final two: C beats D because requirements come first; provider reports can only be judged against them.",
+        "Exam cue: the cloud model follows data sensitivity, legal duties and risk appetite, not cost; the data owner stays accountable."
+      ],
+      "_provenance": "Authored from concept: 'Cloud Deployment Models. Choosing by Data Sensitivity'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.1 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_304",
+      "domain": 5,
+      "subtopic": "Cloud Deployment Models. Community Cloud",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "related_concepts": [
+        "Community cloud",
+        "Private cloud",
+        "Public cloud",
+        "Hybrid cloud"
+      ],
+      "framework_ref": "NIST SP 800-145 (The NIST Definition of Cloud Computing)",
+      "question": "Four regional water utilities with identical regulatory duties want shared cloud infrastructure closed to all other organizations. Which deployment model would the IS auditor consider MOST suitable?",
+      "options": {
+        "A": "A public cloud, with each utility in its own tenant account",
+        "B": "A community cloud under joint governance by the utilities",
+        "C": "A private cloud built and run separately by each utility",
+        "D": "A hybrid cloud linking each utility's data center to a provider"
+      },
+      "correct": "B",
+      "key_concept": "A community cloud serves organizations with shared needs and duties, is closed to others, and needs jointly agreed governance.",
+      "pre_read": "Ask who shares the infrastructure: one organization, a group of peers, or the public.",
+      "correct_explanation": "A community cloud is shared by organizations with common needs, such as utilities under the same regulations, and closed to everyone else. It gives the shared infrastructure they want, and joint governance settles who sets and checks the controls. Separate private clouds are the runner-up: they give each utility full isolation and control, but they share nothing, so each pays alone for what the group wanted to pool.",
+      "wrong_explanations": {
+        "A": "Separate tenant accounts still run on infrastructure the provider shares with any paying customer, so outside organizations use it too.",
+        "C": "Separate private clouds give each utility control and isolation, but they give up the shared infrastructure the group wants.",
+        "D": "A hybrid design links each utility to a public provider, so the shared part is open to outside customers."
+      },
+      "tips": [
+        "Eliminate: A and D both rely on public infrastructure that also serves outside customers.",
+        "Final two: B beats C because a community cloud is shared within the group; separate private clouds share nothing.",
+        "Exam cue: shared by peers with common duties means community cloud; one organization means private; anyone means public."
+      ],
+      "_provenance": "Authored from concept: 'Cloud Deployment Models. Community Cloud'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.1 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_305",
+      "domain": 5,
+      "subtopic": "Cloud Deployment Models. Hybrid Cloud Control Consistency",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Hybrid cloud",
+        "Identity federation",
+        "Centralized logging",
+        "Configuration baseline"
+      ],
+      "framework_ref": "CSA Cloud Controls Matrix v4 (IAM, LOG and CCC domains); ISO/IEC 27017 (Cloud Security)",
+      "question": "An IS auditor finds that a bank's private cloud and its public cloud each use separate administrator accounts, logging and configuration baselines. Which recommendation is BEST?",
+      "options": {
+        "A": "Move every workload back into the private cloud to simplify control",
+        "B": "Assign separate audit teams to review each environment every year",
+        "C": "Deploy additional monitoring tools in the public cloud environment",
+        "D": "Apply one common control standard and identity source to both"
+      },
+      "correct": "D",
+      "key_concept": "Hybrid and multi-cloud designs need one common control standard and identity source across every environment, or gaps open at the seams.",
+      "pre_read": "In a hybrid design, ask what happens to accounts and evidence when activity crosses between environments.",
+      "correct_explanation": "In a hybrid design, gaps sit at the seams: an administrator removed in one environment may keep access in the other, and an attack crossing between them leaves evidence in logs nobody correlates. One common control standard and identity source across both closes those seams. More monitoring in the public cloud is the runner-up: it strengthens one side but leaves identities and baselines inconsistent between environments.",
+      "wrong_explanations": {
+        "A": "Pulling everything into the private cloud gives up the business case for the public cloud and does not by itself fix weak identity or logging.",
+        "B": "More audit teams would report the inconsistency each year but would not fix the separate accounts, logs and baselines causing it.",
+        "C": "Extra tools in one environment improve its visibility, but accounts and baselines stay inconsistent and cross-environment activity stays uncorrelated."
+      },
+      "tips": [
+        "Eliminate: A abandons the public cloud instead of controlling it, and B adds audits without fixing the cause.",
+        "Final two: D beats C because hybrid risk sits between environments; strengthening one side leaves the seams open.",
+        "Exam cue: in hybrid and multi-cloud designs, look for one common control standard and identity source across every environment."
+      ],
+      "_provenance": "Authored from concept: 'Cloud Deployment Models. Hybrid Cloud Control Consistency'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.1 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "style_version": 2
     }
   ]
 }
