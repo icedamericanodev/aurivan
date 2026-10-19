@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.21.1] — Fairer topic filters
+
+### Fixed
+- Topic filter names in Practice no longer hint at the answer before you see the question.
+
 ## [v12.21] — More practice on IT operations
 
 ### New
