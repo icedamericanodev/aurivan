@@ -1960,3 +1960,9 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - ISO/IEC 27002:2022 Control 7.14 (Secure Disposal or Re-Use of Equipment)
 - Härder and Reuter (1983), Principles of Transaction-Oriented Database Recovery (ACM Computing Surveys)
 - COBIT 2019 DSS06.03 (Manage roles, responsibilities, access privileges and levels of authority)
+
+## Added with Wave 2 coverage batch Q7 (Domain 4, Oct 2026)
+
+- NIST SP 800-77 Rev 1 (Guide to IPsec VPNs)
+- RFC 4301 (Security Architecture for the Internet Protocol)
+- ISO/IEC 27002:2022 Control 8.19 (Installation of Software on Operational Systems)
