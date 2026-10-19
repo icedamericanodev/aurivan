@@ -99,6 +99,8 @@
 .ep-set:focus-visible,
 .ep-skip:focus-visible,
 .ec-edit:focus-visible,
+.eg-toc-list a:focus-visible,
+.eg-src a:focus-visible,
 .wb-close:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
@@ -2540,6 +2542,113 @@ header {
   .pl-pn { grid-template-columns: 1fr; }
   .pl-pn-next { grid-column: auto; }
 }
+
+/* ═══ ABOUT THE CISA EXAM + FINAL REVIEW WEEK (data/exam/*.json) ═══
+   One column like Principles (.gt): a calm note, a short contents list, then
+   sections with serif headings. Final review week adds the day cards and the
+   cheat sheet. Grove tokens only. */
+.ex-note {
+  display: flex; align-items: flex-start; gap: var(--sp-md); max-width: 68ch; margin: 0 0 var(--sp-lg);
+  padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md); background: var(--surface2); color: var(--text);
+}
+.ex-note > .ico { flex-shrink: 0; margin-top: 1px; color: var(--accent-text); }
+.ex-note-text { min-width: 0; }
+.ex-note-t { font: var(--t-small); color: var(--text); margin: 0; }
+.ex-note-m { font: var(--t-meta); color: var(--text2); margin: 2px 0 0; }
+.eg-disc { font: var(--t-meta); color: var(--text2); max-width: 68ch; margin: 0 0 var(--sp-lg); }
+.eg-toc { max-width: 68ch; padding: var(--sp-md) 0 var(--sp-xs); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.eg-toc .gt-cap { margin: 0; }
+.eg-toc-list { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: var(--sp-xxl); }
+.eg-toc-list li { break-inside: avoid; }
+.eg-toc-list a, .eg-toc-btn {
+  display: flex; align-items: center; min-height: 44px; padding: 0; background: none; border: 0; cursor: pointer; text-align: left;
+  font: var(--t-label); color: var(--accent-text); text-decoration: none;
+}
+.eg-toc-list a:hover, .eg-toc-btn:hover { text-decoration: underline; text-underline-offset: 3px; }
+.eg-sec { margin-top: var(--sp-section); max-width: 68ch; }
+.eg-h { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); margin: 0 0 var(--sp-sm); scroll-margin-top: var(--sp-lg); }
+.eg-sum { font: var(--t-body); color: var(--text2); margin: 0 0 var(--sp-md); }
+.eg-sub { margin-top: var(--sp-lg); }
+.eg-list { margin-top: var(--sp-sm); }
+.eg-doms { list-style: none; margin: 0 0 var(--sp-md); padding: 0; border-top: 1px solid var(--border); }
+.eg-doms li { display: flex; align-items: center; gap: var(--sp-md); padding: var(--sp-md) 0; border-bottom: 1px solid var(--border); }
+.eg-doms .dom-dot { flex-shrink: 0; margin: 0; }
+.eg-dom-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.eg-dom-n { font: var(--t-caption); color: var(--text2); }
+.eg-dom-name { font: var(--t-label); color: var(--text); }
+.eg-dom-w { flex-shrink: 0; font: var(--t-meta); color: var(--text2); }
+.eg-dom-w .gt-num { font: var(--t-headline); font-family: var(--f-serif); font-weight: 500; color: var(--text); }
+.eg-src { font: var(--t-meta); color: var(--text2); margin: var(--sp-lg) 0 0; overflow-wrap: anywhere; }
+.eg-src-l { font-weight: 600; }
+.eg-src a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.eg-src a .ico { display: inline-block; vertical-align: -2px; margin-left: 2px; }
+.eg-h:focus, .fw-h3:focus, .fw-day-h:focus, .eg-toc .gt-cap:focus { outline: none; }
+.eg-h:focus-visible, .fw-h3:focus-visible, .fw-day-h:focus-visible, .eg-toc .gt-cap:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
+
+/* Final review week: the days, flat on the paper with a rule between them;
+   today's day (when an exam date is set) is outlined in the ink colour. */
+.fw-count:empty { margin: 0; }
+.fw-days { margin-top: var(--sp-md); }
+.fw-day { padding: var(--sp-xl) 0; border-top: 1px solid var(--border); scroll-margin-top: var(--sp-lg); }
+.fw-day:last-child { border-bottom: 1px solid var(--border); }
+.fw-day.fw-today { padding: var(--sp-xl); margin: var(--sp-md) 0; border: 1.5px solid var(--text); border-radius: var(--r-md); }
+.fw-day.fw-today + .fw-day { border-top: 0; }
+.fw-day-h { margin: 0; display: flex; flex-direction: column; gap: 2px; scroll-margin-top: var(--sp-lg); }
+.fw-day-n { display: flex; align-items: center; gap: var(--sp-sm); font: var(--t-caption); color: var(--text2); }
+.fw-today-pill { display: inline-flex; align-items: center; padding: 0 var(--sp-sm); border-radius: var(--r-pill); background: var(--surface2); color: var(--accent-text); font: var(--t-caption); }
+.fw-day-t { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); }
+.fw-goal { font: var(--t-body); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-md); }
+.fw-tasks { list-style: none; counter-reset: fw; margin: 0; padding: 0; border-top: 1px solid var(--border); }
+.fw-tasks > li { counter-increment: fw; position: relative; padding: var(--sp-md) 0 var(--sp-md) 28px; border-bottom: 1px solid var(--border); }
+.fw-tasks > li::before { content: counter(fw); position: absolute; left: 0; top: var(--sp-md); font: var(--t-headline); font-family: var(--f-serif); font-weight: 500; color: var(--text2); }
+.fw-task-t { font: var(--t-body); color: var(--text); margin: 0; }
+.fw-task-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-xs) var(--sp-md); margin-top: var(--sp-sm); }
+.fw-act {
+  display: inline-flex; align-items: center; gap: var(--sp-sm); max-width: 100%; min-height: 44px; padding: var(--sp-sm) var(--sp-lg);
+  border-radius: var(--r-pill); background: transparent; border: 1.5px solid var(--control); color: var(--text);
+  font: var(--t-meta); font-weight: 600; text-align: left; cursor: pointer;
+}
+.fw-act .ico { flex-shrink: 0; color: var(--accent-text); }
+.fw-act:hover { border-color: var(--text); }
+.fw-jumps { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-sm); font: var(--t-meta); color: var(--text2); }
+.fw-jump {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; background: none; border: 0; cursor: pointer;
+  font: var(--t-meta); font-weight: 600; color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px;
+}
+.fw-rem { margin: var(--sp-lg) 0 0; font: var(--t-body); color: var(--text); }
+.fw-rem-l { display: block; font: var(--t-caption); font-style: normal; color: var(--text2); }
+/* The coach's voice (3px rule + italic) only on the day in focus. */
+.fw-rem.fw-rem-coach { padding-left: var(--sp-lg); border-left: 3px solid var(--accent); font: var(--t-quote); }
+.fw-rem.fw-rem-coach .fw-rem-l { color: var(--accent-text); }
+.fw-back { display: block; margin-top: var(--sp-xs); }
+.ex-note .gt-btn-ghost { margin-left: -4px; }
+.fw-day-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-md); margin-top: var(--sp-lg); }
+.fw-done-m { font: var(--t-meta); color: var(--text2); }
+.fw-done-m:empty { display: none; }
+
+/* Final review week: checklists and the cheat sheet */
+.fw-h3 { display: flex; align-items: center; gap: var(--sp-sm); font: var(--t-headline); color: var(--text); margin: var(--sp-xxl) 0 var(--sp-xs); scroll-margin-top: var(--sp-lg); }
+.fw-h3 .dom-dot { flex-shrink: 0; margin: 0; }
+.fw-points { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
+.fw-points > li { padding: var(--sp-md) 0 var(--sp-xs); border-bottom: 1px solid var(--border); }
+.fw-point-t { font: var(--t-body); color: var(--text); margin: 0; }
+.fw-note-a { display: inline-flex; align-items: center; min-height: 44px; font: var(--t-meta); font-weight: 600; color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
+.fw-words dt { letter-spacing: 0.4px; }
+.fw-cue { display: block; margin-top: 2px; font-style: italic; color: var(--text2); }
+.fw-rt-t { font-weight: 600; }
+.fw-prs .pl-row { text-decoration: none; }
+.fw-act:focus-visible, .fw-jump:focus-visible, .fw-note-a:focus-visible, .eg-toc-btn:focus-visible, .td-fw-hide:focus-visible {
+  outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm);
+}
+@media (max-width: 600px) {
+  .eg-toc-list { columns: 1; }
+  .fw-day.fw-today { padding: var(--sp-lg); }
+}
+
+/* Today: the final review week card (last 8 days before a set exam date) */
+.td-fw { margin-top: var(--sp-section); }
+.td-fw .you-list { margin-top: var(--sp-xs); }
+.td-fw-hide { margin-top: var(--sp-xs); }
 
 /* Section banner — KaiSip-branded header for Glossary & FAQ. Mirrors the
    .brand-card visual language: light surface gradient, soft blue + teal
@@ -5241,7 +5350,7 @@ header.app-header .brand-lockup { height: 28px; }
 }
 #bottomNav .bnav-item:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; border-radius: 12px; }
 
-/* Section pages (phones): Study notes · Glossary · Principles, Practice · Mock exam · Saved.
+/* Section pages (phones): Study notes · Glossary · Principles · About the exam · Final week, Practice · Mock exam · Saved.
    On You's own pages: the way back to You. */
 .sub-nav { display: flex; gap: 4px; margin: 0 0 20px; border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
 .sub-nav::-webkit-scrollbar { display: none; }
@@ -5255,6 +5364,11 @@ header.app-header .brand-lockup { height: 28px; }
 .sub-nav a[aria-current="page"] { color: var(--text); border-bottom-color: var(--text); }
 .sub-nav a:focus-visible { outline-offset: -2px; border-radius: 8px; }
 .sub-nav.sub-nav-back { border-bottom: 0; margin-bottom: 4px; }
+/* Learn has five pages, more than a phone shows: the edge that has more
+   links fades out, so it is clear the bar scrolls (subNavFade). */
+.sub-nav.sn-fade-r { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); }
+.sub-nav.sn-fade-l { -webkit-mask-image: linear-gradient(to right, transparent, #000 40px); mask-image: linear-gradient(to right, transparent, #000 40px); }
+.sub-nav.sn-fade-l.sn-fade-r { -webkit-mask-image: linear-gradient(to right, transparent, #000 40px, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to right, transparent, #000 40px, #000 calc(100% - 40px), transparent); }
 .sub-nav.sub-nav-back a { padding: 0 12px 0 0; color: var(--accent-text); }
 .ico-back { transform: rotate(180deg); }
 
@@ -6055,7 +6169,7 @@ html { scroll-padding-bottom: 104px; }
 <!-- Address markers for the section links (#today, #notes ...). The router
      reads the address; these empty markers sit at the very top of the page so
      every in-page link has a real target and opening one never scrolls. -->
-<div class="route-marks" aria-hidden="true"><span id="today"></span><span id="learn"></span><span id="notes"></span><span id="glossary"></span><span id="principles"></span><span id="practice"></span><span id="mock"></span><span id="saved"></span><span id="you"></span><span id="weak-spots"></span><span id="help"></span><span id="about"></span></div>
+<div class="route-marks" aria-hidden="true"><span id="today"></span><span id="learn"></span><span id="notes"></span><span id="glossary"></span><span id="principles"></span><span id="exam-guide"></span><span id="final-week"></span><span id="practice"></span><span id="mock"></span><span id="saved"></span><span id="you"></span><span id="weak-spots"></span><span id="help"></span><span id="about"></span></div>
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="app-rail" id="appRail">
 <header class="app-header">
@@ -6071,6 +6185,8 @@ html { scroll-padding-bottom: 104px; }
         <li><a class="sn-subitem" data-tab="topics" href="#notes" onclick="return navTo(event,'topics')">Study notes</a></li>
         <li><a class="sn-subitem" data-tab="glossary" href="#glossary" onclick="return navTo(event,'glossary')">Glossary</a></li>
         <li><a class="sn-subitem" data-tab="principles" href="#principles" onclick="return navTo(event,'principles')">Principles</a></li>
+        <li><a class="sn-subitem" data-tab="examguide" href="#exam-guide" onclick="return navTo(event,'examguide')">About the CISA exam</a></li>
+        <li><a class="sn-subitem" data-tab="finalweek" href="#final-week" onclick="return navTo(event,'finalweek')">Final review week</a></li>
       </ul>
     </li>
     <li><a class="sn-item" data-sec="practice" href="#practice" onclick="return navTo(event,'sec:practice')"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 6 2 2 4-4"/><path d="m3 14 2 2 4-4"/><path d="M13 6h8M13 14h8M13 20h8"/></svg><span>Practice</span></a>
@@ -6198,6 +6314,14 @@ html { scroll-padding-bottom: 104px; }
   <div id="principlesArea"></div>
 </div>
 
+<!-- ABOUT THE CISA EXAM and FINAL REVIEW WEEK (data/exam/*.json) -->
+<div id="screen-examguide" class="screen">
+  <div id="examGuideArea"></div>
+</div>
+<div id="screen-finalweek" class="screen">
+  <div id="finalWeekArea"></div>
+</div>
+
 <!-- GLOSSARY -->
 <div id="screen-glossary" class="screen">
   <div id="glossaryArea"></div>
@@ -6216,7 +6340,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.13</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.14</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6380,7 +6504,7 @@ html { scroll-padding-bottom: 104px; }
 {"cat":"Using the app","q":"What is the Review queue?","a":"Questions you answer incorrectly come back on a spaced schedule — soon at first, then at widening intervals as you get them right, until they retire. The Home screen shows how many are due and lets you start a review session in one tap."},
 {"cat":"Using the app","q":"How do I save a question for later?","a":"Use the bookmark control on a question to save it. Saved questions live under Practice, then Saved, where you can revisit them any time."},
 {"cat":"Using the app","q":"What does the Weak Spots tab show?","a":"Weak Spots shows how each of the five domains is going and lets you start a drill on the ones that need work. Until a domain has 30 answers it shows Building, Steady or Strong instead of a number, so a few answers never read as a verdict."},
-{"cat":"Using the app","q":"Some tabs are missing on my phone — where are they?","a":"On phones the bottom bar shows Today, Learn, Practice and You. Learn holds Study notes, Glossary and Principles; Practice holds Mock exam and Saved; You holds Weak spots, settings and help."},
+{"cat":"Using the app","q":"Some tabs are missing on my phone — where are they?","a":"On phones the bottom bar shows Today, Learn, Practice and You. Learn holds Study notes, Glossary, Principles, About the CISA exam and Final review week; Practice holds Mock exam and Saved; You holds Weak spots, settings and help."},
 {"cat":"Using the app","q":"What are Study notes?","a":"Study notes are a study reference. Each topic has a plain-language explanation, clear diagrams, and the common mistakes to watch for, organized by domain."},
 {"cat":"Using the app","q":"How do I switch to dark mode?","a":"Open You and turn on Dark mode. Your choice is remembered for next time."},
 {"cat":"The CISA exam","q":"How many questions are on the CISA exam?","a":"The CISA exam has 150 multiple-choice questions."},
@@ -6428,6 +6552,8 @@ var ICONS = {
   "book": "<path d=\"M4.5 19.5A2.5 2.5 0 0 1 7 17h12.5V3H7a2.5 2.5 0 0 0-2.5 2.5z\"/><path d=\"M4.5 19.5A2.5 2.5 0 0 0 7 22h12.5v-5\"/>",
   "exam": "<rect x=\"5\" y=\"4\" width=\"14\" height=\"17\" rx=\"2\"/><path d=\"M9 4V2.8h6V4\"/><path d=\"M8.5 10h7M8.5 13.5h7M8.5 17h4\"/>",
   "flag": "<path d=\"M5.5 21V4h11l-2 4.2 2 4.3h-11\"/>",
+  "external": "<path d=\"M14 4.5h5.5V10\"/><path d=\"M19.5 4.5 11 13\"/><path d=\"M18 14v4.5a1 1 0 0 1-1 1H5.5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1H10\"/>",
+  "calendar": "<rect x=\"4\" y=\"5\" width=\"16\" height=\"15.5\" rx=\"2\"/><path d=\"M4 9.5h16M8.5 3v4M15.5 3v4\"/>",
   "check": "<path d=\"m5 12.5 4.5 4.5L19 7.5\"/>",
   "arrow-right": "<path d=\"M4.5 12h15M13.5 6l6 6-6 6\"/>",
   "x": "<path d=\"M6 6l12 12M18 6 6 18\"/>",
@@ -6505,7 +6631,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.13';
+const APP_VERSION = 'v12.14';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -6980,6 +7106,9 @@ var S_DEFAULTS = {
   plantSettings: {},
   cleanLog: {},
   readinessLog: [],
+  // Final review week (web): "Mark day done" per day, dayId -> 'YYYY-MM-DD'
+  // (the local day it was marked). A new field beside the old ones.
+  finalWeekDone: {},
   activeTab: "home",
 };
 
@@ -7624,7 +7753,7 @@ function normalizeImportedState(state) {
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed",
                 "current","qn","activeTab","review","topicTicksSchema",
                 "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
-                "plant","plantSettings","cleanLog","readinessLog"];
+                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone"];
   fields.forEach(function(k) {
     if (state[k] !== undefined) clean[k] = state[k];
   });
@@ -7649,6 +7778,8 @@ function normalizeImportedState(state) {
   clean.plantSettings = sanitizePlantSettings(clean.plantSettings);
   clean.cleanLog = plantSeedCleanLog(sanitizeCleanLog(clean.cleanLog), clean.answerLog);
   clean.readinessLog = sanitizeReadinessLog(clean.readinessLog);
+  // Final review week: saves from before it have none and load as empty.
+  clean.finalWeekDone = sanitizeFinalWeekDone(clean.finalWeekDone);
   clean.bookmarks = rehydrateSavedQuestions(clean.bookmarks);
   clean.missedQuestions = rehydrateSavedQuestions(clean.missedQuestions);
   clean.review = sanitizeReviewMap(clean.review);
@@ -7667,7 +7798,7 @@ function normalizeImportedState(state) {
   if (["any","foundational","application","analysis"].indexOf(clean.diff) === -1) clean.diff = "any";
   clean.timerEnabled = !!clean.timerEnabled;
   clean.timerSeconds = Number(clean.timerSeconds) || 0;
-  clean.activeTab = ["home","practice","mock","topics","bookmarks","weakspots","glossary","faq","principles"].indexOf(clean.activeTab) >= 0 ? clean.activeTab : "home";
+  clean.activeTab = ["home","practice","mock","topics","bookmarks","weakspots","glossary","faq","principles","examguide","finalweek"].indexOf(clean.activeTab) >= 0 ? clean.activeTab : "home";
   return clean;
 }
 
@@ -7719,6 +7850,7 @@ function saveState() {
     qNotes: S.qNotes || {},
     plant: S.plant || null, plantSettings: S.plantSettings || {},
     cleanLog: S.cleanLog || {}, readinessLog: S.readinessLog || [],
+    finalWeekDone: S.finalWeekDone || {},
     selectedDomain: S.selectedDomain, diff: S.diff,
     timerEnabled: S.timerEnabled, timerSeconds: S.timerSeconds,
     qIdx: S.qIdx, mindsetIdx: S.mindsetIdx,
@@ -7758,7 +7890,7 @@ function loadState() {
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed","topicTicksSchema",
                 "current","qn","activeTab",
                 "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
-                "plant","plantSettings","cleanLog","readinessLog"];
+                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone"];
   fields.forEach(function(k) {
     if (saved[k] !== undefined) S[k] = saved[k];
   });
@@ -9677,6 +9809,8 @@ function switchTab(t, opts) {
   reviewQueueMode = false;
   missedReviewMode = false;
   resetConceptPractice();
+  // Leaving the exam guide drops a section still waiting for the file.
+  if (t !== 'examguide') egState.pending = null;
   S.activeTab = t;
   saveState();
   // Lets CSS drop the shared dashboard above Topics on phones.
@@ -9694,6 +9828,8 @@ function switchTab(t, opts) {
   if (t === 'glossary') renderGlossary();
   if (t === 'faq') renderFAQ();
   if (t === 'principles') renderPrinciplesLibrary();
+  if (t === 'examguide') renderExamGuide();
+  if (t === 'finalweek') renderFinalWeek();
   if (t === 'practice') {
     // Practice opens on its hub; a question opens the focused view
     // (renderQuestion). An open question waits behind the hub's Continue.
@@ -9726,19 +9862,22 @@ function switchTab(t, opts) {
 // still open the right page.
 var NAV_SECTION = {
   home: 'today',
-  topics: 'learn', glossary: 'learn', principles: 'learn',
+  topics: 'learn', glossary: 'learn', principles: 'learn', examguide: 'learn', finalweek: 'learn',
   practice: 'practice', mock: 'practice', bookmarks: 'practice',
   you: 'you', weakspots: 'you', faq: 'you', about: 'you'
 };
 // The page a section opens on (its first page) and its listed sub-pages.
 var NAV_HOME = { today: 'home', learn: 'topics', practice: 'practice', you: 'you' };
 var NAV_PAGES = {
-  learn: [['topics', 'Study notes'], ['glossary', 'Glossary'], ['principles', 'Principles']],
+  // Short labels on purpose: the phone page bar has five Learn pages (the
+  // sidebar uses the full names, "About the CISA exam" and "Final review week").
+  learn: [['topics', 'Study notes'], ['glossary', 'Glossary'], ['principles', 'Principles'], ['examguide', 'About the exam'], ['finalweek', 'Final week']],
   practice: [['practice', 'Practice'], ['mock', 'Mock exam'], ['bookmarks', 'Saved']]
 };
 // The address each page shows (#notes, #saved ...) and every name we accept.
 var NAV_HASH = {
   home: 'today', topics: 'notes', glossary: 'glossary', principles: 'principles',
+  examguide: 'exam-guide', finalweek: 'final-week',
   practice: 'practice', mock: 'mock', bookmarks: 'saved',
   you: 'you', weakspots: 'weak-spots', faq: 'help', about: 'about'
 };
@@ -9746,6 +9885,7 @@ var NAV_ALIAS = {
   today: 'home', home: 'home',
   learn: 'sec:learn', notes: 'topics', 'study-notes': 'topics', topics: 'topics',
   glossary: 'glossary', principles: 'principles',
+  'exam-guide': 'examguide', 'about-the-exam': 'examguide', 'final-week': 'finalweek', 'final-review-week': 'finalweek',
   practice: 'practice', mock: 'mock', 'mock-exam': 'mock',
   saved: 'bookmarks', bookmarks: 'bookmarks',
   you: 'you', settings: 'you', more: 'you',
@@ -9788,6 +9928,9 @@ function navFromHash(hash) {
     try { pid = decodeURIComponent(pid); } catch (e) {}
     return { tab: 'principles', action: 'principle:' + pid };
   }
+  // #exam-guide/<section id>: one section of About the CISA exam.
+  var gm = /^exam-guide\/([a-z0-9-]{1,48})$/.exec(key);
+  if (gm) return { tab: 'examguide', action: 'guide:' + gm[1] };
   var v = NAV_ALIAS[key];
   if (!v) return null;
   var parts = v.split('!');
@@ -9797,12 +9940,14 @@ function navRunAction(action) {
   if (action === 'changelog' && typeof showChangelog === 'function') showChangelog();
   if (action === 'data' && typeof showYourData === 'function') showYourData();
   if (action.indexOf('principle:') === 0) openPrinciple(action.slice(10));
+  if (action.indexOf('guide:') === 0) egOpenSection(action.slice(6));
 }
 // Marks the current section and page in the rail and the bottom bar, draws
 // the section's page links (phones) or the way back to You, and keeps the
 // address in step (without adding history entries).
 var NAV_TITLE = {
   topics: 'Study notes', glossary: 'Glossary', principles: 'Principles',
+  examguide: 'About the CISA exam', finalweek: 'Final review week',
   practice: 'Practice', mock: 'Mock exam', bookmarks: 'Saved',
   you: 'You', weakspots: 'Weak spots', faq: 'Help', about: 'About'
 };
@@ -9839,6 +9984,14 @@ function syncNav(t) {
     }
     sub.innerHTML = html;
     sub.hidden = !html;
+    // Learn has more pages than a phone shows: keep the current one in view.
+    var cur = html && sub.querySelector('[aria-current="page"]');
+    if (cur) sub.scrollLeft = Math.max(0, cur.offsetLeft - 16);
+    if (!sub.onscroll) {
+      sub.onscroll = function () { subNavFade(sub); };
+      window.addEventListener('resize', function () { subNavFade(sub); });
+    }
+    subNavFade(sub);
   }
   if (t === 'you') syncYouSettings();
   updateHeaderCountdown();
@@ -9848,6 +10001,12 @@ function syncNav(t) {
       history.replaceState(history.state, '', want);
     }
   } catch (e) {}
+}
+// Fades the page bar's edge where more links are hidden (it scrolls sideways).
+function subNavFade(sub) {
+  var max = sub.scrollWidth - sub.clientWidth;
+  sub.classList.toggle('sn-fade-r', max > 2 && sub.scrollLeft < max - 2);
+  sub.classList.toggle('sn-fade-l', max > 2 && sub.scrollLeft > 2);
 }
 // The You page's on/off rows show the saved choices.
 function syncYouSettings() {
@@ -10382,7 +10541,7 @@ function renderHome() {
     + (r.answered === 0 ? '<p class="td-intro">Free practice for the CISA exam. Start with a short set below.</p>' : '')
     + '</div>'
     // Phones read it top to bottom as the web mock-up: practice, next step, then readiness.
-    + hero + next + plate
+    + hero + todayFinalWeekHtml(days) + next + plate
     + (apps.length ? '<p class="td-apps">Get the app: ' + apps.join(' &middot; ') + '</p>' : '')
     // The full disclaimer lives on About (and Help); Today keeps one line.
     + '<p class="td-legal">KaiSip is independent and not affiliated with ISACA.</p>'
@@ -14612,6 +14771,7 @@ function doResetProgress() {
   S.plantSettings = {};
   S.cleanLog = {};
   S.readinessLog = [];
+  S.finalWeekDone = {};
   plantGrewShown = null;
   plantBackfillShown = null;
   S.mockId = null;
@@ -15214,6 +15374,711 @@ function openPrinciple(pid) {
 // Expose to window for cross-function reach (tip principle links)
 window.selectPrinciple = selectPrinciple;
 window.openPrinciple = openPrinciple;
+
+// ── ABOUT THE CISA EXAM + FINAL REVIEW WEEK (data/exam/*.json) ──
+// Content: data/exam/cisa_exam_guide.json and data/exam/final_review_week.json,
+// shared with the mobile app (schema: docs/content/EXAM_GUIDE_SCHEMA.md).
+// Both live under Learn, one column like Principles. Loaded like the
+// principles (loadPrinciplesData): fetched once and cached, a loading state,
+// then an error state with Retry when the file is missing (or the page runs
+// from file://). No inline copy is kept.
+function examJsonLoader(path) {
+  var L = { data: null, failed: false, loading: false, waiters: [] };
+  L.done = function (ok) {
+    L.loading = false;
+    var waiting = L.waiters;
+    L.waiters = [];
+    waiting.forEach(function (cb) { try { cb(ok); } catch (e) { console.warn('[exam data]', e); } });
+  };
+  // callback(ok) runs once the file is in (ok) or has failed (not ok).
+  L.load = function (callback) {
+    if (L.data) { if (callback) callback(true); return; }
+    if (L.failed) { if (callback) callback(false); return; }
+    if (callback) L.waiters.push(callback);
+    if (L.loading) return;
+    L.loading = true;
+    fetch(path)
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status + ' (file may be missing)');
+        return r.json();
+      })
+      .then(function (data) {
+        if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('not a data file');
+        L.data = data;
+        L.done(true);
+      })
+      .catch(function (err) {
+        L.failed = true;
+        console.warn('Could not load ' + path + ':', err);
+        L.done(false);
+      });
+  };
+  return L;
+}
+var EXAM_GUIDE = examJsonLoader('data/exam/cisa_exam_guide.json');
+var FINAL_WEEK = examJsonLoader('data/exam/final_review_week.json');
+
+var EX_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+// '2026-10-19' -> 'October 19, 2026' (or 'October 19'); '' for anything else.
+function exDateWords(iso, noYear) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
+  if (!m || Number(m[2]) < 1 || Number(m[2]) > 12) return '';
+  return EX_MONTHS[Number(m[2]) - 1] + ' ' + Number(m[3]) + (noYear ? '' : ', ' + m[1]);
+}
+function exStrs(a) {
+  return (Array.isArray(a) ? a : []).filter(function (s) { return typeof s === 'string' && s.trim(); });
+}
+function exList(a, cls) {
+  return '<ul class="gt-list eg-list' + (cls ? ' ' + cls : '') + '">' + a.map(function (t) { return '<li>' + escapeHtml(t) + '</li>'; }).join('') + '</ul>';
+}
+// Ids go into attributes and addresses: only kebab-case ids are accepted.
+var EX_ID_RE = /^[a-z0-9-]{1,48}$/;
+var EX_NOTE_RE = /^[1-5][A-Z0-9.]{1,12}$/;
+function exLoadingHtml(heading) {
+  return '<div class="gt">' + emptyState({ kind: 'loading', heading: heading, body: 'This usually takes less than a second.' }) + '</div>';
+}
+function exErrorHtml(heading, retry) {
+  return '<div class="gt">' + emptyState({
+    kind: 'network',
+    heading: heading,
+    body: 'This usually means the file was opened directly in a browser rather than served over HTTP. Run one of these commands in the project folder and reload.',
+    chips: ['python3 -m http.server', 'npx serve .'],
+    actions: [{ label: 'Retry', style: 'primary', onclick: retry }]
+  }) + '</div>';
+}
+// Scrolls a heading (tabindex=-1) to the top and moves focus to it.
+function exFocusHeading(el) {
+  if (!el) return;
+  try { el.scrollIntoView({ block: 'start' }); } catch (e) {}
+  try { el.focus({ preventScroll: true }); } catch (e) {}
+}
+
+// ── About the CISA exam (#exam-guide, #exam-guide/<section id>) ──
+// pending: a section asked for (by address) before the file was in;
+// waiting: this page's load callback is queued (only ever one, so the page
+// is drawn once when the file arrives and the section keeps its focus).
+var egState = { pending: null, waiting: false };
+function retryExamGuide() {
+  EXAM_GUIDE.failed = false;
+  renderExamGuide();
+}
+function renderExamGuide() {
+  var area = document.getElementById('examGuideArea');
+  if (!area) return;
+  if (!EXAM_GUIDE.data) {
+    if (EXAM_GUIDE.failed) { area.innerHTML = exErrorHtml("Couldn't load the exam guide.", 'retryExamGuide()'); return; }
+    area.innerHTML = exLoadingHtml('Loading the exam guide…');
+    if (!egState.waiting) {
+      egState.waiting = true;
+      EXAM_GUIDE.load(function () {
+        egState.waiting = false;
+        if (S.activeTab === 'examguide') renderExamGuide();
+        else egState.pending = null;
+      });
+    }
+    return;
+  }
+  area.innerHTML = '<div class="gt eg">' + examGuideHtml(EXAM_GUIDE.data) + '</div>';
+  if (egState.pending) {
+    var sid = egState.pending;
+    egState.pending = null;
+    egShowSection(sid);
+  }
+}
+function egSections(g) {
+  return (Array.isArray(g.sections) ? g.sections : []).filter(function (s) {
+    return s && typeof s.id === 'string' && EX_ID_RE.test(s.id) && gtStr(s.title);
+  });
+}
+function examGuideHtml(g) {
+  var secs = egSections(g);
+  var checked = exDateWords(g.last_checked);
+  var h = '<div class="gt-head"><h1 class="gt-title" id="egTitle" tabindex="-1">' + escapeHtml(gtStr(g.title) || 'About the CISA exam') + '</h1>'
+    + (gtStr(g.description) ? '<p class="gt-sub">' + escapeHtml(g.description) + '</p>' : '') + '</div>';
+  // The one "check before you book" note covers every fee and rule below.
+  if (gtStr(g.check_before_booking) || checked) {
+    h += '<div class="ex-note" role="note">' + ico('info', 20)
+      + '<div class="ex-note-text">'
+      + (gtStr(g.check_before_booking) ? '<p class="ex-note-t">' + escapeHtml(g.check_before_booking) + '</p>' : '')
+      + (checked ? '<p class="ex-note-m">Last checked ' + checked + '</p>' : '')
+      + '</div></div>';
+  }
+  if (gtStr(g.disclaimer)) h += '<p class="eg-disc">' + escapeHtml(g.disclaimer) + '</p>';
+  if (secs.length) {
+    h += '<nav class="eg-toc" aria-labelledby="egTocH"><h2 class="gt-cap" id="egTocH">On this page</h2><ol class="eg-toc-list">'
+      + secs.map(function (s) {
+        return '<li><a href="#exam-guide/' + s.id + '" data-sid="' + s.id + '" onclick="return egTocClick(event,this.dataset.sid)">' + escapeHtml(s.title) + '</a></li>';
+      }).join('') + '</ol></nav>';
+  }
+  secs.forEach(function (s) { h += egSectionHtml(s); });
+  return h;
+}
+function egSectionHtml(s) {
+  var hid = 'egH-' + s.id;
+  var h = '<section class="eg-sec" id="eg-' + s.id + '" aria-labelledby="' + hid + '">'
+    + '<h2 class="eg-h" id="' + hid + '" tabindex="-1">' + escapeHtml(s.title) + '</h2>'
+    + (gtStr(s.summary) ? '<p class="eg-sum">' + escapeHtml(s.summary) + '</p>' : '');
+  // The domains and weights: names from the outline, weights and colours from DI.
+  var doms = (Array.isArray(s.domains) ? s.domains : []).filter(function (d) { return d && DI[String(d.id)]; });
+  if (doms.length) {
+    h += '<ul class="eg-doms">' + doms.map(function (d) {
+      var inf = DI[String(d.id)];
+      return '<li><span class="dom-dot" style="background:' + inf.color + '" aria-hidden="true"></span>'
+        + '<span class="eg-dom-text"><span class="eg-dom-n">Domain ' + escapeHtml(String(d.id)) + '</span>'
+        + '<span class="eg-dom-name">' + escapeHtml(gtStr(d.name) || inf.name) + '</span></span>'
+        + '<span class="eg-dom-w"><span class="gt-num">' + inf.weight + '</span>%<span class="sr-only"> of the exam</span></span></li>';
+    }).join('') + '</ul>';
+  }
+  var steps = exStrs(s.steps), items = exStrs(s.items);
+  var both = steps.length && items.length;
+  if (steps.length) {
+    h += (both ? '<h3 class="gt-cap eg-sub">Step by step</h3>' : '')
+      + '<ol class="gt-list gt-olist eg-list">' + steps.map(function (t) { return '<li>' + escapeHtml(t) + '</li>'; }).join('') + '</ol>';
+  }
+  if (items.length) h += (both ? '<h3 class="gt-cap eg-sub">Key facts</h3>' : '') + exList(items);
+  var src = (Array.isArray(s.sources) ? s.sources : []).filter(function (x) {
+    return x && gtStr(x.label) && typeof x.url === 'string' && /^https:\/\/[^\s"'<>]+$/i.test(x.url);
+  });
+  if (src.length) {
+    h += '<p class="eg-src"><span class="eg-src-l">Sources: </span>' + src.map(function (x) {
+      return '<a href="' + escapeHtml(x.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(x.label) + ico('external', 14) + '<span class="sr-only"> (opens in a new tab)</span></a>';
+    }).join('<span aria-hidden="true"> &middot; </span>') + '</p>';
+  }
+  return h + '</section>';
+}
+// A contents link: its own history entry (so Back returns to the top), then
+// the section, with focus on its heading.
+function egTocClick(e, sid) {
+  if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.button && e.button !== 0))) return true;
+  if (e && e.preventDefault) e.preventDefault();
+  try {
+    var want = '#exam-guide/' + sid;
+    if (location.hash !== want && window.history && history.pushState) history.pushState(history.state, '', want);
+  } catch (ex) {}
+  egShowSection(sid);
+  return false;
+}
+function egShowSection(sid) {
+  var el = document.getElementById('egH-' + sid);
+  if (!el) return;
+  exFocusHeading(el);
+  try {
+    var want = '#exam-guide/' + sid;
+    if (location.hash !== want && window.history && history.replaceState) history.replaceState(history.state, '', want);
+  } catch (e) {}
+}
+// From an address like #exam-guide/exam-day (waits for the file).
+function egOpenSection(sid) {
+  if (!sid || !EX_ID_RE.test(sid)) return;
+  if (S.activeTab !== 'examguide') { egState.pending = sid; switchTab('examguide'); return; }
+  if (EXAM_GUIDE.data) { egShowSection(sid); return; }
+  // Still loading: the queued draw opens it. Not yet asked (or failed): draw now.
+  egState.pending = sid;
+  if (!egState.waiting) renderExamGuide();
+}
+
+// ── Final review week (#final-week) ──
+function retryFinalWeek() {
+  FINAL_WEEK.failed = false;
+  renderFinalWeek();
+}
+var fwNotesAsked = false;
+var fwWaiting = false;   // a load callback for this page is queued (only one)
+function renderFinalWeek() {
+  var area = document.getElementById('finalWeekArea');
+  if (!area) return;
+  if (!FINAL_WEEK.data) {
+    if (FINAL_WEEK.failed) { area.innerHTML = exErrorHtml("Couldn't load the final review week.", 'retryFinalWeek()'); return; }
+    area.innerHTML = exLoadingHtml('Loading the final review week…');
+    if (!fwWaiting) {
+      fwWaiting = true;
+      FINAL_WEEK.load(function () { fwWaiting = false; if (S.activeTab === 'finalweek') renderFinalWeek(); });
+    }
+    return;
+  }
+  // The principles give the cheat sheet its titles and the tasks their
+  // targets: wait for them (if they fail, the page still shows).
+  if (!PRINCIPLES_RAW && !principlesLoadFailed) {
+    area.innerHTML = exLoadingHtml('Loading the final review week…');
+    if (!fwWaiting) {
+      fwWaiting = true;
+      loadPrinciplesData(function () { fwWaiting = false; if (S.activeTab === 'finalweek') renderFinalWeek(); });
+    }
+    return;
+  }
+  // The study notes only add names to the note links: draw now, again when they arrive.
+  if (!CISA_NOTES_RAW && !conceptsLoadFailed && !fwNotesAsked) {
+    fwNotesAsked = true;
+    loadConceptsData(function () { fwNotesAsked = false; if (S.activeTab === 'finalweek') renderFinalWeek(); });
+  }
+  // A redraw keeps focus on the same control.
+  var act = document.activeElement;
+  var key = act && area.contains(act) ? act.getAttribute('data-fwk') : null;
+  area.innerHTML = '<div class="gt fw">' + finalWeekHtml(FINAL_WEEK.data) + '</div>';
+  if (key) {
+    var again = area.querySelector('[data-fwk="' + key + '"]');
+    if (again) { try { again.focus({ preventScroll: true }); } catch (e) {} }
+  }
+}
+function fwDays(w) {
+  return (Array.isArray(w.days) ? w.days : []).filter(function (d) {
+    return d && typeof d.id === 'string' && /^day-\d{1,2}$/.test(d.id) && gtStr(d.title);
+  });
+}
+function fwDoneMap() {
+  if (!S.finalWeekDone || typeof S.finalWeekDone !== 'object' || Array.isArray(S.finalWeekDone)) S.finalWeekDone = {};
+  return S.finalWeekDone;
+}
+// A mark counts only inside the current final week: from 8 days before the
+// saved exam date to the exam date. With no exam date every mark shows.
+// (Older marks stay saved; they just don't count for this week.)
+function fwWeekRange() {
+  var left = examDaysLeft();
+  if (left === null) return null;
+  var now = Date.now();
+  var exam = new Date(now); exam.setDate(exam.getDate() + left);
+  var start = new Date(now); start.setDate(start.getDate() + left - 8);
+  return { from: parityDayKey(start.getTime()), to: parityDayKey(exam.getTime()) };
+}
+function fwDoneOn(dayId) {
+  var at = fwDoneMap()[dayId];
+  if (!at) return '';
+  var r = fwWeekRange();
+  return (!r || (at >= r.from && at <= r.to)) ? at : '';
+}
+function finalWeekHtml(w) {
+  var days = fwDays(w);
+  var left = examDaysLeft();
+  var h = '<div class="gt-head"><h1 class="gt-title" id="fwTitle" tabindex="-1">' + escapeHtml(gtStr(w.title) || 'Final review week') + '</h1>'
+    + (gtStr(w.intro) ? '<p class="gt-sub">' + escapeHtml(w.intro) + '</p>' : '') + '</div>';
+  var cl = (w.checklists && typeof w.checklists === 'object') ? w.checklists : {};
+  var eve = exStrs(cl.eve), morning = exStrs(cl.morning);
+  // Where the learner is in the plan, when an exam date is set (nothing otherwise).
+  var status = '';
+  if (left === 0) status = 'Today is exam day. The morning checklist is below.';
+  else if (left === 8) status = 'Your exam is in 8 days. Day 7 starts tomorrow.';
+  else if (left !== null && left >= 1 && left <= 7) status = 'Your exam is in ' + left + (left === 1 ? ' day' : ' days') + ', so today is Day ' + left + '.';
+  var goDay = (left !== null && left >= 1 && left <= 7) ? days.filter(function (d) { return Number(d.days_before) === left; })[0] : null;
+  if (status) {
+    h += '<div class="ex-note" role="note">' + ico('calendar', 20) + '<div class="ex-note-text"><p class="ex-note-t">' + status + '</p>'
+      + (goDay ? '<button type="button" class="gt-btn-ghost" data-fwk="go-today" data-to="fwDay-' + goDay.id + '" onclick="fwJump(this.dataset.to)">Go to Day ' + left + ico('arrow-right', 16) + '</button>' : '')
+      + (left === 0 && morning.length ? '<button type="button" class="gt-btn-ghost" data-fwk="go-morning" onclick="fwJump(\'fwH-morning\')">Go to the morning checklist' + ico('arrow-right', 16) + '</button>' : '')
+      + '</div></div>';
+  }
+  var how = exStrs(w.how_it_works);
+  var sheet = (w.cheat_sheet && typeof w.cheat_sheet === 'object') ? w.cheat_sheet : null;
+  var toc = [];
+  if (how.length) toc.push(['fwH-how', 'How it works']);
+  if (days.length) toc.push(['fwH-days', 'Day by day']);
+  if (eve.length || morning.length) toc.push(['fwH-lists', 'The eve and the morning']);
+  if (sheet) toc.push(['fwH-sheet', 'Cheat sheet']);
+  if (toc.length > 1) {
+    h += '<nav class="eg-toc" aria-labelledby="fwTocH"><h2 class="gt-cap" id="fwTocH" tabindex="-1">On this page</h2><ul class="eg-toc-list">'
+      + toc.map(function (t) { return '<li><button type="button" class="eg-toc-btn" data-fwk="toc-' + t[0] + '" data-to="' + t[0] + '" onclick="fwJump(this.dataset.to)">' + t[1] + '</button></li>'; }).join('')
+      + '</ul></nav>';
+  }
+  if (how.length) {
+    h += '<section class="eg-sec" aria-labelledby="fwH-how"><h2 class="eg-h" id="fwH-how" tabindex="-1">How it works</h2>' + exList(how) + '</section>';
+  }
+  if (days.length) {
+    var n = days.filter(function (d) { return fwDoneOn(d.id); }).length;
+    // The coach's voice goes on the day in focus: today's, else the first.
+    var coach = days.filter(function (d) { return left !== null && Number(d.days_before) === left; })[0] || days[0];
+    h += '<section class="eg-sec fw-days-sec" aria-labelledby="fwH-days"><h2 class="eg-h" id="fwH-days" tabindex="-1">Day by day</h2>'
+      + '<p class="ph-h-meta fw-count" id="fwDoneCount" role="status">' + fwDoneCountText(n, days.length) + '</p>'
+      + '<div class="fw-days">' + days.map(function (d) { return fwDayHtml(d, left, d === coach); }).join('') + '</div></section>';
+  }
+  if (eve.length || morning.length) {
+    h += '<section class="eg-sec" aria-labelledby="fwH-lists"><h2 class="eg-h" id="fwH-lists" tabindex="-1">The eve and the morning</h2>'
+      + (eve.length ? '<h3 class="fw-h3" id="fwH-eve" tabindex="-1">The evening before</h3>' + exList(eve) : '')
+      + (morning.length ? '<h3 class="fw-h3" id="fwH-morning" tabindex="-1">Exam morning</h3>' + exList(morning) : '')
+      + '</section>';
+  }
+  if (sheet) h += fwSheetHtml(sheet);
+  return h;
+}
+function fwDoneCountText(n, total) {
+  return n ? n + ' of ' + total + ' days marked done' : '';
+}
+function fwDayHtml(d, left, coach) {
+  var num = Number(d.days_before);
+  var isToday = left !== null && left === num;
+  var doneAt = fwDoneOn(d.id);
+  var hid = 'fwDay-' + d.id;
+  var tasks = (Array.isArray(d.tasks) ? d.tasks : []).filter(function (t) { return t && gtStr(t.text); });
+  var h = '<article class="fw-day' + (isToday ? ' fw-today' : '') + '" id="fw-' + d.id + '" aria-labelledby="' + hid + '">'
+    + '<h3 class="fw-day-h" id="' + hid + '" tabindex="-1"><span class="fw-day-n">' + (isFinite(num) && num > 0 ? 'Day ' + num : '')
+    + (isToday ? '<span class="fw-today-pill">Today</span>' : '') + '</span>'
+    + '<span class="sr-only">: </span><span class="fw-day-t">' + escapeHtml(d.title) + '</span></h3>'
+    + (gtStr(d.goal) ? '<p class="fw-goal">' + escapeHtml(d.goal) + '</p>' : '');
+  if (tasks.length) {
+    h += '<ol class="fw-tasks">' + tasks.map(function (t, i) { return fwTaskHtml(t, d.id + '-' + i); }).join('') + '</ol>';
+  }
+  if (gtStr(d.remember)) h += '<p class="fw-rem' + (coach ? ' fw-rem-coach' : '') + '"><span class="fw-rem-l">Remember</span>' + escapeHtml(d.remember) + '</p>';
+  h += '<div class="fw-day-foot">'
+    + '<button type="button" class="gt-btn-secondary fw-done-btn" aria-pressed="' + (doneAt ? 'true' : 'false') + '" data-day="' + d.id + '" data-fwk="done-' + d.id + '" onclick="fwToggleDone(this.dataset.day)">'
+    + ico('check', 18) + '<span>Mark day done</span></button>'
+    + '<span class="fw-done-m" id="fwDoneM-' + d.id + '">' + (doneAt && exDateWords(doneAt, true) ? 'Done on ' + exDateWords(doneAt, true) : '') + '</span>'
+    + '</div></article>';
+  return h;
+}
+function fwTaskHtml(t, key) {
+  var h = '<li><p class="fw-task-t">' + escapeHtml(t.text) + '</p>';
+  var acts = '';
+  var a = fwActionFor(t.action);
+  if (a) {
+    acts += '<button type="button" class="fw-act" data-fwk="act-' + key + '" data-act="' + a.kind + '" data-arg="' + escapeHtml(a.arg) + '" onclick="fwRunAction(this.dataset.act,this.dataset.arg)">'
+      + '<span>' + escapeHtml(a.label) + '</span>' + ico('arrow-right', 16) + '</button>';
+  }
+  var jumps = exStrs(t.sheet).map(function (k, i) {
+    var j = fwSheetTarget(k);
+    return j ? '<button type="button" class="fw-jump" data-fwk="jump-' + key + '-' + i + '" data-to="' + j.id + '" aria-label="Cheat sheet: ' + escapeHtml(j.label) + '" onclick="fwJump(this.dataset.to)">' + escapeHtml(j.label) + '</button>' : '';
+  }).filter(Boolean);
+  if (jumps.length) acts += '<span class="fw-jumps"><span class="fw-jumps-l">Cheat sheet:</span>' + jumps.join('') + '</span>';
+  if (acts) h += '<div class="fw-task-acts">' + acts + '</div>';
+  return h + '</li>';
+}
+// A cheat-sheet part named by a task -> { id, label } of its heading, or null.
+function fwSheetTarget(k) {
+  var named = { principles: ['fwS-principles', 'Principles'], priority_words: ['fwS-words', 'Priority words'], routine: ['fwS-routine', 'Answering routine'], pace: ['fwS-pace', 'Pace'] };
+  if (named[k]) return { id: named[k][0], label: named[k][1] };
+  var d = (k === 'focus' || k === 'next_focus') ? fwResolveDomain(k) : (DI[k] ? k : null);
+  return d ? { id: 'fwS-d' + d, label: 'Domain ' + d } : null;
+}
+function fwJump(id) {
+  exFocusHeading(document.getElementById(id));
+}
+
+// ── The cheat sheet ──
+function fwBackHtml(key) {
+  return '<button type="button" class="gt-btn-ghost fw-back" data-fwk="back-' + key + '" onclick="fwJump(\'fwTocH\')">Back to contents</button>';
+}
+function fwSheetHtml(sh) {
+  var h = '<section class="eg-sec fw-sheet" aria-labelledby="fwH-sheet"><h2 class="eg-h" id="fwH-sheet" tabindex="-1">Cheat sheet</h2>';
+  var doms = (Array.isArray(sh.domains) ? sh.domains : []).filter(function (d) { return d && DI[String(d.id)]; });
+  doms.forEach(function (d) {
+    var id = String(d.id), inf = DI[id];
+    var pts = (Array.isArray(d.points) ? d.points : []).filter(function (p) { return p && gtStr(p.text); });
+    if (!pts.length) return;
+    h += '<h3 class="fw-h3" id="fwS-d' + id + '" tabindex="-1"><span class="dom-dot" style="background:' + inf.color + '" aria-hidden="true"></span>Domain ' + id + ': ' + escapeHtml(gtStr(d.name) || inf.name) + '</h3>'
+      + '<ul class="fw-points">' + pts.map(function (p, i) {
+        var link = '';
+        var code = typeof p.note === 'string' ? p.note.trim() : '';
+        if (EX_NOTE_RE.test(code)) {
+          var nm = fwNoteName(code);
+          link = '<a class="fw-note-a" href="#notes" data-fwk="note-' + id + '-' + i + '" data-code="' + escapeHtml(code) + '" onclick="return fwNoteLink(event,this.dataset.code)">'
+            + (nm ? 'Note: ' + escapeHtml(nm) : 'Open the note<span class="sr-only"> for this point</span>') + '</a>';
+        }
+        return '<li><p class="fw-point-t">' + escapeHtml(p.text) + '</p>' + link + '</li>';
+      }).join('') + '</ul>' + fwBackHtml('d' + id);
+  });
+  var pw = (Array.isArray(sh.priority_words) ? sh.priority_words : []).filter(function (x) { return x && gtStr(x.word); });
+  if (pw.length) {
+    h += '<h3 class="fw-h3" id="fwS-words" tabindex="-1">Priority words</h3><dl class="gt-dl fw-words">' + pw.map(function (x) {
+      return '<div class="gt-dl-row"><dt>' + escapeHtml(x.word) + '</dt><dd>' + escapeHtml(x.meaning || '')
+        + (gtStr(x.cue) ? '<span class="fw-cue">' + escapeHtml(x.cue) + '</span>' : '') + '</dd></div>';
+    }).join('') + '</dl>' + fwBackHtml('words');
+  }
+  var rt = (Array.isArray(sh.answering_routine) ? sh.answering_routine : []).filter(function (x) { return x && gtStr(x.title); });
+  if (rt.length) {
+    h += '<h3 class="fw-h3" id="fwS-routine" tabindex="-1">Answering routine</h3><ol class="gt-list gt-olist eg-list">' + rt.map(function (x) {
+      return '<li><span class="fw-rt-t">' + escapeHtml(x.title) + '.</span> ' + escapeHtml(x.text || '') + '</li>';
+    }).join('') + '</ol>' + fwBackHtml('routine');
+  }
+  var pace = exStrs(sh.pace);
+  if (pace.length) h += '<h3 class="fw-h3" id="fwS-pace" tabindex="-1">Pace</h3>' + exList(pace) + fwBackHtml('pace');
+  // Principles by title, each linking to its page (the rule comes from principles.json).
+  var pr = sh.principles && typeof sh.principles === 'object' ? sh.principles : {};
+  var list = (Array.isArray(pr.ids) ? pr.ids : []).map(function (k) { return resolvePrinciple(k); }).filter(Boolean);
+  h += '<h3 class="fw-h3" id="fwS-principles" tabindex="-1">Principles</h3>'
+    + (gtStr(pr.intro) ? '<p class="eg-sum">' + escapeHtml(pr.intro) + '</p>' : '');
+  if (list.length) {
+    h += '<ul class="pl-rows fw-prs">' + list.map(function (p) {
+      return '<li><a class="pl-row" href="#principles/' + p.id + '" data-fwk="pr-' + p.id + '" data-pid="' + p.id + '" onclick="return railOpenPrinciples(event,this.dataset.pid)">'
+        + '<span class="pl-row-text"><span class="pl-row-title">' + escapeHtml(p.title) + '</span>'
+        + '<span class="pl-row-rule">' + escapeHtml(p.rule || '') + '</span></span>'
+        + '<span class="pl-row-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></a></li>';
+    }).join('') + '</ul>';
+  } else {
+    h += '<p class="eg-sum"><a class="fw-note-a" href="#principles" data-fwk="pr-all" onclick="return navTo(event,\'principles\')">Open Principles</a></p>';
+  }
+  return h + fwBackHtml('principles') + '</section>';
+}
+
+// ── What a task's action opens ──
+// Domains in "work on this next" order: the study rail's Focus next weak
+// spot first (when there is one), then by points left on the table (Today's
+// readiness rule, mobile focusId), then, for a new learner, the heaviest-
+// weighted domain they have practiced least. focus = the first,
+// next_focus = the second.
+function fwFocusOrder() {
+  var order = [];
+  var add = function (d) { d = String(d); if (DI[d] && order.indexOf(d) < 0) order.push(d); };
+  try { if (CISA_NOTES_RAW) { var w = railWeakSpot(); if (w) add(w.d); } } catch (e) {}
+  var r = null;
+  try { r = computeTodayReadiness(); } catch (e) {}
+  if (r && r.answered > 0) {
+    r.domains.slice().sort(function (a, b) {
+      return (1 - b.mastery) * DI[b.id].weight - (1 - a.mastery) * DI[a.id].weight;
+    }).forEach(function (x) { add(x.id); });
+  }
+  var answered = {};
+  if (r) r.domains.forEach(function (x) { answered[x.id] = x.answered; });
+  Object.keys(DI).sort(function (a, b) {
+    return (DI[b].weight - DI[a].weight) || ((answered[a] || 0) - (answered[b] || 0));
+  }).forEach(add);
+  return order;
+}
+function fwResolveDomain(t) {
+  if (DI[t]) return String(t);
+  var order = fwFocusOrder();
+  if (t === 'focus') return order[0] || null;
+  if (t === 'next_focus') return order[1] || null;
+  return null;
+}
+// The learner's most common thinking slip (tags in the mistake journal) ->
+// { pid } (its principle, via slip_map), { knowledge: true } ("Didn't know
+// it": no thinking slip) or null (nothing tagged yet).
+function fwTopSlip() {
+  var log = S.mistakeLog || {};
+  var count = {}, last = {};
+  Object.keys(log).forEach(function (id) {
+    var e = log[id];
+    if (!e || typeof e.slip !== 'string') return;
+    count[e.slip] = (count[e.slip] || 0) + 1;
+    last[e.slip] = Math.max(last[e.slip] || 0, Number(e.at) || 0);
+  });
+  var top = Object.keys(count).sort(function (a, b) { return (count[b] - count[a]) || (last[b] - last[a]); })[0];
+  if (!top) return null;
+  var map = (PRINCIPLES_RAW && PRINCIPLES_RAW.slip_map && typeof PRINCIPLES_RAW.slip_map === 'object') ? PRINCIPLES_RAW.slip_map : {};
+  if (!Object.prototype.hasOwnProperty.call(map, top)) return null;
+  return map[top] ? { pid: map[top] } : { knowledge: true };
+}
+function fwFamily(fid) {
+  for (var i = 0; i < PRINCIPLE_FAMILIES.length; i++) if (PRINCIPLE_FAMILIES[i].id === fid) return PRINCIPLE_FAMILIES[i];
+  return null;
+}
+// The name of a note (subtopic 1B3.2 or topic 1B3), once the notes are in.
+function fwNoteName(code) {
+  if (!CISA_NOTES_RAW) return '';
+  var dom = (buildConceptsData().domains || []).filter(function (x) { return String(x.domain_id) === code.charAt(0); })[0];
+  if (!dom) return '';
+  for (var i = 0; i < dom.groups.length; i++) {
+    var g = dom.groups[i];
+    if (g.group_id === code) return g.group_title;
+    for (var j = 0; j < g.items.length; j++) if (g.items[j].id === code) return g.items[j].name;
+  }
+  return '';
+}
+// A task's action -> { kind, arg, label } for its button, or null (no button).
+function fwActionFor(a) {
+  if (!a || typeof a !== 'object' || typeof a.kind !== 'string') return null;
+  var t = typeof a.target === 'string' ? a.target.trim() : '';
+  if (a.kind === 'note') {
+    if (!t) return { kind: 'note', arg: '', label: 'Open Study notes' };
+    if (!EX_NOTE_RE.test(t)) return null;
+    // Once the notes are in, a code they don't have gets no button.
+    var nm = fwNoteName(t);
+    if (CISA_NOTES_RAW && !nm) return null;
+    return { kind: 'note', arg: t, label: nm ? 'Note: ' + nm : 'Open the note' };
+  }
+  if (a.kind === 'principles') {
+    if (!t || !PRINCIPLES_RAW) return { kind: 'principles', arg: '', label: 'Open Principles' };
+    if (t === 'top_slip') {
+      var slip = fwTopSlip();
+      var sp = slip && slip.pid ? resolvePrinciple(slip.pid) : null;
+      if (sp) return { kind: 'principle', arg: sp.id, label: 'Principle: ' + sp.title };
+      if (slip && slip.knowledge) return { kind: 'note', arg: '', label: 'Open Study notes' };
+      return { kind: 'principles', arg: '', label: 'Open Principles' };
+    }
+    var fam = fwFamily(t);
+    if (fam) return { kind: 'family', arg: fam.id, label: 'Principles: ' + fam.title };
+    var p = resolvePrinciple(t);
+    return p ? { kind: 'principle', arg: p.id, label: 'Principle: ' + p.title } : null;
+  }
+  if (a.kind === 'practice_domain') {
+    var d = fwResolveDomain(t);
+    return d ? { kind: 'practice', arg: d, label: 'Practice ' + DI[d].short } : null;
+  }
+  if (a.kind === 'mock_mini' || a.kind === 'mock_full') {
+    var mt = a.kind === 'mock_mini' ? 'mini' : 'full';
+    return { kind: 'mock', arg: mt, label: 'Start a ' + MOCK_TYPES[mt].name.toLowerCase() };
+  }
+  if (a.kind === 'mistakes') {
+    var has = Array.isArray(S.missedQuestions) && S.missedQuestions.length > 0;
+    return { kind: 'mistakes', arg: '', label: has ? 'Review your missed questions' : 'Open Saved' };
+  }
+  if (a.kind === 'glossary') {
+    return { kind: 'glossary', arg: t, label: t ? 'Look up ' + t : 'Open the Glossary' };
+  }
+  return null;
+}
+function fwRunAction(kind, arg) {
+  arg = arg || '';
+  if (kind === 'note') { fwOpenNote(arg); return; }
+  if (kind === 'principles') { principlesState.seq++; principlesState.selectedId = null; switchTab('principles'); return; }
+  if (kind === 'principle') { openPrinciple(arg); return; }
+  if (kind === 'family') { fwOpenFamily(arg); return; }
+  if (kind === 'practice' && DI[arg]) { todayPracticeDomain(arg); return; }
+  if (kind === 'mock') {
+    switchTab('mock');
+    // The start dialog, unless the banks are still loading (the page says so).
+    if (!Object.keys(window.QB_LOADING || {}).length) showMockConfirm(arg === 'mini' ? 'mini' : 'full');
+    return;
+  }
+  if (kind === 'mistakes') {
+    if (Array.isArray(S.missedQuestions) && S.missedQuestions.length) {
+      switchTab('practice', { noScroll: true });
+      practiceMissed();
+    } else switchTab('bookmarks');
+    return;
+  }
+  if (kind === 'glossary') {
+    if (arg) {
+      glossState.search = arg;
+      glossState.domain = 'all';
+      glossState.showMastered = 'all';
+      glossState.view = 'browse';
+    }
+    switchTab('glossary');
+  }
+}
+// A principle family: the Principles list, at that family's heading.
+function fwOpenFamily(fid) {
+  principlesState.seq++;
+  principlesState.selectedId = null;
+  principlesState.query = '';
+  switchTab('principles');
+  var seq = principlesState.seq;
+  var go = function () {
+    if (S.activeTab !== 'principles' || principlesState.selectedId || principlesState.seq !== seq) return;
+    var h = document.getElementById('plFam-' + fid);
+    if (h) { h.setAttribute('tabindex', '-1'); exFocusHeading(h); }
+  };
+  if (PRINCIPLES_RAW) go();
+  else loadPrinciplesData(function (ok) { if (ok) go(); });
+}
+// A note: a subtopic (1B3.2) opens and is highlighted, a topic (1B3) opens
+// its group; no code opens Study notes.
+function fwOpenNote(code) {
+  var dm = /^([1-5])/.exec(code || '');
+  if (!dm) { switchTab('topics'); return; }
+  topicState.domain = dm[1];
+  switchTab('topics');
+  var go = function () {
+    if (S.activeTab !== 'topics') return;
+    var dom = (buildConceptsData().domains || []).filter(function (x) { return String(x.domain_id) === dm[1]; })[0];
+    if (!dom) return;
+    var group = null, isItem = false;
+    dom.groups.forEach(function (g) {
+      if (g.group_id === code) group = g;
+      if (g.items.some(function (it) { return it.id === code; })) isItem = true;
+    });
+    if (isItem) {
+      jumpToSubtopic(code);
+      var row = document.getElementById('ni-' + code);
+      var btn = row && row.querySelector('.gt-row-btn');
+      if (btn) { try { btn.focus({ preventScroll: true }); } catch (e) {} }
+      return;
+    }
+    if (!group) return;
+    var gKey = dm[1] + '-g-' + group.group_id;
+    topicState.search = '';
+    topicState.openGroups[gKey] = true;
+    renderTopics();
+    var sec = document.getElementById('ng-' + gKey);
+    var gb = sec && sec.querySelector('.gt-group-btn');
+    if (sec) { try { sec.scrollIntoView({ block: 'start' }); } catch (e) {} }
+    if (gb) { try { gb.focus({ preventScroll: true }); } catch (e) {} }
+  };
+  if (CISA_NOTES_RAW) go();
+  else loadConceptsData(go);
+}
+function fwNoteLink(e, code) {
+  if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.button && e.button !== 0))) return true;
+  if (e && e.preventDefault) e.preventDefault();
+  fwOpenNote(code);
+  return false;
+}
+
+// ── Mark day done: S.finalWeekDone = { dayId: 'YYYY-MM-DD' } (saved, exported) ──
+function sanitizeFinalWeekDone(m) {
+  var out = {};
+  if (!m || typeof m !== 'object' || Array.isArray(m)) return out;
+  Object.keys(m).slice(0, 20).forEach(function (k) {
+    if (/^day-\d{1,2}$/.test(k) && typeof m[k] === 'string' && PARITY_DAY_RE.test(m[k])) out[k] = m[k];
+  });
+  return out;
+}
+function fwToggleDone(dayId) {
+  if (!dayId || !/^day-\d{1,2}$/.test(dayId)) return;
+  var done = fwDoneMap();
+  // A mark from an earlier week does not count: pressing marks it again.
+  if (fwDoneOn(dayId)) delete done[dayId];
+  else done[dayId] = parityDayKey(Date.now());
+  saveState();
+  var at = fwDoneOn(dayId);
+  var btn = document.querySelector('.fw-done-btn[data-day="' + dayId + '"]');
+  if (btn) btn.setAttribute('aria-pressed', at ? 'true' : 'false');
+  var m = document.getElementById('fwDoneM-' + dayId);
+  if (m) m.textContent = at ? 'Done on ' + exDateWords(at, true) : '';
+  var cnt = document.getElementById('fwDoneCount');
+  if (cnt && FINAL_WEEK.data) {
+    var days = fwDays(FINAL_WEEK.data);
+    cnt.textContent = fwDoneCountText(days.filter(function (d) { return fwDoneOn(d.id); }).length, days.length);
+  }
+}
+
+// ── Today: one calm card in the last 8 days before a set exam date ──
+// "Hide for today" keeps it away until tomorrow (a device-only key).
+var FW_HIDE_KEY = 'aurivan_final_week_hidden';
+function todayFinalWeekHtml(days) {
+  if (days === null || days < 0 || days > 8) return '';
+  try { if (localStorage.getItem(FW_HIDE_KEY) === parityDayKey(Date.now())) return ''; } catch (e) {}
+  if (!FINAL_WEEK.data && !FINAL_WEEK.failed && !FINAL_WEEK.loading) {
+    FINAL_WEEK.load(function (ok) { if (ok) refreshTodayFinalWeek(); });
+  }
+  var day = null;
+  if (FINAL_WEEK.data) day = fwDays(FINAL_WEEK.data).filter(function (d) { return Number(d.days_before) === days; })[0] || null;
+  var kicker, title, meta;
+  // The day line above already counts the days, so the kicker doesn't.
+  if (days === 0) { kicker = 'This morning'; title = 'Your exam-morning checklist'; meta = 'A few calm steps before you go.'; }
+  else if (days === 8) { kicker = 'Starts tomorrow'; title = 'A calm plan for your last 7 days'; meta = 'One short plan for each day, with a cheat sheet.'; }
+  else {
+    kicker = 'Today&rsquo;s plan';
+    title = day ? 'Day ' + days + ': ' + escapeHtml(day.title) : 'Today&rsquo;s review plan';
+    meta = day && gtStr(day.goal) ? escapeHtml(day.goal) : 'Today&rsquo;s goal, tasks and one thing to remember.';
+  }
+  return '<section class="td-fw" id="tdFw" aria-labelledby="tdFwH">'
+    + '<h2 class="ph-h" id="tdFwH">Final review week</h2>'
+    + '<ul class="you-list"><li><a class="you-row td-row" href="#final-week" onclick="return navTo(event,\'finalweek\')">'
+    + '<span class="you-ico" aria-hidden="true">' + ico('calendar', 20) + '</span>'
+    + '<span class="you-text"><span class="td-kicker">' + kicker + '</span>'
+    + '<span class="you-t">' + title + '</span>'
+    + '<span class="you-m">' + meta + '</span></span>'
+    + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
+    + '</a></li></ul>'
+    + '<button type="button" class="gt-btn-ghost td-fw-hide" onclick="todayHideFinalWeek()">Hide for today</button>'
+    + '</section>';
+}
+function refreshTodayFinalWeek() {
+  if (S.activeTab !== 'home') return;
+  var old = document.getElementById('tdFw');
+  if (!old) return;
+  var a = document.activeElement;
+  var focused = old.contains(a) ? (a.classList.contains('td-fw-hide') ? '.td-fw-hide' : '.you-row') : null;
+  old.outerHTML = todayFinalWeekHtml(examDaysLeft());
+  var now = document.getElementById('tdFw');
+  if (focused && now) { var f = now.querySelector(focused); if (f) { try { f.focus({ preventScroll: true }); } catch (e) {} } }
+}
+function todayHideFinalWeek() {
+  try { localStorage.setItem(FW_HIDE_KEY, parityDayKey(Date.now())); } catch (e) {}
+  var card = document.getElementById('tdFw');
+  if (card) card.parentNode.removeChild(card);
+  var next = document.querySelector('#homeArea .td-next .you-row') || document.getElementById('tdTitle');
+  if (next) { try { next.focus({ preventScroll: true }); } catch (e) {} }
+  showToast('Hidden for today. The plan stays under Learn.', 'info', 2600);
+}
 
 function renderGlossary() {
   var area = document.getElementById('glossaryArea');
@@ -16811,6 +17676,15 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Exam guide and final review week',
+    items: [
+      { cat: 'new', text: 'About the CISA exam: registration and fees, test center or online, exam day, results, and how to become certified, with links to the official sources and the date we last checked them.' },
+      { cat: 'new', text: 'Final review week: a calm seven-day plan for the last week before your exam, with one-tap tasks, a must-remember sheet for each domain and an exam-day answering routine.' },
+      { cat: 'new', text: 'With an exam date set, Today shows your final-week plan for the last eight days.' }
+    ]
+  },
+  {
+    version: 'v12.13',
     title: 'Your plant companion, now on the web',
     items: [
       { cat: 'new', text: 'Grow your own plant companion on the web, just like in the app. Pick one of 13 plants and give it a name. It grows only from real progress across the exam outline, and you will find it on Today and on You.' },

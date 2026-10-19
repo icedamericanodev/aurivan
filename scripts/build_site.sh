@@ -17,8 +17,9 @@
 #       companion (generated from the mobile app's plant code by
 #       mobile/scripts/build-web-plant.mjs). No other .js file is allowed.
 #     - the data the web app really loads (index.html fetches
-#       data/domain1..5.json, data/cisa_notes.json and
-#       data/mindset/principles.json; nothing else in data/)
+#       data/domain1..5.json, data/cisa_notes.json,
+#       data/mindset/principles.json and the two data/exam/ files, the exam
+#       guide and the final review week; nothing else in data/)
 #     - _headers (security and cache headers) and _redirects
 #     - favicon.ico at the top level (browsers ask for /favicon.ico by
 #       themselves)
@@ -35,7 +36,7 @@ cd "$(dirname "$0")/.."
 OUT="_site"
 
 PAGES=(index.html privacy.html terms.html support.html)
-DATA=(data/domain1.json data/domain2.json data/domain3.json data/domain4.json data/domain5.json data/cisa_notes.json data/mindset/principles.json)
+DATA=(data/domain1.json data/domain2.json data/domain3.json data/domain4.json data/domain5.json data/cisa_notes.json data/mindset/principles.json data/exam/cisa_exam_guide.json data/exam/final_review_week.json)
 SITE_CONFIG=(_headers _redirects)
 # File types allowed inside assets/ (lower case).
 ASSET_TYPES='png|ico|svg|webp|jpg|jpeg|woff2|woff|css'
@@ -105,6 +106,7 @@ while IFS= read -r -d '' f; do
   case "$rel" in
     index.html|privacy.html|terms.html|support.html|_headers|_redirects|favicon.ico) ;;
     data/domain[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
+    data/exam/cisa_exam_guide.json|data/exam/final_review_week.json) ;;
     assets/*) ;;
     *) fail "unexpected file in the site: $rel" ;;
   esac

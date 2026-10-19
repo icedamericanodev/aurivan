@@ -4,6 +4,13 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.14] — Exam guide and final review week
+
+### New
+- About the CISA exam: registration and fees, test center or online, exam day, results, and how to become certified, with links to the official sources and the date we last checked them.
+- Final review week: a calm seven-day plan for the last week before your exam, with one-tap tasks, a must-remember sheet for each domain and an exam-day answering routine.
+- With an exam date set, Today shows your final-week plan for the last eight days.
+
 ## [v12.13] — Your plant companion, now on the web
 
 ### New
