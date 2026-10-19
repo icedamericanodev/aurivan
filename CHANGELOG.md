@@ -4,6 +4,15 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.12] — A clearer glossary and tidier topics
+
+### Improved
+- Every glossary definition is rewritten in clear, plain language, with what the IS auditor looks for where it helps.
+- A few practice questions that sat in the wrong topic were rewritten to fit it, and more questions now link to their study note.
+
+### Fixed
+- Several glossary definitions were updated to current practice, such as encryption protocols and recovery objectives.
+
 ## [v12.11] — Principles, rebuilt
 
 ### Improved

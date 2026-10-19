@@ -4439,38 +4439,38 @@
     {
       "id": "d2_120",
       "domain": 2,
-      "subtopic": "IT Incident Classification and Prioritization",
+      "subtopic": "IT Performance Reporting. Coverage of Business-Run Services",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor reviews a bank's IT incident management process. Which classification approach MOST supports consistent prioritization?",
+      "question": "An IT steering committee's monthly service report covers only systems run by IT, though business units now run several critical processes on SaaS they bought directly. Which change should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Categories by technology area, used to route each incident",
-        "B": "Severity set by the business owner's judgment, without criteria",
-        "C": "An impact-and-urgency matrix with defined criteria per tier",
-        "D": "Incidents handled in the order in which they are reported"
+        "A": "Ask each business unit to report its SaaS issues separately",
+        "B": "Transfer every business-bought SaaS tool to IT operations support",
+        "C": "Report on every critical business service, whoever runs it",
+        "D": "Add incident detail for the systems IT already runs"
       },
       "correct": "C",
-      "key_concept": "Consistent prioritization comes from a documented matrix of business impact and urgency, with defined criteria and response targets per tier.",
-      "pre_read": "Notice the word consistent. Ask which approach makes two engineers rate the same incident the same way, by business impact.",
-      "correct_explanation": "Priority should reflect business consequence and urgency, and consistency needs written criteria. A matrix of impact and urgency with defined criteria per tier gives every engineer the same answer for the same incident and links tiers to response targets. Technology categories are useful for routing to the right team, but they say nothing about business impact, so they cannot set priority.",
+      "key_concept": "Governance reporting must cover every critical business service, whoever operates it, so oversight has no blind spots.",
+      "pre_read": "Ask what the committee cannot see today, then which option closes that gap in one view.",
+      "correct_explanation": "Governance oversight must cover every service the business depends on, not just the ones IT operates. Reporting on all critical business services, whoever runs them, shows the committee where performance and risk sit across the enterprise. Asking units to report separately looks practical, but it fragments the picture, so no one sees the combined exposure or compares services against the same targets.",
       "wrong_explanations": {
-        "A": "Technology categories decide who responds, not how urgently. Without an impact dimension, a minor and a critical outage rank the same.",
-        "B": "Undocumented judgment, even a business owner's, varies between people and shifts, so the same incident gets different priorities.",
-        "D": "Arrival order ignores impact, so a critical outage can wait behind minor requests."
+        "A": "Separate unit reports fragment oversight; the committee still cannot see combined exposure or compare services against common targets.",
+        "B": "Moving support to IT is an operational restructuring decision for management; it does not fix what the committee sees now.",
+        "D": "More detail on systems already reported deepens the existing view but leaves the critical SaaS services invisible."
       },
       "tips": [
-        "Eliminate: B depends on undocumented judgment, and D ignores impact altogether.",
-        "Final two: C beats A because priority must reflect business impact; technology categories route incidents but do not rank them.",
-        "Exam cue: prioritization questions favor business impact with documented criteria over technical category or arrival order."
+        "Eliminate: D adds depth where the committee already has a view, and B reorganizes support rather than fixing oversight.",
+        "Final two: C beats A because one enterprise view shows combined exposure; separate unit reports leave the committee to piece it together.",
+        "Exam cue: when oversight misses part of the business, widen the scope of what governance sees before adding detail."
       ],
-      "framework_ref": "ITIL 4 Incident Management; COBIT 2019 DSS02 (Managed Service Requests and Incidents)",
+      "framework_ref": "COBIT 2019 MEA01 (Managed Performance and Conformance Monitoring); COBIT 2019 EDM05 (Ensured Stakeholder Engagement)",
       "related_concepts": [
-        "Incident classification",
-        "Severity matrix",
-        "ITIL 4",
-        "Response SLAs"
+        "Governance reporting scope",
+        "Business-managed SaaS",
+        "Critical business services",
+        "IT steering committee"
       ],
-      "_provenance": "Authored from concept: 'IT incident classification multi-dimensional severity matrix - complements d2_105 (incident response escalation analysis) and d2_110 (crisis communication)'. Public source: ITIL 4 + FFIEC. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'IT incident classification multi-dimensional severity matrix - complements d2_105 (incident response escalation analysis) and d2_110 (crisis communication)'. Public source: ITIL 4 + FFIEC. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Wave 0-A re-scope (Oct 2026): rewritten in place to test D2 IT performance reporting to governance (2B3.3), the scope of what the committee sees, instead of D4 incident classification; id kept so learner history is preserved.",
       "style_version": 2
     },
     {
