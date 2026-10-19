@@ -4,6 +4,15 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.11] — Principles, rebuilt
+
+### Improved
+- Principles is rebuilt: 20 rules of the IS auditor's mindset, grouped by the question each one answers, now covering every domain.
+
+### New
+- Each principle shows the rule, why it matters, the words in a question that signal it, the trap to avoid and a worked example.
+- Practice this principle starts a short set of questions that turn on that rule.
+
 ## [v12.10] — A study panel on wide screens
 
 ### New

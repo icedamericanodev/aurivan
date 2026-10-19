@@ -83,8 +83,11 @@
 .dark-toggle-btn:focus-visible,
 .whats-new-btn:focus-visible,
 .profile-btn:focus-visible,
-.pl-item:focus-visible,
-.pl-nav-btn:focus-visible,
+.pl-row:focus-visible,
+.pl-pn-btn:focus-visible,
+.gt-btn-ghost:focus-visible,
+.gt-practice-btn:focus-visible,
+.gt-btn-secondary:focus-visible,
 .tp-item:focus-visible,
 .subtopic-chip:focus-visible,
 .ctrl-btn:focus-visible,
@@ -2475,237 +2478,62 @@ header {
   50% { box-shadow: 0 0 0 6px rgba(43,110,74,0.35); }
 }
 
-/* ═══ PHASE 4 — PRINCIPLES LIBRARY (Two-Pane Master-Detail, Decision 2) ═══ */
-.pl-twopane {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 0;
-  min-height: 600px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
+/* ═══ PRINCIPLES (exam mindset, data/mindset/principles.json) ═══
+   One column like Study notes (.gt): the list grouped by family, then one
+   principle at a time with Previous / Next. Grove tokens only. */
+.pl-fam { margin-top: var(--sp-section); }
+.pl-fam:first-child { margin-top: var(--sp-sm); }
+.pl-fam-title { font: var(--t-headline); color: var(--text); margin: 0; }
+.pl-fam-q { font: var(--t-meta); color: var(--text2); margin: 2px 0 var(--sp-sm); }
+.pl-rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
+.pl-rows > li { border-bottom: 1px solid var(--border); }
+.pl-row {
+  width: 100%; display: flex; align-items: center; gap: var(--sp-md); min-height: 64px; padding: var(--sp-md) 0;
+  background: none; border: 0; cursor: pointer; text-align: left; color: var(--text);
 }
-.pl-list {
-  background: var(--surface2);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  max-height: 78vh;
-}
-.pl-list-header { padding: 20px 18px 14px; border-bottom: 1px solid var(--border); }
-.pl-title {
-  font-family: Fraunces,Georgia,serif;
-  font-size: 18px; font-weight: 500;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-.pl-sub {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px; letter-spacing: 0;
-  text-transform: none;
-  color: var(--muted);
-  margin-bottom: 12px;
-}
-.pl-search {
-  width: 100%;
-  padding: 10px 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px;
-  color: var(--text);
-  outline: none;
-  transition: border-color var(--tr);
-}
-.pl-search:focus { border-color: var(--accent); }
-.pl-progress {
-  margin-top: 10px;
-  height: 3px;
-  background: var(--border);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.pl-progress-fill {
-  height: 100%;
-  background: var(--accent);
-  transition: width 0.4s ease;
-  width: 6.67%;
-}
-.pl-list-items {
-  flex: 1;
-  overflow-y: auto;
-  padding: 6px 0;
-}
-.pl-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 18px;
-  cursor: pointer;
-  transition: var(--tr);
-  border-left: 3px solid transparent;
-}
-.pl-item:hover { background: var(--surface2); }
-.pl-item.active {
-  background: rgba(43,110,74,0.10);
-  border-left-color: var(--accent);
-}
-.pl-item-tag {
-  width: 8px; height: 8px; border-radius: 50%;
-  flex-shrink: 0;
-}
-.pl-item-code {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px; font-weight: 600;
-  color: var(--text);
-  letter-spacing: 0.02em;
-  line-height: 1.25;
-}
-.pl-item-domain {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px;
-  color: var(--text2);
-  letter-spacing: 0;
-  text-transform: none;
-  margin-top: 2px;
-}
-.pl-no-match {
-  padding: 20px 18px;
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px;
-  color: var(--muted);
-  text-align: center;
-  font-style: italic;
-}
-/* Detail pane */
-.pl-detail {
-  padding: 28px 32px;
-  overflow-y: auto;
-  max-height: 78vh;
-}
-.pl-empty {
-  padding: 80px 20px;
-  text-align: center;
-  color: var(--muted);
-  font-style: italic;
-}
-.pl-detail-header { border-bottom: 1px solid var(--border); padding-bottom: 18px; }
-.pl-detail-tag-row {
-  display: flex; align-items: center; gap: 12px;
-  margin-bottom: 10px;
-  font-family: Figtree,system-ui,sans-serif;
-}
-.pl-domain-chip {
-  font-size: 13px;
-  letter-spacing: 0;
-  padding: 4px 10px;
-  border-radius: 100px;
-  font-weight: 600;
-}
-.pl-counter {
-  font-size: 13px;
-  color: var(--muted);
-  letter-spacing: 0;
-}
-.pl-detail-code {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px; font-weight: 600;
-  color: var(--accent);
-  letter-spacing: 0;
-  margin-bottom: 6px;
-}
-.pl-detail-tagline {
-  font-family: Fraunces,Georgia,serif;
-  font-size: 26px; font-weight: 500;
-  line-height: 1.3;
-  color: var(--text);
-  margin: 0 0 14px;
-}
-.pl-prev-next {
-  display: flex; justify-content: space-between; gap: 8px;
-  margin-top: 12px;
-}
-.pl-nav-btn {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text2);
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px;
-  letter-spacing: 0;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: var(--tr);
-}
-.pl-nav-btn:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-.pl-detail-body { padding-top: 22px; }
-.pl-section { margin-bottom: 22px; }
-.pl-section-label {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--muted);
-  margin: 0 0 10px;
-  font-weight: 600;
-}
-.pl-def, .pl-distinct {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--text2);
-  margin: 0;
-}
-.pl-distinct strong { color: var(--text); font-weight: 600; }
-.pl-applies {
-  list-style: none;
-  margin: 0; padding: 0;
-}
-.pl-applies-item {
-  display: flex; align-items: flex-start; gap: 10px;
-  margin-bottom: 8px;
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13.5px;
-  line-height: 1.6;
-  color: var(--text2);
-}
-.pl-applies-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  margin-top: 8px;
-  flex-shrink: 0;
-}
-.pl-qcount {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px;
-  color: var(--text2);
-  padding: 8px 14px;
-  background: var(--surface2);
-  border-radius: 100px;
-}
-.pl-qcount strong {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px;
-  color: var(--accent);
-}
-.pl-qcount-dot { color: var(--accent); font-size: 13px; }
+.pl-row-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.pl-row-title { font: var(--t-label); color: var(--text); }
+.pl-row-rule { font: var(--t-small); color: var(--text2); }
+.pl-row-chev { color: var(--muted); flex-shrink: 0; display: inline-flex; }
+.pl-row:hover .pl-row-title { text-decoration: underline; text-underline-offset: 3px; }
+.pl-row:hover .pl-row-chev { color: var(--text); }
 
-/* Mobile: stack list above detail */
-@media (max-width: 760px) {
-  .pl-twopane { grid-template-columns: 1fr; }
-  .pl-list {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    max-height: 240px;
-  }
-  .pl-list-items { padding-bottom: 12px; }
-  .pl-detail { padding: 22px 18px; max-height: none; }
-  .pl-detail-tagline { font-size: 20px; }
+/* Detail */
+.pl-back { margin: 0 0 var(--sp-sm) -4px; }
+.pl-back .ico-back { margin-right: 2px; }
+.pl-d-head { padding-bottom: var(--sp-lg); border-bottom: 1px solid var(--border); }
+.pl-d-cap { font: var(--t-caption); color: var(--text2); margin: 0 0 var(--sp-xs); }
+.pl-d-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: 0; }
+.pl-d-title:focus { outline: none; }
+.pl-d-title:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
+.pl-d-body .gt-sec { margin-top: var(--sp-xxl); }
+.pl-d-body .gt-sec:first-child { margin-top: var(--sp-xl); }
+.pl-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--sp-sm); }
+.pl-chip {
+  display: inline-flex; align-items: center; min-height: 32px; padding: var(--sp-xs) var(--sp-md); border-radius: var(--r-pill);
+  background: var(--surface2); color: var(--text); font: var(--t-meta);
+}
+.pl-ex-a { margin-top: var(--sp-md); padding-top: var(--sp-md); border-top: 1px solid var(--border2); }
+.pl-ex-label { font-weight: 600; color: var(--accent-text); }
+.pl-d-body .gt-practice { margin-top: 0; }
+.pl-doms { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--sp-sm) var(--sp-lg); }
+.pl-doms li { font: var(--t-small); font-weight: 500; color: var(--text); display: inline-flex; align-items: center; }
+.pl-doms .pl-dom-n { color: var(--text2); margin-right: 4px; }
+
+/* Previous / Next across the whole ordered list */
+.pl-pn { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-md); margin-top: var(--sp-section); padding-top: var(--sp-lg); border-top: 1px solid var(--border); }
+.pl-pn-btn {
+  display: flex; flex-direction: column; gap: 2px; min-height: 64px; padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md);
+  background: var(--surface); border: 1.5px solid var(--raised-outline); box-shadow: var(--shadow); color: var(--text); cursor: pointer; text-align: left;
+}
+.pl-pn-btn:hover { border-color: var(--control); }
+.pl-pn-next { text-align: right; align-items: flex-end; grid-column: 2; }
+.pl-pn-cap { font: var(--t-caption); color: var(--text2); display: inline-flex; align-items: center; gap: 4px; }
+.pl-pn-t { font: var(--t-label); color: var(--text); }
+@media (max-width: 600px) {
+  .pl-d-title { font: var(--t-hero); letter-spacing: var(--tr-hero); }
+  .pl-pn { grid-template-columns: 1fr; }
+  .pl-pn-next { grid-column: auto; }
 }
 
 /* Section banner — KaiSip-branded header for Glossary & FAQ. Mirrors the
@@ -5201,8 +5029,8 @@ body[data-mock-results="1"] #readinessCard { display: none; }
   .ep-skip, .consent-close, .legal-disclaimer a, .legal-link-btn, .tipjar-btn, .home-cta, .pwa-install-btn, .pwa-dismiss-btn,
   .ws-prac-btn, .mock-chip, .resume-btn, .bk-tag-chip, .gloss-chip, .fb-type, .flag-btn, .fb-btn, .session-btn { min-height: 44px; }
   .session-start .ss-chip, .session-start .ss-select, .exam-prompt .ep-set, .exam-prompt .ep-input, .ep-set, .ep-input,
-  .mock-resume-btn, .pl-search, .pl-nav-btn, .gloss-mode-btn, .gloss-card-master-btn { min-height: 44px !important; }
-  .gloss-card-master-btn, .pl-nav-btn { min-width: 44px; }
+  .mock-resume-btn, .gloss-mode-btn, .gloss-card-master-btn { min-height: 44px !important; }
+  .gloss-card-master-btn { min-width: 44px; }
   .conf-tip button, .study-rec-dismiss, .ep-skip, .consent-close, .pwa-dismiss-btn { min-width: 44px; }
   .legal-disclaimer a, .legal-link-btn { display: inline-flex; align-items: center; }
 }
@@ -6222,7 +6050,7 @@ html { scroll-padding-bottom: 104px; }
   <div id="topicsArea"></div>
 </div>
 
-<!-- PRINCIPLES (Phase 4 — Two-Pane Master-Detail) -->
+<!-- PRINCIPLES (data/mindset/principles.json: list by family, then one principle) -->
 <div id="screen-principles" class="screen">
   <div id="principlesArea"></div>
 </div>
@@ -6245,7 +6073,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.10</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.11</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6531,7 +6359,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.10';
+const APP_VERSION = 'v12.11';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -9396,15 +9224,17 @@ function startConceptPractice(itemId) {
 
 // A short fixed set that is not one note's (the study rail's weak-spot mix):
 // the same runner, no "Back to topic". Each question keeps its own domain in
-// its meta line; the strip names the set.
-function startMixedSet(qs, name, domain) {
+// its meta line; the strip names the set. opts.principleId: the set is a
+// principle's practice_ids, so the way back leads to that principle.
+function startMixedSet(qs, name, domain, opts) {
   if (!qs || !qs.length) return;
   clearAllTimers();
   switchTab('practice');      // clears the other replay modes…
   conceptPracticeMode = true; // …so set ours after the tab switch
   conceptPracticeList = qs.slice();
   conceptPracticeIndex = 0;
-  conceptPracticeCtx = { itemId: null, name: name, domain: String(domain || 'all'), answered: 0, correct: 0, mixed: true };
+  conceptPracticeCtx = { itemId: null, name: name, domain: String(domain || 'all'), answered: 0, correct: 0, mixed: true,
+    principleId: (opts && opts.principleId) || null };
   hideSessionStart();
   showNextConcept();
   var title = document.getElementById('qMeta');
@@ -9444,6 +9274,29 @@ function showConceptPracticeDone() {
   var total = conceptPracticeList.length;
   var idE = escapeHtml(ctx.itemId || '');
   conceptPracticeDone = true;
+  if (ctx.principleId) {
+    // A principle's set: back to that principle, or go again.
+    var pidE = escapeHtml(ctx.principleId);
+    var pnote = ctx.answered < total
+      ? 'You answered ' + ctx.answered + ' of ' + total + '.'
+      : (ctx.correct === total ? 'All correct. You are spotting this principle.' : 'Reread the principle and its trap, then try the set again.');
+    area.innerHTML = '<div class="session-debrief cp-done" id="cpDone" tabindex="-1" role="region" aria-labelledby="cpDoneTitle">'
+      + '<div class="sd-head">'
+      + '<div class="sd-label" id="cpDoneTitle" role="heading" aria-level="2">Principle practice complete</div>'
+      + '<p class="sd-name">' + escapeHtml(ctx.name) + '</p>'
+      + '<div class="sd-score"><span class="sd-num">' + ctx.correct + '</span><span class="sd-of">/ ' + total + ' correct</span></div>'
+      + '<div class="sd-pct">' + escapeHtml(pnote) + '</div>'
+      + '</div>'
+      + '<div class="sd-actions">'
+      + '<button type="button" class="act-btn primary" onclick="backToConceptTopic()">Back to principle</button>'
+      + '<button type="button" class="act-btn secondary" data-pid="' + pidE + '" onclick="startPrinciplePractice(this.dataset.pid)">Practice again</button>'
+      + '<button type="button" class="act-btn secondary" onclick="backToPractice()">Keep practicing</button>'
+      + '</div></div>';
+    try { window.scrollTo(0, 0); } catch (e) {}
+    var pc = document.getElementById('cpDone');
+    if (pc) pc.focus({ preventScroll: true });
+    return;
+  }
   if (ctx.mixed) {
     // The weak-spot mix: its own end card, back to the hub.
     area.innerHTML = '<div class="session-debrief cp-done" id="cpDone" tabindex="-1" role="region" aria-labelledby="cpDoneTitle">'
@@ -9486,6 +9339,7 @@ function backToConceptTopic() {
   var ctx = conceptPracticeCtx;
   clearAllTimers();
   if (!ctx) { switchTab('topics'); return; }
+  if (ctx.principleId) { selectPrinciple(ctx.principleId); return; }  // a principle's set
   if (ctx.mixed) { backToPractice(); return; }  // a weak-spot mix has no topic
   topicState.domain = ctx.domain;
   switchTab('topics');
@@ -9745,13 +9599,23 @@ function navResolve(target) {
 function navTo(e, target) {
   if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.button && e.button !== 0))) return true;
   if (e && e.preventDefault) e.preventDefault();
-  switchTab(navResolve(target));
+  var t = navResolve(target);
+  // Principles while a principle is open: back to the list.
+  if (t === 'principles' && S.activeTab === 'principles' && principlesState.selectedId) { principlesBackToList(); return false; }
+  switchTab(t);
   return false;
 }
 // Reads an address like #weak or #whats-new. Returns { tab, action } or null.
 function navFromHash(hash) {
   var key = String(hash || '').replace(/^#\/?/, '').toLowerCase();
   if (!key) return null;
+  // #principles/<id>: one principle (any current, old or alias id).
+  var pm = /^principles?\/(.+)$/.exec(key);
+  if (pm) {
+    var pid = pm[1];
+    try { pid = decodeURIComponent(pid); } catch (e) {}
+    return { tab: 'principles', action: 'principle:' + pid };
+  }
   var v = NAV_ALIAS[key];
   if (!v) return null;
   var parts = v.split('!');
@@ -9760,6 +9624,7 @@ function navFromHash(hash) {
 function navRunAction(action) {
   if (action === 'changelog' && typeof showChangelog === 'function') showChangelog();
   if (action === 'data' && typeof showYourData === 'function') showYourData();
+  if (action.indexOf('principle:') === 0) openPrinciple(action.slice(10));
 }
 // Marks the current section and page in the rail and the bottom bar, draws
 // the section's page links (phones) or the way back to You, and keeps the
@@ -9859,6 +9724,11 @@ function saveDisplayName() {
 window.addEventListener('hashchange', function () {
   var r = navFromHash(location.hash);
   if (!r) return;
+  // Plain #principles (Back from a principle opened from the list): the list.
+  if (r.tab === 'principles' && !r.action) {
+    if (S.activeTab === 'principles') { if (principlesState.selectedId) showPrinciplesList(); return; }
+    principlesState.selectedId = null;
+  }
   if (r.tab !== S.activeTab) switchTab(r.tab);
   if (r.action) navRunAction(r.action);
 });
@@ -10887,7 +10757,8 @@ function updateFocusStrip() {
   mid.innerHTML = html;
   var ex = document.getElementById('pfExit');
   if (ex) {
-    var lbl = (conceptPracticeMode || conceptPracticeDone) && !(conceptPracticeCtx && conceptPracticeCtx.mixed) ? 'Back to topic'
+    var lbl = (conceptPracticeMode || conceptPracticeDone) && conceptPracticeCtx && conceptPracticeCtx.principleId ? 'Back to principle'
+      : (conceptPracticeMode || conceptPracticeDone) && !(conceptPracticeCtx && conceptPracticeCtx.mixed) ? 'Back to topic'
       : (reviewQueueMode || missedReviewMode) ? 'End review' : 'End practice';
     ex.setAttribute('aria-label', lbl);
     ex.title = lbl;
@@ -11319,22 +11190,19 @@ function railMixedSet(w) {
   return out;
 }
 
-// Today's principle: one of the library's principles, by day of the year.
+// Today's principle: one of the principles (in page order), by day of the
+// year. None until data/mindset/principles.json is in.
 function railPrinciple() {
-  if (!PRINCIPLES_LIB.length) return null;
+  if (!PRINCIPLES.length) return null;
   var now = new Date();
   var doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / DAY_MS);
-  return PRINCIPLES_LIB[doy % PRINCIPLES_LIB.length];
-}
-function railPrincipleName(id) {
-  var s = String(id || '').toLowerCase().replace(/-/g, ' ');
-  return s.charAt(0).toUpperCase() + s.slice(1);
+  return PRINCIPLES[doy % PRINCIPLES.length];
 }
 function railOpenPrinciples(e, pid) {
   if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) return true;
   if (e && e.preventDefault) e.preventDefault();
-  if (pid) principlesState.selectedId = pid;
-  switchTab('principles');
+  if (pid) openPrinciple(pid);
+  else switchTab('principles');
   return false;
 }
 
@@ -11692,8 +11560,8 @@ function railHubSections() {
     html: '<h2 class="sr-cap" id="srhFocus">Focus next</h2><ul class="you-list sr-rows">' + rows.map(railRowHtml).join('') + '</ul>' });
   var p = railPrinciple();
   if (p) secs.push({ id: 'principle', key: 'p:' + p.id, html: '<h2 class="sr-cap" id="srhPrin">Today&rsquo;s principle</h2>'
-    + '<div class="sr-key"><p class="sr-quote">' + escapeHtml(p.tagline) + '</p><p class="sr-meta">' + escapeHtml(railPrincipleName(p.id)) + '</p></div>'
-    + '<a class="sr-link" href="#principles" onclick="return railOpenPrinciples(event,\'' + p.id + '\')">All principles' + ico('arrow-right', 16) + '</a>' });
+    + '<div class="sr-key"><p class="sr-quote">' + escapeHtml(p.rule || '') + '</p><p class="sr-meta">' + escapeHtml(p.title) + '</p></div>'
+    + '<a class="sr-link" href="#principles/' + escapeHtml(p.id) + '" data-pid="' + escapeHtml(p.id) + '" onclick="return railOpenPrinciples(event,this.dataset.pid)">Read this principle' + ico('arrow-right', 16) + '</a>' });
   return secs;
 }
 // After the answer is checked (nothing before: retrieval comes first).
@@ -12507,25 +12375,6 @@ function tipParts(text, idx) {
   return { label: legacy[idx] || 'Exam-day', body: text };
 }
 
-function openPrinciple(pid) {
-  // Wires a Mindset-tip principle ID click to the Principles Library tab.
-  // If the requested ID isn't in PRINCIPLES_LIB, surface a toast so the
-  // navigation isn't silent — fixes UX-review OBSERVATION.
-  try {
-    var isKnown = typeof PRINCIPLES_LIB !== 'undefined'
-      && PRINCIPLES_LIB.some(function(p){ return p.id === pid; });
-    if (typeof switchTab === 'function') switchTab('principles');
-    if (isKnown && typeof window.selectPrinciple === 'function') {
-      window.selectPrinciple(pid);
-    } else {
-      if (typeof showToast === 'function') {
-        showToast('Principle ' + pid + ' isn\'t in the library yet.', 'info', 2400);
-      }
-      console.info('[principles] click on', pid, '— not in current PRINCIPLES_LIB.');
-    }
-  } catch (e) { console.info('[principles] open failed', e); }
-}
-
 // ── RENDER QUESTION ──
 function renderQuestion(q) {
   recordQuestionStart();
@@ -12882,10 +12731,13 @@ function showResult(chosen, correct, timeout, info) {
         : parts.label === 'Final two' ? 'final'
         : (parts.label === 'Exam cue' || parts.label === 'Exam-day') ? 'cue' : 'plain';
       var body = escapeHtml(parts.body);
-      // Older "Mindset" tips name a principle: link it to the Principles library.
+      // Older "Mindset" tips name a principle by an old id or label: link it
+      // to the Principles page (resolvePrinciple maps it to today's
+      // principle). Once the principles are in, words that name none stay text.
       if (parts.label === 'Mindset') {
         body = body.replace(/\b([A-Z]{3,}(?:-[A-Z]+){1,5})\b/g, function(_, pid){
-          return '<button type="button" class="principle-link" onclick="openPrinciple(\'' + pid + '\')">' + pid + '</button>';
+          if (PRINCIPLES_RAW && !resolvePrinciple(pid)) return pid;
+          return '<button type="button" class="principle-link" data-pid="' + pid + '" onclick="openPrinciple(this.dataset.pid)">' + pid + '</button>';
         });
       }
       nodes.push('<div class="vine-node vine-' + tone + '" style="--i:' + nodes.length + '">' + vineLeafSvg(false)
@@ -14004,141 +13856,400 @@ function highlightSearch(text, q) {
   return safe;
 }
 
-// ── PHASE 4: PRINCIPLES LIBRARY (Decision 2 — Two-Pane Master-Detail) ──
-// All 15 principles content copied verbatim from
-// design-notes/Principles Library Designs.html → PRINCIPLES array.
-var PRINCIPLES_LIB = [
-  {id:'CONTAIN-FIRST',tagline:'Stop the spread before you investigate the cause.',domain:'D4',definition:'When an active threat is confirmed, containment of the affected environment takes priority over investigation, notification, or remediation. Acting on incomplete information to limit damage is always preferable to waiting for certainty.',applies:['Active intrusion or lateral movement in progress','Malware propagating across network segments','Unauthorized access detected in real-time','Data exfiltration underway'],distinctFrom:'FORENSIC-IMAGING-BEFORE-WIPE governs what happens after containment. CHAIN-OF-CUSTODY-FIRST governs evidence handling. Both are downstream of CONTAIN-FIRST.',qCount:12},
-  {id:'REVOCATION-FIRST',tagline:'Remove access before you understand how it was abused.',domain:'D5',definition:'When user compromise is suspected or confirmed, revoking credentials, tokens, and access rights takes precedence over investigation or user notification. Delayed revocation extends the attacker\'s window.',applies:['Suspected account compromise','Terminated employee with active credentials','Shared credential exposure','Privilege escalation detected'],distinctFrom:'CHAIN-OF-CUSTODY-FIRST applies after revocation when forensic analysis is needed. LEAST-PRIVILEGE-ALWAYS is a preventive control; REVOCATION-FIRST is a reactive one.',qCount:9},
-  {id:'METHODOLOGY-RIGOR-FIRST',tagline:'Follow audit methodology even under time and political pressure.',domain:'D1',definition:'An IS auditor must adhere to established methodology and professional standards regardless of deadline pressure, auditee pushback, or management influence. Methodological shortcuts invalidate audit conclusions and expose the auditor to liability.',applies:['Compressed audit timelines','Auditee requests to limit scope','Management pressure to reach a predetermined conclusion','Complex systems with incomplete documentation'],distinctFrom:'EVIDENCE-BEFORE-CONCLUSION is about the sequence within methodology. AUDIT-INDEPENDENCE-FIRST is about the auditor\'s objectivity. METHODOLOGY-RIGOR-FIRST governs adherence to the process itself.',qCount:14},
-  {id:'BACKUP-IMMUTABILITY-FIRST',tagline:'Treat backup integrity as a prerequisite, not an afterthought.',domain:'D4',definition:'Backups must be immutable, tested, and stored separately from the primary environment. A backup that has never been restored is untested. A backup on the same network as the primary system is not a backup — it is a duplicate target.',applies:['BCP/DRP design and review','Ransomware resilience assessment','RTO/RPO validation','Cloud migration backup strategy'],distinctFrom:'BUSINESS-CONTINUITY-OVER-RECOVERY addresses strategic framing; BACKUP-IMMUTABILITY-FIRST governs the specific technical and procedural requirements of the backup system.',qCount:11},
-  {id:'CHAIN-OF-CUSTODY-FIRST',tagline:'Evidence integrity trumps the speed of investigation.',domain:'D5',definition:'Digital evidence must be collected, documented, and preserved in a manner that maintains integrity from collection through legal proceedings. Any break in the chain of custody may render evidence inadmissible and compromise the investigation.',applies:['Digital forensics and incident response','Insider threat investigations','Regulatory inquiries requiring evidentiary standard','e-Discovery obligations'],distinctFrom:'CONTAIN-FIRST governs the decision to isolate; CHAIN-OF-CUSTODY-FIRST governs what happens to the evidence after isolation. The two operate sequentially, not in competition.',qCount:8},
-  {id:'SCOPE-BEFORE-FIELDWORK',tagline:'Define the boundary completely before any testing begins.',domain:'D1',definition:'The audit scope — including systems, processes, time periods, and exclusions — must be formally agreed upon before any fieldwork commences. Ambiguity in scope creates findings disputes, scope creep, and inadequate coverage.',applies:['Audit planning phase','Systems with interdependent components','Cloud environments with blurred boundaries','Third-party and vendor audits'],distinctFrom:'METHODOLOGY-RIGOR-FIRST is the broader principle; SCOPE-BEFORE-FIELDWORK is the specific planning-phase application. RISK-BEFORE-CONTROLS guides what goes INTO scope.',qCount:10},
-  {id:'RISK-BEFORE-CONTROLS',tagline:'Understand what could go wrong before evaluating what prevents it.',domain:'D1',definition:'An auditor must identify and rank the risks inherent to an area before assessing whether controls are adequate. Evaluating controls without a risk baseline produces a compliance checklist, not an assurance opinion.',applies:['Control design reviews','Risk-based audit planning','IT general controls assessment','Third-party risk evaluation'],distinctFrom:'SCOPE-BEFORE-FIELDWORK determines what is audited; RISK-BEFORE-CONTROLS determines how deeply each area is examined. IMPACT-BEFORE-LIKELIHOOD guides how risks are ranked.',qCount:13},
-  {id:'LEAST-PRIVILEGE-ALWAYS',tagline:'Minimum access is the default, not the exception.',domain:'D5',definition:'Users, processes, and systems should operate with only the access rights required to perform their defined functions — nothing more. Least privilege is an architectural principle, not a remediation activity applied after over-provisioning is discovered.',applies:['Access control design and review','Privileged access management','Cloud IAM configuration','Service account provisioning'],distinctFrom:'SEGREGATION-OF-DUTIES-FIRST prevents a single identity from accumulating incompatible functions. LEAST-PRIVILEGE-ALWAYS minimizes the total access footprint of any identity.',qCount:15},
-  {id:'SEGREGATION-OF-DUTIES-FIRST',tagline:'Separate incompatible functions before designing compensating controls.',domain:'D2',definition:'No single individual should have end-to-end control over a critical business process. Segregation of duties (SoD) is the primary control; compensating controls are acceptable only when true SoD is demonstrably impractical.',applies:['Financial system access reviews','ERP configuration audits','IT operations and development overlap','Small-organization control environments'],distinctFrom:'LEAST-PRIVILEGE-ALWAYS limits breadth of access; SEGREGATION-OF-DUTIES-FIRST limits concentration of incompatible functions. Both are required; neither substitutes for the other.',qCount:11},
-  {id:'GOVERNANCE-OVER-MANAGEMENT',tagline:'IT governance directs strategy; management executes it — never conflate the two.',domain:'D2',definition:'IT governance is the responsibility of the board and senior leadership; it defines direction, risk appetite, and accountability. IT management translates governance decisions into operational plans. Auditors must evaluate both layers and flag when management decisions exceed governance-defined boundaries.',applies:['IT governance framework assessments','COBIT alignment reviews','Board-level IT risk reporting','Outsourcing and vendor governance'],distinctFrom:'METHODOLOGY-RIGOR-FIRST governs how auditors behave. GOVERNANCE-OVER-MANAGEMENT governs how the audited entity is structured. This principle is descriptive, not prescriptive.',qCount:9},
-  {id:'IMPACT-BEFORE-LIKELIHOOD',tagline:'Assess magnitude before probability when prioritizing risk.',domain:'D1',definition:'Risk prioritization must consider potential impact before likelihood. A low-probability, catastrophic-impact event may warrant more attention than a high-probability, low-impact event. Likelihood bias leads to systematic under-investment in tail risks.',applies:['Quantitative and qualitative risk assessment','BIA (Business Impact Analysis)','Control gap prioritization','Residual risk acceptance decisions'],distinctFrom:'RISK-BEFORE-CONTROLS sets the sequence; IMPACT-BEFORE-LIKELIHOOD governs the ranking method within that risk assessment. Both operate in the same planning phase.',qCount:7},
-  {id:'AUDIT-INDEPENDENCE-FIRST',tagline:'Objectivity must be established and documented before scope is set.',domain:'D1',definition:'An IS auditor must assess and document threats to independence — self-interest, self-review, advocacy, familiarity, and intimidation — before accepting an engagement. Objectivity compromised at engagement acceptance cannot be recovered during fieldwork.',applies:['Engagement acceptance decisions','Internal audit charter reviews','Outsourced audit relationships','Auditing systems the auditor helped design'],distinctFrom:'METHODOLOGY-RIGOR-FIRST governs adherence to process during fieldwork. AUDIT-INDEPENDENCE-FIRST is a pre-engagement gate. You cannot apply METHODOLOGY-RIGOR-FIRST if AUDIT-INDEPENDENCE-FIRST has failed.',qCount:10},
-  {id:'BUSINESS-CONTINUITY-OVER-RECOVERY',tagline:'Design to keep operating, not just to recover after failure.',domain:'D4',definition:'Business continuity planning (BCP) encompasses the full range of strategies to maintain operations during disruption. Disaster recovery (DR) is a subset focused on restoration after failure. An organization that only plans for recovery accepts unavoidable downtime; one that plans for continuity aims to eliminate it.',applies:['BCP/DRP design and gap assessment','RTO/RPO target setting','Crisis communication planning','Pandemic and long-duration disruption scenarios'],distinctFrom:'BACKUP-IMMUTABILITY-FIRST governs a specific technical component of recovery. BUSINESS-CONTINUITY-OVER-RECOVERY is the strategic framing that determines what recovery targets are even worth having.',qCount:10},
-  {id:'EVIDENCE-BEFORE-CONCLUSION',tagline:'Form no audit opinion without documented, sufficient, and appropriate evidence.',domain:'D1',definition:'Audit conclusions must be grounded in evidence that is sufficient (enough to support the conclusion), reliable (from credible sources), relevant (pertaining to the objective), and appropriately documented in the workpapers. Preliminary conclusions formed before evidence collection introduce confirmation bias.',applies:['Workpaper review and sign-off','Finding formulation and rating','Management response evaluation','Expert opinion and third-party reliance'],distinctFrom:'METHODOLOGY-RIGOR-FIRST is the umbrella; EVIDENCE-BEFORE-CONCLUSION is the specific principle governing the conclusion-forming step. AUDIT-INDEPENDENCE-FIRST governs who is collecting the evidence.',qCount:12},
-  {id:'CONTINUOUS-MONITORING-OVER-PERIODIC',tagline:'Persistent visibility into control operation outperforms point-in-time sampling.',domain:'D4',definition:'Continuous control monitoring (CCM) and continuous auditing approaches detect control failures as they occur, rather than retrospectively through periodic testing. Where feasible, audit programs should incorporate automated monitoring as a complement to or replacement for interval-based testing.',applies:['GRC platform and SIEM integration','SOX and financial controls monitoring','Cloud security posture management','Third-party continuous assurance programs'],distinctFrom:'BACKUP-IMMUTABILITY-FIRST is about a specific asset class. CONTINUOUS-MONITORING-OVER-PERIODIC is a methodology principle applicable across all control domains.',qCount:8}
-];
-var PRINCIPLES_DOMAIN_NAMES = { D1: 'Audit Process', D2: 'Governance', D3: 'Acquisition', D4: 'Operations', D5: 'Protection' };
-var principlesState = { selectedId: 'CONTAIN-FIRST', query: '' };
+// ── PRINCIPLES (the exam mindset) ──
+// Content: data/mindset/principles.json, shared with the mobile app (schema:
+// docs/content/PRINCIPLES_SCHEMA.md). Six families, each a question a
+// candidate asks under pressure; each principle carries its rule, why it
+// matters, stem triggers, the trap, a worked example, an optional nuance,
+// the domains it appears in and the questions that practise it.
+// Layout (owner decision 19 Oct 2026): one column like Study notes, the list
+// grouped by family, then one principle full width with a back link.
+// Loaded like the study notes (loadConceptsData): fetched once and cached,
+// with an error state and Retry when the file is missing (or the page runs
+// from file://, where fetch is blocked). No inline copy is kept.
+// Any stored id resolves (resolvePrinciple): the current id, an old library
+// id (legacy_ids, e.g. CONTAIN-FIRST) or a label used in question data
+// (aliases), so older tips, links and saved addresses keep working.
+var PRINCIPLES_RAW = null;      // the file, once fetched
+var PRINCIPLES = [];            // every principle: family order, then order
+var PRINCIPLE_FAMILIES = [];    // [{ id, title, question, items }] in order
+var PRINCIPLE_INDEX = {};       // lower-case id / legacy id / alias -> principle
+var PRINCIPLE_ID_RE = /^[a-z0-9-]+$/;
+var principlesLoadFailed = false;
+var principlesLoading = false;
+var principlesWaiters = [];
+// selectedId: the principle on screen (null = the list); lastId: the row to
+// return focus to; query: the list's search; pushed: opening it added a
+// history entry (so the back link can step back instead of adding another);
+// seq: bumped by every open / close, so a late callback can tell it is stale.
+var principlesState = { selectedId: null, lastId: null, query: '', pushed: false, seq: 0 };
+
+function buildPrinciples(data) {
+  var fams = (data && Array.isArray(data.families)) ? data.families.slice() : [];
+  fams.sort(function (a, b) { return (Number(a.order) || 0) - (Number(b.order) || 0); });
+  var famById = {};
+  var families = fams.filter(function (f) { return f && typeof f.id === 'string' && PRINCIPLE_ID_RE.test(f.id); }).map(function (f) {
+    var fam = { id: f.id, title: String(f.title || f.id), question: String(f.question || ''), items: [] };
+    famById[f.id] = fam;
+    return fam;
+  });
+  var list = (data && Array.isArray(data.principles)) ? data.principles : [];
+  // Ids go into attributes and addresses: only kebab-case ids are accepted.
+  list = list.filter(function (p) { return p && typeof p.id === 'string' && PRINCIPLE_ID_RE.test(p.id) && famById[p.family]; });
+  list.sort(function (a, b) { return (Number(a.order) || 0) - (Number(b.order) || 0); });
+  list.forEach(function (p) { famById[p.family].items.push(p); });
+  var ordered = [];
+  families.forEach(function (f) { ordered = ordered.concat(f.items); });
+  // The current id wins over a legacy id, which wins over an alias.
+  var idx = {};
+  var add = function (key, p) {
+    var k = String(key || '').trim().toLowerCase();
+    if (k && !idx[k]) idx[k] = p;
+  };
+  ordered.forEach(function (p) { add(p.id, p); });
+  ordered.forEach(function (p) { (Array.isArray(p.legacy_ids) ? p.legacy_ids : []).forEach(function (k) { add(k, p); }); });
+  ordered.forEach(function (p) { (Array.isArray(p.aliases) ? p.aliases : []).forEach(function (k) { add(k, p); }); });
+  PRINCIPLE_FAMILIES = families.filter(function (f) { return f.items.length; });
+  PRINCIPLES = ordered;
+  PRINCIPLE_INDEX = idx;
+}
+
+// Any stored id (current, legacy or alias, any case) -> the principle, or null.
+function resolvePrinciple(key) {
+  if (key == null) return null;
+  return PRINCIPLE_INDEX[String(key).trim().toLowerCase()] || null;
+}
+function principleFamily(p) {
+  for (var i = 0; i < PRINCIPLE_FAMILIES.length; i++) {
+    if (PRINCIPLE_FAMILIES[i].id === p.family) return PRINCIPLE_FAMILIES[i];
+  }
+  return null;
+}
+
+// callback(ok) runs once the file is in (ok) or has failed (not ok).
+function loadPrinciplesData(callback) {
+  if (PRINCIPLES_RAW) { if (callback) callback(true); return; }
+  if (principlesLoadFailed) { if (callback) callback(false); return; }
+  if (callback) principlesWaiters.push(callback);
+  if (principlesLoading) return;
+  principlesLoading = true;
+  fetch('data/mindset/principles.json')
+    .then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status + ' (file may be missing)');
+      return r.json();
+    })
+    .then(function (data) {
+      buildPrinciples(data);
+      PRINCIPLES_RAW = data;
+      principlesLoadDone(true);
+    })
+    .catch(function (err) {
+      principlesLoadFailed = true;
+      console.warn('Could not load data/mindset/principles.json:', err);
+      principlesLoadDone(false);
+    });
+}
+function principlesLoadDone(ok) {
+  principlesLoading = false;
+  var waiting = principlesWaiters;
+  principlesWaiters = [];
+  waiting.forEach(function (cb) { try { cb(ok); } catch (e) { console.warn('[principles]', e); } });
+  // Today's principle (the Practice hub's study rail) appears once the file is in.
+  try { railSync(); } catch (e) {}
+}
+function retryPrinciples() {
+  principlesLoadFailed = false;
+  renderPrinciplesLibrary();
+}
 
 function renderPrinciplesLibrary() {
   var area = document.getElementById('principlesArea');
   if (!area) return;
-  area.innerHTML =
-    '<div class="pl-twopane">'
-      + '<aside class="pl-list">'
-        + '<div class="pl-list-header">'
-          + '<div class="pl-title">Principles Library</div>'
-          + '<div class="pl-sub">15 auditor-mindset mental models</div>'
-          + '<input id="plSearch" aria-label="Search principles" class="pl-search" placeholder="Search principles…" oninput="filterPrinciples(this.value)" autocomplete="off">'
-          + '<div class="pl-progress"><div class="pl-progress-fill" id="plProgressFill"></div></div>'
-        + '</div>'
-        + '<div class="pl-list-items" id="plListItems"></div>'
-      + '</aside>'
-      + '<section class="pl-detail" id="plDetail"></section>'
-    + '</div>';
-  renderPrinciplesList();
-  renderPrincipleDetail();
-}
-
-function renderPrinciplesList() {
-  var listEl = document.getElementById('plListItems');
-  if (!listEl) return;
-  var q = (principlesState.query || '').toLowerCase();
-  var matches = PRINCIPLES_LIB.filter(function(p){
-    if (!q) return true;
-    return p.id.toLowerCase().indexOf(q) !== -1
-      || p.tagline.toLowerCase().indexOf(q) !== -1
-      || (PRINCIPLES_DOMAIN_NAMES[p.domain] || '').toLowerCase().indexOf(q) !== -1;
-  });
-  if (matches.length === 0) {
-    listEl.innerHTML = '<div class="pl-no-match">No principles match.</div>';
-    return;
-  }
-  listEl.innerHTML = matches.map(function(p){
-    var active = p.id === principlesState.selectedId ? ' active' : '';
-    var dColor = (DI[p.domain.replace('D','')] && DI[p.domain.replace('D','')].color) || 'var(--accent)';
-    return '<div class="pl-item' + active + '" onclick="selectPrinciple(\'' + p.id + '\')">'
-      + '<span class="pl-item-tag" style="background:' + dColor + '"></span>'
-      + '<div>'
-        + '<div class="pl-item-code">' + p.id + '</div>'
-        + '<div class="pl-item-domain">' + (PRINCIPLES_DOMAIN_NAMES[p.domain] || p.domain) + '</div>'
-      + '</div>'
-    + '</div>';
-  }).join('');
-  // Progress fill = (current index + 1) / 15
-  var idx = PRINCIPLES_LIB.findIndex(function(p){ return p.id === principlesState.selectedId; });
-  var pct = ((idx + 1) / PRINCIPLES_LIB.length) * 100;
-  var bar = document.getElementById('plProgressFill');
-  if (bar) bar.style.width = pct + '%';
-}
-
-function renderPrincipleDetail() {
-  var pane = document.getElementById('plDetail');
-  if (!pane) return;
-  var p = PRINCIPLES_LIB.find(function(x){ return x.id === principlesState.selectedId; });
-  if (!p) {
-    pane.innerHTML = '<div class="pl-empty">Select a principle to see its definition.</div>';
-    return;
-  }
-  var idx = PRINCIPLES_LIB.findIndex(function(x){ return x.id === p.id; });
-  var prev = idx > 0 ? PRINCIPLES_LIB[idx - 1] : null;
-  var next = idx < PRINCIPLES_LIB.length - 1 ? PRINCIPLES_LIB[idx + 1] : null;
-  var dColor = (DI[p.domain.replace('D','')] && DI[p.domain.replace('D','')].color) || 'var(--accent)';
-  // Linkify principle IDs in distinctFrom prose
-  var distinctHtml = escapeHtml(p.distinctFrom).replace(/\b([A-Z]{3,}(?:-[A-Z]+){1,5})\b/g, function(_, pid){
-    if (PRINCIPLES_LIB.find(function(x){ return x.id === pid; })) {
-      return '<button type="button" class="principle-link" onclick="selectPrinciple(\'' + pid + '\')">' + pid + '</button>';
+  if (!PRINCIPLES_RAW) {
+    if (principlesLoadFailed) {
+      area.innerHTML = '<div class="gt">' + emptyState({
+        kind: 'network',
+        heading: "Couldn't load the principles.",
+        body: 'This usually means the file was opened directly in a browser rather than served over HTTP. Run one of these commands in the project folder and reload.',
+        chips: ['python3 -m http.server', 'npx serve .'],
+        actions: [{ label: 'Retry', style: 'primary', onclick: 'retryPrinciples()' }]
+      }) + '</div>';
+      return;
     }
-    return pid;
-  });
-  var appliesHtml = p.applies.map(function(a){
-    return '<li class="pl-applies-item"><span class="pl-applies-dot" style="background:' + dColor + '"></span>' + escapeHtml(a) + '</li>';
-  }).join('');
-  pane.innerHTML =
-    '<div class="pl-detail-header">'
-      + '<div class="pl-detail-tag-row">'
-        + '<span class="pl-domain-chip">' + '<span class="dom-dot" style="background:' + dColor + '"></span>' + 'D' + p.domain.replace('D','') + ' &middot; ' + (PRINCIPLES_DOMAIN_NAMES[p.domain] || '') + '</span>'
-        + '<span class="pl-counter">' + (idx + 1) + ' of ' + PRINCIPLES_LIB.length + '</span>'
-      + '</div>'
-      + '<div class="pl-detail-code">' + p.id + '</div>'
-      + '<h2 class="pl-detail-tagline">' + escapeHtml(p.tagline) + '</h2>'
-      + '<div class="pl-prev-next">'
-        + (prev ? '<button class="pl-nav-btn" onclick="selectPrinciple(\'' + prev.id + '\')">&larr; ' + prev.id + '</button>' : '<span></span>')
-        + (next ? '<button class="pl-nav-btn" onclick="selectPrinciple(\'' + next.id + '\')">' + next.id + ' &rarr;</button>' : '<span></span>')
-      + '</div>'
+    area.innerHTML = '<div class="gt">' + emptyState({
+      kind: 'loading',
+      heading: 'Loading principles…',
+      body: 'This usually takes less than a second.'
+    }) + '</div>';
+    loadPrinciplesData(function () { if (S.activeTab === 'principles') renderPrinciplesLibrary(); });
+    return;
+  }
+  var p = resolvePrinciple(principlesState.selectedId);
+  principlesState.selectedId = p ? p.id : null;
+  area.innerHTML = '<div class="gt pl">' + (p ? principleDetailHtml(p) : principlesListHtml()) + '</div>';
+  syncPrinciplesHash(p, false);
+}
+
+// The address shows the open principle (#principles/final-two), so it can be
+// shared or reopened. Opening one from the list adds a history entry (push),
+// so the browser's Back returns to the list; everything else replaces.
+function syncPrinciplesHash(p, push) {
+  try {
+    if (S.activeTab !== 'principles' || !window.history) return;
+    var want = '#principles' + (p ? '/' + p.id : '');
+    if (location.hash === want) return;
+    if (push && history.pushState) { history.pushState(history.state, '', want); principlesState.pushed = true; }
+    else if (history.replaceState) history.replaceState(history.state, '', want);
+  } catch (e) {}
+}
+
+// ── The list: one short section per family ──
+function principlesListHtml() {
+  var q = principlesState.query || '';
+  return '<div class="gt-head"><h1 class="gt-title">Principles</h1>'
+    + '<p class="gt-sub">How an IS auditor reasons: the thinking CISA questions reward, grouped by the question each one answers.</p></div>'
+    + '<div class="gt-search gt-search-sm">' + ico('search', 20)
+    + '<label class="sr-only" for="plSearch">Search principles</label>'
+    + '<input type="search" class="gt-search-input" id="plSearch" placeholder="Search, e.g. evidence or scope" autocomplete="off" value="' + escapeHtml(q) + '" oninput="filterPrinciples(this.value)">'
     + '</div>'
-    + '<div class="pl-detail-body">'
-      + '<section class="pl-section"><h3 class="pl-section-label">Definition</h3><p class="pl-def">' + escapeHtml(p.definition) + '</p></section>'
-      + '<section class="pl-section"><h3 class="pl-section-label">Applies when</h3><ul class="pl-applies">' + appliesHtml + '</ul></section>'
-      + '<section class="pl-section"><h3 class="pl-section-label">Distinct from</h3><p class="pl-distinct">' + distinctHtml + '</p></section>'
-      + '<section class="pl-section"><h3 class="pl-section-label">Example questions</h3><div class="pl-qcount"><span class="pl-qcount-dot">●</span>Practice questions are tagged <strong>' + p.id + '</strong></div></section>'
-    + '</div>';
-  // Update list active state + progress bar
-  renderPrinciplesList();
+    + '<p class="gt-results-meta" id="plResults" role="status" aria-live="polite">' + principlesResultsText() + '</p>'
+    + '<div id="plList">' + principlesListInner() + '</div>';
 }
-
-function selectPrinciple(pid) {
-  if (!pid) return;
-  principlesState.selectedId = pid;
-  // Ensure tab is active
-  if (S.activeTab !== 'principles') switchTab('principles');
-  // Update detail + list
-  renderPrincipleDetail();
+function principleMatches(p, tokens) {
+  if (!tokens.length) return true;
+  var fam = principleFamily(p);
+  var hay = [p.id, p.title, p.rule, p.why, fam ? fam.title : '']
+    .concat(p.triggers || [], p.legacy_ids || [], p.aliases || []).join(' ').toLowerCase();
+  return tokens.every(function (t) { return hay.indexOf(t) !== -1; });
 }
-
+function principlesTokens() {
+  return String(principlesState.query || '').toLowerCase().split(/\s+/).filter(Boolean);
+}
+function principlesResultsText() {
+  var tokens = principlesTokens();
+  if (!tokens.length) return '';
+  var n = PRINCIPLES.filter(function (p) { return principleMatches(p, tokens); }).length;
+  return n ? n + (n === 1 ? ' principle matches' : ' principles match') : 'No principles match';
+}
+function principlesListInner() {
+  var tokens = principlesTokens();
+  var html = '';
+  PRINCIPLE_FAMILIES.forEach(function (f) {
+    var items = f.items.filter(function (p) { return principleMatches(p, tokens); });
+    if (!items.length) return;
+    var fid = 'plFam-' + f.id;
+    html += '<section class="pl-fam" aria-labelledby="' + fid + '">'
+      + '<h2 class="pl-fam-title" id="' + fid + '">' + escapeHtml(f.title) + '</h2>'
+      + (f.question ? '<p class="pl-fam-q">' + escapeHtml(f.question) + '</p>' : '')
+      + '<ul class="pl-rows">' + items.map(function (p) {
+        return '<li><button type="button" class="pl-row" data-pid="' + p.id + '" onclick="selectPrinciple(this.dataset.pid,{fromList:true})">'
+          + '<span class="pl-row-text"><span class="pl-row-title">' + escapeHtml(p.title) + '</span>'
+          + '<span class="pl-row-rule">' + escapeHtml(p.rule || '') + '</span></span>'
+          + '<span class="pl-row-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button></li>';
+      }).join('') + '</ul></section>';
+  });
+  return html || '<p class="gt-empty">Try a word from a question stem, such as &ldquo;first&rdquo; or &ldquo;evidence&rdquo;.</p>';
+}
 function filterPrinciples(q) {
   principlesState.query = q || '';
-  renderPrinciplesList();
+  var list = document.getElementById('plList');
+  if (list) list.innerHTML = principlesListInner();
+  var res = document.getElementById('plResults');
+  if (res) res.textContent = principlesResultsText();
 }
-// Expose to window for cross-function reach (Phase 2 tip[1] principle-link)
+
+// ── One principle ──
+function plSection(label, inner, cls) {
+  return inner ? '<section class="gt-sec' + (cls ? ' ' + cls : '') + '"><h2 class="gt-cap">' + escapeHtml(label) + '</h2>' + inner + '</section>' : '';
+}
+function principleDetailHtml(p) {
+  var i = PRINCIPLES.indexOf(p);
+  var n = PRINCIPLES.length;
+  var prev = i > 0 ? PRINCIPLES[i - 1] : null;
+  var next = i < n - 1 ? PRINCIPLES[i + 1] : null;
+  var fam = principleFamily(p);
+  var trap = p.trap || {};
+  var ex = p.example || {};
+  var triggers = (Array.isArray(p.triggers) ? p.triggers : []).filter(function (t) { return typeof t === 'string' && t.trim(); });
+  var doms = (Array.isArray(p.domains) ? p.domains : []).filter(function (d) { return DI[String(d)]; });
+  var h = '<div class="pl-back">'
+    + '<button type="button" class="gt-btn-ghost" onclick="principlesBackToList()">' + ico('chevron', 18, 'ico ico-back') + 'All principles</button></div>'
+    + '<div class="pl-d-head">'
+    + '<p class="pl-d-cap">' + (fam ? escapeHtml(fam.title) + ' &middot; ' : '') + (i + 1) + ' of ' + n + '</p>'
+    + '<h1 class="pl-d-title" id="plTitle" tabindex="-1">' + escapeHtml(p.title) + '</h1>'
+    + '</div><div class="pl-d-body">';
+  h += plSection('Rule', '<p class="gt-quote">' + escapeHtml(p.rule || '') + '</p>', 'gt-rule');
+  h += plSection('Why it matters', gtStr(p.why) ? '<p class="gt-p">' + escapeHtml(p.why) + '</p>' : '');
+  h += plSection('Spot it in the stem', triggers.length
+    ? '<ul class="pl-chips">' + triggers.map(function (t) { return '<li class="pl-chip">&ldquo;' + escapeHtml(t) + '&rdquo;</li>'; }).join('') + '</ul>' : '');
+  h += plSection('The trap', gtStr(trap.move)
+    ? '<p class="gt-trap-t">' + escapeHtml(trap.move) + '</p>'
+      + (gtStr(trap.why_wrong) ? '<p class="gt-trap-why"><span class="gt-trap-label">Why it is wrong: </span>' + escapeHtml(trap.why_wrong) + '</p>' : '')
+    : '', 'gt-traps');
+  h += plSection('Worked example', gtStr(ex.scenario)
+    ? '<div class="gt-example"><p>' + escapeHtml(ex.scenario) + '</p>'
+      + (gtStr(ex.answer) ? '<p class="pl-ex-a"><span class="pl-ex-label">The answer: </span>' + escapeHtml(ex.answer) + '</p>' : '') + '</div>'
+    : '');
+  h += plSection('Nuance', gtStr(p.nuance) ? '<p class="gt-p">' + escapeHtml(p.nuance) + '</p>' : '');
+  h += principlePracticeBlock(p);
+  h += plSection('Appears in', doms.length
+    ? '<ul class="pl-doms">' + doms.map(function (d) {
+        var inf = DI[String(d)];
+        return '<li><span class="dom-dot" style="background:' + inf.color + '"></span><span class="pl-dom-n">Domain ' + d + '</span>' + escapeHtml(inf.short) + '</li>';
+      }).join('') + '</ul>' : '');
+  h += '</div>';
+  if (prev || next) {
+    h += '<nav class="pl-pn" aria-label="Previous and next principle">'
+      + (prev ? '<button type="button" class="pl-pn-btn pl-pn-prev" data-pid="' + prev.id + '" onclick="selectPrinciple(this.dataset.pid)">'
+        + '<span class="pl-pn-cap">' + ico('chevron', 14, 'ico ico-back') + 'Previous</span><span class="pl-pn-t">' + escapeHtml(prev.title) + '</span></button>' : '')
+      + (next ? '<button type="button" class="pl-pn-btn pl-pn-next" data-pid="' + next.id + '" onclick="selectPrinciple(this.dataset.pid)">'
+        + '<span class="pl-pn-cap">Next' + ico('chevron', 14) + '</span><span class="pl-pn-t">' + escapeHtml(next.title) + '</span></button>' : '')
+      + '</nav>';
+  }
+  return h;
+}
+
+// ── Practice this principle: a short set of its practice_ids ──
+// Runs on the same set runner as "Practice this concept" (startMixedSet):
+// the normal question card, grading, explanations, tips and option shuffle.
+// Ids span domains; unknown ids are skipped, so a stale id never breaks it.
+function principlePracticeIds(p) {
+  var seen = {};
+  return (Array.isArray(p.practice_ids) ? p.practice_ids : []).filter(function (id) {
+    if (typeof id !== 'string' || !id || seen[id]) return false;
+    seen[id] = true;
+    return true;
+  });
+}
+function principlePracticeDomains(ids) {
+  var doms = {};
+  ids.forEach(function (id) {
+    var m = /^d(\d+)_/.exec(id);
+    if (m && DI[m[1]]) doms[m[1]] = true;
+  });
+  return Object.keys(doms);
+}
+function principlePracticeQuestions(p) {
+  var ids = principlePracticeIds(p);
+  var byId = {};
+  principlePracticeDomains(ids).forEach(function (d) {
+    (QB[d] || []).forEach(function (q) { if (q && q.id) byId[q.id] = q; });
+  });
+  return ids.map(function (id) { return byId[id]; }).filter(Boolean);
+}
+function principlePracticeBlock(p) {
+  var ids = principlePracticeIds(p);
+  var doms = principlePracticeDomains(ids);
+  // While a bank is still loading, count the ids that name a known domain.
+  var ready = doms.every(function (d) { return isQBReady(d); });
+  var n = ready ? principlePracticeQuestions(p).length
+    : ids.filter(function (id) { var m = /^d(\d+)_/.exec(id); return !!(m && DI[m[1]]); }).length;
+  if (!n) return '';
+  return plSection('Practice this', '<div class="gt-practice">'
+    + '<button type="button" class="gt-practice-btn" aria-describedby="plPracSub" data-pid="' + p.id + '" onclick="startPrinciplePractice(this.dataset.pid)">'
+    + ico('play', 16) + '<span>Practice this principle</span></button>'
+    + '<p class="gt-practice-sub" id="plPracSub">' + n + (n === 1 ? ' question that turns' : ' questions that turn') + ' on this principle. Answers count toward your progress.</p>'
+    + '</div>');
+}
+function startPrinciplePractice(pid) {
+  var p = resolvePrinciple(pid);
+  if (!p) return;
+  var doms = principlePracticeDomains(principlePracticeIds(p));
+  if (doms.some(function (d) { return isQBLoading(d); })) {
+    showToast('Loading questions…', 'info', 1500);
+    var seq = principlesState.seq;
+    var onDone = function () {
+      if (doms.some(function (d) { return isQBLoading(d); })) return;
+      document.removeEventListener('qb:domain-loaded', onDone);
+      document.removeEventListener('qb:domain-error', onDone);
+      // Only if the learner is still on this principle (they may have moved on).
+      if (S.activeTab !== 'principles' || principlesState.seq !== seq) return;
+      startPrinciplePractice(p.id);
+    };
+    document.addEventListener('qb:domain-loaded', onDone);
+    document.addEventListener('qb:domain-error', onDone);
+    return;
+  }
+  var qs = principlePracticeQuestions(p);
+  if (!qs.length) { showToast('No practice questions for this principle yet', 'info', 2200); return; }
+  startMixedSet(railShuffle(qs), p.title, 'all', { principleId: p.id });
+}
+
+// ── Opening a principle ──
+// opts.fromList: opened from the list, so it gets its own history entry.
+function selectPrinciple(pid, opts) {
+  if (!pid) return;
+  var p = resolvePrinciple(pid);
+  // List -> principle adds a history entry (before drawing, so the draw's
+  // own address update finds it already in place).
+  var push = !!(p && opts && opts.fromList && S.activeTab === 'principles' && !principlesState.selectedId);
+  principlesState.seq++;
+  principlesState.selectedId = p ? p.id : pid;
+  if (S.activeTab !== 'principles') switchTab('principles');
+  else {
+    if (push) syncPrinciplesHash(p, true);
+    renderPrinciplesLibrary();
+    plScrollTop();
+  }
+  var t = document.getElementById('plTitle');
+  if (t) { try { t.focus({ preventScroll: true }); } catch (e) {} }
+}
+function showPrinciplesList() {
+  principlesState.seq++;
+  principlesState.pushed = false;
+  if (principlesState.selectedId) principlesState.lastId = principlesState.selectedId;
+  principlesState.selectedId = null;
+  renderPrinciplesLibrary();
+  var row = principlesState.lastId && document.querySelector('.pl-row[data-pid="' + CSS.escape(principlesState.lastId) + '"]');
+  if (row) {
+    try { row.focus({ preventScroll: true }); row.scrollIntoView({ block: 'center' }); } catch (e) {}
+  } else plScrollTop();
+}
+// The back link (and Learn > Principles while a principle is open): step back
+// through the entry the list added, so browser history stays in step.
+function principlesBackToList() {
+  if (principlesState.pushed && /^#principles\/./.test(location.hash) && window.history) {
+    principlesState.pushed = false;
+    history.back();   // the hashchange listener shows the list
+    return;
+  }
+  showPrinciplesList();
+}
+// Same landing as switchTab: the section's page bar on phones, else the screen.
+function plScrollTop() {
+  try {
+    var sub = document.getElementById('subNav');
+    var sc = (sub && !sub.hidden && sub.offsetParent !== null) ? sub : document.getElementById('screen-principles');
+    if (sc && sc.scrollIntoView) sc.scrollIntoView({ block: 'start' });
+  } catch (e) {}
+}
+// From a question's Mindset tip, the study rail or an address like
+// #principles/CONTAIN-FIRST. Waits for the file, but only opens it if the
+// learner is still on Principles and has not opened something else since.
+// An id that does not resolve shows the library with a short message.
+function openPrinciple(pid) {
+  try {
+    if (!PRINCIPLES_RAW && !principlesLoadFailed) {
+      principlesState.selectedId = null;
+      if (S.activeTab !== 'principles') switchTab('principles');
+      var seq = ++principlesState.seq;
+      loadPrinciplesData(function (ok) {
+        if (ok && S.activeTab === 'principles' && principlesState.seq === seq) openPrinciple(pid);
+      });
+      return;
+    }
+    var p = resolvePrinciple(pid);
+    if (p) { selectPrinciple(p.id); return; }
+    principlesState.seq++;
+    principlesState.selectedId = null;
+    if (S.activeTab !== 'principles') switchTab('principles');
+    else renderPrinciplesLibrary();
+    if (PRINCIPLES_RAW) showToast('That principle was not found. Here are all of them.', 'info', 2600);
+  } catch (e) { console.info('[principles] open failed', e); }
+}
+// Expose to window for cross-function reach (tip principle links)
 window.selectPrinciple = selectPrinciple;
+window.openPrinciple = openPrinciple;
 
 function renderGlossary() {
   var area = document.getElementById('glossaryArea');
@@ -15734,6 +15845,15 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Principles, rebuilt',
+    items: [
+      { cat: 'improved', text: 'Principles is rebuilt: 20 rules of the IS auditor\'s mindset, grouped by the question each one answers, now covering every domain.' },
+      { cat: 'new', text: 'Each principle shows the rule, why it matters, the words in a question that signal it, the trap to avoid and a worked example.' },
+      { cat: 'new', text: 'Practice this principle starts a short set of questions that turn on that rule.' }
+    ]
+  },
+  {
+    version: 'v12.10',
     title: 'A study panel on wide screens',
     items: [
       { cat: 'new', text: 'On wide screens, Practice and Study notes have a study panel beside the page: what to focus on next and today\'s principle.' },
@@ -16950,6 +17070,10 @@ function loadExamMode() {
 // (Topics tab will use the cached result once available.)
 (function preloadNotes() {
   try { loadConceptsData(function(){ /* ready */ }); } catch(e){}
+})();
+// The principles too (small): Today's principle and tip links need them.
+(function preloadPrinciples() {
+  try { loadPrinciplesData(); } catch(e){}
 })();
 
 (function initTheme() {

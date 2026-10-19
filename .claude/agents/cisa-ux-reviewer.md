@@ -20,7 +20,7 @@ You are NOT a content reviewer. Do not flag question wording, distractor quality
 **Read `docs/mobile/DESIGN_SYSTEM.md` (Grove) first**, and check token values against `mobile/src/theme/tokens.ts`. Both are the source of truth. Any UI that contradicts them is a HARD ERROR. Locked product decisions that still apply:
 
 - Scenario context layout: **Sealed Brief** (`.scenario-block` / `.sc-label` / `.sc-text`), but the left rule is retired: the 3px left rule means only "the coach is speaking"
-- Principles Library layout: **Two-pane master-detail** (300px left list + flex-1 right detail)
+- Principles Library layout: **one column, list then full-width detail with a back link** (same pattern as Study notes; owner decision 19 Oct 2026)
 - Tips reveal UX: **Sequential** (Trap, Mindset, Exam-day, strict 1, 2, 3 order)
 - First-time UX: **Instant question** (no tour)
 - Confidence button timing: **After answer selection, before submit**
@@ -125,7 +125,7 @@ Walk these in order. For each, output findings tiered as HARD ERROR / PRECISION 
   - Tap targets ≥ 44×44px on all interactive elements
   - Safe-area-inset-bottom honored on `position: fixed` bottom elements (toast, save-error banner)
   - Confidence row reflows; option buttons remain readable; submit button stays visible (not pushed off-screen)
-  - Principles Library two-pane stacks vertically at <760px
+  - Principles Library list and detail stay one readable column at every width (no side-by-side panes)
 
 ### 6. Empty + error states
 - Every async-load surface has a defined loading + error + empty state
@@ -146,7 +146,7 @@ Walk these in order. For each, output findings tiered as HARD ERROR / PRECISION 
 ### 8. Information architecture
 - Tab count balance: the web app is a slim companion; flag any new top-level tab.
 - Primary CTA visible on every screen (Start Practice on Practice, Set exam date on first visit, etc.)
-- Cross-links work: principle ID in Mindset tip → Principles Library entry; principle "distinct from" prose → adjacent principle
+- Cross-links work: principle ID in Mindset tip (current, old or alias id) → Principles Library entry; Previous / Next walk the whole ordered list
 - Navigation depth never exceeds 3 levels (tab → screen → modal max)
 - Modal dismissal: every modal has an X close button AND ESC key works AND clicking outside dismisses (where appropriate)
 

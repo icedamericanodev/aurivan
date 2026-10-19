@@ -8,8 +8,10 @@ the web app and the mobile app (mobile reads it through its content build).
 
 This is Principles v2. It replaces the inline web `PRINCIPLES_LIB` (15 entries)
 and absorbs the eight `exam_strategy_tips` rules in `data/cisa_notes.json`.
-Nothing reads the file yet; wiring it into the web and mobile apps is a separate
-step.
+The web app reads it for the Principles page, Today's principle and the
+principle links in question tips (fetched like `data/cisa_notes.json`;
+published by `scripts/build_site.sh`). Wiring it into the mobile app is a
+separate step.
 
 ## File
 ```jsonc

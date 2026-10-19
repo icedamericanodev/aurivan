@@ -14,7 +14,8 @@
 #     - assets/ (icons and, once added, the self-hosted fonts). Only image,
 #       font and stylesheet files: anything else in assets/ stops the build.
 #     - the data the web app really loads (index.html fetches
-#       data/domain1..5.json and data/cisa_notes.json; nothing else in data/)
+#       data/domain1..5.json, data/cisa_notes.json and
+#       data/mindset/principles.json; nothing else in data/)
 #     - _headers (security and cache headers) and _redirects
 #     - favicon.ico at the top level (browsers ask for /favicon.ico by
 #       themselves)
@@ -31,7 +32,7 @@ cd "$(dirname "$0")/.."
 OUT="_site"
 
 PAGES=(index.html privacy.html terms.html support.html)
-DATA=(data/domain1.json data/domain2.json data/domain3.json data/domain4.json data/domain5.json data/cisa_notes.json)
+DATA=(data/domain1.json data/domain2.json data/domain3.json data/domain4.json data/domain5.json data/cisa_notes.json data/mindset/principles.json)
 SITE_CONFIG=(_headers _redirects)
 # File types allowed inside assets/ (lower case).
 ASSET_TYPES='png|ico|svg|webp|jpg|jpeg|woff2|woff|css'
@@ -62,6 +63,7 @@ for f in "${DATA[@]}"; do
   [ -f "$f" ] || fail "missing $f"
   # Catch a broken data file here, not in a learner's browser.
   valid_json "$f" || fail "$f is not valid JSON"
+  mkdir -p "$OUT/$(dirname "$f")"
   cp "$f" "$OUT/$f"
 done
 
@@ -97,7 +99,7 @@ while IFS= read -r -d '' f; do
   rel="${f#"$OUT"/}"
   case "$rel" in
     index.html|privacy.html|terms.html|support.html|_headers|_redirects|favicon.ico) ;;
-    data/domain[1-5].json|data/cisa_notes.json) ;;
+    data/domain[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
     assets/*) ;;
     *) fail "unexpected file in the site: $rel" ;;
   esac
