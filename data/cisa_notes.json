@@ -885,7 +885,7 @@
                   "Workpapers showing ITGC test results and the resulting substantive sample sizes",
                   "Timesheets showing ITGC testing finished before substantive work began"
                 ],
-                "recommend": "Have audit management plan ITGC testing first and set substantive testing from its results.",
+                "recommend": "Have the engagement leader test ITGCs first, set substantive testing from the results and link each IT finding to its business effect.",
                 "decides": "The chief audit executive decides whether to integrate, based on interdependence"
               },
               "isaca_rule": "The reason to integrate is interdependence, not cost. Weak IT general controls cut reliance on automated controls and push the IS auditor toward more substantive testing. A truly integrated report connects each IT cause to its business effect.",
@@ -6786,7 +6786,7 @@
                   "Purchase records showing lead times for past capacity additions",
                   "Forum minutes recording capacity decisions and the decision rights used"
                 ],
-                "recommend": "Have the IT capacity manager plan from validated forecasts, release funding in stages and route disputes to a decision forum.",
+                "recommend": "Have the chief information officer base capacity on validated forecasts, fund it in stages and give a cross-team forum decision rights.",
                 "decides": "Business owners set service priorities and the governance forum allocates shared resources"
               },
               "isaca_rule": "Capacity follows business demand and value. Plan from validated forecasts, act on thresholds before limits are hit, and settle contested resources in an accountable forum, not by whoever escalates loudest.",
@@ -9999,7 +9999,7 @@
               "example": "A ride-hailing app's reliability target allows 40 minutes of failed requests a month. By mid-month, three faulty releases have used 55 minutes, yet the product team plans two more feature releases that week. The IS auditor notes that the agreed error-budget policy pauses non-essential releases once the budget is spent, and recommends that the release manager enforce it and put reliability fixes first.",
               "audit_focus": {
                 "review": [
-                  "Inspect the rollback plan's last test date and what it restored",
+                  "Inspect the last rollback test's duration and code, data and configuration restored",
                   "Trace a failed staged release to when it was halted and rolled back",
                   "Compare error-budget use with releases shipped after the budget ran out"
                 ],
@@ -10791,16 +10791,16 @@
               "example": "An IS auditor at an insurer maps a network control list to the TCP/IP layers. Firewall port rules sit at transport and the web application firewall at application, but remote offices have no link-layer control: any device plugged into a wall port joins the network. The IS auditor reports the gap to the network manager.",
               "audit_focus": {
                 "review": [
-                  "Inspect network diagrams for any layer, such as wall ports, left without a control",
+                  "Inspect network diagrams for layers, such as wall ports, with no control",
                   "Evaluate whether content threats, such as email attachments, meet an application-layer control",
-                  "Inspect encryption between sites for legacy applications that cannot protect their own traffic"
+                  "Inspect how traffic between sites is encrypted for legacy applications"
                 ],
                 "evidence": [
-                  "Firewall, gateway and switch configurations showing what each device inspects",
+                  "Device configurations showing what each firewall and gateway inspects",
                   "Mail gateway logs showing attachments scanned and blocked",
                   "Switch port settings showing which ports admit unknown devices"
                 ],
-                "recommend": "Have the network manager close layers with no control and add content inspection where threats ride allowed traffic.",
+                "recommend": "Have the network manager close uncontrolled layers, inspect content in allowed traffic and join offices with an Internet Protocol Security (IPsec) tunnel.",
                 "decides": "The system owner accepts the risk of any layer left uncontrolled"
               },
               "isaca_rule": "Map each control to the layer where it acts, then look for layers with no control at all. A control can judge only what its own layer can see, so match each control to the threat's layer; content threats need application-layer controls.",
@@ -11955,7 +11955,7 @@
                 "review": [
                   "Compare the availability target with the business impact analysis for the service",
                   "Reperform the availability calculation from incident records over agreed service hours",
-                  "Compare component monitoring coverage with the network map to find blind spots"
+                  "Compare synthetic transaction failures with component dashboards for outages the dashboards missed"
                 ],
                 "evidence": [
                   "Synthetic transaction results showing whether customers could complete work",
@@ -13195,12 +13195,12 @@
                   "Reperform a transfer that fails midway in testing and confirm nothing commits"
                 ],
                 "evidence": [
+                  "Auditor-run query results counting orphan records and invalid values",
                   "Database catalog export listing keys, constraints and their enforcement status",
-                  "Query results counting orphan records and invalid values",
                   "Reconciliation reports for denormalized copies, with mismatches fixed"
                 ],
                 "recommend": "Have the database administrator move integrity rules into the database and schedule reconciliations for duplicated data.",
-                "decides": "The data owner approves any trade of integrity checks for speed"
+                "decides": "The data owner approves any design that stores the same data twice for speed"
               },
               "isaca_rule": "Enforce integrity as close to the data as possible: keys, constraints and transactions in the database rather than in each program. Where a design trades integrity for speed, expect compensating checks such as reconciliations.",
               "exam_traps": [
@@ -13773,11 +13773,11 @@
                   "Inspect the degraded-mode procedure for which features stop and who triggers it"
                 ],
                 "evidence": [
-                  "Monitoring records of past component failures and how service held up",
+                  "Past fault-injection and failover test results, with recovery times and issues found",
                   "Facility and carrier records showing separate power feeds and cable routes",
                   "Architecture records listing each single point of failure and its partner"
                 ],
-                "recommend": "Have the infrastructure manager remove shared dependencies, add circuit breakers and test failover on a schedule.",
+                "recommend": "Have the infrastructure manager remove shared dependencies, add circuit breakers and run fault-injection tests on a schedule.",
                 "decides": "The business owner decides which features may stop in degraded mode"
               },
               "isaca_rule": "Redundancy counts only when it is independent and tested. The IS auditor looks for hidden shared dependencies, such as one cable route, power grid or provider, and asks for fault-injection or failover evidence before accepting a resilience claim.",
@@ -13893,9 +13893,9 @@
                 "evidence": [
                   "Cluster logs showing node load and past takeovers",
                   "Carrier route maps showing separate paths and building entries",
-                  "Backup records proving point-in-time copies exist beside the RAID arrays"
+                  "Backup records showing point-in-time copies kept apart from the RAID arrays"
                 ],
-                "recommend": "Have the infrastructure manager pair single points of failure with independent standby units and keep separate backups.",
+                "recommend": "Have the infrastructure manager pair each single point of failure with an independent unit that takes over automatically and keep point-in-time backups.",
                 "decides": "The business owner decides how much redundancy each service warrants"
               },
               "isaca_rule": "Name the failure first, then the control: RAID for disk failure, clustering for server failure, diverse routing for cable failure, a distant second site for site loss, and backups for lost or damaged data. High availability in one site is not disaster recovery. Untested redundancy proves nothing.",
@@ -14201,7 +14201,7 @@
                   "Backup records showing immutable point-in-time copies",
                   "Business impact analysis records showing the approved RPO"
                 ],
-                "recommend": "Have the infrastructure manager match each copy method to the RPO and keep isolated backups beside replication.",
+                "recommend": "Have the infrastructure manager match each copy method to the RPO, test restore time against the RTO and keep isolated backups.",
                 "decides": "The business owner sets the acceptable data loss and approves any trade-off with speed"
               },
               "isaca_rule": "Pick the technique from the RPO and the distance needed, not from what is newest. Every network copy also copies mistakes and attacks, so it never replaces isolated, point-in-time backups.",
@@ -15574,7 +15574,7 @@
                   "Room integrity test results showing the gas concentration holds",
                   "Maintenance contractor reports for detectors, valves and gas cylinders"
                 ],
-                "recommend": "Have the facilities manager choose suppression that protects people first, seal openings and test detection regularly.",
+                "recommend": "Have the facilities manager fit clean-agent gas with early detection in staffed rooms, seal openings and keep detectors tested.",
                 "decides": "Senior management accepts residual fire risk within local fire code"
               },
               "isaca_rule": "Protect people first, then equipment. Clean-agent gas with early detection fits occupied server rooms best. Among water systems, pipes that stay dry until a fire is detected (pre-action, which exam questions often group under the dry-pipe label) beat wet pipe. Carbon dioxide never belongs where people work.",
@@ -16112,7 +16112,7 @@
                   "Service-to-service policy export listing which calls are allowed",
                   "Session logs showing access cut when device health changed"
                 ],
-                "recommend": "Have the security architecture team extend per-request policy checks to office users, internal servers and service calls.",
+                "recommend": "Have the security architecture team authorize every user and service request by policy and re-check device health during sessions.",
                 "decides": "Senior management sets zero trust priorities and funding"
               },
               "isaca_rule": "Zero trust is an architecture of continuous, policy-based decisions, not a product. Proving identity is only the first step; a policy must still decide what that identity, on that device, may reach right now.",
@@ -16350,16 +16350,16 @@
               "example": "A consulting firm lets remote laptops use split tunneling, so web browsing bypasses the corporate proxy. A consultant's laptop picks up malware on a hotel network and then connects to the firm's file servers through the VPN. The IS auditor recommends full tunneling, or equivalent cloud web filtering, for devices handling client data, and a device health check before each connection.",
               "audit_focus": {
                 "review": [
-                  "Compare VPN accounts with MFA enforcement settings to find password-only logins",
+                  "Compare VPN accounts with MFA settings to find password-only logins",
                   "Inspect server logs for partners still connecting with TLS 1.0 or 1.1",
-                  "Inspect VPN settings for internet traffic that skips company web controls"
+                  "Inspect VPN settings for traffic that skips web controls"
                 ],
                 "evidence": [
                   "VPN authentication logs showing the factor used for each login",
-                  "Protocol and cipher reports from remote access and web gateways",
+                  "Gateway reports of protocol versions and ciphers in use",
                   "Endpoint compliance reports for devices allowed to connect"
                 ],
-                "recommend": "Have the network team require MFA and device checks for remote logins and retire old TLS by plan.",
+                "recommend": "Have the network team require MFA on every remote login and retire TLS 1.0 and 1.1 once usage is measured.",
                 "decides": "The business owner approves the cutoff date for partners on old TLS versions"
               },
               "isaca_rule": "Encryption protects the tunnel, not the login. Remote access must require multi-factor authentication and a healthy device, and give only the access the user needs. Retire weak protocol versions on a plan, after measuring who still relies on them.",
@@ -16546,16 +16546,16 @@
               "example": "A logistics company's IDS uses only signatures, updated monthly, and the security operations manager reports zero critical alerts for the quarter. The IS auditor notes that a signature-only sensor with stale updates would also stay quiet during a new attack. She recommends automatic signature updates and anomaly detection on the warehouse network, verified with simulated attacks.",
               "audit_focus": {
                 "review": [
-                  "Inspect sensor settings for detection methods used and signature update dates",
+                  "Inspect sensor settings for which detection methods are active",
                   "Compare the current rule set with last quarter's to find rules switched off",
                   "Inquire when the anomaly baseline was learned and compare with incident history"
                 ],
                 "evidence": [
                   "Results of simulated attacks showing which ones raised alerts",
-                  "Sensor configuration export with methods, rules and update timestamps",
+                  "Sensor configuration export listing active methods and rules",
                   "Change records explaining each disabled or tuned rule"
                 ],
-                "recommend": "Have the security operations manager automate signature updates, add anomaly detection and tune noisy rules instead of disabling them.",
+                "recommend": "Have the security operations manager add anomaly detection, relearn baselines from clean periods and tune noisy rules instead of disabling them.",
                 "decides": "Senior management accepts the risk of any detection gap left open"
               },
               "isaca_rule": "For an IDS, a missed attack is worse than a false alarm. Signature detection catches the known; anomaly detection is needed for the new. Fix noise by tuning rules, not by disabling them, and prove detection works by testing it.",
@@ -16673,9 +16673,9 @@
                 "evidence": [
                   "EDR alerts on suspicious use of built-in tools, with analyst follow-up",
                   "Configuration scan reports showing drift from the hardening baseline",
-                  "Allowlisting policy logs showing blocked unapproved programs"
+                  "Allowlisting tool logs showing unapproved programs blocked from running"
                 ],
-                "recommend": "Have the endpoint team close agent gaps, scan for baseline drift and enforce encryption on portable media.",
+                "recommend": "Have IT management close EDR agent gaps, scan for baseline drift and enforce encryption on portable media.",
                 "decides": "System owners approve any device exempted from the baseline and accept its risk"
               },
               "isaca_rule": "Coverage comes first: a device without the agent sends no data, so confirm the population before trusting results. Prevent misuse of powerful tools through least privilege instead of relying only on detection. Encryption must follow sensitive data onto every portable medium.",
@@ -17829,7 +17829,7 @@
                   "Firewall rules showing the management network's allowed sources",
                   "Patch reports for hypervisors and guest VMs, with dates"
                 ],
-                "recommend": "Have the infrastructure manager isolate the management plane, assign an owner to every VM and patch hypervisors promptly.",
+                "recommend": "Have the infrastructure manager isolate the management plane, send administrator logs to a store administrators cannot alter and give every VM an owner.",
                 "decides": "The data owner decides whether sensitive workloads need dedicated hosts"
               },
               "isaca_rule": "Protect the hypervisor's management plane as the keys to every VM: isolated network, strong authentication and logs that administrators cannot alter. Direct testing of isolation is stronger evidence than vendor statements. Patching reduces escape risk; dedicated hosts remove co-tenant exposure.",
@@ -18504,10 +18504,10 @@
                 ],
                 "evidence": [
                   "Firewall logs of blocked outbound connections, reviewed by security staff",
-                  "EDR alerts on unknown code, with records of follow-up",
+                  "EDR alerts on unknown code, with records of infected hosts rebuilt from known-good media",
                   "Mitigation provider test report showing scrubbing activates within agreed time"
                 ],
-                "recommend": "Have the network manager contract upstream mitigation, restrict outbound traffic and allowlist programs on fixed-purpose devices.",
+                "recommend": "Have the information security manager arrange upstream mitigation, restrict outbound traffic and allowlist programs on fixed-purpose devices.",
                 "decides": "Senior management approves the mitigation contract and accepts residual outage risk"
               },
               "isaca_rule": "Match the defense to where the attack works. Malware is stopped by layered prevention, such as patching, least privilege and allowlisting, backed by behavior detection. A flood that fills the internet link is stopped upstream, by mitigation arranged in advance.",

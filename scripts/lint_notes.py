@@ -58,7 +58,7 @@ AF_AUDITOR_DOES = re.compile(r"\b(IS )?auditors?\b[^;.]*?\b(implements?|fix(es)?
 # Role words match in any case ("Management decides" opens many lines); acronyms stay upper case.
 AF_ACTOR = re.compile(r"\b((?i:management|managers?|owners?|officers?|committees?|board|team|operations|directors?|"
                       r"executives?|administrators?|staff|council|leads?|sponsors?|custodians?|steering|department|"
-                      r"function|counsel)|CISO|CIO|CFO|CEO|IT)\b")
+                      r"function|counsel|leaders?)|CISO|CIO|CFO|CEO|IT)\b")
 AF_MISSING = []
 
 PRACTICE_SEEN = {}
