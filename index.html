@@ -5029,6 +5029,23 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 .gt-zoom-inner svg, .gt-zoom-inner img { display: block; width: 100%; height: auto; }
 .gt-zoom-hint { font: 500 13px/18px var(--f-sans); color: var(--text2); padding: 8px 16px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); }
 body.gt-zoom-open { overflow: hidden; }
+/* "Auditing it": the auditor's view, set apart from "How it works" as a
+   raised card (white in light, outlined in dark) with three labelled parts. */
+.gt-audit { margin-top: 22px; }
+.gt-audit-h { display: flex; align-items: center; gap: 8px; color: var(--accent-text); margin-bottom: 8px; }
+.gt-audit-h .ico { flex: none; }
+.gt-audit-card { background: var(--surface); border: 1px solid var(--raised-outline); box-shadow: var(--shadow); border-radius: var(--r-md); overflow: hidden; }
+.gt-audit-body { padding: 4px 20px; }
+.gt-audit-decides { background: var(--surface2); padding: 14px 20px 16px; }
+.gt-audit-dec { font: 600 16px/24px var(--f-sans); color: var(--text); margin: 0; }
+.gt-audit-part { padding: 14px 0; }
+.gt-audit-part + .gt-audit-part { border-top: 1px solid var(--border); }
+.gt-audit-k { font: 600 13px/18px var(--f-sans); color: var(--text2); letter-spacing: 0.1px; margin: 0 0 8px; }
+.gt-audit .gt-list > li { font-size: 15px; line-height: 22px; }
+.gt-audit .gt-list > li::before { top: 8px; }
+.gt-audit .gt-list > li:last-child { margin-bottom: 0; }
+.gt-audit-rec { font: 400 16px/24px var(--f-sans); color: var(--text); margin: 0; }
+@media (max-width: 600px) { .gt-audit-body { padding: 2px 16px; } .gt-audit-part { padding: 12px 0; } .gt-audit-decides { padding: 12px 16px 14px; } }
 .gt-example { background: var(--surface2); border-radius: 16px; padding: 16px; font: 400 15px/22px var(--f-sans); color: var(--text); }
 .gt-rule { border-left: 3px solid var(--accent); padding-left: 16px; margin-top: 22px; }
 .gt-rule .gt-cap { color: var(--accent-text); }
@@ -8527,6 +8544,25 @@ document.addEventListener('keydown', function(e) {
   else if (e.key === 'Tab') { e.preventDefault(); var f = document.querySelector('#gtZoom .gt-zoom-close, #gtZoom .gt-zoom-scroll'); var all = document.querySelectorAll('#gtZoom .gt-zoom-close, #gtZoom .gt-zoom-scroll'); var i = [].indexOf.call(all, document.activeElement); (all[(i + 1) % all.length] || f).focus(); }
 });
 
+// "Auditing it" (optional audit_focus): the IS auditor's process view of a
+// subtopic, as a quiet raised card with three labelled parts. An empty part
+// is skipped; with no usable part there is no card at all.
+function gtAuditFocus(af, t) {
+  if (!af || typeof af !== 'object' || Array.isArray(af)) return '';
+  var strs = function(a) { return Array.isArray(a) ? a.filter(function(x) { return gtStr(x); }) : []; };
+  var part = function(label, inner) { return inner ? '<div class="gt-audit-part"><h6 class="gt-audit-k">' + escapeHtml(label) + '</h6>' + inner + '</div>' : ''; };
+  var inner = part('What to review', gtList(strs(af.review), t))
+    + part('Evidence to ask for', gtList(strs(af.evidence), t))
+    + part('Typical recommendation', gtStr(af.recommend) && '<p class="gt-audit-rec">' + highlightText(af.recommend, t) + '</p>');
+  // Optional "decides": the exam lesson (who owns the call), a tinted band at the card's foot.
+  var decides = gtStr(af.decides) ? '<div class="gt-audit-decides"><h6 class="gt-audit-k">Who decides</h6>'
+    + '<p class="gt-audit-dec">' + highlightText(af.decides, t) + '</p></div>' : '';
+  if (!inner && !decides) return '';
+  return '<section class="gt-sec gt-audit">'
+    + '<h5 class="gt-cap gt-audit-h">' + ico('exam', 18) + '<span>Auditing it</span></h5>'
+    + '<div class="gt-audit-card">' + (inner ? '<div class="gt-audit-body">' + inner + '</div>' : '') + decides + '</div></section>';
+}
+
 // Plain-value renderer for v1 fields we have no special place for.
 function gtValue(val, t) {
   if (val == null) return '';
@@ -8585,6 +8621,7 @@ function renderItemBodyV2(raw, domainId, t) {
   }
   h += gtFigure(raw.illustration);
   h += gtSection('Example', gtStr(raw.example) && '<div class="gt-example">' + highlightText(raw.example, t) + '</div>');
+  h += gtAuditFocus(raw.audit_focus, t);
   h += gtSection('The IS auditor’s lens', gtStr(raw.isaca_rule) && '<p class="gt-quote">' + highlightText(raw.isaca_rule, t) + '</p>', 'gt-rule');
   if (Array.isArray(raw.exam_traps) && raw.exam_traps.length) {
     h += gtSection('Exam traps', raw.exam_traps.map(function(x) {
@@ -8626,7 +8663,7 @@ function renderItemBodyV1(raw, domainId, t) {
     if (gtStr(raw[k])) h += gtSection(k === 'MFA' || k === 'dmz' ? k.toUpperCase() : humanLabel(k), '<p class="gt-p">' + highlightText(use(k), t) + '</p>');
   });
   // Anything else the notes carry (categories, tables, lists…)
-  var later = { illustration:1, example:1, real_life_scenario:1, case_study:1, key_point:1, principle:1, exam_tip:1,
+  var later = { illustration:1, audit_focus:1, example:1, real_life_scenario:1, case_study:1, key_point:1, principle:1, exam_tip:1,
                 common_mistakes:1, memory_aid:1, hierarchy_memory_aid:1, analogy:1 };
   Object.keys(raw).forEach(function(k) {
     if (done[k] || later[k]) return;
@@ -8638,6 +8675,7 @@ function renderItemBodyV1(raw, domainId, t) {
   ['example', 'real_life_scenario', 'case_study'].forEach(function(k) {
     if (gtStr(raw[k])) h += gtSection(k === 'case_study' ? 'Case study' : 'Example', '<div class="gt-example">' + highlightText(raw[k], t) + '</div>');
   });
+  h += gtAuditFocus(raw.audit_focus, t);
   var rule = gtStr(raw.principle) || gtStr(raw.key_point);
   if (rule) h += gtSection(raw.principle ? 'The IS auditor’s lens' : 'Key point', '<p class="gt-quote">' + highlightText(rule, t) + '</p>', 'gt-rule');
   if (raw.principle && raw.key_point) h += gtSection('Key point', '<p class="gt-p">' + highlightText(raw.key_point, t) + '</p>');
