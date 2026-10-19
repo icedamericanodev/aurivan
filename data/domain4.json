@@ -9933,7 +9933,7 @@
       "question": "A retailer has replaced its nightly backups with continuous replication to a distant data center. Which risk should the IS auditor report as MOST significant?",
       "options": {
         "A": "Operators may not yet know the new failover procedure",
-        "B": "Corruption or ransomware encryption would reach both copies at once",
+        "B": "Corruption or ransomware would reach both copies at once",
         "C": "Replication traffic could slow the network during business hours",
         "D": "The distant site could lose the last few seconds of writes"
       },
@@ -9970,21 +9970,21 @@
       "question": "An airline's booking database has a five-minute RPO and a one-hour RTO, and its recovery relies on last night's backup plus remote journaling. What is the GREATEST concern for the IS auditor?",
       "options": {
         "A": "Entries still in transit may exceed the allowed data loss",
-        "B": "Journal entries may leave the site in nightly batches",
+        "B": "Journaling every transaction may slow booking response times",
         "C": "A corrupted transaction would be copied to the recovery site",
         "D": "Restore and replay time may exceed the allowed downtime"
       },
       "correct": "D",
       "key_concept": "Remote journaling limits data loss, but recovery means restoring the last backup and replaying entries, which takes time against the RTO.",
       "pre_read": "Check each objective separately: how much data the method can lose, and how long it takes to run again.",
-      "correct_explanation": "Remote journaling keeps loss to seconds, well inside the five-minute RPO, but the journal holds only log entries. Last night's backup must be restored and a day of entries replayed before bookings resume, which can easily take longer than an hour. A copied corrupt transaction is the runner-up: it is journaled too, but replay can stop just before it, so point-in-time recovery remains possible.",
+      "correct_explanation": "Journaling keeps loss to seconds, inside the five-minute RPO, but bookings resume only after last night's backup is restored and a day of entries replayed. No option shows a certain breach, and replay time cannot be read from the schedule, so the untested restore-and-replay window is the greatest risk to the one-hour RTO. A copied corrupt transaction is the runner-up: replay can stop just before it.",
       "wrong_explanations": {
         "A": "Journaling sends each entry as it happens, so only seconds of work are at risk, well inside a five-minute RPO.",
-        "B": "Sending data in scheduled batches describes electronic vaulting; journaling sends each log entry to the remote site as the transaction occurs.",
+        "B": "Journaling overhead can be measured and tuned; it threatens neither recovery objective.",
         "C": "A bad transaction is journaled too, but replay can stop just before it, so point-in-time recovery remains possible."
       },
       "tips": [
-        "Eliminate: A overlooks that journaling loses only seconds, and B describes electronic vaulting, not journaling.",
+        "Eliminate: A overlooks that journaling loses only seconds, and B is a performance issue, not a recovery gap.",
         "Final two: D beats C because replay can stop before a bad transaction, but rebuilding from last night's backup takes hours against a one-hour RTO.",
         "Exam cue: journaling protects the RPO; ask how long restore plus replay takes before trusting it to meet the RTO."
       ],
@@ -10008,8 +10008,8 @@
       "options": {
         "A": "Upgrade the link between the two sites to higher bandwidth",
         "B": "Switch to asynchronous replication so payments run faster",
-        "C": "Have the business owner decide what data loss is acceptable",
-        "D": "Move the recovery site into the same building as production"
+        "C": "Have the business owner reconfirm the acceptable data loss",
+        "D": "Move the recovery site to a nearby metro-area data center"
       },
       "correct": "C",
       "key_concept": "Synchronous replication is limited by distance; moving to asynchronous adds a loss window the business owner must accept first.",
@@ -10018,10 +10018,10 @@
       "wrong_explanations": {
         "A": "More bandwidth does not shorten the travel time of each write over 900 miles, so synchronous writes stay slow.",
         "B": "Asynchronous copying may be right, but it opens a small data-loss window that the business owner must accept first.",
-        "D": "A site in the same building would be lost in the same fire or flood, defeating the purpose of a recovery site."
+        "D": "A nearer site cuts write delay but shares regional disasters; that trade-off, like the RPO, is the business owner's to accept first."
       },
       "tips": [
-        "Eliminate: A adds bandwidth, which does not cut distance delay, and D puts both copies in one building.",
+        "Eliminate: A adds bandwidth, which does not cut distance delay, and D trades regional protection for speed without a business decision.",
         "Final two: C beats B because asynchronous copying changes the RPO, and only the business owner can accept that loss window.",
         "Exam cue: when a recovery design trades data loss for speed or cost, the business owner sets the RPO before IT changes the design."
       ],
@@ -10041,9 +10041,9 @@
         "Business impact analysis"
       ],
       "framework_ref": "NIST SP 800-34 Rev 1 (Contingency Planning Guide for Federal Information Systems); BCI Good Practice Guidelines PP3 (Analysis)",
-      "question": "An insurer's claims unit has a 10-hour MTD; IT restores systems in six hours, then adjusters need five more to reconcile records and queued claims. What is the IS auditor's PRIMARY finding?",
+      "question": "An insurer's claims unit has a maximum tolerable downtime (MTD) of 10 hours and a six-hour RTO; adjusters then need five hours to reconcile records and queued claims. What is the IS auditor's PRIMARY finding?",
       "options": {
-        "A": "Full recovery, with catch-up work, would outlast the tolerable outage",
+        "A": "Restoring systems plus catch-up work would exceed the MTD",
         "B": "The six-hour RTO by itself is longer than the MTD",
         "C": "The five hours of reconciling should count toward the RPO",
         "D": "Recovery targets are adequate because the RTO falls inside the MTD"
