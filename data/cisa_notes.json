@@ -1360,7 +1360,9 @@
               ],
               "practice_ids": [
                 "d1_062",
-                "d1_126"
+                "d1_126",
+                "d1_198",
+                "d1_199"
               ],
               "definition": "Audit risk is the risk that the IS auditor reaches the wrong conclusion, such as reporting controls as effective when a material problem exists.",
               "why_it_matters": "It explains why testing must grow as the subject gets riskier. The IS auditor controls only one part of audit risk, so every adjustment happens there.",
@@ -1448,7 +1450,9 @@
               ],
               "practice_ids": [
                 "d1_007",
-                "d1_094"
+                "d1_094",
+                "d1_200",
+                "d1_201"
               ],
               "definition": "Materiality is the point at which an error, weakness or omission could change the decisions of the people who rely on the audit.",
               "why_it_matters": "It tells the IS auditor what is worth finding and reporting. Judging it by dollar size alone lets small but sensitive problems slip through.",
@@ -1656,7 +1660,9 @@
               ],
               "practice_ids": [
                 "d1_012",
-                "d1_155"
+                "d1_155",
+                "d1_202",
+                "d1_203"
               ],
               "definition": "Preventive, detective and corrective controls sort controls by timing: stopping a problem before it happens, finding it afterward, or fixing its effects.",
               "why_it_matters": "When a control acts shows what it can and cannot do. Good design mixes all three, because prevention fails and detection without correction leaves the damage in place.",
@@ -1875,7 +1881,9 @@
               ],
               "practice_ids": [
                 "d1_008",
-                "d1_156"
+                "d1_156",
+                "d1_204",
+                "d1_205"
               ],
               "definition": "A compensating control reduces a risk when the preferred control is impractical; defense in depth layers several controls so one failure does not expose the asset.",
               "why_it_matters": "Small teams and old systems often cannot have the ideal control. Knowing what makes a substitute or a layered design truly work prevents false comfort from controls that only look reassuring.",
@@ -2784,7 +2792,8 @@
               ],
               "practice_ids": [
                 "d1_102",
-                "d1_183"
+                "d1_183",
+                "d1_206"
               ],
               "definition": "Audit evidence must be sufficient, meaning there is enough of it, and appropriate, meaning it is relevant to the objective and reliable.",
               "why_it_matters": "A conclusion built on too little evidence, or on evidence that is off-topic or untrustworthy, can mislead the board. More of it cannot rescue poor-quality evidence.",
@@ -3542,7 +3551,10 @@
                 "1B5.1"
               ],
               "practice_ids": [
-                "d1_079"
+                "d1_079",
+                "d1_195",
+                "d1_196",
+                "d1_197"
               ],
               "definition": "An audit finding is a documented gap between what should happen and what does happen, with its cause and risk, plus a recommendation to fix it.",
               "why_it_matters": "A finding that is vague, overstated or missing its cause gets disputed, or fixed only on the surface. A clear finding helps management act on the real problem.",
@@ -12531,7 +12543,9 @@
                 "d4_165",
                 "d4_171",
                 "d4_180",
-                "d4_246"
+                "d4_246",
+                "d4_301",
+                "d4_302"
               ],
               "definition": "A service level agreement (SLA) is a documented agreement between a service provider and its customer that sets measurable service targets, reporting and remedies.",
               "why_it_matters": "An SLA turns good service into numbers both sides can check. Targets that cannot be measured, or that measure only speed, give false comfort and make penalties unenforceable.",
@@ -13371,13 +13385,14 @@
                 "d4_067",
                 "d4_183",
                 "d4_184",
-                "d4_205"
+                "d4_205",
+                "d4_295"
               ],
               "definition": "Resilient technology design builds systems that keep working, sometimes at reduced capacity, when a component fails, instead of relying only on recovery afterward.",
               "why_it_matters": "Recovery always costs some downtime and often some data. Resilience prevents many outages altogether, which matters most for services with very short recovery time objectives (RTOs).",
               "how_it_works": [
                 "Designers trace each critical service end to end and list every single point of failure: one disk, server, network link, provider or site.",
-                "Each single point of failure gets a redundant partner, so the service continues when one fails.",
+                "Each single point of failure gets a monitored redundant partner, so the service continues and a failed part is repaired quickly.",
                 "Redundant parts must be truly independent, with different carriers, physical routes, power feeds and hazard zones.",
                 "Applications isolate a failing dependency with a circuit breaker and degrade gracefully, so core functions stay available.",
                 "If the backup path has failed or was never tested, deliberately run with reduced features rather than rushing to an untested environment.",
@@ -13419,7 +13434,7 @@
                   }
                 ]
               },
-              "example": "A food processor runs its plant-scheduling system on two server clusters in separate buildings, and the IT manager reports no single point of failure. The IS auditor finds both buildings take power through one shared switchgear room. She reports the common-cause exposure and asks for a test with one power feed cut before accepting the claim. The plant director decides.",
+              "example": "A food processor runs its plant-scheduling system on two server clusters in separate buildings, and IT reports no single point of failure. The IS auditor finds both buildings take power through one shared switchgear room, reports the common-cause exposure and asks for a test with one power feed cut. The plant director decides.",
               "isaca_rule": "Redundancy counts only when it is independent and tested. The IS auditor looks for hidden shared dependencies, such as one cable route, power grid or provider, and asks for fault-injection or failover evidence before accepting a resilience claim.",
               "exam_traps": [
                 {
@@ -13454,7 +13469,10 @@
                 "d4_008",
                 "d4_068",
                 "d4_069",
-                "d4_266"
+                "d4_266",
+                "d4_296",
+                "d4_297",
+                "d4_298"
               ],
               "definition": "Redundancy techniques duplicate disks, servers and network links so one failure does not stop a service. Examples are RAID (redundant array of independent disks), clustering and diverse routing.",
               "why_it_matters": "Each technique protects against one kind of failure only. Spare disks or servers do nothing against deletion, corruption, ransomware or a shared cable route, so the IS auditor matches each technique to its risk.",
@@ -13662,7 +13680,9 @@
                 "d4_063",
                 "d4_064",
                 "d4_162",
-                "d4_233"
+                "d4_233",
+                "d4_303",
+                "d4_304"
               ],
               "definition": "A backup scheme is the pattern of full, incremental and differential copies an organization takes; rotation is the schedule for reusing and retiring backup media.",
               "why_it_matters": "The scheme sets how long backups take, how much storage they use and how long a restore will take. A poor choice can make restores miss the recovery time objective (RTO) or leave no clean copy.",
@@ -13903,7 +13923,9 @@
                 "d4_126",
                 "d4_181",
                 "d4_222",
-                "d4_249"
+                "d4_249",
+                "d4_305",
+                "d4_306"
               ],
               "definition": "Restore testing means recovering data from real backup media into a test environment and checking that it is complete, correct and usable.",
               "why_it_matters": "A backup job marked successful shows only that something was written. Without test restores, the organization may discover its backups are unusable in the middle of a disaster.",
@@ -13948,7 +13970,7 @@
                   }
                 ]
               },
-              "example": "An online retailer restores a sample file each month and calls its backups tested. The IS auditor asks how long a full restore of the order database takes, and nobody knows. A timed test takes 31 hours against a 12-hour RTO. She reports the gap and recommends regular timed full restores. The IT operations manager decides how to speed recovery.",
+              "example": "A university restores one sample file each term and calls its backups tested. The IS auditor asks how long a full restore of the student records system takes, and nobody knows. A timed test takes 40 hours against a 24-hour RTO. The IS auditor reports the gap and recommends regular timed full restores. The IT operations manager decides how to speed recovery.",
               "isaca_rule": "Recoverability is proven only by restoring data and checking it. Job logs, creation-time verification, contracts and provider assurances are weaker evidence. The IS auditor asks for recent, timed test restores with integrity checks.",
               "exam_traps": [
                 {
@@ -14304,7 +14326,9 @@
               "practice_ids": [
                 "d4_084",
                 "d4_099",
-                "d4_252"
+                "d4_252",
+                "d4_299",
+                "d4_300"
               ],
               "definition": "Recovery site agreements are the arrangements that secure a place to recover: commercial shared sites, reciprocal agreements, mobile units, duplicate sites or cloud services.",
               "why_it_matters": "A recovery site helps only if it is available when needed. Contract terms, shared capacity and dependence on one provider decide whether the organization can recover.",
