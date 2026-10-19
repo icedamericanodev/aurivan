@@ -4,6 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.18] — More practice on audit judgment and keeping systems running
+
+### New
+- New practice questions on audit risk, materiality, compensating controls and reporting findings, and on backups, failover, recovery sites, supplier agreements and restore tests.
+
+### Fixed
+- The phone app no longer redraws a hidden tab after you answer a question, so it stays quick with a long study history.
+
 ## [v12.17] — More practice on security, networks and IT operations
 
 ### New

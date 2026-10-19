@@ -10955,6 +10955,450 @@
       ],
       "_provenance": "Authored from concept: 'Interface Risk. Missing Records Despite Matching Totals'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A4.1 (Wave 2 coverage batch Q7: thin subtopic). Distinct from d4_111 (trace every hop when scoping) and the 4A4.2 control items d4_010 and d4_187 (reconciling totals): tests why matching file-to-load totals cannot reveal records the sender never extracted. Public sources: COBIT 2019.",
       "style_version": 2
+    },
+    {
+      "id": "d4_295",
+      "domain": 4,
+      "subtopic": "Resilient Design. Redundant Pair Failure",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "One of a web service's two paired load balancers failed seven weeks before the other, and the service then stopped. Which recommendation should the IS auditor consider MOST effective?",
+      "options": {
+        "A": "Alert staff if either unit fails, with a repair deadline",
+        "B": "Test failover between the two units at least every six months",
+        "C": "Replace both units with models that have higher capacity",
+        "D": "Negotiate faster on-site repair times with the vendor"
+      },
+      "correct": "A",
+      "key_concept": "Redundancy decays silently: monitor each redundant part, alert when one fails and repair it quickly, or the service runs on one point of failure.",
+      "pre_read": "Ask how long the service ran without its spare, and which option shortens that gap the most.",
+      "correct_explanation": "Redundancy protects a service only while both parts work. Once the first unit failed, the service quietly ran on a single point of failure for seven weeks. An alert on any unit failure, tied to a repair deadline, restores protection within hours. Six-monthly failover tests are the runner-up: they prove failover works, but a failed unit could stay unseen for months between tests.",
+      "wrong_explanations": {
+        "B": "Six-monthly tests would find a failed unit only at the next test, so the service could again run for months with no spare.",
+        "C": "Bigger units do nothing about a failure going unseen; the pair would still lose its protection silently after the first fault.",
+        "D": "Repair terms help only once someone reports the fault; a unit left failed for seven weeks points to nobody knowing, not to slow repair."
+      },
+      "tips": [
+        "Eliminate: C and D, because bigger units and faster repair terms do nothing while nobody knows the first unit has failed.",
+        "Final two: A beats B because an alert reveals a failed unit within minutes; six-monthly tests could leave it unseen for months.",
+        "Exam cue: when redundant parts fail one after another, look for the missing alert on the first failure, not more hardware."
+      ],
+      "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); ISO/IEC 27002:2022 Control 8.14 (Redundancy of Information Processing Facilities)",
+      "related_concepts": [
+        "Single point of failure",
+        "Monitoring redundant components",
+        "Failover",
+        "Repair time"
+      ],
+      "_provenance": "Authored from concept: 'Resilient Design. Redundant Pair Failure'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B2.1 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_183 (fault-injection evidence), d4_184 (shared fiber route) and d4_008 (a controller with no partner): tests that redundancy decays silently unless the failure of each redundant part raises an alert and a timed repair. Public sources: COBIT 2019, ISO/IEC 27002:2022.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_296",
+      "domain": 4,
+      "subtopic": "Clustering. Active-Active Design",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A card-authorization service runs on a two-node active-active cluster, and each node runs at 70 percent of its capacity at peak. What is the PRIMARY risk the IS auditor should report?",
+      "options": {
+        "A": "Both nodes acting alone if the link between them fails",
+        "B": "The surviving node overloading when the other node fails",
+        "C": "In-flight authorizations lost on the node that fails",
+        "D": "A long pause while the standby node starts up"
+      },
+      "correct": "B",
+      "key_concept": "In an active-active cluster, each node must be able to carry the full load alone; otherwise one failure at peak overloads the survivor.",
+      "pre_read": "Add up the load the surviving node would carry after a failure before judging the design.",
+      "correct_explanation": "Each node needs headroom to absorb its partner's work. At 70 percent each, losing one node at peak leaves the survivor facing 140 percent of its capacity, so it slows or fails and the redundancy protects nothing when it matters most. Split-brain is the runner-up: a genuine cluster risk, but it needs a specific link fault, and a quorum witness usually contains it.",
+      "wrong_explanations": {
+        "A": "Nodes acting alone after a link fault, called split-brain, is a real risk, but a quorum witness usually contains it; overload follows any node failure at peak.",
+        "C": "Losing the few authorizations in progress on a failed node is brief and limited; overload hits every authorization on the survivor at peak.",
+        "D": "A startup pause belongs to active-passive failover; in active-active designs the surviving node is already running and takes the load."
+      },
+      "tips": [
+        "Eliminate: C and D, because in-flight losses are brief and limited, and a standby that must start up belongs to active-passive clusters.",
+        "Final two: B beats A because overload follows any node failure at peak, while split-brain needs a link fault that a quorum witness usually contains.",
+        "Exam cue: in active-active clusters, check that one node can carry the whole load; two nodes each above 50 percent give no real protection."
+      ],
+      "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); ISO/IEC 27002:2022 Control 8.14 (Redundancy of Information Processing Facilities)",
+      "related_concepts": [
+        "Active-active clustering",
+        "Capacity headroom",
+        "Failover",
+        "High availability (HA)"
+      ],
+      "_provenance": "Authored from concept: 'Clustering. Active-Active Design'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B2.2 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_008 (a lone controller), d4_266 and d4_069 (RAID) and d4_152 (capacity planning on peak demand): tests that an active-active cluster protects nothing unless each node can absorb its partner's load. Public sources: COBIT 2019, ISO/IEC 27002:2022.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_297",
+      "domain": 4,
+      "subtopic": "RAID Levels. Large-Disk Arrays",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A critical file server uses redundant array of independent disks (RAID) 5 on very large disks, and rebuilding after a disk failure takes three days. Which recommendation should the IS auditor consider BEST?",
+      "options": {
+        "A": "Replace the disks with faster models so rebuilds finish sooner",
+        "B": "Keep a hot spare disk so each rebuild starts at once",
+        "C": "Add a second server node that takes over if this one fails",
+        "D": "Convert the array to RAID 6 with double parity"
+      },
+      "correct": "D",
+      "key_concept": "RAID 5 tolerates one disk failure; long rebuilds on large disks leave a window where a second failure loses the array, which RAID 6 covers.",
+      "pre_read": "Ask how many disk failures the array survives, and what happens if another fails during the rebuild.",
+      "correct_explanation": "RAID 5 survives one disk failure. While it spends three days rebuilding, a second failure, more likely on large disks under heavy rebuild load, loses the whole array. RAID 6 keeps double parity, so the array survives a second failure during the rebuild. A hot spare is the runner-up: it starts the rebuild sooner but leaves the same three-day window with no protection left.",
+      "wrong_explanations": {
+        "A": "Faster disks shorten the rebuild, but the array still cannot survive a second failure until it ends.",
+        "B": "A hot spare starts the rebuild sooner, but the three days of rebuilding still leave the array unable to survive another failure.",
+        "C": "A second server node covers a failed server, not the exposure of the disk array while it rebuilds."
+      },
+      "tips": [
+        "Eliminate: A and C, because faster disks still leave a window with no protection and a second server does nothing for the disk array.",
+        "Final two: D beats B because a hot spare only starts the rebuild sooner; double parity survives a second failure during the three days.",
+        "Exam cue: long rebuilds on a single-parity array point to double parity, not faster spares or more servers."
+      ],
+      "framework_ref": "NIST SP 800-209 (Security Guidelines for Storage Infrastructure); ISO/IEC 27002:2022 Control 8.14 (Redundancy of Information Processing Facilities)",
+      "related_concepts": [
+        "RAID 5",
+        "RAID 6",
+        "Rebuild window",
+        "Hot spare"
+      ],
+      "_provenance": "Authored from concept: 'RAID Levels. Large-Disk Arrays'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B2.2 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_266 (what RAID 1 protects against), d4_069 (RAID is not a backup) and d4_286 (a shared SAN switch): tests the single-parity rebuild window on large disks and why double parity closes it. Public sources: NIST SP 800-209, ISO/IEC 27002:2022.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_298",
+      "domain": 4,
+      "subtopic": "Telecommunications Resilience. Remote Site Link",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A remote mine site reaches head office over one fiber cable, and laying a second cable along another route is unaffordable. Which recommendation should the IS auditor consider MOST effective?",
+      "options": {
+        "A": "A second circuit from the carrier over the same cable",
+        "B": "Faster repair terms in the fiber carrier's contract",
+        "C": "A satellite link that takes over when the cable fails",
+        "D": "Higher bandwidth on the existing cable to absorb peaks"
+      },
+      "correct": "C",
+      "key_concept": "When diverse cable routes are impractical, alternative routing over another medium, like satellite, removes the lone cable as a single point of failure.",
+      "pre_read": "Separate options that prevent a link outage from options that only shorten one or add capacity.",
+      "correct_explanation": "With only one cable and no affordable second route, the remaining option is alternative routing: a different medium, such as satellite or cellular, that does not share the cable's physical path. It keeps the site connected while the cable is repaired. Faster repair terms are the runner-up: they shorten each outage, but the site still loses all connectivity until the crew finishes.",
+      "wrong_explanations": {
+        "A": "A second circuit in the same cable shares its fate; one cut still takes down both circuits at once.",
+        "B": "Faster repair shortens an outage but does not prevent it; the site still loses its only link until crews fix the cable.",
+        "D": "More bandwidth helps capacity, not availability; a cut cable stops all traffic however fast the link was."
+      },
+      "tips": [
+        "Eliminate: A and D, because a second circuit in the same cable and extra bandwidth both fail when that cable is cut.",
+        "Final two: C beats B because a satellite link keeps the site connected during a cut; faster repair only shortens the outage.",
+        "Exam cue: when a second cable route is impractical, look for alternative routing over a different medium."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 CP-8 (Telecommunications Services); ISO/IEC 27002:2022 Control 8.14 (Redundancy of Information Processing Facilities)",
+      "related_concepts": [
+        "Alternative routing",
+        "Diverse routing",
+        "Single point of failure",
+        "Telecommunications resilience"
+      ],
+      "_provenance": "Authored from concept: 'Telecommunications Resilience. Remote Site Link'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B2.2 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_068 (a second ISP on a diverse path) and d4_184 (two sites on one fiber route): tests alternative routing over a different medium when a second cable route is impractical. Public sources: NIST SP 800-53 Rev 5, ISO/IEC 27002:2022.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_299",
+      "domain": 4,
+      "subtopic": "Recovery Sites. Reciprocal Agreements",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Management plans a reciprocal agreement with a peer firm to recover one of its systems. For which system should the IS auditor consider such an agreement BEST suited?",
+      "options": {
+        "A": "Customer payments, needed within four hours, on a platform both firms run",
+        "B": "Month-end reporting, needed within ten days, on a platform both firms run",
+        "C": "Archive search, needed within three weeks, on a platform the peer lacks",
+        "D": "Staff scheduling, needed within one day, on a platform both firms run"
+      },
+      "correct": "B",
+      "key_concept": "Reciprocal agreements suit only systems with long recovery targets that run on platforms both parties share; short targets or incompatible platforms rule them out.",
+      "pre_read": "Think about what a peer host must do before another firm's system can run on its equipment.",
+      "correct_explanation": "Reciprocal agreements are cheap but hard to enforce or test, and the host must free capacity from its own work, so they suit only systems that can wait days and run on platforms both firms share. Month-end reporting meets both conditions. Archive search is the runner-up: it can wait even longer, but the peer lacks its platform, so recovery there would fail.",
+      "wrong_explanations": {
+        "A": "A four-hour need requires capacity ready on demand; a peer running its own business cannot free that much that fast.",
+        "C": "The long timescale suits a reciprocal pact, but a peer without the platform cannot run the system at all.",
+        "D": "One day is too short for a peer to clear space, reconfigure its equipment and load another firm's workload."
+      },
+      "tips": [
+        "Eliminate: A and D, because a peer rarely frees spare capacity within hours or a single day.",
+        "Final two: B beats C because a peer that lacks the platform cannot run archive search, however long it can wait.",
+        "Exam cue: reciprocal agreements fit long recovery targets on compatible platforms; short targets point to hot sites or cloud recovery."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev 1 Section 3.4.2 Alternate Sites; NIST SP 800-53 Rev 5 CP-7 (Alternate Processing Site)",
+      "related_concepts": [
+        "Reciprocal agreement",
+        "Alternate processing site",
+        "Recovery time objective (RTO)",
+        "Platform compatibility"
+      ],
+      "_provenance": "Authored from concept: 'Recovery Sites. Reciprocal Agreements'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B5.2 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_084 (shared hot-site priority rules), d4_099 (concentration risk) and d4_264 and d4_082 (choosing a hot or mirrored site): tests when a reciprocal agreement fits, weighing recovery time and platform compatibility together. Public sources: NIST SP 800-34 Rev 1, NIST SP 800-53 Rev 5.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_300",
+      "domain": 4,
+      "subtopic": "Cloud Disaster Recovery. DRaaS Contract Review",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A firm's disaster recovery as a service (DRaaS) contract allows one failover test a year, and that test covers two of its nine critical applications. What should be the IS auditor's PRIMARY recommendation?",
+      "options": {
+        "A": "Raise the service credits owed for any missed recovery time",
+        "B": "Replicate the nine applications more often to cut data loss",
+        "C": "Obtain the provider's System and Organization Controls (SOC) 2 report",
+        "D": "Renegotiate test rights to cover every critical application"
+      },
+      "correct": "D",
+      "key_concept": "Outsourcing recovery to a provider keeps accountability with the customer, so the contract must allow tests proving every critical application recovers.",
+      "pre_read": "Ask who must prove recovery works, and whether the contract lets them prove it.",
+      "correct_explanation": "Using a DRaaS provider does not transfer accountability for recovery. The firm must prove each critical application meets its recovery targets, yet the contract lets it test only two of nine. Securing test rights that cover every critical application, over a planned cycle, closes that gap. The SOC 2 report is the runner-up: it shows the provider's platform controls work, not that this firm's applications recover.",
+      "wrong_explanations": {
+        "A": "Service credits compensate after a failed recovery; they give no evidence that the untested applications can be recovered in time.",
+        "B": "More frequent replication reduces data loss, the recovery point, but proves nothing about whether the applications restart in time.",
+        "C": "A SOC 2 report covers the provider's own controls, not whether this firm's applications, data and dependencies recover within its targets."
+      },
+      "tips": [
+        "Eliminate: A and B, because service credits only compensate and faster replication only reduces data loss; neither proves recovery.",
+        "Final two: D beats C because a SOC 2 report covers the provider's controls, not whether this firm's applications recover in time.",
+        "Exam cue: when recovery is outsourced, accountability stays with the customer; prefer the option that lets it test its own recovery."
+      ],
+      "framework_ref": "COBIT 2019 DSS04 (Managed Continuity); ISO 22301:2019 Clause 8.5 (Exercise Programme); COBIT 2019 APO10 (Managed Vendors)",
+      "related_concepts": [
+        "Disaster recovery as a service (DRaaS)",
+        "Recovery testing",
+        "Accountability",
+        "Shared responsibility"
+      ],
+      "_provenance": "Authored from concept: 'Cloud Disaster Recovery. DRaaS Contract Review'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B5.2 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_181 (cloud backup restore testing left to provider checks), d4_084 (shared hot-site capacity) and d4_228 (data residency): tests that a DRaaS contract must give the customer enough test rights to prove every critical application recovers. Public sources: COBIT 2019, ISO 22301.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_301",
+      "domain": 4,
+      "subtopic": "Service Levels. Missed Restore Targets",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A service level agreement (SLA) restore target is missed only when the in-house database team must act, and that team handles requests in arrival order. What is the GREATEST weakness the IS auditor should report?",
+      "options": {
+        "A": "No agreement commits the database team to response times",
+        "B": "The restore target is stricter than recent results support",
+        "C": "Missed targets are not reported to the business each month",
+        "D": "The agreement sets no service credits for missed targets"
+      },
+      "correct": "A",
+      "key_concept": "Internal teams behind a service level agreement (SLA) need operational level agreements (OLAs) whose times fit within the SLA target.",
+      "pre_read": "Find where in the chain the target is lost, then ask what commits that link to a time.",
+      "correct_explanation": "An SLA target is achievable only if every team behind it is committed to supporting times. Here the database team works in arrival order with no operational level agreement (OLA), so its delays break the end-to-end target. A target stricter than recent results is the runner-up: targets come from business need, so the fix is an OLA, not a lower target.",
+      "wrong_explanations": {
+        "B": "Targets come from business need, not from what IT achieves today; lowering one would hide the gap rather than fix its cause.",
+        "C": "Reporting misses tells the business about the problem but does nothing about why the database work is slow.",
+        "D": "Service credits move money after a miss; they do not commit the database team to act within the time the target needs."
+      },
+      "tips": [
+        "Eliminate: C and D, because reporting misses and service credits react after a failure; neither commits the team that causes it.",
+        "Final two: A beats B because the target reflects business need; lowering it hides the gap instead of fixing the missing commitment.",
+        "Exam cue: when an SLA fails at one internal handoff, look for a missing operational level agreement (OLA)."
+      ],
+      "framework_ref": "ITIL 4 Service Level Management practice; COBIT 2019 APO09 (Managed Service Agreements)",
+      "related_concepts": [
+        "Operational level agreement (OLA)",
+        "Service level agreement (SLA)",
+        "Service level management",
+        "End-to-end targets"
+      ],
+      "_provenance": "Authored from concept: 'Service Levels. Missed Restore Targets'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A10.1 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_003 (measurable targets), d4_165 (balanced metrics), d4_171 and d4_180 (measuring and reconciling performance) and d4_246 (incident notification): tests that internal teams behind an SLA need OLAs that support its targets. Public sources: ITIL 4, COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_302",
+      "domain": 4,
+      "subtopic": "Service Levels. Hosting Provider Gaps",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A hosting provider misses the four-hour restore target in its service level agreements (SLAs) because its hardware supplier's contract allows next-day repair. Which control should the IS auditor consider MOST effective against such gaps?",
+      "options": {
+        "A": "Annual surveys of customer satisfaction with restore times",
+        "B": "A check of supplier terms against SLA targets before signing",
+        "C": "Monthly SLA performance reports reviewed with each customer",
+        "D": "Supplier penalties that match the service credits owed to customers"
+      },
+      "correct": "B",
+      "key_concept": "Underpinning contracts with suppliers must support the service level agreement (SLA) targets they sit behind; check both before signing, as penalties do not restore service.",
+      "pre_read": "Separate controls that prevent a mismatch from ones that report it or pay for it afterward.",
+      "correct_explanation": "The provider promised a four-hour restore that its underpinning contract with the hardware supplier cannot support. The preventive control is to check each supplier contract against the SLA targets it underpins before either is signed or renewed, so the commitments line up. Matching penalties are the runner-up: they pass the financial cost to the supplier, but repairs still take until the next day.",
+      "wrong_explanations": {
+        "A": "Surveys show unhappy customers after the fact; they do not stop the provider promising targets its suppliers cannot support.",
+        "C": "Performance reports detect missed targets after they happen; the mismatch with the supplier's terms would remain.",
+        "D": "Matching penalties recover money, but repairs would still take until the next day, so the four-hour target would keep failing."
+      },
+      "tips": [
+        "Eliminate: A and C, because surveys and performance reports only show the misses after customers have suffered them.",
+        "Final two: B beats D because matching penalties recover money while repairs still take a day; aligned terms stop the gap forming.",
+        "Exam cue: service credits and penalties transfer cost, not service; prefer controls that align commitments before signing."
+      ],
+      "framework_ref": "COBIT 2019 APO09 (Managed Service Agreements); ITIL 4 Supplier Management practice; ITIL 4 Service Level Management practice; COBIT 2019 APO10 (Managed Vendors)",
+      "related_concepts": [
+        "Underpinning contract",
+        "Service level agreement (SLA)",
+        "Supplier management",
+        "Service credits"
+      ],
+      "_provenance": "Authored from concept: 'Service Levels. Hosting Provider Gaps'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A10.1 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_171 (independent measurement of provider figures), d4_180 (metric disputes) and d4_246 (incident notification terms): tests aligning underpinning supplier contracts with SLA targets before signing, rather than relying on matching penalties. Public sources: COBIT 2019, ITIL 4.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_303",
+      "domain": 4,
+      "subtopic": "Backup Schemes. Weekly Cycle",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "With Sunday full backups and daily incrementals, Monday restores take six hours and Saturday's take 12, against an eight-hour recovery time objective (RTO). Which change would the IS auditor consider MOST LIKELY to fix this?",
+      "options": {
+        "A": "Verify each incremental backup as it is written",
+        "B": "Take incremental backups every four hours instead",
+        "C": "Replace the daily incrementals with daily differentials",
+        "D": "Move the weekly full backup from Sunday to Wednesday night"
+      },
+      "correct": "C",
+      "key_concept": "Incremental restores apply the full plus every later set in order; differentials need only the full plus the latest set, shortening late-cycle restores.",
+      "pre_read": "Work out how many backup sets each restore must apply, and how each option changes that count.",
+      "correct_explanation": "Restore time grows each day because each incremental must be loaded in order after the full backup. A differential holds every change since the full, so any restore needs the full plus one set, with no six-set chain and no record restored several times. That makes it the change most likely to bring Saturday under eight hours. Moving the full to Wednesday is the runner-up, but the day before it still needs six incrementals.",
+      "wrong_explanations": {
+        "A": "Verifying each incremental checks its integrity, but a Saturday restore would still apply the full backup plus six sets in order.",
+        "B": "Four-hourly incrementals improve the recovery point but multiply the sets a restore must apply, making late-week restores even slower.",
+        "D": "Moving the full backup only moves the long chain; a restore on the day before the new full would still apply six incrementals."
+      },
+      "tips": [
+        "Eliminate: A and B, because verification does not shorten a restore and more frequent incrementals add sets to apply.",
+        "Final two: C beats D because moving the full only shifts the chain; the day before it still needs six incrementals.",
+        "Exam cue: restores that slow as the week goes on point to a long incremental chain; differentials cut it to one set."
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.13 (Information Backup); NIST SP 800-53 Rev 5 CP-9 (System Backup)",
+      "related_concepts": [
+        "Incremental backup",
+        "Differential backup",
+        "Recovery time objective (RTO)",
+        "Restore chain"
+      ],
+      "_provenance": "Authored from concept: 'Backup Schemes. Weekly Cycle'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B3.1 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_061 (identifying a differential scheme from its restore pattern) and d4_075 (a bad incremental found in testing): tests how the incremental chain stretches late-week restores past the RTO and how differentials shorten it. Public sources: ISO/IEC 27002:2022, NIST SP 800-53 Rev 5.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_304",
+      "domain": 4,
+      "subtopic": "Backup Rotation. Media Reuse Cycle",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A payroll bureau reuses backup media every 14 days, and its records show data errors usually surface four to six weeks after they occur. Which is the GREATEST risk for the IS auditor to report?",
+      "options": {
+        "A": "Older payroll periods unavailable for legal or audit requests",
+        "B": "Ransomware encrypting the backups along with the live data",
+        "C": "Losing up to 14 days of payroll changes in a failure",
+        "D": "Every clean copy being overwritten before an error is found"
+      },
+      "correct": "D",
+      "key_concept": "Backup retention must outlast the usual time to detect data errors, or every remaining copy may already hold the bad data.",
+      "pre_read": "Compare how long backups are kept with how long problems take to come to light.",
+      "correct_explanation": "Retention must outlast the time errors usually take to be noticed. Here media is reused after 14 days, but errors surface four to six weeks later, so by then every backup already holds the bad data and no clean restore point exists. Losing 14 days of changes is the runner-up, but it confuses media reuse with backup frequency.",
+      "wrong_explanations": {
+        "A": "Legal retention is usually met by separate archives; the facts point to recovery, where every recent copy holds the errors.",
+        "B": "Ransomware is a real threat to backups, but nothing here points to it; the facts given show clean copies overwritten before errors appear.",
+        "C": "Reusing media every 14 days sets how long copies are kept, not how often backups run; the backup schedule decides how much recent data is lost."
+      },
+      "tips": [
+        "Eliminate: A and B, because legal history sits in separate archives and nothing in the facts points to ransomware.",
+        "Final two: D beats C because 14-day reuse limits how long copies are kept, not how often they are taken.",
+        "Exam cue: when errors come to light weeks after they occur, check that backup retention outlasts that detection time."
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.13 (Information Backup); NIST SP 800-53 Rev 5 CP-9 (System Backup)",
+      "related_concepts": [
+        "Backup retention",
+        "Media rotation",
+        "Silent data corruption",
+        "Clean restore point"
+      ],
+      "_provenance": "Authored from concept: 'Backup Rotation. Media Reuse Cycle'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B3.1 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_233 (responding once corruption is found and backups have rotated out), d4_064 (rotation for seven-year legal retention) and d4_162 (immutable copies): tests designing retention to outlast the usual time to detect data errors. Public sources: ISO/IEC 27002:2022, NIST SP 800-53 Rev 5.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_305",
+      "domain": 4,
+      "subtopic": "Restore Testing. Monthly Sample Restores",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A logistics firm restores a few sample files from backup each month without errors, and its shipment-tracking database has a 10-hour recovery time objective (RTO). Which evidence should the IS auditor consider MOST relevant?",
+      "options": {
+        "A": "Results of a timed restore of the whole database",
+        "B": "Checksums comparing each restored sample file with its source",
+        "C": "Logs showing every nightly database backup job completed",
+        "D": "The backup vendor's published maximum restore speeds"
+      },
+      "correct": "A",
+      "key_concept": "Restore tests must be timed and sized like a real recovery; small sample restores cannot show whether the recovery time objective (RTO) is achievable.",
+      "pre_read": "Identify the target the stem gives, then pick the evidence that tests that target directly.",
+      "correct_explanation": "Successful sample restores show some files can come back, but the tracking database has a 10-hour RTO and nobody knows whether a full restore fits. Only a timed restore of the complete database, on realistic hardware, shows whether recovery meets the target. Checksums on the samples are the runner-up: they confirm small files are intact, not the time needed to recover the system that matters.",
+      "wrong_explanations": {
+        "B": "Checksums show the sample files came back intact, but samples say nothing about how long the whole database would take to restore.",
+        "C": "Job logs show data was written, not that it restores, and not how long a restore would take.",
+        "D": "Published speeds are vendor claims under ideal conditions; they are not evidence of this firm's actual restore time."
+      },
+      "tips": [
+        "Eliminate: C and D, because job logs and vendor speed claims show neither that data restores nor how long it takes here.",
+        "Final two: A beats B because checksums prove sample files are intact, not that the whole database restores within 10 hours.",
+        "Exam cue: when a stem states a recovery time objective, the best restore evidence is a timed restore at full scale."
+      ],
+      "framework_ref": "CIS Controls v8 Safeguard 11.5 (Test Data Recovery); NIST SP 800-53 Rev 5 CP-4 (Contingency Plan Testing)",
+      "related_concepts": [
+        "Restore testing",
+        "Recovery time objective (RTO)",
+        "Timed recovery",
+        "Sample restores"
+      ],
+      "_provenance": "Authored from concept: 'Restore Testing. Monthly Sample Restores'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B3.4 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_075 (checksums on restored data), d4_126 (restores from offsite media), d4_181 (cloud restore testing ownership) and d4_222 (directory restores): tests that restore tests must be timed at full scale to show the RTO is achievable. Public sources: CIS Controls v8, NIST SP 800-53 Rev 5.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_306",
+      "domain": 4,
+      "subtopic": "Restore Testing. Audit Evidence",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "The operations team gives the IS auditor signed reports of quarterly restore tests that the backup administrator chose and ran. Which further step would provide the BEST evidence that backups can be restored?",
+      "options": {
+        "A": "Inspect backup job logs covering the same quarters",
+        "B": "Observe restores of backup sets the IS auditor picks",
+        "C": "Confirm that a manager approved each signed test report",
+        "D": "Obtain the backup vendor's statement of product reliability"
+      },
+      "correct": "B",
+      "key_concept": "Evidence the IS auditor obtains directly from an independently selected sample is more reliable than reports produced by the person being audited.",
+      "pre_read": "Ask who chose what was tested, and who would produce each piece of evidence.",
+      "correct_explanation": "Evidence the IS auditor obtains directly, from a sample the IS auditor selects, is more reliable than reports prepared by the person whose work is being tested. Observing restores of independently picked backup sets removes the risk that only known-good sets were tested. Manager approval of the reports is the runner-up: it adds a review, but the administrator still chose and ran every test.",
+      "wrong_explanations": {
+        "A": "Job logs show backups were written, not that they restore; they add nothing to the test reports already provided.",
+        "C": "Manager approval adds a review, but the administrator still chose and ran every test, so the selection bias remains.",
+        "D": "A vendor's reliability claim covers its product in general, not whether this firm's backup sets restore."
+      },
+      "tips": [
+        "Eliminate: A and D, because job logs and vendor claims show nothing about whether this firm's backup sets restore.",
+        "Final two: B beats C because approval still leaves the administrator's own choice of tests; sets the IS auditor picks remove that bias.",
+        "Exam cue: when evidence comes from the person being audited, prefer evidence the IS auditor obtains or observes directly."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); CIS Controls v8 Safeguard 11.5 (Test Data Recovery)",
+      "related_concepts": [
+        "Restore testing",
+        "Audit evidence reliability",
+        "Independent sample selection",
+        "Observation"
+      ],
+      "_provenance": "Authored from concept: 'Restore Testing. Audit Evidence'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B3.4 (Wave 2 coverage batch Q8: thin subtopic). Distinct from d4_126 (adding restores to a contract-only control) and d4_075 (checksums on restored data): tests the reliability of restore-test evidence prepared by the administrator against restores of sets the IS auditor selects and observes. Public sources: ISACA ITAF, CIS Controls v8.",
+      "style_version": 2
     }
   ]
 }

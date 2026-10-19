@@ -1972,3 +1972,17 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - RFC 4301 (Security Architecture for the Internet Protocol)
 - ISO/IEC 27002:2022 Control 8.19 (Installation of Software on Operational Systems)
 - CIS Controls v8 Safeguard 2.5 (Allowlist Authorized Software)
+
+## Added with Wave 2 coverage batch Q8 (Domain 4, Oct 2026)
+
+- NIST SP 800-53 Rev 5 CP-4 (Contingency Plan Testing)
+- NIST SP 800-53 Rev 5 CP-8 (Telecommunications Services)
+- CIS Controls v8 Safeguard 11.5 (Test Data Recovery)
+
+## Added with Wave 3 coverage batch Q9 (Domain 1, Oct 2026)
+
+- ISA 450, Evaluation of Misstatements Identified during the Audit
+- ISA 530 (Audit Sampling)
+- COBIT 2019 BAI06.02 (Manage emergency changes)
+- PCI DSS v4.0.1 Appendix B (Compensating Controls)
+- NIST SP 800-53 Rev 5 AC-7 (Unsuccessful Logon Attempts)
