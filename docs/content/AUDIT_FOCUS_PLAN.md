@@ -1,9 +1,16 @@
 # audit_focus roll-out plan (Wave 3a)
 
 Internal plan. `audit_focus` is the optional subtopic field that gives the IS
-auditor's process view: what to review, which evidence proves the control works,
-and the typical recommendation. Its rules are in `NOTES_SCHEMA_V2.md`;
-`scripts/lint_notes.py --audit-focus` lists every subtopic still without it.
+auditor's process view. It sits after the example, beside the IS auditor's lens:
+
+- `review`: 2–3 audit steps, the step that must come first at the top
+- `evidence`: 2–3 records or test results, strongest first (aim for 3)
+- `recommend`: one imperative sentence that names who acts ("Have the … ")
+- `decides`: who decides or accepts the risk, shown on its own line
+
+At most 95 words, counted apart from the 380-word core. The full rules are in
+`NOTES_SCHEMA_V2.md`. `scripts/lint_notes.py --audit-focus` lists every subtopic
+still without the field.
 
 ## Scope
 These are the 60 notes from the October 2026 curriculum coverage review whose
@@ -17,7 +24,9 @@ the rule alone. Six are done in the pilot; 54 remain.
 
 Batches of about nine fit one `cisa-notes-curator` pass. Check each note's
 `practice_ids` stems and keys before writing, so the field never contradicts a key.
-Trim any note already over 380 core words in the same pass (marked *).
+Trim any note already over 380 core words in the same pass (marked *). When
+`decides` is added, drop any "management decides" ending from the example, so the
+line appears once on the card.
 
 | # | Code | Subtopic | Yield | Bank | Batch |
 |---|---|---|---|---|---|
@@ -30,7 +39,7 @@ Trim any note already over 380 core words in the same pass (marked *).
 | 7 | 4A7.3 | Problem Management and Root Cause Analysis | high | 6 | N4 |
 | 8 | 3B1.2 | Test Types and Techniques | high | 6 | N4 |
 | 9 | 4A11.4* | Database Recovery | high | 5 | N4 |
-| 10 | 4B3.1* | Backup Schemes, Rotation and the 3-2-1 Rule | high | 5 | Pilot (done; trim pending) |
+| 10 | 4B3.1 | Backup Schemes, Rotation and the 3-2-1 Rule | high | 5 | Pilot (done; trimmed) |
 | 11 | 5A4.4* | Intrusion Detection, Prevention and Network Access Control | high | 5 | N4 |
 | 12 | 5A6.2 | Asymmetric Encryption and the Digital Envelope | high | 5 | N4 |
 | 13 | 5B2.2* | Social Engineering and Business Email Compromise | high | 5 | N5 |
@@ -92,8 +101,9 @@ never shown to learners.
   TOGAF, 3A1.3 critical path, 5A8.5 SDN): keep the field short and practical, such
   as how the auditor uses the model to scope or read evidence. If no honest audit
   step exists, leave the field out and say why in the PR.
-- **1A1.2 ethics:** the review is of the audit function itself (independence
-  declarations, quality assurance files), not of the auditee.
+- **Audit-method subtopics (1A1.2 ethics, 1A2.4, 1B4.6):** say plainly that the
+  audit function is under review (independence declarations, quality assurance
+  files). Audit management acts; the audit committee usually decides.
 - **After the 60:** subtopics that already carry an audit bullet in `how_it_works`
   can move that bullet into `audit_focus` later. That frees core words; it is
   optional and lower priority.

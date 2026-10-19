@@ -1196,19 +1196,21 @@
                   }
                 ]
               },
+              "example": "An insurer's IS auditor ranks risks for next year's plan. Claims-system outages have ten years of reliable loss data, so she expresses that risk as expected annual loss. A new mobile app has no history, so she rates it on the defined high, medium and low scales used across the register. Both feed one ranking, and she records the assumptions behind each.",
               "audit_focus": {
                 "review": [
-                  "Re-rate a sample of risks with the written scales and compare scores",
-                  "Trace top-ranked risks into the audit plan to confirm they get hours first",
-                  "Check that ratings were refreshed after mergers, new systems or new regulations"
+                  "Re-rate a sample of the audit function's risk ratings; wide gaps mean unclear scales",
+                  "Trace top-ranked risks into the audit plan and confirm they receive priority coverage",
+                  "Compare register update dates with recent mergers, system launches and new regulations"
                 ],
                 "evidence": [
                   "Approved rating criteria and the dated risk register they were applied to",
-                  "Data sources and assumptions behind each money-based loss estimate"
+                  "Data sources and assumptions behind each quantitative loss estimate",
+                  "Audit committee minutes approving the risk-based audit plan"
                 ],
-                "recommend": "The IS auditor recommends defined rating scales, recorded assumptions and re-rating after major change; the audit committee approves the plan the ranking drives."
+                "recommend": "Have audit management define rating scales, record assumptions and re-rate risks after major business change.",
+                "decides": "The audit committee approves the audit plan built from the ranking"
               },
-              "example": "An insurer's IS auditor ranks risks for next year's plan. Claims-system outages have ten years of reliable loss data, so she expresses that risk as expected annual loss. A new mobile app has no history, so she rates it on the defined high, medium and low scales used across the register. Both feed one ranking, and she records the assumptions behind each.",
               "isaca_rule": "Rank on likelihood and impact together, adjusted for existing controls. Fit the method to each area's data: numbers where history is reliable, defined qualitative scales where it is not. Consistency means shared definitions, not one method forced on every area.",
               "exam_traps": [
                 {
@@ -6884,19 +6886,21 @@
                 "svg": "<svg viewBox='0 0 340 150' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Work is outsourced to a vendor under an SLA and right to audit, but accountability for the data stays with your organization'><rect x='20' y='8' width='300' height='50' rx='4' fill='var(--accent-fill)'/><text x='170' y='29' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='#ffffff'>Your organization</text><text x='170' y='48' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='#ffffff'>Keeps accountability for data and results</text><line x1='170' y1='62' x2='170' y2='93' stroke='var(--text2)' stroke-width='1.5'/><path d='M166,93 L170,100 L174,93 Z' fill='var(--text2)'/><text x='182' y='85' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>SLA, right to audit</text><rect x='20' y='102' width='300' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='170' y='127' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='var(--text)'>Vendor does the work</text></svg>",
                 "caption": "Outsourcing moves the work to a vendor under contract. Accountability for the data and the result stays with the organization."
               },
+              "example": "A state pension fund's managers propose outsourcing development of the member-benefits system to a near-shore provider, citing a 30% cost cut. Their analysis ignores where member data would be stored, how much system knowledge would leave with retiring staff, and how hard it would be to bring the work back. The IS auditor recommends adding these risks to the analysis.",
               "audit_focus": {
                 "review": [
                   "Trace the sourcing decision to business strategy and a documented risk analysis",
-                  "Check that in-house staff keep the skills and authority to oversee the provider",
+                  "Compare the retained team's roles and skills with what provider oversight requires",
                   "Evaluate the exit plan for data return, knowledge transfer and a realistic timeline"
                 ],
                 "evidence": [
                   "Business case and risk analysis signed by the accountable business owner",
-                  "Board or steering committee minutes recording the decision and accepted risks"
+                  "Board or steering committee minutes recording the decision and accepted risks",
+                  "Exit plan and transition checkpoint records with named owners"
                 ],
-                "recommend": "The IS auditor recommends that management close gaps in the risk analysis before signing the contract; the sourcing choice itself stays with management."
+                "recommend": "Have management complete the risk analysis, keep oversight skills in-house and plan an exit before contracting.",
+                "decides": "Senior management chooses the sourcing option and stays accountable"
               },
-              "example": "A state pension fund's managers propose outsourcing development of the member-benefits system to a near-shore provider, citing a 30% cost cut. Their analysis ignores where member data would be stored, how much system knowledge would leave with retiring staff, and how hard it would be to bring the work back. The IS auditor recommends adding these risks to the analysis and leaves the sourcing decision to management.",
               "isaca_rule": "Outsourcing transfers the work, never the accountability. The IS auditor verifies that management weighed every material risk beyond cost; management makes the sourcing decision.",
               "exam_traps": [
                 {
@@ -9059,19 +9063,21 @@
                 "svg": "<svg viewBox='0 0 430 100' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Application controls: input controls, processing controls, output controls'><rect x='8' y='24' width='112' height='44' rx='4' fill='var(--accent-fill)'/><text x='64' y='50' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='#ffffff'>Input controls</text><rect x='142' y='24' width='140' height='44' rx='4' fill='var(--accent-fill)'/><text x='212' y='50' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='#ffffff'>Processing controls</text><rect x='304' y='24' width='118' height='44' rx='4' fill='var(--accent-fill)'/><text x='363' y='50' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='#ffffff'>Output controls</text><line x1='122' y1='46' x2='133' y2='46' stroke='var(--text2)' stroke-width='1.5'/><path d='M133,42 L140,46 L133,50 Z' fill='var(--text2)'/><line x1='284' y1='46' x2='295' y2='46' stroke='var(--text2)' stroke-width='1.5'/><path d='M295,42 L302,46 L295,50 Z' fill='var(--text2)'/></svg>",
                 "caption": "Data enters, gets processed and comes out. Each stage has its own controls, and together they protect data integrity end to end."
               },
+              "example": "At a distributor, a clerk types a credit memo of 15,000 instead of 150.00, and the application accepts it. The sales manager relies on a monthly report to catch such errors. The IS auditor recommends a range check on memo amounts and supervisor approval for memos above a set value, so errors are stopped before they post.",
               "audit_focus": {
                 "review": [
                   "Walk one transaction from entry to report, noting where each control acts",
                   "Enter invalid test data in a test environment and confirm it is rejected",
-                  "Check that rejected items are corrected and resubmitted, not left to age"
+                  "Follow a sample of rejected items through to correction and resubmission"
                 ],
                 "evidence": [
-                  "Results of the auditor's own test transactions, showing which entries were rejected",
-                  "Signed batch and run-to-run reconciliations, with every difference explained"
+                  "Signed batch and run-to-run reconciliations, with every difference explained",
+                  "Error log showing when each rejected item was fixed, and any still open",
+                  "Application settings listing the active edit checks and their limits"
                 ],
-                "recommend": "The IS auditor recommends that the application owner add missing checks at the point of entry; management sets the priority from the error risk."
+                "recommend": "Have the application owner add missing edit checks at entry and reconciliations between processing stages.",
+                "decides": "The business process owner accepts any residual risk of errors"
               },
-              "example": "At a distributor, a clerk types a credit memo of 15,000 instead of 150.00, and the application accepts it. The sales manager relies on a monthly report to catch such errors. The IS auditor recommends a range check on memo amounts and supervisor approval for memos above a set value, so errors are stopped before they post.",
               "isaca_rule": "Validate data at the point of entry. Input controls that reject invalid data before processing are cheaper and more effective than finding errors in output. Match each control to the stage it protects.",
               "exam_traps": [
                 {
@@ -13163,19 +13169,21 @@
                   }
                 ]
               },
+              "example": "A hospital's BIA gives the pharmacy dispensing process one 'high impact' score. The IS auditor recommends scoring each process at one hour, one day and one week, because harm grows as an outage continues and the steepest rise sets recovery priority. The continuity manager rescores them.",
               "audit_focus": {
                 "review": [
-                  "Compare the BIA process list with the process inventory to find omissions",
-                  "Confirm that process owners, not IT, signed off each impact rating",
-                  "Trace recovery objectives from the BIA into the recovery strategy and plans"
+                  "Compare the BIA's process list with the organization's full list of business processes",
+                  "Confirm that process owners, not IT, signed off on each impact rating",
+                  "Trace how fast each process must resume, per the BIA, into recovery plans"
                 ],
                 "evidence": [
                   "Owner-signed BIA questionnaires scoring impact at several outage lengths",
+                  "Approved impact criteria applied the same way across all business units",
                   "Dependency records reconciled to the supplier list and IT asset inventory"
                 ],
-                "recommend": "The IS auditor recommends that the continuity manager add missing processes, impact types or dependencies before plans are built; senior management approves the revised tiers."
+                "recommend": "Have the business continuity manager add missing processes, impact types or dependencies before plans are built.",
+                "decides": "Senior management approves the priority tiers (critical, vital, sensitive, nonsensitive)"
               },
-              "example": "A hospital's BIA gives the pharmacy dispensing process one 'high impact' score. The IS auditor recommends scoring each process at one hour, one day and one week, because harm grows as an outage continues and the steepest rise sets recovery priority. The continuity manager rescores them, and the executive committee approves the tiers.",
               "isaca_rule": "Start from business processes, measure harm over time at worst-case timing, and set likelihood aside. Criticality is a business judgment: process owners and senior management decide it, and the IS auditor evaluates the method and advises.",
               "exam_traps": [
                 {
@@ -13713,7 +13721,7 @@
                 "d4_233"
               ],
               "definition": "A backup scheme is the pattern of full, incremental and differential copies an organization takes; rotation is the schedule for reusing and retiring backup media.",
-              "why_it_matters": "The scheme sets how long backups take, how much storage they use and how long a restore will take. A poor choice can make restores miss the recovery time objective (RTO) or leave no clean copy.",
+              "why_it_matters": "The scheme sets backup time, storage use and restore time. A poor choice can make restores miss the recovery time objective (RTO) or leave no clean copy.",
               "how_it_works": [
                 "Schemes are combined, such as a weekly full backup with daily incrementals, trading backup time against restore time.",
                 "Backups run at least as often as the recovery point objective (RPO) requires.",
@@ -13767,19 +13775,21 @@
                 "svg": "<svg viewBox='0 0 470 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Backup schemes: a full backup copies everything, incremental copies changes since the last backup, differential copies changes since the last full backup'><rect x='14' y='16' width='150' height='38' rx='4' fill='var(--accent-fill)'/><text x='89' y='39' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Full</text><rect x='178' y='16' width='278' height='38' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='317' y='39' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Copies everything</text><rect x='14' y='60' width='150' height='38' rx='4' fill='var(--accent-fill)'/><text x='89' y='83' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Incremental</text><rect x='178' y='60' width='278' height='38' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='317' y='83' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Changes since the last backup</text><rect x='14' y='104' width='150' height='38' rx='4' fill='var(--accent-fill)'/><text x='89' y='127' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Differential</text><rect x='178' y='104' width='278' height='38' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='317' y='127' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Changes since the last full backup</text></svg>",
                 "caption": "Three backup schemes side by side: full copies everything, incremental copies what changed since the last backup, differential copies what changed since the last full backup."
               },
+              "example": "A payroll bureau keeps 14 days of backups. Its incident records show corrupted tax codes usually go unnoticed for about five weeks, until employees query their pay. The IS auditor reports that a clean copy may no longer exist when corruption is found, and recommends retention longer than the usual detection time. The operations manager estimates the cost.",
               "audit_focus": {
                 "review": [
-                  "Compare backup schedules and retention settings with each system's RPO and retention rule",
+                  "Compare backup schedules and retention settings with each system's RPO and retention requirement",
                   "Inspect each copy's location and how the immutable or offline copy is protected",
-                  "Observe or reperform a sample restore and time it against the RTO"
+                  "Observe a sample restore, or rerun one, and time it against the RTO"
                 ],
                 "evidence": [
+                  "Restore test records showing time taken and data checked against the source",
                   "Backup job logs showing completion, with every failure followed up",
-                  "Restore test records showing time taken and data checked against the source"
+                  "Offsite custody receipts and immutability settings for the protected copy"
                 ],
-                "recommend": "The IS auditor recommends that IT operations align backups with recovery targets and test restores on a schedule; business owners accept any remaining gap."
+                "recommend": "Have IT operations align backups with recovery targets and test restores on a schedule.",
+                "decides": "The data owner accepts any residual risk"
               },
-              "example": "A payroll bureau keeps 14 days of backups. Its incident records show corrupted tax codes usually go unnoticed for about five weeks, until employees query their pay. The IS auditor reports that a clean copy may no longer exist when corruption is found, and recommends retention longer than the usual detection time. The operations manager estimates the cost.",
               "isaca_rule": "Backups are designed from business targets: frequency from the RPO, restore speed from the RTO, and retention from legal and corruption-detection needs. At least one copy must be offsite and one out of ransomware's reach.",
               "exam_traps": [
                 {
@@ -16773,19 +16783,20 @@
                   }
                 ]
               },
+              "example": "A broadcaster encrypts its film archive with keys held in a single hardware security module, with no backup. The IS auditor notes that losing that module would make decades of footage unreadable. The IS auditor recommends an encrypted backup of the keys held under dual control at a second site, tested by restoring a sample, and a key destruction rule tied to the archive's retention period.",
               "audit_focus": {
                 "review": [
-                  "Compare decrypt and export rights in the key policy with the database administrator list",
+                  "Compare key-policy decrypt and export rights with administrator and developer lists; overlaps are findings",
                   "Sample keys from the inventory and compare their age with the approved cryptoperiod",
                   "Match key destruction dates to the retention periods of the data protected"
                 ],
                 "evidence": [
                   "Key inventory from the HSM or key service, with creation and rotation dates",
-                  "Key ceremony and destruction records signed by two custodians"
+                  "Key creation and destruction records, each signed by two authorized staff (dual control)"
                 ],
-                "recommend": "The IS auditor recommends that the key owner remove excess key rights, enforce cryptoperiods and require dual control; the data owner accepts residual risk."
+                "recommend": "Have the key management team remove excess key rights, enforce cryptoperiods and require dual control.",
+                "decides": "The data owner accepts any residual risk to the protected data"
               },
-              "example": "A broadcaster encrypts its film archive with keys held in a single hardware security module, with no backup. The IS auditor notes that losing that module would make decades of footage unreadable. The IS auditor recommends an encrypted backup of the keys held under dual control at a second site, tested by restoring a sample, and a key destruction rule tied to the archive's retention period.",
               "isaca_rule": "Separate who holds the keys from who holds the data, and require dual control for the most sensitive key operations. Every key needs a cryptoperiod; secure storage does not remove the need to rotate. Never destroy a key before the data it protects is no longer needed.",
               "exam_traps": [
                 {

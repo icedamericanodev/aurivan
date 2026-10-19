@@ -45,13 +45,19 @@ BRITISH_OK = {"raise", "raised", "raises", "raising", "advise", "advised", "advi
 
 # audit_focus: the IS auditor's process view (NOTES_SCHEMA_V2.md). Optional while it is
 # rolled out: a missing field is ONE summary warning (list them with --audit-focus).
-AF_KEYS = {"review", "evidence", "recommend"}
+AF_REQUIRED = {"review", "evidence", "recommend"}
+AF_OPTIONAL = {"decides"}
 AF_ITEM_WORDS = (4, 14)     # each review / evidence item
-AF_REC_WORDS = (12, 28)     # the recommend sentence
-AF_MAX_WORDS = 85           # the whole field, counted apart from the 180-380 core
+AF_REC_WORDS = (8, 24)      # recommend: an imperative sentence naming who acts
+AF_DEC_WORDS = (4, 16)      # decides: who decides or accepts the risk
+AF_MAX_WORDS = 95           # the whole field, counted apart from the 180-380 core
 AF_OVERLAP_MAX = 0.6        # share of an item's content words found in one how_it_works bullet, the rule or the example
-AF_AUDITOR_DOES = re.compile(r"\b(IS )?auditors? (should |will |must )?(implements?|fix(es)?|configures?|designs?|"
-                             r"approves?|drafts?|writes?|owns?|decides?)\b", re.I)
+AF_AUDITOR_DOES = re.compile(r"\b(IS )?auditors?\b[^;.]*?\b(implements?|fix(es)?|configures?|designs?|approves?|"
+                             r"accepts?|drafts?|owns?|decides?)\b", re.I)
+# Who acts / who decides: a role or body, not the auditor.
+AF_ACTOR = re.compile(r"\b(management|managers?|owners?|officers?|committees?|board|team|operations|directors?|"
+                      r"CISO|CIO|CFO|CEO|executives?|administrators?|staff|council|leads?|sponsors?|custodians?|"
+                      r"steering|department|function|IT)\b")
 AF_MISSING = []
 
 PRACTICE_SEEN = {}
@@ -124,8 +130,8 @@ def lint_audit_focus(r, s, where):
     if af is None:
         AF_MISSING.append(where)
         return 0
-    if not isinstance(af, dict) or set(af) != AF_KEYS:
-        r.err(where, "audit_focus must have exactly review, evidence and recommend")
+    if not isinstance(af, dict) or not AF_REQUIRED <= set(af) or set(af) - AF_REQUIRED - AF_OPTIONAL:
+        r.err(where, "audit_focus must have review, evidence and recommend, and optionally decides (nothing else)")
         return 0
     total, parts = 0, []
     for key in ("review", "evidence"):
@@ -142,24 +148,31 @@ def lint_audit_focus(r, s, where):
                 r.err(where, f"audit_focus.{key}[{i}] is {n} words ({lo}-{hi})")
             if x.rstrip().endswith("."):
                 r.warn(where, f"audit_focus.{key}[{i}] is a phrase; drop the closing period")
+            if key == "review" and re.match(r"\s*check that\b", x, re.I):
+                r.warn(where, f"audit_focus.review[{i}] starts 'Check that'; name the procedure and the record examined")
             text_checks(r, where, f"audit_focus.{key}", x)
             parts.append((f"audit_focus.{key}[{i}]", x))
-    rec = af["recommend"]
-    if not isinstance(rec, str) or not rec.strip():
-        r.err(where, "audit_focus.recommend must be one non-empty sentence")
-    else:
-        n = words(rec)
+    for key, (lo, hi) in (("recommend", AF_REC_WORDS), ("decides", AF_DEC_WORDS)):
+        if key not in af:
+            continue
+        x = af[key]
+        if not isinstance(x, str) or not x.strip():
+            r.err(where, f"audit_focus.{key} must be a non-empty string")
+            continue
+        n = words(x)
         total += n
-        lo, hi = AF_REC_WORDS
         if not lo <= n <= hi:
-            r.err(where, f"audit_focus.recommend is {n} words ({lo}-{hi})")
-        if not re.search(r"\brecommends?\b", rec, re.I):
-            r.warn(where, "audit_focus.recommend should say what the IS auditor recommends")
-        if AF_AUDITOR_DOES.search(rec):
-            r.warn(where, "audit_focus.recommend has the auditor doing management's job "
+            r.err(where, f"audit_focus.{key} is {n} words ({lo}-{hi})")
+        if not AF_ACTOR.search(x):
+            r.warn(where, f"audit_focus.{key} names no role; say who {'acts' if key == 'recommend' else 'decides'}")
+        if AF_AUDITOR_DOES.search(x):
+            r.warn(where, f"audit_focus.{key} has the auditor implementing, approving or accepting "
                           "(the auditor recommends; management decides)")
-        text_checks(r, where, "audit_focus.recommend", rec)
-        parts.append(("audit_focus.recommend", rec))
+        text_checks(r, where, f"audit_focus.{key}", x)
+        parts.append((f"audit_focus.{key}", x))
+    rec = af.get("recommend")
+    if isinstance(rec, str) and re.match(r"\s*(the )?(IS )?auditor", rec, re.I):
+        r.warn(where, "audit_focus.recommend should start with the action verb (the label already says who recommends)")
     if total > AF_MAX_WORDS:
         r.err(where, f"audit_focus is {total} words (max {AF_MAX_WORDS})")
     # The field adds the audit procedure and its evidence; it must not restate the
