@@ -7952,7 +7952,9 @@
               "practice_ids": [
                 "d3_045",
                 "d3_085",
-                "d3_121"
+                "d3_121",
+                "d3_152",
+                "d3_153"
               ],
               "definition": "Project roles divide accountability: the sponsor funds the project and owns the benefits, the project manager delivers it, and the steering committee decides escalated issues.",
               "why_it_matters": "When roles are vague, nobody decides, nobody owns the benefits and problems surface late. Exam scenarios often ask who should approve, fund or be accountable.",
@@ -8513,7 +8515,9 @@
               "practice_ids": [
                 "d3_006",
                 "d3_100",
-                "d3_105"
+                "d3_105",
+                "d3_148",
+                "d3_149"
               ],
               "definition": "Investment measures, such as net present value (NPV), payback period, return on investment (ROI) and internal rate of return (IRR), express an investment's financial worth in different ways.",
               "why_it_matters": "Each measure answers a different question, so the wrong one can make a good project look bad. Continue-or-stop decisions also go wrong when past spending clouds judgment.",
@@ -8618,7 +8622,9 @@
               "practice_ids": [
                 "d3_015",
                 "d3_077",
-                "d3_130"
+                "d3_130",
+                "d3_150",
+                "d3_151"
               ],
               "definition": "Software acquisition is the controlled process of choosing a supplier and contracting for software, from written requirements through scored proposals to a contract that protects the buyer.",
               "why_it_matters": "A weak selection locks the organization into a poor fit, and a weak contract leaves no remedy or exit if the vendor fails. Critical custom software also needs a plan for vendor collapse.",
@@ -9559,12 +9565,13 @@
                 "d3_031",
                 "d3_050",
                 "d3_081",
-                "d3_082"
+                "d3_082",
+                "d3_147"
               ],
               "definition": "Test types and techniques describe what a test is trying to find and how its test cases are chosen, from regression checks to boundary values and security probes.",
               "why_it_matters": "Test time is always limited. The right types and techniques find the most serious defects for the effort, and show whether a passing test suite really proves anything.",
               "how_it_works": [
-                "Regression testing reruns existing tests after any change to confirm that what worked before still works.",
+                "Regression testing reruns existing tests after any change to confirm that unchanged functions, including those relying on changed code, still work.",
                 "Choose a test design approach by how much of the code testers can see: black-box, white-box or gray-box, as listed below.",
                 "Boundary-value analysis tests values on and either side of each limit, where off-by-one errors cluster.",
                 "Risk-based testing concentrates effort where failure would have the greatest impact and is most likely.",
@@ -9665,7 +9672,9 @@
               "legacy_ids": [],
               "practice_ids": [
                 "d3_051",
-                "d3_079"
+                "d3_079",
+                "d3_145",
+                "d3_146"
               ],
               "definition": "Performance and specialized tests check how a system behaves in real conditions: under heavy or long load, with large data volumes, beside other systems, and with real users.",
               "why_it_matters": "A system can pass every functional test and still collapse on payday or slow down after a week. These tests expose failures that appear only at scale or over time.",
@@ -9729,7 +9738,9 @@
                 "3B1.3"
               ],
               "practice_ids": [
-                "d3_010"
+                "d3_010",
+                "d3_143",
+                "d3_144"
               ],
               "definition": "Test environments and test data are the separate systems and data sets used for testing; they should resemble production closely without exposing real production data.",
               "why_it_matters": "Tests in an unrealistic environment give false confidence. Copies of live personal data in loosely controlled test systems are a common cause of data breaches.",
@@ -9737,7 +9748,7 @@
                 "Keep development, test and production environments separate, with different access rights and no developer write access to production.",
                 "Make the test environment production-like in configuration and software versions, and in data volume for performance work.",
                 "Mask or pseudonymize personal data before it is extracted from production, not after it lands in test.",
-                "Use synthetic data where real patterns are not needed.",
+                "Use synthetic data where real patterns are not needed, or to create cases that production data does not contain.",
                 "Control test data like any sensitive data set: owner approval, restricted access and deletion when testing ends."
               ],
               "compare": {
@@ -10431,12 +10442,13 @@
               "practice_ids": [
                 "d3_016",
                 "d3_066",
-                "d3_097"
+                "d3_097",
+                "d3_154"
               ],
               "definition": "A post-implementation review (PIR) checks, once a system has run stably for a while, whether it delivered the business case benefits and works as designed.",
               "why_it_matters": "Projects are approved on promised benefits. Without a review, nobody learns whether the money was well spent, and benefit shortfalls and weak controls go unnoticed.",
               "how_it_works": [
-                "Schedule the review after a period of stable operation, often a few months, so the data reflects normal use.",
+                "Schedule the review after a period of stable operation, often a few months, so the data reflects normal use and any peak period the benefits depend on.",
                 "Compare realized benefits with the targets and baselines in the approved business case.",
                 "Check that the system meets its requirements and that its designed controls operate.",
                 "Scale the depth of the review to the significance and risk of the change, as set out in policy.",

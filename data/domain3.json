@@ -2,7 +2,7 @@
   "domain": 3,
   "title": "Information Systems Acquisition, Development and Implementation",
   "weight": "12%",
-  "count": 142,
+  "count": 154,
   "questions": [
     {
       "id": "d3_001",
@@ -5221,6 +5221,438 @@
         "Business events"
       ],
       "_provenance": "Authored from concept: 'Audit Trails. Deferring Business-Event Logging'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A4.4 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d3_068 (how logs are stored and protected) and d3_084 (automated data lineage): tests that deferring business-event logging past go-live permanently loses evidence, which outweighs retrofit cost. All scenario specifics invented for this question. Public sources: NIST SP 800-53 Rev 5 AU-2; OWASP ASVS 5.0 V16.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_143",
+      "domain": 3,
+      "subtopic": "Test Environments and Test Data. Proposal to Test in Production",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "With no test environment that matches production, a retailer's project team proposes running user acceptance testing (UAT) in the live order system using dummy customers. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Allow testing in production, then reverse every test transaction afterward",
+        "B": "Run the tests in the development environment the programmers use",
+        "C": "Build a separate environment configured like production for the testing",
+        "D": "Restrict testing in production to inquiry transactions that change nothing"
+      },
+      "correct": "C",
+      "key_concept": "Testing belongs in a separate environment that resembles production, never in the live system itself.",
+      "pre_read": "Ask what dummy transactions could set off in a live system before anyone reverses them.",
+      "correct_explanation": "Testing belongs in a separate environment that mirrors production in configuration and versions, so results are reliable without putting live data or service at risk. Building one fixes the real gap. Testing live and reversing transactions afterward is the runner-up: dummy orders can still trigger shipments, postings and interface messages, and reversals may miss some, so live data and service stay exposed.",
+      "wrong_explanations": {
+        "A": "Dummy orders can still trigger shipments, financial postings and interface messages, and reversals may be incomplete, so live data and service remain at risk.",
+        "B": "A development environment is controlled by programmers and rarely matches production, so results would be unreliable and testing would lack independence.",
+        "D": "Inquiry-only testing cannot exercise order entry, pricing or posting, so the functions users must accept would go untested."
+      },
+      "tips": [
+        "Eliminate: B uses a programmer-controlled environment unlike production, and D leaves the order-processing functions untested.",
+        "Final two: C beats A because reversing test transactions cannot undo shipments, postings and interface messages already triggered in the live system.",
+        "Exam cue: testing belongs in a separate, production-like environment; testing in production puts live data and service at risk."
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.31 (Separation of Development, Test and Production Environments); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "related_concepts": [
+        "Environment segregation",
+        "Production-like environment",
+        "User acceptance testing"
+      ],
+      "_provenance": "Authored from concept: 'Test Environments and Test Data. Proposal to Test in Production'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B1.4 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_010 (masking production data before extraction) and d3_079 (production-scale data volumes for performance tests): tests that the missing environment must be built rather than testing in the live system, and that reversing test transactions does not remove the risk. All scenario specifics invented for this question. Public sources: ISO/IEC 27002:2022 Control 8.31; COBIT 2019 BAI07.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_144",
+      "domain": 3,
+      "subtopic": "Test Environments and Test Data. Cases Missing from Production",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A pension fund must test benefit rules for rare cases, such as members with three overlapping claims, that appear in no production record. Which test data should the IS auditor consider MOST appropriate?",
+      "options": {
+        "A": "A masked extract of the full production member history",
+        "B": "Live member records edited in production to create the cases",
+        "C": "Production records copied to test, then edited into the cases",
+        "D": "Synthetic records generated to cover each specified scenario"
+      },
+      "correct": "D",
+      "key_concept": "Synthetic data fits early testing and edge cases that real records lack, and it carries no personal data.",
+      "pre_read": "Ask whether any copy of production data, masked or not, could contain these cases.",
+      "correct_explanation": "Synthetic data suits cases that real data does not contain: records generated to the specified scenarios exercise the rare rules and hold no personal data. A masked production extract is the runner-up because masking is the right way to use real data in test, but no extract, however large, contains cases that appear in no production record.",
+      "wrong_explanations": {
+        "A": "Masking protects real data, but these cases appear in no production record, so no extract can supply them.",
+        "B": "Editing live records to stage tests corrupts real member data and mixes test activity with production.",
+        "C": "Copying unmasked records into test exposes real personal data in a less controlled environment before any edit is made."
+      },
+      "tips": [
+        "Eliminate: B alters live member data in production, and C puts unmasked personal data into test.",
+        "Final two: D beats A because a masked extract still holds only real cases, and these rare cases exist in no production record.",
+        "Exam cue: mask real data when realistic patterns matter; generate synthetic data for early tests and cases production lacks."
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.33 (Test Information); NIST SP 800-188 (De-Identifying Government Datasets: Techniques and Governance)",
+      "related_concepts": [
+        "Synthetic data",
+        "Data masking",
+        "Test data management"
+      ],
+      "_provenance": "Authored from concept: 'Test Environments and Test Data. Cases Missing from Production'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B1.4 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_010 (masking personal data before extraction): tests when synthetic data is the better source, because the cases to be tested do not exist in production at all. All scenario specifics invented for this question. Public sources: ISO/IEC 27002:2022 Control 8.33; NIST SP 800-188.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_145",
+      "domain": 3,
+      "subtopic": "Performance and Specialized Testing. New System on a Shared Cluster",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A new warehouse system passed functional and load tests alone but will share production's database cluster with order entry. What should the IS auditor recommend as the PRIMARY focus of further testing?",
+      "options": {
+        "A": "Both systems running together on shared, production-like servers",
+        "B": "Stress testing the warehouse system beyond its expected peak volume",
+        "C": "Beta testing by selected warehouse staff at two sites",
+        "D": "Unit testing of the warehouse database queries by developers"
+      },
+      "correct": "A",
+      "key_concept": "Sociability testing confirms a new system can share production resources without harming, or being harmed by, existing systems.",
+      "pre_read": "Ask which risk remains when each system has only ever been tested on its own.",
+      "correct_explanation": "Sociability testing runs the new system alongside the systems it will share production with, revealing contention for database locks, memory or connections that neither shows alone. That is the untested risk here. Stress testing is the runner-up: finding the warehouse system's breaking point is useful, but done in isolation it still cannot show whether the two systems harm each other.",
+      "wrong_explanations": {
+        "B": "Stress testing finds the warehouse system's breaking point, but run alone it cannot reveal contention with order entry on the shared cluster.",
+        "C": "Beta testing checks fit with real users' work; it does not create the combined load that reveals conflicts between systems.",
+        "D": "Unit tests check individual queries in isolation, so they cannot show how two systems compete for one database cluster."
+      },
+      "tips": [
+        "Eliminate: C checks user fit rather than shared resources, and D tests isolated code units.",
+        "Final two: A beats B because a stress test of the warehouse system alone still misses conflicts with order entry on the shared cluster.",
+        "Exam cue: when a new system shares infrastructure, test sociability by running it with its neighbors under production-like conditions."
+      ],
+      "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); ISO/IEC 25010:2023 (Product Quality Model)",
+      "related_concepts": [
+        "Sociability testing",
+        "Shared infrastructure",
+        "Performance testing"
+      ],
+      "_provenance": "Authored from concept: 'Performance and Specialized Testing. New System on a Shared Cluster'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B1.3 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_051 (soak versus stress versus load) and d3_079 (production-scale data volumes): tests coexistence with other systems on shared infrastructure, which isolated load or stress tests cannot show. All scenario specifics invented for this question. Public sources: COBIT 2019 BAI04; ISO/IEC 25010:2023 compatibility (co-existence).",
+      "style_version": 2
+    },
+    {
+      "id": "d3_146",
+      "domain": 3,
+      "subtopic": "Performance and Specialized Testing. Targets Set After the First Results",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A call-center system's performance test report shows every test passed, but the IS auditor learns the test team set the response-time targets after seeing the first results. What is the GREATEST concern?",
+      "options": {
+        "A": "The test environment may not match production data volumes",
+        "B": "The passing thresholds may not reflect what the business requires",
+        "C": "The test team may lack tools to simulate peak call volumes",
+        "D": "The tests may have run too briefly to expose gradual slowdowns"
+      },
+      "correct": "B",
+      "key_concept": "Performance targets come from business needs and are fixed before testing, or a pass proves nothing.",
+      "pre_read": "Ask what a pass means when the bar was set after seeing the score.",
+      "correct_explanation": "Performance targets must come from business needs and be fixed before testing. Targets set after seeing results can simply be moved to whatever the system achieves, so every pass proves little. A production-like environment is the runner-up: it also matters for valid results, but nothing suggests it is missing, while the moved targets are a known flaw that undermines every result.",
+      "wrong_explanations": {
+        "A": "Environment fidelity matters, but nothing in the report suggests a mismatch; the known flaw is that targets were fitted to the results.",
+        "C": "Nothing suggests the tools fell short, and better load tools would not fix targets that were set to match the results.",
+        "D": "Test duration matters for endurance risks, but longer runs measured against moved targets would still prove little."
+      },
+      "tips": [
+        "Eliminate: C speculates about tools with no supporting fact, and D raises an endurance gap that moved targets would still undermine.",
+        "Final two: B beats A because the environment is not in doubt, while targets set after the results make every pass meaningless.",
+        "Exam cue: a pass means nothing unless the target came from business needs and was fixed before testing began."
+      ],
+      "framework_ref": "ISTQB Certified Tester Performance Testing (CT-PT) Syllabus; COBIT 2019 BAI04 (Managed Availability and Capacity)",
+      "related_concepts": [
+        "Performance targets",
+        "Test acceptance criteria",
+        "Business requirements"
+      ],
+      "_provenance": "Authored from concept: 'Performance and Specialized Testing. Targets Set After the First Results'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B1.3 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_051 (choosing soak, stress or load tests) and d3_079 (production-scale test data): tests that targets must come from business needs and be fixed before testing, or passing results prove nothing. All scenario specifics invented for this question. Public sources: ISTQB CT-PT Syllabus; COBIT 2019 BAI04.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_147",
+      "domain": 3,
+      "subtopic": "Test Types and Techniques. Retesting Only Changed Modules",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "To shorten two-week release cycles, a claims team reruns tests only for the modules each release changes. Which defect is this practice MOST LIKELY to let through?",
+      "options": {
+        "A": "A coding error inside one of the modules the release altered",
+        "B": "A slowdown that appears at peak claim volumes",
+        "C": "A known flaw in an outdated third-party library",
+        "D": "A failure in an unchanged function that depends on altered modules"
+      },
+      "correct": "D",
+      "key_concept": "Regression testing confirms unchanged functions still work after a change, so its scope follows dependencies, not just changed code.",
+      "pre_read": "Ask which parts of the system this practice never exercises after a release.",
+      "correct_explanation": "Regression testing exists because a change can break functions that were never touched, such as a claims calculation that calls a modified module. Rerunning only the changed modules' tests skips exactly those dependents. An error inside a changed module is the runner-up, but those modules are the ones being retested, so their defects are the most likely to be caught.",
+      "wrong_explanations": {
+        "A": "The changed modules are exactly the ones being retested, so defects inside them are the most likely to be caught.",
+        "B": "Peak-volume slowdowns call for performance testing, which a functional regression suite, full or partial, does not provide.",
+        "C": "Outdated library flaws are found by software composition analysis, not by choosing which functional tests to rerun."
+      },
+      "tips": [
+        "Eliminate: B needs performance testing and C needs composition analysis; neither depends on which functional tests are rerun.",
+        "Final two: D beats A because the changed modules are retested, while the untouched functions that depend on them are not.",
+        "Exam cue: regression testing protects what did not change; set its scope by tracing what depends on the changed code."
+      ],
+      "framework_ref": "ISTQB Foundation Level Syllabus; COBIT 2019 BAI03.08 (Execute solution testing)",
+      "related_concepts": [
+        "Regression testing",
+        "Impact analysis",
+        "Test scope"
+      ],
+      "_provenance": "Authored from concept: 'Test Types and Techniques. Retesting Only Changed Modules'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B1.2 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_065 (test pyramid composition), d3_050 (risk-based test strategy) and d4_119 (vendor patch applied without testing): tests that regression scope limited to changed modules misses failures in dependent unchanged functions. All scenario specifics invented for this question. Public sources: ISTQB Foundation Level Syllabus; COBIT 2019 BAI03.08.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_148",
+      "domain": 3,
+      "subtopic": "Financial Measures and Investment Decisions. Projects of Very Different Sizes",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Management will pick one of two projects by internal rate of return: $0.3 million at 45%, or $6 million at 20%, both above the hurdle rate. Which advice from the IS auditor is BEST?",
+      "options": {
+        "A": "Compare each project's net present value at the required rate",
+        "B": "Choose the smaller project, because its rate of return is higher",
+        "C": "Choose the project whose payback period is shorter",
+        "D": "Raise the hurdle rate until a single project still clears it"
+      },
+      "correct": "A",
+      "key_concept": "Internal rate of return can mislead between projects of very different sizes; net present value shows the value each adds.",
+      "pre_read": "Ask whether a high percentage on a small sum beats a lower percentage on a large one.",
+      "correct_explanation": "Internal rate of return is a percentage, so it can mislead when options differ greatly in size: 45% on $0.3 million may add far less value than 20% on $6 million. Net present value at the required rate shows which project adds more value in today's money. Choosing by the higher rate is the runner-up: it ranks return per dollar invested, not the total value created.",
+      "wrong_explanations": {
+        "B": "A higher rate on a much smaller investment can create less total value; rates alone mislead when project sizes differ greatly.",
+        "C": "Payback shows how fast cost is recovered and ignores everything after, so it cannot show which project adds more value.",
+        "D": "Changing the hurdle rate to force a choice is arbitrary; the bar reflects the required return, not which project is worth more."
+      },
+      "tips": [
+        "Eliminate: C ignores everything after the cost is recovered, and D moves the bar arbitrarily instead of measuring value.",
+        "Final two: A beats B because a percentage return hides scale, while net present value shows which project adds more value.",
+        "Exam cue: when options differ greatly in size, rank them by net present value, not by internal rate of return."
+      ],
+      "framework_ref": "ISACA Val IT Framework; COBIT 2019 APO05 (Managed Portfolio)",
+      "related_concepts": [
+        "Internal rate of return",
+        "Net present value",
+        "Hurdle rate"
+      ],
+      "_provenance": "Authored from concept: 'Financial Measures and Investment Decisions. Projects of Very Different Sizes'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A2.3 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_006 (net present value versus payback for late benefits) and d3_100/d3_105 (sunk cost in continue-or-stop decisions): tests that internal rate of return misleads between projects of very different sizes. All scenario specifics invented for this question. Public sources: ISACA Val IT Framework; COBIT 2019 APO05.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_149",
+      "domain": 3,
+      "subtopic": "Financial Measures and Investment Decisions. Lender's Recovery Condition",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A manufacturer's loan covenant requires new systems to recover their cost within 18 months, or the lender can recall the loan. Which measure should the IS auditor expect as the PRIMARY screen for proposals?",
+      "options": {
+        "A": "The net present value of each proposed system",
+        "B": "The payback period each proposed system is forecast to achieve",
+        "C": "The total cost of owning each system over its life",
+        "D": "The share of documented business requirements each system would meet"
+      },
+      "correct": "B",
+      "key_concept": "Choose the financial measure that fits the decision: payback when quick recovery of cost is the binding constraint.",
+      "pre_read": "Ask which question the lender's condition forces management to answer first.",
+      "correct_explanation": "Measures answer different questions, and the covenant makes speed of recovery the binding constraint: a system that pays back in 30 months puts the loan at risk, however valuable it is. Payback period answers exactly that question, so it is the primary screen. Net present value is the runner-up: it best shows whole-life value and can rank the proposals that pass, but it does not show when cost is recovered.",
+      "wrong_explanations": {
+        "A": "Net present value shows whole-life value, but a high-value proposal may still take too long to recover its cost under the covenant.",
+        "C": "Total cost of ownership counts costs only; without benefits and their timing it cannot show whether cost is recovered in time.",
+        "D": "Requirements fit matters for selection, but it is not a financial measure and says nothing about recovering cost within 18 months."
+      },
+      "tips": [
+        "Eliminate: C ignores benefits entirely, and D is not a financial measure at all.",
+        "Final two: B beats A because the covenant makes speed of recovery the deciding constraint, which payback measures and net present value does not.",
+        "Exam cue: match the measure to the question; when cash or a recovery deadline binds, payback comes first."
+      ],
+      "framework_ref": "ISACA Val IT Framework; COBIT 2019 APO06 (Managed Budget and Costs)",
+      "related_concepts": [
+        "Payback period",
+        "Net present value",
+        "Investment appraisal"
+      ],
+      "_provenance": "Authored from concept: 'Financial Measures and Investment Decisions. Lender's Recovery Condition'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A2.3 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_006 (net present value for a long-horizon platform) and d3_148 (internal rate of return across project sizes): tests that payback is the fitting screen when a recovery deadline binds. All scenario specifics invented for this question. Public sources: ISACA Val IT Framework; COBIT 2019 APO06.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_150",
+      "domain": 3,
+      "subtopic": "Acquiring Software from Vendors. Award to the Lowest Bid",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Four proposals for hospital scheduling software meet the minimum requirements, and procurement wants the lowest bid to win, though the request for proposal weighted cost at 30%. What is the IS auditor's MOST appropriate recommendation?",
+      "options": {
+        "A": "Accept the lowest bid, since each proposal meets the requirements",
+        "B": "Seek best and final offers from the two cheapest bidders",
+        "C": "Select the vendor scoring highest under the published weights",
+        "D": "Rescore the four proposals using fresh criteria agreed with clinicians"
+      },
+      "correct": "C",
+      "key_concept": "Select vendors on weighted criteria fixed before proposals arrive; meeting minimum requirements only makes a bid eligible.",
+      "pre_read": "Ask what the published weighting says about how much price should decide.",
+      "correct_explanation": "Vendors should be selected against criteria and weights fixed before proposals arrive. The request for proposal gave cost 30%, so fit, support and stability carry the rest, and meeting minimum requirements makes a proposal eligible, not equal. Rescoring with fresh criteria is the runner-up: clinician input sounds sound, but changing criteria after seeing the bids invites bias toward a favored vendor.",
+      "wrong_explanations": {
+        "A": "Meeting minimum requirements makes a proposal eligible, not equal; awarding on price alone ignores the 70% of the score set for other criteria.",
+        "B": "Best and final offers still decide on price and pass over vendors that may score highest on fit, support and stability.",
+        "D": "Criteria changed after proposals arrive can be tilted toward a favored vendor; clinicians' views belong in the criteria before proposals are requested."
+      },
+      "tips": [
+        "Eliminate: A treats eligibility as equality, and B still lets price alone decide.",
+        "Final two: C beats D because criteria changed after bids arrive invite bias, while the published weights keep the selection fair.",
+        "Exam cue: fix weighted criteria before proposals arrive, then select on the full score; meeting minimums only earns a place."
+      ],
+      "framework_ref": "COBIT 2019 APO10.02 (Select vendors); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "related_concepts": [
+        "Request for proposal",
+        "Weighted evaluation criteria",
+        "Vendor selection"
+      ],
+      "_provenance": "Authored from concept: 'Acquiring Software from Vendors. Award to the Lowest Bid'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A2.4 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_015/d3_130 (source code escrow) and d3_077 (vendor abandonment): tests selection on weighted criteria fixed in advance, not on lowest price or criteria rewritten after bids. All scenario specifics invented for this question. Public sources: COBIT 2019 APO10.02; COBIT 2019 BAI03.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_151",
+      "domain": 3,
+      "subtopic": "Acquiring Software from Vendors. Proposal Request Before Requirements",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "To meet a funding deadline, a county plans to send a request for proposal (RFP) for a permitting system before user requirements are documented. What should the IS auditor consider the GREATEST risk?",
+      "options": {
+        "A": "Proposals cannot be scored against what the county needs",
+        "B": "The chosen vendor may charge heavily for later change requests",
+        "C": "Fewer vendors may respond within a shortened bidding period",
+        "D": "The county may lose the funding if the deadline passes"
+      },
+      "correct": "A",
+      "key_concept": "Document requirements before issuing a request for proposal, because they are the basis for evaluating every proposal.",
+      "pre_read": "Ask what the evaluation team would score the proposals against.",
+      "correct_explanation": "Requirements come first because they are the yardstick for scoring proposals. Without them, the county cannot tell which proposal fits its permitting process and may commit funds to a system that does not meet business needs. Costly change requests are the runner-up: they are a likely consequence, but they are a symptom of that root problem rather than the problem itself.",
+      "wrong_explanations": {
+        "B": "Change-request costs are likely, but they are a symptom of the root problem: selecting a system without defined needs to judge it by.",
+        "C": "A shorter bidding window may reduce responses, but more proposals would not help with no requirements to judge them against.",
+        "D": "Losing the funding is the risk the plan tries to avoid; the question asks for the risk the plan itself creates."
+      },
+      "tips": [
+        "Eliminate: C is a minor competition concern, and D is the risk the plan avoids, not one it creates.",
+        "Final two: A beats B because change-request costs follow from the root flaw: no defined needs to judge proposals against.",
+        "Exam cue: in acquisition, requirements come before the request for proposal; without them, no proposal can be scored fairly."
+      ],
+      "framework_ref": "COBIT 2019 BAI02 (Managed Requirements Definition); COBIT 2019 APO10.02 (Select vendors)",
+      "related_concepts": [
+        "Request for proposal",
+        "Requirements definition",
+        "Vendor selection"
+      ],
+      "_provenance": "Authored from concept: 'Acquiring Software from Vendors. Proposal Request Before Requirements'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A2.4 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_150 (scoring on published weights) and d3_057 (build versus buy comparison): tests that issuing a request for proposal before requirements leaves no basis for evaluating proposals. All scenario specifics invented for this question. Public sources: COBIT 2019 BAI02; COBIT 2019 APO10.02.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_152",
+      "domain": 3,
+      "subtopic": "Project Roles and Accountability. When the IS Auditor Joins",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "To protect audit independence, a bank's project office plans to involve the IS auditor in a new lending system only after system testing ends. What should the IS auditor recommend as MOST appropriate?",
+      "options": {
+        "A": "Agreement with the plan, because independence outweighs early advisory input",
+        "B": "A voting seat on the steering committee from project start",
+        "C": "Reliance on quality assurance reviews in place of audit input",
+        "D": "Advisory input from requirements onward, never designing or approving"
+      },
+      "correct": "D",
+      "key_concept": "The IS auditor advises from requirements onward; independence comes from not designing, building or approving, not from staying away.",
+      "pre_read": "Ask when controls are cheapest to add, and which roles would impair independence.",
+      "correct_explanation": "Controls are cheapest to build in at requirements and design, so the IS auditor should take part from the start in an advisory role. Independence comes from not designing, building or approving the system, not from staying away. A voting steering committee seat is the runner-up: it gives early involvement, but voting makes the IS auditor share management's project decisions, which impairs independence.",
+      "wrong_explanations": {
+        "A": "Advisory input does not impair independence, and waiting until testing ends means missing controls are found when they are costliest to add.",
+        "B": "Early involvement is right, but voting on project decisions makes the IS auditor share management's decisions, which impairs independence.",
+        "C": "Quality assurance checks deliverables against standards; it does not replace the IS auditor's independent view of control requirements."
+      },
+      "tips": [
+        "Eliminate: A delays input until controls are costliest to add, and C swaps audit's control view for a standards check.",
+        "Final two: D beats B because voting on project decisions makes the IS auditor part of management, while advisory input keeps independence.",
+        "Exam cue: the IS auditor joins early and advises, but never designs, builds, approves or votes on project decisions."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1003 (Auditor Objectivity); COBIT 2019 BAI11 (Managed Projects)",
+      "related_concepts": [
+        "IS auditor role in projects",
+        "Independence",
+        "Controls designed in early"
+      ],
+      "_provenance": "Authored from concept: 'Project Roles and Accountability. When the IS Auditor Joins'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A1.1 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_071 (declining to design application controls) and d1_033 (agreeing advisory scope in writing): tests when the IS auditor should join a project and which form of involvement keeps independence. All scenario specifics invented for this question. Public sources: ISACA IT Audit Standard 1003; COBIT 2019 BAI11.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_153",
+      "domain": 3,
+      "subtopic": "Project Roles and Accountability. Business Staff Withheld from Requirements",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Business managers will not release staff for requirements workshops on a new claims system, so IT analysts are writing the requirements alone. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Proceed, and rely on user acceptance testing to find any gaps",
+        "B": "Escalate to the steering committee to commit knowledgeable users",
+        "C": "Hire external consultants to stand in for the business users",
+        "D": "Have business managers formally sign off the analysts' requirements"
+      },
+      "correct": "B",
+      "key_concept": "User management owns requirements and must supply knowledgeable staff; the steering committee resolves gaps in business participation.",
+      "pre_read": "Ask who can commit business people to the project, and why their input matters.",
+      "correct_explanation": "User management owns the new system and must supply people who know the work, because requirements written by IT alone often miss how claims are really handled. The steering committee can commit those people, so escalating is the first step. Formal sign-off by business managers is the runner-up: it records ownership, but approving a document they did not help write rarely catches missing needs.",
+      "wrong_explanations": {
+        "A": "User acceptance testing finds gaps late, when fixing them means rework; missing needs should be caught while requirements are written.",
+        "C": "Consultants may know the industry but not this organization's claims process, and they cannot take on the business's ownership.",
+        "D": "Sign-off records ownership on paper, but managers approving a document they did not help write rarely spot missing needs."
+      },
+      "tips": [
+        "Eliminate: A finds gaps only after the system is built, and C substitutes outsiders for the business's own knowledge.",
+        "Final two: B beats D because sign-off of a document the business did not help write records ownership without supplying its knowledge.",
+        "Exam cue: when the business will not take part, escalate; requirements need user ownership, not just user signatures."
+      ],
+      "framework_ref": "COBIT 2019 BAI02 (Managed Requirements Definition); COBIT 2019 BAI11 (Managed Projects)",
+      "related_concepts": [
+        "User management",
+        "Steering committee",
+        "Requirements ownership"
+      ],
+      "_provenance": "Authored from concept: 'Project Roles and Accountability. Business Staff Withheld from Requirements'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A1.1 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_085 (steering committee members able to commit resources) and d3_088 (sponsor owns benefit shortfalls): tests user management's duty to supply requirements staff and escalation when it does not. All scenario specifics invented for this question. Public sources: COBIT 2019 BAI02; COBIT 2019 BAI11.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_154",
+      "domain": 3,
+      "subtopic": "Purpose and Timing of the Review. Benefits Tied to a Filing Season",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A tax agency's new e-filing system went live in May, and its business case promised faster processing during the January-to-April filing season. Which timing for the post-implementation review should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Three months after go-live, as the usual settling interval",
+        "B": "One week after go-live, while the project team is still assembled",
+        "C": "After the first peak season, once its volumes can be measured",
+        "D": "After two full years, once planned enhancements are finished"
+      },
+      "correct": "C",
+      "key_concept": "Schedule the post-implementation review once the system has run under conditions that let the promised benefits be measured.",
+      "pre_read": "Ask when the benefit promised in the business case can first be observed.",
+      "correct_explanation": "A review must wait until the system has run long enough, under representative conditions, to measure the promised benefits. Here the benefit is faster processing in filing season, so the review belongs shortly after the first season ends, while fixes are still practical. Three months after go-live is the runner-up: it is a common settling period, but summer data shows off-season volumes and cannot confirm the peak-season benefit.",
+      "wrong_explanations": {
+        "A": "Three months is a common settling period, but summer volumes cannot show whether processing is faster in filing season.",
+        "B": "One week after go-live shows start-up problems and the learning curve, not the normal or peak results the review must measure.",
+        "D": "Two years later, context is lost and changes have piled up, so findings come too late to correct cheaply."
+      },
+      "tips": [
+        "Eliminate: B is too early to show anything but start-up issues, and D is too late to act on findings cheaply.",
+        "Final two: C beats A because the promised benefit appears only at peak volume, which off-season data cannot show.",
+        "Exam cue: time the review for when the promised benefit can actually be measured, not by a fixed number of months."
+      ],
+      "framework_ref": "ISACA Val IT Framework; COBIT 2019 BAI07.08 (Perform a post-implementation review)",
+      "related_concepts": [
+        "Post-implementation review",
+        "Benefits realization",
+        "Review timing"
+      ],
+      "_provenance": "Authored from concept: 'Purpose and Timing of the Review. Benefits Tied to a Filing Season'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B4.1 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_066 (review one week after go-live), d3_016 (benefits as the primary focus) and d3_097 (risk-based selection of reviews): tests timing the review to the period when the promised benefit can be measured. All scenario specifics invented for this question. Public sources: ISACA Val IT Framework; COBIT 2019 BAI07.08.",
       "style_version": 2
     }
   ]
