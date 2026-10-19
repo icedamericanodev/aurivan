@@ -241,12 +241,12 @@
         "A": "The firm may overspend by buying drives it already holds",
         "B": "Unapproved personal drives may be connected to company laptops",
         "C": "Encryption software licenses on the drives may be undercounted",
-        "D": "Lost or unreturned drives holding client files may go unnoticed"
+        "D": "Lost or unreturned drives and their data may go unnoticed"
       },
       "correct": "D",
       "key_concept": "An asset inventory assigns each issued device to a holder, so missing or unreturned devices, and the data on them, are noticed.",
       "pre_read": "Ask what an asset inventory lets the firm do, then what goes wrong when issued drives are missing from it.",
-      "correct_explanation": "An asset inventory gives each issued item a named holder, so the firm can confirm drives come back when staff leave and notice when one goes missing. Without records, a lost or kept drive full of client files goes undetected, and no response starts. Personal drives being plugged in is a real risk, but device control addresses it; recording issued drives would neither cause nor prevent it.",
+      "correct_explanation": "An asset inventory gives each issued item a named holder, so the firm can confirm drives come back when staff leave and notice when one goes missing. Without records, a lost or kept drive full of client data goes undetected, and no response starts. Personal drives being plugged in is a real risk, but device control addresses it; recording issued drives would neither cause nor prevent it.",
       "wrong_explanations": {
         "A": "Overspending is a minor cost issue. The gap that matters is losing track of drives that carry client data.",
         "B": "This is a real risk, but it comes from missing device control. Recording issued drives would neither cause nor fix it.",
@@ -273,12 +273,12 @@
       "subtopic": "Wireless Network. Controller Redundancy",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A distributor's warehouse scanners use 300 wireless access points that all depend on one controller, so its failure would halt shipping. Which recommendation should the IS auditor consider MOST effective?",
+      "question": "A distributor's warehouse scanners use 300 wireless access points that all depend on one controller, so its failure would halt shipping. Which recommendation from the IS auditor would be MOST effective?",
       "options": {
         "A": "Add access points so their coverage overlaps across the warehouse",
-        "B": "Add a second controller that takes over automatically on failure",
+        "B": "Pair the controller with a second unit that takes over automatically",
         "C": "Keep a preconfigured spare controller ready in the warehouse",
-        "D": "Back up the controller's configuration to a secure server nightly"
+        "D": "Back up the controller's configuration to a secure server every night"
       },
       "correct": "B",
       "key_concept": "A component every service path depends on is a single point of failure; redundancy with automatic failover removes it.",
@@ -7941,12 +7941,12 @@
     {
       "id": "d4_213",
       "domain": 4,
-      "subtopic": "Leaver Deprovisioning. Scheduled Job Accounts",
+      "subtopic": "Job Scheduling. Job Run-As Accounts",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Twelve production batch jobs run under the personal account of an administrator who left last month, kept active so the jobs do not fail. Which recommendation from the IS auditor is BEST?",
+      "question": "Twelve production batch jobs run under the personal account of an administrator who left last month; the account stays active so the jobs do not fail. Which recommendation from the IS auditor is BEST?",
       "options": {
-        "A": "Move the jobs to owned service accounts, then disable the leaver's account",
+        "A": "Move the jobs to owned service accounts; disable the leaver's account",
         "B": "Reset the account's password and give it to the operations manager",
         "C": "Keep the account active and review its activity each month",
         "D": "Delete the jobs from the scheduler until a new owner is found"
@@ -7963,7 +7963,7 @@
       "tips": [
         "Eliminate: C leaves a leaver's access live and only watches it, and D stops production processing to fix an account issue.",
         "Final two: A beats B because service accounts remove the personal dependency; a reset password just shares one person's identity.",
-        "Exam cue: production jobs should run under owned, non-personal accounts, so staff changes never force a choice between security and availability."
+        "Exam cue: people get named personal accounts; automated jobs get owned service accounts. Either way, every account has one accountable owner."
       ],
       "framework_ref": "COBIT 2019 DSS01 (Managed Operations); NIST SP 800-53 Rev 5 AC-2 (Account Management); NIST SP 800-53 Rev 5 PS-4 (Personnel Termination)",
       "related_concepts": [
@@ -8395,26 +8395,26 @@
       "subtopic": "Data Backup. Electronic Vaulting and RPO Fit",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A BIA sets a one-hour RPO for a firm's order database. If the firm relied on one of these copy methods, which would be the GREATEST concern for the IS auditor?",
+      "question": "A BIA sets a one-hour RPO for a firm's order database. Which copy method, if relied on, should MOST concern the IS auditor?",
       "options": {
-        "A": "Remote journaling of each transaction to the recovery site",
+        "A": "Remote journaling of each committed transaction to the recovery site",
         "B": "Asynchronous replication of the database to the recovery site",
         "C": "Electronic vaulting of backup batches every 30 minutes",
-        "D": "Nightly backup tapes couriered to an offsite vault"
+        "D": "Hourly database snapshots copied to the recovery site each night"
       },
       "correct": "D",
       "key_concept": "A copy method's data-loss window is the gap between copies; it must be shorter than the RPO set by the BIA.",
-      "pre_read": "For each option, estimate the most data it could lose, then compare it with the one-hour RPO.",
-      "correct_explanation": "The concern is any method whose possible data loss exceeds the one-hour RPO. Nightly couriered tapes can lose up to a day of orders, so they are the greatest concern. Electronic vaulting every 30 minutes is the slowest of the network methods and looks like the weak link, but its worst-case loss of about half an hour stays within the objective.",
+      "pre_read": "For each option, ask how often data actually leaves the site, then compare that gap with the one-hour RPO.",
+      "correct_explanation": "Snapshots taken hourly but copied offsite only nightly can lose up to a day of orders if the primary site is lost, far beyond the one-hour RPO. Electronic vaulting every 30 minutes is the slowest network method and looks like the weak link, but its worst case of about half an hour stays within the objective.",
       "wrong_explanations": {
         "A": "Journaling sends each transaction as it happens, so loss is limited to the last few moments; it meets a one-hour RPO easily.",
         "B": "Asynchronous replication copies writes moments after they commit, so the possible loss is seconds or minutes, well within an hour.",
-        "C": "Batches every 30 minutes cap the loss at about half an hour, so this method still meets the one-hour objective."
+        "C": "Batches leave the site every 30 minutes, capping the loss at about half an hour, so this method still meets the one-hour objective."
       },
       "tips": [
         "Eliminate: A and B send data continuously or within moments, so both clearly meet the one-hour objective.",
-        "Final two: D beats C because nightly tapes can lose a full day of orders; 30-minute vaulting is slower but stays inside the hour.",
-        "Exam cue: compare each method's worst-case data loss with the RPO; the method whose gap between copies exceeds it is the finding."
+        "Final two: D beats C because snapshots that leave the site only nightly can lose a day of orders; 30-minute vaulting is slower than replication but stays inside the hour.",
+        "Exam cue: know each copy method's loss window: journaling and replication lose seconds, vaulting one batch interval, anything sent offsite nightly up to a day."
       ],
       "framework_ref": "NIST SP 800-34 Rev 1 (Contingency Planning Guide for Federal Information Systems); NIST SP 800-53 Rev 5 CP-9 (System Backup); COBIT 2019 DSS04 (Managed Continuity)",
       "related_concepts": [
@@ -8473,7 +8473,7 @@
       "question": "An IS auditor finds that customer records can be deleted while open orders still point to them, leaving orphan orders. Which database control is MOST LIKELY missing?",
       "options": {
         "A": "Entity integrity requiring a unique key for each customer",
-        "B": "Referential integrity enforced between orders and customers",
+        "B": "Referential integrity enforced between the two tables",
         "C": "Record locking during simultaneous updates to customer data",
         "D": "Nightly backups of the customer and order tables"
       },
@@ -9180,20 +9180,20 @@
       "subtopic": "Colocation Services. Service Level Reporting",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A firm learned of an intrusion near its colocation racks weeks later, from the provider's SOC 2 report, though every uptime target was met. What is the PRIMARY weakness the IS auditor should report?",
+      "question": "Months later, a colocation provider's SOC 2 report revealed the firm's racks ran on generator power for hours, though every uptime target in the agreement was met. What PRIMARY weakness should the IS auditor report?",
       "options": {
-        "A": "The uptime target in the agreement is set too low",
-        "B": "The agreement sets no deadline for reporting security incidents",
-        "C": "The provider's monthly service reports exclude security events",
+        "A": "The uptime target written into the agreement is set too low",
+        "B": "The agreement sets no deadline for reporting incidents to the firm",
+        "C": "The provider's monthly service reports exclude facility incidents",
         "D": "The service credits in the agreement are too small"
       },
       "correct": "B",
       "key_concept": "Service levels should include timed incident notification; periodic reports and uptime targets do not tell the customer about events promptly.",
-      "pre_read": "Notice the gap between when the intrusion happened and when the firm heard. Ask what controls that timing.",
-      "correct_explanation": "The delay came from what the agreement requires: it measures uptime but sets no deadline for reporting security incidents, so the provider had no duty to tell the firm promptly. Adding timed incident notification to the agreed service levels fixes the cause. Adding security events to the monthly service report helps, but periodic reporting can still leave an intrusion unreported for weeks; notification must be triggered by the event.",
+      "pre_read": "Notice the gap between when the incident happened and when the firm heard. Ask what controls that timing.",
+      "correct_explanation": "The delay came from what the agreement requires: it measures uptime but sets no deadline for reporting incidents, so the provider had no duty to tell the firm promptly. Adding timed incident notification to the agreed service levels fixes the cause. Adding facility incidents to the monthly service report helps, but periodic reporting can still leave an incident unreported for weeks; notification must be triggered by the event.",
       "wrong_explanations": {
-        "A": "Uptime measures availability, and every target was met. A higher target would not require the provider to report security events.",
-        "C": "Monthly reporting would help, but it is periodic, so an intrusion early in the month could still take weeks to reach the firm.",
+        "A": "Uptime measures availability, and every target was met. A higher target would not require the provider to report incidents.",
+        "C": "Monthly reporting would help, but it is periodic, so an incident early in the month could still take weeks to reach the firm.",
         "D": "Credits compensate for missed targets. None were missed, and larger credits would not make the provider report incidents sooner."
       },
       "tips": [
@@ -9201,7 +9201,7 @@
         "Final two: B beats C because a reporting deadline is triggered by the event; a monthly report can still arrive weeks later.",
         "Exam cue: if a supplier problem reaches you late, look first at what the agreement requires the supplier to report, and how fast."
       ],
-      "framework_ref": "ITIL 4 Service Level Management practice; ISO/IEC 20000-1:2018 (Service Management System)",
+      "framework_ref": "ITIL 4 Service Level Management practice; ISO/IEC 20000-1:2018 (Service Management System); COBIT 2019 APO09 (Managed Service Agreements)",
       "related_concepts": [
         "Service level agreement",
         "Supplier reporting",
@@ -9367,11 +9367,11 @@
       "subtopic": "Data Center Exit. Media Sanitization Evidence",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A firm closing an overseas data center will sell its storage arrays to a reseller. Which evidence BEST shows the IS auditor that customer data was removed?",
+      "question": "A firm closing a data center will sell its storage arrays to a reseller. Which evidence BEST shows the IS auditor that customer data was removed?",
       "options": {
         "A": "IT staff's confirmation that the array volumes were deleted",
         "B": "A clause in the reseller's contract requiring it to wipe every drive",
-        "C": "Sanitization certificates matched to the inventory by drive serial number",
+        "C": "Pre-handover sanitization certificates matched to inventory serial numbers",
         "D": "Photos of the arrays sealed and leaving the data center"
       },
       "correct": "C",
@@ -9386,9 +9386,9 @@
       "tips": [
         "Eliminate: A relies on deletion, which leaves data recoverable, and D shows shipment rather than sanitization.",
         "Final two: C beats B because per-drive records prove sanitization happened; a reseller's contract only promises it, after the data has left.",
-        "Exam cue: for disposal, prefer verified, per-item records reconciled to the inventory over promises or statements."
+        "Exam cue: disposal evidence must tie to each item you control: per-drive records for your own hardware, key-destruction logs for cloud data."
       ],
-      "framework_ref": "NIST SP 800-88 (Media Sanitization); COBIT 2019 BAI09 (Managed Assets); ISACA IT Audit Standard 1205 (Evidence)",
+      "framework_ref": "NIST SP 800-88 Rev 2 (Guidelines for Media Sanitization); COBIT 2019 BAI09 (Managed Assets); ISACA IT Audit Standard 1205 (Evidence)",
       "related_concepts": [
         "Media sanitization",
         "Certificate of sanitization",
