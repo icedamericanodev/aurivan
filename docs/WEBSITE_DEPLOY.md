@@ -31,7 +31,7 @@ Cloudflare publishes `_site/`:
 |---|---|
 | `index.html`, `privacy.html`, `terms.html`, `support.html` | The pages |
 | `assets/` (images, icons, fonts, stylesheets only) | Icons and fonts the pages use |
-| `data/domain1.json` … `data/domain5.json`, `data/cisa_notes.json` | The data the web app loads |
+| `data/domain1.json` … `data/domain5.json`, `data/cisa_notes.json`, `data/mindset/principles.json` | The data the web app loads |
 | `_headers`, `_redirects` | Security headers and friendly redirects |
 | `favicon.ico` | Browsers ask for it at the top level |
 
@@ -106,7 +106,8 @@ the web practice needs a sample pack instead (see the A2 report).
      include `claude/*`, if you want a preview link for each pull request).
    - **Build watch paths → Include paths:** `index.html`, `privacy.html`,
      `terms.html`, `support.html`, `assets/*`, `data/domain*.json`,
-     `data/cisa_notes.json`, `_headers`, `_redirects`, `scripts/build_site.sh`.
+     `data/cisa_notes.json`, `data/mindset/principles.json`, `_headers`,
+     `_redirects`, `scripts/build_site.sh`.
      Changes to the mobile app or the docs then don't start a website build.
 7. Later, with the domain: **Custom domains → Set up a custom domain**, add
    the bare domain and `www`. **Web Analytics → Enable** (no cookies).
