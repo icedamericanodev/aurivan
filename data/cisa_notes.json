@@ -15050,13 +15050,13 @@
                 "d5_334",
                 "d5_335"
               ],
-              "definition": "Fire suppression systems put out fires automatically; for computer rooms the choice is between water sprinkler designs and gas systems that leave equipment dry.",
-              "why_it_matters": "The wrong system can endanger staff or ruin the servers it should save; the choice balances safety, equipment damage, reliability and cost.",
+              "definition": "Fire suppression systems put out fires automatically; for computer rooms the choice is between water sprinklers and gas systems that leave equipment dry.",
+              "why_it_matters": "The wrong system can endanger staff or ruin the servers it should save; people come first, then equipment.",
               "how_it_works": [
-                "Smoke and heat detectors, with very early smoke detection in critical rooms, raise the alarm and trigger suppression.",
-                "Wet-pipe sprinklers hold water at all times and spray when heat opens a sprinkler head.",
+                "Wet-pipe sprinklers hold water at all times and spray when heat opens a head.",
                 "Dry-pipe sprinklers hold pressurized air for freezing areas; any opened head, even one knocked by accident, lets water in.",
-                "Pre-action sprinklers stay dry until the detection system opens a valve; a sprinkler head must then open too.",
+                "Pre-action sprinklers stay dry until smoke or heat detectors open a valve; a head must then open too.",
+                "Deluge systems have open heads and spray the whole room at once when detectors trigger; they suit high-hazard areas, not server rooms.",
                 "Clean-agent gas floods a sealed room, safe for people at the planned concentration and leaving no residue; openings let it leak away.",
                 "Carbon dioxide systems displace oxygen and can kill, so they suit only unoccupied spaces."
               ],
@@ -15106,12 +15106,12 @@
                   }
                 ]
               },
-              "example": "A logistics company's new data center must include a water-based system under local fire code. The facilities manager proposes cheap wet-pipe sprinklers. The IS auditor notes that one leaking or knocked head would soak the racks, and recommends a pre-action design that stays dry until detectors confirm a fire, with very early smoke detection.",
+              "example": "A logistics company's new data center must include a water-based system under local fire code. The facilities manager proposes cheap wet-pipe sprinklers. The IS auditor notes that one knocked head would soak the racks, and recommends a pre-action design that stays dry until detectors confirm a fire.",
               "isaca_rule": "Protect people first, then equipment. Clean-agent gas with early detection fits occupied server rooms best. Among water systems, pipes that stay dry until a fire is detected (pre-action, which exam questions often group under the dry-pipe label) beat wet pipe. Carbon dioxide never belongs where people work.",
               "exam_traps": [
                 {
-                  "trap": "Pre-action sprinklers are the best choice because they keep water away from servers.",
-                  "why": "It prevents leaks and accidental discharge, but once it fires, water still damages equipment. Clean-agent gas is stronger for occupied server rooms."
+                  "trap": "Pre-action sprinklers are the best choice for every server room because they keep water away from servers.",
+                  "why": "Pre-action is the best water design where code requires water, but once it discharges, water still damages equipment; clean-agent gas is stronger for occupied server rooms."
                 },
                 {
                   "trap": "Carbon dioxide flooding is ideal for a staffed server room because it leaves no residue.",

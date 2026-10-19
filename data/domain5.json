@@ -11901,12 +11901,12 @@
       "question": "Network engineers configured the inline intrusion prevention system protecting a payment platform to fail open, so sales continue if it crashes. What should the IS auditor do FIRST?",
       "options": {
         "A": "Recommend switching the device to fail closed to protect security",
-        "B": "Verify the business owner approved this trade-off based on assessed risk",
+        "B": "Verify the business owner approved this risk trade-off",
         "C": "Recommend moving the device to a mirrored port to avoid outages",
         "D": "Test whether the device's attack signatures are kept up to date"
       },
       "correct": "B",
-      "key_concept": "An inline device's failure mode trades security against availability; the system owner decides it on assessed risk, not engineers or the IS auditor.",
+      "key_concept": "An inline device's failure mode trades security against availability; the business owner decides it on assessed risk, not engineers or the IS auditor.",
       "pre_read": "Ask who owns a security-versus-availability trade-off before judging which setting is right.",
       "correct_explanation": "Failing open keeps payments flowing but lets traffic pass uninspected while the device is down; failing closed protects but stops sales. Choosing between them is a business risk decision, so the IS auditor first verifies that the business owner made it on assessed risk. Recommending fail closed is the runner-up: it may be right, but the IS auditor would be making the owner's decision without the risk basis.",
       "wrong_explanations": {
@@ -11925,7 +11925,7 @@
     {
       "id": "d5_325",
       "domain": 5,
-      "subtopic": "Unified Threat Management. Single Point of Failure",
+      "subtopic": "Unified Threat Management. Consolidated Appliance Risk",
       "difficulty": "application",
       "bloom_level": "Application",
       "related_concepts": [
@@ -11934,29 +11934,29 @@
         "Redundancy",
         "Availability"
       ],
-      "framework_ref": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection)",
+      "framework_ref": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection); COBIT 2019 BAI04 (Managed Availability and Capacity)",
       "question": "A retailer replaced each store's separate firewall, intrusion prevention and virtual private network (VPN) devices with one unified threat management appliance, without a spare. Which risk should the IS auditor rank GREATEST?",
       "options": {
-        "A": "License costs could rise as the retailer opens more stores",
+        "A": "Vendor default rule sets may not suit each store's traffic",
         "B": "Combined inspection could slow traffic during busy trading hours",
         "C": "One hardware fault could disable every security function at once",
-        "D": "Staff may need training on the new management console"
+        "D": "Logs from every function would be stored on one device"
       },
       "correct": "C",
       "key_concept": "Consolidating controls in one appliance simplifies operation but makes it a single point of failure; critical sites need resilience.",
       "pre_read": "When several controls move into one box, ask what happens to all of them when that box fails.",
       "correct_explanation": "A unified threat management appliance concentrates the firewall, intrusion prevention and VPN in one device. With no spare, a single fault takes all of those controls down together, leaving the store either offline or unprotected. Slower inspection at peak is the runner-up: it degrades service and can be fixed by sizing or tuning, but it leaves protection running, unlike a failure.",
       "wrong_explanations": {
-        "A": "Licensing cost is a budget matter for management, not a security exposure created by consolidating the controls.",
+        "A": "Default rules need tuning to each store's traffic, a one-time setup task; it does not remove protection the way a failure of the only device does.",
         "B": "Inspection load can slow traffic, but capacity sizing fixes it, and a slowdown leaves protection in place, unlike a total failure.",
-        "D": "Training needs are a routine operating issue that a short course resolves; they do not weaken the controls themselves."
+        "D": "Logs kept on the appliance are a retention issue fixed by forwarding them to a central system; the controls keep working."
       },
       "tips": [
-        "Eliminate: A is a budget issue and D a training need; neither weakens the security controls.",
+        "Eliminate: A is a one-time tuning task and D a log retention fix; neither leaves the store unprotected.",
         "Final two: C beats B because a slowdown keeps protection running, while one fault removes every consolidated control at once.",
         "Exam cue: consolidation trades simplicity for concentration; look for the single point of failure and ask for redundancy."
       ],
-      "_provenance": "Authored from concept: 'Unified Threat Management. Single Point of Failure'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.4 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST.",
+      "_provenance": "Authored from concept: 'Unified Threat Management. Consolidated Appliance Risk'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.4 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and ISACA COBIT 2019.",
       "style_version": 2
     },
     {
@@ -12011,10 +12011,10 @@
       "framework_ref": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy); COBIT 2019 DSS05 (Managed Security Services)",
       "question": "An IS auditor finds most perimeter firewall rules have no recorded requester or business purpose, and many have matched no traffic for a year. Which recommendation is MOST effective?",
       "options": {
-        "A": "Disable every entry that has matched no traffic in a year",
-        "B": "Replace the device with a next-generation model that is application-aware",
+        "A": "Disable every entry that has matched no traffic in the past year",
+        "B": "Replace the device with a next-generation firewall that is fully application-aware",
         "C": "Add an intrusion detection sensor behind the perimeter device",
-        "D": "Make named owners justify each entry and remove the rest"
+        "D": "Require named owners to justify each entry periodically and remove the rest"
       },
       "correct": "D",
       "key_concept": "A firewall rule set stays lean only when every entry has an owner who justifies it and periodic recertification removes the rest.",
@@ -12036,7 +12036,7 @@
     {
       "id": "d5_328",
       "domain": 5,
-      "subtopic": "Firewall Rule Sets. Default Deny Instead of a Block List",
+      "subtopic": "Firewall Rule Sets. Rule Base Approach",
       "difficulty": "application",
       "bloom_level": "Application",
       "related_concepts": [
@@ -12067,13 +12067,13 @@
         "Final two: A beats B because the update burden is a symptom; default allow exposes unlisted services even when the list is current.",
         "Exam cue: for any firewall rule set, check the default first; deny by default with approved exceptions is the expected stance."
       ],
-      "_provenance": "Authored from concept: 'Firewall Rule Sets. Default Deny Instead of a Block List'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.1 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST.",
+      "_provenance": "Authored from concept: 'Firewall Rule Sets. Rule Base Approach'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.1 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST.",
       "style_version": 2
     },
     {
       "id": "d5_329",
       "domain": 5,
-      "subtopic": "Firewall Types. Packet Filter vs Stateful Inspection",
+      "subtopic": "Firewall Types. Firewall Types for Return Traffic",
       "difficulty": "application",
       "bloom_level": "Application",
       "related_concepts": [
@@ -12086,7 +12086,7 @@
       "question": "A branch router's static packet filter allows all inbound traffic to high-numbered ports so that replies to staff web sessions get through. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Limit the open range to the reply ports client systems use",
-        "B": "Use stateful inspection that tracks connections opened from inside",
+        "B": "Use stateful inspection that tracks inside connections",
         "C": "Log each inbound connection that reaches the open high ports",
         "D": "Scan the branch's internal hosts for vulnerabilities each month"
       },
@@ -12104,13 +12104,13 @@
         "Final two: B beats A because tracking connections admits replies alone, while a narrower range still accepts unsolicited traffic.",
         "Exam cue: when a filter must open ports broadly to let replies in, the fix is stateful inspection, not a smaller hole."
       ],
-      "_provenance": "Authored from concept: 'Firewall Types. Packet Filter vs Stateful Inspection'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.1 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST.",
+      "_provenance": "Authored from concept: 'Firewall Types. Firewall Types for Return Traffic'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.1 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST.",
       "style_version": 2
     },
     {
       "id": "d5_330",
       "domain": 5,
-      "subtopic": "Enterprise Wireless. Admitting Only Managed Devices",
+      "subtopic": "Enterprise Wireless. Personal Devices on the Corporate Network",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "related_concepts": [
@@ -12124,7 +12124,7 @@
       "options": {
         "A": "Register approved devices by their hardware addresses on the controller",
         "B": "Require staff to change their directory passwords more often",
-        "C": "Hide the network name so personal devices cannot find it",
+        "C": "Turn off the network's broadcast so personal phones cannot see it",
         "D": "Admit company-managed devices that present an issued device certificate"
       },
       "correct": "D",
@@ -12134,14 +12134,14 @@
       "wrong_explanations": {
         "A": "Hardware addresses travel unprotected and are easily copied, so an unmanaged phone could pose as an approved device and still connect.",
         "B": "More frequent password changes do not stop staff from entering a valid password on an unmanaged phone.",
-        "C": "Hidden network names are easily discovered, and staff who already know the name can still connect personal phones."
+        "C": "Stopping the broadcast hides little: devices reveal the network name when they connect, and staff who know it can still join from personal phones."
       },
       "tips": [
-        "Eliminate: B changes passwords that staff can still enter on any phone, and C hides a name that is easily found.",
+        "Eliminate: B changes passwords that staff can still enter on any phone, and C stops a broadcast that hides little.",
         "Final two: D beats A because a certificate kept on managed devices is far harder to copy than a hardware address.",
         "Exam cue: user authentication answers who; when the risk is the device, look for device identity tied to management."
       ],
-      "_provenance": "Authored from concept: 'Enterprise Wireless. Admitting Only Managed Devices'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.2 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and IEEE.",
+      "_provenance": "Authored from concept: 'Enterprise Wireless. Personal Devices on the Corporate Network'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.2 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and IEEE.",
       "style_version": 2
     },
     {
@@ -12167,7 +12167,7 @@
       "correct": "B",
       "key_concept": "When a broken protocol must stay in use for a while, contain it: restrict what the weak network can reach until it is replaced.",
       "pre_read": "If the weak control cannot be fixed yet, ask which measure limits the damage when it is broken.",
-      "correct_explanation": "WEP keys can be recovered from captured traffic in minutes, so anyone nearby could join the scanner network. Limiting that network to the inventory server, behind a firewall, means an intruder reaches one system instead of the corporate network, while management accepts the remaining risk until replacement. Weekly key changes are the runner-up: they feel active, but a key cracked in minutes protects for almost none of the week.",
+      "correct_explanation": "WEP keys can be recovered from captured traffic in minutes, so anyone nearby could join the scanner network. Limiting that network to the inventory server means an intruder reaches one system instead of the corporate network, while management accepts the remaining risk until replacement. Weekly key changes are the runner-up: they feel active, but a key cracked in minutes protects for almost none of the week.",
       "wrong_explanations": {
         "A": "A WEP key can be recovered within minutes of capturing traffic, so changing it weekly leaves the network open for almost the whole week.",
         "C": "Hidden network names are revealed whenever devices connect, so hiding this one does not stop anyone from cracking the WEP key.",
@@ -12184,7 +12184,7 @@
     {
       "id": "d5_332",
       "domain": 5,
-      "subtopic": "Rogue Access Points. Blocking Them at the Wired Port",
+      "subtopic": "Rogue Access Points. Preventing Rogue Access Points",
       "difficulty": "application",
       "bloom_level": "Application",
       "related_concepts": [
@@ -12215,7 +12215,7 @@
         "Final two: C beats A because port authentication blocks the device from connecting, while intrusion detection reports it afterward.",
         "Exam cue: when the stem asks what would have prevented an event, choose the preventive control over strong detective ones."
       ],
-      "_provenance": "Authored from concept: 'Rogue Access Points. Blocking Them at the Wired Port'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.3 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: IEEE and NIST.",
+      "_provenance": "Authored from concept: 'Rogue Access Points. Preventing Rogue Access Points'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.3 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: IEEE and NIST.",
       "style_version": 2
     },
     {
@@ -12272,7 +12272,7 @@
       "options": {
         "A": "Pipes kept full of water that sprays when heat opens a head",
         "B": "Pipes holding pressurized air that fill once any head opens",
-        "C": "Dry pipes that fill only after detectors alarm, then a head opens",
+        "C": "Dry pipes that fill on a detector alarm, spraying where heads open",
         "D": "Open heads across the room that spray together once detectors trigger"
       },
       "correct": "C",
@@ -12287,15 +12287,15 @@
       "tips": [
         "Eliminate: A keeps water in the pipes at all times, and D sprays the whole room from open heads at once.",
         "Final two: C beats B because pre-action needs a detector alarm and an opened head, while dry pipe discharges after one knocked head.",
-        "Exam cue: whatever the label, dry pipe or pre-action, prefer the water design that needs a detector alarm before water enters the pipes."
+        "Exam cue: ISACA sometimes calls pre-action 'dry pipe'; judge by mechanism: choose the design that needs a detector alarm before water enters the pipes."
       ],
-      "_provenance": "Authored from concept: 'Fire Suppression. Choosing a Water-Based Design'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A2.2 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NFPA and NIST.",
+      "_provenance": "Authored from concept: 'Fire Suppression. Choosing a Water-Based Design'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A2.2 (Wave 2 coverage batch Q5: a thin high-yield physical/environmental subtopic). Public sources: NFPA and NIST.",
       "style_version": 2
     },
     {
       "id": "d5_335",
       "domain": 5,
-      "subtopic": "Clean-Agent Suppression. Sealing the Protected Room",
+      "subtopic": "Clean-Agent Suppression. Clean-Agent Room Integrity",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "related_concepts": [
@@ -12326,7 +12326,7 @@
         "Final two: D beats A because clean agents are safe for people at design levels, while leaks can leave a fire burning.",
         "Exam cue: after any change to a protected room, ask whether the control still has what it needs to work."
       ],
-      "_provenance": "Authored from concept: 'Clean-Agent Suppression. Sealing the Protected Room'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A2.2 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NFPA and NIST.",
+      "_provenance": "Authored from concept: 'Clean-Agent Suppression. Clean-Agent Room Integrity'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A2.2 (Wave 2 coverage batch Q5: a thin high-yield physical/environmental subtopic). Public sources: NFPA and NIST.",
       "style_version": 2
     }
   ]
