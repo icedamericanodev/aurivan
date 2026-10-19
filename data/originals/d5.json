@@ -11887,6 +11887,450 @@
       ],
       "_provenance": "Authored from concept: 'Single Sign-On. Local Logins That Bypass the Identity Provider'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A3.2 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: NIST.",
       "style_version": 2
+    },
+    {
+      "id": "d5_324",
+      "domain": 5,
+      "subtopic": "Intrusion Prevention. Who Chooses Fail Open or Fail Closed",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Intrusion prevention system (IPS)",
+        "Fail open",
+        "Fail closed",
+        "Risk ownership"
+      ],
+      "framework_ref": "NIST SP 800-94 (Guide to Intrusion Detection and Prevention Systems); COBIT 2019 APO12 (Managed Risk)",
+      "question": "Network engineers configured the inline intrusion prevention system protecting a payment platform to fail open, so sales continue if it crashes. What should the IS auditor do FIRST?",
+      "options": {
+        "A": "Recommend switching the device to fail closed to protect security",
+        "B": "Verify the business owner approved this trade-off based on assessed risk",
+        "C": "Recommend moving the device to a mirrored port to avoid outages",
+        "D": "Test whether the device's attack signatures are kept up to date"
+      },
+      "correct": "B",
+      "key_concept": "An inline device's failure mode trades security against availability; the system owner decides it on assessed risk, not engineers or the IS auditor.",
+      "pre_read": "Ask who owns a security-versus-availability trade-off before judging which setting is right.",
+      "correct_explanation": "Failing open keeps payments flowing but lets traffic pass uninspected while the device is down; failing closed protects but stops sales. Choosing between them is a business risk decision, so the IS auditor first verifies that the business owner made it on assessed risk. Recommending fail closed is the runner-up: it may be right, but the IS auditor would be making the owner's decision without the risk basis.",
+      "wrong_explanations": {
+        "A": "Fail closed may be right, but it halts sales on every crash; the business owner weighs that trade-off, and the IS auditor first checks it was weighed.",
+        "C": "On a mirrored port the device can only alert, so it would stop blocking attacks entirely; that removes the control instead of managing its failure.",
+        "D": "Signature currency affects detection quality, but it does not show who accepted the risk of uninspected traffic during a failure."
+      },
+      "tips": [
+        "Eliminate: C turns the device into a detector that cannot block, and D checks signatures, which says nothing about the failure setting.",
+        "Final two: B beats A because the failure mode trades security against availability, a decision the business owner makes on assessed risk.",
+        "Exam cue: when technical staff have made a risk trade-off, the IS auditor first checks that the right owner made it."
+      ],
+      "_provenance": "Authored from concept: 'Intrusion Prevention. Who Chooses Fail Open or Fail Closed'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.4 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and ISACA COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_325",
+      "domain": 5,
+      "subtopic": "Unified Threat Management. Single Point of Failure",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Unified threat management (UTM)",
+        "Single point of failure",
+        "Redundancy",
+        "Availability"
+      ],
+      "framework_ref": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection)",
+      "question": "A retailer replaced each store's separate firewall, intrusion prevention and virtual private network (VPN) devices with one unified threat management appliance, without a spare. Which risk should the IS auditor rank GREATEST?",
+      "options": {
+        "A": "License costs could rise as the retailer opens more stores",
+        "B": "Combined inspection could slow traffic during busy trading hours",
+        "C": "One hardware fault could disable every security function at once",
+        "D": "Staff may need training on the new management console"
+      },
+      "correct": "C",
+      "key_concept": "Consolidating controls in one appliance simplifies operation but makes it a single point of failure; critical sites need resilience.",
+      "pre_read": "When several controls move into one box, ask what happens to all of them when that box fails.",
+      "correct_explanation": "A unified threat management appliance concentrates the firewall, intrusion prevention and VPN in one device. With no spare, a single fault takes all of those controls down together, leaving the store either offline or unprotected. Slower inspection at peak is the runner-up: it degrades service and can be fixed by sizing or tuning, but it leaves protection running, unlike a failure.",
+      "wrong_explanations": {
+        "A": "Licensing cost is a budget matter for management, not a security exposure created by consolidating the controls.",
+        "B": "Inspection load can slow traffic, but capacity sizing fixes it, and a slowdown leaves protection in place, unlike a total failure.",
+        "D": "Training needs are a routine operating issue that a short course resolves; they do not weaken the controls themselves."
+      },
+      "tips": [
+        "Eliminate: A is a budget issue and D a training need; neither weakens the security controls.",
+        "Final two: C beats B because a slowdown keeps protection running, while one fault removes every consolidated control at once.",
+        "Exam cue: consolidation trades simplicity for concentration; look for the single point of failure and ask for redundancy."
+      ],
+      "_provenance": "Authored from concept: 'Unified Threat Management. Single Point of Failure'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.4 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_326",
+      "domain": 5,
+      "subtopic": "Network Access Control. Devices That Cannot Be Posture-Checked",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Network access control (NAC)",
+        "Device posture",
+        "Compensating control",
+        "Network segmentation"
+      ],
+      "framework_ref": "IEEE 802.1X (Port-Based Network Access Control); NIST SP 800-53 Rev 5 IA-3 (Device Identification and Authentication); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection)",
+      "question": "Network access control exempts 300 printers and badge readers that cannot run its health-check agent, and they receive full network access. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Place these devices on a segment reaching only needed systems",
+        "B": "Admit these devices once their hardware addresses are registered",
+        "C": "Remove these devices until vendors add support for the agent",
+        "D": "Review the exemption list with the network team every year"
+      },
+      "correct": "A",
+      "key_concept": "Devices that cannot pass a health check need compensating controls; restrict what they can reach rather than trusting identifiers that are easily copied.",
+      "pre_read": "When a control cannot be applied to some devices, ask what compensating control limits the harm they could cause.",
+      "correct_explanation": "Printers and badge readers that skip the health check are a gap in network access control, and full access lets anyone who impersonates one reach the whole network. A restricted segment that reaches only their print and badge servers compensates for the missing check. Registering hardware addresses is the runner-up: it identifies the devices, but addresses are easily copied, so an impostor would still get full access.",
+      "wrong_explanations": {
+        "B": "Hardware addresses are easily copied, so an attacker who unplugs a printer could borrow its address and still receive full network access.",
+        "C": "Taking printers and badge readers offline would disrupt operations; a compensating control can limit the risk without removing needed devices.",
+        "D": "A yearly review checks who is exempt but leaves the exempt devices with full network access all year."
+      },
+      "tips": [
+        "Eliminate: C removes devices the business needs, and D only reviews the exemption list while full access continues.",
+        "Final two: A beats B because copied hardware addresses defeat registration, while a restricted segment limits what any impostor reaches.",
+        "Exam cue: when a preventive check cannot be applied, look for the compensating control that limits impact, not just identification."
+      ],
+      "_provenance": "Authored from concept: 'Network Access Control. Devices That Cannot Be Posture-Checked'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.4 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: IEEE and NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_327",
+      "domain": 5,
+      "subtopic": "Firewall Rule Sets. Rules With No Owner or Purpose",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Firewall rule set",
+        "Rule recertification",
+        "Rule ownership",
+        "Root cause"
+      ],
+      "framework_ref": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy); COBIT 2019 DSS05 (Managed Security Services)",
+      "question": "An IS auditor finds most perimeter firewall rules have no recorded requester or business purpose, and many have matched no traffic for a year. Which recommendation is MOST effective?",
+      "options": {
+        "A": "Disable every entry that has matched no traffic in a year",
+        "B": "Replace the device with a next-generation model that is application-aware",
+        "C": "Add an intrusion detection sensor behind the perimeter device",
+        "D": "Make named owners justify each entry and remove the rest"
+      },
+      "correct": "D",
+      "key_concept": "A firewall rule set stays lean only when every entry has an owner who justifies it and periodic recertification removes the rest.",
+      "pre_read": "Look for the option that fixes why the rule set grew unchecked, not one that trims today's symptom.",
+      "correct_explanation": "Rules with no requester or purpose show that nobody owns the rule set, so it grows unchecked and may allow traffic no one approved. Having business owners justify each entry, removing what they cannot, and repeating this periodically fixes that cause. Disabling rules unused for a year is the runner-up: it trims clutter but may break rare legitimate flows and keeps active rules nobody has justified.",
+      "wrong_explanations": {
+        "A": "Traffic counts show use, not need: rare but legitimate flows could break, and active rules nobody approved would stay in place.",
+        "B": "A newer firewall still enforces whatever rules it is given; the unjustified entries would simply move to the new device.",
+        "C": "A detection sensor may spot attacks that get through, but it leaves the unjustified openings in the rule set untouched."
+      },
+      "tips": [
+        "Eliminate: B moves the same rules to a new device, and C watches traffic without closing any unjustified opening.",
+        "Final two: D beats A because owner justification fixes the cause and catches used but unapproved rules that traffic counts miss.",
+        "Exam cue: when controls drift because no one owns them, the best fix assigns ownership and periodic recertification."
+      ],
+      "_provenance": "Authored from concept: 'Firewall Rule Sets. Rules With No Owner or Purpose'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.1 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and ISACA COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_328",
+      "domain": 5,
+      "subtopic": "Firewall Rule Sets. Default Deny Instead of a Block List",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Default deny",
+        "Block list",
+        "Firewall rule set",
+        "Least functionality"
+      ],
+      "framework_ref": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy); NIST SP 800-53 Rev 5 SC-7(5) (Deny by Default — Allow by Exception)",
+      "question": "An IS auditor finds a manufacturer's internet firewall blocks a list of known malicious ports and allows all other inbound traffic. What is the PRIMARY weakness of this approach?",
+      "options": {
+        "A": "Unlisted services stay reachable by anyone outside the company",
+        "B": "The block list needs frequent updates as new threats appear",
+        "C": "Checking each packet against a long list may slow traffic",
+        "D": "Outbound traffic from staff computers is not being filtered"
+      },
+      "correct": "A",
+      "key_concept": "Firewall rule sets should deny by default and allow only approved traffic; a block list leaves every unlisted service exposed.",
+      "pre_read": "Ask what happens to traffic the rules never mention; that default decides the firewall's real strength.",
+      "correct_explanation": "A block list is a default-allow stance: anything not listed passes, so a new service, a forgotten test server or an unusual port is open to outsiders. Default deny reverses this, allowing only approved traffic. Constant list updates are the runner-up: they are a real burden, but even a perfectly current list still exposes every service nobody thought to block.",
+      "wrong_explanations": {
+        "B": "Keeping the list current is a burden, but even a perfect list leaves every unlisted service exposed; the default-allow stance is the flaw.",
+        "C": "Rule matching on modern firewalls adds little delay; speed is not the control weakness in a default-allow rule set.",
+        "D": "The finding concerns inbound rules; nothing in it shows outbound traffic is unfiltered, so this weakness is not established."
+      },
+      "tips": [
+        "Eliminate: C worries about speed rather than exposure, and D assumes an outbound gap the finding never shows.",
+        "Final two: A beats B because the update burden is a symptom; default allow exposes unlisted services even when the list is current.",
+        "Exam cue: for any firewall rule set, check the default first; deny by default with approved exceptions is the expected stance."
+      ],
+      "_provenance": "Authored from concept: 'Firewall Rule Sets. Default Deny Instead of a Block List'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.1 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_329",
+      "domain": 5,
+      "subtopic": "Firewall Types. Packet Filter vs Stateful Inspection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Packet filtering",
+        "Stateful inspection",
+        "Firewall types",
+        "Ephemeral ports"
+      ],
+      "framework_ref": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy)",
+      "question": "A branch router's static packet filter allows all inbound traffic to high-numbered ports so that replies to staff web sessions get through. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Limit the open range to the reply ports client systems use",
+        "B": "Use stateful inspection that tracks connections opened from inside",
+        "C": "Log each inbound connection that reaches the open high ports",
+        "D": "Scan the branch's internal hosts for vulnerabilities each month"
+      },
+      "correct": "B",
+      "key_concept": "Stateful firewalls track connections and admit only replies to sessions started inside; static packet filters must leave reply ports open to everyone.",
+      "pre_read": "Ask whether the device remembers which conversations started inside, or must trust any packet arriving on an allowed port.",
+      "correct_explanation": "A static packet filter judges each packet alone, so to let replies in it must open the high ports to anyone, and outsiders can reach any internal service listening there. Stateful inspection records connections started from inside and admits only their replies. Narrowing the range is the runner-up: it shrinks the opening, but thousands of ports stay open to unsolicited traffic.",
+      "wrong_explanations": {
+        "A": "Client systems pick reply ports from a wide range, so the narrowed opening still accepts unsolicited traffic from anyone on thousands of ports.",
+        "C": "Logging records connections through the opening after the fact; it does not stop outsiders from using it.",
+        "D": "Monthly scans may find weak internal hosts, but the open inbound ports still let outsiders reach them between scans."
+      },
+      "tips": [
+        "Eliminate: C and D detect problems after the fact and leave the inbound opening in place.",
+        "Final two: B beats A because tracking connections admits replies alone, while a narrower range still accepts unsolicited traffic.",
+        "Exam cue: when a filter must open ports broadly to let replies in, the fix is stateful inspection, not a smaller hole."
+      ],
+      "_provenance": "Authored from concept: 'Firewall Types. Packet Filter vs Stateful Inspection'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.1 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_330",
+      "domain": 5,
+      "subtopic": "Enterprise Wireless. Admitting Only Managed Devices",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Enterprise wireless",
+        "802.1X",
+        "Device certificates",
+        "Unmanaged devices"
+      ],
+      "framework_ref": "NIST SP 800-153 (Guidelines for Securing WLANs); IEEE 802.1X (Port-Based Network Access Control)",
+      "question": "Staff connect personal phones to the corporate wireless network, which reaches internal file servers, by entering their own directory passwords. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Register approved devices by their hardware addresses on the controller",
+        "B": "Require staff to change their directory passwords more often",
+        "C": "Hide the network name so personal devices cannot find it",
+        "D": "Admit company-managed devices that present an issued device certificate"
+      },
+      "correct": "D",
+      "key_concept": "Password-based enterprise wireless proves who the user is, not which device connects; device certificates limit access to managed equipment.",
+      "pre_read": "Separate the two questions an access control can answer: who is connecting, and from what device.",
+      "correct_explanation": "Directory passwords prove who the user is but say nothing about the device, so unmanaged phones of unknown security reach internal file servers. Issuing certificates to company-managed devices and requiring one to connect keeps unmanaged equipment off that network; personal phones can use a separate one. Registering hardware addresses is the runner-up: it looks similar, but addresses are easily copied and cannot prove a device is managed.",
+      "wrong_explanations": {
+        "A": "Hardware addresses travel unprotected and are easily copied, so an unmanaged phone could pose as an approved device and still connect.",
+        "B": "More frequent password changes do not stop staff from entering a valid password on an unmanaged phone.",
+        "C": "Hidden network names are easily discovered, and staff who already know the name can still connect personal phones."
+      },
+      "tips": [
+        "Eliminate: B changes passwords that staff can still enter on any phone, and C hides a name that is easily found.",
+        "Final two: D beats A because a certificate kept on managed devices is far harder to copy than a hardware address.",
+        "Exam cue: user authentication answers who; when the risk is the device, look for device identity tied to management."
+      ],
+      "_provenance": "Authored from concept: 'Enterprise Wireless. Admitting Only Managed Devices'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.2 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and IEEE.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_331",
+      "domain": 5,
+      "subtopic": "Wireless Encryption. Legacy WEP Devices Awaiting Replacement",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Wired Equivalent Privacy (WEP)",
+        "Compensating control",
+        "Network segmentation",
+        "Legacy devices"
+      ],
+      "framework_ref": "NIST SP 800-97 (Establishing Wireless Robust Security Networks: A Guide to IEEE 802.11i); NIST SP 800-153 (Guidelines for Securing WLANs)",
+      "question": "A distribution center's handheld scanners support only Wired Equivalent Privacy (WEP), and approved replacements arrive in nine months. Which interim measure should the IS auditor consider MOST appropriate?",
+      "options": {
+        "A": "Change the WEP key every week until the replacements arrive",
+        "B": "Limit the scanner network to reaching the inventory server alone",
+        "C": "Hide the scanner network's name from public broadcast",
+        "D": "Require scanner operators to change their sign-in passwords monthly"
+      },
+      "correct": "B",
+      "key_concept": "When a broken protocol must stay in use for a while, contain it: restrict what the weak network can reach until it is replaced.",
+      "pre_read": "If the weak control cannot be fixed yet, ask which measure limits the damage when it is broken.",
+      "correct_explanation": "WEP keys can be recovered from captured traffic in minutes, so anyone nearby could join the scanner network. Limiting that network to the inventory server, behind a firewall, means an intruder reaches one system instead of the corporate network, while management accepts the remaining risk until replacement. Weekly key changes are the runner-up: they feel active, but a key cracked in minutes protects for almost none of the week.",
+      "wrong_explanations": {
+        "A": "A WEP key can be recovered within minutes of capturing traffic, so changing it weekly leaves the network open for almost the whole week.",
+        "C": "Hidden network names are revealed whenever devices connect, so hiding this one does not stop anyone from cracking the WEP key.",
+        "D": "Scanner sign-in passwords protect the handheld application, not the radio link; an outsider can still break WEP and join the network."
+      },
+      "tips": [
+        "Eliminate: C hides a name that is easily revealed, and D changes application passwords that do nothing for the radio link.",
+        "Final two: B beats A because a key cracked in minutes defeats weekly changes, while restriction limits what an intruder reaches.",
+        "Exam cue: when a weak control must stay for now, prefer a compensating control that limits impact over cosmetic hardening."
+      ],
+      "_provenance": "Authored from concept: 'Wireless Encryption. Legacy WEP Devices Awaiting Replacement'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.2 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_332",
+      "domain": 5,
+      "subtopic": "Rogue Access Points. Blocking Them at the Wired Port",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Rogue access point",
+        "802.1X",
+        "Preventive control",
+        "Wireless intrusion detection system (WIDS)"
+      ],
+      "framework_ref": "IEEE 802.1X (Port-Based Network Access Control); NIST SP 800-153 (Guidelines for Securing WLANs)",
+      "question": "An IS auditor's site survey found two consumer access points staff had plugged into meeting-room network jacks to boost signal. Which control would MOST LIKELY have prevented this?",
+      "options": {
+        "A": "A wireless intrusion detection system with alerts sent to an owner",
+        "B": "An acceptable use policy that bans personal network equipment",
+        "C": "Device authentication enforced at every wired switch port",
+        "D": "Quarterly wireless site surveys of every office floor"
+      },
+      "correct": "C",
+      "key_concept": "Port-based authentication on wired switch ports stops unapproved access points from connecting; wireless monitoring only finds them afterward.",
+      "pre_read": "Note whether the stem asks to prevent, detect or correct, then pick the control type that matches.",
+      "correct_explanation": "Port-based authentication, such as 802.1X, lets a wired port carry traffic only after the connected device proves it is approved. A consumer access point has no credentials, so the port stays closed and the device never bridges into the network. Wireless intrusion detection is the runner-up: with an owner acting on alerts it finds rogue devices quickly, but only after they are already connected.",
+      "wrong_explanations": {
+        "A": "Wireless intrusion detection finds rogue access points once they are live; even with prompt alerts, it detects the connection rather than preventing it.",
+        "B": "A policy states the rule, but staff who wanted a better signal could still plug a device into an open port.",
+        "D": "Surveys every quarter detect rogue devices after the fact and could leave one connected for months."
+      },
+      "tips": [
+        "Eliminate: B relies on staff obeying a rule, and D finds devices only at the next quarterly visit.",
+        "Final two: C beats A because port authentication blocks the device from connecting, while intrusion detection reports it afterward.",
+        "Exam cue: when the stem asks what would have prevented an event, choose the preventive control over strong detective ones."
+      ],
+      "_provenance": "Authored from concept: 'Rogue Access Points. Blocking Them at the Wired Port'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.3 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: IEEE and NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_333",
+      "domain": 5,
+      "subtopic": "Rogue Access Points. Evidence That None Exist",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Rogue access point",
+        "Site survey",
+        "Audit evidence",
+        "Evidence reliability"
+      ],
+      "framework_ref": "NIST SP 800-153 (Guidelines for Securing WLANs); ISACA IT Audit Standard 1205 (Evidence)",
+      "question": "An IS auditor must conclude whether unapproved wireless access points are operating at 30 branch offices. Which evidence would be MOST reliable?",
+      "options": {
+        "A": "Recent radio scans of every branch, tracing each unknown device",
+        "B": "The network team's current inventory of approved access points",
+        "C": "A copy of the signed policy banning unapproved wireless devices",
+        "D": "Signed statements from every branch manager that none are present"
+      },
+      "correct": "A",
+      "key_concept": "Rogue devices are, by definition, missing from approved inventories; direct radio scanning, with follow-up, shows whether they exist.",
+      "pre_read": "Ask whether the evidence source could ever contain the thing you are looking for.",
+      "correct_explanation": "Unapproved access points are, by definition, absent from the network team's records, so the reliable way to find them is to examine the airwaves. Recent radio scans at every branch, with each unknown device traced to its source, give direct, independent evidence. The approved inventory is the runner-up: it is accurate for managed devices, but it cannot show devices nobody registered.",
+      "wrong_explanations": {
+        "B": "An inventory lists the access points the team installed; a device someone plugged in without approval would never appear in it.",
+        "C": "A policy shows what is required, not what is happening; it gives no evidence that branches comply.",
+        "D": "Manager statements are indirect testimony; a manager may not know that a staff member plugged in a device."
+      },
+      "tips": [
+        "Eliminate: C shows a requirement rather than compliance, and D relies on managers' statements instead of direct observation.",
+        "Final two: A beats B because an inventory of approved devices can never list the unapproved ones the scans find.",
+        "Exam cue: the most reliable evidence is direct and independent; ask whether the source could even contain the problem."
+      ],
+      "_provenance": "Authored from concept: 'Rogue Access Points. Evidence That None Exist'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.3 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and ISACA ITAF.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_334",
+      "domain": 5,
+      "subtopic": "Fire Suppression. Choosing a Water-Based Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Pre-action sprinkler",
+        "Dry-pipe sprinkler",
+        "Wet-pipe sprinkler",
+        "Deluge system"
+      ],
+      "framework_ref": "NFPA 75 (Standard for the Fire Protection of Information Technology Equipment); NIST SP 800-53 Rev 5 PE-13 (Fire Protection)",
+      "question": "Local fire code requires a water-based suppression system in a new data center, and management's main concern is accidental discharge onto servers. Which design should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Pipes kept full of water that sprays when heat opens a head",
+        "B": "Pipes holding pressurized air that fill once any head opens",
+        "C": "Dry pipes that fill only after detectors alarm, then a head opens",
+        "D": "Open heads across the room that spray together once detectors trigger"
+      },
+      "correct": "C",
+      "key_concept": "Where water suppression is required near IT equipment, pre-action designs need both detection and an opened head before water is released.",
+      "pre_read": "For each design, count how many separate failures it would take for water to reach equipment.",
+      "correct_explanation": "A pre-action system keeps its pipes dry until detectors sense a fire, and water flows only when a heat-opened head follows, so a knocked head or a false alarm alone releases nothing. A conventional dry-pipe system is the runner-up: its pipes also hold no water, but it is built for freezing spaces, and one damaged head lets the air out and water in.",
+      "wrong_explanations": {
+        "A": "Wet-pipe systems hold water at all times, so a leaking joint or a knocked head soaks equipment immediately.",
+        "B": "Dry-pipe systems suit freezing areas; one damaged head lets the air out and water flows, so a single accident still causes discharge.",
+        "D": "Deluge systems spray from every open head at once when detection triggers, flooding the whole room even for a small fire."
+      },
+      "tips": [
+        "Eliminate: A keeps water in the pipes at all times, and D sprays the whole room from open heads at once.",
+        "Final two: C beats B because pre-action needs a detector alarm and an opened head, while dry pipe discharges after one knocked head.",
+        "Exam cue: whatever the label, dry pipe or pre-action, prefer the water design that needs a detector alarm before water enters the pipes."
+      ],
+      "_provenance": "Authored from concept: 'Fire Suppression. Choosing a Water-Based Design'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A2.2 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NFPA and NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_335",
+      "domain": 5,
+      "subtopic": "Clean-Agent Suppression. Sealing the Protected Room",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Clean-agent gas suppression",
+        "Enclosure integrity",
+        "Hold time",
+        "Change impact"
+      ],
+      "framework_ref": "NFPA 2001 (Standard on Clean Agent Fire Extinguishing Systems); NIST SP 800-53 Rev 5 PE-13 (Fire Protection)",
+      "question": "A server room protected by clean-agent gas suppression had cable holes cut through its walls during a recent upgrade, and they were never sealed. Which risk should the IS auditor consider GREATEST?",
+      "options": {
+        "A": "Gas escaping through the holes could harm staff in nearby offices",
+        "B": "Dust drawn in through the openings could clog the servers' cooling fans",
+        "C": "Humidity in the room could drift outside the range servers need",
+        "D": "Leaks could drop the concentration below what stops a fire"
+      },
+      "correct": "D",
+      "key_concept": "Clean-agent suppression works only if the room holds the gas at extinguishing concentration; unsealed openings let it leak before the fire is out.",
+      "pre_read": "Ask what a control needs from its surroundings to work, and whether a recent change has taken that away.",
+      "correct_explanation": "Clean-agent systems put out fire by holding a set gas concentration in a sealed room for several minutes. Unsealed cable holes let the gas leak away, so the fire may not go out or may reignite; the room needs resealing and an integrity test. Harm to staff nearby is the runner-up: these agents are chosen to be safe at the planned level, and escaping gas only becomes more diluted.",
+      "wrong_explanations": {
+        "A": "Clean agents are chosen to be safe for people at the planned concentration, and gas escaping into larger offices becomes even more diluted.",
+        "B": "Dust is a housekeeping concern that filters and cleaning manage; it does not stop the suppression system from working in a fire.",
+        "C": "Humidity control is a separate environmental issue; small cable holes barely affect it and do not disable fire protection."
+      },
+      "tips": [
+        "Eliminate: B and C are routine environmental upkeep issues that do not stop the suppression system from working.",
+        "Final two: D beats A because clean agents are safe for people at design levels, while leaks can leave a fire burning.",
+        "Exam cue: after any change to a protected room, ask whether the control still has what it needs to work."
+      ],
+      "_provenance": "Authored from concept: 'Clean-Agent Suppression. Sealing the Protected Room'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A2.2 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NFPA and NIST.",
+      "style_version": 2
     }
   ]
 }

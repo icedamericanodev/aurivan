@@ -15046,16 +15046,18 @@
               "name": "Fire Suppression Systems",
               "legacy_ids": [],
               "practice_ids": [
-                "d5_010"
+                "d5_010",
+                "d5_334",
+                "d5_335"
               ],
               "definition": "Fire suppression systems put out fires automatically; for computer rooms the choice is between water sprinkler designs and gas systems that leave equipment dry.",
               "why_it_matters": "The wrong system can endanger staff or ruin the servers it should save; the choice balances safety, equipment damage, reliability and cost.",
               "how_it_works": [
                 "Smoke and heat detectors, with very early smoke detection in critical rooms, raise the alarm and trigger suppression.",
                 "Wet-pipe sprinklers hold water at all times and spray when heat opens a sprinkler head.",
-                "Dry-pipe sprinklers keep water out of the pipes until triggered, so a damaged head cannot leak onto equipment before a fire.",
+                "Dry-pipe sprinklers hold pressurized air for freezing areas; any opened head, even one knocked by accident, lets water in.",
                 "Pre-action sprinklers stay dry until the detection system opens a valve; a sprinkler head must then open too.",
-                "Clean-agent gas systems flood the room with a gas safe for people at the planned concentration, leaving no residue.",
+                "Clean-agent gas floods a sealed room, safe for people at the planned concentration and leaving no residue; openings let it leak away.",
                 "Carbon dioxide systems displace oxygen and can kill, so they suit only unoccupied spaces."
               ],
               "compare": {
@@ -15104,7 +15106,7 @@
                   }
                 ]
               },
-              "example": "A logistics company's new data center must include a water-based system under the local fire code. The facilities manager proposes wet-pipe sprinklers as the cheapest option. The IS auditor notes that one leaking or knocked head would soak the racks, and recommends a pre-action design that stays dry until detectors confirm a fire, with very early smoke detection.",
+              "example": "A logistics company's new data center must include a water-based system under local fire code. The facilities manager proposes cheap wet-pipe sprinklers. The IS auditor notes that one leaking or knocked head would soak the racks, and recommends a pre-action design that stays dry until detectors confirm a fire, with very early smoke detection.",
               "isaca_rule": "Protect people first, then equipment. Clean-agent gas with early detection fits occupied server rooms best. Among water systems, pipes that stay dry until a fire is detected (pre-action, which exam questions often group under the dry-pipe label) beat wet pipe. Carbon dioxide never belongs where people work.",
               "exam_traps": [
                 {
@@ -15650,7 +15652,10 @@
               "practice_ids": [
                 "d5_044",
                 "d5_085",
-                "d5_097"
+                "d5_097",
+                "d5_327",
+                "d5_328",
+                "d5_329"
               ],
               "definition": "A firewall enforces rules about which traffic may pass between network zones; a web application firewall (WAF) inspects web requests to block attacks on applications.",
               "why_it_matters": "Firewalls are the main gate between trusted and untrusted networks. A weak rule set or an unmanaged change can expose sensitive systems as surely as no firewall.",
@@ -15862,7 +15867,10 @@
               ],
               "practice_ids": [
                 "d5_046",
-                "d5_047"
+                "d5_047",
+                "d5_324",
+                "d5_325",
+                "d5_326"
               ],
               "definition": "An intrusion detection system (IDS) spots attacks and alerts, an intrusion prevention system (IPS) can also block them, and network access control (NAC) vets devices before they join the network.",
               "why_it_matters": "Firewalls let approved traffic through, but attacks often ride inside it. Detection and prevention tools catch what gets past; NAC keeps unknown or unhealthy devices off the network.",
@@ -17376,7 +17384,9 @@
               ],
               "practice_ids": [
                 "d5_084",
-                "d5_269"
+                "d5_269",
+                "d5_330",
+                "d5_331"
               ],
               "definition": "Wireless network security protects Wi-Fi networks, whose signals reach beyond the walls, through strong encryption and authentication of every user and device.",
               "why_it_matters": "Anyone in range can try to connect or listen. A shared passphrase known to former staff, or laptops that trust any network with the right name, leave the network exposed.",
@@ -17456,7 +17466,9 @@
               "name": "Wireless Attacks: Rogue Access Points and War Driving",
               "legacy_ids": [],
               "practice_ids": [
-                "d5_095"
+                "d5_095",
+                "d5_332",
+                "d5_333"
               ],
               "definition": "Wireless attacks exploit radio signals: rogue and look-alike access points create unauthorized ways in, while war driving hunts for weak networks from outside.",
               "why_it_matters": "One unauthorized access point plugged into an office port can bypass the firewall entirely. Fake networks trick staff into handing over credentials, and outsiders can probe Wi-Fi from a parking lot.",
