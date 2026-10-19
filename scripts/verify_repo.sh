@@ -107,6 +107,15 @@ else
   printf "  ${OK} reported (errors=%s warnings=%s; new batches should use --batch --strict)\n" "$errors_count" "$warnings_count"
 fi
 
+# 6b. Mindset principles (data/mindset/principles.json) ----------------------
+# Schema, ids, practice-question and subtopic cross-references, word limits,
+# family/domain coverage, legacy id mapping. Errors fail the check; warnings
+# (e.g. a principle with fewer than 3 practice questions) are reported only.
+printf "\n"
+if ! python3 scripts/lint_principles.py; then
+  status=1
+fi
+
 # 7. Accessibility (pa11y, WCAG AA) -----------------------------------------
 # pa11y runs WCAG AA against a served URL. We skip silently if node/npx is
 # absent or no local server is running on port 8000 — the maintainer can run

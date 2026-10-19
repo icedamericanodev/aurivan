@@ -1,0 +1,476 @@
+#!/usr/bin/env python3
+"""Lint the shared mindset principles against docs/content/PRINCIPLES_SCHEMA.md.
+
+Usage:
+    python3 scripts/lint_principles.py                 # data/mindset/principles.json
+    python3 scripts/lint_principles.py path/to/file    # a draft copy
+
+Errors break the schema, a cross-reference or a hard limit. Warnings are
+gaps to close (for example a principle with fewer than 3 practice questions).
+Exit code 1 if there are errors.
+"""
+import json
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+DEFAULT = ROOT / "data" / "mindset" / "principles.json"
+NOTES = ROOT / "data" / "cisa_notes.json"
+ORIGINALS = ROOT / "data" / "originals"
+SLIP_COACH = ROOT / "mobile" / "src" / "engine" / "slipCoach.ts"
+
+SCHEMA_VERSION = 2
+DOMAINS = {1, 2, 3, 4, 5}
+MIN_PER_FAMILY = 2
+MIN_PER_DOMAIN = 3
+MIN_PRACTICE = 3
+
+# Hard word limits.
+RULE_MAX = 20
+WHY_MAX = 60
+EXAMPLE_MAX = 80
+NUANCE_MAX = 40
+
+# Every id of the old web PRINCIPLES_LIB. Each must appear in exactly one
+# principle's legacy_ids so existing links keep resolving.
+LEGACY_IDS = {
+    "CONTAIN-FIRST", "REVOCATION-FIRST", "METHODOLOGY-RIGOR-FIRST",
+    "BACKUP-IMMUTABILITY-FIRST", "CHAIN-OF-CUSTODY-FIRST", "SCOPE-BEFORE-FIELDWORK",
+    "RISK-BEFORE-CONTROLS", "LEAST-PRIVILEGE-ALWAYS", "SEGREGATION-OF-DUTIES-FIRST",
+    "GOVERNANCE-OVER-MANAGEMENT", "IMPACT-BEFORE-LIKELIHOOD", "AUDIT-INDEPENDENCE-FIRST",
+    "BUSINESS-CONTINUITY-OVER-RECOVERY", "EVIDENCE-BEFORE-CONCLUSION",
+    "CONTINUOUS-MONITORING-OVER-PERIODIC",
+}
+# Used only if mobile/ is absent from the checkout.
+FALLBACK_SLIPS = {"runner-up", "priority", "overconfident", "role", "tech-first",
+                  "symptom", "misread", "knowledge"}
+
+TOP_KEYS = {"schema_version", "title", "updated", "description", "families",
+            "principles", "slip_map"}
+FAMILY_KEYS = {"id", "order", "title", "question"}
+REQUIRED = ["id", "family", "order", "title", "rule", "why", "triggers", "trap",
+            "example", "domains", "subtopics", "practice_ids", "slip_pattern",
+            "legacy_ids"]
+OPTIONAL = ["nuance", "aliases"]
+
+KEBAB = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
+QID = re.compile(r"^d([1-5])_\d{3}$")
+SUBTOPIC = re.compile(r"^([1-5])[AB]\d+\.\d+$")
+DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+EMOJI = re.compile("[\U0001F300-\U0001FAFF☀-➿]")
+# Never state the size of the question bank (CLAUDE.md convention).
+BANK_SIZE = [
+    re.compile(r"\b\d[\d,]*\+?\s+(?:\w+[- ]){0,2}questions?\b", re.I),
+    re.compile(r"\b(?:question\s+)?bank\s+(?:of|has|holds|contains|with)\s+\d", re.I),
+    re.compile(r"\ball\s+\d[\d,]*\s+(?:items|questions)\b", re.I),
+]
+BRITISH = re.compile(r"\b(\w+is(e|ed|es|ing|ation)|colour\w*|behaviour\w*|centre\w*|"
+                     r"licence|analys(e|ed|es|ing)|favour\w*|organisation\w*|"
+                     r"programme\w*|catalogue\w*|defence|judgement|labour\w*|"
+                     r"honour\w*|travell\w*|modell\w*)\b", re.I)
+BRITISH_OK = {
+    "raise", "raised", "raises", "raising", "advise", "advised", "advises", "advising",
+    "revise", "revised", "revises", "revising", "exercise", "exercised", "exercises",
+    "exercising", "otherwise", "promise", "promised", "promises", "premise", "premises",
+    "expertise", "precise", "concise", "wise", "likewise", "noise", "praise", "rise",
+    "arise", "arises", "arising", "comprise", "comprises", "comprised", "compromise",
+    "compromised", "compromises", "compromising", "enterprise", "enterprises",
+    "supervise", "supervised", "supervises", "supervising", "supervision", "devise",
+    "devised", "surprise", "surprised", "franchise", "merchandise", "disguise",
+    "improvise", "imprecise", "sunrise", "clockwise", "premise", "rising", "risen",
+    "uprising", "surprising", "promising", "praising", "appraise", "appraised",
+    "appraising", "advertise", "advertised", "advertises", "advertising",
+    "franchising", "merchandising", "televised", "chastising", "disguising",
+}
+
+errors = []
+warnings = []
+
+
+def err(where, msg):
+    errors.append(f"{where}: {msg}")
+
+
+def warn(where, msg):
+    warnings.append(f"{where}: {msg}")
+
+
+def words(text):
+    return len(str(text).split())
+
+
+def sentences(text):
+    return len(re.findall(r"[.!?](?:\s|$)", str(text).strip()))
+
+
+def nonempty_str(v):
+    return isinstance(v, str) and v.strip() != ""
+
+
+def walk_strings(node, path):
+    """Yield (path, string) for every string in a JSON value."""
+    if isinstance(node, str):
+        yield path, node
+    elif isinstance(node, list):
+        for i, v in enumerate(node):
+            yield from walk_strings(v, f"{path}[{i}]")
+    elif isinstance(node, dict):
+        for k, v in node.items():
+            yield from walk_strings(v, f"{path}.{k}" if path else k)
+
+
+def load_question_ids():
+    ids = set()
+    for n in range(1, 6):
+        f = ORIGINALS / f"d{n}.json"
+        try:
+            data = json.loads(f.read_text())
+        except (OSError, ValueError) as e:
+            err(str(f.relative_to(ROOT)), f"cannot read question bank ({e})")
+            continue
+        for q in data.get("questions", []):
+            ids.add(q.get("id"))
+    return ids
+
+
+def load_subtopic_codes():
+    try:
+        notes = json.loads(NOTES.read_text())
+    except (OSError, ValueError) as e:
+        err("data/cisa_notes.json", f"cannot read notes ({e})")
+        return set()
+    codes = set()
+    for d in notes.get("domains", []):
+        for t in d.get("topics", []):
+            for s in t.get("subtopics", []):
+                codes.add(s.get("id"))
+    return codes
+
+
+def load_slip_patterns():
+    try:
+        src = SLIP_COACH.read_text()
+    except OSError:
+        warn("slipCoach.ts", "not found; using the built-in slip pattern list")
+        return set(FALLBACK_SLIPS)
+    m = re.search(r"PATTERN_COPY[^{]*\{(.*?)\n\};", src, re.S)
+    if not m:
+        warn("slipCoach.ts", "PATTERN_COPY not parsed; using the built-in slip pattern list")
+        return set(FALLBACK_SLIPS)
+    keys = set(re.findall(r"^\s*'?([a-z-]+)'?\s*:\s*\{", m.group(1), re.M))
+    return keys or set(FALLBACK_SLIPS)
+
+
+def check_text_hygiene(doc):
+    for path, s in walk_strings(doc, ""):
+        for rx in BANK_SIZE:
+            if rx.search(s):
+                err(path, f"states a bank size or question count: '{rx.search(s).group(0)}'")
+        if EMOJI.search(s):
+            err(path, "contains an emoji")
+        for m in BRITISH.finditer(s):
+            if m.group(0).lower() not in BRITISH_OK:
+                err(path, f"British spelling '{m.group(0)}' (use US English)")
+
+
+def check_families(families):
+    ids = {}
+    orders = set()
+    if not isinstance(families, list) or not families:
+        err("families", "must be a non-empty list")
+        return ids
+    for i, f in enumerate(families):
+        where = f"families[{i}]"
+        if not isinstance(f, dict):
+            err(where, "must be an object")
+            continue
+        missing = FAMILY_KEYS - f.keys()
+        extra = f.keys() - FAMILY_KEYS
+        if missing:
+            err(where, f"missing {sorted(missing)}")
+        if extra:
+            err(where, f"unknown keys {sorted(extra)}")
+        fid = f.get("id")
+        if not (isinstance(fid, str) and KEBAB.match(fid)):
+            err(where, f"id '{fid}' is not kebab-case")
+        elif fid in ids:
+            err(where, f"duplicate family id '{fid}'")
+        else:
+            ids[fid] = f
+        if not isinstance(f.get("order"), int) or f.get("order") in orders:
+            err(where, f"order must be a unique integer (got {f.get('order')!r})")
+        orders.add(f.get("order"))
+        for k in ("title", "question"):
+            if not nonempty_str(f.get(k)):
+                err(where, f"'{k}' must be a non-empty string")
+        if nonempty_str(f.get("question")) and not f["question"].strip().endswith("?"):
+            err(where, "question must end with '?'")
+    if orders and sorted(orders) != list(range(1, len(orders) + 1)):
+        err("families", f"orders must run 1..{len(orders)} (got {sorted(orders)})")
+    return ids
+
+
+def check_principle(p, i, ctx):
+    where = f"principles[{i}]"
+    if not isinstance(p, dict):
+        err(where, "must be an object")
+        return
+    pid = p.get("id")
+    if isinstance(pid, str):
+        where = f"principle '{pid}'"
+    for k in REQUIRED:
+        if k not in p:
+            err(where, f"missing required field '{k}'")
+    extra = p.keys() - set(REQUIRED) - set(OPTIONAL)
+    if extra:
+        err(where, f"unknown fields {sorted(extra)}")
+
+    # id, family, order, title
+    if not (isinstance(pid, str) and KEBAB.match(pid)):
+        err(where, f"id '{pid}' is not kebab-case")
+    elif pid in ctx["ids"]:
+        err(where, "duplicate principle id")
+    else:
+        ctx["ids"].add(pid)
+    fam = p.get("family")
+    if fam not in ctx["families"]:
+        err(where, f"family '{fam}' is not a declared family")
+    else:
+        ctx["per_family"].setdefault(fam, []).append(pid)
+        order = p.get("order")
+        key = (fam, order)
+        if not isinstance(order, int) or key in ctx["orders"]:
+            err(where, f"order must be a unique integer within its family (got {order!r})")
+        ctx["orders"].add(key)
+    if not nonempty_str(p.get("title")):
+        err(where, "title must be a non-empty string")
+
+    # rule
+    rule = p.get("rule")
+    if not nonempty_str(rule):
+        err(where, "rule must be a non-empty string")
+    else:
+        if "\n" in rule:
+            err(where, "rule must be one line")
+        if words(rule) > RULE_MAX:
+            err(where, f"rule is {words(rule)} words (max {RULE_MAX})")
+
+    # why
+    why = p.get("why")
+    if not nonempty_str(why):
+        err(where, "why must be a non-empty string")
+    else:
+        if words(why) > WHY_MAX:
+            err(where, f"why is {words(why)} words (max {WHY_MAX})")
+        n = sentences(why)
+        if n < 2 or n > 3:
+            err(where, f"why must be 2-3 sentences (found {n})")
+
+    # triggers
+    trig = p.get("triggers")
+    if not (isinstance(trig, list) and len(trig) >= 3 and all(nonempty_str(t) for t in trig)):
+        err(where, "triggers must be a list of at least 3 non-empty strings")
+    elif len(set(t.lower() for t in trig)) != len(trig):
+        err(where, "triggers contain duplicates")
+
+    # trap
+    trap = p.get("trap")
+    if not (isinstance(trap, dict) and set(trap.keys()) == {"move", "why_wrong"}
+            and nonempty_str(trap.get("move")) and nonempty_str(trap.get("why_wrong"))):
+        err(where, "trap must be an object with non-empty 'move' and 'why_wrong'")
+
+    # example
+    ex = p.get("example")
+    if not (isinstance(ex, dict) and set(ex.keys()) == {"scenario", "answer"}
+            and nonempty_str(ex.get("scenario")) and nonempty_str(ex.get("answer"))):
+        err(where, "example must be an object with non-empty 'scenario' and 'answer'")
+    else:
+        total = words(ex["scenario"]) + words(ex["answer"])
+        if total > EXAMPLE_MAX:
+            err(where, f"example is {total} words (max {EXAMPLE_MAX})")
+
+    # nuance (optional)
+    if "nuance" in p:
+        if not nonempty_str(p["nuance"]):
+            err(where, "nuance, when present, must be a non-empty string")
+        elif words(p["nuance"]) > NUANCE_MAX:
+            err(where, f"nuance is {words(p['nuance'])} words (max {NUANCE_MAX})")
+
+    # domains
+    doms = p.get("domains")
+    if not (isinstance(doms, list) and doms and all(isinstance(d, int) for d in doms)
+            and set(doms) <= DOMAINS and len(set(doms)) == len(doms)):
+        err(where, "domains must be a non-empty list of unique integers 1-5")
+        doms = []
+    elif doms != sorted(doms):
+        err(where, "domains must be sorted ascending")
+    for d in doms:
+        ctx["per_domain"].setdefault(d, []).append(pid)
+
+    # subtopics
+    subs = p.get("subtopics")
+    if not isinstance(subs, list):
+        err(where, "subtopics must be a list")
+        subs = []
+    if len(set(subs)) != len(subs):
+        err(where, "subtopics contain duplicates")
+    if not subs and fam != "reading":
+        warn(where, "no subtopics linked")
+    for s in subs:
+        m = SUBTOPIC.match(s) if isinstance(s, str) else None
+        if not m:
+            err(where, f"subtopic '{s}' is not a note code like 1A3.6")
+            continue
+        if ctx["codes"] and s not in ctx["codes"]:
+            err(where, f"subtopic '{s}' does not exist in data/cisa_notes.json")
+        if int(m.group(1)) not in doms:
+            err(where, f"subtopic '{s}' is in D{m.group(1)}, which is not in domains")
+
+    # practice_ids
+    pids = p.get("practice_ids")
+    if not isinstance(pids, list):
+        err(where, "practice_ids must be a list")
+        pids = []
+    if len(set(pids)) != len(pids):
+        err(where, "practice_ids contain duplicates")
+    for q in pids:
+        m = QID.match(q) if isinstance(q, str) else None
+        if not m:
+            err(where, f"practice id '{q}' is not like d1_004")
+            continue
+        if ctx["qids"] and q not in ctx["qids"]:
+            err(where, f"practice id '{q}' does not exist in data/originals")
+        if int(m.group(1)) not in doms:
+            err(where, f"practice id '{q}' is in D{m.group(1)}, which is not in domains")
+        owner = ctx["practice_owner"].get(q)
+        if owner and owner != pid:
+            err(where, f"practice id '{q}' is already used by '{owner}' (one principle per question)")
+        ctx["practice_owner"][q] = pid
+    if len(pids) < MIN_PRACTICE:
+        warn(where, f"only {len(pids)} practice_ids (target {MIN_PRACTICE}+); write questions for this gap")
+    if len({q[:2] for q in pids if isinstance(q, str)}) == 1 and len(doms) > 1:
+        warn(where, "practice_ids all come from one domain")
+
+    # slip_pattern
+    slip = p.get("slip_pattern")
+    if slip is not None:
+        if slip not in ctx["slips"]:
+            err(where, f"slip_pattern '{slip}' is not a slip coach pattern {sorted(ctx['slips'])}")
+        elif slip in ctx["slip_owner"]:
+            err(where, f"slip_pattern '{slip}' is already the primary pattern of '{ctx['slip_owner'][slip]}'")
+        else:
+            ctx["slip_owner"][slip] = pid
+
+    # legacy_ids and aliases
+    for field in ("legacy_ids", "aliases"):
+        vals = p.get(field, [])
+        if not isinstance(vals, list) or not all(nonempty_str(v) for v in vals):
+            err(where, f"{field} must be a list of strings")
+            continue
+        for v in vals:
+            if field == "legacy_ids" and v not in LEGACY_IDS:
+                err(where, f"legacy id '{v}' is not an old PRINCIPLES_LIB id")
+            other = ctx["old_owner"].get(v)
+            if other and other != pid:
+                err(where, f"'{v}' is already mapped to '{other}'")
+            ctx["old_owner"][v] = pid
+
+
+def main(argv):
+    path = Path(argv[1]) if len(argv) > 1 else DEFAULT
+    try:
+        doc = json.loads(path.read_text())
+    except (OSError, ValueError) as e:
+        print(f"✗ cannot read {path}: {e}")
+        return 1
+
+    if not isinstance(doc, dict):
+        print("✗ top level must be an object")
+        return 1
+    missing = TOP_KEYS - doc.keys()
+    extra = doc.keys() - TOP_KEYS
+    if missing:
+        err("top level", f"missing {sorted(missing)}")
+    if extra:
+        err("top level", f"unknown keys {sorted(extra)}")
+    if doc.get("schema_version") != SCHEMA_VERSION:
+        err("schema_version", f"expected {SCHEMA_VERSION}, got {doc.get('schema_version')!r}")
+    if not (isinstance(doc.get("updated"), str) and DATE.match(doc["updated"])):
+        err("updated", "must be a YYYY-MM-DD date")
+
+    ctx = {
+        "families": check_families(doc.get("families")),
+        "qids": load_question_ids(),
+        "codes": load_subtopic_codes(),
+        "slips": load_slip_patterns(),
+        "ids": set(), "orders": set(), "per_family": {}, "per_domain": {},
+        "practice_owner": {}, "slip_owner": {}, "old_owner": {},
+    }
+
+    principles = doc.get("principles")
+    if not isinstance(principles, list) or not principles:
+        err("principles", "must be a non-empty list")
+        principles = []
+    for i, p in enumerate(principles):
+        check_principle(p, i, ctx)
+
+    # Aliases must not shadow principle ids.
+    for old, owner in ctx["old_owner"].items():
+        if old in ctx["ids"]:
+            err(f"principle '{owner}'", f"'{old}' collides with a principle id")
+
+    # Coverage rules.
+    for fam in ctx["families"]:
+        n = len(ctx["per_family"].get(fam, []))
+        if n < MIN_PER_FAMILY:
+            err(f"family '{fam}'", f"has {n} principles (min {MIN_PER_FAMILY})")
+    for d in sorted(DOMAINS):
+        n = len(ctx["per_domain"].get(d, []))
+        if n < MIN_PER_DOMAIN:
+            err(f"domain {d}", f"has {n} principles (min {MIN_PER_DOMAIN})")
+    for fam, members in ctx["per_family"].items():
+        orders = sorted(o for (f, o) in ctx["orders"] if f == fam and isinstance(o, int))
+        if orders != list(range(1, len(members) + 1)):
+            err(f"family '{fam}'", f"principle orders must run 1..{len(members)} (got {orders})")
+    unmapped = LEGACY_IDS - set(ctx["old_owner"])
+    if unmapped:
+        err("legacy_ids", f"old PRINCIPLES_LIB ids not mapped: {sorted(unmapped)}")
+
+    # slip_map: every slip pattern has an entry; targets exist; primaries agree.
+    sm = doc.get("slip_map")
+    if not isinstance(sm, dict):
+        err("slip_map", "must be an object")
+    else:
+        if set(sm) != ctx["slips"]:
+            err("slip_map", f"keys must be exactly the slip coach patterns {sorted(ctx['slips'])}")
+        for slip, target in sm.items():
+            if target is not None and target not in ctx["ids"]:
+                err("slip_map", f"'{slip}' points to unknown principle '{target}'")
+        for slip, owner in ctx["slip_owner"].items():
+            if sm.get(slip) != owner:
+                err("slip_map", f"'{slip}' should point to '{owner}', which declares it as slip_pattern")
+
+    check_text_hygiene(doc)
+
+    # Report.
+    rel = path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
+    print(f"Principles lint: {rel}")
+    print(f"  {len(principles)} principles in {len(ctx['families'])} families")
+    fam_line = ", ".join(f"{f} {len(ctx['per_family'].get(f, []))}" for f in ctx["families"])
+    print(f"  per family: {fam_line}")
+    dom_line = ", ".join(f"D{d} {len(ctx['per_domain'].get(d, []))}" for d in sorted(DOMAINS))
+    print(f"  per domain: {dom_line}")
+    for w in warnings:
+        print(f"  ⚠ {w}")
+    for e in errors:
+        print(f"  ✗ {e}")
+    if errors:
+        print(f"  ✗ {len(errors)} error(s), {len(warnings)} warning(s)")
+        return 1
+    print(f"  ✓ clean ({len(warnings)} warning(s))")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

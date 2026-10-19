@@ -1,0 +1,1108 @@
+{
+  "schema_version": 2,
+  "title": "KaiSip exam mindset principles",
+  "updated": "2026-10-19",
+  "description": "The reasoning patterns CISA questions reward, grouped into six families. Shared by the web app and the mobile app. Schema: docs/content/PRINCIPLES_SCHEMA.md. Lint: scripts/lint_principles.py.",
+  "families": [
+    {
+      "id": "role",
+      "order": 1,
+      "title": "Your role",
+      "question": "Who am I in this question, and who owns the decision?"
+    },
+    {
+      "id": "priorities",
+      "order": 2,
+      "title": "What matters most",
+      "question": "What should drive the choice?"
+    },
+    {
+      "id": "assurance",
+      "order": 3,
+      "title": "How you know",
+      "question": "How do I know it is true?"
+    },
+    {
+      "id": "remedies",
+      "order": 4,
+      "title": "What fixes it",
+      "question": "Which fix actually works?"
+    },
+    {
+      "id": "response",
+      "order": 5,
+      "title": "When it breaks",
+      "question": "What comes first when something goes wrong?"
+    },
+    {
+      "id": "reading",
+      "order": 6,
+      "title": "Reading the question",
+      "question": "What is the question really asking?"
+    }
+  ],
+  "principles": [
+    {
+      "id": "recommend-dont-implement",
+      "family": "role",
+      "order": 1,
+      "title": "Recommend, don't implement",
+      "rule": "The IS auditor assesses, reports and recommends; management designs, implements and owns the fix.",
+      "why": "An IS auditor who builds a control will later judge their own work, which is a self-review threat. Management owns the process, the budget and the risk, so a fix it did not choose is less likely to last. Advising on what a control must achieve is fine; designing or running it is not.",
+      "triggers": [
+        "asks the IS auditor to design",
+        "configure or set up the control",
+        "select the tool",
+        "IS auditor's role during development",
+        "help management fix it",
+        "halt operations"
+      ],
+      "trap": {
+        "move": "Building or configuring the control yourself so the project is not delayed.",
+        "why_wrong": "It feels helpful, but it is the wrong role. The IS auditor would later audit their own design, and management never takes ownership of the fix."
+      },
+      "example": {
+        "scenario": "An IS auditor finds that a new HR system raises no alert when salaries change outside a payroll run. The HR manager asks the auditor to set up the alert.",
+        "answer": "Report the gap and recommend an alert with a named reviewer. HR and IT build and run it; the IS auditor can say what it must catch and test it later."
+      },
+      "nuance": "Advisory work is allowed when its scope is agreed in writing up front, management keeps every decision, and the same IS auditor does not later give assurance on it.",
+      "domains": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "subtopics": [
+        "1A2.2",
+        "2B2.1",
+        "3A4.1",
+        "4A10.2"
+      ],
+      "practice_ids": [
+        "d1_033",
+        "d1_159",
+        "d2_017",
+        "d3_071",
+        "d4_059"
+      ],
+      "slip_pattern": "role",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "independence-throughout",
+      "family": "role",
+      "order": 2,
+      "title": "Independence at every stage",
+      "rule": "Guard independence and objectivity before, during and after the engagement; never trade them for speed or goodwill.",
+      "why": "An opinion is only worth something if readers trust that nothing influenced it. Threats such as self-interest, self-review, familiarity and intimidation (undue pressure) can appear at any point, not only at acceptance. So the IS auditor reassesses whenever circumstances change and removes each threat or reduces it to an acceptable level.",
+      "triggers": [
+        "previously worked on the system",
+        "accepted a job offer",
+        "asks to soften the rating",
+        "many years on the same client",
+        "join the committee",
+        "run the process until someone is hired"
+      ],
+      "trap": {
+        "move": "Treating independence as a one-time check at engagement acceptance, or merely disclosing a severe threat instead of removing it.",
+        "why_wrong": "Threats that arise mid-engagement still impair the work, and disclosure alone does not fix a severe threat such as a pending job at the auditee."
+      },
+      "example": {
+        "scenario": "Two months into an audit of the payments platform, the IS auditor's spouse is appointed head of payments operations.",
+        "answer": "Disclose the new threat to audit management at once. Audit management should assign another IS auditor, have the work done so far reviewed and document the assessment. Independence is not settled at acceptance."
+      },
+      "nuance": "Organizational independence (the reporting line) and individual objectivity are separate tests; a function can be independent while one of its IS auditors is not.",
+      "domains": [
+        1,
+        2,
+        3
+      ],
+      "subtopics": [
+        "1A1.4",
+        "1A1.5",
+        "2A2.3",
+        "3B4.2"
+      ],
+      "practice_ids": [
+        "d1_002",
+        "d1_105",
+        "d1_125",
+        "d2_189",
+        "d3_092"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [
+        "AUDIT-INDEPENDENCE-FIRST"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "escalate-to-decision-owner",
+      "family": "role",
+      "order": 3,
+      "title": "Escalate to whoever owns the decision",
+      "rule": "When an issue exceeds your authority, escalate it promptly to the person or body that owns the decision.",
+      "why": "Decisions belong where accountability sits: the audit committee for audit independence and critical findings, the project sponsor or steering committee for project risk beyond tolerance, the named authority for invoking recovery. Settling it lower down, or waiting for the next scheduled meeting, leaves the real owner uninformed while exposure grows.",
+      "triggers": [
+        "pressures the IS auditor",
+        "exceeds delegated tolerance",
+        "suspected fraud",
+        "regulatory deadline",
+        "the committee meets in",
+        "no one is authorized to decide"
+      ],
+      "trap": {
+        "move": "Handling it yourself: investigating suspected fraud alone, negotiating with the person applying pressure, or waiting for the scheduled report.",
+        "why_wrong": "Each feels responsible, but none puts the decision with the body that has the authority, and some alert the people involved."
+      },
+      "example": {
+        "scenario": "An IS auditor finds that the CIO has granted a relative's company remote access outside any contract. The CIO asks to discuss it privately before anything is reported.",
+        "answer": "Preserve the evidence and escalate through the chief audit executive to the audit committee, which sits above the CIO. Settling it privately leaves the decision with the person involved."
+      },
+      "domains": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "subtopics": [
+        "1A1.4",
+        "1B3.5",
+        "1B4.2",
+        "1B5.5",
+        "2B3.1",
+        "3A1.4",
+        "4B4.2",
+        "4B5.3"
+      ],
+      "practice_ids": [
+        "d1_010",
+        "d1_016",
+        "d1_089",
+        "d1_115",
+        "d1_130",
+        "d2_190",
+        "d3_005",
+        "d4_196"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "management-owns-risk",
+      "family": "role",
+      "order": 4,
+      "title": "Management owns the risk",
+      "rule": "Management and risk owners accept, mitigate, transfer or avoid risk; the IS auditor and vendors cannot take on that accountability.",
+      "why": "Accepting risk is a business decision tied to risk appetite, budget and strategy, so it sits with the accountable owner at the level the risk policy names. An IS auditor who accepts risk takes on a management decision and impairs objectivity. A vendor can do the work, but the organization still answers for the outcome.",
+      "triggers": [
+        "risk acceptance",
+        "exceeds appetite",
+        "outsourced to a provider",
+        "shared responsibility",
+        "who should approve",
+        "sponsor or business owner"
+      ],
+      "trap": {
+        "move": "Letting the IS auditor, an operational manager or the vendor accept the residual risk.",
+        "why_wrong": "None of them owns the risk at the right level. The IS auditor would be judging their own decision, and a contract moves work, not accountability."
+      },
+      "example": {
+        "scenario": "A marketing director wants to keep customer data in an unapproved cloud tool for six months and asks the IS auditor to approve the exception.",
+        "answer": "Report the risk and recommend a formal exception decided by the accountable data owner at the level the policy names, with an expiration date and compensating controls. Approving it would make the IS auditor the risk owner."
+      },
+      "domains": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "2A2.3",
+        "2A3.3",
+        "2A5.2",
+        "2A5.4",
+        "2A7.1",
+        "3B1.5",
+        "3B4.3",
+        "4B1.2",
+        "5A8.2",
+        "5B4.3"
+      ],
+      "practice_ids": [
+        "d2_082",
+        "d2_123",
+        "d3_062",
+        "d3_088",
+        "d4_098",
+        "d5_140",
+        "d5_213"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "governance-before-technology",
+      "family": "priorities",
+      "order": 1,
+      "title": "Business goals and governance before technology",
+      "rule": "Settle direction, policy, ownership and requirements before choosing or switching on a tool.",
+      "why": "Tools enforce decisions; they cannot make them. Without approved policy, a business case or data classification, a tool automates guesswork and can breach law or block legitimate work. Governance of enterprise IT (GEIT) means IT serves business objectives under direction approved by the board and senior management.",
+      "triggers": [
+        "buy a tool",
+        "deploy next month",
+        "policy approved by the CISO alone",
+        "generic strategy",
+        "no business case",
+        "switch on blocking"
+      ],
+      "trap": {
+        "move": "Picking the technical answer first: buying the platform, enabling enforcement or migrating right away.",
+        "why_wrong": "It looks decisive, but without direction, owners and requirements the tool may solve the wrong problem or create legal exposure."
+      },
+      "example": {
+        "scenario": "A CIO wants to buy an AI coding assistant for every developer next week. No policy says what code or data may be pasted into it.",
+        "answer": "Recommend that management first agree on an acceptable use policy and data limits with business and legal stakeholders, then pilot the tool against them. Buying first leaves staff guessing and may leak code or personal data."
+      },
+      "nuance": "When governance already exists and the gap is purely technical, the technical control can be the right answer.",
+      "domains": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "2A2.1",
+        "2A2.5",
+        "2A3.1",
+        "2A3.2",
+        "3A2.1",
+        "3A2.2",
+        "4A5.1",
+        "5A1.1",
+        "5A1.5",
+        "5A5.1"
+      ],
+      "practice_ids": [
+        "d2_130",
+        "d2_185",
+        "d3_057",
+        "d3_096",
+        "d4_209",
+        "d5_052",
+        "d5_111"
+      ],
+      "slip_pattern": "tech-first",
+      "legacy_ids": [
+        "GOVERNANCE-OVER-MANAGEMENT"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "risk-sets-priority",
+      "family": "priorities",
+      "order": 2,
+      "title": "Risk decides where effort goes",
+      "rule": "Rank by risk, weighing likelihood and impact together, and put effort where combined exposure is highest.",
+      "why": "Resources are limited, so effort follows risk rather than rotation, preference or the most alarming single factor. Risk combines how likely an event is with how much harm it would cause, after existing controls. A rare event with severe impact can still rank high, but likelihood is weighed, not ignored.",
+      "triggers": [
+        "rank",
+        "prioritize",
+        "limited budget or time",
+        "annual audit plan",
+        "which to fix first",
+        "fixed rotation"
+      ],
+      "trap": {
+        "move": "Ranking on one dimension, such as the most catastrophic impact or the highest severity score, or covering everything equally.",
+        "why_wrong": "A single factor misranks exposures, and equal coverage spends scarce effort where risk is low."
+      },
+      "example": {
+        "scenario": "An audit manager can cover three of five areas next year. The largest system has strong, recently tested controls; a smaller refunds system has no recent review and rising complaints.",
+        "answer": "Rank the refunds system higher: weak assurance, warning signs and direct financial exposure give it greater combined risk. System size alone does not set priority."
+      },
+      "nuance": "A business impact analysis (BIA) deliberately measures impact regardless of likelihood; likelihood is handled in the risk assessment. Neither replaces the other.",
+      "domains": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "1A3.1",
+        "1A3.2",
+        "2A5.3",
+        "2A5.4",
+        "3B1.2",
+        "4A1.5",
+        "4A8.3",
+        "5B3.1",
+        "5B3.4"
+      ],
+      "practice_ids": [
+        "d1_003",
+        "d1_037",
+        "d2_127",
+        "d3_050",
+        "d4_043",
+        "d4_186",
+        "d5_135"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [
+        "RISK-BEFORE-CONTROLS",
+        "IMPACT-BEFORE-LIKELIHOOD"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "plan-before-testing",
+      "family": "assurance",
+      "order": 1,
+      "title": "Understand and scope before you test",
+      "rule": "Know the business, the population and the risks, then set scope and procedures before testing.",
+      "why": "Testing answers only the questions planning asked. An incomplete audit universe, an unverified population or an outdated audit program means the work can be flawless yet miss the real risk. When fieldwork reveals something the plan did not cover, the IS auditor updates the plan with audit management's approval rather than ignoring it.",
+      "triggers": [
+        "before fieldwork",
+        "what should the IS auditor do FIRST",
+        "population or extract",
+        "audit universe",
+        "not covered by the program",
+        "inventory or baseline"
+      ],
+      "trap": {
+        "move": "Jumping straight into testing, sampling or ranking with whatever list is at hand.",
+        "why_wrong": "Results drawn from an incomplete or wrong population cannot be projected to the whole, however careful the testing."
+      },
+      "example": {
+        "scenario": "Before testing change management, an IS auditor receives a list of production changes from the change tool. Some emergency fixes are known to be applied directly on servers.",
+        "answer": "First build the population from the system side, such as server change logs, and reconcile it to the tool's list. Sampling the tool's list alone would miss the changes most likely to bypass change control."
+      },
+      "domains": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "subtopics": [
+        "1A3.1",
+        "1A3.4",
+        "1B1.1",
+        "1B1.2",
+        "1B2.2",
+        "2A4.3",
+        "3B3.3",
+        "5A8.2"
+      ],
+      "practice_ids": [
+        "d1_056",
+        "d1_071",
+        "d1_074",
+        "d1_114",
+        "d2_069",
+        "d3_112",
+        "d5_143"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [
+        "SCOPE-BEFORE-FIELDWORK",
+        "METHODOLOGY-RIGOR-FIRST"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "evidence-quality",
+      "family": "assurance",
+      "order": 2,
+      "title": "Evidence quality decides",
+      "rule": "Prefer sufficient, relevant and reliable evidence: from independent sources, obtained directly by the IS auditor and documented.",
+      "why": "A conclusion is only as strong as the evidence beneath it. Evidence the IS auditor obtains directly, through reperformance, observation or confirmation from independent sources, leaves less room for error or bias than what the auditee says or prepares. More volume does not make up for poor quality.",
+      "triggers": [
+        "MOST reliable evidence",
+        "report produced by the system",
+        "management states",
+        "the provider's own figures",
+        "rely on",
+        "screenshots"
+      ],
+      "trap": {
+        "move": "Accepting a written procedure, a management assertion or an auditee-prepared report at face value.",
+        "why_wrong": "A management assertion needs corroboration, a procedure shows design rather than operation, and a system report needs its completeness and accuracy tested before the IS auditor relies on it."
+      },
+      "example": {
+        "scenario": "An IS auditor must confirm that departing employees lose system access within one day. HR says they do, IT offers a ticket summary, and a written offboarding procedure exists.",
+        "answer": "Obtain the termination list directly from HR's system and compare it with the directory's account-disable timestamps. Independent, system-sourced evidence the IS auditor obtains beats statements, documents and summaries prepared by the auditee."
+      },
+      "domains": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "1B3.1",
+        "1B3.2",
+        "1B3.4",
+        "2B3.3",
+        "3B4.2",
+        "4B5.4",
+        "5A5.3"
+      ],
+      "practice_ids": [
+        "d1_004",
+        "d1_095",
+        "d1_172",
+        "d2_158",
+        "d3_117",
+        "d4_116",
+        "d5_289"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [
+        "EVIDENCE-BEFORE-CONCLUSION"
+      ],
+      "aliases": [],
+      "nuance": "Relevance comes first: for a specific past event, a contemporaneous system log beats the IS auditor's later re-creation of the process."
+    },
+    {
+      "id": "materiality-judgment",
+      "family": "assurance",
+      "order": 3,
+      "title": "Materiality takes judgment, not just arithmetic",
+      "rule": "Judge significance by its effect on decisions, including qualitative factors and small items added together.",
+      "why": "A weakness is material when it could change what users of the audit report decide. A small amount can still matter if it touches regulatory reporting, repeats thousands of times or shows that a control others rely on has failed. Pervasiveness matters too: a contained issue may qualify the opinion; a pervasive one can make it adverse.",
+      "triggers": [
+        "small dollar impact",
+        "average value",
+        "thousands of transactions",
+        "regulatory report",
+        "consistent deviation",
+        "pervasive"
+      ],
+      "trap": {
+        "move": "Dismissing an issue because each item is small, or because an overall percentage looks healthy.",
+        "why_wrong": "Aggregation, context and who relies on the figures can make small items material, and averages hide concentrations."
+      },
+      "example": {
+        "scenario": "Clerks can adjust shipping fees by small amounts without approval. Each change is under five dollars, but there are thousands a month, and the fees feed revenue reported to investors.",
+        "answer": "Assess the weakness as potentially material: add the items up and weigh who relies on the figures. Calling it minor because each change is small would understate the risk."
+      },
+      "domains": [
+        1,
+        3,
+        5
+      ],
+      "subtopics": [
+        "1A3.5",
+        "1A3.6",
+        "1B4.4",
+        "1B5.4",
+        "3B3.1",
+        "5A1.3"
+      ],
+      "practice_ids": [
+        "d1_007",
+        "d1_036",
+        "d1_094",
+        "d1_161",
+        "d3_049",
+        "d5_200"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "report-agree-follow-up",
+      "family": "assurance",
+      "order": 4,
+      "title": "Report, agree, then verify",
+      "rule": "Report findings factually, record management's response, and verify the agreed actions with evidence.",
+      "why": "An audit adds value only when risks are understood and addressed. Ratings rest on the IS auditor's evidence, so they change for new facts, not for pressure or seniority. Disagreement is reported beside the finding, and closure depends on proof that the agreed action works, not on a promise.",
+      "triggers": [
+        "management disagrees",
+        "asks to delay the report",
+        "reports it is remediated",
+        "follow-up",
+        "repeat finding",
+        "closed after a document update"
+      ],
+      "trap": {
+        "move": "Softening or delaying a finding to keep the peace, or closing it because management says it is done.",
+        "why_wrong": "Both give senior management and the audit committee a false picture; follow-up exists to verify, not to trust."
+      },
+      "example": {
+        "scenario": "Management reports that a finding on quarterly access reviews is fixed and sends the updated procedure.",
+        "answer": "Test that the review now operates, for example by inspecting the latest completed review and the access removals it triggered. A revised document shows intent; only evidence of operation closes the finding."
+      },
+      "domains": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "1B5.1",
+        "1B5.2",
+        "1B5.5",
+        "3B4.2",
+        "3B4.3",
+        "4B4.3",
+        "5B3.4"
+      ],
+      "practice_ids": [
+        "d1_015",
+        "d1_050",
+        "d1_068",
+        "d1_078",
+        "d1_129",
+        "d3_120",
+        "d4_220",
+        "d5_127"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": [],
+      "nuance": "If management chooses to accept the risk instead of fixing it, follow-up confirms the acceptance was made at the right level; if the residual risk looks too high, escalate to senior management or the audit committee."
+    },
+    {
+      "id": "root-cause-over-symptom",
+      "family": "remedies",
+      "order": 1,
+      "title": "Root cause beats symptom",
+      "rule": "Prefer the fix that removes why a problem happens over one that only handles its effects.",
+      "why": "Treating symptoms costs money every time the problem returns and hides the weakness that let it happen. Root cause analysis looks past the obvious trigger, such as human error, to the process, tool or design that allowed it. Fix that, and the repeats stop.",
+      "triggers": [
+        "recurring",
+        "repeatedly",
+        "the same finding again",
+        "operator error",
+        "each closed with a separate fix",
+        "BEST long-term"
+      ],
+      "trap": {
+        "move": "Adding staff, monitoring, reminders or another point fix.",
+        "why_wrong": "Each is a real action, but it catches the next failure instead of preventing it."
+      },
+      "example": {
+        "scenario": "A nightly interface has failed eleven times in three months. Each time an operator restarts it, and management proposes hiring a second night operator.",
+        "answer": "Recommend that IT open a problem record, analyze the failures together to find the common cause, log a workaround in the meantime and fix the underlying defect. A second operator only restarts the job faster."
+      },
+      "nuance": "During a live outage, restore service first; root cause follows through problem management and is never skipped.",
+      "domains": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "1B5.5",
+        "2B4.4",
+        "3A1.5",
+        "3B4.2",
+        "4A7.3",
+        "5B5.1"
+      ],
+      "practice_ids": [
+        "d1_169",
+        "d2_195",
+        "d3_098",
+        "d4_039",
+        "d4_164",
+        "d5_170",
+        "d5_270",
+        "d5_279"
+      ],
+      "slip_pattern": "symptom",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "prevent-before-detect",
+      "family": "remedies",
+      "order": 2,
+      "title": "Prevent first, and build it in early",
+      "rule": "Prefer controls that stop the problem, designed in early; keep detective controls as a backstop because prevention can fail.",
+      "why": "Preventive controls act before harm occurs and cost least when built into requirements and design rather than retrofitted. Automated checks apply to every transaction without relying on attention. No preventive control is perfect, though: collusion, override and new threats mean detective controls still complete the picture.",
+      "triggers": [
+        "during design",
+        "before development proceeds",
+        "automated check",
+        "block or hold",
+        "high volume",
+        "after-the-fact review"
+      ],
+      "trap": {
+        "move": "Choosing a later review, report or inspection when a built-in preventive control is available.",
+        "why_wrong": "Detection finds harm after it happens and depends on someone acting on the alert."
+      },
+      "example": {
+        "scenario": "A new online banking feature lets customers add payees. The design team proposes a monthly report of payees added from new devices.",
+        "answer": "Recommend that the design include an extra check, such as confirming each new payee with a second authentication factor before its first payment. Keep the report as a backstop; it finds fraud after money has left."
+      },
+      "nuance": "When collusion or management override can defeat a preventive control, a detective control is the right complement.",
+      "domains": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "1A4.3",
+        "2B4.1",
+        "3A3.3",
+        "3A4.1",
+        "3A4.3",
+        "4A1.1",
+        "4A4.2",
+        "5B1.1"
+      ],
+      "practice_ids": [
+        "d2_110",
+        "d3_009",
+        "d3_056",
+        "d3_070",
+        "d4_112",
+        "d4_167",
+        "d5_105"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "compensating-controls-fallback",
+      "family": "remedies",
+      "order": 3,
+      "title": "Compensating controls are a fallback, and must be proven",
+      "rule": "Use a compensating control only when the primary control is impractical, and verify that it actually operates.",
+      "why": "A compensating control offsets the risk left by a missing control, such as segregation of duties a small team cannot achieve or a patch that cannot yet be applied. It reduces risk only if it is independent, covers the same failure and works in practice. An unverified compensating control is an assumption, not a control.",
+      "triggers": [
+        "small team",
+        "cannot segregate",
+        "cannot be patched yet",
+        "approved exception",
+        "management has accepted",
+        "until the replacement arrives"
+      ],
+      "trap": {
+        "move": "Accepting a compensating control because it is listed on the exception form, or using one when the primary control is practical.",
+        "why_wrong": "Residual risk may be far higher than management believes, and convenience is not a reason to skip the primary control."
+      },
+      "example": {
+        "scenario": "A clinic's only IT administrator manages user accounts and also reviews the access logs. The clinic cannot fund a second IT position.",
+        "answer": "Recommend that a manager outside IT review a monthly report of account changes against approved requests, and test that the review happens and catches exceptions. The administrator should not review their own activity."
+      },
+      "domains": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "1A4.6",
+        "2A2.6",
+        "3A2.4",
+        "4A11.5",
+        "5A1.3"
+      ],
+      "practice_ids": [
+        "d1_008",
+        "d2_037",
+        "d3_077",
+        "d4_048",
+        "d5_007",
+        "d5_219"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "least-privilege-and-sod",
+      "family": "remedies",
+      "order": 4,
+      "title": "Least privilege and segregation of duties by design",
+      "rule": "Grant only the access a role needs, for as long as it is needed, and separate incompatible duties.",
+      "why": "Each extra right widens what one mistake, insider or stolen account can do. Segregation of duties (SoD) stops one person from completing a sensitive process alone. Designing both into roles from the start is cheaper and stronger than cleaning up later, with any exception approved, time-limited and covered by compensating controls.",
+      "triggers": [
+        "can both",
+        "the same person",
+        "shared account",
+        "standing administrator rights",
+        "approve their own requests",
+        "every badge opens"
+      ],
+      "trap": {
+        "move": "Relying on training, trust or an after-the-fact review when one person can still complete the whole process.",
+        "why_wrong": "Detection and goodwill do not stop a deceived or dishonest person acting alone; segregation of duties does, unless people collude."
+      },
+      "example": {
+        "scenario": "Help desk agents can reset any user's password and can also add users to the group that approves payments.",
+        "answer": "Recommend removing group changes from the help desk role and routing them through requests approved by the process owner. Resets are needed for the job; the combination lets one agent take over or create a payment approver."
+      },
+      "nuance": "Least privilege is a strong default, not an absolute: emergency access and very small teams are handled through approved, time-limited and monitored exceptions.",
+      "domains": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "2A2.6",
+        "3A4.3",
+        "4A3.1",
+        "4A11.5",
+        "5A2.3",
+        "5A3.3",
+        "5A3.4",
+        "5A3.5",
+        "5B2.5"
+      ],
+      "practice_ids": [
+        "d2_008",
+        "d3_061",
+        "d4_156",
+        "d4_211",
+        "d5_008",
+        "d5_030",
+        "d5_212"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [
+        "LEAST-PRIVILEGE-ALWAYS",
+        "SEGREGATION-OF-DUTIES-FIRST"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "proven-not-configured",
+      "family": "remedies",
+      "order": 5,
+      "title": "Operating, not just configured",
+      "rule": "A control counts when evidence shows it worked over the period, not when it is documented, installed or configured.",
+      "why": "Policies, settings and tools show design. Assurance needs proof of operation: samples across the period, reperformance, simulated attacks or test restores. Continuous monitoring is management's control and continuous auditing is the IS auditor's; the IS auditor may rely on management's monitoring only after testing it.",
+      "triggers": [
+        "installed on all",
+        "policy is in place",
+        "configured to",
+        "Type 1 report",
+        "operating effectively over the year",
+        "continuous monitoring"
+      ],
+      "trap": {
+        "move": "Concluding from a configuration screen, a design-only report or a tool's dashboard.",
+        "why_wrong": "These show the control could work at one moment; drift, coverage gaps and unreviewed alerts appear only when operation is tested."
+      },
+      "example": {
+        "scenario": "Management says its web application firewall protects the online store and offers the configuration screen as evidence.",
+        "answer": "Ask for proof of operation: confirm it runs in blocking mode, review its block logs over recent months and, with management's approval, run safe test attacks. A configuration screen shows what was set, not that it works."
+      },
+      "nuance": "Continuous auditing can reduce periodic testing, but neither it nor management's monitoring removes the need for independent evidence.",
+      "domains": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "subtopics": [
+        "1A2.6",
+        "1A4.8",
+        "1B2.1",
+        "1B4.2",
+        "2A3.3",
+        "3A2.4",
+        "5B4.2"
+      ],
+      "practice_ids": [
+        "d1_013",
+        "d1_061",
+        "d1_124",
+        "d1_148",
+        "d2_150",
+        "d3_130",
+        "d5_160"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [
+        "CONTINUOUS-MONITORING-OVER-PERIODIC"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "people-contain-preserve",
+      "family": "response",
+      "order": 1,
+      "title": "People, containment, evidence, then cause",
+      "rule": "In a live incident, protect people, stop the harm, preserve evidence, then investigate and recover.",
+      "why": "Safety comes before systems. While harm is spreading, every minute adds loss, so containment, such as isolating a host or revoking compromised access, comes before analysis. Evidence is preserved as containment happens, because rebooting, wiping or rebuilding destroys what investigators and courts need.",
+      "triggers": [
+        "right now",
+        "actively encrypting",
+        "still signed in",
+        "in progress",
+        "may be needed as evidence",
+        "legal action is planned"
+      ],
+      "trap": {
+        "move": "While harm is still spreading, investigating, notifying or rebuilding first, or containing in a way that destroys evidence, such as pulling the power.",
+        "why_wrong": "Investigating while harm spreads adds loss, and destroying volatile evidence can leave nothing usable in court. Contain in a way that preserves evidence."
+      },
+      "example": {
+        "scenario": "A sales manager's account is signed in from an unfamiliar country and is downloading the full customer list right now. Legal action is likely.",
+        "answer": "Management should disable the account and end its sessions at once, capturing logs and device evidence under a documented chain of custody. The IS auditor recommends this order rather than acting directly. Interviews, notification and root cause work follow."
+      },
+      "nuance": "Against a stealthy, persistent attacker whose reach is unknown, scope quietly first; visible action too early can push the attacker to hidden footholds.",
+      "domains": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "1B3.5",
+        "3B2.3",
+        "4A7.2",
+        "4B2.3",
+        "5B2.5",
+        "5B5.1",
+        "5B6.1",
+        "5B6.2"
+      ],
+      "practice_ids": [
+        "d1_084",
+        "d3_075",
+        "d4_199",
+        "d5_057",
+        "d5_119",
+        "d5_182",
+        "d5_254"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [
+        "CONTAIN-FIRST",
+        "REVOCATION-FIRST",
+        "CHAIN-OF-CUSTODY-FIRST"
+      ],
+      "aliases": [
+        "FORENSIC-IMAGING-BEFORE-WIPE",
+        "FORENSIC-IMAGING",
+        "IRREVERSIBLE-LOSS-CLOCK",
+        "FINANCIAL-LOSS-CLOCK",
+        "CREDENTIAL-VALIDITY-CLOCK",
+        "EXPOSURE-WINDOW-CLOSE",
+        "TRUSTED-BASELINE-RESTORE",
+        "NOTIFY-FIRST",
+        "NOTIFY-FIRST-FOR-CUSTOMER-PROTECTION",
+        "DEFER-MAJOR-DECISIONS",
+        "DEFER-MAJOR-DECISIONS-DURING-CRISIS"
+      ]
+    },
+    {
+      "id": "recover-by-business-priority",
+      "family": "response",
+      "order": 2,
+      "title": "Recover by business priority, and prove it by testing",
+      "rule": "Let the business impact analysis (BIA) set recovery order and targets, dependencies first, and prove recovery through realistic tests.",
+      "why": "The business knows how fast harm grows when a process stops, so the BIA sets priorities, recovery time objectives (RTOs) and recovery point objectives (RPOs); strategy follows. Continuity aims to keep critical services running, even in degraded mode, not only to rebuild afterward. A backup or plan never restored or exercised is a hope, not a capability.",
+      "triggers": [
+        "RTO or RPO",
+        "restore order",
+        "select a recovery site",
+        "backups passed verification",
+        "never tested",
+        "business impact analysis"
+      ],
+      "trap": {
+        "move": "Choosing the site or restore order from IT capability, or trusting backup job success messages.",
+        "why_wrong": "IT-led priorities can recover the wrong things first, and a backup proves itself only when it is restored."
+      },
+      "example": {
+        "scenario": "A BIA says online ordering must be back within four hours and payroll within three days. IT's plan restores payroll first because its server is smallest, and no restore has been timed.",
+        "answer": "Recommend reordering recovery to follow the BIA, with online ordering first, then timing a test restore against the four-hour target. Ease of restore does not set priority, and an untimed plan is unproven."
+      },
+      "nuance": "Immutable or offline copies matter because attackers target backups, but immutability is one design choice inside a tested recovery capability, not a substitute for it.",
+      "domains": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "2B1.4",
+        "3B2.3",
+        "4B1.1",
+        "4B1.2",
+        "4B1.3",
+        "4B3.1",
+        "4B3.4",
+        "4B4.1",
+        "4B5.3",
+        "5B5.1"
+      ],
+      "practice_ids": [
+        "d2_129",
+        "d3_054",
+        "d4_075",
+        "d4_083",
+        "d4_120",
+        "d4_133",
+        "d4_241",
+        "d5_253"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [
+        "BUSINESS-CONTINUITY-OVER-RECOVERY",
+        "BACKUP-IMMUTABILITY-FIRST"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "priority-word-decides",
+      "family": "reading",
+      "order": 1,
+      "title": "The priority word decides",
+      "rule": "Find FIRST, BEST, MOST, PRIMARY, GREATEST or LEAST before reading the options; it decides which true answer wins.",
+      "why": "Most options in a CISA question are reasonable actions, so the priority word sets the test. FIRST asks for sequence, PRIMARY for core purpose, GREATEST for the worst consequence, MOST LIKELY for probability rather than severity, BEST for the strongest valid choice, and LEAST inverts the test to the weakest option. Answer that test, not the topic.",
+      "triggers": [
+        "FIRST",
+        "BEST",
+        "MOST appropriate",
+        "MOST likely",
+        "PRIMARY",
+        "GREATEST",
+        "LEAST"
+      ],
+      "trap": {
+        "move": "Picking an option that is true and important but answers a different question from the one the priority word asks.",
+        "why_wrong": "A correct statement still loses if it is not first, not primary or not the greatest."
+      },
+      "example": {
+        "scenario": "A stem says a business team's SaaS tool may hold customer data and asks what the IS auditor should do FIRST. Options include recommending encryption, notifying the regulator and confirming what data the tool holds.",
+        "answer": "Confirm the facts first: which data, how much and who can reach it. Encryption or notification may follow, but FIRST asks for the step the others depend on."
+      },
+      "domains": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [],
+      "practice_ids": [
+        "d1_001",
+        "d1_018",
+        "d2_021",
+        "d3_016",
+        "d4_015"
+      ],
+      "slip_pattern": "priority",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "final-two",
+      "family": "reading",
+      "order": 2,
+      "title": "Choosing between the final two",
+      "rule": "When two survive, prefer the option that comes first, enables the other, fixes the cause and fits your role.",
+      "why": "Exam writers build a strong runner-up that is right but narrower, later or one step removed. Comparing the two directly on sequence, dependency, cause and role shows which one the other depends on. Say in one sentence why the winner beats the runner-up before you commit.",
+      "triggers": [
+        "two options both look right",
+        "one option is part of the other",
+        "a general rule versus one example",
+        "which must happen first"
+      ],
+      "trap": {
+        "move": "Choosing the runner-up because it is more specific, more technical or more familiar.",
+        "why_wrong": "Specific or complete-looking often means later or narrower; the better answer usually comes first or enables the runner-up."
+      },
+      "example": {
+        "scenario": "A question about onboarding a new cloud vendor leaves two options: review the vendor's independent assurance report, such as a SOC 2 report, or set the vendor's risk tier from data sensitivity and service criticality.",
+        "answer": "Tiering wins. It comes first and decides how much assurance is needed, including whether the report is enough. The report review is a later, narrower step."
+      },
+      "domains": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [],
+      "practice_ids": [
+        "d1_090",
+        "d1_102",
+        "d2_118",
+        "d3_103",
+        "d4_090",
+        "d5_215"
+      ],
+      "slip_pattern": "runner-up",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "answer-from-the-stem",
+      "family": "reading",
+      "order": 3,
+      "title": "Answer from the stem; distrust absolutes",
+      "rule": "Use only the facts in the question, weigh words like \"already\" and \"small\", and distrust \"always\", \"never\" and \"guarantees\".",
+      "why": "Each fact in the stem is there for a reason: phrases such as \"already measured\", \"management has accepted\" or \"a small team\" rule some options out and point to others. Answers built on your own workplace habits, or that promise certainty, ignore that. Correct CISA answers usually depend on risk, so absolute claims are rarely right.",
+      "triggers": [
+        "already",
+        "management has accepted",
+        "small organization",
+        "guarantee",
+        "removes the need for",
+        "always or never"
+      ],
+      "trap": {
+        "move": "Answering what you would do at work, or choosing an option that promises complete or permanent protection.",
+        "why_wrong": "The question tests the scenario as written, and claims such as one control removing the need for another are almost always false."
+      },
+      "example": {
+        "scenario": "A vendor claims its new firewall makes the company's intrusion detection unnecessary. The stem asks for the IS auditor's MOST appropriate response.",
+        "answer": "Reject the absolute: one layer cannot remove the need for another, so recommend keeping detection as part of defense in depth. Options that eliminate or remove the need rarely survive."
+      },
+      "domains": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [],
+      "practice_ids": [
+        "d1_023",
+        "d2_092",
+        "d2_151",
+        "d3_089",
+        "d4_069",
+        "d4_093",
+        "d4_096",
+        "d5_073"
+      ],
+      "slip_pattern": "misread",
+      "legacy_ids": [],
+      "aliases": []
+    }
+  ],
+  "slip_map": {
+    "role": "recommend-dont-implement",
+    "tech-first": "governance-before-technology",
+    "symptom": "root-cause-over-symptom",
+    "priority": "priority-word-decides",
+    "runner-up": "final-two",
+    "misread": "answer-from-the-stem",
+    "overconfident": "answer-from-the-stem",
+    "knowledge": null
+  }
+}
