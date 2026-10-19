@@ -2048,3 +2048,7 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - GDPR Article 13 (Information to be provided where personal data are collected from the data subject)
 - COBIT 2019 Design Guide: Designing an Information and Technology Governance Solution
 - ISO/IEC 33020:2019 (Process Measurement Framework for Assessment of Process Capability)
+
+## Added with Wave 3 coverage batch Q15 (Domain 4, Oct 2026)
+
+- DAMA-DMBOK 2nd Edition (Data Modeling and Design, Data Storage and Operations)

@@ -6357,7 +6357,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.20</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.21</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6648,7 +6648,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.20';
+const APP_VERSION = 'v12.21';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -17714,6 +17714,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'More practice on IT operations',
+    items: [
+      { cat: 'new', text: 'New practice questions on measuring uptime, log coverage, configuration baselines, hardening servers, unapproved cloud services and choosing database types.' }
+    ]
+  },
+  {
+    version: 'v12.20',
     title: 'Auditing it: the IS auditor\'s view in your notes',
     items: [
       { cat: 'new', text: 'Many study notes now end with \u201cAuditing it\u201d: what the IS auditor reviews, the evidence to ask for, the typical recommendation and who makes the decision.' },
