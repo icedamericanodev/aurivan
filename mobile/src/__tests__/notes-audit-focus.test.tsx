@@ -113,6 +113,10 @@ describe('"Auditing it" on a pilot note (4B1.1)', () => {
     expect(stop(`What to review: ${focus.review.join('. ')}.`)).toHaveLength(1);
     expect(stop(`Evidence to ask for: ${focus.evidence.join('. ')}.`)).toHaveLength(1);
     expect(stop(`Typical recommendation: ${focus.recommend}`)).toHaveLength(1);
+    // Each part is also a header, so the VoiceOver rotor can jump between parts.
+    for (const label of [`What to review: ${focus.review.join('. ')}.`, `Evidence to ask for: ${focus.evidence.join('. ')}.`, `Typical recommendation: ${focus.recommend}`]) {
+      expect(stop(label)[0].props.accessibilityRole).toBe('header');
+    }
   });
 
   it('survives 200% text: no line limits, and every line may grow to ×2', () => {
@@ -127,6 +131,24 @@ describe('"Auditing it" on a pilot note (4B1.1)', () => {
   });
 });
 
+describe('bullet dots follow the text size (centred on the first line)', () => {
+  const dotTops = () =>
+    root()
+      .findAll((n) => typeof n.type === 'string' && n.props.importantForAccessibility === 'no' && n.props.style?.width === 6)
+      .map((n) => n.props.style.marginTop);
+  it.each([
+    [1, 9],
+    [2, 21],
+    [3, 21], // capped at body's ×2
+  ])('at ×%s text the dot sits %spt down', (scale, top) => {
+    setFontScale(scale);
+    mount(<AuditFocus focus={note('4B1.1').auditFocus!} />);
+    const tops = dotTops();
+    expect(tops.length).toBeGreaterThan(0);
+    for (const t of tops) expect(t).toBe(top);
+  });
+});
+
 describe('"Who decides" (optional)', () => {
   const base = note('4B1.1').auditFocus!;
   it('shows its own labelled line after the recommendation when present', () => {
@@ -136,6 +158,7 @@ describe('"Who decides" (optional)', () => {
     expect(text.indexOf('Who decides')).toBeGreaterThan(text.indexOf('Typical recommendation'));
     expect(text).toContain(decides);
     expect(stop(`Who decides: ${decides}`)).toHaveLength(1);
+    expect(stop(`Who decides: ${decides}`)[0].props.accessibilityRole).toBe('header');
   });
   it('is left out when absent', () => {
     const { decides: _absent, ...withoutDecides } = base;

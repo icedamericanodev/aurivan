@@ -48,6 +48,10 @@ export function useColumnWidth(): number {
 /** A bulleted list: a small accent dot, then body text (wraps under itself). */
 export function Bullets({ items, color }: { items: string[]; color?: string }) {
   const { c } = useTheme();
+  // The dot is centred on the FIRST line, so it follows the text size: body's
+  // 24pt line grows with the font scale up to body's ×2 cap (tokens.ts), and
+  // the 6pt dot sits half of what is left below the line's top.
+  const scale = Math.min(useFontScale(), 2);
   return (
     <View style={{ gap: space.sm, marginTop: space.sm }}>
       {items.map((item, i) => (
@@ -56,7 +60,7 @@ export function Bullets({ items, color }: { items: string[]; color?: string }) {
           <View
             accessible={false}
             importantForAccessibility="no"
-            style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: c.accent, marginTop: 10 }}
+            style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: c.accent, marginTop: (24 * scale - 6) / 2 }}
           />
           <T v="body" color={color} style={{ flex: 1 }}>{item}</T>
         </View>
@@ -544,10 +548,11 @@ export function IsacaRule({ text }: { text: string }) {
  *     label already says the IS auditor recommends it);
  *   - "Who decides" (optional): who decides or accepts the risk. It is the
  *     exam lesson (the auditor recommends, management decides), so its
- *     sentence is in `label` (Figtree 600): a little emphasis, no new colour.
+ *     phrase is in `label` (Figtree 600): a little emphasis, no new colour.
  * Each label is a `caption` in `accentText` over its content, so the parts
  * are told apart by words, never by colour alone. Each part is ONE
- * screen-reader stop that says its label first ("What to review: …").
+ * screen-reader stop that says its label first ("What to review: …"), and a
+ * header, so VoiceOver's rotor (and TalkBack's headings) can jump between parts.
  * Text only (no fixed heights), so it reflows at 200% text. No animation.
  */
 export function AuditFocus({ focus }: { focus: NoteAuditFocus }) {
@@ -564,6 +569,7 @@ export function AuditFocus({ focus }: { focus: NoteAuditFocus }) {
         <View
           key={part.label}
           accessible
+          accessibilityRole="header"
           // The steps have no closing period (schema rule), so add one between them when spoken.
           accessibilityLabel={`${part.label}: ${part.items.join('. ')}.`}
           style={[{ paddingVertical: space.md }, i > 0 && hairline]}
@@ -574,6 +580,7 @@ export function AuditFocus({ focus }: { focus: NoteAuditFocus }) {
       ))}
       <View
         accessible
+        accessibilityRole="header"
         accessibilityLabel={`Typical recommendation: ${focus.recommend}`}
         style={[{ paddingVertical: space.md }, hairline]}
       >
@@ -581,7 +588,7 @@ export function AuditFocus({ focus }: { focus: NoteAuditFocus }) {
         <T v="body" style={{ marginTop: space.sm }}>{focus.recommend}</T>
       </View>
       {focus.decides ? (
-        <View accessible accessibilityLabel={`Who decides: ${focus.decides}`} style={[{ paddingVertical: space.md }, hairline]}>
+        <View accessible accessibilityRole="header" accessibilityLabel={`Who decides: ${focus.decides}`} style={[{ paddingVertical: space.md }, hairline]}>
           <T v="caption" color={c.accentText}>Who decides</T>
           <T v="label" style={{ marginTop: space.sm }}>{focus.decides}</T>
         </View>
