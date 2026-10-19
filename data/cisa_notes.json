@@ -9414,6 +9414,20 @@
                 ]
               },
               "example": "A water utility changes one rounding rule in its billing engine, and the team lead wants to release it without regression testing because 'only one line changed'. Rounding feeds tax, late fees and payment plans. The IS auditor recommends rerunning the billing regression suite, and asks that test effort be weighted toward the calculations where an error would hit the most customers.",
+              "audit_focus": {
+                "review": [
+                  "Trace high-risk functions to the test cases that cover them",
+                  "Confirm every change in the release log has a regression test run",
+                  "Compare coverage figures with mutation-test results before relying on coverage"
+                ],
+                "evidence": [
+                  "Regression run reports for each release, with failures resolved before go-live",
+                  "Mutation scores showing the share of planted faults the tests caught",
+                  "Defect logs with root causes, to tell better detection from worse code"
+                ],
+                "recommend": "Have the test manager set risk-based test plans, require regression runs for every change and track mutation scores.",
+                "decides": "The business owner accepts any untested risk before go-live"
+              },
               "isaca_rule": "Test effort follows risk: concentrate it where failure impact and likelihood are highest. Every change gets regression testing, and coverage alone proves only which code ran, not whether the tests would catch a defect.",
               "exam_traps": [
                 {
@@ -11881,8 +11895,7 @@
                 "Priority combines business impact and urgency, so exposed customer data outranks a broken office printer.",
                 "Agents restore service first, using a workaround if needed, and raise a problem record when the cause is unknown.",
                 "Incidents beyond the desk's skill or authority are escalated, and calls that look like security incidents go to the response team.",
-                "An incident closes only after the user confirms that service works.",
-                "Effectiveness shows in outcome measures, such as first-contact resolution and reopen rates, not speed or volume alone."
+                "An incident closes only after the user confirms that service works."
               ],
               "compare": {
                 "columns": [
@@ -11914,6 +11927,20 @@
                 ]
               },
               "example": "A warehouse scanning outage at a logistics company has passed its four-hour resolution target, and the service desk agent keeps retrying fixes alone. The IS auditor finds no functional escalation to the network team and no hierarchical escalation to the service manager when the target was missed. She recommends defined escalation triggers, and the IT service manager updates the procedure.",
+              "audit_focus": {
+                "review": [
+                  "Sample closed tickets for user confirmation before closure and later reopening",
+                  "Trace security-related calls from the desk log to the incident response team",
+                  "Judge the desk on reopen rates and first-contact resolution, not speed or volume"
+                ],
+                "evidence": [
+                  "Ticket history showing escalations, priority changes and user sign-off",
+                  "Priority matrix that scores business impact, including customer data exposure",
+                  "Reset logs showing out-of-band verification before each MFA reset"
+                ],
+                "recommend": "Have the IT service manager require user confirmation before closure, set escalation triggers and verify callers before credential resets.",
+                "decides": "The service owner agrees on priority rules and targets with the business"
+              },
               "isaca_rule": "For an ordinary outage, restore service first, even by workaround, then pursue the cause through problem management. When harm is still spreading, as in a security incident, contain before restoring. Judge the desk by outcomes such as reopen rates.",
               "exam_traps": [
                 {
@@ -12072,6 +12099,20 @@
                 ]
               },
               "example": "A broadband provider's problem team closes a recurring router-crash problem as soon as a firmware fix is deployed. Two weeks later the crashes resume. The IS auditor recommends reopening the problem and closing problems only after monitoring shows the incidents have stopped for an agreed period. The service owner agrees.",
+              "audit_focus": {
+                "review": [
+                  "Group six months of incidents by symptom to find repeats lacking a problem record",
+                  "Sample closed problems and flag any whose cause stops at human error",
+                  "Confirm known errors and workarounds are in the knowledge base the desk uses"
+                ],
+                "evidence": [
+                  "Incident trend reports linking repeats to shared root causes",
+                  "Problem records with timelines rebuilt from monitoring data",
+                  "Change records proving each permanent fix was approved and verified"
+                ],
+                "recommend": "Have the problem manager open a problem record whenever incidents recur and close it only once the fix holds.",
+                "decides": "The IT steering committee sets priorities for permanent fixes"
+              },
               "isaca_rule": "Recurring incidents signal a problem. Find the common root cause from facts before choosing a permanent fix, look past human error to the process that allowed it, and report trends by business impact so management can act.",
               "exam_traps": [
                 {
@@ -12973,8 +13014,7 @@
                 "Checkpoints periodically write changes to disk, so crash recovery starts from a known point.",
                 "After a crash, the database undoes uncommitted work from before-images and redoes committed work from after-images.",
                 "After media loss, the last backup is restored and the log is rolled forward to the latest or a chosen point.",
-                "Backups and log copies run at least as often as the RPO requires and are stored apart from the database.",
-                "Scheduled restore tests prove both the recovery time and the data recovered."
+                "Backups and log copies run at least as often as the RPO requires and are stored apart from the database."
               ],
               "compare": {
                 "columns": [
@@ -13009,7 +13049,21 @@
                   }
                 ]
               },
-              "example": "At 2 p.m., a faulty script at an online grocer overwrites 40,000 delivery addresses. The last full backup is from midnight, and the transaction log is intact. The IS auditor reviews the database administrator's plan and finds it sound: restore the backup to a separate server, roll the log forward to 1:59 p.m., verify, then copy back the correct addresses. The operations director approves.",
+              "example": "At 2 p.m., a faulty script at an online grocer overwrites 40,000 delivery addresses. The last full backup is from midnight, and the transaction log is intact. The IS auditor reviews the database administrator's plan and finds it sound: restore the backup to a separate server, roll the log forward to 1:59 p.m., verify, then copy back the correct addresses.",
+              "audit_focus": {
+                "review": [
+                  "Compare log-copy timing and storage location with each database's RPO",
+                  "Observe a scheduled restore test, timing it and checking the data recovered",
+                  "Inspect the recovery plan for a costed choice between faster and more complete recovery"
+                ],
+                "evidence": [
+                  "Restore test results showing recovery time and data checked",
+                  "Log-copy job history with storage locations separate from the database",
+                  "Recovery procedure covering rollback, roll-forward and restore"
+                ],
+                "recommend": "Have the database administrator copy logs to separate storage within the RPO and test restores on a schedule.",
+                "decides": "The business process owner signs off on the chosen path and any data lost"
+              },
               "isaca_rule": "Backup and log-copy frequency must meet the RPO, or the possible loss exceeds what the business accepted. When recovery paths trade data loss against time, the IS auditor reports each path's impact and the business owner decides.",
               "exam_traps": [
                 {
@@ -15372,6 +15426,20 @@
                 "caption": "The three As in order. Authorization only means something after authentication, and accountability only works when each action ties to one person."
               },
               "example": "A pharmaceutical warehouse installs palm-vein readers on its controlled-drug cage. After night-shift complaints about rejections, the facilities supervisor lowers the match threshold. The IS auditor obtains the vendor's test results at the new setting, finds the false acceptance rate has risen sharply, and recommends restoring the threshold and improving enrollment quality instead.",
+              "audit_focus": {
+                "review": [
+                  "Trace a sample of admin log entries to one named person",
+                  "Inspect MFA settings for remote and admin access; factors must differ in category",
+                  "Obtain the false acceptance rate at each biometric reader's current setting"
+                ],
+                "evidence": [
+                  "Account list reconciled to HR records, with shared accounts flagged",
+                  "Biometric test results at the live threshold, not the vendor's default",
+                  "Authentication settings exported from the central sign-in system"
+                ],
+                "recommend": "Have the access management team replace shared accounts with named ones and require phishing-resistant MFA for administrators.",
+                "decides": "System and data owners approve each user's rights and accept residual risk"
+              },
               "isaca_rule": "Each action must trace to one identified person, so unique accounts come first. Real MFA mixes factor categories. When the risk is impostors, look at the false acceptance rate; when comparing biometric products overall, the lower crossover error rate wins.",
               "exam_traps": [
                 {
@@ -16003,7 +16071,21 @@
                 "svg": "<svg viewBox='0 0 450 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Unified Threat Management consolidates five security functions into one appliance'><text x='225' y='20' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>ONE UTM APPLIANCE</text><rect x='15' y='30' width='420' height='66' rx='8' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><rect x='23' y='50' width='72' height='30' rx='4' fill='var(--accent-fill)'/><text x='59' y='69' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Firewall</text><rect x='106' y='50' width='72' height='30' rx='4' fill='var(--accent-fill)'/><text x='142' y='69' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>IPS / IDS</text><rect x='189' y='50' width='72' height='30' rx='4' fill='var(--accent-fill)'/><text x='225' y='69' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Antivirus</text><rect x='272' y='50' width='72' height='30' rx='4' fill='var(--accent-fill)'/><text x='308' y='69' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>VPN</text><rect x='355' y='50' width='72' height='30' rx='4' fill='var(--accent-fill)'/><text x='391' y='69' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Web filter</text><text x='225' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>Firewall, intrusion prevention, antivirus, VPN and web filtering — managed as one</text></svg>",
                 "caption": "A UTM appliance packs several security functions into one managed box. Simple to run, but one failure can take them all down together."
               },
-              "example": "An airline's inline intrusion prevention system in front of its check-in platform fails closed. When it crashed during an update, check-in stopped for 40 minutes. The network manager proposes moving it to a mirrored port. The IS auditor notes that this would end all blocking and recommends redundant inline units with tested failover, with the system owner deciding the failure mode based on the risk assessment.",
+              "example": "An airline's inline intrusion prevention system in front of its check-in platform fails closed. When it crashed during an update, check-in stopped for 40 minutes. The network manager proposes moving it to a mirrored port. The IS auditor notes that this would end all blocking and recommends redundant inline units with tested failover.",
+              "audit_focus": {
+                "review": [
+                  "Inspect network diagrams and switch settings to confirm the IPS sits inline",
+                  "Verify the business owner approved the fail-open or fail-closed setting",
+                  "Compare NAC exemptions with device inventories; exempt devices need a restricted segment"
+                ],
+                "evidence": [
+                  "Switch or tap configuration showing where each sensor sits in the traffic path",
+                  "Signed risk acceptance for the chosen failure mode",
+                  "NAC logs showing which devices were quarantined and why"
+                ],
+                "recommend": "Have the network team place blocking devices inline with failover and segment devices that skip health checks.",
+                "decides": "The business owner chooses the failure mode based on assessed risk"
+              },
               "isaca_rule": "Evaluate a control against its purpose. An IPS that cannot block is only an IDS, and a NAC that checks only passwords lets infected devices in. Placement and configuration decide what a device can actually do.",
               "exam_traps": [
                 {
@@ -16563,6 +16645,20 @@
                 }
               ],
               "example": "A medical device maker's insulin pumps send readings to a phone app, and engineers plan RSA with 4,096-bit keys, which drains pump batteries. The IS auditor confirms that elliptic-curve cryptography gives comparable strength with shorter keys and less processing. The IS auditor recommends it, built so algorithms can later be swapped for post-quantum ones through configuration.",
+              "audit_focus": {
+                "review": [
+                  "Compare the cryptographic inventory with a scan of live systems to find gaps",
+                  "Sample transfer designs and flag bulk data encrypted directly with RSA",
+                  "Compare the migration order with how long each data set must stay secret"
+                ],
+                "evidence": [
+                  "Scan results showing algorithms and key lengths actually in use",
+                  "Design documents showing where algorithms can be swapped through configuration",
+                  "Migration roadmap approved by the security steering committee"
+                ],
+                "recommend": "Have the security architecture team keep the inventory current and build new systems so algorithms can be swapped.",
+                "decides": "Senior management approves the migration roadmap and its funding"
+              },
               "isaca_rule": "Use asymmetric cryptography to exchange keys and to sign, and symmetric for bulk data. Confidentiality uses the recipient's public key; proof of origin uses the sender's private key. Plan post-quantum migration from an inventory, long-lived secrets first, with swappable algorithms.",
               "exam_traps": [
                 {
@@ -16942,6 +17038,20 @@
                 }
               ],
               "example": "An online grocer's security team watches Certificate Transparency logs and spots a certificate for its checkout domain from an authority it has never used. The web operations manager suggests waiting to see whether it is misused. The IS auditor recommends asking that authority to revoke it now and investigating how the request passed validation.",
+              "audit_focus": {
+                "review": [
+                  "Compare the certificate inventory with a network scan to find untracked certificates",
+                  "Inspect relying applications' validation settings to confirm revocation status is checked",
+                  "Trace a past key compromise to the time trust was withdrawn"
+                ],
+                "evidence": [
+                  "Renewal tool reports listing certificates renewed, failed or near expiry",
+                  "Application configuration showing CRL or OCSP checking is enforced",
+                  "Revocation records with compromise, request and publication times"
+                ],
+                "recommend": "Have the certificate management team automate renewal and enforce revocation checking in every relying application.",
+                "decides": "Senior management approves emergency revocation and accepts its operational impact"
+              },
               "isaca_rule": "The organization owns its certificate inventory instead of relying on reminders from a CA or vendor. A compromised CA or signing key must lose trust at once, even at heavy operational cost, and revocation works only where relying systems check it.",
               "exam_traps": [
                 {
@@ -17173,6 +17283,20 @@
                 ]
               },
               "example": "A marketing agency uses a cloud file-sharing service and assumes the provider decides who can see its files. The IS auditor finds 4,000 client files shared through public links that never expire. The IS auditor explains that in software as a service the customer still controls sharing settings, and recommends link expiry, a ban on public links for client work and regular reviews of shared files.",
+              "audit_focus": {
+                "review": [
+                  "Compare the full list of cloud accounts with those the posture tool monitors",
+                  "Map each customer control in the provider's SOC 2 report to an in-house owner",
+                  "Test the firm's own access, key and data-logging settings directly"
+                ],
+                "evidence": [
+                  "Account inventory reconciled to the posture tool's coverage list",
+                  "Drift alerts and fix times from continuous configuration scanning",
+                  "Sample of data-access log entries for the most sensitive storage"
+                ],
+                "recommend": "Have the cloud team assign an owner to every customer-side control and scan all accounts continuously.",
+                "decides": "The data owner stays accountable for cloud data and accepts residual risk"
+              },
               "isaca_rule": "Outsourcing a service never outsources accountability. The customer remains responsible for its data, identities and the settings it chooses, and needs its own evidence for them. A provider's report covers only the provider's side.",
               "exam_traps": [
                 {

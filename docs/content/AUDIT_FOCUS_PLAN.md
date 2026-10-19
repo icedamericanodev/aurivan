@@ -15,7 +15,7 @@ still without the field.
 ## Scope
 These are the 60 notes from the October 2026 curriculum coverage review whose
 `how_it_works` has no audit step, so the process lens rests on the example and
-the rule alone. Six are done in the pilot; 54 remain.
+the rule alone. Fifteen are done (pilot and N4); 45 remain.
 
 ## Priority order
 1. **Exam importance:** subtopics rated high-yield in the curriculum checklist come first.
@@ -31,17 +31,17 @@ line appears once on the card.
 | # | Code | Subtopic | Yield | Bank | Batch |
 |---|---|---|---|---|---|
 | 1 | 4B1.1 | BIA Purpose, Scope and Ownership | high | 9 | Pilot (done) |
-| 2 | 5A7.2 | Certificate Life Cycle and Revocation | high | 9 | N4 |
-| 3 | 5A8.2 | Shared Responsibility in the Cloud | high | 8 | N4 |
-| 4 | 5A3.1 | Authentication, Authorization and Accountability | high | 7 | N4 |
+| 2 | 5A7.2 | Certificate Life Cycle and Revocation | high | 9 | N4 (done) |
+| 3 | 5A8.2 | Shared Responsibility in the Cloud | high | 8 | N4 (done) |
+| 4 | 5A3.1 | Authentication, Authorization and Accountability | high | 7 | N4 (done) |
 | 5 | 5A6.5 | Cryptographic Key Management | high | 7 | Pilot (done) |
-| 6 | 4A7.1 | Incident Management and the Service Desk | high | 6 | N4 |
-| 7 | 4A7.3 | Problem Management and Root Cause Analysis | high | 6 | N4 |
-| 8 | 3B1.2 | Test Types and Techniques | high | 6 | N4 |
-| 9 | 4A11.4* | Database Recovery | high | 5 | N4 |
+| 6 | 4A7.1 | Incident Management and the Service Desk | high | 6 | N4 (done) |
+| 7 | 4A7.3 | Problem Management and Root Cause Analysis | high | 6 | N4 (done) |
+| 8 | 3B1.2 | Test Types and Techniques | high | 6 | N4 (done) |
+| 9 | 4A11.4 | Database Recovery | high | 5 | N4 (done; trimmed) |
 | 10 | 4B3.1 | Backup Schemes, Rotation and the 3-2-1 Rule | high | 5 | Pilot (done; trimmed) |
-| 11 | 5A4.4* | Intrusion Detection, Prevention and Network Access Control | high | 5 | N4 |
-| 12 | 5A6.2 | Asymmetric Encryption and the Digital Envelope | high | 5 | N4 |
+| 11 | 5A4.4 | Intrusion Detection, Prevention and Network Access Control | high | 5 | N4 (done; trimmed) |
+| 12 | 5A6.2 | Asymmetric Encryption and the Digital Envelope | high | 5 | N4 (done) |
 | 13 | 5B2.2* | Social Engineering and Business Email Compromise | high | 5 | N5 |
 | 14 | 1A3.2 | Risk Assessment Methods | high | 5 | Pilot (done) |
 | 15 | 4A4.2 | Interface Controls | high | 4 | N5 |
