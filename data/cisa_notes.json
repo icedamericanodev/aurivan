@@ -8082,13 +8082,18 @@
                 "3.1.4",
                 "3A1.3"
               ],
+              "practice_ids": [
+                "d3_131",
+                "d3_132",
+                "d3_133"
+              ],
               "definition": "The critical path is the longest chain of dependent tasks through a project; its total duration sets the earliest date the project can finish.",
               "why_it_matters": "Delays on the critical path delay the whole project, while other tasks can slip a little without harm. Knowing which is which tells managers where to focus people and attention.",
               "how_it_works": [
                 "List the tasks, estimate each duration and record which tasks must finish before others can start.",
                 "Add up the durations along every chain of dependent tasks, from start to finish.",
                 "The chain with the longest total time is the critical path, and its tasks have zero slack.",
-                "Tasks off the critical path can slip by their slack without moving the end date.",
+                "Tasks off the critical path can slip by their slack without moving the end date. Early work on them can make overall progress look healthy while critical tasks run late.",
                 "If a task uses up all its slack, its chain becomes critical and the critical path can change.",
                 "Adding resources or overlapping tasks shortens the project only when applied to critical-path tasks."
               ],
@@ -8928,7 +8933,9 @@
               "legacy_ids": [],
               "practice_ids": [
                 "d3_055",
-                "d3_109"
+                "d3_109",
+                "d3_139",
+                "d3_140"
               ],
               "definition": "Object-oriented and component-based development build systems from self-contained, reusable parts, while reverse engineering works backward from existing software to recover its design.",
               "why_it_matters": "Reuse speeds delivery but spreads one flaw to every system sharing a part. Reverse engineering helps replace undocumented legacy systems but can breach license terms. Both need specific controls.",
@@ -9050,7 +9057,10 @@
               "name": "Developing and Releasing Machine Learning Systems",
               "legacy_ids": [],
               "practice_ids": [
-                "d3_038"
+                "d3_038",
+                "d3_136",
+                "d3_137",
+                "d3_138"
               ],
               "definition": "Machine learning (ML) system development builds software that learns its behavior from training data, so the data, the trained model and its monitoring need life-cycle controls like code.",
               "why_it_matters": "A model can pass testing and still make biased or worsening decisions as real-world data changes. Without an owner, validation and monitoring, nobody notices until customers or regulators do.",
@@ -9187,7 +9197,9 @@
               ],
               "practice_ids": [
                 "d3_022",
-                "d3_042"
+                "d3_042",
+                "d3_134",
+                "d3_135"
               ],
               "definition": "Application controls are checks built into a business application that keep its data complete, accurate, valid and authorized as it is entered, processed and reported.",
               "why_it_matters": "Many business errors and frauds pass through applications. Controls at each stage of the data flow stop or catch problems before they reach financial records or customers.",
@@ -9361,12 +9373,14 @@
               ],
               "practice_ids": [
                 "d3_068",
-                "d3_084"
+                "d3_084",
+                "d3_141",
+                "d3_142"
               ],
               "definition": "An audit trail is a reliable, time-ordered record of who did what, when and to which data, designed into a system so actions can be traced and proven.",
               "why_it_matters": "Without trustworthy records, nobody can investigate fraud, prove compliance or hold users accountable. Logs added as an afterthought are often incomplete, editable or impossible to link to a person.",
               "how_it_works": [
-                "Decide during design which security-relevant events to log, such as logins, approvals, privilege changes and changes to key data.",
+                "Decide during design which security-relevant and business events to log, such as logins, approvals, privilege changes and changes to key data with their old and new values.",
                 "Send logs to a central store outside the system they describe, so its own administrators cannot alter them.",
                 "Synchronize system clocks to one time source, so events from different systems line up.",
                 "Tie every logged action to an individual, authenticated identity; shared accounts break that link.",

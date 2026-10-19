@@ -2,7 +2,7 @@
   "domain": 3,
   "title": "Information Systems Acquisition, Development and Implementation",
   "weight": "12%",
-  "count": 130,
+  "count": 142,
   "questions": [
     {
       "id": "d3_001",
@@ -4777,6 +4777,450 @@
       ],
       "framework_ref": "ISO/IEC 27002:2022 Control 8.30 (Outsourced Development); NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management); COBIT 2019 APO10 (Managed Vendors)",
       "_provenance": "Authored from concept: 'Source code escrow purpose'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; NIST SP 800-161r1 Supply Chain Risk Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to escrow verification to avoid overlap with d3_015. v2: de-cued (key states an annual agent verification, so interval words also appear in keys).",
+      "style_version": 2
+    },
+    {
+      "id": "d3_131",
+      "domain": 3,
+      "subtopic": "Scheduling and the Critical Path. Estimating Uncertain Durations",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A project plan uses single-point duration estimates for a first-of-its-kind data migration whose effort is highly uncertain. Which estimating approach should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "A flat 20% buffer added to every task's single estimate",
+        "B": "Optimistic, most likely and pessimistic durations weighted per task",
+        "C": "A single best estimate from the vendor performing the migration",
+        "D": "A Gantt chart plotting each migration task against the project calendar"
+      },
+      "correct": "B",
+      "key_concept": "Three-point estimating, as in the program evaluation and review technique (PERT), weights optimistic, most likely and pessimistic durations for each uncertain task.",
+      "pre_read": "Ask how the plan can show a range of possible durations instead of one guess per task.",
+      "correct_explanation": "Three-point estimating, used in the program evaluation and review technique (PERT), weights optimistic, most likely and pessimistic durations as (O + 4M + P) / 6, so each task's estimate reflects its own uncertainty and the spread shows schedule risk. A flat 20% buffer is the runner-up: it adds contingency, but the amount is arbitrary and spread evenly instead of where the uncertainty lies.",
+      "wrong_explanations": {
+        "A": "A uniform buffer is arbitrary: it pads predictable tasks needlessly and may still be too small for the most uncertain ones.",
+        "C": "The vendor's figure is still one point with no range, and the party doing the work may have reasons to understate it.",
+        "D": "A Gantt chart displays timing and progress; it presents the existing estimates but does nothing to make them more realistic."
+      },
+      "tips": [
+        "Eliminate: C still gives one figure with no range, and D is a display tool, not an estimating method.",
+        "Final two: B beats A because task-level ranges place contingency where uncertainty lies, while a flat buffer is arbitrary.",
+        "Exam cue: when task durations are uncertain, look for three-point estimates rather than single figures or blanket padding."
+      ],
+      "framework_ref": "PMBOK Guide 6th Edition, Section 6.4 (Estimate Activity Durations); COBIT 2019 BAI11.04 (Develop and maintain the project plan)",
+      "related_concepts": [
+        "Program evaluation and review technique (PERT)",
+        "Three-point estimating",
+        "Schedule risk",
+        "Contingency reserve"
+      ],
+      "_provenance": "Authored from concept: 'Scheduling and the Critical Path. Estimating Uncertain Durations'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A1.3 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d3_008 (velocity-based forecasts) and d3_026 (function point sizing): tests choosing three-point estimates over a flat buffer for uncertain task durations. All scenario specifics invented for this question. Public sources: PMI PMBOK Guide 6th Edition section 6.4; COBIT 2019 BAI11.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_132",
+      "domain": 3,
+      "subtopic": "Scheduling and the Critical Path. Slippage on a Chain with Slack",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds critical-path tasks on schedule, but the data conversion chain, which had five days of total float before go-live, has slipped eight days. What is the MOST LIKELY effect on go-live?",
+      "options": {
+        "A": "Go-live holds, because data conversion is not on the critical path",
+        "B": "Go-live slips eight days, matching the full delay to conversion",
+        "C": "Go-live slips about three days, since conversion now drives the end",
+        "D": "Go-live holds if extra staff join the original critical-path tasks"
+      },
+      "correct": "C",
+      "key_concept": "A chain that slips beyond its slack becomes the critical path and moves the end date by the excess.",
+      "pre_read": "Compare the slip with the slack the chain had before it started to slip.",
+      "correct_explanation": "Slack, or total float, is how far a chain can slip without moving the end date. The conversion chain had five days, so an eight-day slip uses all of it and adds three more, making conversion the new critical path. Concluding that go-live holds because conversion was not critical is the runner-up error: a chain stays non-critical only while its delay stays within its slack.",
+      "wrong_explanations": {
+        "A": "Conversion was off the critical path only while its delay stayed within five days of slack; at eight days it drives the end date.",
+        "B": "Five of the eight days are absorbed by the chain's slack, so only the excess three days move go-live.",
+        "D": "The original critical-path tasks are on schedule and no longer the longest chain, so adding staff there cannot pull go-live back."
+      },
+      "tips": [
+        "Eliminate: B ignores the five days of slack, and D adds staff to tasks that no longer set the end date.",
+        "Final two: C beats A because slack protects a chain only until it is used up; after that, the chain is critical.",
+        "Exam cue: subtract the slack from the slip; any excess moves the end date and makes that chain critical."
+      ],
+      "framework_ref": "PMBOK Guide 6th Edition, Sections 6.5 (Develop Schedule) and 6.6 (Control Schedule); COBIT 2019 BAI11.07 (Monitor and control projects)",
+      "related_concepts": [
+        "Critical path method (CPM)",
+        "Slack (float)",
+        "Schedule variance",
+        "Data conversion"
+      ],
+      "_provenance": "Authored from concept: 'Scheduling and the Critical Path. Slippage on a Chain with Slack'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A1.3 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d4_189 (estimating restore time from the longest dependency chain) and d4_147 (batch job critical path): tests that a chain slipping beyond its slack becomes critical and moves the end date by the excess. All scenario specifics invented for this question. Public sources: PMI PMBOK Guide 6th Edition sections 6.5 and 6.6; COBIT 2019 BAI11.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_133",
+      "domain": 3,
+      "subtopic": "Scheduling and the Critical Path. Reading Aggregate Progress",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A steering committee report shows 80% of planned work complete, mostly training and reporting tasks that had ample slack and finished early. Which indicator should the IS auditor treat as MOST reliable for go-live risk?",
+      "options": {
+        "A": "Forecast finish of the critical-path tasks against the baseline",
+        "B": "Earned value schedule performance index for the whole project",
+        "C": "Share of the approved project budget spent to date",
+        "D": "Count of tasks completed ahead of their baseline dates"
+      },
+      "correct": "A",
+      "key_concept": "Aggregate progress measures, including the schedule performance index, can hide critical-path delays; only critical-path forecasts show end-date risk.",
+      "pre_read": "Ask which tasks actually decide the finish date, and whether the indicator looks at them.",
+      "correct_explanation": "Only critical-path tasks have zero slack, so their forecast finish decides whether go-live holds. Early work on non-critical training and reporting tasks inflates aggregate progress. The schedule performance index is the runner-up: it values work done instead of counting tasks, but it still sums all work, so early non-critical progress can offset, and hide, late critical-path tasks.",
+      "wrong_explanations": {
+        "B": "The index aggregates earned value across all tasks, so early non-critical work can offset a late critical path and show a healthy figure.",
+        "C": "Budget spent measures cost consumption, not whether the tasks that drive the end date are on time.",
+        "D": "Counting early tasks treats every task alike and ignores which ones actually determine the finish date."
+      },
+      "tips": [
+        "Eliminate: C measures cost rather than schedule, and D counts tasks without regard to which ones drive the end date.",
+        "Final two: A beats B because an aggregate index lets early non-critical work mask late critical-path tasks.",
+        "Exam cue: to judge whether a project will finish on time, look at the critical path, not totals or averages of all work."
+      ],
+      "framework_ref": "PMI The Standard for Earned Value Management (2019); PMBOK Guide 6th Edition, Section 6.6 (Control Schedule); COBIT 2019 BAI11.07 (Monitor and control projects)",
+      "related_concepts": [
+        "Critical path method (CPM)",
+        "Schedule performance index (SPI)",
+        "Earned value management (EVM)",
+        "Steering committee reporting"
+      ],
+      "_provenance": "Authored from concept: 'Scheduling and the Critical Path. Reading Aggregate Progress'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A1.3 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d3_037 (interpreting low CPI and SPI values): tests that an aggregate schedule index can look healthy while critical-path tasks run late. All scenario specifics invented for this question. Public sources: PMI The Standard for Earned Value Management (2019); PMI PMBOK Guide 6th Edition section 6.6; COBIT 2019 BAI11.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_134",
+      "domain": 3,
+      "subtopic": "Application Input Controls. Keyed Account Numbers",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds that transposition errors in account numbers keyed by clerks sometimes post customer payments to another valid customer. Which missing control MOST LIKELY explains this?",
+      "options": {
+        "A": "An existence check that each account number is on file",
+        "B": "A batch total of payment amounts agreed before posting",
+        "C": "A daily posting report reviewed by a supervisor",
+        "D": "A check digit verified on every account number at entry"
+      },
+      "correct": "D",
+      "key_concept": "A check digit tests an identification number's internal consistency at entry, catching transpositions that an existence check misses.",
+      "pre_read": "Ask whether a mistyped account number could still match a real customer.",
+      "correct_explanation": "A check digit is calculated from the other digits of the account number, so most transpositions produce a number that fails the calculation and is rejected at entry, before posting. An existence check is the runner-up: it is a sound input edit, but a transposed number that belongs to another real customer is on file and passes it.",
+      "wrong_explanations": {
+        "A": "A transposed number that matches another real customer is on file, so an existence check accepts it.",
+        "B": "The amounts are keyed correctly, so the batch total still agrees even though payments reach the wrong customers.",
+        "C": "A report reviewed after posting is detective, and a supervisor is unlikely to spot a swapped pair of digits."
+      },
+      "tips": [
+        "Eliminate: B checks amounts, which are correct, and C reviews postings only after the damage is done.",
+        "Final two: D beats A because a transposed number can still belong to a real customer; only a check digit tests the number itself.",
+        "Exam cue: transposition or keying errors in identification numbers point to a check digit."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 SI-10 (Information Input Validation); COBIT 2019 DSS06.02 (Control the processing of information)",
+      "related_concepts": [
+        "Input controls",
+        "Check digit",
+        "Existence check",
+        "Edit checks"
+      ],
+      "_provenance": "Authored from concept: 'Application Input Controls. Keyed Account Numbers'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A4.2 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d3_022 (validity check for invalid customer IDs) and d3_042 (batch totals and completeness): tests that a transposed number can pass an existence check, so a check digit is the control. All scenario specifics invented for this question. Public sources: NIST SP 800-53 Rev 5 SI-10; COBIT 2019 DSS06.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_135",
+      "domain": 3,
+      "subtopic": "Application Processing Controls. Records Lost Between Steps",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A nightly billing run passes records through three processing steps, and a failed step silently dropped 400 records last month. Which control should the IS auditor recommend as the PRIMARY means of detection?",
+      "options": {
+        "A": "Control totals carried forward and reconciled at each step",
+        "B": "Monthly reconciliation of billed revenue to the general ledger",
+        "C": "Range checks on billing amounts when charges are entered",
+        "D": "Restricted distribution of printed invoices to authorized staff"
+      },
+      "correct": "A",
+      "key_concept": "Run-to-run control totals prove completeness across each processing step and show where records were lost.",
+      "pre_read": "Ask where the records went missing and which control watches that point.",
+      "correct_explanation": "Run-to-run control totals carry a record count or amount from one processing step to the next, so a step that drops records is caught the same night, and the failing step is identified. Reconciling billed revenue to the general ledger is the runner-up: it also tests completeness, but only monthly and in aggregate, so missing records surface weeks later and are hard to trace.",
+      "wrong_explanations": {
+        "B": "A monthly ledger reconciliation finds the gap weeks later, as a total only, without showing which step lost the records.",
+        "C": "Range checks test values at input; they cannot notice records lost later during processing.",
+        "D": "Controlling who receives invoices protects output; it does nothing to show that records went missing earlier."
+      },
+      "tips": [
+        "Eliminate: C acts at input, and D protects output distribution; neither watches what happens between processing steps.",
+        "Final two: A beats B because step-by-step totals catch a loss the same night, while a monthly ledger check finds it late and in aggregate.",
+        "Exam cue: records lost between processing steps point to run-to-run totals, the processing-stage completeness control."
+      ],
+      "framework_ref": "COBIT 2019 DSS06.02 (Control the processing of information); COBIT 2019 DSS06.04 (Manage errors and exceptions)",
+      "related_concepts": [
+        "Processing controls",
+        "Run-to-run totals",
+        "Completeness",
+        "Batch processing"
+      ],
+      "_provenance": "Authored from concept: 'Application Processing Controls. Records Lost Between Steps'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A4.2 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d3_042 (which objective a batch total mismatch puts at risk) and d4_158 (batch overrun alerts): tests choosing step-level run-to-run totals over a later aggregate reconciliation. All scenario specifics invented for this question. Public sources: COBIT 2019 DSS06.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_136",
+      "domain": 3,
+      "subtopic": "Machine Learning Release. Weekly Retraining by the Builders",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An airline's data scientists retrain its fare-pricing model weekly and deploy each version themselves, arguing that retraining changes no code. Which recommendation by the IS auditor is BEST?",
+      "options": {
+        "A": "Retrain monthly instead of weekly to cut the number of releases",
+        "B": "Freeze the model until an annual independent review",
+        "C": "Release each new version through validation and change control",
+        "D": "Have the data scientists log each retraining run and its results"
+      },
+      "correct": "C",
+      "key_concept": "A retrained machine learning model is a production change and needs validation, approval and controlled release with a way back.",
+      "pre_read": "Ask whether new model behavior counts as a change, even when no code changes.",
+      "correct_explanation": "A retrained model changes system behavior just as new code does, so each version needs validation, approval and deployment through change control, with a way back to the prior version. Having the data scientists log each run is the runner-up: it creates a record, but the builders still release their own changes with no independent check before customers see the new fares.",
+      "wrong_explanations": {
+        "A": "Fewer releases reduce volume, but each one still reaches production without validation or approval.",
+        "B": "Freezing the model lets it fall out of step with demand for a year; the aim is controlled change, not no change.",
+        "D": "A log records what the builders did, but they still approve and release their own changes with no independent check."
+      },
+      "tips": [
+        "Eliminate: A only slows the release rate, and B stops needed retraining instead of controlling it.",
+        "Final two: C beats D because a log records changes after the fact, while change control validates and approves them before release.",
+        "Exam cue: a retrained model is a production change; expect validation, approval and controlled release, whatever the team calls it."
+      ],
+      "framework_ref": "ISO/IEC 5338:2023 (AI System Life Cycle Processes); COBIT 2019 BAI06.01 (Evaluate, prioritize and authorize change requests)",
+      "related_concepts": [
+        "Machine learning operations (MLOps)",
+        "Change control",
+        "Model release",
+        "Segregation of duties"
+      ],
+      "_provenance": "Authored from concept: 'Machine Learning Release. Weekly Retraining by the Builders'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A3.6 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d3_038 (drift monitoring and model ownership), d4_231 (rolling back a biased model version) and d1_029 (agile audit of a retrained model): tests that each retrained model is a change needing validation, approval and controlled release. All scenario specifics invented for this question. Public sources: ISO/IEC 5338:2023; COBIT 2019 BAI06.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_137",
+      "domain": 3,
+      "subtopic": "Machine Learning Release. Pre-Release Model Testing",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bank's data science team has built and tested a model that flags transactions for anti-money-laundering review. Before release, what should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "A second project data scientist reviewing the team's test results",
+        "B": "Independent testing of the model's accuracy, bias and limits",
+        "C": "Business owner sign-off based on the builders' own test results",
+        "D": "Drift alert thresholds set for the model's live performance"
+      },
+      "correct": "B",
+      "key_concept": "Before release, a model needs validation independent of its builders; business acceptance should rest on that evidence.",
+      "pre_read": "Ask who has checked the builders' work, and whether they are independent of it.",
+      "correct_explanation": "Model validation must be independent of the builders, who tend to test their own assumptions. Independent testing of accuracy, unfair bias and known limits gives the business owner a sound basis for acceptance. Owner sign-off is the runner-up: the owner should accept the model, but signing off on the builders' own results adds accountability without independent evidence, so validation comes first.",
+      "wrong_explanations": {
+        "A": "A colleague on the same project shares the team's assumptions and incentives, so the review is not independent.",
+        "C": "The owner should accept the model, but sign-off based only on the builders' results adds approval, not independent evidence.",
+        "D": "Drift alerts watch the model after release; they cannot show it is sound before it starts flagging transactions."
+      },
+      "tips": [
+        "Eliminate: A stays inside the project team, and D monitors the model only after it is live.",
+        "Final two: B beats C because owner sign-off needs independent evidence first; approving the builders' own results adds no challenge.",
+        "Exam cue: before a model is released, look for validation by someone other than its builders, then business acceptance."
+      ],
+      "framework_ref": "Federal Reserve SR 11-7 (Model Risk Management); NIST AI Risk Management Framework (AI RMF 1.0)",
+      "related_concepts": [
+        "Model validation",
+        "Effective challenge",
+        "Model risk management",
+        "Business acceptance"
+      ],
+      "_provenance": "Authored from concept: 'Machine Learning Release. Pre-Release Model Testing'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A3.6 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d1_085 (IS auditor's own drift test with a challenger model) and d2_163 (bias audit after a regulator's finding): tests that pre-release validation by a party independent of the builders comes before business sign-off. All scenario specifics invented for this question. Public sources: Federal Reserve SR 11-7; NIST AI RMF 1.0.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_138",
+      "domain": 3,
+      "subtopic": "Machine Learning Release. Disputed Automated Decisions",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A lender's model, updated several times a year, automatically declines loan applications, and complaints staff cannot tell which version declined an applicant. Which control should the IS auditor recommend to MOST directly address this?",
+      "options": {
+        "A": "Archive every released model version in a controlled repository",
+        "B": "Explain disputed declines by rerunning them through the current model",
+        "C": "Update the model less often to limit the number of versions",
+        "D": "Record the model version and inputs with each automated decision"
+      },
+      "correct": "D",
+      "key_concept": "Automated decisions are traceable only if each one records the model version and inputs that produced it.",
+      "pre_read": "Ask what links one past decision to the exact model that made it.",
+      "correct_explanation": "Tracing a decision requires a record, made at the time, of which model version and which inputs produced it. With that record, the lender can rebuild and explain any disputed decline. Archiving every version is the runner-up: it keeps the models, but without a link from each decision to its version, staff still cannot tell which archived model declined a given applicant.",
+      "wrong_explanations": {
+        "A": "Archived versions are needed, but without the version recorded on each decision, nobody knows which archived model to examine.",
+        "B": "The current model may differ from the one that made the decision, so its output proves nothing about past declines.",
+        "C": "Fewer updates mean fewer versions, but decisions would still carry no record of which version made them."
+      },
+      "tips": [
+        "Eliminate: B uses a model that may not have made the decision, and C reduces versions without linking any of them to decisions.",
+        "Final two: D beats A because keeping versions helps only once each decision records which version made it.",
+        "Exam cue: to explain automated decisions later, look for a per-decision record of the model version and inputs."
+      ],
+      "framework_ref": "ISO/IEC 42001:2023 Annex A control A.6.2.8 (AI system recording of event logs); ISO/IEC 5338:2023 (AI System Life Cycle Processes)",
+      "related_concepts": [
+        "Model versioning",
+        "Decision traceability",
+        "Explainability",
+        "Automated decision-making"
+      ],
+      "_provenance": "Authored from concept: 'Machine Learning Release. Disputed Automated Decisions'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A3.6 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d1_174 (keeping records when a model is retired), d3_038 (drift monitoring) and d4_231 (rolling back a credit-scoring model version): tests designing a per-decision record of model version and inputs so live decisions stay traceable. Review fix: moved from an online retailer to lending so d3_136 and d3_138 no longer echo the note example. All scenario specifics invented for this question. Public sources: ISO/IEC 42001:2023 Annex A; ISO/IEC 5338:2023.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_139",
+      "domain": 3,
+      "subtopic": "Reverse Engineering. Decompiling Licensed Vendor Software",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "The vendor of a licensed claims-processing engine will not share its design, so developers propose decompiling the engine to build new interfaces. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Have legal counsel confirm the decompiling is lawfully permitted",
+        "B": "Request the engine's source code from the software escrow agent",
+        "C": "Carry out the decompiling in an isolated, logged test environment",
+        "D": "Plan integration testing of the new interfaces before go-live"
+      },
+      "correct": "A",
+      "key_concept": "A license grants use, not ownership; reverse engineering vendor software needs legal confirmation that the license permits it.",
+      "pre_read": "Ask what the license actually lets the organization do with the vendor's code.",
+      "correct_explanation": "A software license grants the right to use the product, not rights to its code. Many licenses forbid decompiling, and many jurisdictions allow it only in narrow cases, such as interoperability, so legal review must come before any work starts. An isolated, logged environment is the runner-up: it controls technical risk, such as harm to production, but it does nothing to make the decompiling lawful.",
+      "wrong_explanations": {
+        "B": "Escrow releases code only on defined events such as vendor failure; refusing to share design is not one.",
+        "C": "Isolation contains technical risk, but the decompiling itself may breach the license wherever it runs.",
+        "D": "Interface testing is needed later, but it assumes the work behind the interfaces is permitted in the first place."
+      },
+      "tips": [
+        "Eliminate: B relies on escrow, which a design refusal does not trigger, and D is a later step that assumes the work is allowed.",
+        "Final two: A beats C because isolation controls technical risk, while the larger risk is legal and arises the moment decompiling starts.",
+        "Exam cue: before reverse engineering vendor software, look for legal review of the license terms first."
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 5.32 (Intellectual Property Rights); COBIT 2019 MEA03 (Managed Compliance with External Requirements)",
+      "related_concepts": [
+        "Reverse engineering",
+        "Decompiling",
+        "Software licensing",
+        "Source code escrow"
+      ],
+      "_provenance": "Authored from concept: 'Reverse Engineering. Decompiling Licensed Vendor Software'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A3.4 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d3_055 and d3_109 (microservice governance and consolidation): Review fix: escrow distractor replaces the ownership one, and the law is stated less absolutely. Tests that legal review of license terms comes before reverse engineering vendor code. All scenario specifics invented for this question. Public sources: ISO/IEC 27002:2022 control 5.32; COBIT 2019 MEA03.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_140",
+      "domain": 3,
+      "subtopic": "Component-Based Development. Reusing a Proven Component",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A team will reuse a tax-calculation component, proven in the retail system, inside a new wholesale system with different pricing data. What should the IS auditor consider the PRIMARY testing need?",
+      "options": {
+        "A": "Rerunning the component's original retail unit test cases",
+        "B": "Testing the component inside the wholesale system with wholesale data",
+        "C": "Relying on the retail system's earlier production results for the component",
+        "D": "Reviewing the component's source code for secure coding flaws"
+      },
+      "correct": "B",
+      "key_concept": "Reused components must be tested in each new system, with its data and interfaces; earlier success elsewhere is not evidence.",
+      "pre_read": "Ask what is different about the new system the component will serve.",
+      "correct_explanation": "A component that worked in one system can fail in another that sends it different data or calls it differently. Testing it inside the wholesale system, with wholesale pricing data and interfaces, shows whether it works in its new setting. Rerunning the original unit tests is the runner-up: it confirms the component is unchanged, but those cases reflect retail data, not wholesale use.",
+      "wrong_explanations": {
+        "A": "The original cases use retail data and calls, so passing them again says little about wholesale pricing.",
+        "C": "Retail results show the component works in retail; the wholesale system will use it with different data.",
+        "D": "Secure coding review looks for vulnerabilities, not whether tax is calculated correctly on wholesale data."
+      },
+      "tips": [
+        "Eliminate: C relies on results from another setting, and D checks for security flaws rather than correct calculation.",
+        "Final two: B beats A because old unit tests confirm the component is unchanged, not that it works with new data.",
+        "Exam cue: reused components need integration testing in each new system, however well they worked before."
+      ],
+      "framework_ref": "COBIT 2019 BAI03.08 (Execute solution testing); ISO/IEC 25010:2023 (Product Quality Model)",
+      "related_concepts": [
+        "Component-based development",
+        "Software reuse",
+        "Integration testing",
+        "Regression testing"
+      ],
+      "_provenance": "Authored from concept: 'Component-Based Development. Reusing a Proven Component'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A3.4 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d3_003 (integration evidence for interfaces) and d3_055 (microservice contracts): tests that a reused component must be tested in its new system with that system's data. All scenario specifics invented for this question. Public sources: COBIT 2019 BAI03; ISO/IEC 25010:2023.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_141",
+      "domain": 3,
+      "subtopic": "Audit Trails. Investigating Changed Bank Details",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "After a salary diversion, the payroll audit trail showed who edited bank details and when, but investigators could not tell which accounts received the pay. Which improvement should the IS auditor give the GREATEST priority?",
+      "options": {
+        "A": "Sending payroll logs to a central store that payroll staff cannot alter",
+        "B": "Keeping payroll logs for seven years instead of one year",
+        "C": "Recording the prior and new values of each changed field",
+        "D": "Having payroll managers review the logs every week"
+      },
+      "correct": "C",
+      "key_concept": "Audit trails for sensitive data changes must capture prior and new values, not just who and when, to support investigation.",
+      "pre_read": "Ask which part of who, what and when the audit trail is missing.",
+      "correct_explanation": "The gap is content: the trail shows who changed bank details but not what changed, so the diverted account numbers cannot be traced or reversed from it. Recording prior and new values closes that gap. Central, protected storage is the runner-up: it makes logs trustworthy, but protecting a record that lacks the changed values still leaves investigators without the evidence they need.",
+      "wrong_explanations": {
+        "A": "Protection keeps logs from being altered, but a protected log that omits the changed values still cannot show where pay was redirected.",
+        "B": "Longer retention keeps the same incomplete records for longer; it adds none of the missing detail.",
+        "D": "Weekly review of logs that lack the changed values cannot show whether a new account is legitimate or which account to restore."
+      },
+      "tips": [
+        "Eliminate: B keeps incomplete records longer, and D reviews records that still lack the changed values.",
+        "Final two: C beats A because protection secures the log, but the gap here is what the log captures.",
+        "Exam cue: an audit trail needs who, what, when and the before-and-after values; fix the missing element first."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 AU-3 (Content of Audit Records); COBIT 2019 DSS06.05 (Ensure traceability and accountability for information events)",
+      "related_concepts": [
+        "Audit trail content",
+        "Payroll master data changes",
+        "Fraud investigation",
+        "Tamper-evident logs"
+      ],
+      "_provenance": "Authored from concept: 'Audit Trails. Investigating Changed Bank Details'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A4.4 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d3_068 (central, synchronized, tamper-protected logging), d4_105 (log review ownership) and d4_238 (log capacity): tests that an audit trail missing before-and-after values must be fixed in content before storage, retention or review. All scenario specifics invented for this question. Public sources: NIST SP 800-53 Rev 5 AU-3; COBIT 2019 DSS06.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_142",
+      "domain": 3,
+      "subtopic": "Audit Trails. Deferring Business-Event Logging",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Requirements for a new loan-origination system specify logging of technical errors only, and the project team plans to add business-event logging after go-live. What should the IS auditor consider the GREATEST risk of this plan?",
+      "options": {
+        "A": "Adding the logging after go-live will cost more than building it now",
+        "B": "Technical error logs will fill the available storage before testing ends",
+        "C": "Performance tests will not reflect the load of later logging",
+        "D": "Early loan approvals and rate exceptions will have no audit trail"
+      },
+      "correct": "D",
+      "key_concept": "Business events must be defined for logging in requirements, because actions taken before logging exists leave no evidence.",
+      "pre_read": "Ask what happens to accountability for actions taken before the logging is added.",
+      "correct_explanation": "Business events such as loan approvals and rate exceptions are the evidence of who did what. If they are not logged from go-live, any error or fraud in the early months leaves no trail, and that history can never be recreated. Higher retrofit cost is the runner-up: building controls in early is cheaper, but cost can be absorbed, while missing evidence is lost for good.",
+      "wrong_explanations": {
+        "A": "Retrofitting costs more, but the extra cost can be funded later; months of approvals with no record cannot be recovered.",
+        "B": "Storage capacity is a routine operational matter, and nothing suggests error logs will exhaust it.",
+        "C": "The added load can be performance-tested when the logging is added; that is a manageable testing gap, not lost evidence."
+      },
+      "tips": [
+        "Eliminate: B is a routine capacity concern, and C is a testing gap that can be closed when the logging is added.",
+        "Final two: D beats A because extra cost can be absorbed, while approvals made without a record leave an evidence gap that can never be filled.",
+        "Exam cue: decide which business events to log during design; evidence not captured from day one is gone for good."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 AU-2 (Event Logging); OWASP ASVS 5.0 V16 (Security Logging and Error Handling)",
+      "related_concepts": [
+        "Audit logging requirements",
+        "Accountability",
+        "Controls designed in early",
+        "Business events"
+      ],
+      "_provenance": "Authored from concept: 'Audit Trails. Deferring Business-Event Logging'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A4.4 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d3_068 (how logs are stored and protected) and d3_084 (automated data lineage): tests that deferring business-event logging past go-live permanently loses evidence, which outweighs retrofit cost. All scenario specifics invented for this question. Public sources: NIST SP 800-53 Rev 5 AU-2; OWASP ASVS 5.0 V16.",
       "style_version": 2
     }
   ]
