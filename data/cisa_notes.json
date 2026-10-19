@@ -861,6 +861,19 @@
                 "caption": "Integrated auditing. IT, financial and operational work come together in a single engagement and one report."
               },
               "example": "In an integrated audit of a wine distributor's order-to-cash process, the IS auditor finds that developers can change the pricing engine in production without approval. Ana, the engagement leader, tells the financial auditors not to rely on the system's automated price checks. The team instead tests invoice prices directly against the approved price list, and the report links the change-control gap to revenue risk.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the engagement plan for the interdependence that justified integrating",
+                  "Trace ITGC results to the reliance placed on automated controls in financial testing",
+                  "Sample report findings for a stated link from IT cause to business effect"
+                ],
+                "evidence": [
+                  "Workpapers showing ITGC test results and the resulting substantive sample sizes",
+                  "Timesheets showing ITGC testing finished before substantive work began"
+                ],
+                "recommend": "Have audit management plan ITGC testing first and set substantive testing from its results.",
+                "decides": "The chief audit executive decides whether to integrate, based on interdependence"
+              },
               "isaca_rule": "The reason to integrate is interdependence, not cost. Weak IT general controls cut reliance on automated controls and push the IS auditor toward more substantive testing. A truly integrated report connects each IT cause to its business effect.",
               "exam_traps": [
                 {
@@ -6705,7 +6718,21 @@
                 "Funding is released in stages as validated forecasts change, rather than fixed a year ahead.",
                 "When teams dispute a shared resource, a governance forum with defined decision rights settles it."
               ],
-              "example": "A regional garden-center chain will open 40 new stores next year, but its IT service desk plans staffing by copying this year's headcount, and two teams dispute who gets a shared contractor pool. The IS auditor recommends staffing from business-validated demand forecasts and giving a cross-team forum clear decision rights over shared resources. The chief technology officer agrees.",
+              "example": "A regional garden-center chain will open 40 new stores next year, but its IT service desk plans staffing by copying this year's headcount, and two teams dispute who gets a shared contractor pool. The IS auditor recommends staffing from business-validated demand forecasts and giving a cross-team forum clear decision rights over shared resources.",
+              "audit_focus": {
+                "review": [
+                  "Compare capacity plans with the sales and growth forecasts the business signed off",
+                  "Compare utilization trends with headroom thresholds and procurement lead times",
+                  "Inspect how shared-resource disputes were settled and by whom"
+                ],
+                "evidence": [
+                  "Monitoring reports of utilization against headroom thresholds",
+                  "Purchase records showing lead times for past capacity additions",
+                  "Forum minutes recording capacity decisions and the decision rights used"
+                ],
+                "recommend": "Have the IT capacity manager plan from validated forecasts, release funding in stages and route disputes to a decision forum.",
+                "decides": "Business owners set service priorities and the governance forum allocates shared resources"
+              },
               "isaca_rule": "Capacity follows business demand and value. Plan from validated forecasts, act on thresholds before limits are hit, and settle contested resources in an accountable forum, not by whoever escalates loudest.",
               "exam_traps": [
                 {
@@ -6791,6 +6818,20 @@
                 ]
               },
               "example": "A hospital network's new electronic health record went live a year ago. Clinicians still keep paper notes, overtime has doubled, and the steering group's monthly report still shows every milestone green. The IS auditor rates the inaccurate status reporting as the most serious finding, because it blocks correction, and recommends business-set adoption measures, clinician engagement and go/no-go gates for the remaining sites.",
+              "audit_focus": {
+                "review": [
+                  "Compare program status reports with actual milestones, costs and adoption data",
+                  "Inspect the stakeholder plan for each group's engagement and feedback channel",
+                  "Trace go/no-go decisions to business-set readiness criteria"
+                ],
+                "evidence": [
+                  "System usage data showing who uses the new process and who works around it",
+                  "Help desk and overtime records since go-live",
+                  "Gate records showing criteria, results and who approved each go-live"
+                ],
+                "recommend": "Have the program sponsor set business adoption measures, engage each stakeholder group and report status honestly to governance.",
+                "decides": "Business process owners decide go/no-go at each gate from readiness evidence"
+              },
               "isaca_rule": "Major initiatives need both IT change management and enterprise change management, with business-set go/no-go criteria. Inaccurate status reporting to governance is among the most serious failures, because it stops leaders from correcting course.",
               "exam_traps": [
                 {
@@ -10663,7 +10704,21 @@
                 "svg": "<svg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='OSI model seven-layer pyramid from Physical at the base to Application at the peak'><rect x='135' y='10' width='130' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>7 · Application</text><rect x='115' y='50' width='170' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='72' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>6 · Presentation</text><rect x='95' y='90' width='210' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='112' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>5 · Session</text><rect x='75' y='130' width='250' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='152' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>4 · Transport</text><rect x='55' y='170' width='290' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='192' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>3 · Network</text><rect x='35' y='210' width='330' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='232' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>2 · Data Link</text><rect x='15' y='250' width='370' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='272' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>1 · Physical</text></svg>",
                 "caption": "The seven OSI layers, from Physical at the base to Application at the top. Layers 1 to 4 move data across the network; layers 5 to 7 prepare it for the application."
               },
-              "example": "An IS auditor at an insurer maps a network control list to the TCP/IP layers. Firewall port rules sit at transport and the web application firewall at application, but remote offices have no link-layer control: any device plugged into a wall port joins the network. The IS auditor reports the gap to the network manager, who decides on a fix.",
+              "example": "An IS auditor at an insurer maps a network control list to the TCP/IP layers. Firewall port rules sit at transport and the web application firewall at application, but remote offices have no link-layer control: any device plugged into a wall port joins the network. The IS auditor reports the gap to the network manager.",
+              "audit_focus": {
+                "review": [
+                  "Inspect network diagrams for any layer, such as wall ports, left without a control",
+                  "Evaluate whether content threats, such as email attachments, meet an application-layer control",
+                  "Inspect encryption between sites for legacy applications that cannot protect their own traffic"
+                ],
+                "evidence": [
+                  "Firewall, gateway and switch configurations showing what each device inspects",
+                  "Mail gateway logs showing attachments scanned and blocked",
+                  "Switch port settings showing which ports admit unknown devices"
+                ],
+                "recommend": "Have the network manager close layers with no control and add content inspection where threats ride allowed traffic.",
+                "decides": "The system owner accepts the risk of any layer left uncontrolled"
+              },
               "isaca_rule": "Map each control to the layer where it acts, then look for layers with no control at all. A control can judge only what its own layer can see, so match each control to the threat's layer; content threats need application-layer controls.",
               "exam_traps": [
                 {
@@ -12888,6 +12943,20 @@
                 "caption": "Two families of databases. Relational stores data in linked tables with a fixed structure; NoSQL gives up some of that structure to handle flexible or unstructured data."
               },
               "example": "A ride-hailing company plans to keep driver payout balances in a NoSQL key-value store with eventual consistency. The IS auditor notes that two copies could briefly show different balances, so a payout might be made twice. She asks the engineering lead to show how the design prevents this, such as a strongly consistent store for balances, before go-live.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the NoSQL design for where the application validates record fields",
+                  "Evaluate whether financial balances sit in a store with full transaction guarantees",
+                  "Inquire which legacy databases remain and who can still maintain them"
+                ],
+                "evidence": [
+                  "Query results showing records with missing or invalid fields",
+                  "Vendor support notices with end-of-support dates",
+                  "Staffing records listing people trained on the legacy database"
+                ],
+                "recommend": "Have the application owner add validation where the database has no fixed schema and plan for legacy support gaps.",
+                "decides": "The data owner approves the database choice for critical records"
+              },
               "isaca_rule": "Choose the model by workload, then follow the controls. Where the database enforces structure, test its constraints and access; where it does not, test validation in the application. For legacy models, current risk comes from vendor support status and scarce skills.",
               "exam_traps": [
                 {
@@ -15410,6 +15479,20 @@
                 ]
               },
               "example": "A logistics company's new data center must include a water-based system under local fire code. The facilities manager proposes cheap wet-pipe sprinklers. The IS auditor notes that one knocked head would soak the racks, and recommends a pre-action design that stays dry until detectors confirm a fire.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the room's suppression type against how often staff work there",
+                  "Inspect walls, floors and ceilings for unsealed openings in gas-protected rooms",
+                  "Observe a detector test and confirm the alarm reaches the fire panel"
+                ],
+                "evidence": [
+                  "Fire panel event logs showing detector alarms and system status",
+                  "Room integrity test results showing the gas concentration holds",
+                  "Maintenance contractor reports for detectors, valves and gas cylinders"
+                ],
+                "recommend": "Have the facilities manager choose suppression that protects people first, seal openings and test detection regularly.",
+                "decides": "Senior management accepts residual fire risk within local fire code"
+              },
               "isaca_rule": "Protect people first, then equipment. Clean-agent gas with early detection fits occupied server rooms best. Among water systems, pipes that stay dry until a fire is detected (pre-action, which exam questions often group under the dry-pipe label) beat wet pipe. Carbon dioxide never belongs where people work.",
               "exam_traps": [
                 {
@@ -15933,7 +16016,21 @@
                 "svg": "<svg viewBox='0 0 450 168' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Comparison of the traditional perimeter model and zero trust'><rect x='10' y='8' width='209' height='152' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><rect x='10' y='8' width='209' height='26' rx='6' fill='var(--accent-fill)'/><rect x='10' y='20' width='209' height='14' fill='var(--accent-fill)'/><text x='114' y='25' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='600' fill='#ffffff'>PERIMETER MODEL</text><text x='24' y='58' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>TRUST</text><text x='24' y='72' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Trust everything inside</text><text x='24' y='92' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>BOUNDARY</text><text x='24' y='106' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>One hard outer wall</text><text x='24' y='126' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>IF BREACHED</text><text x='24' y='140' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Attacker moves freely</text><rect x='231' y='8' width='209' height='152' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><rect x='231' y='8' width='209' height='26' rx='6' fill='var(--accent-fill)'/><rect x='231' y='20' width='209' height='14' fill='var(--accent-fill)'/><text x='335' y='25' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='600' fill='#ffffff'>ZERO TRUST</text><text x='245' y='58' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>TRUST</text><text x='245' y='72' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Trust nothing by default</text><text x='245' y='92' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>BOUNDARY</text><text x='245' y='106' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Verify at every resource</text><text x='245' y='126' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>IF BREACHED</text><text x='245' y='140' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Lateral movement limited</text></svg>",
                 "caption": "A perimeter model trusts whatever is inside the wall. Zero trust checks every request at the resource, so a single breach does not open the whole network."
               },
-              "example": "A logistics firm's board is told the company now has zero trust after it bought a secure remote access product. The IS auditor finds the product brokers only remote connections, while office users and internal servers still trust anything on the local network. The IS auditor reports zero trust as partly implemented and recommends a roadmap covering users, devices, workloads and data, with senior management setting priorities.",
+              "example": "A logistics firm's board is told the company now has zero trust after it bought a secure remote access product. The IS auditor finds the product brokers only remote connections, while office users and internal servers still trust anything on the local network. The IS auditor reports zero trust as partly implemented and recommends a roadmap covering users, devices, workloads and data.",
+              "audit_focus": {
+                "review": [
+                  "Sample internal application requests and trace each to a per-request policy decision",
+                  "Inspect service-to-service rules for explicit authorization, not just authentication",
+                  "Observe a device failing a health check mid-session and confirm access is restricted"
+                ],
+                "evidence": [
+                  "Policy decision point logs showing allow, limit and block results per request",
+                  "Service-to-service policy export listing which calls are allowed",
+                  "Session logs showing access cut when device health changed"
+                ],
+                "recommend": "Have the security architecture team extend per-request policy checks to office users, internal servers and service calls.",
+                "decides": "Senior management sets zero trust priorities and funding"
+              },
               "isaca_rule": "Zero trust is an architecture of continuous, policy-based decisions, not a product. Proving identity is only the first step; a policy must still decide what that identity, on that device, may reach right now.",
               "exam_traps": [
                 {
@@ -16167,6 +16264,20 @@
                 ]
               },
               "example": "A consulting firm lets remote laptops use split tunneling, so web browsing bypasses the corporate proxy. A consultant's laptop picks up malware on a hotel network and then connects to the firm's file servers through the VPN. The IS auditor recommends full tunneling, or equivalent cloud web filtering, for devices handling client data, and a device health check before each connection.",
+              "audit_focus": {
+                "review": [
+                  "Compare VPN accounts with MFA enforcement settings to find password-only logins",
+                  "Inspect server logs for partners still connecting with TLS 1.0 or 1.1",
+                  "Inspect VPN settings for internet traffic that skips company web controls"
+                ],
+                "evidence": [
+                  "VPN authentication logs showing the factor used for each login",
+                  "Protocol and cipher reports from remote access and web gateways",
+                  "Endpoint compliance reports for devices allowed to connect"
+                ],
+                "recommend": "Have the network team require MFA and device checks for remote logins and retire old TLS by plan.",
+                "decides": "The business owner approves the cutoff date for partners on old TLS versions"
+              },
               "isaca_rule": "Encryption protects the tunnel, not the login. Remote access must require multi-factor authentication and a healthy device, and give only the access the user needs. Retire weak protocol versions on a plan, after measuring who still relies on them.",
               "exam_traps": [
                 {
@@ -16349,6 +16460,20 @@
                 ]
               },
               "example": "A logistics company's IDS uses only signatures, updated monthly, and the security operations manager reports zero critical alerts for the quarter. The IS auditor notes that a signature-only sensor with stale updates would also stay quiet during a new attack. She recommends automatic signature updates and anomaly detection on the warehouse network, verified with simulated attacks.",
+              "audit_focus": {
+                "review": [
+                  "Inspect sensor settings for detection methods used and signature update dates",
+                  "Compare the current rule set with last quarter's to find rules switched off",
+                  "Inquire when the anomaly baseline was learned and compare with incident history"
+                ],
+                "evidence": [
+                  "Results of simulated attacks showing which ones raised alerts",
+                  "Sensor configuration export with methods, rules and update timestamps",
+                  "Change records explaining each disabled or tuned rule"
+                ],
+                "recommend": "Have the security operations manager automate signature updates, add anomaly detection and tune noisy rules instead of disabling them.",
+                "decides": "Senior management accepts the risk of any detection gap left open"
+              },
               "isaca_rule": "For an IDS, a missed attack is worse than a false alarm. Signature detection catches the known; anomaly detection is needed for the new. Fix noise by tuning rules, not by disabling them, and prove detection works by testing it.",
               "exam_traps": [
                 {

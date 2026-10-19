@@ -15,7 +15,7 @@ still without the field.
 ## Scope
 These are the 60 notes from the October 2026 curriculum coverage review whose
 `how_it_works` has no audit step, so the process lens rests on the example and
-the rule alone. Forty-two are done (pilot and N4 to N7); 18 remain.
+the rule alone. Fifty-one are done (pilot and N4 to N8); 9 remain.
 
 ## Priority order
 1. **Exam importance:** subtopics rated high-yield in the curriculum checklist come first.
@@ -72,15 +72,15 @@ line appears once on the card.
 | 40 | 5A4.7 | Endpoint Protection and Hardening | medium | 4 | N7 (done) |
 | 41 | 5A8.3 | Virtualization and the Hypervisor | medium | 4 | N7 (done) |
 | 42 | 5B2.1 | Malware and Denial-of-Service Attacks | medium | 4 | N7 (done) |
-| 43 | 1A2.4 | Integrated Audits | medium | 4 | N8 |
-| 44 | 2B1.4 | Capacity and Resource Planning | medium | 4 | N8 |
-| 45 | 2B1.5 | Enterprise Change Management | medium | 4 | N8 |
-| 46 | 4A1.2 | OSI and TCP/IP Reference Models | medium | 3 | N8 |
-| 47 | 4A11.1 | Database Models | medium | 3 | N8 |
-| 48 | 5A2.2 | Fire Suppression Systems | medium | 3 | N8 |
-| 49 | 5A3.6 | Zero Trust Architecture | medium | 3 | N8 |
-| 50 | 5A4.3 | Secure Remote Access and VPNs | medium | 3 | N8 |
-| 51 | 5A4.5 | Intrusion Detection Methods | medium | 3 | N8 |
+| 43 | 1A2.4 | Integrated Audits | medium | 4 | N8 (done) |
+| 44 | 2B1.4 | Capacity and Resource Planning | medium | 4 | N8 (done) |
+| 45 | 2B1.5 | Enterprise Change Management | medium | 4 | N8 (done) |
+| 46 | 4A1.2 | OSI and TCP/IP Reference Models | medium | 3 | N8 (done) |
+| 47 | 4A11.1 | Database Models | medium | 3 | N8 (done) |
+| 48 | 5A2.2 | Fire Suppression Systems | medium | 3 | N8 (done) |
+| 49 | 5A3.6 | Zero Trust Architecture | medium | 3 | N8 (done) |
+| 50 | 5A4.3 | Secure Remote Access and VPNs | medium | 3 | N8 (done) |
+| 51 | 5A4.5 | Intrusion Detection Methods | medium | 3 | N8 (done) |
 | 52 | 5B1.1 | Role-Based Security Awareness Programs | medium | 3 | N9 |
 | 53 | 5B2.4 | Network Attacks: Spoofing, Interception and Tunneling | medium | 3 | N9 |
 | 54 | 2A4.2 | Enterprise Architecture Frameworks: Zachman and TOGAF | medium | 3 | N9 |
