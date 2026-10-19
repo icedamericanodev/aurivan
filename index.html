@@ -14172,6 +14172,262 @@ function planMockAllocation(total) {
   return { plan: plan, domainTarget: domainTarget, total: totalAssigned(), avail: avail };
 }
 
+// ── TOPIC-STRATIFIED MOCK (Wave 5 / M1; mirrors mobile engine/blueprint.ts) ──
+// With the study notes loaded, each domain's mock questions are spread
+// across the outline topics (1A1 … 5B6) in proportion to the bank, at least
+// one per topic, and each topic rotates through its subtopics (the notes'
+// practice_ids) before repeating one. Domain counts and the difficulty mix
+// still come from planMockAllocation. Without the notes, a domain keeps the
+// old random pick inside each difficulty tier, call for call.
+var MOCK_TIERS = ['analysis', 'application', 'foundational'];
+var mockOutlineMemo = null;
+var mockNotesWait = false;
+
+function mockShuffled(arr, rnd) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+// Largest remainder: whole numbers in proportion to `weights`, adding up to `total`.
+function mockAllocate(total, weights) {
+  var sum = weights.reduce(function (s, w) { return s + w; }, 0);
+  if (sum <= 0 || total <= 0) return weights.map(function () { return 0; });
+  var exact = weights.map(function (w) { return (w / sum) * total; });
+  var out = exact.map(Math.floor);
+  var left = total - out.reduce(function (s, n) { return s + n; }, 0);
+  var order = exact.map(function (x, i) { return { i: i, f: x - Math.floor(x) }; })
+    .sort(function (a, b) { return b.f - a.f || a.i - b.i; });
+  for (var k = 0; k < order.length && left > 0; k++) { out[order[k].i]++; left--; }
+  return out;
+}
+// The outline from the notes, in reading order (each domain's Parts, then any
+// topic no Part lists): [{ id: '4B1', domainId: '4', subtopics: [{ id, questionIds }] }].
+// A question listed by two notes belongs to the first. null = no notes.
+function mockOutline() {
+  var raw = CISA_NOTES_RAW;
+  if (!raw || raw.schema_version !== 2 || !Array.isArray(raw.domains)) return null;
+  if (mockOutlineMemo && mockOutlineMemo.raw === raw) return mockOutlineMemo.topics;
+  var topics = [], seen = {}, doms = {}, nums = [];
+  raw.domains.forEach(function (d) {
+    if (!d || !Array.isArray(d.topics)) return;
+    var k = String(d.domain_number);
+    if (!doms[k]) { doms[k] = { topics: [], parts: [] }; nums.push(k); }
+    doms[k].topics = doms[k].topics.concat(d.topics);
+    if (!doms[k].parts.length && Array.isArray(d.parts)) doms[k].parts = d.parts;
+  });
+  nums.sort(function (a, b) { return Number(a) - Number(b); });
+  nums.forEach(function (k) {
+    var byId = {}, ids = [];
+    doms[k].topics.forEach(function (t) {
+      if (t && typeof t.topic_id === 'string' && Array.isArray(t.subtopics) && !byId[t.topic_id]) { byId[t.topic_id] = t; ids.push(t.topic_id); }
+    });
+    var order = [];
+    doms[k].parts.forEach(function (p) {
+      (p && Array.isArray(p.topic_ids) ? p.topic_ids : []).forEach(function (id) { if (byId[id] && order.indexOf(id) < 0) order.push(id); });
+    });
+    ids.forEach(function (id) { if (order.indexOf(id) < 0) order.push(id); });
+    order.forEach(function (id) {
+      topics.push({
+        id: id,
+        domainId: k,
+        subtopics: byId[id].subtopics.map(function (s) {
+          return { id: s && s.id, questionIds: conceptPracticeIds(s).filter(function (q) { return seen[q] ? false : (seen[q] = true); }) };
+        })
+      });
+    });
+  });
+  mockOutlineMemo = { raw: raw, topics: topics };
+  return topics;
+}
+// Fetch the notes in the background (the setup page asks early, so a start
+// rarely waits). Never shows an error: the mock just keeps the old pick.
+function mockPrefetchNotes() {
+  if (CISA_NOTES_RAW || conceptsLoadFailed || conceptsLoading) return;
+  try { loadConceptsData(function () {}); } catch (e) {}
+}
+// Calls `cb` once: when the notes are here, have failed, or after 3 s.
+function mockWhenNotes(cb) {
+  if (CISA_NOTES_RAW || conceptsLoadFailed) { cb(); return; }
+  var done = false;
+  var go = function () { if (!done) { done = true; cb(); } };
+  setTimeout(go, 3000);
+  try { loadConceptsData(go); } catch (e) { go(); }
+}
+
+// Topic slots inside one domain: in proportion to each topic's questions
+// (largest remainder); each topic that rounded to 0 takes one slot from the
+// topic that rounded up the most (ties: the earlier topic). Fewer slots than
+// topics (mini mock): one each for the first `total` of a shuffled order.
+function mockTopicTargets(total, sizes, rnd) {
+  var sum = sizes.reduce(function (s, n) { return s + n; }, 0);
+  var t = Math.min(total, sum);
+  var nonEmpty = [];
+  sizes.forEach(function (n, i) { if (n > 0) nonEmpty.push(i); });
+  var alloc;
+  if (t < nonEmpty.length) {
+    alloc = sizes.map(function () { return 0; });
+    mockShuffled(nonEmpty, rnd).slice(0, Math.max(0, t)).forEach(function (i) { alloc[i] = 1; });
+    return alloc;
+  }
+  alloc = mockAllocate(t, sizes);
+  var exact = sizes.map(function (n) { return (n / sum) * t; });
+  nonEmpty.filter(function (i) { return alloc[i] === 0; }).forEach(function (z) {
+    var donor = -1;
+    for (var i = 0; i < alloc.length; i++) {
+      if (alloc[i] < 2) continue;
+      if (donor < 0 || alloc[i] - exact[i] > alloc[donor] - exact[donor]) donor = i;
+    }
+    if (donor < 0) return;
+    alloc[donor]--;
+    alloc[z]++;
+  });
+  return alloc;
+}
+// Rotation: the next pick comes from the subtopics with the fewest picks so far.
+function mockEligibleSubs(subs) {
+  var open = subs.filter(function (s) { return s.qs.length > 0; });
+  if (!open.length) return [];
+  var min = Math.min.apply(null, open.map(function (s) { return s.picks; }));
+  return open.filter(function (s) { return s.picks === min; });
+}
+function mockRotationHolds(subs) {
+  var open = subs.filter(function (s) { return s.qs.length > 0; });
+  if (!open.length) return true;
+  var min = Math.min.apply(null, open.map(function (s) { return s.picks; }));
+  return subs.every(function (s) { return s.picks <= min + 1; });
+}
+// One domain's stratified pick (mobile pickDomainStratified, step for step).
+// `diffTargets` = { analysis, application, foundational }; `topics` = this
+// domain's outline topics. Returns the picked questions.
+function mockPickStratified(pool, diffTargets, topics, rnd) {
+  var target = MOCK_TIERS.reduce(function (s, t) { return s + (diffTargets[t] || 0); }, 0);
+  var inDomain = pool.filter(function (q) { return MOCK_TIERS.indexOf(q.difficulty) >= 0; });
+  // 1. Topic -> subtopic buckets (seeded shuffles), then the unmapped pool.
+  var byId = {}, mapped = {};
+  inDomain.forEach(function (q) { byId[q.id] = q; });
+  var buckets = [];
+  topics.forEach(function (t) {
+    var subs = [];
+    t.subtopics.forEach(function (s) {
+      var qs = [];
+      s.questionIds.forEach(function (id) {
+        if (byId[id] && !mapped[id]) { mapped[id] = true; qs.push(byId[id]); }
+      });
+      if (qs.length) subs.push({ qs: mockShuffled(qs, rnd), picks: 0 });
+    });
+    if (subs.length) buckets.push(mockShuffled(subs, rnd));
+  });
+  var unmapped = { qs: mockShuffled(inDomain.filter(function (q) { return !mapped[q.id]; }), rnd), picks: 0 };
+
+  var need = {};
+  MOCK_TIERS.forEach(function (t) { need[t] = diffTargets[t] || 0; });
+  var neededOrder = function () {
+    return MOCK_TIERS.filter(function (t) { return need[t] > 0; })
+      .map(function (t, i) { return { t: t, i: i }; })
+      .sort(function (a, b) { return need[b.t] - need[a.t] || a.i - b.i; })
+      .map(function (x) { return x.t; });
+  };
+  var picked = [], home = {};
+  var take = function (bucket, i, topic) {
+    var q = bucket.qs.splice(i, 1)[0];
+    bucket.picks++;
+    need[q.difficulty]--;
+    picked.push(q);
+    home[q.id] = { bucket: bucket, topic: topic };
+  };
+  var pickFrom = function (subs, topic) {
+    var eligible = mockEligibleSubs(subs);
+    if (!eligible.length) return;
+    var tiers = neededOrder();
+    for (var a = 0; a < tiers.length; a++) {
+      for (var b = 0; b < eligible.length; b++) {
+        var s = eligible[b];
+        for (var i = 0; i < s.qs.length; i++) {
+          if (s.qs[i].difficulty === tiers[a]) { take(s, i, topic); return; }
+        }
+      }
+    }
+    take(eligible[0], 0, topic);
+  };
+
+  // 2-3. Topic slots, filled round by round in a shuffled topic order.
+  var sizes = buckets.map(function (subs) { return subs.reduce(function (n, s) { return n + s.qs.length; }, 0); });
+  var slots = mockTopicTargets(target, sizes, rnd);
+  var order = mockShuffled(buckets.map(function (_, i) { return i; }), rnd);
+  var rounds = Math.max.apply(null, [0].concat(slots));
+  for (var r = 0; r < rounds; r++) {
+    order.forEach(function (j) { if (slots[j] > r) pickFrom(buckets[j], buckets[j]); });
+  }
+  // 4. Gaps come from the unmapped pool.
+  while (picked.length < target && unmapped.qs.length) pickFrom([unmapped], null);
+
+  // 5. Repair the difficulty mix with like-for-like swaps (same subtopic,
+  // else the same topic while the rotation still holds).
+  var swapOnce = function () {
+    var over = MOCK_TIERS.filter(function (t) { return need[t] < 0; });
+    var lows = neededOrder();
+    for (var a = 0; a < lows.length; a++) {
+      var lo = lows[a];
+      for (var p = 0; p < picked.length; p++) {
+        var out = picked[p];
+        if (over.indexOf(out.difficulty) < 0) continue;
+        var h = home[out.id], bucket = h.bucket, topic = h.topic;
+        var cands = topic ? [bucket].concat(topic.filter(function (s) { return s !== bucket; })) : [bucket];
+        for (var c = 0; c < cands.length; c++) {
+          var s = cands[c], i = -1;
+          for (var x = 0; x < s.qs.length; x++) { if (s.qs[x].difficulty === lo) { i = x; break; } }
+          if (i < 0) continue;
+          var inQ = s.qs.splice(i, 1)[0];
+          bucket.qs.push(out);
+          bucket.picks--;
+          s.picks++;
+          if (topic && !mockRotationHolds(topic)) {
+            s.picks--;
+            bucket.picks++;
+            bucket.qs.pop();
+            s.qs.splice(i, 0, inQ);
+            continue;
+          }
+          picked[p] = inQ;
+          delete home[out.id];
+          home[inQ.id] = { bucket: s, topic: topic };
+          need[out.difficulty]++;
+          need[inQ.difficulty]--;
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+  for (var guard = 0; guard < picked.length && neededOrder().length > 0; guard++) {
+    if (!swapOnce()) break;
+  }
+  return picked;
+}
+// The mock's questions, in exam order. `outline` null = the old random pick
+// in every domain; `rnd` defaults to Math.random.
+function mockBuildQueue(total, outline, rnd) {
+  rnd = rnd || Math.random;
+  function shuffle(arr){ for(var i=arr.length-1;i>0;i--){ var j=Math.floor(rnd()*(i+1)); var t=arr[i];arr[i]=arr[j];arr[j]=t; } return arr; }
+  var plan = planMockAllocation(total).plan;
+  var queue = [];
+  Object.keys(DI).forEach(function(d){
+    var pool = (QB[d] || []);
+    var topics = (outline || []).filter(function (t) { return t.domainId === d; });
+    if (topics.length) {
+      mockPickStratified(pool, plan[d], topics, rnd).forEach(function (q) { queue.push(q); });
+      return;
+    }
+    var aPool = shuffle(pool.filter(function(q){ return q.difficulty === 'analysis'; }));
+    var mPool = shuffle(pool.filter(function(q){ return q.difficulty === 'application'; }));
+    var fPool = shuffle(pool.filter(function(q){ return q.difficulty === 'foundational'; }));
+    aPool.slice(0, plan[d].analysis).forEach(function(q){ queue.push(q); });
+    mPool.slice(0, plan[d].application).forEach(function(q){ queue.push(q); });
+    fPool.slice(0, plan[d].foundational).forEach(function(q){ queue.push(q); });
+  });
+  return shuffle(queue);
+}
+
 // ── MOCK EXAM (Grove Desk step 5; mobile app/mock-start.tsx) ──
 // Setup: a calm page with the two mocks as cards you choose between (the
 // full mock, and a 50-question mini mock with the same domain weights and
@@ -14225,6 +14481,7 @@ function mockPastRowsHtml(hist) {
 function renderMockSetup() {
   document.body.removeAttribute('data-mock-results');
   mockSetMview('setup');
+  mockPrefetchNotes(); // the topic spread reads the study notes
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
   var area = document.getElementById('mockArea');
   if (!area) return;
@@ -14345,7 +14602,7 @@ function checkMockResume() {
   return true;
 }
 
-function startMock(type) {
+function startMock(type, notesWaited) {
   // Don't let the user start an exam while a domain bank is still fetching —
   // that would silently drop those questions from the simulation. Checked
   // first, so an unfinished mock is not discarded by a start that can't run.
@@ -14355,6 +14612,15 @@ function startMock(type) {
     return;
   }
   type = mockTypeOf(type);
+  // The topic spread needs the study notes: wait for them (once, at most
+  // 3 s); if they cannot load, the mock starts with the old random pick.
+  if (!notesWaited && !CISA_NOTES_RAW && !conceptsLoadFailed) {
+    if (mockNotesWait) return;
+    mockNotesWait = true;
+    try { showToast('Getting the questions ready\u2026', 'info', 1800); } catch (e) {}
+    mockWhenNotes(function () { mockNotesWait = false; startMock(type, true); });
+    return;
+  }
 
   clearAllTimers();
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
@@ -14368,22 +14634,11 @@ function startMock(type) {
   mockAnswerLock = false;
   S.mockId = newMockId(); // parity mock id
 
-  function shuffle(arr){ for(var i=arr.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=arr[i];arr[i]=arr[j];arr[j]=t; } return arr; }
-
-  // The same blueprint for both: domain weights and difficulty mix, scaled.
-  var planRes = planMockAllocation(MOCK_TYPES[type].total);
-  var plan = planRes.plan;
-
-  Object.keys(DI).forEach(function(d){
-    var pool = (QB[d] || []);
-    var aPool = shuffle(pool.filter(function(q){ return q.difficulty === 'analysis'; }));
-    var mPool = shuffle(pool.filter(function(q){ return q.difficulty === 'application'; }));
-    var fPool = shuffle(pool.filter(function(q){ return q.difficulty === 'foundational'; }));
-    aPool.slice(0, plan[d].analysis).forEach(function(q){ S.mockQueue.push(q); });
-    mPool.slice(0, plan[d].application).forEach(function(q){ S.mockQueue.push(q); });
-    fPool.slice(0, plan[d].foundational).forEach(function(q){ S.mockQueue.push(q); });
-  });
-  shuffle(S.mockQueue);
+  // The same blueprint for both: domain weights and difficulty mix, scaled,
+  // each domain spread across its outline topics when the notes are here.
+  var outline = null;
+  try { outline = mockOutline(); } catch (e) { outline = null; }
+  S.mockQueue = mockBuildQueue(MOCK_TYPES[type].total, outline);
 
   // One clock for the whole exam: 4 hours for the full mock, the same pace
   // scaled for the mini mock.
