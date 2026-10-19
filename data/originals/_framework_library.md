@@ -1951,3 +1951,5 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - NIST FIPS 186-5 (Digital Signature Standard (DSS))
 - NIST FIPS 198-1 (The Keyed-Hash Message Authentication Code (HMAC))
 - ISO/IEC 19795-1:2021 (Information Technology — Biometric Performance Testing and Reporting — Part 1: Principles and Framework)
+- NIST SP 800-175B Rev 1 (Guideline for Using Cryptographic Standards in the Federal Government: Cryptographic Mechanisms)
+- IETF RFC 5280 (Internet X.509 PKI Certificate and CRL Profile), 4.2.1.3 Key Usage and 4.2.1.9 Basic Constraints
