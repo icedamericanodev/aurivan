@@ -45,6 +45,11 @@
     document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
+<!-- The plant companion: the mobile app's own growth rules and SVG art,
+     compiled into one plain script (mobile/scripts/build-web-plant.mjs;
+     never edit it by hand). Deferred: the page never waits for it, and the
+     plant draws itself once it has arrived (plantReady). -->
+<script id="kaisipPlantJs" src="assets/kaisip-plant.js?v=8d1e6cc1b0" defer></script>
 <link rel="preload" href="assets/fonts/Figtree_400Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Fraunces_500Medium.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -5888,6 +5893,144 @@ html { scroll-padding-bottom: 104px; }
 .q-note { margin-top: var(--sp-sm); padding-top: var(--sp-sm); border-top: 1px solid var(--border); }
 .q-note-cap { margin: 0; font: var(--t-caption); color: var(--text2); }
 .q-note-t { margin: 2px 0 0; font: var(--t-small); color: var(--text); white-space: pre-wrap; overflow-wrap: anywhere; }
+/* ── PLANT COMPANION (web v12.11; owner-approved 19 Oct 2026) ───────────────
+   The mobile app's plant (DESIGN_SYSTEM §13), drawn from its own art data.
+   Today: a small plant under the readiness. You: the plant, what grows it
+   next and its look, in the study rail from 1180px and inline near the top
+   of You below that. The plant's leaf and material colours are fixed (the
+   plant is an object); everything around it uses the Grove tokens. */
+.plnt-svg { display: block; max-width: 100%; height: auto; overflow: visible; }
+/* The Breathe idle: one slow breath (in 2 s, out 2.4 s) the first time You
+   shows in a visit, then still. Never a loop; none under reduced motion. */
+@keyframes plBreathe {
+  0% { transform: none; }
+  45% { transform: scale(calc(1 + var(--pl-d, .016) * .5), calc(1 + var(--pl-d, .016))) rotate(-0.6deg); }
+  100% { transform: none; }
+}
+.plnt-sway { transform-box: view-box; }
+@media (prefers-reduced-motion: no-preference) {
+  .plnt-sway.plnt-breathe { animation: plBreathe 4.4s cubic-bezier(.37, 0, .63, 1) .2s 1 both; }
+}
+/* Today: under the readiness, inside the plate (a hairline above) */
+.td-plant:empty { display: none; }
+.td-plant { grid-column: 1 / -1; margin-top: var(--sp-xl); padding-top: var(--sp-md); border-top: 1px solid var(--border); }
+.td-plant-btn {
+  display: flex; align-items: center; gap: var(--sp-md); width: 100%; min-height: 64px; padding: var(--sp-xs) 0;
+  background: none; border: 0; border-radius: var(--r-md); cursor: pointer; text-align: left; color: var(--text); font: inherit;
+}
+.td-plant-btn:hover .you-chev { color: var(--text); }
+.td-plant-btn:focus-visible, .plnt-ghost:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.td-plant-art { flex-shrink: 0; width: 72px; height: 72px; }
+.td-plant-name { overflow-wrap: anywhere; }
+.td-plant-note { margin: var(--sp-sm) 0 0; font: var(--t-small); color: var(--text); }
+/* The one quiet invitation (an InviteRow: icon, words, ghost actions under them) */
+.plnt-invite { display: flex; align-items: flex-start; gap: var(--sp-md); text-align: left; }
+.plnt-invite-t { flex: 1; min-width: 0; }
+.plnt-invite-h { margin: 0; font: var(--t-label); color: var(--text); }
+.plnt-invite-m { margin: var(--sp-xs) 0 0; font: var(--t-small); color: var(--text2); }
+.plnt-invite-acts { display: flex; flex-wrap: wrap; gap: 0 var(--sp-lg); margin-top: var(--sp-xs); }
+.plnt-ghost {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0; background: none; border: 0; border-radius: var(--r-sm);
+  cursor: pointer; font: var(--t-label); color: var(--accent-text);
+}
+.plnt-ghost:hover { text-decoration: underline; text-underline-offset: 3px; }
+/* You: the plant section (rail and inline share it) */
+.you-plant { margin-top: var(--sp-xl); }
+.you-plant[hidden] { display: none; }
+.plnt-cap { display: block; margin: 0 0 var(--sp-md); font: var(--t-caption); letter-spacing: 0.1px; color: var(--text2); }
+.plnt-cap:focus { outline: none; }
+.plnt-hero { display: flex; justify-content: center; }
+.plnt-name { margin: var(--sp-md) 0 0; font: var(--t-headline); font-family: var(--f-serif); font-weight: 500; color: var(--text); overflow-wrap: anywhere; }
+.plnt-meta { margin: var(--sp-xs) 0 0; font: var(--t-meta); color: var(--text2); }
+.plnt-center { text-align: center; }
+.plnt-look-line { margin: var(--sp-xs) 0 0; font: var(--t-quote); font-style: italic; color: var(--text2); }
+.plnt-note { margin-top: var(--sp-lg); padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md); background: var(--raised2); }
+.plnt-note-h { margin: 0; font: var(--t-label); color: var(--text); }
+.plnt-note-m { margin: var(--sp-xs) 0 0; font: var(--t-small); color: var(--text2); }
+.plnt-sub { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-md); margin: var(--sp-xxl) 0 var(--sp-sm); font: var(--t-label); color: var(--text); }
+.plnt-sub-m { font: var(--t-meta); color: var(--text2); }
+.plnt-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-lg); }
+.plnt-step-row { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-md); }
+.plnt-step-t { flex: 1; min-width: 0; font: var(--t-small); color: var(--text); }
+.plnt-step-v { flex-shrink: 0; font: var(--t-meta); color: var(--text2); font-variant-numeric: tabular-nums; }
+.plnt-step-v.done { color: var(--accent-text); }
+.plnt-bar { margin-top: var(--sp-xs); height: 6px; border-radius: var(--r-pill); background: var(--surface2); overflow: hidden; }
+.plnt-bar span { display: block; height: 100%; border-radius: inherit; background: var(--accent); }
+.plnt-small { margin: var(--sp-md) 0 0; font: var(--t-meta); color: var(--text2); }
+.plnt-acts li:last-child .you-row { border-bottom: 0; }
+.plnt-empty-t { margin: 0; font: var(--t-label); color: var(--text); }
+.you-plant .plnt-plant-btn { width: auto; display: inline-flex; }
+/* The rail: the 200 stage, the words centred under it */
+.study-rail .plnt-who { text-align: center; }
+/* Inline (below 1180px): a compact row near the top of You, the plant beside
+   its words; the rules and the look behind one disclosure */
+.plnt-row { display: flex; align-items: center; gap: var(--sp-lg); }
+.plnt-row .plnt-hero { flex-shrink: 0; width: 112px; }
+.plnt-row .plnt-who { flex: 1; min-width: 0; }
+.plnt-row .plnt-name { margin-top: 0; text-align: left; }
+.plnt-more { margin-top: var(--sp-md); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.plnt-more-s {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-md); min-height: 48px; padding: var(--sp-sm) 0;
+  cursor: pointer; list-style: none; font: var(--t-label); color: var(--text);
+}
+.plnt-more-s::-webkit-details-marker { display: none; }
+.plnt-more-s .ico { flex-shrink: 0; color: var(--muted); }
+.plnt-more[open] .plnt-more-s .ico { transform: rotate(180deg); }
+.plnt-more-s:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
+.plnt-more > .plnt-sub:first-of-type { margin-top: var(--sp-sm); }
+.plnt-more .plnt-acts { margin-bottom: var(--sp-xs); }
+/* The dialog: plant yours, change plant, rename, change its look */
+.plnt-modal { max-width: 600px; }
+.plnt-modal .cl-title { margin-bottom: var(--sp-md); }
+.plnt-modal > .plnt-meta { margin: 0 0 var(--sp-sm); }
+.plnt-pick { border: 0; margin: var(--sp-lg) 0 0; padding: 0; min-width: 0; }
+.plnt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: var(--sp-sm); }
+.plnt-tile, .plnt-opt {
+  position: relative; display: flex; align-items: center; border-radius: var(--r-md); background: var(--raised);
+  /* One border width in every state, so choosing never shifts the layout. */
+  border: 2px solid transparent; box-shadow: var(--shadow); cursor: pointer;
+}
+[data-theme="dark"] .plnt-tile, [data-theme="dark"] .plnt-opt { border-color: var(--control); box-shadow: none; }
+.plnt-tile { flex-direction: column; justify-content: flex-start; gap: var(--sp-xs); min-height: 48px; padding: var(--sp-sm) var(--sp-xs) var(--sp-md); text-align: center; }
+.plnt-tile-art { width: 72px; height: 72px; }
+.plnt-tile-n { font: var(--t-label); color: var(--text); overflow-wrap: normal; word-break: keep-all; }
+/* The radio stays a real radio (arrow keys, the form's name), drawn as the card's ring. */
+.plnt-radio { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.plnt-tile:has(.plnt-radio:checked), .plnt-opt:has(.plnt-radio:checked) { border-color: var(--text); }
+.plnt-tile:has(.plnt-radio:focus-visible), .plnt-opt:has(.plnt-radio:focus-visible) { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.plnt-opt.locked { cursor: default; background: transparent; box-shadow: none; border: 2px dashed var(--border); }
+/* Three keepsakes on show: the others wait, muted, until one is put away. */
+.plnt-opt.muted { opacity: .55; }
+.plnt-opt.locked .plnt-radio { cursor: default; }
+.plnt-opt.locked .plnt-opt-n { color: var(--text2); }
+.plnt-quote { margin: var(--sp-md) 0 0; font: var(--t-quote); font-style: italic; color: var(--text2); }
+.plnt-name-f { margin-top: var(--sp-xl); }
+.plnt-field-l { display: block; font: var(--t-caption); color: var(--accent-text); }
+.plnt-input {
+  display: block; width: 100%; min-height: 48px; margin-top: var(--sp-sm); padding: var(--sp-md) var(--sp-lg); box-sizing: border-box;
+  border: 1.5px solid var(--control); border-radius: var(--r-md); background: var(--raised); color: var(--text); font: var(--t-body);
+}
+.plnt-input::placeholder { color: var(--muted); }
+.plnt-input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.plnt-name-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--sp-md); }
+.plnt-name-row .plnt-meta { flex: 1 1 200px; margin: 0; }
+.plnt-err { margin: var(--sp-lg) 0 0; font: var(--t-small); color: var(--text); padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md); background: var(--raised2); }
+.plnt-dlg-acts { display: flex; flex-wrap: wrap; gap: var(--sp-sm); margin-top: var(--sp-xl); }
+.plnt-dlg-acts .act-btn { min-height: 48px; padding: 0 var(--sp-xl); }
+/* The preview stays in view while the choices scroll. */
+.plnt-lk-prev { position: sticky; top: 0; z-index: 1; display: flex; justify-content: center; padding: var(--sp-md); border-radius: var(--r-lg); background: var(--raised2); }
+.plnt-lk { border: 0; margin: var(--sp-xl) 0 0; padding: 0; min-width: 0; }
+.plnt-lk-h { padding: 0; margin: 0 0 var(--sp-sm); font: var(--t-label); color: var(--text); }
+.plnt-lk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--sp-sm); }
+.plnt-opt { gap: var(--sp-md); min-height: 56px; padding: var(--sp-sm) var(--sp-md); }
+.plnt-opt-art { flex-shrink: 0; width: 36px; height: 36px; }
+.plnt-opt-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.plnt-opt-n { font: var(--t-label); color: var(--text); }
+.plnt-opt-m { font: var(--t-meta); color: var(--text2); }
+@media (max-width: 400px) {
+  .plnt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .changelog-modal.plnt-modal { padding: var(--sp-xl); }
+}
 /* GROVE-LAYER-END */
 </style>
 </head>
@@ -6073,7 +6216,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.12</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.13</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6127,6 +6270,9 @@ html { scroll-padding-bottom: 104px; }
 <div id="screen-you" class="screen" role="region" aria-labelledby="youTitle">
   <div class="you">
     <h1 class="you-title" id="youTitle">You</h1>
+    <!-- Your plant, below the desktop breakpoint (plantYouInline); from
+         1180px it moves to the study rail beside the page. -->
+    <section class="you-plant" id="youPlant" aria-labelledby="plYouH" hidden></section>
     <section class="you-group" aria-labelledby="youProgressH">
       <h2 class="you-head" id="youProgressH">Your progress</h2>
       <!-- Practice totals (moved from the Practice page, web step 3). "In a
@@ -6359,7 +6505,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.12';
+const APP_VERSION = 'v12.13';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -6823,6 +6969,17 @@ var S_DEFAULTS = {
   // The learner's own note on a question (study rail, web v12.10):
   // qId -> { text (at most QNOTE_MAX characters), ts }. Saved beside the rest.
   qNotes: {},
+  // The plant companion (web v12.11, see "PLANT COMPANION"): new fields
+  // beside the old ones, each in the mobile app's own shape.
+  // plant = mobile CertPlant (species, name, growth, look...) or null;
+  // plantSettings = mobile PlantSettings ({ promptHidden } on the web);
+  // cleanLog[qId] = { first, last }: the first and the latest right answer
+  //   that was not a retest (ms), so "know the outline" can count two days;
+  // readinessLog = mobile ReadinessDay[] (the low end, per day) for Elder.
+  plant: null,
+  plantSettings: {},
+  cleanLog: {},
+  readinessLog: [],
   activeTab: "home",
 };
 
@@ -7310,6 +7467,10 @@ function recordAnswerParity(qId, ok, opts) {
     S.mistakeLog[qId].resolved = true;
   }
   noteStudyDay(now);
+  // The plant's evidence (mobile engine/mastery.ts and examReady.ts): a right
+  // answer that is not a retest counts toward "know the outline", and the
+  // day's readiness low end is logged for Elder's week-long hold.
+  try { plantNoteAnswer(qId, ok && !retest, now); } catch (e) {}
 }
 
 // A finished mock, once (mobile MockResult). `answers` is S.mockAnswers,
@@ -7462,7 +7623,8 @@ function normalizeImportedState(state) {
                 "confidenceLog","sessionHistory","selectedDomain","diff",
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed",
                 "current","qn","activeTab","review","topicTicksSchema",
-                "answerLog","mistakeLog","studyDays","mockHistory","qNotes"];
+                "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
+                "plant","plantSettings","cleanLog","readinessLog"];
   fields.forEach(function(k) {
     if (state[k] !== undefined) clean[k] = state[k];
   });
@@ -7482,6 +7644,11 @@ function normalizeImportedState(state) {
   clean.mockHistory = sanitizeMockHistory(clean.mockHistory);
   // Saves from before the study rail have no notes: load as empty.
   clean.qNotes = sanitizeQNotes(clean.qNotes);
+  // The plant companion: saves from before it have none and load as empty.
+  clean.plant = sanitizePlant(clean.plant);
+  clean.plantSettings = sanitizePlantSettings(clean.plantSettings);
+  clean.cleanLog = plantSeedCleanLog(sanitizeCleanLog(clean.cleanLog), clean.answerLog);
+  clean.readinessLog = sanitizeReadinessLog(clean.readinessLog);
   clean.bookmarks = rehydrateSavedQuestions(clean.bookmarks);
   clean.missedQuestions = rehydrateSavedQuestions(clean.missedQuestions);
   clean.review = sanitizeReviewMap(clean.review);
@@ -7550,6 +7717,8 @@ function saveState() {
     answerLog: S.answerLog, mistakeLog: S.mistakeLog,
     studyDays: S.studyDays, mockHistory: S.mockHistory,
     qNotes: S.qNotes || {},
+    plant: S.plant || null, plantSettings: S.plantSettings || {},
+    cleanLog: S.cleanLog || {}, readinessLog: S.readinessLog || [],
     selectedDomain: S.selectedDomain, diff: S.diff,
     timerEnabled: S.timerEnabled, timerSeconds: S.timerSeconds,
     qIdx: S.qIdx, mindsetIdx: S.mindsetIdx,
@@ -7588,7 +7757,8 @@ function loadState() {
                 "confidenceLog","sessionHistory","review","selectedDomain","diff",
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed","topicTicksSchema",
                 "current","qn","activeTab",
-                "answerLog","mistakeLog","studyDays","mockHistory","qNotes"];
+                "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
+                "plant","plantSettings","cleanLog","readinessLog"];
   fields.forEach(function(k) {
     if (saved[k] !== undefined) S[k] = saved[k];
   });
@@ -7673,6 +7843,8 @@ function importProgress(file) {
       var data = JSON.parse(e.target.result);
       var state = data && data.cisaMindsetExport && data.profile ? normalizeImportedState(data.profile.state) : null;
       if (!state) { showToast('That file is not a KaiSip progress file.', 'info', 3200); return; }
+      // The plant never grows past what the file's own progress supports.
+      try { plantClampImported(state); } catch (e2) {}
       if (!confirm('Replace the progress in this browser with the progress in this file?')) return;
       var id = getActiveProfileId();
       var profiles = getProfiles();
@@ -10191,7 +10363,8 @@ function renderHome() {
     }
     plate += '</div>';
   }
-  // (The plant companion joins later, under this plate, as on mobile Today.)
+  // The plant companion, under the readiness (mobile Today's plant slot).
+  plate += '<div class="td-plant" id="tdPlant">' + plantSafe(plantTodayHtml) + '</div>';
   plate += '</section>';
 
   // One next step.
@@ -10994,7 +11167,7 @@ function showSessionStart() { renderPracticeHub(); }
 // the note link and "Add a note" after the Key idea, "Check yourself" at the
 // end of each note; the topic list and the lookup drop.
 // No streaks, counters, tip of the day or second countdown live here.
-var RAIL_BP = { hub: 1180, notes: 1180, mock: 1180, q: 1320 };
+var RAIL_BP = { hub: 1180, notes: 1180, mock: 1180, q: 1320, you: 1180 };
 var RAIL_SHOW_MAX = 20;          // a backlog shows as "20+", never an alarming number
 var RAIL_WEAK_MIN = 8;           // answers in a topic before it can be called weak
 var RAIL_MIX_SIZE = 10;          // the weak spot's mixed set
@@ -11033,6 +11206,8 @@ function railPage() {
   if (t === 'practice') return practiceView === 'focus' ? 'q' : 'hub';
   if (t === 'topics') return 'notes';
   if (t === 'mock') return document.body.getAttribute('data-mview') === 'setup' ? 'mock' : null;
+  // You (web v12.11): the plant companion in the empty right column.
+  if (t === 'you') return 'you';
   return null;
 }
 
@@ -11623,7 +11798,8 @@ function railAlign(aside, page) {
   var main = document.getElementById('main');
   var a = page === 'hub' ? document.getElementById('phHero')
     : page === 'q' ? document.getElementById('qArea')
-    : page === 'mock' ? document.querySelector('#mkResume:not(:empty), #mockArea .ph-sec') : null;
+    : page === 'mock' ? document.querySelector('#mkResume:not(:empty), #mockArea .ph-sec')
+    : page === 'you' ? document.querySelector('#screen-you .you-group') : null;
   var lead = 0;
   if (a && main && a.getClientRects().length) {
     var pad = parseFloat(getComputedStyle(main).paddingTop) || 0;
@@ -11647,6 +11823,8 @@ function railSync() {
   else railQInline(false);
   if (page === 'notes' && wide) secs = railNotesSections();
   if (page === 'mock' && wide) secs = railMockSections();
+  if (page === 'you') { plantSafe(function () { plantYouInline(!wide); }); if (wide) secs = plantSafe(plantRailSections) || []; }
+  else plantSafe(function () { plantYouInline(false); });
   // The question view keeps its column before the answer, so nothing moves on Check.
   var on = wide && (page === 'q' || secs.length > 0);
   if (on) document.body.setAttribute('data-rail', page);
@@ -11714,6 +11892,785 @@ window.addEventListener('resize', function () {
   var page = document.body.getAttribute('data-rail');
   if (aside && page) { try { railAlign(aside, page); } catch (e) {} }
 });
+
+// ── PLANT COMPANION (web v12.11; owner-approved 19 Oct 2026) ──
+// The mobile app's plant on the web: the same growth rules, looks and SVG
+// art, compiled from the app's own TypeScript into assets/kaisip-plant.js
+// (window.KaiSipPlant, built by mobile/scripts/build-web-plant.mjs). Nothing
+// here re-decides or redraws the plant. This part only maps the web's saved
+// progress onto the engine's inputs, draws the engine's part tree as SVG and
+// keeps the learner's choices in S.plant (the mobile CertPlant shape).
+//
+// Where it shows: Today (a small plant under the readiness, or one quiet
+// "Plant a companion" invitation) and You (the plant, what grows it next and
+// its look: in the study rail from 1180px, inline near the top below that).
+// Never on a question, a mock or its results.
+//
+// The data mapping (mobile field -> web source):
+// - answers (AnswerRecord per question): S.answerLog, field for field.
+//   Answers from before v12.3 have no record (only S.answeredIds): each
+//   counts once, right at its domain's accuracy from those older answers
+//   (Today's readiness rule), split in question id order. In memory only.
+// - mastery (subtopic -> first day, mastered day): replayed with the app's
+//   own recordMastery from S.cleanLog (the first and the latest right answer
+//   that was not a retest, per question, kept from v12.11) and, for older
+//   history, S.answerLog's latest answers. The app's two-day rule decides.
+// - subtopicsByDomain and question -> subtopic: the study notes'
+//   practice_ids (data/cisa_notes.json), reshaped by the app's own notes-pack
+//   and outline code, so the web and the app read the same outline.
+// - mocks (MockResult -> PlantMock): S.mockHistory; day = the local finish
+//   day; timing plus25 / plus50 -> extra25 / extra50.
+// - readinessLog (moments.readiness): S.readinessLog, logged after every
+//   answer with the app's logReadinessDay (from v12.11 on).
+// - readySeenAt: none (the web has no exam-ready panel).
+// - milestones.lastDay: the last of S.studyDays (resting after 3 quiet days).
+// - badges (milestones.earned, planters): none on the web yet, so badge
+//   keepsakes and badge-set planters stay closed. Growth unlocks all work.
+// - the day plan (planCleared: the visitor perches, the happy face): none on
+//   the web, so the visitor shows in the look preview only.
+// - newTopicToday (the curious face): a subtopic's first clean answer
+//   today, or a study note first opened today (S.topicViewed).
+// - the exam eve and exam day (planned rest): the exam date (examDaysLeft).
+// - organs (one part per domain): Today's readiness domains, the rings' own numbers.
+var PLANT_PREVIEW = 5;          // the picker shows each species at Crown
+var PLANT_KEYS = ['species', 'name', 'plantedAt', 'replantedAt', 'growth', 'reached', 'pending', 'backfill', 'look', 'kept', 'passedOn'];
+var PLANT_TIMING = { standard: 'standard', plus25: 'extra25', plus50: 'extra50', untimed: 'untimed' };
+var PLANT_LOG_MAX = 60;         // readiness days kept (the app keeps 30 by date)
+var plantCertMemo = null;
+var plantOutlineMemo = null;
+var plantNotesAsked = false;
+var plantBreathed = {};         // surfaces that took their one breath this visit
+var plantBackfillShown = null;  // { at, line }: the back-fill line, kept for this visit
+var plantGrewShown = null;      // Today's grow-up line, kept for this visit
+var plantDlg = null;            // the open plant dialog
+var plantMoreOpen = false;      // You (inline): "What grows it next" opened
+
+// Nothing in the plant may break a page: a render path draws nothing instead.
+function plantSafe(fn) {
+  try { var out = fn(); return out === undefined ? '' : out; }
+  catch (e) { try { console.warn('plant:', e); } catch (e2) {} return ''; }
+}
+function plantApi() {
+  var K = window.KaiSipPlant;
+  return K && K.plant && K.art && K.looks ? K : null;
+}
+function plantTheme() { return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
+function plantExamMoment() { var d = examDaysLeft(); return d === 1 ? 'eve' : d === 0 ? 'day' : null; }
+
+// The certification as the engine reads it, from DI (the source of truth).
+function plantCert() {
+  if (!plantCertMemo) {
+    plantCertMemo = {
+      id: ACTIVE.id,
+      domains: Object.keys(DI).map(function (d) { return { id: d, name: DI[d].name, short: DI[d].short, weight: DI[d].weight }; }),
+      exam: { questions: MOCK_TOTAL, minutes: MOCK_TYPES.full.minutes }
+    };
+  }
+  return plantCertMemo;
+}
+
+// The outline: the app's own notes-pack + outline code on the notes file.
+function plantOutline() {
+  var K = plantApi();
+  if (!K || !CISA_NOTES_RAW) return null;
+  if (plantOutlineMemo && plantOutlineMemo.raw === CISA_NOTES_RAW) return plantOutlineMemo;
+  var topics = K.outline.outlineFromNotes(K.notesPack.buildNotesPack(CISA_NOTES_RAW, ACTIVE.id).pack);
+  var idx = K.outline.indexOutline(topics);
+  plantOutlineMemo = {
+    raw: CISA_NOTES_RAW,
+    subtopicOf: idx.subtopicOf,
+    byDomain: Object.keys(DI).map(function (d) {
+      var out = [];
+      topics.forEach(function (t) {
+        if (t.domainId === d) t.subtopics.forEach(function (x) { if (x.questionIds.length) out.push(x.id); });
+      });
+      return out;
+    })
+  };
+  return plantOutlineMemo;
+}
+// The notes arrive in the background: draw the plant again once they have.
+function plantAskNotes() {
+  if (CISA_NOTES_RAW || plantNotesAsked || conceptsLoadFailed) return;
+  plantNotesAsked = true;
+  try { loadConceptsData(function () { plantRefresh(); }); } catch (e) {}
+}
+
+// Every answered question as a mobile AnswerRecord (see the mapping above).
+function plantAnswers() {
+  var log = (S.answerLog && typeof S.answerLog === 'object') ? S.answerLog : {};
+  var out = {};
+  Object.keys(log).forEach(function (id) { out[id] = log[id]; });
+  Object.keys(DI).forEach(function (d) {
+    var seen = (S.answeredIds && S.answeredIds[d]) || {};
+    var older = Object.keys(seen).filter(function (id) { return seen[id] && !log[id] && rdDomainOf(id) === d; }).sort();
+    if (!older.length) return;
+    var att = 0, cor = 0;
+    Object.keys(log).forEach(function (id) {
+      if (rdDomainOf(id) === d) { att += parityCount(log[id].attempts); cor += parityCount(log[id].correctCount); }
+    });
+    var ds = (S.ds && S.ds[d]) || { t: 0, c: 0 };
+    var ot = (Number(ds.t) || 0) - att, oc = (Number(ds.c) || 0) - cor;
+    var acc = (ot > 0 && oc >= 0) ? oc / ot : ((Number(ds.t) || 0) > 0 ? (Number(ds.c) || 0) / ds.t : 0);
+    var right = Math.round(older.length * Math.max(0, Math.min(1, acc)));
+    older.forEach(function (id, i) { out[id] = { attempts: 1, correctCount: i < right ? 1 : 0, lastCorrect: i < right, lastAt: 0 }; });
+  });
+  return out;
+}
+
+// Subtopic mastery, replayed in time order with the app's recordMastery.
+// Cached until the evidence changes (an answer, a load, a reset or an import).
+var plantEvidenceVer = 0;
+var plantMasteryMemo = null;
+function plantMastery(o) {
+  var K = plantApi();
+  if (!K || !o) return {};
+  var m = plantMasteryMemo;
+  if (m && m.o === o && m.s === S && m.cl === S.cleanLog && m.al === S.answerLog && m.ver === plantEvidenceVer) return m.map;
+  var map = plantMasteryReplay(K, o);
+  plantMasteryMemo = { o: o, s: S, cl: S.cleanLog, al: S.answerLog, ver: plantEvidenceVer, map: map };
+  return map;
+}
+function plantMasteryReplay(K, o) {
+  var cl = (S.cleanLog && typeof S.cleanLog === 'object') ? S.cleanLog : {};
+  var log = (S.answerLog && typeof S.answerLog === 'object') ? S.answerLog : {};
+  var ev = [];
+  Object.keys(cl).forEach(function (id) {
+    var e = cl[id];
+    if (!e) return;
+    ev.push([e.first, id]);
+    if (e.last !== e.first) ev.push([e.last, id]);
+  });
+  Object.keys(log).forEach(function (id) {
+    var r = log[id];
+    if (!cl[id] && r && r.lastCorrect && !r.lastRetest && !r.lastAssisted && !r.lastGame) ev.push([r.lastAt, id]);
+  });
+  ev.sort(function (a, b) { return a[0] - b[0] || (a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0); });
+  var map = {};
+  ev.forEach(function (e) {
+    map = K.mastery.recordMastery(map, o.subtopicOf(e[1]), parityDayKey(e[0]), { correct: true, assisted: false }, e[0]) || map;
+  });
+  return map;
+}
+
+function plantMocks() {
+  return (Array.isArray(S.mockHistory) ? S.mockHistory : []).map(function (m) {
+    var p = { total: m.total, correct: m.correct, day: parityDayKey(m.finishedAt) };
+    if (m.timing) p.timing = PLANT_TIMING[m.timing] || m.timing;
+    if (m.unanswered !== undefined) p.unanswered = m.unanswered;
+    return p;
+  });
+}
+
+// The engine's PlantFacts for the saved progress (null until the notes and the plant script are here).
+function plantFactsNow(now) {
+  var K = plantApi(), o = plantOutline();
+  if (!K || !o) { plantAskNotes(); return null; }
+  return K.plant.plantFacts({
+    cert: plantCert(),
+    answers: plantAnswers(),
+    mastery: plantMastery(o),
+    subtopicsByDomain: o.byDomain,
+    mocks: plantMocks(),
+    readinessLog: Array.isArray(S.readinessLog) ? S.readinessLog : [],
+    replantedAt: S.plant ? S.plant.replantedAt : undefined,
+    today: parityDayKey(now)
+  });
+}
+
+// One graded answer (recordAnswerParity): the clean log and today's readiness low end.
+function plantNoteAnswer(qId, clean, now) {
+  plantEvidenceVer++;
+  if (clean) {
+    if (!S.cleanLog || typeof S.cleanLog !== 'object' || Array.isArray(S.cleanLog)) S.cleanLog = {};
+    var c = S.cleanLog[qId];
+    S.cleanLog[qId] = { first: c ? c.first : now, last: now };
+  }
+  var K = plantApi();
+  if (!K) return;
+  var cert = plantCert();
+  var range = K.readinessRange.readinessRange(cert, K.readiness.computeReadiness(cert, plantAnswers()));
+  S.readinessLog = K.examReady.logReadinessDay(Array.isArray(S.readinessLog) ? S.readinessLog : [], parityDayKey(now), range.enough ? range.low : null);
+}
+
+// ── Saved shapes (load / import) ──
+function plantKnownFields(x) {
+  var y = {};
+  PLANT_KEYS.forEach(function (k) { if (x[k] !== undefined) y[k] = x[k]; });
+  if (y.backfill && typeof y.backfill === 'object') {
+    var b = { at: y.backfill.at, growth: y.backfill.growth };
+    if (y.backfill.seen !== undefined) b.seen = y.backfill.seen;
+    y.backfill = b;
+  }
+  return JSON.parse(JSON.stringify(y));
+}
+// A well-formed plant (the app's own validator), repaired when it can be, else null.
+function plantValid(x) {
+  var K = plantApi();
+  if (!K || !x || typeof x !== 'object' || Array.isArray(x)) return null;
+  if (K.plant.isValidPlantState(x)) return x;
+  if (!K.plant.isPlantSpecies(x.species) || !K.plant.isGrowthLevel(x.growth) || !(Number(x.plantedAt) >= 0)) return null;
+  try {
+    var r = K.plant.repairPlant(plantKnownFields(x));
+    return K.plant.isValidPlantState(r) ? r : null;
+  } catch (e) { return null; }
+}
+function sanitizePlant(x) {
+  if (!x || typeof x !== 'object' || Array.isArray(x) || typeof x.species !== 'string') return null;
+  // Before the plant script arrives only the known fields are kept; plantSync checks the rest.
+  return plantApi() ? plantValid(x) : plantKnownFields(x);
+}
+function sanitizePlantSettings(x) {
+  var out = {};
+  if (!x || typeof x !== 'object' || Array.isArray(x)) return out;
+  ['showPlant', 'quietLook', 'promptHidden'].forEach(function (k) { if (typeof x[k] === 'boolean') out[k] = x[k]; });
+  return out;
+}
+function sanitizeCleanLog(m) {
+  var out = {};
+  if (!m || typeof m !== 'object' || Array.isArray(m)) return out;
+  Object.keys(m).slice(0, PARITY_MAX_IDS).forEach(function (id) {
+    var e = m[id];
+    if (!PARITY_ID_RE.test(id) || !e || typeof e !== 'object') return;
+    var a = Number(e.first), b = Number(e.last);
+    if (!isFinite(a) || !isFinite(b) || a <= 0 || b <= 0) return;
+    out[id] = { first: Math.min(a, b), last: Math.max(a, b) };
+  });
+  return out;
+}
+// A right answer saved before the clean log existed (latest try only) seeds
+// it once, so answering that question again later keeps its first day: the
+// app's two-day rule then sees both days. Idempotent: an entry, once there, wins.
+function plantSeedCleanLog(cl, log) {
+  Object.keys(log || {}).forEach(function (id) {
+    var r = log[id];
+    if (cl[id] || !r || !r.lastCorrect || r.lastRetest || r.lastAssisted || r.lastGame) return;
+    if (Object.keys(cl).length >= PARITY_MAX_IDS) return;
+    cl[id] = { first: r.lastAt, last: r.lastAt };
+  });
+  return cl;
+}
+function sanitizeReadinessLog(list) {
+  if (!Array.isArray(list)) return [];
+  var low = function (v) { return v === null ? null : (typeof v === 'number' && isFinite(v) && v >= 0 && v <= 100 ? v : undefined); };
+  var seen = {}, out = [];
+  list.forEach(function (e) {
+    if (!e || typeof e !== 'object' || typeof e.day !== 'string' || !PARITY_DAY_RE.test(e.day) || seen[e.day]) return;
+    var mn = low(e.min), ls = low(e.last);
+    if (mn === undefined || ls === undefined) return;
+    seen[e.day] = true;
+    out.push({ day: e.day, min: mn, last: ls });
+  });
+  out.sort(function (a, b) { return a.day < b.day ? -1 : a.day > b.day ? 1 : 0; });
+  return out.slice(-PLANT_LOG_MAX);
+}
+// An imported file's plant never grows beyond what the file's own progress
+// supports (the app's restore clamp: generous where evidence may be lost).
+function plantClampImported(state) {
+  var K = plantApi();
+  if (!K || !state || !state.plant) return state;
+  var saved = S;
+  try {
+    S = state;   // plantAnswers and plantMastery read S
+    var o = plantOutline();
+    var e = K.plant.supportEvidence({
+      cert: plantCert(),
+      answers: plantAnswers(),
+      mastery: o ? plantMastery(o) : {},
+      subtopicsByDomain: o ? o.byDomain : [],
+      mocks: plantMocks(),
+      readinessLog: state.readinessLog || []
+    });
+    state.plant = K.plant.clampToSupported(state.plant, K.plant.maxSupportedGrowth(e));
+  } finally { S = saved; }
+  return state;
+}
+
+// Checks the saved plant and lets it grow (never down). Saves when it changed.
+function plantSync(now) {
+  var K = plantApi();
+  if (!K || !S.plant) return;
+  var p = plantValid(S.plant);
+  if (!p) { S.plant = null; saveState(); return; }
+  var f = plantFactsNow(now);
+  if (f) p = K.plant.advance(p, f, now).plant;
+  if (p !== S.plant) { S.plant = p; saveState(); }
+}
+
+// Did a subtopic get its first clean answer today, or a note its first opening?
+function plantNewTopicToday(today) {
+  var o = plantOutline();
+  var m = o ? plantMastery(o) : {};
+  if (Object.keys(m).some(function (k) { return m[k] && m[k].firstDay === today; })) return true;
+  var tv = (S.topicViewed && typeof S.topicViewed === 'object') ? S.topicViewed : {};
+  return Object.keys(tv).some(function (k) { return typeof tv[k] === 'number' && parityDayKey(tv[k]) === today; });
+}
+
+// Everything the surfaces draw for the saved plant (null without one).
+function plantView(now) {
+  var K = plantApi();
+  if (!K || !S.plant) return null;
+  var p = S.plant, today = parityDayKey(now);
+  var r = computeTodayReadiness();
+  var weights = Object.keys(DI).map(function (d) { return DI[d].weight; });
+  var domains = r.domains.map(function (x) { return { answered: x.answered, mastery: x.mastery }; });
+  var days = Array.isArray(S.studyDays) ? S.studyDays : [];
+  var lastDay = days.length ? days[days.length - 1] : undefined;
+  var exam = plantExamMoment();
+  var resting = K.plant.isResting(lastDay, today, exam !== null);
+  var newGrowth = lastDay === today;
+  var face = K.plant.plantHasFace(S.plantSettings);
+  var unlocked = K.looks.unlockedLooks(p, []);
+  var resolved = K.looks.resolveLook(p.species, p.look, unlocked, K.looks.defaultKeepsakes(p, []));
+  var grewToday = Object.keys(p.reached || {}).some(function (k) {
+    var at = p.reached[k];
+    return typeof at === 'number' && parityDayKey(at) === today && !(p.backfill && at === p.backfill.at);
+  });
+  var mood = K.looks.plantMood({ face: face, resting: resting, grewToday: grewToday, newKeepsakeToday: false, planCleared: false, newTopicToday: plantNewTopicToday(today) });
+  return {
+    plant: p, today: today, lastDay: lastDay, exam: exam, resting: resting, newGrowth: newGrowth, face: face,
+    scales: K.plant.organScales(K.plant.organSlots(weights, domains)),
+    unlocked: unlocked, resolved: resolved, mood: mood,
+    label: K.plant.plantLabel({ name: p.name, species: p.species, growth: p.growth, resting: resting, newGrowth: newGrowth, mood: mood })
+  };
+}
+// What the art draws. Today never shows keepsakes (the app's rule); the
+// visitor comes on a cleared plan day, which the web does not have.
+function plantArtLook(v, surface) {
+  var r = v.resolved;
+  return { palette: r.palette, ground: r.ground, planter: r.planter, keepsakes: surface === 'you' ? r.keepsakes : [] };
+}
+
+// ── Drawing: the engine's part tree as SVG markup ──
+function plantAttr(v) { return String(v).replace(/[<>&"]/g, ''); }
+function plantNodeSvg(n) {
+  if (!n) return '';
+  var a = '';
+  if (n.fill !== undefined) a += ' fill="' + plantAttr(n.fill) + '"';
+  if (n.opacity !== undefined) a += ' opacity="' + plantAttr(n.opacity) + '"';
+  if (n.transform) a += ' transform="' + plantAttr(n.transform) + '"';
+  if (n.stroke) a += ' stroke="' + plantAttr(n.stroke) + '" stroke-width="' + plantAttr(n.sw) + '" stroke-linecap="round" stroke-linejoin="round"';
+  if (n.t === 'g') return '<g' + a + '>' + n.children.map(plantNodeSvg).join('') + '</g>';
+  if (n.t === 'path') return '<path d="' + plantAttr(n.d) + '"' + a + '/>';
+  if (n.t === 'circle') return '<circle cx="' + n.cx + '" cy="' + n.cy + '" r="' + n.r + '"' + a + '/>';
+  if (n.t === 'ellipse') return '<ellipse cx="' + n.cx + '" cy="' + n.cy + '" rx="' + n.rx + '" ry="' + n.ry + '"' + a + '/>';
+  return '';
+}
+// o: { species, stage, scales, look, mood, resting, quiet, size, fit, lod, label, breathe }
+function plantSvg(o) {
+  var K = plantApi();
+  var organs = o.scales ? o.scales.map(function (v) { return Math.round(v * 40) / 40; }) : undefined;
+  var built = K.art.buildPlant({ species: o.species, stage: o.stage, organs: organs, quietLook: !!o.quiet, lod: o.lod || K.art.lodFor(o.size), theme: plantTheme(), resting: !!o.resting, mood: o.mood, look: o.look });
+  var layers = K.art.plantLayers(built.root);
+  var base = built.anchors && built.anchors.base ? built.anchors.base.y : 170;
+  // The breath: about 2px deep at any size (the app's breathDepth).
+  var depth = Math.min(0.02, Math.max(0.012, 2 / o.size));
+  var kids = function (g) { return g.children.map(plantNodeSvg).join(''); };
+  return '<svg class="plnt-svg" width="' + o.size + '" height="' + o.size + '" viewBox="' + plantAttr(o.fit ? built.frame : '0 0 200 200') + '"'
+    + (o.label ? ' role="img" aria-label="' + escapeHtml(o.label) + '"' : ' aria-hidden="true" focusable="false"') + '>'
+    + kids(layers.back)
+    + '<g class="plnt-sway' + (o.breathe ? ' plnt-breathe' : '') + '" style="transform-origin:100px ' + base + 'px;--pl-d:' + depth.toFixed(4) + '">' + kids(layers.plant) + '</g>'
+    + kids(layers.front)
+    + '</svg>';
+}
+// One slow breath the first time a surface shows in a visit, then still (CSS; none under reduced motion).
+function plantBreathe(surface) {
+  if (plantBreathed[surface]) return false;
+  plantBreathed[surface] = true;
+  return true;
+}
+function plantDraw(v, surface, size, extra) {
+  var p = v.plant;
+  var o = { species: p.species, stage: p.growth, scales: v.scales, look: plantArtLook(v, surface), mood: v.mood, resting: v.resting, quiet: !v.face, size: size };
+  Object.keys(extra || {}).forEach(function (k) { o[k] = extra[k]; });
+  return plantSvg(o);
+}
+
+// ── Today: the plant under the readiness, or one quiet invitation ──
+function plantTodayHtml() {
+  var K = plantApi();
+  if (!K) return '';   // drawn when the plant script arrives (plantWhenReady)
+  var now = Date.now();
+  plantSync(now);
+  var p = S.plant;
+  if (!p) {
+    if (S.plantSettings && S.plantSettings.promptHidden) return '';
+    return '<div class="plnt-invite">'
+      + '<span class="you-ico" aria-hidden="true">' + ico('sprig', 20) + '</span>'
+      + '<div class="plnt-invite-t"><p class="plnt-invite-h" id="tdPlantInvH">Plant a companion</p>'
+      + '<p class="plnt-invite-m" id="tdPlantInvM">It grows only from real progress across the exam outline. It asks for nothing and never wilts.</p>'
+      + '<div class="plnt-invite-acts"><button type="button" class="plnt-ghost" id="tdPlantGo" onclick="plantOpen(\'new\',\'today\')" aria-describedby="tdPlantInvM">Plant yours</button>'
+      + '<button type="button" class="plnt-ghost" onclick="plantHidePrompt()">No thanks</button></div></div></div>';
+  }
+  // A grow-up: one calm line on Today, once (kept for this visit), then it is seen.
+  if (p.pending) {
+    plantGrewShown = K.plant.grewLabel(p, p.pending);
+    S.plant = K.plant.clearPending(p);
+    p = S.plant;
+    saveState();
+  }
+  var v = plantView(now);
+  return '<button type="button" class="td-plant-btn" onclick="plantOpenYou()" aria-label="' + escapeHtml(v.label + ' Opens your plant on You.') + '">'
+    + '<span class="td-plant-art">' + plantDraw(v, 'today', 72, { fit: true, lod: 'small' }) + '</span>'
+    + '<span class="you-text"><span class="you-t td-plant-name">' + escapeHtml(K.plant.plantCallName(p)) + '</span>'
+    + '<span class="you-m">' + escapeHtml(K.plant.growthShort(p.growth)) + '</span></span>'
+    + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button>'
+    + (plantGrewShown ? '<p class="td-plant-note" role="status">' + escapeHtml(plantGrewShown) + '</p>' : '');
+}
+function plantHidePrompt() {
+  if (!S.plantSettings || typeof S.plantSettings !== 'object') S.plantSettings = {};
+  S.plantSettings.promptHidden = true;
+  saveState();
+  var slot = document.getElementById('tdPlant');
+  if (slot) slot.innerHTML = '';
+  try { showToast('Hidden from Today. You can plant one from You.', 'info', 3200); } catch (e) {}
+  var t = document.getElementById('tdTitle');
+  if (t) { try { t.focus({ preventScroll: true }); } catch (e) {} }
+}
+function plantOpenYou() {
+  switchTab('you');
+  var h = document.querySelector('#studyRail:not([hidden]) [data-sec="plant"] h2, #youPlant:not([hidden]) h2');
+  if (h) { h.setAttribute('tabindex', '-1'); try { h.focus({ preventScroll: true }); } catch (e) {} }
+}
+
+// ── You: the plant, what grows it next and its look ──
+function plantYouHtml(where) {
+  var K = plantApi();
+  if (!K) return '';
+  var hid = where === 'rail' ? 'plRailH' : 'plYouH';
+  var head = '<h2 class="' + (where === 'rail' ? 'plnt-cap' : 'you-head') + '" id="' + hid + '">Your plant</h2>';
+  var now = Date.now();
+  plantSync(now);
+  var p = S.plant;
+  if (!p) {
+    return head + '<div class="plnt-empty"><p class="plnt-empty-t">Nothing planted yet</p>'
+      + '<p class="plnt-meta">Pick a plant and give it a name. It grows only from real progress across the exam outline, and it never wilts.</p>'
+      + '<button type="button" class="sr-btn plnt-plant-btn" id="plActPlant" onclick="plantOpen(\'new\',\'you\')">' + ico('sprig', 18) + 'Plant yours</button></div>';
+  }
+  var v = plantView(now);
+  var info = K.plant.SPECIES_INFO[p.species];
+  var rail = where === 'rail';
+  // The rail draws the shared 200 stage (growth reads from one size to the
+  // next); inline, near the top of You, a compact row (the plant framed tight).
+  var who = '<p class="plnt-name">' + escapeHtml(K.plant.plantCallName(p)) + '</p>'
+    + '<p class="plnt-meta">' + escapeHtml((p.name ? 'Your ' + info.lower + ' \u00b7 ' : '') + K.plant.growthShort(p.growth)) + '</p>'
+    + '<p class="plnt-look-line">' + escapeHtml(K.plant.GROWTH_LOOKS[p.growth]) + '</p>';
+  var html = head + (rail
+    ? '<div class="plnt-hero">' + plantDraw(v, 'you', 200, { fit: false, label: v.label, breathe: plantBreathe(where) }) + '</div><div class="plnt-who">' + who + '</div>'
+    : '<div class="plnt-row"><div class="plnt-hero">' + plantDraw(v, 'you', 112, { fit: true, label: v.label, breathe: plantBreathe(where) }) + '</div><div class="plnt-who">' + who + '</div></div>');
+  // The back-fill line, once (kept for this visit); then the rest line.
+  if (p.backfill && !p.backfill.seen) {
+    plantBackfillShown = { at: p.backfill.at, line: K.plant.backfillLine(p, p.backfill.growth) };
+    S.plant = Object.assign({}, p, { backfill: Object.assign({}, p.backfill, { seen: true }) });
+    saveState();
+  }
+  var notes = [];
+  if (plantBackfillShown && p.backfill && plantBackfillShown.at === p.backfill.at) notes.push(['From your study so far', plantBackfillShown.line]);
+  var rest = K.plant.restLine(p, v.lastDay, v.today, v.exam) || (v.resting ? K.plant.plantCallName(p) + ' is resting. Pick up whenever you’re ready.' : null);
+  if (rest) notes.push([v.exam === 'day' ? 'Exam day' : 'Resting', rest]);
+  notes.forEach(function (n) {
+    html += '<div class="plnt-note"><p class="plnt-note-h">' + escapeHtml(n[0]) + '</p><p class="plnt-note-m">' + escapeHtml(n[1]) + '</p></div>';
+  });
+  var f = plantFactsNow(now);
+  var next = f ? K.plant.nextGrowthSteps(p.growth, f) : null;
+  // Inline, the rules and the look sit behind one disclosure, so You still
+  // leads with progress on a phone.
+  if (!rail) html += '<details class="plnt-more"' + (plantMoreOpen ? ' open' : '') + ' ontoggle="plantMoreOpen=this.open"><summary class="plnt-more-s"><span>What grows it next, and its look</span>' + ico('chevron-down', 18) + '</summary>';
+  html += '<h3 class="plnt-sub">What grows it next' + (next ? '<span class="plnt-sub-m">' + K.plant.GROWTH_NAMES[next.growth] + '</span>' : '') + '</h3>';
+  if (!f) {
+    html += '<p class="plnt-meta">Working it out from your progress&hellip;</p>';
+  } else if (next) {
+    html += '<ul class="plnt-steps">' + next.steps.map(function (st) {
+      var pc = Math.round(Math.max(0, Math.min(1, st.progress)) * 100);
+      var word = st.progress >= 1 ? 'Done' : st.progress <= 0 ? 'Not yet' : pc + '%';
+      var spoken = st.progress >= 1 ? 'Done' : st.progress <= 0 ? 'Not yet' : pc + ' percent there';
+      return '<li class="plnt-step"><div class="plnt-step-row"><span class="plnt-step-t">' + escapeHtml(st.label) + '<span class="sr-only">. ' + spoken + '.</span></span>'
+        + '<span class="plnt-step-v' + (st.progress >= 1 ? ' done' : '') + '" aria-hidden="true">' + word + '</span></div>'
+        + '<div class="plnt-bar" aria-hidden="true"><span style="width:' + pc + '%"></span></div></li>';
+    }).join('') + '</ul>'
+      + '<p class="plnt-small">“Know the outline” counts: ' + escapeHtml(K.plant.SPREAD_EXPLAINER.charAt(0).toLowerCase() + K.plant.SPREAD_EXPLAINER.slice(1)) + '</p>'
+      + '<p class="plnt-small">Only real progress grows it: never taps, minutes, streaks or games. It never shrinks.</p>';
+  } else {
+    html += '<p class="plnt-meta">Fully grown, and in season. It keeps all of its growth.</p>';
+  }
+  var row = function (id, fn, t, m) {
+    return '<li><button type="button" class="you-row" id="' + id + '" onclick="' + fn + '"><span class="you-text"><span class="you-t">' + t + '</span><span class="you-m">' + m + '</span></span>'
+      + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button></li>';
+  };
+  html += '<h3 class="plnt-sub">Look</h3><ul class="you-list plnt-acts">'
+    + row('plActLook', "plantOpen('look','you')", 'Change its look', 'Colour, ground, planter and visitor')
+    + row('plActSpecies', "plantOpen('species','you')", 'Change plant', 'Same growth, new look.')
+    + row('plActName', "plantOpen('name','you')", 'Rename', p.name ? 'Now: ' + escapeHtml(p.name) : 'No name yet')
+    + '</ul>';
+  if (!rail) html += '</details>';
+  return html;
+}
+// Below the rail's breakpoint the plant sits near the top of You.
+function plantYouInline(show) {
+  var slot = document.getElementById('youPlant');
+  if (!slot) return;
+  var html = show ? plantYouHtml('inline') : '';
+  var key = html.replace(' plnt-breathe', '');
+  if (slot.getAttribute('data-key') !== key) {
+    slot.innerHTML = html;
+    slot.setAttribute('data-key', key);
+  }
+  slot.hidden = !html;
+}
+function plantRailSections() {
+  var html = plantYouHtml('rail');
+  return html ? [{ id: 'plant', key: html.replace(' plnt-breathe', ''), html: html }] : [];
+}
+// Draw every plant surface again (a choice changed, the theme, the notes or the script arrived).
+function plantRefresh() {
+  if (typeof S === 'undefined' || !S) return;
+  var slot = document.getElementById('tdPlant');
+  if (slot && S.activeTab === 'home') slot.innerHTML = plantSafe(plantTodayHtml);
+  try { railSync(); } catch (e) {}
+}
+
+// ── The plant dialog: plant yours, change plant, rename, change its look ──
+function plantOpen(mode, from) {
+  var K = plantApi();
+  if (!K) return;
+  var p = S.plant;
+  if (!p) mode = 'new';
+  plantDlg = { mode: mode, from: from || '', species: p ? p.species : 'oak', pick: Math.random() };
+  var modal = document.getElementById('changelogModal');
+  var title = { 'new': 'Choose what you’ll grow', species: 'Change plant', name: 'Rename', look: 'Change its look' }[mode];
+  var body = '';
+  if (mode === 'new') {
+    body += '<p class="plnt-meta">It grows only from real progress across the exam outline. Never from taps or time. It asks for nothing and never wilts.</p>';
+    if (from === 'today') body += '<p class="plnt-meta">Not now also hides the plant row on Today. You can plant one from You.</p>';
+  }
+  if (mode === 'species') body += '<p class="plnt-meta">Same growth, new look. Each is shown at Crown.</p>';
+  if (mode === 'new' || mode === 'species') body += plantPickHtml();
+  if (mode === 'new' || mode === 'name') body += plantNameHtml(mode === 'name' && p ? p.name : '');
+  if (mode === 'look') body += plantLookHtml();
+  var acts = mode === 'look'
+    ? '<button type="button" class="act-btn primary" onclick="plantClose()">Done</button>'
+    : '<button type="button" class="act-btn primary" onclick="plantConfirm()">' + (mode === 'new' ? 'Plant it' : mode === 'species' ? 'Use this plant' : 'Save name') + '</button>'
+      + '<button type="button" class="act-btn" onclick="plantCancel()">' + (mode === 'new' ? 'Not now' : 'Cancel') + '</button>';
+  modal.innerHTML = '<div class="changelog-overlay" onclick="plantClose(event)">'
+    + '<div class="changelog-modal plnt-modal" onclick="event.stopPropagation()">'
+    + '<div class="cl-title">' + title + '</div>' + body
+    + '<div class="plnt-dlg-acts">' + acts + '</div></div></div>';
+  if (mode === 'name') {
+    setTimeout(function () { var i = document.getElementById('plName'); if (i) { try { i.focus(); } catch (e) {} } }, 0);
+  }
+  if (mode === 'look') plantSyncKeepsakes();
+}
+// `ret`: where focus goes once the dialog has gone (an element id, or "none"
+// when the caller moves focus itself); otherwise back to the opener.
+function plantClose(e, ret) {
+  if (e && e.target !== e.currentTarget) return;
+  var holder = document.getElementById('changelogModal');
+  if (holder && ret) holder.setAttribute('data-return', ret);
+  plantDlg = null;
+  closeSummary();
+}
+function plantCancel() {
+  // "Not now" from Today's invitation also hides it there (the app's rule).
+  if (plantDlg && plantDlg.mode === 'new' && plantDlg.from === 'today') {
+    plantClose(null, 'none');
+    plantHidePrompt();
+    return;
+  }
+  plantClose();
+}
+function plantPickHtml() {
+  var K = plantApi(), sel = plantDlg.species;
+  var tiles = K.plant.PLANT_SPECIES.map(function (sp) {
+    var info = K.plant.SPECIES_INFO[sp];
+    return '<label class="plnt-tile"><input type="radio" class="plnt-radio" name="plSpecies" value="' + sp + '"' + (sp === sel ? ' checked' : '')
+      + ' onchange="plantPickSpecies(this.value)">'
+      + '<span class="plnt-tile-art">' + plantSvg({ species: sp, stage: PLANT_PREVIEW, size: 72, fit: true, lod: 'small', quiet: !K.plant.plantHasFace(S.plantSettings) }) + '</span>'
+      + '<span class="plnt-tile-n">' + escapeHtml(info.name) + '<span class="sr-only">. ' + escapeHtml(info.line) + '</span></span></label>';
+  }).join('');
+  var info = K.plant.SPECIES_INFO[sel];
+  return '<fieldset class="plnt-pick"><legend class="sr-only">Choose your plant</legend><div class="plnt-grid">' + tiles + '</div></fieldset>'
+    + '<p class="plnt-quote" id="plSpLine">' + escapeHtml(info.name + ': ' + info.line) + '</p>';
+}
+function plantNameHtml(value) {
+  var K = plantApi(), sp = plantDlg.species;
+  var idea = K.plant.suggestName(sp, plantDlg.pick);
+  return '<div class="plnt-name-f"><label class="plnt-field-l" for="plName">Name it</label>'
+    + '<input type="text" class="plnt-input" id="plName" maxlength="' + K.plant.MAX_NAME + '" autocomplete="off" spellcheck="false" autocapitalize="words"'
+    + ' placeholder="' + escapeHtml(idea) + '" value="' + escapeHtml(value) + '" aria-describedby="plNameHint"'
+    + ' onkeydown="if(event.key===\'Enter\'){event.preventDefault();plantConfirm();}">'
+    + '<div class="plnt-name-row"><p class="plnt-meta" id="plNameHint">Optional. Left empty, it is “Your ' + escapeHtml(K.plant.SPECIES_INFO[sp].lower) + '”.</p>'
+    + '<button type="button" class="plnt-ghost" onclick="plantAnotherName()" aria-label="Suggest another name">Another idea</button></div></div>';
+}
+function plantPickSpecies(sp) {
+  var K = plantApi();
+  if (!K || !plantDlg || !K.plant.isPlantSpecies(sp)) return;
+  var was = plantDlg.species;
+  plantDlg.species = sp;
+  var info = K.plant.SPECIES_INFO[sp];
+  var line = document.getElementById('plSpLine');
+  if (line) line.textContent = info.name + ': ' + info.line;
+  var inp = document.getElementById('plName');
+  if (inp) {
+    // A suggested name follows the species until the learner types their own.
+    if (K.plant.SPECIES_INFO[was].suggestions.indexOf(inp.value) >= 0) inp.value = K.plant.suggestName(sp, Math.random());
+    inp.placeholder = K.plant.suggestName(sp, plantDlg.pick);
+    var hint = document.getElementById('plNameHint');
+    if (hint) hint.textContent = 'Optional. Left empty, it is “Your ' + info.lower + '”.';
+  }
+}
+function plantAnotherName() {
+  var K = plantApi(), inp = document.getElementById('plName');
+  if (!K || !inp || !plantDlg) return;
+  var list = K.plant.SPECIES_INFO[plantDlg.species].suggestions;
+  var cur = inp.value || inp.placeholder;
+  var others = list.filter(function (n) { return n !== cur; });
+  inp.value = others.length ? others[Math.floor(Math.random() * others.length)] : list[0];
+  try { inp.focus(); } catch (e) {}
+}
+function plantConfirm() {
+  var K = plantApi();
+  if (!K || !plantDlg) return;
+  var d = plantDlg, now = Date.now();
+  var inp = document.getElementById('plName');
+  var name = inp ? K.plant.cleanPlantName(inp.value) : '';
+  if (d.mode === 'new') {
+    if (S.plant) { plantClose(); return; }   // a double tap plants once
+    if (d.waiting) return;                   // still working out the back-fill
+    // An existing learner's study sets the growth quietly (the back-fill), so
+    // the outline must be here first. Nothing studied yet: a seed, no outline needed.
+    if (!plantOutline() && plantHasStudy()) { plantWaitForNotes(d); return; }
+    var f = plantFactsNow(now);
+    S.plant = K.plant.plantNew(d.species, name, now, f ? K.plant.growthFor(f) : 1);
+    if (!S.plantSettings || typeof S.plantSettings !== 'object') S.plantSettings = {};
+    S.plantSettings.promptHidden = true;
+    saveState();
+    plantClose(null, 'none');
+    try { showToast('Planted.', 'info', 2400); } catch (e) {}
+    plantOpenYou();
+    return;
+  }
+  if (!S.plant) { plantClose(); return; }
+  if (d.mode === 'species') S.plant = K.plant.switchSpecies(S.plant, d.species);
+  else if (d.mode === 'name') S.plant = K.plant.renamePlant(S.plant, name);
+  saveState();
+  plantClose();
+  plantRefresh();
+}
+function plantHasStudy() {
+  if (S.answerLog && Object.keys(S.answerLog).length) return true;
+  var ids = S.answeredIds || {};
+  return Object.keys(ids).some(function (d) { return ids[d] && Object.keys(ids[d]).length > 0; });
+}
+// "Plant it" waits (disabled, "Planting…") until the notes arrive, then plants.
+// A failed load says so, with a retry; it never plants at the wrong growth.
+function plantWaitForNotes(d) {
+  var btn = document.querySelector('.plnt-dlg-acts .act-btn.primary');
+  var err = document.getElementById('plPlantErr');
+  if (err) err.remove();
+  d.waiting = true;
+  if (btn) { btn.disabled = true; btn.textContent = 'Planting\u2026'; }
+  var done = function (okay) {
+    if (plantDlg !== d || !document.querySelector('.plnt-modal')) return;   // closed meanwhile: nothing is planted
+    d.waiting = false;
+    if (okay) { plantConfirm(); return; }
+    if (btn) { btn.disabled = false; btn.textContent = 'Try again'; }
+    var acts = document.querySelector('.plnt-dlg-acts');
+    if (acts) acts.insertAdjacentHTML('beforebegin', '<p class="plnt-err" id="plPlantErr" role="alert">We could not load the study outline, so your plant can\u2019t start from your study so far yet. Check your connection and try again.</p>');
+  };
+  conceptsLoadFailed = false;   // a retry asks again
+  var tries = 0;
+  (function poll() {
+    if (CISA_NOTES_RAW) { done(true); return; }
+    if (conceptsLoadFailed || ++tries > 200) { done(false); return; }
+    setTimeout(poll, 100);
+  })();
+  try { loadConceptsData(function () {}); } catch (e) { conceptsLoadFailed = true; }
+}
+// The look: a live preview, then one radio group per slot. A tap applies at once.
+function plantLookHtml() {
+  var K = plantApi(), p = S.plant;
+  var unlocked = K.looks.unlockedLooks(p, []);
+  var open = function (id) { return unlocked.indexOf(id) >= 0; };
+  var resolved = K.looks.resolveLook(p.species, p.look, unlocked, K.looks.defaultKeepsakes(p, []));
+  var group = function (slot, legend, items, cur, art, note) {
+    return '<fieldset class="plnt-lk"><legend class="plnt-lk-h">' + legend + '</legend><div class="plnt-lk-grid">'
+      + items.map(function (it) {
+        var on = open(it.id);
+        return '<label class="plnt-opt' + (on ? '' : ' locked') + '"><input type="radio" class="plnt-radio" name="plLk-' + slot + '" value="' + it.id + '"'
+          + (it.id === cur ? ' checked' : '') + (on ? '' : ' disabled') + ' onchange="plantSetLook(\'' + slot + '\', this.value)">'
+          + (art ? '<span class="plnt-opt-art">' + art(it) + '</span>' : '')
+          + '<span class="plnt-opt-t"><span class="plnt-opt-n">' + escapeHtml(it.name) + '</span>'
+          + '<span class="plnt-opt-m">' + escapeHtml(on ? it.caption : K.looks.howToOpen(it, { badgesHidden: true })) + '</span></span></label>';
+      }).join('') + '</div>' + (note ? '<p class="plnt-small">' + note + '</p>' : '') + '</fieldset>';
+  };
+  var icon = function (b) { return '<svg width="36" height="36" viewBox="' + plantAttr(b.viewBox) + '" aria-hidden="true" focusable="false">' + plantNodeSvg(b.root) + '</svg>'; };
+  var cw = function (it) {
+    return plantSvg({ species: p.species, stage: Math.max(3, p.growth), size: 36, fit: true, lod: 'icon', look: { palette: it.palette } });
+  };
+  var planters = K.looks.plantersFor(p.species).filter(function (it) { return open(it.id); });
+  var keeps = K.looks.KEEPSAKE_ITEMS.filter(function (it) { return open(it.id); });
+  return '<div class="plnt-lk-prev" id="plLookPrev">' + plantLookPreview() + '</div>'
+    + group('colourway', 'Colour', K.looks.colourwaysFor(p.species), resolved.colourway, cw)
+    + group('ground', 'Ground', K.looks.GROUNDS, resolved.ground)
+    + group('planter', 'Planter', planters, resolved.planter, function (it) { return icon(K.art.planterIcon(it.id, p.species, plantTheme())); })
+    + group('visitor', 'Visitor', K.looks.VISITORS, resolved.visitor, null, 'Shown here. In the KaiSip app it perches on days you clear your plan.')
+    + (keeps.length ? '<fieldset class="plnt-lk" id="plKeeps"><legend class="plnt-lk-h">Keepsakes</legend><div class="plnt-lk-grid">' + keeps.map(function (it) {
+      var on = (resolved.keepsakes || []).indexOf(it.id) >= 0;
+      return '<label class="plnt-opt"><input type="checkbox" class="plnt-radio" value="' + it.id + '"' + (on ? ' checked' : '') + ' onchange="plantToggleKeepsake(this.value)">'
+        + '<span class="plnt-opt-art">' + icon(K.art.keepsakeIcon(it.id, plantTheme())) + '</span>'
+        + '<span class="plnt-opt-t"><span class="plnt-opt-n">' + escapeHtml(it.name) + '</span><span class="plnt-opt-m">' + escapeHtml(K.looks.skillLine(it)) + '</span></span></label>';
+    }).join('') + '</div><p class="plnt-small" id="plKeepsNote"></p></fieldset>' : '');
+}
+// The keepsake boxes follow the engine's list: three on show mutes the rest.
+function plantSyncKeepsakes() {
+  var K = plantApi(), box = document.getElementById('plKeeps');
+  if (!K || !box || !S.plant) return;
+  var unlocked = K.looks.unlockedLooks(S.plant, []);
+  var shown = K.looks.resolveLook(S.plant.species, S.plant.look, unlocked, K.looks.defaultKeepsakes(S.plant, [])).keepsakes;
+  var full = shown.length >= K.looks.MAX_SHOWN_KEEPSAKES;
+  Array.prototype.forEach.call(box.querySelectorAll('input[type="checkbox"]'), function (c) {
+    c.checked = shown.indexOf(c.value) >= 0;
+    c.parentNode.classList.toggle('muted', full && !c.checked);
+  });
+  var note = document.getElementById('plKeepsNote');
+  if (note) note.textContent = full ? 'Three on show. Tap one that\u2019s on show to put it away, then pick another.' : 'Show up to three.';
+}
+function plantLookPreview() {
+  var K = plantApi(), p = S.plant;
+  var v = plantView(Date.now());
+  var look = plantArtLook(v, 'you');
+  if (v.resolved.visitor !== 'no-visitor') look.visitor = v.resolved.visitor;
+  var parts = [K.plant.plantCallName(p)];
+  var item = K.looks.lookItem(v.resolved.colourway);
+  if (item) parts.push(item.name);
+  var pot = K.looks.lookItem(v.resolved.planter);
+  if (pot) parts.push(pot.id === 'native' ? 'in its usual home' : 'in a ' + pot.name.charAt(0).toLowerCase() + pot.name.slice(1));
+  return plantSvg({ species: p.species, stage: p.growth, scales: v.scales, look: look, mood: v.mood, quiet: !v.face, size: 140, fit: true, lod: 'small',
+    label: 'Preview: ' + parts.join(', ') + (look.visitor ? ', with a ' + look.visitor + ' visiting' : '') });
+}
+function plantSetLook(slot, id) {
+  var K = plantApi();
+  if (!K || !S.plant) return;
+  var change = {};
+  change[slot] = id;
+  S.plant = K.plant.withLook(S.plant, change);
+  saveState();
+  var prev = document.getElementById('plLookPrev');
+  if (prev) prev.innerHTML = plantLookPreview();
+  plantRefresh();
+}
+function plantToggleKeepsake(id) {
+  var K = plantApi();
+  if (!K || !S.plant) return;
+  var unlocked = K.looks.unlockedLooks(S.plant, []);
+  var shown = K.looks.resolveLook(S.plant.species, S.plant.look, unlocked, K.looks.defaultKeepsakes(S.plant, [])).keepsakes;
+  S.plant = K.plant.withLook(S.plant, { keepsakes: K.looks.toggleKeepsake(shown, id) });
+  saveState();
+  var prev = document.getElementById('plLookPrev');
+  if (prev) prev.innerHTML = plantLookPreview();
+  plantSyncKeepsakes();
+  plantRefresh();
+}
 
 // End cards drawn into the focused view (Time is up, a finished set, a
 // loading or empty state) keep the strip in step. This never switches
@@ -13650,6 +14607,13 @@ function doResetProgress() {
   S.studyDays = [];
   S.mockHistory = [];
   S.qNotes = {};
+  // The plant goes too: a fresh start plants again from the beginning.
+  S.plant = null;
+  S.plantSettings = {};
+  S.cleanLog = {};
+  S.readinessLog = [];
+  plantGrewShown = null;
+  plantBackfillShown = null;
   S.mockId = null;
   S.mockType = 'full';
   S.mockFlags = {};
@@ -13677,7 +14641,7 @@ function doResetProgress() {
   document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">&#128256;</div><div class="empty-title">Progress Reset</div><div class="empty-sub">All scores and history cleared. Fresh start!</div></div>';
   // A note field still open (or a save waiting to run) must not bring a
   // deleted note back; the rail redraws for the page as it is now.
-  try { railForgetNotes(); railSync(); } catch (e) {}
+  try { railForgetNotes(); railSync(); plantRefresh(); } catch (e) {}
 }
 
 // â”€â”€ RESET ALL DOMAINS â”€â”€
@@ -15627,6 +16591,8 @@ function showSessionSummary() {
 
 function closeSummary(e) {
   if (e && e.target !== e.currentTarget) return;
+  // A plant dialog closed by Esc or Done is over: a planting still waiting for the notes never happens.
+  plantDlg = null;
   document.getElementById("changelogModal").innerHTML = "";
 }
 
@@ -15845,6 +16811,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Your plant companion, now on the web',
+    items: [
+      { cat: 'new', text: 'Grow your own plant companion on the web, just like in the app. Pick one of 13 plants and give it a name. It grows only from real progress across the exam outline, and you will find it on Today and on You.' },
+      { cat: 'new', text: 'Change its look as it grows: colors, ground and planter unlock with your progress.' }
+    ]
+  },
+  {
+    version: 'v12.12',
     title: 'A clearer glossary and tidier topics',
     items: [
       { cat: 'improved', text: 'Every glossary definition is rewritten in clear, plain language, with what the IS auditor looks for where it helps.' },
@@ -16931,6 +17905,8 @@ function toggleDarkMode() {
   document.documentElement.setAttribute('data-theme', newTheme);
   syncThemeSwitch();
   try { localStorage.setItem('cisa_theme', newTheme); } catch(e){}
+  // The plant's ground shadow and resting dusk follow the theme.
+  try { plantRefresh(); } catch (e) {}
 }
 // The "Dark mode" switch on You shows the theme in use.
 function syncThemeSwitch() {
@@ -16998,6 +17974,7 @@ function loadExamMode() {
   var TITLE = '.onboard-title, .flag-title, .cl-title, .summary-title, .mock-confirm-head';
   var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]):not([hidden]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
   var openers = {};   // holder id -> the element that had focus before it opened
+  var openerIds = {}; // holder id -> that element's id (found again if it was redrawn)
   var order = [];     // holder ids, most recently opened last
 
   function boxOf(id) { var h = document.getElementById(id); return h ? h.querySelector(BOX) : null; }
@@ -17006,8 +17983,15 @@ function loadExamMode() {
     return null;
   }
   function visible(el) { return !!(el && el.isConnected && (el.offsetWidth || el.offsetHeight || el.getClientRects().length)); }
+  // A radio group is one Tab stop (its checked radio, or its first when none
+  // is checked), so Shift+Tab from the first control wraps to the real last.
   function focusables(box) {
-    return Array.prototype.filter.call(box.querySelectorAll(FOCUSABLE), visible);
+    return Array.prototype.filter.call(box.querySelectorAll(FOCUSABLE), visible).filter(function (el) {
+      if (el.type !== 'radio' || !el.name || el.checked) return true;
+      var group = box.querySelectorAll('input[type="radio"][name="' + el.name + '"]');
+      var checked = Array.prototype.some.call(group, function (r) { return r.checked; });
+      return !checked && group[0] === el;
+    });
   }
   function sync(id) {
     var box = boxOf(id);
@@ -17016,7 +18000,17 @@ function loadExamMode() {
       if (at >= 0) {
         order.splice(at, 1);
         var back = openers[id]; delete openers[id];
-        // The opener can be gone (a page that re-rendered): fall back to the
+        var backId = openerIds[id]; delete openerIds[id];
+        // A popup can name where focus goes next (data-return: an element id,
+        // or "none" when its own action already moved focus).
+        var holder = document.getElementById(id);
+        var ret = holder ? holder.getAttribute('data-return') : null;
+        if (holder) holder.removeAttribute('data-return');
+        if (ret === 'none') return;
+        if (ret && visible(document.getElementById(ret))) back = document.getElementById(ret);
+        // The opener can have been redrawn: find it again by its id.
+        if (!visible(back) && backId) back = document.getElementById(backId);
+        // Or gone (a page that re-rendered): fall back to the
         // current section in whichever nav is showing.
         if (!visible(back)) back = Array.prototype.filter.call(document.querySelectorAll('.sn-item[aria-current], .bnav-item[aria-current]'), visible)[0];
         if (back && !top()) { try { back.focus(); } catch (e) {} }
@@ -17024,7 +18018,7 @@ function loadExamMode() {
       return;
     }
     if (at >= 0 && box.getAttribute('role') === 'dialog') return;   // already set up
-    if (at < 0) { order.push(id); openers[id] = document.activeElement; }
+    if (at < 0) { order.push(id); openers[id] = document.activeElement; openerIds[id] = document.activeElement && document.activeElement.id || ''; }
     box.setAttribute('role', 'dialog');
     box.setAttribute('aria-modal', 'true');
     var title = box.querySelector(TITLE);
@@ -17083,6 +18077,16 @@ function loadExamMode() {
 // The principles too (small): Today's principle and tip links need them.
 (function preloadPrinciples() {
   try { loadPrinciplesData(); } catch(e){}
+})();
+
+// The plant script is deferred: draw the plant once it has arrived.
+(function plantWhenReady() {
+  var ready = function () {
+    try { if (S.plant) S.plant = plantValid(S.plant); plantRefresh(); } catch (e) {}
+  };
+  if (plantApi()) { ready(); return; }
+  var el = document.getElementById('kaisipPlantJs');
+  if (el) el.addEventListener('load', ready);
 })();
 
 (function initTheme() {

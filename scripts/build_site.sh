@@ -13,6 +13,9 @@
 #     - the pages: index.html, privacy.html, terms.html, support.html
 #     - assets/ (icons and, once added, the self-hosted fonts). Only image,
 #       font and stylesheet files: anything else in assets/ stops the build.
+#       One script is listed by name: assets/kaisip-plant.js, the plant
+#       companion (generated from the mobile app's plant code by
+#       mobile/scripts/build-web-plant.mjs). No other .js file is allowed.
 #     - the data the web app really loads (index.html fetches
 #       data/domain1..5.json, data/cisa_notes.json and
 #       data/mindset/principles.json; nothing else in data/)
@@ -76,6 +79,8 @@ while IFS= read -r -d '' f; do
   case "$name" in .*) fail "hidden file $f is not allowed in assets/";; esac
   # Font licences must travel with the fonts (the SIL Open Font Licence asks for it).
   case "$f" in assets/fonts/OFL-*.txt) mkdir -p "$OUT/$(dirname "$f")"; cp "$f" "$OUT/$f"; continue;; esac
+  # The one script on the list: the plant companion (index.html loads it).
+  case "$f" in assets/kaisip-plant.js) cp "$f" "$OUT/$f"; continue;; esac
   printf '%s' "$ext" | grep -Eqx "$ASSET_TYPES" || fail "$f: .$ext files are not allowed in assets/ (allowed: ${ASSET_TYPES//|/, })"
   mkdir -p "$OUT/$(dirname "$f")"
   cp "$f" "$OUT/$f"

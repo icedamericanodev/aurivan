@@ -30,7 +30,7 @@ Cloudflare publishes `_site/`:
 | File | Why |
 |---|---|
 | `index.html`, `privacy.html`, `terms.html`, `support.html` | The pages |
-| `assets/` (images, icons, fonts, stylesheets only) | Icons and fonts the pages use |
+| `assets/` (images, icons, fonts, stylesheets, plus one named script: `assets/kaisip-plant.js`) | Icons and fonts the pages use, and the plant companion (generated from the mobile app by `mobile/scripts/build-web-plant.mjs`) |
 | `data/domain1.json` … `data/domain5.json`, `data/cisa_notes.json`, `data/mindset/principles.json` | The data the web app loads |
 | `_headers`, `_redirects` | Security headers and friendly redirects |
 | `favicon.ico` | Browsers ask for it at the top level |

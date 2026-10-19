@@ -55,7 +55,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "expo lint",
     "test": "jest",
-    "check": "npm run typecheck && npm run lint && npm test"
+    "web-plant": "node scripts/build-web-plant.mjs",
+    "check": "npm run typecheck && npm run lint && npm test && node scripts/build-web-plant.mjs --check"
   },
   "private": true,
   "jest": {

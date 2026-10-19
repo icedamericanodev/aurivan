@@ -84,6 +84,41 @@ else
   status=1
 fi
 
+# 4b. The website's plant (assets/kaisip-plant.js) ---------------------------
+# A GENERATED copy of the mobile app's plant engine and art
+# (mobile/scripts/build-web-plant.mjs). Always checked here without npm: the
+# file names its source modules and a hash of their text, and index.html
+# loads it as ?v=<hash of the file>. With mobile/node_modules installed, the
+# full rebuild-and-compare runs too.
+printf "\nWebsite plant (assets/kaisip-plant.js):\n"
+if python3 - <<'PY'
+import hashlib, re, sys
+js = open('assets/kaisip-plant.js', 'rb').read()
+text = js.decode('utf8')
+ids = sorted(set(re.findall(r'^  defs\["([^"]+)"\] = function', text, re.M)))
+h = hashlib.sha256()
+for i in ids:
+    try:
+        src = open('mobile/' + i, 'rb').read()
+    except OSError:
+        print(f"  ✗ source mobile/{i} is missing"); sys.exit(1)
+    h.update(i.encode() + b"\n" + src + b"\n")
+want = re.search(r'api\.sourceHash = "([0-9a-f]+)"', text)
+if not ids or not want or want.group(1) != h.hexdigest()[:16]:
+    print("  ✗ out of date with the mobile plant sources: cd mobile && npm run web-plant"); sys.exit(1)
+ref = re.findall(r'assets/kaisip-plant\.js\?v=([0-9a-f]*)', open('index.html').read())
+if not ref or any(r != hashlib.sha256(js).hexdigest()[:10] for r in ref):
+    print("  ✗ index.html does not load this build (?v=): cd mobile && npm run web-plant"); sys.exit(1)
+print(f"  ✓ matches its {len(ids)} source modules; index.html loads this build")
+PY
+then
+  if [ -d mobile/node_modules/typescript ] && command -v node >/dev/null 2>&1; then
+    (cd mobile && node scripts/build-web-plant.mjs --check) | sed 's/^/  /' || status=1
+  fi
+else
+  status=1
+fi
+
 # 5. Originals (rebuild content) schema validation --------------------------
 # The new bank lives under data/originals/ during the rebuild and is validated
 # against the schema in RELAUNCH_CHECKLIST.md. Empty banks are valid (the
