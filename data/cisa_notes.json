@@ -11520,6 +11520,20 @@
                 ]
               },
               "example": "A university's nightly student-fee file to its finance system has a rejected-records queue of 1,400 items, some eight months old. Control totals compare only the records that posted, so the gap never shows. The IS auditor recommends reconciling the sender's totals to posted plus rejected records, and naming an owner who clears the queue within set days. The bursar agrees.",
+              "audit_focus": {
+                "review": [
+                  "Reperform the reconciliation for a sample of runs, using sender and receiver totals",
+                  "Retry a test message and confirm the receiver rejects the repeat",
+                  "Trace recent patches to connected systems to interface regression test results"
+                ],
+                "evidence": [
+                  "Signed reconciliations of sent, posted and rejected records, with differences explained",
+                  "Receiver error logs listing duplicates blocked before posting",
+                  "Suspense queue aging report with a named owner"
+                ],
+                "recommend": "Have the interface owner reconcile every run at the receiver, reject duplicates by message identifier and test interfaces after patches.",
+                "decides": "The business process owner decides how to treat unresolved differences"
+              },
               "isaca_rule": "Reconcile at the receiving end and act on every exception. Prevent duplicates before posting with unique message identifiers, because reconciliation only finds them afterward; sequence checks reveal gaps. Job status is never proof of completeness.",
               "exam_traps": [
                 {
@@ -15042,6 +15056,20 @@
                 "The AUP covers employees, contractors and temporary staff, and each user acknowledges it before getting access."
               ],
               "example": "A retailer's marketing team wants to train a sales model on customer support call recordings collected to resolve complaints. The recordings are well encrypted. The IS auditor notes that reuse for an incompatible purpose may breach the GDPR and recommends a documented compatibility assessment before any reuse.",
+              "audit_focus": {
+                "review": [
+                  "Compare each new use of personal data with its stated purpose and lawful basis",
+                  "Trace cross-border data flows to an adequacy decision or signed contractual clauses",
+                  "Match the access list to signed AUP acknowledgments, including non-employees"
+                ],
+                "evidence": [
+                  "Processing records listing purpose, lawful basis and retention per data set",
+                  "Consent logs showing a clear opt-in, not pre-ticked boxes",
+                  "Request log with identity checks and response dates"
+                ],
+                "recommend": "Have the privacy officer require a privacy impact assessment before any new use, transfer or monitoring.",
+                "decides": "The data owner, with legal advice, decides whether a new use proceeds"
+              },
               "isaca_rule": "Privacy limits the purpose, not just the access. Strong security does not make collection, reuse or transfer lawful; each needs its own lawful basis, and employee monitoring needs one in each country.",
               "exam_traps": [
                 {
@@ -16543,6 +16571,19 @@
                 "caption": "Symmetric encryption. The same secret key locks and unlocks the data, so both sides must already share it securely."
               },
               "example": "A hospital's legacy laboratory system still encrypts result files with Triple DES, and the vendor says the files are safe because nobody has complained. The IS auditor notes the cipher is retired and the key sits in the same folder as the files. The IS auditor recommends AES-256 in an authenticated mode on a dated plan approved by the lab director, with the key held in a separate key store.",
+              "audit_focus": {
+                "review": [
+                  "Inspect encryption settings for the cipher and mode, flagging DES, Triple DES or ECB",
+                  "Trace where each key is stored and how it reached the other party",
+                  "Compare keys across devices and partners to find one key shared by many"
+                ],
+                "evidence": [
+                  "Configuration exports showing algorithm, key length and mode for each system",
+                  "Key store records showing keys held apart from the data they protect"
+                ],
+                "recommend": "Have the system owner move to AES in an authenticated mode and hold keys separately from the data.",
+                "decides": "The data owner approves the migration date and accepts risk until then"
+              },
               "isaca_rule": "The algorithm is rarely the weak point; the key and how it is used are. Strong encryption with a badly stored key or a weak mode gives little protection. Use symmetric encryption for bulk data, with keys delivered and stored separately from the data.",
               "exam_traps": [
                 {
@@ -16742,6 +16783,19 @@
                 ]
               },
               "example": "A loyalty program hashes customer phone numbers with SHA-256 and shares them with an advertising partner, describing the data as anonymous. The IS auditor notes that phone numbers have few possible values, so the partner could hash every number and match the list. The IS auditor recommends treating the data as personal, replacing the hashes with tokens, and obtaining a privacy review before sharing.",
+              "audit_focus": {
+                "review": [
+                  "Inspect password storage settings for salt, a slow hash and no reversible encryption",
+                  "Compare published integrity checksums against the approved list of hash algorithms",
+                  "Trace card numbers through systems to confirm only the vault holds real values"
+                ],
+                "evidence": [
+                  "Sample of stored password records showing unique salts and the hash algorithm",
+                  "Data-flow map showing which systems hold tokens and which hold card numbers"
+                ],
+                "recommend": "Have application owners retire MD5 and SHA-1, fix weak password storage and tokenize card numbers where possible.",
+                "decides": "The data owner accepts any residual risk until fixes are in place"
+              },
               "isaca_rule": "Hashing gives integrity, not confidentiality; encryption gives confidentiality; tokenization removes the sensitive value from most systems. Store passwords as salted, slow hashes so they can be verified but never recovered.",
               "exam_traps": [
                 {
@@ -16795,6 +16849,20 @@
                 "caption": "Signing and checking. The sender signs a hash with their private key; the receiver checks it with the sender's public key against a fresh hash. A match shows the message is genuine and unchanged."
               },
               "example": "A city procurement office requires suppliers to email digitally signed bids and believes this keeps prices hidden from rival bidders. The IS auditor explains that a signature proves who sent a bid and that it was not changed, but leaves its content readable. The IS auditor recommends that suppliers also encrypt each bid with the office's public key until the deadline passes.",
+              "audit_focus": {
+                "review": [
+                  "Inspect who can use the signing key and where it is stored",
+                  "Trace how the verifier obtains each signer's public key",
+                  "Confirm sensitive signed content is also encrypted for the recipient"
+                ],
+                "evidence": [
+                  "Access list and usage logs for the signing key's protected store",
+                  "Verifier configuration showing public keys come from trusted certificates",
+                  "Signing records showing time-stamps and the person who approved each release"
+                ],
+                "recommend": "Have the release manager move signing keys to protected hardware and verify signatures only against trusted certificates.",
+                "decides": "The business owner decides which content needs encryption as well as signing"
+              },
               "isaca_rule": "A signature gives integrity, authentication and non-repudiation, never confidentiality. The sender signs with its own private key; the receiver verifies with the sender's public key. A signature is only as trustworthy as the custody of the signing key, which must stay under the signer's sole control.",
               "exam_traps": [
                 {
@@ -17654,6 +17722,20 @@
                 ]
               },
               "example": "A boutique hotel chain's back-office Wi-Fi uses a WPA2 personal passphrase, a hidden network name and a list of approved device addresses, which the IT contractor calls three layers of protection. The IS auditor explains that hidden names and hardware addresses are easily discovered and copied, and recommends WPA3 enterprise authentication tied to each employee's own account.",
+              "audit_focus": {
+                "review": [
+                  "Inspect controller settings for the security mode: WPA2 or WPA3, enterprise or personal",
+                  "Confirm laptop profiles enforce validation of the authentication server's certificate",
+                  "Map which internal systems each wireless network, including guest and scanner networks, can reach"
+                ],
+                "evidence": [
+                  "Wireless controller configuration export listing each network and its security mode",
+                  "Device profile settings pushed to company laptops",
+                  "Firewall rules showing what each wireless segment can reach"
+                ],
+                "recommend": "Have the network team adopt enterprise mode with individual logins and limit weak or guest networks.",
+                "decides": "The business owner accepts the risk of legacy devices until replacement"
+              },
               "isaca_rule": "Tie wireless access to individuals so it can be revoked and traced. Enterprise mode with server certificate validation is the standard for organizations; hiding the network name, address filtering and passphrase rotation are weak substitutes.",
               "exam_traps": [
                 {
@@ -18031,7 +18113,7 @@
               "definition": "Social engineering is manipulating people, rather than technology, into giving away access, information or money, usually by faking urgency, authority or trust.",
               "why_it_matters": "It works through people who already have access, so technical controls rarely see it. Business email compromise causes some of the largest cybercrime losses.",
               "how_it_works": [
-                "The attacker researches the target, then uses a pretext, such as an urgent executive request, to rush the victim.",
+                "The attacker researches the target, then uses a pretext, such as an urgent executive request.",
                 "Business email compromise (BEC) uses a spoofed, look-alike or hijacked mailbox to redirect payments or change supplier bank details.",
                 "Process controls defeat it: a callback control confirms payment changes through a number already on file, and changing bank details is split from releasing payments.",
                 "Sender Policy Framework (SPF), DomainKeys Identified Mail (DKIM) and a Domain-based Message Authentication, Reporting and Conformance (DMARC) reject policy block mail faking the exact domain, not look-alikes.",
@@ -18064,6 +18146,20 @@
                 }
               ],
               "example": "A caller posing as an external auditor phones a hospital's payroll office and asks for a staff salary list for sampling. The clerk emails it to the address the caller gives. The IS auditor recommends verifying every request for personal data through a known contact before release, and adding pretexting examples to payroll training.",
+              "audit_focus": {
+                "review": [
+                  "Sample recent supplier bank-detail changes for evidence of independent verification",
+                  "List users holding both supplier-maintenance and payment-release access",
+                  "Inspect the domain's DMARC record to confirm a reject policy is published"
+                ],
+                "evidence": [
+                  "Callback records showing who verified each change and how",
+                  "Payment release logs showing a second approver for changed accounts",
+                  "Email gateway reports of messages rejected under the DMARC policy"
+                ],
+                "recommend": "Have the finance manager split bank-detail changes from payment release and require callbacks for every change.",
+                "decides": "Senior management sets payment approval limits and accepts residual fraud risk"
+              },
               "isaca_rule": "Assume someone will be fooled, and design the process so one deceived person cannot cause the loss. Verify through a channel the attacker does not control, and segregate duties. If money is moving, stop the loss first.",
               "exam_traps": [
                 {
@@ -18146,6 +18242,20 @@
                 ]
               },
               "example": "A concert ticketing site limits each customer to four tickets through a check in the web page's script. Resellers send requests straight to the server and buy hundreds of seats. The IS auditor recommends enforcing the limit, and every input check that matters, on the server, with rejected requests logged for review.",
+              "audit_focus": {
+                "review": [
+                  "Inspect sample code for queries built by joining user input into SQL text",
+                  "Try changing a record identifier in a test account to reach another user's data",
+                  "Compare the API inventory with gateway traffic to find unlisted APIs"
+                ],
+                "evidence": [
+                  "Penetration test or code scan results, ranked by data exposure",
+                  "Code showing validation and permission checks run on the server",
+                  "API gateway inventory listing an owner for every API"
+                ],
+                "recommend": "Have the application owner fix flaws in code and route every API through the gateway.",
+                "decides": "The business owner accepts any residual risk while fixes are pending"
+              },
               "isaca_rule": "Fix application flaws at the source, in the code and on the server. Filters in front of the application are compensating layers that buy time. When ranking web risks, letting users reach data they are not entitled to outranks cosmetic weaknesses.",
               "exam_traps": [
                 {
@@ -18774,6 +18884,20 @@
                 }
               ],
               "example": "A hospital wants to know whether its new monitoring service would notice a real intrusion. The information security manager proposes a white-box test with the operations team warned in advance. The IS auditor notes that warned defenders cannot show whether detection works and recommends a double-blind test, authorized in writing by senior management.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the signed approval: who signed, which systems and which dates it covers",
+                  "Compare the test's type and starting point with the question management wants answered",
+                  "Trace each reported finding to a fix and a retest"
+                ],
+                "evidence": [
+                  "Test report stating knowledge level, notice level and starting point",
+                  "Remediation tracker with retest results for each finding",
+                  "Monitoring team's alert and escalation records from double-blind tests"
+                ],
+                "recommend": "Have the information security manager match each test type to its purpose and get signed approval first.",
+                "decides": "Senior management authorizes each test and accepts the risk of testing live systems"
+              },
               "isaca_rule": "Choose the test type from the question being asked. To test defenses deeply, share more knowledge; to test detection and response, tell defenders less. Every type needs written management authorization, an agreed scope and rules of engagement first.",
               "exam_traps": [
                 {

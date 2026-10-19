@@ -15,7 +15,7 @@ still without the field.
 ## Scope
 These are the 60 notes from the October 2026 curriculum coverage review whose
 `how_it_works` has no audit step, so the process lens rests on the example and
-the rule alone. Fifteen are done (pilot and N4); 45 remain.
+the rule alone. Twenty-four are done (pilot, N4 and N5); 36 remain.
 
 ## Priority order
 1. **Exam importance:** subtopics rated high-yield in the curriculum checklist come first.
@@ -42,17 +42,17 @@ line appears once on the card.
 | 10 | 4B3.1 | Backup Schemes, Rotation and the 3-2-1 Rule | high | 5 | Pilot (done; trimmed) |
 | 11 | 5A4.4 | Intrusion Detection, Prevention and Network Access Control | high | 5 | N4 (done; trimmed) |
 | 12 | 5A6.2 | Asymmetric Encryption and the Digital Envelope | high | 5 | N4 (done) |
-| 13 | 5B2.2* | Social Engineering and Business Email Compromise | high | 5 | N5 |
+| 13 | 5B2.2 | Social Engineering and Business Email Compromise | high | 5 | N5 (done; trimmed) |
 | 14 | 1A3.2 | Risk Assessment Methods | high | 5 | Pilot (done) |
-| 15 | 4A4.2 | Interface Controls | high | 4 | N5 |
-| 16 | 5A6.1 | Symmetric Encryption | high | 4 | N5 |
-| 17 | 5A6.3 | Hashing, Salting and Tokenization | high | 4 | N5 |
-| 18 | 5A6.4 | Digital Signatures | high | 4 | N5 |
-| 19 | 5A9.2 | Wireless Network Security | high | 4 | N5 |
-| 20 | 5B3.3 | Penetration Test Types and Knowledge Levels | high | 4 | N5 |
-| 21 | 5B2.3 | Web Application Attacks | high | 3 | N5 |
+| 15 | 4A4.2 | Interface Controls | high | 4 | N5 (done) |
+| 16 | 5A6.1 | Symmetric Encryption | high | 4 | N5 (done) |
+| 17 | 5A6.3 | Hashing, Salting and Tokenization | high | 4 | N5 (done) |
+| 18 | 5A6.4 | Digital Signatures | high | 4 | N5 (done) |
+| 19 | 5A9.2 | Wireless Network Security | high | 4 | N5 (done) |
+| 20 | 5B3.3 | Penetration Test Types and Knowledge Levels | high | 4 | N5 (done) |
+| 21 | 5B2.3 | Web Application Attacks | high | 3 | N5 (done) |
 | 22 | 3A4.2 | Application Controls: Input, Processing, Output | high | 2 | Pilot (done) |
-| 23 | 5A1.5 | Privacy Principles and Acceptable Use | medium | 12 | N5 |
+| 23 | 5A1.5 | Privacy Principles and Acceptable Use | medium | 12 | N5 (done) |
 | 24 | 5B5.3 | Breach Notification, Legal Duties and Third Parties | medium | 11 | N6 |
 | 25 | 4B5.3 | Invocation and Recovery Procedures | medium | 10 | N6 |
 | 26 | 5B2.5* | Credential and Endpoint Attacks | medium | 9 | N6 |
