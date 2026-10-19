@@ -7671,6 +7671,450 @@
       ],
       "_provenance": "Authored from concept: 'Sufficient and Appropriate Evidence. Hand-Compiled Spreadsheet'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B3.1 (Wave 3 coverage batch Q9: thin subtopic). Distinct from d1_102 and d1_183 (relevance of plentiful evidence) and d1_172 (relying on a system-generated report): tests that more entries from the same hand-compiled source cannot fix reliability. All scenario specifics invented for this question. Public sources: ISACA ITAF, PCAOB AS 1105.",
       "style_version": 2
+    },
+    {
+      "id": "d1_207",
+      "domain": 1,
+      "subtopic": "Online Audit Techniques. Tracing Loan Applications Through Approval",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bank's IS auditor must show how individual loan applications are altered as they pass through each stage of a multi-step approval system. Which online audit technique is MOST appropriate?",
+      "options": {
+        "A": "Embedded audit modules screening every application against set rules",
+        "B": "Audit hooks that flag applications above a chosen loan amount",
+        "C": "Snapshots recording chosen applications at set points in processing",
+        "D": "An integrated test facility processing fictitious applications alongside live ones"
+      },
+      "correct": "C",
+      "key_concept": "Snapshots record selected transactions at chosen processing points, building a step-by-step trail; embedded modules screen against rules instead.",
+      "pre_read": "Ask what the IS auditor needs to see: rule breaches, early alerts, or each stage of processing.",
+      "correct_explanation": "Snapshots capture the data of selected transactions at chosen points as they move through processing, building a step-by-step trail of how each one changed. That is exactly what the IS auditor must show. Embedded audit modules are the runner-up: they screen every application against the IS auditor's rules and log exceptions, but they record rule breaches, not a picture of each stage.",
+      "wrong_explanations": {
+        "A": "Embedded modules log applications that break the IS auditor's rules; they do not record what each application looked like at every processing stage.",
+        "B": "Audit hooks raise an early alert on the few applications that meet a trigger; they leave no stage-by-stage record of how applications change.",
+        "D": "An integrated test facility checks processing logic with fictitious records, so it cannot show how real loan applications were altered."
+      },
+      "tips": [
+        "Eliminate: B only alerts on applications that trip a trigger, and D follows fictitious test records rather than real applications.",
+        "Final two: C beats A because embedded modules report breaches of set rules, while snapshots record how each chosen application looked at each step.",
+        "Exam cue: a step-by-step picture of how a transaction was handled points to snapshots; screening every transaction points to embedded audit modules."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "related_concepts": [
+        "Snapshots",
+        "Embedded audit modules (EAM)",
+        "Audit trail",
+        "Online audit techniques"
+      ],
+      "_provenance": "Authored from concept: 'Online Audit Techniques. Tracing Loan Applications Through Approval'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B4.3 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_046 (embedded modules for full screening), d1_083 (continuous auditing design) and d1_153 (integrated test facility): tests snapshots as the technique for a step-by-step processing trail. All scenario specifics invented for this question. Public sources: ISACA ITAF, ISACA CISA Review Manual.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_208",
+      "domain": 1,
+      "subtopic": "Online Audit Techniques. Supplier Bank-Detail Changes",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A manufacturer's two-person IS audit team, with a small budget, wants an immediate alert whenever a supplier's bank details change and a payment follows within a day. Which online audit technique is BEST?",
+      "options": {
+        "A": "Audit hooks flagging bank-detail changes followed by payment",
+        "B": "Embedded audit modules screening every supplier payment against set rules",
+        "C": "Snapshots of supplier payments at each processing step",
+        "D": "Continuous and intermittent simulation rerunning selected supplier payments"
+      },
+      "correct": "A",
+      "key_concept": "Audit hooks flag a few selected high-risk transactions for early attention and are the simplest online audit technique to build.",
+      "pre_read": "Weigh coverage against cost: does the team need every transaction screened, or an early warning on one pattern?",
+      "correct_explanation": "Audit hooks are small triggers embedded in the application that flag selected suspicious transactions for immediate attention. Watching one known fraud pattern, a bank-detail change followed by a quick payment, is their ideal use, and they are the simplest online technique to build. Embedded audit modules are the runner-up: they screen every payment, but they are costly to build and run for a two-person team watching one pattern.",
+      "wrong_explanations": {
+        "B": "Embedded modules give full screening, but they are the most complex online technique to build and run, which a small team cannot justify for one pattern.",
+        "C": "Snapshots record payments at chosen processing points to build a trail; they do not raise an early alert when the risky sequence occurs.",
+        "D": "Simulation reprocesses payments to check the results; a payment to altered bank details would compute correctly, so no difference would be logged."
+      },
+      "tips": [
+        "Eliminate: C builds a processing trail rather than an alert, and D recomputes payments, which would process this one without any difference.",
+        "Final two: A beats B because hooks watch only the risky sequence and are simple to build, while embedded modules screen everything at a cost a small team cannot support.",
+        "Exam cue: a few specific red flags needing early warning point to audit hooks; screening every transaction points to embedded audit modules."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "related_concepts": [
+        "Audit hooks",
+        "Embedded audit modules (EAM)",
+        "Continuous and intermittent simulation (CIS)",
+        "Supplier master data fraud"
+      ],
+      "_provenance": "Authored from concept: 'Online Audit Techniques. Supplier Bank-Detail Changes'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B4.3 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_046 (embedded modules for full screening) and d1_173 (continuous auditing cost-benefit): tests audit hooks as the low-cost choice for early warning on one high-risk pattern. All scenario specifics invented for this question. Public sources: ISACA ITAF, ISACA CISA Review Manual.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_209",
+      "domain": 1,
+      "subtopic": "Online Audit Techniques. Application Team Maintenance Offer",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "To save audit effort, a bank's application team offers to maintain the embedded audit module that checks wire transfers, including its rules and exception file. Which response should the IS auditor consider BEST?",
+      "options": {
+        "A": "Accept, provided the team logs and reports every change it makes",
+        "B": "Retire the module and analyze wire extracts monthly with audit software",
+        "C": "Configure the module to hold flagged wires until the team reviews them",
+        "D": "Keep any change to the module's logic and outputs under audit control"
+      },
+      "correct": "D",
+      "key_concept": "Audit must control an embedded module's screening rules and exception file, or the auditee could alter the evidence used to audit it.",
+      "pre_read": "Ask who could change the evidence if the team being audited maintained the audit tool.",
+      "correct_explanation": "Evidence from an embedded audit module is reliable only if the auditee cannot change what it screens or what it reports. Keeping the screening logic and the exception file under audit control protects that evidence. Accepting with a change log is the runner-up: it adds a record, but the team being audited could still weaken a rule or delete its own exceptions before anyone reads the log.",
+      "wrong_explanations": {
+        "A": "A change log kept by the team being audited still lets it weaken rules or remove exceptions; recording a change does not prevent it.",
+        "B": "The problem is who controls the module, not the technique; monthly extracts would give up timely screening of wires for no gain.",
+        "C": "Holding wires is a preventive operational control that management owns; it turns the audit tool into part of the process being audited."
+      },
+      "tips": [
+        "Eliminate: B swaps a sound technique for slower extracts without fixing the real issue, and C makes the audit tool part of management's process.",
+        "Final two: D beats A because a change log only records edits; audit control stops the team from weakening the rules or exceptions at all.",
+        "Exam cue: whatever an audit tool screens or stores must stay under audit's control, never the auditee's."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISACA IT Audit Standard 1003 (Auditor Objectivity)",
+      "related_concepts": [
+        "Embedded audit modules (EAM)",
+        "Systems control audit review file (SCARF)",
+        "Evidence integrity",
+        "Auditor objectivity"
+      ],
+      "_provenance": "Authored from concept: 'Online Audit Techniques. Application Team Maintenance Offer'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B4.3 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_046 (choosing embedded modules) and d1_083 (design that avoids degrading production): tests that audit must keep control of the module's rules and exception file. All scenario specifics invented for this question. Public sources: ISACA ITAF, ISACA CISA Review Manual.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_210",
+      "domain": 1,
+      "subtopic": "Code of Professional Ethics. Regulator Request for Work Papers",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A regulator with statutory examination powers formally requests the bank's IS audit work papers on a breach, and management asks that they be withheld as confidential. What is the IS auditor's PRIMARY obligation?",
+      "options": {
+        "A": "Withhold the papers, since the ethics code requires strict confidentiality",
+        "B": "Release what the law requires, coordinated through the bank's legal counsel",
+        "C": "Provide the papers after removing the findings that management disputes",
+        "D": "Refer the regulator to bank management, which decides on any disclosure"
+      },
+      "correct": "B",
+      "key_concept": "Confidentiality under the ISACA Code yields to disclosure required by legal authority, made through proper channels and limited to what is required.",
+      "pre_read": "Ask whether the request carries legal authority, and what confidentiality allows when it does.",
+      "correct_explanation": "The ISACA Code of Professional Ethics protects information gained at work unless disclosure is required by legal authority. A regulator using statutory powers is such an authority, so the IS auditor, through the chief audit executive and the bank's legal counsel, releases only what the law requires. Withholding is the runner-up: it sounds protective, but confidentiality never overrides a lawful demand.",
+      "wrong_explanations": {
+        "A": "Confidentiality under the Code gives way when disclosure is required by legal authority; refusing a lawful demand puts the bank and the IS auditor in breach.",
+        "C": "Removing disputed findings alters the record and omits significant facts, breaching the Code's disclosure principle and misleading the regulator.",
+        "D": "A lawful demand does not depend on management's consent; leaving the decision to management lets the auditee block what the law requires."
+      },
+      "tips": [
+        "Eliminate: C removes facts from the record, and D lets management block what the law requires.",
+        "Final two: B beats A because the Code allows disclosure required by legal authority; confidentiality never overrides a lawful demand.",
+        "Exam cue: confidentiality protects information from inappropriate parties, not from a body with legal authority to demand it."
+      ],
+      "framework_ref": "ISACA Code of Professional Ethics; ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "related_concepts": [
+        "ISACA Code of Professional Ethics",
+        "Confidentiality",
+        "Disclosure required by legal authority",
+        "Work papers"
+      ],
+      "_provenance": "Authored from concept: 'Code of Professional Ethics. Regulator Request for Work Papers'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A1.2 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_031 (omitting a finding after an inducement): tests the confidentiality principle's exception for disclosure required by legal authority. All scenario specifics invented for this question. Public sources: ISACA Code of Professional Ethics, ISACA CISA Review Manual.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_211",
+      "domain": 1,
+      "subtopic": "Code of Professional Ethics. Shares in an Audit Client",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "During fieldwork at a software client, an IS auditor who owns shares in the client learns of a large contract loss that has not been announced. What should the IS auditor do FIRST?",
+      "options": {
+        "A": "Sell the shares at once to remove the conflict of interest",
+        "B": "Ask client management when the loss will be announced publicly",
+        "C": "Disclose the holding to the engagement leader and make no trades",
+        "D": "Keep the holding private, since personal investments are not audit matters"
+      },
+      "correct": "C",
+      "key_concept": "Information gained at work is never used for personal benefit; a personal interest in a client is disclosed so audit leadership can decide.",
+      "pre_read": "Check two duties at once: protecting confidential information and disclosing a threat to objectivity.",
+      "correct_explanation": "The ISACA Code of Professional Ethics bars using information gained at work for personal benefit, and a personal stake in the client threatens objectivity. Disclosing the holding lets audit leadership decide whether to reassign the work, and making no trades keeps the inside information unused. Selling at once is the runner-up: it looks like removing the conflict, but selling on unannounced bad news uses confidential information for personal gain.",
+      "wrong_explanations": {
+        "A": "Selling on unannounced bad news uses confidential client information for personal benefit, breaching the Code and possibly insider trading law.",
+        "B": "The announcement date does nothing to address the conflict, and asking for it seeks more inside information the IS auditor has no need for.",
+        "D": "A personal stake in the client threatens objectivity; hiding it denies audit leadership the chance to decide whether the IS auditor should continue."
+      },
+      "tips": [
+        "Eliminate: B seeks the announcement date, which solves nothing, and D hides a stake that threatens objectivity.",
+        "Final two: C beats A because selling now profits from unannounced news, while disclosure lets leadership manage the conflict without any trade.",
+        "Exam cue: removing a conflict by acting on confidential information is still a breach of the Code."
+      ],
+      "framework_ref": "ISACA Code of Professional Ethics; ISACA IT Audit Standard 1003 (Auditor Objectivity)",
+      "related_concepts": [
+        "ISACA Code of Professional Ethics",
+        "Confidentiality",
+        "Conflict of interest",
+        "Auditor objectivity"
+      ],
+      "_provenance": "Authored from concept: 'Code of Professional Ethics. Shares in an Audit Client'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A1.2 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_031 (disclosure of significant facts) and the independence items d1_002 and d1_125: tests that information gained at work is never used for personal benefit, even to remove a conflict. All scenario specifics invented for this question. Public sources: ISACA Code of Professional Ethics, ISACA ITAF.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_212",
+      "domain": 1,
+      "subtopic": "Engagement Types. Service Desk Speed and Cost",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A logistics firm's IT director asks IS audit whether the IT service desk resolves incidents quickly and at reasonable cost, measured against management's own targets. Which engagement is MOST appropriate?",
+      "options": {
+        "A": "A compliance audit of the desk against the IT service management policy",
+        "B": "A financial audit of the accuracy of recorded service desk costs",
+        "C": "An IS audit of access and change controls in the ticketing tool",
+        "D": "An operational audit of the desk's efficiency and effectiveness"
+      },
+      "correct": "D",
+      "key_concept": "The criteria name the audit type: efficiency and effectiveness against management's own goals call for an operational audit.",
+      "pre_read": "Identify the criteria first: laws or policy, fair presentation, system controls, or management's performance goals.",
+      "correct_explanation": "The question is whether the desk works quickly and economically, judged against goals management set. That is an operational audit: efficiency and effectiveness measured against management's criteria. A compliance audit against the service management policy is the runner-up: it tests whether staff follow the prescribed steps, but a desk can follow every step and still be slow and costly.",
+      "wrong_explanations": {
+        "A": "A compliance audit tests conformity with the policy's steps; a desk can follow every step and still miss management's speed and cost goals.",
+        "B": "A financial audit tests whether costs are fairly recorded, not whether the desk resolves incidents efficiently against management's goals.",
+        "C": "Controls over the ticketing tool protect its data, but they say nothing about how quickly or economically incidents are resolved."
+      },
+      "tips": [
+        "Eliminate: B checks that costs are recorded accurately, and C checks controls over the tool rather than how the desk performs.",
+        "Final two: D beats A because the criteria are management's performance goals; following every policy step does not make the desk fast or economical.",
+        "Exam cue: efficiency, effectiveness or management's own goals as the criteria signal an operational audit."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1008 (Criteria); ISACA IT Audit Standard 1203 (Engagement Planning)",
+      "related_concepts": [
+        "Operational audit",
+        "Compliance audit",
+        "Audit criteria",
+        "Efficiency and effectiveness"
+      ],
+      "_provenance": "Authored from concept: 'Engagement Types. Service Desk Speed and Cost'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A2.1 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_158 (regulatory criteria call for a compliance audit): tests the reverse case, where management's own performance goals as criteria call for an operational audit. All scenario specifics invented for this question. Public sources: ISACA ITAF, ISACA CISA Review Manual.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_213",
+      "domain": 1,
+      "subtopic": "Engagement Types. Suspected Payroll Fraud",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A hospital's management suspects a payroll administrator of adding fictitious employees and plans dismissal and prosecution if confirmed. Which engagement type is MOST LIKELY to meet management's objective?",
+      "options": {
+        "A": "A forensic audit of payroll records and system activity",
+        "B": "An IS audit of access controls over the payroll application",
+        "C": "A compliance audit of payroll processing against the hiring policy",
+        "D": "A financial audit of whether payroll expense is fairly stated"
+      },
+      "correct": "A",
+      "key_concept": "When the objective is evidence of wrongdoing for legal action, the engagement is forensic, with evidence handled to withstand legal challenge.",
+      "pre_read": "Ask what the results will be used for: assurance on controls, or proof for dismissal and prosecution.",
+      "correct_explanation": "The objective is to establish who did what, with evidence fit for dismissal and prosecution. That is a forensic audit: evidence is collected, preserved and documented under chain of custody, with specialists and legal counsel involved, so it can withstand legal challenge. An IS audit of payroll access controls is the runner-up: it shows how fictitious employees could be added, but not, to legal standards, who added them.",
+      "wrong_explanations": {
+        "B": "Access control testing shows whether the weakness exists, not who exploited it, and its evidence is not gathered to legal standards.",
+        "C": "Testing conformity with the hiring policy finds procedural gaps; it does not establish wrongdoing by a named person for legal action.",
+        "D": "Fictitious pay may be too small to misstate the financial statements, and fair presentation says nothing about who committed the fraud."
+      },
+      "tips": [
+        "Eliminate: C measures conformity with policy, and D tests fair presentation; neither establishes who committed the wrongdoing.",
+        "Final two: A beats B because control testing shows how the fraud was possible, while forensic work proves who did it to legal standards.",
+        "Exam cue: litigation, prosecution or dismissal as the goal signals forensic work and chain-of-custody evidence handling."
+      ],
+      "framework_ref": "ISACA IS Audit and Assurance Standard 1207 (Irregularity and Illegal Acts); ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence); ACFE Fraud Examiners Manual",
+      "related_concepts": [
+        "Forensic audit",
+        "Specialized audits",
+        "Chain of custody",
+        "Ghost employees"
+      ],
+      "_provenance": "Authored from concept: 'Engagement Types. Suspected Payroll Fraud'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A2.1 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_070 (engaging forensic specialists), d1_084 (chain of custody) and d1_141 (the IS auditor's role beside a forensic firm): tests choosing the forensic audit type from an objective of legal action. All scenario specifics invented for this question. Public sources: ISACA ITAF, ISO/IEC 27037, ACFE Fraud Examiners Manual.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_214",
+      "domain": 1,
+      "subtopic": "Interviews and Observation. Announced Walkthrough of Visitor Checks",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "During an announced walkthrough, an IS auditor watches a colocation provider's guard check each visitor's photo ID and note it in the visitor register. Which further step BEST supports concluding the check operated all year?",
+      "options": {
+        "A": "Repeat the observation without notice on a different day this quarter",
+        "B": "Inspect sign-in records sampled across the year for ID details",
+        "C": "Ask the guards how often they skip the ID check when busy",
+        "D": "Review the visitor access procedure for a clearly written ID step"
+      },
+      "correct": "B",
+      "key_concept": "Observation shows a moment and invites best behavior; records sampled across the period corroborate that a control operated throughout.",
+      "pre_read": "Ask what evidence covers the whole period, not just the day the IS auditor was watching.",
+      "correct_explanation": "Observation shows only what happened while the IS auditor watched, and an announced visit invites best behavior. Sign-in records sampled across the year are records of the check being performed throughout the period, so they corroborate what was seen. An unannounced repeat observation is the runner-up: it reduces the observer effect, but it still covers a single day, not the year.",
+      "wrong_explanations": {
+        "A": "A surprise visit reduces the observer effect, but it still shows one day; it cannot show the check operated across the whole year.",
+        "C": "The guards' own account is testimonial evidence from the people performing the control; it needs corroboration before it supports a conclusion.",
+        "D": "A well-written procedure shows the control's design, not that guards actually performed it on each visit throughout the year."
+      },
+      "tips": [
+        "Eliminate: C relies on the guards' own account, and D shows how the control is designed rather than whether it operated.",
+        "Final two: B beats A because a second observation still covers one day, while records sampled across the year cover the period.",
+        "Exam cue: observation and interviews find leads; a conclusion about a whole period needs records or reperformance covering it."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "related_concepts": [
+        "Observation",
+        "Observer effect",
+        "Corroboration",
+        "Operating effectiveness"
+      ],
+      "_provenance": "Authored from concept: 'Interviews and Observation. Announced Walkthrough of Visitor Checks'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B3.3 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_025 (preparing open-ended interviews) and d1_132 (walkthrough versus self-assessment): tests that observation covers one moment and must be corroborated with records across the period. All scenario specifics invented for this question. Public sources: ISACA ITAF, ISACA CISA Review Manual.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_215",
+      "domain": 1,
+      "subtopic": "Other Professional Standards. Missed Government Peer Review",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A state agency's IS audit unit, bound by ISACA's IT Audit Framework and government auditing standards, missed the government standards' required external peer review after a budget cut. What should the audit director do FIRST?",
+      "options": {
+        "A": "Document the missed peer review in the unit's quality file and proceed",
+        "B": "Hold every audit report until a peer review is completed",
+        "C": "Have the unit's own quality lead carry out the peer review instead",
+        "D": "Disclose the nonconformance and recovery plan to those charged with governance"
+      },
+      "correct": "D",
+      "key_concept": "When a committed standard's requirement cannot be met, the nonconformance is disclosed to the audit committee with a plan to restore conformance.",
+      "pre_read": "Ask who relies on the unit's claim to meet its standards, and who must hear when it does not.",
+      "correct_explanation": "When a requirement of a committed standard cannot be met, the nonconformance is disclosed to those charged with governance, so the audit committee can judge its effect on reliance and support a fix. Pairing it with a plan to complete the review shows how conformance will be restored. Recording it in the quality file is the runner-up: it documents the gap but keeps it from the people who rely on the unit's work.",
+      "wrong_explanations": {
+        "A": "A note in the quality file documents the gap but hides it from the audit committee, which relies on the unit's claim to conform.",
+        "B": "Stopping every report harms stakeholders who need timely results and still leaves the nonconformance unreported to governance.",
+        "C": "An external peer review must come from outside the unit; a review by its own quality lead cannot meet that requirement."
+      },
+      "tips": [
+        "Eliminate: B halts reporting without telling governance anything, and C replaces an external review with an internal one.",
+        "Final two: D beats A because documenting the gap privately still leaves the audit committee relying on a conformance claim that is untrue.",
+        "Exam cue: when a committed standard cannot be met, expect disclosure to governance, not a quiet workaround."
+      ],
+      "framework_ref": "U.S. GAO Government Auditing Standards: 2024 Revision (GAO-24-106786); ISACA IT Audit Standard 1001 (Audit Charter)",
+      "related_concepts": [
+        "Nonconformance",
+        "Peer review",
+        "Government auditing standards",
+        "Audit committee reporting"
+      ],
+      "_provenance": "Authored from concept: 'Other Professional Standards. Missed Government Peer Review'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A1.6 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_170 (apply the more rigorous of two standards) and d1_030 and d1_065 (external assessment cadence): tests disclosing a nonconformance with a committed standard to the audit committee. All scenario specifics invented for this question. Public sources: GAO Government Auditing Standards (2024 Revision), ISACA ITAF.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_216",
+      "domain": 1,
+      "subtopic": "Readiness and Maturity Assessments. First Card Data Security Assessment",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A retailer faces its first Payment Card Industry Data Security Standard (PCI DSS) assessment in six months, with several controls still being built. Which engagement should the IS auditor propose as MOST useful?",
+      "options": {
+        "A": "An operational audit of how efficiently payments are processed",
+        "B": "A readiness review identifying gaps before the assessment",
+        "C": "An assurance audit testing how the controls operated over a period",
+        "D": "A maturity rating of security processes on a zero-to-five scale"
+      },
+      "correct": "B",
+      "key_concept": "Before a first formal assessment, a readiness review finds design gaps against the target standard; it gives no assurance that controls operate.",
+      "pre_read": "Match the work to the question: are we ready, how capable are we, or do the controls work?",
+      "correct_explanation": "With the formal assessment six months away and controls still being built, management needs to know what is missing. A readiness review compares current control design with the standard's requirements and produces a gap list to fix in time. An assurance audit is the runner-up: it is what eventually proves controls work, but controls still under construction have no period of operation to test.",
+      "wrong_explanations": {
+        "A": "Efficiency of payment processing is a different question; it does not show whether controls meet the standard's requirements.",
+        "C": "Testing operation over a period needs controls that have been running; several are still being built, so the test would be premature.",
+        "D": "A maturity rating shows how well processes are managed in general, not which specific requirements of the standard are still unmet."
+      },
+      "tips": [
+        "Eliminate: A measures efficiency, not conformity with the standard, and D rates general process capability rather than listing specific gaps.",
+        "Final two: B beats C because controls still being built cannot be tested over a period; a gap list is what management can act on now.",
+        "Exam cue: preparing for a coming audit or assessment points to a readiness review; proving controls work points to an assurance audit."
+      ],
+      "framework_ref": "PCI DSS v4.0.1; ISACA IT Audit Standard 1008 (Criteria)",
+      "related_concepts": [
+        "Readiness assessment",
+        "Gap analysis",
+        "Assurance audit",
+        "Maturity assessment"
+      ],
+      "_provenance": "Authored from concept: 'Readiness and Maturity Assessments. First Card Data Security Assessment'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A2.3 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_188 (maturity assessment offered in place of assurance) and d2_168 (capability assessment to set targets): tests choosing a readiness review when controls are still being built. All scenario specifics invented for this question. Public sources: PCI Security Standards Council PCI DSS v4.0.1, ISACA ITAF.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_217",
+      "domain": 1,
+      "subtopic": "Continuous Improvement. Recurring Review Gaps",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "After quality reviews repeatedly found work papers without evidence of supervisory review, the audit function added a reviewer sign-off step to its template and briefed managers. What is the PRIMARY indicator these actions worked?",
+      "options": {
+        "A": "How often later inspections find work papers lacking review",
+        "B": "The share of managers who attended the briefing",
+        "C": "The average time from end of fieldwork to report issuance",
+        "D": "The share of new work papers prepared on the revised template"
+      },
+      "correct": "A",
+      "key_concept": "Measure an improvement action by whether the targeted defect stops recurring, not by whether the action was carried out.",
+      "pre_read": "Separate measures of activity from measures of the outcome the action was meant to change.",
+      "correct_explanation": "Improvement actions are judged by outcomes: if the sign-off step and the briefing worked, later quality reviews should find work papers with missing review evidence less often. That recurrence rate measures the problem itself. Briefing attendance is the runner-up: it confirms managers heard the message, but they can attend and still skip the review, so it measures activity rather than results.",
+      "wrong_explanations": {
+        "B": "Attendance shows the briefing was delivered, not that managers now review and sign off work papers; it measures activity, not results.",
+        "C": "Report timeliness tracks speed; faster reports could even mean less review, and it says nothing about missing review evidence.",
+        "D": "Use of the revised template shows the form was adopted, not that reviewers actually completed the sign-off step it contains."
+      },
+      "tips": [
+        "Eliminate: C tracks reporting speed, and D tracks template use; neither shows whether review evidence is still missing.",
+        "Final two: A beats B because attending a briefing is activity; a falling recurrence rate shows the missing review evidence is being fixed.",
+        "Exam cue: to show an improvement worked, pick the measure of the original problem, not of the effort spent."
+      ],
+      "framework_ref": "IIA Global Internal Audit Standards (2024), Standard 12.2 (Performance Measurement); IIA Global Internal Audit Standards (2024), Standard 12.1 (Internal Quality Assessment)",
+      "related_concepts": [
+        "Continuous improvement",
+        "Quality assurance and improvement program (QAIP)",
+        "Supervisory review",
+        "Outcome measures"
+      ],
+      "_provenance": "Authored from concept: 'Continuous Improvement. Recurring Review Gaps'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B6.4 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_044 (training based on gaps against the audit plan) and d1_076 and d1_099 (designing internal assessment and ongoing monitoring): tests measuring improvement by the outcome, not the activity. All scenario specifics invented for this question. Public sources: IIA Global Internal Audit Standards (2024).",
+      "style_version": 2
+    },
+    {
+      "id": "d1_218",
+      "domain": 1,
+      "subtopic": "Using AI in the Audit. Vendor Model Retrained",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Last year, an insurer's IS audit team validated an artificial intelligence tool that scores journal entries, and the vendor has since retrained the model. What is the GREATEST risk in relying on last year's validation?",
+      "options": {
+        "A": "The vendor may raise the tool's license fee during the audit",
+        "B": "The vendor may have retrained the model on other clients' entries",
+        "C": "The updated tool may now miss improper entries it once caught",
+        "D": "Results may not match the model version recorded in the work papers"
+      },
+      "correct": "C",
+      "key_concept": "Validating an artificial intelligence (AI) tool covers only the version tested; after retraining, revalidate on known outcomes because missed items stay invisible.",
+      "pre_read": "Ask which failure the IS auditor would never see: a visible extra flag, or a silent miss.",
+      "correct_explanation": "Validation holds only for the model that was tested. After retraining, the tool may miss improper entries it used to catch, and misses are invisible: nothing flags them, so the IS auditor could conclude that entries are clean. The tool must be revalidated on data with known outcomes. A version mismatch with the work papers is the runner-up: it weakens reproducibility, but it can be documented.",
+      "wrong_explanations": {
+        "A": "A fee increase is a budget matter; it does not affect whether the tool's output is reliable audit evidence.",
+        "B": "Use of other clients' data is a contract and confidentiality matter for the vendor; it does not by itself make the tool's output unreliable audit evidence.",
+        "D": "A version mismatch weakens reproducibility and should be documented, but it is less serious than the tool silently missing improper entries."
+      },
+      "tips": [
+        "Eliminate: A is a budget matter, and B is a vendor data-handling issue rather than a threat to the evidence.",
+        "Final two: C beats D because a version mismatch can be documented, while silent misses let improper entries pass as clean.",
+        "Exam cue: when an automated audit tool changes, its earlier validation no longer stands; revalidate before relying on its output."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST AI Risk Management Framework (AI RMF 1.0)",
+      "related_concepts": [
+        "AI in the audit",
+        "Tool validation",
+        "False negatives",
+        "Reproducibility"
+      ],
+      "_provenance": "Authored from concept: 'Using AI in the Audit. Vendor Model Retrained'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B4.5 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_018 (unexplainable vendor model) and d1_085 and d1_108 (drift in an audited model): tests revalidating the audit team's own AI tool after the vendor retrains it. All scenario specifics invented for this question. Public sources: ISACA ITAF, NIST AI RMF 1.0.",
+      "style_version": 2
     }
   ]
 }

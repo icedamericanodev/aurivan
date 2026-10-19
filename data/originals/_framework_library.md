@@ -2019,3 +2019,9 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - ISO/IEC 42001:2023 Annex A control A.6.2.8 (AI system recording of event logs)
 - ISO/IEC 25010:2023 (Product Quality Model)
 - OWASP ASVS 5.0 V16 (Security Logging and Error Handling)
+
+## Added with Wave 3 coverage batch Q10 (Domain 1, Oct 2026)
+
+- U.S. GAO Government Auditing Standards: 2024 Revision
+- PCI DSS v4.0.1
+- IIA Global Internal Audit Standards (2024), Standard 12.2 (Performance Measurement)
