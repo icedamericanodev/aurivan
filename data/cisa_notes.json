@@ -9872,6 +9872,20 @@
                 ]
               },
               "example": "A ride-hailing app's reliability target allows 40 minutes of failed requests a month. By mid-month, three faulty releases have used 55 minutes, yet the product team plans two more feature releases that week. The IS auditor notes that the agreed error-budget policy pauses non-essential releases once the budget is spent, and recommends that the release manager enforce it and put reliability fixes first.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the rollback plan's last test date and what it restored",
+                  "Trace a failed staged release to when it was halted and rolled back",
+                  "Compare error-budget use with releases shipped after the budget ran out"
+                ],
+                "evidence": [
+                  "Deployment tool logs showing rollout stages, halts and rollbacks with times",
+                  "Monitoring data showing error rates at each rollout stage",
+                  "Change tickets showing releases approved during a budget freeze"
+                ],
+                "recommend": "Have the release manager stage risky releases, halt on agreed error limits and test rollback plans before go-live.",
+                "decides": "The service owner decides when non-essential releases resume after a budget freeze"
+              },
               "isaca_rule": "When a release starts failing, stop the spread and restore service first, following the tested playbook; root cause comes after. A rollback plan counts only if it is tested, time-bound and restores data and configuration while preserving valid new data.",
               "exam_traps": [
                 {
@@ -11797,7 +11811,21 @@
                   }
                 ]
               },
-              "example": "A ticketing platform's monthly outages fell from six to two, but each now lasts five hours instead of one. The service owner calls the platform more available. The IS auditor shows that monthly downtime rose from six to ten hours: failures are rarer, but repairs are slower. She recommends tracking MTBF and MTTR together, and the operations director agrees.",
+              "example": "A ticketing platform's monthly outages fell from six to two, but each now lasts five hours instead of one. The service owner calls the platform more available. The IS auditor shows that monthly downtime rose from six to ten hours: failures are rarer, but repairs are slower. She recommends tracking MTBF and MTTR together.",
+              "audit_focus": {
+                "review": [
+                  "Compare the availability target with the business impact analysis for the service",
+                  "Reperform the availability calculation from incident records over agreed service hours",
+                  "Compare component monitoring coverage with the network map to find blind spots"
+                ],
+                "evidence": [
+                  "Synthetic transaction results showing whether customers could complete work",
+                  "Incident records with start, end and repair times for each outage",
+                  "Service level agreement listing service hours and allowed exclusions"
+                ],
+                "recommend": "Have the service owner add synthetic transaction monitoring and report availability against agreed service hours.",
+                "decides": "Business process owners set the availability target from business impact"
+              },
               "isaca_rule": "Availability is defined by the business and measured as users experience it, over the hours they need the service. When component dashboards report normal service but customers cannot complete transactions, trust the end-to-end measure.",
               "exam_traps": [
                 {
@@ -13007,6 +13035,20 @@
                 ]
               },
               "example": "Two booking agents at a ferry operator sell the last cabin seconds apart, and both customers get confirmations. The IS auditor finds the reservation program reads availability, then writes the sale, without locking the record. She reports a missing isolation control and recommends locking within a transaction. The systems owner schedules the fix.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the database schema for primary keys, foreign keys and enforced constraints",
+                  "Trace interface loads that write straight to tables and bypass screen checks",
+                  "Reperform a transfer that fails midway in testing and confirm nothing commits"
+                ],
+                "evidence": [
+                  "Database catalog export listing keys, constraints and their enforcement status",
+                  "Query results counting orphan records and invalid values",
+                  "Reconciliation reports for denormalized copies, with mismatches fixed"
+                ],
+                "recommend": "Have the database administrator move integrity rules into the database and schedule reconciliations for duplicated data.",
+                "decides": "The data owner approves any trade of integrity checks for speed"
+              },
               "isaca_rule": "Enforce integrity as close to the data as possible: keys, constraints and transactions in the database rather than in each program. Where a design trades integrity for speed, expect compensating checks such as reconciliations.",
               "exam_traps": [
                 {
@@ -13570,7 +13612,21 @@
                   }
                 ]
               },
-              "example": "A food processor runs its plant-scheduling system on two server clusters in separate buildings, and the IT manager reports no single point of failure. The IS auditor finds both buildings take power through one shared switchgear room. She reports the common-cause exposure and asks for a test with one power feed cut before accepting the claim. The plant director decides.",
+              "example": "A food processor runs its plant-scheduling system on two server clusters in separate buildings, and the IT manager reports no single point of failure. The IS auditor finds both buildings take power through one shared switchgear room. She reports the common-cause exposure and asks for a test with one power feed cut before accepting the claim.",
+              "audit_focus": {
+                "review": [
+                  "Trace each critical service's path for shared power, cable routes and providers",
+                  "Observe a controlled fault-injection test of a critical dependency",
+                  "Inspect the degraded-mode procedure for which features stop and who triggers it"
+                ],
+                "evidence": [
+                  "Monitoring records of past component failures and how service held up",
+                  "Facility and carrier records showing separate power feeds and cable routes",
+                  "Architecture records listing each single point of failure and its partner"
+                ],
+                "recommend": "Have the infrastructure manager remove shared dependencies, add circuit breakers and test failover on a schedule.",
+                "decides": "The business owner decides which features may stop in degraded mode"
+              },
               "isaca_rule": "Redundancy counts only when it is independent and tested. The IS auditor looks for hidden shared dependencies, such as one cable route, power grid or provider, and asks for fault-injection or failover evidence before accepting a resilience claim.",
               "exam_traps": [
                 {
@@ -13674,7 +13730,21 @@
                   "meaning": "Mirrored pairs that are then striped; fast, and survives one failure in each pair."
                 }
               ],
-              "example": "A call center buys internet circuits from two carriers, but both enter the building through one duct from the street. Roadworks cut the duct, and both circuits fail. The IS auditor reports the shared path and recommends last-mile protection, such as a second building entry or a wireless backup link. The facilities and network managers decide.",
+              "example": "A call center buys internet circuits from two carriers, but both enter the building through one duct from the street. Roadworks cut the duct, and both circuits fail. The IS auditor reports the shared path and recommends last-mile protection, such as a second building entry or a wireless backup link.",
+              "audit_focus": {
+                "review": [
+                  "Compare each redundancy control with the failure it is meant to cover",
+                  "Trace both carrier circuits from the building to the carrier network",
+                  "Observe a cluster failover test while the surviving node carries full load"
+                ],
+                "evidence": [
+                  "Cluster logs showing node load and past takeovers",
+                  "Carrier route maps showing separate paths and building entries",
+                  "Backup records proving point-in-time copies exist beside the RAID arrays"
+                ],
+                "recommend": "Have the infrastructure manager pair single points of failure with independent standby units and keep separate backups.",
+                "decides": "The business owner decides how much redundancy each service warrants"
+              },
               "isaca_rule": "Name the failure first, then the control: RAID for disk failure, clustering for server failure, diverse routing for cable failure, a distant second site for site loss, and backups for lost or damaged data. High availability in one site is not disaster recovery. Untested redundancy proves nothing.",
               "exam_traps": [
                 {
@@ -13966,7 +14036,21 @@
                   }
                 ]
               },
-              "example": "A logistics firm couriers backup tapes to a vault nightly, but its business impact analysis (BIA) now sets a one-hour RPO for bookings. The IS auditor reports that a site loss could destroy a day of bookings. The chief information officer prices vaulting, journaling and asynchronous replication, each with isolated backups. The operations director, as RPO owner, chooses.",
+              "example": "A logistics firm couriers backup tapes to a vault nightly, but its business impact analysis (BIA) now sets a one-hour recovery point objective (RPO) for bookings. The IS auditor reports that a site loss could destroy a day of bookings. The chief information officer prices vaulting, journaling and asynchronous replication, each with isolated backups.",
+              "audit_focus": {
+                "review": [
+                  "Compare each copy method's possible data loss with the system's RPO",
+                  "Observe a restore with journal replay, timed against the recovery time objective (RTO)",
+                  "Inspect whether isolated, point-in-time backups exist alongside replication"
+                ],
+                "evidence": [
+                  "Replication and journaling logs showing lag and gaps",
+                  "Backup records showing immutable point-in-time copies",
+                  "Business impact analysis records showing the approved RPO"
+                ],
+                "recommend": "Have the infrastructure manager match each copy method to the RPO and keep isolated backups beside replication.",
+                "decides": "The business owner sets the acceptable data loss and approves any trade-off with speed"
+              },
               "isaca_rule": "Pick the technique from the RPO and the distance needed, not from what is newest. Every network copy also copies mistakes and attacks, so it never replaces isolated, point-in-time backups.",
               "exam_traps": [
                 {
@@ -16364,14 +16448,27 @@
                 "Hardening applies a configuration baseline, such as a Center for Internet Security (CIS) Benchmark, and regular scans detect drift from it.",
                 "Endpoint detection and response (EDR) watches process behavior, catching attacks that misuse built-in tools and leave no malware file.",
                 "Application allowlisting and limits on scripting tools stop many fileless attacks before detection is needed.",
-                "Full-disk encryption protects lost devices; removable-media controls protect copies on portable drives.",
-                "Coverage reports compare the device inventory with the devices actually running the agent."
+                "Full-disk encryption protects lost devices; removable-media controls protect copies on portable drives."
               ],
               "illustration": {
                 "svg": "<svg viewBox='0 0 452 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Layered security controls on every endpoint device'><rect x='126' y='12' width='200' height='40' rx='4' fill='var(--accent-fill)'/><text x='226' y='36' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Endpoint device</text><rect x='14' y='70' width='136' height='30' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='82' y='89' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Antivirus / EDR</text><rect x='162' y='70' width='136' height='30' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='230' y='89' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Host firewall</text><rect x='310' y='70' width='136' height='30' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='378' y='89' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Disk encryption</text><rect x='14' y='110' width='136' height='30' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='82' y='129' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Patch management</text><rect x='162' y='110' width='136' height='30' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='230' y='129' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>DLP agent</text><rect x='310' y='110' width='136' height='30' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='378' y='129' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Device mgmt (MDM)</text></svg>",
                 "caption": "No single control secures an endpoint. Each layer closes a different gap, from malware and open ports to lost devices and missing patches."
               },
               "example": "A casino's self-service kiosks run a full desktop operating system, and staff have installed games and remote-support tools on several of them. The IT manager plans weekly antivirus scans. The IS auditor notes that each kiosk has one fixed purpose and recommends application allowlisting so only the kiosk software can run, plus removing local administrator rights.",
+              "audit_focus": {
+                "review": [
+                  "Compare the device inventory with devices reporting to the EDR console",
+                  "Sample servers and compare live settings with the CIS Benchmark baseline",
+                  "Observe whether a laptop allows copying files to an unencrypted portable drive"
+                ],
+                "evidence": [
+                  "EDR alerts on suspicious use of built-in tools, with analyst follow-up",
+                  "Configuration scan reports showing drift from the hardening baseline",
+                  "Allowlisting policy logs showing blocked unapproved programs"
+                ],
+                "recommend": "Have the endpoint team close agent gaps, scan for baseline drift and enforce encryption on portable media.",
+                "decides": "System owners approve any device exempted from the baseline and accept its risk"
+              },
               "isaca_rule": "Coverage comes first: a device without the agent sends no data, so confirm the population before trusting results. Prevent misuse of powerful tools through least privilege instead of relying only on detection. Encryption must follow sensitive data onto every portable medium.",
               "exam_traps": [
                 {
@@ -17512,6 +17609,20 @@
                 "caption": "The virtualization stack. The hypervisor sits between the hardware and the virtual machines and keeps each guest operating system separate."
               },
               "example": "At a regional newspaper, the IS auditor finds 140 virtual machines that nobody claims, several unpatched for two years, and copies of the subscriber database's VM snapshots on a share open to all IT staff. The infrastructure manager says the hypervisor itself is fully patched. The IS auditor recommends an owner for every VM, retiring unclaimed ones, and protecting snapshots like the data inside them.",
+              "audit_focus": {
+                "review": [
+                  "Inspect which networks can reach the hypervisor management console",
+                  "Inspect permissions on the log store for any hypervisor administrator access",
+                  "Compare the VM inventory with running VMs to find unowned or unpatched ones"
+                ],
+                "evidence": [
+                  "Isolation test results from attempts to reach other tenants' VMs",
+                  "Firewall rules showing the management network's allowed sources",
+                  "Patch reports for hypervisors and guest VMs, with dates"
+                ],
+                "recommend": "Have the infrastructure manager isolate the management plane, assign an owner to every VM and patch hypervisors promptly.",
+                "decides": "The data owner decides whether sensitive workloads need dedicated hosts"
+              },
               "isaca_rule": "Protect the hypervisor's management plane as the keys to every VM: isolated network, strong authentication and logs that administrators cannot alter. Direct testing of isolation is stronger evidence than vendor statements. Patching reduces escape risk; dedicated hosts remove co-tenant exposure.",
               "exam_traps": [
                 {
@@ -18147,7 +18258,21 @@
                   "meaning": "Quietly record activity, such as keystrokes and passwords, and send it to the attacker."
                 }
               ],
-              "example": "A retailer's card payments fail when a huge flood fills its head office internet link. The network manager keeps adding firewall rules, but the link is already full. Afterward, the IS auditor finds no contracted upstream mitigation and no DDoS playbook, and recommends both for the operations director to approve.",
+              "example": "A retailer's card payments fail when a huge flood fills its head office internet link. The network manager keeps adding firewall rules, but the link is already full. Afterward, the IS auditor finds no contracted upstream mitigation and no DDoS playbook, and recommends both.",
+              "audit_focus": {
+                "review": [
+                  "Inspect the contract for upstream DDoS mitigation and the response playbook",
+                  "Inspect outbound firewall rules for servers allowed to reach any internet address",
+                  "Compare endpoint protection on fixed-purpose devices with an allowlisting standard"
+                ],
+                "evidence": [
+                  "Firewall logs of blocked outbound connections, reviewed by security staff",
+                  "EDR alerts on unknown code, with records of follow-up",
+                  "Mitigation provider test report showing scrubbing activates within agreed time"
+                ],
+                "recommend": "Have the network manager contract upstream mitigation, restrict outbound traffic and allowlist programs on fixed-purpose devices.",
+                "decides": "Senior management approves the mitigation contract and accepts residual outage risk"
+              },
               "isaca_rule": "Match the defense to where the attack works. Malware is stopped by layered prevention, such as patching, least privilege and allowlisting, backed by behavior detection. A flood that fills the internet link is stopped upstream, by mitigation arranged in advance.",
               "exam_traps": [
                 {

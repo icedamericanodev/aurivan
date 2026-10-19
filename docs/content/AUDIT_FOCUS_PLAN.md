@@ -15,7 +15,7 @@ still without the field.
 ## Scope
 These are the 60 notes from the October 2026 curriculum coverage review whose
 `how_it_works` has no audit step, so the process lens rests on the example and
-the rule alone. Thirty-three are done (pilot and N4 to N6); 27 remain.
+the rule alone. Forty-two are done (pilot and N4 to N7); 18 remain.
 
 ## Priority order
 1. **Exam importance:** subtopics rated high-yield in the curriculum checklist come first.
@@ -63,15 +63,15 @@ line appears once on the card.
 | 31 | 5B1.2 | Phishing Simulations and Awareness Metrics | medium | 6 | N6 (done) |
 | 32 | 2B2.1 | Sourcing Decisions | medium | 6 | Pilot (done) |
 | 33 | 5A3.2 | Single Sign-On and Federation | medium | 5 | N6 (done) |
-| 34 | 3B2.3 | Deployment Strategies and Rollback | medium | 5 | N7 |
-| 35 | 4A11.3 | Data Integrity and Simultaneous Updates | medium | 4 | N7 |
-| 36 | 4A6.1 | Availability and Its Measures | medium | 4 | N7 |
-| 37 | 4B2.1 | Resilient Technology Design | medium | 4 | N7 |
-| 38 | 4B2.2 | Redundancy Techniques: RAID, Clustering and Network Diversity | medium | 4 | N7 |
-| 39 | 4B3.2 | Electronic Vaulting, Remote Journaling and Replication | medium | 4 | N7 |
-| 40 | 5A4.7 | Endpoint Protection and Hardening | medium | 4 | N7 |
-| 41 | 5A8.3 | Virtualization and the Hypervisor | medium | 4 | N7 |
-| 42 | 5B2.1 | Malware and Denial-of-Service Attacks | medium | 4 | N7 |
+| 34 | 3B2.3 | Deployment Strategies and Rollback | medium | 5 | N7 (done) |
+| 35 | 4A11.3 | Data Integrity and Simultaneous Updates | medium | 4 | N7 (done) |
+| 36 | 4A6.1 | Availability and Its Measures | medium | 4 | N7 (done) |
+| 37 | 4B2.1 | Resilient Technology Design | medium | 4 | N7 (done) |
+| 38 | 4B2.2 | Redundancy Techniques: RAID, Clustering and Network Diversity | medium | 4 | N7 (done) |
+| 39 | 4B3.2 | Electronic Vaulting, Remote Journaling and Replication | medium | 4 | N7 (done) |
+| 40 | 5A4.7 | Endpoint Protection and Hardening | medium | 4 | N7 (done) |
+| 41 | 5A8.3 | Virtualization and the Hypervisor | medium | 4 | N7 (done) |
+| 42 | 5B2.1 | Malware and Denial-of-Service Attacks | medium | 4 | N7 (done) |
 | 43 | 1A2.4 | Integrated Audits | medium | 4 | N8 |
 | 44 | 2B1.4 | Capacity and Resource Planning | medium | 4 | N8 |
 | 45 | 2B1.5 | Enterprise Change Management | medium | 4 | N8 |
