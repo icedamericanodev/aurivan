@@ -9430,7 +9430,7 @@
               "audit_focus": {
                 "review": [
                   "Trace high-risk functions to the test cases that cover them",
-                  "Confirm every change in the release log has a regression test run",
+                  "Sample release-log changes and trace each to a regression run",
                   "Compare coverage figures with mutation-test results before relying on coverage"
                 ],
                 "evidence": [
@@ -9439,7 +9439,7 @@
                   "Defect logs with root causes, to tell better detection from worse code"
                 ],
                 "recommend": "Have the test manager set risk-based test plans, require regression runs for every change and track mutation scores.",
-                "decides": "The business owner accepts any untested risk before go-live"
+                "decides": "The business process owner accepts residual risk from untested functions"
               },
               "isaca_rule": "Test effort follows risk: concentrate it where failure impact and likelihood are highest. Every change gets regression testing, and coverage alone proves only which code ran, not whether the tests would catch a defect.",
               "exam_traps": [
@@ -11956,17 +11956,17 @@
               "example": "A warehouse scanning outage at a logistics company has passed its four-hour resolution target, and the service desk agent keeps retrying fixes alone. The IS auditor finds no functional escalation to the network team and no hierarchical escalation to the service manager when the target was missed. She recommends defined escalation triggers, and the IT service manager updates the procedure.",
               "audit_focus": {
                 "review": [
-                  "Sample closed tickets for user confirmation before closure and later reopening",
+                  "Sample closed tickets for the user's confirmation that service works",
                   "Trace security-related calls from the desk log to the incident response team",
-                  "Judge the desk on reopen rates and first-contact resolution, not speed or volume"
+                  "Evaluate desk metrics for reopen rates and first-contact resolution, not only speed"
                 ],
                 "evidence": [
                   "Ticket history showing escalations, priority changes and user sign-off",
-                  "Priority matrix that scores business impact, including customer data exposure",
-                  "Reset logs showing out-of-band verification before each MFA reset"
+                  "Reset logs showing out-of-band caller checks before each multi-factor authentication (MFA) reset",
+                  "Priority matrix that scores business impact, including customer data exposure"
                 ],
-                "recommend": "Have the IT service manager require user confirmation before closure, set escalation triggers and verify callers before credential resets.",
-                "decides": "The service owner agrees on priority rules and targets with the business"
+                "recommend": "Have the IT service manager require user confirmation before closure and out-of-band caller verification before credential resets.",
+                "decides": "Business process owners set priority rules and service targets with IT"
               },
               "isaca_rule": "For an ordinary outage, restore service first, even by workaround, then pursue the cause through problem management. When harm is still spreading, as in a security incident, contain before restoring. Judge the desk by outcomes such as reopen rates.",
               "exam_traps": [
@@ -12125,7 +12125,7 @@
                   }
                 ]
               },
-              "example": "A broadband provider's problem team closes a recurring router-crash problem as soon as a firmware fix is deployed. Two weeks later the crashes resume. The IS auditor recommends reopening the problem and closing problems only after monitoring shows the incidents have stopped for an agreed period. The service owner agrees.",
+              "example": "A broadband provider's problem team closes a recurring router-crash problem as soon as a firmware fix is deployed. Two weeks later the crashes resume. The IS auditor recommends reopening the problem and closing problems only after monitoring shows the incidents have stopped for an agreed period.",
               "audit_focus": {
                 "review": [
                   "Group six months of incidents by symptom to find repeats lacking a problem record",
@@ -13055,7 +13055,7 @@
                 "Checkpoints periodically write changes to disk, so crash recovery starts from a known point.",
                 "After a crash, the database undoes uncommitted work from before-images and redoes committed work from after-images.",
                 "After media loss, the last backup is restored and the log is rolled forward to the latest or a chosen point.",
-                "Backups and log copies run at least as often as the RPO requires and are stored apart from the database."
+                "Backups and log copies run often enough to meet the recovery point objective (RPO), the most data loss the business accepts, and are stored apart from the database."
               ],
               "compare": {
                 "columns": [
@@ -13093,9 +13093,9 @@
               "example": "At 2 p.m., a faulty script at an online grocer overwrites 40,000 delivery addresses. The last full backup is from midnight, and the transaction log is intact. The IS auditor reviews the database administrator's plan and finds it sound: restore the backup to a separate server, roll the log forward to 1:59 p.m., verify, then copy back the correct addresses.",
               "audit_focus": {
                 "review": [
-                  "Compare log-copy timing and storage location with each database's RPO",
+                  "Compare log-copy frequency with each RPO and inspect where copies are stored",
                   "Observe a scheduled restore test, timing it and checking the data recovered",
-                  "Inspect the recovery plan for a costed choice between faster and more complete recovery"
+                  "Inspect the recovery plan for documented options trading recovery speed against completeness"
                 ],
                 "evidence": [
                   "Restore test results showing recovery time and data checked",
@@ -15511,14 +15511,14 @@
               "example": "A pharmaceutical warehouse installs palm-vein readers on its controlled-drug cage. After night-shift complaints about rejections, the facilities supervisor lowers the match threshold. The IS auditor obtains the vendor's test results at the new setting, finds the false acceptance rate has risen sharply, and recommends restoring the threshold and improving enrollment quality instead.",
               "audit_focus": {
                 "review": [
-                  "Trace a sample of admin log entries to one named person",
-                  "Inspect MFA settings for remote and admin access; factors must differ in category",
+                  "Trace a sample of administrator log entries to one named person",
+                  "Inspect MFA settings for remote and administrator access; factors must differ in category",
                   "Obtain the false acceptance rate at each biometric reader's current setting"
                 ],
                 "evidence": [
-                  "Account list reconciled to HR records, with shared accounts flagged",
-                  "Biometric test results at the live threshold, not the vendor's default",
-                  "Authentication settings exported from the central sign-in system"
+                  "Authentication settings exported from the central sign-in system",
+                  "Directory account list matched to human resources records, shared accounts flagged",
+                  "Reader change history showing who changed each threshold and who approved it"
                 ],
                 "recommend": "Have the access management team replace shared accounts with named ones and require phishing-resistant MFA for administrators.",
                 "decides": "System and data owners approve each user's rights and accept residual risk"
@@ -16172,16 +16172,16 @@
               "audit_focus": {
                 "review": [
                   "Inspect network diagrams and switch settings to confirm the IPS sits inline",
-                  "Verify the business owner approved the fail-open or fail-closed setting",
+                  "Trace the fail-open or fail-closed setting to the business owner's documented approval",
                   "Compare NAC exemptions with device inventories; exempt devices need a restricted segment"
                 ],
                 "evidence": [
                   "Switch or tap configuration showing where each sensor sits in the traffic path",
-                  "Signed risk acceptance for the chosen failure mode",
-                  "NAC logs showing which devices were quarantined and why"
+                  "NAC logs showing which devices were quarantined and why",
+                  "Signed risk acceptance for the chosen failure mode"
                 ],
                 "recommend": "Have the network team place blocking devices inline with failover and segment devices that skip health checks.",
-                "decides": "The business owner chooses the failure mode based on assessed risk"
+                "decides": "The business owner chooses fail-open or fail-closed and accepts the resulting risk"
               },
               "isaca_rule": "Evaluate a control against its purpose. An IPS that cannot block is only an IDS, and a NAC that checks only passwords lets infected devices in. Placement and configuration decide what a device can actually do.",
               "exam_traps": [
@@ -16764,7 +16764,7 @@
                 "evidence": [
                   "Scan results showing algorithms and key lengths actually in use",
                   "Design documents showing where algorithms can be swapped through configuration",
-                  "Migration roadmap approved by the security steering committee"
+                  "Approved post-quantum migration roadmap with priorities and funding"
                 ],
                 "recommend": "Have the security architecture team keep the inventory current and build new systems so algorithms can be swapped.",
                 "decides": "Senior management approves the migration roadmap and its funding"
@@ -17179,7 +17179,7 @@
                 "review": [
                   "Compare the certificate inventory with a network scan to find untracked certificates",
                   "Inspect relying applications' validation settings to confirm revocation status is checked",
-                  "Trace a past key compromise to the time trust was withdrawn"
+                  "Trace past key compromises to revocation, checking delays and backdated effective dates"
                 ],
                 "evidence": [
                   "Renewal tool reports listing certificates renewed, failed or near expiry",
@@ -17423,11 +17423,11 @@
               "audit_focus": {
                 "review": [
                   "Compare the full list of cloud accounts with those the posture tool monitors",
-                  "Map each customer control in the provider's SOC 2 report to an in-house owner",
-                  "Test the firm's own access, key and data-logging settings directly"
+                  "Map each control the SOC 2 report assigns to the customer to an owner",
+                  "Test the organization's own access, key and data-access logging settings directly"
                 ],
                 "evidence": [
-                  "Account inventory reconciled to the posture tool's coverage list",
+                  "Account lists exported from each cloud provider's organization console",
                   "Drift alerts and fix times from continuous configuration scanning",
                   "Sample of data-access log entries for the most sensitive storage"
                 ],
