@@ -10110,17 +10110,17 @@
       "bloom_level": "Application",
       "question": "A core banking upgrade goes live in two weeks, and its change record includes a written backout plan that has never been rehearsed. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Run the rollback steps once in a production-like environment",
+        "A": "Test the reversal steps once in a production-like environment",
         "B": "Take a full backup just before the upgrade starts",
         "C": "Obtain a second change advisory board approval for the release",
         "D": "Ask the vendor to certify that the upgrade has no defects"
       },
       "correct": "A",
-      "key_concept": "Every change needs a backout plan that has been tested; a documented but unrehearsed plan gives no assurance it will work.",
+      "key_concept": "Significant changes need a backout plan that has been tested; a documented but unrehearsed plan gives no assurance it will work.",
       "pre_read": "When a control exists only on paper, ask whether there is still time to prove it before it is needed.",
-      "correct_explanation": "A backout plan that has never been tried is a document, not a proven control. Rehearsing it in a production-like environment shows the steps work and how long they take, while there is still time to fix them. A pre-upgrade backup is the runner-up: it is a useful fallback, but restoring a whole core banking database is slower and is not the tested reversal the change depends on.",
+      "correct_explanation": "A backout plan that has never been tried is a document, not a proven control. Rehearsing it in a production-like environment shows the steps work and how long they take, while there is still time to fix them. A pre-upgrade backup is the runner-up: it is usually already a step in the plan, and restoring a whole core banking database is the slowest, least tested way back.",
       "wrong_explanations": {
-        "B": "A backup is a last-resort fallback; restoring a full core banking database takes longer and does not show the planned reversal steps work.",
+        "B": "A pre-upgrade backup is normally already in the backout plan; it does not prove the reversal steps work or fit the change window.",
         "C": "A second approval adds paperwork but tells no one whether the backout steps work; approvers would still rely on an untested plan.",
         "D": "No vendor can certify an upgrade free of defects, and such a statement would not test the organization's own ability to reverse the change."
       },
@@ -10164,7 +10164,7 @@
       "tips": [
         "Eliminate: C is about recovering lost data and D about links between tables; neither explains how a reporting account could run these commands.",
         "Final two: B beats A because ALTER TABLE redefines structure (DDL), while changing payroll amounts would need data manipulation (DML) commands.",
-        "Exam cue: DDL defines structure, DML manipulates data, DCL controls access; match the command type before naming the weakness."
+        "Exam cue: data definition language (DDL) defines structure, data manipulation language (DML) manipulates data, data control language (DCL) controls access; match the command type before naming the weakness."
       ],
       "framework_ref": "ISO/IEC 9075 (SQL Standard); NIST SP 800-53 Rev 5 AC-6 (Least Privilege); NIST SP 800-53 Rev 5 CM-5 (Access Restrictions for Change)",
       "related_concepts": [
@@ -10200,7 +10200,7 @@
       },
       "tips": [
         "Eliminate: B measures speed and C proves backups restore; neither shows which programs depend on the field.",
-        "Final two: D beats A because the dictionary's cross-references list every dependent program, while interviews depend on who is asked and what they remember.",
+        "Final two: D beats A because the dictionary's cross-references record the dependent programs, while interviews depend on who is asked and what they remember.",
         "Exam cue: before changing a shared data element, start from the metadata that records where it is used; interviews confirm that record but cannot replace it."
       ],
       "framework_ref": "COBIT 2019 APO14 (Managed Data); COBIT 2019 BAI06 (Managed IT Changes); NIST SP 800-53 Rev 5 CM-4 (Impact Analyses)",
@@ -10223,8 +10223,8 @@
       "options": {
         "A": "Copy the screen checks into the interface program's code",
         "B": "Restrict the entry screens to trained claims staff",
-        "C": "Enforce integrity constraints on every insert at the data layer",
-        "D": "Reconcile nightly file record counts to the sending system weekly"
+        "C": "Enforce integrity constraints in the database for every insert",
+        "D": "Reconcile each night's file record count to the sending system"
       },
       "correct": "C",
       "key_concept": "Integrity rules enforced in the database apply to every program, interface and utility, unlike checks built into one screen or program.",
@@ -10256,24 +10256,24 @@
       "subtopic": "Data Integrity. Denormalization and Reconciliation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "To meet reporting speed targets, management approved storing each customer's address in both the customer and order tables. Which control is MOST important for the IS auditor to verify?",
+      "question": "To meet reporting speed targets, management approved storing each customer's credit rating in both the customer master table and a reporting summary table. Which control is MOST important for the IS auditor to verify?",
       "options": {
-        "A": "Referential integrity linking every order to a valid customer",
-        "B": "A scheduled reconciliation that flags and corrects mismatched copies",
-        "C": "A redesign that keeps a single stored copy of each address",
+        "A": "Referential integrity linking every summary row to a valid customer",
+        "B": "A scheduled reconciliation that flags and fixes mismatched copies",
+        "C": "A redesign that keeps a single stored copy of each rating",
         "D": "Record locking while two users update the same row"
       },
       "correct": "B",
-      "key_concept": "Denormalization stores data twice for speed; a compensating reconciliation keeps the copies consistent.",
+      "key_concept": "Storing a value twice for speed (denormalization) needs a compensating reconciliation to keep the copies consistent.",
       "pre_read": "When management has made an informed design trade-off, ask which control manages the risk it accepted.",
-      "correct_explanation": "Storing the address twice is a deliberate trade of integrity for speed, so the copies can drift apart whenever one is updated and the other is not. The expected compensating control is a regular reconciliation that finds and fixes mismatches. A redesign to one stored copy is the runner-up: it removes the risk, but it reverses a decision management made to meet a business need.",
+      "correct_explanation": "Storing the credit rating twice is a deliberate trade of integrity for speed: when the master record changes and the summary does not, reports show a stale rating. The expected compensating control is a regular reconciliation that finds and fixes mismatches. A redesign to one stored copy is the runner-up: it removes the risk, but it reverses a decision management made to meet a business need.",
       "wrong_explanations": {
-        "A": "Referential integrity makes each order point to an existing customer; it does nothing to keep two stored copies of an address identical.",
+        "A": "Referential integrity makes each summary row point to an existing customer; it does nothing to keep two stored copies of a rating identical.",
         "C": "Management accepted the duplication to meet reporting targets; the IS auditor looks for controls over the trade-off rather than reversing the design decision.",
         "D": "Locking stops two users overwriting each other's update to one row; it cannot keep values stored in two different tables in step."
       },
       "tips": [
-        "Eliminate: A only checks that orders point to real customers, and D only isolates simultaneous updates; neither keeps two stored copies alike.",
+        "Eliminate: A only checks that summary rows point to real customers, and D only isolates simultaneous updates; neither keeps two stored copies alike.",
         "Final two: B beats C because management chose duplication for speed; the IS auditor expects a compensating check, not a reversal of a business decision.",
         "Exam cue: when a design trades integrity for performance, look for the compensating control, such as a reconciliation, before questioning the design."
       ],
@@ -10303,7 +10303,7 @@
       "correct": "D",
       "key_concept": "After a crash with intact data files, the database redoes committed work and undoes unfinished work from the log, without a restore.",
       "pre_read": "First ask what was damaged: the running system or the stored data. The answer picks the recovery path.",
-      "correct_explanation": "A power loss leaves the data files intact, so the database recovers itself at restart. It reads the log from the last checkpoint, redoes committed work from after-images and undoes unfinished work from before-images, keeping every committed transaction with the shortest outage. Restoring last night's backup and rolling forward is the runner-up: it reaches the same state, but it is the slower media-loss path and adds avoidable downtime.",
+      "correct_explanation": "A power loss leaves the data files intact, so the database recovers itself at restart. It reads the log, starting from the last checkpoint, redoes committed work from after-images and undoes unfinished work from before-images, keeping every committed transaction with the shortest outage. Restoring last night's backup and rolling forward is the runner-up: it reaches the same state, but it is the slower media-loss path and adds avoidable downtime.",
       "wrong_explanations": {
         "A": "Restore and roll forward is the path for damaged or lost data files. Here the files survived, so a restore only lengthens the outage.",
         "B": "Reapplying unfinished work would commit half-done transactions, such as a debit without its credit, breaking atomicity.",
@@ -10330,25 +10330,25 @@
       "subtopic": "Database Recovery. Log Copies Stored Apart",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A database with a 15-minute recovery point objective (RPO) copies its transaction log every 10 minutes but keeps the copies on its own storage array. Which risk is GREATEST for the IS auditor to report?",
+      "question": "A database with a 15-minute recovery point objective (RPO) copies its transaction log every 10 minutes to the same storage array as the database. Which risk is GREATEST for the IS auditor to report?",
       "options": {
-        "A": "One fault losing all changes since the last backup",
+        "A": "One failure destroying the database and its log copies",
         "B": "Ten-minute log copies falling short of the 15-minute target",
         "C": "Log copies competing with live transactions for array capacity",
-        "D": "Offsite backups being exposed while held by a courier"
+        "D": "Log replay pushing recovery past the recovery time objective"
       },
       "correct": "A",
       "key_concept": "Log copies meet the RPO only when stored apart from the database; one failure must not destroy both.",
       "pre_read": "Check where a recovery copy is kept as well as how often it is made.",
-      "correct_explanation": "Ten-minute log copies meet the 15-minute RPO only if they survive the failure they protect against. Kept on the same array, one storage failure destroys the database and its log copies together, so recovery falls back to the last backup and every change since then is lost, far beyond the RPO. Copies competing for array capacity is the runner-up: a performance concern that monitoring can manage, not a recovery failure.",
+      "correct_explanation": "Ten-minute log copies meet the 15-minute RPO only if they survive the failure they guard against. On the same array, one failure destroys the database and its log copies together, so every change since the last backup is lost, far beyond the RPO. Replay time is the runner-up: it affects how long recovery takes, measured against a recovery time objective, not how much data survives.",
       "wrong_explanations": {
         "B": "Copies every 10 minutes are more frequent than the 15-minute RPO requires; the schedule is sound, but the storage location is not.",
         "C": "Capacity contention can slow transactions, but monitoring and capacity planning manage it; it does not threaten the ability to recover data.",
-        "D": "Nothing suggests transit exposure, and the confidentiality of offsite media does not affect whether recent changes can be recovered."
+        "D": "The stated target is an RPO, not an RTO; replay time affects how long recovery takes, not how much data survives."
       },
       "tips": [
-        "Eliminate: B misreads the numbers, since 10-minute copies meet a 15-minute RPO, and D raises a confidentiality issue the facts do not support.",
-        "Final two: A beats C because one storage failure would lose the log copies with the database, breaking the RPO; contention only slows work.",
+        "Eliminate: B misreads the numbers, since 10-minute copies meet a 15-minute RPO, and C is a performance concern, not a recovery failure.",
+        "Final two: A beats D because the stated target is an RPO; one array failure loses the log copies with the database, while replay time affects only recovery time.",
         "Exam cue: a backup or log copy stored with what it protects shares its fate; check where copies live, not only how often they run."
       ],
       "framework_ref": "NIST SP 800-53 Rev 5 CP-9 (System Backup); NIST SP 800-53 Rev 5 CP-6 (Alternate Storage Site); ISO/IEC 27002:2022 Control 8.13 (Information Backup)",
@@ -10409,7 +10409,7 @@
         "A": "Slower handling of database incidents outside business hours",
         "B": "Patches falling behind while developers learn the new role",
         "C": "Changes going live without an independent check",
-        "D": "Higher license costs for development and database tools"
+        "D": "Developers seeing claimant personal data during fixes"
       },
       "correct": "C",
       "key_concept": "Development and database administration are segregated so no one can change and promote code or data without an independent check.",
@@ -10418,14 +10418,14 @@
       "wrong_explanations": {
         "A": "Developers on call would, if anything, respond faster; the plan's weakness is the loss of an independent check, not slower incident handling.",
         "B": "A learning curve is temporary and fixable with training; the conflict of duties lasts as long as the combined role exists.",
-        "D": "Licensing cost is a budget matter for management; it does not threaten the integrity of production code or data."
+        "D": "Masking and access logging can limit what developers see; the plan's core flaw is that no one independent checks their changes to production."
       },
       "tips": [
-        "Eliminate: A predicts slower response from a plan designed to speed fixes, and D is a cost question, not a control risk.",
+        "Eliminate: A predicts slower response from a plan designed to speed fixes, and D is a confidentiality exposure that masking can limit.",
         "Final two: C beats B because a combined role permanently removes the independent check, while a skills gap is temporary and fixable.",
         "Exam cue: when one role can both build and run production, segregation of duties is lost; that outranks transitional problems."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 AC-5 (Separation of Duties); NIST SP 800-53 Rev 5 CM-5 (Access Restrictions for Change); COBIT 2019 DSS05 (Managed Security Services)",
+      "framework_ref": "NIST SP 800-53 Rev 5 AC-5 (Separation of Duties); NIST SP 800-53 Rev 5 CM-5 (Access Restrictions for Change); COBIT 2019 DSS06.03 (Manage roles, responsibilities, access privileges and levels of authority); COBIT 2019 BAI06 (Managed IT Changes)",
       "related_concepts": [
         "Segregation of duties",
         "Database administration",
@@ -10441,7 +10441,7 @@
       "subtopic": "Media Sanitization. Verifying Wipes Before Reuse",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Technicians overwrite the drives of human resources (HR) laptops before reissuing them to other staff and log each serial number, but no one checks that the overwrite worked. What is the IS auditor's PRIMARY concern?",
+      "question": "Technicians overwrite the hard disk drives of human resources (HR) laptops before reissuing them and log each serial number, but no one checks that the overwrite worked. What is the IS auditor's PRIMARY concern?",
       "options": {
         "A": "Failed wipes leaving personnel files readable by the next user",
         "B": "Logs that omit the name of the technician who wiped each laptop",
@@ -10455,10 +10455,10 @@
       "wrong_explanations": {
         "B": "Naming the technician adds accountability, but it does not show the wipe worked; the data stays exposed until someone verifies the result.",
         "C": "Clearing by overwrite fits media reused inside the organization; shredding reusable laptops wastes assets and still leaves the missing verification unaddressed.",
-        "D": "A single overwrite pass is enough for modern drives; adding passes costs time and still proves nothing without a check of the result."
+        "D": "Pass count is not the issue: one pass suffices for hard drives, and solid-state drives need built-in sanitize or cryptographic erase instead; neither is proven without a check."
       },
       "tips": [
-        "Eliminate: C demands destruction for media staying in-house, where clearing fits, and D repeats the myth that one overwrite pass is too few.",
+        "Eliminate: C demands destruction for media staying in-house, where clearing fits, and D blames the pass count, which is not what makes a wipe trustworthy.",
         "Final two: A beats B because an unverified wipe can leave data exposed, while a missing name only weakens accountability for the result.",
         "Exam cue: a sanitization record without verification is documentation, not assurance; look for someone confirming the method worked."
       ],
@@ -10478,17 +10478,17 @@
       "subtopic": "Media Sanitization. Failed Drives Under Warranty",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Failed solid-state drives from an array holding customer data no longer respond to commands, and the warranty requires returning them to the manufacturer. What should the IS auditor recommend as BEST?",
+      "question": "Failed, unencrypted solid-state drives from an array holding customer data no longer respond to commands, and the warranty requires returning them to the manufacturer. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Wipe them with the array vendor's overwrite utility first",
         "B": "Rely on the manufacturer's confidentiality clause in the warranty",
         "C": "Seal them in tamper-evident bags for the courier trip",
-        "D": "Destroy them on site under a drive-retention support option"
+        "D": "Destroy them on site under a keep-your-drive support option"
       },
       "correct": "D",
       "key_concept": "Media that cannot be cleared or purged, such as failed solid-state drives, must be destroyed before leaving the organization's control.",
       "pre_read": "Check whether the sanitization method can physically work on the media in its current state.",
-      "correct_explanation": "Solid-state drives that no longer accept commands cannot be overwritten, securely erased or degaussed, so the customer data on them stays readable to anyone who repairs or resells them. Destroying them on site, under a support option that waives the return, means the data never leaves the organization's control. The confidentiality clause is the runner-up: it gives a legal remedy after a leak, not a control that prevents one.",
+      "correct_explanation": "Solid-state drives that no longer accept commands cannot be overwritten or securely erased, and degaussing does not work on flash memory, so the customer data stays readable to anyone who repairs or resells them. Destroying them on site, under a support option that waives the return, keeps the data under the organization's control. The confidentiality clause is the runner-up: it gives a legal remedy after a leak, not prevention.",
       "wrong_explanations": {
         "A": "The drives no longer respond to commands, so an overwrite utility cannot run on them, and the data would leave the organization intact.",
         "B": "A contract clause offers a remedy after data is exposed; it does not stop readable customer data leaving the organization's control.",
