@@ -6365,7 +6365,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.22</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.23</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6656,7 +6656,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.22';
+const APP_VERSION = 'v12.23';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -18037,6 +18037,15 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Practise by principle',
+    items: [
+      { cat: 'new', text: 'A new principle, "Fit the method to the objective", shows how to pick the audit approach that answers the question being asked.' },
+      { cat: 'improved', text: 'Each principle page now practises the questions that turn on that principle, missed and new ones first.' },
+      { cat: 'improved', text: 'After you answer a practice question, a link takes you to the principle behind it.' }
+    ]
+  },
+  {
+    version: 'v12.22',
     title: 'Mock exams that cover every topic',
     items: [
       { cat: 'improved', text: 'Mock exams now spread their questions across every topic in the exam outline, so each mock covers the whole exam the way the real one does.' }
