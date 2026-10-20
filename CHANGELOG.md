@@ -4,6 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.24] — Six new study notes
+
+### New
+- New study notes on database monitoring and encryption, operational resilience testing, secure access service edge and zero trust access, serverless computing, and Bluetooth and NFC.
+
+### Improved
+- Post-quantum cryptography now has its own study note, with what to migrate first and why.
+
 ## [v12.23] — Practise by principle
 
 ### New
