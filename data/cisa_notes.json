@@ -18445,7 +18445,7 @@
                 "Each function runs under an execution role; one shared, over-broad role lets a single flawed function reach everything the others can.",
                 "Event data from queues, uploads or messages is untrusted input; without validation it allows event injection, such as commands hidden in a file name.",
                 "Functions are short-lived with no server to inspect later, so logging, tracing and alerts must be built in before an incident.",
-                "Spending alerts and concurrency limits contain denial of wallet, where attackers trigger functions at scale to run up cloud costs.",
+                "Concurrency limits cap denial of wallet, where attackers trigger functions at scale to run up costs; spending alerts only warn.",
                 "Deployment packages carry third-party libraries that need scanning, and runtimes the provider retires must be upgraded on schedule."
               ],
               "example": "A ticketing company runs 300 serverless functions, all under one execution role with full access to its customer database. An image-resizing function triggered by uploads could therefore read every customer's payment record. The IS auditor reports the shared role and recommends one least-privilege role per function, event data validation and central logging.",

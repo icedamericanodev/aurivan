@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.25] — Practice for the newest notes
+
+### New
+- New practice questions on database monitoring and encryption, resilience testing, zero trust access, post-quantum cryptography, serverless computing, and Bluetooth and NFC.
+
 ## [v12.24] — Six new study notes
 
 ### New

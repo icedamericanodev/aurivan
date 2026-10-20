@@ -12725,21 +12725,21 @@
       "principle_id": "prevent-before-detect",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A bot triggered a public serverless function millions of times overnight, running up a large cloud bill before anyone noticed. Which control should the IS auditor recommend as BEST to limit a repeat?",
+      "question": "A bot triggered a public serverless function millions of times overnight, running up a large cloud bill before anyone noticed. Which control should the IS auditor recommend as BEST to contain a repeat?",
       "options": {
         "A": "Spending alerts that notify the cloud team when costs spike",
-        "B": "Concurrency limits that cap how many copies run at once",
+        "B": "Concurrency limits that cap how many instances run at once",
         "C": "A larger cloud budget reserved for unexpected usage spikes",
         "D": "Faster automatic scaling so the function keeps up with demand"
       },
       "correct": "B",
       "key_concept": "Denial of wallet floods functions to run up costs; concurrency limits cap how fast costs can grow, and spending alerts act as a backstop.",
       "pre_read": "Ask whether each option limits the harm automatically or depends on someone noticing it and acting.",
-      "correct_explanation": "Concurrency limits cap how many copies of the function can run at once, so a flood of triggers can only run up the bill at a capped rate. This attack, called denial of wallet, needs a preventive cap. Spending alerts are the runner-up: they flag the spike sooner than any log review, but overnight nobody may act before costs pile up, so they back up the cap rather than replace it.",
+      "correct_explanation": "Concurrency limits cap how many instances of the function can run at once, so a flood of triggers can only run up the bill at a capped rate. This attack, called denial of wallet, needs a preventive cap. Spending alerts are the runner-up: they flag the spike sooner than any log review, but overnight nobody may act before costs pile up, so they back up the cap rather than replace it.",
       "wrong_explanations": {
         "A": "Spending alerts flag the flood quickly, but someone must still act on them, and overnight the bill keeps growing until they do.",
         "C": "A bigger budget absorbs the cost instead of limiting it, and lets an attacker run the bill even higher.",
-        "D": "Faster scaling lets more copies run at once, so the same bot attack would cost even more."
+        "D": "Faster scaling lets more instances run at once, so the same bot attack would cost even more."
       },
       "tips": [
         "Eliminate: C and D, because a bigger budget absorbs the cost and faster scaling lets the attack run up even more.",
