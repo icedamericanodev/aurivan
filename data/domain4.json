@@ -12014,39 +12014,39 @@
     {
       "id": "d4_319",
       "domain": 4,
-      "subtopic": "Database Activity Monitoring. How Queries Are Captured",
-      "principle_id": "answer-from-the-stem",
+      "subtopic": "Privileged Database Access. Evidence When Native Auditing Is Off",
+      "principle_id": "evidence-quality",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds that a database administrator (DBA) switched off native auditing before copying customer records, yet the database activity monitoring (DAM) tool recorded every query. What MOST explains this?",
+      "question": "An IS auditor learns that a database administrator (DBA) switched off native auditing before exporting customer records. Which source would MOST reliably show which records the DBA read?",
       "options": {
-        "A": "It reads the transaction log the database keeps for recovery",
-        "B": "It captures queries through its own agent or network sensor",
-        "C": "It keeps a protected copy of the native audit log",
-        "D": "It records the commands typed on each administrator's workstation"
+        "A": "The transaction log the database keeps for recovery",
+        "B": "Query logs from a database activity monitoring agent or sensor",
+        "C": "Firewall logs of the DBA's connections to the database server",
+        "D": "A written account from the DBA, confirmed by the DBA's manager"
       },
       "correct": "B",
-      "key_concept": "DAM captures database activity through its own agent or network sensor, so it keeps recording when DBAs switch off native auditing.",
-      "pre_read": "Ask what each option depends on, and whether a fact in the stem has already taken that away.",
-      "correct_explanation": "DAM runs apart from the database: a host agent or network sensor captures each query as it happens, so switching off native auditing does not stop it. That independence is why DAM can watch privileged users. A protected copy of the native audit log is the runner-up, but it only copies what native auditing records, and here native auditing was off.",
+      "key_concept": "DAM captures queries through its own agent or network sensor, so it stays reliable evidence when DBAs switch off native auditing.",
+      "pre_read": "Ask which source is independent of the DBA and also shows what was read, not just that a connection happened.",
+      "correct_explanation": "Database activity monitoring (DAM) captures each query through its own host agent or network sensor, apart from the database, so it keeps recording when native auditing is switched off. It is independent of the DBA and shows the records read. Firewall logs are the runner-up: they are independent too, but show only that the DBA connected, not which records were read.",
       "wrong_explanations": {
-        "A": "Transaction logs record changes to data for recovery; copying records only reads them, so those queries would not appear there.",
-        "C": "A copy of the native audit log holds only what native auditing records, and the stem says native auditing was switched off.",
-        "D": "DAM watches database traffic, not administrators' desktops; a DBA could connect from any machine and still be recorded."
+        "A": "Transaction logs record data changes for recovery, not reads, so they cannot show which records the DBA read.",
+        "C": "Firewall logs show that the DBA connected to the server, not which queries ran or which records were read.",
+        "D": "A written account is testimony from the person under review; a manager's confirmation does not make it independent evidence."
       },
       "tips": [
-        "Eliminate: A and D, because transaction logs hold changes, not reads, and DAM watches database activity, not administrators' workstations.",
-        "Final two: B beats C because a copy of the native log is empty once native auditing is off; DAM's own capture is not.",
-        "Exam cue: when the stem says a control was switched off, eliminate any option that depends on that control."
+        "Eliminate: A and D, because transaction logs hold changes, not reads, and the DBA's own account is testimony from the person under review.",
+        "Final two: B beats C because both are independent of the DBA, but only database activity monitoring records which queries ran, not just that a connection happened.",
+        "Exam cue: when the people under review can switch off a log, prefer evidence captured by a tool outside their control."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 AU-9 (Protection of Audit Information); ISO/IEC 27001:2022 Annex A.8.16 (Monitoring activities)",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST SP 800-53 Rev 5 SI-4 (System Monitoring); ISO/IEC 27001:2022 Annex A.8.16 (Monitoring activities)",
       "related_concepts": [
         "Database activity monitoring",
         "Native database auditing",
         "Privileged user monitoring",
-        "Segregation of duties"
+        "Evidence reliability"
       ],
-      "_provenance": "Authored from concept: 'Database Activity Monitoring. How Queries Are Captured'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.6 (batch Q16: practice for the web v12.24 study notes). Distinct from d4_156 (moving audit log administration away from DBAs) and d4_048 (tamper-resistant logging of DBA activity): tests why DAM keeps recording when native auditing is off. Public sources: NIST and ISO.",
+      "_provenance": "Authored from concept: 'Privileged Database Access. Evidence When Native Auditing Is Off'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.6 (batch Q16: practice for the web v12.24 study notes). Distinct from d4_156 (moving audit log administration away from DBAs) and d4_048 (tamper-resistant logging of DBA activity): tests which evidence source shows a DBA's reads when native auditing was switched off. Revised after the Q16 review (D4 auditor S3): rewritten from a mechanism question to an evidence-source choice. Public sources: ISACA ITAF, NIST and ISO.",
       "style_version": 2
     },
     {
@@ -12056,7 +12056,7 @@
       "principle_id": "recommend-dont-implement",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "After an IS auditor reports database administrators can read diagnosis fields protected only by transparent data encryption (TDE), the IT director asks the IS auditor to pick fields to encrypt. What is the BEST response?",
+      "question": "After an IS auditor reports that database administrators can read diagnosis fields protected only by transparent data encryption (TDE), the IT director asks the auditor to pick fields to encrypt. What is the BEST response?",
       "options": {
         "A": "Pick the fields using the data classification policy and document why",
         "B": "Let the database administrators choose the fields they do not need",
@@ -12077,29 +12077,29 @@
         "Final two: C beats A because the IS auditor recommends while the data owner decides; picking the fields means designing the control.",
         "Exam cue: when management asks the IS auditor to make a control decision, route it to the owner with a recommendation."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 SC-28 (Protection of Information at Rest); ISO/IEC 27001:2022 Annex A.8.24 (Use of cryptography)",
+      "framework_ref": "ISACA IT Audit Standard 1003 (Auditor Objectivity); NIST SP 800-53 Rev 5 SC-28 (Protection of Information at Rest); ISO/IEC 27001:2022 Annex A.8.24 (Use of cryptography)",
       "related_concepts": [
         "Transparent data encryption",
         "Field-level encryption",
         "Data owner responsibilities",
         "IS auditor role"
       ],
-      "_provenance": "Authored from concept: 'Database Encryption. Choosing Fields for Further Encryption'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.6 (batch Q16: practice for the web v12.24 study notes). Distinct from d5_072 (which control stops administrators reading card numbers under TDE): tests who decides the fields to encrypt and the IS auditor's role. Public sources: NIST and ISO.",
+      "_provenance": "Authored from concept: 'Database Encryption. Choosing Fields for Further Encryption'. Original KaiSip item (Oct 2026), written for CISA subtopic 4A11.6 (batch Q16: practice for the web v12.24 study notes). Distinct from d5_072 (which control stops administrators reading card numbers under TDE) and d3_071 (auditor asked to design application controls; same role lesson, different context): tests who decides the fields to encrypt and the IS auditor's role. Public sources: ISACA ITAF, NIST and ISO.",
       "style_version": 2
     },
     {
       "id": "d4_321",
       "domain": 4,
-      "subtopic": "Operational Resilience. Choosing a Test for a Service",
+      "subtopic": "Operational Resilience. Testing a Provider Outage",
       "principle_id": "fit-method-to-objective",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A bank's board asks whether the card payment service would hold up if its main cloud provider failed on a peak trading day. Which test should the IS auditor recommend as BEST?",
+      "question": "A bank's board asks whether the card payment service could keep running if its main cloud provider failed on its busiest shopping day. Which test should the IS auditor recommend as BEST?",
       "options": {
         "A": "A failover test showing each system meets its recovery time objective",
         "B": "A review of the cloud provider's latest independent assurance report",
         "C": "A penetration test of the payment service's internet-facing systems",
-        "D": "A scenario exercise measuring the whole service against its impact tolerance"
+        "D": "A scenario test of the whole service against its impact tolerance"
       },
       "correct": "D",
       "key_concept": "Operational resilience tests ask whether a whole service stays within its impact tolerance; disaster recovery tests ask whether a system meets its recovery time objective.",
@@ -12122,42 +12122,42 @@
         "Disaster recovery testing",
         "Third-party dependency"
       ],
-      "_provenance": "Authored from concept: 'Operational Resilience. Choosing a Test for a Service'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B2.4 (batch Q16: practice for the web v12.24 study notes). Distinct from d2_171 (building a resilience program around critical services) and the D4 recovery-test items: tests choosing a service-level scenario exercise over component failover tests. Public sources: Bank of England PRA and ISO.",
+      "_provenance": "Authored from concept: 'Operational Resilience. Testing a Provider Outage'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B2.4 (batch Q16: practice for the web v12.24 study notes). Distinct from d2_171 (building a resilience program around critical services) and the D4 recovery-test items: tests choosing a service-level scenario test over component failover tests. Public sources: Bank of England PRA and ISO.",
       "style_version": 2
     },
     {
       "id": "d4_322",
       "domain": 4,
       "subtopic": "Impact Tolerances. Handling a Tolerance Breach",
-      "principle_id": "management-owns-risk",
+      "principle_id": "escalate-to-decision-owner",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "A resilience exercise shows the online claims service would be down five days in a regional outage, against a two-day impact tolerance, and the fix exceeds budget. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Senior management approves a funded fix plan or accepts the breach",
+        "A": "Senior management approves and funds a dated plan to close the gap",
         "B": "The claims service owner postpones the fix until next year's budget",
         "C": "The IT team raises the tolerance to five days to match recovery",
         "D": "The exercise is rerun with a milder scenario the service can pass"
       },
       "correct": "A",
-      "key_concept": "Senior management sets impact tolerances and decides each breach: it funds a fix plan or formally accepts the risk.",
-      "pre_read": "Ask who set the limit that was breached, and who can therefore approve spending or accept the gap.",
-      "correct_explanation": "Senior management sets impact tolerances, so a breach goes back to it first: it either approves and funds a dated fix or formally accepts the risk of exceeding the tolerance. The service owner deferring the fix is the runner-up: the owner tracks remediation, but cannot alone accept a breach of a tolerance senior management set, especially when the fix needs budget.",
+      "key_concept": "Senior management sets impact tolerances and decides each breach: it approves and funds a dated plan that brings the service back within tolerance.",
+      "pre_read": "Ask who set the limit that was breached, and who can therefore approve the spending to close the gap.",
+      "correct_explanation": "Senior management sets impact tolerances, so a breach that needs unbudgeted money goes back to it first: it approves and funds a dated plan that brings the service back within tolerance. The service owner deferring the fix is the runner-up: the owner tracks remediation, but cannot alone leave a service outside a tolerance senior management set, especially when the fix needs budget.",
       "wrong_explanations": {
-        "B": "The service owner tracks the fix but cannot alone accept a breach of a tolerance that senior management set and must fund.",
+        "B": "The service owner tracks the fix but cannot alone defer a breach of a tolerance that senior management set and must fund.",
         "C": "Tolerances reflect the harm customers can bear, not what recovery can achieve; raising one to match results hides the gap instead of closing it.",
         "D": "Severe but plausible scenarios are meant to find breaches; switching to a milder one only hides the weakness the exercise found."
       },
       "tips": [
         "Eliminate: C and D, because tolerances are set by customer harm, not recovery ability, and milder scenarios only hide the breach.",
-        "Final two: A beats B because only senior management, which set the tolerance, can fund the fix or accept the breach.",
+        "Final two: A beats B because only senior management, which set the tolerance, can fund the fix; the service owner cannot defer a breach alone.",
         "Exam cue: when a gap needs money or exceeds an approved limit, the decision goes to whoever set the limit."
       ],
       "framework_ref": "PRA Supervisory Statement SS1/21 (Operational Resilience: Impact Tolerances for Important Business Services); COBIT 2019 DSS04 (Managed Continuity)",
       "related_concepts": [
         "Impact tolerance",
         "Important business service",
-        "Risk acceptance",
+        "Escalation to senior management",
         "Resilience remediation"
       ],
       "_provenance": "Authored from concept: 'Impact Tolerances. Handling a Tolerance Breach'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B2.4 (batch Q16: practice for the web v12.24 study notes). Distinct from the D4 recovery-test and BIA items: tests who decides when a resilience exercise breaches an impact tolerance. Public sources: Bank of England PRA and ISACA COBIT 2019.",

@@ -192,34 +192,39 @@ All five domains were read against this rubric. Medium-confidence tags are
 listed for review; low-confidence questions are untagged and listed with a
 short reason.
 
+Batch Q16 (d4_319-d4_322, d5_336-d5_343, practice for the v12.24 notes) is
+included: all 12 are tagged; d4_322 (`escalate-to-decision-owner`, close to
+`management-owns-risk`) and d5_339 (`risk-sets-priority`, topic knowledge
+carries much of the weight) are medium, the other ten high.
+
 | Domain | Questions | Tagged | High | Medium | Untagged (low) |
 |---|---|---|---|---|---|
 | D1 | 218 | 165 | 90 | 75 | 53 |
 | D2 | 224 | 104 | 45 | 59 | 120 |
 | D3 | 154 | 70 | 37 | 33 | 84 |
-| D4 | 318 | 170 | 64 | 106 | 148 |
-| D5 | 335 | 196 | 79 | 117 | 139 |
-| All | 1249 | 705 | 315 | 390 | 544 |
+| D4 | 322 | 174 | 67 | 107 | 148 |
+| D5 | 343 | 204 | 86 | 118 | 139 |
+| All | 1261 | 717 | 325 | 392 | 544 |
 
 ### Distribution by principle
 | Principle | Family | D1 | D2 | D3 | D4 | D5 | Total |
 |---|---|---|---|---|---|---|---|
-| `recommend-dont-implement` | role | 3 | 1 | 2 | 2 | 0 | 8 |
+| `recommend-dont-implement` | role | 3 | 1 | 2 | 3 | 0 | 9 |
 | `independence-throughout` | role | 12 | 6 | 1 | 0 | 0 | 19 |
-| `escalate-to-decision-owner` | role | 10 | 5 | 3 | 1 | 3 | 22 |
+| `escalate-to-decision-owner` | role | 10 | 5 | 3 | 2 | 3 | 23 |
 | `management-owns-risk` | role | 3 | 18 | 5 | 9 | 18 | 53 |
 | `governance-before-technology` | priorities | 0 | 13 | 6 | 9 | 10 | 38 |
-| `risk-sets-priority` | priorities | 10 | 7 | 6 | 11 | 17 | 51 |
+| `risk-sets-priority` | priorities | 10 | 7 | 6 | 11 | 18 | 52 |
 | `plan-before-testing` | assurance | 15 | 3 | 0 | 1 | 1 | 20 |
-| `fit-method-to-objective` | assurance | 27 | 4 | 7 | 3 | 5 | 46 |
-| `evidence-quality` | assurance | 25 | 12 | 6 | 18 | 18 | 79 |
+| `fit-method-to-objective` | assurance | 27 | 4 | 7 | 4 | 6 | 48 |
+| `evidence-quality` | assurance | 25 | 12 | 6 | 19 | 18 | 80 |
 | `materiality-judgment` | assurance | 10 | 0 | 1 | 0 | 1 | 12 |
 | `report-agree-follow-up` | assurance | 13 | 0 | 2 | 2 | 1 | 18 |
-| `root-cause-over-symptom` | remedies | 6 | 12 | 8 | 14 | 11 | 51 |
-| `prevent-before-detect` | remedies | 3 | 7 | 10 | 20 | 29 | 69 |
+| `root-cause-over-symptom` | remedies | 6 | 12 | 8 | 14 | 12 | 52 |
+| `prevent-before-detect` | remedies | 3 | 7 | 10 | 20 | 31 | 71 |
 | `compensating-controls-fallback` | remedies | 4 | 1 | 1 | 6 | 4 | 16 |
-| `least-privilege-and-sod` | remedies | 0 | 2 | 1 | 11 | 17 | 31 |
-| `proven-not-configured` | remedies | 12 | 7 | 3 | 6 | 12 | 40 |
+| `least-privilege-and-sod` | remedies | 0 | 2 | 1 | 11 | 19 | 33 |
+| `proven-not-configured` | remedies | 12 | 7 | 3 | 6 | 13 | 41 |
 | `people-contain-preserve` | response | 5 | 0 | 2 | 13 | 42 | 62 |
 | `recover-by-business-priority` | response | 0 | 2 | 2 | 34 | 2 | 40 |
 | `priority-word-decides` | reading | 2 | 1 | 1 | 1 | 1 | 6 |
@@ -237,8 +242,8 @@ remedies principles fill from D4 and D5, assurance principles from D1.
 - **D1** (75): d1_001 d1_006 d1_011 d1_017 d1_018 d1_020 d1_024 d1_025 d1_027 d1_029 d1_030 d1_031 d1_032 d1_042 d1_047 d1_048 d1_059 d1_062 d1_065 d1_066 d1_070 d1_073 d1_075 d1_076 d1_080 d1_083 d1_090 d1_091 d1_092 d1_096 d1_097 d1_101 d1_102 d1_103 d1_104 d1_106 d1_109 d1_110 d1_111 d1_116 d1_122 d1_123 d1_132 d1_133 d1_136 d1_137 d1_139 d1_141 d1_142 d1_143 d1_144 d1_147 d1_149 d1_150 d1_154 d1_162 d1_163 d1_164 d1_168 d1_171 d1_174 d1_175 d1_176 d1_177 d1_180 d1_184 d1_187 d1_203 d1_208 d1_209 d1_211 d1_213 d1_215 d1_217 d1_218
 - **D2** (59): d2_002 d2_004 d2_006 d2_011 d2_012 d2_029 d2_030 d2_042 d2_044 d2_045 d2_057 d2_062 d2_063 d2_068 d2_071 d2_078 d2_084 d2_085 d2_087 d2_090 d2_091 d2_094 d2_099 d2_101 d2_102 d2_103 d2_104 d2_112 d2_117 d2_121 d2_125 d2_128 d2_131 d2_135 d2_140 d2_144 d2_146 d2_147 d2_148 d2_152 d2_154 d2_156 d2_160 d2_161 d2_163 d2_168 d2_171 d2_174 d2_181 d2_191 d2_193 d2_198 d2_200 d2_206 d2_214 d2_215 d2_220 d2_221 d2_222
 - **D3** (33): d3_002 d3_004 d3_007 d3_012 d3_014 d3_019 d3_029 d3_030 d3_044 d3_046 d3_053 d3_059 d3_060 d3_063 d3_067 d3_068 d3_069 d3_074 d3_076 d3_079 d3_080 d3_081 d3_102 d3_107 d3_108 d3_113 d3_129 d3_136 d3_137 d3_140 d3_142 d3_145 d3_151
-- **D4** (106): d4_004 d4_007 d4_014 d4_019 d4_020 d4_022 d4_025 d4_026 d4_029 d4_030 d4_033 d4_038 d4_041 d4_042 d4_049 d4_051 d4_052 d4_053 d4_054 d4_057 d4_058 d4_063 d4_064 d4_065 d4_076 d4_081 d4_082 d4_085 d4_087 d4_108 d4_109 d4_110 d4_111 d4_115 d4_118 d4_119 d4_123 d4_128 d4_136 d4_139 d4_144 d4_148 d4_149 d4_150 d4_151 d4_153 d4_155 d4_160 d4_166 d4_172 d4_174 d4_176 d4_181 d4_185 d4_193 d4_197 d4_198 d4_201 d4_203 d4_204 d4_207 d4_213 d4_218 d4_219 d4_223 d4_224 d4_225 d4_226 d4_230 d4_231 d4_234 d4_236 d4_243 d4_244 d4_247 d4_248 d4_249 d4_250 d4_251 d4_252 d4_253 d4_258 d4_259 d4_260 d4_263 d4_264 d4_265 d4_269 d4_271 d4_272 d4_276 d4_279 d4_281 d4_285 d4_288 d4_289 d4_290 d4_293 d4_300 d4_302 d4_305 d4_309 d4_313 d4_314 d4_315 d4_316
-- **D5** (117): d5_001 d5_009 d5_010 d5_012 d5_014 d5_015 d5_017 d5_018 d5_020 d5_025 d5_026 d5_031 d5_032 d5_033 d5_044 d5_045 d5_049 d5_055 d5_059 d5_064 d5_070 d5_072 d5_074 d5_078 d5_079 d5_081 d5_083 d5_086 d5_088 d5_090 d5_091 d5_092 d5_094 d5_095 d5_096 d5_100 d5_101 d5_102 d5_103 d5_106 d5_108 d5_109 d5_110 d5_113 d5_116 d5_117 d5_121 d5_126 d5_134 d5_136 d5_137 d5_144 d5_147 d5_149 d5_152 d5_154 d5_155 d5_156 d5_158 d5_164 d5_165 d5_166 d5_171 d5_172 d5_176 d5_178 d5_180 d5_186 d5_187 d5_190 d5_193 d5_195 d5_203 d5_208 d5_209 d5_210 d5_216 d5_217 d5_218 d5_220 d5_222 d5_223 d5_224 d5_227 d5_231 d5_233 d5_236 d5_239 d5_240 d5_241 d5_243 d5_245 d5_246 d5_247 d5_250 d5_255 d5_256 d5_258 d5_259 d5_260 d5_261 d5_262 d5_264 d5_266 d5_267 d5_275 d5_276 d5_280 d5_290 d5_293 d5_295 d5_296 d5_299 d5_310 d5_312 d5_321 d5_327
+- **D4** (107): d4_004 d4_007 d4_014 d4_019 d4_020 d4_022 d4_025 d4_026 d4_029 d4_030 d4_033 d4_038 d4_041 d4_042 d4_049 d4_051 d4_052 d4_053 d4_054 d4_057 d4_058 d4_063 d4_064 d4_065 d4_076 d4_081 d4_082 d4_085 d4_087 d4_108 d4_109 d4_110 d4_111 d4_115 d4_118 d4_119 d4_123 d4_128 d4_136 d4_139 d4_144 d4_148 d4_149 d4_150 d4_151 d4_153 d4_155 d4_160 d4_166 d4_172 d4_174 d4_176 d4_181 d4_185 d4_193 d4_197 d4_198 d4_201 d4_203 d4_204 d4_207 d4_213 d4_218 d4_219 d4_223 d4_224 d4_225 d4_226 d4_230 d4_231 d4_234 d4_236 d4_243 d4_244 d4_247 d4_248 d4_249 d4_250 d4_251 d4_252 d4_253 d4_258 d4_259 d4_260 d4_263 d4_264 d4_265 d4_269 d4_271 d4_272 d4_276 d4_279 d4_281 d4_285 d4_288 d4_289 d4_290 d4_293 d4_300 d4_302 d4_305 d4_309 d4_313 d4_314 d4_315 d4_316 d4_322
+- **D5** (118): d5_001 d5_009 d5_010 d5_012 d5_014 d5_015 d5_017 d5_018 d5_020 d5_025 d5_026 d5_031 d5_032 d5_033 d5_044 d5_045 d5_049 d5_055 d5_059 d5_064 d5_070 d5_072 d5_074 d5_078 d5_079 d5_081 d5_083 d5_086 d5_088 d5_090 d5_091 d5_092 d5_094 d5_095 d5_096 d5_100 d5_101 d5_102 d5_103 d5_106 d5_108 d5_109 d5_110 d5_113 d5_116 d5_117 d5_121 d5_126 d5_134 d5_136 d5_137 d5_144 d5_147 d5_149 d5_152 d5_154 d5_155 d5_156 d5_158 d5_164 d5_165 d5_166 d5_171 d5_172 d5_176 d5_178 d5_180 d5_186 d5_187 d5_190 d5_193 d5_195 d5_203 d5_208 d5_209 d5_210 d5_216 d5_217 d5_218 d5_220 d5_222 d5_223 d5_224 d5_227 d5_231 d5_233 d5_236 d5_239 d5_240 d5_241 d5_243 d5_245 d5_246 d5_247 d5_250 d5_255 d5_256 d5_258 d5_259 d5_260 d5_261 d5_262 d5_264 d5_266 d5_267 d5_275 d5_276 d5_280 d5_290 d5_293 d5_295 d5_296 d5_299 d5_310 d5_312 d5_321 d5_327 d5_339
 
 ### Low confidence (untagged)
 The key turns on knowing a definition, technique, standard or rule, and no

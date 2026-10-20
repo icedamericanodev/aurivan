@@ -12545,7 +12545,7 @@
       "correct": "C",
       "key_concept": "ZTNA connects a verified user and device only to the applications policy allows, so a compromised device cannot reach the wider network.",
       "pre_read": "Ask what an attacker on a compromised device could reach under each option.",
-      "correct_explanation": "ZTNA's main gain over a VPN is reach: the broker connects a user only to the applications policy allows, so a compromised laptop cannot scan or spread across the network. A device health check is the runner-up: it helps keep unhealthy devices out, but it can miss a compromise that has not yet been detected, while limiting reach caps the harm either way.",
+      "correct_explanation": "ZTNA's main gain over a VPN is limited reach: the broker connects a user only to the applications policy allows, so a compromised laptop cannot scan or spread across the network. A device health check is the runner-up: it helps keep unhealthy devices out, but it can miss a compromise that has not yet been detected, while limiting reach caps the harm either way.",
       "wrong_explanations": {
         "A": "A VPN tunnel is already encrypted; stronger encryption protects data in transit but does not limit what a compromised laptop can reach.",
         "B": "Health checks block devices known to be unhealthy, but an undetected compromise passes them; limiting reach still caps the harm.",
@@ -12573,7 +12573,7 @@
       "principle_id": "proven-not-configured",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "After a zero trust network access (ZTNA) rollout, management states its application servers can no longer be reached from the internet. Which evidence would BEST support this claim for the IS auditor?",
+      "question": "After a zero trust network access (ZTNA) rollout, management states its application servers can no longer be reached from the internet. Which evidence would BEST allow the IS auditor to verify this claim?",
       "options": {
         "A": "Broker logs listing each allowed and denied application session",
         "B": "An external scan showing the servers accept no inbound connections",
@@ -12594,7 +12594,7 @@
         "Final two: B beats C because a design shows intent, while a scan of the live servers shows they really are hidden.",
         "Exam cue: when management claims a control works, prefer evidence that tests the live result over documents describing the plan."
       ],
-      "framework_ref": "NIST SP 800-207 (Zero Trust Architecture); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection)",
+      "framework_ref": "NIST SP 800-207 (Zero Trust Architecture); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection); NIST SP 800-53 Rev 5 RA-5 (Vulnerability Monitoring and Scanning)",
       "related_concepts": [
         "Zero trust network access",
         "Application connector",
@@ -12619,7 +12619,7 @@
         "D": "Compare the inventory with a discovery scan of live systems"
       },
       "correct": "D",
-      "key_concept": "Test an inventory's completeness from an independent source, such as a discovery scan of live systems, toward the inventory.",
+      "key_concept": "Test completeness by starting from an independent source, such as a discovery scan of live systems, and looking for items the inventory lacks.",
       "pre_read": "Ask which direction each test runs: from the record to reality, or from reality to the record.",
       "correct_explanation": "Completeness means finding what the questionnaires missed, so the test must start from an independent view of what really exists, such as a discovery scan of live systems, and look for algorithms the inventory lacks. Tracing sampled entries to their systems is the runner-up: it confirms that listed items are real and accurate, but it starts from the inventory, so it cannot reveal anything left out.",
       "wrong_explanations": {
@@ -12639,7 +12639,7 @@
         "Completeness testing",
         "Cryptographic discovery"
       ],
-      "_provenance": "Authored from concept: 'Cryptographic Inventory. Testing Completeness'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.6 (batch Q16: practice for the web v12.24 study notes). Distinct from d5_079 (build the inventory first), d5_074 (which systems migrate first) and d5_249 (crypto-agile design): tests how the IS auditor checks an existing inventory's completeness. Public sources: ISACA ITAF and ISO.",
+      "_provenance": "Authored from concept: 'Cryptographic Inventory. Testing Completeness'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.6 (batch Q16: practice for the web v12.24 study notes). Distinct from d5_079 (build the inventory first), d5_074 (which systems migrate first) and d5_249 (crypto-agile design): tests how the IS auditor checks an existing inventory's completeness; sibling lesson to d4_309 (completeness from population toward record, in a log-coverage context). Public sources: ISACA ITAF and ISO.",
       "style_version": 2
     },
     {
@@ -12652,16 +12652,16 @@
       "question": "To prepare for quantum computers, an IT manager plans to double the key length of all Rivest-Shamir-Adleman (RSA) certificates used to sign long-term contracts. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "A capable quantum computer breaks RSA at any practical key length",
-        "B": "Longer keys will slow signing and checking on older devices",
-        "C": "Symmetric 256-bit encryption of stored contracts will also fail",
-        "D": "Certificates with longer keys will cost more to renew each year"
+        "B": "Longer RSA keys will slow signing and checking on older devices",
+        "C": "Quantum attacks will also break symmetric 256-bit contract encryption",
+        "D": "Certificates with longer RSA keys will cost more to renew each year"
       },
       "correct": "A",
       "key_concept": "Quantum computers break RSA and elliptic-curve cryptography at any practical key length; the answer is standardized post-quantum algorithms, not longer keys.",
       "pre_read": "Ask whether the proposed change works against the stated threat before weighing its side effects.",
-      "correct_explanation": "A large quantum computer breaks RSA through its mathematics, not by brute force, so longer keys buy no lasting protection. Signatures on long-term contracts must stay trustworthy for decades, so they need a standardized post-quantum signature algorithm. Slower signing on older devices is the runner-up: it is a real cost, but a manageable one beside a change that fails against the threat.",
+      "correct_explanation": "A large quantum computer breaks RSA with Shor's algorithm, whose cost grows only modestly with key length, so longer keys buy no lasting protection. Signatures on long-term contracts must stay trustworthy for decades, so they need a standardized post-quantum signature algorithm. Slower signing on older devices is the runner-up: it is a real cost, but a manageable one beside a change that fails against the threat.",
       "wrong_explanations": {
-        "B": "Slower processing is an operating cost the bank can manage; it matters less than a change that fails against the quantum threat itself.",
+        "B": "Slower processing is an operating cost the organization can manage; it matters less than a change that fails against the quantum threat itself.",
         "C": "256-bit symmetric encryption is expected to stay strong against quantum attack; the urgent exposure is public-key cryptography such as RSA.",
         "D": "Certificate fees rarely depend on key length, and even a higher fee would be minor beside a control that fails."
       },
@@ -12677,7 +12677,7 @@
         "Digital signatures",
         "Symmetric encryption strength"
       ],
-      "_provenance": "Authored from concept: 'Post-Quantum Cryptography. Interim Response to the Quantum Threat'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.6 (batch Q16: practice for the web v12.24 study notes). Distinct from d5_074 (migration order), d5_079 (inventory first), d5_249 (crypto-agility) and d2_174 (stalled migration governance): tests why longer RSA keys are not an answer to the quantum threat. Public sources: NIST and ISO.",
+      "_provenance": "Authored from concept: 'Post-Quantum Cryptography. Interim Response to the Quantum Threat'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.6 (batch Q16: practice for the web v12.24 study notes). Distinct from d5_074 (migration order), d5_079 (inventory first), d5_249 (crypto-agility) and d2_174 (stalled migration governance): tests why longer RSA keys are not an answer to the quantum threat. The same misconception appears as d5_249 option D ('use longer RSA keys until the standards settle'); this item builds a full question on it, matching the 5A6.6 exam trap. Public sources: NIST and ISO.",
       "style_version": 2
     },
     {
@@ -12687,7 +12687,7 @@
       "principle_id": "least-privilege-and-sod",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor learns an attacker exploited a receipt-formatting serverless function, then deleted records in the human resources (HR) database. What MOST likely explains how the function reached HR data?",
+      "question": "An IS auditor learns an attacker exploited a company's receipt-formatting serverless function, then deleted records in its own human resources (HR) database. What MOST likely explains how the function reached HR data?",
       "options": {
         "A": "The function did not validate the event data it received",
         "B": "The provider failed to isolate one customer's functions from another's",
@@ -12727,23 +12727,23 @@
       "bloom_level": "Application",
       "question": "A bot triggered a public serverless function millions of times overnight, running up a large cloud bill before anyone noticed. Which control should the IS auditor recommend as BEST to limit a repeat?",
       "options": {
-        "A": "Detailed logging of every invocation, reviewed each morning",
+        "A": "Spending alerts that notify the cloud team when costs spike",
         "B": "Concurrency limits that cap how many copies run at once",
         "C": "A larger cloud budget reserved for unexpected usage spikes",
         "D": "Faster automatic scaling so the function keeps up with demand"
       },
       "correct": "B",
-      "key_concept": "Denial of wallet floods functions to run up costs; concurrency limits cap it, and spending alerts act as a backstop.",
-      "pre_read": "Ask whether each option stops the harm as it happens or only reveals it afterward.",
-      "correct_explanation": "Concurrency limits cap how many copies of the function can run at once, so a flood of triggers cannot grow the bill without bound; spending alerts add a backstop. This attack, called denial of wallet, needs a preventive cap. Morning log review is the runner-up: it would show the flood, but only after the night's costs had already been run up.",
+      "key_concept": "Denial of wallet floods functions to run up costs; concurrency limits cap how fast costs can grow, and spending alerts act as a backstop.",
+      "pre_read": "Ask whether each option limits the harm automatically or depends on someone noticing it and acting.",
+      "correct_explanation": "Concurrency limits cap how many copies of the function can run at once, so a flood of triggers can only run up the bill at a capped rate. This attack, called denial of wallet, needs a preventive cap. Spending alerts are the runner-up: they flag the spike sooner than any log review, but overnight nobody may act before costs pile up, so they back up the cap rather than replace it.",
       "wrong_explanations": {
-        "A": "Logs reviewed each morning reveal the flood only after the night's costs are incurred; detection is a backstop, not the main limit.",
+        "A": "Spending alerts flag the flood quickly, but someone must still act on them, and overnight the bill keeps growing until they do.",
         "C": "A bigger budget absorbs the cost instead of limiting it, and lets an attacker run the bill even higher.",
         "D": "Faster scaling lets more copies run at once, so the same bot attack would cost even more."
       },
       "tips": [
         "Eliminate: C and D, because a bigger budget absorbs the cost and faster scaling lets the attack run up even more.",
-        "Final two: B beats A because a concurrency cap stops runaway costs as they happen, while morning log review finds them afterward.",
+        "Final two: B beats A because a concurrency cap limits runaway costs automatically, while a spending alert still needs someone to act.",
         "Exam cue: when harm grows by the minute, prefer a control that caps it automatically over one that reports it later."
       ],
       "framework_ref": "NIST SP 800-53 Rev 5 SC-5 (Denial-of-Service Protection); ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)",
@@ -12763,24 +12763,24 @@
       "principle_id": "prevent-before-detect",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Hotel staff open guest room doors by holding an enrolled phone to the lock using near-field communication (NFC), with no unlock or confirmation on the phone. What should the IS auditor recommend as BEST?",
+      "question": "Hotel staff open guest room doors by holding an enrolled phone near the lock using near-field communication (NFC), even while the phone is locked. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Require a deliberate action on the phone for each opening",
         "B": "Log every door opening and review the logs each week",
         "C": "Reduce the lock reader's range to under one centimeter",
-        "D": "Turn off Bluetooth discoverability on the staff phones"
+        "D": "Encrypt the credential each phone sends to the lock"
       },
       "correct": "A",
       "key_concept": "Proximity alone does not prove presence: relay attacks forward signals, so each tap or opening needs a deliberate user action.",
       "pre_read": "Ask whether the option stops a misuse when it happens or only records it for later.",
-      "correct_explanation": "With no action on the phone, a relay attack can forward the signal from a staff member's phone to a distant lock and open a room while the holder is elsewhere. A deliberate unlock or confirmation for each opening stops that. Weekly log review is the runner-up: logs help investigate, but they record a relayed opening only after the guest's room was entered.",
+      "correct_explanation": "With no action on the phone, a lost phone opens any enrolled door, and a relay attack can forward a staff member's phone signal to a distant lock while the holder is elsewhere. A deliberate unlock or confirmation for each opening stops both. Weekly log review is the runner-up: logs help investigate, but they record a relayed opening only after the guest's room was entered.",
       "wrong_explanations": {
         "B": "Logs show which phone opened a door, but a relayed opening looks legitimate and is found only after the room was entered.",
         "C": "A relay attack forwards the signal over any distance, so a shorter reader range does not prove the phone is really present.",
-        "D": "Discoverability concerns Bluetooth, not NFC, and hiding a device only stops casual scans; it does nothing against a relayed tap."
+        "D": "A relay forwards the encrypted exchange unchanged, so the lock still accepts it; encryption stops eavesdropping, not relaying."
       },
       "tips": [
-        "Eliminate: C and D, because relays defeat short range, and Bluetooth discoverability has nothing to do with an NFC tap.",
+        "Eliminate: C and D, because a relay forwards the signal over any distance and passes an encrypted exchange through unchanged.",
         "Final two: A beats B because a deliberate action stops a relayed opening, while log review finds it only after the room was entered.",
         "Exam cue: short range is not a security control; look for a deliberate user action at each transaction."
       ],
@@ -12797,16 +12797,16 @@
     {
       "id": "d5_343",
       "domain": 5,
-      "subtopic": "Bluetooth Security. Closing a Headset Firmware Finding",
+      "subtopic": "Bluetooth Security. Judging a Remediation Claim",
       "principle_id": "root-cause-over-symptom",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
-      "question": "To close a finding on unpatched firmware in staff Bluetooth headsets, management turned off Bluetooth discoverability on all company phones. Why should the IS auditor MOST doubt that the finding is resolved?",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "To close a finding on unpatched firmware in staff Bluetooth headsets, management turned off Bluetooth discoverability on all company phones. Which reason should MOST lead the IS auditor to doubt the finding is resolved?",
       "options": {
         "A": "Staff can switch discoverability back on in their phone settings",
-        "B": "Hidden phones can no longer connect to their paired headsets",
-        "C": "The headsets' firmware flaws remain open to attack",
-        "D": "Bluetooth's short range already made attacks on headsets unlikely"
+        "B": "The change was made without a record in the change log",
+        "C": "The change leaves the vulnerable headsets exactly as they were",
+        "D": "Attackers with antennas can reach Bluetooth devices from far away"
       },
       "correct": "C",
       "key_concept": "Turning off Bluetooth discoverability only hides devices from casual scans; patching and confirmed pairing address the actual flaws.",
@@ -12814,11 +12814,11 @@
       "correct_explanation": "The finding is about flaws in the headsets' firmware, and only patching removes them. Hiding the phones treats the exposure, not the cause: the headsets themselves are untouched, and a hidden device's address can still be learned from its traffic. Staff switching discoverability back on is the runner-up: enforcing the setting through device management would help, yet the flaws would still be there.",
       "wrong_explanations": {
         "A": "Enforcing the setting through device management would close this gap, but even an enforced hidden mode leaves the headsets' firmware flaws in place.",
-        "B": "Turning off discoverability stops new scans finding the phone; devices already paired keep connecting normally.",
-        "D": "Attackers can use directional antennas to reach Bluetooth devices from much farther away, so short range is not a control."
+        "B": "A missing change record is a process gap worth noting, but it does not show whether the headsets' flaws were fixed.",
+        "D": "Antennas extend Bluetooth range, but range is not what the finding is about; the headsets' unpatched flaws are the issue either way."
       },
       "tips": [
-        "Eliminate: B and D, because paired devices still connect when hidden, and antennas extend Bluetooth range.",
+        "Eliminate: B and D, because a missing change record and Bluetooth's range say nothing about whether the headsets' flaws were fixed.",
         "Final two: C beats A because even an enforced hidden setting leaves the firmware flaws; only patching removes the cause.",
         "Exam cue: check that a fix addresses the cause named in the finding, not just one way it could be exposed."
       ],
@@ -12829,7 +12829,7 @@
         "Firmware patching",
         "Remediation follow-up"
       ],
-      "_provenance": "Authored from concept: 'Bluetooth Security. Closing a Headset Firmware Finding'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.5 (batch Q16: practice for the web v12.24 study notes). Distinct from the D5 wireless LAN items (5A9.2, 5A9.3): tests why hiding Bluetooth devices does not resolve unpatched firmware flaws. Public sources: NIST.",
+      "_provenance": "Authored from concept: 'Bluetooth Security. Judging a Remediation Claim'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.5 (batch Q16: practice for the web v12.24 study notes). Distinct from the D5 wireless LAN items (5A9.2, 5A9.3): tests why hiding Bluetooth devices does not resolve unpatched firmware flaws. Public sources: NIST.",
       "style_version": 2
     }
   ]
