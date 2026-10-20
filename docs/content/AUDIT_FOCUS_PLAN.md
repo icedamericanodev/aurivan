@@ -104,6 +104,9 @@ never shown to learners.
 - **Audit-method subtopics (1A1.2 ethics, 1A2.4, 1B4.6):** say plainly that the
   audit function is under review (independence declarations, quality assurance
   files). Audit management acts; the audit committee usually decides.
+- **New subtopics ship with the field.** The six added in plan item N1 (4A11.6,
+  4B2.4, 5A4.8, 5A6.6, 5A8.6, 5A9.5) carry `audit_focus` from the start; 5A6.6
+  took over 5A6.2's post-quantum audit steps, and 5A6.2 got its own.
 - **After the 60:** subtopics that already carry an audit bullet in `how_it_works`
   can move that bullet into `audit_focus` later. That frees core words; it is
   optional and lower priority.
