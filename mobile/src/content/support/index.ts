@@ -45,9 +45,9 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     date: '2026-10-20',
     new: [
       'A new principle, "Fit the method to the objective": pick the audit approach that answers the question being asked.',
-      'A link from each answer to the principle it tests.',
+      'Many answers now link to the principle they test.',
     ],
-    improved: ['Practise each principle with the questions that turn on it, new and missed ones first.'],
+    improved: ['Practice each principle with the questions that turn on it, new and missed ones first.'],
   },
   {
     version: '1.30.0',

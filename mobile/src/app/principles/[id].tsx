@@ -107,7 +107,7 @@ export default function PrincipleScreen() {
         <View style={{ marginTop: space.xxl, gap: space.xs }}>
           <Button
             label="Practice this principle"
-            accessibilityHint={`Starts a practice set on ${principle.title}`}
+            accessibilityHint={`Starts a set of ${Math.min(n, PRINCIPLE_SET_SIZE)} questions on ${principle.title}, new and missed ones first`}
             onPress={practise}
           />
           <T v="meta" center>

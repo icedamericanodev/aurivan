@@ -188,15 +188,18 @@ export default function SessionScreen() {
     return { noteId, noteName: note?.name, noteMinutes: note?.minutes ?? 2, lessons };
   }, [missed, missCert, qid]);
   // Mobile 1.31: the principle this question tests (its `principleId`), for a
-  // "Principle" row after ANY checked answer. Same rule as the note and lesson
-  // rows: never in a mock (a mock shows no answer screen until it is
-  // submitted, and Results' review has no per-question links). Untagged → none.
-  const principleCert = isMock ? undefined : active?.certId;
+  // "Read the principle" row after ANY checked answer. Same rule as the note
+  // and lesson rows: never in a mock (a mock shows no answer screen until it
+  // is submitted, and Results' review has no per-question links). Not in the
+  // first set either (one less thing in the first minute), and not inside a
+  // set started from that same principle. Untagged → none.
+  const principleCert = isMock || active?.firstSet ? undefined : active?.certId;
   const principleTag = q?.principleId;
-  const answerPrinciple = useMemo(
+  const taggedPrinciple = useMemo(
     () => (principleCert && principleTag ? findPrinciple(principleCert, principleTag) : undefined),
     [principleCert, principleTag],
   );
+  const answerPrinciple = taggedPrinciple && active?.title !== taggedPrinciple.title ? taggedPrinciple : undefined;
   // Coach me was opened for this question (never in mock exams).
   const coached = !isMock && Boolean(qid && active?.coached?.includes(qid));
   // Quiet data (Build C): time on this question, background time excluded.
@@ -892,10 +895,10 @@ export default function SessionScreen() {
                   <ListRow
                     testID="answer-principle-row"
                     icon={<Compass size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                    kicker="Principle"
+                    kicker="Read the principle"
                     title={answerPrinciple.title}
-                    subtitle="The thinking this question tests"
-                    accessibilityLabel={`Principle: ${answerPrinciple.title}, the thinking this question tests`}
+                    subtitle="How to think it through"
+                    accessibilityLabel={`Read the principle: ${answerPrinciple.title}, how to think it through`}
                     accessibilityHint="Opens the principle. Go back to return to this answer."
                     onPress={() => router.push(`/principles/${encodeURIComponent(answerPrinciple.id)}`)}
                     last

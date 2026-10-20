@@ -1,11 +1,12 @@
 /**
- * Mobile 1.31: the answer screen's "Principle" row.
+ * Mobile 1.31: the answer screen's "Read the principle" row.
  *
  * - After a checked answer (right or wrong) on a question tagged with a
- *   principle: a row in the next-steps area that reads "Principle" over the
- *   principle's title, says "Principle: <title>" to a screen reader (role
- *   button), and opens /principles/<id>.
- * - An untagged question shows no such row.
+ *   principle: a row in the next-steps area that reads "Read the principle"
+ *   over the principle's title, says "Read the principle: <title>" to a
+ *   screen reader (role button), and opens /principles/<id>.
+ * - An untagged question shows no such row, nor does the first set or a set
+ *   started from that same principle.
  * - A mock exam never shows it: no answer screen while the exam runs, and
  *   the Results review has no per-question links (the note row's rule).
  * - The principle page and the list both render the 21st principle,
@@ -68,12 +69,12 @@ const press = (label: string) => {
     b.props.onPress();
   });
 };
-/** The rows (ListRow, the component itself) whose spoken label starts "Principle:". */
+/** The rows (ListRow, the component itself) whose spoken label starts "Read the principle:". */
 const principleRows = () =>
-  root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Principle:') && typeof n.props.kicker === 'string');
+  root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Read the principle:') && typeof n.props.kicker === 'string');
 /** What the screen reader meets: the host element with the label, and its role. */
 const principleHosts = () =>
-  root().findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Principle:'));
+  root().findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Read the principle:'));
 /** Tap the first option that is right (or wrong) by its ORIGINAL letter. */
 function pickBy(right: boolean) {
   const s = useSession.getState().active!;
@@ -117,15 +118,15 @@ describe('the answer screen Principle row', () => {
     answerFirst([tagged.id, ...filler], right);
     const rows = principleRows();
     expect(rows).toHaveLength(1);
-    expect(rows[0].props.accessibilityLabel).toBe(`Principle: ${principle.title}, the thinking this question tests`);
-    expect(rows[0].props.kicker).toBe('Principle');
+    expect(rows[0].props.accessibilityLabel).toBe(`Read the principle: ${principle.title}, how to think it through`);
+    expect(rows[0].props.kicker).toBe('Read the principle');
     expect(rows[0].props.title).toBe(principle.title);
     // A screen reader hears it as a button.
     expect(principleHosts().length).toBeGreaterThan(0);
     expect(principleHosts().every((h) => h.props.accessibilityRole === 'button')).toBe(true);
-    // On screen: the kicker "Principle" over the principle's own title.
+    // On screen: the kicker "Read the principle" over the principle's own title.
     const t = textOf(root());
-    expect(t).toContain('Principle');
+    expect(t).toContain('Read the principle');
     expect(t).toContain(principle.title);
     act(() => {
       rows[0].props.onPress();
@@ -136,6 +137,22 @@ describe('the answer screen Principle row', () => {
   it('is not there before the answer is checked', () => {
     startFromIds('cisa', [tagged.id, ...filler], 'T');
     mount(<SessionScreen />);
+    expect(principleRows()).toEqual([]);
+  });
+
+  it('hides in the first set', () => {
+    startFromIds('cisa', [tagged.id, ...filler], 'T', { firstSet: true, timed: false });
+    mount(<SessionScreen />);
+    pickBy(false);
+    press('Check answer');
+    expect(principleRows()).toEqual([]);
+  });
+
+  it('hides inside a set started from that same principle', () => {
+    startFromIds('cisa', [tagged.id, ...filler], principle.title);
+    mount(<SessionScreen />);
+    pickBy(false);
+    press('Check answer');
     expect(principleRows()).toEqual([]);
   });
 
