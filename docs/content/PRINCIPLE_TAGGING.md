@@ -178,12 +178,12 @@ Strict agreement was 63/80; with defensible boundary calls, 74/80. Applied:
 - **d1_185 stem.** The language review suggested rewording it as a choice of
   which report to request. Wording changes go through the question reviewers;
   the tag (`fit-method-to-objective`) stands meanwhile.
-- **Seeds against the new `plan-before-testing` line.** d2_069 (management
-  documents the current-state architecture first) and d3_112 (migration team
-  maps dependencies first) are seeds of `plan-before-testing` but describe
-  management planning. They keep the tag because tags must agree with seeds;
-  moving them changes a learner-visible practice set, so the maintainer
-  decides.
+- **Seeds moved (maintainer decision: the rubric wins).** d2_069 (management
+  documents the current-state architecture first) and d3_112 (dependencies
+  mapped before migration waves) now seed `governance-before-technology`.
+  `plan-before-testing` gets d2_050 (the IS auditor maps regulations to
+  shared and unit-specific controls before planning testing) as its
+  replacement seed.
 - **Old "20 rules" lines** in past release notes (web What's New and mobile
   1.26.0 notes) stay as history.
 
@@ -208,9 +208,9 @@ short reason.
 | `independence-throughout` | role | 12 | 6 | 1 | 0 | 0 | 19 |
 | `escalate-to-decision-owner` | role | 10 | 5 | 3 | 1 | 3 | 22 |
 | `management-owns-risk` | role | 3 | 18 | 5 | 9 | 18 | 53 |
-| `governance-before-technology` | priorities | 0 | 12 | 5 | 9 | 10 | 36 |
+| `governance-before-technology` | priorities | 0 | 13 | 6 | 9 | 10 | 38 |
 | `risk-sets-priority` | priorities | 10 | 7 | 6 | 11 | 17 | 51 |
-| `plan-before-testing` | assurance | 15 | 4 | 1 | 1 | 1 | 22 |
+| `plan-before-testing` | assurance | 15 | 3 | 0 | 1 | 1 | 20 |
 | `fit-method-to-objective` | assurance | 27 | 4 | 7 | 3 | 5 | 46 |
 | `evidence-quality` | assurance | 25 | 12 | 6 | 18 | 18 | 79 |
 | `materiality-judgment` | assurance | 10 | 0 | 1 | 0 | 1 | 12 |
