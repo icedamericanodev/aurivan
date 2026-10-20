@@ -13043,7 +13043,7 @@
         {
           "topic_id": "4A11",
           "topic_name": "Database Management",
-          "overview": "Databases hold the organization's authoritative records. The IS auditor reviews how data is structured and kept consistent, who can change the data and its definitions, and whether every change is traceable and recoverable to the point the business needs.",
+          "overview": "Databases hold the organization's authoritative records. The IS auditor reviews how data is structured and kept consistent, who can change the data and its definitions, how privileged activity is monitored and stored data encrypted, and whether every change is traceable and recoverable to the point the business needs.",
           "can_do": [
             "Match a workload to a relational or NoSQL model and name where the IS auditor should look",
             "Explain how keys, constraints and locking protect data integrity",
@@ -13474,6 +13474,101 @@
                   "definition": "Hiding parts of sensitive values at display time, such as all but four card digits; stored data is unchanged."
                 }
               ]
+            },
+            {
+              "id": "4A11.6",
+              "name": "Database Activity Monitoring and Database Encryption",
+              "legacy_ids": [],
+              "definition": "Database activity monitoring (DAM) records and analyzes database activity independently of the database itself; database encryption keeps stored data unreadable to anyone who bypasses normal access.",
+              "why_it_matters": "Database administrators (DBAs) and stolen privileged accounts can read or change any record. Logs the DBAs control, and encryption they can see through, give little protection against that risk.",
+              "how_it_works": [
+                "DAM captures queries through a host agent or network sensor, so it keeps recording even when native database logging is switched off.",
+                "DAM rules alert on risky activity, such as bulk reads of card numbers or changes to audit settings, and some tools can block it.",
+                "Transparent data encryption (TDE) encrypts database files and backups, protecting stolen disks or copies; anyone the database lets in still sees clear text.",
+                "Field-level encryption protects chosen sensitive fields with keys held outside the database team's reach.",
+                "Security staff, not the DBAs being watched, administer the DAM tool and the encryption keys."
+              ],
+              "compare": {
+                "columns": [
+                  "Transparent data encryption",
+                  "Column-level encryption",
+                  "Application-level encryption"
+                ],
+                "rows": [
+                  {
+                    "label": "What it covers",
+                    "cells": [
+                      "Whole database files, logs and backups",
+                      "Chosen sensitive columns, encrypted inside the database",
+                      "Fields encrypted by the application before they reach the database"
+                    ]
+                  },
+                  {
+                    "label": "Protects against",
+                    "cells": [
+                      "Theft of disks, files or backups",
+                      "Users without rights to the column key",
+                      "DBAs and anyone with only database access"
+                    ]
+                  },
+                  {
+                    "label": "Does not stop",
+                    "cells": [
+                      "Anyone querying through the database, DBAs included",
+                      "DBAs, if the database also manages the keys",
+                      "A compromised application or its key store"
+                    ]
+                  },
+                  {
+                    "label": "Cost",
+                    "cells": [
+                      "No application changes",
+                      "Some query and index changes",
+                      "Application changes; searching and sorting get harder"
+                    ]
+                  }
+                ]
+              },
+              "example": "A retailer installs a database activity monitoring tool on its loyalty database, and the DBA team administers it. The IS auditor finds that a DBA disabled the alert rule for bulk exports of member records a week before a large unexplained export. The IS auditor reports that the monitored team controls the monitor and recommends moving tool administration and rule changes to the security team.",
+              "audit_focus": {
+                "review": [
+                  "Compare DAM administrator rights with the DBA group membership",
+                  "Trace a sample of high-risk DAM alerts to review and follow-up",
+                  "Sample sensitive columns and test whether a DBA account reads clear text"
+                ],
+                "evidence": [
+                  "DAM alert and rule-change history exported from the tool",
+                  "Key service access list for field-encryption keys",
+                  "DAM coverage report of monitored databases and sensitive tables"
+                ],
+                "recommend": "Have the security team run the monitoring tool and field keys apart from the DBAs and review high-risk alerts promptly.",
+                "decides": "The data owner decides which fields need encryption beyond TDE"
+              },
+              "isaca_rule": "A control over privileged users must sit outside their reach. Monitoring that DBAs can switch off, or encryption whose keys they hold, does not protect data from them. TDE protects stored files, not what the database shows to its users.",
+              "exam_traps": [
+                {
+                  "trap": "Transparent data encryption stops DBAs from reading sensitive data.",
+                  "why": "TDE decrypts data for anyone the database lets in, DBAs included. It protects disks, files and backups; field encryption with keys DBAs cannot reach protects against them."
+                },
+                {
+                  "trap": "Installing a DAM tool settles a finding about unmonitored DBAs.",
+                  "why": "Only if someone outside the DBA team administers it, its rules cover the sensitive tables, and its alerts are reviewed and followed up."
+                }
+              ],
+              "key_terms": [
+                {
+                  "term": "Database activity monitoring (DAM)",
+                  "definition": "A tool that captures and analyzes database activity independently of the database, alerting on risky or unusual actions."
+                },
+                {
+                  "term": "Native auditing",
+                  "definition": "Logging built into the database software, usually configured by the DBAs themselves."
+                },
+                {
+                  "term": "Field-level encryption",
+                  "definition": "Encrypting individual sensitive values, such as card numbers, with their own keys."
+                }
+              ]
             }
           ]
         },
@@ -13792,7 +13887,7 @@
         {
           "topic_id": "4B2",
           "topic_name": "System and Operational Resilience",
-          "overview": "Resilience means keeping services running through a failure, not only restoring them afterward. This topic covers the design choices that remove single points of failure, the redundancy techniques that put them into practice, and the fallbacks for people, suppliers and operational technology (OT).",
+          "overview": "Resilience means keeping services running through a failure, not only restoring them afterward. This topic covers the design choices that remove single points of failure, the redundancy techniques that put them into practice, the fallbacks for people, suppliers and operational technology (OT), and the testing that shows important services stay within tolerance.",
           "can_do": [
             "Find single points of failure, including hidden shared dependencies such as one cable route",
             "Match redundant array of independent disks (RAID), clustering and network diversity to the failure each one covers",
@@ -14105,6 +14200,96 @@
                 {
                   "term": "Supplier workaround",
                   "definition": "The continuity plan's tested manual process for use during a supplier outage; the usual security controls still apply to it."
+                }
+              ]
+            },
+            {
+              "id": "4B2.4",
+              "name": "Operational Resilience Testing and Impact Tolerances",
+              "legacy_ids": [],
+              "definition": "Operational resilience testing checks whether each important business service can stay within its impact tolerance during severe but plausible disruptions, including failures at third parties.",
+              "why_it_matters": "Disaster recovery tests usually prove that one system comes back. They rarely show whether a whole customer service survives a supplier outage, a cyberattack or a regional event, which is what customers feel.",
+              "how_it_works": [
+                "Management names its important business services and sets an impact tolerance for each, such as a maximum outage in hours.",
+                "Each service is mapped end to end: people, processes, technology, facilities, data and third parties, including key suppliers' own suppliers.",
+                "Scenarios are severe but plausible, such as losing a major cloud provider or ransomware across sites, not only one failed server.",
+                "Tests combine tabletop exercises, failover, controlled fault injection (chaos engineering) and joint exercises with critical suppliers.",
+                "Each tolerance breach becomes a remediation action with an owner and a date, and testing repeats after major changes."
+              ],
+              "compare": {
+                "columns": [
+                  "Disaster recovery test",
+                  "Operational resilience test"
+                ],
+                "rows": [
+                  {
+                    "label": "Question asked",
+                    "cells": [
+                      "Can this system be restored within its RTO?",
+                      "Can this service stay within its impact tolerance?"
+                    ]
+                  },
+                  {
+                    "label": "Scope",
+                    "cells": [
+                      "One system, site or recovery plan",
+                      "A whole service, end to end, including third parties"
+                    ]
+                  },
+                  {
+                    "label": "Scenario",
+                    "cells": [
+                      "A planned loss of a known component",
+                      "Severe events, often several failures at once"
+                    ]
+                  },
+                  {
+                    "label": "Main output",
+                    "cells": [
+                      "Recovery times compared with the RTO",
+                      "Tolerance breaches and the dependencies that caused them"
+                    ]
+                  }
+                ]
+              },
+              "example": "A pension administrator passes every system recovery test, yet its monthly payment service depends on one outsourced payments processor. The IS auditor finds that no exercise has simulated that processor failing on payment day. The IS auditor reports the untested dependency and recommends a joint exercise with the processor, measured against the two-day tolerance management set for late pensions.",
+              "audit_focus": {
+                "review": [
+                  "Trace each important service map to supplier and technology inventories",
+                  "Compare scenario test results with each service's approved impact tolerance",
+                  "Inspect whether critical third parties took part in any exercise"
+                ],
+                "evidence": [
+                  "Exercise results showing service restoration times against each tolerance",
+                  "Remediation log of tolerance breaches with owners, dates and closure",
+                  "Approved list of important business services and their tolerances"
+                ],
+                "recommend": "Have the resilience manager test each important service against its tolerance, include critical suppliers and track every fix.",
+                "decides": "Senior management sets impact tolerances and accepts any service left outside them"
+              },
+              "isaca_rule": "Resilience is proven per business service, not per system. The IS auditor asks whether severe but plausible tests, including third parties, show each important service staying within the tolerance management set, and whether breaches get fixed.",
+              "exam_traps": [
+                {
+                  "trap": "Passing every disaster recovery test proves the business can withstand a severe disruption.",
+                  "why": "Recovery tests prove single systems restore. A service can still fail through an untested supplier, people or data dependency, or under several failures at once."
+                },
+                {
+                  "trap": "Choose test scenarios the organization is confident it will pass.",
+                  "why": "Tests that always pass teach little. Severe scenarios aim to find where a service would breach its tolerance, before a real event does."
+                }
+              ],
+              "key_terms": [
+                {
+                  "term": "Impact tolerance",
+                  "definition": "The most disruption to an important business service, usually a time limit, that management will accept."
+                },
+                {
+                  "term": "Important business service",
+                  "definition": "A service to outside customers or users whose disruption would seriously harm them, the organization or its market."
+                },
+                {
+                  "term": "Severe but plausible scenario",
+                  "definition": "A test scenario extreme enough to stretch the service, yet realistic enough to happen."
                 }
               ]
             }
@@ -16249,7 +16434,7 @@
         {
           "topic_id": "5A4",
           "topic_name": "Network and End-Point Security",
-          "overview": "Networks carry data between systems, and endpoints are where people actually touch it. This topic covers filtering and segmenting traffic, secure remote access, detecting and blocking attacks, decoys that expose intruders, and hardening the laptops, servers and phones at the edges.",
+          "overview": "Networks carry data between systems, and endpoints are where people actually touch it. This topic covers filtering and segmenting traffic, secure remote access, including zero trust network access, detecting and blocking attacks, decoys that expose intruders, and hardening the laptops, servers and phones at the edges.",
           "can_do": [
             "Explain why an intrusion prevention system on a mirrored port cannot block attacks",
             "Recommend a screened subnet, and mapping data flows before any segmentation change",
@@ -16802,6 +16987,95 @@
                   "definition": "An attack that runs in memory or through built-in tools, leaving no malicious file on disk."
                 }
               ]
+            },
+            {
+              "id": "5A4.8",
+              "name": "Secure Access Service Edge and Zero Trust Network Access",
+              "legacy_ids": [],
+              "definition": "Zero trust network access (ZTNA) connects a verified user and device to a single application, instead of placing them on the internal network as a virtual private network (VPN) does.",
+              "why_it_matters": "A VPN login often reaches whole network segments, so one stolen password or infected laptop can spread widely. ZTNA limits each session to the applications a person needs.",
+              "how_it_works": [
+                "A broker checks identity, multi-factor authentication (MFA) and device health, then connects the user only to applications the policy allows.",
+                "In common designs, applications connect outward to the broker, so they are hidden from the internet and expose no open inbound ports.",
+                "Secure access service edge (SASE) delivers ZTNA from the cloud with web filtering, firewalling and wide-area networking, so every location gets one policy.",
+                "ZTNA applies the zero trust principles of National Institute of Standards and Technology (NIST) Special Publication 800-207 to remote access, but is only one part of zero trust."
+              ],
+              "compare": {
+                "columns": [
+                  "Traditional VPN",
+                  "ZTNA"
+                ],
+                "rows": [
+                  {
+                    "label": "What the user reaches",
+                    "cells": [
+                      "A network segment, often many systems",
+                      "Only the applications the policy allows"
+                    ]
+                  },
+                  {
+                    "label": "When trust is checked",
+                    "cells": [
+                      "Mainly at login",
+                      "At login and again during the session"
+                    ]
+                  },
+                  {
+                    "label": "Internet exposure",
+                    "cells": [
+                      "A gateway listening for connections",
+                      "Applications hidden behind the broker"
+                    ]
+                  },
+                  {
+                    "label": "If a device is compromised",
+                    "cells": [
+                      "It can scan and reach the wider network",
+                      "It reaches only the permitted applications"
+                    ]
+                  }
+                ]
+              },
+              "example": "A university gives contract researchers VPN access so they can use one grant-management system. The IS auditor finds the VPN profile lets them reach the whole campus network, including student records. The IS auditor reports the excess reach and recommends per-application access through ZTNA, or VPN rules limited to that one system, with access ending when each contract ends.",
+              "audit_focus": {
+                "review": [
+                  "Sample ZTNA policies and compare each group's applications with job needs",
+                  "Inspect whether failed device health checks block access or only log it",
+                  "Compare remaining VPN accounts and rules with approved migration exceptions"
+                ],
+                "evidence": [
+                  "Broker logs showing per-application allow and deny decisions",
+                  "Policy export mapping user groups to permitted applications",
+                  "External scan showing application servers accept no inbound internet connections"
+                ],
+                "recommend": "Have the network security team grant remote access per application by policy and retire broad VPN access on a tracked plan.",
+                "decides": "Senior management sets the migration timeline and accepts risk from remaining VPN use"
+              },
+              "isaca_rule": "Judge remote access by what a connected user can reach, not by how strong the tunnel is. Access should be per application, decided by policy and re-checked. A SASE or ZTNA product counts only when its policies actually enforce least privilege.",
+              "exam_traps": [
+                {
+                  "trap": "Moving remote users to a SASE service means the organization now has zero trust.",
+                  "why": "SASE is a delivery model. If its policies still grant broad network access or skip device checks, the old VPN risk has simply moved to the cloud."
+                },
+                {
+                  "trap": "ZTNA is just a faster VPN.",
+                  "why": "A VPN places the device on the network. ZTNA connects it only to approved applications, so a compromised device cannot reach anything else."
+                }
+              ],
+              "key_terms": [
+                {
+                  "term": "Secure access service edge (SASE)",
+                  "definition": "A cloud model that combines networking and security services, such as ZTNA and web filtering, under one policy."
+                },
+                {
+                  "term": "Security service edge (SSE)",
+                  "definition": "The security services of SASE without its wide-area networking part."
+                },
+                {
+                  "term": "Application connector",
+                  "definition": "Software beside an application that dials out to the ZTNA broker, so the application needs no inbound access."
+                }
+              ]
             }
           ]
         },
@@ -17014,7 +17288,7 @@
         {
           "topic_id": "5A6",
           "topic_name": "Data Encryption",
-          "overview": "Encryption turns readable data into scrambled data that only a key holder can restore. This topic covers symmetric and asymmetric encryption, hashing and tokenization, digital signatures, and the key management that decides whether any of it actually protects anything.",
+          "overview": "Encryption turns readable data into scrambled data that only a key holder can restore. This topic covers symmetric and asymmetric encryption, hashing and tokenization, digital signatures, the key management that decides whether any of it actually protects anything, and the move to post-quantum algorithms.",
           "can_do": [
             "Choose symmetric or asymmetric cryptography for a scenario and explain the digital envelope",
             "Name which key encrypts, decrypts, signs and verifies in each case",
@@ -17097,9 +17371,6 @@
               ],
               "practice_ids": [
                 "d5_062",
-                "d5_074",
-                "d5_079",
-                "d5_249",
                 "d5_284"
               ],
               "definition": "Asymmetric encryption uses a linked key pair: a public key anyone may use and a private key only its owner holds; what one key locks, only the other unlocks.",
@@ -17107,8 +17378,7 @@
               "how_it_works": [
                 "To send a secret, encrypt with the recipient's public key; only the recipient's private key can decrypt it.",
                 "A digital envelope encrypts the message with a fresh symmetric key, then encrypts that key with the recipient's public key.",
-                "Common algorithms are RSA (Rivest-Shamir-Adleman) and elliptic-curve cryptography (ECC), whose shorter keys suit mobile and low-power devices; key agreement often uses Diffie-Hellman.",
-                "Quantum computers threaten RSA and elliptic-curve methods, not AES-256; migration to the 2024 post-quantum standards (FIPS 203 to 205) starts with an inventory and builds crypto-agility."
+                "Common algorithms are RSA (Rivest-Shamir-Adleman) and elliptic-curve cryptography (ECC), whose shorter keys suit mobile and low-power devices; key agreement often uses Diffie-Hellman."
               ],
               "compare": {
                 "columns": [
@@ -17163,30 +17433,30 @@
                   "caption": "The two kinds side by side. They work as partners: asymmetric delivers the key, symmetric protects the data."
                 }
               ],
-              "example": "A medical device maker's insulin pumps send readings to a phone app, and engineers plan RSA with 4,096-bit keys, which drains pump batteries. The IS auditor confirms that elliptic-curve cryptography gives comparable strength with shorter keys and less processing. The IS auditor recommends it, built so algorithms can later be swapped for post-quantum ones through configuration.",
+              "example": "A medical device maker's insulin pumps send readings to a phone app, and engineers plan RSA with 4,096-bit keys, which drains pump batteries. The IS auditor confirms that elliptic-curve cryptography gives comparable strength with shorter keys and less processing, and recommends it for the pump design.",
               "audit_focus": {
                 "review": [
-                  "Compare the cryptographic inventory with a scan of live systems to find gaps",
                   "Sample transfer designs and flag bulk data encrypted directly with RSA",
-                  "Compare the migration order with how long each data set must stay secret"
+                  "Inspect sampled designs for which key encrypts and which key signs",
+                  "Compare scanned algorithms and key lengths with the approved standard"
                 ],
                 "evidence": [
                   "Scan results showing algorithms and key lengths actually in use",
-                  "Design documents showing where algorithms can be swapped through configuration",
-                  "Approved post-quantum migration roadmap with priorities and funding"
+                  "Approved cryptographic standard listing allowed algorithms and minimum key lengths",
+                  "Design documents for sampled key exchanges and data transfers"
                 ],
-                "recommend": "Have the security architecture team keep the inventory current and build new systems so algorithms can be swapped.",
-                "decides": "Senior management approves the migration roadmap and its funding"
+                "recommend": "Have the security architecture team exchange session keys with public keys, encrypt bulk data symmetrically and use approved key lengths.",
+                "decides": "The system owner accepts residual risk for any approved exception to the standard"
               },
-              "isaca_rule": "Use asymmetric cryptography to exchange keys and to sign, and symmetric for bulk data. Confidentiality uses the recipient's public key; proof of origin uses the sender's private key. Plan post-quantum migration from an inventory, long-lived secrets first, with swappable algorithms.",
+              "isaca_rule": "Use asymmetric cryptography to exchange keys and to sign, and symmetric for bulk data. Confidentiality uses the recipient's public key; proof of origin uses the sender's private key.",
               "exam_traps": [
                 {
                   "trap": "To keep a message confidential, the sender encrypts it with the sender's own private key.",
                   "why": "Anyone holding the sender's public key, which is everyone, could decrypt it. Confidentiality needs the recipient's public key; the sender's private key is for signing."
                 },
                 {
-                  "trap": "Post-quantum migration can wait until quantum computers exist.",
-                  "why": "In a harvest now, decrypt later attack, traffic recorded today is broken once quantum computers can. Long-lived secrets sent now are already exposed, so inventory and planning start now."
+                  "trap": "Encrypting large files directly with the recipient's RSA public key is the strongest design.",
+                  "why": "RSA is slow and can encrypt only small amounts at once. Encrypt the data with a symmetric key and protect only that key with RSA: the digital envelope."
                 }
               ],
               "key_terms": [
@@ -17195,12 +17465,12 @@
                   "definition": "Hybrid encryption: data travels under a symmetric key, and that key travels under the recipient's public key."
                 },
                 {
-                  "term": "Harvest now, decrypt later",
-                  "definition": "Recording encrypted data today in order to break it once quantum computers become capable."
+                  "term": "Elliptic-curve cryptography (ECC)",
+                  "definition": "Public-key cryptography whose short keys give strength comparable to much longer RSA keys, suiting low-power devices."
                 },
                 {
-                  "term": "Crypto-agility",
-                  "definition": "Designing systems so algorithms and key sizes can be swapped through configuration, not code changes, making future cryptographic transitions fast and cheap."
+                  "term": "Diffie-Hellman",
+                  "definition": "A method that lets two parties agree on a shared secret key over an open network without ever sending it."
                 }
               ],
               "analogy": "Asymmetric encryption is like handing out open padlocks. Anyone can snap one shut on a box meant for the owner, but only the owner's own key opens it.",
@@ -17464,6 +17734,76 @@
                   "definition": "Dividing a secret so no single person ever knows the whole of it."
                 }
               ]
+            },
+            {
+              "id": "5A6.6",
+              "name": "Post-Quantum Cryptography and Crypto-Agility",
+              "legacy_ids": [],
+              "practice_ids": [
+                "d5_074",
+                "d5_079",
+                "d5_249"
+              ],
+              "definition": "Post-quantum cryptography (PQC) uses algorithms designed to resist future quantum computers; crypto-agility lets systems switch algorithms without being redesigned.",
+              "why_it_matters": "A large quantum computer could break Rivest-Shamir-Adleman (RSA) and elliptic-curve cryptography, which protect most key exchanges and signatures today. Data recorded now could be read later, so long-lived secrets are already at risk.",
+              "how_it_works": [
+                "Quantum attacks threaten public-key methods such as RSA and elliptic-curve cryptography; the Advanced Encryption Standard (AES) with 256-bit keys and modern hashes remain strong.",
+                "The US National Institute of Standards and Technology (NIST) published its first post-quantum Federal Information Processing Standards (FIPS 203, 204 and 205) in August 2024.",
+                "Migration starts with a cryptographic inventory: where each algorithm is used, in which systems and products, protecting which data for how long.",
+                "Systems protecting data that must stay secret longest move first; hybrid schemes pair a classical and a post-quantum algorithm during the transition.",
+                "Crypto-agile designs keep algorithm choices in configuration or shared services, so later changes need no rewrite of each application."
+              ],
+              "types": [
+                {
+                  "term": "ML-KEM (FIPS 203)",
+                  "meaning": "Module-lattice key encapsulation: two parties agree on a shared secret key. It replaces RSA and Diffie-Hellman key exchange."
+                },
+                {
+                  "term": "ML-DSA (FIPS 204)",
+                  "meaning": "Module-lattice digital signatures: the general-purpose replacement for RSA and elliptic-curve signatures."
+                },
+                {
+                  "term": "SLH-DSA (FIPS 205)",
+                  "meaning": "Stateless hash-based digital signatures: a backup method built on well-understood hash functions, with larger, slower signatures."
+                }
+              ],
+              "example": "A land registry signs digital property titles that must stay valid for decades, and RSA signing is coded separately into dozens of applications. The IS auditor finds no record of where signatures are created or checked. The IS auditor reports the long-term exposure and recommends an inventory, one shared signing service whose algorithm can be changed, and a funded migration plan.",
+              "audit_focus": {
+                "review": [
+                  "Compare the cryptographic inventory with a scan of live systems to find gaps",
+                  "Compare the migration order with how long each data set must stay secret",
+                  "Sample new system designs for algorithms hard-coded into application code"
+                ],
+                "evidence": [
+                  "Scan results showing algorithms and key lengths actually in use",
+                  "Design documents showing where algorithms can be swapped through configuration",
+                  "Approved post-quantum migration roadmap with priorities and funding"
+                ],
+                "recommend": "Have the security architecture team keep the inventory current and build new systems so algorithms can be swapped.",
+                "decides": "Senior management approves the migration roadmap and its funding"
+              },
+              "isaca_rule": "Plan post-quantum migration now, from an inventory, moving the longest-lived secrets first. Build crypto-agility into new systems so algorithms can be swapped through configuration. Public-key cryptography is the urgent exposure; strong symmetric encryption stays sound.",
+              "exam_traps": [
+                {
+                  "trap": "Post-quantum migration can wait until quantum computers exist.",
+                  "why": "In a harvest now, decrypt later attack, traffic recorded today is broken once quantum computers can. Long-lived secrets sent now are already exposed, so inventory and planning start now."
+                },
+                {
+                  "trap": "Use longer RSA keys as a safe interim answer to the quantum threat.",
+                  "why": "A capable quantum computer breaks RSA at any practical key length. The answer is moving to standardized post-quantum algorithms, built so they can be swapped again."
+                }
+              ],
+              "key_terms": [
+                {
+                  "term": "Harvest now, decrypt later",
+                  "definition": "Recording encrypted data today in order to break it once quantum computers become capable."
+                },
+                {
+                  "term": "Crypto-agility",
+                  "definition": "Designing systems so algorithms and key sizes can be swapped through configuration, not code changes, making future cryptographic transitions fast and cheap."
+                }
+              ],
+              "memory_aid": "Inventory first, longest secrets first, swappable always."
             }
           ]
         },
@@ -17700,7 +18040,7 @@
         {
           "topic_id": "5A8",
           "topic_name": "Cloud and Virtualized Environments",
-          "overview": "Virtual machines, containers and cloud services let many workloads share the same hardware and software layers. That sharing saves money but moves the risk: the layer that separates tenants becomes critical, and security duties split between provider and customer. This topic covers deployment models, shared responsibility, virtualization, containers and software-defined networks.",
+          "overview": "Virtual machines, containers and cloud services let many workloads share the same hardware and software layers. That sharing saves money but moves the risk: the layer that separates tenants becomes critical, and security duties split between provider and customer. This topic covers deployment models, shared responsibility, virtualization, containers, serverless functions and software-defined networks.",
           "can_do": [
             "Tell cloud deployment models from service models and match each to its main risks",
             "Assign a cloud control to the provider or the customer for infrastructure, platform and software services",
@@ -18078,13 +18418,67 @@
                 "d5_306",
                 "d5_307"
               ]
+            },
+            {
+              "id": "5A8.6",
+              "name": "Serverless Computing and Function as a Service",
+              "legacy_ids": [],
+              "definition": "Serverless computing, or function as a service (FaaS), runs small pieces of customer code when an event triggers them, while the provider runs and patches the servers.",
+              "why_it_matters": "Serverless removes server patching from the customer, but not code, permissions, data or settings. Each of many functions is a separate entry point with its own rights, which control reviews often miss.",
+              "how_it_works": [
+                "The provider manages hardware, operating system and runtime; the customer owns the code, libraries, permissions, triggers and data.",
+                "Each function runs under an execution role; one shared, over-broad role lets a single flawed function reach everything the others can.",
+                "Event data from queues, uploads or messages is untrusted input; without validation it allows event injection, such as commands hidden in a file name.",
+                "Functions are short-lived with no server to inspect later, so logging, tracing and alerts must be built in before an incident.",
+                "Deployment packages carry third-party libraries that need scanning, and runtimes the provider retires must be upgraded on schedule."
+              ],
+              "example": "A ticketing company runs 300 serverless functions, all under one execution role with full access to its customer database. An image-resizing function triggered by uploads could therefore read every customer's payment record. The IS auditor reports the shared role and recommends one least-privilege role per function, validation of event data, and function logs sent to central monitoring.",
+              "audit_focus": {
+                "review": [
+                  "Compare each function's execution role with the resources its code uses",
+                  "Inspect triggers for functions reachable from the internet without authentication",
+                  "Trace a sample function's invocations into central logs and alerts"
+                ],
+                "evidence": [
+                  "Function inventory with roles, triggers and runtime versions from the provider console",
+                  "Dependency scan results for each deployment package",
+                  "Central log records of invocations, errors and denied calls per function"
+                ],
+                "recommend": "Have the cloud engineering team give each function a least-privilege role, validate event input and send function logs centrally.",
+                "decides": "The application owner accepts residual risk from functions left over-privileged"
+              },
+              "isaca_rule": "Serverless moves server care to the provider but leaves code, permissions, event input and monitoring with the customer. The IS auditor treats every function as its own entry point, with its own least-privilege role and its own logs.",
+              "exam_traps": [
+                {
+                  "trap": "With serverless, the provider handles security, so the customer has little left to audit.",
+                  "why": "The provider patches servers and runtimes. Function code, permissions, triggers, libraries, data and logging stay with the customer."
+                },
+                {
+                  "trap": "Function logs can be gathered after an incident if they are needed.",
+                  "why": "Function instances disappear after running, leaving no server to examine. Without logging and tracing set up in advance, there is no record of what happened."
+                }
+              ],
+              "key_terms": [
+                {
+                  "term": "Execution role",
+                  "definition": "The cloud identity and permissions a function uses when it runs."
+                },
+                {
+                  "term": "Event injection",
+                  "definition": "Attack data hidden in an event, such as a message or file name, that a function processes without validating."
+                },
+                {
+                  "term": "Denial of wallet",
+                  "definition": "An attack that triggers functions at huge scale to run up the victim's cloud bill."
+                }
+              ]
             }
           ]
         },
         {
           "topic_id": "5A9",
           "topic_name": "Mobile, Wireless, and Internet-of-Things Devices",
-          "overview": "Phones, wireless networks and connected devices carry company data far beyond the office walls, often on hardware the company does not fully control. This topic covers mobile device management and bring your own device (BYOD), Wi-Fi security, wireless attacks, and the Internet of Things (IoT).",
+          "overview": "Phones, wireless networks and connected devices carry company data far beyond the office walls, often on hardware the company does not fully control. This topic covers mobile device management and bring your own device (BYOD), Wi-Fi security, wireless attacks, Bluetooth and near-field communication (NFC), and the Internet of Things (IoT).",
           "can_do": [
             "Explain why a mobile device management report is not a control unless non-compliant devices are blocked",
             "Recommend enterprise wireless with server certificate validation over a shared passphrase",
@@ -18374,6 +18768,96 @@
                 {
                   "term": "Default credentials",
                   "definition": "Factory-set usernames and passwords, often public, that must be changed before use."
+                }
+              ]
+            },
+            {
+              "id": "5A9.5",
+              "name": "Bluetooth and Near-Field Communication",
+              "legacy_ids": [],
+              "definition": "Bluetooth and near-field communication (NFC) are short-range wireless links: Bluetooth connects devices across a room, NFC only within a few centimeters, as in tap-to-pay.",
+              "why_it_matters": "Payments, badges, locks and headsets rely on these links. Users assume short range means safe, but attackers can extend range with antennas or relay signals over the internet.",
+              "how_it_works": [
+                "Bluetooth devices pair once to share keys; pairing where users compare or enter a code resists interception, while Just Works pairing does not.",
+                "Discoverable mode, default codes and unpatched Bluetooth firmware let attackers find devices, connect without consent and copy data.",
+                "Directional antennas let attackers reach Bluetooth devices from well beyond their expected range.",
+                "In a relay attack, attacker devices forward signals between a victim's card, phone or key and a distant reader, defeating proximity as proof of presence.",
+                "Mobile wallets send a stand-in token and a one-time code per payment, not the card number, and require the phone to be unlocked."
+              ],
+              "compare": {
+                "columns": [
+                  "Bluetooth",
+                  "NFC"
+                ],
+                "rows": [
+                  {
+                    "label": "Typical range",
+                    "cells": [
+                      "Meters: a room or more",
+                      "A few centimeters"
+                    ]
+                  },
+                  {
+                    "label": "Common uses",
+                    "cells": [
+                      "Headsets, keyboards, wearables, smart locks",
+                      "Contactless payment, transit cards, access badges"
+                    ]
+                  },
+                  {
+                    "label": "Main risks",
+                    "cells": [
+                      "Unwanted connections, weak pairing, unpatched flaws",
+                      "Relay attacks, cloned weak cards, malicious tags"
+                    ]
+                  },
+                  {
+                    "label": "Key controls",
+                    "cells": [
+                      "Patched devices, hidden by default, code-confirmed pairing",
+                      "Tokenized wallets, phone unlock, transaction limits"
+                    ]
+                  }
+                ]
+              },
+              "example": "A hospital lets clinicians open medicine cabinets by holding a phone near the reader, which checks Bluetooth proximity only. The IS auditor learns that relay attacks can fool proximity checks and that phones need not be unlocked. The IS auditor reports the risk and recommends requiring phone unlock or a PIN at the cabinet, with opening logs reviewed.",
+              "audit_focus": {
+                "review": [
+                  "Inspect mobile device management (MDM) settings for Bluetooth discoverability and pairing",
+                  "Compare Bluetooth device firmware versions with vendor security advisories",
+                  "Evaluate whether proximity-based access also requires a user action or PIN"
+                ],
+                "evidence": [
+                  "MDM configuration export showing Bluetooth and NFC restrictions by device group",
+                  "Patch reports listing firmware levels of Bluetooth locks and peripherals",
+                  "Reader logs showing which devices opened doors or cabinets, and when"
+                ],
+                "recommend": "Have the endpoint team enforce code-confirmed pairing, patched firmware and a user action for proximity-based access and payments.",
+                "decides": "The business owner accepts any residual risk from proximity-only access"
+              },
+              "isaca_rule": "Short range is not a security control. The IS auditor expects confirmed pairing, patched devices and a deliberate user action, such as an unlock or PIN, wherever a wireless tap or proximity check grants payment or access.",
+              "exam_traps": [
+                {
+                  "trap": "NFC is safe because an attacker would need to be within a few centimeters.",
+                  "why": "A relay attack forwards the signal from a device near the victim to a reader far away. Distance protects little without a user action such as unlocking the phone."
+                },
+                {
+                  "trap": "Turning off Bluetooth discoverability fully secures a device.",
+                  "why": "It only hides the device from casual scans. Its address can still be learned from its traffic, so patching and confirmed pairing still matter."
+                }
+              ],
+              "key_terms": [
+                {
+                  "term": "Relay attack",
+                  "definition": "Forwarding signals between a genuine card, phone or key and a distant reader so they seem side by side."
+                },
+                {
+                  "term": "Pairing",
+                  "definition": "The one-time process in which two Bluetooth devices exchange keys so they can later connect securely."
+                },
+                {
+                  "term": "Bluesnarfing",
+                  "definition": "Copying data such as contacts or messages from a Bluetooth device without the owner's consent."
                 }
               ]
             }
