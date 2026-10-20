@@ -15,7 +15,7 @@ status=0
 # tips_overrides/ is legacy and no longer the authoring layer.
 python3 - <<'PY' || status=1
 import json, sys
-counts = {1: 218, 2: 224, 3: 154, 4: 322, 5: 343}
+counts = {1: 218, 2: 224, 3: 154, 4: 322, 5: 351}
 all_ok = True
 print("Tip + question coverage:")
 for d, expected in counts.items():
