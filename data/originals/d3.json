@@ -5727,6 +5727,82 @@
       ],
       "_provenance": "Authored from concept: 'Purpose and Timing of the Review. Scheduling the First Review'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B4.1 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_066 (review one week after go-live), d3_016 (benefits as the primary focus) and d3_097 (risk-based selection of reviews): tests timing the review to the period when the promised benefit can be measured. All scenario specifics invented for this question. Public sources: ISACA Val IT Framework; COBIT 2019 BAI07.08.",
       "style_version": 2
+    },
+    {
+      "id": "d3_155",
+      "domain": 3,
+      "subtopic": "Release Control. Who Signs Off a Release",
+      "principle_id": "recommend-dont-implement",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A product team wants an independent sign-off on each production release and asks the IS auditor to provide it from the attached test and scan results. Which recommendation is BEST?",
+      "options": {
+        "A": "The change authority approves releases on the attached test evidence",
+        "B": "The IS auditor approves releases on the attached test evidence",
+        "C": "The developer approves each release once an independent peer review passes",
+        "D": "The change advisory board approves and deploys each release"
+      },
+      "correct": "A",
+      "key_concept": "Release approval is a management control: the change authority approves on attached evidence, and the IS auditor later tests that approvals were evidence-based.",
+      "pre_read": "Compare who performs the approval in each option, not only what evidence the approval uses.",
+      "correct_explanation": "The change authority, a management role independent of the developers, approves each release on the attached test and scan evidence; the IS auditor can later test that approvals were evidence-based. The IS auditor approving releases is the runner-up. It uses the same evidence, but it makes the IS auditor operate a production control that the IS auditor must later audit, a self-review threat.",
+      "wrong_explanations": {
+        "B": "The evidence is right but the approver is wrong: approving releases makes the IS auditor run a production control that the IS auditor must later audit.",
+        "C": "Peer review helps, but the author still approves the author's own release, so the separation between writing and approving code is lost.",
+        "D": "A board that both approves and deploys merges authorizing with doing; its core role is to advise, and deployment runs through the pipeline or operations staff."
+      },
+      "tips": [
+        "Eliminate: C and D, because authors must not approve their own changes, and the body that approves a release should not also deploy it.",
+        "Final two: A beats B because a management role should operate the approval; the IS auditor using the same evidence would audit its own control later.",
+        "Exam cue: if two options differ only in who acts, choose the one where management runs the control and the IS auditor tests it."
+      ],
+      "framework_ref": "ITIL 4 Change Enablement practice; COBIT 2019 BAI06 (Managed IT Changes); ISACA IT Audit Standard 1003 (Auditor Objectivity)",
+      "related_concepts": [
+        "Change authority",
+        "Release approval",
+        "Segregation of duties",
+        "Self-review threat"
+      ],
+      "_provenance": "Authored from concept: 'Release Control. Who Signs Off a Release'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B2.2 (batch Q18: practice for principles with under ten tagged questions; principle recommend-dont-implement). Key and runner-up use the same evidence and differ only in who approves: management versus the IS auditor. Closest sibling d3_071 (IS auditor asked to design application controls); distinct from d3_013 (CAB role). Public sources: AXELOS ITIL 4 and ISACA COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_156",
+      "domain": 3,
+      "subtopic": "Project Closure. Order of Closing Steps",
+      "principle_id": "final-two",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A new billing system went live last week, and the project manager plans to close the project and release the team on Friday. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Hold a lessons-learned review while the team is still together",
+        "B": "Release the team on Friday, since the system runs in production",
+        "C": "Confirm the business owner's formal sign-off on the deliverables",
+        "D": "Begin the post-implementation review of the business benefits realized"
+      },
+      "correct": "C",
+      "key_concept": "Project closure starts with the business owner's formal acceptance; releasing resources, financial closeout and lessons learned follow it.",
+      "pre_read": "Ask which closing step decides whether the others can happen at all.",
+      "correct_explanation": "Closure starts by confirming the business owner's formal acceptance of the deliverables against the agreed criteria, because go-live is not acceptance. If acceptance reveals gaps, the team is still needed, so acceptance decides whether the project can close at all. The lessons-learned review is the runner-up. It is valuable and time-sensitive, but it can be held after acceptance, and it does not decide whether closure may proceed.",
+      "wrong_explanations": {
+        "A": "Lessons matter, but they can be captured after acceptance; they do not decide whether the project may close or the team may go.",
+        "B": "Deployment is not acceptance; releasing the team before the owner signs off leaves no one to fix gaps that acceptance finds.",
+        "D": "A post-implementation review measures benefits months after go-live; it is not a closure step and would come far too early here."
+      },
+      "tips": [
+        "Eliminate: B and D, because going live is not acceptance, and the benefits review comes months later, not at closure.",
+        "Final two: C beats A because confirmed acceptance decides whether the project can close and the team can go; lessons can be captured after it.",
+        "Exam cue: between two good FIRST steps, choose the one that decides whether the plan in the stem can go ahead; here, acceptance decides closure."
+      ],
+      "framework_ref": "PMBOK Guide 6th Edition, Section 4.7 (Close Project or Phase); COBIT 2019 BAI11 (Managed Projects)",
+      "related_concepts": [
+        "Project closure",
+        "Formal acceptance",
+        "Lessons learned",
+        "Post-implementation review"
+      ],
+      "_provenance": "Authored from concept: 'Project Closure. Order of Closing Steps'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A1.5 (batch Q18: practice for principles with under ten tagged questions; principle final-two). The key gates the plan in the stem: acceptance decides whether closure and the team's release can proceed; the lessons-learned runner-up does not. Closest sibling d3_043 (closure activities after acceptance is signed); distinct from d3_044 (lessons repository). Public sources: PMI and ISACA COBIT 2019.",
+      "style_version": 2
     }
   ]
 }

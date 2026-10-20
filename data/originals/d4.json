@@ -8460,7 +8460,7 @@
         "Final two: C beats A because an active exploit demands exposure-based emergency priorities, not the routine change order.",
         "Exam cue: when everything cannot be patched at once, patch by exposure and add a compensating control meanwhile."
       ],
-      "framework_ref": "NIST SP 800-204D (Strategies for the Integration of Software Supply Chain Security in DevSecOps CI/CD Pipelines); CISA Software Bill of Materials Guidance; SLSA v1.0 (Supply-chain Levels for Software Artifacts); NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning)",
+      "framework_ref": "NIST SP 800-204D (Strategies for the Integration of Software Supply Chain Security in DevSecOps CI/CD Pipelines); US Cybersecurity and Infrastructure Security Agency (CISA) Software Bill of Materials Guidance; SLSA v1.0 (Supply-chain Levels for Software Artifacts); NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning)",
       "related_concepts": [
         "SBOM",
         "Virtual patching",
@@ -12164,6 +12164,82 @@
         "Resilience remediation"
       ],
       "_provenance": "Authored from concept: 'Impact Tolerances. Handling a Tolerance Breach'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B2.4 (batch Q16: practice for the web v12.24 study notes). Distinct from the D4 recovery-test and BIA items: tests who decides when a resilience exercise breaches an impact tolerance. Public sources: Bank of England PRA and ISACA COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_323",
+      "domain": 4,
+      "subtopic": "Supplier Resilience. Rating Supplier Risks",
+      "principle_id": "priority-word-decides",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bank sends every card payment to one external fraud-scoring provider with no alternate, and the service has brief outages most months. Which risk should the IS auditor rate as GREATEST?",
+      "options": {
+        "A": "Brief outages delay some card payments for minutes each month",
+        "B": "Fraud scores are slightly less accurate than an in-house model",
+        "C": "The bank cannot audit a service that it does not run",
+        "D": "The provider fails for good, leaving no way to score payments"
+      },
+      "correct": "D",
+      "key_concept": "With one supplier and no alternate, the greatest risk is that supplier failing for good; brief outages are more frequent but less harmful.",
+      "pre_read": "Notice whether the stem asks how often something happens or how much harm it would do.",
+      "correct_explanation": "With no alternate, a permanent provider failure would leave the bank unable to screen card payments at all: it must stop payments or accept unscreened fraud until a replacement is found. Monthly brief outages are the runner-up. They are certain, so they would win if the stem asked what is MOST LIKELY, but each delay is short and recoverable.",
+      "wrong_explanations": {
+        "A": "Brief outages are near certain, so they are the MOST LIKELY risk, but each one is short and recoverable, unlike losing the only provider.",
+        "B": "A small accuracy gap has limited impact compared with losing fraud screening entirely, and nothing in the stem suggests the scores are poor.",
+        "C": "Outsourcing does not remove audit access; the bank can use contract audit rights and the provider's independent assurance reports."
+      },
+      "tips": [
+        "Eliminate: B and C, because a slight accuracy gap is minor, and contract rights and assurance reports let the bank audit an outsourced service.",
+        "Final two: D beats A because GREATEST asks for the worst outcome; frequent short outages would win only if the stem asked what is MOST LIKELY.",
+        "Exam cue: GREATEST ranks by the harm a realistic event would do, not by how often it happens; were this stem MOST LIKELY, the brief outages would be the answer."
+      ],
+      "framework_ref": "ISO 22301 Clause 8.3 (Business Continuity Strategies and Solutions); COBIT 2019 APO10.04 (Manage vendor risk)",
+      "related_concepts": [
+        "Supplier dependency",
+        "Single point of failure",
+        "Likelihood versus impact",
+        "Alternate source"
+      ],
+      "_provenance": "Authored from concept: 'Supplier Resilience. Single-Provider Dependency'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B2.3 (batch Q18: practice for principles with under ten tagged questions; principle priority-word-decides). The priority word decides: GREATEST picks permanent loss of the only provider, MOST LIKELY would pick the frequent brief outages. Closest sibling d4_136 (sole-source payment processor, remedy); distinct from d4_203 (single engineer) and d2_118 (cloud concentration, assess before treating). Public sources: ISO and ISACA COBIT 2019.",
+      "style_version": 2
+    },
+    {
+      "id": "d4_324",
+      "domain": 4,
+      "subtopic": "Business Impact Analysis. From Draft to Approval",
+      "principle_id": "final-two",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A continuity team has drafted a business impact analysis (BIA) from process owners' questionnaire answers and plans to present it to senior management next week. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Senior management approves the draft impact results and recovery priorities",
+        "B": "The continuity team checks ratings against records and agreed criteria",
+        "C": "IT sets recovery time objectives from current recovery capability",
+        "D": "The continuity team selects recovery strategies for the top tier"
+      },
+      "correct": "B",
+      "key_concept": "BIA data from questionnaires is validated against records and ranked on common criteria before senior management approves it.",
+      "pre_read": "Ask which plausible step needs another step's output before it can be done soundly.",
+      "correct_explanation": "Questionnaire answers are self-reported, so the draft ratings are first checked against records, such as revenue and transaction volumes, and ranked on one set of impact criteria. Senior management approval is the runner-up. It is essential before strategies are chosen, but approving unvalidated ratings would lock in priorities that may be inflated or wrong.",
+      "wrong_explanations": {
+        "A": "Approval is required, but it should rest on validated ratings; approving self-reported answers first locks in priorities that may be inflated or wrong.",
+        "C": "Recovery targets come from business impact, not from what IT can recover today; starting from current capability hides the gap.",
+        "D": "Strategies are chosen only after the BIA is validated and approved; selecting them now builds on an unagreed basis."
+      },
+      "tips": [
+        "Eliminate: C and D, because recovery targets come from business impact, not IT capability, and strategies follow an approved BIA.",
+        "Final two: B beats A because approval is only as sound as the ratings it accepts; validate them first, then seek approval.",
+        "Exam cue: an approval is only as sound as what it approves; when approving and validating the input both look right, validate first."
+      ],
+      "framework_ref": "ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis); BCI Good Practice Guidelines 2023 PP3 (Analysis)",
+      "related_concepts": [
+        "Business impact analysis",
+        "BIA validation",
+        "Senior management approval",
+        "Common impact criteria"
+      ],
+      "_provenance": "Authored from concept: 'Business Impact Analysis. From Draft to Approval'. Original KaiSip item (Oct 2026), written for CISA subtopic 4B1.3 (batch Q18: practice for principles with under ten tagged questions; principle final-two). The key enables the runner-up: approval is sound only on validated ratings. Closest sibling d4_230 (unapproved BIA used for strategies); distinct from d4_259 (blank questionnaire answers). Public sources: ISO and the Business Continuity Institute.",
       "style_version": 2
     }
   ]

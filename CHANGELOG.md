@@ -4,6 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.27] — Reading the exam
+
+### New
+- New practice questions on reading the exam: when the priority word changes the answer, how to decide between the final two options, and why the IS auditor recommends rather than builds controls.
+
+### Improved
+- Practice sets for those three principles are now fuller, and a few study notes now say which risks happen most often.
+
 ## [v12.26] — How attacks work, and the auditor after the incident
 
 ### New

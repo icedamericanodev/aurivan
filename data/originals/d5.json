@@ -13131,6 +13131,82 @@
       ],
       "_provenance": "Authored from concept: 'Logic Bombs. Trigger and Reach'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B2.7 (batch Q17: concept practice for a subtopic previously practised only as live-incident FIRST calls or recommendations). Tests how a logic bomb works (it runs with the program's authority, so account removal cannot stop it); distinct from d5_262, which asks for the preventive control. Public sources: NIST and ISACA.",
       "style_version": 2
+    },
+    {
+      "id": "d5_352",
+      "domain": 5,
+      "subtopic": "Environmental Hazards. Small Server Rooms",
+      "principle_id": "priority-word-decides",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor reviews environmental risks for a small server room in a leased office building. Which event is MOST LIKELY to occur?",
+      "options": {
+        "A": "A brief interruption in the building's utility power supply",
+        "B": "A fire that destroys the server room and its equipment",
+        "C": "Condensation on equipment caused by humidity set too low",
+        "D": "A lightning strike that damages the building's equipment"
+      },
+      "correct": "A",
+      "key_concept": "Power disturbances are the most frequent environmental disruption; fire is rarer but far more destructive, so the priority word decides between them.",
+      "pre_read": "Before weighing options, note whether the stem asks how often an event happens or how much damage it does.",
+      "correct_explanation": "Brief power interruptions are the most frequent environmental event, which is why uninterruptible power supplies are a baseline control even in small rooms. A destructive fire is the runner-up. It would win if the stem asked which event causes the GREATEST impact, but fires are rare, and MOST LIKELY asks how often, not how badly.",
+      "wrong_explanations": {
+        "B": "A fire would cause the GREATEST impact, but it is rare; MOST LIKELY asks which event happens most often, and brief power interruptions happen far more often.",
+        "C": "Low humidity causes static discharge, not condensation; condensation comes from humidity that is too high.",
+        "D": "Lightning strikes on a building are rare, and surge protection limits the harm; they happen far less often than brief power interruptions."
+      },
+      "tips": [
+        "Eliminate: C and D, because low humidity causes static rather than condensation, and lightning strikes are rare events.",
+        "Final two: A beats B because MOST LIKELY asks about frequency; a destructive fire would win only if the stem asked for the GREATEST impact.",
+        "Exam cue: MOST LIKELY picks the most frequent event, not the most dramatic; GREATEST picks the most harmful realistic one, which here would be the fire."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 PE-11 (Emergency Power); ISO/IEC 27002:2022 Control 7.11 (Supporting Utilities)",
+      "related_concepts": [
+        "Environmental threats",
+        "Power disturbances",
+        "Uninterruptible power supply",
+        "Likelihood versus impact"
+      ],
+      "_provenance": "Authored from concept: 'Environmental Hazards. Small Server Rooms'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A2.1 (batch Q18: practice for principles with under ten tagged questions; principle priority-word-decides). The priority word decides: MOST LIKELY picks frequent power disturbances, GREATEST would pick a destructive fire. Closest sibling d5_011 (power protection design); distinct from d5_003 and d5_019 (unmonitored alarms). Public sources: NIST and ISO.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_353",
+      "domain": 5,
+      "subtopic": "Vulnerability Management. Newly Announced Library Flaws",
+      "principle_id": "final-two",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A critical flaw is announced in a widely used open-source logging library, and an IS auditor reviews the vulnerability procedure. Which step should the procedure require FIRST?",
+      "options": {
+        "A": "Rank affected systems by internet exposure and active exploitation",
+        "B": "Identify every system that runs an affected version",
+        "C": "Run the standard uncredentialed network scan on every host",
+        "D": "Schedule the vendor patch for the next monthly maintenance window"
+      },
+      "correct": "B",
+      "key_concept": "Responding to a new library flaw starts with finding every affected system; risk ranking and patching depend on that list.",
+      "pre_read": "Check whether one plausible step needs the other's result before it can start.",
+      "correct_explanation": "The procedure must first find every system running an affected version, using software inventories, bills of materials and credentialed scans, because nothing can be ranked or patched until it is found. Ranking by exposure and exploitation is the runner-up. It is the right way to order the work, but it can only rank the systems already identified, so it depends on the inventory step.",
+      "wrong_explanations": {
+        "A": "Risk ranking is the right next step, but it can only rank systems already found; a system missed by identification is never ranked.",
+        "C": "An uncredentialed scan sees only what the network exposes, so it usually cannot detect library versions installed inside applications.",
+        "D": "A critical, widely used flaw needs risk-based urgency; waiting for the monthly window leaves exposed systems open longer than needed."
+      },
+      "tips": [
+        "Eliminate: C and D, because uncredentialed scans cannot see installed library versions, and the monthly window ignores the flaw's urgency.",
+        "Final two: B beats A because ranking depends on knowing which systems are affected; identification comes first and enables it.",
+        "Exam cue: when one plausible option can only work on the other's output, choose the step that produces that output."
+      ],
+      "framework_ref": "NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); CIS Controls v8 Control 2 (Inventory and Control of Software Assets); CIS Controls v8 Control 7 (Continuous Vulnerability Management); US Cybersecurity and Infrastructure Security Agency (CISA) Software Bill of Materials Guidance",
+      "related_concepts": [
+        "Vulnerability management",
+        "Software inventory",
+        "Software bill of materials",
+        "Risk-based prioritization"
+      ],
+      "_provenance": "Authored from concept: 'Vulnerability Management. Newly Announced Library Flaws'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B3.1 (batch Q18: practice for principles with under ten tagged questions; principle final-two). The key enables the runner-up: ranking needs the list of affected systems. Closest sibling d4_223 (rollout order once affected services are known); distinct from d3_023 (vendor SBOM) and d5_277 (urgency factor). Public sources: NIST, CIS and the US Cybersecurity and Infrastructure Security Agency.",
+      "style_version": 2
     }
   ]
 }

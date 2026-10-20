@@ -2,7 +2,7 @@
   "domain": 1,
   "title": "Information Systems Auditing Process",
   "weight": "18%",
-  "count": 218,
+  "count": 220,
   "questions": [
     {
       "id": "d1_001",
@@ -8276,6 +8276,82 @@
         "Reproducibility"
       ],
       "_provenance": "Authored from concept: 'Using AI in the Audit. Vendor Model Retrained'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B4.5 (Wave 3 coverage batch Q10: thin subtopic). Distinct from d1_018 (unexplainable vendor model) and d1_085 and d1_108 (drift in an audited model): tests revalidating the audit team's own AI tool after the vendor retrains it. All scenario specifics invented for this question. Public sources: ISACA ITAF, NIST AI RMF 1.0.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_219",
+      "domain": 1,
+      "subtopic": "Internal Control Basics. Built-In Limitations",
+      "principle_id": "priority-word-decides",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor reviews a well-designed two-person approval control over high-volume vendor payments. Which built-in limitation is MOST LIKELY to let a wrong payment through?",
+      "options": {
+        "A": "A senior executive overrides the control to force a payment through",
+        "B": "Both approvers miss a keying error in an invoice amount",
+        "C": "Running the control costs more than the errors it catches",
+        "D": "The payment system keeps no record of who approved"
+      },
+      "correct": "B",
+      "key_concept": "Controls give reasonable assurance because of built-in limits: human error happens most often, while management override is rarer but causes greater loss.",
+      "pre_read": "Before reading the options, decide whether the stem asks how often a limitation occurs or how much damage it could do.",
+      "correct_explanation": "Human error is the limitation that occurs most often: approvers handle many invoices, and a mistyped amount can pass two busy reviewers. A senior executive overriding the control is the runner-up. It would cause the GREATEST loss, so it would win if the stem asked for the most severe limitation. Overrides are rare, though, and MOST LIKELY asks about frequency, not severity.",
+      "wrong_explanations": {
+        "A": "Override would cause the greatest loss, but it is rare; MOST LIKELY asks how often a limitation occurs, and routine human error happens far more often.",
+        "C": "Cost compared with benefit limits which controls are worth running, but it does not let a specific wrong payment pass the approval.",
+        "D": "A missing approval record is a design gap, not a built-in limitation, and the stem says the control is well designed."
+      },
+      "tips": [
+        "Eliminate: C and D, because cost versus benefit does not release a payment, and a missing approval record is a design gap the stem rules out.",
+        "Final two: B beats A because MOST LIKELY asks about frequency; override would win only if the stem asked for the GREATEST loss.",
+        "Exam cue: MOST LIKELY ranks by how often; GREATEST ranks by how much harm a realistic event would do. Were this stem GREATEST, the override would be the answer."
+      ],
+      "framework_ref": "COSO Internal Control – Integrated Framework (2013); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "related_concepts": [
+        "Reasonable assurance",
+        "Inherent limitations of internal control",
+        "Human error",
+        "Management override"
+      ],
+      "_provenance": "Authored from concept: 'Internal Control Basics. Built-In Limitations'. Original KaiSip item (Oct 2026), written for CISA subtopic 1A4.1 (batch Q18: practice for principles with under ten tagged questions; principle priority-word-decides). The priority word decides between two real limitations: MOST LIKELY picks routine human error, GREATEST would pick management override. Closest sibling d1_023 (reasonable, not absolute, assurance); distinct from d1_063 (remedy after collusion). Public sources: COSO and ISACA.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_220",
+      "domain": 1,
+      "subtopic": "External Quality Assessments. Validated Self-Assessment",
+      "principle_id": "final-two",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A chief audit executive (CAE) will meet the external assessment requirement through a self-assessment validated by a qualified outside assessor. What should the CAE do FIRST?",
+      "options": {
+        "A": "Complete the self-assessment against the standards and the audit charter",
+        "B": "Ask the compliance officer to validate the completed self-assessment",
+        "C": "Postpone the review, since annual internal assessments found no gaps",
+        "D": "Agree the scope and the validator's independence with the board"
+      },
+      "correct": "D",
+      "key_concept": "For an external quality assessment, the CAE agrees its terms, including scope and the assessor's independence, with the board before the work begins.",
+      "pre_read": "Ask which of the two plausible steps the other depends on before it can be done properly.",
+      "correct_explanation": "The assessment's terms, meaning its scope and the validator's qualifications and independence, are agreed with the board, usually through its audit committee, before any work starts. They decide what the self-assessment must cover and whether its validation will be accepted. Completing the self-assessment is the runner-up. It is necessary, but done first it may follow a scope the board later changes, or be checked by a validator the board rejects.",
+      "wrong_explanations": {
+        "A": "The self-assessment is needed, but it depends on an agreed scope and an accepted validator; done first, it may have to be redone.",
+        "B": "A compliance officer works for the organization, so is not independent of it; external validation needs a qualified assessor from outside.",
+        "C": "Clean internal assessments do not replace the external assessment the standards require at least once every five years."
+      },
+      "tips": [
+        "Eliminate: B and C, because a compliance officer is not independent of the organization, and internal assessments never replace the external one.",
+        "Final two: D beats A because the agreed terms, including who validates, decide what the self-assessment must cover; doing it first risks rework.",
+        "Exam cue: when two steps both look right, ask which one the other depends on, and choose that one."
+      ],
+      "framework_ref": "IIA Global Internal Audit Standards (2024), Standard 8.4 (External Quality Assessment)",
+      "related_concepts": [
+        "External quality assessment",
+        "Self-assessment with independent validation",
+        "Assessor independence",
+        "Board oversight of internal audit"
+      ],
+      "_provenance": "Authored from concept: 'External Quality Assessments. Validated Self-Assessment'. Original KaiSip item (Oct 2026), written for CISA subtopic 1B6.3 (batch Q18: practice for principles with under ten tagged questions; principle final-two). The key enables the runner-up: the self-assessment must follow a scope and validator agreed with the audit committee. Closest sibling d1_065 (external assessment cadence and assessor); distinct from d1_030 (missing external review). Public source: IIA Global Internal Audit Standards.",
       "style_version": 2
     }
   ]
