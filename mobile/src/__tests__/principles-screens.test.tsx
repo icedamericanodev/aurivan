@@ -7,7 +7,7 @@
  * - The list shows the six families in order, each principle once, and a
  *   row opens its page.
  * - The detail page: the family, the title, and "Practice this principle"
- *   starts a practice set of exactly its practice ids. An old id opens the
+ *   starts a practice set drawn from every question that tests it (1.31). An old id opens the
  *   principle that replaced it; an unknown id says "Principle not found".
  * - Learn shows the Principles row; the Mistake journal's "Your pattern"
  *   links to the principle that coaches it (none for "Didn't know it").
@@ -20,6 +20,7 @@ import { Dimensions } from 'react-native';
 import { PrincipleBody } from '../components/principles';
 import { findQuestion, getAllQuestions } from '../content/loader';
 import { getPrinciples, principleFamilies } from '../content/principles';
+import { questionsForPrinciple } from '../lib/principleQuestions';
 import { runnerUp } from '../engine/tips';
 import { useProgress, type ThinkingSlip } from '../store/progress';
 import { useSession } from '../store/session';
@@ -190,20 +191,28 @@ describe('Principles list', () => {
 });
 
 describe('Principle page', () => {
-  it('shows the family and title, and "Practice this principle" starts exactly its questions', () => {
+  // Mobile 1.31: the count is every question that tests it (lib/principleQuestions.ts), and
+  // the set keeps the hand-picked size, drawn from all of them.
+  it('shows the family and title, and "Practice this principle" draws from all its questions', () => {
     const p = pack.principles.find((x) => x.practiceIds.length >= 3)!;
+    const all = questionsForPrinciple('cisa', p);
     mockParams = { id: p.id };
     mount(<PrincipleScreen />);
     const text = allText();
     const family = pack.families.find((f) => f.id === p.family)!;
     expect(text).toContain(`Principle · ${family.title}`);
     expect(text).toContain(p.title);
-    expect(text).toContain(`${p.practiceIds.length} questions on this idea. Your answers count toward your progress.`);
+    expect(text).toContain(
+      all.length > 10
+        ? `${all.length} questions on this idea. Each set asks 10, new and missed ones first.`
+        : `${all.length} questions on this idea. Your answers count toward your progress.`,
+    );
     press('Practice this principle');
     const active = useSession.getState().active!;
     expect(active.mode).toBe('practice');
     expect(active.title).toBe(p.title);
-    expect([...active.questionIds].sort()).toEqual([...p.practiceIds].sort());
+    expect(active.questionIds).toHaveLength(Math.min(10, all.length));
+    for (const id of active.questionIds) expect(all).toContain(id);
     // Every one of them is a real question.
     for (const id of active.questionIds) expect(findQuestion('cisa', id)).toBeTruthy();
     expect(mockPush).toHaveBeenCalledWith('/session');

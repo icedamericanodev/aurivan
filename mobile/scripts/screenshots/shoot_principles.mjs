@@ -1,7 +1,9 @@
 // Exam-mindset principles screenshots (393x852 @2x): the Learn row that leads
 // there, the principles list (top and further down), one principle's page
 // (top, middle and the "Practice this principle" ending) and an old id that
-// still opens its principle. Usage: node shoot_principles.mjs <seed.json> <out> <suffix>
+// still opens its principle. Mobile 1.31: the 21st principle
+// (fit-method-to-objective: top and its ending with the full count) and an
+// answered question whose "Principle" row links to it. Usage: node shoot_principles.mjs <seed.json> <out> <suffix>
 // Run via: SHOTS=principles bash scripts/screenshots/run.sh <out> <dark|light>
 import { createRequire } from 'module';
 import fs from 'fs';
@@ -45,5 +47,21 @@ await scrollTo('The trap'); await snap('p03b-detail-trap-example');
 await page.mouse.wheel(0, 20000); await page.waitForTimeout(700); await snap('p03c-detail-practice');
 // An old id from the web's first library still opens its principle.
 await open('/principles/CONTAIN-FIRST'); await snap('p04-legacy-id');
+// Mobile 1.31: the 21st principle, top and its ending (the count is every question that tests it).
+await open('/principles/fit-method-to-objective'); await snap('p05-fit-method-top');
+await page.mouse.wheel(0, 20000); await page.waitForTimeout(700); await snap('p05b-fit-method-practice');
+// Mobile 1.31: an answered question (the seed's first sample, a miss on the runner-up)
+// and its "Read the principle" row under Read the note, scrolled into view.
+const keys = (seed.__shotKeys || 'A').split(',');
+await open('/session');
+await page.getByLabel(new RegExp(`^Option ${keys[0]}:`)).first().click();
+await page.getByText('Check answer', { exact: true }).click();
+await page.waitForTimeout(1500);
+const row = page.getByLabel(/^Read the principle: /).first();
+await row.scrollIntoViewIfNeeded();
+const rbox = await row.boundingBox();
+if (rbox) { await page.mouse.move(196, 400); await page.mouse.wheel(0, rbox.y - 420); }
+await page.waitForTimeout(800);
+await snap('p06-answer-principle-row');
 console.log('errors:', errs.slice(0, 5));
 await browser.close();

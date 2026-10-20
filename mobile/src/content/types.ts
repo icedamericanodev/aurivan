@@ -32,6 +32,12 @@ export interface PackQuestion {
   tips: string[]; // Trap → Mindset → Exam-day shortcut (→ optional 4th)
   reference?: string; // framework citation, e.g. "ISACA IT Audit Standard 1001"
   related: string[];
+  /**
+   * The one exam-mindset principle this question MOST tests: a principle `id`
+   * from the cert's principles pack (docs/content/PRINCIPLE_TAGGING.md).
+   * Absent when no principle decides it. Mobile 1.31: the answer screen links to it, and the principle page counts and practises it (lib/principleQuestions.ts).
+   */
+  principleId?: string;
 }
 
 /** One exam domain inside a certification. */

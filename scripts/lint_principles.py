@@ -8,6 +8,11 @@ Usage:
 Errors break the schema, a cross-reference or a hard limit. Warnings are
 gaps to close (for example a principle with fewer than 3 practice questions).
 Exit code 1 if there are errors.
+
+It also reports the question tags: how many bank questions carry each
+principle as `principle_id` (docs/content/PRINCIPLE_TAGGING.md), flags any
+principle with fewer than MIN_TAGGED, and checks that tags agree with
+`practice_ids`.
 """
 import json
 import re
@@ -25,6 +30,8 @@ DOMAINS = {1, 2, 3, 4, 5}
 MIN_PER_FAMILY = 2
 MIN_PER_DOMAIN = 3
 MIN_PRACTICE = 3
+# Questions tagged with a principle (principle_id) before it is well covered.
+MIN_TAGGED = 10
 
 # Hard word limits.
 RULE_MAX = 20
@@ -120,8 +127,10 @@ def walk_strings(node, path):
             yield from walk_strings(v, f"{path}.{k}" if path else k)
 
 
-def load_question_ids():
+def load_questions():
+    """Return (all question ids, {id: principle_id} for tagged questions)."""
     ids = set()
+    tags = {}
     for n in range(1, 6):
         f = ORIGINALS / f"d{n}.json"
         try:
@@ -131,7 +140,42 @@ def load_question_ids():
             continue
         for q in data.get("questions", []):
             ids.add(q.get("id"))
-    return ids
+            if "principle_id" in q:
+                tags[q.get("id")] = q["principle_id"]
+    return ids, tags
+
+
+def check_question_tags(doc, ctx):
+    """Cross-check principle_id tags on questions against the principles.
+
+    Returns {principle id: {domain: count}} for the report."""
+    principles = [p for p in doc.get("principles") or [] if isinstance(p, dict)]
+    by_id = {p.get("id"): p for p in principles}
+    counts = {p.get("id"): {} for p in principles}
+    for qid, pid in sorted(ctx["tags"].items(), key=lambda kv: str(kv[0])):
+        m = QID.match(qid) if isinstance(qid, str) else None
+        where = f"question {qid}"
+        if not isinstance(pid, str) or pid not in by_id:
+            err(where, f"principle_id {pid!r} is not a principle id")
+            continue
+        dom = int(m.group(1)) if m else None
+        counts[pid][dom] = counts[pid].get(dom, 0) + 1
+        doms = by_id[pid].get("domains") or []
+        if dom is not None and dom not in doms:
+            warn(where, f"tagged '{pid}', whose domains {doms} exclude D{dom}")
+    # practice_ids and principle_id must agree (one principle per question).
+    for p in principles:
+        for q in p.get("practice_ids") or []:
+            tag = ctx["tags"].get(q)
+            if tag is not None and tag != p.get("id"):
+                err(f"principle '{p.get('id')}'",
+                    f"practice id '{q}' is tagged principle_id '{tag}'; the two must agree")
+    if ctx["tags"]:
+        for pid, per_dom in counts.items():
+            total = sum(per_dom.values())
+            if total < MIN_TAGGED:
+                warn(f"principle '{pid}'", f"{total} tagged question(s) (target {MIN_TAGGED}+)")
+    return counts
 
 
 def load_subtopic_codes():
@@ -399,9 +443,10 @@ def main(argv):
     if not (isinstance(doc.get("updated"), str) and DATE.match(doc["updated"])):
         err("updated", "must be a YYYY-MM-DD date")
 
+    qids, tags = load_questions()
     ctx = {
         "families": check_families(doc.get("families")),
-        "qids": load_question_ids(),
+        "qids": qids, "tags": tags,
         "codes": load_subtopic_codes(),
         "slips": load_slip_patterns(),
         "ids": set(), "orders": set(), "per_family": {}, "per_domain": {},
@@ -451,6 +496,7 @@ def main(argv):
             if sm.get(slip) != owner:
                 err("slip_map", f"'{slip}' should point to '{owner}', which declares it as slip_pattern")
 
+    tag_counts = check_question_tags(doc, ctx)
     check_text_hygiene(doc)
 
     # Report.
@@ -461,6 +507,15 @@ def main(argv):
     print(f"  per family: {fam_line}")
     dom_line = ", ".join(f"D{d} {len(ctx['per_domain'].get(d, []))}" for d in sorted(DOMAINS))
     print(f"  per domain: {dom_line}")
+    n_q = len(ctx["qids"] - {None})
+    print(f"  question tags (principle_id): {len(ctx['tags'])} of {n_q} tagged")
+    if ctx["tags"]:
+        tagged_doms = sorted({int(q[1]) for q in ctx["tags"] if isinstance(q, str) and QID.match(q)})
+        for pid, per_dom in tag_counts.items():
+            total = sum(per_dom.values())
+            split = ", ".join(f"D{d} {per_dom.get(d, 0)}" for d in tagged_doms)
+            flag = "  < target" if total < MIN_TAGGED else ""
+            print(f"    {total:4d}  {pid} ({split}){flag}")
     for w in warnings:
         print(f"  ⚠ {w}")
     for e in errors:

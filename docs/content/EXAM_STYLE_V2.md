@@ -22,6 +22,7 @@ ISACA mindset picks one.
 | `key_concept`, `pre_read` | ≤ 25 words each. |
 | `_provenance` | Keep the original `Authored from concept:` text and append the v2 note. |
 | `style_version` | `2` |
+| `principle_id` | Optional. The id of the **one** principle in `data/mindset/principles.json` the question MOST tests, chosen by the rubric in `docs/content/PRINCIPLE_TAGGING.md`. Use the principle's own `id`, never a legacy id or alias. Must agree with that principle's `practice_ids`. Leave it out when no principle fits. `validate_originals.py`: unknown id = error, missing = warning. |
 | Unchanged | `id`, `domain`, `subtopic`, `difficulty`, `bloom_level`, `framework_ref`, `related_concepts` |
 
 ### The three tips

@@ -5904,6 +5904,14 @@ html { scroll-padding-bottom: 104px; }
    shows (the page carries the fallbacks). */
 .study-rail[hidden] { display: none; }
 .sr-sec + .sr-sec { margin-top: 32px; }
+/* The answered question's principle link sits right under its note card. */
+.sr-sec + .sr-sec.sr-sec-pl { margin-top: var(--sp-xs); }
+/* A long title wraps with the arrow after its last word, not at the far edge. */
+/* (44px target - 22px line) / 2 = 11px each side: one line is exactly 44px tall. */
+.sr-link.sr-link-pl { display: inline-block; max-width: 100%; padding: 11px 0; }
+.sr-link-tail { white-space: nowrap; }
+/* -3px centres the 16px icon optically on the 22px line. */
+.sr-link-pl .ico { display: inline-block; margin-left: var(--sp-sm); vertical-align: -3px; }
 .sr-cap { display: block; margin: 0 0 var(--sp-md); font: var(--t-caption); letter-spacing: 0.1px; color: var(--text2); }
 .sr-label { margin: 0; font: var(--t-label); color: var(--text); overflow-wrap: anywhere; }
 .sr-meta { margin: 0; font: var(--t-meta); color: var(--text2); }
@@ -6012,6 +6020,8 @@ html { scroll-padding-bottom: 104px; }
 .vr-nl { padding: var(--sp-lg) var(--sp-xl); border-radius: var(--r-md); background: var(--raised2); }
 .vr-nl-t { margin: 0; font: var(--t-label); color: var(--text); }
 .vr-nl-rule { margin: var(--sp-xs) 0 0; font: var(--t-small); color: var(--text2); }
+.vr-pl { margin-top: var(--sp-xs); }
+.vr-pl:first-child .sr-link { margin-top: 0; }
 .vr-mine { margin-top: var(--sp-lg); }
 .vr-mine .sr-area { margin-top: var(--sp-sm); }
 .vr-add-note {
@@ -6357,7 +6367,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.22</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.23</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6648,7 +6658,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.22';
+const APP_VERSION = 'v12.23';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11573,9 +11583,29 @@ function railPrinciple() {
 function railOpenPrinciples(e, pid) {
   if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) return true;
   if (e && e.preventDefault) e.preventDefault();
+  railNoteFlush();
+  railStat('principle_open');
   if (pid) openPrinciple(pid);
   else switchTab('principles');
   return false;
+}
+// The principle an answered question tests (its principle_id), or null. Only
+// on the practice answer screen (railQ*), so never in a mock, like the note
+// card. The rail redraws once the principles file is in. Exam-style mode hides
+// mindset add-ons, so it hides this link too.
+function railPrincipleFor(q) {
+  if (S.examMode) return null;
+  if (!q || typeof q.principle_id !== 'string' || !q.principle_id) return null;
+  if (!PRINCIPLES_RAW) { if (!principlesLoadFailed) loadPrinciplesData(); return null; }
+  return resolvePrinciple(q.principle_id);
+}
+function railPrincipleLinkHtml(p) {
+  // The arrow stays with the title's last word when the line wraps.
+  var t = String(p.title || '');
+  var cut = t.lastIndexOf(' ') + 1;
+  var head = t.slice(0, cut), tail = t.slice(cut);
+  return '<a class="sr-link sr-link-pl" href="#principles/' + escapeHtml(p.id) + '" data-pid="' + escapeHtml(p.id) + '" onclick="return railOpenPrinciples(event,this.dataset.pid)">'
+    + 'Principle: ' + escapeHtml(head) + '<span class="sr-link-tail">' + escapeHtml(tail) + ico('arrow-right', 16) + '</span></a>';
 }
 
 // ── The note that practises a question (reverse index of practice_ids) ──
@@ -11947,6 +11977,8 @@ function railQSections() {
   var res = railNoteFor(q.id);
   if (res.state !== 'none') secs.push({ id: 'note', key: 'note:' + q.id + ':' + res.state + ':' + (exam ? 1 : 0) + ':' + (res.note ? gtNoteState(res.note.id) : ''),
     html: '<h2 class="sr-cap" id="srhNote">From your study notes</h2>' + railNoteCardHtml(res, exam, false) });
+  var pl = railPrincipleFor(q);
+  if (pl) secs.push({ id: 'principle-q', key: 'pq:' + pl.id, cls: 'sr-sec-pl', html: railPrincipleLinkHtml(pl) });
   secs.push({ id: 'mine', key: railMineKey(q.id), html: '<h2 class="sr-cap" id="srhMine">Your note on this question</h2>' + railMineHtml(q.id, 'sr', 'srhMine') });
   // The glossary terms this question uses first; the search box below them.
   var terms = railQuestionTerms(q);
@@ -11980,11 +12012,13 @@ function railQInline(show) {
     var q = S.current;
     var res = railNoteFor(q.id);
     if (res.state === 'found') parts.push({ id: 'nl', key: 'nl:' + q.id + ':' + (S.examMode ? 1 : 0), html: railNoteCardHtml(res, !!S.examMode, true) });
+    var pl = railPrincipleFor(q);
+    if (pl) parts.push({ id: 'pl', key: 'pl:' + pl.id, html: railPrincipleLinkHtml(pl) });
     parts.push({ id: 'mine', key: railMineKey(q.id), html: '<p class="vine-cap" id="vrMineL">Your note on this question</p>' + railMineHtml(q.id, 'vr', 'vrMineL') });
   }
   railPatch(slot, parts, function (s) {
     var el = document.createElement('div');
-    el.className = s.id === 'mine' ? 'vr-mine' : 'vr-nl-wrap';
+    el.className = s.id === 'mine' ? 'vr-mine' : s.id === 'pl' ? 'vr-pl' : 'vr-nl-wrap';
     el.innerHTML = s.html;
     return el;
   });
@@ -12033,7 +12067,7 @@ function railSync() {
 function railRender(aside, secs) {
   railPatch(aside, secs, function (s) {
     var el = document.createElement('section');
-    el.className = 'sr-sec sr-in';
+    el.className = 'sr-sec sr-in' + (s.cls ? ' ' + s.cls : '');
     var h = /^<h2[^>]* id="([^"]+)"/.exec(s.html);
     if (h) el.setAttribute('aria-labelledby', h[1]);
     el.innerHTML = s.html;
@@ -15533,57 +15567,93 @@ function principleDetailHtml(p) {
   return h;
 }
 
-// ── Practice this principle: a short set of its practice_ids ──
+// ── Practice this principle: a short set of its questions ──
 // Runs on the same set runner as "Practice this concept" (startMixedSet):
 // the normal question card, grading, explanations, tips and option shuffle.
-// Ids span domains; unknown ids are skipped, so a stale id never breaks it.
+// The pool is every bank question tagged with the principle (principle_id)
+// plus its curated practice_ids that are not tagged yet, without repeats.
+// A set holds up to PRINCIPLE_SET_SIZE of them, missed and unseen ones first.
+// Unknown ids are skipped, so a stale id never breaks it.
+var PRINCIPLE_SET_SIZE = RAIL_MIX_SIZE;
+var principleTagIdx = null; // principle id -> [question id] (rebuilt when a bank arrives)
+function principleTagIndex() {
+  if (principleTagIdx) return principleTagIdx;
+  var idx = {};
+  Object.keys(DI).forEach(function (d) {
+    (QB[d] || []).forEach(function (q) {
+      if (!q || !q.id || typeof q.principle_id !== 'string' || !q.principle_id) return;
+      (idx[q.principle_id] || (idx[q.principle_id] = [])).push(q.id);
+    });
+  });
+  principleTagIdx = idx;
+  return idx;
+}
+// Tags can sit in any domain, so the pool is final once every bank is in.
+function principleBanksReady() {
+  return Object.keys(DI).every(function (d) { return isQBReady(d); });
+}
 function principlePracticeIds(p) {
   var seen = {};
-  return (Array.isArray(p.practice_ids) ? p.practice_ids : []).filter(function (id) {
+  var keep = function (id) {
     if (typeof id !== 'string' || !id || seen[id]) return false;
     seen[id] = true;
     return true;
-  });
-}
-function principlePracticeDomains(ids) {
-  var doms = {};
-  ids.forEach(function (id) {
-    var m = /^d(\d+)_/.exec(id);
-    if (m && DI[m[1]]) doms[m[1]] = true;
-  });
-  return Object.keys(doms);
+  };
+  var tagged = (principleTagIndex()[p.id] || []).filter(keep);
+  var curated = (Array.isArray(p.practice_ids) ? p.practice_ids : []).filter(keep);
+  return tagged.concat(curated);
 }
 function principlePracticeQuestions(p) {
-  var ids = principlePracticeIds(p);
-  var byId = {};
-  principlePracticeDomains(ids).forEach(function (d) {
-    (QB[d] || []).forEach(function (q) { if (q && q.id) byId[q.id] = q; });
-  });
-  return ids.map(function (id) { return byId[id]; }).filter(Boolean);
+  var idx = railQuestionIndex();
+  return principlePracticeIds(p).map(function (id) { return idx[id]; }).filter(Boolean);
+}
+// Missed last time and not yet seen come before ones already answered right,
+// then the chosen few are shuffled so the domains mix.
+function principlePracticeSet(qs) {
+  var log = S.answerLog || {};
+  var missed = railShuffle(qs.filter(function (q) { return log[q.id] && !log[q.id].lastCorrect; }));
+  var fresh = railShuffle(qs.filter(function (q) { return !log[q.id]; }));
+  var right = railShuffle(qs.filter(function (q) { return log[q.id] && log[q.id].lastCorrect; }));
+  return railShuffle(missed.concat(fresh, right).slice(0, PRINCIPLE_SET_SIZE));
+}
+function principlePracticeSubText(p) {
+  if (!principleBanksReady()) return 'Questions that turn on this principle. Answers count toward your progress.';
+  var n = principlePracticeQuestions(p).length;
+  return n + (n === 1 ? ' question turns' : ' questions turn') + ' on this principle.'
+    + (n > PRINCIPLE_SET_SIZE ? ' Each set draws ' + PRINCIPLE_SET_SIZE + ', missed and new ones first.' : '')
+    + ' Answers count toward your progress.';
 }
 function principlePracticeBlock(p) {
-  var ids = principlePracticeIds(p);
-  var doms = principlePracticeDomains(ids);
-  // While a bank is still loading, count the ids that name a known domain.
-  var ready = doms.every(function (d) { return isQBReady(d); });
-  var n = ready ? principlePracticeQuestions(p).length
-    : ids.filter(function (id) { var m = /^d(\d+)_/.exec(id); return !!(m && DI[m[1]]); }).length;
+  // While the banks load, the curated ids keep the block in place.
+  var n = principleBanksReady() ? principlePracticeQuestions(p).length
+    : principlePracticeIds(p).filter(function (id) { var m = /^d(\d+)_/.exec(id); return !!(m && DI[m[1]]); }).length;
   if (!n) return '';
   return plSection('Practice this', '<div class="gt-practice">'
     + '<button type="button" class="gt-practice-btn" aria-describedby="plPracSub" data-pid="' + p.id + '" onclick="startPrinciplePractice(this.dataset.pid)">'
     + ico('play', 16) + '<span>Practice this principle</span></button>'
-    + '<p class="gt-practice-sub" id="plPracSub">' + n + (n === 1 ? ' question that turns' : ' questions that turn') + ' on this principle. Answers count toward your progress.</p>'
+    + '<p class="gt-practice-sub" id="plPracSub">' + escapeHtml(principlePracticeSubText(p)) + '</p>'
     + '</div>');
 }
+// A bank arrived (or failed): the tag index is stale, and an open principle's
+// count may change, so the count shows even when the last bank fails.
+function principleBankSettled() {
+  principleTagIdx = null;
+  try {
+    var sub = document.getElementById('plPracSub');
+    var p = S.activeTab === 'principles' && resolvePrinciple(principlesState.selectedId);
+    if (sub && p) sub.textContent = principlePracticeSubText(p);
+  } catch (e) {}
+}
+document.addEventListener('qb:domain-loaded', principleBankSettled);
+document.addEventListener('qb:domain-error', principleBankSettled);
 function startPrinciplePractice(pid) {
   var p = resolvePrinciple(pid);
   if (!p) return;
-  var doms = principlePracticeDomains(principlePracticeIds(p));
-  if (doms.some(function (d) { return isQBLoading(d); })) {
+  if (!principleBanksReady()) {
     showToast('Loading questions…', 'info', 1500);
     var seq = principlesState.seq;
     var onDone = function () {
-      if (doms.some(function (d) { return isQBLoading(d); })) return;
+      if (!principleBanksReady()) return;
       document.removeEventListener('qb:domain-loaded', onDone);
       document.removeEventListener('qb:domain-error', onDone);
       // Only if the learner is still on this principle (they may have moved on).
@@ -15596,7 +15666,7 @@ function startPrinciplePractice(pid) {
   }
   var qs = principlePracticeQuestions(p);
   if (!qs.length) { showToast('No practice questions for this principle yet', 'info', 2200); return; }
-  startMixedSet(railShuffle(qs), p.title, 'all', { principleId: p.id });
+  startMixedSet(principlePracticeSet(qs), p.title, 'all', { principleId: p.id });
 }
 
 // ── Opening a principle ──
@@ -17976,6 +18046,15 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Practise by principle',
+    items: [
+      { cat: 'new', text: 'A new principle, "Fit the method to the objective", shows how to pick the audit approach that answers the question being asked.' },
+      { cat: 'improved', text: 'Practise each principle with the questions that turn on it, missed and new ones first.' },
+      { cat: 'improved', text: 'After you answer a practice question, a link takes you to the principle behind it.' }
+    ]
+  },
+  {
+    version: 'v12.22',
     title: 'Mock exams that cover every topic',
     items: [
       { cat: 'improved', text: 'Mock exams now spread their questions across every topic in the exam outline, so each mock covers the whole exam the way the real one does.' }
