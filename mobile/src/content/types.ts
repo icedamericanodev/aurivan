@@ -35,7 +35,7 @@ export interface PackQuestion {
   /**
    * The one exam-mindset principle this question MOST tests: a principle `id`
    * from the cert's principles pack (docs/content/PRINCIPLE_TAGGING.md).
-   * Absent while a domain is not yet tagged. Not shown in the UI yet.
+   * Absent when no principle decides it. Mobile 1.31: the answer screen links to it, and the principle page counts and practises it (lib/principleQuestions.ts).
    */
   principleId?: string;
 }

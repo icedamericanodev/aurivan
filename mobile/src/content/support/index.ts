@@ -41,6 +41,12 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.31.0',
+    date: '2026-10-20',
+    new: ['A link from each answer to the principle it tests.'],
+    improved: ['Principles now practise every question that tests them.'],
+  },
+  {
     version: '1.30.0',
     date: '2026-10-19',
     improved: [
