@@ -766,7 +766,7 @@ sub-references like "(Managed Risk) and APO12.03").
 - CISA Industrial Control Systems Cybersecurity Guidance
 - CISA Joint Cybersecurity Advisories
 - CISA Joint Cybersecurity Advisories (AD-related)
-- CISA Software Bill of Materials Guidance
+- US Cybersecurity and Infrastructure Security Agency (CISA) Software Bill of Materials Guidance
 - China Data Security Law (DSL)
 - China Personal Information Protection Law (PIPL)
 - Cloud-native architecture (cell-based architecture pattern)

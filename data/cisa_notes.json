@@ -1568,6 +1568,7 @@
                 "Controls support three kinds of objectives: effective operations, reliable reporting and compliance with laws and regulations.",
                 "They give reasonable, not absolute, assurance because of limits built into any control system.",
                 "Those limits include human error, collusion, management override and the cost of controls compared with their benefit.",
+                "Human error is the most frequent limit; management override and collusion are rarer but can cause larger losses.",
                 "Because preventive controls can be defeated, detective controls are layered behind them to catch what gets through.",
                 "The COSO (Committee of Sponsoring Organizations of the Treadway Commission) framework groups internal control into five linked components."
               ],
@@ -15721,8 +15722,8 @@
               "how_it_works": [
                 "Assessment comes first: list assets and hazards, review existing controls, then rate residual risk and plan fixes.",
                 "Cooling and humidity controls keep rooms in range; low humidity causes static discharge and high humidity causes condensation.",
-                "Water sensors under raised floors detect leaks, and pipes are routed away from the space above equipment.",
-                "An uninterruptible power supply (UPS) bridges short gaps and generator start-up; a fueled generator carries long outages.",
+                "Water sensors under raised floors detect leaks, and pipes avoid the space above equipment.",
+                "Power disturbances are the most frequent disruption, fire and flood the most destructive; an uninterruptible power supply (UPS) bridges short gaps, and a fueled generator carries long outages.",
                 "Every alarm is routed, at all hours, to someone who can act before damage occurs.",
                 "When power loss is unavoidable, an orderly shutdown protects data integrity before failover."
               ],
@@ -15767,12 +15768,12 @@
                 "svg": "<svg viewBox='0 0 460 132' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Environmental threats a data center must control: fire, flooding, power failure, temperature'><rect x='14' y='16' width='210' height='44' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='119' y='42' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Fire</text><rect x='236' y='16' width='210' height='44' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='341' y='42' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Flooding</text><rect x='14' y='74' width='210' height='44' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='119' y='100' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Power failure</text><rect x='236' y='74' width='210' height='44' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='341' y='100' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Temperature</text></svg>",
                 "caption": "Four hazards every data center must plan for. Each needs its own detection, its own control and a person who acts on the alarm."
               },
-              "example": "At a newspaper printing plant, file servers reboot several times a week when heavy presses start and the voltage briefly sags. The plant engineer proposes a larger generator. The IS auditor explains that a generator helps only in long outages, not momentary dips, and recommends a UPS or power line conditioner on the server circuits.",
+              "example": "At a printing plant, file servers reboot several times a week when heavy presses start and the voltage sags. The engineer proposes a larger generator. The IS auditor explains that generators help only in long outages, not momentary dips, and recommends a UPS or power line conditioner.",
               "isaca_rule": "A sensor protects nothing unless its alert reaches someone able to act in time; monitoring and response are part of the control. For power, batteries bridge gaps and generators sustain operations, so critical sites need both, tested under load.",
               "exam_traps": [
                 {
                   "trap": "A UPS alone can keep a data center running through a long outage.",
-                  "why": "Batteries last minutes. They bridge short gaps and generator start-up; only a fueled generator sustains power for hours."
+                  "why": "Batteries last minutes, bridging short gaps and generator start-up; only a fueled generator sustains power for hours."
                 },
                 {
                   "trap": "Installed sensors prove environmental risk is controlled.",
@@ -19754,8 +19755,9 @@
               "definition": "Vulnerability scanning is automated, scheduled checking of systems for known weaknesses, such as missing patches, weak settings and outdated software, without trying to exploit them.",
               "why_it_matters": "Many breaches exploit known, fixable weaknesses. Scanning finds them cheaply and often, but only on assets it knows about, and only helps when findings are fixed in risk order.",
               "how_it_works": [
-                "The scanner compares each asset's software and settings with a database of known vulnerabilities and reports matches with a Common Vulnerability Scoring System (CVSS) score.",
+                "The scanner compares each asset's software and settings with known vulnerabilities and scores matches with the Common Vulnerability Scoring System (CVSS).",
                 "Coverage depends on a complete asset list; automated asset discovery, such as cloud inventories and network sweeps, catches new servers as they appear.",
+                "For a newly announced flaw, first find every affected system from inventories and credentialed scans, then rank and patch.",
                 "Credentialed scans sign in to each host and see installed software; uncredentialed scans see only what the network exposes.",
                 "Findings are ranked by exploitability, such as presence on a known-exploited list, by exposure and by asset value, not by severity score alone.",
                 "Each finding gets an owner and a risk-based due date, and the next scan confirms the fix."
@@ -19796,7 +19798,7 @@
                   }
                 ]
               },
-              "example": "A clinic network's quarterly scan report shows only a few low-risk issues across 300 servers. The IS auditor learns the scans run without credentials, so they see network services but not installed software. She recommends credentialed scans through a dedicated, monitored service account, with results ranked by exploitability and asset value.",
+              "example": "A clinic's quarterly scan shows only a few low-risk issues across 300 servers. The IS auditor learns the scans run without credentials, so they miss installed software, and recommends credentialed scans through a dedicated, monitored service account.",
               "isaca_rule": "A scan is only as good as its coverage, and a finding matters only once it is fixed. Prioritize by real exploitability, exposure and asset value, assign owners and deadlines, and verify fixes. Repeat findings point to a broken remediation process.",
               "exam_traps": [
                 {

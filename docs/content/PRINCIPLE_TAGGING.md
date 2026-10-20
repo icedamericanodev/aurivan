@@ -219,11 +219,16 @@ auditor running the monitoring check or approving releases).
 `priority-word-decides`: d1_219, d2_226 and d4_323 (high) and d5_352 (medium,
 because knowing which hazard is most frequent carries weight); in each, MOST
 LIKELY and GREATEST pick different true options, and the explanation names the
-option that wins under the other word. `final-two`: d1_220 (medium, close to
-`independence-throughout`), d3_156 (medium, closure order is topic knowledge),
-d4_324 (medium, close to `evidence-quality`) and d5_353 (medium; the runner-up
-applies `risk-sets-priority`); in each, the key is the step the runner-up
-depends on. The new ids are not added to `practice_ids` in
+option that wins under the other word; the Exam cues add that GREATEST ranks
+the harm of a realistic event. `final-two`: d1_220 (medium, close to
+`plan-before-testing` and `independence-throughout`; kept because the decisive
+step is that the self-assessment depends on terms set first), d3_156 (medium;
+the key gates the stem's plan rather than being a prerequisite of the
+runner-up, and closure order is topic knowledge; kept because no content
+principle decides it and the "comes first" part of the rule does), d4_324
+(medium, close to `evidence-quality`) and d5_353 (medium; the runner-up
+applies `risk-sets-priority`). In d1_220, d4_324 and d5_353 the key is the
+step the runner-up depends on. The new ids are not added to `practice_ids` in
 `data/mindset/principles.json`: those are curated seeds that the linter only
 checks for agreement, and changing them changes a learner-visible "Practice
 this principle" set, which needs a web version bump.
