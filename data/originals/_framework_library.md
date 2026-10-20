@@ -792,7 +792,7 @@ sub-references like "(Managed Risk) and APO12.03").
 - NIST AI Risk Management Framework 1.0
 - NIST SP 800-190 (Application Container Security Guide)
 - NIST SP 800-204D (Strategies for Secure Software Supply Chain)
-- NIST SP 800-213 (IoT Device Cybersecurity Capability Core Baseline)
+- NIST SP 800-213 (IoT Device Cybersecurity Guidance for the Federal Government: Establishing IoT Device Cybersecurity Requirements)
 - NIST SP 800-53 Rev 5 IA-5 (Authenticator Management)
 - NSA/CISA Kubernetes Hardening Guide
 - Open Policy Agent (OPA) Gatekeeper Best Practices

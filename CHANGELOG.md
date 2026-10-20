@@ -4,6 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.26] — How attacks work, and the auditor after the incident
+
+### New
+- New practice questions on how advanced persistent threats, zero-days, container and Kubernetes risks, hidden IoT devices, business email compromise and logic bombs actually work.
+
+### Improved
+- Several incident questions now ask what the IS auditor concludes after the incident, the way the exam frames them.
+
 ## [v12.25] — Practice for the newest notes
 
 ### New
