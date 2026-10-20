@@ -121,8 +121,11 @@ Each bank question in `data/originals/d{N}.json` may carry one optional
 - `scripts/originals_to_domain.py` copies the field to `data/domain{N}.json`;
   the mobile content build passes it on as `principleId` and fails on an id
   that is not in the principles pack.
-- Not shown in the web or mobile UI yet. The "Practice this principle" count
-  still comes from `practice_ids`.
+- Web: a principle's "Practice this principle" count and pool are the
+  questions tagged with it plus any of its `practice_ids` not yet tagged
+  (deduplicated); each set draws up to 10, missed and unseen first. A tagged
+  question's practice answer screen links to its principle (never in a mock).
+  Not shown in the mobile UI yet.
 
 Checks: `validate_originals.py` (unknown id = error; missing = warning,
 one summary line per domain) and `lint_principles.py` (tag count per
