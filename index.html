@@ -6367,7 +6367,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.24</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.25</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6658,7 +6658,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.24';
+const APP_VERSION = 'v12.25';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -18046,6 +18046,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Practice for the newest notes',
+    items: [
+      { cat: 'new', text: 'New practice questions on database monitoring and encryption, resilience testing, zero trust access, post-quantum cryptography, serverless computing, and Bluetooth and NFC.' }
+    ]
+  },
+  {
+    version: 'v12.24',
     title: 'Six new study notes',
     items: [
       { cat: 'new', text: 'New study notes on database monitoring and encryption, operational resilience testing, secure access service edge and zero trust access, serverless computing, and Bluetooth and NFC.' },

@@ -13479,6 +13479,10 @@
               "id": "4A11.6",
               "name": "Database Activity Monitoring and Database Encryption",
               "legacy_ids": [],
+              "practice_ids": [
+                "d4_319",
+                "d4_320"
+              ],
               "definition": "Database activity monitoring (DAM) records and analyzes database activity independently of the database; database encryption keeps stored data unreadable to anyone who bypasses normal access.",
               "why_it_matters": "Database administrators (DBAs) and stolen privileged accounts can read or change any record. Logs the DBAs control, and encryption that still shows them clear text, give little protection against that risk.",
               "how_it_works": [
@@ -14207,6 +14211,10 @@
               "id": "4B2.4",
               "name": "Operational Resilience Testing and Impact Tolerances",
               "legacy_ids": [],
+              "practice_ids": [
+                "d4_321",
+                "d4_322"
+              ],
               "definition": "Operational resilience testing checks whether each important business service can stay within its impact tolerance during severe but plausible disruptions, including failures at third parties.",
               "why_it_matters": "Disaster recovery tests usually prove that a system or site comes back. They rarely show whether a whole customer service survives a supplier outage, a cyberattack or a regional event, which is what customers feel. Financial regulators increasingly require such testing.",
               "how_it_works": [
@@ -14265,7 +14273,7 @@
                   "Approved list of important business services and tolerances, traced to the BIA"
                 ],
                 "recommend": "Have the business continuity manager test each important service against its tolerance, include critical suppliers and track every fix.",
-                "decides": "Senior management approves tolerances and the fix plan or risk acceptance for any breach"
+                "decides": "Senior management sets tolerances and approves and funds the plan to close any breach"
               },
               "isaca_rule": "Resilience is proven per business service, not per system. The IS auditor asks whether severe but plausible tests, including third parties, show each important service staying within the tolerance senior management set, and whether breaches get fixed.",
               "exam_traps": [
@@ -16988,6 +16996,10 @@
               "id": "5A4.8",
               "name": "Secure Access Service Edge and Zero Trust Network Access",
               "legacy_ids": [],
+              "practice_ids": [
+                "d5_336",
+                "d5_337"
+              ],
               "definition": "Zero trust network access (ZTNA) connects a verified user and device only to the applications policy allows, not to a network segment, as a virtual private network (VPN) does.",
               "why_it_matters": "A VPN login often reaches whole network segments, so one stolen password or infected laptop can spread widely. ZTNA limits each session to the applications a person needs.",
               "how_it_works": [
@@ -17738,7 +17750,9 @@
               "practice_ids": [
                 "d5_074",
                 "d5_079",
-                "d5_249"
+                "d5_249",
+                "d5_338",
+                "d5_339"
               ],
               "definition": "Post-quantum cryptography (PQC) uses algorithms designed to resist future quantum computers; crypto-agility lets systems switch algorithms without being redesigned.",
               "why_it_matters": "A large quantum computer could break Rivest-Shamir-Adleman (RSA) and elliptic-curve cryptography, which protect most key exchanges and signatures today. Data recorded now could be read later, so long-lived secrets are already at risk.",
@@ -18420,6 +18434,10 @@
               "id": "5A8.6",
               "name": "Serverless Computing and Function as a Service",
               "legacy_ids": [],
+              "practice_ids": [
+                "d5_340",
+                "d5_341"
+              ],
               "definition": "Serverless computing, or function as a service (FaaS), runs small pieces of customer code when an event triggers them, while the provider runs and patches the servers.",
               "why_it_matters": "Serverless removes server patching from the customer, but not code, permissions, data or settings. Each function is a separate entry point with its own rights, often missed in reviews.",
               "how_it_works": [
@@ -18427,7 +18445,7 @@
                 "Each function runs under an execution role; one shared, over-broad role lets a single flawed function reach everything the others can.",
                 "Event data from queues, uploads or messages is untrusted input; without validation it allows event injection, such as commands hidden in a file name.",
                 "Functions are short-lived with no server to inspect later, so logging, tracing and alerts must be built in before an incident.",
-                "Spending alerts and concurrency limits contain denial of wallet, where attackers trigger functions at scale to run up cloud costs.",
+                "Concurrency limits cap denial of wallet, where attackers trigger functions at scale to run up costs; spending alerts only warn.",
                 "Deployment packages carry third-party libraries that need scanning, and runtimes the provider retires must be upgraded on schedule."
               ],
               "example": "A ticketing company runs 300 serverless functions, all under one execution role with full access to its customer database. An image-resizing function triggered by uploads could therefore read every customer's payment record. The IS auditor reports the shared role and recommends one least-privilege role per function, event data validation and central logging.",
@@ -18769,6 +18787,10 @@
               "id": "5A9.5",
               "name": "Bluetooth and Near-Field Communication",
               "legacy_ids": [],
+              "practice_ids": [
+                "d5_342",
+                "d5_343"
+              ],
               "definition": "Bluetooth and near-field communication (NFC) are short-range wireless links: Bluetooth connects devices across a room, NFC only within a few centimeters, as in tap-to-pay.",
               "why_it_matters": "Payments, badges, locks and headsets rely on these links. Users assume short range means safe, but attackers can extend range with antennas or relay signals over the internet.",
               "how_it_works": [
