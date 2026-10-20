@@ -41,6 +41,14 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.34.0',
+    date: '2026-10-20',
+    new: [
+      'New practice questions on how advanced persistent threats, zero-days, container and Kubernetes risks, hidden IoT devices, business email compromise and logic bombs actually work.',
+    ],
+    improved: ['Several incident questions now ask what the IS auditor concludes after the incident, the way the exam frames them.'],
+  },
+  {
     version: '1.33.0',
     date: '2026-10-20',
     new: [
