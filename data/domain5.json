@@ -2,7 +2,7 @@
   "domain": 5,
   "title": "Protection of Information Assets",
   "weight": "26%",
-  "count": 335,
+  "count": 343,
   "questions": [
     {
       "id": "d5_001",
@@ -12523,6 +12523,310 @@
         "Exam cue: after any change to a protected room, ask whether the control still has what it needs to work."
       ],
       "_provenance": "Authored from concept: 'Clean-Agent Suppression. Clean-Agent Room Integrity'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A2.2 (Wave 2 coverage batch Q5: a thin high-yield physical/environmental subtopic). Public sources: NFPA and NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_336",
+      "domain": 5,
+      "subtopic": "Zero Trust Network Access. Limiting a Compromised Device",
+      "principle_id": "least-privilege-and-sod",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A firm is replacing its virtual private network (VPN) with zero trust network access (ZTNA). Which ZTNA feature would the IS auditor expect to MOST limit harm from a compromised laptop?",
+      "options": {
+        "A": "Stronger encryption of the tunnel between the laptop and broker",
+        "B": "A device health check each time a session begins",
+        "C": "Connections only to the applications policy allows that user",
+        "D": "One sign-on page that opens each remote application"
+      },
+      "correct": "C",
+      "key_concept": "ZTNA connects a verified user and device only to the applications policy allows, so a compromised device cannot reach the wider network.",
+      "pre_read": "Ask what an attacker on a compromised device could reach under each option.",
+      "correct_explanation": "ZTNA's main gain over a VPN is reach: the broker connects a user only to the applications policy allows, so a compromised laptop cannot scan or spread across the network. A device health check is the runner-up: it helps keep unhealthy devices out, but it can miss a compromise that has not yet been detected, while limiting reach caps the harm either way.",
+      "wrong_explanations": {
+        "A": "A VPN tunnel is already encrypted; stronger encryption protects data in transit but does not limit what a compromised laptop can reach.",
+        "B": "Health checks block devices known to be unhealthy, but an undetected compromise passes them; limiting reach still caps the harm.",
+        "D": "A single sign-on page is a convenience; it does not narrow what a compromised laptop can reach and may widen it."
+      },
+      "tips": [
+        "Eliminate: A and D, because tunnel encryption and single sign-on do not limit what a compromised laptop can reach.",
+        "Final two: C beats B because health checks can miss an undetected compromise, while per-application access caps the harm either way.",
+        "Exam cue: judge remote access by what a connected device can reach, not by how strong the tunnel is."
+      ],
+      "framework_ref": "NIST SP 800-207 (Zero Trust Architecture); NIST SP 800-53 Rev 5 AC-6 (Least Privilege)",
+      "related_concepts": [
+        "Zero trust network access",
+        "Virtual private network",
+        "Least privilege",
+        "Lateral movement"
+      ],
+      "_provenance": "Authored from concept: 'Zero Trust Network Access. Limiting a Compromised Device'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.8 (batch Q16: practice for the web v12.24 study notes). Distinct from d5_050 (authorizing each application request after a VPN login) and d5_286 (a mid-session device-health failure): tests why per-application reach limits harm from a compromised device. Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_337",
+      "domain": 5,
+      "subtopic": "Zero Trust Network Access. Verifying an Exposure Claim",
+      "principle_id": "proven-not-configured",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "After a zero trust network access (ZTNA) rollout, management states its application servers can no longer be reached from the internet. Which evidence would BEST support this claim for the IS auditor?",
+      "options": {
+        "A": "Broker logs listing each allowed and denied application session",
+        "B": "An external scan showing the servers accept no inbound connections",
+        "C": "The approved design stating applications connect outward to the broker",
+        "D": "The ZTNA vendor's certificate of alignment with zero trust principles"
+      },
+      "correct": "B",
+      "key_concept": "In common ZTNA designs, applications connect outward to the broker; an external scan proves they accept no inbound internet connections.",
+      "pre_read": "Ask whether each piece of evidence shows the intended setup or tests what is actually reachable today.",
+      "correct_explanation": "An external scan tests the claim directly: if the servers accept no inbound connections from the internet, they are hidden behind the broker in practice. The approved design is the runner-up: it shows the intended setup, but a leftover firewall rule or old remote-access path could still expose a server, and only a test of the live state would reveal it.",
+      "wrong_explanations": {
+        "A": "Broker logs show decisions on traffic that passes through the broker; they cannot show whether servers are also reachable by another path.",
+        "C": "A design shows what was intended; a leftover firewall rule or old access path could still expose servers despite it.",
+        "D": "A vendor certificate speaks to the product in general, not to how this organization configured its own servers."
+      },
+      "tips": [
+        "Eliminate: A and D, because broker logs only see traffic through the broker and a vendor certificate covers the product, not this setup.",
+        "Final two: B beats C because a design shows intent, while a scan of the live servers shows they really are hidden.",
+        "Exam cue: when management claims a control works, prefer evidence that tests the live result over documents describing the plan."
+      ],
+      "framework_ref": "NIST SP 800-207 (Zero Trust Architecture); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection)",
+      "related_concepts": [
+        "Zero trust network access",
+        "Application connector",
+        "External exposure testing",
+        "Control operation evidence"
+      ],
+      "_provenance": "Authored from concept: 'Zero Trust Network Access. Verifying an Exposure Claim'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.8 (batch Q16: practice for the web v12.24 study notes). Distinct from d5_050 and d5_286 (zero trust access decisions): tests which evidence proves applications are hidden from the internet after a ZTNA rollout. Public sources: NIST.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_338",
+      "domain": 5,
+      "subtopic": "Cryptographic Inventory. Testing Completeness",
+      "principle_id": "fit-method-to-objective",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bank built the cryptographic inventory for its post-quantum migration from questionnaires that system owners completed. Which procedure would BEST test whether the inventory is complete?",
+      "options": {
+        "A": "Have each system owner confirm their entries in writing",
+        "B": "Check that every entry records the algorithm and key length",
+        "C": "Trace a sample of inventory entries to the systems they name",
+        "D": "Compare the inventory with a discovery scan of live systems"
+      },
+      "correct": "D",
+      "key_concept": "Test an inventory's completeness from an independent source, such as a discovery scan of live systems, toward the inventory.",
+      "pre_read": "Ask which direction each test runs: from the record to reality, or from reality to the record.",
+      "correct_explanation": "Completeness means finding what the questionnaires missed, so the test must start from an independent view of what really exists, such as a discovery scan of live systems, and look for algorithms the inventory lacks. Tracing sampled entries to their systems is the runner-up: it confirms that listed items are real and accurate, but it starts from the inventory, so it cannot reveal anything left out.",
+      "wrong_explanations": {
+        "A": "Owners who missed a system in the questionnaire are likely to miss it again; their sign-off adds no independent view of what exists.",
+        "B": "Checking each entry's fields shows the listed items are well described, not that unlisted systems are missing.",
+        "C": "Tracing from the inventory confirms listed entries exist and are accurate, but anything never listed is never sampled."
+      },
+      "tips": [
+        "Eliminate: A and B, because owners re-confirming repeats the same source, and checking entry fields says nothing about missing systems.",
+        "Final two: D beats C because completeness is tested from live systems toward the list; tracing listed entries cannot find omissions.",
+        "Exam cue: to test completeness, start from an independent population and look for items missing from the record."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISO/IEC 27001:2022 Annex A.8.24 (Use of cryptography)",
+      "related_concepts": [
+        "Cryptographic inventory",
+        "Post-quantum migration",
+        "Completeness testing",
+        "Cryptographic discovery"
+      ],
+      "_provenance": "Authored from concept: 'Cryptographic Inventory. Testing Completeness'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.6 (batch Q16: practice for the web v12.24 study notes). Distinct from d5_079 (build the inventory first), d5_074 (which systems migrate first) and d5_249 (crypto-agile design): tests how the IS auditor checks an existing inventory's completeness. Public sources: ISACA ITAF and ISO.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_339",
+      "domain": 5,
+      "subtopic": "Post-Quantum Cryptography. Interim Response to the Quantum Threat",
+      "principle_id": "risk-sets-priority",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "To prepare for quantum computers, an IT manager plans to double the key length of all Rivest-Shamir-Adleman (RSA) certificates used to sign long-term contracts. What is the IS auditor's GREATEST concern?",
+      "options": {
+        "A": "A capable quantum computer breaks RSA at any practical key length",
+        "B": "Longer keys will slow signing and checking on older devices",
+        "C": "Symmetric 256-bit encryption of stored contracts will also fail",
+        "D": "Certificates with longer keys will cost more to renew each year"
+      },
+      "correct": "A",
+      "key_concept": "Quantum computers break RSA and elliptic-curve cryptography at any practical key length; the answer is standardized post-quantum algorithms, not longer keys.",
+      "pre_read": "Ask whether the proposed change works against the stated threat before weighing its side effects.",
+      "correct_explanation": "A large quantum computer breaks RSA through its mathematics, not by brute force, so longer keys buy no lasting protection. Signatures on long-term contracts must stay trustworthy for decades, so they need a standardized post-quantum signature algorithm. Slower signing on older devices is the runner-up: it is a real cost, but a manageable one beside a change that fails against the threat.",
+      "wrong_explanations": {
+        "B": "Slower processing is an operating cost the bank can manage; it matters less than a change that fails against the quantum threat itself.",
+        "C": "256-bit symmetric encryption is expected to stay strong against quantum attack; the urgent exposure is public-key cryptography such as RSA.",
+        "D": "Certificate fees rarely depend on key length, and even a higher fee would be minor beside a control that fails."
+      },
+      "tips": [
+        "Eliminate: C and D, because 256-bit symmetric encryption stays strong and certificate fees are a minor cost, not a security concern.",
+        "Final two: A beats B because slower signing is a manageable cost, while longer RSA keys give no lasting protection against quantum attack.",
+        "Exam cue: rank a weak remedy by whether it works against the threat before weighing its side effects."
+      ],
+      "framework_ref": "NIST FIPS 204 (ML-DSA); ISO/IEC 27001:2022 Annex A.8.24 (Use of cryptography)",
+      "related_concepts": [
+        "Post-quantum cryptography",
+        "RSA",
+        "Digital signatures",
+        "Symmetric encryption strength"
+      ],
+      "_provenance": "Authored from concept: 'Post-Quantum Cryptography. Interim Response to the Quantum Threat'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.6 (batch Q16: practice for the web v12.24 study notes). Distinct from d5_074 (migration order), d5_079 (inventory first), d5_249 (crypto-agility) and d2_174 (stalled migration governance): tests why longer RSA keys are not an answer to the quantum threat. Public sources: NIST and ISO.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_340",
+      "domain": 5,
+      "subtopic": "Serverless Functions. Reach of a Flawed Function",
+      "principle_id": "least-privilege-and-sod",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor learns an attacker exploited a receipt-formatting serverless function, then deleted records in the human resources (HR) database. What MOST likely explains how the function reached HR data?",
+      "options": {
+        "A": "The function did not validate the event data it received",
+        "B": "The provider failed to isolate one customer's functions from another's",
+        "C": "The HR database was not encrypted at rest",
+        "D": "Functions shared one execution role with wide database rights"
+      },
+      "correct": "D",
+      "key_concept": "Each serverless function runs under an execution role; one shared, over-broad role lets a single flawed function reach everything.",
+      "pre_read": "Separate how the attacker got in from what the compromised component was allowed to reach.",
+      "correct_explanation": "Each function acts with the rights of its execution role. If all functions share one role with wide database rights, a flaw in any function, even a receipt formatter, reaches everything those rights allow. Missing event validation is the runner-up: it may explain how the attacker got into the function, but not why that function could touch HR data; a least-privilege role would have contained it.",
+      "wrong_explanations": {
+        "A": "Unvalidated event data may explain how the attacker entered the function; its reach into HR data came from the rights it ran with.",
+        "B": "Provider isolation separates different customers; here the function and the HR database belong to the same customer, whose permissions decided the reach.",
+        "C": "Encryption at rest protects stored files from theft; a function acting through an authorized role sees the data in clear text anyway."
+      },
+      "tips": [
+        "Eliminate: B and C, because provider isolation separates different customers, and encryption at rest does not stop an authorized role.",
+        "Final two: D beats A because missing validation explains the entry, while the shared role explains why one function could reach HR data.",
+        "Exam cue: when a small component causes wide damage, look for the over-broad permissions behind it, not only the flaw used to get in."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 AC-6 (Least Privilege); ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)",
+      "related_concepts": [
+        "Serverless computing",
+        "Execution role",
+        "Least privilege",
+        "Event injection"
+      ],
+      "_provenance": "Authored from concept: 'Serverless Functions. Reach of a Flawed Function'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.6 (batch Q16: practice for the web v12.24 study notes). Distinct from the D5 cloud shared-responsibility items: tests why one flawed serverless function could reach unrelated data through a shared execution role. Public sources: NIST and ISACA.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_341",
+      "domain": 5,
+      "subtopic": "Serverless Functions. Overnight Bot Invocations",
+      "principle_id": "prevent-before-detect",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bot triggered a public serverless function millions of times overnight, running up a large cloud bill before anyone noticed. Which control should the IS auditor recommend as BEST to limit a repeat?",
+      "options": {
+        "A": "Detailed logging of every invocation, reviewed each morning",
+        "B": "Concurrency limits that cap how many copies run at once",
+        "C": "A larger cloud budget reserved for unexpected usage spikes",
+        "D": "Faster automatic scaling so the function keeps up with demand"
+      },
+      "correct": "B",
+      "key_concept": "Denial of wallet floods functions to run up costs; concurrency limits cap it, and spending alerts act as a backstop.",
+      "pre_read": "Ask whether each option stops the harm as it happens or only reveals it afterward.",
+      "correct_explanation": "Concurrency limits cap how many copies of the function can run at once, so a flood of triggers cannot grow the bill without bound; spending alerts add a backstop. This attack, called denial of wallet, needs a preventive cap. Morning log review is the runner-up: it would show the flood, but only after the night's costs had already been run up.",
+      "wrong_explanations": {
+        "A": "Logs reviewed each morning reveal the flood only after the night's costs are incurred; detection is a backstop, not the main limit.",
+        "C": "A bigger budget absorbs the cost instead of limiting it, and lets an attacker run the bill even higher.",
+        "D": "Faster scaling lets more copies run at once, so the same bot attack would cost even more."
+      },
+      "tips": [
+        "Eliminate: C and D, because a bigger budget absorbs the cost and faster scaling lets the attack run up even more.",
+        "Final two: B beats A because a concurrency cap stops runaway costs as they happen, while morning log review finds them afterward.",
+        "Exam cue: when harm grows by the minute, prefer a control that caps it automatically over one that reports it later."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 SC-5 (Denial-of-Service Protection); ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)",
+      "related_concepts": [
+        "Serverless computing",
+        "Denial of wallet",
+        "Concurrency limits",
+        "Cloud cost monitoring"
+      ],
+      "_provenance": "Authored from concept: 'Serverless Functions. Overnight Bot Invocations'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.6 (batch Q16: practice for the web v12.24 study notes). Distinct from the D5 denial-of-service items on network floods: tests the preventive cap for denial of wallet against a serverless function. Public sources: NIST and ISACA.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_342",
+      "domain": 5,
+      "subtopic": "Near-Field Communication. Phone-Based Door Access",
+      "principle_id": "prevent-before-detect",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Hotel staff open guest room doors by holding an enrolled phone to the lock using near-field communication (NFC), with no unlock or confirmation on the phone. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Require a deliberate action on the phone for each opening",
+        "B": "Log every door opening and review the logs each week",
+        "C": "Reduce the lock reader's range to under one centimeter",
+        "D": "Turn off Bluetooth discoverability on the staff phones"
+      },
+      "correct": "A",
+      "key_concept": "Proximity alone does not prove presence: relay attacks forward signals, so each tap or opening needs a deliberate user action.",
+      "pre_read": "Ask whether the option stops a misuse when it happens or only records it for later.",
+      "correct_explanation": "With no action on the phone, a relay attack can forward the signal from a staff member's phone to a distant lock and open a room while the holder is elsewhere. A deliberate unlock or confirmation for each opening stops that. Weekly log review is the runner-up: logs help investigate, but they record a relayed opening only after the guest's room was entered.",
+      "wrong_explanations": {
+        "B": "Logs show which phone opened a door, but a relayed opening looks legitimate and is found only after the room was entered.",
+        "C": "A relay attack forwards the signal over any distance, so a shorter reader range does not prove the phone is really present.",
+        "D": "Discoverability concerns Bluetooth, not NFC, and hiding a device only stops casual scans; it does nothing against a relayed tap."
+      },
+      "tips": [
+        "Eliminate: C and D, because relays defeat short range, and Bluetooth discoverability has nothing to do with an NFC tap.",
+        "Final two: A beats B because a deliberate action stops a relayed opening, while log review finds it only after the room was entered.",
+        "Exam cue: short range is not a security control; look for a deliberate user action at each transaction."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 AC-19 (Access Control for Mobile Devices); ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)",
+      "related_concepts": [
+        "Near-field communication",
+        "Relay attack",
+        "Proximity-based access",
+        "Mobile credentials"
+      ],
+      "_provenance": "Authored from concept: 'Near-Field Communication. Phone-Based Door Access'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.5 (batch Q16: practice for the web v12.24 study notes). Distinct from the D5 badge and physical access items: tests why proximity-only phone access needs a deliberate user action against relay attacks. Public sources: NIST and ISACA.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_343",
+      "domain": 5,
+      "subtopic": "Bluetooth Security. Closing a Headset Firmware Finding",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "To close a finding on unpatched firmware in staff Bluetooth headsets, management turned off Bluetooth discoverability on all company phones. Why should the IS auditor MOST doubt that the finding is resolved?",
+      "options": {
+        "A": "Staff can switch discoverability back on in their phone settings",
+        "B": "Hidden phones can no longer connect to their paired headsets",
+        "C": "The headsets' firmware flaws remain open to attack",
+        "D": "Bluetooth's short range already made attacks on headsets unlikely"
+      },
+      "correct": "C",
+      "key_concept": "Turning off Bluetooth discoverability only hides devices from casual scans; patching and confirmed pairing address the actual flaws.",
+      "pre_read": "Compare the fix with the cause named in the finding: does it remove the cause, or only reduce exposure?",
+      "correct_explanation": "The finding is about flaws in the headsets' firmware, and only patching removes them. Hiding the phones treats the exposure, not the cause: the headsets themselves are untouched, and a hidden device's address can still be learned from its traffic. Staff switching discoverability back on is the runner-up: enforcing the setting through device management would help, yet the flaws would still be there.",
+      "wrong_explanations": {
+        "A": "Enforcing the setting through device management would close this gap, but even an enforced hidden mode leaves the headsets' firmware flaws in place.",
+        "B": "Turning off discoverability stops new scans finding the phone; devices already paired keep connecting normally.",
+        "D": "Attackers can use directional antennas to reach Bluetooth devices from much farther away, so short range is not a control."
+      },
+      "tips": [
+        "Eliminate: B and D, because paired devices still connect when hidden, and antennas extend Bluetooth range.",
+        "Final two: C beats A because even an enforced hidden setting leaves the firmware flaws; only patching removes the cause.",
+        "Exam cue: check that a fix addresses the cause named in the finding, not just one way it could be exposed."
+      ],
+      "framework_ref": "NIST SP 800-121 Rev 2 (Guide to Bluetooth Security); NIST SP 800-53 Rev 5 SI-2 (Flaw Remediation)",
+      "related_concepts": [
+        "Bluetooth security",
+        "Discoverable mode",
+        "Firmware patching",
+        "Remediation follow-up"
+      ],
+      "_provenance": "Authored from concept: 'Bluetooth Security. Closing a Headset Firmware Finding'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.5 (batch Q16: practice for the web v12.24 study notes). Distinct from the D5 wireless LAN items (5A9.2, 5A9.3): tests why hiding Bluetooth devices does not resolve unpatched firmware flaws. Public sources: NIST.",
       "style_version": 2
     }
   ]

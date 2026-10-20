@@ -2052,3 +2052,9 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 ## Added with Wave 3 coverage batch Q15 (Domain 4, Oct 2026)
 
 - DAMA-DMBOK 2nd Edition (Data Modeling and Design, Data Storage and Operations)
+
+## Added with batch Q16 (Domains 4 and 5, Oct 2026)
+
+- ISO/IEC 27001:2022 Annex A.8.16 (Monitoring activities)
+- PRA Supervisory Statement SS1/21 (Operational Resilience: Impact Tolerances for Important Business Services)
+- NIST SP 800-121 Rev 2 (Guide to Bluetooth Security)
