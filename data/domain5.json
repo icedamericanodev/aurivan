@@ -9606,7 +9606,7 @@
     {
       "id": "d5_255",
       "domain": 5,
-      "subtopic": "BEC Wire Fraud Window. Response Review",
+      "subtopic": "BEC Wire Fraud. Response Review",
       "principle_id": "answer-from-the-stem",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
@@ -9627,10 +9627,10 @@
       },
       "correct": "D",
       "key_concept": "When a loss turns irreversible over time, the recall must start at once; approvals and notifications run in parallel, never first.",
-      "pre_read": "Notice the question asks why recovery failed, not why the fraud happened. Ask what used up the recall window.",
+      "pre_read": "Notice the question asks why recovery failed, not why the fraud happened. Weigh each option against what the stem says happened first.",
       "correct_explanation": "Recall chances fall sharply with every hour, and nothing required the bank to brief anyone first: the transfer was never authorized, so the recall needed no one's approval. Holding it back for notifications spent the window, which is why the funds were lost. A missed callback explains how the fraud succeeded, a separate finding, but the question asks why recovery failed.",
       "wrong_explanations": {
-        "A": "The transfer was never authorized, so a recall needs no client approval; seeking it first would have used up more of the recovery window.",
+        "A": "The transfer was never authorized, so a recall needs no client approval; seeking that approval first would have used up more of the recovery window.",
         "B": "Law enforcement reporting runs alongside a recall and gives no clearance the bank needs; waiting for it would have delayed recovery further.",
         "C": "A callback would likely have stopped the fraud and is worth reporting, but the question asks why recovery failed, and the recall wait explains that."
       },
@@ -12957,7 +12957,7 @@
       },
       "correct": "B",
       "key_concept": "The orchestrator's control plane commands every container and holds its secrets, so exposed, shared admin access puts the whole cluster at stake.",
-      "pre_read": "Ask what someone holding that one credential could do, not only what can no longer be traced.",
+      "pre_read": "Ask what someone holding that one credential could do across the cluster.",
       "correct_explanation": "The control plane is the orchestrator's command center: it deploys and changes every container and stores the cluster's secrets. Reachable from the internet with one shared certificate, a single leaked copy hands an attacker the whole cluster, and Kubernetes cannot revoke one client certificate without reissuing them all. Lost individual accountability is a real weakness, but it limits tracing after the fact; takeover of every workload is the greater exposure.",
       "wrong_explanations": {
         "A": "A shared certificate does weaken accountability, but untraceable actions matter less than an outsider gaining control of every workload.",
