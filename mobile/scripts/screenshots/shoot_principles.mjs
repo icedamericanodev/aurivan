@@ -51,13 +51,13 @@ await open('/principles/CONTAIN-FIRST'); await snap('p04-legacy-id');
 await open('/principles/fit-method-to-objective'); await snap('p05-fit-method-top');
 await page.mouse.wheel(0, 20000); await page.waitForTimeout(700); await snap('p05b-fit-method-practice');
 // Mobile 1.31: an answered question (the seed's first sample, a miss on the runner-up)
-// and its "Principle" row under Read the note, scrolled into view.
+// and its "Read the principle" row under Read the note, scrolled into view.
 const keys = (seed.__shotKeys || 'A').split(',');
 await open('/session');
 await page.getByLabel(new RegExp(`^Option ${keys[0]}:`)).first().click();
 await page.getByText('Check answer', { exact: true }).click();
 await page.waitForTimeout(1500);
-const row = page.getByLabel(/^Principle: /).first();
+const row = page.getByLabel(/^Read the principle: /).first();
 await row.scrollIntoViewIfNeeded();
 const rbox = await row.boundingBox();
 if (rbox) { await page.mouse.move(196, 400); await page.mouse.wheel(0, rbox.y - 420); }
