@@ -63,6 +63,16 @@ const scrollTo = async (text) => {
 const scrollBy = async (dy) => { await page.mouse.move(196, 500); await page.mouse.wheel(0, dy); await page.waitForTimeout(700); };
 
 // Mobile 1.29: "Auditing it" on 4B1.1 and on 5B2.1 (the longest): the section and the lens under it.
+// NOTES_SHOTS=new shoots only the newest notes (web v12.24 / mobile 1.32): top and "Auditing it".
+if (process.env.NOTES_SHOTS === 'new') {
+  for (const id of ['4A11.6', '4B2.4', '5A4.8', '5A6.6', '5A8.6', '5A9.5']) {
+    await open(`/notes/subtopic/${id}`); await snap(`n20-${id}-top`);
+    await scrollTo('Auditing it'); await snap(`n20b-${id}-auditing-it`);
+  }
+  console.log('errors:', errs.slice(0, 5));
+  await browser.close();
+  process.exit(0);
+}
 // NOTES_SHOTS=audit shoots only these (a quick check of the section).
 await open('/notes/subtopic/4B1.1'); await scrollTo('Auditing it'); await snap('n11-4B1.1-auditing-it');
 await scrollBy(400); await snap('n11b-4B1.1-auditing-it-end');
