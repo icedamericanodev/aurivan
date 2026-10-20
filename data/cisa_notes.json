@@ -18334,6 +18334,7 @@
                 "Containers run without administrator rights and with only the host permissions they need, which closes the most common escape paths.",
                 "An orchestrator such as Kubernetes schedules containers; its control plane and stored secrets need strong access control.",
                 "Runtime monitoring adds detection of unusual container behavior as defense in depth.",
+                "Replacing a compromised container does not cancel credentials it exposed; revoke any cloud credentials it could reach, such as those from the instance metadata service.",
                 "A suspected escape is contained by isolating the affected containers and the server running them, which also preserves evidence."
               ],
               "illustration": {
@@ -19689,7 +19690,7 @@
                   }
                 ]
               },
-              "example": "At an insurer, a developer who can also move code into production adds a routine that would erase claims history if his user ID ever disappeared from the payroll file. A colleague spots it by chance. The IS auditor recommends independent code review within change control, and removing developers' ability to promote their own code to production.",
+              "example": "At an insurer, a developer who can also move code into production adds a routine that would erase claims history if the developer's own user ID ever disappeared from the payroll file. A colleague spots it by chance. The IS auditor recommends independent code review within change control, and removing developers' ability to promote their own code to production.",
               "isaca_rule": "Put the control where the fraud lives. Prevent bad input with independent verification, prevent malicious code with independent review before production, and detect salami slicing with independent recalculation. Checks after the fact only protect figures that are already false.",
               "exam_traps": [
                 {

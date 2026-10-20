@@ -3749,25 +3749,25 @@
         "Incident playbook"
       ],
       "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ISO/IEC 27002:2022 Control 5.26 (Response to Information Security Incidents); ISO/IEC 27002:2022 Control 8.22 (Segregation of Networks)",
-      "question": "Reviewing a past incident, an IS auditor finds staff powered down botnet-infected building-control devices in 14 stores, which then opened without heating or door controls. Which recommendation is BEST?",
+      "question": "Reviewing a past incident, an IS auditor finds staff powered down botnet-infected building-control devices, so 14 stores opened without heating or door controls. Which recommendation is BEST?",
       "options": {
         "A": "Keep infected devices fully online until replacements are installed",
-        "B": "Contain such devices by blocking only their internet traffic",
+        "B": "Update the playbook to block such devices' internet traffic",
         "C": "Switch building devices to a different vendor's models",
         "D": "Keep spare devices at each store for quick replacement"
       },
       "correct": "B",
       "key_concept": "Proportionate containment cuts the harmful traffic path while essential operations keep running, rather than shutting every affected device down.",
       "pre_read": "Notice what the shutdown cost the stores. Ask which response would stop the attack without that cost.",
-      "correct_explanation": "Blocking the devices' internet traffic stops the attack traffic while heating, cameras and door controls keep working locally, so the stores could have opened normally. The response playbook should make that proportionate step the default for compromised building devices. Keeping spares shortens an outage after a shutdown, but it accepts the outage and the swap work; blocking traffic avoids the outage altogether.",
+      "correct_explanation": "Blocking the devices' internet traffic stops the attack traffic while heating and door controls keep working locally, so the stores could have opened normally. The response playbook should make that proportionate step the default for compromised building devices. Keeping spares shortens an outage after a shutdown, but it accepts the outage and the swap work; blocking traffic avoids the outage altogether.",
       "wrong_explanations": {
-        "A": "Leaving infected devices fully online lets the attack traffic continue against the outside victim until replacements arrive.",
+        "A": "Leaving infected devices fully online lets the botnet keep using them for attacks until replacements arrive.",
         "C": "Changing vendors is a long-term buying decision; it does not tell staff how to contain the next compromised device.",
         "D": "Spares shorten an outage after a shutdown, but blocking internet traffic would have avoided the outage while still stopping the attack."
       },
       "tips": [
-        "Eliminate: A and C, because leaving the attack running harms the victim, and changing vendors does not improve the response.",
-        "Final two: B beats D because spares only shorten the outage, while blocking internet traffic stops the attack with no outage.",
+        "Eliminate: A and C, because leaving the devices online keeps the attack running, and changing vendors does not improve the response.",
+        "Final two: B beats D because spares only shorten the outage, while a playbook that blocks internet traffic stops the attack with no outage.",
         "Exam cue: judge containment by whether it stopped the harm with the least disruption; cut the harmful path, not the whole service."
       ],
       "_provenance": "Authored from concept: 'IoT botnet activity in branch network response'. Public sources: ISACA, NIST, CISA, Mirai research. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. R1 reframe (Oct 2026, batch Q17): recast from a live-incident operational call (the IS auditor recommends blocking the devices' internet traffic FIRST while compromised building controls attack an outside victim) to a post-incident audit judgement (the IS auditor's best recommendation after a blanket shutdown left 14 stores without building controls); key letter kept.",
@@ -4244,7 +4244,7 @@
       "question": "A treasury analyst flags a $2.4M wire, emailed by the traveling CEO, to an overseas account opened 14 days ago. With settlement in 45 minutes, what should the IS auditor recommend FIRST?",
       "options": {
         "A": "Hold the wire until the CEO confirms on a known phone number",
-        "B": "Reply to the CEO's email and ask him to confirm the payment",
+        "B": "Reply to the CEO's email asking to confirm the payment",
         "C": "Release the wire and ask the bank to recall it if needed",
         "D": "Call finance, legal and security leaders together to agree a response"
       },
@@ -4262,7 +4262,7 @@
         "Final two: A beats D because the settlement deadline makes stopping the payment the priority; a meeting would let the wire leave.",
         "Exam cue: when a loss is irreversible and time-bound, the FIRST action stops it, then verify through a known channel."
       ],
-      "_provenance": "Authored from concept: 'BEC wire-fraud immediate response'. Public sources: ISACA, FBI IC3, SWIFT, OFAC, PCAOB. No legacy bank citation. Note: intentional single-focus surgical action; FINANCIAL-LOSS-CLOCK principle distinct from contain-first / restore-first / lateral-movement-contain. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'BEC wire-fraud immediate response'. Public sources: ISACA, FBI IC3, SWIFT, OFAC, PCAOB. No legacy bank citation. Note: intentional single-focus surgical action; FINANCIAL-LOSS-CLOCK principle distinct from contain-first / restore-first / lateral-movement-contain. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Wording fix (Oct 2026): gendered pronoun in option B replaced; key and meaning unchanged.",
       "style_version": 2
     },
     {
@@ -4431,26 +4431,26 @@
         "Post-incident review"
       ],
       "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); CISA Joint Cybersecurity Advisory AA20-245A (Technical Approaches to Uncovering and Remediating Malicious Activity)",
-      "question": "Responders blocked a nation-state group's control server the day it was found, though no sensitive data was leaving; the group returned within a week through unknown accounts. What is the IS auditor's MOST significant finding?",
+      "question": "Responders blocked a nation-state group's control server the day it was found, though no sensitive data was leaving; the group later returned through accounts nobody had discovered. What is the IS auditor's MOST significant finding?",
       "options": {
         "A": "Passwords on the known compromised accounts were not reset afterward",
         "B": "Staff were not warned that the network was compromised",
         "C": "Visible action was taken before the intrusion was fully scoped",
-        "D": "The firewall block on the control server came too late"
+        "D": "Detection of the group's return took too long"
       },
       "correct": "C",
-      "key_concept": "Against a hidden, patient attacker, visible action before scoping warns them; footholds not yet found survive and they return.",
+      "key_concept": "Against a hidden, patient attacker, act visibly only after scoping, unless sensitive data is leaving; early action warns it toward unfound footholds.",
       "pre_read": "Notice the group came back through accounts nobody knew about. Ask what step would have found them first.",
       "correct_explanation": "With no sensitive data leaving, nothing forced an immediate block. A nation-state group with unknown reach usually holds several footholds, and blocking its control server warned it before they were mapped, so it returned through accounts nobody had found. Resetting passwords on the known accounts sounds thorough, but those were not the accounts it used; scoping first, then evicting every foothold at once, was the missing step.",
       "wrong_explanations": {
         "A": "The group returned through accounts nobody had found; resetting passwords on the known ones would not have closed those.",
         "B": "Announcing the compromise widely could reach the attacker through monitored mailboxes and would not have found the hidden accounts.",
-        "D": "The block came on the first day; speed was not the problem, acting before the intrusion was scoped was."
+        "D": "Nothing shows detection was slow, and faster detection would only have spotted the return; it would not have found the hidden accounts beforehand."
       },
       "tips": [
-        "Eliminate: B and D, because a company-wide warning can tip off the attacker, and the block was not late.",
+        "Eliminate: B and D, because a company-wide warning can tip off the attacker, and faster detection only spots a return that scoping would have prevented.",
         "Final two: C beats A because the group used accounts nobody had found; acting before scoping, not unreset known passwords, let it survive.",
-        "Exam cue: when an attacker returns after cleanup, ask why; for an APT, the usual cause is eviction before full scoping."
+        "Exam cue: for an APT, visible action before full scoping lets it return through hidden footholds; act at once only when sensitive data is leaving."
       ],
       "_provenance": "Authored from concept: 'Nation-state APT investigation in defense-contractor context'. Public sources: ISACA, NISPOM, CISA/NSA advisories, FBI, DCSA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): split the stem cleanly and removed the ambiguous 'its'. Final polish (Oct 2026). Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. R1 reframe (Oct 2026, batch Q17): recast from a live-incident operational call (the IS auditor recommends quiet scoping FIRST when a nation-state group with an unknown foothold is found) to a post-incident audit judgement (the IS auditor's most significant finding after a premature block let the group return through unfound accounts); key letter kept.",
       "style_version": 2
@@ -5970,7 +5970,7 @@
         "Post-incident review"
       ],
       "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); MITRE ATT&CK T1552.005 (Unsecured Credentials: Cloud Instance Metadata API); NIST SP 800-53 Rev 5 IR-4 (Incident Handling)",
-      "question": "After an attacker ran commands in a production container and queried the instance metadata service, responders replaced the container from a clean image and closed the incident. What is the IS auditor's GREATEST concern?",
+      "question": "After an attacker ran commands in a production container and queried the instance metadata service, responders replaced the container from a clean image. Which gap should the IS auditor report as MOST significant?",
       "options": {
         "A": "The clean image was not scanned again before redeployment",
         "B": "Cloud credentials the attacker could reach were not revoked",
@@ -5980,10 +5980,10 @@
       "correct": "B",
       "key_concept": "Rebuilding a compromised workload does not invalidate credentials it exposed; containment ends only when reachable credentials are revoked.",
       "pre_read": "Notice what the attacker was reaching for. Ask whether replacing the container makes anything already taken stop working.",
-      "correct_explanation": "The attacker queried the metadata service to collect cloud credentials, and replacing the container does nothing to credentials already taken; they stay valid in the attacker's hands. Containment was incomplete until every credential the container could reach was revoked. Leaving the older metadata service enabled is a real hardening gap, but closing it protects against the next theft, not credentials stolen this time.",
+      "correct_explanation": "The attacker queried the metadata service to collect cloud credentials, and replacing the container does nothing to credentials already taken; they remained usable until they expired or were revoked, long enough to create lasting access. Containment was incomplete until every credential the container could reach was revoked. Leaving the older metadata service enabled is a real hardening gap, but closing it protects against the next theft, not credentials stolen this time.",
       "wrong_explanations": {
-        "A": "The image was already clean; rescanning it would not affect credentials the attacker may have taken from the metadata service.",
-        "C": "Disabling the older metadata version prevents future theft but leaves any credentials already stolen still valid for the attacker.",
+        "A": "The image was already clean; rescanning it would not affect credentials the attacker may have taken. Replacing the container also discarded its evidence, a separate gap.",
+        "C": "Disabling the older metadata version prevents future theft but leaves credentials already stolen usable by the attacker.",
         "D": "Telling customers about a routine container replacement does nothing to cut off access the attacker may still hold."
       },
       "tips": [
@@ -7313,7 +7313,7 @@
     {
       "id": "d5_195",
       "domain": 5,
-      "subtopic": "Mass-Exploitation Vulnerability Forensic Investigation",
+      "subtopic": "Zero-Day Mass Exploitation. Response Review",
       "principle_id": "prevent-before-detect",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
@@ -7326,24 +7326,24 @@
       "framework_ref": "CISA Binding Operational Directive 22-01 (Reducing Significant Risk of Known Exploited Vulnerabilities); CISA Known Exploited Vulnerabilities (KEV) Catalog; NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning)",
       "question": "Customer files were stolen through a mass-exploited zero-day flaw in a file transfer server while the team increased monitoring and waited two days for the patch. What is the IS auditor's MOST significant finding?",
       "options": {
-        "A": "No procedure required cutting exposure until a patch existed",
-        "B": "Monitoring alerts were not acted on quickly enough",
+        "A": "No procedure required cutting exposure before the patch arrived",
+        "B": "The monitoring procedure lacked a set time to act on alerts",
         "C": "The vendor patch was not tested before it was installed",
         "D": "Business partners were not asked to pause sending their files"
       },
       "correct": "A",
       "key_concept": "With no patch for an actively exploited flaw, the zero-day procedure must cut exposure at once; added monitoring only detects the theft.",
       "pre_read": "Notice what the team did during the two days. Ask whether it could have stopped the theft or only seen it.",
-      "correct_explanation": "The flaw was being exploited widely and no patch existed for two days, so an exposed server was almost certain to be attacked. The gap is a zero-day procedure that cuts exposure at once, such as blocking internet access or applying a compensating firewall rule. Faster response to monitoring alerts sounds right, but monitoring only detects theft after files leave; it cannot prevent it.",
+      "correct_explanation": "The flaw was being exploited widely and no patch existed for two days, so an exposed server was almost certain to be attacked. The gap is the lack of a management-approved zero-day procedure that cuts exposure at once, such as blocking internet access or a compensating firewall rule. A deadline for acting on alerts sounds right, but monitoring only detects theft after files leave; it cannot prevent it.",
       "wrong_explanations": {
-        "B": "Faster alert handling still starts after exploitation; with no patch and active attacks, detection alone could not keep the files from leaving.",
+        "B": "A response-time target speeds alert handling, but handling still begins after exploitation; with no patch, only cutting exposure keeps files from leaving.",
         "C": "Patch testing affects the fix that arrived after the theft; the files were taken during the two days before any patch existed.",
         "D": "Pausing uploads would not protect files already stored on the server, which attackers could still reach through the flaw."
       },
       "tips": [
         "Eliminate: C and D, because the theft happened before any patch existed, and pausing uploads leaves stored files exposed.",
         "Final two: A beats B because faster alert handling still only detects theft, while cutting exposure would have prevented it.",
-        "Exam cue: no patch plus active exploitation means remove exposure now; judge a zero-day response by prevention, not added monitoring."
+        "Exam cue: judge a zero-day response by whether exposure was cut before the patch arrived; added monitoring only records the loss."
       ],
       "_provenance": "Authored from concept: 'Mass-exploitation vulnerability forensic investigation, tonal MOVEit 2023 echo'. Public sources: ISACA, CISA, FBI, ISO, public incident lessons. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. R1 reframe (Oct 2026, batch Q17): recast from a live-incident operational call (the IS auditor recommends blocking internet access FIRST while a mass-exploited zero-day awaits its patch) to a post-incident audit judgement (the IS auditor's most significant finding after files were stolen while the team only added monitoring); key letter kept.",
       "style_version": 2
@@ -9180,7 +9180,7 @@
     {
       "id": "d5_244",
       "domain": 5,
-      "subtopic": "Third-Party SaaS Provider Compromise. Malicious Updates Cascade",
+      "subtopic": "Trojanized Vendor Update. Post-Incident Review",
       "principle_id": "risk-sets-priority",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
@@ -9202,14 +9202,14 @@
       "correct": "C",
       "key_concept": "A host that ran malicious code for months cannot be trusted after a patch; rebuild from a clean baseline and rotate its secrets.",
       "pre_read": "Notice how long the code ran and how much access the servers held. Ask what a corrected update cannot remove.",
-      "correct_explanation": "Nine months of malicious code with privileged access gave the attacker time to add backdoors and harvest credentials. The vendor's corrected update replaces its own code but removes none of that, so closing the incident leaves the agency exposed; the servers needed rebuilding from a trusted baseline and their credentials rotating. A skipped change approval is a real process lapse, but it is minor beside a live foothold.",
+      "correct_explanation": "Nine months of malicious code with privileged access gave the attacker time to add backdoors and harvest credentials. The vendor's corrected update replaces its own code but removes none of that, so closing the incident leaves the agency exposed; the servers needed to be rebuilt from a trusted baseline and their credentials rotated. A skipped change approval is a real process lapse, but it is minor beside a live foothold.",
       "wrong_explanations": {
-        "A": "The agency already knows its servers ran the malicious update; waiting for indicators is not what leaves it exposed now.",
+        "A": "Vendor indicators would help a threat hunt, but the agency already knows its servers were compromised; missing indicators are not what leaves it exposed.",
         "B": "Skipping change approval in an emergency is a process lapse to report, but it does not leave an attacker inside the network.",
-        "D": "The vendor's controls report describes past controls at the vendor; it would not remove footholds inside the agency's own network."
+        "D": "A missed review of the vendor's controls report is a third-party oversight gap, but it carries far less risk than a possibly live foothold."
       },
       "tips": [
-        "Eliminate: A and D, because indicators and vendor reports do not remove anything from the agency's own servers.",
+        "Eliminate: A and D, because vendor indicators and vendor reports say nothing about whether the attacker is still inside the agency's servers.",
         "Final two: C beats B because a skipped approval is a process lapse, while nine months of privileged access may have left backdoors active.",
         "Exam cue: a patch fixes the flaw, not the intrusion; after a long compromise, expect rebuild from a clean baseline and credential rotation."
       ],
@@ -9618,28 +9618,28 @@
         "FinCEN SAR"
       ],
       "framework_ref": "FinCEN Advisory FIN-2016-A003 (Business Email Compromise); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
-      "question": "A bank sent a client's $14.2 million on a spoofed email, then waited a day for client approval before requesting a recall. Which finding should the IS auditor report as the PRIMARY reason recovery failed?",
+      "question": "A bank wired $14.2 million on a spoofed email, then briefed its client, police and executives before seeking a recall next day. What should the IS auditor report as the PRIMARY reason recovery failed?",
       "options": {
-        "A": "The client was not told of the fraud straight away",
-        "B": "Law enforcement was not contacted before the recall request",
-        "C": "The procedure made recalls wait for client approval",
-        "D": "The email gateway did not block the spoofed sender"
+        "A": "The client's approval was not obtained before the recall was sought",
+        "B": "Law enforcement had not cleared the recall before it was requested",
+        "C": "The wire instruction was not verified by a callback",
+        "D": "Notifications held up a recall that should have gone first"
       },
-      "correct": "C",
+      "correct": "D",
       "key_concept": "When a loss turns irreversible over time, the recall must start at once; approvals and notifications run in parallel, never first.",
       "pre_read": "Notice the question asks why recovery failed, not why the fraud happened. Ask what used up the recall window.",
-      "correct_explanation": "Recall chances fall sharply each hour, and the transfer was never authorized, so no client approval was needed to request it. A procedure that made recalls wait for approval spent the window, and that is why the funds were lost. The gateway's failure to block the spoofed email explains how the fraud began, a separate finding, but the question asks why recovery failed.",
+      "correct_explanation": "Recall chances fall sharply with every hour, and nothing required the bank to brief anyone first: the transfer was never authorized, so the recall needed no one's approval. Holding it back for notifications spent the window, which is why the funds were lost. A missed callback explains how the fraud succeeded, a separate finding, but the question asks why recovery failed.",
       "wrong_explanations": {
-        "A": "Prompt notice to the client matters, but it runs alongside the recall; telling the client sooner would not have recovered the funds.",
-        "B": "Law enforcement reporting runs in parallel with a recall; waiting to contact them first would have delayed recovery further.",
-        "D": "The unblocked spoofed email explains how the fraud started; it does not explain why the bank then failed to recover the money."
+        "A": "The transfer was never authorized, so a recall needs no client approval; seeking it first would have used up more of the recovery window.",
+        "B": "Law enforcement reporting runs alongside a recall and gives no clearance the bank needs; waiting for it would have delayed recovery further.",
+        "C": "A callback would likely have stopped the fraud and is worth reporting, but the question asks why recovery failed, and the recall wait explains that."
       },
       "tips": [
-        "Eliminate: A and B, because notifying the client or law enforcement runs alongside a recall and does not recover funds.",
-        "Final two: C beats D because the gateway gap explains the fraud, while the approval step spent the recall window the question asks about.",
-        "Exam cue: read what the question asks you to explain; when a loss clock runs, stopping the loss comes first, notifications in parallel."
+        "Eliminate: A and B, because an unauthorized transfer needs neither client approval nor police clearance before a recall is requested.",
+        "Final two: D beats C because a missed callback explains the fraud, while the notifications spent the recall window the question asks about.",
+        "Exam cue: read what the question asks you to explain; when a loss clock runs, stop the loss first and notify in parallel."
       ],
-      "_provenance": "Authored from concept: 'Cross-principle scenario: IRREVERSIBLE-LOSS-CLOCK vs NOTIFY-FIRST-FOR-CUSTOMER-PROTECTION'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now says whose CFO was spoofed and whose funds moved. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; key and options unchanged. R1 reframe (Oct 2026, batch Q17): recast from a live-incident operational call (the IS auditor judges which action management should take FIRST 47 minutes after a $14.2 million wire left on a spoofed email) to a post-incident audit judgement (the finding the IS auditor reports as the primary reason recovery failed after a day's wait for client approval); key letter kept.",
+      "_provenance": "Authored from concept: 'Cross-principle scenario: IRREVERSIBLE-LOSS-CLOCK vs NOTIFY-FIRST-FOR-CUSTOMER-PROTECTION'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now says whose CFO was spoofed and whose funds moved. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; key and options unchanged. R1 reframe (Oct 2026, batch Q17): recast from a live-incident operational call (the IS auditor judges which action management should take FIRST 47 minutes after a $14.2 million wire left on a spoofed email) to a post-incident audit judgement (the finding the IS auditor reports as the primary reason recovery failed after a day's wait for client approval); key letter kept. Audit fix (Q17 review, Oct 2026): the stem no longer states the approval wait; the approval and police-clearance misconceptions return as distractors; the runner-up is a missed callback (how the fraud began); key moved C to D.",
       "style_version": 2
     },
     {
@@ -9883,16 +9883,16 @@
       "question": "An IS auditor finds that a programmer, months before resigning, planted code that deleted payroll records on a set date. Which control would BEST have prevented this?",
       "options": {
         "A": "Independent code review before changes reach production",
-        "B": "Disabling the programmer's accounts on his last day",
+        "B": "Disabling the programmer's accounts on the final working day",
         "C": "Daily backups of the payroll database to offline storage",
         "D": "Antivirus scanning of the payroll servers each night"
       },
       "correct": "A",
       "key_concept": "A logic bomb hides in approved code and fires on a trigger; independent review within change control prevents it.",
-      "pre_read": "Notice the code was planted months before he left. Ask what would have caught it then.",
-      "correct_explanation": "A logic bomb is malicious code planted inside a legitimate program and triggered later by a date or event. Because it runs under the application's own authority, the best prevention is change control that requires independent review and approval of code before it reaches production. Disabling the programmer's accounts is the runner-up; it is essential at exit, but the planted code fires whether or not his accounts still work.",
+      "pre_read": "Notice the code was planted months before the programmer left. Ask what would have caught it then.",
+      "correct_explanation": "A logic bomb is malicious code planted inside a legitimate program and triggered later by a date or event. Because it runs under the application's own authority, the best prevention is change control that requires independent review and approval of code before it reaches production. Disabling the programmer's accounts is the runner-up; it is essential at exit, but the planted code fires whether or not those accounts still work.",
       "wrong_explanations": {
-        "B": "Prompt removal of access is essential, but the code was already in production and runs under the application's authority, not his account.",
+        "B": "Prompt removal of access is essential, but the code was already in production and runs under the application's authority, not the programmer's account.",
         "C": "Offline backups support recovery after the deletion; they do not stop the planted code from running.",
         "D": "Antivirus looks for known malware and will not recognize custom code hidden inside an approved business program."
       },
@@ -9901,7 +9901,7 @@
         "Final two: A beats B because the planted code runs without the programmer's login; only review before release catches it.",
         "Exam cue: for a logic bomb or back door, the preventive control is independent code review within change control."
       ],
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in credential-leak response — BEST = rotate + remove + audit + customer notify + secrets-management hardening; FIRST = rotate only'. Paired companion to d5_039. Public sources: NIST SP 800-61, CIS Controls v8, GDPR Article 33. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5B2. Rebalance review (Oct 2026): simplified the stem.",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in credential-leak response — BEST = rotate + remove + audit + customer notify + secrets-management hardening; FIRST = rotate only'. Paired companion to d5_039. Public sources: NIST SP 800-61, CIS Controls v8, GDPR Article 33. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5B2. Rebalance review (Oct 2026): simplified the stem. Wording fix (Oct 2026): gendered pronouns replaced with neutral wording; key and options' meaning unchanged.",
       "style_version": 2
     },
     {
@@ -12834,10 +12834,9 @@
       "id": "d5_344",
       "domain": 5,
       "subtopic": "Advanced Persistent Threats. Log History",
-      "principle_id": "answer-from-the-stem",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds a firm's security monitoring keeps event logs for only 14 days. Why does this MOST weaken its ability to investigate an advanced persistent threat (APT)?",
+      "question": "An IS auditor finds a firm's security monitoring keeps event logs for only 14 days. What is the MOST likely reason this weakens investigation of an advanced persistent threat (APT)?",
       "options": {
         "A": "APT intruders often stay hidden for months before discovery",
         "B": "APT intruders often delete the logs held on hosts they control",
@@ -12874,26 +12873,26 @@
       "subtopic": "Zero-Day Exploits. Patch Program Limits",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds a company manages vulnerabilities only by scanning monthly and applying vendor patches. Why does this process MOST likely fail against zero-day exploits?",
+      "question": "An IS auditor finds a company manages vulnerabilities only by scanning monthly and applying vendor patches. What is the PRIMARY reason this process fails against zero-day exploits?",
       "options": {
         "A": "Zero-day exploits target systems that skipped older patches",
         "B": "A monthly cycle leaves newly known flaws open for several weeks",
-        "C": "Scanners and patches address flaws only after they are disclosed",
-        "D": "Vendor patches often disable the logging that reveals attacks"
+        "C": "No vendor patch or scanner check exists yet for such flaws",
+        "D": "Scans rank flaws by severity score, not by active exploitation"
       },
       "correct": "C",
-      "key_concept": "A zero-day exploit attacks a flaw before any patch or scanner check exists, so scan-and-patch cannot see or fix it.",
+      "key_concept": "A zero-day exploit attacks a flaw with no patch yet and often no scanner check, so scan-and-patch cannot see or close it.",
       "pre_read": "Ask what a scanner and a vendor patch both need to exist before either can help.",
-      "correct_explanation": "A zero-day exploit attacks a flaw that is not yet publicly known or patched. Scanners look for disclosed flaws and vendors patch them only after disclosure, so a scan-and-patch program cannot see or fix it; compensating controls and reduced exposure must cover the gap. A slow monthly cycle is a real weakness, but it concerns known flaws, and a faster cycle would still miss a zero-day.",
+      "correct_explanation": "A zero-day exploit attacks a flaw before its vendor has released a patch, often before anyone else knows of it. Scanners need a published check and patching needs a fix, so a scan-and-patch program cannot see or close the gap; compensating controls and reduced exposure must cover it. A slow monthly cycle is a real weakness, but it concerns known flaws, and a faster cycle would still miss a zero-day.",
       "wrong_explanations": {
         "A": "Systems missing older, available patches face known exploits, which patching does address; a zero-day targets a flaw with no patch yet.",
         "B": "A monthly cycle does leave known flaws open, but a faster cycle would still miss a flaw that has no patch or scanner check.",
-        "D": "Applying vendor patches does not switch off logging, and this would not explain why the program misses undisclosed flaws."
+        "D": "Ranking by active exploitation improves the patch order for known flaws, but a zero-day has no patch to rank or apply."
       },
       "tips": [
-        "Eliminate: A and D, because flaws on unpatched systems are known flaws, and patches do not disable logging.",
-        "Final two: C beats B because a faster cycle still cannot fix a flaw nobody has disclosed; zero-days fall outside scan-and-patch.",
-        "Exam cue: zero-day means no patch and no scanner check yet; look for compensating controls or reduced exposure, not faster patching."
+        "Eliminate: A and D, because flaws on unpatched systems are known flaws, and better ranking still needs a known flaw to rank.",
+        "Final two: C beats B because a faster cycle still cannot apply a patch that does not exist yet; zero-days fall outside scan-and-patch.",
+        "Exam cue: zero-day means no patch yet and often no scanner check; look for compensating controls or reduced exposure, not faster patching."
       ],
       "framework_ref": "NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)",
       "related_concepts": [
@@ -12949,17 +12948,17 @@
       "principle_id": "risk-sets-priority",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds a Kubernetes control plane reachable from the internet, with every administrator using one shared certificate. Why is this the GREATEST risk to the cluster?",
+      "question": "An IS auditor finds a Kubernetes control plane reachable from the internet, with every administrator using one shared certificate. What is the GREATEST risk of this setup?",
       "options": {
         "A": "Shared certificates make administrator actions impossible to trace to a person",
-        "B": "Whoever obtains it can control every container and stored secret",
+        "B": "Anyone holding the certificate could control every container and secret",
         "C": "Internet traffic to the control plane slows container scheduling",
         "D": "Certificates expire, which stops the cluster's containers from running"
       },
       "correct": "B",
       "key_concept": "The orchestrator's control plane commands every container and holds its secrets, so exposed, shared admin access puts the whole cluster at stake.",
       "pre_read": "Ask what someone holding that one credential could do, not only what can no longer be traced.",
-      "correct_explanation": "The control plane is the orchestrator's command center: it deploys and changes every container and stores the cluster's secrets. Reachable from the internet with one shared certificate, a single leaked copy hands an attacker the whole cluster and everything it can reach. Lost individual accountability is a real weakness, but it limits tracing after the fact; takeover of every workload is the greater exposure.",
+      "correct_explanation": "The control plane is the orchestrator's command center: it deploys and changes every container and stores the cluster's secrets. Reachable from the internet with one shared certificate, a single leaked copy hands an attacker the whole cluster, and Kubernetes cannot revoke one client certificate without reissuing them all. Lost individual accountability is a real weakness, but it limits tracing after the fact; takeover of every workload is the greater exposure.",
       "wrong_explanations": {
         "A": "A shared certificate does weaken accountability, but untraceable actions matter less than an outsider gaining control of every workload.",
         "C": "Scheduling speed is a performance matter; internet exposure is a concern because of who can reach the control plane, not how fast it responds.",
@@ -12987,12 +12986,12 @@
       "principle_id": "answer-from-the-stem",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds a company's vulnerability scans cover only devices recorded in its asset register. Why does this MOST likely leave its Internet of Things (IoT) devices exposed?",
+      "question": "An IS auditor finds a company's vulnerability scans cover only devices recorded in its asset register. What is the MOST likely reason this leaves its Internet of Things (IoT) devices exposed?",
       "options": {
         "A": "IoT devices encrypt their traffic, which hides them from scanners",
         "B": "Many IoT devices cannot be patched even when flaws are found",
-        "C": "Devices bought outside IT are often missing from the register",
-        "D": "Scanners are built to assess desktop operating systems, not devices"
+        "C": "Teams often buy and connect these devices without informing IT",
+        "D": "Scanners are built to assess desktop operating systems, not embedded devices"
       },
       "correct": "C",
       "key_concept": "IoT devices are often bought and connected outside IT, so they are missing from the asset register, and anything driven by it skips them.",
@@ -13008,7 +13007,7 @@
         "Final two: C beats B because the stem says scans follow the register; unlisted devices are never examined, before patching even arises.",
         "Exam cue: devices nobody knows about cannot be protected; when a control works from a list, ask what is missing from the list."
       ],
-      "framework_ref": "NIST SP 800-213 (IoT Device Cybersecurity Guidance for the Federal Government); CIS Controls v8 Control 1 (Inventory and Control of Enterprise Assets)",
+      "framework_ref": "CIS Controls v8 Control 1 (Inventory and Control of Enterprise Assets); NIST SP 800-213 (IoT Device Cybersecurity Guidance for the Federal Government)",
       "related_concepts": [
         "Internet of Things",
         "Asset inventory",
@@ -13025,10 +13024,10 @@
       "principle_id": "evidence-quality",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Sampling supplier bank-detail changes, an IS auditor finds each was confirmed by calling the phone number given in the change request. Why does this MOST weaken the control?",
+      "question": "Sampling supplier bank-detail changes, an IS auditor finds each was confirmed by calling the phone number given in the change request. What is the PRIMARY weakness in this control?",
       "options": {
         "A": "Phone confirmations are slower than confirming by email reply",
-        "B": "Suppliers may object to being called about routine changes",
+        "B": "The calls were made by clerks, not by finance managers",
         "C": "Phone calls leave no written record of who confirmed each change",
         "D": "Whoever sent the request controls that number and can confirm"
       },
@@ -13038,11 +13037,11 @@
       "correct_explanation": "A callback control works because it reaches the real supplier through a channel the requester does not control. A number taken from the change request belongs to whoever sent it, so a fraudster simply answers and confirms the false bank details. Missing call records are a genuine evidence gap, but recording every call to the fraudster's own number would not stop a single fraudulent change.",
       "wrong_explanations": {
         "A": "Speed is not the weakness; confirming by email reply would be worse, since a hijacked or spoofed mailbox receives the reply.",
-        "B": "Supplier convenience does not decide the design of a fraud control; verifying bank changes is expected practice for both parties.",
+        "B": "Seniority does not fix the channel: a manager calling the number in the request reaches the same fraudster and gets the same false confirmation.",
         "C": "Call records matter as evidence, but documenting calls to the fraudster's number would still let every fraudulent change through."
       },
       "tips": [
-        "Eliminate: A and B, because speed and supplier convenience do not decide whether a verification channel can be trusted.",
+        "Eliminate: A and B, because speed does not make a channel trustworthy, and a senior caller dialing the same number reaches the same fraudster.",
         "Final two: D beats C because better records of a call to the fraudster's number still approve the fraud; the source is not independent.",
         "Exam cue: verify through a channel the attacker cannot control; a number, link or address supplied in the request fails that test."
       ],
@@ -13062,12 +13061,12 @@
       "subtopic": "Business Email Compromise. Awareness Limits",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds a company's only defense against business email compromise is training finance staff to check sender addresses. Why is this defense MOST likely to fail?",
+      "question": "An IS auditor finds a company's only defense against business email compromise is training finance staff to check sender addresses. What is the MOST likely reason this defense will fail?",
       "options": {
         "A": "Spam filters remove spoofed messages before staff ever see them",
         "B": "Fraud often comes from hijacked real mailboxes with correct addresses",
         "C": "Staff forget most awareness training within a few months of attending",
-        "D": "Checking addresses slows payments beyond agreed supplier terms"
+        "D": "Attackers can fake the display name shown above the address"
       },
       "correct": "B",
       "key_concept": "Business email compromise often uses a hijacked real mailbox, so the sender address checks out; process controls must stop the payment instead.",
@@ -13076,10 +13075,10 @@
       "wrong_explanations": {
         "A": "Filters catch some spoofed mail but not mail from hijacked real mailboxes, and filtering would not explain why the training fails.",
         "C": "Refresher training addresses fading knowledge; even freshly trained staff cannot spot fraud sent from a genuine, correctly addressed mailbox.",
-        "D": "A brief address check barely affects payment timing; delay is not why this defense fails against business email compromise."
+        "D": "Checking the actual address is exactly what exposes a faked display name; a hijacked genuine mailbox is what defeats the check."
       },
       "tips": [
-        "Eliminate: A and D, because filters miss mail from real mailboxes, and a quick address check does not hold up payments.",
+        "Eliminate: A and D, because filters miss mail from real mailboxes, and checking the address is what exposes a faked display name.",
         "Final two: B beats C because refresher training cannot help when the fraudulent email comes from a correct, genuine address.",
         "Exam cue: assume someone will be fooled; for payment fraud, prefer process controls such as callbacks over spotting fake emails."
       ],
@@ -13099,9 +13098,9 @@
       "subtopic": "Logic Bombs. Trigger and Reach",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor confirms a departing developer's accounts were all disabled on the last day. Why could a logic bomb planted by the developer MOST likely still run?",
+      "question": "An IS auditor confirms a departing developer's accounts were all disabled on the last day. What is the MOST likely reason a logic bomb the developer planted could still run?",
       "options": {
-        "A": "It runs inside approved code with the program's own authority",
+        "A": "It fires from inside approved code with the program's own authority",
         "B": "The developer could still sign in through a shared service account",
         "C": "Disabled accounts are restored automatically after thirty days",
         "D": "Antivirus tools cannot scan code held on production servers"
@@ -13109,7 +13108,7 @@
       "correct": "A",
       "key_concept": "A logic bomb is hidden code inside approved software that fires on a condition, using the program's authority, so it needs no sign-in.",
       "pre_read": "Ask whether the hidden code needs its author to sign in before it can run.",
-      "correct_explanation": "A logic bomb is code hidden inside approved software that fires when a condition is met, such as a date. It runs with the program's own authority, so it needs no account and no sign-in from its author. A shared service account is a real gap to close, but even with it removed the planted code would still fire; independent code review before production prevents it.",
+      "correct_explanation": "A logic bomb is code hidden inside approved software that fires when a condition is met, such as a date. It runs with the program's own authority, so it needs no account and no sign-in from its author. A shared service account is a real gap to close, but even with it removed the planted code would still fire.",
       "wrong_explanations": {
         "B": "Shared accounts are a real gap, but a logic bomb needs no sign-in; it would fire even if every account were removed.",
         "C": "Disabled accounts are not restored automatically, and account status does not matter here, since the code runs without anyone signing in.",
