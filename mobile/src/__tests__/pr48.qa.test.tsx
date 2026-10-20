@@ -33,6 +33,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FocusEmitter, FocusScope, routeParams } from '../../jest/perf/focusRouter';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
+import { lessonsFor } from '../content/lessons';
 import { domainFigure } from '../engine/domainBand';
 import { daysToExam } from '../engine/examDay';
 import { grewLabel } from '../engine/plant';
@@ -399,7 +400,7 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
       useProgress.getState().completeLesson('cisa', lesson.id);
       useProgress.getState().recordGame('cisa', 'trap', 7);
     });
-    expect(joined('learn')).toContain('1 of 41 done');
+    expect(joined('learn')).toContain(`1 of ${lessonsFor('cisa').length} done`); // the course total, never a hard-coded count
     expectTabsFresh(['learn', 'play']);
   });
 
@@ -538,7 +539,7 @@ describe('Reset', () => {
     expect(joined('you')).toContain('No mocks yet');
     expect(joined('you')).toContain('[Answered: 0]');
     expect(joined('practice')).toContain('[Spaced review, all caught up]');
-    expect(joined('learn')).toContain('0 of 41 done');
+    expect(joined('learn')).toContain(`0 of ${lessonsFor('cisa').length} done`);
     expect(engineDue()).toBe(0);
   });
 });
