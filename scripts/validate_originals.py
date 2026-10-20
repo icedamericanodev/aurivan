@@ -19,6 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 ORIGINALS_DIR = ROOT / "data" / "originals"
+PRINCIPLES_PATH = ROOT / "data" / "mindset" / "principles.json"
 
 DOMAIN_WEIGHTS = {1: 18, 2: 18, 3: 12, 4: 26, 5: 26}
 VALID_DIFFICULTIES = {"foundational", "application", "analysis"}
@@ -46,11 +47,31 @@ REQUIRED = [
 OPTIONAL = [
     "scenario_context",
     "related_concepts",
+    # The one mindset principle the question MOST tests: an `id` from
+    # data/mindset/principles.json (docs/content/PRINCIPLE_TAGGING.md).
+    # Unknown ids are errors; a missing id is a warning while tagging rolls out.
+    "principle_id",
 ]
 
 
-def validate_question(q: dict, expected_domain: int, idx: int) -> list[str]:
-    """Return a list of error strings for this question (empty = valid)."""
+def load_principle_ids() -> set[str] | None:
+    """Canonical principle ids, or None when the principles file is absent."""
+    try:
+        doc = json.loads(PRINCIPLES_PATH.read_text())
+    except FileNotFoundError:
+        return None
+    except json.JSONDecodeError as e:
+        print(f"  ✗ {PRINCIPLES_PATH.relative_to(ROOT)}: invalid JSON — {e}")
+        return set()
+    return {p.get("id") for p in doc.get("principles", []) if isinstance(p, dict)}
+
+
+def validate_question(q: dict, expected_domain: int, idx: int,
+                      principle_ids: set[str] | None = None) -> list[str]:
+    """Return a list of error strings for this question (empty = valid).
+
+    `principle_ids`: canonical ids from data/mindset/principles.json, or None
+    to skip the principle_id check (file absent)."""
     errors: list[str] = []
     qid = q.get("id", f"<#{idx} no id>")
 
@@ -115,6 +136,13 @@ def validate_question(q: dict, expected_domain: int, idx: int) -> list[str]:
             if words < 60:
                 errors.append(f"{qid}: analysis-tier correct_explanation has only {words} words (< 60 expected)")
 
+    if "principle_id" in q:
+        pid = q["principle_id"]
+        if not isinstance(pid, str) or not pid.strip():
+            errors.append(f"{qid}: principle_id must be a non-empty string")
+        elif principle_ids is not None and pid not in principle_ids:
+            errors.append(f"{qid}: principle_id '{pid}' is not a principle id in data/mindset/principles.json (legacy ids and aliases are not accepted)")
+
     # ID format: d{1..5}_NNN
     if "id" in q and isinstance(q["id"], str):
         if not re.match(rf"^d{expected_domain}_\d{{3}}$", q["id"]):
@@ -130,8 +158,11 @@ def main() -> int:
 
     total_questions = 0
     total_errors = 0
+    principle_ids = load_principle_ids()
 
     print("Originals schema validation:")
+    if principle_ids is None:
+        print(f"  [skip] principle_id check: {PRINCIPLES_PATH.relative_to(ROOT)} not found")
     for d in sorted(DOMAIN_WEIGHTS.keys()):
         path = ORIGINALS_DIR / f"d{d}.json"
         if not path.exists():
@@ -152,7 +183,7 @@ def main() -> int:
 
         file_errors = 0
         for idx, q in enumerate(questions):
-            for err in validate_question(q, d, idx):
+            for err in validate_question(q, d, idx, principle_ids):
                 if file_errors == 0:
                     print(f"  ✗ D{d}:")
                 print(f"      {err}")
@@ -164,6 +195,11 @@ def main() -> int:
             count = len(questions)
             label = "empty" if count == 0 else f"{count} question{'s' if count != 1 else ''}"
             print(f"  ✓ D{d}: {label}, all valid")
+        # Warning only (never fails): questions not yet linked to a principle.
+        untagged = [q.get("id", "?") for q in questions if isinstance(q, dict) and "principle_id" not in q]
+        if questions and untagged:
+            print(f"  ⚠ D{d}: {len(untagged)} of {len(questions)} without principle_id"
+                  + (" (none tagged yet)" if len(untagged) == len(questions) else ""))
 
     if total_errors == 0:
         print(f"  Total: {total_questions} questions across all 5 domains, no schema issues.")

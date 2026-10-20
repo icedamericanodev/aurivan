@@ -109,6 +109,26 @@ are the principle's trap, or the "Final two" tip names the principle's logic.
 Prefer a spread across domains. When fewer than 3 exist, the linter warns: that
 is a gap to write questions for.
 
+## Question tags (`principle_id`)
+Each bank question in `data/originals/d{N}.json` may carry one optional
+`principle_id`: the principle it MOST tests. How to choose it:
+`docs/content/PRINCIPLE_TAGGING.md`.
+
+- The value is a principle `id` from this file. Legacy ids and aliases are
+  not accepted on questions.
+- `practice_ids` and `principle_id` must agree: a question listed in a
+  principle's `practice_ids` is tagged with that principle (or not yet tagged).
+- `scripts/originals_to_domain.py` copies the field to `data/domain{N}.json`;
+  the mobile content build passes it on as `principleId` and fails on an id
+  that is not in the principles pack.
+- Not shown in the web or mobile UI yet. The "Practice this principle" count
+  still comes from `practice_ids`.
+
+Checks: `validate_originals.py` (unknown id = error; missing = warning,
+one summary line per domain) and `lint_principles.py` (tag count per
+principle, warning under 10; warning when a tagged question's domain is not in
+the principle's `domains`; error when a tag disagrees with `practice_ids`).
+
 ## Legacy mapping (v1 to v2)
 | Old `PRINCIPLES_LIB` id | v2 principle |
 |---|---|
@@ -141,5 +161,8 @@ python3 scripts/lint_principles.py draft.json # a draft copy
 Errors: schema, unique ids, unknown practice ids or subtopic codes, a question
 used by two principles, word limits, families with fewer than 2 principles,
 domains with fewer than 3, unmapped old ids, slip map drift, bank-size
-statements, British spelling, emojis. Warnings: fewer than 3 practice ids, all
-practice from one domain, or no subtopics.
+statements, British spelling, emojis, a question `principle_id` that is not a
+principle id, a `practice_ids` entry tagged with another principle. Warnings:
+fewer than 3 practice ids, all practice from one domain, no subtopics, fewer
+than 10 tagged questions, a tagged question outside the principle's `domains`.
+The report also prints the tagged-question count per principle and domain.

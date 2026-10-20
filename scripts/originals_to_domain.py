@@ -11,8 +11,10 @@ This converter:
   3. Adds `title` and `count` per the archive app's expected schema
   4. Passes each question through verbatim (the archive app silently ignores
      extra fields: `_provenance`, `key_concept`, `pre_read`, `related_concepts`,
-     `scenario_context` — see render-path patches that explicitly handle the
-     last one)
+     `principle_id`, `scenario_context` — see render-path patches that
+     explicitly handle the last one). `principle_id` (optional, see
+     docs/content/PRINCIPLE_TAGGING.md) links a question to one principle in
+     data/mindset/principles.json; it is copied as-is and never invented here
   5. Writes `data/domain{N}.json` ready to be served
 
 Idempotent — safe to re-run after originals updates.
@@ -64,11 +66,13 @@ def main(argv):
         dst.write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n")
         with_scenario = sum(1 for q in out["questions"] if q.get("scenario_context"))
         with_tips = sum(1 for q in out["questions"] if q.get("tips") and len(q["tips"]) >= 3)
-        results.append((d, len(out["questions"]), with_tips, with_scenario, dst.stat().st_size // 1024))
+        with_principle = sum(1 for q in out["questions"] if q.get("principle_id"))
+        results.append((d, len(out["questions"]), with_tips, with_scenario, with_principle,
+                        dst.stat().st_size // 1024))
 
-    print(f"{'Domain':<8}{'Qs':>6}{'Tips':>8}{'Scenario':>10}{'Size (KB)':>12}")
-    for d, q, t, s, kb in results:
-        print(f"D{d:<7}{q:>6}{t:>8}{s:>10}{kb:>12}")
+    print(f"{'Domain':<8}{'Qs':>6}{'Tips':>8}{'Scenario':>10}{'Principle':>11}{'Size (KB)':>12}")
+    for d, q, t, s, pr, kb in results:
+        print(f"D{d:<7}{q:>6}{t:>8}{s:>10}{pr:>11}{kb:>12}")
     print(f"\nTotal: {sum(r[1] for r in results)} questions across {len(results)} domain(s)")
 
 

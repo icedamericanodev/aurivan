@@ -5,7 +5,9 @@
  *
  * WHAT IT DOES (plain English):
  *   1. Reads ../data/domain{1..5}.json (the same files the web app uses).
- *   2. Renames fields into the mobile app's cleaner, cert-neutral shape.
+ *   2. Renames fields into the mobile app's cleaner, cert-neutral shape
+ *      (an explicit list: a new source field is dropped until added here,
+ *      e.g. principle_id → principleId).
  *   3. Drops author-only fields the learner never sees (e.g. _provenance),
  *      which keeps the app download smaller.
  *   4. Marks REAL option-letter references in tips/explanations with a
@@ -21,6 +23,8 @@
  *      ../data/mindset/principles.json via principles-pack.cjs (schema:
  *      docs/content/PRINCIPLES_SCHEMA.md). Its practice ids are checked the
  *      same way. A missing file gives an empty pack (Learn hides the row).
+ *      Each question's optional principleId must name a principle in this
+ *      pack, or the build fails.
  *   8. Builds the exam pack (<cert>/exam.json) from ../data/exam/
  *      cisa_exam_guide.json and final_review_week.json via exam-guide-pack.cjs
  *      (schema: docs/content/EXAM_GUIDE_SCHEMA.md). Every note code and
@@ -192,7 +196,28 @@ function toPackQuestion(q, certId) {
     tips: (q.tips || []).map(tok),
     reference: q.framework_ref || undefined,
     related: q.related_concepts || [],
+    // Optional link to one principle (docs/content/PRINCIPLE_TAGGING.md);
+    // checked against the principles pack in main(). Omitted when untagged.
+    principleId: q.principle_id || undefined,
   };
+}
+
+/**
+ * Every question's principleId must name a principle in this cert's pack
+ * (its own id, not a legacy id or alias). Returns problem strings.
+ * With an empty pack (no principles file) the tags cannot be checked: warn.
+ */
+function checkPrincipleIds(certId, questions, principlesPack) {
+  const tagged = questions.filter((q) => q.principleId);
+  if (!tagged.length) return [];
+  const ids = new Set((principlesPack.principles || []).map((p) => p.id));
+  if (!ids.size) {
+    console.warn(`! ${certId}: ${tagged.length} question(s) carry principleId but the principles pack is empty`);
+    return [];
+  }
+  return tagged
+    .filter((q) => !ids.has(q.principleId))
+    .map((q) => `${q.id}: principleId "${q.principleId}" is not a principle in the ${certId} pack`);
 }
 
 function validate(q) {
@@ -345,6 +370,10 @@ function main() {
     indexLines.push('  },');
     const notes = buildNotes(pack, certDir, certQuestions);
     const principles = buildPrinciples(pack, certDir, certQuestions);
+    for (const p of checkPrincipleIds(pack.certId, certQuestions, principles.pack)) {
+      errors += 1;
+      console.error(`✗ ${p}`);
+    }
     notesLines.push(notes.line);
     principlesLines.push(principles.line);
     examLines.push(buildExam(pack, certDir, notes.pack, principles.pack));

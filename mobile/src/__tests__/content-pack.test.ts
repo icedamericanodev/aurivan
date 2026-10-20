@@ -4,6 +4,7 @@
  */
 import { CERTIFICATIONS } from '../content/certifications';
 import { getAllQuestions, hasContent } from '../content/loader';
+import { getPrinciples } from '../content/principles';
 import { FIRM_DEEP_ANSWERS } from '../engine/milestones';
 import { optionLetters } from '../engine/shuffle';
 import { marksFor, tookRootShare } from '../lib/milestones';
@@ -51,6 +52,17 @@ for (const cert of CERTIFICATIONS.filter((c) => c.status === 'available')) {
         }
       }
       expect(problems).toEqual([]);
+    });
+
+    // principle_id (docs/content/PRINCIPLE_TAGGING.md) is optional while
+    // domains are tagged; when present it is a principle's own id in this pack.
+    it('every principleId names a principle in the pack', () => {
+      const ids = new Set((getPrinciples(cert.id)?.principles ?? []).map((p) => p.id));
+      const bad = questions
+        .filter((q) => q.principleId !== undefined)
+        .filter((q) => typeof q.principleId !== 'string' || !ids.has(q.principleId))
+        .map((q) => `${q.id}: ${String(q.principleId)}`);
+      expect(bad).toEqual([]);
     });
 
     it('every domain has enough questions for a full mock', () => {
