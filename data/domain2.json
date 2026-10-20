@@ -2,7 +2,7 @@
   "domain": 2,
   "title": "Governance and Management of IT",
   "weight": "18%",
-  "count": 224,
+  "count": 226,
   "questions": [
     {
       "id": "d2_001",
@@ -8383,6 +8383,82 @@
         "Re-identification risk"
       ],
       "_provenance": "Authored from concept: 'pseudonymization with a separately held key supports linked analysis without identities'. Original KaiSip item (Oct 2026), written for CISA topic 2A6 to add practice to a thin subtopic and test a lesson its existing items do not (d2_086 tests default settings; d2_097 tests SDLC gates; d3_010 tests test-data masking). All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_225",
+      "domain": 2,
+      "subtopic": "Governing Artificial Intelligence. Ongoing Outcome Checks",
+      "principle_id": "recommend-dont-implement",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor found that an artificial intelligence tool ranking job applicants rarely advances older ones, and human resources now asks IS audit to run the age check monthly. Which recommendation is BEST?",
+      "options": {
+        "A": "The vendor runs the monthly check, since it supplied the model",
+        "B": "IS audit runs the monthly check and sends results to human resources",
+        "C": "The tool's business owner runs the monthly check against thresholds",
+        "D": "Data scientists retrain the model monthly on rebalanced data"
+      },
+      "correct": "C",
+      "key_concept": "Monitoring artificial intelligence (AI) outcomes is a management control run by the business owner; IS audit recommends it and later tests it.",
+      "pre_read": "Ask who should operate the check day to day, and who should later give assurance that it works.",
+      "correct_explanation": "Outcome monitoring is a management control, so the tool's business owner runs the monthly check against agreed thresholds and acts on breaches; IS audit later tests that monitoring. IS audit running the check is the runner-up. It would catch bias, but the IS auditor would be operating a control it must later audit, and the business would never own the risk.",
+      "wrong_explanations": {
+        "A": "The organization stays accountable for decisions made with a vendor's model; contracts can require testing, but ownership of monitoring stays in-house.",
+        "B": "The check would run, but IS audit would be operating management's control and later auditing its own work, while the business never owns the risk.",
+        "D": "Retraining before the cause is understood may repeat the bias, and it is not monitoring; outcomes still need an owner checking them."
+      },
+      "tips": [
+        "Eliminate: A and D, because accountability for a vendor's model stays with the organization, and retraining is not monitoring and may repeat the bias.",
+        "Final two: C beats B because the business owner runs monitoring as a management control; IS audit running it would audit its own work later.",
+        "Exam cue: when IS audit is asked to run a control, even helpfully, recommend that the owner run it and audit it later."
+      ],
+      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); ISO/IEC 42001:2023 (Artificial Intelligence Management System)",
+      "related_concepts": [
+        "AI governance",
+        "Model outcome monitoring",
+        "Business ownership",
+        "Self-review threat"
+      ],
+      "_provenance": "Authored from concept: 'Governing Artificial Intelligence. Ongoing Outcome Checks'. Original KaiSip item (Oct 2026), written for CISA subtopic 2A2.7 (batch Q18: practice for principles with under ten tagged questions; principle recommend-dont-implement). The runner-up has IS audit operating the monitoring control; the key leaves it with the business owner. Closest sibling d2_163 (response to biased AI outcomes); distinct from d2_220 (AI inventory first). Public sources: NIST and ISO.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_226",
+      "domain": 2,
+      "subtopic": "Retention and Disposal. Weighing Over-Retention",
+      "principle_id": "priority-word-decides",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A retailer keeps every customer record indefinitely, though most have no business use after seven years, and its storage bill rises every year. Which risk should the IS auditor rate as GREATEST?",
+      "options": {
+        "A": "A breach exposes years of unneeded customer data",
+        "B": "Storage and legal discovery costs keep growing year after year",
+        "C": "Tax authorities fine the retailer for keeping records too long",
+        "D": "Data owners stop being accountable for records once archived"
+      },
+      "correct": "A",
+      "key_concept": "Over-retention raises breach impact as well as storage cost; under GREATEST, the larger potential harm outranks the more certain cost.",
+      "pre_read": "Decide whether the stem asks for the most frequent consequence or the most severe one before comparing options.",
+      "correct_explanation": "Keeping records with no business use means a single breach would expose years of customer data, bringing notification costs, regulatory penalties and lasting harm to customers. Rising storage and discovery costs are the runner-up. They are certain, so they would win if the stem asked which consequence is MOST LIKELY, but GREATEST asks for the worst consequence, and cost growth is gradual and bounded.",
+      "wrong_explanations": {
+        "B": "Rising cost is near certain, so it would be the MOST LIKELY consequence, but its impact grows slowly and stays far below a large breach.",
+        "C": "Tax laws set minimum retention periods, not maximums, so keeping records longer does not draw tax penalties.",
+        "D": "Accountability for data stays with its owner wherever the data is stored, including in archives and backups."
+      },
+      "tips": [
+        "Eliminate: C and D, because tax laws set minimum periods, not maximums, and owners stay accountable for archived data.",
+        "Final two: A beats B because GREATEST asks for the worst consequence; rising cost would win only if the stem asked what is MOST LIKELY.",
+        "Exam cue: GREATEST weighs how bad, MOST LIKELY weighs how often; were this stem MOST LIKELY, the certain cost growth would be the answer."
+      ],
+      "framework_ref": "COBIT 2019 APO14 (Managed Data); ISO/IEC 27002:2022 Control 8.10 (Information Deletion)",
+      "related_concepts": [
+        "Data retention",
+        "Over-retention",
+        "Breach impact",
+        "Likelihood versus impact"
+      ],
+      "_provenance": "Authored from concept: 'Retention and Disposal. Weighing Over-Retention'. Original KaiSip item (Oct 2026), written for CISA subtopic 2A7.4 (batch Q18: practice for principles with under ten tagged questions; principle priority-word-decides). The priority word decides: GREATEST picks breach impact, MOST LIKELY would pick the certain cost growth. Closest sibling d2_210 (indefinite retention of purchase histories, remedy); distinct from d2_098 (retention policy design). Public sources: ISACA COBIT 2019 and ISO.",
       "style_version": 2
     }
   ]
