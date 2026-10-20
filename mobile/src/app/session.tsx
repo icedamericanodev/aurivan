@@ -57,7 +57,7 @@ import {
 import { CrossFade, PageTurn, Pop, useMotion } from '../components/motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LeafSmall } from '../components/glyphs';
-import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Flag, ICON_STROKE, LayoutGrid, Lightbulb, Play, X } from '../components/icons';
+import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Compass, Flag, ICON_STROKE, LayoutGrid, Lightbulb, Play, X } from '../components/icons';
 import {
   AnswerRecap,
   ConfidenceRow,
@@ -84,6 +84,7 @@ import { getCertification, getDomain } from '../content/certifications';
 import { lessonPreparing, lessonsForSubtopic } from '../content/lessons';
 import { findQuestion } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
+import { findPrinciple } from '../content/principles';
 import { REASON_LABEL } from '../engine/studyModes';
 import { LETTERS, type Letter } from '../content/types';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../engine/shuffle';
@@ -186,6 +187,16 @@ export default function SessionScreen() {
     const lessons = [...(prepares ? [prepares] : []), ...teaching.filter((l) => l.id !== prepares?.id)];
     return { noteId, noteName: note?.name, noteMinutes: note?.minutes ?? 2, lessons };
   }, [missed, missCert, qid]);
+  // Mobile 1.31: the principle this question tests (its `principleId`), for a
+  // "Principle" row after ANY checked answer. Same rule as the note and lesson
+  // rows: never in a mock (a mock shows no answer screen until it is
+  // submitted, and Results' review has no per-question links). Untagged → none.
+  const principleCert = isMock ? undefined : active?.certId;
+  const principleTag = q?.principleId;
+  const answerPrinciple = useMemo(
+    () => (principleCert && principleTag ? findPrinciple(principleCert, principleTag) : undefined),
+    [principleCert, principleTag],
+  );
   // Coach me was opened for this question (never in mock exams).
   const coached = !isMock && Boolean(qid && active?.coached?.includes(qid));
   // Quiet data (Build C): time on this question, background time excluded.
@@ -844,7 +855,7 @@ export default function SessionScreen() {
                     lesson when one is still to do (Play = lessons). Both PUSH, so Back lands
                     here again, on this same answer with its explanation. */}
                 {/* A hairline sets the next steps apart from the vine (design spec §6). */}
-                {Boolean((missNote && missNoteName) || reviewLesson) && <View style={{ height: 1, backgroundColor: c.line, marginTop: space.md }} />}
+                {Boolean((missNote && missNoteName) || reviewLesson || answerPrinciple) && <View style={{ height: 1, backgroundColor: c.line, marginTop: space.md }} />}
                 {missNote && missNoteName && (
                   // Title = the note's own name; the verb is the kicker above it (mobile 1.22:
                   // "Read the note" on screen, not only in the spoken label).
@@ -857,7 +868,7 @@ export default function SessionScreen() {
                     accessibilityHint="Opens the study note. Go back to return to this answer."
                     onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(missNote)}`)}
                     // TrustLine below draws its own top rule, so the last row skips its hairline.
-                    last={!reviewLesson}
+                    last={!reviewLesson && !answerPrinciple}
                   />
                 )}
                 {reviewLesson && (
@@ -871,6 +882,22 @@ export default function SessionScreen() {
                     accessibilityLabel={`Take the lesson: ${reviewLesson.title}, ${reviewLesson.minutes} minutes, not done yet`}
                     accessibilityHint="Opens the lesson. Go back to return to this answer."
                     onPress={() => router.push(`/lesson/${reviewLesson.id}`)}
+                    last={!answerPrinciple}
+                  />
+                )}
+                {answerPrinciple && (
+                  // Mobile 1.31: the principle this question tests (Compass = how to think, as in
+                  // Learn). After a right answer too: it names the thinking that won. PUSH, so
+                  // Back lands here again.
+                  <ListRow
+                    testID="answer-principle-row"
+                    icon={<Compass size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                    kicker="Principle"
+                    title={answerPrinciple.title}
+                    subtitle="The thinking this question tests"
+                    accessibilityLabel={`Principle: ${answerPrinciple.title}, the thinking this question tests`}
+                    accessibilityHint="Opens the principle. Go back to return to this answer."
+                    onPress={() => router.push(`/principles/${encodeURIComponent(answerPrinciple.id)}`)}
                     last
                   />
                 )}

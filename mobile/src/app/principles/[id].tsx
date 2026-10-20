@@ -5,11 +5,13 @@
  * - The family it belongs to ("Your role"), then its name as the page title.
  * - The page itself (components/principles.tsx → PrincipleBody): The rule,
  *   Why it matters, Spot it in the question, The trap, Worked example, Nuance.
- * - ONE ending: "Practice this principle", which starts a practice set of
- *   exactly the questions the principle lists (`practiceIds`), shuffled, the
- *   same path as a study note's "Practice this concept". Those answers count
- *   toward progress and spaced review like any practice. No button when none
- *   of its questions are in this build.
+ * - ONE ending: "Practice this principle". Mobile 1.31: the count is every
+ *   question that tests it (tagged with its `principleId`, plus its
+ *   hand-picked `practiceIds` that carry no tag), and the set draws from all
+ *   of them: the hand-picked count as before, unseen and missed questions
+ *   first (lib/principleQuestions.ts). Those answers count toward progress
+ *   and spaced review like any practice. No button when none of its
+ *   questions are in this build.
  *
  * - Then the source row, like a study note's: "Code <id>" and "Report a
  *   problem" (a `principle` report: its id and title only, never the text).
@@ -31,11 +33,10 @@ import { PrincipleBody } from '../../components/principles';
 import { ReportRow } from '../../components/support';
 import { Button, Enter, PushedHeader, Screen, T } from '../../components/ui';
 import { CERTIFICATIONS, getCertification } from '../../content/certifications';
-import { findQuestion } from '../../content/loader';
 import { familyOf, findPrinciple } from '../../content/principles';
-import { createRng, shuffled } from '../../engine/random';
 import { openSessionFromStack, safeDecode } from '../../lib/actions';
-import { guardedStart, startFromIds } from '../../lib/sessions';
+import { questionsForPrinciple, startPrinciplePractice } from '../../lib/principleQuestions';
+import { guardedStart } from '../../lib/sessions';
 import { useSettings } from '../../store/settings';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -68,13 +69,12 @@ export default function PrincipleScreen() {
   }
 
   const family = familyOf(cert.id, principle);
-  // The questions it lists, minus any a content update removed.
-  const practiceIds = principle.practiceIds.filter((q) => findQuestion(cert.id, q));
-  const n = practiceIds.length;
+  // Every question that tests it (memoised per cert: the bank is scanned once, not per render).
+  const n = questionsForPrinciple(cert.id, principle).length;
   const practise = () =>
     guardedStart(
-      // Shuffled each time, so a repeat run does not replay the same order.
-      () => startFromIds(cert.id, shuffled(practiceIds, createRng(Date.now())), principle.title),
+      // A fresh draw each time: unseen first, then missed, each group shuffled.
+      () => startPrinciplePractice(cert.id, principle),
       // The page can sit above an old session or Results: start clean (lib/actions.ts).
       openSessionFromStack,
     );
