@@ -10,7 +10,7 @@ For internal/technical history, see git log and PR descriptions.
 - A new principle, "Fit the method to the objective", shows how to pick the audit approach that answers the question being asked.
 
 ### Improved
-- Each principle page now practises the questions that turn on that principle, missed and new ones first.
+- Practise each principle with the questions that turn on it, missed and new ones first.
 - After you answer a practice question, a link takes you to the principle behind it.
 
 ## [v12.22] — Mock exams that cover every topic

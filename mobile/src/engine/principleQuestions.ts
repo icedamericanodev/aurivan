@@ -8,9 +8,9 @@
  * - A principle's questions are BOTH, without repeats: every question tagged
  *   with it, plus any of its hand-picked ones that carry no tag yet. (A
  *   hand-picked id tagged with ANOTHER principle belongs to that one.)
- * - "Practice this principle" stays the size it always was (the hand-picked
- *   count), but now draws from all of them: questions never seen first, then
- *   the ones missed last time, then the rest (engine/queue.ts).
+ * - "Practice this principle" asks PRINCIPLE_SET_SIZE (10, as on the web),
+ *   drawn from all of them: questions never seen first, then the ones missed
+ *   last time, then the rest (engine/queue.ts).
  *
  * Pure TypeScript: no React, no storage. The screen's memo lives in
  * lib/principleQuestions.ts, so the bank is scanned once, not every render.
@@ -56,17 +56,12 @@ export function principleQuestionIds(
   return [...out];
 }
 
-/** The set size when a principle has no hand-picked questions left (one short session). */
-export const PRINCIPLE_SET_FALLBACK = 10;
+/** How many questions one "Practice this principle" set asks (the web draws 10 too). */
+export const PRINCIPLE_SET_SIZE = 10;
 
-/**
- * How many questions "Practice this principle" asks: the hand-picked count,
- * as before 1.31 (never more than there are). With none hand-picked, a
- * short set of PRINCIPLE_SET_FALLBACK.
- */
-export function principleSetSize(curatedCount: number, available: number): number {
-  const want = curatedCount > 0 ? curatedCount : PRINCIPLE_SET_FALLBACK;
-  return Math.min(want, available);
+/** The set size: PRINCIPLE_SET_SIZE, or fewer when the principle has fewer questions. */
+export function principleSetSize(available: number): number {
+  return Math.min(PRINCIPLE_SET_SIZE, available);
 }
 
 /**

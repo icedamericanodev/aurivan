@@ -188,6 +188,6 @@ describe('the 21st principle, fit-method-to-objective', () => {
     expect(t).toContain(`${n} questions on this idea.`);
     press('Practice this principle');
     const active = useSession.getState().active!;
-    expect(active.questionIds).toHaveLength(fit.practiceIds.length);
+    expect(active.questionIds).toHaveLength(Math.min(10, n));
   });
 });

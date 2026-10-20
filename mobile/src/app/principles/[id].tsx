@@ -8,7 +8,7 @@
  * - ONE ending: "Practice this principle". Mobile 1.31: the count is every
  *   question that tests it (tagged with its `principleId`, plus its
  *   hand-picked `practiceIds` that carry no tag), and the set draws from all
- *   of them: the hand-picked count as before, unseen and missed questions
+ *   of them: sets of up to 10, unseen and missed questions
  *   first (lib/principleQuestions.ts). Those answers count toward progress
  *   and spaced review like any practice. No button when none of its
  *   questions are in this build.
@@ -35,6 +35,7 @@ import { Button, Enter, PushedHeader, Screen, T } from '../../components/ui';
 import { CERTIFICATIONS, getCertification } from '../../content/certifications';
 import { familyOf, findPrinciple } from '../../content/principles';
 import { openSessionFromStack, safeDecode } from '../../lib/actions';
+import { PRINCIPLE_SET_SIZE } from '../../engine/principleQuestions';
 import { questionsForPrinciple, startPrinciplePractice } from '../../lib/principleQuestions';
 import { guardedStart } from '../../lib/sessions';
 import { useSettings } from '../../store/settings';
@@ -110,7 +111,9 @@ export default function PrincipleScreen() {
             onPress={practise}
           />
           <T v="meta" center>
-            {`${n} ${n === 1 ? 'question' : 'questions'} on this idea. Your answers count toward your progress.`}
+            {n > PRINCIPLE_SET_SIZE
+              ? `${n} questions on this idea. Each set asks ${PRINCIPLE_SET_SIZE}, new and missed ones first.`
+              : `${n} ${n === 1 ? 'question' : 'questions'} on this idea. Your answers count toward your progress.`}
           </T>
         </View>
       )}

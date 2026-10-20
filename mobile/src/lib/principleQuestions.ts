@@ -46,14 +46,13 @@ export function questionsForPrinciple(certId: string, principle: Principle): str
 }
 
 /**
- * Start "Practice this principle": the hand-picked count of questions, drawn
+ * Start "Practice this principle": a set of up to PRINCIPLE_SET_SIZE, drawn
  * from all of the principle's questions, unseen and missed first. Null when
  * there is nothing to ask (the button is hidden then anyway).
  */
 export function startPrinciplePractice(certId: string, principle: Principle) {
   const ids = questionsForPrinciple(certId, principle);
-  const curated = principle.practiceIds.filter((id) => findQuestion(certId, id)).length;
-  const count = principleSetSize(curated, ids.length);
+  const count = principleSetSize(ids.length);
   const answers = selectCert(useProgress.getState(), certId).answers;
   const pick = principlePracticeSet(ids, (id) => findQuestion(certId, id), answers, count, createRng(Date.now()));
   return startFromIds(certId, pick, principle.title);

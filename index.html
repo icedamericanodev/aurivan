@@ -5907,8 +5907,10 @@ html { scroll-padding-bottom: 104px; }
 /* The answered question's principle link sits right under its note card. */
 .sr-sec + .sr-sec.sr-sec-pl { margin-top: var(--sp-xs); }
 /* A long title wraps with the arrow after its last word, not at the far edge. */
-.sr-link.sr-link-pl { display: inline-block; max-width: 100%; padding: 11px 0; line-height: 22px; }
+/* (44px target - 22px line) / 2 = 11px each side: one line is exactly 44px tall. */
+.sr-link.sr-link-pl { display: inline-block; max-width: 100%; padding: 11px 0; }
 .sr-link-tail { white-space: nowrap; }
+/* -3px centres the 16px icon optically on the 22px line. */
 .sr-link-pl .ico { display: inline-block; margin-left: var(--sp-sm); vertical-align: -3px; }
 .sr-cap { display: block; margin: 0 0 var(--sp-md); font: var(--t-caption); letter-spacing: 0.1px; color: var(--text2); }
 .sr-label { margin: 0; font: var(--t-label); color: var(--text); overflow-wrap: anywhere; }
@@ -11581,14 +11583,18 @@ function railPrinciple() {
 function railOpenPrinciples(e, pid) {
   if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) return true;
   if (e && e.preventDefault) e.preventDefault();
+  railNoteFlush();
+  railStat('principle_open');
   if (pid) openPrinciple(pid);
   else switchTab('principles');
   return false;
 }
 // The principle an answered question tests (its principle_id), or null. Only
 // on the practice answer screen (railQ*), so never in a mock, like the note
-// card. The rail redraws once the principles file is in.
+// card. The rail redraws once the principles file is in. Exam-style mode hides
+// mindset add-ons, so it hides this link too.
 function railPrincipleFor(q) {
+  if (S.examMode) return null;
   if (!q || typeof q.principle_id !== 'string' || !q.principle_id) return null;
   if (!PRINCIPLES_RAW) { if (!principlesLoadFailed) loadPrinciplesData(); return null; }
   return resolvePrinciple(q.principle_id);
@@ -15628,15 +15634,18 @@ function principlePracticeBlock(p) {
     + '<p class="gt-practice-sub" id="plPracSub">' + escapeHtml(principlePracticeSubText(p)) + '</p>'
     + '</div>');
 }
-// A bank arrived: the tag index is stale, and an open principle's count may change.
-document.addEventListener('qb:domain-loaded', function () {
+// A bank arrived (or failed): the tag index is stale, and an open principle's
+// count may change, so the count shows even when the last bank fails.
+function principleBankSettled() {
   principleTagIdx = null;
   try {
     var sub = document.getElementById('plPracSub');
     var p = S.activeTab === 'principles' && resolvePrinciple(principlesState.selectedId);
     if (sub && p) sub.textContent = principlePracticeSubText(p);
   } catch (e) {}
-});
+}
+document.addEventListener('qb:domain-loaded', principleBankSettled);
+document.addEventListener('qb:domain-error', principleBankSettled);
 function startPrinciplePractice(pid) {
   var p = resolvePrinciple(pid);
   if (!p) return;
@@ -18040,7 +18049,7 @@ const CHANGELOG = [
     title: 'Practise by principle',
     items: [
       { cat: 'new', text: 'A new principle, "Fit the method to the objective", shows how to pick the audit approach that answers the question being asked.' },
-      { cat: 'improved', text: 'Each principle page now practises the questions that turn on that principle, missed and new ones first.' },
+      { cat: 'improved', text: 'Practise each principle with the questions that turn on it, missed and new ones first.' },
       { cat: 'improved', text: 'After you answer a practice question, a link takes you to the principle behind it.' }
     ]
   },

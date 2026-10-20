@@ -202,12 +202,16 @@ describe('Principle page', () => {
     const family = pack.families.find((f) => f.id === p.family)!;
     expect(text).toContain(`Principle · ${family.title}`);
     expect(text).toContain(p.title);
-    expect(text).toContain(`${all.length} questions on this idea. Your answers count toward your progress.`);
+    expect(text).toContain(
+      all.length > 10
+        ? `${all.length} questions on this idea. Each set asks 10, new and missed ones first.`
+        : `${all.length} questions on this idea. Your answers count toward your progress.`,
+    );
     press('Practice this principle');
     const active = useSession.getState().active!;
     expect(active.mode).toBe('practice');
     expect(active.title).toBe(p.title);
-    expect(active.questionIds).toHaveLength(p.practiceIds.length);
+    expect(active.questionIds).toHaveLength(Math.min(10, all.length));
     for (const id of active.questionIds) expect(all).toContain(id);
     // Every one of them is a real question.
     for (const id of active.questionIds) expect(findQuestion('cisa', id)).toBeTruthy();

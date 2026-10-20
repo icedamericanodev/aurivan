@@ -5,7 +5,7 @@
  * - The count is the UNION: every question tagged with the principle, plus
  *   its hand-picked practice ids that carry no tag, with no repeats. A
  *   hand-picked id tagged with another principle is not counted.
- * - The practice set draws ONLY from that union, keeps the hand-picked size,
+ * - The practice set draws ONLY from that union, asks up to 10,
  *   and puts unseen, then missed, questions first.
  * - The real pack: all 21 principles (fit-method-to-objective included)
  *   have questions, and the index is built from ONE scan of the bank.
@@ -14,7 +14,7 @@ import type { PackQuestion } from '../content/types';
 import * as loader from '../content/loader';
 import { getPrinciples } from '../content/principles';
 import {
-  PRINCIPLE_SET_FALLBACK,
+  PRINCIPLE_SET_SIZE,
   indexByPrinciple,
   principlePracticeSet,
   principleQuestionIds,
@@ -74,11 +74,11 @@ describe('the practice set', () => {
   const index = indexByPrinciple(bank);
   const union = principleQuestionIds('alpha', ['q4'], index, find); // q1 q2 q6 q4
 
-  it('keeps the hand-picked size, capped by what exists; a fallback when none are hand-picked', () => {
-    expect(principleSetSize(7, 43)).toBe(7);
-    expect(principleSetSize(7, 3)).toBe(3);
-    expect(principleSetSize(0, 43)).toBe(PRINCIPLE_SET_FALLBACK);
-    expect(principleSetSize(0, 0)).toBe(0);
+  it('asks a set of PRINCIPLE_SET_SIZE, capped by what exists', () => {
+    expect(PRINCIPLE_SET_SIZE).toBe(10);
+    expect(principleSetSize(43)).toBe(10);
+    expect(principleSetSize(3)).toBe(3);
+    expect(principleSetSize(0)).toBe(0);
   });
 
   it('draws only from the union, never repeating, for many seeds', () => {
@@ -135,7 +135,7 @@ describe('the real CISA pack', () => {
     scan.mockRestore();
   });
 
-  it('"Practice this principle" starts the hand-picked count, drawn only from the union', () => {
+  it('"Practice this principle" starts a set of up to 10, drawn only from the union', () => {
     useProgress.getState().resetCert('cisa');
     const p = pack.principles.find((x) => x.id === 'evidence-quality')!;
     const union = new Set(questionsForPrinciple('cisa', p));
@@ -143,7 +143,7 @@ describe('the real CISA pack', () => {
     const active = useSession.getState().active!;
     expect(active.mode).toBe('practice');
     expect(active.title).toBe(p.title);
-    expect(active.questionIds).toHaveLength(p.practiceIds.length);
+    expect(active.questionIds).toHaveLength(Math.min(PRINCIPLE_SET_SIZE, union.size));
     for (const id of active.questionIds) expect(union.has(id)).toBe(true);
     useSession.getState().clear();
   });
