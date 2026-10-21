@@ -68,6 +68,9 @@ const ACRONYMS = new Set([
   'CAB',
   // Added with the Oct 2026 register pass: maximum tolerable downtime.
   'MTD',
+  // Added with the Domain 1 gap lessons: online audit techniques (embedded audit
+  // module, systems control audit review file, continuous and intermittent simulation).
+  'EAM', 'SCARF', 'CIS',
 ]);
 const EXAM_KEYWORDS = new Set(['FIRST', 'BEST', 'MOST', 'GREATEST', 'PRIMARY', 'LEAST', 'NOT', 'MAIN']);
 const capsWords = (text: string) => (text.match(/\b[A-Z]{2,}\b/g) ?? []).filter((w) => !ACRONYMS.has(w));

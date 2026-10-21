@@ -1,6 +1,8 @@
 # ITAF IS Audit and Assurance Standards — verified numbering
 
-Edition checked: ITAF 4th edition (ISACA, October 2020). ISACA published a 5th edition on 26 February 2026. Search results say the 5th edition keeps the same standard structure: 1201 is still Risk Assessment in Planning and 1202 is still Audit Scheduling. The 1000, 1200 and 1400 titles below are therefore current. I could not open the 5th edition text itself. See the caveats section.
+Edition checked: ITAF 4th edition (ISACA, October 2020). ISACA published a 5th edition on 26 February 2026. Guideline 2208 is confirmed as carried forward; the 1000, 1200 and 1400 standard numbers and titles are reported (not yet verified) to be unchanged. See the caveats section.
+
+Citation policy (Oct 2026): the repo keeps 4th-edition (2020) standard numbers and titles, as the current CISA job practice (2024) and the 28th-edition Review Manual do. Revisit when ISACA publishes a CISA job practice or Review Manual based on ITAF 5.
 
 Method: the egress proxy blocked direct fetches of isaca.org, famu.edu (which hosts the 4th edition PDF), pdfcoffee.com and the other secondary sites, so I could not read any primary text. The mapping below comes from several web-search result sets that index the ITAF 4th edition PDF and ISACA pages. Each number/title was returned consistently across them.
 

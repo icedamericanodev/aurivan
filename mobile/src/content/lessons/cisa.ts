@@ -24,6 +24,7 @@ const PROVENANCE = 'Original KaiSip content. Not affiliated with or endorsed by 
 const OUTLINE = 'CISA job practice 2024';
 const REVIEWED = '2026-10-07';
 const PHASE2_REVIEWED = '2026-10-08'; // Phase 2 lessons, after concept, teaching and novice reviews
+const D1_GAPS_REVIEWED = '2026-10-20'; // Domain 1 gap lessons (plan items L1 + L2), appended as orders 8–13
 
 export const CISA_LESSONS: Lesson[] = [
   // ───────────────────────────── Domain 1 ─────────────────────────────
@@ -514,7 +515,7 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'The IT security team reapproves the clerk’s refund access quarterly',
           'A regional manager checks each week’s refunds against receipts',
-          'The clerk signs a daily log of the refunds she issued',
+          'The clerk signs a daily log of the refunds issued that day',
           'Retrain the clerk yearly on refund policy and its limits',
         ],
         correctIndex: 1,
@@ -548,7 +549,7 @@ export const CISA_LESSONS: Lesson[] = [
     references: [
       'ITAF Standard 1203 (Engagement Planning)',
       'ITAF Standard 1204 (Performance and Supervision)',
-      'ITAF Standard 1207 (Irregularity and Illegal Acts)',
+      'ITAF Standard 1207 (Irregularities and Illegal Acts)',
     ],
     outlineVersion: OUTLINE,
     lastReviewed: PHASE2_REVIEWED,
@@ -636,7 +637,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'While testing purchasing, an IS auditor sees that a buyer approved large orders to a supplier he set up himself. The buyer’s manager is his close friend. To whom should the IS auditor FIRST report?',
+          'While testing purchasing, an IS auditor sees that a buyer approved large orders to a supplier the buyer had set up. The buyer’s manager is a close friend of the buyer. To whom should the IS auditor FIRST report?',
         options: [
           'The chief audit executive, who heads the audit function',
           'The buyer’s manager, who has line authority over the buyer',
@@ -645,7 +646,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 0,
         explanation:
-          'Possible fraud goes up the audit line under the agreed procedure, so people with authority decide how to investigate and evidence is protected. The buyer’s manager is tempting because they manage the buyer, but they are close to him and could tip him off. Going to HR or the police is not the IS auditor’s call; those steps are decided after escalation.',
+          'Possible fraud goes up the audit line under the agreed procedure, so people with authority decide how to investigate and evidence is protected. The buyer’s manager is tempting because they manage the buyer, but they are close to the buyer and could tip the buyer off. Going to HR or the police is not the IS auditor’s call; those steps are decided after escalation.',
       },
     ],
   },
@@ -716,7 +717,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'An IS auditor rates a backup failure as high risk. The IT director asks for the final report to go only to her. What is the IS auditor’s MOST appropriate response?',
+          'An IS auditor rates a backup failure as high risk. The IT director asks for the final report to go only to the director. What is the IS auditor’s MOST appropriate response?',
         options: [
           'Agree, since the IT director owns the backup process and its fix',
           'Send it to the director now and to the committee later',
@@ -725,7 +726,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 2,
         explanation:
-          'The report goes to the body that oversees audit, whatever the audited area prefers, because severe findings must reach those who hold management to account. Sending it to the director first is tempting because she will lead the fix, but it lets the audited area control what the committee sees. The CIO is senior, yet still management, so the committee would not see the finding.',
+          'The report goes to the body that oversees audit, whatever the audited area prefers, because severe findings must reach those who hold management to account. Sending it to the director first is tempting because the director will lead the fix, but it lets the audited area control what the committee sees. The CIO is senior, yet still management, so the committee would not see the finding.',
       },
       {
         type: 'check',
@@ -754,6 +755,674 @@ export const CISA_LESSONS: Lesson[] = [
         correctIndex: 1,
         explanation:
           'When weaknesses run through most of what was reviewed, controls are ineffective overall, so the opinion is adverse. Qualified is tempting because each finding is written up, but “except for” fits only contained problems. A disclaimer is for missing evidence, not bad results.',
+      },
+    ],
+  },
+  // Domain 1 gap lessons (plan items L1 + L2). Appended as orders 8–13 so the
+  // seven earlier lessons keep their numbers; within the block they follow the
+  // outline (1A1, 1B1, 1B3, 1B4, 1B5, 1B6).
+  {
+    id: 'cisa-l-d1-independence',
+    certId: 'cisa',
+    domainId: '1',
+    order: 8,
+    title: 'Independence, and relying on others',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'ITAF Standard 1003 (Auditor Objectivity)',
+      'ITAF Standard 1206 (Using the Work of Other Experts)',
+      'IIA Global Internal Audit Standards (2024), Standard 2.2 (Safeguarding Objectivity)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: D1_GAPS_REVIEWED,
+    topics: ['1A1'],
+    prepares: ['d1_002', 'd1_087', 'd1_090'],
+    notes: ['1A1.5', '1A1.7'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 1 · Professional standards',
+        title: 'Independence, and relying on others',
+        subtitle: 'When your own ties put a fair audit at risk, and when someone else’s work is safe to use.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'Independence means the audit function is free from control by the people it audits. Objectivity is each auditor’s own unbiased state of mind. Both must hold in fact and in appearance: auditing a sibling’s team fails the appearance test, even if you would be fair.',
+      },
+      {
+        type: 'stack',
+        heading: 'Four threats to objectivity',
+        layers: [
+          { label: 'Self-review', note: 'Auditing work you designed, built or ran, such as a system you helped set up' },
+          { label: 'Self-interest', note: 'A personal stake in the result, such as a job offer from the area being audited (the auditee)' },
+          { label: 'Familiarity', note: 'Closeness from long tenure or personal ties that dulls skepticism; rotation is the usual safeguard' },
+          { label: 'Intimidation', note: 'Pressure to narrow the scope or soften the findings' },
+        ],
+        caption:
+          'Tell audit management about any tie before work starts. They judge how serious it is: a serious threat means another auditor does the work; a minor one is managed with safeguards, such as extra review.',
+      },
+      {
+        type: 'flow',
+        heading: 'Before you rely on someone else’s work',
+        steps: [
+          { label: 'Assess the provider', note: 'Check competence, qualifications and objectivity, including any ties to the auditee' },
+          { label: 'Agree the terms', note: 'Scope, objectives and access set down in writing, so the work answers the audit’s question' },
+          { label: 'Evaluate the work', note: 'Check the methods, the evidence, and whether the conclusions follow from them' },
+          { label: 'Rely, or do not', note: 'Use what holds up; for gaps, ask for correction or add your own procedures' },
+        ],
+        caption: 'Record how the work was used and why it was judged reliable. You can hand over the work, but never the responsibility for the conclusion.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'As the IS (information systems) auditor, you disclose rather than decide alone: tell audit management about any tie before testing starts, and let them weigh it. With an expert’s work, credentials open the door but prove nothing about the result: judge the delivered work, because the conclusion stays yours.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“A senior colleague will review my conclusions, so I can still audit the system I built.”',
+        why: 'Review reduces a self-review threat but does not remove it: the sampling, testing and judgments still come from the conflicted auditor. When the tie is serious, the fix is a different auditor.',
+      },
+      {
+        type: 'tip',
+        body: 'When a stem mentions a past role, a relative or a job offer, ask: how close and how recent is the tie, and was it disclosed? Recently built or ran the system, or accepted a job with the auditee: reassign. A distant or old tie: disclose it and add safeguards. For an expert’s report, pick the option that evaluates the work first.',
+      },
+      {
+        type: 'check',
+        question:
+          'An IS auditor spent two years configuring a hospital’s patient-billing system, then joined internal audit last quarter. That system is now due for audit. What should the IS audit manager do?',
+        options: [
+          'Assign the auditor, with a senior reviewer checking the conclusions',
+          'Assign the auditor, since configuring differs from designing',
+          'Ask the billing team to confirm the auditor’s findings are fair',
+          'Assign an auditor who had no part in the billing system',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Configuring the system the auditor would now test is a serious self-review threat, so the work goes to someone with no involvement. A senior reviewer is tempting because it adds oversight, but the fieldwork and judgments would still come from the conflicted auditor.',
+      },
+      {
+        type: 'check',
+        question:
+          'An IS auditor on a payroll audit has a sibling who works in the marketing department, which has no role in payroll. What should the IS auditor do?',
+        options: [
+          'Say nothing, since marketing plays no part in payroll',
+          'Disclose the tie to audit management before work starts',
+          'Decline the assignment without giving a reason',
+          'Ask the payroll manager whether the tie is a concern',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Even a distant tie is disclosed before work starts; audit management then weighs it, and here safeguards are likely enough. Declining quietly is tempting because it avoids any doubt, but it leaves the threat unassessed and unrecorded, and the decision is audit management’s, not the IS auditor’s alone.',
+      },
+      {
+        type: 'check',
+        question:
+          'A specialist firm hired to assess a payment system’s encryption delivers a two-page report rating it “strong”, with no tests or settings listed. What should the IS auditor do?',
+        options: [
+          'Ask for the tests and evidence before relying on the report',
+          'Rely on it, since the firm’s credentials were checked beforehand',
+          'Have the audit team repeat the firm’s encryption tests',
+          'Report the encryption as strong, naming the firm as the source',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Credentials show the firm could do the work, not that this report is sound. The IS auditor evaluates the delivered work and holds back reliance until the evidence is there. Repeating the tests is tempting, but a team without encryption skills cannot do it meaningfully; that is why the expert was hired.',
+      },
+    ],
+  },
+  {
+    id: 'cisa-l-d1-audit-project',
+    certId: 'cisa',
+    domainId: '1',
+    order: 9,
+    title: 'Keeping an audit on track',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'ITAF Standard 1203 (Engagement Planning)',
+      'ITAF Standard 1204 (Performance and Supervision)',
+      'ITAF Standard 1006 (Proficiency)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: D1_GAPS_REVIEWED,
+    topics: ['1B1', '1B2'],
+    prepares: ['d1_165', 'd1_166', 'd1_061'],
+    notes: ['1B1.1', '1B1.4', '1B2.1'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 1 · Audit project management',
+        title: 'Keeping an audit on track',
+        subtitle: 'How an engagement runs from kickoff to follow-up, and what to do when time, money or facts change.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'Every audit is a small project, with a deadline, a budget and a team. Managing it well means protecting the conclusions when time, money or facts change. Who’s who: an audit manager runs each audit; the chief audit executive heads the whole audit function; the audit committee, a group of board members, oversees audit and its yearly plan.',
+      },
+      {
+        type: 'analogy',
+        heading: 'Think of a builder',
+        body: 'A builder who finds rotten beams halfway through a renovation does not keep painting over them, and does not knock down a wall unasked. The builder stops, shows the owner the problem and the options, and lets the owner decide. If the budget shrinks, the roof comes before the trim, and the owner is told what was left out.',
+      },
+      {
+        type: 'flow',
+        layout: 'timeline',
+        heading: 'An engagement, start to finish',
+        steps: [
+          { label: 'Planning', note: 'Objectives, scope and criteria, from a risk assessment' },
+          { label: 'Engagement letter or notice', note: 'Confirms scope, timing, access and who gets the report' },
+          { label: 'Opening meeting', note: 'The plan is walked through with the auditee' },
+          { label: 'Fieldwork', note: 'First test the controls (compliance tests); the weaker they are, the more you check the data itself (substantive tests)' },
+          { label: 'Reporting', note: 'Facts confirmed with management; conclusions finalized' },
+          { label: 'Follow-up', note: 'Evidence that the agreed actions were carried out' },
+        ],
+        caption:
+          'Each phase rests on the one before it: thin planning shows up later as rework in fieldwork.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'As the IS (information systems) auditor, protect the conclusion, not the schedule. Missing a skill? Get it before fieldwork: training, an expert, or a specialist firm beside the team (co-sourcing). Budget cut? Keep the high-risk work and say what you dropped. Facts changed? Pause and brief the audit committee on the options.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“The control passed when we tested it in July, so we can rely on it for the whole year.”',
+        why: 'A test part-way through the year (an interim test) shows the control worked up to July. Before relying on it for the whole year, get evidence that it kept working from August to December. That top-up is called a roll-forward.',
+      },
+      {
+        type: 'tip',
+        body: 'When a stem changes the ground mid-audit (a cut budget, a missing skill, facts that undermine the plan), pick the option that keeps quality and is open about it: reprioritize by risk, bring in the skill, or pause and brief whoever approved the audit. Options that quietly carry on, or act alone without telling anyone, are the traps.',
+      },
+      {
+        type: 'check',
+        question:
+          'Three weeks into a payroll audit, the IS auditor learns that payroll moved to an outsourced provider two months ago, which the plan never covered. What should the chief audit executive do FIRST?',
+        options: [
+          'Finish the planned work and mention the move in the report',
+          'Add the provider to the scope and start testing it today',
+          'Pause and present rescoping options to the audit committee',
+          'Ask the payroll manager which areas still need testing',
+        ],
+        correctIndex: 2,
+        explanation:
+          'New facts have undermined the basis of the approved plan, so the scope decision goes to the audit committee, which oversees audit coverage, with the options laid out. Adding the provider at once is tempting because it looks thorough, but it changes the engagement without approval and may stretch the team past its budget and skills.',
+      },
+      {
+        type: 'check',
+        question:
+          'Before substantive testing begins on a loan system audit, the audit budget is cut by a fifth. What is the audit manager’s BEST response?',
+        options: [
+          'Drop the lowest-risk procedures and disclose the narrower scope',
+          'Cut each remaining sample by a fifth to share the impact',
+          'Accept management’s written assurances in place of data tests',
+          'Stop fieldwork and report on the work done so far',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Effort goes where risk is highest, and readers are told what was not covered. Cutting each sample evenly is tempting because it feels fair, but it weakens the high-risk tests as much as the low-risk ones. Written assurances are management’s own word: weak evidence that cannot stand in for testing the data.',
+      },
+      {
+        type: 'check',
+        question:
+          'In month seven, an IS auditor tests a password-reset control and finds it effective. The audit covers the full year. What should the IS auditor do before relying on the control for the year?',
+        options: [
+          'Rely on it, since password controls rarely change',
+          'Obtain management’s written statement that nothing changed',
+          'Retest the control from January with a fresh sample',
+          'Test that the control kept operating in the later months',
+        ],
+        correctIndex: 3,
+        explanation:
+          'An interim test covers only the months tested, so the IS auditor extends it with evidence for the rest of the year (a roll-forward). Retesting from January is tempting because it feels complete, but the early months are already covered; the gap is the later ones.',
+      },
+    ],
+  },
+  {
+    id: 'cisa-l-d1-fraud',
+    certId: 'cisa',
+    domainId: '1',
+    order: 10,
+    title: 'When the evidence points to fraud',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'ITAF Standard 1207 (Irregularities and Illegal Acts)',
+      'ITAF Standard 1205 (Evidence)',
+      'ISA 240 (Revised) (The Auditor’s Responsibilities Relating to Fraud in an Audit of Financial Statements) (analogous guidance)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: D1_GAPS_REVIEWED,
+    topics: ['1B3'],
+    prepares: ['d1_069', 'd1_084', 'd1_141'],
+    notes: ['1B3.5'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 1 · Audit evidence',
+        title: 'When the evidence points to fraud',
+        subtitle: 'What the IS auditor owes the organization when warning signs appear, and where that duty stops.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'Fraud is deliberate deception for gain, such as fake suppliers or altered records. Management owns preventing and detecting it, through controls. The IS (information systems) auditor is not a fraud investigator, but must stay alert to warning signs (red flags) and handle them so the evidence survives and the right people decide what happens next.',
+      },
+      {
+        type: 'stack',
+        heading: 'The fraud triangle',
+        layers: [
+          { label: 'Pressure', note: 'A need that pushes someone toward fraud, such as debt or impossible targets' },
+          { label: 'Opportunity', note: 'A weakness that lets fraud happen and stay hidden, such as one person running a whole process' },
+          { label: 'Rationalization', note: 'The story that excuses it: “I am underpaid”, “I will pay it back”' },
+        ],
+        caption:
+          'Fraud usually needs all three. Opportunity is the part the IS auditor can see and test, so in an audit it is usually the strongest red flag: sole control of a process, nobody reviewing it, and a person who never takes leave.',
+      },
+      {
+        type: 'flow',
+        heading: 'From red flag to hand-off',
+        steps: [
+          { label: 'Record the facts', note: 'What was seen, where and when, without accusing anyone' },
+          { label: 'Preserve the evidence', note: 'Secure originals and record who held each item, and when (chain of custody)' },
+          { label: 'Escalate', note: 'Tell the head of audit (chief audit executive), following the fraud procedure' },
+          {
+            label: 'Go higher if needed',
+            note: 'If management may be involved or a regulator must be told, tell the audit committee (board members overseeing audit) and the lawyers (legal counsel) promptly',
+          },
+          { label: 'Support the investigators', note: 'Help the forensic specialists (trained fraud investigators); run no inquiry of your own' },
+        ],
+        caption: 'Keep it confidential: questioning people or widening your testing first can alert a suspect or spoil evidence.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Stay in your role: as the IS auditor, you document, preserve and escalate; trained investigators and lawyers investigate. If you are asked to sit in on an interview, bring a second person and take notes as it happens. A whistleblower’s tip about an area already in scope gets targeted, confidential testing within that scope.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“File the evidence in the audit archive with the other work papers.”',
+        why: 'A routine archive does not record who handled each item and when. Evidence that may reach a court or a regulator needs a documented chain of custody, or it may be unusable.',
+      },
+      {
+        type: 'tip',
+        body: 'In fraud stems, sort the options by role. Confronting the suspect, investigating alone, going straight to the police, or handing the matter to the suspect’s own manager are the traps. The best answer usually protects the evidence and moves the matter up the agreed channel, above anyone who may be involved.',
+      },
+      {
+        type: 'check',
+        question:
+          'An IS auditor is reviewing a warehouse inventory system. Which observation is the MOST significant fraud red flag to follow up?',
+        options: [
+          'A clerk who suggested several fixes to the inventory system',
+          'A supervisor who adjusts stock counts alone and never takes leave',
+          'A clerk who often complains openly that the warehouse pays poorly',
+          'A supervisor with fifteen years in the same warehouse role',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Sole, unreviewed control is opportunity, the part of the fraud triangle an IS auditor can observe and test, and skipping leave keeps anyone else from seeing the work. The pay complaints are tempting because they hint at pressure, but on their own they are common and show no way to commit or hide fraud. Long tenure alone is not a red flag either.',
+      },
+      {
+        type: 'check',
+        question:
+          'An IS auditor has secured system logs that suggest a manager altered suppliers’ bids for a contract, and the matter may go to court. What is MOST important in handling the logs?',
+        options: [
+          'Store them in the audit team’s secure shared folder',
+          'Send copies to the manager’s director for an explanation',
+          'Record who has held each item, from collection onward',
+          'Print them so the content cannot be changed later',
+        ],
+        correctIndex: 2,
+        explanation:
+          'Evidence that may reach court must show an unbroken record of who held it and when, a chain of custody. The secure folder is tempting because it is protected, but it does not record each hand-off, so the evidence could be challenged.',
+      },
+      {
+        type: 'check',
+        question:
+          'A forensic firm brought in by the audit committee to investigate a kickback scheme asks the IS auditor for the system logs the IS auditor secured. What should the IS auditor do?',
+        options: [
+          'Analyze the logs first to confirm they really show fraud',
+          'Refuse, since the firm sits outside the audit function’s reporting line',
+          'Ask the suspect’s manager to approve releasing the logs',
+          'Release the logs with a custody record; tell the head of audit',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Once authorized specialists lead the investigation, the IS auditor supports them, keeps the chain of custody unbroken and keeps the head of audit informed. Analyzing the logs first is tempting because it seems diligent, but it is the parallel investigation that can disturb evidence and blur who owns the conclusions.',
+      },
+    ],
+  },
+  {
+    id: 'cisa-l-d1-online-audit',
+    certId: 'cisa',
+    domainId: '1',
+    order: 11,
+    title: 'Auditing transactions as they happen',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: ['ITAF Standard 1205 (Evidence)', 'IIA GTAG: Continuous Auditing and Monitoring, 3rd Edition (2025)'],
+    outlineVersion: OUTLINE,
+    lastReviewed: D1_GAPS_REVIEWED,
+    topics: ['1B4'],
+    prepares: ['d1_046', 'd1_208', 'd1_209'],
+    notes: ['1B4.3'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 1 · Audit data analytics',
+        title: 'Auditing transactions as they happen',
+        subtitle: 'Four audit tools that work inside live systems, and how to pick the one a question is asking for.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'Some systems process so much, so fast, or leave so little trail that a review months later comes too late. Online audit techniques are audit tools built into or running beside a live application, so the IS (information systems) auditor sees transactions as they are processed. Each one trades coverage against cost and load on the live (production) system.',
+      },
+      {
+        type: 'stack',
+        heading: 'Four online techniques',
+        layers: [
+          {
+            label: 'Embedded audit module (EAM)',
+            note: 'Audit code in the application checks every transaction against audit’s rules, logging exceptions to an audit file',
+          },
+          { label: 'Snapshots', note: 'Record chosen transactions at set points, building a step-by-step trail; blind between those points' },
+          { label: 'Audit hooks', note: 'Small triggers that flag a few chosen risky transactions at once' },
+          {
+            label: 'Continuous and intermittent simulation (CIS)',
+            note: 'Reruns only transactions meeting set criteria through audit’s copy of the logic; logs any difference',
+          },
+        ],
+        caption:
+          'That audit file is often called SCARF (systems control audit review file). EAM sees the most but is the hardest to build and adds load; hooks are the simplest.',
+      },
+      {
+        type: 'analogy',
+        heading: 'Think of a factory inspector',
+        body: 'An inspector can check every product as it leaves the line, photograph chosen items at each station to see how they were assembled, or fit a sensor that buzzes only when a part is the wrong size. Each costs a different amount and misses different things. The right choice depends on what the inspector needs to know.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Whichever tool fits, it must stay audit’s own. As the IS auditor, keep the rules and the audit file under audit’s control, test them before relying on them, and make sure the tool does not slow the live system unacceptably. If people outside audit could change the rules, the results stop being independent evidence.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“The embedded module should block suspicious transactions, not just flag them.”',
+        why: 'Blocking is an operational control that management owns, and holding transactions in line can slow critical systems. Audit modules flag and report; management decides what to stop.',
+      },
+      {
+        type: 'tip',
+        body: 'Read the stem for cue words. “Every transaction” or “no gaps”: embedded audit modules. “Trace” or “each step of processing”: snapshots. An alert on a few specific events, or a small team and budget: audit hooks. “Only transactions that meet set criteria”, rechecked against audit’s own logic: continuous and intermittent simulation.',
+      },
+      {
+        type: 'check',
+        question:
+          'At a card issuer, the IS auditor must screen every purchase against audit rules as it is processed, with none skipped. Which technique BEST fits?',
+        options: [
+          'Snapshots of purchases at chosen processing steps',
+          'Audit hooks on purchases above a set amount',
+          'An embedded audit module inside the card system',
+          'Weekly analytics over an extract of purchases',
+        ],
+        correctIndex: 2,
+        explanation:
+          'Only an embedded audit module checks each transaction as it is processed, so none slips past. Audit hooks are tempting because they react at once, but they watch only the purchases that trip a trigger, such as large amounts.',
+      },
+      {
+        type: 'check',
+        question:
+          'A hospital’s small audit staff, with little funding, must know at once whenever administrator rights are granted outside working hours. Which technique is BEST?',
+        options: [
+          'Audit hooks that flag after-hours grants of those rights',
+          'Embedded modules screening every change to user access',
+          'Snapshots of access changes at each processing step',
+          'Simulation that reruns selected access changes',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Audit hooks watch for a few specific risky events and are the simplest to build, which suits a small team and budget. Embedded modules are tempting because they screen everything, but they cost far more than this narrow need justifies.',
+      },
+      {
+        type: 'check',
+        question:
+          'To free up audit time, the IT operations team offers to take over the rules and exception file of audit’s embedded module. What is the IS auditor’s BEST response?',
+        options: [
+          'Agree, if operations sends audit a monthly change report',
+          'Agree, and have the module stop flagged items for review',
+          'Switch off the module and sample transactions once a year',
+          'Keep the rules and the exception file under audit’s control',
+        ],
+        correctIndex: 3,
+        explanation:
+          'If people outside audit can change the rules or the file, the module stops being independent evidence. A monthly change report is tempting because it adds visibility, but it tells audit about changes after the fact; it does not prevent them.',
+      },
+    ],
+  },
+  {
+    id: 'cisa-l-d1-findings',
+    certId: 'cisa',
+    domainId: '1',
+    order: 12,
+    title: 'Writing a finding that gets fixed',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'ITAF Standard 1401 (Reporting)',
+      'ITAF Standard 1008 (Criteria)',
+      'IIA Global Internal Audit Standards (2024), Standard 15.1 (Final Engagement Communication)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: D1_GAPS_REVIEWED,
+    topics: ['1B5'],
+    prepares: ['d1_195', 'd1_196', 'd1_197'],
+    notes: ['1B5.1'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 1 · Audit reporting',
+        title: 'Writing a finding that gets fixed',
+        subtitle: 'The five parts of a sound finding, and why the recommendation must aim at the cause.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'An audit finding is a documented gap between what should happen and what does happen. A finding that is vague, overstated or missing its cause gets disputed, or gets a surface fix while the real problem stays. A well-built finding gives management what it needs to act.',
+      },
+      {
+        type: 'flow',
+        heading: 'The parts of a finding',
+        steps: [
+          { label: 'Criteria', note: 'What should happen, from a policy, standard, law, contract or agreed framework' },
+          { label: 'Condition', note: 'What the IS (information systems) auditor actually found, backed by evidence' },
+          { label: 'Cause', note: 'Why the gap exists: the root cause, not the symptom' },
+          { label: 'Effect', note: 'The risk or harm if nothing changes, in business terms' },
+          { label: 'Recommendation', note: 'A fix aimed at the root cause; management decides how to carry it out' },
+        ],
+        caption:
+          'What should be, what is, why, so what, then the fix. A missing part shows: without criteria the finding reads as opinion; without the effect the rating looks arbitrary.',
+      },
+      {
+        type: 'analogy',
+        heading: 'Think of a doctor',
+        body: 'A good doctor’s note says what healthy looks like, what the tests showed, what is causing it and what happens if it is left alone, then treats the cause. Painkillers for a broken bone would quiet the complaint and leave the break. A recommendation that only cleans up the exceptions found is the painkiller.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'As the IS auditor, you recommend; management decides and implements. So every finding must stand on objective ground: evidence for the condition, and criteria from policy or, when no policy applies, a recognized standard agreed for the engagement. Never personal preference, and never softer wording for senior people.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“Recommend correcting the twelve exceptions in the sample.”',
+        why: 'Cleaning up the exceptions treats the symptom. Unless the process that let them through changes, the same gap reappears next quarter. Deal with live exposures, but aim the recommendation at the root cause.',
+      },
+      {
+        type: 'tip',
+        body: 'For “best recommendation” questions, find the cause in the stem (often a system setting or a missing step) and pick the option that changes it. Reminders, retraining and one-off cleanups are usually the runners-up. If management disputes a rating but not the facts, ask which part of the finding is weak; often it is the effect.',
+      },
+      {
+        type: 'check',
+        question:
+          'An IS auditor finds that 15 of 60 sampled supplier-record changes were never approved, because the system applies a change before the approval step runs. Which recommendation is BEST?',
+        options: [
+          'Have the 15 changes approved after the fact',
+          'Make the system hold changes until approval is recorded',
+          'Remind staff of the supplier-change approval policy',
+          'Add a monthly report of unapproved changes for the manager',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The cause is the system applying changes before approval, so the fix makes approval a required step. Approving the 15 after the fact is tempting and may be needed for the live exposure, but it leaves the gap open for the next change.',
+      },
+      {
+        type: 'check',
+        question:
+          'Management accepts the facts in a draft finding on shared administrator accounts, but asks why it is rated high. Which part of the finding is MOST likely weak?',
+        options: [
+          'The standard the shared accounts fail to meet',
+          'The list of shared accounts and who uses them',
+          'The reason the accounts were never split up',
+          'The business harm if the accounts are misused',
+        ],
+        correctIndex: 3,
+        explanation:
+          'A rating rests on the effect: what could go wrong for the business. Management already accepts the facts, so the condition is not in dispute. The cause is tempting, but it explains why the gap exists, not how serious it is.',
+      },
+      {
+        type: 'check',
+        question:
+          'At a startup, an IS auditor finds that backups have never been test-restored, but no internal policy requires testing. What is the BEST basis for reporting it?',
+        options: [
+          'A recognized standard agreed as criteria for the audit',
+          'The IS auditor’s own experience of sound practice',
+          'The IT manager’s view of acceptable backup practice',
+          'Practices the audit team saw at similar startups',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Criteria must be objective and widely recognized, ideally agreed at planning, so a recognized standard gives the finding a defensible basis. The IS auditor’s own experience is tempting because it is expert, but it is personal judgment that management can dismiss as opinion.',
+      },
+    ],
+  },
+  {
+    id: 'cisa-l-d1-quality',
+    certId: 'cisa',
+    domainId: '1',
+    order: 13,
+    title: 'Who audits the auditors?',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'IIA Global Internal Audit Standards (2024), Standard 8.3 (Quality)',
+      'IIA Global Internal Audit Standards (2024), Standard 8.4 (External Quality Assessment)',
+      'IIA Global Internal Audit Standards (2024), Standard 12.1 (Internal Quality Assessment)',
+      'ITAF Standard 1204 (Performance and Supervision)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: D1_GAPS_REVIEWED,
+    topics: ['1B6'],
+    prepares: ['d1_065', 'd1_076', 'd1_217'],
+    notes: ['1B6.3', '1B6.2', '1B6.1', '1B6.4'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 1 · Audit quality',
+        title: 'Who audits the auditors?',
+        subtitle: 'The layers of quality checking that make an audit function’s own work trustworthy.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'An audit function asks others to prove their controls work, so it must be able to prove its own work is sound. Its quality assurance and improvement program is that proof: checks built into every engagement, periodic reviews inside the function, an independent outside review, and action on what they find.',
+      },
+      {
+        type: 'stack',
+        heading: 'Three layers of quality checking',
+        layers: [
+          {
+            label: 'Ongoing monitoring',
+            note: 'Supervisors review work papers on every engagement as evidence arrives; the one layer that stops a flaw before a report goes out',
+          },
+          {
+            label: 'Periodic internal assessment',
+            note: 'Auditors who did not do the work review completed engagements and the method, for example once a year',
+          },
+          {
+            label: 'External quality assessment',
+            note: 'A qualified assessor independent of the whole organization reviews the function at least once every five years',
+          },
+        ],
+        caption:
+          'Each layer adds to the ones before it; none replaces another. The outside review can be a full external assessment, or a self-assessment checked and confirmed by a qualified outside assessor.',
+      },
+      {
+        type: 'analogy',
+        heading: 'Think of a restaurant kitchen',
+        body: 'The head chef tastes every plate before it leaves the kitchen. Now and then, a chef from another branch inspects how the kitchen runs. Every few years, an outside inspector visits. Only the head chef stops a bad plate reaching a diner, but only the outsider can say the whole kitchen meets the standard.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Judge each layer by who does the checking. A team reviewing its own files is not independent enough for a periodic review, and another department of the same company is not independent enough for the external one. A missing or overdue external assessment is a significant weakness to report to the audit committee.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“Our new tool checks each work paper for sign-offs and attachments, so supervisors can stop reviewing them.”',
+        why: 'Tools check form, not substance. Only a reviewer can judge whether the evidence is enough and the conclusion follows from it. An unsupported conclusion is the most serious quality defect, and a checklist cannot spot one.',
+      },
+      {
+        type: 'tip',
+        body: 'Ask two questions of any quality option: who does the checking, and are they independent enough for this layer? “External” means outside the organization, not just outside audit. Only supervision stops a flaw before the report. For improvement, the best measure is whether the problem stops coming back, not how many people were trained.',
+      },
+      {
+        type: 'check',
+        question:
+          'To save money, the board suggests that the company’s risk management team perform the audit function’s external quality assessment. What should the chief audit executive (the head of audit) recommend?',
+        options: [
+          'Accept, since the risk team is outside the audit function',
+          'Use a qualified assessor who is independent of the company',
+          'Replace the external review with a deeper self-assessment',
+          'Accept, provided the risk team follows a recognized checklist',
+        ],
+        correctIndex: 1,
+        explanation:
+          'External means independent of the whole organization, and the assessor must be qualified. The risk team is tempting because it sits outside audit, but it works for the same company, so its view is not independent. A self-assessment counts only when a qualified outsider validates it.',
+      },
+      {
+        type: 'check',
+        question: 'An audit director is setting up periodic internal reviews of completed engagements. Who should perform them?',
+        options: [
+          'The team that ran each engagement, since it knows the files',
+          'The external auditor, as part of its yearly financial audit',
+          'Auditors from other teams who had no part in the work',
+          'The auditees, through a survey sent after each audit',
+        ],
+        correctIndex: 2,
+        explanation:
+          'Periodic internal reviews need people who did not do the work, so they can judge it impartially. The original team is tempting because it knows the files best, but knowledge is not objectivity: people rarely spot the gaps in their own work.',
+      },
+      {
+        type: 'check',
+        question:
+          'Reviews found, three years running, that conclusions in work papers were not linked to their evidence. The function changed its review checklist. What BEST shows the change worked?',
+        options: [
+          'Fewer files with the gap in the next review cycles',
+          'The number of managers trained on the new checklist',
+          'The share of files reviewed using the new checklist',
+          'Better scores from auditees in the yearly survey',
+        ],
+        correctIndex: 0,
+        explanation:
+          'The aim was to stop the defect, so the best evidence is that later reviews find it less often. Counting files reviewed with the new checklist is tempting because it shows the change was adopted, but using a checklist does not prove conclusions are now linked to evidence.',
       },
     ],
   },
@@ -1170,7 +1839,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A customer asks a retailer for a copy of all data it holds about her. Staff search five systems and cannot be sure they found everything. What root cause should the IS auditor report?',
+          'A customer asks a retailer for a copy of all data it holds about them. Staff search five systems and cannot be sure they found everything. What root cause should the IS auditor report?',
         options: [
           'Nobody has listed what customer data is held, and where',
           'Staff were not properly trained to search the five systems',
@@ -1400,7 +2069,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'An IS auditor recommends job rotation for a payments team. The manager objects that her staff are experts and rotation would slow the work. Which reply BEST explains the control’s value?',
+          'An IS auditor recommends job rotation for a payments team. The manager objects that the staff are experts and rotation would slow the work. Which reply BEST explains the control’s value?',
         options: [
           'A newcomer in each role may uncover problems left hidden',
           'Rotation builds broader skills, which lifts staff morale over time',
@@ -1879,11 +2548,11 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A payroll clerk’s role in a new system lets her add employees and also release each month’s salary payments. What is the GREATEST risk?',
+          'A payroll clerk’s role in a new system lets the clerk add employees and also release each month’s salary payments. What is the GREATEST risk?',
         options: [
           'Errors in new employee records may go unnoticed until payday',
           'The clerk may need extra training to handle the combined role',
-          'She could add a fake employee and then pay them unnoticed',
+          'The clerk could add a fake employee and pay them unnoticed',
           'HR and payroll may dispute which team owns the combined role',
         ],
         correctIndex: 2,
@@ -1893,7 +2562,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A manager denies approving a large trade. The log shows her user ID, but administrators can edit that log. What is the GREATEST weakness for the IS auditor to report?',
+          'A manager denies approving a large trade. The log shows the manager’s user ID, but administrators can edit that log. What is the GREATEST weakness for the IS auditor to report?',
         options: [
           'The log can be altered, so it cannot prove who approved',
           'The log was not encrypted while stored on the server',
@@ -3395,7 +4064,7 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'Too many people will need yearly training on the plan',
           'Alternates may declare too late, too early or inconsistently',
-          'The lead executive may feel her own authority has been reduced',
+          'The lead executive may feel their own authority has been reduced',
           'The plan may need rewriting whenever an alternate leaves',
         ],
         correctIndex: 1,
@@ -4638,16 +5307,16 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'Logs show a payroll file was exported at night under a finance manager’s account. The IS auditor’s draft report says she stole the data. Which revision is BEST?',
+          'Logs show a payroll file was exported at night under a finance manager’s account. The IS auditor’s draft report says the manager stole the data. Which revision is BEST?',
         options: [
-          'Name her in the report and recommend disciplinary action',
-          'Remove the finding until she admits taking the data',
-          'State that her account ran the export, then corroborate',
+          'Name the manager and recommend disciplinary action',
+          'Remove the finding until the manager admits it',
+          'Say the account ran the export, then corroborate',
           'Have the audit committee approve the wording before issue',
         ],
         correctIndex: 2,
         explanation:
-          'The logs prove which account was used, not who was at the keyboard; a stolen or shared password fits the same facts. Naming her is tempting because the logs look clear, but it goes beyond the evidence and would not survive a challenge. Committee approval would not fix a claim the evidence cannot support.',
+          'The logs prove which account was used, not who was at the keyboard; a stolen or shared password fits the same facts. Naming the manager is tempting because the logs look clear, but it goes beyond the evidence and would not survive a challenge. Committee approval would not fix a claim the evidence cannot support.',
       },
     ],
   },

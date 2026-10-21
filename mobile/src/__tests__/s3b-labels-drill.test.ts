@@ -49,7 +49,7 @@ describe('"The IS auditor’s lens" (replaces "How ISACA thinks")', () => {
     const text = JSON.stringify(CISA_LESSONS);
     expect(text).not.toContain('ISACA IT Audit Standard');
     expect(text).toContain('ITAF Standard 1201 (Risk Assessment in Planning)');
-    expect(text).toContain('ITAF Standard 1207 (Irregularity and Illegal Acts)');
+    expect(text).toContain('ITAF Standard 1207 (Irregularities and Illegal Acts)'); // 4th-edition title
     expect(text).toContain('ITAF Standard 1402 (Follow-up Activities)');
   });
 });
