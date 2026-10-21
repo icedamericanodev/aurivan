@@ -207,6 +207,9 @@ describe('the lesson player after a check is answered', () => {
     mockMoveFocus.mockClear();
     mockSay.mockClear();
     press(new RegExp(`^Option [A-D]: ${wrongText.slice(0, 20).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
+    // Not yet: focus waits for the answer block's layout (and so for the scroll).
+    expect(mockMoveFocus).not.toHaveBeenCalled();
+    layoutAnswer(500, 300);
     const verdict = root().findByType(Verdict);
     // The focus move targets the Verdict's own ref (React 19: ref is a prop).
     const verdictRef = (verdict.props as { ref?: unknown }).ref;

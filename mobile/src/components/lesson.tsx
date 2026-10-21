@@ -595,6 +595,9 @@ function CheckScene({
     reported.current = true;
     const { y, height } = e.nativeEvent.layout;
     onReveal?.({ top: y, bottom: y + height });
+    // Focus moves only AFTER the scroll is issued, so the glide (~250–300 ms) has settled
+    // before it lands and VoiceOver / TalkBack never scroll to the verdict mid-glide.
+    moveFocus(verdictRef, 400);
   };
 
   return (
@@ -623,11 +626,10 @@ function CheckScene({
                 setPicked(letter);
                 if (isRight) haptic.success();
                 else haptic.error();
-                // Mobile 1.37: move screen-reader focus to the verdict, the same pattern as the
-                // practice answer screen (session.tsx). Its label says it all once ("Not quite. The
-                // best answer is B."), so there is no separate announcement (that was cut off on iOS
-                // and doubled on Android), and the reader then continues into the explanation.
-                moveFocus(verdictRef, 400);
+                // Mobile 1.37: screen-reader focus then moves to the verdict (onAnswerLayout, after
+                // the scroll), the same pattern as the practice answer screen (session.tsx). Its
+                // label says it all once ("Not quite. The best answer is B."), so there is no
+                // separate announcement (that was cut off on iOS and doubled on Android).
                 onCheck?.(isRight, letter);
               }}
             />
