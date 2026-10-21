@@ -2252,7 +2252,7 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Within appetite?', note: 'Yes: accept it, with the owner’s decision recorded' },
           { label: 'Can a control bring it within appetite?', note: 'Yes: mitigate, if the loss it prevents justifies its cost' },
           {
-            label: 'Can part of the cost be shared?',
+            label: 'Can sharing the cost bring it within appetite?',
             note: 'Yes: transfer it through insurance or a contract. Only the bill is shared; the organization still answers for the risk',
           },
           { label: 'Nothing brings it within?', note: 'Then avoid: stop or redesign the activity' },
@@ -4582,7 +4582,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 1,
         explanation:
-          'The laptops leave the district’s control, so the rule is purge, and a verified purge defeats even laboratory recovery. Keeping the disks is tempting because nothing leaves, but destroying is for media that cannot be purged; here it adds cost without adding safety. Deleting files or reinstalling leaves data recoverable.',
+          'The laptops leave the district’s control, so the rule is purge, and a verified purge defeats even laboratory recovery. Keeping the disks is tempting because nothing leaves, but destroying is for the most sensitive data or media that cannot be purged; for student records, a verified purge is enough and costs less. Deleting files or reinstalling leaves data recoverable.',
       },
       {
         type: 'check',
@@ -6119,11 +6119,11 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'What testers know', note: 'Black box: little but a name. Gray box: some details, such as an account. White box: designs, code and accounts' },
           {
             label: 'Who is warned',
-            note: 'Blind: the defenders, the security team, are told. Double-blind: they are not. Targeted: both sides work together',
+            note: 'Blind: testers know little; the security team is told. Double-blind: testers know little and the security team is not told either. Targeted: both sides work together',
           },
         ],
         caption:
-          'Black box is about what testers know; blind is about who is warned. Telling testers more finds more flaws in the days you pay for; warning defenders less shows whether they notice.',
+          'Telling testers more finds more flaws in the days you pay for; warning defenders less shows whether they notice.',
       },
       {
         type: 'analogy',
