@@ -670,17 +670,17 @@
         "Badge-issuance governance"
       ],
       "framework_ref": "ISO/IEC 27002:2022 Control 7.2 (Physical Entry); NIST SP 800-53 Rev 5 PE-2 (Physical Access Authorizations); NIST SP 800-53 Rev 5 PE-3 (Physical Access Control)",
-      "question": "A contractor entered a restricted server room unescorted on four nights because his cleaning badge also opened that room. Which weakness should the IS auditor report as MOST significant?",
+      "question": "A contractor entered a restricted server room unescorted on four nights because their cleaning badge also opened that room. Which weakness should the IS auditor report as MOST significant?",
       "options": {
         "A": "Server room camera footage was reviewed once a month",
-        "B": "The contractor's employer did not vet him properly",
+        "B": "The employer did not vet the contractor properly",
         "C": "Visitor logs at reception were kept on paper",
         "D": "Badge rights went beyond the contractor's cleaning role"
       },
       "correct": "D",
       "key_concept": "Physical access rights must follow least privilege, so badges open only the areas each role needs.",
       "pre_read": "Notice why the contractor could enter. Ask which control should have stopped that badge.",
-      "correct_explanation": "The contractor could enter because his badge granted access beyond what his cleaning role required, a failure of least privilege in physical access provisioning. Monthly camera review is a weakness too, but it is detective and would only have revealed the visits later; correct badge rights would have prevented them.",
+      "correct_explanation": "The contractor could enter because the badge granted access beyond what the cleaning role required, a failure of least privilege in physical access provisioning. Monthly camera review is a weakness too, but it is detective and would only have revealed the visits later; correct badge rights would have prevented them.",
       "wrong_explanations": {
         "A": "Camera review is detective and would only reveal entries after they happened.",
         "B": "Vetting reduces insider risk but does not justify server-room access for a cleaner.",
@@ -820,9 +820,9 @@
         "Response timelines"
       ],
       "framework_ref": "GDPR Article 15 (Right of Access); GDPR Article 12 (Information and Modalities for Exercise of Rights)",
-      "question": "A retailer receives an email from someone claiming to be a customer and asking for a copy of all personal data held about her. What should the IS auditor recommend FIRST?",
+      "question": "A retailer receives an email from someone claiming to be a customer and asking for a copy of all personal data held about them. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Send her the requested data within one month of receiving it",
+        "A": "Send the requester the data within one month of receiving it",
         "B": "Charge a standard fee before starting to process it",
         "C": "Verify the requester's identity before releasing any data",
         "D": "Refuse unless the request arrives by registered post"
@@ -830,7 +830,7 @@
       "correct": "C",
       "key_concept": "Data subjects have a right of access, answered within one month, but the controller must confirm identity first to avoid disclosure to impostors.",
       "pre_read": "Notice the request came by email from someone claiming to be a customer. Ask what could go wrong if the retailer simply complied.",
-      "correct_explanation": "Releasing personal data to an impostor would itself be a breach of confidentiality, and an email claim proves nothing. GDPR lets the controller ask for information needed to confirm identity when there is reasonable doubt. Responding within one month is a real obligation, but the deadline serves the genuine customer; meeting it by sending her data to an unverified requester trades one failure for a worse one.",
+      "correct_explanation": "Releasing personal data to an impostor would itself be a breach of confidentiality, and an email claim proves nothing. GDPR lets the controller ask for information needed to confirm identity when there is reasonable doubt. Responding within one month is a real obligation, but the deadline serves the genuine customer; meeting it by sending the data to an unverified requester trades one failure for a worse one.",
       "wrong_explanations": {
         "A": "The one-month deadline is real, but sending data before confirming identity could disclose it to an impostor.",
         "B": "Access requests are normally free. A fee is allowed for manifestly unfounded or excessive requests, which nothing here suggests.",
@@ -8157,10 +8157,10 @@
         "Limits of log evidence"
       ],
       "framework_ref": "NIST SP 800-86 (Guide to Integrating Forensic Techniques into Incident Response); ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence)",
-      "question": "A forensic report concludes that an employee stole data based only on activity under her user account. Which statement would the IS auditor consider MOST valid about this conclusion?",
+      "question": "A forensic report concludes that an employee stole data based only on activity under their user account. Which statement would the IS auditor consider MOST valid about this conclusion?",
       "options": {
         "A": "Account use is not identity, so attribution needs corroboration",
-        "B": "More log entries for the same account would establish her identity",
+        "B": "More log entries for the same account would establish the employee's identity",
         "C": "The examiner's experience can substitute for corroborating evidence",
         "D": "The conclusion is sufficient and counsel can defend it"
       },
@@ -8924,11 +8924,11 @@
         "sanctioned channels"
       ],
       "framework_ref": "ISO/IEC 27002:2022 Control 5.36 (Compliance with Policies, Rules and Standards for Information Security); ISO/IEC 27002:2022 Control 6.4 (Disciplinary Process); ISO/IEC 27002:2022 Control 8.12 (Data Leakage Prevention)",
-      "question": "Data loss prevention quarantined a senior partner's email sending confidential deal files to his personal account, though an approved secure laptop was available. What is the IS auditor's BEST recommendation on his demand for release?",
+      "question": "Data loss prevention quarantined a senior partner's email sending confidential deal files to a personal account, though an approved secure laptop was available. What is the IS auditor's BEST recommendation when the partner demands release?",
       "options": {
         "A": "Let the general counsel decide each release case by case",
         "B": "Keep the quarantine and report the violation under the policy",
-        "C": "Release the email once he attests he will delete it later",
+        "C": "Release the email once the partner attests to deleting it later",
         "D": "Release the email and record it as a documented policy exception"
       },
       "correct": "B",

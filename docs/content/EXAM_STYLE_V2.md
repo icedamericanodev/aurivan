@@ -42,6 +42,7 @@ ISACA mindset picks one.
 7. **Applied over definitional.** Turn "which describes X" into "which report/test/evidence is MOST appropriate for objective Y".
 8. **Spread the keys.** Across a batch, no letter holds more than about 35%.
 9. **Original wording only.** Never copy or closely paraphrase ISACA QAE items or the Review Manual.
+10. **Gender-neutral wording.** Use gender-neutral wording: name the role (the IS auditor, the CIO) or use singular they. No he/she for any person in stems, explanations, tips, notes or lessons.
 
 ## The loop (how a domain is converted)
 

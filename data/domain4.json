@@ -5684,11 +5684,11 @@
       "correct": "A",
       "key_concept": "RPA bots need their own identities, least-privilege rights and an accountable business owner, so their actions are traceable and controllable.",
       "pre_read": "Notice whose login the bot uses. Ask how anyone could tell the clerk's actions from the bot's.",
-      "correct_explanation": "A bot running under a person's login cannot be told apart from that person, so its actions lack accountability and it inherits all of the clerk's rights. A dedicated bot account with only the rights its task needs, and a named business owner, fixes both. Weekly review by the clerk is a useful detective check, but it leaves the shared identity in place, and she reviews activity done under her own login.",
+      "correct_explanation": "A bot running under a person's login cannot be told apart from that person, so its actions lack accountability and it inherits all of the clerk's rights. A dedicated bot account with only the rights its task needs, and a named business owner, fixes both. Weekly review by the clerk is a useful detective check, but it leaves the shared identity in place, and the clerk would be reviewing activity done under their own login.",
       "wrong_explanations": {
         "B": "Vaulting and rotating the password protects the credential, but the bot and the clerk still share one identity, so actions stay unattributable.",
         "C": "Approval does not fix the shared identity: the bot keeps a person's full rights, and its actions stay unattributable.",
-        "D": "Review is detective only, and the clerk would be reviewing activity performed under her own login, which weakens independence."
+        "D": "Review is detective only, and the clerk would be reviewing activity performed under their own login, which weakens independence."
       },
       "tips": [
         "Eliminate: B protects a password the bot should not share, and C leaves the bot with a person's full rights.",
@@ -8131,7 +8131,7 @@
       "subtopic": "Data Corruption Recovery vs Business Deadline",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Storage corruption has damaged 8% of yesterday's trade records on settlement day; restoring the clean backup and replaying logs takes 6–8 hours. What should the IS auditor recommend management do FIRST?",
+      "question": "Storage corruption has damaged 8% of yesterday's trade records on settlement day; restoring the clean backup and replaying logs takes 6–8 hours, well before the cutoff. What should the IS auditor recommend management do FIRST?",
       "options": {
         "A": "Settle using best-available data and correct the records afterward",
         "B": "Reconcile each affected trade manually before settling",
@@ -8139,9 +8139,9 @@
         "D": "Restore the clean backup and replay the logs"
       },
       "correct": "D",
-      "key_concept": "Integrity of settlement data comes first; the fastest verified recovery path plus early regulator contact beats settling on corrupt data.",
-      "pre_read": "Compare the recovery options against the deadline. Which one produces verified data in time, and who should hear early?",
-      "correct_explanation": "Settlement must rest on accurate records. Restoring the clean backup and replaying the transaction logs is the fastest route to verified data. Manual reconciliation is accurate in principle, but reworking thousands of trades by hand is far slower and more error-prone than a replay.",
+      "key_concept": "When one recovery path yields complete, verified data before the deadline, recommend it; only when every path costs data or time does management choose.",
+      "pre_read": "Compare the recovery options against the deadline. Which one produces complete, verified data in time?",
+      "correct_explanation": "Settlement must rest on accurate records. Restoring the clean backup and replaying the transaction logs is the fastest route to verified data. Manual reconciliation is accurate in principle, but reworking thousands of trades by hand is far slower and more error-prone than a replay. The replay loses no committed trades and finishes in time, so there is no trade-off for management to weigh.",
       "wrong_explanations": {
         "A": "Settling on known-corrupt data harms customers and breaches books-and-records duties. Later correction does not undo that.",
         "B": "Manually reconciling thousands of trades takes far longer than a replay and introduces human error under deadline pressure.",
@@ -8150,7 +8150,7 @@
       "tips": [
         "Eliminate: A knowingly settles on corrupt data, and C spends scarce hours waiting for an unlikely extension.",
         "Final two: D beats B because a backup replay yields verified data far faster and more reliably than manual rework.",
-        "Exam cue: for corrupted data, choose the fastest verified recovery over settling on bad data or manual rework."
+        "Exam cue: when one recovery path gives complete, verified data in time, recommend it; when every path costs data or time, management chooses."
       ],
       "framework_ref": "SEC Rule 15c6-1 (T+1 Settlement Cycle); SEC Rule 17a-4 (Books and Records Preservation); FINRA Rule 4511 (General Requirements); SEC Rule 15c3-3 (Customer Protection); FFIEC Business Continuity Management Booklet; ISO/IEC 27040 (Storage Security)",
       "related_concepts": [
