@@ -28,6 +28,12 @@
  * the header; the header carries a flag ("Report a problem") on every scene;
  * the footer is the shared sticky footer with its paper fade, and Back is a
  * 56pt round "Previous step" beside Next (a full "Back" pill on checks).
+ *
+ * Mobile 1.37: after a check is answered, the page scrolls so the verdict and
+ * its explanation sit above the Back / Next bar (learners were tapping Next
+ * without seeing why). It moves just enough, so the picked option stays in
+ * view when it all fits; at once under Reduce Motion. Screen-reader focus
+ * moves to the verdict (components/lesson.tsx), as on the practice screen.
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -35,8 +41,8 @@ import { ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LessonBranch, type BotanyKind } from '../../components/glyphs';
 import { ArrowRight, BookOpen, ChevronLeft, Flag, ICON_STROKE } from '../../components/icons';
-import { SceneView } from '../../components/lesson';
-import { Celebrate, FadeIn, PageTurn, useCelebration } from '../../components/motion';
+import { revealScrollY, SceneView, type RevealBox } from '../../components/lesson';
+import { Celebrate, FadeIn, PageTurn, useCelebration, useMotion } from '../../components/motion';
 import { StickyFooter } from '../../components/quiz';
 import { useReportFlow } from '../../components/support';
 import { Button, Gap, ICON_SIZE, IconButton, PushedHeader, Row, SegmentBar, T, useFontScale } from '../../components/ui';
@@ -106,6 +112,10 @@ export default function LessonPlayer() {
   // focus is handed to the new one once the new page is placed (mobile 1.22 review P3).
   const backFocusAfterTurn = useRef(false);
   const scrollRef = useRef<ScrollView>(null);
+  // Mobile 1.37: the scroll view's height and where it is scrolled to, so a check's answer can be scrolled into view.
+  const viewportH = useRef(0);
+  const scrollY = useRef(0);
+  const { reduced: reduceMotion } = useMotion();
   // The page on screen: it changes at PageTurn's swap (before paint), so the footer follows the page, not the tap.
   const [onPage, setOnPage] = useState<string | number>(0);
   // The DISPLAY letter picked on this scene's check (for Report a problem), reset with `checked`.
@@ -132,6 +142,7 @@ export default function LessonPlayer() {
   // At the swap (before the new page is painted): back to the top, and the controls follow the page.
   const onSwap = useCallback((to: string | number) => {
     scrollRef.current?.scrollTo({ y: 0, animated: false });
+    scrollY.current = 0;
     setOnPage(to);
   }, []);
   // The new page is placed (its footer with it): hand focus to Back if it changed shape.
@@ -223,6 +234,13 @@ export default function LessonPlayer() {
   // Lesson complete keep the closer 24 (a forest panel and a moment, not a page of text).
   const anchor = showingDone || scene.type === 'title' ? space.xl : ANCHOR;
   const onCheck = scene.type === 'check';
+  // Mobile 1.37: a check was answered and its verdict + explanation laid out. The scene starts
+  // `anchor` below the top of the scroll content (the page turn adds no offset), so add it to
+  // get scroll positions, then scroll just enough to show the explanation above the bar.
+  const revealAnswer = (box: RevealBox) => {
+    const y = revealScrollY({ top: anchor + box.top, bottom: anchor + box.bottom }, viewportH.current, footerH, scrollY.current);
+    if (y !== null) scrollRef.current?.scrollTo({ y, animated: !reduceMotion });
+  };
 
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
@@ -257,6 +275,9 @@ export default function LessonPlayer() {
       <View style={{ flex: 1 }}>
         <ScrollView
           ref={scrollRef}
+          onLayout={(e) => (viewportH.current = e.nativeEvent.layout.height)}
+          onScroll={(e) => (scrollY.current = e.nativeEvent.contentOffset.y)}
+          scrollEventThrottle={32}
           // Pad by the sticky footer + 24, so the sources line on the last scene is never under it.
           contentContainerStyle={{ flexGrow: 1, paddingHorizontal: space.gutter, paddingTop: anchor, paddingBottom: footerH + space.xl }}
         >
@@ -291,6 +312,7 @@ export default function LessonPlayer() {
                     setChecked(true);
                     setPicked(letter);
                   }}
+                  onReveal={revealAnswer}
                   perm={perms[index]}
                   art={`branch${toneIndex % 5}` as BotanyKind}
                   tone={domainColor(toneIndex, true)}
