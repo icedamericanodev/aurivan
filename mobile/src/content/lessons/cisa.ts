@@ -2163,7 +2163,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'Size changes the control, not the risk. As the IS (information systems) auditor, you look first for anyone who can change code or data and also hide it. Where a small team cannot split duties, look for an independent review after the fact, such as production changes matched to approved tickets. You recommend; management decides.',
+        body: 'A small team has the same risk; it needs a different control. As the IS (information systems) auditor, you look first for anyone who can change code or data and also hide it. Where duties cannot be split, look for a compensating control: another check on the same risk, such as an independent review of change logs.',
       },
       {
         type: 'trap',
@@ -2173,7 +2173,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'Hunt for the person who can both do and hide. In a small team, choose the independent after-the-fact review over self-reporting, signed pledges or a note in the risk register. When asked who defines conflicting duties, look for the business process owners, not IT security alone.',
+        body: 'Hunt for the person who can both do and hide. In a small team, choose the independent after-the-fact review over self-reporting, signed pledges or a note in the risk register. When asked who defines conflicting duties, look for the business process owners, not IT security alone. You recommend; management decides.',
       },
       {
         type: 'check',
@@ -2197,11 +2197,11 @@ export const CISA_LESSONS: Lesson[] = [
           'The administrator signs a yearly conduct pledge',
           'Management records the conflict in the risk register',
           'The owner repeats each database update to confirm it',
-          'A second person matches changes to approved tickets',
+          'A second person checks change logs against tickets',
         ],
         correctIndex: 3,
         explanation:
-          'An independent person checking production changes against approved tickets detects anything done outside the process. Recording the conflict in the register is tempting because it looks formal, but it documents the risk without detecting a single wrong change. Repeating every update is impractical.',
+          'An independent person checking the logs of production and database changes against approved tickets detects anything done outside the process; it rests on logs because the administrator can change data directly. Recording the conflict in the register is tempting because it looks formal, but it documents the risk without detecting a single wrong change. Repeating every update is impractical.',
       },
       {
         type: 'check',
@@ -2243,22 +2243,22 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'A risk response, or risk treatment, is management’s choice of what to do about a risk: accept it, mitigate (reduce) it, transfer (share) part of it, or avoid it. The aim is that the residual risk, what remains afterward, fits within the risk appetite the board has set. The risk owner chooses; the IS (information systems) auditor checks that the choice holds up.',
+        body: 'A risk response, or risk treatment, is management’s choice of what to do about a risk: accept it, mitigate (reduce) it, transfer (share) part of it, or avoid it. The aim is that the residual risk, what remains afterward, fits within the risk appetite: the amount of risk the board is willing to live with. The risk owner chooses; the IS (information systems) auditor checks that the choice holds up.',
       },
       {
         type: 'flow',
         heading: 'Picking a response',
         steps: [
-          { label: 'Within appetite?', note: 'Accept it, with the owner’s decision recorded' },
-          { label: 'Can a control bring it within?', note: 'Mitigate, if the loss it prevents justifies its cost' },
-          { label: 'Can part of the cost be shared?', note: 'Transfer that part, through insurance or a contract; accountability stays' },
+          { label: 'Within appetite?', note: 'Yes: accept it, with the owner’s decision recorded' },
+          { label: 'Can a control bring it within appetite?', note: 'Yes: mitigate, if the loss it prevents justifies its cost' },
           {
-            label: 'Nothing brings it within?',
-            note: 'Avoid: stop or redesign the activity, or seek a documented exception from senior management',
+            label: 'Can part of the cost be shared?',
+            note: 'Yes: transfer it through insurance or a contract. Only the bill is shared; the organization still answers for the risk',
           },
+          { label: 'Nothing brings it within?', note: 'Then avoid: stop or redesign the activity' },
         ],
         caption:
-          'A short budget does not change the logic: fund legal and regulatory duties first, then the most loss reduced per dollar, and escalate what is left.',
+          'Ask in order and stop at the first yes. A short budget does not change the logic: fund legal and regulatory duties first, then the fixes that cut the most loss per dollar, and escalate what is left.',
       },
       {
         type: 'analogy',
@@ -2268,13 +2268,13 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'A response must change the exposure, not just the paperwork. As the IS auditor, you check that each significant risk has an owned response that brings the residual risk within appetite, and that unfunded risks above tolerance reach senior management for a documented decision. You recommend; management chooses.',
+        body: 'A response must change the exposure, not just the paperwork. As the IS auditor, you check that each significant risk has an owned response that brings the residual risk within appetite, and that risks still above appetite, with no money to fix them, reach senior management for a documented decision. You recommend; management chooses.',
       },
       {
         type: 'trap',
         heading: 'The exam trap',
         trap: '“The fix is expensive, so accept the risk.”',
-        why: 'Acceptance suits risks within appetite. A severe risk with a workable fix is mitigated; if nothing brings it within appetite, it is avoided, or kept only through a documented exception at the right level.',
+        why: 'Acceptance suits risks within appetite. A severe risk with a workable fix is mitigated. If no control or transfer brings it within the appetite the board set, the activity is stopped or redesigned.',
       },
       {
         type: 'tip',
@@ -2292,27 +2292,27 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 3,
         explanation:
-          'When no control or transfer brings a risk within appetite, the remaining choice is to avoid it: stop or redesign the activity. A chief executive’s signature is tempting because it looks like proper authority, but accepting a risk far above the board’s appetite overrides that appetite rather than respecting it.',
+          'When no control or transfer brings a risk within appetite, stop or redesign the activity. A chief executive’s signature is tempting because it looks like authority, but risk outside appetite is never fixed by one executive signing an acceptance: the board set that appetite, and the exposure stays exactly as large.',
       },
       {
         type: 'check',
         question:
-          'This year’s budget funds fixes for 6 of 10 high-priority IT risks, and three of them face legal deadlines. How should the IS auditor recommend ranking them?',
+          'This year’s budget funds fixes for 6 of the 10 high-priority IT risks, and 3 of the 10 face legal deadlines. How should the IS auditor recommend ranking them?',
         options: [
-          'Legal deadlines first, then most loss reduced per dollar',
-          'The six with the highest impact, whatever the deadlines',
+          'Start with the 3 legal deadlines, then the best-value fixes',
+          'The 6 with the highest impact, whatever the deadlines',
           'Wait for next year’s larger budget before acting',
           'Buy cyber insurance in place of the fixes',
         ],
         correctIndex: 0,
         explanation:
-          'Mandatory obligations come first, then the fixes that cut the most expected loss for the money; unfunded risks above tolerance go to senior management. Ranking by impact alone is tempting because it sounds risk-based, but it can leave a legal deadline missed, adding penalties to the risk.',
+          'Mandatory obligations come first, then the fixes that cut the most expected loss for the money; risks left unfunded above appetite go to senior management. Ranking by impact alone is tempting because it sounds risk-based, but it can leave a legal deadline missed, adding penalties to the risk.',
       },
       {
         type: 'check',
-        question: 'A logistics firm is buying cyber insurance. Which choice MOST improves the policy’s value as a way to transfer risk?',
+        question: 'A logistics firm is buying cyber insurance. Which choice would make the policy BEST at transferring the firm’s risk?',
         options: [
-          'The lowest premium offered for broad coverage',
+          'The lowest premium offered for the broadest coverage',
           'The highest limit any insurer will offer',
           'Limits set from the firm’s measured loss exposure',
           'Automatic yearly renewal on unchanged terms',
@@ -3161,7 +3161,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Test time is always limited, so the technique matters as much as the effort. Black-box tests are designed from the requirements without seeing the code; white-box tests from the code’s own logic; gray-box tests use partial knowledge, such as the database design. Good testing puts effort where failure would hurt most (risk-based testing), and can show that its tests would catch a fault.',
+        body: 'Test time is always limited, so the technique matters as much as the effort. Good testing puts effort where failure would hurt most (risk-based testing) and proves its tests would actually catch a mistake. Under a fixed date, cutting testing a little everywhere hides risk everywhere: ship a smaller, fully tested release, and defer the rest with the business owner formally accepting the risk.',
       },
       {
         type: 'stack',
@@ -3175,17 +3175,17 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Code coverage', note: 'Shows which lines of code ran during testing, not whether the results were checked' },
           { label: 'Mutation testing', note: 'Plants small deliberate faults to see whether the tests notice them' },
         ],
-        caption: 'High coverage with a poor mutation score means the tests run the code without really checking it.',
+        caption: 'If coverage is high but most planted faults go unnoticed, the tests run the code without really checking the answers.',
       },
       {
-        type: 'idea',
-        heading: 'When the deadline will not move',
-        body: 'Under a fixed date, cutting testing a little everywhere hides risk everywhere. The sounder choice is a smaller release, fully tested, with the rest deferred and the risk of deferring it formally accepted. The business owner decides what ships; the IS (information systems) auditor reports what the testing does and does not prove.',
+        type: 'analogy',
+        heading: 'Think of a month-end reviewer',
+        body: 'To learn whether a month-end reviewer really reads the reconciliations, slip in one wrong figure on purpose. If the pack comes back signed off, the review only looked busy. That is mutation testing. A reviewer who turned every page (coverage) proves nothing if the planted error got through.',
       },
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'Test effort follows risk, and evidence must prove what it claims. As the IS auditor, you check that every change got regression testing, that effort went where failure hurts most, and that a coverage figure is backed by proof that the tests catch faults. You report the gaps; the owner decides what ships.',
+        body: 'Test effort follows risk, and evidence must prove what it claims. As the IS (information systems) auditor, you check that every change got regression testing, that effort went where failure hurts most, and that a coverage figure is backed by proof that the tests catch faults. You report the gaps; the owner decides what ships.',
       },
       {
         type: 'trap',
@@ -3195,7 +3195,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'Match the cue to the technique. A range such as 18 to 65: boundary values. “Do the tests catch faults?”: mutation testing. Any change: regression. Little time: risk-based testing. Under a fixed deadline, cut scope, not testing.',
+        body: 'Match the cue to the technique. A range such as 18 to 65: boundary values. Asked whether tests catch faults: mutation testing. Any change: regression. Little time: risk-based testing. Under a fixed deadline, cut scope, not testing.',
       },
       {
         type: 'check',
@@ -3214,9 +3214,9 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'Tests run 92% of a claims module’s code, yet errors keep reaching users. Which step BEST shows whether the tests actually catch faults?',
+          'Tests run 92% of a claims module’s code, yet errors keep reaching users. Which step BEST shows whether the tests would notice a wrong result?',
         options: [
-          'Raise the coverage goal to the remaining lines',
+          'Raise the coverage goal to cover the remaining lines',
           'Plant small faults and see whether the tests fail',
           'Scan the source code each time it is saved',
           'Load-test the module at peak claim volumes',
@@ -3228,7 +3228,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A tax-filing feature must ship on a fixed legal date in four weeks. Two optional dashboards in the same release are still failing acceptance tests. What should the IS auditor recommend?',
+          'A tax-filing feature must ship on a fixed legal date in four weeks. Two optional dashboards in the same release are still failing acceptance tests, the business users’ sign-off checks. What should the IS auditor recommend?',
         options: [
           'Ship everything and fix the dashboards in production',
           'Delay the whole release until the dashboards pass',
@@ -4426,7 +4426,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'An untested recovery plan is a guess. Plan testing exercises the continuity and disaster recovery plans to find gaps safely, before a real disaster does. Before any test, define its scope, its objectives, measurable pass or fail criteria, and stop conditions: events, such as a threat to the live (production) systems, that end the test at once.',
+        body: 'An untested recovery plan is a guess. Plan testing exercises the continuity plan (keeping the business going) and the disaster recovery plan (bringing IT back) to find gaps safely. Before any test, define its scope, its objectives, measurable pass or fail criteria, and stop conditions: events, such as a threat to the live (production) systems, that end the test at once.',
       },
       {
         type: 'flow',
@@ -4434,12 +4434,12 @@ export const CISA_LESSONS: Lesson[] = [
         steps: [
           { label: 'Checklist review', note: 'Teams check the plan’s contents and contacts against reality' },
           { label: 'Walkthrough (tabletop)', note: 'The team talks through a scenario, testing roles and decisions' },
-          { label: 'Simulation', note: 'A timed scenario is played out without moving live processing' },
+          { label: 'Simulation', note: 'Like a walkthrough, but timed, with people carrying out the steps; live systems stay untouched' },
           { label: 'Parallel test', note: 'Recovery systems process real data while production keeps running' },
-          { label: 'Full interruption', note: 'Production is shut down and moved to the recovery site' },
+          { label: 'Full interruption', note: 'Production is shut down and work fails over (switches) to the recovery site' },
         ],
         caption:
-          'Each step adds realism and risk. Move up only when the step below works; the most critical systems need periodic parallel or full tests.',
+          'Each step adds realism and risk. Move to the next step only when the one before it works; the most critical systems need periodic parallel or full tests.',
       },
       {
         type: 'analogy',
@@ -4459,7 +4459,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'A new team or plan starts with a walkthrough. Proving real volumes without touching production calls for a parallel test; full interruption comes last. For results, trust timestamped system records over memories or signed summaries, and look for each gap’s owner and retest.',
+        body: 'A new team or plan starts with a discussion-based test, such as a walkthrough. Proving real volumes without touching production calls for a parallel test; full interruption comes last. For results, trust timestamped system records over memories or signed summaries, and look for each gap’s owner and retest.',
       },
       {
         type: 'check',
@@ -4540,20 +4540,20 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'stack',
         heading: 'Three levels of sanitization',
         layers: [
-          { label: 'Clear', note: 'Overwrite so ordinary tools cannot recover the data; fits media reused in-house' },
           {
-            label: 'Purge',
-            note: 'Defeat even laboratory recovery, for example with a drive’s verified secure-erase command; fits media leaving your control',
+            label: 'Clear',
+            note: 'Overwrite so ordinary tools cannot recover the data; one verified pass is enough on modern drives. Fits reuse in-house',
           },
-          { label: 'Destroy', note: 'Shred, disintegrate or burn; fits the most sensitive data, and media that cannot be purged' },
+          { label: 'Purge', note: 'Defeat even laboratory recovery, such as with a drive’s built-in secure-erase feature. Fits media leaving your control' },
+          { label: 'Destroy', note: 'Shred, disintegrate or burn. Fits the most sensitive data, and media no purge works on, such as damaged drives' },
         ],
         caption:
-          'Match the method to the media: degaussing, erasing with a strong magnet, works on magnetic disks and tapes but not on solid-state drives.',
+          'Degaussing (a strong magnet) purges magnetic disks and tapes, not solid-state drives. In the cloud, where you cannot touch the disks, destroying the encryption keys purges the data: cryptographic erase.',
       },
       {
         type: 'analogy',
-        heading: 'Think of old letters',
-        body: 'A letter dropped in the recycling bin can be read by anyone who fishes it out. Torn in half, by anyone patient. Cross-cut shredded, by nobody. Which one you choose depends on what the letter says and whose bin it is going into.',
+        heading: 'Think of a written page',
+        body: 'Tearing out a book’s index leaves every page readable: that is deleting. Painting over the text stops any casual reader: clear, fine for your own office. Bleaching it so even a lab finds nothing: purge, fine to hand to strangers. Shredding and burning it: destroy, for the most secret pages.',
       },
       {
         type: 'idea',
@@ -4564,7 +4564,7 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'trap',
         heading: 'The exam trap',
         trap: '“Ask the cloud provider to shred the disks that held our data.”',
-        why: 'Cloud storage is shared and spread across many disks, so one customer cannot have them destroyed. Destroying the customer’s own encryption keys, called cryptographic erase, makes the data unreadable, and the key-destruction log is the proof.',
+        why: 'Cloud storage is shared and spread across many disks, so one customer cannot have them destroyed. Cryptographic erase, destroying the customer’s own keys, makes the data unreadable, and the key-destruction log is the proof.',
       },
       {
         type: 'tip',
@@ -4576,20 +4576,20 @@ export const CISA_LESSONS: Lesson[] = [
           'A school district must return leased laptops whose disks held student records. What should the IS auditor recommend before they go back?',
         options: [
           'Delete the student files and empty the trash folder',
-          'Purge the disks with a verified method suited to them',
+          'Purge the disks with a verified, suitable method',
           'Reinstall the operating system over the old one',
           'Keep the disks and pay the lessor to replace them',
         ],
         correctIndex: 1,
         explanation:
-          'Leased laptops leave the district’s control, so the data must be purged, and the purge verified. Keeping the disks is tempting because nothing leaves, but it costs more than needed when a verified purge already makes the data unrecoverable. Deleting files or reinstalling leaves data recoverable.',
+          'The laptops leave the district’s control, so the rule is purge, and a verified purge defeats even laboratory recovery. Keeping the disks is tempting because nothing leaves, but destroying is for media that cannot be purged; here it adds cost without adding safety. Deleting files or reinstalling leaves data recoverable.',
       },
       {
         type: 'check',
         question:
           'A university is giving retired lab computers to a charity. What proof would BEST satisfy the IS auditor that research data on their drives is gone?',
         options: [
-          'A sanitization certificate per drive, by serial number',
+          'Sanitization certificates matched to serial numbers',
           'The lab manager’s note that the drives were erased',
           'The charity’s written promise to erase the drives',
           'Photos of the computers boxed before pickup',
@@ -4601,16 +4601,16 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'An IT team overwrites the disks of returned sales laptops before reissuing them and logs each serial number, but never checks whether old data can still be read. What should concern the IS auditor MOST?',
+          'An IT team overwrites the hard disk drives of returned sales laptops with an approved tool, logs each serial number, date and method, and reissues them the same day. What should concern the IS auditor MOST?',
         options: [
           'The log does not name who ran each wipe',
           'Overwriting is used rather than shredding',
-          'One overwrite pass may not be enough',
-          'A failed wipe could leave old data readable',
+          'One overwrite pass may not be enough for these drives',
+          'No one confirms that each wipe actually worked',
         ],
         correctIndex: 3,
         explanation:
-          'Without verification, a wipe that failed looks the same in the log as one that worked, and the next user could read the old files. A missing technician name is tempting as an accountability gap, but it puts no data at risk. One overwrite pass is accepted for clearing modern drives, and laptops staying in-house need clearing, not shredding.',
+          'Nothing confirms the wipes worked, so a failed wipe looks the same in the log as one that succeeded, and the next user could read the old files. A missing technician name is tempting as an accountability gap, but it puts no data at risk. One overwrite pass is accepted for clearing modern drives, and laptops staying in-house need clearing, not shredding.',
       },
     ],
   },
@@ -4643,7 +4643,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'A database writes every change to its transaction log (or journal) before the change counts. The log keeps each record as it was (the before-image) and as it became (the after-image). Recovery uses that log, plus backups, to return the database to a correct, consistent state after a crash, corrupt storage or a bad update.',
+        body: 'A database writes every change to its transaction log (or journal) first. A change is committed once its whole transaction finishes; half-done work is uncommitted. The log keeps each record as it was (the before-image) and as it became (the after-image). With the log and backups, recovery reaches a consistent state, where every transaction is either fully in or fully out.',
       },
       {
         type: 'stack',
@@ -4664,13 +4664,13 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'Recovery must fit what the business agreed to lose. As the IS (information systems) auditor, you compare how often, and where, the log is copied with the recovery point objective (RPO): the most data loss the business accepts. When paths trade loss against time, you set out each one’s impact; the business owner chooses.',
+        body: 'Recovery must fit the loss the business accepts. As the IS (information systems) auditor, you check log copies against the recovery point objective (RPO), that accepted loss. When one path is complete and in time, you recommend it; when paths trade loss against time, you set out each one’s impact and the business owner chooses.',
       },
       {
         type: 'trap',
         heading: 'The exam trap',
         trap: '“Nightly full backups protect a database whose RPO is fifteen minutes.”',
-        why: 'A failure just before the next backup loses almost a day of work. Only log copies made more often than the RPO and kept on separate storage, or replication, keep the loss within minutes.',
+        why: 'A failure just before the next backup loses almost a day of work. Only log copies made at least as often as the RPO allows, kept on separate storage, or replication (a live copy on another server) keep the loss within minutes.',
       },
       {
         type: 'tip',
@@ -4683,7 +4683,7 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'Load the most recent backup and replay the journal',
           'Roll back half-done work; redo the completed work',
-          'Keep all transactions, including half-done ones',
+          'Keep every transaction, finished or not',
           'Ask warehouse staff to recount the stock',
         ],
         correctIndex: 1,
@@ -4707,7 +4707,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A claims database is corrupted two days before a regulatory filing. IT can restore an older backup quickly, losing a day of claims, or replay the log slowly and lose nothing. What should the IS auditor recommend?',
+          'A claims database is corrupted two days before a regulatory filing. Restoring an older backup is fast but loses a day of claims; replaying the log loses nothing but finishes after the filing is due. What should the IS auditor recommend?',
         options: [
           'Restore the older backup, since the deadline comes first',
           'Replay the log, since no data may ever be lost',
@@ -5979,7 +5979,7 @@ export const CISA_LESSONS: Lesson[] = [
     provenance: PROVENANCE,
     references: [
       'NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management)',
-      'NIST SP 800-175B Rev 1 (Guideline for Using Cryptographic Standards: Cryptographic Mechanisms)',
+      'NIST SP 800-175B Rev 1 (Guideline for Using Cryptographic Standards in the Federal Government: Cryptographic Mechanisms)',
       'ISO/IEC 27002:2022 Control 8.24 (Use of Cryptography)',
     ],
     outlineVersion: OUTLINE,
@@ -5990,29 +5990,29 @@ export const CISA_LESSONS: Lesson[] = [
     scenes: [
       {
         type: 'title',
-        kicker: 'Domain 5 · Encryption and key management',
+        kicker: 'Domain 5 · Key management',
         title: 'Guarding the encryption keys',
         subtitle: 'Strong encryption fails when its key is shared too widely, kept beside the data or destroyed too soon.',
       },
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Symmetric encryption uses one shared secret key both to lock and to unlock data. The Advanced Encryption Standard (AES) is the usual choice, fast enough for whole databases. Asymmetric encryption, with its public and private key pair, is slower, so it mainly delivers those shared keys safely. Either way, whoever holds the key can read the data, and whoever loses it loses the data.',
+        body: 'Symmetric encryption uses one shared secret key both to lock and to unlock data. The Advanced Encryption Standard (AES) is the usual choice, fast enough for whole databases. Asymmetric encryption uses a pair of keys, one public and one private; it is slower, so it is mostly used to send the shared key safely. Either way, whoever holds the key can read the data, and whoever loses it loses the data.',
       },
       {
         type: 'flow',
         layout: 'timeline',
         heading: 'A key’s life',
         steps: [
-          { label: 'Generate', note: 'In a hardware security module (a tamper-resistant key device) or a key service, never in code' },
+          { label: 'Generate', note: 'In a hardware security module (a tamper-resistant key device) or key service, never in program code' },
           { label: 'Deliver', note: 'By a separate route, never with the data it unlocks' },
-          { label: 'Store and use', note: 'Apart from the data, out of reach of the people who run it' },
+          { label: 'Back up', note: 'An encrypted copy kept elsewhere, so one failure cannot lock data away' },
+          { label: 'Store and use', note: 'Apart from the data, out of reach of the people who run its systems' },
           { label: 'Rotate', note: 'Replaced when its cryptoperiod, its approved lifetime, ends' },
-          { label: 'Back up', note: 'An encrypted copy kept elsewhere, so one failure cannot lock the data away' },
           { label: 'Destroy', note: 'Only after the data it protects is past its retention period' },
         ],
         caption:
-          'One key per device or partner keeps a stolen key’s damage small. Risky steps, such as exporting a key, need dual control: two people acting together.',
+          'One key per device or partner limits a stolen key’s damage. Copying a key out of its secure device needs dual control: two people acting together.',
       },
       {
         type: 'analogy',
@@ -6028,11 +6028,11 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'trap',
         heading: 'The exam trap',
         trap: '“We use AES with 256-bit keys, so the data is safe whatever else we do.”',
-        why: 'The algorithm is rarely the weak point. A strong cipher protects little if the key sits beside the data, travels in the same email, or is shared by every device. Attackers go after the key, not the math.',
+        why: 'The algorithm is rarely the weak point. A strong algorithm protects little if the key sits beside the data, travels in the same email, or is shared by every device. Attackers go after the key, not the math.',
       },
       {
         type: 'tip',
-        body: 'For key questions, ask three things: who can use the key, does it live apart from the data, and what happens if it is lost? One key shared by many devices, a key sent with the data, and a key destroyed while its data must still be kept are classic findings. Fix excess access at the permission, not by rotating.',
+        body: 'For key questions, ask: who can use the key, does it live apart from the data, and what happens if it is lost? One key shared by many devices, a key sent with the data, and a key destroyed while its data must still be kept are classic findings. If too many people can use a key, remove their permission; a new key would work for them too.',
       },
       {
         type: 'check',
@@ -6041,7 +6041,7 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'Scanners may slow down while encrypting each record',
           'Changing the key later means updating each scanner',
-          'A key pulled from one scanner exposes the whole fleet',
+          'One scanner’s extracted key exposes them all',
           'Delivery records may arrive late on busy networks',
         ],
         correctIndex: 2,
@@ -6053,7 +6053,7 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'A new rule says encryption keys are destroyed after three years. Some of those keys protect backups that the law requires keeping for seven years. What should concern the IS auditor MOST?',
         options: [
-          'Those backups would become permanently unreadable',
+          'The backups could never be decrypted again',
           'Two people may not witness each key destruction',
           'Attackers could recover keys after destruction',
           'Three years may be too long a key lifetime',
@@ -6070,7 +6070,7 @@ export const CISA_LESSONS: Lesson[] = [
           'Rotate the payroll key to a new version today',
           'Encrypt the database again with a second key',
           'Have the payroll owner accept the access as low risk',
-          'Remove decrypt rights from staff who do not need them',
+          'Revoke decrypt rights the 57 extra staff hold',
         ],
         correctIndex: 3,
         explanation:
@@ -6089,7 +6089,7 @@ export const CISA_LESSONS: Lesson[] = [
     provenance: PROVENANCE,
     references: [
       'NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment)',
-      'PCI DSS v4.0 Requirement 11.4 (Penetration Testing)',
+      'PCI DSS v4.0.1 Requirement 11.4 (Penetration Testing)',
     ],
     outlineVersion: OUTLINE,
     lastReviewed: L3_L5_REVIEWED,
@@ -6114,19 +6114,16 @@ export const CISA_LESSONS: Lesson[] = [
         layers: [
           {
             label: 'Where testers start',
-            note: 'External: from the internet. Internal: inside the network, as an insider or an attacker with a foothold would',
+            note: 'External: from the internet. Internal: inside the network, like an insider or an attacker who already got in',
           },
-          {
-            label: 'What testers know',
-            note: 'Black box: little beyond a name. Gray box: some details, such as a user account. White box: full designs, code and accounts',
-          },
+          { label: 'What testers know', note: 'Black box: little but a name. Gray box: some details, such as an account. White box: designs, code and accounts' },
           {
             label: 'Who is warned',
-            note: 'Blind: defenders know, testers know little. Double-blind: defenders are not told either. Targeted: both sides work together',
+            note: 'Blind: the defenders, the security team, are told. Double-blind: they are not. Targeted: both sides work together',
           },
         ],
         caption:
-          'More knowledge finds more flaws in the time paid for; less warning shows whether defenders notice. In a double-blind test, senior management and a named contact still know.',
+          'Black box is about what testers know; blind is about who is warned. Telling testers more finds more flaws in the days you pay for; warning defenders less shows whether they notice.',
       },
       {
         type: 'analogy',
@@ -6146,12 +6143,12 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'Read the stem for the goal. “Would anyone notice?” points to double-blind. “Deepest coverage in limited time” points to white box. “Insiders” points to an internal test that starts with an account. If testing is about to begin without signed approval and agreed rules, fix that first.',
+        body: 'Read the stem for the goal. “Would anyone notice?” points to double-blind; even then, senior management and a named contact know. “Deepest coverage in limited time” points to white box. “Insiders” points to an internal test that starts with an account. No signed approval and agreed rules yet? Fix that first.',
       },
       {
         type: 'check',
         question:
-          'A testing firm will attack a hospital’s internal network on Monday. The only approval is a chat message from the network lead. What should the IS auditor recommend FIRST?',
+          'A testing firm will attack a hospital’s internal network on Monday. The only go-ahead is a chat message from the network lead. What should the IS auditor recommend FIRST?',
         options: [
           'Signed senior management approval and agreed test rules',
           'A check of the testers’ professional certifications',
@@ -6179,7 +6176,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'check',
         question:
-          'A retailer offers a clean external black-box test as proof that staff with network accounts cannot reach card data. What is the IS auditor’s GREATEST concern?',
+          'A retailer offers an external black-box test that found nothing as proof that staff with network accounts cannot reach card data. What is the IS auditor’s GREATEST concern?',
         options: [
           'The testers’ tools may not be the newest available',
           'The results describe a single point in time',
@@ -6221,18 +6218,21 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'An intrusion detection system (IDS) watches network traffic, or activity on one server, for signs of attack and raises an alert. An intrusion prevention system (IPS) can also block, but only when it sits inline, in the path the traffic takes. Fed a copy of the traffic from a switch (a mirrored port), it can only alert. An inline device also needs a failure setting: fail open lets traffic through unchecked; fail closed stops it all.',
+        body: 'An intrusion detection system (IDS) watches network traffic, or activity on one server, for signs of attack and raises an alert. An intrusion prevention system (IPS) can also block attacks, but only when it sits inline, in the path the traffic takes. An IPS that gets only a copy of the traffic, from a mirrored port on a network switch, can only alert.',
       },
       {
         type: 'stack',
         heading: 'Three ways to recognize an attack',
         layers: [
           { label: 'Signature', note: 'Matches patterns of known attacks. Precise, but blind to brand-new (zero-day) attacks until updated' },
-          { label: 'Anomaly', note: 'Learns normal activity, a baseline, and flags departures. Catches new attacks; raises more false alarms' },
-          { label: 'Heuristic', note: 'Expert rules about suspicious behavior, such as one computer probing hundreds of ports' },
+          { label: 'Anomaly', note: 'Learns what is normal for this network, a baseline, and flags departures. Catches new attacks; more false alarms' },
+          {
+            label: 'Heuristic',
+            note: 'Fixed rules for behavior suspicious anywhere, such as one computer trying hundreds of ports (service entry points)',
+          },
         ],
         caption:
-          'A false alarm (false positive) wastes time; a missed attack (false negative) is worse. Tune noisy rules rather than switching them off, and learn baselines in a clean period, or an attack becomes “normal”.',
+          'A missed attack (false negative) is worse than a false alarm (false positive). Tune noisy rules rather than switching them off, and let a baseline learn only when nothing bad is going on, or it learns the attack as normal.',
       },
       {
         type: 'analogy',
@@ -6242,7 +6242,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'Judge a control against its purpose. As the IS (information systems) auditor, you check where each device sits, which detection methods are on, which rules were switched off and why, and whether simulated attacks raise alerts. A quiet console proves nothing on its own.',
+        body: 'Judge a control against its purpose. As the IS (information systems) auditor, you check where each device sits, which detection methods are on, which rules were switched off and why, and whether simulated attacks raise alerts. A screen with no alerts proves nothing on its own.',
       },
       {
         type: 'trap',
@@ -6252,7 +6252,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'Check placement first: on a copied (mirrored) port, a device can only alert. For attacks nobody has seen, look for anomaly detection. For noise, tuning beats switching rules off. Fail open or fail closed trades security against availability, so the business owner chooses.',
+        body: 'Check placement first: on a mirrored port, a device can only alert. For attacks nobody has seen, look for anomaly detection; for noise, tune rather than switch off. If an inline device fails, fail open keeps traffic flowing unchecked (favoring availability); fail closed stops it (favoring security). The business owner chooses.',
       },
       {
         type: 'check',
@@ -6290,7 +6290,7 @@ export const CISA_LESSONS: Lesson[] = [
           'Switch them off, since analyst time is limited',
           'Keep them, but send their alerts to a separate queue',
           'Replace them with the vendor’s default rule set',
-          'Adjust the rules so backup traffic no longer trips them',
+          'Tune the rules to exclude the scheduled jobs',
         ],
         correctIndex: 3,
         explanation:
