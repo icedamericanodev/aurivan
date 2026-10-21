@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.27.1] — Corrected reference
+
+### Fixed
+- The audit standard on fraud and illegal acts now shows its current title in question references.
+
 ## [v12.27] — Reading the exam
 
 ### New
