@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.28.1] — Gender-neutral wording
+
+### Improved
+- Study notes and practice questions now use gender-neutral wording, and one recovery question is clearer.
+
 ## [v12.28] — Safer backups and analytics
 
 ### Fixed
