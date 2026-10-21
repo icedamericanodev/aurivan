@@ -3479,59 +3479,6 @@ header {
   .study-rec-dismiss { min-width: 44px; min-height: 44px; padding: 10px; }
 }
 
-/* TRIPLET COMPANIONS — surfaced below tips on the explanation panel.
-   Teal left-border (--accent2) intentionally distinct from the navy
-   (--accent) scenario block at top of card. */
-.triplet-companions {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent2);
-  border-radius: 0 8px 8px 0;
-  padding: 12px 16px;
-  margin-top: 16px;
-}
-.tc-label {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--accent2);
-  margin-bottom: 6px;
-  font-weight: 600;
-}
-.tc-scenario {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px;
-  color: var(--text2);
-  line-height: 1.55;
-  margin-bottom: 10px;
-}
-.tc-chips {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.tc-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 100px;
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text2);
-}
-.tc-chip-role {
-  color: var(--accent2);
-  letter-spacing: 0;
-}
-.tc-chip-qid {
-  color: var(--muted);
-}
-
 /* CHANGELOG */
 .changelog-overlay {
   position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;
@@ -5554,7 +5501,6 @@ header.app-header .brand-lockup { height: 28px; }
 .vine-key .vine-leaf, .vine-cue .vine-leaf { color: var(--accent); }
 .vine-key .vine-cap, .vine-cue .vine-cap { color: var(--accent-text); }
 .vine-elim .vine-leaf, .vine-elim .vine-cap { color: var(--tip); }
-.vr-panel .triplet-companions { margin-top: var(--sp-xxl); }
 
 .vr-src {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--sp-lg);
@@ -6525,6 +6471,8 @@ html { scroll-padding-bottom: 104px; }
 
 <div id="flagModal"></div>
 <div id="changelogModal"></div>
+<!-- Toasts: one live region, in the page from the start so screen readers announce each message. -->
+<div id="globalToast" class="toast" role="status" aria-live="polite"></div>
 <div id="feedbackModal"></div>
 
 <!-- PHONE / TABLET BOTTOM BAR (<1024px): the four sections. Active = ink label,
@@ -7284,10 +7232,15 @@ function resolvedSavedQuestions(list) {
 document.addEventListener('qb:domain-loaded', function() {
   try {
     if (typeof S === 'undefined' || !S) return;
+    var before = (S.bookmarks || []).length;
     S.bookmarks = rehydrateSavedQuestions(S.bookmarks);
     S.missedQuestions = rehydrateSavedQuestions(S.missedQuestions);
-    if (S.activeTab === 'bookmarks' && typeof renderBookmarks === 'function') renderBookmarks();
+    if (S.activeTab === 'bookmarks' && typeof bkRefreshRows === 'function') bkRefreshRows(S.bookmarks.length !== before);
   } catch (e) {}
+});
+// A bank that failed to load: its Saved rows say so instead of "Loading".
+document.addEventListener('qb:domain-error', function() {
+  try { if (typeof S !== 'undefined' && S && S.activeTab === 'bookmarks' && typeof bkRefreshRows === 'function') bkRefreshRows(false); } catch (e) {}
 });
 
 // ── MOCK RESUME ──
@@ -8130,11 +8083,12 @@ function exportProgress(otherId) {
 // A progress file is JSON and well under this size (browser storage holds about
 // 5 MB); a far larger file is not one, and reading it would freeze the page.
 var IMPORT_MAX_BYTES = 20 * 1024 * 1024;
+var IMPORT_MSG_NOT_PROGRESS = 'That file isn\'t a KaiSip progress file. Choose the .json file you exported from KaiSip. Your progress hasn\'t changed.';
 function importProgress(file) {
   if (!file) return;
   var isJson = /\.json$/i.test(String(file.name || '')) || /json/i.test(String(file.type || ''));
-  if (!isJson) { showToast('That file is not a KaiSip progress file.', 'info', 3200); return; }
-  if (file.size > IMPORT_MAX_BYTES) { showToast('That file is too large to be a KaiSip progress file.', 'info', 3200); return; }
+  if (!isJson) { showToast(IMPORT_MSG_NOT_PROGRESS, 'info', 6000); return; }
+  if (file.size > IMPORT_MAX_BYTES) { showToast('That file is too large to be a KaiSip progress file. Choose the .json file you exported. Your progress hasn\'t changed.', 'info', 6000); return; }
   var reader = new FileReader();
   reader.onload = function(e) {
     try {
@@ -8142,7 +8096,7 @@ function importProgress(file) {
       var ok = isPlainObj(data) && data.cisaMindsetExport === true && data.version === 1
         && isPlainObj(data.profile) && isPlainObj(data.profile.state);
       var state = ok ? normalizeImportedState(data.profile.state) : null;
-      if (!state) { showToast('That file is not a KaiSip progress file.', 'info', 3200); return; }
+      if (!state) { showToast(IMPORT_MSG_NOT_PROGRESS, 'info', 6000); return; }
       // The plant never grows past what the file's own progress supports.
       try { plantClampImported(state); } catch (e2) {}
       if (!confirm('Replace the progress in this browser with the progress in this file?')) return;
@@ -8156,7 +8110,7 @@ function importProgress(file) {
       leavingForReload = true;
       location.reload();
     } catch (ex) {
-      showToast('Could not read that file.', 'info', 3200);
+      showToast('We couldn\'t read that file. Try exporting it again. Your progress hasn\'t changed.', 'info', 6000);
     }
   };
   reader.readAsText(file);
@@ -8227,7 +8181,7 @@ function showYourData() {
     + '<div class="yd-actions">'
     + '<button type="button" class="act-btn" onclick="exportProgress()">Export progress</button>'
     + '<button type="button" class="act-btn" onclick="document.getElementById(\'ydFile\').click()">Import progress</button>'
-    + '<input type="file" id="ydFile" accept=".json" hidden onchange="importProgress(this.files[0])">'
+    + '<input type="file" id="ydFile" accept=".json" hidden onchange="importProgress(this.files[0]);this.value=\'\'">'
     + '</div>'
     + othersHtml
     + '<div class="yd-danger-row">'
@@ -8622,14 +8576,13 @@ function sanitizeIllustrationSvg(s) {
   try {
     var tpl = document.createElement('template');
     tpl.innerHTML = s;
-    var bad = false;
     (function clean(node) {
       Array.prototype.slice.call(node.children).forEach(function(el) {
-        if (!SVG_SAFE_TAGS.test(String(el.localName).toLowerCase())) { el.remove(); bad = true; return; }
+        if (!SVG_SAFE_TAGS.test(String(el.localName).toLowerCase())) { el.remove(); return; }
         Array.prototype.slice.call(el.attributes).forEach(function(a) {
           var v = String(a.value);
           if (!SVG_SAFE_ATTRS.test(a.name.toLowerCase()) || /url\s*\(\s*['"]?\s*[^#'"\s]|javascript:/i.test(v)) {
-            el.removeAttribute(a.name); bad = true;
+            el.removeAttribute(a.name);
           }
         });
         clean(el);
@@ -8637,7 +8590,6 @@ function sanitizeIllustrationSvg(s) {
     })(tpl.content);
     var root = tpl.content.firstElementChild;
     if (root && String(root.localName).toLowerCase() === 'svg') out = tpl.innerHTML;
-    if (bad && window.console) console.warn('Illustration SVG: removed markup that is not allowed.');
   } catch (e) { out = ''; }
   svgSafeCache[s] = out;
   return out;
@@ -13963,7 +13915,7 @@ function selectAnswer(chosen, _ignoredCorrect) {
 // wrong-answer note) → "Best answer" row (only after a miss) → "Why X" →
 // the vine (Key idea + Eliminate / Final two / Exam cue) → source row →
 // "Next question". Exam-style questions keep their compact contract: no
-// coaching, no key idea, no tips, no companion strip.
+// coaching, no key idea, no tips.
 var VR_LEAF_PATH = 'M35.5 2.5V19A16.5 16.5 0 1 1 19 2.5z';
 var VR_TICK = 'M12.5 19.5l4.5 4.5 9-9.5';
 var VR_CROSS = 'M13 13l12 12M25 13 13 25';
@@ -14131,7 +14083,6 @@ function showResult(chosen, correct, timeout, info) {
     + vineHtml
     // Below the rail's breakpoint: the note link and "Add a note" (railSync).
     + '<div class="vr-study" id="vrStudy"></div>'
-    + (inExamMode ? '' : buildTripletCompanionsHtml(q))
     + srcHtml
     + footHtml;
   p.classList.add('show', 'vr-panel');
@@ -16979,10 +16930,13 @@ function showToast(msg, type, dur) {
     t.setAttribute('aria-live', 'polite');
     document.body.appendChild(t);
   }
-  t.textContent = msg;
-  t.className = 'toast' + (type ? ' toast-' + type : '');
+  // Shown first, then the text on the next frame: a live region announces a
+  // change, so the message is read out even when it repeats.
+  t.textContent = '';
+  t.className = 'toast show' + (type ? ' toast-' + type : '');
   clearTimeout(_toastTimeout);
-  setTimeout(function(){ t.classList.add('show'); }, 10);
+  var raf = window.requestAnimationFrame || function(f) { return setTimeout(f, 16); };
+  raf(function(){ t.textContent = msg; });
   _toastTimeout = setTimeout(function(){
     t.classList.remove('show');
   }, dur || 2200);
@@ -17315,6 +17269,47 @@ function setBkTagFilter(t) {
   renderBookmarks();
 }
 
+// Why a saved question cannot be opened yet (its bank is loading or failed),
+// or null when its bank is ready.
+var SAVED_LOAD_ERROR_MSG = 'Couldn\'t load this question. Check your connection, then reload the page.';
+var SAVED_LOADING_MSG = 'This question is still loading. Try again in a moment.';
+function savedQuestionUnavailableMsg(id) {
+  var d = savedQuestionDomain(id);
+  if (!d || savedQuestionBankLoaded(id)) return null;
+  if (!(window.QB_LOADING || {})[d] && (window.QB_LOAD_ERROR || {})[d]) return SAVED_LOAD_ERROR_MSG;
+  return SAVED_LOADING_MSG;
+}
+// The text of one Saved row: the question from the bank, or why it is not there yet.
+function bkRowTextHtml(id) {
+  var bankQ = findQuestionById(id);
+  var qText = bankQ && typeof bankQ.question === 'string' ? bankQ.question : '';
+  if (qText) return escapeHtml(qText.substring(0, 120)) + (qText.length > 120 ? '&#8230;' : '');
+  return savedQuestionUnavailableMsg(id) === SAVED_LOAD_ERROR_MSG ? escapeHtml(SAVED_LOAD_ERROR_MSG) : 'Loading this question&#8230;';
+}
+// A bank arrived (or failed): update the Saved rows in place, so focus and the
+// open tag menu stay where they are. Only when a saved question is gone from
+// its bank is the list drawn again, with focus put back on the same row.
+function bkRefreshRows(listChanged) {
+  var area = document.getElementById('bkList');
+  if (!area) return;
+  if (listChanged) {
+    var a = document.activeElement;
+    var row = a && area.contains(a) && a.closest ? a.closest('[data-qid]') : null;
+    var qid = row ? row.getAttribute('data-qid') : null;
+    var isSel = !!(a && a.classList && a.classList.contains('bk-tag-select'));
+    renderBookmarks();
+    if (qid) {
+      var back = Array.prototype.filter.call(area.querySelectorAll(isSel ? '.bk-tag-select' : '.bk-item'), function(el) { return el.getAttribute('data-qid') === qid; })[0];
+      if (back) { try { back.focus({ preventScroll: true }); } catch (e) {} }
+    }
+    return;
+  }
+  Array.prototype.forEach.call(area.querySelectorAll('.bk-item[data-qid]'), function(el) {
+    var t = el.querySelector('.bk-item-text');
+    var html = bkRowTextHtml(el.getAttribute('data-qid'));
+    if (t && t.innerHTML !== html) t.innerHTML = html;
+  });
+}
 function renderBookmarks() {
   var area = document.getElementById('bkList');
   if (!area) return;
@@ -17352,8 +17347,6 @@ function renderBookmarks() {
   var itemsHtml = filtered.map(function(bk) {
     // The domain comes from the id and the text from the bank, never from the saved copy.
     var d = savedQuestionDomain(bk.id) || '';
-    var bankQ = findQuestionById(bk.id);
-    var qText = bankQ && typeof bankQ.question === 'string' ? bankQ.question : '';
     var safeId = escapeHtml(bk.id || '');
     var tagInfo = BK_TAG_OPTIONS.find(function(t){ return t.value === bk.tag; });
     var tagHtml = tagInfo ? '<div style="margin-top:6px"><span class="bk-item-tag ' + tagInfo.cls + '">' + tagInfo.label + '</span></div>' : '';
@@ -17364,7 +17357,7 @@ function renderBookmarks() {
     var tagSel = '<select class="bk-tag-select" data-qid="' + safeId + '" onchange="bkTagChange(this)" onclick="event.stopPropagation()">' + tagOpts + '</select>';
     return '<div class="bk-item" data-qid="' + safeId + '" onclick="bkDrillClick(this)">'
       + '<span class="bk-d-tag">' + '<span class="dom-dot" style="background:' + (dColors[d]||'var(--muted)') + '"></span>' + 'D' + escapeHtml(d || '?') + '</span>'
-      + '<div style="flex:1;min-width:0"><div class="bk-item-text">' + (qText ? escapeHtml(qText.substring(0,120)) + (qText.length > 120 ? '&#8230;' : '') : 'Loading this question&#8230;') + '</div>' + tagHtml + qNoteBlockHtml(bk.id, 'q-note bk-item-note') + '</div>'
+      + '<div style="flex:1;min-width:0"><div class="bk-item-text">' + bkRowTextHtml(bk.id) + '</div>' + tagHtml + qNoteBlockHtml(bk.id, 'q-note bk-item-note') + '</div>'
       + tagSel + '</div>';
   }).join('');
 
@@ -17381,7 +17374,12 @@ function startBookmarkDrill(tagFilter) {
     var found = (QB[d]||[]).find(function(q){ return q.id === bk.id; });
     if (found) fullQs.push(found);
   });
-  if (!fullQs.length) { showToast('Questions not found', 'info', 1800); return; }
+  if (!fullQs.length) {
+    var why = null;
+    pool.some(function(bk) { why = savedQuestionUnavailableMsg(bk.id); return !!why; });
+    showToast(why || 'Questions not found', 'info', why ? 6000 : 1800);
+    return;
+  }
   clearAllTimers();
   S.selectedDomain = 'all';
   S.queues['all'] = fullQs.sort(function(){ return Math.random()-0.5; });
@@ -17419,7 +17417,11 @@ function drillSingleBookmark(qId) {
   if (!bk) return;
   var d = String(bk.domain || '');
   var found = (QB[d]||[]).find(function(q){ return q.id === qId; });
-  if (!found) { showToast('Question not found', 'info', 1500); return; }
+  if (!found) {
+    var why = savedQuestionUnavailableMsg(qId);
+    showToast(why || 'Question not found', 'info', why ? 6000 : 1500);
+    return;
+  }
   clearAllTimers();
   S.selectedDomain = d;
   S.queues[d] = [found];
@@ -17795,7 +17797,9 @@ function startMissedReview(d) {
   }
   // Missed questions are shown from the bank; none there yet means it is still loading.
   if (!missedReviewQueue.length) {
-    showToast(S.missedQuestions && S.missedQuestions.length ? 'Your missed questions are still loading. Try again in a moment.' : 'No missed questions yet', 'info', 2600);
+    var failed = (S.missedQuestions || []).some(function(q) { return q && savedQuestionUnavailableMsg(q.id) === SAVED_LOAD_ERROR_MSG; });
+    if (!(S.missedQuestions && S.missedQuestions.length)) showToast('No missed questions yet', 'info', 2600);
+    else showToast(failed ? 'Couldn\'t load your missed questions. Check your connection, then reload the page.' : 'Your missed questions are still loading. Try again in a moment.', 'info', 6000);
     return;
   }
   missedReviewIndex = 0;
@@ -18197,33 +18201,6 @@ function toggleMockDetail(i) {
   if (row) row.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
 
-// ── TRIPLET COMPANIONS DATA ──
-// Maps a question ID to its sibling questions in a triplet/pair scenario.
-// Embedded inline (source: data/triplet_manifest.json) so the static app
-// can render cross-links without an extra fetch. Update by regenerating
-// from the manifest if the triplet roster changes.
-const TRIPLET_COMPANIONS = {"d2_181":{"scenario_key":"Capacity and Growth Planning","role":"BEST","companions":[{"qid":"d2_183","role":"PRIMARY"},{"qid":"d2_045","role":"FIRST"}]},"d2_183":{"scenario_key":"Capacity and Growth Planning","role":"PRIMARY","companions":[{"qid":"d2_181","role":"BEST"},{"qid":"d2_045","role":"FIRST"}]},"d2_045":{"scenario_key":"Capacity and Growth Planning","role":"FIRST","companions":[{"qid":"d2_181","role":"BEST"},{"qid":"d2_183","role":"PRIMARY"}]},"d2_182":{"scenario_key":"Multi-Jurisdiction Privacy Program Scaling","role":"BEST","companions":[{"qid":"d2_184","role":"MOST_IMPORTANT"},{"qid":"d2_066","role":"FIRST"}]},"d2_184":{"scenario_key":"Multi-Jurisdiction Privacy Program Scaling","role":"MOST_IMPORTANT","companions":[{"qid":"d2_182","role":"BEST"},{"qid":"d2_066","role":"FIRST"}]},"d2_066":{"scenario_key":"Multi-Jurisdiction Privacy Program Scaling","role":"FIRST","companions":[{"qid":"d2_182","role":"BEST"},{"qid":"d2_184","role":"MOST_IMPORTANT"}]},"d5_261":{"scenario_key":"Ransomware Detection in EDR","role":"BEST","companions":[{"qid":"d5_271","role":"PRIMARY"},{"qid":"d5_057","role":"FIRST"}]},"d5_271":{"scenario_key":"Ransomware Detection in EDR","role":"PRIMARY","companions":[{"qid":"d5_261","role":"BEST"},{"qid":"d5_057","role":"FIRST"}]},"d5_057":{"scenario_key":"Ransomware Detection in EDR","role":"FIRST","companions":[{"qid":"d5_261","role":"BEST"},{"qid":"d5_271","role":"PRIMARY"}]},"d5_262":{"scenario_key":"Privileged Credential Leak","role":"BEST","companions":[{"qid":"d5_272","role":"PRIMARY"},{"qid":"d5_039","role":"FIRST"}]},"d5_272":{"scenario_key":"Privileged Credential Leak","role":"PRIMARY","companions":[{"qid":"d5_262","role":"BEST"},{"qid":"d5_039","role":"FIRST"}]},"d5_039":{"scenario_key":"Privileged Credential Leak","role":"FIRST","companions":[{"qid":"d5_262","role":"BEST"},{"qid":"d5_272","role":"PRIMARY"}]},"d5_263":{"scenario_key":"Insider Threat Active Exfiltration","role":"BEST","companions":[{"qid":"d5_273","role":"PRIMARY"},{"qid":"d5_060","role":"FIRST"}]},"d5_273":{"scenario_key":"Insider Threat Active Exfiltration","role":"PRIMARY","companions":[{"qid":"d5_263","role":"BEST"},{"qid":"d5_060","role":"FIRST"}]},"d5_060":{"scenario_key":"Insider Threat Active Exfiltration","role":"FIRST","companions":[{"qid":"d5_263","role":"BEST"},{"qid":"d5_273","role":"PRIMARY"}]},"d5_264":{"scenario_key":"BEC Wire-Transfer Fraud","role":"BEST","companions":[{"qid":"d5_274","role":"PRIMARY"},{"qid":"d5_112","role":"FIRST"}]},"d5_274":{"scenario_key":"BEC Wire-Transfer Fraud","role":"PRIMARY","companions":[{"qid":"d5_264","role":"BEST"},{"qid":"d5_112","role":"FIRST"}]},"d5_112":{"scenario_key":"BEC Wire-Transfer Fraud","role":"FIRST","companions":[{"qid":"d5_264","role":"BEST"},{"qid":"d5_274","role":"PRIMARY"}]},"d5_265":{"scenario_key":"CA Compromise","role":"BEST","companions":[{"qid":"d5_275","role":"PRIMARY"},{"qid":"d5_077","role":"FIRST"}]},"d5_275":{"scenario_key":"CA Compromise","role":"PRIMARY","companions":[{"qid":"d5_265","role":"BEST"},{"qid":"d5_077","role":"FIRST"}]},"d5_077":{"scenario_key":"CA Compromise","role":"FIRST","companions":[{"qid":"d5_265","role":"BEST"},{"qid":"d5_275","role":"PRIMARY"}]},"d5_276":{"scenario_key":"Container Escape Detection","role":"PRIMARY","companions":[{"qid":"d5_098","role":"FIRST"}]},"d5_098":{"scenario_key":"Container Escape Detection","role":"FIRST","companions":[{"qid":"d5_276","role":"PRIMARY"}]},"d5_277":{"scenario_key":"Zero-Day Vulnerability Mitigation","role":"PRIMARY","companions":[{"qid":"d5_137","role":"FIRST"}]},"d5_137":{"scenario_key":"Zero-Day Vulnerability Mitigation","role":"FIRST","companions":[{"qid":"d5_277","role":"PRIMARY"}]},"d5_278":{"scenario_key":"Phishing Initial Access","role":"MOST_IMPORTANT","companions":[{"qid":"d5_119","role":"FIRST"}]},"d5_119":{"scenario_key":"Phishing Initial Access","role":"FIRST","companions":[{"qid":"d5_278","role":"MOST_IMPORTANT"}]},"d5_279":{"scenario_key":"Cloud Configuration Drift on Production Security Control","role":"MOST_IMPORTANT","companions":[{"qid":"d5_154","role":"FIRST"}]},"d5_154":{"scenario_key":"Cloud Configuration Drift on Production Security Control","role":"FIRST","companions":[{"qid":"d5_279","role":"MOST_IMPORTANT"}]},"d5_280":{"scenario_key":"SaaS Customer Material Data Breach","role":"MOST_IMPORTANT","companions":[{"qid":"d5_173","role":"FIRST"}]},"d5_173":{"scenario_key":"SaaS Customer Material Data Breach","role":"FIRST","companions":[{"qid":"d5_280","role":"MOST_IMPORTANT"}]}};
-
-// Build the "companion questions" strip injected below the tips block on the
-// explanation panel. Uses --accent2 (teal) to distinguish it from the navy
-// scenario block at the top of the question card.
-function buildTripletCompanionsHtml(q) {
-  if (!q || !q.id) return '';
-  var meta = TRIPLET_COMPANIONS[q.id];
-  if (!meta || !meta.companions || !meta.companions.length) return '';
-  var roleLabels = { 'BEST': 'BEST', 'PRIMARY': 'PRIMARY', 'MOST_IMPORTANT': 'MOST IMPORTANT', 'FIRST': 'FIRST' };
-  var chips = meta.companions.map(function(c) {
-    var r = roleLabels[c.role] || c.role;
-    return '<span class="tc-chip"><span class="tc-chip-role">' + escapeHtml(r) + '</span><span class="tc-chip-qid">' + escapeHtml(c.qid) + '</span></span>';
-  }).join('');
-  var myRole = roleLabels[meta.role] || meta.role;
-  return '<div class="triplet-companions">'
-    + '<div class="tc-label">Companion questions</div>'
-    + '<div class="tc-scenario">' + escapeHtml(meta.scenario_key) + ' &middot; you answered the <strong>' + escapeHtml(myRole) + '</strong> framing</div>'
-    + '<div class="tc-chips">' + chips + '</div>'
-    + '</div>';
-}
-
 // â”€â”€ CHANGELOG â”€â”€
 // ── WHAT'S NEW DATA ──
 // User-facing changelog. Entries are grouped by category (new / improved /
@@ -18236,7 +18213,9 @@ const CHANGELOG = [
     title: 'Safer backups and analytics',
     items: [
       { cat: 'fixed', text: 'Importing a backup file is now stricter about what it accepts, to keep your progress and this site safe.' },
-      { cat: 'improved', text: 'Analytics now loads only after you accept it in the cookie banner. If you decline, it never loads.' }
+      { cat: 'improved', text: 'Analytics now loads only after you accept it in the cookie banner. If you decline, it never loads.' },
+      { cat: 'improved', text: 'The feedback form no longer includes your device details unless you tick the box.' },
+      { cat: 'improved', text: 'Removed the companion-question chips under some answers; they pointed to questions that have since changed.' }
     ]
   },
   {
@@ -19340,7 +19319,7 @@ function showFeedback() {
     + '<div class="fb-helper" id="fbExamNote">Please don\'t include questions from the real exam: candidates agree to keep them confidential.</div>'
     + '</div>'
     + '<div class="fb-row">'
-    + '<label class="fb-checkrow"><input type="checkbox" id="fbDiag" checked> '
+    + '<label class="fb-checkrow"><input type="checkbox" id="fbDiag"> '
     + 'Include anonymous diagnostic info (app version, browser, screen size). Helps with bug reports.'
     + '</label>'
     + '</div>'
@@ -19386,9 +19365,8 @@ function _readFeedbackForm() {
       'Theme: ' + (document.documentElement.getAttribute('data-theme') || 'light'),
       'Sent: ' + new Date().toISOString()
     ].join('\n');
-  } else {
-    diag = 'App version: ' + APP_VERSION;
   }
+  // Unticked: no diagnostics at all (not even the app version).
   return { type: FEEDBACK_STATE.type || 'general', msg: msg, diag: diag };
 }
 function sendFeedback() {
@@ -19401,7 +19379,7 @@ function sendFeedback() {
   var body = new URLSearchParams();
   body.append(FEEDBACK_FIELD_TYPE, data.type);
   body.append(FEEDBACK_FIELD_MESSAGE, data.msg);
-  body.append(FEEDBACK_FIELD_DIAG, data.diag);
+  if (data.diag) body.append(FEEDBACK_FIELD_DIAG, data.diag);
   // Google Forms responses don't expose CORS headers, so we use no-cors and
   // treat any non-network-error resolution as success. Network errors (offline,
   // DNS failure) reject and are surfaced with a graceful mailto fallback.
@@ -19435,7 +19413,7 @@ function sendFeedbackViaMailto() {
     bug:     'KaiSip bug report'
   };
   var subject = subjectMap[data.type] || subjectMap.general;
-  var body = data.msg + '\n\n---\n' + data.diag;
+  var body = data.msg + (data.diag ? '\n\n---\n' + data.diag : '');
   var mailto = 'mailto:' + encodeURIComponent(FEEDBACK_EMAIL)
     + '?subject=' + encodeURIComponent(subject)
     + '&body=' + encodeURIComponent(body);
@@ -19471,10 +19449,10 @@ function syncThemeSwitch() {
 
 // ── EXAM-REALISTIC MODE TOGGLE (v10.10) ──
 // Two ways to practice: STUDY mode (default) shows dense scenario blocks plus
-// post-answer tips, mindset coaching, and triplet-companion chips so the learner
-// internalizes audit reasoning. EXAM mode merges scenario into the stem as a
-// single paragraph and hides all pedagogical add-ons so the surface looks like
-// the real ISACA exam — no tips, no companion chips, no mindset alerts.
+// post-answer tips and mindset coaching so the learner internalizes audit
+// reasoning. EXAM mode merges scenario into the stem as a single paragraph and
+// hides all pedagogical add-ons so the surface looks like the real ISACA exam:
+// no tips, no mindset alerts.
 function toggleExamMode() {
   if (!window.S) window.S = {};
   S.examMode = !S.examMode;
