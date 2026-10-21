@@ -8,10 +8,12 @@
 #
 # IMPORTANT (Cloudflare): when two rules match one path, Cloudflare JOINS
 # their values for the same header name. So:
-#   - the catch-all /* rule below has NO Content-Security-Policy and NO
-#     Cache-Control;
-#   - every page has its OWN rule with its own policy, so a page never ends
-#     up with two policies.
+#   - the catch-all /* rule below has NO Cache-Control (each path sets its own);
+#   - its Content-Security-Policy is the web app's policy. A joined policy is
+#     safe: the browser reads "A, B" as two policies and enforces BOTH, so a
+#     path with its own stricter policy (the legal pages, /data, /assets)
+#     stays at least that strict. Any other address (Cloudflare shows the app
+#     for an unknown path) still gets the app's policy.
 # Cloudflare serves /privacy.html at /privacy (it drops ".html"), so each page
 # is listed both ways. A new page needs its own rule here (and a line in
 # scripts/build_site.sh).
@@ -19,6 +21,13 @@
 # Every response.
 #   HSTS: browsers use HTTPS only for this site for a year. ("preload" is left
 #   out on purpose; add it only after this has run for a month.)
+#   Content-Security-Policy (ENFORCED, web v12.28): what the web app loads and
+#   nothing else. Scripts: this site, the inline scripts and onclick handlers
+#   ('unsafe-inline' stays until they move into a .js file), Google Analytics
+#   (loaded only after the visitor accepts) and Cloudflare Web Analytics.
+#   Fonts are self-hosted. Connections: this site, the Google Forms used for
+#   feedback and flags, Google Analytics, Cloudflare Web Analytics. No
+#   plugins, no <base>, no framing.
 /*
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Content-Type-Options: nosniff
@@ -26,25 +35,14 @@
   X-Frame-Options: DENY
   Cross-Origin-Opener-Policy: same-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com/gtag/js https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://docs.google.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com; frame-src https://docs.google.com; form-action https://docs.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
 
-# The web app. Two policies:
-#   1. ENFORCED, small and safe today: no framing, no plugins, no <base> tricks.
-#   2. REPORT-ONLY, the full list of what the app loads today (Google
-#      Analytics, Google Fonts, Google Forms for feedback, the offline helper
-#      made from a blob, Cloudflare Web Analytics). Report-only blocks nothing:
-#      breaks show as warnings in the browser console. When the console is
-#      clean on every screen, rename the header to Content-Security-Policy
-#      (and merge it with policy 1). 'unsafe-inline' stays until the inline
-#      onclick handlers move into a separate .js file. Once the fonts are
-#      self-hosted and Google Analytics is gone, drop those hosts.
+# The web app: its policy comes from the /* rule above (one policy, so
+# nothing to join here).
 /
   Cache-Control: public, max-age=0, must-revalidate
-  Content-Security-Policy: frame-ancestors 'none'; object-src 'none'; base-uri 'none'
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://docs.google.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com; frame-src https://docs.google.com; form-action https://docs.google.com; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
 /index.html
   Cache-Control: public, max-age=0, must-revalidate
-  Content-Security-Policy: frame-ancestors 'none'; object-src 'none'; base-uri 'none'
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://docs.google.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com; frame-src https://docs.google.com; form-action https://docs.google.com; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
 
 # The legal pages have one tiny inline script (it applies the theme saved by
 # the app), allowed by its exact hash; scripts/build_site.sh fails if the

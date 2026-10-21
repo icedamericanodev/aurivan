@@ -4,6 +4,16 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.28] — Safer backups and analytics
+
+### Fixed
+- Importing a backup file is now stricter about what it accepts, to keep your progress and this site safe.
+
+### Improved
+- Analytics now loads only after you accept it in the cookie banner. If you decline, it never loads.
+- The feedback form no longer includes your device details unless you tick the box.
+- Removed the companion-question chips under some answers; they pointed to questions that have since changed.
+
 ## [v12.27.1] — Corrected reference
 
 ### Fixed
