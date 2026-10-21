@@ -30,12 +30,12 @@
  *   simply drawn, and nothing moves; the same words are there.
  * Every part is mounted (and readable) from the first frame.
  */
-import { useState, type ReactNode } from 'react';
-import { View } from 'react-native';
+import { useRef, useState, type ReactNode } from 'react';
+import { View, type LayoutChangeEvent } from 'react-native';
 import type { Lesson, Scene } from '../content/lessons/types';
 import { displayToOriginal, isCheckCorrect, lettersFor, originalToDisplay, renderText, type Permutation } from '../engine/shuffle';
 import { LETTERS, type Letter } from '../content/types';
-import { sayLater } from '../lib/a11y';
+import { moveFocus } from '../lib/a11y';
 import { lessonNotes } from '../lib/outline';
 import { haptic } from '../lib/haptics';
 import { motion, radius, space } from '../theme/tokens';
@@ -413,10 +413,50 @@ function LayersScene({ scene }: { scene: Extract<Scene, { type: 'stack' }> }) {
   );
 }
 
+/**
+ * Where a check's answer block sits, in the scroll's content (mobile 1.37):
+ * `top` = the verdict's top edge, `bottom` = the explanation's last line.
+ */
+export interface RevealBox {
+  top: number;
+  bottom: number;
+}
+
+/** Breathing room kept above the verdict and below the explanation when the page scrolls to them. */
+export const REVEAL_GAP = space.lg;
+
+/**
+ * Mobile 1.37: after a check is answered, how far to scroll so the verdict
+ * and explanation are in view ABOVE the sticky Back / Next bar. Pure maths
+ * (exported for tests). Returns null when no scroll is needed.
+ *
+ * - Scroll just enough that the explanation's last line clears the bar
+ *   (the smallest move, so the option the learner picked stays on screen
+ *   whenever everything fits).
+ * - But never past the verdict's top (minus a small gap): when the
+ *   explanation is taller than the screen, the verdict leads.
+ * - Never scroll backwards: if the learner has already scrolled further
+ *   down, leave them where they are.
+ *
+ * `viewport` = the scroll view's height; `footer` = the sticky bar's height
+ * (it floats over the bottom of the scroll view); `scrollY` = where the
+ * scroll is now.
+ */
+export function revealScrollY(box: RevealBox, viewport: number, footer: number, scrollY: number): number | null {
+  // Visible area above the bar. Unknown (0) or tiny: just lead with the verdict.
+  const visible = viewport - footer;
+  const fitBottom = visible > 0 ? box.bottom + REVEAL_GAP - visible : Infinity;
+  const verdictTop = box.top - REVEAL_GAP;
+  const target = Math.max(0, Math.min(fitBottom, verdictTop));
+  // 1pt of slack, so a rounding difference never causes a pointless nudge.
+  return target > scrollY + 1 ? target : null;
+}
+
 export function SceneView({
   scene,
   lesson,
   onCheck,
+  onReveal,
   art,
   tone,
   perm,
@@ -426,6 +466,12 @@ export function SceneView({
   lesson: Lesson;
   /** A check was answered: right or not, and the DISPLAY letter picked (for Report a problem). */
   onCheck?: (correct: boolean, picked: Letter) => void;
+  /**
+   * Check scenes only (mobile 1.37): the answer block has been laid out, at
+   * these y positions measured from the top of the scene. The player uses it
+   * to scroll the explanation into view.
+   */
+  onReveal?: (box: RevealBox) => void;
   /**
    * Check scenes only: the option order to show. The player makes it once
    * per viewing, so going Back and Next shows the same order.
@@ -515,17 +561,19 @@ export function SceneView({
       return <KeyIdea caption="Exam-day shortcut" body={scene.body} />;
 
     case 'check':
-      return <CheckScene scene={scene} onCheck={onCheck} perm={perm ?? lettersFor(scene.options.length)} />;
+      return <CheckScene scene={scene} onCheck={onCheck} onReveal={onReveal} perm={perm ?? lettersFor(scene.options.length)} />;
   }
 }
 
 function CheckScene({
   scene,
   onCheck,
+  onReveal,
   perm,
 }: {
   scene: Extract<Scene, { type: 'check' }>;
   onCheck?: (correct: boolean, picked: Letter) => void;
+  onReveal?: (box: RevealBox) => void;
   perm: Permutation;
 }) {
   const { c } = useTheme();
@@ -538,6 +586,19 @@ function CheckScene({
   // The key as the learner sees it (the coach line names it on a miss).
   const keyLetter = originalToDisplay(LETTERS[scene.correctIndex], perm);
   const coach = right ? 'That’s the answer the exam wants.' : `The best answer is ${keyLetter}.`;
+  // Mobile 1.37: screen-reader focus moves to the verdict after a pick (as on the practice answer screen).
+  const verdictRef = useRef<View>(null);
+  // The answer block is reported to the player ONCE per pick (a later re-layout must not scroll again).
+  const reported = useRef(false);
+  const onAnswerLayout = (e: LayoutChangeEvent) => {
+    if (reported.current) return;
+    reported.current = true;
+    const { y, height } = e.nativeEvent.layout;
+    onReveal?.({ top: y, bottom: y + height });
+    // Focus moves only AFTER the scroll is issued, so the glide (~250–300 ms) has settled
+    // before it lands and VoiceOver / TalkBack never scroll to the verdict mid-glide.
+    moveFocus(verdictRef, 400);
+  };
 
   return (
     <View>
@@ -565,8 +626,10 @@ function CheckScene({
                 setPicked(letter);
                 if (isRight) haptic.success();
                 else haptic.error();
-                // Said once, after the tap's own feedback (a live region would say it twice).
-                sayLater(`${isRight ? 'Correct' : 'Not quite'}. ${isRight ? 'That’s the answer the exam wants.' : `The best answer is ${keyLetter}.`}`);
+                // Mobile 1.37: screen-reader focus then moves to the verdict (onAnswerLayout, after
+                // the scroll), the same pattern as the practice answer screen (session.tsx). Its
+                // label says it all once ("Not quite. The best answer is B."), so there is no
+                // separate announcement (that was cut off on iOS and doubled on Android).
                 onCheck?.(isRight, letter);
               }}
             />
@@ -574,13 +637,17 @@ function CheckScene({
         );
       })}
       {done && (
-        // The session's verdict (ui.md LP4): the leaf springs in, then the words.
-        <FadeIn dur="reveal">
-          <Verdict correct={right} coach={coach} />
-          <Gap h={space.md} />
-          {/* renderText maps any {{X}} letter reference to what is on screen. */}
-          <T v="body">{renderText(scene.explanation, perm)}</T>
-        </FadeIn>
+        // A plain View measures the answer block (FadeIn only fades and rises, so the
+        // layout is final at once): the player scrolls it into view (mobile 1.37).
+        <View onLayout={onAnswerLayout}>
+          {/* The session's verdict (ui.md LP4): the leaf springs in, then the words. */}
+          <FadeIn dur="reveal">
+            <Verdict ref={verdictRef} correct={right} coach={coach} />
+            <Gap h={space.md} />
+            {/* renderText maps any {{X}} letter reference to what is on screen. */}
+            <T v="body">{renderText(scene.explanation, perm)}</T>
+          </FadeIn>
+        </View>
       )}
     </View>
   );
