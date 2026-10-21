@@ -31,7 +31,7 @@ Sub-bullets and free-text content are ignored by the linter.
 - ISACA IT Audit Standard 1008 (Criteria)
 - ISACA IT Audit Standard 1205 (Evidence)
 - ISACA IT Audit Standard 1206 (Using the Work of Other Experts)
-- ISACA IS Audit and Assurance Standard 1207 (Irregularity and Illegal Acts)
+- ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts)
 - ISACA IT Audit Standard 1401 (Reporting)
 - ISACA IT Audit Standard 1402 (Follow-up Activities)
 - Standard 1401 (Reporting)
@@ -39,7 +39,7 @@ Sub-bullets and free-text content are ignored by the linter.
 ## ITAF — Performance Standards (colloquial topical references)
 
 These are widely-used colloquial references to ITAF Performance Standards
-grouped by topic. When a specific mandatory standard (1201–1208) covers the
+grouped by topic. When a specific mandatory standard (1201–1207) covers the
 same topic, prefer the specific standard; ITAF Performance Standards on X is
 acceptable when the reference is to the broader topical body of guidance.
 
@@ -1434,10 +1434,10 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - ISACA governance guidance on the audit committee
 
 ### ITAF
-- ITAF (Information Technology Assurance Framework) — Standards and Guidelines layering
-- ITAF (Information Technology Assurance Framework) — Standards layer authority
+- ITAF (IT Audit Framework) — Standards and Guidelines layering
+- ITAF (IT Audit Framework) — Standards layer authority
 - ITAF General Standards
-- ITAF Tools and Techniques (Information Technology Assurance Framework)
+- ITAF Tools and Techniques (IT Audit Framework)
 - ITAF — IT Audit Framework (ISACA)
 
 ### IIA
