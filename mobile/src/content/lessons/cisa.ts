@@ -25,6 +25,7 @@ const OUTLINE = 'CISA job practice 2024';
 const REVIEWED = '2026-10-07';
 const PHASE2_REVIEWED = '2026-10-08'; // Phase 2 lessons, after concept, teaching and novice reviews
 const D1_GAPS_REVIEWED = '2026-10-20'; // Domain 1 gap lessons (plan items L1 + L2), appended as orders 8–13
+const L3_L5_REVIEWED = '2026-10-21'; // Plan items L3–L5: Domain 5, Domain 4, and Domains 2–3 lessons, appended after each domain’s last lesson
 
 export const CISA_LESSONS: Lesson[] = [
   // ───────────────────────────── Domain 1 ─────────────────────────────
@@ -2111,6 +2112,218 @@ export const CISA_LESSONS: Lesson[] = [
     ],
   },
 
+  // Plan item L5 (2026-10-21): segregation of duties in IT, and choosing a risk response.
+  {
+    id: 'cisa-l-d2-sod',
+    certId: 'cisa',
+    domainId: '2',
+    order: 7,
+    title: 'Splitting duties in IT',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'ISO/IEC 27002:2022 Control 5.3 (Segregation of Duties)',
+      'NIST SP 800-53 Rev 5 AC-5 (Separation of Duties)',
+      'COBIT 2019 DSS06.03 (Manage roles, responsibilities, access privileges and levels of authority)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: L3_L5_REVIEWED,
+    topics: ['2A2'],
+    prepares: ['d2_008', 'd2_037', 'd2_206'],
+    notes: ['2A2.6'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 2 · IT governance',
+        title: 'Splitting duties in IT',
+        subtitle: 'Why nobody should be able to make a change and hide it, and what to do when a team is too small to split the work.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'Segregation of duties (SoD) splits a sensitive task so no single person can start, approve, carry out and hide it. Wrongdoing then needs a partner (collusion), which is harder to arrange and easier to catch. Business process owners decide which duties conflict; IT builds the roles that enforce the split.',
+      },
+      {
+        type: 'stack',
+        heading: 'Four IT jobs to keep apart',
+        layers: [
+          { label: 'Development', note: 'Writes and changes code; does not move it into the live (production) systems' },
+          { label: 'Operations', note: 'Runs production and moves approved changes into it' },
+          { label: 'Database administration', note: 'Looks after the databases; does not grant user access' },
+          { label: 'Security administration', note: 'Grants access and guards the logs; does not change code or data' },
+        ],
+        caption:
+          'The most dangerous mix, a toxic combination, is the power to change code or data and also alter the logs that would reveal it. Access builds up as people change jobs, so roles are reviewed regularly.',
+      },
+      {
+        type: 'analogy',
+        heading: 'Think of a shop till',
+        body: 'In a shop, the cashier takes the money, a supervisor approves refunds, and someone else counts the till at closing. If one person did all three, a fake refund could cover cash taken from the till, and the count would still balance. Splitting the jobs means a theft needs two people to agree.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Size changes the control, not the risk. As the IS (information systems) auditor, you look first for anyone who can change code or data and also hide it. Where a small team cannot split duties, look for an independent review after the fact, such as production changes matched to approved tickets. You recommend; management decides.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“The biggest segregation of duties worry is a user who can read many systems.”',
+        why: 'Broad read access is a confidentiality issue. The bigger segregation concern is the power to change data or code and also conceal it, for example by editing the logs.',
+      },
+      {
+        type: 'tip',
+        body: 'Hunt for the person who can both do and hide. In a small team, choose the independent after-the-fact review over self-reporting, signed pledges or a note in the risk register. When asked who defines conflicting duties, look for the business process owners, not IT security alone.',
+      },
+      {
+        type: 'check',
+        question:
+          'Which access held by one IT employee should worry the IS auditor MOST from a segregation of duties view?',
+        options: [
+          'A tester who can view, but not change, live data',
+          'A developer who can change payment code and clear its logs',
+          'An analyst who reads logs but cannot edit them',
+          'A help desk agent who resets passwords after identity checks',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Changing payment code and clearing the logs lets one person commit an error or fraud and erase the trail. Read-only access to live data is tempting to flag, but it raises confidentiality questions, not the ability to change something and conceal it.',
+      },
+      {
+        type: 'check',
+        question:
+          'At an eight-person software firm, one administrator can both release code to production and edit the customer database. Hiring is not an option. Which compensating control is BEST?',
+        options: [
+          'The administrator signs a yearly conduct pledge',
+          'Management records the conflict in the risk register',
+          'The owner repeats each database update to confirm it',
+          'A second person matches changes to approved tickets',
+        ],
+        correctIndex: 3,
+        explanation:
+          'An independent person checking production changes against approved tickets detects anything done outside the process. Recording the conflict in the register is tempting because it looks formal, but it documents the risk without detecting a single wrong change. Repeating every update is impractical.',
+      },
+      {
+        type: 'check',
+        question:
+          'Security staff alone wrote the rules that flag clashing roles in a new purchasing system; purchasing managers were never consulted. What should concern the IS auditor MOST?',
+        options: [
+          'Risky pairs of purchasing tasks may go undetected',
+          'Staff may be blocked from tasks their jobs need',
+          'Security staff may give themselves purchasing roles',
+          'The rules may delay the system’s launch',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Only the people who run purchasing know which task pairs let someone order, receive and pay for goods alone, so rules written without them can miss the dangerous ones. Blocked tasks are tempting because users would complain loudly, but that is a nuisance that gets noticed and fixed; a missed fraud path stays silent.',
+      },
+    ],
+  },
+  {
+    id: 'cisa-l-d2-risk-response',
+    certId: 'cisa',
+    domainId: '2',
+    order: 8,
+    title: 'Choosing a risk response',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: ['ISO 31000:2018 (Risk Management)', 'COBIT 2019 APO12 (Managed Risk)', 'COSO ERM (2017)'],
+    outlineVersion: OUTLINE,
+    lastReviewed: L3_L5_REVIEWED,
+    topics: ['2A5'],
+    prepares: ['d2_022', 'd2_089', 'd2_133'],
+    notes: ['2A5.4'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 2 · Risk management',
+        title: 'Choosing a risk response',
+        subtitle: 'Accept, reduce, share or avoid: how to pick the response that really brings a risk within limits.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'A risk response, or risk treatment, is management’s choice of what to do about a risk: accept it, mitigate (reduce) it, transfer (share) part of it, or avoid it. The aim is that the residual risk, what remains afterward, fits within the risk appetite the board has set. The risk owner chooses; the IS (information systems) auditor checks that the choice holds up.',
+      },
+      {
+        type: 'flow',
+        heading: 'Picking a response',
+        steps: [
+          { label: 'Within appetite?', note: 'Accept it, with the owner’s decision recorded' },
+          { label: 'Can a control bring it within?', note: 'Mitigate, if the loss it prevents justifies its cost' },
+          { label: 'Can part of the cost be shared?', note: 'Transfer that part, through insurance or a contract; accountability stays' },
+          {
+            label: 'Nothing brings it within?',
+            note: 'Avoid: stop or redesign the activity, or seek a documented exception from senior management',
+          },
+        ],
+        caption:
+          'A short budget does not change the logic: fund legal and regulatory duties first, then the most loss reduced per dollar, and escalate what is left.',
+      },
+      {
+        type: 'analogy',
+        heading: 'Think of a mountain road',
+        body: 'A family plans a drive on a road with rockfalls. If the risk is small, they go. If better tires make it safe enough, they buy them. Travel insurance pays the bills but does not stop a rock. If nothing makes the trip safe enough, they take another road or stay home.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'A response must change the exposure, not just the paperwork. As the IS auditor, you check that each significant risk has an owned response that brings the residual risk within appetite, and that unfunded risks above tolerance reach senior management for a documented decision. You recommend; management chooses.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“The fix is expensive, so accept the risk.”',
+        why: 'Acceptance suits risks within appetite. A severe risk with a workable fix is mitigated; if nothing brings it within appetite, it is avoided, or kept only through a documented exception at the right level.',
+      },
+      {
+        type: 'tip',
+        body: 'First ask: is the risk inside appetite? Inside: accept and record it. Outside: mitigate if a control works, transfer the money side, avoid if nothing works. Insurance sized to the measured exposure beats the biggest or cheapest policy. Short budget: legal duties first, then loss reduced per dollar.',
+      },
+      {
+        type: 'check',
+        question:
+          'A hospital wants to share patient records with a marketing partner. The privacy risk is far above appetite, and no control or contract brings it down enough. What should the IS auditor recommend?',
+        options: [
+          'Proceed once the chief executive signs a risk acceptance',
+          'Add monitoring of how the partner uses the records',
+          'Rely on the partner’s contract to carry the risk',
+          'Drop or redesign the data-sharing plan',
+        ],
+        correctIndex: 3,
+        explanation:
+          'When no control or transfer brings a risk within appetite, the remaining choice is to avoid it: stop or redesign the activity. A chief executive’s signature is tempting because it looks like proper authority, but accepting a risk far above the board’s appetite overrides that appetite rather than respecting it.',
+      },
+      {
+        type: 'check',
+        question:
+          'This year’s budget funds fixes for 6 of 10 high-priority IT risks, and three of them face legal deadlines. How should the IS auditor recommend ranking them?',
+        options: [
+          'Legal deadlines first, then most loss reduced per dollar',
+          'The six with the highest impact, whatever the deadlines',
+          'Wait for next year’s larger budget before acting',
+          'Buy cyber insurance in place of the fixes',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Mandatory obligations come first, then the fixes that cut the most expected loss for the money; unfunded risks above tolerance go to senior management. Ranking by impact alone is tempting because it sounds risk-based, but it can leave a legal deadline missed, adding penalties to the risk.',
+      },
+      {
+        type: 'check',
+        question: 'A logistics firm is buying cyber insurance. Which choice MOST improves the policy’s value as a way to transfer risk?',
+        options: [
+          'The lowest premium offered for broad coverage',
+          'The highest limit any insurer will offer',
+          'Limits set from the firm’s measured loss exposure',
+          'Automatic yearly renewal on unchanged terms',
+        ],
+        correctIndex: 2,
+        explanation:
+          'A policy transfers risk well when its limits, and the share the firm pays itself, match what an incident could actually cost. The highest limit is tempting because it feels safest, but premiums for cover beyond the real exposure buy little. The lowest premium may leave the real exposure uncovered.',
+      },
+    ],
+  },
+
   // ───────────────────────────── Domain 3 ─────────────────────────────
   {
     id: 'cisa-l-d3-pir',
@@ -2915,6 +3128,116 @@ export const CISA_LESSONS: Lesson[] = [
         correctIndex: 0,
         explanation:
           'Big-bang suits uniform, simple operations where a failure can be reversed quickly, because it avoids temporary links between old and new. The vendor’s promise is tempting, but when stores differ widely, one failure hits many different processes at once; a phased cutover limits that damage. Committee sign-off settles the date, not whether one cutover suits the stores.',
+      },
+    ],
+  },
+
+  // Plan item L5 (2026-10-21): test techniques, and testing under a fixed deadline.
+  {
+    id: 'cisa-l-d3-test-techniques',
+    certId: 'cisa',
+    domainId: '3',
+    order: 8,
+    title: 'Test techniques that find real defects',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'ISO/IEC 29119 (Software Testing)',
+      'COBIT 2019 BAI03.08 (Execute solution testing)',
+      'COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: L3_L5_REVIEWED,
+    topics: ['3B1'],
+    prepares: ['d3_082', 'd3_030', 'd3_020'],
+    notes: ['3B1.2', '3B1.5'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 3 · Testing',
+        title: 'Test techniques that find real defects',
+        subtitle: 'Which technique fits which risk, what coverage really proves, and what to cut when the deadline will not move.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'Test time is always limited, so the technique matters as much as the effort. Black-box tests are designed from the requirements without seeing the code; white-box tests from the code’s own logic; gray-box tests use partial knowledge, such as the database design. Good testing puts effort where failure would hurt most (risk-based testing), and can show that its tests would catch a fault.',
+      },
+      {
+        type: 'stack',
+        heading: 'Techniques and what each proves',
+        layers: [
+          { label: 'Regression testing', note: 'Rerun existing tests after any change, to confirm what was not changed still works' },
+          {
+            label: 'Boundary values',
+            note: 'Test on and either side of each limit, where off-by-one errors (one too many or too few) cluster',
+          },
+          { label: 'Code coverage', note: 'Shows which lines of code ran during testing, not whether the results were checked' },
+          { label: 'Mutation testing', note: 'Plants small deliberate faults to see whether the tests notice them' },
+        ],
+        caption: 'High coverage with a poor mutation score means the tests run the code without really checking it.',
+      },
+      {
+        type: 'idea',
+        heading: 'When the deadline will not move',
+        body: 'Under a fixed date, cutting testing a little everywhere hides risk everywhere. The sounder choice is a smaller release, fully tested, with the rest deferred and the risk of deferring it formally accepted. The business owner decides what ships; the IS (information systems) auditor reports what the testing does and does not prove.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Test effort follows risk, and evidence must prove what it claims. As the IS auditor, you check that every change got regression testing, that effort went where failure hurts most, and that a coverage figure is backed by proof that the tests catch faults. You report the gaps; the owner decides what ships.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“Only one line changed, so the release can skip regression testing.”',
+        why: 'Small changes often break things elsewhere, especially functions that depend on the changed code. Regression testing is how the team confirms everything else still works.',
+      },
+      {
+        type: 'tip',
+        body: 'Match the cue to the technique. A range such as 18 to 65: boundary values. “Do the tests catch faults?”: mutation testing. Any change: regression. Little time: risk-based testing. Under a fixed deadline, cut scope, not testing.',
+      },
+      {
+        type: 'check',
+        question:
+          'A loan screen accepts amounts from 1,000 to 50,000. With only a few test cases allowed, which set BEST catches off-by-one errors?',
+        options: [
+          '999, 1,000, 1,001, 49,999, 50,000 and 50,001',
+          'One typical value from each group of inputs',
+          'Random amounts spread across the whole range',
+          '25,000, the middle of the allowed range',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Off-by-one errors sit at the edges, so testing on and just either side of each limit catches them with few cases. One value per input group is tempting because it is also efficient, but a typical value from the middle of a group never touches the edge where these errors hide.',
+      },
+      {
+        type: 'check',
+        question:
+          'Tests run 92% of a claims module’s code, yet errors keep reaching users. Which step BEST shows whether the tests actually catch faults?',
+        options: [
+          'Raise the coverage goal to the remaining lines',
+          'Plant small faults and see whether the tests fail',
+          'Scan the source code each time it is saved',
+          'Load-test the module at peak claim volumes',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Mutation testing plants faults on purpose; tests that still pass are not checking the results. Raising coverage is tempting because 92% leaves a gap, but more coverage still shows only which code ran, not whether a wrong answer would be caught.',
+      },
+      {
+        type: 'check',
+        question:
+          'A tax-filing feature must ship on a fixed legal date in four weeks. Two optional dashboards in the same release are still failing acceptance tests. What should the IS auditor recommend?',
+        options: [
+          'Ship everything and fix the dashboards in production',
+          'Delay the whole release until the dashboards pass',
+          'Shorten testing across the release to fit the date',
+          'Ship the rest; defer the dashboards with risk accepted',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Releasing the fully tested, required part meets the legal date, and deferring the optional dashboards with the business owner’s formal risk acceptance keeps the risk visible. Delaying everything is tempting because it avoids shipping any defect, but it misses a legal date for features the law does not need.',
       },
     ],
   },
@@ -4070,6 +4393,330 @@ export const CISA_LESSONS: Lesson[] = [
         correctIndex: 1,
         explanation:
           'Named alternates remove the single point of failure, but without criteria each may judge differently, so a disaster is declared late, needlessly or inconsistently. Training load is tempting as a concern, but it is a cost of having alternates, not a gap in how decisions are made.',
+      },
+    ],
+  },
+
+  // Plan item L4 (2026-10-21): recovery plan testing, media sanitization, database recovery.
+  {
+    id: 'cisa-l-d4-dr-testing',
+    certId: 'cisa',
+    domainId: '4',
+    order: 11,
+    title: 'Testing the recovery plan',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'ISO 22301 Clause 8.5 (Exercise Programme)',
+      'NIST SP 800-84 (Guide to Test, Training, and Exercise Programs for IT Plans and Capabilities)',
+      'NIST SP 800-34 Rev 1 (Contingency Planning Guide for Federal Information Systems)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: L3_L5_REVIEWED,
+    topics: ['4B5'],
+    prepares: ['d4_190', 'd4_114', 'd4_116'],
+    notes: ['4B5.4'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 4 · Disaster recovery',
+        title: 'Testing the recovery plan',
+        subtitle: 'From talking it through to switching over for real: how tests build honest evidence that recovery works.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'An untested recovery plan is a guess. Plan testing exercises the continuity and disaster recovery plans to find gaps safely, before a real disaster does. Before any test, define its scope, its objectives, measurable pass or fail criteria, and stop conditions: events, such as a threat to the live (production) systems, that end the test at once.',
+      },
+      {
+        type: 'flow',
+        heading: 'From talking to doing',
+        steps: [
+          { label: 'Checklist review', note: 'Teams check the plan’s contents and contacts against reality' },
+          { label: 'Walkthrough (tabletop)', note: 'The team talks through a scenario, testing roles and decisions' },
+          { label: 'Simulation', note: 'A timed scenario is played out without moving live processing' },
+          { label: 'Parallel test', note: 'Recovery systems process real data while production keeps running' },
+          { label: 'Full interruption', note: 'Production is shut down and moved to the recovery site' },
+        ],
+        caption:
+          'Each step adds realism and risk. Move up only when the step below works; the most critical systems need periodic parallel or full tests.',
+      },
+      {
+        type: 'analogy',
+        heading: 'Think of a fire drill',
+        body: 'A school talks through its fire plan in a staff meeting before the first drill, then runs a drill with warning, and only later an unannounced one. Nobody starts by pulling the alarm during exams. If a stairwell door turns out to be locked, the drill carries on by another route, someone writes it down, and the door gets fixed.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'A test earns its value from honest evidence, not a clean pass. As the IS (information systems) auditor, you check that success was defined in advance, that failures and workarounds were recorded, that results rest on system records, and that each gap has an owner, a due date and a retest.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“The test is going badly, so stop it and rerun it next month for a clean result.”',
+        why: 'Failures are what the test exists to find. Carry on where it is safe, record each workaround, and report every gap with an owner and a date. Replacing a poor result with a rerun misleads management and regulators.',
+      },
+      {
+        type: 'tip',
+        body: 'A new team or plan starts with a walkthrough. Proving real volumes without touching production calls for a parallel test; full interruption comes last. For results, trust timestamped system records over memories or signed summaries, and look for each gap’s owner and retest.',
+      },
+      {
+        type: 'check',
+        question:
+          'A company has finished its first disaster recovery plan, and nobody on the recovery team has used it yet. Which test should the IS auditor recommend FIRST?',
+        options: [
+          'A walkthrough where the team talks through a scenario',
+          'A parallel test running live data at the recovery site',
+          'A full shutdown of production, moved to the recovery site',
+          'A vendor demonstration that the team watches',
+        ],
+        correctIndex: 0,
+        explanation:
+          'A walkthrough tests roles and decisions safely, so gaps surface before any system is touched. A parallel test is tempting because it is more realistic, but with an untried team and plan it risks confusion around live data; it belongs later in the progression.',
+      },
+      {
+        type: 'check',
+        question:
+          'Midway through a recovery test, engineers add a step missing from the written procedure, with no risk to production. What should the IS auditor recommend?',
+        options: [
+          'Stop the test until the procedure is rewritten',
+          'Let the step go ahead and have an observer record it',
+          'Leave the extra step out of the test report',
+          'Make the engineers follow the written steps exactly',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Continuing safely keeps the rest of the evidence, and recording the deviation lets the procedure be corrected afterward. Stopping is tempting because the written steps were wrong, but it throws away what the rest of the test would show. Leaving the step out of the report hides the gap.',
+      },
+      {
+        type: 'check',
+        question:
+          'A recovery team says its failover test met the four-hour recovery time objective, the longest outage the business accepts. Which evidence should the IS auditor rely on MOST?',
+        options: [
+          'The team lead’s signed summary of the results',
+          'The test plan’s target time for each system',
+          'Interviews with the engineers who ran the failover',
+          'Timestamped system records from the failover',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Records produced by the systems themselves show when each step really finished. A signed summary is tempting because it is formal, but it is the team’s own account, not independent evidence. Target times show the plan, not the result.',
+      },
+    ],
+  },
+
+  {
+    id: 'cisa-l-d4-disposal',
+    certId: 'cisa',
+    domainId: '4',
+    order: 12,
+    title: 'Wiping media before it leaves',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'NIST SP 800-88 Rev 2 (Guidelines for Media Sanitization)',
+      'ISO/IEC 27002:2022 Control 7.14 (Secure Disposal or Re-Use of Equipment)',
+      'COBIT 2019 BAI09 (Managed Assets)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: L3_L5_REVIEWED,
+    topics: ['4A2'],
+    prepares: ['d4_121', 'd4_251', 'd4_281'],
+    notes: ['4A2.3'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 4 · IT asset management',
+        title: 'Wiping media before it leaves',
+        subtitle: 'Deleting a file is not erasing it. How to make retired storage unreadable, and prove it.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'Deleting files or formatting a drive removes only the pointers to the data; the content can be recovered with ordinary tools. Media sanitization makes data on retired or reused storage unrecoverable: laptops, disks, tapes, phones and leased equipment. The method depends on two facts: how sensitive the data is, and whether the media will leave the organization’s control.',
+      },
+      {
+        type: 'stack',
+        heading: 'Three levels of sanitization',
+        layers: [
+          { label: 'Clear', note: 'Overwrite so ordinary tools cannot recover the data; fits media reused in-house' },
+          {
+            label: 'Purge',
+            note: 'Defeat even laboratory recovery, for example with a drive’s verified secure-erase command; fits media leaving your control',
+          },
+          { label: 'Destroy', note: 'Shred, disintegrate or burn; fits the most sensitive data, and media that cannot be purged' },
+        ],
+        caption:
+          'Match the method to the media: degaussing, erasing with a strong magnet, works on magnetic disks and tapes but not on solid-state drives.',
+      },
+      {
+        type: 'analogy',
+        heading: 'Think of old letters',
+        body: 'A letter dropped in the recycling bin can be read by anyone who fishes it out. Torn in half, by anyone patient. Cross-cut shredded, by nobody. Which one you choose depends on what the letter says and whose bin it is going into.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Proof matters as much as the wipe. As the IS (information systems) auditor, you check that the method fits the data and the destination, that someone verified it worked, and that a certificate of sanitization (item, method, date, person) matches each serial number in the asset register.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“Ask the cloud provider to shred the disks that held our data.”',
+        why: 'Cloud storage is shared and spread across many disks, so one customer cannot have them destroyed. Destroying the customer’s own encryption keys, called cryptographic erase, makes the data unreadable, and the key-destruction log is the proof.',
+      },
+      {
+        type: 'tip',
+        body: 'Two questions pick the method: how sensitive is the data, and is the media leaving your control? Staying in-house: clear. Leaving: purge. Most sensitive, or cannot be purged: destroy. Then ask for proof: verification and certificates matched to serial numbers, not someone’s word.',
+      },
+      {
+        type: 'check',
+        question:
+          'A school district must return leased laptops whose disks held student records. What should the IS auditor recommend before they go back?',
+        options: [
+          'Delete the student files and empty the trash folder',
+          'Purge the disks with a verified method suited to them',
+          'Reinstall the operating system over the old one',
+          'Keep the disks and pay the lessor to replace them',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Leased laptops leave the district’s control, so the data must be purged, and the purge verified. Keeping the disks is tempting because nothing leaves, but it costs more than needed when a verified purge already makes the data unrecoverable. Deleting files or reinstalling leaves data recoverable.',
+      },
+      {
+        type: 'check',
+        question:
+          'A university is giving retired lab computers to a charity. What proof would BEST satisfy the IS auditor that research data on their drives is gone?',
+        options: [
+          'A sanitization certificate per drive, by serial number',
+          'The lab manager’s note that the drives were erased',
+          'The charity’s written promise to erase the drives',
+          'Photos of the computers boxed before pickup',
+        ],
+        correctIndex: 0,
+        explanation:
+          'A certificate tied to each serial number shows every drive was sanitized, by which method, and that none was missed. The charity’s promise is tempting because it is in writing, but the erasing would happen after the data has already left the university. The manager’s note is an assertion, not proof.',
+      },
+      {
+        type: 'check',
+        question:
+          'An IT team overwrites the disks of returned sales laptops before reissuing them and logs each serial number, but never checks whether old data can still be read. What should concern the IS auditor MOST?',
+        options: [
+          'The log does not name who ran each wipe',
+          'Overwriting is used rather than shredding',
+          'One overwrite pass may not be enough',
+          'A failed wipe could leave old data readable',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Without verification, a wipe that failed looks the same in the log as one that worked, and the next user could read the old files. A missing technician name is tempting as an accountability gap, but it puts no data at risk. One overwrite pass is accepted for clearing modern drives, and laptops staying in-house need clearing, not shredding.',
+      },
+    ],
+  },
+
+  {
+    id: 'cisa-l-d4-db-recovery',
+    certId: 'cisa',
+    domainId: '4',
+    order: 13,
+    title: 'Bringing a database back',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'COBIT 2019 APO14.10 (Manage data backup and restore arrangements)',
+      'ISO/IEC 27002:2022 Control 8.13 (Information Backup)',
+      'COBIT 2019 DSS04 (Managed Continuity)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: L3_L5_REVIEWED,
+    topics: ['4A11'],
+    prepares: ['d4_277', 'd4_278', 'd4_117'],
+    notes: ['4A11.4'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 4 · Database management',
+        title: 'Bringing a database back',
+        subtitle: 'How backups and the transaction log rebuild a database, and who chooses when speed and data loss pull apart.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'A database writes every change to its transaction log (or journal) before the change counts. The log keeps each record as it was (the before-image) and as it became (the after-image). Recovery uses that log, plus backups, to return the database to a correct, consistent state after a crash, corrupt storage or a bad update.',
+      },
+      {
+        type: 'stack',
+        heading: 'Three ways back',
+        layers: [
+          { label: 'Rollback', note: 'Undo unfinished work using before-images, after a failed transaction or a crash mid-update' },
+          { label: 'Roll-forward', note: 'Reapply committed work using after-images, up to the latest moment or a chosen one' },
+          { label: 'Restore from backup', note: 'Replace lost or damaged files with a saved copy, then roll the log forward' },
+        ],
+        caption:
+          'After a crash with files intact, the database undoes unfinished work and redoes committed work on its own. Restoring to a chosen moment, such as just before a bad update, is point-in-time recovery.',
+      },
+      {
+        type: 'analogy',
+        heading: 'Think of a bookkeeper’s diary',
+        body: 'A bookkeeper notes every ledger entry in a diary, with the line before and after the change. If the lights go out mid-entry, the half-written line is rubbed out and the finished ones are kept. If the ledger is ruined, last month’s copy plus the diary rebuilds it, as long as the diary was not kept in the same drawer.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Recovery must fit what the business agreed to lose. As the IS (information systems) auditor, you compare how often, and where, the log is copied with the recovery point objective (RPO): the most data loss the business accepts. When paths trade loss against time, you set out each one’s impact; the business owner chooses.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“Nightly full backups protect a database whose RPO is fifteen minutes.”',
+        why: 'A failure just before the next backup loses almost a day of work. Only log copies made more often than the RPO and kept on separate storage, or replication, keep the loss within minutes.',
+      },
+      {
+        type: 'tip',
+        body: 'Crash with files intact: undo the unfinished, redo the committed, automatically. Files lost or corrupted: restore the backup, then roll the log forward. For log copies, ask how often (inside the RPO) and where (away from the database). When paths trade loss for speed, the business owner decides.',
+      },
+      {
+        type: 'check',
+        question:
+          'An inventory system’s server reboots unexpectedly in the middle of a busy shift. Nothing on its disks is damaged. How should the database get back to a consistent state?',
+        options: [
+          'Load the most recent backup and replay the journal',
+          'Roll back half-done work; redo the completed work',
+          'Keep all transactions, including half-done ones',
+          'Ask warehouse staff to recount the stock',
+        ],
+        correctIndex: 1,
+        explanation:
+          'With the disks undamaged, the database uses its log to roll back half-finished work and redo committed work, on its own. Loading a backup is tempting because it sounds thorough, but it is needed only when files are lost, and it takes far longer. Keeping half-done transactions would leave the data inconsistent.',
+      },
+      {
+        type: 'check',
+        question:
+          'An order database has a 30-minute RPO. Its transaction log is copied every 15 minutes to a folder on the database’s own server. Which risk is GREATEST?',
+        options: [
+          'A server failure destroys the database and its log copies',
+          'Log copying slows down order processing',
+          'Fifteen-minute copies are more often than the RPO needs',
+          'Replaying the logs may take longer than planned',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Copies on the same server share its fate: one failure takes the database and every copy, so far more than 30 minutes of orders is lost. Copies more frequent than needed are tempting to flag as waste, but they are what keeps loss inside the RPO; the problem is where they sit.',
+      },
+      {
+        type: 'check',
+        question:
+          'A claims database is corrupted two days before a regulatory filing. IT can restore an older backup quickly, losing a day of claims, or replay the log slowly and lose nothing. What should the IS auditor recommend?',
+        options: [
+          'Restore the older backup, since the deadline comes first',
+          'Replay the log, since no data may ever be lost',
+          'Have the business owner weigh each path and choose',
+          'Let the database administrator pick the faster path',
+        ],
+        correctIndex: 2,
+        explanation:
+          'Each path trades data loss against time, and that is a business decision: the owner weighs the lost claims against the filing deadline. Restoring fast is tempting because the deadline is real, but choosing for the business would put IT, or the IS auditor, in management’s seat.',
       },
     ],
   },
@@ -5317,6 +5964,337 @@ export const CISA_LESSONS: Lesson[] = [
         correctIndex: 2,
         explanation:
           'The logs prove which account was used, not who was at the keyboard; a stolen or shared password fits the same facts. Naming the manager is tempting because the logs look clear, but it goes beyond the evidence and would not survive a challenge. Committee approval would not fix a claim the evidence cannot support.',
+      },
+    ],
+  },
+
+  // Plan item L3 (2026-10-21): encryption keys, penetration test types, intrusion detection and prevention.
+  {
+    id: 'cisa-l-d5-keys',
+    certId: 'cisa',
+    domainId: '5',
+    order: 12,
+    title: 'Guarding the encryption keys',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management)',
+      'NIST SP 800-175B Rev 1 (Guideline for Using Cryptographic Standards: Cryptographic Mechanisms)',
+      'ISO/IEC 27002:2022 Control 8.24 (Use of Cryptography)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: L3_L5_REVIEWED,
+    topics: ['5A6'],
+    prepares: ['d5_313', 'd5_069', 'd5_238'],
+    notes: ['5A6.5', '5A6.1'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 5 · Encryption and key management',
+        title: 'Guarding the encryption keys',
+        subtitle: 'Strong encryption fails when its key is shared too widely, kept beside the data or destroyed too soon.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'Symmetric encryption uses one shared secret key both to lock and to unlock data. The Advanced Encryption Standard (AES) is the usual choice, fast enough for whole databases. Asymmetric encryption, with its public and private key pair, is slower, so it mainly delivers those shared keys safely. Either way, whoever holds the key can read the data, and whoever loses it loses the data.',
+      },
+      {
+        type: 'flow',
+        layout: 'timeline',
+        heading: 'A key’s life',
+        steps: [
+          { label: 'Generate', note: 'In a hardware security module (a tamper-resistant key device) or a key service, never in code' },
+          { label: 'Deliver', note: 'By a separate route, never with the data it unlocks' },
+          { label: 'Store and use', note: 'Apart from the data, out of reach of the people who run it' },
+          { label: 'Rotate', note: 'Replaced when its cryptoperiod, its approved lifetime, ends' },
+          { label: 'Back up', note: 'An encrypted copy kept elsewhere, so one failure cannot lock the data away' },
+          { label: 'Destroy', note: 'Only after the data it protects is past its retention period' },
+        ],
+        caption:
+          'One key per device or partner keeps a stolen key’s damage small. Risky steps, such as exporting a key, need dual control: two people acting together.',
+      },
+      {
+        type: 'analogy',
+        heading: 'Think of a bank’s vault keys',
+        body: 'A vault is only as safe as its keys. One key cut for every branch opens every branch once it is copied. A key taped to the vault door protects nothing. And melting the only key while deeds are still inside locks them away for good. The lock’s design matters far less than how the keys are handled.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Follow the key, not the algorithm. As the IS (information systems) auditor, you check who can use each key, where it is kept, how old it is and what happens at the end of its life. You assess and recommend; the data owner, who answers for the data, decides on any risk left over.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“We use AES with 256-bit keys, so the data is safe whatever else we do.”',
+        why: 'The algorithm is rarely the weak point. A strong cipher protects little if the key sits beside the data, travels in the same email, or is shared by every device. Attackers go after the key, not the math.',
+      },
+      {
+        type: 'tip',
+        body: 'For key questions, ask three things: who can use the key, does it live apart from the data, and what happens if it is lost? One key shared by many devices, a key sent with the data, and a key destroyed while its data must still be kept are classic findings. Fix excess access at the permission, not by rotating.',
+      },
+      {
+        type: 'check',
+        question:
+          'A courier firm loads the same symmetric key onto 800 handheld scanners to protect delivery records. Which risk should the IS auditor consider GREATEST?',
+        options: [
+          'Scanners may slow down while encrypting each record',
+          'Changing the key later means updating each scanner',
+          'A key pulled from one scanner exposes the whole fleet',
+          'Delivery records may arrive late on busy networks',
+        ],
+        correctIndex: 2,
+        explanation:
+          'With one shared key, a single stolen scanner unlocks the records of all 800; one key per device would limit the damage to one. The effort of changing the key everywhere is tempting because it is a real cost, but it is an inconvenience, while the shared key is an exposure.',
+      },
+      {
+        type: 'check',
+        question:
+          'A new rule says encryption keys are destroyed after three years. Some of those keys protect backups that the law requires keeping for seven years. What should concern the IS auditor MOST?',
+        options: [
+          'Those backups would become permanently unreadable',
+          'Two people may not witness each key destruction',
+          'Attackers could recover keys after destruction',
+          'Three years may be too long a key lifetime',
+        ],
+        correctIndex: 0,
+        explanation:
+          'A key destroyed before its data’s retention period ends leaves the backups unreadable when the law or the business needs them. Witnessing is tempting because dual control is good practice, but a well-witnessed destruction still loses the data. Key destruction must follow data retention.',
+      },
+      {
+        type: 'check',
+        question:
+          'A review finds that 60 support staff can decrypt the payroll database through the key service, but only 3 need to. What should the IS auditor recommend FIRST?',
+        options: [
+          'Rotate the payroll key to a new version today',
+          'Encrypt the database again with a second key',
+          'Have the payroll owner accept the access as low risk',
+          'Remove decrypt rights from staff who do not need them',
+        ],
+        correctIndex: 3,
+        explanation:
+          'The exposure is the permission, so removing it is the fix; the logs can then be checked for misuse. Rotating the key is tempting because it sounds decisive, but the same 60 staff could decrypt with the new key. A second layer of encryption leaves the same people with the same access.',
+      },
+    ],
+  },
+
+  {
+    id: 'cisa-l-d5-pentest',
+    certId: 'cisa',
+    domainId: '5',
+    order: 13,
+    title: 'Choosing the right penetration test',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment)',
+      'PCI DSS v4.0 Requirement 11.4 (Penetration Testing)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: L3_L5_REVIEWED,
+    topics: ['5B3'],
+    prepares: ['d5_296', 'd5_294', 'd5_297'],
+    notes: ['5B3.3'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 5 · Security testing',
+        title: 'Choosing the right penetration test',
+        subtitle: 'What testers know, where they start and who is warned decide what a test can prove.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'A penetration test is an authorized, simulated attack that tries to exploit weaknesses the way a real attacker would. Before any testing, senior management signs a written authorization and agrees on the rules of engagement: targets, timing, allowed techniques, contacts and when testers must stop. Without that, the test cannot be told apart from a real attack.',
+      },
+      {
+        type: 'stack',
+        heading: 'Three choices that shape a test',
+        layers: [
+          {
+            label: 'Where testers start',
+            note: 'External: from the internet. Internal: inside the network, as an insider or an attacker with a foothold would',
+          },
+          {
+            label: 'What testers know',
+            note: 'Black box: little beyond a name. Gray box: some details, such as a user account. White box: full designs, code and accounts',
+          },
+          {
+            label: 'Who is warned',
+            note: 'Blind: defenders know, testers know little. Double-blind: defenders are not told either. Targeted: both sides work together',
+          },
+        ],
+        caption:
+          'More knowledge finds more flaws in the time paid for; less warning shows whether defenders notice. In a double-blind test, senior management and a named contact still know.',
+      },
+      {
+        type: 'analogy',
+        heading: 'Think of hiring a burglar',
+        body: 'A homeowner hires a professional to test the locks. Handing over the floor plan finds more weak spots in a day. Saying nothing shows what a stranger could do. Warning the night guard first proves nothing about whether the guard would notice. And the homeowner’s signed letter is what makes it a test, not a break-in.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Match the test to the question. As the IS (information systems) auditor, you first ask what management needs to know: how deep the flaws go, whether defenders notice, or what an insider could reach. Then you check that the test type answers that question, and that signed authorization and rules of engagement came first.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“Black-box testing is always best, because it is the most realistic.”',
+        why: 'Testers have days; real attackers have months. A black-box team spends its budget rediscovering what it could simply have been told, so gray- or white-box tests usually find more weaknesses for the same cost.',
+      },
+      {
+        type: 'tip',
+        body: 'Read the stem for the goal. “Would anyone notice?” points to double-blind. “Deepest coverage in limited time” points to white box. “Insiders” points to an internal test that starts with an account. If testing is about to begin without signed approval and agreed rules, fix that first.',
+      },
+      {
+        type: 'check',
+        question:
+          'A testing firm will attack a hospital’s internal network on Monday. The only approval is a chat message from the network lead. What should the IS auditor recommend FIRST?',
+        options: [
+          'Signed senior management approval and agreed test rules',
+          'A check of the testers’ professional certifications',
+          'Full backups of the systems the test will touch',
+          'A notice to staff so test traffic is not reported',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Signed approval from someone with authority, plus agreed rules, is what makes the test lawful and sets its limits. Checking certifications is tempting because skill matters, but skilled testers acting without authority are still attacking the hospital. Backups are prudent, yet they do not settle what may be tested.',
+      },
+      {
+        type: 'check',
+        question:
+          'An airline’s board wants to know whether its own security analysts would notice an intruder and raise the alarm unaided. Which test BEST shows this?',
+        options: [
+          'A white-box test of the booking system',
+          'A double-blind test the analysts are not told about',
+          'A blind test the analysts are told about in advance',
+          'A targeted test run together with the analysts',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Only analysts who do not know a test is running show their real reaction, so a double-blind test answers the question; senior management still authorizes it. A blind test is tempting because the testers start with little knowledge, but warned analysts are watching for it, so their response proves little.',
+      },
+      {
+        type: 'check',
+        question:
+          'A retailer offers a clean external black-box test as proof that staff with network accounts cannot reach card data. What is the IS auditor’s GREATEST concern?',
+        options: [
+          'The testers’ tools may not be the newest available',
+          'The results describe a single point in time',
+          'The report went to IT, not to the audit committee',
+          'The test never started inside with an account',
+        ],
+        correctIndex: 3,
+        explanation:
+          'The claim is about insiders, but the test started outside with no account, so it never tried their path. The point-in-time limit is tempting because it is true, but it applies to every test; even a current result would not cover insiders.',
+      },
+    ],
+  },
+
+  {
+    id: 'cisa-l-d5-ids',
+    certId: 'cisa',
+    domainId: '5',
+    order: 14,
+    title: 'Intrusion detection and prevention',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'NIST SP 800-94 (Guide to Intrusion Detection and Prevention Systems)',
+      'NIST SP 800-53 Rev 5 SI-4 (System Monitoring)',
+      'ISO/IEC 27002:2022 Control 8.16 (Monitoring Activities)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: L3_L5_REVIEWED,
+    topics: ['5A4'],
+    prepares: ['d5_047', 'd5_298', 'd5_299'],
+    notes: ['5A4.5', '5A4.4'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 5 · Network security',
+        title: 'Intrusion detection and prevention',
+        subtitle: 'Where a sensor sits decides what it can do, and how it detects decides what it can miss.',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'An intrusion detection system (IDS) watches network traffic, or activity on one server, for signs of attack and raises an alert. An intrusion prevention system (IPS) can also block, but only when it sits inline, in the path the traffic takes. Fed a copy of the traffic from a switch (a mirrored port), it can only alert. An inline device also needs a failure setting: fail open lets traffic through unchecked; fail closed stops it all.',
+      },
+      {
+        type: 'stack',
+        heading: 'Three ways to recognize an attack',
+        layers: [
+          { label: 'Signature', note: 'Matches patterns of known attacks. Precise, but blind to brand-new (zero-day) attacks until updated' },
+          { label: 'Anomaly', note: 'Learns normal activity, a baseline, and flags departures. Catches new attacks; raises more false alarms' },
+          { label: 'Heuristic', note: 'Expert rules about suspicious behavior, such as one computer probing hundreds of ports' },
+        ],
+        caption:
+          'A false alarm (false positive) wastes time; a missed attack (false negative) is worse. Tune noisy rules rather than switching them off, and learn baselines in a clean period, or an attack becomes “normal”.',
+      },
+      {
+        type: 'analogy',
+        heading: 'Think of two door guards',
+        body: 'One guard carries photos of known thieves and stops anyone who matches: reliable, but a new face walks straight in. Another knows the regulars and notices anyone acting oddly: catches newcomers, but also stops a regular in a new coat. A guard watching a camera feed can raise the alarm but cannot close the door.',
+      },
+      {
+        type: 'idea',
+        heading: 'The IS auditor’s lens',
+        body: 'Judge a control against its purpose. As the IS (information systems) auditor, you check where each device sits, which detection methods are on, which rules were switched off and why, and whether simulated attacks raise alerts. A quiet console proves nothing on its own.',
+      },
+      {
+        type: 'trap',
+        heading: 'The exam trap',
+        trap: '“No critical alerts all quarter, so the network is safe.”',
+        why: 'Stale signatures, switched-off rules, a badly placed sensor or a baseline that learned an attack as normal all stay quiet too. Test detection with simulated attacks instead of trusting silence.',
+      },
+      {
+        type: 'tip',
+        body: 'Check placement first: on a copied (mirrored) port, a device can only alert. For attacks nobody has seen, look for anomaly detection. For noise, tuning beats switching rules off. Fail open or fail closed trades security against availability, so the business owner chooses.',
+      },
+      {
+        type: 'check',
+        question:
+          'A bank bought an intrusion prevention system to stop attacks on its payment servers, but it receives only a copy of the traffic from a switch. What should concern the IS auditor MOST?',
+        options: [
+          'It can raise alerts but cannot stop an attack',
+          'Analysts may struggle with the number of alerts',
+          'It may slow payments while it inspects traffic',
+          'Its attack patterns may be updated too slowly',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Working from a copy, the device sees attacks but sits outside their path, so it cannot block them, and the reason for buying it is not met. Alert volume is tempting because it is a daily pain, but that is an operating issue; the design flaw comes first. It cannot slow payments either, since it is not in their path.',
+      },
+      {
+        type: 'check',
+        question:
+          'A water utility’s detection system matches traffic against known attack patterns only. Management fears attacks no vendor has seen yet. Which addition BEST addresses this?',
+        options: [
+          'More frequent downloads of pattern updates',
+          'Alerts on departures from normal traffic patterns',
+          'Switching the sensor to block known patterns',
+          'A full record of traffic kept for later review',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Anomaly detection learns what normal looks like and flags departures, so it can catch an attack nobody has a pattern for. Faster updates are tempting, but they still add patterns only for attacks already known. Blocking known patterns has the same blind spot.',
+      },
+      {
+        type: 'check',
+        question:
+          'Twenty-five detection rules fire every night on normal backup traffic, and the security team proposes switching them off. What should the IS auditor recommend?',
+        options: [
+          'Switch them off, since analyst time is limited',
+          'Keep them, but send their alerts to a separate queue',
+          'Replace them with the vendor’s default rule set',
+          'Adjust the rules so backup traffic no longer trips them',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Tuning removes the false alarms while the rules keep watching for real attacks. Switching them off is tempting because it ends the noise at once, but it also ends detection of whatever those rules were written to catch. A separate queue keeps the noise and moves it where nobody looks.',
       },
     ],
   },
