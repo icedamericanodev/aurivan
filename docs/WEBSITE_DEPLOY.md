@@ -63,13 +63,18 @@ the web practice needs a sample pack instead (see the A2 report).
   Policy. These pages have no scripts, so only this site's styles, images and
   fonts load. The one script allowed is Cloudflare Web Analytics, which
   Cloudflare adds itself once it is switched on.
-- **The web app (`/`):** a small enforced policy (no framing, no plugins) plus
-  a **Report-Only** policy that lists everything the app loads today. It
-  blocks nothing and only reports in the browser console. Checked on
-  15 Oct 2026 in Chromium: no reports. Make it enforced once it has stayed
-  clean for a while.
-- Cloudflare **joins** the values when two rules match the same path. That is
-  why each page has its own rule and the catch-all rule has no policy.
+- **The web app (`/`, and any unknown address, which shows the app):** an
+  **enforced** policy on the catch-all `/*` rule (web v12.28) that allows
+  only what the app loads: this site, its inline scripts and handlers
+  (`'unsafe-inline'` until they move into a `.js` file), Google Analytics
+  after the visitor accepts, Cloudflare Web Analytics, and the Google Forms
+  for feedback and flags. Fonts are self-hosted. Checked on 21 Oct 2026 in
+  Chromium with a local server that applies `_headers`: no violations on any
+  screen, light or dark.
+- Cloudflare **joins** the values when two rules match the same path. For
+  Content-Security-Policy that is safe: the browser enforces both policies,
+  so the legal pages, `/data/*` and `/assets/*` keep their own stricter
+  policy on top of the app's. Other headers are set in one rule only.
 - Cloudflare shows `/privacy.html` at `/privacy`. Use the short addresses in
   the store listings and in the app: `https://<domain>/privacy`, `/terms`,
   `/support`.

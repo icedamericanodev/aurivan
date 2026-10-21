@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google Analytics — Consent Mode v2.
-     Analytics storage is denied by default and is enabled only after the
-     visitor accepts on the cookie banner. A prior choice is restored here,
-     before GA initialises, so accepted visitors are measured from page one. -->
+<!-- Google Analytics — Consent Mode v2, basic mode (v12.28).
+     Every consent type is denied by default, and the Google script is not
+     loaded at all until the visitor accepts on the cookie banner (setConsent
+     calls loadGA). A prior "granted" is restored here, so accepted visitors
+     are measured from page one. Ads storage is never granted. -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('consent', 'default', { 'analytics_storage': 'denied' });
+  gtag('consent', 'default', {
+    'analytics_storage': 'denied',
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied'
+  });
+  window.loadGA = function () {
+    if (window.__gaLoaded) return;
+    window.__gaLoaded = true;
+    gtag('js', new Date());
+    gtag('config', 'G-KDECR41WQ9');
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-KDECR41WQ9';
+    document.head.appendChild(s);
+  };
   try {
     if (localStorage.getItem('aurivan_consent') === 'granted') {
       gtag('consent', 'update', { 'analytics_storage': 'granted' });
+      window.loadGA();
     }
   } catch (e) {}
-</script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KDECR41WQ9"></script>
-<script>
-  gtag('config', 'G-KDECR41WQ9');
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6367,7 +6379,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.27.1</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.28</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6658,7 +6670,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.27.1';
+const APP_VERSION = 'v12.28';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -7218,23 +7230,54 @@ function savedQuestionBankLoaded(id) {
   var d = m ? m[1] : null;
   return !!(d && QB[d] && QB[d].length);
 }
+// A saved question id: "d<domain>_<id>", for a domain in DI. Anything else in
+// a saved list (or an imported file) is dropped.
+var SAVED_QID_RE = /^d(\d{1,2})_[A-Za-z0-9_-]{1,40}$/;
+var SAVED_MAX = 5000;
+function savedQuestionDomain(id) {
+  var m = typeof id === 'string' ? SAVED_QID_RE.exec(id) : null;
+  return m && DI[m[1]] ? m[1] : null;
+}
+// What the learner added to a saved copy: only a known bookmark tag.
+function savedQuestionTag(q) {
+  var t = q && q.tag;
+  return (t === 'need-review' || t === 'tricky-wording' || t === 'standard-ref') ? t : null;
+}
+// Every saved copy is rebuilt from the bank. Until its bank has loaded, only a
+// small { id, domain, tag } stub is kept (never the saved object itself); the
+// screens look each one up in the bank before they show it.
 function rehydrateSavedQuestions(list) {
   if (!Array.isArray(list)) return [];
   var seen = {};
   var out = [];
-  list.forEach(function(q) {
-    if (!q || !q.id || seen[q.id]) return;
-    var bankQ = findQuestionById(q.id);
+  list.slice(0, SAVED_MAX).forEach(function(q) {
+    var id = q && q.id;
+    var d = savedQuestionDomain(id);
+    if (!d || seen[id]) return;
+    var tag = savedQuestionTag(q);
+    var bankQ = findQuestionById(id);
     if (bankQ) {
       var copy = JSON.parse(JSON.stringify(bankQ));
-      // Keep what the learner added to the saved copy (e.g. a bookmark tag).
-      Object.keys(q).forEach(function(k) { if (!(k in copy)) copy[k] = q[k]; });
+      // Keep what the learner added to the saved copy (a bookmark tag).
+      if (tag) copy.tag = tag;
       out.push(copy);
-      seen[q.id] = true;
-    } else if (!savedQuestionBankLoaded(q.id)) {
-      out.push(q);
-      seen[q.id] = true;
+      seen[id] = true;
+    } else if (!savedQuestionBankLoaded(id)) {
+      var stub = { id: id, domain: d };
+      if (tag) stub.tag = tag;
+      out.push(stub);
+      seen[id] = true;
     }
+  });
+  return out;
+}
+// The saved questions that can be shown now: each looked up in its loaded
+// bank (a stub whose bank is still loading is skipped).
+function resolvedSavedQuestions(list) {
+  var out = [];
+  (Array.isArray(list) ? list : []).forEach(function(q) {
+    var bankQ = q && savedQuestionDomain(q.id) ? findQuestionById(q.id) : null;
+    if (bankQ) out.push(bankQ);
   });
   return out;
 }
@@ -7243,6 +7286,7 @@ document.addEventListener('qb:domain-loaded', function() {
     if (typeof S === 'undefined' || !S) return;
     S.bookmarks = rehydrateSavedQuestions(S.bookmarks);
     S.missedQuestions = rehydrateSavedQuestions(S.missedQuestions);
+    if (S.activeTab === 'bookmarks' && typeof renderBookmarks === 'function') renderBookmarks();
   } catch (e) {}
 });
 
@@ -7443,9 +7487,9 @@ var DAY_MS = 86400000;
 function sanitizeReviewMap(r) {
   if (!r || typeof r !== 'object') return {};
   var out = {};
-  Object.keys(r).forEach(function(id) {
+  Object.keys(r).slice(0, PARITY_MAX_IDS).forEach(function(id) {
     var e = r[id];
-    if (!e || typeof e !== 'object') return;
+    if (!PARITY_ID_RE.test(id) || !e || typeof e !== 'object') return;
     var box = Math.round(Number(e.box) || 1);
     if (box < 1) box = 1;
     if (box > REVIEW_MAX_BOX) box = REVIEW_MAX_BOX;
@@ -7811,22 +7855,111 @@ function normalizeImportedState(state) {
   clean.missedQuestions = rehydrateSavedQuestions(clean.missedQuestions);
   clean.review = sanitizeReviewMap(clean.review);
   clean.current = clean.current && clean.current.id ? findQuestionById(clean.current.id) : null;
-  if (!clean.score || typeof clean.score !== 'object') clean.score = {t:0,c:0};
-  if (!clean.ds || typeof clean.ds !== 'object') clean.ds = JSON.parse(JSON.stringify(S_DEFAULTS.ds));
-  if (!clean.qIdx || typeof clean.qIdx !== 'object') clean.qIdx = JSON.parse(JSON.stringify(S_DEFAULTS.qIdx));
-  if (!clean.answeredIds || typeof clean.answeredIds !== 'object') clean.answeredIds = {};
-  if (!clean.glossMastered || typeof clean.glossMastered !== 'object') clean.glossMastered = {};
-  if (!clean.topicReviewed || typeof clean.topicReviewed !== 'object') clean.topicReviewed = {};
+  // The older fields, in the shapes the app writes (v12.28: they were kept as
+  // they were, so a crafted file could put markup where a number belongs).
+  // Counts are whole numbers; anything else loads as its empty default.
+  var sc = isPlainObj(clean.score) ? clean.score : {};
+  var scT = importCount(sc.t);
+  clean.score = { t: scT, c: Math.min(scT, importCount(sc.c)) };
+  clean.streak = importCount(clean.streak);
+  var dsIn = isPlainObj(clean.ds) ? clean.ds : {};
+  var ds = {};
+  Object.keys(DI).forEach(function(d) {
+    var x = isPlainObj(dsIn[d]) ? dsIn[d] : {};
+    var t = importCount(x.t);
+    ds[d] = { t: t, c: Math.min(t, importCount(x.c)) };
+  });
+  clean.ds = ds;
+  var qiIn = isPlainObj(clean.qIdx) ? clean.qIdx : {};
+  var qi = {};
+  Object.keys(DI).concat(['all']).forEach(function(k) { qi[k] = importCount(qiIn[k]); });
+  clean.qIdx = qi;
+  clean.qn = importCount(clean.qn);
+  clean.mindsetIdx = MINDSET.length ? importCount(clean.mindsetIdx) % MINDSET.length : 0;
+  clean.answeredIds = sanitizeAnsweredIds(clean.answeredIds);
+  clean.confidenceLog = sanitizeConfidenceLog(clean.confidenceLog);
+  clean.sessionHistory = sanitizeSessionHistory(clean.sessionHistory);
+  clean.glossMastered = sanitizeTickMap(clean.glossMastered);
+  clean.topicReviewed = sanitizeTickMap(clean.topicReviewed);
   // Saves from before the Started state have no topicViewed: load as empty.
-  if (!clean.topicViewed || typeof clean.topicViewed !== 'object' || Array.isArray(clean.topicViewed)) clean.topicViewed = {};
-  clean.topicTicksSchema = Number(clean.topicTicksSchema) || 0;
+  clean.topicViewed = sanitizeTickMap(clean.topicViewed);
+  clean.topicTicksSchema = Math.min(9, importCount(clean.topicTicksSchema));
   if (!clean.lastOpenedSubtopic || typeof clean.lastOpenedSubtopic !== 'object') clean.lastOpenedSubtopic = {};
   if (["1","2","3","4","5","all"].indexOf(String(clean.selectedDomain)) === -1) clean.selectedDomain = "1";
+  clean.selectedDomain = String(clean.selectedDomain);
   if (["any","foundational","application","analysis"].indexOf(clean.diff) === -1) clean.diff = "any";
   clean.timerEnabled = !!clean.timerEnabled;
-  clean.timerSeconds = Number(clean.timerSeconds) || 0;
+  clean.timerSeconds = Math.min(600, importCount(clean.timerSeconds));
   clean.activeTab = ["home","practice","mock","topics","bookmarks","weakspots","glossary","faq","principles","examguide","finalweek"].indexOf(clean.activeTab) >= 0 ? clean.activeTab : "home";
   return clean;
+}
+
+// Import / load checks for the older fields (v12.28).
+var IMPORT_MAX_COUNT = 1e7;
+var IMPORT_MAX_LOG = 20000;
+function isPlainObj(v) { return !!v && typeof v === 'object' && !Array.isArray(v); }
+// A whole number from 0 up to IMPORT_MAX_COUNT (anything else is 0).
+function importCount(v) {
+  if (typeof v !== 'number' && typeof v !== 'string') return 0;
+  v = Math.floor(Number(v));
+  return isFinite(v) && v > 0 ? Math.min(v, IMPORT_MAX_COUNT) : 0;
+}
+// answeredIds: { "<domain>" | "all": { "<question id>": true } }.
+function sanitizeAnsweredIds(m) {
+  var out = {};
+  if (!isPlainObj(m)) return out;
+  Object.keys(DI).concat(['all']).forEach(function(d) {
+    var src = m[d];
+    if (!isPlainObj(src)) return;
+    var o = {};
+    Object.keys(src).slice(0, PARITY_MAX_IDS).forEach(function(id) {
+      if (src[id] && PARITY_ID_RE.test(id)) o[id] = true;
+    });
+    out[d] = o;
+  });
+  return out;
+}
+// Read ticks, "started" notes and mastered terms: id -> true or a time (ms).
+function sanitizeTickMap(m) {
+  var out = {};
+  if (!isPlainObj(m)) return out;
+  Object.keys(m).slice(0, PARITY_MAX_IDS).forEach(function(id) {
+    var v = m[id];
+    if (!PARITY_ID_RE.test(id)) return;
+    if (v === true) out[id] = true;
+    else if (typeof v === 'number' && isFinite(v) && v > 0) out[id] = v;
+  });
+  return out;
+}
+var CONFIDENCE_CHIPS = ['sure', 'educated', 'guessing', 'none'];
+// confidenceLog: { qId, confidence, correct } per practice answer.
+function sanitizeConfidenceLog(list) {
+  if (!Array.isArray(list)) return [];
+  var out = [];
+  list.slice(-IMPORT_MAX_LOG).forEach(function(e) {
+    if (!isPlainObj(e)) return;
+    out.push({
+      qId: typeof e.qId === 'string' && PARITY_ID_RE.test(e.qId) ? e.qId : 'unknown',
+      confidence: CONFIDENCE_CHIPS.indexOf(e.confidence) >= 0 ? e.confidence : null,
+      correct: e.correct === true
+    });
+  });
+  return out;
+}
+// sessionHistory: { domain, correct, confidence, question (first 80 chars) }.
+function sanitizeSessionHistory(list) {
+  if (!Array.isArray(list)) return [];
+  var out = [];
+  list.slice(-IMPORT_MAX_LOG).forEach(function(e) {
+    if (!isPlainObj(e) || !DI[String(e.domain)]) return;
+    out.push({
+      domain: String(e.domain),
+      correct: e.correct === true,
+      confidence: CONFIDENCE_CHIPS.indexOf(e.confidence) >= 0 ? e.confidence : null,
+      question: typeof e.question === 'string' ? e.question.substring(0, 80) : ''
+    });
+  });
+  return out;
 }
 
 function ensureLocalProfile() {
@@ -7994,13 +8127,21 @@ function exportProgress(otherId) {
   setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 1000);
 }
 
+// A progress file is JSON and well under this size (browser storage holds about
+// 5 MB); a far larger file is not one, and reading it would freeze the page.
+var IMPORT_MAX_BYTES = 20 * 1024 * 1024;
 function importProgress(file) {
   if (!file) return;
+  var isJson = /\.json$/i.test(String(file.name || '')) || /json/i.test(String(file.type || ''));
+  if (!isJson) { showToast('That file is not a KaiSip progress file.', 'info', 3200); return; }
+  if (file.size > IMPORT_MAX_BYTES) { showToast('That file is too large to be a KaiSip progress file.', 'info', 3200); return; }
   var reader = new FileReader();
   reader.onload = function(e) {
     try {
       var data = JSON.parse(e.target.result);
-      var state = data && data.cisaMindsetExport && data.profile ? normalizeImportedState(data.profile.state) : null;
+      var ok = isPlainObj(data) && data.cisaMindsetExport === true && data.version === 1
+        && isPlainObj(data.profile) && isPlainObj(data.profile.state);
+      var state = ok ? normalizeImportedState(data.profile.state) : null;
       if (!state) { showToast('That file is not a KaiSip progress file.', 'info', 3200); return; }
       // The plant never grows past what the file's own progress supports.
       try { plantClampImported(state); } catch (e2) {}
@@ -8467,10 +8608,39 @@ function topicSnippet(it, tokens) {
 // text. This helper is defense-in-depth against an accidental bad paste: it
 // rejects the string entirely if it contains scripts, inline event handlers,
 // javascript: URLs, or <foreignObject> (which can host scripts).
+// v12.28: then an allowlist. The SVG is parsed in an inert <template> (nothing
+// in it runs or loads) and only drawing elements and presentation attributes
+// are kept; links, styles, frames and anything else are dropped.
+var SVG_SAFE_TAGS = /^(svg|g|rect|line|path|circle|ellipse|polygon|polyline|text|tspan|title|desc|defs|marker|lineargradient|radialgradient|stop)$/;
+var SVG_SAFE_ATTRS = /^(xmlns|viewbox|preserveaspectratio|width|height|x|y|x1|x2|y1|y2|dx|dy|cx|cy|r|rx|ry|d|points|transform|fill|fill-opacity|fill-rule|stroke|stroke-[a-z]+|opacity|font-family|font-size|font-weight|font-style|letter-spacing|text-anchor|dominant-baseline|role|aria-label|aria-hidden|class|id|offset|stop-color|stop-opacity|marker-start|marker-mid|marker-end|markerwidth|markerheight|refx|refy|orient|gradientunits|gradienttransform)$/;
+var svgSafeCache = {};
 function sanitizeIllustrationSvg(s) {
   if (typeof s !== 'string') return '';
   if (/<script|on\w+\s*=|javascript:|<foreignObject/i.test(s)) return '';
-  return s;
+  if (svgSafeCache[s] !== undefined) return svgSafeCache[s];
+  var out = '';
+  try {
+    var tpl = document.createElement('template');
+    tpl.innerHTML = s;
+    var bad = false;
+    (function clean(node) {
+      Array.prototype.slice.call(node.children).forEach(function(el) {
+        if (!SVG_SAFE_TAGS.test(String(el.localName).toLowerCase())) { el.remove(); bad = true; return; }
+        Array.prototype.slice.call(el.attributes).forEach(function(a) {
+          var v = String(a.value);
+          if (!SVG_SAFE_ATTRS.test(a.name.toLowerCase()) || /url\s*\(\s*['"]?\s*[^#'"\s]|javascript:/i.test(v)) {
+            el.removeAttribute(a.name); bad = true;
+          }
+        });
+        clean(el);
+      });
+    })(tpl.content);
+    var root = tpl.content.firstElementChild;
+    if (root && String(root.localName).toLowerCase() === 'svg') out = tpl.innerHTML;
+    if (bad && window.console) console.warn('Illustration SVG: removed markup that is not allowed.');
+  } catch (e) { out = ''; }
+  svgSafeCache[s] = out;
+  return out;
 }
 
 function gtStr(v) { return typeof v === 'string' && v.trim() ? v : ''; }
@@ -8601,7 +8771,7 @@ function gtFooter(itemId, domainId, practiceHtml) {
   // data-gtfoot: the note's end line; reaching it by the learner's own
   // scrolling marks the note read (gtCheckAutoRead).
   return '<div class="gt-foot" data-gtfoot="' + escapeHtml(itemId) + '">'
-    + '<button class="gt-btn-secondary gt-read-btn" aria-pressed="' + done + '" onclick="event.stopPropagation();toggleConceptReviewed(\'' + escapeHtml(itemId) + '\')">'
+    + '<button class="gt-btn-secondary gt-read-btn" aria-pressed="' + done + '" data-id="' + escapeHtml(itemId) + '" onclick="event.stopPropagation();toggleConceptReviewed(this.dataset.id)">'
     + ico('check', 18) + '<span>' + (done ? 'Read' : 'Mark as read') + '</span></button>'
     + (practiceHtml ? '' : domainBtn)
     + '</div>'
@@ -8740,7 +8910,7 @@ function gtPracticeBlock(raw, itemId, domainId) {
   if (!n) return '';
   var idE = escapeHtml(itemId);
   return '<div class="gt-practice">'
-    + '<button type="button" class="gt-practice-btn" aria-describedby="gtps-' + idE + '" onclick="event.stopPropagation();startConceptPractice(\'' + idE + '\')">'
+    + '<button type="button" class="gt-practice-btn" aria-describedby="gtps-' + idE + '" data-id="' + idE + '" onclick="event.stopPropagation();startConceptPractice(this.dataset.id)">'
     + ico('play', 16) + '<span>Practice this concept</span></button>'
     + '<p class="gt-practice-sub" id="gtps-' + idE + '">' + n + (n === 1 ? ' question that tests' : ' questions that test') + ' this concept. Answers count toward your progress.</p>'
     + '</div>';
@@ -8817,7 +8987,7 @@ function gtItemRow(it, d, tokens, opts) {
     + '<div class="gt-row-head">'
     // The mark only SHOWS read status; the whole row opens the note. A note
     // is marked read from inside it ("Mark as read" at its end), as on mobile.
-    + '<h4 class="gt-row-h"><button class="gt-row-btn" aria-expanded="' + isOpen + '" aria-controls="nb-' + idE + '" onclick="toggleNotesItem(\'' + idE + '\')">'
+    + '<h4 class="gt-row-h"><button class="gt-row-btn" aria-expanded="' + isOpen + '" aria-controls="nb-' + idE + '" data-id="' + idE + '" onclick="toggleNotesItem(this.dataset.id)">'
     + '<span class="gt-row-text"><span class="gt-row-title">' + highlightText(it.name, tokens) + '</span>'
     + '<span class="sr-only gt-row-state">' + GT_STATE_SR[state] + '</span>'
     + '<span class="gt-row-meta"><span class="gt-row-status" aria-hidden="true">' + GT_STATE_WORD[state] + '</span>'
@@ -8901,7 +9071,7 @@ function renderTopics() {
       return '<div class="gt-mapchips-row"><span class="gt-part">Part ' + escapeHtml(p.part || '') + ' &middot; ' + escapeHtml(p.name || '') + '</span>'
         + (p.topic_ids || []).map(function(id) {
             var nm = names[id] || id;
-            return '<button class="gt-mapchip" title="' + escapeHtml(nm) + '" onclick="openTopicGroup(\'' + escapeHtml(String(id)) + '\')">' + escapeHtml(nm) + '</button>';
+            return '<button class="gt-mapchip" title="' + escapeHtml(nm) + '" data-id="' + escapeHtml(String(id)) + '" onclick="openTopicGroup(this.dataset.id)">' + escapeHtml(nm) + '</button>';
           }).join('') + '</div>';
     }).join('') + '</nav>';
   }
@@ -8916,7 +9086,7 @@ function renderTopics() {
     });
     if (found) {
       continueHtml = '<div class="gt-continue">'
-        + '<button class="gt-continue-btn" onclick="jumpToSubtopic(\'' + escapeHtml(found.id) + '\')">'
+        + '<button class="gt-continue-btn" data-id="' + escapeHtml(found.id) + '" onclick="jumpToSubtopic(this.dataset.id)">'
         + '<span class="gt-continue-ico">' + ico('topics', 20) + '</span><span class="gt-continue-text"><span class="gt-row-meta">Continue reading</span><span class="gt-row-title">' + escapeHtml(found.name) + '</span></span>' + ico('chevron', 18) + '</button>'
         + '<button class="gt-icon-btn" onclick="dismissContinueReading()" aria-label="Dismiss continue reading">' + ico('x', 18) + '</button>'
         + '</div>';
@@ -8989,7 +9159,7 @@ function renderTopics() {
         bodyHtml += '<div class="gt-rows">' + items.map(function(it) { return gtItemRow(it, d, tokens); }).join('') + '</div>';
       }
       return '<section class="gt-group' + (isOpen ? ' open' : '') + '" id="ng-' + escapeHtml(gKey) + '">'
-        + '<h3 class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" aria-controls="ngb-' + escapeHtml(gKey) + '" onclick="toggleNotesGroup(\'' + escapeHtml(gKey) + '\')">'
+        + '<h3 class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" aria-controls="ngb-' + escapeHtml(gKey) + '" data-id="' + escapeHtml(gKey) + '" onclick="toggleNotesGroup(this.dataset.id)">'
         + '<span class="gt-group-text"><span class="gt-group-title">' + escapeHtml(g.group_title) + '</span>'
         + '<span class="gt-group-meta">' + gTotal + ' notes &middot; about ' + readMin + ' min</span></span>'
         + '<span class="gt-group-count" data-gcount="' + escapeHtml(gKey) + '"><span class="gt-num">' + gDone + '</span><span class="gt-of"> of ' + gTotal + ' read</span></span>'
@@ -9678,7 +9848,7 @@ function showConceptPracticeDone() {
     + '</div>'
     + '<div class="sd-actions">'
     + '<button type="button" class="act-btn primary" onclick="backToConceptTopic()">Back to topic</button>'
-    + '<button type="button" class="act-btn secondary" onclick="startConceptPractice(\'' + idE + '\')">Practice again</button>'
+    + '<button type="button" class="act-btn secondary" data-id="' + idE + '" onclick="startConceptPractice(this.dataset.id)">Practice again</button>'
     + '<button type="button" class="act-btn secondary" onclick="backToPractice()">Keep practicing</button>'
     + '</div></div>';
   var card = document.getElementById('cpDone');
@@ -11930,7 +12100,7 @@ function railNotesSections() {
         secs.push({ id: 'check', key: 'check:' + it.id + ':' + n, html: '<h2 class="sr-cap" id="srhCheck">Check yourself</h2>'
           + '<div class="sr-plate"><p class="sr-label">Recall it while it&rsquo;s fresh</p>'
           + '<p class="sr-small">A short set on ' + escapeHtml(it.name) + '. Answering from memory makes it stick.</p>'
-          + '<button type="button" class="sr-btn" onclick="railPracticeNote(\'' + escapeHtml(it.id) + '\')">Practice this note' + ico('arrow-right', 18) + '</button></div>' });
+          + '<button type="button" class="sr-btn" data-id="' + escapeHtml(it.id) + '" onclick="railPracticeNote(this.dataset.id)">Practice this note' + ico('arrow-right', 18) + '</button></div>' });
       }
     }
     if (g) {
@@ -11938,7 +12108,7 @@ function railNotesSections() {
       secs.push({ id: 'toc', key: 'toc:' + v.group + ':' + (v.note || '') + ':' + states.join(','), html: '<h2 class="sr-cap" id="srhToc">In this topic</h2>'
         + '<ul class="sr-toc">' + g.items.map(function (x, i) {
           var cur = x.id === v.note;
-          return '<li><button type="button" class="sr-toc-row' + (cur ? ' cur' : '') + '"' + (cur ? ' aria-current="location"' : '') + ' onclick="railJumpNote(\'' + escapeHtml(x.id) + '\')">'
+          return '<li><button type="button" class="sr-toc-row' + (cur ? ' cur' : '') + '"' + (cur ? ' aria-current="location"' : '') + ' data-id="' + escapeHtml(x.id) + '" onclick="railJumpNote(this.dataset.id)">'
             + gtMarkSvg(states[i]) + '<span class="sr-toc-t">' + escapeHtml(x.name) + '</span><span class="sr-only">' + GT_STATE_SR[states[i]] + '</span></button></li>';
         }).join('') + '</ul>' });
     }
@@ -13155,7 +13325,8 @@ function mapLettersInText(text, shuffle, selfLetter) {
 // ── WELCOME BANNER (Decision 4) — first-time users only ──
 // ── COOKIE CONSENT BANNER ──
 // Shown until the visitor makes a choice. Analytics is denied by default
-// (set in the head); accepting flips Consent Mode to granted. The choice
+// and the Google script is not loaded (set in the head); accepting flips
+// Consent Mode to granted and loads it. The choice
 // is persisted so the banner does not reappear, and can be revisited via
 // the "Cookie preferences" link in the footer.
 var consentReturnFocus = null;
@@ -13201,6 +13372,8 @@ function setConsent(granted) {
     if (window.gtag) {
       window.gtag('consent', 'update', { 'analytics_storage': granted ? 'granted' : 'denied' });
     }
+    // The Google script loads only now, after "Accept" (see the head).
+    if (granted && window.loadGA) window.loadGA();
   } catch (e) {}
   hideConsentBanner();
 }
@@ -13612,7 +13785,7 @@ function renderQuestion(q) {
     '<div class="q-card">'
     + '<p class="q-line" id="qMeta" tabindex="-1"><span class="dom-dot" style="background:' + info.color + '"></span>' + metaParts.join(' &middot; ') + '</p>'
     + '<div class="q-body">'
-    + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + q.id + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + q.id + '" onclick="expandScenario(\'' + q.id + '\')">Read scenario ▾</button></div>' : '')
+    + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + escapeHtml(q.id) + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + escapeHtml(q.id) + '" data-qid="' + escapeHtml(q.id) + '" onclick="expandScenario(this.dataset.qid)">Read scenario ▾</button></div>' : '')
     + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(q.scenario_context) + ' ' : '') + escapeHtml(q.question) + '</p>'
     + '<div class="opts">' + optsHtml + '</div>'
     // "How sure?" (redesign step 2): one segmented control, then the action.
@@ -14070,7 +14243,7 @@ function renderWeakSpots() {
     var r = x.r;
     return '<div class="ws-row">'
       + '<span class="ws-label"><span><span class="dom-dot" style="background:' + x.info.color + '"></span>' + 'D' + x.d + ' ' + x.info.short + '</span>'
-      + '<span class="ws-count">' + r.n + ' answered</span></span>'
+      + '<span class="ws-count">' + escapeHtml(String(r.n)) + ' answered</span></span>'
       + '<div class="ws-track"><div class="ws-fill" style="width:' + readBarWidth(r) + '%;background:var(--accent)"></div></div>'
       + '<span class="ws-pct">' + domainReadLabel(r) + '</span>'
       + '</div>';
@@ -14772,7 +14945,7 @@ function showMockQuestion() {
     + '<div class="q-card">'
     + '<p class="q-line" id="mkMeta" tabindex="-1"><span class="dom-dot" style="background:' + info.color + '"></span>' + escapeHtml(info.short) + ' &middot; Question ' + cur + ' of ' + tot + '</p>'
     + '<div class="q-body">'
-    + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + q.id + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + q.id + '" onclick="expandScenario(\'' + q.id + '\')">Read scenario ▾</button></div>' : '')
+    + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + escapeHtml(q.id) + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + escapeHtml(q.id) + '" data-qid="' + escapeHtml(q.id) + '" onclick="expandScenario(this.dataset.qid)">Read scenario ▾</button></div>' : '')
     + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(q.scenario_context) + ' ' : '') + escapeHtml(q.question) + '</p>'
     + '<div class="opts" id="mOpts" role="group" aria-labelledby="mkMeta">' + optsHtml + '</div>'
     + '<div class="mk-acts">'
@@ -16943,7 +17116,7 @@ function renderSubtopicFilter() {
                : accuracy[st] < 75 ? ' borderline' : ' strong';
     }
     return '<button class="subtopic-chip' + active + accClass + '"'
-      + ' onclick="setSubtopicFilter(\'' + st.replace(/'/g, "\\'") + '\')"'
+      + ' data-st="' + escapeHtml(st) + '" onclick="setSubtopicFilter(this.dataset.st)"'
       + (accuracy[st] !== undefined ? ' title="' + accuracy[st] + '% accuracy' : ' title="' + escapeHtml(label))
       + '">' + escapeHtml(label) + '</button>';
   }
@@ -17094,8 +17267,9 @@ function getTrainWeakSpotsPool() {
     domQ.slice(0, 7).forEach(function(q){ pool.push(q); });
   });
 
-  if (S.missedQuestions && S.missedQuestions.length) {
-    S.missedQuestions.slice().sort(function(){ return Math.random()-0.5; }).slice(0, 5).forEach(function(mq) {
+  var missedQs = resolvedSavedQuestions(S.missedQuestions);
+  if (missedQs.length) {
+    missedQs.sort(function(){ return Math.random()-0.5; }).slice(0, 5).forEach(function(mq) {
       if (!pool.some(function(p){ return p.id === mq.id; })) pool.unshift(mq);
     });
   }
@@ -17176,7 +17350,10 @@ function renderBookmarks() {
 
   var dColors = {'1':'var(--d1)','2':'var(--d2)','3':'var(--d3)','4':'var(--d4)','5':'var(--d5)'};
   var itemsHtml = filtered.map(function(bk) {
-    var d = String(bk.domain || '');
+    // The domain comes from the id and the text from the bank, never from the saved copy.
+    var d = savedQuestionDomain(bk.id) || '';
+    var bankQ = findQuestionById(bk.id);
+    var qText = bankQ && typeof bankQ.question === 'string' ? bankQ.question : '';
     var safeId = escapeHtml(bk.id || '');
     var tagInfo = BK_TAG_OPTIONS.find(function(t){ return t.value === bk.tag; });
     var tagHtml = tagInfo ? '<div style="margin-top:6px"><span class="bk-item-tag ' + tagInfo.cls + '">' + tagInfo.label + '</span></div>' : '';
@@ -17186,8 +17363,8 @@ function renderBookmarks() {
     // Use data-qid to avoid quote-in-attribute HTML injection issues
     var tagSel = '<select class="bk-tag-select" data-qid="' + safeId + '" onchange="bkTagChange(this)" onclick="event.stopPropagation()">' + tagOpts + '</select>';
     return '<div class="bk-item" data-qid="' + safeId + '" onclick="bkDrillClick(this)">'
-      + '<span class="bk-d-tag">' + '<span class="dom-dot" style="background:' + (dColors[d]||'var(--muted)') + '"></span>' + 'D' + (d||'?') + '</span>'
-      + '<div style="flex:1;min-width:0"><div class="bk-item-text">' + escapeHtml((bk.question||'').substring(0,120)) + (bk.question && bk.question.length > 120 ? '&#8230;' : '') + '</div>' + tagHtml + qNoteBlockHtml(bk.id, 'q-note bk-item-note') + '</div>'
+      + '<span class="bk-d-tag">' + '<span class="dom-dot" style="background:' + (dColors[d]||'var(--muted)') + '"></span>' + 'D' + escapeHtml(d || '?') + '</span>'
+      + '<div style="flex:1;min-width:0"><div class="bk-item-text">' + (qText ? escapeHtml(qText.substring(0,120)) + (qText.length > 120 ? '&#8230;' : '') : 'Loading this question&#8230;') + '</div>' + tagHtml + qNoteBlockHtml(bk.id, 'q-note bk-item-note') + '</div>'
       + tagSel + '</div>';
   }).join('');
 
@@ -17510,6 +17687,12 @@ function clearFilterAndContinue() {
   nextQ();
 }
 
+// The missed questions in one domain, each looked up in its loaded bank.
+function missedInDomain(d) {
+  d = String(d);
+  return resolvedSavedQuestions(S.missedQuestions).filter(function(q){ return String(q.domain) === d; });
+}
+
 function showDomainComplete(d) {
   d = String(d);
   var info = DI[d];
@@ -17517,7 +17700,7 @@ function showDomainComplete(d) {
   var st = S.ds[d] || {t:0, c:0};
   var pct = st.t > 0 ? Math.round((st.c / st.t) * 100) : 0;
   var pctColor = 'var(--text)';
-  var domMissed = S.missedQuestions ? S.missedQuestions.filter(function(mq){ return String(mq.domain) === d; }) : [];
+  var domMissed = missedInDomain(d);
 
   var missedListHtml = '';
   if (domMissed.length > 0) {
@@ -17529,7 +17712,7 @@ function showDomainComplete(d) {
       missedListHtml += '<div style="background:var(--wrong-light);border:2px solid var(--wrong);border-radius:10px;padding:12px 16px;margin-bottom:8px;cursor:pointer;transition:all 0.2s ease" onclick="reviewSpecificMissed(\x27' + d + '\x27,' + i + ')" onmouseover="this.style.transform=\x27translateX(4px)\x27" onmouseout="this.style.transform=\x27none\x27">'
         + '<div style="display:flex;align-items:center;gap:10px">'
         + '<span style="font-family:Fraunces,Georgia,serif;font-size:16px;font-weight:500;color:var(--wrong)">#' + qNum + '</span>'
-        + '<span style="font-size:16px;color:var(--text2);font-weight:500;line-height:1.5">' + mq.question.substring(0, 100) + (mq.question.length > 100 ? '...' : '') + '</span>'
+        + '<span style="font-size:16px;color:var(--text2);font-weight:500;line-height:1.5">' + escapeHtml(String(mq.question || '').substring(0, 100)) + (String(mq.question || '').length > 100 ? '...' : '') + '</span>'
         + '</div></div>';
     }
     missedListHtml += '</div>';
@@ -17605,10 +17788,15 @@ function startMissedReview(d) {
   setMistakesReview = false; // the whole Missed list, not one set's
   d = String(d);
   missedReviewDomain = d;
-  missedReviewQueue = S.missedQuestions.filter(function(q){ return String(q.domain) === d; });
+  missedReviewQueue = missedInDomain(d);
   if (missedReviewQueue.length === 0) {
-    missedReviewQueue = S.missedQuestions.slice();
+    missedReviewQueue = resolvedSavedQuestions(S.missedQuestions);
     missedReviewDomain = "all";
+  }
+  // Missed questions are shown from the bank; none there yet means it is still loading.
+  if (!missedReviewQueue.length) {
+    showToast(S.missedQuestions && S.missedQuestions.length ? 'Your missed questions are still loading. Try again in a moment.' : 'No missed questions yet', 'info', 2600);
+    return;
   }
   missedReviewIndex = 0;
   missedReviewMode = true;
@@ -17619,7 +17807,7 @@ function reviewSpecificMissed(d, idx) {
   setMistakesReview = false;
   d = String(d);
   missedReviewDomain = d;
-  missedReviewQueue = S.missedQuestions.filter(function(q){ return String(q.domain) === d; });
+  missedReviewQueue = missedInDomain(d);
   missedReviewIndex = idx;
   missedReviewMode = true;
   showNextMissed();
@@ -17667,10 +17855,9 @@ function startReviewQueue() {
   var dueIds = getDueReview();
   // Resolve each due id to a question object — prefer the missed-questions
   // store (full objects), fall back to the live bank, skip anything gone.
-  var byId = {};
-  (S.missedQuestions || []).forEach(function(q){ if (q && q.id) byId[q.id] = q; });
+  // Each one comes from the bank (a saved copy is never shown as it was saved).
   reviewQueueList = dueIds.map(function(id){
-    return byId[id] || (typeof findQuestionById === 'function' ? findQuestionById(id) : null);
+    return findQuestionById(id);
   }).filter(Boolean);
   if (!reviewQueueList.length) {
     if (typeof showToast === 'function') showToast('Nothing due for review right now', 'info', 2200);
@@ -17805,11 +17992,11 @@ function showSessionSummary() {
     + '<div class="summary-title">Session Summary</div>'
     + '<div class="summary-sub">Your practice session so far</div>'
     + '<div class="summary-big-score" style="color:' + pctColor + '">' + domainReadLabel(domainRead(S.score)) + '</div>'
-    + '<div class="summary-score-label">' + c + ' of ' + t + ' correct</div>'
+    + '<div class="summary-score-label">' + escapeHtml(String(c)) + ' of ' + escapeHtml(String(t)) + ' correct</div>'
     + '<div class="summary-grid">'
-    + '<div class="summary-stat"><span class="summary-stat-num">' + t + '</span><span class="summary-stat-label">Answered</span></div>'
-    + '<div class="summary-stat"><span class="summary-stat-num" style="color:var(--correct)">' + c + '</span><span class="summary-stat-label">Correct</span></div>'
-    + '<div class="summary-stat"><span class="summary-stat-num">' + S.streak + '</span><span class="summary-stat-label">In a row</span></div>'
+    + '<div class="summary-stat"><span class="summary-stat-num">' + escapeHtml(String(t)) + '</span><span class="summary-stat-label">Answered</span></div>'
+    + '<div class="summary-stat"><span class="summary-stat-num" style="color:var(--correct)">' + escapeHtml(String(c)) + '</span><span class="summary-stat-label">Correct</span></div>'
+    + '<div class="summary-stat"><span class="summary-stat-num">' + escapeHtml(String(S.streak)) + '</span><span class="summary-stat-label">In a row</span></div>'
     + '</div>'
     + '<div class="summary-section-label">Confidence Breakdown</div>'
     + confCards
@@ -18046,6 +18233,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Safer backups and analytics',
+    items: [
+      { cat: 'fixed', text: 'Importing a backup file is now stricter about what it accepts, to keep your progress and this site safe.' },
+      { cat: 'improved', text: 'Analytics now loads only after you accept it in the cookie banner. If you decline, it never loads.' }
+    ]
+  },
+  {
+    version: 'v12.27.1',
     title: 'Corrected reference',
     items: [
       { cat: 'fixed', text: 'The audit standard on fraud and illegal acts now shows its current title in question references.' }
