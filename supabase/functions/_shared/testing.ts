@@ -11,16 +11,25 @@ function b64url(s: string): string {
   return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
-/** A token the fake Auth server knows. `amrAgoMs` = how long ago the learner signed in. */
+/**
+ * A token the fake Auth server knows. `amrAgoMs` = how long ago the learner
+ * signed in; `aal` = 'aal2' for a session that passed a second factor (TOTP).
+ */
 export function makeJwt(
   sub: string,
-  opts: { amrAgoMs?: number | null; role?: string; nowMs?: number } = {},
+  opts: { amrAgoMs?: number | null; role?: string; nowMs?: number; aal?: 'aal1' | 'aal2' } = {},
 ): string {
   const now = opts.nowMs ?? NOW;
   const amr = opts.amrAgoMs === null
     ? undefined
     : [{ method: 'otp', timestamp: Math.floor((now - (opts.amrAgoMs ?? 60_000)) / 1000) }];
-  const payload = { sub, role: opts.role ?? 'authenticated', aal: 'aal1', amr, session_id: crypto.randomUUID() };
+  const payload = {
+    sub,
+    role: opts.role ?? 'authenticated',
+    aal: opts.aal ?? 'aal1',
+    amr,
+    session_id: crypto.randomUUID(),
+  };
   return `${b64url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }))}.${b64url(JSON.stringify(payload))}.c2lnbmF0dXJl`;
 }
 

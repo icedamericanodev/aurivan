@@ -28,8 +28,12 @@ name: Phone update (EAS Update)
 #   is not a required check on main, so this is the gate that counts.
 # - Only the Expo steps receive the key, and eas-cli is pinned to one exact
 #   version (a new, possibly hijacked release is never fetched with the key).
-#   Install scripts could still reach the later steps (GITHUB_ENV, patched
-#   node_modules), so the key is only as safe as the dependency tree.
+# - No third-party install scripts run in this job (security audit M1, 21 Oct
+#   2026): `npm ci --ignore-scripts`, then our own content build by name, and
+#   npx fetches eas-cli with npm_config_ignore_scripts. None of the skipped
+#   scripts is needed (proved on a clean copy: same fingerprint, byte-identical
+#   JS bundle, every check below passes). The dependency CODE still runs, so
+#   the real fix is signed updates: docs/mobile/SECURITY_GATES.md, gate 1.
 # - It publishes to "preview" (test phones) only, never "production".
 # Owner setup (docs/WEBSITE_DEPLOY.md, "GitHub settings"): Settings →
 # Environments → "ota": no Required reviewers; Deployment branches: main only;
@@ -62,7 +66,7 @@ concurrency:
   group: eas-update
   cancel-in-progress: true # a newer merge supersedes an older update
 
-# Read-only token: `npm ci` runs third-party install scripts.
+# Read-only token: third-party code runs here (tests, the bundler, eas-cli).
 permissions:
   contents: read
 
@@ -103,10 +107,17 @@ jobs:
           cache: npm
           cache-dependency-path: mobile/package-lock.json
 
-      - name: Install (also builds the content pack)
+      # --ignore-scripts: no package's install script runs in the job that holds
+      # the update key. The ones skipped: our own postinstall (the content pack,
+      # run by name on the next line), @parcel/watcher and unrs-resolver (both
+      # only fall back to building or fetching a native binary that npm already
+      # installed from the lockfile).
+      - name: Install without install scripts, then build the content pack
         if: steps.token.outputs.ok == 'true'
         working-directory: mobile
-        run: npm ci
+        run: |
+          npm ci --ignore-scripts
+          node scripts/build-content.mjs
 
       # The safety check that replaced the approval click: every check in
       # mobile.yml. Any failure stops the publish.
@@ -138,6 +149,9 @@ jobs:
         working-directory: mobile
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          # npx installs eas-cli's dependencies fresh: run none of their install
+          # scripts (dtrace-provider, protobufjs: neither is needed).
+          npm_config_ignore_scripts: 'true'
         run: |
           set -uo pipefail
           for scope in project account; do
@@ -162,6 +176,7 @@ jobs:
         working-directory: mobile
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          npm_config_ignore_scripts: 'true'
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
           message="$(printf '%s' "${COMMIT_MESSAGE:-Manual update}" | head -n 1)"

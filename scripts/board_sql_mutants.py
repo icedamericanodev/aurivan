@@ -115,8 +115,8 @@ MUTANTS = {
         (r"where p\.id = new\.target_id and p\.author_id = new\.user_id\n", "where p.id = new.target_id\n"),
     ],
     "staff actions without staff": [
-        (r"if not exists \(select 1 from private\.staff s where s\.user_id = p_actor\) then\n    raise exception 'forbidden' using errcode = '42501';\n  end if;\n  if v_reason",
-         "if false then\n    raise exception 'forbidden' using errcode = '42501';\n  end if;\n  if v_reason"),
+        (r"if not exists \(select 1 from private\.staff s where s\.user_id = p_actor\) then\n    raise exception 'forbidden' using errcode = '42501';\n  end if;\n  -- Admin-only",
+         "if false then\n    raise exception 'forbidden' using errcode = '42501';\n  end if;\n  -- Admin-only"),
     ],
     "staff_act for learners": [
         (r"grant execute on function private\.is_staff\(\), private\.is_active_member\(\) to authenticated;",
@@ -245,6 +245,27 @@ MUTANTS = {
     ],
     "board in realtime": [
         (r"\Z", "\ncreate publication supabase_realtime for table public.board_posts;\n"),
+    ],
+    # Security audit, 21 Oct 2026 (tests: supabase/tests/33_board_security.sql).
+    "moderators get the admin-only actions (audit M2)": [
+        (r"if not v_admin and \(", "if false and ("),
+    ],
+    "moderators can lift a ban (audit M2)": [
+        (r"or \(p_kind = 'member' and p_action = 'unban' and exists \(", "or (false and exists ("),
+        (r"or \(p_kind = 'appeal' and p_action = 'restore_appeal' and exists \(", "or (false and exists ("),
+    ],
+    "moderators can act on other staff (audit M2)": [
+        (r"or \(p_kind = 'member' and exists \(\n          select 1 from public\.board_members m\n            join private\.staff s",
+         "or (false and exists (\n          select 1 from public.board_members m\n            join private.staff s"),
+    ],
+    "edit_comment on a locked or hidden post (audit L5)": [
+        (r"\n                    and p\.visibility = 'visible' and not p\.locked\) then", ") then"),
+    ],
+    "board_feed takes any cert id (audit L2)": [
+        (r"if p_cert is null or p_cert !~ '\^\[a-z0-9-\]\{2,20\}\$' then", "if false then"),
+    ],
+    "board_feed searches uncut text (audit L2)": [
+        (r"p_q := nullif\(left\(btrim\(p_q\), 100\), ''\);", "p_q := p_q;"),
     ],
 }
 

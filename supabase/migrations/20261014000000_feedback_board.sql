@@ -1147,10 +1147,16 @@ begin
     return jsonb_build_object('id', v_id, 'visibility', v_vis, 'holdReason', v_hold);
   end if;
 
-  -- edit_comment
+  -- edit_comment: the learner's own pending or visible comment, on a post that
+  -- is still visible and NOT locked. A locked post (a dispute staff froze) or
+  -- a hidden one keeps its comments as they are, like `comment` and
+  -- `edit_post` above (security audit L5, 21 Oct 2026).
   perform private.board_take(p_user, 'edit', null, 30, true);
-  if not exists (select 1 from public.board_comments c where c.id = p_target and c.author_id = p_user
-                  and c.visibility in ('pending', 'visible') and not c.is_official) then
+  if not exists (select 1 from public.board_comments c
+                   join public.board_posts p on p.id = c.post_id
+                  where c.id = p_target and c.author_id = p_user
+                    and c.visibility in ('pending', 'visible') and not c.is_official
+                    and p.visibility = 'visible' and not p.locked) then
     raise exception 'forbidden' using errcode = '42501';
   end if;
   v_vis := case when v_hold is null then 'visible' else 'pending' end;
@@ -1172,6 +1178,11 @@ end $$;
 --   appeal:         uphold, restore_appeal
 --   report:         dismiss {kind, editedAt}: every open report on that target (the queue's id);
 --                   refused ('changed') when the words were edited after `editedAt`
+-- Roles (security audit M2, 21 Oct 2026). A 'moderator' has the everyday
+-- tools above. Only an 'admin' may: pause or reopen the board; ban; lift a
+-- ban (unban, or restore_appeal on a banned member's standing appeal); or
+-- take ANY member action against a staff account. Otherwise 'forbidden'.
+-- (staff-action also requires an MFA session for every staff call.)
 create function private.staff_act(p_actor uuid, p_action text, p_kind text, p_target uuid, p_reason text, p_extra jsonb)
 returns jsonb language plpgsql volatile security invoker set search_path = '' as $$
 declare
@@ -1186,8 +1197,32 @@ declare
   v_log_action text := p_action;
   v_member uuid;
   v_edited timestamptz;
+  v_admin boolean;
 begin
   if not exists (select 1 from private.staff s where s.user_id = p_actor) then
+    raise exception 'forbidden' using errcode = '42501';
+  end if;
+  -- Admin-only actions (see "Roles" above). One phished moderator mailbox
+  -- must not be able to close the whole board or silence people for good.
+  v_admin := exists (select 1 from private.staff s where s.user_id = p_actor and s.role = 'admin');
+  if not v_admin and (
+       p_kind = 'board'
+    or (p_kind = 'member' and p_action = 'ban')
+    -- Lifting a ban, directly or through an appeal.
+    or (p_kind = 'member' and p_action = 'unban' and exists (
+          select 1 from public.board_members m
+           where (m.public_id = p_target or m.user_id = p_target) and m.standing = 'banned'))
+    or (p_kind = 'appeal' and p_action = 'restore_appeal' and exists (
+          select 1 from public.moderation_appeals a
+            join public.board_members m on m.user_id = a.user_id
+           where a.id = p_target and a.target_kind = 'standing' and m.standing = 'banned'))
+    -- Any member action aimed at a staff account (a moderator can't ban,
+    -- suspend or rename another moderator or an admin).
+    or (p_kind = 'member' and exists (
+          select 1 from public.board_members m
+            join private.staff s on s.user_id = m.user_id
+           where m.public_id = p_target or m.user_id = p_target))
+  ) then
     raise exception 'forbidden' using errcode = '42501';
   end if;
   if v_reason is not null and v_reason not in
@@ -1552,6 +1587,14 @@ begin
   if p_tab not in ('top', 'new', 'shipped') then
     raise exception 'invalid' using errcode = '22023';
   end if;
+  -- Anyone (even signed out) can call this, so bound the inputs before any
+  -- row is read (security audit L2, 21 Oct 2026): the cert id must have the
+  -- same shape as board_posts.cert_id, and the search text is trimmed and cut
+  -- to 100 characters (a megabyte of search words would cost CPU on every row).
+  if p_cert is null or p_cert !~ '^[a-z0-9-]{2,20}$' then
+    raise exception 'invalid' using errcode = '22023';
+  end if;
+  p_q := nullif(left(btrim(p_q), 100), '');
   if v_me is null then
     return query
       select p.id, p.kind, p.title, p.status, p.shipped_in, p.author_member, m.handle, coalesce(m.is_team, false),

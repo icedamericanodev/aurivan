@@ -500,7 +500,8 @@ export function createMemoryBoard(ctx: BoardCtx, seed: BoardSeed = {}): { port: 
       await ctx.enter('board.feed');
       const viewer = await ctx.viewer();
       const tab: BoardTab = q.tab;
-      const search = (q.search ?? '').trim().toLowerCase();
+      // Like board_feed in SQL: trimmed, then at most 100 characters (audit L2).
+      const search = (q.search ?? '').trim().slice(0, 100).toLowerCase();
       let list = [...posts.values()].filter(
         (p) =>
           p.cert === q.cert &&

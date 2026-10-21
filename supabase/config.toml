@@ -120,9 +120,15 @@ enable_confirmations = false
 [auth.mfa]
 max_enrolled_factors = 10
 
+# TOTP (an authenticator app) is ON for STAFF (security audit M2, 21 Oct
+# 2026): the staff-action Edge Function refuses the queue and every action
+# unless the session passed a second factor (JWT `aal` = 'aal2'). Learners
+# are never asked to enrol (the Phase 9 app offers enrolment on the staff
+# screen only; see docs/mobile/SECURITY_GATES.md). Mirror
+# this by hand on the hosted project (Dashboard > Authentication > Multi-Factor).
 [auth.mfa.totp]
-enroll_enabled = false
-verify_enabled = false
+enroll_enabled = true
+verify_enabled = true
 
 [auth.mfa.phone]
 enroll_enabled = false
