@@ -14,9 +14,34 @@ function setup() {
   const board = new FakeBoardDb();
   board.staffIds.add(STAFF);
   const log = recordingLogger();
-  const run = (body: unknown, user = STAFF) => handleStaffAction(post(body, admin.issue(user)), { admin, board, log });
+  // Staff sessions passed a second factor (aal2) unless a test says otherwise.
+  const run = (body: unknown, user = STAFF, aal: 'aal1' | 'aal2' = 'aal2') =>
+    handleStaffAction(post(body, admin.issue(user, { aal })), { admin, board, log });
   return { admin, board, log, run };
 }
+
+Deno.test('staff without a second factor (aal1) get 401 mfa_required, and nothing runs (audit M2)', async () => {
+  const { board, log, run } = setup();
+  for (
+    const body of [
+      { action: 'queue', tab: 'held' },
+      { action: 'pause', targetKind: 'board' },
+      { action: 'ban', targetKind: 'member', targetId: POST_ID },
+      { action: 'approve', targetKind: 'post', targetId: POST_ID },
+    ]
+  ) {
+    const res = await run(body, STAFF, 'aal1');
+    assert.equal(res.status, 401, JSON.stringify(body));
+    assert.deepEqual(await res.json(), { error: 'reauth_required', detail: 'mfa_required' });
+  }
+  assert.deepEqual(board.staffActs, []);
+  assert.ok(!board.calls.includes('staffQueue'));
+  assert.ok(log.lines.some((l) => l.includes('staff_mfa_required')));
+  // whoami still answers, so the app can ask staff to verify with their authenticator first.
+  assert.deepEqual(await (await run({ action: 'whoami' }, STAFF, 'aal1')).json(), { staff: true });
+  // And a learner is still a plain 403, whatever their session.
+  assert.equal((await run({ action: 'queue', tab: 'held' }, USER_A, 'aal2')).status, 403);
+});
 
 Deno.test('whoami tells anyone signed in whether THEY are staff, and nothing else', async () => {
   const { run } = setup();

@@ -1042,7 +1042,8 @@ cap.
 |---|---|---|
 | Board schema | `supabase/migrations/20261014000000_feedback_board.sql` | `board_settings` (the pause valve, the guidelines version, the read scope), `board_members` (handle, consent, standing, the team mark), `board_posts`, `board_comments`, `board_votes`, `board_follows`, `board_status_events`, `board_notifications`, `ugc_reports`, `member_blocks`, `moderation_appeals` in `public`; `staff`, `moderation_log`, `moderation_terms`, `board_events` (rate-limit counts, 2 days) and the `board_priority` view in `private`; the triggers; the reads `board_feed` and `board_post`; the server entry points `svc_board_member`, `svc_board_join`, `svc_board_write`, `svc_moderation_terms`, `svc_is_staff`, `svc_staff_act` (→ `private.staff_act`), `svc_staff_queue`, `svc_staff_digest`, `svc_board_export`, `svc_board_counts` |
 | Board tests | `supabase/tests/30_board.sql`, `31_board_review.sql` | 166 + 83 pgTAP checks. `31_board_review.sql` is the fix round's: names checked only when set or changed, no direct name writes, look-alikes and ISACA marks, staff rename; no account ids for readers; a blocked learner can't reply to or notify the blocker; reported words kept for staff; trusted reporters and reviewed posts; member reports and dismiss by target; deletion closes reports; the team's name in `author_staff`; own withdrawn and removed comments; withdrawn stays withdrawn; folding; one post per draft; write attempts counted; one official response after a merge. `30_board.sql`: anon and A/B/staff in each read scope; column grants; withdraw-only (and the other learner's post, comment, vote and notice unchanged after A's attempts); votes (exactly ±1, 100 changes a day, a take-back counts and is never refused); reports (exam content hides at once, 3 reporters 7+ days old, a young reporter doesn't count, rate limits, unseen targets refused); blocks; handles; appeals; private tables and functions; board-submit's writer (holds, pause, guidelines, banned, post and comment limits, one level of replies); staff actions and their log; cascade on account delete; no board table in any publication |
-| Board mutants | `scripts/board_sql_mutants.py` | 56 one-change breaks of the board migration (22 added in the fix round); the suite must fail on each (same `PGTAP_RUN` as the sync mutants) |
+| Board security tests | `supabase/tests/33_board_security.sql` | The 21 Oct 2026 security audit: the moderator / admin split (M2), `board_feed`'s cert id check and 100-character search cut (L2), and no comment edits on a locked or hidden post (L5) |
+| Board mutants | `scripts/board_sql_mutants.py` | 68 one-change breaks of the board migration (22 added in the fix round, 6 by the security audit); the suite must fail on each (same `PGTAP_RUN` as the sync mutants) |
 | Board functions | `supabase/functions/{board-submit,staff-action,staff-digest}` | Pure handlers on a `BoardDbPort` (`_shared/board.ts`; real adapter `_shared/supabaseBoard.ts`, which maps the SQL's own words to codes and never passes a database message on); `deno test` with `FakeBoardDb` |
 | Leak print | `scripts/build-leakprint.mjs` → `supabase/functions/board-submit/leakprint.json` | Built at DEPLOY time from the bundled pack, with the squashed-letters fingerprint (gitignored, numbers only); `board-submit` refuses every post without it, or with a file from before the fix round. Shipped as a static file (`config.toml`). Rebuild it on every content release |
 
@@ -1097,6 +1098,14 @@ is the same switch.
 - Staff come only from `private.staff`. `staff-action` checks it with the
   service role, and `private.staff_act` checks the actor again; every action
   is logged with actor and reason (never the learner's text).
+- Two staff roles (security audit M2, 21 Oct 2026). A `moderator` has the
+  everyday tools (approve, hide, remove, lock, status, warn, limit,
+  suspend, lift a suspension, rename a learner, dismiss, appeals). Only an
+  `admin` may pause or reopen the board, ban, lift a ban (directly or by
+  restoring a banned member's appeal), or take any member action against a
+  staff account; `private.staff_act` refuses the rest with `forbidden`. And
+  every staff call except `whoami` needs an MFA session (TOTP, JWT `aal` =
+  `aal2`); see `docs/mobile/SECURITY_GATES.md`.
 - App roles have **no usage on schema `private`** (hardening test 13 still
   holds): a policy calls a helper by its stored id, which needs only
   EXECUTE. Exactly two helpers are executable by `authenticated`
@@ -1133,7 +1142,10 @@ is the same switch.
   `{ op: 'me' }` returns `memberId` (the public id), never the account id.
 - `staff-action` `{ action, targetKind, targetId, reason, extra }` or
   `{ action: 'queue', tab }` or `{ action: 'whoami' }`: fixed lists of
-  actions per target, rebuilt extras, 403 for anyone not in `private.staff`.
+  actions per target, rebuilt extras, 403 for anyone not in `private.staff`,
+  and 401 `reauth_required` with detail `mfa_required` for staff whose
+  session has not passed a second factor (`aal2`; `whoami` stays open so
+  the app can ask them to verify first).
   Fix round P8: member `rename` (a neutral pseudonym, logged; the target is
   the member's public id), post `spoiler {on}`, report `dismiss {kind}`
   (every open report on the queue's target), and approve, restore and hide
@@ -1308,3 +1320,23 @@ Phase 6 on purpose).**
       (`author_member`, `authorId`); never `error.message` (SEC N10);
     - optionally rotate a member's public id on a name change (SEC S4);
       blocks and reports point at it, so they would need moving too.
+
+## 11. Security: go-live gates
+
+The 21 Oct 2026 security audit (OWASP MASVS v2) found nothing Critical or
+High. Today's release, with accounts built OFF, is a go. The gates that must
+close first, with plain owner steps, are in
+**[`SECURITY_GATES.md`](SECURITY_GATES.md)**:
+
+| Gate | Before | Status |
+|---|---|---|
+| 1. Signed phone updates (EAS Update code signing; private key off CI; one native build) | first store / `production` build, and Phase 9 | open (interim: no install scripts in the publishing job) |
+| 2. Staff MFA (`aal2`) and the admin / moderator split | Phase 9 | done in code; owner enables TOTP and enrols staff |
+| 3. Turnstile captcha + custom SMTP | Phase 9 | open (owner accounts) |
+| 4. Own key for the backup-route test APK, or retire it | its next run | open (owner decision) |
+| 5. GraphQL off on the hosted project | Phase 9 | open (one switch) |
+| 6. Supabase adapter guardrails (no string-built filters, webhook, secure-store backup) | Phase 9 | engineer checklist |
+
+Fixed in code by the audit: outside links can't pre-fill a board post (L1),
+the board search is bounded (L2), and no comment edits on a locked or hidden
+post (L5).

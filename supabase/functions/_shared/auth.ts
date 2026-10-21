@@ -26,6 +26,12 @@ export interface Claims {
   sub: string;
   role: string;
   amr: AmrEntry[];
+  /**
+   * Authenticator assurance level: 'aal2' once the session has passed a
+   * second factor (TOTP), 'aal1' otherwise (Supabase Auth, sessions.go
+   * CalculateAALAndAMR). Anything missing or unknown is read as 'aal1'.
+   */
+  aal: 'aal1' | 'aal2';
 }
 
 /** Deleting the account needs a sign-in in the last 10 minutes. */
@@ -62,7 +68,7 @@ export function decodeClaims(jwt: string): Claims | null {
   try {
     const payload = JSON.parse(base64UrlDecode(jwt.split('.')[1] ?? ''));
     if (!payload || typeof payload !== 'object') return null;
-    const { sub, role, amr } = payload as Record<string, unknown>;
+    const { sub, role, amr, aal } = payload as Record<string, unknown>;
     if (typeof sub !== 'string' || !UUID_RE.test(sub) || typeof role !== 'string') return null;
     const entries: AmrEntry[] = Array.isArray(amr)
       ? amr.flatMap((e) =>
@@ -73,7 +79,8 @@ export function decodeClaims(jwt: string): Claims | null {
           : []
       )
       : [];
-    return { sub, role, amr: entries };
+    // Fail safe: only the exact string 'aal2' counts as a second factor.
+    return { sub, role, amr: entries, aal: aal === 'aal2' ? 'aal2' : 'aal1' };
   } catch {
     return null;
   }
@@ -117,4 +124,14 @@ export function recentAuth(claims: Claims, nowMs: number, windowMs = RECENT_AUTH
 
 export function requireRecentAuth(claims: Claims, nowMs: number): void {
   if (!recentAuth(claims, nowMs)) throw new HttpError(401, 'reauth_required');
+}
+
+/**
+ * Staff work needs a session that passed a second factor (TOTP), not just an
+ * email code: a phished mailbox alone must not open the moderation tools
+ * (security audit M2, 21 Oct 2026). 401 `reauth_required` with detail
+ * `mfa_required` tells the app to run the MFA challenge, then retry.
+ */
+export function requireMfa(claims: Claims): void {
+  if (claims.aal !== 'aal2') throw new HttpError(401, 'reauth_required', 'mfa_required');
 }

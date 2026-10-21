@@ -1,5 +1,13 @@
 import { strict as assert } from 'node:assert';
-import { bearerToken, type Claims, decodeClaims, lastSignInMs, RECENT_AUTH_MS, recentAuth } from './auth.ts';
+import {
+  bearerToken,
+  type Claims,
+  decodeClaims,
+  lastSignInMs,
+  RECENT_AUTH_MS,
+  recentAuth,
+  requireMfa,
+} from './auth.ts';
 import { HttpError } from './http.ts';
 import { makeJwt, NOW, USER_A } from './testing.ts';
 
@@ -34,12 +42,24 @@ Deno.test('bearerToken accepts only a well-formed Bearer JWT', () => {
 
 Deno.test('decodeClaims reads sub, role and amr, dropping malformed amr entries', () => {
   const c = claims([{ method: 'otp', timestamp: 100 }, { method: 'oauth' }, 'x', { method: 1, timestamp: 2 }]);
-  assert.deepEqual(c, { sub: USER_A, role: 'authenticated', amr: [{ method: 'otp', timestamp: 100 }] });
+  assert.deepEqual(c, { sub: USER_A, role: 'authenticated', amr: [{ method: 'otp', timestamp: 100 }], aal: 'aal1' });
   assert.deepEqual(claims(undefined).amr, []);
   assert.equal(decodeClaims(makeJwtWith({ sub: 'not-a-uuid', role: 'authenticated' })), null);
   assert.equal(decodeClaims(makeJwtWith({ role: 'authenticated' })), null);
   assert.equal(decodeClaims('a.%%%.c'), null);
   assert.equal(decodeClaims('only-one-part'), null);
+});
+
+Deno.test('aal: only the exact string aal2 counts as a second factor (security audit M2)', () => {
+  const aal = (v: unknown) => decodeClaims(makeJwtWith({ sub: USER_A, role: 'authenticated', aal: v }))!;
+  assert.equal(aal('aal2').aal, 'aal2');
+  for (const v of ['aal1', 'AAL2', 'aal3', '', 2, true, null, undefined, ['aal2']]) assert.equal(aal(v).aal, 'aal1');
+  assert.doesNotThrow(() => requireMfa(aal('aal2')));
+  assert.throws(
+    () => requireMfa(aal('aal1')),
+    (e: unknown) =>
+      e instanceof HttpError && e.status === 401 && e.code === 'reauth_required' && e.detail === 'mfa_required',
+  );
 });
 
 Deno.test('recentAuth: the newest sign-in must be within 10 minutes and not in the future', () => {

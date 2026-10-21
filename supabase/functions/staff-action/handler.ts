@@ -12,11 +12,15 @@
 //    from the token's metadata. Anyone else gets 403 `forbidden` and learns
 //    nothing (no queue, no counts). The app's staff screen is only cosmetic;
 //    this is the gate, and private.staff_act checks the actor again.
-// 3. Every action and its fields are checked against a fixed list before
-//    the database sees them.
+// 3. Staff need an MFA (aal2) session for the queue and every action: 401
+//    `reauth_required` with detail `mfa_required` otherwise (audit M2).
+//    `whoami` stays open, so the app can tell staff to verify first.
+// 4. Every action and its fields are checked against a fixed list before
+//    the database sees them. private.staff_act keeps pausing the board,
+//    bans and actions on other staff for role 'admin' (moderators get 403).
 
 import type { AdminPort } from '../_shared/admin.ts';
-import { requireUser } from '../_shared/auth.ts';
+import { requireMfa, requireUser } from '../_shared/auth.ts';
 import type { BoardDbPort, StaffActInput } from '../_shared/board.ts';
 import { fromBoardDb } from '../_shared/boardHttp.ts';
 import { HttpError, json, type Logger, readJsonObject, requirePost, serveSafely } from '../_shared/http.ts';
@@ -114,7 +118,7 @@ function extraFor(action: string, raw: unknown): Record<string, unknown> {
 export function handleStaffAction(req: Request, deps: StaffActionDeps): Promise<Response> {
   return serveSafely(deps.log, async () => {
     requirePost(req);
-    const { user } = await requireUser(req, deps.admin);
+    const { user, claims } = await requireUser(req, deps.admin);
     const body = await readJsonObject(req, { maxBytes: 8 * 1024 });
     const staff = await deps.board.isStaff(user.id).catch(fromBoardDb);
 
@@ -123,6 +127,13 @@ export function handleStaffAction(req: Request, deps: StaffActionDeps): Promise<
       deps.log('not_staff', {});
       throw new HttpError(403, 'forbidden');
     }
+    // The queue holds learners' held words (contact details, threats) and the
+    // actions can silence anyone, so staff must have passed a second factor in
+    // THIS session: an email code alone is not enough (security audit M2).
+    // Admin-only actions (pause the board, ban, act on staff) are checked
+    // again in private.staff_act, by role.
+    if (claims.aal !== 'aal2') deps.log('staff_mfa_required', {});
+    requireMfa(claims);
 
     if (body.action === 'queue') {
       const tab = TABS.find((t) => t === body.tab);
