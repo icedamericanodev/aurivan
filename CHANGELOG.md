@@ -16,7 +16,8 @@ For internal/technical history, see git log and PR descriptions.
 - The practice timer now counts up while you answer and never counts down.
 - Your stats and readiness appear once you have enough answers, instead of a page of zeros.
 - The cookie notice is a slim bar that waits until your first answer, and it says plainly what Google Analytics and Google Forms are used for.
-- Calmer wording across the app, no more pop-up alerts, and curly quotes in questions.
+- Calmer wording across the app, no more pop-up alerts, and curly quotes in questions and explanations.
+- The About page now says plainly what KaiSip is and where its questions and notes come from.
 - Links to KaiSip now show a preview card and say that it is CISA exam prep.
 
 ## [v12.29.2] — Privacy policy detail

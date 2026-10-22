@@ -37,7 +37,7 @@
 <meta name="description" content="KaiSip is free CISA exam prep: practice questions across all five domains, mock exams and plain-language study notes that teach you to reason like an IS auditor.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="KaiSip">
-<meta property="og:title" content="KaiSip: CISA exam prep that teaches the auditor's mindset">
+<meta property="og:title" content="KaiSip: CISA exam prep that teaches the auditor’s mindset">
 <meta property="og:description" content="Think like an IS auditor. Practice questions that explain every option, mock exams and plain-language study notes for the CISA exam.">
 <meta property="og:url" content="https://kaisip.com/">
 <!-- Link previews (Reddit, Threads, iMessage, Slack): a 1200×630 card. Crawlers
@@ -48,11 +48,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="KaiSip: Think like an IS auditor. An answer screen shows the best answer with Eliminate two, Final two and Exam cue tips.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="KaiSip: CISA exam prep that teaches the auditor's mindset">
+<meta name="twitter:title" content="KaiSip: CISA exam prep that teaches the auditor’s mindset">
 <meta name="twitter:description" content="Think like an IS auditor. Practice questions that explain every option, mock exams and plain-language study notes for the CISA exam.">
 <meta name="twitter:image" content="https://kaisip.com/assets/og-kaisip.png">
 <meta name="twitter:image:alt" content="KaiSip: Think like an IS auditor. An answer screen shows the best answer with Eliminate two, Final two and Exam cue tips.">
-<title>KaiSip: CISA exam prep that teaches the auditor's mindset</title>
+<title>KaiSip: CISA exam prep that teaches the auditor’s mindset</title>
 <link rel="icon" href="assets/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -121,9 +121,6 @@
 .tp-item:focus-visible,
 .subtopic-chip:focus-visible,
 .ctrl-btn:focus-visible,
-.ep-set:focus-visible,
-.ep-skip:focus-visible,
-.ec-edit:focus-visible,
 .eg-toc-list a:focus-visible,
 .eg-src a:focus-visible,
 .wb-close:focus-visible {
@@ -910,7 +907,7 @@ header {
   /* The bottom nav replaces the horizontally-scrolling top-tab strip on
      phones — hide the strip so there is one navigation system, not two. */
   .nav-tabs-wrap { display: none; }
-  .app { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+  .app { padding-bottom: calc(64px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
 }
 
 /* â”€â”€ SECTION LABEL â”€â”€ */
@@ -1699,91 +1696,6 @@ header {
 .empty-state.es-chart    { color: var(--text2); }        /* muted */
 .empty-state.es-bookmark { color: var(--text2); }
 .empty-state.es-calendar { color: var(--text2); }
-
-/* ═══ DECISION 8: EXAM-DATE PROMPT + COUNTDOWN PILL ═══ */
-.exam-prompt {
-  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  margin-bottom: 16px;
-  padding: 14px 18px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  border-radius: 12px;
-}
-.exam-prompt .ep-icon { font-size: 22px; flex-shrink: 0; }
-.exam-prompt .ep-text { flex: 1; min-width: 200px; }
-.exam-prompt .ep-title {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 14px; font-weight: 600; color: var(--text);
-  margin-bottom: 2px;
-}
-.exam-prompt .ep-body {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px; color: var(--text2);
-}
-.exam-prompt .ep-input {
-  font-family: Figtree,system-ui,sans-serif;
-  /* 16px prevents iOS Mobile Safari auto-zoom-on-focus (threshold <16px triggers zoom) */
-  font-size: 16px;
-  padding: 8px 10px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text);
-  min-height: 38px;
-}
-.exam-prompt .ep-set {
-  background: var(--btn); color: var(--on-btn);
-  border: none; border-radius: 8px;
-  padding: 9px 16px;
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px; font-weight: 600;
-  cursor: pointer;
-  transition: var(--tr);
-  min-height: 38px;
-}
-.exam-prompt .ep-set:hover { background: var(--brand-blue); }
-.exam-prompt .ep-skip {
-  background: none; border: none; cursor: pointer;
-  color: var(--muted); font-size: 22px; line-height: 1;
-  padding: 8px 10px; border-radius: 6px;
-}
-.exam-prompt .ep-skip:hover { color: var(--text); background: var(--surface2); }
-
-.exam-countdown {
-  display: inline-flex; align-items: center; gap: 10px;
-  margin-bottom: 16px;
-  padding: 8px 14px 8px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  font-family: Figtree,system-ui,sans-serif;
-}
-.exam-countdown .ec-num {
-  font-family: Fraunces,Georgia,serif;
-  font-size: 22px; font-weight: 500;
-  color: var(--accent);
-  line-height: 1;
-}
-.exam-countdown .ec-label {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px; letter-spacing: 0;
-  text-transform: none;
-  color: var(--text2);
-}
-.exam-countdown.urgent { border-color: var(--warning); }
-.exam-countdown.urgent .ec-num { color: var(--warning); }
-.exam-countdown .ec-edit {
-  background: none; border: none; cursor: pointer;
-  margin-left: 4px;
-  padding: 4px 10px;
-  border-radius: 100px;
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px; letter-spacing: 0;
-  color: var(--muted);
-  transition: var(--tr);
-}
-.exam-countdown .ec-edit:hover { color: var(--accent); background: var(--surface2); }
 
 /* ═══ DECISION 9: SESSION INTENT (START) + DEBRIEF ═══ */
 .session-start {
@@ -3156,14 +3068,6 @@ header {
   font-size:14px;line-height:1.8;color:var(--text2);text-align:center;
   margin-bottom:20px;font-weight:500;
 }
-.onboard-feature {
-  background:var(--surface2);border:2px solid var(--border);
-  border-radius:12px;padding:14px 16px;margin-bottom:10px;
-  display:flex;align-items:flex-start;gap:12px;
-}
-.onboard-feature-icon {font-size:20px;flex-shrink:0;margin-top:2px;}
-.onboard-feature-text {font-size:13px;line-height:1.6;color:var(--text2);font-weight:500;}
-.onboard-feature-text strong {color:var(--text);}
 .onboard-footer {
   padding:16px 28px;border-top:2px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
@@ -3481,8 +3385,6 @@ header {
   .profile-btn { min-height: 44px; }
   .pwa-dismiss-btn { min-width: 44px; min-height: 44px; padding: 8px 12px; }
   .welcome-banner .wb-close { min-width: 44px; min-height: 44px; padding: 10px 12px; }
-  .exam-countdown .ec-edit { min-height: 44px; padding: 12px 14px; }
-  .exam-prompt .ep-skip { min-width: 44px; min-height: 44px; padding: 10px 14px; }
   .seq-tips-skip { min-height: 44px; padding: 12px 4px; }
   /* UX-review v10.4: hamburger menu, session-start chips, control buttons */
   #hdrMenuBtn { min-width: 44px; min-height: 44px; padding: 10px; }
@@ -4187,47 +4089,7 @@ header {
   border-top: 1px solid var(--border);
   padding-top: 18px;
 }
-.brand-coverage-label {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--muted);
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-.brand-coverage-chips {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.brand-chip {
-  font-family: Figtree,system-ui,sans-serif;
-  font-size: 13px;
-  padding: 6px 14px;
-  border-radius: 100px;
-  border: 1.5px solid var(--border2);
-  background: transparent;
-  color: var(--text2);
-  font-weight: 600;
-  letter-spacing: 0;
-}
-.brand-chip.live {
-  background: var(--btn);
-  border-color: var(--accent-fill);
-  color: var(--on-btn);
-}
-.brand-chip.soon::after {
-  content: 'soon';
-  margin-left: 6px;
-  font-size: 13px;
-  padding: 1px 6px;
-  border-radius: 100px;
-  background: rgba(43,110,74,0.12);
-  color: var(--accent2-fill);
-  letter-spacing: 0;
-  font-weight: 600;
-}
+
 
 /* ── VISION & MISSION ── */
 .mission-card { margin: 18px 0; }
@@ -4669,7 +4531,7 @@ header {
 
 /* ── Cards that stay cards get Grove's quiet surface ── */
 .home-hero, .study-rec-card, .session-start, .session-debrief, .ws-panel, .mock-setup-card, .bk-panel,
-.tipjar-card, .legal-disclaimer, .brand-card, .exam-prompt, .notify-card, .mock-results-card {
+.tipjar-card, .legal-disclaimer, .brand-card, .notify-card, .mock-results-card {
   background: var(--surface); border: 1px solid var(--raised-outline); box-shadow: var(--shadow); border-radius: 24px;
 }
 .brand-card::before, .brand-card::after { display: none; }
@@ -5075,7 +4937,6 @@ body.gt-zoom-open { overflow: hidden; }
 .ws-rec-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 .bk-btn.saved { background: var(--tip-bg); border-color: var(--tip); color: var(--tip); }
 .bk-btn.saved svg { fill: currentColor; }
-.ep-icon { color: var(--accent-text); display: inline-flex; }
 .domain-card .dc-tried, .domain-card:hover .dc-tried, .domain-card.selected .dc-tried { color: var(--text2) !important; }
 /* Grove motion: calm 8px rise (spec §8); overrides the older 20px slide. */
 @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
@@ -5095,9 +4956,7 @@ button.principle-link { background: none; border: 0; border-bottom: 1px dashed c
 [data-theme="dark"] .vision-glyph .pg-leaf { fill: #2E5440; }
 .vision-pillar-text { font: 400 15px/22px var(--f-sans); color: var(--text2); }
 .vision-pillar-title { font: 600 16px/22px var(--f-sans); color: var(--text); }
-.brand-coverage-label { font: 600 13px/18px var(--f-sans); color: var(--text2); text-transform: none; letter-spacing: 0; }
-.brand-chip { border: 1.5px solid var(--control); background: transparent; color: var(--text); border-radius: 999px; font: 600 14px/20px var(--f-sans); }
-.brand-chip.live { background: var(--text); color: var(--bg); border-color: var(--text); }
+.brand-coverage-line { margin: 0; font: var(--t-body); color: var(--text2); }
 .mission-item { background: transparent; border: 0; border-top: 1px solid var(--border); border-radius: 0; padding: 14px 0 0; }
 .mission-item-label, .mission-item.vision .mission-item-label, .mission-item.mission .mission-item-label { font: 600 13px/18px var(--f-sans); color: var(--accent-text); text-transform: none; letter-spacing: 0; }
 .mission-item-text { font: 400 16px/24px var(--f-sans); color: var(--text); }
@@ -5124,17 +4983,17 @@ body[data-mock-results="1"] #readinessCard { display: none; }
 .ico-up { transform: rotate(180deg); }
 .faq-q-chev { display: inline-flex; font-size: 0; }
 .dc-loading, .domain-card:hover .dc-loading, .domain-card.selected .dc-loading { background: var(--surface2); color: var(--text2); }
-.study-rec-dismiss, .ep-skip, .consent-close, .conf-tip button { display: inline-flex; align-items: center; justify-content: center; }
+.study-rec-dismiss, .consent-close, .conf-tip button { display: inline-flex; align-items: center; justify-content: center; }
 /* Phones: every control is at least 44px tall (WCAG 2.5.5 target size). */
 @media (max-width: 600px) {
-  .profile-btn, .exam-mode-btn, .hdr-icon-btn, .study-rec-btn, .readiness-set-btn, .readiness-date-input, .ep-set, .ep-input,
+  .profile-btn, .exam-mode-btn, .hdr-icon-btn, .study-rec-btn, .readiness-set-btn, .readiness-date-input,
   .ss-chip, .ss-select, .ctrl-btn, .subtopic-chip, .subtopic-expand-btn, .act-btn, .conf-tip button, .study-rec-dismiss,
-  .ep-skip, .consent-close, .legal-disclaimer a, .legal-link-btn, .tipjar-btn, .home-cta, .pwa-install-btn, .pwa-dismiss-btn,
+  .consent-close, .legal-disclaimer a, .legal-link-btn, .tipjar-btn, .home-cta, .pwa-install-btn, .pwa-dismiss-btn,
   .ws-prac-btn, .mock-chip, .resume-btn, .bk-tag-chip, .gloss-chip, .fb-type, .flag-btn, .fb-btn, .session-btn { min-height: 44px; }
-  .session-start .ss-chip, .session-start .ss-select, .exam-prompt .ep-set, .exam-prompt .ep-input, .ep-set, .ep-input,
+  .session-start .ss-chip, .session-start .ss-select,
   .mock-resume-btn, .gloss-mode-btn, .gloss-card-master-btn { min-height: 44px !important; }
   .gloss-card-master-btn { min-width: 44px; }
-  .conf-tip button, .study-rec-dismiss, .ep-skip, .consent-close, .pwa-dismiss-btn { min-width: 44px; }
+  .conf-tip button, .study-rec-dismiss, .consent-close, .pwa-dismiss-btn { min-width: 44px; }
   .legal-disclaimer a, .legal-link-btn { display: inline-flex; align-items: center; }
 }
 
@@ -5399,8 +5258,8 @@ header.app-header .brand-lockup { height: 28px; }
 
 @media (max-width: 1023px) {
   #bottomNav { display: flex; }
-  .app { padding-bottom: calc(104px + env(safe-area-inset-bottom)); }
-  .toast { bottom: calc(88px + env(safe-area-inset-bottom)); }
+  .app { padding-bottom: calc(104px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
+  .toast { bottom: calc(88px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
 }
 @media (min-width: 1024px) {
   body { padding-left: 248px; }
@@ -5646,7 +5505,6 @@ header.app-header .brand-lockup { height: 28px; }
 .ph-h { font: var(--t-headline); color: var(--text); margin: 0; }
 .ph-h-meta { font: var(--t-meta); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xs); }
 .you-stats { margin: var(--sp-md) 0 var(--sp-lg); }
-.ph #examCountdownArea:not(:empty) { margin-top: var(--sp-section); }
 
 /* Domain picks: list rows with a lead serif numeral and a quiet read bar. */
 .ph-dom {
@@ -5718,9 +5576,6 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 }
 /* Sub-topic chips show sentence case (subtopicLabel), not Title Case. */
 .subtopic-chip { text-transform: none; }
-/* The exam-date prompt: 44px targets on every screen size. */
-.exam-prompt .ep-set, .exam-prompt .ep-skip { min-height: 44px; }
-.exam-prompt .ep-skip { min-width: 44px; }
 
 /* ── RESULTS + MOCK EXAM (Grove Desk step 5, 2026-10-19) ────────────────────
    Results (a practice set's end card, a mock's results), like the mobile
@@ -5863,9 +5718,9 @@ body[data-tab="mock"][data-mview="q"] #subNav { display: none; }
 }
 /* Keyboard focus never lands under the answer screen's sticky footer (or
    the phone bottom bar under it): focused controls scroll clear of both. */
-html { scroll-padding-bottom: 104px; }
+html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 @media (max-width: 1023px) {
-  html { scroll-padding-bottom: calc(177px + env(safe-area-inset-bottom)); }
+  html { scroll-padding-bottom: calc(177px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
 }
 /* ── STUDY RAIL (desktop, owner-approved 19 Oct 2026) ───────────────────────
    A 320px column after <main> (railSync): the page and the rail are one
@@ -6160,7 +6015,7 @@ html { scroll-padding-bottom: 104px; }
 }
 .ob-forest > *:not(.gt-frond) { position: relative; }
 .ob-forest .gt-frond { top: auto; bottom: -24px; right: -20px; width: 170px; height: 170px; }
-.ob-lockup { --tn-ring: #A9D9BA; --tn-needle: #F3F1EA; --tn-word: #F3F1EA; --tn-leaf: #A9D9BA; }
+.ob-lockup { --tn-ring: var(--sap); --tn-needle: var(--on-forest); --tn-word: var(--on-forest); --tn-leaf: var(--sap); }
 .ob-lockup .brand-lockup { height: 34px; width: auto; display: block; }
 .ob-title.onboard-title {
   margin: 28px 0 0; font: 500 40px/46px var(--f-serif); letter-spacing: -0.8px; color: var(--on-forest); text-align: left;
@@ -6256,8 +6111,9 @@ html { scroll-padding-bottom: 104px; }
   body[data-tab="mock"][data-mview="q"] #bottomNav { display: none; }
   body[data-tab="practice"][data-pview="focus"] .app,
   body[data-tab="mock"][data-mview="q"] .app { padding-bottom: calc(24px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
+  /* The bar already pads itself past the safe area, so whichever is taller wins (never both). */
   body[data-tab="practice"][data-pview="focus"] .vr-foot,
-  body[data-tab="practice"][data-pview="focus"] .q-check-foot { bottom: calc(var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
+  body[data-tab="practice"][data-pview="focus"] .q-check-foot { bottom: max(var(--consent-h, 0px), env(safe-area-inset-bottom)); }
   body[data-tab="practice"][data-pview="focus"] .toast,
   body[data-tab="mock"][data-mview="q"] .toast { bottom: calc(96px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
 }
@@ -6270,11 +6126,14 @@ html { scroll-padding-bottom: 104px; }
    the first answer, never over the welcome. */
 .consent-banner {
   left: 0; right: 0; bottom: 0; border-radius: 0; border: 0; border-top: 1px solid var(--border);
-  background: var(--raised2); box-shadow: 0 -8px 24px -16px rgba(23,35,27,.35);
+  background: var(--raised2); box-shadow: var(--shadow-lg);
   gap: var(--sp-sm) var(--sp-lg); padding: 10px var(--sp-xl) calc(10px + env(safe-area-inset-bottom));
 }
 .consent-text { font: 400 13px/18px var(--f-sans); max-width: 720px; min-width: 220px; }
 .consent-btn { min-height: 44px; padding: 0 var(--sp-xl); }
+/* One solid button per screen (Grove): the bar's choices are both outlined. */
+.consent-btn.accept { background: var(--raised); color: var(--text); border: 1.5px solid var(--control); }
+.consent-btn.accept:hover { filter: none; background: var(--surface2); }
 @media (max-width: 1023px) {
   .consent-banner { left: 0; right: 0; bottom: calc(73px + env(safe-area-inset-bottom)); padding: 10px var(--sp-lg); }
   body[data-tab="practice"][data-pview="focus"] .consent-banner,
@@ -6303,7 +6162,7 @@ html { scroll-padding-bottom: 104px; }
 <!-- COOKIE CONSENT BANNER — analytics stays off until the visitor chooses -->
 <div id="consent-banner" class="consent-banner" role="region" aria-label="Cookie consent" tabindex="-1" hidden>
   <p class="consent-text">
-    KaiSip can use Google Analytics to count visits and see which pages help. It stays off unless you accept. Anything you send through Feedback reaches us via Google Forms.
+    Count visits with Google Analytics? It stays off unless you accept. Feedback goes via Google Forms.
     <a href="privacy.html" target="_blank" rel="noopener noreferrer" aria-label="Privacy Policy (opens in a new tab)">Privacy&nbsp;Policy</a>
   </p>
   <div class="consent-actions">
@@ -6487,12 +6346,13 @@ html { scroll-padding-bottom: 104px; }
   <section class="vision-panel" data-testid="brand-hero" aria-labelledby="aboutScreenTitle">
     <svg class="brand-mark-svg about-mark" viewBox="35 5 70 130" aria-hidden="true" focusable="false"><g transform="translate(70 70) scale(0.90228) translate(-102.999 -100.123)"><defs><mask id="kaboutm" maskUnits="userSpaceOnUse" x="-100" y="-100" width="400" height="400"><rect x="-100" y="-100" width="400" height="400" fill="white"/><path d="M72 146 V66" stroke="black" stroke-width="4" stroke-linecap="round"/></mask></defs><path d="M72 168 C90 129.92 90 78.24 72 32 C54 78.24 54 129.92 72 168Z" style="fill:var(--on-forest)" mask="url(#kaboutm)"/><path d="M94 100 C120.2 93.85 140.92 69.43 150 34 C113.47 46.14 92.75 70.56 94 100Z" style="fill:var(--sap)"/><path d="M94 100 C93.48 129.7 114.94 154.12 152 166 C141.98 130.36 120.52 105.94 94 100Z" style="fill:var(--sap)"/></g></svg>
     <p class="vision-cap">The KaiSip way</p>
-    <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
-    <p class="vision-line">Grow your judgment, one ring at a time.</p>
+    <h1 class="vision-title" id="aboutScreenTitle">Think like an IS auditor.</h1>
+    <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
   <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.30</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
-    <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
+    <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
+    <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
     <ul class="vision-pillars">
       <li class="vision-pillar">
         <span class="vision-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" focusable="false"><circle cx="12" cy="12" r="8.75" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M15.6 8.4 C14.6 11.6 12.9 13.2 9.4 15.6 C10.1 12.2 11.9 10 15.6 8.4Z" class="pg-leaf" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
@@ -6512,14 +6372,7 @@ html { scroll-padding-bottom: 104px; }
       </li>
     </ul>
     <div class="brand-coverage">
-      <div class="brand-coverage-label">Coverage roadmap</div>
-      <div class="brand-coverage-chips">
-        <span class="brand-chip live">CISA</span>
-        <span class="brand-chip soon">CRISC</span>
-        <span class="brand-chip soon">CISM</span>
-        <span class="brand-chip soon">Cloud Audit</span>
-        <span class="brand-chip soon">AI Governance</span>
-      </div>
+      <p class="brand-coverage-line">Starting with CISA. More certifications later.</p>
     </div>
   </section>
 
@@ -6591,7 +6444,7 @@ html { scroll-padding-bottom: 104px; }
       <ul class="you-list">
         <li><button type="button" class="you-row" onclick="showChangelog()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5 13.8 9 19.5 10.5 13.8 12 12 17.5 10.2 12 4.5 10.5 10.2 9z"/><path d="M19 17v4M17 19h4"/></svg></span><span class="you-text"><span class="you-t">What&#39;s New</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
         <li><a class="you-row" href="#help" onclick="return navTo(event,'faq')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6"/><path d="M12 16.8h.01"/></svg></span><span class="you-text"><span class="you-t">FAQ and help</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
-        <li><button type="button" class="you-row" onclick="showOnboarding()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg></span><span class="you-text"><span class="you-t">Welcome tour</span><span class="you-m">How KaiSip works</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
+        <li><button type="button" class="you-row" onclick="showOnboarding()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg></span><span class="you-text"><span class="you-t">How KaiSip works</span><span class="you-m">The welcome screen again</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
         <li><button type="button" class="you-row" onclick="showFeedback()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 15a2 2 0 0 1-2 2H8l-4.5 3.5V5.5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></span><span class="you-text"><span class="you-t">Send feedback</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
         <li><button type="button" class="you-row" onclick="openSupport()" aria-label="Support KaiSip (opens in a new tab)"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg></span><span class="you-text"><span class="you-t">Support KaiSip</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
         <li><a class="you-row" href="#about" onclick="return navTo(event,'about')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg></span><span class="you-text"><span class="you-t">About KaiSip</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
@@ -6620,7 +6473,7 @@ html { scroll-padding-bottom: 104px; }
   <!-- ── LEGAL DISCLAIMER ── -->
   <section class="legal-disclaimer" data-testid="legal-disclaimer">
     <div class="legal-disclaimer-head">Disclaimer</div>
-    <p>This is an independent, AI-assisted CISA exam preparation tool designed to help users develop an IS auditor’s way of reasoning through scenario-based practice and critical thinking.</p>
+    <p>This is an independent CISA exam preparation tool designed to help users develop an IS auditor’s way of reasoning through scenario-based practice and critical thinking. Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
     <p><span class="warn">This app is NOT affiliated with, endorsed by, or sponsored by ISACA&reg;.</span></p>
     <p><strong>CISA&reg; is a registered trademark of ISACA.</strong> All references are used for educational and identification purposes only.</p>
     <p>This tool is intended as a supplementary study resource and should not be considered a replacement for official ISACA materials.</p>
@@ -6677,6 +6530,7 @@ html { scroll-padding-bottom: 104px; }
 {"cat":"Study strategy","q":"Which domain should I focus on?","a":"Domains 4 and 5 are the largest, at about 26% each. Use the Weak Spots tab to find where your accuracy is lowest and drill there first."},
 {"cat":"Study strategy","q":"How many practice questions should I do?","a":"There is no fixed number. Aim for consistent daily practice, full coverage of every domain, and Mock Exams close to your test date. How carefully you review each answer matters more than raw volume."},
 {"cat":"About & your data","q":"Is this app affiliated with ISACA?","a":"No. It is an independent, free study resource. CISA is a registered trademark of ISACA; this app is for educational use only and is not a substitute for official ISACA materials."},
+{"cat":"About & your data","q":"Where do the questions and notes come from?","a":"Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards."},
 {"cat":"About & your data","q":"Does the app cost anything?","a":"No. The web practice app is free, with no account and no ads."},
 {"cat":"About & your data","q":"Is my data private?","a":"Yes. Your progress is stored only in your own browser and never leaves your device. There is no sign-up, and your answers are not sent to any server."},
 {"cat":"About & your data","q":"Where is my progress saved?","a":"All progress is saved locally in your browser. Clearing your browser data or using a different device or browser will start you fresh. Open You, then Your data, to export a copy, import one, or reset."},
@@ -8369,8 +8223,10 @@ function showYourData() {
 }
 
 // â”€â”€ XSS HELPER â”€â”€
-// Curly quotes for question stems at render time (v12.30): the bank keeps its
-// straight ones; the UI's own copy already uses ’ “ ”. Run BEFORE escapeHtml.
+// Curly quotes at render time (v12.30) for stems, options, explanations and
+// tips: the bank keeps its straight ones; the UI's own copy already uses ’ “ ”.
+// Always escapeHtml(smartQuotes(text)), after any letter mapping. Display text
+// only: never data-l or anything graded.
 function smartQuotes(str) {
   if (!str) return '';
   return String(str)
@@ -9246,7 +9102,7 @@ function renderTopics() {
     + '<div class="gt-toolbar-row"><div class="gt-chips" role="group" aria-label="Show">' + filterBtn('all', 'All') + filterBtn('unreviewed', 'To review') + filterBtn('reviewed', 'Read') + '</div>'
     + '<div class="gt-toolbar-end">'
     + (searchQ ? '' : '<button class="gt-btn-ghost" onclick="' + (anyOpen ? 'collapseAllGroups()' : 'expandAllGroups()') + '">' + (anyOpen ? 'Collapse all' : 'Expand all') + '</button>')
-    + '<details class="gt-menu"><summary class="gt-btn-ghost gt-menu-btn">Reading progress' + ico('chevron-down', 16) + '</summary>'
+    + '<details class="gt-menu"><summary class="gt-btn-ghost gt-menu-btn" id="gtMenuBtn">Reading progress' + ico('chevron-down', 16) + '</summary>'
     + '<div class="gt-menu-pop" role="group" aria-label="Reading progress">'
     + '<button class="gt-menu-item" onclick="this.closest(\'details\').open=false;markAllDomainTopics(' + d + ')">' + ico('check', 18) + 'Mark all in Domain ' + d + ' as read</button>'
     + '<button class="gt-menu-item gt-danger" onclick="this.closest(\'details\').open=false;confirmResetDomain(' + d + ')">' + ico('x', 18) + 'Reset Domain ' + d + ' progress&hellip;</button>'
@@ -9753,6 +9609,8 @@ function confirmResetDomain(d) {
     body: 'Every note in this domain goes back to not read. Your answers and scores stay.',
     confirmLabel: 'Reset reading',
     danger: true,
+    // The menu item that opened it is hidden once the menu closes.
+    returnTo: 'gtMenuBtn',
     onConfirm: function () { resetConceptDomain(d); }
   });
 }
@@ -10321,7 +10179,7 @@ var NAV_TITLE = {
 function syncNav(t) {
   var sec = NAV_SECTION[t] || 'today';
   // Screen readers announce the new title, so a page change is not silent.
-  document.title = NAV_TITLE[t] ? NAV_TITLE[t] + ' · KaiSip' : 'KaiSip — Master Modern Risk';
+  document.title = NAV_TITLE[t] ? NAV_TITLE[t] + ' · KaiSip' : 'KaiSip: CISA exam prep that teaches the auditor’s mindset';
   if (NAV_PAGES[sec]) navLastPage[sec] = t;
   document.body.setAttribute('data-section', sec);
   document.querySelectorAll('.sn-item, .bnav-item').forEach(function (x) {
@@ -13838,7 +13696,7 @@ function renderQuestion(q) {
     var origL = shuffle[idx];
     return '<button class="opt" data-l="' + displayL + '" onclick="pickAnswer(\'' + displayL + '\')">'
       + '<span class="opt-letter">' + displayL + '</span>'
-      + '<span>' + escapeHtml(q.options[origL]) + '</span>'
+      + '<span>' + escapeHtml(smartQuotes(q.options[origL])) + '</span>'
       + '</button>';
   }).join('');
 
@@ -13861,7 +13719,7 @@ function renderQuestion(q) {
   try { showConfTip = !localStorage.getItem('aurivan_conf_tip_seen'); } catch (e) {}
   var confTipHtml = showConfTip
     ? '<div id="conf-tip" class="conf-tip">'
-        + '<span>Optional: how sure you are decides how soon this question comes back for review.</span>'
+        + '<span>How sure you are decides how soon this question comes back for review.</span>'
         + '<button onclick="dismissConfTip()" aria-label="Dismiss">' + ico('x', 18) + '</button>'
       + '</div>'
     : '';
@@ -14121,10 +13979,10 @@ function showResult(chosen, correct, timeout, info) {
   var checkFoot = document.getElementById('qCheckFoot');
   if (checkFoot) checkFoot.remove();
 
-  function optText(origL) { return escapeHtml((q.options || {})[origL] || ''); }
+  function optText(origL) { return escapeHtml(smartQuotes((q.options || {})[origL] || '')); }
   function wrongNote(origL) {
     var w = q.wrong_explanations && q.wrong_explanations[origL];
-    return w ? escapeHtml(mapLettersInText(w, shuffle, origL)) : '';
+    return w ? escapeHtml(smartQuotes(mapLettersInText(w, shuffle, origL))) : '';
   }
 
   // 1. Verdict: leaf mark + hero, then one coach line (the review-queue
@@ -14167,7 +14025,7 @@ function showResult(chosen, correct, timeout, info) {
 
   // 3. Why X + the explanation.
   var whyHtml = '<h3 class="vr-why">Why ' + correct + '</h3>'
-    + '<p class="vr-exp">' + escapeHtml(mapLettersInText(q.correct_explanation, shuffle)) + '</p>';
+    + '<p class="vr-exp">' + escapeHtml(smartQuotes(mapLettersInText(q.correct_explanation, shuffle))) + '</p>';
 
   // 4. The vine: Key idea, then the tips as leaves on one stem.
   var vineHtml = '';
@@ -14176,14 +14034,14 @@ function showResult(chosen, correct, timeout, info) {
     if (q.key_concept) {
       nodes.push('<div class="vine-node vine-key" style="--i:0">' + vineLeafSvg(true)
         + '<p class="vine-cap">Key idea</p>'
-        + '<p class="vine-quote">' + escapeHtml(mapLettersInText(q.key_concept, shuffle)) + '</p></div>');
+        + '<p class="vine-quote">' + escapeHtml(smartQuotes(mapLettersInText(q.key_concept, shuffle))) + '</p></div>');
     }
     (q.tips || []).filter(function(t){ return t && t.trim(); }).forEach(function(t, i){
       var parts = tipParts(mapLettersInText(t, shuffle), i);
       var tone = parts.label === 'Eliminate two' ? 'elim'
         : parts.label === 'Final two' ? 'final'
         : (parts.label === 'Exam cue' || parts.label === 'Exam-day') ? 'cue' : 'plain';
-      var body = escapeHtml(parts.body);
+      var body = escapeHtml(smartQuotes(parts.body));
       // Older "Mindset" tips name a principle by an old id or label: link it
       // to the Principles page (resolvePrinciple maps it to today's
       // principle). Once the principles are in, words that name none stay text.
@@ -15009,7 +14867,7 @@ function showMockQuestion() {
     var origL = shuffle[idx];
     return '<button type="button" class="opt" data-l="' + displayL + '" aria-pressed="false" onclick="pickMockAnswer(\'' + displayL + '\')">'
       + '<span class="opt-letter">' + displayL + '</span>'
-      + '<span>' + escapeHtml(q.options[origL]) + '</span>'
+      + '<span>' + escapeHtml(smartQuotes(q.options[origL])) + '</span>'
       + '</button>';
   }).join('');
   var last = cur >= tot;
@@ -15256,6 +15114,16 @@ function showOnboarding() {
   // two copies never share one).
   var lock = document.querySelector('header .brand-lockup');
   var lockHtml = lock ? lock.outerHTML.replace(/kslr/g, 'kslob').replace(/role="img" aria-label="KaiSip"/, 'aria-hidden="true" focusable="false"') : '';
+  // Reopened from You ("How KaiSip works") by a learner already past it: the
+  // action never starts the first five again and never replaces an open set.
+  var onboarded = false;
+  try { onboarded = !!localStorage.getItem('cisa_onboarded_v6'); } catch (e) {}
+  var goLabel = 'Start 5 questions';
+  if (onboarded) {
+    var leftOpen = false;
+    try { leftOpen = practiceLeftOpen(); } catch (e) {}
+    goLabel = leftOpen ? 'Continue your set' : 'Start a short set';
+  }
   var checks = OB_CHECKS.map(function (t) {
     return '<li><span class="ob-check" aria-hidden="true">' + ico('check', 16) + '</span><span>' + escapeHtml(t) + '</span></li>';
   }).join('');
@@ -15272,19 +15140,30 @@ function showOnboarding() {
       + '<p class="ob-fine">Not affiliated with or endorsed by ISACA&reg;. CISA&reg; is a registered trademark of ISACA.</p>'
     + '</div>'
     + '<div class="ob-foot">'
-      + '<button type="button" class="ob-go" id="obGo" onclick="onboardStartFive()">Start 5 questions' + ico('arrow-right', 18) + '</button>'
-      + '<button type="button" class="ob-ghost" onclick="closeOnboarding()">Look around first</button>'
+      + '<button type="button" class="ob-go" id="obGo" onclick="onboardStartFive()">' + goLabel + ico('arrow-right', 18) + '</button>'
+      + '<button type="button" class="ob-ghost" onclick="closeOnboarding()">' + (onboarded ? 'Close' : 'Look around first') + '</button>'
     + '</div>'
     + '</div></div>';
 }
 
-// "Start 5 questions": the welcome closes and a five-question set opens at once.
+// "Start 5 questions": the welcome closes and a five-question set opens at
+// once. Reopened later: "Continue your set" picks up what is open, or "Start
+// a short set" runs five with a plain label (no date ask afterwards).
 function onboardStartFive() {
+  var wasOnboarded = false;
+  try { wasOnboarded = !!localStorage.getItem('cisa_onboarded_v6'); } catch (e) {}
   var holder = document.getElementById('flagModal');
   if (holder) holder.setAttribute('data-return', 'none');
   closeOnboarding();
-  firstFiveRun = true;
   if (S.activeTab !== 'practice') switchTab('practice', { noScroll: true });
+  if (wasOnboarded) {
+    var leftOpen = false;
+    try { leftOpen = practiceLeftOpen(); } catch (e) {}
+    if (leftOpen) { continuePractice(); return; }
+    startSession(5, S.selectedDomain || '1');
+    return;
+  }
+  firstFiveRun = true;
   startSession(5, S.selectedDomain || '1', FIRST_FIVE_LABEL);
 }
 
@@ -15410,6 +15289,8 @@ function ksConfirm(o) {
   var modal = document.getElementById('flagModal');
   if (!modal) return;
   ksConfirmAction = o.onConfirm || null;
+  // Where focus goes when the sheet closes, when the opener will be gone.
+  if (o.returnTo) modal.setAttribute('data-return', o.returnTo);
   modal.innerHTML = '<div class="mock-confirm-overlay ks-sheet-overlay" onclick="closeFlagModal(event)">'
     + '<div class="mock-confirm-modal ks-sheet" role="dialog" aria-modal="true" aria-labelledby="ksConfH">'
     + '<h2 class="mock-confirm-head" id="ksConfH">' + escapeHtml(o.title) + '</h2>'
@@ -15420,8 +15301,9 @@ function ksConfirm(o) {
     + '<button type="button" class="mock-confirm-btn ' + (o.danger ? 'danger' : 'gostart') + '" id="ksConfGo" onclick="runKsConfirm()">' + escapeHtml(o.confirmLabel) + '</button>'
     + '</div></div></div></div>';
   // The safe choice takes focus, so Enter never confirms by accident.
+  // (After the dialog manager has noted the opener, so focus goes back there on close.)
   var c = modal.querySelector('.mock-confirm-btn.cancel');
-  if (c) { try { c.focus({ preventScroll: true }); } catch (e) {} }
+  if (c) setTimeout(function () { try { c.focus({ preventScroll: true }); } catch (e) {} }, 0);
 }
 function runKsConfirm() {
   var fn = ksConfirmAction;
@@ -15542,7 +15424,9 @@ document.addEventListener('keydown', function(e) {
   // Enter/Space on a focused control (a link, "Back to topic", Next…) is that
   // control's own click; only answers, confidence and Submit use the shortcut.
   var ctl = e.target && e.target.closest ? e.target.closest('button, a[href], summary, [role="button"]') : null;
-  var ownsKey = !!ctl && !ctl.matches('.opt, .conf-btn, #submitBtn');
+  // v12.30: a focused option or How sure? button takes its own Enter/Space
+  // (pick or rate); only Check answer (or nothing focused) uses the shortcut.
+  var ownsKey = !!ctl && !ctl.matches('#submitBtn');
 
   // A/B/C/D â€” select answer option (Phase 2b: options stay enabled until submit)
   if (['A','B','C','D'].indexOf(key) !== -1) {
@@ -18419,7 +18303,7 @@ function buildMockAnswerKey(answers, queue) {
     // Explanation
     if (q.correct_explanation) {
       html += '<h3 class="mr-why">Why ' + escapeHtml(correctAns) + '</h3>'
-        + '<p class="mr-exp">' + escapeHtml(mapLettersInText(q.correct_explanation, shuffle)) + '</p>';
+        + '<p class="mr-exp">' + escapeHtml(smartQuotes(mapLettersInText(q.correct_explanation, shuffle))) + '</p>';
     }
     if (q.framework_ref) {
       html += '<p class="mr-ref">' + escapeHtml(q.framework_ref) + '</p>';
@@ -18459,7 +18343,8 @@ const CHANGELOG = [
       { cat: 'improved', text: 'The practice timer now counts up while you answer and never counts down.' },
       { cat: 'improved', text: 'Your stats and readiness appear once you have enough answers, instead of a page of zeros.' },
       { cat: 'improved', text: 'The cookie notice is a slim bar that waits until your first answer, and it says plainly what Google Analytics and Google Forms are used for.' },
-      { cat: 'improved', text: 'Calmer wording across the app, no more pop-up alerts, and curly quotes in questions.' },
+      { cat: 'improved', text: 'Calmer wording across the app, no more pop-up alerts, and curly quotes in questions and explanations.' },
+      { cat: 'improved', text: 'The About page now says plainly what KaiSip is and where its questions and notes come from.' },
       { cat: 'improved', text: 'Links to KaiSip now show a preview card and say that it is CISA exam prep.' }
     ]
   },
@@ -19827,7 +19712,8 @@ function loadExamMode() {
         // Or gone (a page that re-rendered): fall back to the
         // current section in whichever nav is showing.
         if (!visible(back)) back = Array.prototype.filter.call(document.querySelectorAll('.sn-item[aria-current], .bnav-item[aria-current]'), visible)[0];
-        if (back && !top()) { try { back.focus(); } catch (e) {} }
+        var under = top() ? boxOf(top()) : null;
+        if (back && (!under || under.contains(back))) { try { back.focus(); } catch (e) {} }
       }
       return;
     }
