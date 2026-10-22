@@ -87,7 +87,7 @@ import { greetingWithName } from '../../engine/displayName';
 import { useSettings } from '../../store/settings';
 import { runPlanItem } from '../../lib/actions';
 import { firstSetLeftOf } from '../../lib/firstSet';
-import { firstSetIds } from '../../content/firstSet';
+import { firstSetIds, firstSetNextLine } from '../../content/firstSet';
 import { refreshReminders } from '../../lib/reminderSync';
 import { remindersSupported } from '../../lib/reminders';
 import { haptic } from '../../lib/haptics';
@@ -583,6 +583,12 @@ export default function Today() {
               rangeGrowth={rangeGrowth}
               onPress={() => router.push('/readiness')}
             />
+          )}
+          {/* Day 0 (mobile 1.39): the first five are still to finish, so say what comes after them. */}
+          {firstNow && !plan.done[cur] && (
+            <View testID="today-day0-next" style={{ marginTop: answeredTotal > 0 ? space.md : space.lg }}>
+              <T v="meta">{firstSetNextLine(j.daysLeft !== null)}</T>
+            </View>
           )}
           {/* "Your first readiness range": one calm card, right under the range it explains (mobile 1.24). */}
           {firstRangeDue && <View style={{ marginTop: space.lg }}>{firstRangeCard}</View>}

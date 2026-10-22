@@ -154,7 +154,9 @@ describe('the readiness report: every section, every state', () => {
     expect(t).toMatch(/\d+–\d+/);
     expect(t).toContain('estimated readiness');
     expect(t).toContain('A study estimate, not a prediction.');
-    expect(t).toContain(FRAMING_LINE);
+    // Mobile 1.39: the framing's detail is folded into "How it's worked out" (one tap away).
+    expect(t).not.toContain(FRAMING_LINE);
+    expect(t).toContain('How it’s worked out');
     // One name for the number: "low end" (UX review P2).
     for (const h of ['What would raise your low end', 'Your low end over time', 'The cautious end of your range, last 30 days', 'Mock trend', 'Domain by domain', 'Pacing', 'Your path', 'Your mocks'])
       expect(t).toContain(h);

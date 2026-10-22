@@ -23,7 +23,7 @@ import Play from '../app/(tabs)/play';
 import { branchLeaves, DomainRing, GAME_GLYPHS, GameGlyph, LeafBig, LessonBranch, sparkPoints, TierLeaf, TierLeafMorph } from '../components/glyphs';
 import { T } from '../components/ui';
 import { GameFrame, RoundEnd, RoundScore } from '../components/game';
-import { lessonMap, partDelay, SceneView } from '../components/lesson';
+import { lessonMap, partDelay, SceneView, splitCoachText } from '../components/lesson';
 import { CheckDraw, Collapse, DrawLine, FadeIn, Pop, resetCelebrationsForTest, Turn } from '../components/motion';
 import { Verdict } from '../components/quiz';
 import { getCertification } from '../content/certifications';
@@ -351,8 +351,9 @@ describe('every scene of every lesson renders', () => {
     mount(<SceneView scene={scene} lesson={lesson} />);
     expect(allText()).toContain('The IS auditor’s lens');
     // The body is the italic `quote` voice (not the bold serif paragraph it used to be)…
+    // Mobile 1.39: only its first sentence or two (the cap); the rest follows in plain body text.
     const quote = root().findAll((n) => n.type === T && n.props.v === 'quote');
-    expect(quote.map((q) => q.props.children)).toEqual([scene.type === 'idea' ? scene.body : '']);
+    expect(quote.map((q) => q.props.children)).toEqual([splitCoachText(scene.type === 'idea' ? scene.body : '').quote]);
     // …on a 3pt green rule, under a caption with the big leaf.
     expect(root().findAll((n) => typeof n.type !== 'string' && style(n).borderLeftWidth === 3).length).toBeGreaterThan(0);
     expect(root().findAllByType(LeafBig)).toHaveLength(1);

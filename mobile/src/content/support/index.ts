@@ -17,6 +17,7 @@
  * Content only: no React, no storage.
  */
 import type { Fix, SupportTopic } from '../../engine/support';
+import { PROVENANCE_LINE } from '../brand';
 
 // ── Fixes after learner reports ──────────────────────────────────────────
 /**
@@ -40,6 +41,17 @@ export interface WhatsNewEntry {
 
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
+  {
+    version: '1.39.0',
+    date: '2026-10-22',
+    improved: [
+      'Questions no longer name their topic before you answer, so practice and mock scores show what you really know.',
+      'Setting a study reminder after your first questions is now one simple choice, with a time you can change.',
+      'Lessons are easier to read: shorter italic quotes, and short pages sit in the middle of the screen.',
+      'Today, You, Results and the readiness report are calmer, with less repeated text and the main facts first.',
+      'About KaiSip now says plainly what the app is for and how its questions and notes are made.',
+    ],
+  },
   {
     version: '1.38.0',
     date: '2026-10-21',
@@ -557,6 +569,8 @@ export const FAQ: readonly FaqEntry[] = [
     question: 'Is KaiSip affiliated with ISACA?',
     answer: [
       'No. KaiSip is independent and is not affiliated with, endorsed by or sponsored by ISACA. CISA® is a registered trademark of ISACA.',
+      // Mobile 1.39: the one provenance line, in the same words as Settings → About (content/brand.ts PROVENANCE_LINE).
+      PROVENANCE_LINE,
     ],
     topic: 'other',
   },

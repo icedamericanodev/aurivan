@@ -510,12 +510,12 @@ describe('the reminder ask never sticks on "working"', () => {
   it('a native error while asking falls back to the calm "Not now" state', async () => {
     mockEnsure.mockRejectedValueOnce(new Error('permissions module failed'));
     mount(<ReminderAsk which="first" />);
-    const b = r!.root.findAll((n) => typeof n.props.onPress === 'function' && typeof n.props.accessibilityLabel === 'string' && /^Tomorrow I’ll study at /.test(n.props.accessibilityLabel))[0];
+    const b = r!.root.findAll((n) => typeof n.props.onPress === 'function' && typeof n.props.accessibilityLabel === 'string' && /^Remind me tomorrow at /.test(n.props.accessibilityLabel))[0];
     await act(async () => {
       await b.props.onPress();
     });
     expect(useSeen.getState().reminderAsk.first).toBe('later');
-    expect(allText()).not.toMatch(/Tomorrow I’ll study at/);
+    expect(allText()).not.toMatch(/Remind me tomorrow\sat/);
     expect(useSettings.getState().reminder.enabled).toBe(false);
   });
 });

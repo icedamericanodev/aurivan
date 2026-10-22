@@ -187,15 +187,16 @@ describe('Choice sheets work like a dropdown', () => {
     expect(row('Theme').props.accessibilityLabel).toBe('Theme, Dark');
   });
 
-  it('Exam: coming-soon exams are shown but cannot be chosen', () => {
+  it('Exam: only the exams the app teaches are listed (mobile 1.39: no "coming soon" list)', () => {
     mount(<Settings />);
     openRow('Certification');
     const soon = hosts((n) => n.props.accessibilityRole === 'radio' && /Coming soon/.test(String(n.props.accessibilityLabel)));
-    expect(soon.length).toBeGreaterThan(0);
-    for (const n of soon) expect(n.props.accessibilityState).toMatchObject({ disabled: true, checked: false });
+    expect(soon).toHaveLength(0);
+    const radios = hosts((n) => n.props.accessibilityRole === 'radio');
+    expect(radios).toHaveLength(1);
     const cisa = hosts((n) => n.props.accessibilityRole === 'radio' && String(n.props.accessibilityLabel).startsWith('CISA.'))[0];
     expect(cisa.props.accessibilityState.checked).toBe(true);
-    expect(allText()).toContain('Only CISA is available today.');
+    expect(allText()).toContain('Starting with CISA. More certifications later.');
   });
 
   it('a sheet closes from its header button, and the dim is hidden from screen readers', () => {

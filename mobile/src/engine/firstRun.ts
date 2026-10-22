@@ -127,9 +127,16 @@ export function defaultReminderTime(now: number): { hour: number; minute: number
   return { hour: new Date(now).getHours(), minute: 0 };
 }
 
-/** "Tomorrow I’ll study at 7:00 PM" (the phone's own time format). */
+/**
+ * The reminder ask's words before the time chip (mobile 1.39). The button shows
+ * these words and the chip beside it shows the time, so the row reads as one
+ * sentence: "Remind me tomorrow at [7:00 PM]".
+ */
+export const REMINDER_ASK_LEAD = 'Remind me tomorrow at';
+
+/** "Remind me tomorrow at 7:00 PM" (the phone's own time format): the whole sentence, as a screen reader says it. */
 export function reminderAskLine(hour: number, minute: number, locale?: string): string {
-  return `Tomorrow I’ll study at ${localTime(hour, minute, locale)}`;
+  return `${REMINDER_ASK_LEAD} ${localTime(hour, minute, locale)}`;
 }
 
 /**

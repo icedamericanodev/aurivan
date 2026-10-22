@@ -94,6 +94,15 @@ for (const l of lessonShots) {
   await page.screenshot({ path: `${out}/${l.name}-feedback.png` });
   console.log('shot lesson', l.id);
 }
+// Mobile 1.39: the longest "The IS auditor’s lens" quote (the italic cap, about four lines at 393pt).
+await page.goto('http://127.0.0.1:8093/lesson/cisa-l-d4-batch-interfaces-euc', { waitUntil: 'networkidle' });
+await page.waitForTimeout(1200);
+for (let k = 0; k < 4; k++) {
+  await page.getByRole('button', { name: 'Next', exact: true }).click();
+  await page.waitForTimeout(350);
+}
+await page.waitForTimeout(1200);
+await page.screenshot({ path: `${out}/03f-lesson-longest-lens.png` });
 // Mobile 1.22: an idea scene (the kicker, the hero heading, the anchor line and the round Back), as in the north-star mockup.
 await page.goto('http://127.0.0.1:8093/lesson/cisa-l-d1-charter', { waitUntil: 'networkidle' });
 await page.waitForTimeout(1200);

@@ -247,6 +247,8 @@ export default function Results() {
   // Only the domains this session asked about get a ring (ui.md R1).
   const inSession = cert.domains.map((d, i) => (score.byDomain[d.id] ? i : -1)).filter((i) => i >= 0);
   const oneDomain = inSession.length === 1 ? cert.domains[inSession[0]] : undefined;
+  // Mobile 1.39: the domain rings only where they tell something: a mixed-domain set or a mock.
+  const showRings = active.mode === 'mock' || !oneDomain;
   // One pace line for every practice / review session (Build C answer times).
   const paceText = practicePaceLine(active.questionIds.map((id) => active.responses[id]?.ms), cert.exam);
   // The same time the mock history, pacing panel and Today use (a timed mock's
@@ -272,48 +274,59 @@ export default function Results() {
         {fact && <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{fact}</T>}
       </Enter>
 
-      {/* Score rings in domain tones (spec §10.1, Results 200): arc = this session's score per domain. */}
-      <Enter i={1} style={{ marginTop: space.xl }}>
-        <DomainRings
-          cert={cert}
-          values={values}
-          only={inSession}
-          // One domain: the ring alone, centred, with its one line under it (no stranded legend row).
-          legend={!oneDomain}
-          grow={{ play: grow, run: 1, delay: at }}
-          legendValue={(i) => {
-            const b = score.byDomain[cert.domains[i].id];
-            return b ? `${b.correct}/${b.total}` : '–';
-          }}
-          accessibilityLabel={`${tiny ? `${score.correct} of ${score.answered} right` : `Score ${pct} percent`}. ${cert.domains
-            .map((d) => (score.byDomain[d.id] ? `${d.short} ${score.byDomain[d.id].correct} of ${score.byDomain[d.id].total}` : null))
-            .filter(Boolean)
-            .join(', ')}.`}
-          center={
-            tiny ? (
-              // A handful of questions: no percent (a percent of 4 says little), and no count either: the
-              // headline already says "2 of 3 right" (UX review S7, the count once). One domain names it here.
-              oneDomain ? (
-                <T v="caption" color={c.ink2} center style={{ maxWidth: 96 }}>{oneDomain.short}</T>
-              ) : null
-            ) : (
-              <View style={{ alignItems: 'center' }}>
-                <BigNum value={String(pct)} pct size={30} roll={{ play: grow, from: null, run: 1, delay: at }} />
-                <T v="caption" color={c.ink2}>score</T>
-              </View>
-            )
-          }
-        />
-        {tiny ? null : oneDomain ? (
-          // Mobile 1.22 (design spec §8.2): one centred line, "All IS Audit · 12 of 15". A handful of
-          // questions has none: the headline holds the count and the ring names the domain (UX review S7).
-          <T v="meta" center style={{ marginTop: 14 }}>
-            {`All ${oneDomain.short} · ${score.byDomain[oneDomain.id].correct} of ${score.byDomain[oneDomain.id].total}`}
-          </T>
-        ) : (
-          <T v="meta" style={{ marginTop: 14 }}>Each ring is a domain in this session. Thicker rings weigh more on the exam.</T>
-        )}
-      </Enter>
+      {/* Score rings in domain tones (spec §10.1, Results 200): arc = this session's score per domain.
+          Mobile 1.39: only for a mixed-domain set or a mock. A one-domain set's ring said nothing the
+          headline and "Correct" don't already say, so it keeps just its one line ("All IS Audit · 80%"),
+          close under the headline. */}
+      {(showRings || !tiny) && (
+        <Enter i={1} style={{ marginTop: showRings ? space.xl : space.sm }}>
+          {showRings && (
+            <DomainRings
+              cert={cert}
+              values={values}
+              only={inSession}
+              // One domain: the ring alone, centred, with its one line under it (no stranded legend row).
+              legend={!oneDomain}
+              grow={{ play: grow, run: 1, delay: at }}
+              legendValue={(i) => {
+                const b = score.byDomain[cert.domains[i].id];
+                return b ? `${b.correct}/${b.total}` : '–';
+              }}
+              accessibilityLabel={`${tiny ? `${score.correct} of ${score.answered} right` : `Score ${pct} percent`}. ${cert.domains
+                .map((d) => (score.byDomain[d.id] ? `${d.short} ${score.byDomain[d.id].correct} of ${score.byDomain[d.id].total}` : null))
+                .filter(Boolean)
+                .join(', ')}.`}
+              center={
+                tiny ? (
+                  // A handful of questions: no percent (a percent of 4 says little), and no count either: the
+                  // headline already says "2 of 3 right" (UX review S7, the count once). One domain names it here.
+                  oneDomain ? (
+                    <T v="caption" color={c.ink2} center style={{ maxWidth: 96 }}>{oneDomain.short}</T>
+                  ) : null
+                ) : (
+                  <View style={{ alignItems: 'center' }}>
+                    <BigNum value={String(pct)} pct size={30} roll={{ play: grow, from: null, run: 1, delay: at }} />
+                    <T v="caption" color={c.ink2}>score</T>
+                  </View>
+                )
+              }
+            />
+          )}
+          {tiny ? null : oneDomain ? (
+            // Mobile 1.22 (design spec §8.2): one line naming the domain. A handful of questions has none:
+            // the headline holds the count (UX review S7). Mobile 1.39: with no ring it says the percent
+            // ("All IS Audit · 80%"), since "Correct 12 of 15" below already gives the count; a one-domain
+            // mock keeps its ring and the count line.
+            <T v="meta" center={showRings} style={{ marginTop: showRings ? 14 : 0 }}>
+              {showRings
+                ? `All ${oneDomain.short} · ${score.byDomain[oneDomain.id].correct} of ${score.byDomain[oneDomain.id].total}`
+                : `All ${oneDomain.short} · ${pct}%`}
+            </T>
+          ) : (
+            <T v="meta" style={{ marginTop: 14 }}>Each ring is a domain in this session. Thicker rings weigh more on the exam.</T>
+          )}
+        </Enter>
+      )}
 
       <View style={{ marginTop: space.xl }} onLayout={(e) => setStatsY(e.nativeEvent.layout.y)}>
       <Enter i={2}>

@@ -164,7 +164,8 @@ describe('Results growth', () => {
     finish(6);
     mount(<Results />);
     expect(columns().length).toBeGreaterThan(0);
-    expect(allText()).toContain('All IS Audit · 6 of 8');
+    // Mobile 1.39: one domain, no ring; the line gives the percent ("Correct 6 of 8" gives the count).
+    expect(allText()).toContain('All IS Audit · 75%');
   });
 
   it('never on a session that went badly: below 60% it is simply shown', () => {
@@ -172,7 +173,7 @@ describe('Results growth', () => {
     finish(2);
     mount(<Results />);
     expect(columns()).toHaveLength(0);
-    expect(allText()).toContain('All IS Audit · 2 of 8');
+    expect(allText()).toContain('All IS Audit · 25%');
   });
 });
 

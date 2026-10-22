@@ -167,6 +167,15 @@ describe('Day 0: the first five is the whole plan', () => {
     expect(t).not.toMatch(/Not yet|Not enough data|Also today|Stage \d|accuracy/i);
     expect(t).not.toMatch(/\bcheck\b|diagnos/i);
     expect(pill().props.accessibilityLabel).toBe('Start');
+    // Mobile 1.39: one quiet line under the panel says what comes after the first five.
+    expect(byTestID('today-day0-next')).toHaveLength(1);
+    expect(t).toMatch(/After your first five: a daily plan built around (your date|you)/);
+  });
+
+  it('mobile 1.39: the Day-0 line goes once the first five are done', () => {
+    storePlan([FIRST], [true]);
+    mount(<Today />);
+    expect(byTestID('today-day0-next')).toHaveLength(0);
   });
 
   it('Start begins the SAME five questions, in the same order, with no timer', async () => {
@@ -382,11 +391,11 @@ describe('the reminder ask, second chance', () => {
     setMilestones(3, today());
     mount(<Today />);
     expect(allText()).toContain('A study time can help');
-    expect(allText()).toMatch(/Tomorrow I’ll study at/);
+    expect(allText()).toMatch(/Remind me tomorrow\u00A0at/);
     expect(useSeen.getState().reminderAsk.second).toBe(true);
     // Nothing is asked of the phone until the button is tapped.
     expect(mockEnsure).not.toHaveBeenCalled();
-    await press(/^Tomorrow I’ll study at /);
+    await press(/^Remind me tomorrow at /);
     expect(mockEnsure).toHaveBeenCalledTimes(1);
     expect(useSettings.getState().reminder).toMatchObject({ enabled: true, hour: 9, minute: 0 });
   });
@@ -416,15 +425,18 @@ describe('the reminder ask, second chance', () => {
     say.mockRestore();
   });
 
-  it('Earlier / Later say the new study time', async () => {
+  it('the time chip opens the steppers; closing them leaves the new time on the chip (no extra announcement)', async () => {
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     setMilestones(3, today());
     mount(<Today />);
-    await press(/^One hour later$/);
+    await press(/^Reminder time, /);
+    await press(/^Hour later$/);
+    await press(/^Done, Study time$/);
     flushSayLaterForTest();
-    // 9 AM now, so one hour later is 10 (the phone's own time format).
-    expect(say.mock.calls.map((c) => String(c[0])).some((s) => /^Study time 10[:.]00/.test(s))).toBe(true);
-    expect(allText()).toMatch(/Tomorrow I’ll study at 10[:.]00/);
+    // 9 AM now, so one hour later is 10 (the phone's own time format). Mobile 1.39 review P2: the chip
+    // says it when focus returns to it, so nothing is announced on top.
+    expect(say.mock.calls.map((c) => String(c[0])).some((s) => /^Study time/.test(s))).toBe(false);
+    expect(allText()).toMatch(/10[:.]00/);
     say.mockRestore();
   });
 

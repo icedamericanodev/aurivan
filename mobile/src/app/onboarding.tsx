@@ -14,7 +14,8 @@
  *
  * What changed in 1.24, and why (the panel's first-ten-minutes review):
  * - The exam step is gone. CISA is the only exam, so it is chosen for you
- *   (no greyed-out "coming soon" tiles; Settings still lists the others).
+ *   (no greyed-out "coming soon" tiles; since 1.39 Settings lists only CISA too,
+ *   with "Starting with CISA. More certifications later.").
  * - The plant step and the "Planted" screen are gone. A seed is planted for you
  *   after the first five questions, and You keeps "Plant yours".
  * - The line about moving from the old app is gone from the welcome. "Restore

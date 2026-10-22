@@ -349,7 +349,7 @@ describe('answer screen after a miss', () => {
 
 // ── Results ─────────────────────────────────────────────────────────────
 describe('results: one domain', () => {
-  it('the ring alone, centred, with one line under it; Done is the one solid button, Practice the missed is secondary', () => {
+  it('no ring (mobile 1.39: rings only for mixed sets and mocks); Done is the one solid button, Practice the missed is secondary', () => {
     const ids = ['d1_001', 'd1_002', 'd1_003'].filter((id) => findQuestion('cisa', id));
     startFromIds('cisa', ids, 'T');
     ids.forEach((_, i) => {
@@ -362,12 +362,12 @@ describe('results: one domain', () => {
       finishSession();
     });
     mount(<Results />);
-    expect(root().findByType(DomainRings).props.legend).toBe(false);
-    // Three questions is a handful (mobile 1.24, UX review S7): the headline holds the count once, the ring
-    // names the domain, and there is no "All IS Audit · 2 of 3" line repeating it.
+    // Mobile 1.39: a one-domain set has no ring; it said nothing the headline doesn't.
+    expect(root().findAllByType(DomainRings)).toHaveLength(0);
+    // Three questions is a handful (mobile 1.24, UX review S7): the headline holds the count once,
+    // and there is no "All IS Audit · 2 of 3" line repeating it.
     expect(allText()).toContain(`${ids.length - 1} of ${ids.length} right`);
     expect(allText()).not.toContain('All IS Audit ·');
-    expect(allText()).toContain('IS Audit');
     // Mobile 1.24: Done is the one solid button; "Practice the one you missed" is the secondary
     // (a miss re-answered minutes later is a retest and earns no spacing credit).
     const kindOf = (label: string) => root().findAll((n) => n.props.label === label && typeof n.props.onPress === 'function')[0].props.kind ?? 'primary';

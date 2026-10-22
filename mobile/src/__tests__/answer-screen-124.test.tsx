@@ -302,7 +302,7 @@ function finished(n: number, right: number, confidences: (undefined | 'sure' | '
 }
 
 describe('Results', () => {
-  it('a handful of questions: the count, never "Strong work."; the ring says 3 of 4, not a percent', () => {
+  it('a handful of questions: the count, never "Strong work."; no percent anywhere', () => {
     finished(4, 3);
     mount(<Results />);
     const t = allText();
@@ -315,8 +315,10 @@ describe('Results', () => {
     // The count is said once (UX review S7): no "Correct" cell and no count in the ring's centre.
     expect(t.match(/3 of 4/g)).toHaveLength(1);
     expect(t).not.toMatch(/Correct 3/);
-    const rings = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('3 of 4 right.'));
-    expect(rings.length).toBeGreaterThan(0);
+    // Mobile 1.39: these four are one domain, so there is no ring at all (rings are for mixed sets and mocks).
+    const rings = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^(3 of 4 right|Score \d+ percent)\./.test(n.props.accessibilityLabel));
+    expect(rings).toHaveLength(0);
+    expect(t).not.toMatch(/\d+%|percent/);
   });
 
   it('eight or more: the encouraging bands are back', () => {

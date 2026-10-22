@@ -270,7 +270,7 @@ export const CISA_LESSONS: Lesson[] = [
         // Review fix (MAJOR): a confirmation sent straight to the IS auditor by a
         // third party is STRONG evidence, so "confirmed" is not a weak cue.
         type: 'tip',
-        body: 'When a question asks for the most reliable evidence, pick the option where the IS auditor obtains it directly, from the system or an independent party. A confirmation a third party sends straight to the IS auditor is strong. Words like “told”, “stated” or “assured” usually signal inquiry, the weakest kind.',
+        body: 'For the most reliable evidence, pick the option where the IS auditor obtains it directly, from the system or an independent party. A confirmation a third party sends straight to the IS auditor is strong. Words like “told”, “stated” or “assured” usually signal inquiry, the weakest kind.',
       },
       {
         type: 'check',
@@ -818,7 +818,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'As the IS (information systems) auditor, you disclose rather than decide alone: tell audit management about any tie before testing starts, and let them weigh it. With an expert’s work, credentials open the door but prove nothing about the result: judge the delivered work, because the conclusion stays yours.',
+        body: 'As the IS (information systems) auditor, you disclose rather than decide alone. Tell audit management about any tie before testing starts, and let them weigh it. With an expert’s work, credentials open the door but prove nothing about the result: judge the delivered work, because the conclusion stays yours.',
       },
       {
         type: 'trap',
@@ -937,7 +937,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'When a stem changes the ground mid-audit (a cut budget, a missing skill, facts that undermine the plan), pick the option that keeps quality and is open about it: reprioritize by risk, bring in the skill, or pause and brief whoever approved the audit. Options that quietly carry on, or act alone without telling anyone, are the traps.',
+        body: 'When the ground shifts mid-audit, pick the option that keeps quality and is open about it. A cut budget, a missing skill or facts that undermine the plan call for the same moves: reprioritize by risk, bring in the skill, or pause and brief whoever approved the audit. Options that quietly carry on, or act alone without telling anyone, are the traps.',
       },
       {
         type: 'check',
@@ -1267,7 +1267,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'For “best recommendation” questions, find the cause in the stem (often a system setting or a missing step) and pick the option that changes it. Reminders, retraining and one-off cleanups are usually the runners-up. If management disputes a rating but not the facts, ask which part of the finding is weak; often it is the effect.',
+        body: 'For the best recommendation, find the cause in the stem (often a system setting or a missing step) and pick the option that changes it. Reminders, retraining and one-off cleanups are usually the runners-up. If management disputes a rating but not the facts, ask which part of the finding is weak; often it is the effect.',
       },
       {
         type: 'check',
@@ -5006,7 +5006,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'For “first” during a live attack, pick the action that stops the spread, such as isolating an affected computer (host) or disabling a compromised account. Restoring, notifying and investigating come next. For plan reviews, look for missing authority or missing lessons learned.',
+        body: 'For “first” during a live attack, pick the action that stops the spread. Isolating an affected computer (host) or disabling a compromised account are typical examples. Restoring, notifying and investigating come next. For plan reviews, look for missing authority or missing lessons learned.',
       },
       {
         type: 'check',
@@ -5476,7 +5476,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'For certificate questions, follow the trust: who checked the identity, who holds the private key, and what happens on the day a certificate stops being valid? An answer that waits for an outage or someone else’s reminder is detective at best.',
+        body: 'For certificate questions, follow the trust. Who checked the identity, who holds the private key, and what happens on the day a certificate stops being valid? An answer that waits for an outage or someone else’s reminder is detective at best.',
       },
       {
         type: 'check',

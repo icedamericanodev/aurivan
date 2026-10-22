@@ -26,6 +26,7 @@ import { getCertification } from '../content/certifications';
 import { getAllQuestions } from '../content/loader';
 import { noteSubtopics } from '../content/notes';
 import { YARDSTICK_LINE } from '../engine/domainBand';
+import { FRAMING_LINE } from '../components/readinessReport';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
@@ -143,6 +144,8 @@ describe('You: bands below 30 answers, numbers from 30', () => {
     expect(t).toMatch(/75/);
     expect(t).toContain('%');
     expect(t).toContain('Percentages count your latest try at each question.');
+    // Mobile 1.39: said once on You; the Accuracy line under the stats is not repeated.
+    expect(t.match(/latest try/g)).toHaveLength(1);
     expect(t).not.toMatch(/Building is under/);
   });
 
@@ -179,10 +182,11 @@ describe('You: bands below 30 answers, numbers from 30', () => {
 
 describe('the rings legend', () => {
   const values = [0.5, 0.5, 0.5, 0.5, 0.5];
+  // The legend's names: the `small` texts (the figures are serif numerals or a `label` word).
   const legendNames = () =>
     root()
-      .findAll((n) => n.props.numberOfLines !== undefined && typeof n.props.children === 'string')
-      .map((n) => ({ text: n.props.children as string, lines: n.props.numberOfLines as number }));
+      .findAll((n) => n.props.v === 'small' && typeof n.props.children === 'string')
+      .map((n) => ({ text: n.props.children as string, lines: n.props.numberOfLines as number | undefined }));
 
   it('names stay on one line, and below 380 wide the exam’s short names are used ("Governan / ce" never breaks)', () => {
     setWidth(360);
@@ -197,6 +201,8 @@ describe('the rings legend', () => {
     setWidth(412);
     mount(<DomainRings cert={cisa} values={values} center={null} accessibilityLabel="rings" />);
     expect(legendNames().map((n) => n.text)).toEqual(expect.arrayContaining(['IT Governance', 'Info Protection']));
+    // Mobile 1.39: no line cap, so "Info Protection" wraps at its space instead of ending in "Info Protecti…".
+    expect(legendNames().every((n) => n.lines === undefined)).toBe(true);
   });
 
   it('a band word on any row puts the legend under the rings, full width, even on a wide phone (UX review S1)', () => {
@@ -217,10 +223,11 @@ describe('the rings legend', () => {
     expect(legendNames().map((n) => n.text)).toEqual(expect.arrayContaining(['IT Governance', 'IS Acquisition', 'IS Operations', 'Info Protection']));
   });
 
-  it('at large text a name may wrap at a space (two lines) but is never cut', () => {
+  it('at large text a name may wrap at a space but is never cut', () => {
     setWidth(393, 2);
     mount(<DomainRings cert={cisa} values={values} center={null} accessibilityLabel="rings" />);
-    expect(legendNames().every((n) => n.lines === 2)).toBe(true);
+    expect(legendNames().length).toBe(5);
+    expect(legendNames().every((n) => n.lines === undefined)).toBe(true);
   });
 
   it('"+N" is said ONCE under the rings, not on every row, and never a minus', () => {
@@ -231,11 +238,14 @@ describe('the rings legend', () => {
 });
 
 describe('readiness report: the yardstick', () => {
-  it('one plain line with the app’s own bars, under the range, with or without a range', () => {
+  it('mobile 1.39: the estimate line stays in view; the yardstick and the detail are one tap away, in "How it’s worked out"', () => {
     mount(<ReadinessReport />);
+    expect(allText()).toContain('A study estimate, not a prediction.');
+    expect(allText()).not.toContain(YARDSTICK_LINE);
+    press(/^How it’s worked out/);
     expect(allText()).toContain(YARDSTICK_LINE);
     expect(allText()).toContain('not a promise or a prediction of your exam result');
-    expect(allText()).toContain('A study estimate, not a prediction.');
+    expect(allText()).toContain(FRAMING_LINE);
   });
 });
 
