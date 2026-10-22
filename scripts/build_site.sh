@@ -11,7 +11,8 @@
 #
 #   The list:
 #     - the pages: index.html, privacy.html, terms.html, support.html
-#     - assets/ (icons and, once added, the self-hosted fonts). Only image,
+#     - assets/ (icons, the self-hosted fonts and og-kaisip.png, the
+#       link-preview card that index.html names in og:image). Only image,
 #       font and stylesheet files: anything else in assets/ stops the build.
 #       One script is listed by name: assets/kaisip-plant.js, the plant
 #       companion (generated from the mobile app's plant code by
