@@ -4,6 +4,21 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.30] — A calmer first visit and a quicker answer
+
+### New
+- A new welcome: one tap on Start 5 questions takes you straight into your first questions.
+- Set your exam date with quick choices like In 2 months, from Today or from You.
+
+### Improved
+- Check answer is ready as soon as you pick an option. Saying how sure you are is now optional.
+- On phones, the tab bar steps aside during a set or mock, and Check answer stays in reach at the bottom of the screen.
+- The practice timer now counts up while you answer and never counts down.
+- Your stats and readiness appear once you have enough answers, instead of a page of zeros.
+- The cookie notice is a slim bar that waits until your first answer, and it says plainly what Google Analytics and Google Forms are used for.
+- Calmer wording across the app, no more pop-up alerts, and curly quotes in questions.
+- Links to KaiSip now show a preview card and say that it is CISA exam prep.
+
 ## [v12.29.2] — Privacy policy detail
 
 ### Improved

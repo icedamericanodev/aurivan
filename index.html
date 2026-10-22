@@ -37,9 +37,22 @@
 <meta name="description" content="KaiSip is free CISA exam prep: practice questions across all five domains, mock exams and plain-language study notes that teach you to reason like an IS auditor.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="KaiSip">
-<meta property="og:title" content="KaiSip — Master Modern Risk">
-<meta property="og:description" content="Free CISA exam prep: practice questions, mock exams and study notes that teach you to reason like an IS auditor.">
-<title>KaiSip — Master Modern Risk</title>
+<meta property="og:title" content="KaiSip: CISA exam prep that teaches the auditor's mindset">
+<meta property="og:description" content="Think like an IS auditor. Practice questions that explain every option, mock exams and plain-language study notes for the CISA exam.">
+<meta property="og:url" content="https://kaisip.com/">
+<!-- Link previews (Reddit, Threads, iMessage, Slack): a 1200×630 card. Crawlers
+     fetch it from the live site, so the URL is absolute. Master: design-notes/brand-kaisip/og/. -->
+<meta property="og:image" content="https://kaisip.com/assets/og-kaisip.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KaiSip: Think like an IS auditor. An answer screen shows the best answer with Eliminate two, Final two and Exam cue tips.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="KaiSip: CISA exam prep that teaches the auditor's mindset">
+<meta name="twitter:description" content="Think like an IS auditor. Practice questions that explain every option, mock exams and plain-language study notes for the CISA exam.">
+<meta name="twitter:image" content="https://kaisip.com/assets/og-kaisip.png">
+<meta name="twitter:image:alt" content="KaiSip: Think like an IS auditor. An answer screen shows the best answer with Eliminate two, Final two and Exam cue tips.">
+<title>KaiSip: CISA exam prep that teaches the auditor's mindset</title>
 <link rel="icon" href="assets/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -5151,7 +5164,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
   font: inherit; color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px;
 }
 /* A taller tap area that takes no room in the layout. */
-.td-setdate::after { content: ''; position: absolute; left: -4px; right: -4px; top: -12px; bottom: -12px; }
+.td-setdate { display: inline-block; padding: 12px 4px; margin: -12px -4px; }
 .td-setdate:hover { color: var(--text); }
 .td-setdate:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
 @media (min-width: 1024px) { .td-count { display: none; } }
@@ -6130,6 +6143,158 @@ html { scroll-padding-bottom: 104px; }
   .plnt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .changelog-modal.plnt-modal { padding: var(--sp-xl); }
 }
+
+/* ── v12.30: FIRST RUN, ANSWER FLOW, SHEETS (pre-beta quality pass) ───────── */
+/* The welcome: a port of the mobile one. The forest header (lockup, "Think
+   like an IS auditor."), check rows on the paper, one primary action. A
+   centred sheet on wide screens, the whole screen on phones. */
+.onboard-overlay.ob-overlay { padding: var(--sp-lg); }
+.onboard-modal.ob-welcome {
+  max-width: 480px; width: 100%; padding: 0; overflow: hidden auto; display: flex; flex-direction: column;
+  background: var(--bg); border-radius: 28px; box-shadow: var(--shadow-lg);
+}
+.ob-forest {
+  position: relative; overflow: hidden; padding: var(--sp-xxl) var(--sp-xxl) 28px;
+  background: var(--forest-panel); box-shadow: inset 0 1px 0 var(--forest-hl); color: var(--on-forest);
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+}
+.ob-forest > *:not(.gt-frond) { position: relative; }
+.ob-forest .gt-frond { top: auto; bottom: -24px; right: -20px; width: 170px; height: 170px; }
+.ob-lockup { --tn-ring: #A9D9BA; --tn-needle: #F3F1EA; --tn-word: #F3F1EA; --tn-leaf: #A9D9BA; }
+.ob-lockup .brand-lockup { height: 34px; width: auto; display: block; }
+.ob-title.onboard-title {
+  margin: 28px 0 0; font: 500 40px/46px var(--f-serif); letter-spacing: -0.8px; color: var(--on-forest); text-align: left;
+}
+.ob-title:focus { outline: none; }
+.ob-sub { margin: var(--sp-md) 0 0; font: italic 400 19px/26px var(--f-serif); color: var(--on-forest2); max-width: 340px; }
+.ob-body { padding: var(--sp-xxl) var(--sp-xxl) 0; }
+.ob-checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-lg); }
+.ob-checks li { display: flex; align-items: flex-start; gap: var(--sp-md); font: var(--t-body); color: var(--text); }
+.ob-check {
+  flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--surface2);
+  display: inline-flex; align-items: center; justify-content: center; color: var(--accent-text); margin-top: -2px;
+}
+.ob-fine { margin: var(--sp-xl) 0 0; font: var(--t-meta); color: var(--text2); }
+.ob-foot { display: flex; flex-direction: column; align-items: stretch; gap: var(--sp-xs); padding: var(--sp-xxl); margin-top: auto; }
+.ob-go {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-sm); min-height: 56px; padding: 0 var(--sp-xxl);
+  border: 0; border-radius: var(--r-pill); cursor: pointer; background: var(--btn); color: var(--on-btn); font: 600 17px/22px var(--f-sans);
+}
+.ob-go:hover { opacity: .92; }
+.ob-ghost {
+  min-height: 48px; padding: 0 var(--sp-lg); background: none; border: 0; cursor: pointer;
+  font: 600 16px/22px var(--f-sans); color: var(--accent-text);
+}
+.ob-ghost:hover { text-decoration: underline; }
+.ob-go:focus-visible, .ob-ghost:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+@media (max-width: 600px) {
+  .onboard-overlay.ob-overlay { padding: 0; align-items: stretch; }
+  .onboard-modal.ob-welcome { max-width: none; min-height: 100%; max-height: 100%; border-radius: 0; box-shadow: none; }
+  .ob-forest { padding-top: calc(var(--sp-xxl) + env(safe-area-inset-top)); }
+  .ob-foot { padding-bottom: calc(var(--sp-xxl) + env(safe-area-inset-bottom)); }
+}
+
+/* A small sheet (the reset confirms and the exam-date choice): Grove raised2,
+   rising from the bottom edge on phones, centred on wide screens. */
+.ks-sheet-sub { margin: 0 0 var(--sp-lg); font: var(--t-body); color: var(--text2); }
+/* A sheet is modal: it sits over the cookie bar too (the bar waits under the dim). */
+.mock-confirm-overlay.ks-sheet-overlay { z-index: 300; }
+.ks-sheet .mock-confirm-btns { margin-top: var(--sp-xl); }
+/* A label never breaks inside its button; the pair stacks instead. */
+.ks-sheet .mock-confirm-btn { flex: 1 1 auto; white-space: nowrap; }
+.mock-confirm-btn.danger { background: var(--wrong-light); border-color: var(--wrong-light); color: var(--wrong); }
+.mock-confirm-btn.danger:hover { opacity: .92; }
+.ks-date-chips { margin: 0; }
+.ks-link {
+  display: inline-flex; align-items: center; min-height: 44px; margin-top: var(--sp-md); padding: 0;
+  background: none; border: 0; cursor: pointer; font: var(--t-label); color: var(--accent-text);
+}
+.ks-link:hover { text-decoration: underline; }
+.ks-link:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
+.ks-exact[hidden] { display: none; }
+.ks-exact { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--sp-md); margin-top: var(--sp-sm); }
+.ks-exact label { flex-basis: 100%; margin: 0; }
+.ks-date-input {
+  flex: 1 1 180px; min-height: 48px; padding: 0 var(--sp-lg); border-radius: var(--r-md);
+  border: 1.5px solid var(--control); background: var(--raised); color: var(--text); font: var(--t-body);
+}
+.ks-date-input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.ks-exact .mock-confirm-btn { flex: 0 0 auto; }
+@media (max-width: 600px) {
+  .mock-confirm-overlay.ks-sheet-overlay { align-items: flex-end; padding: 0; }
+  .mock-confirm-overlay.ks-sheet-overlay .mock-confirm-modal {
+    max-width: none; border-radius: 28px 28px 0 0; max-height: calc(100% - 24px);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* "How sure?" is optional (v12.30): Check answer is ready once an option is
+   picked, and sits in a footer held at the bottom of the screen. */
+.conf-q-opt { font: var(--t-meta); color: var(--text2); margin-left: var(--sp-xs); }
+.q-check-foot {
+  position: sticky; bottom: 0; z-index: 5; margin-top: var(--sp-xl); padding: var(--sp-xl) 0 var(--sp-lg);
+  background: linear-gradient(to bottom, transparent, var(--bg) var(--sp-xl));
+}
+.q-check-foot::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: var(--grain-img); background-attachment: fixed; opacity: var(--grain-op);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black var(--sp-xl));
+  mask-image: linear-gradient(to bottom, transparent, black var(--sp-xl));
+}
+.q-check-foot .submit-btn {
+  margin: 0; min-height: 56px; padding: 0 var(--sp-xxl); border-radius: var(--r-pill);
+  font: 600 17px/22px var(--f-sans); letter-spacing: 0;
+}
+/* The cookie bar, when showing, lifts the footers above it (--consent-h). */
+.q-check-foot, .vr-foot { bottom: var(--consent-h, 0px); }
+@media (max-width: 1023px) {
+  .vr-foot { bottom: calc(73px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
+  .q-check-foot { bottom: calc(73px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
+  /* A practice set or a mock question has the screen to itself: the tab bar
+     steps aside and the footers sit on the safe area. */
+  body[data-tab="practice"][data-pview="focus"] #bottomNav,
+  body[data-tab="mock"][data-mview="q"] #bottomNav { display: none; }
+  body[data-tab="practice"][data-pview="focus"] .app,
+  body[data-tab="mock"][data-mview="q"] .app { padding-bottom: calc(24px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
+  body[data-tab="practice"][data-pview="focus"] .vr-foot,
+  body[data-tab="practice"][data-pview="focus"] .q-check-foot { bottom: calc(var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
+  body[data-tab="practice"][data-pview="focus"] .toast,
+  body[data-tab="mock"][data-mview="q"] .toast { bottom: calc(96px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
+}
+
+/* The practice hub's Timed switch (counts up, never a countdown). */
+.ph-timer .you-list { margin: 0; }
+.ph-timer .ph-hint { margin-top: var(--sp-xs); }
+
+/* The cookie question (v12.30): a slim bar on the bottom edge, shown after
+   the first answer, never over the welcome. */
+.consent-banner {
+  left: 0; right: 0; bottom: 0; border-radius: 0; border: 0; border-top: 1px solid var(--border);
+  background: var(--raised2); box-shadow: 0 -8px 24px -16px rgba(23,35,27,.35);
+  gap: var(--sp-sm) var(--sp-lg); padding: 10px var(--sp-xl) calc(10px + env(safe-area-inset-bottom));
+}
+.consent-text { font: 400 13px/18px var(--f-sans); max-width: 720px; min-width: 220px; }
+.consent-btn { min-height: 44px; padding: 0 var(--sp-xl); }
+@media (max-width: 1023px) {
+  .consent-banner { left: 0; right: 0; bottom: calc(73px + env(safe-area-inset-bottom)); padding: 10px var(--sp-lg); }
+  body[data-tab="practice"][data-pview="focus"] .consent-banner,
+  body[data-tab="mock"][data-mview="q"] .consent-banner { bottom: 0; padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
+}
+@media (min-width: 1024px) {
+  .consent-banner { left: 248px; right: 0; bottom: 0; }
+}
+
+/* You: the stats wait for 10 answers; a word ("Building") is not a numeral. */
+.you-stats-wait { margin: var(--sp-md) 0 var(--sp-lg); font: var(--t-meta); color: var(--text2); }
+.you-stats-wait[hidden], .you-stats[hidden] { display: none; }
+.you-stats .stat-num.stat-word { font: 500 20px/26px var(--f-serif); letter-spacing: 0; }
+
+/* Today: before the first readiness range, one quiet line instead of the empty rings. */
+.td-plate.td-plate-quiet { background: none; padding: 0; }
+.td-wait { margin: 0; font: var(--t-meta); color: var(--text2); }
+@media (min-width: 560px) and (max-width: 1179px) {
+  .td-plate.td-plate-quiet { display: block; }
+}
 /* GROVE-LAYER-END */
 </style>
 </head>
@@ -6138,7 +6303,7 @@ html { scroll-padding-bottom: 104px; }
 <!-- COOKIE CONSENT BANNER — analytics stays off until the visitor chooses -->
 <div id="consent-banner" class="consent-banner" role="region" aria-label="Cookie consent" tabindex="-1" hidden>
   <p class="consent-text">
-    KaiSip uses one optional cookie for <strong>anonymous analytics</strong> — to see how the app is used and what to improve. Nothing else leaves your device.
+    KaiSip can use Google Analytics to count visits and see which pages help. It stays off unless you accept. Anything you send through Feedback reaches us via Google Forms.
     <a href="privacy.html" target="_blank" rel="noopener noreferrer" aria-label="Privacy Policy (opens in a new tab)">Privacy&nbsp;Policy</a>
   </p>
   <div class="consent-actions">
@@ -6238,10 +6403,12 @@ html { scroll-padding-bottom: 104px; }
         <p class="ph-hint">Foundational is recall, Application is a scenario, Analysis is best judgment. The exam is mostly Application and Analysis.</p>
         <button type="button" class="ph-done" onclick="togglePracticeSetup(false)">Done</button>
       </div>
+      <!-- Timed (v12.30, the mobile rule): a switch; the clock counts up while you answer, never down. -->
       <div class="ph-timer">
-        <p class="ph-field" id="phTimerL">Session timer</p>
-        <p class="ph-hint" id="phTimerM">Counts down across the whole set, not per question.</p>
-        <div class="ph-chips" role="group" aria-labelledby="phTimerL" aria-describedby="phTimerM" id="timerCtrlArea"></div>
+        <ul class="you-list">
+          <li><button type="button" class="you-row" id="phTimedBtn" role="switch" aria-checked="false" aria-labelledby="phTimedT" aria-describedby="phTimedM phTimedH" onclick="toggleTimer()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9.5 2.5h5"/></svg></span><span class="you-text"><span class="you-t" id="phTimedT">Timed</span><span class="you-m" id="phTimedM">Counts up while you answer; never a countdown.</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
+        </ul>
+        <p class="ph-hint" id="phTimedH">The exam allows about 96 seconds a question.</p>
       </div>
     </div>
     <!-- Focus next (below the rail's breakpoint; on wide screens it is in the study rail) -->
@@ -6255,8 +6422,6 @@ html { scroll-padding-bottom: 104px; }
       <h2 class="ph-h" id="phMoreH">Review and saved</h2>
       <ul class="you-list" id="phMore"></ul>
     </section>
-    <!-- Decision 8 — Exam-date countdown / set-date prompt -->
-    <div id="examCountdownArea"></div>
   </div>
 
   <div class="pf" id="practiceFocus" hidden>
@@ -6279,8 +6444,8 @@ html { scroll-padding-bottom: 104px; }
 <!-- BOOKMARKS -->
 <div id="screen-bookmarks" class="screen">
   <div class="bk-panel">
-    <div class="bk-panel-title">Saved Questions</div>
-    <div id="bkList"><div class="no-bk">No bookmarks yet - save tricky questions during practice!</div></div>
+    <div class="bk-panel-title">Saved questions</div>
+    <div id="bkList"><div class="no-bk">Nothing saved yet. Tap the bookmark on any question to keep it here.</div></div>
   </div>
 </div>
 
@@ -6325,7 +6490,7 @@ html { scroll-padding-bottom: 104px; }
     <h1 class="vision-title" id="aboutScreenTitle">Master Modern Risk.</h1>
     <p class="vision-line">Grow your judgment, one ring at a time.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.29.2</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.30</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <p class="vision-desc">A continuous learning platform for IT audit, cyber risk and AI governance professionals: authored from primary sources, free, and growing every week.</p>
     <ul class="vision-pillars">
@@ -6386,7 +6551,8 @@ html { scroll-padding-bottom: 104px; }
       <h2 class="you-head" id="youProgressH">Your progress</h2>
       <!-- Practice totals (moved from the Practice page, web step 3). "In a
            row" = right answers in a row, in ink: clay is for study days. -->
-      <div class="stats-row you-stats">
+      <p class="you-stats-wait" id="youStatsWait">Your stats appear after 10 answers</p>
+      <div class="stats-row you-stats" id="youStats" hidden>
         <div class="stat-card"><span class="stat-num" id="sTotal">0</span><span class="stat-label">Answered</span></div>
         <div class="stat-card"><span class="stat-num good" id="sCorrect">0</span><span class="stat-label">Correct</span></div>
         <div class="stat-card"><span class="stat-num" id="sPct">--</span><span class="stat-label">Accuracy</span></div>
@@ -6408,6 +6574,8 @@ html { scroll-padding-bottom: 104px; }
             <p class="ph-hint" id="youNameHint" aria-live="polite">Only on this device. It just helps us say hello.</p>
             <div class="you-name-acts"><button type="button" class="ph-done you-name-save" onclick="saveDisplayName()">Save</button><button type="button" class="ph-done" onclick="toggleNameEdit(false)">Cancel</button></div>
           </div></li>
+        <!-- Exam date (v12.30): the one place to set or change it, as on mobile Settings. -->
+        <li><button type="button" class="you-row" id="youExamDateBtn" aria-haspopup="dialog" onclick="openExamDateSheet(false)"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="5" width="16" height="15.5" rx="2"/><path d="M4 9.5h16M8.5 3v4M15.5 3v4"/></svg></span><span class="you-text"><span class="you-t">Exam date</span><span class="you-m" id="youExamDateM">Not set</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
         <li><button type="button" class="you-row" id="darkToggleBtn" role="switch" aria-checked="false" aria-labelledby="youDarkT" aria-describedby="youDarkM" onclick="toggleDarkMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 1 1 9.4 4a6.6 6.6 0 0 0 10.6 10.6z"/></svg></span><span class="you-text"><span class="you-t" id="youDarkT">Dark mode</span><span class="you-m" id="youDarkM">Easier on the eyes at night</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
         <li><button type="button" class="you-row" id="examModeBtn" role="switch" aria-checked="false" aria-labelledby="youExamT" aria-describedby="youExamM" onclick="toggleExamMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4"/><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg></span><span class="you-text"><span class="you-t" id="youExamT">Exam-style questions</span><span class="you-m" id="youExamM">Shorter questions, no tips after you answer</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
       </ul>
@@ -6618,7 +6786,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.29.2';
+const APP_VERSION = 'v12.30';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -7038,6 +7206,7 @@ var S_DEFAULTS = {
   timerSeconds: 0,
   domainTimerActive: false,
   domainTimerRemaining: 0,
+  domainTimerElapsed: 0,   // v12.30: the practice clock counts up (seconds this set)
   score: {t:0, c:0},
   ds: {"1":{t:0,c:0},"2":{t:0,c:0},"3":{t:0,c:0},"4":{t:0,c:0},"5":{t:0,c:0}},
   streak: 0,
@@ -8099,16 +8268,23 @@ function importProgress(file) {
       if (!state) { showToast(IMPORT_MSG_NOT_PROGRESS, 'info', 6000); return; }
       // The plant never grows past what the file's own progress supports.
       try { plantClampImported(state); } catch (e2) {}
-      if (!confirm('Replace the progress in this browser with the progress in this file?')) return;
-      var id = getActiveProfileId();
-      var profiles = getProfiles();
-      if (!id || !profiles[id]) return;
-      profiles[id].state = state;
-      profiles[id].totalAnswered = state.score ? Number(state.score.t) || 0 : 0;
-      profiles[id].lastActive = Date.now();
-      saveProfiles(profiles);
-      leavingForReload = true;
-      location.reload();
+      ksConfirm({
+        title: 'Restore this file?',
+        body: 'The progress in this browser is replaced with the progress in the file.',
+        confirmLabel: 'Replace my progress',
+        danger: true,
+        onConfirm: function () {
+          var id = getActiveProfileId();
+          var profiles = getProfiles();
+          if (!id || !profiles[id]) return;
+          profiles[id].state = state;
+          profiles[id].totalAnswered = state.score ? Number(state.score.t) || 0 : 0;
+          profiles[id].lastActive = Date.now();
+          saveProfiles(profiles);
+          leavingForReload = true;
+          location.reload();
+        }
+      });
     } catch (ex) {
       showToast('We couldn\'t read that file. Try exporting it again. Your progress hasn\'t changed.', 'info', 6000);
     }
@@ -8193,6 +8369,17 @@ function showYourData() {
 }
 
 // â”€â”€ XSS HELPER â”€â”€
+// Curly quotes for question stems at render time (v12.30): the bank keeps its
+// straight ones; the UI's own copy already uses ’ “ ”. Run BEFORE escapeHtml.
+function smartQuotes(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/(^|[\s(\[{—–-])"/g, '$1“')
+    .replace(/"/g, '”')
+    .replace(/([A-Za-z0-9])'([A-Za-z])/g, '$1’$2')
+    .replace(/(^|[\s(\[{—–-])'/g, '$1‘')
+    .replace(/'/g, '’');
+}
 function escapeHtml(str) {
   if (!str) return '';
   return String(str)
@@ -8997,7 +9184,7 @@ function renderTopics() {
     + gtFrondSvg()
     + '<p class="gt-panel-cap"><span class="dom-dot" style="background:' + info.color + '"></span>Domain ' + d + ' &middot; ' + escapeHtml(domainData.exam_weight) + ' of the exam</p>'
     + '<h3 class="gt-panel-title" id="gtPanelTitle">' + escapeHtml(domainData.domain_name) + '</h3>'
-    + '<div class="gt-panel-foot"><div class="gt-panel-row">' + gtRingSvg(domProg.pct)
+    + '<div class="gt-panel-foot"><div class="gt-panel-row">' + (domProg.done > 0 ? gtRingSvg(domProg.pct) : '')
     + '<p class="gt-panel-meta" id="gtPanelMeta">' + domainData.groups.length + ' topics &middot; <span class="gt-num">' + domProg.done + '</span> of ' + totalItems + ' read</p></div>'
     + '<button class="gt-pill" onclick="startTopicPractice(\'' + d + '\')">' + ico('play', 16) + 'Practice Domain ' + d + '</button></div>'
     + '</section>';
@@ -9350,6 +9537,10 @@ function onTopicSearch(val) {
 function refreshTopicProgress(d) {
   var p = getConceptDomainProgress(d);
   var arc = document.getElementById('gtRingArc');
+  // v12.30: the ring appears with the first note read, and goes at zero.
+  var row = document.querySelector('.gt-panel-row');
+  if (!arc && p.done > 0 && row) { row.insertAdjacentHTML('afterbegin', gtRingSvg(p.pct)); arc = null; }
+  else if (arc && p.done === 0) { var svg = arc.closest('svg'); if (svg) svg.remove(); arc = null; }
   if (arc) {
     var c = parseFloat(arc.getAttribute('stroke-dasharray')) || 0;
     arc.setAttribute('stroke-dashoffset', (c * (1 - p.pct / 100)).toFixed(2));
@@ -9557,9 +9748,13 @@ function toggleConceptReviewed(itemId) {
 
 // Reset needs a confirm: one mis-tap must not wipe a learner's progress.
 function confirmResetDomain(d) {
-  var ok = true;
-  try { ok = window.confirm('Reset reading progress for Domain ' + d + '? Every note in this domain goes back to not read.'); } catch (e) {}
-  if (ok) resetConceptDomain(d);
+  ksConfirm({
+    title: 'Reset Domain ' + d + ' reading?',
+    body: 'Every note in this domain goes back to not read. Your answers and scores stay.',
+    confirmLabel: 'Reset reading',
+    danger: true,
+    onConfirm: function () { resetConceptDomain(d); }
+  });
 }
 
 function markAllDomainTopics(domainId) {
@@ -9604,11 +9799,13 @@ function resetAllTopicReviews() {
 }
 // You → Your data: "Reset reading progress".
 function confirmResetReadingProgress() {
-  var ok = false;
-  try { ok = window.confirm('Reset reading progress? Every note goes back to not read. Your answers and scores stay.'); } catch (e) {}
-  if (!ok) return;
-  closeSummary();
-  resetAllTopicReviews();
+  ksConfirm({
+    title: 'Reset reading progress?',
+    body: 'Every note goes back to not read. Your answers and scores stay.',
+    confirmLabel: 'Reset reading',
+    danger: true,
+    onConfirm: function () { closeSummary(); resetAllTopicReviews(); }
+  });
 }
 
 // Backward-compat aliases
@@ -9971,7 +10168,7 @@ function switchTab(t, opts) {
   // A stale or unknown page name (an older save, a typo'd link) opens Today.
   if (!NAV_SECTION[t]) t = 'home';
   // Leaving a set mid-way pauses its clock (Continue picks it up again).
-  if (S.activeTab === 'practice' && S.domainTimerActive && S.domainTimerRemaining > 0 && practiceLeftOpen()) S.domainTimerPaused = true;
+  if (S.activeTab === 'practice' && S.domainTimerActive && practiceLeftOpen()) S.domainTimerPaused = true;
   clearAllTimers(); // always clear timers when switching tabs
   // Leaving any review-replay session — clear the mode flags so the gen
   // button and nextQ() return to normal practice behaviour. startReviewQueue
@@ -10580,14 +10777,10 @@ function todayStepGo(btn) {
   else if (g.step === 'domain' && DI[g.d]) todayPracticeDomain(g.d);
   else if (g.step === 'note' && g.id) todayOpenNote(g.d, g.id);
 }
-// "Set exam date" on the day line: the Practice page's exam-date field.
+// "Set exam date" on the day line: the exam-date sheet (v12.30; the
+// Practice hub no longer carries a date card).
 function todaySetExamDate() {
-  switchTab('practice', { noScroll: true });
-  try { renderExamCountdown(); } catch (e) {}
-  var area = document.getElementById('examCountdownArea');
-  if (area && area.scrollIntoView) area.scrollIntoView({ block: 'center' });
-  var inp = document.getElementById('exam-date-input');
-  if (inp) { try { inp.focus({ preventScroll: true }); } catch (e) {} }
+  openExamDateSheet(false);
 }
 function todayNextHtml(step) {
   if (!step) return '';
@@ -10668,16 +10861,26 @@ function renderHome() {
   var range = todayReadinessRange(r);
   var figures = r.domains.map(function (x) { return domainFigure(x.answered, Math.round(x.mastery * 100)); });
   var spoken = range.enough ? 'Estimated readiness between ' + range.low + ' and ' + range.high + ' percent.' : 'Readiness: not enough data yet.';
-  var plate = '<section class="td-plate" aria-labelledby="tdReadyH">'
+  var plate;
+  if (!range.enough) {
+    // v12.30: no empty rings and no plate before the first range, only one
+    // quiet line (mobile hides its readiness until there is data).
+    var needed = range.needed;
+    plate = '<section class="td-plate td-plate-quiet" aria-labelledby="tdReadyH">'
+      + '<h2 class="sr-only" id="tdReadyH">Readiness</h2>'
+      + '<p class="td-wait">' + (r.answered > 0
+        ? 'Answer ' + needed + ' more to see your first readiness range'
+        : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' to see your first readiness range') + '</p>';
+  } else {
+  plate = '<section class="td-plate" aria-labelledby="tdReadyH">'
     + '<h2 class="sr-only" id="tdReadyH">Readiness</h2>'
     + '<div class="td-fig">'
     + growthRingsSvg(r.domains.map(function (x) { return x.answered ? x.mastery : 0; }), r.answered > 0 && todayRingsGrowNow())
     + '<div class="td-fig-text">'
-    + (range.enough
-      ? '<p class="td-big"><span class="sr-only">' + spoken + '</span><span aria-hidden="true">' + range.low + '&ndash;' + range.high + '<sup>%</sup></span></p><p class="td-cap">Estimated readiness</p>'
-      : '<p class="td-none">Not enough data yet</p><p class="td-cap">' + (RD_RANGE_MIN_ANSWERS - range.needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' for your first range</p>')
+    + '<p class="td-big"><span class="sr-only">' + spoken + '</span><span aria-hidden="true">' + range.low + '&ndash;' + range.high + '<sup>%</sup></span></p><p class="td-cap">Estimated readiness</p>'
     + '</div></div>';
-  if (r.answered > 0) {
+  }
+  if (r.answered > 0 && range.enough) {
     plate += '<div class="td-detail"><ul class="td-legend">' + r.domains.map(function (x, i) {
       var f = figures[i];
       var val = f.banded || f.text === '–' ? '<span class="td-word">' + f.text + '</span>' : '<span class="td-num">' + f.text.replace('%', '') + '<sup>%</sup></span>';
@@ -10812,48 +11015,32 @@ function syncDiffChips() {
 }
 
 // â”€â”€ TIMER TOGGLE â”€â”€
+// v12.30: the mobile rule. Practice has one "Timed" switch: a clock that
+// counts UP while a question is being answered, stands still while the
+// explanation shows, and never counts down or ends a set. S.timerEnabled is
+// the switch (an older saved Auto / 15 / 30 / 60 min choice simply reads as
+// "on"); S.timerSeconds stays in saved progress, unused. Mock exams keep
+// their own exam clock (startMockTotalTimer), unchanged.
+var PRACTICE_PACE_SECONDS = 96; // the exam's pace: 240 minutes for 150 questions
+
 function toggleTimer() {
   S.timerEnabled = !S.timerEnabled;
-  updateTimerDisplay();
-  saveState();
-}
-
-function setTimerDuration(mins) {
-  S.timerSeconds = mins; // stored as minutes selection (0=auto)
-  S.timerEnabled = true;
   S.domainTimerPaused = false;
-  // A new choice starts a fresh countdown now if a question is on screen;
-  // otherwise it starts with the next question.
-  stopSessionTimer();
-  if (S.activeTab === 'practice' && S.current && document.querySelector('#qArea .opt')) startDomainTimer();
-  updateTimerDisplay();
-  saveState();
-  renderPracticeHub();
-}
-// The hub's "Off" choice.
-function setTimerOff() {
-  S.timerEnabled = false;
-  S.domainTimerPaused = false;
-  stopSessionTimer();
+  if (S.timerEnabled) {
+    // A set already open starts its clock now, from zero.
+    S.domainTimerElapsed = 0;
+    if (S.activeTab === 'practice' && practiceView === 'focus' && document.querySelector('#qArea .q-card')) startDomainTimer();
+  } else {
+    stopSessionTimer();
+  }
   updateTimerDisplay();
   saveState();
   renderPracticeHub();
 }
 
 function updateTimerDisplay() {
-  var area = document.getElementById('timerCtrlArea');
-  if (!area) return;
-  var choices = [
-    [null, 'Off', 'No timer: practice at your own pace'],
-    [0, 'Auto', 'Exam pace for the questions you have not answered yet, up to 4 hours'],
-    [15, '15 min', ''], [30, '30 min', ''], [60, '60 min', '']
-  ];
-  area.innerHTML = choices.map(function (c) {
-    var on = c[0] === null ? !S.timerEnabled : (S.timerEnabled && S.timerSeconds === c[0]);
-    return '<button type="button" class="ph-chip' + (on ? ' active' : '') + '" aria-pressed="' + on + '"'
-      + (c[2] ? ' title="' + c[2] + '"' : '')
-      + ' onclick="' + (c[0] === null ? 'setTimerOff()' : 'setTimerDuration(' + c[0] + ')') + '">' + c[1] + '</button>';
-  }).join('');
+  var b = document.getElementById('phTimedBtn');
+  if (b) b.setAttribute('aria-checked', S.timerEnabled ? 'true' : 'false');
 }
 
 // â”€â”€ CLEAR ALL TIMERS â”€â”€
@@ -10866,9 +11053,9 @@ function clearAllTimers() {
 }
 
 // Between questions only the per-question mock clock stops. The practice
-// session timer (Off / Auto / 15 / 30 / 60 min) covers the WHOLE session, so
-// answering or moving on must not restart it; leaving practice, a finished
-// bank or a new timer choice ends it (clearAllTimers / stopSessionTimer).
+// clock covers the WHOLE set, so answering or moving on must not restart
+// it; leaving practice, a finished set or the switch going off ends it
+// (clearAllTimers / stopSessionTimer).
 function clearQuestionTimers() {
   if (S.mockTimerInt) { clearInterval(S.mockTimerInt); S.mockTimerInt = null; }
 }
@@ -10878,91 +11065,42 @@ function stopSessionTimer() {
   var ta = document.getElementById('timerArea');
   if (ta) ta.style.display = 'none';
 }
-// "Continue without timer" (on the Time is up card): the timer goes off and
-// the set carries on, with the question that was open when time ran out.
-function continueWithoutTimer() {
-  S.timerEnabled = false;
-  S.domainTimerPaused = false;
-  stopSessionTimer();
-  updateTimerDisplay();
-  saveState();
-  if (practiceView !== 'focus') { renderPracticeHub(); return; }
-  if (shouldResumeCurrent()) resumeCurrentQuestion();
-  else nextQ();
-}
 
-// â”€â”€ PRACTICE TIMER â”€â”€
+// â”€â”€ PRACTICE TIMER (counts up) â”€â”€
+function practiceClock(s) {
+  s = Math.max(0, Math.floor(Number(s) || 0));
+  var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  return (h ? h + ':' + (m < 10 ? '0' : '') : '') + m + ':' + (sec < 10 ? '0' : '') + sec;
+}
 function startDomainTimer() {
   if (!S.timerEnabled || S.domainTimerActive) return;
-  var bankCount = (QB[S.selectedDomain] || []).length;
-  var coveredCount = (S.answeredIds && S.answeredIds[S.selectedDomain]) ? Object.keys(S.answeredIds[S.selectedDomain]).length : 0;
-  var remaining = bankCount - coveredCount;
-  var totalMins;
-  if (S.timerSeconds === 0) {
-    // 1.6 min per unanswered question (the real exam's pace), capped at the
-    // real exam's 4 hours so the countdown never reveals the bank size.
-    totalMins = Math.round(Math.min(remaining > 0 ? remaining : bankCount, 150) * 1.6);
-  } else {
-    totalMins = S.timerSeconds;
-  }
-  var totalSecs = totalMins * 60;
-  // A clock paused when the learner left the set resumes where it was.
-  var resume = !!S.domainTimerPaused && S.domainTimerRemaining > 0;
+  // A clock paused when the learner left the set carries on from there.
+  if (!S.domainTimerPaused) S.domainTimerElapsed = 0;
   S.domainTimerPaused = false;
-  if (resume) totalSecs = S.domainTimerTotal || totalSecs;
-  else S.domainTimerRemaining = totalSecs;
-  S.domainTimerTotal = totalSecs;
   S.domainTimerActive = true;
 
   var ta = document.getElementById('timerArea');
   if (!ta) return;
   ta.style.display = '';
-  var total = totalSecs;
-
-  function formatTime(s) {
-    var m = Math.floor(s / 60);
-    var sec = s % 60;
-    return m + ':' + (sec < 10 ? '0' : '') + sec;
-  }
-
   // The focus strip's clock: digits only (the hub says what the timer does).
   // role="timer" is never announced on each tick.
-  ta.title = S.timerSeconds === 0 ? 'Session timer (auto)' : 'Session timer (' + totalMins + ' min)';
-  ta.innerHTML = ico('mock', 18) + '<span class="sr-only">Time left in this set: </span><span class="timer-digits ok" id="tDig" role="timer">' + formatTime(S.domainTimerRemaining) + '</span>';
+  ta.title = 'Time on this set (counts up while you answer)';
+  ta.innerHTML = ico('mock', 18) + '<span class="sr-only">Time on this set: </span><span class="timer-digits ok" id="tDig" role="timer">' + practiceClock(S.domainTimerElapsed) + '</span>';
 
   if (S.practiceTimerInt) { clearInterval(S.practiceTimerInt); S.practiceTimerInt = null; }
-  S.practiceTimerInt = setInterval(function(){
-    S.domainTimerRemaining--;
-    var secs = S.domainTimerRemaining;
+  S.practiceTimerInt = setInterval(function () {
+    // Only while a question is being answered: the explanation, the
+    // results and a hidden tab do not count.
+    if (document.hidden) return;
+    if (!document.querySelector('#qArea .q-card:not(.is-answered) .opts .opt')) return;
+    S.domainTimerElapsed = (S.domainTimerElapsed || 0) + 1;
     var d = document.getElementById('tDig');
-    var f = document.getElementById('tFill');
-    var urgentThreshold = total * 0.1;
-    var warnThreshold = total * 0.25;
-    if (d) {
-      d.textContent = formatTime(secs);
-      d.className = 'timer-digits ' + (secs <= urgentThreshold ? 'urgent' : secs <= warnThreshold ? 'warn' : 'ok');
-    }
-    if (f) {
-      f.style.width = ((secs/total)*100) + '%';
-      f.style.background = secs <= urgentThreshold ? 'var(--wrong)' : secs <= warnThreshold ? 'var(--tip)' : 'var(--accent)';
-    }
-    if (secs <= 0) {
-      clearAllTimers();
-      S.domainTimerActive = false;
-      document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--wrong-light);border:2px solid var(--wrong);border-radius:var(--radius);padding:36px">'
-        + '<div class="empty-icon">\u23f0</div>'
-        + '<div class="empty-title" style="color:var(--wrong)">Time is up</div>'
-        + '<div class="empty-sub">Your ' + totalMins + '-minute session has ended.</div>'
-        + '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
-        + '<button class="act-btn primary" onclick="showSessionSummary()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">View summary</button>'
-        + '<button class="act-btn secondary" onclick="continueWithoutTimer()">Continue without timer</button>'
-        + '</div></div>';
-    }
+    if (d) d.textContent = practiceClock(S.domainTimerElapsed);
   }, 1000);
 }
 
 function startPracticeTimer(seconds, onExpire) {
-  // Legacy compatibility - now starts domain timer instead
+  // Legacy compatibility - now starts the practice clock instead
   if (!S.domainTimerActive) startDomainTimer();
 }
 
@@ -11036,12 +11174,23 @@ function updateStats() {
   pe.textContent = pct !== null ? domainReadLabel(domainRead(S.score)) : '--';
   pe.className = 'stat-num';
   document.getElementById('sStreak').textContent = S.streak;
+  // v12.30: the stats wait for 10 answers (a row of zeros is not progress);
+  // a band word ("Building") is set as a word, not as a numeral.
+  var statsReady = t >= YOU_STATS_MIN;
+  var grid = document.getElementById('youStats');
+  var wait = document.getElementById('youStatsWait');
+  if (grid) grid.hidden = !statsReady;
+  if (wait) wait.hidden = statsReady;
+  if (pct !== null && !domainRead(S.score).enough) pe.className = 'stat-num stat-word';
   var n = S.bookmarks.length;
   var bd = document.getElementById('bkBadge');
   bd.textContent = n;
   bd.style.display = n > 0 ? 'inline' : 'none';
   updateMissedBtn();
+  // The cookie question waits for the first answer (practice or mock).
+  try { maybeShowConsentBanner(); } catch (e) {}
 }
+var YOU_STATS_MIN = 10;
 
 // ── HONEST DOMAIN READ (v12.1) ──
 // Same rule as the mobile app: until a domain has 30 answers the web shows a
@@ -11158,12 +11307,12 @@ function practiceLeftOpen() {
   try { open = shouldResumeCurrent(); } catch (e) {}
   return open || (sessionGoal > 0 && sessionAnswered > 0 && sessionAnswered < sessionGoal);
 }
-// The session clock pauses (not stops) while a set or question is left open,
-// so Continue picks up the time left instead of a fresh countdown.
+// The practice clock pauses (not stops) while a set or question is left
+// open, so Continue carries on counting from where it was.
 function pauseSessionTimer() {
   var running = S.domainTimerActive;
   stopSessionTimer();
-  if (running && S.domainTimerRemaining > 0) S.domainTimerPaused = true;
+  if (running) S.domainTimerPaused = true;
 }
 
 // The hub. Leaving the focused view pauses its clock (or ends it, when
@@ -11182,7 +11331,6 @@ function showPracticeHub() {
   // Reduced motion: the Mindset line never rotates on its own; a new line
   // is picked each time the hub opens.
   if (mindsetReduced()) nextMindsetLine();
-  try { renderExamCountdown(); } catch (e) {}
   renderDomainGrid();
   renderSubtopicFilter();
   updateTimerDisplay();
@@ -11299,6 +11447,7 @@ function exitPracticeFocus() {
   if (deb) {
     var area = document.getElementById('sessionBoundaryArea');
     if (area) area.innerHTML = debriefHtml(deb, true);
+    maybeAskExamDate(deb);
   }
 }
 
@@ -11339,7 +11488,7 @@ function hubRow(icon, title, meta, onclick) {
 // options. Returns its words (HTML-safe) and whether it continues.
 function practicePrimary() {
   var scope = practiceScopeName();
-  var timedWords = S.timerEnabled ? (S.timerSeconds === 0 ? 'exam-pace timer' : S.timerSeconds + '-min timer') : '';
+  var timedWords = S.timerEnabled ? 'timed' : '';
   var open = null;
   try { open = shouldResumeCurrent() ? S.current : null; } catch (e) {}
   var midSet = sessionGoal > 0 && sessionAnswered > 0 && sessionAnswered < sessionGoal;
@@ -11354,9 +11503,9 @@ function practicePrimary() {
   }
   var lenPart = practiceLen === -1 ? 'Open-ended' : practiceLen + ' questions';
   return {
-    resume: false, cap: 'Quick practice', label: 'Start',
+    resume: false, cap: 'Picked for you', label: 'Start',
     title: scope === 'All domains' ? 'A mixed set' : escapeHtml(scope),
-    meta: lenPart + ' &middot; ' + (timedWords || (practiceLen === -1 ? 'stop any time' : 'about ' + Math.round(practiceLen * MINUTES_PER_PRACTICE_Q) + ' min'))
+    meta: lenPart + ' &middot; ' + (practiceLen === -1 ? 'stop any time' : 'about ' + Math.round(practiceLen * MINUTES_PER_PRACTICE_Q) + ' min') + (timedWords ? ' &middot; ' + timedWords : '')
   };
 }
 function runPracticePrimary() {
@@ -13069,6 +13218,7 @@ function nextQ() {
     var dh = document.getElementById('sdTitle');
     if (dh) { try { dh.focus({ preventScroll: true }); } catch (e) {} }
     try { window.scrollTo(0, 0); } catch (e) {}
+    maybeAskExamDate(deb);
     return;
   }
   if (reviewQueueMode) {
@@ -13105,7 +13255,7 @@ function nextQ() {
     if (activeSubtopic || S.diff !== "any") {
       showFilterComplete();
     } else if (S.selectedDomain === "all") {
-      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Bank complete</div><div class="empty-sub">You have answered every question in the bank. Impressive!</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Reset all and restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View summary</button></div></div>';
+      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Bank complete</div><div class="empty-sub">You have answered every question in the bank.</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Reset all and restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View summary</button></div></div>';
     } else {
       showDomainComplete(S.selectedDomain);
     }
@@ -13288,6 +13438,15 @@ function consentChoiceMade() {
     return c === 'granted' || c === 'denied';
   } catch (e) { return false; }
 }
+// v12.30: the bar's height is published as --consent-h, so the sticky
+// Check / Next footers sit above it instead of under it.
+var consentResizeObs = null;
+function consentSyncHeight() {
+  var el = document.getElementById('consent-banner');
+  var h = el && !el.hidden ? Math.ceil(el.getBoundingClientRect().height) : 0;
+  if (h) document.documentElement.style.setProperty('--consent-h', h + 'px');
+  else document.documentElement.style.removeProperty('--consent-h');
+}
 function showConsentBanner(reopened) {
   var el = document.getElementById('consent-banner');
   if (!el) return;
@@ -13296,15 +13455,31 @@ function showConsentBanner(reopened) {
   var closeBtn = document.getElementById('consent-close');
   if (closeBtn) closeBtn.hidden = !reopened;
   el.hidden = false;
-  try { el.focus(); } catch (e) {}
+  consentSyncHeight();
+  if (!consentResizeObs && typeof ResizeObserver !== 'undefined') {
+    consentResizeObs = new ResizeObserver(consentSyncHeight);
+    consentResizeObs.observe(el);
+  }
+  // Focus moves to the bar only when the learner asked for it (Cookie
+  // preferences). Raised after an answer, it never takes focus from the verdict.
+  if (reopened) { try { el.focus(); } catch (e) {} }
 }
 function hideConsentBanner() {
   var el = document.getElementById('consent-banner');
   if (el) el.hidden = true;
+  consentSyncHeight();
   if (consentReturnFocus && consentReturnFocus.focus) {
     try { consentReturnFocus.focus(); } catch (e) {}
   }
   consentReturnFocus = null;
+}
+// The cookie question waits for the first answer (v12.30): never over the
+// welcome or a first look around. Analytics stays off until then, as before.
+function maybeShowConsentBanner() {
+  if (consentChoiceMade()) return;
+  if (!(window.S && S.score && S.score.t > 0)) return;
+  var el = document.getElementById('consent-banner');
+  if (el && el.hidden) showConsentBanner(false);
 }
 function initConsentBanner() {
   // Escape closes the banner only once a choice already exists.
@@ -13313,10 +13488,8 @@ function initConsentBanner() {
     var el = document.getElementById('consent-banner');
     if (el && !el.hidden && consentChoiceMade()) hideConsentBanner();
   });
-  // First-time visitors see the welcome first; closeOnboarding() raises the banner.
-  var onboarded = true;
-  try { onboarded = !!localStorage.getItem('cisa_onboarded_v6'); } catch (e) {}
-  if (onboarded && !consentChoiceMade()) showConsentBanner(false);
+  // A returning learner who has answered before and never chose sees it now.
+  maybeShowConsentBanner();
 }
 function setConsent(granted) {
   try { localStorage.setItem('aurivan_consent', granted ? 'granted' : 'denied'); } catch (e) {}
@@ -13393,52 +13566,6 @@ function getDaysToExam() {
     return Math.max(0, Math.ceil(ms / 86400000));
   } catch (e) { return null; }
 }
-function setExamDate() {
-  var input = document.getElementById('exam-date-input');
-  if (!input || !input.value) return;
-  try { localStorage.setItem('aurivan_exam_date', input.value); } catch (e) {}
-  renderExamCountdown();
-  updateHeaderCountdown();
-}
-function clearExamDate() {
-  try { localStorage.removeItem('aurivan_exam_date'); } catch (e) {}
-  renderExamCountdown();
-  updateHeaderCountdown();
-}
-function renderExamCountdown() {
-  var area = document.getElementById('examCountdownArea');
-  if (!area) return;
-  var days = getDaysToExam();
-  if (days === null) {
-    // Set-date prompt (first visit or never set)
-    var todayIso = new Date().toISOString().slice(0, 10);
-    area.innerHTML =
-      '<div class="exam-prompt">'
-        + '<span class="ep-icon" aria-hidden="true">' + ico('mock', 22) + '</span>'
-        + '<div class="ep-text">'
-          + '<div class="ep-title">When is your exam?</div>'
-          + '<div class="ep-body">Set your exam date to see a countdown while you practice. Optional.</div>'
-        + '</div>'
-        + '<input type="date" id="exam-date-input" aria-label="Exam date" class="ep-input" min="' + todayIso + '">'
-        + '<button class="ep-set" onclick="setExamDate()">Set</button>'
-        + '<button class="ep-skip" onclick="dismissExamPrompt()" aria-label="Dismiss">' + ico('x', 18) + '</button>'
-      + '</div>';
-    return;
-  }
-  // Showing active countdown — compact pill, dismissible via "Change date"
-  var urgent = days <= 14;
-  area.innerHTML =
-    '<div class="exam-countdown' + (urgent ? ' urgent' : '') + '">'
-      + '<span class="ec-num">' + days + '</span>'
-      + '<span class="ec-label">' + (days === 1 ? 'day' : 'days') + ' to exam</span>'
-      + '<button class="ec-edit" onclick="clearExamDate()" title="Change exam date">Change</button>'
-    + '</div>';
-}
-function dismissExamPrompt() {
-  // Soft-dismiss for this session only — re-prompts on next session if still unset
-  var area = document.getElementById('examCountdownArea');
-  if (area) area.innerHTML = '';
-}
 // The desktop rail's footer shows the days to the exam once a date is set
 // (hidden when there is no date, or the date has passed).
 function updateHeaderCountdown() {
@@ -13484,14 +13611,17 @@ function resetSessionTally() {
 }
 
 function startSession(n, domain, label) {
+  if (label !== FIRST_FIVE_LABEL) firstFiveRun = false;
   sessionGoal = (n === null || n === 0) ? -1 : n;
   sessionAnswered = 0;
   sessionCorrect = 0;
   resetSessionTally();
   sessionLabel = label || null;
   pendingDebrief = null;
-  // A new set gets a fresh clock.
+  // A new set gets a fresh clock (it counts up from zero).
+  stopSessionTimer();
   S.domainTimerPaused = false;
+  S.domainTimerElapsed = 0;
   sessionDomain = domain || 'all';
   if (sessionDomain !== 'all') {
     S.selectedDomain = sessionDomain;
@@ -13533,8 +13663,11 @@ function showSessionDebrief() {
   var goal = sessionGoal > 0 ? sessionGoal : sessionAnswered;
   pendingDebrief = {
     goal: goal, correct: sessionCorrect, domain: sessionDomain, label: sessionLabel,
-    answered: sessionAnswered, byDomain: sessionByDomain, missed: sessionMissedIds.slice(), ms: sessionMs
+    answered: sessionAnswered, byDomain: sessionByDomain, missed: sessionMissedIds.slice(), ms: sessionMs,
+    // The welcome's five: the exam date is asked once its results show.
+    firstFive: firstFiveRun && sessionLabel === FIRST_FIVE_LABEL
   };
+  firstFiveRun = false;
   // Persist
   try {
     localStorage.setItem('aurivan_last_session', JSON.stringify({
@@ -13728,7 +13861,7 @@ function renderQuestion(q) {
   try { showConfTip = !localStorage.getItem('aurivan_conf_tip_seen'); } catch (e) {}
   var confTipHtml = showConfTip
     ? '<div id="conf-tip" class="conf-tip">'
-        + '<span>How sure you are decides how soon this question comes back for review.</span>'
+        + '<span>Optional: how sure you are decides how soon this question comes back for review.</span>'
         + '<button onclick="dismissConfTip()" aria-label="Dismiss">' + ico('x', 18) + '</button>'
       + '</div>'
     : '';
@@ -13737,26 +13870,30 @@ function renderQuestion(q) {
     '<div class="q-card">'
     + '<p class="q-line" id="qMeta" tabindex="-1"><span class="dom-dot" style="background:' + info.color + '"></span>' + metaParts.join(' &middot; ') + '</p>'
     + '<div class="q-body">'
-    + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + escapeHtml(q.id) + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + escapeHtml(q.id) + '" data-qid="' + escapeHtml(q.id) + '" onclick="expandScenario(this.dataset.qid)">Read scenario ▾</button></div>' : '')
-    + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(q.scenario_context) + ' ' : '') + escapeHtml(q.question) + '</p>'
+    + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + escapeHtml(q.id) + '">' + escapeHtml(smartQuotes(q.scenario_context)) + '</p><button class="sc-expand-btn" id="sc-btn-' + escapeHtml(q.id) + '" data-qid="' + escapeHtml(q.id) + '" onclick="expandScenario(this.dataset.qid)">Read scenario ▾</button></div>' : '')
+    + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(smartQuotes(q.scenario_context)) + ' ' : '') + escapeHtml(smartQuotes(q.question)) + '</p>'
     + '<div class="opts">' + optsHtml + '</div>'
-    // "How sure?" (redesign step 2): one segmented control, then the action.
-    // Shown once an option is picked; removed (not disabled) after checking.
+    // "How sure?" (v12.30: optional). Shown once an option is picked; an
+    // unrated answer is scheduled as an educated guess. Removed after checking.
     + '<div class="conf-stage" id="confStage" hidden>'
       + confTipHtml
-      + '<p class="conf-q" id="confQ">How sure?</p>'
+      + '<p class="conf-q" id="confQ">How sure?<span class="conf-q-opt">Optional</span></p>'
       + '<div class="conf-seg" role="group" aria-labelledby="confQ">'
         + '<button type="button" class="conf-btn" data-conf="sure" aria-pressed="false" onclick="setConfidence(\'sure\')">Sure</button>'
         + '<button type="button" class="conf-btn" data-conf="educated" aria-pressed="false" onclick="setConfidence(\'educated\')">Educated guess</button>'
         + '<button type="button" class="conf-btn" data-conf="guessing" aria-pressed="false" onclick="setConfidence(\'guessing\')">Guessing</button>'
       + '</div>'
-      + '<button type="button" class="submit-btn" id="submitBtn" onclick="submitAnswer()" disabled>Check answer</button>'
     + '</div>'
+    + '</div>'
+    // Check answer: ready as soon as an option is picked, held in a footer
+    // at the bottom of the screen (above the safe area on phones).
+    + '<div class="q-check-foot" id="qCheckFoot">'
+      + '<button type="button" class="submit-btn" id="submitBtn" onclick="submitAnswer()" disabled>Check answer</button>'
     + '</div>'
     + '<div class="result-panel" id="rPanel"></div>'
     + '</div>'
     + '<p class="q-keys">'
-    + 'Keys: <strong>A&#8211;D</strong> pick &middot; <strong>1</strong>&#8211;<strong>3</strong> how sure &middot; <strong>Enter</strong> check, then next'
+    + 'Keys: <strong>A&#8211;D</strong> pick &middot; <strong>Enter</strong> check, then next'
     + '</p>';
   // Reset transient state for fresh question
   pendingAnswer = null;
@@ -13789,9 +13926,9 @@ function pickAnswer(chosen) {
   // Reveal confidence stage
   var stage = document.getElementById('confStage');
   if (stage) stage.hidden = false;
-  // How sure? may already be set (key 1–3 first): then Check is ready.
+  // Check answer is ready at once ("How sure?" is optional).
   var sb = document.getElementById('submitBtn');
-  if (sb) sb.disabled = !currentConfidence;
+  if (sb) sb.disabled = false;
   // Smooth-scroll the confidence stage into view
   setTimeout(function(){
     var el = document.getElementById('confStage');
@@ -13809,7 +13946,7 @@ function pickAnswer(chosen) {
 // setConfidence(). Backwards-compat shim selectAnswer() still works for any
 // callers (e.g. legacy review paths) that grade in one step.
 function submitAnswer() {
-  if (!S.current || !pendingAnswer || !currentConfidence) return;
+  if (!S.current || !pendingAnswer) return;
   selectAnswer(pendingAnswer);
 }
 
@@ -13866,13 +14003,14 @@ function selectAnswer(chosen, _ignoredCorrect) {
   // Adaptive review queue — schedule (or graduate) this question based on
   // the answer just graded. Practice path only; consumes the existing `ok`.
   if (S.current) {
-    try { updateReviewSchedule(S.current.id, ok, currentConfidence); } catch(e) {}
+    // "How sure?" is optional: an unrated answer is scheduled as an educated guess.
+    try { updateReviewSchedule(S.current.id, ok, currentConfidence || 'educated'); } catch(e) {}
   }
 
   // Log confidence
   S.confidenceLog.push({
     qId: S.current.id || "unknown",
-    confidence: currentConfidence,
+    confidence: currentConfidence || null,
     correct: ok
   });
 
@@ -13880,7 +14018,7 @@ function selectAnswer(chosen, _ignoredCorrect) {
   S.sessionHistory.push({
     domain: d,
     correct: ok,
-    confidence: currentConfidence,
+    confidence: currentConfidence || null,
     question: S.current.question.substring(0, 80)
   });
 
@@ -13888,7 +14026,7 @@ function selectAnswer(chosen, _ignoredCorrect) {
   try {
     recordAnswerParity(S.current.id, ok, {
       picked: displayToOriginal(chosen, shuffle),
-      confidence: currentConfidence,
+      confidence: currentConfidence || undefined,
       ms: questionStartTime ? Date.now() - questionStartTime : undefined
     });
   } catch(e) {}
@@ -13936,7 +14074,7 @@ function runnerUpLetter(q) {
 function verdictCoachLine(q, ok, timeout, chosenOrig, exam) {
   if (exam) return '';
   if (timeout) return 'Time ran out on this one.';
-  if (ok) return 'Clean read.';
+  if (ok) return 'That’s the answer the exam wants.';
   if (chosenOrig && chosenOrig === runnerUpLetter(q)) return 'You picked the runner-up. That’s the trap.';
   if (detectMindsetIssue(q, chosenOrig)) return 'That’s the implementer’s move. Auditors assess and report.';
   return 'Here’s the idea to take with you.';
@@ -13980,6 +14118,8 @@ function showResult(chosen, correct, timeout, info) {
   if (card) card.classList.add('is-answered');
   var stage = document.getElementById('confStage');
   if (stage) stage.remove();
+  var checkFoot = document.getElementById('qCheckFoot');
+  if (checkFoot) checkFoot.remove();
 
   function optText(origL) { return escapeHtml((q.options || {})[origL] || ''); }
   function wrongNote(origL) {
@@ -14896,8 +15036,8 @@ function showMockQuestion() {
     + '<div class="q-card">'
     + '<p class="q-line" id="mkMeta" tabindex="-1"><span class="dom-dot" style="background:' + info.color + '"></span>' + escapeHtml(info.short) + ' &middot; Question ' + cur + ' of ' + tot + '</p>'
     + '<div class="q-body">'
-    + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + escapeHtml(q.id) + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + escapeHtml(q.id) + '" data-qid="' + escapeHtml(q.id) + '" onclick="expandScenario(this.dataset.qid)">Read scenario ▾</button></div>' : '')
-    + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(q.scenario_context) + ' ' : '') + escapeHtml(q.question) + '</p>'
+    + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + escapeHtml(q.id) + '">' + escapeHtml(smartQuotes(q.scenario_context)) + '</p><button class="sc-expand-btn" id="sc-btn-' + escapeHtml(q.id) + '" data-qid="' + escapeHtml(q.id) + '" onclick="expandScenario(this.dataset.qid)">Read scenario ▾</button></div>' : '')
+    + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(smartQuotes(q.scenario_context)) + ' ' : '') + escapeHtml(smartQuotes(q.question)) + '</p>'
     + '<div class="opts" id="mOpts" role="group" aria-labelledby="mkMeta">' + optsHtml + '</div>'
     + '<div class="mk-acts">'
     + '<button type="button" class="rs-btn primary mk-next" id="mkNext" disabled onclick="nextMockQuestion()">' + (last ? 'Finish mock' : 'Next question') + ico('arrow-right', 18) + '</button>'
@@ -15093,110 +15233,212 @@ function reviewMockMistakes() {
 
 
 
-// â”€â”€ ONBOARDING â”€â”€
-var onboardStep = 0;
-var ONBOARD_TOTAL = 2;
+// ── ONBOARDING (v12.30: the mobile welcome, ported) ──
+// One screen: the forest header (lockup, "Think like an IS auditor."), four
+// check rows and one primary action, "Start 5 questions", which opens a
+// five-question set straight away. The exam date is asked AFTER those five
+// (maybeAskExamDate). The saved key keeps its meaning: cisa_onboarded_v6 is
+// set once the welcome is dealt with, so a returning learner never sees it.
+var FIRST_FIVE_LABEL = 'Your first five';
+var firstFiveRun = false;   // the welcome's five-question set is the one running
+
+var OB_CHECKS = [
+  'Questions that explain every option, the trap included.',
+  'Plain-language study notes for every exam topic.',
+  'Progress shown as a range, never a promise.',
+  'No account. Everything stays in this browser.'
+];
 
 function showOnboarding() {
-  onboardStep = 0;
-  renderOnboardStep();
+  var modal = document.getElementById('flagModal');
+  if (!modal) return;
+  // The header's lockup, in its on-forest colours (a fresh mask id, so the
+  // two copies never share one).
+  var lock = document.querySelector('header .brand-lockup');
+  var lockHtml = lock ? lock.outerHTML.replace(/kslr/g, 'kslob').replace(/role="img" aria-label="KaiSip"/, 'aria-hidden="true" focusable="false"') : '';
+  var checks = OB_CHECKS.map(function (t) {
+    return '<li><span class="ob-check" aria-hidden="true">' + ico('check', 16) + '</span><span>' + escapeHtml(t) + '</span></li>';
+  }).join('');
+  modal.innerHTML = '<div class="onboard-overlay ob-overlay">'
+    + '<div class="onboard-modal ob-welcome">'
+    + '<div class="ob-forest">'
+      + gtFrondSvg()
+      + '<div class="ob-lockup">' + lockHtml + '</div>'
+      + '<h2 class="onboard-title ob-title" id="onboardTitle"><span class="sr-only">Welcome to KaiSip. </span>Think like an IS auditor.</h2>'
+      + '<p class="ob-sub">CISA exam prep, taught the way the exam thinks.</p>'
+    + '</div>'
+    + '<div class="ob-body">'
+      + '<ul class="ob-checks">' + checks + '</ul>'
+      + '<p class="ob-fine">Not affiliated with or endorsed by ISACA&reg;. CISA&reg; is a registered trademark of ISACA.</p>'
+    + '</div>'
+    + '<div class="ob-foot">'
+      + '<button type="button" class="ob-go" id="obGo" onclick="onboardStartFive()">Start 5 questions' + ico('arrow-right', 18) + '</button>'
+      + '<button type="button" class="ob-ghost" onclick="closeOnboarding()">Look around first</button>'
+    + '</div>'
+    + '</div></div>';
 }
 
-function renderOnboardStep() {
-  var modal = document.getElementById("flagModal");
-  var dots = "";
-  for (var i = 0; i < ONBOARD_TOTAL; i++) {
-    dots += '<div class="onboard-dot' + (i === onboardStep ? ' active' : '') + '"></div>';
-  }
-  var dotBar = '<div class="onboard-step-indicator" aria-hidden="true">' + dots + '</div>';
-  var html = "";
-
-  if (onboardStep === 0) {
-    html = '<div class="onboard-overlay">'
-      + '<div class="onboard-modal">'
-      + '<div class="onboard-content">'
-      + dotBar
-      + '<div class="onboard-title" id="onboardTitle">Welcome to KaiSip</div>'
-      + '<div class="onboard-desc">Free practice for the CISA exam. Think like an IS auditor.</div>'
-      + '<div class="onboard-feature"><span class="onboard-feature-icon"></span><span class="onboard-feature-text"><strong>Practice questions across all 5 domains</strong>, weighted by the exam blueprint</span></div>'
-      + '<div class="onboard-feature"><span class="onboard-feature-icon"></span><span class="onboard-feature-text"><strong>Spaced review and Weak spots</strong> so you study what matters most</span></div>'
-      + '<div class="onboard-feature"><span class="onboard-feature-icon"></span><span class="onboard-feature-text"><strong>Mock exams</strong> with a timer, plus plain-language study notes in Topics</span></div>'
-      + '<div class="onboard-feature"><span class="onboard-feature-icon"></span><span class="onboard-feature-text"><strong>No account.</strong> Your progress stays in this browser</span></div>'
-      + '<p class="onboard-fine">KaiSip is independent and not affiliated with ISACA.</p>'
-      + '</div>'
-      + '<div class="onboard-footer">'
-      + '<button class="onboard-skip" onclick="closeOnboarding()">Skip</button>'
-      + '<button class="onboard-next" onclick="nextOnboardStep()">Next →</button>'
-      + '</div>'
-      + '</div></div>';
-
-  } else if (onboardStep === 1) {
-    html = '<div class="onboard-overlay">'
-      + '<div class="onboard-modal">'
-      + '<div class="onboard-content">'
-      + dotBar
-      + '<div class="onboard-title" id="onboardTitle">When’s your exam?</div>'
-      + '<div class="onboard-desc">Add your exam date to see a countdown while you practice. This is optional.</div>'
-      + '<div style="margin:20px 0 8px;">'
-      + '<label class="onboard-label" for="onboardExamDate">Exam date</label>'
-      + '<input type="date" id="onboardExamDate"'
-      + ' style="width:100%;box-sizing:border-box;padding:12px 16px;border-radius:12px;border:2px solid var(--control);background:var(--bg);color:var(--text);font-size:16px;font-family:inherit;transition:border-color .2s;">'
-      + '</div>'
-      + '<div style="background:var(--surface2);border-radius:14px;padding:14px 16px;margin-top:4px;">'
-      + '<p style="margin:0 0 6px;font-size:13px;font-weight:600;color:var(--text);">Where to start</p>'
-      + '<p style="margin:0;font-size:16px;color:var(--text2);">Begin with <strong>Domain 1 Practice</strong>. It covers IS audit fundamentals, the foundation for every other domain.</p>'
-      + '</div>'
-      + '</div>'
-      + '<div class="onboard-footer">'
-      + '<button class="onboard-skip" onclick="closeOnboarding()">Skip</button>'
-      + '<button class="onboard-next" onclick="onboardFinish()">Start practicing →</button>'
-      + '</div>'
-      + '</div></div>';
-  }
-
-  modal.innerHTML = html;
-}
-
-function onboardFinish() {
-  var dateInput = document.getElementById('onboardExamDate');
-  if (dateInput && dateInput.value) {
-    try { localStorage.setItem('aurivan_exam_date', dateInput.value); } catch (e) {}
-  }
+// "Start 5 questions": the welcome closes and a five-question set opens at once.
+function onboardStartFive() {
+  var holder = document.getElementById('flagModal');
+  if (holder) holder.setAttribute('data-return', 'none');
   closeOnboarding();
-  switchTab('practice');
-}
-
-function nextOnboardStep() {
-  onboardStep++;
-  if (onboardStep >= ONBOARD_TOTAL) {
-    closeOnboarding();
-  } else {
-    renderOnboardStep();
-  }
+  firstFiveRun = true;
+  if (S.activeTab !== 'practice') switchTab('practice', { noScroll: true });
+  startSession(5, S.selectedDomain || '1', FIRST_FIVE_LABEL);
 }
 
 function closeOnboarding() {
   document.getElementById("flagModal").innerHTML = "";
   try { localStorage.setItem("cisa_onboarded_v6", "1"); } catch(e) {}
-  // The cookie question waits until the welcome has been dealt with.
-  if (typeof consentChoiceMade === 'function' && !consentChoiceMade()) showConsentBanner(false);
 }
 
 function checkOnboarding() {
   try {
     if (!localStorage.getItem("cisa_onboarded_v6")) {
-      setTimeout(function(){ showOnboarding(); }, 700);
+      setTimeout(function(){ showOnboarding(); }, 300);
     }
   } catch(e) {
     // localStorage not available - skip onboarding
   }
 }
 
+// ── EXAM DATE (v12.30): friendly choices in a sheet ──
+// "In 1 / 2 / 3 months" or "Not sure yet" (the one way to clear a date), with
+// the exact date one tap further. Asked once after the first five; opened
+// from Today's "Set exam date" and You → Exam date. Saved as YYYY-MM-DD in
+// aurivan_exam_date, as before.
+var DATE_ASKED_KEY = 'aurivan_exam_date_asked';
+function isoLocalDate(dt) {
+  var m = dt.getMonth() + 1, d = dt.getDate();
+  return dt.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (d < 10 ? '0' : '') + d;
+}
+// The same day number N months on, or that month's last day when it is shorter.
+function monthsFromToday(n) {
+  var t = new Date(); t.setHours(0, 0, 0, 0);
+  var day = t.getDate();
+  var out = new Date(t.getFullYear(), t.getMonth() + n, 1);
+  var last = new Date(out.getFullYear(), out.getMonth() + 1, 0).getDate();
+  out.setDate(Math.min(day, last));
+  return out;
+}
+function examDateWords(iso) {
+  if (!iso) return '';
+  var dt = new Date(/T/.test(iso) ? iso : iso + 'T00:00:00');
+  if (isNaN(dt)) return '';
+  var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return TODAY_WEEKDAYS[dt.getDay()].slice(0, 3) + ' ' + dt.getDate() + ' ' + MON[dt.getMonth()] + ' ' + dt.getFullYear();
+}
+function savedExamDate() {
+  try { return localStorage.getItem('aurivan_exam_date') || ''; } catch (e) { return ''; }
+}
+function openExamDateSheet(firstRun) {
+  var modal = document.getElementById('flagModal');
+  if (!modal) return;
+  var cur = savedExamDate();
+  var chips = [[1, 'In 1 month'], [2, 'In 2 months'], [3, 'In 3 months'], [0, 'Not sure yet']].map(function (c) {
+    return '<button type="button" class="ph-chip" onclick="setExamDateMonths(' + c[0] + ')">' + c[1] + '</button>';
+  }).join('');
+  var sub = firstRun
+    ? 'Five done. When is your exam? A rough date is fine: it sets your countdown on Today.'
+    : 'A rough date is fine. It sets your countdown on Today.';
+  modal.innerHTML = '<div class="mock-confirm-overlay ks-sheet-overlay" onclick="closeFlagModal(event)">'
+    + '<div class="mock-confirm-modal ks-sheet" role="dialog" aria-modal="true" aria-labelledby="edH">'
+    + '<h2 class="mock-confirm-head" id="edH">' + (firstRun ? 'One last thing' : 'When is your exam?') + '</h2>'
+    + '<div class="mock-confirm-body">'
+    + '<p class="ks-sheet-sub" id="edSub">' + escapeHtml(sub) + '</p>'
+    + (cur ? '<p class="ks-sheet-sub">Now: ' + escapeHtml(examDateWords(cur)) + '</p>' : '')
+    + '<div class="ph-chips ks-date-chips" role="group" aria-label="Exam date">' + chips + '</div>'
+    + '<button type="button" class="ks-link" id="edExactBtn" aria-expanded="false" aria-controls="edExact" onclick="toggleExactExamDate()">Pick the exact date</button>'
+    + '<div class="ks-exact" id="edExact" hidden>'
+      + '<label class="ph-field" for="edInput">Exam date</label>'
+      + '<input type="date" class="ks-date-input" id="edInput" min="' + isoLocalDate(new Date()) + '" value="' + escapeHtml(cur) + '">'
+      + '<button type="button" class="mock-confirm-btn gostart" onclick="saveExactExamDate()">Save</button>'
+    + '</div>'
+    + '<div class="mock-confirm-btns"><button type="button" class="mock-confirm-btn cancel" onclick="closeFlagModal()">' + (firstRun ? 'Later' : 'Cancel') + '</button></div>'
+    + '</div></div></div>';
+}
+function toggleExactExamDate() {
+  var b = document.getElementById('edExactBtn'), box = document.getElementById('edExact');
+  if (!b || !box) return;
+  var open = box.hidden;
+  box.hidden = !open;
+  b.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) { var inp = document.getElementById('edInput'); if (inp) { try { inp.focus(); } catch (e) {} } }
+}
+function storeExamDate(iso) {
+  try {
+    if (iso) localStorage.setItem('aurivan_exam_date', iso);
+    else localStorage.removeItem('aurivan_exam_date');
+  } catch (e) {}
+  closeFlagModal();
+  try { updateHeaderCountdown(); } catch (e) {}
+  try { renderYouExamDate(); } catch (e) {}
+  try { if (S.activeTab === 'home') renderHome(); } catch (e) {}
+  showToast(iso ? 'Exam date saved: ' + examDateWords(iso) : 'No date for now. Add it any time from You.', 'info', 2600);
+}
+function setExamDateMonths(n) {
+  storeExamDate(n > 0 ? isoLocalDate(monthsFromToday(n)) : '');
+}
+function saveExactExamDate() {
+  var inp = document.getElementById('edInput');
+  if (!inp || !inp.value) { if (inp) { try { inp.focus(); } catch (e) {} } return; }
+  storeExamDate(inp.value);
+}
+// After the first five: once, and only when no date is set.
+function maybeAskExamDate(deb) {
+  if (!deb || !deb.firstFive) return;
+  var asked = false;
+  try { asked = !!localStorage.getItem(DATE_ASKED_KEY); } catch (e) {}
+  if (asked || savedExamDate()) return;
+  try { localStorage.setItem(DATE_ASKED_KEY, '1'); } catch (e) {}
+  setTimeout(function () { openExamDateSheet(true); }, 450);
+}
+// You → Settings → Exam date: the current value under the row's title.
+function renderYouExamDate() {
+  var m = document.getElementById('youExamDateM');
+  if (!m) return;
+  var cur = savedExamDate();
+  var days = examDaysLeft();
+  m.textContent = !cur ? 'Not set' : (days !== null && days < 0 ? examDateWords(cur) + ' · Date passed' : examDateWords(cur));
+}
+
+// A small confirm sheet for the resets and the import (v12.30: no browser
+// confirm() boxes). onConfirm runs only on the explicit button.
+var ksConfirmAction = null;
+function ksConfirm(o) {
+  var modal = document.getElementById('flagModal');
+  if (!modal) return;
+  ksConfirmAction = o.onConfirm || null;
+  modal.innerHTML = '<div class="mock-confirm-overlay ks-sheet-overlay" onclick="closeFlagModal(event)">'
+    + '<div class="mock-confirm-modal ks-sheet" role="dialog" aria-modal="true" aria-labelledby="ksConfH">'
+    + '<h2 class="mock-confirm-head" id="ksConfH">' + escapeHtml(o.title) + '</h2>'
+    + '<div class="mock-confirm-body">'
+    + '<p class="ks-sheet-sub">' + escapeHtml(o.body) + '</p>'
+    + '<div class="mock-confirm-btns">'
+    + '<button type="button" class="mock-confirm-btn cancel" onclick="closeFlagModal()">Cancel</button>'
+    + '<button type="button" class="mock-confirm-btn ' + (o.danger ? 'danger' : 'gostart') + '" id="ksConfGo" onclick="runKsConfirm()">' + escapeHtml(o.confirmLabel) + '</button>'
+    + '</div></div></div></div>';
+  // The safe choice takes focus, so Enter never confirms by accident.
+  var c = modal.querySelector('.mock-confirm-btn.cancel');
+  if (c) { try { c.focus({ preventScroll: true }); } catch (e) {} }
+}
+function runKsConfirm() {
+  var fn = ksConfirmAction;
+  ksConfirmAction = null;
+  closeFlagModal();
+  if (typeof fn === 'function') fn();
+}
+
 // â”€â”€ RESET PROGRESS â”€â”€
 function confirmResetProgress() {
-  if (confirm('Reset all progress in this browser? This cannot be undone.')) {
-    doResetProgress();
-  }
+  ksConfirm({
+    title: 'Reset all progress?',
+    body: 'Every answer, score and note in this browser is cleared. This cannot be undone.',
+    confirmLabel: 'Reset everything',
+    danger: true,
+    onConfirm: doResetProgress
+  });
 }
 
 function doResetProgress() {
@@ -15256,7 +15498,7 @@ function doResetProgress() {
   updateStats();
   closeFlagModal();
   closeSummary();
-  document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">&#128256;</div><div class="empty-title">Progress Reset</div><div class="empty-sub">All scores and history cleared. Fresh start!</div></div>';
+  document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-title">Progress reset</div><div class="empty-sub">Your scores and history are cleared.</div></div>';
   // A note field still open (or a save waiting to run) must not bring a
   // deleted note back; the rail redraws for the page as it is now.
   try { railForgetNotes(); railSync(); plantRefresh(); } catch (e) {}
@@ -17202,7 +17444,7 @@ function renderPacingFeedbackHtml() {
   var badgeClass = overSec <= 0 ? 'ok' : overSec <= 30 ? 'warn' : 'bad';
   var badgeLabel = overSec <= 0 ? 'On pace' : '+' + overSec + 's over';
   var msg = overSec <= 0
-    ? "You're within exam pace of 1.6 min/Q. Great discipline!"
+    ? "You're within the exam pace of 1.6 min a question."
     : 'Avg ' + avgMin + ' min/Q vs 1.6 min target. On a 150-Q exam you\'d finish ~' + Math.round(Math.abs(overSec) * sessionPacingData.length / 60) + ' min over time.';
   return '<div class="pacing-feedback"><div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:10px">Pacing Feedback (' + sessionPacingData.length + ' questions)</div><div class="pacing-row"><div class="pacing-info"><strong>' + avgMin + ' min / question average</strong><span>CISA target: 1.6 min/Q (240 min ÷ 150 Q)</span></div><div class="pacing-badge ' + badgeClass + '">' + badgeLabel + '</div></div><div style="font-size:13px;color:var(--text2);line-height:1.6;font-weight:500;margin-top:8px">' + msg + '</div></div>';
 }
@@ -17233,7 +17475,7 @@ function getTrainWeakSpotsPool() {
 
 function startWeakSpotsDrill() {
   var pool = getTrainWeakSpotsPool();
-  if (!pool.length) { showToast('Answer some questions first to identify weak spots!', 'info', 2200); return; }
+  if (!pool.length) { showToast('Answer a few questions first. Weak spots show up after that.', 'info', 2600); return; }
   clearAllTimers();
   S.selectedDomain = 'all';
   S.queues['all'] = pool;
@@ -17318,8 +17560,8 @@ function renderBookmarks() {
     // Decision 7 (f) — Bookmarks empty
     area.innerHTML = emptyState({
       kind: 'bookmark',
-      heading: 'No bookmarked questions.',
-      body: "While answering, tap the bookmark icon to save questions you want to revisit. They'll appear here.",
+      heading: 'Nothing saved yet.',
+      body: 'Tap the bookmark on any question to keep it here.',
       actions: [{ label: 'Go to practice', style: 'ghost', onclick: "switchTab('practice')" }]
     });
     return;
@@ -17367,7 +17609,7 @@ function renderBookmarks() {
 function startBookmarkDrill(tagFilter) {
   var bks = S.bookmarks || [];
   var pool = tagFilter === 'all' ? bks : bks.filter(function(b){ return b.tag === tagFilter; });
-  if (!pool.length) { showToast('No bookmarks to drill!', 'info', 1800); return; }
+  if (!pool.length) { showToast('Nothing saved to practice yet.', 'info', 2200); return; }
   var fullQs = [];
   pool.forEach(function(bk) {
     var d = String(bk.domain || '');
@@ -17549,10 +17791,7 @@ initConsentBanner(); // cookie consent — gates Google Analytics
 // instead of the one used last.
 var bootNav = navFromHash(location.hash);
 if (bootNav) S.activeTab = bootNav.tab;
-// Decision 8: the exam-date prompt sits on the Practice hub.
-try {
-  if (S.activeTab === 'practice' || !S.activeTab) renderExamCountdown();
-} catch (e) {}
+try { renderYouExamDate(); } catch (e) {}
 (function syncHeaderVersion(){
   var pill = document.getElementById('versionPill');
   if (pill) pill.textContent = APP_VERSION;
@@ -17597,7 +17836,9 @@ checkOnboarding();
     var freshUser = !S.qn || S.qn === 0;
     var qArea = document.getElementById('qArea');
     var qAreaEmpty = qArea && !qArea.innerHTML.trim();
-    if (onPractice && notResuming && freshUser && qAreaEmpty) {
+    // A first visit starts from the welcome's "Start 5 questions" instead.
+    var welcomed = !!localStorage.getItem('cisa_onboarded_v6');
+    if (onPractice && notResuming && freshUser && qAreaEmpty && welcomed) {
       setTimeout(function() { try { nextQ(); } catch (e) { console.error('FTUE auto-fire failed:', e); } }, 200);
     }
   } catch (e) {}
@@ -17611,14 +17852,15 @@ var currentConfidence = null;
 var pendingAnswer = null; // Phase 2b — selected option awaiting confidence + submit
 
 function setConfidence(level) {
-  currentConfidence = level;
+  // Optional (v12.30): a second tap on the same choice clears it.
+  currentConfidence = currentConfidence === level ? null : level;
+  level = currentConfidence;
   document.querySelectorAll(".conf-btn").forEach(function(b) {
     var on = b.dataset.conf === level;
     b.classList.toggle("picked", on);
     b.setAttribute("aria-pressed", on ? "true" : "false");
   });
-  // Phase 2b (Decision 5): Check answer is enabled once both an answer and
-  // How sure? are picked.
+  // Check answer needs only an answer (How sure? is optional).
   var submitBtn = document.getElementById("submitBtn");
   if (submitBtn) submitBtn.disabled = !pendingAnswer;
 }
@@ -17671,7 +17913,6 @@ function showFilterComplete() {
 
   document.getElementById('qArea').innerHTML =
     '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct-light);border-radius:var(--radius);padding:36px 28px">'
-    + '<div class="empty-icon">\u2705</div>'
     + '<div class="empty-title" style="color:var(--correct)">Filter complete</div>'
     + '<div class="empty-sub" style="margin-bottom:4px"><strong>' + filterLabel + '</strong></div>'
     + '<div class="empty-sub">' + domainLabel + ' \u2014 every question answered</div>'
@@ -17779,7 +18020,7 @@ var missedReviewDomain = null;
 
 function reviewMissed() {
   if (!S.missedQuestions || S.missedQuestions.length === 0) {
-    document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">\u2705</div><div class="empty-title">No incorrect answers!</div><div class="empty-sub">Great job! You have no incorrect answers to review.</div></div>';
+    document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-title">Nothing to review</div><div class="empty-sub">You have no missed questions right now.</div></div>';
     return;
   }
   // Start review of all missed for current domain
@@ -17880,11 +18121,10 @@ function showNextReview() {
     var stillDue = getDueReview().length;
     stopSessionTimer();
     document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct);border-radius:var(--radius);padding:36px">'
-      + '<div class="empty-icon">🎉</div>'
       + '<div class="empty-title" style="color:var(--correct)">Review session complete</div>'
       + '<div class="empty-sub">' + (stillDue > 0
           ? stillDue + ' question' + (stillDue === 1 ? '' : 's') + ' still due — missed answers come back sooner.'
-          : 'Nothing else is due right now. Great work!') + '</div>'
+          : 'Nothing else is due right now.') + '</div>'
       + '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
       + (stillDue > 0 ? '<button class="act-btn primary" onclick="startReviewQueue()">Continue review (' + stillDue + ')</button>' : '')
       + '<button class="act-btn secondary" onclick="backToPractice()">Back to Practice</button>'
@@ -17915,7 +18155,7 @@ function backToPractice() {
 // â”€â”€ SESSION SUMMARY â”€â”€
 function showSessionSummary() {
   if (S.score.t === 0) {
-    alert("No questions answered yet! Start practicing first.");
+    showToast('Your summary appears after your first answers.', 'info', 2600);
     return;
   }
 
@@ -17969,8 +18209,8 @@ function showSessionSummary() {
   if (confGuess > 0 && confGuessCorrect > 0) {
     var luckyPct = Math.round((confGuessCorrect / confGuess) * 100);
     confInsight = '<div class="summary-focus"><span class="summary-focus-icon"></span>'
-      + '<span class="summary-focus-text">You got <strong>' + luckyPct + '%</strong> correct on questions you were guessing on. '
-      + (luckyPct > 50 ? 'You might know more than you think!' : 'These are great areas to review deeper.')
+      + '<span class="summary-focus-text">You were right on <strong>' + luckyPct + '%</strong> of your guesses. '
+      + 'Mark these Sure only when you can say why the others are wrong.'
       + '</span></div>';
   }
 
@@ -18210,6 +18450,21 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'A calmer first visit and a quicker answer',
+    items: [
+      { cat: 'new', text: 'A new welcome: one tap on Start 5 questions takes you straight into your first questions.' },
+      { cat: 'new', text: 'Set your exam date with quick choices like In 2 months, from Today or from You.' },
+      { cat: 'improved', text: 'Check answer is ready as soon as you pick an option. Saying how sure you are is now optional.' },
+      { cat: 'improved', text: 'On phones, the tab bar steps aside during a set or mock, and Check answer stays in reach at the bottom of the screen.' },
+      { cat: 'improved', text: 'The practice timer now counts up while you answer and never counts down.' },
+      { cat: 'improved', text: 'Your stats and readiness appear once you have enough answers, instead of a page of zeros.' },
+      { cat: 'improved', text: 'The cookie notice is a slim bar that waits until your first answer, and it says plainly what Google Analytics and Google Forms are used for.' },
+      { cat: 'improved', text: 'Calmer wording across the app, no more pop-up alerts, and curly quotes in questions.' },
+      { cat: 'improved', text: 'Links to KaiSip now show a preview card and say that it is CISA exam prep.' }
+    ]
+  },
+  {
+    version: 'v12.29.2',
     title: 'Privacy policy detail',
     items: [
       { cat: 'improved', text: 'The privacy policy now lists the optional certification-interest question on the beta sign-up form.' }
@@ -19306,7 +19561,7 @@ function showChangelog() {
     + '<div class="cl-title">What\'s New</div>'
     + expanded
     + olderHtml
-    + '<button class="cl-close" onclick="closeChangelog()">Got it!</button>'
+    + '<button class="cl-close" onclick="closeChangelog()">Close</button>'
     + '</div></div>';
 }
 
@@ -19419,7 +19674,7 @@ function sendFeedback() {
   }).then(function(){
     closeFeedback();
     if (typeof showToast === 'function') {
-      showToast('Thanks for the feedback — sent!', 'success', 2600);
+      showToast('Sent. Thank you for the feedback.', 'success', 2600);
     }
   }).catch(function(err){
     if (btn) { btn.disabled = false; btn.textContent = 'Send Feedback'; }
