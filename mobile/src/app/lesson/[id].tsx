@@ -25,7 +25,7 @@
  *   draws the ✓ without a second buzz).
  *
  * Mobile 1.22 (design spec §4): every scene starts on one anchor line under
- * the header; the header carries a flag ("Report a problem") on every scene;
+ * the header (since 1.39 a short scene is centred below it instead); the header carries a flag ("Report a problem") on every scene;
  * the footer is the shared sticky footer with its paper fade, and Back is a
  * 56pt round "Previous step" beside Next (a full "Back" pill on checks).
  *
@@ -240,8 +240,9 @@ export default function LessonPlayer() {
     goTo(index - 1);
   };
 
-  // Every scene starts on the same anchor line under the header (design spec §4.2); the cover and
-  // Lesson complete keep the closer 24 (a forest panel and a moment, not a page of text).
+  // The anchor line under the header (design spec §4.2): long scenes and checks start on it; since
+  // mobile 1.39 a short scene is centred in the space below it (centreScene). The cover and Lesson
+  // complete keep the closer 24 (a forest panel and a moment, not a page of text).
   const anchor = showingDone || scene.type === 'title' ? space.xl : ANCHOR;
   const onCheck = scene.type === 'check';
   // Mobile 1.37: a check was answered and its verdict + explanation laid out. The scene starts

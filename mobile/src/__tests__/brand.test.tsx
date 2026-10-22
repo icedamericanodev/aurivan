@@ -171,7 +171,8 @@ describe('Settings → About', () => {
       r!.root.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && String(n.props.accessibilityLabel).startsWith('About KaiSip'))[0].props.onPress();
     });
     const text = allText();
-    expect(text).toContain('Our vision');
+    // Mobile 1.39 review O1: the same caption as the web's About.
+    expect(text).toContain('The KaiSip way');
     expect(text).toContain(WELCOME_HEADLINE);
     expect(text).toContain(WELCOME_LINE);
     for (const p of PILLARS) expect(text).toContain(p.title);

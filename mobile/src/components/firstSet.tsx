@@ -33,7 +33,7 @@
  */
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState, type Ref } from 'react';
-import { BackHandler, ScrollView, View } from 'react-native';
+import { BackHandler, ScrollView, View, type StyleProp, type ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getCertification } from '../content/certifications';
 import type { Certification } from '../content/types';
@@ -80,7 +80,16 @@ type Phase = 'idle' | 'working' | 'on' | 'blocked' | 'later';
  * the same hour and minute steppers Settings uses. "Not now" sits under it.
  * (Before, three ghost links, "Earlier", "Later" and "Not now", crowded the ask.)
  */
-export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; onNotNow?: () => void }) {
+export function ReminderAsk({
+  which,
+  onNotNow,
+  style,
+}: {
+  which: 'first' | 'second';
+  onNotNow?: () => void;
+  /** Spacing from the caller, on whatever is drawn (nothing is drawn when there is nothing to ask). */
+  style?: StyleProp<ViewStyle>;
+}) {
   const { c } = useTheme();
   const enabled = useSettings((s) => s.reminder.enabled);
   const asked = useSeen((s) => s.reminderAsk?.first);
@@ -97,10 +106,10 @@ export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; on
     setTimeDir(deltaMinutes < 0 ? -1 : 1);
     setTime((t) => stepTime(t.hour, t.minute, deltaMinutes));
   };
-  // Closing the sheet says the chosen time and puts focus back on the chip that opened it.
+  // Closing the sheet puts focus back on the chip that opened it. The chip says the new time itself
+  // ("Reminder time, 8:15 PM"), so nothing else is announced (one announcement, not two).
   const closePicker = () => {
     setPicking(false);
-    sayLater(`Study time ${localTime(time.hour, time.minute)}`);
     moveFocus(chipRef, ANNOUNCE_DELAY);
   };
   // "Not now" takes the ask away: say so, then the caller moves focus somewhere that still exists
@@ -138,10 +147,18 @@ export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; on
   if (!remindersSupported) return null;
   if (phase === 'later') return null;
   if (phase === 'on') {
-    return <T v="small" color={c.ink2}>{`Done. I’ll remind you at ${localTime(time.hour, time.minute)}. You can change this in Settings.`}</T>;
+    return (
+      <View style={style}>
+        <T v="small" color={c.ink2}>{`Done. I’ll remind you at ${localTime(time.hour, time.minute)}. You can change this in Settings.`}</T>
+      </View>
+    );
   }
   if (phase === 'blocked') {
-    return <T v="small" color={c.ink2}>Notifications are off for KaiSip on this phone. You can turn them on in the phone’s Settings, then choose a time here in Settings.</T>;
+    return (
+      <View style={style}>
+        <T v="small" color={c.ink2}>Notifications are off for KaiSip on this phone. You can turn them on in the phone’s Settings, then choose a time here in Settings.</T>
+      </View>
+    );
   }
   // Already on (set up in Settings, or restored), or answered before and this is the first-run screen: nothing to ask.
   if (enabled || (which === 'first' && asked !== undefined)) return null;
@@ -152,13 +169,15 @@ export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; on
   // screen, the button's words wrap inside their pill instead (the chip never shrinks).
   const large = fontScale >= LARGE_TEXT;
   return (
-    <View style={{ gap: space.xs }}>
+    <View style={[{ gap: space.xs }, style]}>
       {/* One row, read as one sentence. */}
       <Row gap={space.sm} style={{ flexWrap: large ? 'wrap' : 'nowrap' }}>
         <Button
           kind="secondary"
-          label={REMINDER_ASK_LEAD}
-          // The button alone ends in "at", so the spoken name carries the whole sentence.
+          // A no-break space joins "tomorrow at": on a narrow screen the words wrap as "Remind me /
+          // tomorrow at", never with "at" alone. The button alone ends in "at", so the spoken name
+          // carries the whole sentence (ordinary spaces).
+          label={REMINDER_ASK_LEAD.replace(/ at$/, '\u00A0at')}
           accessibilityLabel={reminderAskLine(time.hour, time.minute)}
           accessibilityHint="Turns on a study reminder. Your phone may ask to allow notifications."
           disabled={busy}
@@ -168,7 +187,8 @@ export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; on
         />
         <TimeChip ref={chipRef} time={shown} disabled={busy} onPress={() => setPicking(true)} />
       </Row>
-      {/* A ghost after content sits at the gutter (spec §5), its text lined up with the plate's. */}
+      {/* A ghost after content sits at the gutter (spec §5): -8 cancels its own 8pt padding, so "Not now"
+          lines up with the left edge of the button above it. */}
       <Button
         kind="ghost"
         label="Not now"
@@ -206,7 +226,7 @@ export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; on
 
 /**
  * The reminder ask's time chip: an outlined pill with the time and a down chevron (it opens the
- * time sheet). 48pt tall: a comfortable touch target that lines up with the button beside it.
+ * time sheet). 56pt tall, the same height as the button beside it (and well over the 48pt touch target).
  */
 function TimeChip({ time, onPress, disabled, ref }: { time: string; onPress: () => void; disabled?: boolean; ref?: Ref<View> }) {
   const { c } = useTheme();
@@ -401,8 +421,9 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
         </Enter>
         {/* Mobile 1.39: the reminder ask is its own block under the plate (one job per block), with the
             full width it needs to read as one row, "Remind me tomorrow at [time]". */}
-        <Enter i={2} style={{ marginTop: space.xl }}>
-          <ReminderAsk which="first" onNotNow={() => moveFocus(doneRef, ANNOUNCE_DELAY + 50)} />
+        <Enter i={2}>
+          {/* The margin is the ask's own, so a closing screen with nothing to ask has no empty gap. */}
+          <ReminderAsk which="first" style={{ marginTop: space.xl }} onNotNow={() => moveFocus(doneRef, ANNOUNCE_DELAY + 50)} />
         </Enter>
       </ScrollView>
       <StickyFooter onHeight={setFooterH}>

@@ -8,7 +8,7 @@ Brand source: `mobile/src/content/brand.ts`. Compliance source: `docs/mobile/ARC
 - Never state or hint at the number of questions. Say "practice questions across all 5 CISA domains".
 - Never promise a pass. Readiness is always "an estimate".
 - Keep "CISA" and "ISACA" out of the app name, icon and developer name. Use them only to describe the exam, with the trademark notice.
-- Only CISA is available. Do not mention future certifications.
+- Only CISA is available. Never name other certifications or imply they are available now. If a field needs to say more are planned, use only the owner's line: "Starting with CISA. More certifications later." (as in the app's About).
 - No hype words ("ultimate", "guaranteed", "best", "#1").
 
 Character counts below are exact for the short fields (® counts as 1). Long fields are approximate. Check them in the console's counter before you submit.
@@ -50,7 +50,7 @@ auditor,cybersecurity,governance,risk,controls,compliance,quiz,certification,stu
 ### Description (4000): about 2,300/4000
 
 ```
-Master Modern Risk.
+Think like an IS auditor.
 
 KaiSip helps IT auditors, security and risk professionals prepare for the CISA® exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you grow the judgment the exam rewards, one ring at a time.
 
@@ -144,7 +144,7 @@ Use the App Store description above unchanged. Play indexes the full description
 
 | # | Screen | Caption | Words |
 |---|---|---|---|
-| 1 | Welcome / vision | Master Modern Risk. | 3 |
+| 1 | Welcome / vision | Think like an IS auditor. | 5 |
 | 2 | Today (daily plan) | Know what to study next | 5 |
 | 3 | Question with tips revealed | Learn the why behind answers | 5 |
 | 4 | Readiness range | An honest readiness estimate | 4 |
@@ -192,8 +192,8 @@ Apple Product Page Optimization can test screenshots, icon and preview video, bu
 |---|---|---|---|
 | Play short description | Practice for the CISA® exam: teaching tips, daily plan and spaced review. (73) | CISA® exam practice that teaches the why. Daily plan, spaced review, offline. (77) | Leading with "teaches the why" and "offline" lifts install conversion in markets with patchy data |
 | iOS subtitle (change with a version update) | Practice for the CISA® exam (27) | CISA® exam practice, offline (28) | Same as above, measured as conversion before and after |
-| Name (later, only if data supports it) | KaiSip: IT Audit Exam Prep (26) | KaiSip: IT Audit & Risk Prep (28) | Widens reach to risk professionals ahead of more certifications |
-| Screenshot 1 caption | Master Modern Risk. | Know what to study next | A concrete benefit first beats the brand line for cold traffic |
+| Name (later, only if data supports it) | KaiSip: IT Audit Exam Prep (26) | KaiSip: IT Audit & Risk Prep (28) | Widens reach to risk professionals; only once a second certification is live (until then the listing stays CISA-only) |
+| Screenshot 1 caption | Think like an IS auditor. | Know what to study next | A concrete benefit first beats the brand line for cold traffic |
 
 Success metric: store listing conversion rate (visitors to installs), read at 90% confidence and at least 7 days per test.
 

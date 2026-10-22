@@ -509,7 +509,7 @@ export default function Settings() {
         <SettingsRow
           ref={aboutRow}
           title="About KaiSip"
-          subtitle="Our vision and what the app stands for"
+          subtitle="The KaiSip way and what the app stands for"
           onPress={open('about')}
           last={lastHelpRow === 'about'}
         />
@@ -747,12 +747,12 @@ export default function Settings() {
       />
 
       <Sheet visible={sheet === 'about'} onClose={close} title="About KaiSip">
-        {/* Our vision: the same promise as the welcome screen (content/brand.ts). */}
+        {/* The KaiSip way (the web's About says the same): the same promise as the welcome screen (content/brand.ts). */}
         <View style={{ marginTop: space.sm }}>
           <KaisipLockup height={28} />
         </View>
         {/* Mobile 1.39: the same lead as the welcome screen, one CISA story (no platform tagline). */}
-        <T v="caption" color={c.accentText} accessibilityRole="header" style={{ marginTop: space.lg }}>Our vision</T>
+        <T v="caption" color={c.accentText} accessibilityRole="header" style={{ marginTop: space.lg }}>The KaiSip way</T>
         <T v="hero" style={{ marginTop: space.xs }}>{WELCOME_HEADLINE}</T>
         <T v="quote" color={c.ink2} style={{ marginTop: space.xs }}>{WELCOME_LINE}</T>
         <Gap h={space.lg} />

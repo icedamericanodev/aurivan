@@ -515,7 +515,7 @@ describe('the reminder ask never sticks on "working"', () => {
       await b.props.onPress();
     });
     expect(useSeen.getState().reminderAsk.first).toBe('later');
-    expect(allText()).not.toMatch(/Remind me tomorrow at/);
+    expect(allText()).not.toMatch(/Remind me tomorrow\sat/);
     expect(useSettings.getState().reminder.enabled).toBe(false);
   });
 });

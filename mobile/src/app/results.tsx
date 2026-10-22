@@ -276,9 +276,10 @@ export default function Results() {
 
       {/* Score rings in domain tones (spec §10.1, Results 200): arc = this session's score per domain.
           Mobile 1.39: only for a mixed-domain set or a mock. A one-domain set's ring said nothing the
-          headline and "Correct" don't already say, so it keeps just its one line. */}
+          headline and "Correct" don't already say, so it keeps just its one line ("All IS Audit · 80%"),
+          close under the headline. */}
       {(showRings || !tiny) && (
-        <Enter i={1} style={{ marginTop: space.xl }}>
+        <Enter i={1} style={{ marginTop: showRings ? space.xl : space.sm }}>
           {showRings && (
             <DomainRings
               cert={cert}
@@ -312,10 +313,14 @@ export default function Results() {
             />
           )}
           {tiny ? null : oneDomain ? (
-            // Mobile 1.22 (design spec §8.2): one centred line, "All IS Audit · 12 of 15". A handful of
-            // questions has none: the headline holds the count and the ring names the domain (UX review S7).
+            // Mobile 1.22 (design spec §8.2): one line naming the domain. A handful of questions has none:
+            // the headline holds the count (UX review S7). Mobile 1.39: with no ring it says the percent
+            // ("All IS Audit · 80%"), since "Correct 12 of 15" below already gives the count; a one-domain
+            // mock keeps its ring and the count line.
             <T v="meta" center={showRings} style={{ marginTop: showRings ? 14 : 0 }}>
-              {`All ${oneDomain.short} · ${score.byDomain[oneDomain.id].correct} of ${score.byDomain[oneDomain.id].total}`}
+              {showRings
+                ? `All ${oneDomain.short} · ${score.byDomain[oneDomain.id].correct} of ${score.byDomain[oneDomain.id].total}`
+                : `All ${oneDomain.short} · ${pct}%`}
             </T>
           ) : (
             <T v="meta" style={{ marginTop: 14 }}>Each ring is a domain in this session. Thicker rings weigh more on the exam.</T>

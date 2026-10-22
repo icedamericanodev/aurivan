@@ -173,7 +173,7 @@ describe('Today: the day in minutes', () => {
     // The lesson leads: its title is the panel's title; the questions are the one row after it.
     expect(allText()).toContain(first.title);
     // Mobile 1.39: the one item after the lesson is a "Then:" line (no hollow circle).
-    expect(allText()).toContain('Then: IS Audit practice · 10 questions');
+    expect(allText()).toContain('Then: IS Audit practice · 10\u00A0questions');
     expect(root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string)).toContain(first.title);
     expect(allText()).toContain(`Today’s plan · about ${first.minutes + 12} min`);
     expect(allText()).not.toMatch(/Starting check/);

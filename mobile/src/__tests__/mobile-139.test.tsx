@@ -192,24 +192,29 @@ describe('#15 the IS auditor’s lens and the Exam-day shortcut', () => {
     expect([quote, rest].filter(Boolean).join(' ')).toBe(scene.body.trim().replace(/\s+/g, ' '));
   });
 
-  // The lens is held to the full cap: about four lines at most, in every lesson.
-  it.each(coachScenes.filter(([, , s]) => s.type === 'idea'))('%s: the italic part fits about four lines', (_name, _l, scene) => {
+  // Every lens and every Exam-day shortcut is held to the full cap: about four lines at most.
+  it.each(coachScenes)('%s: the italic part fits about four lines', (_name, _l, scene) => {
     expect(splitCoachText(scene.body).quote.length).toBeLessThanOrEqual(QUOTE_MAX_CHARS);
   });
 
-  // Exam-day shortcuts whose FIRST sentence alone is over the cap (a content follow-up: shorten the
-  // opening sentence). Pinned so the list can only shrink.
-  it('only these shortcuts still open with a sentence longer than the cap', () => {
+  // Review P4: the shortcuts that opened with one over-long sentence were rewritten; none is left.
+  it('no shortcut opens with a sentence longer than the cap', () => {
     const long = coachScenes
       .filter(([, , s]) => s.type === 'tip' && sentencesOf(s.body)[0].length > QUOTE_MAX_CHARS)
       .map(([, l]) => l.id);
-    expect(long).toEqual([
-      'cisa-l-d1-evidence',
-      'cisa-l-d1-audit-project',
-      'cisa-l-d1-findings',
-      'cisa-l-d5-incident-response',
-      'cisa-l-d5-pki',
-    ]);
+    expect(long).toEqual([]);
+  });
+
+  // Review P3: a question never ends the quote; its answer would sit apart, in the body.
+  it('the quote never ends on a question', () => {
+    expect(splitCoachText('Protect the conclusion. Missing a skill? Get it first.').quote).toBe('Protect the conclusion.');
+    expect(splitCoachText('Follow the trust. “Who checked the identity?” Ask it first.').quote).toBe('Follow the trust.');
+    // In every lesson: a two-sentence quote never ends on a question (a lone first sentence may be one,
+    // e.g. "…did it act before the harm, after it, or to repair it?": it is the whole thought).
+    for (const [, , scene] of coachScenes) {
+      const { quote } = splitCoachText(scene.body);
+      if (sentencesOf(quote).length > 1) expect(quote).not.toMatch(/\?[”’")\]]*$/);
+    }
   });
 
   it.each(over)('%s: renders the quote in italic and the rest in body text', (_name, lesson, scene) => {
@@ -233,9 +238,11 @@ describe('#7 the welcome disclaimer names only what the app teaches', () => {
 // ── #15: Today's "Then:" line and short lesson scenes ─────────────────────
 describe('#15 the one next plan item is a "Then:" line, with no hollow circle', () => {
   it('words: never two colons', () => {
-    expect(thenLine('Practice: IS Operations · 12 questions')).toBe('Then: IS Operations practice · 12 questions');
+    expect(thenLine('Practice: IS Operations · 12 questions')).toBe('Then: IS Operations practice · 12\u00A0questions');
     expect(thenLine('Lesson · Business impact analysis')).toBe('Then: Lesson · Business impact analysis');
-    expect(thenLine('Top-up: Info Protection · 8 questions')).toBe('Then: Top-up · Info Protection · 8 questions');
+    expect(thenLine('Top-up: Info Protection · 8 questions')).toBe('Then: Top-up · Info Protection · 8\u00A0questions');
+    // Review O5: the count and its unit never split across lines.
+    expect(thenLine('Game · 5 min')).toBe('Then: Game · 5\u00A0min');
   });
 
   it('Day 1 (lesson, then practice): one sap line and no ring; once something is done the checklist keeps its marks', () => {
@@ -245,7 +252,7 @@ describe('#15 the one next plan item is a "Then:" line, with no hollow circle', 
     ];
     mount(<PlanChecklist items={items} done={[false, false]} current={0} />);
     const line = root().findAll((n) => n.props.v === 'body' && typeof n.props.children === 'string')[0];
-    expect(line.props.children).toBe('Then: IS Operations practice · 12 questions');
+    expect(line.props.children).toBe('Then: IS Operations practice · 12\u00A0questions');
     // No 24pt ring before it (a hollow circle read as a radio button, spec §5).
     expect(root().findAll((n) => typeof n.type === 'string' && StyleSheet.flatten(n.props.style)?.borderRadius === 12)).toHaveLength(0);
     act(() => {
@@ -288,5 +295,8 @@ describe('Results rings: mixed-domain sets and mocks only', () => {
     finish();
     mount(<Results />);
     expect(root().findAllByType(DomainRings)).toHaveLength(0);
+    // Review P5: its one line gives the percent ("Correct 10 of 10" below gives the count).
+    expect(allText()).toContain('All IS Audit · 100%');
+    expect(allText()).not.toMatch(/All IS Audit · \d+ of/);
   });
 });

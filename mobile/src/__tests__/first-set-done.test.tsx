@@ -264,7 +264,9 @@ describe('the reminder ask', () => {
     expect(ask.length).toBeGreaterThan(0);
     // Spoken as the whole sentence; seen as the button's words and the time chip beside it.
     expect(String(ask[0].props.accessibilityLabel)).toMatch(/^Remind me tomorrow at (9:00 PM|21:00)$/);
-    expect(allText()).toContain('Remind me tomorrow at');
+    // A no-break space joins "tomorrow at", so a wrap is "Remind me / tomorrow at", never a lone "at".
+    expect(String(ask[0].props.label)).toBe('Remind me tomorrow\u00A0at');
+    expect(allText()).toContain('Remind me tomorrow\u00A0at');
     expect(pressable(/^Reminder time, (9:00 PM|21:00)$/).length).toBeGreaterThan(0);
     // Mobile 1.39: no Earlier / Later links any more; "Not now" is the only other choice.
     expect(pressable(/^One hour (earlier|later)$/)).toHaveLength(0);
@@ -317,7 +319,7 @@ describe('the reminder ask', () => {
     expect(mockEnsure).not.toHaveBeenCalled();
     expect(useSettings.getState().reminder.enabled).toBe(false);
     expect(useSeen.getState().reminderAsk.first).toBe('later');
-    expect(allText()).not.toMatch(/Remind me tomorrow at/);
+    expect(allText()).not.toMatch(/Remind me tomorrow\sat/);
   });
 
   it('"Not now" says so, and focus moves to "Done for today" (never left on a removed button)', async () => {
@@ -336,7 +338,7 @@ describe('the reminder ask', () => {
     say.mockRestore();
   });
 
-  it('closing the time sheet says the new time and puts focus back on the chip', async () => {
+  it('closing the time sheet puts focus back on the chip, which says the new time (one announcement, not two)', async () => {
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     finishFirstSet(3);
     mount(<Results />);
@@ -346,7 +348,9 @@ describe('the reminder ask', () => {
     await press(/^Done, Study time$/);
     flushSayLaterForTest();
     expect(jest.mocked(moveFocus).mock.calls.some((c) => c[1] === ANNOUNCE_DELAY)).toBe(true);
-    expect(say.mock.calls.map((c) => String(c[0])).some((s) => /^Study time (8:00 PM|20:00)/.test(s))).toBe(true);
+    // Mobile 1.39 review P2: no separate announcement; the chip's own name carries the new time.
+    expect(say.mock.calls.map((c) => String(c[0])).some((s) => /^Study time/.test(s))).toBe(false);
+    expect(pressable(/^Reminder time, (8:00 PM|20:00)$/).length).toBeGreaterThan(0);
     say.mockRestore();
   });
 
@@ -354,12 +358,12 @@ describe('the reminder ask', () => {
     useSeen.setState({ reminderAsk: { first: 'later' } });
     finishFirstSet(3);
     mount(<Results />);
-    expect(allText()).not.toMatch(/Remind me tomorrow at/);
+    expect(allText()).not.toMatch(/Remind me tomorrow\sat/);
     unmount();
     useSeen.setState({ reminderAsk: {} });
     useSettings.setState({ reminder: { enabled: true, hour: 8, minute: 0, days: [0, 1, 2, 3, 4, 5, 6] } });
     mount(<Results />);
-    expect(allText()).not.toMatch(/Remind me tomorrow at/);
+    expect(allText()).not.toMatch(/Remind me tomorrow\sat/);
   });
 });
 

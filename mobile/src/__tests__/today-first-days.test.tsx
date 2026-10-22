@@ -391,7 +391,7 @@ describe('the reminder ask, second chance', () => {
     setMilestones(3, today());
     mount(<Today />);
     expect(allText()).toContain('A study time can help');
-    expect(allText()).toMatch(/Remind me tomorrow at/);
+    expect(allText()).toMatch(/Remind me tomorrow\u00A0at/);
     expect(useSeen.getState().reminderAsk.second).toBe(true);
     // Nothing is asked of the phone until the button is tapped.
     expect(mockEnsure).not.toHaveBeenCalled();
@@ -425,7 +425,7 @@ describe('the reminder ask, second chance', () => {
     say.mockRestore();
   });
 
-  it('the time chip opens the steppers, and closing them says the new study time', async () => {
+  it('the time chip opens the steppers; closing them leaves the new time on the chip (no extra announcement)', async () => {
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     setMilestones(3, today());
     mount(<Today />);
@@ -433,8 +433,9 @@ describe('the reminder ask, second chance', () => {
     await press(/^Hour later$/);
     await press(/^Done, Study time$/);
     flushSayLaterForTest();
-    // 9 AM now, so one hour later is 10 (the phone's own time format).
-    expect(say.mock.calls.map((c) => String(c[0])).some((s) => /^Study time 10[:.]00/.test(s))).toBe(true);
+    // 9 AM now, so one hour later is 10 (the phone's own time format). Mobile 1.39 review P2: the chip
+    // says it when focus returns to it, so nothing is announced on top.
+    expect(say.mock.calls.map((c) => String(c[0])).some((s) => /^Study time/.test(s))).toBe(false);
     expect(allText()).toMatch(/10[:.]00/);
     say.mockRestore();
   });

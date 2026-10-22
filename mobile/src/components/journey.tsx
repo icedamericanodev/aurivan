@@ -276,7 +276,9 @@ export function thenLine(label: string): string {
   const said = label
     .replace(/^Practice: (.+?)( · |$)/, '$1 practice$2')
     // Any other "Kind: name" label ("Top-up: Info Protection") takes a middle dot instead of its colon.
-    .replace(/^([^:·]+): /, '$1 · ');
+    .replace(/^([^:·]+): /, '$1 · ')
+    // A no-break space keeps a count with its unit ("12 questions", "5 min"), so a wrap never splits it.
+    .replace(/(\d) (questions?|min)\b/g, '$1 $2');
   return `Then: ${said}`;
 }
 

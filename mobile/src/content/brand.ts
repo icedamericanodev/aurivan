@@ -49,7 +49,8 @@ export const WELCOME_FACTS: readonly string[] = [
 /**
  * Said under the welcome facts (it used to sit on the exam step, which is gone).
  * Mobile 1.39: CISA only. The app teaches no ISC2 exam, so naming ISC2 here hinted
- * at a roadmap the welcome doesn't offer (Settings → About keeps the full catalog notice).
+ * at a roadmap the welcome doesn't offer. Settings → About builds its notice from the
+ * available certifications only (today CISA), so the two say the same thing.
  */
 export const EXAM_TRADEMARK_LINE = 'Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.';
 

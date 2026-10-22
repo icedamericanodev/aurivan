@@ -206,11 +206,15 @@ export function sentencesOf(text: string): string[] {
   return out.filter(Boolean);
 }
 
+/** A sentence that asks something: it ends in "?", maybe followed by a closing quote or bracket. */
+const endsWithQuestion = (sentence: string) => /\?[”’")\]]*$/.test(sentence.trim());
+
 /**
  * Splits the coach's text (The IS auditor’s lens, the Exam-day shortcut) into
  * the italic `quote`, its first sentences up to the cap, and the `rest`, said
  * in plain `body` under it. The first sentence is always the quote, even if it
- * runs long (lessons.test.ts keeps every first sentence under the cap).
+ * runs long (mobile-139.test.tsx keeps every lens and shortcut under the cap). A
+ * second sentence that is a question is never pulled in, so the quote never ends on one.
  * Pure: exported for tests.
  */
 export function splitCoachText(text: string): { quote: string; rest: string } {
@@ -219,6 +223,8 @@ export function splitCoachText(text: string): { quote: string; rest: string } {
   while (
     n < all.length &&
     n < QUOTE_MAX_SENTENCES &&
+    // The quote never ends on a question ("Missing a skill?"): its answer would sit apart, in the body.
+    !endsWithQuestion(all[n]) &&
     all.slice(0, n + 1).join(' ').length <= QUOTE_MAX_CHARS
   ) {
     n++;
