@@ -2119,7 +2119,7 @@
     {
       "id": "d5_057",
       "domain": 5,
-      "subtopic": "Ransomware Detection in EDR. Immediate Action",
+      "subtopic": "Ransomware Detection in EDR",
       "principle_id": "people-contain-preserve",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
@@ -3673,7 +3673,7 @@
         "MITRE T1611"
       ],
       "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); NIST SP 800-190 (Application Container Security Guide); MITRE ATT&CK T1611 (Escape to Host)",
-      "question": "Runtime monitoring reports high-confidence container-escape activity from a production pod on a node hosting 47 other pods, including admin tools. What should the IS auditor recommend FIRST?",
+      "question": "Runtime monitoring reports high-confidence container-escape activity from a production pod on a node hosting 47 other pods, including admin tools. What should the IS auditor recommend the incident response team do FIRST?",
       "options": {
         "A": "Delete the pod so that a clean replica is scheduled",
         "B": "Notify customers that their production data may be exposed",
@@ -3694,7 +3694,7 @@
         "Final two: C beats A because isolation contains the node and keeps evidence, while deletion destroys evidence and leaves the node compromised.",
         "Exam cue: in a live compromise, contain first in a way that preserves evidence; deleting the obvious symptom is not containment."
       ],
-      "_provenance": "Authored from concept: 'Container escape detection immediate isolation response'. Public sources: ISACA, NIST, MITRE. No legacy bank citation. Note: intentional single-focus surgical action; lateral-movement-containment principle distinct from business-continuity-restore (d5_097). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): replaced the Kubernetes term cordon with network isolation; removed unmentioned API customers. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Container escape detection immediate isolation response'. Public sources: ISACA, NIST, MITRE. No legacy bank citation. Note: intentional single-focus surgical action; lateral-movement-containment principle distinct from business-continuity-restore (d5_097). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): replaced the Kubernetes term cordon with network isolation; removed unmentioned API customers. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Role-lens follow-up (Oct 2026): stem names who acts (the incident response team); key, options, explanations and tips unchanged.",
       "style_version": 2
     },
     {
@@ -4230,7 +4230,7 @@
     {
       "id": "d5_112",
       "domain": 5,
-      "subtopic": "BEC Wire-Transfer Fraud. Immediate Action",
+      "subtopic": "BEC Wire-Transfer Fraud",
       "principle_id": "people-contain-preserve",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
@@ -4241,7 +4241,7 @@
         "Wire recall low success"
       ],
       "framework_ref": "FinCEN Advisory FIN-2016-A003 (Business Email Compromise); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
-      "question": "A treasury analyst flags a $2.4M wire, emailed by the traveling CEO, to an overseas account opened 14 days ago. With settlement in 45 minutes, what should the IS auditor recommend FIRST?",
+      "question": "A treasury analyst flags a $2.4M wire, emailed by the traveling CEO, to an overseas account opened 14 days ago. With settlement in 45 minutes, what should the IS auditor recommend management do FIRST?",
       "options": {
         "A": "Hold the wire until the CEO confirms on a known phone number",
         "B": "Reply to the CEO's email asking to confirm the payment",
@@ -4262,7 +4262,7 @@
         "Final two: A beats D because the settlement deadline makes stopping the payment the priority; a meeting would let the wire leave.",
         "Exam cue: when a loss is irreversible and time-bound, the FIRST action stops it, then verify through a known channel."
       ],
-      "_provenance": "Authored from concept: 'BEC wire-fraud immediate response'. Public sources: ISACA, FBI IC3, SWIFT, OFAC, PCAOB. No legacy bank citation. Note: intentional single-focus surgical action; FINANCIAL-LOSS-CLOCK principle distinct from contain-first / restore-first / lateral-movement-contain. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Wording fix (Oct 2026): gendered pronoun in option B replaced; key and meaning unchanged.",
+      "_provenance": "Authored from concept: 'BEC wire-fraud immediate response'. Public sources: ISACA, FBI IC3, SWIFT, OFAC, PCAOB. No legacy bank citation. Note: intentional single-focus surgical action; FINANCIAL-LOSS-CLOCK principle distinct from contain-first / restore-first / lateral-movement-contain. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Wording fix (Oct 2026): gendered pronoun in option B replaced; key and meaning unchanged. Role-lens follow-up (Oct 2026): stem names who acts (management); key, options, explanations and tips unchanged.",
       "style_version": 2
     },
     {
@@ -5134,7 +5134,7 @@
     {
       "id": "d5_137",
       "domain": 5,
-      "subtopic": "Zero-Day Vulnerability Mitigation. Immediate Action",
+      "subtopic": "Zero-Day Vulnerability Response",
       "principle_id": "prevent-before-detect",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
@@ -5145,7 +5145,7 @@
         "Virtual patching via WAF"
       ],
       "framework_ref": "NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); CISA Binding Operational Directive 22-01 (Reducing Significant Risk of Known Exploited Vulnerabilities); CISA Known Exploited Vulnerabilities (KEV) Catalog",
-      "question": "A zero-day vulnerability with public exploit code affects 23 customer-facing applications; no patch exists for two days, but the web application firewall can block the exploit. What should the IS auditor recommend FIRST?",
+      "question": "A zero-day vulnerability with public exploit code affects 23 customer-facing applications; no patch exists for two days, but the web application firewall can block the exploit. What should the IS auditor recommend management do FIRST?",
       "options": {
         "A": "Increase monitoring of the affected applications until the patch arrives",
         "B": "Wait for the vendor patch before changing any configuration",
@@ -5166,7 +5166,7 @@
         "Final two: D beats A because blocking prevents exploitation now, while monitoring only detects it afterward.",
         "Exam cue: when a preventive compensating control is ready and exploitation is imminent, deploy it now; detection alone is not enough."
       ],
-      "_provenance": "Authored from concept: 'Zero-day vulnerability immediate compensating control deployment'. Public sources: ISACA, NIST, CISA, ISO. No legacy bank citation. Note: NEW single-focus principle EXPOSURE-WINDOW-CLOSE — distinct from prior six principles. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem no longer implies the applications are already compromised. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Zero-day vulnerability immediate compensating control deployment'. Public sources: ISACA, NIST, CISA, ISO. No legacy bank citation. Note: NEW single-focus principle EXPOSURE-WINDOW-CLOSE — distinct from prior six principles. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem no longer implies the applications are already compromised. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Role-lens follow-up (Oct 2026): stem names who acts (management); key, options, explanations and tips unchanged.",
       "style_version": 2
     },
     {
@@ -6635,7 +6635,7 @@
     {
       "id": "d5_177",
       "domain": 5,
-      "subtopic": "Threat Actor Attribution Disclosure Decision",
+      "subtopic": "Nation-State Intrusion Response",
       "principle_id": "people-contain-preserve",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
@@ -7351,7 +7351,7 @@
     {
       "id": "d5_196",
       "domain": 5,
-      "subtopic": "Covert Insider Threat Forensic Investigation",
+      "subtopic": "Insider Threat Investigation",
       "principle_id": "people-contain-preserve",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
@@ -7362,7 +7362,7 @@
         "Off-hours imaging"
       ],
       "framework_ref": "CERT Common Sense Guide to Mitigating Insider Threats, 7th Edition (CMU SEI, 2022); NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); ISO/IEC 27002:2022 Control 5.28 (Collection of Evidence)",
-      "question": "HR and legal suspect a senior scientist of trade-secret theft but see no active exfiltration, and want evidence before any action. What should the IS auditor recommend FIRST?",
+      "question": "HR and legal suspect a senior scientist of trade-secret theft, but monitoring shows no active exfiltration. What should the IS auditor recommend management do FIRST?",
       "options": {
         "A": "Preserve evidence quietly under legal direction before any confrontation",
         "B": "Suspend the scientist's access and seize the laptop today",
@@ -7383,7 +7383,7 @@
         "Final two: A beats B because, with no active exfiltration, suspension only tips off the suspect before evidence is secured.",
         "Exam cue: if no harm is under way, sequence matters; secure evidence quietly first, then act."
       ],
-      "_provenance": "Authored from concept: 'Covert insider threat forensic investigation'. Public sources: ISACA, CERT, NIST, ABA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Covert insider threat forensic investigation'. Public sources: ISACA, CERT, NIST, ABA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Role-lens follow-up (Oct 2026): stem names who acts (management); key, options, explanations and tips unchanged.",
       "style_version": 2
     },
     {
@@ -9489,7 +9489,7 @@
     {
       "id": "d5_252",
       "domain": 5,
-      "subtopic": "OT/ICS Network Compromise. Safety-Critical Containment",
+      "subtopic": "OT/ICS Network Compromise",
       "principle_id": "people-contain-preserve",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
@@ -9501,7 +9501,7 @@
         "IT/OT boundary"
       ],
       "framework_ref": "NIST SP 800-82 Rev 3 (Guide to Operational Technology Security); IEC 62443-3-3 (Industrial Communication Networks Security); CISA ICS Recommended Practice — Defense in Depth",
-      "question": "An attacker who entered through phishing has reached the zone between a utility's corporate network and its plant control network. What should the IS auditor recommend FIRST?",
+      "question": "An attacker who entered through phishing has reached the zone between a utility's corporate network and its plant control network. What should the IS auditor recommend management do FIRST?",
       "options": {
         "A": "Notify regulators before taking any containment step",
         "B": "Shut down power generation at every site as a safety precaution",
@@ -9522,7 +9522,7 @@
         "Final two: C beats B because cutting the boundary stops the attacker without the safety risks of an emergency shutdown.",
         "Exam cue: in industrial incidents, contain at the network boundary before considering a shutdown, and keep safety in view."
       ],
-      "_provenance": "Authored from concept: 'CONTAIN-FIRST extension to OT/ICS network compromise with safety-engineering integration'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'CONTAIN-FIRST extension to OT/ICS network compromise with safety-engineering integration'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Role-lens follow-up (Oct 2026): stem names who acts (management); key, options, explanations and tips unchanged.",
       "style_version": 2
     },
     {

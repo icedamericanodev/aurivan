@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.29] — The IS auditor's role in incidents
+
+### Improved
+- Several security incident questions now ask what the IS auditor should recommend, matching how the exam frames the auditor's role.
+
 ## [v12.28.1] — Gender-neutral wording
 
 ### Improved
