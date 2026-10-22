@@ -71,6 +71,9 @@ const ACRONYMS = new Set([
   // Added with the Domain 1 gap lessons: online audit techniques (embedded audit
   // module, systems control audit review file, continuous and intermittent simulation).
   'EAM', 'SCARF', 'CIS',
+  // Added with plan items L3–L5: Advanced Encryption Standard, intrusion
+  // detection system, intrusion prevention system.
+  'AES', 'IDS', 'IPS',
 ]);
 const EXAM_KEYWORDS = new Set(['FIRST', 'BEST', 'MOST', 'GREATEST', 'PRIMARY', 'LEAST', 'NOT', 'MAIN']);
 const capsWords = (text: string) => (text.match(/\b[A-Z]{2,}\b/g) ?? []).filter((w) => !ACRONYMS.has(w));
