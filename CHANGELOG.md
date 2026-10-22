@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.29.1] — Privacy policy update
+
+### Improved
+- The privacy policy now explains how optional beta tester sign-ups are handled.
+
 ## [v12.29] — The IS auditor's role in incidents
 
 ### Improved
