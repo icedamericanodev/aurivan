@@ -5,8 +5,8 @@ Thanks for caring enough to help. This document covers the practical bits — ho
 ## Quick start
 
 ```bash
-git clone https://github.com/laladev-ai/cisa-prep.git
-cd cisa-prep
+git clone https://github.com/icedamericanodev/aurivan.git
+cd aurivan
 python3 -m http.server 8000
 # open http://localhost:8000/
 ```
