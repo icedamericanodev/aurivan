@@ -33,6 +33,8 @@ Already fixed in code by the same audit (nothing for you to do):
 
 ## Gate 1. Signed phone updates (OTA code signing)
 
+> **Decision, 22 Oct 2026 (owner):** Google Play builds ship with `updates.enabled: false` until this gate is done (free Option A in `docs/mobile/PLAY_LAUNCH.md`, B1). Store users get changes only through Play releases. Test builds keep OTA. The paid plan stays optional, for later.
+
 **What it protects.** Every merge to `main` that touches the app sends an
 over-the-air update to test phones, with no person approving it. Today a phone
 runs any update that the Expo project serves. A leaked Expo token, a poisoned
