@@ -37,3 +37,12 @@ export function firstSetIds(certId: string): readonly string[] {
 
 /** What the set is called on screen. No "check" and no "diagnose": it is just the first five. */
 export const FIRST_SET_TITLE = 'Your first five';
+
+/**
+ * Day 0 on Today (mobile 1.39): one quiet line under the panel, so the screen says what comes after
+ * the first five instead of sitting empty. "Your date" only when an exam date is set ("Not sure yet"
+ * learners get a plan too, just not one counted down to a day).
+ */
+export function firstSetNextLine(hasExamDate: boolean): string {
+  return hasExamDate ? 'After your first five: a daily plan built around your date' : 'After your first five: a daily plan built around you';
+}

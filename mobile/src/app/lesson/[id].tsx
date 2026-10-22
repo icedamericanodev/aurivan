@@ -78,6 +78,16 @@ const HUGE_TEXT = 1.6;
 const ANCHOR = space.xxl + space.md;
 
 /**
+ * Whether a scene is centred in the space under the anchor line when it is short (mobile 1.39).
+ * Every scene but the cover (a forest panel at the top) and a check (it grows when answered,
+ * and the page must not jump). Long scenes are unaffected: they fill the space and scroll.
+ * Exported for tests.
+ */
+export function centreScene(scene: Lesson['scenes'][number]): boolean {
+  return scene.type !== 'title' && scene.type !== 'check';
+}
+
+/**
  * "Practice this topic" after a lesson: the questions the study notes list
  * for the lesson's outline topics, interleaved and capped (like a notes
  * topic), plus the bank items the lesson prepares for. Empty = none (the
@@ -304,7 +314,11 @@ export default function LessonPlayer() {
                 </View>
               </View>
             ) : (
-              <View style={{ flexGrow: 1 }}>
+              // Mobile 1.39: a short scene (one idea, the lens, a takeaway) sits in the middle of the
+              // space between the anchor line and the footer, so the lower half is not left empty.
+              // A long scene fills the space and scrolls from the anchor line as before. The cover and
+              // checks stay at the top (a check grows when it is answered and must not jump up).
+              <View style={{ flexGrow: 1, justifyContent: centreScene(lesson.scenes[index]) ? 'center' : 'flex-start' }}>
                 <SceneView
                   scene={lesson.scenes[index]}
                   lesson={lesson}

@@ -15,8 +15,22 @@ export interface Pillar {
   body: string;
 }
 
-export const TAGLINE = 'Master Modern Risk.';
-export const VISION_LINE = 'Grow your judgment, one ring at a time.';
+/*
+ * Mobile 1.39 (owner decision, 22 Oct 2026): the "Master Modern Risk." tagline and its
+ * vision line are gone. Settings → About now leads with the same words as the welcome
+ * (WELCOME_HEADLINE + WELCOME_LINE below), so the app tells one CISA story.
+ */
+
+/** Said instead of any list of "coming soon" certifications (About, the Certification picker). */
+export const CERT_SCOPE_LINE = 'Starting with CISA. More certifications later.';
+
+/**
+ * How the content is made, in the SAME words wherever the app says it (About, the
+ * "Is KaiSip affiliated with ISACA?" answer). Never "authored from primary sources"
+ * and never a bare "AI-assisted".
+ */
+export const PROVENANCE_LINE =
+  'Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.';
 
 /**
  * The welcome screen (mobile 1.24): literal, not poetic. It names the exam and
@@ -32,8 +46,12 @@ export const WELCOME_FACTS: readonly string[] = [
   'Progress shown as a range, never a promise.',
   'No account. Everything stays on your phone.',
 ];
-/** Said under the welcome facts (it used to sit on the exam step, which is gone). */
-export const EXAM_TRADEMARK_LINE = 'Not affiliated with or endorsed by ISACA® or ISC2®. Exam names are trademarks of their owners.';
+/**
+ * Said under the welcome facts (it used to sit on the exam step, which is gone).
+ * Mobile 1.39: CISA only. The app teaches no ISC2 exam, so naming ISC2 here hinted
+ * at a roadmap the welcome doesn't offer (Settings → About keeps the full catalog notice).
+ */
+export const EXAM_TRADEMARK_LINE = 'Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.';
 
 export const PILLARS: readonly Pillar[] = [
   { glyph: 'path', title: 'See the path', body: 'Know what to study next, and why it matters.' },

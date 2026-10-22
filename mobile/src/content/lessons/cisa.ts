@@ -818,7 +818,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The IS auditor’s lens',
-        body: 'As the IS (information systems) auditor, you disclose rather than decide alone: tell audit management about any tie before testing starts, and let them weigh it. With an expert’s work, credentials open the door but prove nothing about the result: judge the delivered work, because the conclusion stays yours.',
+        body: 'As the IS (information systems) auditor, you disclose rather than decide alone. Tell audit management about any tie before testing starts, and let them weigh it. With an expert’s work, credentials open the door but prove nothing about the result: judge the delivered work, because the conclusion stays yours.',
       },
       {
         type: 'trap',

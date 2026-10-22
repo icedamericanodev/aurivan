@@ -9,10 +9,11 @@ import fs from 'fs';
 import path from 'path';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import { BackHandler } from 'react-native';
-import { PILLARS, TAGLINE, WELCOME_FACTS, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
+import { CERT_SCOPE_LINE, PILLARS, PROVENANCE_LINE, WELCOME_FACTS, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
 import Onboarding from '../app/onboarding';
 import Settings from '../app/settings';
 import { KaisipLockup } from '../components/brand';
+import { FAQ } from '../content/support';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -118,7 +119,7 @@ describe('welcome screen', () => {
     }
     // The pillars live in Settings → About; the welcome is literal.
     for (const p of PILLARS) expect(text).not.toContain(p.title);
-    expect(text).not.toContain(TAGLINE);
+    expect(text).not.toContain('Master Modern Risk');
   });
 
   it('"Get started" leads into the optional name, then the starting point, and Back returns', () => {
@@ -162,16 +163,36 @@ describe('welcome screen', () => {
 });
 
 describe('Settings → About', () => {
-  it('carries the same vision and pillars', () => {
+  it('leads with the welcome’s CISA line, then the pillars, the scope line and the provenance line (mobile 1.39)', () => {
     mount(<Settings />);
     // Mobile 1.17: behind the "About KaiSip" row (a sheet), so Settings stays short.
-    expect(allText()).not.toContain(TAGLINE);
+    expect(allText()).not.toContain(CERT_SCOPE_LINE);
     act(() => {
       r!.root.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && String(n.props.accessibilityLabel).startsWith('About KaiSip'))[0].props.onPress();
     });
     const text = allText();
     expect(text).toContain('Our vision');
-    expect(text).toContain(TAGLINE);
+    expect(text).toContain(WELCOME_HEADLINE);
+    expect(text).toContain(WELCOME_LINE);
     for (const p of PILLARS) expect(text).toContain(p.title);
+    expect(text).toContain('Starting with CISA. More certifications later.');
+    expect(text).toContain(PROVENANCE_LINE);
+    // Owner decision (22 Oct 2026): no platform tagline and no "coming soon" list of other exams.
+    expect(text).not.toMatch(/Master Modern Risk|Coming soon|primary sources|CISM|CRISC|CISSP|AAIA|ISC2/);
+  });
+
+  it('the Certification picker lists only what the app teaches, with the scope line', () => {
+    mount(<Settings />);
+    act(() => {
+      r!.root.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && String(n.props.accessibilityLabel).startsWith('Certification'))[0].props.onPress();
+    });
+    const text = allText();
+    expect(text).toContain(CERT_SCOPE_LINE);
+    expect(text).not.toMatch(/Coming soon|CISM|CRISC|CISSP|AAIA/);
+  });
+
+  it('the provenance line is the same words in About and in the ISACA answer', () => {
+    expect(PROVENANCE_LINE).toBe('Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.');
+    expect(FAQ.find((f) => f.id === 'isaca')!.answer).toContain(PROVENANCE_LINE);
   });
 });

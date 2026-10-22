@@ -2,7 +2,8 @@
  * Mobile 1.24: the end of Day 1. The first set (the same five questions for
  * everyone) ends on its own closing screen instead of the normal Results:
  * - "3 of 5" with no percentage ring, and one fact (the topic most missed, or "All five right.");
- * - the closing plate: tomorrow in one line, "The 2 you missed come back then.", a seed planted for you (oak), the reminder ask;
+ * - the closing plate: tomorrow in one line, "The 2 you missed come back then.", a seed planted for you (oak), the reminder ask
+ *   (mobile 1.39: one row, "Remind me tomorrow at [9:00 PM]", whose time chip opens the hour and minute steppers);
  * - "Done for today" is the one solid button; "Do 5 more" is a quiet link; never "Practice the ones you missed";
  * - the words "check" and "diagnose" never appear;
  * - the phone's permission box appears only when the ask is tapped, "Not now" is respected;
@@ -256,12 +257,17 @@ describe('the buttons', () => {
 });
 
 describe('the reminder ask', () => {
-  it('is the one emphasised button, worded for the hour they are studying now', () => {
+  it('is one row, "Remind me tomorrow at [time]", for the hour they are studying now', () => {
     finishFirstSet(3);
     mount(<Results />);
-    const ask = pressable(/^Tomorrow I’ll study at /);
+    const ask = pressable(/^Remind me tomorrow at /);
     expect(ask.length).toBeGreaterThan(0);
-    expect(allText()).toMatch(/Tomorrow I’ll study at 9:00 PM|Tomorrow I’ll study at 21:00/);
+    // Spoken as the whole sentence; seen as the button's words and the time chip beside it.
+    expect(String(ask[0].props.accessibilityLabel)).toMatch(/^Remind me tomorrow at (9:00 PM|21:00)$/);
+    expect(allText()).toContain('Remind me tomorrow at');
+    expect(pressable(/^Reminder time, (9:00 PM|21:00)$/).length).toBeGreaterThan(0);
+    // Mobile 1.39: no Earlier / Later links any more; "Not now" is the only other choice.
+    expect(pressable(/^One hour (earlier|later)$/)).toHaveLength(0);
     // Nothing asked of the phone yet.
     expect(mockEnsure).not.toHaveBeenCalled();
     expect(useSettings.getState().reminder.enabled).toBe(false);
@@ -270,7 +276,7 @@ describe('the reminder ask', () => {
   it('a tap asks the phone, turns reminders on at that time and schedules them', async () => {
     finishFirstSet(3);
     mount(<Results />);
-    await press(/^Tomorrow I’ll study at /);
+    await press(/^Remind me tomorrow at /);
     expect(mockEnsure).toHaveBeenCalledTimes(1);
     const rem = useSettings.getState().reminder;
     expect(rem).toMatchObject({ enabled: true, hour: 21, minute: 0 });
@@ -279,19 +285,26 @@ describe('the reminder ask', () => {
     expect(allText()).toMatch(/Done\. I’ll remind you at/);
   });
 
-  it('the time can move by an hour before the tap', async () => {
+  it('the time chip opens the steppers; the time can move by hours and 15 minutes before the tap', async () => {
     finishFirstSet(3);
     mount(<Results />);
-    await press(/^One hour earlier$/);
-    await press(/^Tomorrow I’ll study at /);
-    expect(useSettings.getState().reminder).toMatchObject({ enabled: true, hour: 20, minute: 0 });
+    expect(pressable(/^Hour earlier$/)).toHaveLength(0); // the sheet is closed until the chip is tapped
+    await press(/^Reminder time, /);
+    await press(/^Hour earlier$/);
+    await press(/^Minutes later$/);
+    await press(/^Done, Study time$/);
+    // Nothing is saved by the sheet itself: only the button turns the reminder on.
+    expect(useSettings.getState().reminder.enabled).toBe(false);
+    expect(pressable(/^Reminder time, (8:15 PM|20:15)$/).length).toBeGreaterThan(0);
+    await press(/^Remind me tomorrow at /);
+    expect(useSettings.getState().reminder).toMatchObject({ enabled: true, hour: 20, minute: 15 });
   });
 
   it('if the phone says no: nothing is turned on, the learner is told how to change it, and it is not asked again', async () => {
     mockEnsure.mockResolvedValue(false);
     finishFirstSet(3);
     mount(<Results />);
-    await press(/^Tomorrow I’ll study at /);
+    await press(/^Remind me tomorrow at /);
     expect(useSettings.getState().reminder.enabled).toBe(false);
     expect(useSeen.getState().reminderAsk.first).toBe('blocked');
     expect(allText()).toMatch(/Notifications are off for KaiSip on this phone/);
@@ -304,7 +317,7 @@ describe('the reminder ask', () => {
     expect(mockEnsure).not.toHaveBeenCalled();
     expect(useSettings.getState().reminder.enabled).toBe(false);
     expect(useSeen.getState().reminderAsk.first).toBe('later');
-    expect(allText()).not.toMatch(/Tomorrow I’ll study at/);
+    expect(allText()).not.toMatch(/Remind me tomorrow at/);
   });
 
   it('"Not now" says so, and focus moves to "Done for today" (never left on a removed button)', async () => {
@@ -323,12 +336,16 @@ describe('the reminder ask', () => {
     say.mockRestore();
   });
 
-  it('Earlier / Later say the new time', async () => {
+  it('closing the time sheet says the new time and puts focus back on the chip', async () => {
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     finishFirstSet(3);
     mount(<Results />);
-    await press(/^One hour earlier$/);
+    await press(/^Reminder time, /);
+    await press(/^Hour earlier$/);
+    jest.mocked(moveFocus).mockClear();
+    await press(/^Done, Study time$/);
     flushSayLaterForTest();
+    expect(jest.mocked(moveFocus).mock.calls.some((c) => c[1] === ANNOUNCE_DELAY)).toBe(true);
     expect(say.mock.calls.map((c) => String(c[0])).some((s) => /^Study time (8:00 PM|20:00)/.test(s))).toBe(true);
     say.mockRestore();
   });
@@ -337,12 +354,12 @@ describe('the reminder ask', () => {
     useSeen.setState({ reminderAsk: { first: 'later' } });
     finishFirstSet(3);
     mount(<Results />);
-    expect(allText()).not.toMatch(/Tomorrow I’ll study at/);
+    expect(allText()).not.toMatch(/Remind me tomorrow at/);
     unmount();
     useSeen.setState({ reminderAsk: {} });
     useSettings.setState({ reminder: { enabled: true, hour: 8, minute: 0, days: [0, 1, 2, 3, 4, 5, 6] } });
     mount(<Results />);
-    expect(allText()).not.toMatch(/Tomorrow I’ll study at/);
+    expect(allText()).not.toMatch(/Remind me tomorrow at/);
   });
 });
 
@@ -369,8 +386,9 @@ describe('light, dark and 200% text', () => {
     for (const line of ['3 of 5 right', 'The 2 you missed come back then.', 'Done for today', 'Do 5 more', 'Choose a different plant']) expect(t).toContain(line);
     // Nothing is clipped by a line cap, and every pressable has a spoken name.
     const names = new Set(pressable(/./).map((p) => String(p.props.accessibilityLabel)));
-    for (const name of ['Done for today', 'Do 5 more', 'Choose a different plant', 'One hour earlier', 'One hour later', 'Not now']) expect(names).toContain(name);
-    expect([...names].some((n) => /^Tomorrow I’ll study at /.test(n))).toBe(true);
+    for (const name of ['Done for today', 'Do 5 more', 'Choose a different plant', 'Not now']) expect(names).toContain(name);
+    expect([...names].some((n) => /^Remind me tomorrow at /.test(n))).toBe(true);
+    expect([...names].some((n) => /^Reminder time, /.test(n))).toBe(true);
     const capped = root().findAll((n) => typeof n.type === 'string' && n.props.numberOfLines !== undefined);
     expect(capped).toHaveLength(0);
   });

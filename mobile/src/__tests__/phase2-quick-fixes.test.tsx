@@ -190,19 +190,16 @@ describe('Results for a one-domain session (R1, R2) and the assisted line (Q1)',
     });
   };
 
-  it('R1: one thick ring in the domain’s tone and one centred line that names the domain (mobile 1.22)', () => {
+  it('R1: no ring for one domain (mobile 1.39), and the count said once', () => {
     finishOneDomain(2);
     mount(<Results />);
-    const rings = root().findAllByType(GrowthRings);
-    expect(rings).toHaveLength(1);
-    expect(rings[0].props.weights).toHaveLength(1);
-    expect(rings[0].props.mastery[0]).toBeCloseTo(2 / 3);
+    // Mobile 1.39: the domain rings only for a mixed-domain set or a mock.
+    expect(root().findAllByType(GrowthRings)).toHaveLength(0);
     const text = allText();
-    // Mobile 1.22: no stranded one-row legend. Mobile 1.24 (UX review S7): three questions are a handful, so
-    // the count is said once, in the headline, and the ring's centre names the domain (no "All IS Audit · 2 of 3").
+    // Mobile 1.24 (UX review S7): three questions are a handful, so the count is said once, in the
+    // headline (no "All IS Audit · 2 of 3").
     expect(text).toMatch(/2 of 3 right/);
     expect(text.match(/2 of 3/g)).toHaveLength(1);
-    expect(text).toMatch(/IS Audit/);
     expect(text).not.toMatch(/2\/3/);
     expect(text).not.toMatch(/IT Governance/);
     expect(text).not.toMatch(/–/);

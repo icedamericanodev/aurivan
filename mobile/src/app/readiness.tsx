@@ -223,19 +223,15 @@ export default function ReadinessReport() {
             {range.enough ? 'estimated readiness' : `${range.needed} more ${range.needed === 1 ? 'answer' : 'answers'} until your readiness range`}
           </T>
         </View>
-        {/* Mobile 1.24: what to compare the range with, in the app's own bars (80% low end, 70% per domain).
-            Never a pass mark and never a promise: the framing below says so too. */}
-        <View testID="readiness-yardstick" style={{ marginTop: space.sm }}>
-          <T v="small" color={c.ink2}>{YARDSTICK_LINE}</T>
-        </View>
-
         {/* 2. What this number is: always on screen, never hidden. Before
-            there is a number, it says what the range will be (UX review P3). */}
-        <View testID="readiness-framing" style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
-          <View accessible accessibilityLabel={`${range.enough ? 'What this number is' : 'What your range will be'}. A study estimate, not a prediction. ${FRAMING_LINE}`}>
+            there is a number, it says what the range will be (UX review P3).
+            Mobile 1.39: only the line itself stays in view; what it comes from, the app's own
+            yardstick and how it's worked out fold into the one expander under it, so the first
+            action is not three explanations down. */}
+        <View testID="readiness-framing" style={{ marginTop: space.lg, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
+          <View accessible accessibilityLabel={`${range.enough ? 'What this number is' : 'What your range will be'}. A study estimate, not a prediction.`}>
             <T v="caption" color={c.accentText}>{range.enough ? 'What this number is' : 'What your range will be'}</T>
             <T v="quote" style={{ marginTop: 4 }}>A study estimate, not a prediction.</T>
-            <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{FRAMING_LINE}</T>
           </View>
         </View>
         <HowItWorks />
@@ -424,14 +420,24 @@ export default function ReadinessReport() {
   );
 }
 
-/** "How it's worked out": one tap away, never hidden behind a sheet. */
+/**
+ * "How it's worked out": one tap away, never hidden behind a sheet. Mobile 1.39: it holds the
+ * framing's detail (FRAMING_LINE), the app's own yardstick (YARDSTICK_LINE: 80% low end, 70% per
+ * domain; a study bar, never a pass mark) and how the number is worked out (HOW_LINE).
+ */
 function HowItWorks() {
   const [open, setOpen] = useState(false);
   return (
     <View style={{ marginTop: space.sm }}>
       <DisclosureRow title="How it’s worked out" expanded={open} onPress={() => setOpen((o) => !o)} last />
       <Collapse open={open}>
-        <T v="small" style={{ paddingBottom: space.sm }}>{HOW_LINE}</T>
+        <View style={{ gap: space.sm, paddingBottom: space.sm }}>
+          <T v="small">{FRAMING_LINE}</T>
+          <View testID="readiness-yardstick">
+            <T v="small">{YARDSTICK_LINE}</T>
+          </View>
+          <T v="small">{HOW_LINE}</T>
+        </View>
       </Collapse>
     </View>
   );

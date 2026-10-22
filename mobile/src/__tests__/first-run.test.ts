@@ -140,8 +140,8 @@ describe('the reminder ask', () => {
   it('defaults to the hour the learner is studying now, on the hour', () => {
     const now = new Date(2026, 9, 15, 21, 47).getTime();
     expect(defaultReminderTime(now)).toEqual({ hour: 21, minute: 0 });
-    expect(reminderAskLine(19, 0, 'en-US')).toBe('Tomorrow I’ll study at 7:00 PM');
-    expect(reminderAskLine(19, 0, 'en-GB')).toBe('Tomorrow I’ll study at 19:00');
+    expect(reminderAskLine(19, 0, 'en-US')).toBe('Remind me tomorrow at 7:00 PM');
+    expect(reminderAskLine(19, 0, 'en-GB')).toBe('Remind me tomorrow at 19:00');
   });
 
   const due = { supported: true, enabled: false, studyDays: 3, studiedToday: true, secondShown: false, newLearner: true, turnedOff: false } as const;

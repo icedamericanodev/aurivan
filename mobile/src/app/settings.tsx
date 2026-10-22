@@ -57,7 +57,7 @@ import { Button, Chip, Gap, PushedHeader, Screen, Stepper, T, ToggleRow } from '
 import { spokenDate } from '../engine/calendar';
 import { DAILY_MINUTES, examFocusedOf, FAMILIARITIES, FAMILIARITY_INFO, KEEP_TODAY_LINE, minutesLabel, minutesSpoken, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { MODE_INFO, STUDY_MODES, type StudyMode } from '../engine/studyModes';
-import { TAGLINE, VISION_LINE } from '../content/brand';
+import { CERT_SCOPE_LINE, PROVENANCE_LINE, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certifications';
 import { hasNotes } from '../content/notes';
 import { examDateLabel } from '../engine/examDay';
@@ -545,7 +545,8 @@ export default function Settings() {
       <Gap h={space.xl} />
       <T v="meta">
         {/* The last sentence is "Progress is stored only on this device." with the flag off (content/cloud/copy.ts about.off). */}
-        KaiSip v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. {aboutLine(syncing)}
+        {/* Mobile 1.39: how the content is made, in the one provenance line used everywhere (content/brand.ts). */}
+        KaiSip v{Constants.expoConfig?.version ?? '1.0.0'} · {PROVENANCE_LINE} {aboutLine(syncing)}
       </T>
       {updates.available && (
         // Mobile 1.19: which update this phone runs ("Update 1a2b3c4d · 5e26d4b", or "built-in"), so support
@@ -556,9 +557,9 @@ export default function Settings() {
         </T>
       )}
       <Gap h={space.sm} />
-      {/* Every certification named anywhere in the app (coming-soon ones too) needs its trademark notice;
-          one combined line instead of five near-identical ones. */}
-      <T v="meta">{combinedTrademarkNotice(CERTIFICATIONS)}</T>
+      {/* Every certification named anywhere in the app needs its trademark notice. Mobile 1.39: the
+          app names only the certifications it teaches (no "coming soon" list), so only those. */}
+      <T v="meta">{combinedTrademarkNotice(CERTIFICATIONS.filter((x) => x.status === 'available'))}</T>
 
       {/* ── The sheets ─────────────────────────────────────────────── */}
       {/* Your name: edit, save or clear. Saving tidies the text (engine/displayName.ts), so what the row shows is what Today uses. */}
@@ -600,17 +601,16 @@ export default function Settings() {
         onClose={close}
         title="Certification"
         groupLabel="Which exam are you preparing for?"
-        options={CERTIFICATIONS.map((x) => ({
+        // Mobile 1.39 (owner decision): only the certifications the app teaches; no "coming soon" list.
+        // The catalogue itself (content/certifications.ts) is unchanged.
+        options={CERTIFICATIONS.filter((x) => x.status === 'available').map((x) => ({
           value: x.id,
           title: x.name,
           subtitle: x.fullName,
-          // Shown, so the plan is visible, but not choosable yet.
-          badge: x.status === 'available' ? undefined : 'Coming soon',
-          disabled: x.status !== 'available',
         }))}
         value={s.activeCertId}
         onChange={(id) => s.setActiveCert(id)}
-        after={<T v="meta" style={{ marginTop: space.md }}>Only CISA is available today.</T>}
+        after={<T v="meta" style={{ marginTop: space.md }}>{CERT_SCOPE_LINE}</T>}
       />
 
       <CalendarSheet
@@ -751,11 +751,15 @@ export default function Settings() {
         <View style={{ marginTop: space.sm }}>
           <KaisipLockup height={28} />
         </View>
+        {/* Mobile 1.39: the same lead as the welcome screen, one CISA story (no platform tagline). */}
         <T v="caption" color={c.accentText} accessibilityRole="header" style={{ marginTop: space.lg }}>Our vision</T>
-        <T v="hero" style={{ marginTop: space.xs }}>{TAGLINE}</T>
-        <T v="quote" color={c.ink2} style={{ marginTop: space.xs }}>{VISION_LINE}</T>
+        <T v="hero" style={{ marginTop: space.xs }}>{WELCOME_HEADLINE}</T>
+        <T v="quote" color={c.ink2} style={{ marginTop: space.xs }}>{WELCOME_LINE}</T>
         <Gap h={space.lg} />
         <PillarList look="rows" />
+        <Gap h={space.lg} />
+        <T v="meta">{CERT_SCOPE_LINE}</T>
+        <T v="meta" style={{ marginTop: space.xs }}>{PROVENANCE_LINE}</T>
       </Sheet>
     </Screen>
   );

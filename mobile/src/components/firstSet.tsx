@@ -10,7 +10,8 @@
  *        range is;
  *     2. a closing plate: tomorrow in one line, "The 2 you missed come back then.",
  *        a seed planted for you (oak; drawn as a seed, "Choose a different
- *        plant" opens the picker), and the reminder ask;
+ *        plant" opens the picker); then, under the plate (mobile 1.39), the
+ *        reminder ask;
  *     3. "Done for today" (the one solid button) and a quiet "Do 5 more".
  *   A set ended early (X → End after 2 answers) is not "done": the headline
  *   is the honest count ("2 answered"), one line says how many are left, the
@@ -21,15 +22,17 @@
  *   never shows a badge moment.
  * - `ReminderAsk` is the one reminder question, used on that screen and (once
  *   more, by `SecondAskCard`) on Today the day the learner finishes their 3rd
- *   study day. "Tomorrow I'll study at 7:00 PM" is the only button with
- *   emphasis; the phone's own permission box appears only when it is tapped;
- *   "Not now" is respected and never asked again after the second chance.
+ *   study day. Mobile 1.39: one row, "Remind me tomorrow at [7:00 PM]": the
+ *   button is the only one with emphasis, the time chip opens the hour and
+ *   minute steppers. The phone's own permission box appears only when the
+ *   button is tapped; "Not now" is respected and never asked again after the
+ *   second chance.
  * - `FirstRangePanel` is the calm card on Today, right under the readiness
  *   range, the first time that range appears: what it is (an estimate), the
  *   strongest and the weakest domain. Still, no confetti.
  */
 import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type Ref } from 'react';
 import { BackHandler, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getCertification } from '../content/certifications';
@@ -37,12 +40,12 @@ import type { Certification } from '../content/types';
 import { findQuestion } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
 import { FIRST_SET_SIZE } from '../content/firstSet';
-import { comeBackLine, defaultReminderTime, firstRange, firstSetFact, reminderAskLine, tomorrowPreview } from '../engine/firstRun';
+import { comeBackLine, defaultReminderTime, firstRange, firstSetFact, REMINDER_ASK_LEAD, reminderAskLine, tomorrowPreview } from '../engine/firstRun';
 import { missedSubtopics } from '../engine/outline';
 import { plantCallName, plantShown } from '../engine/plant';
 import type { Readiness } from '../engine/readiness';
 import { RANGE_MIN_ANSWERS } from '../engine/readinessRange';
-import { localTime, stepTime } from '../engine/reminders';
+import { localHour, localTime, MINUTE_STEP, stepTime } from '../engine/reminders';
 import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../lib/a11y';
 import { deferMissesToTomorrow, firstSetLeftOf } from '../lib/firstSet';
 import { scoreSession } from '../lib/finishSession';
@@ -55,11 +58,14 @@ import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession, type ActiveSession } from '../store/session';
 import { useSettings } from '../store/settings';
-import { space } from '../theme/tokens';
+import { LARGE_TEXT, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Seedling } from './glyphs';
+import { ChevronDown, ICON_STROKE } from './icons';
+import { AnimatedPressable, usePressScale } from './motion';
 import { StickyFooter } from './quiz';
-import { Button, Card, Enter, Gap, Row, T } from './ui';
+import { Sheet } from './settings';
+import { Button, Card, Enter, Gap, ICON_SIZE, Row, Stepper, T, useFontScale } from './ui';
 
 // ── The reminder ask ─────────────────────────────────────────────────────
 type Phase = 'idle' | 'working' | 'on' | 'blocked' | 'later';
@@ -68,21 +74,34 @@ type Phase = 'idle' | 'working' | 'on' | 'blocked' | 'later';
  * The one reminder question. `which` is 'first' (the Day-1 closing screen) or
  * 'second' (the one second chance on Today). It draws nothing where reminders
  * cannot work (Expo Go on Android) or are already on.
+ *
+ * Mobile 1.39: one row that reads as a sentence, "Remind me tomorrow at
+ * [9:00 PM]". The button turns the reminder on; the time chip beside it opens
+ * the same hour and minute steppers Settings uses. "Not now" sits under it.
+ * (Before, three ghost links, "Earlier", "Later" and "Not now", crowded the ask.)
  */
 export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; onNotNow?: () => void }) {
   const { c } = useTheme();
   const enabled = useSettings((s) => s.reminder.enabled);
   const asked = useSeen((s) => s.reminderAsk?.first);
-  // The default time is the hour the learner is studying now; the stepper moves it by whole hours.
+  // The default time is the hour the learner is studying now; the sheet moves it by hours and 15 minutes.
   const [time, setTime] = useState(() => defaultReminderTime(Date.now()));
   const [phase, setPhase] = useState<Phase>('idle');
+  // The time sheet (Settings' steppers) and which way the time last moved, so both steppers roll that way.
+  const [picking, setPicking] = useState(false);
+  const [timeDir, setTimeDir] = useState<1 | -1>(1);
+  const chipRef = useRef<View>(null);
+  const fontScale = useFontScale();
 
-  // Earlier / Later: the time on the other button changes, so say the new time (UX review B1; WCAG 4.1.3).
-  // Focus stays on the stepper, so the learner can keep tapping.
-  const step = (delta: number) => {
-    const n = stepTime(time.hour, time.minute, delta);
-    setTime(n);
-    sayLater(`Study time ${localTime(n.hour, n.minute)}`);
+  const moveTime = (deltaMinutes: number) => {
+    setTimeDir(deltaMinutes < 0 ? -1 : 1);
+    setTime((t) => stepTime(t.hour, t.minute, deltaMinutes));
+  };
+  // Closing the sheet says the chosen time and puts focus back on the chip that opened it.
+  const closePicker = () => {
+    setPicking(false);
+    sayLater(`Study time ${localTime(time.hour, time.minute)}`);
+    moveFocus(chipRef, ANNOUNCE_DELAY);
   };
   // "Not now" takes the ask away: say so, then the caller moves focus somewhere that still exists
   // (UX review B1; focus must never be left on a removed button).
@@ -127,33 +146,102 @@ export function ReminderAsk({ which, onNotNow }: { which: 'first' | 'second'; on
   // Already on (set up in Settings, or restored), or answered before and this is the first-run screen: nothing to ask.
   if (enabled || (which === 'first' && asked !== undefined)) return null;
 
-  const spoken = `Tomorrow I’ll study at ${localTime(time.hour, time.minute)}`;
+  const shown = localTime(time.hour, time.minute);
+  const busy = phase === 'working';
+  // Large text: the chip drops under the button. Otherwise the row stays one line and, on a narrow
+  // screen, the button's words wrap inside their pill instead (the chip never shrinks).
+  const large = fontScale >= LARGE_TEXT;
   return (
-    <View style={{ gap: space.sm }}>
-      <Button
-        kind="secondary"
-        label={reminderAskLine(time.hour, time.minute)}
-        accessibilityLabel={spoken}
-        accessibilityHint="Turns on a study reminder. Your phone may ask to allow notifications."
-        disabled={phase === 'working'}
-        onPress={accept}
-      />
-      <Row style={{ flexWrap: 'wrap' }}>
+    <View style={{ gap: space.xs }}>
+      {/* One row, read as one sentence. */}
+      <Row gap={space.sm} style={{ flexWrap: large ? 'wrap' : 'nowrap' }}>
         <Button
-          kind="ghost"
-          label="Earlier"
-          accessibilityLabel="One hour earlier"
-          onPress={() => step(-60)}
+          kind="secondary"
+          label={REMINDER_ASK_LEAD}
+          // The button alone ends in "at", so the spoken name carries the whole sentence.
+          accessibilityLabel={reminderAskLine(time.hour, time.minute)}
+          accessibilityHint="Turns on a study reminder. Your phone may ask to allow notifications."
+          disabled={busy}
+          onPress={accept}
+          // 16 a side (the pill's usual 32 is for a lone button), so with the chip beside it the row fits 393pt.
+          style={{ flexShrink: 1, paddingHorizontal: space.lg }}
         />
-        <Button
-          kind="ghost"
-          label="Later"
-          accessibilityLabel="One hour later"
-          onPress={() => step(60)}
-        />
-        <Button kind="ghost" label="Not now" accessibilityHint="No reminder. You can set one in Settings." onPress={notNow} />
+        <TimeChip ref={chipRef} time={shown} disabled={busy} onPress={() => setPicking(true)} />
       </Row>
+      {/* A ghost after content sits at the gutter (spec §5), its text lined up with the plate's. */}
+      <Button
+        kind="ghost"
+        label="Not now"
+        accessibilityHint="No reminder. You can set one in Settings."
+        onPress={notNow}
+        style={{ alignSelf: 'flex-start', marginLeft: -space.sm }}
+      />
+      {/* The same hour and minute steppers as Settings → Time and days. Nothing is saved until the button is tapped. */}
+      <Sheet visible={picking} onClose={closePicker} title="Study time" closeLabel="Done" intro="When should the reminder come?">
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: space.xl, marginTop: space.sm }}>
+          <Stepper
+            label="Hour"
+            spokenLabel="Reminder hour"
+            dir={timeDir}
+            value={localHour(time.hour)}
+            spoken={shown}
+            onDec={() => moveTime(-60)}
+            onInc={() => moveTime(60)}
+          />
+          <Stepper
+            label="Minutes"
+            spokenLabel="Reminder minutes"
+            dir={timeDir}
+            value={String(time.minute).padStart(2, '0')}
+            spoken={shown}
+            onDec={() => moveTime(-MINUTE_STEP)}
+            onInc={() => moveTime(MINUTE_STEP)}
+          />
+        </View>
+        <T v="meta" style={{ marginTop: space.md }}>At most one reminder a day. You can change it in Settings.</T>
+      </Sheet>
     </View>
+  );
+}
+
+/**
+ * The reminder ask's time chip: an outlined pill with the time and a down chevron (it opens the
+ * time sheet). 48pt tall: a comfortable touch target that lines up with the button beside it.
+ */
+function TimeChip({ time, onPress, disabled, ref }: { time: string; onPress: () => void; disabled?: boolean; ref?: Ref<View> }) {
+  const { c } = useTheme();
+  const press = usePressScale({ tint: c.soft, tintRadius: radius.pill });
+  return (
+    <AnimatedPressable
+      ref={ref}
+      accessibilityRole="button"
+      accessibilityLabel={`Reminder time, ${time}`}
+      accessibilityHint="Opens the time picker."
+      accessibilityState={disabled ? { disabled } : undefined}
+      disabled={disabled}
+      onPress={onPress}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      style={[
+        {
+          minHeight: 56,
+          maxWidth: '100%',
+          borderRadius: radius.pill,
+          borderWidth: 1.5,
+          borderColor: c.control,
+          paddingHorizontal: space.md,
+          flexShrink: 0,
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: space.xs,
+        },
+        press.style,
+      ]}
+    >
+      {press.layer}
+      <T v="label" style={{ fontVariant: ['tabular-nums'], flexShrink: 1 }}>{time}</T>
+      <ChevronDown size={ICON_SIZE.inline} color={c.ink2} strokeWidth={ICON_STROKE} />
+    </AnimatedPressable>
   );
 }
 
@@ -309,8 +397,12 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
                 </View>
               </Row>
             )}
-            <ReminderAsk which="first" onNotNow={() => moveFocus(doneRef, ANNOUNCE_DELAY + 50)} />
           </Card>
+        </Enter>
+        {/* Mobile 1.39: the reminder ask is its own block under the plate (one job per block), with the
+            full width it needs to read as one row, "Remind me tomorrow at [time]". */}
+        <Enter i={2} style={{ marginTop: space.xl }}>
+          <ReminderAsk which="first" onNotNow={() => moveFocus(doneRef, ANNOUNCE_DELAY + 50)} />
         </Enter>
       </ScrollView>
       <StickyFooter onHeight={setFooterH}>

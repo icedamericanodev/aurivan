@@ -268,6 +268,19 @@ export function planCheckLabel(item: PlanItem, due?: number): string {
 const MARK = 24;
 
 /**
+ * The one next item as a "Then:" line (mobile 1.39). A "Practice: IS Operations" label is turned
+ * round ("IS Operations practice") so the line never has two colons:
+ * "Then: IS Operations practice · 12 questions", "Then: Lesson · Business impact analysis".
+ */
+export function thenLine(label: string): string {
+  const said = label
+    .replace(/^Practice: (.+?)( · |$)/, '$1 practice$2')
+    // Any other "Kind: name" label ("Top-up: Info Protection") takes a middle dot instead of its colon.
+    .replace(/^([^:·]+): /, '$1 · ');
+  return `Then: ${said}`;
+}
+
+/**
  * Today's plan as a checklist on the forest panel (mockup A): done = a filled
  * sap check and struck-through text, later items = a faint ring and the
  * panel's quiet text. State is never colour alone: the check, the strike and
@@ -300,6 +313,20 @@ export function PlanChecklist({
   const shown = useShownDone(done, focused, seenKey);
   const rows = items.map((item, i) => ({ item, i })).filter(({ i }) => i !== current && !isOptional(items, i));
   if (rows.length === 0) return null;
+  // Mobile 1.39 (spec §5: a hollow circle reads as a radio button): when all that is left is ONE
+  // item after the one you are on (Day 1's lesson, then practice), there is nothing to tick off
+  // yet, so it is a plain "Then:" line in `sap`, with no circle.
+  const only = rows.length === 1 ? rows[0] : undefined;
+  if (only && only.i > current && !done[only.i]) {
+    const line = thenLine(planCheckLabel(only.item, due));
+    return (
+      <View testID="plan-checklist" style={{ marginTop: space.lg }}>
+        <View accessible accessibilityLabel={spokenMin(line)}>
+          <T v="body" color={c.sap}>{line}</T>
+        </View>
+      </View>
+    );
+  }
   return (
     <View testID="plan-checklist" style={{ marginTop: space.lg, gap: 10 }}>
       {rows.map(({ item, i }) => {
@@ -536,9 +563,10 @@ export function DomainRings({
           return (
             <Row key={cert.domains[i].id} gap={space.sm} style={{ minHeight: 28 }}>
               <DomainDot domain={cert.domains[i]} />
-              {/* One line, never broken mid-word ("Governan / ce", 1.24): the name shrinks first, and
-                  below 380 wide the exam's shorter tile name is used. At large text it may wrap at a space. */}
-              <T v="small" color={c.ink} numberOfLines={large ? 2 : 1} style={{ flex: 1, flexShrink: 1, minWidth: 0 }}>
+              {/* Below 380 wide the exam's shorter tile name is used: one word, on one line, so it never
+                  breaks mid-word ("Governan / ce", 1.24). Wider, mobile 1.39: the name wraps at its space
+                  ("Info / Protection") instead of ending in "Info Protecti…"; the figure keeps its column. */}
+              <T v="small" color={c.ink} numberOfLines={narrow && !large ? 1 : undefined} style={{ flex: 1, flexShrink: 1, minWidth: 0 }}>
                 {narrow ? (cert.domains[i].tile ?? cert.domains[i].short) : cert.domains[i].short}
               </T>
               {/* The figure never shrinks: the name gives way first. A band word ("Building") is a word. */}

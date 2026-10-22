@@ -225,8 +225,10 @@ export default function You() {
             ),
           ]}
         </StatRow>
-        {/* Two "Accuracy" stats in the app count different things (C8): say what this one counts. */}
-        <T v="meta" style={{ marginTop: space.sm }}>Accuracy counts your latest try at each question.</T>
+        {/* Two "Accuracy" stats in the app count different things (C8): say what this one counts.
+            Mobile 1.39: only when the rings' "Percentages count your latest try…" line is not already
+            on screen two blocks up (that one covers this percentage too); never both. */}
+        {!anyNumber && <T v="meta" style={{ marginTop: space.sm }}>Accuracy counts your latest try at each question.</T>}
         {/* Your plant, below the stats (decided 15 Oct 2026): it never leads a study screen. */}
         {(plant.plant || plant.shown) && (
           <View style={{ marginTop: space.lg }}>

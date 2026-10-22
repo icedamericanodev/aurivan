@@ -177,7 +177,8 @@ describe('the exact §2.3 strings', () => {
   it('the About line with the flag off is the one Settings has always shown', () => {
     // Settings reads its last sentence from here (aboutLine); with the flag off it must stay word for word.
     const settings = readFileSync(join(__dirname, '../app/settings.tsx'), 'utf8');
-    expect(settings).toContain('written for exam preparation. {aboutLine(syncing)}');
+    // Mobile 1.39: the sentence before it is the one provenance line (content/brand.ts PROVENANCE_LINE).
+    expect(settings).toContain('{PROVENANCE_LINE} {aboutLine(syncing)}');
     expect(ACCOUNT_COPY['about.off']).toBe('Progress is stored only on this device.');
   });
 });

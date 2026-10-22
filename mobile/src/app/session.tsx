@@ -94,7 +94,6 @@ import { missCoachLine } from '../engine/slipCoach';
 import { eliminateTip, runnerUp, splitMissTips, tipParts } from '../engine/tips';
 import { finishSession } from '../lib/finishSession';
 import { advancePath } from '../lib/sessions';
-import { shortSubtopic } from '../lib/format';
 import { HINT_AFTER_LINE, HINT_BEFORE_LINE } from '../engine/readiness';
 import { useAnswerClock } from '../lib/useAnswerClock';
 import { selectCert, useProgress } from '../store/progress';
@@ -593,7 +592,11 @@ export default function SessionScreen() {
   // The navigator's summary: how many answered, flagged and left (the exam's own length, not the bank's).
   const answeredCount = Object.keys(active.responses).length;
   const navSummary = `${answeredCount} answered · ${active.flagged.length} flagged · ${total - answeredCount} left`;
-  const metaLine = [domain?.short, shortSubtopic(q.subtopic), `${active.index + 1} of ${total}`].filter(Boolean).join(' · ');
+  // Mobile 1.39: above the stem, only the domain and the count ("IS Audit · 1 of 5"). The
+  // subtopic named the idea being tested, which gave the answer away, and the real exam
+  // never labels topics. It appears only after the reveal, in the "Read the note" row, and
+  // never in a mock (a mock has no answer screen).
+  const metaLine = [domain?.short, `${active.index + 1} of ${total}`].filter(Boolean).join(' · ');
 
   // The vine draws itself the first time it scrolls into view: on each
   // scroll we ask where it sits on screen (measureInWindow works on phones

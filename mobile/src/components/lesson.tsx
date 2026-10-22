@@ -65,8 +65,14 @@ export function lastPart(scene: Scene): number {
       return 2;
     case 'check':
       return scene.options.length;
+    case 'tip':
+      // The takeaway: the caption, the italic quote, then (when it runs long) the rest in plain text.
+      return splitCoachText(scene.body).rest ? 2 : 1;
+    case 'idea':
+      // "The IS auditor’s lens" splits like the takeaway; a plain idea is two parts.
+      return scene.heading === COACH_HEADING && splitCoachText(scene.body).rest ? 2 : 1;
     default:
-      // The cover, an idea, an analogy, "The IS auditor’s lens" and the takeaway: two parts.
+      // The cover and an analogy: two parts.
       return 1;
   }
 }
@@ -172,9 +178,62 @@ function Prose({ children }: { children: string }) {
   return <Stem>{children}</Stem>;
 }
 
-/** The key-idea recipe (as on the vine and in notes): a leaf and a caption, then the italic voice on a green rule. */
+/**
+ * The italic coach's voice is capped (mobile 1.39, design spec §1: italic is
+ * "never for whole paragraphs > 4 lines"): at most two sentences and about
+ * four lines at phone width. Fraunces italic 18 fits about 35 characters a
+ * line at 393pt, so four lines is about 140 characters.
+ */
+export const QUOTE_MAX_SENTENCES = 2;
+export const QUOTE_MAX_CHARS = 140;
+
+/**
+ * Splits a sentence-ending text into its sentences. A sentence ends at . ? or !
+ * (with any closing quote or bracket) followed by a space and a capital or an
+ * opening quote. "(information systems)" and "a.m." mid-sentence stay whole,
+ * because what follows them is lower case.
+ */
+export function sentencesOf(text: string): string[] {
+  const out: string[] = [];
+  // The end mark (and closing quote) is kept with its sentence; only the spaces after it are cut.
+  const end = /[.?!][”’")]?(?=\s+[A-Z“‘"(])/g;
+  let from = 0;
+  for (let m = end.exec(text); m; m = end.exec(text)) {
+    out.push(text.slice(from, m.index + m[0].length).trim());
+    from = m.index + m[0].length;
+  }
+  out.push(text.slice(from).trim());
+  return out.filter(Boolean);
+}
+
+/**
+ * Splits the coach's text (The IS auditor’s lens, the Exam-day shortcut) into
+ * the italic `quote`, its first sentences up to the cap, and the `rest`, said
+ * in plain `body` under it. The first sentence is always the quote, even if it
+ * runs long (lessons.test.ts keeps every first sentence under the cap).
+ * Pure: exported for tests.
+ */
+export function splitCoachText(text: string): { quote: string; rest: string } {
+  const all = sentencesOf(text);
+  let n = 1;
+  while (
+    n < all.length &&
+    n < QUOTE_MAX_SENTENCES &&
+    all.slice(0, n + 1).join(' ').length <= QUOTE_MAX_CHARS
+  ) {
+    n++;
+  }
+  return { quote: all.slice(0, n).join(' '), rest: all.slice(n).join(' ') };
+}
+
+/**
+ * The key-idea recipe (as on the vine and in notes): a leaf and a caption, then the italic voice on a green rule.
+ * Mobile 1.39: only the first sentence or two sit in the italic quote (splitCoachText); the rest follows as plain
+ * `body` text under the rule, so the italic never runs past about four lines.
+ */
 function KeyIdea({ caption, body, i = 0 }: { caption: string; body: string; i?: number }) {
   const { c } = useTheme();
+  const { quote, rest } = splitCoachText(body);
   return (
     <>
       <Part i={i}>
@@ -187,8 +246,14 @@ function KeyIdea({ caption, body, i = 0 }: { caption: string; body: string; i?: 
         <Gap h={space.md} />
       </Part>
       <Part i={i + 1} style={{ borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.lg }}>
-        <T v="quote">{body}</T>
+        <T v="quote">{quote}</T>
       </Part>
+      {rest ? (
+        // 24 between blocks (spec §4 rhythm); lined up with the quote's text, not the rule.
+        <Part i={i + 2} style={{ marginTop: space.lg, paddingLeft: space.lg + 3 }}>
+          <T v="body">{rest}</T>
+        </Part>
+      ) : null}
     </>
   );
 }

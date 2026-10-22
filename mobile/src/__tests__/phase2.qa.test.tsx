@@ -754,7 +754,7 @@ describe('J5 quick fixes', () => {
     expect(btn('Start a mini mock')).toBeUndefined();
   });
 
-  it('a one-domain practice played through the screen: Results shows one ring and the right button copy', () => {
+  it('a one-domain practice played through the screen: Results shows no ring (mobile 1.39) and the right button copy', () => {
     const d2 = ALL.filter((q) => q.domainId === CISA.domains[1].id).slice(0, 4).map((q) => q.id);
     act(() => {
       startFromIds('cisa', d2, 'Practice · one domain');
@@ -769,15 +769,12 @@ describe('J5 quick fixes', () => {
     });
     unmount();
     mount(<Results />);
-    const rings = root().findAllByType(GrowthRings);
-    expect(rings).toHaveLength(1);
-    expect(rings[0].props.weights).toHaveLength(1);
-    expect(rings[0].props.mastery[0]).toBeCloseTo(3 / 4);
+    // Mobile 1.39: the domain rings only for a mixed-domain set or a mock.
+    expect(root().findAllByType(GrowthRings)).toHaveLength(0);
     // Four questions are a handful (mobile 1.24, UX review S7): the count is said once, in the headline,
-    // and the ring names the domain instead of repeating "All IT Governance · 3 of 4".
+    // never repeated as "All IT Governance · 3 of 4".
     expect(allText()).toContain('3 of 4 right');
     expect(allText()).not.toContain(`All ${CISA.domains[1].short} ·`);
-    expect(allText()).toContain(CISA.domains[1].short);
     expect(btn('Practice the one you missed')).toBeDefined();
   });
 

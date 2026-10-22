@@ -197,8 +197,11 @@ const clearing = () => r!.root.findByType(ClearingBody).props.celebration as { m
  * under 8 answers Results states the count once, in the headline, so nothing rolls there; the motion
  * tests below use 8+ questions, where the percent and "Correct" roll.
  */
-function finishPractice(right: number, of = 3) {
-  const qs = inDomain('1').slice(100, 100 + of);
+function finishPractice(right: number, of = 3, mixed = false) {
+  // `mixed`: half from IS Audit, half from IT Governance (mobile 1.39: Results draws rings only for a mixed set).
+  const qs = mixed
+    ? [...inDomain('1').slice(100, 100 + Math.ceil(of / 2)), ...inDomain('2').slice(100, 100 + Math.floor(of / 2))]
+    : inDomain('1').slice(100, 100 + of);
   act(() => {
     startFromIds('cisa', qs.map((q) => q.id), 'Practice · IS Audit');
   });
@@ -336,12 +339,12 @@ describe('J2 practice session → Results', () => {
 
   it('the rings and the score roll once; reopening the same Results shows them still', () => {
     setMockReducedMotion(false);
-    finishPractice(8, 8);
+    finishPractice(8, 8, true);
     mount(<Results />);
     expect(resultRings().play).toBe(true);
     expect(growingArcs()).toBeGreaterThan(0);
     expect(movingDigits()).toBeGreaterThan(0);
-    expect(allText()).toContain('All IS Audit · 8 of 8');
+    expect(allText()).toContain('Each ring is a domain in this session.');
     unmount();
     mount(<Results />);
     expect(resultRings().play).toBe(false);
@@ -351,7 +354,7 @@ describe('J2 practice session → Results', () => {
 
   it('60% exactly grows; below 60% nothing animates (same words either way)', () => {
     setMockReducedMotion(false);
-    finishPractice(6, 10); // 60%, and 8+ answers so the numbers show (and roll)
+    finishPractice(6, 10, true); // 60%, and 8+ answers so the numbers show (and roll)
     mount(<Results />);
     expect(movingDigits()).toBeGreaterThan(0);
     unmount();
@@ -359,7 +362,7 @@ describe('J2 practice session → Results', () => {
       useSession.getState().clear();
     });
     resetOncePerDayForTest();
-    finishPractice(2, 5);
+    finishPractice(2, 5, true);
     mount(<Results />);
     expect(resultRings().play).toBe(false);
     expect(growingArcs()).toBe(0);
