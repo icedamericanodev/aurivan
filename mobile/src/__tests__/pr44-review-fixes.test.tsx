@@ -14,7 +14,7 @@ import { previewSizeFor } from '../app/plant-look';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest, type Celebration } from '../components/motion';
 import { bandHalfWidth, buildPlant, bounds, builtCacheSize, groupNames, keepsakeIcon, keepsakeShape, planterIcon, type GNode, type PNode } from '../components/plant/art';
 import { claimReaction, LivePlant, reactionMs, resetPlantReactionsForTest } from '../components/plant/LivePlant';
-import { freezeKeepsakes, isValidPlantState, keepThroughOtherReset, plantNew, repairPlant, resetPlant, withLook, type CertPlant, type GrowthLevel } from '../engine/plant';
+import { freezeKeepsakes, isValidPlantState, keepThroughOtherReset, repairPlant, resetPlant, withLook, type CertPlant, type GrowthLevel } from '../engine/plant';
 import { defaultKeepsakes, isKeepable, isUnlocked, keepOnReset, KEEPSAKE_ITEMS, lookItem, LOOK_ITEMS, resolveLook, unlockedLooks, type CertMarks } from '../engine/plantLooks';
 import { createRng } from '../engine/random';
 import { dayKey } from '../engine/streak';
@@ -23,6 +23,8 @@ import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSettings } from '../store/settings';
 import { motion, LARGE_TEXT } from '../theme/tokens';
+// Mobile 1.40: these tests check the storybook plant, so they plant as an app from before 1.40 did (no style).
+import { legacyPlantNew as plantNew } from '../../jest/legacyPlant';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),

@@ -18,6 +18,7 @@
 import type { PlantSpecies } from '../../engine/plant';
 import { lookItem, type ArtLook } from '../../engine/plantLooks';
 import { plantArt as A0, plantLeaf, plantTheme, type PlantLeafPalette } from '../../theme/tokens';
+import { buildBotanical, type BotanicalKit } from './botanical';
 
 // ── nodes ───────────────────────────────────────────────────────────────
 export interface Paint {
@@ -135,7 +136,7 @@ interface FlowerArt {
   driftFill: string;
 }
 type SpeciesArt = TreeArt | FlowerArt;
-type PotKind = 'meadow' | 'terracotta' | 'celadon' | 'bonsai' | 'pond' | 'basket' | 'stone' | 'fieldstone' | 'five-stone' | 'compass-rose' | 'banded' | 'root-woven';
+export type PotKind = 'meadow' | 'terracotta' | 'celadon' | 'bonsai' | 'pond' | 'basket' | 'stone' | 'fieldstone' | 'five-stone' | 'compass-rose' | 'banded' | 'root-woven';
 
 const L = plantLeaf;
 const B = A0.bark;
@@ -614,7 +615,7 @@ function palmCanopy(st: number, pal: PlantLeafPalette, lod: Lod, sc: number[], c
 }
 
 // ── ground and pots ─────────────────────────────────────────────────────
-interface GroundResult {
+export interface GroundResult {
   back: GNode;
   front: GNode;
   top: number;
@@ -1127,8 +1128,9 @@ export function keepsakeIcon(id: string, theme: 'light' | 'dark' = 'light'): { r
  * bare pot is a thin sliver at 40pt; the sprout makes it read as a planter).
  * No face: it is a picture of the pot, not the companion.
  */
-export function planterIcon(id: string, species: PlantSpecies, theme: 'light' | 'dark' = 'light'): { root: GNode; viewBox: string } {
-  const built = buildPlant({ species, stage: 2, lod: 'small', theme, quietLook: true, drift: false, look: { planter: id } });
+export function planterIcon(id: string, species: PlantSpecies, theme: 'light' | 'dark' = 'light', style?: 'botanical' | 'storybook'): { root: GNode; viewBox: string } {
+  // Mobile 1.40: drawn in the plant's own style (a botanical plant's planters are inked), at the row's 40pt.
+  const built = buildPlant({ species, stage: 2, lod: 'small', theme, quietLook: true, drift: false, look: { planter: id }, style, px: 40, fit: true });
   return { root: built.root, viewBox: iconFrame(built.root) };
 }
 
@@ -1960,8 +1962,20 @@ export interface BuildOpts {
   stage: number;
   /** D1…D5 organ scales (engine/plant.ts organScales). Missing values use ORGAN_DEFAULT. */
   organs?: readonly number[];
-  /** True: no face ("Quiet look"). */
+  /** True: no face ("Quiet look"). The storybook style only (botanical never has one). */
   quietLook?: boolean;
+  /**
+   * Mobile 1.40: 'botanical' draws the faceless line drawing (botanical.ts).
+   * Unset: the look's own style (`look.style`), else the storybook art, so
+   * every caller from before 1.40 draws exactly what it drew.
+   */
+  style?: 'botanical' | 'storybook';
+  /**
+   * Botanical only: the rendered size in points, and whether the tight frame
+   * is the viewBox. They set the true line weight (1.5pt at full detail).
+   */
+  px?: number;
+  fit?: boolean;
   lod?: Lod;
   theme?: 'light' | 'dark';
   /** The face's expression (mobile 1.14: the face only; no posture or marks). */
@@ -1999,8 +2013,36 @@ const BUILT = new Map<string, BuiltPlant>();
 // 32 (code review M8c): about 13 previews and 4 screens are ever live, and keys churn as organs move.
 const BUILT_MAX = 32;
 const lookKey = (l: ArtLook | undefined) => (l ? [l.palette ?? '', l.ground ?? '', l.planter ?? '', l.visitor ?? '', (l.keepsakes ?? []).join('+')].join('/') : '');
+/** True when these options draw the botanical plant (mobile 1.40). */
+export const isBotanical = (o: Pick<BuildOpts, 'style' | 'look'>) => (o.style ?? o.look?.style) === 'botanical';
 const buildKey = (o: BuildOpts) =>
-  [o.species, Math.round(o.stage), o.lod ?? 'full', o.theme ?? 'light', o.quietLook ? 1 : 0, o.resting ? 1 : 0, o.mood ?? '', o.drift === false ? 0 : 1, (o.organs ?? []).join(','), lookKey(o.look)].join('|');
+  [
+    o.species,
+    Math.round(o.stage),
+    o.lod ?? 'full',
+    o.theme ?? 'light',
+    o.quietLook ? 1 : 0,
+    o.resting ? 1 : 0,
+    o.mood ?? '',
+    o.drift === false ? 0 : 1,
+    (o.organs ?? []).join(','),
+    lookKey(o.look),
+    // The botanical line weight depends on the rendered size; the storybook art never does (its cache hits stay the same).
+    isBotanical(o) ? `b${o.px ?? 200}${o.fit ? 'f' : ''}` : '',
+  ].join('|');
+
+/** art.ts's own helpers, lent to botanical.ts (so that module never imports this one: no import cycle). */
+const BOTANICAL_KIT: BotanicalKit = {
+  rng,
+  hash,
+  mix,
+  scallop,
+  bounds: (n) => bounds(n),
+  frameFor: (b) => frameFor(b),
+  ground: (species, look, stage, lod, theme) => groundOf(species, look, Math.max(1, Math.min(6, Math.round(stage))), lod, theme),
+  visitor: visitorNode,
+  keepsakes: placeKeepsakes,
+};
 
 export function buildPlant(o: BuildOpts): BuiltPlant {
   const k = buildKey(o);
@@ -2011,7 +2053,8 @@ export function buildPlant(o: BuildOpts): BuiltPlant {
     BUILT.set(k, hit);
     return hit;
   }
-  const built = buildUncached(o);
+  // Mobile 1.40: the botanical style is its own drawing (no face, ever).
+  const built = isBotanical(o) ? buildBotanical(o, BOTANICAL_KIT) : buildUncached(o);
   if (BUILT.size >= BUILT_MAX) BUILT.delete(BUILT.keys().next().value as string);
   BUILT.set(k, built);
   return built;
@@ -2035,6 +2078,13 @@ function potFor(sp: SpeciesArt, planter: string | undefined): PotKind {
   }
 }
 
+/** The ground a species stands on with this look: its pot or planter (or the meadow), and the kind. */
+function groundOf(key: PlantSpecies, look: ArtLook | undefined, st: number, lod: Lod, theme: 'light' | 'dark'): { gr: GroundResult; potKind: PotKind } {
+  const potKind = potFor(SPECIES_ART[key], look?.planter);
+  const gr = ground(potKind, GEO[st].ground, lod, theme, { water: key === 'lotus' && potKind !== 'pond', look: (look?.ground as GroundLook) || 'meadow' });
+  return { gr, potKind };
+}
+
 function buildUncached(o: BuildOpts): BuiltPlant {
   const key = o.species;
   const base0 = SPECIES_ART[key];
@@ -2053,8 +2103,7 @@ function buildUncached(o: BuildOpts): BuiltPlant {
     const v = o.organs?.[i];
     return typeof v === 'number' && Number.isFinite(v) ? Math.max(ORGAN_DRAW_MIN, Math.min(ORGAN_DRAW_MAX, v)) : ORGAN_DEFAULT;
   });
-  const potKind = potFor(base0, look?.planter);
-  const gr = ground(potKind, GEO[st].ground, lod, theme, { water: key === 'lotus' && potKind !== 'pond', look: (look?.ground as GroundLook) || 'meadow' });
+  const { gr, potKind } = groundOf(key, look, st, lod, theme);
   const base = gr.top + 2;
   const A: Anchors = { base: { x: 100, y: base }, organs: [] };
   // A cactus' own pot is deep; in any other planter the young seed sits the same way.
@@ -2097,16 +2146,52 @@ function buildUncached(o: BuildOpts): BuiltPlant {
   const fit = Math.min(1, (base - M) / Math.max(1, base - tb.minY), (100 - M) / Math.max(1, 100 - tb.minX), (100 - M) / Math.max(1, tb.maxX - 100));
   if (fit < 1) tree.transform = `translate(100 ${f(base)}) scale(${fit.toFixed(3)}) translate(-100 ${f(-base)})`;
 
+  const { back: keepBack, front: keepFront, dawn } = placeKeepsakes(look?.keepsakes, st, gr, tree, base, potKind, A, lod, theme);
+  const frame = frameFor(bounds(G(null, [gr.back, ...keepBack, tree, gr.front, ...keepFront, dawn])));
+  // The resting dusk: a soft disc behind the whole plant, filling the frame.
+  let backdrop: GNode | null = null;
+  if (o.resting) {
+    const T = plantTheme[theme];
+    const [fx0, fy0, fs0] = frame.split(' ').map(Number);
+    // Kept inside the shared 200 × 200 stage too, so the 200pt hero (which
+    // draws the whole stage, not the tight frame) never clips the disc.
+    const dcx = fx0 + fs0 / 2;
+    const dcy = fy0 + fs0 / 2;
+    const dr = Math.max(8, Math.min(fs0 * 0.48, dcx - 1, dcy - 1, 199 - dcx, 199 - dcy));
+    backdrop = G('dusk', [C(dcx, dcy, dr, T.dusk, { opacity: T.duskOpacity })]);
+  }
+  // Paint order, and the three motion layers (PlantLayers): back (dusk, the
+  // dawn, the ground, a keepsake behind) · the plant (`tree`, which moves) ·
+  // front (the pot's rim, grass, the keepsakes beside it). Never moves: the
+  // ground grounds the character (motion.md §5).
+  const root = G('mascot', [backdrop, dawn, gr.back, G('keepsakes-back', keepBack), tree, gr.front, G('keepsakes', keepFront)]);
+  return { root, anchors: A, frame };
+}
+
+/** Where the keepsakes stand (art.ts and botanical.ts share it). */
+export interface KeepsakePlacement {
+  /** One keepsake behind the plant (paint order: before the tree). */
+  back: GNode[];
+  /** The ones beside it (after the tree). */
+  front: GNode[];
+  /** The clear dawn: a soft sun behind the crown. */
+  dawn: GNode | null;
+}
+/**
+ * Places the keepsakes on show around a built plant (mobile 1.14; moved out
+ * of buildUncached in 1.40 so the botanical plant places them the same way).
+ */
+function placeKeepsakes(keepsakes: readonly string[] | undefined, st: number, gr: GroundResult, tree: GNode, base: number, potKind: PotKind, A: Anchors, lod: Lod, theme: 'light' | 'dark'): KeepsakePlacement {
   // Keepsakes (mobile 1.14): up to three, on the shelf beside the plant. Two
   // base slots (left, right) and one behind it; the clear dawn is always the
   // backdrop. Never at icon size (a 24pt chip is the silhouette only).
   // UX review H2: flat ones (a stone, a pond, a ring) take the base slots
   // first, since behind the plant the trunk would hide them; a flat third
   // lies in front instead, and the slot behind stands clear of the trunk.
-  const keepBack: Maybe[] = [];
-  const keepFront: Maybe[] = [];
+  const keepBack: GNode[] = [];
+  const keepFront: GNode[] = [];
   let dawn: GNode | null = null;
-  if (lod !== 'icon' && look?.keepsakes?.length) {
+  if (lod !== 'icon' && keepsakes?.length) {
     // Big enough to read at 104pt, kept on the 200 × 200 stage.
     const k = GROUND_K[GEO[st].ground] * 1.6;
     const gap = 3 + 9 * k;
@@ -2115,7 +2200,7 @@ function buildUncached(o: BuildOpts): BuiltPlant {
       { x: Math.max(2 + half, 100 - gr.span - gap), foot: gr.floor },
       { x: Math.min(198 - half, 100 + gr.span + gap), foot: gr.floor },
     ];
-    const items = [...new Set(look.keepsakes)].slice(0, 3);
+    const items = [...new Set(keepsakes)].slice(0, 3);
     if (items.includes('clear-dawn')) {
       // A soft sun behind the crown: the mist has lifted.
       const T = plantTheme[theme];
@@ -2143,25 +2228,7 @@ function buildUncached(o: BuildOpts): BuiltPlant {
       }
     });
   }
-  const frame = frameFor(bounds(G(null, [gr.back, ...(keepBack as PNode[]), tree, gr.front, ...(keepFront.filter(Boolean) as PNode[]), dawn ?? null].filter(Boolean) as PNode[])));
-  // The resting dusk: a soft disc behind the whole plant, filling the frame.
-  let backdrop: GNode | null = null;
-  if (o.resting) {
-    const T = plantTheme[theme];
-    const [fx0, fy0, fs0] = frame.split(' ').map(Number);
-    // Kept inside the shared 200 × 200 stage too, so the 200pt hero (which
-    // draws the whole stage, not the tight frame) never clips the disc.
-    const dcx = fx0 + fs0 / 2;
-    const dcy = fy0 + fs0 / 2;
-    const dr = Math.max(8, Math.min(fs0 * 0.48, dcx - 1, dcy - 1, 199 - dcx, 199 - dcy));
-    backdrop = G('dusk', [C(dcx, dcy, dr, T.dusk, { opacity: T.duskOpacity })]);
-  }
-  // Paint order, and the three motion layers (PlantLayers): back (dusk, the
-  // dawn, the ground, a keepsake behind) · the plant (`tree`, which moves) ·
-  // front (the pot's rim, grass, the keepsakes beside it). Never moves: the
-  // ground grounds the character (motion.md §5).
-  const root = G('mascot', [backdrop, dawn, gr.back, G('keepsakes-back', keepBack), tree, gr.front, G('keepsakes', keepFront)]);
-  return { root, anchors: A, frame };
+  return { back: keepBack, front: keepFront, dawn };
 }
 
 /** The motion layers of a built plant, in paint order: back and front never move; the plant does. */
@@ -2247,19 +2314,64 @@ function parseTransform(s: string | undefined): Mat {
 }
 
 /** The points that bound a path (end and control points; an arc adds its bulge). Over-estimates slightly, never under. */
+/**
+ * A path's tokens: command letters as strings, numbers as numbers. The same
+ * tokens as the regex /[a-zA-Z]|-?\d*\.?\d+(?:e-?\d+)?/g, read by hand
+ * (mobile 1.40: about 3× faster, and bounds() reads every path of a build).
+ */
+export function pathTokens(d: string): (number | string)[] {
+  const out: (number | string)[] = [];
+  const n = d.length;
+  const digit = (k: number) => {
+    const c = d.charCodeAt(k);
+    return c >= 48 && c <= 57;
+  };
+  let i = 0;
+  while (i < n) {
+    const c = d.charCodeAt(i);
+    if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122)) {
+      out.push(d[i]);
+      i++;
+      continue;
+    }
+    // A number: -? digits [. digits], at least one digit, then an optional exponent.
+    let j = c === 45 ? i + 1 : i;
+    const intStart = j;
+    while (j < n && digit(j)) j++;
+    if (j < n && d.charCodeAt(j) === 46 && j + 1 < n && digit(j + 1)) {
+      j++;
+      while (j < n && digit(j)) j++;
+    } else if (j === intStart) {
+      i++; // not a number here (a space, a comma, a lone sign or dot)
+      continue;
+    }
+    if (j < n && d.charCodeAt(j) === 101) {
+      let e = j + 1;
+      if (e < n && d.charCodeAt(e) === 45) e++;
+      if (e < n && digit(e)) {
+        while (e < n && digit(e)) e++;
+        j = e;
+      }
+    }
+    out.push(Number(d.slice(i, j)));
+    i = j;
+  }
+  return out;
+}
+
 function pathPoints(d: string): [number, number][] {
   const out: [number, number][] = [];
-  const toks = d.match(/[a-zA-Z]|-?\d*\.?\d+(?:e-?\d+)?/g) || [];
+  const toks = pathTokens(d);
   let i = 0;
   let cmd = '';
   let x = 0;
   let y = 0;
   let sx = 0;
   let sy = 0;
-  const num = () => Number(toks[i++]);
-  const isNum = () => i < toks.length && !/^[a-zA-Z]$/.test(toks[i]);
+  const num = () => toks[i++] as number;
+  const isNum = () => i < toks.length && typeof toks[i] === 'number';
   while (i < toks.length) {
-    if (/^[a-zA-Z]$/.test(toks[i])) cmd = toks[i++];
+    if (typeof toks[i] === 'string') cmd = toks[i++] as string;
     const rel = cmd === cmd.toLowerCase();
     const C = cmd.toUpperCase();
     if (C === 'Z') {

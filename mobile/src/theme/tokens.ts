@@ -696,3 +696,84 @@ export const plantTheme: { light: PlantThemeTone; dark: PlantThemeTone } = {
   light: { shadow: '#17231B', shadowOpacity: 0.1, sap: '#2B6E4A', leafFill: '#6DB38A', honey: '#8F6620', dusk: '#DCD8E6', duskOpacity: 0.85, dawnOpacity: 0.7 },
   dark: { shadow: '#000000', shadowOpacity: 0.35, sap: '#A9D9BA', leafFill: '#A9D9BA', honey: '#E9C46A', dusk: '#232842', duskOpacity: 0.9, dawnOpacity: 0.32 },
 };
+
+/**
+ * Mobile 1.40: the botanical plant's line (components/plant/botanical.ts).
+ * The botanical style is a field-guide drawing: an INK line over a soft wash
+ * of the plant's own colours. Like every Grove line drawing, the ink follows
+ * the theme (the one deliberate exception to "the plant is an object, the
+ * same in both themes"); the washes stay the colourway's.
+ *
+ * Plain English: in light the line is the palette's deep tone on paper; in
+ * dark its light tone on the night page. Wood is the bark mixed toward the
+ * page's ink. Contrast (line on `bg`, non-text 3:1): wood 6.5–10.7:1, leaf
+ * lines ≥ 3.2:1 light and ≥ 5.3:1 dark; pearl and snow blooms sit on green
+ * or wood lines, which carry the silhouette (the plantLeaf rule above).
+ */
+export interface PlantLineTone {
+  /** Wood (trunk, limbs, seed coats): bark mixed toward this ink, by `woodMix`. */
+  woodInk: string;
+  woodMix: number;
+  /** The leaf line: this tone of the leaf palette. */
+  leaf: keyof PlantLeafPalette;
+  /** The leaf wash under the line. */
+  washLeaf: keyof PlantLeafPalette;
+  washLeafOp: number;
+  /** The unlined foliage mass behind a cluster (watercolour), so a crown reads at 24–72pt. */
+  washMass: keyof PlantLeafPalette;
+  washMassOp: number;
+  /** The wash inside a trunk outline. */
+  washWoodOp: number;
+  /** The three soil lines under a plant in the meadow (= `control`, ≥ 3:1). */
+  soil: string;
+  /** The resting moon (a line over a 25% wash). */
+  moon: string;
+  moonWashOp: number;
+  /** Props drawn in line (pots, planters, keepsakes, a visitor): their colour mixed toward this ink. */
+  propInk: string;
+  propMix: number;
+  /** Their soft wash. */
+  propWashOp: number;
+  /** Gifts (acorns, samaras, blossoms, fruit): their line mixes toward `propInk` by this. */
+  giftMix: number;
+  /** The sampaguita's white star flowers: a grey-green line in light, pearl in dark. */
+  starLine: string;
+}
+export const plantLine: { light: PlantLineTone; dark: PlantLineTone } = {
+  light: {
+    woodInk: '#17231B',
+    woodMix: 0.38,
+    leaf: 'deep',
+    washLeaf: 'light',
+    washLeafOp: 0.55,
+    washMass: 'light',
+    washMassOp: 0.22,
+    washWoodOp: 0.26,
+    soil: light.control,
+    moon: '#8F6620',
+    moonWashOp: 0.25,
+    propInk: '#17231B',
+    propMix: 0.45,
+    propWashOp: 0.42,
+    giftMix: 0.4,
+    starLine: '#7E8A78',
+  },
+  dark: {
+    woodInk: '#F3E3CC',
+    woodMix: 0.62,
+    leaf: 'light',
+    washLeaf: 'mid',
+    washLeafOp: 0.5,
+    washMass: 'mid',
+    washMassOp: 0.2,
+    washWoodOp: 0.32,
+    soil: dark.control,
+    moon: '#E9C46A',
+    moonWashOp: 0.25,
+    propInk: '#F3F1EA',
+    propMix: 0.55,
+    propWashOp: 0.5,
+    giftMix: 0.45,
+    starLine: '#E3E8DD',
+  },
+};

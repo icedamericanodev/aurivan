@@ -448,22 +448,11 @@ describe('Journey 3: notes, lesson steps and game recaps', () => {
     expect(allText()).toContain(`Lesson: ${lesson.title}, step ${checkAt + 1}`);
   });
 
+  // Mobile 1.40: the recap has ONE report link at its foot; with a single miss it reports that item.
   it('a game recap: a real Root or Rumor card and a real question each report as themselves', async () => {
     const card = rumorStatements(getNotes('cisa'))[5];
     const q = getAllQuestions('cisa')[40];
-    mount(
-      <RoundEnd
-        certId="cisa"
-        game="rumor"
-        score={4}
-        max={12}
-        onAgain={() => {}}
-        misses={[
-          { questionId: card.id, stem: card.text, tag: 'Rumor', why: 'Why.', answerWrong: true },
-          { questionId: q.id, stem: 'A question…', tag: 'Snare: B', why: 'Why.', answerWrong: true },
-        ]}
-      />,
-    );
+    mount(<RoundEnd certId="cisa" game="rumor" score={11} max={12} onAgain={() => {}} misses={[{ questionId: card.id, stem: card.text, tag: 'Rumor', why: 'Why.', answerWrong: true }]} />);
     press('Report a problem with this card');
     press('Something on this card is wrong');
     await pressAsync('Write the email');
@@ -472,7 +461,9 @@ describe('Journey 3: notes, lesson steps and game recaps', () => {
     expect(keptLines(email.body)).toContain(`Item: Game card ${card.id} (Root or Rumor)`);
     // The card's own text is not sent.
     expect(email.body).not.toContain(card.text.slice(0, 30));
+    unmount();
 
+    mount(<RoundEnd certId="cisa" game="rumor" score={11} max={12} onAgain={() => {}} misses={[{ questionId: q.id, stem: 'A question…', tag: 'Snare: B', why: 'Why.', answerWrong: true }]} />);
     press(`Report a problem with question ${q.id}`);
     // No letters were on screen in the recap: nothing to suggest by letter.
     press('The marked answer looks wrong');

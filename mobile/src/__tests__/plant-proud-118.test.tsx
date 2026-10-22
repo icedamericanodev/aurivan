@@ -28,7 +28,7 @@ import YourPlant from '../app/plant';
 import { claimDecor, resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { buildPlant, type GNode, type Lod, type PNode } from '../components/plant/art';
 import { breathDepth, claimReaction, relaunchPlantForTest, resetPlantReactionsForTest } from '../components/plant/LivePlant';
-import { plantNew, PLANT_SPECIES, resetPlant, type CertPlant } from '../engine/plant';
+import { PLANT_SPECIES, resetPlant, withLook, type CertPlant } from '../engine/plant';
 import { keepsakeForBadge } from '../engine/plantLooks';
 import {
   admitProud,
@@ -47,6 +47,8 @@ import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import { motion, plantArt } from '../theme/tokens';
+// Mobile 1.40: these tests check the storybook plant, so they plant as an app from before 1.40 did (no style).
+import { legacyPlantNew as plantNew } from '../../jest/legacyPlant';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -100,6 +102,8 @@ const unmount = () => {
 const root = () => r!.root;
 const plants = () => root().findAll((n) => typeof n.type !== 'string' && typeof n.props.species === 'string' && typeof n.props.stage === 'number' && typeof n.props.size === 'number');
 const hero = () => plants().find((x: ReactTestInstance) => x.props.testID === 'plant-hero')!;
+/** The hero's spoken label (the accessible View around the drawing). */
+const heroLabel = (): string => r!.root.findAll((n) => n.props.testID === 'plant-hero' && typeof n.type === 'string')[0].props.accessibilityLabel;
 /** The stand-tall reactions started (their first tween is 30% of motion.plant.react; happy's too). */
 const reactCalls = (spy: jest.SpyInstance) => spy.mock.calls.filter((c) => (c[1] as { duration?: number } | undefined)?.duration === motion.plant.react * 0.3).length;
 /** The Breathe burst's out-breaths (only the breath uses motion.plant.breathOut). */
@@ -300,7 +304,9 @@ describe('proud on the screens', () => {
     expect(hero().props.mood).toBe('idle');
   });
 
-  it('Quiet look: no face, no reaction; the single breath stays', () => {
+  // Mobile 1.40 (spec §3.5): the posture plays for EVERY style, so a faceless plant still answers
+  // a good day; the face and its words are the "Storybook with a face" style's alone.
+  it('Quiet look: no face and no mood words, but the proud posture still plays once; the single breath stays', () => {
     motionOn();
     const spy = jest.spyOn(Reanimated, 'withTiming');
     act(() => {
@@ -309,9 +315,32 @@ describe('proud on the screens', () => {
     setPlant(grownAgo(3));
     earn('dress-rehearsal', T0);
     mount(<YourPlant />);
-    expect(hero().props.mood).toBe('idle');
-    expect(reactCalls(spy)).toBe(0);
+    expect(hero().props.mood).toBe('proud');
+    expect(hero().props.quietLook).toBe(true);
+    expect(heroLabel()).not.toMatch(/Looking/);
+    expect(reactCalls(spy)).toBe(1);
     expect(breathCalls(spy)).toBe(1);
+  });
+
+  it('botanical (a new plant): the proud posture plays, with no face and no mood words', () => {
+    motionOn();
+    const spy = jest.spyOn(Reanimated, 'withTiming');
+    setPlant(withLook(grownAgo(3), { style: 'botanical' }));
+    earn('dress-rehearsal', T0);
+    mount(<YourPlant />);
+    expect(hero().props.mood).toBe('proud');
+    expect(hero().props.look.style).toBe('botanical');
+    expect(heroLabel()).not.toMatch(/Looking/);
+    expect(reactCalls(spy)).toBe(1);
+  });
+
+  it('storybook with a face: unchanged, the proud face and its words', () => {
+    setPlant(withLook(grownAgo(3), { style: 'storybook-face' }));
+    earn('dress-rehearsal', T0);
+    mount(<YourPlant />);
+    expect(hero().props.mood).toBe('proud');
+    expect(hero().props.quietLook).toBe(false);
+    expect(heroLabel()).toMatch(/Looking proud\./);
   });
 });
 
@@ -544,22 +573,23 @@ describe('PR #51 review: a proud moment only counts when it is really seen or ne
     expect(reactCalls(spy)).toBe(1);
   });
 
-  it('Quiet look writes no proud log, so unseen moments never use up the 3-in-7-days cap', () => {
+  // Mobile 1.40: Quiet look's plant stands tall too (the posture plays for every style), so it
+  // counts like any shown moment; what never counts is a moment nobody sees (the plant hidden).
+  it('a hidden plant writes no proud log, so unseen moments never use up the 3-in-7-days cap', () => {
     setPlant(grownAgo(3));
     act(() => {
-      useProgress.getState().setPlantSettings({ quietLook: true });
+      useProgress.getState().setPlantSettings({ showPlant: false });
     });
     ['first-foothold', 'topic-clear', 'loop-closed'].forEach((b, i) => {
       setNow(T0 + i * DAY);
       earn(b, T0 + i * DAY);
       mount(<YourPlant />);
-      expect(hero().props.mood).toBe('idle');
       unmount();
     });
     expect(useSeen.getState().proud).toEqual({});
-    // The face back on: the next keepsake within the same 7 days still makes it proud (none of the 3 were used).
+    // The plant shown again: the next keepsake within the same 7 days still makes it proud (none of the 3 were used).
     act(() => {
-      useProgress.getState().setPlantSettings({ quietLook: false });
+      useProgress.getState().setPlantSettings({ showPlant: true });
     });
     setNow(T0 + 3 * DAY);
     earn('slip-spotter', T0 + 3 * DAY);

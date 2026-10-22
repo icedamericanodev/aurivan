@@ -87,13 +87,14 @@ function PlantInner({ species, stage, organs, quietLook, size, theme, resting, m
   const level = lod ?? lodFor(size);
   // Rounded organs keep the memo steady while mastery moves by tiny amounts.
   const organKey = organKeyOf(organs);
+  const tight = fit ?? size <= 96;
+  // Mobile 1.40: the size and frame go in too, so a botanical plant's line is a true 1.5pt at any size.
   const built = useMemo(
-    () => buildPlant({ species, stage, organs: organKey ? organKey.split(',').map(Number) : undefined, quietLook, lod: level, theme, resting, mood, look }),
-    [species, stage, organKey, quietLook, level, theme, resting, mood, look],
+    () => buildPlant({ species, stage, organs: organKey ? organKey.split(',').map(Number) : undefined, quietLook, lod: level, theme, resting, mood, look, px: size, fit: tight }),
+    [species, stage, organKey, quietLook, level, theme, resting, mood, look, size, tight],
   );
   // The element tree is kept too, so a parent's re-render never rebuilds ~150 SVG elements.
   const tree = useMemo(() => renderNode(built.root, 'p', wrapGroup), [built, wrapGroup]);
-  const tight = fit ?? size <= 96;
   const labelled = !!accessibilityLabel;
   return (
     <View
@@ -114,7 +115,7 @@ function PlantInner({ species, stage, organs, quietLook, size, theme, resting, m
 }
 
 /** A look as a stable string, so an equal look built fresh never redraws. */
-export const lookKeyOf = (l: ArtLook | undefined) => (l ? JSON.stringify([l.palette, l.ground, l.planter, l.visitor, l.keepsakes]) : '');
+export const lookKeyOf = (l: ArtLook | undefined) => (l ? JSON.stringify([l.style, l.palette, l.ground, l.planter, l.visitor, l.keepsakes]) : '');
 
 /** Same props, same drawing: the organs compare by their rounded values, not the array (code review M6c). */
 function sameProps(a: PlantProps, b: PlantProps): boolean {

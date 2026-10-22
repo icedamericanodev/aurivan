@@ -416,6 +416,9 @@ const plantShape = rule(
       look: obj(
         {},
         {
+          // Mobile 1.40: how the plant is drawn. An older build drops it (obj() ignores
+          // unknown keys), so its file still restores there; the plant just shows storybook.
+          style: slotLook('style'),
           colourway: slotLook('colourway'),
           ground: slotLook('ground'),
           planter: slotLook('planter'),

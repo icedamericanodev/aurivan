@@ -685,6 +685,19 @@ export function takeNext(m: CertMilestones | undefined): { key?: string; milesto
   return { key, milestones: { ...m, queue: rest } };
 }
 
+/**
+ * Mobile 1.40 (game recap): the first queued mark that is one of `only`
+ * (what the screen's own round just earned), and the queue without it.
+ * Older queued marks stay queued: they are not this round's news (You shows
+ * them quietly with the badge dot; a later Results can still celebrate them).
+ */
+export function takeNextOf(m: CertMilestones | undefined, only: readonly string[]): { key?: string; milestones?: CertMilestones } {
+  const queue = m?.queue ?? [];
+  const key = queue.find((k) => only.includes(k));
+  if (!m || !key) return { milestones: m };
+  return { key, milestones: { ...m, queue: queue.filter((k) => k !== key) } };
+}
+
 // ── Back-fill at launch ──────────────────────────────────────────────────
 
 /** The saved data a back-fill reads (one cert's own progress only). */

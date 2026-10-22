@@ -2,12 +2,13 @@
  * Look (mobile 1.14, Phase 4b "Dress and Alive") — "how does my plant look?"
  *
  * A live preview at the top (it stays in view while the choices scroll),
- * then five sections: Colour, Ground, Planter, Visitor and Keepsakes (show up
- * to three). A tap changes the look at once; nothing to save. Planter and
+ * then six sections: Style (mobile 1.40: Botanical, Storybook, or Storybook
+ * with a face; it replaced Settings' Quiet look), Colour, Ground, Planter,
+ * Visitor and Keepsakes (show up to three). A tap changes the look at once; nothing to save. Planter and
  * Keepsakes list what is open; the planters and keepsakes still to earn sit
  * in one closed "More to find" group at the end, each saying how (UX P1).
  *
- * Unlocks are derived (engine/plantLooks.ts): every species' two colourways,
+ * Unlocks are derived (engine/plantLooks.ts): the three styles, every species' two colourways,
  * the Meadow, its own ground, a terracotta pot and the wren are free; the
  * rest open with growth, badges and completed badge sets. A locked choice
  * says how to open it in plain words. There is no "n of m" anywhere, no
@@ -24,10 +25,11 @@ import { EmptyScreen } from '../components/emptyScreen';
 import { ChevronDown, ICON_STROKE } from '../components/icons';
 import { Collapse, Turn } from '../components/motion';
 import { LivePlant } from '../components/plant/LivePlant';
+import { Plant } from '../components/plant/Plant';
 import { KeepsakeIcon, LookOption, PlanterIcon, Swatch } from '../components/plant/LookUI';
 import { ICON_SIZE, PushedHeader, Row, Section, T, useFontScale } from '../components/ui';
 import { growthShort, plantCallName } from '../engine/plant';
-import { colourwaysFor, GROUNDS, howToOpen, skillLine, KEEPSAKE_ITEMS, lookItem, MAX_SHOWN_KEEPSAKES, plantersFor, toggleKeepsake, VISITORS, type LookItem, type LookSlot } from '../engine/plantLooks';
+import { colourwaysFor, GROUNDS, howToOpen, skillLine, KEEPSAKE_ITEMS, lookItem, MAX_SHOWN_KEEPSAKES, plantersFor, STYLES, toggleKeepsake, VISITORS, type LookItem, type LookSlot, type PlantStyle } from '../engine/plantLooks';
 import { haptic } from '../lib/haptics';
 import { usePlantView } from '../lib/plant';
 import { useProgress } from '../store/progress';
@@ -39,6 +41,8 @@ import { useTheme } from '../theme/useTheme';
 const MIN_TILE = 150;
 /** From this text size the preview is at its smallest, so the choices keep the screen. */
 const HUGE_TEXT = 1.6;
+/** How each style is said in the preview's label ("Kai, your oak, botanical style."). */
+const STYLE_WORDS: Record<PlantStyle, string> = { botanical: 'botanical style', storybook: 'storybook style', 'storybook-face': 'storybook style with a face' };
 
 /**
  * The preview's size (UX review P9): 140pt, 96pt at large text, 72pt at
@@ -104,7 +108,10 @@ export default function PlantLook() {
   // The preview's label says what it draws (code review M10a): the plant, then its visitor, planter and keepsakes.
   const named = (id: string | undefined) => (id ? lookItem(id)?.name.toLowerCase() : undefined);
   const extras = [preview.visitor ? `a ${named(preview.visitor)}` : '', r.planter !== 'native' ? `in the ${named(r.planter)}` : '', ...r.keepsakes.map((k) => `the ${named(k)}`)].filter(Boolean);
-  const previewLabel = `Preview: ${view.label}${extras.length ? ` With ${extras.join(', ')}.` : ''}`;
+  // Mobile 1.40: the style follows the name ("Kai, your oak, botanical style. Growth: …").
+  const cut = view.label.indexOf('. ');
+  const styled = cut > 0 ? `${view.label.slice(0, cut)}, ${STYLE_WORDS[r.style]}${view.label.slice(cut)}` : view.label;
+  const previewLabel = `Preview: ${styled}${extras.length ? ` With ${extras.join(', ')}.` : ''}`;
 
   /**
    * One section's choices. Short ones (colour, ground, visitor) sit two
@@ -139,7 +146,11 @@ export default function PlantLook() {
   };
 
   const planters = plantersFor(p.species);
-  const planterArt = (x: LookItem) => <PlanterIcon id={x.id} species={p.species} size={40} theme={theme} />;
+  const planterArt = (x: LookItem) => <PlanterIcon id={x.id} species={p.species} size={40} theme={theme} style={r.style === 'botanical' ? 'botanical' : 'storybook'} />;
+  // Each style card shows THIS plant drawn that way (its growth and colours; no visitor or keepsakes at 56pt).
+  const styleArt = (x: LookItem) => (
+    <Plant species={p.species} stage={p.growth} organs={view.scales} size={56} theme={theme} quietLook={x.id !== 'storybook-face'} look={{ style: x.id as PlantStyle, palette: r.palette }} />
+  );
   const keepsakeArt = (x: LookItem) => <KeepsakeIcon id={x.id} size={40} theme={theme} />;
   // Planter and Keepsakes list only what is open (UX review P1). The ribbon is
   // never listed until it is earned (it opens when you tell us you passed).
@@ -175,6 +186,9 @@ export default function PlantLook() {
       </View>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }} onLayout={(e) => setWidth(e.nativeEvent.layout.width - space.gutter * 2)}>
         <T v="meta" style={{ marginTop: space.md }}>A look is just for you: it never changes your growth or your readiness.</T>
+
+        <Section title="Style" />
+        {group('Style', false, STYLES, (x) => x.id === r.style, (x) => choose('style', x.id), { asRows: true, art: styleArt })}
 
         <Section title="Colour" />
         {group(

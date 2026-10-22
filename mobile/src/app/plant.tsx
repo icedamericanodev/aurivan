@@ -189,7 +189,7 @@ export default function YourPlant() {
         <ListRow title="Change its look" subtitle="Colour, ground, planter, visitor and keepsakes" onPress={() => router.push('/plant-look')} />
         <ListRow title="Change plant" subtitle="Same growth, new look." onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'species' } })} />
         <ListRow title="Rename" subtitle={p.name ? `Now: ${shownName(p.name)}` : 'No name yet'} onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'name' } })} last />
-        <Button kind="ghost" label="Plant settings" accessibilityHint="Show my plant and Quiet look, in Settings" onPress={() => router.push({ pathname: '/settings', params: { section: 'plant' } })} style={{ alignSelf: 'flex-start', marginTop: space.md, marginLeft: -space.sm }} />
+        <Button kind="ghost" label="Plant settings" accessibilityHint="Show my plant, in Settings" onPress={() => router.push({ pathname: '/settings', params: { section: 'plant' } })} style={{ alignSelf: 'flex-start', marginTop: space.md, marginLeft: -space.sm }} />
       </ScrollView>
     </SafeAreaView>
   );

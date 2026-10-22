@@ -74,7 +74,7 @@
      compiled into one plain script (mobile/scripts/build-web-plant.mjs;
      never edit it by hand). Deferred: the page never waits for it, and the
      plant draws itself once it has arrived (plantReady). -->
-<script id="kaisipPlantJs" src="assets/kaisip-plant.js?v=d57c4cda1d" defer></script>
+<script id="kaisipPlantJs" src="assets/kaisip-plant.js?v=c2b050d7da" defer></script>
 <link rel="preload" href="assets/fonts/Figtree_400Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Fraunces_500Medium.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -6349,7 +6349,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h1 class="vision-title" id="aboutScreenTitle">Think like an IS auditor.</h1>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.30</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.31</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -6640,7 +6640,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.30';
+const APP_VERSION = 'v12.31';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -12579,16 +12579,20 @@ function plantView(now) {
   var exam = plantExamMoment();
   var resting = K.plant.isResting(lastDay, today, exam !== null);
   var newGrowth = lastDay === today;
-  var face = K.plant.plantHasFace(S.plantSettings);
+  // The style is per plant (app 1.40, web v12.31): its own look.style, or for a
+  // plant saved before then (no style) the storybook art it always had, with
+  // its face unless Quiet look is on. New plants are botanical (plantNew).
+  var style = K.looks.resolveStyle(p.look, S.plantSettings);
+  var face = K.looks.styleHasFace(style);
   var unlocked = K.looks.unlockedLooks(p, []);
-  var resolved = K.looks.resolveLook(p.species, p.look, unlocked, K.looks.defaultKeepsakes(p, []));
+  var resolved = K.looks.resolveLook(p.species, p.look, unlocked, K.looks.defaultKeepsakes(p, []), style);
   var grewToday = Object.keys(p.reached || {}).some(function (k) {
     var at = p.reached[k];
     return typeof at === 'number' && parityDayKey(at) === today && !(p.backfill && at === p.backfill.at);
   });
   var mood = K.looks.plantMood({ face: face, resting: resting, grewToday: grewToday, newKeepsakeToday: false, planCleared: false, newTopicToday: plantNewTopicToday(today) });
   return {
-    plant: p, today: today, lastDay: lastDay, exam: exam, resting: resting, newGrowth: newGrowth, face: face,
+    plant: p, today: today, lastDay: lastDay, exam: exam, resting: resting, newGrowth: newGrowth, face: face, style: style,
     scales: K.plant.organScales(K.plant.organSlots(weights, domains)),
     unlocked: unlocked, resolved: resolved, mood: mood,
     label: K.plant.plantLabel({ name: p.name, species: p.species, growth: p.growth, resting: resting, newGrowth: newGrowth, mood: mood })
@@ -12598,7 +12602,7 @@ function plantView(now) {
 // visitor comes on a cleared plan day, which the web does not have.
 function plantArtLook(v, surface) {
   var r = v.resolved;
-  return { palette: r.palette, ground: r.ground, planter: r.planter, keepsakes: surface === 'you' ? r.keepsakes : [] };
+  return { style: v.style, palette: r.palette, ground: r.ground, planter: r.planter, keepsakes: surface === 'you' ? r.keepsakes : [] };
 }
 
 // ── Drawing: the engine's part tree as SVG markup ──
@@ -12620,7 +12624,7 @@ function plantNodeSvg(n) {
 function plantSvg(o) {
   var K = plantApi();
   var organs = o.scales ? o.scales.map(function (v) { return Math.round(v * 40) / 40; }) : undefined;
-  var built = K.art.buildPlant({ species: o.species, stage: o.stage, organs: organs, quietLook: !!o.quiet, lod: o.lod || K.art.lodFor(o.size), theme: plantTheme(), resting: !!o.resting, mood: o.mood, look: o.look });
+  var built = K.art.buildPlant({ species: o.species, stage: o.stage, organs: organs, quietLook: !!o.quiet, lod: o.lod || K.art.lodFor(o.size), theme: plantTheme(), resting: !!o.resting, mood: o.mood, look: o.look, px: o.size, fit: !!o.fit });
   var layers = K.art.plantLayers(built.root);
   var base = built.anchors && built.anchors.base ? built.anchors.base.y : 170;
   // The breath: about 2px deep at any size (the app's breathDepth).
@@ -12806,7 +12810,7 @@ function plantOpen(mode, from) {
   if (mode === 'species') body += '<p class="plnt-meta">Same growth, new look. Each is shown at Crown.</p>';
   if (mode === 'new' || mode === 'species') body += plantPickHtml();
   if (mode === 'new' || mode === 'name') body += plantNameHtml(mode === 'name' && p ? p.name : '');
-  if (mode === 'look') body += plantLookHtml();
+  if (mode === 'look') body += '<div id="plLookBody">' + plantLookHtml() + '</div>';
   var acts = mode === 'look'
     ? '<button type="button" class="act-btn primary" onclick="plantClose()">Done</button>'
     : '<button type="button" class="act-btn primary" onclick="plantConfirm()">' + (mode === 'new' ? 'Plant it' : mode === 'species' ? 'Use this plant' : 'Save name') + '</button>'
@@ -12840,11 +12844,12 @@ function plantCancel() {
 }
 function plantPickHtml() {
   var K = plantApi(), sel = plantDlg.species;
+  var pickStyle = plantDlg.mode === 'species' && S.plant ? K.looks.resolveStyle(S.plant.look, S.plantSettings) : K.looks.NEW_PLANT_STYLE;
   var tiles = K.plant.PLANT_SPECIES.map(function (sp) {
     var info = K.plant.SPECIES_INFO[sp];
     return '<label class="plnt-tile"><input type="radio" class="plnt-radio" name="plSpecies" value="' + sp + '"' + (sp === sel ? ' checked' : '')
       + ' onchange="plantPickSpecies(this.value)">'
-      + '<span class="plnt-tile-art">' + plantSvg({ species: sp, stage: PLANT_PREVIEW, size: 72, fit: true, lod: 'small', quiet: !K.plant.plantHasFace(S.plantSettings) }) + '</span>'
+      + '<span class="plnt-tile-art">' + plantSvg({ species: sp, stage: PLANT_PREVIEW, size: 72, fit: true, lod: 'small', quiet: !K.looks.styleHasFace(pickStyle), look: { style: pickStyle } }) + '</span>'
       + '<span class="plnt-tile-n">' + escapeHtml(info.name) + '<span class="sr-only">. ' + escapeHtml(info.line) + '</span></span></label>';
   }).join('');
   var info = K.plant.SPECIES_INFO[sel];
@@ -12951,7 +12956,8 @@ function plantLookHtml() {
   var K = plantApi(), p = S.plant;
   var unlocked = K.looks.unlockedLooks(p, []);
   var open = function (id) { return unlocked.indexOf(id) >= 0; };
-  var resolved = K.looks.resolveLook(p.species, p.look, unlocked, K.looks.defaultKeepsakes(p, []));
+  var style = K.looks.resolveStyle(p.look, S.plantSettings);
+  var resolved = K.looks.resolveLook(p.species, p.look, unlocked, K.looks.defaultKeepsakes(p, []), style);
   var group = function (slot, legend, items, cur, art, note) {
     return '<fieldset class="plnt-lk"><legend class="plnt-lk-h">' + legend + '</legend><div class="plnt-lk-grid">'
       + items.map(function (it) {
@@ -12965,14 +12971,19 @@ function plantLookHtml() {
   };
   var icon = function (b) { return '<svg width="36" height="36" viewBox="' + plantAttr(b.viewBox) + '" aria-hidden="true" focusable="false">' + plantNodeSvg(b.root) + '</svg>'; };
   var cw = function (it) {
-    return plantSvg({ species: p.species, stage: Math.max(3, p.growth), size: 36, fit: true, lod: 'icon', look: { palette: it.palette } });
+    return plantSvg({ species: p.species, stage: Math.max(3, p.growth), size: 36, fit: true, lod: 'icon', quiet: true, look: { style: style, palette: it.palette } });
+  };
+  // Each style card draws THIS plant that way (its growth and colours).
+  var st = function (it) {
+    return plantSvg({ species: p.species, stage: p.growth, size: 48, fit: true, lod: 'small', quiet: !K.looks.styleHasFace(it.id), look: { style: it.id, palette: resolved.palette } });
   };
   var planters = K.looks.plantersFor(p.species).filter(function (it) { return open(it.id); });
   var keeps = K.looks.KEEPSAKE_ITEMS.filter(function (it) { return open(it.id); });
   return '<div class="plnt-lk-prev" id="plLookPrev">' + plantLookPreview() + '</div>'
+    + group('style', 'Style', K.looks.STYLES, style, st)
     + group('colourway', 'Colour', K.looks.colourwaysFor(p.species), resolved.colourway, cw)
     + group('ground', 'Ground', K.looks.GROUNDS, resolved.ground)
-    + group('planter', 'Planter', planters, resolved.planter, function (it) { return icon(K.art.planterIcon(it.id, p.species, plantTheme())); })
+    + group('planter', 'Planter', planters, resolved.planter, function (it) { return icon(K.art.planterIcon(it.id, p.species, plantTheme(), style === 'botanical' ? 'botanical' : 'storybook')); })
     + group('visitor', 'Visitor', K.looks.VISITORS, resolved.visitor, null, 'Shown here. In the KaiSip app it perches on days you clear your plan.')
     + (keeps.length ? '<fieldset class="plnt-lk" id="plKeeps"><legend class="plnt-lk-h">Keepsakes</legend><div class="plnt-lk-grid">' + keeps.map(function (it) {
       var on = (resolved.keepsakes || []).indexOf(it.id) >= 0;
@@ -12986,7 +12997,7 @@ function plantSyncKeepsakes() {
   var K = plantApi(), box = document.getElementById('plKeeps');
   if (!K || !box || !S.plant) return;
   var unlocked = K.looks.unlockedLooks(S.plant, []);
-  var shown = K.looks.resolveLook(S.plant.species, S.plant.look, unlocked, K.looks.defaultKeepsakes(S.plant, [])).keepsakes;
+  var shown = K.looks.resolveLook(S.plant.species, S.plant.look, unlocked, K.looks.defaultKeepsakes(S.plant, []), K.looks.resolveStyle(S.plant.look, S.plantSettings)).keepsakes;
   var full = shown.length >= K.looks.MAX_SHOWN_KEEPSAKES;
   Array.prototype.forEach.call(box.querySelectorAll('input[type="checkbox"]'), function (c) {
     c.checked = shown.indexOf(c.value) >= 0;
@@ -13001,6 +13012,8 @@ function plantLookPreview() {
   var look = plantArtLook(v, 'you');
   if (v.resolved.visitor !== 'no-visitor') look.visitor = v.resolved.visitor;
   var parts = [K.plant.plantCallName(p)];
+  var sty = K.looks.lookItem(v.style);
+  if (sty) parts.push(sty.name.toLowerCase() + ' style');
   var item = K.looks.lookItem(v.resolved.colourway);
   if (item) parts.push(item.name);
   var pot = K.looks.lookItem(v.resolved.planter);
@@ -13015,15 +13028,23 @@ function plantSetLook(slot, id) {
   change[slot] = id;
   S.plant = K.plant.withLook(S.plant, change);
   saveState();
-  var prev = document.getElementById('plLookPrev');
-  if (prev) prev.innerHTML = plantLookPreview();
+  var body = document.getElementById('plLookBody');
+  if (slot === 'style' && body) {
+    body.innerHTML = plantLookHtml();
+    plantSyncKeepsakes();
+    var picked = body.querySelector('input[name="plLk-style"]:checked');
+    if (picked) { try { picked.focus(); } catch (e) {} }
+  } else {
+    var prev = document.getElementById('plLookPrev');
+    if (prev) prev.innerHTML = plantLookPreview();
+  }
   plantRefresh();
 }
 function plantToggleKeepsake(id) {
   var K = plantApi();
   if (!K || !S.plant) return;
   var unlocked = K.looks.unlockedLooks(S.plant, []);
-  var shown = K.looks.resolveLook(S.plant.species, S.plant.look, unlocked, K.looks.defaultKeepsakes(S.plant, [])).keepsakes;
+  var shown = K.looks.resolveLook(S.plant.species, S.plant.look, unlocked, K.looks.defaultKeepsakes(S.plant, []), K.looks.resolveStyle(S.plant.look, S.plantSettings)).keepsakes;
   S.plant = K.plant.withLook(S.plant, { keepsakes: K.looks.toggleKeepsake(shown, id) });
   saveState();
   var prev = document.getElementById('plLookPrev');
@@ -18334,6 +18355,14 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'A calm new plant',
+    items: [
+      { cat: 'new', text: 'New plants now grow in a calm botanical style; the storybook look with a face is still one tap away in Change its look.' },
+      { cat: 'improved', text: 'Change its look has a new Style choice. Plants you already have keep their look.' }
+    ]
+  },
+  {
+    version: 'v12.30',
     title: 'A calmer first visit and a quicker answer',
     items: [
       { cat: 'new', text: 'A new welcome: one tap on Start 5 questions takes you straight into your first questions.' },

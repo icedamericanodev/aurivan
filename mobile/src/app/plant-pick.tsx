@@ -96,7 +96,8 @@ export default function PlantPick() {
               <Gap h={space.lg} />
               <SpeciesGrid
                 value={species}
-                quietLook={!view.face}
+                // A new plant is previewed as it will grow (botanical); Change plant, in the plant's own style.
+                plantStyle={mode === 'species' ? view.style : undefined}
                 onChange={(s) => {
                   // A suggested name follows the species until the learner types their own.
                   if (mode === 'new' && SPECIES_INFO[species].suggestions.includes(name)) setName(suggestName(s, Math.random()));

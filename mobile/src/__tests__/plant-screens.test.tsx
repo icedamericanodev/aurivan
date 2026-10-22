@@ -27,13 +27,15 @@ import Settings from '../app/settings';
 import { pickCelebration, resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { pickColumns } from '../components/plant/PlantUI';
 import { getDomainQuestions } from '../content/loader';
-import { MAX_NAME, PLANT_SPECIES, plantNew, SPECIES_INFO, type CertPlant } from '../engine/plant';
+import { MAX_NAME, PLANT_SPECIES, SPECIES_INFO, type CertPlant } from '../engine/plant';
 import { dayKey } from '../engine/streak';
 import { plantFor } from '../lib/plant';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
+// Mobile 1.40: these tests check the storybook plant, so they plant as an app from before 1.40 did (no style).
+import { legacyPlantNew as plantNew } from '../../jest/legacyPlant';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -376,19 +378,23 @@ describe('the picker', () => {
 });
 
 describe('Settings', () => {
-  it('Show my plant and Quiet look; Quiet look only while the plant shows', () => {
+  // Mobile 1.40: Quiet look moved into Your plant › Change its look › Style. Settings keeps
+  // Show my plant and, while the plant shows, one "Change its look" row that opens the Look screen.
+  it('Show my plant and Change its look; Change its look only while the plant shows', () => {
     mount(<Settings />);
     const toggle = (title: string) => root().findAll((n) => n.props.accessibilityLabel === title && typeof n.props.onValueChange === 'function')[0];
+    const lookRow = () => root().findAll((n) => typeof n.props.onPress === 'function' && /^Change its look/.test(n.props.accessibilityLabel ?? ''))[0];
     expect(toggle('Show my plant').props.value).toBe(true);
-    act(() => {
-    toggle('Quiet look').props.onValueChange(true);
-  });
-    expect(useProgress.getState().plantSettings?.quietLook).toBe(true);
-    act(() => {
-    toggle('Show my plant').props.onValueChange(false);
-  });
-    expect(useProgress.getState().plantSettings?.showPlant).toBe(false);
     expect(toggle('Quiet look')).toBeUndefined();
+    act(() => {
+      lookRow().props.onPress();
+    });
+    expect(router.push).toHaveBeenCalledWith('/plant-look');
+    act(() => {
+      toggle('Show my plant').props.onValueChange(false);
+    });
+    expect(useProgress.getState().plantSettings?.showPlant).toBe(false);
+    expect(lookRow()).toBeUndefined();
   });
 
   it('the Reset alert says the plant goes back to a seed and keeps its name and look', () => {

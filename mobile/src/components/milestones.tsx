@@ -74,7 +74,7 @@ function decideQuiet(k: string, now = Date.now()): boolean {
 const counted = new Set<string>();
 
 /** "Rooted · 30 days, Lichen": the tier's metal is said and printed, never shown by colour alone. */
-const momentName = (m: MilestoneMoment) => (m.tier ? `${m.label} · ${badgeMetal[m.tier as 1 | 2 | 3].name}` : m.label);
+export const momentName = (m: MilestoneMoment) => (m.tier ? `${m.label} · ${badgeMetal[m.tier as 1 | 2 | 3].name}` : m.label);
 
 /** What a screen reader hears, once: "A new badge, Evergreen: Long Memory. You recalled…". */
 export function momentSpoken(m: MilestoneMoment): string {

@@ -146,8 +146,12 @@ elif [ "${SHOTS:-}" = plant ]; then
   # plants, moods, planters, keepsakes, the badge sheet line, a plant just
   # planted from "Plant yours", and frame strips of Breathe, a reaction and the
   # growth sequence (REDUCED=1 for the reduced set). PLANT=4b runs only these.
-  if [ "${PLANT:-}" != 4b ]; then node scripts/screenshots/shoot_plant.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
-  node scripts/screenshots/shoot_plant4b.mjs "$TMP/seed.json" "$OUT" "$THEME"
+  # Mobile 1.40 (shoot_plant140.mjs): the botanical default plant, Look › Style, a plant saved
+  # before 1.40 (unchanged), Play before and after "More games" opens, and a game recap
+  # with a new badge. PLANT=140 runs only these.
+  if [ "${PLANT:-}" != 4b ] && [ "${PLANT:-}" != 140 ]; then node scripts/screenshots/shoot_plant.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
+  if [ "${PLANT:-}" != 140 ]; then node scripts/screenshots/shoot_plant4b.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
+  if [ "${PLANT:-}" != 4b ]; then node scripts/screenshots/shoot_plant140.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
 elif [ "${SHOTS:-}" = fit ]; then
   # Mobile 1.15 "Fit the plan": onboarding's Step 1 and Step 2 of 2, Today (a new learner's
   # day 1, a 10-minute day, the Exam-focused mini mock, the "Fit your plan"

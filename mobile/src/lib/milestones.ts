@@ -38,6 +38,7 @@ import {
   markLabel,
   newlyMet,
   takeNext,
+  takeNextOf,
   withFrozenPlanters,
   type CertMilestones,
   type MilestoneFacts,
@@ -301,6 +302,23 @@ export function celebrateNext(certId: string): MilestoneMoment | null {
   let key: string | undefined;
   useProgress.getState().updateMilestones(certId, (m) => {
     const r = takeNext(m);
+    key = r.key;
+    return r.key && r.milestones ? { milestones: r.milestones } : null;
+  });
+  return key ? momentFor(certId, key) : null;
+}
+
+/**
+ * Mobile 1.40 (game recap): take ONE queued badge, but only one that `keys`
+ * (what this round itself just earned) holds. A badge from earlier stays
+ * queued: the recap never shows old news as "new"; You's badge dot shows it
+ * quietly instead. Nothing with badges hidden, as celebrateNext.
+ */
+export function celebrateFrom(certId: string, keys: readonly string[]): MilestoneMoment | null {
+  if (badgesHidden() || !keys.length) return null;
+  let key: string | undefined;
+  useProgress.getState().updateMilestones(certId, (m) => {
+    const r = takeNextOf(m, keys);
     key = r.key;
     return r.key && r.milestones ? { milestones: r.milestones } : null;
   });

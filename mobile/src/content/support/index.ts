@@ -42,6 +42,16 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.40.0',
+    date: '2026-10-22',
+    new: ['New plants now grow as a calm botanical drawing, like a page from a field guide.'],
+    improved: [
+      'A face is now optional: choose Botanical, Storybook, or Storybook with a face under Style in Change its look. Plants you already have keep their look.',
+      'Play starts with three core games to keep things simple. More games open as you practise, and any game you have already played stays.',
+      'A game recap now shows a new badge only when that round earned it, with one Report a problem link at the end.',
+    ],
+  },
+  {
     version: '1.39.0',
     date: '2026-10-22',
     improved: [

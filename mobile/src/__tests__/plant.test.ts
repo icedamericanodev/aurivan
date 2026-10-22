@@ -217,7 +217,8 @@ describe('life cycle', () => {
   const grown = (): CertPlant => ({ ...advance(plantNew('cherry-blossom', 'Hana', T0), factsFor(5), T0 + 10).plant, look: { ground: 'meadow', keepsakes: ['lantern'] }, kept: ['robin'] });
 
   it('plantNew: a seed, or a quiet back-fill for an existing learner', () => {
-    expect(plantNew('oak', '  Kai  ', T0)).toEqual({ species: 'oak', name: 'Kai', plantedAt: T0, growth: 1 });
+    // Mobile 1.40: a new plant is written down as botanical at birth.
+    expect(plantNew('oak', '  Kai  ', T0)).toEqual({ species: 'oak', name: 'Kai', plantedAt: T0, growth: 1, look: { style: 'botanical' } });
     const b = plantNew('oak', 'Kai', T0, 4);
     expect(b.growth).toBe(4);
     expect(b.backfill).toEqual({ at: T0, growth: 4 });

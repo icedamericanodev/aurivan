@@ -28,8 +28,8 @@ import {
   organSlots,
   organScales,
   organs,
+  plantFace,
   plantFacts,
-  plantHasFace,
   plantLabel,
   plantNew,
   plantShown,
@@ -43,7 +43,7 @@ import {
   type PlantSpecies,
 } from '../engine/plant';
 import { planComplete } from '../engine/dayPlan';
-import { defaultKeepsakes, plantMood, resolveLook, unlockedLooks, type ArtLook, type CertMarks, type PlantMood, type ResolvedLook } from '../engine/plantLooks';
+import { defaultKeepsakes, plantMood, resolveLook, resolveStyle, styleHasFace, unlockedLooks, type ArtLook, type CertMarks, type PlantMood, type PlantStyle, type ResolvedLook } from '../engine/plantLooks';
 import { growthOccasions, keepsakeOccasions, proudReactionId, proudToday, type ProudMarks, type ProudOccasion } from '../engine/proud';
 import { readinessFor } from '../engine/readiness';
 import { dayKey } from '../engine/streak';
@@ -173,7 +173,9 @@ export function carryPlantIdentity(certId: string, restored: CertProgress, phone
   if (restored.plant || !phone) return restored.plant;
   const facts = plantFactsFor(certId, { ...restored, plant: undefined }, now);
   const g = facts ? growthFor(facts) : 1;
-  const fresh = plantNew(phone.species, phone.name, now, g);
+  // The phone's look exactly as it is: a plant from before mobile 1.40 has no
+  // style and must keep its storybook art, so plantNew's botanical is dropped.
+  const { look: _newLook, ...fresh } = plantNew(phone.species, phone.name, now, g);
   return {
     ...fresh,
     plantedAt: phone.plantedAt,
@@ -190,7 +192,13 @@ export interface PlantView {
   settings: PlantSettings;
   /** The plant, when there is one AND it is shown. */
   plant: CertPlant | null;
-  /** The face (off with Quiet look). */
+  /**
+   * Mobile 1.40: how this plant is drawn (engine/plantLooks.ts resolveStyle):
+   * its own `look.style`, or for a plant saved before 1.40 the storybook art
+   * (with its face unless Quiet look was on).
+   */
+  style: PlantStyle;
+  /** The face: only the "Storybook with a face" style has one. */
   face: boolean;
   /** The calm resting look: a planned rest day, or 3+ days without study. */
   resting: boolean;
@@ -215,11 +223,13 @@ export function plantView(cert: Certification, cp: Pick<CertProgress, 'answers' 
   const plant = shown && cp.plant ? cp.plant : null;
   const resting = isResting(lastDay, today, plannedRest);
   const newGrowth = lastDay === today;
+  const style = resolveStyle(cp.plant?.look, settings);
   return {
     shown,
     settings: settings ?? {},
     plant,
-    face: plantHasFace(settings),
+    style,
+    face: plantFace(cp.plant, settings),
     resting,
     newGrowth,
     organs: organs(weights, domains),
@@ -277,15 +287,25 @@ export interface PlantLookView {
   resolved: ResolvedLook;
   /** What the art draws (the visitor only on a day the plan is cleared). */
   art: ArtLook;
-  /** The face's mood (none with Quiet look). */
+  /**
+   * The plant's mood today. Mobile 1.40: it drives the POSTURE reaction
+   * (happy stretches, proud stands tall) for every style, so a faceless
+   * plant still answers a good day; only a plant with a face draws it on the
+   * face and says it in the label (`face`).
+   */
   mood: PlantMood;
+  /** This plant has a face (the "Storybook with a face" style). */
+  face: boolean;
   /** The visitor is here today. */
   visiting: boolean;
 }
 
 export interface LookInput {
   marks: readonly CertMarks[];
-  face: boolean;
+  /** Mobile 1.40: the plant's resolved style (PlantView.style). Left out: worked out from the plant (and `face`). */
+  style?: PlantStyle;
+  /** Before 1.40: the app-wide face switch. Read only when `style` is left out (a plant with no style of its own). */
+  face?: boolean;
   resting: boolean;
   planCleared: boolean;
   newTopicToday: boolean;
@@ -295,18 +315,21 @@ export interface LookInput {
 
 /** Pure: the look and mood for one plant (tests call this directly). */
 export function plantLookView(plant: CertPlant, i: LookInput): PlantLookView {
+  const style = i.style ?? resolveStyle(plant.look, { quietLook: i.face === false });
   const unlocked = new Set(unlockedLooks(plant, i.marks));
-  const resolved = resolveLook(plant.species, plant.look, unlocked, defaultKeepsakes(plant, i.marks));
+  const resolved = resolveLook(plant.species, plant.look, unlocked, defaultKeepsakes(plant, i.marks), style);
   const visiting = i.planCleared && resolved.visitor !== 'no-visitor' && !i.resting;
   // A back-filled growth (planting, or a restore with no plant) is one quiet
   // line, never a moment, so it is no reason to look proud (code review M5).
   const grewToday = Object.values(plant.reached ?? {}).some((at) => typeof at === 'number' && dayKey(at) === i.today && at !== plant.backfill?.at);
-  const mood = plantMood({ face: i.face, resting: i.resting, grewToday, newKeepsakeToday: i.newKeepsakeToday, planCleared: i.planCleared, newTopicToday: i.newTopicToday });
+  // Worked out as if there were a face (spec 3.5): the posture plays for every style.
+  const mood = plantMood({ face: true, resting: i.resting, grewToday, newKeepsakeToday: i.newKeepsakeToday, planCleared: i.planCleared, newTopicToday: i.newTopicToday });
   return {
     unlocked,
     resolved,
-    art: { palette: resolved.palette, ground: resolved.ground, planter: resolved.planter, visitor: visiting ? resolved.visitor : undefined, keepsakes: resolved.keepsakes },
+    art: { style, palette: resolved.palette, ground: resolved.ground, planter: resolved.planter, visitor: visiting ? resolved.visitor : undefined, keepsakes: resolved.keepsakes },
     mood,
+    face: styleHasFace(style),
     visiting,
   };
 }
@@ -352,14 +375,16 @@ export function usePlantView(): PlantView & { cert: Certification; certId: strin
   const occasionKey = occasions.map((o) => o.id).join(',');
   const look = useMemo(() => {
     if (!view.plant) return null;
-    return plantLookView(view.plant, { marks: allCertMarks(useProgress.getState().byCert), face: view.face, resting: view.resting, planCleared, newTopicToday, newKeepsakeToday: proud.keepsake, today });
+    return plantLookView(view.plant, { marks: allCertMarks(useProgress.getState().byCert), style: view.style, resting: view.resting, planCleared, newTopicToday, newKeepsakeToday: proud.keepsake, today });
     // `marks` changes when a badge or planter does: the unlocks are read fresh from the store then.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [view.plant, view.face, view.resting, marks, planCleared, newTopicToday, proud.keepsake, today]);
+  }, [view.plant, view.style, view.resting, marks, planCleared, newTopicToday, proud.keepsake, today]);
   // Write down the new occasions (the cap applies once, here), but ONLY while
-  // the proud face really shows (PR #51 review). With Quiet look (no face),
-  // the plant hidden, or the plant resting, nobody sees a proud moment, so it
-  // must not use up one of the 3 keepsake moments in 7 days. No save when nothing is new.
+  // the proud moment really shows (PR #51 review). With the plant hidden or
+  // resting, nobody sees a proud moment, so it must not use up one of the 3
+  // keepsake moments in 7 days. Mobile 1.40: the proud POSTURE (standing tall)
+  // plays for every style, a faceless plant too, so it counts the same way.
+  // No save when nothing is new.
   const proudShown = look?.mood === 'proud';
   useEffect(() => {
     if (occasionKey && proudShown) useSeen.getState().noteProud(occasions, Date.now());
@@ -368,7 +393,7 @@ export function usePlantView(): PlantView & { cert: Certification; certId: strin
   // The reaction's occasion: proud is keyed by its earned occasions (once ever,
   // and a new occasion later today is a new reason); the others by mood and day.
   const reactionId = look ? (look.mood === 'proud' ? (proudReactionId(proud.ids) ?? `${certId}:proud:${today}`) : `${certId}:${look.mood}:${today}`) : null;
-  // The spoken label says the mood and the visitor too.
-  const label = view.plant && look ? plantLabel({ name: view.plant.name, species: view.plant.species, growth: view.plant.growth, resting: view.resting, newGrowth: view.newGrowth, mood: look.mood, visitor: look.visiting ? look.resolved.visitor : undefined }) : view.label;
+  // The spoken label says the mood (only with a face: a faceless plant has no expression to read) and the visitor too.
+  const label = view.plant && look ? plantLabel({ name: view.plant.name, species: view.plant.species, growth: view.plant.growth, resting: view.resting, newGrowth: view.newGrowth, mood: look.face ? look.mood : undefined, visitor: look.visiting ? look.resolved.visitor : undefined }) : view.label;
   return { ...view, label, cert, certId, exam, look, reactionId };
 }

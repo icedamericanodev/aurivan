@@ -18,7 +18,7 @@ import { MAX_ANSWER_MS } from '../engine/answerClock';
 import { cleanDone } from '../engine/examWeek';
 import { readBackup } from '../engine/backup';
 import { isValidPlantState } from '../engine/plant';
-import { isCatalogLook, isKeepable, isLookOfSlot } from '../engine/plantLooks';
+import { isCatalogLook, isKeepable, isLookOfSlot, resolveStyle } from '../engine/plantLooks';
 import { originalToDisplay } from '../engine/shuffle';
 import { checkBackupText, currentBackup } from '../lib/backup';
 import { finishSession, MAX_SESSION_MINUTES } from '../lib/finishSession';
@@ -123,7 +123,7 @@ describe('export: every state the phone can hold reads back', () => {
         // Mobile 1.14: a look choice that is a catalogue id in its own slot survives exactly
         // (whether or not its unlock does: the art falls back, the choice is kept).
         const want = plant!.look;
-        for (const [k, slot] of [['colourway', 'colourway'], ['ground', 'ground'], ['planter', 'planter'], ['visitor', 'visitor']] as const)
+        for (const [k, slot] of [['style', 'style'], ['colourway', 'colourway'], ['ground', 'ground'], ['planter', 'planter'], ['visitor', 'visitor']] as const)
           expect(back.look?.[k]).toBe(want && isLookOfSlot(want[k], slot) ? want[k] : undefined);
         const ks = [...new Set((want?.keepsakes ?? []).filter((x) => isLookOfSlot(x, 'keepsake')))].slice(0, 3);
         // An explicit list (even an empty one: "none on show") survives as such; unset stays unset (the default three).
@@ -175,5 +175,59 @@ describe('export: every state the phone can hold reads back', () => {
       },
     });
     expect(restorable().kind).toBe('ok');
+  });
+});
+
+// ── Mobile 1.40: the plant's style rides in backups, both ways ──────────────
+describe('the plant style (look.style) in backups', () => {
+  type FilePlant = { look?: Record<string, unknown> } & Record<string, unknown>;
+  type File = { stores: { progress: { state: { byCert: { cisa: { plant?: FilePlant } } } } } };
+  const plantBase = { species: 'oak' as const, name: 'Kai', plantedAt: T0 - 10 * DAY, growth: 3 as const };
+  const setPhone = (plant: Record<string, unknown>, quietLook?: boolean) =>
+    useProgress.setState({ byCert: { cisa: { ...randomCert(3), plant } as unknown as CertProgress }, plantSettings: quietLook === undefined ? {} : { quietLook } });
+  const exported = (plant: Record<string, unknown>, quietLook?: boolean) => {
+    setPhone(plant, quietLook);
+    const read = restorable();
+    if (read.kind !== 'ok') throw new Error(read.code);
+    return read.data;
+  };
+
+  it('a file with look.style round-trips exactly', () => {
+    for (const style of ['botanical', 'storybook', 'storybook-face']) {
+      const back = exported({ ...plantBase, look: { style, colourway: 'oak-autumn' } }).progress.byCert.cisa.plant!;
+      expect(back.look).toEqual({ style, colourway: 'oak-autumn' });
+      expect(resolveStyle(back.look, undefined)).toBe(style);
+    }
+  });
+
+  it('an old file without it restores, and the plant keeps its storybook art (the face, or none with Quiet look)', () => {
+    const face = exported({ ...plantBase, look: { colourway: 'oak-autumn' } });
+    expect(face.progress.byCert.cisa.plant!.look).toEqual({ colourway: 'oak-autumn' });
+    expect(resolveStyle(face.progress.byCert.cisa.plant!.look, face.progress.plantSettings)).toBe('storybook-face');
+    const quiet = exported({ ...plantBase }, true);
+    expect(quiet.progress.byCert.cisa.plant!.look).toBeUndefined();
+    expect(quiet.progress.plantSettings?.quietLook).toBe(true);
+    expect(resolveStyle(quiet.progress.byCert.cisa.plant!.look, quiet.progress.plantSettings)).toBe('storybook');
+  });
+
+  it('a 1.40 file read the way an older build reads it (style unknown, so dropped) still restores', () => {
+    setPhone({ ...plantBase, look: { style: 'botanical', ground: 'meadow' } });
+    const file = JSON.parse(JSON.stringify(currentBackup(Date.now()))) as File;
+    const look = file.stores.progress.state.byCert.cisa.plant!.look!;
+    expect(look).toEqual({ style: 'botanical', ground: 'meadow' });
+    // An older checker has no `style`: obj() ignores the unknown key. Same as reading it without one.
+    const { style: _dropped, ...older } = look;
+    file.stores.progress.state.byCert.cisa.plant!.look = older;
+    const read = checkBackupText(JSON.stringify(file));
+    expect(read.kind).toBe('ok');
+    // There the plant simply shows storybook until that phone updates: no refusal, no data loss.
+    if (read.kind === 'ok') expect(resolveStyle(read.data.progress.byCert.cisa.plant!.look, undefined)).toBe('storybook-face');
+  });
+
+  it('a style that is an id of another slot is bad data (never silently another look)', () => {
+    setPhone({ ...plantBase });
+    const file = JSON.parse(JSON.stringify(currentBackup(Date.now()))) as File;
+    file.stores.progress.state.byCert.cisa.plant!.look = { style: 'meadow' };
+    expect(checkBackupText(JSON.stringify(file)).kind).not.toBe('ok');
   });
 });

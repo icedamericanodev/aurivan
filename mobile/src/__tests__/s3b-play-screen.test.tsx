@@ -6,6 +6,10 @@
  * related games, and a folded "More games" row holding the other six. Every
  * row has a plain subtitle ("Spot the trick answer"). The Learn tab's
  * "Up next" lesson row is also checked here: it is no longer a second card.
+ *
+ * Mobile 1.40: a new learner sees the three core games only; the other six
+ * open under "More games" after about 50 practice answers (one quiet line
+ * until then), and a game already played is never taken away.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { router } from 'expo-router';
@@ -60,6 +64,15 @@ const gameRows = () => {
 const rowNames = () => gameRows().map((n) => String(n.props.accessibilityLabel).split('. ')[0]);
 const moreRow = () => root().findAll((n) => n.props.accessibilityRole === 'button' && /^More games/.test(String(n.props.accessibilityLabel)) && typeof n.props.onPress === 'function')[0];
 
+/** Answer `n` practice questions (distinct), right: what opens "More games" at 50. */
+const answerN = (n: number) => {
+  const answers = Object.fromEntries(getAllQuestions('cisa').slice(0, n).map((q, i) => [q.id, { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: 1000 + i }]));
+  act(() => {
+    useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, answers } } }));
+  });
+};
+const waitLine = () => root().findAll((n) => n.props.testID === 'more-games-wait' && typeof n.type === 'string');
+
 /** Save five tagged mistakes with one slip, so the slip coach names a pattern. */
 const tagFive = (slip: 'role' | 'priority') => {
   const ids = getAllQuestions('cisa').slice(0, 5).map((q) => q.id);
@@ -82,7 +95,7 @@ afterEach(() => {
 });
 
 describe('Play: Today’s drill', () => {
-  it('a new learner: Snare Spotter leads, two related games sit beside it, the other six are folded', () => {
+  it('a new learner: the three core games only (Snare Spotter leads, Signpost and Call It First beside it), and one quiet line', () => {
     mount();
     const text = textOf(root());
     expect(text).toContain('Today’s drill');
@@ -91,12 +104,47 @@ describe('Play: Today’s drill', () => {
     const [hero] = root().findAll((n) => n.props.testID === 'hero-content' && typeof n.type === 'string');
     expect(textOf(hero)).toContain(GAMES.trap.name);
     expect(rowNames()).toEqual([GAMES.priority.name, GAMES.callit.name]);
-    // Three games in sight (hero + two rows); "More games" is folded and says how many.
+    // Mobile 1.40: no "More games" row yet, just one quiet line (no count of the games waiting).
+    expect(moreRow()).toBeUndefined();
+    expect(waitLine()).toHaveLength(1);
+    expect(textOf(waitLine()[0])).toBe('More games open after 50 answers.');
+  });
+
+  it('49 answers: still the three; 50: "More games" opens, folded, with the other six', () => {
+    answerN(49);
+    mount();
+    expect(moreRow()).toBeUndefined();
+    expect(waitLine()).toHaveLength(1);
+    answerN(50);
+    expect(waitLine()).toHaveLength(0);
     expect(moreRow().props.accessibilityState).toMatchObject({ expanded: false });
     expect(textOf(moreRow())).toContain('6 more');
   });
 
+  it('nobody loses a game: one already played stays under "More games" before 50 answers', () => {
+    act(() => {
+      useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, gameBest: { sprint: 5 } } } }));
+    });
+    mount();
+    expect(textOf(moreRow())).toContain('1 more');
+    act(() => {
+      moreRow().props.onPress();
+    });
+    expect(rowNames()).toEqual([GAMES.priority.name, GAMES.callit.name, GAMES.sprint.name]);
+    // The others still wait, so the quiet line stays.
+    expect(waitLine()).toHaveLength(1);
+  });
+
+  it('before 50 answers, a mistake pattern that names a waiting game falls back to a core game', () => {
+    tagFive('role');
+    mount();
+    const [hero] = root().findAll((n) => n.props.testID === 'hero-content' && typeof n.type === 'string');
+    expect(textOf(hero)).toContain(GAMES.trap.name);
+    expect(textOf(root())).not.toContain(GAMES.canopy.name);
+  });
+
   it('five tagged "wrong person" mistakes make Canopy Call the drill, and say why', () => {
+    answerN(50);
     tagFive('role');
     mount();
     const [hero] = root().findAll((n) => n.props.testID === 'hero-content' && typeof n.type === 'string');
@@ -112,6 +160,7 @@ describe('Play: Today’s drill', () => {
   });
 
   it('"More games" opens to the other six, each with a plain subtitle, and folds again', () => {
+    answerN(50);
     mount();
     act(() => {
       moreRow().props.onPress();

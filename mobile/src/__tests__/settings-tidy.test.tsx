@@ -148,9 +148,12 @@ describe('Settings is grouped, and each row says its value', () => {
     expect(row('Theme').props.accessibilityLabel).toBe('Theme, Dark');
     expect(row('Motion').props.accessibilityLabel).toBe('Motion, Reduced');
     // The on/off settings stay switches on the screen.
-    for (const name of ['Exam-focused plan', 'Timed practice', 'Shuffle answer options', 'Study reminder', 'Haptics', 'Show badges', 'Show my plant', 'Quiet look']) {
+    for (const name of ['Exam-focused plan', 'Timed practice', 'Shuffle answer options', 'Study reminder', 'Haptics', 'Show badges', 'Show my plant']) {
       expect(root().findAll((n) => typeof n.props.onValueChange === 'function' && n.props.accessibilityLabel === name).length).toBeGreaterThan(0);
     }
+    // Mobile 1.40: Quiet look moved into the Look screen's Style choice; Settings links there instead.
+    expect(root().findAll((n) => typeof n.props.onValueChange === 'function' && n.props.accessibilityLabel === 'Quiet look')).toEqual([]);
+    expect(t).toContain('Change its look');
     // The old ±day/week buttons are gone (the calendar replaces them).
     expect(t).not.toMatch(/week earlier|day later/);
   });

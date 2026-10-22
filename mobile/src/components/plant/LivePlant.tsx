@@ -196,12 +196,14 @@ function LivePlantInner(p: LivePlantProps) {
   const artMood = (mood ?? 'idle') as Mood;
   // `look` compares by value: an equal look built fresh is the same object here, so nothing rebuilds.
   const sameLook = stableLook(look);
+  const tight = fit ?? size <= 96;
+  // Mobile 1.40: the size and frame go in too (a botanical line is a true 1.5pt at any size); the old growth uses the same.
   const opts = useMemo(
-    () => ({ species, organs: organKey ? organKey.split(',').map(Number) : undefined, quietLook, lod: level, theme, resting, mood: artMood, look: sameLook }),
-    [species, organKey, quietLook, level, theme, resting, artMood, sameLook],
+    () => ({ species, organs: organKey ? organKey.split(',').map(Number) : undefined, quietLook, lod: level, theme, resting, mood: artMood, look: sameLook, px: size, fit: tight }),
+    [species, organKey, quietLook, level, theme, resting, artMood, sameLook, size, tight],
   );
   const built = useMemo(() => buildPlant({ ...opts, stage }), [opts, stage]);
-  const viewBox = (fit ?? size <= 96) ? built.frame : '0 0 200 200';
+  const viewBox = tight ? built.frame : '0 0 200 200';
   const layers = plantLayers(built.root);
   // Onboarding: the first sprout pops on its own layer.
   // A seed's curled tip, or (an existing learner's study back-filled it) the Sprout's two leaves.
