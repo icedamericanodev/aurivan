@@ -4,6 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.32] — Tidier study notes
+
+### Improved
+- Study notes open straight to your topics, with less clutter.
+- The reading filters appear once you have read your first note.
+- On phones, the Learn page bar fades at the edge so you can see there is more to scroll.
+- The privacy policy now explains that the Google Play version of the app gets its updates only through Google Play.
+
 ## [v12.31] — A calm new plant
 
 ### New
