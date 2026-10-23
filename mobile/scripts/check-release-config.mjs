@@ -35,9 +35,11 @@
  *   4. A profile named production... uses the "production" channel.
  *   5. Until phone updates are signed (docs/mobile/SECURITY_GATES.md Gate 1),
  *      every store build has over-the-air updates switched OFF (owner
- *      decision, 22 Oct 2026). The check loads app.config.js the way EAS
- *      Build does (EAS_BUILD_PROFILE = the profile's name) and the result must
- *      say `updates.enabled: false`. Once app.json carries a code-signing
+ *      decision, 22 Oct 2026). The check loads app.config.js twice, the two
+ *      ways `eas build` does: on your computer (only the profile's `env`) and
+ *      on the build machine (that env plus EAS_BUILD_PROFILE = the profile's
+ *      name). Both results must say `updates.enabled: false`, so the
+ *      fingerprint worked out on each side matches. Once app.json carries a code-signing
  *      certificate (updates.codeSigningCertificate), this rule steps aside.
  *   Profiles may `extends` another; the rules apply to the merged result, and
  *   per platform (an `android` or `ios` block can override distribution or
@@ -63,16 +65,16 @@ function resolveProfile(profiles, name, seen = []) {
   const own = profiles[name];
   if (!own) throw new Error(`eas.json: build profile "${seen.at(-1)}" extends "${name}", which does not exist`);
   const parent = own.extends ? resolveProfile(profiles, own.extends, [...seen, name]) : {};
-  const merged = { ...parent, ...own };
+  const merged = { ...parent, ...own, env: { ...(parent.env ?? {}), ...(own.env ?? {}) } };
   for (const p of PLATFORMS) merged[p] = { ...(parent[p] ?? {}), ...(own[p] ?? {}) };
   return merged;
 }
 
 /**
  * Every problem with this pair of config files, as plain sentences
- * (an empty list means all is well). `resolveConfig(profileName, expo)` gives
- * the config a build of that profile would use (app.config.js applied); by
- * default it is app.json unchanged.
+ * (an empty list means all is well). `resolveConfig(profileName, expo, env)`
+ * gives the config a build of that profile would use with that environment
+ * (app.config.js applied); by default it is app.json unchanged.
  */
 export function releaseConfigProblems(appJson, easJson, resolveConfig = (_profile, config) => config) {
   const problems = [];
@@ -106,11 +108,18 @@ export function releaseConfigProblems(appJson, easJson, resolveConfig = (_profil
     // Checked once per profile: the update switch is not per platform.
     const storeBuild = PLATFORMS.some((p) => (profile[p].distribution ?? profile.distribution ?? 'store') === 'store') || /^production/i.test(name);
     if (storeBuild && !appJson?.expo?.updates?.codeSigningCertificate) {
-      const updates = resolveConfig(name, appJson?.expo ?? {})?.updates;
-      if (updates?.enabled !== false) {
-        problems.push(
-          `eas.json build profile "${name}" makes a store build with over-the-air updates ON, and updates are not signed yet (SECURITY_GATES.md Gate 1). app.config.js must set updates.enabled to false for it.`,
-        );
+      const sides = [
+        ['on your computer', { ...profile.env }],
+        ['on the build machine', { ...profile.env, EAS_BUILD_PROFILE: name }],
+      ];
+      for (const [side, env] of sides) {
+        const updates = resolveConfig(name, appJson?.expo ?? {}, env)?.updates;
+        if (updates?.enabled !== false) {
+          problems.push(
+            `eas.json build profile "${name}" makes a store build with over-the-air updates ON (${side}), and updates are not signed yet (SECURITY_GATES.md Gate 1). app.config.js must set updates.enabled to false for it; give the profile "env": { "KAISIP_STORE_BUILD": "1" }.`,
+          );
+          break;
+        }
       }
     }
   }
@@ -119,16 +128,17 @@ export function releaseConfigProblems(appJson, easJson, resolveConfig = (_profil
 
 /**
  * A resolveConfig for releaseConfigProblems that runs app.config.js as EAS
- * Build would: EAS_BUILD_PROFILE set to the profile, and nothing else from
- * this computer's environment (so a local variable can't change the answer).
+ * Build would: with only the environment it is given (the profile's env, plus
+ * EAS_BUILD_PROFILE on the build machine), and nothing else from this
+ * computer's environment (so a local variable can't change the answer).
  * With no app.config.js, a build uses app.json as it is.
  */
 export function appConfigResolver(configFile) {
   if (!fs.existsSync(configFile)) return (_profile, config) => config;
   const load = createRequire(import.meta.url)(configFile);
-  return (profile, config) => {
+  return (_profile, config, env = {}) => {
     const saved = process.env;
-    process.env = { EAS_BUILD_PROFILE: profile };
+    process.env = { ...env };
     try {
       return load({ config: structuredClone(config) });
     } finally {

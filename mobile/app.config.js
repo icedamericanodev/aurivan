@@ -25,9 +25,14 @@
  *      with a plain message instead of shipping.
  *
  * WHEN IT RUNS: every time Expo reads the config (expo start, expo export,
- * eas build and eas update). EAS Build sets EAS_BUILD_PROFILE on the build
- * machine, where the native project is made from this config; everywhere
- * else it is unset, and this file changes nothing.
+ * eas build and eas update). A build counts as the store build when either
+ *   - KAISIP_STORE_BUILD is "1": eas.json sets it in the production profile's
+ *     env, and `eas build` passes that env both on your own computer (where it
+ *     reads the config and works out the fingerprint) and on the build
+ *     machine, so both see the same config; or
+ *   - EAS_BUILD_PROFILE is "production" (set on the EAS build machine only;
+ *     eas-cli does not set it on your computer).
+ * Everywhere else (expo start, test builds) this file changes nothing.
  *
  * Why plain JavaScript and not a call into configGuard.ts: Node can't load a
  * TypeScript file (and the TypeScript files it imports) from here on every
@@ -42,6 +47,13 @@
 
 /** The EAS build profile that makes the Google Play build (eas.json). */
 const STORE_PROFILE = 'production';
+/** Set to "1" in that profile's env in eas.json (see WHEN IT RUNS above). */
+const STORE_BUILD_MARKER = 'KAISIP_STORE_BUILD';
+
+/** True when Expo is reading the config for the Google Play build. */
+function isStoreBuild(env) {
+  return env.EAS_BUILD_PROFILE === STORE_PROFILE || env[STORE_BUILD_MARKER] === '1';
+}
 
 /**
  * Why a build must stop, as a plain sentence, or null when all is well.
@@ -49,7 +61,7 @@ const STORE_PROFILE = 'production';
  * other checks in src/cloud/configGuard.ts).
  */
 function cloudBuildProblem(env) {
-  if (env.EAS_BUILD_PROFILE !== STORE_PROFILE) return null;
+  if (!isStoreBuild(env)) return null;
   const flag = (env.EXPO_PUBLIC_AURIVAN_CLOUD ?? '').trim();
   if (flag === '' || env.AURIVAN_CLOUD_GO_LIVE_ACK === 'yes') return null;
   return (
@@ -63,7 +75,7 @@ function cloudBuildProblem(env) {
 function configFor(config, env) {
   const problem = cloudBuildProblem(env);
   if (problem) throw new Error(problem);
-  if (env.EAS_BUILD_PROFILE !== STORE_PROFILE) return config; // test builds: unchanged
+  if (!isStoreBuild(env)) return config; // test builds: unchanged
   return { ...config, updates: { ...config.updates, enabled: false } };
 }
 
@@ -72,3 +84,5 @@ module.exports = ({ config }) => configFor(config, process.env);
 module.exports.configFor = configFor;
 module.exports.cloudBuildProblem = cloudBuildProblem;
 module.exports.STORE_PROFILE = STORE_PROFILE;
+module.exports.STORE_BUILD_MARKER = STORE_BUILD_MARKER;
+module.exports.isStoreBuild = isStoreBuild;

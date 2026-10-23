@@ -36,7 +36,7 @@ Already fixed in code by the same audit (nothing for you to do):
 > **Decision, 22 Oct 2026 (owner):** Google Play builds ship with `updates.enabled: false` until this gate is done (free Option A in `docs/mobile/PLAY_LAUNCH.md`, B1). Store users get changes only through Play releases. Test builds keep OTA. The paid plan stays optional, for later.
 >
 > **Status, mobile 1.40.1 (23 Oct 2026): done in code for store builds.**
-> - `mobile/app.config.js` turns updates off when EAS builds the `production` profile (`EAS_BUILD_PROFILE=production`). Every other profile gets `app.json` unchanged, so preview and development builds keep their updates.
+> - `mobile/app.config.js` turns updates off when EAS builds the `production` profile (its `env` in eas.json sets `KAISIP_STORE_BUILD=1`, which `eas build` passes both on your computer and on the build machine; `EAS_BUILD_PROFILE=production` also counts). Every other profile gets `app.json` unchanged, so preview and development builds keep their updates.
 > - `mobile/scripts/check-release-config.mjs` (rule 5, run in CI and by Jest) fails if any store profile would resolve to updates on while `app.json` has no code-signing certificate. Once the certificate is added (steps 2–5 below), the rule steps aside.
 > - The Settings "Check for updates" row and the update stamp hide themselves when `Updates.isEnabled` is false, so a Play install shows neither (`mobile/src/lib/updates.ts`, tested in `settings-updates.test.tsx`).
 > - The same file stops a production build that sets `EXPO_PUBLIC_AURIVAN_CLOUD` without `AURIVAN_CLOUD_GO_LIVE_ACK=yes` (PLAY_LAUNCH.md c4).

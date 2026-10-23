@@ -31,6 +31,11 @@ describe('updates switch per build profile', () => {
     expect({ ...out, updates: undefined }).toEqual({ ...base(), updates: undefined });
   });
 
+  it('production on your own computer (eas build passes only the profile env): updates are off too', () => {
+    const out = appConfig.configFor(base(), { KAISIP_STORE_BUILD: '1' });
+    expect(out.updates).toEqual({ ...appJson.expo.updates, enabled: false });
+  });
+
   it.each([['preview'], ['development'], [undefined]])('%s: app.json comes back exactly as it is', (profile) => {
     const input = base();
     expect(appConfig.configFor(input, { EAS_BUILD_PROFILE: profile })).toBe(input);
@@ -70,6 +75,10 @@ describe('cloud flag guard on the store build', () => {
       expect(() => appConfig.configFor(base(), env)).toThrow(/without AURIVAN_CLOUD_GO_LIVE_ACK=yes/);
     }
     expect(() => appConfig.configFor(base(), { ...prod, EXPO_PUBLIC_AURIVAN_CLOUD: '1', AURIVAN_CLOUD_GO_LIVE_ACK: 'no' })).toThrow();
+  });
+
+  it('stops it on your own computer too, before the build is queued (only the profile env is set there)', () => {
+    expect(appConfig.cloudBuildProblem({ KAISIP_STORE_BUILD: '1', EXPO_PUBLIC_AURIVAN_CLOUD: '1' })).toMatch(/without AURIVAN_CLOUD_GO_LIVE_ACK=yes/);
   });
 
   it('lets a production build through when the flag is unset or empty, or with the ack', () => {

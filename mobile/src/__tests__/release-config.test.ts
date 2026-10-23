@@ -45,7 +45,7 @@ const GOOD_EAS = {
   build: {
     development: { developmentClient: true, distribution: 'internal', channel: 'development' },
     preview: { distribution: 'internal', channel: 'preview', android: { buildType: 'apk' } },
-    production: { channel: 'production', autoIncrement: true },
+    production: { channel: 'production', autoIncrement: true, env: { KAISIP_STORE_BUILD: '1' } },
   },
 };
 
@@ -132,18 +132,31 @@ describe('check-release-config', () => {
     expect(check(signed, GOOD_EAS, join(dir, 'no-app.config.js')).code).toBe(0);
   });
 
-  it('runs app.config.js with only EAS_BUILD_PROFILE set, so a local variable cannot change the answer', () => {
+  it('runs app.config.js with only the profile env (plus EAS_BUILD_PROFILE on the build machine), so a local variable cannot change the answer', () => {
     const spy = join(dir, 'spy.config.js');
     writeFileSync(
       spy,
       [
         'module.exports = ({ config }) => {',
-        '  const onlyProfile = Object.keys(process.env).join() === "EAS_BUILD_PROFILE";',
-        '  return { ...config, updates: { ...config.updates, enabled: !(onlyProfile && process.env.EAS_BUILD_PROFILE === "production") } };',
+        '  const keys = Object.keys(process.env).filter((k) => k !== "EAS_BUILD_PROFILE");',
+        '  const clean = keys.join() === "KAISIP_STORE_BUILD" && [undefined, "production"].includes(process.env.EAS_BUILD_PROFILE);',
+        '  return { ...config, updates: { ...config.updates, enabled: !(clean && process.env.KAISIP_STORE_BUILD === "1") } };',
         '};',
       ].join('\n'),
     );
     expect(check(APP, GOOD_EAS, spy).code).toBe(0);
+  });
+
+  it('fails when only the build machine would switch updates off (fingerprints would differ)', () => {
+    const eas = { build: { ...GOOD_EAS.build, production: { channel: 'production', autoIncrement: true } } };
+    const r = check(APP, eas);
+    expect(r.code).toBe(1);
+    expect(r.out).toMatch(/"production" makes a store build with over-the-air updates ON \(on your computer\)/);
+  });
+
+  it('the real eas.json passes the store-build marker to the production profile', () => {
+    const real = JSON.parse(readFileSync(join(MOBILE, 'eas.json'), 'utf8'));
+    expect(real.build.production.env).toEqual(expect.objectContaining({ KAISIP_STORE_BUILD: '1' }));
   });
 
   it('fails closed on a broken extends', () => {
