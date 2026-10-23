@@ -4654,19 +4654,9 @@ header {
 .gt-intro-analogy { margin-top: 16px; border-left: 3px solid var(--accent); padding-left: 16px; max-width: 68ch; }
 .gt-intro:not(.open) .gt-intro-inner { max-height: 48px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 40%, transparent); mask-image: linear-gradient(#000 40%, transparent); }
 .gt-intro-more { display: inline-flex; }
-/* Topic map: one compact chip row per part; each chip jumps to its topic */
-.gt-mapchips { margin: 0 0 18px; display: grid; gap: 6px; }
-.gt-mapchips-row { display: flex; align-items: center; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 2px 0; }
-.gt-mapchips-row::-webkit-scrollbar { display: none; }
-.gt-part { flex-shrink: 0; font: 600 13px/18px var(--f-sans); color: var(--text2); margin-right: 4px; white-space: nowrap; }
-.gt-mapchip {
-  flex-shrink: 0; max-width: 220px; min-height: 36px; padding: 0 12px; border-radius: 999px; cursor: pointer; position: relative;
-  background: var(--surface2); border: 0; color: var(--text); font: 500 14px/20px var(--f-sans);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.gt-mapchip::after { content: ''; position: absolute; inset: -4px 0; }
-.gt-mapchip:hover { background: var(--border); }
-.gt-mapchips-row { -webkit-mask-image: linear-gradient(to right, #000 88%, transparent); mask-image: linear-gradient(to right, #000 88%, transparent); padding-right: 40px; }
+/* Part caption above each part's topics (v12.32: replaces the topic-map chip rows) */
+.gt-part-h { font: 600 13px/18px var(--f-sans); color: var(--text2); margin: var(--sp-xl) 0 var(--sp-xs); }
+.gt-groups > .gt-part-h:first-child { margin-top: var(--sp-sm); }
 .gt-link { background: none; border: 0; padding: 0; min-height: 44px; color: var(--accent-text); font: 600 15px/22px var(--f-sans); cursor: pointer; text-align: left; }
 .gt-link:hover { text-decoration: underline; }
 
@@ -5122,7 +5112,6 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .fb-helper a, .changelog-modal a, .summary-modal a { color: var(--accent-text); text-decoration: underline; }
 
 /* Topics chips: 44px tap targets */
-.gt-mapchip { min-height: 44px; }
 .gt-chip { min-height: 44px; }
 
 /* Toast: neutral, and above the phone tab bar */
@@ -5200,7 +5189,7 @@ header.app-header .brand-lockup { height: 28px; }
 
 /* Section pages (phones): Study notes · Glossary · Principles · About the exam · Final week, Practice · Mock exam · Saved.
    On You's own pages: the way back to You. */
-.sub-nav { display: flex; gap: 4px; margin: 0 0 20px; border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+.sub-nav { display: flex; gap: 4px; margin: 0 0 20px; border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; scroll-padding-inline: 64px; }
 .sub-nav::-webkit-scrollbar { display: none; }
 .sub-nav[hidden] { display: none; }
 .sub-nav a {
@@ -5217,6 +5206,13 @@ header.app-header .brand-lockup { height: 28px; }
 .sub-nav.sn-fade-r { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); }
 .sub-nav.sn-fade-l { -webkit-mask-image: linear-gradient(to right, transparent, #000 40px); mask-image: linear-gradient(to right, transparent, #000 40px); }
 .sub-nav.sn-fade-l.sn-fade-r { -webkit-mask-image: linear-gradient(to right, transparent, #000 40px, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to right, transparent, #000 40px, #000 calc(100% - 40px), transparent); }
+/* Phones (v12.32): a wider right-edge fade, so the cut-off last link reads as "scroll for more". */
+@media (max-width: 600px) {
+  .sub-nav.sn-fade-r { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 64px), rgba(0,0,0,.15)); mask-image: linear-gradient(to right, #000 calc(100% - 64px), rgba(0,0,0,.15)); }
+  .sub-nav.sn-fade-l.sn-fade-r { -webkit-mask-image: linear-gradient(to right, transparent, #000 40px, #000 calc(100% - 64px), rgba(0,0,0,.15)); mask-image: linear-gradient(to right, transparent, #000 40px, #000 calc(100% - 64px), rgba(0,0,0,.15)); }
+  /* A keyboard-focused link is never faded. */
+  .sub-nav.sn-fade-r:has(a:focus-visible), .sub-nav.sn-fade-l:has(a:focus-visible) { -webkit-mask-image: none; mask-image: none; }
+}
 .sub-nav.sub-nav-back a { padding: 0 12px 0 0; color: var(--accent-text); }
 .ico-back { transform: rotate(180deg); }
 
@@ -5255,6 +5251,18 @@ header.app-header .brand-lockup { height: 28px; }
   .you-switch, .you-switch::after { transition: background .15s ease, border-color .15s ease, transform .15s ease; }
 }
 .about-version { display: flex; align-items: center; gap: 8px; font: var(--t-meta); color: var(--text2); margin: -8px 0 20px; }
+/* KaiSip on your phone (v12.32, APP_CTA) */
+.app-cta-card { margin: var(--sp-xl) 0; }
+.app-cta-card .brand-card-desc { margin-bottom: var(--sp-xl); }
+.app-cta-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-md) var(--sp-xl); }
+.app-cta-actions [hidden] { display: none; }
+.app-cta-badge { display: inline-block; border-radius: var(--r-sm); line-height: 0; margin: 15px 0; } /* Google: clear space = 1/4 of the badge height */
+.app-cta-badge img { display: block; height: 60px; width: auto; }
+.app-cta-ios { font: var(--t-meta); color: var(--text2); margin: 0; }
+.app-cta-line { display: none; margin: var(--sp-section) 0 var(--sp-sm); font: var(--t-meta); }
+body[data-app-cta="android"][data-section="today"] .app-cta-line,
+body[data-app-cta="android"][data-section="learn"] .app-cta-line { display: block; }
+.app-cta-line a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
 
 @media (max-width: 1023px) {
   #bottomNav { display: flex; }
@@ -6350,7 +6358,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h1 class="vision-title" id="aboutScreenTitle">Think like an IS auditor.</h1>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.31</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.32</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -6390,6 +6398,19 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
         <div class="mission-item-label">Our Mission</div>
         <p class="mission-item-text">To make rigorous CISA preparation <strong>free and honest</strong> &mdash; practice and study material that teaches <strong>how an IS auditor reasons</strong>, so candidates apply the principle instead of memorizing facts. A serious supplement to your study, never a shortcut around it.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- ── KAISIP ON YOUR PHONE (v12.32): hidden unless APP_CTA.mode is 'beta'
+       or 'live'; appCtaInit() fills in the links. Plain links, no scripts. ── -->
+  <section class="brand-card app-cta-card" id="appCtaCard" aria-labelledby="appCtaH" hidden>
+    <h2 class="brand-card-title" id="appCtaH">KaiSip on your phone</h2>
+    <p class="brand-card-desc" id="appCtaDesc"></p>
+    <div class="app-cta-actions">
+      <a class="tipjar-btn" id="appCtaBeta" target="_blank" rel="noopener" hidden>Join the Android beta<span class="sr-only"> (opens in a new tab)</span></a>
+      <a class="app-cta-badge" id="appCtaPlay" target="_blank" rel="noopener" hidden><img id="appCtaBadge" alt="Get it on Google Play (opens in a new tab)" width="202" height="60" decoding="async"></a>
+      <a class="tipjar-btn" id="appCtaPlayText" target="_blank" rel="noopener" hidden>Get it on Google Play<span class="sr-only"> (opens in a new tab)</span></a>
+      <p class="app-cta-ios" id="appCtaIos" hidden>Coming soon to iPhone.</p>
     </div>
   </section>
 </div>
@@ -6453,6 +6474,10 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     </section>
   </div>
 </div>
+
+  <!-- One quiet line on Today and Learn pages, for Android phones only, when
+       APP_CTA is on (v12.32; CSS shows it via body[data-app-cta="android"]). -->
+  <p class="app-cta-line" id="appCtaLine"><a id="appCtaLineLink" target="_blank" rel="noopener"><span id="appCtaLineText">Lessons and the daily plan are in the KaiSip app</span><span aria-hidden="true">&rarr;</span><span class="sr-only"> (opens in a new tab)</span></a></p>
 
   <!-- ── TIP JAR — optional support for the project (v9.2) ──
        Switched from Buy Me a Coffee to Ko-fi in v10.11 (BMC has limited support in some regions including PH).
@@ -6587,6 +6612,20 @@ function ico(name, size, cls) {
   return '<svg class="' + (cls || 'ico') + '" width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + (ICONS[name] || '') + '</svg>';
 }
 
+// ── "KaiSip on your phone" (v12.32) ──
+// Switch it here, then bump APP_VERSION as usual:
+//   mode: 'off'  – nothing is shown (the shipped default).
+//   mode: 'beta' – a "Join the Android beta" button that opens betaUrl
+//                  (paste the Play testing opt-in link, https:// only).
+//   mode: 'live' – the official "Get it on Google Play" badge, linking to
+//                  playUrl (the store listing, https:// only); the web
+//                  referrer (utm_source=kaisip_web) is added for you.
+// About shows a "KaiSip on your phone" section to everyone; Android phones
+// also get one quiet line on Today and Learn; iPhones see "Coming soon to
+// iPhone." instead of a button. The badge image is assets/google-play-badge.png
+// (see appCtaInit). Plain links only: nothing extra loads, the CSP is unchanged.
+const APP_CTA = { mode: 'off', betaUrl: '', playUrl: '' };
+
 const QB = JSON.parse(document.getElementById('qbData').textContent);
 
 // All domain keys normalized: QB keys are strings "1"-"5", q.domain is int 1-5
@@ -6641,7 +6680,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.31';
+const APP_VERSION = 'v12.32';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -8640,7 +8679,21 @@ function sanitizeIllustrationSvg(s) {
 }
 
 function gtStr(v) { return typeof v === 'string' && v.trim() ? v : ''; }
-function gtCap(label) { return '<h5 class="gt-cap">' + escapeHtml(label) + '</h5>'; }
+// Heading levels in a note shift down one while it is drawn under a part
+// heading (v12.32: Part h3 > topic h4 > note h5 > captions h6). Past h6 the
+// heading is an ARIA heading at level 7.
+var gtHeadShift = 0;
+function gtHead(level, cls, inner) {
+  var l = level + gtHeadShift;
+  return l <= 6 ? '<h' + l + ' class="' + cls + '">' + inner + '</h' + l + '>'
+    : '<div class="' + cls + '" role="heading" aria-level="' + l + '">' + inner + '</div>';
+}
+// renderItemBody with the shift for a note under a part heading.
+function gtItemBody(raw, d, q, id, underPart) {
+  gtHeadShift = underPart ? 1 : 0;
+  try { return renderItemBody(raw, d, q, id); } finally { gtHeadShift = 0; }
+}
+function gtCap(label) { return gtHead(5, 'gt-cap', escapeHtml(label)); }
 function gtSection(label, inner, cls) {
   return inner ? '<section class="gt-sec' + (cls ? ' ' + cls : '') + '">' + (label ? gtCap(label) : '') + inner + '</section>' : '';
 }
@@ -8726,12 +8779,12 @@ document.addEventListener('keydown', function(e) {
 function gtAuditFocus(af, t) {
   if (!af || typeof af !== 'object' || Array.isArray(af)) return '';
   var strs = function(a) { return Array.isArray(a) ? a.filter(function(x) { return gtStr(x); }) : []; };
-  var part = function(label, inner) { return inner ? '<div class="gt-audit-part"><h6 class="gt-audit-k">' + escapeHtml(label) + '</h6>' + inner + '</div>' : ''; };
+  var part = function(label, inner) { return inner ? '<div class="gt-audit-part">' + gtHead(6, 'gt-audit-k', escapeHtml(label)) + inner + '</div>' : ''; };
   var inner = part('What to review', gtList(strs(af.review), t))
     + part('Evidence to ask for', gtList(strs(af.evidence), t))
     + part('Typical recommendation', gtStr(af.recommend) && '<p class="gt-audit-rec">' + highlightText(af.recommend, t) + '</p>');
   // Optional "decides": the exam lesson (who owns the call), a tinted band at the card's foot.
-  var decides = gtStr(af.decides) ? '<div class="gt-audit-decides"><h6 class="gt-audit-k">Who decides</h6>'
+  var decides = gtStr(af.decides) ? '<div class="gt-audit-decides">' + gtHead(6, 'gt-audit-k', 'Who decides')
     + '<p class="gt-audit-dec">' + highlightText(af.decides, t) + '</p></div>' : '';
   if (!inner && !decides) return '';
   return '<section class="gt-sec gt-audit">'
@@ -8975,7 +9028,8 @@ function gtItemRow(it, d, tokens, opts) {
   var isDone = state === 'read';
   var isOpen = !!topicState.openItems[it.id];
   var idE = escapeHtml(it.id);
-  var body = isOpen ? renderItemBody(it.raw, String(d), topicState.search, it.id) : '';
+  var rh = opts.underPart ? 'h5' : 'h4';
+  var body = isOpen ? gtItemBody(it.raw, String(d), topicState.search, it.id, opts.underPart) : '';
   // Just read this session and not yet seen: draw the old state, and let
   // gtWatchJustRead sweep it to full once the row is on screen.
   var shown = (isDone && gtJustRead[it.id]) ? gtJustRead[it.id] : state;
@@ -8983,20 +9037,29 @@ function gtItemRow(it, d, tokens, opts) {
     + '<div class="gt-row-head">'
     // The mark only SHOWS read status; the whole row opens the note. A note
     // is marked read from inside it ("Mark as read" at its end), as on mobile.
-    + '<h4 class="gt-row-h"><button class="gt-row-btn" aria-expanded="' + isOpen + '" aria-controls="nb-' + idE + '" data-id="' + idE + '" onclick="toggleNotesItem(this.dataset.id)">'
+    + '<' + rh + ' class="gt-row-h"><button class="gt-row-btn" aria-expanded="' + isOpen + '" aria-controls="nb-' + idE + '" data-id="' + idE + '" onclick="toggleNotesItem(this.dataset.id)">'
     + '<span class="gt-row-text"><span class="gt-row-title">' + highlightText(it.name, tokens) + '</span>'
     + '<span class="sr-only gt-row-state">' + GT_STATE_SR[state] + '</span>'
     + '<span class="gt-row-meta"><span class="gt-row-status" aria-hidden="true">' + GT_STATE_WORD[state] + '</span>'
     + (opts.meta ? '<span aria-hidden="true"> &middot; </span>' + opts.meta : '') + '</span>'
     + (opts.snippet ? '<span class="gt-row-snippet">' + highlightText(opts.snippet, tokens) + '</span>' : '')
     + '</span>' + gtMarkSvg(shown, '', shown !== state ? ' data-gtjust="' + idE + '"' : '')
-    + ico('chevron-down', 20, 'ico gt-chev') + '</button></h4>'
+    + ico('chevron-down', 20, 'ico gt-chev') + '</button></' + rh + '>'
     + '</div>'
     + '<div class="gt-body" id="nb-' + idE + '"' + (isOpen ? ' data-rendered="1"' : '') + '>' + body + '</div>'
     + '</div>';
 }
 
 // ── MAIN RENDER ──
+// The All / To review / Read filters (shown once a note in the domain is read).
+function gtFilterChipsHtml(filterMode) {
+  var btn = function(mode, label) {
+    return '<button class="gt-chip" aria-pressed="' + (filterMode === mode) + '" onclick="setTopicFilter(\'' + mode + '\')">'
+      + (filterMode === mode ? ico('check', 16) : '') + label + '</button>';
+  };
+  return '<div class="gt-chips" role="group" aria-label="Show">' + btn('all', 'All') + btn('unreviewed', 'To review') + btn('reviewed', 'Read') + '</div>';
+}
+
 function renderTopics() {
   var area = document.getElementById('topicsArea');
   if (!area) return;
@@ -9018,11 +9081,14 @@ function renderTopics() {
   var reviewed = getTopicReviewedSet();
   var searchQ = (topicState.search || '').trim();
   var tokens = topicSearchTokens(searchQ);
+  // The All / To review / Read filters appear once a note in this domain is
+  // read (v12.32); until then they would all show the same list.
+  if (domProg.done === 0) topicState.filter = 'all';
   var filterMode = topicState.filter || 'all';
   var totalItems = domProg.total;
 
   // ── Header ──
-  var headHtml = '<div class="gt-head"><h2 class="gt-title">Topics</h2>'
+  var headHtml = '<div class="gt-head"><h2 class="gt-title">Study notes</h2>'
     + '<p class="gt-sub">Plain-language study notes for every exam topic.</p></div>';
 
   // ── Domain switcher (segmented control; chip scroller on phones) ──
@@ -9058,19 +9124,12 @@ function renderTopics() {
     ? '<div class="gt-intro' + (introOpen ? ' open' : '') + '" id="gtIntro"><div class="gt-intro-inner" id="gtIntroInner">' + introInner + '</div>'
       + '<button class="gt-btn-ghost gt-intro-more" aria-expanded="' + introOpen + '" aria-controls="gtIntroInner" onclick="toggleDomainSummary()">' + (introOpen ? 'Show less' : 'Read the domain overview') + '</button></div>'
     : '';
-  // ── Topic map (v2 parts): compact chips that jump to each topic ──
-  var mapHtml = '';
-  if (!searchQ && Array.isArray(domainData.parts) && domainData.parts.length) {
-    var names = {};
-    domainData.groups.forEach(function(g) { names[g.group_id] = g.group_title; });
-    mapHtml = '<nav class="gt-mapchips" aria-label="Topic map">' + domainData.parts.map(function(p) {
-      return '<div class="gt-mapchips-row"><span class="gt-part">Part ' + escapeHtml(p.part || '') + ' &middot; ' + escapeHtml(p.name || '') + '</span>'
-        + (p.topic_ids || []).map(function(id) {
-            var nm = names[id] || id;
-            return '<button class="gt-mapchip" title="' + escapeHtml(nm) + '" data-id="' + escapeHtml(String(id)) + '" onclick="openTopicGroup(this.dataset.id)">' + escapeHtml(nm) + '</button>';
-          }).join('') + '</div>';
-    }).join('') + '</nav>';
-  }
+  // ── Parts (v2): a quiet "Part A · Planning" caption above each part's
+  // topics in the list below (v12.32: replaces the topic-map chip rows) ──
+  var partOf = {};
+  if (Array.isArray(domainData.parts)) domainData.parts.forEach(function(p) {
+    (p.topic_ids || []).forEach(function(id) { partOf[String(id)] = p; });
+  });
 
   // ── Continue reading ──
   var continueHtml = '';
@@ -9091,16 +9150,12 @@ function renderTopics() {
 
   // ── Toolbar: search, filters, expand/collapse, progress menu ──
   var anyOpen = domainData.groups.some(function(g) { return topicState.openGroups[d + '-g-' + g.group_id] === true; });
-  var filterBtn = function(mode, label) {
-    return '<button class="gt-chip" aria-pressed="' + (filterMode === mode) + '" onclick="setTopicFilter(\'' + mode + '\')">'
-      + (filterMode === mode ? ico('check', 16) : '') + label + '</button>';
-  };
   var toolbarHtml = '<div class="gt-toolbar">'
     + '<div class="gt-search">' + ico('search', 20) + '<label class="sr-only" for="newTopicSearch">Search Domain ' + d + ' notes</label>'
     + '<input type="search" class="gt-search-input" id="newTopicSearch" placeholder="Search this domain, e.g. RPO" autocomplete="off" value="' + escapeHtml(topicState.search || '') + '" oninput="onTopicSearch(this.value)">'
     + (searchQ ? '<button class="gt-icon-btn" onclick="onTopicSearch(\'\')" aria-label="Clear search">' + ico('x', 18) + '</button>' : '')
     + '</div>'
-    + '<div class="gt-toolbar-row"><div class="gt-chips" role="group" aria-label="Show">' + filterBtn('all', 'All') + filterBtn('unreviewed', 'To review') + filterBtn('reviewed', 'Read') + '</div>'
+    + '<div class="gt-toolbar-row">' + (domProg.done > 0 ? gtFilterChipsHtml(filterMode) : '')
     + '<div class="gt-toolbar-end">'
     + (searchQ ? '' : '<button class="gt-btn-ghost" onclick="' + (anyOpen ? 'collapseAllGroups()' : 'expandAllGroups()') + '">' + (anyOpen ? 'Collapse all' : 'Expand all') + '</button>')
     + '<details class="gt-menu"><summary class="gt-btn-ghost gt-menu-btn" id="gtMenuBtn">Reading progress' + ico('chevron-down', 16) + '</summary>'
@@ -9135,7 +9190,8 @@ function renderTopics() {
           }).join('') + '</div>'
         : '<div class="gt-empty">No notes in Domain ' + d + ' match &ldquo;' + escapeHtml(searchQ) + '&rdquo;. Try a shorter word, or another domain.</div>');
   } else {
-    // ── Topics (all start collapsed) ──
+    // ── Topics (all start collapsed), under their part's caption ──
+    var lastPart = null;
     listHtml = domainData.groups.map(function(g) {
       var gKey = d + '-g-' + g.group_id;
       var isOpen = topicState.openGroups[gKey] === true;
@@ -9145,6 +9201,8 @@ function renderTopics() {
       var gTotal = g.items.length;
       var readMin = estimateReadMinutes({ s: g.group_summary, items: g.items.map(function(i){ return topicSearchText(i.raw); }) });
       var bodyHtml = '';
+      var part = partOf[String(g.group_id)] || null, partHtml = '';
+      var gh = part ? 'h4' : 'h3';
       if (isOpen) {
         // One intro layer per topic: the "You should be able to" list, else the overview.
         if (!(Array.isArray(g.can_do) && g.can_do.length) && g.group_summary) bodyHtml += '<p class="gt-group-about">' + escapeHtml(g.group_summary) + '</p>';
@@ -9152,15 +9210,19 @@ function renderTopics() {
           bodyHtml += '<div class="gt-cando"><p class="gt-cap-inline">You should be able to</p><ul class="gt-list">'
             + g.can_do.map(function(x) { return '<li>' + escapeHtml(x) + '</li>'; }).join('') + '</ul></div>';
         }
-        bodyHtml += '<div class="gt-rows">' + items.map(function(it) { return gtItemRow(it, d, tokens); }).join('') + '</div>';
+        bodyHtml += '<div class="gt-rows">' + items.map(function(it) { return gtItemRow(it, d, tokens, { underPart: !!part }); }).join('') + '</div>';
       }
-      return '<section class="gt-group' + (isOpen ? ' open' : '') + '" id="ng-' + escapeHtml(gKey) + '">'
-        + '<h3 class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" aria-controls="ngb-' + escapeHtml(gKey) + '" data-id="' + escapeHtml(gKey) + '" onclick="toggleNotesGroup(this.dataset.id)">'
+      if (part && part !== lastPart) {
+        partHtml = '<h3 class="gt-part-h">Part ' + escapeHtml(part.part || '') + ' &middot; ' + escapeHtml(part.name || '') + '</h3>';
+      }
+      lastPart = part;
+      return partHtml + '<section class="gt-group' + (isOpen ? ' open' : '') + '" id="ng-' + escapeHtml(gKey) + '">'
+        + '<' + gh + ' class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" aria-controls="ngb-' + escapeHtml(gKey) + '" data-id="' + escapeHtml(gKey) + '" onclick="toggleNotesGroup(this.dataset.id)">'
         + '<span class="gt-group-text"><span class="gt-group-title">' + escapeHtml(g.group_title) + '</span>'
         + '<span class="gt-group-meta">' + gTotal + ' notes &middot; about ' + readMin + ' min</span></span>'
         + '<span class="gt-group-count" data-gcount="' + escapeHtml(gKey) + '"><span class="gt-num">' + gDone + '</span><span class="gt-of"> of ' + gTotal + ' read</span></span>'
         + gtMarkSvg(gtGroupState(g.items), '', ' data-gmark="' + escapeHtml(gKey) + '"')
-        + ico('chevron-down', 20, 'ico gt-chev') + '</button></h3>'
+        + ico('chevron-down', 20, 'ico gt-chev') + '</button></' + gh + '>'
         + '<div class="gt-group-body" id="ngb-' + escapeHtml(gKey) + '">' + bodyHtml + '</div>'
         + '</section>';
     }).join('');
@@ -9168,7 +9230,7 @@ function renderTopics() {
   }
 
   area.innerHTML = '<div class="gt">'
-    + headHtml + tabsHtml + panelHtml + introHtml + mapHtml + continueHtml + toolbarHtml
+    + headHtml + tabsHtml + panelHtml + introHtml + continueHtml + toolbarHtml
     + '<div id="notesGroupsArea" class="gt-groups">' + listHtml + '</div>'
     + renderDomainGlossary(domainData)
     + renderMasterTips()
@@ -9188,36 +9250,30 @@ function renderDomainGlossary(domainData) {
   var terms = domainData.key_terminologies;
   var allTerms = Object.keys(terms);
   if (!allTerms.length) return '';
-  var isOpen = !!topicState.glossaryOpen;
-  var gq = (topicState.glossarySearch || '').trim();
-  var gt = topicSearchTokens(gq);
-  var filtered = gt.length
-    ? allTerms.filter(function(term) { return gt.every(function(tok) { return topicTokenRe(tok).test(term + ' ' + terms[term]); }); })
+  // v12.32: one search box on the notes page. While the notes search is in
+  // use it also filters (and opens) this list; with no matching term the
+  // card goes. The Glossary page and the desktop rail search the whole glossary.
+  var tk = topicSearchTokens((topicState.search || '').trim());
+  var shown = tk.length
+    ? allTerms.filter(function(term) { return tk.every(function(tok) { return topicTokenRe(tok).test(term + ' ' + terms[term]); }); })
     : allTerms;
+  if (!shown.length) return '';
+  var isOpen = tk.length ? topicState.glossarySearchOpen !== false : !!topicState.glossaryOpen;
   var body = '';
   if (isOpen) {
-    body = '<div class="gt-search gt-search-sm">' + ico('search', 18) + '<label class="sr-only" for="notesGlossarySearch">Search key terms</label>'
-      + '<input type="search" class="gt-search-input" id="notesGlossarySearch" placeholder="Search key terms" autocomplete="off" value="' + escapeHtml(topicState.glossarySearch || '') + '" oninput="onGlossarySearch(this.value)"></div>'
-      + (filtered.length
-        ? gtDl(filtered.map(function(term) { return [term, highlightText(terms[term], gt)]; }), gt)
-        : '<div class="gt-empty">No terms match &ldquo;' + escapeHtml(gq) + '&rdquo;.</div>');
+    body = gtDl(shown.map(function(term) { return [term, highlightText(terms[term], tk)]; }), tk);
   }
   return '<section class="gt-extra' + (isOpen ? ' open' : '') + '" id="glossaryCard">'
     + '<h3 class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" onclick="toggleDomainGlossary()">'
-    + '<span class="gt-group-text"><span class="gt-group-title">Key terms for this domain</span><span class="gt-group-meta">' + allTerms.length + ' terms</span></span>'
+    + '<span class="gt-group-text"><span class="gt-group-title">Key terms for this domain</span><span class="gt-group-meta">' + (tk.length ? shown.length + ' of ' + allTerms.length + ' terms match' : allTerms.length + ' terms') + '</span></span>'
     + ico('chevron-down', 20, 'ico gt-chev') + '</button></h3>'
     + '<div class="gt-group-body">' + body + '</div></section>';
 }
 
-function onGlossarySearch(val) {
-  topicState.glossarySearch = val;
-  renderTopics();
-  var inp = document.getElementById('notesGlossarySearch');
-  if (inp) { inp.focus(); try { inp.setSelectionRange((val || '').length, (val || '').length); } catch (e) {} }
-}
-
 function toggleDomainGlossary() {
-  topicState.glossaryOpen = !topicState.glossaryOpen;
+  // While searching, the list starts open; its own toggle still closes it.
+  if (topicSearchTokens((topicState.search || '').trim()).length) topicState.glossarySearchOpen = topicState.glossarySearchOpen === false;
+  else topicState.glossaryOpen = !topicState.glossaryOpen;
   renderTopics();
 }
 
@@ -9272,16 +9328,6 @@ function toggleNotesGroup(gKey) {
   renderTopics();
   var btn = document.querySelector('#ng-' + CSS.escape(gKey) + ' .gt-group-btn');
   if (btn) btn.focus({ preventScroll: true });
-}
-
-// Jump from the v2 topic map to a topic: open it and scroll to it.
-function openTopicGroup(groupId) {
-  var d = parseInt(topicState.domain) || 1;
-  var gKey = d + '-g-' + groupId;
-  topicState.openGroups[gKey] = true;
-  renderTopics();
-  var el = document.getElementById('ng-' + gKey);
-  if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); var b = el.querySelector('.gt-group-btn'); if (b) b.focus({ preventScroll: true }); }
 }
 
 // The domain intro is clamped on phones; this expands it.
@@ -9366,7 +9412,8 @@ function toggleNotesItem(itemId) {
   if (body && isOpen && !body.dataset.rendered) {
     var found = findTopicItem(itemId);
     if (found) {
-      body.innerHTML = renderItemBody(found.raw, String(parseInt(topicState.domain) || 1), topicState.search, itemId);
+      var rowH = el.querySelector('.gt-row-h');
+      body.innerHTML = gtItemBody(found.raw, String(parseInt(topicState.domain) || 1), topicState.search, itemId, !!(rowH && rowH.tagName === 'H5'));
       body.dataset.rendered = '1';
     }
   }
@@ -9404,6 +9451,16 @@ function refreshTopicProgress(d) {
   }
   var meta = document.querySelector('#gtPanelMeta .gt-num');
   if (meta) meta.textContent = p.done;
+  // v12.32: the filters appear with the first note read, and go at zero.
+  var tRow = document.querySelector('.gt-toolbar-row'), chips = tRow && tRow.querySelector('.gt-chips');
+  if (tRow && !chips && p.done > 0) {
+    // Above the screen, the new row must not push the note being read down
+    // (browsers without scroll anchoring).
+    var h0 = tRow.offsetHeight, above = tRow.getBoundingClientRect().bottom < 0;
+    tRow.insertAdjacentHTML('afterbegin', gtFilterChipsHtml(topicState.filter || 'all'));
+    if (above && !(window.CSS && CSS.supports('overflow-anchor', 'auto'))) window.scrollBy(0, tRow.offsetHeight - h0);
+  }
+  else if (chips && p.done === 0) { chips.remove(); if ((topicState.filter || 'all') !== 'all') { topicState.filter = 'all'; renderTopics(); } }
   var data = buildConceptsData();
   var dom = data.domains.find(function(x){ return x.domain_id === d; });
   var reviewed = getTopicReviewedSet();
@@ -10211,8 +10268,13 @@ function syncNav(t) {
     sub.innerHTML = html;
     sub.hidden = !html;
     // Learn has more pages than a phone shows: keep the current one in view.
+    // (Measured against the bar itself: offsetLeft is from the page, which
+    // scrolled the first link half out of view and faded it, v12.32.)
     var cur = html && sub.querySelector('[aria-current="page"]');
-    if (cur) sub.scrollLeft = Math.max(0, cur.offsetLeft - 16);
+    if (cur) {
+      var curX = cur.getBoundingClientRect().left - sub.getBoundingClientRect().left + sub.scrollLeft;
+      sub.scrollLeft = Math.max(0, curX - 16);
+    }
     if (!sub.onscroll) {
       sub.onscroll = function () { subNavFade(sub); };
       window.addEventListener('resize', function () { subNavFade(sub); });
@@ -17689,6 +17751,78 @@ function estimateReadTime(section) {
   return mins;
 }
 
+// ── "KaiSip on your phone" (APP_CTA, v12.32) ──
+// Only https:// addresses are used; anything else switches the call off.
+function appCtaUrl(u) {
+  u = String(u || '').trim();
+  return /^https:\/\/[^\s"'<>]+$/i.test(u) ? u : '';
+}
+// 'android', 'ios' (iPhone, iPad, iPod; iPadOS reports a Mac with touch) or 'desktop'.
+function appCtaPlatform() {
+  var ua = String((navigator && navigator.userAgent) || '');
+  if (/Android/i.test(ua)) return 'android';
+  if (/iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && (navigator.maxTouchPoints || 0) > 1)) return 'ios';
+  return 'desktop';
+}
+// The address a CTA link opens, or '' when the mode is off or incomplete.
+function appCtaHref() {
+  var mode = APP_CTA && APP_CTA.mode;
+  if (mode === 'beta') return appCtaUrl(APP_CTA.betaUrl);
+  if (mode === 'live') {
+    var play = appCtaUrl(APP_CTA.playUrl);
+    if (!play) return '';
+    // The referrer goes before any #fragment, and never twice.
+    var hashAt = play.indexOf('#');
+    var base = hashAt < 0 ? play : play.slice(0, hashAt), frag = hashAt < 0 ? '' : play.slice(hashAt);
+    if (/[?&]referrer=/i.test(base)) return play;
+    return base + (base.indexOf('?') < 0 ? '?' : '&') + 'referrer=utm_source%3Dkaisip_web' + frag;
+  }
+  return '';
+}
+function appCtaInit() {
+  var card = document.getElementById('appCtaCard');
+  var href = appCtaHref();
+  document.body.removeAttribute('data-app-cta');
+  if (!card) return;
+  if (!href) { card.hidden = true; return; }
+  var live = APP_CTA.mode === 'live';
+  var plat = appCtaPlatform();
+  var el = function (id) { return document.getElementById(id); };
+  el('appCtaDesc').textContent = live
+    ? 'Lessons and the daily plan, in the KaiSip app for Android.'
+    : plat === 'ios'
+      ? 'The KaiSip app for Android is in testing.'
+      : 'The KaiSip app for Android is in testing. Join the beta to try lessons and the daily plan on your phone.';
+  // iPhone: no Android link, just the note. Android: the link only. Desktop: both.
+  var showLink = plat !== 'ios';
+  el('appCtaIos').hidden = plat === 'android';
+  el('appCtaBeta').hidden = !(showLink && !live);
+  if (!live) el('appCtaBeta').setAttribute('href', href);
+  var badgeLink = el('appCtaPlay'), textLink = el('appCtaPlayText'), img = el('appCtaBadge');
+  badgeLink.hidden = true; textLink.hidden = true;
+  if (live && showLink) {
+    badgeLink.setAttribute('href', href);
+    textLink.setAttribute('href', href);
+    // The official badge, unmodified: Google's English "Get it on Google Play"
+    // web PNG from the Partner Marketing Hub (downloaded 23 Oct 2026). Rules:
+    // no edits or recolour, at least 28px tall, clear space of 1/4 its height,
+    // and only link it to KaiSip's live store listing. If the file is missing
+    // the badge hides itself and a plain "Get it on Google Play" link shows.
+    img.addEventListener('load', function () { badgeLink.hidden = false; textLink.hidden = true; });
+    img.addEventListener('error', function () { badgeLink.hidden = true; textLink.hidden = false; });
+    img.setAttribute('src', 'assets/google-play-badge.png');
+  }
+  card.hidden = false;
+  // Today and Learn: one quiet line, Android phones only (tablets keep About).
+  if (plat === 'android' && /Mobile/i.test(String(navigator.userAgent || ''))) {
+    el('appCtaLineText').textContent = live
+      ? 'Lessons and the daily plan are in the KaiSip app'
+      : 'Try lessons and the daily plan in the KaiSip app beta';
+    el('appCtaLineLink').setAttribute('href', href);
+    document.body.setAttribute('data-app-cta', 'android');
+  }
+}
+
 ensureLocalProfile();
 loadState();
 buildQueues();
@@ -17702,6 +17836,7 @@ try { renderYouExamDate(); } catch (e) {}
   var pill = document.getElementById('versionPill');
   if (pill) pill.textContent = APP_VERSION;
 })();
+try { appCtaInit(); } catch (e) {}
 loadExamMode();  // v10.10 — restore exam-mode preference
 renderDomainGrid();
 renderSubtopicFilter();
@@ -18356,6 +18491,16 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Tidier study notes',
+    items: [
+      { cat: 'improved', text: 'Study notes open straight to your topics, with less clutter.' },
+      { cat: 'improved', text: 'The reading filters appear once you have read your first note.' },
+      { cat: 'improved', text: 'The privacy policy now explains that the Google Play version of the app gets its updates only through Google Play.' },
+      { cat: 'fixed', text: 'On phones, the Learn page bar keeps the page you are on fully in view, and fades at the edge when there is more to scroll.' }
+    ]
+  },
+  {
+    version: 'v12.31',
     title: 'A calm new plant',
     items: [
       { cat: 'new', text: 'New plants now grow in a calm botanical style; the storybook look with a face is still one tap away in Change its look.' },
