@@ -191,12 +191,6 @@ export default function Play() {
             meta={available.every((id) => level(id) === 'seedling') ? 'All at Seedling' : undefined}
           />
           {plan.also.map((id, i) => gameRow(id, i === plan.also.length - 1))}
-          {/* Mobile 1.40: one quiet line while the other games wait (no count of them, no lock icons). */}
-          {waiting.length > 0 && (
-            <View testID="more-games-wait" style={{ marginTop: space.md }}>
-              <T v="meta">{`More games open after ${MORE_GAMES_AT} answers.`}</T>
-            </View>
-          )}
         </Enter>
       )}
 
@@ -211,6 +205,17 @@ export default function Play() {
             last={!moreOpen}
           />
           {moreOpen && plan.more.map((id, i) => gameRow(id, i === plan.more.length - 1))}
+        </Enter>
+      )}
+
+      {/* Mobile 1.40: one quiet line while games wait for 50 answers (no count of them, no lock
+          icons), on its own so it shows whatever the lists above hold. "The other games" when
+          "More games" already lists some (ones played before, or kept through a Reset's fresh start). */}
+      {featured && waiting.length > 0 && (
+        <Enter i={4}>
+          <View testID="more-games-wait" style={{ marginTop: space.md }}>
+            <T v="meta">{`${plan.more.length ? 'The other games' : 'More games'} open after ${MORE_GAMES_AT} answers.`}</T>
+          </View>
         </Enter>
       )}
     </Screen>

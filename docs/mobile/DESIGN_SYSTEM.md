@@ -836,7 +836,7 @@ sleepy while resting. A botanical plant shows **no visitor and no keepsakes
 until the learner picks them** (the visitor defaults to "No visitor"); picked
 ones are drawn in line. The storybook styles keep the wren and the first three
 earned. The Look preview's label says the style ("Kai, your oak, botanical
-style."). Resting, botanical: the dusk disc, a line moon and a 1.5° settle.
+style."). Resting, botanical: the dusk disc, a line moon and a 1.5° settle. The dusk is a Grove neutral for both styles (1.40 UX review: `#E6E7DE` light, `#1B2820` dark; it was lavender and navy), and resting lines take `plantLine.restLineMix` more ink in light so leaf, soil and star lines stay ≥ 3:1 on it.
 
 **Resting.** After 3 days without study, or on the exam eve and exam day, the
 plant sits on a soft dusk disc with a small moon and closed eyes, and Your plant

@@ -693,8 +693,10 @@ export interface PlantThemeTone {
   duskOpacity: number;
 }
 export const plantTheme: { light: PlantThemeTone; dark: PlantThemeTone } = {
-  light: { shadow: '#17231B', shadowOpacity: 0.1, sap: '#2B6E4A', leafFill: '#6DB38A', honey: '#8F6620', dusk: '#DCD8E6', duskOpacity: 0.85, dawnOpacity: 0.7 },
-  dark: { shadow: '#000000', shadowOpacity: 0.35, sap: '#A9D9BA', leafFill: '#A9D9BA', honey: '#E9C46A', dusk: '#232842', duskOpacity: 0.9, dawnOpacity: 0.32 },
+  // Mobile 1.40 (UX review P1): the dusk is a Grove neutral, a soft sage-grey disc (it was
+  // lavender and navy; Grove has no navy, blue or purple). Both styles rest on it.
+  light: { shadow: '#17231B', shadowOpacity: 0.1, sap: '#2B6E4A', leafFill: '#6DB38A', honey: '#8F6620', dusk: '#E6E7DE', duskOpacity: 0.85, dawnOpacity: 0.7 },
+  dark: { shadow: '#000000', shadowOpacity: 0.35, sap: '#A9D9BA', leafFill: '#A9D9BA', honey: '#E9C46A', dusk: '#1B2820', duskOpacity: 0.9, dawnOpacity: 0.32 },
 };
 
 /**
@@ -706,9 +708,15 @@ export const plantTheme: { light: PlantThemeTone; dark: PlantThemeTone } = {
  *
  * Plain English: in light the line is the palette's deep tone on paper; in
  * dark its light tone on the night page. Wood is the bark mixed toward the
- * page's ink. Contrast (line on `bg`, non-text 3:1): wood 6.5–10.7:1, leaf
- * lines ≥ 3.2:1 light and ≥ 5.3:1 dark; pearl and snow blooms sit on green
- * or wood lines, which carry the silhouette (the plantLeaf rule above).
+ * page's ink. Contrast (non-text 3:1):
+ * - on `bg`: wood 6.5–10.7:1; leaf lines ≥ 3.21:1 light (lemon the lowest)
+ *   and ≥ 5.3:1 dark; soil 3.2:1 light, 3.7:1 dark. The pale bloom palettes
+ *   (snow, pearl) mix `paleLineMix` toward the ink in light: snow 4.1:1,
+ *   pearl 3.1:1 (they sit on green or wood lines anyway, the plantLeaf rule);
+ * - resting, on the dusk disc (light #E8E9E0 once blended): the leaf, soil
+ *   and star lines mix `restLineMix` toward the ink, so every leaf line is
+ *   ≥ 3.2:1 (gold 4.27, lemon 3.98, snow 3.21), soil 3.94, star 3.96. Dark
+ *   (disc #1A261F): leaf lines ≥ 4.53:1, soil 3.15:1, no mix needed.
  */
 export interface PlantLineTone {
   /** Wood (trunk, limbs, seed coats): bark mixed toward this ink, by `woodMix`. */
@@ -738,6 +746,10 @@ export interface PlantLineTone {
   giftMix: number;
   /** The sampaguita's white star flowers: a grey-green line in light, pearl in dark. */
   starLine: string;
+  /** Pale bloom palettes (snow, pearl): their line mixes this far toward `woodInk` (UX review O1). */
+  paleLineMix: number;
+  /** Resting, on the dusk disc: leaf, soil and star lines mix this far toward `woodInk` (UX review H1). */
+  restLineMix: number;
 }
 export const plantLine: { light: PlantLineTone; dark: PlantLineTone } = {
   light: {
@@ -757,6 +769,8 @@ export const plantLine: { light: PlantLineTone; dark: PlantLineTone } = {
     propWashOp: 0.42,
     giftMix: 0.4,
     starLine: '#7E8A78',
+    paleLineMix: 0.3,
+    restLineMix: 0.2,
   },
   dark: {
     woodInk: '#F3E3CC',
@@ -775,5 +789,7 @@ export const plantLine: { light: PlantLineTone; dark: PlantLineTone } = {
     propWashOp: 0.5,
     giftMix: 0.45,
     starLine: '#E3E8DD',
+    paleLineMix: 0,
+    restLineMix: 0,
   },
 };

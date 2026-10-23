@@ -7,6 +7,7 @@ import { wellJudged } from '../engine/games/calibration';
 import { finishGameRound, startingTier } from '../lib/gameRounds';
 import { ensureBackfill } from '../lib/milestones';
 import { takeNextOf } from '../engine/milestones';
+import { isRoundBadge } from '../engine/badgeCatalog';
 import { playableGames } from '../lib/games';
 import { selectCert, useProgress } from '../store/progress';
 
@@ -54,10 +55,31 @@ describe('the round end', () => {
     // and Myth Clearer (25 different rumors, all cleared, this round).
     useProgress.getState().updateMilestones('cisa', (m) => ({ milestones: { ...m!, signposts: hitsOf('f', 10, 10) } }));
     const r = finishGameRound('cisa', 'rumor', { score: 12, rate: 0.6, tier: 'seedling', windows: { myths: hitsOf('m', 25, 25) } });
-    expect(r.moment).not.toBeNull();
+    // Mobile 1.40 (code review #2): the Root or Rumor recap shows ITS badge, Myth Clearer;
+    // Signpost Reader (Signpost's badge) is not this game's news and stays queued for You.
+    expect(r.moment?.key).toBe('myth-clearer');
     const earned = Object.keys(cp().milestones!.earned);
     expect(earned).toEqual(expect.arrayContaining(['signpost-reader', 'myth-clearer']));
-    expect(cp().milestones!.queue).toHaveLength(1);
+    expect(cp().milestones!.queue).toEqual(['signpost-reader']);
+  });
+
+  it('isRoundBadge: a game’s own skill badge, or Whole Grove; never another game’s badge or a milestone', () => {
+    expect(isRoundBadge('trap', 'snare-wise')).toBe(true);
+    expect(isRoundBadge('priority', 'signpost-reader')).toBe(true);
+    expect(isRoundBadge('rumor', 'signpost-reader')).toBe(false);
+    expect(isRoundBadge('field', 'whole-grove')).toBe(true);
+    expect(isRoundBadge('trap', 'back-on-path')).toBe(false);
+    expect(isRoundBadge('trap', 'rooted:10')).toBe(false);
+    expect(isRoundBadge('trap', 'first-foothold')).toBe(false);
+  });
+
+  it('a round that tips over a milestone (not a game badge) shows no badge; the milestone waits for You', () => {
+    // Signpost Reader's window is full, so ANY round's milestone check earns it; a Snare Spotter round must not show it.
+    useProgress.getState().updateMilestones('cisa', (m) => ({ milestones: { ...m!, signposts: hitsOf('f', 10, 10) } }));
+    const r = finishGameRound('cisa', 'trap', { score: 3, rate: 0.6, tier: 'seedling' });
+    expect(cp().milestones!.earned['signpost-reader']).toBe(T0);
+    expect(r.moment).toBeNull();
+    expect(cp().milestones!.queue).toContain('signpost-reader');
   });
 });
 

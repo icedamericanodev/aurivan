@@ -10,10 +10,10 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import { Plant } from '../components/plant/Plant';
-import { bounds, buildPlant, countShapes, groupNames, liftGroup, lodFor, mix, pathTokens, planterIcon, plantLayers, type GNode, type Lod, type PNode } from '../components/plant/art';
+import { bounds, buildPlant, countShapes, groupNames, keepsakeIcon, liftGroup, lodFor, mix, pathTokens, planterIcon, plantLayers, type GNode, type Lod, type PNode } from '../components/plant/art';
 import { ink } from '../components/plant/botanical';
 import { PLANT_SPECIES, type GrowthLevel, type PlantSpecies } from '../engine/plant';
-import { plantArt, plantLeaf, plantLine } from '../theme/tokens';
+import { dark, light, plantArt, plantLeaf, plantLine, plantTheme } from '../theme/tokens';
 
 const LODS: Lod[] = ['icon', 'small', 'full'];
 const GROWTHS: GrowthLevel[] = [1, 2, 3, 4, 5, 6];
@@ -133,6 +133,48 @@ describe('the line', () => {
     expect(line.sw).toBeCloseTo(1.5, 2);
   });
 
+  it('resting (UX review H1): leaf, soil and star lines stay ≥ 3:1 on the dusk disc in light; dark leaf lines ≥ 4.5:1', () => {
+    const lum = (h: string) =>
+      [1, 3, 5]
+        .map((i) => parseInt(h.slice(i, i + 2), 16) / 255)
+        .map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4))
+        .reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0);
+    const ratio = (a: string, b: string) => {
+      const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p);
+      return (x + 0.05) / (y + 0.05);
+    };
+    const disc = (t: 'light' | 'dark') => mix(t === 'light' ? light.bg : dark.bg, plantTheme[t].dusk, plantTheme[t].duskOpacity);
+    /** The full-strength lines of a group (faded soil arcs and bark marks are decorative on purpose). */
+    const lines = (n: PNode | null) => (n ? strokes(n) : []);
+    const fullLines = (n: PNode | null, out: string[] = []): string[] => {
+      if (!n) return out;
+      if (n.t === 'g') n.children.forEach((c) => fullLines(c, out));
+      else if (n.stroke && (n.opacity ?? 1) >= 1) out.push(n.stroke);
+      return out;
+    };
+    const cases: [PlantSpecies, string, string[]][] = [
+      ['oak', 'gold', ['domain-1', 'domain-3']],
+      ['maple', 'gold', ['domain-2']],
+      ['sunflower', 'lemon', ['head', 'domain-1']],
+      ['cherry-blossom', 'snow', ['domain-1']],
+    ];
+    for (const [species, palette, groups] of cases) {
+      const b = bot(species, 5, { resting: true, theme: 'light', look: { palette: palette as never } });
+      for (const id of groups) for (const c of fullLines(find(b.root, id))) expect([species, palette, id, ratio(c, disc('light')) >= 3]).toEqual([species, palette, id, true]);
+      // The soil line (the first, full-strength arc) too.
+      for (const c of fullLines(find(b.root, 'ground'))) expect([species, 'soil', ratio(c, disc('light')) >= 3]).toEqual([species, 'soil', true]);
+      const d = bot(species, 5, { resting: true, theme: 'dark', look: { palette: palette as never } });
+      for (const id of groups) for (const c of fullLines(find(d.root, id))) expect([species, 'dark', id, ratio(c, disc('dark')) >= 4.5]).toEqual([species, 'dark', id, true]);
+    }
+    // The sampaguita's star flowers, resting in light.
+    const s = bot('sampaguita', 5, { resting: true, theme: 'light' });
+    const stars = lines(s.root).filter((x) => x.stroke === mix(plantLine.light.starLine, plantLine.light.woodInk, plantLine.light.restLineMix));
+    expect(stars.length).toBeGreaterThan(0);
+    expect(ratio(stars[0].stroke, disc('light'))).toBeGreaterThanOrEqual(3);
+    // The dusk is a Grove neutral (UX review P1): never lavender or navy.
+    expect([plantTheme.light.dusk, plantTheme.dark.dusk]).toEqual(['#E6E7DE', '#1B2820']);
+  });
+
   it('no absolute black or white line; the ink follows the theme', () => {
     for (const { species, stage } of all)
       for (const theme of THEMES)
@@ -198,6 +240,18 @@ describe('props on a botanical plant (opt-in, drawn in line)', () => {
     const pot = find(bot('cactus', 4).root, 'ground')!;
     expect(strokes(pot).length).toBeGreaterThan(2);
     expect(groupNames(planterIcon('celadon', 'oak', 'light', 'botanical').root)).not.toContain('face');
+  });
+
+  it('keepsake icons (the Look rows) are inked for a botanical plant; the storybook icon is unchanged (UX review P5)', () => {
+    for (const theme of THEMES) {
+      expect(JSON.stringify(keepsakeIcon('lantern', theme, 'storybook'))).toBe(JSON.stringify(keepsakeIcon('lantern', theme)));
+      const inked = keepsakeIcon('lantern', theme, 'botanical', 40);
+      const s = strokes(inked.root);
+      expect(s.length).toBeGreaterThan(3);
+      const side = Number(inked.viewBox.split(' ')[2]);
+      // About a 1.3pt line at the row's 40pt.
+      for (const x of s) expect((x.sw * x.k * 40) / side).toBeLessThan(1.6);
+    }
   });
 
   it('resting: a dusk disc and a line moon; a small settle, never a droop', () => {

@@ -319,6 +319,8 @@ interface Ctx {
   lineOf: (p: PlantLeafPalette) => string;
   /** A gift's line: its colour mixed toward the page's ink. */
   giftLine: (c: string) => string;
+  /** Resting: a line's colour with a touch more ink (UX review H1); unchanged otherwise. */
+  rest: (c: string) => string;
   W: { main: number; fine: number };
   fine: boolean;
   seed: number;
@@ -356,6 +358,15 @@ export function buildBotanical(o: BotanicalOpts, kit: BotanicalKit): BuiltPlant 
     const v = o.organs?.[i];
     return typeof v === 'number' && Number.isFinite(v) ? Math.max(0.5, Math.min(1.25, v)) : 1.011;
   });
+  // UX review H1: resting, the plant sits on the dusk disc, a little darker than the page in
+  // light, so the leaf, soil and star lines take a touch more ink there (≥ 3:1 on the disc).
+  const restMix = o.resting ? TL.restLineMix : 0;
+  const rest = (c: string) => (restMix ? kit.mix(c, TL.woodInk, restMix) : c);
+  // UX review O1: pale bloom palettes (snow, pearl) draw their line a little darker in light.
+  const lineOf = (p: PlantLeafPalette) => {
+    const c = p[TL.leaf];
+    return rest(TL.paleLineMix && (p === plantLeaf.snow || p === plantLeaf.pearl) ? kit.mix(c, TL.woodInk, TL.paleLineMix) : c);
+  };
 
   // The ground: a pot or planter is the storybook shape, inked; the meadow is three soil lines.
   const { gr, potKind } = kit.ground(key, o.look, st, lod, theme);
@@ -373,11 +384,11 @@ export function buildBotanical(o: BotanicalOpts, kit: BotanicalKit): BuiltPlant 
     ];
     // A chosen ground look (stone ring, trail blaze) is kept, inked.
     const look = (g: GNode, ids: string[]) => g.children.filter((c) => c.t === 'g' && c.id !== null && ids.includes(c.id)).map((c) => ink(c, theme, W.main * 0.9, kit.mix));
-    groundBack = G('ground', [...arcs.map(([hw, y, sag, op]) => L(`M${f(100 - hw)} ${y}Q100 ${y - sag} ${f(100 + hw)} ${y}`, TL.soil, W.main, { opacity: op })), ...look(gr.back, ['stone-ring'])]);
+    groundBack = G('ground', [...arcs.map(([hw, y, sag, op]) => L(`M${f(100 - hw)} ${y}Q100 ${y - sag} ${f(100 + hw)} ${y}`, rest(TL.soil), W.main, { opacity: op })), ...look(gr.back, ['stone-ring'])]);
     const front: Maybe[] = [];
     if (lod !== 'icon') {
       const tuft = (x: number, s: number) =>
-        L(`M${f(x - 2.4 * s)} 170.4q0.4 -3 -1 -5.4M${f(x)} 169.8q0 -4 1.4 -7M${f(x + 2.4 * s)} 170.4q0.2 -2.6 1.6 -4.2`, plantLeaf.grove[TL.leaf], W.main * 0.8, { opacity: 0.8 });
+        L(`M${f(x - 2.4 * s)} 170.4q0.4 -3 -1 -5.4M${f(x)} 169.8q0 -4 1.4 -7M${f(x + 2.4 * s)} 170.4q0.2 -2.6 1.6 -4.2`, lineOf(plantLeaf.grove), W.main * 0.8, { opacity: 0.8 });
       front.push(tuft(100 - gw * 0.62, 1), tuft(100 + gw * 0.7, 0.8));
     }
     groundFront = G('ground-front', [...front, ...look(gr.front, ['stone-ring-front', 'trail-blaze'])]);
@@ -398,7 +409,8 @@ export function buildBotanical(o: BotanicalOpts, kit: BotanicalKit): BuiltPlant 
     pal,
     fol,
     wood: (c) => kit.mix(c, TL.woodInk, TL.woodMix),
-    lineOf: (p) => p[TL.leaf],
+    lineOf,
+    rest,
     giftLine: (c) => kit.mix(c, TL.propInk, TL.giftMix),
     W,
     fine,
@@ -1273,11 +1285,11 @@ function sampaguita(ctx: Ctx): Res {
     if (st >= 4 && lod !== 'icon') {
       const fr = st === 6 ? 4.6 : 4;
       const d = star(p1[0], p1[1] - 2, fr * 1.4, r() * 40);
-      groups.push(G(null, [P(d, pal.light, { opacity: 0.95 }), L(d, TL.starLine, W.main * 0.8), C(p1[0], p1[1] - 2, 1, A0.sampaguita.core)]));
+      groups.push(G(null, [P(d, pal.light, { opacity: 0.95 }), L(d, ctx.rest(TL.starLine), W.main * 0.8), C(p1[0], p1[1] - 2, 1, A0.sampaguita.core)]));
       if (st === 6 && i % 2 === 0) {
         const [x2, y2] = qpt(p0, pc, p1, 0.6);
         const d2 = star(x2 + 5, y2 - 3, 4.4, r() * 40);
-        groups.push(G(null, [P(d2, pal.light, { opacity: 0.95 }), L(d2, TL.starLine, W.main * 0.8)]));
+        groups.push(G(null, [P(d2, pal.light, { opacity: 0.95 }), L(d2, ctx.rest(TL.starLine), W.main * 0.8)]));
       }
     }
   }

@@ -18,7 +18,7 @@
 import type { PlantSpecies } from '../../engine/plant';
 import { lookItem, type ArtLook } from '../../engine/plantLooks';
 import { plantArt as A0, plantLeaf, plantTheme, type PlantLeafPalette } from '../../theme/tokens';
-import { buildBotanical, type BotanicalKit } from './botanical';
+import { buildBotanical, ink, type BotanicalKit } from './botanical';
 
 // ── nodes ───────────────────────────────────────────────────────────────
 export interface Paint {
@@ -1117,9 +1117,15 @@ function iconFrame(root: PNode): string {
 }
 
 /** A keepsake alone, framed for a small icon (the Look screen's rows). */
-export function keepsakeIcon(id: string, theme: 'light' | 'dark' = 'light'): { root: GNode; viewBox: string } {
+export function keepsakeIcon(id: string, theme: 'light' | 'dark' = 'light', style?: 'botanical' | 'storybook', px = 40): { root: GNode; viewBox: string } {
   const root = G('mascot', keepsakeShape(id, 'small', theme));
-  return { root, viewBox: iconFrame(root) };
+  if (style !== 'botanical') return { root, viewBox: iconFrame(root) };
+  // Mobile 1.40: inked like the botanical plant (a wash under a theme line), the line 1.3pt at `px`.
+  const inked = { ...ink(root, theme, 1.3, mix), id: 'mascot' };
+  const viewBox = iconFrame(inked);
+  const upp = Number(viewBox.split(' ')[2]) / px;
+  const scale = (n: PNode): PNode => (n.t === 'g' ? { ...n, children: n.children.map(scale) } : n.stroke ? { ...n, sw: f((n.sw ?? 1) * upp * 100) / 100 } : n);
+  return { root: scale(inked) as GNode, viewBox };
 }
 
 /**

@@ -10,7 +10,7 @@ For internal/technical history, see git log and PR descriptions.
 - New plants now grow in a calm botanical style; the storybook look with a face is still one tap away in Change its look.
 
 ### Improved
-- Change its look has a new Style choice. Plants you already have keep their look.
+- Change its look has a new Style choice. Your plant keeps its look.
 
 ## [v12.30] — A calmer first visit and a quicker answer
 

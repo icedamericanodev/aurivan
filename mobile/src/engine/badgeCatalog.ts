@@ -941,6 +941,19 @@ const SKILL_GAME: Partial<Record<BadgeId, GameId>> = {
 };
 
 /**
+ * Mobile 1.40 (code review #2): is this mark one the recap of a `game` round
+ * may show as "A new badge"? Only that game's own skill badge (Snare-wise for
+ * Snare Spotter…), or Whole Grove, which only finishing a round can complete.
+ * Anything else a round happens to tip over (a milestone, Back on the Path,
+ * which review can earn too) is not this game's news: it stays queued for
+ * You's badge dot. `key` is a saved mark key ("snare-wise", "rooted:10").
+ */
+export function isRoundBadge(game: GameId, key: string): boolean {
+  const badge = key.split(':')[0] as BadgeId;
+  return SKILL_GAME[badge] === game || badge === 'whole-grove';
+}
+
+/**
  * Where "Study for this" goes. `weakest`: the domain with the lowest mastery
  * (Whole Map). Earned, gated and Moments marks have none.
  */

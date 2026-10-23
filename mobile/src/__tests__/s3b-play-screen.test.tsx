@@ -131,8 +131,9 @@ describe('Play: Today’s drill', () => {
       moreRow().props.onPress();
     });
     expect(rowNames()).toEqual([GAMES.priority.name, GAMES.callit.name, GAMES.sprint.name]);
-    // The others still wait, so the quiet line stays.
+    // The others still wait, so the quiet line stays; "More games" lists one already, so it says "The other games".
     expect(waitLine()).toHaveLength(1);
+    expect(textOf(waitLine()[0])).toBe('The other games open after 50 answers.');
   });
 
   it('before 50 answers, a mistake pattern that names a waiting game falls back to a core game', () => {

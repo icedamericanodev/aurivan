@@ -186,7 +186,7 @@ export default function YourPlant() {
         {p.growth < 4 && <T v="meta" style={{ marginTop: space.sm }}>Each domain grows its own part of the plant from Bough.</T>}
 
         <Section title="Look" />
-        <ListRow title="Change its look" subtitle="Colour, ground, planter, visitor and keepsakes" onPress={() => router.push('/plant-look')} />
+        <ListRow title="Change its look" subtitle="Its style, colours and keepsakes" onPress={() => router.push('/plant-look')} />
         <ListRow title="Change plant" subtitle="Same growth, new look." onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'species' } })} />
         <ListRow title="Rename" subtitle={p.name ? `Now: ${shownName(p.name)}` : 'No name yet'} onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'name' } })} last />
         <Button kind="ghost" label="Plant settings" accessibilityHint="Show my plant, in Settings" onPress={() => router.push({ pathname: '/settings', params: { section: 'plant' } })} style={{ alignSelf: 'flex-start', marginTop: space.md, marginLeft: -space.sm }} />

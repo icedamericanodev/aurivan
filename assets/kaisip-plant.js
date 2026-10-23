@@ -1283,9 +1283,15 @@ function iconFrame(root) {
     const cy = (b.minY + b.maxY) / 2;
     return `${(0, exports.f)(cx - side / 2)} ${(0, exports.f)(cy - side / 2)} ${(0, exports.f)(side)} ${(0, exports.f)(side)}`;
 }
-function keepsakeIcon(id, theme = 'light') {
+function keepsakeIcon(id, theme = 'light', style, px = 40) {
     const root = G('mascot', keepsakeShape(id, 'small', theme));
-    return { root, viewBox: iconFrame(root) };
+    if (style !== 'botanical')
+        return { root, viewBox: iconFrame(root) };
+    const inked = { ...(0, botanical_1.ink)(root, theme, 1.3, mix), id: 'mascot' };
+    const viewBox = iconFrame(inked);
+    const upp = Number(viewBox.split(' ')[2]) / px;
+    const scale = (n) => { var _a; return (n.t === 'g' ? { ...n, children: n.children.map(scale) } : n.stroke ? { ...n, sw: (0, exports.f)(((_a = n.sw) !== null && _a !== void 0 ? _a : 1) * upp * 100) / 100 } : n); };
+    return { root: scale(inked), viewBox };
 }
 function planterIcon(id, species, theme = 'light', style) {
     const built = buildPlant({ species, stage: 2, lod: 'small', theme, quietLook: true, drift: false, look: { planter: id }, style, px: 40, fit: true });
@@ -2705,6 +2711,12 @@ function buildBotanical(o, kit) {
         const v = (_a = o.organs) === null || _a === void 0 ? void 0 : _a[i];
         return typeof v === 'number' && Number.isFinite(v) ? Math.max(0.5, Math.min(1.25, v)) : 1.011;
     });
+    const restMix = o.resting ? TL.restLineMix : 0;
+    const rest = (c) => (restMix ? kit.mix(c, TL.woodInk, restMix) : c);
+    const lineOf = (p) => {
+        const c = p[TL.leaf];
+        return rest(TL.paleLineMix && (p === tokens_1.plantLeaf.snow || p === tokens_1.plantLeaf.pearl) ? kit.mix(c, TL.woodInk, TL.paleLineMix) : c);
+    };
     const { gr, potKind } = kit.ground(key, o.look, st, lod, theme);
     const meadow = potKind === 'meadow';
     const gw = GROUND_W[groundSize(st)];
@@ -2719,10 +2731,10 @@ function buildBotanical(o, kit) {
             [gw * 0.36, 183.5, 2, 0.3],
         ];
         const look = (g, ids) => g.children.filter((c) => c.t === 'g' && c.id !== null && ids.includes(c.id)).map((c) => ink(c, theme, W.main * 0.9, kit.mix));
-        groundBack = G('ground', [...arcs.map(([hw, y, sag, op]) => L(`M${f(100 - hw)} ${y}Q100 ${y - sag} ${f(100 + hw)} ${y}`, TL.soil, W.main, { opacity: op })), ...look(gr.back, ['stone-ring'])]);
+        groundBack = G('ground', [...arcs.map(([hw, y, sag, op]) => L(`M${f(100 - hw)} ${y}Q100 ${y - sag} ${f(100 + hw)} ${y}`, rest(TL.soil), W.main, { opacity: op })), ...look(gr.back, ['stone-ring'])]);
         const front = [];
         if (lod !== 'icon') {
-            const tuft = (x, s) => L(`M${f(x - 2.4 * s)} 170.4q0.4 -3 -1 -5.4M${f(x)} 169.8q0 -4 1.4 -7M${f(x + 2.4 * s)} 170.4q0.2 -2.6 1.6 -4.2`, tokens_1.plantLeaf.grove[TL.leaf], W.main * 0.8, { opacity: 0.8 });
+            const tuft = (x, s) => L(`M${f(x - 2.4 * s)} 170.4q0.4 -3 -1 -5.4M${f(x)} 169.8q0 -4 1.4 -7M${f(x + 2.4 * s)} 170.4q0.2 -2.6 1.6 -4.2`, lineOf(tokens_1.plantLeaf.grove), W.main * 0.8, { opacity: 0.8 });
             front.push(tuft(100 - gw * 0.62, 1), tuft(100 + gw * 0.7, 0.8));
         }
         groundFront = G('ground-front', [...front, ...look(gr.front, ['stone-ring-front', 'trail-blaze'])]);
@@ -2743,7 +2755,8 @@ function buildBotanical(o, kit) {
         pal,
         fol,
         wood: (c) => kit.mix(c, TL.woodInk, TL.woodMix),
-        lineOf: (p) => p[TL.leaf],
+        lineOf,
+        rest,
         giftLine: (c) => kit.mix(c, TL.propInk, TL.giftMix),
         W,
         fine,
@@ -3562,11 +3575,11 @@ function sampaguita(ctx) {
         if (st >= 4 && lod !== 'icon') {
             const fr = st === 6 ? 4.6 : 4;
             const d = star(p1[0], p1[1] - 2, fr * 1.4, r() * 40);
-            groups.push(G(null, [P(d, pal.light, { opacity: 0.95 }), L(d, TL.starLine, W.main * 0.8), C(p1[0], p1[1] - 2, 1, tokens_1.plantArt.sampaguita.core)]));
+            groups.push(G(null, [P(d, pal.light, { opacity: 0.95 }), L(d, ctx.rest(TL.starLine), W.main * 0.8), C(p1[0], p1[1] - 2, 1, tokens_1.plantArt.sampaguita.core)]));
             if (st === 6 && i % 2 === 0) {
                 const [x2, y2] = qpt(p0, pc, p1, 0.6);
                 const d2 = star(x2 + 5, y2 - 3, 4.4, r() * 40);
-                groups.push(G(null, [P(d2, pal.light, { opacity: 0.95 }), L(d2, TL.starLine, W.main * 0.8)]));
+                groups.push(G(null, [P(d2, pal.light, { opacity: 0.95 }), L(d2, ctx.rest(TL.starLine), W.main * 0.8)]));
             }
         }
     }
@@ -8049,8 +8062,8 @@ exports.plantArt = {
     },
 };
 exports.plantTheme = {
-    light: { shadow: '#17231B', shadowOpacity: 0.1, sap: '#2B6E4A', leafFill: '#6DB38A', honey: '#8F6620', dusk: '#DCD8E6', duskOpacity: 0.85, dawnOpacity: 0.7 },
-    dark: { shadow: '#000000', shadowOpacity: 0.35, sap: '#A9D9BA', leafFill: '#A9D9BA', honey: '#E9C46A', dusk: '#232842', duskOpacity: 0.9, dawnOpacity: 0.32 },
+    light: { shadow: '#17231B', shadowOpacity: 0.1, sap: '#2B6E4A', leafFill: '#6DB38A', honey: '#8F6620', dusk: '#E6E7DE', duskOpacity: 0.85, dawnOpacity: 0.7 },
+    dark: { shadow: '#000000', shadowOpacity: 0.35, sap: '#A9D9BA', leafFill: '#A9D9BA', honey: '#E9C46A', dusk: '#1B2820', duskOpacity: 0.9, dawnOpacity: 0.32 },
 };
 exports.plantLine = {
     light: {
@@ -8070,6 +8083,8 @@ exports.plantLine = {
         propWashOp: 0.42,
         giftMix: 0.4,
         starLine: '#7E8A78',
+        paleLineMix: 0.3,
+        restLineMix: 0.2,
     },
     dark: {
         woodInk: '#F3E3CC',
@@ -8088,6 +8103,8 @@ exports.plantLine = {
         propWashOp: 0.5,
         giftMix: 0.45,
         starLine: '#E3E8DD',
+        paleLineMix: 0,
+        restLineMix: 0,
     },
 };
   };
@@ -8114,6 +8131,6 @@ exports.plantLine = {
   api["streak"] = load("src/engine/streak.ts");
   api["outline"] = load("src/engine/outline.ts");
   api["notesPack"] = load("scripts/notes-pack.cjs");
-  api.sourceHash = "146dd10a286b336f";
+  api.sourceHash = "2ad9a5dab6081727";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

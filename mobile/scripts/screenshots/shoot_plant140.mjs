@@ -107,6 +107,20 @@ await setPlant(kai);
 await go('/plant', 2600);
 await shot('p140-05-your-plant-legacy-unchanged');
 
+// ── 3b. Resting (no study for 4 days): botanical on the Grove-neutral dusk ─
+// The lines take a touch more ink there (UX review H1); a gold oak is the hardest case.
+const dk = (ms) => {
+  const d = new Date(ms);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+};
+await setPlant({ ...botanical, look: { style: 'botanical', colourway: 'oak-autumn' } });
+await edit(P, `const m = v.state.byCert.cisa.milestones || { earned: {} }; m.lastDay = a; v.state.byCert.cisa.milestones = m;`, dk(now - 4 * DAY));
+await go('/plant', 2600);
+await shot('p140-11-resting-botanical');
+await go('/', 2600);
+await shot('p140-11b-resting-today');
+await edit(P, `v.state.byCert.cisa.milestones.lastDay = a;`, dk(now));
+
 // ── 4. Settings: "Change its look" replaced Quiet look ───────────────────
 await setPlant(botanical);
 await go('/settings?section=plant', 2600);

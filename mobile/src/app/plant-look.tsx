@@ -28,7 +28,7 @@ import { LivePlant } from '../components/plant/LivePlant';
 import { Plant } from '../components/plant/Plant';
 import { KeepsakeIcon, LookOption, PlanterIcon, Swatch } from '../components/plant/LookUI';
 import { ICON_SIZE, PushedHeader, Row, Section, T, useFontScale } from '../components/ui';
-import { growthShort, plantCallName } from '../engine/plant';
+import { growthShort, plantCallName, type GrowthLevel } from '../engine/plant';
 import { colourwaysFor, GROUNDS, howToOpen, skillLine, KEEPSAKE_ITEMS, lookItem, MAX_SHOWN_KEEPSAKES, plantersFor, STYLES, toggleKeepsake, VISITORS, type LookItem, type LookSlot, type PlantStyle } from '../engine/plantLooks';
 import { haptic } from '../lib/haptics';
 import { usePlantView } from '../lib/plant';
@@ -109,7 +109,7 @@ export default function PlantLook() {
   const named = (id: string | undefined) => (id ? lookItem(id)?.name.toLowerCase() : undefined);
   const extras = [preview.visitor ? `a ${named(preview.visitor)}` : '', r.planter !== 'native' ? `in the ${named(r.planter)}` : '', ...r.keepsakes.map((k) => `the ${named(k)}`)].filter(Boolean);
   // Mobile 1.40: the style follows the name ("Kai, your oak, botanical style. Growth: …").
-  const cut = view.label.indexOf('. ');
+  const cut = view.label.indexOf('. Growth:');
   const styled = cut > 0 ? `${view.label.slice(0, cut)}, ${STYLE_WORDS[r.style]}${view.label.slice(cut)}` : view.label;
   const previewLabel = `Preview: ${styled}${extras.length ? ` With ${extras.join(', ')}.` : ''}`;
 
@@ -149,9 +149,9 @@ export default function PlantLook() {
   const planterArt = (x: LookItem) => <PlanterIcon id={x.id} species={p.species} size={40} theme={theme} style={r.style === 'botanical' ? 'botanical' : 'storybook'} />;
   // Each style card shows THIS plant drawn that way (its growth and colours; no visitor or keepsakes at 56pt).
   const styleArt = (x: LookItem) => (
-    <Plant species={p.species} stage={p.growth} organs={view.scales} size={56} theme={theme} quietLook={x.id !== 'storybook-face'} look={{ style: x.id as PlantStyle, palette: r.palette }} />
+    <Plant species={p.species} stage={Math.max(3, p.growth) as GrowthLevel} organs={view.scales} size={56} theme={theme} quietLook={x.id !== 'storybook-face'} look={{ style: x.id as PlantStyle, palette: r.palette }} />
   );
-  const keepsakeArt = (x: LookItem) => <KeepsakeIcon id={x.id} size={40} theme={theme} />;
+  const keepsakeArt = (x: LookItem) => <KeepsakeIcon id={x.id} size={40} theme={theme} style={r.style === 'botanical' ? 'botanical' : 'storybook'} />;
   // Planter and Keepsakes list only what is open (UX review P1). The ribbon is
   // never listed until it is earned (it opens when you tell us you passed).
   const openPlanters = planters.filter(open);

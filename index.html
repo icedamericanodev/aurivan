@@ -74,7 +74,7 @@
      compiled into one plain script (mobile/scripts/build-web-plant.mjs;
      never edit it by hand). Deferred: the page never waits for it, and the
      plant draws itself once it has arrived (plantReady). -->
-<script id="kaisipPlantJs" src="assets/kaisip-plant.js?v=c2b050d7da" defer></script>
+<script id="kaisipPlantJs" src="assets/kaisip-plant.js?v=83dffc8ae9" defer></script>
 <link rel="preload" href="assets/fonts/Figtree_400Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Fraunces_500Medium.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -5991,6 +5991,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .plnt-lk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--sp-sm); }
 .plnt-opt { gap: var(--sp-md); min-height: 56px; padding: var(--sp-sm) var(--sp-md); }
 .plnt-opt-art { flex-shrink: 0; width: 36px; height: 36px; }
+.plnt-opt-art-lg { width: 48px; height: 48px; }   /* v12.31: the Style cards draw the plant at 48 */
 .plnt-opt-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .plnt-opt-n { font: var(--t-label); color: var(--text); }
 .plnt-opt-m { font: var(--t-meta); color: var(--text2); }
@@ -12964,7 +12965,7 @@ function plantLookHtml() {
         var on = open(it.id);
         return '<label class="plnt-opt' + (on ? '' : ' locked') + '"><input type="radio" class="plnt-radio" name="plLk-' + slot + '" value="' + it.id + '"'
           + (it.id === cur ? ' checked' : '') + (on ? '' : ' disabled') + ' onchange="plantSetLook(\'' + slot + '\', this.value)">'
-          + (art ? '<span class="plnt-opt-art">' + art(it) + '</span>' : '')
+          + (art ? '<span class="plnt-opt-art' + (slot === 'style' ? ' plnt-opt-art-lg' : '') + '">' + art(it) + '</span>' : '')
           + '<span class="plnt-opt-t"><span class="plnt-opt-n">' + escapeHtml(it.name) + '</span>'
           + '<span class="plnt-opt-m">' + escapeHtml(on ? it.caption : K.looks.howToOpen(it, { badgesHidden: true })) + '</span></span></label>';
       }).join('') + '</div>' + (note ? '<p class="plnt-small">' + note + '</p>' : '') + '</fieldset>';
@@ -12975,7 +12976,7 @@ function plantLookHtml() {
   };
   // Each style card draws THIS plant that way (its growth and colours).
   var st = function (it) {
-    return plantSvg({ species: p.species, stage: p.growth, size: 48, fit: true, lod: 'small', quiet: !K.looks.styleHasFace(it.id), look: { style: it.id, palette: resolved.palette } });
+    return plantSvg({ species: p.species, stage: Math.max(3, p.growth), size: 48, fit: true, lod: 'small', quiet: !K.looks.styleHasFace(it.id), look: { style: it.id, palette: resolved.palette } });
   };
   var planters = K.looks.plantersFor(p.species).filter(function (it) { return open(it.id); });
   var keeps = K.looks.KEEPSAKE_ITEMS.filter(function (it) { return open(it.id); });
@@ -13013,7 +13014,7 @@ function plantLookPreview() {
   if (v.resolved.visitor !== 'no-visitor') look.visitor = v.resolved.visitor;
   var parts = [K.plant.plantCallName(p)];
   var sty = K.looks.lookItem(v.style);
-  if (sty) parts.push(sty.name.toLowerCase() + ' style');
+  if (sty) parts.push(sty.id === 'storybook-face' ? 'storybook style with a face' : sty.name.toLowerCase() + ' style');
   var item = K.looks.lookItem(v.resolved.colourway);
   if (item) parts.push(item.name);
   var pot = K.looks.lookItem(v.resolved.planter);
@@ -18358,7 +18359,7 @@ const CHANGELOG = [
     title: 'A calm new plant',
     items: [
       { cat: 'new', text: 'New plants now grow in a calm botanical style; the storybook look with a face is still one tap away in Change its look.' },
-      { cat: 'improved', text: 'Change its look has a new Style choice. Plants you already have keep their look.' }
+      { cat: 'improved', text: 'Change its look has a new Style choice. Your plant keeps its look.' }
     ]
   },
   {

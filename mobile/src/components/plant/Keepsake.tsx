@@ -42,8 +42,21 @@ function Icon({ root, viewBox, size, dim }: { root: PNode; viewBox: string; size
 }
 
 /** One keepsake alone, decorative (its name is always in words beside it). Dark: a soft cream rim (UX review P12). */
-export const KeepsakeIcon = memo(function KeepsakeIcon({ id, size, dim = false, theme = 'light' }: { id: string; size: number; dim?: boolean; theme?: 'light' | 'dark' }) {
-  const { root, viewBox } = keepsakeIcon(id, theme);
+export const KeepsakeIcon = memo(function KeepsakeIcon({
+  id,
+  size,
+  dim = false,
+  theme = 'light',
+  style,
+}: {
+  id: string;
+  size: number;
+  dim?: boolean;
+  theme?: 'light' | 'dark';
+  /** Mobile 1.40 (UX review P5): a botanical plant's keepsakes are drawn in line, like the plant. */
+  style?: 'botanical' | 'storybook';
+}) {
+  const { root, viewBox } = keepsakeIcon(id, theme, style, size);
   return <Icon root={root} viewBox={viewBox} size={size} dim={dim} />;
 });
 
