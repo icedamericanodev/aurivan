@@ -33,6 +33,7 @@ import {
   plantersFor,
   plantMood,
   resolveLook,
+  STYLES,
   toggleKeepsake,
   unlockedLooks,
   VISITORS,
@@ -163,7 +164,7 @@ describe('the fallback (a restore can make an unlock vanish)', () => {
 
   it('switching species drops only the colourway; growth and the rest of the look stay', () => {
     const p = withLook(seed('oak', 5), { colourway: 'oak-autumn', ground: 'stone-ring', keepsakes: ['fox'] });
-    expect(p.look).toEqual({ colourway: 'oak-autumn', ground: 'stone-ring', keepsakes: ['fox'] });
+    expect(p.look).toEqual({ style: 'botanical', colourway: 'oak-autumn', ground: 'stone-ring', keepsakes: ['fox'] });
   });
 });
 
@@ -172,9 +173,9 @@ describe('withLook and keepsakes', () => {
     const p = seed();
     expect(withLook(p, { ground: 'lantern' })).toBe(p);
     const q = withLook(p, { ground: 'stone-ring', planter: 'celadon', visitor: 'robin' });
-    expect(q.look).toEqual({ ground: 'stone-ring', planter: 'celadon', visitor: 'robin' });
+    expect(q.look).toEqual({ style: 'botanical', ground: 'stone-ring', planter: 'celadon', visitor: 'robin' });
     expect(withLook(q, { ground: 'stone-ring' })).toBe(q);
-    expect(withLook(q, { planter: null }).look).toEqual({ ground: 'stone-ring', visitor: 'robin' });
+    expect(withLook(q, { planter: null }).look).toEqual({ style: 'botanical', ground: 'stone-ring', visitor: 'robin' });
     expect(withLook(q, { keepsakes: ['fox', 'fox', 'jay', 'cairn', 'lantern', 'meadow'] }).look?.keepsakes).toEqual(['fox', 'jay', 'cairn']);
   });
 
@@ -220,6 +221,12 @@ describe('copy', () => {
   it('plain words: no counters, no "Unlocked!", no guilt, no readiness claim, no trademark echo', () => {
     for (const l of lines) {
       expect(l).not.toMatch(/\d+\s+of\s+\d+|collected|unlocked!|\bstage\b|wilt|miss(es)? you|you haven.t|ready for the exam|pass the exam|Pokémon|Pokemon|owl|finch/i);
+    }
+  });
+  it('mobile 1.40: the style names and captions are plain and calm (no "mascot", no "cute"), each a full sentence', () => {
+    for (const s of STYLES) {
+      expect(`${s.name} ${s.caption}`).not.toMatch(/mascot|cute|Pokémon|Pokemon|character|kawaii/i);
+      expect(s.caption).toMatch(/^[A-Z].*\.$/);
     }
   });
   it('a keepsake’s caption names the skill: "The sundial: you finished a timed mock on pace."', () => {

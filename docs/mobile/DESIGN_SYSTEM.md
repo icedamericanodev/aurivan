@@ -494,6 +494,7 @@ Order on the feedback screen:
 - One drawing style: single 1.5pt stroke, round caps/joins, no fills (except leaf marks), leaves = quadratic "lens" shapes with a midrib, arranged along one quadratic-bezier stem. Generator `frond({p0,p1,pc,n,len,wid,ang,alt,taper})` (≈25 lines, see mockup script) emits one SVG path; seeds are fixed per placement so art never changes between renders.
 - Placements: Today panel = upright frond (9 pairs); Practice panel = shorter frond; Learn "Up next" cover = alternate-leaf branch (lesson covers; one variant per domain by changing `alt`/`ang`/`taper` — 5 presets, no images); clearing card = tall frond; empty states = their own drawing (1.9, `EmptyArt`, 170×176 in `accent`): seedling (stem, 2 cotyledons, 1 true leaf, 3 fading soil lines; something new will grow here), fern (a fiddlehead uncurling beside one open frond: review brings questions back around), bookmark (a ribbon standing in the soil with a sprig drawn on it, a sprig growing beside it), pressed (a leaf taped to a herbarium sheet, the tape knocked out on paper, with its label), fieldbook (an open field book: a sprig on the left page, notes on the right).
 - On `forest` it's `forestLine` (decorative, ~1.7:1 on purpose). On paper it's `accent`. Never behind body text on paper.
+- **The plant, botanical (mobile 1.40; the default for new plants).** Your plant drawn in the same hand (`components/plant/botanical.ts`): one round-capped ink line, lens leaves with a midrib on quadratic stems, plus a soft watercolour wash of the plant's own colourway under the line, like a field-guide plate. No face, ever. Seed: an almond a third in the soil with a first curled shoot; Sprout: the Grove seedling (one stem, two seed leaves, the species' first true leaf); Shoot: a slim sapling; Bough on: five domain boughs leaving the trunk at different heights, each ending in a leaf cluster over a faint unlined wash; Crown: thicker limbs and root flare; Elder: the gift in line (acorns, samaras, blossoms, ripe mangoes) and two drifting leaves. The meadow is three soil lines; pots, planters, a chosen visitor and keepsakes are **inked** (a wash of their own colour under a theme line; shadows and highlights dropped). The line is set in POINTS (1.5pt at full detail, 1.3pt small, 1.25pt icon) and converted from the real render size, so it is a true 1.5pt on the 200pt screen and about 1.3pt in Today's tight 72pt frame. Colours: the `plantLine` token (the ink follows the theme: the palette's `deep` tone on paper, `light` on the night page; wood is bark mixed toward the page's ink; soil lines are `control`).
 - Optional, low priority: a 4s ±1.5° sway on the panel frond (reanimated, `withRepeat`), paused when off-screen and under reduce motion.
 
 ### 10.4 Serif numeral system + italic voice
@@ -604,7 +605,7 @@ Reduced paths per §8.5 (the phone's Reduce Motion, live, or Settings → Motion
 
 **You → Study tools** has "Badges" (the `badge` icon, subtitle "What you've mastered, and what's next for your exam", trailing serif count + "earned" (a count only, never "of N"; the case's earned medallions, so a kept key the case doesn't show never adds one), spoken "Badges, none yet…" at 0) and "Field notes" (leaf icon, "Game levels and skill badges") after Saved questions; the back-fill block (same recipe as on Badges, with a ghost "See your badges") sits above Study tools on the first visit after the back-fill (then marked seen). Only its text is one screen-reader stop; the button stays its own stop, outside the group. **The "new" dot (1.10):** while a badge earned since the case was last opened waits, an 8pt `accent` dot sits before the row's count (spoken "Badges, new badge, …") and a 10pt RING (2pt `accent` outline, `bg` inside) sits at the You tab icon's top right (spoken "You, new badge"): a different shape from the filled selected-tab dot under the label. A badge the back-fill saved, or a kept key the case doesn't show, never lights it; it clears only while the case is on screen. Never a number, never red, never on the app icon or in a notification. Badges held when 1.10 first opens never count as new. **Settings → Study → Show badges** (a ToggleRow, on by default, "A short moment when you earn one, and Badges on You. Off: you still earn them, quietly."): off hides the moments, the Badges row, the dot and the back-fill line, and badges are still earned; back on clears the waiting moments (no burst) and counts the active exam's waiting moments (never badges a back-fill or restore saved quietly), showing, for that visit and announced once, one `meta` line in `accentText`: "Badges are on again. 2 badges arrived while they were hidden: see You → Badges." It travels in backups; a file from before it keeps this phone's choice. **Badges, its sheet, Field notes and You** are the only places badges are listed; no medallion art on question, lesson, mock or game-round screens.
 
-**Play, Today's drill (mobile 1.24, panel decision D5):** the tab opens with `Section` "Today’s drill" and one `meta` line ("Picked from your mistakes. You miss priority words like FIRST and BEST." or, for a new learner, "A good place to start…"), then the forest hero for that game (the one the Mistake journal's slip coach names; Snare Spotter with no pattern), then `Section` "Also good for this" / "Also try" with two related games as hairline rows (name, a plain `meta` subtitle such as "Spot the trick answer", level tag once grown, best), then ONE `DisclosureRow` "More games · 6 more…" (folded; the other six rows open under it). Three games in sight; nine in all (frozen). Rows are spoken "<Name>. <plain subtitle>. Your level…". The "All at Seedling" meta sits on the "Also try" section. The picks live in `engine/games/todaysDrill.ts`; the plain subtitles are `plain` in the game registry.
+**Play, Today's drill (mobile 1.24, panel decision D5):** the tab opens with `Section` "Today’s drill" and one `meta` line ("Picked from your mistakes. You miss priority words like FIRST and BEST." or, for a new learner, "A good place to start…"), then the forest hero for that game (the one the Mistake journal's slip coach names; Snare Spotter with no pattern), then `Section` "Also good for this" / "Also try" with two related games as hairline rows (name, a plain `meta` subtitle such as "Spot the trick answer", level tag once grown, best), then ONE `DisclosureRow` "More games · 6 more…" (folded; the other six rows open under it). Three games in sight; nine in all (frozen). Rows are spoken "<Name>. <plain subtitle>. Your level…". The "All at Seedling" meta sits on the "Also try" section. The picks live in `engine/games/todaysDrill.ts`; the plain subtitles are `plain` in the game registry. **Mobile 1.40 (a simpler list):** a new learner sees only the three core games (`CORE_GAMES`: Snare Spotter, Signpost, Call It First), with ONE quiet `meta` line under them, "More games open after 50 answers." (no count of the games waiting, no locks); "More games" appears once the learner has answered 50 practice questions (distinct questions on this exam). A game the learner already played stays, so nobody loses one. A mistake pattern that names a game still waiting falls back to a core game. **Game recap (1.40):** a new badge shows only when THIS round earned it, as an `InviteRow` (badge glyph, "A new badge: Snare-wise", what it means; the row opens it in Badges), never the ruled quote; an older queued badge stays for You's badge dot. "What caught you" rows carry no link; ONE "Report a problem" sits at the foot of the recap (one miss: that question or card; otherwise the round, naming the missed items).
 
 **Play levels** (mobile 1.6; 1.8): each "More games" row's subtitle is the tagline, plus a `TierTag` (leaf + level name) once that game has grown past Seedling; while every game is at Seedling the `Section` meta says "All at Seedling" once. Every row is still spoken "…Your level: Sapling.". The featured hero carries the level after its caption: a `sap` leaf on forest + `caption` level name in `onForest2`. Game intros (`GameIntro`, Daylight's picker) start on the learner's own level and add a centred "Your level: [leaf] Sapling" line with how it grows.
 
@@ -810,15 +811,32 @@ bank size. Never "Pokémon".
 | You | Header row under the title: the plant (in its colours and planter, no keepsakes), its name, its growth; or "Plant yours". One slow breath the first time You comes into view in a session, after the rings have grown | 64pt |
 | Your plant | The plant on the shared 200 × 200 stage (`fit={false}`), name, growth and its look in italic; the back-fill line once; the resting line; What grows it next (rule steps with bars, "Not yet" / "Done"); Your domains as text rows with "Next to grow"; Change species and Rename | 200pt |
 | Picker (onboarding step 3 of 3, Plant yours, Change plant) | A radio grid of the 13 species, each previewed at Crown; the columns come from the measured width and text size (a tile needs 112pt × the text scale, up to ×1.3): three when they fit, else two (a 360 dp phone), and one row per species (56pt plant beside its name and line) at ×1.6 text; names wrap to two lines, never mid-word; selected = 2px ink border. The name field starts empty with an idea as its placeholder ("Another idea" fills one in; empty = "Your oak"); the keyboard never covers it (the footer hides while typing) | 56–96pt |
-| Look (mobile 1.14) | A live preview pinned under the header (it stays in view while the choices scroll; small detail level, so a tap rebuilds quickly; its label names the visitor, planter and keepsakes it draws), then Colour (swatches), Ground and Visitor two across when two fit (the width is known from the first frame), Planter (a 40pt planter icon with a sprout in it) and Keepsakes always one column of rows (an icon, the name, the skill line); one column for everything at ×1.3+ text. Planter and Keepsakes list only what is open; the planters and keepsakes still to earn wait in ONE closed "More to find" group at the end (no count; "Badges and finished badge sets add more. Each one says how."; rows arrive 30 ms apart, a 120 ms fade reduced). Colour, Ground and Visitor keep their one locked choice inline. Selected = a 2px ink ring that cross-fades in (an always-mounted state layer, nothing reflows) and, for a keepsake, a ✓; the press is the soft tint. Keepsakes say "Show up to three", or "Three on show" with "Tap one that's on show to put it away, then pick another." while the others are drawn muted. Radio groups, keepsakes checkboxes; a tap applies at once (selection haptic) | 140pt; 96pt at ×1.3+ text; 72pt at ×1.6+ or on a phone under 700pt tall |
+| Look (mobile 1.14) | A live preview pinned under the header (it stays in view while the choices scroll; small detail level, so a tap rebuilds quickly; its label names the style, visitor, planter and keepsakes it draws), then Style (1.40: three radio rows, each a 56pt drawing of this plant in that style), Colour (swatches), Ground and Visitor two across when two fit (the width is known from the first frame), Planter (a 40pt planter icon with a sprout in it) and Keepsakes always one column of rows (an icon, the name, the skill line); one column for everything at ×1.3+ text. Planter and Keepsakes list only what is open; the planters and keepsakes still to earn wait in ONE closed "More to find" group at the end (no count; "Badges and finished badge sets add more. Each one says how."; rows arrive 30 ms apart, a 120 ms fade reduced). Colour, Ground and Visitor keep their one locked choice inline. Selected = a 2px ink ring that cross-fades in (an always-mounted state layer, nothing reflows) and, for a keepsake, a ✓; the press is the soft tint. Keepsakes say "Show up to three", or "Three on show" with "Tap one that's on show to put it away, then pick another." while the others are drawn muted. Radio groups, keepsakes checkboxes; a tap applies at once (selection haptic) | 140pt; 96pt at ×1.3+ text; 72pt at ×1.6+ or on a phone under 700pt tall |
 | Question, mock, lesson, game and Results screens | **Never**: no plant, face or looping art while answering (practice, review, mock, lesson steps, games in play, answer feedback). Tests walk each screen's imports, and check that its hero panels are still (`plant-proud-118.test.tsx`) | — |
 
 The rings stay on You and Results as the numeric view.
 
 **Settings → Badges and your plant** (called Your plant before 1.17; the plant screens' "Open Settings" / "Plant settings" open Settings scrolled to this group, `?section=plant`). Show my plant (off: no plant and no prompts
-anywhere; growth is still kept, so turning it on shows the truth) and Quiet
-look (no face; shown only while the plant shows). The face is on by default
-and never sad: calm, or sleepy while resting.
+anywhere; growth is still kept, so turning it on shows the truth) and, while
+the plant shows, one row "Change its look" that opens the Look screen.
+
+**Style (mobile 1.40, owner decision 22 Oct 2026).** How the plant is drawn is
+a per-plant look slot, `look.style`: **Botanical** (the faceless line drawing,
+§10.3), **Storybook** (the rounded art, no face) or **Storybook with a face**.
+All free, listed first on the Look screen; each card draws THIS plant that way
+at 56pt. The rule (`engine/plantLooks.ts resolveStyle`), with no migration and
+no renamed key: a plant with `look.style` uses it; a plant saved BEFORE 1.40
+has none and keeps exactly the art it had (the face, or no face if the old
+Settings switch Quiet look was on; `plantSettings.quietLook` is still read and
+kept in backups). `plantNew` writes `botanical` at birth, so every new plant,
+and an existing learner's first plant after the update, is botanical. Quiet
+look moved from Settings into this choice. Only "Storybook with a face" draws
+a face and says its mood ("Looking proud."); the face is never sad: calm, or
+sleepy while resting. A botanical plant shows **no visitor and no keepsakes
+until the learner picks them** (the visitor defaults to "No visitor"); picked
+ones are drawn in line. The storybook styles keep the wren and the first three
+earned. The Look preview's label says the style ("Kai, your oak, botanical
+style."). Resting, botanical: the dusk disc, a line moon and a 1.5° settle. The dusk is a Grove neutral for both styles (1.40 UX review: `#E6E7DE` light, `#1B2820` dark; it was lavender and navy), and resting lines take `plantLine.restLineMix` more ink in light so leaf, soil and star lines stay ≥ 3:1 on it.
 
 **Resting.** After 3 days without study, or on the exam eve and exam day, the
 plant sits on a soft dusk disc with a small moon and closed eyes, and Your plant
@@ -839,7 +857,7 @@ allows, and evidence a save can lose (mocks past the newest 50, readiness days
 past the log, renamed subtopics) never counts against the plant.
 
 **Look (mobile 1.14, Phase 4b).** Catalogue and rules: `mobile/src/engine/plantLooks.ts`.
-Five slots, chosen on the Look screen (Your plant → Change its look):
+Six slots, chosen on the Look screen (Your plant → Change its look, or Settings → Change its look): Style first (1.40, above), then:
 
 | Slot | Free | Opens with |
 |---|---|---|
@@ -912,7 +930,9 @@ elements are cached, so no path is rebuilt per frame (low-end Android).
   one (mobile 1.18, fixes QA BUG-4). Never with the growth sequence, nor
   later on a growth day; on Today it waits while the clearing plays.
   Anything that cuts one short (the screen loses focus, Reduce Motion turns
-  on) puts the plant back at rest at once. Quiet look: no face, no reaction.
+  on) puts the plant back at rest at once. Mobile 1.40: the posture plays for
+  EVERY style (a faceless botanical or storybook plant still stands tall on a
+  good day); only the face style draws the mood and says it.
 - **Proud (mobile 1.18, expert panel)**, rules in `engine/proud.ts`: only for
   something earned today: a growth step (never a back-filled one), or a NEW
   keepsake from a LEARNING badge (the first tier, on any exam, of a badge in
@@ -922,9 +942,10 @@ elements are cached, so no path is rebuilt per frame (low-end Android).
   in `store/seen.ts` (`proud`); keepsake occasions are capped at 3 in any
   rolling 7 days (a 4th is noted as capped and changes nothing), growth
   always counts. The proud face lasts until local midnight, then idle.
-  Occasions are written down only while the proud face really shows: with
-  Quiet look (no face), the plant hidden or resting, nothing is written, so
-  an unseen moment never uses up one of the 3 (PR #51 review). After a
+  Occasions are written down only while the proud moment really shows: with
+  the plant hidden or resting, nothing is written, so an unseen moment never
+  uses up one of the 3 (PR #51 review). Since 1.40 the proud posture shows for
+  every style, so a faceless plant's moment counts like any other. After a
   Reset, re-earning a badge whose keepsake the plant kept (`CertPlant.kept`)
   is no new keepsake, so no proud. A reaction is saved as played only if it
   really played: when the session's 3 s budget is spent, the occasion can
@@ -970,7 +991,8 @@ app, and why:
 | Keepsakes, badge-set planters | From badges | Closed (the web has no badges yet); growth unlocks all work |
 | Visitor, happy face | On a cleared day plan | No day plan on the web: the visitor shows in the look preview only |
 | Elder's week | The readiness log | Logged on the web from v12.11 on, so an existing learner's week starts then |
-| Settings: Show my plant, Quiet look | Settings → Badges and your plant | Not on the web yet (the face shows) |
+| Settings: Show my plant, Change its look | Settings → Badges and your plant | Not on the web yet |
+| Style (1.40; web v12.31) | Look → Style: Botanical, Storybook, Storybook with a face; new plants botanical; a plant with no style keeps storybook | The same rule and the same Style group, first in the look editor; the species picker previews a new plant botanical |
 
 ## 14. Fit your plan (mobile 1.15, Phase 5a)
 
@@ -1226,7 +1248,7 @@ learner set before was lost, and no saved setting changed shape.
 | Practice | Default mode · Let the app choose | Timed practice; Shuffle answer options |
 | Reminders | Time and days (summary as subtitle; Steppers and day chips in a sheet) | Study reminder |
 | Appearance | Theme · System; Motion · Match my phone | Haptics |
-| Badges and your plant | — | Show badges (+ its "on again" line); Show my plant; Quiet look |
+| Badges and your plant | Change its look (opens the Look screen; 1.40, it replaced Quiet look) | Show badges (+ its "on again" line); Show my plant |
 | Your data | Save a backup; Restore from a backup; Undo restore (while it applies) | — |
 | (set apart) | danger "Reset CISA progress" + `meta` line | — |
 | Help and about | Get help or send feedback; About KaiSip (vision and pillars in a sheet); Privacy policy and Terms of use when configured; Check for updates (mobile 1.19, installed apps only) | — |

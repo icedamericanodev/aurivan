@@ -8,7 +8,9 @@
  *   "Plant a companion" line;
  * - SpeciesGrid: the 13 species as a radio group, each previewed at Crown
  *   (growth 5), so the learner sees where it goes before choosing; three,
- *   two or one across from the measured width and text size;
+ *   two or one across from the measured width and text size. Mobile 1.40:
+ *   a new plant is previewed botanical (how it will grow); Change plant
+ *   previews the plant's own style;
  * - PlantNameField: the name (empty to start, a suggestion as its
  *   placeholder) and "Another idea".
  *
@@ -25,7 +27,7 @@ import { Button, CARD_LIFT, ICON_SIZE, InviteRow, T, useFontScale } from '../ui'
 import { Plant } from './Plant';
 import { LivePlant, type LivePlantProps } from './LivePlant';
 import type { ArtLook, Lod } from './art';
-import type { PlantMood } from '../../engine/plantLooks';
+import { NEW_PLANT_STYLE, type PlantMood, type PlantStyle } from '../../engine/plantLooks';
 
 // ── The plant you can tap ──────────────────────────────────────────────
 export function PlantButton({
@@ -132,7 +134,10 @@ export function pickColumns(width: number, fontScale: number, gap: number = spac
   return fits(3) ? 3 : fits(2) ? 2 : 1;
 }
 
-export function SpeciesGrid({ value, onChange, quietLook }: { value: PlantSpecies; onChange: (s: PlantSpecies) => void; quietLook?: boolean }) {
+/** One look object per style (a constant, so the previews never rebuild). */
+const STYLE_LOOK: Record<PlantStyle, { style: PlantStyle }> = { botanical: { style: 'botanical' }, storybook: { style: 'storybook' }, 'storybook-face': { style: 'storybook-face' } };
+
+export function SpeciesGrid({ value, onChange, plantStyle = NEW_PLANT_STYLE }: { value: PlantSpecies; onChange: (s: PlantSpecies) => void; plantStyle?: PlantStyle }) {
   const { c, isDark } = useTheme();
   const scale = useFontScale();
   const [width, setWidth] = useState(0);
@@ -181,7 +186,7 @@ export function SpeciesGrid({ value, onChange, quietLook }: { value: PlantSpecie
                 pressed && { transform: [{ scale: 0.98 }] },
               ]}
             >
-              <Plant species={s} stage={PICK_PREVIEW} quietLook={quietLook} size={art} theme={isDark ? 'dark' : 'light'} />
+              <Plant species={s} stage={PICK_PREVIEW} quietLook={plantStyle !== 'storybook-face'} look={STYLE_LOOK[plantStyle]} size={art} theme={isDark ? 'dark' : 'light'} />
               {rows ? (
                 <View style={{ flex: 1 }}>
                   <T v="label">{info.name}</T>

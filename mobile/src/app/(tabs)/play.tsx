@@ -24,6 +24,12 @@
  * Mobile 1.21: the hero's caption holds two things, not five (the glyph and
  * "Beating distractors · 6 min"); the level (leaf + name) moves under the
  * meta line, clear of the art.
+ *
+ * Mobile 1.40 (owner decision, 22 Oct 2026): a simpler list. A new learner
+ * sees the three core games (Snare Spotter, Signpost, Call It First); the
+ * others open under "More games" after about 50 practice answers, with one
+ * quiet line until then. A game the learner already played always stays
+ * (engine/games/todaysDrill.ts availableGames).
  */
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
@@ -36,17 +42,31 @@ import { Button, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, 
 import { GAME_TIER_NAME, growthTier } from '../../engine/games/growth';
 import { scoreSpoken, scoreText } from '../../engine/games/recap';
 import { GAMES, type GameId } from '../../engine/games/registry';
-import { drillPlan } from '../../engine/games/todaysDrill';
+import { availableGames, drillPlan, moreGamesOpen, MORE_GAMES_AT, waitingGames } from '../../engine/games/todaysDrill';
 import { spokenMin } from '../../engine/pace';
 import { playableGames } from '../../lib/games';
 import { topSlipPattern } from '../../lib/slipPattern';
 import { PATTERN_COPY } from '../../engine/slipCoach';
 import { CERTIFICATIONS, getCertification } from '../../content/certifications';
-import { selectCert, useProgress } from '../../store/progress';
+import { selectCert, useProgress, type ProgressState } from '../../store/progress';
 import { useSettings } from '../../store/settings';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
+/**
+ * Every game this learner has played, on any exam (a best score, a recent
+ * round or a level): as one sorted string, so Play re-renders only when a
+ * game is played for the first time.
+ */
+function playedKey(s: ProgressState): string {
+  const ids = new Set<string>();
+  for (const c of Object.values(s.byCert)) {
+    for (const id of Object.keys(c?.gameBest ?? {})) ids.add(id);
+    for (const [id, h] of Object.entries(c?.gameRecent ?? {})) if (h?.length) ids.add(id);
+    for (const id of Object.keys(c?.gameGrowth ?? {})) ids.add(id);
+  }
+  return [...ids].sort().join(',');
+}
 
 export default function Play() {
   const { c } = useTheme();
@@ -62,13 +82,22 @@ export default function Play() {
   // offered at all (never explained with a number: no bank-size leaks).
   // Note-based games (Root or Rumor) count the cert's study notes instead.
   const playable = useMemo(() => playableGames(cert.id), [cert.id]);
+  // Mobile 1.40: the other games open after about 50 practice answers (the same
+  // count as the backup preview's "answered": distinct questions answered on this
+  // exam). Subscribed as a yes/no, so an answer elsewhere re-renders Play only
+  // the one time it flips. A game already played is never taken away.
+  const open = useProgress((s) => moreGamesOpen(Object.keys(selectCert(s, certId).answers).length));
+  const played = useProgress(playedKey);
+  const access = useMemo(() => ({ answered: open ? MORE_GAMES_AT : 0, played: (played ? played.split(',') : []) as GameId[] }), [open, played]);
+  const available = useMemo(() => availableGames(playable, access), [playable, access]);
+  const waiting = useMemo(() => waitingGames(playable, access), [playable, access]);
   // The learner's own mistake pattern (the same coach as the Mistake journal) picks Today's drill.
   // Subscribed as the pattern's id, not the whole mistakes record (performance,
   // PR #90): a right answer that marks a logged mistake fixed changes the
   // record but not the pattern, and must not re-render this hidden tab.
   const top = useProgress((s) => topSlipPattern(cert.id, selectCert(s, certId).mistakes));
   const pattern = top ? PATTERN_COPY[top] : null;
-  const plan = useMemo(() => drillPlan(pattern ? pattern.game : null, playable), [pattern, playable]);
+  const plan = useMemo(() => drillPlan(pattern ? pattern.game : null, available), [pattern, available]);
   const featured = plan.drill ? GAMES[plan.drill] : undefined;
   // "More games" starts folded: three games in sight, the rest one tap away.
   const [moreOpen, setMoreOpen] = useState(false);
@@ -159,7 +188,7 @@ export default function Play() {
               only once it has grown past that (ui.md G2). Spoken on every row. */}
           <Section
             title={plan.fromPattern ? 'Also good for this' : 'Also try'}
-            meta={playable.every((id) => level(id) === 'seedling') ? 'All at Seedling' : undefined}
+            meta={available.every((id) => level(id) === 'seedling') ? 'All at Seedling' : undefined}
           />
           {plan.also.map((id, i) => gameRow(id, i === plan.also.length - 1))}
         </Enter>
@@ -176,6 +205,17 @@ export default function Play() {
             last={!moreOpen}
           />
           {moreOpen && plan.more.map((id, i) => gameRow(id, i === plan.more.length - 1))}
+        </Enter>
+      )}
+
+      {/* Mobile 1.40: one quiet line while games wait for 50 answers (no count of them, no lock
+          icons), on its own so it shows whatever the lists above hold. "The other games" when
+          "More games" already lists some (ones played before, or kept through a Reset's fresh start). */}
+      {featured && waiting.length > 0 && (
+        <Enter i={4}>
+          <View testID="more-games-wait" style={{ marginTop: space.md }}>
+            <T v="meta">{`${plan.more.length ? 'The other games' : 'More games'} open after ${MORE_GAMES_AT} answers.`}</T>
+          </View>
         </Enter>
       )}
     </Screen>

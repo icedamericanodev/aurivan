@@ -27,11 +27,13 @@ import type { ReportTarget } from '../engine/support';
 import { GameGlyph, SPARK, Sparkline, TierLeafMorph } from './glyphs';
 import { AnimatedPressable, Celebrate, FadeIn as Arrive, Pop, RollingText, Shake, StateLayer, useCelebration, useMotion, usePressScale } from './motion';
 import { haptic } from '../lib/haptics';
-import { MilestoneMomentView, TierTag } from './milestones';
+import { momentName, TierTag } from './milestones';
+import type { MilestoneMoment } from '../lib/milestones';
+import { sayLater } from '../lib/a11y';
 import { GAME_TIERS, tierChangeLine, type GameTier } from '../engine/games/growth';
 import type { RoundNews } from '../lib/gameRounds';
-import { Check, Info, ICON_STROKE, Play as PlayIcon, X } from './icons';
-import { BigNum, Button, CARD_LIFT, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, Row, Section, SegmentBar, Segmented, Stem, T, useFontScale } from './ui';
+import { BadgeIcon, Check, Info, ICON_STROKE, Play as PlayIcon, X } from './icons';
+import { BigNum, Button, CARD_LIFT, Enter, Gap, ICON_SIZE, IconButton, InviteRow, PushedHeader, Row, Section, SegmentBar, Segmented, Stem, T, useFontScale } from './ui';
 
 /**
  * How long the `leaf` spring takes to come to rest (its 280 ms is perceptual;
@@ -325,8 +327,10 @@ export function RoundEnd({
           </View>
         </Enter>
         {news?.moment && (
+          // Mobile 1.40: a badge THIS round earned (lib/gameRounds.ts) is a quiet InviteRow, an
+          // award on the paper (DESIGN_SYSTEM §6), never a ruled quote: that rule is the coach's voice.
           <View style={{ marginTop: space.xl }}>
-            <MilestoneMomentView moment={news.moment} once={`round:${game}:${score}:${news.moment.key}`} onSee={() => router.push({ pathname: '/milestones', params: { open: news.moment!.key } })} />
+            <RoundBadge moment={news.moment} />
           </View>
         )}
         <Gap h={space.xl} />
@@ -334,7 +338,7 @@ export function RoundEnd({
           <View style={{ marginBottom: space.lg }}>
             <T v="headline" accessibilityRole="header">What caught you</T>
             {misses.map((m, k) => (
-              <MissRow key={m.questionId} certId={certId} game={game} miss={m} last={k === misses.length - 1} />
+              <MissRow key={m.questionId} miss={m} last={k === misses.length - 1} />
             ))}
             {review && <T v="meta" style={{ marginTop: space.sm }}>{review}</T>}
           </View>
@@ -344,6 +348,8 @@ export function RoundEnd({
         <Button label="Play again" onPress={onAgain} />
         <Gap h={space.sm} />
         <Button kind="ghost" label="Done" onPress={() => router.back()} />
+        {/* Mobile 1.40: ONE "Report a problem" at the foot of the recap, not one under every item. */}
+        <RecapReport certId={certId} game={game} misses={misses} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -374,32 +380,83 @@ export function SparkScores({ values }: { values: number[] }) {
 }
 
 /**
- * One "What caught you" row: the miss (one screen-reader stop), then its
- * own "Report a problem" link (a separate stop). A question-based game
- * reports the question; a card game (Root or Rumor, Field Guide, Canopy
- * Call, Stepping Stones) reports the card by its stable id.
+ * One "What caught you" row: the miss, one screen-reader stop. Mobile 1.40:
+ * no link under each row any more; the recap has ONE "Report a problem" at
+ * its foot (RecapReport).
  */
-function MissRow({ certId, game, miss: m, last }: { certId: string; game: GameId; miss: RecapMiss; last: boolean }) {
+function MissRow({ miss: m, last }: { miss: RecapMiss; last: boolean }) {
   const { c } = useTheme();
-  const name = GAMES[game].name;
-  const q = findQuestion(certId, m.questionId);
-  const target: ReportTarget = q
-    ? questionTarget(certId, q, `Game recap · ${name}`)
-    : { kind: 'card', id: m.reportId ?? m.questionId, name, where: `Game recap · ${name}` };
-  const report = useReportFlow(certId, target);
   return (
-    <View style={{ paddingTop: 13, paddingBottom: space.xs, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line }}>
+    <View style={{ paddingTop: 13, paddingBottom: space.sm, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line }}>
       <View accessible accessibilityLabel={`${m.stem} ${m.tag}. ${m.why}`}>
         <T v="meta">{m.stem}</T>
         <T v="caption" color={c.tip} style={{ marginTop: space.xs }}>{m.tag}</T>
         <T v="small" style={{ marginTop: 2 }}>{m.why}</T>
       </View>
-      <View style={{ alignItems: 'flex-end' }}>{report.link}</View>
+    </View>
+  );
+}
+
+/**
+ * What the recap's one report is about (exported for tests): the miss itself
+ * when there is exactly one (a question, or a game card by its stable id);
+ * otherwise the round, with the missed items named in "where" so the team
+ * can still find them.
+ */
+export function recapReportTarget(certId: string, game: GameId, misses: readonly RecapMiss[]): ReportTarget {
+  const name = GAMES[game].name;
+  const where = `Game recap · ${name}`;
+  if (misses.length === 1) {
+    const m = misses[0];
+    const q = findQuestion(certId, m.questionId);
+    return q ? questionTarget(certId, q, where) : { kind: 'card', id: m.reportId ?? m.questionId, name, where };
+  }
+  const missed = misses.map((m) => m.reportId ?? m.questionId).slice(0, 12);
+  return { kind: 'app', id: `game-recap:${game}`, name: `${name} recap`, where: missed.length ? `${where} · missed ${missed.join(', ')}` : where };
+}
+
+/** The recap's single "Report a problem" (its link, its note after sending, and its sheet). */
+function RecapReport({ certId, game, misses }: { certId: string; game: GameId; misses: readonly RecapMiss[] }) {
+  const target = useMemo(() => recapReportTarget(certId, game, misses), [certId, game, misses]);
+  const report = useReportFlow(certId, target);
+  return (
+    <View testID="recap-report" style={{ marginTop: space.lg, alignItems: 'center' }}>
+      {report.link}
       {report.block}
       {report.sheet}
     </View>
   );
 }
+
+/**
+ * A badge this round earned, as an InviteRow: the badge glyph in its circle,
+ * "A new badge: Snare-wise", what it means, and the whole row opens it in
+ * Badges. Said once as the recap arrives (a screen-reader user hears it
+ * without scrolling); calm, no burst.
+ */
+function RoundBadge({ moment }: { moment: MilestoneMoment }) {
+  const { c } = useTheme();
+  const name = momentName(moment);
+  useEffect(() => {
+    if (saidBadges.has(moment.key)) return;
+    saidBadges.add(moment.key);
+    // One success tap and one spoken line, once (never again on a re-render).
+    haptic.success();
+    sayLater(`A new badge: ${name}.`);
+  }, [moment.key, name]);
+  return (
+    <InviteRow
+      testID="recap-badge"
+      icon={<BadgeIcon size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+      title={`A new badge: ${name}`}
+      body={moment.completes ? `${moment.unlock} That completes ${moment.setName}.` : moment.unlock}
+      onPress={() => router.push({ pathname: '/milestones', params: { open: moment.key } })}
+      accessibilityHint="Opens it in your badges"
+    />
+  );
+}
+/** Badges already announced this app session (a re-render never says it twice). */
+const saidBadges = new Set<string>();
 
 /**
  * A game's first screen (Build E games, after Daylight's pattern): pushed

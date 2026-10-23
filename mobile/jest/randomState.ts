@@ -187,6 +187,8 @@ export function randomPlant(seed: number): CertPlant | undefined {
     ...(rng() < 0.5
       ? {
           look: {
+            // Mobile 1.40: the style (unset = a plant saved before 1.40), plus ids of another slot.
+            ...(rng() < 0.5 ? { style: pick(['botanical', 'storybook', 'storybook-face', 'meadow', 'Bad Id']) } : {}),
             ...(rng() < 0.6 ? { colourway: pick(['oak-autumn', 'lotus-white', 'cactus-red', 'Bad Id', 'meadow']) } : {}),
             ground: pick(['meadow', 'stone-ring', 'trail-blaze', 'lantern']),
             ...(rng() < 0.6 ? { planter: pick(['native', 'celadon', 'five-stone', 'root-woven', 'wren']) } : {}),

@@ -234,7 +234,8 @@ describe('Round end', () => {
     expect(allText()).not.toMatch(/lose|lost/i);
   });
 
-  it('shows a skill badge as one quiet line with one haptic', () => {
+  // Mobile 1.40: an InviteRow (an award on the paper), never a ruled quote; the whole row opens it in Badges.
+  it('shows a skill badge as one quiet InviteRow with one haptic', () => {
     mount(
       <RoundEnd
         certId="cisa"
@@ -245,9 +246,13 @@ describe('Round end', () => {
         news={{ change: null, tier: 'seedling', best: false, moment: { key: 'snare-wise', label: 'Snare-wise', rule: 'Spot the snare.', kind: 'skill', set: 'fieldNotes', setName: 'Field notes', unlock: 'You spot the snare 8 times in 10.' } }}
       />,
     );
-    expect(allText()).toContain('A new badge · Field notes');
-    expect(allText()).toContain('Snare-wise');
+    expect(allText()).toContain('A new badge: Snare-wise');
     expect(allText()).toContain('You spot the snare 8 times in 10.');
     expect(mockSuccess).toHaveBeenCalledTimes(1);
+    const row = r!.root.findAll((n) => n.props.testID === 'recap-badge' && n.props.accessibilityRole === 'button')[0];
+    expect(row.props.accessibilityRole).toBe('button');
+    expect(row.props.accessibilityLabel).toBe('A new badge: Snare-wise. You spot the snare 8 times in 10.');
+    // No coach rule: nothing on the recap draws the 3pt accent left rule.
+    expect(r!.root.findAll((n) => typeof n.type === 'string' && JSON.stringify(n.props.style ?? {}).includes('"borderLeftWidth":3'))).toHaveLength(0);
   });
 });

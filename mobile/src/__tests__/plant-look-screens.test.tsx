@@ -21,7 +21,7 @@ import YourPlant from '../app/plant';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { resetPlantReactionsForTest } from '../components/plant/LivePlant';
 import { BadgeSheet } from '../components/badges';
-import { plantNew, type CertPlant } from '../engine/plant';
+import { plantNew as plantNewToday, type CertPlant } from '../engine/plant';
 import { onYourPlantLine, unlockedLooks, resolveLook } from '../engine/plantLooks';
 import { allCertMarks } from '../lib/plant';
 import { haptic } from '../lib/haptics';
@@ -30,6 +30,8 @@ import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import { dayKey } from '../engine/streak';
+// Mobile 1.40: these tests check the storybook plant, so they plant as an app from before 1.40 did (no style).
+import { legacyPlantNew as plantNew } from '../../jest/legacyPlant';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -314,5 +316,71 @@ describe('data safety', () => {
     expect(after.kept).toEqual(expect.arrayContaining(['stone-ring', 'lantern', 'robin', 'oak-autumn']));
     const r2 = resolveLook('oak', after.look, unlockedLooks(after, allCertMarks(useProgress.getState().byCert)));
     expect(r2).toMatchObject({ ground: 'stone-ring', keepsakes: ['lantern'] });
+  });
+});
+
+// ── Mobile 1.40: Style (it replaced Settings' Quiet look) ───────────────────
+describe('Look › Style', () => {
+  const preview = () => root().findAll((n) => n.props.testID === 'look-preview' && typeof n.type !== 'string')[0];
+  const previewLabel = (): string => root().findAll((n) => n.props.testID === 'look-preview' && typeof n.type === 'string')[0].props.accessibilityLabel;
+
+  it('comes first, as three free radio cards, each drawing this plant that way', () => {
+    setPlant(plantNewToday('oak', 'Kai', Date.now(), 4));
+    mount(<PlantLook />);
+    const t = allText();
+    expect(t.indexOf('Style')).toBeGreaterThan(-1);
+    expect(t.indexOf('Style')).toBeLessThan(t.indexOf('Colour'));
+    for (const id of ['botanical', 'storybook', 'storybook-face']) {
+      expect(option(id).props.accessibilityRole).toBe('radio');
+      expect(option(id).props.accessibilityState).toMatchObject({ disabled: false });
+    }
+    expect(option('botanical').props.accessibilityLabel).toMatch(/^Botanical\. A fine line drawing, like a field guide\./);
+    expect(option('storybook-face').props.accessibilityLabel).toMatch(/^Storybook with a face\. A friendly face that shows its mood\./);
+    // A new plant is botanical: on its own (no visitor) until the learner picks one.
+    expect(option('botanical').props.accessibilityState).toMatchObject({ checked: true });
+    expect(option('no-visitor').props.accessibilityState).toMatchObject({ checked: true });
+    expect(previewLabel()).toMatch(/^Preview: Kai, your oak, botanical style\. Growth: Bough, 4 of 6\./);
+  });
+
+  it('the label names the style after the whole name, even a name with a full stop in it (UX review P2)', () => {
+    setPlant(plantNewToday('oak', 'J. Kai', Date.now(), 4));
+    mount(<PlantLook />);
+    expect(previewLabel()).toMatch(/^Preview: J\. Kai, your oak, botanical style\. Growth: Bough, 4 of 6\./);
+  });
+
+  it('a tap saves the style for this plant, and the preview and its label follow', () => {
+    setPlant(plantNewToday('oak', 'Kai', Date.now(), 4));
+    mount(<PlantLook />);
+    tap('storybook-face');
+    expect(cp().plant!.look?.style).toBe('storybook-face');
+    expect(preview().props.quietLook).toBe(false);
+    expect(preview().props.look.style).toBe('storybook-face');
+    expect(previewLabel()).toMatch(/^Preview: Kai, your oak, storybook style with a face\./);
+    tap('storybook');
+    expect(cp().plant!.look?.style).toBe('storybook');
+    expect(preview().props.quietLook).toBe(true);
+    tap('botanical');
+    expect(cp().plant!.look?.style).toBe('botanical');
+  });
+
+  it('a plant from before 1.40 shows the style it already has: Quiet look on is "Storybook", off is "with a face"', () => {
+    setPlant(plantNew('oak', 'Kai', Date.now(), 4));
+    act(() => {
+      useProgress.getState().setPlantSettings({ quietLook: true });
+    });
+    mount(<PlantLook />);
+    expect(option('storybook').props.accessibilityState).toMatchObject({ checked: true });
+    // Its storybook defaults are unchanged (the wren).
+    expect(option('wren').props.accessibilityState).toMatchObject({ checked: true });
+    act(() => {
+      r!.unmount();
+    });
+    act(() => {
+      useProgress.getState().setPlantSettings({ quietLook: false });
+    });
+    mount(<PlantLook />);
+    expect(option('storybook-face').props.accessibilityState).toMatchObject({ checked: true });
+    // Nothing was written until the learner picks one.
+    expect(cp().plant!.look?.style).toBeUndefined();
   });
 });

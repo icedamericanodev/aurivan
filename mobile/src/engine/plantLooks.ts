@@ -26,7 +26,7 @@
  * earn it in plain words, never as a guilt line.
  */
 import { BADGES, WHOLE_MAP_FLOOR } from './milestones';
-import type { CertPlant, GrowthLevel, LookId, PlantLook, PlantSpecies } from './plant';
+import type { CertPlant, GrowthLevel, LookId, PlantLook, PlantSettings, PlantSpecies } from './plant';
 
 /**
  * The species list, written out here (not imported from plant.ts) so the two
@@ -50,7 +50,7 @@ const SPECIES: readonly PlantSpecies[] = [
 ];
 const GROWTH_WORD: Record<number, string> = { 1: 'Seed', 2: 'Sprout', 3: 'Shoot', 4: 'Bough', 5: 'Crown', 6: 'Elder' };
 
-export type LookSlot = 'colourway' | 'ground' | 'planter' | 'visitor' | 'keepsake';
+export type LookSlot = 'style' | 'colourway' | 'ground' | 'planter' | 'visitor' | 'keepsake';
 
 /** How an item opens. Never a game level, never a purchase. */
 export type LookUnlock =
@@ -89,6 +89,38 @@ export interface LookItem {
   /** Keepsakes only: how to earn it, in plain words ("Answer your first 20 questions"). */
   how?: string;
 }
+
+// ── Style (mobile 1.40: the botanical default) ──────────────────────────
+/**
+ * How the plant is drawn. Owner decision (22 Oct 2026): new plants are a
+ * calm botanical line drawing with no face; the rounded storybook art, and
+ * its face, are optional looks. All three are free and listed first.
+ * The ids are saved (`look.style`): never rename one.
+ */
+export type PlantStyle = 'botanical' | 'storybook' | 'storybook-face';
+const styleItems: LookItem[] = [
+  { id: 'botanical', slot: 'style', name: 'Botanical', caption: 'A fine line drawing, like a field guide.', unlock: { kind: 'free' } },
+  { id: 'storybook', slot: 'style', name: 'Storybook', caption: 'Rounded and colourful.', unlock: { kind: 'free' } },
+  { id: 'storybook-face', slot: 'style', name: 'Storybook with a face', caption: 'A friendly face that shows its mood.', unlock: { kind: 'free' } },
+];
+
+/**
+ * The style a plant is drawn in. No migration step and no renamed key:
+ * - a plant with `look.style` (any plant planted from mobile 1.40 on, or
+ *   one whose style the learner picked) uses it;
+ * - a plant saved BEFORE this release has no `look.style`, so it keeps the
+ *   art it always had: the storybook plant, with its face unless the old
+ *   Settings switch "Quiet look" was on.
+ * Reads saved data only (per plant), never an install date.
+ */
+export function resolveStyle(look: Pick<PlantLook, 'style'> | undefined, settings: Pick<PlantSettings, 'quietLook'> | undefined): PlantStyle {
+  if (look?.style !== undefined && isLookOfSlot(look.style, 'style')) return look.style as PlantStyle;
+  return settings?.quietLook === true ? 'storybook' : 'storybook-face';
+}
+/** Only "Storybook with a face" draws a face (and says its mood). */
+export const styleHasFace = (s: PlantStyle): boolean => s === 'storybook-face';
+/** The style a new plant is planted with. */
+export const NEW_PLANT_STYLE: PlantStyle = 'botanical';
 
 // ── Colourways (three per species: two free, the third at Bough) ────────
 const COLOURWAYS: Record<PlantSpecies, [string, string, PaletteKey][]> = {
@@ -199,7 +231,7 @@ const keepsakeItems: LookItem[] = [
 ];
 
 /** Every look item, in the order the Look screen lists them. Ids are saved in backups: never rename one. */
-export const LOOK_ITEMS: readonly LookItem[] = [...colourwayItems, ...groundItems, ...planterItems, ...visitorItems, ...keepsakeItems];
+export const LOOK_ITEMS: readonly LookItem[] = [...styleItems, ...colourwayItems, ...groundItems, ...planterItems, ...visitorItems, ...keepsakeItems];
 const BY_ID = new Map(LOOK_ITEMS.map((x) => [x.id, x]));
 
 export function lookItem(id: string | undefined): LookItem | undefined {
@@ -222,6 +254,7 @@ export function colourwaysFor(species: PlantSpecies): LookItem[] {
 export function plantersFor(species: PlantSpecies): LookItem[] {
   return planterItems.filter((x) => !(x.id === 'terracotta' && NATIVE_POT[species] === 'terracotta'));
 }
+export const STYLES = styleItems;
 export const GROUNDS = groundItems;
 export const VISITORS = visitorItems;
 export const KEEPSAKE_ITEMS = keepsakeItems;
@@ -360,6 +393,8 @@ export function howToOpen(item: LookItem, o: HowOptions = {}): string {
 
 // ── What the art draws (with the fallback) ──────────────────────────────
 export interface ResolvedLook {
+  /** Mobile 1.40: how it is drawn (resolveStyle). */
+  style: PlantStyle;
   colourway: LookId;
   palette: PaletteKey;
   ground: LookId;
@@ -371,6 +406,8 @@ export interface ResolvedLook {
 
 /** What the art reads from a look (components/plant/art.ts draws it). */
 export interface ArtLook {
+  /** Mobile 1.40: 'botanical' draws the line drawing; unset or a storybook style, the storybook art. */
+  style?: PlantStyle;
   palette?: PaletteKey;
   ground?: string;
   planter?: string;
@@ -389,19 +426,30 @@ export const DEFAULT_LOOK = { ground: 'meadow', planter: 'native', visitor: 'wre
  * `defaultKeeps`: what shows while no keepsake was ever chosen
  * (defaultKeepsakes; none when not given).
  */
-export function resolveLook(species: PlantSpecies, look: PlantLook | undefined, unlocked: ReadonlySet<string> | readonly string[], defaultKeeps: readonly string[] = []): ResolvedLook {
+export function resolveLook(
+  species: PlantSpecies,
+  look: PlantLook | undefined,
+  unlocked: ReadonlySet<string> | readonly string[],
+  defaultKeeps: readonly string[] = [],
+  style: PlantStyle = resolveStyle(look, undefined),
+): ResolvedLook {
   const open = unlocked instanceof Set ? (unlocked as ReadonlySet<string>) : new Set(unlocked as readonly string[]);
   const ok = (id: string | undefined, slot: LookSlot) => id !== undefined && isLookOfSlot(id, slot) && open.has(id);
   const ways = colourwaysFor(species);
   const cw = look?.colourway !== undefined && ok(look.colourway, 'colourway') && lookItem(look.colourway)!.species === species ? lookItem(look.colourway)! : ways[0];
   const planter = ok(look?.planter, 'planter') && plantersFor(species).some((x) => x.id === look!.planter) ? look!.planter! : DEFAULT_LOOK.planter;
+  // Mobile 1.40: a botanical plant is the plant on its own until the learner
+  // picks a visitor or keepsakes (they are optional looks there). The
+  // storybook styles keep the wren and the first three earned, as before.
+  const botanical = style === 'botanical';
   return {
+    style,
     colourway: cw.id,
     palette: cw.palette!,
     ground: ok(look?.ground, 'ground') ? look!.ground! : DEFAULT_LOOK.ground,
     planter,
-    visitor: ok(look?.visitor, 'visitor') ? look!.visitor! : DEFAULT_LOOK.visitor,
-    keepsakes: [...new Set(look?.keepsakes ?? defaultKeeps)].filter((k) => ok(k, 'keepsake')).slice(0, MAX_SHOWN_KEEPSAKES),
+    visitor: ok(look?.visitor, 'visitor') ? look!.visitor! : botanical ? 'no-visitor' : DEFAULT_LOOK.visitor,
+    keepsakes: [...new Set(look?.keepsakes ?? (botanical ? [] : defaultKeeps))].filter((k) => ok(k, 'keepsake')).slice(0, MAX_SHOWN_KEEPSAKES),
   };
 }
 
@@ -442,7 +490,11 @@ export function toggleKeepsake(current: readonly string[] | undefined, id: strin
 export type PlantMood = 'idle' | 'happy' | 'curious' | 'proud' | 'resting';
 
 export interface MoodInput {
-  /** Quiet look: no face, so no expression at all. */
+  /**
+   * False: no expression at all. Mobile 1.40: lib/plant.ts passes true for
+   * every style to work out the POSTURE (a faceless plant still stands tall
+   * on a good day); only a plant with a face draws and says the mood.
+   */
   face: boolean;
   resting: boolean;
   /** A growth step was reached today (this cert). */

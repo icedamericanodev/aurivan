@@ -86,7 +86,7 @@ describe('old saves and planting', () => {
 
   it('a new learner plants a seed; Today’s prompt is then done', () => {
     plantFor('cisa', 'sunflower', '  Sunny  ');
-    expect(cp().plant).toEqual({ species: 'sunflower', name: 'Sunny', plantedAt: T0, growth: 1 });
+    expect(cp().plant).toEqual({ species: 'sunflower', name: 'Sunny', plantedAt: T0, growth: 1, look: { style: 'botanical' } });
     expect(useProgress.getState().plantSettings?.promptHidden).toBe(true);
     // A second tap never replaces it.
     plantFor('cisa', 'oak', 'Kai');

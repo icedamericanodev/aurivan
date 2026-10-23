@@ -111,4 +111,20 @@ describe('website plant bundle', () => {
     const look = { palette: 'gold' as const, ground: 'stone-ring', planter: 'terracotta', visitor: 'robin', keepsakes: ['lantern'] };
     expect(JSON.stringify(K.art.buildPlant({ species: 'oak', stage: 5, look, lod: 'small' }))).toBe(JSON.stringify(buildPlant({ species: 'oak', stage: 5, look, lod: 'small' })));
   });
+
+  it('mobile 1.40: draws the botanical plant the same way, and has the style rule', () => {
+    for (const species of PLANT_SPECIES)
+      for (const stage of [1, 4, 6])
+        for (const theme of ['light', 'dark'] as const) {
+          const o = { species, stage, theme, style: 'botanical' as const, px: 104, fit: true, organs: [0.7, 0.9, 1.0, 1.1, 0.8] };
+          expect(JSON.stringify(K.art.buildPlant(o))).toBe(JSON.stringify(buildPlant(o)));
+        }
+    // The website's rule is the app's: no style = a plant from before (storybook); new plants are botanical.
+    expect(K.looks.resolveStyle(undefined, undefined)).toBe('storybook-face');
+    expect(K.looks.resolveStyle({}, { quietLook: true })).toBe('storybook');
+    expect(K.looks.resolveStyle({ style: 'botanical' }, { quietLook: true })).toBe('botanical');
+    expect(K.looks.styleHasFace('storybook-face')).toBe(true);
+    expect(K.plant.plantNew('oak', 'Kai', 0).look).toEqual({ style: 'botanical' });
+    expect(K.looks.STYLES.map((s: { id: string }) => s.id)).toEqual(['botanical', 'storybook', 'storybook-face']);
+  });
 });

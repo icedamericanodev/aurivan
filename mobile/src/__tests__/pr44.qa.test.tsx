@@ -39,7 +39,7 @@ import YourPlant from '../app/plant';
 import { pickCelebration, resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { claimReaction, relaunchPlantForTest, resetPlantReactionsForTest } from '../components/plant/LivePlant';
 import { BACKUP_APP, BACKUP_SCHEMA } from '../engine/backup';
-import { plantNew, withLook, type CertPlant } from '../engine/plant';
+import { withLook, type CertPlant } from '../engine/plant';
 import { keepsakeForBadge, lookItem, MAX_SHOWN_KEEPSAKES, plantMood, resolveLook, toggleKeepsake, unlockedLooks } from '../engine/plantLooks';
 import { PROGRESS_VERSION, SETTINGS_VERSION } from '../engine/saveMigrations';
 import { dayKey } from '../engine/streak';
@@ -54,6 +54,8 @@ import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import { motion } from '../theme/tokens';
+// Mobile 1.40: these tests check the storybook plant, so they plant as an app from before 1.40 did (no style).
+import { legacyPlantNew as plantNew } from '../../jest/legacyPlant';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -685,7 +687,9 @@ describe('J8 moods', () => {
     expect(root().findAll((n) => n.props.testID === 'plant-hero' && typeof n.type === 'string')[0].props.accessibilityLabel).toMatch(/Looking proud\./);
   });
 
-  it('Quiet look: no face, so no mood, no mood words and no reaction', () => {
+  // Mobile 1.40 (spec §3.5): the posture (proud stands tall) plays for every style, a faceless one too;
+  // only a plant with a face draws the mood and says it.
+  it('Quiet look: no face and no mood words; the posture still answers a good day', () => {
     motionOn();
     act(() => {
       useProgress.getState().setPlantSettings({ quietLook: true });
@@ -695,11 +699,10 @@ describe('J8 moods', () => {
     clearPlan();
     mount(<YourPlant />);
     const hero = plants().find((x) => x.props.testID === 'plant-hero')!;
-    expect(hero.props.mood).toBe('idle');
+    expect(hero.props.mood).toBe('proud');
     expect(hero.props.quietLook).toBe(true);
     expect(root().findAll((n) => n.props.testID === 'plant-hero' && typeof n.type === 'string')[0].props.accessibilityLabel).not.toMatch(/Looking/);
-    // Nothing claimed: no reaction played for proud or happy.
-    expect(claimReaction(`cisa:proud:${today()}`)).toBe(true);
+    // No happy reaction was claimed (proud is the mood today).
     expect(claimReaction(`cisa:happy:${today()}`)).toBe(true);
   });
 
@@ -937,12 +940,12 @@ describe('J12 never on question, mock, lesson or game screens (transitive import
     for (const x of files.filter((y) => y !== 'lib/plant.ts')) expect(readFileSync(join(SRC, x), 'utf8')).not.toMatch(/usePlantView\(|<LivePlant\b|<Plant\b|<PlantButton|<KeepsakeIcon|plantLookView\(/);
   });
 
-  it('the Look screen is reached only from Your plant', () => {
+  it('the Look screen is reached only from Your plant (and, from 1.40, Settings › Change its look)', () => {
     const users = readdirSync(join(SRC, 'app'), { recursive: true })
       .map(String)
       .filter((f) => /\.tsx?$/.test(f))
       .filter((f) => readFileSync(join(SRC, 'app', f), 'utf8').includes("'/plant-look'"));
-    expect(users).toEqual(['plant.tsx']);
+    expect(users.sort()).toEqual(['plant.tsx', 'settings.tsx']);
   });
 });
 

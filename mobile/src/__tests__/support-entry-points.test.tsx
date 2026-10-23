@@ -359,7 +359,8 @@ describe('lessons', () => {
 });
 
 describe('game recaps', () => {
-  it('each miss has its own link: a question by its code, a card by its id', async () => {
+  // Mobile 1.40: ONE "Report a problem" at the foot of the recap, not one under every miss.
+  it('one link at the foot: with several misses it reports the round and names the missed items', async () => {
     const q = getAllQuestions('cisa')[20];
     mount(
       <RoundEnd
@@ -374,7 +375,26 @@ describe('game recaps', () => {
         ]}
       />,
     );
+    expect(pressables(/^Report a problem/)).toHaveLength(1);
+    expect(pressables(`Report a problem with question ${q.id}`)).toHaveLength(0);
+    // It sits at the foot: after "Done".
+    const t = allText();
+    expect(t.lastIndexOf('Report a problem')).toBeGreaterThan(t.indexOf('Done'));
+    press('Report a problem with the app');
+    for (const reason of REASONS.app) expect(allText()).toContain(reason.label);
+    await sendReport('A score or result looks wrong');
+    expect(lastBody()).toContain(`Where: Game recap · Root or Rumor · missed ${q.id}, rumor:4B1.2:k1x9`);
+  });
+
+  it('one link at the foot: with one miss it reports that question by its code', async () => {
+    const q = getAllQuestions('cisa')[20];
+    mount(<RoundEnd certId="cisa" game="trap" score={4} max={5} onAgain={() => {}} misses={[{ questionId: q.id, stem: 'A question…', tag: 'Snare: B', why: 'Why.', answerWrong: true }]} />);
+    expect(pressables(/^Report a problem/)).toHaveLength(1);
     expect(pressables(`Report a problem with question ${q.id}`)).toHaveLength(1);
+  });
+
+  it('one link at the foot: a single card miss reports the card by its id', async () => {
+    mount(<RoundEnd certId="cisa" game="rumor" score={7} max={8} onAgain={() => {}} misses={[{ questionId: 'rumor:4B1.2:k1x9', stem: 'A statement…', tag: 'Rumor', why: 'Why.', answerWrong: true }]} />);
     press('Report a problem with this card');
     for (const reason of REASONS.card) expect(allText()).toContain(reason.label);
     await sendReport('The game marked me wrong, but I was right');

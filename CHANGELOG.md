@@ -4,6 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.31] — A calm new plant
+
+### New
+- New plants now grow in a calm botanical style; the storybook look with a face is still one tap away in Change its look.
+
+### Improved
+- Change its look has a new Style choice. Your plant keeps its look.
+
 ## [v12.30] — A calmer first visit and a quicker answer
 
 ### New

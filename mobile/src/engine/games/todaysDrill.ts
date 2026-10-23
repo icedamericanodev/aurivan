@@ -9,6 +9,9 @@
  * - Beside it Play shows two related games, so three games are in sight.
  *   The other six wait under "More games". (Nine games in all: frozen, no
  *   new ones. Paid plans may later unlock games beyond the first three.)
+ * - Mobile 1.40: a new learner sees only the three core games (CORE_GAMES)
+ *   until about 50 practice answers; then "More games" opens. A game the
+ *   learner already played always stays (availableGames).
  * - With no pattern yet (a new learner), it leads with Snare Spotter, the
  *   game that trains the most common exam skill: beating the tempting wrong
  *   answer.
@@ -37,6 +40,47 @@ export const RELATED: Record<GameId, GameId[]> = {
 
 /** How many games are in sight on Play before "More games". */
 export const SHOWN_GAMES = 3;
+
+/**
+ * Mobile 1.40: the three core games, the ones Play shows first. They train
+ * the three habits the exam rewards most: beating the tempting wrong answer
+ * (Snare Spotter), reading the word that decides (Signpost) and answering
+ * before the options (Call It First). They are also a new learner's default
+ * drill and its two related games, so a new learner sees exactly these.
+ */
+export const CORE_GAMES: readonly GameId[] = ['trap', 'priority', 'callit'];
+
+/** Mobile 1.40: practice answers before the other games open under "More games". */
+export const MORE_GAMES_AT = 50;
+
+/** What decides which games a learner sees (saved data only). */
+export interface GameAccess {
+  /** Practice questions answered on this exam (distinct questions). */
+  answered: number;
+  /** Games this learner has already played (any exam): never taken away. */
+  played: readonly GameId[];
+}
+
+/** True once "More games" is open for everyone: about 50 practice answers. */
+export const moreGamesOpen = (answered: number): boolean => answered >= MORE_GAMES_AT;
+
+/**
+ * The games Play offers now, in Play's order (a filter of `playable`):
+ * - the core three, always;
+ * - every game, once the learner has answered MORE_GAMES_AT questions;
+ * - and any game the learner already played, so an update never takes a
+ *   game away from someone who used it.
+ */
+export function availableGames(playable: readonly GameId[], a: GameAccess): GameId[] {
+  if (moreGamesOpen(a.answered)) return [...playable];
+  return playable.filter((g) => CORE_GAMES.includes(g) || a.played.includes(g));
+}
+
+/** Games this exam can play that are still waiting for the learner's 50 answers (none once open). */
+export function waitingGames(playable: readonly GameId[], a: GameAccess): GameId[] {
+  const open = availableGames(playable, a);
+  return playable.filter((g) => !open.includes(g));
+}
 
 export interface DrillPlan {
   /** Today's drill: the lead game (null only when no game can be played). */

@@ -42,14 +42,42 @@ function Icon({ root, viewBox, size, dim }: { root: PNode; viewBox: string; size
 }
 
 /** One keepsake alone, decorative (its name is always in words beside it). Dark: a soft cream rim (UX review P12). */
-export const KeepsakeIcon = memo(function KeepsakeIcon({ id, size, dim = false, theme = 'light' }: { id: string; size: number; dim?: boolean; theme?: 'light' | 'dark' }) {
-  const { root, viewBox } = keepsakeIcon(id, theme);
+export const KeepsakeIcon = memo(function KeepsakeIcon({
+  id,
+  size,
+  dim = false,
+  theme = 'light',
+  style,
+}: {
+  id: string;
+  size: number;
+  dim?: boolean;
+  theme?: 'light' | 'dark';
+  /** Mobile 1.40 (UX review P5): a botanical plant's keepsakes are drawn in line, like the plant. */
+  style?: 'botanical' | 'storybook';
+}) {
+  const { root, viewBox } = keepsakeIcon(id, theme, style, size);
   return <Icon root={root} viewBox={viewBox} size={size} dim={dim} />;
 });
 
 /** One planter alone, as this species wears it (UX review P8), decorative. */
-export const PlanterIcon = memo(function PlanterIcon({ id, species, size, dim = false, theme = 'light' }: { id: string; species: PlantSpecies; size: number; dim?: boolean; theme?: 'light' | 'dark' }) {
-  const { root, viewBox } = planterIcon(id, species, theme);
+export const PlanterIcon = memo(function PlanterIcon({
+  id,
+  species,
+  size,
+  dim = false,
+  theme = 'light',
+  style,
+}: {
+  id: string;
+  species: PlantSpecies;
+  size: number;
+  dim?: boolean;
+  theme?: 'light' | 'dark';
+  /** Mobile 1.40: a botanical plant's planters are drawn in line, like the plant. */
+  style?: 'botanical' | 'storybook';
+}) {
+  const { root, viewBox } = planterIcon(id, species, theme, style);
   return <Icon root={root} viewBox={viewBox} size={size} dim={dim} />;
 });
 

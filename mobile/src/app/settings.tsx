@@ -437,7 +437,7 @@ export default function Settings() {
         <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
       </SettingsGroup>
 
-      {/* Mobile 1.10: badges are optional. Mobile 1.13: so is the plant (Quiet look = no face). */}
+      {/* Mobile 1.10: badges are optional. Mobile 1.13: so is the plant. */}
       <View
         onLayout={(e) => {
           if (params.section !== 'plant' || scrolled.current) return;
@@ -473,15 +473,10 @@ export default function Settings() {
             onValueChange={(on) => setPlantSettings({ showPlant: on })}
             last={!plantOn}
           />
-          {plantOn && (
-            <ToggleRow
-              title="Quiet look"
-              subtitle="Your plant without a face."
-              value={plantSettings?.quietLook === true}
-              onValueChange={(on) => setPlantSettings({ quietLook: on })}
-              last
-            />
-          )}
+          {/* Mobile 1.40: the Quiet look switch moved into the Look screen's Style choice (botanical,
+              storybook, or storybook with a face). Old saves keep their quietLook; it still decides
+              how a plant planted before 1.40 looks until a style is picked there. */}
+          {plantOn && <SettingsRow title="Change its look" subtitle="Its style, colours and keepsakes" onPress={() => router.push('/plant-look')} last />}
         </SettingsGroup>
       </View>
 

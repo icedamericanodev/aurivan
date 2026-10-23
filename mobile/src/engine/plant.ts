@@ -24,7 +24,7 @@ import type { SubtopicMastery } from './mastery';
 import { computeReadiness, MIN_SAMPLE, domainMastery, type AnswerRecord } from './readiness';
 import { RANGE_MIN_ANSWERS, readinessRange } from './readinessRange';
 import { daysBetween, dayKey } from './streak';
-import { defaultKeepsakes, isCatalogLook, isKeepable, isLookOfSlot, keepOnReset, MOOD_WORDS, type CertMarks, type PlantMood } from './plantLooks';
+import { defaultKeepsakes, isCatalogLook, isKeepable, isLookOfSlot, keepOnReset, MOOD_WORDS, NEW_PLANT_STYLE, resolveStyle, styleHasFace, type CertMarks, type PlantMood } from './plantLooks';
 
 // ── Species ────────────────────────────────────────────────────────────
 
@@ -336,6 +336,12 @@ export const MAX_KEEPSAKES = 3;
 export const MAX_KEPT = 64;
 
 export interface PlantLook {
+  /**
+   * Mobile 1.40: how the plant is drawn ('botanical', 'storybook',
+   * 'storybook-face'). A NEW field beside the old ones: a plant saved before
+   * 1.40 has none and keeps its storybook art (plantLooks.ts resolveStyle).
+   */
+  style?: LookId;
   colourway?: LookId;
   ground?: LookId;
   /** Mobile 1.14: the pot or planter ("native" = the species' own ground). */
@@ -379,7 +385,12 @@ export interface CertPlant {
 export interface PlantSettings {
   /** "Show my plant". Default on. Off: no plant anywhere, no prompts; growth is still worked out quietly. */
   showPlant?: boolean;
-  /** "Quiet look": the plant without a face. Default off (the face shows). */
+  /**
+   * "Quiet look": the plant without a face. Default off (the face shows).
+   * Mobile 1.40: the switch moved into Your plant › Change its look › Style.
+   * It is still read for plants saved before then (no `look.style`), and
+   * kept in backups; a plant's own style wins over it.
+   */
   quietLook?: boolean;
   /**
    * The one quiet "Plant a companion…" line on Today was dismissed (or the
@@ -390,6 +401,8 @@ export interface PlantSettings {
 }
 export const plantShown = (s: PlantSettings | undefined) => s?.showPlant !== false;
 export const plantHasFace = (s: PlantSettings | undefined) => s?.quietLook !== true;
+/** Mobile 1.40: does THIS plant draw a face? Its own style first; a plant saved before 1.40 follows Quiet look. */
+export const plantFace = (plant: Pick<CertPlant, 'look'> | null | undefined, s: PlantSettings | undefined) => styleHasFace(resolveStyle(plant?.look, s));
 
 // ── Names ──────────────────────────────────────────────────────────────
 
@@ -513,7 +526,9 @@ export function plantCallName(p: Pick<CertPlant, 'name' | 'species'>): string {
 
 /** A new plant: a seed. `growth` lets an existing learner's study set it quietly (the back-fill). */
 export function plantNew(species: PlantSpecies, rawName: string, now: number, backfillGrowth: GrowthLevel = 1): CertPlant {
-  const p: CertPlant = { species, name: cleanPlantName(rawName), plantedAt: now, growth: 1 };
+  // Mobile 1.40: a new plant is written down as botanical at birth, so the
+  // rule "no style = planted before 1.40" stays true for every saved plant.
+  const p: CertPlant = { species, name: cleanPlantName(rawName), plantedAt: now, growth: 1, look: { style: NEW_PLANT_STYLE } };
   if (backfillGrowth > 1) {
     const reached: Partial<Record<GrowthId, number>> = {};
     for (let g = 2; g <= backfillGrowth; g++) reached[growthId(g as GrowthLevel)] = now;
@@ -588,6 +603,10 @@ export function resetPlant(plant: CertPlant, now: number, unlocked: readonly Loo
  */
 export function freezeKeepsakes(plant: CertPlant, marks: readonly CertMarks[]): CertPlant {
   if (plant.look?.keepsakes !== undefined) return plant;
+  // Mobile 1.40: a botanical plant shows no keepsakes until some are picked,
+  // so there is nothing to freeze. (Quiet look never matters here: both
+  // storybook styles show the first three earned.)
+  if (resolveStyle(plant.look, undefined) === 'botanical') return plant;
   const shown = defaultKeepsakes(plant, marks);
   return shown.length ? { ...plant, look: { ...plant.look, keepsakes: shown } } : plant;
 }
@@ -816,6 +835,7 @@ const onlyKeys = (o: Record<string, unknown>, keys: readonly string[]) => Object
 const isLook = isCatalogLook;
 /** The look's single-choice slots and the catalogue slot each must hold (mobile 1.14). */
 const LOOK_SLOTS = [
+  ['style', 'style'],
   ['colourway', 'colourway'],
   ['ground', 'ground'],
   ['planter', 'planter'],
@@ -852,7 +872,7 @@ export function isValidPlantState(x: unknown): x is CertPlant {
   }
   if (x.look !== undefined) {
     const l = x.look;
-    if (!isObj(l) || !onlyKeys(l, ['colourway', 'ground', 'planter', 'visitor', 'keepsakes'])) return false;
+    if (!isObj(l) || !onlyKeys(l, ['style', 'colourway', 'ground', 'planter', 'visitor', 'keepsakes'])) return false;
     for (const [k, slot] of LOOK_SLOTS) if (l[k] !== undefined && !isLookOfSlot(l[k], slot)) return false;
     if (l.keepsakes !== undefined) {
       const ks = l.keepsakes;

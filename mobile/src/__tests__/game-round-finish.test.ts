@@ -6,6 +6,8 @@
 import { wellJudged } from '../engine/games/calibration';
 import { finishGameRound, startingTier } from '../lib/gameRounds';
 import { ensureBackfill } from '../lib/milestones';
+import { takeNextOf } from '../engine/milestones';
+import { isRoundBadge } from '../engine/badgeCatalog';
 import { playableGames } from '../lib/games';
 import { selectCert, useProgress } from '../store/progress';
 
@@ -53,10 +55,31 @@ describe('the round end', () => {
     // and Myth Clearer (25 different rumors, all cleared, this round).
     useProgress.getState().updateMilestones('cisa', (m) => ({ milestones: { ...m!, signposts: hitsOf('f', 10, 10) } }));
     const r = finishGameRound('cisa', 'rumor', { score: 12, rate: 0.6, tier: 'seedling', windows: { myths: hitsOf('m', 25, 25) } });
-    expect(r.moment).not.toBeNull();
+    // Mobile 1.40 (code review #2): the Root or Rumor recap shows ITS badge, Myth Clearer;
+    // Signpost Reader (Signpost's badge) is not this game's news and stays queued for You.
+    expect(r.moment?.key).toBe('myth-clearer');
     const earned = Object.keys(cp().milestones!.earned);
     expect(earned).toEqual(expect.arrayContaining(['signpost-reader', 'myth-clearer']));
-    expect(cp().milestones!.queue).toHaveLength(1);
+    expect(cp().milestones!.queue).toEqual(['signpost-reader']);
+  });
+
+  it('isRoundBadge: a game’s own skill badge, or Whole Grove; never another game’s badge or a milestone', () => {
+    expect(isRoundBadge('trap', 'snare-wise')).toBe(true);
+    expect(isRoundBadge('priority', 'signpost-reader')).toBe(true);
+    expect(isRoundBadge('rumor', 'signpost-reader')).toBe(false);
+    expect(isRoundBadge('field', 'whole-grove')).toBe(true);
+    expect(isRoundBadge('trap', 'back-on-path')).toBe(false);
+    expect(isRoundBadge('trap', 'rooted:10')).toBe(false);
+    expect(isRoundBadge('trap', 'first-foothold')).toBe(false);
+  });
+
+  it('a round that tips over a milestone (not a game badge) shows no badge; the milestone waits for You', () => {
+    // Signpost Reader's window is full, so ANY round's milestone check earns it; a Snare Spotter round must not show it.
+    useProgress.getState().updateMilestones('cisa', (m) => ({ milestones: { ...m!, signposts: hitsOf('f', 10, 10) } }));
+    const r = finishGameRound('cisa', 'trap', { score: 3, rate: 0.6, tier: 'seedling' });
+    expect(cp().milestones!.earned['signpost-reader']).toBe(T0);
+    expect(r.moment).toBeNull();
+    expect(cp().milestones!.queue).toContain('signpost-reader');
   });
 });
 
@@ -69,18 +92,47 @@ describe('one celebration at a time', () => {
     expect(r.moment).toBeNull();
     expect(cp().milestones!.earned['snare-wise']).toBe(T0);
     expect(cp().milestones!.queue).toEqual(['snare-wise']);
-    // The next round with no level change shows it.
+    // Mobile 1.40: the next round did not earn it, so its recap never shows it as new;
+    // it stays queued (You's badge dot shows it quietly; a later Results may celebrate it).
     const next = finishGameRound('cisa', 'trap', { score: 5, rate: 0.6, tier: 'sapling' });
     expect(next.change).toBeNull();
-    expect(next.moment?.key).toBe('snare-wise');
+    expect(next.moment).toBeNull();
+    expect(cp().milestones!.queue).toEqual(['snare-wise']);
   });
 
-  it('a step back still shows a waiting milestone (it is not a celebration)', () => {
+  it('a step back with a badge waiting from before: the recap shows nothing new, the badge stays queued', () => {
     useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { trap: { tier: 'sapling', up: 0, down: 1 } } } } });
     useProgress.getState().updateMilestones('cisa', () => ({ milestones: { earned: { 'rooted:10': T0 }, queue: ['rooted:10'] } }));
     const r = finishGameRound('cisa', 'trap', { score: 1, rate: 0.2, tier: 'sapling' });
     expect(r.change).toBe('down');
-    expect(r.moment?.key).toBe('rooted:10');
+    expect(r.moment).toBeNull();
+    expect(cp().milestones!.queue).toEqual(['rooted:10']);
+  });
+});
+
+// ── Mobile 1.40: the recap's "new badge" is this round's own ─────────────────
+describe('the recap shows a new badge only when this round earned it', () => {
+  it('an older queued badge ahead of it is skipped (and kept); the round’s own badge is the one shown', () => {
+    useProgress.getState().updateMilestones('cisa', () => ({ milestones: { earned: { 'rooted:10': T0 - 1000 }, queue: ['rooted:10'] } }));
+    // Snare-wise needs 8 of the last 10 snares; rate under 80% so the level holds (no level-up line).
+    finishGameRound('cisa', 'trap', { score: 8, rate: 0.7, tier: 'seedling', hits: [true, true, true, true, false] });
+    const r = finishGameRound('cisa', 'trap', { score: 9, rate: 0.7, tier: 'seedling', hits: [true, true, true, true, false] });
+    expect(r.moment?.key).toBe('snare-wise');
+    expect(cp().milestones!.queue).toEqual(['rooted:10']);
+  });
+
+  it('a round that earns nothing shows no badge, even with badges waiting', () => {
+    useProgress.getState().updateMilestones('cisa', () => ({ milestones: { earned: { 'rooted:10': T0 - 1000 }, queue: ['rooted:10'] } }));
+    const r = finishGameRound('cisa', 'trap', { score: 3, rate: 0.6, tier: 'seedling' });
+    expect(r.moment).toBeNull();
+    expect(cp().milestones!.queue).toEqual(['rooted:10']);
+  });
+
+  it('takeNextOf: the first queued key the round earned, the rest of the queue untouched', () => {
+    const m = { earned: { a: 1, b: 2, c: 3 }, queue: ['a', 'b', 'c'] };
+    expect(takeNextOf(m, ['c', 'b'])).toEqual({ key: 'b', milestones: { earned: m.earned, queue: ['a', 'c'] } });
+    expect(takeNextOf(m, ['z'])).toEqual({ milestones: m });
+    expect(takeNextOf(undefined, ['a'])).toEqual({ milestones: undefined });
   });
 });
 
