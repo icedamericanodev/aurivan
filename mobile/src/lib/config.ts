@@ -18,11 +18,26 @@ export function supportEmailFrom(env: string | undefined): string {
   return EMAIL_RE.test(v) ? v : DEFAULT_SUPPORT_EMAIL;
 }
 
+/**
+ * The live Privacy policy and Terms of use pages (kaisip.com, checked
+ * 22 Oct 2026). Both stores require the privacy link INSIDE the app, so these
+ * are built-in defaults, like the support inbox: a build made without the
+ * EXPO_PUBLIC_* settings still shows both rows in Settings (mobile 1.40.1).
+ */
+export const DEFAULT_PRIVACY_URL = 'https://kaisip.com/privacy';
+export const DEFAULT_TERMS_URL = 'https://kaisip.com/terms';
+
+/** The env value when it is an https:// link; otherwise the default (an empty or broken value never hides the row). */
+export function linkFrom(env: string | undefined, fallback: string): string {
+  const v = (env ?? '').trim();
+  return /^https:\/\/\S+$/.test(v) ? v : fallback;
+}
+
 export const config = {
-  /** Live URL of privacy.html — REQUIRED by both stores before launch. */
-  privacyUrl: process.env.EXPO_PUBLIC_PRIVACY_URL ?? '',
-  /** Live URL of terms.html — required once subscriptions exist. */
-  termsUrl: process.env.EXPO_PUBLIC_TERMS_URL ?? '',
+  /** Live URL of the privacy policy. REQUIRED in the app by both stores; never empty (see linkFrom). */
+  privacyUrl: linkFrom(process.env.EXPO_PUBLIC_PRIVACY_URL, DEFAULT_PRIVACY_URL),
+  /** Live URL of the terms of use. Never empty (see linkFrom). */
+  termsUrl: linkFrom(process.env.EXPO_PUBLIC_TERMS_URL, DEFAULT_TERMS_URL),
   /** Where "Report a problem", "Send feedback" and "Contact support" emails go. Always set (see supportEmailFrom). */
   feedbackEmail: supportEmailFrom(process.env.EXPO_PUBLIC_FEEDBACK_EMAIL),
   // The cloud backend's URL and publishable key are NOT read here: only the

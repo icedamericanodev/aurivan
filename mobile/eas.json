@@ -19,10 +19,18 @@
     "production": {
       "channel": "production",
       "autoIncrement": true,
-      "environment": "production"
+      "environment": "production",
+      "env": {
+        "KAISIP_STORE_BUILD": "1"
+      }
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "track": "internal",
+        "releaseStatus": "draft"
+      }
+    }
   }
 }

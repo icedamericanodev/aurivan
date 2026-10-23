@@ -164,8 +164,9 @@ describe('where the row shows', () => {
     // shows), and the stamp sits right after it.
     expect(t).toMatch(/KaiSip v\s*1\.0\.0/);
     expect(t.indexOf('KaiSip v')).toBeLessThan(t.indexOf(STAMP));
-    // The row comes after About (Privacy and Terms are unset in tests).
+    // The row comes after About, Privacy policy and Terms of use (their built-in links, mobile 1.40.1).
     expect(t.indexOf('About KaiSip')).toBeLessThan(t.indexOf(UPDATE_ROW));
+    expect(t.indexOf('Terms of use')).toBeLessThan(t.indexOf(UPDATE_ROW));
     expect(button(RESTART)).toBeUndefined();
   });
 
@@ -208,6 +209,22 @@ describe('where the row shows', () => {
     expect(api.phase).toBe('idle');
     expect(mockUpdates.checkForUpdateAsync).not.toHaveBeenCalled();
     expect(mockUpdates.reloadAsync).not.toHaveBeenCalled();
+  });
+
+  it('a Google Play build (updates switched off, mobile 1.40.1): no row and no stamp, but Privacy policy and Terms of use stay', () => {
+    // app.config.js builds the "production" profile with updates.enabled false, so on the phone
+    // expo-updates reports isEnabled false (the same as Expo Go).
+    Platform.OS = 'android';
+    mockUpdates.isEnabled = false;
+    mount(<Settings />);
+    expect(row(UPDATE_ROW)).toBeUndefined();
+    expect(allText()).not.toMatch(/Update (built-in|1a2b3c4d)/);
+    const privacy = hosts((n) => n.props.accessibilityRole === 'button' && n.props.accessibilityLabel === 'Privacy policy')[0];
+    const terms = hosts((n) => n.props.accessibilityRole === 'button' && n.props.accessibilityLabel === 'Terms of use')[0];
+    expect(privacy).toBeDefined();
+    expect(terms).toBeDefined();
+    expect(privacy.props.accessibilityHint).toBe('Opens in your browser');
+    expect(mockUpdates.checkForUpdateAsync).not.toHaveBeenCalled();
   });
 
   it('opening Settings calls nothing: a check starts only from a tap', () => {

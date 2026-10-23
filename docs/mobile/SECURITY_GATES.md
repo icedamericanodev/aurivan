@@ -15,7 +15,7 @@
 
 | # | Gate | Needed before | Code status | Owner action |
 |---|---|---|---|---|
-| 1 | Signed phone updates (audit M1) | (A) and (B) | Interim hardening done | Yes: keys, one native build, maybe a paid plan |
+| 1 | Signed phone updates (audit M1) | (A) and (B) | (A) met another way: store builds ship with updates off (mobile 1.40.1). Signing still open for test builds and Phase 9 | Not for (A). For (B): keys, one native build, a paid plan |
 | 2 | Staff MFA + admin/moderator split (M2) | (B) | **Done** | Yes: turn on MFA, enrol staff, add staff rows |
 | 3 | Captcha + your own email sender (L3) | (B) | Interface ready | Yes: Turnstile + SMTP accounts |
 | 4 | Backup-route APK signing key (L4) | Next run of that workflow | Not started | Yes: a decision |
@@ -34,6 +34,14 @@ Already fixed in code by the same audit (nothing for you to do):
 ## Gate 1. Signed phone updates (OTA code signing)
 
 > **Decision, 22 Oct 2026 (owner):** Google Play builds ship with `updates.enabled: false` until this gate is done (free Option A in `docs/mobile/PLAY_LAUNCH.md`, B1). Store users get changes only through Play releases. Test builds keep OTA. The paid plan stays optional, for later.
+>
+> **Status, mobile 1.40.1 (23 Oct 2026): done in code for store builds.**
+> - `mobile/app.config.js` turns updates off when EAS builds the `production` profile (its `env` in eas.json sets `KAISIP_STORE_BUILD=1`, which `eas build` passes both on your computer and on the build machine; `EAS_BUILD_PROFILE=production` also counts). Every other profile gets `app.json` unchanged, so preview and development builds keep their updates.
+> - `mobile/scripts/check-release-config.mjs` (rule 5, run in CI and by Jest) fails if any store profile would resolve to updates on while `app.json` has no code-signing certificate. Once the certificate is added (steps 2–5 below), the rule steps aside.
+> - The Settings "Check for updates" row and the update stamp hide themselves when `Updates.isEnabled` is false, so a Play install shows neither (`mobile/src/lib/updates.ts`, tested in `settings-updates.test.tsx`).
+> - The same file stops a production build that sets `EXPO_PUBLIC_AURIVAN_CLOUD` without `AURIVAN_CLOUD_GO_LIVE_ACK=yes` (PLAY_LAUNCH.md c4).
+> - What stays open: test phones (preview APKs) still accept unsigned updates. That is the accepted risk for test builds until this gate is closed. Steps 1–6 below still apply before Phase 9, or before store builds ever turn updates back on.
+> - One-off cost: this release changed the native fingerprint of preview builds as well (the blocked advertising-ID permission and the `eas.json` submit settings), so testers on an older preview APK need one new preview build to keep receiving updates.
 
 **What it protects.** Every merge to `main` that touches the app sends an
 over-the-air update to test phones, with no person approving it. Today a phone

@@ -16,6 +16,7 @@ import { join } from 'path';
 const MOBILE = join(__dirname, '..', '..');
 const CHECK = join(MOBILE, 'scripts', 'check-release-config.mjs');
 const SET_CHANNEL = join(MOBILE, 'scripts', 'set-update-channel.mjs');
+const APP_CONFIG = join(MOBILE, 'app.config.js');
 
 let dir: string;
 beforeEach(() => {
@@ -25,13 +26,17 @@ afterEach(() => {
   rmSync(dir, { recursive: true, force: true });
 });
 
-/** Runs the check on these configs; returns its exit code and output. */
-function check(app: object, eas: object) {
+/**
+ * Runs the check on these configs; returns its exit code and output.
+ * `configFile` is the app.config.js to use (default: the real one; a path
+ * that doesn't exist means "no app.config.js", so app.json is used as is).
+ */
+function check(app: object, eas: object, configFile = APP_CONFIG) {
   const appFile = join(dir, 'app.json');
   const easFile = join(dir, 'eas.json');
   writeFileSync(appFile, JSON.stringify(app));
   writeFileSync(easFile, JSON.stringify(eas));
-  const r = spawnSync(process.execPath, [CHECK, '--app', appFile, '--eas', easFile], { encoding: 'utf8' });
+  const r = spawnSync(process.execPath, [CHECK, '--app', appFile, '--eas', easFile, '--config', configFile], { encoding: 'utf8' });
   return { code: r.status, out: `${r.stdout}${r.stderr}` };
 }
 
@@ -40,7 +45,7 @@ const GOOD_EAS = {
   build: {
     development: { developmentClient: true, distribution: 'internal', channel: 'development' },
     preview: { distribution: 'internal', channel: 'preview', android: { buildType: 'apk' } },
-    production: { channel: 'production', autoIncrement: true },
+    production: { channel: 'production', autoIncrement: true, env: { KAISIP_STORE_BUILD: '1' } },
   },
 };
 
@@ -96,6 +101,62 @@ describe('check-release-config', () => {
   it('skips development builds', () => {
     const eas = { build: { ...GOOD_EAS.build, development: { developmentClient: true } } };
     expect(check(APP, eas).code).toBe(0);
+  });
+
+  // Rule 5 (owner decision, 22 Oct 2026): store builds ship with over-the-air
+  // updates OFF until they are signed (SECURITY_GATES.md Gate 1).
+  it('fails when a store build would keep updates on (no app.config.js)', () => {
+    const r = check(APP, GOOD_EAS, join(dir, 'no-app.config.js'));
+    expect(r.code).toBe(1);
+    expect(r.out).toMatch(/"production" makes a store build with over-the-air updates ON/);
+    // Test builds are not affected: preview keeps its updates.
+    expect(r.out).not.toMatch(/"preview" makes a store build/);
+  });
+
+  it('fails when an app.config.js turns updates on for the store build', () => {
+    const on = join(dir, 'on.config.js');
+    writeFileSync(on, 'module.exports = ({ config }) => ({ ...config, updates: { ...config.updates, enabled: true } });');
+    expect(check(APP, GOOD_EAS, on).out).toMatch(/"production" makes a store build with over-the-air updates ON/);
+  });
+
+  it('fails for a new store profile that app.config.js does not switch off', () => {
+    const eas = { build: { ...GOOD_EAS.build, 'store-beta': { channel: 'production' } } };
+    const r = check(APP, eas);
+    expect(r.code).toBe(1);
+    expect(r.out).toMatch(/"store-beta" makes a store build with over-the-air updates ON/);
+    expect(r.out).not.toMatch(/"production" makes a store build with/);
+  });
+
+  it('steps aside once updates are signed (a code-signing certificate in app.json)', () => {
+    const signed = { expo: { updates: { url: 'https://u.expo.dev/x', codeSigningCertificate: './certs/certificate.pem' } } };
+    expect(check(signed, GOOD_EAS, join(dir, 'no-app.config.js')).code).toBe(0);
+  });
+
+  it('runs app.config.js with only the profile env (plus EAS_BUILD_PROFILE on the build machine), so a local variable cannot change the answer', () => {
+    const spy = join(dir, 'spy.config.js');
+    writeFileSync(
+      spy,
+      [
+        'module.exports = ({ config }) => {',
+        '  const keys = Object.keys(process.env).filter((k) => k !== "EAS_BUILD_PROFILE");',
+        '  const clean = keys.join() === "KAISIP_STORE_BUILD" && [undefined, "production"].includes(process.env.EAS_BUILD_PROFILE);',
+        '  return { ...config, updates: { ...config.updates, enabled: !(clean && process.env.KAISIP_STORE_BUILD === "1") } };',
+        '};',
+      ].join('\n'),
+    );
+    expect(check(APP, GOOD_EAS, spy).code).toBe(0);
+  });
+
+  it('fails when only the build machine would switch updates off (fingerprints would differ)', () => {
+    const eas = { build: { ...GOOD_EAS.build, production: { channel: 'production', autoIncrement: true } } };
+    const r = check(APP, eas);
+    expect(r.code).toBe(1);
+    expect(r.out).toMatch(/"production" makes a store build with over-the-air updates ON \(on your computer\)/);
+  });
+
+  it('the real eas.json passes the store-build marker to the production profile', () => {
+    const real = JSON.parse(readFileSync(join(MOBILE, 'eas.json'), 'utf8'));
+    expect(real.build.production.env).toEqual(expect.objectContaining({ KAISIP_STORE_BUILD: '1' }));
   });
 
   it('fails closed on a broken extends', () => {

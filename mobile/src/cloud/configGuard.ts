@@ -3,12 +3,13 @@
  * guard G9). Pure: it reads an env object and either returns the cloud
  * config or throws, which fails the build.
  *
- * Phase 9 (go-live) adds `mobile/app.config.ts`, which calls
- * `assertCloudConfig(process.env)` before it adds the native sign-in
- * plugins. It is NOT added in Phase 6: there are no plugins to add yet, and
- * a config file would risk changing the app's native fingerprint (over-the-
- * air updates must keep reaching the APKs learners already have). Until
- * then the checks are tested here (__tests__/cloud-config-guard.test.ts).
+ * Phase 9 (go-live) turns `mobile/app.config.js` into `app.config.ts`, which
+ * calls `assertCloudConfig(process.env)` before it adds the native sign-in
+ * plugins. Until then (mobile 1.40.1) `app.config.js` carries a plain-JS copy
+ * of the one rule a store build needs now: no cloud flag on the production
+ * profile without AURIVAN_CLOUD_GO_LIVE_ACK=yes. A test checks it is never
+ * looser than this file (__tests__/app-config.test.ts); the full checks are
+ * tested here (__tests__/cloud-config-guard.test.ts).
  *
  * It refuses:
  * - a flag value other than "1" or unset ("true" would silently mean OFF);
