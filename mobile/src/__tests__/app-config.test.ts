@@ -43,15 +43,18 @@ describe('updates switch per build profile', () => {
   });
 
   it('the exported function reads process.env like Expo does', () => {
-    const saved = process.env.EAS_BUILD_PROFILE;
+    // A clean environment: CI sets the cloud test flag, which a production
+    // read would (rightly) refuse.
+    const saved = process.env;
     try {
-      process.env.EAS_BUILD_PROFILE = 'production';
+      process.env = { NODE_ENV: 'test', EAS_BUILD_PROFILE: 'production' };
       expect((appConfig({ config: base() }).updates as { enabled?: boolean }).enabled).toBe(false);
-      process.env.EAS_BUILD_PROFILE = 'preview';
+      process.env = { NODE_ENV: 'test', KAISIP_STORE_BUILD: '1' };
+      expect((appConfig({ config: base() }).updates as { enabled?: boolean }).enabled).toBe(false);
+      process.env = { NODE_ENV: 'test', EAS_BUILD_PROFILE: 'preview' };
       expect(appConfig({ config: base() }).updates).not.toHaveProperty('enabled');
     } finally {
-      if (saved === undefined) delete process.env.EAS_BUILD_PROFILE;
-      else process.env.EAS_BUILD_PROFILE = saved;
+      process.env = saved;
     }
   });
 
