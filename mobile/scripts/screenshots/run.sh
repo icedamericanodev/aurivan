@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 OUT="${1:-screenshots}"; THEME="${2:-dark}"; TMP="$(mktemp -d)"
+# SHOTS=store: the Google Play listing screenshots are always light (STORE_LISTING.md §3).
+if [ "${SHOTS:-}" = store ]; then THEME=light; fi
 mkdir -p "$OUT"
 # Rebuild the question pack first so shots never show stale questions.
 node scripts/build-content.mjs >/dev/null
@@ -203,6 +205,13 @@ elif [ "${SHOTS:-}" = principles ]; then
   # Exam-mindset principles: the Learn row, the list by family, one principle
   # (top, trap and example, the Practice ending) and an old id (shoot_principles.mjs).
   node scripts/screenshots/shoot_principles.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = store ]; then
+  # Mobile 1.40.1, the Google Play listing (docs/mobile/PLAY_LAUNCH.md c6): six screens at
+  # 1080×1920 (a 360×640 phone at 3×), light, demo data, no question count (the script
+  # checks), then flattened to 24-bit PNG with no alpha (Play's rule) (shoot_store.mjs).
+  # Copies for the listing live in design-notes/brand-kaisip/store/screenshots/.
+  node scripts/screenshots/shoot_store.mjs "$TMP/seed.json" "$OUT"
+  python3 scripts/screenshots/flatten_png.py "$OUT"/store-0*.png
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).

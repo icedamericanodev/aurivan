@@ -42,6 +42,11 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.40.1',
+    date: '2026-10-23',
+    fixed: ['The Privacy policy and Terms links in Settings now always appear.'],
+  },
+  {
     version: '1.40.0',
     date: '2026-10-22',
     new: ['New plants now grow as a calm botanical drawing, like a page from a field guide.'],

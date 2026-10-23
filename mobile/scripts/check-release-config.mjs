@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 /**
  * check-release-config.mjs: makes sure a store build can never listen to the
- * "preview" update channel (architecture decision, 15 Oct 2026).
+ * "preview" update channel (architecture decision, 15 Oct 2026), and that it
+ * ships with over-the-air updates off until they are signed (22 Oct 2026).
  *
  *   node scripts/check-release-config.mjs                 check app.json + eas.json
- *   node scripts/check-release-config.mjs --app <file> --eas <file>   (tests)
+ *   node scripts/check-release-config.mjs --app <file> --eas <file> [--config <app.config.js>]   (tests)
  *
  * WHAT IT IS ABOUT (plain English):
  *   An over-the-air update is published to a CHANNEL. A phone only downloads
@@ -32,6 +33,12 @@
  *   3. A profile that makes a store build (distribution "store", which is
  *      EAS's default when none is given) uses the "production" channel.
  *   4. A profile named production... uses the "production" channel.
+ *   5. Until phone updates are signed (docs/mobile/SECURITY_GATES.md Gate 1),
+ *      every store build has over-the-air updates switched OFF (owner
+ *      decision, 22 Oct 2026). The check loads app.config.js the way EAS
+ *      Build does (EAS_BUILD_PROFILE = the profile's name) and the result must
+ *      say `updates.enabled: false`. Once app.json carries a code-signing
+ *      certificate (updates.codeSigningCertificate), this rule steps aside.
  *   Profiles may `extends` another; the rules apply to the merged result, and
  *   per platform (an `android` or `ios` block can override distribution or
  *   channel).
@@ -41,6 +48,7 @@
  * No third-party packages: only Node's built-in modules.
  */
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -62,9 +70,11 @@ function resolveProfile(profiles, name, seen = []) {
 
 /**
  * Every problem with this pair of config files, as plain sentences
- * (an empty list means all is well).
+ * (an empty list means all is well). `resolveConfig(profileName, expo)` gives
+ * the config a build of that profile would use (app.config.js applied); by
+ * default it is app.json unchanged.
  */
-export function releaseConfigProblems(appJson, easJson) {
+export function releaseConfigProblems(appJson, easJson, resolveConfig = (_profile, config) => config) {
   const problems = [];
 
   const header = appJson?.expo?.updates?.requestHeaders?.['expo-channel-name'];
@@ -92,8 +102,39 @@ export function releaseConfigProblems(appJson, easJson) {
         problems.push(`${where} is a production profile but listens on the "${channel}" channel. Use "production".`);
       }
     }
+    // Rule 5: store builds ship with updates OFF until Gate 1 (signed updates).
+    // Checked once per profile: the update switch is not per platform.
+    const storeBuild = PLATFORMS.some((p) => (profile[p].distribution ?? profile.distribution ?? 'store') === 'store') || /^production/i.test(name);
+    if (storeBuild && !appJson?.expo?.updates?.codeSigningCertificate) {
+      const updates = resolveConfig(name, appJson?.expo ?? {})?.updates;
+      if (updates?.enabled !== false) {
+        problems.push(
+          `eas.json build profile "${name}" makes a store build with over-the-air updates ON, and updates are not signed yet (SECURITY_GATES.md Gate 1). app.config.js must set updates.enabled to false for it.`,
+        );
+      }
+    }
   }
   return problems;
+}
+
+/**
+ * A resolveConfig for releaseConfigProblems that runs app.config.js as EAS
+ * Build would: EAS_BUILD_PROFILE set to the profile, and nothing else from
+ * this computer's environment (so a local variable can't change the answer).
+ * With no app.config.js, a build uses app.json as it is.
+ */
+export function appConfigResolver(configFile) {
+  if (!fs.existsSync(configFile)) return (_profile, config) => config;
+  const load = createRequire(import.meta.url)(configFile);
+  return (profile, config) => {
+    const saved = process.env;
+    process.env = { EAS_BUILD_PROFILE: profile };
+    try {
+      return load({ config: structuredClone(config) });
+    } finally {
+      process.env = saved;
+    }
+  };
 }
 
 function readJson(file) {
@@ -107,20 +148,21 @@ function main(argv) {
   };
   const appFile = arg('--app', path.join(MOBILE, 'app.json'));
   const easFile = arg('--eas', path.join(MOBILE, 'eas.json'));
+  const configFile = arg('--config', path.join(MOBILE, 'app.config.js'));
 
   let problems;
   try {
-    problems = releaseConfigProblems(readJson(appFile), readJson(easFile));
+    problems = releaseConfigProblems(readJson(appFile), readJson(easFile), appConfigResolver(configFile));
   } catch (err) {
     console.error(`Release channels: could not check the config: ${err.message}`);
     return 1;
   }
   if (problems.length > 0) {
     for (const p of problems) console.error(`Release channels: ${p}`);
-    console.error('Release channels check FAILED: a store build could receive untested preview updates.');
+    console.error('Release channels check FAILED: a store build could receive untested or unsigned updates.');
     return 1;
   }
-  console.log('Release channels: store builds listen on "production"; app.json sets no channel.');
+  console.log('Release channels: store builds listen on "production" with updates off; app.json sets no channel.');
   return 0;
 }
 

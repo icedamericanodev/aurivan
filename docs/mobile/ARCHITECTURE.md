@@ -1330,7 +1330,7 @@ close first, with plain owner steps, are in
 
 | Gate | Before | Status |
 |---|---|---|
-| 1. Signed phone updates (EAS Update code signing; private key off CI; one native build) | first store / `production` build, and Phase 9 | open (interim: no install scripts in the publishing job) |
+| 1. Signed phone updates (EAS Update code signing; private key off CI; one native build) | first store / `production` build, and Phase 9 | store builds: met by switching updates off (owner decision 22 Oct 2026, done in mobile 1.40.1). Signing itself: open for test builds and Phase 9 (interim: no install scripts in the publishing job) |
 | 2. Staff MFA (`aal2`) and the admin / moderator split | Phase 9 | done in code; owner enables TOTP and enrols staff |
 | 3. Turnstile captcha + custom SMTP | Phase 9 | open (owner accounts) |
 | 4. Own key for the backup-route test APK, or retire it | its next run | open (owner decision) |
@@ -1340,3 +1340,16 @@ close first, with plain owner steps, are in
 Fixed in code by the audit: outside links can't pre-fill a board post (L1),
 the board search is bounded (L2), and no comment edits on a locked or hidden
 post (L5).
+
+**Google Play builds have over-the-air updates off (owner decision, 22 Oct
+2026; mobile 1.40.1).** Phone updates are not signed yet, and signing needs a
+paid Expo plan. So `mobile/app.config.js` builds the EAS `production` profile
+with `updates.enabled: false`: a Play install only runs the code in its Play
+release and never contacts Expo, and learners get changes through Play
+releases. Preview and development builds are built from `app.json` unchanged
+and keep their updates. `scripts/check-release-config.mjs` fails CI if a store
+profile would resolve to updates on before a code-signing certificate exists,
+and the same `app.config.js` stops a production build that sets the cloud
+flag without the owner's go-live acknowledgement. Settings hides "Check for
+updates" wherever updates are off. Details: `docs/mobile/PLAY_LAUNCH.md` (B1,
+section c) and `SECURITY_GATES.md` Gate 1.

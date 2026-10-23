@@ -17,7 +17,7 @@ Character counts below are exact for the short fields (® counts as 1). Long fie
 
 ## 1. Apple App Store
 
-### App name (30): 27/30
+### App name (30): 26/30
 
 ```
 KaiSip: IT Audit Exam Prep
@@ -90,7 +90,8 @@ A NOTE ON READINESS
 Your readiness range is a study estimate, not a prediction of your exam result. KaiSip cannot promise a pass. It helps you practise with purpose and walk in prepared.
 
 
-CISA® is a registered trademark of ISACA. KaiSip is not affiliated with or endorsed by ISACA. All practice questions are original and are not ISACA exam questions.
+All practice questions are original and are not ISACA exam questions.
+CISA® and ISACA® are registered trademarks of ISACA. KaiSip is not affiliated with or endorsed by ISACA.
 ```
 
 ### What's New
@@ -118,7 +119,7 @@ About 250 characters.
 
 ## 2. Google Play
 
-### Title (30): 27/30
+### Title (30): 26/30
 
 ```
 KaiSip: IT Audit Exam Prep
@@ -130,28 +131,127 @@ KaiSip: IT Audit Exam Prep
 Practice for the CISA® exam: teaching tips, daily plan and spaced review.
 ```
 
-### Full description (4000): about 2,300/4000
+### Full description (4000): 2,293/4000
 
-Use the App Store description above unchanged. Play indexes the full description for search, so these phrases already appear naturally: "CISA® exam", "IT auditors", "practice questions", "mock exams", "offline". Do not add keyword lists. Play's metadata policy rejects them.
+Its own text for Play (22 Oct 2026). It differs from the App Store text in three places: the beta line "free to use during the beta" (the same words as the beta invitation; never "free app", "completely free" or "free forever", because paid plans may come), the owner's line "Starting with CISA. More certifications later." (no other certification is named), and the three games a new learner sees first (mobile 1.40). Play indexes the full description for search, so these phrases already appear naturally: "CISA® exam", "IT auditors", "practice questions", "mock exams", "offline". Do not add keyword lists. Play's metadata policy rejects them.
+
+"No data collected" in MADE FOR REAL LIFE is true only because the Play build ships with over-the-air updates off (owner decision, 22 Oct 2026; PLAY_LAUNCH.md B1 Option A). If store builds ever turn updates back on, change that line to "No account, no ads, no analytics. Your progress stays on your phone." and redo the Data safety form below.
+
+When the beta ends, change the beta line (the owner decides the wording then).
+
+```
+Think like an IS auditor.
+
+KaiSip helps IT auditors, security and risk professionals prepare for the CISA® exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you grow the judgment the exam rewards, one ring at a time.
+
+KaiSip is free to use during the beta. No account, no ads.
+
+PRACTICE THAT TEACHES
+• Original practice questions across all 5 CISA domains
+• A clear explanation for every answer, including why the other choices fall short
+• Exam-style tips on each question: Eliminate, Final two and Exam cue
+• Coach me hints when you want a nudge before you commit
+
+SEE THE PATH
+• Today: a short daily plan that shows what to study next, and why it matters
+• An estimated readiness range, so you can see where your points are
+• An exam-date countdown, with a calm exam-eve check-in and an exam-day moment
+
+GROW DEEP ROOTS
+• Spaced review brings missed questions back before they fade
+• A mistakes log keeps every miss in one place, so patterns become clear
+• Short lessons on the ideas that matter most
+• A plant that grows as you study, drawn like a page from a field guide
+
+GAMES THAT BUILD EXAM SKILL
+• Snare Spotter: find the answer built to fool you, then the best one
+• Signpost: read the word that decides which true answer wins
+• Call It First: name the principle before you see the options
+• More games open as you practise
+
+STAND TALL ON EXAM DAY
+• Full mock exams weighted like the real exam, plus shorter mini mocks
+• Share cards to mark milestones with your study group
+
+MADE FOR REAL LIFE
+• Works offline, on the commute or between meetings
+• No account and no sign-up. No data collected. Your progress stays on your phone, and a backup file you save yourself moves it to a new one.
+• Report any question from where you see it. Fixes are listed in What's new.
+• Light and dark Grove themes, designed for easy reading
+
+A NOTE ON READINESS
+Your readiness range is a study estimate, not a prediction of your exam result. KaiSip cannot promise a pass. It helps you practise with purpose and walk in prepared.
+
+Starting with CISA. More certifications later.
+
+All practice questions are original and are not ISACA exam questions.
+CISA® and ISACA® are registered trademarks of ISACA. KaiSip is not affiliated with or endorsed by ISACA.
+```
+
+### Graphics
+
+Made from `design-notes/brand-kaisip/store/` (re-render with `node design-notes/brand-kaisip/store/render.mjs`):
+- **App icon:** `play-icon-512.png`, 512×512, 32-bit PNG with alpha, under 1 MB.
+- **Feature graphic:** `feature-graphic-1024x500.png`, 1024×500, 24-bit PNG with no alpha. The lockup and "Think like an IS auditor." on the Grove forest green. No CISA or ISACA text.
+- **Phone screenshots:** the six in `screenshots/` (section 3), 1080×1920, 24-bit PNG.
 
 ### Category
 
 - **Education** (Play allows one category). Tags: Exam prep, Professional skills (or the closest available).
 
+### App content answers (Play Console → Policy and programs → App content)
+
+From `docs/mobile/PLAY_LAUNCH.md` section (d). These assume the owner's decision of 22 Oct 2026: the Play build ships with over-the-air updates OFF (Option A), so the app makes no network call of its own.
+
+**Data safety (Option A).**
+- "Does your app collect or share any of the required user data types?" → **No**. The remaining questions are skipped, and the listing shows "No data collected" and "No data shared".
+- Why this is accurate:
+  - With updates off, the Play build makes no network call.
+  - Report a problem and Contact support open the learner's own email app with a draft: a user-initiated action.
+  - The backup file and share cards go through the system share sheet, also user-initiated.
+  - Reminders are local notifications; no push token is ever requested.
+  - Android Auto Backup is the system's backup, not collection by the app.
+  - The learner's first name stays on the phone.
+- If store builds ever turn updates back on, this answer changes (PLAY_LAUNCH.md section (d), Option B: "Device or other IDs" collected).
+
+**Other declarations.**
+
+| Declaration | Answer |
+|---|---|
+| Privacy policy | https://kaisip.com/privacy |
+| App access | "All functionality in my app is available without any access restrictions" |
+| Ads | "No, my app does not contain ads" |
+| Advertising ID | "No" (the AD_ID permission is blocked in `mobile/app.json` since mobile 1.40.1) |
+| Government apps | No |
+| Financial features | "My app doesn't provide any financial features" |
+| Health apps | "My app does not have any health features" |
+| News app | No |
+| Target audience | **18 and over** only. "Could your store listing unintentionally appeal to children?" → No (if asked). Restrict Minor Access: leave off |
+
+**Content rating (IARC questionnaire).**
+- Email: certprep.support@gmail.com.
+- Category: **Reference, News, or Educational**. The mini-games are exam drills, not the app's main purpose. If the reviewer reclassifies it as a game, the answers below don't change.
+- Answer **No** to every question: violence, blood or gore; fear or horror; sexual content or nudity; profanity or crude humour; drugs, alcohol or tobacco; real or simulated gambling; hate or discrimination.
+- Miscellaneous, all **No**: users can interact or exchange content; shares the user's location with other users; allows purchases of digital goods; unrestricted internet access (web browser or search engine); NFTs or digital assets (if asked).
+- Expected result: ESRB Everyone, PEGI 3, USK 0, ClassInd L, Play "Everyone".
+- Redo the questionnaire when the feedback board (user-generated content) ships at Phase 9 (section 7).
+
 ---
 
 ## 3. Screenshot captions (2–5 words each)
 
-| # | Screen | Caption | Words |
-|---|---|---|---|
-| 1 | Welcome / vision | Think like an IS auditor. | 5 |
-| 2 | Today (daily plan) | Know what to study next | 5 |
-| 3 | Question with tips revealed | Learn the why behind answers | 5 |
-| 4 | Readiness range | An honest readiness estimate | 4 |
-| 5 | Mistakes / spaced review | Every miss becomes a lesson | 5 |
-| 6 | Games (Play tab) | Sharpen your exam judgment | 4 |
+The Play set, in listing order. Files: `design-notes/brand-kaisip/store/screenshots/` (1080×1920, 24-bit PNG, light theme, demo data). Re-shoot with `SHOTS=store npm run shots -- <out_dir>` in `mobile/`, then copy the six files there.
 
-Screenshots must not show a question count. Use demo data (`npm run shots`) and check that no screen shows the bank size.
+| # | File | Screen | Caption | Words |
+|---|---|---|---|---|
+| 1 | `store-01-today.png` | Today (daily plan) | Know what to study next | 5 |
+| 2 | `store-02-question.png` | A practice question | Think like an IS auditor. | 5 |
+| 3 | `store-03-answer.png` | The answer, with the tips | Learn the why behind answers | 5 |
+| 4 | `store-04-lesson.png` | A lesson | Short lessons, big ideas | 4 |
+| 5 | `store-05-readiness.png` | Readiness report after mocks | An honest readiness estimate | 4 |
+| 6 | `store-06-plant.png` | Your plant (botanical) | Watch your progress grow | 4 |
+
+Screenshots must not show the bank size. The store shoot checks each screen's visible text for "<number> questions" and stops if it finds one. Today shows the learner's own numbers ("16 of 53 due", "200 answered"), which say nothing about the bank's size. Keep "CISA" out of the captions.
 
 ---
 
@@ -190,12 +290,13 @@ Apple Product Page Optimization can test screenshots, icon and preview video, bu
 
 | Field | Control (A) | Variant (B) | Hypothesis |
 |---|---|---|---|
-| Play short description | Practice for the CISA® exam: teaching tips, daily plan and spaced review. (73) | CISA® exam practice that teaches the why. Daily plan, spaced review, offline. (77) | Leading with "teaches the why" and "offline" lifts install conversion in markets with patchy data |
 | iOS subtitle (change with a version update) | Practice for the CISA® exam (27) | CISA® exam practice, offline (28) | Same as above, measured as conversion before and after |
 | Name (later, only if data supports it) | KaiSip: IT Audit Exam Prep (26) | KaiSip: IT Audit & Risk Prep (28) | Widens reach to risk professionals; only once a second certification is live (until then the listing stays CISA-only) |
 | Screenshot 1 caption | Think like an IS auditor. | Know what to study next | A concrete benefit first beats the brand line for cold traffic |
 
 Success metric: store listing conversion rate (visitors to installs), read at 90% confidence and at least 7 days per test.
+
+**Retired (22 Oct 2026): Play short description variant B** ("CISA® exam practice that teaches the why. Daily plan, spaced review, offline."). It starts with "CISA®", which reads like a product name (trademark review, PLAY_LAUNCH.md section 6 (ii)). Keep variant A. Do not test a short description that starts with CISA or ISACA.
 
 ## 7. Cloud release (DRAFT, not in effect until Phase 9)
 

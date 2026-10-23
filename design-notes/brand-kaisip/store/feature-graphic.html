@@ -1,0 +1,44 @@
+<!doctype html>
+<!-- KaiSip Google Play feature graphic, 1024x500 (docs/mobile/PLAY_LAUNCH.md c9).
+     Play's rules: JPEG or 24-bit PNG with no alpha, exactly 1024x500.
+     Render (from the repo root):
+       node design-notes/brand-kaisip/store/render.mjs
+     It opens this file in headless Chromium at 1024x500, device scale 1, saves
+     feature-graphic-1024x500.png next to it, then flattens it to 24-bit RGB
+     (mobile/scripts/screenshots/flatten_png.py).
+     Content rules: the light-on-dark lockup and the brand line only. NO "CISA"
+     or ISACA text (trademark: STORE_LISTING.md guardrails), no question count.
+     Play can lay its own controls over the edges, so the lockup and the line
+     stay in the middle; the art in the corners is decoration only. -->
+<html><head><meta charset="utf-8"><style>
+@font-face { font-family: 'Fraunces'; font-style: italic; font-weight: 400; src: url('../../../assets/fonts/Fraunces_400Regular_Italic.woff2'); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1024px; height: 500px; overflow: hidden; }
+/* The Grove forest panel, lit from the top edge (tokens forestTop -> forest), full bleed. */
+body { position: relative; background: linear-gradient(180deg, #245A40 0%, #1E4A34 62%); }
+/* Decoration (forestLine / forestTrack): a frond top right, growth rings bottom left. */
+.frond { position: absolute; right: -10px; top: 6px; width: 300px; height: 300px; fill: none; stroke: #3A6B51; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.rings { position: absolute; left: -150px; bottom: -170px; width: 440px; height: 440px; fill: none; stroke: #2F5C44; stroke-width: 1.5; }
+/* What must read: the lockup and the line, centred. */
+.safe { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.lockup { width: 440px; height: auto; display: block; }
+.line { font: italic 400 46px/54px Fraunces, serif; color: #C9DACD; letter-spacing: -0.4px; margin-top: 30px; }
+</style></head><body>
+<svg class="rings" viewBox="0 0 470 470"><circle cx="235" cy="235" r="225"/><circle cx="235" cy="235" r="180"/><circle cx="235" cy="235" r="135"/><circle cx="235" cy="235" r="90"/></svg>
+<svg class="frond" id="frond" viewBox="0 0 160 160"></svg>
+<div class="safe">
+  <img class="lockup" src="../png/lockup_dark.png" alt="KaiSip">
+  <p class="line">Think like an IS auditor.</p>
+</div>
+<script>
+// The frond, drawn as in og/og-card.html: a curved stem with paired leaves.
+(function(){
+  var p0=[96,150],pc=[70,80],p1=[118,6],path='M'+p0+' Q'+pc+' '+p1;
+  function pt(u){var a=(1-u)*(1-u),b=2*(1-u)*u,c=u*u;return [a*p0[0]+b*pc[0]+c*p1[0],a*p0[1]+b*pc[1]+c*p1[1]];}
+  for(var i=1;i<=9;i++){var u=i/10.5,q=pt(u),q2=pt(u+0.02);var ang=Math.atan2(q2[1]-q[1],q2[0]-q[0]);var len=30*(1-u*0.55),wid=len*0.28;
+    [-1,1].forEach(function(side){var a2=ang+side*0.95;var tip=[q[0]+Math.cos(a2)*len,q[1]+Math.sin(a2)*len];var n=[-Math.sin(a2)*wid,Math.cos(a2)*wid],mid=[(q[0]+tip[0])/2,(q[1]+tip[1])/2];
+      path+=' M'+q[0].toFixed(1)+' '+q[1].toFixed(1)+' Q'+(mid[0]+n[0]).toFixed(1)+' '+(mid[1]+n[1]).toFixed(1)+' '+tip[0].toFixed(1)+' '+tip[1].toFixed(1)+' Q'+(mid[0]-n[0]).toFixed(1)+' '+(mid[1]-n[1]).toFixed(1)+' '+q[0].toFixed(1)+' '+q[1].toFixed(1);});}
+  document.getElementById('frond').innerHTML='<path d="'+path+'"/>';
+})();
+</script>
+</body></html>

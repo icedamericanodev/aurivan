@@ -13,10 +13,11 @@
  * recents for days can stay one or two versions behind. This row is the
  * manual way: check now, download, and restart to apply at once.
  *
- * Where it works: only where expo-updates is enabled (an installed APK or
- * store build). It is hidden in Expo Go and development builds
- * (`Updates.isEnabled` is false, and the calls would reject) and on the web
- * (no native app to update). One tap is one check: nothing runs on its own,
+ * Where it works: only where expo-updates is enabled (an installed test
+ * APK). It is hidden in Expo Go, development builds and the Google Play
+ * build (`Updates.isEnabled` is false there, and the calls would reject; the
+ * Play build has updates switched off by app.config.js since mobile 1.40.1)
+ * and on the web (no native app to update). One tap is one check: nothing runs on its own,
  * nothing polls, and a second tap while busy does nothing.
  *
  * Tests stub `UpdatesClient`; the web screenshot build can run a demo client
