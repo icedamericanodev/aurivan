@@ -146,7 +146,7 @@ What exists in the repo:
 
 **Days 1–2, after Claude's PR (section c) merges**
 
-6. **Build.** In `mobile/`, run `npx eas-cli build --platform android --profile production`. When asked to use the existing Android keystore, say yes. On expo.dev → the build page → download the `.aab`.
+6. **Build.** GitHub → Actions → "Phone build (EAS Build)" → Run workflow → profile `production` → Run (`.github/workflows/eas-build.yml`; it uses the existing Android keystore on expo.dev). Or, on a computer: in `mobile/`, run `npx eas-cli build --platform android --profile production` and say yes to the existing keystore. When the build finishes, expo.dev → the build page → download the `.aab`.
 7. **First upload, by hand.**
    - Play Console → Test and release → Testing → Internal testing → Testers tab: create an email list with yourself → Save.
    - Releases → Create new release. App integrity / Play App Signing: choose "Use Google-generated key" (the default).

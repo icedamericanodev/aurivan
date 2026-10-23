@@ -1,0 +1,101 @@
+name: Phone build (EAS Build)
+
+# Starts a phone app build on expo.dev with one click, so nobody has to run
+# eas-cli on their own computer.
+#
+#   - "production" makes the Google Play build (an .aab file). Upload it to
+#     Play Console by hand: Test and release → Testing → Internal testing →
+#     Create new release (docs/mobile/PLAY_LAUNCH.md, step 7). Store builds have
+#     over-the-air updates OFF (mobile/app.config.js; eas.json marks the
+#     profile with KAISIP_STORE_BUILD=1).
+#   - "preview" makes a test APK for your own phone. It keeps over-the-air
+#     updates (the "Phone update" workflow publishes them after each merge).
+#
+# How to run it: Actions tab → "Phone build (EAS Build)" → "Run workflow" →
+# pick the profile → Run. The job checks the app, then hands the build to
+# expo.dev and finishes in a few minutes; the build itself takes about
+# 15–25 minutes there. Open expo.dev → your project → Builds to download the
+# file when it is done (the job log prints the link too).
+#
+# Needs the EXPO_TOKEN secret in the GitHub Environment "ota" (main branch
+# only), the same one the "Phone update" workflow uses. The Android signing
+# key already lives on expo.dev (EAS-managed credentials), so the build runs
+# without questions (--non-interactive). For Play, that key is the upload key;
+# Google holds the app signing key (Play App Signing).
+#
+# Safety, as in eas-update.yml: no package install scripts run in the job
+# that holds the key, eas-cli is pinned to one exact version, and the build
+# starts only if the release-channel rules, typecheck and tests pass.
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Which build
+        type: choice
+        options: [production, preview]
+        default: production
+
+concurrency:
+  group: eas-build-${{ inputs.profile }}
+  cancel-in-progress: false
+
+# Read-only token: third-party code runs here (tests, eas-cli).
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build ${{ inputs.profile }} (Android)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Holds the Expo key; main-only.
+    environment: ota
+    steps:
+      - name: Check for the Expo token
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "The EXPO_TOKEN secret is not set in the 'ota' environment, so no build can start." >&2
+            exit 1
+          fi
+
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      # eas-cli reads the app config and works out the runtime fingerprint
+      # here, which needs the project's packages (no install scripts run).
+      - name: Install without install scripts, then build the content pack
+        working-directory: mobile
+        run: |
+          npm ci --ignore-scripts
+          node scripts/build-content.mjs
+
+      - name: Check the app before building
+        working-directory: mobile
+        run: |
+          node scripts/check-release-config.mjs
+          npm run typecheck
+          npm test -- --ci
+
+      # app.config.js stops a store build if a cloud variable is set in the
+      # EAS "production" environment without the owner's go-live ack.
+      - name: Start the build on expo.dev
+        working-directory: mobile
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          npm_config_ignore_scripts: 'true'
+          PROFILE: ${{ inputs.profile }}
+        run: |
+          npx --yes eas-cli@24.14.0 build \
+            --platform android \
+            --profile "$PROFILE" \
+            --non-interactive \
+            --no-wait
+          echo "Build started. Download it from expo.dev → Projects → aurivan → Builds when it finishes."
