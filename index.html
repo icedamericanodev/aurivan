@@ -5256,7 +5256,7 @@ header.app-header .brand-lockup { height: 28px; }
 .app-cta-card .brand-card-desc { margin-bottom: var(--sp-xl); }
 .app-cta-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-md) var(--sp-xl); }
 .app-cta-actions [hidden] { display: none; }
-.app-cta-badge { display: inline-block; border-radius: var(--r-sm); line-height: 0; }
+.app-cta-badge { display: inline-block; border-radius: var(--r-sm); line-height: 0; margin: 15px 0; } /* Google: clear space = 1/4 of the badge height */
 .app-cta-badge img { display: block; height: 60px; width: auto; }
 .app-cta-ios { font: var(--t-meta); color: var(--text2); margin: 0; }
 .app-cta-line { display: none; margin: var(--sp-section) 0 var(--sp-sm); font: var(--t-meta); }
@@ -6408,7 +6408,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <p class="brand-card-desc" id="appCtaDesc"></p>
     <div class="app-cta-actions">
       <a class="tipjar-btn" id="appCtaBeta" target="_blank" rel="noopener" hidden>Join the Android beta<span class="sr-only"> (opens in a new tab)</span></a>
-      <a class="app-cta-badge" id="appCtaPlay" target="_blank" rel="noopener" hidden><img id="appCtaBadge" alt="Get it on Google Play (opens in a new tab)" width="155" height="60" decoding="async"></a>
+      <a class="app-cta-badge" id="appCtaPlay" target="_blank" rel="noopener" hidden><img id="appCtaBadge" alt="Get it on Google Play (opens in a new tab)" width="202" height="60" decoding="async"></a>
       <a class="tipjar-btn" id="appCtaPlayText" target="_blank" rel="noopener" hidden>Get it on Google Play<span class="sr-only"> (opens in a new tab)</span></a>
       <p class="app-cta-ios" id="appCtaIos" hidden>Coming soon to iPhone.</p>
     </div>
@@ -17803,11 +17803,11 @@ function appCtaInit() {
   if (live && showLink) {
     badgeLink.setAttribute('href', href);
     textLink.setAttribute('href', href);
-    // The official badge, unmodified. TO ADD IT: open Google's badge generator
-    // at https://play.google.com/intl/en_us/badges/ , choose English, download,
-    // and save the PNG as assets/google-play-badge.png (no edits, no recolour).
-    // Until that file exists the badge hides itself and a plain "Get it on
-    // Google Play" link shows instead.
+    // The official badge, unmodified: Google's English "Get it on Google Play"
+    // web PNG from the Partner Marketing Hub (downloaded 23 Oct 2026). Rules:
+    // no edits or recolour, at least 28px tall, clear space of 1/4 its height,
+    // and only link it to KaiSip's live store listing. If the file is missing
+    // the badge hides itself and a plain "Get it on Google Play" link shows.
     img.addEventListener('load', function () { badgeLink.hidden = false; textLink.hidden = true; });
     img.addEventListener('error', function () { badgeLink.hidden = true; textLink.hidden = false; });
     img.setAttribute('src', 'assets/google-play-badge.png');
