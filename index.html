@@ -34,7 +34,7 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="KaiSip is free CISA exam prep: practice questions across all five domains, mock exams and plain-language study notes that teach you to reason like an IS auditor.">
+<meta name="description" content="KaiSip is CISA exam prep, free during the beta: practice questions across all five domains, mock exams and plain-language study notes that teach you to reason like an IS auditor.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="KaiSip">
 <meta property="og:title" content="KaiSip: CISA exam prep that teaches the auditor’s mindset">
@@ -4593,7 +4593,7 @@ header {
 
 /* ── TOPICS (Grove): ux.md §2c/2d ── */
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-.gt { max-width: 760px; margin: 0 auto; padding-bottom: 32px; color: var(--text); }
+.gt { max-width: 640px; margin: 0 auto; padding-bottom: 32px; color: var(--text); }
 .gt-loading { padding: 48px 0; text-align: center; font: 500 14px/20px var(--f-sans); color: var(--text2); }
 .gt-head { margin: 4px 0 18px; }
 .gt-title { font: 500 36px/42px var(--f-serif); letter-spacing: -0.6px; color: var(--text); }
@@ -5023,6 +5023,21 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-hero-t, .td-hero-m { max-width: min(520px, calc(100% - 110px)); }
 .td-hero-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-lg); margin-top: var(--sp-xl); }
 .td-go { padding: 0 var(--sp-xxl); }
+/* Today's plan (v12.33): the items in order, on the forest */
+.td-plan { list-style: none; margin: var(--sp-md) 0 0; padding: 0; max-width: min(520px, calc(100% - 110px)); }
+.td-plan li { display: flex; align-items: baseline; gap: var(--sp-md); padding: var(--sp-xs) 0; }
+.td-plan-n { flex-shrink: 0; min-width: 14px; font: 500 20px/26px var(--f-serif); color: var(--sap); }
+.td-plan-t { min-width: 0; font: var(--t-label); color: var(--on-forest); overflow-wrap: anywhere; }
+.td-plan-m { display: block; font: var(--t-meta); color: var(--on-forest2); }
+/* Save a backup: an InviteRow on the paper */
+.td-backup { margin-top: var(--sp-section); }
+.td-backup .plnt-invite-h { font: var(--t-label); }
+.td-est { margin-top: 0; }
+/* The first five's close: Tomorrow on an L1 plate */
+.rs-plate.rs-tomorrow { display: block; }
+.rs-tm-cap { margin: 0; font: var(--t-caption); color: var(--accent-text); }
+.rs-tm-t { margin: var(--sp-sm) 0 0; font: var(--t-body); color: var(--text); }
+.rs-one { margin-top: var(--sp-sm); }
 /* Readiness plate (L1: tonal, never tapped) */
 .td-plate { margin-top: 32px; background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xxl); }
 .td-fig { display: flex; flex-direction: column; align-items: center; gap: var(--sp-md); text-align: center; }
@@ -5426,6 +5441,20 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 
 .vr-why { margin: var(--sp-xxl) 0 var(--sp-sm); font: var(--t-headline); color: var(--text); }
 .vr-exp { margin: 0; font: var(--t-body); color: var(--text); }
+.vr-exp.vr-fold:not(.open) { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.vr-readmore, .vr-more-btn {
+  display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 44px; padding: 0;
+  background: none; border: 0; cursor: pointer; font: var(--t-label); color: var(--accent-text); text-align: left;
+}
+.vr-readmore:hover, .vr-more-btn:hover .vr-toggle-t { text-decoration: underline; }
+.vr-readmore:focus-visible, .vr-more-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
+.vr-more-btn { margin-top: var(--sp-xl); }
+.vr-more-btn[aria-expanded="true"] .ico { transform: rotate(180deg); }
+@media (prefers-reduced-motion: no-preference) { .vr-more-btn .ico { transition: transform .12s ease; } }
+/* Phones: the study note link and your note wait behind "More". */
+@media (max-width: 600px) { .vr-more:not(.open) { display: none; } }
+@media (min-width: 601px) { .vr-more-btn { display: none; } }
+.vr-src-sub { flex: 1 1 100%; margin: 0 0 var(--sp-sm); font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
 
 /* The vine: one stem with a leaf per node. The stem is drawn in pieces from
    leaf to leaf with a 2px gap, so it seems to pass behind each leaf without a
@@ -5450,7 +5479,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--sp-lg);
   margin-top: var(--sp-section); padding-top: var(--sp-md); border-top: 1px solid var(--border);
 }
-.vr-src-ref { flex: 1 1 240px; min-width: 0; font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
+.vr-src-ref { flex: 1 1 auto; min-width: 0; font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
 .vr-report {
   min-height: 44px; padding: 0; background: none; border: 0; cursor: pointer;
   font: var(--t-label); color: var(--accent-text);
@@ -5595,7 +5624,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .ph-dom-r { flex-shrink: 0; font: 600 15px/20px var(--f-sans); color: var(--text2); }
 
 /* Focused session */
-.pf { max-width: 720px; margin: 0 auto; }
+.pf { max-width: 640px; margin: 0 auto; }
 .pf #qArea { max-width: none; margin: 0; }
 .pf-strip { display: flex; align-items: center; gap: var(--sp-md); min-height: 56px; margin: 0 0 var(--sp-md); }
 .pf-btn {
@@ -6435,7 +6464,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h1 class="vision-title" id="aboutScreenTitle">Think like an IS auditor.</h1>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.32</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.34</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -6473,7 +6502,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
       </div>
       <div class="mission-item mission">
         <div class="mission-item-label">Our Mission</div>
-        <p class="mission-item-text">To make rigorous CISA preparation <strong>free and honest</strong> &mdash; practice and study material that teaches <strong>how an IS auditor reasons</strong>, so candidates apply the principle instead of memorizing facts. A serious supplement to your study, never a shortcut around it.</p>
+        <p class="mission-item-text">To build rigorous, <strong>honest</strong> CISA preparation &mdash; practice and study material that teaches <strong>how an IS auditor reasons</strong>, so candidates apply the principle instead of memorizing facts. A serious supplement to your study, never a shortcut around it.</p>
       </div>
     </div>
   </section>
@@ -6487,7 +6516,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
       <a class="tipjar-btn" id="appCtaBeta" target="_blank" rel="noopener" hidden>Join the Android beta<span class="sr-only"> (opens in a new tab)</span></a>
       <a class="app-cta-badge" id="appCtaPlay" target="_blank" rel="noopener" hidden><img id="appCtaBadge" alt="Get it on Google Play (opens in a new tab)" width="202" height="60" decoding="async"></a>
       <a class="tipjar-btn" id="appCtaPlayText" target="_blank" rel="noopener" hidden>Get it on Google Play<span class="sr-only"> (opens in a new tab)</span></a>
-      <p class="app-cta-ios" id="appCtaIos" hidden>Coming soon to iPhone.</p>
+      <p class="app-cta-ios" id="appCtaIos" hidden>The iPhone app isn&rsquo;t ready yet. KaiSip works here in your browser.</p>
     </div>
     <figure class="app-cta-qr" id="appCtaQr" hidden>
       <img id="appCtaQrImg" alt="QR code that opens KaiSip on Google Play" width="148" height="148" decoding="async">
@@ -6507,13 +6536,14 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
       <h2 class="you-head" id="youProgressH">Your progress</h2>
       <!-- Practice totals (moved from the Practice page, web step 3). "In a
            row" = right answers in a row, in ink: clay is for study days. -->
-      <p class="you-stats-wait" id="youStatsWait">Your stats appear after 10 answers</p>
+      <p class="you-stats-wait" id="youStatsWait">Your stats appear after 10 questions</p>
       <div class="stats-row you-stats" id="youStats" hidden>
         <div class="stat-card"><span class="stat-num" id="sTotal">0</span><span class="stat-label">Answered</span></div>
         <div class="stat-card"><span class="stat-num good" id="sCorrect">0</span><span class="stat-label">Correct</span></div>
         <div class="stat-card"><span class="stat-num" id="sPct">--</span><span class="stat-label">Accuracy</span></div>
         <div class="stat-card"><span class="stat-num" id="sStreak">0</span><span class="stat-label">In a row</span></div>
       </div>
+      <p class="you-stats-wait" id="youStatsNote" hidden>Each question counts once, at your latest try. In a row counts right answers.</p>
       <ul class="you-list">
         <li><a class="you-row" href="#weak-spots" onclick="return navTo(event,'weakspots')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5h17"/><path d="M7 17v-5M12 17V6M17 17v-8"/></svg></span><span class="you-text"><span class="you-t">Weak spots</span><span class="you-m">Where to focus next</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
         <li><button type="button" class="you-row" onclick="showSessionSummary()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-7.5 4 15 3-7.5h4"/></svg></span><span class="you-text"><span class="you-t">Session summary</span><span class="you-m">What you did this session</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
@@ -6533,7 +6563,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
         <!-- Exam date (v12.30): the one place to set or change it, as on mobile Settings. -->
         <li><button type="button" class="you-row" id="youExamDateBtn" aria-haspopup="dialog" onclick="openExamDateSheet(false)"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="5" width="16" height="15.5" rx="2"/><path d="M4 9.5h16M8.5 3v4M15.5 3v4"/></svg></span><span class="you-text"><span class="you-t">Exam date</span><span class="you-m" id="youExamDateM">Not set</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
         <li><button type="button" class="you-row" id="darkToggleBtn" role="switch" aria-checked="false" aria-labelledby="youDarkT" aria-describedby="youDarkM" onclick="toggleDarkMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 1 1 9.4 4a6.6 6.6 0 0 0 10.6 10.6z"/></svg></span><span class="you-text"><span class="you-t" id="youDarkT">Dark mode</span><span class="you-m" id="youDarkM">Easier on the eyes at night</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
-        <li><button type="button" class="you-row" id="examModeBtn" role="switch" aria-checked="false" aria-labelledby="youExamT" aria-describedby="youExamM" onclick="toggleExamMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4"/><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg></span><span class="you-text"><span class="you-t" id="youExamT">Exam-style questions</span><span class="you-m" id="youExamM">Shorter questions, no tips after you answer</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
+        <li><button type="button" class="you-row" id="examModeBtn" role="switch" aria-checked="false" aria-labelledby="youExamT" aria-describedby="youExamM" onclick="toggleExamMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4"/><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg></span><span class="you-text"><span class="you-t" id="youExamT">Exam-day rehearsal</span><span class="you-m" id="youExamM">Same questions, without the tips and coaching after you answer</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
       </ul>
     </section>
     <section class="you-group" aria-labelledby="youDataH">
@@ -6566,8 +6596,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   <section class="tipjar-card" data-testid="tipjar">
     <div class="tipjar-text">
       <div class="tipjar-eyebrow">Support the mission</div>
-      <h3 class="tipjar-title">The web practice app is free.</h3>
-      <p class="tipjar-desc">No account and no ads. If the web app has helped you prep, a small tip keeps it running and funds new questions and features.</p>
+      <h3 class="tipjar-title">Free during the beta. No account, no ads.</h3>
+      <p class="tipjar-desc">Tips help keep KaiSip going while it&rsquo;s in beta.</p>
     </div>
     <div class="tipjar-actions">
       <a class="tipjar-btn" href="https://ko-fi.com/aurivan" target="_blank" rel="noopener noreferrer" aria-label="Support KaiSip with a tip on Ko-fi">
@@ -6614,9 +6644,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 <script id="glossData" type="application/json">[{"id":1,"term":"Acceptable use policy (AUP)","acronym":"AUP","def":"Written rules that tell staff what they may and may not do with the organization's systems, networks and internet access. Users usually acknowledge it before they get an account.","scopeNotes":"","domain":2,"category":"Control"},{"id":2,"term":"Access control","acronym":null,"def":"Any measure that limits who can reach systems, data or physical areas, and what they can do once there. The IS auditor verifies that access is based on job need and has been approved.","scopeNotes":"","domain":5,"category":"Control"},{"id":3,"term":"Access control list (ACL)","acronym":"ACL","def":"A list attached to a resource that names which users, groups or devices may use it and with what permissions, such as read or write.","scopeNotes":"Also called an access control table. The IS auditor reviews ACLs for excessive rights and generic accounts.","domain":5,"category":"Control"},{"id":4,"term":"Access control table","acronym":null,"def":"Another name for an access control list: the stored set of rules a system checks to decide which users or devices may use a resource and how.","scopeNotes":"","domain":5,"category":"Control"},{"id":5,"term":"Access method","acronym":null,"def":"How software finds and reads stored records, for example one after another (sequential) or by jumping straight to a key (direct). It is separate from how the file is laid out.","scopeNotes":"","domain":0,"category":"Process"},{"id":6,"term":"Access rights","acronym":null,"def":"What a given user, program or device is allowed to do, such as view, add, change or delete records. Data owners approve these permissions under the security policy.","scopeNotes":"","domain":2,"category":"Technology"},{"id":7,"term":"Administrative controls","acronym":null,"def":"Management-set policies, procedures and practices, such as hiring checks, training and approvals, that guide how people work. They are not technical or physical safeguards.","scopeNotes":"","domain":2,"category":"Control"},{"id":8,"term":"Anonymous File Transfer Protocol (AFTP)","acronym":"AFTP","def":"A way to fetch public files from an FTP server without a personal account, usually by logging in as \"anonymous.\" Because no one is identified, it should never expose sensitive data.","scopeNotes":"","domain":5,"category":"Technology"},{"id":9,"term":"Antivirus software","acronym":null,"def":"Software that scans for known malicious code and blocks, removes or quarantines infected files. It is usually installed on endpoints, servers and mail gateways and needs current signatures.","scopeNotes":"","domain":5,"category":"Technology"},{"id":10,"term":"Application","acronym":null,"def":"A program, or group of programs, that does a specific business job, such as payroll or order entry.","scopeNotes":"Contrast with the operating system and other software that runs the computer itself rather than a business task.","domain":3,"category":"Technology"},{"id":11,"term":"Application controls","acronym":null,"def":"Controls built into or around a specific application that keep its input, processing and output complete, accurate and authorized, such as edit checks and batch totals.","scopeNotes":"","domain":3,"category":"Control"},{"id":12,"term":"Application layer","acronym":null,"def":"Layer 7 of the Open Systems Interconnection (OSI) model, closest to the user. It lets programs on different machines exchange data through services such as HTTP, email and file transfer.","scopeNotes":"","domain":3,"category":"Technology"},{"id":13,"term":"Application programming interface (API)","acronym":"API","def":"A defined set of calls and data formats that lets one program request services or data from another. The IS auditor verifies how API access is authenticated and logged.","scopeNotes":"","domain":3,"category":"Technology"},{"id":14,"term":"Artificial intelligence (AI)","acronym":"AI","def":"Computer systems that perform tasks normally needing human judgment, such as recognizing patterns, predicting outcomes or understanding language, often by learning from data rather than fixed rules.","scopeNotes":"","domain":0,"category":"Technology"},{"id":15,"term":"Asymmetric key (public key)","acronym":null,"def":"Encryption that uses a matched key pair: one key locks the data and the other unlocks it. One key is shared openly; the other stays private.","scopeNotes":"","domain":5,"category":"Technology"},{"id":16,"term":"Audit evidence","acronym":null,"def":"The records, observations, confirmations and test results the IS auditor relies on to reach conclusions and support the audit opinion. Under ITAF it must be sufficient and appropriate (relevant and reliable).","scopeNotes":"","domain":1,"category":"Concept"},{"id":17,"term":"Audit objective","acronym":null,"def":"What a particular audit sets out to determine, such as whether access controls over payroll work as intended.","scopeNotes":"Objectives drive the scope, the procedures and the evidence the IS auditor needs.","domain":1,"category":"Concept"},{"id":18,"term":"Audit plan","acronym":null,"def":"A document laying out the audit work ahead: what it covers and aims to achieve, the schedule, the staff assigned and the budget.","scopeNotes":"Can mean a single engagement plan or the audit function's plan for a whole period, usually risk-based.","domain":1,"category":"Control"},{"id":19,"term":"Audit program","acronym":null,"def":"A step-by-step list of procedures for auditing a subject, telling the team what to test and how.","scopeNotes":"","domain":1,"category":"Control"},{"id":20,"term":"Audit risk","acronym":null,"def":"The chance that the IS auditor reaches a wrong conclusion, such as reporting controls as effective when material weaknesses exist.","scopeNotes":"Has three parts: inherent risk (the risk built into the area), control risk (controls fail to prevent or detect a problem) and detection risk (the IS auditor's procedures miss it). Only detection risk is under the IS auditor's control.","domain":1,"category":"Concept"},{"id":21,"term":"Audit trail","acronym":null,"def":"A record of the steps, data and people involved in processing a transaction, from start to finish, so it can be traced and reconstructed.","scopeNotes":"","domain":1,"category":"Concept"},{"id":22,"term":"Authentication","acronym":null,"def":"Confirming that a user, device or process really is who or what it claims to be before access is granted, for example with a password, token or biometric.","scopeNotes":"Can also mean confirming that data has not been altered.","domain":5,"category":"Technology"},{"id":23,"term":"Backup","acronym":null,"def":"Copies of data, software and settings, plus the procedures and equipment to restore them, kept so operations can resume if the originals are lost or damaged.","scopeNotes":"","domain":4,"category":"Control"},{"id":24,"term":"Balanced scorecard (BSC)","acronym":"BSC","def":"A management tool that judges strategy from four angles at once: customer, financial, learning and growth, and internal business process.","scopeNotes":"IT versions help show IT's contribution to business goals.","domain":4,"category":"Process"},{"id":25,"term":"Benchmarking","acronym":null,"def":"Comparing performance with peers or published standards to set targets or find gaps.","scopeNotes":"","domain":0,"category":"Technology"},{"id":26,"term":"Biometrics","acronym":null,"def":"Identifying or verifying a person by a measurable body trait or behavior, such as a fingerprint, face, iris or palm.","scopeNotes":"","domain":5,"category":"Process"},{"id":27,"term":"Black box testing","acronym":null,"def":"Testing a system by feeding inputs and checking outputs against requirements, without looking at the code inside.","scopeNotes":"Suits user acceptance and functional testing.","domain":3,"category":"Process"},{"id":28,"term":"Broadband","acronym":null,"def":"A transmission method that splits one medium into several frequency channels so it can carry many signals at once, such as data, voice and video.","scopeNotes":"","domain":0,"category":"Concept"},{"id":29,"term":"Brouter","acronym":null,"def":"A hybrid device that acts as a router for traffic it knows how to route and as a bridge for everything else.","scopeNotes":"","domain":0,"category":"Technology"},{"id":30,"term":"Bus","acronym":null,"def":"The set of shared wires or channels over which a computer's parts, or the machines on a network, pass signals to each other.","scopeNotes":"","domain":0,"category":"Technology"},{"id":31,"term":"Bus configuration","acronym":null,"def":"A network layout where every device connects to a single shared cable, so all nodes see every transmission. It is cheap and simple, but one cable fault can stop the network.","scopeNotes":"","domain":0,"category":"Technology"},{"id":32,"term":"Business case","acronym":null,"def":"A document that justifies an investment by setting out its costs, benefits, risks and options. It supports the go/no-go decision and is revisited throughout the investment.","scopeNotes":"The IS auditor verifies that it exists, is approved and is updated at key decision points.","domain":2,"category":"Process"},{"id":33,"term":"Business continuity plan (BCP)","acronym":"BCP","def":"An organization's plan for keeping critical business processes running, or restoring them quickly, after a disruption.","scopeNotes":"Relies on the disaster recovery plan to bring the IT systems back.","domain":4,"category":"Technology"},{"id":34,"term":"Business impact analysis (BIA)","acronym":"BIA","def":"An analysis of which business processes matter most and how the harm from losing each grows over time. It sets recovery priorities and each process's recovery time objective (RTO) and recovery point objective (RPO).","scopeNotes":"Business process owners supply the impact estimates, not IT alone. The BIA comes before choosing a recovery strategy.","domain":4,"category":"Technology"},{"id":35,"term":"Business process reengineering (BPR)","acronym":"BPR","def":"Rethinking and redesigning core business processes from the ground up to achieve major gains in cost, speed, quality or service.","scopeNotes":"The IS auditor evaluates whether key controls survive the redesign.","domain":3,"category":"Technology"},{"id":36,"term":"Business risk","acronym":null,"def":"The chance that an event or situation stops the organization from meeting its business goals.","scopeNotes":"","domain":3,"category":"Concept"},{"id":37,"term":"Capability Maturity Model Integration (CMMI)","acronym":"CMMI","def":"A widely used model that rates process capability and organizational maturity on defined levels, used to guide process improvement.","scopeNotes":"","domain":3,"category":"Process"},{"id":38,"term":"Card swipe","acronym":null,"def":"A physical access control in which people present a coded card to a reader to unlock a door. It admits only enabled cards and logs attempts, but cannot stop tailgating alone.","scopeNotes":"The logs give the IS auditor evidence of who entered and when.","domain":3,"category":"Control"},{"id":39,"term":"Central processing unit (CPU)","acronym":"CPU","def":"The main processor of a computer that carries out program instructions and coordinates the other hardware.","scopeNotes":"","domain":0,"category":"Control"},{"id":40,"term":"Certificate (Certification) authority (CA)","acronym":"CA","def":"A trusted party that confirms the identity of people or systems and issues digital certificates binding them to their public keys.","scopeNotes":"","domain":5,"category":"Concept"},{"id":41,"term":"Certificate revocation list (CRL)","acronym":"CRL","def":"A signed list of certificates no longer trusted, published by a CA on a schedule.","scopeNotes":"The gap between updates is a risk: a revoked certificate may still be accepted in the meantime.","domain":5,"category":"Concept"},{"id":42,"term":"Certification practice statement (CPS)","acronym":"CPS","def":"A CA's published description of how it issues, protects and revokes certificates.","scopeNotes":"Helps relying parties judge how far to trust that CA's certificates.","domain":5,"category":"Concept"},{"id":43,"term":"Chain of custody","acronym":null,"def":"A record of who held each piece of evidence, and when, from collection to court, so it can be shown it was not tampered with.","scopeNotes":"Broken custody can make evidence inadmissible.","domain":1,"category":"Process"},{"id":44,"term":"Challenge/response token","acronym":null,"def":"A login method where the server sends a random value, the user's token or a secret the user holds transforms it, and the server checks the result. The secret itself never crosses the network.","scopeNotes":"Because each challenge is new, captured responses cannot be replayed.","domain":5,"category":"Technology"},{"id":45,"term":"Change management (CM)","acronym":"CM","def":"Helping people accept and adopt a new way of working, through leadership, communication, training, incentives and attention to culture.","scopeNotes":"This is the people side of change (COBIT 2019 BAI05). In most CISA questions, \"change management\" means the IT process for requesting, testing, approving and moving system changes into production (BAI06).","domain":3,"category":"Process"},{"id":46,"term":"Ciphertext","acronym":null,"def":"Scrambled data produced by encryption, unreadable without the key.","scopeNotes":"","domain":5,"category":"Technology"},{"id":47,"term":"Circuit-switched network","acronym":null,"def":"A network that sets up a dedicated end-to-end path between two parties before any data is sent and holds it for the whole session, like a traditional phone call.","scopeNotes":"","domain":0,"category":"Technology"},{"id":48,"term":"Circular routing","acronym":null,"def":"The route a message travels as each gateway passes it to the next at the physical layer, the lowest layer of the networking model known as OSI (Open Systems Interconnection).","scopeNotes":"","domain":0,"category":"Technology"},{"id":49,"term":"Client-server","acronym":null,"def":"An arrangement where user-facing programs ask for work or data and central machines supply it, so processing is split between the two.","scopeNotes":"Adds control points: the IS auditor reviews security on both the client and the server side.","domain":3,"category":"Technology"},{"id":50,"term":"Cloud computing","acronym":null,"def":"Using shared, on-demand computing resources, such as servers, storage and applications, over a network. Resources scale up or down quickly with little provider involvement.","scopeNotes":"The IS auditor focuses on the contract, the provider's assurance reports and who is responsible for which controls.","domain":3,"category":"Technology"},{"id":51,"term":"Coaxial cable","acronym":null,"def":"A cable with a central copper conductor wrapped in insulation, a braided metal shield and an outer jacket. It carries more data than basic twisted pair over limited distances.","scopeNotes":"","domain":0,"category":"Concept"},{"id":52,"term":"Cold site","acronym":null,"def":"A recovery facility with power, cooling and space but no computers installed. Equipment must be brought in after a disaster, so recovery takes days or weeks.","scopeNotes":"Cheapest site option, suited to long recovery time objectives.","domain":4,"category":"Technology"},{"id":53,"term":"Compensating control","acronym":null,"def":"A substitute safeguard used when the preferred control cannot be applied, such as an extra supervisor review where duties cannot be segregated.","scopeNotes":"","domain":1,"category":"Control"},{"id":54,"term":"Completely connected (mesh) configuration","acronym":null,"def":"A network layout in which each node links to many or all others, giving several alternate paths. It is highly resilient but costly, so it is common in backbones.","scopeNotes":"","domain":4,"category":"Technology"},{"id":55,"term":"Compliance testing","acronym":null,"def":"Testing whether controls exist and operate as designed throughout the period under review.","scopeNotes":"Also called tests of controls. Contrast with substantive testing, which checks the data itself.","domain":1,"category":"Control"},{"id":56,"term":"Comprehensive audit","acronym":null,"def":"A broad-scope review that checks both the reliability of a unit's financial figures and how well its controls work.","scopeNotes":"","domain":3,"category":"Control"},{"id":57,"term":"Computer emergency response team (CERT)","acronym":"CERT","def":"A team, also called a computer security incident response team (CSIRT), that the organization calls on when a security incident occurs. It coordinates detection, containment, recovery and communication.","scopeNotes":"","domain":4,"category":"Technology"},{"id":58,"term":"Computer forensics","acronym":null,"def":"Collecting, preserving and analyzing digital data in a sound, repeatable way so the findings can be used in legal or disciplinary action.","scopeNotes":"Evidence handling and chain of custody decide whether results are admissible.","domain":5,"category":"Technology"},{"id":59,"term":"Computer-assisted audit technique (CAAT)","acronym":"CAAT","def":"Any technique in which the IS auditor uses a computer to carry out audit tests, for example data analytics tools, test data, embedded audit modules or an integrated test facility.","scopeNotes":"Lets the IS auditor test whole populations, not just samples.","domain":1,"category":"Technology"},{"id":60,"term":"Configuration management (CM)","acronym":"CM","def":"Tracking and controlling the settings and versions of IT components across their life, so every change is known, approved and recorded.","scopeNotes":"","domain":2,"category":"Control"},{"id":61,"term":"Contingency planning","acronym":null,"def":"Preparing in advance the steps, resources and arrangements an organization will use if an unexpected event disrupts normal operations.","scopeNotes":"","domain":2,"category":"Control"},{"id":62,"term":"Continuous auditing approach","acronym":null,"def":"A method where audit software runs alongside live systems, testing transactions and flagging exceptions as they happen instead of after the period ends.","scopeNotes":"Best suited to high-volume, paperless environments.","domain":1,"category":"Technology"},{"id":63,"term":"Control objective","acronym":null,"def":"The result a control is meant to achieve, such as only authorized payments being made.","scopeNotes":"","domain":4,"category":"Control"},{"id":64,"term":"Control practice","acronym":null,"def":"A specific action or mechanism that helps achieve a control objective, for example a monthly review of user access lists.","scopeNotes":"","domain":2,"category":"Control"},{"id":65,"term":"Control risk","acronym":null,"def":"The chance that a material error or loss happens and is not prevented or caught in time by internal controls, because they are missing, badly designed or not working.","scopeNotes":"One of the three parts of audit risk.","domain":3,"category":"Control"},{"id":66,"term":"Cookie","acronym":null,"def":"A small file a website stores in the user's browser to remember things like login state or preferences between visits.","scopeNotes":"Cookies can be stolen or misused, so sensitive data and session tokens in them need protection.","domain":4,"category":"Concept"},{"id":67,"term":"Corrective control","acronym":null,"def":"A control that limits damage and restores normal operation after a problem is found, such as restoring from backup or patching a flaw.","scopeNotes":"","domain":5,"category":"Control"},{"id":68,"term":"Countermeasure","acronym":null,"def":"Any action, device or process put in place to reduce a threat or a vulnerability.","scopeNotes":"","domain":5,"category":"Process"},{"id":69,"term":"Critical success factor (CSF)","acronym":"CSF","def":"One of the few things that must go right for an objective to be achieved.","scopeNotes":"","domain":2,"category":"Control"},{"id":70,"term":"Data custodian","acronym":null,"def":"The role, usually IT or a provider, that runs systems and applies the owner's protection requirements, such as storage, backup and access settings.","scopeNotes":"","domain":0,"category":"Technology"},{"id":71,"term":"Data Encryption Standard (DES)","acronym":"DES","def":"An early symmetric block cipher with a 56-bit key, now easy to break by brute force and withdrawn. Its successor is AES, the Advanced Encryption Standard.","scopeNotes":"Finding DES still in use is a weakness to report.","domain":5,"category":"Control"},{"id":72,"term":"Data leakage","acronym":null,"def":"Sensitive data leaving the organization without authorization, whether by email, upload, removable media or printed copies.","scopeNotes":"","domain":0,"category":"Concept"},{"id":73,"term":"Data owner","acronym":null,"def":"The business manager accountable for a data set's classification, access approvals and acceptable use.","scopeNotes":"Owners approve access; custodians carry it out.","domain":0,"category":"Technology"},{"id":74,"term":"Data security","acronym":null,"def":"Measures that protect information from unauthorized viewing or change and keep it accessible to the right people when they need it.","scopeNotes":"","domain":4,"category":"Control"},{"id":75,"term":"Database","acronym":null,"def":"An organized store of related data, kept so many programs can share it without each needing to know how it is physically held.","scopeNotes":"","domain":4,"category":"Technology"},{"id":76,"term":"Database administrator (DBA)","acronym":"DBA","def":"The person or team who designs, builds and maintains databases and manages their security, access and performance.","scopeNotes":"DBAs hold powerful rights, so the IS auditor verifies that their activity is logged and independently reviewed.","domain":3,"category":"Technology"},{"id":77,"term":"Database management system (DBMS)","acronym":"DBMS","def":"Software that sits between users and a database to define, store, find and protect data, including deciding who can read or change it.","scopeNotes":"","domain":2,"category":"Control"},{"id":78,"term":"Decision support systems (DSS)","acronym":"DSS","def":"Software that lets managers explore data and try out \"what-if\" models when a decision cannot be reduced to fixed rules.","scopeNotes":"","domain":0,"category":"Technology"},{"id":79,"term":"Decryption","acronym":null,"def":"Turning ciphertext back into readable plaintext using the right key; the reverse of encryption.","scopeNotes":"","domain":5,"category":"Technology"},{"id":80,"term":"Decryption key","acronym":null,"def":"The value used with a decryption algorithm to turn ciphertext back into plaintext.","scopeNotes":"","domain":5,"category":"Technology"},{"id":81,"term":"Degauss","acronym":null,"def":"Erasing magnetic media, such as tapes and older hard disks, with a strong alternating magnetic field so the data cannot be recovered.","scopeNotes":"Does not work on solid-state drives; those need other sanitization methods.","domain":4,"category":"Concept"},{"id":82,"term":"Detective control","acronym":null,"def":"A control that finds and reports errors, irregularities or intrusions after they occur, such as log reviews, reconciliations or intrusion detection alerts.","scopeNotes":"","domain":3,"category":"Control"},{"id":83,"term":"Digital certificate","acronym":null,"def":"An electronic document, signed by a certificate authority, that binds a public key to a named person, device or organization.","scopeNotes":"","domain":5,"category":"Concept"},{"id":84,"term":"Digital signature","acronym":null,"def":"A value created with the sender's private key that lets the receiver confirm who sent a message and that it was not changed.","scopeNotes":"Provides authentication, integrity and nonrepudiation, but not confidentiality.","domain":5,"category":"Concept"},{"id":85,"term":"Disaster recovery plan (DRP)","acronym":"DRP","def":"The documented steps and resources for restoring IT systems, data and facilities within agreed times after a disaster.","scopeNotes":"Supports the business continuity plan.","domain":4,"category":"Concept"},{"id":86,"term":"Discovery sampling","acronym":null,"def":"An attribute sampling method used when a single occurrence matters, such as fraud. The sample is sized so that if the problem exists above a set rate, one case is very likely found.","scopeNotes":"","domain":1,"category":"Concept"},{"id":87,"term":"Discretionary access control (DAC)","acronym":"DAC","def":"Access control where the owner of a resource decides who else may use it and can change those permissions.","scopeNotes":"Contrast with mandatory access control, where users cannot change the rules.","domain":5,"category":"Control"},{"id":88,"term":"Domain name system (DNS)","acronym":"DNS","def":"The internet's distributed lookup service that translates names like example.com into IP addresses, and back.","scopeNotes":"","domain":0,"category":"Technology"},{"id":89,"term":"Domain name system (DNS) poisoning","acronym":"DNS","def":"An attack that plants false entries in a DNS server or cache, so users asking for a real site are silently sent to an attacker's address.","scopeNotes":"Also called DNS cache poisoning.","domain":0,"category":"Technology"},{"id":90,"term":"Dry-pipe fire extinguisher system","acronym":null,"def":"A sprinkler system whose pipes stay empty until a fire is detected; water then flows in and discharges. It lowers the risk of leaks damaging equipment.","scopeNotes":"Often preferred in computer rooms over wet-pipe systems.","domain":4,"category":"Technology"},{"id":91,"term":"Dynamic Host Configuration Protocol (DHCP)","acronym":"DHCP","def":"A protocol that automatically gives devices on a network an IP address and related settings, such as gateway and DNS server, from a managed pool.","scopeNotes":"","domain":4,"category":"Technology"},{"id":92,"term":"Ecommerce","acronym":null,"def":"Trading online: companies selling to and buying from consumers, vendors and partners over the internet.","scopeNotes":"Ecommerce controls focus on authentication, transaction integrity, privacy and nonrepudiation.","domain":0,"category":"Process"},{"id":93,"term":"Electronic data interchange (EDI)","acronym":"EDI","def":"The computer-to-computer exchange of standard business documents, such as orders and invoices, between organizations in an agreed format, replacing paper.","scopeNotes":"The IS auditor reviews transmission controls, authorization and the completeness of transactions.","domain":2,"category":"Concept"},{"id":94,"term":"Electronic funds transfer (EFT)","acronym":"EFT","def":"Moving money between accounts electronically rather than by cash or check.","scopeNotes":"","domain":0,"category":"Concept"},{"id":95,"term":"Email/interpersonal messaging","acronym":null,"def":"Sending text messages and attachments from one person to another person or group over a network.","scopeNotes":"","domain":3,"category":"Technology"},{"id":96,"term":"Embedded audit module (EAM)","acronym":"EAM","def":"Audit code built into an application that watches live transactions and records those meeting set criteria for the IS auditor to review.","scopeNotes":"A continuous auditing technique.","domain":3,"category":"Technology"},{"id":97,"term":"Encryption","acronym":null,"def":"Turning readable data (plaintext) into unreadable data (ciphertext) with an algorithm and a key, so only holders of the right key can read it.","scopeNotes":"","domain":5,"category":"Technology"},{"id":98,"term":"Encryption key","acronym":null,"def":"The value a cipher uses to turn plaintext into ciphertext. In symmetric encryption it is a shared secret; in public key encryption it is usually the recipient's public key.","scopeNotes":"","domain":5,"category":"Technology"},{"id":99,"term":"End-user computing","acronym":null,"def":"Business users building and running their own applications, such as spreadsheets or small databases, outside formal IT development.","scopeNotes":"These tools often lack testing, change control and backup, so the IS auditor reviews the critical ones.","domain":3,"category":"Technology"},{"id":100,"term":"Enterprise resource planning (ERP)","acronym":"ERP","def":"An integrated software suite that runs core business functions, such as finance, purchasing and HR, on one shared database in near real time.","scopeNotes":"","domain":0,"category":"Technology"},{"id":101,"term":"Ethernet","acronym":null,"def":"The most common wired LAN technology. Early shared Ethernet used collision detection (CSMA/CD) when two devices sent at once; modern switched, full-duplex Ethernet avoids collisions.","scopeNotes":"","domain":0,"category":"Technology"},{"id":102,"term":"Evidence","acronym":null,"def":"Anything the IS auditor obtains during an audit, such as documents, observations, interview notes or system output, to support findings and conclusions. See audit evidence for the quality tests it must pass.","scopeNotes":"","domain":1,"category":"Concept"},{"id":103,"term":"Exception reports","acronym":null,"def":"Reports that list only transactions or data falling outside expected limits or rules, so staff can follow them up.","scopeNotes":"","domain":0,"category":"Concept"},{"id":104,"term":"eXtensible Markup Language (XML)","acronym":"XML","def":"A text-based markup language that lets users define their own tags, used to describe, store and exchange structured data between systems.","scopeNotes":"","domain":3,"category":"Process"},{"id":105,"term":"Extranet","acronym":null,"def":"A private network that gives outside partners, such as customers and suppliers, controlled access to selected internal systems and data over the internet.","scopeNotes":"Relies on strong authentication and encryption, often a VPN.","domain":0,"category":"Technology"},{"id":106,"term":"Fallback procedures","acronym":null,"def":"A plan for going back to the old, working system if a new release or upgrade fails.","scopeNotes":"Should be defined and tested before go-live.","domain":3,"category":"Control"},{"id":107,"term":"False authorization","acronym":null,"def":"A biometric error in which an impostor is wrongly accepted as a valid user.","scopeNotes":"Also called false acceptance. This error type matters most for security.","domain":5,"category":"Technology"},{"id":108,"term":"False enrollment","acronym":null,"def":"A biometric failure in which someone who should not be registered gets a template stored and becomes a recognized user.","scopeNotes":"Enrollment is when a person's biometric trait is first captured and stored.","domain":5,"category":"Technology"},{"id":109,"term":"Feasibility study","acronym":null,"def":"An early study of whether a proposed system or project is practical and worthwhile, weighing technical, financial and operational factors.","scopeNotes":"","domain":3,"category":"Technology"},{"id":110,"term":"Fiber-optic cable","acronym":null,"def":"Cable that carries data as pulses of light through thin glass strands. It offers high speed over long distances and resists interference and tapping.","scopeNotes":"","domain":0,"category":"Technology"},{"id":111,"term":"File Transfer Protocol (FTP)","acronym":"FTP","def":"A standard protocol for moving files between computers over a TCP/IP network.","scopeNotes":"Plain FTP sends credentials in clear text; secure variants are preferred.","domain":0,"category":"Control"},{"id":112,"term":"Financial audit","acronym":null,"def":"An audit that checks whether financial statements and records are accurate and fairly presented.","scopeNotes":"","domain":3,"category":"Concept"},{"id":113,"term":"Firewall","acronym":null,"def":"A device or software that sits between networks and permits or blocks traffic based on set rules, typically separating a trusted network from the internet.","scopeNotes":"","domain":5,"category":"Technology"},{"id":114,"term":"Firmware","acronym":null,"def":"Software held on a hardware chip, often in read-only memory, that controls the device and is not changed during normal processing. Firmware updates are controlled changes.","scopeNotes":"","domain":0,"category":"Technology"},{"id":115,"term":"Fourth-generation language (4GL)","acronym":null,"def":"A high-level, user-friendly programming language in which users state what result they want rather than how to get it, often used for queries and reports.","scopeNotes":"","domain":0,"category":"Technology"},{"id":116,"term":"Frame relay","acronym":null,"def":"An older carrier service for linking sites across a wide area. It moves variable-sized units of data over fixed logical paths and was quicker than earlier packet-based services.","scopeNotes":"Better for data than for live voice or video.","domain":0,"category":"Technology"},{"id":117,"term":"Function point analysis (FPA)","acronym":"FPA","def":"Sizing software by the inputs, outputs, inquiries, files and interfaces it provides, independent of the programming language.","scopeNotes":"Used to estimate development effort and cost.","domain":3,"category":"Process"},{"id":118,"term":"Gateway","acronym":null,"def":"A device that connects networks using different protocols and translates between them.","scopeNotes":"","domain":5,"category":"Technology"},{"id":119,"term":"Generalized audit software (GAS)","acronym":"GAS","def":"Off-the-shelf software the IS auditor uses to read and analyze data from many systems and file formats, for example to extract exceptions, compare files, recompute totals, stratify and sample.","scopeNotes":"","domain":1,"category":"Technology"},{"id":120,"term":"Governance","acronym":null,"def":"The board's role, or that of an equivalent governing body, in deciding what the organization must achieve: it weighs what stakeholders need, sets priorities for management, and tracks results and compliance.","scopeNotes":"Governance sets direction; management carries it out.","domain":3,"category":"Process"},{"id":121,"term":"Hacker","acronym":null,"def":"Someone who tries to break into computer systems without permission.","scopeNotes":"","domain":0,"category":"Technology"},{"id":122,"term":"Handprint scanner","acronym":null,"def":"A biometric reader that identifies a person by measuring the shape and features of the hand.","scopeNotes":"","domain":5,"category":"Technology"},{"id":123,"term":"Hash total","acronym":null,"def":"A sum of a non-money field, such as account numbers, used only to detect changed or missing records.","scopeNotes":"Compared before and after processing; the total itself has no business meaning.","domain":5,"category":"Control"},{"id":124,"term":"Help desk","acronym":null,"def":"The support function users contact for help with IT problems. It logs, solves or escalates issues and tracks them until closed.","scopeNotes":"Ticket logs give the IS auditor evidence of how incidents are handled.","domain":0,"category":"Technology"},{"id":125,"term":"Hierarchical database","acronym":null,"def":"A database that arranges records in a tree, where one parent record can link to many child records but every child links to only one parent.","scopeNotes":"","domain":0,"category":"Technology"},{"id":126,"term":"Honeypot","acronym":null,"def":"A decoy system set up to attract attackers so their methods can be watched and studied, away from real production systems.","scopeNotes":"","domain":5,"category":"Technology"},{"id":127,"term":"Hot site","acronym":null,"def":"A fully equipped and configured recovery site that can take over operations within hours.","scopeNotes":"The most expensive site option, used for very short recovery time objectives.","domain":4,"category":"Technology"},{"id":128,"term":"Hypertext Markup Language (HTML)","acronym":"HTML","def":"The tagging language browsers read to lay out a web page, marking which text is a heading, paragraph, list item or link.","scopeNotes":"","domain":3,"category":"Concept"},{"id":129,"term":"Incident","acronym":null,"def":"An unplanned event that interrupts, or could interrupt, an IT service or that compromises the confidentiality, integrity or availability of information. A security incident is one kind.","scopeNotes":"","domain":5,"category":"Control"},{"id":130,"term":"Incident response","acronym":null,"def":"How an organization detects, analyzes, contains and recovers from an incident, then learns from it. Serious events may require invoking the disaster recovery plan (DRP).","scopeNotes":"","domain":4,"category":"Concept"},{"id":131,"term":"Information processing facility (IPF)","acronym":"IPF","def":"The data center: where the organization's computers run, together with its supporting rooms.","scopeNotes":"","domain":0,"category":"Technology"},{"id":132,"term":"Information systems (IS)","acronym":"IS","def":"The people, processes, data and technology an organization uses to collect, process, store and share information.","scopeNotes":"Broader than IT, which is only the technology component.","domain":0,"category":"Technology"},{"id":133,"term":"Inherent risk","acronym":null,"def":"Risk before any controls or other responses are applied.","scopeNotes":"One of the three parts of audit risk. The IS auditor assesses it but cannot change it.","domain":2,"category":"Control"},{"id":134,"term":"Instant messaging (IM)","acronym":"IM","def":"Real-time exchange of typed messages, and often files or media, between people over a network.","scopeNotes":"","domain":0,"category":"Concept"},{"id":135,"term":"Integrated services digital network (ISDN)","acronym":"ISDN","def":"A digital phone network standard that carries voice, video and data together over ordinary telephone lines in 64-kbps channels.","scopeNotes":"","domain":2,"category":"Technology"},{"id":136,"term":"Integrated test facilities (ITF)","acronym":"ITF","def":"A testing method that runs fictitious test records, such as a dummy customer, through the live production system and checks the results.","scopeNotes":"Test entries must be removed or reversed so they do not affect real accounts.","domain":1,"category":"Technology"},{"id":137,"term":"Integrity","acronym":null,"def":"Assurance that information is accurate and complete and has not been changed or destroyed without authorization.","scopeNotes":"","domain":0,"category":"Concept"},{"id":138,"term":"Internal controls","acronym":null,"def":"The safeguards management builds into the way the organization works, such as rules, approvals, reviews and system checks, so it can be reasonably sure its objectives will be met.","scopeNotes":"Controls prevent, detect or correct problems. They give reasonable assurance, never absolute assurance.","domain":3,"category":"Concept"},{"id":139,"term":"IP Security (IPSec)","acronym":null,"def":"A suite of protocols that protects traffic at the network layer by authenticating and encrypting IP packets, often used for VPNs.","scopeNotes":"","domain":5,"category":"Technology"},{"id":140,"term":"IT steering committee","acronym":null,"def":"A management-level group that oversees IT projects and service delivery and makes sure they carry out the IT strategy.","scopeNotes":"Differs from the board-level IT strategy committee, which focuses on direction.","domain":3,"category":"Process"},{"id":141,"term":"IT strategic plan","acronym":null,"def":"A long-range plan, often covering three to five years, that shows how IT will support the organization's strategic objectives. Business and IT management prepare it jointly.","scopeNotes":"The IS auditor verifies that it is aligned with the business strategy.","domain":2,"category":"Process"},{"id":142,"term":"Key goal indicator (KGI)","acronym":"KGI","def":"A measure looking back on results to show whether an IT process met its goal.","scopeNotes":"Lagging measure. Contrast with KPIs, which track progress along the way.","domain":3,"category":"Process"},{"id":143,"term":"Key performance indicator (KPI)","acronym":"KPI","def":"A measure of how well a process is performing toward a goal, such as the share of audit reports issued on time; an early signal of whether the goal will be reached.","scopeNotes":"","domain":2,"category":"Concept"},{"id":144,"term":"Leased line","acronym":null,"def":"A private communication line rented full time between two fixed points, always available rather than dialed when needed.","scopeNotes":"Also called a dedicated line.","domain":0,"category":"Technology"},{"id":145,"term":"Licensing agreement","acronym":null,"def":"A contract setting the terms under which the software owner allows a customer to install and use the software.","scopeNotes":"The IS auditor verifies that installed copies stay within licensed numbers.","domain":2,"category":"Technology"},{"id":146,"term":"Local area network (LAN)","acronym":"LAN","def":"A network that links computers and devices within a limited area, such as an office or building.","scopeNotes":"","domain":0,"category":"Technology"},{"id":147,"term":"Log","acronym":null,"def":"A time-ordered record of events or activities on a system; also the act of recording them.","scopeNotes":"","domain":0,"category":"Technology"},{"id":148,"term":"Logical access controls","acronym":null,"def":"Software-based measures, such as user IDs, passwords and permissions, that limit who can use systems, programs and data.","scopeNotes":"","domain":5,"category":"Control"},{"id":149,"term":"Logon","acronym":null,"def":"Signing in to a system, usually by entering a username and a password.","scopeNotes":"","domain":5,"category":"Technology"},{"id":150,"term":"Malware","acronym":null,"def":"Any harmful code, such as viruses, worms, Trojans or spyware, built to damage systems, steal data or gain access without permission.","scopeNotes":"","domain":5,"category":"Technology"},{"id":151,"term":"Mandatory access control (MAC)","acronym":"MAC","def":"Access control where the system enforces rules based on data classification and user clearance, and ordinary users or owners cannot change them.","scopeNotes":"Stricter than discretionary access control.","domain":5,"category":"Control"},{"id":152,"term":"Media access control (MAC)","acronym":"MAC","def":"The lower part of the OSI data link layer (Layer 2) that controls how devices take turns using the physical network medium.","scopeNotes":"Not the same as mandatory access control, which shares the acronym.","domain":5,"category":"Control"},{"id":153,"term":"Middleware","acronym":null,"def":"Software between applications that routes, queues and converts messages, so different systems can work together.","scopeNotes":"","domain":3,"category":"Concept"},{"id":154,"term":"Mobile site","acronym":null,"def":"A transportable recovery facility, such as a trailer fitted with equipment, that can be brought to a chosen location after a disaster.","scopeNotes":"","domain":3,"category":"Concept"},{"id":155,"term":"Network","acronym":null,"def":"Computers and other devices linked together, with the equipment needed to connect them, so they can share data and resources.","scopeNotes":"","domain":0,"category":"Technology"},{"id":156,"term":"Network administrator","acronym":null,"def":"The person who plans, installs and keeps the organization's network running, sometimes including phone systems.","scopeNotes":"","domain":0,"category":"Technology"},{"id":157,"term":"Network attached storage (NAS)","acronym":"NAS","def":"A file server appliance attached to the network that gives many users and systems shared storage space.","scopeNotes":"","domain":0,"category":"Technology"},{"id":158,"term":"Network interface card (NIC)","acronym":"NIC","def":"The hardware component that connects a computer to a network.","scopeNotes":"","domain":0,"category":"Technology"},{"id":159,"term":"Nondisclosure agreement (NDA)","acronym":"NDA","def":"A contract in which the parties agree to keep shared secrets private; for staff it often applies even after they leave.","scopeNotes":"Common when parties explore a deal or when staff are hired.","domain":4,"category":"Concept"},{"id":160,"term":"Operating system (OS)","acronym":"OS","def":"The base software that runs a computer, sharing out processor time, memory and devices among programs and offering them common services.","scopeNotes":"It also enforces many security controls, such as access rights.","domain":0,"category":"Control"},{"id":161,"term":"Operational audit","acronym":null,"def":"A review of whether a department or function uses its resources well and achieves what it is meant to, and whether its controls help it do so.","scopeNotes":"","domain":3,"category":"Control"},{"id":162,"term":"Outsourcing","acronym":null,"def":"Contracting an outside provider to run IT or other work on the organization's behalf.","scopeNotes":"The organization stays accountable for the outsourced function and its risk; the provider takes on responsibility for doing the work.","domain":2,"category":"Concept"},{"id":163,"term":"Paper test","acronym":null,"def":"A disaster recovery test in which team members read through the plan together and talk through their roles, without carrying out any steps.","scopeNotes":"Also called a desk-based evaluation or structured walkthrough. More involved than a checklist review, but less disruptive than preparedness or full operational tests.","domain":3,"category":"Concept"},{"id":164,"term":"Password","acronym":null,"def":"A secret string of characters a user enters to prove identity when logging in.","scopeNotes":"","domain":5,"category":"Technology"},{"id":165,"term":"Patch management","acronym":null,"def":"Finding, testing, approving and installing software fixes in a controlled way to keep systems current and secure.","scopeNotes":"Patches should go through change management and be tested first.","domain":3,"category":"Technology"},{"id":166,"term":"Penetration testing","acronym":null,"def":"An authorized, controlled attack on systems that copies real attacker methods to find weaknesses before others do.","scopeNotes":"Needs a clear scope and written approval from management before testing starts.","domain":5,"category":"Concept"},{"id":167,"term":"Phishing","acronym":null,"def":"A social engineering attack, usually by email, that poses as a trusted source to trick people into revealing information or running malicious content.","scopeNotes":"","domain":5,"category":"Concept"},{"id":168,"term":"Phreakers","acronym":null,"def":"People who break into phone systems and telecom lines, often to make free calls or listen in.","scopeNotes":"","domain":0,"category":"Technology"},{"id":169,"term":"Plaintext","acronym":null,"def":"Readable data before encryption or after decryption.","scopeNotes":"","domain":0,"category":"Concept"},{"id":170,"term":"Point-to-Point Protocol (PPP)","acronym":"PPP","def":"A data link protocol that carries network traffic over a direct link between two points, such as a dial-up or serial connection. It also handles authentication and link setup.","scopeNotes":"","domain":0,"category":"Technology"},{"id":171,"term":"Policy","acronym":null,"def":"A high-level management statement of intent that sets out what is required and what is not allowed.","scopeNotes":"Standards and procedures sit below policies and support them.","domain":2,"category":"Control"},{"id":172,"term":"Preventive control","acronym":null,"def":"A control that stops errors, fraud or other unwanted events before they happen, such as segregation of duties or input validation.","scopeNotes":"","domain":1,"category":"Control"},{"id":173,"term":"Privacy","acronym":null,"def":"An individual's right to expect that data about them is handled fairly: gathered, kept, passed on and destroyed only in ways that fit the reason it was obtained.","scopeNotes":"","domain":4,"category":"Concept"},{"id":174,"term":"Private key cryptosystems","acronym":null,"def":"Encryption where the sender and receiver share one secret key that both locks and unlocks the data.","scopeNotes":"Also called symmetric encryption. Key distribution is the main challenge.","domain":5,"category":"Technology"},{"id":175,"term":"Procedure","acronym":null,"def":"Written, detailed steps for carrying out a task in line with policies and standards.","scopeNotes":"","domain":2,"category":"Control"},{"id":176,"term":"Process","acronym":null,"def":"Any repeatable chain of work that converts inputs into results, operating within the organization's rules.","scopeNotes":"","domain":2,"category":"Process"},{"id":177,"term":"Protocol","acronym":null,"def":"An agreed set of rules for how two systems format and exchange data.","scopeNotes":"","domain":0,"category":"Control"},{"id":178,"term":"Public key cryptosystem","acronym":null,"def":"A cryptosystem using a public and private key pair: what one key encrypts only the other can decrypt.","scopeNotes":"Encrypting with the recipient's public key gives confidentiality; signing with the sender's private key gives authenticity.","domain":5,"category":"Technology"},{"id":179,"term":"Public key encryption","acronym":null,"def":"Encryption using two related keys: a public key anyone can use and a private key kept secret by its owner.","scopeNotes":"Same as asymmetric key encryption.","domain":5,"category":"Technology"},{"id":180,"term":"Public key infrastructure (PKI)","acronym":"PKI","def":"The policies, roles, systems and procedures that create, issue, manage and revoke digital certificates linking public keys to their owners.","scopeNotes":"","domain":5,"category":"Process"},{"id":181,"term":"Quality assurance (QA)","acronym":"QA","def":"Planned activities that build confidence a product or process will meet its requirements, mainly by improving how work is done rather than checking finished output.","scopeNotes":"","domain":3,"category":"Technology"},{"id":182,"term":"Reciprocal agreement","acronym":null,"def":"An arrangement in which two or more organizations with compatible systems agree to lend each other processing capacity in an emergency.","scopeNotes":"Cheap but hard to enforce and rarely tested; the IS auditor questions whether the capacity really exists.","domain":3,"category":"Process"},{"id":183,"term":"Recovery point objective (RPO)","acronym":"RPO","def":"The most data, measured in time, a business can afford to lose in a disruption. It sets the oldest acceptable restore point and drives backup frequency.","scopeNotes":"A low RPO means frequent backups or replication.","domain":4,"category":"Concept"},{"id":184,"term":"Recovery strategy","acronym":null,"def":"The chosen approach for meeting a process's recovery objectives, such as an alternate site or manual procedures.","scopeNotes":"Choosing between options such as hot, warm or cold sites depends on the RTO and on cost.","domain":4,"category":"Process"},{"id":185,"term":"Recovery time objective (RTO)","acronym":"RTO","def":"The target time within which a business function or system must be restored after a disruption. It is set inside the maximum tolerable downtime, leaving time to verify data.","scopeNotes":"A short RTO calls for a faster, costlier recovery option.","domain":4,"category":"Concept"},{"id":186,"term":"Registration authority (RA)","acronym":"RA","def":"The function that checks who a requester is before a certificate is created, then passes the approved request on to the CA for signing.","scopeNotes":"","domain":5,"category":"Technology"},{"id":187,"term":"Remote access service (RAS)","acronym":"RAS","def":"Hardware and software that let users connect to an organization's network and resources from a remote location.","scopeNotes":"Remote connections need strong authentication and logging.","domain":0,"category":"Technology"},{"id":188,"term":"Remote procedure call (RPC)","acronym":"RPC","def":"A protocol that lets a program on one computer run a procedure on another computer as if it were local, then receive the results.","scopeNotes":"","domain":2,"category":"Technology"},{"id":189,"term":"Repeaters","acronym":null,"def":"A Layer 1 (physical layer) device that rebuilds a signal weakened by distance and forwards it, so cabling can extend further.","scopeNotes":"","domain":0,"category":"Technology"},{"id":190,"term":"Request for proposal (RFP)","acronym":"RFP","def":"A formal invitation asking vendors to propose how they would meet stated requirements, and at what cost.","scopeNotes":"","domain":2,"category":"Technology"},{"id":191,"term":"Ring topology","acronym":null,"def":"A network layout in which devices connect in a closed loop and messages pass from one device to the next until they reach their destination.","scopeNotes":"","domain":0,"category":"Technology"},{"id":192,"term":"Risk","acronym":null,"def":"How likely something harmful is to happen, combined with how bad the harm would be.","scopeNotes":"","domain":1,"category":"Concept"},{"id":193,"term":"Risk analysis","acronym":null,"def":"Working out, for each identified risk, how likely it is and how much harm it could do, so risks can be compared and ranked.","scopeNotes":"Can be qualitative (high, medium, low) or quantitative (such as annualized loss expectancy). Its output feeds risk evaluation.","domain":5,"category":"Process"},{"id":194,"term":"Risk appetite","acronym":null,"def":"How much risk, in total, the organization is prepared to take on to achieve its strategy, as set by the board and senior management.","scopeNotes":"Risk tolerance turns it into limits for specific risks.","domain":0,"category":"Concept"},{"id":195,"term":"Risk assessment","acronym":null,"def":"Identifying risks and rating how likely and serious each one is.","scopeNotes":"The IS auditor uses it to focus the audit plan on the areas of greatest risk.","domain":3,"category":"Process"},{"id":196,"term":"Risk evaluation","acronym":null,"def":"Judging how serious an assessed risk is by setting it against the organization's agreed thresholds, to decide whether it needs treatment.","scopeNotes":"","domain":3,"category":"Process"},{"id":197,"term":"Risk management","acronym":null,"def":"The ongoing work of identifying, assessing, responding to and monitoring risks so they stay within the organization's risk appetite.","scopeNotes":"","domain":2,"category":"Control"},{"id":198,"term":"Risk mitigation","acronym":null,"def":"Reducing risk by putting controls or countermeasures in place.","scopeNotes":"","domain":2,"category":"Control"},{"id":199,"term":"Risk tolerance","acronym":null,"def":"The limit on how far a particular risk or result may drift from target before management must respond. It turns the broad risk appetite into specific, measurable thresholds.","scopeNotes":"","domain":2,"category":"Process"},{"id":200,"term":"Risk transfer","acronym":null,"def":"Moving the financial impact of a risk to a third party, for example through insurance or a contract.","scopeNotes":"Also called risk sharing. Accountability stays with the organization.","domain":2,"category":"Control"},{"id":201,"term":"Risk treatment","acronym":null,"def":"Choosing and carrying out a response to a risk: mitigate (reduce) it, avoid it, transfer or share it, or accept it.","scopeNotes":"Accepting risk is a management decision. The IS auditor reports the risk but never accepts it.","domain":3,"category":"Process"},{"id":202,"term":"Router","acronym":null,"def":"A Layer 3 device that reads where each packet is headed and picks the best path to forward it to the next network.","scopeNotes":"Routers can also filter traffic by address, protocol or port.","domain":0,"category":"Technology"},{"id":203,"term":"RSA (RSA)","acronym":"RSA","def":"A widely used public key algorithm, named after its three inventors, that can both encrypt data and sign it.","scopeNotes":"Its strength rests on how hard it is to factor very large numbers.","domain":5,"category":"Technology"},{"id":204,"term":"Secure Sockets Layer (SSL)","acronym":"SSL","def":"An older protocol that encrypts traffic between a browser and a server. It has been replaced by Transport Layer Security (TLS).","scopeNotes":"Every SSL version, and TLS 1.0 and 1.1, is deprecated and should be disabled; use TLS 1.2 or, preferably, TLS 1.3.","domain":5,"category":"Technology"},{"id":205,"term":"Segregation/separation of duties (SoD)","acronym":null,"def":"Splitting key tasks, such as authorizing, recording and handling assets, among different people so no one person can commit and hide errors or fraud.","scopeNotes":"Where SoD is not possible, management applies compensating controls, such as independent review of activity logs, and the IS auditor verifies that they work.","domain":1,"category":"Concept"},{"id":206,"term":"Service level agreement (SLA)","acronym":"SLA","def":"A contract or formal agreement that sets measurable service targets, such as uptime and response times, between a provider and its customer, and how results are reported.","scopeNotes":"","domain":4,"category":"Concept"},{"id":207,"term":"Simple Object Access Protocol (SOAP)","acronym":"SOAP","def":"An XML-based messaging protocol that lets applications exchange structured data over the internet, usually over HTTP.","scopeNotes":"Because it travels through ports firewalls normally allow, it needs its own security controls.","domain":3,"category":"Technology"},{"id":208,"term":"Spyware","acronym":null,"def":"Software that secretly monitors what a user does and sends the information to someone else without the user's consent.","scopeNotes":"","domain":5,"category":"Technology"},{"id":209,"term":"Standard","acronym":null,"def":"A binding rule that spells out exactly how something must be done, set either by the organization or by an outside body such as ISO.","scopeNotes":"","domain":3,"category":"Control"},{"id":210,"term":"Star topology","acronym":null,"def":"A network layout in which every device connects to a central hub or switch, which passes all traffic between them.","scopeNotes":"The central device is a single point of failure.","domain":0,"category":"Control"},{"id":211,"term":"Statistical sampling","acronym":null,"def":"Choosing sample items at random and using probability theory to draw conclusions about the whole population, with a measurable level of confidence.","scopeNotes":"Lets the IS auditor measure sampling risk objectively.","domain":1,"category":"Process"},{"id":212,"term":"Storage area networks (SANs)","acronym":null,"def":"A dedicated high-speed network that connects servers to shared storage devices.","scopeNotes":"","domain":4,"category":"Technology"},{"id":213,"term":"Structured Query Language (SQL)","acronym":"SQL","def":"The standard language for querying and managing data in relational databases.","scopeNotes":"","domain":3,"category":"Technology"},{"id":214,"term":"Switches","acronym":null,"def":"Layer 2 devices that link computers on a LAN and deliver each frame only to the port where its recipient sits, which cuts down collisions.","scopeNotes":"","domain":0,"category":"Technology"},{"id":215,"term":"System development life cycle (SDLC)","acronym":"SDLC","def":"The stages a system passes through, from first idea and feasibility, through design, build and testing, to go-live and a post-implementation review.","scopeNotes":"The IS auditor verifies that controls are built in at each phase, not added at the end.","domain":3,"category":"Technology"},{"id":216,"term":"Threat","acronym":null,"def":"Anything, such as a person, event or natural force, that could exploit a vulnerability and harm an asset.","scopeNotes":"","domain":5,"category":"Concept"},{"id":217,"term":"Token ring topology","acronym":null,"def":"A ring network in which a special message, the token, passes from device to device, and only the device holding it may transmit.","scopeNotes":"This prevents two devices sending at once.","domain":0,"category":"Technology"},{"id":218,"term":"Transmission Control Protocol/Internet Protocol (TCP/IP)","acronym":"TCP/IP","def":"The family of protocols that the internet and most networks run on, covering addressing, routing and reliable delivery of data.","scopeNotes":"","domain":2,"category":"Technology"},{"id":219,"term":"Trojan horse","acronym":null,"def":"Malicious code hidden inside a program that appears legitimate and useful.","scopeNotes":"","domain":5,"category":"Technology"},{"id":220,"term":"Twisted pair","acronym":null,"def":"Cable made of pairs of insulated copper wires twisted together to reduce interference. It is cheap and common but more open to interference and tapping than fiber.","scopeNotes":"","domain":4,"category":"Concept"},{"id":221,"term":"Uninterruptible power supply (UPS)","acronym":"UPS","def":"A battery-based device that keeps equipment running for a short time during a power failure or voltage drop, allowing an orderly shutdown or switch to a generator.","scopeNotes":"","domain":4,"category":"Technology"},{"id":222,"term":"Universal Serial BUS (USB)","acronym":"USB","def":"A common standard for connecting external devices, such as drives, keyboards and phones, to a computer.","scopeNotes":"USB ports are a common route for data leakage and malware, so many organizations restrict them.","domain":2,"category":"Control"},{"id":223,"term":"Variable sampling","acronym":null,"def":"Sampling that estimates an amount, such as the total or average value of all items, from the items tested.","scopeNotes":"Used in substantive testing. Attribute sampling estimates a rate instead.","domain":1,"category":"Process"},{"id":224,"term":"Voice-over Internet Protocol (VoIP)","acronym":null,"def":"Technology that carries phone calls as data over the internet or another IP network instead of traditional phone lines.","scopeNotes":"","domain":0,"category":"Technology"},{"id":225,"term":"Vulnerability","acronym":null,"def":"A gap or flaw, in technology, a process or a control, that a threat could take advantage of.","scopeNotes":"","domain":5,"category":"Control"},{"id":226,"term":"Vulnerability analysis","acronym":null,"def":"Finding, classifying and ranking weaknesses in systems or processes.","scopeNotes":"","domain":5,"category":"Process"},{"id":227,"term":"Warm site","acronym":null,"def":"A recovery site with power, network and some equipment ready, but not a full set of hardware or current data. Recovery takes from hours to a few days.","scopeNotes":"Sits between a hot site and a cold site in cost and speed.","domain":4,"category":"Technology"},{"id":228,"term":"White box testing","acronym":null,"def":"Testing that looks inside a program's code and logic to check that each path works as intended.","scopeNotes":"Usually done by developers at unit level.","domain":3,"category":"Process"},{"id":229,"term":"Wi-Fi Protected Access (WPA)","acronym":"WPA","def":"Security protocols that protect Wi-Fi networks with stronger encryption and authentication than WEP.","scopeNotes":"WPA2 and WPA3 are the current versions; original WPA is outdated.","domain":5,"category":"Technology"},{"id":230,"term":"Wide area network (WAN)","acronym":"WAN","def":"A network that links computers and LANs across a wide geographic area, such as between cities or countries.","scopeNotes":"","domain":0,"category":"Technology"},{"id":231,"term":"Wide area network (WAN) switch","acronym":"WAN","def":"Layer 2 equipment in a telecom provider's core that moves customer traffic for wide-area technologies such as frame relay and ISDN.","scopeNotes":"","domain":0,"category":"Technology"},{"id":232,"term":"Wired Equivalent Privacy (WEP)","acronym":"WEP","def":"An early Wi-Fi security protocol meant to give wireless networks privacy similar to a wired network. It has serious flaws and is easily broken.","scopeNotes":"Replaced by WPA and WPA2; finding WEP in use is a weakness.","domain":5,"category":"Control"},{"id":233,"term":"Wiretapping","acronym":null,"def":"Secretly listening in on calls or data as they pass along communication lines.","scopeNotes":"","domain":5,"category":"Concept"},{"id":234,"term":"X.25 Interface","acronym":null,"def":"An older International Telecommunication Union (ITU) standard defining how terminals connect to public packet-switched data networks.","scopeNotes":"","domain":0,"category":"Technology"}]</script>
 <script id="faqData" type="application/json">[
 {"cat":"Using the app","q":"How do I start practicing?","a":"Open Practice from the bottom navigation, choose a domain (or 'All domains'), and answer questions one at a time. Your first question loads automatically — read the explanation after every answer, right or wrong."},
-{"cat":"Using the app","q":"What is the difference between Study mode and Exam mode?","a":"Study mode shows the full scenario plus tips and mindset coaching after you answer. Exam mode compacts the question and hides the extras so the screen feels closer to the real exam. Turn it on or off with Exam-style questions under You."},
+{"cat":"Using the app","q":"What does Exam-day rehearsal change?","a":"Turn on Exam-day rehearsal under You to practice the way exam day feels: the scenario sits inside the question, and the tips and coaching after you answer are hidden. The questions are the same exam-style questions either way. Turn it off to see the full scenario, tips and coaching again."},
 {"cat":"Using the app","q":"How does the Mock Exam work?","a":"Choose a full mock (150 questions, 4 hours) or a mini mock (50 questions, 80 minutes). Both follow the real CISA blueprint: the same domain mix and a realistic spread of difficulty. Like the real exam, you see no right or wrong while you answer. Your score, a breakdown by domain and every explanation come at the end."},
-{"cat":"Using the app","q":"What is the Review queue?","a":"Questions you answer incorrectly come back on a spaced schedule — soon at first, then at widening intervals as you get them right, until they retire. The Home screen shows how many are due and lets you start a review session in one tap."},
+{"cat":"Using the app","q":"What are Questions to revisit?","a":"Questions you miss come back the next day, then at widening intervals as you get them right, until they retire. A right answer you marked Unsure or Guessing comes back too. Today's plan starts with them, a few at a time, most overdue first."},
 {"cat":"Using the app","q":"How do I save a question for later?","a":"Use the bookmark control on a question to save it. Saved questions live under Practice, then Saved, where you can revisit them any time."},
 {"cat":"Using the app","q":"What does the Weak Spots tab show?","a":"Weak Spots shows how each of the five domains is going and lets you start a drill on the ones that need work. Until a domain has 30 answers it shows Building, Steady or Strong instead of a number, so a few answers never read as a verdict."},
 {"cat":"Using the app","q":"Some tabs are missing on my phone — where are they?","a":"On phones the bottom bar shows Today, Learn, Practice and You. Learn holds Study notes, Glossary, Principles, About the CISA exam and Final review week; Practice holds Mock exam and Saved; You holds Weak spots, settings and help."},
@@ -6630,15 +6660,15 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 {"cat":"The CISA exam","q":"What format are the questions?","a":"Every question is multiple choice with four options and one best answer. The wording often asks for the BEST, FIRST, or MOST appropriate choice."},
 {"cat":"The CISA exam","q":"Do I need work experience to be certified?","a":"CISA certification requires relevant verified work experience in addition to passing the exam. Requirements can change, so always confirm the current rules on ISACA's official website."},
 {"cat":"The CISA exam","q":"Where do I register for the exam?","a":"Registration, fees, scheduling, and eligibility are all handled by ISACA. Confirm the current details on ISACA's official website — this app does not manage exam registration."},
-{"cat":"Study strategy","q":"How should I use this app to prepare?","a":"Practice one domain at a time, read the explanation for every question, let the Review queue resurface your misses, and use Mock Exams to rehearse timing as your test date approaches."},
-{"cat":"Study strategy","q":"What is spaced repetition?","a":"It means reviewing material at increasing intervals — questions you struggle with come back sooner, and ones you know come back later. The Review queue does this for you automatically."},
+{"cat":"Study strategy","q":"How should I use this app to prepare?","a":"Practice one domain at a time, read the explanation for every question, let Questions to revisit bring back your misses, and use Mock Exams to rehearse timing as your test date approaches."},
+{"cat":"Study strategy","q":"What is spaced repetition?","a":"It means reviewing material at increasing intervals — questions you struggle with come back sooner, and ones you know come back later. Questions to revisit does this for you automatically."},
 {"cat":"Study strategy","q":"Why do questions ask for the BEST, FIRST, or MOST answer?","a":"CISA questions often have several defensible options. The wording asks for the single best, first, or most appropriate one — so train yourself to compare all four options against the IS auditor's priorities (risk, governance, independence), not just spot a correct-looking answer."},
 {"cat":"Study strategy","q":"How do I think like an IS auditor?","a":"The IS auditor evaluates, recommends and reports; management implements and decides. Favor governance, risk-based reasoning, and understanding a situation before acting. The tips after each question reinforce this."},
 {"cat":"Study strategy","q":"Which domain should I focus on?","a":"Domains 4 and 5 are the largest, at about 26% each. Use the Weak Spots tab to find where your accuracy is lowest and drill there first."},
 {"cat":"Study strategy","q":"How many practice questions should I do?","a":"There is no fixed number. Aim for consistent daily practice, full coverage of every domain, and Mock Exams close to your test date. How carefully you review each answer matters more than raw volume."},
-{"cat":"About & your data","q":"Is this app affiliated with ISACA?","a":"No. It is an independent, free study resource. CISA is a registered trademark of ISACA; this app is for educational use only and is not a substitute for official ISACA materials."},
+{"cat":"About & your data","q":"Is this app affiliated with ISACA?","a":"No. It is an independent study resource. CISA is a registered trademark of ISACA; this app is for educational use only and is not a substitute for official ISACA materials."},
 {"cat":"About & your data","q":"Where do the questions and notes come from?","a":"Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards."},
-{"cat":"About & your data","q":"Does the app cost anything?","a":"No. The web practice app is free, with no account and no ads."},
+{"cat":"About & your data","q":"Does the app cost anything?","a":"Not during the beta. KaiSip is free during the beta, with no account and no ads. If paid features come later, we'll say so here first, and everything you've saved stays yours."},
 {"cat":"About & your data","q":"Is my data private?","a":"Yes. Your progress is stored only in your own browser and never leaves your device. There is no sign-up, and your answers are not sent to any server."},
 {"cat":"About & your data","q":"Where is my progress saved?","a":"All progress is saved locally in your browser. Clearing your browser data or using a different device or browser will start you fresh. Open You, then Your data, to export a copy, import one, or reset."},
 {"cat":"About & your data","q":"How do I report a problem or suggest a feature?","a":"Open You, then Send feedback — it goes straight to the team."}
@@ -6764,7 +6794,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.32';
+const APP_VERSION = 'v12.34';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -7575,14 +7605,34 @@ document.addEventListener('visibilitychange', function() {
   if (document.visibilityState === 'hidden') saveMockOnLeave();
 });
 
-// ── ADAPTIVE REVIEW QUEUE (v10.39) ──
+// ── ADAPTIVE REVIEW QUEUE (v10.39; mobile rules from v12.33) ──
 // Leitner-style spaced repetition. Each missed question gets a review
 // entry { box, dueAt, lastSeen, reps }; the box advances on correct
 // answers and resets on wrong ones, spreading the interval until the
-// question graduates out of box 5.
+// question graduates out of box 5. Since v12.33 the rules are the mobile
+// app's (mobile/src/engine/srs.ts):
+// - a miss goes back to box 1 and comes back at the start of tomorrow
+//   (local midnight), never straight away: the learner has just read why;
+// - a RIGHT answer less than 4 hours after a MISS on the same question is
+//   a retest: no promotion, and not due before tomorrow;
+// - a right answer the learner rated "Guessing" or "Unsure" on a question
+//   that is not in the queue joins it (box 1 or 2), due tomorrow.
+// The saved entry shape and the key are unchanged.
 var REVIEW_INTERVAL_DAYS = { 1: 0, 2: 1, 3: 3, 4: 7, 5: 16 };
 var REVIEW_MAX_BOX = 5;
 var DAY_MS = 86400000;
+// The most a review set asks at once (mobile REVIEW_SESSION_CAP), and the
+// part of a day's plan that reviews take (mobile's planner gives reviews
+// about half of a 20-minute day: 8 questions). The rest wait, most overdue
+// first, so the daily load never piles up.
+var REVIEW_SESSION_CAP = 20;
+var REVIEW_DAILY_PLAN = 8;
+// The start of the next local day (setHours(24) is DST-safe), as mobile's startOfNextDay.
+function reviewNextDay(now) {
+  var d = new Date(now);
+  d.setHours(24, 0, 0, 0);
+  return d.getTime();
+}
 
 function sanitizeReviewMap(r) {
   if (!r || typeof r !== 'object') return {};
@@ -7605,36 +7655,77 @@ function sanitizeReviewMap(r) {
 
 // Update one question's review schedule after a practice answer.
 // Consumes the already-graded `ok` — never re-derives correctness.
+// `confidence`: 'sure' | 'educated' (shown as Unsure) | 'guessing', or none.
+// Runs BEFORE the answer is logged (recordAnswerParity), so S.answerLog
+// still holds the previous answer to this question (the retest check).
+// Returns what happened, for the answer screen's coach line:
+// 'missed' | 'retest' | 'guess' | '' (nothing to say).
 function updateReviewSchedule(qId, ok, confidence) {
-  if (!qId) return;
+  if (!qId) return '';
   if (!S.review || typeof S.review !== 'object') S.review = {};
   var now = Date.now();
+  var tomorrow = reviewNextDay(now);
   var e = S.review[qId];
   if (!ok) {
-    // Wrong — (re)enter the queue at box 1, due immediately.
+    // Wrong: back to box 1, due at the start of tomorrow (a wrong retest counts in full).
     S.review[qId] = {
-      box: 1, dueAt: now, lastSeen: now,
+      box: 1, dueAt: tomorrow, lastSeen: now,
       reps: ((e && e.reps) || 0) + 1
     };
-    return;
+    return 'missed';
   }
-  // Correct but the question was never in the queue → nothing to schedule.
-  if (!e) return;
+  var prev = S.answerLog && S.answerLog[qId];
+  var gap = prev ? now - (Number(prev.lastAt) || 0) : -1;
+  if (prev && prev.lastCorrect === false && gap >= 0 && gap < PARITY_RETEST_MS) {
+    // A right answer minutes after a miss is working memory: no promotion,
+    // and not due again before tomorrow.
+    if (e) {
+      e.dueAt = Math.max(Number(e.dueAt) || 0, tomorrow);
+      e.lastSeen = now; e.reps = (e.reps || 0) + 1;
+    } else {
+      S.review[qId] = { box: 1, dueAt: tomorrow, lastSeen: now, reps: 1 };
+    }
+    return 'retest';
+  }
+  if (!e) {
+    // Not in the queue: a confident right answer needs no review, but a
+    // lucky guess or an unsure hit comes back tomorrow to be re-tested.
+    if (confidence === 'guessing') { S.review[qId] = { box: 1, dueAt: now + DAY_MS, lastSeen: now, reps: 1 }; return 'guess'; }
+    if (confidence === 'educated') { S.review[qId] = { box: 2, dueAt: now + REVIEW_INTERVAL_DAYS[2] * DAY_MS, lastSeen: now, reps: 1 }; return 'guess'; }
+    return '';
+  }
   if (confidence === 'guessing') {
-    // A lucky guess does not advance the box — just re-space at the
-    // current box so it still comes back.
-    e.dueAt = now + REVIEW_INTERVAL_DAYS[e.box] * DAY_MS;
+    // A lucky guess does not advance the box — re-space at the current box
+    // so it still comes back (never sooner than tomorrow).
+    e.dueAt = Math.max(now + REVIEW_INTERVAL_DAYS[e.box] * DAY_MS, tomorrow);
     e.lastSeen = now; e.reps = (e.reps || 0) + 1;
-    return;
+    return 'guess';
   }
-  // Confident correct answer — promote a box.
+  // A right answer — promote a box.
   if (e.box >= REVIEW_MAX_BOX) {
     delete S.review[qId]; // graduated — leaves the queue for good
-    return;
+    return '';
   }
   e.box = e.box + 1;
   e.dueAt = now + REVIEW_INTERVAL_DAYS[e.box] * DAY_MS;
   e.lastSeen = now; e.reps = (e.reps || 0) + 1;
+  return '';
+}
+
+// Saves from before v12.33 (load time, nothing dropped): a question missed
+// earlier TODAY was due at once under the old rule; it now waits for the
+// start of tomorrow, like a new miss. Box 1 with a real last answer only, so
+// questions seeded from the old missed list keep their place. Entries from
+// earlier days are already due either way and are left exactly as they are.
+function migrateReviewSchedule() {
+  if (!S.review || typeof S.review !== 'object') return;
+  var now = Date.now();
+  Object.keys(S.review).forEach(function (id) {
+    var e = S.review[id];
+    if (!e || e.box !== 1 || !(Number(e.lastSeen) > 0)) return;
+    var next = reviewNextDay(e.lastSeen);
+    if (next > now && (Number(e.dueAt) || 0) < next) e.dueAt = next;
+  });
 }
 
 // A review id the queue can still open: a saved missed question, a question
@@ -8163,6 +8254,7 @@ function loadState() {
   if (!S.queues) S.queues = {};
   if (!S.queues["all"]) S.queues["all"] = [];
   seedReviewFromMissed();
+  migrateReviewSchedule();
   // A profile loaded after the notes arrived still gets its v2 tick move.
   if (CISA_NOTES_RAW && CONCEPTS_DATA) migrateTopicTicksToV2(CONCEPTS_DATA);
   tryResumeSavedMock();
@@ -8224,6 +8316,7 @@ function exportProgress(otherId) {
   a.download = 'kaisip-web-progress' + slug + '.json';
   document.body.appendChild(a);
   a.click();
+  if (!otherId) { try { localStorage.setItem(BACKUP_SAVED_KEY, String(Date.now())); } catch (e) {} }
   setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 1000);
 }
 
@@ -9236,7 +9329,7 @@ function renderTopics() {
   var anyOpen = domainData.groups.some(function(g) { return topicState.openGroups[d + '-g-' + g.group_id] === true; });
   var toolbarHtml = '<div class="gt-toolbar">'
     + '<div class="gt-search">' + ico('search', 20) + '<label class="sr-only" for="newTopicSearch">Search Domain ' + d + ' notes</label>'
-    + '<input type="search" class="gt-search-input" id="newTopicSearch" placeholder="Search this domain, e.g. RPO" autocomplete="off" value="' + escapeHtml(topicState.search || '') + '" oninput="onTopicSearch(this.value)">'
+    + '<input type="search" class="gt-search-input" id="newTopicSearch" placeholder="Search this domain, e.g. recovery time" autocomplete="off" value="' + escapeHtml(topicState.search || '') + '" oninput="onTopicSearch(this.value)">'
     + (searchQ ? '<button class="gt-icon-btn" onclick="onTopicSearch(\'\')" aria-label="Clear search">' + ico('x', 18) + '</button>' : '')
     + '</div>'
     + '<div class="gt-toolbar-row">' + (domProg.done > 0 ? gtFilterChipsHtml(filterMode) : '')
@@ -10174,6 +10267,7 @@ function switchTab(t, opts) {
   // button and nextQ() return to normal practice behaviour. startReviewQueue
   // re-sets reviewQueueMode AFTER its own switchTab('practice') call.
   reviewQueueMode = false;
+  reviewEndShown = false;
   missedReviewMode = false;
   resetConceptPractice();
   // Leaving the exam guide drops a section still waiting for the file.
@@ -10205,6 +10299,8 @@ function switchTab(t, opts) {
     pendingDebrief = null;
   }
   try { railNoteFlush(); railSync(); } catch (e) {}
+  // The cookie question, once its moment has come (maybeShowConsentBanner).
+  try { maybeShowConsentBanner(); } catch (e) {}
   // Land on the newly opened section's own content — scroll the active
   // screen element into view rather than the page origin, so the section
   // heading sits at the top of the viewport instead of the page header.
@@ -10740,8 +10836,12 @@ function todayStartedNote() {
 function todayNextStep(r, range) {
   var due = 0;
   try { due = getDueReview().length; } catch (e) {}
-  if (due > 0) {
-    return { icon: 'review', kicker: 'Due today', title: 'Spaced review', meta: railShowCount(due) + ' due &middot; most overdue first', go: { step: 'review' } };
+  // Today's plan already starts with the questions to revisit (unless it is
+  // a "Where you left off" panel), so the next step never repeats them.
+  var inPlan = false;
+  try { inPlan = !practicePrimary().resume; } catch (e) {}
+  if (due > 0 && !inPlan) {
+    return { icon: 'review', kicker: 'Due today', title: 'Questions to revisit', meta: railShowCount(due) + ' due &middot; most overdue first', go: { step: 'review' } };
   }
   var note = function (hit, kicker) {
     var mins = 0;
@@ -10754,6 +10854,17 @@ function todayNextStep(r, range) {
   };
   var started = todayStartedNote();
   if (started) return note(started, 'Continue reading');
+  if (inPlan) {
+    var planD = null;
+    try { planD = todayPlanDomain(r).d; } catch (e) { planD = null; }
+    var keys = Object.keys(DI);
+    var reading = planD ? [planD].concat(keys.filter(function (d) { return d !== planD; })) : keys;
+    for (var k = 0; k < reading.length; k++) {
+      var unread = todayNoteIn(reading[k], 'none');
+      if (unread) return note(unread, 'Read next');
+    }
+    return null;
+  }
   // Domains by points left on the table (mobile's focus rule), biggest first.
   var order = r.domains.slice().sort(function (a, b) {
     return (1 - b.mastery) * DI[b.id].weight - (1 - a.mastery) * DI[a.id].weight;
@@ -10811,7 +10922,7 @@ function refreshTodayNext() {
   var old = td.querySelector('.td-next');
   var focused = !!(old && old.contains(document.activeElement));
   if (old) old.outerHTML = html;
-  else if (html) (td.querySelector('.td-side') || td.querySelector('.td-plate')).insertAdjacentHTML('beforebegin', html);
+  else if (html) (td.querySelector('.td-backup') || td.querySelector('.td-side') || td.querySelector('.td-plate')).insertAdjacentHTML('beforebegin', html);
   if (focused) { var b = td.querySelector('.td-next .you-row'); if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} } }
 }
 function todayOpenNote(domainId, itemId) {
@@ -10830,6 +10941,124 @@ function todayPracticeDomain(d) {
 function todayPractice() {
   switchTab('practice', { noScroll: true });
   runPracticePrimary();
+}
+
+// ── TODAY'S PLAN (v12.33; mobile engine/planner.ts, in brief) ──
+// One plan with its time: the questions to revisit first (at most
+// REVIEW_DAILY_PLAN, most overdue first), then one practice set in the
+// domain that most needs it: one not started yet (outline order), else the
+// one with the most points left on the table. Never the domain of the set
+// just finished when another will do. Nothing new is saved.
+function lastSetDomain() {
+  try {
+    var j = JSON.parse(localStorage.getItem('aurivan_last_session') || 'null');
+    return j && DI[String(j.domain)] ? String(j.domain) : null;
+  } catch (e) { return null; }
+}
+function todayPlanDomain(r, last) {
+  if (last === undefined) last = lastSetDomain();
+  var fresh = r.domains.filter(function (x) { return x.answered === 0 && x.id !== last; });
+  if (fresh.length) return { d: fresh[0].id, why: 'new' };
+  var order = r.domains.slice().sort(function (a, b) {
+    return (1 - b.mastery) * DI[b.id].weight - (1 - a.mastery) * DI[a.id].weight;
+  });
+  var pick = order.filter(function (x) { return x.id !== last; })[0] || order[0];
+  return { d: pick.id, why: 'gain' };
+}
+function todayPlanSetLength() { return practiceLen > 0 ? practiceLen : 10; }
+function todayPlan(r, last) {
+  r = r || computeTodayReadiness();
+  var due = 0;
+  try { due = getDueReview().length; } catch (e) {}
+  var review = Math.min(due, REVIEW_DAILY_PLAN);
+  var set = todayPlanDomain(r, last);
+  var n = todayPlanSetLength();
+  var items = [];
+  if (review > 0) {
+    items.push({ title: 'Questions to revisit', meta: due > review ? review + ' of ' + railShowCount(due) + ' due' : review + (review === 1 ? ' question' : ' questions') + ' from before' });
+  }
+  items.push({ title: escapeHtml(DI[set.d].short), meta: n + ' questions &middot; ' + (set.why === 'new' ? 'not started' : 'most to gain') });
+  return { review: review, due: due, d: set.d, n: n, items: items, minutes: Math.max(1, Math.round((review + n) * MINUTES_PER_PRACTICE_Q)) };
+}
+function todayPlanStart() {
+  var plan = todayPlan();
+  if (plan.review > 0) { startReviewQueue(plan.review, { d: plan.d, n: plan.n }); return; }
+  switchTab('practice', { noScroll: true });
+  selectDomain(plan.d);
+  startSession(plan.n, plan.d);
+}
+
+// ── KEEP YOUR PROGRESS (v12.33) ──
+// Progress lives only in this browser, and a browser may clear a site it
+// has not seen for a while (Safari after about a week). Two quiet helps:
+// - once, after the first finished set, the browser is asked to keep this
+//   site's storage (navigator.storage.persist, where it exists; any prompt
+//   is the browser's own);
+// - a "Save a backup" row on Today after BACKUP_NUDGE_MIN questions, again
+//   every two weeks, until the learner saves one or says Not now. It uses
+//   the existing export (Your data). New device-only keys; nothing renamed.
+var FIRST_SET_KEY = 'aurivan_first_set_done';
+var PERSIST_ASKED_KEY = 'aurivan_storage_persist_asked';
+var BACKUP_SAVED_KEY = 'aurivan_backup_saved_at';
+var BACKUP_LATER_KEY = 'aurivan_backup_nudge_at';
+var BACKUP_NUDGE_MIN = 50;
+var BACKUP_NUDGE_EVERY_MS = 14 * 86400000;
+// A first set, review set or mock has been finished. Saves from before this
+// key with a few answers count as done.
+function firstSetDone() {
+  try { if (localStorage.getItem(FIRST_SET_KEY)) return true; } catch (e) {}
+  return !!(S && S.score && S.score.t >= 5 && !firstFiveRun);
+}
+function markFirstSetDone() {
+  try { if (!localStorage.getItem(FIRST_SET_KEY)) localStorage.setItem(FIRST_SET_KEY, String(Date.now())); } catch (e) {}
+  askPersistentStorage();
+}
+function askPersistentStorage() {
+  try {
+    if (localStorage.getItem(PERSIST_ASKED_KEY)) return;
+    if (!navigator.storage || typeof navigator.storage.persist !== 'function') return;
+    localStorage.setItem(PERSIST_ASKED_KEY, String(Date.now()));
+    var ask = function () { navigator.storage.persist().catch(function () {}); };
+    if (typeof navigator.storage.persisted === 'function') {
+      navigator.storage.persisted().then(function (kept) { if (!kept) ask(); }).catch(function () {});
+    } else ask();
+  } catch (e) {}
+}
+function backupNudgeDue(answered) {
+  if (!(answered >= BACKUP_NUDGE_MIN)) return false;
+  var last = 0;
+  try {
+    last = Math.max(Number(localStorage.getItem(BACKUP_SAVED_KEY)) || 0, Number(localStorage.getItem(BACKUP_LATER_KEY)) || 0);
+  } catch (e) { return false; }
+  return !last || Date.now() - last >= BACKUP_NUDGE_EVERY_MS;
+}
+function backupNudgeHtml(answered) {
+  if (!backupNudgeDue(answered)) return '';
+  var ios = false;
+  try { ios = appCtaPlatform() === 'ios'; } catch (e) {}
+  return '<section class="td-backup" id="tdBackup" aria-labelledby="tdBkH">'
+    + '<div class="plnt-invite"><span class="you-ico" aria-hidden="true">' + ico('install', 20) + '</span>'
+    + '<div class="plnt-invite-t"><h2 class="plnt-invite-h" id="tdBkH">Save a backup</h2>'
+    + '<p class="plnt-invite-m" id="tdBkM">Your progress lives only in this browser. A backup file lets you restore it if the browser clears it.'
+    + (ios ? ' On iPhone, adding KaiSip to your Home Screen also helps Safari keep it.' : '') + '</p>'
+    + '<div class="plnt-invite-acts"><button type="button" class="plnt-ghost" id="tdBkGo" aria-describedby="tdBkM" onclick="backupNudgeSave()">Download backup</button>'
+    + '<button type="button" class="plnt-ghost" onclick="backupNudgeLater()">Not now</button></div></div></div></section>';
+}
+function backupNudgeClose() {
+  var el = document.getElementById('tdBackup');
+  if (el && el.parentNode) el.parentNode.removeChild(el);
+  var t = document.getElementById('tdGo') || document.getElementById('tdTitle');
+  if (t) { try { t.focus({ preventScroll: true }); } catch (e) {} }
+}
+function backupNudgeSave() {
+  exportProgress();
+  backupNudgeClose();
+  showToast('Backup saved to your downloads. Keep the file somewhere safe.', 'info', 3200);
+}
+function backupNudgeLater() {
+  try { localStorage.setItem(BACKUP_LATER_KEY, String(Date.now())); } catch (e) {}
+  backupNudgeClose();
+  showToast('We’ll remind you in two weeks. Back up any time from You.', 'info', 3000);
 }
 
 // Today's right-hand column: the readiness plate, and under it the app's QR
@@ -10858,19 +11087,35 @@ function renderHome() {
   var name = getDisplayName();
   var greeting = greetingForHour(now.getHours()) + (name ? ', ' + name : '');
 
-  // Today's practice: the hub's start action, in its own words.
-  var p = practicePrimary();
-  var hero = '<section class="gt-panel td-hero" aria-labelledby="tdHeroT">'
-    + gtFrondSvg()
-    + '<p class="gt-panel-cap" aria-hidden="true">Today&rsquo;s practice</p>'
-    + '<h2 class="td-hero-t" id="tdHeroT"><span class="sr-only">Today&rsquo;s practice: </span>' + p.title + '</h2>'
-    + '<p class="td-hero-m">' + p.meta + '</p>'
-    + '<div class="td-hero-acts"><button type="button" class="gt-pill td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPractice()">' + p.label + ico('arrow-right', 18) + '</button></div>'
-    + '</section>';
-
   // Readiness: the rings, the honest range and each domain.
   var r = computeTodayReadiness();
   var range = todayReadinessRange(r);
+
+  // Today's plan (v12.33): one forest panel, one plan with its time. A set
+  // or question left open comes first ("Where you left off"), as before.
+  var p = practicePrimary();
+  var hero;
+  if (p.resume) {
+    hero = '<section class="gt-panel td-hero" aria-labelledby="tdHeroT">'
+      + gtFrondSvg()
+      + '<p class="gt-panel-cap" aria-hidden="true">' + p.cap + '</p>'
+      + '<h2 class="td-hero-t" id="tdHeroT"><span class="sr-only">' + p.cap + ': </span>' + p.title + '</h2>'
+      + '<p class="td-hero-m">' + p.meta + '</p>'
+      + '<div class="td-hero-acts"><button type="button" class="gt-pill td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPractice()">' + p.label + ico('arrow-right', 18) + '</button></div>'
+      + '</section>';
+  } else {
+    var plan = todayPlan(r);
+    var steps = plan.items.map(function (it, i) {
+      return '<li><span class="td-plan-n" aria-hidden="true">' + (i + 1) + '</span><span class="td-plan-t">' + it.title + '<span class="td-plan-m">' + it.meta + '</span></span></li>';
+    }).join('');
+    hero = '<section class="gt-panel td-hero" aria-labelledby="tdHeroT">'
+      + gtFrondSvg()
+      + '<p class="gt-panel-cap" aria-hidden="true">Today&rsquo;s plan</p>'
+      + '<h2 class="td-hero-t" id="tdHeroT"><span class="sr-only">Today&rsquo;s plan: </span>About ' + plan.minutes + ' min</h2>'
+      + '<ol class="td-plan" aria-label="Today&rsquo;s plan, in order">' + steps + '</ol>'
+      + '<div class="td-hero-acts"><button type="button" class="gt-pill td-go" id="tdGo" aria-describedby="tdHeroT" onclick="todayPlanStart()">Start' + ico('arrow-right', 18) + '</button></div>'
+      + '</section>';
+  }
   var figures = r.domains.map(function (x) { return domainFigure(x.answered, Math.round(x.mastery * 100)); });
   var spoken = range.enough ? 'Estimated readiness between ' + range.low + ' and ' + range.high + ' percent.' : 'Readiness: not enough data yet.';
   var plate;
@@ -10878,11 +11123,13 @@ function renderHome() {
     // v12.30: no empty rings and no plate before the first range, only one
     // quiet line (mobile hides its readiness until there is data).
     var needed = range.needed;
+    // One count toward one goal, in the same units as You's "Answered":
+    // different questions, each counted once at its latest try (v12.33).
     plate = '<section class="td-plate td-plate-quiet" aria-labelledby="tdReadyH">'
       + '<h2 class="sr-only" id="tdReadyH">Readiness</h2>'
       + '<p class="td-wait">' + (r.answered > 0
-        ? 'Answer ' + needed + ' more to see your first readiness range'
-        : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' to see your first readiness range') + '</p>';
+        ? (RD_RANGE_MIN_ANSWERS - needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' questions for your first readiness range. Each question counts once.'
+        : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range') + '</p>';
   } else {
   plate = '<section class="td-plate" aria-labelledby="tdReadyH">'
     + '<h2 class="sr-only" id="tdReadyH">Readiness</h2>'
@@ -10893,26 +11140,36 @@ function renderHome() {
     + '</div></div>';
   }
   if (r.answered > 0 && range.enough) {
-    plate += '<div class="td-detail"><ul class="td-legend">' + r.domains.map(function (x, i) {
+    // What the range means, in one sentence (mobile: "A study estimate, not a prediction").
+    plate += '<div class="td-detail"><p class="td-note td-est">' + READINESS_MEANS + '</p><ul class="td-legend">' + r.domains.map(function (x, i) {
       var f = figures[i];
       var val = f.banded || f.text === '–' ? '<span class="td-word">' + f.text + '</span>' : '<span class="td-num">' + f.text.replace('%', '') + '<sup>%</sup></span>';
       return '<li><span class="dom-dot" style="background:' + DI[x.id].color + '" aria-hidden="true"></span>'
         + '<span class="td-dname">' + escapeHtml(DI[x.id].short) + '</span>'
         + '<span class="sr-only">: ' + f.spoken + '</span><span class="td-dval" aria-hidden="true">' + val + '</span></li>';
     }).join('') + '</ul>';
+    plate += '<p class="td-note">' + RINGS_NOTE + '</p>';
     if (figures.some(function (f) { return f.banded; })) {
-      plate += '<p class="td-note">Building is under ' + DOMAIN_TARGET_PCT + ', Steady ' + DOMAIN_TARGET_PCT + ' to 79, Strong 80 and up. A number shows from ' + DOMAIN_READ_MIN + ' answers in a domain.</p>';
+      plate += '<p class="td-note">' + bandsLine() + '</p>';
     } else if (figures.some(function (f) { return f.text !== '–'; })) {
       plate += '<p class="td-note">Percentages count your latest try at each question.</p>';
     }
     plate += '</div>';
   }
+  // One invitation per visit: when the backup reminder and the plant
+  // invitation are both due, the first study day gets the plant and a later
+  // visit the backup (todayInvitePick, kept for this visit).
+  var backup = backupNudgeHtml(r.answered);
+  if (backup && plantInviteDue()) {
+    if (!todayInvitePick) todayInvitePick = (Array.isArray(S.studyDays) && S.studyDays.length > 1) ? 'backup' : 'plant';
+    if (todayInvitePick === 'plant') backup = '';
+  }
   // The plant companion, under the readiness (mobile Today's plant slot).
   plate += '<div class="td-plant" id="tdPlant">' + plantSafe(plantTodayHtml) + '</div>';
   plate += '</section>';
 
-  // One next step.
-  var next = todayNextHtml(todayNextStep(r, range));
+  // One next step, then (now and then) the backup reminder.
+  var next = todayNextHtml(todayNextStep(r, range)) + backup;
   var apps = [];
   if (STORE_LINKS.ios) apps.push('<a href="' + escapeHtml(STORE_LINKS.ios) + '" target="_blank" rel="noopener noreferrer">iPhone</a>');
   if (STORE_LINKS.android) apps.push('<a href="' + escapeHtml(STORE_LINKS.android) + '" target="_blank" rel="noopener noreferrer">Android</a>');
@@ -10923,7 +11180,7 @@ function renderHome() {
     + (streak > 0 ? '<p class="td-streak">' + ico('sprig', 20) + '<span>' + streak + '-day study streak</span></p>' : '')
     + '</div>'
     + '<h1 class="td-title" id="tdTitle" tabindex="-1">' + escapeHtml(greeting) + '</h1>'
-    + (r.answered === 0 ? '<p class="td-intro">Free practice for the CISA exam. Start with a short set below.</p>' : '')
+    + (r.answered === 0 ? '<p class="td-intro">CISA exam practice, free during the beta. Start with a short set below.</p>' : '')
     + '</div>'
     // Phones read it top to bottom as the web mock-up: practice, next step, then readiness.
     + appCtaTodayHtml()
@@ -11179,13 +11436,18 @@ function startMockTotalTimer() {
 
 // â”€â”€ UPDATE STATS â”€â”€
 function updateStats() {
-  var t = S.score.t, c = S.score.c;
-  var pct = t > 0 ? Math.round((c/t)*100) : null;
+  // v12.33: the same count as Today's readiness goal (mobile You): each
+  // different question once, at its latest try. Older answers kept only as
+  // totals count once each, at their domain's accuracy (readinessTally).
+  var rd = computeTodayReadiness();
+  var t = rd.answered;
+  var c = Math.round(rd.domains.reduce(function (s, x) { return s + x.mastered; }, 0));
+  var read = domainRead({ t: t, c: c });
   document.getElementById('sTotal').textContent = t;
   document.getElementById('sCorrect').textContent = c;
   var pe = document.getElementById('sPct');
   // Same honest rule as the domains: a band word until 30 answers, then the number.
-  pe.textContent = pct !== null ? domainReadLabel(domainRead(S.score)) : '--';
+  pe.textContent = t > 0 ? domainReadLabel(read) : '--';
   pe.className = 'stat-num';
   document.getElementById('sStreak').textContent = S.streak;
   // v12.30: the stats wait for 10 answers (a row of zeros is not progress);
@@ -11193,15 +11455,17 @@ function updateStats() {
   var statsReady = t >= YOU_STATS_MIN;
   var grid = document.getElementById('youStats');
   var wait = document.getElementById('youStatsWait');
+  var sn = document.getElementById('youStatsNote');
   if (grid) grid.hidden = !statsReady;
+  if (sn) sn.hidden = !statsReady;
   if (wait) wait.hidden = statsReady;
-  if (pct !== null && !domainRead(S.score).enough) pe.className = 'stat-num stat-word';
+  if (t > 0 && !read.enough) pe.className = 'stat-num stat-word';
   var n = S.bookmarks.length;
   var bd = document.getElementById('bkBadge');
   bd.textContent = n;
   bd.style.display = n > 0 ? 'inline' : 'none';
   updateMissedBtn();
-  // The cookie question waits for the first answer (practice or mock).
+  // The cookie question (maybeShowConsentBanner) has its own rule.
   try { maybeShowConsentBanner(); } catch (e) {}
 }
 var YOU_STATS_MIN = 10;
@@ -11212,6 +11476,12 @@ var YOU_STATS_MIN = 10;
 // number, so a few lucky or unlucky answers never read as a verdict.
 var DOMAIN_READ_MIN = 30;
 var DOMAIN_TARGET_PCT = 70;
+// The readiness words (v12.33), shared by Today and the results.
+var READINESS_MEANS = 'A study estimate, not a prediction: about how much of the exam you would get right today, weighted like the exam.';
+var RINGS_NOTE = 'Each ring is a domain, Domain 1 at the center. Thicker rings count for more of the exam, and an arc grows as you get more right.';
+function bandsLine() {
+  return 'Building is under ' + DOMAIN_TARGET_PCT + '% correct, Steady ' + DOMAIN_TARGET_PCT + '% to 79%, Strong 80% and up. Aim for Steady or better in every domain. A number shows from ' + DOMAIN_READ_MIN + ' answers in a domain.';
+}
 function bandFor(pct) { return pct >= 80 ? 'Strong' : pct >= 70 ? 'Steady' : 'Building'; }
 function domainRead(st) {
   var n = st ? (st.t || 0) : 0;
@@ -11313,6 +11583,7 @@ function setPracticeView(v) {
   if (hub) hub.hidden = v !== 'hub';
   if (foc) foc.hidden = v !== 'focus';
   try { railSync(); } catch (e) {}
+  if (v === 'hub') { try { maybeShowConsentBanner(); } catch (e) {} }
 }
 
 // Is something left open that the hub's Continue would pick up?
@@ -11368,6 +11639,7 @@ function focusProgress(fresh) {
     return { pos: conceptPracticeIndex + 1, total: conceptPracticeList.length, done: conceptPracticeCtx.answered };
   }
   if (reviewQueueMode) return { pos: reviewQueueIndex + 1, total: reviewQueueList.length, done: reviewQueueIndex + (answered ? 1 : 0) };
+  if (reviewEndShown) return { pos: 0, total: 0, done: reviewTally.t };
   if (missedReviewMode) return { pos: missedReviewIndex + 1, total: missedReviewQueue.length, done: missedReviewIndex + (answered ? 1 : 0) };
   if (bookmarkReviewMode) return { pos: 0, total: 0, done: 0 };
   if (pendingDebrief) return { pos: pendingDebrief.goal, total: pendingDebrief.goal, done: pendingDebrief.goal };
@@ -11378,7 +11650,7 @@ function focusProgress(fresh) {
 }
 function focusSetName() {
   if (conceptPracticeMode && conceptPracticeCtx) return conceptPracticeCtx.name;
-  if (reviewQueueMode) return 'Spaced review';
+  if (reviewQueueMode || reviewEndShown) return 'Questions to revisit';
   if (missedReviewMode) return 'Missed questions';
   if (bookmarkReviewMode) return 'Saved question';
   if (sessionLabel) return sessionLabel;
@@ -11423,7 +11695,7 @@ function updateFocusStrip() {
   if (ex) {
     var lbl = (conceptPracticeMode || conceptPracticeDone) && conceptPracticeCtx && conceptPracticeCtx.principleId ? 'Back to principle'
       : (conceptPracticeMode || conceptPracticeDone) && !(conceptPracticeCtx && conceptPracticeCtx.mixed) ? 'Back to topic'
-      : (reviewQueueMode || missedReviewMode) ? 'End review' : 'End practice';
+      : (reviewQueueMode || missedReviewMode || reviewEndShown) ? 'End review' : 'End practice';
     ex.setAttribute('aria-label', lbl);
     ex.title = lbl;
   }
@@ -11787,7 +12059,7 @@ function railFocusRows() {
   var dueIds = railDueIds();
   var dueMap = {};
   dueIds.forEach(function (id) { dueMap[id] = true; });
-  if (dueIds.length) rows.push({ kind: 'review', icon: 'review', cap: 'Due today', title: 'Spaced review', meta: railShowCount(dueIds.length) + ' due &middot; most overdue first' });
+  if (dueIds.length) rows.push({ kind: 'review', icon: 'review', cap: 'Due today', title: 'Questions to revisit', meta: railShowCount(dueIds.length) + ' due &middot; ' + REVIEW_SESSION_CAP + ' at a time' });
   var w = railWeakSpot();
   if (w) rows.push({ kind: 'weak', icon: 'target', cap: 'Weak spot &middot; mixed set', title: escapeHtml(w.name), meta: escapeHtml(DI[w.d].short) + ' &middot; ' + w.right + ' of ' + w.n + ' right' });
   var m = railRecentMistakes(dueMap).length;
@@ -12264,7 +12536,7 @@ function railQSections() {
     html: '<h2 class="sr-cap" id="srhNote">From your study notes</h2>' + railNoteCardHtml(res, exam, false) });
   var pl = railPrincipleFor(q);
   if (pl) secs.push({ id: 'principle-q', key: 'pq:' + pl.id, cls: 'sr-sec-pl', html: railPrincipleLinkHtml(pl) });
-  secs.push({ id: 'mine', key: railMineKey(q.id), html: '<h2 class="sr-cap" id="srhMine">Your note on this question</h2>' + railMineHtml(q.id, 'sr', 'srhMine') });
+  if (!(firstFiveRun && sessionLabel === FIRST_FIVE_LABEL)) secs.push({ id: 'mine', key: railMineKey(q.id), html: '<h2 class="sr-cap" id="srhMine">Your note on this question</h2>' + railMineHtml(q.id, 'sr', 'srhMine') });
   // The glossary terms this question uses first; the search box below them.
   var terms = railQuestionTerms(q);
   if (terms.length) secs.push({ id: 'terms', key: 'terms:' + q.id, html: '<h2 class="sr-cap" id="srhTerms">Terms in this question</h2>' + railTermsHtml(terms) });
@@ -12299,7 +12571,8 @@ function railQInline(show) {
     if (res.state === 'found') parts.push({ id: 'nl', key: 'nl:' + q.id + ':' + (S.examMode ? 1 : 0), html: railNoteCardHtml(res, !!S.examMode, true) });
     var pl = railPrincipleFor(q);
     if (pl) parts.push({ id: 'pl', key: 'pl:' + pl.id, html: railPrincipleLinkHtml(pl) });
-    parts.push({ id: 'mine', key: railMineKey(q.id), html: '<p class="vine-cap" id="vrMineL">Your note on this question</p>' + railMineHtml(q.id, 'vr', 'vrMineL') });
+    // Not in the first five (mobile: one less thing in the first minute).
+    if (!(firstFiveRun && sessionLabel === FIRST_FIVE_LABEL)) parts.push({ id: 'mine', key: railMineKey(q.id), html: '<p class="vine-cap" id="vrMineL">Your note on this question</p>' + railMineHtml(q.id, 'vr', 'vrMineL') });
   }
   railPatch(slot, parts, function (s) {
     var el = document.createElement('div');
@@ -12807,6 +13080,13 @@ function plantDraw(v, surface, size, extra) {
 }
 
 // ── Today: the plant under the readiness, or one quiet invitation ──
+// Today shows one invitation per visit (renderHome): this visit's pick.
+var todayInvitePick = null;
+function plantInviteDue() {
+  if (S.plant) return false;   // the invitation draws once the plant script is in
+  if (S.plantSettings && S.plantSettings.promptHidden) return false;
+  return firstSetDone();
+}
 function plantTodayHtml() {
   var K = plantApi();
   if (!K) return '';   // drawn when the plant script arrives (plantWhenReady)
@@ -12815,6 +13095,11 @@ function plantTodayHtml() {
   var p = S.plant;
   if (!p) {
     if (S.plantSettings && S.plantSettings.promptHidden) return '';
+    // v12.34 (owner decision): offered at the end of the first study day,
+    // never before the first answer. Plants and "No thanks" stay as they are.
+    if (!firstSetDone()) return '';
+    // The backup reminder has this visit's one invitation slot.
+    if (todayInvitePick === 'backup' && backupNudgeDue(computeTodayReadiness().answered)) return '';
     return '<div class="plnt-invite">'
       + '<span class="you-ico" aria-hidden="true">' + ico('sprig', 20) + '</span>'
       + '<div class="plnt-invite-t"><p class="plnt-invite-h" id="tdPlantInvH">Plant a companion</p>'
@@ -12863,6 +13148,8 @@ function plantYouHtml(where) {
   plantSync(now);
   var p = S.plant;
   if (!p) {
+    // Not before the first finished set (as Today's invitation).
+    if (!firstSetDone()) return '';
     return head + '<div class="plnt-empty"><p class="plnt-empty-t">Nothing planted yet</p>'
       + '<p class="plnt-meta">Pick a plant and give it a name. It grows only from real progress across the exam outline, and it never wilts.</p>'
       + '<button type="button" class="sr-btn plnt-plant-btn" id="plActPlant" onclick="plantOpen(\'new\',\'you\')">' + ico('sprig', 18) + 'Plant yours</button></div>';
@@ -13241,6 +13528,7 @@ function discardResumeQuestion() {
 function nextQ() {
   clearQuestionTimers();
   bookmarkReviewMode = false;
+  reviewEndShown = false;
   // Asking for a question is a start action: the focused view opens (and
   // its end cards, loading and empty states show there).
   if (S.activeTab === 'practice') enterPracticeFocus();
@@ -13324,10 +13612,11 @@ function onPracticeTimeout() {
     for (var m = 0; m < S.missedQuestions.length; m++) {
       if (S.missedQuestions[m].id === S.current.id) { alreadyMissed = true; break; }
     }
-    if (!alreadyMissed) { S.missedQuestions.push(JSON.parse(JSON.stringify(S.current))); addedToReview = true; }
+    if (!alreadyMissed) { S.missedQuestions.push(JSON.parse(JSON.stringify(S.current))); }
     // A timed-out question is a miss — schedule it for review too.
-    try { updateReviewSchedule(S.current.id, false, 'none'); } catch(e) {}
+    try { addedToReview = updateReviewSchedule(S.current.id, false, null) === 'missed'; } catch(e) {}
   }
+  if (reviewQueueMode) reviewTally.t++;
   if (S.current.id && S.answeredIds && S.answeredIds[d]) {
     S.answeredIds[d][S.current.id] = true;
   }
@@ -13338,7 +13627,7 @@ function onPracticeTimeout() {
   focusAnswered++;
   updateStats();
   renderDomainGrid();
-  showResult(null, correctDisplay, true, { addedToReview: addedToReview });
+  showResult(null, correctDisplay, true, { review: addedToReview ? 'missed' : '' });
   saveState();
 }
 
@@ -13508,11 +13797,16 @@ function hideConsentBanner() {
   }
   consentReturnFocus = null;
 }
-// The cookie question waits for the first answer (v12.30): never over the
-// welcome or a first look around. Analytics stays off until then, as before.
+// The cookie question (v12.34) waits until the first set is finished, and
+// never covers a question, an answer or a mock: it shows on the next page
+// (Today, after "Done for today"). Analytics stays off until then, as before.
 function maybeShowConsentBanner() {
   if (consentChoiceMade()) return;
-  if (!(window.S && S.score && S.score.t > 0)) return;
+  if (!(window.S && firstSetDone())) return;
+  if (S.activeTab === 'practice' && practiceView === 'focus') return;
+  if (S.activeTab === 'mock' && (isMockInProgress() || document.body.getAttribute('data-mock-results') === '1')) return;
+  // Never on top of a toast ("Exam date saved"): look again once it has gone.
+  if (document.querySelector('#globalToast.show')) { setTimeout(function () { try { maybeShowConsentBanner(); } catch (e) {} }, 600); return; }
   var el = document.getElementById('consent-banner');
   if (el && el.hidden) showConsentBanner(false);
 }
@@ -13704,6 +13998,7 @@ function showSessionDebrief() {
     firstFive: firstFiveRun && sessionLabel === FIRST_FIVE_LABEL
   };
   firstFiveRun = false;
+  try { markFirstSetDone(); } catch (e) {}
   // Persist
   try {
     localStorage.setItem('aurivan_last_session', JSON.stringify({
@@ -13730,13 +14025,11 @@ function showSessionDebrief() {
 // a band word under 30 answers, then the number), three plain stats, then
 // "Review your mistakes" and one next action.
 var RS_SMALL_SAMPLE = 8;
+// v12.33: always the plain count, "14 of 50 right" (the slogans are retired:
+// after a long mock the score is what a candidate came for).
 function resultsHeadline(correct, total) {
-  if (total < RS_SMALL_SAMPLE) {
-    if (total > 0 && correct === total) return total === 1 ? 'Right' : 'All ' + total + ' right';
-    return correct + ' of ' + total + ' right';
-  }
-  var pct = Math.round((correct / total) * 100);
-  return pct >= 75 ? 'Strong work.' : pct >= 60 ? 'Getting there.' : 'Every miss is a lesson.';
+  if (total > 0 && correct === total) return total === 1 ? 'Right' : 'All ' + total + ' right';
+  return correct + ' of ' + total + ' right';
 }
 // "Under 1 min", "24 min", "3 h 12 min" as a value and its unit (HTML-safe).
 function resultsTime(ms) {
@@ -13746,7 +14039,31 @@ function resultsTime(ms) {
   var h = Math.floor(min / 60), m = min % 60;
   return { v: h + '&nbsp;h', u: m ? m + '&nbsp;min' : '', s: h + (h === 1 ? ' hour' : ' hours') + (m ? ' ' + m + (m === 1 ? ' minute' : ' minutes') : '') };
 }
-// The domain most missed (for the one fact under a small-sample headline).
+// The one fact under a small set's headline (mobile firstSetFact): the study
+// note behind most of the misses; the domain only when the set mixed domains
+// (naming the one domain every question shared says nothing).
+function resultsFact(byDomain, missed, total, correct) {
+  if (total > 0 && correct >= total) return '';
+  var name = '';
+  try {
+    var idx = CISA_NOTES_RAW ? (railBuildNoteIndex() || {}) : {};
+    var count = {}, best = null;
+    missed.forEach(function (id) {
+      var n = idx[id];
+      if (!n) return;
+      count[n.name] = (count[n.name] || 0) + 1;
+      if (!best || count[n.name] > count[best]) best = n.name;
+    });
+    if (best) name = best;
+  } catch (e) { name = ''; }
+  if (!name && Object.keys(byDomain).filter(function (d) { return byDomain[d] && byDomain[d].t > 0; }).length > 1) {
+    var mm = resultsMostMissed(byDomain);
+    if (mm) name = DI[mm.d].short;
+  }
+  if (name) return (missed.length === 1 ? 'Missed: ' : 'Most missed: ') + escapeHtml(name) + '.';
+  return 'Every one you missed comes back, so it sticks.';
+}
+// The domain most missed.
 function resultsMostMissed(byDomain) {
   var best = null;
   Object.keys(DI).forEach(function (d) {
@@ -13757,10 +14074,22 @@ function resultsMostMissed(byDomain) {
   });
   return best;
 }
-// The rings + domain rows + stats. o = { byDomain: { d: { t, c } }, correct, total, ms }.
+// The rings + domain rows + stats. o = { byDomain: { d: { t, c } }, correct, total, ms, set }.
+// `set`: a practice set. One domain there has no rings (mobile 1.39): one
+// line, "All IS Audit · 80%", and none for a handful of questions.
 function resultsBodyHtml(o) {
   var keys = Object.keys(DI);
   var inSet = keys.filter(function (d) { return o.byDomain[d] && o.byDomain[d].t > 0; });
+  if (o.set && inSet.length <= 1) {
+    var one = inSet[0], tOne = resultsTime(o.ms);
+    var pctOne = o.total > 0 ? Math.round((o.correct / o.total) * 100) : 0;
+    return (one && o.total >= RS_SMALL_SAMPLE ? '<p class="rs-fact rs-one">All ' + escapeHtml(DI[one].short) + ' &middot; ' + pctOne + '%</p>' : '')
+      + '<ul class="rs-stats">'
+      + '<li class="rs-stat"><span class="rs-stat-l">Correct</span><span class="rs-stat-v rs-correct">' + o.correct + '<span class="rs-unit"> of ' + o.total + '</span></span></li>'
+      + '<li class="rs-stat"><span class="rs-stat-l">Time</span><span class="rs-stat-v"><span aria-hidden="true">' + tOne.v + (tOne.u ? '<span class="rs-unit"> ' + tOne.u + '</span>' : '') + '</span><span class="sr-only">' + tOne.s + '</span></span></li>'
+      + '<li class="rs-stat"><span class="rs-stat-l">Accuracy</span><span class="rs-stat-v">' + pctOne + '<span class="rs-unit">%</span></span></li>'
+      + '</ul>';
+  }
   var values = keys.map(function (d) { var x = o.byDomain[d]; return x && x.t ? x.c / x.t : 0; });
   var pct = o.total > 0 ? Math.round((o.correct / o.total) * 100) : 0;
   var banded = false;
@@ -13781,7 +14110,8 @@ function resultsBodyHtml(o) {
     + '<div class="td-fig">' + growthRingsSvg(values, pct >= 60) + '</div>'
     // The section heading's level follows the page: h2 under a mock's h1, h3 under a set's h2.
     + '<div class="rs-detail"><h' + lvl + ' class="sr-only">By domain</h' + lvl + '><ul class="td-legend">' + rows + '</ul>'
-    + (banded ? '<p class="td-note">Building is under ' + DOMAIN_TARGET_PCT + ', Steady ' + DOMAIN_TARGET_PCT + ' to 79, Strong 80 and up. A number shows from ' + DOMAIN_READ_MIN + ' answers in a domain.</p>' : '')
+    + '<p class="td-note">' + RINGS_NOTE + '</p>'
+    + (banded ? '<p class="td-note">' + bandsLine() + '</p>' : '')
     + '</div></div>'
     + '<ul class="rs-stats">'
     + '<li class="rs-stat"><span class="rs-stat-l">Correct</span><span class="rs-stat-v rs-correct">' + o.correct + '<span class="rs-unit"> of ' + o.total + '</span></span></li>'
@@ -13799,22 +14129,55 @@ function debriefHtml(deb, inHub) {
   var missed = Array.isArray(deb.missed) ? deb.missed : [];
   lastSetMissedIds = missed.slice();
   var name = deb.label || (dom !== 'all' && DI[dom] ? DI[dom].short : 'Mixed set');
-  var fact = '';
-  if (total < RS_SMALL_SAMPLE) {
-    var mm = resultsMostMissed(byDomain);
-    if (mm) fact = '<p class="rs-fact">' + (missed.length === 1 ? 'Missed: ' : 'Most missed: ') + escapeHtml(DI[mm.d].short) + '.</p>';
-  }
+  var factText = total < RS_SMALL_SAMPLE ? resultsFact(byDomain, missed, total, deb.correct) : '';
+  var fact = factText ? '<p class="rs-fact">' + factText + '</p>' : '';
+  if (deb.firstFive) return firstFiveEndHtml(deb, total, missed, fact);
   return '<section class="session-debrief rs rs-set" role="region" aria-labelledby="sdKick sdTitle">'
     + '<p class="rs-kicker" id="sdKick">Set complete &middot; ' + escapeHtml(name) + '</p>'
     + '<h2 class="rs-title" id="sdTitle" tabindex="-1">' + resultsHeadline(deb.correct, total) + '</h2>'
     + fact
-    + resultsBodyHtml({ byDomain: byDomain, correct: deb.correct, total: total, ms: deb.ms, level: 3 })
+    + resultsBodyHtml({ byDomain: byDomain, correct: deb.correct, total: total, ms: deb.ms, level: 3, set: true })
     + '<div class="rs-acts">'
     + '<button type="button" class="rs-btn primary" onclick="startSession(' + deb.goal + ', \'' + dom + '\')">Practice another set' + ico('arrow-right', 18) + '</button>'
     + (missed.length ? '<button type="button" class="rs-btn" onclick="reviewSetMistakes()">Review your mistakes</button>' : '')
     + (inHub ? '<button type="button" class="rs-btn ghost" onclick="closeSetResults()">Close</button>' : '')
     + '</div>'
     + '</section>';
+}
+// The end of the first five (mobile components/firstSet.tsx): the count,
+// one fact, the way to the first range, then TOMORROW: the next plan and the
+// misses coming back. "Done for today" is the one solid button.
+function firstFiveEndHtml(deb, total, missed, fact) {
+  var r = computeTodayReadiness();
+  var range = todayReadinessRange(r);
+  var toward = range.enough ? '' : (RD_RANGE_MIN_ANSWERS - range.needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' for your first readiness range';
+  var dom = /^[0-9]+$/.test(String(deb.domain)) ? String(deb.domain) : null;
+  var next = todayPlanDomain(r, dom);
+  var n = todayPlanSetLength();
+  var plan = n + ' questions in ' + escapeHtml(DI[next.d].short) + ', about ' + Math.max(1, Math.round(n * MINUTES_PER_PRACTICE_Q)) + ' min.';
+  var back = missed.length === 0 ? '' : missed.length === 1 ? 'The one you missed comes back then.' : 'The ' + missed.length + ' you missed come back then.';
+  return '<section class="session-debrief rs rs-set rs-first" role="region" aria-labelledby="sdKick sdTitle">'
+    + '<p class="rs-kicker" id="sdKick">' + escapeHtml(FIRST_FIVE_LABEL) + '</p>'
+    + '<h2 class="rs-title" id="sdTitle" tabindex="-1">' + resultsHeadline(deb.correct, total) + '</h2>'
+    + fact
+    + (toward ? '<p class="rs-note">' + toward + '</p>' : '')
+    + '<div class="rs-plate rs-tomorrow"><p class="rs-tm-cap">Tomorrow</p><p class="rs-tm-t">' + plan + '</p>'
+    + (back ? '<p class="rs-tm-t">' + back + '</p>' : '') + '</div>'
+    + '<div class="rs-acts">'
+    + '<button type="button" class="rs-btn primary" id="sdDone" onclick="firstFiveDone()">Done for today</button>'
+    + '<button type="button" class="rs-btn ghost" onclick="firstFiveMore(\'' + next.d + '\')">Do 5 more</button>'
+    + '</div>'
+    + '</section>';
+}
+function firstFiveDone() {
+  hideSessionStart();
+  switchTab('home');
+}
+function firstFiveMore(d) {
+  if (!DI[String(d)]) d = '1';
+  selectDomain(String(d));
+  if (S.activeTab !== 'practice') switchTab('practice', { noScroll: true });
+  startSession(5, String(d));
 }
 // "Review your mistakes" on a set's results: this set's misses, again.
 function reviewSetMistakes() {
@@ -13878,26 +14241,29 @@ function renderQuestion(q) {
       + '</button>';
   }).join('');
 
-  var bloomLabel = q.bloom_level || 'Application';
   // One quiet meta line instead of a row of tags (DESIGN_SYSTEM §6, tag):
-  // "● IS Audit · Application · 3 of 10". Exam-style mode leaves out the
-  // difficulty, like the real exam. A concept set names its concept.
+  // "● IS Audit · 3 of 10", as on mobile. v12.33: no level word
+  // (Foundational / Application / Analysis) above an unanswered question:
+  // it hinted at the answer and its meaning was never said. The hub's
+  // Change panel explains the levels where you can filter by them. A
+  // concept set names its concept.
   var pr = focusProgress(true);
   var metaParts = [];
   if (conceptPracticeMode && conceptPracticeCtx && !conceptPracticeCtx.mixed) metaParts.push('Practicing: ' + escapeHtml(conceptPracticeCtx.name));
   else metaParts.push(escapeHtml(info.short));
-  if (reviewQueueMode) metaParts.push('Spaced review');
-  else if (missedReviewMode) metaParts.push('Missed question');
+  if (missedReviewMode) metaParts.push('Missed question');
   else if (bookmarkReviewMode) metaParts.push('Saved question');
-  else if (!(window.S && S.examMode)) metaParts.push(escapeHtml(bloomLabel));
   if (pr.total > 0) metaParts.push(pr.pos + ' of ' + pr.total);
 
-  // One-time confidence tooltip (first question only) — Decision 5
+  // v12.34 (mobile parity): no confidence question during the first five,
+  // so the first answer is one tap and one check.
+  var askConf = !(firstFiveRun && sessionLabel === FIRST_FIVE_LABEL);
+  // One-time confidence tooltip (the first time it is asked) — Decision 5
   var showConfTip = false;
-  try { showConfTip = !localStorage.getItem('aurivan_conf_tip_seen'); } catch (e) {}
+  try { showConfTip = askConf && !localStorage.getItem('aurivan_conf_tip_seen'); } catch (e) {}
   var confTipHtml = showConfTip
     ? '<div id="conf-tip" class="conf-tip">'
-        + '<span>How sure you are decides how soon this question comes back for review.</span>'
+        + '<span>How confident you are decides how soon this question comes back.</span>'
         + '<button onclick="dismissConfTip()" aria-label="Dismiss">' + ico('x', 18) + '</button>'
       + '</div>'
     : '';
@@ -13909,17 +14275,18 @@ function renderQuestion(q) {
     + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + escapeHtml(q.id) + '">' + escapeHtml(smartQuotes(q.scenario_context)) + '</p><button class="sc-expand-btn" id="sc-btn-' + escapeHtml(q.id) + '" data-qid="' + escapeHtml(q.id) + '" onclick="expandScenario(this.dataset.qid)">Read scenario ▾</button></div>' : '')
     + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(smartQuotes(q.scenario_context)) + ' ' : '') + escapeHtml(smartQuotes(q.question)) + '</p>'
     + '<div class="opts">' + optsHtml + '</div>'
-    // "How sure?" (v12.30: optional). Shown once an option is picked; an
-    // unrated answer is scheduled as an educated guess. Removed after checking.
-    + '<div class="conf-stage" id="confStage" hidden>'
+    // "How confident are you?" (optional; mobile's words: Sure / Unsure /
+    // Guessing — Unsure keeps its saved value, 'educated'). Shown once an
+    // option is picked, never in the first five. Removed after checking.
+    + (askConf ? '<div class="conf-stage" id="confStage" hidden>'
       + confTipHtml
-      + '<p class="conf-q" id="confQ">How sure?<span class="conf-q-opt">Optional</span></p>'
+      + '<p class="conf-q" id="confQ">How confident are you?<span class="conf-q-opt">Optional</span></p>'
       + '<div class="conf-seg" role="group" aria-labelledby="confQ">'
         + '<button type="button" class="conf-btn" data-conf="sure" aria-pressed="false" onclick="setConfidence(\'sure\')">Sure</button>'
-        + '<button type="button" class="conf-btn" data-conf="educated" aria-pressed="false" onclick="setConfidence(\'educated\')">Educated guess</button>'
+        + '<button type="button" class="conf-btn" data-conf="educated" aria-pressed="false" onclick="setConfidence(\'educated\')">Unsure</button>'
         + '<button type="button" class="conf-btn" data-conf="guessing" aria-pressed="false" onclick="setConfidence(\'guessing\')">Guessing</button>'
       + '</div>'
-    + '</div>'
+    + '</div>' : '')
     + '</div>'
     // Check answer: ready as soon as an option is picked, held in a footer
     // at the bottom of the screen (above the safe area on phones).
@@ -14019,8 +14386,7 @@ function selectAnswer(chosen, _ignoredCorrect) {
   }
 
   // Track missed questions for spaced repetition. The answer screen's coach
-  // line says so (no toast: it covered the explanation).
-  var addedToReview = false;
+  // line says when it comes back (no toast: it covered the explanation).
   if (!ok && S.current) {
     var alreadyMissed = false;
     for (var m = 0; m < S.missedQuestions.length; m++) {
@@ -14028,7 +14394,6 @@ function selectAnswer(chosen, _ignoredCorrect) {
     }
     if (!alreadyMissed) {
       S.missedQuestions.push(JSON.parse(JSON.stringify(S.current)));
-      addedToReview = true;
     }
   }
   // Remove from missed if answered correctly
@@ -14038,10 +14403,13 @@ function selectAnswer(chosen, _ignoredCorrect) {
 
   // Adaptive review queue — schedule (or graduate) this question based on
   // the answer just graded. Practice path only; consumes the existing `ok`.
+  // "How confident?" is optional: an unrated answer is scheduled like a sure
+  // one (a right answer promotes; a new right answer needs no review).
+  var reviewNote = '';
   if (S.current) {
-    // "How sure?" is optional: an unrated answer is scheduled as an educated guess.
-    try { updateReviewSchedule(S.current.id, ok, currentConfidence || 'educated'); } catch(e) {}
+    try { reviewNote = updateReviewSchedule(S.current.id, ok, currentConfidence || null); } catch(e) {}
   }
+  if (reviewQueueMode) { reviewTally.t++; if (ok) reviewTally.c++; }
 
   // Log confidence
   S.confidenceLog.push({
@@ -14072,7 +14440,7 @@ function selectAnswer(chosen, _ignoredCorrect) {
   try { recordQuestionEnd(ok); } catch(e) {}
   updateStats();
   renderDomainGrid();
-  showResult(chosen, correctDisplay, false, { addedToReview: addedToReview });
+  showResult(chosen, correctDisplay, false, { review: reviewNote });
   rotateMindset();
   saveState();
   // A "Practice this concept" set keeps its own score, apart from a goal session.
@@ -14091,6 +14459,10 @@ function selectAnswer(chosen, _ignoredCorrect) {
 // "Next question". Exam-style questions keep their compact contract: no
 // coaching, no key idea, no tips.
 var VR_LEAF_PATH = 'M35.5 2.5V19A16.5 16.5 0 1 1 19 2.5z';
+// A Why longer than this folds to two lines after a miss (mobile WHY_FOLD_CHARS).
+var WHY_FOLD_CHARS = 150;
+// When the questions and notes were last checked (mobile config.contentReviewed).
+var CONTENT_REVIEWED = 'Oct 2026';
 var VR_TICK = 'M12.5 19.5l4.5 4.5 9-9.5';
 var VR_CROSS = 'M13 13l12 12M25 13 13 25';
 
@@ -14167,7 +14539,11 @@ function showResult(chosen, correct, timeout, info) {
   //    note folds into it).
   var hero = timeout ? 'Time’s up' : ok ? 'Correct' : 'Not quite';
   var coach = verdictCoachLine(q, ok, timeout, chosenOrig, inExamMode);
-  if (info.addedToReview) coach = (coach ? coach + ' ' : '') + 'Added to your review queue.';
+  // When it comes back (the review rules, updateReviewSchedule).
+  var back = info.review === 'missed' ? 'It comes back tomorrow.'
+    : info.review === 'retest' ? 'Back in your review tomorrow.'
+    : info.review === 'guess' ? 'You weren’t sure, so it comes back tomorrow.' : '';
+  if (back) coach = (coach ? coach + ' ' : '') + back;
   var verdictHtml = '<div class="vr-verdict vr-' + vc + '">'
       + '<svg class="vr-leaf" viewBox="0 0 38 38" aria-hidden="true" focusable="false">'
         + '<path d="' + VR_LEAF_PATH + '" class="vr-leaf-fill"/>'
@@ -14201,18 +14577,25 @@ function showResult(chosen, correct, timeout, info) {
       + '<div class="vr-others" id="vrOthers" hidden>' + others + '</div>'
     : '';
 
-  // 3. Why X + the explanation.
+  // 3. Why X + the explanation. After a miss it comes after the Key idea and
+  //    the Exam cue, folded to two lines with "Read more" (mobile WhyBlock);
+  //    screen readers hear all of it either way.
+  var expRaw = String(q.correct_explanation || '');
+  var foldWhy = !ok && !inExamMode && expRaw.length > WHY_FOLD_CHARS;
   var whyHtml = '<h3 class="vr-why">Why ' + correct + '</h3>'
-    + '<p class="vr-exp">' + escapeHtml(smartQuotes(mapLettersInText(q.correct_explanation, shuffle))) + '</p>';
+    + '<p class="vr-exp' + (foldWhy ? ' vr-fold' : '') + '" id="vrExp">' + escapeHtml(smartQuotes(mapLettersInText(expRaw, shuffle))) + '</p>'
+    + (foldWhy ? '<button type="button" class="vr-readmore" aria-expanded="false" aria-controls="vrExp" onclick="toggleWhyFold(this)"><span class="vr-rm-t">Read more</span><span class="sr-only"> of the explanation</span></button>' : '');
 
-  // 4. The vine: Key idea, then the tips as leaves on one stem.
-  var vineHtml = '';
+  // 4. The vine: Key idea, then the tips as leaves on one stem. After a miss
+  //    (mobile splitMissTips) the Key idea and the Exam cue lead, before the
+  //    Why; Eliminate two and Final two follow it on a second stem.
+  var vineFirst = [], vineRest = [];
   if (!inExamMode) {
     var nodes = [];
     if (q.key_concept) {
-      nodes.push('<div class="vine-node vine-key" style="--i:0">' + vineLeafSvg(true)
+      nodes.push({ first: true, html: '<div class="vine-node vine-key" style="--i:@I@">' + vineLeafSvg(true)
         + '<p class="vine-cap">Key idea</p>'
-        + '<p class="vine-quote">' + escapeHtml(smartQuotes(mapLettersInText(q.key_concept, shuffle))) + '</p></div>');
+        + '<p class="vine-quote">' + escapeHtml(smartQuotes(mapLettersInText(q.key_concept, shuffle))) + '</p></div>' });
     }
     (q.tips || []).filter(function(t){ return t && t.trim(); }).forEach(function(t, i){
       var parts = tipParts(mapLettersInText(t, shuffle), i);
@@ -14229,20 +14612,27 @@ function showResult(chosen, correct, timeout, info) {
           return '<button type="button" class="principle-link" data-pid="' + pid + '" onclick="openPrinciple(this.dataset.pid)">' + pid + '</button>';
         });
       }
-      nodes.push('<div class="vine-node vine-' + tone + '" style="--i:' + nodes.length + '">' + vineLeafSvg(false)
+      nodes.push({ first: tone === 'cue', html: '<div class="vine-node vine-' + tone + '" style="--i:@I@">' + vineLeafSvg(false)
         + '<p class="vine-cap">' + escapeHtml(parts.label) + '</p>'
-        + '<p class="vine-tip">' + body + '</p></div>');
+        + '<p class="vine-tip">' + body + '</p></div>' });
     });
-    if (nodes.length) {
-      vineHtml = '<div class="vine" id="vrVine" style="--vine-n:' + nodes.length + '">'
-        + nodes.join('') + '</div>';
-    }
+    nodes.forEach(function (n) { (ok || n.first ? vineFirst : vineRest).push(n.html); });
   }
+  var vineOf = function (list, id) {
+    if (!list.length) return '';
+    return '<div class="vine" id="' + id + '" style="--vine-n:' + list.length + '">'
+      + list.map(function (h, i) { return h.replace('@I@', String(i)); }).join('') + '</div>';
+  };
+  var vineA = vineOf(vineFirst, 'vrVine'), vineB = vineOf(vineRest, 'vrVine2');
 
-  // 5. Source row: the reference, and Report a problem.
+  // 5. Source row (mobile TrustLine): "Original · Reviewed Oct 2026" with
+  //    Report a problem, then the main source (the first one listed, its
+  //    bracketed parts dropped, as mobile shortReference).
+  var ref = q.framework_ref ? String(q.framework_ref).split(';')[0].replace(/\s*\([^)]*\)/g, '').trim() : '';
   var srcHtml = '<div class="vr-src">'
-    + '<span class="vr-src-ref">' + (q.framework_ref ? escapeHtml(q.framework_ref) : 'KaiSip original question') + '</span>'
+    + '<span class="vr-src-ref">Original &middot; Reviewed ' + CONTENT_REVIEWED + '</span>'
     + '<button type="button" class="vr-report" onclick="showFlagModal()">Report a problem</button>'
+    + (ref ? '<p class="vr-src-sub">' + escapeHtml(ref) + '</p>' : '')
     + '</div>';
 
   // 6. Footer: Save (outline icon button) + Next question (sticky on phones).
@@ -14255,10 +14645,12 @@ function showResult(chosen, correct, timeout, info) {
   p.innerHTML = verdictHtml
     + (rows ? '<div class="vr-rows">' + rows + '</div>' : '')
     + othersHtml
-    + whyHtml
-    + vineHtml
+    + (ok || inExamMode ? whyHtml + vineA : vineA + whyHtml + vineB)
     // Below the rail's breakpoint: the note link and "Add a note" (railSync).
-    + '<div class="vr-study" id="vrStudy"></div>'
+    // On phones they wait behind one "More" (CSS), so the verdict, the why
+    // and the tips fit in about two screens.
+    + '<button type="button" class="vr-more-btn" id="vrMoreBtn" aria-expanded="false" aria-controls="vrMore" onclick="toggleAnswerMore(this)"><span class="vr-toggle-t">More: study note, principle and your note</span>' + ico('chevron-down', 18) + '</button>'
+    + '<div class="vr-more" id="vrMore"><div class="vr-study" id="vrStudy"></div></div>'
     + srcHtml
     + footHtml;
   p.classList.add('show', 'vr-panel');
@@ -14266,6 +14658,7 @@ function showResult(chosen, correct, timeout, info) {
 
   // The vine draws itself as it scrolls into view (motion allowed only).
   armVine(document.getElementById('vrVine'));
+  armVine(document.getElementById('vrVine2'));
   // The study rail starts teaching now: the note, your note, the lookup.
   try { railSync(); } catch (e) {}
   // The strip: progress moves on, and its Save hands over to the footer's.
@@ -14282,6 +14675,24 @@ function showResult(chosen, correct, timeout, info) {
   }, 60);
 }
 
+// "Read more" under a folded Why (after a miss).
+function toggleWhyFold(btn) {
+  var exp = document.getElementById('vrExp');
+  if (!exp || !btn) return;
+  var open = btn.getAttribute('aria-expanded') !== 'true';
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  exp.classList.toggle('open', open);
+  var t = btn.querySelector('.vr-rm-t');
+  if (t) t.textContent = open ? 'Show less' : 'Read more';
+}
+// Phones: "More" opens the study note link and your note.
+function toggleAnswerMore(btn) {
+  var box = document.getElementById('vrMore');
+  if (!box || !btn) return;
+  var open = btn.getAttribute('aria-expanded') !== 'true';
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  box.classList.toggle('open', open);
+}
 // "Show all options" on the answer screen: the options that are not your
 // answer or the best answer, each with why it is not the best.
 function toggleOtherOptions() {
@@ -14350,6 +14761,36 @@ function reviewBookmark(i) {
 }
 
 // â”€â”€ WEAK SPOTS â”€â”€
+// Before any domain has 30 answers (v12.33): an early sign, said as one.
+// The weakest study-notes topic with at least 8 answers (the rail's rule),
+// else the domain with at least 10 answers that is furthest under the target.
+function wsEarlySignHtml(rows) {
+  var later = '<div class="ws-quiet">Once a domain has ' + DOMAIN_READ_MIN + ' answers, this list shows where to focus with a number.</div>';
+  var spot = null;
+  try { spot = railWeakSpot(); } catch (e) { spot = null; }
+  var title = '', sub = '', go = '';
+  if (spot && DI[spot.d]) {
+    title = escapeHtml(spot.name);
+    sub = spot.right + ' of ' + spot.n + ' right so far in ' + escapeHtml(DI[spot.d].short) + '. An early sign from a few answers.';
+    go = 'selectDomain(' + spot.d + ');switchTab(\x27practice\x27)';
+  } else {
+    var low = rows.filter(function (x) { return x.r.n >= RD_MIN_SAMPLE && x.r.pct < DOMAIN_TARGET_PCT; })
+      .sort(function (a, b) { return a.r.pct - b.r.pct; })[0];
+    if (!low) {
+      var some = rows.some(function (x) { return x.r.n >= RD_MIN_SAMPLE; });
+      return '<div class="ws-quiet">' + (some ? 'No early sign of a weak spot so far.' : 'Keep going. After about ' + RD_MIN_SAMPLE + ' answers in a domain, an early sign shows here.') + '</div>' + later;
+    }
+    title = 'Domain ' + low.d + ': ' + escapeHtml(low.info.name);
+    sub = 'About ' + low.r.pct + '% right so far, from ' + low.r.n + ' answers. An early sign, not a verdict.';
+    go = 'selectDomain(' + low.d + ');switchTab(\x27practice\x27)';
+  }
+  return '<div class="ws-rec">'
+    + '<span class="ws-rec-dot" style="background:var(--tip)" aria-hidden="true"></span>'
+    + '<div><div class="ws-rec-title">Early sign: ' + title + '</div>'
+    + '<div class="ws-rec-sub">' + sub + '</div></div>'
+    + '<button class="ws-prac-btn" onclick="' + go + '">Practice &rarr;</button>'
+    + '</div>' + later;
+}
 function renderWeakSpots() {
   var area = document.getElementById('wsArea');
   if (S.score.t === 0) {
@@ -14362,8 +14803,12 @@ function renderWeakSpots() {
     });
     return;
   }
-  var rows = Object.keys(DI).map(function(d){
-    return { d: d, info: DI[d], r: domainRead(S.ds[d] || {t:0,c:0}) };
+  // v12.33: the same figures as Today and the Practice hub (the latest try
+  // at each question), so a domain reads the same everywhere.
+  var rdWs = computeTodayReadiness();
+  var rows = Object.keys(DI).map(function(d, i){
+    var x = rdWs.domains[i];
+    return { d: d, info: DI[d], r: domainRead({ t: x.answered, c: Math.round(x.mastered) }) };
   }).sort(domainOrder);
 
   var rowsHtml = rows.map(function(x){
@@ -14388,7 +14833,7 @@ function renderWeakSpots() {
           + '<button class="ws-prac-btn" onclick="selectDomain(' + x.d + ');switchTab(\x27practice\x27)">Practice &rarr;</button>'
           + '</div>';
       }).join('')
-    : '<div class="ws-quiet">' + (anyRead ? 'No domain is below the ' + DOMAIN_TARGET_PCT + '% target. Keep building coverage across all five.' : 'Keep going. Once a domain has ' + DOMAIN_READ_MIN + ' answers, this list shows where to focus.') + '</div>';
+    : (anyRead ? '<div class="ws-quiet">No domain is below the ' + DOMAIN_TARGET_PCT + '% target. Keep building coverage across all five.</div>' : wsEarlySignHtml(rows));
 
   area.innerHTML = '<button class="train-ws-btn" onclick="startWeakSpotsDrill()">Train my weak spots <span class="train-ws-badge">20 questions</span></button>'
     + '<div class="ws-panel"><div class="ws-title">Domain performance</div>'
@@ -15196,6 +15641,7 @@ function showMockResults() {
   var timedOut = answers.some(function (a) { return a && a.timedOut; });
   // Parity: keep this mock in the history (once), and save it now.
   try { recordMockParity(answers, S.mockQueue); saveState(); } catch(e) {}
+  try { markFirstSetDone(); } catch (e) {}
   // Every question counts: a blank is not correct (graded on original letters).
   var tot = Math.max(queue.length, answers.length);
   var cor = 0, blank = 0;
@@ -15224,11 +15670,11 @@ function showMockResults() {
     + '<p class="rs-kicker" id="mrKick">' + MOCK_TYPES[kind].name + ' &middot; ' + tot + ' questions</p>'
     + (timedOut ? '<p class="rs-timesup">Time&rsquo;s up. Your exam was submitted.</p><p class="rs-fact">Questions you did not answer count as not correct.</p>' : '')
     + '<h1 class="rs-title" id="mrTitle" tabindex="-1">' + resultsHeadline(cor, tot) + '</h1>'
+    + '<p class="rs-note">An estimate from this mock, not a prediction of your exam result. Practice scores are not scaled exam scores.</p>'
+    + buildMockAdvisory(db)
+    + '<div class="rs-acts">' + acts + '</div>'
     + resultsBodyHtml({ byDomain: db, correct: cor, total: tot, ms: usedSec * 1000, level: 2 })
     + (blank > 0 ? '<p class="rs-note">' + (blank === 1 ? '1 question was' : blank + ' questions were') + ' left blank: a blank counts as not correct.</p>' : '')
-    + '<p class="rs-note">An estimate from this mock, not a prediction of your exam result. Practice scores are not scaled exam scores.</p>'
-    + '<div class="rs-acts">' + acts + '</div>'
-    + buildMockAdvisory(db)
     + '<section class="rs-review" aria-labelledby="mrRevH">'
     + '<h2 class="ph-h" id="mrRevH" tabindex="-1">Review answers</h2>'
     + '<div class="ph-chips rs-filter" role="group" aria-label="Show">'
@@ -18081,6 +18527,9 @@ initConsentBanner(); // cookie consent — gates Google Analytics
 // instead of the one used last.
 var bootNav = navFromHash(location.hash);
 if (bootNav) S.activeTab = bootNav.tab;
+// v12.33: a returning visitor opens on Today, not the page used last (an
+// unfinished mock keeps its page, so its Resume is the first thing seen).
+else if (!mockResumePending) S.activeTab = 'home';
 try { renderYouExamDate(); } catch (e) {}
 (function syncHeaderVersion(){
   var pill = document.getElementById('versionPill');
@@ -18382,44 +18831,86 @@ function showNextMissed() {
 }
 
 // ── ADAPTIVE REVIEW QUEUE — SESSION (v10.39) ──
+// "Questions to revisit" (v12.33): a set asks at most REVIEW_SESSION_CAP (or
+// the day plan's share), most overdue first, and ends on its score.
 var reviewQueueMode = false;
 var reviewQueueList = [];
 var reviewQueueIndex = 0;
+var reviewTally = { t: 0, c: 0 };   // this review set's answers
+var reviewEndShown = false;         // the review set's end card is on screen
+var reviewThen = null;              // Today's plan: the practice set that follows ({ d, n })
 
-// Start a spaced-review session over every question currently due.
-function startReviewQueue() {
+// Start a review set over the questions due now (at most `limit`).
+// `then`: Today's plan, the set offered once the review is done.
+function startReviewQueue(limit, then) {
   var dueIds = getDueReview();
-  // Resolve each due id to a question object — prefer the missed-questions
-  // store (full objects), fall back to the live bank, skip anything gone.
-  // Each one comes from the bank (a saved copy is never shown as it was saved).
+  var cap = Math.max(1, Math.min(Number(limit) || REVIEW_SESSION_CAP, REVIEW_SESSION_CAP));
+  // Each one comes from the bank (a saved copy is never shown as it was
+  // saved); anything gone from the bank is skipped.
   reviewQueueList = dueIds.map(function(id){
     return findQuestionById(id);
-  }).filter(Boolean);
+  }).filter(Boolean).slice(0, cap);
   if (!reviewQueueList.length) {
-    if (typeof showToast === 'function') showToast('Nothing due for review right now', 'info', 2200);
+    // From Today's plan while the banks are still loading: go straight on to
+    // the plan's practice set instead of stopping on a toast.
+    if (then && DI[String(then.d)]) {
+      switchTab('practice', { noScroll: true });
+      selectDomain(String(then.d));
+      startSession(Number(then.n) || practiceLenGoal(), String(then.d));
+      return;
+    }
+    if (typeof showToast === 'function') showToast('Nothing to revisit right now', 'info', 2200);
     return;
   }
   reviewQueueIndex = 0;
+  reviewTally = { t: 0, c: 0 };
+  reviewEndShown = false;
   switchTab('practice');     // clears the review-mode flags…
   reviewQueueMode = true;    // …so set ours after the tab switch
+  reviewThen = then && DI[String(then.d)] ? { d: String(then.d), n: Number(then.n) || practiceLenGoal() } : null;
   showNextReview();
+}
+// The review set's end: its score, what is still due and the next step.
+function reviewEndHtml() {
+  var t = reviewTally.t, c = reviewTally.c, missed = Math.max(0, t - c);
+  var stillDue = getDueReview().length;
+  var line = stillDue > 0
+    ? railShowCount(stillDue) + ' more ' + (stillDue === 1 ? 'is' : 'are') + ' due. Revisit ' + (stillDue === 1 ? 'it' : 'them') + ' now, or ' + (stillDue === 1 ? 'it waits' : 'they wait') + ' for your next plan.'
+    : missed > 0
+      ? 'That’s all for today. ' + (missed === 1 ? 'The one you missed comes' : 'The ' + missed + ' you missed come') + ' back tomorrow.'
+      : 'That’s all for today. Each one comes back later, further apart.';
+  var then = reviewThen && DI[reviewThen.d] ? reviewThen : null;
+  var acts = then
+    ? '<button type="button" class="rs-btn primary" onclick="reviewThenGo()">Next: ' + then.n + ' in ' + escapeHtml(DI[then.d].short) + ico('arrow-right', 18) + '</button>'
+    : '<button type="button" class="rs-btn primary" onclick="switchTab(\'home\')">Back to Today' + ico('arrow-right', 18) + '</button>';
+  if (stillDue > 0) acts += '<button type="button" class="rs-btn" onclick="startReviewQueue()">Revisit ' + railShowCount(Math.min(stillDue, REVIEW_SESSION_CAP)) + ' more</button>';
+  if (then) acts += '<button type="button" class="rs-btn ghost" onclick="switchTab(\'home\')">Back to Today</button>';
+  return '<section class="session-debrief rs rs-set" role="region" aria-labelledby="rvKick rvTitle">'
+    + '<p class="rs-kicker" id="rvKick">Questions to revisit</p>'
+    + '<h2 class="rs-title" id="rvTitle" tabindex="-1">' + resultsHeadline(c, t) + '</h2>'
+    + '<p class="rs-fact">' + line + '</p>'
+    + '<div class="rs-acts">' + acts + '</div>'
+    + '</section>';
+}
+function reviewThenGo() {
+  var then = reviewThen;
+  reviewThen = null;
+  reviewEndShown = false;
+  if (then && DI[then.d]) { selectDomain(then.d); startSession(then.n, then.d); }
+  else switchTab('home');
 }
 
 function showNextReview() {
   clearQuestionTimers();
   if (reviewQueueIndex >= reviewQueueList.length) {
     reviewQueueMode = false;
-    var stillDue = getDueReview().length;
+    reviewEndShown = true;
     stopSessionTimer();
-    document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct);border-radius:var(--radius);padding:36px">'
-      + '<div class="empty-title" style="color:var(--correct)">Review session complete</div>'
-      + '<div class="empty-sub">' + (stillDue > 0
-          ? stillDue + ' question' + (stillDue === 1 ? '' : 's') + ' still due — missed answers come back sooner.'
-          : 'Nothing else is due right now.') + '</div>'
-      + '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
-      + (stillDue > 0 ? '<button class="act-btn primary" onclick="startReviewQueue()">Continue review (' + stillDue + ')</button>' : '')
-      + '<button class="act-btn secondary" onclick="backToPractice()">Back to Practice</button>'
-      + '</div></div>';
+    document.getElementById('qArea').innerHTML = reviewEndHtml();
+    var rh = document.getElementById('rvTitle');
+    if (rh) { try { rh.focus({ preventScroll: true }); } catch (e) {} }
+    try { window.scrollTo(0, 0); } catch (e) {}
+    try { markFirstSetDone(); } catch (e) {}
     return;
   }
   var q = reviewQueueList[reviewQueueIndex];
@@ -18434,6 +18925,8 @@ function showNextReview() {
 function backToPractice() {
   missedReviewMode = false;
   reviewQueueMode = false;
+  reviewEndShown = false;
+  reviewThen = null;
   resetConceptPractice();
   pendingDebrief = null;
   showPracticeHub();
@@ -18741,6 +19234,34 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Calmer screens',
+    items: [
+      { cat: 'improved', text: 'After a miss, the answer leads with the key idea and the exam cue, with the full explanation one tap away.' },
+      { cat: 'improved', text: 'On phones, the study note link and your own note wait behind one More button, so an answer fits in about two screens.' },
+      { cat: 'improved', text: 'Your first five skip the confidence question, and the choices now read Sure, Unsure or Guessing.' },
+      { cat: 'improved', text: 'Each answer shows its main source and when the questions were last reviewed.' },
+      { cat: 'improved', text: 'The cookie question waits until you finish your first set.' },
+      { cat: 'improved', text: 'On a computer, questions, answers and study notes keep a comfortable reading width.' },
+      { cat: 'improved', text: 'New visitors are offered a plant companion at the end of their first study session, not before their first question.' }
+    ]
+  },
+  {
+    version: 'v12.33',
+    title: 'Trust and knowing what to do next',
+    items: [
+      { cat: 'new', text: 'Today opens with one plan and its time: the questions to revisit first, then a set in the area that needs it most.' },
+      { cat: 'new', text: 'A gentle reminder to save a backup of your progress, so a browser clean-up never costs you your work.' },
+      { cat: 'improved', text: 'Questions you miss come back the next day instead of straight away, and right answers you guessed come back too.' },
+      { cat: 'improved', text: 'Your first five end with what is waiting for you tomorrow.' },
+      { cat: 'improved', text: 'Readiness says plainly what the range means, and Weak spots gives an early sign sooner.' },
+      { cat: 'improved', text: 'Results lead with your score, and a review ends with yours too.' },
+      { cat: 'improved', text: 'Your counts now agree across Today, You and the end of a review.' },
+      { cat: 'improved', text: 'KaiSip opens on Today when you come back.' },
+      { cat: 'improved', text: 'Plainer words across the app, and KaiSip now says clearly that it is free during the beta.' }
+    ]
+  },
+  {
+    version: 'v12.32',
     title: 'Tidier study notes',
     items: [
       { cat: 'improved', text: 'Study notes open straight to your topics, with less clutter.' },
@@ -20066,7 +20587,7 @@ function syncExamModeBtn() {
   var icon = document.getElementById('examModeIcon');
   var label = document.getElementById('examModeLabel');
   if (!btn) return;
-  // The control is the "Exam-style questions" switch on You.
+  // The control is the "Exam-day rehearsal" switch on You.
   btn.setAttribute('aria-checked', S.examMode ? 'true' : 'false');
   if (S.examMode) {
     if (icon) icon.innerHTML = ico('exam', 18);
