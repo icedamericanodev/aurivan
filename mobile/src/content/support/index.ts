@@ -42,6 +42,25 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.42.0',
+    date: '2026-10-24',
+    new: ['Studied on the KaiSip website? Restore from a backup now adds that progress to this phone, and shows what it will add first.'],
+  },
+  {
+    version: '1.41.0',
+    date: '2026-10-24',
+    new: [
+      'Short on time? Today offers 5 quick questions before you start, and they count toward your plan.',
+      'Beta testers can turn on a short question on some days in Help, answered by email only when you choose.',
+    ],
+    improved: [
+      'Your first question comes sooner: setup is one screen shorter, and you can add your name later.',
+      'A plant is now offered after your first questions instead of planted for you. Plants you have stay as they are.',
+      'Reminders now say what is waiting for you, and the last one says when they pause.',
+      'Send feedback can now say something confused you, and Report a problem can say you couldn’t find something.',
+    ],
+  },
+  {
     version: '1.40.1',
     date: '2026-10-23',
     fixed: ['The Privacy policy and Terms links in Settings now always appear.'],
@@ -540,6 +559,15 @@ export const FAQ: readonly FaqEntry[] = [
     answer: [
       'In Settings, under Your data, tap Save a backup and keep the file somewhere the new phone can reach, such as Files, Google Drive or your email.',
       'On the new phone, choose Restore from a backup on the welcome screen, or later in Settings. KaiSip never uploads your progress.',
+    ],
+    topic: 'backup',
+  },
+  {
+    id: 'from-website',
+    question: 'Can I bring my progress from the KaiSip website?',
+    answer: [
+      'Yes. On the website, open Your data and choose Export progress. Then in the app, choose Restore from a backup, on the welcome screen or in Settings under Your data, and pick that file.',
+      'KaiSip shows what it will add first. Your answers, saved questions, notes and mock results are added to what is already on this phone; nothing here is replaced or deleted.',
     ],
     topic: 'backup',
   },

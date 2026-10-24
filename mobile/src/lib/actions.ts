@@ -3,6 +3,7 @@
  * One place, so Journey, Learn and Practice all behave the same way.
  */
 import { router } from 'expo-router';
+import { SHORT_SET_SIZE } from '../engine/dayPlan';
 import type { PlanItem } from '../engine/planner';
 import { useSession } from '../store/session';
 import { startFirstSet } from './firstSet';
@@ -49,6 +50,25 @@ export function safeDecode(raw: string): string {
 export function openSessionFromStack() {
   if (router.canDismiss()) router.dismissAll();
   router.push('/session');
+}
+
+/**
+ * "Short on time? 5 questions" on Today (mobile 1.41): the plan's review or
+ * practice item, at five questions. Same mode and the same domain as the
+ * item, so its answers bank on it (engine/dayPlan.ts logActivity) and count
+ * toward today's plan. Anything else just runs the item as usual.
+ */
+export function runShortSet(item: PlanItem, certId: string) {
+  if (item.kind === 'review') {
+    return guardedStart(() => startReview(certId, Math.min(SHORT_SET_SIZE, item.count)), openSession, () => router.push('/caught-up'));
+  }
+  if (item.kind === 'practice' && item.why !== 'first') {
+    return guardedStart(
+      () => startPractice(certId, { count: SHORT_SET_SIZE, domainId: item.domainId, title: item.label }),
+      openSession,
+    );
+  }
+  return runPlanItem(item, certId);
 }
 
 export function runPlanItem(item: PlanItem, certId: string) {

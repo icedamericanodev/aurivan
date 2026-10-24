@@ -35,6 +35,7 @@ import { useBackup } from '../store/backup';
 import { LARGE_TEXT, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { SettingsGroup, SettingsRow } from './settings';
+import { WebImportPreview } from './webImport';
 import { Button, Gap, T, useFontScale } from './ui';
 
 /** "6 Oct 2026" for a timestamp, in the phone's local time. */
@@ -56,6 +57,8 @@ export function YourData() {
   const syncing = useSyncing();
   // Only a cloud build ever takes a "sync" undo copy.
   const syncUndo = CLOUD && undo?.kind === 'sync';
+  // Mobile 1.42: a copy taken just before website progress was added is "the import", not "the restore".
+  const what = undo?.kind === 'import' ? 'import' : 'restore';
 
   // Tidy up when Settings opens: an expired undo snapshot, and backup files
   // we made more than an hour ago in the app's cache.
@@ -111,18 +114,18 @@ export function YourData() {
     if (!undo) return;
     if (syncUndo) return confirmUndoSync();
     Alert.alert(
-      'Undo the restore?',
-      `Your progress goes back to how it was on ${dateOf(undo.takenAt)}, before the restore. Anything you studied since then will be replaced.`,
+      `Undo the ${what}?`,
+      `Your progress goes back to how it was on ${dateOf(undo.takenAt)}, before the ${what}. Anything you studied since then will be replaced.`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
-          text: 'Undo restore',
+          text: what === 'import' ? 'Undo import' : 'Undo restore',
           style: 'destructive',
           onPress: async () => {
             setBusy('undo');
             try {
               const r = await undoRestore();
-              if (r.kind === 'ok') say({ tone: 'ok', title: 'Restore undone', text: `Your progress is back to how it was before.${reminderLine(r.reminders)}` });
+              if (r.kind === 'ok') say({ tone: 'ok', title: what === 'import' ? 'Import undone' : 'Restore undone', text: `Your progress is back to how it was before.${reminderLine(r.reminders)}` });
               else if (r.kind === 'none') say({ tone: 'problem', title: 'Nothing to undo', text: `A restore can only be undone for ${UNDO_DAYS} days.` });
               else if (r.kind === 'invalid') {
                 say({ tone: 'problem', title: 'Can’t undo', text: 'The copy kept from before the restore is damaged, so it can’t be used. Your progress stays as it is now.' });
@@ -171,9 +174,9 @@ export function YourData() {
         />
         <SettingsRow
           title={pickLabel}
-          subtitle="You see what changes before anything is replaced."
+          subtitle="An app backup, or a progress file from the KaiSip website. You see what changes first."
           accessibilityLabel={pickLabel}
-          accessibilityHint="Choose a backup file. You will see what changes before anything is replaced."
+          accessibilityHint="Choose a backup file, or a progress file exported from the KaiSip website. You will see what changes before anything is changed."
           disabled={busy !== null}
           onPress={flow.pick}
           last={!(canUndo && undo)}
@@ -181,10 +184,10 @@ export function YourData() {
         />
         {canUndo && undo && !syncUndo && (
           <SettingsRow
-            title="Undo restore"
+            title={what === 'import' ? 'Undo last import' : 'Undo restore'}
             subtitle={`Available until ${dateOf(undoExpiresAt(undo))}.`}
-            accessibilityLabel={`Undo restore, available until ${dateOf(undoExpiresAt(undo))}`}
-            accessibilityHint="Puts back your progress from before the restore."
+            accessibilityLabel={`${what === 'import' ? 'Undo last import' : 'Undo restore'}, available until ${dateOf(undoExpiresAt(undo))}`}
+            accessibilityHint={`Puts back your progress from before the ${what}.`}
             disabled={busy !== null}
             onPress={confirmUndo}
             last
@@ -206,6 +209,8 @@ export function YourData() {
       {/* The result of the last action, right under the rows that started it. */}
       {message && <DataMessage message={message} />}
       <RestorePreview ready={flow.ready} busy={busy === 'restore'} onConfirm={flow.confirm} onCancel={flow.cancel} />
+      {/* Mobile 1.42: a file exported from the KaiSip website is added, never a replacement. */}
+      <WebImportPreview web={flow.web} busy={busy === 'web'} onConfirm={flow.confirmWeb} onCancel={flow.cancelWeb} />
     </>
   );
 }

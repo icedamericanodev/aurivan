@@ -211,7 +211,6 @@ function onboard(start: Start, minutes: DailyMinutes) {
   useSettings.setState({ onboarded: false, examDates: {} });
   mount(<Onboarding />);
   press(/^Get started$/);
-  press(/^Skip$/); // the optional name step (mobile 1.23)
   // Mobile 1.24: no exam step (CISA is chosen) and no plant step; the last button starts the first set.
   if (start === 'skipped') press(/^Skip this question$/);
   else {
@@ -863,7 +862,6 @@ describe('J7 the plant and the badges are unaffected by the fit', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
     press(/^Get started$/);
-    press(/^Skip$/); // the optional name step (mobile 1.23)
     press(/^Experienced practitioner/);
     press(/^Continue$/);
     press(/^45 minutes a day$/);

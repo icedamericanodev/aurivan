@@ -386,6 +386,7 @@ describe('privacy', () => {
     'engine/backup.ts',
     'engine/questionNotes.ts',
     'engine/syncMerge.ts',
+    'engine/webImport.ts', // mobile 1.42: brings the website's notes into the app (merged like a sync)
     'store/progress.ts',
   ];
   const src = join(__dirname, '..');

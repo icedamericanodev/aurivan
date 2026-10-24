@@ -151,6 +151,40 @@ states and checks each one restores. The write sites are fixed too:
 `minutesUsed` (one helper, 1..1440; an untimed mock counts its answer
 time) and answer `ms` (capped at 30 minutes).
 
+**Website progress (mobile 1.42).** "Restore from a backup" (Settings → Your data and the
+welcome screen) also takes the website's export (`{ cisaMindsetExport: true, version: 1,
+profile }`, `kaisip-web-progress.json`; a file with `profiles` offers each). It is ADDED, never a
+replacement:
+- `engine/webImport.ts` (pure, tested with a fixture made by driving the real website) reads it as
+  untrusted input: 8 MB cap (the website keeps full question copies), JSON in try/catch, the marker
+  and a numeric `version` (a higher one asks to update), prototype keys ignored, every field type-
+  and range-checked, lists capped. It maps the website's parity fields one to one (answers, review,
+  saved questions, mistakes, mocks as `web-<id>`, notes read and started when the website's ticks are
+  schema 2, notes on questions, study days). Ids the app doesn't have are left out and counted.
+  Not brought: the plant, settings and exam date (the export file doesn't hold the date).
+- The merge is the sync merge (`engine/syncMerge.ts` `mergeSides`, through the strict checker), with
+  the phone's whole-value fields (recent game scores, where study paths stopped, the streak's rest
+  day) carried on the website's side so they always stay. Importing twice changes nothing more.
+- `lib/webImport.ts` writes through `lib/backup.ts` `writeSynced` (one storage write, keeps today's
+  plan and a paused quiz, merges in anything done meanwhile) with a 7-day "Undo restore" copy.
+  `pickAnyBackup` reads up to 8 MB; anything that isn't a website export keeps the 1 MB backup rules.
+- Review fixes (1.42): the web side can only ADD (`webSideFor`): a note or review entry already on the
+  phone (a deleted note too) always stays; a website review entry is skipped for a question the phone
+  answered later; website mocks fill only the room left under `MAX_MOCKS` (the rest are counted and
+  said). Anything dated more than a day ahead of the phone's clock is dropped and counted (never
+  clamped); a review's next date is capped at last seen + 16 days; the streak counts days up to today
+  only and the file alone never raises the best. The sheet's counts come from merging on a copy and
+  comparing; study days count only those newer than the oldest day the phone keeps (so a re-import
+  says "nothing new"). The file is size-checked, then parsed once; `profiles` is cut to 20 before it is
+  read; zero-width and bidi control characters are stripped from names and notes. An Undo copy still
+  inside its 7 days is kept (the earliest wins); otherwise the import takes its own (`kind: 'import'`,
+  "Undo last import"). From the welcome screen an import does not finish onboarding: the learner goes on
+  to the starting point, exam date and daily time, then to Today (not the first set).
+- Website files carry the website's own version, so the app's "made by a newer version" check never
+  applies to them. **Open owner decision:** if `expo.version` is reset to 1.0 for the beta, app
+  backups (and "Your reports" credits) made on 1.1–1.42 compare as newer (`compareVersions` on
+  major.minor) and are refused until the app passes that number again.
+
 ### Quiet data (mobile 1.3)
 Collected because it can't be back-filled. Since mobile 1.4 the answer times
 feed the pace features below; since mobile 1.6 `masteredAt`, `lastConfidence`
@@ -375,6 +409,33 @@ server: every email goes through the learner's OWN email app.
   `kaisip://whats-next` links to Help (`lib/legacyLinks.ts`). Content
   in `content/support/index.ts`; `support-content.test.ts` enforces the What's
   New style. Maintainer side: `docs/support/PLAYBOOK.md`.
+
+**Beta helpers and a calmer start (mobile 1.41).** From the pre-beta review (owner decisions, 24 Oct 2026):
+- *Reminders* (`engine/reminders.ts` `slotCopy` / `rollingCopy`, pure, tested): each of the 7 rolling
+  reminders gets its own words. The next one names the reviews due by its time ("The 2 you missed are
+  back", only when every one was a miss); the middle ones offer the short path ("about 6 min for 5
+  questions"); the last says reminders pause until the app is opened. `lib/reminderSync.ts` counts the
+  waiting reviews (`waitingAt`); `lib/activity.ts` re-plans after every finished session. Same ids, same count.
+- *Short on time? 5 questions* on Today (`engine/dayPlan.ts` `shortSetItem`): before the plan has started,
+  never on the first-set day or in exam week. `lib/actions.ts` `runShortSet` starts the plan's own review
+  or practice item at five questions, so the answers bank on it.
+- *Feedback*: "Something confused me" (first feedback kind, subject tag `Confused`) and "I couldn’t find
+  something" (app reason `findable`). Same privacy rules.
+- *Tester question* (`engine/betaTester.ts`, `components/beta.tsx`): off unless Help → "I’m a beta tester"
+  is on (a switch, not a build flag: production is the same build). State in `store/seen.ts` `tester`
+  (this phone only; never backed up, synced or emailed). Questions on test days 1–2, 3, 5, 7, 9, 12 and 14
+  counted from the day it was turned on; "What got in the way?" after 3+ whole days with no study, once per
+  absence. "Answer by email" opens a mailto (subject `[KaiSip beta D3]`); the day-7 and day-14 check-ins
+  show "You studied on N of the last 7 days" on screen only. No badge, growth or streak for answering.
+- *Onboarding* has no name step; the welcome leads with "Questions that explain every option, the trap
+  included." Today asks for a name once, from the day after the first study day (`engine/firstRun.ts`
+  `nameAskDue`, `store/seen.ts` `nameAsk`, only for learners onboarded on 1.41+).
+- *The plant is offered* on the first set's closing screen ("Plant a seed" / "Maybe later", `store/seen.ts`
+  `plantOffer`), never planted for the learner, and only once the reminder ask is answered (one decision
+  at a time). Existing plants are untouched; You and Your plant keep "Plant yours".
+- Review fixes (1.41): Help has its own "Something confused me" row; the tester card never shows "0 of
+  the last 7 days", says "Turn these off any time in Help.", and on a day after an absence shows only
+  the away question (or nothing once it is answered); "Short on time?" waits while a tester card shows.
 
 **Games (mobile 1.6).** Three content games, all in the registry with the
 minPool guard (`isPlayable` now also counts a cert's decks from

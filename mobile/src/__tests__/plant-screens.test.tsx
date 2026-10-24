@@ -411,7 +411,6 @@ describe('onboarding', () => {
     useSettings.setState({ onboarded: false });
     mount(<Onboarding />);
     press(/^Get started$/);
-    press(/^Skip$/); // the optional name step (mobile 1.23)
     press(/^Skip this question$/);
     expect(allText()).not.toMatch(/Plant it|Planted|never wilts/);
     press(/^Start my first questions$/);

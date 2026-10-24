@@ -104,8 +104,7 @@ await edit(S, `v.state.onboarded = false; delete v.state.familiarity; delete v.s
 await go('/onboarding', 1800);
 await shot('fd01-welcome');
 await press('Get started');
-await shot('fd02-name');
-await press('Skip');
+// Mobile 1.41: no name step (Today asks later), so fd02 is not taken any more.
 await shot('fd03-starting-point');
 await pick(/^Some IT audit experience/);
 await press('Continue');

@@ -2,16 +2,25 @@
  * useRestoreFlow — pick a backup → preview → confirm → message, shared by
  * Settings → Your data and the welcome screen (lib/backup.ts does the work).
  *
+ * Mobile 1.42: the same pick also accepts a file exported from the KaiSip
+ * website. That opens its own sheet (`web`): which profile, when the file has
+ * several, and what will be ADDED; "Add to my progress" merges it in
+ * (lib/webImport.ts), never replacing what the phone has.
+ *
  * Messages are spoken once by screen readers, a moment after they appear
  * (so they don't cut off the button's own feedback), and queued on iOS.
  */
 import { useState } from 'react';
 import { BACKUP_ERROR_COPY, UNDO_DAYS } from '../engine/backup';
+import { examDateLabel } from '../engine/examDay';
+import { dayKey } from '../engine/streak';
+import { WEB_IMPORT_ERROR_COPY } from '../engine/webImport';
 import { sayLater } from './a11y';
 import { haptic } from './haptics';
-import { pickBackup, restoreBackup, type ReadyToRestore, type ReminderOutcome } from './backup';
+import { restoreBackup, type ReadyToRestore, type ReminderOutcome } from './backup';
+import { importWebProgress, pickAnyBackup, type WebReady } from './webImport';
 
-export type Busy = null | 'save' | 'pick' | 'restore' | 'undo';
+export type Busy = null | 'save' | 'pick' | 'restore' | 'undo' | 'web';
 export type FlowMessage = { tone: 'ok' | 'problem'; title: string; text: string };
 
 /**
@@ -29,11 +38,17 @@ export function reminderLine(r: ReminderOutcome): string {
   return '';
 }
 
-/** `onboard`: used on the welcome screen (the restore also finishes onboarding). */
-export function useRestoreFlow(opts: { onRestored?: () => void; onboard?: boolean } = {}) {
+/**
+ * `onboard`: used on the welcome screen (a restore also finishes onboarding).
+ * `onWebAdded`: website progress was added (the welcome screen goes on to its next step: an
+ * import never finishes onboarding, so the learner still sets an exam date and daily time).
+ */
+export function useRestoreFlow(opts: { onRestored?: () => void; onboard?: boolean; onWebAdded?: () => void } = {}) {
   const [busy, setBusy] = useState<Busy>(null);
   const [message, setMessage] = useState<FlowMessage | null>(null);
   const [ready, setReady] = useState<ReadyToRestore | null>(null);
+  // Mobile 1.42: a website export, read and waiting for "Add to my progress".
+  const [web, setWeb] = useState<WebReady | null>(null);
 
   const say = (m: FlowMessage) => {
     setMessage(m);
@@ -45,8 +60,10 @@ export function useRestoreFlow(opts: { onRestored?: () => void; onboard?: boolea
     setMessage(null);
     setBusy('pick');
     try {
-      const out = await pickBackup();
+      const out = await pickAnyBackup();
       if (out.kind === 'error') say({ tone: 'problem', title: 'Couldn’t restore', text: BACKUP_ERROR_COPY[out.code] });
+      else if (out.kind === 'web-error') say({ tone: 'problem', title: 'Couldn’t add your website progress', text: WEB_IMPORT_ERROR_COPY[out.code] });
+      else if (out.kind === 'web') setWeb(out);
       // The "fresh" preview (backup values only, no undo) is for the welcome
       // screen only. In Settings the learner has already chosen an exam date
       // and reminders that a restore replaces, so it always compares and keeps Undo.
@@ -87,5 +104,41 @@ export function useRestoreFlow(opts: { onRestored?: () => void; onboard?: boolea
     }
   };
 
-  return { busy, setBusy, message, setMessage, say, ready, pick, confirm, cancel: () => setReady(null) };
+  /** "Add to my progress" on the website sheet, for the chosen profile. */
+  const confirmWeb = async (index: number) => {
+    const profile = web?.profiles[index];
+    if (!profile) return;
+    setBusy('web');
+    try {
+      const out = await importWebProgress(profile);
+      setWeb(null);
+      if (out.kind === 'ok') {
+        haptic.success();
+        // Undo keeps the EARLIEST copy still inside its 7 days (review 1.42 L3): say which.
+        const undo = out.earlierUndo
+          ? ` Undo still goes back to how it was on ${examDateLabel(dayKey(out.undoFrom))}, before your earlier change.`
+          : ` You can undo this for ${UNDO_DAYS} days.`;
+        say({ tone: 'ok', title: 'Added', text: `Your website progress is on this phone now, together with what was already here.${undo}` });
+        (opts.onWebAdded ?? opts.onRestored)?.();
+      } else if (out.kind === 'too-big') {
+        say({ tone: 'problem', title: 'Couldn’t add your website progress', text: 'Together, the two would be too large to save on this phone. Nothing was changed.' });
+      } else if (out.kind === 'no-snapshot') {
+        say({
+          tone: 'problem',
+          title: 'Couldn’t add your website progress',
+          text: 'KaiSip couldn’t keep a copy of this phone’s progress to undo with, so it didn’t add anything. Nothing was changed.',
+        });
+      } else {
+        say({
+          tone: 'problem',
+          title: 'Adding didn’t finish',
+          text: 'Something went wrong while saving, so nothing was added and your progress was put back as it was. If anything looks wrong, close and reopen KaiSip.',
+        });
+      }
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  return { busy, setBusy, message, setMessage, say, ready, pick, confirm, cancel: () => setReady(null), web, confirmWeb, cancelWeb: () => setWeb(null) };
 }

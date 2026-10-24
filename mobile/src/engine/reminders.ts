@@ -14,7 +14,13 @@
  *   reminders without touching anything else (no "cancel everything").
  * - Calm copy: the plan is ready, and how long it takes. No streak pressure,
  *   no guilt, no promise about passing.
+ * - Mobile 1.41 (behavioural review, change 4): each reminder gets its own
+ *   words (`rollingCopy`). The NEXT one names what is waiting ("The 2 you
+ *   missed are back"); the ones after it offer the short path ("about 6
+ *   minutes for 5 questions"); the LAST one says plainly that reminders pause
+ *   until the app is opened again. Same number of reminders as before.
  */
+import { MINUTES_PER_QUESTION } from './pace';
 
 /** 0 = Sunday … 6 = Saturday (JavaScript's Date.getDay()). */
 export type Weekday = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -157,4 +163,82 @@ export function reminderCopy(certName: string, minutes?: number): { title: strin
     title: minutes && minutes > 0 ? `Your ${minutes}-minute plan is ready` : 'Your study plan is ready',
     body: `${certName}: a short session whenever you have a moment.`,
   };
+}
+
+// ── Mobile 1.41: words per reminder ──────────────────────────────────────
+/** The short path the reminders offer: this many questions ("Even 5 questions counts"). */
+export const SHORT_SET = 5;
+/** "about 6 minutes" for the short path, from the study pace (5 × 1.2 min, rounded). */
+export const SHORT_SET_MINUTES = Math.max(1, Math.round(SHORT_SET * MINUTES_PER_QUESTION));
+
+/** What is waiting in spaced review when a reminder appears. */
+export interface WaitingReviews {
+  /** Review questions due by then. */
+  due: number;
+  /** How many of those were last answered WRONG (the rest were guesses or unsure right answers). */
+  missed: number;
+}
+
+/**
+ * Count what is waiting at moment `at`: review questions due by then, and how
+ * many of them the learner last got wrong. `exists` drops questions the bank
+ * no longer has (a review session skips them too, so they are never promised).
+ */
+export function waitingAt(
+  review: Record<string, { dueAt: number }>,
+  answers: Record<string, { lastCorrect: boolean }>,
+  at: number,
+  exists: (id: string) => boolean = () => true,
+): WaitingReviews {
+  let due = 0;
+  let missed = 0;
+  for (const id of Object.keys(review)) {
+    if (review[id].dueAt > at || !exists(id)) continue;
+    due += 1;
+    if (answers[id]?.lastCorrect === false) missed += 1;
+  }
+  return { due, missed };
+}
+
+/**
+ * The words for one reminder. `slot` is 1 for the next reminder; `count` is
+ * how many are scheduled. Rules (no streak, no plant, no guilt, no "!"):
+ * - the next reminder, with reviews due by then: it names them. "The 2 you
+ *   missed are back" only when every one of them was a miss; otherwise
+ *   "2 questions are back for review" (a guess that was right is not a miss);
+ * - the last of two or more: a plain fact, reminders pause until the app opens;
+ * - anything else (or nothing due): the plan is ready, and the short path.
+ */
+export function slotCopy(opts: { slot: number; count: number; certName: string; waiting?: WaitingReviews }): { title: string; body: string } {
+  const { slot, count, certName, waiting } = opts;
+  if (slot === 1 && waiting && waiting.due > 0) {
+    const n = waiting.due;
+    const title =
+      waiting.missed === n
+        ? n === 1
+          ? 'The one you missed is back'
+          : `The ${n} you missed are back`
+        : n === 1
+          ? 'One question is back for review'
+          : `${n} questions are back for review`;
+    return { title, body: `${certName}: a quick review, then today’s plan. Even ${SHORT_SET} questions counts.` };
+  }
+  if (count >= 2 && slot === count) {
+    return { title: 'Your study plan is ready', body: 'This is the last reminder for now. They start again when you next open KaiSip.' };
+  }
+  return {
+    title: 'Your study plan is ready',
+    body: `${certName}: about ${SHORT_SET_MINUTES} min for ${SHORT_SET} questions, or the full plan if you have time.`,
+  };
+}
+
+/** The words for every reminder in a rolling plan, in order. `waitingFor(at)` counts reviews due by the first one. */
+export function rollingCopy(
+  plan: readonly ReminderRequest[],
+  certName: string,
+  waitingFor?: (at: number) => WaitingReviews,
+): { title: string; body: string }[] {
+  return plan.map((r, i) =>
+    slotCopy({ slot: i + 1, count: plan.length, certName, waiting: i === 0 && waitingFor ? waitingFor(r.at) : undefined }),
+  );
 }

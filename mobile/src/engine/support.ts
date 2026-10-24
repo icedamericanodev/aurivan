@@ -136,6 +136,8 @@ export const REASONS: Record<ReportKind, Choice[]> = {
     { code: 'score', label: 'A score or result looks wrong' },
     { code: 'timer', label: 'The timer or pacing looks wrong' },
     { code: 'reminder', label: 'A reminder didn’t arrive' },
+    // Mobile 1.41 (behavioural review change 6): "I looked for it and couldn't find it" is its own reason.
+    { code: 'findable', label: 'I couldn’t find something' },
     { code: 'other', label: 'Something else' },
   ],
 };
@@ -387,8 +389,14 @@ export function buildReportEmail(input: ReportInput): Email {
 }
 
 // ── Send feedback ────────────────────────────────────────────────────────
-export type FeedbackKind = 'idea' | 'like' | 'other';
+export type FeedbackKind = 'confused' | 'idea' | 'like' | 'other';
+/**
+ * Mobile 1.41: "Something confused me" comes first. Confusion is the beta's
+ * main quality measure, and learners had no way to label it (behavioural
+ * review change 6). The subject carries its tag ("Confused") for mail filters.
+ */
 export const FEEDBACK_KINDS: (Choice & { code: FeedbackKind; tag: string })[] = [
+  { code: 'confused', label: 'Something confused me', tag: 'Confused' },
   { code: 'idea', label: 'An idea', tag: 'Idea' },
   { code: 'like', label: 'Something I like', tag: 'Like' },
   { code: 'other', label: 'Something else', tag: 'Other' },

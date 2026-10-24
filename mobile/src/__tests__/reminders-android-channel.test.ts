@@ -97,9 +97,21 @@ describe('reminders on Android', () => {
   it('uses calm copy: the plan is ready; no streak, no guilt, no pass promise', async () => {
     await scheduleReminders({ enabled: true, hour: 19, minute: 0 }, 'CISA', { now: NOW, minutes: 15 });
     const { title, body } = requests()[0].content;
-    expect(title).toBe('Your 15-minute plan is ready');
+    // Mobile 1.41: the short path instead of the day's minutes (the cost was the barrier).
+    expect(title).toBe('Your study plan is ready');
     expect(`${title} ${body}`).not.toMatch(/streak|alive|got this|don.t|lose|miss|behind|pass/i);
     expect(body).toContain('CISA');
+  });
+
+  it('mobile 1.41: the next reminder names the misses waiting; the last says they pause', async () => {
+    await scheduleReminders({ enabled: true, hour: 19, minute: 0 }, 'CISA', { now: NOW, waitingFor: () => ({ due: 2, missed: 2 }) });
+    const all = requests();
+    expect(all).toHaveLength(7);
+    expect(all[0].content.title).toBe('The 2 you missed are back');
+    expect(all[0].content.body).toBe('CISA: a quick review, then today’s plan. Even 5 questions counts.');
+    expect(all[6].content.body).toBe('This is the last reminder for now. They start again when you next open KaiSip.');
+    // Still one notification per day on our own ids.
+    expect(new Set(all.map((r) => r.identifier)).size).toBe(7);
   });
 
   it('turned off: schedules nothing (but still clears ours)', async () => {

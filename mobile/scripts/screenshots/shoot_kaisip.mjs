@@ -78,15 +78,10 @@ await edit(S, `delete v.state.displayName;`);
 await go('/home');
 await shot('k01c-today-no-name');
 
-// Onboarding: the optional name step.
+// Onboarding: the welcome. Mobile 1.41: no name step any more (Today asks later; SHOTS=m141 shows it).
 await edit(S, `v.state.onboarded = false;`);
 await go('/onboarding', 1800);
 await shot('k02-onboarding-welcome');
-await press('Get started'); // mobile 1.24 (was "Start my plan")
-await shot('k03-onboarding-name');
-await page.getByRole('textbox', { name: 'Your name' }).fill('Maya');
-await wait(500);
-await shot('k03b-onboarding-name-typed');
 await edit(S, `v.state.onboarded = true; v.state.displayName = 'Maya';`);
 
 // Settings: the "You" group, its sheet, About and Your data.
