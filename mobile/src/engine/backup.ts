@@ -1149,8 +1149,10 @@ export interface UndoSnapshot {
    * Uplift Phase 7 (cloud builds only): 'sync' when the copy was taken just
    * before this phone first synced (Settings → Your data says "Undo sync").
    * Never set otherwise, so an OFF build saves exactly what it always did.
+   * Mobile 1.42: 'import' when the copy was taken just before website progress
+   * was added (Settings → Your data says "Undo last import").
    */
-  kind?: 'sync';
+  kind?: 'sync' | 'import';
 }
 
 /** When "Undo restore" stops being offered. */

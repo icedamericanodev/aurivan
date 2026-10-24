@@ -12,6 +12,8 @@
  */
 import { useState } from 'react';
 import { BACKUP_ERROR_COPY, UNDO_DAYS } from '../engine/backup';
+import { examDateLabel } from '../engine/examDay';
+import { dayKey } from '../engine/streak';
 import { WEB_IMPORT_ERROR_COPY } from '../engine/webImport';
 import { sayLater } from './a11y';
 import { haptic } from './haptics';
@@ -36,8 +38,12 @@ export function reminderLine(r: ReminderOutcome): string {
   return '';
 }
 
-/** `onboard`: used on the welcome screen (the restore also finishes onboarding). */
-export function useRestoreFlow(opts: { onRestored?: () => void; onboard?: boolean } = {}) {
+/**
+ * `onboard`: used on the welcome screen (a restore also finishes onboarding).
+ * `onWebAdded`: website progress was added (the welcome screen goes on to its next step: an
+ * import never finishes onboarding, so the learner still sets an exam date and daily time).
+ */
+export function useRestoreFlow(opts: { onRestored?: () => void; onboard?: boolean; onWebAdded?: () => void } = {}) {
   const [busy, setBusy] = useState<Busy>(null);
   const [message, setMessage] = useState<FlowMessage | null>(null);
   const [ready, setReady] = useState<ReadyToRestore | null>(null);
@@ -104,16 +110,16 @@ export function useRestoreFlow(opts: { onRestored?: () => void; onboard?: boolea
     if (!profile) return;
     setBusy('web');
     try {
-      const out = await importWebProgress(profile, { onboard: opts.onboard });
+      const out = await importWebProgress(profile);
       setWeb(null);
       if (out.kind === 'ok') {
         haptic.success();
-        say({
-          tone: 'ok',
-          title: 'Added',
-          text: `Your website progress is on this phone now, together with what was already here. You can undo this for ${UNDO_DAYS} days.`,
-        });
-        opts.onRestored?.();
+        // Undo keeps the EARLIEST copy still inside its 7 days (review 1.42 L3): say which.
+        const undo = out.earlierUndo
+          ? ` Undo still goes back to how it was on ${examDateLabel(dayKey(out.undoFrom))}, before your earlier change.`
+          : ` You can undo this for ${UNDO_DAYS} days.`;
+        say({ tone: 'ok', title: 'Added', text: `Your website progress is on this phone now, together with what was already here.${undo}` });
+        (opts.onWebAdded ?? opts.onRestored)?.();
       } else if (out.kind === 'too-big') {
         say({ tone: 'problem', title: 'Couldn’t add your website progress', text: 'Together, the two would be too large to save on this phone. Nothing was changed.' });
       } else if (out.kind === 'no-snapshot') {

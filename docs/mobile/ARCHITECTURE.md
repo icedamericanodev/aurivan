@@ -168,6 +168,18 @@ replacement:
 - `lib/webImport.ts` writes through `lib/backup.ts` `writeSynced` (one storage write, keeps today's
   plan and a paused quiz, merges in anything done meanwhile) with a 7-day "Undo restore" copy.
   `pickAnyBackup` reads up to 8 MB; anything that isn't a website export keeps the 1 MB backup rules.
+- Review fixes (1.42): the web side can only ADD (`webSideFor`): a note or review entry already on the
+  phone (a deleted note too) always stays; a website review entry is skipped for a question the phone
+  answered later; website mocks fill only the room left under `MAX_MOCKS` (the rest are counted and
+  said). Anything dated more than a day ahead of the phone's clock is dropped and counted (never
+  clamped); a review's next date is capped at last seen + 16 days; the streak counts days up to today
+  only and the file alone never raises the best. The sheet's counts come from merging on a copy and
+  comparing; study days count only those newer than the oldest day the phone keeps (so a re-import
+  says "nothing new"). The file is size-checked, then parsed once; `profiles` is cut to 20 before it is
+  read; zero-width and bidi control characters are stripped from names and notes. An Undo copy still
+  inside its 7 days is kept (the earliest wins); otherwise the import takes its own (`kind: 'import'`,
+  "Undo last import"). From the welcome screen an import does not finish onboarding: the learner goes on
+  to the starting point, exam date and daily time, then to Today (not the first set).
 - Website files carry the website's own version, so the app's "made by a newer version" check never
   applies to them. **Open owner decision:** if `expo.version` is reset to 1.0 for the beta, app
   backups (and "Your reports" credits) made on 1.1–1.42 compare as newer (`compareVersions` on

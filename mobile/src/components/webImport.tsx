@@ -23,7 +23,7 @@ import type { WebReady } from '../lib/webImport';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { useMotion } from './motion';
-import { Button, Gap, RadioRow, T } from './ui';
+import { Button, RadioRow, T } from './ui';
 
 /** "Progress 2 · last used 6 Oct 2026" when a profile has no name. */
 function profileTitle(name: string, i: number): string {
@@ -35,9 +35,12 @@ export function WebImportPreview({
   busy,
   onConfirm,
   onCancel,
+  onboarding,
 }: {
   web: WebReady | null;
   busy: boolean;
+  /** Opened from the welcome screen: say what comes next (the exam date and daily time). */
+  onboarding?: boolean;
   onConfirm: (index: number) => void;
   onCancel: () => void;
 }) {
@@ -51,13 +54,15 @@ export function WebImportPreview({
   const lines = summary ? webAddLines(summary) : [];
   const skips = summary ? webSkipLines(summary) : [];
   const several = (web?.profiles.length ?? 0) > 1;
+  // Nothing new, or too large to save together: no Add button (Close only).
+  const canAdd = Boolean(summary && !summary.nothingNew && !summary.tooBig);
   return (
     <Modal visible={web !== null} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={busy ? () => {} : onCancel}>
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.raised2 }}>
-        <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xl }} testID="web-import">
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xl }} testID="web-import">
           <T v="display" accessibilityRole="header">Add your website progress?</T>
           <T v="body" color={c.ink2} style={{ marginTop: space.md }}>
-            {`This adds what you studied on the KaiSip website to this phone. Nothing here is replaced or deleted. You can undo this for ${UNDO_DAYS} days.`}
+            {`This adds what you studied on the KaiSip website to this phone. Nothing here is replaced or deleted. You can undo it for ${UNDO_DAYS} days in Your data.`}
           </T>
           {several && web && (
             <>
@@ -97,20 +102,20 @@ export function WebImportPreview({
             <T key={line} v="small" color={c.ink2} style={{ marginTop: space.md }}>{line}</T>
           ))}
           <T v="small" color={c.ink2} style={{ marginTop: space.md }}>{WEB_NOT_IN_FILE}</T>
-          <Gap h={space.xl} />
-          {!summary?.nothingNew && (
-            <>
-              <Button
-                label={busy ? 'Adding…' : 'Add to my progress'}
-                accessibilityHint="Adds the website progress to this phone. Nothing here is replaced."
-                disabled={busy}
-                onPress={() => onConfirm(index)}
-              />
-              <Gap h={space.sm} />
-            </>
-          )}
-          <Button kind="secondary" label={summary?.nothingNew ? 'Close' : 'Cancel'} disabled={busy} onPress={onCancel} />
+          {onboarding && <T v="small" color={c.ink2} style={{ marginTop: space.sm }}>Next, you choose your starting point, exam date and daily time.</T>}
         </ScrollView>
+        {/* The actions stay in reach under the scrolling list (UX review). */}
+        <View style={{ paddingHorizontal: space.gutter, paddingTop: space.md, paddingBottom: space.md, borderTopWidth: 1, borderColor: c.line, gap: space.sm }}>
+          {canAdd && (
+            <Button
+              label={busy ? 'Adding…' : 'Add to my progress'}
+              accessibilityHint="Adds the website progress to this phone. Nothing here is replaced."
+              disabled={busy}
+              onPress={() => onConfirm(index)}
+            />
+          )}
+          <Button kind="secondary" label={canAdd ? 'Cancel' : 'Close'} disabled={busy} onPress={onCancel} />
+        </View>
       </SafeAreaView>
     </Modal>
   );

@@ -15,6 +15,8 @@
  */
 import { Dimensions } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
+import { router } from 'expo-router';
+import Onboarding from '../app/onboarding';
 import { YourData } from '../components/yourData';
 import { getAllQuestions } from '../content/loader';
 import { fitForBackup } from '../engine/backup';
@@ -70,6 +72,12 @@ jest.mock('expo-file-system', () => ({
   },
   Paths: { cache: { uri: 'file:///cache' } },
 }));
+jest.mock('expo-router', () => ({
+  router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), canGoBack: () => true, canDismiss: () => false },
+  useFocusEffect: (cb: () => void | (() => void)) => jest.requireActual('react').useEffect(() => cb(), [cb]),
+  useLocalSearchParams: () => ({}),
+}));
+jest.mock('../lib/haptics', () => ({ haptic: { success: () => {}, selection: () => {}, error: () => {}, light: () => {} } }));
 jest.mock('expo-sharing', () => ({ isAvailableAsync: async () => true, shareAsync: async () => {} }));
 jest.mock('expo-document-picker', () => ({ getDocumentAsync: async () => mockPick }));
 
@@ -186,7 +194,7 @@ describe('adding it', () => {
     expect(ready.summaries[0]).toMatchObject({ answers: 10, saved: 2, nothingNew: false });
     expect(ready.pausedSession).toBe(true);
     const out = await importWebProgress(ready.profiles[0]);
-    expect(out).toEqual({ kind: 'ok' });
+    expect(out).toMatchObject({ kind: 'ok' });
     const cp = selectCert(useProgress.getState(), 'cisa');
     expect(cp.answers[mine]).toBeDefined();
     for (const id of Object.keys(fixture.profile.state.answerLog)) expect(cp.answers[id]).toBeDefined();
@@ -209,13 +217,49 @@ describe('adding it', () => {
     expect(stableStringify(fitForBackup({ settings: {}, progress: { ...useProgress.getState() } }).progress)).toBe(after);
   });
 
-  it('on a fresh phone (the welcome screen), it also finishes onboarding', async () => {
+  it('on a fresh phone it never finishes onboarding on its own (review 1.42)', async () => {
     useSettings.setState({ ...useSettings.getInitialState(), onboarded: false });
     const ready = checkAnyText(WEB);
     if (ready.kind !== 'web') throw new Error('not web');
-    await importWebProgress(ready.profiles[0], { onboard: true });
-    expect(useSettings.getState()).toMatchObject({ onboarded: true, activeCertId: 'cisa' });
+    await importWebProgress(ready.profiles[0]);
+    expect(useSettings.getState().onboarded).toBe(false);
     expect(Object.keys(selectCert(useProgress.getState(), 'cisa').answers)).toHaveLength(10);
+  });
+
+  it('takes its own Undo copy, marked as an import', async () => {
+    studied();
+    const ready = checkAnyText(WEB);
+    if (ready.kind !== 'web') throw new Error('not web');
+    const out = await importWebProgress(ready.profiles[0]);
+    expect(out).toMatchObject({ kind: 'ok', earlierUndo: false });
+    expect(useBackup.getState().undo?.kind).toBe('import');
+  });
+
+  it('keeps an earlier Undo copy that is still inside its 7 days, so Undo goes back to before the first change', async () => {
+    studied();
+    const earlier = { takenAt: Date.now() - 2 * 86_400_000, file: currentBackup(Date.now() - 2 * 86_400_000) };
+    act(() => {
+      useBackup.setState({ undo: earlier });
+    });
+    const ready = checkAnyText(WEB);
+    if (ready.kind !== 'web') throw new Error('not web');
+    const out = await importWebProgress(ready.profiles[0]);
+    expect(out).toMatchObject({ kind: 'ok', earlierUndo: true, undoFrom: earlier.takenAt });
+    expect(useBackup.getState().undo).toEqual(earlier);
+  });
+
+  it('a note already on the phone is kept, even when the website’s is newer', async () => {
+    studied();
+    act(() => {
+      useProgress.getState().setQuestionNote('cisa', 'd1_010', 'My phone note');
+    });
+    const f = JSON.parse(WEB);
+    f.profile.state.qNotes.d1_010.ts = Date.now() - 1000;
+    const ready = checkAnyText(JSON.stringify(f));
+    if (ready.kind !== 'web') throw new Error('not web');
+    expect(ready.summaries[0].qNotes).toBe(0);
+    await importWebProgress(ready.profiles[0]);
+    expect(selectCert(useProgress.getState(), 'cisa').qNotes?.d1_010.text).toBe('My phone note');
   });
 
   it('a merge too large to save changes nothing', async () => {
@@ -252,12 +296,12 @@ describe('Settings → Your data, with a website file', () => {
     expect(t).toContain('10 questions you answered on the website');
     expect(t).toContain('2 saved questions');
     expect(t).toContain('1 mock exam result');
-    expect(t).toMatch(/exam date, plant and settings aren’t in this file/);
+    expect(t).toMatch(/doesn’t include your exam date, plant or settings/);
     expect(t).not.toMatch(/isn’t a KaiSip backup/);
     await press('Add to my progress');
     expect(allText()).toContain('Added');
     expect(allText()).toContain('Your website progress is on this phone now');
-    expect(allText()).toContain('Undo restore');
+    expect(allText()).toContain('Undo last import');
   });
 
   it('Cancel adds nothing', async () => {
@@ -310,5 +354,26 @@ describe('Settings → Your data, with a website file', () => {
     } finally {
       Dimensions.set({ window: { ...w, fontScale: 1 }, screen: { ...w, fontScale: 1 } });
     }
+  });
+});
+
+describe('the welcome screen with a website file (review 1.42)', () => {
+  it('adds it, then goes on to the starting point: onboarding is not skipped; the end goes to Today, not the first set', async () => {
+    useSettings.setState({ ...useSettings.getInitialState(), onboarded: false, theme: 'light' });
+    act(() => {
+      r = create(<Onboarding />);
+    });
+    pickFile(WEB);
+    await press('Restore from a backup');
+    expect(allText()).toContain('Next, you choose your starting point, exam date and daily time.');
+    await press('Add to my progress');
+    expect(useSettings.getState().onboarded).toBe(false);
+    expect(allText()).toContain('Where are you starting from?');
+    expect(allText()).toContain('Your website progress is on this phone now');
+    await press('Skip this question');
+    await press('Start my first questions');
+    expect(useSettings.getState().onboarded).toBe(true);
+    expect(router.replace).toHaveBeenCalledWith('/home');
+    expect(router.replace).not.toHaveBeenCalledWith('/session');
   });
 });

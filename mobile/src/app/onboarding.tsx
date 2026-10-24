@@ -61,7 +61,7 @@ import { useRestoreFlow } from '../lib/useRestoreFlow';
 import { CalendarSheet, chosenLine } from '../components/calendar';
 import { DEFAULT_MINUTES, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { dayKey } from '../engine/streak';
-import { useProgress } from '../store/progress';
+import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSettings } from '../store/settings';
 import { radius, space } from '../theme/tokens';
@@ -104,7 +104,9 @@ export default function Onboarding() {
   const [footerH, setFooterH] = useState(120);
   // Restore from a backup (shared with Settings → Your data). Success
   // finishes onboarding and goes straight to Today.
-  const restore = useRestoreFlow({ onboard: true, onRestored: () => router.replace('/home') });
+  // Website progress (mobile 1.42 review): ADDED, then onboarding goes on to its next step, so the
+  // learner still chooses a starting point, exam date and daily time (the website file has none).
+  const restore = useRestoreFlow({ onboard: true, onRestored: () => router.replace('/home'), onWebAdded: () => setStep(1) });
 
   // Each step's header takes screen-reader focus when the step changes (UX review P7).
   // Not tied to the step's entrance: the header is there from the first frame.
@@ -190,7 +192,9 @@ export default function Onboarding() {
     useSeen.getState().noteReminderFlag('newLearner');
     // Day 1's plan (the first set) is made now, BEFORE any answer, so the five answers tick it off.
     buildTodayPlan(certId, false);
-    if (startFirstSet(certId)) router.replace('/session');
+    // Website progress was added on the welcome screen: this learner has studied already, so Today, not the first set.
+    if (Object.keys(selectCert(useProgress.getState(), certId).answers).length > 0) router.replace('/home');
+    else if (startFirstSet(certId)) router.replace('/session');
     else router.replace('/home');
   };
 
@@ -199,6 +203,12 @@ export default function Onboarding() {
   const body =
     step === 1 ? (
       <Enter key="s1">
+        {/* After website progress was added on the welcome screen: the result, then the usual steps. */}
+        {restore.message?.tone === 'ok' && (
+          <View style={{ marginTop: space.lg }}>
+            <DataMessage message={restore.message} />
+          </View>
+        )}
         <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 1 of 2</T>
         <StepHeader title={FAMILIARITY_QUESTION} headRef={headRef} />
         <T v="meta" style={{ marginTop: space.sm }}>This shapes your first week. You can change it any time in Settings.</T>
@@ -332,7 +342,7 @@ export default function Onboarding() {
       />
       <RestorePreview ready={restore.ready} busy={restore.busy === 'restore'} onConfirm={restore.confirm} onCancel={restore.cancel} />
       {/* Mobile 1.42: progress exported from the KaiSip website can start the app too. */}
-      <WebImportPreview web={restore.web} busy={restore.busy === 'web'} onConfirm={restore.confirmWeb} onCancel={restore.cancelWeb} />
+      <WebImportPreview web={restore.web} busy={restore.busy === 'web'} onConfirm={restore.confirmWeb} onCancel={restore.cancelWeb} onboarding />
     </SafeAreaView>
   );
 }

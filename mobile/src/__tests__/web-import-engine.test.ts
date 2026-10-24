@@ -16,8 +16,10 @@ import { getAllQuestions } from '../content/loader';
 import { noteSubtopics } from '../content/notes';
 import { fitForBackup, type BackupProgress } from '../engine/backup';
 import { stableStringify } from '../engine/syncMerge';
+import { bumpStreak } from '../engine/streak';
 import {
   mergeWebProgress,
+  parseWebText,
   profileIsEmpty,
   readWebExport,
   streakFromDays,
@@ -41,7 +43,10 @@ const CTX = { now: fixture.profile.lastActive + 60_000, knownCertIds: ['cisa'] }
 
 /** A fresh copy of the real export, to change in one test. */
 const file = (): typeof fixture & Record<string, unknown> => JSON.parse(JSON.stringify(fixture));
-const read = (f: unknown) => readWebExport(typeof f === 'string' ? f : JSON.stringify(f), KNOWN);
+const NOW = CTX.now;
+const read = (f: unknown) => readWebExport(parseWebText(typeof f === 'string' ? f : JSON.stringify(f)), KNOWN, NOW);
+/** What importing `p` into `phone` adds (merged on a copy and compared, as the app does). */
+const summaryOf = (phone: BackupProgress, p: ReturnType<typeof read>[number]) => webAddSummary(phone, mergeWebProgress(phone, p, 'cisa', CTX), p, 'cisa', NOW);
 const codeOf = (f: unknown) => {
   try {
     read(f);
@@ -113,7 +118,7 @@ describe('ids the app doesn’t have', () => {
     expect(p.cert.answers?.d9_999).toBeUndefined();
     expect(p.cert.bookmarks).not.toContain('d9_999');
     expect(p.unmatched).toBe(3);
-    expect(webSkipLines(webAddSummary(emptyPhone(), p, 'cisa'))[0]).toBe('3 items couldn’t be matched to questions or notes in this app, so they’re left out.');
+    expect(webSkipLines(summaryOf(emptyPhone(), p))[0]).toBe('3 items couldn’t be matched to questions or notes in this app, so they’re left out.');
   });
 
   it('notes ticked under the website’s older numbering are not guessed at', () => {
@@ -131,7 +136,7 @@ describe('ids the app doesn’t have', () => {
     const [p] = read(f);
     expect(p.cert.answers?.[q.id]).toBeUndefined();
     expect(p.noDetail).toBe(1);
-    expect(webSkipLines(webAddSummary(emptyPhone(), p, 'cisa'))).toContain('1 older answer was saved without whether it was right, so it can’t be added.');
+    expect(webSkipLines(summaryOf(emptyPhone(), p))).toContain('1 older answer was saved without whether it was right, so it can’t be added.');
   });
 });
 
@@ -224,8 +229,8 @@ describe('merging into an empty app', () => {
 
   it('the summary names what will be added, in plain words, with no bank size', () => {
     const [p] = read(fixture);
-    const s = webAddSummary(emptyPhone(), p, 'cisa');
-    expect(s).toMatchObject({ answers: 10, updated: 0, saved: 2, notesRead: 2, qNotes: 1, mocks: 1, studyDays: 4, nothingNew: false });
+    const s = summaryOf(emptyPhone(), p);
+    expect(s).toMatchObject({ answers: 10, updated: 0, saved: 2, notesRead: 2, qNotes: 1, mocks: 1, mocksSkipped: 0, studyDays: 4, future: 0, nothingNew: false });
     expect(webAddLines(s)).toEqual([
       '10 questions you answered on the website',
       '2 saved questions',
@@ -314,7 +319,7 @@ describe('merging into existing progress', () => {
     const twice = mergeWebProgress(fitForBackup({ settings: {}, progress: once }).progress as BackupProgress, p, 'cisa', CTX);
     expect(stableStringify(twice)).toBe(stableStringify(once));
     // And the summary then says there is nothing new.
-    expect(webAddSummary(once, p, 'cisa').nothingNew).toBe(true);
+    expect(summaryOf(once, p).nothingNew).toBe(true);
   });
 
   it('into an empty app, twice, is the same as once', () => {
@@ -330,8 +335,177 @@ describe('merging into existing progress', () => {
 
 describe('the streak from study days', () => {
   it('counts the run ending on the last day and the best run', () => {
-    expect(streakFromDays([])).toEqual({ current: 0, best: 0, lastDay: null });
-    expect(streakFromDays(['2026-10-01', '2026-10-02', '2026-10-03', '2026-10-10', '2026-10-11'])).toMatchObject({ current: 2, best: 3, lastDay: '2026-10-11' });
-    expect(streakFromDays(['2026-10-31', '2026-11-01'])).toMatchObject({ current: 2 });
+    expect(streakFromDays([], '2026-11-30')).toEqual({ current: 0, best: 0, lastDay: null });
+    // The run ending on the last day; `best` is never more than that run (the file can't raise the phone's best).
+    expect(streakFromDays(['2026-10-01', '2026-10-02', '2026-10-03', '2026-10-10', '2026-10-11'], '2026-11-30')).toMatchObject({ current: 2, best: 2, lastDay: '2026-10-11' });
+    expect(streakFromDays(['2026-10-31', '2026-11-01'], '2026-11-30')).toMatchObject({ current: 2 });
+    // Days after today are left out.
+    expect(streakFromDays(['2026-10-30', '2026-10-31', '2026-11-01'], '2026-10-31')).toMatchObject({ current: 2, lastDay: '2026-10-31' });
+  });
+});
+
+// ── Review fixes (1.42): "adds, never replaces", wrong clocks, caps ─────────
+const DAY = 86_400_000;
+const at = fixture.profile.state.answerLog.d1_010.lastAt;
+/** A phone with exactly these bits of progress, fitted as the merge expects. */
+const phoneWith = (cert: Record<string, unknown>, streak: Record<string, unknown> = { current: 0, best: 0, lastDay: null }) =>
+  fitForBackup({ settings: {}, progress: { byCert: { cisa: { answers: {}, review: {}, bookmarks: [], mocks: [], lessonsDone: [], mistakes: {}, gameBest: {}, ...cert } }, streak, today: { day: '', answered: 0 } } })
+    .progress as BackupProgress;
+
+describe('the phone’s own notes and review are never replaced', () => {
+  it('a note here stays, even when the website’s is newer; the summary doesn’t count it', () => {
+    const f = file();
+    f.profile.state.qNotes.d1_010.ts = at + 5 * DAY > NOW ? NOW - 1000 : at + 5 * DAY;
+    const [p] = read(f);
+    const phone = phoneWith({ qNotes: { d1_010: { text: 'Mine, older.', ts: at - 10 * DAY } } });
+    const merged = mergeWebProgress(phone, p, 'cisa', CTX);
+    expect(merged.byCert.cisa.qNotes?.d1_010.text).toBe('Mine, older.');
+    expect(summaryOf(phone, p).qNotes).toBe(0);
+  });
+
+  it('a note deleted here stays deleted', () => {
+    const [p] = read(fixture);
+    const phone = phoneWith({ qNotes: { d1_010: { text: '', ts: at - 10 * DAY } } });
+    expect(mergeWebProgress(phone, p, 'cisa', CTX).byCert.cisa.qNotes?.d1_010.text).toBe('');
+    expect(summaryOf(phone, p).qNotes).toBe(0);
+  });
+
+  it('a review entry here stays as it is, whatever the website says', () => {
+    const [p] = read(fixture);
+    const mine = { box: 4, dueAt: at + 7 * DAY, lastSeen: at - 2 * DAY, reps: 6 };
+    const phone = phoneWith({ review: { d1_010: mine } });
+    expect(mergeWebProgress(phone, p, 'cisa', CTX).byCert.cisa.review?.d1_010).toEqual(mine);
+  });
+
+  it('the website’s review entry isn’t added for a question the phone answered after the website saw it', () => {
+    const [p] = read(fixture);
+    const phone = phoneWith({ answers: { d1_010: { attempts: 2, correctCount: 2, lastCorrect: true, lastAt: at + 1000 } } });
+    expect(mergeWebProgress(phone, p, 'cisa', CTX).byCert.cisa.review?.d1_010).toBeUndefined();
+  });
+});
+
+describe('a computer with a wrong clock', () => {
+  it('drops answers, review, mistakes, notes, mocks and study days dated in the future, and counts them', () => {
+    const f = file();
+    const s = f.profile.state as unknown as Record<string, Record<string, Record<string, unknown>>> & { studyDays: string[]; mockHistory: Record<string, unknown>[] };
+    const later = NOW + 3 * DAY;
+    s.answerLog.d1_008.lastAt = later;
+    s.review.d1_010.lastSeen = later;
+    s.mistakeLog.d2_010.at = later;
+    s.qNotes.d1_010.ts = later;
+    s.mockHistory[0].finishedAt = later;
+    s.studyDays = [...s.studyDays, '2026-12-25'];
+    const [p] = read(f);
+    expect(p.cert.answers?.d1_008).toBeUndefined();
+    expect(p.cert.review?.d1_010).toBeUndefined();
+    expect(p.cert.mistakes?.d2_010).toBeUndefined();
+    expect(p.cert.qNotes).toBeUndefined();
+    expect(p.cert.mocks).toBeUndefined();
+    expect(p.studyDays).not.toContain('2026-12-25');
+    expect(p.future).toBe(6);
+    expect(webSkipLines(summaryOf(emptyPhone(), p))).toContain('6 items are dated in the future (the computer’s clock may be wrong), so they’re left out.');
+  });
+
+  it('a date within a day ahead (another time zone) is kept', () => {
+    const f = file();
+    f.profile.state.answerLog.d1_008.lastAt = NOW + 6 * 3_600_000;
+    expect(read(f)[0].cert.answers?.d1_008).toBeDefined();
+  });
+
+  it('a review date far beyond the longest interval is brought back to it', () => {
+    const f = file();
+    const e = f.profile.state.review.d1_010;
+    e.dueAt = e.lastSeen + 400 * DAY;
+    expect(read(f)[0].cert.review?.d1_010.dueAt).toBe(e.lastSeen + 16 * DAY);
+  });
+
+  it('150 future study days make no streak and never raise the best', () => {
+    const f = file();
+    const days: string[] = [];
+    for (let i = 1; i <= 150; i++) {
+      const d = new Date(NOW + i * DAY);
+      days.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
+    }
+    (f.profile.state as { studyDays: string[] }).studyDays = days;
+    const [p] = read(f);
+    const phone = phoneWith({}, { current: 1, best: 3, lastDay: '2026-10-20', recentDays: ['2026-10-20'] });
+    const merged = mergeWebProgress(phone, p, 'cisa', CTX);
+    expect(merged.streak.best).toBe(3);
+    expect(merged.streak.current).toBeLessThanOrEqual(2);
+    expect(p.future).toBeGreaterThanOrEqual(149);
+  });
+});
+
+describe('mocks never push the phone’s own out', () => {
+  it('with 50 mocks here, the website’s mock is left out and said so', () => {
+    const mine = Array.from({ length: 50 }, (_, i) => ({ id: `m${i}`, finishedAt: at - (i + 1) * DAY, total: 10, correct: 5, minutesUsed: 10, byDomain: {} }));
+    const phone = phoneWith({ mocks: mine });
+    const [p] = read(fixture);
+    const merged = mergeWebProgress(phone, p, 'cisa', CTX);
+    expect(merged.byCert.cisa.mocks?.map((m) => m.id).sort()).toEqual(mine.map((m) => m.id).sort());
+    const s = summaryOf(phone, p);
+    expect(s).toMatchObject({ mocks: 0, mocksSkipped: 1 });
+    expect(webSkipLines(s)).toContain('1 older mock exam result isn’t added: the app keeps 50 at most, and yours stay.');
+  });
+
+  it('with room for some, only that many are added (newest first)', () => {
+    const mine = Array.from({ length: 49 }, (_, i) => ({ id: `m${i}`, finishedAt: at - (i + 1) * DAY, total: 10, correct: 5, minutesUsed: 10, byDomain: {} }));
+    const f = file();
+    const m0 = f.profile.state.mockHistory[0];
+    (f.profile.state as { mockHistory: unknown[] }).mockHistory = [m0, { ...m0, id: 'mock_demo_2', finishedAt: m0.finishedAt - DAY }];
+    const [p] = read(f);
+    const merged = mergeWebProgress(phoneWith({ mocks: mine }), p, 'cisa', CTX);
+    expect(merged.byCert.cisa.mocks).toHaveLength(50);
+    expect(merged.byCert.cisa.mocks?.some((m) => m.id === 'web-mock_demo_1')).toBe(true);
+    expect(merged.byCert.cisa.mocks?.some((m) => m.id === 'web-mock_demo_2')).toBe(false);
+  });
+});
+
+describe('re-importing after more study', () => {
+  it('with 20+ website days and a new study day between, says there is nothing new', () => {
+    const f = file();
+    const days: string[] = [];
+    for (let i = 30; i >= 1; i--) {
+      const d = new Date(NOW - i * DAY);
+      days.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
+    }
+    (f.profile.state as { studyDays: string[] }).studyDays = days;
+    const [p] = read(f);
+    expect(p.studyDays).toHaveLength(30);
+    const once = mergeWebProgress(emptyPhone(), p, 'cisa', CTX);
+    // The learner studies again: the app keeps only its last 14 days.
+    const studied = { ...once, streak: bumpStreak(once.streak, NOW + 2 * DAY) };
+    expect(studied.streak.recentDays).toHaveLength(14);
+    expect(summaryOf(fitForBackup({ settings: {}, progress: studied }).progress as BackupProgress, p).nothingNew).toBe(true);
+  });
+});
+
+describe('hostile files (review 1.42)', () => {
+  it('a huge profiles list is cut BEFORE it is walked', () => {
+    const list: unknown[] = Array.from({ length: 30 }, () => fixture.profile);
+    Object.defineProperty(list, 25, {
+      get() {
+        throw new Error('walked past the cap');
+      },
+    });
+    expect(readWebExport({ cisaMindsetExport: true, version: 1, profiles: list }, KNOWN, NOW)).toHaveLength(WEB_MAX_PROFILES);
+  });
+
+  it('a profiles map is cut before it is read too', () => {
+    const profiles: Record<string, unknown> = {};
+    for (let i = 0; i < 5000; i++) profiles[`p${i}`] = { name: `P${i}`, state: {} };
+    profiles.p0 = fixture.profile;
+    expect(readWebExport({ cisaMindsetExport: true, version: 1, profiles }, KNOWN, NOW)).toHaveLength(WEB_MAX_PROFILES);
+  });
+
+  it('invisible and direction-changing characters are taken out of names and notes', () => {
+    const f = file();
+    f.profile.name = 'Ma\u202Eya\u200B';
+    f.profile.state.qNotes.d1_010.text = '\u2066Charter\u2069 first\u200F';
+    (f.profile.state.qNotes as Record<string, unknown>).d1_008 = { text: '\u200B\u200C', ts: f.profile.state.qNotes.d1_010.ts };
+    const [p] = read(f);
+    expect(p.name).toBe('Maya');
+    expect(p.cert.qNotes?.d1_010.text).toBe('Charter first');
+    expect(p.cert.qNotes?.d1_008).toBeUndefined();
   });
 });

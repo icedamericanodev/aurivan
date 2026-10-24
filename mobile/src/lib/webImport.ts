@@ -5,21 +5,26 @@
  * Plain English for the founder:
  * - Settings → Your data → "Restore from a backup" (and the welcome screen)
  *   now also accept the file the KaiSip website exports ("kaisip-web-progress.json").
- * - `checkWebText` reads it (changes nothing) and works out, per profile in
- *   the file, what would be ADDED to this phone. The screen shows that and asks.
+ * - `checkWebParsed` reads it (changes nothing) and works out, per profile in
+ *   the file, what would truly be ADDED to this phone, by merging on a copy
+ *   and comparing. The screen shows that and asks.
  * - `importWebProgress` merges it in: never replacing or deleting the phone's
- *   own progress. It keeps a 7-day "Undo restore" copy first, and writes in
- *   ONE storage write (lib/backup.ts writeSynced, the path sync uses), so a
- *   failed write changes nothing. Anything the learner does meanwhile is
- *   merged too, never dropped.
+ *   own progress. It keeps a 7-day "Undo" copy first (or keeps the earlier
+ *   one when a restore or import already left one), and writes in ONE storage
+ *   write (lib/backup.ts writeSynced, the path sync uses), so a failed write
+ *   changes nothing. Anything the learner does meanwhile is merged too.
+ * - From the welcome screen it does NOT finish onboarding: the learner still
+ *   sets a starting point, exam date and daily time afterwards.
  */
 import { CERTIFICATIONS, DEFAULT_CERT_ID } from '../content/certifications';
-import { BackupError, fitForBackup, MAX_BACKUP_BYTES, utf8Bytes, type BackupProgress } from '../engine/backup';
+import { BackupError, fitForBackup, MAX_BACKUP_BYTES, undoAvailable, utf8Bytes, type BackupProgress, type UndoSnapshot } from '../engine/backup';
 import {
   isWebExport,
   mergeWebProgress,
+  parseWebText,
   profileIsEmpty,
   readWebExport,
+  tooBigSummary,
   WEB_MARKER,
   WEB_MAX_BYTES,
   webAddSummary,
@@ -28,8 +33,8 @@ import {
   type WebImportErrorCode,
   type WebProfile,
 } from '../engine/webImport';
+import { useBackup } from '../store/backup';
 import { useSession } from '../store/session';
-import { useSettings } from '../store/settings';
 import { checkBackupText, currentBackup, knownIds, phoneStores, pickFileText, writeSynced, type PickOutcome } from './backup';
 import { refreshReminders } from './reminderSync';
 
@@ -58,20 +63,26 @@ function fittedPhone(progress: unknown, settings: unknown): BackupProgress {
   return fitForBackup({ settings, progress }).progress as BackupProgress;
 }
 
-/** Read a website export's text. Never changes anything. */
-export function checkWebText(text: string): WebReady | { kind: 'web-error'; code: WebImportErrorCode } {
+const mergeCtx = (now: number) => ({ now, knownCertIds: CERTIFICATIONS.map((c) => c.id) });
+
+/** Read a parsed website export (parsed ONCE, by checkAnyText). Never changes anything. */
+export function checkWebParsed(raw: unknown, now = Date.now()): WebReady | { kind: 'web-error'; code: WebImportErrorCode } {
   try {
-    const profiles = readWebExport(text, known());
+    const profiles = readWebExport(raw, known(), now);
     if (profiles.every(profileIsEmpty)) return { kind: 'web-error', code: 'empty' };
     const phone = phoneStores();
     const fitted = fittedPhone(phone.progress, phone.settings);
     const active = useSession.getState().active;
-    return {
-      kind: 'web',
-      profiles,
-      summaries: profiles.map((p) => webAddSummary(fitted, p, WEB_CERT_ID)),
-      pausedSession: Boolean(active && !active.finishedAt),
-    };
+    // What each profile truly adds: merged on a copy and compared (nothing is written).
+    const summaries = profiles.map((p) => {
+      try {
+        return webAddSummary(fitted, mergeWebProgress(fitted, p, WEB_CERT_ID, mergeCtx(now)), p, WEB_CERT_ID, now);
+      } catch (e) {
+        if (e instanceof BackupError && e.code === 'too-big') return tooBigSummary(p);
+        throw e;
+      }
+    });
+    return { kind: 'web', profiles, summaries, pausedSession: Boolean(active && !active.finishedAt) };
   } catch (e) {
     return { kind: 'web-error', code: e instanceof WebImportError ? e.code : 'bad-data' };
   }
@@ -81,19 +92,22 @@ export function checkWebText(text: string): WebReady | { kind: 'web-error'; code
 export type AnyPick = PickOutcome | WebReady | { kind: 'web-error'; code: WebImportErrorCode };
 
 /**
- * Read any picked file's text: a website export goes to checkWebText, anything
- * else is an app backup (checkBackupText, with its own 1 MB cap). Never changes anything.
+ * Read any picked file's text: a website export goes to checkWebParsed,
+ * anything else is an app backup (checkBackupText, with its own 1 MB cap).
+ * The size is checked before any parse, and a website file is parsed once.
+ * Never changes anything.
  */
-export function checkAnyText(text: string): AnyPick {
-  // Only a file that mentions the website's marker is parsed here (an app backup is parsed once, by its own reader).
+export function checkAnyText(text: string, now = Date.now()): AnyPick {
+  // Only a file that mentions the website's marker is parsed here (an app backup is read by its own reader).
   if (text.includes(`"${WEB_MARKER}"`)) {
     let raw: unknown;
     try {
-      raw = JSON.parse(text.charCodeAt(0) === 0xfeff ? text.slice(1) : text);
-    } catch {
+      raw = parseWebText(text);
+    } catch (e) {
+      if (e instanceof WebImportError && e.code === 'too-big') return { kind: 'web-error', code: 'too-big' };
       raw = undefined;
     }
-    if (isWebExport(raw)) return checkWebText(text);
+    if (isWebExport(raw)) return checkWebParsed(raw, now);
   }
   if (utf8Bytes(text) > MAX_BACKUP_BYTES) return { kind: 'error', code: 'too-big' };
   return checkBackupText(text);
@@ -106,7 +120,8 @@ export async function pickAnyBackup(): Promise<AnyPick> {
 }
 
 export type WebImportOutcome =
-  | { kind: 'ok' }
+  /** `undoFrom`: the moment Undo goes back to (this import's copy, or an earlier one still kept). */
+  | { kind: 'ok'; undoFrom: number; earlierUndo: boolean }
   /** The phone's own data couldn't be copied for Undo, so nothing was changed. */
   | { kind: 'no-snapshot' }
   /** The merged progress would be too large to save on this phone. Nothing was changed. */
@@ -114,16 +129,20 @@ export type WebImportOutcome =
   /** The write failed; the old data was put back. */
   | { kind: 'failed' };
 
-/**
- * Merge one profile into the phone's progress. `onboard` (the welcome
- * screen): onboarding is finished too, so the learner lands on Today.
- */
-export async function importWebProgress(profile: WebProfile, opts: { onboard?: boolean; now?: number } = {}): Promise<WebImportOutcome> {
+/** Merge one profile into the phone's progress. */
+export async function importWebProgress(profile: WebProfile, opts: { now?: number } = {}): Promise<WebImportOutcome> {
   const now = opts.now ?? Date.now();
-  const ctx = { now, knownCertIds: CERTIFICATIONS.map((c) => c.id) };
-  // Undo first (like a restore): the phone's data as a backup file, checked to be restorable.
-  const file = currentBackup(now);
-  if (checkBackupText(JSON.stringify(file)).kind !== 'ok') return { kind: 'no-snapshot' };
+  const ctx = mergeCtx(now);
+  // Undo (review 1.42 L3): an earlier copy still inside its 7 days (a restore, or an earlier import)
+  // is KEPT, so Undo still goes back to before the first change. Otherwise this import takes its own.
+  const existing = useBackup.getState().undo;
+  const keepEarlier = undoAvailable(existing, now);
+  let undo: UndoSnapshot | undefined;
+  if (!keepEarlier) {
+    const file = currentBackup(now);
+    if (checkBackupText(JSON.stringify(file)).kind !== 'ok') return { kind: 'no-snapshot' };
+    undo = { takenAt: now, file, kind: 'import' };
+  }
   const merge = (live: ReturnType<typeof phoneStores>) => ({
     settings: live.settings as unknown as Record<string, unknown>,
     progress: mergeWebProgress(fittedPhone(live.progress, live.settings), profile, WEB_CERT_ID, ctx) as unknown as Record<string, unknown>,
@@ -136,13 +155,12 @@ export async function importWebProgress(profile: WebProfile, opts: { onboard?: b
   }
   try {
     // The sync write path: keeps today's plan and a paused quiz, writes the undo copy in the same
-    // write, and merges in anything the learner did meanwhile (merging the same file again is safe).
-    await writeSynced(first, { undo: { takenAt: now, file }, rebase: merge });
+    // write (or leaves the slot alone), and merges in anything the learner did meanwhile.
+    await writeSynced(first, { ...(undo ? { undo } : {}), rebase: merge });
   } catch (e) {
     return e instanceof BackupError && e.code === 'too-big' ? { kind: 'too-big' } : { kind: 'failed' };
   }
-  if (opts.onboard) useSettings.setState({ onboarded: true, activeCertId: WEB_CERT_ID });
   // The review queue may have grown: the next reminder names what is waiting.
   await refreshReminders().catch(() => {});
-  return { kind: 'ok' };
+  return { kind: 'ok', undoFrom: keepEarlier && existing ? existing.takenAt : now, earlierUndo: keepEarlier };
 }

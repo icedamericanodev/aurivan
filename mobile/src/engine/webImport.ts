@@ -30,7 +30,8 @@ import { deviceLocalOf, localSide, mergeSides, type MergeContext, type SyncedPro
 import { capNoteText, isLiveNote, NOTE_ID_RE, NOTES_TOTAL_MAX } from './questionNotes';
 import { MAX_ANSWER_MS } from './answerClock';
 import { MAX_MOCKS } from './journey';
-import { daysBetween } from './streak';
+import { DAY_MS, INTERVAL_DAYS, MAX_BOX } from './srs';
+import { dayKey, daysBetween } from './streak';
 
 // ── Limits ───────────────────────────────────────────────────────────────
 /** The marker the website writes (its original name, kept so older exports still import). */
@@ -123,23 +124,56 @@ export interface WebProfile {
   lastActive?: number;
   /** Its study, in the app's shapes (only ids the app has). */
   cert: Cert;
-  /** Days with study ("YYYY-MM-DD"), oldest first. */
+  /** Days with study ("YYYY-MM-DD"), oldest first; never later than the reading day + 1. */
   studyDays: string[];
   /** Items that couldn't be matched to anything in the app (distinct ids). */
   unmatched: number;
   /** Older answers the website saved without their result (right or wrong), so they can't be added. */
   noDetail: number;
+  /** Entries dated in the future (a wrong clock on the computer): left out, never clamped. */
+  future: number;
+}
+
+/**
+ * Review 1.42 L4: invisible characters that can reorder or hide text
+ * (zero-width and bidirectional controls) are taken out of names and notes.
+ */
+const INVISIBLE = /[​-‏‪-‮⁦-⁩]/g;
+export function stripInvisible(text: string): string {
+  return text.replace(INVISIBLE, '');
 }
 
 /** A clean, short display name (the website allowed 32 characters of text). */
 function cleanName(x: unknown): string {
   if (typeof x !== 'string') return '';
-  // Control characters and markup-looking text are dropped; the screen shows plain text only.
-  return x.replace(/[\u0000-\u001F\u007F<>]/g, '').trim().slice(0, 32);
+  // Control characters, invisible ones and markup-looking text are dropped; the screen shows plain text only.
+  return stripInvisible(x).replace(/[\u0000-\u001F\u007F<>]/g, '').trim().slice(0, 32);
 }
 
-/** Read one profile's `state` (untrusted) into the app's shapes. */
-export function readWebState(state: Record<string, unknown>, known: WebKnown): Omit<WebProfile, 'key' | 'name' | 'lastActive'> {
+/** How far ahead of the phone's clock a date may be (time zones), before it counts as a wrong clock. */
+export const FUTURE_SLACK_MS = DAY_MS;
+/** The longest wait in spaced review (box 5): a review date further out than this after it was seen is not real. */
+const LONGEST_REVIEW_MS = Math.max(...Object.values(INTERVAL_DAYS)) * DAY_MS;
+
+/**
+ * Read one profile's `state` (untrusted) into the app's shapes. `now` is the
+ * phone's clock: anything dated later than now + FUTURE_SLACK_MS is DROPPED
+ * (and counted), so a computer with a wrong clock can't plant answers,
+ * notes or study days in the future.
+ */
+export function readWebState(state: Record<string, unknown>, known: WebKnown, now: number): Omit<WebProfile, 'key' | 'name' | 'lastActive'> {
+  const limit = now + FUTURE_SLACK_MS;
+  const lastDayAllowed = dayKey(limit);
+  let future = 0;
+  /** A real time, and not in the future (counted when it is). */
+  const past = (x: unknown): x is number => {
+    if (!isTime(x)) return false;
+    if (x > limit) {
+      future += 1;
+      return false;
+    }
+    return true;
+  };
   const unknownIds = new Set<string>();
   /** True when the id is one of the app's questions; any other well-formed id is counted as unmatched. */
   const keepQ = (id: string) => {
@@ -154,7 +188,7 @@ export function readWebState(state: Record<string, unknown>, known: WebKnown): O
   const log = isObj(state.answerLog) ? state.answerLog : {};
   for (const id of keysOf(log)) {
     const e = log[id];
-    if (!isObj(e) || !isTime(e.lastAt) || !keepQ(id)) continue;
+    if (!isObj(e) || !keepQ(id) || !past(e.lastAt)) continue;
     if (Object.keys(answers).length >= MAX_IDS) break;
     const attempts = Math.max(1, whole(e.attempts));
     const rec: Answer = { attempts, correctCount: Math.min(attempts, whole(e.correctCount)), lastCorrect: e.lastCorrect === true, lastAt: e.lastAt };
@@ -176,15 +210,19 @@ export function readWebState(state: Record<string, unknown>, known: WebKnown): O
     }
   }
 
-  // Spaced review (the same Leitner entries; an undated one is the oldest, so the phone's own wins).
+  // Spaced review (the same Leitner entries). An undated one is the oldest; a "seen" date in the future
+  // is dropped; the next review is never more than the longest interval after it was seen.
   const review: Record<string, Review> = {};
   const rv = isObj(state.review) ? state.review : {};
   for (const id of keysOf(rv)) {
     const e = rv[id];
     if (!isObj(e) || !keepQ(id)) continue;
+    if (isTime(e.lastSeen) && !past(e.lastSeen)) continue;
     if (Object.keys(review).length >= MAX_IDS) break;
-    const box = Math.min(5, Math.max(1, Math.round(typeof e.box === 'number' && Number.isFinite(e.box) ? e.box : 1)));
-    review[id] = { box, dueAt: isTime(e.dueAt) ? e.dueAt : OLDEST, lastSeen: isTime(e.lastSeen) ? e.lastSeen : OLDEST, reps: whole(e.reps) };
+    const box = Math.min(MAX_BOX, Math.max(1, Math.round(typeof e.box === 'number' && Number.isFinite(e.box) ? e.box : 1)));
+    const lastSeen = isTime(e.lastSeen) ? e.lastSeen : OLDEST;
+    const dueAt = Math.min(isTime(e.dueAt) ? e.dueAt : OLDEST, lastSeen + LONGEST_REVIEW_MS);
+    review[id] = { box, dueAt: Math.max(OLDEST, dueAt), lastSeen, reps: whole(e.reps) };
   }
 
   // Saved questions: the website keeps copies; only the id is needed.
@@ -201,7 +239,7 @@ export function readWebState(state: Record<string, unknown>, known: WebKnown): O
   const ml = isObj(state.mistakeLog) ? state.mistakeLog : {};
   for (const id of keysOf(ml)) {
     const e = ml[id];
-    if (!isObj(e) || !isTime(e.at) || !keepQ(id)) continue;
+    if (!isObj(e) || !keepQ(id) || !past(e.at)) continue;
     if (Object.keys(mistakes).length >= MAX_IDS) break;
     const m: Mistake = { at: e.at };
     const picked = oneOf(LETTERS, e.picked);
@@ -221,7 +259,7 @@ export function readWebState(state: Record<string, unknown>, known: WebKnown): O
   if (Array.isArray(state.mockHistory)) {
     const seen = new Set<string>();
     for (const m of state.mockHistory.slice(0, MAX_ENTRIES)) {
-      if (!isObj(m) || typeof m.id !== 'string' || !NOTE_ID_RE.test(m.id) || !isTime(m.finishedAt) || seen.has(m.id)) continue;
+      if (!isObj(m) || typeof m.id !== 'string' || !NOTE_ID_RE.test(m.id) || seen.has(m.id) || !past(m.finishedAt)) continue;
       seen.add(m.id);
       const total = whole(m.total, 1000);
       if (total === 0) continue;
@@ -261,6 +299,7 @@ export function readWebState(state: Record<string, unknown>, known: WebKnown): O
     for (const id of keysOf(x)) {
       const v = x[id];
       if (!(v === true || isTime(v)) || !NOTE_ID_RE.test(id)) continue;
+      if (typeof v === 'number' && !past(v)) continue;
       if (state.topicTicksSchema === 2 && known.note(id)) {
         if (out.length < MAX_IDS) out.push(id);
       } else unknownIds.add(`note:${id}`);
@@ -270,21 +309,31 @@ export function readWebState(state: Record<string, unknown>, known: WebKnown): O
   const notesRead = ticks(state.topicReviewed);
   const notesViewed = ticks(state.topicViewed);
 
-  // Your notes on questions (the same { text, ts }). An undated one is the oldest, so the phone's own wins.
+  // Your notes on questions (the same { text, ts }). An undated one is the oldest; a future one is dropped.
   const qNotes: Record<string, Note> = {};
   const qn = isObj(state.qNotes) ? state.qNotes : {};
   let chars = 0;
   for (const id of keysOf(qn)) {
     const e = qn[id];
-    if (!isObj(e) || typeof e.text !== 'string' || !e.text.trim() || !keepQ(id)) continue;
-    const text = capNoteText(e.text);
+    if (!isObj(e) || typeof e.text !== 'string' || !keepQ(id)) continue;
+    const text = capNoteText(stripInvisible(e.text));
+    if (!text.trim()) continue;
+    if (isTime(e.ts) && !past(e.ts)) continue;
     if (chars + text.length > NOTES_TOTAL_MAX || Object.keys(qNotes).length >= MAX_IDS) break;
     chars += text.length;
     qNotes[id] = { text, ts: isTime(e.ts) ? e.ts : OLDEST };
   }
 
-  // Study days (the app's streak days).
-  const studyDays = Array.isArray(state.studyDays) ? [...new Set(state.studyDays.slice(0, MAX_ENTRIES).filter(isDay))].sort().slice(-MAX_DAYS) : [];
+  // Study days (the app's streak days). A day after tomorrow is a wrong clock: dropped and counted.
+  const days: string[] = [];
+  if (Array.isArray(state.studyDays)) {
+    for (const d of state.studyDays.slice(0, MAX_ENTRIES)) {
+      if (!isDay(d)) continue;
+      if (d > lastDayAllowed) future += 1;
+      else days.push(d);
+    }
+  }
+  const studyDays = [...new Set(days)].sort().slice(-MAX_DAYS);
 
   const cert: Cert = {};
   if (Object.keys(answers).length) cert.answers = answers;
@@ -298,14 +347,14 @@ export function readWebState(state: Record<string, unknown>, known: WebKnown): O
   }
   if (notesViewed.length) cert.notesViewed = notesViewed;
   if (Object.keys(qNotes).length) cert.qNotes = qNotes;
-  return { cert, studyDays, unmatched: unknownIds.size, noDetail: noDetailIds.size };
+  return { cert, studyDays, unmatched: unknownIds.size, noDetail: noDetailIds.size, future };
 }
 
 /** One profile from the file, or null when it isn't one (no `state` object). */
-function readProfile(key: string, p: unknown, known: WebKnown): WebProfile | null {
+function readProfile(key: string, p: unknown, known: WebKnown, now: number): WebProfile | null {
   if (!isObj(p) || !isObj(p.state)) return null;
-  const read = readWebState(p.state, known);
-  return { key, name: cleanName(p.name), ...(isTime(p.lastActive) ? { lastActive: p.lastActive } : {}), ...read };
+  const read = readWebState(p.state, known, now);
+  return { key, name: cleanName(p.name), ...(isTime(p.lastActive) && p.lastActive <= now + FUTURE_SLACK_MS ? { lastActive: p.lastActive } : {}), ...read };
 }
 
 /** True when the parsed JSON is a website export (the marker), whatever its version. */
@@ -314,38 +363,46 @@ export function isWebExport(raw: unknown): boolean {
 }
 
 /**
- * Read a website export. Returns its profiles (one for a normal export; a
- * file holding several, as `profiles`, offers each). Throws WebImportError.
- * `text` is the whole file; the caller has already capped its size.
+ * The file's text, size-checked BEFORE it is parsed, then parsed once.
+ * Throws WebImportError ('too-big', or 'bad-data' when it isn't JSON).
  */
-export function readWebExport(text: string, known: WebKnown): WebProfile[] {
+export function parseWebText(text: string): unknown {
   if (text.length > WEB_MAX_BYTES) throw new WebImportError('too-big');
-  const body = text.charCodeAt(0) === 0xfeff ? text.slice(1) : text;
-  let raw: unknown;
   try {
-    raw = JSON.parse(body);
+    return JSON.parse(text.charCodeAt(0) === 0xfeff ? text.slice(1) : text);
   } catch {
     throw new WebImportError('bad-data');
   }
+}
+
+/**
+ * Read a parsed website export (parseWebText). Returns its profiles (one for
+ * a normal export; a file holding several, as `profiles`, offers at most
+ * WEB_MAX_PROFILES). `now` is the phone's clock (future dates are dropped).
+ * Throws WebImportError.
+ */
+export function readWebExport(raw: unknown, known: WebKnown, now: number): WebProfile[] {
   if (!isObj(raw) || raw[WEB_MARKER] !== true) throw new WebImportError('bad-data');
   // The website's own versioning: a number. A newer one may hold data this app would drop.
   if (typeof raw.version !== 'number' || !Number.isInteger(raw.version)) throw new WebImportError('bad-data');
   if (!WEB_VERSIONS.includes(raw.version)) throw new WebImportError(raw.version > Math.max(...WEB_VERSIONS) ? 'newer' : 'bad-data');
   const out: WebProfile[] = [];
   if (raw.profile !== undefined) {
-    const p = readProfile('profile', raw.profile, known);
+    const p = readProfile('profile', raw.profile, known, now);
     if (!p) throw new WebImportError('bad-data');
     out.push(p);
   }
-  // Several profiles (the website's profile records, keyed by id, or a list).
+  // Several profiles (the website's profile records, keyed by id, or a list). Cut to the cap FIRST,
+  // so a file with a huge list is never walked in full.
   if (raw.profiles !== undefined) {
+    const room = Math.max(0, WEB_MAX_PROFILES - out.length);
     const list: [string, unknown][] = Array.isArray(raw.profiles)
-      ? raw.profiles.map((p, i) => [isObj(p) && typeof p.id === 'string' ? p.id : `profile-${i + 1}`, p])
+      ? raw.profiles.slice(0, room).map((p, i) => [isObj(p) && typeof p.id === 'string' ? p.id : `profile-${i + 1}`, p])
       : isObj(raw.profiles)
-        ? keysOf(raw.profiles, 1000).map((k) => [k, (raw.profiles as Record<string, unknown>)[k]])
+        ? keysOf(raw.profiles, room).map((k) => [k, (raw.profiles as Record<string, unknown>)[k]])
         : [];
-    for (const [key, p] of list.slice(0, WEB_MAX_PROFILES)) {
-      const read = readProfile(String(key).slice(0, 64), p, known);
+    for (const [key, p] of list) {
+      const read = readProfile(String(key).slice(0, 64), p, known, now);
       if (read) out.push(read);
     }
     if (!out.length) throw new WebImportError('bad-data');
@@ -360,16 +417,75 @@ export function profileIsEmpty(p: WebProfile): boolean {
 }
 
 // ── The streak from study days ───────────────────────────────────────────
-/** Consecutive days ending on the last one, and the longest run (no rest days: the website has none). */
-export function streakFromDays(days: readonly string[], restDay?: string | null): SyncedProgress['streak'] {
-  if (!days.length) return { current: 0, best: 0, lastDay: null };
-  let best = 1;
+/**
+ * The run of consecutive days ending on the last day that is not after
+ * `today` (later days are left out). `best` is that run only: the website
+ * file never raises the phone's best streak on its own; the merge works the
+ * current streak out from both sides' real days.
+ */
+export function streakFromDays(days: readonly string[], today: string, restDay?: string | null): SyncedProgress['streak'] {
+  const upTo = days.filter((d) => d <= today);
+  if (!upTo.length) return { current: 0, best: 0, lastDay: null, ...(restDay !== undefined ? { restDay } : {}) };
   let run = 1;
-  for (let i = 1; i < days.length; i++) {
-    run = daysBetween(days[i - 1], days[i]) === 1 ? run + 1 : 1;
-    best = Math.max(best, run);
-  }
-  return { current: run, best, lastDay: days[days.length - 1], recentDays: [...days], ...(restDay !== undefined ? { restDay } : {}) };
+  for (let i = 1; i < upTo.length; i++) run = daysBetween(upTo[i - 1], upTo[i]) === 1 ? run + 1 : 1;
+  return { current: run, best: run, lastDay: upTo[upTo.length - 1], recentDays: [...upTo], ...(restDay !== undefined ? { restDay } : {}) };
+}
+
+// ── The merge ────────────────────────────────────────────────────────────
+/**
+ * The web side with everything that would REPLACE something on the phone
+ * taken out (review 1.42 S1), so the merge can only add:
+ * - your notes on questions: only for questions with no note entry here
+ *   (a phone note, or a note deleted here, always stays as it is);
+ * - review entries: only for questions with no review entry here, and only
+ *   when the website saw the question after the phone last answered it;
+ * - mock results: only as many as fit beside the phone's own under the
+ *   MAX_MOCKS cap (newest first), so the phone's mocks are never pushed out;
+ * - the few fields the merge takes whole from the side that studied last
+ *   (recent game scores, where study paths stopped) carry the phone's own.
+ */
+function webSideFor(mine: Cert, p: WebProfile): { cert: Cert; mocksSkipped: number } {
+  const has = (m: Record<string, unknown> | undefined, id: string) => Boolean(m && Object.prototype.hasOwnProperty.call(m, id));
+  const cert: Cert = { ...p.cert };
+  delete cert.qNotes;
+  delete cert.review;
+  delete cert.mocks;
+  const notes = Object.entries(p.cert.qNotes ?? {}).filter(([id]) => !has(mine.qNotes, id));
+  if (notes.length) cert.qNotes = Object.fromEntries(notes);
+  const review = Object.entries(p.cert.review ?? {}).filter(([id, r]) => !has(mine.review, id) && !(mine.answers?.[id] && mine.answers[id].lastAt >= r.lastSeen));
+  if (review.length) cert.review = Object.fromEntries(review);
+  const myMocks = new Set((mine.mocks ?? []).map((m) => m.id));
+  const newMocks = (p.cert.mocks ?? []).filter((m) => !myMocks.has(m.id));
+  const room = Math.max(0, MAX_MOCKS - myMocks.size);
+  const kept = newMocks.slice(0, room);
+  // The ids already on the phone come along too (the merge keeps one of each, the phone's own).
+  const mocks = [...(p.cert.mocks ?? []).filter((m) => myMocks.has(m.id)), ...kept];
+  if (mocks.length) cert.mocks = mocks;
+  if (mine.gameRecent) cert.gameRecent = mine.gameRecent;
+  if (mine.studyPath) cert.studyPath = mine.studyPath;
+  return { cert, mocksSkipped: newMocks.length - kept.length };
+}
+
+/**
+ * The phone's progress with `p` merged in, for `certId`. `phone` must be the
+ * phone's own progress FITTED for backup (engine/backup.ts fitForBackup).
+ * Uses the sync merge (engine/syncMerge.ts) on a web side that can only add
+ * (webSideFor), then puts the phone's device-only fields back. Throws
+ * BackupError when the result can't pass the checker (e.g. too big).
+ *
+ * Safe to repeat: merging the result with the same profile again gives the
+ * same progress.
+ */
+export function mergeWebProgress(phone: BackupProgress, p: WebProfile, certId: string, ctx: Omit<MergeContext, 'firstSync'>): BackupProgress {
+  if (!ctx.knownCertIds.includes(certId)) throw new BackupError('unknown-cert', certId);
+  const mine: Cert = phone.byCert[certId] ?? {};
+  const { cert } = webSideFor(mine, p);
+  // The phone's rest day travels on the web side too, so it stays whichever side studied last.
+  const webState = { byCert: { [certId]: cert }, streak: streakFromDays(p.studyDays, dayKey(ctx.now), phone.streak.restDay ?? null) };
+  const local = localSide<SyncedProgress>('progress', phone, {}, ctx);
+  const web = localSide<SyncedProgress>('progress', webState, {}, ctx);
+  const merged = mergeSides<SyncedProgress>('progress', local, web, ctx);
+  return { ...(merged.state as BackupProgress), ...(deviceLocalOf('progress', phone) as Partial<BackupProgress>) } as BackupProgress;
 }
 
 // ── What would be added ──────────────────────────────────────────────────
@@ -382,32 +498,72 @@ export interface WebAddSummary {
   notesRead: number;
   qNotes: number;
   mocks: number;
+  /** Mock results left out because the phone already keeps the most it can. */
+  mocksSkipped: number;
   studyDays: number;
   unmatched: number;
   noDetail: number;
+  future: number;
+  /** Together with this phone's progress it would be too large to save (nothing can be added). */
+  tooBig?: boolean;
   /** True when the phone already has everything this profile could add. */
   nothingNew: boolean;
 }
 
-/** What importing `p` would add to the phone's progress for `certId`. Changes nothing. */
-export function webAddSummary(phone: BackupProgress, p: WebProfile, certId: string): WebAddSummary {
+/** The summary when the merge can't be saved on this phone (too large together). */
+export function tooBigSummary(p: WebProfile): WebAddSummary {
+  return { answers: 0, updated: 0, saved: 0, notesRead: 0, qNotes: 0, mocks: 0, mocksSkipped: 0, studyDays: 0, unmatched: p.unmatched, noDetail: p.noDetail, future: p.future, tooBig: true, nothingNew: false };
+}
+
+/**
+ * What importing `p` adds, worked out by comparing the phone (`phone`, fitted)
+ * with the merge result (`merged`, mergeWebProgress): only what truly changes
+ * is counted. Study days count only those the phone hasn't already kept or
+ * gone past (a phone keeps its recent days only), so a re-import after more
+ * study says there is nothing new.
+ */
+export function webAddSummary(phone: BackupProgress, merged: BackupProgress, p: WebProfile, certId: string, now: number): WebAddSummary {
   const cp: Cert = phone.byCert[certId] ?? {};
+  const out: Cert = merged.byCert[certId] ?? {};
   const has = (m: Record<string, unknown> | undefined, id: string) => Boolean(m && Object.prototype.hasOwnProperty.call(m, id));
-  const newIds = (x: Record<string, unknown> | undefined, mine: Record<string, unknown> | undefined) => Object.keys(x ?? {}).filter((id) => !has(mine, id)).length;
   const newIn = (x: readonly string[] | undefined, mine: readonly string[] | undefined) => {
     const set = new Set(mine ?? []);
     return (x ?? []).filter((v) => !set.has(v)).length;
   };
-  const answers = newIds(p.cert.answers, cp.answers);
-  const updated = Object.entries(p.cert.answers ?? {}).filter(([id, a]) => has(cp.answers, id) && a.lastAt > (cp.answers?.[id]?.lastAt ?? 0)).length;
-  const myNotes = cp.qNotes ?? {};
-  const qNotes = Object.keys(p.cert.qNotes ?? {}).filter((id) => !isLiveNote(myNotes[id])).length;
-  const mocks = newIn((p.cert.mocks ?? []).map((m) => m.id), (cp.mocks ?? []).map((m) => m.id));
-  const studyDays = newIn(p.studyDays, phone.streak.recentDays ?? (phone.streak.lastDay ? [phone.streak.lastDay] : []));
-  const saved = newIn(p.cert.bookmarks, cp.bookmarks);
-  const notesRead = newIn(p.cert.notesRead, cp.notesRead);
-  const added = answers + updated + saved + notesRead + qNotes + mocks + studyDays + newIds(p.cert.mistakes, cp.mistakes) + newIds(p.cert.review, cp.review);
-  return { answers, updated, saved, notesRead, qNotes, mocks, studyDays, unmatched: p.unmatched, noDetail: p.noDetail, nothingNew: added === 0 };
+  const answers = Object.keys(out.answers ?? {}).filter((id) => !has(cp.answers, id)).length;
+  const updated = Object.entries(out.answers ?? {}).filter(([id, a]) => has(cp.answers, id) && a.lastAt > cp.answers![id].lastAt).length;
+  const qNotes = Object.entries(out.qNotes ?? {}).filter(([id, note]) => !has(cp.qNotes, id) && isLiveNote(note)).length;
+  const mockIds = new Set((cp.mocks ?? []).map((m) => m.id));
+  const mocks = (out.mocks ?? []).filter((m) => !mockIds.has(m.id)).length;
+  const fileMocks = (p.cert.mocks ?? []).filter((m) => !mockIds.has(m.id)).length;
+  const saved = newIn(out.bookmarks, cp.bookmarks);
+  const notesRead = newIn(out.notesRead, cp.notesRead);
+  // Study days: up to today, not already kept here, and not older than the oldest day this phone keeps.
+  const myDays = phone.streak.recentDays ?? (phone.streak.lastDay ? [phone.streak.lastDay] : []);
+  const oldestKept = myDays.length ? [...myDays].sort()[0] : '';
+  const today = dayKey(now);
+  const studyDays = p.studyDays.filter((d) => !myDays.includes(d) && d > oldestKept && d <= today).length;
+  // Anything else the merge changed (the mistake journal, review, notes started).
+  const sameMistake = (a: Mistake, b: Mistake) =>
+    a.at === b.at && a.picked === b.picked && a.slip === b.slip && !!a.resolved === !!b.resolved && !!a.fixedLater === !!b.fixedLater && a.confidence === b.confidence;
+  const mistakes = Object.entries(out.mistakes ?? {}).filter(([id, m]) => !cp.mistakes?.[id] || !sameMistake(cp.mistakes[id], m)).length;
+  const review = Object.keys(out.review ?? {}).filter((id) => !has(cp.review, id)).length;
+  const viewed = newIn(out.notesViewed, cp.notesViewed);
+  const added = answers + updated + saved + notesRead + qNotes + mocks + studyDays + mistakes + review + viewed;
+  return {
+    answers,
+    updated,
+    saved,
+    notesRead,
+    qNotes,
+    mocks,
+    mocksSkipped: Math.max(0, fileMocks - mocks),
+    studyDays,
+    unmatched: p.unmatched,
+    noDetail: p.noDetail,
+    future: p.future,
+    nothingNew: added === 0,
+  };
 }
 
 /** "1 question" / "12 questions". */
@@ -432,6 +588,7 @@ export function webAddLines(s: WebAddSummary): string[] {
 /** What is left out, in plain words (empty when nothing is). */
 export function webSkipLines(s: WebAddSummary): string[] {
   const out: string[] = [];
+  if (s.tooBig) out.push('Together with the progress on this phone, this would be too large to save, so it can’t be added.');
   if (s.unmatched) {
     out.push(
       s.unmatched === 1
@@ -446,33 +603,22 @@ export function webSkipLines(s: WebAddSummary): string[] {
         : `${s.noDetail} older answers were saved without whether they were right, so they can’t be added.`,
     );
   }
+  if (s.mocksSkipped) {
+    out.push(
+      s.mocksSkipped === 1
+        ? `1 older mock exam result isn’t added: the app keeps ${MAX_MOCKS} at most, and yours stay.`
+        : `${s.mocksSkipped} older mock exam results aren’t added: the app keeps ${MAX_MOCKS} at most, and yours stay.`,
+    );
+  }
+  if (s.future) {
+    out.push(
+      s.future === 1
+        ? '1 item is dated in the future (the computer’s clock may be wrong), so it’s left out.'
+        : `${s.future} items are dated in the future (the computer’s clock may be wrong), so they’re left out.`,
+    );
+  }
   return out;
 }
 
-/** Said under the lines: what the website file never holds. */
-export const WEB_NOT_IN_FILE = 'Your exam date, plant and settings aren’t in this file, so they stay as they are on this phone.';
-
-// ── The merge ────────────────────────────────────────────────────────────
-/**
- * The phone's progress with `p` merged in, for `certId`. `phone` must be the
- * phone's own progress FITTED for backup (engine/backup.ts fitForBackup).
- * Uses the sync merge (engine/syncMerge.ts), then puts the phone's
- * device-only fields (today's count, plant display choices) back.
- * Throws BackupError when the result can't pass the checker (e.g. too big).
- *
- * Safe to repeat: merging the result with the same profile again gives the
- * same progress (the merge is a union / max / later-wins on every field).
- */
-export function mergeWebProgress(phone: BackupProgress, p: WebProfile, certId: string, ctx: Omit<MergeContext, 'firstSync'>): BackupProgress {
-  if (!ctx.knownCertIds.includes(certId)) throw new BackupError('unknown-cert', certId);
-  const mine: Cert = phone.byCert[certId] ?? {};
-  // The few per-exam fields the merge takes WHOLE from the side that studied last (recent game scores,
-  // where the study paths stopped) and the streak's rest day: the website has none of them, so its side
-  // carries the phone's own. Whichever side "wins", the phone's values stay.
-  const webCert: Cert = { ...p.cert, ...(mine.gameRecent ? { gameRecent: mine.gameRecent } : {}), ...(mine.studyPath ? { studyPath: mine.studyPath } : {}) };
-  const webState = { byCert: { [certId]: webCert }, streak: streakFromDays(p.studyDays, phone.streak.restDay ?? null) };
-  const local = localSide<SyncedProgress>('progress', phone, {}, ctx);
-  const web = localSide<SyncedProgress>('progress', webState, {}, ctx);
-  const merged = mergeSides<SyncedProgress>('progress', local, web, ctx);
-  return { ...(merged.state as BackupProgress), ...(deviceLocalOf('progress', phone) as Partial<BackupProgress>) } as BackupProgress;
-}
+/** Said under the lines: what the website file never holds (true whether or not this phone has them). */
+export const WEB_NOT_IN_FILE = 'This file doesn’t include your exam date, plant or settings, so adding it doesn’t change them.';
