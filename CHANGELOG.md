@@ -4,6 +4,17 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.34] — Calmer screens
+
+### Improved
+- After a miss, the answer leads with the key idea and the exam cue, with the full explanation one tap away.
+- On phones, the study note link and your own note wait behind one More button, so an answer fits in about two screens.
+- Your first five skip the confidence question, and the choices now read Sure, Unsure or Guessing.
+- Each answer shows its main source and when the questions were last reviewed.
+- The cookie question waits until you finish your first set.
+- On a computer, questions, answers and study notes keep a comfortable reading width.
+- New visitors are offered a plant companion at the end of their first study session, not before their first question.
+
 ## [v12.33] — Trust and knowing what to do next
 
 ### New

@@ -4593,7 +4593,7 @@ header {
 
 /* ── TOPICS (Grove): ux.md §2c/2d ── */
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-.gt { max-width: 760px; margin: 0 auto; padding-bottom: 32px; color: var(--text); }
+.gt { max-width: 640px; margin: 0 auto; padding-bottom: 32px; color: var(--text); }
 .gt-loading { padding: 48px 0; text-align: center; font: 500 14px/20px var(--f-sans); color: var(--text2); }
 .gt-head { margin: 4px 0 18px; }
 .gt-title { font: 500 36px/42px var(--f-serif); letter-spacing: -0.6px; color: var(--text); }
@@ -5441,6 +5441,20 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 
 .vr-why { margin: var(--sp-xxl) 0 var(--sp-sm); font: var(--t-headline); color: var(--text); }
 .vr-exp { margin: 0; font: var(--t-body); color: var(--text); }
+.vr-exp.vr-fold:not(.open) { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.vr-readmore, .vr-more-btn {
+  display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 44px; padding: 0;
+  background: none; border: 0; cursor: pointer; font: var(--t-label); color: var(--accent-text); text-align: left;
+}
+.vr-readmore:hover, .vr-more-btn:hover .vr-toggle-t { text-decoration: underline; }
+.vr-readmore:focus-visible, .vr-more-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
+.vr-more-btn { margin-top: var(--sp-xl); }
+.vr-more-btn[aria-expanded="true"] .ico { transform: rotate(180deg); }
+@media (prefers-reduced-motion: no-preference) { .vr-more-btn .ico { transition: transform .12s ease; } }
+/* Phones: the study note link and your note wait behind "More". */
+@media (max-width: 600px) { .vr-more:not(.open) { display: none; } }
+@media (min-width: 601px) { .vr-more-btn { display: none; } }
+.vr-src-sub { flex: 1 1 100%; margin: 0 0 var(--sp-sm); font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
 
 /* The vine: one stem with a leaf per node. The stem is drawn in pieces from
    leaf to leaf with a 2px gap, so it seems to pass behind each leaf without a
@@ -5465,7 +5479,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--sp-lg);
   margin-top: var(--sp-section); padding-top: var(--sp-md); border-top: 1px solid var(--border);
 }
-.vr-src-ref { flex: 1 1 240px; min-width: 0; font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
+.vr-src-ref { flex: 1 1 auto; min-width: 0; font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
 .vr-report {
   min-height: 44px; padding: 0; background: none; border: 0; cursor: pointer;
   font: var(--t-label); color: var(--accent-text);
@@ -5610,7 +5624,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .ph-dom-r { flex-shrink: 0; font: 600 15px/20px var(--f-sans); color: var(--text2); }
 
 /* Focused session */
-.pf { max-width: 720px; margin: 0 auto; }
+.pf { max-width: 640px; margin: 0 auto; }
 .pf #qArea { max-width: none; margin: 0; }
 .pf-strip { display: flex; align-items: center; gap: var(--sp-md); min-height: 56px; margin: 0 0 var(--sp-md); }
 .pf-btn {
@@ -6450,7 +6464,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h1 class="vision-title" id="aboutScreenTitle">Think like an IS auditor.</h1>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.33</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.34</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -6780,7 +6794,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.33';
+const APP_VERSION = 'v12.34';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -10284,6 +10298,8 @@ function switchTab(t, opts) {
     pendingDebrief = null;
   }
   try { railNoteFlush(); railSync(); } catch (e) {}
+  // The cookie question, once its moment has come (maybeShowConsentBanner).
+  try { maybeShowConsentBanner(); } catch (e) {}
   // Land on the newly opened section's own content — scroll the active
   // screen element into view rather than the page origin, so the section
   // heading sits at the top of the viewport instead of the page header.
@@ -10995,7 +11011,6 @@ function firstSetDone() {
 function markFirstSetDone() {
   try { if (!localStorage.getItem(FIRST_SET_KEY)) localStorage.setItem(FIRST_SET_KEY, String(Date.now())); } catch (e) {}
   askPersistentStorage();
-  try { maybeShowConsentBanner(); } catch (e) {}
 }
 function askPersistentStorage() {
   try {
@@ -11559,6 +11574,7 @@ function setPracticeView(v) {
   if (hub) hub.hidden = v !== 'hub';
   if (foc) foc.hidden = v !== 'focus';
   try { railSync(); } catch (e) {}
+  if (v === 'hub') { try { maybeShowConsentBanner(); } catch (e) {} }
 }
 
 // Is something left open that the hub's Continue would pick up?
@@ -13062,6 +13078,9 @@ function plantTodayHtml() {
   var p = S.plant;
   if (!p) {
     if (S.plantSettings && S.plantSettings.promptHidden) return '';
+    // v12.34 (owner decision): offered at the end of the first study day,
+    // never before the first answer. Plants and "No thanks" stay as they are.
+    if (!firstSetDone()) return '';
     return '<div class="plnt-invite">'
       + '<span class="you-ico" aria-hidden="true">' + ico('sprig', 20) + '</span>'
       + '<div class="plnt-invite-t"><p class="plnt-invite-h" id="tdPlantInvH">Plant a companion</p>'
@@ -13110,6 +13129,8 @@ function plantYouHtml(where) {
   plantSync(now);
   var p = S.plant;
   if (!p) {
+    // Not before the first finished set (as Today's invitation).
+    if (!firstSetDone()) return '';
     return head + '<div class="plnt-empty"><p class="plnt-empty-t">Nothing planted yet</p>'
       + '<p class="plnt-meta">Pick a plant and give it a name. It grows only from real progress across the exam outline, and it never wilts.</p>'
       + '<button type="button" class="sr-btn plnt-plant-btn" id="plActPlant" onclick="plantOpen(\'new\',\'you\')">' + ico('sprig', 18) + 'Plant yours</button></div>';
@@ -13757,11 +13778,14 @@ function hideConsentBanner() {
   }
   consentReturnFocus = null;
 }
-// The cookie question waits for the first answer (v12.30): never over the
-// welcome or a first look around. Analytics stays off until then, as before.
+// The cookie question (v12.34) waits until the first set is finished, and
+// never covers a question, an answer or a mock: it shows on the next page
+// (Today, after "Done for today"). Analytics stays off until then, as before.
 function maybeShowConsentBanner() {
   if (consentChoiceMade()) return;
-  if (!(window.S && S.score && S.score.t > 0)) return;
+  if (!(window.S && firstSetDone())) return;
+  if (S.activeTab === 'practice' && practiceView === 'focus') return;
+  if (S.activeTab === 'mock' && (isMockInProgress() || document.body.getAttribute('data-mock-results') === '1')) return;
   var el = document.getElementById('consent-banner');
   if (el && el.hidden) showConsentBanner(false);
 }
@@ -14210,9 +14234,12 @@ function renderQuestion(q) {
   else if (bookmarkReviewMode) metaParts.push('Saved question');
   if (pr.total > 0) metaParts.push(pr.pos + ' of ' + pr.total);
 
-  // One-time confidence tooltip (first question only) — Decision 5
+  // v12.34 (mobile parity): no confidence question during the first five,
+  // so the first answer is one tap and one check.
+  var askConf = !(firstFiveRun && sessionLabel === FIRST_FIVE_LABEL);
+  // One-time confidence tooltip (the first time it is asked) — Decision 5
   var showConfTip = false;
-  try { showConfTip = !localStorage.getItem('aurivan_conf_tip_seen'); } catch (e) {}
+  try { showConfTip = askConf && !localStorage.getItem('aurivan_conf_tip_seen'); } catch (e) {}
   var confTipHtml = showConfTip
     ? '<div id="conf-tip" class="conf-tip">'
         + '<span>How sure you are decides how soon this question comes back for review.</span>'
@@ -14227,17 +14254,18 @@ function renderQuestion(q) {
     + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + escapeHtml(q.id) + '">' + escapeHtml(smartQuotes(q.scenario_context)) + '</p><button class="sc-expand-btn" id="sc-btn-' + escapeHtml(q.id) + '" data-qid="' + escapeHtml(q.id) + '" onclick="expandScenario(this.dataset.qid)">Read scenario ▾</button></div>' : '')
     + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(smartQuotes(q.scenario_context)) + ' ' : '') + escapeHtml(smartQuotes(q.question)) + '</p>'
     + '<div class="opts">' + optsHtml + '</div>'
-    // "How sure?" (v12.30: optional). Shown once an option is picked; an
-    // unrated answer is scheduled as an educated guess. Removed after checking.
-    + '<div class="conf-stage" id="confStage" hidden>'
+    // "How confident are you?" (optional; mobile's words: Sure / Unsure /
+    // Guessing — Unsure keeps its saved value, 'educated'). Shown once an
+    // option is picked, never in the first five. Removed after checking.
+    + (askConf ? '<div class="conf-stage" id="confStage" hidden>'
       + confTipHtml
-      + '<p class="conf-q" id="confQ">How sure?<span class="conf-q-opt">Optional</span></p>'
+      + '<p class="conf-q" id="confQ">How confident are you?<span class="conf-q-opt">Optional</span></p>'
       + '<div class="conf-seg" role="group" aria-labelledby="confQ">'
         + '<button type="button" class="conf-btn" data-conf="sure" aria-pressed="false" onclick="setConfidence(\'sure\')">Sure</button>'
-        + '<button type="button" class="conf-btn" data-conf="educated" aria-pressed="false" onclick="setConfidence(\'educated\')">Educated guess</button>'
+        + '<button type="button" class="conf-btn" data-conf="educated" aria-pressed="false" onclick="setConfidence(\'educated\')">Unsure</button>'
         + '<button type="button" class="conf-btn" data-conf="guessing" aria-pressed="false" onclick="setConfidence(\'guessing\')">Guessing</button>'
       + '</div>'
-    + '</div>'
+    + '</div>' : '')
     + '</div>'
     // Check answer: ready as soon as an option is picked, held in a footer
     // at the bottom of the screen (above the safe area on phones).
@@ -14410,6 +14438,10 @@ function selectAnswer(chosen, _ignoredCorrect) {
 // "Next question". Exam-style questions keep their compact contract: no
 // coaching, no key idea, no tips.
 var VR_LEAF_PATH = 'M35.5 2.5V19A16.5 16.5 0 1 1 19 2.5z';
+// A Why longer than this folds to two lines after a miss (mobile WHY_FOLD_CHARS).
+var WHY_FOLD_CHARS = 150;
+// When the questions and notes were last checked (mobile config.contentReviewed).
+var CONTENT_REVIEWED = 'Oct 2026';
 var VR_TICK = 'M12.5 19.5l4.5 4.5 9-9.5';
 var VR_CROSS = 'M13 13l12 12M25 13 13 25';
 
@@ -14524,18 +14556,25 @@ function showResult(chosen, correct, timeout, info) {
       + '<div class="vr-others" id="vrOthers" hidden>' + others + '</div>'
     : '';
 
-  // 3. Why X + the explanation.
+  // 3. Why X + the explanation. After a miss it comes after the Key idea and
+  //    the Exam cue, folded to two lines with "Read more" (mobile WhyBlock);
+  //    screen readers hear all of it either way.
+  var expRaw = String(q.correct_explanation || '');
+  var foldWhy = !ok && !inExamMode && expRaw.length > WHY_FOLD_CHARS;
   var whyHtml = '<h3 class="vr-why">Why ' + correct + '</h3>'
-    + '<p class="vr-exp">' + escapeHtml(smartQuotes(mapLettersInText(q.correct_explanation, shuffle))) + '</p>';
+    + '<p class="vr-exp' + (foldWhy ? ' vr-fold' : '') + '" id="vrExp">' + escapeHtml(smartQuotes(mapLettersInText(expRaw, shuffle))) + '</p>'
+    + (foldWhy ? '<button type="button" class="vr-readmore" aria-expanded="false" aria-controls="vrExp" onclick="toggleWhyFold(this)">Read more</button>' : '');
 
-  // 4. The vine: Key idea, then the tips as leaves on one stem.
-  var vineHtml = '';
+  // 4. The vine: Key idea, then the tips as leaves on one stem. After a miss
+  //    (mobile splitMissTips) the Key idea and the Exam cue lead, before the
+  //    Why; Eliminate two and Final two follow it on a second stem.
+  var vineFirst = [], vineRest = [];
   if (!inExamMode) {
     var nodes = [];
     if (q.key_concept) {
-      nodes.push('<div class="vine-node vine-key" style="--i:0">' + vineLeafSvg(true)
+      nodes.push({ first: true, html: '<div class="vine-node vine-key" style="--i:@I@">' + vineLeafSvg(true)
         + '<p class="vine-cap">Key idea</p>'
-        + '<p class="vine-quote">' + escapeHtml(smartQuotes(mapLettersInText(q.key_concept, shuffle))) + '</p></div>');
+        + '<p class="vine-quote">' + escapeHtml(smartQuotes(mapLettersInText(q.key_concept, shuffle))) + '</p></div>' });
     }
     (q.tips || []).filter(function(t){ return t && t.trim(); }).forEach(function(t, i){
       var parts = tipParts(mapLettersInText(t, shuffle), i);
@@ -14552,20 +14591,26 @@ function showResult(chosen, correct, timeout, info) {
           return '<button type="button" class="principle-link" data-pid="' + pid + '" onclick="openPrinciple(this.dataset.pid)">' + pid + '</button>';
         });
       }
-      nodes.push('<div class="vine-node vine-' + tone + '" style="--i:' + nodes.length + '">' + vineLeafSvg(false)
+      nodes.push({ first: tone === 'cue', html: '<div class="vine-node vine-' + tone + '" style="--i:@I@">' + vineLeafSvg(false)
         + '<p class="vine-cap">' + escapeHtml(parts.label) + '</p>'
-        + '<p class="vine-tip">' + body + '</p></div>');
+        + '<p class="vine-tip">' + body + '</p></div>' });
     });
-    if (nodes.length) {
-      vineHtml = '<div class="vine" id="vrVine" style="--vine-n:' + nodes.length + '">'
-        + nodes.join('') + '</div>';
-    }
+    nodes.forEach(function (n) { (ok || n.first ? vineFirst : vineRest).push(n.html); });
   }
+  var vineOf = function (list, id) {
+    if (!list.length) return '';
+    return '<div class="vine" id="' + id + '" style="--vine-n:' + list.length + '">'
+      + list.map(function (h, i) { return h.replace('@I@', String(i)); }).join('') + '</div>';
+  };
+  var vineA = vineOf(vineFirst, 'vrVine'), vineB = vineOf(vineRest, 'vrVine2');
 
-  // 5. Source row: the reference, and Report a problem.
+  // 5. Source row (mobile TrustLine): "Original · Reviewed Oct 2026" with
+  //    Report a problem, then the main source (the first one listed).
+  var ref = q.framework_ref ? String(q.framework_ref).split(';')[0].trim() : '';
   var srcHtml = '<div class="vr-src">'
-    + '<span class="vr-src-ref">' + (q.framework_ref ? escapeHtml(q.framework_ref) : 'KaiSip original question') + '</span>'
+    + '<span class="vr-src-ref">Original &middot; Reviewed ' + CONTENT_REVIEWED + '</span>'
     + '<button type="button" class="vr-report" onclick="showFlagModal()">Report a problem</button>'
+    + (ref ? '<p class="vr-src-sub">' + escapeHtml(ref) + '</p>' : '')
     + '</div>';
 
   // 6. Footer: Save (outline icon button) + Next question (sticky on phones).
@@ -14578,10 +14623,12 @@ function showResult(chosen, correct, timeout, info) {
   p.innerHTML = verdictHtml
     + (rows ? '<div class="vr-rows">' + rows + '</div>' : '')
     + othersHtml
-    + whyHtml
-    + vineHtml
+    + (ok || inExamMode ? whyHtml + vineA : vineA + whyHtml + vineB)
     // Below the rail's breakpoint: the note link and "Add a note" (railSync).
-    + '<div class="vr-study" id="vrStudy"></div>'
+    // On phones they wait behind one "More" (CSS), so the verdict, the why
+    // and the tips fit in about two screens.
+    + '<button type="button" class="vr-more-btn" id="vrMoreBtn" aria-expanded="false" aria-controls="vrMore" onclick="toggleAnswerMore(this)"><span class="vr-toggle-t">More: the study note and your note</span>' + ico('chevron-down', 18) + '</button>'
+    + '<div class="vr-more" id="vrMore"><div class="vr-study" id="vrStudy"></div></div>'
     + srcHtml
     + footHtml;
   p.classList.add('show', 'vr-panel');
@@ -14589,6 +14636,7 @@ function showResult(chosen, correct, timeout, info) {
 
   // The vine draws itself as it scrolls into view (motion allowed only).
   armVine(document.getElementById('vrVine'));
+  armVine(document.getElementById('vrVine2'));
   // The study rail starts teaching now: the note, your note, the lookup.
   try { railSync(); } catch (e) {}
   // The strip: progress moves on, and its Save hands over to the footer's.
@@ -14605,6 +14653,23 @@ function showResult(chosen, correct, timeout, info) {
   }, 60);
 }
 
+// "Read more" under a folded Why (after a miss).
+function toggleWhyFold(btn) {
+  var exp = document.getElementById('vrExp');
+  if (!exp || !btn) return;
+  var open = btn.getAttribute('aria-expanded') !== 'true';
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  exp.classList.toggle('open', open);
+  btn.textContent = open ? 'Show less' : 'Read more';
+}
+// Phones: "More" opens the study note link and your note.
+function toggleAnswerMore(btn) {
+  var box = document.getElementById('vrMore');
+  if (!box || !btn) return;
+  var open = btn.getAttribute('aria-expanded') !== 'true';
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  box.classList.toggle('open', open);
+}
 // "Show all options" on the answer screen: the options that are not your
 // answer or the best answer, each with why it is not the best.
 function toggleOtherOptions() {
@@ -19138,6 +19203,19 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Calmer screens',
+    items: [
+      { cat: 'improved', text: 'After a miss, the answer leads with the key idea and the exam cue, with the full explanation one tap away.' },
+      { cat: 'improved', text: 'On phones, the study note link and your own note wait behind one More button, so an answer fits in about two screens.' },
+      { cat: 'improved', text: 'Your first five skip the confidence question, and the choices now read Sure, Unsure or Guessing.' },
+      { cat: 'improved', text: 'Each answer shows its main source and when the questions were last reviewed.' },
+      { cat: 'improved', text: 'The cookie question waits until you finish your first set.' },
+      { cat: 'improved', text: 'On a computer, questions, answers and study notes keep a comfortable reading width.' },
+      { cat: 'improved', text: 'New visitors are offered a plant companion at the end of their first study session, not before their first question.' }
+    ]
+  },
+  {
+    version: 'v12.33',
     title: 'Trust and knowing what to do next',
     items: [
       { cat: 'new', text: 'Today opens with one plan and its time: the questions to revisit first, then a set in the area that needs it most.' },
