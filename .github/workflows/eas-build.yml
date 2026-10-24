@@ -35,6 +35,10 @@ on:
         type: choice
         options: [production, preview]
         default: production
+      submit:
+        description: "Upload to Google Play when the build finishes (production only; needs the Play service-account key on expo.dev)"
+        type: boolean
+        default: false
 
 concurrency:
   group: eas-build-${{ inputs.profile }}
@@ -92,10 +96,30 @@ jobs:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           npm_config_ignore_scripts: 'true'
           PROFILE: ${{ inputs.profile }}
+          SUBMIT: ${{ inputs.submit }}
         run: |
+          # Upload to Play only for the store build, and only when asked.
+          # eas.json's submit profile sends it to the internal track as a
+          # DRAFT, so nothing reaches users until the owner clicks in Play
+          # Console. Needs the Play service-account key uploaded on expo.dev
+          # (Credentials → Android → Google service account), and the app's
+          # first release uploaded by hand (Google requires that once).
+          extra=()
+          if [ "$SUBMIT" = "true" ]; then
+            if [ "$PROFILE" != "production" ]; then
+              echo "Upload to Google Play is only for the production build; pick production, or untick the upload box." >&2
+              exit 1
+            fi
+            extra=(--auto-submit)
+          fi
           npx --yes eas-cli@24.14.0 build \
             --platform android \
             --profile "$PROFILE" \
             --non-interactive \
-            --no-wait
-          echo "Build started. Download it from expo.dev → Projects → aurivan → Builds when it finishes."
+            --no-wait \
+            "${extra[@]}"
+          if [ "$SUBMIT" = "true" ]; then
+            echo "Build started. When it finishes, expo.dev uploads it to Play Console (internal testing, draft). Then open Play Console and send it for review."
+          else
+            echo "Build started. Download it from expo.dev → Projects → aurivan → Builds when it finishes."
+          fi

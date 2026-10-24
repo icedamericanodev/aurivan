@@ -201,6 +201,7 @@ What exists in the repo:
     - Google Cloud Console: create a project → enable "Google Play Android Developer API" → IAM → Service Accounts → Create → Keys → Add key → JSON → download. Keep it in your password manager and never commit it.
     - Play Console → Users and permissions → Invite new users → paste the service-account email → App permissions → KaiSip → tick release-to-testing-tracks, manage testing tracks, release to production, view app information → Invite.
     - expo.dev → Credentials → Android → com.kaisip.app → Service credentials → Add Google service account key → upload the JSON.
+    - Then each release is one click: GitHub → Actions → "Phone build (EAS Build)" → profile `production`, tick "Upload to Google Play" → Run. The build lands in Play Console's internal testing track as a draft; open Play Console and send it for review (or promote it to the closed or production track).
 16. **After launch:** tell Claude to set the store link and update `STORE_LISTING.md` with the live URLs.
 
 ## (c) Repo changes before the first AAB
