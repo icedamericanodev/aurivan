@@ -151,6 +151,28 @@ states and checks each one restores. The write sites are fixed too:
 `minutesUsed` (one helper, 1..1440; an untimed mock counts its answer
 time) and answer `ms` (capped at 30 minutes).
 
+**Website progress (mobile 1.42).** "Restore from a backup" (Settings → Your data and the
+welcome screen) also takes the website's export (`{ cisaMindsetExport: true, version: 1,
+profile }`, `kaisip-web-progress.json`; a file with `profiles` offers each). It is ADDED, never a
+replacement:
+- `engine/webImport.ts` (pure, tested with a fixture made by driving the real website) reads it as
+  untrusted input: 8 MB cap (the website keeps full question copies), JSON in try/catch, the marker
+  and a numeric `version` (a higher one asks to update), prototype keys ignored, every field type-
+  and range-checked, lists capped. It maps the website's parity fields one to one (answers, review,
+  saved questions, mistakes, mocks as `web-<id>`, notes read and started when the website's ticks are
+  schema 2, notes on questions, study days). Ids the app doesn't have are left out and counted.
+  Not brought: the plant, settings and exam date (the export file doesn't hold the date).
+- The merge is the sync merge (`engine/syncMerge.ts` `mergeSides`, through the strict checker), with
+  the phone's whole-value fields (recent game scores, where study paths stopped, the streak's rest
+  day) carried on the website's side so they always stay. Importing twice changes nothing more.
+- `lib/webImport.ts` writes through `lib/backup.ts` `writeSynced` (one storage write, keeps today's
+  plan and a paused quiz, merges in anything done meanwhile) with a 7-day "Undo restore" copy.
+  `pickAnyBackup` reads up to 8 MB; anything that isn't a website export keeps the 1 MB backup rules.
+- Website files carry the website's own version, so the app's "made by a newer version" check never
+  applies to them. **Open owner decision:** if `expo.version` is reset to 1.0 for the beta, app
+  backups (and "Your reports" credits) made on 1.1–1.42 compare as newer (`compareVersions` on
+  major.minor) and are refused until the app passes that number again.
+
 ### Quiet data (mobile 1.3)
 Collected because it can't be back-filled. Since mobile 1.4 the answer times
 feed the pace features below; since mobile 1.6 `masteredAt`, `lastConfidence`

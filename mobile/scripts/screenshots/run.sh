@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -180,6 +180,11 @@ elif [ "${SHOTS:-}" = firstdays ]; then
   # "Your first readiness range", and the reminder's second chance (shoot_firstdays.mjs;
   # NARROW=1; FONT_SCALE=2 for about 200% text).
   node scripts/screenshots/shoot_firstdays.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = m142 ]; then
+  # Mobile 1.42 "bring your website progress into the app": Your data, the "Add your website
+  # progress?" sheet (top and end), the message after adding, the same file again, a file with
+  # two profiles, a newer website file, and the welcome screen on a new phone (shoot_m142.mjs).
+  node scripts/screenshots/shoot_m142.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = m141 ]; then
   # Mobile 1.41 "beta tester helpers + calmer start": the welcome and the starting point (no name
   # step), the closing screen's plant offer and "Not now", Today's "Short on time? 5 questions", the

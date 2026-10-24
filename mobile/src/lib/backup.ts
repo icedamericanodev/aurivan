@@ -230,6 +230,20 @@ export function checkBackupText(text: string): { kind: 'error'; code: BackupErro
 
 /** Let the learner pick a backup file, then read and check it. */
 export async function pickBackup(): Promise<PickOutcome> {
+  const picked = await pickFileText(MAX_BACKUP_BYTES);
+  return picked.kind === 'text' ? checkBackupText(picked.text) : picked;
+}
+
+/** What reading a picked file gave: its text, nothing (cancelled), or why it couldn't be read. */
+export type PickedText = { kind: 'cancel' } | { kind: 'error'; code: BackupErrorCode } | { kind: 'text'; text: string };
+
+/**
+ * Let the learner pick a file and read its text, never more than `maxBytes`
+ * (mobile 1.42: a website export may be bigger than an app backup, so the
+ * cap is the caller's). Changes nothing. The picker's own copy in our cache
+ * is deleted afterwards (never the learner's file).
+ */
+export async function pickFileText(maxBytes: number): Promise<PickedText> {
   let result: DocumentPicker.DocumentPickerResult;
   try {
     // copyToCacheDirectory: the picked file is copied where we can read it.
@@ -241,22 +255,22 @@ export async function pickBackup(): Promise<PickOutcome> {
   const asset = result.assets[0];
   try {
     // Size first: never read a huge file into memory.
-    if (typeof asset.size === 'number' && asset.size > MAX_BACKUP_BYTES) return { kind: 'error', code: 'too-big' };
+    if (typeof asset.size === 'number' && asset.size > maxBytes) return { kind: 'error', code: 'too-big' };
     let text: string;
     try {
       if (asset.file) {
         // Web: the browser's File object.
-        if (asset.file.size > MAX_BACKUP_BYTES) return { kind: 'error', code: 'too-big' };
+        if (asset.file.size > maxBytes) return { kind: 'error', code: 'too-big' };
         text = await asset.file.text();
       } else {
         const file = new File(asset.uri);
-        if (file.size > MAX_BACKUP_BYTES) return { kind: 'error', code: 'too-big' };
+        if (file.size > maxBytes) return { kind: 'error', code: 'too-big' };
         text = await file.text();
       }
     } catch {
       return { kind: 'error', code: 'unreadable' };
     }
-    return checkBackupText(text);
+    return { kind: 'text', text };
   } finally {
     // The picker copied the file into our cache: delete that copy (never
     // the learner's own file, which lives outside our cache).

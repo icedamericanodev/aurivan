@@ -1,0 +1,562 @@
+{
+  "cisaMindsetExport": true,
+  "version": 1,
+  "profile": {
+    "id": "CISA-48C9J",
+    "name": "My Progress",
+    "color": "#3F7F96",
+    "created": 1792823920525,
+    "lastActive": 1792823923924,
+    "totalAnswered": 0,
+    "state": {
+      "score": {
+        "t": 0,
+        "c": 0
+      },
+      "ds": {
+        "1": {
+          "t": 0,
+          "c": 0
+        },
+        "2": {
+          "t": 0,
+          "c": 0
+        },
+        "3": {
+          "t": 0,
+          "c": 0
+        },
+        "4": {
+          "t": 0,
+          "c": 0
+        },
+        "5": {
+          "t": 0,
+          "c": 0
+        }
+      },
+      "streak": 0,
+      "bookmarks": [
+        {
+          "id": "d2_010",
+          "domain": 2,
+          "subtopic": "Auditing IT Governance Structure and Implementation",
+          "principle_id": "root-cause-over-symptom",
+          "difficulty": "analysis",
+          "bloom_level": "Analysis",
+          "question": "An IS audit manager finds the IT governance charter's meeting, approval, board-review and annual-update requirements have all been missed for years. Which conclusion is BEST?",
+          "options": {
+            "A": "The charter is well designed; the lapses are routine operational issues",
+            "B": "Each lapse is a separate operational issue to report to its owner",
+            "C": "Governance exists on paper, not in practice, and cannot self-correct",
+            "D": "The charter should be discarded and a new framework adopted"
+          },
+          "correct": "C",
+          "key_concept": "Auditing IT governance tests design and practice; consistent divergence, including a lapsed review cycle, is itself a systemic finding.",
+          "pre_read": "Look for what the separate observations have in common before choosing a conclusion.",
+          "correct_explanation": "Seen together, the lapses show documented governance and actual practice have diverged on every requirement, including the charter's own update cycle. That pattern is the finding: governance exists on paper only, and the mechanism that should have caught the drift has also failed. Option B reports symptoms one by one and misses the common root cause the board needs to see.",
+          "wrong_explanations": {
+            "A": "Auditing governance covers design and implementation. A charter nobody follows provides no governance, whatever its design quality.",
+            "B": "Separate reports treat symptoms and hide the shared root cause: governance discipline has broken down, including the charter's own review cycle.",
+            "D": "Replacing the framework does not fix weak discipline; a new charter would drift the same way unless the root cause is addressed."
+          },
+          "tips": [
+            "Eliminate: A ignores implementation entirely, and D replaces the document instead of fixing the discipline.",
+            "Final two: C beats B because the pattern across every requirement is the root-cause finding; reporting each lapse separately hides it.",
+            "Exam cue: when several lapses share one cause, report the systemic finding to governance rather than isolated items to owners."
+          ],
+          "framework_ref": "COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); ISO/IEC 38500:2024 Information technology - Governance of IT for the organization; ISACA IT Audit Standard 1205 (Evidence); ISACA IT Audit Standard 1401 (Reporting)",
+          "related_concepts": [
+            "Auditing IT governance structure",
+            "Design vs implementation",
+            "Charter divergence",
+            "Self-correction mechanism",
+            "Governance discipline"
+          ],
+          "_provenance": "Authored from concept: 'auditing IT governance structure - synthesis finding when documented governance and operational practice diverge across multiple dimensions AND self-correction mechanism is also broken'. Public source: COBIT 2019 EDM + ITAF Performance Standards on IT Governance. All scenario specifics (state university IT system, four divergence observations) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref updated to ISO/IEC 38500:2024.",
+          "style_version": 2
+        },
+        {
+          "id": "d4_050",
+          "domain": 4,
+          "subtopic": "Incident Response. Detection, Documentation, Control, Resolution, Reporting",
+          "principle_id": "people-contain-preserve",
+          "difficulty": "application",
+          "bloom_level": "Application",
+          "question": "A failed batch job is corrupting payment files, and the incident has been logged. What should the IS auditor recommend as the MOST appropriate next step?",
+          "options": {
+            "A": "Fix and rerun the failed batch job to restore the payment files",
+            "B": "Send the post-incident report to business stakeholders",
+            "C": "Halt the downstream payment run until the damage is contained",
+            "D": "Start root cause analysis of the batch job's code"
+          },
+          "correct": "C",
+          "key_concept": "Abnormal conditions are handled in order: detection, documentation, control, resolution, reporting; containment limits damage before the fix.",
+          "pre_read": "Note which steps are already done. Ask what limits harm before anyone attempts the fix.",
+          "correct_explanation": "After detection and documentation, the next step is control: limit the damage before resolving it. Halting the downstream payment run stops corrupted files from turning into wrong payments, which would be far harder to reverse. Fixing and rerunning the job is the right resolution step, but doing it first lets corrupted files keep flowing while the fix is prepared and tested.",
+          "wrong_explanations": {
+            "A": "Resolution comes after containment; while the fix is prepared, corrupted files could still feed live payments.",
+            "B": "Final reporting comes last, after the incident is contained and resolved.",
+            "D": "Root cause analysis follows restoration; it does not stop the damage now under way."
+          },
+          "tips": [
+            "Eliminate: B reports before the incident is handled, and D starts root cause work while damage continues.",
+            "Final two: C beats A because containment comes before resolution; stopping the payment run limits harm while the fix is prepared.",
+            "Exam cue: handling runs detect, document, control, resolve, report; pausing a process to contain harm is often the right next move."
+          ],
+          "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ITIL 4 Incident Management practice; COBIT 2019 DSS02 (Managed Service Requests and Incidents)",
+          "related_concepts": [
+            "Incident response",
+            "Detection",
+            "Containment",
+            "Resolution"
+          ],
+          "_provenance": "Authored from concept: 'Abnormal-condition handling sequence per ISACA Incident Response Standards and NIST SP 800-61'. Public sources: ISACA, NIST. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+          "style_version": 2
+        }
+      ],
+      "answeredIds": {
+        "1": {
+          "d1_010": true,
+          "d1_008": true
+        },
+        "2": {
+          "d2_006": true,
+          "d2_010": true
+        },
+        "3": {
+          "d3_002": true,
+          "d3_005": true
+        },
+        "4": {
+          "d4_041": true,
+          "d4_050": true
+        },
+        "5": {
+          "d5_008": true,
+          "d5_012": true
+        },
+        "all": {
+          "d1_010": true,
+          "d1_008": true,
+          "d2_006": true,
+          "d2_010": true,
+          "d3_002": true,
+          "d3_005": true,
+          "d4_041": true,
+          "d4_050": true,
+          "d5_008": true,
+          "d5_012": true
+        }
+      },
+      "missedQuestions": [
+        {
+          "id": "d1_010",
+          "domain": 1,
+          "subtopic": "Fraud Indicators. Auditor's First Action",
+          "principle_id": "escalate-to-decision-owner",
+          "difficulty": "analysis",
+          "bloom_level": "Analysis",
+          "question": "During fieldwork, an IS auditor finds repeated high-value payments processed through an emergency override, all initiated and approved by the same two employees. What should the auditor do FIRST?",
+          "options": {
+            "A": "Interview both employees to obtain their explanations",
+            "B": "Expand testing to all override transactions for the year",
+            "C": "Disable the emergency override until the matter is resolved",
+            "D": "Document the facts and escalate per fraud procedures"
+          },
+          "correct": "D",
+          "key_concept": "On finding fraud indicators, the IS auditor first documents facts and escalates through the fraud-response procedure, not investigating alone.",
+          "pre_read": "Notice the red flags suggest collusion and the stem says FIRST. Ask who is authorized to investigate before more testing happens.",
+          "correct_explanation": "Indicators of possible fraud should be documented factually and escalated through the established fraud-response channel, typically the chief audit executive, so investigation is properly authorized and evidence is preserved. The IS auditor's role is to detect and report, not to investigate independently. Expanding the sample is a sound later step, but acting before escalation risks working without authority or alerting suspects.",
+          "wrong_explanations": {
+            "A": "Approaching the suspects alerts them, risks evidence destruction and draws the auditor into an investigation they are not authorized to run.",
+            "B": "Expanding the sample may be appropriate, but only after escalation, so scope and investigative approach are properly authorized.",
+            "C": "Disabling a system function is a management decision. An auditor who changes operations loses independence."
+          },
+          "tips": [
+            "Eliminate: A tips off the suspects, and C has the auditor changing operations, which is management's decision.",
+            "Final two: D beats B because escalation must come first; more testing is valid only once the right authority directs it.",
+            "Exam cue: suspected fraud plus FIRST almost always means document and escalate, never confront or investigate alone."
+          ],
+          "framework_ref": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts); IIA Global Internal Audit Standards (2024), Standard 3.1 (Competency); ISA 240 (The Auditor's Responsibilities Relating to Fraud)",
+          "related_concepts": [
+            "Fraud response procedure",
+            "Auditor's role in fraud detection",
+            "Evidence preservation",
+            "Escalation chain"
+          ],
+          "_provenance": "Authored from concept: 'auditor's first response to suspected fraud — document and escalate, not investigate'. Public source: ISACA IT Audit Standard 1207. All scenario specifics (insurance, claims-adjuster collusion pattern, $200K threshold, 14 claims) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+          "style_version": 2
+        },
+        {
+          "id": "d2_010",
+          "domain": 2,
+          "subtopic": "Auditing IT Governance Structure and Implementation",
+          "principle_id": "root-cause-over-symptom",
+          "difficulty": "analysis",
+          "bloom_level": "Analysis",
+          "question": "An IS audit manager finds the IT governance charter's meeting, approval, board-review and annual-update requirements have all been missed for years. Which conclusion is BEST?",
+          "options": {
+            "A": "The charter is well designed; the lapses are routine operational issues",
+            "B": "Each lapse is a separate operational issue to report to its owner",
+            "C": "Governance exists on paper, not in practice, and cannot self-correct",
+            "D": "The charter should be discarded and a new framework adopted"
+          },
+          "correct": "C",
+          "key_concept": "Auditing IT governance tests design and practice; consistent divergence, including a lapsed review cycle, is itself a systemic finding.",
+          "pre_read": "Look for what the separate observations have in common before choosing a conclusion.",
+          "correct_explanation": "Seen together, the lapses show documented governance and actual practice have diverged on every requirement, including the charter's own update cycle. That pattern is the finding: governance exists on paper only, and the mechanism that should have caught the drift has also failed. Option B reports symptoms one by one and misses the common root cause the board needs to see.",
+          "wrong_explanations": {
+            "A": "Auditing governance covers design and implementation. A charter nobody follows provides no governance, whatever its design quality.",
+            "B": "Separate reports treat symptoms and hide the shared root cause: governance discipline has broken down, including the charter's own review cycle.",
+            "D": "Replacing the framework does not fix weak discipline; a new charter would drift the same way unless the root cause is addressed."
+          },
+          "tips": [
+            "Eliminate: A ignores implementation entirely, and D replaces the document instead of fixing the discipline.",
+            "Final two: C beats B because the pattern across every requirement is the root-cause finding; reporting each lapse separately hides it.",
+            "Exam cue: when several lapses share one cause, report the systemic finding to governance rather than isolated items to owners."
+          ],
+          "framework_ref": "COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); ISO/IEC 38500:2024 Information technology - Governance of IT for the organization; ISACA IT Audit Standard 1205 (Evidence); ISACA IT Audit Standard 1401 (Reporting)",
+          "related_concepts": [
+            "Auditing IT governance structure",
+            "Design vs implementation",
+            "Charter divergence",
+            "Self-correction mechanism",
+            "Governance discipline"
+          ],
+          "_provenance": "Authored from concept: 'auditing IT governance structure - synthesis finding when documented governance and operational practice diverge across multiple dimensions AND self-correction mechanism is also broken'. Public source: COBIT 2019 EDM + ITAF Performance Standards on IT Governance. All scenario specifics (state university IT system, four divergence observations) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref updated to ISO/IEC 38500:2024.",
+          "style_version": 2
+        },
+        {
+          "id": "d4_041",
+          "domain": 4,
+          "subtopic": "Availability Targets. Setting Targets",
+          "principle_id": "recover-by-business-priority",
+          "difficulty": "application",
+          "bloom_level": "Application",
+          "question": "IT proposes a 99.999% availability target, with costly redundancy, for an internal expense-claims system. What should the IS auditor recommend FIRST?",
+          "options": {
+            "A": "Approve the target because higher availability lowers business risk",
+            "B": "Benchmark the target against availability levels at peer firms",
+            "C": "Fund the redundancy in phases over the next three years",
+            "D": "Base the target on the system's business impact and tolerance"
+          },
+          "correct": "D",
+          "key_concept": "Availability targets derive from business impact and tolerance for downtime, so the cost of resilience matches business need.",
+          "pre_read": "Notice the system is internal and the target is extreme. Ask who should decide how available it must be.",
+          "correct_explanation": "Availability targets should come from business requirements, such as the impact of the expense system being down and how long users can tolerate it. Five nines for a noncritical internal process likely buys costly redundancy the business does not need. Benchmarking against peers gives useful context, but peers' targets reflect their own processes and risk appetite, not this system's actual business impact.",
+          "wrong_explanations": {
+            "A": "More availability is not automatically worth its cost; targets should match business need.",
+            "B": "Peer benchmarks reflect other firms' needs and risk appetite, not this system's business impact.",
+            "C": "Phasing spends the money more slowly but still assumes the target is justified."
+          },
+          "tips": [
+            "Eliminate: A assumes more availability is always worth paying for, and C phases spending on an unproven target.",
+            "Final two: D beats B because targets come from this system's business impact; peers' figures reflect their own needs.",
+            "Exam cue: availability and capacity targets are set by business requirements, then technology is sized to meet them."
+          ],
+          "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); ITIL 4 Service Level Management practice",
+          "related_concepts": [
+            "Availability targets",
+            "Business requirements",
+            "Cost of resilience",
+            "Service levels"
+          ],
+          "_provenance": "Authored from concept: 'Canonical software-stack layering per ISACA IS Architecture guidance'. Public sources: ISACA, standard systems references. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 4A1 to 4A6.",
+          "style_version": 2
+        },
+        {
+          "id": "d5_012",
+          "domain": 5,
+          "subtopic": "Physical Access Audit Scope",
+          "principle_id": "evidence-quality",
+          "difficulty": "application",
+          "bloom_level": "Application",
+          "related_concepts": [
+            "Badge-access governance",
+            "Visitor management audit",
+            "Termination access removal",
+            "CCTV retention",
+            "Change-management for access"
+          ],
+          "framework_ref": "NIST SP 800-53 Rev 5 PE-2 (Physical Access Authorizations); ISO/IEC 27002:2022 Control 7.2 (Physical Entry); ISACA IT Audit Standard 1205 (Evidence)",
+          "question": "An IS auditor has limited time to test whether data center access is restricted to authorized staff. Which procedure provides the BEST evidence?",
+          "options": {
+            "A": "Review the badge system's uptime and vendor reports",
+            "B": "Observe staff badging in at the entrance for one morning",
+            "C": "Compare the badge access list with current staff and roles",
+            "D": "Inspect the fire marshal's certificate for the building"
+          },
+          "correct": "C",
+          "key_concept": "Strong access evidence comes from comparing the full list of access rights with an authoritative source such as current HR records.",
+          "pre_read": "Ask which procedure would catch a former employee whose badge still works but who did not come in that day.",
+          "correct_explanation": "Comparing the full badge access list with current staff records and roles tests everyone who can get in, revealing leavers, transfers and unexplained grants. Observation shows how people behave on one morning: it cannot reveal a former employee whose badge still works, or a contractor with access who simply did not visit that day, so it gives weaker evidence.",
+          "wrong_explanations": {
+            "A": "Uptime figures and vendor reports show the system is available. They give no evidence about who is allowed in.",
+            "B": "Observation covers a single period and the people who happened to enter. Unauthorized badges that went unused stay hidden.",
+            "D": "A fire certificate relates to life safety and building compliance, not to whether access is limited to authorized staff."
+          },
+          "tips": [
+            "Eliminate: A measures availability and D concerns fire safety; neither tests who can enter.",
+            "Final two: C beats B because comparing the whole access list with staff records tests every authorized badge, while observation sees one morning.",
+            "Exam cue: for who-has-access objectives, testing the access list against an authoritative source beats watching activity."
+          ],
+          "_provenance": "Authored from concept: 'Physical access audit scope per ISACA Data Center Audit Program and NIST SP 800-53 PE family'. Public sources: ISACA, NIST, ISO/IEC, ASIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+          "style_version": 2
+        }
+      ],
+      "confidenceLog": [],
+      "sessionHistory": [],
+      "review": {
+        "d1_010": {
+          "box": 1,
+          "dueAt": 1792823923917,
+          "lastSeen": 1792823923917,
+          "reps": 1
+        },
+        "d2_010": {
+          "box": 1,
+          "dueAt": 1792823923918,
+          "lastSeen": 1792823923918,
+          "reps": 1
+        },
+        "d4_041": {
+          "box": 1,
+          "dueAt": 1792823923918,
+          "lastSeen": 1792823923918,
+          "reps": 1
+        },
+        "d5_012": {
+          "box": 1,
+          "dueAt": 1792823923918,
+          "lastSeen": 1792823923918,
+          "reps": 1
+        }
+      },
+      "answerLog": {
+        "d1_010": {
+          "attempts": 1,
+          "correctCount": 0,
+          "lastCorrect": false,
+          "lastAt": 1792823923916,
+          "ms": 20000,
+          "lastConfidence": "sure"
+        },
+        "d1_008": {
+          "attempts": 1,
+          "correctCount": 1,
+          "lastCorrect": true,
+          "lastAt": 1792823923917,
+          "ms": 21500,
+          "lastConfidence": "unsure"
+        },
+        "d2_006": {
+          "attempts": 1,
+          "correctCount": 1,
+          "lastCorrect": true,
+          "lastAt": 1792823923917,
+          "ms": 23000,
+          "lastConfidence": "guessing"
+        },
+        "d2_010": {
+          "attempts": 1,
+          "correctCount": 0,
+          "lastCorrect": false,
+          "lastAt": 1792823923917,
+          "ms": 24500,
+          "lastConfidence": "sure"
+        },
+        "d3_002": {
+          "attempts": 1,
+          "correctCount": 1,
+          "lastCorrect": true,
+          "lastAt": 1792823923918,
+          "ms": 26000,
+          "lastConfidence": "unsure"
+        },
+        "d3_005": {
+          "attempts": 1,
+          "correctCount": 1,
+          "lastCorrect": true,
+          "lastAt": 1792823923918,
+          "ms": 27500,
+          "lastConfidence": "guessing"
+        },
+        "d4_041": {
+          "attempts": 1,
+          "correctCount": 0,
+          "lastCorrect": false,
+          "lastAt": 1792823923918,
+          "ms": 29000,
+          "lastConfidence": "sure"
+        },
+        "d4_050": {
+          "attempts": 1,
+          "correctCount": 1,
+          "lastCorrect": true,
+          "lastAt": 1792823923918,
+          "ms": 30500,
+          "lastConfidence": "unsure"
+        },
+        "d5_008": {
+          "attempts": 1,
+          "correctCount": 1,
+          "lastCorrect": true,
+          "lastAt": 1792823923918,
+          "ms": 32000,
+          "lastConfidence": "guessing"
+        },
+        "d5_012": {
+          "attempts": 1,
+          "correctCount": 0,
+          "lastCorrect": false,
+          "lastAt": 1792823923918,
+          "ms": 33500,
+          "lastConfidence": "sure"
+        }
+      },
+      "mistakeLog": {
+        "d1_010": {
+          "at": 1792823923916,
+          "resolved": false,
+          "picked": "A",
+          "confidence": "sure"
+        },
+        "d2_010": {
+          "at": 1792823923917,
+          "resolved": false,
+          "picked": "A",
+          "confidence": "sure"
+        },
+        "d4_041": {
+          "at": 1792823923918,
+          "resolved": false,
+          "picked": "A",
+          "confidence": "sure"
+        },
+        "d5_012": {
+          "at": 1792823923918,
+          "resolved": false,
+          "picked": "A",
+          "confidence": "sure"
+        }
+      },
+      "studyDays": [
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24"
+      ],
+      "mockHistory": [
+        {
+          "id": "mock_demo_1",
+          "finishedAt": 1792651123924,
+          "total": 50,
+          "correct": 34,
+          "minutesUsed": 71,
+          "byDomain": {
+            "1": {
+              "total": 9,
+              "correct": 6
+            },
+            "2": {
+              "total": 9,
+              "correct": 7
+            },
+            "3": {
+              "total": 6,
+              "correct": 4
+            },
+            "4": {
+              "total": 13,
+              "correct": 8
+            },
+            "5": {
+              "total": 13,
+              "correct": 9
+            }
+          },
+          "timing": "standard",
+          "minutesAllowed": 80,
+          "unanswered": 1,
+          "type": "mini",
+          "medianSec": 74
+        }
+      ],
+      "qNotes": {
+        "d1_010": {
+          "text": "Charter first, then the plan. Watch the word FIRST.",
+          "ts": 1792823923922
+        }
+      },
+      "plant": null,
+      "plantSettings": {},
+      "cleanLog": {
+        "d1_008": {
+          "first": 1792823923917,
+          "last": 1792823923917
+        },
+        "d2_006": {
+          "first": 1792823923917,
+          "last": 1792823923917
+        },
+        "d3_002": {
+          "first": 1792823923918,
+          "last": 1792823923918
+        },
+        "d3_005": {
+          "first": 1792823923918,
+          "last": 1792823923918
+        },
+        "d4_050": {
+          "first": 1792823923918,
+          "last": 1792823923918
+        },
+        "d5_008": {
+          "first": 1792823923918,
+          "last": 1792823923918
+        }
+      },
+      "readinessLog": [
+        {
+          "day": "2026-10-24",
+          "min": null,
+          "last": null
+        }
+      ],
+      "finalWeekDone": {},
+      "selectedDomain": "1",
+      "diff": "any",
+      "timerEnabled": false,
+      "timerSeconds": 0,
+      "qIdx": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "all": 0
+      },
+      "mindsetIdx": 0,
+      "glossMastered": {},
+      "topicReviewed": {
+        "1A1.1": 1792823923922,
+        "1A1.2": 1792823923923
+      },
+      "topicViewed": {
+        "1A1.3": 1792823923924
+      },
+      "topicTicksSchema": 2,
+      "current": null,
+      "qn": 0,
+      "activeTab": "home",
+      "mockQueueIds": [],
+      "mockAnswers": [],
+      "mockCurrent": 0,
+      "mockTotalSecondsLeft": 0,
+      "mockId": null,
+      "mockType": "full",
+      "mockFlagIds": []
+    }
+  }
+}

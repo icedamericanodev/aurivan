@@ -132,7 +132,7 @@ describe('the welcome screen: literal, names the exam, no metaphors', () => {
     mount(<Onboarding />);
     expect(pressable(/^Restore from a backup$/)).toHaveLength(1);
     // Its hint no longer speaks of the old app.
-    expect(pressable(/^Restore from a backup$/)[0].props.accessibilityHint).toBe('Studied on another phone? Pick your backup file to bring your progress here.');
+    expect(pressable(/^Restore from a backup$/)[0].props.accessibilityHint).toBe('Studied on another phone or on the KaiSip website? Pick your backup or progress file to bring your progress here.');
     press(/^Get started$/);
     expect(allText()).toContain('Where are you starting from?');
     expect(allText()).not.toContain('What should we call you?');

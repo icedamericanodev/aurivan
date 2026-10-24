@@ -48,6 +48,7 @@ import { Check, ICON_STROKE } from '../components/icons';
 import { StickyFooter } from '../components/quiz';
 import { Button, Chip, Enter, Gap, ICON_SIZE, Row, T } from '../components/ui';
 import { DataMessage, RestorePreview } from '../components/yourData';
+import { WebImportPreview } from '../components/webImport';
 import { EXAM_TRADEMARK_LINE, WELCOME_FACTS, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
 import { DEFAULT_CERT_ID } from '../content/certifications';
 import { dateInMonths, daysToExam, EXAM_DATE_PRESETS, presetIndexFor } from '../engine/examDay';
@@ -285,7 +286,7 @@ export default function Onboarding() {
               <Button
                 kind="ghost"
                 label={restore.busy === 'pick' ? 'Opening…' : 'Restore from a backup'}
-                accessibilityHint="Studied on another phone? Pick your backup file to bring your progress here."
+                accessibilityHint="Studied on another phone or on the KaiSip website? Pick your backup or progress file to bring your progress here."
                 disabled={restore.busy !== null}
                 onPress={restore.pick}
               />
@@ -330,6 +331,8 @@ export default function Onboarding() {
         }}
       />
       <RestorePreview ready={restore.ready} busy={restore.busy === 'restore'} onConfirm={restore.confirm} onCancel={restore.cancel} />
+      {/* Mobile 1.42: progress exported from the KaiSip website can start the app too. */}
+      <WebImportPreview web={restore.web} busy={restore.busy === 'web'} onConfirm={restore.confirmWeb} onCancel={restore.cancelWeb} />
     </SafeAreaView>
   );
 }

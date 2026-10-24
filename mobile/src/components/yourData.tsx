@@ -35,6 +35,7 @@ import { useBackup } from '../store/backup';
 import { LARGE_TEXT, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { SettingsGroup, SettingsRow } from './settings';
+import { WebImportPreview } from './webImport';
 import { Button, Gap, T, useFontScale } from './ui';
 
 /** "6 Oct 2026" for a timestamp, in the phone's local time. */
@@ -171,9 +172,9 @@ export function YourData() {
         />
         <SettingsRow
           title={pickLabel}
-          subtitle="You see what changes before anything is replaced."
+          subtitle="An app backup, or a progress file from the KaiSip website. You see what changes first."
           accessibilityLabel={pickLabel}
-          accessibilityHint="Choose a backup file. You will see what changes before anything is replaced."
+          accessibilityHint="Choose a backup file, or a progress file exported from the KaiSip website. You will see what changes before anything is changed."
           disabled={busy !== null}
           onPress={flow.pick}
           last={!(canUndo && undo)}
@@ -206,6 +207,8 @@ export function YourData() {
       {/* The result of the last action, right under the rows that started it. */}
       {message && <DataMessage message={message} />}
       <RestorePreview ready={flow.ready} busy={busy === 'restore'} onConfirm={flow.confirm} onCancel={flow.cancel} />
+      {/* Mobile 1.42: a file exported from the KaiSip website is added, never a replacement. */}
+      <WebImportPreview web={flow.web} busy={busy === 'web'} onConfirm={flow.confirmWeb} onCancel={flow.cancelWeb} />
     </>
   );
 }
