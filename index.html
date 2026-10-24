@@ -5055,9 +5055,13 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
   .td-head, .td-hero, .td-next, .td-apps { grid-column: 1; }
   .td-legal { grid-column: 1 / -1; }
   .td-plate { grid-column: 2; grid-row: 1 / span 3; margin-top: 0; }
+  .td-side { grid-column: 2; grid-row: 1 / span 3; }
+  .td-side > .td-plate { grid-column: auto; grid-row: auto; }
 }
 @media (min-width: 1180px) and (min-height: 720px) {
   .td-plate { position: sticky; top: 40px; }
+  .td-side { position: sticky; top: 40px; }
+  .td-side > .td-plate { position: static; }
 }
 /* The rings draw in once a day, outer ring first (DESIGN_SYSTEM §10.1); still under reduced motion. */
 @keyframes tdArc { from { stroke-dashoffset: 1; opacity: 0; } 4% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
@@ -5268,6 +5272,54 @@ header.app-header .brand-lockup { height: 28px; }
 body[data-app-cta="android"][data-section="today"] .app-cta-line,
 body[data-app-cta="android"][data-section="learn"] .app-cta-line { display: block; }
 .app-cta-line a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
+/* While the Today card shows, the quiet line steps aside on Today (Learn keeps it). */
+body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: none; }
+
+/* Desktop rail: "Get KaiSip for Android" (shown from 1024px; railAppFit picks
+   data-app-fit: "qr" with room, "base" badge or button only, "tight" pulls the
+   rail's top spacing in, "min" also keeps the title for screen readers only). */
+.rail-app { display: none; }
+.rail-app-t { margin: 0; font: var(--t-caption); color: var(--text); }
+.rail-app-qr { display: flex; align-items: center; gap: var(--sp-md); margin: var(--sp-md) 0 0; }
+.rail-app-qr img { flex: none; width: 112px; height: 112px; background: #fff; border: 1px solid var(--border); border-radius: var(--r-sm); }
+.rail-app-qr figcaption { min-width: 0; font: var(--t-caption); font-weight: 500; color: var(--text2); }
+/* Google: at least 28px tall, clear space of 1/4 the height (10px) all round */
+.rail-app-badge { display: inline-block; margin-top: 10px; line-height: 0; border-radius: var(--r-sm); }
+.rail-app-badge img { display: block; height: 40px; width: auto; }
+.rail-app .rail-app-btn { margin-top: var(--sp-md); padding: 0 var(--sp-lg); }
+.rail-app [hidden], #appRail:not([data-app-fit="qr"]) .rail-app-qr { display: none; }
+#appRail[data-app-fit="min"] .rail-app-t { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+#appRail[data-app-fit="min"] .rail-app-badge, #appRail[data-app-fit="min"] .rail-app .rail-app-btn { margin-top: 0; }
+
+/* Today, Android phones: one short L1 plate with the badge (or the beta
+   button) and "Not now" (hides it for 14 days). */
+.td-app { margin: 0 0 var(--sp-xxl); padding: var(--sp-lg); background: var(--raised2); border-radius: var(--r-lg); }
+.td-app-t { margin: 0; font: var(--t-small); color: var(--text); }
+.td-app-acts { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-sm) var(--sp-lg); margin-top: var(--sp-sm); }
+.td-app-badge { display: inline-block; margin: 2px 0; line-height: 0; border-radius: var(--r-sm); }
+.td-app-badge img { display: block; height: 40px; width: auto; }
+.td-app-acts .gt-btn-secondary { min-height: 44px; padding: 0 var(--sp-lg); text-decoration: none; }
+.td-app-hide { margin-right: -4px; }
+
+/* Today on a computer, live mode with the QR (appCtaQrOk): a "Get KaiSip for
+   Android" plate under the readiness and plant. With it, the plate and the
+   card share one wrapper (.td-side) that takes the plate's place. */
+.td-qr { display: none; }
+@media (min-width: 1024px) {
+  .td-qr { display: block; margin-top: var(--sp-xxl); padding: var(--sp-lg); background: var(--raised2); border-radius: var(--r-lg); }
+}
+.td-qr-h { margin: 0; font: var(--t-label); color: var(--text); }
+.td-qr-row { display: flex; align-items: center; gap: var(--sp-md); margin-top: var(--sp-md); }
+.td-qr-row img { flex: none; width: 112px; height: 112px; background: #fff; border: 1px solid var(--border); border-radius: var(--r-sm); }
+.td-qr-row p { margin: 0; min-width: 0; font: var(--t-meta); color: var(--text2); }
+.td-qr .td-app-badge { margin-top: var(--sp-md); }
+
+/* Welcome: one small text link under the main action (Android and computers). */
+.ob-app {
+  align-self: center; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--sp-sm);
+  font: var(--t-meta); color: var(--text2); text-decoration: underline; text-underline-offset: 3px;
+}
+.ob-app:hover { color: var(--text); }
 
 @media (max-width: 1023px) {
   #bottomNav { display: flex; }
@@ -5285,6 +5337,13 @@ body[data-app-cta="android"][data-section="learn"] .app-cta-line { display: bloc
   header.app-header .brand-lockup { height: 30px; }
   .side-nav { display: block; }
   .rail-foot:not([hidden]) { display: block; }
+  .rail-app:not([hidden]) { display: block; margin-top: auto; padding: var(--sp-lg) 12px 0; border-top: 1px solid var(--border); }
+  .rail-app:not([hidden]) ~ .rail-foot { margin-top: var(--sp-lg); }
+  #appRail[data-app-fit="tight"], #appRail[data-app-fit="min"] { padding-top: 16px; padding-bottom: 12px; }
+  #appRail[data-app-fit="tight"] header.app-header, #appRail[data-app-fit="min"] header.app-header { margin-bottom: 12px; }
+  #appRail[data-app-fit="tight"] .rail-app, #appRail[data-app-fit="min"] .rail-app { padding-top: 10px; }
+  /* Today's own QR card is on screen: the rail keeps its title and badge only. */
+  body[data-section="today"][data-app-qr-card="shown"] #appRail:not([data-app-measure]) .rail-app-qr { display: none; }
   #bottomNav { display: none !important; }
   .app { padding-top: 40px; padding-left: 48px; padding-right: 48px; }
   .sub-nav.sub-nav-pages { display: none; }
@@ -6222,6 +6281,19 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <li><a class="sn-item" data-sec="you" href="#you" onclick="return navTo(event,'you')"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span>You</span></a></li>
   </ul>
 </nav>
+<!-- Desktop rail: "Get KaiSip for Android". Hidden unless APP_CTA.mode is
+     'beta' or 'live' (and never on iPhone or iPad); appCtaInit() fills it and
+     railAppFit() sizes it so the nav above never moves. -->
+<aside class="rail-app" id="railApp" aria-labelledby="railAppT" hidden>
+  <p class="rail-app-t" id="railAppT">Get KaiSip for Android</p>
+  <figure class="rail-app-qr" id="railAppQr" hidden>
+    <img id="railAppQrImg" alt="QR code that opens KaiSip on Google Play" width="112" height="112" decoding="async">
+    <figcaption>Scan with your phone, or click the badge</figcaption>
+  </figure>
+  <a class="rail-app-badge" id="railAppPlay" target="_blank" rel="noopener" hidden><img id="railAppBadge" alt="Get it on Google Play (opens in a new tab)" width="135" height="40" decoding="async"></a>
+  <a class="tipjar-btn rail-app-btn" id="railAppPlayText" target="_blank" rel="noopener" hidden>Get it on Google Play<span class="sr-only"> (opens in a new tab)</span></a>
+  <a class="tipjar-btn rail-app-btn" id="railAppBeta" target="_blank" rel="noopener" hidden>Join the Android beta<span class="sr-only"> (opens in a new tab)</span></a>
+</aside>
 <div class="rail-foot" id="railCountdown" hidden></div>
 </div>
 
@@ -6630,8 +6702,11 @@ function ico(name, size, cls) {
 //                  playUrl (the store listing, https:// only); the web
 //                  referrer (utm_source=kaisip_web) is added for you.
 // About shows a "KaiSip on your phone" section to everyone; Android phones
-// also get one quiet line on Today and Learn; iPhones see "Coming soon to
-// iPhone." instead of a button. The badge image is assets/google-play-badge.png
+// also get one quiet line on Today and Learn plus a Today card ("Not now"
+// hides it for 14 days); computers get a panel at the foot of the desktop
+// rail (with the QR when it fits); the first-visit welcome has a small "Also
+// on Android" link (not on iPhone); iPhones see "Coming soon to iPhone."
+// instead of a button. The badge image is assets/google-play-badge.png
 // (see appCtaInit). Plain links only: nothing extra loads, the CSP is unchanged.
 const APP_CTA = { mode: 'off', betaUrl: '', playUrl: '' };
 
@@ -10736,7 +10811,7 @@ function refreshTodayNext() {
   var old = td.querySelector('.td-next');
   var focused = !!(old && old.contains(document.activeElement));
   if (old) old.outerHTML = html;
-  else if (html) td.querySelector('.td-plate').insertAdjacentHTML('beforebegin', html);
+  else if (html) (td.querySelector('.td-side') || td.querySelector('.td-plate')).insertAdjacentHTML('beforebegin', html);
   if (focused) { var b = td.querySelector('.td-next .you-row'); if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} } }
 }
 function todayOpenNote(domainId, itemId) {
@@ -10757,6 +10832,13 @@ function todayPractice() {
   runPracticePrimary();
 }
 
+// Today's right-hand column: the readiness plate, and under it the app's QR
+// card when it applies (computers, live mode; see appCtaTodayQrHtml).
+function todaySideHtml(plate) {
+  var qr = '';
+  try { qr = appCtaTodayQrHtml(); } catch (e) { qr = ''; }
+  return qr ? '<div class="td-side">' + plate + qr + '</div>' : plate;
+}
 function renderHome() {
   var area = document.getElementById('homeArea');
   if (!area) return;
@@ -10844,11 +10926,13 @@ function renderHome() {
     + (r.answered === 0 ? '<p class="td-intro">Free practice for the CISA exam. Start with a short set below.</p>' : '')
     + '</div>'
     // Phones read it top to bottom as the web mock-up: practice, next step, then readiness.
-    + hero + todayFinalWeekHtml(days) + next + plate
+    + appCtaTodayHtml()
+    + hero + todayFinalWeekHtml(days) + next + todaySideHtml(plate)
     + (apps.length ? '<p class="td-apps">Get the app: ' + apps.join(' &middot; ') + '</p>' : '')
     // The full disclaimer lives on About (and Help); Today keeps one line.
     + '<p class="td-legal">KaiSip is independent and not affiliated with ISACA.</p>'
     + '</div>';
+  appCtaTodayWire();
 
   // The notes arrive after the first paint: draw the next step again then.
   if (!CISA_NOTES_RAW && !conceptsLoadFailed) {
@@ -13533,11 +13617,12 @@ function updateHeaderCountdown() {
       if (!isNaN(diff) && diff >= 0) days = diff;
     }
   } catch (e) {}
-  if (days === null) { foot.hidden = true; foot.innerHTML = ''; return; }
+  if (days === null) { foot.hidden = true; foot.innerHTML = ''; try { railAppFit(); } catch (e) {} return; }
   foot.innerHTML = days === 0
     ? '<span class="rail-days">Today</span>is your CISA exam'
     : '<span class="rail-days">' + days + (days === 1 ? ' day' : ' days') + '</span>to your CISA exam';
   foot.hidden = false;
+  try { railAppFit(); } catch (e) {}
 }
 
 // ── DECISION 9: SESSION INTENT → PRACTICE → DEBRIEF ──
@@ -15217,6 +15302,15 @@ function showOnboarding() {
     try { leftOpen = practiceLeftOpen(); } catch (e) {}
     goLabel = leftOpen ? 'Continue your set' : 'Start a short set';
   }
+  // Android and computers, when the app link is on: one small text link under
+  // the main action (never on iPhone or iPad).
+  var appLink = '';
+  try {
+    var appHref = appCtaHref();
+    if (appHref && appCtaPlatform() !== 'ios') {
+      appLink = '<a class="ob-app" href="' + escapeHtml(appHref) + '" target="_blank" rel="noopener">Also on Android<span class="sr-only"> (opens in a new tab)</span></a>';
+    }
+  } catch (e) { appLink = ''; }
   var checks = OB_CHECKS.map(function (t) {
     return '<li><span class="ob-check" aria-hidden="true">' + ico('check', 16) + '</span><span>' + escapeHtml(t) + '</span></li>';
   }).join('');
@@ -15234,6 +15328,7 @@ function showOnboarding() {
     + '</div>'
     + '<div class="ob-foot">'
       + '<button type="button" class="ob-go" id="obGo" onclick="onboardStartFive()">' + goLabel + ico('arrow-right', 18) + '</button>'
+      + appLink
       + '<button type="button" class="ob-ghost" onclick="closeOnboarding()">' + (onboarded ? 'Close' : 'Look around first') + '</button>'
     + '</div>'
     + '</div></div>';
@@ -17788,12 +17883,140 @@ function appCtaHref() {
   }
   return '';
 }
+// An Android phone (Android tablets report no "Mobile" and keep About).
+function appCtaAndroidPhone() {
+  return appCtaPlatform() === 'android' && /Mobile/i.test(String((navigator && navigator.userAgent) || ''));
+}
+// Computers only: a QR code that opens the Play listing on the visitor's
+// phone. assets/kaisip-play-qr.svg is a fixed image that encodes
+//   https://play.google.com/store/apps/details?id=com.kaisip.app&referrer=utm_source%3Dkaisip_web%26utm_medium%3Dqr
+// (made with segno, error level M; decoded and checked 24 Oct 2026), so it
+// shows only when playUrl points at that same listing.
+function appCtaQrOk(href) {
+  return APP_CTA.mode === 'live' && appCtaPlatform() === 'desktop' && /[?&]id=com\.kaisip\.app(?:[&#]|$)/.test(href || '');
+}
+// The official badge, unmodified: Google's English "Get it on Google Play"
+// web PNG from the Partner Marketing Hub (downloaded 23 Oct 2026). Rules: no
+// edits or recolour, at least 28px tall, clear space of 1/4 its height, and
+// only link it to KaiSip's live store listing. The badge link shows once the
+// file loads; if it is missing, a plain "Get it on Google Play" link shows.
+function appCtaBadge(img, badgeLink, textLink, done) {
+  img.addEventListener('load', function () { badgeLink.hidden = false; textLink.hidden = true; if (done) done(); });
+  img.addEventListener('error', function () { badgeLink.hidden = true; textLink.hidden = false; if (done) done(); });
+  img.setAttribute('src', 'assets/google-play-badge.png');
+}
+
+// Today, Android phones (beta or live): one short card at the top, until
+// "Not now" puts it away for 14 days (a NEW device-only key, epoch ms). While
+// it is away the quiet line further down Today stays.
+var APP_CTA_HIDE_KEY = 'aurivan_app_cta_hidden_until';
+var APP_CTA_HIDE_MS = 14 * 86400000;
+function appCtaTodayHtml() {
+  var show = false, href = '';
+  try {
+    href = appCtaHref();
+    show = !!href && appCtaAndroidPhone();
+  } catch (e) { show = false; }
+  if (show) {
+    var until = 0;
+    try { until = Number(localStorage.getItem(APP_CTA_HIDE_KEY)) || 0; } catch (e) { until = 0; }
+    if (until > Date.now()) show = false;
+  }
+  if (!show) { document.body.removeAttribute('data-app-cta-card'); return ''; }
+  document.body.setAttribute('data-app-cta-card', 'shown');
+  var live = APP_CTA.mode === 'live';
+  var h = escapeHtml(href);
+  var action = live
+    ? '<a class="td-app-badge" href="' + h + '" target="_blank" rel="noopener"><img src="assets/google-play-badge.png" alt="Get it on Google Play (opens in a new tab)" width="135" height="40" decoding="async"></a>'
+    : '<a class="gt-btn-secondary" href="' + h + '" target="_blank" rel="noopener">Join the Android beta<span class="sr-only"> (opens in a new tab)</span></a>';
+  return '<section class="td-app" id="tdApp" aria-labelledby="tdAppT">'
+    + '<p class="td-app-t" id="tdAppT">' + (live ? 'Lessons and the daily plan, in the KaiSip app.' : 'Try lessons and the daily plan in the app beta.') + '</p>'
+    + '<div class="td-app-acts">' + action
+    + '<button type="button" class="gt-btn-ghost td-app-hide" onclick="appCtaNotNow()">Not now</button>'
+    + '</div></section>';
+}
+// Today on a computer (CSS shows it from 1024px): live mode with the QR only
+// (appCtaQrOk), never in beta. While it is on the page, the rail's panel
+// shows its title and badge without the QR on Today, so the QR shows once.
+function appCtaTodayQrHtml() {
+  var href = appCtaHref();
+  if (!href || !appCtaQrOk(href)) { document.body.removeAttribute('data-app-qr-card'); return ''; }
+  document.body.setAttribute('data-app-qr-card', 'shown');
+  return '<section class="td-qr" id="tdQr" aria-labelledby="tdQrH">'
+    + '<h2 class="td-qr-h" id="tdQrH">Get KaiSip for Android</h2>'
+    + '<div class="td-qr-row"><img src="assets/kaisip-play-qr.svg" alt="QR code that opens KaiSip on Google Play" width="112" height="112" decoding="async">'
+    + '<p>Scan with your phone&rsquo;s camera</p></div>'
+    + '<a class="td-app-badge" href="' + escapeHtml(href) + '" target="_blank" rel="noopener"><img src="assets/google-play-badge.png" alt="Get it on Google Play (opens in a new tab)" width="135" height="40" decoding="async"></a>'
+    + '</section>';
+}
+// The badge file missing: a Today card's link reads "Get it on Google Play".
+function appCtaTodayWire() {
+  Array.prototype.forEach.call(document.querySelectorAll('#tdApp .td-app-badge img, #tdQr .td-app-badge img'), function (img) {
+    var fallback = function () {
+      var a = img.parentNode;
+      if (!a || !a.parentNode) return;
+      a.className = 'gt-btn-secondary';
+      a.innerHTML = 'Get it on Google Play<span class="sr-only"> (opens in a new tab)</span>';
+    };
+    if (img.complete && !img.naturalWidth) fallback();
+    else img.addEventListener('error', fallback);
+  });
+}
+function appCtaNotNow() {
+  try { localStorage.setItem(APP_CTA_HIDE_KEY, String(Date.now() + APP_CTA_HIDE_MS)); } catch (e) {}
+  var card = document.getElementById('tdApp');
+  if (card && card.parentNode) card.parentNode.removeChild(card);
+  document.body.removeAttribute('data-app-cta-card');
+  var next = document.getElementById('tdGo') || document.getElementById('tdTitle');
+  if (next) { try { next.focus({ preventScroll: true }); } catch (e) {} }
+  showToast('Hidden for 14 days. The app link stays in About.', 'info', 2600);
+}
+
+// Desktop rail: the panel takes the room under the nav and no more. It tries
+// the full panel (QR, caption, badge), then the badge or button alone, then
+// the rail's top spacing pulled in, then the title kept for screen readers
+// only; if even that does not fit, the rail scrolls as before (the nav never
+// moves). Runs on resize, when the rail reappears and when its foot changes.
+function railAppFit() {
+  var rail = document.getElementById('appRail'), panel = document.getElementById('railApp');
+  if (!rail || !panel) return;
+  var wide = !window.matchMedia || window.matchMedia('(min-width: 1024px)').matches;
+  if (panel.hidden || !wide) { rail.removeAttribute('data-app-fit'); return; }
+  if (!rail.clientHeight) return; // hidden (a focused question): fit when it returns
+  var fits = ['qr', 'base', 'tight', 'min'];
+  if (document.getElementById('railAppQr').hidden) fits.shift();
+  // Measured with the QR in place even on Today (where Today's own card may
+  // hide it), so the fit holds on every page.
+  rail.setAttribute('data-app-measure', '1');
+  for (var i = 0; i < fits.length; i++) {
+    rail.setAttribute('data-app-fit', fits[i]);
+    if (rail.scrollHeight <= rail.clientHeight) break;
+  }
+  rail.removeAttribute('data-app-measure');
+}
+var railAppWatching = false;
+function railAppWatch() {
+  if (railAppWatching) return;
+  railAppWatching = true;
+  var rail = document.getElementById('appRail');
+  var queued = false;
+  var later = function () {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; railAppFit(); });
+  };
+  if (window.ResizeObserver && rail) new ResizeObserver(later).observe(rail);
+  window.addEventListener('resize', later);
+}
+
 function appCtaInit() {
   var card = document.getElementById('appCtaCard');
   var href = appCtaHref();
   document.body.removeAttribute('data-app-cta');
+  var rp = document.getElementById('railApp');
+  if (rp) rp.hidden = true;
   if (!card) return;
-  if (!href) { card.hidden = true; return; }
+  if (!href) { card.hidden = true; railAppFit(); return; }
   var live = APP_CTA.mode === 'live';
   var plat = appCtaPlatform();
   var el = function (id) { return document.getElementById(id); };
@@ -17812,29 +18035,36 @@ function appCtaInit() {
   if (live && showLink) {
     badgeLink.setAttribute('href', href);
     textLink.setAttribute('href', href);
-    // The official badge, unmodified: Google's English "Get it on Google Play"
-    // web PNG from the Partner Marketing Hub (downloaded 23 Oct 2026). Rules:
-    // no edits or recolour, at least 28px tall, clear space of 1/4 its height,
-    // and only link it to KaiSip's live store listing. If the file is missing
-    // the badge hides itself and a plain "Get it on Google Play" link shows.
-    img.addEventListener('load', function () { badgeLink.hidden = false; textLink.hidden = true; });
-    img.addEventListener('error', function () { badgeLink.hidden = true; textLink.hidden = false; });
-    img.setAttribute('src', 'assets/google-play-badge.png');
+    appCtaBadge(img, badgeLink, textLink);
   }
-  // Computers only: a QR code that opens the Play listing on the visitor's
-  // phone. assets/kaisip-play-qr.svg is a fixed image that encodes
-  //   https://play.google.com/store/apps/details?id=com.kaisip.app&referrer=utm_source%3Dkaisip_web%26utm_medium%3Dqr
-  // (made with segno, error level M; decoded and checked 24 Oct 2026), so it
-  // shows only when playUrl points at that same listing.
+  // Computers only: the QR code (see appCtaQrOk).
+  var qrOk = appCtaQrOk(href);
   var qr = el('appCtaQr');
   qr.hidden = true;
-  if (live && plat === 'desktop' && /[?&]id=com\.kaisip\.app(?:[&#]|$)/.test(href)) {
+  if (qrOk) {
     el('appCtaQrImg').setAttribute('src', 'assets/kaisip-play-qr.svg');
     qr.hidden = false;
   }
   card.hidden = false;
+  // Desktop rail (CSS shows it from 1024px): Android and computers, never iPhone or iPad.
+  if (rp && showLink) {
+    el('railAppBeta').hidden = live;
+    if (!live) el('railAppBeta').setAttribute('href', href);
+    var rBadge = el('railAppPlay'), rText = el('railAppPlayText');
+    rBadge.hidden = true; rText.hidden = true;
+    if (live) {
+      rBadge.setAttribute('href', href);
+      rText.setAttribute('href', href);
+      appCtaBadge(el('railAppBadge'), rBadge, rText, railAppFit);
+    }
+    el('railAppQr').hidden = !qrOk;
+    if (qrOk) el('railAppQrImg').setAttribute('src', 'assets/kaisip-play-qr.svg');
+    rp.hidden = false;
+    railAppWatch();
+  }
+  railAppFit();
   // Today and Learn: one quiet line, Android phones only (tablets keep About).
-  if (plat === 'android' && /Mobile/i.test(String(navigator.userAgent || ''))) {
+  if (appCtaAndroidPhone()) {
     el('appCtaLineText').textContent = live
       ? 'Lessons and the daily plan are in the KaiSip app'
       : 'Try lessons and the daily plan in the KaiSip app beta';
