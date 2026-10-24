@@ -5055,9 +5055,13 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
   .td-head, .td-hero, .td-next, .td-apps { grid-column: 1; }
   .td-legal { grid-column: 1 / -1; }
   .td-plate { grid-column: 2; grid-row: 1 / span 3; margin-top: 0; }
+  .td-side { grid-column: 2; grid-row: 1 / span 3; }
+  .td-side > .td-plate { grid-column: auto; grid-row: auto; }
 }
 @media (min-width: 1180px) and (min-height: 720px) {
   .td-plate { position: sticky; top: 40px; }
+  .td-side { position: sticky; top: 40px; }
+  .td-side > .td-plate { position: static; }
 }
 /* The rings draw in once a day, outer ring first (DESIGN_SYSTEM §10.1); still under reduced motion. */
 @keyframes tdArc { from { stroke-dashoffset: 1; opacity: 0; } 4% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
@@ -5297,6 +5301,19 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .td-app-acts .gt-btn-secondary { min-height: 44px; padding: 0 var(--sp-lg); text-decoration: none; }
 .td-app-hide { margin-right: -4px; }
 
+/* Today on a computer, live mode with the QR (appCtaQrOk): a "Get KaiSip for
+   Android" plate under the readiness and plant. With it, the plate and the
+   card share one wrapper (.td-side) that takes the plate's place. */
+.td-qr { display: none; }
+@media (min-width: 1024px) {
+  .td-qr { display: block; margin-top: var(--sp-xxl); padding: var(--sp-lg); background: var(--raised2); border-radius: var(--r-lg); }
+}
+.td-qr-h { margin: 0; font: var(--t-label); color: var(--text); }
+.td-qr-row { display: flex; align-items: center; gap: var(--sp-md); margin-top: var(--sp-md); }
+.td-qr-row img { flex: none; width: 112px; height: 112px; background: #fff; border: 1px solid var(--border); border-radius: var(--r-sm); }
+.td-qr-row p { margin: 0; min-width: 0; font: var(--t-meta); color: var(--text2); }
+.td-qr .td-app-badge { margin-top: var(--sp-md); }
+
 /* Welcome: one small text link under the main action (Android and computers). */
 .ob-app {
   align-self: center; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--sp-sm);
@@ -5325,6 +5342,8 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
   #appRail[data-app-fit="tight"], #appRail[data-app-fit="min"] { padding-top: 16px; padding-bottom: 12px; }
   #appRail[data-app-fit="tight"] header.app-header, #appRail[data-app-fit="min"] header.app-header { margin-bottom: 12px; }
   #appRail[data-app-fit="tight"] .rail-app, #appRail[data-app-fit="min"] .rail-app { padding-top: 10px; }
+  /* Today's own QR card is on screen: the rail keeps its title and badge only. */
+  body[data-section="today"][data-app-qr-card="shown"] #appRail:not([data-app-measure]) .rail-app-qr { display: none; }
   #bottomNav { display: none !important; }
   .app { padding-top: 40px; padding-left: 48px; padding-right: 48px; }
   .sub-nav.sub-nav-pages { display: none; }
@@ -10792,7 +10811,7 @@ function refreshTodayNext() {
   var old = td.querySelector('.td-next');
   var focused = !!(old && old.contains(document.activeElement));
   if (old) old.outerHTML = html;
-  else if (html) td.querySelector('.td-plate').insertAdjacentHTML('beforebegin', html);
+  else if (html) (td.querySelector('.td-side') || td.querySelector('.td-plate')).insertAdjacentHTML('beforebegin', html);
   if (focused) { var b = td.querySelector('.td-next .you-row'); if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} } }
 }
 function todayOpenNote(domainId, itemId) {
@@ -10813,6 +10832,13 @@ function todayPractice() {
   runPracticePrimary();
 }
 
+// Today's right-hand column: the readiness plate, and under it the app's QR
+// card when it applies (computers, live mode; see appCtaTodayQrHtml).
+function todaySideHtml(plate) {
+  var qr = '';
+  try { qr = appCtaTodayQrHtml(); } catch (e) { qr = ''; }
+  return qr ? '<div class="td-side">' + plate + qr + '</div>' : plate;
+}
 function renderHome() {
   var area = document.getElementById('homeArea');
   if (!area) return;
@@ -10901,7 +10927,7 @@ function renderHome() {
     + '</div>'
     // Phones read it top to bottom as the web mock-up: practice, next step, then readiness.
     + appCtaTodayHtml()
-    + hero + todayFinalWeekHtml(days) + next + plate
+    + hero + todayFinalWeekHtml(days) + next + todaySideHtml(plate)
     + (apps.length ? '<p class="td-apps">Get the app: ' + apps.join(' &middot; ') + '</p>' : '')
     // The full disclaimer lives on About (and Help); Today keeps one line.
     + '<p class="td-legal">KaiSip is independent and not affiliated with ISACA.</p>'
@@ -17909,18 +17935,32 @@ function appCtaTodayHtml() {
     + '<button type="button" class="gt-btn-ghost td-app-hide" onclick="appCtaNotNow()">Not now</button>'
     + '</div></section>';
 }
-// The badge file missing: the card's link reads "Get it on Google Play".
+// Today on a computer (CSS shows it from 1024px): live mode with the QR only
+// (appCtaQrOk), never in beta. While it is on the page, the rail's panel
+// shows its title and badge without the QR on Today, so the QR shows once.
+function appCtaTodayQrHtml() {
+  var href = appCtaHref();
+  if (!href || !appCtaQrOk(href)) { document.body.removeAttribute('data-app-qr-card'); return ''; }
+  document.body.setAttribute('data-app-qr-card', 'shown');
+  return '<section class="td-qr" id="tdQr" aria-labelledby="tdQrH">'
+    + '<h2 class="td-qr-h" id="tdQrH">Get KaiSip for Android</h2>'
+    + '<div class="td-qr-row"><img src="assets/kaisip-play-qr.svg" alt="QR code that opens KaiSip on Google Play" width="112" height="112" decoding="async">'
+    + '<p>Scan with your phone&rsquo;s camera</p></div>'
+    + '<a class="td-app-badge" href="' + escapeHtml(href) + '" target="_blank" rel="noopener"><img src="assets/google-play-badge.png" alt="Get it on Google Play (opens in a new tab)" width="135" height="40" decoding="async"></a>'
+    + '</section>';
+}
+// The badge file missing: a Today card's link reads "Get it on Google Play".
 function appCtaTodayWire() {
-  var img = document.querySelector('#tdApp .td-app-badge img');
-  if (!img) return;
-  var fallback = function () {
-    var a = img.parentNode;
-    if (!a || !a.parentNode) return;
-    a.className = 'gt-btn-secondary';
-    a.innerHTML = 'Get it on Google Play<span class="sr-only"> (opens in a new tab)</span>';
-  };
-  if (img.complete && !img.naturalWidth) fallback();
-  else img.addEventListener('error', fallback);
+  Array.prototype.forEach.call(document.querySelectorAll('#tdApp .td-app-badge img, #tdQr .td-app-badge img'), function (img) {
+    var fallback = function () {
+      var a = img.parentNode;
+      if (!a || !a.parentNode) return;
+      a.className = 'gt-btn-secondary';
+      a.innerHTML = 'Get it on Google Play<span class="sr-only"> (opens in a new tab)</span>';
+    };
+    if (img.complete && !img.naturalWidth) fallback();
+    else img.addEventListener('error', fallback);
+  });
 }
 function appCtaNotNow() {
   try { localStorage.setItem(APP_CTA_HIDE_KEY, String(Date.now() + APP_CTA_HIDE_MS)); } catch (e) {}
@@ -17945,10 +17985,14 @@ function railAppFit() {
   if (!rail.clientHeight) return; // hidden (a focused question): fit when it returns
   var fits = ['qr', 'base', 'tight', 'min'];
   if (document.getElementById('railAppQr').hidden) fits.shift();
+  // Measured with the QR in place even on Today (where Today's own card may
+  // hide it), so the fit holds on every page.
+  rail.setAttribute('data-app-measure', '1');
   for (var i = 0; i < fits.length; i++) {
     rail.setAttribute('data-app-fit', fits[i]);
-    if (rail.scrollHeight <= rail.clientHeight) return;
+    if (rail.scrollHeight <= rail.clientHeight) break;
   }
+  rail.removeAttribute('data-app-measure');
 }
 var railAppWatching = false;
 function railAppWatch() {
