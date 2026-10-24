@@ -4,6 +4,21 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.33] — Trust and knowing what to do next
+
+### New
+- Today opens with one plan and its time: the questions to revisit first, then a set in the area that needs it most.
+- A gentle reminder to save a backup of your progress, so a browser clean-up never costs you your work.
+
+### Improved
+- Questions you miss come back the next day instead of straight away, and right answers you guessed come back too.
+- Your first five end with what is waiting for you tomorrow.
+- Readiness says plainly what the range means, and Weak spots gives an early sign sooner.
+- Results lead with your score, and a review ends with yours too.
+- Your counts now agree across Today, You and the end of a review.
+- KaiSip opens on Today when you come back.
+- Plainer words across the app, and KaiSip now says clearly that it is free during the beta.
+
 ## [v12.32] — Tidier study notes
 
 ### Improved
