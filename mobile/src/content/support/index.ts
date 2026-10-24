@@ -44,7 +44,10 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
     version: '1.42.1',
     date: '2026-10-24',
-    improved: ['Spaced review is now called Questions to revisit, the same name as on the KaiSip website, so it is easy to find on both.'],
+    improved: [
+      'Spaced review is now called Questions to revisit, the same name as on the KaiSip website, so it is easy to find on both.',
+      'Your exam date now comes along when you add your website progress, if this phone doesn’t have one yet.',
+    ],
   },
   {
     version: '1.42.0',

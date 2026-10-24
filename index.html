@@ -6464,7 +6464,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h1 class="vision-title" id="aboutScreenTitle">Think like an IS auditor.</h1>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.34</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.34.1</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -6794,7 +6794,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.34';
+const APP_VERSION = 'v12.34.1';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -8307,7 +8307,15 @@ function exportProgress(otherId) {
   if (!profile) { showToast('Nothing to export yet.', 'info', 2400); return; }
   if (!otherId) { saveState(); profile = getProfiles()[id]; }
   // The marker below is the file's original name, kept so older exports still import.
-  var data = JSON.stringify({cisaMindsetExport: true, version: 1, profile: profile}, null, 2);
+  var out = {cisaMindsetExport: true, version: 1, profile: profile};
+  // v12.34.1: the exam date travels too, so the app can use it. It is kept per
+  // browser (not per record), so only the progress in use carries it. A new
+  // field beside the old ones: older readers ignore it, older files lack it.
+  if (!otherId) {
+    var examDate = savedExamDate();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(examDate)) out.examDate = examDate;
+  }
+  var data = JSON.stringify(out, null, 2);
   var blob = new Blob([data], {type: 'application/json'});
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
@@ -19234,6 +19242,13 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Your exam date comes along',
+    items: [
+      { cat: 'improved', text: 'Your exam date now comes along when you move your progress to the app.' },
+    ],
+  },
+  {
+    version: 'v12.34',
     title: 'Calmer screens',
     items: [
       { cat: 'improved', text: 'After a miss, the answer leads with the key idea and the exam cue, with the full explanation one tap away.' },

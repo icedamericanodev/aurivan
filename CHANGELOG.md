@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.34.1] — Your exam date comes along
+
+### Improved
+- Your exam date now comes along when you move your progress to the app.
+
 ## [v12.34] — Calmer screens
 
 ### Improved

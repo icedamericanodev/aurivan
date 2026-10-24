@@ -20,8 +20,13 @@
  *   the max, the later answer wins its "last answer" fields. Nothing on the
  *   phone is deleted or replaced wholesale, and importing the same file twice
  *   changes nothing the second time.
- * - Not brought over: the website's plant (the phone keeps its own), its
- *   settings, and the exam date (the website keeps it outside the export file).
+ * - Not brought over: the website's plant (the phone keeps its own) and its
+ *   settings.
+ * - The exam date (mobile 1.42.1, website v12.34.1): a newer website file
+ *   carries it as a top-level `examDate` ("YYYY-MM-DD"). It is checked (a
+ *   real day, not more than a day in the past, at most about 3 years ahead)
+ *   and used ONLY when this phone has no exam date yet: the phone's own date
+ *   always wins. Older files have no date and read exactly as before.
  *
  * Pure TypeScript: no React, no storage, no network.
  */
@@ -31,6 +36,7 @@ import { capNoteText, isLiveNote, NOTE_ID_RE, NOTES_TOTAL_MAX } from './question
 import { MAX_ANSWER_MS } from './answerClock';
 import { MAX_MOCKS } from './journey';
 import { DAY_MS, INTERVAL_DAYS, MAX_BOX } from './srs';
+import { examDateLabel } from './examDay';
 import { dayKey, daysBetween } from './streak';
 
 // ── Limits ───────────────────────────────────────────────────────────────
@@ -132,6 +138,23 @@ export interface WebProfile {
   noDetail: number;
   /** Entries dated in the future (a wrong clock on the computer): left out, never clamped. */
   future: number;
+  /** The file's exam date ("YYYY-MM-DD"), when it has a sensible one (readWebExamDate). The same for every profile in a file. */
+  examDate?: string;
+}
+
+// ── The exam date ────────────────────────────────────────────────────────
+/** The latest exam date accepted from a file, in days from today: about 3 years. */
+export const WEB_EXAM_DATE_MAX_DAYS = 3 * 366;
+/**
+ * The file's exam date (top-level `examDate`), or undefined when there is
+ * none or it isn't sensible: a real calendar day, no more than one day before
+ * today (time zones), and at most WEB_EXAM_DATE_MAX_DAYS ahead. `now` is the
+ * phone's clock; "today" is its local day.
+ */
+export function readWebExamDate(raw: unknown, now: number): string | undefined {
+  if (!isObj(raw) || !isDay(raw.examDate)) return undefined;
+  const ahead = daysBetween(dayKey(now), raw.examDate);
+  return ahead >= -1 && ahead <= WEB_EXAM_DATE_MAX_DAYS ? raw.examDate : undefined;
 }
 
 /**
@@ -408,7 +431,8 @@ export function readWebExport(raw: unknown, known: WebKnown, now: number): WebPr
     if (!out.length) throw new WebImportError('bad-data');
   }
   if (!out.length) throw new WebImportError('bad-data');
-  return out;
+  const examDate = readWebExamDate(raw, now);
+  return examDate ? out.map((p) => ({ ...p, examDate })) : out;
 }
 
 /** True when a profile holds nothing the app could add. */
@@ -506,6 +530,10 @@ export interface WebAddSummary {
   future: number;
   /** Together with this phone's progress it would be too large to save (nothing can be added). */
   tooBig?: boolean;
+  /** The exam date this import sets: the file has one and this phone has none. */
+  examDate?: string;
+  /** The file has an exam date, but this phone already has a different one, which stays. */
+  examDateKept?: boolean;
   /** True when the phone already has everything this profile could add. */
   nothingNew: boolean;
 }
@@ -522,7 +550,15 @@ export function tooBigSummary(p: WebProfile): WebAddSummary {
  * gone past (a phone keeps its recent days only), so a re-import after more
  * study says there is nothing new.
  */
-export function webAddSummary(phone: BackupProgress, merged: BackupProgress, p: WebProfile, certId: string, now: number): WebAddSummary {
+export function webAddSummary(
+  phone: BackupProgress,
+  merged: BackupProgress,
+  p: WebProfile,
+  certId: string,
+  now: number,
+  /** This phone's exam date for `certId` (settings), if it has one: the file's date is then never used. */
+  phoneExamDate?: string,
+): WebAddSummary {
   const cp: Cert = phone.byCert[certId] ?? {};
   const out: Cert = merged.byCert[certId] ?? {};
   const has = (m: Record<string, unknown> | undefined, id: string) => Boolean(m && Object.prototype.hasOwnProperty.call(m, id));
@@ -549,7 +585,10 @@ export function webAddSummary(phone: BackupProgress, merged: BackupProgress, p: 
   const mistakes = Object.entries(out.mistakes ?? {}).filter(([id, m]) => !cp.mistakes?.[id] || !sameMistake(cp.mistakes[id], m)).length;
   const review = Object.keys(out.review ?? {}).filter((id) => !has(cp.review, id)).length;
   const viewed = newIn(out.notesViewed, cp.notesViewed);
-  const added = answers + updated + saved + notesRead + qNotes + mocks + studyDays + mistakes + review + viewed;
+  // The exam date: add-only. The phone's own date always wins.
+  const examDate = p.examDate && !phoneExamDate ? p.examDate : undefined;
+  const examDateKept = Boolean(p.examDate && phoneExamDate && phoneExamDate !== p.examDate);
+  const added = answers + updated + saved + notesRead + qNotes + mocks + studyDays + mistakes + review + viewed + (examDate ? 1 : 0);
   return {
     answers,
     updated,
@@ -562,6 +601,8 @@ export function webAddSummary(phone: BackupProgress, merged: BackupProgress, p: 
     unmatched: p.unmatched,
     noDetail: p.noDetail,
     future: p.future,
+    ...(examDate ? { examDate } : {}),
+    ...(examDateKept ? { examDateKept } : {}),
     nothingNew: added === 0,
   };
 }
@@ -582,6 +623,7 @@ export function webAddLines(s: WebAddSummary): string[] {
   if (s.qNotes) out.push(`${n(s.qNotes, 'note', 'notes')} you wrote on questions`);
   if (s.mocks) out.push(n(s.mocks, 'mock exam result', 'mock exam results'));
   if (s.studyDays) out.push(n(s.studyDays, 'study day', 'study days'));
+  if (s.examDate) out.push(`Your exam date: ${examDateLabel(s.examDate)}`);
   return out;
 }
 
@@ -610,6 +652,7 @@ export function webSkipLines(s: WebAddSummary): string[] {
         : `${s.mocksSkipped} older mock exam results aren’t added: the app keeps ${MAX_MOCKS} at most, and yours stay.`,
     );
   }
+  if (s.examDateKept) out.push('This phone already has an exam date, so it stays as it is.');
   if (s.future) {
     out.push(
       s.future === 1
@@ -620,5 +663,11 @@ export function webSkipLines(s: WebAddSummary): string[] {
   return out;
 }
 
-/** Said under the lines: what the website file never holds (true whether or not this phone has them). */
+/** Said under the lines: what the website file never holds (true whether or not this phone has them). An older file has no exam date either. */
 export const WEB_NOT_IN_FILE = 'This file doesn’t include your exam date, plant or settings, so adding it doesn’t change them.';
+/** The same, for a file that carries an exam date (website v12.34.1 and later). */
+export const WEB_NOT_IN_FILE_DATED = 'This file doesn’t include your plant or settings, so adding it doesn’t change them.';
+/** Which of the two lines fits this profile's file. */
+export function webNotInFile(p: Pick<WebProfile, 'examDate'>): string {
+  return p.examDate ? WEB_NOT_IN_FILE_DATED : WEB_NOT_IN_FILE;
+}
