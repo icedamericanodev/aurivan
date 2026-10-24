@@ -185,7 +185,7 @@ describe('the closing screen', () => {
     const t = allText();
     expect(t).toContain('Tomorrow');
     expect(t).toMatch(/\d+ questions, about \d+ min|-minute lesson on/);
-    expect(t).not.toMatch(/Spaced review/);
+    expect(t).not.toMatch(/Spaced review|Questions to revisit/i);
   });
 
   it('mobile 1.41 review: one decision at a time: the plant is offered only after the reminder ask is answered', async () => {

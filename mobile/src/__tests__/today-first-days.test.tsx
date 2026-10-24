@@ -236,9 +236,9 @@ describe('the title is said once, and the optional mock is not a checklist row',
       .findAll((n) => typeof n.type === 'string' && n.props.accessible === true)
       .map((n) => n.props.accessibilityLabel as string);
     expect(lines).toEqual(['Lesson · Business impact analysis, later', 'Warm-up · 5 questions, later']);
-    // "Spaced review" is the panel's title once; it is not a first row too.
-    expect(lines.some((l) => /^Spaced review/.test(l))).toBe(false);
-    expect(root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === 'Spaced review').length).toBeGreaterThan(0);
+    // "Questions to revisit" is the panel's title once; it is not a first row too.
+    expect(lines.some((l) => /^Questions to revisit/.test(l))).toBe(false);
+    expect(root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === 'Questions to revisit').length).toBeGreaterThan(0);
   });
 
   it('the weekly mini mock is an "Also today" row, with its length, and not part of "N of N done"', () => {

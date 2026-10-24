@@ -376,10 +376,10 @@ const YouLists = memo(function YouLists({
         {/* The review queue: same word ("due") and same cap line as Today and Practice. */}
         <ListRow
           icon={icon(RotateCcw)}
-          title="Spaced review"
+          title="Questions to revisit"
           subtitle={reviewSubtitle(dueCount)}
           trailing={dueCount ? <Trail value={String(dueCount)} unit={REVIEW_UNIT} /> : undefined}
-          accessibilityLabel={`Spaced review, ${dueCount ? `${dueCount} ${REVIEW_UNIT}. ${reviewSubtitle(dueCount)}` : 'all caught up'}`}
+          accessibilityLabel={`Questions to revisit, ${dueCount ? `${dueCount} ${REVIEW_UNIT}. ${reviewSubtitle(dueCount)}` : 'all caught up'}`}
           onPress={() => guardedStart(() => startReview(cert.id), () => router.push('/session'), () => router.push('/caught-up'))}
         />
         <ListRow

@@ -295,7 +295,7 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
       const n = Number(key.split(':')[1]) || LONG_LADDER[0];
       const top = n === LONG_LADDER[LONG_LADDER.length - 1];
       return {
-        howTo: 'Spaced review brings questions back after a gap. Answer them cold, without Coach me.',
+        howTo: 'Questions to revisit come back after a gap. Answer them cold, without Coach me.',
         unlock: `You recalled ${n} questions a week or more after you last saw them. That’s what holds on exam day.`,
         effort: `Needs at least ${LONG_GAP_DAYS + 1} days: a recall counts a week after you last saw the question.${top ? ` ${STRETCH}.` : ''}`,
         skill: `Recalled ${n} answers a week or more later`,
@@ -311,10 +311,10 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
         // counts (PR #51 review, honesty): a right answer from the last box
         // moves a question out of review. The count never checks how many
         // days passed, so the lines say "box after box" and "moved out of
-        // spaced review", never "weeks apart".
+        // review", never "weeks apart".
         unlock: `${GRADUATES === 50 ? 'Fifty' : GRADUATES} questions have left review: you answered them right again and again, box after box. Spaced recall is what holds on exam day.`,
         effort: 'Needs several weeks: a question leaves review from the last box.',
-        skill: `Moved ${GRADUATES} questions out of spaced review`,
+        skill: `Moved ${GRADUATES} questions out of review`,
         minDays: GRADUATE_MIN_DAYS,
       };
     case 'loop-closed':

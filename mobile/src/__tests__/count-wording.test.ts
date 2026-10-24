@@ -21,8 +21,8 @@ describe('review queue wording', () => {
     expect(REVIEW_SESSION_CAP).toBe(20);
     expect(REVIEW_CAP_LINE).toBe('20 at a time, most overdue first');
     expect(reviewSubtitle(55)).toBe('20 at a time, most overdue first');
-    expect(reviewSubtitle(12)).toBe('Questions to revisit');
-    expect(reviewSubtitle(20)).toBe('Questions to revisit'); // exactly 20 fits one session
+    expect(reviewSubtitle(12)).toBe('Misses and unsure answers come back here');
+    expect(reviewSubtitle(20)).toBe('Misses and unsure answers come back here'); // exactly 20 fits one session
     expect(reviewSubtitle(0)).toBe('All caught up');
   });
 

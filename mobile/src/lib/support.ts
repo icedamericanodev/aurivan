@@ -116,12 +116,14 @@ export function helpOpenParam(v: unknown): HelpOpen | null {
 /**
  * Where a session question was reported from: "Practice · Quick 10",
  * "Mock review · Full mock". Nothing is said twice: a title that already
- * says it ("Practice · IS Audit") or that the place already names ("Review"
- * in Spaced review) isn't repeated.
+ * says it ("Practice · IS Audit") or that the place already names ("Revisit"
+ * in Questions to revisit) isn't repeated.
  */
-export function sessionWhere(place: 'Practice' | 'Spaced review' | 'Practice review' | 'Mock review', title: string): string {
+export function sessionWhere(place: 'Practice' | 'Questions to revisit' | 'Practice review' | 'Mock review', title: string): string {
   const t = title.trim();
   if (!t || place.toLowerCase().includes(t.toLowerCase())) return place;
+  // A review set saved before mobile 1.42.1 is titled "Review": the place already names it.
+  if (place === 'Questions to revisit' && /^review$/i.test(t)) return place;
   if (place === 'Practice' && /^practice\b/i.test(t)) return t;
   return `${place} · ${t}`;
 }

@@ -1,5 +1,5 @@
 /**
- * Spaced review, all caught up: shown when nothing is due for review.
+ * Questions to revisit, all caught up: shown when nothing is due for review.
  * Mobile 1.9: the fern (questions come back around) and one useful line,
  * when anything is scheduled: "Next review: tomorrow · 6 questions" (the
  * learner's own queue, never the bank).
@@ -21,7 +21,7 @@ export default function CaughtUp() {
   const next = upcomingReview(progress.review, now, questionExists(cert.id));
   return (
     <EmptyScreen
-      header="Spaced review"
+      header="Questions to revisit"
       art="fern"
       title="All caught up"
       body="Questions you miss come back here, spaced over the next days so they stick."

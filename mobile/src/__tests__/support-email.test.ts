@@ -416,7 +416,9 @@ describe('configuration and the phone', () => {
   it('says where a session question was reported, without saying anything twice', () => {
     expect(sessionWhere('Practice', 'Quick 10')).toBe('Practice · Quick 10');
     expect(sessionWhere('Practice', 'Practice · IS Audit')).toBe('Practice · IS Audit');
-    expect(sessionWhere('Spaced review', 'Review')).toBe('Spaced review');
+    expect(sessionWhere('Questions to revisit', 'Questions to revisit')).toBe('Questions to revisit');
+    // A review set saved before mobile 1.42.1 is titled "Review": not said twice either.
+    expect(sessionWhere('Questions to revisit', 'Review')).toBe('Questions to revisit');
     expect(sessionWhere('Mock review', 'Mini mock')).toBe('Mock review · Mini mock');
     expect(sessionWhere('Practice review', '')).toBe('Practice review');
   });
