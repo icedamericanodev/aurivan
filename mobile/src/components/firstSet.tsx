@@ -335,7 +335,14 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
   // Kept for this visit, so "Not now" can say where planting lives instead of vanishing.
   const [offerAnswer, setOfferAnswer] = useState<'later' | null>(null);
   const offerRef = useRef<View>(null);
-  const offerPlant = plantOn && !plant && (!plantLater || offerAnswer === 'later');
+  // One decision at a time (review 1.41): the plant is offered only once the reminder ask is answered,
+  // or when there is none to show (reminders already on, or not possible on this phone).
+  const reminderOn = useSettings((s) => s.reminder.enabled);
+  const reminderAnswered = useSeen((s) => s.reminderAsk?.first !== undefined);
+  const askSettled = !remindersSupported || reminderOn || reminderAnswered;
+  const offerPlant = plantOn && !plant && askSettled && (!plantLater || offerAnswer === 'later');
+  // At large text the seedling sits above the words, so the words keep the full width.
+  const large = useFontScale() >= LARGE_TEXT;
 
   useEffect(() => {
     moveFocus(headRef, 500);
@@ -404,24 +411,8 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
             <T v="caption" color={c.accentText}>Tomorrow</T>
             {tomorrow ? <T v="body">{tomorrow}</T> : <T v="body">Your next plan is ready when you open the app.</T>}
             {comeBack && <T v="body">{comeBack}</T>}
-            {offerPlant && (
-              <PlantOffer
-                answered={offerAnswer === 'later'}
-                lineRef={offerRef}
-                onPlant={() => {
-                  plantFor(certId, 'oak', '');
-                  sayLater('Seed planted. It grows as you learn.');
-                }}
-                onNotNow={() => {
-                  useSeen.getState().setPlantOffer('later');
-                  setOfferAnswer('later');
-                  // The buttons go: focus moves to the line that says where planting lives.
-                  moveFocus(offerRef, ANNOUNCE_DELAY);
-                }}
-              />
-            )}
             {plantOn && plant && (
-              <Row gap={space.md} style={{ alignItems: 'center' }}>
+              <Row gap={space.md} style={large ? { flexDirection: 'column', alignItems: 'flex-start' } : { alignItems: 'center' }}>
                 {/* A seed, not the plant drawing: Results stays light and the plant keeps its own screens.
                     Decorative: hidden from TalkBack (importantForAccessibility) and VoiceOver (accessibilityElementsHidden). */}
                 <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ marginLeft: -space.sm }}>
@@ -446,6 +437,26 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
           {/* The margin is the ask's own, so a closing screen with nothing to ask has no empty gap. */}
           <ReminderAsk which="first" style={{ marginTop: space.xl }} onNotNow={() => moveFocus(doneRef, ANNOUNCE_DELAY + 50)} />
         </Enter>
+        {/* Then the plant, in its own block under the ask (one decision at a time). */}
+        {offerPlant && (
+          <Card variant="plate" style={{ marginTop: space.xl }}>
+            <PlantOffer
+              answered={offerAnswer === 'later'}
+              large={large}
+              lineRef={offerRef}
+              onPlant={() => {
+                plantFor(certId, 'oak', '');
+                sayLater('Seed planted. It grows as you learn.');
+              }}
+              onNotNow={() => {
+                useSeen.getState().setPlantOffer('later');
+                setOfferAnswer('later');
+                // The buttons go: focus moves to the line that says where planting lives.
+                moveFocus(offerRef, ANNOUNCE_DELAY);
+              }}
+            />
+          </Card>
+        )}
       </ScrollView>
       <StickyFooter onHeight={setFooterH}>
         <Button ref={doneRef} label={endedEarly ? 'Back to Today' : 'Done for today'} onPress={done} />
@@ -465,27 +476,30 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
 
 /**
  * Mobile 1.41: the plant, offered (never planted for the learner). Two quiet ghost buttons: the
- * closing screen's one solid button stays "Done for today". "Not now" swaps the buttons for one
- * line saying where planting lives, so the choice is respected and still easy to undo.
+ * closing screen's one solid button stays "Done for today". "Maybe later" (not "Not now": that is the
+ * reminder's) swaps the buttons for one line saying where planting lives, so the choice is respected
+ * and still easy to undo. At large text the seedling sits above the words.
  */
 function PlantOffer({
   answered,
+  large,
   lineRef,
   onPlant,
   onNotNow,
 }: {
   answered: boolean;
+  large: boolean;
   lineRef: Ref<View>;
   onPlant: () => void;
   onNotNow: () => void;
 }) {
   const { c } = useTheme();
   return (
-    <Row gap={space.md} style={{ alignItems: 'center' }}>
+    <Row gap={space.md} style={large ? { flexDirection: 'column', alignItems: 'flex-start' } : { alignItems: 'center' }}>
       <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ marginLeft: -space.sm }}>
         <Seedling color={c.accent} size={64} />
       </View>
-      <View style={{ flex: 1 }} testID="plant-offer">
+      <View style={large ? { alignSelf: 'stretch' } : { flex: 1 }} testID="plant-offer">
         {answered ? (
           <View ref={lineRef} accessible accessibilityLabel="No plant for now. You can plant one any time from You.">
             <T v="small">No plant for now. You can plant one any time from You.</T>
@@ -495,7 +509,7 @@ function PlantOffer({
             <T v="small">Want a plant that grows as you learn? It’s optional.</T>
             <Row gap={0} style={{ flexWrap: 'wrap', marginLeft: -space.sm }}>
               <Button kind="ghost" label="Plant a seed" accessibilityHint="Plants an oak. You can choose a different plant after." onPress={onPlant} />
-              <Button kind="ghost" label="Not now" accessibilityLabel="Not now, no plant" onPress={onNotNow} />
+              <Button kind="ghost" label="Maybe later" accessibilityLabel="Maybe later, no plant for now" onPress={onNotNow} />
             </Row>
           </>
         )}

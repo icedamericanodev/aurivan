@@ -86,7 +86,8 @@ export function TesterQuestionCard({
       <Card variant="plate" style={{ gap: space.sm }}>
         <T v="caption" color={c.accentText} accessibilityRole="header">{card.caption}</T>
         <T v="body">{card.body}</T>
-        {card.studiedOfLast7 !== undefined && (
+        {/* Never "You studied on 0 of the last 7 days" (review 1.41): the line is left out at 0. */}
+        {card.studiedOfLast7 !== undefined && card.studiedOfLast7 > 0 && (
           // On screen only: the email never carries it.
           <View accessible accessibilityLabel={`${weekLine(card.studiedOfLast7)} Counted on this phone only, and not put in the email.`}>
             <T v="small">{weekLine(card.studiedOfLast7)}</T>
@@ -114,6 +115,7 @@ export function TesterQuestionCard({
             <Button kind="ghost" label="Not today" accessibilityLabel="Not today, hide this question" onPress={notToday} />
           </Row>
         )}
+        <T v="meta">Turn these off any time in Help.</T>
       </Card>
     </View>
   );

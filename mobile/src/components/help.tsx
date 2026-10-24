@@ -5,7 +5,8 @@
  * Two groups, so a learner can tell "do something" from "read something"
  * (UX review O2):
  * - Get help: Common questions, Contact support, Report a problem with the
- *   app, Suggest an idea. These open a screen or a short sheet.
+ *   app, Something confused me (mobile 1.41), Suggest an idea. These open a
+ *   screen or a short sheet.
  *   Since the exam guide (data/exam/): "About the CISA exam" right after
  *   Common questions (hidden when the cert has no guide), for "how do I book,
  *   what do I bring" questions that aren't about the app.
@@ -28,7 +29,7 @@ import { config } from '../lib/config';
 import { reportsSubtitle, useReports } from '../lib/useReports';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { CircleQuestionMark, Flag, ICON_STROKE, Inbox, Info, Lightbulb, Mail, Sparkles } from './icons';
+import { CircleQuestionMark, Flag, ICON_STROKE, Inbox, Info, Lightbulb, Mail, MessagesSquare, Sparkles } from './icons';
 import { useContactFlow, useReportFlow } from './support';
 import { ICON_SIZE, ListRow, Section, T, ToggleRow } from './ui';
 import { switchTester } from '../engine/betaTester';
@@ -101,10 +102,17 @@ export function HelpRows({ certId }: { certId: string }) {
         onPress={report.open}
       />
       {report.block}
+      {/* Mobile 1.41 review: confusion is the beta's main quality measure, so it has its own row. */}
+      <ListRow
+        icon={icon(MessagesSquare)}
+        title="Something confused me"
+        subtitle="A screen, a word or an answer that didn’t make sense"
+        onPress={() => contact.openFeedback('confused', WHERE)}
+      />
       <ListRow
         icon={icon(Lightbulb)}
         title="Suggest an idea"
-        subtitle="Or something that confused you"
+        subtitle="Or tell us what works for you"
         onPress={() => contact.openFeedback('idea', WHERE)}
         last
       />

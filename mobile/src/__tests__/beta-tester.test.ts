@@ -131,10 +131,12 @@ describe('after 3 or more days away', () => {
     expect(c?.away).toBe(true);
     expect(c?.body).toBe(AWAY_QUESTION);
     expect(c?.id).toBe(`away:${key(1)}`);
-    // Answered: that day's own question comes back; the same absence is never asked again.
+    // Answered: nothing else that day (one question a day, review 1.41 C5), and the same absence is
+    // never asked again; the schedule comes back after the next study day.
     const after = markAnswered(ON, c!.id);
-    expect(card(after, 5, studied(1, 5))?.id).toBe('doubt');
+    expect(card(after, 5, studied(1, 5))).toBeNull();
     expect(card(after, 6, studied(1, 5))).toBeNull();
+    expect(card(after, 7, studied(1, 5, 6, 7))?.id).toBe('week1');
   });
 
   it('has no "we missed you", no plant, no count of missed days', () => {

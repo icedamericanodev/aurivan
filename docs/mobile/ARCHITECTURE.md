@@ -430,9 +430,12 @@ server: every email goes through the learner's OWN email app.
 - *Onboarding* has no name step; the welcome leads with "Questions that explain every option, the trap
   included." Today asks for a name once, from the day after the first study day (`engine/firstRun.ts`
   `nameAskDue`, `store/seen.ts` `nameAsk`, only for learners onboarded on 1.41+).
-- *The plant is offered* on the first set's closing screen ("Plant a seed" / "Not now", `store/seen.ts`
-  `plantOffer`), never planted for the learner. Existing plants are untouched; You and Your plant keep
-  "Plant yours".
+- *The plant is offered* on the first set's closing screen ("Plant a seed" / "Maybe later", `store/seen.ts`
+  `plantOffer`), never planted for the learner, and only once the reminder ask is answered (one decision
+  at a time). Existing plants are untouched; You and Your plant keep "Plant yours".
+- Review fixes (1.41): Help has its own "Something confused me" row; the tester card never shows "0 of
+  the last 7 days", says "Turn these off any time in Help.", and on a day after an absence shows only
+  the away question (or nothing once it is answered); "Short on time?" waits while a tester card shows.
 
 **Games (mobile 1.6).** Three content games, all in the registry with the
 minPool guard (`isPlayable` now also counts a cert's decks from

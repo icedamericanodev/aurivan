@@ -16,6 +16,7 @@ import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Today from '../app/(tabs)/home';
 import Help from '../app/help';
+import { TesterQuestionCard } from '../components/beta';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { getAllQuestions } from '../content/loader';
 import type { DayPlan } from '../engine/dayPlan';
@@ -221,12 +222,14 @@ describe('Help: I’m a beta tester', () => {
     expect(useSeen.getState().tester).toEqual({});
   });
 
-  it('"Suggest an idea" also invites confusion; Send feedback lists "Something confused me" first', async () => {
+  it('review 1.41: "Something confused me" is its own Help row and opens feedback with that kind chosen', async () => {
     mount(<Help />);
-    expect(allText()).toContain('Or something that confused you');
-    await press(/^Suggest an idea/);
+    expect(allText()).toContain('Or tell us what works for you');
+    await press(/^Something confused me/);
+    expect(allText()).toContain('What confused you?');
     const chips = root().findAll((n) => n.props.accessibilityRole === 'button' && /^(Something confused me|An idea|Something I like|Something else)$/.test(String(n.props.accessibilityLabel)));
     expect(chips[0]?.props.accessibilityLabel).toBe('Something confused me');
+    expect(chips[0]?.props.accessibilityState?.selected).toBe(true);
   });
 
   it('Report a problem with the app offers "I couldn’t find something"', async () => {
@@ -329,5 +332,35 @@ describe('the Tester question on Today', () => {
     mount(<Today />);
     expect(byTestID('name-ask')).toHaveLength(1);
     expect(byTestID('tester-card')).toHaveLength(0);
+  });
+});
+
+describe('review 1.41 fixes on Today', () => {
+  it('a week check-in never says "You studied on 0 of the last 7 days"', () => {
+    const card = { id: 'week1', day: 7, caption: 'Week 1 check-in', body: 'How has your first week gone?' };
+    mount(<TesterQuestionCard card={{ ...card, studiedOfLast7: 0 }} today={today()} />);
+    expect(allText()).toContain('Week 1 check-in');
+    expect(allText()).not.toMatch(/You studied on|Counted on this phone/);
+    unmount();
+    mount(<TesterQuestionCard card={{ ...card, studiedOfLast7: 3 }} today={today()} />);
+    expect(allText()).toContain('You studied on 3 of the last 7 days.');
+  });
+
+  it('the tester card says where to turn the questions off', () => {
+    testerOn(2);
+    studiedDaysAgo(2, 1);
+    storePlan([LESSON]);
+    mount(<Today />);
+    expect(textOf(byTestID('tester-card')[0])).toContain('Turn these off any time in Help.');
+  });
+
+  it('"Short on time?" waits while a Tester question is on Today', () => {
+    queueReviews();
+    testerOn(2);
+    studiedDaysAgo(2, 1);
+    storePlan([REVIEW, LESSON]);
+    mount(<Today />);
+    expect(byTestID('tester-card')).toHaveLength(1);
+    expect(byTestID('short-set')).toHaveLength(0);
   });
 });

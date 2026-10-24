@@ -130,9 +130,13 @@ await edit(
   { ids: FIRST, now },
 );
 await go('/results', 2800);
+// One decision at a time (review 1.41): the reminder ask first, then the plant.
+await shot('m03a-closing-reminder-first');
+await page.getByRole('button', { name: 'Not now', exact: true }).first().click();
+await wait(900);
 await into('Want a plant that grows as you learn?', 'm03');
 await shot('m03-closing-plant-offer');
-await press('Not now, no plant', 900);
+await press('Maybe later, no plant for now', 900);
 await shot('m03b-closing-plant-not-now');
 
 // ── 3. Today before the plan starts: "Short on time? 5 questions" ───────
@@ -182,7 +186,7 @@ await shot('m08-today-week1-checkin');
 // ── 8. Send feedback: "Something confused me" first ─────────────────────
 await edit(SEEN, `v.state.tester = {};`);
 await go('/help', 2000);
-await press(/^Suggest an idea/, 1200);
+await press(/^Something confused me/, 1200);
 await shot('m09-feedback-confused');
 await go('/help', 2000);
 await press(/^Report a problem with the app/, 1200);

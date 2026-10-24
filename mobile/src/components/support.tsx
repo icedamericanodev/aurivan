@@ -663,7 +663,7 @@ function FeedbackSheet({
   return (
     <SheetFrame visible={visible} onClose={() => onClose(panel !== null)}>
       {/* "Suggest an idea" opens this sheet with "An idea" chosen: the title says so. */}
-      <T v="display" accessibilityRole="header">{initialKind === 'idea' ? 'Suggest an idea' : 'Send feedback'}</T>
+      <T v="display" accessibilityRole="header">{initialKind === 'idea' ? 'Suggest an idea' : initialKind === 'confused' ? 'What confused you?' : 'Send feedback'}</T>
       <T v="body" color={c.ink2} style={{ marginTop: space.sm }}>
         Tell us what helps, what’s missing, or what feels off. It goes to the people who build KaiSip.
       </T>

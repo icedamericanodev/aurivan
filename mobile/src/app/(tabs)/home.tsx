@@ -519,7 +519,8 @@ export default function Today() {
   // "Short on time? 5 questions" (mobile 1.41): only before the plan has started, never in exam week,
   // never beside a paused session (Also today already offers to resume it).
   const examWeekNow = j.daysLeft !== null && j.daysLeft >= 0 && j.daysLeft <= 7;
-  const shortIdx = !showReady && !allDone && !resume ? shortSetItem(plan, { examWeek: examWeekNow }) : -1;
+  // Not beside a Tester question either (review 1.41): one extra ask on Today at a time.
+  const shortIdx = !showReady && !allDone && !resume && !(testerShown && !nameVisit) ? shortSetItem(plan, { examWeek: examWeekNow }) : -1;
   // "About 6 min. Counts toward today’s plan." (the app's one minutes style; spoken as "minutes").
   const shortLine = `${aboutMin(SHORT_SET_SIZE * MINUTES_PER_QUESTION)}. Counts toward today’s plan.`;
 

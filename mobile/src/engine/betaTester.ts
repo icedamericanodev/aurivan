@@ -126,8 +126,10 @@ export function testerCard(state: TesterState | undefined, streak: Streak, now: 
   const answered = new Set(state.answered ?? []);
   const away = daysAway(streak, state.since, today);
   if (away.days >= AWAY_DAYS) {
+    // One question a day (review 1.41 C5): on a day after an absence it is the away question or
+    // nothing, even once that is answered; the schedule picks up again after the next study day.
     const id = `away:${away.from}`;
-    if (!answered.has(id)) return { id, day, caption: 'Tester question', body: AWAY_QUESTION, away: true };
+    return answered.has(id) ? null : { id, day, caption: 'Tester question', body: AWAY_QUESTION, away: true };
   }
   const q = questionForDay(day);
   if (!q || answered.has(q.id)) return null;
