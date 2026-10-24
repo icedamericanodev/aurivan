@@ -105,8 +105,18 @@ export default function Onboarding() {
   // Restore from a backup (shared with Settings → Your data). Success
   // finishes onboarding and goes straight to Today.
   // Website progress (mobile 1.42 review): ADDED, then onboarding goes on to its next step, so the
-  // learner still chooses a starting point, exam date and daily time (the website file has none).
-  const restore = useRestoreFlow({ onboard: true, onRestored: () => router.replace('/home'), onWebAdded: () => setStep(1) });
+  // learner still chooses a starting point, exam date and daily time. Mobile 1.42.1: a newer website
+  // file may have set the exam date (only when none was set); the date step starts on it, so finishing
+  // keeps it (the learner can still change it).
+  const restore = useRestoreFlow({
+    onboard: true,
+    onRestored: () => router.replace('/home'),
+    onWebAdded: () => {
+      const added = useSettings.getState().examDates[certId];
+      if (added) setExamDate(added);
+      setStep(1);
+    },
+  });
 
   // Each step's header takes screen-reader focus when the step changes (UX review P7).
   // Not tied to the step's entrance: the header is there from the first frame.

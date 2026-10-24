@@ -690,13 +690,13 @@ describe('3. "Next for your exam" at each journey stage', () => {
     expect(results['whole-grove']).toBe('/play');
     expect(results['loop-closed']).toBe('/mistakes');
     expect(results['topic-clear']).toBe('/guided');
-    expect(results['long-memory']).toBe('session:Review'); // two misses are due
+    expect(results['long-memory']).toBe('session:Questions to revisit'); // two misses are due
     expect(results['know-what-you-know']).toBe('session:Smart · All domains');
     // Every badge but Fresh Start (a moment), Mindset Shift and the tiers that open at Whole Map
     // (gated); mobile 1.11 adds Long Memory · 75 and · 150 and Took Root.
     expect(Object.keys(results)).toHaveLength(29);
     expect(results['took-root']).toBe('/guided');
-    expect(results['long-memory:75']).toBe('session:Review');
+    expect(results['long-memory:75']).toBe('session:Questions to revisit');
   });
 });
 

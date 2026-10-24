@@ -284,10 +284,10 @@ export default function Practice() {
         <Section title="More ways to practice" />
         <ListRow
           icon={icon(RotateCcw)}
-          title="Spaced review"
+          title="Questions to revisit"
           subtitle={reviewSubtitle(dueCount)}
           trailing={dueCount ? <Trail value={String(dueCount)} unit={REVIEW_UNIT} /> : undefined}
-          accessibilityLabel={`Spaced review, ${dueCount ? `${dueCount} ${REVIEW_UNIT}. ${reviewSubtitle(dueCount)}` : 'all caught up'}`}
+          accessibilityLabel={`Questions to revisit, ${dueCount ? `${dueCount} ${REVIEW_UNIT}. ${reviewSubtitle(dueCount)}` : 'all caught up'}`}
           onPress={() => guardedStart(() => startReview(cert.id), open, () => router.push('/caught-up'))}
         />
         {focus && (

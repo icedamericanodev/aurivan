@@ -137,14 +137,14 @@ Never make it depend on reviews or star ratings.
 **How names get added (no backend):**
 - A content file, `mobile/src/content/credits.ts`, exporting `BETA_TESTERS` (a fixed list of names) and `ANONYMOUS_TESTERS` (a number).
 - It holds names only, never emails, and is never generated from the Sheet automatically.
-- This is JavaScript only, so adding or removing a name ships as an over-the-air update without a new store build.
+- It is JavaScript only, but store builds have over-the-air updates turned off (`docs/mobile/SECURITY_GATES.md` Gate 1). So adding or removing a name reaches Play users only in the next Play build (a new release on the closed test or production track). Test builds outside the store may still get it over the air.
 - Add a test that every name passes the same cleaning rules as the in-app first-name field (`/home/user/aurivan/mobile/src/engine/displayName.ts`): up to 24 characters, no links or emails, no hidden control characters. Have `mobile-app-engineer` check this doesn't trip the existing test that limits which files may read the learner's own name.
 - Mirroring the list on kaisip.com is optional, later.
 
 **Moderation, by the owner, before every addition:**
 1. Reject: slurs, sexual or abusive words, rude words in any language you can check (paste unknown words into a translator), names of public figures, brands, ISACA or "official", anything that looks like a link, email or phone number.
 2. If rejected, list them as anonymous and email them: "We couldn't use that name. Reply with another, or we'll keep you anonymous."
-3. Remove on request within 7 days, by over-the-air update.
+3. Remove on request within 7 days, in a new Play build (store builds have no over-the-air updates). If no release is due, make a small one for the removal.
 4. Before each release, glance over the handles again. A handle can change hands or meaning.
 
 ---
@@ -198,7 +198,7 @@ Reply to every tester within 72 hours, even if it's just "Got it, thanks". This 
 - Every fix goes in What's New, written as general benefits, in the app's existing tone.
 - Testers who reported something already see "Things you reported were updated" in Help.
 - Email the reporter "Fixed, thanks", plus a short BCC'd "Beta notes" email every two weeks.
-- JavaScript-only fixes reach the closed-test build by over-the-air update. Changes to native code need a new build uploaded to the closed-test track.
+- Every fix, JavaScript or native, needs a new build uploaded to the closed-test track: store builds have over-the-air updates turned off (`docs/mobile/SECURITY_GATES.md` Gate 1).
 
 ---
 

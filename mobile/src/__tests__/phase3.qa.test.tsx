@@ -1108,7 +1108,7 @@ describe('Review fixes on the real screens', () => {
       }));
     });
     mount(<You />);
-    expect(allText()).not.toMatch(/Questions to revisit/);
-    expect(spoken().some((l) => l === 'Spaced review, all caught up')).toBe(true);
+    expect(allText()).not.toMatch(/Misses and unsure answers come back here/);
+    expect(spoken().some((l) => l === 'Questions to revisit, all caught up')).toBe(true);
   });
 });

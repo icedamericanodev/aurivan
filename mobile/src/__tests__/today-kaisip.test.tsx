@@ -110,7 +110,7 @@ const seedAnswers = (n: number, right: number) => {
     const ok = i < right;
     answers[q.id] = { attempts: 1, correctCount: ok ? 1 : 0, lastCorrect: ok, lastAt: NOW.getTime() - 86_400_000 };
   });
-  // 20 review cards due an hour ago: the live queue the "Spaced review" line counts.
+  // 20 review cards due an hour ago: the live queue the "Questions to revisit" line counts.
   const review: Record<string, { box: number; dueAt: number; lastSeen: number; reps: number }> = {};
   for (const q of ALL.slice(0, 20)) review[q.id] = { box: 1, dueAt: NOW.getTime() - 3_600_000, lastSeen: NOW.getTime() - 2 * 86_400_000, reps: 1 };
   act(() => {
@@ -190,9 +190,9 @@ describe('the KaiSip mark and lockup', () => {
 describe('planCheckLabel: the plan as checklist lines, in the plan’s own words', () => {
   it('names each item with its real size', () => {
     expect(planCheckLabel(WARM)).toBe('Warm-up · 5 questions');
-    expect(planCheckLabel(REVIEW, 20)).toBe('Spaced review · 20 due');
-    expect(planCheckLabel({ kind: 'review', count: 8, due: 56 }, 56)).toBe('Spaced review · 8 of 56 due');
-    expect(planCheckLabel(REVIEW, 0)).toBe('Spaced review · all caught up');
+    expect(planCheckLabel(REVIEW, 20)).toBe('Questions to revisit · 20 due');
+    expect(planCheckLabel({ kind: 'review', count: 8, due: 56 }, 56)).toBe('Questions to revisit · 8 of 56 due');
+    expect(planCheckLabel(REVIEW, 0)).toBe('Questions to revisit · all caught up');
     expect(planCheckLabel(LESSON)).toBe('Lesson · Business impact analysis');
     expect(planCheckLabel({ kind: 'practice', count: 20, label: '20 questions · IS Audit' })).toBe('Practice: IS Audit · 20 questions');
     // A plan saved before 1.24 still says "Starting check": the learner reads the plain words now.
@@ -263,7 +263,7 @@ describe('Today, top to bottom', () => {
     const list = byTestID('plan-checklist')[0];
     const lines = list.findAll((n) => typeof n.type === 'string' && n.props.accessible === true).map((n) => n.props.accessibilityLabel as string);
     // Mobile 1.24: the item you are on is the title (with its detail under it), not also the first row.
-    expect(lines).toEqual(['Spaced review · 20 due, later', 'Lesson · Business impact analysis, later']);
+    expect(lines).toEqual(['Questions to revisit · 20 due, later', 'Lesson · Business impact analysis, later']);
     expect(allText()).toContain('5 questions');
     // The title is the current item's own, with no count in it.
     expect(root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === 'Warm-up').length + root().findAll((n) => n.props.accessibilityRole === 'header' && /^(Warm-up|Optional warm-up)/.test(textOf(n))).length).toBeGreaterThan(0);
@@ -283,7 +283,7 @@ describe('Today, top to bottom', () => {
     expect(iconNames(lines[0])).toContain('Check');
     expect(iconNames(lines[1])).not.toContain('Check');
     // The current item (the review) is the panel's title, said once.
-    const heading = root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === 'Spaced review');
+    const heading = root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === 'Questions to revisit');
     expect(heading.length).toBeGreaterThan(0);
   });
 

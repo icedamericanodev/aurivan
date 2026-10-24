@@ -652,15 +652,15 @@ describe('J5 quick fixes', () => {
   /** The review count each screen shows. */
   const todayReview = () => {
     mount(<Today />);
-    // Mobile 1.21: the panel says "Spaced review" / "16 of 55 due · most overdue first" (no count in the title).
+    // Mobile 1.21: the panel says "Questions to revisit" / "16 of 55 due · most overdue first" (no count in the title).
     const m = allText().match(/Review (\d+) due|\d+ of (\d+) due|(\d+) questions? to revisit/);
     unmount();
     return m ? Number(m[1] ?? m[2] ?? m[3]) : null;
   };
   const trailDue = (Screen: () => React.ReactElement | null) => {
     mount(<Screen />);
-    const row = root().find((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Spaced review, ') && typeof n.props.onPress === 'function');
-    const m = (row.props.accessibilityLabel as string).match(/Spaced review, (\d+) due/);
+    const row = root().find((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Questions to revisit, ') && typeof n.props.onPress === 'function');
+    const m = (row.props.accessibilityLabel as string).match(/Questions to revisit, (\d+) due/);
     unmount();
     return m ? Number(m[1]) : null;
   };

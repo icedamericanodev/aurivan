@@ -405,7 +405,7 @@ describe('Timed practice (Settings default on) reaches every non-mock way in', (
     const starts: [string, () => unknown][] = [
       ['Today: practice', () => runPlanItem({ kind: 'practice', count: 5, label: '5 questions' }, 'cisa')],
       ['Today: review', () => runPlanItem({ kind: 'review', count: 1 }, 'cisa')],
-      ['Spaced review', () => startReview('cisa')],
+      ['Questions to revisit', () => startReview('cisa')],
       ['Practice this concept', () => startFromIds('cisa', topicQuestionIds(t).slice(0, 3), 'Concept')],
       ['Practice this topic', () => startFromIds('cisa', interleaveTopic(t.subtopics.map((s) => s.questionIds), createRng(1)), t.name)],
       ['Saved', () => startFromIds('cisa', [bank[2].id], 'Saved questions')],

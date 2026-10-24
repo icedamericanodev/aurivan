@@ -16,7 +16,8 @@ import { getAllQuestions } from '../content/loader';
 import { noteSubtopics } from '../content/notes';
 import { fitForBackup, type BackupProgress } from '../engine/backup';
 import { stableStringify } from '../engine/syncMerge';
-import { bumpStreak } from '../engine/streak';
+import { bumpStreak, dayKey } from '../engine/streak';
+import { addDays, examDateLabel } from '../engine/examDay';
 import {
   mergeWebProgress,
   parseWebText,
@@ -26,8 +27,12 @@ import {
   WEB_IMPORT_ERROR_COPY,
   WEB_MAX_BYTES,
   WEB_MAX_PROFILES,
+  WEB_EXAM_DATE_MAX_DAYS,
   WEB_NOT_IN_FILE,
+  WEB_NOT_IN_FILE_DATED,
+  readWebExamDate,
   webAddLines,
+  webNotInFile,
   webAddSummary,
   WebImportError,
   webSkipLines,
@@ -507,5 +512,76 @@ describe('hostile files (review 1.42)', () => {
     expect(p.name).toBe('Maya');
     expect(p.cert.qNotes?.d1_010.text).toBe('Charter first');
     expect(p.cert.qNotes?.d1_008).toBeUndefined();
+  });
+});
+
+describe('the exam date (mobile 1.42.1, website v12.34.1)', () => {
+  const today = dayKey(NOW);
+  const dated = (examDate: unknown) => ({ ...file(), examDate });
+
+  it('reads a sensible date: a real day, at most a day in the past, at most about 3 years ahead', () => {
+    expect(readWebExamDate({ examDate: addDays(today, 60) }, NOW)).toBe(addDays(today, 60));
+    expect(readWebExamDate({ examDate: today }, NOW)).toBe(today);
+    expect(readWebExamDate({ examDate: addDays(today, -1) }, NOW)).toBe(addDays(today, -1)); // time zones
+    expect(readWebExamDate({ examDate: addDays(today, WEB_EXAM_DATE_MAX_DAYS) }, NOW)).toBe(addDays(today, WEB_EXAM_DATE_MAX_DAYS));
+    expect(readWebExamDate({ examDate: addDays(today, -2) }, NOW)).toBeUndefined();
+    expect(readWebExamDate({ examDate: addDays(today, WEB_EXAM_DATE_MAX_DAYS + 1) }, NOW)).toBeUndefined();
+  });
+
+  it('a malformed date is ignored, never an error: the rest of the file still reads', () => {
+    for (const bad of ['2027-02-30', '2027-3-1', '15/03/2027', '2027-03-15T00:00:00Z', '', 20270315, null, { y: 2027 }, ['2027-03-15']]) {
+      expect(readWebExamDate({ examDate: bad }, NOW)).toBeUndefined();
+      const [p] = read(dated(bad));
+      expect(p.examDate).toBeUndefined();
+      expect(Object.keys(p.cert.answers ?? {})).toHaveLength(10);
+      const s = summaryOf(emptyPhone(), p);
+      expect(s.examDate).toBeUndefined();
+      expect(webAddLines(s).some((l) => /exam date/i.test(l))).toBe(false);
+    }
+  });
+
+  it('an older file (no date) reads as before and still says the date is not in it', () => {
+    const [p] = read(fixture);
+    expect(p.examDate).toBeUndefined();
+    expect(readWebExamDate(fixture, NOW)).toBeUndefined();
+    expect(webNotInFile(p)).toBe(WEB_NOT_IN_FILE);
+  });
+
+  it('with an empty phone: the date is added and named in the summary', () => {
+    const date = addDays(today, 90);
+    const [p] = read(dated(date));
+    expect(p.examDate).toBe(date);
+    const s = summaryOf(emptyPhone(), p);
+    expect(s).toMatchObject({ examDate: date, nothingNew: false });
+    expect(s.examDateKept).toBeUndefined();
+    expect(webAddLines(s)).toContain(`Your exam date: ${examDateLabel(date)}`);
+    expect(webNotInFile(p)).toBe(WEB_NOT_IN_FILE_DATED);
+    expect(WEB_NOT_IN_FILE_DATED).not.toMatch(/exam date/);
+  });
+
+  it('with a phone that has its own date: the phone wins, and the sheet says so', () => {
+    const [p] = read(dated(addDays(today, 90)));
+    const s = webAddSummary(emptyPhone(), mergeWebProgress(emptyPhone(), p, 'cisa', CTX), p, 'cisa', NOW, addDays(today, 30));
+    expect(s.examDate).toBeUndefined();
+    expect(s.examDateKept).toBe(true);
+    expect(webAddLines(s).some((l) => /exam date/i.test(l))).toBe(false);
+    expect(webSkipLines(s)).toContain('This phone already has an exam date, so it stays as it is.');
+    // The same date on both: nothing to add, nothing to explain.
+    const same = webAddSummary(emptyPhone(), mergeWebProgress(emptyPhone(), p, 'cisa', CTX), p, 'cisa', NOW, addDays(today, 90));
+    expect(same.examDate).toBeUndefined();
+    expect(same.examDateKept).toBeUndefined();
+  });
+
+  it('a file with several profiles gives every one the file’s date', () => {
+    const date = addDays(today, 120);
+    const out = read({ cisaMindsetExport: true, version: 1, examDate: date, profiles: { a: fixture.profile, b: fixture.profile } });
+    expect(out.map((p) => p.examDate)).toEqual([date, date]);
+  });
+
+  it('a date alone is something new: after everything else is on the phone, the date still counts', () => {
+    const [p] = read(dated(addDays(today, 90)));
+    const merged = mergeWebProgress(emptyPhone(), p, 'cisa', CTX);
+    expect(webAddSummary(merged, mergeWebProgress(merged, p, 'cisa', CTX), p, 'cisa', NOW).nothingNew).toBe(false);
+    expect(webAddSummary(merged, mergeWebProgress(merged, p, 'cisa', CTX), p, 'cisa', NOW, addDays(today, 90)).nothingNew).toBe(true);
   });
 });

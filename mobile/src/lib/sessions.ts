@@ -189,11 +189,11 @@ export function startGuidedStep(certId: string, topicId: string, domainId?: stri
   });
 }
 
-/** The Spaced review row's subtitle, the same on Practice and You. */
+/** The Questions to revisit row's subtitle, the same on Practice and You. */
 export function reviewSubtitle(dueCount: number): string {
   if (!dueCount) return 'All caught up';
-  // "to revisit", not "missed": the queue also holds lucky guesses and shaky right answers.
-  return dueCount > REVIEW_SESSION_CAP ? REVIEW_CAP_LINE : 'Questions to revisit';
+  // Not just "misses": the queue also holds lucky guesses and shaky right answers.
+  return dueCount > REVIEW_SESSION_CAP ? REVIEW_CAP_LINE : 'Misses and unsure answers come back here';
 }
 
 /** Due reviews, most overdue first: at most one session's worth (REVIEW_SESSION_CAP, 20). */
@@ -201,7 +201,7 @@ export function startReview(certId: string, limit = REVIEW_SESSION_CAP) {
   const review = selectCert(useProgress.getState(), certId).review;
   // Retired questions are skipped before the cap, so a review is always a full one.
   const ids = dueIds(review, Date.now(), questionExists(certId)).slice(0, limit);
-  return newSession('review', certId, 'Review', ids);
+  return newSession('review', certId, 'Questions to revisit', ids);
 }
 
 /**

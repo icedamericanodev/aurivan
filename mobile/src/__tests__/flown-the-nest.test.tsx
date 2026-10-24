@@ -136,7 +136,7 @@ describe('a 1.17 save with Graduate earned, opened on 1.18', () => {
     press(/^Share Flown the Nest$/);
     const shown = textOf(root().findByType(BadgeShareCard));
     expect(shown).toContain('Flown the Nest');
-    expect(shown).toContain('Moved 50 questions out of spaced review');
+    expect(shown).toContain('Moved 50 questions out of review');
     expect(shown).toContain('Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.');
     expect(textOf(sheet())).not.toMatch(/graduat/i);
   });

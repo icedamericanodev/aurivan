@@ -42,6 +42,14 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.42.1',
+    date: '2026-10-24',
+    improved: [
+      'Spaced review is now called Questions to revisit, the same name as on the KaiSip website, so it is easy to find on both.',
+      'Your exam date now comes along when you add your website progress, if this phone doesn’t have one yet.',
+    ],
+  },
+  {
     version: '1.42.0',
     date: '2026-10-24',
     new: ['Studied on the KaiSip website? Restore from a backup now adds that progress to this phone, and shows what it will add first.'],

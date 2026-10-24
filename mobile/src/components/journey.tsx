@@ -70,9 +70,9 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
       // preview names the habit, not today's count (UX review O5).
       if (when === 'tomorrow' && !item.label) {
         return {
-          title: 'Spaced review',
-          meta: `${aboutMin(mins)} · questions to revisit`,
-          short: more ? `Review · ${item.count} tomorrow` : `Review · ${mins} min`,
+          title: 'Questions to revisit',
+          meta: `${aboutMin(mins)} · your misses come back`,
+          short: more ? `Revisit · ${item.count} tomorrow` : `Revisit · ${mins} min`,
         };
       }
       return {
@@ -80,7 +80,7 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
         // the meta says how much of it today takes.
         title: item.label ?? (queue > 0 ? `Review ${queue} ${REVIEW_UNIT}` : 'Review · all caught up'),
         meta: `${aboutMin(mins)} · ${more ? `${item.count} ${when}, most overdue first` : 'questions to revisit'}`,
-        short: more ? `Spaced review · ${item.count} ${when}` : 'Spaced review',
+        short: more ? `Revisit · ${item.count} ${when}` : `Revisit · ${mins} min`,
       };
     }
     case 'lesson':
@@ -130,8 +130,8 @@ export function heroPracticeTitle(label: string): string {
 
 /**
  * The forest panel's words for the current plan item (mobile 1.21, spec §11
- * "Today"): the TITLE names the activity and never holds a count ("Spaced
- * review", not "Review 55 due"); the counts and the minutes go to the META
+ * "Today"): the TITLE names the activity and never holds a count ("Questions
+ * to revisit", not "Review 55 due"); the counts and the minutes go to the META
  * line. `minutesSaid`: the panel's caption already gives the day's minutes
  * and they are this item's alone, so the meta leaves them out (said once).
  * The rows under the panel keep planText's titles.
@@ -150,9 +150,9 @@ export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boo
       // A labelled review is exam week's ("Light review · 8 questions"). An old save's "Review 20 due" label is a count, so it reads as the plain review.
       if (item.label && !/^Review \d/.test(item.label)) return { title: item.label.split(' · ')[0], meta: join(`${qs(item.count)}, most overdue first`) };
       return {
-        title: 'Spaced review',
+        title: 'Questions to revisit',
         // "16 of 55 due": today's share of the live queue (the same "55 due" as You and Practice).
-        meta: join(queue === 0 ? 'all caught up' : more ? `${item.count} of ${queue} ${REVIEW_UNIT} · most overdue first` : `${qs(queue)} to revisit`),
+        meta: join(queue === 0 ? 'all caught up' : more ? `${item.count} of ${queue} ${REVIEW_UNIT} · most overdue first` : `${qs(queue)} from before`),
       };
     }
     case 'lesson':
@@ -238,7 +238,7 @@ export function PlanLeaves({ done, focused = true, seenKey }: { done: boolean[];
 
 /**
  * One plan item as a checklist line (mobile 1.23, Today): what it is, with its
- * real size. "Warm-up · 5 questions", "Spaced review · 20 due", "Lesson ·
+ * real size. "Warm-up · 5 questions", "Questions to revisit · 20 due", "Lesson ·
  * Business impact analysis". The title never changes the plan's own words;
  * it only puts the count or the length after them.
  */
@@ -251,8 +251,8 @@ export function planCheckLabel(item: PlanItem, due?: number): string {
       if (item.label && !/^Review \d/.test(item.label)) return item.label;
       // A review that takes part of the queue says how much of it TODAY takes ("8 of 56 due", the same
       // queue You and Practice count), not the session's size.
-      if (queue === 0) return 'Spaced review · all caught up';
-      return queue > item.count ? `Spaced review · ${item.count} of ${queue} ${REVIEW_UNIT}` : `Spaced review · ${queue} ${REVIEW_UNIT}`;
+      if (queue === 0) return 'Questions to revisit · all caught up';
+      return queue > item.count ? `Questions to revisit · ${item.count} of ${queue} ${REVIEW_UNIT}` : `Questions to revisit · ${queue} ${REVIEW_UNIT}`;
     }
     case 'lesson':
       return `Lesson · ${item.title}`;

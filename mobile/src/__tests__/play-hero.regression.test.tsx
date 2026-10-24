@@ -186,7 +186,7 @@ describe('Settings gear in the Today and You headers', () => {
 
   it('You shows the review queue with the same word as Today and Practice', () => {
     mount(<You />);
-    const row = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Spaced review'));
+    const row = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Questions to revisit'));
     expect(row.length).toBeGreaterThan(0);
   });
 

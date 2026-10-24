@@ -670,7 +670,7 @@ describe('J5 edge cases', () => {
     expect(storedPlan().items).toEqual([{ kind: 'review', count: 8, due: 300, capped: true }]);
     // The title names the activity; today's share of the queue and the order are the line under it
     // (mobile 1.24), and the minutes are said once (the caption's, this item's alone).
-    expect(allText()).toContain('Spaced review');
+    expect(allText()).toContain('Questions to revisit');
     expect(allText()).toContain('8 of 300 due · most overdue first');
     expect(todayMinutesShown()).toBe(10);
   });

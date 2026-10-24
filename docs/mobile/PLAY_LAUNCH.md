@@ -132,7 +132,8 @@ What exists in the repo:
    - Set the public developer name with no CISA/ISACA. The public email is certprep.support@gmail.com.
 2. **Decide B1.** Reply "Option A" (free, recommended) or "Option B" (pay $199/month, then do SECURITY_GATES Gate 1 steps 2–5 before any store build).
 3. **Recruit 15–20 testers now** (buffer over 12).
-   - Create a Google Group, for example kaisip-testers@googlegroups.com, with "Who can join: anyone with the link". Collect the Gmail address each tester uses in the Play Store on their Android phone.
+   - Use the **Play Console email list**, not a Google Group (owner decision; see `marketing/BETA_PROGRAM.md` §1). A group needs each tester to accept an invite, and missed invites quietly drop the count below 12.
+   - Collect the Gmail address each tester uses in the Play Store on their Android phone (the sign-up Form asks for it).
    - Tell anyone who has the preview APK: Settings → Your data → Save a backup before switching.
 4. **Create the app.**
    - Play Console → All apps → Create app.
@@ -162,10 +163,17 @@ What exists in the repo:
    - Store settings: Category = Education; tags such as Education/Exam prep; email certprep.support@gmail.com; website https://kaisip.com.
 10. **Closed test.** Starting this step starts the clock.
     - Test and release → Testing → Closed testing → Manage track (Alpha) → Countries/regions: add all countries.
-    - Testers: Google Groups → add the group email. Feedback: certprep.support@gmail.com.
+    - Testers: use the Play Console email list.
+      - Copy the Android testers' emails from the sign-up Sheet. Add a helper tab named "Android list" and put this formula in A1 (change the column letters if your Sheet differs: B = email, C = phone type):
+        `=TEXTJOIN(", ", TRUE, FILTER('Form Responses 1'!B2:B, 'Form Responses 1'!C2:C="Android"))`
+      - Copy cell A1 (the comma-separated emails).
+      - Play Console → Test and release → Testing → Closed testing → Testers → Create email list → name it (for example "KaiSip beta") → paste the emails → Save. Tick the list for the track and Save.
+      - Feedback email: certprep.support@gmail.com.
+      - New sign-ups later: paste the new emails into the same list and Save.
+      - Alternative (not the plan): a Google Group added under "Google Groups". Use it only if the email list ever stops being enough.
     - Create new release → "Add from library" → choose the internal build → Save.
     - Publishing overview → Send changes for review. New accounts can wait several days.
-11. **When approved,** copy the opt-in URL from the Testers tab and send it to everyone. Each tester opens it while signed in with the same Google account, taps "Become a tester", then installs from the Play link.
+11. **When approved,** copy the opt-in URL from the Testers tab and send it by email to everyone on the list, with all the addresses in **BCC** (never To or CC, so testers don't see each other's emails). Each tester opens it while signed in with the same Google account, taps "Become a tester", then installs from the Play link.
     - Check the opted-in count and make sure 12 or more stay opted in.
     - Tell testers not to leave the program for 14 days.
 

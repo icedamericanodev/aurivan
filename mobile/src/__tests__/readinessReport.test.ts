@@ -321,7 +321,7 @@ describe('Your path: the six steps', () => {
     expect(PATH_STEPS.map((s) => s.line)).toEqual([
       'Your first questions: a short look at where you are.',
       'Lessons for the domains you need.',
-      'Practice and spaced review.',
+      'Practice, then revisit what you missed.',
       'Mocks at exam pace.',
       'Light review, one mock a week.',
       'Rest, a checklist, light review.',

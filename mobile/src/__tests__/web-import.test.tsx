@@ -20,6 +20,8 @@ import Onboarding from '../app/onboarding';
 import { YourData } from '../components/yourData';
 import { getAllQuestions } from '../content/loader';
 import { fitForBackup } from '../engine/backup';
+import { addDays, examDateLabel } from '../engine/examDay';
+import { dayKey } from '../engine/streak';
 import { stableStringify } from '../engine/syncMerge';
 import { WEB_IMPORT_ERROR_COPY } from '../engine/webImport';
 import { checkBackupText, currentBackup } from '../lib/backup';
@@ -375,5 +377,85 @@ describe('the welcome screen with a website file (review 1.42)', () => {
     expect(useSettings.getState().onboarded).toBe(true);
     expect(router.replace).toHaveBeenCalledWith('/home');
     expect(router.replace).not.toHaveBeenCalledWith('/session');
+  });
+});
+
+describe('the exam date comes along (mobile 1.42.1, website v12.34.1)', () => {
+  const inDays = (n: number) => addDays(dayKey(Date.now()), n);
+  const withDate = (examDate: unknown) => JSON.stringify({ ...fixture, examDate });
+  const render = () =>
+    act(() => {
+      r = create(<YourData />);
+    });
+
+  it('a file with a date and a phone with none: the sheet names it, and adding sets it', async () => {
+    const date = inDays(100);
+    expect(useSettings.getState().examDates.cisa).toBeUndefined();
+    render();
+    pickFile(withDate(date));
+    await press('Restore from a backup');
+    const t = allText();
+    expect(t).toContain(`Your exam date: ${examDateLabel(date)}`);
+    expect(t).toContain('This file doesn’t include your plant or settings');
+    expect(t).not.toMatch(/doesn’t include your exam date/);
+    await press('Add to my progress');
+    expect(allText()).toContain('Added');
+    expect(useSettings.getState().examDates.cisa).toBe(date);
+    expect(Object.keys(selectCert(useProgress.getState(), 'cisa').answers)).toHaveLength(10);
+  });
+
+  it('a file with a date and a phone that has one: the phone’s date stays, and the sheet says so', async () => {
+    useSettings.getState().completeOnboarding('cisa', inDays(30));
+    render();
+    pickFile(withDate(inDays(100)));
+    await press('Restore from a backup');
+    const t = allText();
+    expect(t).not.toMatch(/Your exam date:/);
+    expect(t).toContain('This phone already has an exam date, so it stays as it is.');
+    await press('Add to my progress');
+    expect(useSettings.getState().examDates.cisa).toBe(inDays(30));
+  });
+
+  it('the phone’s date wins even when it is set after the sheet opened (checked again when adding)', async () => {
+    const ready = checkAnyText(withDate(inDays(100)));
+    if (ready.kind !== 'web') throw new Error('not web');
+    expect(ready.summaries[0].examDate).toBe(inDays(100));
+    act(() => {
+      useSettings.getState().setExamDate('cisa', inDays(45));
+    });
+    await importWebProgress(ready.profiles[0]);
+    expect(useSettings.getState().examDates.cisa).toBe(inDays(45));
+  });
+
+  it('a malformed or out-of-range date is ignored: the progress is still added, no date is set', async () => {
+    for (const bad of ['2027-02-30', 'next spring', inDays(-5), inDays(5 * 365)]) {
+      useSettings.setState({ ...useSettings.getInitialState(), onboarded: true, theme: 'light' });
+      useProgress.setState(useProgress.getInitialState());
+      useBackup.setState({ lastBackupAt: null, undo: null });
+      const ready = checkAnyText(withDate(bad));
+      if (ready.kind !== 'web') throw new Error(`not web: ${String(bad)}`);
+      expect(ready.summaries[0].examDate).toBeUndefined();
+      const out = await importWebProgress(ready.profiles[0]);
+      expect(out.kind).toBe('ok');
+      expect(useSettings.getState().examDates.cisa).toBeUndefined();
+      expect(Object.keys(selectCert(useProgress.getState(), 'cisa').answers)).toHaveLength(10);
+    }
+  });
+
+  it('on the welcome screen the date step starts on the file’s date, and finishing keeps it', async () => {
+    const date = inDays(100);
+    useSettings.setState({ ...useSettings.getInitialState(), onboarded: false, theme: 'light' });
+    act(() => {
+      r = create(<Onboarding />);
+    });
+    pickFile(withDate(date));
+    await press('Restore from a backup');
+    expect(allText()).toContain('Next, you choose your starting point and daily time, and check your exam date.');
+    await press('Add to my progress');
+    expect(useSettings.getState().examDates.cisa).toBe(date);
+    await press('Skip this question');
+    await press('Start my first questions');
+    expect(useSettings.getState().onboarded).toBe(true);
+    expect(useSettings.getState().examDates.cisa).toBe(date);
   });
 });

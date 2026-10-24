@@ -182,7 +182,7 @@ describe('sharing a badge', () => {
     expect(textOf(sheet())).not.toMatch(/graduat/i);
     press(/^Share Flown the Nest$/);
     const t = textOf(sheet());
-    expect(t).toContain('Moved 50 questions out of spaced review');
+    expect(t).toContain('Moved 50 questions out of review');
     expect(t).toContain('KaiSip study badge · Earned 3 Nov 2026');
     expect(t).toContain('Studying for the CISA® exam');
     expect(t).toContain('Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.');

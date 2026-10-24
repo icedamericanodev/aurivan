@@ -916,7 +916,7 @@ export default function SessionScreen() {
                 <TrustLine
                   certId={active.certId}
                   reference={q.reference}
-                  target={questionTarget(active.certId, q, sessionWhere(active.mode === 'review' ? 'Spaced review' : 'Practice', active.title), {
+                  target={questionTarget(active.certId, q, sessionWhere(active.mode === 'review' ? 'Questions to revisit' : 'Practice', active.title), {
                     perm,
                     pickedDisplay: response.display,
                   })}

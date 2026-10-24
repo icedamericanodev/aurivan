@@ -223,9 +223,9 @@ describe('Today: the day in minutes', () => {
 describe('the plan items in minutes (C1, C7)', () => {
   it('a review of part of the queue says how many today, and "tomorrow" in the Tomorrow preview', () => {
     const item = { kind: 'review' as const, count: 8, due: 55 };
-    expect(planText(item, 55)).toEqual({ title: 'Review 55 due', meta: 'About 10 min · 8 today, most overdue first', short: 'Spaced review · 8 today' });
+    expect(planText(item, 55)).toEqual({ title: 'Review 55 due', meta: 'About 10 min · 8 today, most overdue first', short: 'Revisit · 8 today' });
     // UX review O5: tomorrow's queue isn't known yet, so the preview names the habit.
-    expect(planText(item, undefined, 'tomorrow')).toMatchObject({ title: 'Spaced review', short: 'Review · 8 tomorrow' });
+    expect(planText(item, undefined, 'tomorrow')).toMatchObject({ title: 'Questions to revisit', short: 'Revisit · 8 tomorrow' });
   });
   it('one minutes style on every kind of item', () => {
     expect(planText({ kind: 'lesson', lessonId: 'x', title: 'X' }).meta).toBe('Lesson · 5 min');

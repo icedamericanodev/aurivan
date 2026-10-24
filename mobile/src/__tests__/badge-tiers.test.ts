@@ -349,7 +349,7 @@ describe('copy for the new marks', () => {
     }
     expect(badgeShareable({ status: 'earned', set: 'moments', skill: 'Came back' })).toBe(false);
     expect(badgeShareable(find(marks, 'fresh-start'))).toBe(false);
-    expect(find(marks, 'graduate').skill).toBe('Moved 50 questions out of spaced review');
+    expect(find(marks, 'graduate').skill).toBe('Moved 50 questions out of review');
     // PR #51 review (honesty): Flown the Nest's words claim only what the rule counts
     // (a right answer from the last box), never a time gap the count does not check.
     expect(find(marks, 'graduate').unlock).toContain('box after box');

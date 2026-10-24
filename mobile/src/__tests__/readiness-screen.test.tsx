@@ -172,7 +172,7 @@ describe('the readiness report: every section, every state', () => {
     // The six steps, the current one marked, with why; no "Step N of 6" (UX review P1, O8).
     expect(t).toContain('Now: Make it stick');
     expect(t).not.toMatch(/Step \d of 6/);
-    expect(labelled(/^3\. Make it stick\. Practice and spaced review\. You are here\. Until every domain is steady, practice leads\.$/)).toHaveLength(1);
+    expect(labelled(/^3\. Make it stick\. Practice, then revisit what you missed\. You are here\. Until every domain is steady, practice leads\.$/)).toHaveLength(1);
     expect(labelled(/You are here\./)).toHaveLength(1);
     expect(t).toContain('The plan moves between these as you go.');
     // The newest 5 mocks, folded, then "Show all 8 mocks" (UX review P8).

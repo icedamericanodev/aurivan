@@ -117,6 +117,12 @@ describe('copy consistency: the old words stay gone', () => {
     expect(hits(/counts? half toward readiness/i)).toEqual([]);
   });
 
+  it('one name for the review queue on both surfaces: "Questions to revisit", never "Spaced review" (mobile 1.42.1)', () => {
+    // The website calls it "Questions to revisit". What's New keeps its history: an old entry may name the old word.
+    const history = (f: string) => f === join('content', 'support', 'index.ts');
+    expect(hits(/spaced review/i, { in: (f) => !history(f) })).toEqual([]);
+  });
+
   it('no bare "s" for seconds in a pace ("96 s a question")', () => {
     expect(hits(/(\d|…) s a question| s a question/)).toEqual([]);
   });

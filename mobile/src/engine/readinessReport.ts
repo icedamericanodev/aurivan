@@ -364,7 +364,7 @@ export function chartScale(values: readonly number[], minSpan = 20): { lo: numbe
 export const PATH_STEPS: readonly { stage: Exclude<Stage, 'afterExam'>; line: string }[] = [
   { stage: 'diagnose', line: 'Your first questions: a short look at where you are.' },
   { stage: 'learn', line: 'Lessons for the domains you need.' },
-  { stage: 'practice', line: 'Practice and spaced review.' },
+  { stage: 'practice', line: 'Practice, then revisit what you missed.' },
   { stage: 'mock', line: 'Mocks at exam pace.' },
   { stage: 'ready', line: 'Light review, one mock a week.' },
   { stage: 'examDay', line: 'Rest, a checklist, light review.' },

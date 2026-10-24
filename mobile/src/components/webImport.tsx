@@ -18,7 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { examDateLabel } from '../engine/examDay';
 import { dayKey } from '../engine/streak';
 import { UNDO_DAYS } from '../engine/backup';
-import { WEB_NOT_IN_FILE, webAddLines, webSkipLines } from '../engine/webImport';
+import { webAddLines, webNotInFile, webSkipLines } from '../engine/webImport';
 import type { WebReady } from '../lib/webImport';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -51,6 +51,7 @@ export function WebImportPreview({
   const [picked, setPicked] = useState<{ file: WebReady | null; index: number }>({ file: null, index: 0 });
   const index = picked.file === web ? picked.index : firstNew;
   const summary = web?.summaries[index];
+  const profile = web?.profiles[index];
   const lines = summary ? webAddLines(summary) : [];
   const skips = summary ? webSkipLines(summary) : [];
   const several = (web?.profiles.length ?? 0) > 1;
@@ -101,8 +102,12 @@ export function WebImportPreview({
           {skips.map((line) => (
             <T key={line} v="small" color={c.ink2} style={{ marginTop: space.md }}>{line}</T>
           ))}
-          <T v="small" color={c.ink2} style={{ marginTop: space.md }}>{WEB_NOT_IN_FILE}</T>
-          {onboarding && <T v="small" color={c.ink2} style={{ marginTop: space.sm }}>Next, you choose your starting point, exam date and daily time.</T>}
+          <T v="small" color={c.ink2} style={{ marginTop: space.md }}>{webNotInFile(profile ?? {})}</T>
+          {onboarding && (
+            <T v="small" color={c.ink2} style={{ marginTop: space.sm }}>
+              {summary?.examDate ? 'Next, you choose your starting point and daily time, and check your exam date.' : 'Next, you choose your starting point, exam date and daily time.'}
+            </T>
+          )}
         </ScrollView>
         {/* The actions stay in reach under the scrolling list (UX review). */}
         <View style={{ paddingHorizontal: space.gutter, paddingTop: space.md, paddingBottom: space.md, borderTopWidth: 1, borderColor: c.line, gap: space.sm }}>
