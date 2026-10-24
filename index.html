@@ -5259,6 +5259,11 @@ header.app-header .brand-lockup { height: 28px; }
 .app-cta-badge { display: inline-block; border-radius: var(--r-sm); line-height: 0; margin: 15px 0; } /* Google: clear space = 1/4 of the badge height */
 .app-cta-badge img { display: block; height: 60px; width: auto; }
 .app-cta-ios { font: var(--t-meta); color: var(--text2); margin: 0; }
+/* QR to the Play listing (desktop only). Dark on white in both themes so phone cameras can read it. */
+.app-cta-qr { display: flex; align-items: center; gap: var(--sp-lg); margin: var(--sp-lg) 0 0; }
+.app-cta-qr[hidden] { display: none; }
+.app-cta-qr img { flex: none; width: 148px; height: 148px; background: #fff; border-radius: var(--r-sm); border: 1px solid var(--border); }
+.app-cta-qr figcaption { font: var(--t-meta); color: var(--text2); max-width: 32ch; }
 .app-cta-line { display: none; margin: var(--sp-section) 0 var(--sp-sm); font: var(--t-meta); }
 body[data-app-cta="android"][data-section="today"] .app-cta-line,
 body[data-app-cta="android"][data-section="learn"] .app-cta-line { display: block; }
@@ -6412,6 +6417,10 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
       <a class="tipjar-btn" id="appCtaPlayText" target="_blank" rel="noopener" hidden>Get it on Google Play<span class="sr-only"> (opens in a new tab)</span></a>
       <p class="app-cta-ios" id="appCtaIos" hidden>Coming soon to iPhone.</p>
     </div>
+    <figure class="app-cta-qr" id="appCtaQr" hidden>
+      <img id="appCtaQrImg" alt="QR code that opens KaiSip on Google Play" width="148" height="148" decoding="async">
+      <figcaption>On a computer? Scan with your Android phone's camera to open KaiSip on Google Play.</figcaption>
+    </figure>
   </section>
 </div>
 
@@ -17811,6 +17820,17 @@ function appCtaInit() {
     img.addEventListener('load', function () { badgeLink.hidden = false; textLink.hidden = true; });
     img.addEventListener('error', function () { badgeLink.hidden = true; textLink.hidden = false; });
     img.setAttribute('src', 'assets/google-play-badge.png');
+  }
+  // Computers only: a QR code that opens the Play listing on the visitor's
+  // phone. assets/kaisip-play-qr.svg is a fixed image that encodes
+  //   https://play.google.com/store/apps/details?id=com.kaisip.app&referrer=utm_source%3Dkaisip_web%26utm_medium%3Dqr
+  // (made with segno, error level M; decoded and checked 24 Oct 2026), so it
+  // shows only when playUrl points at that same listing.
+  var qr = el('appCtaQr');
+  qr.hidden = true;
+  if (live && plat === 'desktop' && /[?&]id=com\.kaisip\.app(?:[&#]|$)/.test(href)) {
+    el('appCtaQrImg').setAttribute('src', 'assets/kaisip-play-qr.svg');
+    qr.hidden = false;
   }
   card.hidden = false;
   // Today and Learn: one quiet line, Android phones only (tablets keep About).
