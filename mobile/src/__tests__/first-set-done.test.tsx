@@ -23,6 +23,7 @@ import { ANNOUNCE_DELAY, flushSayLaterForTest, moveFocus } from '../lib/a11y';
 import { startFirstSet, startOfTomorrow } from '../lib/firstSet';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
+import { plantNew } from '../engine/plant';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 
@@ -187,14 +188,44 @@ describe('the closing screen', () => {
     expect(t).not.toMatch(/Spaced review/);
   });
 
-  it('plants an oak seed on its own, and offers a different plant', async () => {
+  it('mobile 1.41: OFFERS a plant instead of planting one; "Plant a seed" plants an oak, then offers a different plant', async () => {
     finishFirstSet(3);
-    expect(selectCert(useProgress.getState(), CERT).plant).toBeUndefined();
     mount(<Results />);
+    // Nothing is planted for the learner.
+    expect(selectCert(useProgress.getState(), CERT).plant).toBeUndefined();
+    expect(allText()).toContain('Want a plant that grows as you learn? It’s optional.');
+    await press(/^Plant a seed$/);
     expect(selectCert(useProgress.getState(), CERT).plant?.species).toBe('oak');
     expect(allText()).toMatch(/is planted\. It grows as you learn\./);
     await press(/^Choose a different plant$/);
     expect(router.push).toHaveBeenCalledWith({ pathname: '/plant-pick', params: { mode: 'species' } });
+  });
+
+  it('mobile 1.41: "Not now" plants nothing, says where planting lives, and is never offered here again', async () => {
+    finishFirstSet(3);
+    mount(<Results />);
+    await press(/^Not now, no plant$/);
+    expect(selectCert(useProgress.getState(), CERT).plant).toBeUndefined();
+    expect(useSeen.getState().plantOffer).toBe('later');
+    expect(allText()).toContain('No plant for now. You can plant one any time from You.');
+    expect(pressable(/^Plant a seed$/)).toHaveLength(0);
+    act(() => {
+      r?.unmount();
+    });
+    mount(<Results />);
+    expect(allText()).not.toMatch(/Want a plant|No plant for now/);
+  });
+
+  it('mobile 1.41: a learner who already has a plant keeps it exactly as it is, and is not asked', () => {
+    finishFirstSet(3);
+    act(() => {
+      useProgress.getState().updatePlant(CERT, () => plantNew('oak', 'Kai', Date.now() - 86_400_000));
+    });
+    const before = selectCert(useProgress.getState(), CERT).plant;
+    mount(<Results />);
+    expect(selectCert(useProgress.getState(), CERT).plant).toBe(before);
+    expect(allText()).not.toContain('Want a plant');
+    expect(allText()).toMatch(/Kai is planted/);
   });
 
   it('a learner who turned plants off gets no seed and no plant words', () => {
@@ -387,10 +418,10 @@ describe('light, dark and 200% text', () => {
     finishFirstSet(3);
     mount(<Results />);
     const t = allText();
-    for (const line of ['3 of 5 right', 'The 2 you missed come back then.', 'Done for today', 'Do 5 more', 'Choose a different plant']) expect(t).toContain(line);
+    for (const line of ['3 of 5 right', 'The 2 you missed come back then.', 'Done for today', 'Do 5 more', 'Plant a seed']) expect(t).toContain(line);
     // Nothing is clipped by a line cap, and every pressable has a spoken name.
     const names = new Set(pressable(/./).map((p) => String(p.props.accessibilityLabel)));
-    for (const name of ['Done for today', 'Do 5 more', 'Choose a different plant', 'Not now']) expect(names).toContain(name);
+    for (const name of ['Done for today', 'Do 5 more', 'Plant a seed', 'Not now, no plant', 'Not now']) expect(names).toContain(name);
     expect([...names].some((n) => /^Remind me tomorrow at /.test(n))).toBe(true);
     expect([...names].some((n) => /^Reminder time, /.test(n))).toBe(true);
     const capped = root().findAll((n) => typeof n.type === 'string' && n.props.numberOfLines !== undefined);

@@ -96,13 +96,14 @@ export function changeFit(certId: string, fit: Parameters<ReturnType<typeof useS
 
 export function logActivity(certId: string, a: Activity) {
   ensureTodayPlan(certId);
-  if (useProgress.getState().logActivity(certId, a)) {
-    haptic.light();
-    // The plan was just cleared: re-plan the reminders now, so today's is skipped even if the learner
-    // closes the app on Results without seeing Today (refreshReminders does nothing when they are off).
-    const plan = useProgress.getState().days[certId];
-    if (plan && certId === useSettings.getState().activeCertId && planComplete(plan)) refreshReminders().catch(() => {});
-  }
+  const ticked = useProgress.getState().logActivity(certId, a);
+  if (ticked) haptic.light();
+  // Re-plan the reminders when the plan was just cleared (today's is skipped even if the learner closes
+  // the app on Results without seeing Today), and, since 1.41, after any finished session: the next
+  // reminder names the reviews waiting, and a session changes them. Nothing happens when reminders are off.
+  const plan = useProgress.getState().days[certId];
+  const cleared = ticked && plan && planComplete(plan);
+  if (certId === useSettings.getState().activeCertId && (cleared || a.kind === 'session')) refreshReminders().catch(() => {});
 }
 
 // The lesson's own length (mobile 1.15: the same minutes the plan and Learn show).

@@ -26,6 +26,15 @@
  *   `newLearner` (onboarded on 1.24+) and `turnedOff` (turned reminders off
  *   in Settings) decide who may get the second chance (engine/firstRun.ts).
  *
+ * - mobile 1.41 (all optional, added beside the old fields):
+ *   - `tester`: the "I'm a beta tester" switch in Help and the Tester question
+ *     card's answers (engine/betaTester.ts). Kept on this phone only: never in
+ *     a backup, an email or a sync.
+ *   - `nameAsk`: 'due' for a learner onboarded on 1.41+ (onboarding no longer
+ *     asks for a name), 'shown' once Today has asked (once ever).
+ *   - `plantOffer`: 'later' when the learner chose "Not now" on the first-set
+ *     screen's plant offer, so it is never offered there again.
+ *
  * Presentation only: it holds no answers, nothing a backup needs, and losing
  * it only means one number counts up again. So it is NOT in backups. A reset
  * leaves it alone (a value that went down just shows); a restore forgets the
@@ -34,6 +43,7 @@
  */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import type { TesterState } from '../engine/betaTester';
 import type { AskAnswer } from '../engine/firstRun';
 import { admitProud, PROUD_KEEP_DAYS, type ProudLog, type ProudOccasion } from '../engine/proud';
 import { DAY_MS } from '../engine/srs';
@@ -72,6 +82,15 @@ interface SeenState {
    * `turnedOff`: turned reminders off in Settings (never asked again).
    */
   reminderAsk: { first?: AskAnswer; second?: boolean; newLearner?: boolean; turnedOff?: boolean };
+  /** Mobile 1.41: the beta tester switch and its card (engine/betaTester.ts). Unset = off. */
+  tester?: TesterState;
+  /** Mobile 1.41: the name ask on Today ('due' after a 1.41+ onboarding, 'shown' once asked). */
+  nameAsk?: 'due' | 'shown';
+  /** Mobile 1.41: "Not now" on the first-set screen's plant offer. */
+  plantOffer?: 'later';
+  setTester: (state: TesterState) => void;
+  setNameAsk: (v: 'due' | 'shown') => void;
+  setPlantOffer: (v: 'later') => void;
   see: (key: string, values: number[]) => void;
   played: (kind: string) => void;
   /** Marks `key`'s first view of the day as used (false: it already was today). */
@@ -142,6 +161,10 @@ export const useSeen = create<SeenState>()(
       reactions: {},
       proud: {},
       reminderAsk: {},
+      setTester: (tester) => set({ tester }),
+      // 'shown' is final: a later onboarding (a restore on a fresh phone) never asks again.
+      setNameAsk: (v) => set((s) => (s.nameAsk === 'shown' || s.nameAsk === v ? s : { nameAsk: v })),
+      setPlantOffer: (plantOffer) => set({ plantOffer }),
       noteReminderAsk: (which, answer) =>
         set((s) => ({ reminderAsk: which === 'first' ? { ...s.reminderAsk, first: answer } : { ...s.reminderAsk, second: true } })),
       noteReminderFlag: (flag) => set((s) => (s.reminderAsk?.[flag] ? s : { reminderAsk: { ...s.reminderAsk, [flag]: true } })),

@@ -485,7 +485,7 @@ export default function Settings() {
       {/* Cloud builds only: Settings → Feedback board (Your activity, Blocked learners; Phase 8). */}
       {CLOUD && <BoardSettingsGroup />}
 
-      {/* Backup and restore (Build C): save a file, restore one, undo for 7 days. Free, offline, no account. */}
+      {/* Backup and restore (Build C): save a file, restore one, undo for 7 days. Offline, no account. */}
       <YourData />
 
       {/* Destructive, so set apart from the rows above, with its own line. */}

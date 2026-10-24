@@ -256,3 +256,27 @@ export function biggestGrowth(plan: DayPlan, readiness: Readiness): { domainId: 
   }
   return best;
 }
+
+// ── Mobile 1.41: "Short on time? 5 questions" ────────────────────────────
+/** The short path's size: five questions, about 6 minutes at study pace. */
+export const SHORT_SET_SIZE = 5;
+
+/**
+ * The plan item the short path starts, or -1 when Today should not offer it.
+ * Offered only BEFORE the day's plan has started (nothing ticked, no answers
+ * banked), never on the first-set day (that set is already five questions),
+ * never in exam week (the caller passes `examWeek`), and never when the plan
+ * has no review or practice item (a mock-only day). A plan that is already a
+ * single item of five questions or fewer has nothing shorter to offer.
+ * Its answers bank on this item through logActivity, so they count toward it.
+ */
+export function shortSetItem(plan: DayPlan, opts: { examWeek: boolean }): number {
+  if (opts.examWeek || plan.items.length === 0) return -1;
+  if (plan.done.some(Boolean) || (plan.credit ?? []).some((n) => n > 0)) return -1;
+  if (plan.items.some((it) => it.kind === 'practice' && it.why === 'first')) return -1;
+  const i = plan.items.findIndex((it) => it.kind === 'review' || it.kind === 'practice');
+  if (i < 0) return -1;
+  const item = plan.items[i];
+  if (plan.items.length === 1 && (item.kind === 'review' || item.kind === 'practice') && item.count <= SHORT_SET_SIZE) return -1;
+  return i;
+}

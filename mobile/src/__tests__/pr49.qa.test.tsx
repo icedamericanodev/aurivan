@@ -471,7 +471,6 @@ describe('F. Onboarding’s date step', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
     press('Get started');
-    press('Skip'); // the optional name step (mobile 1.23)
     press('Skip this question'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
     expect(allText()).toContain('When is your exam?');
   };

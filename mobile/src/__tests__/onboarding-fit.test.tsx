@@ -103,10 +103,9 @@ afterEach(() => {
 
 const caption = () => allText().match(/Step \d of \d/)?.[0];
 const continueBtn = () => root().findAll((x) => x.props.label === 'Continue' && x.props.onPress)[0];
-/** Welcome → name step → skip it → "Where are you starting from?". */
+/** Welcome → "Where are you starting from?" (mobile 1.41: no name step any more). */
 const toStartingPoint = () => {
   press(/^Get started$/);
-  press(/^Skip$/); // the optional name step (mobile 1.23)
 };
 
 describe('the welcome screen: literal, names the exam, no metaphors', () => {
@@ -117,8 +116,10 @@ describe('the welcome screen: literal, names the exam, no metaphors', () => {
     const t = allText();
     expect(t).toContain('Think like an IS auditor.');
     expect(t).toContain('CISA exam prep, taught the way the exam thinks.');
+    // Mobile 1.41: the best feature first, in the web welcome's words.
+    expect(t).toContain('Questions that explain every option, the trap included.');
     expect(t).toContain('Your daily plan, built around your exam date.');
-    expect(t).toContain('About 20 min a day.');
+    expect(t).not.toContain('About 20 min a day.');
     expect(t).toContain('Progress shown as a range, never a promise.');
     expect(t).toContain('No account. Everything stays on your phone.');
     expect(t).toMatch(/Not affiliated with or endorsed by ISACA/);
@@ -127,13 +128,14 @@ describe('the welcome screen: literal, names the exam, no metaphors', () => {
     expect(t).not.toContain('Master Modern Risk.');
   });
 
-  it('"Get started" leads to the optional name, and Restore from a backup is still there', () => {
+  it('mobile 1.41: "Get started" leads straight to the starting point (no name step), and Restore from a backup is still there', () => {
     mount(<Onboarding />);
     expect(pressable(/^Restore from a backup$/)).toHaveLength(1);
     // Its hint no longer speaks of the old app.
     expect(pressable(/^Restore from a backup$/)[0].props.accessibilityHint).toBe('Studied on another phone? Pick your backup file to bring your progress here.');
     press(/^Get started$/);
-    expect(allText()).toContain('What should we call you?');
+    expect(allText()).toContain('Where are you starting from?');
+    expect(allText()).not.toContain('What should we call you?');
   });
 });
 
@@ -228,7 +230,7 @@ describe('onboarding: where you start and how long you have', () => {
     expect(useSettings.getState().familiarity).toBeUndefined();
   });
 
-  it('Android back walks 3 → 2 → 1 → 0, keeping the answers', () => {
+  it('Android back walks 2 → 1 → 0 (mobile 1.41: no name step), keeping the answers', () => {
     type Handler = () => boolean | null | undefined;
     const subs: Handler[] = [];
     jest.spyOn(BackHandler, 'addEventListener').mockImplementation((_e, h) => {
@@ -251,12 +253,10 @@ describe('onboarding: where you start and how long you have', () => {
     expect(back()).toBe(true);
     expect(caption()).toBe('Step 1 of 2');
     expect(checkedRadio('Where are you starting from?')).toEqual(['Some IT audit experience, I work in IT, risk or audit, or I’ve studied some of it.']);
-    expect(back()).toBe(true);
-    // The optional name step sits between the welcome and step 1; it has no "Step N of 2".
-    expect(caption()).toBeUndefined();
-    expect(allText()).toContain('What should we call you?');
+    // Mobile 1.41: no name step between step 1 and the welcome.
     expect(back()).toBe(true);
     expect(caption()).toBeUndefined();
+    expect(allText()).not.toContain('What should we call you?');
     expect(allText()).toContain('Get started');
     // On the welcome step, back is the phone's own (the app closes).
     expect(back()).toBe(false);
@@ -283,7 +283,7 @@ describe('200% text and dark mode', () => {
     useSettings.setState({ theme });
     setScale(2);
     mount(<Onboarding />);
-    for (const line of ['Think like an IS auditor.', 'Your daily plan, built around your exam date.', 'About 20 min a day.', 'Progress shown as a range, never a promise.', 'No account. Everything stays on your phone.']) {
+    for (const line of ['Think like an IS auditor.', 'Questions that explain every option, the trap included.', 'Your daily plan, built around your exam date.', 'Progress shown as a range, never a promise.', 'No account. Everything stays on your phone.']) {
       expect(allText()).toContain(line);
     }
     expect(pressable(/^Get started$/)).toHaveLength(1);

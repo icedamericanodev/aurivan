@@ -42,6 +42,20 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.41.0',
+    date: '2026-10-24',
+    new: [
+      'Short on time? Today offers 5 quick questions before you start, and they count toward your plan.',
+      'Beta testers can turn on a short question on some days in Help, answered by email only when you choose.',
+    ],
+    improved: [
+      'Your first question comes sooner: setup is one screen shorter, and you can add your name later.',
+      'A plant is now offered after your first questions instead of planted for you. Plants you have stay as they are.',
+      'Reminders now say what is waiting for you, and the last one says when they pause.',
+      'Send feedback can now say something confused you, and Report a problem can say you couldn’t find something.',
+    ],
+  },
+  {
     version: '1.40.1',
     date: '2026-10-23',
     fixed: ['The Privacy policy and Terms links in Settings now always appear.'],

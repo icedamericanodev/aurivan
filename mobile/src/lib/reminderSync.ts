@@ -10,12 +10,18 @@
  * progress, so any screen can call it with no arguments. It never asks for
  * permission and never throws (a failed schedule is simply tried again at the
  * next open).
+ *
+ * Mobile 1.41: it also counts the reviews waiting at the next reminder's
+ * time, so that reminder can say "The 2 you missed are back". It runs after
+ * every finished session too (lib/activity.ts), so the count stays true.
  */
 import { getCertification } from '../content/certifications';
 import { planComplete } from '../engine/dayPlan';
+import { waitingAt } from '../engine/reminders';
 import { dayKey } from '../engine/streak';
 import { useProgress } from '../store/progress';
 import { dailyMinutesOf, useSettings } from '../store/settings';
+import { questionExists } from './outline';
 import { scheduleReminders } from './reminders';
 
 export function refreshReminders(now = Date.now()): Promise<void> {
@@ -24,10 +30,14 @@ export function refreshReminders(now = Date.now()): Promise<void> {
   // Off stays off: turning reminders off in Settings already cancelled them, and the app's start-up
   // pass clears any leftovers. Nothing to refresh here.
   if (!reminder.enabled) return Promise.resolve();
-  const plan = useProgress.getState().days[activeCertId];
+  const progress = useProgress.getState();
+  const plan = progress.days[activeCertId];
+  // Mobile 1.41: the next reminder names what is waiting then (reviews due by its time).
+  const cp = progress.byCert[activeCertId];
+  const waitingFor = cp ? (at: number) => waitingAt(cp.review, cp.answers, at, questionExists(activeCertId)) : undefined;
   const cleared = Boolean(plan && plan.day === dayKey(now) && planComplete(plan));
   const certName = getCertification(activeCertId)?.name ?? 'your exam';
-  return Promise.resolve(scheduleReminders(reminder, certName, { now, skipToday: cleared, minutes: dailyMinutesOf(settings) })).then(
+  return Promise.resolve(scheduleReminders(reminder, certName, { now, skipToday: cleared, minutes: dailyMinutesOf(settings), waitingFor })).then(
     () => undefined,
     () => undefined,
   );

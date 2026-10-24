@@ -41,8 +41,9 @@ export const PROVENANCE_LINE =
 export const WELCOME_HEADLINE = 'Think like an IS auditor.';
 export const WELCOME_LINE = 'CISA exam prep, taught the way the exam thinks.';
 export const WELCOME_FACTS: readonly string[] = [
+  // Mobile 1.41: the best feature first, in the web welcome's words (pre-beta review #10).
+  'Questions that explain every option, the trap included.',
   'Your daily plan, built around your exam date.',
-  'About 20 min a day.',
   'Progress shown as a range, never a promise.',
   'No account. Everything stays on your phone.',
 ];

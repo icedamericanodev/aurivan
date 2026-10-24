@@ -681,7 +681,9 @@ function FeedbackSheet({
           <NoteField
             value={message}
             onChangeText={setMessage}
-            placeholder={kind === 'idea' ? 'What would help you most?' : 'What would you like to tell us?'}
+            placeholder={
+              kind === 'idea' ? 'What would help you most?' : kind === 'confused' ? 'What confused you, and on which screen?' : 'What would you like to tell us?'
+            }
             accessibilityLabel="Your message"
             maxLength={MAX_NOTE}
           />

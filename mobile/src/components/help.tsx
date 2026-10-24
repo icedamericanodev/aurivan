@@ -30,7 +30,19 @@ import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { CircleQuestionMark, Flag, ICON_STROKE, Inbox, Info, Lightbulb, Mail, Sparkles } from './icons';
 import { useContactFlow, useReportFlow } from './support';
-import { ICON_SIZE, ListRow, Section, T } from './ui';
+import { ICON_SIZE, ListRow, Section, T, ToggleRow } from './ui';
+import { switchTester } from '../engine/betaTester';
+import { dayKey } from '../engine/streak';
+import { sayLater } from '../lib/a11y';
+import { useSeen } from '../store/seen';
+
+/**
+ * Mobile 1.41: the beta tester switch (behavioural review change 3). Off by
+ * default. The public build is this same build, so a switch, not a build flag,
+ * keeps the Tester question card away from everyone who doesn't turn it on.
+ */
+export const TESTER_SWITCH = 'I’m a beta tester';
+export const TESTER_SWITCH_HINT = 'A short question on Today on some days during the test. Turn it off any time.';
 
 /** The footer, in two pieces: the address is selectable on its own. */
 export const HELP_FOOTER_LEAD = 'Write to us any time at';
@@ -54,6 +66,7 @@ export function HelpRows({ certId }: { certId: string }) {
   const { counts, dueItems } = useReports();
   const contact = useContactFlow(certId);
   const report = useReportFlow(certId, { kind: 'app', id: 'help', name: WHERE, where: WHERE });
+  const testerOn = useSeen((s) => Boolean(s.tester?.since));
   const icon = (G: typeof Mail) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
   return (
     <View>
@@ -91,7 +104,7 @@ export function HelpRows({ certId }: { certId: string }) {
       <ListRow
         icon={icon(Lightbulb)}
         title="Suggest an idea"
-        subtitle="Or tell us what works for you"
+        subtitle="Or something that confused you"
         onPress={() => contact.openFeedback('idea', WHERE)}
         last
       />
@@ -99,7 +112,18 @@ export function HelpRows({ certId }: { certId: string }) {
 
       <Section title="Updates" />
       <ListRow icon={icon(Inbox)} title="Your reports" subtitle={reportsSubtitle(counts)} onPress={() => router.push('/reports')} />
-      <ListRow icon={icon(Sparkles)} title="What’s new" subtitle={whatsNewSubtitle(dueItems)} onPress={() => router.push('/whats-new')} last />
+      <ListRow icon={icon(Sparkles)} title="What’s new" subtitle={whatsNewSubtitle(dueItems)} onPress={() => router.push('/whats-new')} />
+      <ToggleRow
+        title={TESTER_SWITCH}
+        subtitle={TESTER_SWITCH_HINT}
+        value={testerOn}
+        onValueChange={(on) => {
+          // On starts the test today (day 1); off forgets the test days and answers.
+          useSeen.getState().setTester(switchTester(on, dayKey(Date.now())));
+          sayLater(on ? 'Tester questions on. One may show on Today.' : 'Tester questions off.');
+        }}
+        last
+      />
 
       <T v="small" color={c.ink2} style={{ marginTop: space.lg }}>{HELP_FOOTER_LEAD}</T>
       <T v="label" selectable color={c.accentText}>{config.feedbackEmail}</T>

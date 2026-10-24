@@ -9,9 +9,11 @@
  *        missed, or "All five right.") and how close the first readiness
  *        range is;
  *     2. a closing plate: tomorrow in one line, "The 2 you missed come back then.",
- *        a seed planted for you (oak; drawn as a seed, "Choose a different
- *        plant" opens the picker); then, under the plate (mobile 1.39), the
- *        reminder ask;
+ *        and (mobile 1.41) an OFFER of a plant: "Plant a seed" plants an oak
+ *        (drawn as a seed, "Choose a different plant" opens the picker), "Not
+ *        now" is remembered and points to You. Before 1.41 a seed was planted
+ *        for every new learner; plants planted that way stay exactly as they
+ *        are. Then, under the plate (mobile 1.39), the reminder ask;
  *     3. "Done for today" (the one solid button) and a quiet "Do 5 more".
  *   A set ended early (X → End after 2 answers) is not "done": the headline
  *   is the honest count ("2 answered"), one line says how many are left, the
@@ -325,12 +327,15 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
     deferMissesToTomorrow(certId, missed);
   }, [session.id, certId, missed]);
 
-  // The seed: planted for the learner, passively (oak). A learner who turned plants off gets none.
+  // Mobile 1.41 (owner decision A): the plant is OFFERED here, never planted for the learner. A learner
+  // who turned plants off, or already has one, is not asked; "Not now" is remembered (store/seen.ts).
   const plantOn = useProgress((s) => plantShown(s.plantSettings));
   const plant = useProgress((s) => selectCert(s, certId).plant);
-  useEffect(() => {
-    if (plantOn && !plant) plantFor(certId, 'oak', '');
-  }, [plantOn, plant, certId]);
+  const plantLater = useSeen((s) => s.plantOffer === 'later');
+  // Kept for this visit, so "Not now" can say where planting lives instead of vanishing.
+  const [offerAnswer, setOfferAnswer] = useState<'later' | null>(null);
+  const offerRef = useRef<View>(null);
+  const offerPlant = plantOn && !plant && (!plantLater || offerAnswer === 'later');
 
   useEffect(() => {
     moveFocus(headRef, 500);
@@ -399,6 +404,22 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
             <T v="caption" color={c.accentText}>Tomorrow</T>
             {tomorrow ? <T v="body">{tomorrow}</T> : <T v="body">Your next plan is ready when you open the app.</T>}
             {comeBack && <T v="body">{comeBack}</T>}
+            {offerPlant && (
+              <PlantOffer
+                answered={offerAnswer === 'later'}
+                lineRef={offerRef}
+                onPlant={() => {
+                  plantFor(certId, 'oak', '');
+                  sayLater('Seed planted. It grows as you learn.');
+                }}
+                onNotNow={() => {
+                  useSeen.getState().setPlantOffer('later');
+                  setOfferAnswer('later');
+                  // The buttons go: focus moves to the line that says where planting lives.
+                  moveFocus(offerRef, ANNOUNCE_DELAY);
+                }}
+              />
+            )}
             {plantOn && plant && (
               <Row gap={space.md} style={{ alignItems: 'center' }}>
                 {/* A seed, not the plant drawing: Results stays light and the plant keeps its own screens.
@@ -439,6 +460,47 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
         )}
       </StickyFooter>
     </SafeAreaView>
+  );
+}
+
+/**
+ * Mobile 1.41: the plant, offered (never planted for the learner). Two quiet ghost buttons: the
+ * closing screen's one solid button stays "Done for today". "Not now" swaps the buttons for one
+ * line saying where planting lives, so the choice is respected and still easy to undo.
+ */
+function PlantOffer({
+  answered,
+  lineRef,
+  onPlant,
+  onNotNow,
+}: {
+  answered: boolean;
+  lineRef: Ref<View>;
+  onPlant: () => void;
+  onNotNow: () => void;
+}) {
+  const { c } = useTheme();
+  return (
+    <Row gap={space.md} style={{ alignItems: 'center' }}>
+      <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ marginLeft: -space.sm }}>
+        <Seedling color={c.accent} size={64} />
+      </View>
+      <View style={{ flex: 1 }} testID="plant-offer">
+        {answered ? (
+          <View ref={lineRef} accessible accessibilityLabel="No plant for now. You can plant one any time from You.">
+            <T v="small">No plant for now. You can plant one any time from You.</T>
+          </View>
+        ) : (
+          <>
+            <T v="small">Want a plant that grows as you learn? It’s optional.</T>
+            <Row gap={0} style={{ flexWrap: 'wrap', marginLeft: -space.sm }}>
+              <Button kind="ghost" label="Plant a seed" accessibilityHint="Plants an oak. You can choose a different plant after." onPress={onPlant} />
+              <Button kind="ghost" label="Not now" accessibilityLabel="Not now, no plant" onPress={onNotNow} />
+            </Row>
+          </>
+        )}
+      </View>
+    </Row>
   );
 }
 

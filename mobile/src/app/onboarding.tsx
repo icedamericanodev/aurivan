@@ -1,16 +1,22 @@
 /**
- * Onboarding — a plain welcome, an optional name, then 2 quick steps, then
- * straight into the first five questions (mobile 1.24, "first five minutes").
+ * Onboarding — a plain welcome, then 2 quick steps, then straight into the
+ * first five questions (mobile 1.24, "first five minutes"; 1.41, one screen fewer).
  *
  *   0  Welcome      "Think like an IS auditor." It names the exam (CISA) and
  *                   says in four literal lines what you will do and what the
- *                   app does with your data. No metaphors.
- *   1  Name         Optional ("What should we call you?"), with a clear Skip.
- *                   Not counted in the step numbers.
- *   2  Step 1 of 2  Where are you starting from? (optional; "Skip this
+ *                   app does with your data, starting with the best feature:
+ *                   every option is explained, the trap included. No metaphors.
+ *   1  Step 1 of 2  Where are you starting from? (optional; "Skip this
  *                   question" leaves it unset)
- *   3  Step 2 of 2  Your exam date and how long you can study most days, with
+ *   2  Step 2 of 2  Your exam date and how long you can study most days, with
  *                   a plain line saying what the two add up to.
+ *
+ * What changed in 1.41, and why (pre-beta review: testers decide in the first minute):
+ * - The name step is gone from here. Today asks once, quietly, from the day
+ *   after the first study day (engine/firstRun.ts nameAskDue), and Settings →
+ *   Your name keeps it. Learners who already gave a name keep it.
+ * - No seed is planted for you any more: the first set's closing screen offers
+ *   one, with "Not now" (You and Your plant keep "Plant yours").
  *
  * What changed in 1.24, and why (the panel's first-ten-minutes review):
  * - The exam step is gone. CISA is the only exam, so it is chosen for you
@@ -52,8 +58,6 @@ import { startFirstSet } from '../lib/firstSet';
 import { useKeyboardShown } from '../lib/useKeyboardShown';
 import { useRestoreFlow } from '../lib/useRestoreFlow';
 import { CalendarSheet, chosenLine } from '../components/calendar';
-import { DisplayNameField } from '../components/displayName';
-import { cleanDisplayName } from '../engine/displayName';
 import { DEFAULT_MINUTES, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { dayKey } from '../engine/streak';
 import { useProgress } from '../store/progress';
@@ -66,21 +70,19 @@ import { useTheme } from '../theme/useTheme';
 // pure React Native: no native date-picker dependency.
 const PRESETS = EXAM_DATE_PRESETS;
 
-/** The steps in order: welcome, name, where you start, date and minutes. */
-type Step = 0 | 1 | 2 | 3;
+/** The steps in order: welcome, where you start, date and minutes. */
+type Step = 0 | 1 | 2;
 
 export default function Onboarding() {
   const { c } = useTheme();
   const complete = useSettings((s) => s.completeOnboarding);
   const insets = useSafeAreaInsets();
   const [step, setStep] = useState<Step>(0);
-  // The optional name: empty to start; "Skip" and an empty field both mean "no name".
-  const [nameInput, setNameInput] = useState('');
   // Step 1 of 2: nothing chosen to start (no default biases the answer); skip leaves it unset.
   const [familiarity, setFamiliarity] = useState<Familiarity | undefined>(undefined);
   // Step 2 of 2: minutes most days, 20 to start.
   const [minutes, setMinutes] = useState<DailyMinutes>(DEFAULT_MINUTES);
-  // The keyboard and the sticky footer never cover the name field (UX review H2).
+  // The keyboard and the sticky footer never cover a field (UX review H2). No step types today; kept for safety.
   const typing = useKeyboardShown();
   // CISA is the only exam today, so it is chosen for the learner (no exam step).
   const certId = DEFAULT_CERT_ID;
@@ -177,8 +179,11 @@ export default function Onboarding() {
 
   // One tap saves everything and starts the first five questions. CISA is chosen for the learner.
   const finish = () => {
-    complete(certId, examDate, { familiarity, dailyMinutes: minutes }, cleanDisplayName(nameInput) || undefined);
-    // No plant question in onboarding: a seed is planted after the first set, and You keeps "Plant yours".
+    // No name here since 1.41: a name already saved (a restore) is kept, and Today asks later if there is none.
+    complete(certId, examDate, { familiarity, dailyMinutes: minutes });
+    if (!useSettings.getState().displayName) useSeen.getState().setNameAsk('due');
+    // No plant question in onboarding: the first set's closing screen offers one, and You keeps "Plant yours".
+    // Today's own plant line stays hidden, so the first days have one setup line at a time.
     useProgress.getState().setPlantSettings({ promptHidden: true });
     // A 1.24+ learner: the only kind that may get the reminder ask's second chance (engine/firstRun.ts).
     useSeen.getState().noteReminderFlag('newLearner');
@@ -193,21 +198,6 @@ export default function Onboarding() {
   const body =
     step === 1 ? (
       <Enter key="s1">
-        <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Optional</T>
-        <StepHeader title="What should we call you?" headRef={headRef} />
-        <T v="meta" style={{ marginTop: space.sm }}>A first name or a nickname, whatever you like.</T>
-        <Gap h={space.xl} />
-        <DisplayNameField
-          value={nameInput}
-          onChange={setNameInput}
-          onSubmit={() => {
-            setNameInput(cleanDisplayName(nameInput));
-            setStep(2);
-          }}
-        />
-      </Enter>
-    ) : step === 2 ? (
-      <Enter key="s2">
         <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 1 of 2</T>
         <StepHeader title={FAMILIARITY_QUESTION} headRef={headRef} />
         <T v="meta" style={{ marginTop: space.sm }}>This shapes your first week. You can change it any time in Settings.</T>
@@ -215,7 +205,7 @@ export default function Onboarding() {
         <FamiliarityRows look="raised" value={familiarity} onChange={setFamiliarity} />
       </Enter>
     ) : (
-      <Enter key="s3">
+      <Enter key="s2">
         <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 2 of 2</T>
         <StepHeader title="When is your exam?" headRef={headRef} />
         <T v="meta" style={{ marginTop: space.sm }}>For your countdown. A rough date is fine.</T>
@@ -283,7 +273,7 @@ export default function Onboarding() {
           </ScrollView>
         </KeyboardAvoidingView>
       )}
-      {/* Hidden while typing (the name step): "Done" on the keyboard brings the buttons back. */}
+      {/* Hidden while the keyboard is up, so it never covers a field. */}
       {!typing && (
         <StickyFooter onHeight={setFooterH}>
           {step === 0 ? (
@@ -304,42 +294,19 @@ export default function Onboarding() {
             <>
               <Button
                 label="Continue"
-                onPress={() => {
-                  // Save the tidied name; an empty or unusable one is simply no name.
-                  setNameInput(cleanDisplayName(nameInput));
-                  setStep(2);
-                }}
-              />
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <Button kind="ghost" label="Back" onPress={() => setStep(0)} />
-                <Button
-                  kind="ghost"
-                  label="Skip"
-                  accessibilityHint="Leaves it empty. You can add a name later in Settings."
-                  onPress={() => {
-                    setNameInput('');
-                    setStep(2);
-                  }}
-                />
-              </View>
-            </>
-          ) : step === 2 ? (
-            <>
-              <Button
-                label="Continue"
-                onPress={() => setStep(3)}
+                onPress={() => setStep(2)}
                 disabled={!familiarity}
                 accessibilityHint={familiarity ? undefined : 'Choose one, or skip this question.'}
               />
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <Button kind="ghost" label="Back" onPress={() => setStep(1)} />
+                <Button kind="ghost" label="Back" onPress={() => setStep(0)} />
                 <Button
                   kind="ghost"
                   label="Skip this question"
                   accessibilityHint="Leaves it unset. You can answer it later in Settings."
                   onPress={() => {
                     setFamiliarity(undefined);
-                    setStep(3);
+                    setStep(2);
                   }}
                 />
               </View>
@@ -347,7 +314,7 @@ export default function Onboarding() {
           ) : (
             <>
               <Button label="Start my first questions" accessibilityHint="Saves your choices and starts five questions, with no timer." onPress={finish} />
-              <Button kind="ghost" label="Back" onPress={() => setStep(2)} style={{ alignSelf: 'center' }} />
+              <Button kind="ghost" label="Back" onPress={() => setStep(1)} style={{ alignSelf: 'center' }} />
             </>
           )}
         </StickyFooter>

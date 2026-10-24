@@ -346,9 +346,7 @@ await edit('aurivan.settings.v1', 'v.state.onboarded = false;');
 await shot('22-onboarding', '/onboarding');
 await page.getByRole('button', { name: 'Get started', exact: true }).click();
 await page.waitForTimeout(900);
-await page.screenshot({ path: `${out}/22a-onboarding-name.png` });
-await page.getByRole('button', { name: 'Skip', exact: true }).click();
-await page.waitForTimeout(900);
+// Mobile 1.41: no name step (Today asks later), so 22a is not taken any more.
 await page.screenshot({ path: `${out}/22b-onboarding-start.png` });
 await page.getByRole('radio', { name: /^Some IT audit experience/ }).first().click();
 await page.waitForTimeout(500);

@@ -1,8 +1,8 @@
 /**
  * Mobile 1.23, "What should we call you?", on screen:
- * - onboarding: one optional step after the welcome. A name is saved with
- *   the rest in the last tap; Skip and an empty field both mean no name;
- *   the helper line says it stays on the phone;
+ * - onboarding (mobile 1.41): no name step any more. Today asks once, from
+ *   the day after the first study day, with "Add a name" (a small sheet with
+ *   the same field) and "Not now"; learners from before 1.41 are never asked;
  * - Settings: a "Your name" row (the name, or "Not set") opening a small
  *   sheet to edit, save and clear it; Cancel changes nothing;
  * - Today: "Good morning, Maya" (afternoon, evening) with a name and plain
@@ -20,7 +20,7 @@ import Settings from '../app/settings';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { NAME_HELPER } from '../components/displayName';
 import { MAX_DISPLAY_NAME } from '../engine/displayName';
-import { selectCert, useProgress } from '../store/progress';
+import { completeCert, selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
@@ -172,108 +172,107 @@ describe('Today greets by name', () => {
   });
 });
 
-describe('onboarding: "What should we call you?"', () => {
-  beforeEach(() => useSettings.setState({ onboarded: false, displayName: undefined }));
-
-  const toNameStep = () => {
-    mount(<Onboarding />);
-    press('Get started');
-  };
-  /** From the starting-point step to the end: skip it, then start the first questions. */
-  const finishFromStart = () => {
-    press('Skip this question'); // starting point → date and minutes
-    press('Start my first questions');
-  };
-  const finish = () => {
-    press('Continue'); // name → starting point
-    finishFromStart();
-  };
-
-  it('comes right after the welcome, is optional, and says it stays on the phone', () => {
-    toNameStep();
-    expect(allText()).toContain('What should we call you?');
-    expect(allText()).toContain('Optional');
-    expect(allText()).toContain(NAME_HELPER);
-    expect(NAME_HELPER).toBe('Only on this phone. It just helps us say hello.');
-    // Not one of the numbered steps (those are "of 2").
-    expect(allText()).not.toMatch(/Step \d of/);
-    expect(field().props.maxLength).toBe(MAX_DISPLAY_NAME);
-    expect(field().props.value).toBe('');
-    expect(field().props.accessibilityHint).toContain('Optional');
-    // A clear way past it, and a way back.
-    expect(hasButton('Skip')).toBe(true);
-    expect(hasButton('Continue')).toBe(true);
-    expect(hasButton('Back')).toBe(true);
+describe('mobile 1.41: the name is asked later, on Today, once', () => {
+  beforeEach(() => {
+    useSettings.setState({ onboarded: false, displayName: undefined });
+    useSeen.setState({ nameAsk: undefined, tester: undefined, plantOffer: undefined });
   });
 
-  it('a typed name is saved with the rest, tidied, and Today greets by it', () => {
-    toNameStep();
+  const onboard = () => {
+    mount(<Onboarding />);
+    press('Get started');
+    press('Skip this question'); // starting point → date and minutes
+    press('Start my first questions');
+    act(() => {
+      r?.unmount();
+    });
+  };
+  /** The learner has studied on `days` days, the last one `lastDay` days ago (0 = today). */
+  const studied = (days: number, lastDay: number) =>
+    act(() => {
+      const last = new Date(2026, 9, 15 - lastDay, 12);
+      const key = `${last.getFullYear()}-${String(last.getMonth() + 1).padStart(2, '0')}-${String(last.getDate()).padStart(2, '0')}`;
+      useProgress.setState((st) => ({ byCert: { ...st.byCert, cisa: completeCert({ ...selectCert(st, 'cisa'), milestones: { earned: {}, days, lastDay: key } }) } }));
+    });
+  const card = () => root().findAll((n) => n.props.testID === 'name-ask' && typeof n.type === 'string');
+
+  it('onboarding has no name step, and CISA is still chosen; Today will ask later', () => {
+    mount(<Onboarding />);
+    press('Get started');
+    expect(allText()).not.toContain('What should we call you?');
+    expect(field()).toBeUndefined();
+    press('Skip this question');
+    press('Start my first questions');
+    expect(useSettings.getState()).toMatchObject({ onboarded: true, activeCertId: 'cisa' });
+    expect(useSettings.getState().displayName).toBeUndefined();
+    expect(useSeen.getState().nameAsk).toBe('due');
+    // Straight into the first five questions.
+    expect(router.replace).toHaveBeenCalledWith('/session');
+  });
+
+  it('a name already saved (a restore) is kept, and is never asked for', () => {
+    useSettings.setState({ displayName: 'Maya' });
+    onboard();
+    expect(useSettings.getState().displayName).toBe('Maya');
+    expect(useSeen.getState().nameAsk).toBeUndefined();
+  });
+
+  it('not on the first study day; the next day, one quiet card that saves a tidied name', () => {
+    onboard();
+    studied(1, 0);
+    mount(<Today />);
+    expect(card()).toHaveLength(0);
+    act(() => {
+      r?.unmount();
+    });
+    studied(1, 1);
+    mount(<Today />);
+    expect(card()).toHaveLength(1);
+    expect(allText()).toContain('What should we call you?');
+    expect(allText()).toContain('Optional. A first name or a nickname, kept on this phone.');
+    // Showing it counts as asked (once ever).
+    expect(useSeen.getState().nameAsk).toBe('shown');
+    press('Add a name');
+    expect(field().props.maxLength).toBe(MAX_DISPLAY_NAME);
+    expect(allText()).toContain(NAME_HELPER);
     type('  Maya   Jane ');
     endEditing();
-    expect(field().props.value).toBe('Maya Jane');
-    // Nothing is saved before the last step.
+    press('Save');
+    expect(useSettings.getState().displayName).toBe('Maya Jane');
+    expect(allText()).toContain('Good morning, Maya Jane');
+    expect(card()).toHaveLength(0);
+  });
+
+  it('a link or an email is not saved: the box stays open and says why', () => {
+    onboard();
+    studied(2, 1);
+    mount(<Today />);
+    press('Add a name');
+    type('maya@example.com');
+    press('Save');
     expect(useSettings.getState().displayName).toBeUndefined();
-    finish();
-    expect(useSettings.getState()).toMatchObject({ onboarded: true, displayName: 'Maya Jane' });
+    expect(field()).toBeTruthy();
+  });
+
+  it('"Not now" puts it away for good; Settings keeps the name row', () => {
+    onboard();
+    studied(2, 1);
+    mount(<Today />);
+    press('Not now, no name');
+    expect(card()).toHaveLength(0);
+    expect(useSettings.getState().displayName).toBeUndefined();
     act(() => {
       r?.unmount();
     });
     mount(<Today />);
-    expect(allText()).toContain('Good morning, Maya Jane');
+    expect(card()).toHaveLength(0);
   });
 
-  it('Skip leaves no name, even when something was typed (and the starting-point step follows)', () => {
-    toNameStep();
-    type('Maya');
-    press('Skip');
-    expect(allText()).toContain('Where are you starting from?');
-    // Back from the starting-point step returns to the name step, empty.
-    press('Back');
-    expect(field().props.value).toBe('');
-    press('Skip');
-    finishFromStart();
-    expect(useSettings.getState().displayName).toBeUndefined();
-  });
-
-  it('Continue with the field empty is just as fine as Skip', () => {
-    toNameStep();
-    press('Continue');
-    expect(allText()).toContain('Where are you starting from?');
-    finishFromStart();
-    expect(useSettings.getState().onboarded).toBe(true);
-    expect(useSettings.getState().displayName).toBeUndefined();
-  });
-
-  it('something that is not a name (an email) is quietly dropped', () => {
-    toNameStep();
-    type('maya@example.com');
-    press('Continue');
-    expect(field()).toBeUndefined();
-    expect(allText()).toContain('Where are you starting from?');
-    press('Back');
-    expect(field().props.value).toBe('');
-  });
-
-  it('the keyboard’s Done moves on, like Continue', () => {
-    toNameStep();
-    type('Maya');
-    act(() => {
-      field().props.onSubmitEditing();
-    });
-    expect(allText()).toContain('Where are you starting from?');
-    finishFromStart();
-    expect(useSettings.getState().displayName).toBe('Maya');
-  });
-
-  it('CISA is still chosen when the name is skipped (there is no exam step any more)', () => {
-    toNameStep();
-    press('Skip');
-    press('Skip this question');
-    press('Start my first questions');
-    expect(useSettings.getState().activeCertId).toBe('cisa');
-    expect(selectCert(useProgress.getState(), 'cisa')).toBeTruthy();
-    // Straight into the first five questions.
-    expect(router.replace).toHaveBeenCalledWith('/session');
+  it('learners who onboarded before 1.41 are never asked', () => {
+    useSettings.setState({ onboarded: true });
+    studied(5, 1);
+    mount(<Today />);
+    expect(card()).toHaveLength(0);
   });
 });
 

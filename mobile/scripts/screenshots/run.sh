@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -180,6 +180,13 @@ elif [ "${SHOTS:-}" = firstdays ]; then
   # "Your first readiness range", and the reminder's second chance (shoot_firstdays.mjs;
   # NARROW=1; FONT_SCALE=2 for about 200% text).
   node scripts/screenshots/shoot_firstdays.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = m141 ]; then
+  # Mobile 1.41 "beta tester helpers + calmer start": the welcome and the starting point (no name
+  # step), the closing screen's plant offer and "Not now", Today's "Short on time? 5 questions", the
+  # name ask and its sheet, Help's "I'm a beta tester", the Tester question, the Week 1 check-in,
+  # Send feedback ("Something confused me") and the app reasons ("I couldn't find something")
+  # (shoot_m141.mjs; NARROW=1; FONT_SCALE=2 for about 200% text).
+  node scripts/screenshots/shoot_m141.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = today ]; then
   # Mobile 1.23 Today (mockup A): the day with a warm-up done, a fresh plan, below the fold,
   # a new learner, no exam date, a mock-only day, the clearing, exam eve and week, and a

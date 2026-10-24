@@ -17,7 +17,7 @@
  */
 import { isRunningInExpoGo } from 'expo';
 import { Platform } from 'react-native';
-import { isStudyReminder, reminderCopy, rollingPlan, type ReminderPrefs } from '../engine/reminders';
+import { isStudyReminder, rollingCopy, rollingPlan, type ReminderPrefs, type WaitingReviews } from '../engine/reminders';
 
 type NotificationsModule = typeof import('expo-notifications');
 
@@ -107,8 +107,16 @@ export interface ScheduleOptions {
   now?: number;
   /** Today's plan is already cleared: no reminder today. */
   skipToday?: boolean;
-  /** The learner's daily minutes, for the title ("Your 15-minute plan is ready"). */
+  /**
+   * The learner's daily minutes. Mobile 1.41: no longer in the words (the
+   * reminders offer the short path instead); kept so older callers still work.
+   */
   minutes?: number;
+  /**
+   * Mobile 1.41: what is waiting in spaced review at a moment, so the next
+   * reminder can name it ("The 2 you missed are back"). Unset = the plain words.
+   */
+  waitingFor?: (at: number) => WaitingReviews;
 }
 
 /**
@@ -125,11 +133,13 @@ export async function scheduleReminders(prefs: ReminderPrefs, certName: string, 
 async function replaceOurs(N: NotificationsModule, prefs: ReminderPrefs, certName: string, opts: ScheduleOptions) {
   await ensureAndroidChannel(N);
   await cancelOurs(N);
-  const content = reminderCopy(certName, opts.minutes);
-  for (const r of rollingPlan(prefs, opts.now ?? Date.now(), { skipToday: opts.skipToday })) {
+  const plan = rollingPlan(prefs, opts.now ?? Date.now(), { skipToday: opts.skipToday });
+  // Mobile 1.41: each reminder has its own words (engine/reminders.ts slotCopy). Same count, same ids.
+  const words = rollingCopy(plan, certName, opts.waitingFor);
+  for (const [i, r] of plan.entries()) {
     await N.scheduleNotificationAsync({
       identifier: r.id,
-      content,
+      content: words[i],
       // channelId is ignored on iOS; on Android it files the reminder under "Study reminders".
       trigger: { type: N.SchedulableTriggerInputTypes.DATE, date: new Date(r.at), channelId: REMINDER_CHANNEL_ID },
     });

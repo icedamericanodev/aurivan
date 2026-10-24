@@ -122,16 +122,17 @@ describe('welcome screen', () => {
     expect(text).not.toContain('Master Modern Risk');
   });
 
-  it('"Get started" leads into the optional name, then the starting point, and Back returns', () => {
+  it('mobile 1.41: the welcome names the best feature first', () => {
+    expect(WELCOME_FACTS[0]).toBe('Questions that explain every option, the trap included.');
+    expect(WELCOME_HEADLINE).toBe('Think like an IS auditor.');
+  });
+
+  it('"Get started" leads straight to the starting point (mobile 1.41: no name step), and Back returns', () => {
     mount(<Onboarding />);
     press('Get started');
-    // The optional name step comes first; Skip moves on, Back from the starting point returns to it.
-    expect(allText()).toContain('What should we call you?');
-    press('Skip');
+    expect(allText()).not.toContain('What should we call you?');
     expect(allText()).toContain('Where are you starting from?');
     expect(allText()).not.toContain(WELCOME_HEADLINE);
-    press('Back');
-    expect(allText()).toContain('What should we call you?');
     press('Back');
     expect(allText()).toContain(WELCOME_HEADLINE);
   });
@@ -147,13 +148,13 @@ describe('welcome screen', () => {
     mount(<Onboarding />);
     expect(handler!()).toBe(false); // welcome: default behaviour
     press('Get started');
-    press('Skip');
+    press('Skip this question');
     let handled: boolean | null | undefined;
     act(() => {
       handled = handler!();
     });
     expect(handled).toBe(true);
-    expect(allText()).toContain('What should we call you?'); // the name step sits between the welcome and step 1
+    expect(allText()).toContain('Where are you starting from?');
     act(() => {
       handler!();
     });

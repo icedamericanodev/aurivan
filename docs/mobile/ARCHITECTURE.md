@@ -376,6 +376,30 @@ server: every email goes through the learner's OWN email app.
   in `content/support/index.ts`; `support-content.test.ts` enforces the What's
   New style. Maintainer side: `docs/support/PLAYBOOK.md`.
 
+**Beta helpers and a calmer start (mobile 1.41).** From the pre-beta review (owner decisions, 24 Oct 2026):
+- *Reminders* (`engine/reminders.ts` `slotCopy` / `rollingCopy`, pure, tested): each of the 7 rolling
+  reminders gets its own words. The next one names the reviews due by its time ("The 2 you missed are
+  back", only when every one was a miss); the middle ones offer the short path ("about 6 min for 5
+  questions"); the last says reminders pause until the app is opened. `lib/reminderSync.ts` counts the
+  waiting reviews (`waitingAt`); `lib/activity.ts` re-plans after every finished session. Same ids, same count.
+- *Short on time? 5 questions* on Today (`engine/dayPlan.ts` `shortSetItem`): before the plan has started,
+  never on the first-set day or in exam week. `lib/actions.ts` `runShortSet` starts the plan's own review
+  or practice item at five questions, so the answers bank on it.
+- *Feedback*: "Something confused me" (first feedback kind, subject tag `Confused`) and "I couldn’t find
+  something" (app reason `findable`). Same privacy rules.
+- *Tester question* (`engine/betaTester.ts`, `components/beta.tsx`): off unless Help → "I’m a beta tester"
+  is on (a switch, not a build flag: production is the same build). State in `store/seen.ts` `tester`
+  (this phone only; never backed up, synced or emailed). Questions on test days 1–2, 3, 5, 7, 9, 12 and 14
+  counted from the day it was turned on; "What got in the way?" after 3+ whole days with no study, once per
+  absence. "Answer by email" opens a mailto (subject `[KaiSip beta D3]`); the day-7 and day-14 check-ins
+  show "You studied on N of the last 7 days" on screen only. No badge, growth or streak for answering.
+- *Onboarding* has no name step; the welcome leads with "Questions that explain every option, the trap
+  included." Today asks for a name once, from the day after the first study day (`engine/firstRun.ts`
+  `nameAskDue`, `store/seen.ts` `nameAsk`, only for learners onboarded on 1.41+).
+- *The plant is offered* on the first set's closing screen ("Plant a seed" / "Not now", `store/seen.ts`
+  `plantOffer`), never planted for the learner. Existing plants are untouched; You and Your plant keep
+  "Plant yours".
+
 **Games (mobile 1.6).** Three content games, all in the registry with the
 minPool guard (`isPlayable` now also counts a cert's decks from
 `content/games`; `lib/games.ts` asks it for every screen):

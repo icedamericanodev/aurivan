@@ -325,6 +325,7 @@ describe('the name stays on the phone', () => {
       'app/(tabs)/home.tsx', // the greeting
       'app/onboarding.tsx', // the optional step
       'app/settings.tsx', // Your name
+      'components/beta.tsx', // mobile 1.41: Today's one name ask (onboarding no longer asks)
       'components/displayName.tsx', // the text field
       'engine/backup.ts', // the learner's own backup file
       'engine/displayName.ts', // the one rule

@@ -169,3 +169,27 @@ export function secondAskDue(opts: {
   if (opts.first === 'blocked' || opts.first === 'on') return false;
   return opts.studiedToday && opts.studyDays >= 3;
 }
+
+// ── Mobile 1.41: the name, asked later ───────────────────────────────────
+/**
+ * Onboarding no longer asks for a name (fewer screens before the first
+ * question). A learner who onboarded on 1.41+ (`offered`) gets ONE quiet ask
+ * on Today, from the day after their first study day, if they still have no
+ * name and nothing else is asking on that visit (one setup line at a time).
+ * Settings → Your name keeps it any time after.
+ */
+export function nameAskDue(opts: {
+  /** Onboarded on 1.41+ and not asked yet (store/seen.ts nameAsk 'due'). */
+  offered: boolean;
+  hasName: boolean;
+  /** Study days so far (milestones.days) and the last one counted. */
+  studyDays: number;
+  lastStudyDay?: string;
+  today: string;
+  /** Another setup line is on Today this visit (the reminder ask, Fit, the plant line). */
+  otherSetup: boolean;
+}): boolean {
+  if (!opts.offered || opts.hasName || opts.otherSetup || opts.studyDays < 1) return false;
+  // Not on the first study day itself: that day ends on the first set's closing screen.
+  return !(opts.studyDays === 1 && opts.lastStudyDay === opts.today);
+}

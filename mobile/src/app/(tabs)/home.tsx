@@ -53,6 +53,15 @@
  * invitation is one plain row (no ghost pair beside Start; it hides on a long
  * press); "Updated after your report" is an InviteRow, not the coach's rule.
  *
+ * Mobile 1.41 (pre-beta review):
+ *   - "Short on time? 5 questions": one ghost button under the hero, only before the day's plan has
+ *     started (engine/dayPlan.ts shortSetItem). It starts the plan's first review or practice item at
+ *     five questions, so those answers count toward it. Never in exam week, never on the first-set day.
+ *   - Two more quiet cards in the setup slot below the day's study, still one setup line per visit:
+ *     the name ask (onboarding no longer asks; engine/firstRun.ts nameAskDue) and, only for learners
+ *     who turned on "I'm a beta tester" in Help, the Tester question (engine/betaTester.ts). The
+ *     reminder's second chance, Fit and the plant line go first; the name ask goes before the tester card.
+ *
  * Signature moments (Phase 5b, components/moments.tsx):
  *   - the day before the exam / exam day: a calm card above the panel;
  *   - "Your readiness is holding" (lower bound ≥ 80% for 7 days): the forest
@@ -67,6 +76,8 @@ import { KaisipLockup } from '../../components/brand';
 import { StreakPill } from '../../components/today';
 import { FirstRangePanel, SecondAskCard } from '../../components/firstSet';
 import { FitCard } from '../../components/fit';
+import { NameAskCard, TesterQuestionCard } from '../../components/beta';
+import { testerCard, type TesterCard } from '../../engine/betaTester';
 import { ExamWeekCard, type ExamWeekCardCopy } from '../../components/readinessReport';
 import { getFinalWeek } from '../../content/exam';
 import type { FinalWeek } from '../../content/exam/types';
@@ -76,16 +87,16 @@ import { Celebrate, useCelebration, useGrowth, useScreenFocus } from '../../comp
 import { ArrowRight, ICON_STROKE, Inbox, Play, Settings, Sprout, Target, Timer } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
 import { Button, Enter, HeroPanel, IconButton, ICON_SIZE, InviteRow, ListRow, Row, Screen, Section, T } from '../../components/ui';
-import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete } from '../../engine/dayPlan';
+import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete, SHORT_SET_SIZE, shortSetItem } from '../../engine/dayPlan';
 import { shouldAskFit } from '../../engine/fit';
-import { firstRangePanelDue, secondAskDue } from '../../engine/firstRun';
+import { firstRangePanelDue, nameAskDue, secondAskDue } from '../../engine/firstRun';
 import { STAGE_ORDER } from '../../engine/journey';
 import { aboutMin, spokenMin } from '../../engine/pace';
 import { DAY_MS } from '../../engine/srs';
 import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../../lib/a11y';
 import { greetingWithName } from '../../engine/displayName';
 import { useSettings } from '../../store/settings';
-import { runPlanItem } from '../../lib/actions';
+import { runPlanItem, runShortSet } from '../../lib/actions';
 import { firstSetLeftOf } from '../../lib/firstSet';
 import { firstSetIds, firstSetNextLine } from '../../content/firstSet';
 import { refreshReminders } from '../../lib/reminderSync';
@@ -477,6 +488,41 @@ export default function Today() {
     if (askFit) useSettings.getState().noteFitAsked(plan.day);
   }, [askFit, plan.day]);
 
+  // Mobile 1.41: the name ask and the Tester question share the setup slot, one line per visit.
+  // Both wait for the second ask, Fit and the plant line; each is latched for the visit it first shows on.
+  const otherSetup = secondVisit || askFit || plantLineNow || plantVisit;
+  const nameAsk = useSeen((x) => x.nameAsk);
+  const nameDue = nameAskDue({
+    offered: nameAsk === 'due',
+    hasName: Boolean(displayName),
+    studyDays: j.progress.milestones?.days ?? 0,
+    lastStudyDay: j.progress.milestones?.lastDay,
+    today: plan.day,
+    otherSetup,
+  });
+  const [nameVisit, setNameVisit] = useState(false);
+  if (nameDue && !nameVisit) setNameVisit(true);
+  useFocusEffect(useCallback(() => () => setNameVisit(false), []));
+  // Asked once: showing it counts (as the reminder's second chance does).
+  useEffect(() => {
+    if (nameVisit) useSeen.getState().setNameAsk('shown');
+  }, [nameVisit]);
+  const tester = useSeen((x) => x.tester);
+  const rawStreak = useProgress((x) => x.streak);
+  const testerNow = tester?.since && !moments.moment ? testerCard(tester, rawStreak, now, plan.day) : null;
+  const [testerVisit, setTesterVisit] = useState<TesterCard | null>(null);
+  if (testerNow && !testerVisit && !otherSetup && !nameVisit) setTesterVisit(testerNow);
+  useFocusEffect(useCallback(() => () => setTesterVisit(null), []));
+  // The switch turned off (Help, or the card's own action) takes the card away.
+  const testerShown = testerVisit && tester?.since ? testerVisit : null;
+
+  // "Short on time? 5 questions" (mobile 1.41): only before the plan has started, never in exam week,
+  // never beside a paused session (Also today already offers to resume it).
+  const examWeekNow = j.daysLeft !== null && j.daysLeft >= 0 && j.daysLeft <= 7;
+  const shortIdx = !showReady && !allDone && !resume ? shortSetItem(plan, { examWeek: examWeekNow }) : -1;
+  // "About 6 min. Counts toward today’s plan." (the app's one minutes style; spoken as "minutes").
+  const shortLine = `${aboutMin(SHORT_SET_SIZE * MINUTES_PER_QUESTION)}. Counts toward today’s plan.`;
+
   // "Good morning, Maya" (or just "Good morning"): read again each render, so a name changed in Settings shows at once.
   const greetingText = greeting(new Date().getHours(), displayName);
 
@@ -568,6 +614,24 @@ export default function Today() {
           </HeroPanel>
         )}
       </Enter>
+
+      {shortIdx >= 0 && (
+        // The short path (mobile 1.41): a quiet ghost button under the hero, never a second Start.
+        <View testID="short-set" style={{ alignSelf: 'flex-start', marginTop: space.xs, marginLeft: -space.sm }}>
+          <Button
+            kind="ghost"
+            label={`Short on time? ${SHORT_SET_SIZE} questions`}
+            accessibilityHint={spokenMin(shortLine)}
+            onPress={() => runShortSet(plan.items[shortIdx], j.cert.id)}
+            // Hugs its label, so the words line up with the plain line under it.
+            style={{ alignSelf: 'flex-start' }}
+          />
+          {/* Said by the button's hint already, so hidden from screen readers here. */}
+          <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ paddingHorizontal: space.sm }}>
+            <T v="meta">{shortLine}</T>
+          </View>
+        </View>
+      )}
 
       {!allDone && (
         <Enter i={2}>
@@ -753,6 +817,18 @@ export default function Today() {
                 },
               }}
             />
+          </View>
+        )}
+        {/* Mobile 1.41: the name, asked once (onboarding no longer asks), from the day after the first study day. */}
+        {nameVisit && (
+          <View style={{ marginTop: space.xl }}>
+            <NameAskCard onGone={() => moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50)} />
+          </View>
+        )}
+        {/* Mobile 1.41: the opt-in Tester question (Help → I'm a beta tester). Never above the day's study. */}
+        {testerShown && !nameVisit && (
+          <View style={{ marginTop: space.xl }}>
+            <TesterQuestionCard card={testerShown} today={plan.day} onGone={() => moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50)} />
           </View>
         )}
         {credit.items > 0 && !credit.hidden && (
