@@ -831,7 +831,7 @@
         "Input validation",
         "Batch monitoring"
       ],
-      "_provenance": "Authored from concept: 'Hardware component categorization per ISACA Information Systems Audit and Assurance Standards'. Public sources: ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): hardware grouping aligned with the Review Manual (power and cooling as supporting environment). Rebalanced (Oct 2026): re-angled from 4A1 to 4A3. Rebalance review (Oct 2026): stem kept in the job-scheduling lane, away from d4_010.",
+      "_provenance": "Authored from concept: 'Hardware component categorization per ISACA Information Systems Audit and Assurance Standards'. Public sources: ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): hardware grouping aligned with common CISA study usage (power and cooling as supporting environment). Rebalanced (Oct 2026): re-angled from 4A1 to 4A3. Rebalance review (Oct 2026): stem kept in the job-scheduling lane, away from d4_010.",
       "style_version": 2
     },
     {
@@ -1011,7 +1011,7 @@
         "Final two: C beats A because criticality now demands managed controls; documentation still leaves payments on an uncontrolled tool.",
         "Exam cue: when an EUC tool becomes business-critical or a system of record, expect migration to a managed platform."
       ],
-      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 BAI03 (Managed Solutions Identification and Build); ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)",
+      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
       "related_concepts": [
         "End-user computing",
         "System of record",
@@ -2169,7 +2169,7 @@
       "correct": "D",
       "key_concept": "Before investing in a performance fix, establish the cause: workload analysis shows which option addresses the bottleneck and what it costs.",
       "pre_read": "The stem says FIRST. Ask whether the cause of the slowdown is known before money is committed.",
-      "correct_explanation": "Neither proposal is justified until the team knows why latency rose: inefficient queries, write contention or read load. Analyzing workload and the SLA effect of each option comes first and may show one, both or neither is needed. Adding replicas now and measuring later sounds pragmatic, but it commits recurring cost on an untested assumption that reads are the bottleneck.",
+      "correct_explanation": "Neither proposal is justified until the team knows why latency rose: inefficient queries, write contention (writes queuing for the same data) or read load. Analyzing workload and the effect of each option on the service level agreement (SLA) comes first and may show one, both or neither is needed. Adding replicas now and measuring later sounds pragmatic, but it commits recurring cost on an untested guess that reads are the bottleneck.",
       "wrong_explanations": {
         "A": "Approving both commits cost and a write-throughput penalty without knowing whether either addresses the cause.",
         "B": "Synchronous replication cuts write throughput and may worsen latency if writes are the real bottleneck.",
@@ -2187,7 +2187,7 @@
         "Synchronous replication",
         "Workload analysis"
       ],
-      "_provenance": "Authored from concept: 'Database performance vs availability tradeoff per ISACA Database Performance vs Availability guidance'. Public sources: ISACA, DAMA. Scenario specifics (B2B SaaS, 1.4K customers, 80/20 read split, P99 50→320ms over 6 months, $180K replicas vs 40% throughput sync, CTO/CFO positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Database performance vs availability tradeoff per ISACA Database Performance vs Availability guidance'. Public sources: ISACA, DAMA. Scenario specifics (B2B SaaS, 1.4K customers, 80/20 read split, P99 50→320ms over 6 months, $180K replicas vs 40% throughput sync, CTO/CFO positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): glossed write contention and SLA.",
       "style_version": 2
     },
     {
@@ -2985,24 +2985,24 @@
       "principle_id": "people-contain-preserve",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "During a 340 Gbps DDoS attack, on-premises rate limiting is saturated and a contracted cloud mitigation service is not yet active. Which action would the IS auditor consider MOST appropriate for management to take FIRST?",
+      "question": "During a large DDoS attack, on-premises rate limiting is saturated, and a contracted cloud scrubbing service is on standby but has not been activated. What should the IS auditor expect management to do FIRST?",
       "options": {
         "A": "Disconnect customer-facing services until the attack ends",
-        "B": "Redirect traffic through the pre-arranged scrubbing provider",
-        "C": "Notify the regulator before taking any mitigation action",
+        "B": "Activate the scrubbing service and route traffic through it",
+        "C": "Geo-block the countries sending the most attack traffic",
         "D": "Capture attack traffic samples to establish the root cause"
       },
       "correct": "B",
       "key_concept": "During an active incident, contain and restore service first using pre-arranged mitigation; root-cause analysis follows but is never skipped.",
       "pre_read": "Note what is already contracted and what is failing. Ask what restores service fastest without harming customers.",
-      "correct_explanation": "The on-premises defense is saturated and a contracted mitigation service is ready, so activating it per the playbook contains the attack and restores service fastest. Capturing traffic samples for root cause is valuable evidence work, but doing it first leaves customers degraded. In incident response, containment and service restoration come first; root-cause analysis follows once the service is stable.",
+      "correct_explanation": "The on-premises defense is saturated and a contracted scrubbing service (a provider that filters attack traffic out before it reaches the network) is on standby, so activating it contains the attack and restores service fastest. Capturing traffic samples for root cause is valuable evidence work, but doing it first leaves customers degraded. Containment and service restoration come first; root-cause analysis follows once the service is stable.",
       "wrong_explanations": {
         "A": "Going fully offline achieves the attacker's goal for them. Mitigation exists to keep legitimate traffic flowing.",
-        "C": "Notification duties run in parallel with response and never require halting mitigation of an active attack.",
+        "C": "Attack traffic usually comes from botnets worldwide; blocking on saturated on-premises equipment cannot absorb the volume and also blocks legitimate customers.",
         "D": "Evidence collection and root cause matter, but they follow containment. Delaying mitigation prolongs customer impact."
       },
       "tips": [
-        "Eliminate: A completes the denial of service, and C wrongly makes notification a precondition for containment.",
+        "Eliminate: A completes the denial of service, and C blocks legitimate customers without relieving the saturated link.",
         "Final two: B beats D because containment and service restoration come before root-cause work, which follows later.",
         "Exam cue: during an active incident, contain and restore FIRST; investigate root cause afterwards, never skip it."
       ],
@@ -3013,7 +3013,7 @@
         "Incident command",
         "Cyber resilience"
       ],
-      "_provenance": "Authored from concept: 'DDoS active response per ISACA DDoS Response guidance and NIST SP 800-184'. Public sources: ISACA, NIST. Scenario specifics (e-commerce, 8.4M customers, 21:30 attack, 340 Gbps multi-vector, four existing protections, 25-min cloud DDoS propagation, CISO/CIO on call) invented for this question. Varies analysis-tier template per D4-3 reviewer feedback — incident response scenario rather than stakeholder conflict. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; key and options unchanged. Metadata refresh (Oct 2026): related_concepts no longer names the CISO. Fourth pass (polish, Oct 2026): wording and metadata fixes from the last blind test; key unchanged.",
+      "_provenance": "Authored from concept: 'DDoS active response per ISACA DDoS Response guidance and NIST SP 800-184'. Public sources: ISACA, NIST. Scenario specifics (e-commerce, 8.4M customers, 21:30 attack, 340 Gbps multi-vector, four existing protections, 25-min cloud DDoS propagation, CISO/CIO on call) invented for this question. Varies analysis-tier template per D4-3 reviewer feedback — incident response scenario rather than stakeholder conflict. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; key and options unchanged. Metadata refresh (Oct 2026): related_concepts no longer names the CISO. Fourth pass (polish, Oct 2026): wording and metadata fixes from the last blind test; key unchanged. Content review (Oct 2026): stem now says the contracted scrubbing service is on standby, matching the key's wording; glossed scrubbing; replaced the regulator-notice distractor with geo-blocking; simplified the stacked priority wording.",
       "style_version": 2
     },
     {
@@ -3794,39 +3794,38 @@
     {
       "id": "d4_102",
       "domain": 4,
-      "subtopic": "IPv4 vs IPv6 Addressing Fundamentals",
-      "difficulty": "foundational",
-      "bloom_level": "Foundational",
+      "subtopic": "IPv6. Dual-Stack Perimeter Exposure",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "question": "An IS auditor finds IPv6 enabled by default on servers, while perimeter firewalls filter only IPv4 packets. Which risk is GREATEST?",
       "options": {
-        "A": "Attackers reaching hosts over unfiltered IPv6 traffic paths",
+        "A": "Attackers reaching servers over traffic the perimeter never inspects",
         "B": "Auto-configured addresses complicating the asset inventory records",
-        "C": "The IPv6 address space proving too small for the server estate",
-        "D": "IPv6 lacking any built-in support for IPsec encryption"
+        "C": "Monitoring tools failing to parse IPv6 addresses in security alerts",
+        "D": "Neighbor Discovery spoofing between servers on the same internal segment"
       },
       "correct": "A",
-      "key_concept": "IPv6 left enabled but uninspected creates a parallel, unfiltered path; dual-stack networks need equivalent controls for both protocols.",
-      "pre_read": "Recall the basic IPv4 and IPv6 facts: address length and IPsec design. Then ask which gap lets traffic bypass controls.",
-      "correct_explanation": "Servers with IPv6 enabled can be reached over a protocol the firewalls do not inspect, so the perimeter control is bypassed entirely. That direct exposure to attack is the greatest risk. Stateless address autoconfiguration can make asset inventories harder to keep accurate, which is a real governance issue, but it does not by itself let attackers through a control that the organization believes is working.",
+      "key_concept": "IPv6 left enabled but uninspected creates a parallel, unfiltered path; dual-stack networks (running IPv4 and IPv6 together) need equal controls for both.",
+      "pre_read": "Notice which traffic the firewalls inspect and which they do not. Ask which gap lets an attacker past a control everyone trusts.",
+      "correct_explanation": "Servers with IPv6 enabled can be reached over a protocol the firewalls do not inspect, so the perimeter control is bypassed entirely and outsiders can attack directly. Neighbor Discovery spoofing (faking IPv6 address announcements on a local network) is a real IPv6 weakness, but it needs an attacker already on the internal segment; the uninspected path gives outsiders that foothold.",
       "wrong_explanations": {
-        "B": "SLAAC addresses can complicate inventory, but this is an administrative weakness. It does not open an unmonitored attack path through the perimeter.",
-        "C": "IPv6 uses 128-bit addresses, far larger than IPv4's 32-bit space. Address shortage is an IPv4 problem, not an IPv6 one.",
-        "D": "IPsec was designed into IPv6 from the start. The protocol does not lack encryption support."
+        "B": "Self-assigned IPv6 addresses (SLAAC) can complicate inventory, but this is an administrative weakness; it does not open an attack path through the perimeter.",
+        "C": "Nothing in the stem shows a monitoring gap, and alert parsing affects detection after the fact, not the open path in.",
+        "D": "Neighbor Discovery spoofing is an IPv6 risk only for an attacker already inside the segment; the uninspected perimeter path is open to anyone outside."
       },
       "tips": [
-        "Eliminate: C reverses the address sizes, since IPv6 is 128-bit, and D is wrong because IPsec was designed into IPv6.",
-        "Final two: A beats B because an uninspected protocol bypasses the perimeter, while inventory drift is an administrative weakness.",
+        "Eliminate: B is an administrative inventory issue, and C assumes a monitoring gap the stem never shows.",
+        "Final two: A beats D because the uninspected path is open to any outsider, while Neighbor Discovery spoofing needs a foothold inside first.",
         "Exam cue: a control that silently misses part of the traffic is worse than one that is merely hard to manage."
       ],
-      "framework_ref": "RFC 791 (Internet Protocol); RFC 8200 (Internet Protocol Version 6 Specification); NIST SP 800-119 (Guidelines for the Secure Deployment of IPv6); RFC 4632 (Classless Inter-domain Routing (CIDR))",
+      "framework_ref": "RFC 791 (Internet Protocol); RFC 8200 (Internet Protocol Version 6 Specification); NIST SP 800-119 (Guidelines for the Secure Deployment of IPv6)",
       "related_concepts": [
-        "IPv4 exhaustion",
-        "IPv6 SLAAC",
-        "CIDR",
-        "IPsec",
-        "Dual-stack"
+        "Dual-stack networks",
+        "Perimeter filtering",
+        "Neighbor Discovery spoofing",
+        "IPv6 SLAAC"
       ],
-      "_provenance": "Authored from concept: 'IPv4/IPv6 fundamentals per IETF and NIST SP 800-119'. Public sources: IETF RFCs, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'IPv4/IPv6 fundamentals per IETF and NIST SP 800-119'. Public sources: IETF RFCs, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): key no longer echoes the stem's 'filter'/'IPv6'; replaced two factually false distractors with plausible operational ones; glossed SLAAC and dual-stack; dropped an irrelevant CIDR cite. Content review round 2 (Oct 2026): D replaced with a real IPv6 exposure (Neighbor Discovery spoofing) as the runner-up so the key is not the only security option; tier moved to application.",
       "style_version": 2
     },
     {
@@ -3894,7 +3893,7 @@
         "Final two: B beats A because the RTO should minimize total cost; the fastest recovery can cost more than it saves.",
         "Exam cue: an RTO is a cost balance, with outage losses rising over time while recovery costs fall."
       ],
-      "framework_ref": "ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience); NIST SP 800-34 Rev 1 Section 3.2",
+      "framework_ref": "NIST SP 800-34 Rev 1 Section 3.2",
       "related_concepts": [
         "Recovery time objective",
         "Outage cost",
@@ -3910,25 +3909,25 @@
       "subtopic": "Log Management. Unreviewed Logs",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds operational logs from critical systems are collected centrally, but no one is assigned to review them. What should the auditor recommend as BEST?",
+      "question": "An IS auditor finds operational logs from critical systems are collected centrally, but there is no evidence anyone examines them. What should the auditor recommend as BEST?",
       "options": {
-        "A": "Assign log review owners with risk-based review frequencies",
-        "B": "Collect logs from more systems into the central platform",
+        "A": "Designate accountable reviewers with risk-based review frequencies",
+        "B": "Schedule a quarterly internal audit review of log samples",
         "C": "Increase central log storage so records are not overwritten",
         "D": "Configure automated alerts that email the shared IT mailbox"
       },
       "correct": "A",
       "key_concept": "Log management requires assigned, risk-based review with follow-up; collection and storage alone detect nothing.",
       "pre_read": "Notice the logs are collected but unreviewed. Ask what value they provide until someone looks.",
-      "correct_explanation": "Collected logs are only a control when someone is accountable for reviewing them and acting on what they show. Assigning owners, with review frequency and scope set by each system's risk, turns collection into monitoring. Automated alerts are valuable, but sending them to a shared mailbox with no named owner means everyone assumes someone else is looking, so significant events still go unexamined.",
+      "correct_explanation": "Collected logs are only a control when someone is accountable for reviewing them and acting on what they show. Designating accountable reviewers, with review frequency and scope set by each system's risk, turns collection into monitoring. Automated alerts are valuable, but sending them to a shared mailbox with no named owner means everyone assumes someone else is looking, so significant events still go unexamined.",
       "wrong_explanations": {
-        "B": "More sources add more unreviewed data; the gap is review, not collection.",
+        "B": "Log review is management's ongoing monitoring duty; a quarterly audit sample cannot replace routine review, and having audit run the control would impair its independence.",
         "C": "More storage keeps logs longer, but still nobody looks at them.",
         "D": "Alerts to a shared mailbox lack an accountable owner, so they are easily ignored."
       },
       "tips": [
-        "Eliminate: B and C collect or keep more data without anyone reviewing it.",
-        "Final two: A beats D because accountable owners ensure review and follow-up; unowned alerts are easily ignored.",
+        "Eliminate: B makes internal audit perform management's monitoring, and C keeps more data without anyone reviewing it.",
+        "Final two: A beats D because accountable reviewers ensure review and follow-up; unowned alerts are easily ignored.",
         "Exam cue: logging is a control only when review is assigned, scheduled by risk and acted on."
       ],
       "framework_ref": "NIST SP 800-53 Rev 5 AU-6 (Audit Record Review, Analysis, and Reporting); CIS Controls v8 Safeguard 8.11 (Conduct Audit Log Reviews); NIST SP 800-92 (Guide to Computer Security Log Management)",
@@ -3938,7 +3937,7 @@
         "Risk-based monitoring",
         "Alert ownership"
       ],
-      "_provenance": "Authored from concept: 'SIEM alert governance per NIST SP 800-92 and MITRE ATT&CK detection engineering'. Public sources: NIST, MITRE, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): SOAR acronym replaced with plain wording. Rebalanced (Oct 2026): re-angled from 5B4 to 4A9.",
+      "_provenance": "Authored from concept: 'SIEM alert governance per NIST SP 800-92 and MITRE ATT&CK detection engineering'. Public sources: NIST, MITRE, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): SOAR acronym replaced with plain wording. Rebalanced (Oct 2026): re-angled from 5B4 to 4A9. Content review (Oct 2026): stem states the gap as an observed fact instead of naming the missing owner; B replaced with an auditor-versus-management trap.",
       "style_version": 2
     },
     {
@@ -4006,7 +4005,7 @@
         "Final two: B beats D because testing proves the logic is right; prompt records only show how it was produced.",
         "Exam cue: AI-generated code or content in a critical process needs the same review and testing as human work."
       ],
-      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); COBIT 2019 DSS06 (Managed Business Process Controls); ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)",
+      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); COBIT 2019 DSS06 (Managed Business Process Controls)",
       "related_concepts": [
         "Shadow AI",
         "End-user computing",
@@ -9272,15 +9271,15 @@
     {
       "id": "d4_245",
       "domain": 4,
-      "subtopic": "Monitoring Agent Rollout. Rollout Decision",
+      "subtopic": "Endpoint Agent Rollout. Rollout Decision",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Management plans to release a keystroke-monitoring agent to 2,400 laptops in the US, EU and India before its 50-laptop pilot finishes. What should the IS auditor recommend FIRST?",
+      "question": "Management plans to release an endpoint management agent to 2,400 laptops before its 50-laptop pilot finishes. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Hold the release until pilot results and change approval are in",
+        "A": "Hold the release until pilot results and change approval are complete",
         "B": "Release to one region now and expand as issues are fixed",
         "C": "Deploy everywhere and roll back any laptops that report problems",
-        "D": "Deploy globally once counsel approves jurisdiction-specific privacy notices"
+        "D": "Deploy fleet-wide once the vendor certifies the pilot build"
       },
       "correct": "A",
       "key_concept": "A release reaches production only after pilot or test evidence is reviewed and change approval is granted, with a tested backout plan.",
@@ -9289,21 +9288,21 @@
       "wrong_explanations": {
         "B": "Phasing limits blast radius but still deploys a build whose pilot has not finished, so production users become the test group.",
         "C": "Fleet-wide deployment with reactive rollback assumes a tested backout exists and accepts widespread disruption before problems are known.",
-        "D": "Privacy notices address transparency, not release readiness; the agent would still ship without pilot results or change approval."
+        "D": "Vendor certification shows the build passed the vendor's tests, not that it works on this fleet; the pilot exists to prove that."
       },
       "tips": [
-        "Eliminate: C deploys fleet-wide on untested rollback, and D treats privacy notices as release readiness.",
+        "Eliminate: C deploys fleet-wide on untested rollback, and D swaps the organization's own pilot evidence for the vendor's word.",
         "Final two: A beats B because a regional rollout still releases an unvalidated build; pilot evidence and approval come first.",
         "Exam cue: a pilot exists to gate the release, so do not release before its results are reviewed and approved."
       ],
-      "framework_ref": "ITIL 4 Release Management practice; ITIL 4 Deployment Management practice; COBIT 2019 BAI06 (Managed IT Changes); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); GDPR Article 88 (Processing in the Context of Employment)",
+      "framework_ref": "ITIL 4 Release Management practice; ITIL 4 Deployment Management practice; COBIT 2019 BAI06 (Managed IT Changes); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
         "Release readiness",
         "Pilot results",
         "Change approval",
         "Deployment hold"
       ],
-      "_provenance": "Authored from concept: 'Cross-border employee monitoring multi-jurisdiction'. Public sources: EU GDPR, German labor law, French CNIL, UK ICO. Scenario specifics (multinational tech firm $820M ARR, ~2,460 employees across US/EU/UK/India, multi-modality monitoring, works council objections) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
+      "_provenance": "Authored from concept: 'Cross-border employee monitoring multi-jurisdiction'. Public sources: EU GDPR, German labor law, French CNIL, UK ICO. Scenario specifics (multinational tech firm $820M ARR, ~2,460 employees across US/EU/UK/India, multi-modality monitoring, works council objections) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit. Content review (Oct 2026): made the agent neutral (was keystroke monitoring across the US, EU and India, which raised an unaddressed employee-privacy and lawfulness issue); replaced the privacy-notice distractor with vendor certification; dropped the GDPR Article 88 cite. Content review round 2 (Oct 2026): subtopic renamed to match the neutral endpoint agent.",
       "style_version": 2
     },
     {
@@ -9791,7 +9790,7 @@
         "Final two: C beats D because a defined restart point prevents duplicates; monthly reconciliation finds them weeks later.",
         "Exam cue: for failed batch jobs, look for restart and rerun controls that process each record exactly once."
       ],
-      "framework_ref": "COBIT 2019 DSS01 (Managed Operations); ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)",
+      "framework_ref": "COBIT 2019 DSS01 (Managed Operations)",
       "related_concepts": [
         "Batch processing",
         "Checkpoint restart",
@@ -9967,7 +9966,7 @@
         "Final two: A beats B because shared criteria create real priorities; self-ratings make everything critical.",
         "Exam cue: BIA priorities come from defined impact criteria applied consistently, agreed by senior management."
       ],
-      "framework_ref": "ISO 22301:2019 clause 8.2.2; NIST SP 800-34 Rev 1 Section 3.2; ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)",
+      "framework_ref": "ISO 22301:2019 clause 8.2.2; NIST SP 800-34 Rev 1 Section 3.2",
       "_provenance": "Authored from concept: 'BIA primary purpose per ISO 22301:2019 and NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: ISO 22301:2019 clause 8.2.2, NIST SP 800-34 Rev 1 Section 3.2. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
       "style_version": 2
     },
@@ -9999,8 +9998,8 @@
         "Final two: D beats C because only current replicated data meets near-zero data loss; a warm site restores from backup.",
         "Exam cue: match site type to both objectives; short RTO plus tiny RPO means hot."
       ],
-      "framework_ref": "NIST SP 800-34 Rev 1 Section 3.4.2 Alternate Sites; ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)",
-      "_provenance": "Authored from concept: 'Hot/warm/cold site definitions per NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: NIST SP 800-34 Rev 1 Section 3.4.2, ISACA CISA Review Manual. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "framework_ref": "NIST SP 800-34 Rev 1 Section 3.4.2 Alternate Sites",
+      "_provenance": "Authored from concept: 'Hot/warm/cold site definitions per NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: NIST SP 800-34 Rev 1 Section 3.4.2. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
       "style_version": 2
     },
     {
@@ -10062,8 +10061,8 @@
         "Final two: B beats C because mirroring copies corruption to both disks instantly; it protects only against hardware failure.",
         "Exam cue: RAID is availability, not backup; it protects against disk failure, never against bad data."
       ],
-      "framework_ref": "Storage Networking Industry Association (SNIA) Common RAID Disk Data Format Specification; ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)",
-      "_provenance": "Authored from concept: 'RAID 1 mirroring definition'. Foundational recall tier. Public sources: SNIA Common RAID DDF, ISACA CISA Review Manual. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "framework_ref": "Storage Networking Industry Association (SNIA) Common RAID Disk Data Format Specification",
+      "_provenance": "Authored from concept: 'RAID 1 mirroring definition'. Foundational recall tier. Public sources: SNIA Common RAID DDF. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
     },
     {

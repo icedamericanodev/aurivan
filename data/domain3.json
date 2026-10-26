@@ -662,7 +662,7 @@
       "subtopic": "Failed UAT. Auditor Escalation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Four weeks before an ERP go-live, only 47% of UAT cases have passed against agreed exit criteria. What is the IS auditor's MOST appropriate recommendation to the steering committee?",
+      "question": "Four weeks before an ERP go-live, only 47% of user acceptance testing (UAT) cases have passed against agreed exit criteria. What is the IS auditor's MOST appropriate recommendation to the steering committee?",
       "options": {
         "A": "Re-scope UAT to remove failing cases so the criteria are met",
         "B": "Have the audit team re-execute the failed cases independently",
@@ -670,9 +670,9 @@
         "D": "Go live on schedule, moving failed cases to Phase 2"
       },
       "correct": "C",
-      "key_concept": "UAT exit criteria decide go-live readiness; the auditor recommends meeting them, with any deviation formally documented by the steering committee.",
+      "key_concept": "UAT exit criteria decide go-live readiness; the auditor recommends meeting them rather than moving failures to a later phase.",
       "pre_read": "Compare the pass rate with the agreed criteria. Ask which option keeps the criteria meaningful and the auditor independent.",
-      "correct_explanation": "Agreed exit criteria are the control that decides readiness. With fewer than half the cases passed, the auditor should recommend deferring go-live until a further cycle meets them, with any deviation formally documented by the steering committee. Phase 2 deferral is the runner-up: it meets the date, but it accepts large untested risk without meeting the agreed criteria.",
+      "correct_explanation": "Agreed exit criteria are the control that decides readiness. With fewer than half the cases passed, the auditor should recommend deferring go-live until a further cycle meets them. Moving failed cases to Phase 2 is the tempting option: it meets the date, but it accepts large untested risk without meeting the agreed criteria.",
       "wrong_explanations": {
         "A": "Removing failing cases hides the problem and makes the exit criteria meaningless. It defeats the control.",
         "B": "Executing tests is management's job. Audit performing them would impair independence and not fix the defects.",
@@ -681,7 +681,7 @@
       "tips": [
         "Eliminate: A manipulates the scope to fake a pass, and B has the auditor perform management's testing.",
         "Final two: C beats D because agreed exit criteria should decide readiness; going live on schedule accepts major untested risk.",
-        "Exam cue: when testing fails its exit criteria, the auditor recommends holding to the criteria and documenting any deviation."
+        "Exam cue: when testing fails its exit criteria, the auditor recommends holding to the criteria, not shifting failures to a later phase."
       ],
       "framework_ref": "ISACA Systems Development and Project Management Audit Program; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 BAI11 (Managed Projects)",
       "related_concepts": [
@@ -691,7 +691,7 @@
         "Go-live decision",
         "Project governance"
       ],
-      "_provenance": "Authored from concept: 'Auditor recommendation on partial UAT pass rate per ISACA Project Audit and UAT Audit guidance'. Public sources: ISACA guidance, COBIT 2019. Scenario specifics (manufacturer, 14 countries, $3B, 22-week cutover, 47/31/22 split) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Auditor recommendation on partial UAT pass rate per ISACA Project Audit and UAT Audit guidance'. Public sources: ISACA guidance, COBIT 2019. Scenario specifics (manufacturer, 14 countries, $3B, 22-week cutover, 47/31/22 split) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): spelled out UAT; removed a leftover 'documented deviation' clause that confused the deferral advice.",
       "style_version": 2
     },
     {
@@ -1419,25 +1419,25 @@
       "principle_id": "root-cause-over-symptom",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A fraud-detection model's false-positive rate has risen from 4% to 11% in eight months, with no retraining or assigned model owner. What should the IS auditor recommend as the BEST response?",
+      "question": "A fraud-detection model's false-positive rate has risen from 4% to 11% in eight months; no one has been assigned to monitor it since go-live. What should the IS auditor recommend as the BEST response?",
       "options": {
-        "A": "Decommission the model and return to fully manual claim reviews",
+        "A": "Decommission the model and return to fully manual fraud reviews",
         "B": "Raise the alert threshold to cut false positives now",
-        "C": "Assign an owner and set drift alerts and retraining triggers",
-        "D": "Accept the rate, as it is typical for fraud-detection models"
+        "C": "Establish lifecycle governance with accountability and drift thresholds",
+        "D": "Commission an independent revalidation of the model now"
       },
       "correct": "C",
       "key_concept": "Production ML needs lifecycle governance: an accountable owner, drift monitoring, retraining triggers and performance gates.",
-      "pre_read": "Separate the symptom (rising errors) from the cause (no monitoring or owner). Ask which option fixes the cause.",
-      "correct_explanation": "The rising false-positive rate is a symptom; the root cause is the absence of lifecycle governance. An accountable owner, drift monitoring with thresholds, and defined retraining and performance gates keep the model reliable over time. Raising the alert threshold is the runner-up: it cuts false positives quickly, but it trades them for missed fraud and leaves the unowned model drifting.",
+      "pre_read": "Separate the symptom (rising errors) from the cause. Ask why the decline went unmanaged for eight months.",
+      "correct_explanation": "The rising false-positive rate is a symptom; the root cause is that no one monitors the model, so drift (accuracy falling as real data changes) went unaddressed for eight months. Lifecycle governance, with an accountable owner, drift thresholds and retraining triggers, keeps it reliable over time. An independent revalidation is the tempting option, but it checks only today's model; revalidation belongs inside the lifecycle.",
       "wrong_explanations": {
         "A": "Decommissioning discards a fixable model and returns to costly manual review, without addressing why degradation went unnoticed.",
-        "B": "A higher threshold cuts false positives but lets more fraud through. With no owner or monitoring, the model keeps drifting unnoticed.",
-        "D": "Accepting a near-tripling of false positives ignores the drift evidence and the missing governance behind it."
+        "B": "A higher threshold cuts false positives but lets more fraud through. Without monitoring or ownership, the model keeps drifting.",
+        "D": "Revalidation checks today's model, but without an owner, drift thresholds or retraining triggers, the next degradation would again go unmanaged."
       },
       "tips": [
-        "Eliminate: A abandons a fixable model, and D accepts degradation as normal.",
-        "Final two: C beats B because governance fixes the root cause, while tuning the threshold only shifts today's symptom.",
+        "Eliminate: A abandons a fixable model, and B trades false positives for missed fraud.",
+        "Final two: C beats D because governance keeps catching drift as it happens, while a one-time revalidation only checks today's model.",
         "Exam cue: when a symptom comes with a missing control framework, recommend the framework, not the one-time fix."
       ],
       "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); ISO/IEC 42001 (AI Management System); ISO/IEC 5338:2023 (AI System Life Cycle Processes)",
@@ -1448,7 +1448,7 @@
         "NIST AI RMF",
         "Production ML lifecycle"
       ],
-      "_provenance": "Authored from concept: 'MLOps governance for production ML per NIST AI RMF 1.0 and ISO/IEC 42001'. Public sources: NIST AI RMF, ISO/IEC 42001. Scenario specifics (health-insurance, 4M members, 5 states, fraud-detection model, 4%→11% FPR, 8 months in production, no re-training) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'MLOps governance for production ML per NIST AI RMF 1.0 and ISO/IEC 42001'. Public sources: NIST AI RMF, ISO/IEC 42001. Scenario specifics (health-insurance, 4M members, 5 states, fraud-detection model, 4%→11% FPR, 8 months in production, no re-training) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): stem no longer names the missing owner and retraining that only the key supplied; C reworded and D replaced with a one-time revalidation runner-up; option A no longer mentions claims. Content review round 2 (Oct 2026): stem now states that no one monitors the model, so the governance gap is given rather than inferred; explanation places revalidation inside the lifecycle.",
       "style_version": 2
     },
     {
@@ -2961,7 +2961,7 @@
       "correct": "B",
       "key_concept": "Performance tests are valid evidence only when staging matches production data volume, infrastructure tier and load patterns.",
       "pre_read": "Compare the test table size with production, then ask what the test result really proved.",
-      "correct_explanation": "The test passed because the environment did not resemble production: a tiny data set produced misleading query behavior. Testing is valid evidence only when conditions represent production, so staging needs realistic data volumes and a matching database tier. Expert code review helps, but query performance depends on data volume and execution plans that a reviewer cannot reliably predict from the code alone.",
+      "correct_explanation": "The test passed because the environment did not resemble production: a tiny data set produced misleading query behavior. Testing is valid evidence only when conditions represent production, so staging needs realistic data volumes and a matching database tier. Expert code review helps, but query performance depends on data volume and execution plans (how the database chooses to run a query) that a reviewer cannot predict from code alone.",
       "wrong_explanations": {
         "A": "Review can spot obvious inefficiency, but query behavior at scale depends on data volume, which only representative testing reveals.",
         "C": "Removing load testing discards the control instead of fixing it; the problem was unrepresentative conditions, not testing itself.",
@@ -2979,7 +2979,7 @@
         "Load testing",
         "Feature flags"
       ],
-      "_provenance": "Authored from concept: 'Production-fidelity staging per ISACA Production-Like Environment guidance and DORA research'. Public sources: ISACA, DORA. Scenario specifics (e-commerce, 15M users, $2.8B GMV, 18,000x slow query, 0.007% data volume, smaller DB tier, flash-sale outage) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Production-fidelity staging per ISACA Production-Like Environment guidance and DORA research'. Public sources: ISACA, DORA. Scenario specifics (e-commerce, 15M users, $2.8B GMV, 18,000x slow query, 0.007% data volume, smaller DB tier, flash-sale outage) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): glossed execution plans.",
       "style_version": 2
     },
     {
@@ -3098,38 +3098,38 @@
     {
       "id": "d3_083",
       "domain": 3,
-      "subtopic": "Behavior-Driven Development (BDD)",
+      "subtopic": "Behavior-Driven Development (BDD). Audit Evidence",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A project team adopts behavior-driven development. Which practice should the IS auditor expect as MOST characteristic of it?",
+      "question": "An IS auditor reviewing a behavior-driven development (BDD) project wants assurance that delivered features meet business requirements. Which evidence is MOST useful?",
       "options": {
-        "A": "Given-When-Then scenarios agreed by business, developers and testers",
-        "B": "Test scripts written by testers after the code is complete",
-        "C": "Failing unit tests written by developers before the code",
-        "D": "Acceptance tests owned by product managers, run by engineers"
+        "A": "Given-When-Then scenarios agreed with the business, run as tests",
+        "B": "A unit-test coverage report showing most code paths are exercised",
+        "C": "Developers' test logs showing builds passed before each release",
+        "D": "Business sign-off emails sent after each release has gone live"
       },
       "correct": "A",
-      "key_concept": "BDD is collaborative specification: business, developers and testers agree Given-When-Then scenarios before coding, which become executable tests.",
-      "pre_read": "Ask what separates BDD from other test-first approaches such as TDD.",
-      "correct_explanation": "Behavior-driven development is a collaboration practice. Business, development and testing agree plain-language Given-When-Then scenarios before coding, and those scenarios become executable acceptance tests and shared documentation. Writing failing unit tests first is test-driven development: it is test-first too, but it is a developer activity at code level and lacks the shared business-readable specification that defines BDD.",
+      "key_concept": "In BDD, business-agreed Given-When-Then scenarios run as automated acceptance tests, so they show each requirement was both specified and verified.",
+      "pre_read": "Ask which evidence links each delivered feature back to a requirement the business agreed.",
+      "correct_explanation": "In behavior-driven development, business, developers and testers agree plain-language Given-When-Then scenarios before coding, and those scenarios run as automated acceptance tests. Passing scenarios therefore show, requirement by requirement, that delivered behavior matches what the business agreed. Post-release sign-off emails are the tempting option: they show business approval, but they are informal, come after go-live and do not tie approval to specific tested behavior.",
       "wrong_explanations": {
-        "B": "Writing tests after the code reverses BDD, which specifies behavior before development starts.",
-        "C": "This describes test-driven development: test-first, but developer-only and at unit level, without shared business-readable scenarios.",
-        "D": "Giving product managers sole ownership removes the joint authoring between business, development and testing that BDD depends on."
+        "B": "Coverage shows how much code the unit tests exercise, not whether features do what the business asked for.",
+        "C": "Developer test logs show builds passed the developers' own tests; they say nothing about business requirements.",
+        "D": "Sign-off emails after go-live are informal and late, and they do not link approval to specific tested behavior."
       },
       "tips": [
-        "Eliminate: B tests after coding, and D removes the joint authoring BDD relies on.",
-        "Final two: A beats C because BDD is defined by shared business-readable scenarios, not by test-first unit coding alone.",
-        "Exam cue: BDD means three roles agreeing behavior in plain language; TDD means developers writing unit tests first."
+        "Eliminate: B and C measure developers' code testing, not whether features meet business requirements.",
+        "Final two: A beats D because agreed scenarios run as tests prove each requirement; sign-off emails after go-live are informal and untied to tests.",
+        "Exam cue: for assurance that requirements are met, look for evidence that links business-agreed criteria to executed tests."
       ],
-      "framework_ref": "Behavior-Driven Development (Dan North); ISTQB Foundation Level Syllabus",
+      "framework_ref": "Behavior-Driven Development (Dan North); ISTQB Foundation Level Syllabus; ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
         "BDD",
         "Given-When-Then",
-        "Cucumber",
-        "Specification by example"
+        "Acceptance testing evidence",
+        "Requirements traceability"
       ],
-      "_provenance": "Authored from concept: 'BDD practice per Dan North and Cucumber/Gherkin framework'. Public sources: BDD literature, Cucumber documentation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'BDD practice per Dan North and Cucumber/Gherkin framework'. Public sources: BDD literature, Cucumber documentation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a methodology-definition recall stem into an auditor evidence judgment on a BDD project. Content review round 2 (Oct 2026): added evidence and acceptance cites.",
       "style_version": 2
     },
     {
@@ -3249,35 +3249,35 @@
       "subtopic": "Release Management. Deployment Strategy",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A team wants to limit the impact of failed releases while validating them with real customer traffic. Which approach should the IS auditor consider MOST suitable?",
+      "question": "After a defective release disrupted payments, management proposes blue-green deployment, with both environments built from one template, for a payment app. Which risk should the IS auditor raise as GREATEST?",
       "options": {
-        "A": "Blue-green cutover of every user's traffic with instant switch-back",
-        "B": "A full rehearsal in a pre-production copy of the environment",
-        "C": "Shifting a small share of live traffic, expanding if healthy",
-        "D": "A month-long internal staff release before external rollout"
+        "A": "A defect reaches every customer at once before switch-back",
+        "B": "Change approvals relaxed because switching back looks easy",
+        "C": "The idle environment drifting out of step with live settings",
+        "D": "Customers facing long downtime while traffic switches between environments"
       },
-      "correct": "C",
-      "key_concept": "A canary release routes a small share of live traffic to the new version and widens it only while health signals hold.",
-      "pre_read": "Ask how many customers each option exposes if the new release is faulty.",
-      "correct_explanation": "A canary release sends a small share of real customer traffic to the new version, watches error and latency signals, and widens the share only while they stay healthy. A failure therefore affects few users. Blue-green deployment allows a fast switch back, but every customer is moved at once, so a defect hits everyone before the rollback happens.",
+      "correct": "A",
+      "key_concept": "Blue-green deployment moves all users at once; it limits downtime, not exposure, so a defect reaches every customer until switch-back.",
+      "pre_read": "Recall what blue-green deployment limits and what it does not. Then picture the next faulty release.",
+      "correct_explanation": "Blue-green deployment keeps two identical environments and switches all traffic to the new one at once. It allows a fast switch back and near-zero downtime, but every customer meets a defect before anyone reverses it, repeating the failed release's harm. Environment drift is the tempting option: it is a real concern, but defining both environments from the same templates controls it. A canary release (a small share of traffic first) would limit exposure.",
       "wrong_explanations": {
-        "A": "Blue-green limits downtime, but it exposes all customers at once; the impact of a defect is not limited to a few.",
-        "B": "A pre-production rehearsal never sees real customer traffic, so it cannot validate behavior under real use.",
-        "D": "Staff traffic is not customer traffic; an internal release delays external validation rather than providing it."
+        "B": "Blue-green changes how a release is deployed, not whether it needs approval; change management still applies to every release.",
+        "C": "Both environments are built from one template, which controls drift; all-at-once exposure is built into blue-green and no template removes it.",
+        "D": "Blue-green switches traffic almost instantly, so long downtime is the problem it solves, not one it creates."
       },
       "tips": [
-        "Eliminate: B never meets real customer traffic, and D validates only with staff.",
-        "Final two: C beats A because exposing a small share first limits impact, while blue-green exposes everyone before switching back.",
-        "Exam cue: limiting blast radius with real traffic points to canary; fast full switch-back points to blue-green."
+        "Eliminate: B assumes change approval lapses, which blue-green does not cause, and D gets blue-green backwards, since it avoids downtime.",
+        "Final two: A beats C because exposing every customer at once is built into blue-green, while drift is controlled by building both environments from the same templates.",
+        "Exam cue: blue-green limits downtime, canary limits exposure; match the deployment strategy to the risk the stem names."
       ],
       "framework_ref": "Continuous Delivery (Humble & Farley); DORA / Accelerate (DevOps Research and Assessment); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
+        "Blue-green deployment",
         "Canary deployment",
-        "Progressive delivery",
         "Blast radius",
-        "DORA"
+        "Progressive delivery"
       ],
-      "_provenance": "Authored from concept: 'Canary deployment strategy per Continuous Delivery and DORA research'. Public sources: Humble & Farley, DORA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Canary deployment strategy per Continuous Delivery and DORA research'. Public sources: Humble & Farley, DORA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a canary-definition recall stem into an auditor risk judgment on a blue-green proposal. Content review round 2 (Oct 2026): stem now names the harm of the failed release; hosting-cost distractor replaced with a change-approval risk; drift rebuttal now names version-controlled templates.",
       "style_version": 2
     },
     {
@@ -3579,9 +3579,9 @@
       "principle_id": "governance-before-technology",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A business case lists benefits such as improved efficiency and better customer experience, with no measures or owners. What should the IS auditor recommend as BEST before approval?",
+      "question": "A business case lists benefits such as improved efficiency and better customer experience, stated only in general terms. What should the IS auditor recommend as BEST before approval?",
       "options": {
-        "A": "Remove the benefits that cannot be stated in financial terms",
+        "A": "Convert every benefit into a financial value before approval",
         "B": "Ask IT to track the benefits once the system is live",
         "C": "Define measurable targets with a business owner for each benefit",
         "D": "Approve now and have the project manager define benefits after go-live"
@@ -3589,15 +3589,15 @@
       "correct": "C",
       "key_concept": "Every promised benefit needs a measurable target, a baseline and a named business owner before the investment is approved.",
       "pre_read": "Ask how anyone could later prove these benefits arrived, and who would answer if they did not.",
-      "correct_explanation": "Benefits that are vague and unowned cannot be measured or managed, so the case should state each benefit with a measurable target, a baseline and a named business owner accountable for realizing it. Having IT track benefits is the runner-up: tracking is needed, but IT does not own business outcomes, and without defined targets there is nothing meaningful to track.",
+      "correct_explanation": "Benefits stated in general terms cannot be measured or managed, so the case should give each benefit a measurable target, a baseline and a named business owner accountable for realizing it. Converting every benefit into money is the tempting option: it looks rigorous, but non-financial benefits can be measured without a price, and a valuation with no owner leaves no one accountable for delivering it.",
       "wrong_explanations": {
-        "A": "Non-financial benefits can be valid if they are measurable. Removing them can undervalue a sound investment.",
+        "A": "Forcing a financial value on every benefit can distort ones that are measurable in their own terms, and it still names no owner.",
         "B": "IT can supply data, but business owners are accountable for benefits, and undefined benefits give nothing to track.",
         "D": "Defining benefits after go-live lets the review measure whatever happened, and the project manager does not own business outcomes. Targets must be set before approval."
       },
       "tips": [
-        "Eliminate: A discards valid non-financial benefits, and D sets targets after the results are known.",
-        "Final two: C beats B because benefits need a measurable target and a business owner; IT tracking supplies neither.",
+        "Eliminate: B hands benefits to IT after go-live, and D sets targets after the results are known.",
+        "Final two: C beats A because measurable targets need not be financial, and only a named business owner makes someone accountable.",
         "Exam cue: every promised benefit should be measurable and owned by the business before the investment is approved."
       ],
       "framework_ref": "ISACA Val IT Framework; COBIT 2019 EDM02 (Ensured Benefits Delivery); COBIT 2019 APO05 (Managed Portfolio)",
@@ -3606,7 +3606,7 @@
         "Benefits ownership",
         "Measurable benefits"
       ],
-      "_provenance": "Authored from concept: 'GDPR Article 33 72-hour notification with supplemental follow-up per Article 33(4) and EDPB Guidelines'. Public sources: GDPR, EDPB. Scenario specifics (multinational consumer-services, 18M EU + 12M US subjects, internal audit script exfiltration, 14:00 Tuesday awareness, Friday 14:00 deadline) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): CPO acronym removed; options rewritten as full statements. Rebalanced (Oct 2026): re-angled from 2A6 to 3A2. Rebalance review (Oct 2026): distractor D names a role (owner-cue fix).",
+      "_provenance": "Authored from concept: 'GDPR Article 33 72-hour notification with supplemental follow-up per Article 33(4) and EDPB Guidelines'. Public sources: GDPR, EDPB. Scenario specifics (multinational consumer-services, 18M EU + 12M US subjects, internal audit script exfiltration, 14:00 Tuesday awareness, Friday 14:00 deadline) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): CPO acronym removed; options rewritten as full statements. Rebalanced (Oct 2026): re-angled from 2A6 to 3A2. Rebalance review (Oct 2026): distractor D names a role (owner-cue fix). Content review (Oct 2026): stem no longer names the missing measures and owners that only the key supplied; A replaced with a financial-valuation runner-up.",
       "style_version": 2
     },
     {
@@ -4676,7 +4676,7 @@
         "Exam cue: anchor on requirements before design and test before deploy; any option breaking either is wrong."
       ],
       "framework_ref": "ISO/IEC 12207 (Software Life Cycle Processes); NIST SP 800-160 Vol 1 (Systems Security Engineering); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
-      "_provenance": "Authored from concept: 'SDLC phases (waterfall: requirements -> design -> build -> test -> deploy -> maintain)'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; NIST SP 800-160. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem reframed around phase gating.",
+      "_provenance": "Authored from concept: 'SDLC phases (waterfall: requirements -> design -> build -> test -> deploy -> maintain)'. Foundational recall tier. Public sources: NIST SP 800-160. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem reframed around phase gating.",
       "style_version": 2
     },
     {
@@ -4769,7 +4769,7 @@
         "Exam cue: UAT sits after system testing and before cutover, in a production-like environment, run by business users."
       ],
       "framework_ref": "ISTQB Foundation Level Syllabus; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
-      "_provenance": "Authored from concept: 'UAT (User Acceptance Testing) purpose and timing'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; ISTQB Foundation Level syllabus. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to UAT timing to avoid overlap with d3_003/d3_029. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'UAT (User Acceptance Testing) purpose and timing'. Foundational recall tier. Public sources: ISTQB Foundation Level syllabus. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to UAT timing to avoid overlap with d3_003/d3_029. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
       "style_version": 2
     },
     {
@@ -4838,7 +4838,7 @@
         "Exam cue: for escrow assurance, an independent periodic test build beats any vendor assertion, however often it is made."
       ],
       "framework_ref": "ISO/IEC 27002:2022 Control 8.30 (Outsourced Development); NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management); COBIT 2019 APO10 (Managed Vendors)",
-      "_provenance": "Authored from concept: 'Source code escrow purpose'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; NIST SP 800-161r1 Supply Chain Risk Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to escrow verification to avoid overlap with d3_015. v2: de-cued (key states an annual agent verification, so interval words also appear in keys).",
+      "_provenance": "Authored from concept: 'Source code escrow purpose'. Foundational recall tier. Public sources: NIST SP 800-161r1 Supply Chain Risk Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to escrow verification to avoid overlap with d3_015. v2: de-cued (key states an annual agent verification, so interval words also appear in keys).",
       "style_version": 2
     },
     {

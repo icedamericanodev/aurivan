@@ -67,7 +67,9 @@
               "why_it_matters": "It tells the IS auditor what must happen on every engagement and what can be adapted. Many exam questions turn on which layer a requirement belongs to.",
               "how_it_works": [
                 "Standards are mandatory minimum requirements for ISACA members and certification holders on every audit and assurance engagement.",
-                "Standards come in three groups: general (charter, independence, objectivity, due care, proficiency), performance (risk assessment, planning, supervision, evidence, using experts, irregularities) and reporting (reporting, follow-up).",
+                "Standards come in three groups: general, performance and reporting. General standards cover the audit charter, organizational independence, auditor objectivity, reasonable expectation, due professional care, proficiency, assertions and criteria.",
+                "Performance standards cover risk assessment in planning, audit scheduling, engagement planning, performance and supervision, evidence, using other experts' work, irregularities and illegal acts; the reporting group covers reporting and follow-up.",
+                "These are the ITAF 4th edition (2020) standards that current CISA study materials use.",
                 "Guidelines explain how to apply the standards. They are not mandatory, but the IS auditor considers them and must be able to justify any departure.",
                 "Tools and techniques are informational aids, such as sample audit programs and white papers, that the IS auditor tailors to each engagement."
               ],
@@ -1939,7 +1941,7 @@
               "why_it_matters": "Small teams and old systems often cannot have the ideal control. Knowing what makes a substitute or a layered design truly work prevents false comfort from controls that only look reassuring.",
               "how_it_works": [
                 "Identify the gap: which preferred control is missing and which risk it leaves open.",
-                "Choose a substitute that addresses the same risk, often an independent review after the fact.",
+                "Choose a substitute that covers the same risk in time: an independent after-the-fact review often offsets missing segregation of duties, but misuse that harms in minutes needs real-time detection.",
                 "Confirm independence: the reviewer must not be the person whose work is reviewed.",
                 "Test the compensating control as rigorously as the control it replaces.",
                 "For layered defenses, list each way the asset could be exposed and check that at least one layer covers it.",
@@ -4003,8 +4005,8 @@
               "definition": "An external quality assessment is an independent review of the whole audit function's conformance with standards, carried out by a qualified assessor from outside the organization.",
               "why_it_matters": "Self-assessment alone gives the audit committee unverified, possibly false, assurance. An outside view tests the function against standards and good practice and catches blind spots the whole team shares.",
               "how_it_works": [
-                "The Institute of Internal Auditors (IIA) standards require an external assessment at least once every five years.",
-                "The assessor or team must be qualified and independent of the organization, not just of the audit function.",
+                "The Institute of Internal Auditors' Global Internal Audit Standards (2024, Standard 8.4) require an external assessment at least once every five years.",
+                "The assessor or team must be qualified and independent of the organization, not just of audit; at least one member must hold an active Certified Internal Auditor (CIA) designation.",
                 "It can be a full external assessment, or a self-assessment checked and confirmed by a qualified outside assessor.",
                 "The chief audit executive agrees on the scope and the assessor's independence with the audit committee, and reports the results and action plan to it."
               ],
@@ -4050,7 +4052,7 @@
                 },
                 {
                   "trap": "Strong yearly self-assessments remove the need for an external review.",
-                  "why": "Self-assessment by the people being assessed gives unverified assurance. The IIA standards still require an independent external assessment at least every five years."
+                  "why": "Self-assessment by the people being assessed gives unverified assurance. The IIA's Global Internal Audit Standards still require an independent external assessment at least every five years."
                 }
               ],
               "key_terms": [
@@ -4254,7 +4256,7 @@
                   "COBIT 2019",
                   "ISO/IEC 27001:2022",
                   "NIST CSF 2.0",
-                  "ITIL"
+                  "ITIL 4"
                 ],
                 "rows": [
                   {
@@ -5075,7 +5077,7 @@
               "how_it_works": [
                 "Top-down policies start from enterprise objectives and strategy, so they stay aligned with what the business needs.",
                 "Bottom-up policies grow from risk assessments and operating practice; they are practical but may lock in local habits.",
-                "Drafts are reviewed by the functions that must apply them, such as human resources, legal and business units.",
+                "Any function, such as IT security, may draft; those who must apply the policy, such as human resources, legal and business units, review the draft so the rules are workable.",
                 "Top management or the board approves policies, which gives them authority across the enterprise.",
                 "A corporate group sets one policy baseline, and subsidiaries add approved local addenda where local law differs."
               ],
@@ -8246,7 +8248,7 @@
               "exam_traps": [
                 {
                   "trap": "A mid-project CPI of 0.8 will probably even out by the end.",
-                  "why": "Cumulative variances that far below 1.0 rarely self-correct, and rebaselining only resets the yardstick. Report the variance and escalate it to the sponsor."
+                  "why": "Cumulative variances that far below 1.0 rarely self-correct, and a rebaseline without independent review only resets the yardstick. Report the variance and escalate it to the sponsor."
                 },
                 {
                   "trap": "Lines of code are a fair way to compare productivity across teams using different languages.",
@@ -9846,7 +9848,7 @@
                 "Collect sign-offs on a readiness checklist: testers certify that controls meet requirements, and a senior official accredits the system, accepting the residual risk (what remains after controls) and exceptions.",
                 "Fix high-risk findings before go-live. Within risk appetite (what the organization accepts), the owner or senior management may accept them; above it, only a documented exception at the right level.",
                 "If user acceptance testing (UAT) misses its exit criteria, defer go-live; any deviation is decided and documented by the steering committee.",
-                "Under a fixed deadline, release a fully tested smaller scope and defer the rest with documented risk acceptance."
+                "Under a fixed deadline, release only a smaller scope that has passed its criteria, deferring optional features with risk acceptance; widespread UAT failures mean deferring go-live."
               ],
               "compare": {
                 "columns": [
@@ -10870,7 +10872,7 @@
                 "svg": "<svg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='OSI model seven-layer pyramid from Physical at the base to Application at the peak'><rect x='135' y='10' width='130' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>7 · Application</text><rect x='115' y='50' width='170' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='72' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>6 · Presentation</text><rect x='95' y='90' width='210' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='112' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>5 · Session</text><rect x='75' y='130' width='250' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='152' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>4 · Transport</text><rect x='55' y='170' width='290' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='192' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>3 · Network</text><rect x='35' y='210' width='330' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='232' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>2 · Data Link</text><rect x='15' y='250' width='370' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='272' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>1 · Physical</text></svg>",
                 "caption": "The seven OSI layers, from Physical at the base to Application at the top. Layers 1 to 4 move data across the network; layers 5 to 7 prepare it for the application."
               },
-              "example": "An IS auditor at an insurer maps a network control list to the TCP/IP layers. Firewall port rules sit at transport and the web application firewall at application, but remote offices have no link-layer control: any device plugged into a wall port joins the network. The IS auditor reports the gap to the network manager.",
+              "example": "An IS auditor at an insurer maps network controls to the TCP/IP layers. Firewall port rules sit at transport and the web application firewall at application, but remote offices have no link-layer control: any device plugged into a wall port joins the network. The IS auditor reports the gap and recommends port-based network access control; the network manager decides the fix.",
               "audit_focus": {
                 "review": [
                   "Inspect network diagrams and device settings for any layer left with no control",
@@ -12103,7 +12105,7 @@
               "how_it_works": [
                 "Monitoring compares use and spending with thresholds; alerts reach a staffed team queue with a named backup, so someone always reviews them and acts on trends.",
                 "Forecasts model peak demand, such as month-end batches, not averages that hide saturation.",
-                "Demand management comes first: moving or rescheduling workload, such as reports run off-peak, before buying more.",
+                "Before adding resources, analyze the workload to find the real bottleneck, then try demand management, such as off-peak reports, before buying more.",
                 "Plans add capacity early enough to cover purchase and setup lead times.",
                 "In the cloud, autoscaling stops at the provider's service quotas, so plans track those limits.",
                 "On shared platforms, limits per tenant (each customer sharing the platform) stop one customer's workload from using capacity sold to others."
@@ -15229,7 +15231,7 @@
               ],
               "illustration": {
                 "svg": "<svg viewBox='0 0 538 114' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='BCP test types by thoroughness: checklist is least thorough, full interruption is most thorough'><rect x='8' y='18' width='86' height='40' rx='4' fill='var(--accent-fill)'/><text x='51' y='42' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Checklist</text><rect x='108' y='18' width='92' height='40' rx='4' fill='var(--accent-fill)'/><text x='154' y='42' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Walkthrough</text><rect x='214' y='18' width='88' height='40' rx='4' fill='var(--accent-fill)'/><text x='258' y='42' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Simulation</text><rect x='316' y='18' width='82' height='40' rx='4' fill='var(--accent-fill)'/><text x='357' y='42' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Parallel</text><rect x='412' y='18' width='118' height='40' rx='4' fill='var(--accent-fill)'/><text x='471' y='42' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Full interruption</text><line x1='8' y1='78' x2='521' y2='78' stroke='var(--text2)' stroke-width='1.5'/><path d='M521,74 L528,78 L521,82 Z' fill='var(--text2)'/><text x='40' y='100' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>least thorough</text><text x='490' y='100' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>most thorough</text></svg>",
-                "caption": "Plan tests from least to most thorough: checklist, walkthrough, simulation, parallel and full interruption. Organizations progress through them in order; each step adds realism and risk."
+                "caption": "Plan tests from least to most thorough: checklist, walkthrough, simulation, parallel and full interruption. Organizations generally build up through them; each step adds realism and risk."
               },
               "example": "During a parallel test at a payments processor, transactions from the recovery site start posting to live customer accounts. The test plan has no stop conditions, so the team debates for 40 minutes. The IS auditor recommends defining stop conditions that protect production before any further test. The chief operating officer approves the retest plan.",
               "isaca_rule": "A test is valuable for the honest evidence it produces, not for a clean pass. Define success in advance, progress from simpler tests to more realistic ones, record every failure, and track each gap to a verified fix.",
@@ -17228,7 +17230,7 @@
                 ]
               },
               "example": "A brewing company's legal team fears leaks of a confidential acquisition plan, but its DLP rules look only for card and national ID numbers. The IS auditor notes that pattern rules cannot recognize deal documents and recommends registering the plan's drafts for document fingerprinting, so partial copies are caught, with the general counsel named as the rule's owner.",
-              "isaca_rule": "Combine content with context so legitimate work flows and leaks stop. Move rules from monitor to block only after measuring false positives, then block, not just alert, where the business case allows. A senior requester is not an exception; an approved channel or a documented exception is.",
+              "isaca_rule": "Combine content with context so legitimate work flows and leaks stop. Block only after measuring false positives in monitor mode. Seniority never creates an exception: when an approved channel was available, keep the block and report the policy violation; documented exceptions are for business needs no approved channel meets.",
               "exam_traps": [
                 {
                   "trap": "Turn on blocking on day one for the strongest protection.",
@@ -18152,7 +18154,8 @@
               "how_it_works": [
                 "In every service model the customer keeps responsibility for its data, its users' access and the settings it controls.",
                 "The provider's System and Organization Controls (SOC) 2 Type 2 report tests its controls over a period; its complementary user entity controls list what the customer must run itself.",
-                "Continuous automated checks, such as cloud security posture management (CSPM), must cover every account, because settings change in minutes; unapproved changes that remove a security control are reverted at once.",
+                "Continuous automated checks, such as cloud security posture management (CSPM), must cover every account, because settings change in minutes.",
+                "Unapproved changes that remove a security control raise an alert and, where management has approved automatic remediation, are reverted at once.",
                 "Data-access logs, not only administrative logs, show who read sensitive records during an investigation.",
                 "Code running in the cloud uses a workload identity, issued automatically and short-lived, instead of long-lived stored keys."
               ],

@@ -92,7 +92,7 @@
         "DCIM monitoring",
         "TIA-942"
       ],
-      "framework_ref": "ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets); NIST SP 800-53 Rev 5 PE-14 (Environmental Controls); ISO/IEC 27002:2022 Control 7.5 (Protecting Against Physical and Environmental Threats)",
+      "framework_ref": "NIST SP 800-53 Rev 5 PE-14 (Environmental Controls); ISO/IEC 27002:2022 Control 7.5 (Protecting Against Physical and Environmental Threats)",
       "question": "An IS auditor reviews environmental controls in a company data center. Which finding represents the GREATEST risk?",
       "options": {
         "A": "Temperature and humidity alarms are not monitored by anyone",
@@ -114,7 +114,7 @@
         "Final two: A beats B because unmonitored alarms let damage happen unseen, while a slightly late inspection leaves a working system in place.",
         "Exam cue: an environmental control that nobody watches gives no protection; detection must reach someone who can act."
       ],
-      "_provenance": "Authored from concept: 'Environmental controls scope per CISA Review Manual 5.2.1 and NIST SP 800-14'. Public sources: ISACA, NIST, TIA, ASHRAE. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Environmental controls scope per CISA exam content outline topic 5A2 and NIST SP 800-14'. Public sources: ISACA, NIST, TIA, ASHRAE. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
     },
     {
@@ -129,7 +129,7 @@
         "Defense in depth (layered)",
         "NIST PE family"
       ],
-      "framework_ref": "ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets); NIST SP 800-53 Rev 5 PE-3 (Physical Access Control); ISO/IEC 27002:2022 Control 7.2 (Physical Entry)",
+      "framework_ref": "NIST SP 800-53 Rev 5 PE-3 (Physical Access Control); ISO/IEC 27002:2022 Control 7.2 (Physical Entry)",
       "question": "Entry to a network wiring closet must be restricted so each entry is traceable to a person and access can be withdrawn quickly. Which control should the IS auditor recommend as BEST?",
       "options": {
         "A": "Warning signs saying the closet is under constant surveillance",
@@ -151,7 +151,7 @@
         "Final two: C beats D because badge access is logged to individuals and can be revoked at once, while keys cannot.",
         "Exam cue: sort physical controls by type first (deter, prevent, detect), then choose the preventive control that also gives accountability."
       ],
-      "_provenance": "Authored from concept: 'Physical access control categorization per CISA Review Manual 5.2.2 and NIST SP 800-53 PE family'. Public sources: ISACA, NIST, COBIT, ISO/IEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'Physical access control categorization per CISA exam content outline topic 5A2 and NIST SP 800-53 PE family'. Public sources: ISACA, NIST, COBIT, ISO/IEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
       "style_version": 2
     },
     {
@@ -1347,24 +1347,24 @@
       "options": {
         "A": "Push approvals sent to each administrator's registered mobile phone",
         "B": "One-time passcodes delivered to administrators by text message",
-        "C": "Hardware security keys bound to the genuine sign-in site",
-        "D": "Longer passwords combined with stricter account lockout rules"
+        "C": "FIDO2 hardware security keys issued to each administrator",
+        "D": "Time-based codes from an authenticator app on each phone"
       },
       "correct": "C",
       "key_concept": "Phishing-resistant authenticators such as FIDO2 hardware keys bind the login to the genuine site, so stolen responses cannot be replayed.",
       "pre_read": "Notice the threat named in the stem. Ask which factor stays safe if the administrator lands on a fake page.",
-      "correct_explanation": "Phishing resistance is the deciding need. FIDO2 hardware security keys cryptographically bind the login to the real site, so a fake page cannot relay or reuse the response; NIST SP 800-63B treats such authenticators as phishing-resistant. Push approvals are a genuine second factor, but attackers can relay them through fake sites or wear users down with repeated prompts until one is approved.",
+      "correct_explanation": "Phishing resistance is the deciding need. FIDO2 hardware security keys (a standard for phishing-resistant sign-in) cryptographically bind the login to the real site, so a fake page cannot relay or reuse the response; NIST SP 800-63B treats such authenticators as phishing-resistant. Push approvals are a genuine second factor, but attackers can relay them through fake sites or wear users down with repeated prompts until one is approved.",
       "wrong_explanations": {
         "A": "Push approval is a real second factor, but it can be relayed through a phishing site or approved by a tired user after repeated prompts.",
-        "B": "Text-message codes can be phished or intercepted through SIM swapping, and NIST restricts their use as an authenticator.",
-        "D": "This is still a single factor. A phished password works regardless of its length or the lockout settings."
+        "B": "Text-message codes can be phished or intercepted through SIM swapping (moving a phone number to an attacker's SIM), and NIST restricts their use as an authenticator.",
+        "D": "App codes can be typed into a fake page and relayed to the real site at once, so they are not phishing-resistant."
       },
       "tips": [
-        "Eliminate: B relies on interceptable text messages, and D is still single-factor authentication.",
+        "Eliminate: B relies on interceptable text messages, and D uses app codes that a fake page can capture and relay.",
         "Final two: C beats A because a hardware key binds to the real site and cannot be relayed, while push approvals can be phished or fatigued.",
         "Exam cue: when the stem names phishing, pick the factor that is cryptographically bound to the site, not just any second step."
       ],
-      "_provenance": "Authored from concept: 'NIST 800-63B AAL levels for privileged-access MFA design'. Public sources: NIST, CISA, FIDO Alliance, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged.",
+      "_provenance": "Authored from concept: 'NIST 800-63B AAL levels for privileged-access MFA design'. Public sources: NIST, CISA, FIDO Alliance, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Content review (Oct 2026): glossed FIDO2 and SIM swapping. Content review round 2 (Oct 2026): D is now a phishable MFA factor instead of a single-factor option; C names FIDO2 instead of describing the site binding.",
       "style_version": 2
     },
     {
@@ -2477,7 +2477,7 @@
       "correct": "C",
       "key_concept": "Remove deprecated protocol versions, and keep TLS 1.2 only with strong cipher suites when customers still need it alongside TLS 1.3.",
       "pre_read": "Notice what many customers' browsers support. Ask which change removes the weakness without blocking legitimate users.",
-      "correct_explanation": "TLS 1.0 is deprecated and must go. TLS 1.2 remains acceptable under PCI DSS when limited to strong, forward-secret cipher suites, so keeping it alongside 1.3 removes the real weakness while customers can still pay. Accepting only TLS 1.3 is the strictest option, but here it would lock out many legitimate customers without fixing any remaining weakness in properly configured TLS 1.2.",
+      "correct_explanation": "TLS 1.0 is deprecated and must go. Under PCI DSS (the card industry's security standard), TLS 1.2 remains acceptable with strong cipher suites (the algorithm sets a connection uses), so keeping it alongside 1.3 removes the real weakness while customers can still pay. Accepting only TLS 1.3 is strictest, but it would lock out many legitimate customers without fixing any weakness in properly configured TLS 1.2.",
       "wrong_explanations": {
         "A": "TLS 1.0 is deprecated and exposed to known attacks. Keeping it fails PCI DSS and leaves card data at risk.",
         "B": "A web application firewall filters application attacks but does not remove the weak protocol version.",
@@ -2488,7 +2488,7 @@
         "Final two: C beats D because a strong TLS 1.2 setup is still acceptable, and cutting it blocks the many customers who rely on it.",
         "Exam cue: remove what is deprecated, harden what remains acceptable, and weigh the stated business fact in the stem."
       ],
-      "_provenance": "Authored from concept: 'TLS 1.2 vs TLS 1.3 substantive differences'. Public sources: IETF, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'TLS 1.2 vs TLS 1.3 substantive differences'. Public sources: IETF, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): glossed PCI DSS and cipher suites. Content review round 2 (Oct 2026): cipher-suite gloss made precise.",
       "style_version": 2
     },
     {
@@ -3181,7 +3181,7 @@
         "False-positive tuning",
         "CDN+WAF sequencing"
       ],
-      "framework_ref": "PCI DSS v4.0.1 Requirement 6.4 (Public-Facing Web Applications Are Protected Against Attacks); OWASP ModSecurity Core Rule Set (CRS); OWASP Top 10:2025",
+      "framework_ref": "PCI DSS v4.0.1 Requirement 6.4.2 (Automated Technical Solution That Detects and Prevents Web-Based Attacks); OWASP ModSecurity Core Rule Set (CRS); OWASP Top 10:2025",
       "question": "An IS auditor reviews the web application firewall protecting a public payment website. Which finding should concern the auditor MOST?",
       "options": {
         "A": "The firewall has stayed in monitoring-only mode since tuning finished",
@@ -3192,7 +3192,7 @@
       "correct": "A",
       "key_concept": "A web application firewall only prevents attacks in blocking mode; monitoring mode is for tuning, and enforcement must follow.",
       "pre_read": "Notice that tuning has finished. Ask which finding means the firewall prevents no attacks at all.",
-      "correct_explanation": "A web application firewall left in monitoring-only mode logs attacks but blocks none of them, so the payment site has no preventive protection at all. Tuning was meant to come before blocking, and it has finished. Delayed rule updates leave a gap for new attack patterns, but existing rules would still block known attacks if blocking were enabled.",
+      "correct_explanation": "A web application firewall in monitoring-only mode logs attacks but blocks none, so the payment site has no preventive protection. PCI DSS 6.4.2 accepts alert-only mode only if every alert is investigated immediately; nothing shows that here, and the tuning that justified monitoring mode is over. Delayed rule updates leave a gap for new attack patterns, but existing rules would block known attacks if blocking were on.",
       "wrong_explanations": {
         "B": "A two-week lag leaves new attack patterns uncovered for a while, but existing rules still apply; here nothing is being blocked at all.",
         "C": "Log retention affects investigations and compliance evidence, but it does not leave the site unprotected against attacks.",
@@ -3203,7 +3203,7 @@
         "Final two: A beats B because monitoring-only mode blocks nothing, while delayed updates only miss the newest attack patterns.",
         "Exam cue: a preventive control that is configured but not enforcing gives detection only; check the mode, not just the presence."
       ],
-      "_provenance": "Authored from concept: 'WAF audit scope canonical framework'. Public sources: ISACA, OWASP, PCI Council. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'WAF audit scope canonical framework'. Public sources: ISACA, OWASP, PCI Council. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): explanation now states PCI DSS 6.4.2's alert-only condition precisely; cite narrowed to 6.4.2.",
       "style_version": 2
     },
     {
@@ -4881,12 +4881,12 @@
         "Hunting-to-detection feedback loop"
       ],
       "framework_ref": "MITRE ATT&CK Framework; NIST SP 800-53 Rev 5 RA-10 (Threat Hunting)",
-      "question": "A security operations lead says the team hunts threats, but analysts only investigate alerts the monitoring system raises. Which recommendation should the IS auditor make FIRST?",
+      "question": "A security operations lead describes the team's work as proactive, but analysts only investigate alerts the monitoring system raises. Which recommendation should the IS auditor make FIRST?",
       "options": {
         "A": "Add more vendor detection rules to the central monitoring system",
         "B": "Raise alert thresholds to reduce the number of alerts",
         "C": "Automate alert triage with response playbooks",
-        "D": "Run hypothesis-led hunts for techniques current rules miss"
+        "D": "Run hypothesis-led searches for techniques current rules miss"
       },
       "correct": "D",
       "key_concept": "Threat hunting proactively searches for attackers that existing alerts miss, starting from a hypothesis; alert triage is reactive.",
@@ -4902,7 +4902,7 @@
         "Final two: D beats A because hunting searches for what rules miss; more rules still leave the team waiting for alerts.",
         "Exam cue: threat hunting is proactive and hypothesis-driven; anything triggered by an alert is triage."
       ],
-      "_provenance": "Authored from concept: 'Threat hunting canonical framework'. Public sources: SANS, MITRE, Sqrrl, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Threat hunting canonical framework'. Public sources: SANS, MITRE, Sqrrl, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): the stem no longer says 'hunts', which only the key repeated.",
       "style_version": 2
     },
     {
@@ -5686,10 +5686,10 @@
       },
       "tips": [
         "Eliminate: D ignores a known critical flaw, and B addresses the contract instead of the risk.",
-        "Final two: A beats C because the vulnerability is real now; the scope question can be investigated afterward.",
+        "Final two: A beats C because the vulnerability is real now; the scope question can be investigated in parallel.",
         "Exam cue: once a critical flaw is known, fix the risk first; how it was discovered is a secondary question."
       ],
-      "_provenance": "Authored from concept: 'Pentest scope dispute resolution with responsible-disclosure obligation'. Public sources: ISO, CISA, PTES, PCI Council, SEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; options revised. Fourth pass (polish, Oct 2026): wording and metadata fixes from the last blind test; key unchanged.",
+      "_provenance": "Authored from concept: 'Pentest scope dispute resolution with responsible-disclosure obligation'. Public sources: ISO, CISA, PTES, PCI Council, SEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Third pass (ISACA reviewer, Oct 2026): live-incident and legal/forensic stems reframed; options revised. Fourth pass (polish, Oct 2026): wording and metadata fixes from the last blind test; key unchanged. Content review (Oct 2026): tip timing now matches the explanation (scope investigated in parallel).",
       "style_version": 2
     },
     {
@@ -11336,38 +11336,38 @@
     {
       "id": "d5_304",
       "domain": 5,
-      "subtopic": "Cloud Deployment Models. Model Selection",
-      "difficulty": "foundational",
-      "bloom_level": "Foundational",
+      "subtopic": "Cloud Deployment Models. Community Cloud Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "related_concepts": [
         "Community cloud",
-        "Private cloud",
-        "Public cloud",
-        "Hybrid cloud"
+        "Shared responsibility",
+        "Joint governance",
+        "Third-party assurance"
       ],
-      "framework_ref": "NIST SP 800-145 (The NIST Definition of Cloud Computing)",
-      "question": "Four regional water utilities with identical regulatory duties want shared cloud infrastructure closed to all other organizations. Which deployment model would the IS auditor consider MOST suitable?",
+      "framework_ref": "NIST SP 800-145 (The NIST Definition of Cloud Computing); ISO/IEC 27002:2022 Control 5.23 (Information Security for Use of Cloud Services)",
+      "question": "Four regional water utilities with identical regulatory obligations have moved to a shared community cloud. What should the IS auditor verify FIRST?",
       "options": {
-        "A": "A public cloud, with each utility in its own tenant account",
-        "B": "A community cloud under joint governance by the utilities",
-        "C": "A private cloud built and run separately by each utility",
-        "D": "A hybrid cloud linking each utility's data center to a provider"
+        "A": "The cloud provider's latest SOC 2 Type 2 assurance report",
+        "B": "An agreement assigning each utility's control and oversight duties",
+        "C": "Each utility's own continuity plan for the shared platform",
+        "D": "Each utility's quarterly review of its own users' access"
       },
       "correct": "B",
-      "key_concept": "A community cloud serves organizations with shared needs and duties, is closed to others, and needs jointly agreed governance.",
-      "pre_read": "Ask who shares the infrastructure: one organization, a group of peers, or the public.",
-      "correct_explanation": "A community cloud is shared by organizations with common needs, such as utilities under the same regulations, and closed to everyone else. It gives the shared infrastructure they want, and joint governance settles who sets and checks the controls. Separate private clouds are the runner-up: they give each utility full isolation and control, but they share nothing, so each pays alone for what the group wanted to pool.",
+      "key_concept": "In a community cloud, several organizations share one platform, so an agreement must first set who controls and oversees what.",
+      "pre_read": "Notice that several organizations share one platform. Ask what must be settled before anyone can rely on its controls.",
+      "correct_explanation": "When several utilities share one community cloud, no single organization controls it by default, so the auditor first verifies an agreement that assigns each party's control and oversight duties, including who manages the provider. The provider's SOC 2 report is the tempting option: it is valuable evidence, but it covers only the provider's controls, and without agreed duties no one may be responsible for acting on it.",
       "wrong_explanations": {
-        "A": "Separate tenant accounts still run on infrastructure the provider shares with any paying customer, so outside organizations use it too.",
-        "C": "Separate private clouds give each utility control and isolation, but they give up the shared infrastructure the group wants.",
-        "D": "A hybrid design links each utility to a public provider, so the shared part is open to outside customers."
+        "A": "A SOC 2 Type 2 report (an independent opinion on a provider's controls over time) is useful, but it cannot say which utility owns which shared control.",
+        "C": "A utility's own continuity plan matters, but it cannot cover shared recovery duties that no agreement has yet assigned.",
+        "D": "Each utility can review its own users, but administrator access to the shared platform falls to no one until duties are agreed."
       },
       "tips": [
-        "Eliminate: A and D both rely on public infrastructure that also serves outside customers.",
-        "Final two: B beats C because a community cloud is shared within the group; separate private clouds share nothing.",
-        "Exam cue: shared by peers with common duties means community cloud; one organization means private; anyone means public."
+        "Eliminate: C and D are controls each utility runs alone; until duties are agreed, shared parts of the platform fall to no one.",
+        "Final two: B beats A because agreed duties must exist before the provider's report can be acted on; the report covers only the provider.",
+        "Exam cue: when several parties share one platform, first confirm a written split of control and oversight duties."
       ],
-      "_provenance": "Authored from concept: 'Cloud Deployment Models. Community Cloud'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.1 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "_provenance": "Authored from concept: 'Cloud Deployment Models. Community Cloud'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.1 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES. Content review (Oct 2026): recast from a community-cloud definition recall stem into an auditor's first verification on a shared community cloud. Content review round 2 (Oct 2026): common-sense distractors (latency, licensing split) replaced with control-side options each utility runs alone.",
       "style_version": 2
     },
     {
@@ -12706,7 +12706,7 @@
         "Final two: D beats A because missing validation explains the entry, while the shared role explains why one function could reach HR data.",
         "Exam cue: when a small component causes wide damage, look for the over-broad permissions behind it, not only the flaw used to get in."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 AC-6 (Least Privilege); ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)",
+      "framework_ref": "NIST SP 800-53 Rev 5 AC-6 (Least Privilege)",
       "related_concepts": [
         "Serverless computing",
         "Execution role",
@@ -12744,7 +12744,7 @@
         "Final two: B beats A because a concurrency cap limits runaway costs automatically, while a spending alert still needs someone to act.",
         "Exam cue: when harm grows by the minute, prefer a control that caps it automatically over one that reports it later."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 SC-5 (Denial-of-Service Protection); ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)",
+      "framework_ref": "NIST SP 800-53 Rev 5 SC-5 (Denial-of-Service Protection)",
       "related_concepts": [
         "Serverless computing",
         "Denial of wallet",
@@ -12782,7 +12782,7 @@
         "Final two: A beats B because a deliberate action stops a relayed opening, while log review finds it only after the room was entered.",
         "Exam cue: short range is not a security control; look for a deliberate user action at each transaction."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 AC-19 (Access Control for Mobile Devices); ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)",
+      "framework_ref": "NIST SP 800-53 Rev 5 AC-19 (Access Control for Mobile Devices)",
       "related_concepts": [
         "Near-field communication",
         "Relay attack",
@@ -12836,35 +12836,35 @@
       "subtopic": "Advanced Persistent Threats. Log History",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds a firm's security monitoring keeps event logs for only 14 days. What is the MOST likely reason this weakens investigation of an advanced persistent threat (APT)?",
+      "question": "Management proposes extending central log retention from 14 to 90 days to support investigations of advanced persistent threats (APTs). Which recommendation should the IS auditor make as BEST?",
       "options": {
-        "A": "APT intruders often stay hidden for months before discovery",
-        "B": "APT intruders often delete the logs held on hosts they control",
-        "C": "APT attacks flood networks until older log entries are overwritten",
-        "D": "APT attacks leave no trace in event logs of any kind"
+        "A": "Extend central log retention to at least one year",
+        "B": "Accept 90 days and forward host logs in real time",
+        "C": "Accept 90 days and tune alerts to detect intrusions sooner",
+        "D": "Keep one year of logs on each host instead of centrally"
       },
       "correct": "A",
-      "key_concept": "An APT stays hidden for months, so logs kept for days or weeks are gone before anyone starts investigating.",
-      "pre_read": "Compare how long the logs last with how long this kind of attacker usually stays unnoticed.",
-      "correct_explanation": "An advanced persistent threat is defined by patience: it hides in the network for months, often unnoticed. Logs kept for 14 days will have rolled over long before the intrusion is found, so its entry point and early movement cannot be traced. Deleting logs on compromised hosts is a real tactic, but central collection answers it; it does not explain the retention gap.",
+      "key_concept": "APTs often stay hidden for months, so retention must cover that dwell time, typically about a year; 90 days can still miss the start.",
+      "pre_read": "Compare the proposed retention with how long this kind of attacker usually stays unnoticed.",
+      "correct_explanation": "An advanced persistent threat often stays hidden for months; its dwell time (how long an intruder goes unnoticed) can exceed 90 days. Logs must reach back to the intrusion's start, so the auditor recommends at least a year of central retention. Real-time forwarding is the tempting option: it stops attackers deleting host logs, but with 90 days kept, the early history is still gone when the APT is found.",
       "wrong_explanations": {
-        "B": "Attackers erasing logs on hosts they control is answered by sending logs to a central store; it is not what a 14-day limit exposes.",
-        "C": "Flooding networks is how denial-of-service attacks work. APTs stay quiet so they are not noticed, and rarely generate heavy traffic.",
-        "D": "APT activity does leave traces, such as unusual sign-ins and outbound connections; that is why logs covering the whole intrusion matter."
+        "B": "Real-time forwarding protects host logs from deletion, but 90 days of central history can still end before the intrusion began.",
+        "C": "Faster alerting may shorten future dwell time, but investigators still lack history for an intrusion that began months ago.",
+        "D": "An intruder with administrator rights can wipe logs kept on the hosts it controls; long history must sit centrally, out of the attacker's reach."
       },
       "tips": [
-        "Eliminate: C and D, because APTs stay quiet rather than flooding networks, and their activity does leave traces in logs.",
-        "Final two: A beats B because the 14-day limit fails against months of hidden presence, while log deletion on hosts is answered by central collection.",
+        "Eliminate: C improves detection without keeping history, and D keeps a year only on hosts an intruder can wipe.",
+        "Final two: A beats B because APTs hide for months; real-time forwarding stops deletion, but 90 days may still miss the start.",
         "Exam cue: when an APT appears in the stem, think months of hidden presence; a control measured in days or weeks will miss it."
       ],
-      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); NIST SP 800-53 Rev 5 AU-11 (Audit Record Retention); ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)",
+      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); NIST SP 800-53 Rev 5 AU-11 (Audit Record Retention)",
       "related_concepts": [
         "Advanced persistent threat",
         "Dwell time",
         "Log retention",
         "Centralized logging"
       ],
-      "_provenance": "Authored from concept: 'Advanced Persistent Threats. Log History'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B2.6 (batch Q17: concept practice for a subtopic previously practised only as live-incident FIRST calls or recommendations). Tests what defines an APT (months of hidden presence) through its effect on investigation evidence; distinct from d5_150 and d5_206, which recommend a retention fix. Public sources: NIST and ISACA.",
+      "_provenance": "Authored from concept: 'Advanced Persistent Threats. Log History'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B2.6 (batch Q17: concept practice for a subtopic previously practised only as live-incident FIRST calls or recommendations). Tests what defines an APT (months of hidden presence) by having the IS auditor judge a proposed retention change against APT dwell time; distinct from d5_150 (meeting a regulatory one-year duty at acceptable cost) and d5_206 (forensic readiness when logs and tools are missing). Public sources: NIST and ISACA. Content review (Oct 2026): recast from APT dwell-time recall with two false-statement distractors into an auditor recommendation on log retention. Content review round 2 (Oct 2026): re-angled so management proposes 14 to 90 days and the auditor judges it against APT dwell time; this no longer duplicates d5_206, and all runner-ups are control-side.",
       "style_version": 2
     },
     {
@@ -12894,7 +12894,7 @@
         "Final two: C beats B because a faster cycle still cannot apply a patch that does not exist yet; zero-days fall outside scan-and-patch.",
         "Exam cue: zero-day means no patch yet and often no scanner check; look for compensating controls or reduced exposure, not faster patching."
       ],
-      "framework_ref": "NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)",
+      "framework_ref": "NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning)",
       "related_concepts": [
         "Zero-day exploit",
         "Vulnerability scanning",
@@ -12931,7 +12931,7 @@
         "Final two: D beats B because image scanning handles shared flaws, while the shared kernel makes the boundary itself thin.",
         "Exam cue: containers share a kernel and virtual machines do not; for high-value separation, question container-only isolation."
       ],
-      "framework_ref": "NIST SP 800-190 (Application Container Security Guide); ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)",
+      "framework_ref": "NIST SP 800-190 (Application Container Security Guide)",
       "related_concepts": [
         "Container isolation",
         "Shared kernel",
@@ -13045,7 +13045,7 @@
         "Final two: D beats C because better records of a call to the fraudster's number still approve the fraud; the source is not independent.",
         "Exam cue: verify through a channel the attacker cannot control; a number, link or address supplied in the request fails that test."
       ],
-      "framework_ref": "FinCEN Advisory FIN-2016-A003 (Business Email Compromise); ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)",
+      "framework_ref": "FinCEN Advisory FIN-2016-A003 (Business Email Compromise)",
       "related_concepts": [
         "Callback control",
         "Business email compromise",
@@ -13119,7 +13119,7 @@
         "Final two: A beats B because removing every account still leaves the code to fire; it never needed its author to sign in.",
         "Exam cue: a logic bomb hides in approved code, so prevention sits in independent code review before production, not account removal."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control); NIST SP 800-53 Rev 5 AC-5 (Separation of Duties); ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)",
+      "framework_ref": "NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control); NIST SP 800-53 Rev 5 AC-5 (Separation of Duties)",
       "related_concepts": [
         "Logic bomb",
         "Insider threat",

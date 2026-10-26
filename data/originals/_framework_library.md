@@ -877,8 +877,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - Executive Order 13636 (Improving Critical Infrastructure Cybersecurity)
 - FBI Internet Crime Complaint Center
 - IEEE 446 (Recommended Practice for Emergency and Standby Power Systems)
-- ISACA CISA Review Manual, 28th Edition, Chapter 5 Section 5.2.1
-- ISACA CISA Review Manual, 28th Edition, Chapter 5 Section 5.2.2
 - ISACA Information Security Management Audit/Assurance Program
 - ISO/IEC 27001:2022 Annex A.5.1 (Policies for information security)
 - ISO/IEC 27001:2022 Annex A.7 (Physical Controls)
@@ -1415,13 +1413,6 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 ### ISACA
 - ISACA "Audit Data Analytics" guidance
 - ISACA "Auditing Cryptocurrency Operations" guidance
-- ISACA CISA Review Manual Domain 4
-- ISACA CISA Review Manual on General vs Application Controls
-- ISACA CISA Review Manual, Domain 1 — Use of CAATs
-- ISACA CISA Review Manual, Domain 2
-- ISACA CISA Review Manual, Domain 3 SDLC guidance
-- ISACA CISA Review Manual, Domain 3 testing levels
-- ISACA CISA Review Manual, Domain 3 third-party software acquisition guidance
 - ISACA DevOps audit and assurance guidance
 - ISACA IS Audit and Assurance Standards
 - ISACA IT Audit and Assurance Standards / ITAF
@@ -1577,7 +1568,6 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - IEC 31010:2019 (Risk Assessment Techniques)
 - IIA Global Internal Audit Standards (2024), Standard 10.2 (Human Resources Management)
 - IIA Global Internal Audit Standards (2024), Standard 9.2 (Internal Audit Strategy)
-- ISACA CISA Review Manual, 28th Edition, Chapter 2 (Governance and Management of IT)
 - ISO 30300:2020 (Management Systems for Records)
 - ISO 37301:2021 (Compliance Management Systems)
 - ISO/IEC 27002:2022 Control 5.7 (Threat Intelligence)
@@ -1667,7 +1657,6 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - GLBA Safeguards Rule (16 CFR §314)
 - HHS 405(d) Health Industry Cybersecurity Practices (HICP), 2023 Edition
 - IIA Global Internal Audit Standards (2024), Standard 11.3 (Communicating Results)
-- ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)
 - ISO 22301:2019 Clause 10.1 (Nonconformity and Corrective Action)
 - ISO 22301:2019 Clause 5.2 (Policy)
 - ISO 22301:2019 Clause 5.3 (Roles, Responsibilities and Authorities)
@@ -1771,7 +1760,6 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - IETF RFC 6797 (HTTP Strict Transport Security (HSTS))
 - IETF RFC 7009 (OAuth 2.0 Token Revocation)
 - IETF RFC 8659 (DNS Certification Authority Authorization (CAA) Resource Record)
-- ISACA CISA Review Manual, 28th Edition, Chapter 5 (Protection of Information Assets)
 - ISO 22361:2022 (Security and Resilience — Crisis Management — Guidelines)
 - ISO/IEC 27001:2022 Clause 7.2 (Competence)
 - ISO/IEC 27001:2022 Clause 9.1 (Monitoring, Measurement, Analysis and Evaluation)
@@ -1884,7 +1872,6 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - COBIT 2019 (Control Objectives and Practices)
 - AICPA AU-C 530 (Audit Sampling) (analogous guidance)
 - AICPA Peer Review Standards (analogous in public accounting practice)
-- ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)
 - COBIT 2019 (Management Objectives)
 - AICPA reporting standards (analogous)
 - COBIT 2019 (Management Objectives across DSS, BAI, APO domains)
@@ -2058,3 +2045,10 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - ISO/IEC 27001:2022 Annex A.8.16 (Monitoring activities)
 - PRA Supervisory Statement SS1/21 (Operational Resilience: Impact Tolerances for Important Business Services)
 - NIST SP 800-121 Rev 2 (Guide to Bluetooth Security)
+
+## Added with the six-expert content review (Oct 2026)
+
+- PCI DSS v4.0.1 Requirement 6.4.2 (Automated Technical Solution That Detects and Prevents Web-Based Attacks)
+- COSO Internal Control – Integrated Framework (2013), Principle 2 (Board Independence and Oversight)
+
+Citations to ISACA's commercial CISA study guide were removed from the bank and this library in Oct 2026 (owner decision on legal advice); cite the public ITAF, COBIT, NIST, ISO or IIA source instead.
