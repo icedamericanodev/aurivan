@@ -2051,4 +2051,7 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - PCI DSS v4.0.1 Requirement 6.4.2 (Automated Technical Solution That Detects and Prevents Web-Based Attacks)
 - COSO Internal Control – Integrated Framework (2013), Principle 2 (Board Independence and Oversight)
 
+## D3 round 3 additions (Oct 2026)
+- PMI, The Standard for Risk Management in Portfolios, Programs, and Projects (2019)
+
 Citations to ISACA's commercial CISA study guide were removed from the bank and this library in Oct 2026 (owner decision on legal advice); cite the public ITAF, COBIT, NIST, ISO or IIA source instead.
