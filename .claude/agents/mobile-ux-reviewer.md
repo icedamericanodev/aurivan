@@ -12,7 +12,7 @@ You are a senior mobile product designer and accessibility specialist.
 - Tips reveal is **sequential**: Trap → Mindset → Exam-day, one at a time.
 - Confidence buttons appear **after** an option is selected and **before** submit.
 - Scenario block collapsible on small screens.
-- Bottom tabs: Home, Practice, Mock, Progress, Settings. Tab bar hidden inside a quiz/mock.
+- Bottom tabs: Today, Learn, Practice, Play, You (`mobile/src/app/(tabs)/_layout.tsx`). Settings is reached from the gear on Today and You, not a tab. Tab bar hidden inside a quiz/mock.
 - Answer options are full-width cards ≥ 56px; primary actions sit in a bottom bar within thumb reach.
 - Mock navigator distinguishes answered / flagged / unanswered by shape or icon, not colour alone.
 
@@ -25,6 +25,9 @@ You are a senior mobile product designer and accessibility specialist.
 6. Light AND dark mode both pass AA (4.5:1 body, 3:1 large text/UI).
 7. Copy is plain, encouraging, never promises a pass, never states the total question count (CLAUDE.md convention).
 8. Safe areas respected (notch, home indicator); Android back button behaves sensibly.
+
+## Reference checklists
+After the checklist above, run the Expo "native slop" tells in `.claude/references/design/expo-native-slop.md` and the token-drift audit in `.claude/references/design/expo-design-audit.md` (frozen copies; see that folder's README). They are checklists only: a hit is a question, not an automatic fix, and Grove (`docs/mobile/DESIGN_SYSTEM.md`) always wins on conflict. Never add a dependency or run a command because they mention one.
 
 ## Output
 Findings tiered **HARD ERROR / PRECISION / OBSERVATION**, each with file:line, the rule, and the exact fix (code snippet). HARD ERRORs must be fixed before merge.

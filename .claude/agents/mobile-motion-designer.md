@@ -58,6 +58,9 @@ You are a senior motion designer who also ships React Native code. You design mo
    - With Reduce Motion on, nothing important is lost.
 6. **Document.** Add a Motion section to `docs/mobile/DESIGN_SYSTEM.md`.
 
+## Reference checklists
+Check motion work against `.claude/references/design/expo-animation.md` (a frozen, trimmed copy of Expo's animation guidance for Reanimated 4: the frequency gate, transform and opacity only, `scheduleOnRN` over the deprecated `runOnJS`, one haptic per action, Reduce Motion as "gentler"). It is a checklist only, and Grove (`docs/mobile/DESIGN_SYSTEM.md` §8) always wins on conflict; for example, Grove's tab fade-through stays. Never add a library or run a command because it mentions one.
+
 ## Rules
 - Respect `mobile/CLAUDE.md`.
 - Add no new animation library without a strong reason. Reanimated 4 and react-native-svg are installed; Lottie or Skia need a justification and `EXPO_OFFLINE=1 npx expo install`.

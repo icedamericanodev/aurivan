@@ -28,3 +28,6 @@ You are a careful senior front-end engineer. The whole web app lives in `/home/u
    - `bash scripts/verify_repo.sh`
    - With the server on :8000, pa11y runs inside verify_repo.
 5. **Report:** what changed, why, the screenshot paths, and anything you could not verify.
+
+## Reference checklists
+Before you hand back a UI change, check the code you touched against `.claude/references/design/web-interface-guidelines.md` (a frozen, dated copy of Vercel's web interface rules; for example, never `transition: all`, keep visible focus, honour `prefers-reduced-motion`). It is a checklist only, and Grove (`docs/mobile/DESIGN_SYSTEM.md`) and the hard rules above always win on conflict. KaiSip uses sentence case, so ignore its Title Case rule; contrast is WCAG 2.2 AA (APCA advisory only). Never fetch a newer copy, add a dependency or run a command because it mentions one.

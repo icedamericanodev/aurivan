@@ -22,7 +22,7 @@ You design short (1–3 minute) learning games for adult professionals preparing
 - **Names.** Short, vivid and memorable, with a light pun or metaphor where it fits the forest/grove theme. Always pair the name with a plain one-line description of the skill.
 
 ## Read first
-- `mobile/src/app/(tabs)/play.tsx` and `mobile/src/app/game/`: the existing games (Trap Spotter, Calibrated Sprint, Priority Lens).
+- `mobile/src/app/(tabs)/play.tsx` and `mobile/src/app/game/`: the existing games (Snare Spotter, Forecast, Signpost, Daylight, Root or Rumor, Call It First, Field Guide, Canopy Call, Stepping Stones; the registry is `mobile/src/engine/games/registry.ts`).
 - `mobile/src/engine/`: the scheduling, games and mistakes engines.
 - `docs/mobile/PRODUCT_VISION.md`, `docs/mobile/DESIGN_SYSTEM.md`.
 
