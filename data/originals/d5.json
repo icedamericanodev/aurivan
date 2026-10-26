@@ -10051,7 +10051,7 @@
       "options": {
         "A": "Encrypt the inventory database so stored figures cannot be read",
         "B": "Log every change made to inventory records after they are saved",
-        "C": "Give warehouse clerks read-only access to the inventory system",
+        "C": "Give warehouse clerks view access with no edit rights",
         "D": "Match keyed quantities to independently confirmed receiving counts"
       },
       "correct": "D",
@@ -10068,7 +10068,7 @@
         "Final two: D beats B because the change happened before entry, so only input verification catches it; logs see a normal save.",
         "Exam cue: data diddling falsifies data before or during input, so the BEST control is input verification, not a database control."
       ],
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in phishing-credential compromise — BEST = full revoke + access audit + PII impact assess + customer notify + FIDO2 hardening; FIRST = revoke only'. Paired companion to d5_119. Public sources: NIST SP 800-63B, CISA Phishing Guidance, ISACA Incident Management A/A Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from the reset-does-not-end-sessions lesson (kept in d5_233) and from d5_278's surface: now scoping notification from evidence of actual access. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5B2. Rebalance review (Oct 2026): exam cue now uses the term data diddling.",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in phishing-credential compromise — BEST = full revoke + access audit + PII impact assess + customer notify + FIDO2 hardening; FIRST = revoke only'. Paired companion to d5_119. Public sources: NIST SP 800-63B, CISA Phishing Guidance, ISACA Incident Management A/A Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from the reset-does-not-end-sessions lesson (kept in d5_233) and from d5_278's surface: now scoping notification from evidence of actual access. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5B2. Rebalance review (Oct 2026): exam cue now uses the term data diddling. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Lone absolute ('read-only') reworded in C.",
       "style_version": 2
     },
     {
@@ -10126,7 +10126,7 @@
         "A": "Wireless traffic will travel between laptops and access points unencrypted",
         "B": "A fake access point could capture staff network credentials",
         "C": "Laptops may connect more slowly during peak office hours",
-        "D": "The wireless controller could fail and stop all connections"
+        "D": "The wireless controller could fail and drop the laptops' connections"
       },
       "correct": "B",
       "key_concept": "Enterprise wireless clients must verify the authentication server, or a look-alike access point can harvest their credentials.",
@@ -10142,7 +10142,7 @@
         "Final two: B beats A because the flaw lets an impostor collect credentials, while traffic with genuine access points stays encrypted.",
         "Exam cue: an 'evil twin' access point works when clients skip server certificate validation, so clients must verify the network as it verifies them."
       ],
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in B2B SaaS breach notification — BEST = customer notify + own-regulator filings + forensic completion + patch + relationship management; FIRST = customer notify only'. Paired companion to d5_173. Public sources: GDPR Article 33, SEC cybersecurity disclosure rules, ISACA Privacy A/A Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_173 (provider notifying clients): now the data owner's duty when a provider stays silent. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A9. Rebalance review (Oct 2026): exam cue now uses the term evil twin.",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in B2B SaaS breach notification — BEST = customer notify + own-regulator filings + forensic completion + patch + relationship management; FIRST = customer notify only'. Paired companion to d5_173. Public sources: GDPR Article 33, SEC cybersecurity disclosure rules, ISACA Privacy A/A Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_173 (provider notifying clients): now the data owner's duty when a provider stays silent. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A9. Rebalance review (Oct 2026): exam cue now uses the term evil twin. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Lone absolute ('all') removed from D.",
       "style_version": 2
     },
     {
@@ -11316,7 +11316,7 @@
       "options": {
         "A": "Choose the lowest-cost public cloud provider with an in-country region",
         "B": "Move to a private cloud, which isolates data from other tenants",
-        "C": "Have the data owner approve a legal and sensitivity risk assessment",
+        "C": "Have the data owner set the data's legal and handling requirements",
         "D": "Review shortlisted providers' assurance reports for scope and exceptions"
       },
       "correct": "C",
@@ -11333,7 +11333,7 @@
         "Final two: C beats D because requirements come first; provider reports can only be judged against them.",
         "Exam cue: the cloud model follows data sensitivity, legal duties and risk appetite, not cost; the data owner stays accountable."
       ],
-      "_provenance": "Authored from concept: 'Cloud Deployment Models. Choosing by Data Sensitivity'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.1 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "_provenance": "Authored from concept: 'Cloud Deployment Models. Choosing by Data Sensitivity'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.1 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key no longer stacks 'owner' with 'risk'.",
       "style_version": 2
     },
     {
@@ -11388,7 +11388,7 @@
       "framework_ref": "CSA Cloud Controls Matrix v4 (IAM, LOG and CCC domains); ISO/IEC 27017 (Cloud Security)",
       "question": "An IS auditor finds that a bank's private cloud and its public cloud each use separate administrator accounts, logging and configuration baselines. Which recommendation is BEST?",
       "options": {
-        "A": "Move every workload back into the private cloud to simplify control",
+        "A": "Have each cloud team formally document its own baseline",
         "B": "Assign separate audit teams to review each environment every year",
         "C": "Deploy additional monitoring tools in the public cloud environment",
         "D": "Apply one common control standard and identity source to both"
@@ -11398,16 +11398,16 @@
       "pre_read": "In a hybrid design, ask what happens to accounts and evidence when activity crosses between environments.",
       "correct_explanation": "In a hybrid design, gaps sit at the seams: an administrator removed in one environment may keep access in the other, and an attack crossing between them leaves evidence in logs nobody correlates. One common control standard and identity source across both closes those seams. More monitoring in the public cloud is the runner-up: it strengthens one side but leaves identities and baselines inconsistent between environments.",
       "wrong_explanations": {
-        "A": "Pulling everything into the private cloud gives up the business case for the public cloud and does not by itself fix weak identity or logging.",
+        "A": "Documenting each baseline records the split instead of closing it; separate accounts and uncorrelated logs stay in place.",
         "B": "More audit teams would report the inconsistency each year but would not fix the separate accounts, logs and baselines causing it.",
         "C": "Extra tools in one environment improve its visibility, but accounts and baselines stay inconsistent and cross-environment activity stays uncorrelated."
       },
       "tips": [
-        "Eliminate: A abandons the public cloud instead of controlling it, and B adds audits without fixing the cause.",
+        "Eliminate: A documents the split instead of closing it, and B adds audits without fixing the cause.",
         "Final two: D beats C because hybrid risk sits between environments; strengthening one side leaves the seams open.",
         "Exam cue: in hybrid and multi-cloud designs, look for one common control standard and identity source across every environment."
       ],
-      "_provenance": "Authored from concept: 'Cloud Deployment Models. Hybrid Cloud Control Consistency'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.1 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES.",
+      "_provenance": "Authored from concept: 'Cloud Deployment Models. Hybrid Cloud Control Consistency'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.1 (Wave 1 coverage batch Q1: a subtopic with no practice yet). Public sources: NIST, ISO/IEC, CSA, PTES. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (move every workload back) was a strawman; it is now formal documentation of separate baselines, which records the split. Eliminate tip no longer says 'abandons'.",
       "style_version": 2
     },
     {
@@ -11477,11 +11477,11 @@
         "D": "Returning to per-switch management gives up central control and consistency instead of making the controller resilient."
       },
       "tips": [
-        "Eliminate: C strengthens access but leaves the single point of failure, and D abandons the design instead of protecting it.",
+        "Eliminate: C strengthens access but leaves the single point of failure, and D gives up central control instead of making the controller resilient.",
         "Final two: A beats B because a standby keeps the network running, while backups only speed a rebuild after an outage.",
         "Exam cue: centralizing control centralizes risk; protect a critical controller with automatic failover, not just backups."
       ],
-      "_provenance": "Authored from concept: 'Software-Defined Networking. Controller Redundancy'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.5 (Wave 1 coverage batch Q2: a subtopic with no practice yet). Public sources: ONF, ISO/IEC.",
+      "_provenance": "Authored from concept: 'Software-Defined Networking. Controller Redundancy'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A8.5 (Wave 1 coverage batch Q2: a subtopic with no practice yet). Public sources: ONF, ISO/IEC. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'abandons'.",
       "style_version": 2
     },
     {
@@ -11650,8 +11650,8 @@
       "question": "A laboratory application still encrypts result files with Triple DES, which current standards no longer allow for encryption, and the vendor notes no breach has occurred. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the vendor's view, since no breach has been reported",
-        "B": "Encrypt each result file a second time with Triple DES",
-        "C": "Migrate to AES by a date the data owner approves",
+        "B": "Use the longest keying option Triple DES supports",
+        "C": "Migrate to AES on a dated plan management approves",
         "D": "Add monitoring of who opens the encrypted result files"
       },
       "correct": "C",
@@ -11660,15 +11660,15 @@
       "correct_explanation": "NIST no longer allows Triple DES for encryption, so the files lack the assurance a current cipher gives, whatever the incident history. Migrating to the Advanced Encryption Standard (AES) by a date the data owner approves fixes the root cause and assigns accountability for it. Monitoring who opens the files is the runner-up: it may detect misuse, but copies taken from the system stay under a retired cipher.",
       "wrong_explanations": {
         "A": "No reported breach is not evidence of strength; NIST retired the cipher because its assurance no longer meets current standards.",
-        "B": "Encrypting twice with the same retired cipher still depends on an algorithm no longer allowed for encryption.",
+        "B": "Keying options do not rescue Triple DES; the cipher itself is retired for encryption, whichever key option is used.",
         "D": "Monitoring is detective only; it leaves the files protected by a cipher NIST no longer allows for encryption, so copies taken from the system keep that reduced assurance."
       },
       "tips": [
-        "Eliminate: A treats the absence of a reported breach as proof of strength, and B keeps the same retired cipher.",
+        "Eliminate: A treats the absence of a reported breach as proof of strength, and B changes key options on a cipher that is retired regardless.",
         "Final two: C beats D because replacing the cipher fixes the root cause; monitoring only compensates for it.",
         "Exam cue: when an algorithm is retired, recommend a dated migration that the business owns, not a compensating control around it."
       ],
-      "_provenance": "Authored from concept: 'Symmetric Encryption. Retiring Legacy Ciphers'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.1 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: NIST.",
+      "_provenance": "Authored from concept: 'Symmetric Encryption. Retiring Legacy Ciphers'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.1 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: NIST. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (encrypt twice with Triple DES) is now the longest keying option, a common misconception. Key no longer carries 'owner' (cue balance).",
       "style_version": 2
     },
     {
@@ -11775,11 +11775,11 @@
         "D": "Mailbox limits narrow access inside the insurer but leave quotes readable in transit and on the brokers' mail systems."
       },
       "tips": [
-        "Eliminate: A strengthens the signature, which never hides content, and C uses a private key that the insurer would never hold.",
+        "Eliminate: A strengthens the signature, which gives integrity, not secrecy, and C uses a private key that the insurer would never hold.",
         "Final two: B beats D because encryption protects each quote wherever it travels; mailbox limits guard only one stop.",
         "Exam cue: signatures give integrity, origin and non-repudiation, never confidentiality; secrecy needs encryption with the recipient's public key."
       ],
-      "_provenance": "Authored from concept: 'Digital Signatures. Signing Is Not Encrypting'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.4 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: NIST.",
+      "_provenance": "Authored from concept: 'Digital Signatures. Signing Is Not Encrypting'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.4 (Wave 2 coverage batch Q4: a thin high-yield subtopic). Public sources: NIST. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'hides'.",
       "style_version": 2
     },
     {
@@ -12096,7 +12096,7 @@
       "question": "Network engineers configured the inline intrusion prevention system protecting a payment platform to fail open, so sales continue if it crashes. What should the IS auditor do FIRST?",
       "options": {
         "A": "Recommend switching the device to fail closed to protect security",
-        "B": "Verify the business owner approved this risk trade-off",
+        "B": "Verify the business owner formally approved this trade-off",
         "C": "Recommend moving the device to a mirrored port to avoid outages",
         "D": "Test whether the device's attack signatures are kept up to date"
       },
@@ -12114,7 +12114,7 @@
         "Final two: B beats A because the failure mode trades security against availability, a decision the business owner makes on assessed risk.",
         "Exam cue: when technical staff have made a risk trade-off, the IS auditor first checks that the right owner made it."
       ],
-      "_provenance": "Authored from concept: 'Intrusion Prevention. Who Chooses Fail Open or Fail Closed'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.4 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and ISACA COBIT 2019.",
+      "_provenance": "Authored from concept: 'Intrusion Prevention. Who Chooses Fail Open or Fail Closed'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.4 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and ISACA COBIT 2019. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key no longer carries the word 'risk'.",
       "style_version": 2
     },
     {
@@ -12211,7 +12211,7 @@
         "A": "Disable every entry that has matched no traffic in the past year",
         "B": "Replace the device with a next-generation firewall that is fully application-aware",
         "C": "Add an intrusion detection sensor behind the perimeter device",
-        "D": "Require named owners to justify each entry periodically and remove the rest"
+        "D": "Require periodic rejustification of each rule, removing the rest"
       },
       "correct": "D",
       "key_concept": "A firewall rule set stays lean only when every entry has an owner who justifies it and periodic recertification removes the rest.",
@@ -12227,7 +12227,7 @@
         "Final two: D beats A because owner justification fixes the cause and catches used but unapproved rules that traffic counts miss.",
         "Exam cue: when controls drift because no one owns them, the best fix assigns ownership and periodic recertification."
       ],
-      "_provenance": "Authored from concept: 'Firewall Rule Sets. Rules With No Owner or Purpose'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.1 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and ISACA COBIT 2019.",
+      "_provenance": "Authored from concept: 'Firewall Rule Sets. Rules With No Owner or Purpose'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A4.1 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and ISACA COBIT 2019. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Cue balance: the key no longer says 'owners' and is no longer the longest option.",
       "style_version": 2
     },
     {
@@ -12334,11 +12334,11 @@
         "C": "Stopping the broadcast hides little: devices reveal the network name when they connect, and staff who know it can still join from personal phones."
       },
       "tips": [
-        "Eliminate: B changes passwords that staff can still enter on any phone, and C stops a broadcast that hides little.",
+        "Eliminate: B changes passwords that staff can still enter on any phone, and C stops a broadcast, though devices reveal the name when they connect.",
         "Final two: D beats A because a certificate kept on managed devices is far harder to copy than a hardware address.",
         "Exam cue: user authentication answers who; when the risk is the device, look for device identity tied to management."
       ],
-      "_provenance": "Authored from concept: 'Enterprise Wireless. Personal Devices on the Corporate Network'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.2 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and IEEE.",
+      "_provenance": "Authored from concept: 'Enterprise Wireless. Personal Devices on the Corporate Network'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.2 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST and IEEE. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'hides'.",
       "style_version": 2
     },
     {
@@ -12372,11 +12372,11 @@
         "D": "Scanner sign-in passwords protect the handheld application, not the radio link; an outsider can still break WEP and join the network."
       },
       "tips": [
-        "Eliminate: C hides a name that is easily revealed, and D changes application passwords that do nothing for the radio link.",
+        "Eliminate: C relies on a hidden name that connecting devices reveal, and D changes application passwords that do nothing for the radio link.",
         "Final two: B beats A because a key cracked in minutes defeats weekly changes, while restriction limits what an intruder reaches.",
         "Exam cue: when a weak control must stay for now, prefer a compensating control that limits impact over cosmetic hardening."
       ],
-      "_provenance": "Authored from concept: 'Wireless Encryption. Legacy WEP Devices Awaiting Replacement'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.2 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST.",
+      "_provenance": "Authored from concept: 'Wireless Encryption. Legacy WEP Devices Awaiting Replacement'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.2 (Wave 2 coverage batch Q5: a thin high-yield network subtopic). Public sources: NIST. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'hides'.",
       "style_version": 2
     },
     {
@@ -12485,11 +12485,11 @@
         "D": "Deluge systems spray from every open head at once when detection triggers, flooding the whole room even for a small fire."
       },
       "tips": [
-        "Eliminate: A keeps water in the pipes at all times, and D sprays the whole room from open heads at once.",
+        "Eliminate: A keeps water in the pipes permanently, and D sprays the whole room from open heads at once.",
         "Final two: C beats B because pre-action needs a detector alarm and an opened head, while dry pipe discharges after one knocked head.",
         "Exam cue: ISACA sometimes calls pre-action 'dry pipe'; judge by mechanism: choose the design that needs a detector alarm before water enters the pipes."
       ],
-      "_provenance": "Authored from concept: 'Fire Suppression. Choosing a Water-Based Design'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A2.2 (Wave 2 coverage batch Q5: a thin high-yield physical/environmental subtopic). Public sources: NFPA and NIST.",
+      "_provenance": "Authored from concept: 'Fire Suppression. Choosing a Water-Based Design'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A2.2 (Wave 2 coverage batch Q5: a thin high-yield physical/environmental subtopic). Public sources: NFPA and NIST. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'at all'.",
       "style_version": 2
     },
     {
@@ -12612,7 +12612,7 @@
       "principle_id": "fit-method-to-objective",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A bank built the cryptographic inventory for its post-quantum migration from questionnaires that system owners completed. Which procedure would BEST test whether the inventory is complete?",
+      "question": "A bank built the cryptographic inventory for its post-quantum migration from questionnaires that system owners completed. Which procedure should the IS auditor use to BEST test its completeness?",
       "options": {
         "A": "Have each system owner confirm their entries in writing",
         "B": "Check that every entry records the algorithm and key length",
@@ -12640,7 +12640,7 @@
         "Completeness testing",
         "Cryptographic discovery"
       ],
-      "_provenance": "Authored from concept: 'Cryptographic Inventory. Testing Completeness'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.6 (batch Q16: practice for the web v12.24 study notes). Distinct from d5_079 (build the inventory first), d5_074 (which systems migrate first) and d5_249 (crypto-agile design): tests how the IS auditor checks an existing inventory's completeness; sibling lesson to d4_309 (completeness from population toward record, in a log-coverage context). Public sources: ISACA ITAF and ISO.",
+      "_provenance": "Authored from concept: 'Cryptographic Inventory. Testing Completeness'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A6.6 (batch Q16: practice for the web v12.24 study notes). Distinct from d5_079 (build the inventory first), d5_074 (which systems migrate first) and d5_249 (crypto-agile design): tests how the IS auditor checks an existing inventory's completeness; sibling lesson to d4_309 (completeness from population toward record, in a log-coverage context). Public sources: ISACA ITAF and ISO. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Stem now names the IS auditor as the actor.",
       "style_version": 2
     },
     {
@@ -12879,7 +12879,7 @@
       "question": "An IS auditor finds a company manages vulnerabilities only by scanning monthly and applying vendor patches. What is the PRIMARY reason this process fails against zero-day exploits?",
       "options": {
         "A": "Zero-day exploits target systems that skipped older patches",
-        "B": "A monthly cycle leaves newly known flaws open for several weeks",
+        "B": "A monthly scanning cycle leaves vendor-patched flaws open for several weeks",
         "C": "No vendor patch or scanner check exists yet for such flaws",
         "D": "Scans rank flaws by severity score, not by active exploitation"
       },
@@ -12904,7 +12904,7 @@
         "Patch management",
         "Compensating controls"
       ],
-      "_provenance": "Authored from concept: 'Zero-Day Exploits. Patch Program Limits'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B2.6 (batch Q17: concept practice for a subtopic previously practised only as live-incident FIRST calls or recommendations). Tests what a zero-day is and why a scan-and-patch program cannot cover it; distinct from d5_137, which asks for the live compensating control. Public sources: NIST and ISACA.",
+      "_provenance": "Authored from concept: 'Zero-Day Exploits. Patch Program Limits'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B2.6 (batch Q17: concept practice for a subtopic previously practised only as live-incident FIRST calls or recommendations). Tests what a zero-day is and why a scan-and-patch program cannot cover it; distinct from d5_137, which asks for the live compensating control. Public sources: NIST and ISACA. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): The key alone echoed 'scanning' and 'vendor'; the runner-up now shares that wording.",
       "style_version": 2
     },
     {
@@ -13006,7 +13006,7 @@
         "D": "Vulnerability scanners assess network devices, appliances and embedded systems as well as computers; the gap is which devices they are pointed at."
       },
       "tips": [
-        "Eliminate: A and D, because encrypted traffic does not hide a device from a scan, and scanners assess embedded devices too.",
+        "Eliminate: A and D, because a scanner finds a device whether or not its traffic is encrypted, and scanners assess embedded devices too.",
         "Final two: C beats B because the stem says scans follow the register; unlisted devices are never examined, before patching even arises.",
         "Exam cue: devices nobody knows about cannot be protected; when a control works from a list, ask what is missing from the list."
       ],
@@ -13017,7 +13017,7 @@
         "Shadow IT",
         "Vulnerability scanning"
       ],
-      "_provenance": "Authored from concept: 'IoT Security. Asset Visibility'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.4 (batch Q17: concept practice for a subtopic previously practised only as live-incident FIRST calls or recommendations). Tests why IoT devices escape IT controls (they are invisible to IT); distinct from d5_241, which recommends building the inventory. Public sources: NIST, CIS and ISACA.",
+      "_provenance": "Authored from concept: 'IoT Security. Asset Visibility'. Original KaiSip item (Oct 2026), written for CISA subtopic 5A9.4 (batch Q17: concept practice for a subtopic previously practised only as live-incident FIRST calls or recommendations). Tests why IoT devices escape IT controls (they are invisible to IT); distinct from d5_241, which recommends building the inventory. Public sources: NIST, CIS and ISACA. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'hide'.",
       "style_version": 2
     },
     {
@@ -13194,7 +13194,7 @@
         "D": "A critical, widely used flaw needs risk-based urgency; waiting for the monthly window leaves exposed systems open longer than needed."
       },
       "tips": [
-        "Eliminate: C and D, because uncredentialed scans cannot see installed library versions, and the monthly window ignores the flaw's urgency.",
+        "Eliminate: C and D, because uncredentialed scans cannot see installed library versions, and the monthly window is too slow for a critical, widely used flaw.",
         "Final two: B beats A because ranking depends on knowing which systems are affected; identification comes first and enables it.",
         "Exam cue: when one plausible option can only work on the other's output, choose the step that produces that output."
       ],
@@ -13205,7 +13205,7 @@
         "Software bill of materials",
         "Risk-based prioritization"
       ],
-      "_provenance": "Authored from concept: 'Vulnerability Management. Newly Announced Library Flaws'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B3.1 (batch Q18: practice for principles with under ten tagged questions; principle final-two). The key enables the runner-up: ranking needs the list of affected systems. Closest sibling d4_223 (rollout order once affected services are known); distinct from d3_023 (vendor SBOM) and d5_277 (urgency factor). Public sources: NIST, CIS and the US Cybersecurity and Infrastructure Security Agency.",
+      "_provenance": "Authored from concept: 'Vulnerability Management. Newly Announced Library Flaws'. Original KaiSip item (Oct 2026), written for CISA subtopic 5B3.1 (batch Q18: practice for principles with under ten tagged questions; principle final-two). The key enables the runner-up: ranking needs the list of affected systems. Closest sibling d4_223 (rollout order once affected services are known); distinct from d3_023 (vendor SBOM) and d5_277 (urgency factor). Public sources: NIST, CIS and the US Cybersecurity and Infrastructure Security Agency. D5 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Eliminate tip no longer says 'ignores'.",
       "style_version": 2
     }
   ]
