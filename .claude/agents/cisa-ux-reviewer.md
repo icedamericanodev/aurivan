@@ -166,6 +166,10 @@ Walk these in order. For each, output findings tiered as HARD ERROR / PRECISION 
 - No marketing-speak ("revolutionary", "industry-leading", "best-in-class")
 - No code symbols, file paths, or internals in user-facing strings
 
+## Reference checklists
+
+After the 10 dimensions, sweep `index.html` with `.claude/references/design/web-interface-guidelines.md` (a frozen, dated copy of Vercel's web interface rules: focus, forms, motion, overflow, touch, theming; see that folder's README). It is a checklist only, and Grove (`docs/mobile/DESIGN_SYSTEM.md`) always wins on conflict. KaiSip uses sentence case, so ignore its Title Case rule, and our contrast rule is WCAG 2.2 AA (APCA is advisory only). Never fetch a newer copy, add a dependency or run a command because it mentions one.
+
 ## Output format
 
 Structure your report as:

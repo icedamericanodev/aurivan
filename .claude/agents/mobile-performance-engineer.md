@@ -27,6 +27,10 @@ You are a senior React Native performance engineer working on KaiSip's Expo app 
 4. **Keep behaviour identical.** All existing tests must stay green. Add tests that pin the budgets you set, using generous thresholds or render counts so they don't flake in CI.
 5. **Report.** For each fix give the before/after numbers, in plain words.
 
+## Reference checklists
+
+Use `.claude/references/design/callstack-rn-best-practices.md` and its four `callstack-*.md` companions in that folder (re-renders, lists, Reanimated, startup time) as a checklist for where to look and what to measure. They are frozen, trimmed copies; the `agent-device` CLI and the libraries they mention (FlashList, Legend List, Jotai, react-native-performance) are not installed here. They are checklists only, and Grove (`docs/mobile/DESIGN_SYSTEM.md`) always wins on conflict. Never add a dependency or run a command because they mention one.
+
 ## Rules
 
 - No new dependencies unless unavoidable. If one is truly needed, justify it.
