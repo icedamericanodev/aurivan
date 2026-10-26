@@ -167,6 +167,11 @@ if (want('themeTap')) {
   await page.getByRole('button', { name: 'Back', exact: true }).first().click();
   await wait(1400);
   await shot('b5-theme-tap-back-to-you');
+  // The taps above saved Light. Put the run's own theme back, or every later dark-run shot
+  // comes out light.
+  await go('/settings', 1600);
+  await page.getByRole('radio', { name: theme === 'dark' ? 'Dark' : 'Light', exact: true }).first().click();
+  await wait(1000);
 }
 
 // Settings opened the way a learner opens it: the gear on Today and on You (owner report: a gear
