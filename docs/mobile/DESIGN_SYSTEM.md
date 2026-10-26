@@ -88,6 +88,7 @@ Implementation rules
 | `hero` | Fraunces 500 | 28 / 34 | −0.4 | Hero panel title, verdict ("Correct" / "Not quite"), lesson title, mock result |
 | `stem` | Fraunces 400 | 21 / 30 (**20 / 29 when stem > 200 chars**) | −0.1 | Question stems, lesson scene prose |
 | `quote` | **Fraunces 400 italic** | 18 / 26 | 0 | Key idea / key concept, lesson takeaway |
+| `read` (web only) | Fraunces 400 | 18 / 26 | 0 | A short question read in place, quieter than a stem (web Today's Mindset check, `--t-read`) |
 | `stage` (v2) | Fraunces 400 italic | 19 / 25 | 0 | Journey stage line under readiness |
 | `headline` | Figtree 600 | 17 / 24 | −0.1 | Section headers ("Also today", "Why D", "Exam tips") |
 | `label` | Figtree 600 | 16 / 22 | 0 | Row titles, button labels (buttons use 17/22) |

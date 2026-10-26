@@ -223,6 +223,7 @@
   --t-hero: 500 28px/34px var(--f-serif);      --tr-hero: -0.4px;
   --t-stem: 400 21px/30px var(--f-serif);
   --t-quote: italic 400 18px/26px var(--f-serif);
+  --t-read: 400 18px/26px var(--f-serif);
   --t-stage: italic 400 19px/25px var(--f-serif);
   --t-headline: 600 17px/24px var(--f-sans);
   --t-label: 600 16px/22px var(--f-sans);
@@ -5090,12 +5091,12 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-mind-slot:empty { display: none; }
 .td-mind { margin-top: var(--sp-section); }
 .td-mind-open { margin-top: var(--sp-xs); }
-.td-mind-m { font: var(--t-meta); color: var(--text2); }
+.td-mind-m { font: var(--t-meta); color: var(--text2); white-space: nowrap; }
 .td-mind-open[aria-expanded="true"] .td-mind-chev .ico { transform: rotate(180deg); }
 .td-mind-body { padding: var(--sp-lg) 0 var(--sp-xs); }
 .td-mind-body[hidden] { display: none; }
-/* 18px serif (no 18 roman token): a read-in-place stem that stays quieter than the plan */
-.td-mind-q { margin: 0; font: 400 18px/26px var(--f-serif); color: var(--text); max-width: 60ch; }
+/* A read-in-place stem that stays quieter than the plan */
+.td-mind-q { margin: 0; font: var(--t-read); color: var(--text); max-width: 60ch; }
 .td-mind-fs { min-width: 0; margin: var(--sp-lg) 0 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: var(--sp-md); }
 .td-mind-lg { margin: 0 0 var(--sp-md); padding: 0; font: var(--t-caption); color: var(--text2); }
 .td-mind-opt {
@@ -5103,7 +5104,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
   padding: var(--sp-md) var(--sp-lg); background: none; border: 1.5px solid var(--control); border-radius: var(--r-md);
   cursor: pointer; text-align: left; font: var(--t-body); color: var(--text);
 }
-.td-mind-opt:hover { background: var(--surface2); }
+.td-mind-opt:hover { background: var(--raised2); }
 .td-mind-opt[aria-pressed="true"] { border: 2px solid var(--text); padding: calc(var(--sp-md) - .5px) calc(var(--sp-lg) - .5px); }
 .td-mind-opt.is-key, .td-mind-opt.is-key:hover { background: var(--correct-light); border-color: var(--correct); }
 .td-mind-opt.is-key[aria-pressed="true"] { border-color: var(--text); }
@@ -5121,7 +5122,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-idea-t { margin: 0; font: var(--t-label); color: var(--text); }
 .td-idea-q { margin: var(--sp-xs) 0 0; font: var(--t-quote); color: var(--text); max-width: 60ch; }
 .td-idea .td-link { margin-top: var(--sp-xs); }
-/* Phones: every Today control is at least 48px tall */
+/* Every Today control is at least 48px tall */
 .td .gt-btn-ghost, .td .plnt-ghost { min-height: 48px; }
 .td-rings { display: block; max-width: 100%; height: auto; }
 .td-big { font: var(--t-number); letter-spacing: var(--tr-number); color: var(--text); margin: 0; white-space: nowrap; }
@@ -11399,14 +11400,14 @@ function todayReadyHtml(r, range, st, showRings) {
     return '<section class="td-ready td-ready-quiet" aria-labelledby="tdReadyH">' + head
       + '<p class="td-wait">' + (r.answered > 0
         ? (RD_RANGE_MIN_ANSWERS - range.needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' questions for your first readiness range. Each question counts once.'
-        : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range') + '</p>'
+        : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range.') + '</p>'
       + '<p class="td-note td-est">Your range will be a study estimate, not a prediction.</p></section>';
   }
   if (st.exam) {
     return '<section class="td-ready td-ready-words" aria-labelledby="tdReadyH">' + head
       + '<p class="td-words">Your estimated readiness is ' + range.low + ' to ' + range.high + '%.</p>'
       + '<p class="td-note td-est">' + TODAY_EST_LINE + '</p>'
-      + '<p class="td-note">Progress charts are hidden this week so you can focus.</p></section>';
+      + '<p class="td-note">Progress charts are hidden ' + (st.exam === 'day' ? 'today' : 'this week') + ' so you can focus.</p></section>';
   }
   var spoken = 'Estimated readiness between ' + range.low + ' and ' + range.high + ' percent.';
   var html = '<section class="td-ready" aria-labelledby="tdReadyH">' + head
@@ -11483,7 +11484,7 @@ function todayRouteHref(hash) {
   return escapeHtml(here + '#' + hash);
 }
 function todayPrincipleLink(p) {
-  return '<a class="td-link" href="' + todayRouteHref('principles/' + p.id) + '" data-pid="' + p.id + '" onclick="return todayOpenPrinciple(event,this.dataset.pid)">'
+  return '<a class="td-link" href="' + todayRouteHref('principles/' + p.id) + '" data-pid="' + escapeHtml(p.id) + '" onclick="return todayOpenPrinciple(event,this.dataset.pid)">'
     + 'Read the principle<span class="sr-only">: ' + escapeHtml(p.title) + '</span>' + ico('chevron', 18) + '</a>';
 }
 function todayOpenPrinciple(e, pid) {
@@ -11662,7 +11663,8 @@ function renderHome() {
   // One invitation per visit: when the backup reminder and the plant
   // invitation are both due, the first study day gets the plant and a later
   // visit the backup (todayInvitePick, kept for this visit).
-  var backup = backupNudgeHtml(r.answered);
+  // A Welcome back day keeps one action: no backup nudge.
+  var backup = st.back ? '' : backupNudgeHtml(r.answered);
   if (backup && plantInviteDue()) {
     if (!todayInvitePick) todayInvitePick = (Array.isArray(S.studyDays) && S.studyDays.length > 1) ? 'backup' : 'plant';
     if (todayInvitePick === 'plant') backup = '';
