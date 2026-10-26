@@ -65,6 +65,12 @@
         "scenario": "An IS auditor finds that a new HR system raises no alert when salaries change outside a payroll run. The HR manager asks the auditor to set up the alert.",
         "answer": "Report the gap and recommend an alert with a named reviewer. HR and IT build and run it; the IS auditor can say what it must catch and test it later."
       },
+      "check": {
+        "scenario": "During a pre-implementation review, an IS auditor finds that buyers can approve their own purchase orders in the new procurement system. The short-staffed project manager asks the auditor to write the approval rule into the workflow.",
+        "right": "Report the gap and recommend an approval rule that the project team builds and the auditor tests.",
+        "trap": "Write the approval rule together with the project team, then report the gap as closed before go-live.",
+        "why": "Writing the rule would leave the IS auditor auditing their own work later. The auditor can say what the control must do; the project team builds and owns it."
+      },
       "nuance": "Advisory work is allowed when its scope is agreed in writing up front, management keeps every decision, and the same IS auditor does not later give assurance on it.",
       "domains": [
         1,
@@ -111,6 +117,12 @@
       "example": {
         "scenario": "Two months into an audit of the payments platform, the IS auditor's spouse is appointed head of payments operations.",
         "answer": "Disclose the new threat to audit management at once. Audit management should assign another IS auditor, have the work done so far reviewed and document the assessment. Independence is not settled at acceptance."
+      },
+      "check": {
+        "scenario": "Midway through an audit of procurement, the lead IS auditor accepts a job offer from the auditee's procurement director, starting after the audit ends.",
+        "right": "Report the offer to audit management now, so another auditor takes over and the earlier work is reviewed.",
+        "trap": "Disclose the offer in the final audit report, so its readers can weigh the audit conclusions for themselves.",
+        "why": "A pending job with the auditee is a severe threat that arose mid-engagement. Disclosure alone does not remove it; the auditor steps off and the work so far is rechecked."
       },
       "nuance": "Organizational independence (the reporting line) and individual objectivity are separate tests; a function can be independent while one of its IS auditors is not.",
       "domains": [
@@ -159,6 +171,12 @@
       "example": {
         "scenario": "An IS auditor finds that the CIO has granted a relative's company remote access outside any contract. The CIO asks to discuss it privately before anything is reported.",
         "answer": "Preserve the evidence and escalate through the chief audit executive to the audit committee, which sits above the CIO. Settling it privately leaves the decision with the person involved."
+      },
+      "check": {
+        "scenario": "An IS auditor finds that the CFO approved payments to a supplier the CFO secretly co-owns. The CFO asks the auditor to hold the finding while it is sorted out internally.",
+        "right": "Preserve the evidence and take the matter through the chief audit executive to the audit committee.",
+        "trap": "Preserve the evidence and have the chief audit executive give the CFO a deadline to reverse the payments.",
+        "why": "The person involved cannot own the decision. Suspected fraud by a senior officer goes to the body above them, and a private deadline only warns them."
       },
       "domains": [
         1,
@@ -213,6 +231,12 @@
       "example": {
         "scenario": "A marketing director wants to keep customer data in an unapproved cloud tool for six months and asks the IS auditor to approve the exception.",
         "answer": "Report the risk and recommend a formal exception decided by the accountable data owner at the level the policy names, with an expiration date and compensating controls. Approving it would make the IS auditor the risk owner."
+      },
+      "check": {
+        "scenario": "A business unit cannot patch a legacy server until next year. Its manager asks the IS auditor to sign the risk acceptance form so the exception can be filed.",
+        "right": "Leave the signature to the risk owner and recommend compensating controls until the patch.",
+        "trap": "Sign the form as the independent reviewer and recommend compensating controls until the patch.",
+        "why": "Accepting risk is management's decision. An IS auditor who signs takes on the risk owner's role and would later judge a decision they made."
       },
       "domains": [
         1,
@@ -270,6 +294,12 @@
       "example": {
         "scenario": "A CIO wants to buy an AI coding assistant for every developer next week. No policy says what code or data may be pasted into it.",
         "answer": "Recommend that management first agree on an acceptable use policy and data limits with business and legal stakeholders, then pilot the tool against them. Buying first leaves staff guessing and may leak code or personal data."
+      },
+      "check": {
+        "scenario": "A business unit wants to launch a chatbot that answers customer billing questions next month. No one has decided who owns its answers or what customer data it may use.",
+        "right": "Recommend that management name an owner and set data-use limits before the chatbot goes live.",
+        "trap": "Recommend a filter that screens its answers for customer data, plus full logging, before go-live.",
+        "why": "Ownership and data limits decide what the chatbot may do and what the filters must catch. Technical safeguards come after that direction, not instead of it."
       },
       "nuance": "When governance already exists and the gap is purely technical, the technical control can be the right answer.",
       "domains": [
@@ -330,6 +360,12 @@
         "scenario": "An audit manager can cover three of five areas next year. The largest system has strong, recently tested controls; a smaller refunds system has no recent review and rising complaints.",
         "answer": "Rank the refunds system higher: weak assurance, warning signs and direct financial exposure give it greater combined risk. System size alone does not set priority."
       },
+      "check": {
+        "scenario": "An audit plan can cover one of two areas. Payroll has high impact but strong, recently tested controls. Vendor payments has moderate impact, no recent review and several unexplained duplicate payments.",
+        "right": "Cover vendor payments, where weak assurance and warning signs raise the combined risk.",
+        "trap": "Cover payroll, where a failure would have the greatest impact on staff and the business.",
+        "why": "Risk weighs likelihood with impact. Tested controls lower payroll's likelihood, while duplicates and no recent review raise the exposure in vendor payments."
+      },
       "nuance": "A business impact analysis (BIA) deliberately measures impact regardless of likelihood; likelihood is handled in the risk assessment. Neither replaces the other.",
       "domains": [
         1,
@@ -388,6 +424,12 @@
         "scenario": "Before testing change management, an IS auditor receives a list of production changes from the change tool. Some emergency fixes are known to be applied directly on servers.",
         "answer": "First build the population from the system side, such as server change logs, and reconcile it to the tool's list. Sampling the tool's list alone would miss the changes most likely to bypass change control."
       },
+      "check": {
+        "scenario": "An IS auditor will test user access reviews for a finance application. IT sends a spreadsheet of user accounts it exported last week.",
+        "right": "Reconcile the spreadsheet to the application's own user table before choosing a sample from it.",
+        "trap": "Test every account on the spreadsheet against its approved request, rather than only a sample.",
+        "why": "Testing, sampled or full, only covers the list it came from. Confirm that the population is complete first, or careful testing can miss the accounts that matter most."
+      },
       "domains": [
         1,
         2,
@@ -443,6 +485,12 @@
       "example": {
         "scenario": "An IS auditor must confirm that no refund over $500 was paid last year without a matching return record. The audit manager suggests a random sample of 40 refunds.",
         "answer": "The objective is \"none\", so test the whole population: use generalized audit software (GAS) on a complete extract and match every refund over $500 to a return. A sample can estimate how often refunds lack a match, but cannot show that none did."
+      },
+      "check": {
+        "scenario": "An IS auditor must find out whether any vendor in the master file shares a bank account with an employee. Complete vendor and payroll files are available.",
+        "right": "Use data analytics software to match every vendor bank account against every employee account.",
+        "trap": "Select a statistical sample of vendors and check each sampled bank account against payroll records.",
+        "why": "The objective asks whether any match exists. Only testing the whole population can show that none does; a sample can only estimate a rate."
       },
       "nuance": "Cost, tools and staffing decide only among methods that answer the objective. If none is feasible, the IS auditor informs audit management and reports the scope limitation rather than substituting a test that answers a different question.",
       "domains": [
@@ -504,6 +552,12 @@
         "scenario": "An IS auditor must confirm that departing employees lose system access within one day. HR says they do, IT offers a ticket summary, and a written offboarding procedure exists.",
         "answer": "Obtain the termination list directly from HR's system and compare it with the directory's account-disable timestamps. Independent, system-sourced evidence the IS auditor obtains beats statements, documents and summaries prepared by the auditee."
       },
+      "check": {
+        "scenario": "An IS auditor must confirm that nightly database backups ran throughout the last quarter. The database administrator (DBA) offers to help.",
+        "right": "Extract the quarter's job history directly from the backup tool and check each night's run.",
+        "trap": "Obtain a signed confirmation from the DBA, supported by the team's monthly backup reports.",
+        "why": "Evidence the IS auditor obtains directly from the system beats statements and reports the auditee prepares, which need corroboration before the auditor relies on them."
+      },
       "domains": [
         1,
         2,
@@ -559,6 +613,12 @@
         "scenario": "Clerks can adjust shipping fees by small amounts without approval. Each change is under five dollars, but there are thousands a month, and the fees feed revenue reported to investors.",
         "answer": "Assess the weakness as potentially material: add the items up and weigh who relies on the figures. Calling it minor because each change is small would understate the risk."
       },
+      "check": {
+        "scenario": "Testing finds that a small fraction of supplier invoices were paid without a purchase order. All of them went to one new supplier owned by a purchasing clerk's relative.",
+        "right": "Report it as significant: the concentration and the related party matter more than the low rate.",
+        "trap": "Report it as minor: the rate is well below the tolerable deviation rate the auditor set for the test.",
+        "why": "Significance depends on context, not only size. Exceptions concentrated on a related party point to possible fraud, which a low overall rate hides."
+      },
       "domains": [
         1,
         3,
@@ -606,6 +666,12 @@
       "example": {
         "scenario": "Management reports that a finding on quarterly access reviews is fixed and sends the updated procedure.",
         "answer": "Test that the review now operates, for example by inspecting the latest completed review and the access removals it triggered. A revised document shows intent; only evidence of operation closes the finding."
+      },
+      "check": {
+        "scenario": "A draft report rates a finding on shared administrator passwords as high. The CIO asks for a medium rating because a fix is already planned for next quarter.",
+        "right": "Keep the high rating and record the planned fix and its date as management's response.",
+        "trap": "Lower the rating to medium and record the planned fix and its date as management's response.",
+        "why": "The rating reflects the risk as it stands today. A planned fix belongs in management's response, and follow-up later checks that it was done."
       },
       "domains": [
         1,
@@ -660,6 +726,12 @@
         "scenario": "A nightly interface has failed eleven times in three months. Each time an operator restarts it, and management proposes hiring a second night operator.",
         "answer": "Recommend that IT open a problem record, analyze the failures together to find the common cause, log a workaround in the meantime and fix the underlying defect. A second operator only restarts the job faster."
       },
+      "check": {
+        "scenario": "The same payroll calculation error reappears after each monthly software release. Each time, a developer corrects the affected records by hand.",
+        "right": "Recommend finding why the error returns with each release and fixing the code and its testing.",
+        "trap": "Recommend a reconciliation after each release so that any bad records are caught before payday.",
+        "why": "A reconciliation catches the error every month but never stops it. The defect, and the testing gap that lets it back in, are the cause to fix."
+      },
       "nuance": "During a live outage, restore service first; root cause follows through problem management and is never skipped.",
       "domains": [
         1,
@@ -712,6 +784,12 @@
       "example": {
         "scenario": "A new online banking feature lets customers add payees. The design team proposes a monthly report of payees added from new devices.",
         "answer": "Recommend that the design include an extra check, such as confirming each new payee with a second authentication factor before its first payment. Keep the report as a backstop; it finds fraud after money has left."
+      },
+      "check": {
+        "scenario": "A new expense app lets employees submit claims online. The design team plans a monthly report of claims that exceeded the policy limits.",
+        "right": "Recommend that the app block or route for approval any claim over the limit as it is entered.",
+        "trap": "Recommend that a finance analyst review the monthly report and recover any amounts over the limit.",
+        "why": "A check at entry stops the overpayment; the report finds it after the money is paid. Keep the report as a backstop, since prevention can fail."
       },
       "nuance": "When collusion or management override can defeat a preventive control, a detective control is the right complement.",
       "domains": [
@@ -767,6 +845,12 @@
         "scenario": "A clinic's only IT administrator manages user accounts and also reviews the access logs. The clinic cannot fund a second IT position.",
         "answer": "Recommend that a manager outside IT review a monthly report of account changes against approved requests, and test that the review happens and catches exceptions. The administrator should not review their own activity."
       },
+      "check": {
+        "scenario": "An application team asks to skip multi-factor authentication (MFA) on a new admin console and review its login logs monthly instead. The console supports MFA at no extra cost.",
+        "right": "Recommend enabling MFA on the admin console, with a short rollout plan for its users.",
+        "trap": "Recommend the monthly login review as a compensating control, with a named reviewer.",
+        "why": "A compensating control is a fallback for when the primary control is impractical. Here MFA is available and practical, so a later log review is a weaker substitute."
+      },
       "domains": [
         1,
         2,
@@ -815,6 +899,12 @@
       "example": {
         "scenario": "Help desk agents can reset any user's password and can also add users to the group that approves payments.",
         "answer": "Recommend removing group changes from the help desk role and routing them through requests approved by the process owner. Resets are needed for the job; the combination lets one agent take over or create a payment approver."
+      },
+      "check": {
+        "scenario": "A warehouse supervisor can record stock counts in the inventory system and also approve write-offs for missing stock. The warehouse has several supervisors.",
+        "right": "Recommend that a different supervisor approve each write-off, with the system blocking self-approval.",
+        "trap": "Recommend a monthly review by the operations manager of all write-offs and the counts behind them.",
+        "why": "One person who can count stock and write it off can hide a theft alone. Splitting the duties stops that; a monthly review finds it after the stock is gone."
       },
       "nuance": "Least privilege is a strong default, not an absolute: emergency access and very small teams are handled through approved, time-limited and monitored exceptions.",
       "domains": [
@@ -873,6 +963,12 @@
         "scenario": "Management says its web application firewall protects the online store and offers the configuration screen as evidence.",
         "answer": "Ask for proof of operation: confirm it runs in blocking mode, review its block logs over recent months and, with management's approval, run safe test attacks. A configuration screen shows what was set, not that it works."
       },
+      "check": {
+        "scenario": "Management states that every company laptop is encrypted and shows the device management policy that enforces encryption.",
+        "right": "Compare the asset inventory with each laptop's reported encryption status and follow up every gap.",
+        "trap": "Review the policy's encryption settings and confirm that it is assigned to every laptop group in use.",
+        "why": "A policy shows what was set, not what happened. Laptops that never checked in or failed to encrypt show up only when operation is compared with the full inventory."
+      },
       "nuance": "Continuous auditing can reduce periodic testing, but neither it nor management's monitoring removes the need for independent evidence.",
       "domains": [
         1,
@@ -927,6 +1023,12 @@
       "example": {
         "scenario": "A sales manager's account is signed in from an unfamiliar country and is downloading the full customer list right now. Legal action is likely.",
         "answer": "Management should disable the account and end its sessions at once, capturing logs and device evidence under a documented chain of custody. The IS auditor recommends this order rather than acting directly. Interviews, notification and root cause work follow."
+      },
+      "check": {
+        "scenario": "An IS auditor reviews the incident plan's first step for ransomware found spreading across file servers. Legal action against the attackers is likely.",
+        "right": "Isolate the infected servers from the network, but keep them running to preserve memory evidence.",
+        "trap": "Power off the infected servers at once, then image their disks as evidence for the legal case.",
+        "why": "Containment comes first, in a way that preserves evidence. Isolation stops the spread; powering off also erases memory that investigators and a court may need."
       },
       "nuance": "Against a stealthy, persistent attacker whose reach is unknown, scope quietly first; visible action too early can push the attacker to hidden footholds.",
       "domains": [
@@ -997,6 +1099,12 @@
         "scenario": "A BIA says online ordering must be back within four hours and payroll within three days. IT's plan restores payroll first because its server is smallest, and no restore has been timed.",
         "answer": "Recommend reordering recovery to follow the BIA, with online ordering first, then timing a test restore against the four-hour target. Ease of restore does not set priority, and an untimed plan is unproven."
       },
+      "check": {
+        "scenario": "After a site outage, IT plans to restore email first because it is quick, then order processing. The business impact analysis (BIA) ranks order processing as most critical.",
+        "right": "Restore order processing first, with the directory and network services it depends on.",
+        "trap": "Restore email first, so that staff can coordinate the rest of the recovery more quickly.",
+        "why": "The BIA, not speed or convenience, sets recovery order, and shared dependencies come first. The plan's call tree, not email, should coordinate staff."
+      },
       "nuance": "Immutable or offline copies matter because attackers target backups, but immutability is one design choice inside a tested recovery capability, not a substitute for it.",
       "domains": [
         2,
@@ -1057,6 +1165,12 @@
         "scenario": "A question says a business team's SaaS tool may hold customer data and asks what the IS auditor should do FIRST. Options include recommending encryption, notifying the regulator and confirming what data the tool holds.",
         "answer": "Confirm the facts first: which data, how much and who can reach it. Encryption or notification may follow, but FIRST asks for the step the others depend on."
       },
+      "check": {
+        "scenario": "A question asks for the IS auditor's FIRST step after hearing in an interview that a payroll interface was changed without approval.",
+        "right": "Confirm the change happened by checking the interface's change log and production version.",
+        "trap": "Recommend that the change management policy be updated to cover all interface changes.",
+        "why": "FIRST asks for the step the others depend on. Until the unapproved change is confirmed, any recommendation rests on hearsay."
+      },
       "domains": [
         1,
         2,
@@ -1096,6 +1210,12 @@
       "example": {
         "scenario": "A question about onboarding a new cloud vendor leaves two options: review the vendor's independent assurance report, such as a SOC 2 report, or set the vendor's risk tier from data sensitivity and service criticality.",
         "answer": "Tiering wins. It comes first and decides how much assurance is needed, including whether the report is enough. The report review is a later, narrower step."
+      },
+      "check": {
+        "scenario": "A question asks what the IS auditor should review FIRST when payroll is moving to a cloud provider. Two options survive elimination.",
+        "right": "Review whether the business has defined its security and service requirements for the provider.",
+        "trap": "Review whether the contract includes a right-to-audit clause and breach notification terms.",
+        "why": "Requirements come first and decide what the contract must say. The specific, familiar option is often the later, narrower step."
       },
       "domains": [
         1,
@@ -1139,6 +1259,12 @@
       "example": {
         "scenario": "A vendor claims its new firewall makes the company's intrusion detection unnecessary. The question asks for the IS auditor's MOST appropriate response.",
         "answer": "Reject the absolute: one layer cannot remove the need for another, so recommend keeping detection as part of defense in depth. Options that eliminate or remove the need rarely survive."
+      },
+      "check": {
+        "scenario": "A question says a company already runs a full weekly backup and asks what would MOST help it meet a four-hour recovery point objective (RPO).",
+        "right": "Add incremental or transaction log backups that run several times a day.",
+        "trap": "Store a copy of the weekly backup offsite at a secure, distant location.",
+        "why": "The stem sets a four-hour RPO, so the gap is how much data could be lost. Offsite storage is good practice but does not shorten the time between backups."
       },
       "domains": [
         1,

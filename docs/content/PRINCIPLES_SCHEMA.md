@@ -51,6 +51,7 @@ Current families: `role`, `priorities`, `assurance`, `remedies`, `response`,
 | `triggers` | string[] | At least 3 stem words or phrases that signal the principle |
 | `trap` | `{ move, why_wrong }` | The seductive wrong move and why it loses |
 | `example` | `{ scenario, answer }` | An **original** mini-scenario and the right move. **At most 80 words** across both parts |
+| `check` | `{ scenario, right, trap, why }`, optional | One **original** two-option question for the web Today "Mindset check": a scenario (at most 45 words), the right move and the trap as single moves of matched form and length (each at most 22 words; the shorter at least 80% of the longer in characters), and a `why` (at most 35 words) shown after either answer. Never a retelling of `example` or a bank question; the trap must not name its own flaw |
 | `nuance` | string, optional | One accuracy boundary (when the rule bends), at most 40 words |
 | `domains` | int[] | Sorted, unique, 1–5. Every practice id and subtopic must sit in one of these domains |
 | `subtopics` | string[] | Note subtopic codes (e.g. `1A3.6`) from `data/cisa_notes.json` where the principle is taught or applied. May be empty only for the `reading` family |

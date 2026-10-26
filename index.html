@@ -5094,7 +5094,8 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-mind-open[aria-expanded="true"] .td-mind-chev .ico { transform: rotate(180deg); }
 .td-mind-body { padding: var(--sp-lg) 0 var(--sp-xs); }
 .td-mind-body[hidden] { display: none; }
-.td-mind-q { margin: 0; font: var(--t-stem); color: var(--text); max-width: 60ch; }
+/* 18px serif (no 18 roman token): a read-in-place stem that stays quieter than the plan */
+.td-mind-q { margin: 0; font: 400 18px/26px var(--f-serif); color: var(--text); max-width: 60ch; }
 .td-mind-fs { min-width: 0; margin: var(--sp-lg) 0 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: var(--sp-md); }
 .td-mind-lg { margin: 0 0 var(--sp-md); padding: 0; font: var(--t-caption); color: var(--text2); }
 .td-mind-opt {
@@ -5104,7 +5105,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 }
 .td-mind-opt:hover { background: var(--surface2); }
 .td-mind-opt[aria-pressed="true"] { border: 2px solid var(--text); padding: calc(var(--sp-md) - .5px) calc(var(--sp-lg) - .5px); }
-.td-mind-opt.is-key, .td-mind-opt.is-key:hover { background: var(--correct-light); border-color: transparent; }
+.td-mind-opt.is-key, .td-mind-opt.is-key:hover { background: var(--correct-light); border-color: var(--correct); }
 .td-mind-opt.is-key[aria-pressed="true"] { border-color: var(--text); }
 .td-mind-tag { display: inline-flex; align-items: center; gap: var(--sp-xs); font: var(--t-caption); color: var(--text); }
 .td-mind-tag:empty { display: none; }
@@ -5145,6 +5146,13 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 @media (min-width: 560px) and (max-width: 1179px) {
   .td-ready:not(.td-ready-quiet):not(.td-ready-words) { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--sp-section); align-items: center; }
   .td-ready-more > :first-child { margin-top: 0; }
+  /* A week-strip day hides the rings: the figure sits above the legend instead of floating beside it. */
+  .td-vis-week .td-ready:not(.td-ready-quiet):not(.td-ready-words) { display: block; }
+  .td-vis-week .td-ready-more > :first-child { margin-top: var(--sp-xl); }
+}
+/* Narrow phones: the plan text may run under the decorative frond */
+@media (max-width: 399px) {
+  .td-hero-t, .td-hero-m, .td-plan { max-width: none; }
 }
 /* Two columns: the plan on the left, a glanceable 320px column on the right */
 @media (min-width: 1180px) {
@@ -11065,24 +11073,36 @@ function todayPlanSetLength() { return practiceLen > 0 ? practiceLen : 10; }
 //   total: the rest wait for the next days' plans. With none due, a short
 //   mixed set instead.
 // - 'examweek' (1 to 7 days out): genuinely shorter, about 11 min: a few
-//   questions to revisit plus one short top-up set.
+//   questions to revisit plus one short set.
+// - 'examday': lighter still, an optional warm-up of at most
+//   TODAY_WARM_UP questions to revisit (a short mixed set when none are
+//   due), like mobile's exam-day warm-up.
 // - 'normal': as v12.33.
 var TODAY_BACK_QUESTIONS = 6;
 var TODAY_EXAM_WEEK_REVIEW = 4;
 var TODAY_EXAM_WEEK_QUESTIONS = 9;
+var TODAY_WARM_UP = 5;
+function todayPlanMinutes(n) { return Math.max(1, Math.round(n * MINUTES_PER_PRACTICE_Q)); }
 function todayPlan(r, last, mode) {
   r = r || computeTodayReadiness();
   var due = 0;
   try { due = getDueReview().length; } catch (e) {}
   var items = [];
-  if (mode === 'back') {
-    var nb = Math.min(due, TODAY_BACK_QUESTIONS);
+  if (mode === 'back' || mode === 'examday') {
+    // One item only: questions to revisit, else a short mixed set.
+    var warm = mode === 'examday';
+    var cap = warm ? TODAY_WARM_UP : TODAY_BACK_QUESTIONS;
+    var nb = Math.min(due, cap);
     if (nb > 0) {
-      items.push({ title: 'Questions to revisit', meta: nb + ' from before &middot; the ones you missed, oldest first' });
-      return { mode: mode, review: nb, due: due, d: null, n: 0, items: items, minutes: Math.max(1, Math.ceil(nb * MINUTES_PER_PRACTICE_Q)) };
+      items.push(warm
+        ? { title: 'Optional warm-up', meta: nb + (nb === 1 ? ' question' : ' questions') + ' to revisit' }
+        : { title: 'Questions to revisit', meta: nb + ' from before &middot; the ones you missed, oldest first' });
+      return { mode: mode, review: nb, due: due, d: null, n: 0, items: items, minutes: todayPlanMinutes(nb) };
     }
-    items.push({ title: 'A short mixed set', meta: TODAY_BACK_QUESTIONS + ' questions &middot; across the domains' });
-    return { mode: mode, review: 0, due: 0, d: 'all', n: TODAY_BACK_QUESTIONS, items: items, minutes: Math.max(1, Math.ceil(TODAY_BACK_QUESTIONS * MINUTES_PER_PRACTICE_Q)) };
+    items.push(warm
+      ? { title: 'Optional warm-up', meta: cap + ' mixed questions' }
+      : { title: 'A short mixed set', meta: cap + ' questions &middot; across the domains' });
+    return { mode: mode, review: 0, due: due, d: 'all', n: cap, items: items, minutes: todayPlanMinutes(cap) };
   }
   var week = mode === 'examweek';
   var review = Math.min(due, week ? TODAY_EXAM_WEEK_REVIEW : REVIEW_DAILY_PLAN);
@@ -11092,13 +11112,13 @@ function todayPlan(r, last, mode) {
     items.push({ title: 'Questions to revisit', meta: !week && due > review ? review + ' of ' + railShowCount(due) + ' due' : review + (review === 1 ? ' question' : ' questions') + ' from before' });
   }
   // One name for the weak area across Today: "where you'll gain most".
-  items.push({ title: escapeHtml(DI[set.d].short), meta: n + ' questions &middot; ' + (set.why === 'new' ? 'not started' : week ? 'one short set' :'where you&rsquo;ll gain most') });
-  return { mode: mode || 'normal', review: review, due: due, d: set.d, n: n, items: items, minutes: Math.max(1, Math.round((review + n) * MINUTES_PER_PRACTICE_Q)) };
+  items.push({ title: escapeHtml(DI[set.d].short), meta: n + ' questions &middot; ' + (set.why === 'new' ? 'not started' : week ? 'one short set' : 'where you&rsquo;ll gain most') });
+  return { mode: mode || 'normal', review: review, due: due, d: set.d, n: n, items: items, minutes: todayPlanMinutes(review + n) };
 }
 function todayPlanStart() {
   var r = computeTodayReadiness();
   var plan = todayPlan(r, undefined, todayState(new Date(), r).plan);
-  if (plan.mode === 'back') {
+  if (plan.mode === 'back' || plan.mode === 'examday') {
     if (plan.review > 0) { startReviewQueue(plan.review); return; }
     switchTab('practice', { noScroll: true });
     selectDomain('all');
@@ -11193,9 +11213,10 @@ function backupNudgeLater() {
 //   count of days away, and no next step, Mindset check or week strip;
 // - exam week: a shorter plan, readiness in words only, no rings, no strip;
 // - one visual per visit below 1180px: the rings or the week, by the day.
-// "See your readiness report" opens this page. The Readiness report page is
-// next: switch this one constant when it lands.
+// The readiness link opens this page, and its words follow it. The
+// Readiness report page is next: switch this one constant when it lands.
 var TODAY_REPORT_TAB = 'weakspots';
+var TODAY_REPORT_LABEL = TODAY_REPORT_TAB === 'weakspots' ? 'See your weak spots' : 'See your readiness report';
 var TODAY_WEEK_LINE_FROM = 14;
 var TODAY_BACK_AFTER_DAYS = 3;
 var TODAY_EXAM_WEEK_DAYS = 7;
@@ -11225,7 +11246,7 @@ function todayState(now, r) {
   return {
     days: days, exam: exam, resume: resume, back: back, studyDays: list,
     newLearner: list.length < 2,
-    plan: back ? 'back' : exam === 'week' ? 'examweek' : 'normal'
+    plan: back ? 'back' : exam === 'week' ? 'examweek' : exam === 'day' ? 'examday' : 'normal'
   };
 }
 // A whole-day number for daily rotations (the visual, the principle).
@@ -11318,36 +11339,35 @@ function todayReadyHtml(r, range, st, showRings) {
   if (figures.some(function (f) { return f.banded; })) how += '<p class="td-note">' + bandsLine() + '</p>';
   else if (figures.some(function (f) { return f.text !== '–'; })) how += '<p class="td-note">Percentages count your latest try at each question.</p>';
   html += '<details class="td-how"><summary class="td-how-s"><span>How this is worked out</span>' + ico('chevron-down', 18) + '</summary>' + how + '</details>';
-  html += '<a class="td-link" href="#' + NAV_HASH[TODAY_REPORT_TAB] + '" onclick="return navTo(event,\'' + TODAY_REPORT_TAB + '\')">See your readiness report' + ico('chevron', 18) + '</a>';
+  html += '<a class="td-link" href="#' + NAV_HASH[TODAY_REPORT_TAB] + '" onclick="return navTo(event,\'' + TODAY_REPORT_TAB + '\')">' + TODAY_REPORT_LABEL + ico('chevron', 18) + '</a>';
   return html + '</div></section>';
 }
 
 // ── Mindset check: one principle a day (data/mindset/principles.json) ──
-// A compact row that opens ONE question with two answers: the principle's
-// own right move (the first sentence of its worked example) against its
-// trap. Only principles where that pair reads cleanly take part (see
-// todayMindPair); with none, the principle shows read-only. It is practice
-// for the mindset only: nothing is saved, graded or counted toward
-// readiness or the answer logs. In exam week (and on exam day) it becomes
-// one read-only idea for the exam.
+// A compact row that opens ONE question with two answers, from the
+// principle's hand-written `check` (scenario, right move, trap, why;
+// docs/content/PRINCIPLES_SCHEMA.md). All principles with a complete check
+// rotate, one a day; which answer shows first is mixed by the day, so
+// position is never a cue. Without any check, the principle shows read-only.
+// It is practice for the mindset only: nothing is saved, graded or counted
+// toward readiness or the answer logs. In exam week (and on exam day) it
+// becomes one read-only idea for the exam. Every text is escaped where it
+// is written into the page.
 var TODAY_EXAM_IDEA = 'priority-word-decides';
 var todayMindOpen = false;
 var todayMindNow = null;      // the question on screen: { key, p, pair, opts }
 var todayMindChoice = null;   // this visit's answer: { key, idx }
-function todayFirstSentence(s) {
-  var m = /^(.+?[.!?])\s+[A-Z]/.exec(s);
-  return m ? m[1] : s;
-}
 function todayMindPair(p) {
-  if (!p || p.family === 'reading' || !p.example || !p.trap) return null;
-  var scenario = gtStr(p.example.scenario).trim(), answer = gtStr(p.example.answer).trim(), trap = gtStr(p.trap.move).trim();
-  if (!scenario || !answer || !trap) return null;
-  var right = todayFirstSentence(answer);
-  // A clean pair: both short, the trap is one move (not a list after a
-  // colon), and it does not use the right answer's own verb.
-  var verb = (right.split(/\s+/)[0] || '').toLowerCase().replace(/[^a-z]/g, '').slice(0, 5);
-  if (right.length > 150 || trap.length > 130 || trap.indexOf(':') >= 0 || (verb && trap.toLowerCase().indexOf(verb) >= 0)) return null;
-  return { scenario: scenario, right: right, rest: answer.slice(right.length).trim(), trap: trap, why: gtStr(p.trap.why_wrong).trim() };
+  var c = p && p.check;
+  if (!c || typeof c !== 'object') return null;
+  var scenario = gtStr(c.scenario).trim(), right = gtStr(c.right).trim(), trap = gtStr(c.trap).trim(), why = gtStr(c.why).trim();
+  if (!scenario || !right || !trap || !why) return null;
+  return { scenario: scenario, right: right, trap: trap, rest: why, why: why };
+}
+// A small integer hash of the day number: which side shows first.
+function todayMindRightFirst(n) {
+  var h = Math.imul(n ^ 0x5bd1e995, 0x27d4eb2d);
+  return ((h >>> 15) & 1) === 0;
 }
 function todayMindToday(now) {
   if (!PRINCIPLES.length) return null;
@@ -11355,7 +11375,7 @@ function todayMindToday(now) {
   var ok = PRINCIPLES.filter(function (p) { return !!todayMindPair(p); });
   if (!ok.length) return { p: PRINCIPLES[n % PRINCIPLES.length], pair: null };
   var p = ok[n % ok.length];
-  return { p: p, pair: todayMindPair(p), rightFirst: (n + p.id.length) % 2 === 0, key: parityDayKey(now.getTime()) + '/' + p.id };
+  return { p: p, pair: todayMindPair(p), rightFirst: todayMindRightFirst(n), key: parityDayKey(now.getTime()) + '/' + p.id };
 }
 // The page's own path before the hash, so a route address (#principles/id)
 // is not read as an in-page anchor that is missing (WCAG checkers do).
@@ -11413,15 +11433,15 @@ function todayMindHtml(st) {
     + '<span class="you-text"><span class="you-t">One auditor question <span class="td-mind-m">&middot; under a minute</span></span></span>'
     + '<span class="you-chev td-mind-chev" aria-hidden="true">' + ico('chevron-down', 18) + '</span></button>'
     + '<div class="td-mind-body" id="tdMindBody"' + (todayMindOpen ? '' : ' hidden') + '>'
-    + '<p class="td-mind-q">' + escapeHtml(t.pair.scenario) + '</p>'
-    + '<fieldset class="td-mind-fs"><legend class="td-mind-lg">Which is the better move?</legend>'
+    + '<p class="td-mind-q" id="tdMindQ">' + escapeHtml(t.pair.scenario) + '</p>'
+    + '<fieldset class="td-mind-fs" aria-describedby="tdMindQ"><legend class="td-mind-lg">Which is the better move?</legend>'
     + opts.map(function (o, i) {
       return '<button type="button" class="td-mind-opt' + (answered && o.ok ? ' is-key' : '') + '" aria-pressed="' + (c === i ? 'true' : 'false') + '" onclick="todayMindAnswer(this)">'
         + '<span class="td-mind-ot">' + escapeHtml(o.text) + '</span>'
         + '<span class="td-mind-tag">' + (answered && o.ok ? ico('check', 16) + 'The auditor&rsquo;s move' : '') + '</span></button>';
     }).join('')
     + '</fieldset>'
-    + '<p class="td-mind-hint">Tap an answer to see why</p>'
+    + '<p class="td-mind-hint">Choose an answer to see why.</p>'
     + '<div class="td-mind-v' + (answered ? (opts[c].ok ? ' ok' : ' no') : '') + '" id="tdMindV" role="status">' + (answered ? todayMindVerdictHtml(opts[c].ok) : '') + '</div>'
     + '</div></section>';
 }
@@ -11519,7 +11539,7 @@ function renderHome() {
       + '</section>';
   } else {
     plan = todayPlan(r, undefined, st.plan);
-    var cap = st.plan === 'examweek' ? 'Exam week &middot; today&rsquo;s plan' : 'Today&rsquo;s plan';
+    var cap = st.plan === 'examday' ? 'Exam day &middot; today&rsquo;s plan' : st.plan === 'examweek' ? 'Exam week &middot; today&rsquo;s plan' : 'Today&rsquo;s plan';
     var steps = plan.items.map(function (it, i) {
       return '<li><span class="td-plan-n" aria-hidden="true">' + (i + 1) + '</span><span class="td-plan-t">' + it.title + '<span class="td-plan-m">' + it.meta + '</span></span></li>';
     }).join('');
@@ -17693,22 +17713,24 @@ function todayFinalWeekHtml(days) {
   if (!FINAL_WEEK.data && !FINAL_WEEK.failed && !FINAL_WEEK.loading) {
     FINAL_WEEK.load(function (ok) { if (ok) refreshTodayFinalWeek(); });
   }
-  var day = null;
-  if (FINAL_WEEK.data) day = fwDays(FINAL_WEEK.data).filter(function (d) { return Number(d.days_before) === days; })[0] || null;
   var kicker, title, meta;
   // The day line above already counts the days, so the kicker doesn't.
   if (days === 0) { kicker = 'This morning'; title = 'Your exam-morning checklist'; meta = 'A few calm steps before you go.'; }
   else if (days === 8) { kicker = 'Starts tomorrow'; title = 'A calm plan for your last 7 days'; meta = 'One short plan for each day, with a cheat sheet.'; }
   else {
-    kicker = 'Today&rsquo;s plan';
-    title = day ? 'Day ' + days + ': ' + escapeHtml(day.title) : 'Today&rsquo;s review plan';
-    meta = day && gtStr(day.goal) ? escapeHtml(day.goal) : 'Today&rsquo;s goal, tasks and one thing to remember.';
+    // Today's plan panel above is the day's work; this row only opens the
+    // checklist (web Today redesign: no second "Today's plan", and the weak
+    // area keeps the one name the plan gives it). The heading already says
+    // "Final review week", so there is no kicker.
+    kicker = '';
+    title = 'Open your final-week checklist';
+    meta = 'Today&rsquo;s goal, tasks and one thing to remember.';
   }
   return '<section class="td-fw" id="tdFw" aria-labelledby="tdFwH">'
     + '<h2 class="ph-h" id="tdFwH">Final review week</h2>'
     + '<ul class="you-list"><li><a class="you-row td-row" href="#final-week" onclick="return navTo(event,\'finalweek\')">'
     + '<span class="you-ico" aria-hidden="true">' + ico('calendar', 20) + '</span>'
-    + '<span class="you-text"><span class="td-kicker">' + kicker + '</span>'
+    + '<span class="you-text">' + (kicker ? '<span class="td-kicker">' + kicker + '</span>' : '')
     + '<span class="you-t">' + title + '</span>'
     + '<span class="you-m">' + meta + '</span></span>'
     + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
