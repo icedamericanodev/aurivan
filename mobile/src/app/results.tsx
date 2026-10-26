@@ -44,7 +44,7 @@
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, BackHandler, Pressable, View } from 'react-native';
-import { OptionCard, TrustLine } from '../components/quiz';
+import { OptionCard, PickNote, TrustLine } from '../components/quiz';
 import { QuestionNote } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
 import { DomainRings } from '../components/journey';
@@ -492,16 +492,29 @@ export default function Results() {
             </Pressable>
             {open && (
               <View style={{ paddingBottom: space.lg }}>
+                {/* The same rows as the answer screen (mobile 1.43): the DISPLAY letter in each badge and spoken
+                    label, and the pick's own note under its red row. */}
                 {r && !r.correct && picked && (
-                  <OptionCard
-                    letter={r.display}
-                    text={q.options[picked] ?? ''}
-                    state="wrong"
-                    tag={`Your answer · ${r.display}`}
-                    note={q.wrongExplanations[picked] ? renderText(q.wrongExplanations[picked]!, perm) : undefined}
-                  />
+                  <>
+                    <OptionCard
+                      letter={r.display}
+                      text={q.options[picked] ?? ''}
+                      state="wrong"
+                      mark="letter"
+                      tag="Your answer"
+                      spoken={`Your answer, ${r.display}, not correct: ${q.options[picked] ?? ''}`}
+                    />
+                    {q.wrongExplanations[picked] ? <PickNote letter={r.display} text={renderText(q.wrongExplanations[picked]!, perm)} /> : null}
+                  </>
                 )}
-                <OptionCard letter={correctDisplay} text={q.options[q.correct] ?? ''} state="correct" tag={`Best answer · ${correctDisplay}`} />
+                <OptionCard
+                  letter={correctDisplay}
+                  text={q.options[q.correct] ?? ''}
+                  state="correct"
+                  mark="letter"
+                  tag="Best answer"
+                  spoken={`Best answer, ${correctDisplay}: ${q.options[q.correct] ?? ''}`}
+                />
                 <T v="headline">{`Why ${correctDisplay}`}</T>
                 <T v="body" style={{ marginBottom: space.sm }}>{renderText(q.explanation, perm)}</T>
                 {trapTip(q) !== '' && (

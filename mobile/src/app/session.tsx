@@ -63,10 +63,12 @@ import {
   ConfidenceRow,
   FEEDBACK_DELAY,
   OptionCard,
+  PickNote,
   Rise,
   ScenarioBlock,
   StickyFooter,
   TrustLine,
+  useVerdictIndent,
   Verdict,
   Vine,
   WhyBlock,
@@ -128,6 +130,8 @@ export default function SessionScreen() {
   // Lessons already done: a done lesson is not offered again after a miss (mobile 1.20).
   const lessonsDone = useProgress((s) => (active ? selectCert(s, active.certId).lessonsDone : NO_LESSONS));
   const { fontScale } = useWindowDimensions();
+  // Lines under the verdict start under its word; at ×1.3 text, at the gutter (mobile 1.43).
+  const verdictIndent = useVerdictIndent();
   // Reduce Motion: the navigator sheet fades in instead of sliding.
   const { reduced: reduceMotion } = useMotion();
 
@@ -152,7 +156,6 @@ export default function SessionScreen() {
   const vineRef = useRef<View>(null);
   // Mobile 1.24: after a miss the tips come in two parts (Key idea + Exam cue, then
   // Eliminate / Final two after the folded "Why"); the second part draws on its own.
-  const vine2Ref = useRef<View>(null);
   const [vine2Visible, setVine2Visible] = useState(false);
   // Screen-reader focus lands on the verdict after "Check answer".
   const verdictRef = useRef<View>(null);
@@ -278,9 +281,6 @@ export default function SessionScreen() {
     const t = setTimeout(() => {
       vineRef.current?.measureInWindow((_x, y) => {
         if (y < Dimensions.get('window').height - 40) setVineVisible(true);
-      });
-      vine2Ref.current?.measureInWindow((_x, y) => {
-        if (y < Dimensions.get('window').height - 40) setVine2Visible(true);
       });
     }, 450);
     return () => clearTimeout(t);
@@ -607,11 +607,6 @@ export default function SessionScreen() {
         if (y < Dimensions.get('window').height - 40) setVineVisible(true);
       });
     }
-    if (!vine2Visible && vine2Ref.current) {
-      vine2Ref.current.measureInWindow((_x, y) => {
-        if (y < Dimensions.get('window').height - 40) setVine2Visible(true);
-      });
-    }
   };
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     scrollY.current = e.nativeEvent.contentOffset.y;
@@ -799,25 +794,33 @@ export default function SessionScreen() {
                 </View>
                 {/* Lined up with the coach line above it (left 50, under "Correct"). */}
                 {/* Only after a RIGHT hinted answer (UX H1): a wrong one counts nothing, so "half" would be untrue. */}
-                {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>{HINT_AFTER_LINE}</T>}
+                {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{HINT_AFTER_LINE}</T>}
                 {/* A right retest (under 4 hours after a miss) is not promoted: say when it is back. */}
-                {response.retest && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>{RETEST_LINE}</T>}
+                {response.retest && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{RETEST_LINE}</T>}
                 <Rise delay={FEEDBACK_DELAY.rows}>
+                  {/* Mobile 1.43: the DISPLAY letter sits in each row's badge (no ✓ / ✗ discs: the verdict leaf is
+                      the screen's one mark) and in every spoken label. The pick's own note sits under its red row. */}
                   <View style={{ marginTop: space.lg }}>
                     {!response.correct && pickedOriginal && (
-                      <OptionCard
-                        letter={response.display}
-                        text={q.options[pickedOriginal] ?? ''}
-                        state="wrong"
-                        tag={`Your answer · ${response.display}`}
-                        note={whyWrong ? renderText(whyWrong, perm) : undefined}
-                      />
+                      <>
+                        <OptionCard
+                          letter={response.display}
+                          text={q.options[pickedOriginal] ?? ''}
+                          state="wrong"
+                          mark="letter"
+                          tag="Your answer"
+                          spoken={`Your answer, ${response.display}, not correct: ${q.options[pickedOriginal] ?? ''}`}
+                        />
+                        {whyWrong && <PickNote letter={response.display} text={renderText(whyWrong, perm)} />}
+                      </>
                     )}
                     <OptionCard
                       letter={correctDisplay}
                       text={q.options[q.correct] ?? ''}
                       state="correct"
-                      tag={`Best answer · ${correctDisplay}`}
+                      mark="letter"
+                      tag="Best answer"
+                      spoken={`Best answer, ${correctDisplay}: ${q.options[q.correct] ?? ''}`}
                     />
                   </View>
                 </Rise>
@@ -842,19 +845,26 @@ export default function SessionScreen() {
                         visible={vineVisible}
                       />
                     </View>
-                    {/* Then the long "Why", folded to two lines. */}
+                    {/* Then the long "Why", folded to two lines, with Eliminate two / Final two inside the fold
+                        (mobile 1.43, owner decision): "Read more" opens all three, "Show less" closes them. */}
                     <Rise delay={FEEDBACK_DELAY.why}>
-                      <WhyBlock key={qid} letter={correctDisplay} text={renderText(q.explanation, perm)} fold />
+                      <WhyBlock
+                        key={qid}
+                        letter={correctDisplay}
+                        text={renderText(q.explanation, perm)}
+                        fold
+                        more={missTips.rest.map((i) => tipParts(q.tips[i], i).label)}
+                        // The vine inside draws as the fold opens (it is on screen right under the toggle).
+                        onOpen={() => setVine2Visible(true)}
+                      >
+                        <Vine
+                          key={`${qid}:b`}
+                          tips={missTips.rest.map((i) => renderText(q.tips[i], perm))}
+                          tipIndex={missTips.rest}
+                          visible={vine2Visible}
+                        />
+                      </WhyBlock>
                     </Rise>
-                    {/* Then Eliminate two / Final two. */}
-                    <View ref={vine2Ref} collapsable={false} onLayout={checkVine}>
-                      <Vine
-                        key={`${qid}:b`}
-                        tips={missTips.rest.map((i) => renderText(q.tips[i], perm))}
-                        tipIndex={missTips.rest}
-                        visible={vine2Visible}
-                      />
-                    </View>
                   </>
                 )}
                 {/* After a miss (mobile 1.20): the note first (BookOpen = notes), then the
