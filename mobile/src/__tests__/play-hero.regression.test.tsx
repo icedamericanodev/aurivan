@@ -119,8 +119,10 @@ describe('Play hero renders its content (Android blank-hero regression)', () => 
     expect(textOf(button[0])).toBe('Play');
   });
 
-  it('draws the art in its own clipped layer BELOW the content, with explicit sizes', () => {
-    mount(<Play />);
+  // Mobile 1.43 (tab header C): Play, Learn and Practice lead with a white seal card; the forest panel
+  // with its swaying frond is Today's alone, so the layering checks run there.
+  it('Today: draws the art in its own clipped layer BELOW the content, with explicit sizes', () => {
+    mount(<Today />);
     const [art] = byTestId('hero-art');
     const [content] = byTestId('hero-content');
     // Art layer: absolute fill, does its own rounded clipping, never takes touches.
@@ -144,8 +146,8 @@ describe('Play hero renders its content (Android blank-hero regression)', () => 
     expect(flat(slot)).toMatchObject(botanySize('frond'));
   });
 
-  it('the swaying frond has an explicit size and a pivot in points, not percentages', () => {
-    mount(<Play />);
+  it('Today: the swaying frond has an explicit size and a pivot in points, not percentages', () => {
+    mount(<Today />);
     const [art] = byTestId('hero-art');
     const sway = art.findAll((n) => typeof n.type === 'string' && typeof flat(n).transformOrigin === 'string');
     expect(sway.length).toBe(1);
@@ -155,9 +157,18 @@ describe('Play hero renders its content (Android blank-hero regression)', () => 
     expect(s).toMatchObject(botanySize('frond'));
   });
 
-  it('Practice (frond2, the hero that always worked) uses the same layering', () => {
+  it('Play and Practice: a white card with the tab seal, no forest art layer (mobile 1.43, tab header C)', () => {
+    mount(<Play />);
+    expect(byTestId('hero-art')).toHaveLength(0);
+    expect(byTestId('hero-seal')).toHaveLength(1);
+    // The seal is decorative: hidden from screen readers.
+    expect(byTestId('hero-seal')[0].props.importantForAccessibility).toBe('no-hide-descendants');
+    act(() => {
+      r?.unmount();
+    });
     mount(<Practice />);
-    expect(byTestId('hero-art')).toHaveLength(1);
+    expect(byTestId('hero-art')).toHaveLength(0);
+    expect(byTestId('hero-seal')).toHaveLength(1);
     const [content] = byTestId('hero-content');
     // Build E: the hero starts the learner's study path (a new learner: Random, 10 questions).
     // Mobile 1.21: the title names the path ("A mixed set"); the count is the meta.

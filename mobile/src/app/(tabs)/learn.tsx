@@ -106,6 +106,7 @@ const useOwnNavigation: () => { setParams?: (p: { domain?: string }) => void } |
   (Router as { useNavigation?: () => { setParams?: (p: { domain?: string }) => void } }).useNavigation ?? (() => undefined);
 
 export default function Learn() {
+  const { isDark } = useTheme();
   // Only what Learn shows (performance, 1.15.x): lessons done, notes read,
   // and from readiness only the focus domain and whether there are answers.
   // Learn stays mounted (hidden) during study; an answer that doesn't move
@@ -201,8 +202,9 @@ export default function Learn() {
       <Enter i={1} style={{ marginTop: space.xl }}>
         {upNext && upDomain ? (
           <HeroPanel
-            // On the dark forest panel the brighter (dark-mode) domain tone reads best.
-            captionLead={<View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: domainColor(upDomain.tone, true) }} />}
+            // Mobile 1.43 (tab header C): a white card with the Learn seal; the dot takes the page's own tone.
+            seal="seedhead"
+            captionLead={<View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: domainColor(upDomain.tone, isDark) }} />}
             caption={`Up next · ${upDomain.short}`}
             title={upNext.title}
             // Why this one (ui.md L3), on the same line as its length.
@@ -214,7 +216,7 @@ export default function Learn() {
             action={{ label: 'Start lesson', icon: (col) => play(col), hint: upNext.title, onPress: () => router.push(`/lesson/${upNext.id}`) }}
           />
         ) : (
-          <HeroPanel caption="All caught up" title="Every lesson done" meta={showNotes ? 'Revisit any lesson anytime, or look a topic up in the notes.' : 'Revisit any lesson anytime.'} art="branch1" />
+          <HeroPanel seal="seedhead" caption="All caught up" title="Every lesson done" meta={showNotes ? 'Revisit any lesson anytime, or look a topic up in the notes.' : 'Revisit any lesson anytime.'} art="branch1" />
         )}
       </Enter>
 
