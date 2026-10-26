@@ -7370,6 +7370,10 @@ S.current = null;
 // â”€â”€ PROFILE SYSTEM â”€â”€
 var PROFILES_KEY = "cisa_profiles_v1";    // stores {id: profileObj}
 var ACTIVE_KEY   = "cisa_active_profile"; // stores active profile id
+// The record this tab loaded (or switched to itself). If another tab makes a
+// different record active, saveState here stops writing, so this tab's
+// progress never lands in that record. A reload picks up the new record.
+var profileInUse = null;
 
 var PROFILE_COLORS = ['#3F7F96','#4E8A3E','#B0802C','#86689C','#5E7482','#2B6E4A'];
 
@@ -7383,7 +7387,7 @@ function genProfileId() {
 function getProfiles() {
   // A save still waiting (saveStateSoon) is written first, so whoever reads
   // the stored progress sees the latest.
-  flushSaveSoon();
+  try { flushSaveSoon(); } catch (e) {}
   try {
     var raw = JSON.parse(localStorage.getItem(PROFILES_KEY) || '{}');
     var clean = {};
@@ -7411,6 +7415,7 @@ function getActiveProfileId() {
 }
 
 function setActiveProfileId(id) {
+  profileInUse = id; // this tab switches, so it keeps writing to the new record
   try { localStorage.setItem(ACTIVE_KEY, id); } catch(e) {}
 }
 
@@ -8104,7 +8109,7 @@ function normalizeImportedState(state) {
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed",
                 "current","qn","activeTab","review","topicTicksSchema",
                 "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
-                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone"];
+                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic"];
   fields.forEach(function(k) {
     if (state[k] !== undefined) clean[k] = state[k];
   });
@@ -8164,7 +8169,7 @@ function normalizeImportedState(state) {
   // Saves from before the Started state have no topicViewed: load as empty.
   clean.topicViewed = sanitizeTickMap(clean.topicViewed);
   clean.topicTicksSchema = Math.min(9, importCount(clean.topicTicksSchema));
-  if (!clean.lastOpenedSubtopic || typeof clean.lastOpenedSubtopic !== 'object') clean.lastOpenedSubtopic = {};
+  clean.lastOpenedSubtopic = sanitizeLastOpened(clean.lastOpenedSubtopic);
   if (["1","2","3","4","5","all"].indexOf(String(clean.selectedDomain)) === -1) clean.selectedDomain = "1";
   clean.selectedDomain = String(clean.selectedDomain);
   if (["any","foundational","application","analysis"].indexOf(clean.diff) === -1) clean.diff = "any";
@@ -8200,6 +8205,19 @@ function sanitizeAnsweredIds(m) {
   return out;
 }
 // Read ticks, "started" notes and mastered terms: id -> true or a time (ms).
+// "Continue reading": domain -> { id, name, ts }. Only known domains and a
+// note id in the usual shape are kept; the name is shown escaped.
+function sanitizeLastOpened(m) {
+  var out = {};
+  if (!m || typeof m !== 'object' || Array.isArray(m)) return out;
+  Object.keys(DI).forEach(function(d) {
+    var e = m[d];
+    if (!e || typeof e !== 'object' || typeof e.id !== 'string' || !PARITY_ID_RE.test(e.id)) return;
+    var ts = Number(e.ts);
+    out[d] = { id: e.id, name: typeof e.name === 'string' ? e.name.substring(0, 200) : e.id, ts: isFinite(ts) && ts > 0 ? ts : 0 };
+  });
+  return out;
+}
 function sanitizeTickMap(m) {
   var out = {};
   if (!isPlainObj(m)) return out;
@@ -8296,12 +8314,19 @@ window.addEventListener('pagehide', flushSaveSoon);
 document.addEventListener('visibilitychange', function() {
   if (document.visibilityState === 'hidden') flushSaveSoon();
 });
+// Another tab saved (or switched record): a light save still waiting here
+// would write this tab's older copy over what that tab just saved.
+window.addEventListener('storage', function(e) {
+  if (e.key === PROFILES_KEY || e.key === ACTIVE_KEY) cancelSaveSoon();
+});
 
 function saveState() {
   cancelSaveSoon();
   ensureAnsweredBuckets();
   var id = getActiveProfileId();
   if (!id) return; // no profile, no save
+  // Another tab made a different record active: never write into it.
+  if (profileInUse && id !== profileInUse) return;
   var profiles = getProfiles();
   if (!profiles[id]) return;
   // Save mock exam progress as IDs only (avoids bloating localStorage with full
@@ -8332,6 +8357,8 @@ function saveState() {
     qIdx: S.qIdx, mindsetIdx: S.mindsetIdx,
     glossMastered: S.glossMastered, topicReviewed: S.topicReviewed, topicViewed: S.topicViewed,
     topicTicksSchema: S.topicTicksSchema || 0,
+    // New field beside the old ones: "Continue reading" survives a reload.
+    lastOpenedSubtopic: S.lastOpenedSubtopic || {},
     current: shouldResumeCurrent() ? S.current : null,
     qn: S.qn,
     activeTab: S.activeTab || "home",
@@ -8356,6 +8383,7 @@ function saveState() {
 
 function loadState() {
   var id = getActiveProfileId();
+  profileInUse = id;
   // No saved state yet: this profile's ticks are already v2 ids.
   if (!id) { S.topicTicksSchema = 2; return; }
   var profiles = getProfiles();
@@ -8366,7 +8394,7 @@ function loadState() {
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed","topicTicksSchema",
                 "current","qn","activeTab",
                 "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
-                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone"];
+                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic"];
   fields.forEach(function(k) {
     if (saved[k] !== undefined) S[k] = saved[k];
   });
@@ -8428,9 +8456,10 @@ function createProfile(name) {
 function exportProgress(otherId) {
   // No id: the progress in use. An id: one of the older records kept from profiles.
   var id = otherId || getActiveProfileId();
+  // The progress in use is saved first, then read once.
+  if (!otherId) saveState();
   var profile = id ? getProfiles()[id] : null;
   if (!profile) { showToast('Nothing to export yet.', 'info', 2400); return; }
-  if (!otherId) { saveState(); profile = getProfiles()[id]; }
   // The marker below is the file's original name, kept so older exports still import.
   var out = {cisaMindsetExport: true, version: 1, profile: profile};
   // v12.34.1: the exam date travels too, so the app can use it. It is kept per
