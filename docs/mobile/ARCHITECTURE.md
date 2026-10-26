@@ -429,7 +429,12 @@ server: every email goes through the learner's OWN email app.
   show "You studied on N of the last 7 days" on screen only. No badge, growth or streak for answering.
 - *Onboarding* has no name step; the welcome leads with "Questions that explain every option, the trap
   included." Today asks for a name once, from the day after the first study day (`engine/firstRun.ts`
-  `nameAskDue`, `store/seen.ts` `nameAsk`, only for learners onboarded on 1.41+).
+  `nameAskDue`, `store/seen.ts` `nameAsk`, only for learners onboarded on 1.41+). Mobile 1.44 (the
+  owner's "Version 3"): the field is inside the card; it never shows beside another Today invitation, on
+  a welcome-back day or in exam week; learners from before 1.41 with no name get `nameAsk` set to 'due'
+  once (`nameNudgeDue`); You opens with "Your study profile" (`engine/studyProfile.ts`); and a website
+  file's top-level `displayName` is added only when the phone has no name (`engine/webImport.ts`
+  `readWebDisplayName`).
 - *The plant is offered* on the first set's closing screen ("Plant a seed" / "Maybe later", `store/seen.ts`
   `plantOffer`), never planted for the learner, and only once the reminder ask is answered (one decision
   at a time). Existing plants are untouched; You and Your plant keep "Plant yours".
@@ -990,7 +995,9 @@ Freemium with in-app subscriptions (product panel recommendation):
    leniently), and is listed as device-only in `engine/syncMerge.ts`, so it
    never syncs. It must never reach a support email, a share card, the board
    handle, a link or a log: `src/__tests__/display-name.test.ts` has a source
-   guard listing the only files that may read it.
+   guard listing the only files that may read it. Mobile 1.44 adds one more
+   place it shows (You's "Your study profile" block) and one way in (the
+   website file's `displayName`, add-only, cleaned by the same rule).
 
 Run the `app-store-compliance-reviewer` agent before every submission.
 

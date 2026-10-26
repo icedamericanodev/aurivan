@@ -18,8 +18,13 @@
  * - The exam date (mobile 1.42.1): a newer website file carries one. It is
  *   set ONLY when this phone has no exam date for CISA (add-only, checked
  *   again against the live settings at write time); the phone's date wins.
+ * - The learner's name (mobile 1.44): the same add-only rule. It is set ONLY
+ *   when this phone has no name (checked again at write time), never synced
+ *   (it is device-only, engine/syncMerge.ts), and the website's profile label
+ *   is never used as a name.
  */
 import { CERTIFICATIONS, DEFAULT_CERT_ID } from '../content/certifications';
+import { cleanDisplayName } from '../engine/displayName';
 import { BackupError, fitForBackup, MAX_BACKUP_BYTES, undoAvailable, utf8Bytes, type BackupProgress, type UndoSnapshot } from '../engine/backup';
 import {
   isWebExport,
@@ -75,6 +80,11 @@ function examDateIn(settings: unknown): string | undefined {
   return typeof d === 'string' && d ? d : undefined;
 }
 
+/** The name a settings object holds (cleaned: a bad saved value counts as none). Mobile 1.44. */
+function displayNameIn(settings: unknown): string | undefined {
+  return cleanDisplayName((settings as { displayName?: unknown } | null)?.displayName) || undefined;
+}
+
 /** Read a parsed website export (parsed ONCE, by checkAnyText). Never changes anything. */
 export function checkWebParsed(raw: unknown, now = Date.now()): WebReady | { kind: 'web-error'; code: WebImportErrorCode } {
   try {
@@ -86,7 +96,7 @@ export function checkWebParsed(raw: unknown, now = Date.now()): WebReady | { kin
     // What each profile truly adds: merged on a copy and compared (nothing is written).
     const summaries = profiles.map((p) => {
       try {
-        return webAddSummary(fitted, mergeWebProgress(fitted, p, WEB_CERT_ID, mergeCtx(now)), p, WEB_CERT_ID, now, examDateIn(phone.settings));
+        return webAddSummary(fitted, mergeWebProgress(fitted, p, WEB_CERT_ID, mergeCtx(now)), p, WEB_CERT_ID, now, examDateIn(phone.settings), displayNameIn(phone.settings));
       } catch (e) {
         if (e instanceof BackupError && e.code === 'too-big') return tooBigSummary(p);
         throw e;
@@ -154,10 +164,12 @@ export async function importWebProgress(profile: WebProfile, opts: { now?: numbe
     undo = { takenAt: now, file, kind: 'import' };
   }
   const merge = (live: ReturnType<typeof phoneStores>) => ({
-    // The exam date is add-only: set from the file only when this phone (as it is NOW) has none.
-    settings: (profile.examDate && !examDateIn(live.settings)
-      ? { ...live.settings, examDates: { ...live.settings.examDates, [WEB_CERT_ID]: profile.examDate } }
-      : live.settings) as unknown as Record<string, unknown>,
+    // The exam date and (mobile 1.44) the name are add-only: set from the file only when this phone (as it is NOW) has none.
+    settings: {
+      ...live.settings,
+      ...(profile.examDate && !examDateIn(live.settings) ? { examDates: { ...live.settings.examDates, [WEB_CERT_ID]: profile.examDate } } : {}),
+      ...(profile.displayName && !displayNameIn(live.settings) ? { displayName: cleanDisplayName(profile.displayName) || undefined } : {}),
+    } as unknown as Record<string, unknown>,
     progress: mergeWebProgress(fittedPhone(live.progress, live.settings), profile, WEB_CERT_ID, ctx) as unknown as Record<string, unknown>,
   });
   let first: ReturnType<typeof merge>;

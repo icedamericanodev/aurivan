@@ -10,8 +10,10 @@
  *   studied on N of the last 7 days", on this screen only (never in the email).
  *   No badge, no plant growth, no streak for answering.
  * - `NameAskCard`: onboarding no longer asks for a name. This card asks once,
- *   from the day after the first study day. "Add a name" opens a small sheet
- *   (the same field as Settings → Your name); "Not now" puts it away for good.
+ *   from the day after the first study day. Mobile 1.44: the field ("Name or
+ *   nickname", the same field as Settings → Your name) is in the card, with
+ *   Save and Not now; after Save, "Saved on this device" stays for the visit.
+ *   "Not now" puts it away for good.
  */
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -26,9 +28,8 @@ import { useSettings } from '../store/settings';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { DisplayNameField } from './displayName';
-import { ICON_STROKE, UserRound } from './icons';
-import { Sheet } from './settings';
-import { Button, Card, ICON_SIZE, InviteRow, Row, T } from './ui';
+import { Check, ICON_STROKE, UserRound } from './icons';
+import { Button, Card, ICON_SIZE, IconCircle, InviteRow, Row, T } from './ui';
 
 /** What the card shows after "Answer by email" (for this visit). */
 type Sent = 'idle' | 'opened' | 'failed';
@@ -121,49 +122,86 @@ export function TesterQuestionCard({
   );
 }
 
+/** Mobile 1.44 (the owner's "Version 3" mockup): the card's words. */
+export const NAME_ASK_TITLE = 'What should we call you?';
+export const NAME_ASK_BODY = 'Optional. A first name or a nickname, kept on this device only.';
+/** The field's words, inside it and spoken. */
+export const NAME_ASK_FIELD = 'Name or nickname';
+/** Under the field after Save with nothing typed. */
+export const NAME_ASK_EMPTY = 'Type a name or nickname first, or choose Not now.';
+/** What replaces the card for the rest of the visit once a name is saved. */
+export const NAME_SAVED_TITLE = 'Saved on this device';
+export const NAME_SAVED_BODY = 'Change or clear it any time in Settings.';
+
+/**
+ * Mobile 1.44: the field sits IN the card (one tap less than 1.41's sheet):
+ * "Name or nickname", then Save and Not now. Saving updates the greeting at
+ * once, and for the rest of this visit a "Saved on this device" line takes the
+ * card's place (Today unmounts it when the learner leaves). "Not now" puts it
+ * away for good. Today decides when it shows (engine/firstRun.ts nameAskDue).
+ */
 export function NameAskCard({ onGone }: { onGone?: () => void }) {
   const { c } = useTheme();
-  const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState('');
-  const [gone, setGone] = useState(false);
-  if (gone) return null;
-  const close = (said: string) => {
-    setOpen(false);
-    setGone(true);
-    sayLater(said);
+  const [state, setState] = useState<'ask' | 'saved' | 'gone'>('ask');
+  // Save with nothing typed: one plain line under the field (the field's live region says it), nothing saved.
+  const [empty, setEmpty] = useState(false);
+  if (state === 'gone') return null;
+  if (state === 'saved') {
+    return (
+      <View testID="name-saved" accessibilityLiveRegion="polite">
+        <InviteRow
+          icon={<Check size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+          title={NAME_SAVED_TITLE}
+          body={NAME_SAVED_BODY}
+        />
+      </View>
+    );
+  }
+  const clean = cleanDisplayName(draft);
+  const save = () => {
+    // Nothing typed: say what to do. A link or an email is left out: the field already says why.
+    if (clean === '') {
+      if (draft.trim() === '') setEmpty(true);
+      return;
+    }
+    useSettings.getState().setDisplayName(clean);
+    setState('saved');
+    sayLater(`Saved. Hello, ${clean}.`);
+  };
+  const notNow = () => {
+    setState('gone');
+    sayLater('No name. You can add one any time in Settings.');
     onGone?.();
   };
-  const save = () => {
-    const clean = cleanDisplayName(draft);
-    // A link or an email is left out: the sheet stays open and the field says why.
-    if (clean === '' && draft.trim() !== '') return;
-    if (clean) useSettings.getState().setDisplayName(clean);
-    close(clean ? `Saved. Hello, ${clean}.` : 'No name saved. You can add one in Settings.');
-  };
   return (
-    <>
-      <InviteRow
-        testID="name-ask"
-        icon={<UserRound size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-        title="What should we call you?"
-        body="Optional. A first name or a nickname, kept on this phone."
-        actions={
-          <>
-            <Button kind="ghost" label="Add a name" accessibilityHint="Opens a box for your name" onPress={() => setOpen(true)} />
-            <Button kind="ghost" label="Not now" accessibilityLabel="Not now, no name" onPress={() => close('No name. You can add one any time in Settings.')} />
-          </>
-        }
-      />
-      <Sheet
-        visible={open}
-        onClose={() => setOpen(false)}
-        title="Your name"
-        intro="A first name or a nickname, whatever you like."
-        closeLabel="Cancel"
-        footer={<Button label="Save" onPress={save} />}
-      >
-        <DisplayNameField value={draft} onChange={setDraft} onSubmit={save} />
-      </Sheet>
-    </>
+    // The InviteRow's shape (an icon circle, the words, then the actions under them), with the field in it.
+    <View testID="name-ask" style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.md, paddingVertical: space.md }}>
+      <IconCircle>
+        <UserRound size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />
+      </IconCircle>
+      <View style={{ flex: 1, minWidth: 0 }}>
+        <View accessible accessibilityLabel={`${NAME_ASK_TITLE} ${NAME_ASK_BODY}`}>
+          <T v="label">{NAME_ASK_TITLE}</T>
+          <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{NAME_ASK_BODY}</T>
+        </View>
+        <View style={{ marginTop: space.md }}>
+          <DisplayNameField
+            value={draft}
+            onChange={(v) => {
+              setDraft(v);
+              setEmpty(false);
+            }}
+            onSubmit={save}
+            label={NAME_ASK_FIELD}
+            helper={empty ? NAME_ASK_EMPTY : null}
+          />
+        </View>
+        <Row gap={0} style={{ flexWrap: 'wrap', marginLeft: -space.sm, marginTop: space.xs }}>
+          <Button kind="ghost" label="Save" accessibilityLabel="Save my name" onPress={save} />
+          <Button kind="ghost" label="Not now" accessibilityLabel="Not now, no name" onPress={notNow} />
+        </Row>
+      </View>
+    </View>
   );
 }

@@ -40,12 +40,18 @@
  * 80% study bar) and one row per area with a word, a bar with its 70% line and
  * the percent from 30 answers (components/youReadiness.tsx). The plant, the
  * badges and Study tools stay where they were.
+ * Mobile 1.44 (the owner's "Version 3"): "Your study profile" comes first,
+ * above Readiness (components/studyProfile.tsx): the leaf initial, the name
+ * (or "Your study profile" with "Add your name"), "Studying for CISA since …",
+ * the exam date and daily time, and the starting point. Built only from the
+ * learner's own choices and study; one button that opens Settings → Your name.
+ * The name is used here and in Today's greeting only (display-name.test.ts).
  * Uplift Phase 6 (accounts, built OFF): in a cloud build only, the first row
  * of Help and feedback is "Sync across devices" (components/account.tsx).
  * With the flag off (every build today) nothing here changes.
  */
-import { router } from 'expo-router';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { ringsChangeLine } from '../../components/journey';
 import { AreaRows, ReadinessBlock } from '../../components/youReadiness';
@@ -77,9 +83,15 @@ import { useReports } from '../../lib/useReports';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress, type MockResult } from '../../store/progress';
 import type { Certification } from '../../content/types';
-import { useSettings } from '../../store/settings';
+import { dailyMinutesOf, useSettings } from '../../store/settings';
+import { StudyProfile } from '../../components/studyProfile';
+import { firstStudyDay, nameInitial, profileLines } from '../../engine/studyProfile';
+import { FAMILIARITY_INFO } from '../../engine/fit';
 import { motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
+
+/** The study profile opens the one name editor: Settings → Your name, which goes back to You on Save or Cancel. */
+const openNameEditor = () => router.push({ pathname: '/settings', params: { open: 'name' } });
 
 /** When You's rings have finished growing (five arcs, outer first 60 ms apart, each over `grow`): the plant breathes after. */
 const RINGS_SETTLED_MS = motion.dur.grow + 4 * motion.stagger.stat;
@@ -145,10 +157,55 @@ export default function You() {
   const rowLook = useMemo(() => (lookArt ? { ...lookArt, keepsakes: [] } : undefined), [lookArt]);
   const { isDark } = useTheme();
 
+  // Mobile 1.44: "Your study profile", from the learner's own choices and study only.
+  // Today's day, read again whenever You comes into view (render stays pure), so "Exam 14 Feb" drops off after the day.
+  const [today, setToday] = useState(() => dayKey(Date.now()));
+  useFocusEffect(
+    useCallback(() => {
+      setToday(dayKey(Date.now()));
+    }, []),
+  );
+  const displayName = useSettings((s) => s.displayName);
+  const examDate = useSettings((s) => s.examDates[cert.id]);
+  const minutes = useSettings((s) => dailyMinutesOf(s));
+  const familiarity = useSettings((s) => s.familiarity);
+  // The first study day: worked out again only when this exam's records change.
+  const since = useMemo(
+    () =>
+      firstStudyDay({
+        answers: progress.answers,
+        mistakes: progress.mistakes,
+        mocks: progress.mocks,
+        mastery: progress.mastery,
+        earned: progress.milestones?.earned,
+        readinessDays: progress.moments?.readiness?.map((r) => r.day),
+      }),
+    [progress.answers, progress.mistakes, progress.mocks, progress.mastery, progress.milestones?.earned, progress.moments?.readiness],
+  );
+  // The same object while the words are unchanged, so the memoised block skips re-rendering on an answer (perf-tabs budget).
+  const certName = cert.name;
+  const profile = useMemo(
+    () =>
+      profileLines({
+        name: displayName,
+        certName,
+        since,
+        examDate,
+        minutes,
+        startedWith: familiarity ? FAMILIARITY_INFO[familiarity].title : undefined,
+        today,
+      }),
+    [displayName, certName, since, examDate, minutes, familiarity, today],
+  );
+
   return (
     <Screen>
       <Enter i={0}>
         <ScreenTitle title="You" settings={() => router.push('/settings')} />
+        {/* Mobile 1.44: the first block, on the paper, with a hairline under it. It opens the one name editor. */}
+        <View style={{ marginTop: space.lg, paddingBottom: space.md, borderBottomWidth: 1, borderColor: c.line }}>
+          <StudyProfile lines={profile} initial={nameInitial(displayName)} onPress={openNameEditor} />
+        </View>
       </Enter>
 
       <Enter i={1}>

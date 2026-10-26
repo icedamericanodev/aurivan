@@ -1,8 +1,9 @@
 /**
  * Mobile 1.23, "What should we call you?", on screen:
  * - onboarding (mobile 1.41): no name step any more. Today asks once, from
- *   the day after the first study day, with "Add a name" (a small sheet with
- *   the same field) and "Not now"; learners from before 1.41 are never asked;
+ *   the day after the first study day. Mobile 1.44: the field is in the card
+ *   ("Name or nickname", Save, Not now) and "Saved on this device" stays for
+ *   the visit; learners from before 1.41 with no name are asked once too;
  * - Settings: a "Your name" row (the name, or "Not set") opening a small
  *   sheet to edit, save and clear it; Cancel changes nothing;
  * - Today: "Good morning, Maya" (afternoon, evening) with a name and plain
@@ -75,11 +76,6 @@ const field = () => root().findAll((n) => n.props.accessibilityLabel === 'Your n
 const type = (text: string) => {
   act(() => {
     field().props.onChangeText(text);
-  });
-};
-const endEditing = () => {
-  act(() => {
-    field().props.onEndEditing?.({});
   });
 };
 const setScale = (fontScale: number) => {
@@ -195,6 +191,13 @@ describe('mobile 1.41: the name is asked later, on Today, once', () => {
       useProgress.setState((st) => ({ byCert: { ...st.byCert, cisa: completeCert({ ...selectCert(st, 'cisa'), milestones: { earned: {}, days, lastDay: key } }) } }));
     });
   const card = () => root().findAll((n) => n.props.testID === 'name-ask' && typeof n.type === 'string');
+  /** Mobile 1.44: the field inside Today's card. */
+  const cardField = () => root().findAll((n) => n.props.accessibilityLabel === 'Name or nickname' && typeof n.props.onChangeText === 'function')[0];
+  const typeIn = (f: () => ReactTestInstance, text: string) =>
+    act(() => {
+      f().props.onChangeText(text);
+    });
+  const saveButton = () => root().findAll((n) => n.props.accessibilityLabel === 'Save my name' && n.props.accessibilityRole === 'button')[0];
 
   it('onboarding has no name step, and CISA is still chosen; Today will ask later', () => {
     mount(<Onboarding />);
@@ -229,29 +232,50 @@ describe('mobile 1.41: the name is asked later, on Today, once', () => {
     mount(<Today />);
     expect(card()).toHaveLength(1);
     expect(allText()).toContain('What should we call you?');
-    expect(allText()).toContain('Optional. A first name or a nickname, kept on this phone.');
+    // Mobile 1.44: the field is in the card ("Name or nickname"), with Save and Not now.
+    expect(allText()).toContain('Optional. A first name or a nickname, kept on this device only.');
     // Showing it counts as asked (once ever).
     expect(useSeen.getState().nameAsk).toBe('shown');
-    press('Add a name');
-    expect(field().props.maxLength).toBe(MAX_DISPLAY_NAME);
-    expect(allText()).toContain(NAME_HELPER);
-    type('  Maya   Jane ');
-    endEditing();
-    press('Save');
+    const box = cardField();
+    expect(box.props.maxLength).toBe(MAX_DISPLAY_NAME);
+    expect(box.props.placeholder).toBe('Name or nickname');
+    // Save with nothing typed saves nothing, and says what to do.
+    expect(saveButton()).toBeTruthy();
+    press('Save my name');
+    expect(useSettings.getState().displayName).toBeUndefined();
+    expect(allText()).toContain('Type a name or nickname first, or choose Not now.');
+    expect(card()).toHaveLength(1);
+    typeIn(cardField, '  Maya   Jane ');
+    // Typing takes the hint away.
+    expect(allText()).not.toContain('Type a name or nickname first');
+    act(() => {
+      cardField().props.onEndEditing?.({});
+    });
+    press('Save my name');
     expect(useSettings.getState().displayName).toBe('Maya Jane');
     expect(allText()).toContain('Good morning, Maya Jane');
+    // For the rest of this visit, one line takes the card's place.
+    expect(card()).toHaveLength(0);
+    expect(allText()).toContain('Saved on this device');
+    expect(allText()).toContain('Change or clear it any time in Settings.');
+    // The next visit: nothing.
+    act(() => {
+      r?.unmount();
+    });
+    mount(<Today />);
+    expect(allText()).not.toContain('Saved on this device');
     expect(card()).toHaveLength(0);
   });
 
-  it('a link or an email is not saved: the box stays open and says why', () => {
+  it('a link or an email is not saved: the card stays and says why', () => {
     onboard();
     studied(2, 1);
     mount(<Today />);
-    press('Add a name');
-    type('maya@example.com');
-    press('Save');
+    typeIn(cardField, 'maya@example.com');
+    press('Save my name');
     expect(useSettings.getState().displayName).toBeUndefined();
-    expect(field()).toBeTruthy();
+    expect(cardField()).toBeTruthy();
+    expect(allText()).toContain('looks like a web address or an email');
   });
 
   it('"Not now" puts it away for good; Settings keeps the name row', () => {
@@ -268,11 +292,26 @@ describe('mobile 1.41: the name is asked later, on Today, once', () => {
     expect(card()).toHaveLength(0);
   });
 
-  it('learners who onboarded before 1.41 are never asked', () => {
+  it('mobile 1.44: learners who onboarded before 1.41 (no name, never asked) are asked once, with no new onboarding', () => {
     useSettings.setState({ onboarded: true });
     studied(5, 1);
     mount(<Today />);
+    expect(card()).toHaveLength(1);
+    expect(useSeen.getState().nameAsk).toBe('shown');
+    expect(useSettings.getState().onboarded).toBe(true);
+    act(() => {
+      r?.unmount();
+    });
+    mount(<Today />);
     expect(card()).toHaveLength(0);
+  });
+
+  it('mobile 1.44: a learner from before 1.41 with a name is never asked, and nothing is set up for them', () => {
+    useSettings.setState({ onboarded: true, displayName: 'Maya' });
+    studied(5, 1);
+    mount(<Today />);
+    expect(card()).toHaveLength(0);
+    expect(useSeen.getState().nameAsk).toBeUndefined();
   });
 });
 

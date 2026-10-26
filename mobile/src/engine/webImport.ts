@@ -27,10 +27,18 @@
  *   real day, not more than a day in the past, at most about 3 years ahead)
  *   and used ONLY when this phone has no exam date yet: the phone's own date
  *   always wins. Older files have no date and read exactly as before.
+ * - The learner's name (mobile 1.44, the owner's "Version 3"): a newer website
+ *   file carries the name the website greets them by as a top-level
+ *   `displayName` (24 characters at most). It is read as hostile text
+ *   (`readWebDisplayName`: not text, too long or markup-looking means none;
+ *   otherwise engine/displayName.ts cleans it) and used ONLY when this phone
+ *   has no name yet: the phone's own name always wins. The website's
+ *   profile LABEL ("My Progress") is never used as a name.
  *
  * Pure TypeScript: no React, no storage, no network.
  */
 import { BackupError, type BackupProgress } from './backup';
+import { cleanDisplayName } from './displayName';
 import { deviceLocalOf, localSide, mergeSides, type MergeContext, type SyncedProgress } from './syncMerge';
 import { capNoteText, isLiveNote, NOTE_ID_RE, NOTES_TOTAL_MAX } from './questionNotes';
 import { MAX_ANSWER_MS } from './answerClock';
@@ -140,6 +148,29 @@ export interface WebProfile {
   future: number;
   /** The file's exam date ("YYYY-MM-DD"), when it has a sensible one (readWebExamDate). The same for every profile in a file. */
   examDate?: string;
+  /** Mobile 1.44: the name the website greets the learner by (readWebDisplayName), cleaned. The same for every profile in a file. */
+  displayName?: string;
+}
+
+// ── The learner's name (mobile 1.44) ─────────────────────────────────────
+/**
+ * The longest `displayName` text read at all, in UTF-16 units. The website
+ * keeps 24 characters at most (48 units even if every one is an emoji), so
+ * anything longer did not come from the website and is left out entirely.
+ */
+export const WEB_NAME_MAX_UNITS = 64;
+/**
+ * The file's name for the learner (top-level `displayName`), or undefined.
+ * Hostile input gives undefined: not text, longer than WEB_NAME_MAX_UNITS,
+ * or anything that looks like markup ("<" or ">", which a name never has).
+ * Otherwise the app's one rule cleans it (engine/displayName.ts: control and
+ * direction-changing characters removed, no links or emails, 24 characters).
+ */
+export function readWebDisplayName(raw: unknown): string | undefined {
+  if (!isObj(raw)) return undefined;
+  const text = raw.displayName;
+  if (typeof text !== 'string' || text.length > WEB_NAME_MAX_UNITS || /[<>]/.test(text)) return undefined;
+  return cleanDisplayName(text) || undefined;
 }
 
 // ── The exam date ────────────────────────────────────────────────────────
@@ -432,7 +463,9 @@ export function readWebExport(raw: unknown, known: WebKnown, now: number): WebPr
   }
   if (!out.length) throw new WebImportError('bad-data');
   const examDate = readWebExamDate(raw, now);
-  return examDate ? out.map((p) => ({ ...p, examDate })) : out;
+  // Mobile 1.44: the top-level name (never a profile's label).
+  const displayName = readWebDisplayName(raw);
+  return examDate || displayName ? out.map((p) => ({ ...p, ...(examDate ? { examDate } : {}), ...(displayName ? { displayName } : {}) })) : out;
 }
 
 /** True when a profile holds nothing the app could add. */
@@ -534,6 +567,10 @@ export interface WebAddSummary {
   examDate?: string;
   /** The file has an exam date, but this phone already has a different one, which stays. */
   examDateKept?: boolean;
+  /** Mobile 1.44: the name this import sets: the file has one and this phone has none. */
+  displayName?: string;
+  /** Mobile 1.44: the file has a name, but this phone already has a different one, which stays. */
+  displayNameKept?: boolean;
   /** True when the phone already has everything this profile could add. */
   nothingNew: boolean;
 }
@@ -558,6 +595,8 @@ export function webAddSummary(
   now: number,
   /** This phone's exam date for `certId` (settings), if it has one: the file's date is then never used. */
   phoneExamDate?: string,
+  /** Mobile 1.44: this phone's own name (settings), if it has one: the file's name is then never used. */
+  phoneName?: string,
 ): WebAddSummary {
   const cp: Cert = phone.byCert[certId] ?? {};
   const out: Cert = merged.byCert[certId] ?? {};
@@ -588,7 +627,11 @@ export function webAddSummary(
   // The exam date: add-only. The phone's own date always wins.
   const examDate = p.examDate && !phoneExamDate ? p.examDate : undefined;
   const examDateKept = Boolean(p.examDate && phoneExamDate && phoneExamDate !== p.examDate);
-  const added = answers + updated + saved + notesRead + qNotes + mocks + studyDays + mistakes + review + viewed + (examDate ? 1 : 0);
+  // The name: add-only too. The phone's own name always wins (cleaned, so a bad saved value counts as none).
+  const mine = cleanDisplayName(phoneName);
+  const displayName = p.displayName && !mine ? p.displayName : undefined;
+  const displayNameKept = Boolean(p.displayName && mine && mine !== p.displayName);
+  const added = answers + updated + saved + notesRead + qNotes + mocks + studyDays + mistakes + review + viewed + (examDate ? 1 : 0) + (displayName ? 1 : 0);
   return {
     answers,
     updated,
@@ -603,6 +646,8 @@ export function webAddSummary(
     future: p.future,
     ...(examDate ? { examDate } : {}),
     ...(examDateKept ? { examDateKept } : {}),
+    ...(displayName ? { displayName } : {}),
+    ...(displayNameKept ? { displayNameKept } : {}),
     nothingNew: added === 0,
   };
 }
@@ -624,8 +669,14 @@ export function webAddLines(s: WebAddSummary): string[] {
   if (s.mocks) out.push(n(s.mocks, 'mock exam result', 'mock exam results'));
   if (s.studyDays) out.push(n(s.studyDays, 'study day', 'study days'));
   if (s.examDate) out.push(`Your exam date: ${examDateLabel(s.examDate)}`);
+  if (s.displayName) out.push(`${WEB_NAME_PREFIX}${s.displayName}`);
   return out;
 }
+
+/** Mobile 1.44: the start of the name's line ("Your name: Maya"); the sheet shows the name itself in bold. */
+export const WEB_NAME_PREFIX = 'Your name: ';
+/** Mobile 1.44: the small note under the lines when the file's name will be used. */
+export const WEB_NAME_NOTE = 'Your name stays on this phone only. If you already set one here, that one is kept.';
 
 /** What is left out, in plain words (empty when nothing is). */
 export function webSkipLines(s: WebAddSummary): string[] {
@@ -653,6 +704,7 @@ export function webSkipLines(s: WebAddSummary): string[] {
     );
   }
   if (s.examDateKept) out.push('This phone already has an exam date, so it stays as it is.');
+  if (s.displayNameKept) out.push('This phone already has a name, so it stays as it is.');
   if (s.future) {
     out.push(
       s.future === 1

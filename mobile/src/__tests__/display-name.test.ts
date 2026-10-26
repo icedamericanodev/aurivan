@@ -323,14 +323,19 @@ describe('the name stays on the phone', () => {
   it('is read by a short list of files only', () => {
     const allowed = new Set([
       'app/(tabs)/home.tsx', // the greeting
+      'app/(tabs)/you.tsx', // mobile 1.44: "Your study profile" (the only other place the name shows)
       'app/onboarding.tsx', // the optional step
       'app/settings.tsx', // Your name
       'components/beta.tsx', // mobile 1.41: Today's one name ask (onboarding no longer asks)
       'components/displayName.tsx', // the text field
       'engine/backup.ts', // the learner's own backup file
       'engine/displayName.ts', // the one rule
+      'engine/studyProfile.ts', // mobile 1.44: the profile block's words (cleans the name again)
       'engine/syncMerge.ts', // listed as device-only
+      'engine/webImport.ts', // mobile 1.44: the website file's name, read as hostile text, add-only
       'lib/backup.ts', // restore
+      'lib/webImport.ts', // mobile 1.44: sets the website's name only when this phone has none
+      'components/webImport.tsx', // mobile 1.44: "Your name: Maya" in the confirm sheet (on this phone only)
       'store/settings.ts', // the store
     ]);
     const root = join(__dirname, '..');

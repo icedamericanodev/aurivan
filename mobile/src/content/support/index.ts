@@ -42,6 +42,11 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.44.0',
+    date: '2026-10-26',
+    new: ['You now opens with your study profile, and Today can greet you by a name or nickname you choose. It stays on this phone, and can come from your website progress.'],
+  },
+  {
     version: '1.43.0',
     date: '2026-10-26',
     improved: [

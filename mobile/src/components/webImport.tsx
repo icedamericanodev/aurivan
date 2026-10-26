@@ -9,6 +9,9 @@
  *   with something new is chosen to start).
  * - "Add to my progress" merges it in (lib/webImport.ts); Cancel changes nothing.
  *   When everything is already on the phone it says so and offers only Close.
+ * - Mobile 1.44: a file with the learner's name (and a phone with none) adds
+ *   "Your name: Maya" to the list, with a small note beside the leaf initial:
+ *   the name stays on this phone, and a name already set here is kept.
  * Same shape as the restore preview (components/yourData.tsx): a page sheet,
  * stacked rows that survive 200% text, and Reduce Motion's fade.
  */
@@ -18,7 +21,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { examDateLabel } from '../engine/examDay';
 import { dayKey } from '../engine/streak';
 import { UNDO_DAYS } from '../engine/backup';
-import { webAddLines, webNotInFile, webSkipLines } from '../engine/webImport';
+import { WEB_NAME_NOTE, WEB_NAME_PREFIX, webAddLines, webNotInFile, webSkipLines } from '../engine/webImport';
+import { nameInitial } from '../engine/studyProfile';
+import { LeafAvatar } from './studyProfile';
 import type { WebReady } from '../lib/webImport';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -94,9 +99,24 @@ export function WebImportPreview({
                 // A hanging bullet, so a wrapped line lines up under its words. Read as one line.
                 <View key={line} accessible accessibilityLabel={line} style={{ flexDirection: 'row', gap: space.sm }}>
                   <T v="body">•</T>
-                  <T v="body" style={{ flex: 1 }}>{line}</T>
+                  {summary?.displayName && line === `${WEB_NAME_PREFIX}${summary.displayName}` ? (
+                    // Mobile 1.44: "Your name: Maya", the name in bold.
+                    <T v="body" style={{ flex: 1 }}>
+                      {WEB_NAME_PREFIX}
+                      <T v="label">{summary.displayName}</T>
+                    </T>
+                  ) : (
+                    <T v="body" style={{ flex: 1 }}>{line}</T>
+                  )}
                 </View>
               ))}
+            </View>
+          )}
+          {/* Mobile 1.44: the name is added only when this phone has none, and stays on this phone. */}
+          {summary?.displayName && !summary.nothingNew && (
+            <View testID="web-import-name" style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.md, marginTop: space.lg }}>
+              <LeafAvatar initial={nameInitial(summary.displayName)} size={32} />
+              <T v="small" color={c.ink2} style={{ flex: 1 }}>{WEB_NAME_NOTE}</T>
             </View>
           )}
           {skips.map((line) => (

@@ -358,6 +358,10 @@ describe('review 1.41 fixes on Today', () => {
     queueReviews();
     testerOn(2);
     studiedDaysAgo(2, 1);
+    // Already asked for a name (mobile 1.44 would otherwise ask an onboarded learner with none, first).
+    act(() => {
+      useSeen.getState().setNameAsk('shown');
+    });
     storePlan([REVIEW, LESSON]);
     mount(<Today />);
     expect(byTestID('tester-card')).toHaveLength(1);

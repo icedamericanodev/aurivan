@@ -23,7 +23,9 @@
  *
  * Deep links: `?open=exam-date` opens the calendar (Today's and exam week's
  * "Set exam date"); on iOS once the push transition has ended, and its
- * Save or Cancel goes back to where the learner came from. `?section=plant`
+ * Save or Cancel goes back to where the learner came from. `?open=name`
+ * (mobile 1.44, You's study profile) opens Your name the same way: one name
+ * editor in the app, never a second one. `?section=plant`
  * opens at Badges and your plant (the plant screens' "Open Settings").
  *
  * Theme lives only here since 1.17 (the owner found the switch on You
@@ -150,23 +152,29 @@ export default function Settings() {
   // screen left open past midnight never offers yesterday (render stays pure:
   // it is only read in handlers and effects).
   const [now, setNow] = useState(() => Date.now());
-  // ?open=exam-date: on Android (and web) the calendar is up from the first frame, as before.
-  const linkNow = params.open === 'exam-date' && Platform.OS !== 'ios';
-  const [sheet, setSheet] = useState<SheetId | null>(() => (linkNow ? 'date' : null));
-  // True while the calendar the link opened is up: its Save or Cancel goes back to where the learner came from.
+  // ?open=exam-date opens the calendar; ?open=name (mobile 1.44, You's study profile) opens Your name.
+  const linkSheet: SheetId | null = params.open === 'exam-date' ? 'date' : params.open === 'name' ? 'name' : null;
+  // On Android (and web) the sheet is up from the first frame, as before.
+  const linkNow = linkSheet !== null && Platform.OS !== 'ios';
+  const [sheet, setSheet] = useState<SheetId | null>(() => (linkNow ? linkSheet : null));
+  // True while the sheet the link opened is up: its Save or Cancel goes back to where the learner came from.
   const fromLink = useRef(linkNow);
+  // "Your name": the text being edited in its sheet (starts from the saved name each time it opens).
+  // Opened by ?open=name from the first frame (Android, web): it starts from the saved name too.
+  const [nameDraft, setNameDraft] = useState(() => (linkNow && linkSheet === 'name' ? (useSettings.getState().displayName ?? '') : ''));
   // iOS presents a sheet from the screen itself; one presented during the
   // push transition can be dropped (and then can't open until the learner
   // leaves). So wait for the transition to end, with a short fallback.
   useEffect(() => {
-    if (params.open !== 'exam-date' || Platform.OS !== 'ios') return;
+    if (!linkSheet || Platform.OS !== 'ios') return;
     let done = false;
     const show = () => {
       if (done) return;
       done = true;
       fromLink.current = true;
       setNow(Date.now());
-      setSheet('date');
+      if (linkSheet === 'name') setNameDraft(useSettings.getState().displayName ?? '');
+      setSheet(linkSheet);
     };
     const off = navigation?.addListener?.('transitionEnd', (e) => {
       if (!e.data?.closing) show();
@@ -192,8 +200,6 @@ export default function Settings() {
   const remindRow = useRef<View>(null);
   const motionRow = useRef<View>(null);
   const aboutRow = useRef<View>(null);
-  // "Your name": the text being edited in its sheet (starts from the saved name each time it opens).
-  const [nameDraft, setNameDraft] = useState('');
   // Save keeps the sheet open (and the old name) when the text is a link or an email; the field explains why.
   const saveName = () => {
     const clean = cleanDisplayName(nameDraft);
@@ -206,15 +212,15 @@ export default function Settings() {
     if (id === 'name') setNameDraft(useSettings.getState().displayName ?? '');
     setSheet(id);
   };
-  /** True when closing the calendar should leave Settings: the link opened it and there is a screen to go back to. */
-  const leavesWithLink = () => sheet === 'date' && fromLink.current && router.canGoBack();
+  /** True when closing the sheet should leave Settings: the link opened it and there is a screen to go back to. */
+  const leavesWithLink = () => sheet !== null && sheet === linkSheet && fromLink.current && router.canGoBack();
   const close = () => {
     const id = sheet;
     const leave = leavesWithLink();
     setSheet(null);
     if (!id) return;
-    if (id === 'date') fromLink.current = false;
-    // Opened from "Set exam date": back to where the learner was (Today, exam week).
+    if (id === linkSheet) fromLink.current = false;
+    // Opened from "Set exam date" (Today, exam week) or You's study profile: back to where the learner was.
     if (leave) {
       router.back();
       return;
