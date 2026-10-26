@@ -251,8 +251,8 @@ describe('the closing screen', () => {
   it('a miss comes back tomorrow, not in a minute', () => {
     const s = finishFirstSet(3);
     const missed = s.questionIds.slice(3);
-    // Before the screen: misses are due at once (the normal rule).
-    for (const id of missed) expect(selectCert(useProgress.getState(), CERT).review[id].dueAt).toBeLessThanOrEqual(Date.now());
+    // Mobile 1.43: every miss already waits for tomorrow (the normal rule now), and the closing screen keeps it so.
+    for (const id of missed) expect(selectCert(useProgress.getState(), CERT).review[id].dueAt).toBe(startOfTomorrow(Date.now()));
     mount(<Results />);
     const tomorrow = startOfTomorrow(Date.now());
     for (const id of missed) expect(selectCert(useProgress.getState(), CERT).review[id].dueAt).toBe(tomorrow);

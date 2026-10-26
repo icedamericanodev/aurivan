@@ -368,11 +368,11 @@ describe('results: one domain', () => {
     // and there is no "All IS Audit · 2 of 3" line repeating it.
     expect(allText()).toContain(`${ids.length - 1} of ${ids.length} right`);
     expect(allText()).not.toContain('All IS Audit ·');
-    // Mobile 1.24: Done is the one solid button; "Practice the one you missed" is the secondary
-    // (a miss re-answered minutes later is a retest and earns no spacing credit).
+    // Mobile 1.24: Done is the one solid button. 1.43: "Practice the one you missed" is a quiet link
+    // (a miss re-answered minutes later is a retest and earns no spacing credit; it comes back tomorrow).
     const kindOf = (label: string) => root().findAll((n) => n.props.label === label && typeof n.props.onPress === 'function')[0].props.kind ?? 'primary';
     expect(kindOf('Done')).toBe('primary');
-    expect(kindOf('Practice the one you missed')).toBe('secondary');
+    expect(kindOf('Practice the one you missed')).toBe('ghost');
   });
 });
 

@@ -267,6 +267,8 @@ function mockExam(right: number, total = 50) {
 }
 /** Independent of the PR's caches: the engine, computed from scratch. */
 const engineDue = () => dueIds(cp().review, Date.now(), questionExists('cisa')).length;
+/** The review row's spoken start: "N due." or, with nothing due yet (mobile 1.43: fresh misses wait for tomorrow), "all caught up". */
+const revisitLabel = (due: number) => (due > 0 ? `[Questions to revisit, ${due} due.` : '[Questions to revisit, all caught up');
 const engineRange = () => readinessRange(cert, computeReadiness(cert, cp().answers));
 
 // ── Saves (AsyncStorage writes per key) ──────────────────────────────────
@@ -337,9 +339,10 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     expect(joined('practice')).not.toBe(before.practice);
     // ...and match the engine computed from scratch.
     const due = engineDue();
-    expect(due).toBeGreaterThan(0);
-    expect(joined('practice')).toContain(`[Questions to revisit, ${due} due.`);
-    expect(joined('you')).toContain(`[Questions to revisit, ${due} due.`);
+    // Mobile 1.43: the misses are in review, due from the start of tomorrow (none due this minute).
+    expect(Object.keys(cp().review).length).toBeGreaterThan(0);
+    expect(joined('practice')).toContain(revisitLabel(due));
+    expect(joined('you')).toContain(revisitLabel(due));
     const range = engineRange();
     expect(range.enough).toBe(true);
     if (range.enough) {
@@ -377,7 +380,7 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
       }
     });
     expect(textOf('you')).toEqual(freshText('you'));
-    expect(joined('you')).toContain(`[Questions to revisit, ${engineDue()} due.`);
+    expect(joined('you')).toContain(revisitLabel(engineDue()));
     expect(joined('you')).toContain('[Mistake journal, 6 open]');
     // A hidden tab (never switched to) is fresh too, the moment it is opened.
     expectTabsFresh(['practice', 'learn', 'home']);
@@ -413,15 +416,15 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     });
     mountAll();
     const dueNow = engineDue();
-    expect(joined('practice')).toContain(`[Questions to revisit, ${dueNow} due.`);
+    expect(joined('practice')).toContain(revisitLabel(dueNow));
     const later = Math.min(...Object.values(cp().review).map((e) => e.dueAt).filter((d) => d > Date.now()));
     expect(Number.isFinite(later)).toBe(true);
     // The app comes back just after the next review fell due.
     setClock(later + 1000);
     foreground();
     expect(engineDue()).toBeGreaterThan(dueNow);
-    expect(joined('practice')).toContain(`[Questions to revisit, ${engineDue()} due.`);
-    expect(joined('you')).toContain(`[Questions to revisit, ${engineDue()} due.`);
+    expect(joined('practice')).toContain(revisitLabel(engineDue()));
+    expect(joined('you')).toContain(revisitLabel(engineDue()));
     expectTabsFresh(['practice', 'you', 'home']);
   });
 });
@@ -513,7 +516,7 @@ describe('backup restore', () => {
     expectTabsFresh();
     expect(joined('you')).toContain(`[Answered: ${answeredThen}]`);
     expect(joined('you')).toContain('No mocks yet');
-    expect(joined('practice')).toContain(`[Questions to revisit, ${engineDue()} due.`);
+    expect(joined('practice')).toContain(revisitLabel(engineDue()));
     // The phone's saved progress is the restored data (a later no-op never skips it back).
     const saved = JSON.parse((await AsyncStorage.getItem('aurivan.progress.v1'))!);
     expect(Object.keys(saved.state.byCert.cisa.answers)).toHaveLength(answeredThen);

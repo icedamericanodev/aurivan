@@ -31,7 +31,7 @@ import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import { withNote, type QuestionNotes } from '../engine/questionNotes';
 import type { ThinkingSlip } from '../engine/slipCoach';
 import { addReport, type ReportEntry } from '../engine/support';
-import { isRetestAfterMiss, MAX_BOX, nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
+import { isRetestAfterMiss, MAX_BOX, nextCardReview, nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
 import { bumpStreak, dayKey, type Streak } from '../engine/streak';
 import { watchHydration } from './hydration';
 import { persistStorage } from './storage';
@@ -622,7 +622,8 @@ export const useProgress = create<ProgressState>()(
           const cp = normalize(s.byCert[certId]);
           const cards = { ...cp.cards };
           const prevCard = cards[cardId];
-          const next = nextReview(prevCard, correct, undefined, now);
+          // A missed card comes back in the next round (nextCardReview); a missed question waits for tomorrow.
+          const next = nextCardReview(prevCard, correct, now);
           if (next) cards[cardId] = next;
           else delete cards[cardId];
           // Build F: a missed card got right on a later day is a game miss fixed (Back on the Path).

@@ -1,10 +1,24 @@
-import { DAY_MS, dueIds, INTERVAL_DAYS, MAX_BOX, nextReview, upcomingReview } from '../engine/srs';
+import { DAY_MS, dueIds, INTERVAL_DAYS, MAX_BOX, nextReview, startOfNextDay, upcomingReview } from '../engine/srs';
 
 const NOW = 1_700_000_000_000;
 
 describe('Leitner spaced repetition', () => {
-  it('a wrong answer enters box 1, due now', () => {
-    expect(nextReview(undefined, false, 'sure', NOW)).toEqual({ box: 1, dueAt: NOW, lastSeen: NOW, reps: 1 });
+  it('a wrong answer enters box 1, due at the start of the next local day (mobile 1.43, as on the web)', () => {
+    expect(nextReview(undefined, false, 'sure', NOW)).toEqual({ box: 1, dueAt: startOfNextDay(NOW), lastSeen: NOW, reps: 1 });
+  });
+
+  it('a fresh miss is not due again the same day, and is due from local midnight', () => {
+    const e = nextReview(undefined, false, undefined, NOW)!;
+    const midnight = startOfNextDay(NOW);
+    expect(dueIds({ q: e }, NOW)).toEqual([]);
+    expect(dueIds({ q: e }, midnight - 1)).toEqual([]);
+    expect(dueIds({ q: e }, midnight)).toEqual(['q']);
+    // A miss one minute before midnight still waits only until midnight (never a full day more).
+    expect(nextReview(undefined, false, undefined, midnight - 60_000)!.dueAt).toBe(midnight);
+  });
+
+  it('a miss from a higher box falls back to box 1, due tomorrow, keeping its count', () => {
+    expect(nextReview({ box: 4, dueAt: NOW - 1, lastSeen: NOW - 7 * DAY_MS, reps: 5 }, false, 'sure', NOW)).toEqual({ box: 1, dueAt: startOfNextDay(NOW), lastSeen: NOW, reps: 6 });
   });
 
   it('a correct answer on a never-missed question schedules nothing', () => {

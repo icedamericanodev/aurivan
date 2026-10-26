@@ -397,7 +397,8 @@ describe('Timed practice (Settings default on) reaches every non-mock way in', (
   it('Today’s plan, review, concept, topic, Saved, Mistakes, Bank, Weak area, every mode and Guided are timed; mocks are not', () => {
     useSettings.setState({ practiceTimer: true });
     const miss = (id: string) => {
-      useProgress.getState().recordAnswer('cisa', id, false);
+      // Missed two days ago (mobile 1.43: a fresh miss waits for the next day), so it is due now.
+      useProgress.getState().recordAnswer('cisa', id, false, undefined, { at: Date.now() - 2 * 86_400_000 });
       useProgress.getState().recordMistake('cisa', id, 'A');
     };
     miss(bank[0].id);

@@ -295,8 +295,9 @@ describe('Results rings: mixed-domain sets and mocks only', () => {
     finish();
     mount(<Results />);
     expect(root().findAllByType(DomainRings)).toHaveLength(0);
-    // Review P5: its one line gives the percent ("Correct 10 of 10" below gives the count).
-    expect(allText()).toContain('All IS Audit · 100%');
+    // Mobile 1.43: its one line names the domain; the headline is the count (no percent, no "Correct" cell).
+    expect(allText()).toContain('All IS Audit');
+    expect(allText()).not.toMatch(/All IS Audit · \d+%/);
     expect(allText()).not.toMatch(/All IS Audit · \d+ of/);
   });
 });

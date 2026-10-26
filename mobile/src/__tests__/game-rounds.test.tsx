@@ -19,7 +19,7 @@ import type { Letter, PackQuestion } from '../content/types';
 import { ASK_FOR, ASK_LABEL, ASKS, priorityPool, priorityWord } from '../engine/games/priorityLens';
 import { REVIEW_LINE } from '../engine/games/recap';
 import { trapLetter, trapPool } from '../engine/games/trapSpotter';
-import { DAY_MS, dueIds } from '../engine/srs';
+import { DAY_MS, dueIds, startOfNextDay } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
 import TrapSpotter from '../app/game/trap';
@@ -132,7 +132,9 @@ describe('Snare Spotter: a whole round to the recap', () => {
     expect(allText()).toContain(REVIEW_LINE);
     // One "Snare: …" tag per question, naming the REAL snare.
     expect(allText().split('Snare: ').length - 1).toBe(5);
-    const due = dueIds(cisa().review, Date.now());
+    // Mobile 1.43: a missed question is in review from the start of the next day (not the same hour).
+    expect(dueIds(cisa().review, Date.now())).toEqual([]);
+    const due = dueIds(cisa().review, startOfNextDay(Date.now()));
     for (const q of played) {
       expect(due).toContain(q.id);
       expect(cisa().mistakes[q.id].picked).toBe(trapLetter(q));
@@ -209,14 +211,16 @@ describe('Forecast: a whole round to the recap', () => {
     for (const q of played) expect(cisa().review[q.id]).toBeUndefined();
   });
 
-  it('all wrong on Sure: −40, eight misses, the over-confidence note, and all eight due now', () => {
+  it('all wrong on Sure: −40, eight misses, the over-confidence note, and all eight due tomorrow', () => {
     const played = play(() => 'Sure', false);
     expect(hasLabel('Score minus 40 out of 24')).toBe(true);
     expect(allText()).toContain('−40'); // a real minus sign, not a hyphen
     expect(allText()).toContain('What caught you');
     expect(allText()).toContain(REVIEW_LINE);
     expect(allText()).toContain('Some of your Sure answers missed.');
-    const due = dueIds(cisa().review, Date.now());
+    // Mobile 1.43: a missed question is in review from the start of the next day (not the same hour).
+    expect(dueIds(cisa().review, Date.now())).toEqual([]);
+    const due = dueIds(cisa().review, startOfNextDay(Date.now()));
     for (const q of played) {
       expect(due).toContain(q.id);
       expect(cisa().mistakes[q.id].confidence).toBe('sure');
@@ -282,7 +286,9 @@ describe('Signpost: step 1 and a whole round to the recap', () => {
     expect(allText()).toContain('What caught you');
     expect(allText()).toContain(REVIEW_LINE);
     for (const q of played) expect(allText()).toContain(`Signpost word: ${priorityWord(q.stem)}`);
-    const due = dueIds(cisa().review, Date.now());
+    // Mobile 1.43: a missed question is in review from the start of the next day (not the same hour).
+    expect(dueIds(cisa().review, Date.now())).toEqual([]);
+    const due = dueIds(cisa().review, startOfNextDay(Date.now()));
     for (const q of played) expect(due).toContain(q.id);
   });
 });

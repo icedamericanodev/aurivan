@@ -2,10 +2,12 @@
  * Spaced repetition (Leitner boxes) — a direct port of the web app's
  * review queue so learners get the same behaviour on mobile.
  *
- * Idea in plain English: every question you miss goes into Box 1 and is
- * due again immediately. Each time you answer it correctly (and you were
- * not just guessing), it moves up a box and comes back later:
- *   Box 1 → now, Box 2 → 1 day, Box 3 → 3 days, Box 4 → 7 days, Box 5 → 16 days.
+ * Idea in plain English: every question you miss goes into Box 1 and comes
+ * back at the start of the next local day (mobile 1.43, the web's rule too:
+ * seeing it again the same hour is massed practice, not recall). Each time
+ * you answer it correctly (and you were not just guessing), it moves up a box
+ * and comes back later:
+ *   Box 1 → tomorrow, Box 2 → 1 day, Box 3 → 3 days, Box 4 → 7 days, Box 5 → 16 days.
  * Answer it correctly from Box 5 and it "graduates" out of the queue.
  *
  * A correct first answer marked "guessing" or "unsure" also enters the queue
@@ -106,15 +108,17 @@ export function nextReview(
   retest = false,
 ): ReviewEntry | null {
   if (!correct) {
-    // Wrong → back to Box 1, due right away. (A wrong retest counts in full.)
-    return { box: 1, dueAt: now, lastSeen: now, reps: (current?.reps ?? 0) + 1 };
+    // Wrong → back to Box 1, due at the start of the next local day (mobile 1.43; the web's
+    // updateReviewSchedule does the same). Results says "The 2 you missed come back tomorrow",
+    // and this makes it true. A wrong retest counts in full. Entries already saved keep their dueAt.
+    return { box: 1, dueAt: startOfNextDay(now), lastSeen: now, reps: (current?.reps ?? 0) + 1 };
   }
   if (retest) {
     // A right answer minutes after a MISS: no promotion, and not due again
     // before the start of tomorrow (local midnight, so it is in tomorrow's
     // plan, as the answer screen promises). The miss normally queued it
-    // already; if it did not (a mock saves without scheduling), it joins
-    // Box 1 now, so "Back in your review tomorrow." is always true.
+    // already; if it did not (a game or an old save that never scheduled it),
+    // it joins Box 1 now, so "Back in your review tomorrow." is always true.
     const tomorrow = startOfNextDay(now);
     if (current) return { ...current, dueAt: Math.max(current.dueAt, tomorrow), lastSeen: now, reps: current.reps + 1 };
     return { box: 1, dueAt: tomorrow, lastSeen: now, reps: 1 };
@@ -144,6 +148,17 @@ export function nextReview(
 
   const box = current.box + 1;
   return { box, dueAt: now + INTERVAL_DAYS[box] * DAY_MS, lastSeen: now, reps: current.reps + 1 };
+}
+
+/**
+ * The same boxes for a note-card game's cards (Field Guide, Canopy Call,
+ * Stepping Stones, Root or Rumor), with one difference: a missed CARD is due
+ * at once, because the game's next round brings it back (that is the game).
+ * Missed QUESTIONS wait for the next day (nextReview, mobile 1.43).
+ */
+export function nextCardReview(current: ReviewEntry | undefined, correct: boolean, now: number): ReviewEntry | null {
+  if (!correct) return { box: 1, dueAt: now, lastSeen: now, reps: (current?.reps ?? 0) + 1 };
+  return nextReview(current, true, undefined, now);
 }
 
 /**

@@ -332,10 +332,11 @@ describe('Results', () => {
     expect(t).not.toMatch(/\d+%|percent/);
   });
 
-  it('eight or more: the encouraging bands are back', () => {
+  it('eight or more: still the count first (mobile 1.43, owner decision), never "Strong work." before it', () => {
     finished(8, 7);
     mount(<Results />);
-    expect(allText()).toContain('Strong work.');
+    expect(allText()).toContain('7 of 8 right');
+    expect(allText()).not.toContain('Strong work');
   });
 
   it('the calibration line when enough answers were rated', () => {

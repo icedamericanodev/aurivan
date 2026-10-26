@@ -268,7 +268,8 @@ describe('Results: pace line and coaching lines', () => {
     });
     mount(<Results />);
     const text = allText();
-    expect(text).toContain('About 74 seconds per question. The exam allows about 96 seconds.');
+    // Mobile 1.43: a "Per question" stat beside the exam pace (it was one sentence).
+    expect(text).toContain('Per question 74 s Exam pace: about 96 s');
     expect(text).not.toContain('Quick pick');
     expect(text).not.toContain('Took its time');
     expect(text).toContain('Slow down on the question.');

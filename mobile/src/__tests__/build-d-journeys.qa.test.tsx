@@ -411,7 +411,8 @@ describe('journey 5: timed practice', () => {
     expect(active().finishedAt).toBeDefined();
     unmount();
     mount(<Results />);
-    expect(allText()).toContain('About 50 seconds per question. The exam allows about 96 seconds.');
+    // Mobile 1.43: a "Per question" stat beside the exam pace (it was one sentence).
+    expect(allText()).toContain('Per question 50 s Exam pace: about 96 s');
     // Mobile 1.24: the tags are gone (one quiet line each); the line says it.
     expect(allText()).toContain('You knew it; trust the first pass.');
   });

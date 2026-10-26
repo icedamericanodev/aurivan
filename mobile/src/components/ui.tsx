@@ -1396,7 +1396,10 @@ export function Stat({
   unitColor,
   roll,
   spoken,
+  note,
 }: {
+  /** Mobile 1.43: one `meta` line under the value ("Exam pace: about 96 s"); put it in `spoken` too. */
+  note?: string;
   label: string;
   /** The number (rolls with `roll`). Leave it out when the value is `word`. */
   value?: string;
@@ -1418,7 +1421,7 @@ export function Stat({
   const fg = color ?? c.ink;
   const said = spoken ?? (word ? word.toLowerCase() : `${value}${pct ? ' percent' : ''}${unit ? ` ${unit}` : ''}`);
   return (
-    <View accessible accessibilityLabel={`${label}: ${said}`} style={[styles.stat, listed && styles.statListed]}>
+    <View accessible accessibilityLabel={`${label}: ${said}`} style={[styles.stat, listed && styles.statListed, listed && note ? { flexWrap: 'wrap' } : null]}>
       <T v="caption" color={labelColor ?? c.ink2} style={listed ? { flexShrink: 1 } : undefined}>{label}</T>
       {word !== undefined ? (
         <Text maxFontSizeMultiplier={2} style={[statWord, { color: fg }, listed ? { flexShrink: 1, textAlign: 'right' } : { marginTop: space.xs }]}>{word}</Text>
@@ -1430,6 +1433,8 @@ export function Stat({
           )}
         </View>
       )}
+      {/* Listed (large text): the note takes its own line under the label and value. */}
+      {note ? <T v="meta" style={listed ? { flexBasis: '100%' } : { marginTop: 2 }}>{note}</T> : null}
     </View>
   );
 }

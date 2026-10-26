@@ -104,7 +104,8 @@ const spoken = (re: RegExp) =>
   root()
     .findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && re.test(n.props.accessibilityLabel))
     .map((n) => n.props.accessibilityLabel as string);
-const resultStats = () => spoken(/^(Correct|Missed|Time): /);
+// Mobile 1.43: the count is the headline, so the stat row is Time and Per question only.
+const resultStats = () => spoken(/^(Correct|Missed|Time|Per question): /);
 const buttons = (label: RegExp) =>
   root().findAll((x) => typeof x.props.onPress === 'function' && typeof x.props.accessibilityLabel === 'string' && label.test(x.props.accessibilityLabel));
 const press = (label: RegExp) => {
@@ -198,8 +199,9 @@ describe('Journey 1 · Results stats', () => {
     answer(IDS.slice(0, 1), 1, 5_000);
     finishAt(T0 + 5_000);
     mount(<Results />);
-    // A handful of answers (mobile 1.24, UX review S7): the headline is the count, so no "Correct" cell.
-    expect(resultStats()).toEqual(['Missed: none', 'Time: under a minute']);
+    // The headline is the count (mobile 1.24, UX review S7; every size since 1.43), so no count cells.
+    expect(allText()).toContain('Right');
+    expect(resultStats()).toEqual(['Time: under a minute']);
     expect(allText()).not.toMatch(/per question|median|exam pace|to review/i);
   });
 
@@ -226,9 +228,10 @@ describe('Journey 1 · Results stats', () => {
     answer(IDS.slice(0, 20), 13, 74_000);
     finishAt(T0 + 25 * MIN);
     mount(<Results />);
-    expect(resultStats()).toEqual(['Correct: 13 of 20', 'Missed: 7', 'Time: 25 minutes']);
+    expect(resultStats()).toEqual(['Time: 25 minutes', 'Per question: 74 seconds. Exam pace about 96 seconds']);
     const t = allText();
-    expect(t).toContain('About 74 seconds per question. The exam allows about 96 seconds.');
+    expect(t).toContain('13 of 20 right');
+    expect(t).toContain('Exam pace: about 96 s');
     expect(buttons(/^Practice the 7 you missed$/)).toHaveLength(1);
     expect(t).not.toMatch(/median/i);
   });
@@ -241,7 +244,8 @@ describe('Journey 1 · Results stats', () => {
     finishAt(T0 + 11 * MIN);
     mount(<Results />);
     // Practice time is the answer time added up (12 × 50 s), not the wall clock (QA Bug 7).
-    expect(resultStats()).toEqual(['Correct: 8 of 12', 'Missed: 4', 'Time: 10 minutes']);
+    expect(allText()).toContain('8 of 12 right');
+    expect(resultStats()[0]).toBe('Time: 10 minutes');
   });
 
   it('a review: same stats, same pace sentence', () => {
@@ -257,8 +261,8 @@ describe('Journey 1 · Results stats', () => {
     answer(ids, 3, 40_000);
     finishAt(T0 + 4 * MIN);
     mount(<Results />);
-    expect(resultStats()).toEqual(['Missed: 2', 'Time: 3 minutes']); // 5 × 40 s of answer time; "3 of 5 right" is the headline
-    expect(allText()).toContain('About 40 seconds per question. The exam allows about 96 seconds.');
+    expect(resultStats()).toEqual(['Time: 3 minutes', 'Per question: 40 seconds. Exam pace about 96 seconds']); // 5 × 40 s of answer time
+    expect(allText()).toContain('3 of 5 right');
   });
 
   it('a timed full mock submitted at 3 h 31 min: hours read plainly; the pacing panel says "typical", never "median"', () => {
@@ -270,9 +274,11 @@ describe('Journey 1 · Results stats', () => {
     answer(ids.slice(0, 146), 100, 80_000);
     finishAt(T0 + 211 * MIN);
     mount(<Results />);
-    // On a mock a blank is missed too: Correct + Missed = 150 (QA Bug 4).
-    expect(resultStats()).toEqual(['Correct: 100 of 150', 'Missed: 50, 4 of them left blank', 'Time: 3 hours 31 minutes']);
+    // On a mock a blank is missed too (QA Bug 4): the count leads, one line says the misses and blanks.
+    expect(resultStats()).toEqual(['Time: 3 hours 31 minutes']);
     const t = allText();
+    expect(t).toContain('100 of 150 right');
+    expect(t).toContain('50 missed, 4 of them left blank');
     expect(t).toContain('Typical time per question');
     expect(t).toContain('About 80 seconds');
     expect(t).toContain('Unanswered at submit');
@@ -290,7 +296,9 @@ describe('Journey 1 · Results stats', () => {
     answer(ids.slice(0, 10), 7, 90_000);
     finishAt(T0 + 6 * 60 * MIN);
     mount(<Results />);
-    expect(resultStats()).toEqual(['Correct: 7 of 150', 'Missed: 143, 140 of them left blank', 'Time: 4 hours']);
+    expect(resultStats()).toEqual(['Time: 4 hours']);
+    expect(allText()).toContain('7 of 150 right');
+    expect(allText()).toContain('143 missed, 140 of them left blank');
     expect(allText()).toContain('Unanswered when time ran out');
     expect(cp().mocks[0].minutesUsed).toBe(240);
   });
@@ -304,8 +312,11 @@ describe('Journey 1 · Results stats', () => {
     answer(ids.slice(0, 50), 40, 78_000); // 50 × 78 s = 65 min
     finishAt(T0 + 3 * DAY);
     mount(<Results />);
-    expect(resultStats()).toEqual(['Correct: 40 of 150', 'Missed: 110, 100 of them left blank', 'Time: 1 hour 5 minutes']);
+    // No pacing panel on an untimed mock, so its time per question is a stat.
+    expect(resultStats()).toEqual(['Time: 1 hour 5 minutes', 'Per question: 78 seconds. Exam pace about 96 seconds']);
     const t = allText();
+    expect(t).toContain('40 of 150 right');
+    expect(t).toContain('110 missed, 100 of them left blank');
     expect(t).toContain('Untimed mock: your answers count toward readiness, and pacing stats leave it out.');
     expect(t).not.toContain('Typical time per question');
     expect(t).not.toMatch(/median/i);
@@ -347,8 +358,9 @@ describe('Journey 1 · Results stats', () => {
     });
     finishAt(T0 + 2 * MIN);
     mount(<Results />);
-    expect(resultStats()[0]).toBe('Correct: 0 of 50');
-    expect(resultStats()).not.toContain('Missed: none');
+    expect(allText()).toContain('0 of 50 right');
+    expect(allText()).toContain('50 missed, 50 of them left blank');
+    expect(allText()).not.toContain('None missed');
   });
 });
 

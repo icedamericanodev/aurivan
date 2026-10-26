@@ -704,7 +704,7 @@ describe('J5 Reduce Motion (system and in-app)', () => {
 
     it(`${way}: Results, You and Today's first view of the day show their end state at once, same words`, () => {
       seed(60);
-      finishPractice(8, 8);
+      finishPractice(8, 8, true); // mixed: the score in the rings rolls (1.43: a one-domain set has nothing that rolls)
       reduce(way);
       mount(<Results />);
       expect(growingArcs()).toBe(0);
@@ -748,7 +748,7 @@ describe('J5 Reduce Motion (system and in-app)', () => {
     mount(<You />);
     check();
     unmount();
-    finishPractice(8, 8);
+    finishPractice(8, 8, true); // mixed: the rings' score rolls
     mount(<Results />);
     check();
     unmount();

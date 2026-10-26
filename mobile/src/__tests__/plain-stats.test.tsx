@@ -56,7 +56,7 @@ const textOf = (n: ReactTestInstance) => {
 /** The spoken labels of the stat cells (host views only, once each). */
 const statLabels = () =>
   r!.root
-    .findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && /^(Correct|Missed|Time): /.test(n.props.accessibilityLabel))
+    .findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && /^(Correct|Missed|Time|Per question): /.test(n.props.accessibilityLabel))
     .map((n) => n.props.accessibilityLabel as string);
 const IDS = getAllQuestions('cisa').slice(20, 40).map((q) => q.id);
 
@@ -115,23 +115,24 @@ describe('time as a stat', () => {
 });
 
 describe('Results', () => {
-  it('a 1-question, 5-second practice: "Missed None", "Time <1 min", and no pace line', () => {
+  it('a 1-question, 5-second practice: "Time <1 min", and no pace', () => {
     practice(1, 1, 5_000, 5_000);
-    // A handful of questions (mobile 1.24, UX review S7): the headline ("Right") is the count, so the
-    // stat row leaves out "Correct" instead of saying it a second time.
-    expect(statLabels()).toEqual(['Missed: none', 'Time: under a minute']);
+    // The headline ("Right") is the count (mobile 1.24, UX review S7), and since 1.43 the strip shows
+    // which ones: the stat row has no "Correct" or "Missed" cell saying it again.
+    expect(statLabels()).toEqual(['Time: under a minute']);
     const text = textOf(r!.root);
-    expect(text).toContain('Missed None Time <1 min');
+    expect(text).toContain('Time <1 min');
     expect(text).not.toContain('Correct 1 of 1');
     // One answer says nothing useful about pace.
     expect(text).not.toMatch(/per question/);
     expect(text).not.toMatch(/Median|exam pace|to review/);
   });
 
-  it('a 20-question practice: the counts, the time, and one plain pace sentence', () => {
+  it('a 20-question practice: the count in the headline, the time, and the time per question beside the exam pace', () => {
     practice(20, 14, 70_000, 23 * 60_000);
-    expect(statLabels()).toEqual(['Correct: 14 of 20', 'Missed: 6', 'Time: 23 minutes']);
-    expect(textOf(r!.root)).toContain('About 70 seconds per question. The exam allows about 96 seconds.');
+    expect(textOf(r!.root)).toContain('14 of 20 right');
+    expect(statLabels()).toEqual(['Time: 23 minutes', 'Per question: 70 seconds. Exam pace about 96 seconds']);
+    expect(textOf(r!.root)).toContain('Per question 70 s Exam pace: about 96 s');
   });
 });
 
@@ -224,8 +225,10 @@ describe('the same time everywhere (QA bugs 2, 3, 5, 7)', () => {
       finishSession();
     });
     mount(<Results />);
-    expect(statLabels()).toEqual(['Correct: 30 of 50', 'Missed: 20, 10 of them left blank', 'Time: 50 minutes']);
-    expect(textOf(r!.root)).toContain('Missed includes 10 left blank: a blank counts as not correct.');
+    // Mobile 1.43: the count leads ("30 of 50 right"); a mock has no leaf strip, one line says the misses and blanks.
+    expect(textOf(r!.root)).toContain('30 of 50 right');
+    expect(statLabels()[0]).toBe('Time: 50 minutes');
+    expect(textOf(r!.root)).toContain('20 missed, 10 of them left blank: a blank counts as not correct.');
   });
 });
 
