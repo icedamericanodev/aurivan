@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.37] — Today can greet you by name
+
+### New
+- Today can greet you by name. Add a first name or nickname if you like; it stays in this browser and comes along when you move your progress to the app.
+
 ## [v12.36] — A calmer Today and harder practice
 
 ### New
